@@ -1,0 +1,245 @@
+- name: dc_ptc unit test 1
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 69
+        employment_income: 20_000
+        rent: 8_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 67
+        employment_income: 20_000
+        rent: 4_000
+      person3:
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DC
+  output:
+    adjusted_gross_income: 40_000
+    dc_ptc: 800  # = 12000 * 20% - 40000 * 4%
+
+- name: dc_ptc unit test 2
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 69
+        employment_income: 20_000
+        rent: 8_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 70
+        employment_income: 20_000
+        rent: 4_000
+      person3:
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DC
+  output:
+    adjusted_gross_income: 40_000
+    dc_ptc: 1_200  # = 12000 * 20% - 40000 * 3%
+
+- name: dc_ptc unit test 3
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 69
+        employment_income: 40_000
+        rent: 8_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 67
+        employment_income: 20_000
+        rent: 4_000
+      person3:
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DC
+  output:
+    adjusted_gross_income: 60_000
+    dc_ptc: 0
+
+- name: dc_ptc unit test 4
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 69
+        employment_income: 40_000
+        rent: 10_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 67
+        employment_income: 16_200
+        rent: 10_000
+      person3:
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DC
+  output:
+    adjusted_gross_income: 56_200
+    dc_ptc: 1_190  # = 12000 * 20% - 56_200 * 5%
+
+- name: dc_ptc unit test 5 (same as test 4 except an extra dollar of income)
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 69
+        employment_income: 40_000
+        rent: 10_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 67
+        employment_income: 16_201
+        rent: 10_000
+      person3:
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DC
+  output:
+    adjusted_gross_income: 56_201
+    dc_ptc: 0  # inelgible for property tax credit
+
+- name: dc_ptc unit test 6
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 69
+        employment_income: 40_000
+        rent: 10_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 67
+        employment_income: 17_600
+        rent: 10_000
+      person3:
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DC
+  output:
+    adjusted_gross_income: 57_600
+    dc_ptc: 1_120  # = 20000 * 20% - 57_600 * 5%
+
+- name: dc_ptc unit test 7 (same as test 6 except an extra dollar of income)
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 69
+        employment_income: 40_000
+        rent: 10_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 67
+        employment_income: 17_601
+        rent: 10_000
+      person3:
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DC
+  output:
+    adjusted_gross_income: 57_601
+    dc_ptc: 0  # inelgible for property tax credit
+
+- name: dc_ptc unit test 8
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 69
+        rent: 10_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 67
+        rent: 10_000
+      person3:
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        adjusted_gross_income: -3_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DC
+  output:
+    dc_ptc: 1_250  # = min(1250, 20000 * 20% - 0 * 5%)

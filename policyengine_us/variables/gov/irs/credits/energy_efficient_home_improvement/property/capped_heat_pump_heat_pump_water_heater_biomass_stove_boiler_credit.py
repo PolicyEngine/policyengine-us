@@ -1,5 +1,4 @@
 from policyengine_us.model_api import *
-import numpy as np
 
 
 class capped_heat_pump_heat_pump_water_heater_biomass_stove_boiler_credit(

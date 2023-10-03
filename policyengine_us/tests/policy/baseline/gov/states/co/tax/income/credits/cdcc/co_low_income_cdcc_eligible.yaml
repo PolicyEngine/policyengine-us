@@ -1,0 +1,26 @@
+- name: co_low_income_cdcc_eligible unit test 1
+  period: 2022
+  input:
+    state_code: CO
+    capped_cdcc: 0
+    adjusted_gross_income: 24_999
+  output:
+    co_low_income_cdcc_eligible: true
+
+- name: co_low_income_cdcc_eligible unit test 2
+  period: 2022
+  input:
+    state_code: CO
+    capped_cdcc: 300
+    adjusted_gross_income: 24_999
+  output:
+    co_low_income_cdcc_eligible: false
+
+- name: co_low_income_cdcc_eligible unit test 3
+  period: 2022
+  input:
+    state_code: CO
+    capped_cdcc: 0
+    adjusted_gross_income: 25_001
+  output:
+    co_low_income_cdcc_eligible: false

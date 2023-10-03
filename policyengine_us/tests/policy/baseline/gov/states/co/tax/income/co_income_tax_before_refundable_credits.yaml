@@ -1,0 +1,17 @@
+- name: Calculation 
+  period: 2023
+  input:
+    state_code: CO
+    co_income_tax_before_non_refundable_credits: 2_000
+    co_non_refundable_credits: 500
+  output:
+    co_income_tax_before_refundable_credits: 1_500
+
+- name: Capped at 0 
+  period: 2023
+  input:
+    state_code: CO
+    co_income_tax_before_non_refundable_credits: 200
+    co_non_refundable_credits: 500
+  output:
+    co_income_tax_before_refundable_credits: 0

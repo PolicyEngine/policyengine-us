@@ -1,0 +1,39 @@
+- name: WI standard deduction unit test 1
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    filing_status: JOINT
+    wi_agi: 75_000
+    state_code: WI
+  output:
+    wi_standard_deduction: 11_836.06
+
+- name: WI standard deduction unit test 2
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    filing_status: SINGLE
+    wi_agi: 49_705
+    state_code: WI
+  output:
+    wi_standard_deduction: 7_864.20
+
+- name: WI standard deduction unit test 3
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    wi_agi: 49_705
+    state_code: WI
+  output:
+    wi_standard_deduction: 7_864.22
+
+- name: WI standard deduction unit test 4
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    wi_agi: 49_705 + 10_000
+    state_code: WI
+  output:
+    wi_standard_deduction: 7_864.22 - 0.12 * 10_000

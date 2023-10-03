@@ -1,7 +1,6 @@
 from policyengine_core.model_api import *
 from policyengine_us.entities import *
 from policyengine_us.tools.branched_simulation import BranchedSimulation
-import numpy as np
 from pathlib import Path
 import pandas as pd
 from policyengine_us.typing import Formula
@@ -92,15 +91,6 @@ def in_state(state):
         return population("state_code_str", period) == state
 
     return is_eligible
-
-
-def excess(of: str, over: str) -> Formula:
-    def formula(entity, period, parameters):
-        of_variable = add(entity, period, [of])
-        over_variable = add(entity, period, [over])
-        return max_(of_variable - over_variable, 0)
-
-    return formula
 
 
 def get_next_threshold(values: ArrayLike, thresholds: ArrayLike) -> ArrayLike:

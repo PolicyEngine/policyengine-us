@@ -27,17 +27,14 @@ class ia_fedtax_deduction(Variable):
             us_tax = ustax + person.tax_unit("non_refundable_ctc", period)
         else:
             us_tax = ustax
+        # remove SECA and Additional Medicare taxes
+        amtax = person.tax_unit("additional_medicare_tax", period)
+        setax = add(person.tax_unit, period, ["self_employment_tax"])
+        agg_tax = max_(0.0, us_tax - amtax - setax)
+        # project agg_tax to head and spouse in net_tax variable
         is_head = person("is_tax_unit_head", period)
         is_spouse = person("is_tax_unit_spouse", period)
-        additional_hi_tax = person.tax_unit("additional_medicare_tax", period)
-        aggregate_tax = (is_head | is_spouse) * (us_tax - additional_hi_tax)
-        # prorate aggregate_tax among head and spouse according to net incomes
+        net_tax = (is_head | is_spouse) * agg_tax
+        # prorate net_tax among head and spouse according to net incomes
         fraction = person("ia_prorate_fraction", period)
-        prorated_tax = fraction * aggregate_tax
-        # allocate any dependent self-employment tax to tax unit head
-        indiv_setax = person("self_employment_tax", period)
-        is_dependent = person("is_tax_unit_dependent", period)
-        sum_dep_setax = person.tax_unit.sum(is_dependent * indiv_setax)
-        setax = ~is_dependent * indiv_setax + is_head * sum_dep_setax
-        # return prorated_tax less setax
-        return max_(0, prorated_tax - setax)
+        return fraction * net_tax

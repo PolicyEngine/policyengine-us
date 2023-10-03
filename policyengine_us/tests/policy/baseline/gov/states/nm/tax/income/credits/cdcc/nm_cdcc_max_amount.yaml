@@ -1,0 +1,172 @@
+- name: One eligible child with full childcare expenses (capped at 480)
+  period: 2023
+  input:
+    people:
+      head:
+        age: 30
+        nm_cdcc_eligible_child: false
+      child1:
+        age: 18
+        nm_cdcc_eligible_child: false
+        # daily_childcare_expenses: 10 
+        # childcare_days_per_year: 365
+      child2:
+        age: 8
+        nm_cdcc_eligible_child: true
+        # daily_childcare_expenses: 10 
+        # childcare_days_per_year: 365
+    tax_units:
+      tax_unit:
+        members: [head, child1, child2]
+        nm_cdcc_eligible: true
+        tax_unit_childcare_expenses: 7_300
+    households:
+      household:
+        state_code: NM
+  output:
+    nm_cdcc_max_amount: 480
+
+- name: Four eligible children with full childcare expenses (capped at 480)
+  period: 2023
+  input:
+    people:
+      head:
+        age: 30
+        nm_cdcc_eligible_child: false
+      child1:
+        age: 10
+        nm_cdcc_eligible_child: true
+        # daily_childcare_expenses: 10 
+        # childcare_days_per_year: 365
+      child2:
+        age: 8
+        nm_cdcc_eligible_child: true
+        # daily_childcare_expenses: 10 
+        # childcare_days_per_year: 365
+      child3:
+        age: 11
+        nm_cdcc_eligible_child: true
+        # daily_childcare_expenses: 10 
+        # childcare_days_per_year: 365
+      child4:
+        age: 10
+        nm_cdcc_eligible_child: true
+        # daily_childcare_expenses: 10 
+        # childcare_days_per_year: 365
+    tax_units:
+      tax_unit:
+        members: [head, child1, child2, child3, child4]
+        nm_cdcc_eligible: true
+        tax_unit_childcare_expenses: 14_600
+    households:
+      household:
+        state_code: NM
+  output:
+    nm_cdcc_max_amount: 1_200
+
+- name: Two eligible children with full childcare expenses (capped at 480 each)
+  period: 2023
+  input:
+    people:
+      head:
+        age: 30
+        nm_cdcc_eligible_child: false
+      child1:
+        age: 10
+        nm_cdcc_eligible_child: true
+        # daily_childcare_expenses: 10 
+        # childcare_days_per_year: 365
+      child2:
+        age: 8
+        nm_cdcc_eligible_child: true
+        # daily_childcare_expenses: 10 
+        # childcare_days_per_year: 365
+    tax_units:
+      tax_unit:
+        members: [head, child1, child2]
+        nm_cdcc_eligible: true
+        tax_unit_childcare_expenses: 7_300
+    households:
+      household:
+        state_code: NM
+  output:
+    nm_cdcc_max_amount: 960
+
+- name: One eligible child with childcare expenses # (6 * 20) * 0.4 = 48
+  period: 2023
+  input:
+    people:
+      head:
+        age: 30
+        nm_cdcc_eligible_child: false
+      child1:
+        age: 8
+        nm_cdcc_eligible_child: true
+        # daily_childcare_expenses: 6 
+        # childcare_days_per_year: 20
+    tax_units:
+      tax_unit:
+        members: [head, child1]
+        nm_cdcc_eligible: true
+        tax_unit_childcare_expenses: 20 * 6 * 1
+    households:
+      household:
+        state_code: NM
+  output:
+    nm_cdcc_max_amount: 48
+
+- name: One eligible child with childcare expenses # (6 * 20) * 0.4 + (5 * 30) * 0.4= 108
+  period: 2023
+  input:
+    people:
+      head:
+        age: 30
+        nm_cdcc_eligible_child: false
+      child1:
+        age: 8
+        nm_cdcc_eligible_child: true
+        # daily_childcare_expenses: 6 
+        # childcare_days_per_year: 20
+      child2:
+        age: 12
+        nm_cdcc_eligible_child: true
+        # daily_childcare_expenses: 5 
+        # childcare_days_per_year: 30
+    tax_units:
+      tax_unit:
+        members: [head, child1, child2]
+        nm_cdcc_eligible: true
+        tax_unit_childcare_expenses: 20 * 6 + 30 * 5
+    households:
+      household:
+        state_code: NM
+  output:
+    nm_cdcc_max_amount: 108
+
+- name: Another nm_cdcc_max_amount unit test
+  period: 2021
+  input:
+    people:
+      head:
+        age: 32
+      child1:
+        age: 12
+        nm_cdcc_eligible_child: true
+      child2:
+        age: 10
+        nm_cdcc_eligible_child: true
+      child3:
+        age: 8
+        nm_cdcc_eligible_child: true
+    tax_units:
+      tax_unit:
+        members: [head, child1, child2, child3]
+        nm_cdcc_eligible: true
+        cdcc: 505
+        tax_unit_childcare_expenses: 2_000
+    households:
+      household:
+        members: [head, child1, child2, child3]
+        state_code: NM
+  output:
+    nm_cdcc_max_amount: 800

@@ -17,6 +17,12 @@ CA:
 CO:
   2010-01-01: false
   2021-10-01: true
+  2022-11-30:
+    value: true
+    metadata:
+      reference:
+        - title: Code of Colorado Regulations | Rule Manual Volume 4, SNAP | 4.407.3(C) (page 107)
+          href: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=10492&fileName=10%20CCR%202506-1
 CT:
   2010-01-01: false
   2021-10-01: false
@@ -160,7 +166,6 @@ WY:
   2021-10-01: false
 metadata:
   unit: bool
-  name: snap_homeless_shelter_deduction_available
   label: SNAP homeless shelter deduction available
   breakdown:
   - state_code

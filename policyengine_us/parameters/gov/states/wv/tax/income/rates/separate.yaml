@@ -1,0 +1,34 @@
+description: West Virginia taxes income at these rates for married filers, filing separately.
+
+metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  label: West Virginia income tax rate married filers, filing separately
+  reference:
+    - title: West Virginia Personal Income Tax Forms And Instructions 2022
+      href:  https://tax.wv.gov/Documents/PIT/2022/PersonalIncomeTaxFormsAndInstructions.2022.pdf#Page=36
+    - title: Code of West Virginia §11-21-4e
+      href: https://code.wvlegislature.gov/11-21-4E/
+
+brackets:
+  - threshold:
+      2022-01-01: 0
+    rate:
+      2022-01-01: 0.03
+  - threshold:
+      2022-01-01: 5_000
+    rate:
+      2022-01-01: 0.04
+  - threshold:
+      2022-01-01: 12_500
+    rate:
+      2022-01-01: 0.045
+  - threshold:
+      2022-01-01: 20_000
+    rate:
+      2022-01-01: 0.06
+  - threshold:
+      2022-01-01: 30_000
+    rate:
+      2022-01-01: 0.065
