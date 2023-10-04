@@ -94,12 +94,12 @@
   output:
     ky_personal_tax_credits: 120
 
-- name: Kentucky separate ineligible
+- name: Kentucky joint eligible 2
   period: 2022
   input:
     people:
       person1:
-        ky_personal_tax_credits_aged_eligible: False
+        ky_personal_tax_credits_aged_eligible: True
         ky_personal_tax_credits_blind_eligible: False
       person2:
         ky_personal_tax_credits_aged_eligible: False
@@ -107,13 +107,13 @@
     tax_units:
       tax_unit:
         members: [person1,person2]
-        filing_status: SEPARATE
+        filing_status: JOINT
     households:
       household:
         members: [person1,person2]
         state_code: KY
   output:
-    ky_personal_tax_credits: 0
+    ky_personal_tax_credits: 40
 
 - name: Kentucky separate ineligible
   period: 2022
