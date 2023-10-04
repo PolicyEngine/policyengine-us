@@ -1,11 +1,9 @@
 description: Ohio counts these sources as additions.
 values:
   2021-01-01:
-  # - Ohio income tax refund
-  # - Ohio taxes evclusion
-  # - Ohio 529 plan fund
-  # - Ohio losses
-  # - Ohio Reimbursement
+    - adjusted_gross_income",
+    - oh_bonus_depreciation_add_back
+    - oh_other_add_backs
 metadata:
   unit: list
   reference:

@@ -1,10 +1,16 @@
 description: Ohio counts these sources as deductions.
 values:
   2021-01-01:
-  # - Ohio business income deductions
-  # - Ohio Employee compensation
-    - taxable_social_security
-  # - Ohio Interest income
+    - oh_section_179_expense_add_back",
+    - qualified_business_income_deduction
+    - tax_unit_taxable_social_security
+    - dividend_income
+  # - above_the_line_deductions" #only need line 8z
+    - oh_uniformed_services_retirement_income_deduction
+    - investment_in_529_plan
+    - spm_unit_pell_grant
+    - educator_expense
+    - disability_benefits
 metadata:
   unit: list
   reference:
