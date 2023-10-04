@@ -6,7 +6,7 @@ class id_taxable_income(Variable):
     entity = TaxUnit
     label = "Idaho taxable income"
     unit = USD
-    documentation = "Idaho AGI less taxable income deductions"
+    documentation = "Idaho taxable income"
     definition_period = YEAR
     reference = "https://tax.idaho.gov/wp-content/uploads/forms/EFO00089/EFO00089_12-30-2022.pdf#page=1"
     defined_for = StateCode.ID
