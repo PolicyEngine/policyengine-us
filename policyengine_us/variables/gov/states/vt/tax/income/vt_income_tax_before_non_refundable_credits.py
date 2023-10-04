@@ -8,6 +8,11 @@ class vt_income_tax_before_non_refundable_credits(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.VT
+    reference = (
+        "https://legislature.vermont.gov/statutes/section/32/151/05822",  # Vermont §5822. Tax on income of individuals, estates, and trusts (a)
+        "https://tax.vermont.gov/sites/tax/files/documents/RateSched-2021.pdf#page=1",  # Vermont 2021 Income Tax Rate Schedules
+        "https://tax.vermont.gov/sites/tax/files/documents/RateSched-2022.pdf#page=1",  # Vermont 2022 Income Tax Return Booklet Forms and Instructions
+    )
 
     def formula(tax_unit, period, parameters):
         income = tax_unit("vt_taxable_income", period)
@@ -30,7 +35,8 @@ class vt_income_tax_before_non_refundable_credits(Variable):
                 p.head_of_household.calc(income),
             ],
         )
-        # If agi is bigger than threshold, than we need to further compare 3% of Adjusted Gross Income less interest from U.S. obligations and Tax Rate Schedule calculation
+        # If agi is bigger than threshold, then we need to further compare 3% of Adjusted Gross Income less interest from U.S. obligations and Tax Rate Schedule calculation
+        # Less interest from U.S. obligations  mentioned only in tax form, but not in the legal code (Vermont §5822 (a)(6)).
         federal_agi = tax_unit("adjusted_gross_income", period)
         above_threshold = federal_agi > p.threshold
         us_govt_interest = tax_unit("us_govt_interest", period)
