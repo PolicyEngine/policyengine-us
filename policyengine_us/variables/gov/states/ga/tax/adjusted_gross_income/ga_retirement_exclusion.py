@@ -16,25 +16,32 @@ class ga_retirement_exclusion(Variable):
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
-        p = parameters(period).gov.states.ga.tax.income.agi.exclusions
+        p = parameters(
+            period
+        ).gov.states.ga.tax.income.agi.exclusions.retirement
         retirement_income = person("ga_retirement_income", period)
         age = person("age", period)
-        age_younger = (age >= p.retirement.age.younger) & (
-            age < p.retirement.age.older
-        )
-        age_older = age >= p.retirement.age.older
-        cap_younger = p.retirement.cap.exclusion.younger
-        cap_older = p.retirement.cap.exclusion.older
-        capped_younger_exclusion = min_(retirement_income, cap_younger)
-        capped_older_exclusion = min_(retirement_income, cap_older)
+        # age_younger = (age >= p.retirement.age.younger) & (
+        #    age < p.retirement.age.older)
+        # age_older = age >= p.retirement.age.older
+        # cap_younger = p.retirement.cap.exclusion.younger
+        # cap_older = p.retirement.cap.exclusion.older
+
+        cap = p.amount.calc(age)
+        capped_exclusion = min_(retirement_income, cap)
+        # capped_younger_exclusion = min_(retirement_income, cap_younger)
+        # capped_older_exclusion = min_(retirement_income, cap_older)
 
         head = person("is_tax_unit_head", period)
         spouse = person("is_tax_unit_spouse", period)
         head_or_spuse = head | spouse
         disabled = person("is_disabled", period)
-        older_eligible = (head_or_spuse) & age_older
-        older_exclusion = where(older_eligible, capped_older_exclusion, 0)
-        younger_eligible = (head_or_spuse) & age_younger
+
+        exclusion = where(head_or_spuse, capped_exclusion, 0)
+
+        # older_eligible = (head_or_spuse) & age_older
+        # older_exclusion = where(older_eligible, capped_older_exclusion, 0)
+        # younger_eligible = (head_or_spuse) & age_younger
         disabled_eligible = (head_or_spuse) & disabled
         younger_exclusion = where(
             younger_eligible | disabled_eligible, capped_younger_exclusion, 0
