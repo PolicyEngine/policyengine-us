@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ms_self_employment_adjustment(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Mississippi adjustemnts to federal adjusted gross income"
+    label = "Mississippi self employment adjustment"
     unit = USD
     definition_period = YEAR
     reference = [

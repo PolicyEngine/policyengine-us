@@ -13,4 +13,5 @@ class ms_taxable_income(Variable):
     )
     defined_for = StateCode.MS
 
-    adds = "gov.states.ms.tax.income.income_sources"
+    adds = ["ms_agi"]
+    subtracts = ["ms_deductions", "ms_total_exemptions"]
