@@ -10,7 +10,7 @@ class oh_deductions(Variable):
     reference = (
         "https://tax.ohio.gov/static/communications/publications/individual_income_tax_ohio.pdf#page=2"
         "https://tax.ohio.gov/static/forms/ohio_individual/individual/2022/it1040-bundle.pdf#page=3"
-        "https://cms7files1.revize.com/starkcountyoh/Document_center/Offices/Auditor/Services/Homestead%20Exemption/Ohio_Adj_Gross_Income.pdf"                
+        "https://cms7files1.revize.com/starkcountyoh/Document_center/Offices/Auditor/Services/Homestead%20Exemption/Ohio_Adj_Gross_Income.pdf"
     )
     defined_for = StateCode.OH
     adds = "gov.states.oh.tax.income.deductions"
