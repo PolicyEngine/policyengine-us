@@ -17,7 +17,7 @@ class oh_joint_filing_credit_eligible(Variable):
         p = parameters(
             period
         ).gov.states.oh.tax.income.credits.joint_filing_credit
-        income = person("employment_income", period)
+        income = person("oh_alternative_agi", period)
 
         head_income = tax_unit.sum(is_head * income)
 
