@@ -19,10 +19,10 @@ class mt_interest_exemptions(Variable):
             "dividend_income", period
         )  # dividends or share accounts
         dividend_income_unit = tax_unit.sum(dividend_income)
-        qalified_amount = min_(cap_amount, dividend_income_unit)
+        qualified_amount = min_(cap_amount, dividend_income_unit)
         age_head = tax_unit("age_head", period)
         eligible_aged_head = age_head >= p.age
         age_spouse = tax_unit("age_spouse", period)
         eligible_aged_spouse = age_spouse >= p.age
         eligible_tax_unit = eligible_aged_head | eligible_aged_spouse
-        return where(eligible_tax_unit, qalified_amount, 0)
+        return where(eligible_tax_unit, qualified_amount, 0)
