@@ -1,31 +1,16 @@
-description: Montana provides partial interest exemption for the age filer at this amount.
+description: Montana deducts this amount for each eligible exemption when computing taxable income.
+values:
+  2021-01-01: 2_580
+  2022-01-01: 2_710
 metadata:
-  label: Montana interest exemption base amount
-  period: year
+  reference:
+    - title: "Montana Tax Form 2021 | Exemptions | Line 16"
+      href: https://mtrevenue.gov/wp-content/uploads/mdocs/form%202%202021.pdf#page=1
+    - title: "Montana Tax Form 2022 | Exemptions | Line 16"
+      href: https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2023/05/Montana-Idividiual-Income-Tax-Return-Form-2-2022v6.2.pdf#page=1
+    - title: Rule 42.15.402 - Personal Exemptions (4) (b)
+      href: https://regulations.justia.com/states/montana/department-42/chapter-42-15/subchapter-42-15-4/rule-42-15-402/
   unit: currency-USD
-  breakdown:
-  - filing_status
-  reference: 
-  - title: 2022 Montana Form 2 | line 3 - Partial Interest Exemption for Taxpayers
-    href: https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2022/12/Form-2-2022-Instructions.pdf#page=25
-  - title: Administrative Rules of Montana | Income Taxes | § 42.14.215
-    href: https://advance.lexis.com/documentpage/?pdmfid=1000516&crid=fb5db531-a80f-4790-bddb-eefc8327ef60&config=00JAA1MDBlYzczZi1lYjFlLTQxMTgtYWE3OS02YTgyOGM2NWJlMDYKAFBvZENhdGFsb2feed0oM9qoQOMCSJFX5qkd&pddocfullpath=%2Fshared%2Fdocument%2Fstatutes-legislation%2Furn%3AcontentItem%3A65D2-CDH3-CGX8-044N-00008-00&pdcontentcomponentid=234186&pdteaserkey=sr1&pditab=allpods&ecomp=8s65kkk&earg=sr1&prid=66f02b0a-c5ae-4162-9535-127751546807
-SINGLE:
-  2021-01-01: 800 # 2021 need to update 
-  2022-01-01: 800
-SEPARATE:
-  2021-01-01: 800
-  2022-01-01: 800
-JOINT:
-  2021-01-01: 1_600
-  2022-01-01: 1_600
-HEAD_OF_HOUSEHOLD:
-  2021-01-01: 800
-  2022-01-01: 800
-WIDOW: # if filling status on federal form is qualifing widow, we can use head of household
-  2021-01-01: 800
-  2022-01-01: 800
-
-# exemption for dependents?? should we included?
-# page15
+  period: year
+  label: Montana income tax exemption amount
 

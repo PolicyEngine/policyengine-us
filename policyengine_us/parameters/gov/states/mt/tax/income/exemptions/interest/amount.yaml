@@ -6,25 +6,20 @@ metadata:
   breakdown:
   - filing_status
   reference: 
-  - title: 2022 Montana Form 2 | line 3 - Partial Interest Exemption for Taxpayers
-    href: https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2022/12/Form-2-2022-Instructions.pdf#page=25
-  - title: Administrative Rules of Montana | Income Taxes | § 42.14.215
-    href: https://advance.lexis.com/documentpage/?pdmfid=1000516&crid=fb5db531-a80f-4790-bddb-eefc8327ef60&config=00JAA1MDBlYzczZi1lYjFlLTQxMTgtYWE3OS02YTgyOGM2NWJlMDYKAFBvZENhdGFsb2feed0oM9qoQOMCSJFX5qkd&pddocfullpath=%2Fshared%2Fdocument%2Fstatutes-legislation%2Furn%3AcontentItem%3A65D2-CDH3-CGX8-044N-00008-00&pdcontentcomponentid=234186&pdteaserkey=sr1&pditab=allpods&ecomp=8s65kkk&earg=sr1&prid=66f02b0a-c5ae-4162-9535-127751546807
+    - title: 2021 Montana Form 2 | line 3 - Partial Interest Exemption for Taxpayers
+      href: https://mtrevenue.gov/wp-content/uploads/mdocs/form%202%202021%20instructions.pdf#page=24
+    - title: 2022 Montana Form 2 | line 3 - Partial Interest Exemption for Taxpayers
+      href: https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2022/12/Form-2-2022-Instructions.pdf#page=25
+    - title: Administrative Rules of Montana | Income Taxes | § 42.14.215
+      href: https://rules.mt.gov/gateway/RuleNo.asp?RN=42%2E15%2E215
+
 SINGLE:
-  2021-01-01: 800 # 2021 need to update 
-  2022-01-01: 800
+  2021-01-01: 800
 SEPARATE:
   2021-01-01: 800
-  2022-01-01: 800
 JOINT:
   2021-01-01: 1_600
-  2022-01-01: 1_600
 HEAD_OF_HOUSEHOLD:
   2021-01-01: 800
-  2022-01-01: 800
-WIDOW: # if filling status on federal form is qualifing widow, we can use head of household
+WIDOW:
   2021-01-01: 800
-  2022-01-01: 800
-
-# exemption for dependents?? should we included?
-# page15
