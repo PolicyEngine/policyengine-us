@@ -5,7 +5,7 @@
     ms_income_tax_before_credits: 2_000
     ms_non_refundable_credits: 200
   output:
-    ms_income_tax_before_refundable_credits: 1_800
+    ms_income_tax_before_credits: 1_800
 
 - name: Capped at 0 
   period: 2023
@@ -14,4 +14,4 @@
     ms_income_tax_before_credits: 300
     ms_non_refundable_credits: 500
   output:
-    ms_income_tax_before_refundable_credits: 0
+    ms_income_tax_before_credits: 0
