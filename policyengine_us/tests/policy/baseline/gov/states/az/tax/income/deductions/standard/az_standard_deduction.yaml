@@ -1,20 +1,18 @@
-- name: Single filer 2022
+- name: Single filer 2021
   period: 2021
   input:
     state_code: AZ
     filing_status: SINGLE
-    charitable_deduction: 2_000
-    az_charitable_contributions_credit: 1_000
+    az_increased_standard_deduction_for_charitable_contributions: 250
   output:
     az_standard_deduction: 13_200
 
-- name: Single filer 2021
+- name: Single filer 2022
   period: 2022
   input:
     state_code: AZ
     filing_status: SINGLE
-    charitable_deduction: 2_000
-    az_charitable_contributions_credit: 1_000
+    az_increased_standard_deduction_for_charitable_contributions: 270
   output:
     az_standard_deduction: 13_220
 
@@ -24,8 +22,7 @@
   input:
     state_code: AZ
     filing_status: JOINT
-    charitable_deduction: 1_000
-    az_charitable_contributions_credit: 500
+    az_increased_standard_deduction_for_charitable_contributions: 135
   output:
     az_standard_deduction: 26_035
 
@@ -34,7 +31,6 @@
   input:
     state_code: AZ
     filing_status: JOINT
-    charitable_deduction: 1_000
-    az_charitable_contributions_credit: 500
+    az_increased_standard_deduction_for_charitable_contributions: 125
   output:
     az_standard_deduction: 26_025
