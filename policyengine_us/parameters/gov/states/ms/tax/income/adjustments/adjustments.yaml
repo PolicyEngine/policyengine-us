@@ -1,21 +1,10 @@
 description: Mississippi counts these adjustments from the federal adjusted gross income.
 values:
-  2021-01-01:
-    # ira_contributions
-    - ms_self_employment_adjustment
-    # Payment to Self-Employed SEP and Qualified Plans
-    # Interest Penalty on Early Withdrawal of Savings
-    # Allmony and Separate Maintenance Paid
-    # Moving Expense
-    # National Guard and Reserve Pay
-    # MPACT - - Mississippi Prepaid Affordable College Tuition Program AND/OR MACS - Mississippi Affordable College Savings
-    # Self-Employed Health Insurance Deduction
-    # Health Savings Account Deductions 
-    # Catastrophe Savings Account Deductions
-    # Self-Employment Tax Deduction
-    # First-Time Home Buyer Savings Account
-    # Agricultural Disaster Program Compensation
-    # Mississippi Achieving a Better Life Experience (ABLE) Act Deduction
+  2020-01-01:
+    - ira_contributions # Line 50
+    - ms_self_employment_adjustment # Line 61
+    - ms_national_guard_or_reserve_pay_adjustment # Line 55
+    - alimony_expense # Line 53
 
 metadata:
   unit: list
