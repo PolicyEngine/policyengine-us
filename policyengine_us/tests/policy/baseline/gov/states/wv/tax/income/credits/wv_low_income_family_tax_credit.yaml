@@ -1,0 +1,57 @@
+- name: Single filers get 0 low-income family tax credit whose family size 4, the federal poverty guidelines based on 4 members $30,000, modified federal adjusted gross income $40,000.
+  period: 2022
+  input:
+    wv_agi: 40_000
+    wv_low_income_family_tax_credit_fpg: 27_750
+   # tax_unit_fpg: 27_750
+    state_code: WV
+    filing_status: SINGLE
+    wv_income_tax_before_non_refundable_credits: 0
+    state_group: CONTIGUOUS_US
+  output:
+   wv_low_income_family_tax_credit: 0
+
+- name: Head of household filers get 40% x the amount of tax owed low-income family tax credit whose family size 2, the federal poverty guidelines based on 2 members $19,720, modified federal adjusted gross income $20,000.
+  period: 2022
+  input:
+    wv_agi: 20_000
+    wv_low_income_family_tax_credit_fpg: 18_310
+    # tax_unit_fpg: 18_310
+    state_code: WV
+    filing_status: HEAD_OF_HOUSEHOLD
+    wv_income_tax_before_non_refundable_credits: 2_000
+    state_group: CONTIGUOUS_US
+  output:
+    # 1500 < wv_modified_agi-tax_unit_fpg = 20_000-18_310 = 1690 < 1800 40% x the amount of tax owed
+    # 2_000 * 0.4
+    wv_low_income_family_tax_credit: 800
+
+- name: Husband and wife who file separate returns get 0 low-income family tax credit whose family size 3, the federal poverty guidelines based on 3 members $24,860, modified federal adjusted gross income $20,000.
+  period: 2022
+  input:
+    wv_agi: 20_000
+    wv_low_income_family_tax_credit_fpg: 23_030
+    # tax_unit_fpg: 23_030
+    state_code: AR
+    filing_status: SEPARATE
+    wv_income_tax_before_non_refundable_credits: 1_000
+    state_group: CONTIGUOUS_US
+  output:
+    wv_low_income_family_tax_credit: 0
+
+- name: Husband and wife who file separate returns get 100% x the amount of tax owed low-income family tax credit whose family size 3, the federal poverty guidelines based on 3 members $24,860, modified federal adjusted gross income $12,000.
+  period: 2022
+  input:
+    wv_agi: 12_000
+    wv_low_income_family_tax_credit_fpg: 23_030
+    # tax_unit_fpg: 23_030
+    state_code: WV
+    filing_status: SEPARATE
+    wv_income_tax_before_non_refundable_credits: 1_000
+    state_group: CONTIGUOUS_US
+  output:
+    # 450<wv_modified_agi-tax_unit_fpg = 12000-11515= 485 <600 60% x the amount of tax owed
+    # 1_000 * 0.6 
+    wv_low_income_family_tax_credit: 600
+
+#  brackets interval: wv_modified_agi-tax_unit_fpg*percent 
