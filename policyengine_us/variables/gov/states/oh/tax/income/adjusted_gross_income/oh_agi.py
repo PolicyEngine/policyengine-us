@@ -13,6 +13,6 @@ class oh_agi(Variable):
     )
     defined_for = StateCode.OH
 
-    adds = "gov.states.oh.tax.income.additions"
+    adds = ["oh_additions"]
 
-    subtracts = "gov.states.oh.tax.income.deductions"
+    subtracts = ["oh_deductions"]
