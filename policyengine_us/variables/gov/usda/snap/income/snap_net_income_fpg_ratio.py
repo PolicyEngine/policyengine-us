@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class snap_net_income_fpg_ratio(Variable):
     value_type = float
     entity = SPMUnit
-    definition_period = YEAR
+    definition_period = MONTH
     label = "SNAP net income to FPL ratio"
     documentation = (
         "SNAP net income as a percentage of the federal poverty line"
