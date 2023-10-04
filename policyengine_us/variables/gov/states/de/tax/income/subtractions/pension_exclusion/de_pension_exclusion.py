@@ -32,7 +32,7 @@ class de_pension_exclusion(Variable):
             person("taxable_pension_income", period) * head_or_spouse
         )
 
-        # Filers under 60, are only eligible to receive a pension exclusion of max $2,000 pre 2022 
+        # Filers under 60, are only eligible to receive a pension exclusion of max $2,000 pre 2022
         capped_eligible_pension_income = min_(
             p.cap.younger, eligible_pension_income
         )
@@ -41,7 +41,6 @@ class de_pension_exclusion(Variable):
         eligible_retirement_income = (
             person("de_pension_exclusion_income", period) * head_or_spouse
         )
-
 
         # Filer over 60 are eligible to receive an exclsuion for the total of pension income and eligible retirement income pre and after 2022
         total_income = eligible_pension_income + eligible_retirement_income
