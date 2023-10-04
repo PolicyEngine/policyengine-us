@@ -6,7 +6,7 @@
   output:
     vt_charitable_contribution_credit: 50
 
-- name: filer has 30,000 charitable contribution
+- name: filer has 30,000 charitable contribution, capped at $1,000
   period: 2022
   input:
     charitable_deduction: 30_000
