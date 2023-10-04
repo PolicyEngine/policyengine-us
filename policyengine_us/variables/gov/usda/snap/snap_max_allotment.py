@@ -24,4 +24,4 @@ class snap_max_allotment(Variable):
         additional_allotment = (
             additional_members * max_allotments.additional[snap_region]
         )
-        return (main_allotment + additional_allotment)
+        return main_allotment + additional_allotment

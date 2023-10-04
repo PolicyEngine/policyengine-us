@@ -25,7 +25,7 @@ class snap_emergency_allotment(Variable):
         state = spm_unit.household("state_code", period)
         ea_in_effect = p.in_effect[state]
         ea_minimum = p.minimum
-        ea_amount_if_in_effect = (
-            max_(ea_minimum, max_allotment - normal_allotment)
+        ea_amount_if_in_effect = max_(
+            ea_minimum, max_allotment - normal_allotment
         )
         return eligible * ea_in_effect * ea_amount_if_in_effect

@@ -35,9 +35,7 @@ class snap_excess_shelter_expense_deduction(Variable):
         ) + spm_unit("snap_utility_allowance", period)
         # Homeless shelter deduction is flat and has no utility component.
         state = spm_unit.household("state_code_str", period)
-        homeless_deduction = (
-            p.homeless.deduction * p.homeless.available[state]
-        )
+        homeless_deduction = p.homeless.deduction * p.homeless.available[state]
         return where(
             spm_unit.household("is_homeless", period)
             & (housing_cost > 0)
