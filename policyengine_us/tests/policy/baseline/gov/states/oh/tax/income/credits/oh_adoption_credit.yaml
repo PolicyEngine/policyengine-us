@@ -1,0 +1,187 @@
+- name: In 2023, taxpayer adopted 1 children, age < 18, the eligible adoption-related expenses were 1_000 , the ohio adoption credit was 0
+  period: 2023
+  input:
+    qualified_adoption_assistance_expense: 1_000
+    age: 10
+    state_code: OH
+  output: 
+    oh_adoption_credit: 0
+
+- name: In 2021, taxpayer adopted 1 children, age >= 18, the eligible adoption-related expenses were 1_000 , the ohio adoption credit was 0
+  period: 2021
+  input:
+    qualified_adoption_assistance_expense: 1_000
+    age: 18
+    state_code: OH
+  output: 
+    oh_adoption_credit: 0
+
+- name: In 2021, taxpayer adopted 1 children, age < 18, the eligible adoption-related expenses were 1_000 , the ohio adoption credit was 1_500
+  period: 2021
+  input:
+    qualified_adoption_assistance_expense: 1_000
+    age: 10
+    state_code: OH
+  output: 
+    oh_adoption_credit: 1_500
+
+- name: In 2021, taxpayer adopted 1 children, age < 18, the eligible adoption-related expenses were 1_500 , the ohio adoption credit was 1_500
+  period: 2021
+  input:
+    qualified_adoption_assistance_expense: 1_500
+    age: 10
+    state_code: OH
+  output: 
+    oh_adoption_credit: 1_500
+
+- name: In 2021, taxpayer adopted 1 children, age < 18, the eligible adoption-related expenses were 3_000 , the ohio adoption credit was 3_000
+  period: 2021
+  input:
+    qualified_adoption_assistance_expense: 3_000
+    age: 10
+    state_code: OH
+  output: 
+    oh_adoption_credit: 3_000
+
+- name: In 2021, taxpayer adopted 1 children, age < 18, the eligible adoption-related expenses were 10_000 , the ohio adoption credit was 10_000
+  period: 2021
+  input:
+    qualified_adoption_assistance_expense: 10_000
+    age: 10
+    state_code: OH
+  output: 
+    oh_adoption_credit: 10_000
+
+- name: In 2021, taxpayer adopted 1 children, age < 18, the eligible adoption-related expenses were 15_000 , the ohio adoption credit was 10_000
+  period: 2021
+  input:
+    qualified_adoption_assistance_expense: 15_000
+    age: 10
+    state_code: OH
+  output: 
+    oh_adoption_credit: 10_000
+
+- name: In 2021, taxpayer adopted 2 children, age < 18, the eligible adoption-related expenses were 1_000 and 1_200 separately, the ohio adoption credit was 3_000
+  period: 2021
+  input:
+    people:
+      child1: 
+        qualified_adoption_assistance_expense: 1_000
+        age: 10
+      child2:
+        qualified_adoption_assistance_expense: 1_200
+        age: 5
+    households:
+      household:
+        members: [child1, child2]
+        state_code: OH
+  output: 
+    oh_adoption_credit: 3_000
+
+- name: In 2021, taxpayer adopted 2 children, age < 18, the eligible adoption-related expenses were 1_000 and 5_000 separately, the ohio adoption credit was 6_500
+  period: 2021
+  input:
+    people:
+      child1: 
+        qualified_adoption_assistance_expense: 1_000
+        age: 10
+      child2:
+        qualified_adoption_assistance_expense: 5_000
+        age: 2
+    households:
+      household:
+        members: [child1, child2]
+        state_code: OH
+  output: 
+    oh_adoption_credit: 6_500
+
+- name: In 2021, taxpayer adopted 2 children, age < 18, the eligible adoption-related expenses were 8_000 and 5_000 separately, the ohio adoption credit was 13_000
+  period: 2021
+  input:
+    people:
+      child1: 
+        qualified_adoption_assistance_expense: 8_000
+        age: 10
+      child2:
+        qualified_adoption_assistance_expense: 5_000
+        age: 6
+    households:
+      household:
+        members: [child1, child2]
+        state_code: OH
+  output: 
+    oh_adoption_credit: 13_000
+  
+- name: In 2021, taxpayer adopted 2 children, age < 18, the eligible adoption-related expenses were 8_000 and 10_000 separately, the ohio adoption credit was 18_000
+  period: 2021
+  input:
+    people:
+      child1: 
+        qualified_adoption_assistance_expense: 8_000
+        age: 7
+      child2:
+        qualified_adoption_assistance_expense: 15_000
+        age: 4
+    households:
+      household:
+        members: [child1, child2]
+        state_code: OH
+  output: 
+    oh_adoption_credit: 18_000
+
+- name: In 2021, taxpayer adopted 2 children, age < 18, the eligible adoption-related expenses were 15_000 and 10_000 separately, the ohio adoption credit was 20_000
+  period: 2021
+  input:
+    people:
+      child1: 
+        qualified_adoption_assistance_expense: 15_000
+        age: 10
+      child2:
+        qualified_adoption_assistance_expense: 20_000
+        age: 8
+    households:
+      household:
+        members: [child1, child2]
+        state_code: OH
+  output: 
+    oh_adoption_credit: 20_000
+
+- name: In 2021, taxpayer adopted 2 children, one age < 18, the other age >= 18, the eligible adoption-related expenses were 15_000 and 10_000 separately, the ohio adoption credit was 10_000
+  period: 2021
+  input:
+    people:
+      child1: 
+        qualified_adoption_assistance_expense: 15_000
+        age: 10
+      child2:
+        qualified_adoption_assistance_expense: 20_000
+        age: 18
+    households:
+      household:
+        members: [child1, child2]
+        state_code: OH
+  output: 
+    oh_adoption_credit: 10_000
+
+- name: In 2021, taxpayer adopted 4 children, age < 18, the eligible adoption-related expenses were 1_000, 1_500, 10_000 and 15_000 separately, the ohio adoption credit was 23_000
+  period: 2021
+  input:
+    people:
+      child1: 
+        qualified_adoption_assistance_expense: 1_000
+        age: 10
+      child2:
+        qualified_adoption_assistance_expense: 1_500
+        age: 15
+      child3: 
+        qualified_adoption_assistance_expense: 10_000
+        age: 7
+      child4:
+        qualified_adoption_assistance_expense: 15_000      
+        age: 2
+    households:
+      household:
+        members: [child1, child2, child3, child4]
+        state_code: OH
+  output: 
+    oh_adoption_credit: 23_000
