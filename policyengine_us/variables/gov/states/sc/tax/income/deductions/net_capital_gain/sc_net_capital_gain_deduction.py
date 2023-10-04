@@ -17,6 +17,6 @@ class sc_net_capital_gain_deduction(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(
             period
-        ).gov.states.sc.tax.income.deductions.net_capital_gain_deduction
+        ).gov.states.sc.tax.income.deductions.net_capital_gain
         capital_gains = tax_unit("net_capital_gain", period)
         return capital_gains * p.rate
