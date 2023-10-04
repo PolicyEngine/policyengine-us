@@ -1,4 +1,4 @@
-- name: Idaho grocery credit enhancement unit test 1
+- name: id_grocery_credit_enhancement unit test 1 # 2 dependents
   period: 2021
   input:
     people:
@@ -17,7 +17,7 @@
     id_grocery_credit_enhancement: 200
 
 
-- name: Idaho grocery credit enhancement unit test 2
+- name: id_grocery_credit_enhancement unit test 2 # 1 dependent
   period: 2021
   input:
     people:
@@ -35,7 +35,7 @@
   output:  
     id_grocery_credit_enhancement: 100
 
-- name: Idaho grocery credit enhancement unit test 3
+- name: id_grocery_credit_enhancement unit test 3 # 3 dependents
   period: 2021
   input:
     people:

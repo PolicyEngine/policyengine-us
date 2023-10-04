@@ -1,4 +1,4 @@
-- name: Eligible for the enhancement of the Idaho grocery credit unit test 1
+- name: id_grocery_credit_enhancement_eligible unit test 1 # House head over 65, income 20000, 2021
   period: 2021
   input:
     state_code: ID
@@ -8,7 +8,7 @@
   output:
     id_grocery_credit_enhancement_eligible: False
 
-- name: Eligible for the enhancement of the Idaho grocery credit unit test 2
+- name: id_grocery_credit_enhancement_eligible unit test 2 # House head over 65, income 14000, 2022
   period: 2022
   input:
     state_code: ID
@@ -18,7 +18,7 @@
   output:
     id_grocery_credit_enhancement_eligible: True
 
-- name: Eligible for the enhancement of the Idaho grocery credit unit test 3
+- name: id_grocery_credit_enhancement_eligible unit test 3 # House head and spouse over 65, income 30000, 2021
   period: 2021
   input:
     state_code: ID
@@ -29,7 +29,7 @@
   output:
     id_grocery_credit_enhancement_eligible: False
 
-- name: Eligible for the enhancement of the Idaho grocery credit unit test 4
+- name: id_grocery_credit_enhancement_eligible unit test 4 # House head over 65, spouse under 65, income 27000, 2022
   period: 2022
   input:
     state_code: ID
@@ -40,7 +40,7 @@
   output:
     id_grocery_credit_enhancement_eligible: True
 
-- name: Eligible for the enhancement of the Idaho grocery credit unit test 5
+- name: id_grocery_credit_enhancement_eligible unit test 5 # House head over 65, spouse under 65, income 50000, 2021
   period: 2021
   input:
     state_code: ID

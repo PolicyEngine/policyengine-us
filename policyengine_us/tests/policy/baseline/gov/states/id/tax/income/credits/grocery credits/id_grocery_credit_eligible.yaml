@@ -1,4 +1,4 @@
-- name: id grocery credit eligible unit test 1
+- name: id_grocery_credit_eligible unit test 1 # House head and spouse over 65
   period: 2021
   input:
     state_code: ID
@@ -8,7 +8,7 @@
     id_grocery_credit_eligible: True
 
 
-- name: id grocery credit eligible unit test 2
+- name: id_grocery_credit_eligible unit test 2 # House head and spouse under 65
   period: 2021
   input:
     state_code: ID
@@ -17,7 +17,7 @@
   output:
     id_grocery_credit_eligible: False
 
-- name: id grocery credit eligible unit test 3
+- name: id_grocery_credit_eligible unit test 3 # House head under 65, spouse over 65
   period: 2021
   input:
     state_code: ID
@@ -26,11 +26,11 @@
   output:
     id_grocery_credit_eligible: True
 
-- name: id grocery credit eligible unit test 4
+- name: id_grocery_credit_eligible unit test 4 # House head over 65, spouse under 65
   period: 2022
   input:
     state_code: ID
-    age_head: 60
-    age_spouse: 66
+    age_head: 66
+    age_spouse: 60
   output:
     id_grocery_credit_eligible: True

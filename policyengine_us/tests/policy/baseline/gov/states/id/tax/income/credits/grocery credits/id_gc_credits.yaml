@@ -1,5 +1,5 @@
 
-- name: id grocery credit unit test 1
+- name: id_grocery_credit unit test 1 # house head over 65, spouse not
   period: 2021
   input:
     people:
@@ -20,7 +20,7 @@
     id_grocery_credit: 220
 
 
-- name: id grocery credit unit test 2
+- name: id_grocery_credit unit test 2 # house head over 65, spouse not, with 1 dependent
   period: 2022
   input:
     people:
@@ -42,7 +42,7 @@
   output:  
     id_grocery_credit: 320
 
-- name: id grocery credit unit test 3
+- name: id_grocery_credit unit test 3 # house head and spouse under 65, with 1 dependent
   period: 2021
   input:
     people:
