@@ -15,7 +15,7 @@ class ar_itemized_deductions(Variable):
         p = parameters(period).gov.states.ar.tax.income.deductions.itemized
         p_ded = parameters(period).gov.irs.deductions
 
-        agi = tax_unit("adjusted_gross_income", period)
+        agi = tax_unit("ar_adjusted_gross_income", period)
         head = person("is_tax_unit_head", period)
         person_agi = person("adjusted_gross_income_person", period)
         total_person_agi = tax_unit.sum(person_agi * head)
