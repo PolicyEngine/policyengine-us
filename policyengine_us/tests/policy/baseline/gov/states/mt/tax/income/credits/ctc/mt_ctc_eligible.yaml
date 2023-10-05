@@ -3,7 +3,7 @@
   input:
     tax_unit_earned_income: 66_298
     adjusted_gross_income: 55_999
-    net_investment_income: 10_299
+    mt_disqualified_income: 10_299
     state_code: MT
   output: 
     mt_ctc_eligible: true
@@ -13,7 +13,7 @@
   input:
     tax_unit_earned_income: 66_300
     adjusted_gross_income: 56_001
-    net_investment_income: 10_299
+    mt_disqualified_income: 10_299
     state_code: MT
   output: 
     mt_ctc_eligible: false
@@ -23,7 +23,7 @@
   input:
     tax_unit_earned_income: 66_300
     adjusted_gross_income: 56_000
-    net_investment_income: 10_300
+    mt_disqualified_income: 10_300
     state_code: MT
   output: 
     mt_ctc_eligible: false
@@ -33,7 +33,7 @@
   input:
     tax_unit_earned_income: 0
     adjusted_gross_income: 0
-    net_investment_income: 0
+    mt_disqualified_income: 0
     state_code: MT
   output: 
     mt_ctc_eligible: false

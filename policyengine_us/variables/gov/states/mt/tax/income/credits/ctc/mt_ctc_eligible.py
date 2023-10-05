@@ -17,8 +17,9 @@ class mt_ctc_eligible(Variable):
         income_eligible = agi <= p.agi
         # CTC limited to filers with investment income below $10,300
         investment_income_eligible = (
-            tax_unit("net_investment_income", period) < p.investment
+            tax_unit("mt_disqualified_income", period) < p.investment
         )
+
         earned_income = tax_unit("tax_unit_earned_income", period)
         proof_earned_income = earned_income > p.earned_income_required
 
