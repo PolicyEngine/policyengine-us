@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ar_retirement_or_disability_benefits_exemption_eligible_person(Variable):
     value_type = bool
     entity = Person
-    label = "Eligible person for the Arkansas individual retirement or disability benefit exemption"
+    label = "Eligible person for the Arkansas individual retirement or disability benefits exemption"
     definition_period = YEAR
     reference = "https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2022_AR1000F_and_AR1000NR_Instructions.pdf#page=13"
     defined_for = StateCode.AR
