@@ -6,7 +6,7 @@
     is_tax_unit_spouse: false
     state_code: HI
   output:
-    hi_military_reserve_or_national_guard_duty_pay_exclusion: 5_000
+    hi_military_pay_exclusion: 5_000
 
 - name: Military reserve or national guard duty pay exceeds max amount
   period: 2021
@@ -16,4 +16,4 @@
     is_tax_unit_spouse: true
     state_code: HI
   output:
-    hi_military_reserve_or_national_guard_duty_pay_exclusion: 7_345
+    hi_military_pay_exclusion: 7_345

@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class hi_military_reserve_or_national_guard_duty_pay_exclusion(Variable):
+class hi_military_pay_exclusion(Variable):
     value_type = float
     entity = TaxUnit
     label = "Hawaii military reserve or national guard duty pay exclusion"
@@ -15,7 +15,7 @@ class hi_military_reserve_or_national_guard_duty_pay_exclusion(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(
             period
-        ).gov.states.hi.tax.income.subtractions.military_reserve_or_national_guard_duty_pay_exclusion
+        ).gov.states.hi.tax.income.subtractions.military_pay
         person = tax_unit.members
         military_service_income = person("military_service_income", period)
         capped_military_income = min_(military_service_income, p.max_amount)
