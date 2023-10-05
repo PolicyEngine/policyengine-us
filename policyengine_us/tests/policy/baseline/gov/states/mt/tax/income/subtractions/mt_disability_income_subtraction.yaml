@@ -4,8 +4,8 @@
     people:
       person1:
         disability_benefits: 15_000
-        is_tax_unit_head: 1
-        is_retired: 1
+        is_tax_unit_head: true
+        is_retired: true
         age: 65
     tax_units:
       tax_unit:
@@ -23,9 +23,9 @@
     people:
       person1:
         disability_benefits: 15_000
-        is_tax_unit_head: 1
-        is_retired: 1
-        is_permanently_and_totally_disabled: 0
+        is_tax_unit_head: true
+        is_retired: true
+        is_permanently_and_totally_disabled: false
         age: 64
     tax_units:
       tax_unit:
@@ -43,9 +43,9 @@
     people:
       person1:
         disability_benefits: 15_000
-        is_tax_unit_head: 1
-        is_retired: 1
-        is_permanently_and_totally_disabled: 1
+        is_tax_unit_head: true
+        is_retired: true
+        is_permanently_and_totally_disabled: true
         age: 64
     tax_units:
       tax_unit:
@@ -63,15 +63,15 @@
     people:
       person1:
         disability_benefits: 15_000
-        is_tax_unit_head: 1
-        is_retired: 1
-        is_permanently_and_totally_disabled: 1
+        is_tax_unit_head: true
+        is_retired: true
+        is_permanently_and_totally_disabled: true
         age: 64
       person2:
         disability_benefits: 12_000
-        is_tax_unit_spouse: 1
-        is_retired: 1
-        is_permanently_and_totally_disabled: 1
+        is_tax_unit_spouse: true
+        is_retired: true
+        is_permanently_and_totally_disabled: true
         age: 63
     tax_units:
       tax_unit:
