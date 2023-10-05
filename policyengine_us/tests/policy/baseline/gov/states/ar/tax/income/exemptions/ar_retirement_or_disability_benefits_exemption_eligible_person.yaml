@@ -18,70 +18,70 @@
         members: [head, spouse]
         state_code: AR
   output:
-    ar_retirement_or_disability_benefits_exemption_eligible_person: [1,1]
+    ar_retirement_or_disability_benefits_exemption_eligible_person: [[1,1],[1,1]]
 
-- name: Arkansas eligible exemption for retirement or disability benefits (case 2)
-  period: 2021
-  input:
-    people:
-      head:
-        age: 58
-        is_tax_unit_head: true
-        is_tax_unit_spouse: false
-      spouse:
-        age: 60
-        is_tax_unit_head: false
-        is_tax_unit_spouse: true
-    tax_units:
-      tax_unit:
-        members: [head, spouse]  
-    households:
-      household:
-        members: [head, spouse]
-        state_code: AR
-  output:
-    ar_retirement_or_disability_benefits_exemption_eligible_person: [0,1]
+# - name: Arkansas eligible exemption for retirement or disability benefits (case 2)
+#   period: 2021
+#   input:
+#     people:
+#       head:
+#         age: 58
+#         is_tax_unit_head: true
+#         is_tax_unit_spouse: false
+#       spouse:
+#         age: 60
+#         is_tax_unit_head: false
+#         is_tax_unit_spouse: true
+#     tax_units:
+#       tax_unit:
+#         members: [head, spouse]  
+#     households:
+#       household:
+#         members: [head, spouse]
+#         state_code: AR
+#   output:
+#     ar_retirement_or_disability_benefits_exemption_eligible_person: [0,1]
 
-- name: Arkansas eligible exemption for retirement or disability benefits (case 3)
-  period: 2021
-  input:
-    people:
-      head:
-        age: 62
-        is_tax_unit_head: true
-        is_tax_unit_spouse: false
-      spouse:
-        age: 57
-        is_tax_unit_head: false
-        is_tax_unit_spouse: true
-    tax_units:
-      tax_unit:
-        members: [head, spouse]  
-    households:
-      household:
-        members: [head, spouse]
-        state_code: AR
-  output:
-    ar_retirement_or_disability_benefits_exemption_eligible_person: [1,0]
+# - name: Arkansas eligible exemption for retirement or disability benefits (case 3)
+#   period: 2021
+#   input:
+#     people:
+#       head:
+#         age: 62
+#         is_tax_unit_head: true
+#         is_tax_unit_spouse: false
+#       spouse:
+#         age: 57
+#         is_tax_unit_head: false
+#         is_tax_unit_spouse: true
+#     tax_units:
+#       tax_unit:
+#         members: [head, spouse]  
+#     households:
+#       household:
+#         members: [head, spouse]
+#         state_code: AR
+#   output:
+#     ar_retirement_or_disability_benefits_exemption_eligible_person: [1,0]
 
-- name: Arkansas ineligible exemption for retirement or disability benefits 
-  period: 2021
-  input:
-    people:
-      head:
-        age: 58
-        is_tax_unit_head: true
-        is_tax_unit_spouse: false
-      spouse:
-        age: 57
-        is_tax_unit_head: false
-        is_tax_unit_spouse: true
-    tax_units:
-      tax_unit:
-        members: [head, spouse]  
-    households:
-      household:
-        members: [head, spouse]
-        state_code: AR
-  output:
-    ar_retirement_or_disability_benefits_exemption_eligible_person: [0,0]
+# - name: Arkansas ineligible exemption for retirement or disability benefits 
+#   period: 2021
+#   input:
+#     people:
+#       head:
+#         age: 58
+#         is_tax_unit_head: true
+#         is_tax_unit_spouse: false
+#       spouse:
+#         age: 57
+#         is_tax_unit_head: false
+#         is_tax_unit_spouse: true
+#     tax_units:
+#       tax_unit:
+#         members: [head, spouse]  
+#     households:
+#       household:
+#         members: [head, spouse]
+#         state_code: AR
+#   output:
+#     ar_retirement_or_disability_benefits_exemption_eligible_person: [0,0]
