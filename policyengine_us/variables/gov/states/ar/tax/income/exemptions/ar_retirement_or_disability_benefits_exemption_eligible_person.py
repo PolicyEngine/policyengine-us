@@ -17,4 +17,4 @@ class ar_retirement_or_disability_benefits_exemption_eligible_person(Variable):
         head = person("is_tax_unit_head", period).astype(int)
         spouse = person("is_tax_unit_spouse", period).astype(int)
 
-        return (head | spouse) * age, head | spouse
+        return (head | spouse) * age

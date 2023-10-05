@@ -18,7 +18,7 @@
         members: [head, spouse]
         state_code: AR
   output:
-    ar_retirement_or_disability_benefits_exemption_eligible_person: [[1,1],[1,1]]
+    ar_retirement_or_disability_benefits_exemption_eligible_person: [1,1]
 
 # - name: Arkansas eligible exemption for retirement or disability benefits (case 2)
 #   period: 2021

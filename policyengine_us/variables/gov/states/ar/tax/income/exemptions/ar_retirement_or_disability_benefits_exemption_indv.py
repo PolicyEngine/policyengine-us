@@ -20,7 +20,9 @@ class ar_retirement_or_disability_benefits_exemption_indv(Variable):
             "ar_retirement_or_disability_benefits_exemption_eligible_person",
             period,
         )
-        eligible_pension_income = person("taxable_pension_income", period) * eligible_person[0] + person(
-            "pension_contributions", period
-        )* eligible_person[1]
-        return min_(eligible_pension_income, p.amount)
+        pension_income = person("taxable_pension_income", period)
+        pension_distribution = (
+            person("pension_contributions", period) * eligible_person
+        )
+        eligible_pension_income = pension_income + pension_distribution
+        return min_(eligible_pension_income, p.max_amount)
