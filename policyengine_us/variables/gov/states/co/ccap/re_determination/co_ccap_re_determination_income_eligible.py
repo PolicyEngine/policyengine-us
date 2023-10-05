@@ -13,7 +13,8 @@ class co_ccap_re_determination_income_eligible(Variable):
     defined_for = StateCode.CO
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.co.ccap
+        co_swap_year = tax_unit("co_swap_year", period)
+        p = parameters(co_swap_year).gov.states.co.ccap
         monthly_agi = np.round(
             tax_unit("adjusted_gross_income", period) / MONTHS_IN_YEAR, 2
         )
@@ -21,6 +22,6 @@ class co_ccap_re_determination_income_eligible(Variable):
         # Calculate monthly smi limit
         spm_unit = tax_unit.spm_unit
         hhs_smi_rate = p.re_determination.re_determination_hhs_smi_rate
-        hhs_smi = spm_unit("hhs_smi", period)
+        hhs_smi = spm_unit("hhs_smi", co_swap_year)
         monthly_hhs_smi = np.round(hhs_smi * hhs_smi_rate / MONTHS_IN_YEAR, 2)
         return monthly_agi < monthly_hhs_smi

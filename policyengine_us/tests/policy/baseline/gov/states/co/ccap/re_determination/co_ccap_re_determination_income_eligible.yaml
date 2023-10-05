@@ -1,5 +1,5 @@
 - name: HHS = 2, agi < 75_334.48 * .85, eligible. # hhs_smi_rate: 85%
-  period: 2022
+  period: 2023
   input:
     adjusted_gross_income: 40_000
     hhs_smi: 75_334.48
@@ -9,7 +9,7 @@
 
 
 - name: HHS = 3, agi < 93_060.24 * .85, eligible.
-  period: 2022
+  period: 2023
   input:
     adjusted_gross_income: 46_000
     hhs_smi: 93_060.24
@@ -18,7 +18,7 @@
     co_ccap_re_determination_income_eligible: true
 
 - name: HHS = 4, agi < 110_786 * .85, eligible. 
-  period: 2022
+  period: 2023
   input:
     adjusted_gross_income: 74_000
     hhs_smi: 110_786
@@ -27,7 +27,7 @@
     co_ccap_re_determination_income_eligible: true
 
 - name: HHS = 5, agi < 128_511.76 * .85, eligible. 
-  period: 2022
+  period: 2023
   input:
     adjusted_gross_income: 64_000
     hhs_smi: 128_511.76
@@ -36,7 +36,7 @@
     co_ccap_re_determination_income_eligible: true
 
 - name: HHS = 6, agi < 146_237.52 * .85, eligible.
-  period: 2022
+  period: 2023
   input:
     adjusted_gross_income: 87_000
     hhs_smi: 146_237.52
@@ -45,7 +45,7 @@
     co_ccap_re_determination_income_eligible: true
 
 - name: HHS = 7, agi < 149_561.1 * .85, eligible.
-  period: 2022
+  period: 2023
   input:
     adjusted_gross_income: 98_000
     hhs_smi: 149_561.1
@@ -54,7 +54,7 @@
     co_ccap_re_determination_income_eligible: true
 
 - name: HHS = 8, agi < 152_884.68 * .85, eligible. 
-  period: 2022
+  period: 2023
   input:
     adjusted_gross_income: 109_000
     hhs_smi: 152_884.68
@@ -63,7 +63,7 @@
     co_ccap_re_determination_income_eligible: true
 
 - name: HHS = 9, agi < 156_208.26 * .85, eligible.
-  period: 2022
+  period: 2023
   input:
     adjusted_gross_income: 120_000
     hhs_smi: 156_208.26
@@ -72,7 +72,7 @@
     co_ccap_re_determination_income_eligible: true
 
 - name: HHS = 9, agi >= 156_208.26 * .85, ineligible. 
-  period: 2022
+  period: 2023
   input:
     adjusted_gross_income: 160_000
     hhs_smi: 156_208.26

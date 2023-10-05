@@ -1,5 +1,5 @@
 - name: In the entry process and be eligible, then eligible for cccap
-  period: 2022
+  period: 2023
   input:
     co_ccap_is_in_the_entry_process: true
     co_ccap_entry_eligible: true
@@ -10,7 +10,7 @@
     co_ccap_eligible: true
 
 - name: In the entry process and not eligible, then eligible for cccap
-  period: 2022
+  period: 2023
   input:
     co_ccap_is_in_the_entry_process: true
     co_ccap_entry_eligible: false
@@ -21,7 +21,7 @@
     co_ccap_eligible: false
 
 - name: In the entry process and not eligible, but eligible for the re-determination, then still ineligible for cccap
-  period: 2022
+  period: 2023
   input:
     co_ccap_is_in_the_entry_process: true
     co_ccap_entry_eligible: false
@@ -32,7 +32,7 @@
     co_ccap_eligible: false
 
 - name: In the re-determination process and be eligible, then eligible for cccap
-  period: 2022
+  period: 2023
   input:
     co_ccap_is_in_the_entry_process: false
     co_ccap_entry_eligible: false
@@ -43,7 +43,7 @@
     co_ccap_eligible: true
 
 - name: In the re-determination process and not eligible, then eligible for cccap
-  period: 2022
+  period: 2023
   input:
     co_ccap_is_in_the_entry_process: false
     co_ccap_entry_eligible: false
@@ -54,7 +54,7 @@
     co_ccap_eligible: false
 
 - name: In the re-determination process and not eligible, but eligible for the entry, then still ineligible for cccap
-  period: 2022
+  period: 2023
   input:
     co_ccap_is_in_the_entry_process: false
     co_ccap_entry_eligible: true
@@ -65,7 +65,7 @@
     co_ccap_eligible: false
 
 - name: In the entry process and neither eligible for the entry nor eligible for the re-determination, then ineligible for cccap
-  period: 2022
+  period: 2023
   input:
     co_ccap_is_in_the_entry_process: true
     co_ccap_entry_eligible: false
@@ -76,7 +76,7 @@
     co_ccap_eligible: false
 
 - name: In the re-determination process and neither eligible for the entry nor eligible for the re-determination, then ineligible for cccap
-  period: 2022
+  period: 2023
   input:
     co_ccap_is_in_the_entry_process: false
     co_ccap_entry_eligible: false

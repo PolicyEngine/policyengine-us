@@ -1,5 +1,5 @@
 - name: One child, not disabled, age < 13, eligible.
-  period: 2022
+  period: 2023
   input:
     is_disabled: false
     is_tax_unit_dependent: true
@@ -9,7 +9,7 @@
     co_ccap_child_eligible: true
 
 - name: One child, not disabled, age >= 13, ineligible.
-  period: 2022
+  period: 2023
   input:
     is_disabled: false
     is_tax_unit_dependent: true
@@ -19,7 +19,7 @@
     co_ccap_child_eligible: false
 
 - name: One child, disabled, age < 19, eligible.
-  period: 2022
+  period: 2023
   input:
     is_disabled: true
     is_tax_unit_dependent: true
@@ -29,7 +29,7 @@
     co_ccap_child_eligible: true
 
 - name: One child, disabled, age >= 19, ineligible.
-  period: 2022
+  period: 2023
   input:
     is_disabled: true
     is_tax_unit_dependent: true

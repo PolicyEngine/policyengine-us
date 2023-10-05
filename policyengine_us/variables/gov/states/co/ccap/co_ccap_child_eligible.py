@@ -13,7 +13,9 @@ class co_ccap_child_eligible(Variable):
     defined_for = StateCode.CO
 
     def formula(person, period, parameters):
-        p = parameters(period).gov.states.co.ccap
+        tax_unit = person.tax_unit
+        co_swap_year = tax_unit("co_swap_year", period)[0]
+        p = parameters(co_swap_year).gov.states.co.ccap
         # child < 13 or disabled child < 19 to be eligible
         disabled = person("is_disabled", period)
         dependent = person("is_tax_unit_dependent", period)

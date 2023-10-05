@@ -16,11 +16,12 @@ class co_ccap_parent_fee(Variable):
     defined_for = "co_ccap_eligible"
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.co.ccap
+        co_swap_year = tax_unit("co_swap_year", period)
+        p = parameters(co_swap_year).gov.states.co.ccap
         person = tax_unit.members
         # Calculate base parent fee and add on parent fee.
         agi = tax_unit("adjusted_gross_income", period)
-        hhs_fpg = tax_unit("tax_unit_fpg", period)
+        hhs_fpg = tax_unit("tax_unit_fpg", co_swap_year)
         num_child_age_eligible = tax_unit("co_ccap_num_child_eligible", period)
 
         # The numebrs below are weights copied from government spreadsheet

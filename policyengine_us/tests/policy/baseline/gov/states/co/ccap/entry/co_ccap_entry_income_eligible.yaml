@@ -1,5 +1,5 @@
 - name: Both hhs fpg and hhs smi are eligible, income eligible.
-  period: 2022
+  period: 2023
   input:
     co_ccap_hhs_fpg_eligible: true
     co_ccap_hhs_smi_eligible: true
@@ -8,7 +8,7 @@
     co_ccap_entry_income_eligible: true
 
 - name: The hhs fpg is eligible while the hhs smi not, income ineligible.
-  period: 2022
+  period: 2023
   input:
     co_ccap_hhs_fpg_eligible: true
     co_ccap_hhs_smi_eligible: false
@@ -17,7 +17,7 @@
     co_ccap_entry_income_eligible: false
 
 - name: The hhs smi is eligible while the hhs fpg not, income ineligible.
-  period: 2022
+  period: 2023
   input:
     co_ccap_hhs_fpg_eligible: false
     co_ccap_hhs_smi_eligible: true
@@ -26,7 +26,7 @@
     co_ccap_entry_income_eligible: false
 
 - name: Neither hhs smi nor hhs fpg is eligible, income ineligible.
-  period: 2022
+  period: 2023
   input:
     co_ccap_hhs_fpg_eligible: false
     co_ccap_hhs_smi_eligible: false
