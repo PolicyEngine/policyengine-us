@@ -4597,3 +4597,53 @@
     added:
     - Vermont interest from u.s. obligation & student loan interest agi subtraction.
   date: 2023-10-02 12:59:39
+- bump: minor
+  changes:
+    added:
+    - West Virginia low-income family tax credit.
+  date: 2023-10-02 22:45:10
+- bump: patch
+  changes:
+    fixed:
+    - Add unemployment compensation to list of benefits.
+  date: 2023-10-03 04:26:23
+- bump: minor
+  changes:
+    added:
+    - Georgia adjusted gross income structure.
+  date: 2023-10-03 14:18:18
+- bump: patch
+  changes:
+    fixed:
+    - Deductions subtracted from id_taxable_income.
+  date: 2023-10-04 01:08:56
+- bump: minor
+  changes:
+    added:
+    - Arizona long-term capital gains subtraction.
+  date: 2023-10-04 01:21:16
+- bump: minor
+  changes:
+    added:
+    - South Carolina net capital gain deduction.
+  date: 2023-10-04 02:24:19
+- bump: minor
+  changes:
+    added:
+    - Montana net capital gain credit.
+  date: 2023-10-04 04:44:55
+- bump: minor
+  changes:
+    added:
+    - Arizona increased standard deduction for charitable contributions.
+  date: 2023-10-04 21:03:41
+- bump: patch
+  changes:
+    fixes:
+    - Georgia investment in 529 plan deduction variable name adjustment.
+  date: 2023-10-05 01:05:40
+- bump: minor
+  changes:
+    fixed:
+    - SNAP now uses the previous October's FPG.
+  date: 2023-10-05 14:43:50
