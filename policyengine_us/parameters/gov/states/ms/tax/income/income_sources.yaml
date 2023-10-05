@@ -1,4 +1,4 @@
-description: Mississippi accounts for these income sources.
+description: Mississippi counts these income sources toward adjusted gross income.
 values:
   2021-01-01:
     - employment_income # Wages, salaries, tips, etc.
@@ -14,6 +14,7 @@ values:
     - unemployment_compensation
 
 metadata:
+  label: Mississippi AGI income sources
   unit: list
   reference: 
     - title: Mississippi Resident INCOME TAX Instructions

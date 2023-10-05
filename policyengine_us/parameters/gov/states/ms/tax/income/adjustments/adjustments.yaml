@@ -1,4 +1,4 @@
-description: Mississippi counts these adjustments from the federal adjusted gross income.
+description: Mississippi subtracts these adjustments from federal adjusted gross income when computing state adjusted gross income.
 values:
   2020-01-01:
     - ira_contributions # Line 50
@@ -7,6 +7,7 @@ values:
     - alimony_expense # Line 53
 
 metadata:
+  label: Mississippi AGI adjustments
   unit: list
   reference: 
     - title: Mississippi Resident INCOME TAX Instruction

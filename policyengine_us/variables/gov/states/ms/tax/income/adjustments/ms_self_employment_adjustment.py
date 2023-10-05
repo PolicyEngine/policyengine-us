@@ -14,8 +14,8 @@ class ms_self_employment_adjustment(Variable):
     defined_for = StateCode.MS
 
     def formula(tax_unit, period, parameters):
-        self_employment = add(tax_unit, period, ["self_employment_tax"])
+        self_employment_tax = add(tax_unit, period, ["self_employment_tax"])
         p = parameters(
             period
         ).gov.states.ms.tax.income.adjustments.self_employment
-        return self_employment * p.rate
+        return self_employment_tax * p.rate
