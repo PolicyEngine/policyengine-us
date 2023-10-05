@@ -1,7 +1,7 @@
 - name: Vermont CDCC  
   period: 2022
   input:
-    cdcc: 1_000
+    capped_cdcc: 1_000
     state_code: VT
   output:
     vt_cdcc: 720  
@@ -9,7 +9,7 @@
 - name: Vermont CDCC 
   period: 2022
   input:
-    cdcc: 2_000
+    capped_cdcc: 2_000
     state_code: VT
   output:
     vt_cdcc: 1440 

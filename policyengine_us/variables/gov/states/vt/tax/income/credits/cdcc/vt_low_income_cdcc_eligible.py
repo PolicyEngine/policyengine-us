@@ -17,4 +17,5 @@ class vt_low_income_cdcc_eligible(Variable):
         filing_status = tax_unit("filing_status", period)
         federal_agi_threshold = p.income_threshold[filing_status]
         federal_agi = tax_unit("adjusted_gross_income", period)
+        # Law says "less than" but tax form says "$x or less". We apply form rules.
         return federal_agi <= federal_agi_threshold
