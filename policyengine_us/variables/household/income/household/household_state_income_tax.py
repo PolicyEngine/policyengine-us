@@ -10,6 +10,7 @@ class household_state_income_tax(Variable):
     definition_period = YEAR
     adds = [
         "ca_income_tax_before_refundable_credits",
+        "co_income_tax_before_refundable_credits",
         "dc_income_tax_before_refundable_credits",
         "ia_income_tax_before_refundable_credits",
         "il_total_tax",
@@ -20,6 +21,7 @@ class household_state_income_tax(Variable):
         "md_income_tax_before_refundable_credits",
         "mn_income_tax_before_refundable_credits",
         "mo_income_tax_before_refundable_credits",
+        "nc_income_tax",
         "nd_income_tax_before_refundable_credits",
         "ne_income_tax_before_refundable_credits",
         "nh_income_tax_before_refundable_credits",
@@ -34,6 +36,7 @@ class household_state_income_tax(Variable):
     ]
     subtracts = [
         "ca_refundable_credits",  # California.
+        "co_refundable_credits",  # Colorado
         "dc_refundable_credits",  # District of Columbia.
         "ia_refundable_credits",  # Iowa.
         "il_refundable_credits",  # Illinois.
@@ -44,6 +47,7 @@ class household_state_income_tax(Variable):
         "md_refundable_credits",  # Maryland.
         "mn_refundable_credits",  # Minnesota.
         "mo_refundable_credits",  # Missouri.
+        # Skip NC, which has no refundable credits.
         "nd_refundable_credits",  # North Dakota.
         "ne_refundable_credits",  # Nebraska.
         "nh_refundable_credits",  # New Hampshire.

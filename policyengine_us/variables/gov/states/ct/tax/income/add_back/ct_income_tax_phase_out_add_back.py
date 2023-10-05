@@ -11,7 +11,7 @@ class ct_income_tax_phase_out_add_back(Variable):
 
     def formula(tax_unit, period, parameters):
         income = tax_unit("ct_agi", period)
-        p = parameters(period).gov.states.ct.tax.income.main.add_back
+        p = parameters(period).gov.states.ct.tax.income.add_back
         filing_status = tax_unit("filing_status", period)
         start = p.start[filing_status]
         max_amount = p.max_amount[filing_status]
