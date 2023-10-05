@@ -32,7 +32,7 @@
     co_sales_tax_refund_eligible: true
     filing_status: SINGLE
   output:
-    co_sales_tax_refund: 606
+    co_sales_tax_refund: 639
 
 - name: Joint calculation
   period: 2022
@@ -59,4 +59,4 @@
     co_sales_tax_refund_eligible: true
     filing_status: SEPARATE
   output:
-    co_sales_tax_refund: 829
+    co_sales_tax_refund: 875
