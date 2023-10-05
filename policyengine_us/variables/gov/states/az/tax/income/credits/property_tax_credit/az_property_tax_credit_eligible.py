@@ -18,8 +18,8 @@ class az_property_tax_credit_eligible(Variable):
         ssi = person("ssi", period)
         ssi_qualifies = ssi > 0
 
-        property_tax = person("real_estate_taxes", period)
-        rent = person("rent", period)
+        property_tax = add(tax_unit, period, ["real_estate_taxes"])
+        rent = add(tax_unit, period, ["rent"])
         payment_qualifies = (property_tax + rent) > 0
 
         head = person("is_tax_unit_head", period)
