@@ -14,7 +14,6 @@ class co_ccap_hhs_fpg_eligible(Variable):
 
     def formula(tax_unit, period, parameters):
         spm_unit = tax_unit.spm_unit
-        # state_code = spm_unit.household("state_code_str", period.this_year)
         monthly_agi = np.round(
             tax_unit("adjusted_gross_income", period.this_year) / MONTHS_IN_YEAR, 2
         )
