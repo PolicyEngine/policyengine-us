@@ -4466,3 +4466,174 @@
     added:
     - Louisiana military pay exclusion.
   date: 2023-09-15 04:34:13
+- bump: minor
+  changes:
+    added:
+    - Child Health Plan Plus
+  date: 2023-09-15 19:38:29
+- bump: minor
+  changes:
+    added:
+    - Kentucky family size tax credit.
+  date: 2023-09-19 14:45:39
+- bump: patch
+  changes:
+    fixed:
+    - Colorado income tax model formatting.
+  date: 2023-09-20 17:44:51
+- bump: minor
+  changes:
+    added:
+    - Arkansas child and dependent care credit.
+  date: 2023-09-21 12:28:34
+- bump: patch
+  changes:
+    fixed:
+    - Remove two unused variables in variables/gov/irs/taxcalc/deductions/standard
+      directory.
+  date: 2023-09-21 12:36:13
+- bump: minor
+  changes:
+    added:
+    - Population by state to calibration routines.
+  date: 2023-09-22 10:21:41
+- bump: minor
+  changes:
+    added:
+    - North Carolina itemized deductions.
+    - North Carolina income tree.
+  date: 2023-09-22 19:22:49
+- bump: minor
+  changes:
+    added:
+    - Arkansas inflation relief income-tax credit.
+  date: 2023-09-22 19:30:12
+- bump: minor
+  changes:
+    added:
+    - A non_mortgage_interest variable.
+    - A formula for interest_expense variable that adds mortgage_interest and non_mortgage_interest
+      variables.
+  date: 2023-09-23 21:48:12
+- bump: minor
+  changes:
+    added:
+    - Vermont earned income tax credit.
+  date: 2023-09-24 03:22:24
+- bump: patch
+  changes:
+    fixed:
+    - North Carolina index files.
+    - North Carolina missing legislative references.
+  date: 2023-09-24 05:33:57
+- bump: minor
+  changes:
+    added:
+    - Arizona pension exclusion.
+  date: 2023-09-24 17:33:25
+- bump: minor
+  changes:
+    added:
+    - Arizona itemized deduction.
+  date: 2023-09-24 17:57:29
+- bump: minor
+  changes:
+    added:
+    - DC single-joint tax threshold ratio reform switch.
+  date: 2023-09-25 17:18:37
+- bump: patch
+  changes:
+    fixed:
+    - Remove tax exempt form 4972 lump sum distribution variable.
+  date: 2023-09-25 21:27:04
+- bump: minor
+  changes:
+    added:
+    - Idaho deductions.
+  date: 2023-09-27 17:44:45
+- bump: minor
+  changes:
+    added:
+    - Arkansas income tax exemptions.
+  date: 2023-09-27 18:22:39
+- bump: minor
+  changes:
+    added:
+    - Connecticut state tuition subtraction.
+  date: 2023-09-27 21:57:34
+- bump: patch
+  changes:
+    fixes:
+    - Add Louisiana index file.
+    - Remove Missouri index file.
+  date: 2023-09-28 17:28:07
+- bump: patch
+  changes:
+    fixed:
+    - North Carolina income tree patch.
+  date: 2023-09-28 19:35:20
+- bump: minor
+  changes:
+    added:
+    - Ohio adoption credit.
+  date: 2023-09-29 05:35:10
+- bump: minor
+  changes:
+    added:
+    - Idaho partial subtractions.
+  date: 2023-09-29 21:46:02
+- bump: minor
+  changes:
+    added:
+    - Vermont medical expense deduction.
+  date: 2023-09-29 22:17:41
+- bump: minor
+  changes:
+    added:
+    - SNAP 2023 parameters.
+  date: 2023-10-02 00:05:46
+- bump: minor
+  changes:
+    added:
+    - Vermont interest from u.s. obligation & student loan interest agi subtraction.
+  date: 2023-10-02 12:59:39
+- bump: minor
+  changes:
+    added:
+    - West Virginia low-income family tax credit.
+  date: 2023-10-02 22:45:10
+- bump: patch
+  changes:
+    fixed:
+    - Add unemployment compensation to list of benefits.
+  date: 2023-10-03 04:26:23
+- bump: minor
+  changes:
+    added:
+    - Georgia adjusted gross income structure.
+  date: 2023-10-03 14:18:18
+- bump: patch
+  changes:
+    fixed:
+    - Deductions subtracted from id_taxable_income.
+  date: 2023-10-04 01:08:56
+- bump: minor
+  changes:
+    added:
+    - Arizona long-term capital gains subtraction.
+  date: 2023-10-04 01:21:16
+- bump: minor
+  changes:
+    added:
+    - South Carolina net capital gain deduction.
+  date: 2023-10-04 02:24:19
+- bump: minor
+  changes:
+    added:
+    - Montana net capital gain credit.
+  date: 2023-10-04 04:44:55
+- bump: minor
+  changes:
+    added:
+    - Arizona increased standard deduction for charitable contributions.
+  date: 2023-10-04 21:03:41
