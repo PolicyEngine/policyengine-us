@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ar_post_secondary_education_tuition_deductions(Variable):
+class ar_post_secondary_education_tuition_deduction(Variable):
     value_type = float
     entity = TaxUnit
     label = "Arkansas post-secondary education tuition deduction"

@@ -15,9 +15,9 @@ class ar_itemized_deductions(Variable):
         p = parameters(period).gov.states.ar.tax.income.deductions.itemized
         p_ded = parameters(period).gov.irs.deductions
 
-        agi = tax_unit("ar_adjusted_gross_income", period)
+        agi = tax_unit("ar_agi", period)
         head = person("is_tax_unit_head", period)
-        person_agi = person("adjusted_gross_income_person", period)
+        person_agi = person("ar_agi_person", period)
         total_person_agi = tax_unit.sum(person_agi * head)
 
         # Less salt deduction
@@ -37,7 +37,7 @@ class ar_itemized_deductions(Variable):
 
         # Post-secondary Education Tuition Deduction
         tuition_deds = tax_unit(
-            "ar_post_secondary_education_tuition_deductions", period
+            "ar_post_secondary_education_tuition_deduction", period
         )
 
         # Limitation on several items

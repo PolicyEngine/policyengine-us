@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ar_adjusted_gross_income(Variable):
+class ar_agi(Variable):
     value_type = float
     entity = TaxUnit
     label = "Arkansas adjusted gross income"
