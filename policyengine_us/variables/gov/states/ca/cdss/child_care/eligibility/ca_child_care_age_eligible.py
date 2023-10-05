@@ -15,8 +15,8 @@ class ca_child_care_age_eligible(Variable):
         age = persons("age", period)
         is_disabled = persons("is_disabled", period)
         child_disabled_under_18 = (
-            (is_child) & (age <= p.age_threshold) & (is_disabled)
+            (is_child) & (age <= p.disabled_age_threshold) & (is_disabled)
         )
-        child_under_13 = (is_child) & (age <= p.disabled_age_threshold)
+        child_under_13 = (is_child) & (age <= p.age_threshold)
 
         return spm_unit.any(child_under_13 | child_disabled_under_18)

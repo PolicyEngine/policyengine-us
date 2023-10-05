@@ -1,0 +1,75 @@
+- name: A household that has a child age 13 is eligible.
+  period: 2023
+  input:
+    people:
+      mother:
+        is_child: false
+      father:
+        is_child: false
+      child:
+        is_child: true
+        age: 13
+        is_disabled: false
+    households:
+      household:
+        members: [mother, father, child]
+        state_code: CA
+  output:
+    ca_child_care_age_eligible: true
+
+- name: A household that has a child age 14 is ineligible.
+  period: 2023
+  input:
+    people:
+      mother:
+        is_child: false
+      father:
+        is_child: false
+      child:
+        is_child: true
+        age: 14
+        is_disabled: false
+    households:
+      household:
+        members: [mother, father, child]
+        state_code: CA
+  output:
+    ca_child_care_age_eligible: false
+
+- name: A household that has a child age 18 and disabled is eligible.
+  period: 2023
+  input:
+    people:
+      mother:
+        is_child: false
+      father:
+        is_child: false
+      child:
+        is_child: true
+        age: 18
+        is_disabled: true
+    households:
+      household:
+        members: [mother, father, child]
+        state_code: CA
+  output:
+    ca_child_care_age_eligible: true
+
+- name: A household that has a child age 19 and disabled is eligible.
+  period: 2023
+  input:
+    people:
+      mother:
+        is_child: false
+      father:
+        is_child: false
+      child:
+        is_child: true
+        age: 19
+        is_disabled: true
+    households:
+      household:
+        members: [mother, father, child]
+        state_code: CA
+  output:
+    ca_child_care_age_eligible: false
