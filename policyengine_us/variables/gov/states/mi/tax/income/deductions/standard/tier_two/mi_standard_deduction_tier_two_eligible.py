@@ -2,10 +2,9 @@ from policyengine_us.model_api import *
 
 
 class mi_standard_deduction_tier_two_eligible(Variable):
-    value_type = float
+    value_type = bool
     entity = TaxUnit
-    label = "Michigan tier two standard deduction age eligibility"
-    unit = USD
+    label = "Eligible for the Michigan tier two standard deduction"
     definition_period = YEAR
     reference = (
         "http://legislature.mi.gov/doc.aspx?mcl-206-30",  # (b)&(c)

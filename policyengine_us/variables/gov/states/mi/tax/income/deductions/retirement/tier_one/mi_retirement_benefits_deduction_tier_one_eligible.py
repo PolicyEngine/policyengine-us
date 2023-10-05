@@ -2,10 +2,9 @@ from policyengine_us.model_api import *
 
 
 class mi_retirement_benefits_deduction_tier_one_eligible(Variable):
-    value_type = float
+    value_type = bool
     entity = TaxUnit
     label = "Michigan retirement benefits deduction for tier one"
-    unit = USD
     definition_period = YEAR
     reference = (
         "http://legislature.mi.gov/doc.aspx?mcl-206-30",

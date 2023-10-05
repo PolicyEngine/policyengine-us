@@ -12,7 +12,7 @@ class mi_retirement_benefits_deduction_tier_one(Variable):
         "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2022/2022-IIT-Forms/BOOK_MI-1040.pdf#page=17",
         "https://www.michigan.gov/taxes/iit/retirement-and-pension-benefits",
     )
-    defined_for = StateCode.MI
+    defined_for = "mi_retirement_benefits_deduction_tier_one_eligible"
 
     def formula(tax_unit, period, parameters):
         p = parameters(
@@ -21,31 +21,16 @@ class mi_retirement_benefits_deduction_tier_one(Variable):
         # Core deduction based on filing status.
         filing_status = tax_unit("filing_status", period)
 
-        age_eligibility = tax_unit(
-            "mi_retirement_benefits_deduction_tier_one_eligible", period
-        )
-        max_amount = p.amount[filing_status]
+        person = tax_unit.members
+        uncapped_pension_income = person("taxable_pension_income", period)
+        military_retirement_pay = person("military_retirement_pay", period)
 
-        # add all qualifying retirement and pension benefits received from federal or Michigan public sources
-        # are uncapped
-        # public_pension_income = tax_unit.members(
-        #     "taxable_public_pension_income", period
-        # )
-        # All private penion income is capped at a certain amount
-        # uncapped_private_pension_income = tax_unit.members(
-        #     "taxable_private_pension_income", period
-        # )
-        # capped_private_pension_income = max_(
-        #     max_amount, uncapped_private_pension_income
-        # )
-        # total_pension_income = (
-        #     public_pension_income + capped_private_pension_income
-        # )
-        uncapped_pension_income = tax_unit.members(
-            "taxable_pension_income", period
-        )
-        total_pension_income = min_(
-            tax_unit.sum(uncapped_pension_income), max_amount
+        head = person("is_tax_unit_head", period)
+        spouse = person("is_tax_unit_spouse", period)
+        is_head_or_spouse = head | spouse
+
+        rbd1_amount = p.amount[filing_status] - tax_unit.sum(
+            military_retirement_pay * is_head_or_spouse
         )
 
-        return age_eligibility * total_pension_income
+        return min_(tax_unit.sum(uncapped_pension_income), rbd1_amount)

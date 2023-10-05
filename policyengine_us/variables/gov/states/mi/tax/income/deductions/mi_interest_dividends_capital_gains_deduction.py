@@ -18,8 +18,10 @@ class mi_interest_dividends_capital_gains_deduction(Variable):
         p = parameters(
             period
         ).gov.states.mi.tax.income.deductions.interest_dividends_capital_gains
+
         # Core deduction based on filing status.
         filing_status = tax_unit("filing_status", period)
+        person = tax_unit.members
         age_older = tax_unit("greater_age_head_spouse", period)
         # Interest, Dividends, and Capital Gains Deduction for senior citizens
         idcg_aged_eligibility = age_older >= p.senior_age
@@ -28,8 +30,6 @@ class mi_interest_dividends_capital_gains_deduction(Variable):
         # The maximum amount of the deduction will be reduced by the amount of the
         # deduction claimed for retirement or pension benefits under
         # subdivision (e) or a deduction claimed under subdivision (f)(i), (ii), (iv), or (v)
-        military_retirement_deduction = tax_unit(
-            "mi_military_retirement_pay_deduction", period
-        )
+        military_retirement_pay = person("military_retirement_pay", period)
 
         return min_(idcg_aged_eligibility * idcg_amount, income)
