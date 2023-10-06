@@ -22,8 +22,8 @@ class id_grocery_credit(Variable):
         age_spouse = tax_unit("age_spouse ", period)
 
         # Create boolean variables head_aged and spouse_aged to identify if they're over 65
-        head_aged = where(age_head >= age_threshold, 1, 0)  # 65
-        spouse_aged = where(age_spouse >= age_threshold, 1, 0)  # 65
+        head_aged = age_head >= age_threshold
+        spouse_aged = age_spouse >= age_threshold  # 65
         total_aged = head_aged + spouse_aged
 
         #### Define constants ####
