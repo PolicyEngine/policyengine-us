@@ -59,27 +59,17 @@ class de_pension_exclusion(Variable):
                 capped_military_retirement_pay, capped_eligible_pension_income
             )
 
-            exclusion_amount = select(
-                [
-                    younger_eligible,
-                    ~younger_eligible,
-                ],
-                [
-                    younger_amount,
-                    capped_eligible_retirement_income,
-                ],
+            exclusion_amount = where(
+                younger_eligible,
+                younger_amount,
+                capped_eligible_retirement_income,
             )
             return tax_unit.sum(exclusion_amount)
 
-        previous_exclusion_amount = select(
-            [
-                younger_eligible,
-                ~younger_eligible,
-            ],
-            [
-                capped_eligible_pension_income,
-                capped_eligible_retirement_income,
-            ],
+        previous_exclusion_amount = where(
+            younger_eligible,
+            capped_eligible_pension_income,
+            capped_eligible_retirement_income,
         )
 
         return tax_unit.sum(previous_exclusion_amount)
