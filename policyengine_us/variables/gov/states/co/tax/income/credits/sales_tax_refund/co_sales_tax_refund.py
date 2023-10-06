@@ -11,12 +11,13 @@ class co_sales_tax_refund(Variable):
     defined_for = "co_sales_tax_refund_eligible"
 
     def formula(tax_unit, period, parameters):
-        filing_status = tax_unit("filing_status", period)
-        status = filing_status.possible_values
         p = parameters(
             period
         ).gov.states.co.tax.income.credits.sales_tax_refund.amount
-        agi = tax_unit("co_modified_agi", period)
-        multiplier = p.multiplier[filing_status]
-        amount = p.base.calc(agi)
-        return multiplier * amount
+        if not p.flat_amount_enabled:
+            filing_status = tax_unit("filing_status", period)
+            agi = tax_unit("co_modified_agi", period)
+            multiplier = p.multiplier[filing_status]
+            amount = p.scale.calc(agi)
+            return multiplier * amount
+        return p.flat

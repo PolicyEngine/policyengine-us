@@ -25,7 +25,7 @@
   output:
     co_sales_tax_refund: 208
 
-- name: Single calculation
+- name: Flat amount in 2023
   period: 2023
   input:
     co_modified_agi: 60_001
@@ -51,12 +51,3 @@
     filing_status: SEPARATE
   output:
     co_sales_tax_refund: 234
-
-- name: Separate calculation
-  period: 2023
-  input:
-    co_modified_agi: 219_000
-    co_sales_tax_refund_eligible: true
-    filing_status: SEPARATE
-  output:
-    co_sales_tax_refund: 661
