@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class hi_alternative_tax_on_capital_gains_eligible(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Hawaii eligible alternative tax on capital gains"
+    label = "Eligible for the Hawaii alternative tax on capital gains"
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.HI

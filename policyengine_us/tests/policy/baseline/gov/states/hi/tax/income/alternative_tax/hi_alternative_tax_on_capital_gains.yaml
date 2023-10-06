@@ -7,7 +7,7 @@
     long_term_capital_gains: 5_000
     net_capital_gain: 4_000
     # hi_income_tax_before_credits: 242.8  # 67.2+153.6+22=242.8
-    state_code: HI
+    # state_code: HI
   output:
     # 67.2+153.6+400*0.055=242.8
     hi_alternative_tax_on_capital_gains: 0
@@ -21,7 +21,7 @@
     long_term_capital_gains: 5_000
     net_capital_gain: 4_000
     # hi_income_tax_before_credits: 3_287.6
-    state_code: HI
+    # state_code: HI
   output:
     # income_tax = 33.6+76.8+264+307.2+326.4+1209.6+912+158=3287.6
     # ineligible_tax = 33.6+76.8+264+307.2+326.4+1209.6+760=2977.6 (46000)
@@ -38,7 +38,7 @@
     long_term_capital_gains: 3_000
     net_capital_gain: 4_000
     # hi_income_tax_before_credits: 1_785.6
-    state_code: HI
+    # state_code: HI
   output:
     # income_tax = 33.6+76.8+264+307.2+326.4+777.6=1785.6
     # ineligible_tax = 33.6+76.8+264+307.2+326.4+561.6=1569.6 (27000)
@@ -55,7 +55,7 @@
     long_term_capital_gains: 5_000
     net_capital_gain: 6_000
     # hi_income_tax_before_credits: 2_334.4
-    state_code: HI
+    # state_code: HI
   output:
     # income_tax = 50.4+115.2+396+460.8+489.6+518.4+304=2334.4
     # ineligible_tax = 50.4+115.2+396+460.8+489.6+518.4=2030.4 (36000)
@@ -72,7 +72,7 @@
     long_term_capital_gains: 5_000
     net_capital_gain: 7_000
     # hi_income_tax_before_credits: 5_163.2
-    state_code: HI
+    # state_code: HI
   output:
     # income_tax = 67.2+153.6+528+614.4+652.8+691.2+1824+632=5163.2
     # ineligible_tax = 67.2+153.6+528+614.4+652.8+691.2+1824+237=4768.2 (75000)

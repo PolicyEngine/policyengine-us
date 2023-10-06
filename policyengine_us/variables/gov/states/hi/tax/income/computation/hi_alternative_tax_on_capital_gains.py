@@ -18,9 +18,6 @@ class hi_alternative_tax_on_capital_gains(Variable):
         net_capital_gain = tax_unit("net_capital_gain", period)
         # line_9
         cap = p.max_amount[filing_status]
-        eligibility = tax_unit(
-            "hi_alternative_tax_on_capital_gains_eligible", period
-        ).astype(int)
 
         # line 13
         ineligible_income = max_(
@@ -54,7 +51,4 @@ class hi_alternative_tax_on_capital_gains(Variable):
             ],
         )
 
-        # line 17
-        alternative_tax = ineligible_tax + eligible_income * p.rate
-
-        return eligibility * alternative_tax
+        return ineligible_tax + eligible_income * p.rate

@@ -5,6 +5,7 @@
     filing_status: SINGLE
     state_code: HI
     hi_alternative_tax_on_capital_gains: 110
+    hi_alternative_tax_on_capital_gains_eligible: true
   output:
     # First $4800 = $110.4
     # 5.5% of the next $200 = $11
@@ -17,6 +18,7 @@
     filing_status: JOINT
     state_code: HI
     hi_alternative_tax_on_capital_gains: 85
+    hi_alternative_tax_on_capital_gains_eligible: false
   output:
     # First $4800 = $67.2
     # 3.2% of the next $200 = $6.4
