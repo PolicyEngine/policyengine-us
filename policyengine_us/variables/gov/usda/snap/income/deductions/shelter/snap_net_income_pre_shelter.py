@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class snap_net_income_pre_shelter(Variable):
     value_type = float
     entity = SPMUnit
-    definition_period = YEAR
+    definition_period = MONTH
     documentation = "SNAP net income before the shelter deduction, needed as intermediate to calculate shelter deduction"
     label = "SNAP net income (pre-shelter)"
     unit = USD
