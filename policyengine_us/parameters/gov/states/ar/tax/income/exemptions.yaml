@@ -1,0 +1,19 @@
+description: Arkansas counts these exemptions from income tax.
+metadata:
+  unit: list
+  label: Arkansas exemptions from income tax
+  reference:
+  - title: Arkansas 2022 Individual Income Tax Forms and Instructions
+    href: https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2022_AR1000F_and_AR1000NR_Instructions.pdf#page=10
+
+values:
+  2022-01-01:
+    - military_pension 
+    - life_insurance 
+    - child_support 
+    - gifts
+    - us_govt_interest 
+    - social_security_benefits 
+    - disability_income
+    - us_active_duty_military_compensation
+    - community_match_rural_physicial_recruitment_program
