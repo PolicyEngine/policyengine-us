@@ -1,20 +1,19 @@
-description: Itemized deductions allowed in Alabama income tax.
+description: description: Alabama allows for he following itemized deductions.
 values:
   2021-01-01:
     - real_estate_tax
     - mortage_interest_deduction
     - investment_intertest_deduction
     - charitable_deduction
-    - FICA
-    - self_employment
+    - taxsim_tfica
+    - self_employment_tax
 
 
 metadata:
   unit: list
-  name: al_itemized_deductions
-  label: AL itemized tax-unit-level deductions
+  label: Alabama itemized deductions
   reference:
+    - title: AL law documentation for itemized deductions
+      href: https://law.justia.com/codes/alabama/2021/title-40/chapter-18/article-1/section-40-18-15/
     - title: 2022 Schedule A (Form 1040)
-      href: https://www.revenue.alabama.gov/ultraviewer/viewer/basic_viewer/index.html?form=2023/01/22f40schabdc_blk.pdf
-    - title: 2022 Form 40 Alabama Income Tax Return
-      href: https://www.revenue.alabama.gov/ultraviewer/viewer/basic_viewer/index.html?form=2023/02/22f40.pdf
+      href: https://www.revenue.alabama.gov/ultraviewer/viewer/basic_viewer/index.html?form=2023/01/22f40schabdc_blk.pdf#page=1

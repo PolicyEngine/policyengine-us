@@ -5,13 +5,13 @@
     mortage_interest_deduction: 7
     investment_intertest_deduction: 1
     charitable_deduction: 9
-    FICA: 2
-    self_employment: 1
-    al_medical_deduction: 2
-    al_work_related_expense: 2
+    taxsim_tfica: 2
+    self_employment_tax: 1
+    al_medical_expense_deduction: 2
+    al_misc_deduction: 2
     state_code: AL
   output:
-    al_itemized_deductions: 3+7+1+9+2+1+2+2+3
+    al_itemized_deductions: 30
 
 - name: Alabama itemized deductions unit test 2
   period: 2021
@@ -20,9 +20,9 @@
     mortage_interest_deduction: 10
     investment_intertest_deduction: 11
     charitable_deduction: 29
-    FICA: 1
-    self_employment: 6
-    al_medical_deduction: 3
-    al_work_related_expense: 4
+    taxsim_tfica: 1
+    self_employment_tax: 6
+    al_medical_expense_deduction: 3
+    al_misc_deduction: 4
   output:
-    al_itemized_deductions: 9+10+11+29+1+6+3+4
+    al_itemized_deductions: 73
