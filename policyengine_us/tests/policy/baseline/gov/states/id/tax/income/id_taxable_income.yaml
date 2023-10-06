@@ -1,0 +1,17 @@
+- name: Idaho Deductions less than AGI
+  period: 2021
+  input:
+    id_agi: 1_000
+    id_deductions: 500
+    state_code: ID
+  output:
+    id_taxable_income: 500
+
+- name: Idaho Deductions exceeding AGI
+  period: 2022
+  input:
+    id_agi: 500
+    id_deductions: 1_000
+    state_code: ID
+  output:
+    id_taxable_income: 0
