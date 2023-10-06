@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class oh_529_plan_deduction(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Contributions to an Ohio 529 plan deduction"
+    label = "Ohio contributions to 529 plan deduction"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -13,7 +13,7 @@ class oh_529_plan_deduction(Variable):
     defined_for = StateCode.OH
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.oh.tax.income.deductions
-        contribution_529 = tax_unit("investment_in_529_plan", period)
-        deduction_529 = min_(contribution_529, p.plan_529_deduction_threshold)
-        return max_(deduction_529, 0)
+        p = parameters(period).gov.states.oh.tax.income.deductions.529_plan_contributions
+        contribution_amount = tax_unit("investment_in_529_plan", period)
+        capped_amount = min_(contribution_amount, p.max_amount)
+        return max_(capped_amount, 0)
