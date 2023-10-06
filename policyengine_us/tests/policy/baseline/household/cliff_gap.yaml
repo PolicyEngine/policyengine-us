@@ -32,11 +32,6 @@
     state_fips: 48  # TX
   output:  # as expected from above two test results
     cliff_gap: 0
-    # using PEUS 0.469.0, cliff_gap test results are:
-    #
-    # Test 'cliff_gap test TX-cliff_gap':
-    #   cliff_gap@2021: [78752.61] differs from 0.0
-    #                   with an absolute margin [78752.61] > 0.01
 
 - name: household_net_income test 1 DC-netinc-base
   absolute_error_margin: 0.01
