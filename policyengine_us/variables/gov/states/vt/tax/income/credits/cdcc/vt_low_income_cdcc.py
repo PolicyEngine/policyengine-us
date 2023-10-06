@@ -15,7 +15,5 @@ class vt_low_income_cdcc(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.vt.tax.income.credits.cdcc.low_income
-        federal_capped_cdcc = tax_unit("capped_cdcc", period)
-        # in 2021, refundable cdcc are not limited by tax liability
-        # in 2021: it should be federal_cdcc = tax_unit("cdcc", period)
-        return p.rate * federal_capped_cdcc
+        federal_cdcc = p.federal_cdcc
+        return p.rate * federal_cdcc
