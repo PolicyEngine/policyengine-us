@@ -6,7 +6,7 @@ class vt_capital_gains_exclusion(Variable):
     entity = TaxUnit
     label = "Vermont capital gains exclusion"
     unit = USD
-    documentation = "Vermont as capital gains exclusion which is calculated either as a flat amount or as a percentage of adjusted net capital gains."
+    documentation = "Vermont excludes a portion of capital gains, calculated either as a flat amount or as a fraction of adjusted net capital gains, and limited by a fraction of federal taxable income."
     definition_period = YEAR
     defined_for = StateCode.VT
     reference = (
@@ -23,15 +23,17 @@ class vt_capital_gains_exclusion(Variable):
         p = parameters(
             period
         ).gov.states.vt.tax.income.agi.exclusions.capital_gain
-        # The flat exclusion is the less of a capped amount or the actual amount of net adjusted capital gains
-        flat_exclusion = min_(adjusted_net_capital_gain, p.flat.max_amount)
+        # The flat exclusion is the less of a capped amount
+        # or the actual amount of net adjusted capital gains
+        flat_exclusion = min_(adjusted_net_capital_gain, p.flat.cap)
         # Get percentage exclusion
         percentage_exclusion = tax_unit(
             "vt_percentage_capital_gains_exclusion", period
         )
-        # Filer can choose from flat or percentage exclusion. Assume the filer will always choose the larger one
+        # Filer can choose from flat or percentage exclusion.
+        # Assume the filer will always choose the larger one
         chosen_exclusion = max_(flat_exclusion, percentage_exclusion)
         # The chosen exclusion should not exceed 40% of federal taxable income
         federal_taxable_income = tax_unit("taxable_income", period)
-        cap = federal_taxable_income * p.rate
+        cap = federal_taxable_income * p.income_share_cap
         return min_(chosen_exclusion, cap)
