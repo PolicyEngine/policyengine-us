@@ -14,10 +14,11 @@ class co_sales_tax_refund(Variable):
         p = parameters(
             period
         ).gov.states.co.tax.income.credits.sales_tax_refund.amount
+        multiplier = p.multiplier[filing_status]
         if not p.flat_amount_enabled:
             filing_status = tax_unit("filing_status", period)
             agi = tax_unit("co_modified_agi", period)
             multiplier = p.multiplier[filing_status]
             amount = p.scale.calc(agi)
             return multiplier * amount
-        return p.flat
+        return multiplier * p.flat
