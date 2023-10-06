@@ -7,7 +7,7 @@ class hi_casualty_loss_deduction(Variable):
     label = "Hawaii casualty loss deduction"
     unit = USD
     documentation = (
-        "https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=15"
+        "https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=18"
         "https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=32"  # total itemized deduction worksheet
     )
     definition_period = YEAR

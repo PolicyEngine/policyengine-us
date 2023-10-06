@@ -44,7 +44,7 @@ class hi_reduced_itemized_deduction(Variable):
         reduced_agi_difference = agi_cap_difference * p.rate.reduced_agi_rate
 
         smaller_reduced = min_(reduced_difference, reduced_agi_difference)
-        reduced_deductions = total_deductions - smaller_reduced
+        reduced_deductions = max_(0, total_deductions - smaller_reduced)
 
         return where(
             (difference_eligible & agi_eligible),

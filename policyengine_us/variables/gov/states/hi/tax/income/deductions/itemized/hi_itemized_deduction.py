@@ -17,7 +17,6 @@ class hi_itemized_deduction(Variable):
         p = parameters(period).gov.states.hi.tax.income.deductions.itemized
 
         # Hawaii did not suspend the overall limitation on itemized deductions
-        # Cap: $166,800 ($83,400 if married filing separately)
         # You may not be able to deduct all of your itemized deductions if agi reach the cap
         # need to calculate the reduced itemized deductions
         hi_agi = tax_unit("hi_agi", period)
