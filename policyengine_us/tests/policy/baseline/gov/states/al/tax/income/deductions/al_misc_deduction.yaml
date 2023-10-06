@@ -1,14 +1,14 @@
 - name: Alabama work related itemized deductions unit test 1
   period: 2021
   input:
-    work_related_expense: 2_000
+    misc_deduction: 2_000
   output:
-    al_work_related_expense: 40
+    al_misc_deduction: 40
 
 
 - name: Alabama medical itemized deductions unit test 1
   period: 2021
   input:
-    work_related_expense: 7_000
+    misc_deduction: 7_000
   output:
-    al_work_related_expense: 140
+    al_misc_deduction: 140

@@ -15,6 +15,6 @@ class al_medical_expense_deduction(Variable):
 
     def formula(tax_unit, period, parameters):
         expense = add(tax_unit, period, ["medical_expense"])
-        medical = parameters(period).gov.states.al.tax.income.deductions.itemized.medical_expense
-        medical_floor = medical.floor * tax_unit("positive_agi", period)
+        p = parameters(period).gov.states.al.tax.income.deductions.itemized
+        medical_floor = p.medical_expense * tax_unit("positive_agi", period)
         return max_(0, expense - medical_floor)

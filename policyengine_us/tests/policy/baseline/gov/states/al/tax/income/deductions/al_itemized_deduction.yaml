@@ -8,10 +8,10 @@
     taxsim_tfica: 2
     self_employment_tax: 1
     al_medical_expense_deduction: 2
-    al_misc_deduction: 2
+    al_misc_deduction: 3
     state_code: AL
   output:
-    al_itemized_deductions: 30
+    al_itemized_deductions: 28
 
 - name: Alabama itemized deductions unit test 2
   period: 2021
@@ -22,7 +22,7 @@
     charitable_deduction: 29
     taxsim_tfica: 1
     self_employment_tax: 6
-    al_medical_expense_deduction: 3
-    al_misc_deduction: 4
+    al_medical_expense_deduction: 2
+    al_misc_deduction: 3
   output:
-    al_itemized_deductions: 73
+    al_itemized_deductions: 71
