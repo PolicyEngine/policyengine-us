@@ -9,4 +9,4 @@ class ky_refundable_credits(Variable):
     definition_period = YEAR
     defined_for = StateCode.KY
 
-    adds = 'gov.states.ky.tax.income.credits.non_refundable'
+    adds = "gov.states.ky.tax.income.credits.non_refundable"
