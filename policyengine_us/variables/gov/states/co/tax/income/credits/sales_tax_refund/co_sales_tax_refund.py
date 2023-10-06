@@ -22,5 +22,4 @@ class co_sales_tax_refund(Variable):
             agi = tax_unit("co_modified_agi", period)
             multiplier = p.multiplier[filing_status]
             amount = p.scale.calc(agi)
-            return multiplier * amount
         return multiplier * amount
