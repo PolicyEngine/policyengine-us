@@ -10,14 +10,12 @@ class mt_child_dependent_care_expense_deduction(Variable):
     defined_for = StateCode.MT
 
     def formula(tax_unit, period, parameters):
-        filing_status = tax_unit("filing_status", period)
-        p = parameters(period).gov.states.mt.tax.income.deductions.standard
+        p = parameters(period).gov.states.mt.tax.income.deductions.standard.mt_child_dependent_care_expense_deduction
         agi = tax_unit("mt_agi", period)
-        # standard deduction is a percentage of AGI that
-        # is bounded by a min/max by filing status.
-        min_amount = p.min[filing_status]
-        max_amount = p.max[filing_status]
-        uncapped_amount = p.rate * agi
-        deduction_amount = min_(uncapped_amount, max_amount)
+        care_expense = ("expenses_paid", period)
+        qualifying_child = ("qualifying_child", period)
+        child_qualifies = qualifying_child >= 1
+        income_qualifies = agi <= p.income_threshold[qualifying_child]
+        
 
-        return max_(deduction_amount, min_amount)
+        return child_qualifies * income_qualifies * min(p.amount[qualifying_child], care_expense)
