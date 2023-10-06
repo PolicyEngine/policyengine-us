@@ -16,14 +16,14 @@ class vt_capital_gains_exclusion(Variable):
     )
 
     def formula(tax_unit, period, parameters):
-        # Get adjusted net capital gains
+        # Get adjusted net capital gains, which is capped at 0
         adjusted_net_capital_gain = tax_unit(
             "adjusted_net_capital_gain", period
         )
         p = parameters(
             period
         ).gov.states.vt.tax.income.agi.exclusions.capital_gain
-        # The flat exclusion is the less of $5,000 or the actual amount of net adjusted capital gains
+        # The flat exclusion is the less of a capped amount or the actual amount of net adjusted capital gains
         flat_exclusion = min_(adjusted_net_capital_gain, p.flat.max_amount)
         # Get percentage exclusion
         percentage_exclusion = tax_unit(

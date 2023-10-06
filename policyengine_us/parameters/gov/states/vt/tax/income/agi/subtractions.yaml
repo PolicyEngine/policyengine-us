@@ -1,6 +1,9 @@
 description: Vermont subtracts these sources from adjusted gross income.
 values:
   2021-01-01:
+    - us_govt_interest
+    - vt_medical_expense_deduction
+    - student_loan_interest
     - vt_capital_gains_exclusion
 metadata:
   unit: list

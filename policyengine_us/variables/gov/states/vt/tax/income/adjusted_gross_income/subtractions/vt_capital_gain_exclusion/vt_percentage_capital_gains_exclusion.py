@@ -16,13 +16,13 @@ class vt_percentage_capital_gains_exclusion(Variable):
     )
 
     def formula(tax_unit, period, parameters):
-        # Get adjusted net capital gain
+        # Get adjusted net capital gain, which is capped at 0
         adjusted_net_capital_gain = tax_unit(
             "adjusted_net_capital_gain", period
         )
         p = parameters(
             period
         ).gov.states.vt.tax.income.agi.exclusions.capital_gain
-        # The percentage exclusion equals to 40% of the adjusted net capital gain and has a maximum value
+        # The percentage exclusion equals to a percentage of the adjusted net capital gain and has a maximum value
         percentage_exclusion = adjusted_net_capital_gain * p.percentage.rate
         return min_(percentage_exclusion, p.percentage.max_amount)
