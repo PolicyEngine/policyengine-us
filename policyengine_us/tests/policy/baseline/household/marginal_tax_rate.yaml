@@ -30,12 +30,6 @@
     state_fips: 48  # TX
   output:  # as expected from above two test results; also same as TAXSIM35
     marginal_tax_rate: 0.4345  # that is, 43.45%
-    #
-    # using PEUS 0.466.1, marginal_tax_rate is 80.33411, which is ~8033%
-    #
-    # Test 'marginal_tax_rate test TX-mtr':
-    # marginal_tax_rate@2021: [80.33411] differs from 0.4345000088214874
-    #                         with an absolute margin [79.899605] > 0.0001
 
 - name: marginal_tax_rate test 1 in a two tax-unit household
   absolute_error_margin: 0.0001

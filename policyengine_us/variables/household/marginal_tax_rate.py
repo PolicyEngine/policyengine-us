@@ -18,9 +18,9 @@ class marginal_tax_rate(Variable):
         adult_indexes = person("adult_index", period)
         for adult_index in range(1, 1 + adult_count):
             alt_sim = sim.get_branch(f"mtr_for_adult_{adult_index}")
-            for vname, variable in sim.tax_benefit_system.variables.items():
-                if not variable.is_input_variable():
-                    alt_sim.delete_arrays(vname)
+            for variable in sim.tax_benefit_system.variables:
+                if variable not in simulation.input_variables:
+                    alt_sim.delete_arrays(variable)
             mask = adult_index == adult_indexes
             alt_sim.set_input(
                 "employment_income",
