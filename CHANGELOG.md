@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.496.0] - 2023-10-06 23:26:28
+
+### Added
+
+- West Virginia senior citizens tax credit.
+- West Virginia homestead exemption.
+
 ## [0.495.0] - 2023-10-06 23:18:37
 
 ### Added
@@ -5514,6 +5521,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.496.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.495.0...0.496.0
 [0.495.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.494.1...0.495.0
 [0.494.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.494.0...0.494.1
 [0.494.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.493.1...0.494.0
