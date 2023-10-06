@@ -15,22 +15,13 @@ class mi_retirement_benefits_deduction_tier_three(Variable):
     defined_for = "mi_retirement_benefits_deduction_tier_three_eligible"
 
     def formula(tax_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.mi.tax.income.deductions.retirement_benefits.tier_three
-
-        filing_status = tax_unit("filing_status", period)
-        person = tax_unit.members
-
-        uncapped_pension_income = person("taxable_pension_income", period)
-        military_retirement_pay = person("military_retirement_pay", period)
-
-        rb3_amount = p.amount
-
-        person = tax_unit.members
-        social_security = (
-            person("social_security_exempt_retirement_benefits", period) > 0
+        rbd3_ssa_amount = tax_unit(
+            "mi_retirement_benefits_deduction_tier_three_ssa", period
         )
-        total_eligible = tax_unit.sum(social_security)
+        rbd3_retired_amount = tax_unit(
+            "mi_retirement_benefits_deduction_tier_three_retired", period
+        )
 
-        return rb3_amount * total_eligible
+        return where(
+            rbd3_retired_amount > 0, rbd3_retired_amount, rbd3_ssa_amount
+        )

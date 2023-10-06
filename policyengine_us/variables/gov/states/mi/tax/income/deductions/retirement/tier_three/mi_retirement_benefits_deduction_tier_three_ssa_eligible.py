@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class mi_retirement_benefits_deduction_tier_three_ssa_eligible(Variable):
     value_type = int
     entity = TaxUnit
-    label = "Number of eligible people for the Michigan tier three retirement benefits deduction increase"
+    label = "Number of eligible people for the Michigan tier three retirement benefits deduction qualifying SSA"
     definition_period = YEAR
     reference = (
         "http://legislature.mi.gov/doc.aspx?mcl-206-30",

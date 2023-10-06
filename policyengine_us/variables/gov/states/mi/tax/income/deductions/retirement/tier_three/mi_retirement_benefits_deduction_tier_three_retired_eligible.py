@@ -2,9 +2,9 @@ from policyengine_us.model_api import *
 
 
 class mi_retirement_benefits_deduction_tier_three_retired_eligible(Variable):
-    value_type = int
+    value_type = bool
     entity = TaxUnit
-    label = "Number of eligible people for the Michigan tier three retirement benefits deduction increase"
+    label = "Eligible for the Michigan tier three retirement benefits deduction qualifying both SSA and retirement year"
     definition_period = YEAR
     reference = (
         "http://legislature.mi.gov/doc.aspx?mcl-206-30",
@@ -22,7 +22,7 @@ class mi_retirement_benefits_deduction_tier_three_retired_eligible(Variable):
 
         retirement_eligible = (
             person("year_of_retirement", period) <= p.retirement_age
-        )
+        ) & (person("year_of_retirement", period) > 0)
 
         filer_eligible = person("is_tax_unit_head", period)
         spouse_eligible = person("is_tax_unit_spouse", period)
@@ -30,4 +30,4 @@ class mi_retirement_benefits_deduction_tier_three_retired_eligible(Variable):
 
         eligible_person = retirement_eligible * is_head_or_spouse
 
-        return tax_unit.sum(eligible_person)
+        return tax_unit.sum(eligible_person) > 0
