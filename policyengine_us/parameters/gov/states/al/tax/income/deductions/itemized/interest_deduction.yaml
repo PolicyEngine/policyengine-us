@@ -1,18 +1,13 @@
-description: Alabama allows for the following itemized deductions.
+description: interest deduction includes mortgage and investment interest.
 values:
   2021-01-01:
-    - real_estate_taxes
-    - charitable_deduction
-    - taxsim_tfica
-    - al_medical_expense_deduction
-    - al_misc_deduction
-    - al_intertest_deduction
+    - mortgage_interest_deduction
+    - investment_interest_deduction
 
 
 metadata:
   unit: list
-  name: al_itemized_deductions
-  label: Alabama itemized deductions
+  label: Alabama itemized interest deductions
   reference:
     - title: AL law documentation for itemized deductions
       href: https://law.justia.com/codes/alabama/2021/title-40/chapter-18/article-1/section-40-18-15/
