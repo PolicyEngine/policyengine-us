@@ -4668,3 +4668,8 @@
     added:
     - Mississippi adjusted gross income.
   date: 2023-10-06 23:43:31
+- bump: patch
+  changes:
+    fixed:
+    - Missing unit tests and delta parameter for marginal_tax_rate variable.
+  date: 2023-10-07 11:49:55

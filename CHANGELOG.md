@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.497.1] - 2023-10-07 11:49:55
+
+### Fixed
+
+- Missing unit tests and delta parameter for marginal_tax_rate variable.
+
 ## [0.497.0] - 2023-10-06 23:43:31
 
 ### Added
@@ -5527,6 +5533,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.497.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.497.0...0.497.1
 [0.497.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.496.0...0.497.0
 [0.496.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.495.0...0.496.0
 [0.495.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.494.1...0.495.0
