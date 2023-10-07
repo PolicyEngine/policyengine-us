@@ -1,5 +1,7 @@
 - name: Alabama itemized deductions unit test 1
   period: 2021
+  absolute_error_margin: 0.01
+  period: 2021
   input:
     real_estate_tax: 3
     mortage_interest_deduction: 7
@@ -11,10 +13,11 @@
     al_misc_deduction: 3
     state_code: AL
   output:
-    al_itemized_deductions: 28
+    al_itemized_deductions: 28.00
 
 - name: Alabama itemized deductions unit test 2
   period: 2021
+  absolute_error_margin: 0.01
   input:
     real_estate_tax: 9
     mortage_interest_deduction: 10
@@ -25,4 +28,4 @@
     al_medical_expense_deduction: 2
     al_misc_deduction: 3
   output:
-    al_itemized_deductions: 71
+    al_itemized_deductions: 71.00
