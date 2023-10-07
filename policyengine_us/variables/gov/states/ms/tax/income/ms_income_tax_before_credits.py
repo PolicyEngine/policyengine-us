@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class ms_income_tax_before_non_refundable_credits(Variable):
+class ms_income_tax_before_credits(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Mississippi income tax before non-refundable credits"
+    label = "Mississippi income tax before credits"
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.MS
