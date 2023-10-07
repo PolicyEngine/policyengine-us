@@ -4673,3 +4673,8 @@
     fixed:
     - Missing unit tests and delta parameter for marginal_tax_rate variable.
   date: 2023-10-07 11:49:55
+- bump: patch
+  changes:
+    fixed:
+    - Missing tests of cliff_gap and cliff_evaluated variables.
+  date: 2023-10-07 11:55:34
