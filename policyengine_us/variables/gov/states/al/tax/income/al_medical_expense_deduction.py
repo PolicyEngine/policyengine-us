@@ -14,10 +14,6 @@ class al_medical_expense_deduction(Variable):
     defined_for = StateCode.AL
 
     def formula(tax_unit, period, parameters):
-        medical_expense = tax_unit("medical_expense", period)
-        threshold_percentage = parameters(
-            period
-        ).gov.states.al.tax.income.deductions.itemized.medical_expense
-        medical_floor = threshold_percentage * medical_expense
-
-        return max_(0, medical_expense - medical_floor)
+        p = parameters(period).gov.states.al.tax.income.deductions.itemized
+        medical_expenses = tax_unit("medical_expense", period)
+        return medical_expenses * p.medical_expense
