@@ -1,6 +1,6 @@
-description: Vermont uses this amount as the maximum retirement income exemption from retirement system other than social security system.
+description: Vermont caps the retirement income exemption from retirement systems other than social security system at this amount.
 metadata:
-  label: Vermont maximum retirement income exemption of other retirement system
+  label: Vermont retirement income exemption cap
   period: year
   unit: currency-USD
   reference:
@@ -12,5 +12,6 @@ metadata:
     - title: Legal Code Titl. 32 V.S.A. § 5830e(b)(1)(B), (b)(2)(B),(c),(d)
       href: https://legislature.vermont.gov/statutes/section/32/151/05830e
 values:
-  2021-01-01: 0 # From 2022, allow for the use of other reitrement system's retirement income
+  # The other retirement systems are included in the retirement income exemption in 2022
+  2021-01-01: 0 
   2022-01-01: 10_000 

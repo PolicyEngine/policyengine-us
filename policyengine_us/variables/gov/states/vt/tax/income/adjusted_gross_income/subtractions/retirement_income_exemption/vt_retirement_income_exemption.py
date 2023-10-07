@@ -17,8 +17,10 @@ class vt_retirement_income_exemption(Variable):
     documentation = "Vermont retirement benefits exempt from Vermont taxation."
 
     def formula(tax_unit, period, parameters):
-        # Filer can choose from one of Social Security, Civil Service Retirement System (CSRS), Military Retirement Income
-        # or other eligible retirement systems to calculate retirement income exemption
+        # Filer can choose from one of Social Security,
+        # Civil Service Retirement System (CSRS), Military Retirement Income
+        # or other eligible retirement systems
+        # to calculate retirement income exemption.
         p = parameters(
             period
         ).gov.states.vt.tax.income.agi.retirement_income_exemption
@@ -34,7 +36,8 @@ class vt_retirement_income_exemption(Variable):
         vt_csrs_retirement_pay_exclusion = tax_unit(
             "vt_csrs_retirement_pay_exclusion", period
         )
-        # Assume that filers will always choose the largest reitrement income exclusion from various retirement system
+        # Assume that filers will always choose the largest reitrement income
+        # exclusion from various retirement system
         larger_retirement_income = max_(
             tax_unit_taxable_social_security,
             vt_military_retirement_pay_exclusion,

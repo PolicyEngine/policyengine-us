@@ -1,4 +1,4 @@
-- name: Csrs reitrement pay exclusion test 1
+- name: Csrs retirement pay exclusion test 1
   period: 2021
   input:
     people:
@@ -15,7 +15,7 @@
   output:
     vt_csrs_retirement_pay_exclusion: 0
 
-- name: Csrs reitrement pay exclusion test 2
+- name: Csrs retirement pay exclusion test 2
   period: 2022
   input:
     people:
@@ -34,7 +34,7 @@
   output:
     vt_csrs_retirement_pay_exclusion: 10_000
 
-- name: Csrs reitrement pay exclusion test 3
+- name: Csrs retirement pay exclusion test 3
   period: 2022
   input:
     people:

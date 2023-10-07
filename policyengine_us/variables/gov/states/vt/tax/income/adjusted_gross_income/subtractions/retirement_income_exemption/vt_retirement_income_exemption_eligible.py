@@ -16,7 +16,8 @@ class vt_retirement_income_exemption_eligible(Variable):
     documentation = "Vermont filers use below criteria to check whether the tax unit is eligible for vermont retirement income exemption."
 
     def formula(tax_unit, period, parameters):
-        # Filer can choose from one of Social Security, Civil Service Retirement System (CSRS), Military Retirement Income
+        # Filer can choose from one of Social Security,
+        # Civil Service Retirement System (CSRS), Military Retirement Income
         # or other eligible retirement systems to determine eligibility
         person = tax_unit.members
         # Get social security amount
@@ -45,5 +46,6 @@ class vt_retirement_income_exemption_eligible(Variable):
         ) != 0
         # The agi should below threshold
         agi_qualified = agi < p.income[filing_status]
-        # Both qualified then the filer is qualified for vermont retirement income exemption
+        # Both qualified then the filer is qualified for vermont retirement
+        # income exemption
         return retirement_income_qualified & agi_qualified
