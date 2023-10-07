@@ -14,7 +14,8 @@ class al_misc_deduction(Variable):
     defined_for = StateCode.AL
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.al.tax.income.deductions.itemized
-        work_related = tax_unit("misc_deduction", period)
-        deduction_value = p.misc_deduction * work_related
-        return deduction_value
+        misc_expense = tax_unit("misc_deduction", period)
+        threshold_percentage = parameters(
+            period
+        ).gov.states.al.tax.income.deductions.itemized.misc_deduction
+        return threshold_percentage * misc_expense
