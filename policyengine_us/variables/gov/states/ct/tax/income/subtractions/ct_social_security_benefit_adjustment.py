@@ -1,13 +1,13 @@
 from policyengine_us.model_api import *
 
 
-class ct_social_security_benefit_subtraction(Variable):
+class ct_social_security_benefit_adjustment(Variable):
     value_type = float
     entity = TaxUnit
     unit = USD
-    label = "Connecticut social security benefit subtraction"
+    label = "Connecticut social security benefit adjustment"
     definition_period = YEAR
-    defined_for = "ct_social_security_benefit_subtraction_eligible"
+    defined_for = "ct_social_security_benefit_adjustment_eligible"
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.irs.social_security.taxability
@@ -21,7 +21,7 @@ class ct_social_security_benefit_subtraction(Variable):
         # is_eligible = tax_unit(
         #     "ct_social_security_benefit_adjustment_eligible", period
         # )
-        ss_benefit = add(tax_unit, period, ["social_security"])
+        ss_benefit = add(tax_unit, period, ["taxable_social_security"])
         agi = add(tax_unit, period, ["adjusted_gross_income"])
 
         includable_ss = ss_benefit * ss_rate
