@@ -61,7 +61,7 @@
     household:
       members: [person1]
       state_code: MI
-  output: # 0 + (56961 - 1000 = 55961 < 60000) + 0 + (1000 < 12697) > 20000
+  output: # 0 + (56961 - 1000 = 55961 < 60000) + 0 + (1000 < 12697 - 1000)
     mi_standard_deduction_and_pension_benefit: 56_961
 
 - name: 2022 single filer who is at the tier 3 standard deduction age threshold
@@ -289,7 +289,7 @@
     household:
       members: [person1, person2]
       state_code: MI
-  output: # ((113922 - 1000 - 1000 < 50000 + 60000) + (13000 < 25394)) > (40000 - 1000 - 5000 - 1000 < 50000 + 60000)
+  output: # ((50000 + 60000 = 110000 < 113922 - 1000 - 1000 = 111922) + (13000 < 25394 - 1000 - 1000)) > (40000 - 1000 - 5000 - 1000 < 50000 + 60000)
     mi_standard_deduction_and_pension_benefit: 123_000
 
 - name: 2022 widow filer and their deceased spouse are not at the age threshold
@@ -342,5 +342,5 @@
     household:
       members: [person1]
       state_code: MI
-  output: # 0 + (56961 - 1000 = 55961 < 60000) + 0 + (12697 < 13000) > 20000
-    mi_standard_deduction_and_pension_benefit: 68_658
+  output: # 0 + (56961 - 1000 = 55961 < 60000) + 0 + (12697 - 1000 = 11697 < 13000) > 20000
+    mi_standard_deduction_and_pension_benefit: 67_658

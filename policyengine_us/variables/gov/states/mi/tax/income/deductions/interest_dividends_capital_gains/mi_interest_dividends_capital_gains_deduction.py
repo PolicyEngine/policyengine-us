@@ -12,7 +12,7 @@ class mi_interest_dividends_capital_gains_deduction(Variable):
         "http://legislature.mi.gov/doc.aspx?mcl-206-30",  # (p)
         "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2022/2022-IIT-Forms/BOOK_MI-1040.pdf#page=16",
     )
-    defined_for = StateCode.MI
+    defined_for = "mi_interest_dividends_capital_gains_deduction_eligible"
 
     def formula(tax_unit, period, parameters):
         p = parameters(
@@ -22,14 +22,20 @@ class mi_interest_dividends_capital_gains_deduction(Variable):
         # Core deduction based on filing status.
         filing_status = tax_unit("filing_status", period)
         person = tax_unit.members
-        age_older = tax_unit("greater_age_head_spouse", period)
+
         # Interest, Dividends, and Capital Gains Deduction for senior citizens
-        idcg_aged_eligibility = age_older >= p.senior_age
-        idcg_amount = p.senior_amount[filing_status]
         income = add(tax_unit, period, p.income_types)
         # The maximum amount of the deduction will be reduced by the amount of the
         # deduction claimed for retirement or pension benefits under
         # subdivision (e) or a deduction claimed under subdivision (f)(i), (ii), (iv), or (v)
         military_retirement_pay = person("military_retirement_pay", period)
 
-        return min_(idcg_aged_eligibility * idcg_amount, income)
+        head = person("is_tax_unit_head", period)
+        spouse = person("is_tax_unit_spouse", period)
+        is_head_or_spouse = head | spouse
+
+        idcg_amount = p.amount[filing_status] - tax_unit.sum(
+            military_retirement_pay * is_head_or_spouse
+        )
+
+        return min_(idcg_amount, income)
