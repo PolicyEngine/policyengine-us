@@ -4536,3 +4536,145 @@
     added:
     - Arizona itemized deduction.
   date: 2023-09-24 17:57:29
+- bump: minor
+  changes:
+    added:
+    - DC single-joint tax threshold ratio reform switch.
+  date: 2023-09-25 17:18:37
+- bump: patch
+  changes:
+    fixed:
+    - Remove tax exempt form 4972 lump sum distribution variable.
+  date: 2023-09-25 21:27:04
+- bump: minor
+  changes:
+    added:
+    - Idaho deductions.
+  date: 2023-09-27 17:44:45
+- bump: minor
+  changes:
+    added:
+    - Arkansas income tax exemptions.
+  date: 2023-09-27 18:22:39
+- bump: minor
+  changes:
+    added:
+    - Connecticut state tuition subtraction.
+  date: 2023-09-27 21:57:34
+- bump: patch
+  changes:
+    fixes:
+    - Add Louisiana index file.
+    - Remove Missouri index file.
+  date: 2023-09-28 17:28:07
+- bump: patch
+  changes:
+    fixed:
+    - North Carolina income tree patch.
+  date: 2023-09-28 19:35:20
+- bump: minor
+  changes:
+    added:
+    - Ohio adoption credit.
+  date: 2023-09-29 05:35:10
+- bump: minor
+  changes:
+    added:
+    - Idaho partial subtractions.
+  date: 2023-09-29 21:46:02
+- bump: minor
+  changes:
+    added:
+    - Vermont medical expense deduction.
+  date: 2023-09-29 22:17:41
+- bump: minor
+  changes:
+    added:
+    - SNAP 2023 parameters.
+  date: 2023-10-02 00:05:46
+- bump: minor
+  changes:
+    added:
+    - Vermont interest from u.s. obligation & student loan interest agi subtraction.
+  date: 2023-10-02 12:59:39
+- bump: minor
+  changes:
+    added:
+    - West Virginia low-income family tax credit.
+  date: 2023-10-02 22:45:10
+- bump: patch
+  changes:
+    fixed:
+    - Add unemployment compensation to list of benefits.
+  date: 2023-10-03 04:26:23
+- bump: minor
+  changes:
+    added:
+    - Georgia adjusted gross income structure.
+  date: 2023-10-03 14:18:18
+- bump: patch
+  changes:
+    fixed:
+    - Deductions subtracted from id_taxable_income.
+  date: 2023-10-04 01:08:56
+- bump: minor
+  changes:
+    added:
+    - Arizona long-term capital gains subtraction.
+  date: 2023-10-04 01:21:16
+- bump: minor
+  changes:
+    added:
+    - South Carolina net capital gain deduction.
+  date: 2023-10-04 02:24:19
+- bump: minor
+  changes:
+    added:
+    - Montana net capital gain credit.
+  date: 2023-10-04 04:44:55
+- bump: minor
+  changes:
+    added:
+    - Arizona increased standard deduction for charitable contributions.
+  date: 2023-10-04 21:03:41
+- bump: patch
+  changes:
+    fixes:
+    - Georgia investment in 529 plan deduction variable name adjustment.
+  date: 2023-10-05 01:05:40
+- bump: minor
+  changes:
+    fixed:
+    - SNAP now uses the previous October's FPG.
+  date: 2023-10-05 14:43:50
+- bump: patch
+  changes:
+    fixed:
+    - Update Colorado TABOR parameters for 2023.
+  date: 2023-10-06 18:37:54
+- bump: minor
+  changes:
+    added:
+    - Vermont capital gain exclusion.
+  date: 2023-10-06 23:18:37
+- bump: minor
+  changes:
+    added:
+    - West Virginia senior citizens tax credit.
+    - West Virginia homestead exemption.
+  date: 2023-10-06 23:26:28
+- bump: minor
+  changes:
+    added:
+    - Mississippi adjusted gross income.
+  date: 2023-10-06 23:43:31
+- bump: patch
+  changes:
+    fixed:
+    - Missing unit tests and delta parameter for marginal_tax_rate variable.
+  date: 2023-10-07 11:49:55
+- bump: patch
+  changes:
+    fixed:
+    - Missing tests of cliff_gap and cliff_evaluated variables.
+  date: 2023-10-07 11:55:34
