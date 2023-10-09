@@ -1,5 +1,6 @@
 description: Montana limits its child tax credit to filers with earned income above this threshold.
 values:
+  # May be we don't need to add a threshold here since the law allows credits for filers with earned income > 0 ? 
   2023-01-01: 0
 metadata:
   units: currency-USD
