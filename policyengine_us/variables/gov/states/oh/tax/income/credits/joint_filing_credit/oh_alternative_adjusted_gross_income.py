@@ -1,10 +1,12 @@
 from policyengine_us.model_api import *
 
 
-class oh_adjusted_gross_income(Variable):
+class oh_alternative_adjusted_gross_income(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Ohio Alternative Adjusted gross income"
+    label = (
+        "Ohio Alternative adjusted gross income for the joint filing credit"
+    )
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.OH

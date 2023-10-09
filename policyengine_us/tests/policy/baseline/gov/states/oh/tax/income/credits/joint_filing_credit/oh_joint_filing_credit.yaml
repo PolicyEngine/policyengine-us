@@ -5,7 +5,7 @@
     state_code: OH
     oh_joint_filing_credit_eligible: true
     oh_agi: 67_000
-    oh_exemption: 10_000
+    oh_exemptions: 10_000
     oh_income_tax_before_refundable_credits: 4_000
   output:
     oh_joint_filing_credit: 400
@@ -17,7 +17,7 @@
     state_code: OH
     oh_joint_filing_credit_eligible: true
     oh_agi: 47_000
-    oh_exemption: 10_000
+    oh_exemptions: 10_000
     oh_income_tax_before_refundable_credits: 6_000
   output:
     oh_joint_filing_credit: 650
@@ -29,7 +29,7 @@
     state_code: OH
     oh_joint_filing_credit_eligible: false
     oh_agi: 47_000
-    oh_exemption: 10_000
+    oh_exemptions: 10_000
     oh_income_tax_before_refundable_credits: 4_000
   output:
     oh_joint_filing_credit: 0

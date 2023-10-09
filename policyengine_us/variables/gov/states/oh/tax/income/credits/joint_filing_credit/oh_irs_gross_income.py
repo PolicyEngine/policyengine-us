@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class oh_irs_gross_income(Variable):
     value_type = float
     entity = Person
-    label = "Ohio Gross income"
+    label = "Ohio gross income for the joint filing credit"
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.OH
@@ -19,10 +19,10 @@ class oh_irs_gross_income(Variable):
             for source in p.sources
             if source
             not in [
-                "interest_income",
+                "taxable_interest_income",
                 "dividend_income",
                 "capital_gains",
-                "rents",
+                "rental_income",
             ]
         ]
         for source in sources:

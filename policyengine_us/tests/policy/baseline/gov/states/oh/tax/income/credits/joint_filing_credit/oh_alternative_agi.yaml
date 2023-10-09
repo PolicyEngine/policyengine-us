@@ -1,0 +1,8 @@
+- name: $100 federal agi, $10 add backs, $10 deductions, $10 exemptions
+  period: 2021
+  input:
+    state_code: OH
+    oh_alternative_agi_additions: 10_000
+    oh_alternative_agi_subtractions: 600
+  output:
+    oh_alternative_agi: 9_400

@@ -6,7 +6,7 @@
     basic_income: 10
     state_code: OH
   output:
-    oh_adjusted_gross_income: 2
+    oh_alternative_adjusted_gross_income: 2
 
 - name: Add basic income to AGI if specified.
   period: 2022
@@ -17,7 +17,7 @@
     basic_income: 10
     state_code: OH
   output:
-    oh_adjusted_gross_income: 12
+    oh_alternative_adjusted_gross_income: 12
 
 - name: Net income runs without circular dependency.
   period: 2022
@@ -26,4 +26,4 @@
     state_code: OH
   output:
     basic_income: 0
-    oh_adjusted_gross_income: 0
+    oh_alternative_adjusted_gross_income: 0
