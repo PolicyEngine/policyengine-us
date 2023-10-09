@@ -11,6 +11,6 @@ class hi_agi(Variable):
     # Hawaii Instructions for Form N-11 Rev 2022 (p4)
     reference = " https://files.hawaii.gov/tax/forms/2022/n11ins.pdf"
 
-    adds = ["hi_additions", "adjusted_gross_income"]
+    adds = ["adjusted_gross_income"]
     subtracts = ["hi_subtractions"]
-    # According to the tax form, if Hawaii AGI is negative, shade the minus (-) in the box to the left of the amount.
+    # According to the tax form, Hawaii AGI can be negative.
