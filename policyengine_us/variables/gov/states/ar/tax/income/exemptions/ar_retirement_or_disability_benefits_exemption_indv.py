@@ -16,11 +16,15 @@ class ar_retirement_or_disability_benefits_exemption_indv(Variable):
         p = parameters(
             period
         ).gov.states.ar.tax.income.exemptions.retirement_or_disability_benefits
+        head = person("is_tax_unit_head", period).astype(int)
+        spouse = person("is_tax_unit_spouse", period).astype(int)
         eligible_person = person(
             "ar_retirement_or_disability_benefits_exemption_eligible_person",
             period,
         )
-        pension_income = person("taxable_pension_income", period)
+        pension_income = person("taxable_pension_income", period) * (
+            head | spouse
+        )
         pension_distribution = (
             person("pension_contributions", period) * eligible_person
         )
