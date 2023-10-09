@@ -8,5 +8,3 @@ class ca_child_care_welfare_to_work(Variable):
     unit = "hour"
     definition_period = YEAR
     defined_for = StateCode.CA
-
-    adds = "gov.states.ca.cdss.child_care.eligibility.welfare_to_work"

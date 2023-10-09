@@ -1,4 +1,4 @@
-- name: 
+- name: test1
   period: 2023
   input:
     people:
@@ -14,9 +14,5 @@
       household:
         members: [mother, father, child]
         state_code: CA
-    spm_units:
-      spm_unit:
-        ca_child_care_provider: "child_care_centers"
-        ca_child_care_time_based_category: ["hourly", "part_time"]
   output:
-    ca_child_care_time_based_category: 16.28
+    copy: 96.53
