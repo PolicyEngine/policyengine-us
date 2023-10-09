@@ -6,7 +6,7 @@
     spm_unit_size: 3
   output:
     # Assert that Jan/Feb/Mar/Apr are all $95, and following months are $0.
-    snap_emergency_allotment_monthly:
+    snap_emergency_allotment:
       2022-01: 95
       2022-02: 95
       2022-03: 95
