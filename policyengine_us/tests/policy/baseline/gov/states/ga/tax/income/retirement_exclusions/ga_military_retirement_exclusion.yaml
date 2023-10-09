@@ -3,11 +3,13 @@
   input:
     people:
       person1:
-        ga_military_retirement_exclusion_eligible_person: true
+        is_tax_unit_head: true
+        age: 60
         military_retirement_pay: 20_000
         earned_income: 17_000
       person2:
-        ga_military_retirement_exclusion_eligible_person: false
+        is_tax_unit_spouse: false
+        age: 60
         military_retirement_pay: 20_000
         earned_income: 17_000
     tax_units:
@@ -25,11 +27,13 @@
   input:
     people:
       person1:
-        ga_military_retirement_exclusion_eligible_person: true
+        is_tax_unit_head: true
+        age: 60
         military_retirement_pay: 10_000
         earned_income: 17_000
       person2:
-        ga_military_retirement_exclusion_eligible_person: true
+        is_tax_unit_spouse: true
+        age: 60
         military_retirement_pay: 20_000
         earned_income: 17_900
     tax_units:
@@ -47,7 +51,8 @@
   input:
     people:
       person1:
-        ga_military_retirement_exclusion_eligible_person: true
+        is_tax_unit_head: true
+        age: 60
         military_retirement_pay: 17_600
         earned_income: 0
     tax_units:
