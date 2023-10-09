@@ -4,10 +4,10 @@
     people:
       person1:
         is_tax_unit_head: true
-        dividend_income: 1_000
+        taxable_interest_income: 1_000
       person2:
         is_tax_unit_spouse: true
-        dividend_income: 900
+        taxable_interest_income: 900
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -26,10 +26,10 @@
     people:
       person1:
         is_tax_unit_head: true
-        dividend_income: 1_000
+        taxable_interest_income: 1_000
       person2:
         is_tax_unit_spouse: true
-        dividend_income: 900
+        taxable_interest_income: 900
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -48,7 +48,7 @@
     people:
       person1:
         is_tax_unit_head: true
-        dividend_income: 1_000
+        taxable_interest_income: 1_000
     tax_units:
       tax_unit:
         members: [person1]
