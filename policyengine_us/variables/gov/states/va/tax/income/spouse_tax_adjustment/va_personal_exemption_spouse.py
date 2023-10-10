@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class qualification_spouse(Variable):
+class va_personal_exemption_spouse(Variable):
     value_type = float
     entity = TaxUnit
     label = "Virginia aged/blind exemption"
@@ -11,4 +11,9 @@ class qualification_spouse(Variable):
     reference = "https://www.tax.virginia.gov/sites/default/files/vatax-pdf/2022-760-instructions.pdf#page=19"
 
     def formula(tax_unit, period, parameters):
-        return va_agi - personal_exemption_spouse > 0
+        p = parameters(period).gov.states.va.tax.income.spouse_head_adjustment
+        aged_blind_count = tax_unit("blind_spouse", period) + (
+            age_spouse >= p.age_threshold
+        )
+
+        return aged_blind_count * p.age_blind_multiplier + p.addition_amount

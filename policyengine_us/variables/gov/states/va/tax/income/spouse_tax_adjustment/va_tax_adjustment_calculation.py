@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class tax_adjsutment_calculation(Variable):
+class va_tax_adjsutment_calculation(Variable):
     value_type = float
     entity = TaxUnit
     label = "Virginia aged/blind exemption"
@@ -14,19 +14,18 @@ class tax_adjsutment_calculation(Variable):
         p1 = parameters(period).gov.states.va.tax.income.spouse_head_adjustment
         p = parameters(period).gov.states.va_tax.income
         min_amount = min(
-            va_agi_head - personal_exemption_head,
-            va_agi_spouse - personal_exemption_spouse,
+            va_agi_head - va_personal_exemption_head,
+            va_agi_spouse - va_personal_exemption_spouse,
         )
 
-        half_of_taxable_income = 0.5 * va_taxable_income
+        half_of_taxable_income = va_taxable_income / p1.divider
         diff_amount = min_amount - va_taxable_income
         tax_min = min_(min_amount, half_of_taxable_income) * p.rates
         tax_max = max(diff_amount, half_of_taxable_income) * p.rates
         tax_sum = tax_min + tax_max
-        if (
+        return where(
             min_amount > p.threshold
-            and va_taxable_income > p.taxable_threshold
-        ):
-            return adjustment_limit
-        else:
-            return round(va_taxable_income * p.rates) - tax_sum
+            and va_taxable_income > p.taxable_threshold,
+            p1.adjustment_limit,
+            round(va_taxable_income * p.rates) - tax_sum
+        )
