@@ -301,7 +301,7 @@
   output: 
     mi_standard_deduction_and_pension_benefit: 0
 
-- name: 2022 widow filer and their deceased spouse are at the tier 2 standard deduction age threshold, and not receive retirement benefits from employment exempt from Social Security
+- name: 2022 widow filer at the tier 2 standard deduction age threshold, and not receive retirement benefits from employment exempt from Social Security
   period: 2022
   input:
     people:
@@ -323,7 +323,7 @@
   output: # 20000 + 0 - 1000 - 5000 > 20000
     mi_standard_deduction_and_pension_benefit: 14_000
 
-- name: 2022 widow filer who is at the tier 3 standard deduction age threshold, their deceased spouse is at the tier 1 retirement and pension benefits and interest, dividends, and capital gains deduction threshold, $13000 interest, dividends, and capital gains income
+- name: 2022 single filer who is at the tier 1 retirement and pension benefits and interest, dividends, and capital gains deduction threshold, $13000 interest, dividends, and capital gains income
   period: 2022
   input:
     people:
@@ -338,9 +338,9 @@
       tax_unit:
         greater_age_head_spouse: 77
         members: [person1]
-        filing_status: WIDOW
+        filing_status: SINGLE
     household:
       members: [person1]
       state_code: MI
-  output: # 0 + (56961 - 1000 = 55961 < 60000) + 0 + (12697 - 1000 = 11697 < 13000) > 20000
+  output: # 0 + (56961 - 1000 = 55961 < 60000) + 0 + (12697 - 1000 = 11697 < 13000)
     mi_standard_deduction_and_pension_benefit: 67_658
