@@ -1,0 +1,53 @@
+- name: Ineligible
+  period: 2022
+  input:
+    co_modified_agi: 44_000
+    co_sales_tax_refund_eligible: false
+    filing_status: SINGLE
+  output:
+    co_sales_tax_refund: 0
+
+- name: Ineligible
+  period: 2023
+  input:
+    co_modified_agi: 49_999
+    co_sales_tax_refund_eligible: false
+    filing_status: SINGLE
+  output:
+    co_sales_tax_refund: 0
+
+- name: Single calculation
+  period: 2022
+  input:
+    co_modified_agi: 95_000
+    co_sales_tax_refund_eligible: true
+    filing_status: SINGLE
+  output:
+    co_sales_tax_refund: 208
+
+- name: Flat amount in 2023
+  period: 2023
+  input:
+    co_modified_agi: 60_001
+    co_sales_tax_refund_eligible: true
+    filing_status: SINGLE
+  output:
+    co_sales_tax_refund: 661
+
+- name: Joint calculation
+  period: 2022
+  input:
+    co_modified_agi: 268_001
+    co_sales_tax_refund_eligible: true
+    filing_status: JOINT
+  output:
+    co_sales_tax_refund: 972
+
+- name: Separate calculation
+  period: 2022
+  input:
+    co_modified_agi: 151_000
+    co_sales_tax_refund_eligible: true
+    filing_status: SEPARATE
+  output:
+    co_sales_tax_refund: 234

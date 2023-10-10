@@ -11,16 +11,14 @@ class dc_eitc_without_qualifying_child(Variable):
     defined_for = StateCode.DC
 
     def formula(tax_unit, period, parameters):
-        # Start by matching the federal EITC.
-        p = parameters(
-            period
-        ).gov.states.dc.tax.income.credits.eitc.without_children
-        federal_eitc = tax_unit("earned_income_tax_credit", period)
-        matched_eitc = federal_eitc * p.match
-        # Then phase out for income above the phase-out threshold.
+        # calculate US EITC amount before phase-out
+        us_eligible = tax_unit("eitc_eligible", period)
+        us_eitc = us_eligible * tax_unit("eitc_phased_in", period)
+        # phase out us_eitc for income above DC phase-out start threshold
         earnings = tax_unit("tax_unit_earned_income", period)
-        federal_agi = tax_unit("adjusted_gross_income", period)
-        greater_of = max_(earnings, federal_agi)
-        excess = max_(greater_of - p.phase_out.start, 0)
-        phase_out_amount = excess * p.phase_out.rate
-        return max_(federal_eitc - phase_out_amount, 0)
+        us_agi = tax_unit("adjusted_gross_income", period)
+        greater_of = max_(earnings, us_agi)
+        dc = parameters(period).gov.states.dc.tax.income.credits
+        excess = max_(0, greater_of - dc.eitc.without_children.phase_out.start)
+        dc_phase_out_amount = excess * dc.eitc.without_children.phase_out.rate
+        return max_(0, us_eitc - dc_phase_out_amount)

@@ -1,0 +1,16 @@
+description: DC subtracts these items from US AGI when computing DC AGI.
+metadata:
+  unit: variable
+  label: DC subtractions from US adjusted gross income
+  reference:
+    - title: Code of the District of Columbia § 47–1803.02. Gross income — Items included and excluded; "adjusted gross income" defined.
+      href: https://code.dccouncil.gov/us/dc/council/code/sections/47-1803.02
+    - title: 2021 Form D40 Booklet, Form D-40 (page 36) and Schedule I (page 63)
+      href: https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/52926_D-40_12.21.21_Final_Rev011122.pdf#page=36
+    - title: 2022 Form D40 Booklet, Form D-40 (page 34) and Schedule I (page 55)
+      href: https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2022_D-40_Booklet_Final_blk_01_23_23_Ordc.pdf#page=34
+values:
+  2021-01-01:
+    - taxable_social_security
+    - taxable_unemployment_compensation
+    - dc_disabled_exclusion_subtraction

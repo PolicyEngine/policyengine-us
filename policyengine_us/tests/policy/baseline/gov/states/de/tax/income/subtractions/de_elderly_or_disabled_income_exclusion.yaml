@@ -1,0 +1,23 @@
+- name: Single eligible
+  period: 2023
+  input:
+    filing_status: SINGLE
+    de_elderly_or_disabled_income_exclusion_eligible: true
+  output:
+    de_elderly_or_disabled_income_exclusion: 2_000
+
+- name: Single ineligible
+  period: 2023
+  input:
+    filing_status: SINGLE
+    de_elderly_or_disabled_income_exclusion_eligible: false
+  output:
+    de_elderly_or_disabled_income_exclusion: 0
+
+- name: Joint eligible
+  period: 2023
+  input:
+    filing_status: JOINT
+    de_elderly_or_disabled_income_exclusion_eligible: true
+  output:
+    de_elderly_or_disabled_income_exclusion: 4_000

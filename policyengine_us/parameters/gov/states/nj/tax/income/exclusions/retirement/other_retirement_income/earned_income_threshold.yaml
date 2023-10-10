@@ -1,0 +1,11 @@
+description: New Jersey filers with more than this amount of earned income are not eligible for other retirement exclusion.
+metadata:
+  type: currency-USD
+  label: NJ other retirement earned income exclusion threshold.
+  reference:
+    - title: 2021 New Jersey NJ-1040 Resident Return
+      href: https://www.state.nj.us/treasury/taxation/pdf/other_forms/tgi-ee/2021/1040i.pdf#page=22
+    - title: 2022 New Jersey Revised Statutes Title 54A - New Jersey Gross Income Tax Act Section 54A:6-15 - Other retirement income.
+      href: https://law.justia.com/codes/new-jersey/2022/title-54a/section-54a-6-15/
+values:
+  2021-01-01: 3_000

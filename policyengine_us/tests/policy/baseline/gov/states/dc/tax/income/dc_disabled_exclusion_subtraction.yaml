@@ -1,0 +1,93 @@
+- name: dc_disabled_exclusion_subtraction unit test 1
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 66
+        is_permanently_and_totally_disabled: true
+        social_security_disability: 6_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 65
+      person3:
+        is_tax_unit_dependent: true
+        age: 17
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        household_market_income: 93_000
+        household_benefits: 6_000
+        state_code: DC
+  output:
+    dc_disabled_exclusion_subtraction: [10_000, 0, 0]
+
+- name: dc_disabled_exclusion_subtraction unit test 2
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 66
+        is_permanently_and_totally_disabled: true
+        social_security_disability: 6_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 65
+        is_permanently_and_totally_disabled: true
+        ssi: 6_000
+      person3:
+        is_tax_unit_dependent: true
+        age: 17
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        household_market_income: 87_000
+        household_benefits: 12_000
+        state_code: DC
+  output:
+    dc_disabled_exclusion_subtraction: [10_000, 10_000, 0]
+
+- name: dc_disabled_exclusion_subtraction unit test 3
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 66
+        is_permanently_and_totally_disabled: true
+        social_security_disability: 6_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 65
+        is_permanently_and_totally_disabled: true
+        ssi: 6_000
+      person3:
+        is_tax_unit_dependent: true
+        age: 17
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        household_market_income: 88_000
+        household_benefits: 12_000
+        state_code: DC
+  output:
+    dc_disabled_exclusion_subtraction: [0, 0, 0]

@@ -1,0 +1,21 @@
+description: DC property tax credit offset is this AGI-specific fraction of US AGI for elderly.
+metadata:
+  type: single_amount
+  threshold_period: year
+  threshold_unit: currency-USD  # federal AGI
+  amount_unit: /1
+  reference:
+    - title: 2021 Form D-40 Booklet
+      href: https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/52926_D-40_12.21.21_Final_Rev011122.pdf#page=49
+    - title: 2022 Form D-40 Booklet
+      href: https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2022_D-40_Booklet_Final_blk_01_23_23_Ordc.pdf#page=47
+brackets:
+  - threshold:
+      2021-01-01: -.inf
+    amount:
+      2021-01-01: 0.03
+  - threshold:
+      2021-01-01: 76_700
+      2022-01-01: 78_600
+    amount:
+      2021-01-01: .inf  # infinite offset implies ineligible for credit

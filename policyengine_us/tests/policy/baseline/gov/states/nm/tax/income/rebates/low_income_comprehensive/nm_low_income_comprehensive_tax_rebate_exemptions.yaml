@@ -1,0 +1,26 @@
+- name: Only normal exemptions.
+  period: 2022
+  input:
+    state_code: NM
+    exemptions: 2
+  output:
+    nm_low_income_comprehensive_tax_rebate_exemptions: 2
+
+- name: Exemptions plus aged head and spouse get 2 + 2 = 2.
+  period: 2022
+  input:
+    state_code: NM
+    exemptions: 2
+    age_head: 65
+    age_spouse: 65
+  output:
+    nm_low_income_comprehensive_tax_rebate_exemptions: 6
+
+- name: Single person who is blind.
+  period: 2022
+  input:
+    state_code: NM
+    exemptions: 1
+    blind_head: true
+  output:
+    nm_low_income_comprehensive_tax_rebate_exemptions: 2

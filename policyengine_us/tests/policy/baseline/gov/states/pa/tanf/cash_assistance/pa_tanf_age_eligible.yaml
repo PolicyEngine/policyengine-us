@@ -1,0 +1,44 @@
+- name: Under age 18 & is full time student
+  period: 2023
+  input:
+    state_code: PA
+    age: 17
+    is_full_time_student: true 
+  output:
+    pa_tanf_age_eligible: true
+
+- name: Under age 18 & not full time student
+  period: 2023
+  input:
+    state_code: PA
+    age: 16
+    is_full_time_student: false 
+  output:
+    pa_tanf_age_eligible: true
+
+- name: Age 18 & not full time student
+  period: 2023
+  input:
+    state_code: PA
+    age: 18
+    is_full_time_student: false
+  output:
+    pa_tanf_age_eligible: false
+
+- name: Age 18 & is full time student
+  period: 2023
+  input:
+    state_code: PA
+    age: 18
+    is_full_time_student: true
+  output:
+    pa_tanf_age_eligible: true
+
+- name: Age 19 & is full time student
+  period: 2023
+  input:
+    state_code: PA
+    age: 19
+    is_full_time_student: true
+  output:
+    pa_tanf_age_eligible: false

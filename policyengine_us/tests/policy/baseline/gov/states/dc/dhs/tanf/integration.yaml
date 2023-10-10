@@ -1,0 +1,16 @@
+- name: Single parent of one with no earnings gets maximum benefit.
+  period: 2023
+  input:
+    people:
+      parent: {}
+      child:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: DC
+  output:
+    dc_tanf: 545 * 12
