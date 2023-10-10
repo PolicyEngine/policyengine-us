@@ -4652,3 +4652,29 @@
     fixed:
     - Update Colorado TABOR parameters for 2023.
   date: 2023-10-06 18:37:54
+- bump: minor
+  changes:
+    added:
+    - Vermont capital gain exclusion.
+  date: 2023-10-06 23:18:37
+- bump: minor
+  changes:
+    added:
+    - West Virginia senior citizens tax credit.
+    - West Virginia homestead exemption.
+  date: 2023-10-06 23:26:28
+- bump: minor
+  changes:
+    added:
+    - Mississippi adjusted gross income.
+  date: 2023-10-06 23:43:31
+- bump: patch
+  changes:
+    fixed:
+    - Missing unit tests and delta parameter for marginal_tax_rate variable.
+  date: 2023-10-07 11:49:55
+- bump: patch
+  changes:
+    fixed:
+    - Missing tests of cliff_gap and cliff_evaluated variables.
+  date: 2023-10-07 11:55:34
