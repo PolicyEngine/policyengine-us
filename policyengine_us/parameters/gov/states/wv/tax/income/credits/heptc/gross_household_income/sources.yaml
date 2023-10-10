@@ -1,7 +1,7 @@
-description: West Virginia gross household income.
+description: West Virginia counts these sources as gross household income.  
 metadata:
   unit: list
-  label: West Virginia gross household income
+  label: West Virginia gross household income sources
   reference:
   - title: West Virginia Personal Income Tax Forms And Instructions 2022
     href: https://tax.wv.gov/Documents/PIT/2022/PersonalIncomeTaxFormsAndInstructions.2022.pdf#page=14
@@ -13,7 +13,7 @@ metadata:
 values:
   2012-01-01:
     - adjusted_gross_income
-    - wv_modifications
+    - wv_additions
     - tax_exempt_interest_income
     - workers_compensation
     - tax_exempt_social_security
