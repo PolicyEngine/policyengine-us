@@ -1,0 +1,24 @@
+from policyengine_us.model_api import *
+
+
+class wv_low_income_earned_income_exclusion(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = "West Virginia low-income earned income exclusion"
+    defined_for = "wv_low_income_earned_income_exclusion_eligible"
+    unit = USD
+    definition_period = YEAR
+
+    def formula(tax_unit, period, parameters):
+        federal_agi = tax_unit("adjusted_gross_income", period)
+        person = tax_unit.members
+        wv_earned_income = person("earned_income", period)
+        filing_status = tax_unit("filing_status", period)
+
+        p = parameters(
+            period
+        ).gov.states.wv.tax.income.subtractions.low_income_earned_income_exclusion
+
+        return min_(
+            federal_agi, wv_earned_income, p.income_threshold[filing_status]
+        )
