@@ -1,6 +1,4 @@
 from policyengine_us.model_api import *
-import numpy as np
-
 
 class vt_ctc(Variable):
     value_type = float
