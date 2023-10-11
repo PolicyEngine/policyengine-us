@@ -2,11 +2,11 @@ description: Connecticut counts these as subtractions.
 values:
   2022-01-01:
     - us_govt_interest
-    - ct_federal_bonus_depreciation
+    # ct_federal_bonus_depreciation
     - ct_federal_deduction
-    - ct_pension_annuity_income
+    - ct_pension_annuity_subtraction
     # ct_exempt_interest_mutual_funds
-    - ct_social_security_adjustment
+    - ct_social_security_benefit_subtraction
     # ct_refunds_of_federal_state_tax
     # ct_railroad_retirement
     - military_retirement_pay
