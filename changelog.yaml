@@ -4632,3 +4632,64 @@
     added:
     - Montana net capital gain credit.
   date: 2023-10-04 04:44:55
+- bump: minor
+  changes:
+    added:
+    - Arizona increased standard deduction for charitable contributions.
+  date: 2023-10-04 21:03:41
+- bump: patch
+  changes:
+    fixes:
+    - Georgia investment in 529 plan deduction variable name adjustment.
+  date: 2023-10-05 01:05:40
+- bump: minor
+  changes:
+    fixed:
+    - SNAP now uses the previous October's FPG.
+  date: 2023-10-05 14:43:50
+- bump: patch
+  changes:
+    fixed:
+    - Update Colorado TABOR parameters for 2023.
+  date: 2023-10-06 18:37:54
+- bump: minor
+  changes:
+    added:
+    - Vermont capital gain exclusion.
+  date: 2023-10-06 23:18:37
+- bump: minor
+  changes:
+    added:
+    - West Virginia senior citizens tax credit.
+    - West Virginia homestead exemption.
+  date: 2023-10-06 23:26:28
+- bump: minor
+  changes:
+    added:
+    - Mississippi adjusted gross income.
+  date: 2023-10-06 23:43:31
+- bump: patch
+  changes:
+    fixed:
+    - Missing unit tests and delta parameter for marginal_tax_rate variable.
+  date: 2023-10-07 11:49:55
+- bump: patch
+  changes:
+    fixed:
+    - Missing tests of cliff_gap and cliff_evaluated variables.
+  date: 2023-10-07 11:55:34
+- bump: minor
+  changes:
+    added:
+    - Connecticut military retirement subtraction.
+  date: 2023-10-10 16:55:30
+- bump: minor
+  changes:
+    added:
+    - Hawaii subtractions.
+  date: 2023-10-10 23:24:10
+- bump: minor
+  changes:
+    added:
+    - Tax unit head or spouse varibale.
+  date: 2023-10-11 13:37:15

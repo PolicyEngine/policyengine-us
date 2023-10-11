@@ -1,0 +1,23 @@
+- name: Not head or spouse.
+  period: 2022
+  input:
+    is_tax_unit_head: false
+    is_tax_unit_spouse: false
+  output:
+    is_tax_unit_head_or_spouse: false
+
+- name: Head 
+  period: 2022
+  input:
+    is_tax_unit_head: true
+    is_tax_unit_spouse: false
+  output:
+    is_tax_unit_head_or_spouse: true
+
+- name: Spouse 
+  period: 2022
+  input:
+    is_tax_unit_head: false
+    is_tax_unit_spouse: true
+  output:
+    is_tax_unit_head_or_spouse: true
