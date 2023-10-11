@@ -1,10 +1,19 @@
-description: Delaware excludes up to this amount of taxable pension and retirement income from adjusted gross income for older filers.
-values:
-  2021-01-01: 12_500
+description: Delaware excludes up to this amount of taxable pension and retirement income from adjusted gross income, based on age.
+brackets:
+  - threshold:
+      2007-01-01: 0
+    amount:
+      2007-01-01: 2_000
+  - threshold:
+      2007-01-01: 60
+    amount:
+      2007-01-01: 12_500
 metadata:
-  unit: currency-USD
+  type: single_amount
+  threshold_unit: year
+  amount_unit: currency-USD
   period: year
-  label: Delaware pension exclusion older cap
+  label: Delaware pension exclusion cap
   reference:
     - title: Delaware individual income tax instructions for 2021 Line 6
       href: https://revenuefiles.delaware.gov/2021/PIT-RES_TY21_2021-01_Instructions.pdf#page=6
