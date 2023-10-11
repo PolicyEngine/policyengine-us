@@ -1,0 +1,13 @@
+description: Idaho income tax has these refundable credits.
+metadata:
+  unit: variable
+  label: Idaho refundable credits
+  reference:
+    - title: IDAHO ADMINISTRATIVE CODE || 
+      href: https://adminrules.idaho.gov/rules/current/35/350101.pdf
+    - title: Form 40 Individual Income Tax Return
+      href: https://tax.idaho.gov/wp-content/uploads/forms/EFO00089/EFO00089_12-30-2022.pdf
+values:
+  2021-01-01:
+    - id_ctc  # Idaho Child Tax Credit
+    - id_grocery_credit  # Idaho grocery credit
