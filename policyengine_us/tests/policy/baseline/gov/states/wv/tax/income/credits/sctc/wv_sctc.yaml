@@ -1,0 +1,31 @@
+- name: Filers who is eligible with taxable property value of $40,000 can get the senior citizens tax credit of $20,000.
+  period: 2022
+  input:
+    wv_taxable_property_value: 40_000
+    wv_sctc_eligible: true
+  output:
+    wv_sctc: 20_000
+    
+- name: Filers who is ineligible with taxable property value of $20,000 can get the senior citizens tax credit of 0.
+  period: 2022
+  input:
+    wv_taxable_property_value: 20_000
+    wv_sctc_eligible: false
+  output:
+    wv_sctc: 0
+
+- name: Filers who is eligible with taxable property value of $7,000 can get the senior citizens tax credit of $10,000.
+  period: 2022
+  input:
+    wv_taxable_property_value: 7_000
+    wv_sctc_eligible: true
+  output:
+    wv_sctc: 7_000
+
+- name: Filers who is ineligible with taxable property value of $7,000 can get the senior citizens tax credit of 0.
+  period: 2022
+  input:
+    wv_taxable_property_value: 7_000
+    wv_sctc_eligible: false
+  output:
+    wv_sctc: 0
