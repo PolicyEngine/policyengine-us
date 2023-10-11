@@ -7,7 +7,7 @@ class is_tax_unit_head_or_spouse(Variable):
     label = "Head or Spouse of tax unit"
     definition_period = YEAR
 
-    def formula(tax_unit, period, parameters):
-        head = tax_unit("is_tax_unit_head", period)
-        spouse = tax_unit("is_tax_unit_spouse", period)
+    def formula(person, period, parameters):
+        head = person("is_tax_unit_head", period)
+        spouse = person("is_tax_unit_spouse", period)
         return head | spouse
