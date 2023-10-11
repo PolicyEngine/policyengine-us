@@ -12,7 +12,7 @@ class ct_pension_annuity_subtraction_eligible(Variable):
         ct_agi = tax_unit("ct_agi", period)
         filing_status = tax_unit("filing_status", period)
         p = parameters(period).gov.states.ct.tax.income.subtractions
-        ct_pension_threshold = p.pensions_or_annuity.income_threshold[
+        ct_pension_threshold = p.pensions_or_annuity.income_limit[
             filing_status
         ]
         return ct_agi < ct_pension_threshold
