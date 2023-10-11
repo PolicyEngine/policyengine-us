@@ -15,13 +15,11 @@ class sc_retirement_deduction_indv(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(
             period
-        ).gov.states.sc.tax.income.subtractions.retirement_deduction
+        ).gov.states.sc.tax.income.subtractions.retirement
         p_cap = p.max_amount
         person = tax_unit.members
         age = person("age", period)
-        head = person("is_tax_unit_head", period)
-        spouse = person("is_tax_unit_spouse", period)
-        head_or_spouse = head | spouse
+        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         # line 1
         max_deduction_allowed = where(
             age >= p.age_threshold,

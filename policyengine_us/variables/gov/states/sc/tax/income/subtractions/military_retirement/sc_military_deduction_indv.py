@@ -14,9 +14,7 @@ class sc_military_deduction_indv(Variable):
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
-        head = person("is_tax_unit_head", period)
-        spouse = person("is_tax_unit_spouse", period)
-        head_or_spouse = head | spouse
+        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         military_retirement_pay = (
             person("military_retirement_pay", period) * head_or_spouse
         )
