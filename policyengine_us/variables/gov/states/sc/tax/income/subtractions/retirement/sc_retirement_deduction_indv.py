@@ -13,9 +13,7 @@ class sc_retirement_deduction_indv(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.sc.tax.income.subtractions.retirement
+        p = parameters(period).gov.states.sc.tax.income.subtractions.retirement
         p_cap = p.max_amount
         person = tax_unit.members
         age = person("age", period)
