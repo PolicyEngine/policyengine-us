@@ -1,0 +1,25 @@
+- name: Test Case 1 - Qualifying Child and Income Qualify
+  period: 2021
+  input:
+    mt_agi: 27_000
+    childcare_expenses: 4_000
+    num_dependents: [10, 8, 5, "disabled"]
+  output:
+    result: 4_000
+
+- name: Test Case 2 - Qualifying Child, Income Qualify, and Maximum Deduction
+  period: 2021
+  input:
+    mt_agi: 27_100
+    childcare_expenses: 4_800
+    num_dependents: [12, "disabled", 4, 18]
+  output:
+    result: 4_800
+- name: Test Case 3 - No Qualifying Child
+  period: 2021
+  input:
+    mt_agi: 15_000
+    childcare_expenses: 2500
+    num_dependents: [18,20]
+  output:
+    result: 0  
