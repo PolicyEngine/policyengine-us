@@ -3,7 +3,6 @@
   absolute_error_margin: 0.01
   input:
     real_estate_taxes: 3
-    al_interest_deduction: 7
     charitable_deduction: 9
     taxsim_tfica: 2
     al_medical_expense_deduction: 2
@@ -12,14 +11,13 @@
     al_mortgage_interest_deduction: 2
     state_code: AL
   output:
-    al_itemized_deductions: 30.00
+    al_itemized_deductions: 23.00
 
 - name: Alabama itemized deductions unit test 2
   period: 2021
   absolute_error_margin: 0.01
   input:
     real_estate_taxes: 9
-    al_interest_deduction: 10
     charitable_deduction: 29
     taxsim_tfica: 1
     al_medical_expense_deduction: 2
@@ -28,4 +26,4 @@
     al_mortgage_interest_deduction: 6
     state_code: AL
   output:
-    al_itemized_deductions: 65.00
+    al_itemized_deductions: 55.00
