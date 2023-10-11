@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ky_refundable_credits(Variable):
+class ky_non_refundable_credits(Variable):
     value_type = float
     entity = TaxUnit
     label = "Kentucky non-refundable credits"
