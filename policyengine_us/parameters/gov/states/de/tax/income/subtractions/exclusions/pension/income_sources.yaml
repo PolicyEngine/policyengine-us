@@ -5,8 +5,7 @@ values:
     - capital_gains
     - taxable_interest_income
     - rental_income
-# qualified retirement plans (IRC Sec. 4974), such as IRA, 401(k), Keogh plans, 
-# and government deferred compensation plans (IRC Sec. 457)
+    - taxable_pension_income
 metadata:
   unit: list
   label: Delaware pension exclusion income sources
