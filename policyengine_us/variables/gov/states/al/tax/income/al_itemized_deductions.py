@@ -21,4 +21,6 @@ class al_itemized_deductions(Variable):
             + tax_unit("al_interest_deduction", period)
             + tax_unit("al_medical_expense_deduction", period)
             + tax_unit("al_misc_deduction", period)
+            + tax_unit("al_investment_interest_deduction", period) 
+            + tax_unit("al_mortgage_interest_deduction", period) 
         )
