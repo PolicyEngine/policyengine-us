@@ -4668,3 +4668,23 @@
     added:
     - Mississippi adjusted gross income.
   date: 2023-10-06 23:43:31
+- bump: patch
+  changes:
+    fixed:
+    - Missing unit tests and delta parameter for marginal_tax_rate variable.
+  date: 2023-10-07 11:49:55
+- bump: patch
+  changes:
+    fixed:
+    - Missing tests of cliff_gap and cliff_evaluated variables.
+  date: 2023-10-07 11:55:34
+- bump: minor
+  changes:
+    added:
+    - Connecticut military retirement subtraction.
+  date: 2023-10-10 16:55:30
+- bump: minor
+  changes:
+    added:
+    - Hawaii subtractions.
+  date: 2023-10-10 23:24:10
