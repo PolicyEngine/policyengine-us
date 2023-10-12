@@ -4,12 +4,10 @@
     people:
       head:
         age: 61
-        is_tax_unit_head: true
-        is_tax_unit_spouse: false
+        is_tax_unit_head_or_spouse: true
       spouse:
         age: 60
-        is_tax_unit_head: false
-        is_tax_unit_spouse: true
+        is_tax_unit_head_or_spouse: true
     tax_units:
       tax_unit:
         members: [head, spouse]  
@@ -26,12 +24,10 @@
     people:
       head:
         age: 58
-        is_tax_unit_head: true
-        is_tax_unit_spouse: false
+        is_tax_unit_head_or_spouse: true
       spouse:
         age: 60
-        is_tax_unit_head: false
-        is_tax_unit_spouse: true
+        is_tax_unit_head_or_spouse: true
     tax_units:
       tax_unit:
         members: [head, spouse]  
@@ -48,12 +44,10 @@
     people:
       head:
         age: 62
-        is_tax_unit_head: true
-        is_tax_unit_spouse: false
+        is_tax_unit_head_or_spouse: true
       spouse:
         age: 57
-        is_tax_unit_head: false
-        is_tax_unit_spouse: true
+        is_tax_unit_head_or_spouse: true
     tax_units:
       tax_unit:
         members: [head, spouse]  
@@ -70,12 +64,10 @@
     people:
       head:
         age: 58
-        is_tax_unit_head: true
-        is_tax_unit_spouse: false
+        is_tax_unit_head_or_spouse: true
       spouse:
         age: 57
-        is_tax_unit_head: false
-        is_tax_unit_spouse: true
+        is_tax_unit_head_or_spouse: true
     tax_units:
       tax_unit:
         members: [head, spouse]  

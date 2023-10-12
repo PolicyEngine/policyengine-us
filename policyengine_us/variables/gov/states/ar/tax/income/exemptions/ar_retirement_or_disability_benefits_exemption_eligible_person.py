@@ -14,7 +14,7 @@ class ar_retirement_or_disability_benefits_exemption_eligible_person(Variable):
             period
         ).gov.states.ar.tax.income.exemptions.retirement_or_disability_benefits
         age = (person("age", period) >= p.age_threshold).astype(int)
-        head = person("is_tax_unit_head", period).astype(int)
-        spouse = person("is_tax_unit_spouse", period).astype(int)
-
-        return (head | spouse) * age
+        head_or_spouse = person("is_tax_unit_head_or_spouse", period).astype(
+            int
+        )
+        return head_or_spouse * age

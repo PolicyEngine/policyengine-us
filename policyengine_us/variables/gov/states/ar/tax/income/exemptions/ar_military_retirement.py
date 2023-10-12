@@ -1,9 +1,9 @@
 from policyengine_us.model_api import *
 
 
-class ar_military_retirement(Variable):
+class ar_military_retirement_exemption(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     label = "Arkansas military retirement exemption"
     unit = USD
     definition_period = YEAR
@@ -11,7 +11,7 @@ class ar_military_retirement(Variable):
     defined_for = StateCode.AR
 
     def formula(person, period, parameters):
-        head = person("is_tax_unit_head", period).astype(int)
-        spouse = person("is_tax_unit_spouse", period).astype(int)
-        return tax_unit("military_retirement_pay") * (head | spouse)
-    
+        head_or_spouse = person("is_tax_unit_head_or_spouse", period).astype(
+            int
+        )
+        return person("military_retirement_pay", period) * (head_or_spouse)
