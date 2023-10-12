@@ -20,19 +20,17 @@ class me_sales_tax_fairness_credit(Variable):
         base = p.amount.base[filing_status]
         additional_amount = select(
             [
-                filing_status == status.SINGLE,
                 filing_status == status.JOINT,
                 filing_status == status.HEAD_OF_HOUSEHOLD,
-                filing_status == status.SEPARATE,
                 filing_status == status.WIDOW,
             ],
             [
-                0,
                 p.amount.additional.joint.calc(children),
                 p.amount.additional.head_of_household.calc(children),
-                0,
                 p.amount.additional.widow.calc(children),
             ],
+            # No additional amount for single and separate filers.
+            default=0,
         )
         max_credit = base + additional_amount
         reduction_start = p.reduction.start[filing_status]
@@ -42,6 +40,8 @@ class me_sales_tax_fairness_credit(Variable):
             "me_sales_and_property_tax_fairness_credit_income", period
         )
         excess = max_(income - reduction_start, 0)
+        # Increment should never be zero, but if it is, we assume the number
+        # of increments is 0 to avoid a divide-by-zero warning.
         increments = np.zeros_like(increment)
         mask = increment != 0
         increments[mask] = np.ceil(excess[mask] / increment[mask])
