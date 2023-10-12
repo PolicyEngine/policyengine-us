@@ -45,7 +45,7 @@ class ar_itemized_deductions(Variable):
         medical_expenses = add(tax_unit, period, ["medical_expense"])
         medical_deds = max_(
             0,
-            medical_expenses - p.expense_rate.medical * agi,
+            medical_expenses - p.medical_expense_rate * agi,
         )
 
         # Miscellaneous Deductions
