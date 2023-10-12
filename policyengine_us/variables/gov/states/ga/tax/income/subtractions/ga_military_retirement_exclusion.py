@@ -18,9 +18,7 @@ class ga_military_retirement_exclusion(Variable):
         person = tax_unit.members
         p = parameters(period).gov.states.ga.tax.income.agi.exclusions.military
         age = person("age", period)
-        head = person("is_tax_unit_head", period)
-        spouse = person("is_tax_unit_spouse", period)
-        head_or_spouse = head | spouse
+        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
 
         earned_income = person("earned_income", period)
         additional_income_eligible = (

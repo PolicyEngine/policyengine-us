@@ -26,9 +26,6 @@ class ga_retirement_exclusion(Variable):
         disabled_cap = where(disabled, p.amount.amounts[1], 0)
         cap = max_(age_cap, disabled_cap)
         capped_exclusion = min_(retirement_income, cap)
-
-        head = person("is_tax_unit_head", period)
-        spouse = person("is_tax_unit_spouse", period)
-        head_or_spuse = head | spouse
+        head_or_spuse = person("is_tax_unit_head_or_spouse", period)
         exclusion = where(head_or_spuse, capped_exclusion, 0)
         return tax_unit.sum(exclusion)
