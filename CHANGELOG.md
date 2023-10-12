@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.501.1] - 2023-10-12 22:02:21
+
+### Fixed
+
+- Move maine adjusted gross income folder.
+
 ## [0.501.0] - 2023-10-12 19:53:13
 
 ### Added
@@ -5564,6 +5570,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.501.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.501.0...0.501.1
 [0.501.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.500.0...0.501.0
 [0.500.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.499.0...0.500.0
 [0.499.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.498.0...0.499.0
