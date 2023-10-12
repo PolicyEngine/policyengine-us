@@ -15,7 +15,7 @@ class ky_modified_agi(Variable):
         # Lump sum distributions which are not included in federal AGI are added to the federal AGI
         # Tax exempt interest from municipal bonds (non-Kentucky) is also added but excluded in this calculation
         tax_exempt_lump_sum = tax_unit(
-            "tax_exempt_form_4972_lumpsum_distributions", period
+            "form_4972_lumpsum_distributions", period
         )
         total_fed_agi = fed_agi + tax_exempt_lump_sum
 
