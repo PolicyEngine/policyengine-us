@@ -16,3 +16,6 @@ class ut_income_tax_before_refundable_credits(Variable):
         "ut_at_home_parent_credit",
     ]
     defined_for = StateCode.UT
+
+    def formula():
+        income = tax_unit("ut_income_tax_before_credits", pe)
