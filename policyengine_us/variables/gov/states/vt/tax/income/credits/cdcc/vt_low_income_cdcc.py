@@ -15,5 +15,5 @@ class vt_low_income_cdcc(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.vt.tax.income.credits.cdcc.low_income
-        federal_cdcc = p.federal_cdcc
+        federal_cdcc = tax_unit("capped_cdcc", period)
         return p.rate * federal_cdcc
