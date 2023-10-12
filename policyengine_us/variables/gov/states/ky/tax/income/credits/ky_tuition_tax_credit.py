@@ -15,5 +15,7 @@ class ky_tuition_tax_credit(Variable):
             period,
             ["american_opportunity_credit", "lifetime_learning_credit"],
         )
-        rate = parameters(period).gov.states.ky.tax.income.credits.tuition_tax.rate
+        rate = parameters(
+            period
+        ).gov.states.ky.tax.income.credits.tuition_tax.rate
         return tentative_tax_credit * rate
