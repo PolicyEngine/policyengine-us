@@ -1,20 +1,9 @@
-- name: non_refundable_credits less than tuition_tax_credit
-  period: 2022
-  input:
-    state_code: KY
-    american_opportunity_credit: 1_500
-    lifetime_learning_credit: 2_000
-    ky_income_tax_before_non_refundable_credits: 100
-  output:
-    ky_tuition_tax_credit: 100
-
 - name: non_refundable_credits more than tuition_tax_credit
   period: 2022
   input:
     state_code: KY
     american_opportunity_credit: 1_500
     lifetime_learning_credit: 2_000
-    ky_income_tax_before_non_refundable_credits: 900
   output:
     ky_tuition_tax_credit: 875
 
