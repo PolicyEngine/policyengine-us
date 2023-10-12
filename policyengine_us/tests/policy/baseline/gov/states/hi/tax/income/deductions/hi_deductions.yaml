@@ -1,0 +1,59 @@
+- name: get total deduction
+  period: 2022
+  input:
+    state_code: HI
+    filing_status: JOINT
+    hi_agi: 1_000
+    hi_total_itemized_deduction: 5_000
+    hi_reduced_itemized_deduction: 1_000
+    dsi: false
+  output:
+    hi_itemized_deduction: 5_000
+    
+- name: large agi, no eligible, have standard deduction
+  period: 2022
+  input:
+    state_code: HI
+    filing_status: JOINT
+    hi_agi: 1_000_000
+    hi_total_itemized_deduction: 5_000
+    hi_reduced_itemized_deduction: 1_000
+    dsi: false
+  output:
+    hi_deductions: 4_400
+
+- name: small agi, no eligible, have standard deduction
+  period: 2022
+  input:
+    state_code: HI
+    filing_status: JOINT
+    hi_agi: 1_000
+    hi_total_itemized_deduction: 1_000
+    hi_reduced_itemized_deduction: 1_000
+    dsi: false
+  output:
+    hi_deductions: 4_400
+
+- name: separate, large agi, no eligible, have standard deduction
+  period: 2022
+  input:
+    state_code: HI
+    filing_status: SEPARATE
+    hi_agi: 1_000_000
+    hi_total_itemized_deduction: 5_000
+    hi_reduced_itemized_deduction: 1_000
+    dsi: false
+  output:
+    hi_deductions: 2_200
+
+- name: large agi, eligible, have reduced deduction
+  period: 2022
+  input:
+    state_code: HI
+    filing_status: JOINT
+    hi_agi: 1_000_000
+    hi_total_itemized_deduction: 5_000
+    hi_reduced_itemized_deduction: 4_500
+    dsi: false
+  output:
+    hi_deductions: 4_500
