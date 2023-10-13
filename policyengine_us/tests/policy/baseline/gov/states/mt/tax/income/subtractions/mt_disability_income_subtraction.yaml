@@ -25,7 +25,7 @@
         disability_benefits: 15_000
         is_tax_unit_head: true
         is_retired: true
-        is_permanently_and_totally_disabled: false
+        is_disabled: false
         age: 64
     tax_units:
       tax_unit:
@@ -45,7 +45,7 @@
         disability_benefits: 15_000
         is_tax_unit_head: true
         is_retired: true
-        is_permanently_and_totally_disabled: true
+        is_disabled: true
         age: 64
     tax_units:
       tax_unit:
@@ -65,13 +65,13 @@
         disability_benefits: 15_000
         is_tax_unit_head: true
         is_retired: true
-        is_permanently_and_totally_disabled: true
+        is_disabled: true
         age: 64
       person2:
         disability_benefits: 12_000
         is_tax_unit_spouse: true
         is_retired: true
-        is_permanently_and_totally_disabled: true
+        is_disabled: true
         age: 63
     tax_units:
       tax_unit:
