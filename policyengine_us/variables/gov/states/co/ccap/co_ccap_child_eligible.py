@@ -10,7 +10,7 @@ class co_ccap_child_eligible(Variable):
         "https://docs.google.com/spreadsheets/d/1WzobLnLoxGbN_JfTuw3jUCZV5N7IA_0uvwEkIoMt3Wk/edit#gid=1350122430",
     )
     definition_period = MONTH
-    defined_for = StateCode.CO
+    # defined_for = StateCode.CO
 
     def formula(person, period, parameters):
         year = period.start.year
