@@ -12,17 +12,21 @@ class co_ccap_parent_fee(Variable):
         "https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=11042&fileName=8%20CCR%201403-1#page=62",
     )
     unit = USD
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = "co_ccap_eligible"
 
     def formula(tax_unit, period, parameters):
-        co_swap_year = tax_unit("co_swap_year", period)
-        p = parameters(co_swap_year).gov.states.co.ccap
+        if month >= 10:
+            instant_str = f"{year}-10-01"
+        else:
+            instant_str = f"{year - 1}-10-01"
+        p = parameters(instant_str).gov.states.co.ccap
         person = tax_unit.members
+        spm_unit = tax_unit.spm_unit
         # Calculate base parent fee and add on parent fee.
-        agi = tax_unit("adjusted_gross_income", period)
-        hhs_fpg = tax_unit("tax_unit_fpg", co_swap_year)
-        num_child_age_eligible = tax_unit("co_ccap_num_child_eligible", period)
+        agi = tax_unit("adjusted_gross_income", period.this_year)
+        hhs_fpg = spm_unit("snap_fpg", period)
+        num_child_age_eligible = tax_unit("co_ccap_num_child_eligible", period.this_year)
 
         # The numebrs below are weights copied from government spreadsheet
         # (url: https://docs.google.com/spreadsheets/d/1EEc3z8Iwu_KRTlBtd2NssDDEx_FITqVq/edit#gid=468321263,
@@ -56,7 +60,7 @@ class co_ccap_parent_fee(Variable):
 
         # Sum up all the parent fee for eligible children.
         child_age_eligible = person("co_ccap_child_eligible", period)
-        childcare_hours_per_day = person("childcare_hours_per_day", period)
+        childcare_hours_per_day = person("childcare_hours_per_day", period.this_year)
         rate = p.parent_fee_rate_by_child_care_hours.calc(
             childcare_hours_per_day, right=True
         )
@@ -70,7 +74,7 @@ class co_ccap_parent_fee(Variable):
         )
 
         # Identify whether the filers are eligible for a discount.
-        rating = person("co_quality_rating_of_child_care_facility", period)
+        rating = person("co_quality_rating_of_child_care_facility", period.this_year)
         discount_eligible = (
             tax_unit.sum(
                 p.is_quality_rating_discounted.calc(rating)

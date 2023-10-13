@@ -1,35 +1,43 @@
 - name: Income eligible, child age eligible, then entry eligible.
   period: 2023
   input:
-    co_ccap_entry_income_eligible: true
+    co_ccap_entry_income_eligible: 
+      2023-01: true
     co_ccap_num_child_eligible: 1
     state_code: CO
   output:
-    co_ccap_entry_eligible: true
+    co_ccap_entry_eligible: 
+      2023-01: true
 
 - name: Income ineligible, child age eligible, then entry ineligible.
   period: 2023
   input:
-    co_ccap_entry_income_eligible: false
+    co_ccap_entry_income_eligible: 
+      2023-01: false
     co_ccap_num_child_eligible: 2
     state_code: CO
   output:
-    co_ccap_entry_eligible: false
+    co_ccap_entry_eligible: 
+      2023-01: false
 
 - name: Income eligible, child age ineligible, then entry ineligible.
   period: 2023
   input:
-    co_ccap_entry_income_eligible: true
+    co_ccap_entry_income_eligible: 
+      2023-01: true
     co_ccap_num_child_eligible: 0
     state_code: CO
   output:
-    co_ccap_entry_eligible: false
+    co_ccap_entry_eligible: 
+      2023-01: false
 
 - name: Income ineligible, child age ineligible, then entry ineligible.
   period: 2023
   input:
-    co_ccap_entry_income_eligible: false
+    co_ccap_entry_income_eligible: 
+      2023-01: false
     co_ccap_num_child_eligible: 0
     state_code: CO
   output:
-    co_ccap_entry_eligible: false
+    co_ccap_entry_eligible: 
+      2023-01: false

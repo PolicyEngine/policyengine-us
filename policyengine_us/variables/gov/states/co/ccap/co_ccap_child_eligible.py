@@ -9,17 +9,21 @@ class co_ccap_child_eligible(Variable):
         "https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=11042&fileName=8%20CCR%201403-1#page=6",
         "https://docs.google.com/spreadsheets/d/1WzobLnLoxGbN_JfTuw3jUCZV5N7IA_0uvwEkIoMt3Wk/edit#gid=1350122430",
     )
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = StateCode.CO
 
     def formula(person, period, parameters):
-        tax_unit = person.tax_unit
-        co_swap_year = tax_unit("co_swap_year", period)[0]
-        p = parameters(co_swap_year).gov.states.co.ccap
+        year = period.start.year
+        month = period.start.month
+        if month >= 10:
+            instant_str = f"{year}-10-01"
+        else:
+            instant_str = f"{year - 1}-10-01"
+        p = parameters(instant_str).gov.states.co.ccap
         # child < 13 or disabled child < 19 to be eligible
-        disabled = person("is_disabled", period)
-        dependent = person("is_tax_unit_dependent", period)
-        age = person("age", period)
+        disabled = person("is_disabled", period.this_year)
+        dependent = person("is_tax_unit_dependent", period.this_year)
+        age = person("age", period.this_year)
         return where(
             disabled,
             (age < p.disabled_child_age_limit) & dependent,
