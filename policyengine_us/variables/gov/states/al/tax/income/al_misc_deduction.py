@@ -14,6 +14,7 @@ class al_misc_deduction(Variable):
     defined_for = StateCode.AL
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.al.tax.income.deductions.itemized
         misc_expense = add(tax_unit, period, ["misc_deduction"])
-        return misc_expense * p.misc_deduction
+        p = parameters(period).gov.states.al.tax.income.deductions.itemized
+        misc_floor = p.misc_deduction * tax_unit("al_agi", period)
+        return max_(0, misc_expense - misc_floor)
