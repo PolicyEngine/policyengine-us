@@ -11,10 +11,6 @@ class mt_child_dependent_care_expense_deduction(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.mt.tax.income.deductions.standard.mt_child_dependent_care_expense_deduction
-        agi = tax_unit("mt_agi", period)
-        care_expenses = ("childcare_expenses", period)
-        num_dependents = tax_unit("num_dependents", period)
-
-        qualifying_child = num_dependents[(num_dependents <= p.threshold.age) | (num_dependents == "disabled")]
-
-        return min(p.amount[qualifying_child], care_expense)
+        care_expenses = ("tax_unit_childcare_expenses", period)
+        eligible_children = tax_unit("mt_child_dependent_care_expense_deduction_eligible_children", period)
+        return min_(p.amount[eligible_children], care_expenses)
