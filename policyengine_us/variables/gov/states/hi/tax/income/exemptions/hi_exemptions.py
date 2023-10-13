@@ -11,4 +11,3 @@ class hi_exemptions(Variable):
     )
     definition_period = YEAR
     defined_for = StateCode.HI
-    
