@@ -17,10 +17,9 @@ class mi_standard_deduction_tier_two_eligible(Variable):
         p = parameters(
             period
         ).gov.states.mi.tax.income.deductions.standard.tier_two
-        # HAVE TO CHECK THIS
+
         age_older = tax_unit("greater_age_head_spouse", period)
-        # Michigan standard deduction increase
-        # Tax Form also specifies the age threshold of 67, which is always met by the birth year conditions
+
         sd2_birth_year = -(age_older - period.start.year)
         return (sd2_birth_year >= p.min_birth_year) & (
             sd2_birth_year <= p.max_birth_year

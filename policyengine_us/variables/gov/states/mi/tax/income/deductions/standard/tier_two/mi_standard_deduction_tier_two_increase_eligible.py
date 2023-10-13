@@ -19,8 +19,7 @@ class mi_standard_deduction_tier_two_increase_eligible(Variable):
         ).gov.states.mi.tax.income.deductions.standard.tier_two
 
         person = tax_unit.members
-        # Michigan standard deduction increase
-        # Tax Form also specifies the age threshold of 62, which is already met by the standard deduction conditions
+
         retirement_eligible = (
             person("year_of_retirement", period) <= p.retirement_age
         )

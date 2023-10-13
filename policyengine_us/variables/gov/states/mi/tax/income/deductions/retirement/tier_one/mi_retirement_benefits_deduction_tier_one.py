@@ -18,7 +18,6 @@ class mi_retirement_benefits_deduction_tier_one(Variable):
         p = parameters(
             period
         ).gov.states.mi.tax.income.deductions.retirement_benefits.tier_one
-        # Core deduction based on filing status.
         filing_status = tax_unit("filing_status", period)
 
         person = tax_unit.members

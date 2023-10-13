@@ -18,25 +18,14 @@ class mi_standard_deduction_tier_two(Variable):
         p = parameters(
             period
         ).gov.states.mi.tax.income.deductions.standard.tier_two
-        # Core deduction based on filing status.
         filing_status = tax_unit("filing_status", period)
 
-        # age_older = tax_unit("greater_age_head_spouse", period)
-        # age_threshold = age_older >= p.min_age
         ssa_eligible = tax_unit(
             "mi_standard_deduction_tier_two_increase_eligible", period
         )
 
         person = tax_unit.members
-        # (9), (b)
-        # If the person has not reached the age of 67 (which is mathematically impossible) and is born betwee 1946 and 1952
-        # then the person is eligible to a pension benefit deduction of 20,000 or 40,000, based on filing status
         uncapped_pension_income = person("taxable_pension_income", period)
-        # CHECK PARAMETER NAME
-
-        # If the person has surpassed the age of 67 and was born between 1946 and 1952 (which in 2022 is the only possible outcome)
-        # the person is allows a general standard deduction of 20,000 or 40,000, based on income, no matter what income
-        # CHECK PARAMETER METADATA
         military_retirement_pay = person("military_retirement_pay", period)
         military_service_income = person("military_service_income", period)
 
@@ -54,15 +43,5 @@ class mi_standard_deduction_tier_two(Variable):
             - reductions,
             0,
         )
-
-        # sd2_amount = where(
-        #     total_eligible == 0,
-        #     p.amount.non_qualifying[filing_status],
-        #     where(
-        #         total_eligible == 1,
-        #         p.amount.single_qualifying[filing_status],
-        #         p.amount.both_qualifying[filing_status],
-        #     ),
-        # )
 
         return min_(tax_unit.sum(uncapped_pension_income), sd2_amount)
