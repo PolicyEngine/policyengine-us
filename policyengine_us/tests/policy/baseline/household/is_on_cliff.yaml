@@ -1,0 +1,6 @@
+- name: is_on_cliff unit test 1
+  period: 2021
+  input:
+    cliff_gap: [0, 0, 45, 0, 33, 0]
+  output:
+    is_on_cliff: [false, false, true, false, true, false]
