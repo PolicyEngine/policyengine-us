@@ -1,0 +1,103 @@
+description: California CalWORKs Child Care provides up to this child care reimbursement for children aged 2 to 5.
+
+metadata:
+  label: California CalWORKs Child Care Standard Regional Market Rate Ceilings
+  amount_unit: currency-USD
+  breakdowns:
+    - ca_child_care_provider_category
+    - ca_child_care_time_category
+    - ca_child_care_service_category
+  reference:
+    - title: Los Angeles Department of Public Social Services E-Policy | RMR Ceilings Exhibit I
+      href: http://epolicy.dpss.lacounty.gov/epolicy/epolicy/server/general/projects_responsive/ePolicyMaster/index.htm?&area=general&type=responsivehelp&ctxid=&project=ePolicyMaster#t=mergedProjects%2FChild%20Care%2FChild_Care%2F1210_8_Regional_Market_Rate_Ceilings%2F1210_8_Regional_Market_Rate_Ceilings.htm%23Contactbc-13&rhtocid=_3_3_8_12
+
+CHILD_CARE_CENTER:
+  HOURLY:
+    FULL_TIME:
+      values:
+        2018-01-01: 0
+    PART_TIME:
+      values:
+        2018-01-01: 12.19
+  DAILY:
+    FULL_TIME:
+      values:
+        2018-01-01: 67.37
+    PART_TIME:
+      values:
+        2018-01-01: 0
+  WEEKLY:
+    FULL_TIME:
+      values:
+        2018-01-01: 301.55
+    PART_TIME:
+      values:
+        2018-01-01: 227.58
+  MONTHLY:
+    FULL_TIME:
+      values:
+        2018-01-01: 1_124.28
+    PART_TIME:
+      values:
+        2018-01-01: 727.62
+
+FAMILY_CHILD_CARE_HOME:
+  HOURLY:
+    FULL_TIME:
+      values:
+        2018-01-01: 0
+    PART_TIME:
+      values:
+        2018-01-01: 10.83
+  DAILY:
+    FULL_TIME:
+      values:
+        2018-01-01: 51.96
+
+    PART_TIME:
+      values:
+        2018-01-01: 0
+  WEEKLY:
+    FULL_TIME:
+        2018-01-01: 214.55
+    PART_TIME:
+      values:
+        2018-01-01: 171.73
+  MONTHLY:
+    FULL_TIME:
+      values:
+        2018-01-01: 866.57
+    PART_TIME:
+      values:
+        2018-01-01: 638.63
+
+LICENSE_EXEMPT:
+  HOURLY:
+    FULL_TIME:
+      values:
+        2018-01-01: 0
+    PART_TIME:
+      values:
+        2018-01-01: 3.34
+  DAILY:
+    FULL_TIME:
+      values:
+        2018-01-01: 36.37
+    PART_TIME:
+      values:
+        2018-01-01: 0
+  WEEKLY:
+    FULL_TIME:
+      values:
+        2018-01-01: 150.18
+    PART_TIME:
+      values:
+        2018-01-01: 0
+  MONTHLY:
+    FULL_TIME:
+      values:
+        2018-01-01: 606.60
+    PART_TIME:
+      values:
+        2018-01-01: 0
+  

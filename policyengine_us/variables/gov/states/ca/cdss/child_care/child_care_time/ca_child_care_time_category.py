@@ -13,7 +13,7 @@ class ca_child_care_time_category(Variable):
     possible_values = CaChildCareTimeCategory
     default_value = CaChildCareTimeCategory.WEEKLY
     entity = Person
-    label = "California CalWORKs Child Care time based category"
+    label = "California CalWORKs Child Care time category"
     definition_period = YEAR
     defined_for = StateCode.CA
 

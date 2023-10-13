@@ -1,10 +1,17 @@
 from policyengine_us.model_api import *
 
 
-class ca_child_care_full_time_care(Variable):
-    value_type = bool
+class CaChildCareServiceCategory(Enum):
+    FULL_TIME = "Full time"
+    PART_TIME = "Part time"
+
+
+class ca_child_care_service_category(Variable):
+    value_type = Enum
+    possible_values = CaChildCareServiceCategory
+    default_value = CaChildCareServiceCategory.FULL_TIME
     entity = Person
-    label = "California CalWORKs Child Care full time"
+    label = "California CalWORKs Child Care service category"
     definition_period = YEAR
     defined_for = StateCode.CA
 
@@ -15,7 +22,7 @@ class ca_child_care_full_time_care(Variable):
         weekly_hours = person("childcare_hours_per_week", period)
         time_category = person("ca_child_care_time_category", period)
         time_categories = time_category.possible_values
-        is_full_time = select(
+        service_category = select(
             [
                 (time_category == time_categories.HOURLY),
                 (time_category == time_categories.DAILY),
@@ -27,7 +34,14 @@ class ca_child_care_full_time_care(Variable):
                 (time_category == time_categories.MONTHLY)
                 & (weekly_hours >= p),
             ],
-            [False, True, False, True, False, True],
+            [
+                CaChildCareServiceCategory.PART_TIME,
+                CaChildCareServiceCategory.FULL_TIME,
+                CaChildCareServiceCategory.PART_TIME,
+                CaChildCareServiceCategory.FULL_TIME,
+                CaChildCareServiceCategory.PART_TIME,
+                CaChildCareServiceCategory.FULL_TIME,
+            ],
         )
 
-        return is_full_time
+        return service_category

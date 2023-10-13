@@ -1,0 +1,18 @@
+- name: One child with 2 weeks' Standad Ceilings and another child with 20 days' Evening/Weekend Ceilings.
+  period: 2023
+  input:
+    people:
+      child1:
+        ca_child_care_payment_standard: 400
+        ca_child_care_time_coefficient: 2
+        ca_child_care_payment_factor: 1
+      child2:
+        ca_child_care_payment_standard: 60
+        ca_child_care_time_coefficient: 20
+        ca_child_care_payment_factor: 1.25
+    households:
+      household:
+        members: [child1, child2]
+        state_code: CA
+  output:
+    ca_child_care_payment: 2300
