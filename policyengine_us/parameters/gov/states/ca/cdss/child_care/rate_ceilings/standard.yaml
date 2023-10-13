@@ -6,15 +6,15 @@ metadata:
   threshold_unit: year
   amount_unit: currency-USD
   breakdowns:
-    - [child_care_centers, family_child_care_homes, license_exempt]
-    - [hourly, daily, weekly, monthly]
+    - [CHILD_CARE_CENTER, FAMILY_CHILD_CARE_HOME, LICENSE_EXEMPT]
+    - [HOURLY, DAILY, WEEKLY, MONTHLY]
     - [full_time, part_time]
   reference:
     - title: Los Angeles Department of Public Social Services E-Policy | RMR Ceilings Exhibit I
       href: http://epolicy.dpss.lacounty.gov/epolicy/epolicy/server/general/projects_responsive/ePolicyMaster/index.htm?&area=general&type=responsivehelp&ctxid=&project=ePolicyMaster#t=mergedProjects%2FChild%20Care%2FChild_Care%2F1210_8_Regional_Market_Rate_Ceilings%2F1210_8_Regional_Market_Rate_Ceilings.htm%23Contactbc-13&rhtocid=_3_3_8_12
 
-child_care_centers:
-  hourly:
+CHILD_CARE_CENTER:
+  HOURLY:
     full_time:
       brackets:
         - amount:
@@ -43,7 +43,7 @@ child_care_centers:
             2018-01-01: 11.24
           threshold:
             2018-01-01: 6
-  daily:
+  DAILY:
     full_time:
       brackets:
         - amount:
@@ -72,7 +72,7 @@ child_care_centers:
             2018-01-01: 0
           threshold:
             2018-01-01: 6
-  weekly:
+  WEEKLY:
     full_time:
       brackets:
         - amount:
@@ -101,7 +101,7 @@ child_care_centers:
             2018-01-01: 139.94
           threshold:
             2018-01-01: 6
-  monthly:
+  MONTHLY:
     full_time:
       brackets:
         - amount:
@@ -130,8 +130,8 @@ child_care_centers:
             2018-01-01: 501.85
           threshold:
             2018-01-01: 6
-family_child_care_homes:
-  hourly:
+FAMILY_CHILD_CARE_HOME:
+  HOURLY:
     full_time:
       brackets:
         - amount:
@@ -160,7 +160,7 @@ family_child_care_homes:
             2018-01-01: 9.85
           threshold:
             2018-01-01: 6
-  daily:
+  DAILY:
     full_time:
       brackets:
         - amount:
@@ -189,7 +189,7 @@ family_child_care_homes:
             2018-01-01: 0
           threshold:
             2018-01-01: 6
-  weekly:
+  WEEKLY:
     full_time:
       brackets:
         - amount:
@@ -218,7 +218,7 @@ family_child_care_homes:
             2018-01-01: 137.20
           threshold:
             2018-01-01: 6
-  monthly:
+  MONTHLY:
     full_time:
       brackets:
         - amount:
@@ -247,8 +247,8 @@ family_child_care_homes:
             2018-01-01: 524.70
           threshold:
             2018-01-01: 6
-license_exempt:
-  hourly:
+LICENSE_EXEMPT:
+  HOURLY:
     full_time:
       brackets:
         - amount:
@@ -277,7 +277,7 @@ license_exempt:
             2018-01-01: 2.63
           threshold:
             2018-01-01: 6
-  daily:
+  DAILY:
     full_time:
       brackets:
         - amount:
@@ -306,7 +306,7 @@ license_exempt:
             2018-01-01: 0
           threshold:
             2018-01-01: 6
-  weekly:
+  WEEKLY:
     full_time:
       brackets:
         - amount:
@@ -335,7 +335,7 @@ license_exempt:
             2018-01-01: 0
           threshold:
             2018-01-01: 6
-  monthly:
+  MONTHLY:
     full_time:
       brackets:
         - amount:

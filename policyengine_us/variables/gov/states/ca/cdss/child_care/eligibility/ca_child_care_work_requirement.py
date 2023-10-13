@@ -9,7 +9,7 @@ class ca_child_care_work_requirement(Variable):
     defined_for = StateCode.CA
 
     def formula(spm_unit, period, parameters):
-        persons = spm_unit.members
-        welfare_to_work = persons("ca_child_care_welfare_to_work", period)
-        earned = persons("earned_income", period)
+        person = spm_unit.members
+        welfare_to_work = person("ca_child_care_welfare_to_work", period)
+        earned = person("earned_income", period)
         return spm_unit.any(welfare_to_work > 0) | spm_unit.any(earned > 0)

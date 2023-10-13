@@ -1,9 +1,0 @@
-- name: A household that is tanf eligible, age eligible, and meet work requirement is eligible.
-  period: 2023
-  input:
-    ca_child_care_days: 10
-    ca_child_care_weeks: 1
-    ca_child_care_daily_hours: 5
-    ca_child_care_weekly_hours: 29
-  output:
-    ca_child_care_time_based_category: ["hourly", "part_time"]

@@ -10,10 +10,10 @@ class ca_child_care_age_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ca.cdss.child_care.eligibility
-        persons = spm_unit.members
-        is_child = persons("is_child", period)
-        age = persons("age", period)
-        is_disabled = persons("is_disabled", period)
+        person = spm_unit.members
+        is_child = person("is_child", period)
+        age = person("age", period)
+        is_disabled = person("is_disabled", period)
         child_disabled_under_18 = (
             (is_child) & (age <= p.disabled_age_threshold) & (is_disabled)
         )

@@ -9,13 +9,37 @@ class ca_child_care_payment_standard(Variable):
     defined_for = StateCode.CA
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.states.ca.cdss.child_care.rate_ceilings.standard
-        provider = spm_unit("ca_child_care_provider", period)
-        category = spm_unit("ca_child_care_time_based_category", period)
+        p = parameters(
+            period
+        ).gov.states.ca.cdss.child_care.rate_ceilings.standard
+        person = spm_unit.members
+        provider = person("ca_child_care_provider_category", period)
+        time_category = person("ca_child_care_time_category", period)
+        time_categories = time_category.possible_values
+        is_full_time = person("ca_child_care_full_time_care", period)
+        service_type = where(is_full_time == True, "full_time", "part_time")
 
-        persons = spm_unit.members
-        child = persons("is_child", period)
-        age = persons("age", period)
-        child_payment = p[provider][category[0]][category[1]].calc(age) * child
-  
-        return spm_unit.sum(child_payment)
+        hours_per_day = person("childcare_hours_per_day", period)
+        days_per_month = person("ca_child_care_days_per_month", period)
+        hours_per_week = person("childcare_hours_per_week", period)
+        weeks_per_month = person("ca_child_care_weeks_per_month", period)
+
+        hours_per_month = select(
+            [
+                (time_category == time_categories.HOURLY)
+                | (time_category == time_categories.DAILY),
+                (time_category == time_categories.WEEKLY)
+                | (time_category == time_categories.MONTHLY),
+            ],
+            [hours_per_day * days_per_month, hours_per_week * weeks_per_month],
+        )
+
+        child = person("is_child", period)
+        persons_age = person("age", period)
+        child_payment = 0
+        for pro, tim, ser, per, chi in zip(
+            provider, time_category, service_type, persons_age, child
+        ):
+            child_payment += p[pro][tim][ser].calc(per)
+
+        return child_payment
