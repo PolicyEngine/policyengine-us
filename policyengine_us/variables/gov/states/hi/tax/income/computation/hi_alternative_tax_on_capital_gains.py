@@ -17,7 +17,7 @@ class hi_alternative_tax_on_capital_gains(Variable):
         net_lt_capital_gain = add(person, period, ["long_term_capital_gains"])
         net_capital_gain = tax_unit("net_capital_gain", period)
         # line_9
-        cap = p.max_amount[filing_status]
+        cap = p.income_threshold[filing_status]
 
         # line 13
         ineligible_income = max_(

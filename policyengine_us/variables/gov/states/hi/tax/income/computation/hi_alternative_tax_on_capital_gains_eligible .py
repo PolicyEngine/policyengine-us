@@ -13,5 +13,5 @@ class hi_alternative_tax_on_capital_gains_eligible(Variable):
         p = parameters(period).gov.states.hi.tax.income.alternative_tax
         filing_status = tax_unit("filing_status", period)
         taxable_income = tax_unit("taxable_income", period)
-        cap = p.max_amount[filing_status]
+        cap = p.income_threshold[filing_status]
         return taxable_income > cap
