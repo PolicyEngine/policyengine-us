@@ -43,14 +43,14 @@ class de_pension_exclusion(Variable):
             eligible_pension_income,
         )
 
-        # Filers under a certain age, are only eligible to receive 
+        # Filers under a certain age, are only eligible to receive
         # a pension exclusion of a max amount pre 2022
         capped_eligible_pension_income = min_(cap, eligible_income)
 
         # Filer over a certain age are eligible to receive an exclsuion
         # for the total of pension income and eligible retirement income pre and after 2022
 
-        # Filers under a certain age and retired from military, 
+        # Filers under a certain age and retired from military,
         # are eligible to receive a pension exclusion of a max amount after 2022
         if p.military_retirement_exclusion_available:
             military_retirement_pay = (
