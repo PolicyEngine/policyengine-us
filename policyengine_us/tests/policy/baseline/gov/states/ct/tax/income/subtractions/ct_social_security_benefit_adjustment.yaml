@@ -4,6 +4,7 @@
     state_code: CT
     taxable_social_security: 20_000
     adjusted_gross_income: 70_000
+    ct_magi_excess_over_base: 20_000
     filing_status: SINGLE
   output:
     ct_social_security_benefit_adjustment: 20_000
@@ -14,9 +15,10 @@
     state_code: CT
     taxable_social_security: 20_000
     adjusted_gross_income: 80_000
+    ct_magi_excess_over_base: 20_000
     filing_status: SINGLE
   output:
-    ct_social_security_benefit_adjustment: 0
+    ct_social_security_benefit_adjustment: 15_000
 
 - name: Joint filing with adjusted gross income less than max amount
   period: 2022
@@ -24,6 +26,7 @@
     state_code: CT
     taxable_social_security: 20_000
     adjusted_gross_income: 70_000
+    ct_magi_excess_over_base: 20_000
     filing_status: JOINT
   output:
     ct_social_security_benefit_adjustment: 20_000
@@ -34,9 +37,10 @@
     state_code: CT
     taxable_social_security: 20_000
     adjusted_gross_income: 120_000
+    ct_magi_excess_over_base: 20_000
     filing_status: JOINT
   output:
-    ct_social_security_benefit_adjustment: 0
+    ct_social_security_benefit_adjustment: 15_000
 
 - name: Head of household filing with adjusted gross income less than max amount
   period: 2022
@@ -44,6 +48,7 @@
     state_code: CT
     taxable_social_security: 20_000
     adjusted_gross_income: 70_000
+    ct_magi_excess_over_base: 20_000
     filing_status: HEAD_OF_HOUSEHOLD
   output:
     ct_social_security_benefit_adjustment: 20_000
@@ -54,9 +59,10 @@
     state_code: CT
     taxable_social_security: 20_000
     adjusted_gross_income: 120_000
+    ct_magi_excess_over_base: 20_000
     filing_status: HEAD_OF_HOUSEHOLD
   output:
-    ct_social_security_benefit_adjustment: 0
+    ct_social_security_benefit_adjustment: 15_000
 
 - name: Separate filing with adjusted gross income less than max amount
   period: 2022
@@ -64,6 +70,7 @@
     state_code: CT
     taxable_social_security: 20_000
     adjusted_gross_income: 70_000
+    ct_magi_excess_over_base: 20_000
     filing_status: SEPARATE
   output:
     ct_social_security_benefit_adjustment: 20_000
@@ -74,9 +81,10 @@
     state_code: CT
     taxable_social_security: 20_000
     adjusted_gross_income: 120_000
+    ct_magi_excess_over_base: 20_000
     filing_status: SEPARATE
   output:
-    ct_social_security_benefit_adjustment: 0
+    ct_social_security_benefit_adjustment: 15_000
 
 - name: Widow filing with adjusted gross income less than max amount
   period: 2022
@@ -84,6 +92,7 @@
     state_code: CT
     taxable_social_security: 20_000
     adjusted_gross_income: 70_000
+    ct_magi_excess_over_base: 20_000
     filing_status: WIDOW
   output:
     ct_social_security_benefit_adjustment: 20_000
@@ -94,6 +103,7 @@
     state_code: CT
     taxable_social_security: 20_000
     adjusted_gross_income: 120_000
+    ct_magi_excess_over_base: 20_000
     filing_status: WIDOW
   output:
-    ct_social_security_benefit_adjustment: 0
+    ct_social_security_benefit_adjustment: 15_000
