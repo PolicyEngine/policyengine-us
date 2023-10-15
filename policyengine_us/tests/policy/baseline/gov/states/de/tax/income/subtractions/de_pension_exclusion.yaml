@@ -3,6 +3,7 @@
   input:
     people:
       person1:
+        # 2_000
         age: 59
         military_retirement_pay: 1_000
         taxable_pension_income: 10_000
@@ -12,7 +13,7 @@
         age: 59
         military_retirement_pay: 3_000
         taxable_pension_income: 10_000
-        is_tax_unit_head: true
+        is_tax_unit_spouse: true
         de_pension_exclusion_income: 0
     tax_units:
       tax_unit:
@@ -38,7 +39,7 @@
         age: 59
         military_retirement_pay: 15_000
         taxable_pension_income: 10_000
-        is_tax_unit_head: true
+        is_tax_unit_spouse: true
         de_pension_exclusion_income: 20_000
     tax_units:
       tax_unit:
@@ -63,9 +64,9 @@
       person2:
         age: 60
         military_retirement_pay: 3_000
-        taxable_pension_income: 10_000
-        is_tax_unit_head: true
-        de_pension_exclusion_income: 1_000
+        taxable_pension_income: 1_000
+        is_tax_unit_spouse: true
+        de_pension_exclusion_income: 10_000
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -74,7 +75,7 @@
         members: [person1, person2]
         state_code: DE
   output:
-    de_pension_exclusion: 11_000
+    de_pension_exclusion: 10_000
 
 
 - name: Over 60 amount capped at 12_500 per filer
@@ -86,12 +87,12 @@
         military_retirement_pay: 1_000
         taxable_pension_income: 0
         is_tax_unit_head: true
-        de_pension_exclusion_income: 10_000
+        de_pension_exclusion_income: 20_000
       person2:
         age: 60
         military_retirement_pay: 3_000
         taxable_pension_income: 10_000
-        is_tax_unit_head: true
+        is_tax_unit_spouse: true
         de_pension_exclusion_income: 10_000
     tax_units:
       tax_unit:
