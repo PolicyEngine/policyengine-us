@@ -10,9 +10,6 @@ class tax_unit_medicaid_income_level(Variable):
     unit = "/1"
     documentation = (
         "Medicaid/CHIP/ACA-related MAGI as fraction of federal poverty line."
-        "Documentation on use of prior-year FPL in the following reference:"
-        "  title: 2022 IRS Form 8962 (ACA PTC) instructions, Line 4"
-        "  href: https://www.irs.gov/pub/irs-pdf/i8962.pdf#page=7"
         "Documentation on truncation of fraction in the following reference:"
         "  title: 2022 IRS Form 8962 instructions, Line 5 Worksheet 2"
         "  href: https://www.irs.gov/pub/irs-pdf/i8962.pdf#page=8"
@@ -21,5 +18,5 @@ class tax_unit_medicaid_income_level(Variable):
 
     def formula(tax_unit, period, parameters):
         income = tax_unit("medicaid_income", period)
-        fpg = tax_unit("tax_unit_fpg", period.last_year)
+        fpg = tax_unit("tax_unit_fpg", period)
         return 0.01 * np.floor(100.0 * income / fpg)

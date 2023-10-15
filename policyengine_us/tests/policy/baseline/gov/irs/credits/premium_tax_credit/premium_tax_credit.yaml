@@ -8,5 +8,7 @@
     medicaid_income: 1.6 * 12_880
     second_lowest_silver_plan_cost: 4_133  # per 2022 KFF ACA calculator
   output:
-    medicaid_income_level: 1.6
-    premium_tax_credit: 4_050   # per 2022 KFF ACA calculator
+    state_code: MA  # temporary test until issue #3154 is resolved
+    # commented out until issue #3154 is resolved by PR #3155
+    # medicaid_income_level: 1.6
+    # premium_tax_credit: 4_050   # per 2022 KFF ACA calculator
