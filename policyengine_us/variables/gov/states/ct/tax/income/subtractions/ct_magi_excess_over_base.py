@@ -5,7 +5,13 @@ class ct_magi_excess_over_base(Variable):
     value_type = float
     entity = TaxUnit
     unit = USD
-    label = "Connecticut excess of modified adjusted gross income and social security over base amount"
+    label = "Excess of modified adjusted gross income and social security over base amount calculation for the Connecticut social security subtraction"
+    reference = (
+        # Connecticut General Statutes, Chapter 229, Sec. 12-701, (20), (b), (x), (iii) and (iv)
+        "https://www.cga.ct.gov/current/pub/chap_229.htm#sec_12-701"
+        # Section 86(b)(1) of the Internal Revenue Code
+        "https://www.law.cornell.edu/uscode/text/26/86"
+    )
     definition_period = YEAR
     defined_for = StateCode.CT
 
