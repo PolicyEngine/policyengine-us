@@ -23,7 +23,7 @@ class de_pension_exclusion(Variable):
         # determine age eligibility
         age = person("age", period)
 
-        head_or_spouse = person("tax_unit_head_or_spouse", period)
+        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         cap = p.cap.amount.calc(age)
 
         eligible_pension_income = (
@@ -41,7 +41,8 @@ class de_pension_exclusion(Variable):
             person("de_pension_exclusion_income", period) * head_or_spouse
         )
 
-        # Filer over a certain age are eligible to receive an exclsuion for the total of pension income and eligible retirement income pre and after 2022
+        # Filer over a certain age are eligible to receive an exclsuion 
+        # for the total of pension income and eligible retirement income pre and after 2022
         total_income = eligible_pension_income + eligible_retirement_income
 
         capped_eligible_retirement_income = min_(cap, total_income)
@@ -61,9 +62,14 @@ class de_pension_exclusion(Variable):
             exclusion_amount = where(
                 younger_eligible,
                 younger_amount,
+                capped_eligible_retirement_income)
+        else:
+            exclusion_amount = where(
+                younger_eligible,
+                capped_eligible_pension_income,
                 capped_eligible_retirement_income,
             )
-            return tax_unit.sum(exclusion_amount)
+        return tax_unit.sum(exclusion_amount)
 
         previous_exclusion_amount = where(
             younger_eligible,

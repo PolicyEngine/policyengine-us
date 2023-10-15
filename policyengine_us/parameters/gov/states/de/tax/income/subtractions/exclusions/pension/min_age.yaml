@@ -1,10 +1,18 @@
 description: Delaware determines its exclusion of taxable pension income to filers based on this age threshold.
-values:
-  2021-01-01: 60
-
+brackets:
+  - threshold:
+      2007-01-01: 0
+    amount:
+      2007-01-01: false
+  - threshold:
+      2007-01-01: 60
+    amount:
+      2007-01-01: true
 metadata:
   period: year
-  unit: year
+  type: single_amount
+  threshold_unit: year
+  amount_unit: bool
   label: Delaware pension exclusion age threshold
   reference:
   - title: Delaware individual income tax instructions for 2022 Line 6
