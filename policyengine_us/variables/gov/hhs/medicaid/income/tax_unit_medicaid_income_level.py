@@ -4,10 +4,12 @@ from policyengine_us.model_api import *
 class tax_unit_medicaid_income_level(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Medicaid income level"
+    label = (
+        "Medicaid/CHIP/ACA-related modified adjusted gross income (MAGI) level"
+    )
     unit = "/1"
     documentation = (
-        "Income for Medicaid as a percentage of the federal poverty line."
+        "Medicaid/CHIP/ACA-related MAGI as a fraction of federal poverty line."
     )
     definition_period = YEAR
 
