@@ -11,7 +11,5 @@ class ar_military_retirement_exemption(Variable):
     defined_for = StateCode.AR
 
     def formula(person, period, parameters):
-        head_or_spouse = person("is_tax_unit_head_or_spouse", period).astype(
-            int
-        )
+        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         return person("military_retirement_pay", period) * (head_or_spouse)
