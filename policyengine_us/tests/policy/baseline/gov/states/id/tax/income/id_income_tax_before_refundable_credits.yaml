@@ -10,7 +10,7 @@
 - name: Capped at 0 
   period: 2023
   input:
-    state_code: NM
+    state_code: ID
     id_income_tax_before_non_refundable_credits: 200
     id_non_refundable_credits: 500
   output:
@@ -20,7 +20,7 @@
   period: 2021
   input:
     state_code: ID
-    id_taxable_income: 3,000
+    id_taxable_income: 3_000
     filing_status: JOINT
   output:
     id_income_tax_before_refundable_credits: 30
@@ -29,7 +29,7 @@
   period: 2021
   input:
     state_code: ID
-    id_taxable_income: 3,000
+    id_taxable_income: 3_000
     filing_status: WIDOW
   output:
     id_income_tax_before_refundable_credits: 30
@@ -38,7 +38,7 @@
   period: 2021
   input:
     state_code: ID
-    id_taxable_income: 10,000
+    id_taxable_income: 10_000
     filing_status: JOINT
   output:
     id_income_tax_before_refundable_credits: 211.44
@@ -47,7 +47,7 @@
   period: 2021
   input:
     state_code: ID
-    id_taxable_income: 10,000
+    id_taxable_income: 10_000
     filing_status: WIDOW
   output:
     id_income_tax_before_refundable_credits: 211.44
@@ -56,7 +56,7 @@
   period: 2021
   input:
     state_code: ID
-    id_taxable_income: 15,000
+    id_taxable_income: 15_000
     filing_status: JOINT
   output:
     id_income_tax_before_refundable_credits: 246.33
@@ -65,7 +65,7 @@
   period: 2021
   input:
     state_code: ID
-    id_taxable_income: 15,000
+    id_taxable_income: 15_000
     filing_status: WIDOW
   output:
     id_income_tax_before_refundable_credits: 246.33
@@ -74,7 +74,7 @@
   period: 2021
   input:
     state_code: ID
-    id_taxable_income: 20,000
+    id_taxable_income: 20_000
     filing_status: JOINT
   output:
     id_income_tax_before_refundable_credits: 401.39
@@ -83,7 +83,7 @@
   period: 2021
   input:
     state_code: ID
-    id_taxable_income: 20,000
+    id_taxable_income: 20_000
     filing_status: WIDOW
   output:
     id_income_tax_before_refundable_credits: 401.39
@@ -92,7 +92,7 @@
   period: 2021
   input:
     state_code: ID
-    id_taxable_income: 25,000
+    id_taxable_income: 25_000
     filing_status: JOINT
   output:
     id_income_tax_before_refundable_credits: 592.83
@@ -101,7 +101,7 @@
   period: 2021
   input:
     state_code: ID
-    id_taxable_income: 25,000
+    id_taxable_income: 25_000
     filing_status: WIDOW
   output:
     id_income_tax_before_refundable_credits: 592.83
