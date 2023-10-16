@@ -15,9 +15,9 @@ class mt_interest_exemptions(Variable):
         filing_status = tax_unit("filing_status", period)
         cap = p.cap[filing_status]
         person = tax_unit.members
-        dividend_income = add(person, period, ["taxable_interest_income"])
-        dividend_income_unit = tax_unit.sum(dividend_income)
-        capped_amount = min_(cap, dividend_income_unit)
+        interest_income = add(person, period, ["taxable_interest_income"])
+        interest_income_unit = tax_unit.sum(interest_income)
+        capped_amount = min_(cap, interest_income_unit)
         age_head = tax_unit("age_head", period)
         eligible_aged_head = age_head >= p.age
         age_spouse = tax_unit("age_spouse", period)
