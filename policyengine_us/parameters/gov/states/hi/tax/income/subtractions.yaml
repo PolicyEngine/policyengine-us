@@ -1,0 +1,19 @@
+description: Hawaii subtracts these sources from adjusted gross income.
+values:
+  2021-01-01:
+    - pension_income # Line 13
+    - taxable_social_security # Line 14
+    - hi_military_pay_exclusion # Line 15
+    - us_govt_interest # Line 18
+    - student_loan_interest # Line 18
+
+metadata:
+  unit: list
+  label: Hawaii subtractions from federal adjusted gross income
+  reference:
+    - title: 2022 N-11 Hawaii Resident Income Tax Instructions
+      href: https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=13
+    - title: 2021 N-11 Hawaii Resident Income Tax Instructions
+      href: https://files.hawaii.gov/tax/forms/2021/n11ins.pdf#page=13
+    - title: HI Rev Stat § 235-7 (2022)
+      href: https://law.justia.com/codes/hawaii/2022/title-14/chapter-235/section-235-7/
