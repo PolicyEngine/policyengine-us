@@ -31,7 +31,7 @@ class hi_reduced_itemized_deduction(Variable):
         difference_eligible = partial_total_deductions < total_deductions
         deduction_difference = total_deductions - partial_total_deductions
         reduced_difference = deduction_difference * p_irs.amount
-        # eligible check 2: actual agi need to be smaller than agi cap
+        # eligible check 2: actual AGI need to be smaller than AGI cap
         hi_agi = tax_unit("hi_agi", period)
         filing_status = tax_unit("filing_status", period)
         agi_cap = p.cap.agi[filing_status]

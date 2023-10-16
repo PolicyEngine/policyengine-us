@@ -17,7 +17,7 @@ class hi_medical_expense_deduction(Variable):
         p_deductions = parameters(period).gov.irs.deductions
 
         # 1. medical_expense_deduction: worksheet A-1
-        # use hi_agi instead of agi
+        # use hi_agi instead of AGI
         medical_expense = add(tax_unit, period, ["medical_expense"])
         hi_agi = tax_unit("hi_agi", period)
         medical_agi_amount = max_(

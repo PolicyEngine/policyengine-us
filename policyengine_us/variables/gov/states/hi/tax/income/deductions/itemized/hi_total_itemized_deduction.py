@@ -13,15 +13,4 @@ class hi_total_itemized_deduction(Variable):
     definition_period = YEAR
     defined_for = StateCode.HI
 
-    def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.hi.tax.income.deductions.itemized
-
-        # we need adjustments for medical_expense_deduction, interest_deduction and casualty_loss_deduction
-        hi_itemized_deductions = [
-            "charitable_deduction",
-            "hi_medical_expense_deduction",
-            "hi_interest_deduction",
-            "hi_casualty_loss_deduction",
-        ]
-
-        return add(tax_unit, period, hi_itemized_deductions)
+    adds = "gov.states.hi.tax.income.deductions.itemized.deductions_list"

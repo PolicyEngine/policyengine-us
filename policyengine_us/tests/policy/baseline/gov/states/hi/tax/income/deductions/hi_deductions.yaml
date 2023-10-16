@@ -10,7 +10,7 @@
   output:
     hi_itemized_deduction: 5_000
     
-- name: large agi, no eligible, have standard deduction
+- name: large AGI, no eligible, have standard deduction
   period: 2022
   input:
     state_code: HI
@@ -22,7 +22,7 @@
   output:
     hi_deductions: 4_400
 
-- name: small agi, no eligible, have standard deduction
+- name: small AGI, no eligible, have standard deduction
   period: 2022
   input:
     state_code: HI
@@ -34,7 +34,7 @@
   output:
     hi_deductions: 4_400
 
-- name: separate, large agi, no eligible, have standard deduction
+- name: separate, large AGI, no eligible, have standard deduction
   period: 2022
   input:
     state_code: HI
@@ -46,7 +46,7 @@
   output:
     hi_deductions: 2_200
 
-- name: large agi, eligible, have reduced deduction
+- name: large AGI, eligible, have reduced deduction
   period: 2022
   input:
     state_code: HI
