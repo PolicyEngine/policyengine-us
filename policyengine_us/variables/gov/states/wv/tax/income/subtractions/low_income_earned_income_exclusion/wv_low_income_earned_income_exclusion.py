@@ -16,8 +16,7 @@ class wv_low_income_earned_income_exclusion(Variable):
 
     def formula(tax_unit, period, parameters):
         federal_agi = tax_unit("adjusted_gross_income", period)
-        person = tax_unit.members
-        wv_earned_income = person("earned_income", period)
+        wv_earned_income = add(tax_unit, period, ["earned_income"])
         filing_status = tax_unit("filing_status", period)
 
         p = parameters(
