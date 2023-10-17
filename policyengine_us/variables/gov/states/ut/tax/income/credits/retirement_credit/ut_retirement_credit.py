@@ -9,4 +9,4 @@ class ut_retirement_credit(Variable):
     definition_period = YEAR
     defined_for = "ut_claims_retirement_credit"
 
-    adds =["ut_retirement_credit_max"]
+    adds = ["ut_retirement_credit_max"]
