@@ -8,7 +8,7 @@ class oh_income_tax_before_refundable_credits(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.OH
-    
+
     def formula(tax_unit, period, parameters):
         itax_before_credits = tax_unit("oh_income_tax_before_credits", period)
         nonrefundable_credits = tax_unit("oh_non_refundable_credits", period)
