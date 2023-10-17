@@ -19,7 +19,7 @@ class state_income_tax(Variable):
         # "dc_income_tax",  --- activating will cause circular logic errors
         "de_income_tax",
         # "fl_income_tax",  --- no state income tax
-        "ga_income_tax",
+        # "ga_income_tax",  --- activating will cause circular logic errors
         "hi_income_tax",
         # "ia_income_tax",  --- activating will cause circular logic errors
         "id_income_tax",
