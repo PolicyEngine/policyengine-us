@@ -5,6 +5,73 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.505.0] - 2023-10-16 19:13:31
+
+### Added
+
+- Delaware pension exclusion.
+
+## [0.504.0] - 2023-10-16 18:16:36
+
+### Added
+
+- Connecticut pension or annuity income subtraction.
+
+## [0.503.1] - 2023-10-15 23:47:31
+
+### Fixed
+
+- Formula for tax_unit_medicaid_income_level variable.
+
+## [0.503.0] - 2023-10-15 22:06:59
+
+### Added
+
+- Vermont child tax credit.
+
+## [0.502.1] - 2023-10-14 14:11:49
+
+### Fixed
+
+- Definition of Medicaid/CHIP/ACA-related modified adjusted gross income (MAGI).
+
+## [0.502.0] - 2023-10-13 16:13:43
+
+### Added
+
+- Vermont child and dependent care credit.
+
+## [0.501.1] - 2023-10-12 22:02:21
+
+### Fixed
+
+- Move maine adjusted gross income folder.
+
+## [0.501.0] - 2023-10-12 19:53:13
+
+### Added
+
+- Maine sales tax fairness credits.
+- Maine property tax fairness credits.
+
+## [0.500.0] - 2023-10-11 13:37:15
+
+### Added
+
+- Tax unit head or spouse varibale.
+
+## [0.499.0] - 2023-10-10 23:24:10
+
+### Added
+
+- Hawaii subtractions.
+
+## [0.498.0] - 2023-10-10 16:55:30
+
+### Added
+
+- Connecticut military retirement subtraction.
+
 ## [0.497.2] - 2023-10-07 11:55:34
 
 ### Fixed
@@ -5539,6 +5606,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.505.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.504.0...0.505.0
+[0.504.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.503.1...0.504.0
+[0.503.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.503.0...0.503.1
+[0.503.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.502.1...0.503.0
+[0.502.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.502.0...0.502.1
+[0.502.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.501.1...0.502.0
+[0.501.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.501.0...0.501.1
+[0.501.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.500.0...0.501.0
+[0.500.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.499.0...0.500.0
+[0.499.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.498.0...0.499.0
+[0.498.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.497.2...0.498.0
 [0.497.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.497.1...0.497.2
 [0.497.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.497.0...0.497.1
 [0.497.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.496.0...0.497.0
