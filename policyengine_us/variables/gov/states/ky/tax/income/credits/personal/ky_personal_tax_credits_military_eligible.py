@@ -16,6 +16,6 @@ class ky_personal_tax_credits_military_eligible(Variable):
 
         is_military = person("military_service_income", period) > 0
 
-        head_or_spouse = person("is_tax_unit_head_or_spouse", period)  
+        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
 
         return head_or_spouse * is_military
