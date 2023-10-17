@@ -1,0 +1,26 @@
+- name: MS Standard deduction joint unit test 1
+  absolute_error_margin: 0.01
+  period: 2020
+  input:
+    filing_status: SINGLE
+    state_code: MS
+  output:
+    ms_standard_deduction_joint: 2_300
+
+- name: MS Standard deduction if head of household filer
+  absolute_error_margin: 0.01
+  period: 2020
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    state_code: MS
+  output:
+    ms_standard_deduction_joint: 3_400
+
+- name: MS Standard deduction if married filing jointly
+  absolute_error_margin: 0.01
+  period: 2020
+  input:
+    filing_status: JOINT
+    state_code: MS
+  output:  
+    ms_standard_deduction_joint: 4_600
