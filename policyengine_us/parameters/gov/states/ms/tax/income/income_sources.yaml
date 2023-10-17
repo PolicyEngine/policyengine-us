@@ -1,0 +1,25 @@
+description: Mississippi counts these income sources toward adjusted gross income.
+values:
+  2021-01-01:
+    - employment_income # Wages, salaries, tips, etc.
+    - self_employment_income
+    - qualified_business_income
+    - capital_gains
+    - rent
+    - farm_income
+    - interest_income
+    - qualified_dividend_income
+    - alimony_income
+    - taxable_pension_income
+    - unemployment_compensation
+
+metadata:
+  label: Mississippi AGI income sources
+  unit: list
+  reference: 
+    - title: Mississippi Resident INCOME TAX Instructions
+      href: https://www.dor.ms.gov/sites/default/files/Forms/Individual/80100221.pdf#page=10 # Line 38 - 48
+    - title: Mississippi Income Tax and Withholding Article 1 § 27-7-15
+      href: https://law.justia.com/codes/mississippi/2020/title-27/chapter-7/article-1/section-27-7-15/
+    - title: Mississippi Resident Individual Income Tax Return 2022
+      href: https://www.dor.ms.gov/sites/default/files/Forms/Individual/80105228.pdf#page=2 # Line 38 - 48
