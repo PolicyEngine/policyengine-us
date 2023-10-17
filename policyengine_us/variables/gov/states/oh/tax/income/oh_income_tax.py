@@ -8,3 +8,5 @@ class oh_income_tax(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.OH
+    adds = ["oh_income_tax_before_refundable_credits"]
+    subtracts = ["oh_refundable_credits"]
