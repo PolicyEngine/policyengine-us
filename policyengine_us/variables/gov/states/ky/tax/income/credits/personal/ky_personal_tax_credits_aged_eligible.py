@@ -17,8 +17,6 @@ class ky_personal_tax_credits_aged_eligible(Variable):
         age_threshold = p.age_eligibility
         is_aged = person("age", period) >= age_threshold
 
-        head = person("is_tax_unit_head", period)
-        spouse = person("is_tax_unit_spouse", period)
-        head_or_spouse = head | spouse
+        head_or_spouse = person("is_tax_unit_head_or_spouse", period)  
 
         return head_or_spouse * is_aged
