@@ -18,17 +18,17 @@ class hi_deductions(Variable):
 
         standard_deduction = tax_unit("hi_standard_deduction", period)
         itemized_deduction = tax_unit("hi_itemized_deduction", period)
-        hi_agi = tax_unit("hi_agi", period)
+        tax_unit_earned_income = tax_unit("tax_unit_earned_income", period)
         filing_status = tax_unit("filing_status", period)
 
         # check itemized deduction eligibility
         filing_status_eligible = (
-            itemized_deduction > p.floor.filing_status[filing_status]
+            itemized_deduction > p.threshold.filing_status[filing_status]
         )
-        is_dependent = tax_unit("dsi", period)
-        standard_cap = min_(hi_agi, standard_deduction)
-        dependent_floor = max_(p.floor.dependent, standard_cap)
-        dependent_eligible = is_dependent & (
+        is_dependent_on_another_return = tax_unit("dsi", period)
+        standard_cap = min_(tax_unit_earned_income, standard_deduction)
+        dependent_floor = max_(p.threshold.dependent, standard_cap)
+        dependent_eligible = is_dependent_on_another_return & (
             itemized_deduction > dependent_floor
         )
 

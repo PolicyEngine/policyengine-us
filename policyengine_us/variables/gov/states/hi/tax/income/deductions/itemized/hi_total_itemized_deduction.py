@@ -13,4 +13,4 @@ class hi_total_itemized_deduction(Variable):
     definition_period = YEAR
     defined_for = StateCode.HI
 
-    adds = "gov.states.hi.tax.income.deductions.itemized.deductions_list"
+    adds = "gov.states.hi.tax.income.deductions.itemized.sources"
