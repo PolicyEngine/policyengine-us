@@ -23,7 +23,10 @@ class az_property_tax_credit_eligible(Variable):
         payment_qualifies = (property_tax + rent) > 0
 
         head = person("is_tax_unit_head", period)
+        spouse = person("is_tax_unit_spouse", period)
 
         return tax_unit.any(
-            head & (age_eligible | ssi_qualifies) & payment_qualifies
+            (head | spouse)
+            & (age_eligible | ssi_qualifies)
+            & payment_qualifies
         )
