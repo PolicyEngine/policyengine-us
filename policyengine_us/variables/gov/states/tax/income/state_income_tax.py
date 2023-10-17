@@ -11,6 +11,7 @@ class state_income_tax(Variable):
         # state income tax variables listed in alphabetical order:
         "ca_income_tax",
         # "co_income_tax",  --- activating will cause circular logic errors
+        "de_income_tax",
         # "dc_income_tax",  --- activating will cause circular logic errors
         # "ia_income_tax",  --- activating will cause circular logic errors
         "il_income_tax",
