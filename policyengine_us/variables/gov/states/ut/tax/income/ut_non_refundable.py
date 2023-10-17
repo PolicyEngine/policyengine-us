@@ -9,4 +9,4 @@ class ut_non_refundable(Variable):
     definition_period = YEAR
     defined_for = StateCode.UT
 
-    adds = "gov.states.tax.income.credits.non_refundable"
+    adds = "gov.states.ut.tax.income.non_refundable"
