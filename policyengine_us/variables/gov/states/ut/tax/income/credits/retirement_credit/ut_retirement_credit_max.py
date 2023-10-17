@@ -10,7 +10,7 @@ class ut_retirement_credit_max(Variable):
     reference = "https://incometax.utah.gov/credits/retirement-credit"
     defined_for = StateCode.UT
 
-    def formula_2021(tax_unit, period: Period, parameters):
+    def formula(tax_unit, period: Period, parameters):
         """
         This credit is an alternative to the social security benefits credit,
         but instead is based on a flat rate.
