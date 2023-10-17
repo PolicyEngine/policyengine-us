@@ -24,7 +24,8 @@ class az_parents_grandparents_exemption(Variable):
         payment_eligiblity = (
             support_payment_ratio > p.parent_grandparent.cost_rate
         )
-        # Eligible parents of ancestors of parents have to be 65 or older as well as cohabiting with the filer
+        # Eligible parents of ancestors of parents have to be 65 or older
+        # as well as cohabiting with the filer
         age = person("age", period)
         age_eligible = age >= p.parent_grandparent.min_age
 
