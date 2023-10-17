@@ -8,3 +8,5 @@ class wv_income_tax(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.WV
+    adds = ["wv_income_tax_before_refundable_credits"]
+    subtracts = ["wv_refundable_credits"]
