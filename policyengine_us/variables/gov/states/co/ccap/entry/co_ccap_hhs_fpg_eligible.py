@@ -28,7 +28,8 @@ class co_ccap_hhs_fpg_eligible(Variable):
         p = parameters(instant_str).gov.states.co.ccap
         # Calculate monthly fpg limit
         county = tax_unit.household("county_str", period.this_year)
-        hhs_fpg_rate = p.entry.entry_fpg_rate[county]
+        in_co = tax_unit.household("state_code_str", period.this_year) == "CO"
+        hhs_fpg_rate = p.entry.entry_fpg_rate[county[in_co]]
         hhs_fpg = spm_unit("snap_fpg", period)
         monthly_hhs_fpg = np.round(hhs_fpg * hhs_fpg_rate / MONTHS_IN_YEAR, 2)
         return monthly_agi < monthly_hhs_fpg

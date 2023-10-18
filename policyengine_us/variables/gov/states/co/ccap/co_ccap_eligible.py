@@ -26,9 +26,7 @@ class co_ccap_eligible(Variable):
         re_determination_eligible = tax_unit(
             "co_ccap_re_determination_eligible", period
         )
-
-        spm_unit = tax_unit.spm_unit
-        state = spm_unit.household("state_code_str", period)
+        # state = tax_unit.household("state_code_str", period)
 
         return (is_entry * entry_eligible) | (
             is_re_determination * re_determination_eligible
