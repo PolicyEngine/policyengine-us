@@ -2,10 +2,10 @@
   period: 2023
   input:
     adjusted_gross_income: 40_000
+    state_code_str: CO
     county_str: ADAMS_COUNTY_CO
     snap_fpg: 
       2023-01: 18_310
-    state_code_str: CO
   output:
     co_ccap_hhs_fpg_eligible: 
       2023-01: true
@@ -14,10 +14,10 @@
   period: 2023
   input:
     adjusted_gross_income: 46_000
+    state_code_str: CO
     county_str: BACA_COUNTY_CO
     snap_fpg: 
       2023-01: 23_030
-    state_code_str: CO
   output:
     co_ccap_hhs_fpg_eligible: 
       2023-01: true
@@ -26,10 +26,10 @@
   period: 2023
   input:
     adjusted_gross_income: 74_000
+    state_code_str: CO
     county_str: BOULDER_COUNTY_CO
     snap_fpg:  
       2023-01: 27_750
-    state_code_str: CO
   output:
     co_ccap_hhs_fpg_eligible:   
       2023-01: true
@@ -38,10 +38,10 @@
   period: 2023
   input:
     adjusted_gross_income: 64_000
+    state_code_str: CO
     county_str: CUSTER_COUNTY_CO
     snap_fpg:  
       2023-01: 32_470
-    state_code_str: CO
   output:
     co_ccap_hhs_fpg_eligible:   
       2023-01: true
@@ -50,10 +50,10 @@
   period: 2023
   input:
     adjusted_gross_income: 87_000
+    state_code_str: CO
     county_str: ELBERT_COUNTY_CO
     snap_fpg:   
       2023-01: 37_190
-    state_code_str: CO
   output:
     co_ccap_hhs_fpg_eligible:   
       2023-01: true
@@ -62,10 +62,10 @@
   period: 2023
   input:
     adjusted_gross_income: 98_000
+    state_code_str: CO
     county_str: GRAND_COUNTY_CO
     snap_fpg:   
       2023-01: 41_910
-    state_code_str: CO
   output:
     co_ccap_hhs_fpg_eligible:   
       2023-01: true
@@ -74,10 +74,10 @@
   period: 2023
   input:
     adjusted_gross_income: 109_000
+    state_code_str: CO
     county_str: JACKSON_COUNTY_CO
     snap_fpg:   
       2023-01: 46_630
-    state_code_str: CO
   output:
     co_ccap_hhs_fpg_eligible:   
       2023-01: true
@@ -86,10 +86,10 @@
   period: 2023
   input:
     adjusted_gross_income: 120_000
+    state_code_str: CO
     county_str: LARIMER_COUNTY_CO
     snap_fpg:   
       2023-01: 51_350
-    state_code_str: CO
   output:
     co_ccap_hhs_fpg_eligible:   
       2023-01: true
@@ -98,10 +98,11 @@
   period: 2023
   input:
     adjusted_gross_income: 140_000
+    state_code_str: CO
     county_str: PITKIN_COUNTY_CO
     snap_fpg:   
       2023-01: 51_350
-    state_code_str: CO
+
   output:
     co_ccap_hhs_fpg_eligible:   
       2023-01: false
