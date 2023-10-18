@@ -17,7 +17,7 @@ class snap_utility_allowance_type(Variable):
     documentation = (
         "The type of utility allowance that is eligible for the SPM unit"
     )
-    definition_period = YEAR
+    definition_period = MONTH
 
     def formula(spm_unit, period, parameters):
         distinct_utility_bills = spm_unit(
