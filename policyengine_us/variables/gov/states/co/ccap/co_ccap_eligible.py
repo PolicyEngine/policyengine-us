@@ -16,7 +16,9 @@ class co_ccap_eligible(Variable):
     # defined_for = StateCode.CO
 
     def formula(tax_unit, period, parameters):
-        is_entry = tax_unit("co_ccap_is_in_the_entry_process", period.this_year)
+        is_entry = tax_unit(
+            "co_ccap_is_in_the_entry_process", period.this_year
+        )
         entry_eligible = tax_unit("co_ccap_entry_eligible", period)
         is_re_determination = tax_unit(
             "co_ccap_is_in_the_re_determination_process", period.this_year

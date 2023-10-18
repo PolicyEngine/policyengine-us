@@ -60,7 +60,9 @@ class co_ccap_parent_fee(Variable):
         )
         # Sum up all the parent fee for eligible children.
         child_age_eligible = person("co_ccap_child_eligible", period)
-        childcare_hours_per_day = person("childcare_hours_per_day", period.this_year)
+        childcare_hours_per_day = person(
+            "childcare_hours_per_day", period.this_year
+        )
         rate = p.parent_fee_rate_by_child_care_hours.calc(
             childcare_hours_per_day, right=True
         )
@@ -73,7 +75,9 @@ class co_ccap_parent_fee(Variable):
             2,
         )
         # Identify whether the filers are eligible for a discount.
-        rating = person("co_quality_rating_of_child_care_facility", period.this_year)
+        rating = person(
+            "co_quality_rating_of_child_care_facility", period.this_year
+        )
         discount_eligible = (
             tax_unit.sum(
                 p.is_quality_rating_discounted.calc(rating)

@@ -20,7 +20,9 @@ class snap_hhs_smi(Variable):
             instant_str = f"{year}-10-01"
         else:
             instant_str = f"{year - 1}-10-01"
-        four_person_smi = parameters(instant_str).gov.hhs.smi.amount[state_code]
+        four_person_smi = parameters(instant_str).gov.hhs.smi.amount[
+            state_code
+        ]
         adjustment_mapping = parameters(
             instant_str
         ).gov.hhs.smi.household_size_adjustment
@@ -35,4 +37,3 @@ class snap_hhs_smi(Variable):
             + seven_or_more_additional_rate * max_(size - 6, 0)
         )
         return four_person_smi * size_adjustment
-

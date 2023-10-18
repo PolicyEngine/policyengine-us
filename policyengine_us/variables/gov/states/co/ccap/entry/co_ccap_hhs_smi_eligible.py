@@ -15,7 +15,9 @@ class co_ccap_hhs_smi_eligible(Variable):
     def formula(tax_unit, period, parameters):
         spm_unit = tax_unit.spm_unit
         monthly_agi = np.round(
-            tax_unit("adjusted_gross_income", period.this_year) / MONTHS_IN_YEAR, 2
+            tax_unit("adjusted_gross_income", period.this_year)
+            / MONTHS_IN_YEAR,
+            2,
         )
         year = period.start.year
         month = period.start.month
