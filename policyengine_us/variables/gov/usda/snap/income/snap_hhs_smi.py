@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class snap_smi(Variable):
+class snap_hhs_smi(Variable):
     value_type = float
     entity = SPMUnit
     label = "SNAP state median income"

@@ -1,8 +1,8 @@
-- name: In Adams, HHS = 2, agi < 75_334.48 * .85, eligible. # snap_smi_rate: 85%
+- name: In Adams, HHS = 2, agi < 75_334.48 * .85, eligible. # snap_hhs_smi_rate: 85%
   period: 2023
   input:
     adjusted_gross_income: 40_000
-    snap_smi:  
+    snap_hhs_smi:  
       2023-01: 75_334.48
     # state_code: CO
   output:
@@ -13,7 +13,7 @@
   period: 2023
   input:
     adjusted_gross_income: 46_000
-    snap_smi:  
+    snap_hhs_smi:  
       2023-01: 93_060.24
     # state_code: CO
   output:
@@ -24,7 +24,7 @@
   period: 2023
   input:
     adjusted_gross_income: 74_000
-    snap_smi:  
+    snap_hhs_smi:  
       2023-01: 110_786
     # state_code: CO
   output:
@@ -35,7 +35,7 @@
   period: 2023
   input:
     adjusted_gross_income: 64_000
-    snap_smi:  
+    snap_hhs_smi:  
       2023-01: 128_511.76
     # state_code: CO
   output:
@@ -46,7 +46,7 @@
   period: 2023
   input:
     adjusted_gross_income: 87_000
-    snap_smi:  
+    snap_hhs_smi:  
       2023-01: 146_237.52
     # state_code: CO
   output:
@@ -57,7 +57,7 @@
   period: 2023
   input:
     adjusted_gross_income: 98_000
-    snap_smi:  
+    snap_hhs_smi:  
       2023-01: 149_561.1
     # state_code: CO
   output:
@@ -68,7 +68,7 @@
   period: 2023
   input:
     adjusted_gross_income: 109_000
-    snap_smi:  
+    snap_hhs_smi:  
       2023-01: 152_884.68
     # state_code: CO
   output:
@@ -79,7 +79,7 @@
   period: 2023
   input:
     adjusted_gross_income: 120_000
-    snap_smi:  
+    snap_hhs_smi:  
       2023-01: 156_208.26
     # state_code: CO
   output:
@@ -90,7 +90,7 @@
   period: 2023
   input:
     adjusted_gross_income: 160_000
-    snap_smi:  
+    snap_hhs_smi:  
       2023-01: 156_208.26
     # state_code: CO
   output:
