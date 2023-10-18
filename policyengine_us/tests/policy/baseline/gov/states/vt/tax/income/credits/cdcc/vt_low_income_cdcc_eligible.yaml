@@ -1,0 +1,38 @@
+- name: Vermont low-income CDCC single filer not eligible
+  period: 2021
+  input:
+    state_code: VT
+    adjusted_gross_income: 30_001
+    filing_status: SINGLE
+  output:
+    vt_low_income_cdcc_eligible: false
+
+- name: Vermont low-income CDCC single filer eligible
+  period: 2021
+  input:
+    state_code: VT
+    adjusted_gross_income: 30_000
+    filing_status: SINGLE
+  output:
+    vt_low_income_cdcc_eligible: true
+
+- name: Vermont low-income CDCC joint filer not eligible
+  period: 2021
+  input:
+    state_code: VT
+    adjusted_gross_income: 40_001
+    filing_status: JOINT
+  output:
+    vt_low_income_cdcc_eligible: false
+
+- name: Vermont low-income CDCC joint filer eligible 
+  period: 2021
+  input:
+    state_code: VT
+    adjusted_gross_income: 40_000
+    filing_status: JOINT
+  output:
+    vt_low_income_cdcc_eligible: true
+
+    
+    
