@@ -1,0 +1,17 @@
+- name: 20% rate
+  period: 2023
+  input: 
+    state_code: KY
+    ky_family_size_tax_credit_rate: 0.2
+    ky_income_tax_before_non_refundable_credits: 1_000
+  output:
+    ky_family_size_tax_credit: 200
+
+- name: 0% rate
+  period: 2023
+  input: 
+    state_code: KY
+    ky_family_size_tax_credit_rate: 0
+    ky_income_tax_before_non_refundable_credits: 1_000
+  output:
+    ky_family_size_tax_credit: 0
