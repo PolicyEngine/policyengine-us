@@ -1,25 +1,26 @@
-- name: Test Case 1 - Qualifying Child and Income Qualify
+- name: Unit Test 1 - Qualifying Child and Income Qualify
   period: 2021
   input:
     mt_agi: 27_000
-    childcare_expenses: 4_000
-    num_dependents: [10, 8, 5, "disabled"]
+    tax_unit_childcare_expenses: 4_000
+    mt_child_dependent_care_expense_deduction_eligible_children: 1
   output:
-    result: 4_000
+    mt_child_dependent_care_expense_deduction: 4_000
 
-- name: Test Case 2 - Qualifying Child, Income Qualify, and Maximum Deduction
+- name: Unit Test 2 - Qualifying Child, Income Qualify, and Maximum Deduction
   period: 2021
   input:
     mt_agi: 27_100
-    childcare_expenses: 4_800
-    num_dependents: [12, "disabled", 4, 18]
+    tax_unit_childcare_expenses: 4_800
+    mt_child_dependent_care_expense_deduction_eligible_children: 1
   output:
-    result: 4_800
-- name: Test Case 3 - No Qualifying Child
+    mt_child_dependent_care_expense_deduction: 4_000
+
+- name: Unit Test 3 - No Qualifying Child
   period: 2021
   input:
     mt_agi: 15_000
-    childcare_expenses: 2500
-    num_dependents: [18,20]
+    tax_unit_childcare_expenses: 2_500
+    mt_child_dependent_care_expense_deduction_eligible_children: 0
   output:
-    result: 0  
+    mt_child_dependent_care_expense_deduction: 0
