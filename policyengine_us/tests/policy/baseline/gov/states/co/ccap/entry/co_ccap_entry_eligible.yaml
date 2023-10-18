@@ -3,7 +3,8 @@
   input:
     co_ccap_entry_income_eligible: 
       2023-01: true
-    co_ccap_num_child_eligible: 1
+    co_ccap_eligible_children: 
+      2023-01: 1
     state_code: CO
   output:
     co_ccap_entry_eligible: 
@@ -14,7 +15,8 @@
   input:
     co_ccap_entry_income_eligible: 
       2023-01: false
-    co_ccap_num_child_eligible: 2
+    co_ccap_eligible_children: 
+      2023-01: 2
     state_code: CO
   output:
     co_ccap_entry_eligible: 
@@ -25,7 +27,8 @@
   input:
     co_ccap_entry_income_eligible: 
       2023-01: true
-    co_ccap_num_child_eligible: 0
+    co_ccap_eligible_children: 
+      2023-01: 0
     state_code: CO
   output:
     co_ccap_entry_eligible: 
@@ -36,7 +39,8 @@
   input:
     co_ccap_entry_income_eligible: 
       2023-01: false
-    co_ccap_num_child_eligible: 0
+    co_ccap_eligible_children: 
+      2023-01: 0
     state_code: CO
   output:
     co_ccap_entry_eligible: 

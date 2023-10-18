@@ -6,4 +6,4 @@ class co_quality_rating_of_child_care_facility(Variable):
     entity = Person
     label = "Quality rating of child care facility for Colorado Child Care Assistance Program"
     definition_period = YEAR
-    defined_for = StateCode.CO
+    # defined_for = StateCode.CO

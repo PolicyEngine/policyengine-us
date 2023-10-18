@@ -12,7 +12,7 @@ class snap_smi(Variable):
     definition_period = MONTH
 
     def formula(spm_unit, period, parameters):
-        n = spm_unit("spm_unit_size", period.this_year)
+        size = spm_unit("spm_unit_size", period.this_year)
         state_code = spm_unit.household("state_code_str", period.this_year)
         year = period.start.year
         month = period.start.month

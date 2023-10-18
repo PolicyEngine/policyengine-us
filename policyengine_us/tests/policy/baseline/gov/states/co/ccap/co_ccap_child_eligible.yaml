@@ -6,7 +6,8 @@
     age: 12
     state_code: CO
   output:
-    co_ccap_child_eligible: true
+    co_ccap_child_eligible: 
+      2023-01: true
 
 - name: One child, not disabled, age >= 13, ineligible.
   period: 2023
@@ -16,7 +17,8 @@
     age: 13
     state_code: CO
   output:
-    co_ccap_child_eligible: false
+    co_ccap_child_eligible: 
+      2023-01: false
 
 - name: One child, disabled, age < 19, eligible.
   period: 2023
@@ -26,7 +28,8 @@
     age: 18
     state_code: CO
   output:
-    co_ccap_child_eligible: true
+    co_ccap_child_eligible: 
+      2023-01: true
 
 - name: One child, disabled, age >= 19, ineligible.
   period: 2023
@@ -36,4 +39,5 @@
     age: 19
     state_code: CO
   output:
-    co_ccap_child_eligible: false
+    co_ccap_child_eligible: 
+      2023-01: false
