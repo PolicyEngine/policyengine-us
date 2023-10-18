@@ -9,7 +9,7 @@ class mt_child_dependent_care_expense_deduction_eligible_children(Variable):
     defined_for = StateCode.MT
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.mt.tax.income.deductions.standard.mt_child_dependent_care_expense_deduction.threshold
+        p = parameters(period).gov.states.mt.tax.income.deductions.standard.mt_child_dependent_care_expense_deduction
         person = tax_unit.members
         age = person("age", period)
         dependent = person("is_tax_unit_dependent", period)
