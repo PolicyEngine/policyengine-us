@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.507.0] - 2023-10-18 20:13:39
+
+### Added
+
+- Seven empty state ??_income_tax.py variables.
+- All states to the state_income_taxes.py adds list.
+
 ## [0.506.1] - 2023-10-17 22:47:08
 
 ### Fixed
@@ -5618,6 +5625,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.507.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.506.1...0.507.0
 [0.506.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.506.0...0.506.1
 [0.506.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.505.0...0.506.0
 [0.505.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.504.0...0.505.0
