@@ -5,6 +5,42 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.506.1] - 2023-10-17 22:47:08
+
+### Fixed
+
+- Adjust Georgia variable folder structure.
+
+## [0.506.0] - 2023-10-17 14:53:55
+
+### Added
+
+- Georgia deductions.
+
+## [0.505.0] - 2023-10-16 19:13:31
+
+### Added
+
+- Delaware pension exclusion.
+
+## [0.504.0] - 2023-10-16 18:16:36
+
+### Added
+
+- Connecticut pension or annuity income subtraction.
+
+## [0.503.1] - 2023-10-15 23:47:31
+
+### Fixed
+
+- Formula for tax_unit_medicaid_income_level variable.
+
+## [0.503.0] - 2023-10-15 22:06:59
+
+### Added
+
+- Vermont child tax credit.
+
 ## [0.502.1] - 2023-10-14 14:11:49
 
 ### Fixed
@@ -5582,6 +5618,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.506.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.506.0...0.506.1
+[0.506.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.505.0...0.506.0
+[0.505.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.504.0...0.505.0
+[0.504.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.503.1...0.504.0
+[0.503.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.503.0...0.503.1
+[0.503.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.502.1...0.503.0
 [0.502.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.502.0...0.502.1
 [0.502.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.501.1...0.502.0
 [0.501.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.501.0...0.501.1

@@ -4714,3 +4714,33 @@
     fixed:
     - Definition of Medicaid/CHIP/ACA-related modified adjusted gross income (MAGI).
   date: 2023-10-14 14:11:49
+- bump: minor
+  changes:
+    added:
+    - Vermont child tax credit.
+  date: 2023-10-15 22:06:59
+- bump: patch
+  changes:
+    fixed:
+    - Formula for tax_unit_medicaid_income_level variable.
+  date: 2023-10-15 23:47:31
+- bump: minor
+  changes:
+    added:
+    - Connecticut pension or annuity income subtraction.
+  date: 2023-10-16 18:16:36
+- bump: minor
+  changes:
+    added:
+    - Delaware pension exclusion.
+  date: 2023-10-16 19:13:31
+- bump: minor
+  changes:
+    added:
+    - Georgia deductions.
+  date: 2023-10-17 14:53:55
+- bump: patch
+  changes:
+    fixed:
+    - Adjust Georgia variable folder structure.
+  date: 2023-10-17 22:47:08
