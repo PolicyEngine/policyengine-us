@@ -15,11 +15,13 @@ class wv_heptc(Variable):
     )
 
     def formula(tax_unit, period, parameters):
-        wv_sctc = tax_unit("wv_sctc", period)
+        wv_sctc = tax_unit(
+            "wv_sctc", period
+        )  # West Virginia homestead excess property tax credit
         property_tax = tax_unit("property_tax_primary_residence", period)
         wv_ghi = tax_unit("wv_gross_household_income", period)
 
         p = parameters(period).gov.states.wv.tax.income.credits.heptc
         heptc_amount = property_tax - wv_sctc - p.ghi_percentage * wv_ghi
 
-        return min_(heptc_amount, p.max_amount)
+        return min_(heptc_amount, p.cap)

@@ -28,7 +28,7 @@ class wv_heptc_eligible(Variable):
             p_lig.first_person + p_lig.additional_person * (n - 1)
         )
         lig_condition = federal_agi <= low_income_guidelines
-        property_tax_condition = (
-            property_tax - wv_sctc
-        ) > p.ghi_percentage * wv_ghi
+        property_tax_value = property_tax - wv_sctc
+        ghi_amount = p.ghi_percentage * wv_ghi
+        property_tax_condition = property_tax_value > ghi_amount
         return lig_condition & property_tax_condition
