@@ -95,14 +95,16 @@ class PovertyTracker(Dataset):
         pt = pt[pt["q16surveyyear"].notnull()].reset_index(drop=True)
 
         # Other adult and child household income.
-        pt["other_household_income"] = (
-            pt["imp_q16incothhh_adult_tc"]
-            + pt["imp_q16incothhh_child_tc"]
-            + pt["imp_q16incothhh_tc"]
-        )
+        pt["other_household_income"] = pt[
+            [
+                "imp_q16incothhh_adult_tc",
+                "imp_q16incothhh_child_tc",
+                "imp_q16incothhh_tc",
+            ]
+        ].sum(axis=1)
 
         # Rename columns.
-        columns_to_rename = {
+        COLUMNS_TO_RENAME = {
             "q16a3_age_tc": "age",
             "imp_q16earnhd_tc": "household_head_income",
             "imp_q16earnsp_tc": "spouse_income",
@@ -116,15 +118,15 @@ class PovertyTracker(Dataset):
             # "qopmres": "income",
         }
         for i in range(1, 10):
-            columns_to_rename[f"q16a4_rel{i}"] = f"relationship_to_relative{i}"
-            columns_to_rename[f"q16a4_age{i}_tc"] = f"age_of_relative{i}"
+            COLUMNS_TO_RENAME[f"q16a4_rel{i}"] = f"relationship_to_relative{i}"
+            COLUMNS_TO_RENAME[f"q16a4_age{i}_tc"] = f"age_of_relative{i}"
 
-        pt.rename(columns=columns_to_rename, inplace=True)
+        pt.rename(columns=COLUMNS_TO_RENAME, inplace=True)
 
         # Replace 970 (unknown) with 40 (default age)
         pt["age"] = pt["age"].replace(970, 40)
 
-        return pt.rename(columns=columns_to_rename)
+        return pt.rename(columns=COLUMNS_TO_RENAME)
 
 
 def extract_hh_data(observation: pd.Series) -> dict:
