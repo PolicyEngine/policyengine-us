@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.508.2] - 2023-10-19 19:21:03
+
+### Fixed
+
+- Louisiana military pay exclusion folder structure.
+
 ## [0.508.1] - 2023-10-19 17:00:51
 
 ### Fixed
@@ -5643,6 +5649,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.508.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.508.1...0.508.2
 [0.508.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.508.0...0.508.1
 [0.508.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.507.1...0.508.0
 [0.507.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.507.0...0.507.1
