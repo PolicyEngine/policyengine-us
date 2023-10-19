@@ -4,7 +4,6 @@
     adjusted_gross_income: 40_000
     snap_hhs_smi: 
       2023-01: 75_334.48
-    state_code: CO
   output:
     co_ccap_re_determination_income_eligible: 
       2023-01: true
@@ -16,7 +15,6 @@
     adjusted_gross_income: 46_000
     snap_hhs_smi: 
       2023-01: 93_060.24
-    state_code: CO
   output:
     co_ccap_re_determination_income_eligible: 
       2023-01: true
@@ -27,7 +25,6 @@
     adjusted_gross_income: 74_000
     snap_hhs_smi: 
       2023-01: 110_786
-    state_code: CO
   output:
     co_ccap_re_determination_income_eligible: 
       2023-01: true
@@ -38,7 +35,6 @@
     adjusted_gross_income: 64_000
     snap_hhs_smi: 
       2023-01: 128_511.76
-    state_code: CO
   output:
     co_ccap_re_determination_income_eligible: 
       2023-01: true
@@ -49,7 +45,6 @@
     adjusted_gross_income: 87_000
     snap_hhs_smi: 
       2023-01: 146_237.52
-    state_code: CO
   output:
     co_ccap_re_determination_income_eligible: 
       2023-01: true
@@ -60,7 +55,6 @@
     adjusted_gross_income: 98_000
     snap_hhs_smi: 
       2023-01: 149_561.1
-    state_code: CO
   output:
     co_ccap_re_determination_income_eligible: 
       2023-01: true
@@ -71,29 +65,26 @@
     adjusted_gross_income: 109_000
     snap_hhs_smi: 
       2023-01: 152_884.68
-    state_code: CO
   output:
     co_ccap_re_determination_income_eligible: 
       2023-01: true
 
 - name: HHS = 9, agi < 156_208.26 * .85, eligible.
-  period: 2023
+  period: 2022
   input:
     adjusted_gross_income: 120_000
     snap_hhs_smi: 
-      2023-01: 156_208.26
-    state_code: CO
+      2022-12: 156_208.26
   output:
     co_ccap_re_determination_income_eligible: 
-      2023-01: true
+      2022-12: true
 
 - name: HHS = 9, agi >= 156_208.26 * .85, ineligible. 
-  period: 2023
+  period: 2022
   input:
     adjusted_gross_income: 160_000
     snap_hhs_smi: 
-      2023-01: 156_208.26
-    state_code: CO
+      2022-12: 156_208.26
   output:
     co_ccap_re_determination_income_eligible: 
-      2023-01: false
+      2022-12: false

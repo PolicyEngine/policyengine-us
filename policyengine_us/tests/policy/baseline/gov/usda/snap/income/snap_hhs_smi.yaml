@@ -17,22 +17,22 @@
       2023-01: 0.52 * 109_716
 
 - name: Household size 6, State NY in 2023
-  period: 2023
+  period: 2022
   input:
     spm_unit_size: 6
     state_code_str: NY
   output:
     snap_hhs_smi:
-      2023-01: 1.32 * 109_716
+      2022-12: 1.32 * 109_716
 
 - name: Household size 7, State NY in 2023
-  period: 2023
+  period: 2022
   input:
     spm_unit_size: 7
     state_code_str: NY
   output:
     snap_hhs_smi:
-      2023-01: 1.35 * 109_716
+      2022-12: 1.35 * 109_716
 
 - name: Household size 4, State CO in 2022
   period: 2022

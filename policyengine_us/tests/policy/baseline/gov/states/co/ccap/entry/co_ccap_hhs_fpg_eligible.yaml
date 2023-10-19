@@ -83,25 +83,33 @@
       2023-01: true
 
 - name: In Larimer, HHS = 9, agi < 120_672.5, eligible. # hhs_fpg_rate: 235%
-  period: 2023
+  period: 2022
   input:
     state_code_str: CO
     adjusted_gross_income: 120_000
     county_str: LARIMER_COUNTY_CO
     snap_fpg:   
-      2023-01: 51_350
+      2022-12: 51_350
   output:
     co_ccap_hhs_fpg_eligible:   
-      2023-01: true
+      2022-12: true
 
 - name: In Pitkin, HHS = 9, agi >= 138_645, ineligible. # hhs_fpg_rate: 270%
-  period: 2023
+  period: 2022
   input:
     state_code_str: CO
     adjusted_gross_income: 140_000
     county_str: PITKIN_COUNTY_CO
     snap_fpg:   
-      2023-01: 51_350
+      2022-12: 51_350
   output:
     co_ccap_hhs_fpg_eligible:   
-      2023-01: false
+      2022-12: false
+
+- name: Counties in other states, not eligible
+  period: 2022
+  input:
+    state_code_str: MD
+  output:
+    co_ccap_hhs_fpg_eligible:   
+      2022-12: false
