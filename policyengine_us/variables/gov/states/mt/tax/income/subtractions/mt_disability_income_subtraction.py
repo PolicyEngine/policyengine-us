@@ -20,9 +20,11 @@ class mt_disability_income_subtraction(Variable):
         age_eligible_head = age_eligible & is_head
         is_spouse = person("is_tax_unit_spouse", period)
         age_eligible_spouse = age_eligible & is_spouse
-        is_retired = person("is_retired", period)
-        retired_head = age_eligible_head & is_retired
-        retired_spouse = age_eligible_spouse & is_retired
+        is_retired_on_disability = person(
+            "retired_on_total_disability", period
+        )
+        retired_head = age_eligible_head & is_retired_on_disability
+        retired_spouse = age_eligible_spouse & is_retired_on_disability
         is_disabled = person("is_disabled", period)
         qualified_head = retired_head & is_disabled
         qualified_spouse = retired_spouse & is_disabled

@@ -5,7 +5,7 @@
       person1:
         disability_benefits: 15_000
         is_tax_unit_head: true
-        is_retired: true
+        retired_on_total_disability: true
         age: 65
     tax_units:
       tax_unit:
@@ -24,7 +24,7 @@
       person1:
         disability_benefits: 15_000
         is_tax_unit_head: true
-        is_retired: true
+        retired_on_total_disability: true
         is_disabled: false
         age: 64
     tax_units:
@@ -44,7 +44,7 @@
       person1:
         disability_benefits: 15_000
         is_tax_unit_head: true
-        is_retired: true
+        retired_on_total_disability: true
         is_disabled: true
         age: 64
     tax_units:
@@ -64,13 +64,13 @@
       person1:
         disability_benefits: 15_000
         is_tax_unit_head: true
-        is_retired: true
+        retired_on_total_disability: true
         is_disabled: true
         age: 64
       person2:
         disability_benefits: 12_000
         is_tax_unit_spouse: true
-        is_retired: true
+        retired_on_total_disability: true
         is_disabled: true
         age: 63
     tax_units:
