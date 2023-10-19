@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class ar_dependent_credit(Variable):
+class ar_perosnal_credit_aged_special_eligible(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Arkansas dependent personal credit"
+    label = "Arkansas eligibility ofr aged special personal credit"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -15,18 +15,17 @@ class ar_dependent_credit(Variable):
     defined_for = StateCode.AR
 
     def formula(tax_unit, period, parameters):
-        us_dependent = tax_unit("tax_unit_dependents", period)
         person = tax_unit.members
-        p_ar = parameters(
-            period
-        ).gov.states.ar.tax.income.credits.personal.amount
+        us_aged = person("age", period)
+        p = parameters(period).gov.states.ar.tax.income.credits.personal
+        aged_thres = p.aged.age_threshold
+        is_aged = us_aged >= aged_thres
 
-        is_disabled = person("is_disabled", period)
-        is_dependent = person("is_tax_unit_dependent", period)
-        disabled_dependent = is_disabled & is_dependent
-        count_disabled_dependent = tax_unit.sum(disabled_dependent)
-
-        return (
-            us_dependent * p_ar.dependent
-            + count_disabled_dependent * p_ar.disabled_dependent
+        does_receive_exemption = (
+            person(
+                "ar_retirement_or_disability_benefits_exemptions_indv", period
+            )
+            == 0
         )
+        aged_special = is_aged & does_receive_exemption
+        return aged_special

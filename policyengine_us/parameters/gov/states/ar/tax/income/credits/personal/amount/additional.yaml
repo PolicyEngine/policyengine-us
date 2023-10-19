@@ -1,6 +1,6 @@
-description: Arkansas provides a personal credit of this amount, based on filing status.
+description: Arkansas provides this additional personal credit amount, based on filing status.
 metadata:
-  label: Arkansas personal credit
+  label: Arkansas additional personal credit amount
   period: year
   unit: currency-USD
   breakdown:
@@ -19,3 +19,9 @@ HEAD_OF_HOUSEHOLD:
   2021-01-01: 29
 WIDOW:
   2021-01-01: 29
+Joint:
+  2021-01-01: 0
+Single:
+  2021-01-01: 0
+Separate:
+  2021-01-01: 0

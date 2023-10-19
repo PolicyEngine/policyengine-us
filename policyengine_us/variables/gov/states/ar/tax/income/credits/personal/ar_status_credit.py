@@ -17,4 +17,4 @@ class ar_status_credit(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.ar.tax.income.credits.personal
         filing_status = tax_unit("filing_status", period)
-        return p.personal[filing_status]
+        return p.amount.additional[filing_status]
