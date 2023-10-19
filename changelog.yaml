@@ -4734,3 +4734,29 @@
     added:
     - Delaware pension exclusion.
   date: 2023-10-16 19:13:31
+- bump: minor
+  changes:
+    added:
+    - Georgia deductions.
+  date: 2023-10-17 14:53:55
+- bump: patch
+  changes:
+    fixed:
+    - Adjust Georgia variable folder structure.
+  date: 2023-10-17 22:47:08
+- bump: minor
+  changes:
+    added:
+    - Seven empty state ??_income_tax.py variables.
+    - All states to the state_income_taxes.py adds list.
+  date: 2023-10-18 20:13:39
+- bump: patch
+  changes:
+    fixed:
+    - Add missing 2021 Idaho 5.5% income tax bracket.
+  date: 2023-10-18 22:44:35
+- bump: minor
+  changes:
+    fixed:
+    - Added Kentucky pension income exclusion.
+  date: 2023-10-19 13:58:32
