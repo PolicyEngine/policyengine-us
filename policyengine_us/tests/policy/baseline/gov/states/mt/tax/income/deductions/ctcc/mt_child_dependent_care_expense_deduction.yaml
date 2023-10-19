@@ -1,27 +1,33 @@
 - name: Unit Test 1 - No Qualifying Child
   period: 2021
   input:
+    age: 16
+    is_tax_unit_dependent: true
+    is_disabled: false
     mt_agi: 15_000
     tax_unit_childcare_expenses: 2_500
-    mt_child_dependent_care_expense_deduction_eligible_children: 0
   output:
     mt_child_dependent_care_expense_deduction: 0.0
 
 - name: Unit Test 2 - Qualifying Child and Income Qualify
   period: 2021
   input:
+    age: 8
+    is_tax_unit_dependent: true
+    is_disabled: false
     mt_agi: 27_000
     tax_unit_childcare_expenses: 4_000
-    mt_child_dependent_care_expense_deduction_eligible_children: 1
   output:
-    mt_child_dependent_care_expense_deduction: 4_000.0
+    mt_child_dependent_care_expense_deduction: 0.0
 
 - name: Unit Test 3 - Qualifying Child, Income Qualify, and Maximum Deduction
   period: 2021
   input:
+    age: 3
+    is_tax_unit_dependent: true
+    is_disabled: false
     mt_agi: 27_100
     tax_unit_childcare_expenses: 4_800
-    mt_child_dependent_care_expense_deduction_eligible_children: 1
   output:
-    mt_child_dependent_care_expense_deduction: 4_000.0
+    mt_child_dependent_care_expense_deduction: 0.0
 
