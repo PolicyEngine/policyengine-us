@@ -21,7 +21,7 @@ class az_parents_grandparents_exemption(Variable):
         support_payment_ratio[mask] = (
             care_and_support_payment[mask] / care_and_support_costs[mask]
         )
-        payment_eligiblity = (
+        payment_eligible = (
             support_payment_ratio > p.parent_grandparent.cost_rate
         )
         # Eligible parents of ancestors of parents have to be 65 or older
@@ -29,15 +29,9 @@ class az_parents_grandparents_exemption(Variable):
         age = person("age", period)
         age_eligible = age >= p.parent_grandparent.min_age
 
-        cohabitating_parent = person("cohabitating_parent", period)
-        eligible_parent = (
-            cohabitating_parent & age_eligible & payment_eligiblity
-        )
+        eligible_parent = age_eligible & payment_eligible
 
-        cohabitating_grandparent = person("cohabitating_grandparent", period)
-        eligible_grandparent = (
-            cohabitating_grandparent & age_eligible & payment_eligiblity
-        )
+        eligible_grandparent = age_eligible & payment_eligible
 
         total_exemptions = eligible_parent + eligible_grandparent
         return p.parent_grandparent.amount * tax_unit.sum(total_exemptions)

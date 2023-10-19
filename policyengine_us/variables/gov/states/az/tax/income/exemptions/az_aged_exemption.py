@@ -7,22 +7,18 @@ class az_aged_exemption(Variable):
     label = "Arizona aged exemption"
     unit = USD
     definition_period = YEAR
-    defined_for = StateCode.AZ
+    defined_for = "az_aged_exemption_eligible"
 
     def formula(tax_unit, period, parameters):
-        filing_status = tax_unit("filing_status", period)
-        joint = filing_status == filing_status.possible_values.JOINT
-
         p = parameters(period).gov.states.az.tax.income.exemptions.aged
+        person = tax_unit.members
 
-        age_head = tax_unit("age_head", period)
-        head_age_eligible = age_head >= p.min_age
-        dependent_head = tax_unit("dsi", period)
-        head_eligible = head_age_eligible & ~dependent_head
+        age = person("age", period)
+        amount = p.amount.calc(age)
+        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
 
-        age_spouse = tax_unit("age_spouse", period)
-        spouse_age_eligible = age_spouse >= p.min_age
-        dependent_spouse = tax_unit("dsi_spouse", period)
-        spouse_eligible = spouse_age_eligible & ~dependent_spouse
+        eligible_amount = amount * head_or_spouse
 
-        return p.amount * (head_eligible + spouse_eligible * joint)
+        dsi_eligible = tax_unit("az_aged_exemption_eligible", period)
+
+        return tax_unit.sum(eligible_amount) * dsi_eligible
