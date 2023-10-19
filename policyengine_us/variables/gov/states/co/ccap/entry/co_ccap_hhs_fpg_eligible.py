@@ -14,7 +14,7 @@ class co_ccap_hhs_fpg_eligible(Variable):
 
     def formula(tax_unit, period, parameters):
         if tax_unit.household("state_code_str", period.this_year) != "CO":
-            continue
+            return
         spm_unit = tax_unit.spm_unit
         monthly_agi = np.round(
             tax_unit("adjusted_gross_income", period.this_year)
