@@ -4,6 +4,9 @@ from .winship import create_eitc_winship_reform
 from .dc_tax_threshold_joint_ratio import (
     create_dc_tax_threshold_joint_ratio_reform,
 )
+from .tax_foundation.growth_and_opportunity.remove_net_investment_tax import (
+    create_remove_net_investment_tax_reform,
+)
 from policyengine_core.reforms import Reform
 import warnings
 
@@ -17,12 +20,15 @@ def create_structural_reforms_from_parameters(parameters, period):
     dc_tax_threshold_joint_ratio_reform = (
         create_dc_tax_threshold_joint_ratio_reform(parameters, period)
     )
-
+    remove_net_investment_income_reform = (
+        create_remove_net_investment_tax_reform(parameters, period)
+    )
     reforms = [
         afa_reform,
         winship_reform,
         dc_kccatc_reform,
         dc_tax_threshold_joint_ratio_reform,
+        remove_net_investment_income_reform,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
 
