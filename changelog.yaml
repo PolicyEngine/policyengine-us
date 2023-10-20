@@ -4750,3 +4750,23 @@
     - Seven empty state ??_income_tax.py variables.
     - All states to the state_income_taxes.py adds list.
   date: 2023-10-18 20:13:39
+- bump: patch
+  changes:
+    fixed:
+    - Add missing 2021 Idaho 5.5% income tax bracket.
+  date: 2023-10-18 22:44:35
+- bump: minor
+  changes:
+    fixed:
+    - Added Kentucky pension income exclusion.
+  date: 2023-10-19 13:58:32
+- bump: patch
+  changes:
+    fixed:
+    - Change co_chp parameters to be at or before 2023-01-01
+  date: 2023-10-19 17:00:51
+- bump: patch
+  changes:
+    fixed:
+    - Louisiana military pay exclusion folder structure.
+  date: 2023-10-19 19:21:03
