@@ -1,0 +1,7 @@
+- name: Case 1, capital_gains is positive
+  period: 2021
+  input:
+    state_code: SC
+    net_capital_gain: 1_000
+  output: 
+    sc_net_capital_gain_deduction: 440
