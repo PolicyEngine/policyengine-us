@@ -11,7 +11,7 @@ class va_tax_adjsutment_calculation(Variable):
     reference = "https://www.tax.virginia.gov/sites/default/files/vatax-pdf/2022-760-instructions.pdf#page=19"
 
     def formula(tax_unit, period, parameters):
-        va_agi = person(va_agi, "period")
+        va_agi = person("va_agi", period)
         va_agi_total = person.tax_unit.sum(net_income)
 
         # avoid divide-by-zero warnings when using where() function
@@ -26,8 +26,8 @@ class va_tax_adjsutment_calculation(Variable):
             fraction,
         )
 
-        is_head = tax_unit(is_tax_unit_head, "period")
-        is_spouse = tax_unit(is_tax_unit_spouse, "period")
+        is_head = tax_unit("is_tax_unit_head", period)
+        is_spouse = tax_unit("is_tax_unit_spouse", period)
 
         heads_fraction = where(is_head, fraction, 0)
         va_agi_head = heads_fraction * va_agi_total
