@@ -19,7 +19,7 @@ class mi_retirement_benefits_deduction_tier_three(Variable):
             "mi_retirement_benefits_deduction_tier_three_ssa", period
         )
         rbd3_retired_amount = tax_unit(
-            "mi_retirement_benefits_deduction_tier_three_retired", period
+            "mi_retirement_benefits_deduction_tier_three_ssa_retired", period
         )
 
         return where(

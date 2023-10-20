@@ -1,7 +1,9 @@
 from policyengine_us.model_api import *
 
 
-class mi_retirement_benefits_deduction_tier_three_retired_eligible(Variable):
+class mi_retirement_benefits_deduction_tier_three_ssa_retired_eligible(
+    Variable
+):
     value_type = bool
     entity = TaxUnit
     label = "Eligible for the Michigan tier three retirement benefits deduction qualifying both SSA and retirement year"
