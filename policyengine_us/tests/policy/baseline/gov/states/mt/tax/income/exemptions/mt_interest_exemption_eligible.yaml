@@ -1,35 +1,25 @@
-- name: Joint filing
+- name: both are eligible
   period: 2023
   input:
-    people:
-      person1:
-        taxable_interest_income: 1_000
-      person2:
-        taxable_interest_income: 900
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
-        filing_status: JOINT
-    households:
-      household:
-        state_code: MT
+    age_head: 65
+    age_spouse: 65
+    state_code: MT
   output:
-    mt_interest_exemption_eligible: 1_600
+    mt_interest_exemption_eligible: true
 
-
-- name: Single filing
+- name:  both are eligible, even spouse is under the age
   period: 2023
   input:
-    people:
-      person1:
-        is_tax_unit_head: true
-        taxable_interest_income: 1_000
-    tax_units:
-      tax_unit:
-        members: [person1]
-        filing_status: SINGLE
-    households:
-      household:
-        state_code: MT
+    age_head: 65
+    age_spouse: 62
+    state_code: MT
   output:
-    mt_interest_exemption_eligible: 800
+    mt_interest_exemption_eligible: true
+
+- name: single not eligible
+  period: 2023
+  input:
+    age_head: 62
+    state_code: MT
+  output:
+    mt_interest_exemption_eligible: false
