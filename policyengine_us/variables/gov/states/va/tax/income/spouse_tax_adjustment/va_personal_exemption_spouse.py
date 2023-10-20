@@ -12,8 +12,13 @@ class va_personal_exemption_spouse(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.va.tax.income.spouse_head_adjustment
-        aged_blind_count = tax_unit("blind_spouse", period) + (
+        age_spouse = tax_unit("age_spouse", period)
+        age_blind_spouse = tax_unit("blind_spouse", period) + (
             age_spouse >= p.age_threshold
         )
 
-        return aged_blind_count * p.age_blind_multiplier + p.addition_amount
+        personal_exemption_spouse = (
+            age_blind_spouse * p.age_blind_multiplier + p.addition_amount
+        )
+
+        return personal_exemption_spouse
