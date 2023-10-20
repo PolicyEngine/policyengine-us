@@ -1,0 +1,63 @@
+description: Maine limits the property tax fairness credit to filers with income below this threshold, based on filing status and number of dependents.
+SINGLE:
+  0:
+    2021-01-01: 42_000
+    2022-01-01: 55_000
+  1:
+    2021-01-01: 42_000
+    2022-01-01: 55_000
+  2:
+    2021-01-01: 42_000
+    2022-01-01: 55_000
+HEAD_OF_HOUSEHOLD:
+  0:
+    2021-01-01: 55_000
+    2022-01-01: 70_000
+  1:
+    2021-01-01: 55_000
+    2022-01-01: 70_000
+  2:
+    2021-01-01: 68_000
+    2022-01-01: 70_000
+JOINT:
+  0:
+    2021-01-01: 55_000
+    2022-01-01: 70_000
+  1:
+    2021-01-01: 68_000
+    2022-01-01: 86_250
+  2:
+    2021-01-01: 68_000
+    2022-01-01: 86_250
+WIDOW:
+  0:
+    2021-01-01: 55_000
+    2022-01-01: 70_000
+  1:
+    2021-01-01: 68_000
+    2022-01-01: 86_250
+  2:
+    2021-01-01: 68_000
+    2022-01-01: 86_250
+SEPARATE:
+  0:
+    2021-01-01: 0
+  1:
+    2021-01-01: 0
+  2:
+    2021-01-01: 0
+metadata:
+  unit: currency-USD
+  reference:
+    # Income threshold is not specified in the legal code
+    - title: §5219-KK. Property tax fairness credit for tax 
+      href: https://legislature.maine.gov/statutes/36/title36sec5219-KK.html
+    - title: 2021 Form 1040ME Property Tax Fairness Credit / Sales Tax Fairness Credit 
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/21_1040me_sched_pstfc_dwnldff.pdf#page=1
+    - title: 2022 Form 1040ME Property Tax Fairness Credit / Sales Tax Fairness Credit 
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/22_1040me_sched_pstfc_ff.pdf#page=1
+  period: year
+  label: Maine property tax fairness credit income threshold
+  breakdown:
+    - filing_status
+    - range(0, 3)

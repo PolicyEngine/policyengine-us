@@ -4642,3 +4642,136 @@
     fixes:
     - Georgia investment in 529 plan deduction variable name adjustment.
   date: 2023-10-05 01:05:40
+- bump: minor
+  changes:
+    fixed:
+    - SNAP now uses the previous October's FPG.
+  date: 2023-10-05 14:43:50
+- bump: patch
+  changes:
+    fixed:
+    - Update Colorado TABOR parameters for 2023.
+  date: 2023-10-06 18:37:54
+- bump: minor
+  changes:
+    added:
+    - Vermont capital gain exclusion.
+  date: 2023-10-06 23:18:37
+- bump: minor
+  changes:
+    added:
+    - West Virginia senior citizens tax credit.
+    - West Virginia homestead exemption.
+  date: 2023-10-06 23:26:28
+- bump: minor
+  changes:
+    added:
+    - Mississippi adjusted gross income.
+  date: 2023-10-06 23:43:31
+- bump: patch
+  changes:
+    fixed:
+    - Missing unit tests and delta parameter for marginal_tax_rate variable.
+  date: 2023-10-07 11:49:55
+- bump: patch
+  changes:
+    fixed:
+    - Missing tests of cliff_gap and cliff_evaluated variables.
+  date: 2023-10-07 11:55:34
+- bump: minor
+  changes:
+    added:
+    - Connecticut military retirement subtraction.
+  date: 2023-10-10 16:55:30
+- bump: minor
+  changes:
+    added:
+    - Hawaii subtractions.
+  date: 2023-10-10 23:24:10
+- bump: minor
+  changes:
+    added:
+    - Tax unit head or spouse varibale.
+  date: 2023-10-11 13:37:15
+- bump: minor
+  changes:
+    added:
+    - Maine sales tax fairness credits.
+    - Maine property tax fairness credits.
+  date: 2023-10-12 19:53:13
+- bump: patch
+  changes:
+    fixed:
+    - Move maine adjusted gross income folder.
+  date: 2023-10-12 22:02:21
+- bump: minor
+  changes:
+    added:
+    - Vermont child and dependent care credit.
+  date: 2023-10-13 16:13:43
+- bump: patch
+  changes:
+    fixed:
+    - Definition of Medicaid/CHIP/ACA-related modified adjusted gross income (MAGI).
+  date: 2023-10-14 14:11:49
+- bump: minor
+  changes:
+    added:
+    - Vermont child tax credit.
+  date: 2023-10-15 22:06:59
+- bump: patch
+  changes:
+    fixed:
+    - Formula for tax_unit_medicaid_income_level variable.
+  date: 2023-10-15 23:47:31
+- bump: minor
+  changes:
+    added:
+    - Connecticut pension or annuity income subtraction.
+  date: 2023-10-16 18:16:36
+- bump: minor
+  changes:
+    added:
+    - Delaware pension exclusion.
+  date: 2023-10-16 19:13:31
+- bump: minor
+  changes:
+    added:
+    - Georgia deductions.
+  date: 2023-10-17 14:53:55
+- bump: patch
+  changes:
+    fixed:
+    - Adjust Georgia variable folder structure.
+  date: 2023-10-17 22:47:08
+- bump: minor
+  changes:
+    added:
+    - Seven empty state ??_income_tax.py variables.
+    - All states to the state_income_taxes.py adds list.
+  date: 2023-10-18 20:13:39
+- bump: patch
+  changes:
+    fixed:
+    - Add missing 2021 Idaho 5.5% income tax bracket.
+  date: 2023-10-18 22:44:35
+- bump: minor
+  changes:
+    fixed:
+    - Added Kentucky pension income exclusion.
+  date: 2023-10-19 13:58:32
+- bump: patch
+  changes:
+    fixed:
+    - Change co_chp parameters to be at or before 2023-01-01
+  date: 2023-10-19 17:00:51
+- bump: patch
+  changes:
+    fixed:
+    - Louisiana military pay exclusion folder structure.
+  date: 2023-10-19 19:21:03
+- bump: patch
+  changes:
+    fixed:
+    - Integrated year-specific Poverty Tracker variables.
+  date: 2023-10-20 04:10:36
