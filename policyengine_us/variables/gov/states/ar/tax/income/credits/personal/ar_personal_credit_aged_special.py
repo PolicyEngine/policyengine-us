@@ -17,6 +17,8 @@ class ar_personal_credit_aged_special(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.ar.tax.income.credits.personal
         p_ag = p.aged
-        count_aged_special = add(tax_unit, period, ["ar_personal_credit_aged_special_eligible"])
+        count_aged_special = add(
+            tax_unit, period, ["ar_personal_credit_aged_special_eligible"]
+        )
 
         return count_aged_special * (p_ag.special + p_ag.base)
