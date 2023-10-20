@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class medicaid_income(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Medicaid/CHIP/ACA-related MAGI"
+    label = "Medicaid/CHIP/ACA-related Modified AGI"
     unit = USD
     documentation = "Medicaid/CHIP/ACA-related modified AGI for this tax unit."
     definition_period = YEAR
