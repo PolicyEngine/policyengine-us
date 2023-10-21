@@ -1,0 +1,22 @@
+description: Vermont limits the low-income child and dependent care credit to filers with federal adjusted gross income less than this amount.
+metadata:
+  reference:
+    - title: 2021 Form IN-112 Vermont Tax Adjustments and Credits
+      href: https://tax.vermont.gov/sites/tax/files/documents/IN-112-2021.pdf#page=2
+    - title: 2021 Vermont Statutes, Title 32 - Taxation and Finance, Chapter 151 - Income Taxes, §5828c. Low-income child and dependent care credit
+      href: https://law.justia.com/codes/vermont/2021/title-32/chapter-151/section-5828c/
+  unit: currency-USD
+  period: year
+  label: Vermont low-income child and dependent care credit AGI limit
+  breakdown:
+  - filing_status
+JOINT:
+  2005-01-01: 40_000
+HEAD_OF_HOUSEHOLD:
+  2005-01-01: 30_000
+WIDOW:
+  2005-01-01: 30_000
+SINGLE:
+  2005-01-01: 30_000
+SEPARATE:
+  2005-01-01: 30_000

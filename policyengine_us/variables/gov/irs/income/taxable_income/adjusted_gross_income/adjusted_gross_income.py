@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class adjusted_gross_income(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Federal adjusted gross income for each tax unit"
+    label = "Adjusted gross income"
     unit = USD
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/62"
