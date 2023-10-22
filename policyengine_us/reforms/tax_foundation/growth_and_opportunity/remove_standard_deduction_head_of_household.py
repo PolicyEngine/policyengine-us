@@ -113,20 +113,22 @@ def create_remove_standard_deduction_head_of_household() -> Reform:
     return reform
 
 
-def create_remove_standard_deduction_head_of_household(
+def create_remove_standard_deduction_head_of_household_reform(
     parameters, period, bypass: bool = False
 ):
     if bypass:
         return create_remove_standard_deduction_head_of_household()
 
-    p = parameters(period).gov.contrib.congress.delauro.american_family_act
+    p = parameters(period).gov.contrib.tax_foundation.growth_and_opportunity
 
-    if p.baby_bonus > 0:
+    if p.remove_head_of_household > 0:
         return create_remove_standard_deduction_head_of_household()
     else:
         return None
 
 
-american_family_act = create_remove_standard_deduction_head_of_household(
-    None, None, bypass=True
+remove_standard_deduction_head_of_household = (
+    create_remove_standard_deduction_head_of_household_reform(
+        None, None, bypass=True
+    )
 )
