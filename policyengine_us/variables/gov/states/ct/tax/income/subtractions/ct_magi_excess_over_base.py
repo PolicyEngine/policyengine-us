@@ -15,6 +15,7 @@ class ct_magi_excess_over_base(Variable):
     definition_period = YEAR
     defined_for = StateCode.CT
 
+    # Code extracted from tax_unit_taxable_social_security
     def formula(tax_unit, period, parameters):
         ss = parameters(period).gov.irs.social_security.taxability
         gross_ss = tax_unit("tax_unit_social_security", period)

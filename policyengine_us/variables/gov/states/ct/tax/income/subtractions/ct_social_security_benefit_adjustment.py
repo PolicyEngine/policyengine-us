@@ -15,12 +15,13 @@ class ct_social_security_benefit_adjustment(Variable):
         ).gov.states.ct.tax.income.subtractions.social_security
         filing_status = tax_unit("filing_status", period)
         ss_rate = p.rate
-        agi = add(tax_unit, period, ["adjusted_gross_income"])
+        agi = tax_unit("adjusted_gross_income", period)
         income_threshold = p.income_threshold[filing_status]
-        ss_benefit = add(tax_unit, period, ["taxable_social_security"])
+        taxable_ss = add(tax_unit, period, ["taxable_social_security"])
         excess = tax_unit("ct_magi_excess_over_base", period)
 
-        includable_ss = ss_benefit * ss_rate
-        max_inclusion = min_(includable_ss, ss_rate * excess)
-        adjusted_ss_benefit = max_(ss_benefit - max_inclusion, 0)
-        return where(agi < income_threshold, ss_benefit, adjusted_ss_benefit)
+        total_ss = add(tax_unit, period, ["social_security"])
+        ss_fraction = total_ss * ss_rate
+        max_inclusion = min_(ss_fraction, ss_rate * excess)
+        adjusted_ss_benefit = max_(total_ss - max_inclusion, 0)
+        return where(agi < income_threshold, total_ss, adjusted_ss_benefit)
