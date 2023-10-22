@@ -15,13 +15,12 @@ class mi_retirement_benefits_deduction_tier_three(Variable):
     defined_for = "mi_retirement_benefits_deduction_tier_three_eligible"
 
     def formula(tax_unit, period, parameters):
-        rbd3_ssa_amount = tax_unit(
-            "mi_retirement_benefits_deduction_tier_three_ssa", period
+        rbd3_ss_amount = tax_unit(
+            "mi_retirement_benefits_deduction_tier_three_ss_exempt_employment",
+            period,
         )
-        rbd3_retired_amount = tax_unit(
+        rbd3_ssa_retired_amount = tax_unit(
             "mi_retirement_benefits_deduction_tier_three_ssa_retired", period
         )
 
-        return where(
-            rbd3_retired_amount > 0, rbd3_retired_amount, rbd3_ssa_amount
-        )
+        return max_(rbd3_ss_amount, rbd3_ssa_retired_amount)

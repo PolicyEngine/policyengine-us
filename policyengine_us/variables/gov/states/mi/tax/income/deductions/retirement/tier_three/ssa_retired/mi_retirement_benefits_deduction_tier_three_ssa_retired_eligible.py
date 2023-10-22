@@ -1,30 +1,31 @@
 from policyengine_us.model_api import *
 
 
-class mi_standard_deduction_tier_two_increase_eligible(Variable):
+class mi_retirement_benefits_deduction_tier_three_ssa_retired_eligible(
+    Variable
+):
     value_type = int
     entity = TaxUnit
-    label = "Number of eligible people for the Michigan tier two standard deduction increase"
+    label = "Eligible for the Michigan tier three retirement benefits deduction qualifying SSA & retired"
     definition_period = YEAR
     reference = (
-        "http://legislature.mi.gov/doc.aspx?mcl-206-30",  # (c)
-        "https://www.michigan.gov/taxes/iit/retirement-and-pension-benefits/michigan-standard-deduction",
-        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2022/2022-IIT-Forms/BOOK_MI-1040.pdf#page=15",
+        "http://legislature.mi.gov/doc.aspx?mcl-206-30",
+        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2022/2022-IIT-Forms/BOOK_MI-1040.pdf#page=18",
+        "https://www.michigan.gov/taxes/iit/retirement-and-pension-benefits",
     )
     defined_for = StateCode.MI
 
     def formula(tax_unit, period, parameters):
         p = parameters(
             period
-        ).gov.states.mi.tax.income.deductions.standard.tier_two
+        ).gov.states.mi.tax.income.deductions.retirement_benefits.tier_three.ssa_retired
 
         person = tax_unit.members
 
         retirement_eligible = (
             person("year_of_retirement", period) <= p.retirement_year
-        )
+        ) & (person("year_of_retirement", period) > 0)
 
-        # Line 23C & 23G from the 2022 tax form
         ssa_eligible = (
             person("retirement_benefits_from_ssa_exempt_employment", period)
             > 0
@@ -33,7 +34,7 @@ class mi_standard_deduction_tier_two_increase_eligible(Variable):
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
 
         eligible_person = (
-            retirement_eligible * ssa_eligible * is_head_or_spouse
+            ssa_eligible * retirement_eligible * is_head_or_spouse
         )
 
         return tax_unit.sum(eligible_person)

@@ -1,7 +1,9 @@
 from policyengine_us.model_api import *
 
 
-class mi_retirement_benefits_deduction_tier_three_ssa_eligible(Variable):
+class mi_retirement_benefits_deduction_tier_three_ss_exempt_employment_eligible_people(
+    Variable
+):
     value_type = int
     entity = TaxUnit
     label = "Number of eligible people for the Michigan tier three retirement benefits deduction qualifying SSA"
@@ -14,20 +16,18 @@ class mi_retirement_benefits_deduction_tier_three_ssa_eligible(Variable):
     defined_for = StateCode.MI
 
     def formula(tax_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.mi.tax.income.deductions.standard.tier_two
-
         person = tax_unit.members
 
-        ssa_eligible = (
-            person("social_security_exempt_retirement_benefits", period) > 0
+        ss_eligible = (
+            person(
+                "retirement_benefits_from_employment_exempt_from_social_security",
+                period,
+            )
+            > 0
         )
 
-        filer_eligible = person("is_tax_unit_head", period)
-        spouse_eligible = person("is_tax_unit_spouse", period)
-        is_head_or_spouse = filer_eligible | spouse_eligible
+        is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
 
-        eligible_person = ssa_eligible * is_head_or_spouse
+        eligible_person = ss_eligible * is_head_or_spouse
 
         return tax_unit.sum(eligible_person)

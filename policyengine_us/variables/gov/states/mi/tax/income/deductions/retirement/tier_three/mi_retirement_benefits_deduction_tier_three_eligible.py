@@ -2,7 +2,7 @@ from policyengine_us.model_api import *
 
 
 class mi_retirement_benefits_deduction_tier_three_eligible(Variable):
-    value_type = float
+    value_type = bool
     entity = TaxUnit
     label = (
         "Eligible for the Michigan tier three retirement benefits deduction"

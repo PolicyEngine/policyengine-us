@@ -13,7 +13,7 @@
     people:
       person1:
         taxable_pension_income: 40_000
-        social_security_exempt_retirement_benefits: 1_000
+        retirement_benefits_from_employment_exempt_from_social_security: 1_000
     tax_units:
       tax_unit:
         greater_age_head_spouse: 66
@@ -52,7 +52,7 @@
         interest_income: 500
         dividend_income: 400
         capital_gains: 100
-        is_tax_unit_head: true
+        is_tax_unit_head_or_spouse: true
     tax_units:
       tax_unit:
         greater_age_head_spouse: 77
@@ -73,7 +73,7 @@
         military_retirement_pay: 1_000
         military_service_income: 5_000
         taxable_social_security: 2_000
-        is_tax_unit_head: true
+        is_tax_unit_head_or_spouse: true
     tax_units:
       tax_unit:
         greater_age_head_spouse: 67
@@ -86,17 +86,17 @@
   output: # 20000 - 1000 - 5000 - 2000 - 2000 < 40000
     mi_standard_deduction_and_pension_benefit: 10_000
 
-- name: 2022 single filer who is at the tier 2 standard deduction age threshold, and receive retirement benefits from employment exempt from Social Security
+- name: 2022 single filer who is at the tier 2 standard deduction age threshold, and receive retirement benefits from SSA employment exempt
   period: 2022
   input:
     people:
       person1:
         taxable_pension_income: 20_000
         year_of_retirement: 2012
-        social_security_exempt_retirement_benefits: 1_000
+        retirement_benefits_from_ssa_exempt_employment: 1_000
         military_retirement_pay: 1_000
         military_service_income: 5_000
-        is_tax_unit_head: true
+        is_tax_unit_head_or_spouse: true
     tax_units:
       tax_unit:
         greater_age_head_spouse: 72
@@ -117,24 +117,24 @@
   output: 
     mi_standard_deduction_and_pension_benefit: 0
 
-- name: 2022 joint filer who is at the tier 2 standard deduction age threshold, their spouse is at the tier 3 retirement and pension benefits threshold, and both receive retirement benefits from employment exempt from Social Security
+- name: 2022 joint filer who is at the tier 2 standard deduction age threshold, their spouse is at the tier 3 retirement and pension benefits threshold, and both receive retirement benefits from SSA employment exempt
   period: 2022
   input:
     people:
       person1:
         taxable_pension_income: 40_000
         year_of_retirement: 2010
-        social_security_exempt_retirement_benefits: 2_000
+        retirement_benefits_from_ssa_exempt_employment: 2_000
         military_retirement_pay: 1_000
         military_service_income: 5_000
-        is_tax_unit_head: true
+        is_tax_unit_head_or_spouse: true
       person2:
         taxable_pension_income: 30_000
         year_of_retirement: 2012
-        social_security_exempt_retirement_benefits: 4_000
+        retirement_benefits_from_ssa_exempt_employment: 4_000
         military_retirement_pay: 2_000
         military_service_income: 3_000
-        is_tax_unit_spouse: true
+        is_tax_unit_head_or_spouse: true
     tax_units:
       tax_unit:
         greater_age_head_spouse: 73
@@ -146,17 +146,19 @@
   output: # 40000 + 2 * 15000 - 1000 - 5000 - 2000 - 3000 < 40000 + 30000
     mi_standard_deduction_and_pension_benefit: 59_000
 
-- name: 2022 joint filer and their spouse are at the tier 3 retirement and pension benefits threshold, receive retirement benefits from employment exempt from Social Security, and one retired before 2013
+- name: 2022 joint filer and their spouse are at the tier 3 retirement and pension benefits threshold, one receive retirement benefits from employment exempt from Social Security, one receive retirement benefits from SSA employment exempt and retired before 2013
   period: 2022
   input:
     people:
       person1:
         taxable_pension_income: 20_000
-        social_security_exempt_retirement_benefits: 2_000
+        retirement_benefits_from_employment_exempt_from_social_security: 2_000
+        is_tax_unit_head_or_spouse: true
       person2:
         taxable_pension_income: 40_000
-        social_security_exempt_retirement_benefits: 4_000
+        retirement_benefits_from_ssa_exempt_employment: 4_000
         year_of_retirement: 2010
+        is_tax_unit_head_or_spouse: true
     tax_units:
       tax_unit:
         greater_age_head_spouse: 66
@@ -165,7 +167,7 @@
     household:
       members: [person1, person2]
       state_code: MI
-  output: # 20000 + 15000 < 20000 + 40000
+  output: # 15000 < 55000 < 20000 + 40000
     mi_standard_deduction_and_pension_benefit: 55_000
 
 - name: 2022 joint filer and their spouse are at the tier 2 standard deduction age threshold, and one receive retirement benefits from employment exempt from Social Security
@@ -175,17 +177,15 @@
       person1:
         taxable_pension_income: 40_000
         year_of_retirement: 2010
-        social_security_exempt_retirement_benefits: 2_000
+        retirement_benefits_from_ssa_exempt_employment: 2_000
         military_retirement_pay: 1_000
         military_service_income: 5_000
-        is_tax_unit_head: true
+        is_tax_unit_head_or_spouse: true
       person2:
         taxable_pension_income: 30_000
-        year_of_retirement: 2012
-        social_security_exempt_retirement_benefits: 0
         military_retirement_pay: 2_000
         military_service_income: 3_000
-        is_tax_unit_spouse: true
+        is_tax_unit_head_or_spouse: true
     tax_units:
       tax_unit:
         greater_age_head_spouse: 73
@@ -197,28 +197,26 @@
   output: # 40000 + 15000 - 1000 - 5000 - 2000 - 3000 < 40000 + 30000
     mi_standard_deduction_and_pension_benefit: 44_000
 
-- name: 2022 joint filer and their spouse are at the tier 2 standard deduction age threshold, and one receive retirement benefits from employment exempt from Social Security, and with one more household member
+- name: 2022 joint filer and their spouse are at the tier 2 standard deduction age threshold, and one receive retirement benefits from SSA employment exempt, and with one more household member
   period: 2022
   input:
     people:
       person1:
         taxable_pension_income: 40_000
         year_of_retirement: 2010
-        social_security_exempt_retirement_benefits: 2_000
+        retirement_benefits_from_ssa_exempt_employment: 2_000
         military_retirement_pay: 1_000
         military_service_income: 5_000
-        is_tax_unit_head: true
+        is_tax_unit_head_or_spouse: true
       person2:
         taxable_pension_income: 30_000
-        year_of_retirement: 2012
-        social_security_exempt_retirement_benefits: 0
         military_retirement_pay: 2_000
         military_service_income: 3_000
-        is_tax_unit_spouse: true
+        is_tax_unit_head_or_spouse: true
       person3:
         taxable_pension_income: 30_000
         year_of_retirement: 2012
-        social_security_exempt_retirement_benefits: 300
+        retirement_benefits_from_ssa_exempt_employment: 300
         military_retirement_pay: 2_000
         military_service_income: 3_000
     tax_units:
@@ -241,13 +239,13 @@
         taxable_social_security: 2_000
         military_retirement_pay: 1_000
         military_service_income: 5_000
-        is_tax_unit_head: true
+        is_tax_unit_head_or_spouse: true
       person2:
         taxable_pension_income: 30_000
         taxable_social_security: 0
         military_retirement_pay: 2_000
         military_service_income: 3_000
-        is_tax_unit_spouse: true
+        is_tax_unit_head_or_spouse: true
       person3:
         taxable_pension_income: 30_000
         taxable_social_security: 300
@@ -273,14 +271,14 @@
         taxable_pension_income: 50_000
         military_retirement_pay: 1_000
         military_service_income: 5_000
-        is_tax_unit_head: true
+        is_tax_unit_head_or_spouse: true
       person2:
         taxable_pension_income: 60_000
         military_retirement_pay: 1_000
         interest_income: 10_000
         dividend_income: 2_000
         capital_gains: 1_000
-        is_tax_unit_spouse: true
+        is_tax_unit_head_or_spouse: true
     tax_units:
       tax_unit:
         greater_age_head_spouse: 77
@@ -301,17 +299,16 @@
   output: 
     mi_standard_deduction_and_pension_benefit: 0
 
-- name: 2022 widow filer at the tier 2 standard deduction age threshold, and not receive retirement benefits from employment exempt from Social Security
+- name: 2022 widow filer at the tier 2 standard deduction age threshold, and not receive retirement benefits from SSA employment exempt
   period: 2022
   input:
     people:
       person1:
         taxable_pension_income: 20_000
         year_of_retirement: 2014
-        social_security_exempt_retirement_benefits: 0
         military_retirement_pay: 1_000
         military_service_income: 5_000
-        is_tax_unit_head: true
+        is_tax_unit_head_or_spouse: true
     tax_units:
       tax_unit:
         greater_age_head_spouse: 73
@@ -333,7 +330,7 @@
         interest_income: 10_000
         dividend_income: 2_000
         capital_gains: 1_000
-        is_tax_unit_spouse: true
+        is_tax_unit_head_or_spouse: true
     tax_units:
       tax_unit:
         greater_age_head_spouse: 77

@@ -30,9 +30,7 @@ class mi_interest_dividends_capital_gains_deduction(Variable):
         # subdivision (e) or a deduction claimed under subdivision (f)(i), (ii), (iv), or (v)
         military_retirement_pay = person("military_retirement_pay", period)
 
-        head = person("is_tax_unit_head", period)
-        spouse = person("is_tax_unit_spouse", period)
-        is_head_or_spouse = head | spouse
+        is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
 
         idcg_amount = p.amount[filing_status] - tax_unit.sum(
             military_retirement_pay * is_head_or_spouse

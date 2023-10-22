@@ -27,9 +27,7 @@ class mi_standard_deduction_tier_three(Variable):
         taxable_social_security = person("taxable_social_security", period)
         mi_exemptions = tax_unit("mi_exemptions", period)
 
-        head = person("is_tax_unit_head", period)
-        spouse = person("is_tax_unit_spouse", period)
-        is_head_or_spouse = head | spouse
+        is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
 
         reductions = tax_unit.sum(
             (

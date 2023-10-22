@@ -17,12 +17,9 @@ class mi_retirement_benefits_deduction_tier_three_ssa_retired(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(
             period
-        ).gov.states.mi.tax.income.deductions.retirement_benefits.tier_three
+        ).gov.states.mi.tax.income.deductions.retirement_benefits.tier_three.ssa_retired
 
-        ssa_eligible = tax_unit(
-            "mi_retirement_benefits_deduction_tier_three_ssa_eligible", period
-        )
-        ssa_retired_eligible = tax_unit(
+        ssa_retired_eligible_person = tax_unit(
             "mi_retirement_benefits_deduction_tier_three_ssa_retired_eligible",
             period,
         )
@@ -31,9 +28,14 @@ class mi_retirement_benefits_deduction_tier_three_ssa_retired(Variable):
         person = tax_unit.members
         uncapped_pension_income = person("taxable_pension_income", period)
 
-        rbd3_retired_amount = ssa_retired_eligible * (
-            p.retired_amount[filing_status]
-            + p.amount * min_(ssa_eligible, ssa_retired_eligible)
+        rbd3_retired_amount = where(
+            ssa_retired_eligible_person == 0,
+            0,
+            where(
+                ssa_retired_eligible_person == 1,
+                p.single_qualifying_amount[filing_status],
+                p.both_qualifying_amount[filing_status],
+            ),
         )
 
         return min_(tax_unit.sum(uncapped_pension_income), rbd3_retired_amount)

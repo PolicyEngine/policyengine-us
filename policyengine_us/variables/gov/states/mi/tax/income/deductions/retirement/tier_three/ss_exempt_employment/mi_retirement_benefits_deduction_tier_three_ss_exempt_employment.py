@@ -1,12 +1,12 @@
 from policyengine_us.model_api import *
 
 
-class mi_retirement_benefits_deduction_tier_three_ssa(Variable):
+class mi_retirement_benefits_deduction_tier_three_ss_exempt_employment(
+    Variable
+):
     value_type = float
     entity = TaxUnit
-    label = (
-        "Michigan retirement benefits deduction for tier three qualifying SSA"
-    )
+    label = "Michigan tier three retirement benefits deduction for employment exempt from social security"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -19,15 +19,16 @@ class mi_retirement_benefits_deduction_tier_three_ssa(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(
             period
-        ).gov.states.mi.tax.income.deductions.retirement_benefits.tier_three
+        ).gov.states.mi.tax.income.deductions.retirement_benefits.tier_three.ss_exempt_employment
 
-        ssa_eligible = tax_unit(
-            "mi_retirement_benefits_deduction_tier_three_ssa_eligible", period
+        eligible_people = tax_unit(
+            "mi_retirement_benefits_deduction_tier_three_ss_exempt_employment_eligible_people",
+            period,
         )
 
         person = tax_unit.members
         uncapped_pension_income = person("taxable_pension_income", period)
 
-        rbd3_ssa_amount = p.amount * ssa_eligible
+        rbd3_ssa_amount = p.amount * eligible_people
 
         return min_(tax_unit.sum(uncapped_pension_income), rbd3_ssa_amount)
