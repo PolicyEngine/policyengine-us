@@ -1,4 +1,4 @@
-description: Ohio counts these sources as deductions.
+description: Ohio deducts these sources from taxable income.
 values:
   2021-01-01:
     - oh_section_179_expense_add_back
@@ -13,6 +13,7 @@ values:
     - disability_benefits
 metadata:
   unit: list
+  label: Ohio deductions
   reference:
     - title: 2022 Individual Income Tax - Ohio
       href: https://tax.ohio.gov/static/communications/publications/individual_income_tax_ohio.pdf#page=2
