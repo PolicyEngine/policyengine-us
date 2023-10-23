@@ -10,6 +10,6 @@ class ms_income_tax_before_credits_indiv(Variable):
     defined_for = StateCode.MS
 
     def formula(person, period, parameters):
-        income = person.tax_unit("ms_taxable_income_indiv", period)
+        income = person("ms_taxable_income_indiv", period)
         rate = parameters(period).gov.states.ms.tax.income.rate
         return rate.calc(income)
