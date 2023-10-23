@@ -11,12 +11,12 @@ class az_aged_exemption_eligible(Variable):
 
     def formula(tax_unit, period, parameters):
         filing_status = tax_unit("filing_status", period)
-        joint = filing_status == filing_status.possible_values.JOINT
+        separate = filing_status == filing_status.possible_values.SEPARATE
 
         dependent_head = tax_unit("dsi", period)
-        head_eligible = ~dependent_head
+        head_eligible = ~dependent_head * separate
 
         dependent_spouse = tax_unit("dsi_spouse", period)
         spouse_eligible = ~dependent_spouse
 
-        return head_eligible | spouse_eligible * joint
+        return head_eligible | spouse_eligible

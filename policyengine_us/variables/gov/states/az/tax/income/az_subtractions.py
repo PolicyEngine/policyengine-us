@@ -9,4 +9,4 @@ class az_subtractions(Variable):
     definition_period = YEAR
     defined_for = StateCode.AZ
 
-    adds = ["subtractions"]
+    adds = "gov.states.az.tax.income.subtractions.subtractions"

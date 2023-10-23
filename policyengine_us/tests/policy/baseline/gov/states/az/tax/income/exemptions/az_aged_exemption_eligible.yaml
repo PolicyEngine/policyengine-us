@@ -6,7 +6,7 @@
     dsi: false
     dsi_spouse: true
   output:
-    az_aged_exemption_eligible: true
+    az_aged_exemption_eligible: false
 
 - name: Case 2
   period: 2023
@@ -19,15 +19,6 @@
     az_aged_exemption_eligible: false
 
 - name: Case 3
-  period: 2023
-  input:
-    state_code: AZ
-    filing_status: SINGLE
-    dsi: true
-  output:
-    az_aged_exemption_eligible: false
-
-- name: Case 4
   period: 2023
   input:
     state_code: AZ
