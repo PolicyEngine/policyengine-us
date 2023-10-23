@@ -20,4 +20,4 @@ class az_aged_exemption(Variable):
         eligible_amount = amount * head_or_spouse
 
 
-        return tax_unit.sum(eligible_amount) * dsi_eligible
+        return tax_unit.sum(eligible_amount)
