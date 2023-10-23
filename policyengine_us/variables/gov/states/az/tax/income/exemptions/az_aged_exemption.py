@@ -19,6 +19,5 @@ class az_aged_exemption(Variable):
 
         eligible_amount = amount * head_or_spouse
 
-        dsi_eligible = tax_unit("az_aged_exemption_eligible", period)
 
         return tax_unit.sum(eligible_amount) * dsi_eligible
