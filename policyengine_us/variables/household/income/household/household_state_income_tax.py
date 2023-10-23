@@ -12,6 +12,7 @@ class household_state_income_tax(Variable):
         "ca_income_tax_before_refundable_credits",
         "co_income_tax_before_refundable_credits",
         "dc_income_tax_before_refundable_credits",
+        "de_income_tax_before_refundable_credits",
         "ia_income_tax_before_refundable_credits",
         "il_total_tax",
         "in_income_tax_before_refundable_credits",
@@ -38,6 +39,7 @@ class household_state_income_tax(Variable):
         "ca_refundable_credits",  # California.
         "co_refundable_credits",  # Colorado
         "dc_refundable_credits",  # District of Columbia.
+        "de_refundable_credits",  # Delaware.
         "ia_refundable_credits",  # Iowa.
         "il_refundable_credits",  # Illinois.
         "in_refundable_credits",  # Indiana.

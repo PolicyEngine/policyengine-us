@@ -12,6 +12,7 @@ class household_refundable_tax_credits(Variable):
         "ca_refundable_credits",  # California.
         "co_refundable_credits",  # Colorado.
         "dc_refundable_credits",  # District of Columbia.
+        "de_refundable_credits",  # Delaware.
         "ia_refundable_credits",  # Iowa.
         "il_refundable_credits",  # Illinois.
         "in_refundable_credits",  # Indiana.
