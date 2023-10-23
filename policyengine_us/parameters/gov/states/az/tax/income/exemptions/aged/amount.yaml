@@ -1,7 +1,8 @@
 description: Arizona provides an exemption of this amount per aged filer or spouse.
 metadata:
   type: single_amount
-  unit: currency-USD
+  threshold_unit: year
+  amount_unit: currency-USD
   period: year
   label: Arizona aged exemption amount
   reference: 
