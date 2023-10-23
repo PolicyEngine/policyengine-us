@@ -1,0 +1,15 @@
+- name: Itemized deduction percentage 15%
+  period: 2021
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.cbo.itemized_deduction.limit_itemized_deduction.itemized_deduction
+  input:
+    gov.contrib.cbo.itemized_deduction.percentage: 0.15
+    charitable_deduction: 40
+    interest_deduction: 20
+    salt_deduction: 20
+    medical_expense_deduction: 20 
+    casualty_loss_deduction: 20 
+  output:
+    itemized_deductions_less_salt: 15
+    
+    
