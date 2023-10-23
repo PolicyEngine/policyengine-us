@@ -14,7 +14,7 @@ class az_aged_exemption_eligible(Variable):
         joint = filing_status == filing_status.possible_values.JOINT
 
         dependent_head = tax_unit("dsi", period)
-        head_eligible = ~dependent_head
+        head_eligible = ~dependent_head * separate
 
         dependent_spouse = tax_unit("dsi_spouse", period)
         spouse_eligible = ~dependent_spouse
