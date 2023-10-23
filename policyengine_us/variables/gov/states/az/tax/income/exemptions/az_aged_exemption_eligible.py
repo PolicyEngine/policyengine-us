@@ -19,4 +19,4 @@ class az_aged_exemption_eligible(Variable):
         dependent_spouse = tax_unit("dsi_spouse", period)
         spouse_eligible = ~dependent_spouse
 
-        return head_eligible | spouse_eligible * joint
+        return head_eligible | spouse_eligible
