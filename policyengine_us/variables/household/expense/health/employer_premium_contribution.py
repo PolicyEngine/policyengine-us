@@ -2,7 +2,7 @@ from policyengine_us.model_api import *
 
 
 class EmployerPremiumContribution(Enum):
-    NONE = "NONE" # Employer paid none of premiums.
+    NONE = "NONE"  # Employer paid none of premiums.
     SOME = "SOME"
     ALL = "ALL"
     NA = "N/A"

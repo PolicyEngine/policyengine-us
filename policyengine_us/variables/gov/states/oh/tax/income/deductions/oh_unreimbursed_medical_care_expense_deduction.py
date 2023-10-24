@@ -15,8 +15,22 @@ class oh_unreimbursed_medical_care_expense_deduction(Variable):
     defined_for = StateCode.OH
 
     def formula(tax_unit, period, parameters):
+        person = tax_unit.members
+        employer_premium_contribution = person(
+            "employer_premium_contribution", period
+        )
+        status = employer_premium_contribution.possible_values
         premiums_expenses = add(
             tax_unit, period, ["health_insurance_premiums"]
+        )
+        hipaid = select(
+            [
+                employer_premium_contribution == status.NONE,
+                employer_premium_contribution == status.SOME,
+                employer_premium_contribution == status.ALL,
+                employer_premium_contribution == status.NA,
+            ],
+            [0, 0, 0, premiums_expenses],
         )
         medical_expenses = add(
             tax_unit, period, ["medical_out_of_pocket_expenses"]
@@ -29,4 +43,4 @@ class oh_unreimbursed_medical_care_expense_deduction(Variable):
         ).gov.states.oh.tax.income.deductions.unreimbursed_medical_care_expenses.rate
         adjusted_moop = max_(0, medical_expenses - federal_agi * rate)
 
-        return premiums_expenses + adjusted_moop
+        return hipaid + adjusted_moop
