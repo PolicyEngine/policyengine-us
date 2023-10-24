@@ -37,11 +37,3 @@
     filing_status: SEPARATE
   output:
     ms_regular_exemption: 6_000
-  
-- name: Married-combinec filer gets $12k exemption.
-  period: 2020
-  input:
-    state_code: MS
-    filing_status: COMBINED
-  output:
-    ms_regular_exemption: 12_000
