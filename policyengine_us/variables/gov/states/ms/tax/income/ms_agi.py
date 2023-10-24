@@ -3,7 +3,7 @@ from policyengine_us.model_api import *
 
 class ms_agi(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     label = "Mississippi adjusted gross income"
     unit = USD
     definition_period = YEAR
@@ -16,4 +16,3 @@ class ms_agi(Variable):
     # AGI = Income - Total adjustments from gross income
     adds = "gov.states.ms.tax.income.income_sources"
     subtracts = ["ms_agi_adjustments"]
-    # split them into individual and add together with indiv and joint
