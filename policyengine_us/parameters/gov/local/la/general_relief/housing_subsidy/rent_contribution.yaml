@@ -1,0 +1,12 @@
+description: Los Angeles county requires filers who receive the general relief grant to contribute this amout of the total garnt towards their rent.
+metadata:
+  label: Los Angeles County general relief housing subsidy rent contribution
+  unit: currency_USD
+  period: year
+  reference:
+    - title: GR Housing Subsidy and Case Management Program.pdf
+      href: ABP 392 General Relief Information Sheet Form_rev 07-2021.pdf
+values:
+  2021-07-01: 1_200 # 100 monthly
+
+# Is this required only if they receive the housing subsidy!

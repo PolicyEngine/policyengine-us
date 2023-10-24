@@ -1,0 +1,25 @@
+description: Los Angeles county qualifies filers for the general relief program with cash in addition to money in the bank account below this limit, based on the number of people that apply together.
+metadata:
+  label: Los Angeles County general relief personal property value limit
+  type: single_amount
+  threshold_unit: person
+  amount_unit: currency-USD
+  period: year
+  reference:
+    - title: ABP 392 General Relief Information Sheet Form_rev 07-2021.pdf
+      href: ABP 392 General Relief Information Sheet Form_rev 07-2021.pdf
+brackets:
+  - threshold:
+      2021-07-01: 0
+    amount:
+      2021-07-01: 0
+  - threshold:
+      2021-07-01: 1
+    amount:
+      2021-07-01: 100
+  - threshold:
+      2021-07-01: 2
+    amount:
+      2021-07-01: 200
+
+# reference just a placeholder
