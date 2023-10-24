@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.510.0] - 2023-10-23 15:52:44
+
+### Added
+
+- West Virginia subtractions.
+
+## [0.509.0] - 2023-10-22 21:46:44
+
+### Added
+
+- Delaware income tree.
+
 ## [0.508.4] - 2023-10-20 22:40:37
 
 ### Fixed
@@ -5661,6 +5673,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.510.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.509.0...0.510.0
+[0.509.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.508.4...0.509.0
 [0.508.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.508.3...0.508.4
 [0.508.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.508.2...0.508.3
 [0.508.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.508.1...0.508.2
