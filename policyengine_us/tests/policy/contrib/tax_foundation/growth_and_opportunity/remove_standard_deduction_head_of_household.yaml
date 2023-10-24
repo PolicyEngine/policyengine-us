@@ -2,11 +2,11 @@
   period: 2023
   reforms: policyengine_us.reforms.tax_foundation.growth_and_opportunity.remove_standard_deduction_head_of_household.remove_standard_deduction_head_of_household
   input:
-    gov.contrib.tax_foundation.growth_and_opportunity.remove_head_of_household : true
+    gov.contrib.tax_foundation.growth_and_opportunity.remove_head_of_household : True
     # tax unit basic standard deduction
     filing_status: HEAD_OF_HOUSEHOLD
-    separate_filer_itemizes: false
-    tax_unit_dependent_elsewhere: false
+    separate_filer_itemizes: False
+    tax_unit_dependent_elsewhere: False
     tax_unit_earned_income: 0
     # tax unit additional standard deduction
     aged_blind_count: 2
