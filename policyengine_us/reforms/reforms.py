@@ -4,6 +4,9 @@ from .winship import create_eitc_winship_reform
 from .dc_tax_threshold_joint_ratio import (
     create_dc_tax_threshold_joint_ratio_reform,
 )
+from .tax_foundation.growth_and_opportunity import (
+    create_remove_standard_deduction_head_of_household_reform,
+)
 from policyengine_core.reforms import Reform
 import warnings
 
@@ -17,12 +20,18 @@ def create_structural_reforms_from_parameters(parameters, period):
     dc_tax_threshold_joint_ratio_reform = (
         create_dc_tax_threshold_joint_ratio_reform(parameters, period)
     )
+    remove_standard_deduction_head_of_household = (
+        create_remove_standard_deduction_head_of_household_reform(
+            parameters, period
+        )
+    )
 
     reforms = [
         afa_reform,
         winship_reform,
         dc_kccatc_reform,
         dc_tax_threshold_joint_ratio_reform,
+        remove_standard_deduction_head_of_household,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
 
