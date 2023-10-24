@@ -37,7 +37,7 @@ def create_remove_standard_deduction_head_of_household() -> Reform:
                     std.amount[filing_status],
                     std.amount[filing_status],
                     std.amount[filing_status],
-                    # p.head_of_household.calc(taxable_income), # this should be single amount
+                    13850,  # this should be single amount, use fix amount as temp
                 ],
             )
         else:
@@ -97,7 +97,7 @@ def create_remove_standard_deduction_head_of_household() -> Reform:
                     std.aged_or_blind.amount[filing_status],
                     std.aged_or_blind.amount[filing_status],
                     std.aged_or_blind.amount[filing_status],
-                    # p.head_of_household.calc(taxable_income), # this should be single amount
+                    1850,  # this should be single amount, use fix amount as temp
                 ],
             )
         else:
