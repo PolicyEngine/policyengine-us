@@ -16,6 +16,8 @@ class hi_min_head_spouse_earned(Variable):
     )
 
     def formula(tax_unit, period, parameters):
+        # Schedule X PART II:
+        # line 8 & line 9
         person = tax_unit.members
         head = person("is_tax_unit_head", period)
         spouse = person("is_tax_unit_spouse", period)
