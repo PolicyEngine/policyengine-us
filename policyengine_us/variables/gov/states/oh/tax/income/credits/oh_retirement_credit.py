@@ -11,8 +11,6 @@ class oh_retirement_credit(Variable):
     defined_for = StateCode.OH
 
     def formula(tax_unit, period, parameters):
-        retirement_credit = tax_unit(
-            "oh_retirement_income_credit", period
-        )
+        retirement_credit = tax_unit("oh_retirement_income_credit", period)
         lump_sum_credit = tax_unit("oh_lump_sum_retirement_credit", period)
         return max_(retirement_credit, lump_sum_credit)
