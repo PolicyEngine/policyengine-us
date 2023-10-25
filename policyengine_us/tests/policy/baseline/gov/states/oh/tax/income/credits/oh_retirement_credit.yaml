@@ -1,0 +1,8 @@
+- name: retirement credit test
+  period: 2021
+  input:
+    oh_retirement_income_credit: 200
+    oh_lump_sum_retirement_credit: 50
+    state_code: OH
+  output:
+    oh_retirement_income_credit: 200
