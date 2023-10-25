@@ -5,8 +5,20 @@
     adjusted_gross_income: 10_000
     health_insurance_premiums: 500
     medical_out_of_pocket_expenses: 600
+    employer_premium_contribution: "NONE"
   output:
     oh_unreimbursed_medical_care_expense_deduction: 500
+
+- name: moop < agi * rate
+  period: 2022
+  input:
+    state_code: OH
+    adjusted_gross_income: 10_000
+    health_insurance_premiums: 500
+    medical_out_of_pocket_expenses: 600
+    employer_premium_contribution: "SOME"
+  output:
+    oh_unreimbursed_medical_care_expense_deduction: 0
 
 - name: moop > agi * rate
   period: 2022
@@ -15,6 +27,7 @@
     adjusted_gross_income: 10_000
     health_insurance_premiums: 500
     medical_out_of_pocket_expenses: 800
+    employer_premium_contribution: "NONE"
   output:
     oh_unreimbursed_medical_care_expense_deduction: 550
 
@@ -25,6 +38,7 @@
     adjusted_gross_income: 0
     health_insurance_premiums: 500
     medical_out_of_pocket_expenses: 800
+    employer_premium_contribution: "NONE"
   output:
     oh_unreimbursed_medical_care_expense_deduction: 1_300
 
@@ -35,6 +49,7 @@
     adjusted_gross_income: 2_000
     health_insurance_premiums: 500
     medical_out_of_pocket_expenses: 800
+    employer_premium_contribution: "NONE"
   output:
     oh_unreimbursed_medical_care_expense_deduction: 1_150 #800 - (2,000 * 7,5%) + 500
 
@@ -45,9 +60,11 @@
       head:
         health_insurance_premiums: 300
         medical_out_of_pocket_expenses: 500
+        employer_premium_contribution: "NONE"
       spouse:
         health_insurance_premiums: 200
         medical_out_of_pocket_expenses: 300
+        employer_premium_contribution: "NONE"
     tax_units:
       tax_unit:
         members: [head, spouse]
