@@ -21,7 +21,7 @@ class oh_unreimbursed_medical_care_expense_deduction(Variable):
         )
         status = employer_premium_contribution.possible_values
         premiums_expenses = person("health_insurance_premiums", period)
-        
+
         hipaid = select(
             [
                 employer_premium_contribution == status.NONE,
