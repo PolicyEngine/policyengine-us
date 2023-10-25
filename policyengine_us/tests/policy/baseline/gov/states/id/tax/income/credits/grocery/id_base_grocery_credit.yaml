@@ -1,0 +1,53 @@
+- name: id_base_grocery_credit unit test 1 # only have house head
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+      person2:
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household: 
+        members: [person1, person2]
+        state_code: ID
+  output:   
+    id_base_grocery_credit: 100
+
+- name: id_base_grocery_credit unit test 2 # only have spouse
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: false
+      person2:
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household: 
+        members: [person1, person2]
+        state_code: ID
+  output:   
+    id_base_grocery_credit: 100
+
+- name: id_base_grocery_credit unit test 3 # house head and spouse
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+      person2:
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household: 
+        members: [person1, person2]
+        state_code: ID
+  output:   
+    id_base_grocery_credit: 200
