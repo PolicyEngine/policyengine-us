@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+import numpy as np
 
 
 def create_increase_taxable_earnings_for_social_security() -> Reform:
@@ -10,13 +11,14 @@ def create_increase_taxable_earnings_for_social_security() -> Reform:
         unit = USD
 
         def formula(person, period, parameters):
-            cap = parameters(period).gov.irs.payroll.social_security.cap
-            upper_threshold = parameters(
-                period
-            ).gov.contrib.cbo.payroll.taxable_earnings_upper_threshold
-            return min_(cap, person("payroll_tax_gross_wages", period)) + max_(
-                0, person("payroll_tax_gross_wages", period) - upper_threshold
+            earnings = person("payroll_tax_gross_wages", period)
+            p = parameters(period).gov
+            base_taxable = min_(earnings, p.irs.payroll.social_security.cap)
+            secondary_taxable = max_(
+                0,
+                earnings - p.contrib.cbo.payroll.secondary_earnings_threshold,
             )
+            return base_taxable + secondary_taxable
 
     class reform(Reform):
         def apply(self):
@@ -33,7 +35,7 @@ def create_increase_taxable_earnings_for_social_security_reform(
 
     p = parameters(period).gov.contrib.cbo.payroll
 
-    if p.taxable_earnings_upper_threshold < 9999999999999999999999999:
+    if p.secondary_earnings_threshold < np.inf:
         return create_increase_taxable_earnings_for_social_security()
     else:
         return None
