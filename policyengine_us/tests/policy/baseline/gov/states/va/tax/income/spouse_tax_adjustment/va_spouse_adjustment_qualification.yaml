@@ -1,0 +1,74 @@
+- name: The tax unit is eligible for the Virginia Spouse Tax Adjustment.
+  period: 2021
+  input:
+    people:
+      person1:
+        va_agi: 15_000
+        is_tax_unit_head: 1
+        age: 68
+        is_blind: 1
+      person2:
+        va_agi: 15_000
+        is_tax_unit_head: 1
+        age: 63
+        is_blind: 0
+
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    va_spouse_adjustment_qualification: 1
+
+- name: The tax unit is not eligible for the Virginia Spouse Tax Adjustment (due to the head of the household).
+  period: 2021
+  input:
+    people:
+      person1:
+        va_agi: 1_030
+        is_tax_unit_head: 1
+        age: 80
+        is_blind: 1
+      person2:
+        va_agi: 15_000
+        is_tax_unit_head: 1
+        age: 70
+        is_blind: 0
+
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    va_spouse_adjustment_qualification: 0
+
+- name: The tax unit is not eligible for the Virginia Spouse Tax Adjustment (due to the spouse of the household).
+  period: 2021
+  input:
+    people:
+      person1:
+        va_agi: 15_000
+        is_tax_unit_head: 1
+        age: 75
+        is_blind:0
+      person2:
+        va_agi: 800
+        is_tax_unit_spouse: 1
+        age: 79
+        is_blind: 0
+
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    va_spouse_adjustment_qualification: 0
