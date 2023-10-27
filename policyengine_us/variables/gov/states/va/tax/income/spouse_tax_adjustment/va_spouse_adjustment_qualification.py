@@ -20,17 +20,18 @@ class va_spouse_adjustment_qualification(Variable):
         personal_exemption_blind_qualification = person("is_blind", period)
 
         # Todo: create a personal 'vagi' variable?
-        personal_vagi = person("vagi", period)
+        personal_va_agi = person("va_agi", period)
 
         total_personal_exemptions = (
             personal_exemption_age_qualification
             + personal_exemption_blind_qualification
         ) * p.age_blind_multiplier + p.addition_amount
-        meets_requirement = personal_vagi - total_personal_exemptions > 0
+
+        eligibility_requirement = personal_va_agi - total_personal_exemptions
 
         head = person("is_tax_unit_head", period)
         spouse = person("is_tax_unit_spouse", period)
         head_or_spouse = head | spouse
 
         # If either amount is 0 or less, the filer does not qualifify for this credit.
-        return tax_unit.min_(head_or_spouse * meets_requirement) > 0
+        return tax_unit.min_(head_or_spouse * eligibility_requirement) > 0

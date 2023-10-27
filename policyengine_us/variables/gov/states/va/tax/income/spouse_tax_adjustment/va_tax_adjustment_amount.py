@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class va_tax_adjsutment_calculation(Variable):
+class va_tax_adjsutment_amount(Variable):
     value_type = float
     entity = TaxUnit
     label = "Virginia aged/blind exemption"
@@ -11,8 +11,24 @@ class va_tax_adjsutment_calculation(Variable):
     reference = "https://www.tax.virginia.gov/sites/default/files/vatax-pdf/2022-760-instructions.pdf#page=19"
 
     def formula(tax_unit, period, parameters):
-        va_agi = person("va_agi", period)
-        va_agi_total = person.tax_unit.sum(net_income)
+        person = tax_unit.members
+        personal_va_agi = person("va_agi", period)
+        total_personal_exemptions = (
+            personal_exemption_age_qualification
+            + personal_exemption_blind_qualification
+        ) * p.age_blind_multiplier + p.addition_amount
+
+        eligibility_requirement = personal_va_agi - total_personal_exemptions
+
+        head = person("is_tax_unit_head", period)
+        spouse = person("is_tax_unit_spouse", period)
+        head_or_spouse = head | spouse
+
+        min_eligibility_value = tax_unit.min_(
+            head_or_spouse * eligibility_requirement
+        )
+
+        # TO BE CONTINUED...
 
         # avoid divide-by-zero warnings when using where() function
         fraction = np.zeros_like(va_agi_total)
