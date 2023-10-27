@@ -17,5 +17,5 @@ class oh_529_plan_deduction(Variable):
             period
         ).gov.states.oh.tax.income.deductions.plan_529_contributions
         contribution_amount = tax_unit("investment_in_529_plan", period)
-        capped_amount = min_(contribution_amount, p.max_amount)
+        return min_(contribution_amount, p.max_amount)
         return max_(capped_amount, 0)
