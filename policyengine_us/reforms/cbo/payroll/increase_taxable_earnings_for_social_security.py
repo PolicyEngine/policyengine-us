@@ -1,5 +1,4 @@
 from policyengine_us.model_api import *
-import numpy as np
 
 
 def create_increase_taxable_earnings_for_social_security() -> Reform:
