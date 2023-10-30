@@ -10,9 +10,9 @@
       head: {}
       spouse: {}
       c1:
-        is_grandparent: true
+        is_grandparent_of_filer_or_spouse: true
       c2:
-        is_grandparent: true
+        is_grandparent_of_filer_or_spouse: true
     tax_units:
       tax_unit:
         members: [head, spouse, c1, c2]
