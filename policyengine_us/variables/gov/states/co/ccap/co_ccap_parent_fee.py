@@ -17,19 +17,16 @@ class co_ccap_parent_fee(Variable):
 
     def formula(tax_unit, period, parameters):
         year = period.start.year
-        month = period.start.month
-        if month >= 10:
+        if period.start.month >= 10:
             instant_str = f"{year}-10-01"
         else:
             instant_str = f"{year - 1}-10-01"
         p = parameters(instant_str).gov.states.co.ccap
-        person = tax_unit.members
-        spm_unit = tax_unit.spm_unit
         # Calculate base parent fee and add on parent fee.
         agi = tax_unit("adjusted_gross_income", period.this_year)
-        hhs_fpg = spm_unit("snap_fpg", period) * MONTHS_IN_YEAR
-        num_child_age_eligible = tax_unit("co_ccap_eligible_children", period)
-        # The numebrs below are weights copied from government spreadsheet
+        hhs_fpg = tax_unit.spm_unit("snap_fpg", period) * MONTHS_IN_YEAR
+        eligible_children = tax_unit("co_ccap_eligible_children", period)
+        # The numbers below are weights copied from government spreadsheet
         # (url: https://docs.google.com/spreadsheets/d/1EEc3z8Iwu_KRTlBtd2NssDDEx_FITqVq/edit#gid=468321263,
         #       https://docs.google.com/spreadsheets/d/1HtPiC2qxclzWfBa7LRo2Uohrg-RCBkyZ/edit#gid=582762342)
         first_multiplication_factor = (
@@ -41,6 +38,9 @@ class co_ccap_parent_fee(Variable):
         third_multiplication_factor = (
             p.add_on_parent_fee.third_multiplication_factor
         )
+        # Calculate base parent fee:
+        # When agi <= fpg: agi * 0.01 / 12
+        # When agi > fpg: [fpg * 0.01 + (agi - fpg) * 0.14]/12
         base_parent_fee = np.round(
             where(
                 agi <= hhs_fpg,
@@ -53,14 +53,18 @@ class co_ccap_parent_fee(Variable):
             ),
             2,
         )
+        # Calculate add-on parent fee (this is relevant to number of eligible children in a household and agi):
+        # When agi <= fpg: 0
+        # When agi > fpg: 15 for each additional child
         add_on_parent_fee = where(
             agi > hhs_fpg,
-            (num_child_age_eligible - 1) * third_multiplication_factor,
+            (eligible_children - 1) * third_multiplication_factor,
             0,
         )
-        # Sum up all the parent fee for eligible children.
-        child_age_eligible = person("co_ccap_child_eligible", period)
-        childcare_hours_per_day = person(
+        # Childcare-hours-per-day also affects parent fee. 
+        # Since each child may need different hours of childcare per day, we have to calculate parent fee one by one and sum them up.
+        child_age_eligible = tax_unit.members("co_ccap_child_eligible", period)
+        childcare_hours_per_day = tax_unit.members(
             "childcare_hours_per_day", period.this_year
         )
         rate = p.parent_fee_rate_by_child_care_hours.calc(
@@ -74,8 +78,9 @@ class co_ccap_parent_fee(Variable):
             ),
             2,
         )
-        # Identify whether the filers are eligible for a discount.
-        rating = person(
+        # Rating of child care facilities also affects parent fee.
+        # For households utilizing multiple child care providers, only one child care provider is required to be eligible for the reduced parent fee to apply.
+        rating = tax_unit.members(
             "co_quality_rating_of_child_care_facility", period.this_year
         )
         discount_eligible = (
@@ -85,14 +90,6 @@ class co_ccap_parent_fee(Variable):
             )
             > 0
         )
-
         discounted_rate = p.quality_rating_discounted_rate
-
-        return np.round(
-            where(
-                discount_eligible,
-                non_discounted_fee * discounted_rate,
-                non_discounted_fee,
-            ),
-            2,
-        )
+        unrounded = non_discounted_fee * where(discount_eligible, discounted_rate, 1)
+        return np.round(unrounded, 2)

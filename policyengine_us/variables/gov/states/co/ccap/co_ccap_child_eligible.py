@@ -14,18 +14,13 @@ class co_ccap_child_eligible(Variable):
 
     def formula(person, period, parameters):
         year = period.start.year
-        month = period.start.month
-        if month >= 10:
+        if period.start.month >= 10:
             instant_str = f"{year}-10-01"
         else:
             instant_str = f"{year - 1}-10-01"
         p = parameters(instant_str).gov.states.co.ccap
         # child < 13 or disabled child < 19 to be eligible
         disabled = person("is_disabled", period.this_year)
-        dependent = person("is_tax_unit_dependent", period.this_year)
-        age = person("age", period.this_year)
-        return where(
-            disabled,
-            (age < p.disabled_child_age_limit) & dependent,
-            (age < p.age_limit) & dependent,
-        )
+        age_limit = where(disabled, p.disabled_age_limit, p.age_limit)
+        age_eligible = person("age", period.this_year) < age_limit
+        return age_eligible & person("is_tax_unit_dependent", period.this_year)

@@ -1,10 +1,10 @@
 - name: In the entry process and be eligible, then eligible for cccap
   period: 2023
   input:
-    co_ccap_is_in_the_entry_process: true
+    co_ccap_is_in_entry_process: true
     co_ccap_entry_eligible: 
       2023-01: true
-    co_ccap_is_in_the_re_determination_process: false
+    co_ccap_is_in_re_determination_process: false
     co_ccap_re_determination_eligible: 
       2023-01: true
   output:
@@ -14,10 +14,10 @@
 - name: In the entry process and not eligible, then eligible for cccap
   period: 2023
   input:
-    co_ccap_is_in_the_entry_process: true
+    co_ccap_is_in_entry_process: true
     co_ccap_entry_eligible: 
       2023-01: false
-    co_ccap_is_in_the_re_determination_process: false
+    co_ccap_is_in_re_determination_process: false
     co_ccap_re_determination_eligible: 
       2023-01: true
   output:
@@ -27,10 +27,10 @@
 - name: In the entry process and not eligible, but eligible for the re-determination, then still ineligible for cccap
   period: 2023
   input:
-    co_ccap_is_in_the_entry_process: true
+    co_ccap_is_in_entry_process: true
     co_ccap_entry_eligible: 
       2023-01: false
-    co_ccap_is_in_the_re_determination_process: false
+    co_ccap_is_in_re_determination_process: false
     co_ccap_re_determination_eligible: 
       2023-01: true
   output:
@@ -40,10 +40,10 @@
 - name: In the re-determination process and be eligible, then eligible for cccap
   period: 2023
   input:
-    co_ccap_is_in_the_entry_process: false
+    co_ccap_is_in_entry_process: false
     co_ccap_entry_eligible: 
       2023-01: false
-    co_ccap_is_in_the_re_determination_process: true
+    co_ccap_is_in_re_determination_process: true
     co_ccap_re_determination_eligible: 
       2023-01: true
   output:
@@ -53,10 +53,10 @@
 - name: In the re-determination process and not eligible, then eligible for cccap
   period: 2023
   input:
-    co_ccap_is_in_the_entry_process: false
+    co_ccap_is_in_entry_process: false
     co_ccap_entry_eligible: 
       2023-01: false
-    co_ccap_is_in_the_re_determination_process: true
+    co_ccap_is_in_re_determination_process: true
     co_ccap_re_determination_eligible: 
       2023-01: false
   output:
@@ -66,10 +66,10 @@
 - name: In the re-determination process and not eligible, but eligible for the entry, then still ineligible for cccap
   period: 2023
   input:
-    co_ccap_is_in_the_entry_process: false
+    co_ccap_is_in_entry_process: false
     co_ccap_entry_eligible: 
       2023-01: true
-    co_ccap_is_in_the_re_determination_process: true
+    co_ccap_is_in_re_determination_process: true
     co_ccap_re_determination_eligible: 
       2023-01: false
   output:
@@ -79,10 +79,10 @@
 - name: In the entry process and neither eligible for the entry nor eligible for the re-determination, then ineligible for cccap
   period: 2023
   input:
-    co_ccap_is_in_the_entry_process: true
+    co_ccap_is_in_entry_process: true
     co_ccap_entry_eligible: 
       2023-01: false
-    co_ccap_is_in_the_re_determination_process: false
+    co_ccap_is_in_re_determination_process: false
     co_ccap_re_determination_eligible: 
       2023-01: false
   output:
@@ -92,10 +92,10 @@
 - name: In the re-determination process and neither eligible for the entry nor eligible for the re-determination, then ineligible for cccap
   period: 2023
   input:
-    co_ccap_is_in_the_entry_process: false
+    co_ccap_is_in_entry_process: false
     co_ccap_entry_eligible: 
       2023-01: false
-    co_ccap_is_in_the_re_determination_process: true
+    co_ccap_is_in_re_determination_process: true
     co_ccap_re_determination_eligible: 
       2023-01: false
   output:
