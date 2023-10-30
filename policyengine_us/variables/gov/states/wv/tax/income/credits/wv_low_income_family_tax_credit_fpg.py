@@ -12,7 +12,7 @@ class wv_low_income_family_tax_credit_fpg(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(
             period
-        ).gov.states.wv.tax.income.credits.liftc  # low_income_family_tax_credit
+        ).gov.states.wv.tax.income.credits.low_income_family_tax_credit
 
         # max family size limit
         n = tax_unit("tax_unit_size", period)
