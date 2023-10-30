@@ -14,12 +14,13 @@ class wv_low_income_family_tax_credit(Variable):
         filing_statuses = filing_status.possible_values
         p = parameters(
             period
-        ).gov.states.wv.tax.income.credits.low_income_family_tax_credit
+        ).gov.states.wv.tax.income.credits.liftc  # low_income_family_tax_credit
 
         wv_agi = tax_unit("wv_agi", period)
         fpg = tax_unit("wv_low_income_family_tax_credit_fpg", period)
         # modified agi limit
         fpg_amount = p.fpg_percent[filing_status] * fpg
+        # condition: wv_agi < = fpg_amount
         reduced_agi = wv_agi - fpg_amount
 
         credit_percentage = select(
@@ -31,16 +32,17 @@ class wv_low_income_family_tax_credit(Variable):
                 filing_status == filing_statuses.WIDOW,
             ],
             [
-                p.amount.single.calc(reduced_agi),
-                p.amount.separate.calc(reduced_agi),
-                p.amount.joint.calc(reduced_agi),
-                p.amount.head_of_household.calc(reduced_agi),
-                p.amount.widow.calc(reduced_agi),
+                p.amount.single.calc(reduced_agi, right=True),
+                p.amount.separate.calc(reduced_agi, right=True),
+                p.amount.joint.calc(reduced_agi, right=True),
+                p.amount.head_of_household.calc(reduced_agi, right=True),
+                p.amount.widow.calc(reduced_agi, right=True),
             ],
         )
 
         tax_before_credits = tax_unit(
             "wv_income_tax_before_non_refundable_credits", period
         )
-
+        print(credit_percentage)
+        print(reduced_agi)
         return tax_before_credits * credit_percentage
