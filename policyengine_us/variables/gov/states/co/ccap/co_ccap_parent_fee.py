@@ -61,7 +61,7 @@ class co_ccap_parent_fee(Variable):
             (eligible_children - 1) * third_multiplication_factor,
             0,
         )
-        # Childcare-hours-per-day also affects parent fee. 
+        # Childcare-hours-per-day also affects parent fee.
         # Since each child may need different hours of childcare per day, we have to calculate parent fee one by one and sum them up.
         child_age_eligible = tax_unit.members("co_ccap_child_eligible", period)
         childcare_hours_per_day = tax_unit.members(
@@ -91,5 +91,7 @@ class co_ccap_parent_fee(Variable):
             > 0
         )
         discounted_rate = p.quality_rating_discounted_rate
-        unrounded = non_discounted_fee * where(discount_eligible, discounted_rate, 1)
+        unrounded = non_discounted_fee * where(
+            discount_eligible, discounted_rate, 1
+        )
         return np.round(unrounded, 2)

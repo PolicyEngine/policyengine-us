@@ -26,6 +26,6 @@ class co_ccap_hhs_smi_eligible(Variable):
         p = parameters(instant_str).gov.states.co.ccap
         # Calculate monthly smi limit
         hhs_smi_rate = p.entry.entry_hhs_smi_rate
-        hhs_smi = tax_unit.spm_unit("snap_hhs_smi", period) 
+        hhs_smi = tax_unit.spm_unit("snap_hhs_smi", period)
         monthly_hhs_smi = np.round(hhs_smi * hhs_smi_rate / MONTHS_IN_YEAR, 2)
         return monthly_agi < monthly_hhs_smi
