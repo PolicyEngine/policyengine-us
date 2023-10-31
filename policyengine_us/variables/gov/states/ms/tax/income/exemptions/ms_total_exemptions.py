@@ -3,7 +3,7 @@ from policyengine_us.model_api import *
 
 class ms_total_exemptions(Variable):
     value_type = float
-    entity = Person
+    entity = TaxUnit
     label = "Mississippi total exemptions"
     unit = USD
     definition_period = YEAR

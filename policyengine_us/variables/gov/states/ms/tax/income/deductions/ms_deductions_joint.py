@@ -16,5 +16,5 @@ class ms_deductions_joint(Variable):
     def formula(person, period, parameters):
         return max_(
             person("ms_standard_deduction_joint", period),
-            person("ms_itemized_deductions", period),
+            person.tax_unit("ms_itemized_deductions", period),
         )

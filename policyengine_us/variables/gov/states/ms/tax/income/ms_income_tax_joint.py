@@ -13,5 +13,7 @@ class ms_income_tax_joint(Variable):
         before_non_refundable_credits = person(
             "ms_income_tax_before_credits_joint", period
         )
-        non_refundable_credits = person("ms_non_refundable_credits", period)
+        non_refundable_credits = person.tax_unit(
+            "ms_non_refundable_credits", period
+        )
         return max_(before_non_refundable_credits - non_refundable_credits, 0)

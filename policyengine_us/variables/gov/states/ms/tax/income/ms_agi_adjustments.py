@@ -3,7 +3,7 @@ from policyengine_us.model_api import *
 
 class ms_agi_adjustments(Variable):
     value_type = float
-    entity = Person
+    entity = TaxUnit
     label = "Mississippi adjustments to federal adjusted gross income"
     unit = USD
     definition_period = YEAR
