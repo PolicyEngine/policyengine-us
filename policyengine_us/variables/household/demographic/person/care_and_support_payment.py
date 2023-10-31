@@ -6,5 +6,5 @@ class care_and_support_payment(Variable):
     entity = Person
     definition_period = YEAR
     label = (
-        "Amount of payment paid by filers for care and support for this person"
+        "Amount of payments made for care and support of this person"
     )
