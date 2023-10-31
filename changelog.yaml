@@ -4812,3 +4812,9 @@
     - Location of `state_and_local_sales_or_income_tax` variable module.
     - Presence of unused `filer_e18400` variable.
   date: 2023-10-31 15:33:49
+- bump: patch
+  changes:
+    fixed:
+    - Renamed `exemptions` variable to `exemptions_count`.
+    - Renamed `c04600` variable to `exemptions`.
+  date: 2023-10-31 20:32:49
