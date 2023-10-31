@@ -12,7 +12,7 @@ class az_parents_grandparents_exemption(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.az.tax.income.exemptions
         person = tax_unit.members
-        # The exemption is provided for parents and grandparents who receive over 50% of their care and support
+        # The exemption is provided for parents and grandparents who receive over a percentage of their care and support
         # payments from the filer.
         care_and_support_payment = person("care_and_support_payment", period)
         care_and_support_costs = person("care_and_support_costs", period)
