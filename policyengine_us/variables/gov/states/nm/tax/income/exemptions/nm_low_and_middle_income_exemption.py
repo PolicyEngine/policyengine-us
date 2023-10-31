@@ -27,6 +27,5 @@ class nm_low_and_middle_income_exemption(Variable):
         exemption_amount = p.max_amount - reduction_amount
 
         # Multiply the exemption amount by the number of exemptions
-        num_exemptions = tax_unit("exemptions_count", period)
-
-        return eligible * (exemption_amount * num_exemptions)
+        exemptions_count = tax_unit("exemptions_count", period)
+        return eligible * exemption_amount * exemptions_count
