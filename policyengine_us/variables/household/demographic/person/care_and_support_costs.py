@@ -6,4 +6,4 @@ class care_and_support_costs(Variable):
     entity = Person
     unit = USD
     definition_period = YEAR
-    label = "Amount of total costs for care and support for seniors"
+    label = "Amount of total costs for care and support of seniors"
