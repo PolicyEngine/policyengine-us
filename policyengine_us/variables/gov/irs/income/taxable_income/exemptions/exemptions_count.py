@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class exemptions(Variable):
+class exemptions_count(Variable):
     value_type = int
     entity = TaxUnit
     label = "Number of tax exemptions"
