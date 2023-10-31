@@ -10,7 +10,4 @@ class de_standard_deduction(Variable):
     reference = "https://delcode.delaware.gov/title30/c011/sc02/index.html title 30, chapter 11, subchapter II, section 1108"
     defined_for = StateCode.DE
 
-    def formula(tax_unit, period, parameters):
-        filing_status = tax_unit("filing_status", period)
-        p = parameters(period).gov.states.de.tax.income.deductions.standard
-        return p.amount[filing_status]
+    adds = ["de_base_standard_deduction", "de_additional_standard_deduction"]
