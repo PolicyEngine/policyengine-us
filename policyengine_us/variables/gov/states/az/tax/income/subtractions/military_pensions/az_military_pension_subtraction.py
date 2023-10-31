@@ -16,11 +16,9 @@ class az_military_pension_subtraction(Variable):
         ).gov.states.az.tax.income.subtractions.military_pension
         person = tax_unit.members
 
-        filing_status = tax_unit("filing_status", period)
         military_retirement_pay = min_(
             p.cap, person("military_retirement_pay", period)
         )
-        head = person("is_tax_unit_head", period)
-        spouse = person("is_tax_unit_spouse", period)
+        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
 
-        return tax_unit.sum(military_retirement_pay * (head | spouse))
+        return tax_unit.sum(military_retirement_pay * (head_or_spouse))
