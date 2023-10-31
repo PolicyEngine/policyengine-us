@@ -4818,3 +4818,8 @@
     - Renamed `exemptions` variable to `exemptions_count`.
     - Renamed `c04600` variable to `exemptions`.
   date: 2023-10-31 20:32:49
+- bump: patch
+  changes:
+    fixed:
+    - Remove obsolete xtot variable left over from original taxcalc development.
+  date: 2023-10-31 22:16:07
