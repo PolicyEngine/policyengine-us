@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.513.1] - 2023-10-31 15:33:49
+
+### Fixed
+
+- Location of `state_and_local_sales_or_income_tax` variable module.
+- Presence of unused `filer_e18400` variable.
+
 ## [0.513.0] - 2023-10-30 12:33:37
 
 ### Added
@@ -5691,6 +5698,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.513.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.513.0...0.513.1
 [0.513.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.512.0...0.513.0
 [0.512.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.511.0...0.512.0
 [0.511.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.510.0...0.511.0

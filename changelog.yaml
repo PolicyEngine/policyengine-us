@@ -4806,3 +4806,9 @@
     added:
     - Eliminate cap on Maryland childless EITC amount beginning in 2023.
   date: 2023-10-30 12:33:37
+- bump: patch
+  changes:
+    fixed:
+    - Location of `state_and_local_sales_or_income_tax` variable module.
+    - Presence of unused `filer_e18400` variable.
+  date: 2023-10-31 15:33:49
