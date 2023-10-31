@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class az_aged_exemption_eligible(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Arizona aged exemption dsi eligibility"
+    label = "Eligible for the Arizona aged exemption"
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.AZ
