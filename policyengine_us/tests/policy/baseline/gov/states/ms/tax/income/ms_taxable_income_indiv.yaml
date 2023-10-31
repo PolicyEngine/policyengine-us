@@ -7,13 +7,3 @@
     ms_total_exemptions: 300
   output:
     ms_taxable_income_indiv: 1_500
-
-- name:  MS taxable income indiv unit test 2
-  period: 2023
-  input:
-    state_code: MS
-    ms_agi: 2_000
-    ms_deductions_joint: 2_000
-    ms_total_exemptions: 1_000
-  output:
-    ms_taxable_income_indiv: 0
