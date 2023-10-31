@@ -21,7 +21,7 @@ class hi_tax_credit_for_low_income_household_renters(Variable):
         ).astype(int)
 
         aged_exemptions = aged_head + aged_spouse
-        exemptions = tax_unit("exemptions", period)
+        exemptions = tax_unit("exemptions_count", period)
 
         total_exemptions = exemptions + aged_exemptions
         return p.amount * total_exemptions
