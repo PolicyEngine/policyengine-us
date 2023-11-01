@@ -1,9 +1,9 @@
 - name: Both hhs fpg and hhs smi are eligible, income eligible.
   period: 2023
   input:
-    co_ccap_hhs_fpg_eligible: 
+    co_ccap_fpg_eligible: 
       2023-01: true
-    co_ccap_hhs_smi_eligible:  
+    co_ccap_smi_eligible:  
       2023-01: true
   output:
     co_ccap_entry_income_eligible: 
@@ -12,9 +12,9 @@
 - name: The hhs fpg is eligible while the hhs smi not, income ineligible.
   period: 2023
   input:
-    co_ccap_hhs_fpg_eligible: 
+    co_ccap_fpg_eligible: 
       2023-01: true
-    co_ccap_hhs_smi_eligible: 
+    co_ccap_smi_eligible: 
       2023-01: false
   output:
     co_ccap_entry_income_eligible: 
@@ -23,9 +23,9 @@
 - name: The hhs smi is eligible while the hhs fpg not, income ineligible.
   period: 2023
   input:
-    co_ccap_hhs_fpg_eligible: 
+    co_ccap_fpg_eligible: 
       2023-01: false
-    co_ccap_hhs_smi_eligible: 
+    co_ccap_smi_eligible: 
       2023-01: true
   output:
     co_ccap_entry_income_eligible: 
@@ -34,9 +34,9 @@
 - name: Neither hhs smi nor hhs fpg is eligible, income ineligible.
   period: 2023
   input:
-    co_ccap_hhs_fpg_eligible: 
+    co_ccap_fpg_eligible: 
       2023-01: false
-    co_ccap_hhs_smi_eligible: 
+    co_ccap_smi_eligible: 
       2023-01: false
   output:
     co_ccap_entry_income_eligible: 
