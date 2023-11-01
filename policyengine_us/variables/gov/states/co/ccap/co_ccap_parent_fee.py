@@ -47,7 +47,8 @@ class co_ccap_parent_fee(Variable):
                 gross_income * first_multiplication_factor,
                 hhs_fpg * first_multiplication_factor
                 + (gross_income - hhs_fpg) * second_multiplication_factor,
-            ) / MONTHS_IN_YEAR,
+            )
+            / MONTHS_IN_YEAR,
             2,
         )
         # Calculate add-on parent fee (this is relevant to number of eligible children in a household and agi):

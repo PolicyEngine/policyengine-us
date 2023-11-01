@@ -13,7 +13,9 @@ class co_ccap_hhs_fpg_eligible(Variable):
     # defined_for = StateCode.CO
 
     def formula(spm_unit, period, parameters):
-        state_eligible = spm_unit.household("state_code_str", period.this_year) == "CO"
+        state_eligible = (
+            spm_unit.household("state_code_str", period.this_year) == "CO"
+        )
         monthly_gross_income = np.round(
             spm_unit("co_ccap_countable_income", period),
             2,
