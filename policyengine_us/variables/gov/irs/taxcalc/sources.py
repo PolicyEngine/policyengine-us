@@ -10,44 +10,6 @@ class f6251(Variable):
     )
 
 
-class a_lineno(Variable):
-    value_type = int
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = "CPS line number for the person record of the head of the tax filing unit (not used in tax-calculation logic)"
-
-
-class ffpos(Variable):
-    value_type = int
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = "CPS family identifier within household (not used in tax-calculation logic)"
-
-
-class fips(Variable):
-    value_type = int
-    entity = Household
-    definition_period = YEAR
-    documentation = "FIPS state code (not used in tax-calculation logic)"
-    default_value = 6
-
-
-class h_seq(Variable):
-    value_type = int
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = (
-        "CPS household sequence number (not used in tax-calculation logic)"
-    )
-
-
-class data_source(Variable):
-    value_type = bool
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = "True if unit is created primarily from IRS-SOI PUF data; false if created primarily from CPS data (not used in tax-calculation logic)"
-
-
 class k1bx14(Variable):
     value_type = float
     entity = Person
