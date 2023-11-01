@@ -9,12 +9,4 @@ class ar_non_refundable_credits(Variable):
     definition_period = YEAR
     defined_for = StateCode.AR
 
-    # adds = "gov.states.ar.tax.income.credits.non_refundable"
-    adds = [
-        "ar_aged_credit",
-        "ar_blind_credit",
-        "ar_deaf_credit",
-        "ar_dependent_credit",
-        "ar_status_credit",
-        "ar_personal_credit_aged_special",
-    ]
+    adds = "gov.states.ar.tax.income.credits.non_refundable"
