@@ -3,7 +3,7 @@ from policyengine_us.model_api import *
 
 class co_ccap_eligible(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = SPMUnit
     label = "Eligible for Colorado Child Care Assistance Program"
     reference = (
         "https://docs.google.com/spreadsheets/d/1EEc3z8Iwu_KRTlBtd2NssDDEx_FITqVq/edit#gid=468321263",
@@ -15,15 +15,15 @@ class co_ccap_eligible(Variable):
     definition_period = MONTH
     # defined_for = StateCode.CO
 
-    def formula(tax_unit, period, parameters):
-        in_entry_process = tax_unit(
-            "co_ccap_is_in_entry_process", period.this_year
+    def formula(spm_unit, period, parameters):
+        in_entry_process = spm_unit(
+            "co_ccap_is_in_entry_process", period
         )
-        entry_eligible = tax_unit("co_ccap_entry_eligible", period)
-        in_re_determination_process = tax_unit(
-            "co_ccap_is_in_re_determination_process", period.this_year
+        entry_eligible = spm_unit("co_ccap_entry_eligible", period)
+        in_re_determination_process = spm_unit(
+            "co_ccap_is_in_re_determination_process", period
         )
-        re_determination_eligible = tax_unit(
+        re_determination_eligible = spm_unit(
             "co_ccap_re_determination_eligible", period
         )
 

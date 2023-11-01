@@ -1,4 +1,5 @@
 - name: One parent with two children, agi > hhs_fpg, both children eligible for cccap but not eligible for quality rating facility discount.
+  absolute_error_margin: 0.1
   period: 2023
   input:
     people:
@@ -18,15 +19,12 @@
         age: 17
         childcare_hours_per_day: 4
         co_quality_rating_of_child_care_facility: 1
-    tax_units:
-      tax_unit:
-        members: [parent, child1, child2]
-        adjusted_gross_income: 46_000
-        co_ccap_eligible: 
-          2023-01: true
     spm_units:
       spm_unit:
         members: [parent, child1, child2]
+        co_ccap_eligible: 
+          2023-01: true
+        co_ccap_countable_income: 46_000
     households:
       household: 
         members: [parent, child1, child2]
@@ -40,6 +38,7 @@
     # final parent fee: 770.56
 
 - name: Two parents with two children, agi > hhs_fpg, both children eligible for cccap and one eligible for quality rating facility discount.
+  absolute_error_margin: 0.1  
   period: 2023
   input:
     people:
@@ -63,15 +62,12 @@
         age: 17
         childcare_hours_per_day: 4
         co_quality_rating_of_child_care_facility: 1
-    tax_units:
-      tax_unit:
-        members: [parent1, parent2, child1, child2]
-        adjusted_gross_income: 90_000
-        co_ccap_eligible: 
-          2023-01: true
     spm_units:
       spm_unit:
         members: [parent1, parent2, child1, child2]
+        co_ccap_eligible: 
+          2023-01: true
+        co_ccap_countable_income: 90_000
     households:
       household: 
         members: [parent1, parent2, child1, child2]
@@ -85,6 +81,7 @@
     # final parent fee: 1_559.34
 
 - name: Two parents with two children, agi <= hhs_fpg, both children eligible for cccap and one eligible for quality rating facility discount.
+  absolute_error_margin: 0.1  
   period: 2023
   input:
     people:
@@ -108,15 +105,12 @@
         age: 17
         childcare_hours_per_day: 4
         co_quality_rating_of_child_care_facility: 4
-    tax_units:
-      tax_unit:
-        members: [parent1, parent2, child1, child2]
-        co_ccap_eligible: 
-          2023-01: true
-        adjusted_gross_income: 20_000
     spm_units:
       spm_unit:
         members: [parent1, parent2, child1, child2]
+        co_ccap_eligible: 
+          2023-01: true
+        co_ccap_countable_income: 20_000
     households:
       household: 
         members: [parent1, parent2, child1, child2]
@@ -130,6 +124,7 @@
     # final parent fee: 34.01
 
 - name: Two parents with one child, agi <= hhs_fpg, child eligible for cccap and quality rating facility discount.
+  absolute_error_margin: 0.1  
   period: 2023
   input:
     people:
@@ -147,15 +142,12 @@
         age: 6
         childcare_hours_per_day: 15
         co_quality_rating_of_child_care_facility: 5
-    tax_units:
-      tax_unit:
-        members: [parent1, parent2, child1]
-        co_ccap_eligible: 
-          2023-01: true
-        adjusted_gross_income: 20_000
     spm_units:
       spm_unit:
         members: [parent1, parent2, child1]
+        co_ccap_eligible: 
+          2023-01: true
+        co_ccap_countable_income: 20_000
     households:
       household: 
         members: [parent1, parent2, child1]
@@ -169,6 +161,7 @@
     # final parent fee: 20.67
 
 - name: Two parents with two children, agi <= hhs_fpg, one eligible for cccap and quality rating facility discount, the other not.
+  absolute_error_margin: 0.1  
   period: 2022
   input:
     people:
@@ -192,15 +185,12 @@
         age: 17
         childcare_hours_per_day: 4
         co_quality_rating_of_child_care_facility: 4
-    tax_units:
-      tax_unit:
-        members: [parent1, parent2, child1, child2]
-        co_ccap_eligible: 
-          2022-12: true
-        adjusted_gross_income: 20_000
     spm_units:
       spm_unit:
         members: [parent1, parent2, child1, child2]
+        co_ccap_eligible: 
+          2022-12: true
+        co_ccap_countable_income: 20_000
     households:
       household: 
         members: [parent1, parent2, child1, child2]
@@ -214,6 +204,7 @@
     # final parent fee: 26.67
 
 - name: One parent with two children, agi > hhs_fpg, one eligible for cccap but not eligible for quality rating facility discount, the other not eligible for cccap.
+  absolute_error_margin: 0.1    
   period: 2022
   input:
     people:
@@ -233,15 +224,12 @@
         age: 17
         childcare_hours_per_day: 4
         co_quality_rating_of_child_care_facility: 4
-    tax_units:
-      tax_unit:
-        members: [parent, child1, child2]
-        co_ccap_eligible: 
-          2022-12: true
-        adjusted_gross_income: 46_000
     spm_units:
       spm_unit:
         members: [parent, child1, child2]
+        co_ccap_eligible: 
+          2022-12: true
+        co_ccap_countable_income: 46_000
     households:
       household: 
         members: [parent, child1, child2]

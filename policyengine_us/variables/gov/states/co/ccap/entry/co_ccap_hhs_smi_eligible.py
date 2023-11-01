@@ -3,7 +3,7 @@ from policyengine_us.model_api import *
 
 class co_ccap_hhs_smi_eligible(Variable):
     value_type = bool
-    entity = TaxUnit
+    entity = SPMUnit
     label = "Eligible for the Colorado Child Care Assistance Program through the household size state median income"
     reference = (
         "https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=11042&fileName=8%20CCR%201403-1#page=19",
@@ -12,10 +12,9 @@ class co_ccap_hhs_smi_eligible(Variable):
     definition_period = MONTH
     # defined_for = StateCode.CO
 
-    def formula(tax_unit, period, parameters):
-        monthly_agi = np.round(
-            tax_unit("adjusted_gross_income", period.this_year)
-            / MONTHS_IN_YEAR,
+    def formula(spm_unit, period, parameters):
+        monthly_gross_income = np.round(
+            spm_unit("co_ccap_countable_income", period),
             2,
         )
         year = period.start.year
@@ -26,6 +25,6 @@ class co_ccap_hhs_smi_eligible(Variable):
         p = parameters(instant_str).gov.states.co.ccap
         # Calculate monthly smi limit
         hhs_smi_rate = p.entry.entry_hhs_smi_rate
-        hhs_smi = tax_unit.spm_unit("snap_hhs_smi", period)
+        hhs_smi = spm_unit("snap_hhs_smi", period)
         monthly_hhs_smi = np.round(hhs_smi * hhs_smi_rate / MONTHS_IN_YEAR, 2)
-        return monthly_agi < monthly_hhs_smi
+        return monthly_gross_income < monthly_hhs_smi

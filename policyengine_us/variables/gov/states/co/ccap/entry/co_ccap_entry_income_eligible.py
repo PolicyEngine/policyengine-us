@@ -3,7 +3,7 @@ from policyengine_us.model_api import *
 
 class co_ccap_entry_income_eligible(Variable):
     value_type = bool
-    entity = TaxUnit
+    entity = SPMUnit
     label = "Eligible for the entry of Colorado Child Care Assistance Program through income"
     reference = (
         "https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=11042&fileName=8%20CCR%201403-1#page=19",
@@ -12,7 +12,7 @@ class co_ccap_entry_income_eligible(Variable):
     definition_period = MONTH
     # defined_for = StateCode.CO
 
-    def formula(tax_unit, period, parameters):
-        hhs_fpg_eligible = tax_unit("co_ccap_hhs_fpg_eligible", period)
-        hhs_smi_eligible = tax_unit("co_ccap_hhs_smi_eligible", period)
+    def formula(spm_unit, period, parameters):
+        hhs_fpg_eligible = spm_unit("co_ccap_hhs_fpg_eligible", period)
+        hhs_smi_eligible = spm_unit("co_ccap_hhs_smi_eligible", period)
         return hhs_fpg_eligible & hhs_smi_eligible
