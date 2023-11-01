@@ -109,6 +109,7 @@ def create_remove_standard_deduction_head_of_household() -> Reform:
     class reform(Reform):
         def apply(self):
             self.update_variable(basic_standard_deduction)
+            self.update_variable(additional_standard_deduction)
 
     return reform
 
