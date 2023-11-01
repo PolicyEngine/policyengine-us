@@ -10,29 +10,6 @@ class sey(Variable):
     adds = ["self_employment_income", "farm_income", "k1bx14"]
 
 
-class combined(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-    label = "Taxes"
-    documentation = "Total federal income and payroll tax liability."
-    unit = USD
-
-    adds = [
-        # Tax unit level.
-        "iitax",
-        "additional_medicare_tax",
-        # Person level
-        "self_employment_medicare_tax",
-        "self_employment_social_security_tax",
-        "employee_medicare_tax",
-        "employee_social_security_tax",
-    ]
-
-
-tax = variable_alias("tax", combined)
-
-
 class filer_earned(Variable):
     value_type = float
     entity = TaxUnit
