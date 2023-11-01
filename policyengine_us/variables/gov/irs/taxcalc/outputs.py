@@ -43,14 +43,6 @@ class earned(Variable):
         return person("earned_income", period) - adjustment
 
 
-class othertaxes(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = "Other taxes: sum of niit, e09700, e09800 and e09900 (included in c09200)"
-    unit = USD
-
-
 class sep(Variable):
     value_type = int
     entity = TaxUnit
@@ -59,16 +51,6 @@ class sep(Variable):
     documentation = (
         "2 when filing_status is 3 (married filing separately); otherwise 1"
     )
-
-
-class surtax(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = (
-        "search taxcalc/calcfunctions.py for how calculated and used"
-    )
-    unit = USD
 
 
 class c01000(Variable):
