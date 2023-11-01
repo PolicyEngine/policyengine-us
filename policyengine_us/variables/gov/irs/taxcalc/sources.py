@@ -1,28 +1,6 @@
 from policyengine_us.model_api import *
 
 
-class e00300(Variable):
-    value_type = float
-    entity = Person
-    definition_period = YEAR
-    documentation = "Taxable interest income"
-    unit = USD
-
-    def formula(person, period, parameters):
-        return person("interest_income", period)
-
-
-class filer_e00300(Variable):
-    value_type = float
-    entity = TaxUnit
-    label = "Taxable interest income for the tax unit (excluding dependents)"
-    definition_period = YEAR
-    unit = USD
-
-    def formula(tax_unit, period, parameters):
-        return tax_unit_non_dep_sum("e00300", tax_unit, period)
-
-
 class e02300(Variable):
     value_type = float
     entity = Person
