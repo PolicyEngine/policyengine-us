@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.514.1] - 2023-11-01 11:27:38
+
+### Fixed
+
+- Colorado CCAP bug with individual simulations.
+
 ## [0.514.0] - 2023-11-01 02:15:09
 
 ### Added
@@ -5717,6 +5723,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.514.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.514.0...0.514.1
 [0.514.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.513.3...0.514.0
 [0.513.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.513.2...0.513.3
 [0.513.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.513.1...0.513.2
