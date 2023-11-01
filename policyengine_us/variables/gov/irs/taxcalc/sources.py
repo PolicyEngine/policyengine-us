@@ -1,17 +1,6 @@
 from policyengine_us.model_api import *
 
 
-class e87530(Variable):
-    value_type = float
-    entity = Person
-    definition_period = YEAR
-    label = "Qualified tuition expenses"
-    documentation = (
-        "Adjusted qualified lifetime learning expenses for all students"
-    )
-    unit = USD
-
-
 class elderly_dependents(Variable):
     value_type = int
     entity = TaxUnit
