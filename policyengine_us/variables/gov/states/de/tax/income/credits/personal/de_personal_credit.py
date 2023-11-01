@@ -11,8 +11,6 @@ class de_personal_credit(Variable):
     defined_for = StateCode.DE
 
     def formula(tax_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.de.tax.income.credits.personal_credits
-        exemptions = tax_unit("exemptions", period)
-        return p.personal * exemptions
+        p = parameters(period).gov.states.de.tax.income.credits
+        exemptions_count = tax_unit("exemptions_count", period)
+        return p.personal_credits.personal * exemptions_count
