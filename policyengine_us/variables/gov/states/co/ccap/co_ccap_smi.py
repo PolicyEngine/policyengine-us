@@ -1,14 +1,12 @@
 from policyengine_us.model_api import *
 
 
-class snap_hhs_smi(Variable):
+class co_ccap_smi(Variable):
     value_type = float
     entity = SPMUnit
-    label = "SNAP state median income"
+    label = "State median income for Colorado CCAP"
     unit = USD
-    documentation = (
-        "The state median income used to determine SNAP eligibility."
-    )
+    documentation = "The state median income used to determine eligibility for Colorado's Child Care Assistance Program. This differs from the HHS definition by basing it on the prior year if before October, and dividing by 12."
     definition_period = MONTH
 
     def formula(spm_unit, period, parameters):
@@ -36,4 +34,4 @@ class snap_hhs_smi(Variable):
             + second_to_sixth_additional_rate * (min_(size, 6) - 1)
             + seven_or_more_additional_rate * max_(size - 6, 0)
         )
-        return four_person_smi * size_adjustment
+        return four_person_smi * size_adjustment / MONTHS_IN_YEAR
