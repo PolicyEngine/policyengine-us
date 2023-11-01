@@ -1,26 +1,6 @@
 from policyengine_us.model_api import *
 
 
-class cmbtp(Variable):
-    value_type = float
-    entity = Person
-    definition_period = YEAR
-    label = "AMT income not included in AGI"
-    documentation = "Estimate of income considered for AMT but not AGI"
-    unit = USD
-
-
-class filer_cmbtp(Variable):
-    value_type = float
-    entity = TaxUnit
-    label = "Income on Form 6251 not in AGI for the tax unit (excluding dependents)"
-    definition_period = YEAR
-    unit = USD
-
-    def formula(tax_unit, period, parameters):
-        return tax_unit_non_dep_sum("cmbtp", tax_unit, period)
-
-
 class e00200(Variable):
     value_type = float
     entity = Person
