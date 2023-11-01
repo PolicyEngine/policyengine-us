@@ -10,17 +10,6 @@ class sey(Variable):
     adds = ["self_employment_income", "farm_income", "k1bx14"]
 
 
-class filer_sey(Variable):
-    value_type = float
-    entity = TaxUnit
-    label = "sey for the tax unit (excluding dependents)"
-    definition_period = YEAR
-    unit = USD
-
-    def formula(tax_unit, period, parameters):
-        return tax_unit_non_dep_sum("sey", tax_unit, period)
-
-
 class combined(Variable):
     value_type = float
     entity = TaxUnit
