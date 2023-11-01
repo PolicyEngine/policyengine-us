@@ -1,28 +1,6 @@
 from policyengine_us.model_api import *
 
 
-class e00200(Variable):
-    value_type = float
-    entity = Person
-    definition_period = YEAR
-    documentation = "Wages, salaries, and tips net of pension contributions"
-    unit = USD
-
-    def formula(person, period, parameters):
-        return person("employment_income", period)
-
-
-class filer_e00200(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = "Wages, salaries, and tips for filing unit (excluding dependents) net of pension contributions (pencon)"
-    unit = USD
-
-    def formula(tax_unit, period, parameters):
-        return tax_unit_non_dep_sum("e00200", tax_unit, period)
-
-
 class pencon(Variable):
     value_type = float
     entity = Person
