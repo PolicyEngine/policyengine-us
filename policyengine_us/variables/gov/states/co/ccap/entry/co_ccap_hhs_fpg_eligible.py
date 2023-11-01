@@ -30,8 +30,12 @@ class co_ccap_hhs_fpg_eligible(Variable):
         county = spm_unit.household("county_str", period.this_year)
         hhs_fpg_rate = np.zeros_like(county, dtype=float)
         mask = state_eligible
+        if hasattr(spm_unit.simulation, "dataset"):
+            county = np.array(
+                ["DENVER_COUNTY_CO"] * len(county),
+            )
         if mask.any():
-            hhs_fpg_rate = p.entry.entry_fpg_rate[county[mask]]
+            hhs_fpg_rate[mask] = p.entry.entry_fpg_rate[county[mask]]
         hhs_fpg = spm_unit("snap_fpg", period)
         monthly_hhs_fpg = np.round(hhs_fpg * hhs_fpg_rate / MONTHS_IN_YEAR, 2)
         meets_income_limit = monthly_gross_income < monthly_hhs_fpg
