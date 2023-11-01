@@ -1,0 +1,89 @@
+- name: In Adams, HHS = 2, agi < 75_334.48 * .85, eligible. # snap_hhs_smi_rate: 85%
+  period: 2023
+  input:
+    irs_gross_income: 40_000
+    snap_hhs_smi:  
+      2023-01: 75_334.48
+  output:
+    co_ccap_hhs_smi_eligible:  
+      2023-01: true
+
+- name: In Baca, HHS = 3, agi < 93_060.24 * .85, eligible.
+  period: 2023
+  input:
+    co_ccap_countable_income: 46_000
+    snap_hhs_smi:  
+      2023-01: 93_060.24
+  output:
+    co_ccap_hhs_smi_eligible:  
+      2023-01: true
+
+- name: In Boulder, HHS = 4, agi < 110_786 * .85, eligible. 
+  period: 2023
+  input:
+    co_ccap_countable_income: 74_000
+    snap_hhs_smi:  
+      2023-01: 110_786
+  output:
+    co_ccap_hhs_smi_eligible:  
+      2023-01: true
+
+- name: In Custer, HHS = 5, agi < 128_511.76 * .85, eligible. 
+  period: 2023
+  input:
+    co_ccap_countable_income: 64_000
+    snap_hhs_smi:  
+      2023-01: 128_511.76
+  output:
+    co_ccap_hhs_smi_eligible:  
+      2023-01: true
+
+- name: In Elbert, HHS = 6, agi < 146_237.52 * .85, eligible.
+  period: 2023
+  input:
+    co_ccap_countable_income: 87_000
+    snap_hhs_smi:  
+      2023-01: 146_237.52
+  output:
+    co_ccap_hhs_smi_eligible:  
+      2023-01: true
+
+- name: In Grand, HHS = 7, agi < 149_561.1 * .85, eligible.
+  period: 2023
+  input:
+    co_ccap_countable_income: 98_000
+    snap_hhs_smi:  
+      2023-01: 149_561.1
+  output:
+    co_ccap_hhs_smi_eligible:  
+      2023-01: true
+
+- name: In Jackson, HHS = 8, agi < 152_884.68 * .85, eligible. 
+  period: 2023
+  input:
+    co_ccap_countable_income: 109_000
+    snap_hhs_smi:  
+      2023-01: 152_884.68
+  output:
+    co_ccap_hhs_smi_eligible:  
+      2023-01: true
+
+- name: In Larimer, HHS = 9, agi < 156_208.26 * .85, eligible.
+  period: 2022
+  input:
+    co_ccap_countable_income: 120_000
+    snap_hhs_smi:  
+      2022-12: 156_208.26
+  output:
+    co_ccap_hhs_smi_eligible:  
+      2022-12: true
+
+- name: In Pitkin, HHS = 9, agi >= 156_208.26 * .85, ineligible. 
+  period: 2022
+  input:
+    co_ccap_countable_income: 160_000
+    snap_hhs_smi:  
+      2022-12: 156_208.26
+  output:
+    co_ccap_hhs_smi_eligible:  
+      2022-12: false
