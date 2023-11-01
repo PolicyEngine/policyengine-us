@@ -1,80 +1,36 @@
-- name: id_aged_grocery_credit unit test 1 # House head and spouse over 65
+- name: id_aged_grocery_credit unit test 1 # House head and spouse over 65 #age_head age_spouse
   period: 2021
   input:
-    people:
-      person1:
-        is_tax_unit_head: true
-        age: 67
-      person2:
-        is_tax_unit_spouse: true
-        age: 66
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
-    households:
-      household: 
-        members: [person1, person2]
-        state_code: ID
-  output:  
+    state_code: ID
+    age_head: 66
+    age_spouse: 70
+  output:
     id_aged_grocery_credit: 40
 
 
 - name: id_aged_grocery_credit unit test 2 # House head and spouse under 65
   period: 2021
   input:
-    people:
-      person1:
-        is_tax_unit_head: true
-        age: 60
-      person2:
-        is_tax_unit_spouse: true
-        age: 60
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
-    households:
-      household: 
-        members: [person1, person2]
-        state_code: ID
-  output:  
+    state_code: ID
+    age_head: 60
+    age_spouse: 60
+  output:
     id_aged_grocery_credit: 0
 
 - name: id_aged_grocery_credit unit test 3 # House head under 65, spouse over 65
   period: 2021
   input:
-    people:
-      person1:
-        is_tax_unit_head: true
-        age: 60
-      person2:
-        is_tax_unit_spouse: true
-        age: 66
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
-    households:
-      household: 
-        members: [person1, person2]
-        state_code: ID
-  output: 
+    state_code: ID
+    age_head: 64
+    age_spouse: 67
+  output:
     id_aged_grocery_credit: 20
 
 - name: id_aged_grocery_credit unit test 4 # House head over 65, spouse under 65
   period: 2022
   input:
-    people:
-      person1:
-        is_tax_unit_head: true
-        age: 70
-      person2:
-        is_tax_unit_spouse: true
-        age: 64
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
-    households:
-      household: 
-        members: [person1, person2]
-        state_code: ID
-  output: 
+    state_code: ID
+    age_head: 66
+    age_spouse: 64
+  output:
     id_aged_grocery_credit: 20
