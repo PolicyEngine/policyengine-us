@@ -31,48 +31,6 @@ class filer_k1bx14(Variable):
         return tax_unit_non_dep_sum("k1bx14", tax_unit, period)
 
 
-class n24(Variable):
-    value_type = int
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = "Number of children who are Child-Tax-Credit eligible, one condition for which is being under age 17"
-
-
-class nu06(Variable):
-    value_type = int
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = "Number of dependents under 6 years old"
-
-
-class nu13(Variable):
-    value_type = int
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = "Number of dependents under 13 years old"
-
-
-class nu18(Variable):
-    value_type = int
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = "Number of people under 18 years old in the filing unit"
-
-
-class n1820(Variable):
-    value_type = int
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = "Number of people age 18-20 years old in the filing unit"
-
-
-class n21(Variable):
-    value_type = int
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = "Number of people 21 years old or older in the filing unit"
-
-
 class hasqdivltcg(Variable):
     value_type = bool
     entity = TaxUnit
