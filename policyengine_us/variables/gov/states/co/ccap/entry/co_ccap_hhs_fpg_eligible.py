@@ -30,7 +30,11 @@ class co_ccap_hhs_fpg_eligible(Variable):
         county = spm_unit.household("county_str", period.this_year)
         hhs_fpg_rate = np.zeros_like(county, dtype=float)
         mask = state_eligible
-        if hasattr(spm_unit.simulation, "dataset"):
+
+        # Current fix for counties not in the dataset.
+        try:
+            p.entry.entry_fpg_rate[county[mask]]
+        except:
             county = np.array(
                 ["DENVER_COUNTY_CO"] * len(county),
             )
