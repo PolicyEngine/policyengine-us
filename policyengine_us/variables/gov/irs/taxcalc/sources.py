@@ -1,25 +1,6 @@
 from policyengine_us.model_api import *
 
 
-class pencon(Variable):
-    value_type = float
-    entity = Person
-    definition_period = YEAR
-    documentation = "Contributions to defined-contribution pension plans"
-    unit = USD
-
-
-class filer_pencon(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = "Contributions to defined-contribution pension plans for filing unit (excluding dependents)"
-    unit = USD
-
-    def formula(tax_unit, period, parameters):
-        return tax_unit_non_dep_sum("pencon", tax_unit, period)
-
-
 class e00300(Variable):
     value_type = float
     entity = Person
