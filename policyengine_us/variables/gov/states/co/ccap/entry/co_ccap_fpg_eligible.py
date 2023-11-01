@@ -32,13 +32,13 @@ class co_ccap_fpg_eligible(Variable):
 
         # Current fix for counties not in the dataset.
         try:
-            p.entry.entry_fpg_rate[county[mask]]
+            p.entry.fpg_rate[county[mask]]
         except:
             county = np.array(
                 ["DENVER_COUNTY_CO"] * len(county),
             )
         if mask.any():
-            fpg_rate[mask] = p.entry.entry_fpg_rate[county[mask]]
+            fpg_rate[mask] = p.entry.fpg_rate[county[mask]]
         # SNAP FPG is monthly.
         fpg = spm_unit("snap_fpg", period)
         fpg_limit = np.round(fpg * fpg_rate, 2)
