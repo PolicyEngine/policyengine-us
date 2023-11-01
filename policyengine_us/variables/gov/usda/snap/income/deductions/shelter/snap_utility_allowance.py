@@ -7,7 +7,7 @@ class snap_utility_allowance(Variable):
     label = "Standard Utility Allowance"
     unit = USD
     documentation = "The regular utility allowance deduction for SNAP"
-    definition_period = YEAR
+    definition_period = MONTH
 
     def formula(spm_unit, period, parameters):
         utility = parameters(period).gov.usda.snap.income.deductions.utility

@@ -1,0 +1,31 @@
+- name: VT percentage capital gain exclusion amount unit test 1
+  period: 2022
+  input:
+    state_code: ME # Test state definition other than VT
+    adjusted_net_capital_gain: 1_000
+  output:
+    vt_percentage_capital_gains_exclusion: 0
+
+- name: VT percentage capital gain exclusion amount unit test 2
+  period: 2022
+  input:
+    state_code: VT
+    adjusted_net_capital_gain: 0
+  output:
+    vt_percentage_capital_gains_exclusion: 0 
+
+- name: VT percentage capital gain exclusion amount unit test 3
+  period: 2022
+  input:
+    state_code: VT
+    adjusted_net_capital_gain: 1_000
+  output:
+    vt_percentage_capital_gains_exclusion: 400 
+
+- name: VT percentage capital gain exclusion amount unit test 4
+  period: 2022
+  input:
+    state_code: VT
+    adjusted_net_capital_gain: 900_000
+  output:
+    vt_percentage_capital_gains_exclusion: 350_000      

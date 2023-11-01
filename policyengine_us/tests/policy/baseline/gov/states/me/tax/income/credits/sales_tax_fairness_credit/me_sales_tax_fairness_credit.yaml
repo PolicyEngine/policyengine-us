@@ -1,0 +1,69 @@
+- name: Separate ineligible
+  period: 2022
+  input:
+    me_sales_tax_fairness_credit_eligible: true
+    ctc_qualifying_children: 1
+    filing_status: SEPARATE
+    me_sales_and_property_tax_fairness_credit_income: 0
+  output:
+    me_sales_tax_fairness_credit: 0
+
+- name: Ineligible
+  period: 2022
+  input:
+    me_sales_tax_fairness_credit_eligible: false
+    ctc_qualifying_children: 1
+    filing_status: SINGLE
+    me_sales_and_property_tax_fairness_credit_income: 0
+  output:
+    me_sales_tax_fairness_credit: 0
+
+- name: Joint, no income and no children
+  period: 2022
+  input:
+    me_sales_tax_fairness_credit_eligible: true
+    ctc_qualifying_children: 0
+    filing_status: JOINT
+    me_sales_and_property_tax_fairness_credit_income: 0
+  output:
+    me_sales_tax_fairness_credit: 185
+
+- name: Joint, no income and 4 children
+  period: 2022
+  input:
+    me_sales_tax_fairness_credit_eligible: true
+    ctc_qualifying_children: 4
+    filing_status: JOINT
+    me_sales_and_property_tax_fairness_credit_income: 0
+  output:
+    me_sales_tax_fairness_credit: 240
+
+- name: Joint, no income and 4 children, some reduction
+  period: 2022
+  input:
+    me_sales_tax_fairness_credit_eligible: true
+    ctc_qualifying_children: 4
+    filing_status: JOINT
+    me_sales_and_property_tax_fairness_credit_income: 51_700
+  output:
+    me_sales_tax_fairness_credit: 80
+
+- name: Single with 3 children and reduction
+  period: 2022
+  input:
+    me_sales_tax_fairness_credit_eligible: true
+    ctc_qualifying_children: 3
+    filing_status: SINGLE
+    me_sales_and_property_tax_fairness_credit_income: 25_350
+  output:
+    me_sales_tax_fairness_credit: 60
+
+- name: Head of household with 3, fully reduced
+  period: 2022
+  input:
+    me_sales_tax_fairness_credit_eligible: true
+    ctc_qualifying_children: 3
+    filing_status: SINGLE
+    me_sales_and_property_tax_fairness_credit_income: 50_000
+  output:
+    me_sales_tax_fairness_credit: 0
