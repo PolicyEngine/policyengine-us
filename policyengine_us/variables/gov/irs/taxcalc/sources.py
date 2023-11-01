@@ -1,15 +1,6 @@
 from policyengine_us.model_api import *
 
 
-class f6251(Variable):
-    value_type = bool
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = (
-        "True if Form 6251 (AMT) attached to return; otherwise false"
-    )
-
-
 class k1bx14(Variable):
     value_type = float
     entity = Person
@@ -18,17 +9,6 @@ class k1bx14(Variable):
         "Partner self-employment earnings/loss (included in e26270 total)"
     )
     unit = USD
-
-
-class filer_k1bx14(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = "Partner self-employment earnings/loss for tax unit (excluding dependents) (included in e26270 total)"
-    unit = USD
-
-    def formula(tax_unit, period, parameters):
-        return tax_unit_non_dep_sum("k1bx14", tax_unit, period)
 
 
 class hasqdivltcg(Variable):
