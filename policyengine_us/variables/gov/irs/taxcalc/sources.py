@@ -1,27 +1,6 @@
 from policyengine_us.model_api import *
 
 
-class e02300(Variable):
-    value_type = float
-    entity = Person
-    definition_period = YEAR
-    documentation = "Unemployment compensation benefits"
-    unit = USD
-
-
-class filer_e02300(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = "Unemployment compensation benefits for filing unit (excluding dependents)"
-    unit = USD
-
-    def formula(tax_unit, period, parameters):
-        return tax_unit_non_dep_sum(
-            "unemployment_compensation", tax_unit, period
-        )
-
-
 class e02400(Variable):
     value_type = float
     entity = Person
