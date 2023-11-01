@@ -1,28 +1,6 @@
 from policyengine_us.model_api import *
 
 
-class e02400(Variable):
-    value_type = float
-    entity = Person
-    definition_period = YEAR
-    documentation = "Total Social Security (OASDI) benefits"
-    unit = USD
-
-    def formula(person, period, parameters):
-        return person("social_security", period)
-
-
-class tax_unit_ss(Variable):
-    value_type = float
-    entity = TaxUnit
-    label = "Social security benefits for the tax unit (excluding dependents)"
-    definition_period = YEAR
-    unit = USD
-
-    def formula(tax_unit, period, parameters):
-        return add(tax_unit, period, ["social_security"])
-
-
 class e87530(Variable):
     value_type = float
     entity = Person
