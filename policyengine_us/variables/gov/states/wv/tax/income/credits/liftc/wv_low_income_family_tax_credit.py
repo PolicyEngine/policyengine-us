@@ -32,17 +32,18 @@ class wv_low_income_family_tax_credit(Variable):
                 filing_status == filing_statuses.WIDOW,
             ],
             [
-                p.amount.single.calc(reduced_agi, right=True),
-                p.amount.separate.calc(reduced_agi, right=True),
-                p.amount.joint.calc(reduced_agi, right=True),
-                p.amount.head_of_household.calc(reduced_agi, right=True),
-                p.amount.widow.calc(reduced_agi, right=True),
+                p.amount.single.calc(reduced_agi),
+                p.amount.separate.calc(reduced_agi),
+                p.amount.joint.calc(reduced_agi),
+                p.amount.head_of_household.calc(reduced_agi),
+                p.amount.widow.calc(reduced_agi),
             ],
         )
 
         tax_before_credits = tax_unit(
             "wv_income_tax_before_non_refundable_credits", period
         )
-        print(credit_percentage)
         print(reduced_agi)
+        print(credit_percentage)
+
         return tax_before_credits * credit_percentage
