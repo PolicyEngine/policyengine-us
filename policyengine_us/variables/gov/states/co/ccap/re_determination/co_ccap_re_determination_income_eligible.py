@@ -24,7 +24,7 @@ class co_ccap_re_determination_income_eligible(Variable):
             instant_str = f"{year - 1}-10-01"
         p = parameters(instant_str).gov.states.co.ccap
         # Calculate monthly smi limit
-        hhs_smi_rate = p.re_determination.re_determination_hhs_smi_rate
-        hhs_smi = spm_unit("snap_hhs_smi", period)
-        monthly_hhs_smi = np.round(hhs_smi * hhs_smi_rate / MONTHS_IN_YEAR, 2)
-        return monthly_gross_income < monthly_hhs_smi
+        smi_rate = p.re_determination.re_determination_smi_rate
+        smi = spm_unit("co_ccap_smi", period)
+        income_limit = np.round(_smi * smi_rate, 2)
+        return monthly_gross_income < income_limit

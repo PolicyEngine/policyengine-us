@@ -13,7 +13,6 @@ class co_ccap_parent_fee(Variable):
     )
     unit = USD
     definition_period = MONTH
-    defined_for = "co_ccap_eligible"
 
     def formula(spm_unit, period, parameters):
         year = period.start.year
@@ -23,8 +22,9 @@ class co_ccap_parent_fee(Variable):
             instant_str = f"{year - 1}-10-01"
         p = parameters(instant_str).gov.states.co.ccap
         # Calculate base parent fee and add on parent fee.
-        gross_income = spm_unit("co_ccap_countable_income", period.this_year)
-        hhs_fpg = spm_unit("snap_fpg", period) * MONTHS_IN_YEAR
+        gross_income = spm_unit("co_ccap_countable_income", period)
+        # snap_fpg is monthly.
+        fpg = spm_unit("snap_fpg", period)
         eligible_children = spm_unit("co_ccap_eligible_children", period)
         # The numbers below are weights copied from government spreadsheet
         # (url: https://docs.google.com/spreadsheets/d/1EEc3z8Iwu_KRTlBtd2NssDDEx_FITqVq/edit#gid=468321263,
@@ -38,47 +38,47 @@ class co_ccap_parent_fee(Variable):
         third_multiplication_factor = (
             p.add_on_parent_fee.third_multiplication_factor
         )
-        # Calculate base parent fee:
-        # When agi <= fpg: agi * 0.01 / 12
-        # When agi > fpg: [fpg * 0.01 + (agi - fpg) * 0.14]/12
+        # Calculate base parent fee (note income is monthly):
+        # When income <= fpg: income * 0.01
+        # When income > fpg: [fpg * 0.01 + (income - fpg) * 0.14]
         base_parent_fee = np.round(
             where(
-                gross_income <= hhs_fpg,
+                gross_income <= fpg,
                 gross_income * first_multiplication_factor,
-                hhs_fpg * first_multiplication_factor
-                + (gross_income - hhs_fpg) * second_multiplication_factor,
-            )
-            / MONTHS_IN_YEAR,
+                fpg * first_multiplication_factor
+                + (gross_income - fpg) * second_multiplication_factor,
+            ),
             2,
         )
-        # Calculate add-on parent fee (this is relevant to number of eligible children in a household and agi):
-        # When agi <= fpg: 0
-        # When agi > fpg: 15 for each additional child
+        # Calculate add-on parent fee based on the number of eligible
+        # children in a household and income:
+        # When income <= fpg: 0
+        # When income > fpg: 15 for each additional child
         add_on_parent_fee = where(
-            gross_income > hhs_fpg,
+            gross_income > fpg,
             (eligible_children - 1) * third_multiplication_factor,
             0,
         )
         # Childcare-hours-per-day also affects parent fee.
-        # Since each child may need different hours of childcare per day, we have to calculate parent fee one by one and sum them up.
-        child_age_eligible = spm_unit.members("co_ccap_child_eligible", period)
-        childcare_hours_per_day = spm_unit.members(
+        # Since each child may need different hours of childcare per day, we
+        # have to calculate parent fee one by one and sum them up.
+        person = spm_unit.members
+        child_age_eligible = person("co_ccap_child_eligible", period)
+        childcare_hours_per_day = person(
             "childcare_hours_per_day", period.this_year
         )
         rate = p.parent_fee_rate_by_child_care_hours.calc(
             childcare_hours_per_day, right=True
         )
-        non_discounted_fee = np.round(
-            spm_unit.sum(
-                child_age_eligible
-                * (base_parent_fee + add_on_parent_fee)
-                * rate
-            ),
-            2,
+        unrounded_non_discounted_fee = spm_unit.sum(
+            child_age_eligible * (base_parent_fee + add_on_parent_fee) * rate
         )
+        non_discounted_fee = np.round(unrounded_non_discounted_fee, 2)
         # Rating of child care facilities also affects parent fee.
-        # For households utilizing multiple child care providers, only one child care provider is required to be eligible for the reduced parent fee to apply.
-        rating = spm_unit.members(
+        # For households utilizing multiple child care providers, only one
+        # child care provider is required to be eligible for the reduced
+        # parent fee to apply.
+        rating = person(
             "co_quality_rating_of_child_care_facility", period.this_year
         )
         discount_eligible = (
