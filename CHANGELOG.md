@@ -5,6 +5,56 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.514.1] - 2023-11-01 11:27:38
+
+### Fixed
+
+- Colorado CCAP bug with individual simulations.
+
+## [0.514.0] - 2023-11-01 02:15:09
+
+### Added
+
+- Colorado child care assistance program (CCCAP).
+
+## [0.513.3] - 2023-10-31 22:16:07
+
+### Fixed
+
+- Remove obsolete xtot variable left over from original taxcalc development.
+
+## [0.513.2] - 2023-10-31 20:32:49
+
+### Fixed
+
+- Renamed `exemptions` variable to `exemptions_count`.
+- Renamed `c04600` variable to `exemptions`.
+
+## [0.513.1] - 2023-10-31 15:33:49
+
+### Fixed
+
+- Location of `state_and_local_sales_or_income_tax` variable module.
+- Presence of unused `filer_e18400` variable.
+
+## [0.513.0] - 2023-10-30 12:33:37
+
+### Added
+
+- Eliminate cap on Maryland childless EITC amount beginning in 2023.
+
+## [0.512.0] - 2023-10-28 17:35:45
+
+### Added
+
+- Reform for the Taxable Earnings for Social Security Payroll Taxes, including an upper threshold and increasing the taxable amount.
+
+## [0.511.0] - 2023-10-28 16:48:11
+
+### Added
+
+- Oklahoma income tax to net income tree.
+
 ## [0.510.0] - 2023-10-23 15:52:44
 
 ### Added
@@ -5673,6 +5723,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.514.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.514.0...0.514.1
+[0.514.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.513.3...0.514.0
+[0.513.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.513.2...0.513.3
+[0.513.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.513.1...0.513.2
+[0.513.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.513.0...0.513.1
+[0.513.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.512.0...0.513.0
+[0.512.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.511.0...0.512.0
+[0.511.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.510.0...0.511.0
 [0.510.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.509.0...0.510.0
 [0.509.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.508.4...0.509.0
 [0.508.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.508.3...0.508.4

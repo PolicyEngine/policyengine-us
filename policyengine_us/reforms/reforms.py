@@ -6,6 +6,8 @@ from .dc_tax_threshold_joint_ratio import (
 )
 from .tax_foundation.growth_and_opportunity import (
     create_remove_standard_deduction_head_of_household_reform,
+from .cbo.payroll import (
+    create_increase_taxable_earnings_for_social_security_reform,
 )
 from policyengine_core.reforms import Reform
 import warnings
@@ -22,6 +24,8 @@ def create_structural_reforms_from_parameters(parameters, period):
     )
     remove_standard_deduction_head_of_household = (
         create_remove_standard_deduction_head_of_household_reform(
+    increase_taxable_earnings_for_social_security_reform = (
+        create_increase_taxable_earnings_for_social_security_reform(
             parameters, period
         )
     )
@@ -32,6 +36,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         dc_kccatc_reform,
         dc_tax_threshold_joint_ratio_reform,
         remove_standard_deduction_head_of_household,
+        increase_taxable_earnings_for_social_security_reform,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
 
