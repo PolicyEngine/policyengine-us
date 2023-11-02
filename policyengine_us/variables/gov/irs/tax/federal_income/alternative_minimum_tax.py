@@ -146,8 +146,13 @@ class alternative_minimum_tax(Variable):
         )
         line30 = max_(0, amt_income - line29)
         brackets = amt.brackets
-        amount_over_threshold = line30 - brackets.thresholds["1"] / tax_unit(
-            "sep", period
+        bracket_fraction = where(
+            filing_status == filing_status.possible_values.SEPARATE,
+            0.5,
+            1.0,
+        )
+        amount_over_threshold = (
+            line30 - brackets.thresholds["1"] * bracket_fraction
         )
         line3163 = brackets.rates["1"] * line30 + brackets.rates["2"] * max_(
             0, amount_over_threshold
@@ -183,7 +188,7 @@ class alternative_minimum_tax(Variable):
         line40 = min_(line30, line39)
         line41 = max_(0, line30 - line40)
         amount_over_threshold = max_(
-            0, line41 - amt.brackets.thresholds["1"] / tax_unit("sep", period)
+            0, line41 - amt.brackets.thresholds["1"] * bracket_fraction
         )
         line42 = (
             amt.brackets.rates["1"] * line41

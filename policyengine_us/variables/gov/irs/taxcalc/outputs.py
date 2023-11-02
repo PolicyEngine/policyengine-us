@@ -41,13 +41,3 @@ class earned(Variable):
             * person("self_employment_tax", period)
         )
         return person("earned_income", period) - adjustment
-
-
-class sep(Variable):
-    value_type = int
-    entity = TaxUnit
-    definition_period = YEAR
-    default_value = 1
-    documentation = (
-        "2 when filing_status is 3 (married filing separately); otherwise 1"
-    )
