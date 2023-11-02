@@ -7,7 +7,7 @@ class co_ccap_subsidy(Variable):
     label = "Colorado Child Care Assistance Program"
     reference = ""
     definition_period = MONTH
-    defined_for = StateCode.CO
+    defined_for = "co_ccap_eligible"
 
     def formula(spm_unit, period, parameters):
         expenses = add(
