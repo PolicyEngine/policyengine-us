@@ -9,7 +9,7 @@ from policyengine_core.simulations import (
     Microsimulation as CoreMicrosimulation,
     IndividualSim as CoreIndividualSim,
 )
-from policyengine_us.data import DATASETS, CPS_2023
+from policyengine_us.data import DATASETS, CPS_2023, EnhancedCPS_2023
 from policyengine_us.tools.taxcalc.generate_taxcalc_variable import (
     add_taxcalc_variable_aliases,
 )
@@ -43,12 +43,14 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
             self.parameters, "2023-01-01"
         )
         if reform is not None:
-            self.apply_reform(reform)
+            reform.apply(self)
 
         self.add_variables(*create_50_state_variables())
 
         self.parameters = set_irs_uprating_parameter(self.parameters)
-        self.parameters = backdate_parameters(self.parameters)
+        self.parameters = backdate_parameters(
+            self.parameters, first_instant="2020-01-01"
+        )
 
         add_taxcalc_variable_aliases(self)
 

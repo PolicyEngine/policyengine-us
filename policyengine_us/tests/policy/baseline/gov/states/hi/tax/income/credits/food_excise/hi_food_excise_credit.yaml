@@ -19,7 +19,7 @@
         members: [person1, person2, person3]
         adjusted_gross_income: 4_000
         filing_status: SINGLE
-        exemptions: 3
+        exemptions_count: 3
         dsi: false
     households:
       household: 
@@ -49,7 +49,7 @@
         members: [person1, person2, person3]
         adjusted_gross_income: 4_000
         filing_status: SINGLE
-        exemptions: 3
+        exemptions_count: 3
         dsi: false
     households:
       household: 
@@ -80,7 +80,7 @@
         members: [person1, person2]
         adjusted_gross_income: 4_000
         filing_status: SINGLE
-        exemptions: 2
+        exemptions_count: 2
         dsi: true
     households:
       household: 
@@ -110,7 +110,7 @@
         members: [person1, person2, person3]
         adjusted_gross_income: 35_000
         filing_status: SINGLE
-        exemptions: 3
+        exemptions_count: 3
         dsi: false
     households:
       household: 
@@ -140,7 +140,7 @@
         members: [person1, person2, person3]
         adjusted_gross_income: 35_000
         filing_status: JOINT
-        exemptions: 3
+        exemptions_count: 3
         dsi: false
     households:
       household: 
@@ -170,7 +170,7 @@
         members: [person1, person2, person3]
         adjusted_gross_income: 55_000
         filing_status: JOINT
-        exemptions: 3
+        exemptions_count: 3
         dsi: false
     households:
       household: 
