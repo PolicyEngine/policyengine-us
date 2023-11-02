@@ -21,7 +21,7 @@ class dwks10(Variable):
                     period,
                     ["long_term_capital_gains", "qualified_dividend_income"],
                 ),
-                tax_unit("c23650", period),
+                tax_unit("net_capital_gains", period),
             ),
         ) + add(tax_unit, period, ["non_sch_d_capital_gains"])
         return where(

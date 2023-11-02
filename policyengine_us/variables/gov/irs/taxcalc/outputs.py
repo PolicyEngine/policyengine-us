@@ -61,9 +61,9 @@ class c01000(Variable):
     unit = USD
 
     def formula(tax_unit, period, parameters):
-        return max_(
-            (-3000.0 / tax_unit("sep", period)), tax_unit("c23650", period)
-        )
+        loss_limit = 3000.0 / tax_unit("sep", period)
+        net_capital_gains = tax_unit("net_capital_gains", period)
+        return max_(-loss_limit, net_capital_gains)
 
 
 class tax_unit_is_joint(Variable):

@@ -19,10 +19,10 @@ class hasqdivltcg(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        # Negatives cannot offset other income sources
+        # negatives amounts cannot offset other income sources
         INCOME_SOURCES = [
             "c01000",
-            "c23650",
+            "net_capital_gains",
             "long_term_capital_gains",
             "non_sch_d_capital_gains",
             "qualified_dividend_income",
@@ -35,17 +35,10 @@ class hasqdivltcg(Variable):
         )
 
 
-class c23650(Variable):
+class net_capital_gains(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
-    label = "Net capital gains"
+    label = "Net capital gains before loss limitation"
     unit = USD
-    documentation = "Net capital gains (long and short term) before exclusion"
-
-    def formula(tax_unit, period, parameters):
-        return add(
-            tax_unit,
-            period,
-            ["long_term_capital_gains", "short_term_capital_gains"],
-        )
+    adds = ["long_term_capital_gains", "short_term_capital_gains"]
