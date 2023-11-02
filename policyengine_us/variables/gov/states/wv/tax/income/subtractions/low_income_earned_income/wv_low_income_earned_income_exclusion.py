@@ -21,6 +21,6 @@ class wv_low_income_earned_income_exclusion(Variable):
 
         p = parameters(
             period
-        ).gov.states.wv.tax.income.subtractions.low_income_earned_income_exclusion
+        ).gov.states.wv.tax.income.subtractions.low_income_earned_income
         income_min = min_(federal_agi, wv_earned_income)
         return min_(income_min, p.income_threshold[filing_status])
