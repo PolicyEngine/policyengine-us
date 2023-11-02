@@ -1,0 +1,17 @@
+- name: Calculation 
+  period: 2023
+  input:
+    state_code: MS
+    ms_income_tax_before_credits: 2_000
+    ms_non_refundable_credits: 200
+  output:
+    ms_income_tax: 1_800
+
+- name: Capped at 0 
+  period: 2023
+  input:
+    state_code: MS
+    ms_income_tax_before_credits: 300
+    ms_non_refundable_credits: 500
+  output:
+    ms_income_tax: 0
