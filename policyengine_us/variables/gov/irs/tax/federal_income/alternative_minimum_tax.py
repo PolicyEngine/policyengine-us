@@ -110,8 +110,7 @@ class regular_tax_before_credits(Variable):
         )
         dwks44 = tax_unit("income_tax_main_rates", period)
         dwks45 = min_(dwks43, dwks44)
-        hasqdivltcg = tax_unit("hasqdivltcg", period)
-        return where(hasqdivltcg, dwks45, dwks44)
+        return where(tax_unit("has_qdiv_or_ltcg", period), dwks45, dwks44)
 
 
 class alternative_minimum_tax(Variable):
