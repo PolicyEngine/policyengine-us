@@ -13,9 +13,12 @@ class spm_unit_benefits(Variable):
             "social_security",
             "ssi",
             "state_supplement",
+            # California programs.
+            "ca_cvrp",  # California Clean Vehicle Rebate Project.
+            # Colorado programs.
+            "co_ccap_subsidy",
             "co_state_supplement",
             "co_oap",
-            "ca_cvrp",  # California Clean Vehicle Rebate Project.
             "snap",
             "wic",
             "free_school_meals",

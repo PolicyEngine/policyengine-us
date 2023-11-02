@@ -1,17 +1,22 @@
-description: West Virginia counts these sources as subtractions.
+description: West Virginia subtracts these sources from adjusted gross income.
 values:
-  1989-01-01:
-    - wv_public_pension_subtraction
-  2020-01-01:
-    - wv_public_pension_subtraction
-    - wv_social_security_benefits_subtraction
-    # - wv_low_income_earned_income_exclusion
+  2021-01-01:
+    - us_govt_interest # Line 27
+    - military_retirement_pay # Line 30
+    - wv_public_pension_subtraction.py # Line 31
+    - wv_social_security_benefits_subtraction # Line 32
+    - military_service_income # Line 34
+    - salt_refund_income # Line 36
+    - investment_in_529_plan
+    #- SENIOR CITIZEN OR DISABILITY DEDUCTION. # Line 46
+
 metadata:
   unit: list
+  label: West Virginia subtractions
   reference:
-  - title: Code of West Virginia §11-21-12 (c) - (d)
-    href: https://code.wvlegislature.gov/11-21-12/
-  - title: 2021 West Virginia Personal Income Tax Forms And Instructions - MODIFICATIONS TO ADJUSTED GROSS INCOME
-    href: https://tax.wv.gov/Documents/TaxForms/2021/it140.pdf#page=3 
-  - title: 2022 West Virginia Personal Income Tax Forms And Instructions - MODIFICATIONS TO ADJUSTED GROSS INCOME
-    href: https://tax.wv.gov/Documents/PIT/2022/it140.2022.pdf#page=3
+    - title: 2022 West Virginia Personal Income Tax Forms & Instructions
+      href: https://tax.wv.gov/Documents/PIT/2022/PersonalIncomeTaxFormsAndInstructions.2022.pdf#page=3
+    - title: 2021 West Virginia Personal Income Tax Forms & Instructions
+      href: https://tax.wv.gov/Documents/TaxForms/2021/it140.pdf#page=3
+    - title: Code of West Virginia §11-21-12
+      href: https://code.wvlegislature.gov/11-21-12/

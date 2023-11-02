@@ -4,7 +4,7 @@
     filing_status: SINGLE
     state_code: DE
   output:
-    de_standard_deduction: 3_250
+    de_base_standard_deduction: 3_250
 
 - name: Delaware Standard deduction if married filing jointly and above max threshold
   period: 2022
@@ -12,4 +12,4 @@
     filing_status: JOINT
     state_code: DE
   output:  
-    de_standard_deduction: 6_500
+    de_base_standard_deduction: 6_500
