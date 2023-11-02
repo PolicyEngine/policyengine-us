@@ -82,7 +82,7 @@ def create_remove_standard_deduction_head_of_household() -> Reform:
             parameters(
                 period
             ).gov.contrib.tax_foundation.growth_and_opportunity.remove_head_of_household
-            == True
+            is True
         ):
             additional_standard_deduction_per_count = select(
                 [
@@ -122,7 +122,7 @@ def create_remove_standard_deduction_head_of_household_reform(
 
     p = parameters(period).gov.contrib.tax_foundation.growth_and_opportunity
 
-    if p.remove_head_of_household > 0:
+    if p.remove_head_of_household is True:
         return create_remove_standard_deduction_head_of_household()
     else:
         return None
