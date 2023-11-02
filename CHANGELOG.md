@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.515.0] - 2023-11-02 01:02:06
+
+### Added
+
+- Idaho capital gains deduction.
+
 ## [0.514.3] - 2023-11-01 21:47:32
 
 ### Fixed
@@ -5736,6 +5742,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.515.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.514.3...0.515.0
 [0.514.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.514.2...0.514.3
 [0.514.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.514.1...0.514.2
 [0.514.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.514.0...0.514.1
