@@ -43,7 +43,4 @@ class wv_low_income_family_tax_credit(Variable):
         tax_before_credits = tax_unit(
             "wv_income_tax_before_non_refundable_credits", period
         )
-        print(reduced_agi)
-        print(credit_percentage)
-
         return tax_before_credits * credit_percentage
