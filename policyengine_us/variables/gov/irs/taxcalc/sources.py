@@ -33,12 +33,3 @@ class hasqdivltcg(Variable):
                 for income_source in INCOME_SOURCES
             ]
         )
-
-
-class net_capital_gains(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-    label = "Net capital gains before loss limitation"
-    unit = USD
-    adds = ["long_term_capital_gains", "short_term_capital_gains"]
