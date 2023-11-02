@@ -4823,3 +4823,39 @@
     fixed:
     - Remove obsolete xtot variable left over from original taxcalc development.
   date: 2023-10-31 22:16:07
+- bump: minor
+  changes:
+    added:
+    - Colorado child care assistance program (CCCAP).
+  date: 2023-11-01 02:15:09
+- bump: patch
+  changes:
+    fixed:
+    - Colorado CCAP bug with individual simulations.
+  date: 2023-11-01 11:27:38
+- bump: patch
+  changes:
+    fixed:
+    - Various bugs in Colorado CCAP.
+  date: 2023-11-01 18:48:50
+- bump: patch
+  changes:
+    fixed:
+    - Remove obsolete variables from the `gov/irs/taxcalc/sources.py` module.
+    - Remove obsolete variables from the `gov/irs/taxcalc/outputs.py` module.
+  date: 2023-11-01 21:47:32
+- bump: minor
+  changes:
+    added:
+    - Idaho capital gains deduction.
+  date: 2023-11-02 01:02:06
+- bump: minor
+  changes:
+    added:
+    - Arizona military retirement subtraction.
+  date: 2023-11-02 17:49:15
+- bump: patch
+  changes:
+    fixed:
+    - Automatically set entry process to true for CCAP.
+  date: 2023-11-02 20:44:02
