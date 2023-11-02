@@ -11,7 +11,9 @@ class ca_child_care_payment_standard(Variable):
     def formula(person, period, parameters):
         p = parameters(
             period
-        ).gov.states.ca.cdss.child_care.rate_ceilings.standard
+        ).gov.states.ca.cdss.child_care.rate_ceilings
+        standard = p.standard
+        age_threshold = p.age_threshold
         provider = person("ca_child_care_provider_category", period)
         time = person("ca_child_care_time_category", period)
         service = person("ca_child_care_service_category", period)
@@ -20,11 +22,11 @@ class ca_child_care_payment_standard(Variable):
 
         return (
             select(
-                [age < 2, (age >= 2) & (age <= 5), age > 5],
+                [age < age_threshold.lower, (age >= age_threshold.lower) & (age <= age_threshold.higher), age > age_threshold.higher],
                 [
-                    p.under_2[provider][time][service],
-                    p.between_2_and_5[provider][time][service],
-                    p.over_5[provider][time][service],
+                    standard.under_2[provider][time][service],
+                    standard.between_2_and_5[provider][time][service],
+                    standard.over_5[provider][time][service],
                 ],
             )
             * child
