@@ -17,9 +17,7 @@ class ar_dependent_credit(Variable):
     def formula(tax_unit, period, parameters):
         us_dependent = tax_unit("tax_unit_dependents", period)
         person = tax_unit.members
-        p = parameters(period).gov.states.ar.tax.income.credits.personal
-
-        p_dp = p.dependent
+        p = parameters(period).gov.states.ar.tax.income.credits.personal.dependent
 
         is_disabled = person("is_disabled", period)
         is_dependent = person("is_tax_unit_dependent", period)
@@ -27,5 +25,5 @@ class ar_dependent_credit(Variable):
         count_disabled_dependent = tax_unit.sum(disabled_dependent)
 
         return (
-            us_dependent * p_dp.base + count_disabled_dependent * p_dp.disabled
+            us_dependent * p.base + count_disabled_dependent * p.disabled
         )

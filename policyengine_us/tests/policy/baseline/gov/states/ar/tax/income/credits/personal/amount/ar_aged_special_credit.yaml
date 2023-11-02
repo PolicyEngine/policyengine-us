@@ -1,4 +1,4 @@
-- name: Arkansas personal credit for aged taxpayer over 65 claiming a retirement income exemption is $29*2=$58
+- name: Arkansas personal credit for aged taxpayer with income exemption is $29*2=$58
   period: 2022
   input:
     age: 65
@@ -6,7 +6,7 @@
   output:
     ar_personal_credit_aged_special: 58
 
-- name: Arkansas personal credit for non_aged taxpayer under 64 is $0
+- name: Arkansas personal credit for non_aged taxpayer is $0
   period: 2022
   input:
     age: 64
@@ -14,7 +14,7 @@
   output:
     ar_personal_credit_aged_special: 0
 
-- name: Arkansas personal credit for one non_aged taxpayer under 64 and one aged taxpayer over 65 not claiming a retirement income exemption is $29*2=$58
+- name: Arkansas personal credit for one non_aged taxpayer and one aged taxpayer without income exemption is $29*2=$58
   period: 2022
   input:
     people:
@@ -34,7 +34,7 @@
   output:
     ar_personal_credit_aged_special: 58
 
-- name: Arkansas personal credit for two non_aged taxpayers under 64 is $0
+- name: Arkansas personal credit for two non_aged taxpayers is $0
   period: 2022
   input:
     people:
@@ -54,7 +54,7 @@
   output:
     ar_personal_credit_aged_special: 0
 
-- name: Arkansas personal credit for two aged taxpayers over 65 not claiming a retirement income exemption is $29*2*2=$116
+- name: Arkansas personal credit for two aged taxpayers without income exemption is $29*2*2=$116
   period: 2022
   input:
     people:
@@ -74,7 +74,7 @@
   output:
     ar_personal_credit_aged_special: 116
 
-- name: Arkansas personal credit for one non_aged taxpayer under 64 and two aged taxpayers over 65 not claiming a retirement income exemption is $29*2*2=$116
+- name: Arkansas personal credit for one non_aged taxpayer and two aged taxpayers without income exemption is $29*2*2=$116
   period: 2022
   input:
     people:
