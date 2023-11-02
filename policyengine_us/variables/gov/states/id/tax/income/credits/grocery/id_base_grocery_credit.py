@@ -15,12 +15,10 @@ class id_base_grocery_credit(Variable):
 
         #### Count head and spouse ####
         person = tax_unit.members
-        head = person("is_tax_unit_head", period)
-        spouse = person("is_tax_unit_spouse", period)
-        total_head_and_spouse = tax_unit.sum(head + spouse)
+        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+        total_head_and_spouse = tax_unit.sum(head_or_spouse)
 
         #### Define constant ####
         base_credit = path_gc.amount  # base amount
-        base_amount = total_head_and_spouse * base_credit
 
-        return base_amount
+        return total_head_and_spouse * base_credit
