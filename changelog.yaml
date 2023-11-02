@@ -4859,3 +4859,8 @@
     fixed:
     - Automatically set entry process to true for CCAP.
   date: 2023-11-02 20:44:02
+- bump: patch
+  changes:
+    fixed:
+    - CCAP fix for multi-child households (previously had index errors).
+  date: 2023-11-02 22:14:02
