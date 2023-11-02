@@ -70,9 +70,13 @@ class co_ccap_parent_fee(Variable):
         rate = p.parent_fee_rate_by_child_care_hours.calc(
             childcare_hours_per_day, right=True
         )
-        unrounded_non_discounted_fee = spm_unit.sum(
-            child_age_eligible * (base_parent_fee + add_on_parent_fee) * rate
+        childs_parent_fee = spm_unit.project(
+            base_parent_fee + add_on_parent_fee
         )
+        unrounded_non_discounted_fee = spm_unit.sum(
+            child_age_eligible * childs_parent_fee * rate
+        )
+
         non_discounted_fee = np.round(unrounded_non_discounted_fee, 2)
         # Rating of child care facilities also affects parent fee.
         # For households utilizing multiple child care providers, only one
@@ -84,7 +88,7 @@ class co_ccap_parent_fee(Variable):
         discount_eligible = (
             spm_unit.sum(
                 p.is_quality_rating_discounted.calc(rating)
-                & child_age_eligible
+                * child_age_eligible
             )
             > 0
         )
