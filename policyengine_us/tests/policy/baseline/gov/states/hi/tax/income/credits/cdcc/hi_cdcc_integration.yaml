@@ -26,8 +26,8 @@
         members: [head, spouse]
         state_code: HI
   output:
-    hi_eligible_income_floor: [20_000, 30_000]
-    hi_min_head_spouse_earned: 20_000
+    hi_cdcc_eligible_income_floor: [20_000, 30_000]
+    hi_cdcc_min_head_spouse_earned: 20_000
     hi_dependent_care_benefits: 1_800
     hi_cdcc: 360
 
@@ -53,8 +53,8 @@
         members: [head]
         state_code: HI
   output:
-    hi_eligible_income_floor: 20_000
-    hi_min_head_spouse_earned: 20_000
+    hi_cdcc_eligible_income_floor: 20_000
+    hi_cdcc_min_head_spouse_earned: 20_000
     hi_dependent_care_benefits: 3_800
     hi_cdcc: 950
 
@@ -86,8 +86,8 @@
         members: [head, spouse]
         state_code: HI
   output:
-    hi_eligible_income_floor: [20_000, 2_400]
-    hi_min_head_spouse_earned: 2_400
+    hi_cdcc_eligible_income_floor: [20_000, 2_400]
+    hi_cdcc_min_head_spouse_earned: 2_400
     hi_dependent_care_benefits: 1_400
     hi_cdcc: 350
 
@@ -119,7 +119,7 @@
         members: [head, spouse]
         state_code: HI
   output:
-    hi_eligible_income_floor: [20_000, 2_400]
-    hi_min_head_spouse_earned: 2_400
+    hi_cdcc_eligible_income_floor: [20_000, 2_400]
+    hi_cdcc_min_head_spouse_earned: 2_400
     hi_dependent_care_benefits: 0
     hi_cdcc: 0

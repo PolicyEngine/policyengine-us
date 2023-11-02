@@ -14,12 +14,12 @@ class hi_cdcc(Variable):
         p = parameters(period).gov.states.hi.tax.income.credits.cdcc
         # Schedule X PART II:
         # line 22 = min (line 19, line 20) = return of hi_dependent_care_benefits
-        # min(line 23, line 24) = return of hi_min_head_spouse_earned
+        # min(line 23, line 24) = return of hi_cdcc_min_head_spouse_earned
         # line 25 = min(line 22, line 23, line 24):
         # The smaller of the minimum earnings or dependent care benefits is used for the final calculation
         min_earned = min_(
             tax_unit("hi_dependent_care_benefits", period),
-            tax_unit("hi_min_head_spouse_earned", period),
+            tax_unit("hi_cdcc_min_head_spouse_earned", period),
         )
         # line 26:
         agi = tax_unit("hi_agi", period)

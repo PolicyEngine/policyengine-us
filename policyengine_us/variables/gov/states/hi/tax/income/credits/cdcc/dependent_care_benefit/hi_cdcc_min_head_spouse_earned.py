@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class hi_min_head_spouse_earned(Variable):
+class hi_cdcc_min_head_spouse_earned(Variable):
     value_type = float
     entity = TaxUnit
     label = "Hawaii minimum income between head and spouse for the CDCC"
@@ -19,25 +19,21 @@ class hi_min_head_spouse_earned(Variable):
         # Schedule X PART II:
         # line 8 & line 9
         person = tax_unit.members
-        head = person("is_tax_unit_head", period)
-        spouse = person("is_tax_unit_spouse", period)
-        head_or_spouse = head | spouse
+        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         # Head or spouse are eligible for an income floor if disabled or a student
         income_floor_eligible = head_or_spouse & (
             person("is_disabled", period)
             | person("is_full_time_student", period)
         )
         income = person("earned_income", period)
-        increased_income = person("hi_eligible_income_floor", period)
+        increased_income = person("hi_cdcc_eligible_income_floor", period)
         uncapped_income = where(
             income_floor_eligible,
             increased_income,
             income,
         )
         # remove impact of income for dependents
-        head_spouse_income = where(
-            head_or_spouse, uncapped_income, tax_unit.max(uncapped_income)
-        )
+        head_spouse_income = where(head_or_spouse, uncapped_income, np.inf)
         # Edge case: both spouses were students or disabled:
         # If both filers are disabled / student below the floor limit,
         # only one person with larger earning gets elevated to the floor

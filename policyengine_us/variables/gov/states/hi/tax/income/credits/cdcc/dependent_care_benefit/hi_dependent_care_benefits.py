@@ -36,7 +36,9 @@ class hi_dependent_care_benefits(Variable):
         # line 8 & line 9:
         # married persons must file a joint return to claim the credit
         # if single, the min will be his/her income
-        min_head_spouse_earned = tax_unit("hi_min_head_spouse_earned", period)
+        min_head_spouse_earned = tax_unit(
+            "hi_cdcc_min_head_spouse_earned", period
+        )
         # line 10 = min(line 7, line 8, line 9):
         earned_income_cap = min_(capped_expenses, min_head_spouse_earned)
         # line 11:
@@ -49,8 +51,9 @@ class hi_dependent_care_benefits(Variable):
         # line 15 excluded_benefit = 0 since we ignore line 12
         # line 16 Taxable Benefit is ignored, since we never use it
         # line 17:
-        qualified_num = tax_unit("count_cdcc_eligible", period)
-        expenses_amount = p.expense_floor.calc(qualified_num)
+        expenses_amount = p.expense_floor.calc(
+            tax_unit("count_cdcc_eligible", period)
+        )
         # line 18 = line 14 + line 15 = line 14
         # line 19 = line 17 - line 18 = line 17 - line 14
         net_expenses = max_(0, expenses_amount - deductible_benefit)

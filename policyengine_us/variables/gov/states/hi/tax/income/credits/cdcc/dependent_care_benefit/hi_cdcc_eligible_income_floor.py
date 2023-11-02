@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class hi_eligible_income_floor(Variable):
+class hi_cdcc_eligible_income_floor(Variable):
     value_type = float
     entity = Person
     label = "Hawaii eligible income floor"

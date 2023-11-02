@@ -15,7 +15,7 @@
         members: [head, spouse]
         state_code: HI
   output:
-    hi_eligible_income_floor: [4_800, 5_000]
+    hi_cdcc_eligible_income_floor: [4_800, 5_000]
 
 - name: 1 dependents, both smaller income
   period: 2022
@@ -34,7 +34,7 @@
         members: [head, spouse]
         state_code: HI
   output:
-    hi_eligible_income_floor: [2_400, 2_400]
+    hi_cdcc_eligible_income_floor: [2_400, 2_400]
 
 - name: both larger income
   period: 2022
@@ -53,4 +53,4 @@
         members: [head, spouse]
         state_code: HI
   output:
-    hi_eligible_income_floor: [5_000, 6_000]
+    hi_cdcc_eligible_income_floor: [5_000, 6_000]
