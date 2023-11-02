@@ -6,6 +6,4 @@ class care_and_support_payment(Variable):
     entity = Person
     unit = USD
     definition_period = YEAR
-    label = (
-        "Amount of payments made for care and support of this person"
-    )
+    label = "Amount of payments made for care and support of this person"
