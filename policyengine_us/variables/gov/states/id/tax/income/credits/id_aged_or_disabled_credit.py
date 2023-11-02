@@ -26,4 +26,6 @@ class id_aged_or_disabled_credit(Variable):
         # or disabled deduction is not claimed
         aged_deduction = tax_unit("id_aged_or_disabled_deduction", period)
         credit_amount = capped_eligible * p.amount
+        # To claim aged or disabled credit, filers also have to maintain a household for family members
+        # and provide more than one-half of the family member’s support for the year
         return where(aged_deduction == 0, credit_amount, 0)

@@ -1,147 +1,147 @@
-# - name: One eligible person
-#   period: 2023
-#   input:
-#     people:
-#       person1:
-#         is_disabled: false
-#         is_tax_unit_spouse: false
-#         is_tax_unit_head: false
-#         age: 64
-#       person2:
-#         is_disabled: false
-#         is_tax_unit_spouse: false
-#         is_tax_unit_head: false
-#         age: 65
-#     households:
-#       household:
-#         members: [person1, person2]
-#         state_code: ID
-#     tax_units:
-#       tax_unit:
-#         members: [person1, person2]
-#         id_aged_or_disabled_deduction: 0
-#   output:  
-#     id_aged_or_disabled_credit: 100
+- name: One eligible person
+  period: 2023
+  input:
+    people:
+      person1:
+        is_disabled: false
+        is_tax_unit_spouse: false
+        is_tax_unit_head: false
+        age: 64
+      person2:
+        is_disabled: false
+        is_tax_unit_spouse: false
+        is_tax_unit_head: false
+        age: 65
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        id_aged_or_disabled_deduction: 0
+  output:  
+    id_aged_or_disabled_credit: 100
 
-# - name: One eligible person - claim deduction 
-#   period: 2023
-#   input:
-#     people:
-#       person1:
-#         is_disabled: false
-#         is_tax_unit_spouse: false
-#         is_tax_unit_head: false
-#         age: 64
-#       person2:
-#         is_disabled: false
-#         is_tax_unit_spouse: false
-#         is_tax_unit_head: false
-#         age: 65
-#     households:
-#       household:
-#         members: [person1, person2]
-#         state_code: ID
-#     tax_units:
-#       tax_unit:
-#         members: [person1, person2]
-#         id_aged_or_disabled_deduction: 1000
-#   output:  
-#     id_aged_or_disabled_credit: 0
+- name: One eligible person - claim deduction 
+  period: 2023
+  input:
+    people:
+      person1:
+        is_disabled: false
+        is_tax_unit_spouse: false
+        is_tax_unit_head: false
+        age: 64
+      person2:
+        is_disabled: false
+        is_tax_unit_spouse: false
+        is_tax_unit_head: false
+        age: 65
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        id_aged_or_disabled_deduction: 1000
+  output:  
+    id_aged_or_disabled_credit: 0
 
-# - name: Four eligible people - capped at 3
-#   period: 2023
-#   input:
-#     people:
-#       person1:
-#         is_disabled: true
-#         is_tax_unit_spouse: false
-#         is_tax_unit_head: false
-#         age: 64
-#       person2:
-#         is_disabled: false
-#         is_tax_unit_spouse: false
-#         is_tax_unit_head: false
-#         age: 65
-#       person3:
-#         is_disabled: true
-#         is_tax_unit_spouse: false
-#         is_tax_unit_head: false
-#         age: 64
-#       person4:
-#         is_disabled: false
-#         is_tax_unit_spouse: false
-#         is_tax_unit_head: false
-#         age: 65
-#     households:
-#       household:
-#         members: [person1, person2, person3, person4]
-#         state_code: ID
-#     tax_units:
-#       tax_unit:
-#         members: [person1, person2]
-#         id_aged_or_disabled_deduction: 0
-#   output:  
-#     id_aged_or_disabled_credit: 300
+- name: Four eligible people - capped at 3
+  period: 2023
+  input:
+    people:
+      person1:
+        is_disabled: true
+        is_tax_unit_spouse: false
+        is_tax_unit_head: false
+        age: 64
+      person2:
+        is_disabled: false
+        is_tax_unit_spouse: false
+        is_tax_unit_head: false
+        age: 65
+      person3:
+        is_disabled: true
+        is_tax_unit_spouse: false
+        is_tax_unit_head: false
+        age: 64
+      person4:
+        is_disabled: false
+        is_tax_unit_spouse: false
+        is_tax_unit_head: false
+        age: 65
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: ID
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        id_aged_or_disabled_deduction: 0
+  output:  
+    id_aged_or_disabled_credit: 300
 
-# - name: No eligible people
-#   period: 2023
-#   input:
-#     people:
-#       person1:
-#         is_disabled: false
-#         is_tax_unit_spouse: false
-#         is_tax_unit_head: false
-#         age: 64
-#       person2:
-#         is_disabled: false
-#         is_tax_unit_spouse: false
-#         is_tax_unit_head: false
-#         age: 64
-#     households:
-#       household:
-#         members: [person1, person2]
-#         state_code: ID
-#     tax_units:
-#       tax_unit:
-#         members: [person1, person2]
-#         id_aged_or_disabled_deduction: 0
-#   output:  
-#     id_aged_or_disabled_credit: 0
+- name: No eligible people
+  period: 2023
+  input:
+    people:
+      person1:
+        is_disabled: false
+        is_tax_unit_spouse: false
+        is_tax_unit_head: false
+        age: 64
+      person2:
+        is_disabled: false
+        is_tax_unit_spouse: false
+        is_tax_unit_head: false
+        age: 64
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        id_aged_or_disabled_deduction: 0
+  output:  
+    id_aged_or_disabled_credit: 0
 
-# - name: Head and Spouse are not eligible if aged
-#   period: 2023
-#   input:
-#     people:
-#       person1:
-#         is_disabled: true
-#         is_tax_unit_spouse: false
-#         is_tax_unit_head: false
-#         age: 64
-#       person2:
-#         is_disabled: false
-#         is_tax_unit_spouse: false
-#         is_tax_unit_head: true
-#         age: 65
-#       person3:
-#         is_disabled: true
-#         is_tax_unit_spouse: false
-#         is_tax_unit_head: false
-#         age: 64
-#       person4:
-#         is_disabled: false
-#         is_tax_unit_spouse: true
-#         is_tax_unit_head: false
-#         age: 65
-#     households:
-#       household:
-#         members: [person1, person2, person3, person4]
-#         state_code: ID
-#     tax_units:
-#       tax_unit:
-#         members: [person1, person2]
-#         id_aged_or_disabled_deduction: 0
-#   output:  
-#     id_aged_or_disabled_credit: 200
+- name: Head and Spouse are not eligible if aged
+  period: 2023
+  input:
+    people:
+      person1:
+        is_disabled: true
+        is_tax_unit_spouse: false
+        is_tax_unit_head: false
+        age: 64
+      person2:
+        is_disabled: false
+        is_tax_unit_spouse: false
+        is_tax_unit_head: true
+        age: 65
+      person3:
+        is_disabled: true
+        is_tax_unit_spouse: false
+        is_tax_unit_head: false
+        age: 64
+      person4:
+        is_disabled: false
+        is_tax_unit_spouse: true
+        is_tax_unit_head: false
+        age: 65
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: ID
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        id_aged_or_disabled_deduction: 0
+  output:  
+    id_aged_or_disabled_credit: 200
 
 - name: Head and Spouse are not eligible if aged but are eligible if disabled
   period: 2023

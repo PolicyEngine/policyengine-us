@@ -22,4 +22,6 @@ class id_aged_or_disabled_deduction(Variable):
         eligible = age_eligible | disabled
         total_eligible = tax_unit.sum(eligible)
         capped_eligible = min_(total_eligible, p.max_deductions)
+        # To claim aged or disabled deduction, filers also have to maintain a household for family members
+        # and provide more than one-half of the family member’s support for the year
         return capped_eligible * p.amount
