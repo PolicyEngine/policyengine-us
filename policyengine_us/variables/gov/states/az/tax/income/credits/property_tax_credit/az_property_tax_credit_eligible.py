@@ -13,20 +13,19 @@ class az_property_tax_credit_eligible(Variable):
         p = parameters(period).gov.states.az.tax.income.credits.property_tax
 
         age = person("age", period)
-        age_eligible = age >= p.min_age
+        age_eligible = age >= p.age_threshold
 
         ssi = person("ssi", period)
-        ssi_qualifies = ssi > 0
+        ssi_eligible = ssi > 0
 
         property_tax = add(tax_unit, period, ["real_estate_taxes"])
         rent = add(tax_unit, period, ["rent"])
-        payment_qualifies = (property_tax + rent) > 0
+        payment_eligible = (property_tax + rent) > 0
 
-        head = person("is_tax_unit_head", period)
-        spouse = person("is_tax_unit_spouse", period)
+        is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
 
         return tax_unit.any(
-            (head | spouse)
-            & (age_eligible | ssi_qualifies)
-            & payment_qualifies
+            (is_head_or_spouse)
+            & (age_eligible | ssi_eligible)
+            & payment_eligible
         )

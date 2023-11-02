@@ -3,13 +3,13 @@
   input:
     people:
       person1: 
-        is_tax_unit_head: true
+        is_tax_unit_head_or_spouse: true
         age: 66
         ssi: 100
         real_estate_taxes: 0
         rent: 1_000
       person2:
-        is_tax_unit_spouse: true
+        is_tax_unit_head_or_spouse: true
         age: 60
         ssi: 0
         real_estate_taxes: 0
@@ -28,7 +28,7 @@
   period: 2023
   input:
     state_code: AZ
-    is_tax_unit_head: true
+    is_tax_unit_head_or_spouse: true
     age: 50
     ssi: 100
     real_estate_taxes: 100
@@ -40,7 +40,7 @@
   period: 2023
   input:
     state_code: AZ
-    is_tax_unit_head: true
+    is_tax_unit_head_or_spouse: true
     age: 45
     ssi: 0
     real_estate_taxes: 100
@@ -52,7 +52,7 @@
   period: 2023
   input:
     state_code: AZ
-    is_tax_unit_head: true
+    is_tax_unit_head_or_spouse: true
     age: 80
     ssi: 0
     real_estate_taxes: 0
@@ -64,7 +64,7 @@
   period: 2023
   input:
     state_code: AZ
-    is_tax_unit_head: true
+    is_tax_unit_head_or_spouse: true
     age: 79
     ssi: 0
     real_estate_taxes: 100
@@ -77,13 +77,13 @@
   input:
     people:
       person1: 
-        is_tax_unit_head: true
+        is_tax_unit_head_or_spouse: true
         age: 60
         ssi: 0
         real_estate_taxes: 100
         rent: 1_000
       person2:
-        is_tax_unit_spouse: true
+        is_tax_unit_head_or_spouse: true
         age: 66
         ssi: 200
         real_estate_taxes: 0
