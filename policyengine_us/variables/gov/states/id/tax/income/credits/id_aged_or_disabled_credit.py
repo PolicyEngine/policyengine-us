@@ -22,7 +22,7 @@ class id_aged_or_disabled_credit(Variable):
         eligible = age_eligible | disabled
         total_eligible = sum(eligible)
         capped_eligible = min_(total_eligible, p.max_amount)
-        # The aged or disabled credit can only be claimed if the aged 
+        # The aged or disabled credit can only be claimed if the aged
         # or disabled deduction is not claimed
         aged_deduction = tax_unit("id_aged_or_disabled_deduction", period)
         credit_amount = capped_eligible * p.amount
