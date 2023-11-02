@@ -4,10 +4,10 @@
     people:
       person1:
         military_retirement_pay: 2_501
-        is_tax_unit_head: true
+        is_tax_unit_head_or_spouse: true
       person2:
         military_retirement_pay: 2_400
-        is_tax_unit_spouse: true
+        is_tax_unit_head_or_spouse: true
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -24,10 +24,10 @@
     people:
       person1:
         military_retirement_pay: 2_501
-        is_tax_unit_head: true
+        is_tax_unit_head_or_spouse: true
       person2:
         military_retirement_pay: 2_500
-        is_tax_unit_spouse: false
+        is_tax_unit_head_or_spouse: false
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -44,13 +44,12 @@
     people:
       person1:
         military_retirement_pay: 2_501
-        is_tax_unit_head: true
+        is_tax_unit_head_or_spouse: true
       person2:
         military_retirement_pay: 2_400
-        is_tax_unit_spouse: true
+        is_tax_unit_head_or_spouse: true
       person3:
-        is_tax_unit_head: false
-        is_tax_unit_spouse: false 
+        is_tax_unit_head_or_spouse: false 
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
@@ -67,10 +66,10 @@
     people:
       person1:
         military_retirement_pay: 0
-        is_tax_unit_head: true
+        is_tax_unit_head_or_spouse: true
       person2:
         military_retirement_pay: 0
-        is_tax_unit_spouse: true
+        is_tax_unit_head_or_spouse: true
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -87,10 +86,10 @@
     people:
       person1:
         military_retirement_pay: 3_501
-        is_tax_unit_head: true
+        is_tax_unit_head_or_spouse: true
       person2:
         military_retirement_pay: 3_000
-        is_tax_unit_spouse: true
+        is_tax_unit_head_or_spouse: true
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -107,10 +106,10 @@
     people:
       person1:
         military_retirement_pay: 4_000
-        is_tax_unit_head: true
+        is_tax_unit_head_or_spouse: true
       person2:
         military_retirement_pay: 5_000
-        is_tax_unit_spouse: true
+        is_tax_unit_head_or_spouse: true
     tax_units:
       tax_unit:
         members: [person1, person2]
