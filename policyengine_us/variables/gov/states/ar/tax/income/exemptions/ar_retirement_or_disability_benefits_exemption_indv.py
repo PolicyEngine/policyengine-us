@@ -8,9 +8,6 @@ class ar_retirement_or_disability_benefits_exemption_indv(Variable):
     unit = USD
     definition_period = YEAR
     reference = "https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2022_AR1000F_and_AR1000NR_Instructions.pdf#page=13"
-    # defined_for = (
-    #     "ar_retirement_or_disability_benefits_exemption_eligible_person"
-    # )
     defined_for = StateCode.AR
 
     def formula(person, period, parameters):
@@ -25,6 +22,7 @@ class ar_retirement_or_disability_benefits_exemption_indv(Variable):
         pension_income = (
             person("taxable_pension_income", period) * head_or_spouse
         )
+        # Filers over a certain age can deduct IRA distributions in addition to pension income
         pension_distribution = (
             person("pension_contributions", period) * eligible_person
         )
