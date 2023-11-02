@@ -12,17 +12,17 @@ class mt_ctc_eligible(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(
             period
-        ).gov.states.mt.tax.income.credits.ctc.eligibility.income_limit
+        ).gov.states.mt.tax.income.credits.ctc.income_limit
         agi = tax_unit("adjusted_gross_income", period)
         income_eligible = agi <= p.agi
-        # CTC limited to filers with investment income below $10,300
+         # CTC limited to filers with investment income below a certain threshold
         investment_income_eligible = (
             tax_unit("disqualified_income", period) < p.investment
         )
 
         earned_income = tax_unit("tax_unit_earned_income", period)
-        proof_earned_income = earned_income > p.earned_income_required
+        earned_income_eligible = earned_income > p.earned_income_required
 
         return (
-            income_eligible & investment_income_eligible & proof_earned_income
+            income_eligible & investment_income_eligible & earned_income_eligible
         )
