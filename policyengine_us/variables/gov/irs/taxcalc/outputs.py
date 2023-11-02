@@ -1,15 +1,6 @@
 from policyengine_us.model_api import *
 
 
-class sey(Variable):
-    value_type = float
-    entity = Person
-    definition_period = YEAR
-    unit = USD
-
-    adds = ["self_employment_income", "farm_income", "k1bx14"]
-
-
 class filer_earned(Variable):
     value_type = float
     entity = TaxUnit
