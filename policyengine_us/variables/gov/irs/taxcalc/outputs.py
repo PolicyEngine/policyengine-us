@@ -57,18 +57,13 @@ class c01000(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
-    label = "Limitation on capital losses"
+    label = "Loss-limited net capital gains"
     unit = USD
 
     def formula(tax_unit, period, parameters):
         return max_(
             (-3000.0 / tax_unit("sep", period)), tax_unit("c23650", period)
         )
-
-
-tax_unit_net_capital_gains = variable_alias(
-    "tax_unit_net_capital_gains", c01000
-)
 
 
 class tax_unit_is_joint(Variable):
