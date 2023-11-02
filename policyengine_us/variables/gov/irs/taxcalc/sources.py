@@ -21,7 +21,7 @@ class hasqdivltcg(Variable):
     def formula(tax_unit, period, parameters):
         # negatives amounts cannot offset other income sources
         INCOME_SOURCES = [
-            "c01000",
+            "loss_limited_net_capital_gains",
             "net_capital_gains",
             "long_term_capital_gains",
             "non_sch_d_capital_gains",
