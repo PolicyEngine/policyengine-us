@@ -51,15 +51,3 @@ class sep(Variable):
     documentation = (
         "2 when filing_status is 3 (married filing separately); otherwise 1"
     )
-
-
-class tax_unit_is_joint(Variable):
-    value_type = bool
-    entity = TaxUnit
-    label = "Joint-filing tax unit"
-    documentation = "Whether this tax unit is a joint filer."
-    definition_period = YEAR
-
-    def formula(tax_unit, period, parameters):
-        filing_status = tax_unit("filing_status", period)
-        return filing_status == filing_status.possible_values.JOINT
