@@ -1,0 +1,65 @@
+- name: No eligible income with 1 child
+  period: 2021
+  input:
+    tax_units:
+      tax_unit:
+        mt_child_dependent_care_expense_deduction_eligible_children: 1
+        mt_agi: 22_801
+    state_code: MT
+  output:
+    mt_child_dependent_care_expense_deduction_eligible: 0
+  
+- name: Eligible income with 1 child
+  period: 2021
+  input:
+    tax_units:
+      tax_unit:
+        mt_child_dependent_care_expense_deduction_eligible_children: 1
+        mt_agi: 22_000
+    state_code: MT
+  output:
+    mt_child_dependent_care_expense_deduction_eligible: 1
+
+- name: No eligible income with 2 children
+  period: 2021
+  input:
+    tax_units:
+      tax_unit:
+        mt_child_dependent_care_expense_deduction_eligible_children: 2
+        mt_agi: 25_201
+    state_code: MT
+  output:
+    mt_child_dependent_care_expense_deduction_eligible: 0
+
+- name: Eligible income with 2 children
+  period: 2021
+  input:
+    tax_units:
+      tax_unit:
+        mt_child_dependent_care_expense_deduction_eligible_children: 2
+        mt_agi: 22_000
+    state_code: MT
+  output:
+    mt_child_dependent_care_expense_deduction_eligible: 1
+
+- name: No eligible income with 3 children
+  period: 2021
+  input:
+    tax_units:
+      tax_unit:
+        mt_child_dependent_care_expense_deduction_eligible_children: 3
+        mt_agi: 27_601
+    state_code: MT
+  output:
+    mt_child_dependent_care_expense_deduction_eligible: 0
+
+- name: Eligible income with 3 children
+  period: 2021
+  input:
+    tax_units:
+      tax_unit:
+        mt_child_dependent_care_expense_deduction_eligible_children: 3
+        mt_agi: 26_000
+    state_code: MT
+  output:
+    mt_child_dependent_care_expense_deduction_eligible: 1
