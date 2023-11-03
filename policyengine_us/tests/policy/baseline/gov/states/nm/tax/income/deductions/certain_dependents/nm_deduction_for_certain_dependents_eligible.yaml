@@ -3,7 +3,7 @@
   input:
     exemptions: 0
     state_code: NM
-    dsi: false
+    head_is_dependent_elsewhere: false
   output:
     nm_deduction_for_certain_dependents_eligible: true
 
@@ -12,7 +12,7 @@
   input:
     exemptions: 1
     state_code: NM
-    dsi: false
+    head_is_dependent_elsewhere: false
   output:
     nm_deduction_for_certain_dependents_eligible: false
 
@@ -22,6 +22,6 @@
   input:
     exemptions: 0
     state_code: NM
-    dsi: true
+    head_is_dependent_elsewhere: true
   output:
     nm_deduction_for_certain_dependents_eligible: false
