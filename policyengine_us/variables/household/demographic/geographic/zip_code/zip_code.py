@@ -9,7 +9,31 @@ class zip_code(Variable):
     default_value = "UNKNOWN"
 
     def formula(household, period, parameters):
-        numeric_zip_code = ZIP_CODE_DATASET.zip_code.sample(
-            household.count, weights=ZIP_CODE_DATASET.population, replace=True
-        )
-        return numeric_zip_code.astype(str).str.zfill(5)
+        state_code = household("state_code_str", period)
+
+        if household.simulation.has_axes:
+            # For each state, select ONE zip code randomly, with probability proportional to population.
+
+            state_to_zip_code = {
+                state_code: ZIP_CODE_DATASET[
+                    ZIP_CODE_DATASET.state == state_code
+                ]
+                .sample(1, weights="population")
+                .zip_code.iloc[0]
+                for state_code in ZIP_CODE_DATASET.state.unique()
+            }
+
+            household_zip_code = (
+                pd.Series(state_code).map(state_to_zip_code).squeeze()
+            )
+
+        else:
+            zip_codes = np.empty_like(state_code, dtype=object)
+            for state in ZIP_CODE_DATASET.state.unique():
+                zip_codes[state_code == state] = (
+                    ZIP_CODE_DATASET[ZIP_CODE_DATASET.state == state]
+                    .sample(1, weights="population")
+                    .zip_code.iloc[0]
+                )
+
+            return household_zip_code.astype(str).str.zfill(5)
