@@ -1,0 +1,15 @@
+- name: test 1
+  period: 2019
+  input:
+    state_code: CA
+    adjusted_gross_income: 100_000
+  output:
+    ca_cdcc_rate: 0.2
+
+- name: test 2
+  period: 2021
+  input:
+    state_code: CA
+    adjusted_gross_income: 100_000
+  output:
+    ca_cdcc_rate: 0.2
