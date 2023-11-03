@@ -43,24 +43,19 @@ def create_remove_standard_deduction_head_of_household() -> Reform:
                 std.dependent.amount,
             ),
         )
-        # For debug
-        print(standard_deduction)
-        print(filing_status)
-        print(separate_filer_itemizes)
-        print(claimed_as_dependent_elsewhere)
-
-        return select(
-            [
-                separate_filer_itemizes,
-                claimed_as_dependent_elsewhere,
-                True,
-            ],
-            [
-                0,
-                standard_deduction_if_dependent,
-                standard_deduction,
-            ],
-        )
+        return standard_deduction
+        # return select(
+        #     [
+        #         separate_filer_itemizes,
+        #         claimed_as_dependent_elsewhere,
+        #         True,
+        #     ],
+        #     [
+        #         0,
+        #         standard_deduction_if_dependent,
+        #         standard_deduction,
+        #     ],
+        # )
 
     class additional_standard_deduction(Variable):
         value_type = float
@@ -91,8 +86,6 @@ def create_remove_standard_deduction_head_of_household() -> Reform:
                 1850,  # this should be single amount, use fix amount as temp
             ],
         )
-        # For debug
-        print(aged_blind_count * additional_standard_deduction_per_count)
         return aged_blind_count * additional_standard_deduction_per_count
 
     class reform(Reform):
