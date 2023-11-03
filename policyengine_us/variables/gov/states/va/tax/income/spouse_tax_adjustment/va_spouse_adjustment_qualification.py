@@ -19,7 +19,7 @@ class va_spouse_adjustment_qualification(Variable):
         )
         personal_exemption_blind_qualification = person("is_blind", period)
 
-        # Todo: create a personal 'vagi' variable?
+        # Edits: Added va_agi.py under 'person'
         personal_va_agi = person("va_agi", period)
 
         total_personal_exemptions = (
