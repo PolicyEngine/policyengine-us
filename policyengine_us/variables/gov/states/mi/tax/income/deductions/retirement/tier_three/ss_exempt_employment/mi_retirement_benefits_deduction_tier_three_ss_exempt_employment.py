@@ -29,6 +29,7 @@ class mi_retirement_benefits_deduction_tier_three_ss_exempt_employment(
         person = tax_unit.members
         uncapped_pension_income = person("taxable_pension_income", period)
 
+        # Head and spouse both are eligible to receive an equal deduction amount
         rbd3_ssa_amount = p.amount * eligible_people
 
         return min_(tax_unit.sum(uncapped_pension_income), rbd3_ssa_amount)

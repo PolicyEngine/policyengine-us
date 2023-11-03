@@ -49,20 +49,21 @@
       person1:
         taxable_pension_income: 60_000
         military_retirement_pay: 1_000
-        interest_income: 500
+        taxable_interest_income: 500
         dividend_income: 400
         capital_gains: 100
         is_tax_unit_head_or_spouse: true
     tax_units:
       tax_unit:
         greater_age_head_spouse: 77
+        elderly_disabled_credit: 300
         members: [person1]
         filing_status: WIDOW
     household:
       members: [person1]
       state_code: MI
-  output: # 0 + (56961 - 1000 = 55961 < 60000) + 0 + (1000 < 12697 - 1000)
-    mi_standard_deduction_and_pension_benefit: 56_961
+  output: # 0 + (56961 - 1000 = 55961 < 60000) + 0 + (12697 - 60000 - 1000 - 300 < 0)
+    mi_standard_deduction_and_pension_benefit: 55_961
 
 - name: 2022 single filer who is at the tier 3 standard deduction age threshold
   period: 2022
@@ -275,20 +276,21 @@
       person2:
         taxable_pension_income: 60_000
         military_retirement_pay: 1_000
-        interest_income: 10_000
+        taxable_interest_income: 10_000
         dividend_income: 2_000
         capital_gains: 1_000
         is_tax_unit_head_or_spouse: true
     tax_units:
       tax_unit:
         greater_age_head_spouse: 77
+        elderly_disabled_credit: 300
         members: [person1, person2]
         filing_status: JOINT
     household:
       members: [person1, person2]
       state_code: MI
-  output: # ((50000 + 60000 = 110000 < 113922 - 1000 - 1000 = 111922) + (13000 < 25394 - 1000 - 1000)) > (40000 - 1000 - 5000 - 1000 < 50000 + 60000)
-    mi_standard_deduction_and_pension_benefit: 123_000
+  output: # ((50000 + 60000 = 110000 < 113922 - 1000 - 1000 = 111922) + (13000 > 0 > 25394 - 1000 - 1000 - 50000 - 60000 - 300)) > (40000 - 1000 - 5000 - 1000 < 50000 + 60000)
+    mi_standard_deduction_and_pension_benefit: 110_000
 
 - name: 2022 widow filer and their deceased spouse are not at the age threshold
   period: 2022
@@ -325,19 +327,20 @@
   input:
     people:
       person1:
-        taxable_pension_income: 60_000
+        taxable_pension_income: 10_000
         military_retirement_pay: 1_000
-        interest_income: 10_000
+        taxable_interest_income: 10_000
         dividend_income: 2_000
         capital_gains: 1_000
         is_tax_unit_head_or_spouse: true
     tax_units:
       tax_unit:
         greater_age_head_spouse: 77
+        elderly_disabled_credit: 300
         members: [person1]
         filing_status: SINGLE
     household:
       members: [person1]
       state_code: MI
-  output: # 0 + (56961 - 1000 = 55961 < 60000) + 0 + (12697 - 1000 = 11697 < 13000)
-    mi_standard_deduction_and_pension_benefit: 67_658
+  output: # 0 + (56961 - 1000 = 55961 > 10000) + 0 + (12697 - 1000 - 10000 - 300 = 1397 < 13000)
+    mi_standard_deduction_and_pension_benefit: 11_397

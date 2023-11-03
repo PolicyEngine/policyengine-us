@@ -1,8 +1,10 @@
 description: Michigan provides a interest, dividends, and capital gains deduction of this amount if you or your spouse are of qualifying age.
 values:
   2021-01-01:
-    - interest_income
+    - taxable_interest_income
+    # Divident income included in AGI  
     - dividend_income
+    # Capital gains included in AGI
     - capital_gains
 metadata:
   unit: list
