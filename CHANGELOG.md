@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.516.3] - 2023-11-03 04:08:02
+
+### Fixed
+
+- Added USD metadata to co_ccap_subsidy.
+
 ## [0.516.2] - 2023-11-02 22:14:02
 
 ### Fixed
@@ -5760,6 +5766,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.516.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.516.2...0.516.3
 [0.516.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.516.1...0.516.2
 [0.516.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.516.0...0.516.1
 [0.516.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.515.0...0.516.0
