@@ -34,11 +34,11 @@ class wa_working_families_tax_credit(Variable):
         # instructs DOR to revise it to get to zero by the EITC AGI limit.
         # https://app.leg.wa.gov/billsummary?BillNumber=1888&Year=2021&Initiative=false
         phase_out_rate = max_amount / phase_out_start_reduction
-        earnings = tax_unit("filer_earned", period)
+        earnings = tax_unit("filer_adjusted_earnings", period)
         excess = max_(0, earnings - phase_out_start)
         reduction = max_(0, excess * phase_out_rate)
         phased_out_amount = max_amount - reduction
-        # Minimum benefit applies if calculated amount exceeds zero.
+        # minimum benefit applies if calculated amount exceeds zero
         amount_if_eligible = where(
             phased_out_amount > 0, max_(p.min_amount, phased_out_amount), 0
         )

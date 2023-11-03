@@ -139,9 +139,10 @@ class alternative_minimum_tax(Variable):
         child = amt.exemption.child
         young_head = (age_head != 0) & (age_head < child.max_age)
         no_or_young_spouse = tax_unit("age_spouse", period) < child.max_age
+        adj_earnings = tax_unit("filer_adjusted_earnings", period)
         line29 = where(
             young_head & no_or_young_spouse,
-            min_(line29, tax_unit("filer_earned", period) + child.amount),
+            min_(line29, adj_earnings + child.amount),
             line29,
         )
         line30 = max_(0, amt_income - line29)
