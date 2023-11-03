@@ -28,12 +28,13 @@ class zip_code(Variable):
             )
 
         else:
-            zip_codes = np.empty_like(state_code, dtype=object)
+            household_zip_code = np.empty_like(state_code, dtype=object)
             for state in ZIP_CODE_DATASET.state.unique():
-                zip_codes[state_code == state] = (
+                household_zip_code[state_code == state] = (
                     ZIP_CODE_DATASET[ZIP_CODE_DATASET.state == state]
                     .sample(1, weights="population")
                     .zip_code.iloc[0]
                 )
+            household_zip_code = pd.Series(household_zip_code)
 
             return household_zip_code.astype(str).str.zfill(5)
