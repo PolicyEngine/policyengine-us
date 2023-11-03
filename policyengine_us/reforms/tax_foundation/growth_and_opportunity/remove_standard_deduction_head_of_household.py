@@ -18,30 +18,22 @@ def create_remove_standard_deduction_head_of_household() -> Reform:
         claimed_as_dependent_elsewhere = tax_unit(
             "tax_unit_dependent_elsewhere", period
         )
-        if (
-            parameters(
-                period
-            ).gov.contrib.tax_foundation.growth_and_opportunity.remove_head_of_household
-            == True
-        ):
-            standard_deduction = select(
-                [
-                    filing_status == statuses.SINGLE,
-                    filing_status == statuses.SEPARATE,
-                    filing_status == statuses.JOINT,
-                    filing_status == statuses.WIDOW,
-                    filing_status == statuses.HEAD_OF_HOUSEHOLD,
-                ],
-                [
-                    std.amount[filing_status],
-                    std.amount[filing_status],
-                    std.amount[filing_status],
-                    std.amount[filing_status],
-                    13850,  # this should be single amount, use fix amount as temp
-                ],
-            )
-        else:
-            standard_deduction = std.amount[filing_status]
+        standard_deduction = select(
+            [
+                filing_status == statuses.SINGLE,
+                filing_status == statuses.SEPARATE,
+                filing_status == statuses.JOINT,
+                filing_status == statuses.WIDOW,
+                filing_status == statuses.HEAD_OF_HOUSEHOLD,
+            ],
+            [
+                std.amount[filing_status],
+                std.amount[filing_status],
+                std.amount[filing_status],
+                std.amount[filing_status],
+                13850,  # this should be single amount, use fix amount as temp
+            ],
+        )
 
         standard_deduction_if_dependent = min_(
             standard_deduction,
@@ -51,6 +43,11 @@ def create_remove_standard_deduction_head_of_household() -> Reform:
                 std.dependent.amount,
             ),
         )
+        # For debug
+        print(standard_deduction)
+        print(filing_status)
+        print(separate_filer_itemizes)
+        print(claimed_as_dependent_elsewhere)
 
         return select(
             [
@@ -78,32 +75,24 @@ def create_remove_standard_deduction_head_of_household() -> Reform:
         filing_status = tax_unit("filing_status", period)
         statuses = filing_status.possible_values
         aged_blind_count = tax_unit("aged_blind_count", period)
-        if (
-            parameters(
-                period
-            ).gov.contrib.tax_foundation.growth_and_opportunity.remove_head_of_household
-            is True
-        ):
-            additional_standard_deduction_per_count = select(
-                [
-                    filing_status == statuses.SINGLE,
-                    filing_status == statuses.SEPARATE,
-                    filing_status == statuses.JOINT,
-                    filing_status == statuses.WIDOW,
-                    filing_status == statuses.HEAD_OF_HOUSEHOLD,
-                ],
-                [
-                    std.aged_or_blind.amount[filing_status],
-                    std.aged_or_blind.amount[filing_status],
-                    std.aged_or_blind.amount[filing_status],
-                    std.aged_or_blind.amount[filing_status],
-                    1850,  # this should be single amount, use fix amount as temp
-                ],
-            )
-        else:
-            additional_standard_deduction_per_count = std.aged_or_blind.amount[
-                filing_status
-            ]
+        additional_standard_deduction_per_count = select(
+            [
+                filing_status == statuses.SINGLE,
+                filing_status == statuses.SEPARATE,
+                filing_status == statuses.JOINT,
+                filing_status == statuses.WIDOW,
+                filing_status == statuses.HEAD_OF_HOUSEHOLD,
+            ],
+            [
+                std.aged_or_blind.amount[filing_status],
+                std.aged_or_blind.amount[filing_status],
+                std.aged_or_blind.amount[filing_status],
+                std.aged_or_blind.amount[filing_status],
+                1850,  # this should be single amount, use fix amount as temp
+            ],
+        )
+        # For debug
+        print(aged_blind_count * additional_standard_deduction_per_count)
         return aged_blind_count * additional_standard_deduction_per_count
 
     class reform(Reform):
