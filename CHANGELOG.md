@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.518.0] - 2023-11-03 20:30:48
+
+### Fixed
+
+- ZIP codes are sampled from the state, and axes-containing simulations don't vary the ZIP code.
+
 ## [0.517.0] - 2023-11-03 20:12:54
 
 ### Added
@@ -5774,6 +5780,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.518.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.517.0...0.518.0
 [0.517.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.516.3...0.517.0
 [0.516.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.516.2...0.516.3
 [0.516.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.516.1...0.516.2

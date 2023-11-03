@@ -4883,3 +4883,9 @@
   removed:
   - Formula code that avoids `sep` variable that had no formula, and therefore, was
     likely to cause bugs.
+- bump: minor
+  changes:
+    fixed:
+    - ZIP codes are sampled from the state, and axes-containing simulations don't
+      vary the ZIP code.
+  date: 2023-11-03 20:30:48
