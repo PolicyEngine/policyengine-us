@@ -14,10 +14,9 @@ class hi_exemptions(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.hi.tax.income.exemptions
-        exemp = tax_unit("exemptions", period)
         # disability exemption
-        disabled_head = tax_unit("head_is_disabled", period).astype(int)
-        disabled_spouse = tax_unit("spouse_is_disabled", period).astype(int)
+        disabled_head = tax_unit("head_is_disabled", period)
+        disabled_spouse = tax_unit("spouse_is_disabled", period)
         # aged exemption
         aged_head = (tax_unit("age_head", period) >= p.age_threshold).astype(
             int
@@ -26,19 +25,28 @@ class hi_exemptions(Variable):
             tax_unit("age_spouse", period) >= p.age_threshold
         ).astype(int)
 
-        # if the head or spouse has disabled exemption, aged exemption will be excluded from the total exemptions
-        adjusted_exemp = where(
-            disabled_head, exemp - disabled_head, exemp + aged_head
+        # Head can claim the disabled exemption if they are disabled.
+        head_non_disabled_exemption = p.base + p.base * aged_head
+        head_disabled_exemption = p.disabled * disabled_head
+        head_exemption = max_(
+            head_non_disabled_exemption, head_disabled_exemption
         )
-        # exemp_base stores the normal exemptions other than disability exemptions
-        # and the exemp_base will be multiply by 1_144
-        exemp_base = where(
-            disabled_spouse,
-            max_(0, adjusted_exemp - disabled_spouse),
-            adjusted_exemp + aged_spouse,
+        # Same for spouse.
+        spouse_non_disabled_exemption = p.base + p.base * aged_spouse
+        spouse_disabled_exemption = p.disabled * disabled_spouse
+        spouse_exemption = max_(
+            spouse_non_disabled_exemption, spouse_disabled_exemption
         )
-        # disabled_exemptions will be multiplied by 7_000 instead
-        disabled_exemptions = (disabled_head + disabled_spouse) * p.disabled
-        exemption_base_amount = exemp_base * p.base
-
-        return exemption_base_amount + disabled_exemptions
+        # Add dependent exemptions only if neither head nor spouse claims disabled exemptions.
+        dependent_exemptions = tax_unit("tax_unit_dependents", period) * p.base
+        # Check if using disabled exemptions (and forgoing dependent exemptions) increases total exemption value.
+        exemptions_if_claiming_disabled = head_exemption + spouse_exemption
+        exemptions_if_not_claiming_disabled = (
+            head_non_disabled_exemption
+            + spouse_non_disabled_exemption
+            + dependent_exemptions
+        )
+        return max_(
+            exemptions_if_claiming_disabled,
+            exemptions_if_not_claiming_disabled,
+        )
