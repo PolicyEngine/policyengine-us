@@ -42,4 +42,4 @@ class zip_code(Variable):
                 )
             household_zip_code = pd.Series(household_zip_code)
 
-            return household_zip_code.astype(str).str.zfill(5)
+        return household_zip_code.astype(str).str.zfill(5)
