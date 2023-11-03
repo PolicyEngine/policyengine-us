@@ -30,10 +30,15 @@ class zip_code(Variable):
         else:
             household_zip_code = np.empty_like(state_code, dtype=object)
             for state in ZIP_CODE_DATASET.state.unique():
+                count_households_in_state = (state_code == state).sum()
                 household_zip_code[state_code == state] = (
                     ZIP_CODE_DATASET[ZIP_CODE_DATASET.state == state]
-                    .sample(1, weights="population")
-                    .zip_code.iloc[0]
+                    .sample(
+                        count_households_in_state,
+                        weights="population",
+                        replace=True,
+                    )
+                    .zip_code
                 )
             household_zip_code = pd.Series(household_zip_code)
 
