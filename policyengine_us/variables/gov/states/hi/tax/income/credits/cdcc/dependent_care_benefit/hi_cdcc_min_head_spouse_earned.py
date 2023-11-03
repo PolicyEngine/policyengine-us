@@ -20,29 +20,8 @@ class hi_cdcc_min_head_spouse_earned(Variable):
         # line 8 & line 9
         person = tax_unit.members
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        # Head or spouse are eligible for an income floor if disabled or a student
-        income_floor_eligible = head_or_spouse & (
-            person("is_disabled", period)
-            | person("is_full_time_student", period)
+        hi_cdcc_earned_income = person("hi_cdcc_earned_income", period)
+        # remove impact of dependent income by assigning np.inf
+        return tax_unit.min(
+            where(head_or_spouse, hi_cdcc_earned_income, np.inf)
         )
-        income = person("earned_income", period)
-        increased_income = person("hi_cdcc_eligible_income_floor", period)
-        uncapped_income = where(
-            income_floor_eligible,
-            increased_income,
-            income,
-        )
-        # remove impact of income for dependents
-        head_spouse_income = where(head_or_spouse, uncapped_income, np.inf)
-        # Edge case: both spouses were students or disabled:
-        # If both filers are disabled / student below the floor limit,
-        # only one person with larger earning gets elevated to the floor
-        # If both filers are disabled / student but only one person is below the floor limit,
-        # then the person below the floor limit will be elevated to the floor
-        reach_income_floor = income < uncapped_income
-        head_spouse_income = where(
-            (sum(income_floor_eligible) == 2) & (sum(reach_income_floor) > 1),
-            min_(income, uncapped_income),
-            head_spouse_income,
-        )
-        return tax_unit.min(head_spouse_income)
