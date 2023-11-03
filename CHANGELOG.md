@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.517.0] - 2023-11-03 20:12:54
+
+### Added
+
+- The `net_capital_gains` variable (formerly `c23650`).
+- The `gov/irs/capital_gains/loss_limit.yaml` parameter file.
+- The `loss_limited_net_capital_gains` variable (formerly `c01000`) that uses the `loss_limit` parameter.
+
 ## [0.516.3] - 2023-11-03 04:08:02
 
 ### Fixed
@@ -5766,6 +5774,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.517.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.516.3...0.517.0
 [0.516.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.516.2...0.516.3
 [0.516.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.516.1...0.516.2
 [0.516.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.516.0...0.516.1

@@ -4869,3 +4869,17 @@
     fixed:
     - Added USD metadata to co_ccap_subsidy.
   date: 2023-11-03 04:08:02
+- bump: minor
+  changed:
+  - Rename taxcalc variables to be consistent with this project's coding style and
+    to be in more sensible directory locations.
+  changes:
+    added:
+    - The `net_capital_gains` variable (formerly `c23650`).
+    - The `gov/irs/capital_gains/loss_limit.yaml` parameter file.
+    - The `loss_limited_net_capital_gains` variable (formerly `c01000`) that uses
+      the `loss_limit` parameter.
+  date: 2023-11-03 20:12:54
+  removed:
+  - Formula code that avoids `sep` variable that had no formula, and therefore, was
+    likely to cause bugs.
