@@ -12,8 +12,9 @@ class va_tax_adjsutment_amount(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.va.tax.income.spouse_head_adjustment
+        p1 = parameters(period).gov.states.va.tax.income
         person = tax_unit.members
-        personal_va_agi = person("va_agi", period)
+        personal_va_agi = person("va_prorate_fraction", period) * va_agi
         total_personal_exemptions = (
             personal_exemption_age_qualification
             + personal_exemption_blind_qualification
@@ -30,11 +31,13 @@ class va_tax_adjsutment_amount(Variable):
         )
         temp_value = max_(va_taxable_income - min_eligibility_value, 0)
         half_of_taxable_income = va_taxable_income / p.divider
-        min_temp = min_(min_eligibility_value, half_of_taxable_income)
-        max_temp = max_(temp_value, half_of_taxable_income)
+        min_temp = p1.rates * min_(
+            min_eligibility_value, half_of_taxable_income
+        )
+        max_temp = p1.rates * max_(temp_value, half_of_taxable_income)
         sum_amount = min_temp + max_temp
         tax_amount = va_income_tax
-        tax_adjustment_amount = min_(
+        tax_adjustment_amount = va_spouse_adjustment_qualification * min_(
             where(
                 min_eligibility_value > p.threshold
                 and va_taxable_income > p.taxable_income_threshold,

@@ -19,8 +19,8 @@ class va_spouse_adjustment_qualification(Variable):
         )
         personal_exemption_blind_qualification = person("is_blind", period)
 
-        # Edits: Added va_agi.py under 'person'
-        personal_va_agi = person("va_agi", period)
+        # Edits: Added va_prorate_fraction
+        personal_va_agi = person("va_prorate_fraction", period) * va_agi
 
         total_personal_exemptions = (
             personal_exemption_age_qualification
