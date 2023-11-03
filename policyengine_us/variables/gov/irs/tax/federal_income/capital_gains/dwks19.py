@@ -20,4 +20,4 @@ class dwks19(Variable):
         dwks17 = min_(dwks14, dwks16)
         dwks10 = tax_unit("dwks10", period)
         dwks18 = max_(0, dwks1 - dwks10)
-        return max_(dwks17, dwks18) * tax_unit("hasqdivltcg", period)
+        return max_(dwks17, dwks18) * tax_unit("has_qdiv_or_ltcg", period)

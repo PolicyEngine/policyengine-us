@@ -3,7 +3,7 @@
   input:
     taxable_interest_income: 0
     dividend_income: 0
-    c01000: 0
+    loss_limited_net_capital_gains: 0
     rental_income: 0
     filing_status: SINGLE
   output:
@@ -14,7 +14,7 @@
   input:
     taxable_interest_income: 0
     dividend_income: 0
-    c01000: 0
+    loss_limited_net_capital_gains: 0
     rental_income: 199_000
     filing_status: SINGLE
   output:
@@ -25,7 +25,7 @@
   input:
     taxable_interest_income: 0
     dividend_income: 0
-    c01000: 0
+    loss_limited_net_capital_gains: 0
     adjusted_gross_income: 205_000
     rental_income: 205_000
     filing_status: SINGLE
@@ -37,7 +37,7 @@
   input:
     taxable_interest_income: 0
     dividend_income: 0
-    c01000: 0
+    loss_limited_net_capital_gains: 0
     adjusted_gross_income: 900_000
     rental_income: 900_000
     filing_status: SINGLE
