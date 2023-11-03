@@ -1,7 +1,6 @@
 - name: No eligible children 
   period: 2021
   input:
-    state_code: MT
     people:
       person_1: 
         age: 20
@@ -11,17 +10,16 @@
         age: 17
         is_disabled: false
         is_tax_unit_dependent: true
-    tax_units:
-      tax_unit:
+    households:
+      household:
         members: [person_1, person_2]
-    
+        state_code: MT
   output:
     mt_child_dependent_care_expense_deduction_eligible_children: 0.0
 
 - name: Eligible children under 15
   period: 2021
   input:
-    state_code: MT
     people:
       person_1: 
         age: 14
@@ -31,16 +29,16 @@
         age: 13
         is_disabled: false
         is_tax_unit_dependent: true
-    tax_units:
-      tax_unit:
+    households:
+      household:
         members: [person_1, person_2]
+        state_code: MT
   output:
     mt_child_dependent_care_expense_deduction_eligible_children: 2.0
 
 - name: Noneligible children without disability
   period: 2021
   input:
-    state_code: MT
     people:
       person_1: 
         age: 20
@@ -50,16 +48,16 @@
         age: 20
         is_disabled: false
         is_tax_unit_dependent: true
-    tax_units:
-      tax_unit:
+    households:
+      household:
         members: [person_1, person_2]
+        state_code: MT
   output:
     mt_child_dependent_care_expense_deduction_eligible_children: 0.0
 
 - name: Eligible children with disability
   period: 2021
   input:
-    state_code: MT
     people:
       person_1: 
         age: 16
@@ -69,8 +67,9 @@
         age: 16
         is_disabled: true
         is_tax_unit_dependent: true
-    tax_units:
-      tax_unit:
+    households:
+      household:
         members: [person_1, person_2]
+        state_code: MT
   output:
     mt_child_dependent_care_expense_deduction_eligible_children: 2.0

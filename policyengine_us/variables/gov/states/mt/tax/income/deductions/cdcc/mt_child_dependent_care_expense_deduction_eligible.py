@@ -11,4 +11,4 @@ class mt_child_dependent_care_expense_deduction_eligible(Variable):
         p = parameters(period).gov.states.mt.tax.income.deductions.standard.child_dependent_care_expense_deduction
         agi = tax_unit("mt_agi", period)
         eligible_children = tax_unit("mt_child_dependent_care_expense_deduction_eligible_children", period)
-        return agi <= p.threshold[eligible_children]
+        return agi <= p.threshold.income.calc(eligible_children)
