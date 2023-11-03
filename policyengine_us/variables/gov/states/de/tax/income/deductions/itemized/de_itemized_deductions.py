@@ -14,7 +14,31 @@ class de_itemized_deductions(Variable):
     )
     defined_for = StateCode.DE
 
-    adds = ["itemized_deductions_less_salt"]
-    # Per Law: Self employed filers can deduct the health insurance premiums
-    # less the amount allowed as a deduction on the federal return
-    # We omit this because it is not on the tax form.
+    def formula(tax_unit, period, parameters):
+        p = parameters(
+            period
+        ).gov.states.de.tax.income.subtractions.exclusions.itemized
+        deductions = [
+            deduction
+            for deduction in p.itemized_deductions
+            if deduction
+            not in [
+                "interest_deduction",
+                "charitable_deduction",
+            ]
+        ]
+        federal_deductions = add(tax_unit, period, deductions)
+
+        de_donation = add(
+            tax_unit,
+            period,
+            ["charitable_cash_donations", "charitable_non_cash_donations"],
+        )
+
+        de_interest = add(
+            tax_unit,
+            period,
+            ["mortgage_interest", "investment_income_form_4952"],
+        )
+
+        return federal_deductions + de_donation + de_interest
