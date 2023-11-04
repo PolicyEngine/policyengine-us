@@ -14,7 +14,9 @@ class la_aged_exemption(Variable):
         person = tax_unit.members
         pension_income = person("taxable_pension_income", period)
         age = person("age", period)
-        p = parameters(period).gov.states.la.tax.income.exemptions.aged
+        p = parameters(
+            period
+        ).gov.states.la.tax.income.exemptions.retirement.max_amount
         meets_age_test = age >= p.thresholds[-1]
         deductible_pensions = meets_age_test * min_(
             pension_income, p.amounts[-1]

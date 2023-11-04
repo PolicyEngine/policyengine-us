@@ -12,12 +12,10 @@ class la_disability_income_exemption(Variable):
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
-        amount = parameters(
+        cap = parameters(
             period
-        ).gov.states.la.tax.income.exemptions.disability_income
-        disability_exemption = min_(
-            person("disability_benefits", period), amount
-        )
+        ).gov.states.la.tax.income.exemptions.disability.max_amount
+        disability_exemption = min_(person("disability_benefits", period), cap)
         head = person("is_tax_unit_head", period)
         spouse = person("is_tax_unit_spouse", period)
         is_head_or_spouse = head | spouse
