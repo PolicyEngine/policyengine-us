@@ -18,7 +18,7 @@ def create_remove_standard_deduction_head_of_household() -> Reform:
                 "separate_filer_itemizes", period
             )
             claimed_as_dependent_elsewhere = tax_unit(
-                "tax_unit_dependent_elsewhere", period
+                "head_is_dependent_elsewhere", period
             )
             standard_deduction = select(
                 [
