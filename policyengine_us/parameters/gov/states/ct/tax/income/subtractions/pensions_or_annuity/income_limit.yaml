@@ -1,0 +1,22 @@
+description: Connecticut limits the annuity and pension subtraction to filers with adjusted gross income below this threshold, based on filing status.
+metadata:
+  period: year
+  unit: currency-USD
+  label: Connecticut annuity and pension subtraction income limit
+  breakdown:
+    - filing_status
+  reference:
+    - title: Connecticut General Statutes, Chapter 229, (20), (B), (xxi) 
+      href: https://www.cga.ct.gov/current/pub/chap_229.htm#sec_12-701a
+    - title: 2022 Form CT-1040 Connecticut Resident Income Tax Return Instructions
+      href: https://portal.ct.gov/-/media/DRS/Forms/2022/Income/2022-CT-1040-Instructions_1222.pdf#page=10
+SINGLE:
+  2016-01-01: 75_000
+HEAD_OF_HOUSEHOLD:
+  2016-01-01: 75_000
+JOINT:
+  2016-01-01: 100_000
+WIDOW:
+  2016-01-01: 100_000
+SEPARATE:
+  2016-01-01: 75_000

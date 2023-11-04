@@ -3,7 +3,7 @@
   input: 
     state_code: KY
     adjusted_gross_income: 900
-    tax_exempt_form_4972_lumpsum_distributions: 10
+    form_4972_lumpsum_distributions: 10
     ky_agi: 1_000
   output:
     ky_modified_agi: 1_010
@@ -13,7 +13,7 @@
   input: 
     state_code: KY
     adjusted_gross_income: 2_000
-    tax_exempt_form_4972_lumpsum_distributions: 10
+    form_4972_lumpsum_distributions: 10
     ky_agi: 1_000
   output:
     ky_modified_agi: 2_010

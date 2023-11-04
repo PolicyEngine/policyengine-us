@@ -1,0 +1,23 @@
+description: Ohio provides these non-refundable tax credits.
+values:
+  2021-01-01:
+    - oh_adoption_credit
+    - oh_eitc
+    - oh_cdcc
+    - oh_senior_citizen_credit
+    - oh_retirement_income_credit
+    - oh_non_public_school_credits
+  2023-01-01:
+    - oh_eitc
+    - oh_cdcc
+    - oh_senior_citizen_credit
+    - oh_retirement_income_credit
+    - oh_non_public_school_credits
+metadata:
+  unit: list
+  label: Ohio non-refundable tax credits
+  reference:
+    - title: 2021 Ohio Schedule of Credits
+      href: https://tax.ohio.gov/static/forms/ohio_individual/individual/2021/sch-cre.pdf
+    - title: 2022 Ohio Schedule of Credits
+      href: https://tax.ohio.gov/static/forms/ohio_individual/individual/2022/itschedule-credits.pdf
