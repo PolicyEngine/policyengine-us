@@ -18,5 +18,4 @@ class earned_income_tax_credit(Variable):
         return min_(phased_in, limitation)
 
 
-c59660 = variable_alias("c59660", earned_income_tax_credit)
 eitc = variable_alias("eitc", earned_income_tax_credit)
