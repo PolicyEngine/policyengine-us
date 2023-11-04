@@ -28,7 +28,7 @@ def create_eitc_winship_reform(parameters, period, bypass=False):
             limitation = max_(0, maximum - reduction)
             return min_(phased_in, limitation)
 
-    class earned_income_tax_credit(Variable):
+    class eitc(Variable):
         value_type = float
         entity = TaxUnit
         definition_period = YEAR
@@ -75,7 +75,7 @@ def create_eitc_winship_reform(parameters, period, bypass=False):
     class winship_eitc_reform(Reform):
         def apply(self):
             self.add_variable(original_eitc)
-            self.update_variable(earned_income_tax_credit)
+            self.update_variable(eitc)
 
     return winship_eitc_reform
 
