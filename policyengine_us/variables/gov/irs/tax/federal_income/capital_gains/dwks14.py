@@ -14,4 +14,4 @@ class dwks14(Variable):
     def formula(tax_unit, period, parameters):
         dwks1 = tax_unit("taxable_income", period)
         dwks13 = tax_unit("dwks13", period)
-        return max_(0, dwks1 - dwks13) * tax_unit("hasqdivltcg", period)
+        return max_(0, dwks1 - dwks13) * tax_unit("has_qdiv_or_ltcg", period)
