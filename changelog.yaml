@@ -4894,3 +4894,10 @@
     fixed:
     - ZIP code bug for households with axes.
   date: 2023-11-03 20:53:44
+- bump: patch
+  changes:
+    fixed:
+    - Remove obsolete taxcalc-related alias variable names.
+    - Rename `earned_income_tax_credit` to `eitc` to be more consistent with variable
+      names for other federal credits.
+  date: 2023-11-04 21:02:59
