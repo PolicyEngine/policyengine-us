@@ -48,7 +48,9 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
         self.add_variables(*create_50_state_variables())
 
         self.parameters = set_irs_uprating_parameter(self.parameters)
-        self.parameters = backdate_parameters(self.parameters)
+        self.parameters = backdate_parameters(
+            self.parameters, first_instant="2020-01-01"
+        )
 
         add_taxcalc_variable_aliases(self)
 
