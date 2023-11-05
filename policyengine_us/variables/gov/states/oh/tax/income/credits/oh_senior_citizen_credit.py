@@ -29,6 +29,7 @@ class oh_senior_citizen_credit(Variable):
         # credit_amount = p.agi_limit.calc(person("oh_agi", period))
 
 
+
         return (
             any_elderly * has_not_taken_lump_sum_distribution * credit_amount 
         )
