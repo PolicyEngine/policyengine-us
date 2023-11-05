@@ -1,15 +1,32 @@
-- name: Itemized deduction percentage 15%
+- name: Case 1, Itemized deduction percentage 15%, standard deduction is 10
   period: 2021
   absolute_error_margin: 0.01
   reforms: policyengine_us.reforms.cbo.itemized_deduction.limit_itemized_deduction.itemized_deduction
   input:
     gov.contrib.cbo.itemized_deduction.percentage: 0.15
-    charitable_deduction: 40
+    charitable_deduction: 20
     interest_deduction: 20
     salt_deduction: 20
     medical_expense_deduction: 20 
     casualty_loss_deduction: 20 
+    standard_deduction: 10
   output:
-    itemized_deductions_less_salt: 15
+    taxable_income_deductions: 15
+
+- name: Case 2, Itemized deduction percentage 15%, standard deduction is 20
+  period: 2021
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.cbo.itemized_deduction.limit_itemized_deduction.itemized_deduction
+  input:
+    gov.contrib.cbo.itemized_deduction.percentage: 0.15
+    charitable_deduction: 20
+    interest_deduction: 20
+    salt_deduction: 20
+    medical_expense_deduction: 20 
+    casualty_loss_deduction: 20 
+    standard_deduction: 20
+  output:
+    taxable_income_deductions: 20
+    
     
     
