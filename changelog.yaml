@@ -4906,3 +4906,8 @@
     fixed:
     - pell_grant_efc now can not be negative
   date: 2023-11-04 21:16:41
+- bump: patch
+  changes:
+    fixed:
+    - Presence of unneeded taxcalc-related logic in the `system.py` module.
+  date: 2023-11-05 21:04:11

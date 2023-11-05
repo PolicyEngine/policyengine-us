@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.518.4] - 2023-11-05 21:04:11
+
+### Fixed
+
+- Presence of unneeded taxcalc-related logic in the `system.py` module.
+
 ## [0.518.3] - 2023-11-04 21:16:41
 
 ### Fixed
@@ -5799,6 +5805,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.518.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.518.3...0.518.4
 [0.518.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.518.2...0.518.3
 [0.518.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.518.1...0.518.2
 [0.518.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.518.0...0.518.1
