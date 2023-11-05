@@ -19,4 +19,4 @@ class dwks13(Variable):
         dwks9 = tax_unit("dwks9", period)
         dwks12 = min_(dwks9, dwks11)
         dwks10 = tax_unit("dwks10", period)
-        return (dwks10 - dwks12) * tax_unit("hasqdivltcg", period)
+        return (dwks10 - dwks12) * tax_unit("has_qdiv_or_ltcg", period)
