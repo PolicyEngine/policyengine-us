@@ -7,9 +7,6 @@ class dwks13(Variable):
     definition_period = YEAR
     label = "IRS Form 1040 Schedule D worksheet (part 4 of 6)"
     unit = USD
-    documentation = (
-        "search taxcalc/calcfunctions.py for how calculated and used"
-    )
 
     def formula(tax_unit, period, parameters):
         e24515 = add(tax_unit, period, ["unrecaptured_section_1250_gain"])
