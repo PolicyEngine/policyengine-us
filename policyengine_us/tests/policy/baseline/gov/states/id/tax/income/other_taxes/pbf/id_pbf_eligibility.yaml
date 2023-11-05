@@ -1,0 +1,30 @@
+- name: Eligible
+  period: 2021
+  input:
+    adjusted_gross_income: 20_000
+    filing_status: HEAD_OF_HOUSEHOLD
+    age_head: 60
+    age_spouse: 63
+    tanf: 0
+    blind_head: false
+    blind_spouse: false
+    state_code: ID
+  output:
+    id_pbf_eligibility: true
+
+
+- name: Income not eligible
+  period: 2021
+  input:
+    adjusted_gross_income: 10_000
+    filing_status: HEAD_OF_HOUSEHOLD
+    age_head: 60
+    age_spouse: 63
+    tanf: 0
+    blind_head: false
+    blind_spouse: false
+    state_code: ID
+  output:
+    id_pbf_eligibility: false
+
+
