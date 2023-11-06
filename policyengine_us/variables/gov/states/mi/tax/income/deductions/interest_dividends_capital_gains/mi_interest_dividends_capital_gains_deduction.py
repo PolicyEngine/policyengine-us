@@ -9,7 +9,7 @@ class mi_interest_dividends_capital_gains_deduction(Variable):
     definition_period = YEAR
     documentation = "Michigan interest, dividends, and capital gains deduction of qualifying age."
     reference = (
-        "http://legislature.mi.gov/doc.aspx?mcl-206-30",  # (p)
+        "http://legislature.mi.gov/doc.aspx?mcl-206-30",  # (1)(p)
         "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2022/2022-IIT-Forms/BOOK_MI-1040.pdf#page=16",
     )
     defined_for = "mi_interest_dividends_capital_gains_deduction_eligible"

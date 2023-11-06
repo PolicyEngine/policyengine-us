@@ -7,7 +7,7 @@ class mi_standard_deduction_tier_two_eligible(Variable):
     label = "Eligible for the Michigan tier two standard deduction"
     definition_period = YEAR
     reference = (
-        "http://legislature.mi.gov/doc.aspx?mcl-206-30",  # (b)&(c)
+        "http://legislature.mi.gov/doc.aspx?mcl-206-30",  # (9)(b) & (c)
         "https://www.michigan.gov/taxes/iit/retirement-and-pension-benefits/michigan-standard-deduction",
         "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2022/2022-IIT-Forms/BOOK_MI-1040.pdf#page=15",
     )
