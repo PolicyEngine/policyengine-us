@@ -1,0 +1,61 @@
+- name: filling status = SEPERATE, total salt < salt cap
+  period: 2021
+  input:
+    filing_status: SEPARATE
+    state_code: DE
+    charitable_deduction: 1_000
+    medical_expense_deduction: 500
+    casualty_loss_deduction: 500
+    real_estate_taxes: 1_000
+    state_and_local_sales_or_income_tax: 1_000 # total salt = 2,000
+    mortgage_interest: 500
+    investment_income_form_4952: 1_000    
+  output:
+    de_itemized_deductions: 5_500
+
+  
+- name: filling status = SEPERATE, total salt > salt cap
+  period: 2021
+  input:
+    filing_status: SEPARATE
+    state_code: DE
+    charitable_deduction: 1_000
+    medical_expense_deduction: 500
+    casualty_loss_deduction: 500
+    real_estate_taxes: 5_000
+    state_and_local_sales_or_income_tax: 1_000 # total salt = 7,000
+    mortgage_interest: 500
+    investment_income_form_4952: 1_000    
+  output:
+    de_itemized_deductions: 8_500
+  
+- name: filling status = JOINT, total salt > salt cap
+  period: 2021
+  input:
+    filing_status: JOINT
+    state_code: DE
+    charitable_deduction: 1_000
+    medical_expense_deduction: 500
+    casualty_loss_deduction: 500
+    real_estate_taxes: 5_000
+    state_and_local_sales_or_income_tax: 7_000 # total salt = 12,000
+    mortgage_interest: 500
+    investment_income_form_4952: 1_000    
+  output:
+    de_itemized_deductions: 13_500
+    
+- name: filling status = JOINT, total salt < salt cap
+  period: 2021
+  input:
+    filing_status: JOINT
+    state_code: DE
+    charitable_deduction: 1_000
+    medical_expense_deduction: 500
+    casualty_loss_deduction: 500
+    real_estate_taxes: 5_000
+    state_and_local_sales_or_income_tax: 1_000 # total salt = 6,000
+    mortgage_interest: 500
+    investment_income_form_4952: 1_000    
+  output:
+    de_itemized_deductions: 9_500
+
