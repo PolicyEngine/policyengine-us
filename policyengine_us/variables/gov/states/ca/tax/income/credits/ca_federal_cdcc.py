@@ -4,15 +4,15 @@ from policyengine_us.model_api import *
 class ca_federal_cdcc(Variable):
     value_type = float
     entity = TaxUnit
-    label = "California Child and Dependent Care Expenses Credit"
+    label = "Child and Dependent Care Expenses Credit replicated to include California limitations"
     unit = USD
-    documentation = ""
+    documentation = "https://www.ftb.ca.gov/about-ftb/data-reports-plans/Summary-of-Federal-Income-Tax-Changes/index.html#PL-117-2-9631"
     definition_period = YEAR
     defined_for = StateCode.CA
 
     def formula(tax_unit, period, parameters):
 
-        ca_expenses = tax_unit("ca_cdcc_relevant_expenses", period) 
-        ca_rate = tax_unit("ca_cdcc_rate", period)
+        relevant_expenses = tax_unit("ca_cdcc_relevant_expenses", period) 
+        credit_rate = tax_unit("ca_cdcc_rate", period)
 
-        return ca_expenses*ca_rate
+        return relevant_expenses * credit_rate

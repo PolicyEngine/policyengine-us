@@ -3,7 +3,7 @@
   input:
     state_code: CA
     adjusted_gross_income: 100_001
-    cdcc: 1_000
+    ca_federal_cdcc: 1_000
   output:
     ca_cdcc: 0
 
@@ -12,7 +12,7 @@
   input:
     state_code: CA
     adjusted_gross_income: 1_000
-    cdcc: 1_000
+    ca_federal_cdcc: 1_000
   output:
     ca_cdcc: 500
 
@@ -21,7 +21,7 @@
   input:
     state_code: CA
     adjusted_gross_income: 50_000
-    cdcc: 1_000
+    ca_federal_cdcc: 1_000
   output:
     ca_cdcc: 430
 
@@ -30,6 +30,6 @@
   input:
     state_code: CA
     adjusted_gross_income: -50_000
-    cdcc: 1_000
+    ca_federal_cdcc: 1_000
   output:
     ca_cdcc: 500

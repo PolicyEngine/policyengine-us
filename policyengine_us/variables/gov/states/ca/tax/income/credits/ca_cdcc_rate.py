@@ -4,10 +4,10 @@ from policyengine_us.model_api import *
 class ca_cdcc_rate(Variable):
     value_type = float
     entity = TaxUnit
-    label = "California CDCC credit rate"
+    label = "CDCC credit rate replicated to include California limitations"
     unit = USD
     definition_period = YEAR
-    reference = ""
+    reference = "https://www.ftb.ca.gov/about-ftb/data-reports-plans/Summary-of-Federal-Income-Tax-Changes/index.html#PL-117-2-9631"
     defined_for = StateCode.CA
 
     def formula(tax_unit, period, parameters):
