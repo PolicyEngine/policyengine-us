@@ -36,13 +36,18 @@ class va_tax_adjsutment_amount(Variable):
         )
         max_temp = p1.rates * max_(temp_value, half_of_taxable_income)
         sum_amount = min_temp + max_temp
-        tax_amount = va_income_tax
+        tax_amount = tax_unit("va_income_tax", period)
+        adjustent_limit_condition = (
+            min_eligibility_value
+            > p.threshold & tax_unit("va_taxable_income", period)
+        )
+        adjustment_amount = tax_amount - sum_amount
         tax_adjustment_amount = va_spouse_adjustment_qualification * min_(
             where(
-                min_eligibility_value > p.threshold
-                and va_taxable_income > p.taxable_income_threshold,
+                adjustment_limit_condition,
                 p.adjustment_limit,
-                tax_amount - sum_amount,
+                adjustment_amount,
             ),
             p.adjustment_limit,
         )
+        return tax_adjustment_amount
