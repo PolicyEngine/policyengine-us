@@ -33,7 +33,7 @@ class hi_cdcc_earned_income(Variable):
         # If both filers are disabled / student but only one person is below the floor limit,
         # then the person below the floor limit will be elevated to the floor
         below_income_floor = income_floor_eligible & (income < uncapped_income)
-        more_than_one_below_floor = sum(below_income_floor) > 1
+        more_than_one_below_floor = person.tax_unit.sum(below_income_floor) > 1
         smaller_income = min_(income, uncapped_income)
 
         return where(
