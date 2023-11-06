@@ -1,0 +1,21 @@
+- name: case 1
+  period: 2023
+  input:
+    state_code: AZ
+    adjusted_gross_income: 10_000
+    az_additions: 5_000
+    az_subtractions: 2_500
+    az_exemptions: 3_000
+  output:
+    az_agi: 9_500
+
+- name: case 2
+  period: 2023
+  input:
+    state_code: AZ
+    adjusted_gross_income: 5_000
+    az_additions: 1_000
+    az_subtractions: 3_500
+    az_exemptions: 3_000
+  output:
+    az_agi: 0
