@@ -16,3 +16,12 @@ class eitc(Variable):
         reduction = tax_unit("eitc_reduction", period)
         limitation = max_(0, maximum - reduction)
         return min_(phased_in, limitation)
+
+
+class earned_income_tax_credit(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = "EITC"
+    unit = USD
+    definition_period = YEAR
+    adds = ["eitc"]
