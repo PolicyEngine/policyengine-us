@@ -1,8 +1,7 @@
-description: West Virginia qualifies filers for the low-income earned income exclusion with income below this threshold.
-metadata:
+description: West Virginia limits the low-income earned income exclusion to filers with federal adjusted gross income below this amount.  
   period: year
   unit: USD
-  label: West Virginia low-income earned income exclusion adjusted gross income threshold  
+  label: West Virginia low-income earned income exclusion AGI limit   
   reference:
   - title: Code of West Virginia §11-21-10 (b)
     href: https://code.wvlegislature.gov/11-21-10/
@@ -10,7 +9,6 @@ metadata:
     href: https://tax.wv.gov/Documents/TaxForms/2021/it140.pdf#page=20
   - title: 2022 West Virginia Personal Income Tax Forms And Instructions-2022 FAMILY TAX CREDIT TABLES
     href: https://tax.wv.gov/Documents/PIT/2022/PersonalIncomeTaxFormsAndInstructions.2022.pdf#page=27
-
   breakdown:
     - filing_status
 

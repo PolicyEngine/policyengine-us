@@ -16,11 +16,12 @@ class wv_low_income_earned_income_exclusion(Variable):
 
     def formula(tax_unit, period, parameters):
         federal_agi = tax_unit("adjusted_gross_income", period)
-        wv_earned_income = add(tax_unit, period, ["earned_income"])
+        earned_income = tax_unit("tax_unit_earned_income", period)
         filing_status = tax_unit("filing_status", period)
 
         p = parameters(
             period
         ).gov.states.wv.tax.income.subtractions.low_income_earned_income
-        income_min = min_(federal_agi, wv_earned_income)
-        return min_(income_min, p.income_threshold[filing_status])
+        # Lesser of federal AGI, earned income, and exclusion cap.
+        income_min = min_(federal_agi, earned_income)
+        return min_(income_min, p.amount[filing_status])
