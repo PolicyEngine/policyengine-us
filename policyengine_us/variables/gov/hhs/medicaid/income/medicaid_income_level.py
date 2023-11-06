@@ -4,9 +4,11 @@ from policyengine_us.model_api import *
 class medicaid_income_level(Variable):
     value_type = float
     entity = Person
-    label = "Medicaid income level"
+    label = "Medicaid/CHIP-related income level"
     unit = "/1"
-    documentation = "Income for Medicaid as a percentage of the federal poverty line for this person."
+    documentation = (
+        "Modified AGI as a fraction of current-year federal poverty line."
+    )
     definition_period = YEAR
 
     def formula(person, period, parameters):

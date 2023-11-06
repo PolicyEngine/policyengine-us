@@ -4632,3 +4632,287 @@
     added:
     - Montana net capital gain credit.
   date: 2023-10-04 04:44:55
+- bump: minor
+  changes:
+    added:
+    - Arizona increased standard deduction for charitable contributions.
+  date: 2023-10-04 21:03:41
+- bump: patch
+  changes:
+    fixes:
+    - Georgia investment in 529 plan deduction variable name adjustment.
+  date: 2023-10-05 01:05:40
+- bump: minor
+  changes:
+    fixed:
+    - SNAP now uses the previous October's FPG.
+  date: 2023-10-05 14:43:50
+- bump: patch
+  changes:
+    fixed:
+    - Update Colorado TABOR parameters for 2023.
+  date: 2023-10-06 18:37:54
+- bump: minor
+  changes:
+    added:
+    - Vermont capital gain exclusion.
+  date: 2023-10-06 23:18:37
+- bump: minor
+  changes:
+    added:
+    - West Virginia senior citizens tax credit.
+    - West Virginia homestead exemption.
+  date: 2023-10-06 23:26:28
+- bump: minor
+  changes:
+    added:
+    - Mississippi adjusted gross income.
+  date: 2023-10-06 23:43:31
+- bump: patch
+  changes:
+    fixed:
+    - Missing unit tests and delta parameter for marginal_tax_rate variable.
+  date: 2023-10-07 11:49:55
+- bump: patch
+  changes:
+    fixed:
+    - Missing tests of cliff_gap and cliff_evaluated variables.
+  date: 2023-10-07 11:55:34
+- bump: minor
+  changes:
+    added:
+    - Connecticut military retirement subtraction.
+  date: 2023-10-10 16:55:30
+- bump: minor
+  changes:
+    added:
+    - Hawaii subtractions.
+  date: 2023-10-10 23:24:10
+- bump: minor
+  changes:
+    added:
+    - Tax unit head or spouse varibale.
+  date: 2023-10-11 13:37:15
+- bump: minor
+  changes:
+    added:
+    - Maine sales tax fairness credits.
+    - Maine property tax fairness credits.
+  date: 2023-10-12 19:53:13
+- bump: patch
+  changes:
+    fixed:
+    - Move maine adjusted gross income folder.
+  date: 2023-10-12 22:02:21
+- bump: minor
+  changes:
+    added:
+    - Vermont child and dependent care credit.
+  date: 2023-10-13 16:13:43
+- bump: patch
+  changes:
+    fixed:
+    - Definition of Medicaid/CHIP/ACA-related modified adjusted gross income (MAGI).
+  date: 2023-10-14 14:11:49
+- bump: minor
+  changes:
+    added:
+    - Vermont child tax credit.
+  date: 2023-10-15 22:06:59
+- bump: patch
+  changes:
+    fixed:
+    - Formula for tax_unit_medicaid_income_level variable.
+  date: 2023-10-15 23:47:31
+- bump: minor
+  changes:
+    added:
+    - Connecticut pension or annuity income subtraction.
+  date: 2023-10-16 18:16:36
+- bump: minor
+  changes:
+    added:
+    - Delaware pension exclusion.
+  date: 2023-10-16 19:13:31
+- bump: minor
+  changes:
+    added:
+    - Georgia deductions.
+  date: 2023-10-17 14:53:55
+- bump: patch
+  changes:
+    fixed:
+    - Adjust Georgia variable folder structure.
+  date: 2023-10-17 22:47:08
+- bump: minor
+  changes:
+    added:
+    - Seven empty state ??_income_tax.py variables.
+    - All states to the state_income_taxes.py adds list.
+  date: 2023-10-18 20:13:39
+- bump: patch
+  changes:
+    fixed:
+    - Add missing 2021 Idaho 5.5% income tax bracket.
+  date: 2023-10-18 22:44:35
+- bump: minor
+  changes:
+    fixed:
+    - Added Kentucky pension income exclusion.
+  date: 2023-10-19 13:58:32
+- bump: patch
+  changes:
+    fixed:
+    - Change co_chp parameters to be at or before 2023-01-01
+  date: 2023-10-19 17:00:51
+- bump: patch
+  changes:
+    fixed:
+    - Louisiana military pay exclusion folder structure.
+  date: 2023-10-19 19:21:03
+- bump: patch
+  changes:
+    fixed:
+    - Integrated year-specific Poverty Tracker variables.
+  date: 2023-10-20 04:10:36
+- bump: patch
+  changes:
+    fixed:
+    - Formula for tax_unit_medicaid_income_level variable.
+  date: 2023-10-20 22:40:37
+- bump: minor
+  changes:
+    added:
+    - Delaware income tree.
+  date: 2023-10-22 21:46:44
+- bump: minor
+  changes:
+    added:
+    - West Virginia subtractions.
+  date: 2023-10-23 15:52:44
+- bump: minor
+  changes:
+    added:
+    - Oklahoma income tax to net income tree.
+  date: 2023-10-28 16:48:11
+- bump: minor
+  changes:
+    added:
+    - Reform for the Taxable Earnings for Social Security Payroll Taxes, including
+      an upper threshold and increasing the taxable amount.
+  date: 2023-10-28 17:35:45
+- bump: minor
+  changes:
+    added:
+    - Eliminate cap on Maryland childless EITC amount beginning in 2023.
+  date: 2023-10-30 12:33:37
+- bump: patch
+  changes:
+    fixed:
+    - Location of `state_and_local_sales_or_income_tax` variable module.
+    - Presence of unused `filer_e18400` variable.
+  date: 2023-10-31 15:33:49
+- bump: patch
+  changes:
+    fixed:
+    - Renamed `exemptions` variable to `exemptions_count`.
+    - Renamed `c04600` variable to `exemptions`.
+  date: 2023-10-31 20:32:49
+- bump: patch
+  changes:
+    fixed:
+    - Remove obsolete xtot variable left over from original taxcalc development.
+  date: 2023-10-31 22:16:07
+- bump: minor
+  changes:
+    added:
+    - Colorado child care assistance program (CCCAP).
+  date: 2023-11-01 02:15:09
+- bump: patch
+  changes:
+    fixed:
+    - Colorado CCAP bug with individual simulations.
+  date: 2023-11-01 11:27:38
+- bump: patch
+  changes:
+    fixed:
+    - Various bugs in Colorado CCAP.
+  date: 2023-11-01 18:48:50
+- bump: patch
+  changes:
+    fixed:
+    - Remove obsolete variables from the `gov/irs/taxcalc/sources.py` module.
+    - Remove obsolete variables from the `gov/irs/taxcalc/outputs.py` module.
+  date: 2023-11-01 21:47:32
+- bump: minor
+  changes:
+    added:
+    - Idaho capital gains deduction.
+  date: 2023-11-02 01:02:06
+- bump: minor
+  changes:
+    added:
+    - Arizona military retirement subtraction.
+  date: 2023-11-02 17:49:15
+- bump: patch
+  changes:
+    fixed:
+    - Automatically set entry process to true for CCAP.
+  date: 2023-11-02 20:44:02
+- bump: patch
+  changes:
+    fixed:
+    - CCAP fix for multi-child households (previously had index errors).
+  date: 2023-11-02 22:14:02
+- bump: patch
+  changes:
+    fixed:
+    - Added USD metadata to co_ccap_subsidy.
+  date: 2023-11-03 04:08:02
+- bump: minor
+  changed:
+  - Rename taxcalc variables to be consistent with this project's coding style and
+    to be in more sensible directory locations.
+  changes:
+    added:
+    - The `net_capital_gains` variable (formerly `c23650`).
+    - The `gov/irs/capital_gains/loss_limit.yaml` parameter file.
+    - The `loss_limited_net_capital_gains` variable (formerly `c01000`) that uses
+      the `loss_limit` parameter.
+  date: 2023-11-03 20:12:54
+  removed:
+  - Formula code that avoids `sep` variable that had no formula, and therefore, was
+    likely to cause bugs.
+- bump: minor
+  changes:
+    fixed:
+    - ZIP codes are sampled from the state, and axes-containing simulations don't
+      vary the ZIP code.
+  date: 2023-11-03 20:30:48
+- bump: patch
+  changes:
+    fixed:
+    - ZIP code bug for households with axes.
+  date: 2023-11-03 20:53:44
+- bump: patch
+  changes:
+    fixed:
+    - Remove obsolete taxcalc-related alias variable names.
+    - Rename `earned_income_tax_credit` to `eitc` to be more consistent with variable
+      names for other federal credits.
+  date: 2023-11-04 21:02:59
+- bump: patch
+  changes:
+    fixed:
+    - pell_grant_efc now can not be negative
+  date: 2023-11-04 21:16:41
+- bump: patch
+  changes:
+    fixed:
+    - Presence of unneeded taxcalc-related logic in the `system.py` module.
+  date: 2023-11-05 21:04:11
+- bump: patch
+  changes:
+    fixed:
+    - Re-added earned_income_tax_credit variable alias.
+  date: 2023-11-06 15:27:19

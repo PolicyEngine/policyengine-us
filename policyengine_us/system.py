@@ -10,9 +10,6 @@ from policyengine_core.simulations import (
     IndividualSim as CoreIndividualSim,
 )
 from policyengine_us.data import DATASETS, CPS_2023, EnhancedCPS_2023
-from policyengine_us.tools.taxcalc.generate_taxcalc_variable import (
-    add_taxcalc_variable_aliases,
-)
 from policyengine_us.variables.household.demographic.geographic.state.in_state import (
     create_50_state_variables,
 )
@@ -48,9 +45,9 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
         self.add_variables(*create_50_state_variables())
 
         self.parameters = set_irs_uprating_parameter(self.parameters)
-        self.parameters = backdate_parameters(self.parameters)
-
-        add_taxcalc_variable_aliases(self)
+        self.parameters = backdate_parameters(
+            self.parameters, first_instant="2020-01-01"
+        )
 
 
 system = CountryTaxBenefitSystem()

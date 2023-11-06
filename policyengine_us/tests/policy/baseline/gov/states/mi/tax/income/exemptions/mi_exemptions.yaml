@@ -80,7 +80,7 @@
   period: 2021
   input:
     tax_unit_size: 1
-    dsi: true
+    head_is_dependent_elsewhere: true
     filing_status: SINGLE
     state_code: MI
   output: 
@@ -90,7 +90,7 @@
   period: 2021
   input:
     tax_unit_size: 1
-    dsi: true
+    head_is_dependent_elsewhere: true
     filing_status: JOINT
     state_code: MI
   output: 
@@ -100,7 +100,7 @@
   period: 2022
   input:
     tax_unit_size: 1
-    dsi: true
+    head_is_dependent_elsewhere: true
     filing_status: SINGLE
     state_code: MI
   output: 
