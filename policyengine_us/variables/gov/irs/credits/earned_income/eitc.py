@@ -1,11 +1,11 @@
 from policyengine_us.model_api import *
 
 
-class earned_income_tax_credit(Variable):
+class eitc(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
-    label = "EITC"
+    label = "Federal earned income credit"
     reference = "https://www.law.cornell.edu/uscode/text/26/32#a"
     unit = USD
     defined_for = "eitc_eligible"
@@ -18,5 +18,10 @@ class earned_income_tax_credit(Variable):
         return min_(phased_in, limitation)
 
 
-c59660 = variable_alias("c59660", earned_income_tax_credit)
-eitc = variable_alias("eitc", earned_income_tax_credit)
+class earned_income_tax_credit(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = "EITC"
+    unit = USD
+    definition_period = YEAR
+    adds = ["eitc"]
