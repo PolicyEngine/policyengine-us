@@ -2,8 +2,8 @@
   period: 2021
   input:
     filing_status: JOINT
-    tax_unit_dependent_elsewhere: true
-    tax_unit_spouse_dependent_elsewhere: true
+    head_is_dependent_elsewhere: true
+    spouse_is_dependent_elsewhere: true
     il_base_income: 2_000 # Less than $2,375 personal exemption.
     state_code: IL
   output:
@@ -13,8 +13,8 @@
   period: 2021
   input:
     filing_status: JOINT
-    tax_unit_dependent_elsewhere: true
-    tax_unit_spouse_dependent_elsewhere: true
+    head_is_dependent_elsewhere: true
+    spouse_is_dependent_elsewhere: true
     il_base_income: 5_000 # More than $2,375 personal exemption.
     state_code: IL
   output:
@@ -24,8 +24,8 @@
   period: 2021
   input:
     filing_status: JOINT
-    tax_unit_dependent_elsewhere: true
-    tax_unit_spouse_dependent_elsewhere: false
+    head_is_dependent_elsewhere: true
+    spouse_is_dependent_elsewhere: false
     il_base_income: 2_000 # Less than $2,375 personal exemption.
     state_code: IL
   output:
@@ -35,8 +35,8 @@
   period: 2021
   input:
     filing_status: JOINT
-    tax_unit_dependent_elsewhere: true
-    tax_unit_spouse_dependent_elsewhere: false
+    head_is_dependent_elsewhere: true
+    spouse_is_dependent_elsewhere: false
     il_base_income: 5_000 # More than $2,375 personal exemption.
     state_code: IL
   output:
@@ -46,8 +46,8 @@
   period: 2021
   input:
     filing_status: JOINT
-    tax_unit_dependent_elsewhere: false
-    tax_unit_spouse_dependent_elsewhere: false
+    head_is_dependent_elsewhere: false
+    spouse_is_dependent_elsewhere: false
     il_base_income: 2_000 # Less than $2,375 personal exemption.
     state_code: IL
   output:
@@ -57,8 +57,8 @@
   period: 2021
   input:
     filing_status: JOINT
-    tax_unit_dependent_elsewhere: false
-    tax_unit_spouse_dependent_elsewhere: false
+    head_is_dependent_elsewhere: false
+    spouse_is_dependent_elsewhere: false
     il_base_income: 5_000 # More than $2,375 personal exemption.
     state_code: IL
   output:
@@ -68,7 +68,7 @@
   period: 2021
   input:
     filing_status: SINGLE
-    tax_unit_dependent_elsewhere: true
+    head_is_dependent_elsewhere: true
     il_base_income: 2_000 # Less than $2,375 personal exemption.
     state_code: IL
   output:
@@ -78,7 +78,7 @@
   period: 2021
   input:
     filing_status: SINGLE
-    tax_unit_dependent_elsewhere: true
+    head_is_dependent_elsewhere: true
     il_base_income: 5_000 # More than $2,375 personal exemption.
     state_code: IL
   output:
@@ -88,7 +88,7 @@
   period: 2021
   input:
     filing_status: SINGLE
-    tax_unit_dependent_elsewhere: false
+    head_is_dependent_elsewhere: false
     il_base_income: 2_000 # Less than $2,375 personal exemption.
     state_code: IL
   output:
@@ -98,7 +98,7 @@
   period: 2021
   input:
     filing_status: SINGLE
-    tax_unit_dependent_elsewhere: false
+    head_is_dependent_elsewhere: false
     il_base_income: 5_000  # More than $2,375 personal exemption.
     state_code: IL
   output:
