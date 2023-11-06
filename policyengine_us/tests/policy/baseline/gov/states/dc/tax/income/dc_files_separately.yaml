@@ -15,3 +15,13 @@
     state_code: DC
   output:
     dc_files_separately: false
+
+- name: dc_files_separately unit test 3
+  period: 2022
+  input:
+    gov.states.dc.tax.income.joint_separately_option: false
+    dc_income_tax_before_credits_indiv: 400
+    dc_income_tax_before_credits_joint: 500
+    state_code: DC
+  output:
+    dc_files_separately: false

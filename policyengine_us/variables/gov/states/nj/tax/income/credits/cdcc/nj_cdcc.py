@@ -22,7 +22,7 @@ class nj_cdcc(Variable):
         federal_cdcc = tax_unit("cdcc", period)
 
         # Calculate NJ CDCC
-        rate = p.calc(taxable_income)
+        rate = p.calc(taxable_income, right=True)
 
         # Calculate total NJ CDCC
         return federal_cdcc * rate
