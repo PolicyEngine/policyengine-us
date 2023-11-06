@@ -1,10 +1,11 @@
-description: Ohio counts these sources as additions.
+description: Additions for Ohio are applied to Federal Adjusted Gross Income to calculate Ohio Adjusted Gross Income, as per Ohio tax instructions.
 values:
   2021-01-01:
     - oh_bonus_depreciation_add_back
     - oh_other_add_backs
 metadata:
   unit: list
+  label: Ohio additions
   reference:
     - title: 2022 Individual Income Tax - Ohio
       href: https://tax.ohio.gov/static/communications/publications/individual_income_tax_ohio.pdf#page=2
