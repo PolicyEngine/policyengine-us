@@ -18,11 +18,11 @@ class ca_cdcc_rate(Variable):
             period_adjusted = f"{year-1}-01-01"
         else:
             period_adjusted = f"{year}-01-01"
-        
+
         p = parameters(period_adjusted).gov.irs.credits.cdcc
 
         # First phase-out
-        excess_agi = max_(0, agi - p.phase_out.start) # start
+        excess_agi = max_(0, agi - p.phase_out.start)  # start
         increments = np.ceil(excess_agi / p.phase_out.increment)
         percentage_reduction = increments * p.phase_out.rate
         phased_out_rate = max_(
@@ -30,7 +30,9 @@ class ca_cdcc_rate(Variable):
         )
 
         # Second phase-out
-        second_excess_agi = max_(0, agi - p.phase_out.second_start) # second_start
+        second_excess_agi = max_(
+            0, agi - p.phase_out.second_start
+        )  # second_start
         second_increments = np.ceil(second_excess_agi / p.phase_out.increment)
         second_percentage_reduction = second_increments * p.phase_out.rate
 

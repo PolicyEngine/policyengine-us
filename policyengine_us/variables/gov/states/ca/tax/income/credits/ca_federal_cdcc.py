@@ -11,8 +11,7 @@ class ca_federal_cdcc(Variable):
     defined_for = StateCode.CA
 
     def formula(tax_unit, period, parameters):
-
-        relevant_expenses = tax_unit("ca_cdcc_relevant_expenses", period) 
+        relevant_expenses = tax_unit("ca_cdcc_relevant_expenses", period)
         credit_rate = tax_unit("ca_cdcc_rate", period)
 
         return relevant_expenses * credit_rate
