@@ -1,0 +1,57 @@
+- name: Calculation in 2022
+  period: 2022
+  input:
+    state_code: CO
+    co_taxable_income: 1_000
+  output:
+    co_income_tax_before_non_refundable_credits: 44
+
+- name: Calculation in 2021
+  period: 2021
+  input:
+    state_code: CO
+    co_taxable_income: 1_000
+  output:
+    co_income_tax_before_non_refundable_credits: 45
+
+- name: Calculation in 2020
+  period: 2020
+  input:
+    state_code: CO
+    co_taxable_income: 1_000
+  output:
+    co_income_tax_before_non_refundable_credits: 45.5
+
+- name: Calculation 2019
+  absolute_error_margin: 0.01
+  period: 2019
+  input:
+    state_code: CO
+    co_taxable_income: 1_000
+  output:
+    co_income_tax_before_non_refundable_credits: 45
+
+- name: Calculation 2018
+  absolute_error_margin: 0.01
+  period: 2018
+  input:
+    state_code: CO
+    co_taxable_income: 1_000
+  output:
+    co_income_tax_before_non_refundable_credits: 46.3
+
+- name: Calculation 1999
+  period: 1999
+  input:
+    state_code: CO
+    co_taxable_income: 1_000
+  output:
+    co_income_tax_before_non_refundable_credits: 47.5
+
+- name: No income
+  period: 2023
+  input:
+    state_code: CO
+    co_taxable_income: 0
+  output:
+    co_income_tax_before_non_refundable_credits: 0

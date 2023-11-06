@@ -1,0 +1,106 @@
+- name: 1 Test basic formula
+  period: 2021
+  input:
+    adjusted_gross_income_person: [10_000]
+    nj_agi_additions: [1_000]
+    nj_agi_subtractions: [2_000]
+    state_code: NJ
+  output:
+    nj_agi: 9_000
+
+- name: 2 Test that NJ AGI cannot be negative
+  period: 2021
+  input:
+    adjusted_gross_income: 10_000
+    nj_agi_additions: 1_000
+    nj_agi_subtractions: 20_000
+    state_code: NJ
+  output:
+    nj_agi: 0
+
+- name: 3 NJ taxpayer with taxable pension income
+  absolute_error_margin: 0
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 62
+        taxable_interest_income: 6_000
+        taxable_pension_income: 12_000
+        taxable_social_security: 1_000
+        never_eligible_for_social_security_benefits: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    adjusted_gross_income: 19_000 # on federal form, AGI includes taxable SS
+    nj_agi: 0 # because pension subtraction from federal AGI is missing
+    # CORRECT nj_agi OUTPUT IS:
+    # 0 because pension income is excluded and interest/SS income excluded through "other retirement income"
+
+- name: 4 NJ taxpayer with no taxable pension income
+  absolute_error_margin: 0
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+        taxable_pension_income: 0
+        taxable_interest_income: 7_000
+        taxable_social_security: 0
+        never_eligible_for_social_security_benefits: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    adjusted_gross_income: 7_000 # on federal form
+    nj_agi: 0
+    # Interest income is excluded in other retirement income exclusion,
+    #   plus qualifies for special exclusion.
+    # Note: we can infer qualify for special exclusion for those age 70+ who
+    #       have no social security benefits because beyond age 70 there are
+    #       no more delayed retirement credits under social security.
+
+- name: 5 NJ taxpayer whose only retirement exclusion is the special exclusion.
+  absolute_error_margin: 0
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+        taxable_pension_income: 0
+        taxable_interest_income: 7_000
+        taxable_social_security: 0
+        employment_income: 3_001
+        never_eligible_for_social_security_benefits: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    adjusted_gross_income: 10_001 # on federal form
+    nj_agi: 7_001 # special exclusion reduces AGI by $3k
+    # earned income > $3k makes other retirement income exclusion unavailable

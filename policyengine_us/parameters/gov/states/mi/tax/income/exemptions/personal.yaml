@@ -1,0 +1,26 @@
+description: Michigan provides this exemption amount for the filer and spouse of the tax unit, each dependent, and each of the filers stillborn children.
+values:
+  2017-01-01: 4_000
+  2018-01-01: 4_050
+  2019-01-01: 4_400
+  2020-01-01: 4_750
+  2021-01-01: 4_900
+  2022-01-01: 5_000
+  2023-01-01: 5_400
+
+metadata:
+  period: year
+  unit: currency-USD
+  label: Michigan exemption base amount
+  reference:
+  # Legal code specified $3,700.
+  - title: Michigan Legal Code Section 206.30 - (2)
+    href: http://legislature.mi.gov/doc.aspx?mcl-206-30
+  - title: Michigan Taxpayer's Guide 2022 - page 12
+    href: https://www.legislature.mi.gov/Publications/TaxpayerGuide.pdf#page=12
+  # 2021 manual contains values dating to 2017.
+  - title: 2021 Michigan Taxpayer Assistance Manual - page 10
+    href: https://www.michigan.gov/-/media/Project/Websites/taxes/2022RM/UNCAT/2019_Taxpayer_Assistance_Manual.pdf#page=10
+  - title: What is Michigan’s 2023 personal exemption amount?
+    href: https://www.michigan.gov/taxes/business-taxes/withholding/withholding-tax-faqs/what-is-michigans-2023-personal-exemption-amount
+

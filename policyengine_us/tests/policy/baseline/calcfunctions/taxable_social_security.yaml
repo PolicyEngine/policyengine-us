@@ -1,0 +1,95 @@
+# Tests were generated from Tax-Calculator, but were amended after refactoring and editing variable names.
+# `taxable_ss_magi` previously was `ymod`, which contains 50% of Social Security (in OpenFisca-US, this is
+# added separately). Therefore, all `taxable_ss_magi` values have been corrected by removing half of social
+# security inputs.
+
+- name: SSBenefits unit test 0
+  period: 2019
+  input:
+    filing_status: SINGLE
+    taxable_ss_magi: 38323 - 3411 / 2
+    social_security: 3411
+  output:
+    taxable_social_security: 2899.35
+
+- name: SSBenefits unit test 1
+  period: 2019
+  input:
+    filing_status: JOINT
+    taxable_ss_magi: 54598 - 38818 / 2
+    social_security: 38818
+  output:
+    taxable_social_security: 15008.3
+
+- name: SSBenefits unit test 2
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    filing_status: JOINT
+    taxable_ss_magi: 132696 - 18518 / 2
+    social_security: 18518
+  output:
+    taxable_social_security: 15740.3
+
+- name: SSBenefits unit test 3
+  period: 2019
+  input:
+    filing_status: JOINT
+    taxable_ss_magi: 84124 - 10514 / 2
+    social_security: 10514
+  output:
+    taxable_social_security: 8936.9
+
+- name: SSBenefits unit test 4
+  period: 2019
+  input:
+    filing_status: SINGLE
+    taxable_ss_magi: 26098 - 18705 / 2
+    social_security: 18705
+  output:
+    taxable_social_security: 549.0
+
+- name: SSBenefits unit test 5
+  period: 2019
+  input:
+    filing_status: JOINT
+    taxable_ss_magi: 33518 - 49667 / 2
+    social_security: 49667
+  output:
+    taxable_social_security: 759.0
+
+- name: SSBenefits unit test 6
+  period: 2019
+  input:
+    filing_status: JOINT
+    taxable_ss_magi: 125013 - 52791 / 2
+    social_security: 52791
+  output:
+    taxable_social_security: 44872.35
+
+- name: SSBenefits unit test 7
+  period: 2019
+  input:
+    filing_status: SINGLE
+    taxable_ss_magi: 25533 - 16874 / 2
+    social_security: 16874
+  output:
+    taxable_social_security: 266.5
+
+- name: SSBenefits unit test 8
+  period: 2019
+  input:
+    filing_status: JOINT
+    taxable_ss_magi: 51058 - 34044 / 2
+    social_security: 34044
+  output:
+    taxable_social_security: 11999.3
+
+- name: SSBenefits unit test 9
+  period: 2019
+  input:
+    filing_status: SINGLE
+    taxable_ss_magi: 66787 - 17894 / 2
+    social_security: 17894
+  output:
+    taxable_social_security: 15209.9

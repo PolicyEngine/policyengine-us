@@ -1,0 +1,17 @@
+- name: Calculation before cap
+  period: 2022
+  input:
+    state_code: DE
+    de_income_tax_before_non_refundable_credits: 2_000
+    de_non_refundable_credits: 1_000
+  output:
+    de_income_tax_before_refundable_credits: 1_000
+
+- name: Capper at 0
+  period: 2022
+  input:
+    state_code: DE
+    de_income_tax_before_non_refundable_credits: 1_000
+    de_non_refundable_credits: 2_000
+  output:
+    de_income_tax_before_refundable_credits: 0

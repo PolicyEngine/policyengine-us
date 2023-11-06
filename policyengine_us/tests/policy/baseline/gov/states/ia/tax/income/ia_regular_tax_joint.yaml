@@ -1,0 +1,35 @@
+- name: IA regular tax joint unit test 1
+  absolute_error_margin: 0.5
+  period: 2021
+  input:
+    ia_taxable_income_joint: 95_675
+    state_code: IA
+  output:  # https://tax.iowa.gov/sites/default/files/2021-12/2021TaxTables%2841026%29.pdf#page=5
+    ia_regular_tax_joint: 6_150
+
+- name: IA regular tax joint unit test 2
+  absolute_error_margin: 0.5
+  period: 2021
+  input:
+    ia_taxable_income_joint: 110_000
+    state_code: IA
+  output:  # https://tax.iowa.gov/sites/default/files/2021-12/2021TaxTables%2841026%29.pdf#page=5
+    ia_regular_tax_joint: 7_371.92
+
+- name: IA regular tax joint unit test 3
+  absolute_error_margin: 0.5
+  period: 2022
+  input:
+    ia_taxable_income_joint: 95_775
+    state_code: IA
+  output:  # https://tax.iowa.gov/sites/default/files/2022-12/TY2022IA1040TaxTables%2841026%29.pdf#page=5
+    ia_regular_tax_joint: 6_079
+
+- name: IA regular tax joint unit test 4
+  absolute_error_margin: 0.5
+  period: 2022
+  input:
+    ia_taxable_income_joint: 110_000
+    state_code: IA
+  output:  # https://tax.iowa.gov/sites/default/files/2022-12/TY2022IA1040TaxTables%2841026%29.pdf#page=5
+    ia_regular_tax_joint: 7_292.39

@@ -1,0 +1,19 @@
+- name: Potential NJ property tax deduction if taking deduction (as opposed to credit).
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    nj_potential_property_tax_deduction: 10_000
+    nj_taking_property_tax_deduction: true
+    state_code: NJ
+  output:
+    nj_property_tax_deduction: 10_000
+
+- name: Potential NJ property tax deduction if taking deduction (as opposed to credit).
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    nj_potential_property_tax_deduction: 10_000
+    nj_taking_property_tax_deduction: false
+    state_code: NJ
+  output:
+    nj_property_tax_deduction: 0

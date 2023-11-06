@@ -1,0 +1,14 @@
+description: Indiana taxes Indiana adjusted gross income at this rate.
+values:
+  2014-01-01: 0.034 # "For taxable years beginning before January 1, 2015"
+  2015-01-01: 0.033
+  2017-01-01: 0.0323
+  2023-01-01: 0.0315
+  # From 2025 onwards, the rate depends on the state's revenue growth.
+metadata:
+  period: year
+  unit: /1
+  label: Indiana AGI tax rate
+  reference:
+    - title: IC 6-3-2-1 Tax rate (a)(3)
+      href: http://iga.in.gov/legislative/laws/2023/ic/titles/006#6-3-2-1

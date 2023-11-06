@@ -1,7 +1,6 @@
 from policyengine_core.model_api import *
 from policyengine_us.entities import *
 from policyengine_us.tools.branched_simulation import BranchedSimulation
-import numpy as np
 from pathlib import Path
 import pandas as pd
 from policyengine_us.typing import Formula
@@ -52,29 +51,6 @@ def variable_alias(name: str, variable_cls: type) -> type:
     )
 
 
-def taxcalc_read_only_variable(name: str, variable_cls: type) -> type:
-    """
-    Copy a variable class and return a new class for a tax-calc variable.
-    """
-    class_dict = dict(variable_cls.__dict__)
-    class_dict["formula"] = lambda entity, period: entity(
-        variable_cls.__name__, period
-    )
-    return type(
-        name,
-        (Variable,),
-        dict(
-            value_type=variable_cls.value_type,
-            entity=variable_cls.entity,
-            label=variable_cls.label + " (Tax-Calculator)",
-            definition_period=variable_cls.definition_period,
-            unit=variable_cls.unit,
-            documentation=variable_cls.documentation
-            + " This is a read-only copy variable, matching the corresponding variable in the open-source US federal tax model Tax-Calculator.",
-        ),
-    )
-
-
 def sum_among_non_dependents(variable: str) -> Callable:
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum(variable, tax_unit, period)
@@ -92,15 +68,6 @@ def in_state(state):
         return population("state_code_str", period) == state
 
     return is_eligible
-
-
-def excess(of: str, over: str) -> Formula:
-    def formula(entity, period, parameters):
-        of_variable = add(entity, period, [of])
-        over_variable = add(entity, period, [over])
-        return max_(of_variable - over_variable, 0)
-
-    return formula
 
 
 def get_next_threshold(values: ArrayLike, thresholds: ArrayLike) -> ArrayLike:

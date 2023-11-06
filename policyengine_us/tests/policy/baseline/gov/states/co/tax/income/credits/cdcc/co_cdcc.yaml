@@ -1,0 +1,93 @@
+- name: co_cdcc unit test 1
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 41
+        employment_income: 60_001
+      person2:
+        age: 11
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        capped_cdcc: 1_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CO
+  output:
+    co_cdcc: 0
+
+- name: co_cdcc unit test 2
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 41
+        employment_income: 40_000
+      person2:
+        age: 11
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        capped_cdcc: 1_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CO
+  output:
+    co_cdcc: 500
+
+- name: co_cdcc unit test 3
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 41
+        employment_income: 20_000
+      person2:
+        age: 11
+      person3:
+        age: 9
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        capped_cdcc: 0
+        tax_unit_childcare_expenses: 8_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CO
+  output:
+    co_cdcc: 0  # co_low_income_cdcc = 1000
+
+- name: co_cdcc unit test 4
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 41
+        employment_income: 20_000
+      person2:
+        age: 11
+      person3:
+        age: 9
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        capped_cdcc: 0
+        tax_unit_childcare_expenses: 3_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CO
+  output:
+    co_cdcc: 0  # co_low_income_cdcc = 750

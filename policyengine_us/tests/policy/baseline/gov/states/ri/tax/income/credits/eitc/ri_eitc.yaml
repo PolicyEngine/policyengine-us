@@ -1,0 +1,23 @@
+- name: No Federal EITC
+  period: 2022
+  input:
+    state_code: RI
+    eitc: 0
+  output:
+    ri_eitc: 0
+
+- name: Calculation # Federal EITC * 15%
+  period: 2022
+  input:
+    state_code: RI
+    eitc: 10_000
+  output:
+    ri_eitc: 1_500
+
+- name: Calculation # Federal EITC * 15%
+  period: 2021
+  input:
+    state_code: RI
+    eitc: 20_000
+  output:
+    ri_eitc: 3_000

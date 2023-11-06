@@ -14,15 +14,31 @@ filtered:
       modelled:
       - California state income tax
       - California TANF
+      - California's Clean Vehicle Rebate Project
+    CO:
+      modelled:
+      - Colorado state income tax
+      - Colorado Old Age Pension
+      - Colorado State Supplement
+      - Colorado TANF
     DC:
       modelled:
-      - District of Columbia TANF
-      not_modelled:
       - District of Columbia income tax
+      - District of Columbia TANF
+    IA:
+      modelled:
+      - Iowa state income tax
+      not_modelled:
+      - Iowa TANF
     IL:
       modelled:
       - Illinois state income tax
       - Illinois TANF
+    IN: 
+      modelled:
+      - Indiana state income tax
+      not_modelled:
+      - Indiana TANF
     KS:
       modelled:
       - Kansas state income tax
@@ -48,6 +64,11 @@ filtered:
       - Missouri state income tax
       not_modelled:
       - Missouri TANF
+    NC:
+      modelled:
+      - North Carolina state income tax
+      not_modelled:
+      - North Carolina TANF
     ND:
       modelled:
       - North Dakota state income tax
@@ -58,10 +79,30 @@ filtered:
       - Nebraska state income tax
       not_modelled:
       - Nebraska TANF
+    NH:
+      modelled:
+      - New Hampshire state income tax
+      not_modelled:
+      - New Hampshire TANF
+    NJ:
+      modelled:
+      - New Jersey state income tax
+      not_modelled:
+      - New Jersey TANF
+    NM:
+      modelled:
+      - New Mexico state income tax
+      not_modelled:
+      - New Mexico TANF
     NY:
       modelled:
-      - New York state income tax
+      - New York state and city income tax
       - New York TANF
+    OK:
+      modelled:
+      - Oklahoma state income tax
+      not_modelled:
+      - Oklahoma TANF
     OR:
       modelled:
       - Oregon state income tax
@@ -72,13 +113,18 @@ filtered:
       - Pennsylvania state income tax
       not_modelled:
       - Pennsylvania TANF
-    WA:
-      modelled:
-      - Washington state income tax
-      not_modelled:
-      - Washington TANF
     UT:
       modelled:
       - Utah state income tax
       not_modelled:
       - Utah TANF
+    WA:
+      modelled:
+      - Washington state income tax
+      not_modelled:
+      - Washington TANF
+    WI:
+      modelled:
+      - Wisconsin state income tax
+      not_modelled:
+      - Wisconsin TANF

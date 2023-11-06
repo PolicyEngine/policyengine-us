@@ -1,0 +1,44 @@
+- name: Single filer
+  period: 2022
+  input:
+    filing_status: SINGLE
+    tax_unit_dependents: 1
+    state_code: GA
+  output:
+    ga_exemptions: 5_700
+
+- name: Married filing joint 
+  period: 2021
+  input:
+    filing_status: JOINT
+    tax_unit_dependents: 0
+    state_code: GA
+  output:
+    ga_exemptions: 7_400
+
+- name: Head of household filer
+  period: 2020
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    tax_unit_dependents: 2
+    state_code: GA
+  output:
+    ga_exemptions: 8_700
+
+- name: Separate filer
+  period: 2021
+  input:
+    filing_status: SEPARATE
+    tax_unit_dependents: 1
+    state_code: GA
+  output:
+    ga_exemptions: 6_700
+
+- name: Widow filer
+  period: 2021
+  input:
+    filing_status: WIDOW
+    tax_unit_dependents: 1
+    state_code: GA
+  output:
+    ga_exemptions: 5_700

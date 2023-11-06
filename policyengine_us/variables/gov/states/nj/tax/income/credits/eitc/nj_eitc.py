@@ -23,7 +23,7 @@ class nj_eitc(Variable):
         #     Note: this implies that they have no children.
         # Otherwise, return 0.
         # Worksheet reference: https://www.state.nj.us/treasury/taxation/pdf/current/1040i.pdf#page=43
-        nj_eitc = select(
+        federal_eitc = select(
             [
                 tax_unit("eitc_eligible", period),
                 tax_unit("nj_childless_eitc_age_eligible", period),
@@ -35,4 +35,4 @@ class nj_eitc(Variable):
             default=0,
         )
 
-        return nj_eitc * p.percent_of_federal_eitc
+        return federal_eitc * p.percent_of_federal_eitc

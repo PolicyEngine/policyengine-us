@@ -1,0 +1,15 @@
+- name: No Income
+  period: 2022
+  input:
+    state_code: RI
+    ri_taxable_income: 0
+  output:
+    ri_income_tax_before_refundable_credits: 0
+
+- name: Marginal Calculation # ((70_000 - 68_200) * 0.0475) + 68_200 * 0.0375
+  period: 2022
+  input:
+    state_code: RI
+    ri_taxable_income: 70_000
+  output:
+    ri_income_tax_before_refundable_credits: 2_643

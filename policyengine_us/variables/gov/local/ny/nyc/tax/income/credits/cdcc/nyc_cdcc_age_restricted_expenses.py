@@ -23,4 +23,10 @@ class nyc_cdcc_age_restricted_expenses(Variable):
         tax_unit_childcare_expenses = tax_unit(
             "tax_unit_childcare_expenses", period
         )
-        return qualifying_children * tax_unit_childcare_expenses / children
+        # avoid divide-by-zero warnings by not using where() function
+        qualifying_child_share = np.zeros_like(children)
+        mask = children > 0
+        qualifying_child_share[mask] = (
+            qualifying_children[mask] / children[mask]
+        )
+        return tax_unit_childcare_expenses * qualifying_child_share
