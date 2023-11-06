@@ -7,3 +7,4 @@ class co_ccap_is_in_entry_process(Variable):
     label = "Whether applicants are in the entry process of the Colorado Child Care Assistance Program"
     definition_period = MONTH
     # defined_for = StateCode.CO
+    default_value = True
