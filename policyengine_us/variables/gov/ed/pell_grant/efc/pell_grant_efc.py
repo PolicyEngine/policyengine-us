@@ -22,9 +22,9 @@ class pell_grant_efc(Variable):
                 where(
                     automatic_zero,
                     0,
-                    head_contribution + dependent_contribution,
+                    max_(0, head_contribution + dependent_contribution),
                 ),
-                head_contribution,
-                where(automatic_zero, 0, head_contribution),
+                max_(0, head_contribution),
+                where(automatic_zero, 0, max_(0, head_contribution)),
             ],
         )

@@ -2,7 +2,7 @@
   period: 2022
   input:
     state_code: CT
-    earned_income_tax_credit: 0
+    eitc: 0
   output:
     ct_eitc: 0
 
@@ -10,6 +10,6 @@
   period: 2022
   input:
     state_code: CT
-    earned_income_tax_credit: 2_000
+    eitc: 2_000
   output:
     ct_eitc: 610
