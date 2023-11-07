@@ -4,7 +4,9 @@ from policyengine_us.model_api import *
 class wv_social_security_benefits_subtraction_eligible(Variable):
     value_type = bool
     entity = TaxUnit
-    label = "Eligible for the West Virginia social security benefits subtraction"
+    label = (
+        "Eligible for the West Virginia social security benefits subtraction"
+    )
     definition_period = YEAR
     reference = (
         # West Virginia Personal Income Tax Forms And Instructions 2020 LINE 33
