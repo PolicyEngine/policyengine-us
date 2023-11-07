@@ -12,7 +12,7 @@
   input:
     state_code: WA
     eitc: 1
-    filer_earned: 0
+    filer_adjusted_earnings: 0
     eitc_child_count: 0
   output:
     wa_working_families_tax_credit: 300
@@ -23,7 +23,7 @@
   input:
     state_code: WA
     eitc: 1
-    filer_earned: 100_000
+    filer_adjusted_earnings: 100_000
     eitc_child_count: 3
   output:
     wa_working_families_tax_credit: 0
