@@ -2,8 +2,7 @@
   period: 2021
   input:
     military_service_income: 5_000
-    is_tax_unit_head: true
-    is_tax_unit_spouse: false
+    is_tax_unit_head_or_spouse: true
     state_code: HI
   output:
     hi_military_pay_exclusion: 5_000
@@ -12,8 +11,7 @@
   period: 2021
   input:
     military_service_income: 8_000
-    is_tax_unit_head: false
-    is_tax_unit_spouse: true
+    is_tax_unit_head_or_spouse: true
     state_code: HI
   output:
     hi_military_pay_exclusion: 7_345
