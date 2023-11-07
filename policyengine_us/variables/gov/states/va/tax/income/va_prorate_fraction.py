@@ -1,19 +1,6 @@
 from policyengine_us.model_api import *
 
 
-class va_agi(Variable):
-    value_type = float
-    entity = TaxUnit
-    label = "Adjusted gross income (AGI)"
-    unit = USD
-    definition_period = YEAR
-    reference = "https://www.tax.virginia.gov/laws-rules-decisions/rulings-tax-commissioner/13-5"
-    defined_for = StateCode.VA
-
-
-from policyengine_us.model_api import *
-
-
 class va_prorate_fraction(Variable):
     value_type = float
     entity = Person
