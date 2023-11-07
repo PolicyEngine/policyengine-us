@@ -24,13 +24,12 @@ class ct_amt(Variable):
         )
         taxable_income = tax_unit("amt_income", period)
         federal_minimum_tax = tax_unit("alternative_minimum_tax", period)
-        apportionment = amt.apportionment # Line 18
 
         ct_minimum_tax = min_(
-            taxable_income * amt.taxable_income, # Line 16
-            federal_minimum_tax * amt.tentative_minimum_tax, # Line 15
-        ) # Line 17
+            taxable_income * amt.taxable_income,  # Line 16
+            federal_minimum_tax * amt.tentative_minimum_tax,  # Line 15
+        )  # Line 17
 
-        ct_minimum_tax = ct_minimum_tax * apportionment # Line 19
-
-        return max_(ct_minimum_tax - ct_income_tax_after_personal_credits, 0) # Line 21
+        return max_(
+            ct_minimum_tax - ct_income_tax_after_personal_credits, 0
+        )  # Line 21
