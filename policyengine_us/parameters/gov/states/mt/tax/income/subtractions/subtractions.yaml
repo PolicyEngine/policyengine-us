@@ -1,10 +1,13 @@
-description: Montana counts the following as subtractions.
+description: Montana counts the following sources as subtractions.
 values:
   2010-01-01:
     - mt_disability_income_subtraction
 metadata:
   unit: list
+  label: Montana disability income subtraction
   reference:
+  - title: Montana, Subtractions from Taxable Income Base
+    href: https://answerconnect.cch.com/document/jmt0109013e2c84cd9021/state/explanations/montana/subtractions-from-taxable-income-base
   - title: Montana disability income exclusion rule 42.15.217-1
     href: https://rules.mt.gov/gateway/RuleNo.asp?RN=42%2E15%2E217
   - title: 2022 Montana individual income tax return, line 32
