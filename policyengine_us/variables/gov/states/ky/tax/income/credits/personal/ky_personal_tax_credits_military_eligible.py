@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ky_personal_tax_credits_military_eligible(Variable):
     value_type = bool
     entity = Person
-    label = "Military eligible for Kentucky personal tax credits"
+    label = "Eligibility for the Kentucky personal tax credits due to military service income"
     documentation = (
         "https://apps.legislature.ky.gov/law/statutes/statute.aspx?id=53500"
     )

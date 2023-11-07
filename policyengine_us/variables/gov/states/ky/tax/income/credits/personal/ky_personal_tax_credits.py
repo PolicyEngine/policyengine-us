@@ -27,16 +27,13 @@ class ky_personal_tax_credits(Variable):
             "ky_personal_tax_credits_military_eligible", period
         )
 
-        blind_amt = p.amount.blind
-        eligible_blind_amt = blind_amt * blind_eligible_person
-        total_blind_amt = tax_unit.sum(eligible_blind_amt)
+        eligible_blind_people = p.amount.blind * blind_eligible_person 
+        total_blind_people = tax_unit.sum(eligible_blind_people)
 
-        aged_amt = p.amount.aged
-        eligible_aged_amt = aged_amt * aged_eligible_person
-        total_aged_amt = tax_unit.sum(eligible_aged_amt)
+        eligible_aged_people = p.amount.aged * aged_eligible_person
+        total_aged_people = tax_unit.sum(eligible_aged_people)
 
-        military_amt = p.amount.military
-        eligible_military_amt = military_amt * military_eligible_person
-        total_military_amt = tax_unit.sum(eligible_military_amt)
+        eligible_military_people = p.amount.military * military_eligible_person
+        total_military_people = tax_unit.sum(eligible_military_people)
 
-        return total_blind_amt + total_aged_amt + total_military_amt
+        return total_blind_people + total_aged_people + total_military_people
