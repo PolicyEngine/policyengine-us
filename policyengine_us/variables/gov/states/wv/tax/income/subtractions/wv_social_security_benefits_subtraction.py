@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class wv_social_security_benefits_subtraction(Variable):
     value_type = float
     entity = TaxUnit
-    label = "West Virginia social security deduction"
+    label = "West Virginia social security benefits subtraction"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -25,10 +25,7 @@ class wv_social_security_benefits_subtraction(Variable):
         ).gov.states.wv.tax.income.subtractions.social_security_benefits
         person = tax_unit.members
 
-        is_head = person("is_tax_unit_head", period)
-        is_spouse = person("is_tax_unit_spouse", period)
-
-        head_or_spouse = is_head + is_spouse
+        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         social_security = tax_unit.sum(
             person("taxable_social_security", period) * head_or_spouse
         )
