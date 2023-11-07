@@ -15,6 +15,6 @@ class is_cdcc_eligible(Variable):
         qualifies_by_age = age < max_age
         # Subsection B (dependent) and C (spouse).
         non_head = ~person("is_tax_unit_head", period)
-        disabled = person("incapable_of_self_care", period)
+        disabled = person("is_incapable_of_self_care", period)
         qualifies_by_disability = non_head & disabled
         return qualifies_by_age | qualifies_by_disability
