@@ -4894,3 +4894,30 @@
     fixed:
     - ZIP code bug for households with axes.
   date: 2023-11-03 20:53:44
+- bump: patch
+  changes:
+    fixed:
+    - Remove obsolete taxcalc-related alias variable names.
+    - Rename `earned_income_tax_credit` to `eitc` to be more consistent with variable
+      names for other federal credits.
+  date: 2023-11-04 21:02:59
+- bump: patch
+  changes:
+    fixed:
+    - pell_grant_efc now can not be negative
+  date: 2023-11-04 21:16:41
+- bump: patch
+  changes:
+    fixed:
+    - Presence of unneeded taxcalc-related logic in the `system.py` module.
+  date: 2023-11-05 21:04:11
+- bump: patch
+  changes:
+    fixed:
+    - Re-added earned_income_tax_credit variable alias.
+  date: 2023-11-06 15:27:19
+- bump: minor
+  changes:
+    added:
+    - West Virginia low-income family tax credit.
+  date: 2023-11-06 22:47:48

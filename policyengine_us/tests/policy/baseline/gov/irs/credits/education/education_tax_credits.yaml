@@ -1,7 +1,7 @@
 - name: Defaults to zero
   period: 2020
   output:
-    c07230: 0
+    education_tax_credits: 0
 
 - name: Sums non-refundable American Opportunity Credit and Lifetime Learning Credit
   period: 2020
@@ -9,4 +9,4 @@
     non_refundable_american_opportunity_credit: 1
     lifetime_learning_credit: 1
   output:
-    c07230: 2
+    education_tax_credits: 2
