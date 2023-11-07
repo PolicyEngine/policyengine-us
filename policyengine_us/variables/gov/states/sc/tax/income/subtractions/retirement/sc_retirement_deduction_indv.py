@@ -30,5 +30,3 @@ class sc_retirement_deduction_indv(Variable):
         )
         # line 5
         return min_(retirement_deduction_available, retirement_income)
-        
-
