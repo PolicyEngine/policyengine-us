@@ -13,11 +13,8 @@ class basic_standard_deduction(Variable):
         std = parameters(period).gov.irs.deductions.standard
         filing_status = tax_unit("filing_status", period)
         separate_filer_itemizes = tax_unit("separate_filer_itemizes", period)
-        claimed_as_dependent_elsewhere = tax_unit(
-            "tax_unit_dependent_elsewhere", period
-        )
+        dependent_elsewhere = tax_unit("head_is_dependent_elsewhere", period)
         standard_deduction = std.amount[filing_status]
-
         standard_deduction_if_dependent = min_(
             standard_deduction,
             max_(
@@ -26,11 +23,10 @@ class basic_standard_deduction(Variable):
                 std.dependent.amount,
             ),
         )
-
         return select(
             [
                 separate_filer_itemizes,
-                claimed_as_dependent_elsewhere,
+                dependent_elsewhere,
                 True,
             ],
             [

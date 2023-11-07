@@ -10,6 +10,7 @@ class state_income_tax_before_refundable_credits(Variable):
     adds = [
         "co_income_tax_before_refundable_credits",
         "dc_income_tax_before_refundable_credits",
+        "de_income_tax_before_refundable_credits",
         "ia_income_tax_before_refundable_credits",
         "il_total_tax",
         "in_income_tax_before_refundable_credits",
@@ -19,6 +20,7 @@ class state_income_tax_before_refundable_credits(Variable):
         "me_income_tax_before_refundable_credits",
         "mn_income_tax_before_refundable_credits",
         "mo_income_tax_before_refundable_credits",
+        "nc_income_tax",  # NC has no refundable credits.
         "nd_income_tax_before_refundable_credits",
         "ne_income_tax_before_refundable_credits",
         "nh_income_tax_before_refundable_credits",
