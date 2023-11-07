@@ -1,0 +1,24 @@
+description: Delaware provides this income exclusion to elderly and disabled filers, based on filing status.
+JOINT:
+  2021-01-01: 4_000
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 2_000
+WIDOW:
+  2021-01-01: 2_000
+SINGLE:
+  2021-01-01: 2_000
+SEPARATE:
+  2021-01-01: 2_000
+metadata:
+  reference:
+    - title: "PIT-RES_TY21_2021-02_Instruction Line 11"
+      href: https://revenuefiles.delaware.gov/2021/PIT-RES_TY21_2021-01_Instructions.pdf#page=7
+    - title: "PIT-RES_TY22_2022-02_Instruction Line 11"
+      href: https://revenuefiles.delaware.gov/2021/PIT-RES_TY21_2021-01_Instructions.pdf#page=7
+    - title: Delaware State Taxes, Part II, Chapter 11, Subchapter 2, § 1106. Modifications,(b), (2) 
+      href: https://delcode.delaware.gov/title30/c011/sc02/index.html#1106
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  label: Delaware aged or disabled exclusion amount

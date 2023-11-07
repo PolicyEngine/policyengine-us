@@ -1,0 +1,53 @@
+description: The Department of Education sets the Expected Family Contribution to zero if a family has income below this value.
+values:
+  2009-08-01:
+    value: 30_000
+    metadata:
+      reference:
+        title: THE EFC FORMULA, 2009–2010
+        href: https://fsapartners.ed.gov/sites/default/files/attachments/efcformulaguide/111408EFCFormulaGuide0910.pdf#page=5
+  2011-08-01:
+    value: 31_000
+    metadata:
+      reference:
+        - title: THE EFC FORMULA, 2011–2012
+          href: https://fsapartners.ed.gov/sites/default/files/attachments/efcformulaguide/101310EFCFormulaGuide1112.pdf#page=5
+  2012-08-01:
+    value: 23_000
+    metadata:
+      reference:
+        - title: PELL GRANT ELIGIBILITY CHANGES
+          href: https://www.acct.org/files/Advocacy/Factsheets%20and%20Summaries/pell%20grant%20eligibility%20changes%20website.pdf.
+  2013-08-01:
+    value: 24_000
+    metadata:
+      reference:
+        - title: THE EFC FORMULA, 2013–2014
+          href: https://fsapartners.ed.gov/sites/default/files/attachments/efcformulaguide/091312EFCFormulaGuide1314.pdf#page=5
+  2016-08-01:
+    value: 25_000
+    metadata:
+      reference:
+        - title: THE EFC FORMULA, 2016–2017
+          href: https://fsapartners.ed.gov/sites/default/files/attachments/efcformulaguide/100615EFCFormulaGuide1617Attach.pdf#page=5
+  2019-08-01:
+    value: 26_000
+    metadata:
+      reference:
+        - title: THE EFC FORMULA, 2019–2020
+          href: https://fsapartners.ed.gov/sites/default/files/attachments/efcformulaguide/1920EFCFormulaGuide.pdf#page=5
+  2021-08-01:
+    value: 27_000
+    metadata:
+      reference:
+        - title: THE EFC FORMULA, 2021–2022
+          href: https://fsapartners.ed.gov/sites/default/files/attachments/2020-08/2122EFCFormulaGuide.pdf#page=5
+  2023-08-01:
+    value: 29_000
+    metadata:
+      reference:
+        - title: THE EFC FORMULA, 2023–2024
+          href: https://fsapartners.ed.gov/sites/default/files/2022-08/2324EFCFormulaGuide.pdf#page=5
+metadata:
+  unit: currency-USD
+  label: Max income for an automatic 0 EFC
