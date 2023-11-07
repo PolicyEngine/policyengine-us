@@ -18,9 +18,10 @@ class va_spouse_adjustment_qualification(Variable):
             person("age", period) >= p.age_threshold
         )
         personal_exemption_blind_qualification = person("is_blind", period)
-
-        # Edits: Added va_prorate_fraction
-        personal_va_agi = person("va_prorate_fraction", period) * va_agi
+        agi = person("va_agi", period)
+        personal_va_agi = person(
+            "va_prorate_fraction", period
+        ) * person.tax_unit.sum(agi)
 
         total_personal_exemptions = (
             personal_exemption_age_qualification

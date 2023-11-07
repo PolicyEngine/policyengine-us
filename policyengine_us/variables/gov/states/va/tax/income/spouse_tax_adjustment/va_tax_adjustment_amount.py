@@ -15,9 +15,10 @@ class va_tax_adjsutment_amount(Variable):
         p1 = parameters(period).gov.states.va.tax.income
 
         person = tax_unit.members
-        personal_va_agi = person("va_prorate_fraction", period) * tax_unit(
-            "va_agi", period
-        )
+        agi = person("va_agi", period)
+        personal_va_agi = person(
+            "va_prorate_fraction", period
+        ) * person.tax_unit.sum(agi)
         personal_exemption_age_qualification = (
             person("age", period) >= p.age_threshold
         )
