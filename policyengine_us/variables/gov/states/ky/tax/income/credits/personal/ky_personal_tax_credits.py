@@ -27,7 +27,7 @@ class ky_personal_tax_credits(Variable):
             "ky_personal_tax_credits_military_eligible", period
         )
 
-        eligible_blind_people = p.amount.blind * blind_eligible_person 
+        eligible_blind_people = p.amount.blind * blind_eligible_person
         total_blind_people = tax_unit.sum(eligible_blind_people)
 
         eligible_aged_people = p.amount.aged * aged_eligible_person
