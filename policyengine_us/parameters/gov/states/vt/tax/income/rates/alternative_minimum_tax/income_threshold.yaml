@@ -1,8 +1,8 @@
-description: Vermont calculate minimum taxation of those who above threshold at this rate. 
+description: Vermont qualifies filers for the alternative minimum tax with adjusted gross income above this threshold.
 metadata:
-  label: Vermont threshold above filer's minimum taxation rate
+  label: Vermont alternative minimum tax income threshold
   period: year
-  unit: /1
+  unit: currency-USD
   reference:
     - title: Vermont §5822. Tax on income of individuals, estates, and trusts (a)(6)
       href: https://legislature.vermont.gov/statutes/section/32/151/05822
@@ -11,4 +11,4 @@ metadata:
     - title: Vermont 2022 Income Tax Return Booklet Forms and Instructions
       href: https://tax.vermont.gov/sites/tax/files/documents/RateSched-2022.pdf#page=1
 values:
-  2021-01-01: 0.3
+  2021-01-01: 150_000
