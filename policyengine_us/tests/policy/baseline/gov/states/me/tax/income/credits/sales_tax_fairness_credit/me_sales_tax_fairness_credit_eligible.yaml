@@ -2,7 +2,7 @@
   period: 2022
   input:
     state_code: ME
-    dsi: true
+    head_is_dependent_elsewhere: true
     filing_status: JOINT
   output:
     me_sales_tax_fairness_credit_eligible: false
@@ -11,7 +11,7 @@
   period: 2022
   input:
     state_code: ME
-    dsi: false
+    head_is_dependent_elsewhere: false
     filing_status: SINGLE
   output:
     me_sales_tax_fairness_credit_eligible: true
@@ -20,7 +20,7 @@
   period: 2022
   input:
     state_code: ME
-    dsi: true
+    head_is_dependent_elsewhere: true
     filing_status: SEPARATE
   output:
     me_sales_tax_fairness_credit_eligible: false
