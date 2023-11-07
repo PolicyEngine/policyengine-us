@@ -12,9 +12,10 @@ class mt_interest_exemption(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.mt.tax.income.exemptions.interest
+        person = tax_unit.members
         filing_status = tax_unit("filing_status", period)
         cap = p.cap[filing_status]
-        interest_income = add(tax_unit, period, ["taxable_interest_income"])
-        eligible_amount = min_(cap, interest_income)
+        interest_income = person("taxable_interest_income", period)
+        eligible_amount = min_(cap, tax_unit.sum(interest_income))
         eligible_person = tax_unit("mt_interest_exemption_eligible", period)
         return eligible_person * eligible_amount
