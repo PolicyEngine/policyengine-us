@@ -19,8 +19,6 @@ class hi_military_pay_exclusion(Variable):
         person = tax_unit.members
         military_service_income = person("military_service_income", period)
         capped_military_income = min_(military_service_income, p.max_amount)
-        head = person("is_tax_unit_head", period)
-        spouse = person("is_tax_unit_spouse", period)
-        head_or_spouse = head | spouse
+        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
 
         return tax_unit.sum(capped_military_income * head_or_spouse)
