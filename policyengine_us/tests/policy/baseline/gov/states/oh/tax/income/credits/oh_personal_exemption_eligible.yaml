@@ -2,7 +2,7 @@
   period: 2021
   input:
     state_code: OH
-    dsi: true
+    head_is_dependent_elsewhere: true
   output:
     oh_personal_exemption_eligible: false
 
@@ -10,7 +10,7 @@
   period: 2021
   input:
     state_code: OH
-    dsi: true
+    head_is_dependent_elsewhere: true
   output:
     oh_personal_exemption_eligible: false
     
@@ -18,6 +18,6 @@
   period: 2021
   input:
     state_code: OH
-    dsi: false
+    head_is_dependent_elsewhere: false
   output:
     oh_personal_exemption_eligible: true

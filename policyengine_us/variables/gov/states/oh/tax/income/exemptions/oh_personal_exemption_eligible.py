@@ -13,5 +13,7 @@ class oh_personal_exemption_eligible(Variable):
     defined_for = StateCode.OH
 
     def formula(tax_unit, period, parameters):
-        dependent_on_another_return = tax_unit("dsi", period)
+        dependent_on_another_return = tax_unit(
+            "head_is_dependent_elsewhere", period
+        )
         return ~dependent_on_another_return
