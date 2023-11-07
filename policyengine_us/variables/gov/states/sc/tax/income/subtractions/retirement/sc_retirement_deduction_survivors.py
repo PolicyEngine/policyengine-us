@@ -3,7 +3,7 @@ from policyengine_us.model_api import *
 
 class sc_retirement_deduction_survivors(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     label = "South Carolina retirement deduction for survivors"
     defined_for = StateCode.SC
     unit = USD
@@ -13,9 +13,8 @@ class sc_retirement_deduction_survivors(Variable):
     )
     definition_period = YEAR
 
-    def formula(tax_unit, period, parameters):
+    def formula(person, period, parameters):
         p = parameters(period).gov.states.sc.tax.income.subtractions.retirement
-        person = tax_unit.members
         age = person("age", period)
         # line 1
         max_deduction_allowed = p.cap.calc(age)
@@ -31,8 +30,9 @@ class sc_retirement_deduction_survivors(Variable):
         retirement_income_survivors = person("pension_survivors", period)
         # In 2021, South Carolina subtracts the survivors retirement deduction from the military retirement deduction
         # In 2022, it does not
-        if p.subtract_military:
-            cap = retirement_deduction_available
-        else:
-            cap = max_deduction_allowed
-        return tax_unit.sum(min_(retirement_income_survivors, cap))
+        cap = (
+            retirement_deduction_available
+            if p.subtract_military
+            else max_deduction_allowed
+        )
+        return min_(retirement_income_survivors, cap)

@@ -18,7 +18,7 @@ meradata:
     - title: SC-1040 2022
       href: https://dor.sc.gov/forms-site/Forms/SC1040_2022.pdf#page=2
   period: year
-  label: South Carolina retirement deduction age threshold
+  label: South Carolina retirement deduction cap
 
 brackets:
   - threshold:
@@ -28,4 +28,4 @@ brackets:
   - threshold:
       2021-01-01: 65
     amount: 
-      2021-01-01: 7_000
+      2021-01-01: 10_000

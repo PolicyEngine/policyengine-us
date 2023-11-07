@@ -1,4 +1,4 @@
-- name: Case 1, above age threshold
+- name: Case 1, above age threshold, military retirement deduction higher than cap.
   period: 2022
   input:
     taxable_pension_income: 1_000
@@ -9,7 +9,7 @@
   output:
     sc_retirement_deduction_indv: 1_000
 
-- name: Case 2, below age threshold
+- name: Case 2, below age threshold, military retirement deduction higher than cap.
   period: 2022
   input:
     taxable_pension_income: 1_000
@@ -19,3 +19,25 @@
     state_code: SC
   output:
     sc_retirement_deduction_indv: 0
+
+- name: Case 3, above age threshold, military retirement deduction higher than cap.
+  period: 2022
+  input:
+    taxable_pension_income: 1_000
+    military_retirement_pay: 15_000
+    age: 70
+    is_tax_unit_head_or_spouse: true
+    state_code: SC
+  output:
+    sc_retirement_deduction_indv: 0
+
+- name: Case 4, below age threshold, military retirement deduction lower than cap.
+  period: 2022
+  input:
+    taxable_pension_income: 500
+    military_retirement_pay: 2_000
+    age: 64
+    is_tax_unit_head_or_spouse: true
+    state_code: SC
+  output:
+    sc_retirement_deduction_indv: 500
