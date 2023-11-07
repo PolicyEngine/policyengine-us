@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.520.0] - 2023-11-07 23:06:52
+
+### Fixed
+
+- 2021 Maine income tax parameters.
+
 ## [0.519.0] - 2023-11-06 22:47:48
 
 ### Added
@@ -5817,6 +5823,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.520.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.519.0...0.520.0
 [0.519.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.518.5...0.519.0
 [0.518.5]: https://github.com/PolicyEngine/policyengine-us/compare/0.518.4...0.518.5
 [0.518.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.518.3...0.518.4
