@@ -13,10 +13,10 @@ class az_aged_exemption_eligible(Variable):
         filing_status = tax_unit("filing_status", period)
         separate = filing_status == filing_status.possible_values.SEPARATE
 
-        dependent_head = tax_unit("dsi", period)
+        dependent_head = tax_unit("head_is_dependent_elsewhere", period)
         head_eligible = ~dependent_head * separate
 
-        dependent_spouse = tax_unit("dsi_spouse", period)
+        dependent_spouse = tax_unit("spouse_is_dependent_elsewhere", period)
         spouse_eligible = ~dependent_spouse
 
         return head_eligible | spouse_eligible

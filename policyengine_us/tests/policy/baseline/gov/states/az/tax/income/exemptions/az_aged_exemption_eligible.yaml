@@ -3,8 +3,8 @@
   input:
     state_code: AZ
     filing_status: JOINT
-    dsi: false
-    dsi_spouse: true
+    head_is_dependent_elsewhere: false
+    spouse_is_dependent_elsewhere: true
   output:
     az_aged_exemption_eligible: false
 
@@ -13,8 +13,8 @@
   input:
     state_code: AZ
     filing_status: JOINT
-    dsi: true
-    dsi_spouse: true
+    head_is_dependent_elsewhere: true
+    spouse_is_dependent_elsewhere: true
   output:
     az_aged_exemption_eligible: false
 
@@ -23,7 +23,7 @@
   input:
     state_code: AZ
     filing_status: SEPARATE
-    dsi: false
-    dsi_spouse: false
+    head_is_dependent_elsewhere: false
+    spouse_is_dependent_elsewhere: false
   output:
     az_aged_exemption_eligible: true
