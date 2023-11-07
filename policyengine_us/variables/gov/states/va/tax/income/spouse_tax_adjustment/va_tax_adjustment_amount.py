@@ -14,6 +14,8 @@ class va_tax_adjsutment_amount(Variable):
         p = parameters(period).gov.states.va.tax.income.spouse_head_adjustment
         p1 = parameters(period).gov.states.va.tax.income
 
+    # Consider using existed parameters here for addition and multiplication.
+    
         person = tax_unit.members
         agi = person("va_agi", period)
         personal_va_agi = person(

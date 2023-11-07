@@ -10,10 +10,13 @@ class va_spouse_adjustment_qualification(Variable):
     definition_period = YEAR
     reference = "https://www.tax.virginia.gov/sites/default/files/vatax-pdf/2022-760-instructions.pdf#page=19"
 
-    def formula(person, period, parameters):
+    def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.va.tax.income.spouse_head_adjustment
         person = tax_unit.members
         # Check whether the filer is eligible for age and blind exemptions
+
+        # Consider using existed parameters here for addition and multiplication.
+        
         personal_exemption_age_qualification = (
             person("age", period) >= p.age_threshold
         )
@@ -30,9 +33,12 @@ class va_spouse_adjustment_qualification(Variable):
 
         eligibility_requirement = personal_va_agi - total_personal_exemptions
 
+# replace this with 'is_tax_unit_head_or_spouse.py
+
         head = person("is_tax_unit_head", period)
         spouse = person("is_tax_unit_spouse", period)
         head_or_spouse = head | spouse
 
-        # If either amount is 0 or less, the filer does not qualifify for this credit.
-        return tax_unit.min_(head_or_spouse * eligibility_requirement) > 0
+        # If either amount is 0 or less, the filer does not qualify for this credit.
+        return tax_unit.min_(head_or_spouse * eligibility_requirement) > 0 
+    # or person.tax_unit.min()?
