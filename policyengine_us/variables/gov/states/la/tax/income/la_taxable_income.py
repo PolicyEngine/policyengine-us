@@ -8,3 +8,4 @@ class la_taxable_income(Variable):
     defined_for = StateCode.LA
     unit = USD
     definition_period = YEAR
+    subtracts = ["la_exemptions"]

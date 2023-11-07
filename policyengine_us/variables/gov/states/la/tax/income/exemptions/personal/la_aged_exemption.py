@@ -21,7 +21,5 @@ class la_aged_exemption(Variable):
         deductible_pensions = meets_age_test * min_(
             pension_income, p.amounts[-1]
         )
-        head = person("is_tax_unit_head", period)
-        spouse = person("is_tax_unit_spouse", period)
-        is_head_or_spouse = head | spouse
+        is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         return tax_unit.sum(deductible_pensions * is_head_or_spouse)

@@ -16,7 +16,5 @@ class la_disability_income_exemption(Variable):
             period
         ).gov.states.la.tax.income.exemptions.disability.max_amount
         disability_exemption = min_(person("disability_benefits", period), cap)
-        head = person("is_tax_unit_head", period)
-        spouse = person("is_tax_unit_spouse", period)
-        is_head_or_spouse = head | spouse
+        is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         return tax_unit.sum(disability_exemption * is_head_or_spouse)
