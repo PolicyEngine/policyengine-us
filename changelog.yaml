@@ -4911,3 +4911,13 @@
     fixed:
     - Presence of unneeded taxcalc-related logic in the `system.py` module.
   date: 2023-11-05 21:04:11
+- bump: patch
+  changes:
+    fixed:
+    - Re-added earned_income_tax_credit variable alias.
+  date: 2023-11-06 15:27:19
+- bump: minor
+  changes:
+    added:
+    - West Virginia low-income family tax credit.
+  date: 2023-11-06 22:47:48
