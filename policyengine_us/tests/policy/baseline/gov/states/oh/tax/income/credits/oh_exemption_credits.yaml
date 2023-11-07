@@ -2,9 +2,8 @@
   absolute_error_margin: 0.01
   period: 2022
   input:
-    exemptions: 5
-    oh_agi: 30_000
-    state_code: OH
+    exemptions_count: 5
+    oh_exemption_credit_eligible: true
   output: 
     oh_exemption_credit: 100
 
@@ -12,28 +11,8 @@
   absolute_error_margin: 0.01
   period: 2022
   input:
-    exemptions: 3
+    exemptions_count: 3
     oh_agi: 80_000
-    state_code: OH
-  output: 
-    oh_exemption_credit: 0
-
-- name: 28 people in tax unit and have adjusted gross income of $80,001.
-  absolute_error_margin: 0.01
-  period: 2022
-  input:
-    exemptions: 28
-    oh_agi: 80_001
-    state_code: OH
-  output: 
-    oh_exemption_credit: 0
-
-- name: 3 people in tax unit and have adjusted gross income of $50,000.
-  absolute_error_margin: 0.01
-  period: 2022
-  input:
-    exemptions: 3
-    oh_agi: 50_000
-    state_code: OH
+    oh_exemption_credit_eligible: false
   output: 
     oh_exemption_credit: 0
