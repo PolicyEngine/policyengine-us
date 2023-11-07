@@ -15,15 +15,10 @@ class sc_retirement_deduction_survivors(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.sc.tax.income.subtractions.retirement
-        p_cap = p.max_amount
         person = tax_unit.members
         age = person("age", period)
         # line 1
-        max_deduction_allowed = where(
-            age >= p.age_threshold,
-            p_cap.older,
-            p_cap.younger,
-        )
+        max_deduction_allowed = p.cap.calc(age)
         # line 2
         military_retirement_pay_survivors = person(
             "military_retirement_pay_survivors", period
@@ -37,11 +32,7 @@ class sc_retirement_deduction_survivors(Variable):
         # In 2021, South Carolina subtracts the survivors retirement deduction from the military retirement deduction
         # In 2022, it does not
         if p.subtract_military:
-            return tax_unit.sum(
-                min_(
-                    retirement_deduction_available, retirement_income_survivors
-                )
-            )
-        return tax_unit.sum(
-            min_(max_deduction_allowed, retirement_income_survivors)
-        )
+            cap = retirement_deduction_available
+        else:
+            cap = max_deduction_allowed
+        return tax_unit.sum(min_(retirement_income_survivors, cap))

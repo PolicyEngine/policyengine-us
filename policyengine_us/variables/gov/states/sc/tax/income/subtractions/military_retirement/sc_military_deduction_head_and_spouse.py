@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class sc_military_deduction_indv(Variable):
+class sc_military_deduction_head_and_spouse(Variable):
     value_type = float
     entity = TaxUnit
-    label = "South Carolina military deduction for eligible individuals"
+    label = "South Carolina military deduction for head and spouse"
     unit = USD
     reference = (
         "https://www.scstatehouse.gov/code/t12c006.php",  # SECTION 12-6-1171(A)

@@ -16,7 +16,7 @@
         members: [person1, person2]
         state_code: SC
   output:
-    sc_military_deduction_indv: 9_000
+    sc_military_deduction_head_and_spouse: 9_000
 
 - name: Case 2, no head no spouse.
   period: 2022
@@ -36,7 +36,7 @@
         members: [person1, person2]
         state_code: SC
   output:
-    sc_military_deduction_indv: 0
+    sc_military_deduction_head_and_spouse: 0
   
 - name: Case 3, 1 head no spouse.
   period: 2022
@@ -56,5 +56,5 @@
         members: [person1, person2]
         state_code: SC
   output:
-    sc_military_deduction_indv: 4_000
+    sc_military_deduction_head_and_spouse: 4_000
 
