@@ -6,7 +6,7 @@ class mt_child_dependent_care_expense_deduction_eligible_children(Variable):
     entity = TaxUnit
     label = "Montana child dependent care expense deduction"
     definition_period = YEAR
-    defined_for = StateCode.MT
+    defined_for = "mt_child_dependent_care_expense_deduction_eligible"
 
     def formula(tax_unit, period, parameters):
         p = parameters(
