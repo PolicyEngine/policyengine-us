@@ -15,10 +15,10 @@ class or_federal_tax_liability_subtraction(Variable):
 
     def formula(tax_unit, period, parameters):
         # calculate Oregon concept of federal income tax
-        federal_income_tax = tax_unit("income_tax", period)
-        eitc = tax_unit("earned_income_tax_credit", period)
+        federal_itax = tax_unit("income_tax", period)
+        federal_eitc = tax_unit("eitc", period)
         seca = add(tax_unit, period, ["self_employment_tax"])
-        or_federal_income_tax = max_(0, federal_income_tax - seca + eitc)
+        or_federal_income_tax = max_(0, federal_itax - seca + federal_eitc)
         # limit subtraction based on caps scaled to federal AGI
         filing_status = tax_unit("filing_status", period)
         status = filing_status.possible_values
