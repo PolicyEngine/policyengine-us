@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class sc_retirement_deduction_head_and_spouse(Variable):
+class sc_retirement_deduction_indv(Variable):
     value_type = float
-    entity = TaxUnit
-    label = "South Carolina retirement deduction for head and spouse"
+    entity = Person
+    label = "South Carolina retirement deduction for eligible individuals"
     unit = USD
     reference = (
         "https://www.scstatehouse.gov/code/t12c006.php",  # SECTION 12-6-1170(A)(1)
@@ -12,9 +12,8 @@ class sc_retirement_deduction_head_and_spouse(Variable):
     )
     definition_period = YEAR
 
-    def formula(tax_unit, period, parameters):
+    def formula(person, period, parameters):
         p = parameters(period).gov.states.sc.tax.income.subtractions.retirement
-        person = tax_unit.members
         age = person("age", period)
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         # line 1
@@ -30,7 +29,6 @@ class sc_retirement_deduction_head_and_spouse(Variable):
             person("taxable_pension_income", period) * head_or_spouse
         )
         # line 5
-        capped_deduction = min_(
-            retirement_deduction_available, retirement_income
-        )
-        return tax_unit.sum(capped_deduction)
+        return min_(retirement_deduction_available, retirement_income)
+        
+
