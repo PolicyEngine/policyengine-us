@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.521.0] - 2023-11-08 01:44:09
+
+### Added
+
+- Idaho non-refundable credits file.
+
 ## [0.520.0] - 2023-11-07 23:06:52
 
 ### Fixed
@@ -5823,6 +5829,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.521.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.520.0...0.521.0
 [0.520.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.519.0...0.520.0
 [0.519.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.518.5...0.519.0
 [0.518.5]: https://github.com/PolicyEngine/policyengine-us/compare/0.518.4...0.518.5
