@@ -14,8 +14,8 @@ class va_tax_adjsutment_amount(Variable):
         p = parameters(period).gov.states.va.tax.income.spouse_head_adjustment
         p1 = parameters(period).gov.states.va.tax.income
 
-    # Consider using existed parameters here for addition and multiplication.
-    
+        # Consider using existed parameters here for addition and multiplication.
+
         person = tax_unit.members
         agi = person("va_agi", period)
         personal_va_agi = person(
@@ -33,12 +33,9 @@ class va_tax_adjsutment_amount(Variable):
 
         eligibility_requirement = personal_va_agi - total_personal_exemptions
 
-        head = person("is_tax_unit_head", period)
-        spouse = person("is_tax_unit_spouse", period)
-        head_or_spouse = head | spouse
-
         min_eligibility_value = tax_unit.min_(
-            head_or_spouse * eligibility_requirement
+            person("is_tax_unit_head_or_spouse", period)
+            * eligibility_requirement
         )
         va_taxable_income = tax_unit("va_taxable_income", period)
 

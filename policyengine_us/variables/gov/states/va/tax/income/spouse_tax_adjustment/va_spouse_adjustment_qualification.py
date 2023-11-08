@@ -16,7 +16,7 @@ class va_spouse_adjustment_qualification(Variable):
         # Check whether the filer is eligible for age and blind exemptions
 
         # Consider using existed parameters here for addition and multiplication.
-        
+
         personal_exemption_age_qualification = (
             person("age", period) >= p.age_threshold
         )
@@ -33,12 +33,13 @@ class va_spouse_adjustment_qualification(Variable):
 
         eligibility_requirement = personal_va_agi - total_personal_exemptions
 
-# replace this with 'is_tax_unit_head_or_spouse.py
-
-        head = person("is_tax_unit_head", period)
-        spouse = person("is_tax_unit_spouse", period)
-        head_or_spouse = head | spouse
+        # replace this with 'is_tax_unit_head_or_spouse.py
 
         # If either amount is 0 or less, the filer does not qualify for this credit.
-        return tax_unit.min_(head_or_spouse * eligibility_requirement) > 0 
-    # or person.tax_unit.min()?
+        return (
+            tax_unit.min_(
+                person("is_tax_unit_head_or_spouse", period)
+                * eligibility_requirement
+            )
+            > 0
+        )
