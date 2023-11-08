@@ -14,8 +14,8 @@ class ky_personal_tax_credits_military_eligible(Variable):
     def formula(person, period, parameters):
         p = parameters(period).gov.states.ky.tax.income.credits.personal
 
-        is_military = person("military_service_income", period) > 0
+        has_military_income = person("military_service_income", period) > 0
 
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
 
-        return head_or_spouse * is_military
+        return head_or_spouse * has_military_income
