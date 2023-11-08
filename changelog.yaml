@@ -4911,3 +4911,29 @@
     fixed:
     - Presence of unneeded taxcalc-related logic in the `system.py` module.
   date: 2023-11-05 21:04:11
+- bump: patch
+  changes:
+    fixed:
+    - Re-added earned_income_tax_credit variable alias.
+  date: 2023-11-06 15:27:19
+- bump: minor
+  changes:
+    added:
+    - West Virginia low-income family tax credit.
+  date: 2023-11-06 22:47:48
+- bump: minor
+  changes:
+    fixed:
+    - 2021 Maine income tax parameters.
+  date: 2023-11-07 23:06:52
+- bump: minor
+  changes:
+    added:
+    - Idaho non-refundable credits file.
+  date: 2023-11-08 01:44:09
+- bump: minor
+  changes:
+    added:
+    - South Carolina retirement deduction.
+    - South Carolina military retirement deduction.
+  date: 2023-11-08 21:44:31
