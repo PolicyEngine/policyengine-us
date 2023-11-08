@@ -7,9 +7,7 @@ class mt_modified_income_benefit_fraction(Variable):
     label = "Montana modified AGI benefits"
     unit = USD
     definition_period = YEAR
-    reference = (
-        "https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2023/05/Montana-Idividiual-Income-Tax-Return-Form-2-2022v6.2.pdf"
-    )
+    reference = "https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2023/05/Montana-Idividiual-Income-Tax-Return-Form-2-2022v6.2.pdf"
     defined_for = StateCode.MT
 
     def formula(tax_unit, period, parameters):

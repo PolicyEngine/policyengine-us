@@ -38,12 +38,16 @@ class mt_social_security_benefit(Variable):
         extra_income = max_(
             exceeding_income - exceeding_income_cap, 0
         )  # Line 13
-        capped_exceeding_income = min_(exceeding_income, exceeding_income_cap)  # Line 14
+        capped_exceeding_income = min_(
+            exceeding_income, exceeding_income_cap
+        )  # Line 14
         capped_benefit_amount = min_(
             capped_exceeding_income * exceeding_income_fraction,
             net_benefits * total_benefit_fraction1,
         )  # Line 16
-        additional_benefit_amount = extra_income * extra_income_fraction + capped_benefit_amount  # Line 18
+        additional_benefit_amount = (
+            extra_income * extra_income_fraction + capped_benefit_amount
+        )  # Line 18
 
         return eligibility * min_(
             additional_benefit_amount, net_benefits * total_benefit_fraction2
