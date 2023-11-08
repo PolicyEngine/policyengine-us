@@ -19,5 +19,5 @@ class al_medical_expense_deduction(Variable):
         p = parameters(
             period
         ).gov.states.al.tax.income.deductions.itemized.medical_expense
-        medical_floor = p.income_threshold * tax_unit("al_agi", period)
+        medical_floor = p.income_floor * tax_unit("al_agi", period)
         return max_(0, expense - medical_floor)
