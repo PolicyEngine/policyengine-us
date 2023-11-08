@@ -5,6 +5,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.520.0] - 2023-11-07 23:06:52
+
+### Fixed
+
+- 2021 Maine income tax parameters.
+
+## [0.519.0] - 2023-11-06 22:47:48
+
+### Added
+
+- West Virginia low-income family tax credit.
+
+## [0.518.5] - 2023-11-06 15:27:19
+
+### Fixed
+
+- Re-added earned_income_tax_credit variable alias.
+
+## [0.518.4] - 2023-11-05 21:04:11
+
+### Fixed
+
+- Presence of unneeded taxcalc-related logic in the `system.py` module.
+
 ## [0.518.3] - 2023-11-04 21:16:41
 
 ### Fixed
@@ -5799,6 +5823,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.520.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.519.0...0.520.0
+[0.519.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.518.5...0.519.0
+[0.518.5]: https://github.com/PolicyEngine/policyengine-us/compare/0.518.4...0.518.5
+[0.518.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.518.3...0.518.4
 [0.518.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.518.2...0.518.3
 [0.518.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.518.1...0.518.2
 [0.518.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.518.0...0.518.1
