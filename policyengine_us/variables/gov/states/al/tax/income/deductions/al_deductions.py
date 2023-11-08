@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class al_deduction(Variable):
+class al_deductions(Variable):
     value_type = float
     entity = TaxUnit
     label = "Alabama deductions"

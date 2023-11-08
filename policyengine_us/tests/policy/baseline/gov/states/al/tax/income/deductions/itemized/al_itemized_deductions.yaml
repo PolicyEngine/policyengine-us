@@ -11,7 +11,7 @@
     al_mortgage_interest_deduction: 2
     state_code: AL
   output:
-    al_itemized_deductions: 23.00
+    al_itemized_deductions: 23
 
 - name: Alabama itemized deductions unit test 2
   period: 2021
@@ -26,4 +26,4 @@
     al_mortgage_interest_deduction: 6
     state_code: AL
   output:
-    al_itemized_deductions: 55.00
+    al_itemized_deductions: 55
