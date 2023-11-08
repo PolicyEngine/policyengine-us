@@ -27,7 +27,7 @@ class oh_agi(Variable):
         # "above_the_line_deductions" #only need line 8z
         "oh_uniformed_services_retirement_income_deduction",
         "investment_in_529_plan",
-        "pell_grant",
+        "spm_unit_pell_grant",
         "educator_expense",
         "disability_benefits",
     ]

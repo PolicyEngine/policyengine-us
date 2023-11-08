@@ -1,0 +1,63 @@
+- name: Case 1, age above older threshold.
+  period: 2022
+  input:
+    age: 65
+    taxable_social_security: 23_000
+    social_security_survivors: 5_000
+    co_social_security_subtraction_indv_eligible: true
+  output:
+    co_social_security_subtraction_indv: 23_000
+    # co_social_security_subtraction_indv = social_security = 23_000
+
+- name: Case 2, age between younger and older threshold, exceed cap amount.
+  period: 2022
+  input:
+    age: 64
+    taxable_social_security: 23_000
+    social_security_survivors: 5_000
+    co_social_security_subtraction_indv_eligible: true
+  output:
+    co_social_security_subtraction_indv: 20_000
+    # co_social_security_subtraction_indv = min_(23_000, 20_000) = 20_000
+
+- name: Case 3, age between younger and older threshold, below cap amount.
+  period: 2022
+  input:
+    age: 64
+    taxable_social_security: 18_000
+    social_security_survivors: 5_000
+    co_social_security_subtraction_indv_eligible: true
+  output:
+    co_social_security_subtraction_indv: 18_000
+    # co_social_security_subtraction_indv = min_(18_000, 20_000) = 18_000
+  
+- name: Case 4, age below younger threshold.
+  period: 2022
+  input:
+    age: 54
+    taxable_social_security: 23_000
+    social_security_survivors: 5_000
+    co_social_security_subtraction_indv_eligible: true
+  output:
+    co_social_security_subtraction_indv: 5_000
+    # co_social_security_subtraction_indv = social_security_survivors = 5_000 
+  
+- name: 0 in 2021
+  period: 2021
+  input:
+    age: 66
+    taxable_social_security: 23_000
+    social_security_survivors: 5_000
+    co_social_security_subtraction_indv_eligible: true
+  output:
+    co_social_security_subtraction_indv: 0
+
+- name: Ineligible
+  period: 2022
+  input:
+    age: 54
+    taxable_social_security: 23_000
+    social_security_survivors: 5_000
+    co_social_security_subtraction_indv_eligible: false
+  output:
+    co_social_security_subtraction_indv: 0

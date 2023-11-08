@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class in_other_add_backs(Variable):
     value_type = float
     entity = TaxUnit
-    label = "IN other add backs"
+    label = "Indiana other add backs"
     definition_period = YEAR
     documentation = "Other add backs including those for Conformity, Employer Student Loan Payment, Meal Deductions, Student Loan Discharges, Excess Federal Interest Deduction Modification, Federal Repatriated Dividend Deductions, Qualified Preferred Stock, and Catch-Up Modifications."
     reference = (
