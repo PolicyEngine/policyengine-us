@@ -1,6 +1,6 @@
 description: South Carolina caps the retirement deduction at this amount, based on age. 
 
-meradata:
+metadata:
   threshold_unit: year
   amount_unit: currency_USD
   type: single_amount
@@ -26,6 +26,6 @@ brackets:
     amount:
       2021-01-01: 3_000
   - threshold:
-      2021-01-01: 64
+      2021-01-01: 65
     amount: 
-      2021-01-01: 7_000
+      2021-01-01: 10_000
