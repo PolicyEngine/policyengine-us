@@ -1,4 +1,4 @@
-- name: non_refundable_credits more than tuition_tax_credit
+- name: Calucation
   period: 2022
   input:
     state_code: KY
@@ -6,4 +6,3 @@
     lifetime_learning_credit: 2_000
   output:
     ky_tuition_tax_credit: 875
-
