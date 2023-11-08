@@ -7,9 +7,7 @@ class al_deductions(Variable):
     label = "Alabama deductions"
     unit = USD
     definition_period = YEAR
-    reference = (
-        "https://www.revenue.alabama.gov/ultraviewer/viewer/basic_viewer/index.html?form=2023/01/22f40abk.pdf"  # 2022 Form 40A Booklet
-    )
+    reference = "https://www.revenue.alabama.gov/ultraviewer/viewer/basic_viewer/index.html?form=2023/01/22f40abk.pdf"  # 2022 Form 40A Booklet
     defined_for = StateCode.AL
 
     def formula(tax_unit, period, parameters):
@@ -17,5 +15,9 @@ class al_deductions(Variable):
         std_ded = tax_unit("al_standard_deduction", period)
         federal_ded = tax_unit("al_federal_tax_deduction_deduction", period)
         al_ded = max_(itm_ded, std_ded)
-        exemptions = add(tax_unit, period, ["al_personal_exemption", "al_dependent_exemption"])
-        return al_ded + federal_ded + exemptions 
+        exemptions = add(
+            tax_unit,
+            period,
+            ["al_personal_exemption", "al_dependent_exemption"],
+        )
+        return al_ded + federal_ded + exemptions
