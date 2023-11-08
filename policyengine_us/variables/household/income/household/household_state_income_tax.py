@@ -12,6 +12,7 @@ class household_state_income_tax(Variable):
         "ca_income_tax_before_refundable_credits",
         "co_income_tax_before_refundable_credits",
         "dc_income_tax_before_refundable_credits",
+        "de_income_tax_before_refundable_credits",
         "ia_income_tax_before_refundable_credits",
         "il_total_tax",
         "in_income_tax_before_refundable_credits",
@@ -27,6 +28,7 @@ class household_state_income_tax(Variable):
         "nh_income_tax_before_refundable_credits",
         "nj_income_tax_before_refundable_credits",
         "ny_income_tax_before_refundable_credits",
+        "ok_income_tax_before_refundable_credits",
         "or_income_tax_before_refundable_credits",
         "pa_income_tax",
         "wa_income_tax_before_refundable_credits",
@@ -38,6 +40,7 @@ class household_state_income_tax(Variable):
         "ca_refundable_credits",  # California.
         "co_refundable_credits",  # Colorado
         "dc_refundable_credits",  # District of Columbia.
+        "de_refundable_credits",  # Delaware.
         "ia_refundable_credits",  # Iowa.
         "il_refundable_credits",  # Illinois.
         "in_refundable_credits",  # Indiana.
@@ -52,6 +55,7 @@ class household_state_income_tax(Variable):
         "ne_refundable_credits",  # Nebraska.
         "nh_refundable_credits",  # New Hampshire.
         "ny_refundable_credits",  # New York.
+        "ok_refundable_credits",  # Oklahoma.
         "or_refundable_credits",  # Oregon.
         # Skip PA, which has no refundable credits.
         "wa_refundable_credits",  # Washington.
