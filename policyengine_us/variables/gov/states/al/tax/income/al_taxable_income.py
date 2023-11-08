@@ -16,6 +16,6 @@ class al_taxable_income(Variable):
     )
 
     def formula(tax_unit, period, parameters):
-        al_ded = tax_unit("al_deduction", period)
+        al_ded = tax_unit("al_deductions", period)
         al_agi = tax_unit("al_agi", period)
         return max_(al_agi - al_ded, 0)
