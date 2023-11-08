@@ -21,9 +21,10 @@ class ga_retirement_exclusion(Variable):
         ).gov.states.ga.tax.income.agi.exclusions.retirement
         retirement_income = person("ga_retirement_income", period)
         age = person("age", period)
-        age_cap = p.amount.calc(age)
+        age_cap = p.max_amount.calc(age)
         disabled = person("is_disabled", period)
-        disabled_cap = where(disabled, p.amount.amounts[1], 0)
+        # Disabled filers are not subject to the age dependent cap
+        disabled_cap = where(disabled, p.max_amount.amounts[1], 0)
         cap = max_(age_cap, disabled_cap)
         capped_exclusion = min_(retirement_income, cap)
         head_or_spuse = person("is_tax_unit_head_or_spouse", period)

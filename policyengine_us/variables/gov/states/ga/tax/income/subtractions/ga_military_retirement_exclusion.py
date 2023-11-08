@@ -22,11 +22,11 @@ class ga_military_retirement_exclusion(Variable):
 
         earned_income = person("earned_income", period)
         additional_income_eligible = (
-            earned_income > p.additional.threshold.income
+            earned_income > p.additional.threshold.earned_income
         )
 
         military_income = person("military_retirement_pay", period)
-        base = where(head_or_spouse, p.main.amount.calc(age), 0)
+        base = where(head_or_spouse, p.max_amount.calc(age), 0)
         additional = where(
             head_or_spouse & additional_income_eligible,
             p.additional.amount.calc(age),

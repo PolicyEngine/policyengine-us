@@ -59,3 +59,27 @@
         state_code: GA
   output:
     ga_retirement_exclusion: 100_000
+
+- name: both are eligible for higher cap
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        is_disabled: false
+        age: 65
+        ga_retirement_income: 67_000
+      person2:
+        is_tax_unit_spouse: true
+        is_disabled: true
+        age: 65
+        ga_retirement_income: 37_700
+    tax_units:
+      tax_unit:
+        members: [person1,person2]
+        filing_status: JOINT
+    households:
+      household:
+        state_code: GA
+  output:
+    ga_retirement_exclusion: 65_000 + 37_700
