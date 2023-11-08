@@ -15,10 +15,4 @@ class la_personal_exemption(Variable):
         personal_exemption = parameters(
             period
         ).gov.states.la.tax.income.exemptions.personal.personal[filing_status]
-        return (
-            personal_exemption
-            + tax_unit("la_blind_exemption", period)
-            + tax_unit("la_dependents_exemption", period)
-            + tax_unit("la_widow_exemption", period)
-            + tax_unit("la_aged_exemption", period)
-        )
+        return personal_exemption

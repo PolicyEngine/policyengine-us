@@ -1,47 +1,31 @@
-- name: Single filer gets $4500 exemption, with additional 1_000 dependents and 3_000 aged exemption.
+- name: Single filer gets $4500 exemption.
   period: 2022
   input:
     state_code: LA
     filing_status: SINGLE
-    la_blind_exemption: 0
-    la_dependents_exemption: 1_000
-    la_aged_exemption: 3_000
-    la_widow_exemption: 0
   output:
-    la_personal_exemption: 8_500
+    la_personal_exemption: 4_500
 
-- name: Joint filer gets $9k exemption, with additional 2_000 dependents, 1_000 blind, 6_000 aged exemption.
+- name: Joint filer gets $9k exemption.
   period: 2022
   input:
     state_code: LA
     filing_status: JOINT
-    la_blind_exemption: 1_000
-    la_dependents_exemption: 2_000
-    la_aged_exemption: 6_000
-    la_widow_exemption: 0
   output:
-    la_personal_exemption: 18_000
+    la_personal_exemption: 9_000
 
-- name: Head of household filer gets $9k exemption, with additional 1_000 dependent exemption.
+- name: Head of household filer gets $9k exemption.
   period: 2022
   input:
     state_code: LA
     filing_status: HEAD_OF_HOUSEHOLD
-    la_blind_exemption: 0
-    la_dependents_exemption: 1_000
-    la_aged_exemption: 0
-    la_widow_exemption: 0
   output:
-    la_personal_exemption: 10_000
+    la_personal_exemption: 9_000
 
 - name: Separate filer gets $4500 exemption.
   period: 2022
   input:
     state_code: LA
     filing_status: SEPARATE
-    la_blind_exemption: 0
-    la_dependents_exemption: 0 
-    la_aged_exemption: 0
-    la_widow_exemption: 0
   output:
     la_personal_exemption: 4_500

@@ -11,4 +11,8 @@ class la_exemptions(Variable):
     adds = [
         "la_disability_income_exemption",
         "la_personal_exemption",
+        "la_blind_exemption",
+        "la_dependents_exemption",
+        "la_widow_exemption",
+        "la_aged_exemption",
     ]
