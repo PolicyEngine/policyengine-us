@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.524.0] - 2023-11-09 16:00:28
+
+### Added
+
+- Maryland hundred year subtraction.
+
 ## [0.523.1] - 2023-11-09 01:19:56
 
 ### Fixed
@@ -5848,6 +5854,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.524.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.523.1...0.524.0
 [0.523.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.523.0...0.523.1
 [0.523.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.522.0...0.523.0
 [0.522.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.521.0...0.522.0
