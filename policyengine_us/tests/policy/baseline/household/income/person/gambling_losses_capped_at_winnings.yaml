@@ -1,0 +1,15 @@
+- name: Gambling losses are less than winnings, capped amount = full amount.
+  period: 2022
+  input:
+    gambling_losses: 1
+    gambling_winnings: 2
+  output:
+    gambling_losses_capped_at_winnings: 1
+
+- name: Gambling losses are more than winnings, capped amount = winnings.
+  period: 2022
+  input:
+    gambling_losses: 2
+    gambling_winnings: 1
+  output:
+    gambling_losses_capped_at_winnings: 1
