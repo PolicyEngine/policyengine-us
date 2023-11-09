@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class oh_personal_exemptions_eligible(Variable):
     value_type = bool
     entity = TaxUnit
-    label = "Ohio Personal Exemptions Eligibility"
+    label = "Eligible for the Ohio Exemption Credit"
     unit = USD
     definition_period = YEAR
     reference = (
