@@ -33,4 +33,4 @@ class ar_retirement_or_disability_benefits_exemption_indv(Variable):
         eligible_exemption = max_(
             eligible_pension_income, military_retirement_exemption
         )
-        return min_(eligible_exemption, p.max_amount)
+        return min_(eligible_exemption, p.cap)
