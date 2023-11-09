@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class oh_personal_exemption(Variable):
+class oh_personal_exemptions(Variable):
     value_type = float
     entity = TaxUnit
     label = "Ohio Personal Exemption"
