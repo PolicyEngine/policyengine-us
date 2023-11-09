@@ -15,4 +15,4 @@ class oh_exemption_credit(Variable):
 
         count = tax_unit("exemptions_count", period)
 
-        return credit_amount * count
+        return p.amount * count
