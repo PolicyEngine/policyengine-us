@@ -3,9 +3,9 @@
   input:
     people:
       person1: 
-        college_savigns_plan_529_benefitiary: true
+        count_529_contribution_beneficiaries: true
       person2:
-        college_savigns_plan_529_benefitiary: true
+        count_529_contribution_beneficiaries: true
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -21,7 +21,7 @@
 - name: single filers with countribute $1500 to 529 college savings plans
   period: 2023
   input:
-      college_savigns_plan_529_benefitiary: true
+      count_529_contribution_beneficiaries: true
       filing_status: SINGLE
       investment_in_529_plan: 1_500
       state_code: AZ
@@ -33,9 +33,9 @@
   input:
     people:
       person1: 
-        college_savigns_plan_529_benefitiary: true
+        count_529_contribution_beneficiaries: true
       person2:
-        college_savigns_plan_529_benefitiary: true
+        count_529_contribution_beneficiaries: true
     tax_units:
       tax_unit:
         members: [person1, person2]

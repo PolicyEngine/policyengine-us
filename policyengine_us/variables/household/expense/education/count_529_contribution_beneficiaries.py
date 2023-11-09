@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class college_savigns_plan_529_benefitiary(Variable):
+class count_529_contribution_beneficiaries(Variable):
     value_type = int
     entity = Person
     label = "529 college savings plan beneficiary"
