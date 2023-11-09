@@ -14,13 +14,12 @@ class la_itemized_deductions(Variable):
     defined_for = StateCode.LA
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.la.tax.income.deductions.itemized
+        p = parameters(
+            period
+        ).gov.states.la.tax.income.deductions.itemized.medical
         itemizes = tax_unit("tax_unit_itemizes", period)
         medical_expenses = add(tax_unit, period, ["medical_expense"])
-        return (
-            itemizes
-            * max_(
-                medical_expenses - tax_unit("standard_deduction", period), 0
-            )
-            * p.exceedance
+        excess = max_(
+            medical_expenses - tax_unit("standard_deduction", period), 0
         )
+        return itemizes * excess * p.exceedance

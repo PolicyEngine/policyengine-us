@@ -8,3 +8,11 @@ class la_taxable_income(Variable):
     defined_for = StateCode.LA
     unit = USD
     definition_period = YEAR
+
+    def formula(tax_unit, period, parameters):
+        return max_(
+            tax_unit("adjusted_gross_income", period)
+            - tax_unit("la_itemized_deductions", period)
+            - tax_unit("la_exemptions", period),
+            0,
+        )
