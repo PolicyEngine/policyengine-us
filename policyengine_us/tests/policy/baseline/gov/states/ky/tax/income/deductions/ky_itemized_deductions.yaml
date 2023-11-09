@@ -6,12 +6,12 @@
       person1:
         charitable_cash_donations: 1
         charitable_non_cash_donations: 2
-        gambling_losses: 3
+        gambling_losses_capped_at_winnings: 3
         home_mortgage_interest: 10_000
       person2:
         charitable_cash_donations: 10
         charitable_non_cash_donations: 20
-        gambling_losses: 30
+        gambling_losses_capped_at_winnings: 30
         home_mortgage_interest: 0
     spm_units:
       spm_unit:
