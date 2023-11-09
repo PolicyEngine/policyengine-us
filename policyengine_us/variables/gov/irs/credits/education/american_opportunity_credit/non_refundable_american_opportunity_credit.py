@@ -12,6 +12,3 @@ class non_refundable_american_opportunity_credit(Variable):
 
     adds = ["american_opportunity_credit"]
     subtracts = ["refundable_american_opportunity_credit"]
-
-
-c87668 = variable_alias("c87668", non_refundable_american_opportunity_credit)
