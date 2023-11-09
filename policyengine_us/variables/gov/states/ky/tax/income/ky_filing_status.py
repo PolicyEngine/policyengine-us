@@ -13,6 +13,7 @@ class ky_filing_status(Variable):
     possible_values = KyFilingStatus
     default_value = KyFilingStatus.SINGLE
     definition_period = YEAR
+    reference = "https://codes.findlaw.com/ky/title-xi-revenue-and-taxation/ky-rev-st-sect-141-066.html"
     label = "Filing status for the tax unit in Kentucky"
     defined_for = StateCode.KY
 
@@ -24,11 +25,10 @@ class ky_filing_status(Variable):
             [
                 has_spouse,
                 is_separated,
-                True,
             ],
             [
                 KyFilingStatus.JOINT,
                 KyFilingStatus.SEPARATE,
-                KyFilingStatus.SINGLE,
             ],
+            default=KyFilingStatus.SINGLE,
         )
