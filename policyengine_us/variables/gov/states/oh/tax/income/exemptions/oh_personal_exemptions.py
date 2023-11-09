@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class oh_personal_exemption(Variable):
+class oh_personal_exemptions(Variable):
     value_type = float
     entity = TaxUnit
     label = "Ohio Personal Exemption Eligibility"
@@ -10,7 +10,7 @@ class oh_personal_exemption(Variable):
     reference = (
         "https://tax.ohio.gov/static/forms/ohio_individual/individual/2021/pit-it1040-booklet.pdf#page=14",
     )
-    defined_for = "oh_personal_exemption_eligible"
+    defined_for = "oh_personal_exemptions_eligible"
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.oh.tax.income.exemptions.personal

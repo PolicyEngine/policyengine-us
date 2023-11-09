@@ -14,7 +14,7 @@ class oh_exemption_credit_eligible(Variable):
         p = parameters(period).gov.states.oh.tax.income.exemptions
 
         agi = tax_unit("oh_agi", period)
-        personal_exemptions = tax_unit("oh_personal_exemption", period)
+        personal_exemptions = tax_unit("oh_personal_exemptions", period)
         modified_agi = agi - personal_exemptions
 
         return modified_agi < p.income_threshold

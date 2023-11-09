@@ -9,3 +9,9 @@ class oh_taxable_income(Variable):
     definition_period = YEAR
     reference = "https://tax.ohio.gov/static/forms/ohio_individual/individual/2021/pit-it1040-booklet.pdf"
     defined_for = StateCode.OH
+
+    def formula(tax_unit, period, parameters):
+        agi = tax_unit("oh_agi", period)
+        exemptions = tax_unit("oh_exemption_credit", period)
+
+        return max_(0, agi - exemptions)
