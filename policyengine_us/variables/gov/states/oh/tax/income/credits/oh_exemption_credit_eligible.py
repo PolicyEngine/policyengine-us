@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class oh_exemption_credit_eligible(Variable):
     value_type = bool
     entity = TaxUnit
-    label = "Ohio Exemption Credit Eligibility"
+    label = "Eligible for the Ohio Exemption Credit"
     definition_period = YEAR
     reference = "https://codes.ohio.gov/ohio-revised-code/section-5747.022"
     defined_for = StateCode.OH
