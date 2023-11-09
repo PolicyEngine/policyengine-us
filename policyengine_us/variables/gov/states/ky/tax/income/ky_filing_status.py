@@ -13,7 +13,7 @@ class ky_filing_status(Variable):
     possible_values = KyFilingStatus
     default_value = KyFilingStatus.SINGLE
     definition_period = YEAR
-    reference = "https://codes.findlaw.com/ky/title-xi-revenue-and-taxation/ky-rev-st-sect-141-066.html"
+    reference = "https://codes.findlaw.com/ky/title-xi-revenue-and-taxation/ky-rev-st-sect-141-066.html"  # Section (1), (c) & (d)
     label = "Filing status for the tax unit in Kentucky"
     defined_for = StateCode.KY
 
