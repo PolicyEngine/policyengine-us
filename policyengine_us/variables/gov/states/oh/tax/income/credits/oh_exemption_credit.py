@@ -14,6 +14,5 @@ class oh_exemption_credit(Variable):
         p = parameters(period).gov.states.oh.tax.income.exemptions
 
         count = tax_unit("exemptions_count", period)
-        credit_amount = p.amount
 
         return credit_amount * count
