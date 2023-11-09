@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class snap_max_allotment(Variable):
     value_type = float
     entity = SPMUnit
-    definition_period = YEAR
+    definition_period = MONTH
     documentation = "Maximum SNAP allotment for SPM unit, based on the state group and household size."
     label = "SNAP maximum allotment"
     unit = USD
@@ -24,4 +24,4 @@ class snap_max_allotment(Variable):
         additional_allotment = (
             additional_members * max_allotments.additional[snap_region]
         )
-        return (main_allotment + additional_allotment) * MONTHS_IN_YEAR
+        return main_allotment + additional_allotment
