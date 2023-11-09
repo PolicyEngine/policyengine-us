@@ -2,7 +2,7 @@
   period: 2021
   input:
     state_code: CT
-    ct_income_tax_after_personal_credits: 10_000
+    ct_income_tax_recapture: 10_000
     amt_income: 200_000 # 200000 * 0.055 = 11000
     alternative_minimum_tax: 100_000 # 100000 * 0.19 = 19000
   output:
@@ -12,7 +12,7 @@
   period: 2021
   input:
     state_code: CT
-    ct_income_tax_after_personal_credits: 10_000
+    ct_income_tax_recapture: 10_000
     amt_income: 200_000
     alternative_minimum_tax: 200_000
   output:
@@ -22,7 +22,7 @@
   period: 2021
   input:
     state_code: CT
-    ct_income_tax_after_personal_credits: 1_000
+    ct_income_tax_recapture: 1_000
     amt_income: 200_000 # 200000 * 0.055 = 11000
     alternative_minimum_tax: 10_000 # 10000 * 0.19 = 1900
   output:
@@ -32,7 +32,7 @@
   period: 2021
   input:
     state_code: CT
-    ct_income_tax_after_personal_credits: 10_000
+    ct_income_tax_recapture: 10_000
     amt_income: 100_000
     alternative_minimum_tax: 200_000
   output:
