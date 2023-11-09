@@ -12,14 +12,23 @@ class id_aged_or_disabled_deduction(Variable):
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
         age = person("age", period)
-        head = person("is_tax_unit_head", period)
-        spouse = person("is_tax_unit_spouse", period)
+        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         disabled = person("is_disabled", period)
         p = parameters(
             period
         ).gov.states.id.tax.income.deductions.aged_or_disabled
-        age_eligible = (age >= p.age_eligibility) & ~(head | spouse)
-        eligible = age_eligible | disabled
+        age_eligible = (age >= p.age_eligibility) & ~head_or_spouse
+        # To claim aged or disabled credit, filers also have to maintain a household for family members
+        # and provide more than one-half of the family member’s support for the year
+        care_and_support_payment = person("care_and_support_payment", period)
+        care_and_support_costs = person("care_and_support_costs", period)
+        support_payment_ratio = np.zeros_like(care_and_support_costs)
+        mask = care_and_support_costs != 0
+        support_payment_ratio[mask] = (
+            care_and_support_payment[mask] / care_and_support_costs[mask]
+        )
+        payment_eligible = support_payment_ratio > p.cost_rate
+        eligible = (age_eligible | disabled) & payment_eligible
         total_eligible = tax_unit.sum(eligible)
         capped_eligible = min_(total_eligible, p.max_deductions)
         # To claim aged or disabled deduction, filers also have to maintain a household for family members

@@ -7,10 +7,14 @@
         is_tax_unit_spouse: false
         is_tax_unit_head: false
         age: 64
+        care_and_support_payment: 0
+        care_and_support_costs: 0
       person2:
         is_disabled: false
         is_tax_unit_spouse: false
         is_tax_unit_head: false
+        care_and_support_payment: 600
+        care_and_support_costs: 1_000
         age: 65
     households:
       household:
@@ -23,6 +27,35 @@
   output:  
     id_aged_or_disabled_credit: 100
 
+- name: No eligible person as payment less than one-half of cost
+  period: 2023
+  input:
+    people:
+      person1:
+        is_disabled: false
+        is_tax_unit_spouse: false
+        is_tax_unit_head: false
+        age: 65
+        care_and_support_payment: 0
+        care_and_support_costs: 0
+      person2:
+        is_disabled: false
+        is_tax_unit_spouse: false
+        is_tax_unit_head: false
+        age: 65
+        care_and_support_payment: 300
+        care_and_support_costs: 1_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        id_aged_or_disabled_deduction: 0
+  output:  
+    id_aged_or_disabled_credit: 0
+
 - name: One eligible person - claim deduction 
   period: 2023
   input:
@@ -31,11 +64,15 @@
         is_disabled: false
         is_tax_unit_spouse: false
         is_tax_unit_head: false
+        care_and_support_payment: 0
+        care_and_support_costs: 0
         age: 64
       person2:
         is_disabled: false
         is_tax_unit_spouse: false
         is_tax_unit_head: false
+        care_and_support_payment: 600
+        care_and_support_costs: 1_000
         age: 65
     households:
       household:
@@ -56,21 +93,29 @@
         is_disabled: true
         is_tax_unit_spouse: false
         is_tax_unit_head: false
+        care_and_support_payment: 600
+        care_and_support_costs: 1_000
         age: 64
       person2:
         is_disabled: false
         is_tax_unit_spouse: false
         is_tax_unit_head: false
+        care_and_support_payment: 600
+        care_and_support_costs: 1_000
         age: 65
       person3:
         is_disabled: true
         is_tax_unit_spouse: false
         is_tax_unit_head: false
+        care_and_support_payment: 600
+        care_and_support_costs: 1_000
         age: 64
       person4:
         is_disabled: false
         is_tax_unit_spouse: false
         is_tax_unit_head: false
+        care_and_support_payment: 600
+        care_and_support_costs: 1_000
         age: 65
     households:
       household:
@@ -83,31 +128,6 @@
   output:  
     id_aged_or_disabled_credit: 300
 
-- name: No eligible people
-  period: 2023
-  input:
-    people:
-      person1:
-        is_disabled: false
-        is_tax_unit_spouse: false
-        is_tax_unit_head: false
-        age: 64
-      person2:
-        is_disabled: false
-        is_tax_unit_spouse: false
-        is_tax_unit_head: false
-        age: 64
-    households:
-      household:
-        members: [person1, person2]
-        state_code: ID
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
-        id_aged_or_disabled_deduction: 0
-  output:  
-    id_aged_or_disabled_credit: 0
-
 - name: Head and Spouse are not eligible if aged
   period: 2023
   input:
@@ -116,21 +136,29 @@
         is_disabled: true
         is_tax_unit_spouse: false
         is_tax_unit_head: false
+        care_and_support_payment: 600
+        care_and_support_costs: 1_000
         age: 64
       person2:
         is_disabled: false
         is_tax_unit_spouse: false
         is_tax_unit_head: true
+        care_and_support_payment: 600
+        care_and_support_costs: 1_000
         age: 65
       person3:
         is_disabled: true
         is_tax_unit_spouse: false
         is_tax_unit_head: false
+        care_and_support_payment: 600
+        care_and_support_costs: 1_000
         age: 64
       person4:
         is_disabled: false
         is_tax_unit_spouse: true
         is_tax_unit_head: false
+        care_and_support_payment: 600
+        care_and_support_costs: 1_000
         age: 65
     households:
       household:
@@ -151,21 +179,29 @@
         is_disabled: true
         is_tax_unit_spouse: false
         is_tax_unit_head: false
+        care_and_support_payment: 600
+        care_and_support_costs: 1_000
         age: 64
       person2:
         is_disabled: false
         is_tax_unit_spouse: false
         is_tax_unit_head: true
+        care_and_support_payment: 600
+        care_and_support_costs: 1_000
         age: 65
       person3:
         is_disabled: true
         is_tax_unit_spouse: true
         is_tax_unit_head: false
+        care_and_support_payment: 600
+        care_and_support_costs: 1_000
         age: 64
       person4:
         is_disabled: false
         is_tax_unit_spouse: false
         is_tax_unit_head: false
+        care_and_support_payment: 600
+        care_and_support_costs: 1_000
         age: 65
     households:
       household:
