@@ -156,15 +156,13 @@
     # .0335*35255 + .066*(85150-35255) + .076*(129750-85150) + .0875*(150000-129750) = 9636.5625
     vt_income_tax_before_non_refundable_credits: 9_636.5625
 
-- name: 13 Separate filer, agi is $200k, taxable income is $150K in 2022.
+- name: 7 Single filer, agi is $200k, taxable income is $50K in 2022.
   period: 2022
-  absolute_error_margin: 1
   input:
-
-    vt_taxable_income: 150_000
-    filing_status: SEPARATE
+    vt_taxable_income: 50_000
+    filing_status: SINGLE
     adjusted_gross_income: 200_000
     us_govt_interest: 1_000
     state_code: VT
   output:
-    vt_income_tax_before_non_refundable_credits: 59_000
+    vt_income_tax_before_non_refundable_credits: 5_000
