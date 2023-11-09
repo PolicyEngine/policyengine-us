@@ -5,7 +5,6 @@ class oh_personal_exemption_eligible(Variable):
     value_type = bool
     entity = TaxUnit
     label = "Eligible for the Ohio Personal Exemption"
-    unit = USD
     definition_period = YEAR
     reference = (
         "https://tax.ohio.gov/static/forms/ohio_individual/individual/2021/pit-it1040-booklet.pdf#page=14",
