@@ -10,17 +10,17 @@ metadata:
       href: https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2022/12/Form-2-2022-Instructions.pdf#page=35
     - title: 2021 Montana Form 2 Individual income tax instruction line 14
       href: https://mtrevenue.gov/wp-content/uploads/mdocs/form%202%202021%20instructions.pdf#page=34
+    - title: Montana Code Annotated 2021 15-30-2131.(v)
+      href: https://leg.mt.gov/bills/mca/title_0150/chapter_0300/part_0210/section_0310/0150-0300-0210-0310.html
 
 brackets:
-  - threshold:
-      2021-01-01: 1
-    amount:
-      2021-01-01: 22_800
-  - threshold:
-      2021-01-01: 2
-    amount:
-      2021-01-01: 25_200
-  - threshold:
-      2021-01-01: 3
-    amount:
-      2021-01-01: 27_600
+  - rate:
+      2021-01-01: 0
+    threshold:
+      2021-01-01: 0
+  - rate:
+      2021-01-01: 0.5
+    threshold:
+      2021-01-01: 18_000
+
+
