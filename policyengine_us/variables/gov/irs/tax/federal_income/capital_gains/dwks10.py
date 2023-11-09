@@ -5,14 +5,11 @@ class dwks10(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
-    label = "DWKS10"
-    documentation = (
-        "search taxcalc/calcfunctions.py for how calculated and used"
-    )
+    label = "IRS Form 1040 Schedule D worksheet (part 3 of 6)"
     unit = USD
 
     def formula(tax_unit, period, parameters):
-        dwks10_if_gains = add(tax_unit, period, ["dwks6", "dwks9"])
+        dwks10_if_gains = add(tax_unit, period, ["dwks06", "dwks09"])
         dwks10_if_no_gains = max_(
             0,
             min_(
