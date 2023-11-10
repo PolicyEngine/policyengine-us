@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class ky_personal_tax_credits_military_eligible(Variable):
-    value_type = bool
+class ky_personal_tax_credits_military(Variable):
+    value_type = float
     entity = Person
-    label = "Eligibility for the Kentucky personal tax credits due to military service income"
+    label = "Kentucky personal tax credits amount for filers with military service income"
     documentation = (
         "https://apps.legislature.ky.gov/law/statutes/statute.aspx?id=53500"
     )
@@ -12,10 +12,7 @@ class ky_personal_tax_credits_military_eligible(Variable):
     defined_for = StateCode.KY
 
     def formula(person, period, parameters):
-        p = parameters(period).gov.states.ky.tax.income.credits.personal
-
+        p = parameters(period).gov.states.ky.tax.income.credits.personal.amount
         has_military_income = person("military_service_income", period) > 0
-
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-
-        return head_or_spouse * has_military_income
+        return head_or_spouse * has_military_income * p.military

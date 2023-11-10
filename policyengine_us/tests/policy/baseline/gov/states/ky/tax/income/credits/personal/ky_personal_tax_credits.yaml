@@ -3,9 +3,9 @@
   input:
     people:
       person1:
-        ky_personal_tax_credits_aged_eligible: false
-        ky_personal_tax_credits_blind_eligible: false
-        ky_personal_tax_credits_military_eligible: false
+        ky_personal_tax_credits_aged: 0
+        ky_personal_tax_credits_blind: 0
+        ky_personal_tax_credits_military: 0
     tax_units:
       tax_unit:
         members: [person1]
@@ -22,9 +22,9 @@
   input:
     people:
       person1:
-        ky_personal_tax_credits_aged_eligible: true
-        ky_personal_tax_credits_blind_eligible: false
-        ky_personal_tax_credits_military_eligible: false
+        ky_personal_tax_credits_aged: 40
+        ky_personal_tax_credits_blind: 0
+        ky_personal_tax_credits_military: 0
     tax_units:
       tax_unit:
         members: [person1]
@@ -41,9 +41,9 @@
   input:
     people:
       person1:
-        ky_personal_tax_credits_aged_eligible: true
-        ky_personal_tax_credits_blind_eligible: false
-        ky_personal_tax_credits_military_eligible: true
+        ky_personal_tax_credits_aged: 40
+        ky_personal_tax_credits_blind: 0
+        ky_personal_tax_credits_military: 20
     tax_units:
       tax_unit:
         members: [person1]
@@ -60,9 +60,9 @@
   input:
     people:
       person1:
-        ky_personal_tax_credits_aged_eligible: true
-        ky_personal_tax_credits_blind_eligible: true
-        ky_personal_tax_credits_military_eligible: true
+        ky_personal_tax_credits_aged: 40
+        ky_personal_tax_credits_blind: 40
+        ky_personal_tax_credits_military: 20
     tax_units:
       tax_unit:
         members: [person1]
@@ -79,13 +79,13 @@
   input:
     people:
       person1:
-        ky_personal_tax_credits_aged_eligible: false
-        ky_personal_tax_credits_blind_eligible: false
-        ky_personal_tax_credits_military_eligible: false
+        ky_personal_tax_credits_aged: 0
+        ky_personal_tax_credits_blind: 0
+        ky_personal_tax_credits_military: 0
       person2:
-        ky_personal_tax_credits_aged_eligible: false
-        ky_personal_tax_credits_blind_eligible: false
-        ky_personal_tax_credits_military_eligible: false
+        ky_personal_tax_credits_aged: 0
+        ky_personal_tax_credits_blind: 0
+        ky_personal_tax_credits_military: 0
     tax_units:
       tax_unit:
         members: [person1,person2]
@@ -102,13 +102,13 @@
   input:
     people:
       person1:
-        ky_personal_tax_credits_aged_eligible: true
-        ky_personal_tax_credits_blind_eligible: false
-        ky_personal_tax_credits_military_eligible: true
+        ky_personal_tax_credits_aged: 40
+        ky_personal_tax_credits_blind: 0
+        ky_personal_tax_credits_military: 0
       person2:
-        ky_personal_tax_credits_aged_eligible: true
-        ky_personal_tax_credits_blind_eligible: true
-        ky_personal_tax_credits_military_eligible: false
+        ky_personal_tax_credits_aged: 0
+        ky_personal_tax_credits_blind: 0
+        ky_personal_tax_credits_military: 20
     tax_units:
       tax_unit:
         members: [person1,person2]
@@ -118,20 +118,20 @@
         members: [person1,person2]
         state_code: KY
   output:
-    ky_personal_tax_credits: 140
+    ky_personal_tax_credits: 60
 
 - name: Kentucky joint eligible 2
   period: 2022
   input:
     people:
       person1:
-        ky_personal_tax_credits_aged_eligible: true
-        ky_personal_tax_credits_blind_eligible: false
-        ky_personal_tax_credits_military_eligible: false
+        ky_personal_tax_credits_aged: 40
+        ky_personal_tax_credits_blind: 40
+        ky_personal_tax_credits_military: 20
       person2:
-        ky_personal_tax_credits_aged_eligible: false
-        ky_personal_tax_credits_blind_eligible: false
-        ky_personal_tax_credits_military_eligible: false
+        ky_personal_tax_credits_aged: 0
+        ky_personal_tax_credits_blind: 0
+        ky_personal_tax_credits_military: 0
     tax_units:
       tax_unit:
         members: [person1,person2]
@@ -141,20 +141,20 @@
         members: [person1,person2]
         state_code: KY
   output:
-    ky_personal_tax_credits: 40
+    ky_personal_tax_credits: 100
 
 - name: Kentucky separate ineligible
   period: 2022
   input:
     people:
       person1:
-        ky_personal_tax_credits_aged_eligible: false
-        ky_personal_tax_credits_blind_eligible: false
-        ky_personal_tax_credits_military_eligible: false
+        ky_personal_tax_credits_aged: 0
+        ky_personal_tax_credits_blind: 0
+        ky_personal_tax_credits_military: 0
       person2:
-        ky_personal_tax_credits_aged_eligible: false
-        ky_personal_tax_credits_blind_eligible: false
-        ky_personal_tax_credits_military_eligible: false
+        ky_personal_tax_credits_aged: 0
+        ky_personal_tax_credits_blind: 0
+        ky_personal_tax_credits_military: 0
     tax_units:
       tax_unit:
         members: [person1,person2]
@@ -171,13 +171,13 @@
   input:
     people:
       person1:
-        ky_personal_tax_credits_aged_eligible: true
-        ky_personal_tax_credits_blind_eligible: false
-        ky_personal_tax_credits_military_eligible: true
+        ky_personal_tax_credits_aged: 40
+        ky_personal_tax_credits_blind: 0
+        ky_personal_tax_credits_military: 20
       person2:
-        ky_personal_tax_credits_aged_eligible: false
-        ky_personal_tax_credits_blind_eligible: false
-        ky_personal_tax_credits_military_eligible: false
+        ky_personal_tax_credits_aged: 0
+        ky_personal_tax_credits_blind: 0
+        ky_personal_tax_credits_military: 0
     tax_units:
       tax_unit:
         members: [person1,person2]
