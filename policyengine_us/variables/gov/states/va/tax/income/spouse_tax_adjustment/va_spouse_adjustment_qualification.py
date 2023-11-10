@@ -33,7 +33,6 @@ class va_spouse_adjustment_qualification(Variable):
 
         eligibility_requirement = personal_va_agi - total_personal_exemptions
 
-
         # If either amount is 0 or less, the filer does not qualify for this credit.
         return (
             tax_unit.min(

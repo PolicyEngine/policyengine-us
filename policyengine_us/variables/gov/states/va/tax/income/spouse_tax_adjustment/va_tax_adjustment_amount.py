@@ -49,13 +49,15 @@ class va_tax_adjsutment_amount(Variable):
 
         tax_amount = tax_unit("va_income_tax", period)
 
-        adjustent_limit_condition = (
+        adjustment_limit_condition = (
             min_eligibility_value
             > p.threshold & tax_unit("va_taxable_income", period)
         )
 
         adjustment_amount = tax_amount - sum_amount
-        tax_adjustment_amount = va_spouse_adjustment_qualification * min_(
+        tax_adjustment_amount = tax_unit(
+            "va_spouse_adjustment_qualification", period
+        ) * min_(
             where(
                 adjustment_limit_condition,
                 p.adjustment_limit,
