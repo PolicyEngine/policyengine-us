@@ -1,0 +1,103 @@
+- name: SINGLE person aged 65 with 25_000 agi are eligible for the credit
+  period: 2022
+  input:
+    state_code: CO
+    filing_status: SINGLE
+    age_head: 65
+    adjusted_gross_income: 25_000
+    co_property_tax_exemption: 0
+  output:
+    co_income_qualified_senior_housing_credit_eligible: True
+
+- name: SINGLE person aged 64 with 25_000 agi are ineligible for the credit
+  period: 2022
+  input:
+    state_code: CO
+    filing_status: SINGLE
+    age_head: 64
+    adjusted_gross_income: 25_000
+    co_property_tax_exemption: 0
+  output:
+    co_income_qualified_senior_housing_credit_eligible: False
+
+- name: SINGLE person aged 64 with 75_001 agi are ineligible for the credit
+  period: 2022
+  input:
+    state_code: CO
+    filing_status: SINGLE
+    age_head: 64
+    adjusted_gross_income: 75_001
+    co_property_tax_exemption: 0
+  output:
+    co_income_qualified_senior_housing_credit_eligible: False
+
+- name: SINGLE person aged 66 with 75_001 agi are ineligible for the credit
+  period: 2022
+  input:
+    state_code: CO
+    filing_status: SINGLE
+    age_head: 66
+    adjusted_gross_income: 75_001
+    co_property_tax_exemption: 0
+  output:
+    co_income_qualified_senior_housing_credit_eligible: False
+
+- name: SEPARATE person aged 60 and spouse age 65 with 75_000 agi are eligible for the credit
+  period: 2022
+  input:
+    state_code: CO
+    filing_status: SEPARATE
+    age_head: 60
+    age_spouse: 65
+    adjusted_gross_income: 75_000
+    co_property_tax_exemption: 0
+  output:
+    co_income_qualified_senior_housing_credit_eligible: True
+
+- name: SEPARATE person aged 60 and spouse age 65 with 75_001 agi are ineligible for the credit
+  period: 2022
+  input:
+    state_code: CO
+    filing_status: SEPARATE
+    age_head: 60
+    age_spouse: 65
+    adjusted_gross_income: 75_001
+    co_property_tax_exemption: 0
+  output:
+    co_income_qualified_senior_housing_credit_eligible: False
+
+- name: SEPARATE person aged 60 and spouse age 64 with 75_000 agi are ineligible for the credit
+  period: 2022
+  input:
+    state_code: CO
+    filing_status: SEPARATE
+    age_head: 60
+    age_spouse: 64
+    adjusted_gross_income: 75_000
+    co_property_tax_exemption: 0
+  output:
+    co_income_qualified_senior_housing_credit_eligible: False
+
+- name: SEPARATE person aged 66 and spouse age 66 with 75_000 agi are ineligible for the credit
+  period: 2022
+  input:
+    state_code: CO
+    filing_status: SEPARATE
+    age_head: 66
+    age_spouse: 66
+    adjusted_gross_income: 75_000
+    co_property_tax_exemption: 0
+  output:
+    co_income_qualified_senior_housing_credit_eligible: True
+
+- name: SEPARATE person aged 66 and spouse age 66 with 75_000 agi are ineligible for the credit
+  period: 2022
+  input:
+    state_code: CO
+    filing_status: SEPARATE
+    age_head: 66
+    age_spouse: 66
+    adjusted_gross_income: 75_000
+    co_property_tax_exemption: 10
+  output:
+    co_income_qualified_senior_housing_credit_eligible: False

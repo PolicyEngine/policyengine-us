@@ -1,0 +1,17 @@
+- name: Homeowner's property tax deduction, joint, not maxed out
+  period: 2021
+  input:
+    state_code: IN
+    filing_status: JOINT
+    real_estate_taxes: 2_000
+  output:
+    in_homeowners_property_tax_deduction: 2_000
+
+- name: Homeowner's property tax deduction, separate,  maxed out
+  period: 2021
+  input:
+    state_code: IN
+    filing_status: SEPARATE
+    real_estate_taxes: 2_000
+  output:
+    in_homeowners_property_tax_deduction: 1_250
