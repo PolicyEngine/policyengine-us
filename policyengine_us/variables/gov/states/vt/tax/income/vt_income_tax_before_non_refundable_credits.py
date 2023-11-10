@@ -9,7 +9,7 @@ class vt_income_tax_before_non_refundable_credits(Variable):
     definition_period = YEAR
     defined_for = StateCode.VT
     reference = (
-        "https://legislature.vermont.gov/statutes/section/32/151/05822",  # Vermont §5822. Tax on income of individuals, estates, and trusts (a)
+        "https://casetext.com/statute/vermont-statutes/title-32-taxation-and-finance/chapter-151-income-taxes/subchapter-002-taxation-of-individuals-trusts-and-estates/section-5822-tax-on-income-of-individuals-estates-and-trusts",  # Vermont §5822. Tax on income of individuals, estates, and trusts (a)
         "https://tax.vermont.gov/sites/tax/files/documents/RateSched-2021.pdf#page=1",  # Vermont 2021 Income Tax Rate Schedules
         "https://tax.vermont.gov/sites/tax/files/documents/RateSched-2022.pdf#page=1",  # Vermont 2022 Income Tax Return Booklet Forms and Instructions
     )
