@@ -7,7 +7,10 @@ class de_itemized_deductions(Variable):
     label = "Delaware itemized deductions"
     unit = USD
     definition_period = YEAR
-    reference = "https://revenuefiles.delaware.gov/2022/TY22_PIT-RSA_2022-02_PaperInteractive.pdf"
+    reference = (
+        "https://revenuefiles.delaware.gov/2022/TY22_PIT-RSA_2022-02_PaperInteractive.pdf",
+        "https://delcode.delaware.gov/title30/c011/sc02/index.html",
+    )
     defined_for = StateCode.DE
 
     def formula(tax_unit, period, parameters):
@@ -20,16 +23,10 @@ class de_itemized_deductions(Variable):
         ]
         federal_deductions = add(tax_unit, period, deductions)
 
-        salt_sales_or_income = tax_unit(
-            "state_and_local_sales_or_income_tax", period
-        )
-
-        total_salt = (
-            add(tax_unit, period, ["real_estate_taxes"]) + salt_sales_or_income
-        )
+        real_estate_tax = add(tax_unit, period, ["real_estate_taxes"])
 
         salt_amount = min_(
-            total_salt, p.itemized.salt_and_real_estate.cap[filing_status]
+            real_estate_tax, p.itemized.salt_and_real_estate.cap[filing_status]
         )
 
         interest = add(
