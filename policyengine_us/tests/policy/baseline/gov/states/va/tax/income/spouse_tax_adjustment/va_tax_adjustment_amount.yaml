@@ -1,9 +1,6 @@
 - name: Virginia provides this eligible amount for spouse tax adjustment.
   period: 2021
   input:
-    va_spouse_adjustment_qualification: 1
-    va_taxable_income: 49_000
-    va_income_tax: 500
 
     people:
       person1:
@@ -20,8 +17,11 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
-   # households:
-   #   household:
-   #     members: [person1, person2]
-   #     state_code: VA
+        va_spouse_adjustment_qualification: 1
+        va_taxable_income: 49_000
+        va_income_tax: 500
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
   output: 259 # need to change later
