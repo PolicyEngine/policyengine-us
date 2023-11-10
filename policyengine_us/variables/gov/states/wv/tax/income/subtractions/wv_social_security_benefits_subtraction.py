@@ -24,11 +24,11 @@ class wv_social_security_benefits_subtraction(Variable):
             period
         ).gov.states.wv.tax.income.subtractions.social_security_benefits
         person = tax_unit.members
-
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        social_security = tax_unit.sum(
-            person("taxable_social_security", period) * head_or_spouse
-        )
-        ssi = tax_unit.sum(person("ssi", period) * head_or_spouse)
+        # Federal adjusted gross income includes:
+        # 1. social security benefits paid by the Social Security Administration as Old Age, Survivors and Disability Insurance Benefits
+        # 2. Supplemental Security Income for the Aged, Blind, and Disabled
+        taxable_ss = add(person, period, ["taxable_social_security", "ssi"])
+        total_eligible_ss = tax_unit.sum(taxable_ss * head_or_spouse)
 
-        return (social_security + ssi) * p.rate
+        return total_eligible_ss * p.rate
