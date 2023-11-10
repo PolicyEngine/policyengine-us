@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ca_federal_capped_cdcc(Variable):
     value_type = float
     entity = TaxUnit
-    label = "California capped child/dependent care credit"
+    label = "Capped child/dependent care credit replicated to include California limitations"
     unit = USD
     definition_period = YEAR
     reference = "https://www.ftb.ca.gov/forms/2020/2020-3506-instructions.html"
