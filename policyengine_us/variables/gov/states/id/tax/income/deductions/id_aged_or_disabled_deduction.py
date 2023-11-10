@@ -28,9 +28,9 @@ class id_aged_or_disabled_deduction(Variable):
             care_and_support_payment[mask] / care_and_support_costs[mask]
         )
         payment_eligible = support_payment_ratio > p.cost_rate
-        eligible = (age_eligible | disabled) & payment_eligible
-        total_eligible = tax_unit.sum(eligible)
-        capped_eligible = min_(total_eligible, p.max_deductions)
+        eligible_person = (age_eligible | disabled) & payment_eligible
+        total_eligible_people = tax_unit.sum(eligible_person)
+        capped_eligible_people = min_(total_eligible_people, p.max_deduction)
         # To claim aged or disabled deduction, filers also have to maintain a household for family members
         # and provide more than one-half of the family member’s support for the year
-        return capped_eligible * p.amount
+        return capped_eligible_people * p.amount
