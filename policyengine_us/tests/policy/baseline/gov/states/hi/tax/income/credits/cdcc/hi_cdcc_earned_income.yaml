@@ -278,41 +278,6 @@
   output:
     hi_cdcc_earned_income: [1_000, 1_000, 10_000, 10_000]
 
-- name: married, two disabled/student, two disable child, two income smaller than 4_800
-  period: 2022
-  input:
-    people:
-      head:
-        is_tax_unit_head_or_spouse: true
-        is_disabled: true
-        is_full_time_student: false
-        earned_income: 10_000
-      spouse:
-        is_tax_unit_head_or_spouse: true
-        is_disabled: true
-        is_full_time_student: false
-        earned_income: 1_000
-      child1:
-        is_tax_unit_head_or_spouse: false
-        is_disabled: true
-        is_full_time_student: false
-        earned_income: 1_000
-      child2:
-        is_tax_unit_head_or_spouse: false
-        is_disabled: true
-        is_full_time_student: false
-        earned_income: 10_000
-    tax_units:
-      tax_unit:
-        members: [head, spouse, child1, child2]
-        count_cdcc_eligible: 3
-    households:
-      household:
-        members: [head, spouse, child1, child2]
-        state_code: HI
-  output:
-    hi_cdcc_earned_income: [10_000, 1_000, 1_000, 10_000]
-
 - name: single, not disabled/student
   period: 2022
   input:
@@ -377,3 +342,38 @@
         state_code: HI
   output:
     hi_cdcc_earned_income: [10_000, 4_800]
+
+- name: married, two disabled/student, two disable child, one child and one parent income smaller than 4_800
+  period: 2022
+  input:
+    people:
+      head:
+        is_tax_unit_head_or_spouse: true
+        is_disabled: true
+        is_full_time_student: false
+        earned_income: 10_000
+      spouse:
+        is_tax_unit_head_or_spouse: true
+        is_disabled: true
+        is_full_time_student: false
+        earned_income: 1_000
+      child1:
+        is_tax_unit_head_or_spouse: false
+        is_disabled: true
+        is_full_time_student: false
+        earned_income: 1_000
+      child2:
+        is_tax_unit_head_or_spouse: false
+        is_disabled: true
+        is_full_time_student: false
+        earned_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1, child2]
+        count_cdcc_eligible: 3
+    households:
+      household:
+        members: [head, spouse, child1, child2]
+        state_code: HI
+  output:
+    hi_cdcc_earned_income: [10_000, 4_800, 1_000, 10_000]

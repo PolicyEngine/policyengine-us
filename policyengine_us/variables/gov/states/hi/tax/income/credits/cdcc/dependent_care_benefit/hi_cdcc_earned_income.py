@@ -21,23 +21,32 @@ class hi_cdcc_earned_income(Variable):
             "is_full_time_student", period
         )
         income = person("earned_income", period)
-        increased_income = person("hi_cdcc_eligible_income_floor", period)
-        uncapped_income = where(
-            income_floor_eligible,
-            increased_income,
-            income,
-        )
+        income_floor = person("hi_cdcc_eligible_income_floor", period)
         # Edge case: both spouses were students or disabled:
         # If both filers are disabled / student below the floor limit,
         # only one person with larger earning gets elevated to the floor
         # If both filers are disabled / student but only one person is below the floor limit,
         # then the person below the floor limit will be elevated to the floor
-        below_income_floor = income_floor_eligible & (income < uncapped_income)
-        more_than_one_below_floor = person.tax_unit.sum(below_income_floor) > 1
-        smaller_income = min_(income, uncapped_income)
+        below_income_floor = income_floor_eligible & (income < income_floor)
+        no_more_than_one_below_floor = person.tax_unit.sum(below_income_floor) < 2 #new 
 
         return where(
-            more_than_one_below_floor,
-            smaller_income,
-            uncapped_income,
+            income_floor_eligible & no_more_than_one_below_floor, # new
+            max_(income, income_floor), # new
+            income,
         )
+        # what is earned_income indv ?
+        # what if two child income below income floor and one of dsiabled parent below zero?
+        #possible solution:
+        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+        income = where(head_or_spouse, income, np.inf)
+        below_income_floor = income_floor_eligible & (income < income_floor)
+        no_more_than_one_below_floor = person.tax_unit.sum(below_income_floor) < 2 #new 
+
+        return where(
+            income_floor_eligible & no_more_than_one_below_floor, # new
+            max_(income, income_floor), # new
+            income,
+        )
+        #remove lines in hi_cdcc_min_head_spouse_earned then or entirely delete it
+
