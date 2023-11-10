@@ -1,72 +1,19 @@
-- name: Regular exemptions 
+- name: Hawaii exemptions (disabled exemptions larger than regular exemptions)
   period: 2021
   input:
+    hi_regular_exemptions: 2_288
+    hi_disabled_exemptions: 8_144
     state_code: HI
-    head_is_disabled: false
-    spouse_is_disabled: false
-    age_head: 63
-    age_spouse: 63
-    tax_unit_dependents: 2
-  output:
-    hi_exemptions: 4_576
-  
-- name: Regular exemptions (aged)
-  period: 2021
-  input:
-    state_code: HI
-    head_is_disabled: false
-    spouse_is_disabled: false
-    age_head: 65
-    age_spouse: 66
-    tax_unit_dependents: 2    
-  output:
-    hi_exemptions: 6_864
-
-- name: Exemptions for disabled individual
-  period: 2021
-  input:
-    state_code: HI
-    head_is_disabled: true
-    spouse_is_disabled: false
-    age_head: 66
-    age_spouse: 63
-    tax_unit_dependents: 2 
   output:
     hi_exemptions: 8_144
-
-- name: Exemptions for taxpayer and spouse(nun-disabled spouse under 65) 
+  
+- name: Hawaii exemptions (disabled exemptions the same as regular exemptions)
   period: 2021
   input:
+    hi_regular_exemptions: 2_288
+    hi_disabled_exemptions: 2_288
     state_code: HI
-    head_is_disabled: true
-    spouse_is_disabled: false
-    age_head: 66
-    age_spouse: 64
-    tax_unit_dependents: 2 
   output:
-    hi_exemptions: 81_44
-
-- name: Exemptions for taxpayer and spouse(nun-disabled spouse aged 65 or over)
-  period: 2021
-  input:
-    state_code: HI
-    tax_unit_dependents: 2 
-    head_is_disabled: true
-    spouse_is_disabled: false
-    age_head: 66
-    age_spouse: 67
-  output:
-    hi_exemptions: 9_288
-
-- name: Exemptions for taxpayer and spouse(both disabled)
-  period: 2021
-  input:
-    state_code: HI
-    tax_unit_dependents: 4
-    head_is_disabled: true
-    spouse_is_disabled: true
-    age_head: 66
-    age_spouse: 68
-  output:
-    hi_exemptions: 14_000
+    hi_exemptions: 2_288
+  
     
