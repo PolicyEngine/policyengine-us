@@ -4,7 +4,7 @@
     state_code: NM
     age: 64
     medical_expense: 30_000
-    dsi: false
+    head_is_dependent_elsewhere: false
   output:
     nm_medical_expense_credit: 0
 
@@ -15,7 +15,7 @@
     age: 65
     medical_expense: 27_999
     filing_status: JOINT
-    dsi: false
+    head_is_dependent_elsewhere: false
   output:
     nm_medical_expense_credit: 0
 
@@ -26,7 +26,7 @@
     age: 65
     medical_expense: 28_000
     filing_status: JOINT
-    dsi: false
+    head_is_dependent_elsewhere: false
   output:
     nm_medical_expense_credit: 2_800
 
@@ -37,7 +37,7 @@
     age: 65
     medical_expense: 28_000
     filing_status: SEPARATE
-    dsi: false
+    head_is_dependent_elsewhere: false
   output:
     nm_medical_expense_credit: 1_400
 
@@ -48,7 +48,7 @@
     age: 65
     medical_expense: 40_000
     filing_status: SINGLE
-    dsi: false
+    head_is_dependent_elsewhere: false
   output:
     nm_medical_expense_credit: 2_800
 
@@ -59,6 +59,6 @@
     age: 65
     medical_expense: 40_000
     filing_status: SINGLE
-    dsi: true
+    head_is_dependent_elsewhere: true
   output:
     nm_medical_expense_credit: 0

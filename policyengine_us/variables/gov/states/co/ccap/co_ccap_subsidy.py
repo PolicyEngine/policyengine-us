@@ -5,9 +5,9 @@ class co_ccap_subsidy(Variable):
     value_type = float
     entity = SPMUnit
     label = "Colorado Child Care Assistance Program"
-    reference = ""
+    unit = USD
     definition_period = MONTH
-    defined_for = StateCode.CO
+    defined_for = "co_ccap_eligible"
 
     def formula(spm_unit, period, parameters):
         expenses = add(
