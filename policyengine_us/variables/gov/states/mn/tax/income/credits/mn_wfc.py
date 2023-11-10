@@ -18,7 +18,7 @@ class mn_wfc(Variable):
         # determine count of eligible dependents using EITC rules
         count = tax_unit("eitc_child_count", period)
         # determine pre-phaseout credit amount using EITC earnings
-        earnings = max_(0, tax_unit("filer_earned", period))
+        earnings = tax_unit("filer_adjusted_earnings", period)
         capped_earn = min_(earnings, wfc.phase_in.earnings_maximum.calc(count))
         amount = capped_earn * wfc.phase_in.rate.calc(count)
         # determine phaseout reduction
