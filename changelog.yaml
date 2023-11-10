@@ -4869,3 +4869,86 @@
     fixed:
     - Added USD metadata to co_ccap_subsidy.
   date: 2023-11-03 04:08:02
+- bump: minor
+  changed:
+  - Rename taxcalc variables to be consistent with this project's coding style and
+    to be in more sensible directory locations.
+  changes:
+    added:
+    - The `net_capital_gains` variable (formerly `c23650`).
+    - The `gov/irs/capital_gains/loss_limit.yaml` parameter file.
+    - The `loss_limited_net_capital_gains` variable (formerly `c01000`) that uses
+      the `loss_limit` parameter.
+  date: 2023-11-03 20:12:54
+  removed:
+  - Formula code that avoids `sep` variable that had no formula, and therefore, was
+    likely to cause bugs.
+- bump: minor
+  changes:
+    fixed:
+    - ZIP codes are sampled from the state, and axes-containing simulations don't
+      vary the ZIP code.
+  date: 2023-11-03 20:30:48
+- bump: patch
+  changes:
+    fixed:
+    - ZIP code bug for households with axes.
+  date: 2023-11-03 20:53:44
+- bump: patch
+  changes:
+    fixed:
+    - Remove obsolete taxcalc-related alias variable names.
+    - Rename `earned_income_tax_credit` to `eitc` to be more consistent with variable
+      names for other federal credits.
+  date: 2023-11-04 21:02:59
+- bump: patch
+  changes:
+    fixed:
+    - pell_grant_efc now can not be negative
+  date: 2023-11-04 21:16:41
+- bump: patch
+  changes:
+    fixed:
+    - Presence of unneeded taxcalc-related logic in the `system.py` module.
+  date: 2023-11-05 21:04:11
+- bump: patch
+  changes:
+    fixed:
+    - Re-added earned_income_tax_credit variable alias.
+  date: 2023-11-06 15:27:19
+- bump: minor
+  changes:
+    added:
+    - West Virginia low-income family tax credit.
+  date: 2023-11-06 22:47:48
+- bump: minor
+  changes:
+    fixed:
+    - 2021 Maine income tax parameters.
+  date: 2023-11-07 23:06:52
+- bump: minor
+  changes:
+    added:
+    - Idaho non-refundable credits file.
+  date: 2023-11-08 01:44:09
+- bump: minor
+  changes:
+    added:
+    - South Carolina retirement deduction.
+    - South Carolina military retirement deduction.
+  date: 2023-11-08 21:44:31
+- bump: minor
+  changes:
+    added:
+    - Alabama itemized deductions.
+  date: 2023-11-09 00:11:58
+- bump: patch
+  changes:
+    fixed:
+    - Disable Maine Tax.
+  date: 2023-11-09 01:19:56
+- bump: minor
+  changes:
+    added:
+    - Maryland hundred year subtraction.
+  date: 2023-11-09 16:00:28
