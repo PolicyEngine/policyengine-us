@@ -19,6 +19,6 @@ class mi_interest_dividends_capital_gains_deduction_eligible(Variable):
             period
         ).gov.states.mi.tax.income.deductions.interest_dividends_capital_gains
 
-        age_older = tax_unit("greater_age_head_spouse", period)
-        birth_year = -(age_older - period.start.year)
-        return birth_year < p.birth_year
+        older_spouse_birth_year = tax_unit("older_spouse_birth_year", period)
+
+        return older_spouse_birth_year < p.birth_year

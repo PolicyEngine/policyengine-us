@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class mi_retirement_benefits_deduction_tier_three_ss_exempt_employment(
+class mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired(
     Variable
 ):
     value_type = float
@@ -19,17 +19,20 @@ class mi_retirement_benefits_deduction_tier_three_ss_exempt_employment(
     def formula(tax_unit, period, parameters):
         p = parameters(
             period
-        ).gov.states.mi.tax.income.deductions.retirement_benefits.tier_three.ss_exempt_employment
+        ).gov.states.mi.tax.income.deductions.retirement_benefits.tier_three.ss_exempt.not_retired
 
         eligible_people = tax_unit(
-            "mi_retirement_benefits_deduction_tier_three_ss_exempt_employment_eligible",
+            "mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired_eligible_count",
             period,
         )
 
         person = tax_unit.members
         uncapped_pension_income = person("taxable_pension_income", period)
+        is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
 
         # Head and spouse both are eligible to receive an equal deduction amount
-        rbd3_ssa_amount = p.amount * eligible_people
+        cap = p.amount * eligible_people
 
-        return min_(tax_unit.sum(uncapped_pension_income), rbd3_ssa_amount)
+        return min_(
+            tax_unit.sum(uncapped_pension_income * is_head_or_spouse), cap
+        )

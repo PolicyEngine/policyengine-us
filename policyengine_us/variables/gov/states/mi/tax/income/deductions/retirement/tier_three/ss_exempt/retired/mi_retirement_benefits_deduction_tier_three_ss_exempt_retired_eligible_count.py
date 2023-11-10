@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class mi_retirement_benefits_deduction_tier_three_ssa_retired_eligible(
+class mi_retirement_benefits_deduction_tier_three_ss_exempt_retired_eligible_count(
     Variable
 ):
     value_type = int
@@ -18,7 +18,7 @@ class mi_retirement_benefits_deduction_tier_three_ssa_retired_eligible(
     def formula(tax_unit, period, parameters):
         p = parameters(
             period
-        ).gov.states.mi.tax.income.deductions.retirement_benefits.tier_three.ssa_retired
+        ).gov.states.mi.tax.income.deductions.retirement_benefits.tier_three.ss_exempt.retired
 
         person = tax_unit.members
 
@@ -26,7 +26,7 @@ class mi_retirement_benefits_deduction_tier_three_ssa_retired_eligible(
             person("year_of_retirement", period) <= p.retirement_year
         ) & (person("year_of_retirement", period) > 0)
 
-        ssa_eligible = (
+        has_retirement_benefits_from_ssa_exempt_employment = (
             person("retirement_benefits_from_ssa_exempt_employment", period)
             > 0
         )
@@ -34,7 +34,9 @@ class mi_retirement_benefits_deduction_tier_three_ssa_retired_eligible(
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
 
         eligible_person = (
-            ssa_eligible * retirement_eligible * is_head_or_spouse
+            has_retirement_benefits_from_ssa_exempt_employment
+            * retirement_eligible
+            * is_head_or_spouse
         )
 
         return tax_unit.sum(eligible_person)

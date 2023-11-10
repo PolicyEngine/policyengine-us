@@ -18,7 +18,6 @@ class mi_standard_deduction_tier_three_eligible(Variable):
             period
         ).gov.states.mi.tax.income.deductions.standard.tier_three
 
-        age_older = tax_unit("greater_age_head_spouse", period)
-        sd3_birth_year = -(age_older - period.start.year)
+        older_spouse_birth_year = tax_unit("older_spouse_birth_year", period)
 
-        return p.birth_year.calc(sd3_birth_year)
+        return p.birth_year.calc(older_spouse_birth_year)

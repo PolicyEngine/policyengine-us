@@ -21,25 +21,27 @@ class mi_standard_deduction_tier_two(Variable):
         filing_status = tax_unit("filing_status", period)
 
         ssa_eligible = tax_unit(
-            "mi_standard_deduction_tier_two_increase_eligible", period
+            "mi_standard_deduction_tier_two_increase_eligible_count", period
         )
 
         person = tax_unit.members
         uncapped_pension_income = person("taxable_pension_income", period)
-        military_retirement_pay = person("military_retirement_pay", period)
-        military_service_income = person("military_service_income", period)
+        military_eligible_pay = add(
+            person,
+            period,
+            ["military_retirement_pay", "military_service_income"],
+        )
 
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
 
-        reductions = tax_unit.sum(
-            (military_retirement_pay + military_service_income)
-            * is_head_or_spouse
-        )
-        sd2_amount = max_(
-            p.amount.capped_deduction[filing_status]
+        cap_reduction = tax_unit.sum(military_eligible_pay * is_head_or_spouse)
+        cap = max_(
+            p.amount.base[filing_status]
             + p.amount.increase * ssa_eligible
-            - reductions,
+            - cap_reduction,
             0,
         )
 
-        return min_(tax_unit.sum(uncapped_pension_income), sd2_amount)
+        return min_(
+            tax_unit.sum(uncapped_pension_income * is_head_or_spouse), cap
+        )

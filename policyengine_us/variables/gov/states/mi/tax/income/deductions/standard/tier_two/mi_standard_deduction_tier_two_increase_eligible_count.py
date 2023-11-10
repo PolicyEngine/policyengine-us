@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class mi_standard_deduction_tier_two_increase_eligible(Variable):
+class mi_standard_deduction_tier_two_increase_eligible_count(Variable):
     value_type = int
     entity = TaxUnit
     label = "Number of eligible people for the Michigan tier two standard deduction increase"
@@ -25,7 +25,7 @@ class mi_standard_deduction_tier_two_increase_eligible(Variable):
         )
 
         # Line 23C & 23G from the 2022 tax form
-        ssa_eligible = (
+        has_retirement_benefits_from_ssa_exempt_employment = (
             person("retirement_benefits_from_ssa_exempt_employment", period)
             > 0
         )
@@ -33,7 +33,9 @@ class mi_standard_deduction_tier_two_increase_eligible(Variable):
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
 
         eligible_person = (
-            retirement_eligible * ssa_eligible * is_head_or_spouse
+            retirement_eligible
+            & has_retirement_benefits_from_ssa_exempt_employment
+            & is_head_or_spouse
         )
 
         return tax_unit.sum(eligible_person)

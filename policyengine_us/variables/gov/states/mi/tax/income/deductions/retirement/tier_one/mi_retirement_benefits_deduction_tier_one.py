@@ -26,8 +26,11 @@ class mi_retirement_benefits_deduction_tier_one(Variable):
 
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
 
-        rbd1_amount = p.amount[filing_status] - tax_unit.sum(
+        cap_reduction = tax_unit.sum(
             military_retirement_pay * is_head_or_spouse
         )
+        cap = p.amount[filing_status] - cap_reduction
 
-        return min_(tax_unit.sum(uncapped_pension_income), rbd1_amount)
+        return min_(
+            tax_unit.sum(uncapped_pension_income * is_head_or_spouse), cap
+        )

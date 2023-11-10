@@ -28,20 +28,18 @@ class mi_interest_dividends_capital_gains_deduction(Variable):
         # The maximum amount of the deduction will be reduced by the amount of the
         # deduction claimed for retirement or pension benefits under
         # subdivision (e) or a deduction claimed under subdivision (f)(i), (ii), (iv), or (v)
-        military_retirement_pay = person("military_retirement_pay", period)
-        taxable_pension_income = person("taxable_pension_income", period)
+        reductions_pay = add(
+            person,
+            period,
+            ["military_retirement_pay", "taxable_pension_income"],
+        )
         elderly_disabled_credit = tax_unit("elderly_disabled_credit", period)
 
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
 
         reductions = tax_unit.sum(
-            (
-                military_retirement_pay
-                + taxable_pension_income
-                + elderly_disabled_credit
-            )
-            * is_head_or_spouse
+            (reductions_pay + elderly_disabled_credit) * is_head_or_spouse
         )
-        idcg_amount = max_(0, p.amount[filing_status] - reductions)
+        amount = max_(0, p.amount[filing_status] - reductions)
 
-        return min_(idcg_amount, income)
+        return min_(amount, income)

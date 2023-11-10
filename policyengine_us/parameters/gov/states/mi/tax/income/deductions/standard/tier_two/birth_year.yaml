@@ -1,9 +1,22 @@
-description: Michigan provides a standard deduction addition for recipients born before this year. 
-values:
-  2017-01-01: 1952
+description: Michigan provides a tier two standard deduction for recipients born these years. 
+brackets:
+  - threshold:
+      2017-01-01: 0
+    amount:
+      2017-01-01: false
+  - threshold:
+      2017-01-01: 1946
+    amount:
+      2017-01-01: true
+  - threshold:
+      2017-01-01: 1953
+    amount:
+      2017-01-01: false
 metadata:
-  unit: year
-  label: Michigan standard deduction tier 2 age min threshold
+  type: single_amount
+  amount_unit: bool
+  threshold_unit: year
+  label: Michigan tier two standard deduction birth year range
   reference:
     - title: Michigan Legal Code Section 206.30 - (9)(b)&(c)
       href: http://legislature.mi.gov/doc.aspx?mcl-206-30

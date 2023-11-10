@@ -22,24 +22,25 @@ class mi_standard_deduction_tier_three(Variable):
 
         person = tax_unit.members
         uncapped_pension_income = person("taxable_pension_income", period)
-        military_retirement_pay = person("military_retirement_pay", period)
-        military_service_income = person("military_service_income", period)
-        taxable_social_security = person("taxable_social_security", period)
+        reductions = add(
+            person,
+            period,
+            [
+                "military_retirement_pay",
+                "military_service_income",
+                "taxable_social_security",
+            ],
+        )
         mi_exemptions = tax_unit("mi_exemptions", period)
 
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
 
-        reductions = tax_unit.sum(
-            (
-                military_retirement_pay
-                + military_service_income
-                + taxable_social_security
-            )
-            * is_head_or_spouse
-        )
-        sd3_amount = max_(
-            p.amount[filing_status] - reductions - mi_exemptions,
+        cap_reduction = tax_unit.sum(reductions * is_head_or_spouse)
+        cap = max_(
+            p.amount[filing_status] - cap_reduction - mi_exemptions,
             0,
         )
 
-        return min_(tax_unit.sum(uncapped_pension_income), sd3_amount)
+        return min_(
+            tax_unit.sum(uncapped_pension_income * is_head_or_spouse), cap
+        )

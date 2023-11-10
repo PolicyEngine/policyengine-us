@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class mi_retirement_benefits_deduction_tier_three_ssa_retired(Variable):
+class mi_retirement_benefits_deduction_tier_three_ss_exempt_retired(Variable):
     value_type = float
     entity = TaxUnit
     label = "Michigan retirement benefits deduction for tier three qualifying both SSA and retirement year"
@@ -17,16 +17,17 @@ class mi_retirement_benefits_deduction_tier_three_ssa_retired(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(
             period
-        ).gov.states.mi.tax.income.deductions.retirement_benefits.tier_three.ssa_retired
+        ).gov.states.mi.tax.income.deductions.retirement_benefits.tier_three.ss_exempt.retired
 
         ssa_retired_eligible_person = tax_unit(
-            "mi_retirement_benefits_deduction_tier_three_ssa_retired_eligible",
+            "mi_retirement_benefits_deduction_tier_three_ss_exempt_retired_eligible_count",
             period,
         )
 
         filing_status = tax_unit("filing_status", period)
         person = tax_unit.members
         uncapped_pension_income = person("taxable_pension_income", period)
+        is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
 
         # Where one or two people in the household qualify determines the amount of deduction
         qualified_amount = where(
@@ -34,10 +35,12 @@ class mi_retirement_benefits_deduction_tier_three_ssa_retired(Variable):
             p.single_qualifying_amount[filing_status],
             p.both_qualifying_amount[filing_status],
         )
-        rbd3_retired_amount = where(
+        cap = where(
             ssa_retired_eligible_person == 0,
             0,
             qualified_amount,
         )
 
-        return min_(tax_unit.sum(uncapped_pension_income), rbd3_retired_amount)
+        return min_(
+            tax_unit.sum(uncapped_pension_income * is_head_or_spouse), cap
+        )

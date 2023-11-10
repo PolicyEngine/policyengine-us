@@ -13,7 +13,7 @@
     people:
       person1:
         taxable_pension_income: 40_000
-        retirement_benefits_from_employment_exempt_from_social_security: 1_000
+        retirement_benefits_from_ssa_exempt_employment: 1_000
     tax_units:
       tax_unit:
         greater_age_head_spouse: 66
@@ -147,13 +147,13 @@
   output: # 40000 + 2 * 15000 - 1000 - 5000 - 2000 - 3000 < 40000 + 30000
     mi_standard_deduction_and_pension_benefit: 59_000
 
-- name: 2022 joint filer and their spouse are at the tier 3 retirement and pension benefits threshold, one receive retirement benefits from employment exempt from Social Security, one receive retirement benefits from SSA employment exempt and retired before 2013
+- name: 2022 joint filer and their spouse are at the tier 3 retirement and pension benefits threshold, both receive retirement benefits from SSA employment exempt and one retired before 2013
   period: 2022
   input:
     people:
       person1:
         taxable_pension_income: 20_000
-        retirement_benefits_from_employment_exempt_from_social_security: 2_000
+        retirement_benefits_from_ssa_exempt_employment: 2_000
         is_tax_unit_head_or_spouse: true
       person2:
         taxable_pension_income: 40_000
@@ -168,7 +168,7 @@
     household:
       members: [person1, person2]
       state_code: MI
-  output: # 15000 < 55000 < 20000 + 40000
+  output: # 30000 < 55000 < 20000 + 40000
     mi_standard_deduction_and_pension_benefit: 55_000
 
 - name: 2022 joint filer and their spouse are at the tier 2 standard deduction age threshold, and one receive retirement benefits from employment exempt from Social Security
