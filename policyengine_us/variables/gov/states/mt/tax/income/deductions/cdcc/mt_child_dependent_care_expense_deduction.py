@@ -20,4 +20,4 @@ class mt_child_dependent_care_expense_deduction(Variable):
             "mt_child_dependent_care_expense_deduction_eligible_children",
             period,
         )
-        return min_(p.amount.calc(eligible_children), reduced_expense)
+        return min_(p.amount.calc(eligible_children), reduced_expenses)
