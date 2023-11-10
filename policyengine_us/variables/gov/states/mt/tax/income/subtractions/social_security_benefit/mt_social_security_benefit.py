@@ -10,29 +10,22 @@ class mt_social_security_benefit(Variable):
     reference = (
         "https://mtrevenue.gov/wp-content/uploads/mdocs/form%202%202021.pdf"
     )
-    defined_for = StateCode.MT
+    defined_for = "mt_social_security_benefit_eligible"
 
     def formula(tax_unit, period, parameters):
         # specify parameters
         filing_status = tax_unit("filing_status", period)
         p = parameters(period).gov.states.mt.tax.income.subtractions
-        total_benefit_fraction1 = p.social_security.total_benefit_fraction1
-        total_benefit_fraction2 = p.social_security.total_benefit_fraction2
-        modified_income_cap = p.social_security.modified_income_cap[
+        exceeding_income = tax_unit("mt_social_security_benefit_exceeding_income", period) # line 11
+        total_benefit_fraction1 = p.social_security.amount # 0.5
+        total_benefit_fraction2 = p.social_security.benefit # 0.85
+        exceeding_income_cap = p.social_security.base_amount[
             filing_status
-        ]
-        exceeding_income_cap = p.social_security.exceeding_income_cap[
-            filing_status
-        ]
-        exceeding_income_fraction = p.social_security.exceeding_income_fraction
-        extra_income_fraction = p.social_security.extra_income_fraction
+        ] # line 12
+        exceeding_income_fraction = p.social_security.exceeding_income_fraction # 0.5
+        extra_income_fraction = p.social_security.extra_income_fraction # 0.85
 
         net_benefits = tax_unit.spm_unit("spm_unit_benefits", period)
-        modified_income = tax_unit("mt_modified_income", period)
-
-        # if modified_income is less than cap, return 0
-        exceeding_income = modified_income - modified_income_cap
-        eligibility = exceeding_income >= 0
 
         # Calculate the Montana Taxable Social Security Benefits
         extra_income = max_(
@@ -49,6 +42,6 @@ class mt_social_security_benefit(Variable):
             extra_income * extra_income_fraction + capped_benefit_amount
         )  # Line 18
 
-        return eligibility * min_(
+        return min_(
             additional_benefit_amount, net_benefits * total_benefit_fraction2
         )
