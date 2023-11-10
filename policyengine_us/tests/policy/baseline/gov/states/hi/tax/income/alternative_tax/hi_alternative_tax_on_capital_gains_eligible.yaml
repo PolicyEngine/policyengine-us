@@ -35,11 +35,11 @@
     hi_alternative_tax_on_capital_gains_eligible: false
 
 - name: Hawaii eligible alternative tax on capital gains for widow
-  period: 2021
+  period: 2023
   input:
     state_code: HI
     filing_status: WIDOW
     taxable_income: 50_000
   output:
-    hi_alternative_tax_on_capital_gains_eligible: true
+    hi_alternative_tax_on_capital_gains_eligible: false
 
