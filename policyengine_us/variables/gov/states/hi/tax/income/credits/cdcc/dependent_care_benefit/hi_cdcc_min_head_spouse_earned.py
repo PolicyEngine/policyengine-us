@@ -16,12 +16,20 @@ class hi_cdcc_min_head_spouse_earned(Variable):
     )
 
     def formula(tax_unit, period, parameters):
-        # Schedule X PART II:
-        # line 8 & line 9
+        # Head or spouse are eligible for an income floor if disabled or a student
+        # income_floor_eligible = person("is_disabled", period) | person(
+        #     "is_full_time_student", period
+        # )
         person = tax_unit.members
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        hi_cdcc_earned_income = person("hi_cdcc_earned_income", period)
-        # remove impact of dependent income by assigning np.inf
-        return tax_unit.min(
-            where(head_or_spouse, hi_cdcc_earned_income, np.inf)
-        )
+        income = person("earned_income", period) 
+        dependent_excluded_income = where(head_or_spouse, income, np.inf)
+        income_floor = tax_unit.max(person("hi_cdcc_eligible_income_floor", period))
+        total_income_floor_eligible_people = tax_unit.sum(income_floor)
+        # Edge case: both spouses were students or disabled:
+        # If both filers are disabled / student below the floor limit,
+        # only one person with larger earning gets elevated to the floor
+        # If both filers are disabled / student but only one person is below the floor limit,
+        # then the person below the floor limit will be elevated to the floor
+        smaller_earnings = tax_unit.min(dependent_excluded_income)
+        return where(total_income_floor_eligible_people == 1, income_floor, smaller_earnings)
