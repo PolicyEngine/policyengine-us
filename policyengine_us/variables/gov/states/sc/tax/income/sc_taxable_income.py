@@ -9,5 +9,5 @@ class sc_taxable_income(Variable):
     unit = USD
     definition_period = YEAR
 
-    adds = ["taxable_income", "sc_additions"]
+    adds = ["sc_taxable_income_less_salt", "sc_additions"]
     subtracts = ["sc_subtractions"]
