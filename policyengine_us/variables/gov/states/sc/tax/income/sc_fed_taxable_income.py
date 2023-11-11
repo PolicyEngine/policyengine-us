@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class sc_taxable_income_less_salt(Variable):
+class sc_fed_taxable_income(Variable):
     value_type = float
     entity = TaxUnit
-    label = "South Carolina taxable income exculde salt"
+    label = "South Carolina federal taxable income exculde salt"
     unit = USD
     definition_period = YEAR
 
