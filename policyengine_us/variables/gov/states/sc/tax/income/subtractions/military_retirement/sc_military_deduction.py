@@ -12,11 +12,8 @@ class sc_military_deduction(Variable):
         "https://dor.sc.gov/forms-site/Forms/IITPacket_2021.pdf#page=17",
     )
     definition_period = YEAR
-<<<<<<< HEAD
-=======
 
     adds = [
         "sc_military_deduction_indv",  # p4, p5
         "sc_military_deduction_survivors",  # p6
     ]
->>>>>>> 533c61a6806d740af2e0662d3fdf3a803844c774
