@@ -11,8 +11,6 @@ class la_eitc(Variable):
     defined_for = StateCode.LA
 
     def formula(tax_unit, period, parameters):
-        federal_eitc = tax_unit("earned_income_tax_credit", period)
-        match_percent = parameters(
-            period
-        ).gov.states.la.tax.income.credits.eitc.match
-        return federal_eitc * match_percent
+        federal_eitc = tax_unit("eitc", period)
+        p = parameters(period).gov.states.la.tax.income.credits
+        return federal_eitc * p.eitc.match
