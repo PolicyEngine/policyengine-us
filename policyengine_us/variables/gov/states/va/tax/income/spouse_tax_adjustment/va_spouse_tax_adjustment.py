@@ -13,29 +13,32 @@ class va_spouse_tax_adjsutment(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.va.tax.income.spouse_head_adjustment
         p1 = parameters(period).gov.states.va.tax.income
-
-        min_eligibility_value = tax_unit.min_(
-            person("is_tax_unit_head_or_spouse", period)
-            * eligibility_requirement
-        )
+        exemptions = person("va_agi_less_exemptions_indv", period)
+        smaller_exemption = tax_unit.min(exemptions)
         va_taxable_income = tax_unit("va_taxable_income", period)
-
-        temp_value = max_(va_taxable_income - min_eligibility_value, 0)
-        half_of_taxable_income = va_taxable_income / p.divider
-        min_temp = p1.rates * min_(
-            min_eligibility_value, half_of_taxable_income
+        taxable_income_less_exemption = max_(
+            va_taxable_income - smaller_exemption, 0
         )
-        max_temp = p1.rates * max_(temp_value, half_of_taxable_income)
-        sum_amount = min_temp + max_temp
+
+        half_of_taxable_income = va_taxable_income / p.divider
+        smaller_temp = p1.rates * min_(
+            smaller_exemption, half_of_taxable_income
+        )
+        larger_temp = p1.rates * max_(
+            taxable_income_less_exemption, half_of_taxable_income
+        )
+        sum_temp = smaller_temp + larger_temp
 
         tax_amount = tax_unit("va_income_tax", period)
 
         adjustment_limit_condition = (
-            min_eligibility_value
+            smaller_exemption
             > p.threshold & tax_unit("va_taxable_income", period)
+            > p.taxable_income_threshold
         )
 
         adjustment_amount = tax_amount - sum_amount
+
         tax_adjustment_amount = tax_unit(
             "va_spouse_adjustment_qualification", period
         ) * min_(
