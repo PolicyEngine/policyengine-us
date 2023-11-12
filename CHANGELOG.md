@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.527.0] - 2023-11-12 00:23:31
+
+### Added
+
+- 2024 income tax brackets.
+
 ## [0.526.0] - 2023-11-10 15:59:43
 
 ### Added
@@ -5866,6 +5872,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.527.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.526.0...0.527.0
 [0.526.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.525.0...0.526.0
 [0.525.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.524.0...0.525.0
 [0.524.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.523.1...0.524.0
