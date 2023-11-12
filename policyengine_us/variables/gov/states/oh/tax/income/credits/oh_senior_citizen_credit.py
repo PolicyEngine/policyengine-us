@@ -23,9 +23,7 @@ class oh_senior_citizen_credit(Variable):
 
         age = person("age", period)
         elderly = age >= p.age_threshold
-        eligible = tax_unit.sum(
-            has_not_taken_lump_sum_distribution & elderly 
-        )
+        eligible = tax_unit.sum(has_not_taken_lump_sum_distribution & elderly)
         credit_amount = p.agi_limit.calc(tax_unit("oh_agi", period))
 
         return eligible * credit_amount
