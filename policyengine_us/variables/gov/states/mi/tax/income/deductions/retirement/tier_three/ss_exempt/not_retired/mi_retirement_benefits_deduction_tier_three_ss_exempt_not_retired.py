@@ -6,7 +6,7 @@ class mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired(
 ):
     value_type = float
     entity = TaxUnit
-    label = "Michigan tier three retirement benefits deduction for employment exempt from social security"
+    label = "Michigan non-retired tier three retirement benefits deduction"
     unit = USD
     definition_period = YEAR
     reference = (

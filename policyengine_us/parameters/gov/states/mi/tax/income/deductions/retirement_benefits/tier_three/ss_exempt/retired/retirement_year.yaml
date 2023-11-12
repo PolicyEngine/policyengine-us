@@ -1,9 +1,10 @@
-description: Michigan allows for filer to claim the tier three pension benefit if they retired after this year. 
+description: Michigan limits the tier three pension benefit to filers, retired after this year. 
 values:
   2017-01-01: 2013
 metadata:
   unit: year
-  label: Michigan tier 3 retirement benefit retirement year
+  period: year  
+  label: Michigan tier three retirement benefit retirement year  
   reference:
     - title: Michigan Legal Code Section 206.30 - (9)(c)
       href: http://legislature.mi.gov/doc.aspx?mcl-206-30

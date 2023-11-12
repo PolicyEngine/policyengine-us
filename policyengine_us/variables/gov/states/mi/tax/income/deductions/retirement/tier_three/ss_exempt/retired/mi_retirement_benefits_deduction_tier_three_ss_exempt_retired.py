@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class mi_retirement_benefits_deduction_tier_three_ss_exempt_retired(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Michigan retirement benefits deduction for tier three qualifying both SSA and retirement year"
+    label = "Michigan retired tier three retirement benefits deduction"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -19,7 +19,7 @@ class mi_retirement_benefits_deduction_tier_three_ss_exempt_retired(Variable):
             period
         ).gov.states.mi.tax.income.deductions.retirement_benefits.tier_three.ss_exempt.retired
 
-        ssa_retired_eligible_person = tax_unit(
+        ss_retired_eligible_person = tax_unit(
             "mi_retirement_benefits_deduction_tier_three_ss_exempt_retired_eligible_count",
             period,
         )
@@ -31,12 +31,12 @@ class mi_retirement_benefits_deduction_tier_three_ss_exempt_retired(Variable):
 
         # Where one or two people in the household qualify determines the amount of deduction
         qualified_amount = where(
-            ssa_retired_eligible_person == 1,
+            ss_retired_eligible_person == 1,
             p.single_qualifying_amount[filing_status],
             p.both_qualifying_amount[filing_status],
         )
         cap = where(
-            ssa_retired_eligible_person == 0,
+            ss_retired_eligible_person == 0,
             0,
             qualified_amount,
         )

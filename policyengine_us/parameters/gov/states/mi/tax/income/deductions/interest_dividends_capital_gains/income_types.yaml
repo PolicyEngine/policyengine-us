@@ -1,4 +1,4 @@
-description: Michigan provides a interest, dividends, and capital gains deduction of this amount if you or your spouse are of qualifying age.
+description: Michigan provides a interest, dividends, and capital gains deduction of this amount, based on filing status.  
 values:
   2021-01-01:
     - taxable_interest_income
@@ -8,6 +8,8 @@ values:
     - capital_gains
 metadata:
   unit: list
+  label: Michigan interest, dividends, and capital gains deduction income types  
+  period: year
   reference:
     - title: Michigan Legal Code Section 206.30 - (1)(p)
       href: http://legislature.mi.gov/doc.aspx?mcl-206-30

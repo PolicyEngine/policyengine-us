@@ -20,7 +20,7 @@ class mi_standard_deduction_tier_two(Variable):
         ).gov.states.mi.tax.income.deductions.standard.tier_two
         filing_status = tax_unit("filing_status", period)
 
-        ssa_eligible = tax_unit(
+        eligible_people = tax_unit(
             "mi_standard_deduction_tier_two_increase_eligible_count", period
         )
 
@@ -35,10 +35,9 @@ class mi_standard_deduction_tier_two(Variable):
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
 
         cap_reduction = tax_unit.sum(military_eligible_pay * is_head_or_spouse)
+        increased_amount = p.amount.increase * eligible_people
         cap = max_(
-            p.amount.base[filing_status]
-            + p.amount.increase * ssa_eligible
-            - cap_reduction,
+            p.amount.base[filing_status] + increased_amount - cap_reduction,
             0,
         )
 

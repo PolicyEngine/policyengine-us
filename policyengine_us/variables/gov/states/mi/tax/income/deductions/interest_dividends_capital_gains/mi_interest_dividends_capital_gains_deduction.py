@@ -40,6 +40,6 @@ class mi_interest_dividends_capital_gains_deduction(Variable):
         reductions = tax_unit.sum(
             (reductions_pay + elderly_disabled_credit) * is_head_or_spouse
         )
-        amount = max_(0, p.amount[filing_status] - reductions)
+        reduced_amount = max_(0, p.amount[filing_status] - reductions)
 
-        return min_(amount, income)
+        return min_(reduced_amount, income)

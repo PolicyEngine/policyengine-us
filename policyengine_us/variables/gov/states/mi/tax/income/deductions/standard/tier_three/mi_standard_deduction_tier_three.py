@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class mi_standard_deduction_tier_three(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Michigan standard deduction"
+    label = "Michigan tier three standard deduction"
     unit = USD
     definition_period = YEAR
     reference = (

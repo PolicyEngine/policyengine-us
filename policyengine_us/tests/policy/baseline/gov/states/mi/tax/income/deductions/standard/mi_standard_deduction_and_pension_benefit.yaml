@@ -13,7 +13,7 @@
     people:
       person1:
         taxable_pension_income: 40_000
-        retirement_benefits_from_ssa_exempt_employment: 1_000
+        retirement_benefits_from_ss_exempt_employment: 1_000
     tax_units:
       tax_unit:
         greater_age_head_spouse: 66
@@ -94,7 +94,7 @@
       person1:
         taxable_pension_income: 20_000
         year_of_retirement: 2012
-        retirement_benefits_from_ssa_exempt_employment: 1_000
+        retirement_benefits_from_ss_exempt_employment: 1_000
         military_retirement_pay: 1_000
         military_service_income: 5_000
         is_tax_unit_head_or_spouse: true
@@ -125,14 +125,14 @@
       person1:
         taxable_pension_income: 40_000
         year_of_retirement: 2010
-        retirement_benefits_from_ssa_exempt_employment: 2_000
+        retirement_benefits_from_ss_exempt_employment: 2_000
         military_retirement_pay: 1_000
         military_service_income: 5_000
         is_tax_unit_head_or_spouse: true
       person2:
         taxable_pension_income: 30_000
         year_of_retirement: 2012
-        retirement_benefits_from_ssa_exempt_employment: 4_000
+        retirement_benefits_from_ss_exempt_employment: 4_000
         military_retirement_pay: 2_000
         military_service_income: 3_000
         is_tax_unit_head_or_spouse: true
@@ -153,11 +153,11 @@
     people:
       person1:
         taxable_pension_income: 20_000
-        retirement_benefits_from_ssa_exempt_employment: 2_000
+        retirement_benefits_from_ss_exempt_employment: 2_000
         is_tax_unit_head_or_spouse: true
       person2:
         taxable_pension_income: 40_000
-        retirement_benefits_from_ssa_exempt_employment: 4_000
+        retirement_benefits_from_ss_exempt_employment: 4_000
         year_of_retirement: 2010
         is_tax_unit_head_or_spouse: true
     tax_units:
@@ -178,7 +178,7 @@
       person1:
         taxable_pension_income: 40_000
         year_of_retirement: 2010
-        retirement_benefits_from_ssa_exempt_employment: 2_000
+        retirement_benefits_from_ss_exempt_employment: 2_000
         military_retirement_pay: 1_000
         military_service_income: 5_000
         is_tax_unit_head_or_spouse: true
@@ -205,7 +205,7 @@
       person1:
         taxable_pension_income: 40_000
         year_of_retirement: 2010
-        retirement_benefits_from_ssa_exempt_employment: 2_000
+        retirement_benefits_from_ss_exempt_employment: 2_000
         military_retirement_pay: 1_000
         military_service_income: 5_000
         is_tax_unit_head_or_spouse: true
@@ -217,7 +217,7 @@
       person3:
         taxable_pension_income: 30_000
         year_of_retirement: 2012
-        retirement_benefits_from_ssa_exempt_employment: 300
+        retirement_benefits_from_ss_exempt_employment: 300
         military_retirement_pay: 2_000
         military_service_income: 3_000
     tax_units:

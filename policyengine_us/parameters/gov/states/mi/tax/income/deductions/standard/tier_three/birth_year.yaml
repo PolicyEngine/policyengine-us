@@ -1,4 +1,4 @@
-description: Michigan provides a tier three standard deduction for recipients born these years. 
+description: Michigan limits the tier three standard deduction to filers, based on the birth year. 
 brackets:
   - threshold:
       2017-01-01: 0
@@ -16,6 +16,7 @@ metadata:
   type: single_amount
   amount_unit: bool
   threshold_unit: year
+  period: year  
   label: Michigan tier three standard deduction birth year range
   reference:
     - title: Michigan Legal Code Section 206.30 - (9)(e)

@@ -25,16 +25,15 @@ class mi_standard_deduction_tier_two_increase_eligible_count(Variable):
         )
 
         # Line 23C & 23G from the 2022 tax form
-        has_retirement_benefits_from_ssa_exempt_employment = (
-            person("retirement_benefits_from_ssa_exempt_employment", period)
-            > 0
+        has_retirement_benefits_from_ss_exempt_employment = (
+            person("retirement_benefits_from_ss_exempt_employment", period) > 0
         )
 
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
 
         eligible_person = (
             retirement_eligible
-            & has_retirement_benefits_from_ssa_exempt_employment
+            & has_retirement_benefits_from_ss_exempt_employment
             & is_head_or_spouse
         )
 

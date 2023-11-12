@@ -6,7 +6,7 @@ class mi_retirement_benefits_deduction_tier_three_ss_exempt_retired_eligible_cou
 ):
     value_type = int
     entity = TaxUnit
-    label = "Eligible for the Michigan tier three retirement benefits deduction qualifying SSA & retired"
+    label = "Eligible for the Michigan tier three retired retirement benefits deduction"
     definition_period = YEAR
     reference = (
         "http://legislature.mi.gov/doc.aspx?mcl-206-30",  # (9)(c)
@@ -26,15 +26,14 @@ class mi_retirement_benefits_deduction_tier_three_ss_exempt_retired_eligible_cou
             person("year_of_retirement", period) <= p.retirement_year
         ) & (person("year_of_retirement", period) > 0)
 
-        has_retirement_benefits_from_ssa_exempt_employment = (
-            person("retirement_benefits_from_ssa_exempt_employment", period)
-            > 0
+        has_retirement_benefits_from_ss_exempt_employment = (
+            person("retirement_benefits_from_ss_exempt_employment", period) > 0
         )
 
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
 
         eligible_person = (
-            has_retirement_benefits_from_ssa_exempt_employment
+            has_retirement_benefits_from_ss_exempt_employment
             * retirement_eligible
             * is_head_or_spouse
         )
