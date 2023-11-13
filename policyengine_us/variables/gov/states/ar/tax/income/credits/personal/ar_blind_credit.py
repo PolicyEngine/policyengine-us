@@ -16,8 +16,8 @@ class ar_blind_credit(Variable):
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
-        us_blind = person("is_blind", period)
-        total_blind = tax_unit.sum(us_blind)
+        blind_person = person("is_blind", period)
+        total_blind = tax_unit.sum(blind_person)
         p_ar = parameters(
             period
         ).gov.states.ar.tax.income.credits.personal.amount
