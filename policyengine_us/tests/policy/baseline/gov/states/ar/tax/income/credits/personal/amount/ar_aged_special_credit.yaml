@@ -20,10 +20,10 @@
     people:
       person1:
         age: 64
-        ar_retirement_or_disability_benefits_exemptions_indv: 1
+        ar_retirement_or_disability_benefits_exemptions_indv: true
       person2:
         age: 65
-        ar_retirement_or_disability_benefits_exemptions_indv: 0
+        ar_retirement_or_disability_benefits_exemptions_indv: false
     households:
       household:
         members: [person1, person2]
@@ -40,10 +40,10 @@
     people:
       person1:
         age: 64
-        ar_retirement_or_disability_benefits_exemptions_indv: 1
+        ar_retirement_or_disability_benefits_exemptions_indv: true
       person2:
         age: 50
-        ar_retirement_or_disability_benefits_exemptions_indv: 1
+        ar_retirement_or_disability_benefits_exemptions_indv: true
     households:
       household:
         members: [person1, person2]
@@ -60,10 +60,10 @@
     people:
       person1:
         age: 65
-        ar_retirement_or_disability_benefits_exemptions_indv: 0
+        ar_retirement_or_disability_benefits_exemptions_indv: false
       person2:
         age: 70
-        ar_retirement_or_disability_benefits_exemptions_indv: 0
+        ar_retirement_or_disability_benefits_exemptions_indv: false
     households:
       household:
         members: [person1, person2]
@@ -80,13 +80,13 @@
     people:
       person1:
         age: 64
-        ar_retirement_or_disability_benefits_exemptions_indv: 1
+        ar_retirement_or_disability_benefits_exemptions_indv: true
       person2:
         age: 65
-        ar_retirement_or_disability_benefits_exemptions_indv: 0
+        ar_retirement_or_disability_benefits_exemptions_indv: false
       person3:
         age: 70
-        ar_retirement_or_disability_benefits_exemptions_indv: 0
+        ar_retirement_or_disability_benefits_exemptions_indv: false
     households:
       household:
         members: [person1, person2, person3]
