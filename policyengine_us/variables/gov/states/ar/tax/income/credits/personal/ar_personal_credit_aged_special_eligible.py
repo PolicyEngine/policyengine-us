@@ -15,9 +15,9 @@ class ar_personal_credit_aged_special_eligible(Variable):
     defined_for = StateCode.AR
 
     def formula(person, period, parameters):
-        us_aged = person("age", period)
+        age = person("age", period)  
         p = parameters(period).gov.states.ar.tax.income.credits.personal
-        is_aged = us_aged >= p.aged.age_threshold
+        aged_person = age >= p.aged.age_threshold 
 
         disability_exemption_eligible = (
             person(
@@ -25,4 +25,4 @@ class ar_personal_credit_aged_special_eligible(Variable):
             )
             == 0
         )
-        return is_aged & disability_exemption_eligible
+        return aged_person & disability_exemption_eligible
