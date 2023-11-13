@@ -25,8 +25,8 @@
         members: [person1, person2]
         state_code: AR 
   output:
-    # 3800*(100_000/240_000) = 1583.3333
-    ar_itemized_deductions: 1_583.3333
+    # 4800*(100_000/240_000) = 1583.3333
+    ar_itemized_deductions: 2_000
 
 - name: Itemized deduction for married filing separately (miscellaneous deductions below the floow, medical deduction not zero)
   period: 2022
@@ -55,8 +55,8 @@
         members: [person1, person2]
         state_code: AR 
   output:
-    # 2300*(100_000/240_000) = 958.3333
-    ar_itemized_deductions: 958.3333
+    # 8300*(100_000/240_000) = 958.3333
+    ar_itemized_deductions: 3_458.3333
 
 - name: Itemized deduction for married filing separately (miscellaneous deductions above the floor, medical deduction zero)
   period: 2022
@@ -85,8 +85,8 @@
         members: [person1, person2]
         state_code: AR 
   output:
-    # 2_700 * (30_000/80_000) = 1012.5
-    ar_itemized_deductions: 1_012.5
+    # 3_700 * (30_000/80_000) = 1012.5
+    ar_itemized_deductions: 1_387.5
 
 - name: Itemized deduction for married filing jointly (miscellaneous deductions below the floor, medical deduction not zero)
   period: 2022
@@ -115,7 +115,7 @@
         members: [person1, person2]
         state_code: AR 
   output:
-    ar_itemized_deductions: 3_300
+    ar_itemized_deductions: 8_800
 
 - name: Itemized deduction for single filing status (miscellaneous deductions below the floor, medical deduction not zero)
   period: 2022
@@ -140,7 +140,7 @@
         members: [person1]
         state_code: AR
   output:
-    ar_itemized_deductions: 2_000
+    ar_itemized_deductions: 4_499.9995
 
 - name: Itemized deduction for head of household filing status (miscellaneous deductions below the floor, medical deduction not zero)
   period: 2022
@@ -169,7 +169,7 @@
         members: [person1, person2]
         state_code: AR
   output:
-    ar_itemized_deductions: 2_850
+    ar_itemized_deductions: 8_600
 
 - name: Itemized deduction for widow filing status (miscellaneous deductions below the floor, medical deduction zero)
   period: 2022
@@ -194,5 +194,4 @@
         members: [person1]
         state_code: AR
   output:
-    ar_itemized_deductions: 2_100
-
+    ar_itemized_deductions: 2_499.9995

@@ -43,9 +43,15 @@ class ar_itemized_deductions(Variable):
         # Limitation on several items
         # Medical and Dental Expense
         medical_expenses = add(tax_unit, period, ["medical_expense"])
+        year = period.start.year
+        if year >= 2017:
+            instant_str = f"2017-01-01"
+        else:
+            instant_str = f"2013-01-01"
+        p_medical = parameters(instant_str).gov.irs.deductions.itemized.medical
         medical_deds = max_(
             0,
-            medical_expenses - p.medical_expense_rate * agi,
+            medical_expenses - p_medical.floor * agi,
         )
 
         # Miscellaneous Deductions
