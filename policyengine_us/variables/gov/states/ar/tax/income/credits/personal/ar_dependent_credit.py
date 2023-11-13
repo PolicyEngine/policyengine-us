@@ -26,4 +26,4 @@ class ar_dependent_credit(Variable):
         disabled_dependent = is_disabled & is_dependent
         count_disabled_dependent = tax_unit.sum(disabled_dependent)
 
-        return us_dependent * p.base + count_disabled_dependent * p.disabled
+        return total_dependents * p.base + count_disabled_dependent * p.disabled
