@@ -23,10 +23,10 @@ class mt_disability_income_subtraction(Variable):
         is_retired_on_disability = person(
             "retired_on_total_disability", period
         )
-        retired = age_eligible & is_retired_on_disability
+        eligible_retiree = age_eligible & is_retired_on_disability
         is_disabled = person("is_disabled", period)
-        retired_disabled = retired & is_disabled
-        qualified_head_or_spouse = retired_disabled & head_or_spouse
+        disabled_retiree = eligible_retiree & is_disabled
+        qualified_head_or_spouse = disabled_retiree & head_or_spouse
         eligible_benefits = (
             person("disability_benefits", period) * qualified_head_or_spouse
         )
