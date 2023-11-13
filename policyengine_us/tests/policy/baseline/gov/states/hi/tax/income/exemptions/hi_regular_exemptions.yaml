@@ -1,0 +1,20 @@
+- name: Regular exemptions (not aged)
+  period: 2021
+  input:
+    state_code: HI
+    exemptions_count: 2
+    age_head: 63
+    age_spouse: 63
+  output:
+    hi_regular_exemptions: 2_288
+    
+- name: Regular exemptions (aged)
+  period: 2021
+  input:
+    state_code: HI
+    exemptions_count: 2
+    age_head: 65
+    age_spouse: 66
+  output:
+    hi_regular_exemptions: 4_576
+  
