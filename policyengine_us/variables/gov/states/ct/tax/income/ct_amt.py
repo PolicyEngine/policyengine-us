@@ -22,8 +22,10 @@ class ct_amt(Variable):
         ct_income_tax_recapture = tax_unit(
             "ct_income_tax_recapture", period
         )  # Line 20
-        taxable_income = tax_unit("amt_income", period)
-        federal_minimum_tax = tax_unit("alternative_minimum_tax", period)
+        taxable_income = tax_unit("foreign_tax_credit", period)  # Line 13
+        federal_minimum_tax = tax_unit(
+            "alternative_minimum_tax", period
+        )  # Line 14
 
         ct_minimum_tax = min_(
             taxable_income * amt.taxable_income,  # Line 16
