@@ -15,7 +15,7 @@ class ar_dependent_credit(Variable):
     defined_for = StateCode.AR
 
     def formula(tax_unit, period, parameters):
-        us_dependent = tax_unit("tax_unit_dependents", period)
+        total_dependents = tax_unit("tax_unit_dependents", period)
         person = tax_unit.members
         p = parameters(
             period
