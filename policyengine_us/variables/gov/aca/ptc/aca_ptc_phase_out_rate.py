@@ -11,5 +11,5 @@ class aca_ptc_phase_out_rate(Variable):
 
     def formula(tax_unit, period, parameters):
         magi_pct = tax_unit("aca_magi_percent", period)
-        porate = parameters(period).gov.aca.ptc_phase_out_rate
-        return np.interp(magi_pct, porate.thresholds, porate.amounts)
+        p = parameters(period).gov.aca.ptc_phase_out_rate
+        return np.interp(magi_pct, p.thresholds, p.amounts)
