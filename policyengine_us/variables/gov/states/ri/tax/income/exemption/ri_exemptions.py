@@ -13,9 +13,9 @@ class ri_exemptions(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.ri.tax.income.exemption
 
-        exemptions = tax_unit("exemptions", period)
+        exemptions_count = tax_unit("exemptions", period)
 
-        exemption_amount = exemptions * p.amount
+        exemption_amount = exemptions_count * p.amount
 
         # Modified Federal AGI
         mod_agi = tax_unit("ri_agi", period)
