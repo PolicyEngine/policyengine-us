@@ -8,3 +8,4 @@ class va_agi(Variable):
     unit = USD
     definition_period = YEAR
     reference = "https://www.tax.virginia.gov/laws-rules-decisions/rulings-tax-commissioner/13-5"
+    defined_for = StateCode.VA

@@ -11,42 +11,38 @@ class va_spouse_tax_adjsutment(Variable):
     reference = "https://www.tax.virginia.gov/sites/default/files/vatax-pdf/2022-760-instructions.pdf#page=19"
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.va.tax.income.spouse_head_adjustment
+        # Line 4, enter the taxable income
+        taxable_income = tax_unit("va_taxable_income", period)
+        # Line 5, enter the AGI less exemptions:
+        agi_less_exemptions = person("va_agi_less_exemptions_indv", period)
+        smaller_agi_less_exemptions = tax_unit.min(agi_less_exemptions)
+        # Line 6, subtract
+        reduced_taxable_income = max_(
+            taxable_income - smaller_agi_less_exemptions, 0
+        )
+        # Line 7, divide taxable income in half
+        p = parameters(period).gov.states.va.tax.income.spouse_tax_adjustment
+        half_of_taxable_income = taxable_income / p.divider
+        # Line 8, take the smaller of the tax caluculated on line 5 or line 7
         p1 = parameters(period).gov.states.va.tax.income
-        exemptions = person("va_agi_less_exemptions_indv", period)
-        smaller_exemption = tax_unit.min(exemptions)
-        va_taxable_income = tax_unit("va_taxable_income", period)
-        taxable_income_less_exemption = max_(
-            va_taxable_income - smaller_exemption, 0
+        smaller_agi_or_taxable_income = min_(
+            p1.rates(smaller_agi_less_exemptions),
+            p1.rates(half_of_taxable_income),
         )
-
-        half_of_taxable_income = va_taxable_income / p.divider
-        smaller_temp = p1.rates * min_(
-            smaller_exemption, half_of_taxable_income
+        # Line 9, enter the larger of the tax calculated on line 6 or line 7
+        larger_reduced_taxable_income_or_halved_taxable_income = min_(
+            p1.rates(reduced_taxable_income), p1.rates(half_of_taxable_income)
         )
-        larger_temp = p1.rates * max_(
-            taxable_income_less_exemption, half_of_taxable_income
+        # Line 10, add line 8 and line 9
+        addition_of_tax = (
+            smaller_agi_or_taxable_income
+            + larger_reduced_taxable_income_or_halved_taxable_income
         )
-        sum_temp = smaller_temp + larger_temp
-
-        tax_amount = tax_unit("va_income_tax", period)
-
-        adjustment_limit_condition = (
-            smaller_exemption
-            > p.threshold & tax_unit("va_taxable_income", period)
-            > p.taxable_income_threshold
+        # Line 11, enter income tax before credits
+        income_tax_before_credits = tax_unit(
+            "va_income_tax_before_credits", period
         )
-
-        adjustment_amount = tax_amount - sum_amount
-
-        tax_adjustment_amount = tax_unit(
-            "va_spouse_adjustment_qualification", period
-        ) * min_(
-            where(
-                adjustment_limit_condition,
-                p.adjustment_limit,
-                adjustment_amount,
-            ),
-            p.adjustment_limit,
-        )
-        return tax_adjustment_amount
+        # Line 12, subtract line 10 from line 11
+        reduced_tax = max_(income_tax_before_credits - addition_of_tax, 0)
+        # The value cannot exceed a certain threshold
+        return min_(reduced_tax, p.adjustment_limit)
