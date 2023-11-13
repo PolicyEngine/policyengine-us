@@ -14,4 +14,4 @@ class ar_personal_credits(Variable):
     )
     defined_for = StateCode.AR
 
-    adds = "gov.states.ar.tax.income.credits.personal.ar_personal_credits"
+    adds = "gov.states.ar.tax.income.credits.personal.sources"
