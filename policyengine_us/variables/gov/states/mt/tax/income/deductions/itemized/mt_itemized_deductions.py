@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class mt_itemized_deduction(Variable):
+class mt_itemized_deductions(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Montana itemized deduction"
+    label = "Montana itemized deductions"
     unit = USD
     definition_period = YEAR
     reference = (

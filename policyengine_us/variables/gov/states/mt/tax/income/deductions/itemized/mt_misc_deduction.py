@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class mt_misc_deduction(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Montana Miscellaneous Deduction"
+    label = "Montana miscellaneous deduction"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -13,7 +13,4 @@ class mt_misc_deduction(Variable):
     )
     defined_for = StateCode.MT
 
-    adds = ["tax_unit_childcare_expenses", "casualty_loss_deduction"]
-    # political contribution
-    # gambling
-    # other
+    adds = "gov.states.mt.tax.income.deductions.itemized.misc_deduction"

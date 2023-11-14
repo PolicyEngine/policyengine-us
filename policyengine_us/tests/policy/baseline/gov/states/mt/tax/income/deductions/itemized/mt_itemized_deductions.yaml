@@ -10,7 +10,7 @@
      tax_unit_childcare_expenses: 123
      state_code: MT
   output:
-    mt_itemized_deduction: 7_588
+    mt_itemized_deductions: 7_588
 
 - name: Test case 2 #salt has a cap of 10000 for single, head of household and joint
   period: 2022
@@ -24,7 +24,7 @@
      tax_unit_childcare_expenses: 0
      state_code: MT
   output:
-    mt_itemized_deduction: 14_234
+    mt_itemized_deductions: 14_234
 
 - name: Test case 3 #sum all terms
   period: 2021
@@ -38,4 +38,4 @@
      tax_unit_childcare_expenses: 1_004
      state_code: MT
   output:
-    mt_itemized_deduction: 6_818
+    mt_itemized_deductions: 6_818
