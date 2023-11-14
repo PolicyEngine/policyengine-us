@@ -12,6 +12,6 @@ class oh_taxable_income(Variable):
 
     def formula(tax_unit, period, parameters):
         agi = tax_unit("oh_agi", period)
-        exemptions = tax_unit("oh_exemption_credit", period)
+        exemptions = tax_unit("oh_personal_exemptions", period)
 
         return max_(0, agi - exemptions)
