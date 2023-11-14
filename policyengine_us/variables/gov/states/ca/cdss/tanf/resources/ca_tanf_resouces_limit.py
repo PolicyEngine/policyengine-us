@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ca_tanf_resouces_limit(Variable):
+class ca_tanf_resources_limit(Variable):
     value_type = float
     entity = SPMUnit
     label = "California CalWORKs Resources Limit"
