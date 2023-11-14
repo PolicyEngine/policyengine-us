@@ -20,9 +20,9 @@ class az_529_college_savings_plans_subtraction(Variable):
 
         cap_per_beneficiary = p.cap[filing_status]
         person = tax_unit.members
-        beneficiary = add(
+        beneficiaries = add(
             tax_unit, period, ["count_529_contribution_beneficiaries"]
         )
         cap = cap_per_beneficiary * beneficiaries
 
-        return min_(contributions_529, max_sub)
+        return min_(contributions_529, cap)
