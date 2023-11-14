@@ -1,0 +1,43 @@
+- name: Disabled exemptions (both disabled)
+  period: 2021
+  input:
+    state_code: HI
+    head_is_disabled: true
+    spouse_is_disabled: true
+    age_head: 65
+    age_spouse: 65
+  output:
+    hi_disabled_exemptions: 14_000
+
+- name: Disabled exemptions (either disabled, another aged)
+  period: 2021
+  input:
+    state_code: HI
+    head_is_disabled: true
+    spouse_is_disabled: false
+    age_head: 65
+    age_spouse: 65
+  output:
+    hi_disabled_exemptions: 9_288
+
+- name: Disabled exemptions (either disabled, another not aged)
+  period: 2021
+  input:
+    state_code: HI
+    head_is_disabled: true
+    spouse_is_disabled: false
+    age_head: 65
+    age_spouse: 63
+  output:
+    hi_disabled_exemptions: 8_144
+
+- name: Disabled exemptions (neither disabled)
+  period: 2021
+  input:
+    state_code: HI
+    head_is_disabled: false
+    spouse_is_disabled: false
+    age_head: 63
+    age_spouse: 65
+  output:
+    hi_disabled_exemptions: 3_432
