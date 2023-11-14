@@ -1,0 +1,72 @@
+- name: Joint filers # ((10_000 - 9_974) * 0.045 + ((9_974 - 3_324) * 0.03) + (3_324 * 0.01)
+  period: 2023
+  input:
+    state_code: ID
+    id_taxable_income: 10_000
+    filing_status: JOINT
+  output:
+    id_income_tax_before_non_refundable_credits: 233.91
+
+- name: Joint filers w/ no income
+  period: 2023
+  input:
+    state_code: ID
+    id_taxable_income: 0
+    filing_status: JOINT
+  output:
+    id_income_tax_before_non_refundable_credits: 0
+
+- name: Single filers # ((3_000 - 1_662) * 0.03 + 1_662 * 0.01)
+  period: 2023
+  input:
+    state_code: ID
+    id_taxable_income: 3_000
+    filing_status: SINGLE
+  output:
+    id_income_tax_before_non_refundable_credits: 56.76
+
+- name: Widow filers # ((10_000 - 9_974) * 0.045  + ((9_974 - 3_324) * 0.03) + (3_324 * 0.01)
+  period: 2023
+  input:
+    state_code: ID
+    id_taxable_income: 10_000
+    filing_status: WIDOW
+  output:
+    id_income_tax_before_non_refundable_credits: 233.91
+
+- name: Head_of_Household filers # ((10_000 - 9_974) * 0.045  + ((9_974 - 3_324) * 0.03) + (3_324 * 0.01)
+  period: 2023
+  input:
+    state_code: ID
+    id_taxable_income: 10_000
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    id_income_tax_before_non_refundable_credits: 233.91
+
+
+- name: Separate filers # ((3_000 - 1_662) * 0.03 + 1_662 * 0.01)
+  period: 2023
+  input:
+    state_code: ID
+    id_taxable_income: 3_000
+    filing_status: SEPARATE
+  output:
+    id_income_tax_before_non_refundable_credits: 56.76
+
+- name: Joint filers # (3_176 * 0.01) + ((9_526 - 3_176) * 0.031) + ((12_702 - 9_526) * 0.045) + ((15_878 - 12_702) * 0.055) + ((25_000 - 15_878) * 0.065)
+  period: 2021
+  input:
+    state_code: ID
+    id_taxable_income: 25_000
+    filing_status: JOINT
+  output:
+    id_income_tax_before_non_refundable_credits: 1139.14
+
+- name: Widow filers # (3_176 * 0.01) + ((9_526 - 3_176) * 0.031) + ((12_702 - 9_526) * 0.045) + ((15_878 - 12_702) * 0.055) + ((16_000 - 15_878) * 0.065)
+  period: 2021
+  input:
+    state_code: ID
+    id_taxable_income: 16_000
+    filing_status: WIDOW
+  output:
+    id_income_tax_before_non_refundable_credits: 554.14

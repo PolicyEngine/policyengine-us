@@ -11,6 +11,7 @@ brackets:
       2021-01-01: 1_502
       2022-01-01: 560
       2023-01-01: 600
+      2024-01-01: 632
   - threshold:
       0000-01-01: 1
     amount:
@@ -21,6 +22,7 @@ brackets:
       2021-01-01: 3_618
       2022-01-01: 3_733
       2023-01-01: 3_995
+      2024-01-01: 4_213
   - threshold:
       0000-01-01: 2
     amount:
@@ -31,6 +33,7 @@ brackets:
       2021-01-01: 5_980
       2022-01-01: 6_164
       2023-01-01: 6_604
+      2024-01-01: 6_960
   - threshold:
       0000-01-01: 3
     amount:
@@ -41,12 +44,15 @@ brackets:
       2021-01-01: 6_728
       2022-01-01: 6_935
       2023-01-01: 7_430
+      2024-01-01: 7_830
 metadata:
   type: single_amount
   threshold_unit: child
   amount_unit: currency-USD
   label: EITC maximum amount by number of children
   reference:
+    - title: 2024 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-23-34.pdf#page=10
     - title: 2023 IRS data release
       href: https://www.irs.gov/pub/irs-drop/rp-22-38.pdf#page=10
     - title: 2022 IRS data release

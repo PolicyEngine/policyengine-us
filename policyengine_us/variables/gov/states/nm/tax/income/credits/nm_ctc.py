@@ -6,6 +6,7 @@ class nm_ctc(Variable):
     entity = TaxUnit
     label = "New Mexico child income tax credit"
     definition_period = YEAR
+    unit = USD
     reference = "https://nmonesource.com/nmos/nmsa/en/item/4340/index.do#!fragment/zoupio-_Toc140503818/BQCwhgziBcwMYgK4DsDWszIQewE4BUBTADwBdoAvbRABwEtsBaAfX2zgEYAWABgFYeAZgAcHYQEoANMmylCEAIqJCuAJ7QA5BskRCYXAiUr1WnXoMgAynlIAhdQCUAogBknANQCCAOQDCTyVIwACNoUnZxcSA"
     defined_for = StateCode.NM
 
