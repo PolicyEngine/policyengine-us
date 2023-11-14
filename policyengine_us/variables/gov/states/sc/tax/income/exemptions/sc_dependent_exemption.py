@@ -18,6 +18,6 @@ class sc_dependent_exemption(Variable):
         # Get relevant parameter subtree. The amount for dependent exemption is the same amount as the the young_child's.
         p = parameters(period).gov.states.sc.tax.income.exemptions.young_child
         # every dependent is eligible
-        count_eligible = tax_unit("tax_unit_dependents", period)
+        dependents = tax_unit("tax_unit_dependents", period)
         # Multiply by the amount per exemption.
-        return count_eligible * p.amount
+        return dependents * p.amount

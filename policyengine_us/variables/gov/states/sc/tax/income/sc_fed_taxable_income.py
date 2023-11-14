@@ -10,5 +10,7 @@ class sc_fed_taxable_income(Variable):
 
     def formula(tax_unit, period, parameters):
         agi = tax_unit("adjusted_gross_income", period)
-        deductions = tax_unit("itemized_deductions_less_salt", period)
-        return max_(0, agi - deductions)
+        deductions_less_salt = tax_unit(
+            "itemized_deductions_less_salt", period
+        )
+        return max_(0, agi - deductions_less_salt)
