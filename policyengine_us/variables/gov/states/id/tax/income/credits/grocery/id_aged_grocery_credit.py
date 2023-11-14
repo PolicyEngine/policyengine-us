@@ -10,8 +10,8 @@ class id_aged_grocery_credit(Variable):
     defined_for = StateCode.ID
 
     def formula(tax_unit, period, parameters):
-        #### Define path to gc ####
-        p = parameters(period).gov.states.id.tax.income.credits.gc
+        #### Define path to grocery ####
+        p = parameters(period).gov.states.id.tax.income.credits.grocery
 
         #### Get ages for both the head and spouse ####
         age_head = tax_unit("age_head", period)

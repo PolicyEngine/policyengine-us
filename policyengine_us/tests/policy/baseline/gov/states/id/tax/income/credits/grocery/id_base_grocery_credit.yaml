@@ -51,3 +51,21 @@
         state_code: ID
   output:   
     id_base_grocery_credit: 200
+
+- name: id_base_grocery_credit unit test 4 # house head and spouse
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+      person2:
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household: 
+        members: [person1, person2]
+        state_code: ID
+  output:   
+    id_base_grocery_credit: 240

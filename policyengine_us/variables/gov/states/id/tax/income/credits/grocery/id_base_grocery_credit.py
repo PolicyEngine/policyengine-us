@@ -10,8 +10,8 @@ class id_base_grocery_credit(Variable):
     defined_for = StateCode.ID
 
     def formula(tax_unit, period, parameters):
-        #### Define path to gc ####
-        path_gc = parameters(period).gov.states.id.tax.income.credits.gc
+        #### Define path to grocery ####
+        path_gc = parameters(period).gov.states.id.tax.income.credits.grocery
 
         #### Count head and spouse ####
         person = tax_unit.members

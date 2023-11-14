@@ -10,7 +10,7 @@ class id_enhanced_grocery_credit(Variable):
     defined_for = StateCode.ID
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.id.tax.income.credits.gc
+        p = parameters(period).gov.states.id.tax.income.credits.grocery
 
         # get number of dependents * the amount of credit as a parameter
 

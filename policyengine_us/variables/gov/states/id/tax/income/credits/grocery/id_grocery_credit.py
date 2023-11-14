@@ -7,7 +7,7 @@ class id_grocery_credit(Variable):
     label = "Idaho grocery credit"
     unit = USD
     definition_period = YEAR
-    defined_for = StateCode.ID
+    defined_for = "id_grocery_credit_eligible"
 
     adds = [
         "id_base_grocery_credit",
