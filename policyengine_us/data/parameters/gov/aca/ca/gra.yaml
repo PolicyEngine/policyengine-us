@@ -1,8 +1,8 @@
 description: California specifies these ACA geographic rating areas (GRA).
 metadata:
   label: California ACA geographic rating areas
-  breakdown:
-    - county_fips
+  # breakdown:
+  #   - county_fips  # plus aca_zip3_ca_county_la
   reference:
     - title: California Geographic Rating Areas
       href: https://www.cms.gov/cciio/programs-and-initiatives/health-insurance-market-reforms/ca-gra
