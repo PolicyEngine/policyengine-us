@@ -7,7 +7,7 @@
   output:
     la_itemized_deductions: 0
 
-- name: Louisiana deduction given Single status, with medical_expenses 20_000
+- name: 2022 Louisiana deduction given Single status, with medical_expenses 20_000
   period: 2022
   input:
     state_code: LA
@@ -17,7 +17,7 @@
   output:
     la_itemized_deductions: 7_050
 
-- name: Louisiana deduction given Head of Household status, with medical expenses 20_000
+- name: 2022 Louisiana deduction given Head of Household status, with medical expenses 20_000
   period: 2022
   input:
     state_code: LA
@@ -27,7 +27,7 @@
   output:
     la_itemized_deductions: 600
 
-- name: Louisiana deduction given Head of Widow status, with medical expenses 20_000
+- name: 2022 Louisiana deduction given Head of Widow status, with medical expenses 20_000
   period: 2022
   input:
     state_code: LA
@@ -36,4 +36,3 @@
     tax_unit_itemizes: 1
   output:
     la_itemized_deductions: 0
-

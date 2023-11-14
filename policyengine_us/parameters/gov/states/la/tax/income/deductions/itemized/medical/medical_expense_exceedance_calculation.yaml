@@ -1,0 +1,16 @@
+description: Determine whether Louisiana itemized deduction calculation uses the medical expenses.
+values:
+  2022-01-01: True
+  2021-01-01: False 
+
+metadata:
+  unit: bool
+  period: year
+  label: Louisiana itemized deduction calculation bool parameter 
+  reference:
+    - title: Definitions for "Excess federal itemized personal deductions", (3)
+      href: https://www.legis.la.gov/Legis/Law.aspx?d=101760
+    - title: General Information for Filing Your 2022 Louisiana Resident Individual Income Tax Return, page 2
+      href: https://revenue.louisiana.gov/TaxForms/IT540iWEB(2022)D1.pdf#page=2
+    - title: General Information for Filing Your 2021 Louisiana Resident Individual Income Tax Return, page 1
+      href: https://revenue.louisiana.gov/TaxForms/IT540i(2021)%20Instructions.pdf#page=3
