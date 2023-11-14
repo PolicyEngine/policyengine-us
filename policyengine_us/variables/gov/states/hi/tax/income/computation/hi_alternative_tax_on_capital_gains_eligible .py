@@ -16,10 +16,7 @@ class hi_alternative_tax_on_capital_gains_eligible(Variable):
         cap = p.income_threshold[filing_status]
         income_eligible = taxable_income > cap
 
-        year = period.start.year
-        if year > 2022:
-            enable_alternative_tax = p.enables_capital_gains_tax
+        if p.enables_capital_gains_tax:
+            return income_eligible
         else:
-            enable_alternative_tax = p.enables_capital_gains_tax + 1
-
-        return income_eligible & enable_alternative_tax
+            return False

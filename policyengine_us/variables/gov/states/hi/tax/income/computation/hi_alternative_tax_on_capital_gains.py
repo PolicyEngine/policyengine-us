@@ -20,9 +20,9 @@ class hi_alternative_tax_on_capital_gains(Variable):
         cap = p.income_threshold[filing_status]
 
         # line 13
+        smaller_net_capital_gain = min_(net_capital_gain, net_lt_capital_gain)
         ineligible_income = max_(
-            taxable_income
-            - min_(net_capital_gain, net_lt_capital_gain),  # line 11
+            taxable_income - smaller_net_capital_gain,  # line 11
             cap,
         )
 

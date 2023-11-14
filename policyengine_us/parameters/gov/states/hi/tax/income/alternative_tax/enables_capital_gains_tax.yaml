@@ -1,7 +1,11 @@
 description: Hawaii doesn't consider alternative tax on capital gains after 2022.
 values:
-  2022-01-01: false
+  2021-01-01: true  
+  2023-01-01: false
 metadata:
   unit: bool
-  name: Hawaii enables capital gains tax
+  period: year
   label: Hawaii enables alternative tax on capital gain
+  reference:
+    - title: House of Representatives Thirty-Second Legislature, 2023. State of Hawaii, A Bill For An Act
+      href: https://www.capitol.hawaii.gov/sessions/session2023/bills/HB232_.htm
