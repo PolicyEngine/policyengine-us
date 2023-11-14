@@ -10,6 +10,6 @@ class aca_ptc_phase_out_rate(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/26/36B#b_3_A"
 
     def formula(tax_unit, period, parameters):
-        magi_pct = tax_unit("aca_magi_percent", period)
+        magi_frac = tax_unit("aca_magi_fraction", period)
         p = parameters(period).gov.aca.ptc_phase_out_rate
-        return np.interp(magi_pct, p.thresholds, p.amounts)
+        return np.interp(magi_frac, p.thresholds, p.amounts)

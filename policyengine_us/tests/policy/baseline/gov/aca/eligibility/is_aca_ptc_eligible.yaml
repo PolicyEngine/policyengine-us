@@ -4,7 +4,7 @@
     is_medicaid_eligible: false
     is_aca_eshi_eligible: false
     is_medicare_eligible: false
-    aca_magi_percent: 250
+    aca_magi_fraction: 2.50
   output:
     is_aca_ptc_eligible: true
 
@@ -14,7 +14,7 @@
     is_medicaid_eligible: false
     is_aca_eshi_eligible: false
     is_medicare_eligible: true
-    aca_magi_percent: 250
+    aca_magi_fraction: 2.50
   output:
     is_aca_ptc_eligible: false
 
@@ -24,7 +24,7 @@
     is_medicaid_eligible: true
     is_aca_eshi_eligible: false
     is_medicare_eligible: false
-    aca_magi_percent: 250
+    aca_magi_fraction: 2.50
   output:
     is_aca_ptc_eligible: false
 
@@ -34,7 +34,7 @@
     #is_medicaid_eligible: false
     #is_aca_eshi_eligible: false
     #is_medicare_eligible: false
-    aca_magi_percent: 90
+    aca_magi_fraction: 0.90
   output:
     is_aca_ptc_eligible: false
 
@@ -44,7 +44,7 @@
     is_medicaid_eligible: false
     is_aca_eshi_eligible: false
     is_medicare_eligible: false
-    aca_magi_percent: 650
+    aca_magi_fraction: 6.50
   output:
      is_aca_ptc_eligible: true
 
@@ -80,6 +80,6 @@
     tax_units:
       tax_unit:
         members: [person1, person2, person3, person4, person5]
-        aca_magi_percent: 250
+        aca_magi_fraction: 2.50
   output:
      is_aca_ptc_eligible: [true, true, true, true, false]
