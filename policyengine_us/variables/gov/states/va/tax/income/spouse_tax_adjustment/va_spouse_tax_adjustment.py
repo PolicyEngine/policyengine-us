@@ -27,12 +27,13 @@ class va_spouse_tax_adjustment(Variable):
         # Line 8, take the smaller of the tax caluculated on line 5 or line 7
         p1 = parameters(period).gov.states.va.tax.income
         smaller_agi_or_taxable_income = min_(
-            p1.rates(smaller_agi_less_exemptions),
-            p1.rates(half_of_taxable_income),
+            p1.rates.calc(smaller_agi_less_exemptions),
+            p1.rates.calc(half_of_taxable_income),
         )
         # Line 9, enter the larger of the tax calculated on line 6 or line 7
-        larger_reduced_taxable_income_or_halved_taxable_income = min_(
-            p1.rates(reduced_taxable_income), p1.rates(half_of_taxable_income)
+        larger_reduced_taxable_income_or_halved_taxable_income = max_(
+            p1.rates.calc(reduced_taxable_income),
+            p1.rates.calc(half_of_taxable_income),
         )
         # Line 10, add line 8 and line 9
         addition_of_tax = (
@@ -47,3 +48,11 @@ class va_spouse_tax_adjustment(Variable):
         reduced_tax = max_(income_tax_before_credits - addition_of_tax, 0)
         # The value cannot exceed a certain threshold
         return min_(reduced_tax, p.adjustment_limit)
+
+        # Should we do this instead?
+        return where(
+            (smaller_agi_less_exemptions > p.threshold)
+            & (taxable_income > p.taxable_income_threshold),
+            p.adjustment_limit,
+            min_(reduced_tax.p.adjustment_limit),
+        )

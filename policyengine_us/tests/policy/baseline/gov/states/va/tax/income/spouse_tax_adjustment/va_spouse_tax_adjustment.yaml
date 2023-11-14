@@ -1,4 +1,4 @@
-- name: Virginia spouse tax adjustment amount unit test 1
+- name: Virginia spouse tax adjustment amount unit test 1 - calculation
   period: 2021
   input:
     people:
@@ -15,13 +15,12 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
-        taxable_income: 10_000
+        va_taxable_income: 10_000
         va_income_tax_before_credits: 370
-
   output:
-    va_spouse_tax_adjustment: 0
+    va_spouse_tax_adjustment: 130
 
-- name: Virginia spouse tax adjustment amount unit test 2
+- name: Virginia spouse tax adjustment amount unit test 2 - capped at max amount
   period: 2021
   input:
     people:
@@ -38,8 +37,53 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
-        taxable_income: 50_000
-        va_income_tax_before_credits: 2_618
+        va_taxable_income: 50_000
+        va_income_tax_before_credits: 5_618
 
   output:
     va_spouse_tax_adjustment: 259
+
+- name: Virginia spouse tax adjustment amount unit test 3
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        va_agi_less_exemptions_indiv: 5_500
+      person2:
+        is_tax_unit_spouse: true
+        va_agi_less_exemptions_indiv: 24_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        va_taxable_income: 30_000
+        va_income_tax_before_credits: 2_618
+
+  output:
+    va_spouse_tax_adjustment: 100
+
+- name: No negative values
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        va_agi_less_exemptions_indiv: 19_470
+      person2:
+        is_tax_unit_spouse: true
+        va_agi_less_exemptions_indiv: 34_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        va_taxable_income: 50_000
+        va_income_tax_before_credits: 0
+  output:
+    va_spouse_tax_adjustment: 0

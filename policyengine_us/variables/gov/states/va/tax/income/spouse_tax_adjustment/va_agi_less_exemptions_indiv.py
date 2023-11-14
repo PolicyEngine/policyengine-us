@@ -39,6 +39,4 @@ class va_agi_less_exemptions_indiv(Variable):
         head_or_spouse_amount = head_or_spouse_agi - total_personal_exemptions
         # Set the value for dependent amount to infinity as we will need the smaller amount for
         # further calculations
-        inf = 100_000_000_000_000_000
-        # return where(head_or_spouse, head_or_spouse_amount, np.inf)
-        return where(head_or_spouse, head_or_spouse_amount, inf)
+        return where(head_or_spouse, head_or_spouse_amount, np.inf)

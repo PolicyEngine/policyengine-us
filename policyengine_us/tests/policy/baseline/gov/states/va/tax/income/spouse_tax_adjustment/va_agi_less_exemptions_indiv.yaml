@@ -1,5 +1,6 @@
 - name: Virginia agi less exemptions unit test 1
   period: 2021
+  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -17,11 +18,11 @@
         members: [person1, person2]
         state_code: VA
   output:
-  # va_agi_less_exemptions_indiv: [37_470, .inf]
-    va_agi_less_exemptions_indiv: [37_470, 100_000_000_000_000_000]
+    va_agi_less_exemptions_indiv: [37_470, .inf]
 
 - name: Blind and aged filer without AGI
   period: 2022
+  absolute_error_margin: 0.1
   input:
     va_agi: 0
     state_code: VA
@@ -34,6 +35,7 @@
 
 - name: Blind and aged filer with AGI
   period: 2022
+  absolute_error_margin: 0.1
   input:
     va_agi: 3_000
     state_code: VA
@@ -44,10 +46,9 @@
     # 0 - (800 * 2 + 930) 
     va_agi_less_exemptions_indiv: 470
 
-# TODO: check for non-head or spouse, check for not blind or aged, check for one of them 
-
 - name: Non-head-or-spouse filer with AGI
   period: 2022
+  absolute_error_margin: 0.1
   input:
     va_agi: 3_000
     state_code: VA
@@ -55,11 +56,11 @@
     is_blind: true
     age: 65
   output:
-  #  va_agi_less_exemptions_indiv: .inf
-    va_agi_less_exemptions_indiv: 100_000_000_000_000_000
+    va_agi_less_exemptions_indiv: .inf
 
 - name: Aged filer with AGI
   period: 2022
+  absolute_error_margin: 0.1
   input:
     va_agi: 3_000
     state_code: VA
