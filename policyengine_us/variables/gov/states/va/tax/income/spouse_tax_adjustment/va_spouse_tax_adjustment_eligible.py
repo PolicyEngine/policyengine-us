@@ -11,6 +11,6 @@ class va_spouse_tax_adjustment_eligible(Variable):
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
-        exemptions = person("va_agi_less_exemptions_indv", period)
+        exemptions = person("va_agi_less_exemptions_indiv", period)
         smaller_exemptions = tax_unit.min(exemptions)
         return smaller_exemptions > 0

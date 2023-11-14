@@ -1,20 +1,21 @@
 from policyengine_us.model_api import *
 
 
-class va_spouse_tax_adjsutment(Variable):
+class va_spouse_tax_adjustment(Variable):
     value_type = float
     entity = TaxUnit
     label = "Virginia Spouse Tax Adjustment"
-    defined_for = "va_spouse_tax_adjsutment_eligible"
+    defined_for = "va_spouse_tax_adjustment_eligible"
     unit = USD
     definition_period = YEAR
     reference = "https://www.tax.virginia.gov/sites/default/files/vatax-pdf/2022-760-instructions.pdf#page=19"
 
     def formula(tax_unit, period, parameters):
+        person = tax_unit.members
         # Line 4, enter the taxable income
         taxable_income = tax_unit("va_taxable_income", period)
         # Line 5, enter the AGI less exemptions:
-        agi_less_exemptions = person("va_agi_less_exemptions_indv", period)
+        agi_less_exemptions = person("va_agi_less_exemptions_indiv", period)
         smaller_agi_less_exemptions = tax_unit.min(agi_less_exemptions)
         # Line 6, subtract
         reduced_taxable_income = max_(

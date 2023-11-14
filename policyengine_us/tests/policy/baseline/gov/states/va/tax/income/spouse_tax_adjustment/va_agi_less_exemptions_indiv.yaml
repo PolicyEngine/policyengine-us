@@ -17,7 +17,8 @@
         members: [person1, person2]
         state_code: VA
   output:
-    va_agi_less_exemptions_indiv: [37_470, .inf]
+  # va_agi_less_exemptions_indiv: [37_470, .inf]
+    va_agi_less_exemptions_indiv: [37_470, 100_000_000_000_000_000]
 
 - name: Blind and aged filer without AGI
   period: 2022
@@ -44,3 +45,26 @@
     va_agi_less_exemptions_indiv: 470
 
 # TODO: check for non-head or spouse, check for not blind or aged, check for one of them 
+
+- name: Non-head-or-spouse filer with AGI
+  period: 2022
+  input:
+    va_agi: 3_000
+    state_code: VA
+    is_tax_unit_head_or_spouse: false
+    is_blind: true
+    age: 65
+  output:
+  #  va_agi_less_exemptions_indiv: .inf
+    va_agi_less_exemptions_indiv: 100_000_000_000_000_000
+
+- name: Aged filer with AGI
+  period: 2022
+  input:
+    va_agi: 3_000
+    state_code: VA
+    is_tax_unit_head_or_spouse: true
+    is_blind: false
+    age: 65
+  output:
+    va_agi_less_exemptions_indiv: 1_270
