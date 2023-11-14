@@ -12,8 +12,8 @@ class ky_personal_tax_credits_aged(Variable):
     defined_for = StateCode.KY
 
     def formula(person, period, parameters):
-        p = parameters(period).gov.states.ky.tax.income.credits.personal
-        age_threshold = p.age_eligibility
+        p = parameters(period).gov.states.ky.tax.income.credits.personal.amount
+        age_threshold = p.aged.thresholds[-1]
         is_aged = person("age", period) >= age_threshold
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        return head_or_spouse * is_aged * p.amount.aged
+        return head_or_spouse * is_aged * p.aged.amounts[-1]
