@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class mt_misc_deduction(Variable):
+class mt_misc_deductions(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Montana miscellaneous deduction"
+    label = "Montana miscellaneous deductions"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -14,4 +14,4 @@ class mt_misc_deduction(Variable):
     )
     defined_for = StateCode.MT
 
-    adds = "gov.states.mt.tax.income.deductions.itemized.misc_deduction"
+    adds = "gov.states.mt.tax.income.deductions.itemized.misc_deductions"

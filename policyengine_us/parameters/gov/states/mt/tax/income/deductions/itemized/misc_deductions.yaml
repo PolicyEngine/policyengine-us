@@ -1,4 +1,4 @@
-description: Montana counts these as miscellaneous deduction. 
+description: Montana counts these sources as miscellaneous deductions. 
 values:
   2021-01-01:
     - tax_unit_childcare_expenses
@@ -7,6 +7,8 @@ values:
     
 metadata:
   unit: list
+  label: Montana miscellaneous deductions 
+  period: year
   reference:
     - title: Montana Individual Income Tax Return (Form 2) 2022
       href: https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2023/05/Montana-Idividiual-Income-Tax-Return-Form-2-2022v6.2.pdf#page=7

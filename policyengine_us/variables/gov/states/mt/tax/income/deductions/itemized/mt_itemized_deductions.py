@@ -23,7 +23,7 @@ class mt_itemized_deductions(Variable):
         ]
         filing_status = tax_unit("filing_status", period)
         us_itm_deds_less_salt = add(tax_unit, period, itm_deds) + tax_unit(
-            "mt_misc_deduction", period
+            "mt_misc_deductions", period
         )
         capped_property_taxes = min_(
             add(tax_unit, period, ["real_estate_taxes"]),
