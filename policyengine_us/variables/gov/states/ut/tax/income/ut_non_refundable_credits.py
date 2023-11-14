@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ut_non_refundable(Variable):
+class ut_non_refundable_credits(Variable):
     value_type = float
     entity = TaxUnit
     label = "Utah non-refundable tax credits"
