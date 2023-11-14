@@ -8,3 +8,4 @@ class ca_child_care_welfare_to_work(Variable):
     unit = "hour"
     definition_period = YEAR
     defined_for = StateCode.CA
+    reference = "http://epolicy.dpss.lacounty.gov/epolicy/epolicy/server/general/projects_responsive/ePolicyMaster/index.htm?&area=general&type=responsivehelp&ctxid=&project=ePolicyMaster#t=mergedProjects%2FChild%20Care%2FChild_Care%2F1210_Overview%2F1210_Overview.htm%23Backgroundbc-3&rhtocid=_3_3_0_2"

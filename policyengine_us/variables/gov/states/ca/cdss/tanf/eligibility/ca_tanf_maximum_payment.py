@@ -8,6 +8,7 @@ class ca_tanf_maximum_payment(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.CA
+    reference = "https://hhsaprogramguides.sandiegocounty.gov/CalWORKS/44-300/CalWORKs_Payment_Standards/G_CalWORKs_Payment_Standards.pdf"
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ca.cdss.tanf.monthly_payment
