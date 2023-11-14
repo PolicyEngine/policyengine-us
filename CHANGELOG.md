@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.530.1] - 2023-11-14 23:03:24
+
+### Fixed
+
+- The temporary presence of `earned_income_tax_credit` by removing it, leaving the `eitc` variable as the sole representation of the federal Earned Income Credit.
+
 ## [0.530.0] - 2023-11-14 20:34:35
 
 ### Added
@@ -5890,6 +5896,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.530.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.530.0...0.530.1
 [0.530.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.529.0...0.530.0
 [0.529.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.528.0...0.529.0
 [0.528.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.527.0...0.528.0
