@@ -13,6 +13,7 @@
     households:
       household:
         members: [child1, child2]
+        ca_child_care_eligible: true
         state_code: CA
   output:
     ca_child_care_payment: 2300

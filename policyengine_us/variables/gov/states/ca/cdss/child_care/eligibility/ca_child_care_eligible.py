@@ -10,7 +10,7 @@ class ca_child_care_eligible(Variable):
     reference = "http://epolicy.dpss.lacounty.gov/epolicy/epolicy/server/general/projects_responsive/ePolicyMaster/index.htm?&area=general&type=responsivehelp&ctxid=&project=ePolicyMaster#t=mergedProjects%2FChild%20Care%2FChild_Care%2F1210_Overview%2F1210_Overview.htm%23Backgroundbc-3&rhtocid=_3_3_0_2"
 
     def formula(spm_unit, period, parameters):
-        tanf_eligible = spm_unit("ca_tanf_eligible", period)
+        tanf_eligible = spm_unit("ca_tanf", period) > 0
         age_eligible = spm_unit("ca_child_care_age_eligible", period)
         work_requirement = spm_unit("ca_child_care_work_requirement", period)
 

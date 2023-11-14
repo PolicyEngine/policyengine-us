@@ -6,7 +6,7 @@ class ca_child_care_payment(Variable):
     entity = SPMUnit
     label = "California CalWORKs Child Care final payment"
     definition_period = YEAR
-    defined_for = StateCode.CA
+    defined_for = "ca_child_care_eligible"
 
     def formula(spm_unit, period, parameters):
         person = spm_unit.members
