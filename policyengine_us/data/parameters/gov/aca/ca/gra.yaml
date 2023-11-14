@@ -1,11 +1,11 @@
 description: California specifies these ACA geographic rating areas (GRA).
 metadata:
   label: California ACA geographic rating areas
+  breakdown:
+    - county_fips  # plus aca_zip3_ca_county_la
   reference:
     - title: California Geographic Rating Areas
       href: https://www.cms.gov/cciio/programs-and-initiatives/health-insurance-market-reforms/ca-gra
-  # high-level index is CA county FIPS code as an integer
-  # year-specific value is CA rating area number
 0:  # unknown county_fips
   0000-01-01: 1
 3:  # Alpine
