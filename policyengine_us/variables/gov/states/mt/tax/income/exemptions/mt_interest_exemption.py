@@ -16,6 +16,4 @@ class mt_interest_exemption(Variable):
         filing_status = tax_unit("filing_status", period)
         cap = p.cap[filing_status]
         interest_income = person("taxable_interest_income", period)
-        eligible_amount = min_(cap, tax_unit.sum(interest_income))
-        eligible_person = tax_unit("mt_interest_exemption_eligible", period)
-        return eligible_person * eligible_amount
+        return min_(cap, tax_unit.sum(interest_income))
