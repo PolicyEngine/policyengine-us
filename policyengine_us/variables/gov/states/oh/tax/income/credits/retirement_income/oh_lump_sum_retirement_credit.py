@@ -11,7 +11,7 @@ class oh_lump_sum_retirement_credit(Variable):
     defined_for = "oh_retirement_income_credit_eligible"
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.oh.tax.income.credits
+        p = parameters(period).gov.states.oh.tax.income.credits.retirement
 
         person = tax_unit.members
         is_spouse = person("is_tax_unit_spouse", period)
@@ -20,11 +20,11 @@ class oh_lump_sum_retirement_credit(Variable):
         pension_income = person("pension_income", period)
         age_head = tax_unit("age_head", period)
         age_spouse = tax_unit("age_spouse", period)
-        head_eligible = age_head >= p.lump_sum_retirement.age_threshold
-        spouse_eligible = age_spouse >= p.lump_sum_retirement.age_threshold
+        head_eligible = age_head >= p.lump_sum.age_threshold
+        spouse_eligible = age_spouse >= p.lump_sum.age_threshold
 
-        head_divisor = p.lump_sum_retirement.divisor.calc(age_head)
-        spouse_divisor = p.lump_sum_retirement.divisor.calc(age_spouse)
+        head_divisor = p.lump_sum.divisor.calc(age_head)
+        spouse_divisor = p.lump_sum.divisor.calc(age_spouse)
 
         head_pension = tax_unit.sum(is_head * pension_income)
         spouse_pension = tax_unit.sum(is_spouse * pension_income)
