@@ -5,6 +5,73 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.529.0] - 2023-11-13 21:25:39
+
+### Added
+
+- Rhode Island exemptions.
+
+## [0.528.0] - 2023-11-13 15:13:28
+
+### Added
+
+- Kentucky adjusted gross income.
+
+## [0.527.0] - 2023-11-12 00:23:31
+
+### Added
+
+- 2024 income tax brackets.
+
+## [0.526.0] - 2023-11-10 15:59:43
+
+### Added
+
+- Hawaii exemptions.
+
+## [0.525.0] - 2023-11-10 15:51:59
+
+### Added
+
+- West Virginia low-income earned income exclusion.
+
+## [0.524.0] - 2023-11-09 16:00:28
+
+### Added
+
+- Maryland hundred year subtraction.
+
+## [0.523.1] - 2023-11-09 01:19:56
+
+### Fixed
+
+- Disable Maine Tax.
+
+## [0.523.0] - 2023-11-09 00:11:58
+
+### Added
+
+- Alabama itemized deductions.
+
+## [0.522.0] - 2023-11-08 21:44:31
+
+### Added
+
+- South Carolina retirement deduction.
+- South Carolina military retirement deduction.
+
+## [0.521.0] - 2023-11-08 01:44:09
+
+### Added
+
+- Idaho non-refundable credits file.
+
+## [0.520.0] - 2023-11-07 23:06:52
+
+### Fixed
+
+- 2021 Maine income tax parameters.
+
 ## [0.519.0] - 2023-11-06 22:47:48
 
 ### Added
@@ -5817,6 +5884,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.529.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.528.0...0.529.0
+[0.528.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.527.0...0.528.0
+[0.527.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.526.0...0.527.0
+[0.526.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.525.0...0.526.0
+[0.525.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.524.0...0.525.0
+[0.524.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.523.1...0.524.0
+[0.523.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.523.0...0.523.1
+[0.523.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.522.0...0.523.0
+[0.522.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.521.0...0.522.0
+[0.521.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.520.0...0.521.0
+[0.520.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.519.0...0.520.0
 [0.519.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.518.5...0.519.0
 [0.518.5]: https://github.com/PolicyEngine/policyengine-us/compare/0.518.4...0.518.5
 [0.518.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.518.3...0.518.4
