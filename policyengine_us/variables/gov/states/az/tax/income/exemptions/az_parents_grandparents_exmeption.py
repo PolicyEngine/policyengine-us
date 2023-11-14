@@ -33,5 +33,7 @@ class az_parents_grandparents_exemption(Variable):
 
         eligible_grandparent = age_eligible & payment_eligible
 
-        total_exemptions = eligible_parent + eligible_grandparent
-        return p.parent_grandparent.amount * tax_unit.sum(total_exemptions)
+        total_exemption_count = eligible_parent + eligible_grandparent
+        return p.parent_grandparent.amount * tax_unit.sum(
+            total_exemption_count
+        )
