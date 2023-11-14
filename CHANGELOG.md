@@ -5,6 +5,148 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.529.0] - 2023-11-13 21:25:39
+
+### Added
+
+- Rhode Island exemptions.
+
+## [0.528.0] - 2023-11-13 15:13:28
+
+### Added
+
+- Kentucky adjusted gross income.
+
+## [0.527.0] - 2023-11-12 00:23:31
+
+### Added
+
+- 2024 income tax brackets.
+
+## [0.526.0] - 2023-11-10 15:59:43
+
+### Added
+
+- Hawaii exemptions.
+
+## [0.525.0] - 2023-11-10 15:51:59
+
+### Added
+
+- West Virginia low-income earned income exclusion.
+
+## [0.524.0] - 2023-11-09 16:00:28
+
+### Added
+
+- Maryland hundred year subtraction.
+
+## [0.523.1] - 2023-11-09 01:19:56
+
+### Fixed
+
+- Disable Maine Tax.
+
+## [0.523.0] - 2023-11-09 00:11:58
+
+### Added
+
+- Alabama itemized deductions.
+
+## [0.522.0] - 2023-11-08 21:44:31
+
+### Added
+
+- South Carolina retirement deduction.
+- South Carolina military retirement deduction.
+
+## [0.521.0] - 2023-11-08 01:44:09
+
+### Added
+
+- Idaho non-refundable credits file.
+
+## [0.520.0] - 2023-11-07 23:06:52
+
+### Fixed
+
+- 2021 Maine income tax parameters.
+
+## [0.519.0] - 2023-11-06 22:47:48
+
+### Added
+
+- West Virginia low-income family tax credit.
+
+## [0.518.5] - 2023-11-06 15:27:19
+
+### Fixed
+
+- Re-added earned_income_tax_credit variable alias.
+
+## [0.518.4] - 2023-11-05 21:04:11
+
+### Fixed
+
+- Presence of unneeded taxcalc-related logic in the `system.py` module.
+
+## [0.518.3] - 2023-11-04 21:16:41
+
+### Fixed
+
+- pell_grant_efc now can not be negative
+
+## [0.518.2] - 2023-11-04 21:02:59
+
+### Fixed
+
+- Remove obsolete taxcalc-related alias variable names.
+- Rename `earned_income_tax_credit` to `eitc` to be more consistent with variable names for other federal credits.
+
+## [0.518.1] - 2023-11-03 20:53:44
+
+### Fixed
+
+- ZIP code bug for households with axes.
+
+## [0.518.0] - 2023-11-03 20:30:48
+
+### Fixed
+
+- ZIP codes are sampled from the state, and axes-containing simulations don't vary the ZIP code.
+
+## [0.517.0] - 2023-11-03 20:12:54
+
+### Added
+
+- The `net_capital_gains` variable (formerly `c23650`).
+- The `gov/irs/capital_gains/loss_limit.yaml` parameter file.
+- The `loss_limited_net_capital_gains` variable (formerly `c01000`) that uses the `loss_limit` parameter.
+
+## [0.516.3] - 2023-11-03 04:08:02
+
+### Fixed
+
+- Added USD metadata to co_ccap_subsidy.
+
+## [0.516.2] - 2023-11-02 22:14:02
+
+### Fixed
+
+- CCAP fix for multi-child households (previously had index errors).
+
+## [0.516.1] - 2023-11-02 20:44:02
+
+### Fixed
+
+- Automatically set entry process to true for CCAP.
+
+## [0.516.0] - 2023-11-02 17:49:15
+
+### Added
+
+- Arizona military retirement subtraction.
+
 ## [0.515.0] - 2023-11-02 01:02:06
 
 ### Added
@@ -5742,6 +5884,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.529.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.528.0...0.529.0
+[0.528.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.527.0...0.528.0
+[0.527.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.526.0...0.527.0
+[0.526.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.525.0...0.526.0
+[0.525.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.524.0...0.525.0
+[0.524.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.523.1...0.524.0
+[0.523.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.523.0...0.523.1
+[0.523.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.522.0...0.523.0
+[0.522.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.521.0...0.522.0
+[0.521.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.520.0...0.521.0
+[0.520.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.519.0...0.520.0
+[0.519.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.518.5...0.519.0
+[0.518.5]: https://github.com/PolicyEngine/policyengine-us/compare/0.518.4...0.518.5
+[0.518.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.518.3...0.518.4
+[0.518.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.518.2...0.518.3
+[0.518.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.518.1...0.518.2
+[0.518.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.518.0...0.518.1
+[0.518.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.517.0...0.518.0
+[0.517.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.516.3...0.517.0
+[0.516.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.516.2...0.516.3
+[0.516.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.516.1...0.516.2
+[0.516.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.516.0...0.516.1
+[0.516.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.515.0...0.516.0
 [0.515.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.514.3...0.515.0
 [0.514.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.514.2...0.514.3
 [0.514.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.514.1...0.514.2
