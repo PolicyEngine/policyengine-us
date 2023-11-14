@@ -24,8 +24,10 @@ class hi_cdcc_min_head_spouse_earned(Variable):
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         income = person("earned_income", period) 
         dependent_excluded_income = where(head_or_spouse, income, np.inf)
-        income_floor = tax_unit.max(person("hi_cdcc_eligible_income_floor", period))
-        total_income_floor_eligible_people = tax_unit.sum(income_floor)
+        income_floor_lst = person("hi_cdcc_eligible_income_floor", period)
+        income_floor = tax_unit.max(income_floor_lst)
+        total_income_floor_eligible_people = sum(head_or_spouse & (income_floor_lst != 0))
+        print(total_income_floor_eligible_people)
         # Edge case: both spouses were students or disabled:
         # If both filers are disabled / student below the floor limit,
         # only one person with larger earning gets elevated to the floor
