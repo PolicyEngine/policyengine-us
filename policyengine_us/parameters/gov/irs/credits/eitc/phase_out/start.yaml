@@ -5,6 +5,8 @@ metadata:
   amount_unit: currency-USD
   label: EITC phase-out start by number of children
   reference:
+    - title: 2024 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-23-34.pdf#page=10
     - title: 2023 IRS data release
       href: https://www.irs.gov/pub/irs-drop/rp-22-38.pdf#page=10
     - title: 2022 IRS data release
@@ -41,6 +43,7 @@ brackets:
                 href: https://www.law.cornell.edu/uscode/text/26/32#n_4_A_ii
         2022-01-01: 9_160
         2023-01-01: 9_800
+        2024-01-01: 10_330
       metadata:
         unit: currency-USD
   - threshold:
@@ -57,6 +60,7 @@ brackets:
         2021-01-01: 19_520
         2022-01-01: 20_130
         2023-01-01: 21_560
+        2024-01-01: 22_720
       metadata:
         unit: currency-USD
   - threshold:
@@ -73,6 +77,7 @@ brackets:
         2021-01-01: 19_520
         2022-01-01: 20_130
         2023-01-01: 21_560
+        2024-01-01: 22_720
       metadata:
         unit: currency-USD
   - threshold:
@@ -89,5 +94,6 @@ brackets:
         2021-01-01: 19_520
         2022-01-01: 20_130
         2023-01-01: 21_560
+        2024-01-01: 22_720
       metadata:
         unit: currency-USD
