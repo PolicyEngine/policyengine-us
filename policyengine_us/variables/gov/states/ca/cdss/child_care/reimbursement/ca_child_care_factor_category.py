@@ -3,7 +3,9 @@ from policyengine_us.model_api import *
 
 class CaChildCareFactorCategory(Enum):
     STANDARD = "Standard Rate Ceilings"
-    EVENING_AND_WEEKEND_I = "Evening/Weekend Care Rate Ceilings (50% or more of time)"
+    EVENING_AND_WEEKEND_I = (
+        "Evening/Weekend Care Rate Ceilings (50% or more of time)"
+    )
     EVENING_AND_WEEKEND_II = "Evening/Weekend Care Rate Ceilings (at least 10% but less than 50% of time)"
     EXCEPTIONAL_NEEDS = "Exceptional Needs Care Rate Ceilings"
     SEVERELY_DISABLED = "Severely Disabled Care Rate Ceilings"
