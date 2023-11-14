@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class oh_529_plan_deduction(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Ohio contributions to 529 plan deduction"
+    label = "Ohio deduction for contributions to 529 plans"
     unit = USD
     definition_period = YEAR
     reference = (
