@@ -35,19 +35,20 @@ class vt_income_tax_before_non_refundable_credits(Variable):
                 p.head_of_household.calc(income),
             ],
         )
-        # If agi is bigger than threshold, then we need to further compare 3%
-        # of Adjusted Gross Income less interest from U.S. obligations and Tax
+        # If AGI is bigger than a threshold, then we need to further compare a percentage
+        # of Adjusted Gross Income less interest from U.S. obligations and the initial Tax
         # Rate Schedule calculation.
-        # Less interest from U.S. obligations  mentioned only in tax form, but
+        # The reduction of AGI by U.S. obligations is mentioned only in the tax forms, but
         # not in the legal code (Vermont §5822 (a)(6)).
         federal_agi = tax_unit("adjusted_gross_income", period)
         minimum_tax_eligible = (
             federal_agi > p.alternative_minimum_tax.income_threshold
         )
         us_govt_interest = tax_unit("us_govt_interest", period)
-        alt_minimum_tax = (
-            p.alternative_minimum_tax.rate * federal_agi
-        ) - us_govt_interest
+        alt_minimum_tax = max_(
+            (p.alternative_minimum_tax.rate * federal_agi) - us_govt_interest,
+            0,
+        )
         return where(
             minimum_tax_eligible,
             max_(alt_minimum_tax, income_tax),
