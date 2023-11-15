@@ -23,19 +23,18 @@ class sc_tuition_credit(Variable):
         qualified_tuition_expenses = person(
             "qualified_tuition_expenses", period
         )
-        # line 3
-        sc_tuition_credit_eligible = person(
-            "sc_tuition_credit_eligible", period
-        )
-        tuition_limit = (
-            p.max_amount.tuition
+        # line 3,4,7
+        tuition_max_amount = p.rate.thresholds["2"]
+        rate = p.rate.rates["1"]
+        qualified_tuition_expenses_credit = rate * qualified_tuition_expenses
+        tuition_limit_credit = (
+            rate
+            * tuition_max_amount
             * total_college_hours
             / (p.semester_hour_requirement * p.max_semester_attend)
-        ) * sc_tuition_credit_eligible
-        # line 7 (lesser of line 2 or 3 and multiply by rate)
-        uncapped_credit = (
-            min_(qualified_tuition_expenses, tuition_limit) * p.rate
         )
-        tuition_credit = min_(uncapped_credit, p.max_amount.credit)
+        uncapped_credit = min_(
+            qualified_tuition_expenses_credit, tuition_limit_credit
+        )
         # compare line 7 with credit max amount, take lesser amount
-        return where(sc_tuition_credit_eligible, tuition_credit, 0)
+        return min_(uncapped_credit, p.cap)

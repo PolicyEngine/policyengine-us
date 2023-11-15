@@ -1,15 +1,30 @@
-description: South Carolina credits this percentage of college tuition under the tuition tax credit.
-values: 
-  2021-01-01: 0.5
+description: South Carolina tuition credit thresholds and rates.
+rates:
+  description: South Carolina credits this percentage of college tuition under the tuition tax credit.
+  1:
+    2021-01-01: 0.50
 
-metadata:
-  unit: /1
-  period: year
-  label: South Carolina college tuition credit rate
-  reference: 
-  - title: SC I-319 2021
-    href: https://dor.sc.gov/forms-site/Forms/I319_2021.pdf#page=3
-  - title: South Carolina Legal Code | Section 12-6-3385 (A)(1)(a)
-    href: https://www.scstatehouse.gov/code/t12c006.php
-  - title: SC I-319 2022
-    href: https://dor.sc.gov/forms-site/Forms/I319_2022.pdf#page=3
+  metadata:
+    unit: /1
+    label: South Carolina tuition credit rate
+    reference:
+    - title: South Carolina Legal Code | Section 12-6-3385 (A)(1)(a)
+      href: https://www.scstatehouse.gov/code/t12c006.php
+thresholds:
+  description: South Carolina tuition spend limit. 
+  metadata:
+    unit: currency-USD
+    period: year
+    label: South Caroline tuition threshold
+    reference: 
+    - title: SC I-319 2021
+      href: https://dor.sc.gov/forms-site/Forms/I319_2021.pdf#page=3
+    - title: SC I-319 2022
+      href: https://dor.sc.gov/forms-site/Forms/I319_2022.pdf#page=3
+      # The value 12,268 is not in Legal code but in tax forms.
+  1: 
+    values: 
+      2021-01-01: 0
+  2: 
+    values:
+      2021-01-01: 12_268
