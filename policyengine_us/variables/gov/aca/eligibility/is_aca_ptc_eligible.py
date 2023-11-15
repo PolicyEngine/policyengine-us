@@ -19,13 +19,13 @@ class is_aca_ptc_eligible(Variable):
         )
 
         # determine income eligibility for ACA PTC
-        aca = parameters(period).gov.aca
+        p = parameters(period).gov.aca
         magi_frac = person.tax_unit("aca_magi_fraction", period)
-        is_income_eligible = aca.ptc_income_eligibility.calc(magi_frac)
+        is_income_eligible = p.ptc_income_eligibility.calc(magi_frac)
 
         # determine which people pay an age-based ACA plan premium
-        is_aca_adult = person("age", period) > aca.max_child_age
-        child_pays = person("aca_child_index", period) <= aca.max_child_count
+        is_aca_adult = person("age", period) > p.max_child_age
+        child_pays = person("aca_child_index", period) <= p.max_child_count
         pays_aca_premium = is_aca_adult | child_pays
 
         return is_coverage_eligible & is_income_eligible & pays_aca_premium
