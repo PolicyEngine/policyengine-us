@@ -1,0 +1,15 @@
+- name: Single eligible
+  period: 2022
+  input:
+    state_code: KY
+    ky_filing_status: SINGLE
+  output:
+    ky_tuition_tax_credit_eligible: true
+
+- name: Separate ineligible
+  period: 2022
+  input:
+    state_code: KY
+    ky_filing_status: SEPARATE
+  output:
+    ky_tuition_tax_credit_eligible: false
