@@ -25,14 +25,14 @@ class de_itemized_deductions(Variable):
 
         real_estate_tax = add(tax_unit, period, ["real_estate_taxes"])
 
-        salt_amount = min_(
+        capped_real_estate_tax = min_(
             real_estate_tax, p.itemized.salt_and_real_estate.cap[filing_status]
         )
 
-        interest = add(
+        interest_deduction = add(
             tax_unit,
             period,
             ["mortgage_interest", "investment_income_form_4952"],
         )
 
-        return federal_deductions + salt_amount + interest
+        return federal_deductions + capped_real_estate_tax + interest_deduction
