@@ -13,4 +13,4 @@ class oh_deductions(Variable):
         "https://cms7files1.revize.com/starkcountyoh/Document_center/Offices/Auditor/Services/Homestead%20Exemption/Ohio_Adj_Gross_Income.pdf"
     )
     defined_for = StateCode.OH
-    adds = "gov.states.oh.tax.income.deductions"
+    adds = "gov.states.oh.tax.income.deductions.deductions"
