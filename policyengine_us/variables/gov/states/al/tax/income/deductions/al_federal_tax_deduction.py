@@ -11,7 +11,7 @@ class al_federal_tax_deduction(Variable):
     defined_for = StateCode.AL
 
     def formula(tax_unit, period, parameters):
-        income_tax = tax_unit("al_income_tax_before_credits", period)
+        income_tax = tax_unit("income_tax_before_credits", period)
         net_investment_income_tax = tax_unit(
             "net_investment_income_tax", period
         )
