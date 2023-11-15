@@ -28,13 +28,13 @@ class ca_child_care_service_category(Variable):
                 (time_category == time_categories.HOURLY),
                 (time_category == time_categories.DAILY),
                 (time_category == time_categories.WEEKLY)
-                & (weekly_hours < p.weekly_child_care_hours),
+                & (weekly_hours < p.weekly_child_care_hours_threshold),
                 (time_category == time_categories.WEEKLY)
-                & (weekly_hours >= p.weekly_child_care_hours),
+                & (weekly_hours >= p.weekly_child_care_hours_threshold),
                 (time_category == time_categories.MONTHLY)
-                & (weekly_hours < p.weekly_child_care_hours),
+                & (weekly_hours < p.weekly_child_care_hours_threshold),
                 (time_category == time_categories.MONTHLY)
-                & (weekly_hours >= p.weekly_child_care_hours),
+                & (weekly_hours >= p.weekly_child_care_hours_threshold),
             ],
             [
                 CaChildCareServiceCategory.PART_TIME,
