@@ -11,7 +11,9 @@ class ca_calworks_child_care_payment_factor(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.ca.cdss.tanf.child_care.rate_ceilings
-        factor_category = person("ca_calworks_child_care_factor_category", period)
+        factor_category = person(
+            "ca_calworks_child_care_factor_category", period
+        )
         factor_categories = factor_category.possible_values
         return select(
             [

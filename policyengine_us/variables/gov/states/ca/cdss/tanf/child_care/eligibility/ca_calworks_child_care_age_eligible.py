@@ -14,7 +14,9 @@ class ca_calworks_child_care_age_eligible(Variable):
         person = spm_unit.members
         age = person("age", period)
         is_disabled = person("is_disabled", period)
-        age_limit = where(is_disabled, p.disabled_age_threshold, p.age_threshold)
+        age_limit = where(
+            is_disabled, p.disabled_age_threshold, p.age_threshold
+        )
         eligible = age <= age_limit
 
         return spm_unit.any(eligible)

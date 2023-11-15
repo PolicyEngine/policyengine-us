@@ -12,6 +12,8 @@ class ca_calworks_child_care_eligible(Variable):
     def formula(spm_unit, period, parameters):
         receives_tanf = spm_unit("ca_tanf", period) > 0
         age_eligible = spm_unit("ca_calworks_child_care_age_eligible", period)
-        work_requirement = spm_unit("ca_calworks_child_care_meets_work_requirement", period)
+        work_requirement = spm_unit(
+            "ca_calworks_child_care_meets_work_requirement", period
+        )
 
         return receives_tanf & age_eligible & work_requirement

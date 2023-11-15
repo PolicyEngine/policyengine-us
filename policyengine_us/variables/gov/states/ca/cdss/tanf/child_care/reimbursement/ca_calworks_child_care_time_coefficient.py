@@ -13,8 +13,12 @@ class ca_calworks_child_care_time_coefficient(Variable):
         time_category = person("ca_calworks_child_care_time_category", period)
         time_categories = time_category.possible_values
         hours_per_day = person("childcare_hours_per_day", period)
-        days_per_month = person("ca_calworks_child_care_days_per_month", period)
-        weeks_per_month = person("ca_calworks_child_care_weeks_per_month", period)
+        days_per_month = person(
+            "ca_calworks_child_care_days_per_month", period
+        )
+        weeks_per_month = person(
+            "ca_calworks_child_care_weeks_per_month", period
+        )
 
         return select(
             [
