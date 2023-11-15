@@ -23,7 +23,7 @@ class ca_child_care_service_category(Variable):
         weekly_hours = person("childcare_hours_per_week", period)
         time_category = person("ca_child_care_time_category", period)
         time_categories = time_category.possible_values
-        service_category = select(
+        return select(
             [
                 (time_category == time_categories.HOURLY),
                 (time_category == time_categories.DAILY),
@@ -44,5 +44,3 @@ class ca_child_care_service_category(Variable):
                 CaChildCareServiceCategory.FULL_TIME,
             ],
         )
-
-        return service_category
