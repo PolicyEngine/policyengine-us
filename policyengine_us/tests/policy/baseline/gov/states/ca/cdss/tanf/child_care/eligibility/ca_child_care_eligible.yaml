@@ -3,7 +3,7 @@
   input:
     ca_tanf_eligible: true
     ca_calworks_child_care_age_eligible: true
-    ca_calworks_child_care_work_requirement: true
+    ca_calworks_child_care_meets_work_requirement: true
   output:
     ca_calworks_child_care_eligible: true
 
@@ -12,7 +12,7 @@
   input:
     ca_tanf_eligible: false
     ca_calworks_child_care_age_eligible: true
-    ca_calworks_child_care_work_requirement: true
+    ca_calworks_child_care_meets_work_requirement: true
   output:
     ca_calworks_child_care_eligible: false
 
@@ -21,7 +21,7 @@
   input:
     ca_tanf_eligible: true
     ca_calworks_child_care_age_eligible: false
-    ca_calworks_child_care_work_requirement: true
+    ca_calworks_child_care_meets_work_requirement: true
   output:
     ca_calworks_child_care_eligible: false
 
@@ -30,6 +30,6 @@
   input:
     ca_tanf_eligible: true
     ca_calworks_child_care_age_eligible: true
-    ca_calworks_child_care_work_requirement: false
+    ca_calworks_child_care_meets_work_requirement: false
   output:
     ca_calworks_child_care_eligible: false

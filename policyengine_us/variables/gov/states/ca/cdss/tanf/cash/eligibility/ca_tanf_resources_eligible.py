@@ -11,5 +11,5 @@ class ca_tanf_resources_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         resources = spm_unit("ca_tanf_resources", period)
-        limit = spm_unit("ca_tanf_resouces_limit", period)
+        limit = spm_unit("ca_tanf_resources_limit", period)
         return resources <= limit
