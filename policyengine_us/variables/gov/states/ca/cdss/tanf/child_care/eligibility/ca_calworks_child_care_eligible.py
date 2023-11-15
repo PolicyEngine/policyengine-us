@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ca_child_care_eligible(Variable):
+class ca_calworks_child_care_eligible(Variable):
     value_type = bool
     entity = SPMUnit
     label = "California CalWORKs Child Care Eligibility"
@@ -11,7 +11,7 @@ class ca_child_care_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         receives_tanf = spm_unit("ca_tanf", period) > 0
-        age_eligible = spm_unit("ca_child_care_age_eligible", period)
-        work_requirement = spm_unit("ca_child_care_work_requirement", period)
+        age_eligible = spm_unit("ca_calworks_child_care_age_eligible", period)
+        work_requirement = spm_unit("ca_calworks_child_care_meets_work_requirement", period)
 
         return receives_tanf & age_eligible & work_requirement

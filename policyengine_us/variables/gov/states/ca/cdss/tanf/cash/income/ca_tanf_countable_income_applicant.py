@@ -13,7 +13,7 @@ class ca_tanf_countable_income_applicant(Variable):
     def formula(spm_unit, period, parameters):
         p = parameters(
             period
-        ).gov.states.ca.cdss.tanf.income.disregards.applicant
+        ).gov.states.ca.cdss.tanf.cash.income.disregards.applicant
         countable_earned = max_(
             spm_unit("ca_tanf_earned_income", period) - p.flat, 0
         )

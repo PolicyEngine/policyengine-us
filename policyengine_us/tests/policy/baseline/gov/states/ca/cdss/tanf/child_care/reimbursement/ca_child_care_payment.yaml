@@ -3,20 +3,20 @@
   input:
     people:
       child1:
-        ca_child_care_payment_standard: 400
-        ca_child_care_time_coefficient: 2
-        ca_child_care_payment_factor: 1
+        ca_calworks_child_care_payment_standard: 400
+        ca_calworks_child_care_time_coefficient: 2
+        ca_calworks_child_care_payment_factor: 1
       child2:
-        ca_child_care_payment_standard: 60
-        ca_child_care_time_coefficient: 20
-        ca_child_care_payment_factor: 1.25
+        ca_calworks_child_care_payment_standard: 60
+        ca_calworks_child_care_time_coefficient: 20
+        ca_calworks_child_care_payment_factor: 1.25
     spm_units:
       spm_unit:
         members: [child1, child2]
-        ca_child_care_eligible: true
+        ca_calworks_child_care_eligible: true
     households:
       household:
         members: [child1, child2]
         state_code: CA
   output:
-    ca_child_care_payment: 2300
+    ca_calworks_child_care_payment: 2300

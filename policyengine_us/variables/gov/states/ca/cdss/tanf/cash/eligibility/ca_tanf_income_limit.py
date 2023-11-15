@@ -11,7 +11,7 @@ class ca_tanf_income_limit(Variable):
     reference = "http://epolicy.dpss.lacounty.gov/epolicy/epolicy/server/general/projects_responsive/ePolicyMaster/index.htm?&area=general&type=responsivehelp&ctxid=&project=ePolicyMaster#t=mergedProjects%2FCalWORKs%2FCalWORKs%2F44-212_Minimum_Basic_Standard_of_Adequate_Care%2F44-212_Minimum_Basic_Standard_of_Adequate_Care.htm%23Documentsbc-6&rhtocid=_3_1_7_20_5"
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.states.ca.cdss.tanf.income.monthly_limit
+        p = parameters(period).gov.states.ca.cdss.tanf.cash.income.monthly_limit
         unit_size = spm_unit("spm_unit_size", period)
         au_size = min_(unit_size, p.max_au_size)
         additional_people = unit_size - au_size

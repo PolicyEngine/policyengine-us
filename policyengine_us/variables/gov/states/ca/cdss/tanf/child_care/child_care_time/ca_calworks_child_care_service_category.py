@@ -1,15 +1,15 @@
 from policyengine_us.model_api import *
 
 
-class CaChildCareServiceCategory(Enum):
+class CaCalworksChildCareServiceCategory(Enum):
     FULL_TIME = "Full time"
     PART_TIME = "Part time"
 
 
-class ca_child_care_service_category(Variable):
+class ca_calworks_child_care_service_category(Variable):
     value_type = Enum
-    possible_values = CaChildCareServiceCategory
-    default_value = CaChildCareServiceCategory.FULL_TIME
+    possible_values = CaCalworksChildCareServiceCategory
+    default_value = CaCalworksChildCareServiceCategory.FULL_TIME
     entity = Person
     label = "California CalWORKs Child Care service category"
     definition_period = YEAR
@@ -21,7 +21,7 @@ class ca_child_care_service_category(Variable):
             period
         ).gov.states.ca.cdss.tanf.child_care.child_care_time.weekly_care
         weekly_hours = person("childcare_hours_per_week", period)
-        time_category = person("ca_child_care_time_category", period)
+        time_category = person("ca_calworks_child_care_time_category", period)
         time_categories = time_category.possible_values
         return select(
             [
@@ -37,11 +37,11 @@ class ca_child_care_service_category(Variable):
                 & (weekly_hours >= p.weekly_child_care_hours_threshold),
             ],
             [
-                CaChildCareServiceCategory.PART_TIME,
-                CaChildCareServiceCategory.FULL_TIME,
-                CaChildCareServiceCategory.PART_TIME,
-                CaChildCareServiceCategory.FULL_TIME,
-                CaChildCareServiceCategory.PART_TIME,
-                CaChildCareServiceCategory.FULL_TIME,
+                CaCalworksChildCareServiceCategory.PART_TIME,
+                CaCalworksChildCareServiceCategory.FULL_TIME,
+                CaCalworksChildCareServiceCategory.PART_TIME,
+                CaCalworksChildCareServiceCategory.FULL_TIME,
+                CaCalworksChildCareServiceCategory.PART_TIME,
+                CaCalworksChildCareServiceCategory.FULL_TIME,
             ],
         )

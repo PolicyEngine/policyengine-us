@@ -13,7 +13,7 @@ class ca_tanf_countable_income_recipient(Variable):
     def formula(spm_unit, period, parameters):
         p = parameters(
             period
-        ).gov.states.ca.cdss.tanf.income.disregards.recipient
+        ).gov.states.ca.cdss.tanf.cash.income.disregards.recipient
         earned = spm_unit("ca_tanf_earned_income", period)
         db_unearned = spm_unit("ca_tanf_db_unearned_income", period)
         unearned = spm_unit("ca_tanf_unearned_income", period)

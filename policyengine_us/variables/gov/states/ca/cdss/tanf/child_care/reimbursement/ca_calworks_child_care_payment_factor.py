@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ca_child_care_payment_factor(Variable):
+class ca_calworks_child_care_payment_factor(Variable):
     value_type = float
     entity = Person
     label = "California CalWORKs Child Care payment factor"
@@ -11,7 +11,7 @@ class ca_child_care_payment_factor(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.ca.cdss.tanf.child_care.rate_ceilings
-        factor_category = person("ca_child_care_factor_category", period)
+        factor_category = person("ca_calworks_child_care_factor_category", period)
         factor_categories = factor_category.possible_values
         return select(
             [

@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ca_child_care_payment_standard(Variable):
+class ca_calworks_child_care_payment_standard(Variable):
     value_type = float
     entity = Person
     label = "California CalWORKs Child Care Payment Standard"
@@ -11,9 +11,9 @@ class ca_child_care_payment_standard(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.ca.cdss.tanf.child_care.rate_ceilings
-        provider = person("ca_child_care_provider_category", period)
-        time = person("ca_child_care_time_category", period)
-        service = person("ca_child_care_service_category", period)
+        provider = person("ca_calworks_child_care_provider_category", period)
+        time = person("ca_calworks_child_care_time_category", period)
+        service = person("ca_calworks_child_care_service_category", period)
         age = person("age", period)
 
         return select(

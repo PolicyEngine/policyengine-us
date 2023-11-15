@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class CaChildCareFactorCategory(Enum):
+class CaCalworksChildCareFactorCategory(Enum):
     STANDARD = "Standard Rate Ceilings"
     EVENING_AND_WEEKEND_I = (
         "Evening/Weekend Care Rate Ceilings (50% or more of time)"
@@ -11,10 +11,10 @@ class CaChildCareFactorCategory(Enum):
     SEVERELY_DISABLED = "Severely Disabled Care Rate Ceilings"
 
 
-class ca_child_care_factor_category(Variable):
+class ca_calworks_child_care_factor_category(Variable):
     value_type = Enum
-    possible_values = CaChildCareFactorCategory
-    default_value = CaChildCareFactorCategory.STANDARD
+    possible_values = CaCalworksChildCareFactorCategory
+    default_value = CaCalworksChildCareFactorCategory.STANDARD
     entity = Person
     label = "California CalWORKs Child Care factor category"
     definition_period = YEAR

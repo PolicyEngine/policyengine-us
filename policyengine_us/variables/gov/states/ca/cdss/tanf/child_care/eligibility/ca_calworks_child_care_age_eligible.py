@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ca_child_care_age_eligible(Variable):
+class ca_calworks_child_care_age_eligible(Variable):
     value_type = bool
     entity = SPMUnit
     label = "California CalWORKs Child Care Age Eligibility"
@@ -14,9 +14,7 @@ class ca_child_care_age_eligible(Variable):
         person = spm_unit.members
         age = person("age", period)
         is_disabled = person("is_disabled", period)
-        disabled_child_eligible = (age <= p.disabled_age_threshold) & (
-            is_disabled
-        )
-        younger_child_eligible = age <= p.age_threshold
+        age_limit = where(is_disabled, p.disabled_age_threshold, p.age_threshold)
+        eligible = age <= age_limit
 
-        return spm_unit.any(disabled_child_eligible | younger_child_eligible)
+        return spm_unit.any(eligible)

@@ -2,46 +2,46 @@
   period: 2023
   input:
     age: 1
-    ca_child_care_provider_category: CHILD_CARE_CENTER
-    ca_child_care_time_category: HOURLY
-    ca_child_care_service_category: PART_TIME
+    ca_calworks_child_care_provider_category: CHILD_CARE_CENTER
+    ca_calworks_child_care_time_category: HOURLY
+    ca_calworks_child_care_service_category: PART_TIME
     is_child: true
     state_code: CA
   output:
-    ca_child_care_payment_standard: 16.28
+    ca_calworks_child_care_payment_standard: 16.28
 
 - name: Full time weekly family child care home service.
   period: 2023
   input:
     age: 2
-    ca_child_care_provider_category: FAMILY_CHILD_CARE_HOME
-    ca_child_care_time_category: WEEKLY
-    ca_child_care_service_category: FULL_TIME
+    ca_calworks_child_care_provider_category: FAMILY_CHILD_CARE_HOME
+    ca_calworks_child_care_time_category: WEEKLY
+    ca_calworks_child_care_service_category: FULL_TIME
     is_child: true
     state_code: CA
   output:
-    ca_child_care_payment_standard: 214.55
+    ca_calworks_child_care_payment_standard: 214.55
 
 - name: Full time monthly license exempt service.
   period: 2023
   input:
     age: 6
-    ca_child_care_provider_category: LICENSE_EXEMPT
-    ca_child_care_time_category: MONTHLY
-    ca_child_care_service_category: FULL_TIME
+    ca_calworks_child_care_provider_category: LICENSE_EXEMPT
+    ca_calworks_child_care_time_category: MONTHLY
+    ca_calworks_child_care_service_category: FULL_TIME
     is_child: true
     state_code: CA
   output:
-    ca_child_care_payment_standard: 460.09
+    ca_calworks_child_care_payment_standard: 460.09
 
 - name: Full time monthly family child care home service but is not a child.
   period: 2023
   input:
     age: 3
-    ca_child_care_provider_category: FAMILY_CHILD_CARE_HOME
-    ca_child_care_time_category: MONTHLY
-    ca_child_care_service_category: FULL_TIME
+    ca_calworks_child_care_provider_category: FAMILY_CHILD_CARE_HOME
+    ca_calworks_child_care_time_category: MONTHLY
+    ca_calworks_child_care_service_category: FULL_TIME
     is_child: false
     state_code: CA
   output:
-    ca_child_care_payment_standard: 0
+    ca_calworks_child_care_payment_standard: 0

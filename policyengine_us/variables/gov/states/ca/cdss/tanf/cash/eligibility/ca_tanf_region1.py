@@ -13,5 +13,5 @@ class ca_tanf_region1(Variable):
         county = spm_unit.household("county_str", period)
         region1_counties = parameters(
             period
-        ).gov.states.ca.cdss.tanf.region1_counties
+        ).gov.states.ca.cdss.tanf.cash.region1_counties
         return county in region1_counties
