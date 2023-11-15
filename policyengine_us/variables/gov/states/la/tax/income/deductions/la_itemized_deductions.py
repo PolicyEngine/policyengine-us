@@ -18,14 +18,9 @@ class la_itemized_deductions(Variable):
             period
         ).gov.states.la.tax.income.deductions.itemized.medical
         p_us = parameters(period).gov.irs.deductions
-        itm_deds = [
-            deduction
-            for deduction in p_us.itemized_deductions
-            if deduction not in ["salt_deduction"]
-        ]
         us_itemizing = tax_unit("tax_unit_itemizes", period)
         federal_itemized_deduction = (
-            add(tax_unit, period, itm_deds) * us_itemizing
+            tax_unit("itemized_deductions_less_salt", period) * us_itemizing
         )
         federal_standard_deduction = tax_unit("standard_deduction", period)
         less_itm_amount = max_(
