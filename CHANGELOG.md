@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.533.0] - 2023-11-15 19:02:07
+
+### Added
+
+- Ohio AGI additions and deductions parameters and variables.
+
 ## [0.532.0] - 2023-11-15 06:28:33
 
 ### Added
@@ -5908,6 +5914,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.533.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.532.0...0.533.0
 [0.532.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.531.0...0.532.0
 [0.531.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.530.1...0.531.0
 [0.530.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.530.0...0.530.1
