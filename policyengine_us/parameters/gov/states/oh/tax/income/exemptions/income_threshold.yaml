@@ -1,8 +1,17 @@
-escription: Ohio limits its exemption credit to filers with modified adjusted gross income below this threshold.
-values:
-  2021-01-01: 30_000
+escription: Ohio limits the modified adjusted gross income of filers under this threshold to receive exemption credits.
+brackets:
+  - threshold:
+      2021-01-01: 0
+    amount:
+      2021-01-01: 20
+  - threshold:
+      2021-01-01: 30_000
+    amount:
+      2021-01-01: 0
 metadata:
-  unit: currency-USD
+  type: single_amount
+  threshold_unit: currency-USD
+  rate_unit: currency-USD
   period: year
   label: Ohio Exemption Credit income threshold
   reference:

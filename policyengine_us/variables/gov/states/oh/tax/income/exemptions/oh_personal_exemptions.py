@@ -15,9 +15,9 @@ class oh_personal_exemptions(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.oh.tax.income.exemptions.personal
 
-        count = tax_unit("exemptions_count", period)
+        exemptions = tax_unit("exemptions_count", period)
 
         agi = tax_unit("oh_agi", period)
         credit_amount = p.amount.calc(agi)
 
-        return count * credit_amount
+        return exemptions * credit_amount

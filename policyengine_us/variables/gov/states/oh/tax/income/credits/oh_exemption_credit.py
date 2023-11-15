@@ -8,11 +8,16 @@ class oh_exemption_credit(Variable):
     unit = USD
     definition_period = YEAR
     reference = "https://codes.ohio.gov/ohio-revised-code/section-5747.022"
-    defined_for = "oh_exemption_credit_eligible"
+    defined_for = StateCode.OH
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.oh.tax.income.exemptions
 
-        count = tax_unit("exemptions_count", period)
+        agi = tax_unit("oh_agi", period)
+        personal_exemptions = tax_unit("oh_personal_exemptions", period)
+        # Per tax form, amount can be negative
+        modified_agi = agi - personal_exemptions
 
-        return p.amount * count
+        exemptions = tax_unit("exemptions_count", period)
+
+        return p.income_threshold.calc(modified_agi) * exemptions
