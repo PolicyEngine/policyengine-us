@@ -14,5 +14,12 @@ class is_medicare_eligible(Variable):
     )
 
     def formula(person, period, parameters):
-        MEDICARE_ELIGILITY_AGE = 65
-        return person("age", period) >= MEDICARE_ELIGILITY_AGE
+        p = parameters(period).gov.hhs.medicare.eligibility
+        is_age_eligible = person("age", period) >= p.min_age
+        gets_ssdi = person("social_security_disability", period) > 0
+        months = person("months_receiving_social_security_disability", period)
+        is_disability_eligible = (
+            gets_ssdi
+            & (months >= p.min_months_receiving_social_security_disability)
+        )
+        return is_age_eligible | is_disability_eligible
