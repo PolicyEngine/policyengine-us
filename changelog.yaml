@@ -4982,3 +4982,20 @@
     added:
     - Ohio 529 plan deduction.
   date: 2023-11-14 20:34:35
+- bump: patch
+  changes:
+    fixed:
+    - The temporary presence of `earned_income_tax_credit` by removing it, leaving
+      the `eitc` variable as the sole representation of the federal Earned Income
+      Credit.
+  date: 2023-11-14 23:03:24
+- bump: minor
+  changes:
+    added:
+    - Montana senior interest income exclusion.
+  date: 2023-11-15 06:22:47
+- bump: minor
+  changes:
+    added:
+    - Kentucky tuition tax credit.
+  date: 2023-11-15 06:28:33
