@@ -17,21 +17,34 @@ class hi_cdcc_min_head_spouse_earned(Variable):
 
     def formula(tax_unit, period, parameters):
         # Head or spouse are eligible for an income floor if disabled or a student
-        # income_floor_eligible = person("is_disabled", period) | person(
-        #     "is_full_time_student", period
-        # )
-        person = tax_unit.members
-        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        income = person("earned_income", period) 
-        dependent_excluded_income = where(head_or_spouse, income, np.inf)
-        income_floor_lst = person("hi_cdcc_eligible_income_floor", period)
-        income_floor = tax_unit.max(income_floor_lst)
-        total_income_floor_eligible_people = sum(head_or_spouse & (income_floor_lst != 0))
-        print(total_income_floor_eligible_people)
         # Edge case: both spouses were students or disabled:
         # If both filers are disabled / student below the floor limit,
         # only one person with larger earning gets elevated to the floor
         # If both filers are disabled / student but only one person is below the floor limit,
         # then the person below the floor limit will be elevated to the floor
-        smaller_earnings = tax_unit.min(dependent_excluded_income)
-        return where(total_income_floor_eligible_people == 1, income_floor, smaller_earnings)
+        person = tax_unit.members
+        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+        income = person("earned_income", period)
+        dependent_excluded_income = where(head_or_spouse, income, np.inf)
+        income_floor_lst = person("hi_cdcc_eligible_income_floor", period)
+        income_floor = tax_unit.max(income_floor_lst)
+        income_floor_eligible_people = (
+            head_or_spouse
+            & (income_floor_lst != 0)
+            & (dependent_excluded_income < income_floor)
+        )
+        income_below_floor = sum(dependent_excluded_income < income_floor)
+        only_one_eligible = sum(income_floor_eligible_people) == 1
+        only_one_eligible_below_floor = only_one_eligible & (
+            income_below_floor >= 1
+        )
+        income_applied_floor = where(
+            income_floor_eligible_people,
+            income_floor,
+            dependent_excluded_income,
+        )
+        return where(
+            only_one_eligible_below_floor,
+            tax_unit.min(income_applied_floor),
+            tax_unit.min(dependent_excluded_income),
+        )

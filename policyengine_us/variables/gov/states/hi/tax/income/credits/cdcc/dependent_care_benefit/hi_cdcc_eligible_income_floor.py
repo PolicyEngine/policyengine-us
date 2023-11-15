@@ -20,12 +20,7 @@ class hi_cdcc_eligible_income_floor(Variable):
         qualified_children = person.tax_unit("count_cdcc_eligible", period)
         # Floor depends on number of eligible dependents
         income_floor = p.disabled_student_income_floor.calc(qualified_children)
-        # income = person("earned_income", period)
-        # if one's income is greater than the floor, we will return the income
-        income_floor_eligible = person("is_disabled", period) | person("is_full_time_student", period
+        income_floor_eligible = person("is_disabled", period) | person(
+            "is_full_time_student", period
         )
-        # return max_(income, income_floor)
         return income_floor * income_floor_eligible
-
-
-# Question: people who are ineligible will have a value of 0, which will the affect the min_ function 

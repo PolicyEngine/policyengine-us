@@ -1,17 +1,15 @@
-- name: married, not disabled/student
+- name: married, no eligible
   period: 2022
   input:
     people:
       head:
         is_tax_unit_head_or_spouse: true
-        is_disabled: false
-        is_full_time_student: false
         earned_income: 20_000
+        hi_cdcc_eligible_income_floor: 0
       spouse:
         is_tax_unit_head_or_spouse: true
-        is_disabled: false
-        is_full_time_student: false
         earned_income: 30_000
+        hi_cdcc_eligible_income_floor: 0
     tax_units:
       tax_unit:
         members: [head, spouse]
@@ -19,361 +17,143 @@
     households:
       household:
         members: [head, spouse]
-        state_code: HI
-  output:
-    hi_cdcc_min_head_spouse_earned: [20_000, 30_000]
-
-- name: married, is disabled/student, smaller spouse income(smaller than 4_800)
-  period: 2022
-  input:
-    people:
-      head:
-        is_tax_unit_head_or_spouse: true
-        is_disabled: false
-        is_full_time_student: false
-        earned_income: 20_000
-      spouse:
-        is_tax_unit_head_or_spouse: true
-        is_disabled: true
-        is_full_time_student: false
-        earned_income: 100
-    tax_units:
-      tax_unit:
-        members: [head, spouse]
-        count_cdcc_eligible: 3
-    households:
-      household:
-        members: [head, spouse]
-        state_code: HI
-  output:
-    hi_cdcc_min_head_spouse_earned: [20_000, 4_800]
-
-- name: married, is disabled/student, smaller spouse income(smaller than 2_400)
-  period: 2022
-  input:
-    people:
-      head:
-        is_tax_unit_head_or_spouse: true
-        is_disabled: false
-        is_full_time_student: false
-        earned_income: 20_000
-      spouse:
-        is_tax_unit_head_or_spouse: true
-        is_disabled: true
-        is_full_time_student: false
-        earned_income: 100
-    tax_units:
-      tax_unit:
-        members: [head, spouse]
-        count_cdcc_eligible: 1
-    households:
-      household:
-        members: [head, spouse]
-        state_code: HI
-  output:
-    hi_cdcc_min_head_spouse_earned: [20_000, 2_400]
-
-- name: married, both disabled/student, both income smaller than 4_800
-  period: 2022
-  input:
-    people:
-      head:
-        is_tax_unit_head_or_spouse: true
-        is_disabled: true
-        is_full_time_student: true
-        earned_income: 100
-      spouse:
-        is_tax_unit_head_or_spouse: true
-        is_disabled: true
-        is_full_time_student: false
-        earned_income: 100
-    tax_units:
-      tax_unit:
-        members: [head, spouse]
-        count_cdcc_eligible: 3
-    households:
-      household:
-        members: [head, spouse]
-        state_code: HI
-  output:
-    hi_cdcc_min_head_spouse_earned: [100, 100]
-
-- name: married, both disabled/student, one income smaller than 4_800
-  period: 2022
-  input:
-    people:
-      head:
-        is_tax_unit_head_or_spouse: true
-        is_disabled: true
-        is_full_time_student: true
-        earned_income: 5_000
-      spouse:
-        is_tax_unit_head_or_spouse: true
-        is_disabled: true
-        is_full_time_student: false
-        earned_income: 100
-    tax_units:
-      tax_unit:
-        members: [head, spouse]
-        count_cdcc_eligible: 3
-    households:
-      household:
-        members: [head, spouse]
-        state_code: HI
-  output:
-    hi_cdcc_min_head_spouse_earned: [5_000, 4_800]
-
-- name: married, one disabled/student, both income smaller than 4_800
-  period: 2022
-  input:
-    people:
-      head:
-        is_tax_unit_head_or_spouse: true
-        is_disabled: false
-        is_full_time_student: false
-        earned_income: 100
-      spouse:
-        is_tax_unit_head_or_spouse: true
-        is_disabled: true
-        is_full_time_student: false
-        earned_income: 100
-    tax_units:
-      tax_unit:
-        members: [head, spouse]
-        count_cdcc_eligible: 3
-    households:
-      household:
-        members: [head, spouse]
-        state_code: HI
-  output:
-    hi_cdcc_min_head_spouse_earned: [100, 4_800]
-
-- name: married, one disabled/student, one disable child, both income smaller than 4_800
-  period: 2022
-  input:
-    people:
-      head:
-        is_tax_unit_head_or_spouse: true
-        is_disabled: false
-        is_full_time_student: false
-        earned_income: 100
-      spouse:
-        is_tax_unit_head_or_spouse: true
-        is_disabled: true
-        is_full_time_student: false
-        earned_income: 100
-      child:
-        is_tax_unit_head_or_spouse: false
-        is_disabled: true
-        is_full_time_student: false
-        earned_income: 1_000
-    tax_units:
-      tax_unit:
-        members: [head, spouse, child]
-        count_cdcc_eligible: 3
-    households:
-      household:
-        members: [head, spouse, child]
-        state_code: HI
-  output:
-    hi_cdcc_min_head_spouse_earned: [100, 100, 1_000]
-
-- name: married, two disabled/student, one disable child, all income smaller than 4_800
-  period: 2022
-  input:
-    people:
-      head:
-        is_tax_unit_head_or_spouse: true
-        is_disabled: true
-        is_full_time_student: false
-        earned_income: 100
-      spouse:
-        is_tax_unit_head_or_spouse: true
-        is_disabled: true
-        is_full_time_student: false
-        earned_income: 100
-      child:
-        is_tax_unit_head_or_spouse: false
-        is_disabled: true
-        is_full_time_student: false
-        earned_income: 1_000
-    tax_units:
-      tax_unit:
-        members: [head, spouse, child]
-        count_cdcc_eligible: 3
-    households:
-      household:
-        members: [head, spouse, child]
-        state_code: HI
-  output:
-    hi_cdcc_min_head_spouse_earned: [100, 100, 1_000]
-
-- name: married, two disabled/student, two disable child, two child income smaller than 4_800
-  period: 2022
-  input:
-    people:
-      head:
-        is_tax_unit_head_or_spouse: true
-        is_disabled: true
-        is_full_time_student: false
-        earned_income: 10_000
-      spouse:
-        is_tax_unit_head_or_spouse: true
-        is_disabled: true
-        is_full_time_student: false
-        earned_income: 10_000
-      child1:
-        is_tax_unit_head_or_spouse: false
-        is_disabled: true
-        is_full_time_student: false
-        earned_income: 1_000
-      child2:
-        is_tax_unit_head_or_spouse: false
-        is_disabled: true
-        is_full_time_student: false
-        earned_income: 1_000
-    tax_units:
-      tax_unit:
-        members: [head, spouse, child1, child2]
-        count_cdcc_eligible: 3
-    households:
-      household:
-        members: [head, spouse, child1, child2]
-        state_code: HI
-  output:
-    hi_cdcc_min_head_spouse_earned: [10_000, 10_000, 1_000, 1_000]
-  
-- name: married, two disabled/student, two disable child, two parent smaller than 4_800
-  period: 2022
-  input:
-    people:
-      head:
-        is_tax_unit_head_or_spouse: true
-        is_disabled: true
-        is_full_time_student: false
-        earned_income: 1_000
-      spouse:
-        is_tax_unit_head_or_spouse: true
-        is_disabled: true
-        is_full_time_student: false
-        earned_income: 1_000
-      child1:
-        is_tax_unit_head_or_spouse: false
-        is_disabled: true
-        is_full_time_student: false
-        earned_income: 10_000
-      child2:
-        is_tax_unit_head_or_spouse: false
-        is_disabled: true
-        is_full_time_student: false
-        earned_income: 10_000
-    tax_units:
-      tax_unit:
-        members: [head, spouse, child1, child2]
-        count_cdcc_eligible: 3
-    households:
-      household:
-        members: [head, spouse, child1, child2]
-        state_code: HI
-  output:
-    hi_cdcc_min_head_spouse_earned: [1_000, 1_000, 10_000, 10_000]
-
-- name: single, not disabled/student
-  period: 2022
-  input:
-    people:
-      head:
-        is_tax_unit_head_or_spouse: true
-        is_disabled: false
-        is_full_time_student: false
-        earned_income: 20_000
-    tax_units:
-      tax_unit:
-        members: [head]
-        count_cdcc_eligible: 3
-    households:
-      household:
-        members: [head]
         state_code: HI
   output:
     hi_cdcc_min_head_spouse_earned: 20_000
 
-- name: single, is disabled/student, income smaller than 4_800
+- name: married, two eligible, greater income
   period: 2022
   input:
     people:
       head:
         is_tax_unit_head_or_spouse: true
-        is_disabled: true
-        is_full_time_student: false
-        earned_income: 1_000
-    tax_units:
-      tax_unit:
-        members: [head]
-        count_cdcc_eligible: 3
-    households:
-      household:
-        members: [head]
-        state_code: HI
-  output:
-    hi_cdcc_min_head_spouse_earned: 4_800
-
-- name: single, not disabled/student, one disabled child
-  period: 2022
-  input:
-    people:
-      head:
-        is_tax_unit_head_or_spouse: true
-        is_disabled: true
-        is_full_time_student: false
-        earned_income: 10_000
-      child:
-        is_tax_unit_head_or_spouse: false
-        is_disabled: true
-        is_full_time_student: false
-        earned_income: 1_000
-    tax_units:
-      tax_unit:
-        members: [head, child]
-        count_cdcc_eligible: 3
-    households:
-      household:
-        members: [head, child]
-        state_code: HI
-  output:
-    hi_cdcc_min_head_spouse_earned: [10_000, 4_800]
-
-- name: married, two disabled/student, two disable child, one child and one parent income smaller than 4_800
-  period: 2022
-  input:
-    people:
-      head:
-        is_tax_unit_head_or_spouse: true
-        is_disabled: true
-        is_full_time_student: false
-        earned_income: 10_000
+        earned_income: 20_000
+        hi_cdcc_eligible_income_floor: 2_400
       spouse:
         is_tax_unit_head_or_spouse: true
-        is_disabled: true
-        is_full_time_student: false
-        earned_income: 1_000
-      child1:
-        is_tax_unit_head_or_spouse: false
-        is_disabled: true
-        is_full_time_student: false
-        earned_income: 1_000
-      child2:
-        is_tax_unit_head_or_spouse: false
-        is_disabled: true
-        is_full_time_student: false
-        earned_income: 10_000
+        earned_income: 30_000
+        hi_cdcc_eligible_income_floor: 2_400
     tax_units:
       tax_unit:
-        members: [head, spouse, child1, child2]
-        count_cdcc_eligible: 3
+        members: [head, spouse]
     households:
       household:
-        members: [head, spouse, child1, child2]
+        members: [head, spouse]
         state_code: HI
   output:
-    hi_cdcc_min_head_spouse_earned: [10_000, 4_800, 1_000, 10_000]
+    hi_cdcc_min_head_spouse_earned: 20_000
+
+- name: married, two eligible, both income below floor
+  period: 2022
+  input:
+    people:
+      head:
+        is_tax_unit_head_or_spouse: true
+        earned_income: 200
+        hi_cdcc_eligible_income_floor: 2_400
+      spouse:
+        is_tax_unit_head_or_spouse: true
+        earned_income: 100
+        hi_cdcc_eligible_income_floor: 2_400
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: HI
+  output:
+    hi_cdcc_min_head_spouse_earned: 100
+
+- name: married, one eligible, not eligible one has income below floor
+  period: 2022
+  input:
+    people:
+      head:
+        is_tax_unit_head_or_spouse: true
+        earned_income: 100
+        hi_cdcc_eligible_income_floor: 0
+      spouse:
+        is_tax_unit_head_or_spouse: true
+        earned_income: 30_000
+        hi_cdcc_eligible_income_floor: 2_400
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: HI
+  output:
+    hi_cdcc_min_head_spouse_earned: 100
+
+- name: married, two eligible, one disabled child, both income greater than floor
+  period: 2022
+  input:
+    people:
+      head:
+        is_tax_unit_head_or_spouse: true
+        earned_income: 20_000
+        hi_cdcc_eligible_income_floor: 2_400
+      spouse:
+        is_tax_unit_head_or_spouse: true
+        earned_income: 10_000
+        hi_cdcc_eligible_income_floor: 2_400
+      child:
+        is_tax_unit_head_or_spouse: false
+        earned_income: 100
+        hi_cdcc_eligible_income_floor: 2_400
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: HI
+  output:
+    hi_cdcc_min_head_spouse_earned: 10_000
+
+- name: single, one eligible, one child, income below floor
+  period: 2022
+  input:
+    people:
+      head:
+        is_tax_unit_head_or_spouse: true
+        earned_income: 200
+        hi_cdcc_eligible_income_floor: 2_400
+      child:
+        is_tax_unit_head_or_spouse: false
+        earned_income: 100
+        hi_cdcc_eligible_income_floor: 2_400
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: HI
+  output:
+    hi_cdcc_min_head_spouse_earned: 2_400
+
+- name: married, one eligible, both income below floor
+  period: 2022
+  input:
+    people:
+      head:
+        is_tax_unit_head_or_spouse: true
+        earned_income: 200
+        hi_cdcc_eligible_income_floor: 0
+      spouse:
+        is_tax_unit_head_or_spouse: true
+        earned_income: 100
+        hi_cdcc_eligible_income_floor: 2_400
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: HI
+  output:
+    hi_cdcc_min_head_spouse_earned: 200
+
