@@ -31,9 +31,11 @@ class person_aca_slspc_ca(Variable):
             ptree.gov.aca.add_child("ca_", aca_params)
         # specify ACA geographic rating area
         aca_gra = ptree.gov.aca.ca_.gra(period)
-        in_state = person.household("state_fips", period) == 6
+        CA_FIPS = 6
+        in_state = person.household("state_fips", period) == CA_FIPS
         cofips = person.household("county_fips", period)
-        in_la_county = cofips == 37
+        LA_COUNTY_FIPS = 37
+        in_la_county = cofips == LA_COUNTY_FIPS
         zip3 = person.household("aca_zip3_ca_county_la", period)
         idx = where(in_la_county, zip3, cofips)
         gra = aca_gra[in_state * idx].astype(int)
