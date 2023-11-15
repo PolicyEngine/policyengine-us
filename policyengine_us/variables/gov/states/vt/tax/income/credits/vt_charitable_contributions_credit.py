@@ -14,8 +14,8 @@ class vt_charitable_contribution_credit(Variable):
     defined_for = StateCode.VT
 
     def formula(tax_unit, period, parameters):
-        charity = tax_unit("charitable_deduction", period)
+        charitable_deduction = tax_unit("charitable_deduction", period)
         p = parameters(period).gov.states.vt.tax.income.credits.charitable
-        subtraction_amount = p.rate * charity
-        capped_subtraction_amount = p.rate * p.threshold
-        return min_(subtraction_amount, capped_subtraction_amount)
+        credit_amount = p.rate * charitable_deduction
+        capped_credit_amount = p.rate * p.threshold
+        return min_(credit_amount, capped_credit_amount)
