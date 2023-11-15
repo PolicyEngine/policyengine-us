@@ -19,7 +19,7 @@ class ca_child_care_service_category(Variable):
     def formula(person, period, parameters):
         p = parameters(
             period
-        ).gov.states.ca.cdss.child_care.child_care_time.weekly_care.weekly_child_care_hours
+        ).gov.states.ca.cdss.tanf.child_care.child_care_time.weekly_care
         weekly_hours = person("childcare_hours_per_week", period)
         time_category = person("ca_child_care_time_category", period)
         time_categories = time_category.possible_values
@@ -27,13 +27,13 @@ class ca_child_care_service_category(Variable):
             [
                 (time_category == time_categories.HOURLY),
                 (time_category == time_categories.DAILY),
-                (time_category == time_categories.WEEKLY) & (weekly_hours < p),
+                (time_category == time_categories.WEEKLY) & (weekly_hours < p.weekly_child_care_hours),
                 (time_category == time_categories.WEEKLY)
-                & (weekly_hours >= p),
+                & (weekly_hours >= p.weekly_child_care_hours),
                 (time_category == time_categories.MONTHLY)
-                & (weekly_hours < p),
+                & (weekly_hours < p.weekly_child_care_hours),
                 (time_category == time_categories.MONTHLY)
-                & (weekly_hours >= p),
+                & (weekly_hours >= p.weekly_child_care_hours),
             ],
             [
                 CaChildCareServiceCategory.PART_TIME,
