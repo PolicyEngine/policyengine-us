@@ -17,12 +17,10 @@ class ca_child_care_payment_standard(Variable):
         age = person("age", period)
 
         return select(
-            [
-                age < p.age_threshold.lower,
-                age > p.age_threshold.higher
-            ],
+            [age < p.age_threshold.lower, age > p.age_threshold.higher],
             [
                 p.standard.younger[provider][time][service],
-                p.standard.older[provider][time][service]
-            ], default = p.standard.middle[provider][time][service]
+                p.standard.older[provider][time][service],
+            ],
+            default=p.standard.middle[provider][time][service],
         )

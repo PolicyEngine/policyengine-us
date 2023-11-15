@@ -20,11 +20,8 @@ class ca_child_care_time_coefficient(Variable):
             [
                 time_category == time_categories.HOURLY,
                 time_category == time_categories.DAILY,
-                time_category == time_categories.WEEKLY
+                time_category == time_categories.WEEKLY,
             ],
-            [
-                hours_per_day * days_per_month,
-                days_per_month,
-                weeks_per_month
-            ], default = 1
+            [hours_per_day * days_per_month, days_per_month, weeks_per_month],
+            default=1,
         )

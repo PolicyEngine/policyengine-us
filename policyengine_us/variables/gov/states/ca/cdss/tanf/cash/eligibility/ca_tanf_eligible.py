@@ -14,4 +14,8 @@ class ca_tanf_eligible(Variable):
         tanf_enrolled = spm_unit("is_tanf_enrolled", period)
         resources_eligible = spm_unit("ca_tanf_resources_eligible", period)
 
-        return demographic_eligible & (applicant_eligible | tanf_enrolled) & resources_eligible
+        return (
+            demographic_eligible
+            & (applicant_eligible | tanf_enrolled)
+            & resources_eligible
+        )

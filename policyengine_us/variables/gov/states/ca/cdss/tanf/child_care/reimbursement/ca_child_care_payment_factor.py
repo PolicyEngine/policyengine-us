@@ -25,5 +25,6 @@ class ca_child_care_payment_factor(Variable):
                 p.evening_or_weekend_II,
                 p.exceptional_needs,
                 p.severely_disabled,
-            ], default = 1
+            ],
+            default=1,
         )
