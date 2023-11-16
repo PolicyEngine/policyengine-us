@@ -4849,3 +4849,168 @@
     added:
     - Idaho capital gains deduction.
   date: 2023-11-02 01:02:06
+- bump: minor
+  changes:
+    added:
+    - Arizona military retirement subtraction.
+  date: 2023-11-02 17:49:15
+- bump: patch
+  changes:
+    fixed:
+    - Automatically set entry process to true for CCAP.
+  date: 2023-11-02 20:44:02
+- bump: patch
+  changes:
+    fixed:
+    - CCAP fix for multi-child households (previously had index errors).
+  date: 2023-11-02 22:14:02
+- bump: patch
+  changes:
+    fixed:
+    - Added USD metadata to co_ccap_subsidy.
+  date: 2023-11-03 04:08:02
+- bump: minor
+  changed:
+  - Rename taxcalc variables to be consistent with this project's coding style and
+    to be in more sensible directory locations.
+  changes:
+    added:
+    - The `net_capital_gains` variable (formerly `c23650`).
+    - The `gov/irs/capital_gains/loss_limit.yaml` parameter file.
+    - The `loss_limited_net_capital_gains` variable (formerly `c01000`) that uses
+      the `loss_limit` parameter.
+  date: 2023-11-03 20:12:54
+  removed:
+  - Formula code that avoids `sep` variable that had no formula, and therefore, was
+    likely to cause bugs.
+- bump: minor
+  changes:
+    fixed:
+    - ZIP codes are sampled from the state, and axes-containing simulations don't
+      vary the ZIP code.
+  date: 2023-11-03 20:30:48
+- bump: patch
+  changes:
+    fixed:
+    - ZIP code bug for households with axes.
+  date: 2023-11-03 20:53:44
+- bump: patch
+  changes:
+    fixed:
+    - Remove obsolete taxcalc-related alias variable names.
+    - Rename `earned_income_tax_credit` to `eitc` to be more consistent with variable
+      names for other federal credits.
+  date: 2023-11-04 21:02:59
+- bump: patch
+  changes:
+    fixed:
+    - pell_grant_efc now can not be negative
+  date: 2023-11-04 21:16:41
+- bump: patch
+  changes:
+    fixed:
+    - Presence of unneeded taxcalc-related logic in the `system.py` module.
+  date: 2023-11-05 21:04:11
+- bump: patch
+  changes:
+    fixed:
+    - Re-added earned_income_tax_credit variable alias.
+  date: 2023-11-06 15:27:19
+- bump: minor
+  changes:
+    added:
+    - West Virginia low-income family tax credit.
+  date: 2023-11-06 22:47:48
+- bump: minor
+  changes:
+    fixed:
+    - 2021 Maine income tax parameters.
+  date: 2023-11-07 23:06:52
+- bump: minor
+  changes:
+    added:
+    - Idaho non-refundable credits file.
+  date: 2023-11-08 01:44:09
+- bump: minor
+  changes:
+    added:
+    - South Carolina retirement deduction.
+    - South Carolina military retirement deduction.
+  date: 2023-11-08 21:44:31
+- bump: minor
+  changes:
+    added:
+    - Alabama itemized deductions.
+  date: 2023-11-09 00:11:58
+- bump: patch
+  changes:
+    fixed:
+    - Disable Maine Tax.
+  date: 2023-11-09 01:19:56
+- bump: minor
+  changes:
+    added:
+    - Maryland hundred year subtraction.
+  date: 2023-11-09 16:00:28
+- bump: minor
+  changes:
+    added:
+    - West Virginia low-income earned income exclusion.
+  date: 2023-11-10 15:51:59
+- bump: minor
+  changes:
+    added:
+    - Hawaii exemptions.
+  date: 2023-11-10 15:59:43
+- bump: minor
+  changes:
+    added:
+    - 2024 income tax brackets.
+  date: 2023-11-12 00:23:31
+- bump: minor
+  changes:
+    added:
+    - Kentucky adjusted gross income.
+  date: 2023-11-13 15:13:28
+- bump: minor
+  changes:
+    added:
+    - Rhode Island exemptions.
+  date: 2023-11-13 21:25:39
+- bump: minor
+  changes:
+    added:
+    - Ohio 529 plan deduction.
+  date: 2023-11-14 20:34:35
+- bump: patch
+  changes:
+    fixed:
+    - The temporary presence of `earned_income_tax_credit` by removing it, leaving
+      the `eitc` variable as the sole representation of the federal Earned Income
+      Credit.
+  date: 2023-11-14 23:03:24
+- bump: minor
+  changes:
+    added:
+    - Montana senior interest income exclusion.
+  date: 2023-11-15 06:22:47
+- bump: minor
+  changes:
+    added:
+    - Kentucky tuition tax credit.
+  date: 2023-11-15 06:28:33
+- bump: minor
+  changes:
+    added:
+    - Ohio AGI additions and deductions parameters and variables.
+  date: 2023-11-15 19:02:07
+- bump: patch
+  changes:
+    fixed:
+    - Duplicate Ohio income tax parameter name deductions.
+  date: 2023-11-15 20:42:44
+- bump: minor
+  changes:
+    added:
+    - Replicated Child and Dependent Care Expenses Credit to include California limitations.
+  date: 2023-11-15 20:45:57
