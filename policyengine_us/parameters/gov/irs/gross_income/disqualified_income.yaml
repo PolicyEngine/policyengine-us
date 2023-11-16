@@ -1,4 +1,4 @@
-description: Income sources counted as disqualified income.
+description: Income sources counted as disqualified income for the earned income calculation. 
 values:
   2023-01-01:
     - dividend_income
@@ -10,7 +10,8 @@ values:
 
 metadata:
   unit: list
-  label: Disqualified incomes
+  period: year
+  label: Earned income disqualified income sources  
   reference:
     - title: 26 U.S. Code § 32 - Earned income-(i).(2)
       href: https://www.law.cornell.edu/uscode/text/26/32#:~:text=In%20the%20case%20of%20an,exceed%20the%20earned%20income%20amount

@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class disqualified_income(Variable):
+class earned_income_disqualified_income(Variable):
     value_type = float
     entity = TaxUnit
     label = "Earned Income Disqualified income"
