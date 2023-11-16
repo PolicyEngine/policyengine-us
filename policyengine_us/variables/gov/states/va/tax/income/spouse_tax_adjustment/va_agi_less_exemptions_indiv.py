@@ -36,7 +36,4 @@ class va_agi_less_exemptions_indiv(Variable):
         ) * head_or_spouse
         # Step 3: subtract the Exemption amount from the AGI for each head and spouse
         # tax form allows the amount to be less than 0
-        head_or_spouse_amount = head_or_spouse_agi - total_personal_exemptions
-        # Set the value for dependent amount to infinity as we will need the smaller amount for
-        # further calculations
-        return where(head_or_spouse, head_or_spouse_amount, np.inf)
+        return head_or_spouse_agi - total_personal_exemptions

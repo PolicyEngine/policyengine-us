@@ -12,11 +12,17 @@ class va_spouse_tax_adjustment(Variable):
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
+        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         # Line 4, enter the taxable income
         taxable_income = tax_unit("va_taxable_income", period)
         # Line 5, enter the AGI less exemptions:
         agi_less_exemptions = person("va_agi_less_exemptions_indiv", period)
-        smaller_agi_less_exemptions = tax_unit.min(agi_less_exemptions)
+        # If the tax filer is the head or the spouse of the tax unit, take his/hers corresponding value
+        # Set the value for dependent amount to infinity as we will need the smaller amount for
+        # further calculations
+        smaller_agi_less_exemptions = tax_unit.min(
+            where(head_or_spouse, agi_less_exemptions, np.inf)
+        )
         # Line 6, subtract
         reduced_taxable_income = max_(
             taxable_income - smaller_agi_less_exemptions, 0
@@ -48,11 +54,3 @@ class va_spouse_tax_adjustment(Variable):
         reduced_tax = max_(income_tax_before_credits - addition_of_tax, 0)
         # The value cannot exceed a certain threshold
         return min_(reduced_tax, p.adjustment_limit)
-
-        # Should we do this instead?
-        return where(
-            (smaller_agi_less_exemptions > p.threshold)
-            & (taxable_income > p.taxable_income_threshold),
-            p.adjustment_limit,
-            min_(reduced_tax.p.adjustment_limit),
-        )

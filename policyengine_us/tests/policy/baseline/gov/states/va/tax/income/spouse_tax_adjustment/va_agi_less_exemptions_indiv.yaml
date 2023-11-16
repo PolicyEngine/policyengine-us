@@ -18,7 +18,7 @@
         members: [person1, person2]
         state_code: VA
   output:
-    va_agi_less_exemptions_indiv: [37_470, .inf]
+    va_agi_less_exemptions_indiv: [37_470, 0]
 
 - name: Blind and aged filer without AGI
   period: 2022
@@ -56,7 +56,7 @@
     is_blind: true
     age: 65
   output:
-    va_agi_less_exemptions_indiv: .inf
+    va_agi_less_exemptions_indiv: 0
 
 - name: Aged filer with AGI
   period: 2022
