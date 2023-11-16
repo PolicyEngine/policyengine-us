@@ -23,18 +23,18 @@ class la_itemized_deductions(Variable):
             tax_unit("itemized_deductions_less_salt", period) * us_itemizing
         )
         federal_standard_deduction = tax_unit("standard_deduction", period)
-        less_itm_amount = max_(
+        reduced_itm_deductions = max_(
             0, federal_itemized_deduction - federal_standard_deduction
         )  # 2021
         medical_expenses = (
             add(tax_unit, period, ["medical_expense"]) * us_itemizing
         )
-        less_itm_amount_medical = (
+        reduced_medical_expenses = (
             max_(medical_expenses - federal_standard_deduction, 0)
             * p.exceedance
         )  # 2022
         return where(
             p.medical_expense_exceedance_calculation,
-            less_itm_amount_medical,
-            less_itm_amount,
+            reduced_medical_expenses,
+            reduced_itm_deductions,
         )
