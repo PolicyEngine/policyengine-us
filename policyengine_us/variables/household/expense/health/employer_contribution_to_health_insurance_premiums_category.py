@@ -8,10 +8,10 @@ class EmployerPremiumContribution(Enum):
     NA = "N/A"
 
 
-class employer_premium_contribution(Variable):
+class employer_contribution_to_health_insurance_premiums_category(Variable):
     value_type = Enum
     entity = Person
-    label = "Employer premium contribution"
+    label = "Extent to which employer paid health insurance premiums"
     definition_period = YEAR
     possible_values = EmployerPremiumContribution
     default_value = EmployerPremiumContribution.NONE
