@@ -24,12 +24,13 @@ class sc_tuition_credit(Variable):
             "qualified_tuition_expenses", period
         )
         # line 3,4,7
-        tuition_max_amount = p.rate.thresholds["2"]
-        rate = p.rate.rates["1"]
-        qualified_tuition_expenses_credit = rate * qualified_tuition_expenses
-        tuition_limit_credit = (
-            rate
-            * tuition_max_amount
+        tuition_max_amount = p.rate.thresholds[-1]
+        # rate = p.rate.rates["1"]
+        qualified_tuition_expenses_credit = p.rate.calc(
+            qualified_tuition_expenses
+        )
+        tuition_limit_credit = p.rate.calc(
+            tuition_max_amount
             * total_college_hours
             / (p.semester_hour_requirement * p.max_semester_attend)
         )
