@@ -14,12 +14,8 @@ class la_aged_exemption(Variable):
         person = tax_unit.members
         pension_income = person("taxable_pension_income", period)
         age = person("age", period)
-        p = parameters(
-            period
-        ).gov.states.la.tax.income.exemptions.retirement.max_amount
-        meets_age_test = age >= p.thresholds[-1]
-        deductible_pensions = meets_age_test * min_(
-            pension_income, p.amounts[-1]
-        )
+        p = parameters(period).gov.states.la.tax.income.exemptions.retirement
+        cap = p.cap.calc(age)
+        deductible_pensions = min_(pension_income, cap)
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         return tax_unit.sum(deductible_pensions * is_head_or_spouse)
