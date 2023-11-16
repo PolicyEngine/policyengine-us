@@ -3,22 +3,22 @@
   input:
     state_code: AL
     income_tax_before_credits: 6_000
-    net_investment_income_tax: 5000
-    eitc: 1000
-    american_opportunity_credit: 1000
-    ctc: 1000
+    net_investment_income_tax: 5_000
+    eitc: 1_000
+    american_opportunity_credit: 1_000
+    ctc: 1_000
   output:
-    al_federal_tax_deduction: 8000
+    al_federal_tax_deduction: 8_000
 
 - name: Alabama federal tax deduction unit test 2
   period: 2022
   input:
     state_code: AL
     income_tax_before_credits: 1_000
-    net_investment_income_tax: 5000
-    eitc: 4000
-    american_opportunity_credit: 1000
-    ctc: 2000
+    net_investment_income_tax: 5_000
+    eitc: 4_000
+    american_opportunity_credit: 1_000
+    ctc: 2_000
   output:
     al_federal_tax_deduction: 0
 
@@ -27,9 +27,9 @@
   input:
     state_code: AL
     income_tax_before_credits: 5_000
-    net_investment_income_tax: 5000
+    net_investment_income_tax: 5_000
     eitc: 200
     american_opportunity_credit: 100
     ctc: 200
   output:
-    al_federal_tax_deduction: 9500
+    al_federal_tax_deduction: 9_500
