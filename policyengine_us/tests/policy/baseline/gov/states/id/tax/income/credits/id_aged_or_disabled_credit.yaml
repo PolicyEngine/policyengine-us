@@ -4,17 +4,13 @@
     people:
       person1:
         is_disabled: false
-        is_tax_unit_spouse: false
-        is_tax_unit_head: false
+        is_tax_unit_head_or_spouse: false
         age: 64
-        care_and_support_payment: 0
-        care_and_support_costs: 0
+        share_of_care_and_support_costs_paid_by_tax_filer: 0
       person2:
-        is_disabled: false
-        is_tax_unit_spouse: false
+        is_tax_unit_head_or_spouse: false
         is_tax_unit_head: false
-        care_and_support_payment: 600
-        care_and_support_costs: 1_000
+        share_of_care_and_support_costs_paid_by_tax_filer: 0.6
         age: 65
     households:
       household:
@@ -33,18 +29,14 @@
     people:
       person1:
         is_disabled: false
-        is_tax_unit_spouse: false
-        is_tax_unit_head: false
+        is_tax_unit_head_or_spouse: false
         age: 65
-        care_and_support_payment: 0
-        care_and_support_costs: 0
+        share_of_care_and_support_costs_paid_by_tax_filer: 0
       person2:
         is_disabled: false
-        is_tax_unit_spouse: false
-        is_tax_unit_head: false
+        is_tax_unit_head_or_spouse: false
         age: 65
-        care_and_support_payment: 300
-        care_and_support_costs: 1_000
+        share_of_care_and_support_costs_paid_by_tax_filer: 0.3
     households:
       household:
         members: [person1, person2]
@@ -62,17 +54,13 @@
     people:
       person1:
         is_disabled: false
-        is_tax_unit_spouse: false
-        is_tax_unit_head: false
-        care_and_support_payment: 0
-        care_and_support_costs: 0
+        is_tax_unit_head_or_spouse: false
+        share_of_care_and_support_costs_paid_by_tax_filer: 0
         age: 64
       person2:
         is_disabled: false
-        is_tax_unit_spouse: false
-        is_tax_unit_head: false
-        care_and_support_payment: 600
-        care_and_support_costs: 1_000
+        is_tax_unit_head_or_spouse: false
+        share_of_care_and_support_costs_paid_by_tax_filer: 0.6
         age: 65
     households:
       household:
@@ -91,31 +79,23 @@
     people:
       person1:
         is_disabled: true
-        is_tax_unit_spouse: false
-        is_tax_unit_head: false
-        care_and_support_payment: 600
-        care_and_support_costs: 1_000
+        is_tax_unit_head_or_spouse: false
+        share_of_care_and_support_costs_paid_by_tax_filer: 0.6
         age: 64
       person2:
         is_disabled: false
-        is_tax_unit_spouse: false
-        is_tax_unit_head: false
-        care_and_support_payment: 600
-        care_and_support_costs: 1_000
+        is_tax_unit_head_or_spouse: false
+        share_of_care_and_support_costs_paid_by_tax_filer: 0.6
         age: 65
       person3:
         is_disabled: true
-        is_tax_unit_spouse: false
-        is_tax_unit_head: false
-        care_and_support_payment: 600
-        care_and_support_costs: 1_000
+        is_tax_unit_head_or_spouse: false
+        share_of_care_and_support_costs_paid_by_tax_filer: 0.6
         age: 64
       person4:
         is_disabled: false
-        is_tax_unit_spouse: false
-        is_tax_unit_head: false
-        care_and_support_payment: 600
-        care_and_support_costs: 1_000
+        is_tax_unit_head_or_spouse: false
+        share_of_care_and_support_costs_paid_by_tax_filer: 0.6
         age: 65
     households:
       household:
@@ -134,31 +114,23 @@
     people:
       person1:
         is_disabled: true
-        is_tax_unit_spouse: false
-        is_tax_unit_head: false
-        care_and_support_payment: 600
-        care_and_support_costs: 1_000
+        is_tax_unit_head_or_spouse: false
+        share_of_care_and_support_costs_paid_by_tax_filer: 0.6
         age: 64
       person2:
         is_disabled: false
-        is_tax_unit_spouse: false
-        is_tax_unit_head: true
-        care_and_support_payment: 600
-        care_and_support_costs: 1_000
+        is_tax_unit_head_or_spouse: true
+        share_of_care_and_support_costs_paid_by_tax_filer: 0.6
         age: 65
       person3:
         is_disabled: true
-        is_tax_unit_spouse: false
-        is_tax_unit_head: false
-        care_and_support_payment: 600
-        care_and_support_costs: 1_000
+        is_tax_unit_head_or_spouse: false
+        share_of_care_and_support_costs_paid_by_tax_filer: 0.6
         age: 64
       person4:
         is_disabled: false
-        is_tax_unit_spouse: true
-        is_tax_unit_head: false
-        care_and_support_payment: 600
-        care_and_support_costs: 1_000
+        is_tax_unit_head_or_spouse: true
+        share_of_care_and_support_costs_paid_by_tax_filer: 0.6
         age: 65
     households:
       household:
@@ -177,31 +149,24 @@
     people:
       person1:
         is_disabled: true
-        is_tax_unit_spouse: false
-        is_tax_unit_head: false
-        care_and_support_payment: 600
-        care_and_support_costs: 1_000
+        is_tax_unit_head_or_spouse: false
+        share_of_care_and_support_costs_paid_by_tax_filer: 0.6
         age: 64
       person2:
         is_disabled: false
-        is_tax_unit_spouse: false
-        is_tax_unit_head: true
-        care_and_support_payment: 600
+        is_tax_unit_head_or_spouse: true
+        care_and_support_payments_from_tax_filer: 600
         care_and_support_costs: 1_000
         age: 65
       person3:
         is_disabled: true
-        is_tax_unit_spouse: true
-        is_tax_unit_head: false
-        care_and_support_payment: 600
-        care_and_support_costs: 1_000
+        is_tax_unit_head_or_spouse: true
+        share_of_care_and_support_costs_paid_by_tax_filer: 0.6
         age: 64
       person4:
         is_disabled: false
-        is_tax_unit_spouse: false
-        is_tax_unit_head: false
-        care_and_support_payment: 600
-        care_and_support_costs: 1_000
+        is_tax_unit_head_or_spouse: false
+        share_of_care_and_support_costs_paid_by_tax_filer: 0.6
         age: 65
     households:
       household:
