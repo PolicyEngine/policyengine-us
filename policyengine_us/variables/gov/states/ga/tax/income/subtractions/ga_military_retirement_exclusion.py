@@ -17,22 +17,18 @@ class ga_military_retirement_exclusion(Variable):
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
         p = parameters(period).gov.states.ga.tax.income.agi.exclusions.military
-        age = person("age", period)
-        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-
         earned_income = person("earned_income", period)
         additional_income_eligible = (
             earned_income > p.additional.threshold.earned_income
         )
-
         military_income = person("military_retirement_pay", period)
-        base = where(head_or_spouse, p.max_amount.calc(age), 0)
+        age = person("age", period)
+        base = p.max_amount.calc(age)
         additional = where(
-            head_or_spouse & additional_income_eligible,
-            p.additional.amount.calc(age),
-            0,
+            additional_income_eligible, p.additional.amount.calc(age), 0
         )
-        uncapped_exclusion_amount = base + additional
+        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+        uncapped_exclusion_amount = head_or_spouse * (base + additional)
         capped_exclusion_amount = min_(
             uncapped_exclusion_amount, military_income
         )
