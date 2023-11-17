@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class hi_cdcc_eligible_income_floor(Variable):
-    value_type = float
+class hi_cdcc_income_floor_eligible(Variable):
+    value_type = bool
     entity = Person
-    label = "Hawaii eligible income floor"
+    label = "Hawaii income floor eligible"
     defined_for = StateCode.HI
     unit = USD
     definition_period = YEAR
@@ -16,11 +16,6 @@ class hi_cdcc_eligible_income_floor(Variable):
     )
 
     def formula(person, period, parameters):
-        p = parameters(period).gov.states.hi.tax.income.credits.cdcc
-        qualified_children = person.tax_unit("count_cdcc_eligible", period)
-        # Floor depends on number of eligible dependents
-        income_floor = p.disabled_student_income_floor.calc(qualified_children)
-        income_floor_eligible = person("is_disabled", period) | person(
+        return person("is_disabled", period) | person(
             "is_full_time_student", period
         )
-        return income_floor * income_floor_eligible

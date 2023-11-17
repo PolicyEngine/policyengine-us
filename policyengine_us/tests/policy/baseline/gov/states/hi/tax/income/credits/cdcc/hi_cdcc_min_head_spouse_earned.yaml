@@ -5,11 +5,11 @@
       head:
         is_tax_unit_head_or_spouse: true
         earned_income: 20_000
-        hi_cdcc_eligible_income_floor: 0
+        hi_cdcc_income_floor_eligible: 0
       spouse:
         is_tax_unit_head_or_spouse: true
         earned_income: 30_000
-        hi_cdcc_eligible_income_floor: 0
+        hi_cdcc_income_floor_eligible: 0
     tax_units:
       tax_unit:
         members: [head, spouse]
@@ -28,11 +28,11 @@
       head:
         is_tax_unit_head_or_spouse: true
         earned_income: 20_000
-        hi_cdcc_eligible_income_floor: 2_400
+        hi_cdcc_income_floor_eligible: 2_400
       spouse:
         is_tax_unit_head_or_spouse: true
         earned_income: 30_000
-        hi_cdcc_eligible_income_floor: 2_400
+        hi_cdcc_income_floor_eligible: 2_400
     tax_units:
       tax_unit:
         members: [head, spouse]
@@ -50,11 +50,11 @@
       head:
         is_tax_unit_head_or_spouse: true
         earned_income: 200
-        hi_cdcc_eligible_income_floor: 2_400
+        hi_cdcc_income_floor_eligible: 2_400
       spouse:
         is_tax_unit_head_or_spouse: true
         earned_income: 100
-        hi_cdcc_eligible_income_floor: 2_400
+        hi_cdcc_income_floor_eligible: 2_400
     tax_units:
       tax_unit:
         members: [head, spouse]
@@ -63,7 +63,7 @@
         members: [head, spouse]
         state_code: HI
   output:
-    hi_cdcc_min_head_spouse_earned: 100
+    hi_cdcc_min_head_spouse_earned: 200
 
 - name: married, one eligible, not eligible one has income below floor
   period: 2022
@@ -72,11 +72,11 @@
       head:
         is_tax_unit_head_or_spouse: true
         earned_income: 100
-        hi_cdcc_eligible_income_floor: 0
+        hi_cdcc_income_floor_eligible: 0
       spouse:
         is_tax_unit_head_or_spouse: true
         earned_income: 30_000
-        hi_cdcc_eligible_income_floor: 2_400
+        hi_cdcc_income_floor_eligible: 2_400
     tax_units:
       tax_unit:
         members: [head, spouse]
@@ -94,15 +94,15 @@
       head:
         is_tax_unit_head_or_spouse: true
         earned_income: 20_000
-        hi_cdcc_eligible_income_floor: 2_400
+        hi_cdcc_income_floor_eligible: 2_400
       spouse:
         is_tax_unit_head_or_spouse: true
         earned_income: 10_000
-        hi_cdcc_eligible_income_floor: 2_400
+        hi_cdcc_income_floor_eligible: 2_400
       child:
         is_tax_unit_head_or_spouse: false
         earned_income: 100
-        hi_cdcc_eligible_income_floor: 2_400
+        hi_cdcc_income_floor_eligible: 2_400
     tax_units:
       tax_unit:
         members: [head, spouse, child]
@@ -120,11 +120,11 @@
       head:
         is_tax_unit_head_or_spouse: true
         earned_income: 200
-        hi_cdcc_eligible_income_floor: 2_400
+        hi_cdcc_income_floor_eligible: 2_400
       child:
         is_tax_unit_head_or_spouse: false
         earned_income: 100
-        hi_cdcc_eligible_income_floor: 2_400
+        hi_cdcc_income_floor_eligible: 2_400
     tax_units:
       tax_unit:
         members: [head, child]
@@ -142,11 +142,11 @@
       head:
         is_tax_unit_head_or_spouse: true
         earned_income: 200
-        hi_cdcc_eligible_income_floor: 0
+        hi_cdcc_income_floor_eligible: 0
       spouse:
         is_tax_unit_head_or_spouse: true
         earned_income: 100
-        hi_cdcc_eligible_income_floor: 2_400
+        hi_cdcc_income_floor_eligible: 2_400
     tax_units:
       tax_unit:
         members: [head, spouse]

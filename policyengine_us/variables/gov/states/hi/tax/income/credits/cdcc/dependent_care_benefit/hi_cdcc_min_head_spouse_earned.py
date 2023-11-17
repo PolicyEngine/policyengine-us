@@ -16,35 +16,41 @@ class hi_cdcc_min_head_spouse_earned(Variable):
     )
 
     def formula(tax_unit, period, parameters):
-        # Head or spouse are eligible for an income floor if disabled or a student
-        # Edge case: both spouses were students or disabled:
-        # If both filers are disabled / student below the floor limit,
-        # only one person with larger earning gets elevated to the floor
-        # If both filers are disabled / student but only one person is below the floor limit,
-        # then the person below the floor limit will be elevated to the floor
+        p = parameters(period).gov.states.hi.tax.income.credits.cdcc
         person = tax_unit.members
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        income = person("earned_income", period)
-        dependent_excluded_income = where(head_or_spouse, income, np.inf)
-        income_floor_lst = person("hi_cdcc_eligible_income_floor", period)
-        income_floor = tax_unit.max(income_floor_lst)
-        income_floor_eligible_people = (
-            head_or_spouse
-            & (income_floor_lst != 0)
-            & (dependent_excluded_income < income_floor)
+        earnings = person("earned_income", period)
+        # Head or spouse are eligible for an income floor if disabled or a student
+        # Start with case with only one floor-eligible spouse.
+        qualified_children = tax_unit("count_cdcc_eligible", period)
+        # Floor depends on number of eligible dependents
+        floor = p.disabled_student_income_floor.calc(qualified_children)
+        floor_eligible = person("hi_cdcc_income_floor_eligible", period)
+        potential_floored_earnings = max_(floor, earnings)
+        # floored_earnings = where(floor_eligible, floored_earnings, earnings)
+        floored_earnings = where(
+            floor_eligible, potential_floored_earnings, earnings
+        )  # =======change========#
+        # To take the lesser of head or spouse floored earnings,
+        # assign infinite earnings to dependents.
+        lesser_floored_earnings = tax_unit.min(
+            where(head_or_spouse, floored_earnings, np.inf)
         )
-        income_below_floor = sum(dependent_excluded_income < income_floor)
-        only_one_eligible = sum(income_floor_eligible_people) == 1
-        only_one_eligible_below_floor = only_one_eligible & (
-            income_below_floor >= 1
-        )
-        income_applied_floor = where(
-            income_floor_eligible_people,
-            income_floor,
-            dependent_excluded_income,
-        )
+        # Case with two floor-eligible spouses:
+        # If both spouses are students or disabled, only one can claim the floor.
+        # To maximize the credit value, since the credit phases in with respect to (floored) earnings,
+        # the filer should floor the spouse with the smaller earnings.
+        # Note that the phase-out is separate and with respect to AGI.
+        # Ignore the floor, just take the greater unfloored earnings.
+        # This is equivalent to only applying the floor to one spouse (that with lesser earnings).
+        greater_earnings = tax_unit.max(head_or_spouse * earnings)
+        # Select based on number of floored.
+        count_floor_eligible = tax_unit.sum(head_or_spouse * floor_eligible)
+
+        # return where(count_floor_eligible == 2, greater_earnings, lesser_floored_earnings)
         return where(
-            only_one_eligible_below_floor,
-            tax_unit.min(income_applied_floor),
-            tax_unit.min(dependent_excluded_income),
-        )
+            (count_floor_eligible == 2)
+            & (tax_unit.sum(earnings > floor) != 2),
+            greater_earnings,
+            lesser_floored_earnings,
+        )  # =======change========#
