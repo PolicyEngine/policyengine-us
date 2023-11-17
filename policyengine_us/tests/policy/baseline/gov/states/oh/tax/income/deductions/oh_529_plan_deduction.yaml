@@ -1,0 +1,15 @@
+- name: deduction capped
+  period: 2021
+  input:
+    state_code: OH
+    investment_in_529_plan: 4_500
+  output:
+    oh_529_plan_deduction: 4_000
+
+- name: deduction not capped
+  period: 2021
+  input:
+    state_code: OH
+    investment_in_529_plan: 3_500
+  output:
+    oh_529_plan_deduction: 3_500
