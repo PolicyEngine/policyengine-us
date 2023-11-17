@@ -17,7 +17,8 @@ class oh_unreimbursed_medical_care_expense_deduction(Variable):
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
         employer_premium_contribution = person(
-            "employer_contribution_to_health_insurance_premiums_category", period
+            "employer_contribution_to_health_insurance_premiums_category",
+            period,
         )
         status = employer_premium_contribution.possible_values
         premiums_expenses = person("health_insurance_premiums", period)
