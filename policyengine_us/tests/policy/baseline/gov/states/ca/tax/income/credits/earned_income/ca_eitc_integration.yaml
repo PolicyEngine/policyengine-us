@@ -68,9 +68,6 @@
         age: 7
       person5:
         age: 5
-    #spm_units:
-    #  spm_unit:
-    #    members: [person1, person2, person3, person4, person5]
     tax_units:
       tax_unit:
         members: [person1, person2, person3, person4, person5]
@@ -82,3 +79,259 @@
     ca_yctc: 1_000
     ca_eitc: 578
 
+# The following ca_eitc tests specify the expected output from using 2021
+# Form 3514 and its instructions, which include a CA EITC lookup table.
+# Note: there are three tests (at different earnings levels) for each of
+#       four eligible children counts (0, 1, 2, 3).
+
+- name: CalEITC test 0a
+  absolute_error_margin: 1
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 2_925
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_eitc: 190
+
+- name: CalEITC test 0b
+  absolute_error_margin: 1
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 4_925
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_eitc: 209
+
+- name: CalEITC test 0c
+  absolute_error_margin: 1
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 28_925
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_eitc: 9
+
+- name: CalEITC test 1a
+  absolute_error_margin: 1
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 2_925
+      person2:
+        age: 9
+    tax_units:
+      tax_unit:
+        members: [person1,person2]
+    households:
+      household:
+        members: [person1,person2]
+        state_code: CA
+  output:
+    ca_eitc: 845
+
+- name: CalEITC test 1b
+  absolute_error_margin: 1
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 4_925
+      person2:
+        age: 9
+    tax_units:
+      tax_unit:
+        members: [person1,person2]
+    households:
+      household:
+        members: [person1,person2]
+        state_code: CA
+  output:
+    ca_eitc: 1_423
+
+- name: CalEITC test 1c
+  absolute_error_margin: 1
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 28_925
+      person2:
+        age: 9
+    tax_units:
+      tax_unit:
+        members: [person1,person2]
+    households:
+      household:
+        members: [person1,person2]
+        state_code: CA
+  output:
+    ca_eitc: 28
+
+- name: CalEITC test 2a
+  absolute_error_margin: 1
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 2_925
+      person2:
+        age: 9
+      person3:
+        age: 7
+    tax_units:
+      tax_unit:
+        members: [person1,person2,person3]
+    households:
+      household:
+        members: [person1,person2,person3]
+        state_code: CA
+  output:
+    ca_eitc: 995
+
+- name: CalEITC test 2b
+  absolute_error_margin: 1
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 4_925
+      person2:
+        age: 9
+      person3:
+        age: 7
+    tax_units:
+      tax_unit:
+        members: [person1,person2,person3]
+    households:
+      household:
+        members: [person1,person2,person3]
+        state_code: CA
+  output:
+    ca_eitc: 1_675
+
+- name: CalEITC test 2c
+  absolute_error_margin: 1
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 28_925
+      person2:
+        age: 9
+      person3:
+        age: 7
+    tax_units:
+      tax_unit:
+        members: [person1,person2,person3]
+    households:
+      household:
+        members: [person1,person2,person3]
+        state_code: CA
+  output:
+    ca_eitc: 38
+
+- name: CalEITC test 3a
+  absolute_error_margin: 1
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 2_925
+      person2:
+        age: 9
+      person3:
+        age: 7
+      person4:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1,person2,person3,person4]
+    households:
+      household:
+        members: [person1,person2,person3,person4]
+        state_code: CA
+  output:
+    ca_eitc: 1_119
+
+- name: CalEITC test 3b
+  absolute_error_margin: 1
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 4_925
+      person2:
+        age: 9
+      person3:
+        age: 7
+      person4:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1,person2,person3,person4]
+    households:
+      household:
+        members: [person1,person2,person3,person4]
+        state_code: CA
+  output:
+    ca_eitc: 1_884
+
+- name: CalEITC test 3c
+  absolute_error_margin: 1
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 28_925
+      person2:
+        age: 9
+      person3:
+        age: 7
+      person4:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1,person2,person3,person4]
+    households:
+      household:
+        members: [person1,person2,person3,person4]
+        state_code: CA
+  output:
+    ca_eitc: 39
