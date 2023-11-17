@@ -34,11 +34,11 @@ class hi_income_tax_before_credits(Variable):
                 p.head_of_household.calc(taxable_income),
             ],
         )
-        alternate_tax = tax_unit("hi_alternative_tax_on_capital_gains", period)
+        alternative_tax = tax_unit("hi_alternative_tax_on_capital_gains", period)
 
-        alternate_tax_eligible = tax_unit(
+        alternative_tax_eligible = tax_unit(
             "hi_alternative_tax_on_capital_gains_eligible", period
         )
         return where(
-            alternate_tax_eligible, min_(income_tax, alternate_tax), income_tax
+            alternative_tax_eligible, min_(income_tax, alternative_tax), income_tax
         )
