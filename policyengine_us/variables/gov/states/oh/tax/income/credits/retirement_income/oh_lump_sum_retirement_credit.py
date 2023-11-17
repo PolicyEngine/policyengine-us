@@ -8,7 +8,7 @@ class oh_lump_sum_retirement_credit(Variable):
     unit = USD
     definition_period = YEAR
     reference = "https://codes.ohio.gov/ohio-revised-code/section-5747.055"  # (C, D, E)
-    defined_for = "oh_retirement_income_credit_eligible"
+    defined_for = "oh_pension_based_retirement_income_credit_eligible"
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.oh.tax.income.credits.retirement
@@ -30,14 +30,14 @@ class oh_lump_sum_retirement_credit(Variable):
         spouse_pension = tax_unit.sum(is_spouse * pension_income)
 
         head_credit = (
-            p.retirement_income.amount.calc(
+            p.pension_based.amount.calc(
                 head_pension / head_divisor, right=True
             )
             * head_divisor
         )
         head_credit = where(head_divisor == 0, 0, head_credit)
         spouse_credit = (
-            p.retirement_income.amount.calc(
+            p.pension_based.amount.calc(
                 spouse_pension / spouse_divisor, right=True
             )
             * spouse_divisor,

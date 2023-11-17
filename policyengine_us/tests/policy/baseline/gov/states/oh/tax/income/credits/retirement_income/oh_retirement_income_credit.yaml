@@ -19,7 +19,7 @@
         members: [person1, person2, person3]
         oh_agi: 10_000
   output:
-    oh_retirement_income_credit: 25
+    oh_pension_based_retirement_income_credit: 25
 
 - name: Retirement income credit pension, not eligible
   period: 2021
@@ -39,7 +39,7 @@
         members: [person1, person2]
         oh_agi: 100_000
   output:
-    oh_retirement_income_credit: 0
+    oh_pension_based_retirement_income_credit: 0
 
 - name: Retirement income credit pension eligible
   period: 2021
@@ -62,7 +62,7 @@
         members: [person1, person2, person3]
         oh_agi: 10_000
   output:
-    oh_retirement_income_credit: 0
+    oh_pension_based_retirement_income_credit: 0
 
 - name: Retirement income credit pension AGI not eligible
   period: 2021
@@ -85,7 +85,7 @@
         members: [person1, person2, person3]
         oh_agi: 100_000
   output:
-    oh_retirement_income_credit: 0
+    oh_pension_based_retirement_income_credit: 0
 
 - name: Retirement income credit pension eligible
   period: 2021
@@ -107,4 +107,4 @@
         members: [person1, person2]
         oh_agi: 10_000
   output:
-    oh_retirement_income_credit: 25
+    oh_pension_based_retirement_income_credit: 25

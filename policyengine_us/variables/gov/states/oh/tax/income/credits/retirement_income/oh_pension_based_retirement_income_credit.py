@@ -1,19 +1,19 @@
 from policyengine_us.model_api import *
 
 
-class oh_retirement_income_credit(Variable):
+class oh_pension_based_retirement_income_credit(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Ohio Retirement Income Credit"
+    label = "Ohio penion based retirement income credit"
     unit = USD
     definition_period = YEAR
     reference = "https://codes.ohio.gov/ohio-revised-code/section-5747.055"
-    defined_for = "oh_retirement_income_credit_eligible"
+    defined_for = "oh_pension_based_retirement_income_credit_eligible"
 
     def formula(tax_unit, period, parameters):
         p = parameters(
             period
-        ).gov.states.oh.tax.income.credits.retirement_income
+        ).gov.states.oh.tax.income.credits.retirement.pension_based
 
         person = tax_unit.members
         is_spouse = person("is_tax_unit_spouse", period)

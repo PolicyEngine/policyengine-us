@@ -1,7 +1,7 @@
 - name: Credit over lump sum
   period: 2021
   input:
-    oh_retirement_income_credit: 200
+    oh_pension_based_retirement_income_credit: 200
     oh_lump_sum_retirement_credit: 50
     state_code: OH
   output:
@@ -10,7 +10,7 @@
 - name: Lump sum over credit
   period: 2021
   input:
-    oh_retirement_income_credit: 50
+    oh_pension_based_retirement_income_credit: 50
     oh_lump_sum_retirement_credit: 200
     state_code: OH
   output:
