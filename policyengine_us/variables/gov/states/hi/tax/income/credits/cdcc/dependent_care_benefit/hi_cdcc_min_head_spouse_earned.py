@@ -30,7 +30,7 @@ class hi_cdcc_min_head_spouse_earned(Variable):
         # floored_earnings = where(floor_eligible, floored_earnings, earnings)
         floored_earnings = where(
             floor_eligible, potential_floored_earnings, earnings
-        )  # =======change========#
+        )
         # To take the lesser of head or spouse floored earnings,
         # assign infinite earnings to dependents.
         lesser_floored_earnings = tax_unit.min(
@@ -43,14 +43,16 @@ class hi_cdcc_min_head_spouse_earned(Variable):
         # Note that the phase-out is separate and with respect to AGI.
         # Ignore the floor, just take the greater unfloored earnings.
         # This is equivalent to only applying the floor to one spouse (that with lesser earnings).
-        greater_earnings = tax_unit.max(head_or_spouse * earnings)
+        head_or_spouse_earning = head_or_spouse * earnings
+        greater_earnings = tax_unit.max(head_or_spouse_earning)
         # Select based on number of floored.
         count_floor_eligible = tax_unit.sum(head_or_spouse * floor_eligible)
+        not_both_eligible_above_floor = (count_floor_eligible == 2) & (
+            tax_unit.sum(head_or_spouse_earning > floor) != 2
+        )
 
-        # return where(count_floor_eligible == 2, greater_earnings, lesser_floored_earnings)
         return where(
-            (count_floor_eligible == 2)
-            & (tax_unit.sum(earnings > floor) != 2),
+            not_both_eligible_above_floor,
             greater_earnings,
             lesser_floored_earnings,
-        )  # =======change========#
+        )
