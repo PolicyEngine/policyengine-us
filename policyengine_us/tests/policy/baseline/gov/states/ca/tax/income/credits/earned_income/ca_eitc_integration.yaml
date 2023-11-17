@@ -68,9 +68,9 @@
         age: 7
       person5:
         age: 5
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3, person4, person5]
+    #spm_units:
+    #  spm_unit:
+    #    members: [person1, person2, person3, person4, person5]
     tax_units:
       tax_unit:
         members: [person1, person2, person3, person4, person5]
@@ -81,3 +81,4 @@
   output:  # from hand calculations using 2021 Form 3514 and its instructions
     ca_yctc: 1_000
     ca_eitc: 578
+
