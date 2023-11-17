@@ -3,12 +3,11 @@ from policyengine_us.model_api import *
 
 class share_of_care_and_support_costs_paid_by_tax_filer(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     definition_period = YEAR
     label = "The percentage of care and support costs of a senior paid by tax filer"
 
-    def formula(tax_unit, period, parameters):
-        person = tax_unit.members
+    def formula(person, period, parameters):
         care_and_support_payment = person(
             "care_and_support_payments_from_tax_filer", period
         )
