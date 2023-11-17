@@ -4982,3 +4982,45 @@
     added:
     - Ohio 529 plan deduction.
   date: 2023-11-14 20:34:35
+- bump: patch
+  changes:
+    fixed:
+    - The temporary presence of `earned_income_tax_credit` by removing it, leaving
+      the `eitc` variable as the sole representation of the federal Earned Income
+      Credit.
+  date: 2023-11-14 23:03:24
+- bump: minor
+  changes:
+    added:
+    - Montana senior interest income exclusion.
+  date: 2023-11-15 06:22:47
+- bump: minor
+  changes:
+    added:
+    - Kentucky tuition tax credit.
+  date: 2023-11-15 06:28:33
+- bump: minor
+  changes:
+    added:
+    - Ohio AGI additions and deductions parameters and variables.
+  date: 2023-11-15 19:02:07
+- bump: patch
+  changes:
+    fixed:
+    - Duplicate Ohio income tax parameter name deductions.
+  date: 2023-11-15 20:42:44
+- bump: minor
+  changes:
+    added:
+    - Replicated Child and Dependent Care Expenses Credit to include California limitations.
+  date: 2023-11-15 20:45:57
+- bump: minor
+  changes:
+    added:
+    - Hawaii child and dependent care expenses tax credit.
+  date: 2023-11-17 17:46:39
+- bump: patch
+  changes:
+    added:
+    - Twelve new CalEITC integration tests.
+  date: 2023-11-17 21:05:55
