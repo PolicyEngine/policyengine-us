@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.535.1] - 2023-11-17 21:05:55
+
+### Added
+
+- Twelve new CalEITC integration tests.
+
+## [0.535.0] - 2023-11-17 17:46:39
+
+### Added
+
+- Hawaii child and dependent care expenses tax credit.
+
 ## [0.534.0] - 2023-11-15 20:45:57
 
 ### Added
@@ -5926,6 +5938,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.535.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.535.0...0.535.1
+[0.535.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.534.0...0.535.0
 [0.534.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.533.1...0.534.0
 [0.533.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.533.0...0.533.1
 [0.533.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.532.0...0.533.0
