@@ -1,0 +1,19 @@
+- name: Hawaii exemptions (disabled exemptions larger than regular exemptions)
+  period: 2021
+  input:
+    hi_regular_exemptions: 2_288
+    hi_disabled_exemptions: 8_144
+    state_code: HI
+  output:
+    hi_exemptions: 8_144
+  
+- name: Hawaii exemptions (disabled exemptions the same as regular exemptions)
+  period: 2021
+  input:
+    hi_regular_exemptions: 2_288
+    hi_disabled_exemptions: 2_288
+    state_code: HI
+  output:
+    hi_exemptions: 2_288
+  
+    
