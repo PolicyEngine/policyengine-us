@@ -12,9 +12,13 @@ class ar_itemized_deductions(Variable):
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
+        year = period.start.year
         p = parameters(period).gov.states.ar.tax.income.deductions.itemized
-        p_ded = parameters(period).gov.irs.deductions
-
+        if year < 2018:
+            instant_str = f"2018-01-01"
+        else:
+            instant_str = f"{year}-01-01"
+        p_ded = parameters(instant_str).gov.irs.deductions
         agi = tax_unit("ar_agi", period)
         head = person("is_tax_unit_head", period)
         person_agi = person("ar_agi_person", period)
@@ -43,7 +47,6 @@ class ar_itemized_deductions(Variable):
         # Limitation on several items
         # Medical and Dental Expense
         medical_expenses = add(tax_unit, period, ["medical_expense"])
-        year = period.start.year
         if year >= 2017:
             instant_str = f"2017-01-01"
         else:
