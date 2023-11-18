@@ -3,13 +3,14 @@
   reforms: policyengine_us.reforms.tax_foundation.growth_and_opportunity.remove_standard_deduction_head_of_household.remove_standard_deduction_head_of_household
   input:
     gov.contrib.tax_foundation.growth_and_opportunity.remove_head_of_household : true
-    # tax unit basic standard deduction
-    filing_status: HEAD_OF_HOUSEHOLD
-    separate_filer_itemizes: false
-    head_is_dependent_elsewhere: false
-    tax_unit_earned_income: 0
-    # tax unit additional standard deduction
-    aged_blind_count: 2
+    # tax unit input
+    people:
+      head: {}
+      child:
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [head, child]
   output:
-    basic_standard_deduction: 13_850 # Calculate after hoh formula is done
-    additional_standard_deduction: 3_700 # Calculate after hoh formula is done
+    filing_status: SINGLE
+    
