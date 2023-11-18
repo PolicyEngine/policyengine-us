@@ -16,7 +16,7 @@ class la_itemized_deductions(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(
             period
-        ).gov.states.la.tax.income.deductions.itemized.medical
+        ).gov.states.la.tax.income.deductions.itemized.medical_expenses.exceedance
         p_us = parameters(period).gov.irs.deductions
         us_itemizing = tax_unit("tax_unit_itemizes", period)
         federal_itemized_deduction = (
@@ -25,16 +25,12 @@ class la_itemized_deductions(Variable):
         federal_standard_deduction = tax_unit("standard_deduction", period)
         reduced_itm_deductions = max_(
             0, federal_itemized_deduction - federal_standard_deduction
-        )  # 2021
-        medical_expenses = (
-            add(tax_unit, period, ["medical_expense"]) * us_itemizing
         )
-        reduced_medical_expenses = (
-            max_(medical_expenses - federal_standard_deduction, 0)
-            * p.exceedance
-        )  # 2022
-        return where(
-            p.medical_expense_exceedance_calculation,
-            reduced_medical_expenses,
-            reduced_itm_deductions,
-        )
+        medical_expenses = add(tax_unit, period, ["medical_expense"])
+        if p.availability:
+            item_ded = (
+                max_(medical_expenses - federal_standard_deduction, 0) * p.rate
+            )
+        else:
+            item_ded = reduced_itm_deductions
+        return item_ded
