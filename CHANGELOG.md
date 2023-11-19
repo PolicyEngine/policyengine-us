@@ -5,6 +5,48 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.535.1] - 2023-11-17 21:05:55
+
+### Added
+
+- Twelve new CalEITC integration tests.
+
+## [0.535.0] - 2023-11-17 17:46:39
+
+### Added
+
+- Hawaii child and dependent care expenses tax credit.
+
+## [0.534.0] - 2023-11-15 20:45:57
+
+### Added
+
+- Replicated Child and Dependent Care Expenses Credit to include California limitations.
+
+## [0.533.1] - 2023-11-15 20:42:44
+
+### Fixed
+
+- Duplicate Ohio income tax parameter name deductions.
+
+## [0.533.0] - 2023-11-15 19:02:07
+
+### Added
+
+- Ohio AGI additions and deductions parameters and variables.
+
+## [0.532.0] - 2023-11-15 06:28:33
+
+### Added
+
+- Kentucky tuition tax credit.
+
+## [0.531.0] - 2023-11-15 06:22:47
+
+### Added
+
+- Montana senior interest income exclusion.
+
 ## [0.530.1] - 2023-11-14 23:03:24
 
 ### Fixed
@@ -5896,6 +5938,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.535.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.535.0...0.535.1
+[0.535.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.534.0...0.535.0
+[0.534.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.533.1...0.534.0
+[0.533.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.533.0...0.533.1
+[0.533.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.532.0...0.533.0
+[0.532.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.531.0...0.532.0
+[0.531.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.530.1...0.531.0
 [0.530.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.530.0...0.530.1
 [0.530.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.529.0...0.530.0
 [0.529.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.528.0...0.529.0
