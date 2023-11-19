@@ -1,0 +1,15 @@
+- name: Eligible for tuition subtraction
+  period: 2023
+  input:
+    investment_in_529_plan: 1_000
+    state_code: MT
+  output: 
+    mt_tuition_subtraction_eligible: True
+
+- name: Not eligible for tuition subtraction
+  period: 2023
+  input:
+    investment_in_529_plan: 0
+    state_code: MT
+  output: 
+    mt_tuition_subtraction_eligible: False
