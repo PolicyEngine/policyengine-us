@@ -1,0 +1,17 @@
+- name: Vermont elderly or disabled credit exclusion for eligible filer
+  period: 2022
+  input:
+    vt_elderly_or_disabled_credit_exclusion_eligible: true
+    elderly_disabled_credit: 1_000
+    state_code: VT
+  output:
+    vt_elderly_or_disabled_credit_exclusion: 240 # 1000*0.24
+
+- name: Vermont elderly or disabled credit exclusion for ineligible filer
+  period: 2022
+  input:
+    vt_elderly_or_disabled_credit_exclusion_eligible: false
+    elderly_disabled_credit: 1_000
+    state_code: VT
+  output:
+    vt_elderly_or_disabled_credit_exclusion: 0
