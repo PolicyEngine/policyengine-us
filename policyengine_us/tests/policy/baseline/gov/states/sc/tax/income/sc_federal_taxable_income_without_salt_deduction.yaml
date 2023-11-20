@@ -5,7 +5,7 @@
     itemized_deductions_less_salt: 20_000
     state_code: SC
   output:
-    sc_fed_taxable_income: 10_000
+    sc_federal_taxable_income_without_salt_deduction: 10_000
 
 - name: Case 2, agi less than itemized deduction
   period: 2021
@@ -14,4 +14,4 @@
     itemized_deductions_less_salt: 35_000
     state_code: SC
   output:
-    sc_fed_taxable_income: 0
+    sc_federal_taxable_income_without_salt_deduction: 0
