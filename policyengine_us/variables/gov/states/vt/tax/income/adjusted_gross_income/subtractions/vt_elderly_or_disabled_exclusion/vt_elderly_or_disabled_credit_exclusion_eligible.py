@@ -17,14 +17,24 @@ class vt_elderly_or_disabled_credit_exclusion_eligible(Variable):
         filing_status = tax_unit("filing_status", period)
 
         person = tax_unit.members
-        qualifies_for_elderly_or_disabled_credit = person("qualifies_for_elderly_or_disabled_credit", period)
-        num_qualifying_individuals = tax_unit.sum(qualifies_for_elderly_or_disabled_credit)
+        qualifies_for_elderly_or_disabled_credit = person(
+            "qualifies_for_elderly_or_disabled_credit", period
+        )
+        num_qualifying_individuals = tax_unit.sum(
+            qualifies_for_elderly_or_disabled_credit
+        )
 
         # agi eligibility
         agi_limit = select(
             [
-                filing_status == filing_status.possible_values.JOINT & num_qualifying_individuals == 1,
-                filing_status == filing_status.possible_values.JOINT & num_qualifying_individuals == 2,
+                filing_status
+                == filing_status.possible_values.JOINT
+                & num_qualifying_individuals
+                == 1,
+                filing_status
+                == filing_status.possible_values.JOINT
+                & num_qualifying_individuals
+                == 2,
                 filing_status == filing_status.possible_values.SEPARATE,
                 filing_status == filing_status.possible_values.SINGLE,
                 True,
@@ -49,39 +59,49 @@ class vt_elderly_or_disabled_credit_exclusion_eligible(Variable):
             total_social_security - taxable_social_security
         )
         # 2. nontaxable pension(s) and annuities
-        total_pensions_and_annuities = add(tax_unit, period, ["pension_income"])
-        taxable_pensions_and_annuities = add(tax_unit, period, ["taxable_pension_income"])
+        total_pensions_and_annuities = add(
+            tax_unit, period, ["pension_income"]
+        )
+        taxable_pensions_and_annuities = add(
+            tax_unit, period, ["taxable_pension_income"]
+        )
         non_taxable_pensions_and_annuities = (
             total_pensions_and_annuities - taxable_pensions_and_annuities
         )
         # 3. disability income
-        disability_income = add(tax_unit, period, ["total_disability_payments"])
-        
-        total_nontaxable_income = (
+        disability_income = add(
+            tax_unit, period, ["total_disability_payments"]
+        )
+
+        total_income = (
             non_taxable_social_security
             + non_taxable_pensions_and_annuities
             + disability_income
         )
 
-        nontaxable_income_limit = select(
+        income_limit = select(
             [
-                filing_status == filing_status.possible_values.JOINT & num_qualifying_individuals == 1,
-                filing_status == filing_status.possible_values.JOINT & num_qualifying_individuals == 2,
+                filing_status
+                == filing_status.possible_values.JOINT
+                & num_qualifying_individuals
+                == 1,
+                filing_status
+                == filing_status.possible_values.JOINT
+                & num_qualifying_individuals
+                == 2,
                 filing_status == filing_status.possible_values.SEPARATE,
                 filing_status == filing_status.possible_values.SINGLE,
                 True,
             ],
             [
-                p.nontaxable_income_limit.joint_one_qualified,
-                p.nontaxable_income_limit.joint_two_qualified,
-                p.nontaxable_income_limit.separate,
-                p.nontaxable_income_limit.single,
+                p.income_limit.joint_one_qualified,
+                p.income_limit.joint_two_qualified,
+                p.income_limit.separate,
+                p.income_limit.single,
                 0,
             ],
         )
-        nontaxable_income_eligible = (
-            total_nontaxable_income < nontaxable_income_limit
-        )
+        nontaxable_income_eligible = total_income < income_limit
 
         return (
             (num_qualifying_individuals > 0)
