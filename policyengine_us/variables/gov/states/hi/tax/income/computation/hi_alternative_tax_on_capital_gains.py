@@ -13,9 +13,11 @@ class hi_alternative_tax_on_capital_gains(Variable):
         person = tax_unit.members
         p = parameters(period).gov.states.hi.tax.income.alternative_tax
         filing_status = tax_unit("filing_status", period)
-        taxable_income = tax_unit("hi_taxable_income", period)
-        net_lt_capital_gain = add(person, period, ["long_term_capital_gains"])
-        net_capital_gain = tax_unit("net_capital_gain", period)
+        taxable_income = tax_unit("hi_taxable_income", period)  # line 1
+        net_lt_capital_gain = add(
+            person, period, ["long_term_capital_gains"]
+        )  # line 4
+        net_capital_gain = tax_unit("net_capital_gain", period)  # line 7
         # line_9
         cap = p.income_threshold[filing_status]
 
