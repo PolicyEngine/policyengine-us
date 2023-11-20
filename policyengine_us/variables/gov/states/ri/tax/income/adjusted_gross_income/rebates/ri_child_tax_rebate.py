@@ -17,8 +17,8 @@ class ri_child_tax_rebate(Variable):
         p = parameters(
             period
         ).gov.states.ri.tax.income.adjusted_gross_income.subtractions.child_tax_rebate
-        eligible_child_age = age <= p.threshold.age
-        eligible_child = eligible_child_age & dependent
+        age_eligibility = age <= p.threshold.age
+        eligible_child = age_eligibility & dependent
         child_count = tax_unit.sum(eligible_child)
         return where(
             child_count >= p.max_child,
