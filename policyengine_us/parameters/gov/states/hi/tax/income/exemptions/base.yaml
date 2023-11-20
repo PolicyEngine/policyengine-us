@@ -1,0 +1,18 @@
+description: Hawaii provides this base exemption amount.
+values:
+  # Legal code specifies $1,040 as of 1985. 
+  # Unclear how that results in this number, but we adopt the tax form.  
+  2021-01-01: 1_144
+
+metadata:
+  period: year
+  unit: currency-USD
+  label: Hawaii exemption base amount
+  reference:
+  - title: 2022 Hawaii Resident Income Tax Instructions #page 20, line 25
+    href: https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=20
+  - title: 2021 Hawaii Resident Income Tax Instructions #page 20, line 25
+    href: https://files.hawaii.gov/tax/forms/2021/n11ins.pdf#page=20
+  - title: Hawaii Income Tax Law, HRS §235-54 §18-235-54-(a)-(3)  # 1040
+    href: https://files.hawaii.gov/tax/legal/har/har_235.pdf#page=99
+
