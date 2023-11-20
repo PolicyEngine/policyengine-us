@@ -18,25 +18,25 @@ class hi_alternative_tax_on_capital_gains(Variable):
             person, period, ["long_term_capital_gains"]
         )  # line 4
         net_capital_gain = tax_unit("net_capital_gain", period)  # line 7
-        # line_9
-        cap = p.income_threshold[filing_status]
-
-        # line 13
-        smaller_net_capital_gain = min_(net_capital_gain, net_lt_capital_gain)
-        ineligible_income = max_(
-            taxable_income - smaller_net_capital_gain,  # line 11
+        smaller_net_capital_gain = min_(
+            net_capital_gain, net_lt_capital_gain
+        )  # line 8
+        # Line 9 is including a reduction based on the net gain from the disposition of property held for investment, which is currently not modeled
+        reduced_taxable_income = (
+            taxable_income - smaller_net_capital_gain
+        )  # Line 11
+        cap = p.income_threshold[filing_status]  # Line 12
+        capped_reduced_income = max_(
+            reduced_taxable_income,
             cap,
-        )
-
-        # line 14
-        eligible_income = max_(
-            0, taxable_income - ineligible_income
-        )  # net capital gains eligble for alternative tax
-
-        # ineligible_tax --- line 15
+        )  # Line 13
+        eligible_capital_gains = max_(
+            0, taxable_income - capped_reduced_income
+        )  # net capital gains eligible for alternative tax, Line 14
+        # tax --- line 15
         statuses = filing_status.possible_values
         rate_p = parameters(period).gov.states.hi.tax.income.rates
-        ineligible_tax = select(
+        tax_on_capped_reduced_income = select(
             [
                 filing_status == statuses.SINGLE,
                 filing_status == statuses.SEPARATE,
@@ -45,12 +45,14 @@ class hi_alternative_tax_on_capital_gains(Variable):
                 filing_status == statuses.HEAD_OF_HOUSEHOLD,
             ],
             [
-                rate_p.single.calc(ineligible_income),
-                rate_p.separate.calc(ineligible_income),
-                rate_p.joint.calc(ineligible_income),
-                rate_p.widow.calc(ineligible_income),
-                rate_p.head_of_household.calc(ineligible_income),
+                rate_p.single.calc(capped_reduced_income),
+                rate_p.separate.calc(capped_reduced_income),
+                rate_p.joint.calc(capped_reduced_income),
+                rate_p.widow.calc(capped_reduced_income),
+                rate_p.head_of_household.calc(capped_reduced_income),
             ],
         )
-
-        return ineligible_tax + eligible_income * p.rate
+        eligible_capital_gains_tax = eligible_capital_gains * p.rate  # Line 16
+        return (
+            tax_on_capped_reduced_income + eligible_capital_gains_tax
+        )  # Line 17
