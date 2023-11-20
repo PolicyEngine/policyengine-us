@@ -10,7 +10,7 @@
     blind_spouse: false
     state_code: ID
   output:
-    id_pbf_eligibility: true
+    id_pbf_requirement: true
 
 
 - name: Income not eligible
@@ -25,6 +25,6 @@
     blind_spouse: false
     state_code: ID
   output:
-    id_pbf_eligibility: false
+    id_pbf_requirement: false
 
 

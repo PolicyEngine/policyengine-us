@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class id_pbf_eligibility(Variable):
+class id_pbf_requirement(Variable):
     value_type = bool
     entity = TaxUnit
     label = "Idaho PBF tax exemption credit"
@@ -20,16 +20,21 @@ class id_pbf_eligibility(Variable):
         # widow_status = filing_status.possible_values.WIDOW
         # dependent_count = tax_unit("tax_unit_dependents", period)
 
-        elder_head = tax_unit("age_head", period) >= p.elderly_age
-        elder_spouse = tax_unit("age_spouse", period) >= p.elderly_age
+        elder_head = tax_unit("age_head", period) >= p.age_threshold
+        elder_spouse = tax_unit("age_spouse", period) >= p.age_threshold
         income_ineligible_check = where(
             elder_head | elder_spouse,
-            income < p.threshold_partial_65_and_above[filing_status],
-            income < p.threshold_under_65[filing_status],
+            income
+            < p.income_threshold.older.threshold_partial_65_and_above[
+                filing_status
+            ],
+            income
+            < p.income_threshold.younger.threshold_under_65[filing_status],
         )
         income_ineligible = where(
             elder_head & elder_spouse,
-            income < p.threshold_65_and_above[filing_status],
+            income
+            < p.income_threshold.older.threshold_65_and_above[filing_status],
             income_ineligible_check,
         )
 
