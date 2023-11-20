@@ -1,0 +1,15 @@
+description: California uses this input for the state child/dependent care credit, based on year.  
+values:
+  2012-01-01:
+  - cdcc
+  2021-01-01:
+  - ca_federal_capped_cdcc
+  2022-01-01:
+  - cdcc
+metadata:
+  unit: list
+  period: year 
+  label: California child/dependent care credit input
+  reference: 
+    - title: Details of Public Law 117-2, section 9631
+      href: https://www.ftb.ca.gov/about-ftb/data-reports-plans/Summary-of-Federal-Income-Tax-Changes/index.html#PL-117-2-9631

@@ -1,0 +1,79 @@
+- name: 2021 filer with AGI above $100,000 is not eligible.
+  period: 2021
+  input:
+    state_code: CA
+    adjusted_gross_income: 100_001
+    cdcc: 0
+    ca_federal_capped_cdcc: 1_000
+  output:
+    ca_cdcc: 0
+
+- name: 2021 filer with income at the 50% match level.
+  period: 2021
+  input:
+    state_code: CA
+    adjusted_gross_income: 1_000
+    cdcc: 0
+    ca_federal_capped_cdcc: 1_000
+  output:
+    ca_cdcc: 500
+
+- name: 2021 filer with income at the 43% match level.
+  period: 2021
+  input:
+    state_code: CA
+    adjusted_gross_income: 50_000
+    cdcc: 0
+    ca_federal_capped_cdcc: 1_000
+  output:
+    ca_cdcc: 430
+
+- name: 2021 filer with negative AGI gets a 50% match.
+  period: 2021
+  input:
+    state_code: CA
+    adjusted_gross_income: -50_000
+    cdcc: 0
+    ca_federal_capped_cdcc: 1_000
+  output:
+    ca_cdcc: 500
+
+- name: 2022 filer with AGI above $100,000 is not eligible.
+  period: 2022
+  input:
+    state_code: CA
+    adjusted_gross_income: 100_001
+    cdcc: 1_000
+    ca_federal_capped_cdcc: 0
+  output:
+    ca_cdcc: 0
+
+- name: 2022 filer with income at the 50% match level.
+  period: 2022
+  input:
+    state_code: CA
+    adjusted_gross_income: 1_000
+    cdcc: 1_000
+    ca_federal_capped_cdcc: 0
+  output:
+    ca_cdcc: 500
+
+- name: 2022 filer with income at the 43% match level.
+  period: 2022
+  input:
+    state_code: CA
+    adjusted_gross_income: 50_000
+    cdcc: 1_000
+    ca_federal_capped_cdcc: 0
+  output:
+    ca_cdcc: 430
+
+- name: 2022 filer with negative AGI gets a 50% match.
+  period: 2022
+  input:
+    state_code: CA
+    adjusted_gross_income: -50_000
+    cdcc: 1_000
+    ca_federal_capped_cdcc: 0
+  output:
+    ca_cdcc: 500
