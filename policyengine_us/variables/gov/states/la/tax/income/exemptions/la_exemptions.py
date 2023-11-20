@@ -14,5 +14,5 @@ class la_exemptions(Variable):
         "la_blind_exemption",
         "la_dependents_exemption",
         "la_widow_exemption",
-        "la_aged_exemption",
+        "la_retirement_exemption",
     ]

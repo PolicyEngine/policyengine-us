@@ -14,7 +14,7 @@
         members: [person1]
         state_code: LA
   output:
-    la_aged_exemption: 3_000
+    la_retirement_exemption: 3_000
 
 - name: Aged head with pension income lower than cap amount
   period: 2020
@@ -32,7 +32,7 @@
         members: [person1]
         state_code: LA
   output:
-    la_aged_exemption: 3_000
+    la_retirement_exemption: 3_000
 
 - name: Aged head with pension income higher than cap amount
   period: 2020
@@ -50,7 +50,7 @@
         members: [person1]
         state_code: LA
   output:
-    la_aged_exemption: 6_000
+    la_retirement_exemption: 6_000
 
 - name: Aged spouse
   period: 2020
@@ -72,7 +72,7 @@
         members: [person1, person2]
         state_code: LA
   output:
-    la_aged_exemption: 3_000
+    la_retirement_exemption: 3_000
 
 - name: Aged head and spouse
   period: 2020
@@ -94,4 +94,4 @@
         members: [person1, person2]
         state_code: LA
   output:
-    la_aged_exemption: 9_000
+    la_retirement_exemption: 9_000
