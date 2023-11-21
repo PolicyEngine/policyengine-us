@@ -11,9 +11,5 @@ class mt_tuition_subtraction(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.mt.tax.income.subtractions.tuition
-        threshold = p.threshold
         contributions = add(tax_unit, period, ["investment_in_529_plan"])
-        eligible = tax_unit("mt_tuition_subtraction_eligible", period)
-        eligible_contributions = contributions * eligible
-        taxable_income_reductions = min_(contributions, threshold)
-        return taxable_income_reductions
+        return min_(contributions, p.cap)
