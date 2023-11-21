@@ -12,7 +12,7 @@ class mt_child_dependent_care_expense_deduction_eligible_children(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(
             period
-        ).gov.states.mt.tax.income.deductions.standard.child_dependent_care_expense
+        ).gov.states.mt.tax.income.deductions.child_dependent_care_expense
         person = tax_unit.members
         age = person("age", period)
         dependent = person("is_tax_unit_dependent", period)

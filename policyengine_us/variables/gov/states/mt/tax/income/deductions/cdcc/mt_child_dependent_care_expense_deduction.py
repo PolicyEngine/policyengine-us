@@ -13,7 +13,7 @@ class mt_child_dependent_care_expense_deduction(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(
             period
-        ).gov.states.mt.tax.income.deductions.standard.child_dependent_care_expense
+        ).gov.states.mt.tax.income.deductions.child_dependent_care_expense
         agi = tax_unit("mt_agi", period)
         care_expenses = tax_unit("tax_unit_childcare_expenses", period)
         reduction = p.reduction.calc(agi)
