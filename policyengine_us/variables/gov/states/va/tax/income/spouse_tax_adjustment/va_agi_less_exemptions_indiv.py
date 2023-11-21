@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class va_agi_less_exemptions_indiv(Variable):
     value_type = float
     entity = Person
-    label = "Difference between individual VAGI and personal exemptions"
+    label = "Difference between individual VAGI and personal exemption amounts"
     defined_for = StateCode.VA
     unit = USD
     definition_period = YEAR

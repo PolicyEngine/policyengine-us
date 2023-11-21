@@ -29,7 +29,7 @@ class va_spouse_tax_adjustment(Variable):
         )
         # Line 7, divide taxable income in half
         p = parameters(period).gov.states.va.tax.income.spouse_tax_adjustment
-        half_of_taxable_income = taxable_income / p.divider
+        half_of_taxable_income = taxable_income / p.divisor
         # Line 8, take the smaller of the tax caluculated on line 5 or line 7
         p1 = parameters(period).gov.states.va.tax.income
         smaller_agi_or_taxable_income = min_(
@@ -53,4 +53,4 @@ class va_spouse_tax_adjustment(Variable):
         # Line 12, subtract line 10 from line 11
         reduced_tax = max_(income_tax_before_credits - addition_of_tax, 0)
         # The value cannot exceed a certain threshold
-        return min_(reduced_tax, p.adjustment_limit)
+        return min_(reduced_tax, p.cap)
