@@ -17,4 +17,6 @@ class ca_tanf_recipient_eligbile(Variable):
             "ca_tanf_countable_income_recipient", period
         )
 
-        return (tanf_enrolled | applicant_eligible) & (maximum_payment > countable_income)
+        return (tanf_enrolled | applicant_eligible) & (
+            maximum_payment > countable_income
+        )
