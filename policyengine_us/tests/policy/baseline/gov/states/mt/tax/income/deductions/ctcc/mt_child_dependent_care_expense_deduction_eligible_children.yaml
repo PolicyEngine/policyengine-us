@@ -36,6 +36,25 @@
   output:
     mt_child_dependent_care_expense_deduction_eligible_children: 2
 
+- name: Eligible children with age 15
+  period: 2021
+  input:
+    people:
+      person_1: 
+        age: 15
+        is_disabled: false
+        is_tax_unit_dependent: true
+      person_2:
+        age: 15
+        is_disabled: false
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [person_1, person_2]
+        state_code: MT
+  output:
+    mt_child_dependent_care_expense_deduction_eligible_children: 2
+
 - name: Noneligible children without disability
   period: 2021
   input:
