@@ -116,28 +116,3 @@
         state_code: UT
   output:  
     ut_retirement_credit_max: 662.5
-<<<<<<< HEAD
-=======
-
-- name: Edge case test, birth year
-  period: 2022
-  input:
-    people:
-      person1:
-        age: 70
-        tax_exempt_interest_income: 500
-      person2:
-        age: 69
-        tax_exempt_interest_income: 500
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
-        ut_total_income: 30_000
-        filing_status: SINGLE
-    households:
-      household:
-        members: [person1, person2]
-        state_code: UT
-  output: 
-    ut_retirement_credit_max: 300
->>>>>>> 83fde8de662f071e496f0c3d40c23228584362e1
