@@ -5024,3 +5024,14 @@
     added:
     - Twelve new CalEITC integration tests.
   date: 2023-11-17 21:05:55
+- bump: minor
+  changes:
+    changed:
+    - Add missing 2021 Utah parameter values.
+    - Utah retirement credit fixed.
+  date: 2023-11-20 14:46:37
+- bump: patch
+  changes:
+    fixed:
+    - Fix UT retirement credit birth year parameter.
+  date: 2023-11-20 23:32:21
