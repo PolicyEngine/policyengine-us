@@ -1,0 +1,43 @@
+- name: Tanf enrolled and countable income less than maximum payment.
+  period: 2023
+  input:
+    state_code: CA
+    is_tanf_enrolled: true
+    ca_tanf_applicant_eligible: false
+    ca_tanf_maximum_payment: 100
+    ca_tanf_countable_income_recipient: 99
+  output:
+    ca_tanf_recipient_eligbile: true
+
+- name: Tanf enrolled but countable income greater than maximum payment.
+  period: 2023
+  input:
+    state_code: CA
+    is_tanf_enrolled: true
+    ca_tanf_applicant_eligible: false
+    ca_tanf_maximum_payment: 100
+    ca_tanf_countable_income_recipient: 100
+  output:
+    ca_tanf_recipient_eligbile: false
+
+- name: Applicant eligible and countable income less than maximum payment.
+  period: 2023
+  input:
+    state_code: CA
+    is_tanf_enrolled: false
+    ca_tanf_applicant_eligible: true
+    ca_tanf_maximum_payment: 100
+    ca_tanf_countable_income_recipient: 99
+  output:
+    ca_tanf_recipient_eligbile: true
+
+- name: Applicant eligible but countable income greater than maximum payment.
+  period: 2023
+  input:
+    state_code: CA
+    is_tanf_enrolled: false
+    ca_tanf_applicant_eligible: true
+    ca_tanf_maximum_payment: 100
+    ca_tanf_countable_income_recipient: 100
+  output:
+    ca_tanf_recipient_eligbile: false
