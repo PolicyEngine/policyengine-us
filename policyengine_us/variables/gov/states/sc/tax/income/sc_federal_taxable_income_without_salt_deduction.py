@@ -15,7 +15,8 @@ class sc_federal_taxable_income_without_salt_deduction(Variable):
 
     def formula(tax_unit, period, parameters):
         agi = tax_unit("adjusted_gross_income", period)
-        deductions_less_salt = tax_unit(
+        itemizes = tax_unit("tax_unit_itemizes", period)
+        itemized_deductions_less_salt = tax_unit(
             "itemized_deductions_less_salt", period
-        )
-        return max_(0, agi - deductions_less_salt)
+        )* itemizes
+        return max_(0, agi - itemized_deductions_less_salt)
