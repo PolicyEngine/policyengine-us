@@ -7,6 +7,7 @@ class az_agi(Variable):
     label = "Arizona adjusted gross income"
     unit = USD
     definition_period = YEAR
+    documentation = "https://azdor.gov/sites/default/files/2023-03/FORMS_INDIVIDUAL_2020_140NRBOOKLET.pdf#page=18" 
     defined_for = StateCode.AZ
 
     def formula(tax_unit, period, parameters):
