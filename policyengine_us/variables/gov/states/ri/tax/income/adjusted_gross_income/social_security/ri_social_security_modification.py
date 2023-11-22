@@ -12,7 +12,10 @@ class ri_social_security_modification(Variable):
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
-        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+        income = tax_unit("adjusted_gross_income", period)
+        filing_status = tax_unit("filing_status", period)
+        is_head = person("is_tax_unit_head", period)
+        is_spouse = person("is_tax_unit_spouse", period)
         age = person("age", period)
         birth_year = period.start.year - age
 
@@ -22,21 +25,10 @@ class ri_social_security_modification(Variable):
 
         # Age-based eligibility.
         age_conditions = birth_year <= p.birth_year
-        head_or_spouse_eligible = head_or_spouse & age_conditions
+        head_or_spouse = is_head | is_spouse
+        age_is_eligible = tax_unit.any(age_conditions & head_or_spouse)
 
-        total_social_security = person("social_security", period)
+        # Status eligibility.
+        income_is_eligible = income < p.income[filing_status]
 
-        taxable_social_security = person("taxable_social_security", period)
-
-        final_ss = tax_unit.sum(
-            total_social_security * head_or_spouse_eligible
-        )
-        total_ss = tax_unit.sum(total_social_security * head_or_spouse)
-        percentage_social_security = np.zeros_like(total_ss)
-        mask = total_ss != 0
-        percentage_social_security[mask] = final_ss[mask] / total_ss[mask]
-        total_taxable_ss = tax_unit.sum(
-            taxable_social_security * head_or_spouse_eligible
-        )
-
-        return total_taxable_ss * percentage_social_security
+        return age_is_eligible & income_is_eligible
