@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.537.0] - 2023-11-22 00:37:55
+
+### Added
+
+- Ohio lump sum retirement credit.
+
 ## [0.536.1] - 2023-11-20 23:32:21
 
 ### Fixed
@@ -5951,6 +5957,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.537.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.536.1...0.537.0
 [0.536.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.536.0...0.536.1
 [0.536.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.535.1...0.536.0
 [0.535.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.535.0...0.535.1
