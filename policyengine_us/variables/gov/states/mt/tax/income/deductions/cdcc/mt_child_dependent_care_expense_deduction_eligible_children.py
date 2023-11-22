@@ -18,6 +18,6 @@ class mt_child_dependent_care_expense_deduction_eligible_children(Variable):
         dependent = person("is_tax_unit_dependent", period)
 
         age_eligible = age < p.age_limit
-        eligible = dependent & (age_eligible | person("is_disabled", period))  
+        eligible = dependent & (age_eligible | person("is_disabled", period))
 
         return tax_unit.sum(eligible)
