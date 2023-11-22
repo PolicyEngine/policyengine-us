@@ -10,8 +10,6 @@ class oh_income_tax_before_refundable_credits(Variable):
     defined_for = StateCode.OH
 
     def formula(tax_unit, period, parameters):
-        before_non_refundable_credits = tax_unit(
-            "oh_income_tax_before_non_refundable_credits", period
-        )
-        non_refundable_credits = tax_unit("oh_non_refundable_credits", period)
-        return max_(before_non_refundable_credits - non_refundable_credits, 0)
+        itax_before_credits = tax_unit("oh_income_tax_before_credits", period)
+        nonrefundable_credits = tax_unit("oh_non_refundable_credits", period)
+        return max_(0, itax_before_credits - nonrefundable_credits)
