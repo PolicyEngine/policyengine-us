@@ -5,3 +5,11 @@
     state_code: ID
   output:
     id_pbf: 10
+
+- name: Not Eligible
+  period: 2021
+  input:
+    id_pbf_requirement: false
+    state_code: ID
+  output:
+    id_pbf: 0
