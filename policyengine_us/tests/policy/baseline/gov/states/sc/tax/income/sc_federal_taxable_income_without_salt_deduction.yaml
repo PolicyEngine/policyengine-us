@@ -18,7 +18,7 @@
   output:
     sc_federal_taxable_income_without_salt_deduction: 0
 
-- name: Case 3, agi higher than itemized deduction
+- name: Case 3, not itemizes 
   period: 2021
   input:
     adjusted_gross_income: 30_000
@@ -26,4 +26,4 @@
     tax_unit_itemizes: false
     state_code: SC
   output:
-    sc_federal_taxable_income_without_salt_deduction: 10_000
+    sc_federal_taxable_income_without_salt_deduction: 30_000
