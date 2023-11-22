@@ -10,8 +10,8 @@ class az_stillborn_exemption(Variable):
     defined_for = StateCode.AZ
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.az.tax.income.exemptions.stillborn
+        p = parameters(period).gov.states.az.tax.income.exemptions
 
         stillborn = tax_unit("tax_unit_stillborn_children", period)
 
-        return stillborn * p.amount
+        return stillborn * p.stillborn

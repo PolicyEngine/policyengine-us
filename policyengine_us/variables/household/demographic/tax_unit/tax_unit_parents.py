@@ -7,5 +7,4 @@ class tax_unit_parents(Variable):
     label = "Number of parents in the tax unit"
     definition_period = YEAR
 
-    def formula(tax_unit, period, parameters):
-        return add(tax_unit, period, ["is_parent_of_filer_or_spouse"])
+    adds = ["is_parent_of_filer_or_spouse"]

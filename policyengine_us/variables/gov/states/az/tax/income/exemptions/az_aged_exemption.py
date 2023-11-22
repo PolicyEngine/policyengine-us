@@ -10,11 +10,11 @@ class az_aged_exemption(Variable):
     defined_for = "az_aged_exemption_eligible"
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.az.tax.income.exemptions.aged
+        p = parameters(period).gov.states.az.tax.income.exemptions
         person = tax_unit.members
 
         age = person("age", period)
-        amount = p.amount.calc(age)
+        amount = p.aged.calc(age)
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
 
         eligible_amount = amount * head_or_spouse
