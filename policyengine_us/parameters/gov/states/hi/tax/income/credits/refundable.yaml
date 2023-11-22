@@ -1,7 +1,13 @@
 description: Hawaii refundable tax credits.
 values:
-  2022-01-01:
+  2021-01-01:
     - hi_food_excise_credit
 metadata:
   unit: list
+  period: year
   label: Hawaii refundable tax credits
+  reference:
+    - title: 2022 Hawaii N-11 Tax Form
+      href: https://files.hawaii.gov/tax/forms/2022/n11_i.pdf#page=2
+    - title: 2021 Hawaii N-11 Tax Form
+      href: https://files.hawaii.gov/tax/forms/2021/n11_i.pdf#page=3
