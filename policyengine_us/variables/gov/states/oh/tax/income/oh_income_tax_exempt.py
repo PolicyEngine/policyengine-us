@@ -13,4 +13,4 @@ class oh_income_tax_exempt(Variable):
     def formula(tax_unit, period, parameters):
         taxable_income = tax_unit("oh_taxable_income", period)
         p = parameters(period).gov.states.oh.tax.income
-        return taxable_income < p.min_agi_to_pay_tax
+        return taxable_income < p.agi_threshold

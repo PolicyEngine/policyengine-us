@@ -11,7 +11,7 @@ class oh_exemption_credit(Variable):
     defined_for = StateCode.OH
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.oh.tax.income.exemptions
+        p = parameters(period).gov.states.oh.tax.income.credits.exemptions
 
         agi = tax_unit("oh_agi", period)
         personal_exemptions = tax_unit("oh_personal_exemptions", period)
@@ -20,4 +20,4 @@ class oh_exemption_credit(Variable):
 
         exemptions = tax_unit("exemptions_count", period)
 
-        return p.income_threshold.calc(modified_agi) * exemptions
+        return p.amount.calc(modified_agi) * exemptions
