@@ -21,16 +21,34 @@ class mi_retirement_benefits_deduction_tier_one(Variable):
         filing_status = tax_unit("filing_status", period)
 
         person = tax_unit.members
-        uncapped_pension_income = person("taxable_pension_income", period)
+        # "Recipients born before 1946 may subtract all qualifying retirement and
+        # pension benefits received from federal or Michigan public sources"
+        # all public benefits can be deducted
+        uncapped_public_benefits = person(
+            "taxable_public_pension_income", period
+        )
+        # deductable private benefits are capped
+        uncapped_private_benefits = person(
+            "taxable_private_pension_income", period
+        )
+        # the cap is reduced by the amount of military retirement pay
         military_retirement_pay = person("military_retirement_pay", period)
-
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-
         cap_reduction = tax_unit.sum(
             military_retirement_pay * is_head_or_spouse
         )
-        cap = p.amount[filing_status] - cap_reduction
+        cap = max_(p.amount[filing_status] - cap_reduction, 0)
+        # If your public retirement benefits are greater than the maximum amount,
+        # you are not entitled to claim an additional subtraction for private pensions.
+        capped_public_benefits = max_(
+            cap - tax_unit.sum(uncapped_public_benefits * is_head_or_spouse), 0
+        )
+        capped_private_benefits = min_(
+            tax_unit.sum(uncapped_private_benefits * is_head_or_spouse),
+            capped_public_benefits,
+        )
 
-        return min_(
-            tax_unit.sum(uncapped_pension_income * is_head_or_spouse), cap
+        return (
+            tax_unit.sum(uncapped_public_benefits * is_head_or_spouse)
+            + capped_private_benefits
         )

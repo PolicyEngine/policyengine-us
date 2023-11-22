@@ -21,7 +21,8 @@ class mi_retirement_benefits_deduction_tier_three_ss_exempt_retired_eligible_cou
         ).gov.states.mi.tax.income.deductions.retirement_benefits.tier_three.ss_exempt.retired
 
         person = tax_unit.members
-
+        # Recipients should received retirement benefits from SSA exempt employment
+        # and were retired before qualifying year
         retirement_eligible = (
             person("year_of_retirement", period) <= p.retirement_year
         ) & (person("year_of_retirement", period) > 0)

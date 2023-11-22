@@ -23,11 +23,12 @@ class mi_interest_dividends_capital_gains_deduction(Variable):
         filing_status = tax_unit("filing_status", period)
         person = tax_unit.members
 
-        # Interest, Dividends, and Capital Gains Deduction for senior citizens
+        # Senior citizens may subtract interest, dividends, and capital gains included in AGI.
         income = add(tax_unit, period, p.income_types)
-        # The maximum amount of the deduction will be reduced by the amount of the
-        # deduction claimed for retirement or pension benefits under
-        # subdivision (e) or a deduction claimed under subdivision (f)(i), (ii), (iv), or (v)
+        # The maximum amount of the deduction must be reduced by any deduction for
+        # Military (including Michigan National Guard) retirement benefits
+        # Public and private retirement and pension benefits
+        # Amount used for the federal credit for the elderly and totally and permanently disabled
         reductions_pay = add(
             person,
             period,

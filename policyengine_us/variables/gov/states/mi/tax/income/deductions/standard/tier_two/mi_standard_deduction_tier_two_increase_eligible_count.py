@@ -19,12 +19,12 @@ class mi_standard_deduction_tier_two_increase_eligible_count(Variable):
         ).gov.states.mi.tax.income.deductions.standard.tier_two
 
         person = tax_unit.members
-
+        # Line 23C & 23G from the 2022 tax form
+        # filer retired as of qualifying year
         retirement_eligible = (
             person("year_of_retirement", period) <= p.retirement_year
         )
-
-        # Line 23C & 23G from the 2022 tax form
+        # filer received benefits from SSA exempt employment
         has_retirement_benefits_from_ss_exempt_employment = (
             person("retirement_benefits_from_ss_exempt_employment", period) > 0
         )

@@ -47,7 +47,8 @@
   input:
     people:
       person1:
-        taxable_pension_income: 60_000
+        taxable_public_pension_income: 10_000
+        taxable_private_pension_income: 60_000
         military_retirement_pay: 1_000
         taxable_interest_income: 500
         dividend_income: 400
@@ -62,7 +63,7 @@
     household:
       members: [person1]
       state_code: MI
-  output: # 0 + (56961 - 1000 = 55961 < 60000) + 0 + (12697 - 60000 - 1000 - 300 < 0)
+  output: # 0 + (min(56961 - 1000 - 10000 = 45961, 60000) + 10000) + 0 + (12697 - 70000 - 1000 - 300 < 0)
     mi_standard_deduction_and_pension_benefit: 55_961
 
 - name: 2022 single filer who is at the tier 3 standard deduction age threshold
@@ -269,12 +270,14 @@
   input:
     people:
       person1:
-        taxable_pension_income: 50_000
+        taxable_public_pension_income: 50_000
+        taxable_private_pension_income: 10_000
         military_retirement_pay: 1_000
         military_service_income: 5_000
         is_tax_unit_head_or_spouse: true
       person2:
-        taxable_pension_income: 60_000
+        taxable_public_pension_income: 60_000
+        taxable_private_pension_income: 10_000
         military_retirement_pay: 1_000
         taxable_interest_income: 10_000
         dividend_income: 2_000
@@ -289,8 +292,8 @@
     household:
       members: [person1, person2]
       state_code: MI
-  output: # ((50000 + 60000 = 110000 < 113922 - 1000 - 1000 = 111922) + (13000 > 0 > 25394 - 1000 - 1000 - 50000 - 60000 - 300)) > (40000 - 1000 - 5000 - 1000 < 50000 + 60000)
-    mi_standard_deduction_and_pension_benefit: 110_000
+  output: # ((min(113922 - 1000 - 1000 - 50000 - 60000 = 1922, 10000 + 10000) + 50000 + 60000) + (13000 > 0 > 25394 - 1000 - 1000 - 60000 - 70000 - 300)) > (40000 - 1000 - 5000 - 1000 < 60000 + 70000)
+    mi_standard_deduction_and_pension_benefit: 111_922
 
 - name: 2022 widow filer and their deceased spouse are not at the age threshold
   period: 2022
@@ -327,7 +330,8 @@
   input:
     people:
       person1:
-        taxable_pension_income: 10_000
+        taxable_public_pension_income: 10_000
+        taxable_private_pension_income: 10_000
         military_retirement_pay: 1_000
         taxable_interest_income: 10_000
         dividend_income: 2_000
@@ -342,5 +346,5 @@
     household:
       members: [person1]
       state_code: MI
-  output: # 0 + (56961 - 1000 = 55961 > 10000) + 0 + (12697 - 1000 - 10000 - 300 = 1397 < 13000)
-    mi_standard_deduction_and_pension_benefit: 11_397
+  output: # 0 + (min(56961 - 1000 - 10000 = 45961, 10000) + 10000) + 0 + (12697 - 1000 - 10000 - 10000 - 300 < 0 < 13000)
+    mi_standard_deduction_and_pension_benefit: 20_000

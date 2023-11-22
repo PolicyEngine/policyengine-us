@@ -20,7 +20,7 @@ class mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired(
         p = parameters(
             period
         ).gov.states.mi.tax.income.deductions.retirement_benefits.tier_three.ss_exempt.not_retired
-
+        #  Recipients should receive retirement benefits from employment exempt from Social Security
         eligible_people = tax_unit(
             "mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired_eligible_count",
             period,

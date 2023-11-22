@@ -19,7 +19,11 @@ class mi_standard_deduction_tier_three(Variable):
             period
         ).gov.states.mi.tax.income.deductions.standard.tier_three
         filing_status = tax_unit("filing_status", period)
-
+        # Exemption(s), taxable Social Security benefits,
+        # military compensation (including retirement benefits),
+        # Michigan National Guard retirement benefits and railroad
+        # retirement benefits included in AGI may reduce the amount
+        # eligible to be claimed on this deduction.
         person = tax_unit.members
         uncapped_pension_income = person("taxable_pension_income", period)
         reductions = add(

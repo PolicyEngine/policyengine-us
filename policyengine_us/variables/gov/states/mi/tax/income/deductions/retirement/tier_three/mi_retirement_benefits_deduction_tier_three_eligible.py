@@ -21,6 +21,6 @@ class mi_retirement_benefits_deduction_tier_three_eligible(Variable):
             period
         ).gov.states.mi.tax.income.deductions.retirement_benefits.tier_three
 
-        age_older = tax_unit("greater_age_head_spouse", period)
-        # Retirement Benefits Deduction Tier 3
-        return p.age.calc(age_older)
+        return p.age_eligibility.calc(
+            tax_unit("greater_age_head_spouse", period)
+        )

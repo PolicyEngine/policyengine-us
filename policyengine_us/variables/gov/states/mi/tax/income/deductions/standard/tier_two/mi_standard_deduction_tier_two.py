@@ -23,7 +23,8 @@ class mi_standard_deduction_tier_two(Variable):
         eligible_people = tax_unit(
             "mi_standard_deduction_tier_two_increase_eligible_count", period
         )
-
+        # The standard deduction is reduced by any amounts reported on
+        # line 11 (military retirement benefits) and any military pay included on line 14
         person = tax_unit.members
         uncapped_pension_income = person("taxable_pension_income", period)
         military_eligible_pay = add(
@@ -35,6 +36,7 @@ class mi_standard_deduction_tier_two(Variable):
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
 
         cap_reduction = tax_unit.sum(military_eligible_pay * is_head_or_spouse)
+        # If you checked either box 23C or 23G your standard deduction is increased
         increased_amount = p.amount.increase * eligible_people
         cap = max_(
             p.amount.base[filing_status] + increased_amount - cap_reduction,
