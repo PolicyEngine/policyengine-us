@@ -31,4 +31,8 @@ class id_aged_or_disabled_deduction(Variable):
         eligible_person = (age_eligible | disabled_eligible) & payment_eligible
         total_eligible_people = tax_unit.sum(eligible_person)
         capped_eligible_people = min_(total_eligible_people, p.person_cap)
-        return capped_eligible_people * p.amount
+        deduction_amount = capped_eligible_people * p.amount
+        selected_credit = tax_unit(
+            "id_selected_aged_or_disabled_credit", period
+        )
+        return where(selected_credit, 0, deduction_amount)

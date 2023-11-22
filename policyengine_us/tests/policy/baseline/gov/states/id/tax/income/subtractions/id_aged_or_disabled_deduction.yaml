@@ -16,6 +16,10 @@
       household:
         members: [person1, person2]
         state_code: ID
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        id_selected_aged_or_disabled_credit: false
   output:  
     id_aged_or_disabled_deduction: 0
 
@@ -32,6 +36,10 @@
       household:
         members: [person1]
         state_code: ID
+    tax_units:
+      tax_unit:
+        members: [person1]
+        id_selected_aged_or_disabled_credit: false
   output:  
     id_aged_or_disabled_deduction: 1_000
 
@@ -48,6 +56,10 @@
       household:
         members: [person1]
         state_code: ID
+    tax_units:
+      tax_unit:
+        members: [person1]
+        id_selected_aged_or_disabled_credit: false
   output:  
     id_aged_or_disabled_deduction: 0
 
@@ -69,6 +81,10 @@
       household:
         members: [person1, person2]
         state_code: ID
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        id_selected_aged_or_disabled_credit: false
   output:  
     id_aged_or_disabled_deduction: 0
 
@@ -100,6 +116,10 @@
       household:
         members: [person1, person2, person3, person4]
         state_code: ID
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        id_selected_aged_or_disabled_credit: false
   output:  
     id_aged_or_disabled_deduction: 3_000
 
@@ -121,6 +141,10 @@
       household:
         members: [person1, person2]
         state_code: ID
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        id_selected_aged_or_disabled_credit: false
   output:  
     id_aged_or_disabled_deduction: 1_000
 
@@ -142,6 +166,10 @@
       household:
         members: [person1, person2]
         state_code: ID
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        id_selected_aged_or_disabled_credit: false
   output:  
     id_aged_or_disabled_deduction: 0
 
@@ -173,6 +201,10 @@
       household:
         members: [person1, person2, person3, person4]
         state_code: ID
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        id_selected_aged_or_disabled_credit: false
   output:  
     id_aged_or_disabled_deduction: 2_000
 
@@ -204,5 +236,9 @@
       household:
         members: [person1, person2, person3, person4]
         state_code: ID
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        id_selected_aged_or_disabled_credit: false
   output:  
     id_aged_or_disabled_deduction: 3_000

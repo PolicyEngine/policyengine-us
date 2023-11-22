@@ -31,8 +31,8 @@ class id_aged_or_disabled_credit(Variable):
         eligible_person = (age_eligible | disabled_eligible) & payment_eligible
         total_eligible_people = sum(eligible_person)
         capped_eligible_people = min_(total_eligible_people, p.person_cap)
-        # The aged or disabled credit can only be claimed if the aged
-        # or disabled deduction is not claimed
-        aged_deduction = tax_unit("id_aged_or_disabled_deduction", period)
         credit_amount = capped_eligible_people * p.amount
-        return where(aged_deduction == 0, credit_amount, 0)
+        selected_credit = tax_unit(
+            "id_selected_aged_or_disabled_credit", period
+        )
+        return where(selected_credit, credit_amount, 0)
