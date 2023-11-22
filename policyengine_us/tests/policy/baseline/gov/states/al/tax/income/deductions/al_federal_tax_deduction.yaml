@@ -6,7 +6,7 @@
     net_investment_income_tax: 5_000
     eitc: 1_000
     american_opportunity_credit: 1_000
-    ctc: 1_000
+    refundable_ctc: 1_000
   output:
     al_federal_tax_deduction: 8_000
 
@@ -18,7 +18,7 @@
     net_investment_income_tax: 5_000
     eitc: 4_000
     american_opportunity_credit: 1_000
-    ctc: 2_000
+    refundable_ctc: 2_000
   output:
     al_federal_tax_deduction: 0
 
@@ -30,6 +30,6 @@
     net_investment_income_tax: 5_000
     eitc: 200
     american_opportunity_credit: 100
-    ctc: 200
+    refundable_ctc: 200
   output:
     al_federal_tax_deduction: 9_500
