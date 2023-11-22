@@ -1,5 +1,6 @@
 - name: Care expense greater than maximum amount with low AGI and 1 child
   period: 2021
+  absolute_error_margin: 1
   input:
     mt_child_dependent_care_expense_deduction_eligible_children: 1
     tax_unit_childcare_expenses: 2_401
@@ -10,6 +11,7 @@
 
 - name: Care expense greater than maximum amount with moderate AGI and 1 child
   period: 2021
+  absolute_error_margin: 1
   input:
     mt_child_dependent_care_expense_deduction_eligible_children: 1
     tax_unit_childcare_expenses: 2_401
@@ -17,7 +19,6 @@
     state_code: MT
   output:
     mt_child_dependent_care_expense_deduction: 1_400
-  absolute_error_margin: 1
 
 - name: Care expense greater than maximum amount with high AGI and 1 child
   period: 2021
@@ -31,6 +32,7 @@
 
 - name: Care expense greater than maximum amount with low AGI and 2 children
   period: 2021
+  absolute_error_margin: 1
   input:
     mt_child_dependent_care_expense_deduction_eligible_children: 2
     tax_unit_childcare_expenses: 3_601
@@ -41,6 +43,7 @@
 
 - name: Care expense greater than maximum amount with moderate AGI and 2 children
   period: 2021
+  absolute_error_margin: 1
   input:
     mt_child_dependent_care_expense_deduction_eligible_children: 2
     tax_unit_childcare_expenses: 3_601
@@ -48,7 +51,6 @@
     state_code: MT
   output:
     mt_child_dependent_care_expense_deduction: 1_600
-  absolute_error_margin: 1
 
 - name: Care expense greater than maximum amount with high AGI and 2 children
   period: 2021
@@ -62,6 +64,7 @@
 
 - name: Care expense greater than maximum amount with low AGI and 3 children
   period: 2021
+  absolute_error_margin: 1
   input:
     mt_child_dependent_care_expense_deduction_eligible_children: 3
     tax_unit_childcare_expenses: 4_801
@@ -72,6 +75,7 @@
 
 - name: Care expense greater than maximum amount with moderate AGI and 3 children
   period: 2021
+  absolute_error_margin: 1
   input:
     mt_child_dependent_care_expense_deduction_eligible_children: 3
     tax_unit_childcare_expenses: 4_801
@@ -79,7 +83,6 @@
     state_code: MT
   output:
     mt_child_dependent_care_expense_deduction: 1_800
-  absolute_error_margin: 1
 
 - name: Care expense greater than maximum amount with high AGI and 3 children
   period: 2021
@@ -123,6 +126,7 @@
 
 - name: Care expense less than maximum amount with high AGI and 2 children
   period: 2021
+  absolute_error_margin: 1
   input:
     mt_child_dependent_care_expense_deduction_eligible_children: 2
     tax_unit_childcare_expenses: 3_000
@@ -130,10 +134,10 @@
     state_code: MT
   output:
     mt_child_dependent_care_expense_deduction: 0
-  absolute_error_margin: 1
 
 - name: Care expense less than maximum amount with low AGI and 3 children
   period: 2021
+  absolute_error_margin: 1
   input:
     mt_child_dependent_care_expense_deduction_eligible_children: 3
     tax_unit_childcare_expenses: 4_000
@@ -141,10 +145,10 @@
     state_code: MT
   output:
     mt_child_dependent_care_expense_deduction: 4_000
-  absolute_error_margin: 1
 
 - name: Care expense less than maximum amount with high AGI and 3 children
   period: 2021
+  absolute_error_margin: 1
   input:
     mt_child_dependent_care_expense_deduction_eligible_children: 3
     tax_unit_childcare_expenses: 4_000
@@ -152,4 +156,3 @@
     state_code: MT
   output:
     mt_child_dependent_care_expense_deduction: 0
-  absolute_error_margin: 1
