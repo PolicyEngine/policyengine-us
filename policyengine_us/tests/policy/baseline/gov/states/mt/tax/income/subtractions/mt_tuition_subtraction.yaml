@@ -1,35 +1,23 @@
-- name: Eligible and investment exceeds threshold
+- name: Investment exceeds threshold
   period: 2023
   input:
-    mt_tuition_subtraction_eligible: true
     investment_in_529_plan: 4_000
     state_code: MT
   output: 
     mt_tuition_subtraction: 3_000
 
-- name: Eligible and investment less than threshold
+- name: Investment less than threshold but positive
   period: 2023
   input:
-    mt_tuition_subtraction_eligible: true
     investment_in_529_plan: 2_000
     state_code: MT
   output: 
     mt_tuition_subtraction: 2_000
 
-- name: Not eligible and investment exceeds threshold
+- name: Investment less than threshold and zero
   period: 2023
   input:
-    mt_tuition_subtraction_eligible: false
-    investment_in_529_plan: 4_000
-    state_code: MT
-  output: 
-    mt_tuition_subtraction: 0
-
-- name: Not eligible and investment less than threshold
-  period: 2023
-  input:
-    mt_tuition_subtraction_eligible: false
-    investment_in_529_plan: 2_000
+    investment_in_529_plan: 0
     state_code: MT
   output: 
     mt_tuition_subtraction: 0

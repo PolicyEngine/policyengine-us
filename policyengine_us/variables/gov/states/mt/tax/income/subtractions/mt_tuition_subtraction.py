@@ -7,7 +7,7 @@ class mt_tuition_subtraction(Variable):
     label = "Montana tuition subtraction"
     definition_period = YEAR
     reference = "https://leg.mt.gov/bills/mca/title_0150/chapter_0300/part_0210/section_0200/0150-0300-0210-0200.html"
-    defined_for = "mt_tuition_subtraction_eligible"
+    defined_for = StateCode.MT
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.mt.tax.income.subtractions.tuition
