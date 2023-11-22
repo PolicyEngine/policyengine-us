@@ -132,7 +132,7 @@ class alternative_minimum_tax(Variable):
             (
                 amt.exemption.amount[filing_status]
                 - phase_out.rate
-                * max_(0, amt_income - phase_out.start[filing_status])
+                * max_(0, amt_dincome - phase_out.start[filing_status])
             ),
         )
         age_head = tax_unit("age_head", period)

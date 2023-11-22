@@ -3,8 +3,8 @@
   input:
     state_code: CT
     ct_income_tax_recapture: 10_000
-    foreign_tax_credit: 200_000 # 200000 * 0.055 = 11000
-    alternative_minimum_tax: 100_000 # 100000 * 0.19 = 19000
+    ct_adjusted_amt_income: 200_000 # 200000 * 0.055 = 11000
+    ct_federal_alternative_minimum_tax: 100_000 # 100000 * 0.19 = 19000
   output:
     ct_amt: 1_000 # 11000 - 10000
 
@@ -13,8 +13,8 @@
   input:
     state_code: CT
     ct_income_tax_recapture: 10_000
-    foreign_tax_credit: 200_000
-    alternative_minimum_tax: 200_000
+    ct_adjusted_amt_income: 200_000
+    ct_federal_alternative_minimum_tax: 200_000
   output:
     ct_amt: 1_000
 
@@ -23,8 +23,8 @@
   input:
     state_code: CT
     ct_income_tax_recapture: 1_000
-    foreign_tax_credit: 200_000 # 200000 * 0.055 = 11000
-    alternative_minimum_tax: 10_000 # 10000 * 0.19 = 1900
+    ct_adjusted_amt_income: 200_000 # 200000 * 0.055 = 11000
+    ct_federal_alternative_minimum_tax: 10_000 # 10000 * 0.19 = 1900
   output:
     ct_amt: 900 # 1900 - 1000
 
@@ -33,7 +33,7 @@
   input:
     state_code: CT
     ct_income_tax_recapture: 10_000
-    foreign_tax_credit: 100_000
-    alternative_minimum_tax: 200_000
+    ct_adjusted_amt_income: 100_000
+    ct_federal_alternative_minimum_tax: 200_000
   output:
     ct_amt: 0

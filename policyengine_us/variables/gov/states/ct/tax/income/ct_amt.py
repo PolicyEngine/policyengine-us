@@ -19,17 +19,22 @@ class ct_amt(Variable):
         p = parameters(period).gov.states.ct.tax.income
         amt = p.alternative_minimum_tax.rate
 
-        ct_income_tax_recapture = tax_unit(
-            "ct_income_tax_recapture", period
-        )  # Line 20
-        foreign_tax_credit = tax_unit("foreign_tax_credit", period)  # Line 13
-        federal_minimum_tax = tax_unit(
-            "alternative_minimum_tax", period
+        ct_adjusted_amt_income = tax_unit(
+            "ct_adjusted_amt_income", period
+        )  # line 5
+
+        federal_alternative_minimum_tax = tax_unit(
+            "ct_federal_alternative_minimum_tax", period
         )  # Line 14
 
         ct_minimum_tax = min_(
-            foreign_tax_credit * amt.foreign_tax_credit_rate,  # Line 16
-            federal_minimum_tax * amt.tentative_minimum_tax_rate,  # Line 15
+            federal_alternative_minimum_tax
+            * amt.tentative_minimum_tax_rate,  # Line 15
+            ct_adjusted_amt_income * amt.foreign_tax_credit_rate,  # Line 16
         )  # Line 17
+
+        ct_income_tax_recapture = tax_unit(
+            "ct_income_tax_recapture", period
+        )  # Line 20
 
         return max_(ct_minimum_tax - ct_income_tax_recapture, 0)  # Line 21

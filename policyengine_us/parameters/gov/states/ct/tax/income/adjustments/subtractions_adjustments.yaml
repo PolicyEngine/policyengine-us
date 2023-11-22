@@ -1,0 +1,16 @@
+description: Connecticut subtracts these adjustments from federal adjusted gross income when computing state amt.
+values:
+  2020-01-01:
+    - us_govt_interest # line 39
+    # - line 40 40. Exempt dividends from certain qualifying mutual funds derived from U.S. government obligations
+    - social_security # line 41
+    # - line 46 Beneficiary’s share of Connecticut fiduciary adjustment: Enter only if less than zero
+    # - line 47 Gain on sale of Connecticut state and local government bonds
+    # - line 48 Connecticut Higher Education Trust (CHET) contributions made in 2022 or an excess carried forward from a prior year. See instructions.
+
+metadata:
+  label: Connecticut Federal AGI Subtraction
+  unit: list
+  reference: 
+    - title: Connecticut Resident INCOME TAX Return, Secdule 1, line 50
+      href: https://portal.ct.gov/-/media/DRS/Forms/2022/Income/CT-1040_1222.pdf#page=3

@@ -1,0 +1,15 @@
+description: Connecticut adds these adjustments from federal adjusted gross income when computing state amt.
+values:
+  2020-01-01:
+    # - line 31 Interest on state and local government obligations other than Connecticut
+    - dividend_income # line 32
+    # - line 34 Beneficiary’s share of Connecticut fiduciary adjustment: Enter only if greater than zero
+    - local_sales_tax # line 35
+
+
+metadata:
+  label: Connecticut Federal AGI Addition
+  unit: list
+  reference: 
+    - title: Connecticut Resident INCOME TAX Return, Secdule 1, line 38
+      href: https://portal.ct.gov/-/media/DRS/Forms/2022/Income/CT-1040_1222.pdf#page=3
