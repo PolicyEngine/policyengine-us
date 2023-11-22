@@ -22,7 +22,7 @@ class mt_ctc_eligible(Variable):
         )
 
         earned_income = tax_unit("tax_unit_earned_income", period)
-        earned_income_eligible = earned_income > p.earned_income_required
+        earned_income_eligible = earned_income > 0
 
         return (
             income_eligible
