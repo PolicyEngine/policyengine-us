@@ -14,7 +14,8 @@ class ri_social_security_modification_eligible(Variable):
         person = tax_unit.members
         income = tax_unit("adjusted_gross_income", period)
         filing_status = tax_unit("filing_status", period)
-        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+        is_head = person("is_tax_unit_head", period)
+        is_spouse = person("is_tax_unit_spouse", period)
         age = person("age", period)
         birth_year = period.start.year - age
 
@@ -24,6 +25,7 @@ class ri_social_security_modification_eligible(Variable):
 
         # Age-based eligibility.
         age_conditions = birth_year <= p.birth_year
+        head_or_spouse = is_head | is_spouse
         age_is_eligible = tax_unit.any(age_conditions & head_or_spouse)
 
         # Status eligibility.
