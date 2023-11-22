@@ -13,7 +13,10 @@ class ar_itemized_deductions(Variable):
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
         year = period.start.year
-        p = parameters(period).gov.states.ar.tax.income.deductions.itemized
+
+        # We need to include this condition to be able to test the medical expense rate 
+        # as the itemized deductions list currently only back dates to 2018
+
         if year < 2018:
             instant_str = f"2018-01-01"
         else:
@@ -46,30 +49,23 @@ class ar_itemized_deductions(Variable):
 
         # Limitation on several items
         # Medical and Dental Expense
-        medical_expenses = add(tax_unit, period, ["medical_expense"])
-        if year >= 2017:
-            instant_str = f"2017-01-01"
-        else:
-            instant_str = f"2013-01-01"
-        p_medical = parameters(instant_str).gov.irs.deductions.itemized.medical
-        medical_deds = max_(
-            0,
-            medical_expenses - p_medical.floor * agi,
-        )
+        medical_deds = tax_unit("ar_medical_expense_deduction", period)
 
         # Miscellaneous Deductions
-        misc_deds = tax_unit("misc_deduction", period)
-        adjusted_misc_deds = max_(
-            0,
-            misc_deds - p_ded.itemized.misc.floor * agi,
-        )
+        misc_deds = tax_unit("ar_msc_deduction", period)
 
+        itemized_deductions = [
+            "ar_msc_deduction",
+            "ar_medical_expense_deduction",
+            "ar_post_secondary_education_tuition_deduction",
+            ""
+        ]
         total_itemized_deduction = (
             less_salt_deds
             + medical_deds
             + real_estate_deds
             + tuition_deds
-            + adjusted_misc_deds
+            + misc_deds
         )
 
         # Prorated itemized deductions
