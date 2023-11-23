@@ -20,13 +20,7 @@ class sc_federal_taxable_income_without_salt_deduction(Variable):
         itemized_deductions_less_salt = tax_unit(
             "itemized_deductions_less_salt", period
         )
-        taxable_income_if_itemizes = agi - itemized_deductions_less_salt
-        taxable_income_if_not_itemizes = agi - standard_deduction
-        return max_(
-            0,
-            where(
-                itemizes,
-                taxable_income_if_itemizes,
-                taxable_income_if_not_itemizes,
-            ),
+        deductions = where(
+            itemizes, itemized_deductions_less_salt, standard_deduction
         )
+        return max_(0, agi - deductions)
