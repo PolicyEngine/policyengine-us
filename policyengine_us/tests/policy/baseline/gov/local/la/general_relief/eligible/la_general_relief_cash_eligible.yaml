@@ -1,0 +1,8 @@
+- name: Single eligible
+  period: 2022
+  input:
+    in_la: true
+    spm_unit_cash_assets: 100
+    filing_status: SINGLE
+  output:
+    la_general_relief_cash_eligible: true

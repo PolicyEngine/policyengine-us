@@ -4,10 +4,10 @@ metadata:
   type: single_amount
   threshold_unit: person
   amount_unit: currency-USD
-  period: year
+  period: month
   reference:
-    - title: GR Housing Subsidy and Case Management Program.pdf
-      href: ABP 392 General Relief Information Sheet Form_rev 07-2021.pdf
+    - title: ABP 392 General Relief Information Sheet Form rev 07-2021
+      href: https://drive.google.com/file/d/1Oc7UuRFxJj-eDwTeox92PtmRVGnG9RjW/view?usp=sharing 
 brackets:
   - threshold:
       2021-07-01: 0
@@ -16,10 +16,10 @@ brackets:
   - threshold:
       2021-07-01: 1
     amount:
-      2021-07-01: 5_700 # 475 monthly
+      2021-07-01: 475 # 5_700 yearly
   - threshold:
       2021-07-01: 2
     amount:
-      2021-07-01: 11_400 # 950 monthly
+      2021-07-01: 950 # 11_400 yearly
 
 # Eligibility: no children

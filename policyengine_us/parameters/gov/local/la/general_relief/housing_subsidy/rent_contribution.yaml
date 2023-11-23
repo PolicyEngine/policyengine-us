@@ -2,11 +2,11 @@ description: Los Angeles county requires filers who receive the general relief g
 metadata:
   label: Los Angeles County general relief housing subsidy rent contribution
   unit: currency_USD
-  period: year
+  period: month
   reference:
-    - title: GR Housing Subsidy and Case Management Program.pdf
-      href: ABP 392 General Relief Information Sheet Form_rev 07-2021.pdf
+    - title: ABP 392 General Relief Information Sheet Form rev 07-2021
+      href: https://drive.google.com/file/d/1Oc7UuRFxJj-eDwTeox92PtmRVGnG9RjW/view?usp=sharing 
 values:
-  2021-07-01: 1_200 # 100 monthly
+  2021-07-01: 100 # 1_200 yearly
 
 # Is this required only if they receive the housing subsidy!

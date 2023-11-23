@@ -1,0 +1,10 @@
+- name: Eligible
+  period: 2022
+  input:
+    in_la: true
+    la_general_relief_net_income_sources: 34_000
+    ca_deductions: 1_000
+    taxable_income_deductions: 1_000
+    filing_status: SINGLE
+  output:
+    la_general_relief_net_income_eligible: true
