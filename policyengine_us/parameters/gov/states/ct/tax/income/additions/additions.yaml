@@ -4,7 +4,7 @@ values:
     # us_govt_interest
     # ct_federal_bonus_depreciation
     # ct_federal_deduction
-    - ct_state_add_back
+    - ct_section_179_expense_add_back
     # ct_exempt_interest_mutual_funds
     # ct_taxable_amount_lump_sum
     # ct_beneificiary_share
@@ -12,6 +12,7 @@ values:
 metadata:
   unit: list
   label: Connecticut AGI additions
+  period: year 
   reference:
     - title: 2021 Form CT-1040 Connecticut Resident Income Tax Return Instructions
       href: https://portal.ct.gov/-/media/DRS/Forms/2021/Income/CT-1040-Online-Booklet_1221.pdf#page=23
