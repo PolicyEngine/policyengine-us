@@ -1,7 +1,9 @@
 from policyengine_us.model_api import *
 
 
-class hi_income_tax_before_non_refundable_credits(Variable):
+# name it hi_income_tax_before_credits instead of hi_income_tax_before_non_refundable_credits
+# because Hawaii model does not have non-refundable credits
+class hi_income_tax_before_credits(Variable):
     value_type = float
     entity = TaxUnit
     label = "Hawaii income tax before credits"
