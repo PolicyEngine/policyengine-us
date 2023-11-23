@@ -6,7 +6,7 @@
     american_opportunity_credit: 1_000
     refundable_ctc: 2_000
   output:
-    al_federal_tax_deduction: 7_000
+    al_federal_income_tax_deduction_credits: 7_000
 
 - name: Alabama federal tax deduction  credits unit test 2
   period: 2022
@@ -16,4 +16,4 @@
     american_opportunity_credit: 3_000
     refundable_ctc: 1_000
   output:
-    al_federal_tax_deduction: 10_000
+    al_federal_income_tax_deduction_credits: 10_000

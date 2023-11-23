@@ -13,7 +13,7 @@ class al_deductions(Variable):
     def formula(tax_unit, period, parameters):
         itm_ded = tax_unit("al_itemized_deductions", period)
         std_ded = tax_unit("al_standard_deduction", period)
-        federal_ded = tax_unit("al_federal_tax_deduction", period)
+        federal_ded = tax_unit("al_federal_income_tax_deduction", period)
         al_ded = max_(itm_ded, std_ded)
         exemptions = add(
             tax_unit,
