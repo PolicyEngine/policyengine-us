@@ -6,6 +6,4 @@ class has_itin(Variable):
     entity = Person
     label = "Has ITIN or SSN"
     definition_period = YEAR
-
-    def formula(person, period, parameters):
-        return person("is_citizen", period)
+    default_value = True
