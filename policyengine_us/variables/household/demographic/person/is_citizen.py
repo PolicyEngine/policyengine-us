@@ -6,3 +6,4 @@ class is_citizen(Variable):
     entity = Person
     label = "Is a U.S. citizen"
     definition_period = YEAR
+    default_value = True
