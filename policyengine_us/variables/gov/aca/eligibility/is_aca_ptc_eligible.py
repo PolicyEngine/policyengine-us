@@ -10,6 +10,13 @@ class is_aca_ptc_eligible(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
+        # determine status eligibility for ACA PTC
+        filing_status = person.tax_unit("filing_status", period)
+        separate = filing_status == filing_status.possible_values.SEPARATE
+        has_itin = person("has_itin", period)
+        daca_tps = person("has_daca_tps_status", period)
+        is_status_eligible = has_itin & ~separate & ~daca_tps
+
         # determine coverage eligibility for ACA plan
         medicaid_coverage = person("is_medicaid_eligible", period)
         eshi_coverage = person("is_aca_eshi_eligible", period)
@@ -28,4 +35,9 @@ class is_aca_ptc_eligible(Variable):
         child_pays = person("aca_child_index", period) <= p.max_child_count
         pays_aca_premium = is_aca_adult | child_pays
 
-        return is_coverage_eligible & is_income_eligible & pays_aca_premium
+        return (
+            is_status_eligible
+            & is_coverage_eligible
+            & is_income_eligible
+            & pays_aca_premium
+        )
