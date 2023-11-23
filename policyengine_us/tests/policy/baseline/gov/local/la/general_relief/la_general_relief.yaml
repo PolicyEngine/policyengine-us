@@ -1,0 +1,7 @@
+- name: Single eligible
+  period: 2022-01
+  input:
+    filing_status: SINGLE
+    la_general_relief_eligible: true
+  output:
+    la_general_relief: 221
