@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.538.0] - 2023-11-23 18:53:34
+
+### Added
+
+- South Carolina dependent exemption.
+- South Carolina subtractions.
+- South Carolina additions.
+
 ## [0.537.1] - 2023-11-22 01:31:58
 
 ## [0.537.0] - 2023-11-22 00:37:55
@@ -5959,6 +5967,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.538.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.537.1...0.538.0
 [0.537.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.537.0...0.537.1
 [0.537.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.536.1...0.537.0
 [0.536.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.536.0...0.536.1
