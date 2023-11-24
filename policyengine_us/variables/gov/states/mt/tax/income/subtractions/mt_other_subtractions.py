@@ -10,3 +10,4 @@ class mt_other_subtractions(Variable):
     reference = "https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2023/05/Montana-Idividiual-Income-Tax-Return-Form-2-2022v6.2.pdf#page=5"
     defined_for = StateCode.MT
     adds = ["us_govt_interest"]
+    # what about mt_interest_exemption, this is in subtractions.yaml
