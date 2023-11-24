@@ -9,9 +9,11 @@ class ca_tanf_financial_eligible(Variable):
     defined_for = StateCode.CA
 
     def formula(spm_unit, period, parameters):
-        
+
         tanf_enrolled = spm_unit("is_tanf_enrolled", period)
         applicant_test = spm_unit("ca_tanf_applicant_financial_test", period)
         recipient_test = spm_unit("ca_tanf_recipient_financial_test", period)
 
-        return  where(tanf_enrolled, applicant_test, applicant_test & recipient_test)
+        return where(
+            tanf_enrolled, applicant_test, applicant_test & recipient_test
+        )
