@@ -8,5 +8,5 @@ class la_general_relief_disability_eligible(Variable):
     label = "Eligible for the Los Angeles County General Relief based on the disability requirements"
     # Person has to be disabled AND unable to work
     # which is curently not implemented
-    defined_for = "is_disbaled"
+    defined_for = "is_disabled"
     reference = "https://drive.google.com/file/d/1Oc7UuRFxJj-eDwTeox92PtmRVGnG9RjW/view?usp=sharing"
