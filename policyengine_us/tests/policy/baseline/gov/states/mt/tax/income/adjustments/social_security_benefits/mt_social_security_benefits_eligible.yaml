@@ -1,4 +1,4 @@
-- name: 
+- name: mt_social_security_benefits_exceeding_income and mt_modified_income >= 0, eligible.
   period: 2021
   input:
     mt_social_security_benefits_exceeding_income: 0
@@ -7,8 +7,7 @@
   output: 
     mt_social_security_benefits_eligible: true
 
-
-- name: 
+- name: mt_social_security_benefits_exceeding_income < 0, ineligible.
   period: 2021
   input:
     mt_social_security_benefits_exceeding_income: -100
@@ -17,7 +16,7 @@
   output: 
     mt_social_security_benefits_eligible: false
 
-- name: 
+- name: mt_modified_income < 0, ineligible.
   period: 2021
   input:
     mt_social_security_benefits_exceeding_income: 100
@@ -26,7 +25,7 @@
   output: 
     mt_social_security_benefits_eligible: false
 
-- name: 
+- name: mt_social_security_benefits_exceeding_income and mt_modified_income < 0, ineligible.
   period: 2021
   input:
     mt_social_security_benefits_exceeding_income: -100

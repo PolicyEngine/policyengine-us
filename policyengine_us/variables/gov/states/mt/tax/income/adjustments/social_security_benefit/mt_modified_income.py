@@ -34,7 +34,9 @@ class mt_modified_income(Variable):
         taxable_social_security = tax_unit.sum(
             person("taxable_social_security", period) * is_head_or_spouse
         )
-        reduced_gross_income = max_(gross_income - taxable_social_security, 0)
+        # gross_income always equal or greater than taxable_social_security 
+        # because grosee_income includes taxable_social_security and other items
+        reduced_gross_income = gross_income - taxable_social_security 
         # Line 4 - All montana additions reduced by interest and mutual fund dividends
         # from state, country, or municipal bonds from other states and addition to taxable social security benefits
         # this is currently not included in the model, so we process with the

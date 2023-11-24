@@ -1,4 +1,4 @@
-- name: 
+- name: Joint filers, mt_modified_income > 32_000.
   period: 2021
   input:
     filing_status: JOINT
@@ -7,7 +7,7 @@
   output: 
     mt_social_security_benefits_exceeding_income: 8_000
 
-- name: 
+- name: Joint filers, mt_modified_income <= 32_000.
   period: 2021
   input:
     filing_status: JOINT
@@ -16,7 +16,7 @@
   output: 
     mt_social_security_benefits_exceeding_income: 0
 
-- name: 
+- name: Head of household filers, mt_modified_income > 25_000.
   period: 2021
   input:
     filing_status: HEAD_OF_HOUSEHOLD
@@ -25,7 +25,7 @@
   output: 
     mt_social_security_benefits_exceeding_income: 5_000
 
-- name: 
+- name: Head of household filers, mt_modified_income <= 25_000.
   period: 2021
   input:
     filing_status: HEAD_OF_HOUSEHOLD
@@ -34,7 +34,7 @@
   output: 
     mt_social_security_benefits_exceeding_income: 0
 
-- name: 
+- name: Widow filers, mt_modified_income > 25_000.
   period: 2021
   input:
     filing_status: WIDOW
@@ -43,7 +43,7 @@
   output: 
     mt_social_security_benefits_exceeding_income: 5_000
 
-- name: 
+- name: Widow filers, mt_modified_income <= 25_000.
   period: 2021
   input:
     filing_status: WIDOW
@@ -52,7 +52,7 @@
   output: 
     mt_social_security_benefits_exceeding_income: 0
 
-- name: 
+- name: Single filers, mt_modified_income > 25_000.
   period: 2021
   input:
     filing_status: SINGLE
@@ -61,7 +61,7 @@
   output: 
     mt_social_security_benefits_exceeding_income: 5_000
 
-- name: 
+- name: Single filers, mt_modified_income <= 25_000.
   period: 2021
   input:
     filing_status: SINGLE
@@ -70,7 +70,7 @@
   output: 
     mt_social_security_benefits_exceeding_income: 0
 
-- name: 
+- name: Separate filers, mt_modified_income > 16_000.
   period: 2021
   input:
     filing_status: SEPARATE
@@ -79,7 +79,7 @@
   output: 
     mt_social_security_benefits_exceeding_income: 4_000
 
-- name: 
+- name: Separate filers, mt_modified_income <= 16_000.
   period: 2021
   input:
     filing_status: SEPARATE
