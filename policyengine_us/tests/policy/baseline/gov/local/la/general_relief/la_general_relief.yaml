@@ -21,3 +21,21 @@
     la_general_relief_eligible: false
   output:
     la_general_relief: 0
+
+- name: Married amount with housing subsidy
+  period: 2022-01
+  input:
+    is_married: true
+    la_general_relief_eligible: true
+    la_general_relief_housing_subsidy: 1
+  output:
+    la_general_relief: 175
+
+- name: Single amount with housing subsidy
+  period: 2022-01
+  input:
+    is_married: false
+    la_general_relief_eligible: true
+    la_general_relief_housing_subsidy: 1
+  output:
+    la_general_relief: 121

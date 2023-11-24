@@ -8,6 +8,7 @@
     la_general_relief_motor_vehicle_value_eligible: true
     la_general_relief_net_income_eligible: true
     la_general_relief_personal_property_eligible: true
+    la_general_relief_disability_eligible: true
   output:
     la_general_relief_eligible: true
 
@@ -21,6 +22,7 @@
     la_general_relief_motor_vehicle_value_eligible: true
     la_general_relief_net_income_eligible: true
     la_general_relief_personal_property_eligible: true
+    la_general_relief_disability_eligible: true
   output:
     la_general_relief_eligible: false
 
@@ -33,6 +35,7 @@
     la_general_relief_home_value_eligible: true
     la_general_relief_motor_vehicle_value_eligible: true
     la_general_relief_net_income_eligible: false
+    la_general_relief_disability_eligible: true
     la_general_relief_personal_property_eligible: true
   output:
     la_general_relief_eligible: false
