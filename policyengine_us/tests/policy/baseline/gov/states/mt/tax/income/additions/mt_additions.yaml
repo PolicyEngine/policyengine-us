@@ -1,0 +1,29 @@
+- name: 
+  period: 2021
+  input:
+    mt_other_additions: 1_000
+    mt_social_security_benefits: 500
+    tax_unit_taxable_social_security: 500
+    state_code: MT
+  output: 
+    mt_additions: 1_000
+
+- name: 
+  period: 2021
+  input:
+    mt_other_additions: 1_000
+    mt_social_security_benefits: 600
+    tax_unit_taxable_social_security: 500
+    state_code: MT
+  output: 
+    mt_additions: 1_000+600-500
+
+- name: 
+  period: 2021
+  input:
+    mt_other_additions: 1_000
+    mt_social_security_benefits: 500
+    tax_unit_taxable_social_security: 600
+    state_code: MT
+  output: 
+    mt_additions: 1_000
