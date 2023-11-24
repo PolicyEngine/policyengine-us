@@ -22,6 +22,7 @@ class la_general_relief_housing_subsidy_eligible(Variable):
         age = person("age", period)
         p = parameters(period).gov.local.la.general_relief.housing_subsidy
         age_eligible = p.age_eligibility.calc(age)
+        # Assuming that disabled people are unable to work
         disabled = person("is_disabled", period)
         # Person or couple can not have dependents
         age_or_disability_eligible = spm_unit.any(age_eligible | disabled)
