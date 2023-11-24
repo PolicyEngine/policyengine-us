@@ -631,35 +631,39 @@
     is_medicaid_eligible: [false, true, true, true]
     is_aca_ptc_eligible_ca: [true, false, false, false]
 
-#- name: MED-ACA-COMB-06
-#  period: 2023
-#  input:
-#    people:
-#      person1:
-#        age: 30
-#        immigration_status: UNDOCUMENTED
-#        employment_income: 60_000
-#        has_itin: true
-#        is_aca_eshi_eligible: false
-#      person2:
-#        age: 30
-#        is_aca_eshi_eligible: false
-#      person3:
-#        age: 5
-#        is_aca_eshi_eligible: false
-#      person4:
-#        age: 3
-#        is_aca_eshi_eligible: false
-#      person5:
-#        age: 1
-#        is_aca_eshi_eligible: false
-#    tax_units:
-#      tax_unit:
-#        members: [person1, person2, person3, person4, person5]
-#    households:
-#      household:
-#        members: [person1, person2, person3, person4, person5]
-#        state_fips: 6  # California
-#  output:
-#    is_medicaid_eligible: [false, false, false, false, false]
-#    is_aca_ptc_eligible_ca: [false, true, true, true, true]
+- name: MED-ACA-COMB-06
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: UNDOCUMENTED
+        employment_income: 94_000
+        has_itin: true
+        is_aca_eshi_eligible: false
+      person2:
+        age: 30
+        is_aca_eshi_eligible: false
+      person3:
+        age: 5
+        is_aca_eshi_eligible: false
+      person4:
+        age: 3
+        is_aca_eshi_eligible: false
+      person5:
+        age: 1
+        is_aca_eshi_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_fips: 6  # California
+  output:
+    #is_medicaid_eligible: [false, false, false, false, false]
+    is_aca_ptc_eligible_ca: [false, true, true, true, true]
+    # with $93K income PEUS gets three kids Medicaid eligible and hence
+    #                            only spouse is ACA eligible
+    # with $94K income PEUS gets nobody Medicaid eligible and hence
+    #                            spouse and three kids are ACA eligible
