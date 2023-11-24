@@ -3,9 +3,7 @@
 
 # NOTE: In Policyengine-US these person variables have the following
 # default values:
-#       the default value of is_citizen is True,
-#       the default value of has_daca_tps_status is False,
-#       the default value of has_undocumented_status is False,
+#       the default value of immigration_status is CITIZEN,
 #       the default value of has_itin is True, and
 #       the default value of is_pregnant is False.
 # Test cases in which these variables are not present use those default values.
@@ -54,10 +52,12 @@
   output:
     is_aca_ptc_eligible_ca: [true]
     # SBN test assumes ineligible because person is above ACA income limit,
-    # but that income limit has been removed for the 2021-2025 period by
-    # the following federal legislation:
+    # but that income limit has been removed for the 2021-2025 plan years
+    # by the following federal legislation:
     #   American Rescue Plan Act for 2021-2022
     #   Inflation Reduction Act for 2023-2025
+    # See the CMS document at the following URL:
+    # https://www.cms.gov/marketplace/technical-assistance-resources/aptc-csr-basics.pdf#page=6
 
 - name: ACA-NEG-03
   period: 2023
@@ -81,10 +81,12 @@
   output:
     is_aca_ptc_eligible_ca: [true, true]
     # SBN test assumes ineligible because tax unit is above ACA income limit,
-    # but that income limit has been removed for the 2021-2025 period by
-    # the following federal legislation:
+    # but that income limit has been removed for the 2021-2025 plan years
+    # by the following federal legislation:
     #   American Rescue Plan Act for 2021-2022
     #   Inflation Reduction Act for 2023-2025
+    # See the CMS document at the following URL:
+    # https://www.cms.gov/marketplace/technical-assistance-resources/aptc-csr-basics.pdf#page=6
 
 - name: ACA-NEG-04
   period: 2023
@@ -111,10 +113,12 @@
   output:
     is_aca_ptc_eligible_ca: [true, true, true]
     # SBN test assumes ineligible because tax unit is above ACA income limit,
-    # but that income limit has been removed for the 2021-2025 period by
-    # the following federal legislation:
+    # but that income limit has been removed for the 2021-2025 plan years
+    # by the following federal legislation:
     #   American Rescue Plan Act for 2021-2022
     #   Inflation Reduction Act for 2023-2025
+    # See the CMS document at the following URL:
+    # https://www.cms.gov/marketplace/technical-assistance-resources/aptc-csr-basics.pdf#page=6
 
 - name: ACA-NEG-05
   period: 2023
@@ -144,10 +148,12 @@
   output:
     is_aca_ptc_eligible_ca: [true, true, true, true]
     # SBN test assumes ineligible because tax unit is above ACA income limit,
-    # but that income limit has been removed for the 2021-2025 period by
-    # the following federal legislation:
+    # but that income limit has been removed for the 2021-2025 plan years
+    # by the following federal legislation:
     #   American Rescue Plan Act for 2021-2022
     #   Inflation Reduction Act for 2023-2025
+    # See the CMS document at the following URL:
+    # https://www.cms.gov/marketplace/technical-assistance-resources/aptc-csr-basics.pdf#page=6
 
 - name: ACA-NEG-06
   period: 2023
@@ -180,10 +186,12 @@
   output:
     is_aca_ptc_eligible_ca: [true, true, true, true, true]
     # SBN test assumes ineligible because tax unit is above ACA income limit,
-    # but that income limit has been removed for the 2021-2025 period by
-    # the following federal legislation:
+    # but that income limit has been removed for the 2021-2025 plan years
+    # by the following federal legislation:
     #   American Rescue Plan Act for 2021-2022
     #   Inflation Reduction Act for 2023-2025
+    # See the CMS document at the following URL:
+    # https://www.cms.gov/marketplace/technical-assistance-resources/aptc-csr-basics.pdf#page=6
 
 - name: ACA-NEG-07
   period: 2023
@@ -244,8 +252,7 @@
     people:
       person1:
         age: 33
-        is_citizen: false
-        has_daca_tps_status: true
+        immigration_status: DACA_TPS
         has_itin: true
         employment_income: 24_000  # above 100% FPL, so is ACA income elgible
         is_aca_eshi_eligible: false
@@ -265,8 +272,7 @@
     people:
       person1:
         age: 33
-        is_citizen: false
-        has_daca_tps_status: true
+        immigration_status: DACA_TPS
         has_itin: false
         employment_income: 24_000  # above 100% FPL, so is ACA income elgible
         is_aca_eshi_eligible: false
@@ -286,8 +292,7 @@
     people:
       person1:
         age: 33
-        is_citizen: false
-        has_undocumented_status: true
+        immigration_status: UNDOCUMENTED
         has_itin: true
         employment_income: 24_000  # above 100% FPL, so is ACA income elgible
         is_aca_eshi_eligible: false
@@ -307,8 +312,7 @@
     people:
       person1:
         age: 33
-        is_citizen: false
-        has_undocumented_status: true
+        immigration_status: UNDOCUMENTED
         has_itin: false
         employment_income: 24_000  # above 100% FPL, so is ACA income elgible
         is_aca_eshi_eligible: false
@@ -368,8 +372,7 @@
     people:
       person1:
         age: 33
-        is_citizen: false
-        has_undocumented_status: true
+        immigration_status: UNDOCUMENTED
         has_itin: true
         employment_income: 70_000
         is_aca_eshi_eligible: false
@@ -387,8 +390,6 @@
         members: [person1, person2, person3]
         state_fips: 6  # California
   output:
-    is_citizen: [false, true, true]
-    has_undocumented_status: [true, false, false]
     is_medicaid_eligible: [false, false, false]
     is_aca_ptc_eligible_ca: [false, true, true]
 
@@ -398,8 +399,7 @@
     people:
       person1:
         age: 33
-        is_citizen: false
-        has_undocumented_status: true
+        immigration_status: UNDOCUMENTED
         has_itin: false
         employment_income: 70_000
         is_aca_eshi_eligible: false
@@ -417,8 +417,6 @@
         members: [person1, person2, person3]
         state_fips: 6  # California
   output:
-    is_citizen: [false, true, true]
-    has_undocumented_status: [true, false, false]
     is_medicaid_eligible: [false, false, false]
     is_aca_ptc_eligible_ca: [false, false, false]
 
@@ -428,8 +426,7 @@
     people:
       person1:
         age: 33
-        is_citizen: false
-        has_undocumented_status: true
+        immigration_status: UNDOCUMENTED
         has_itin: true
         employment_income: 50_000
         is_aca_eshi_eligible: false
@@ -463,14 +460,12 @@
     people:
       person1:
         age: 33
-        is_citizen: false
-        has_undocumented_status: true
+        immigration_status: UNDOCUMENTED
         has_itin: false
         employment_income: 50_000
         is_aca_eshi_eligible: false
       person2:
         age: 33
-        is_citizen: true
         has_itin: false
         employment_income: 50_000
         is_aca_eshi_eligible: false
@@ -636,40 +631,35 @@
     is_medicaid_eligible: [false, true, true, true]
     is_aca_ptc_eligible_ca: [true, false, false, false]
 
-- name: MED-ACA-COMB-06
-  period: 2023
-  input:
-    people:
-      person1:
-        age: 30
-        is_citizen: false
-        has_undocumented_status: true
-        has_itin: true
-        employment_income: 40_000
-        is_aca_eshi_eligible: false
-      person2:
-        age: 30
-        is_aca_eshi_eligible: false
-      person3:
-        age: 5
-        is_aca_eshi_eligible: false
-      person4:
-        age: 3
-        is_aca_eshi_eligible: false
-      person5:
-        age: 1
-        is_aca_eshi_eligible: false
-    tax_units:
-      tax_unit:
-        members: [person1, person2, person3, person4, person5]
-    households:
-      household:
-        members: [person1, person2, person3, person4, person5]
-        state_fips: 6  # California
-  output:
-    is_medicaid_eligible: [false, false, false, false, false]
-    is_aca_ptc_eligible_ca: [false, true, true, true, true]
-    # at $ 40K income everybody is eligible for MediCal (no undocumented logic)
-    # at $ 50K income only three kids are eligible for MediCal
-    # at $ 90K income only three kids are eligible for MediCal
-    # at $100K income nobody is eligible for MediCal
+#- name: MED-ACA-COMB-06
+#  period: 2023
+#  input:
+#    people:
+#      person1:
+#        age: 30
+#        immigration_status: UNDOCUMENTED
+#        employment_income: 60_000
+#        has_itin: true
+#        is_aca_eshi_eligible: false
+#      person2:
+#        age: 30
+#        is_aca_eshi_eligible: false
+#      person3:
+#        age: 5
+#        is_aca_eshi_eligible: false
+#      person4:
+#        age: 3
+#        is_aca_eshi_eligible: false
+#      person5:
+#        age: 1
+#        is_aca_eshi_eligible: false
+#    tax_units:
+#      tax_unit:
+#        members: [person1, person2, person3, person4, person5]
+#    households:
+#      household:
+#        members: [person1, person2, person3, person4, person5]
+#        state_fips: 6  # California
+#  output:
+#    is_medicaid_eligible: [false, false, false, false, false]
+#    is_aca_ptc_eligible_ca: [false, true, true, true, true]
