@@ -14,14 +14,14 @@ class mt_social_security_benefits(Variable):
 
     def formula(tax_unit, period, parameters):
         filing_status = tax_unit("filing_status", period)
-        p = parameters(period).gov.states.mt.tax.income.subtractions
+        p = parameters(
+            period
+        ).gov.states.mt.tax.income.adjustments.social_security
 
         exceeding_income = tax_unit(
             "mt_social_security_benefits_exceeding_income", period
         )  # line 11
-        exceeding_income_cap = p.social_security.base_amount[
-            filing_status
-        ]  # line 12
+        exceeding_income_cap = p.base_amount[filing_status]  # line 12
         reduced_exceeding_income = max_(
             exceeding_income - exceeding_income_cap, 0
         )  # Line 13
@@ -30,28 +30,26 @@ class mt_social_security_benefits(Variable):
         )  # Line 14
 
         exceeding_income_fraction = (
-            p.social_security.excess_income.exceeding_income_fraction
+            p.excess_income.exceeding_income_fraction
         )  # 0.5
 
         net_benefits = tax_unit.spm_unit("spm_unit_benefits", period)
         halved_capped_income = (
             capped_exceeding_income * exceeding_income_fraction,
         )  # Line 15
-        total_benefit_fraction1 = p.social_security.fraction.amount  # 0.5
+        total_benefit_fraction1 = p.fraction.amount  # 0.5
         capped_benefit_amount = min_(
             halved_capped_income,
             net_benefits * total_benefit_fraction1,
         )  # Line 16
-        extra_income_fraction = (
-            p.social_security.fraction.extra_income_fraction
-        )  # 0.85
+        extra_income_fraction = p.fraction.extra_income_fraction  # 0.85
         reduced_exceeding_income_fraction = (
             reduced_exceeding_income * extra_income_fraction
         )  # Line 17
         total_income_and_benefit_amount = (
             reduced_exceeding_income_fraction + capped_benefit_amount
         )  # Line 18
-        total_benefit_fraction2 = p.social_security.fraction.benefit  # 0.85
+        total_benefit_fraction2 = p.fraction.benefit  # 0.85
         net_benefit_fraction = (
             net_benefits * total_benefit_fraction2
         )  # Line 19

@@ -14,9 +14,9 @@ class mt_social_security_benefits_exceeding_income(Variable):
 
     def formula(tax_unit, period, parameters):
         filing_status = tax_unit("filing_status", period)
-        p = parameters(period).gov.states.mt.tax.income.subtractions
-        modified_income_cap = p.social_security.modified_income_cap[
-            filing_status
-        ]
+        p = parameters(
+            period
+        ).gov.states.mt.tax.income.adjustments.social_security
+        modified_income_cap = p.modified_income_cap[filing_status]
         modified_income = tax_unit("mt_modified_income", period)
         return max_(0, modified_income - modified_income_cap)

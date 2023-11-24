@@ -16,7 +16,7 @@ class mt_modified_income(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(
             period
-        ).gov.states.mt.tax.income.subtractions.social_security
+        ).gov.states.mt.tax.income.adjustments.social_security
         person = tax_unit.members
         is_head_or_spouse = person("is_tax_unit_head", period) | person(
             "is_tax_unit_spouse", period
