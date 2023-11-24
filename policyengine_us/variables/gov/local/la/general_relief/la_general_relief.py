@@ -10,6 +10,6 @@ class la_general_relief(Variable):
     reference = "https://drive.google.com/file/d/1Oc7UuRFxJj-eDwTeox92PtmRVGnG9RjW/view?usp=sharing"
 
     def formula(spm_unit, period, parameters):
-        filing_status = spm_unit.tax_unit("filing_status", period)
-        p = parameters(period).gov.local.la.general_relief
-        return p.amount[filing_status]
+        married = add(spm_unit, period, ["is_married"])
+        p = parameters(period).gov.local.la.general_relief.amount
+        return where(married, p.married, p.single)

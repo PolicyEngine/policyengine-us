@@ -3,6 +3,33 @@
   input:
     in_la: true
     spm_unit_cash_assets: 100
-    filing_status: SINGLE
+    is_married: false
   output:
     la_general_relief_cash_eligible: true
+
+- name: Single ineligible
+  period: 2022
+  input:
+    in_la: true
+    spm_unit_cash_assets: 101
+    is_married: false
+  output:
+    la_general_relief_cash_eligible: false
+
+- name: Married eligible
+  period: 2022
+  input:
+    in_la: true
+    spm_unit_cash_assets: 200
+    is_married: true
+  output:
+    la_general_relief_cash_eligible: true
+
+- name: Married ineligible
+  period: 2022
+  input:
+    in_la: true
+    spm_unit_cash_assets: 201
+    is_married: false
+  output:
+    la_general_relief_cash_eligible: false

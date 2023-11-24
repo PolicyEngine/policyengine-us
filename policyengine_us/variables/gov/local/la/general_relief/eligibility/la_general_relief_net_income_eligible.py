@@ -11,21 +11,23 @@ class la_general_relief_net_income_eligible(Variable):
     reference = "https://drive.google.com/file/d/1Oc7UuRFxJj-eDwTeox92PtmRVGnG9RjW/view?usp=sharing"
 
     def formula(spm_unit, period, parameters):
-        tax_unit = spm_unit.tax_unit
-        pre_deductions_net_income = (
-            add(spm_unit, period, ["la_general_relief_net_income"])
-            / MONTHS_IN_YEAR
+        pre_deductions_net_income = add(
+            spm_unit, period, ["la_general_relief_net_income"]
         )
-        state_deductions = tax_unit("ca_deductions", period) / MONTHS_IN_YEAR
-        federal_deductions = (
-            tax_unit("taxable_income_deductions", period) / MONTHS_IN_YEAR
+        state_deductions = add(spm_unit, period, ["ca_deductions"])
+        federal_deductions = add(
+            spm_unit, period, ["taxable_income_deductions"]
         )
         post_deductions_net_income = max_(
             pre_deductions_net_income - state_deductions - federal_deductions,
             0,
         )
-        p = parameters(period).gov.local.la.general_relief.eligibility.limit
-        filing_status = tax_unit("filing_status", period)
-        return spm_unit.any(
-            post_deductions_net_income <= p.income[filing_status]
+        p = parameters(
+            period
+        ).gov.local.la.general_relief.eligibility.limit.income
+        married = add(spm_unit, period, ["is_married"])
+        return where(
+            married,
+            post_deductions_net_income <= p.married,
+            post_deductions_net_income <= p.single,
         )

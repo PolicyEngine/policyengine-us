@@ -1,7 +1,23 @@
-- name: Single eligible
+- name: Single amount
   period: 2022-01
   input:
-    filing_status: SINGLE
+    is_married: false
     la_general_relief_eligible: true
   output:
     la_general_relief: 221
+
+- name: Married amount
+  period: 2022-01
+  input:
+    is_married: true
+    la_general_relief_eligible: true
+  output:
+    la_general_relief: 375
+
+- name: Ineligible
+  period: 2022-01
+  input:
+    is_married: false
+    la_general_relief_eligible: false
+  output:
+    la_general_relief: 0

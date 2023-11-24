@@ -1,26 +1,14 @@
-description: Los Angeles county provides a cash grant of this amount under the general relief program, based on the number of people that apply together.
+description: Los Angeles county provides a cash grant of this amount under the general relief program to single filers.
 metadata:
-  label: Los Angeles County general relief amount
+  label: Los Angeles County general relief single amount
   period: month
   unit: currency-USD
-  breakdown:
-  - filing_status
   reference:
     - title: ABP 392 General Relief Information Sheet Form rev 07-2021
       href: https://drive.google.com/file/d/1Oc7UuRFxJj-eDwTeox92PtmRVGnG9RjW/view?usp=sharing 
 
-JOINT:
-  2021-01-01: 375 # 4_500 yearly
-HEAD_OF_HOUSEHOLD:
+values:
   2021-01-01: 221 # 2_652 yearly
-WIDOW:
-  2021-01-01: 221 # 2_652 yearly
-SINGLE:
-  2021-01-01: 221 # 2_652 yearly
-SEPARATE:
-  2021-01-01: 221 # 2_652 yearly
-
-
 
 
 
