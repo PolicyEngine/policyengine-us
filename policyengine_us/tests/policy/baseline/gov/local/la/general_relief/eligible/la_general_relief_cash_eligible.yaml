@@ -33,3 +33,32 @@
     is_married: false
   output:
     la_general_relief_cash_eligible: false
+
+- name: Married eligible applicant
+  period: 2022
+  input:
+    in_la: true
+    spm_unit_cash_assets: 200
+    is_married: true
+  output:
+    la_general_relief_cash_eligible: true
+
+- name: Eligible recipient
+  period: 2022
+  input:
+    in_la: true
+    spm_unit_cash_assets: 1_500
+    is_married: false
+    la_general_relief_recipient: true
+  output:
+    la_general_relief_cash_eligible: true
+
+- name: Ineligible recipient
+  period: 2022
+  input:
+    in_la: true
+    spm_unit_cash_assets: 1_501
+    is_married: false
+    la_general_relief_recipient: true
+  output:
+    la_general_relief_cash_eligible: false

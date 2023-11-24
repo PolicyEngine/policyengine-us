@@ -26,8 +26,11 @@ class la_general_relief_net_income_eligible(Variable):
             period
         ).gov.local.la.general_relief.eligibility.limit.income
         married = add(spm_unit, period, ["is_married"])
-        return where(
+        applicant_eligible = where(
             married,
-            post_deductions_net_income <= p.married,
-            post_deductions_net_income <= p.single,
+            post_deductions_net_income <= p.applicant.married,
+            post_deductions_net_income <= p.applicant.single,
         )
+        recipient = spm_unit("la_general_relief_recipient", period)
+        recipient_eligible = post_deductions_net_income <= p.recipient
+        return where(recipient, recipient_eligible, applicant_eligible)

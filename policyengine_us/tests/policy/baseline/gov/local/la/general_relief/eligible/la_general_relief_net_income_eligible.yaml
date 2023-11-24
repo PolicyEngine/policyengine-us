@@ -42,7 +42,7 @@
   output:
     la_general_relief_net_income_eligible: false
 
-- name: Married eligible
+- name: Married eligible applicant
   period: 2022-01
   input:
     in_la: true
@@ -50,5 +50,31 @@
     ca_deductions: 100
     taxable_income_deductions: 100
     is_married: true
+    la_general_relief_recipient: false
   output:
     la_general_relief_net_income_eligible: true
+
+- name: Eligible recipient
+  period: 2022-01
+  input:
+    in_la: true
+    la_general_relief_net_income: 7_452
+    ca_deductions: 0
+    taxable_income_deductions: 0
+    is_married: true
+    la_general_relief_recipient: true
+  output:
+    la_general_relief_net_income_eligible: true
+
+
+- name: Ineligible recipient
+  period: 2022-01
+  input:
+    in_la: true
+    la_general_relief_net_income: 7_453
+    ca_deductions: 0
+    taxable_income_deductions: 0
+    is_married: true
+    la_general_relief_recipient: true
+  output:
+    la_general_relief_net_income_eligible: false
