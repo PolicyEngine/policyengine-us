@@ -470,6 +470,7 @@
         is_aca_eshi_eligible: false
       person2:
         age: 33
+        is_citizen: true
         has_itin: false
         employment_income: 50_000
         is_aca_eshi_eligible: false
@@ -492,4 +493,183 @@
   output:
     is_medicaid_eligible: [false, false, false, false, false]
     is_aca_ptc_eligible_ca: [false, false, false, false, false]
-    # nobody is ACA PTC eligible because neither head nor spouse have ITIN
+    # nobody is ACA PTC eligible because neither head nor spouse have an ITIN;
+    # either having an ITIN would make the spouse and children ACA eligible
+
+- name: MED-ACA-COMB-01
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 33
+        is_pregnant: true
+        employment_income: 40_000
+        is_aca_eshi_eligible: false
+      person2:
+        age: 9
+        is_aca_eshi_eligible: false
+      person3:
+        age: 7
+        is_aca_eshi_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_fips: 6  # California
+  output:
+    is_medicaid_eligible: [true, true, true]
+    is_aca_ptc_eligible_ca: [false, false, false]
+
+- name: MED-ACA-COMB-02
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 33
+        is_pregnant: false
+        employment_income: 40_000
+        is_aca_eshi_eligible: false
+      person2:
+        age: 9
+        is_aca_eshi_eligible: false
+      person3:
+        age: 7
+        is_aca_eshi_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_fips: 6  # California
+  output:
+    is_medicaid_eligible: [false, true, true]
+    is_aca_ptc_eligible_ca: [true, false, false]
+
+- name: MED-ACA-COMB-03
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 33
+        employment_income: 60_000
+        is_aca_eshi_eligible: false
+      person2:
+        age: 9
+        is_aca_eshi_eligible: false
+      person3:
+        age: 7
+        is_aca_eshi_eligible: false
+      person4:
+        age: 5
+        is_aca_eshi_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_fips: 6  # California
+  output:
+    is_medicaid_eligible: [false, true, true, true]
+    is_aca_ptc_eligible_ca: [true, false, false, false]
+
+- name: MED-ACA-COMB-04
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 33
+        employment_income: 70_000
+        is_aca_eshi_eligible: false
+      person2:
+        age: 11
+        is_aca_eshi_eligible: false
+      person3:
+        age: 9
+        is_aca_eshi_eligible: false
+      person4:
+        age: 7
+        is_aca_eshi_eligible: false
+      person5:
+        age: 5
+        is_aca_eshi_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_fips: 6  # California
+  output:
+    is_medicaid_eligible: [false, true, true, true, true]
+    is_aca_ptc_eligible_ca: [true, false, false, false, false]
+
+- name: MED-ACA-COMB-05
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 50_000
+        is_aca_eshi_eligible: false
+      person2:
+        age: 30
+        is_aca_eshi_eligible: false
+        is_pregnant: true
+      person3:
+        age: 5
+        is_aca_eshi_eligible: false
+      person4:
+        age: 3
+        is_aca_eshi_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_fips: 6  # California
+  output:
+    is_medicaid_eligible: [false, true, true, true]
+    is_aca_ptc_eligible_ca: [true, false, false, false]
+
+- name: MED-ACA-COMB-06
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 30
+        is_citizen: false
+        has_undocumented_status: true
+        has_itin: true
+        employment_income: 40_000
+        is_aca_eshi_eligible: false
+      person2:
+        age: 30
+        is_aca_eshi_eligible: false
+      person3:
+        age: 5
+        is_aca_eshi_eligible: false
+      person4:
+        age: 3
+        is_aca_eshi_eligible: false
+      person5:
+        age: 1
+        is_aca_eshi_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_fips: 6  # California
+  output:
+    is_medicaid_eligible: [false, false, false, false, false]
+    is_aca_ptc_eligible_ca: [false, true, true, true, true]
+    # at $ 40K income everybody is eligible for MediCal (no undocumented logic)
+    # at $ 50K income only three kids are eligible for MediCal
+    # at $ 90K income only three kids are eligible for MediCal
+    # at $100K income nobody is eligible for MediCal
