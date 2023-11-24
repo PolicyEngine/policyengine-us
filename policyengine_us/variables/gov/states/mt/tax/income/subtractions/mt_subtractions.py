@@ -25,6 +25,7 @@ class mt_subtractions(Variable):
         )
         return subtractions + exceeded_ss_benefit
 
+
 # This conflicts with some other PR (unkonwn, it's a conflict merge)
 # It used: add = "p.gov.states.mt.tax.income.subtractions.subtractions"
-# substitute mt_subtractions with mt_other_subtractions in that PR 
+# substitute mt_subtractions with mt_other_subtractions in that PR
