@@ -1,4 +1,4 @@
-- name: 
+- name: mt_social_security_benefits = tax_unit_taxable_social_security.
   period: 2021
   input:
     mt_other_subtractions: 1_000
@@ -8,7 +8,7 @@
   output: 
     mt_subtractions: 1_000
 
-- name: 
+- name: mt_social_security_benefits > tax_unit_taxable_social_security.
   period: 2021
   input:
     mt_other_subtractions: 1_000
@@ -18,7 +18,7 @@
   output: 
     mt_subtractions: 1_000
 
-- name: 
+- name: mt_social_security_benefits < tax_unit_taxable_social_security.
   period: 2021
   input:
     mt_other_subtractions: 1_000

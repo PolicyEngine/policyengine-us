@@ -8,8 +8,8 @@ class mt_modified_income(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2023/05/Montana-Idividiual-Income-Tax-Return-Form-2-2022v6.2.pdf#page=1",
-        "https://mtrevenue.gov/wp-content/uploads/mdocs/form%202%202021.pdf#page=1",
+        "https://mtrevenue.gov/wp-content/uploads/mdocs/form%202%202021.pdf#page=6",
+        "https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2023/05/Montana-Idividiual-Income-Tax-Return-Form-2-2022v6.2.pdf#page=6",
     )
     defined_for = StateCode.MT
 
