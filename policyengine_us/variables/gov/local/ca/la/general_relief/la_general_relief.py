@@ -11,7 +11,7 @@ class la_general_relief(Variable):
 
     def formula(spm_unit, period, parameters):
         married = add(spm_unit, period, ["is_married"])
-        p = parameters(period).gov.local.la.general_relief
+        p = parameters(period).gov.local.ca.la.general_relief
         gr_amount = where(married, p.amount.married, p.amount.single)
         # If filers are receiving the housing subsidy
         # they are obligate to commit an amount of their GR towards rent

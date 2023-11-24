@@ -15,7 +15,7 @@ class la_general_relief_cash_eligible(Variable):
         married = add(spm_unit, period, ["is_married"])
         p = parameters(
             period
-        ).gov.local.la.general_relief.eligibility.limit.cash
+        ).gov.local.ca.la.general_relief.eligibility.limit.cash
         applicant_eligible = where(
             married, cash <= p.applicant.married, cash <= p.applicant.single
         )

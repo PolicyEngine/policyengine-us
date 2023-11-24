@@ -16,7 +16,7 @@ class la_general_relief_motor_vehicle_value_eligible(Variable):
         vehicle_value = household("household_vehicles_value", period)
         p = parameters(
             period
-        ).gov.local.la.general_relief.eligibility.limit.motor_vehicle
+        ).gov.local.ca.la.general_relief.eligibility.limit.motor_vehicle
         vehicle_value_eligible = where(
             is_homeless,
             vehicle_value <= p.value.homeless,

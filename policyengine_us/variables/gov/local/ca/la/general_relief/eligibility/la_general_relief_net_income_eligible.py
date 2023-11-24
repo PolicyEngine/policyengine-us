@@ -24,7 +24,7 @@ class la_general_relief_net_income_eligible(Variable):
         )
         p = parameters(
             period
-        ).gov.local.la.general_relief.eligibility.limit.income
+        ).gov.local.ca.la.general_relief.eligibility.limit.income
         married = add(spm_unit, period, ["is_married"])
         applicant_eligible = where(
             married,

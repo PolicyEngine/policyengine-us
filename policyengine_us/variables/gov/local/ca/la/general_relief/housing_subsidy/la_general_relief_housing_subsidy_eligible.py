@@ -20,7 +20,7 @@ class la_general_relief_housing_subsidy_eligible(Variable):
         homeless = household("is_homeless", period)
         # Person can be in a speicfic age range or disabled to be eligible
         age = person("age", period)
-        p = parameters(period).gov.local.la.general_relief.housing_subsidy
+        p = parameters(period).gov.local.ca.la.general_relief.housing_subsidy
         age_eligible = p.age_eligibility.calc(age)
         # Assuming that disabled people are unable to work
         disabled = person("is_disabled", period)

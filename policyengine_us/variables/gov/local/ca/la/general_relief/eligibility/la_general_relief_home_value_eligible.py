@@ -12,5 +12,5 @@ class la_general_relief_home_value_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         home_value = add(spm_unit, period, ["assessed_property_value"])
-        p = parameters(period).gov.local.la.general_relief.eligibility.limit
+        p = parameters(period).gov.local.ca.la.general_relief.eligibility.limit
         return home_value <= p.home_value
