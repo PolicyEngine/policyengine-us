@@ -2,12 +2,10 @@ from policyengine_us.model_api import *
 
 
 class ImmigrationStatus(Enum):
-    CITIZEN = "Citizen"
-    RESIDENT = "Legal Permanent Resident"
-    DACA_TPS = (
-        "Deferred Action for Childhood Arrivals or Temporary Protected Status"
-    )
-    UNDOCUMENTED = "Undocumented"
+    CITIZEN = "CITIZEN"
+    RESIDENT = "RESIDENT"
+    DACA_TPS = "DACA_TPS"
+    UNDOCUMENTED = "UNDOCUMENTED"
 
 
 class immigration_status(Variable):
@@ -16,4 +14,9 @@ class immigration_status(Variable):
     possible_values = ImmigrationStatus
     default_value = ImmigrationStatus.CITIZEN
     definition_period = YEAR
-    label = "U.S. immigration status"
+    label = "U.S. immigration status as an enumeration type"
+
+    def formula(person, period, parameters):
+        return ImmigrationStatus.encode(
+            person("immigration_status_str", period).decode_to_str()
+        )
