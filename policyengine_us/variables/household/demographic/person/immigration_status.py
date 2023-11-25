@@ -2,10 +2,12 @@ from policyengine_us.model_api import *
 
 
 class ImmigrationStatus(Enum):
-    CITIZEN = "CITIZEN"
-    RESIDENT = "RESIDENT"
-    DACA_TPS = "DACA_TPS"
-    UNDOCUMENTED = "UNDOCUMENTED"
+    CITIZEN = "Citizen"
+    RESIDENT = "Legal Permanent Resident"
+    DACA_TPS = (
+        "Deferred Action for Childhood Arrivals or Temporary Protected Status"
+    )
+    UNDOCUMENTED = "Undocumented"
 
 
 class immigration_status(Variable):
