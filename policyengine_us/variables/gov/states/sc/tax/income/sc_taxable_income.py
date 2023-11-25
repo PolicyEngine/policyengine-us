@@ -8,3 +8,6 @@ class sc_taxable_income(Variable):
     defined_for = StateCode.SC
     unit = USD
     definition_period = YEAR
+
+    adds = ["sc_federal_taxable_income_without_salt_deduction", "sc_additions"]
+    subtracts = ["sc_subtractions"]
