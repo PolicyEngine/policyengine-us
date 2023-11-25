@@ -14,6 +14,7 @@ class ar_personal_credits(Variable):
     )
     defined_for = StateCode.AR
 
+    # The formula is modeled after the Tax Form AR1000F as opposed to the legal code
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
         # Only head and spouse are eligible for the personal credit amounts
