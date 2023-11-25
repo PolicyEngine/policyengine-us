@@ -1,0 +1,56 @@
+- name: Arkansas personal credit for 2 dependents of taxpayer including 1 disabled dependent $29*2 + $500*1 = $558
+  period: 2022
+  input:
+    people:
+      person1:
+        is_disabled: false
+        is_tax_unit_dependent: true
+      person2:
+        is_disabled: true
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    ar_personal_credit_dependent_amount: 558
+
+- name: Arkansas personal credit for 3 dependents of taxpayer including 3 disabled dependent $29*3 + $500*3 = $1587
+  period: 2022
+  input:
+    people:
+      person1:
+        is_disabled: true
+        is_tax_unit_dependent: true
+      person2:
+        is_disabled: true
+        is_tax_unit_dependent: true
+      person3:
+        is_disabled: true
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AR
+  output:
+    ar_personal_credit_dependent_amount: 1_587
+
+- name: Arkansas personal credit for 3 dependents of taxpayer including no disabled dependent $29*3 = $87
+  period: 2022
+  input:
+    people:
+      person1:
+        is_disabled: false
+        is_tax_unit_dependent: true
+      person2:
+        is_disabled: false
+        is_tax_unit_dependent: true
+      person3:
+        is_disabled: false
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AR
+  output:
+    ar_personal_credit_dependent_amount: 87

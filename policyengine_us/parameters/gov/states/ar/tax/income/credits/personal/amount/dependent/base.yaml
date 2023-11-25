@@ -1,23 +1,18 @@
-description: Arkansas provides this personal tax credit amount for aged filers.
+description: Arkansas provides this base personal tax credit amount to each dependent.
 values:
   2021-01-01: 29
 
 metadata:
   unit: currency-USD
   period: year
-  label: Arkansas aged personal tax credit
+  label: Arkansas personal tax credit amount base dependent amount
   reference:
-    - title: Arkansas 2022 Individual Income Tax Forms and Instructions, LINE 7A.
+    - title: Arkansas 2022 Individual Income Tax Forms and Instructions, LINE 7B.
       href: https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2022_AR1000F_and_AR1000NR_Instructions.pdf#page=12
     - title: 2022 AR1000F ARKANSAS INDIVIDUAL INCOME TAX RETURN Full Year Resident
       href: https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2022_AR1000F_FullYearResidentIndividualIncomeTaxReturn.pdf#page=1
-    - title: Ark. Code § 26-51-501 (a)(1)(D)
+    # The legal code does not match the tax form and specifies $20, however it was increased in 2005  
+    - title: Ark. Code § 26-51-501 (d)(1)
       href: https://casetext.com/statute/arkansas-code-of-1987/title-26-taxation/subtitle-5-state-taxes/chapter-51-income-taxes/subchapter-5-tax-credits-generally/section-26-51-501-personal-tax-credits
     - title: 2021 AR1000F ARKANSAS INDIVIDUAL INCOME TAX RETURN Full Year Resident
       href: https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2021_AR1000F_FullYearResidentIndividualIncomeTaxReturn.pdf#page=1
-    
-    # The legal code specifies $20, however it was increased in the 2005 tax form 
-    - title: 2004 AR1000F ARKANSAS INDIVIDUAL INCOME TAX RETURN Full Year Resident - same as legal code
-      href: https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/AR1000_2004_fi.pdf#page=1
-    - title: ARKANSAS 2005 Full Year / Part-Year / Nonresident Individual Income Tax Booklet - personal credit increase to $21
-      href: https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/AR1000_Instr_2005.pdf#page=6
