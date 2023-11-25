@@ -9,5 +9,5 @@ class immigration_status_str(Variable):
     possible_values = ImmigrationStatus
     default_value = ImmigrationStatus.CITIZEN
     entity = Person
-    label = "Immigration status as an all-upper-case string"
+    label = "ImmigrationStatus enumeration type as an all-upper-case string"
     definition_period = YEAR
