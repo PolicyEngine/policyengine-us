@@ -1,27 +1,14 @@
-- name: immigration_status unit test 1
-  period: 2021
-  input:
-    immigration_status_str: "CITIZEN"
-  output:
-    immigration_status: CITIZEN
-
-- name: immigration_status unit test 2
-  period: 2022
-  input:
-    immigration_status_str: "RESIDENT"
-  output:
-    immigration_status: RESIDENT
-
-- name: immigration_status unit test 3
+- name: immigration_status test
   period: 2023
   input:
-    immigration_status_str: "DACA_TPS"
+    people:
+      person1:
+        immigration_status_str: "UNDOCUMENTED"
+      person2:
+        immigration_status_str: "RESIDENT"
+      person3:
+        immigration_status_str: "CITIZEN"
+      person4:
+        immigration_status_str: "DACA_TPS"
   output:
-    immigration_status: DACA_TPS
-
-- name: immigration_status unit test 4
-  period: 2024
-  input:
-    immigration_status_str: "UNDOCUMENTED"
-  output:
-    immigration_status: UNDOCUMENTED
+    immigration_status: [UNDOCUMENTED, RESIDENT, CITIZEN, DACA_TPS]
