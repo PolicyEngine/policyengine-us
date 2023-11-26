@@ -1,23 +1,53 @@
-- name: Investment exceeds threshold
+- name: Investment exceeds threshold and is head or spouse
   period: 2023
   input:
     investment_in_529_plan: 4_000
+    is_tax_unit_head_or_spouse: true
     state_code: MT
   output: 
     mt_tuition_subtraction: 3_000
 
-- name: Investment less than threshold but positive
+- name: Investment exceeds threshold and isn't head or spouse
+  period: 2023
+  input:
+    investment_in_529_plan: 4_000
+    is_tax_unit_head_or_spouse: false
+    state_code: MT
+  output: 
+    mt_tuition_subtraction: 3_000
+
+- name: Investment exceeds threshold and is head or spouse
   period: 2023
   input:
     investment_in_529_plan: 2_000
+    is_tax_unit_head_or_spouse: true
     state_code: MT
   output: 
     mt_tuition_subtraction: 2_000
 
-- name: Investment less than threshold and zero
+- name: Investment exceeds threshold and isn't head or spouse
+  period: 2023
+  input:
+    investment_in_529_plan: 2_000
+    is_tax_unit_head_or_spouse: false
+    state_code: MT
+  output: 
+    mt_tuition_subtraction: 2_000
+
+- name: Investment exceeds threshold and is head or spouse
   period: 2023
   input:
     investment_in_529_plan: 0
+    is_tax_unit_head_or_spouse: true
+    state_code: MT
+  output: 
+    mt_tuition_subtraction: 0
+
+- name: Investment exceeds threshold and isn't head or spouse
+  period: 2023
+  input:
+    investment_in_529_plan: 0
+    is_tax_unit_head_or_spouse: false
     state_code: MT
   output: 
     mt_tuition_subtraction: 0

@@ -10,6 +10,16 @@ class mt_tuition_subtraction(Variable):
     defined_for = StateCode.MT
 
     def formula(tax_unit, period, parameters):
+        person = tax_unit.members
         p = parameters(period).gov.states.mt.tax.income.subtractions.tuition
-        contributions = add(tax_unit, period, ["investment_in_529_plan"])
-        return min_(contributions, p.cap)
+        # investment_in_529_plan_indv = add(
+        #     person, period, ["investment_in_529_plan"]
+        # )
+        investment_in_529_plan_indv = person.tax_unit("investment_in_529_plan", period)
+        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+        head_or_spouse_inv = investment_in_529_plan_indv * head_or_spouse
+        total_inv = where(
+            head_or_spouse, head_or_spouse_inv, investment_in_529_plan_indv
+        )
+        capped_inv = min_(total_inv, p.cap)
+        return tax_unit.sum(capped_inv)
