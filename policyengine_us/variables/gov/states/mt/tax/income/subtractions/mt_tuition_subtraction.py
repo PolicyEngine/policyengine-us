@@ -15,7 +15,9 @@ class mt_tuition_subtraction(Variable):
         # investment_in_529_plan_indv = add(
         #     person, period, ["investment_in_529_plan"]
         # )
-        investment_in_529_plan_indv = person.tax_unit("investment_in_529_plan", period)
+        investment_in_529_plan_indv = person.tax_unit(
+            "investment_in_529_plan", period
+        )
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         head_or_spouse_inv = investment_in_529_plan_indv * head_or_spouse
         total_inv = where(
