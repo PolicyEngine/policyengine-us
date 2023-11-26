@@ -15,4 +15,4 @@ class ca_tanf_recipient_financial_test(Variable):
             "ca_tanf_countable_income_recipient", period
         )
 
-        return maximum_payment > countable_income
+        return countable_income < maximum_payment
