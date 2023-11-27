@@ -26,22 +26,7 @@
       members: [person1]
       state_code: MI
   output: # 0 + (min(56961 - 1000 - 60000 < 0, 10000) + 60000) + 0 + (12697 - 60000 - 1000 - 300 < 0)
-    mi_interest_dividends_capital_gains_deduction_eligible: true
-    mi_interest_dividends_capital_gains_deduction: 0
     mi_retirement_benefits_deduction_tier_one_eligible: true
-    mi_retirement_benefits_deduction_tier_one: 60_000
-    mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired_eligible_count: false
-    mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired: 0
-    mi_retirement_benefits_deduction_tier_three_ss_exempt_retired_eligible_count: false
-    mi_retirement_benefits_deduction_tier_three_ss_exempt_retired: 0
-    mi_retirement_benefits_deduction_tier_three_eligible: false
-    mi_retirement_benefits_deduction_tier_three: 0
-    mi_standard_deduction_tier_three_eligible: false
-    mi_standard_deduction_tier_three: 0
-    mi_standard_deduction_tier_two_eligible: false
-    mi_standard_deduction_tier_two_increase_eligible_count: false
-    mi_standard_deduction_tier_two: 0
-    mi_standard_deduction_and_pension_benefit: 60_000
 
 - name: 2022 joint filer and their spouse are at the tier 3 standard deduction age threshold, and with one more household member
   period: 2022
@@ -93,20 +78,5 @@
       members: [person1, person2, person3]
       state_code: MI
   output: # 40000 - 2000 - 1000 - 5000 - 2000 - 3000 - 2000 < 40000 + 30000
-    mi_interest_dividends_capital_gains_deduction_eligible: false
-    mi_interest_dividends_capital_gains_deduction: 0
     mi_retirement_benefits_deduction_tier_one_eligible: false
-    mi_retirement_benefits_deduction_tier_one: 0
-    mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired_eligible_count: false
-    mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired: 0
-    mi_retirement_benefits_deduction_tier_three_ss_exempt_retired_eligible_count: false
-    mi_retirement_benefits_deduction_tier_three_ss_exempt_retired: 0
-    mi_retirement_benefits_deduction_tier_three_eligible: false
-    mi_retirement_benefits_deduction_tier_three: 0
-    mi_standard_deduction_tier_three_eligible: true
-    mi_standard_deduction_tier_three: 25_000
-    mi_standard_deduction_tier_two_eligible: false
-    mi_standard_deduction_tier_two_increase_eligible_count: false
-    mi_standard_deduction_tier_two: 0
-    mi_standard_deduction_and_pension_benefit: 25_000
     

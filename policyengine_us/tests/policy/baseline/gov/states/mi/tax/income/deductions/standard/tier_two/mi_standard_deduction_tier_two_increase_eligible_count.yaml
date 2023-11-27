@@ -1,0 +1,82 @@
+- name: 2022 widow filer at the tier 2 standard deduction age threshold, and not receive retirement benefits from SSA employment exempt
+  period: 2022
+  input:
+    people:
+      person1:
+        taxable_pension_income: 20_000
+        taxable_public_pension_income: 10_000
+        taxable_private_pension_income: 10_000
+        military_retirement_pay: 1_000
+        military_service_income: 5_000
+        taxable_social_security: 0
+        year_of_retirement: 2014
+        retirement_benefits_from_ss_exempt_employment: 0
+        taxable_interest_income: 0
+        dividend_income: 0
+        capital_gains: 0
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        greater_age_head_spouse: 73
+        elderly_disabled_credit: 300
+        mi_exemptions: 2_000
+        members: [person1]
+        filing_status: WIDOW
+    household:
+      members: [person1]
+      state_code: MI
+  output: # 20000 + 0 - 1000 - 5000 < 20000
+    mi_standard_deduction_tier_two_increase_eligible_count: false
+
+- name: 2022 joint filer and their spouse are at the tier 2 standard deduction age threshold, and one receive retirement benefits from SSA employment exempt, and with one more household member
+  period: 2022
+  input:
+    people:
+      person1:
+        taxable_pension_income: 40_000
+        taxable_public_pension_income: 20_000
+        taxable_private_pension_income: 20_000
+        taxable_social_security: 2_000
+        military_retirement_pay: 1_000
+        military_service_income: 5_000
+        year_of_retirement: 2010
+        retirement_benefits_from_ss_exempt_employment: 2_000
+        taxable_interest_income: 500
+        dividend_income: 400
+        capital_gains: 100
+        is_tax_unit_head_or_spouse: true
+      person2:
+        taxable_pension_income: 30_000
+        taxable_social_security: 0
+        military_retirement_pay: 2_000
+        military_service_income: 3_000
+        year_of_retirement: 2018
+        retirement_benefits_from_ss_exempt_employment: 0
+        taxable_interest_income: 500
+        dividend_income: 400
+        capital_gains: 100
+        is_tax_unit_head_or_spouse: true
+      person3:
+        taxable_pension_income: 30_000
+        taxable_social_security: 300
+        military_retirement_pay: 2_000
+        military_service_income: 3_000
+        year_of_retirement: 2012
+        retirement_benefits_from_ss_exempt_employment: 300
+        taxable_interest_income: 500
+        dividend_income: 400
+        capital_gains: 100
+        is_tax_unit_head_or_spouse: false
+    tax_units:
+      tax_unit:
+        greater_age_head_spouse: 73
+        elderly_disabled_credit: 300
+        mi_exemptions: 2_000
+        members: [person1, person2, person3]
+        filing_status: JOINT
+    household:
+      members: [person1, person2, person3]
+      state_code: MI
+  output: # 40000 + 15000 - 1000 - 5000 - 2000 - 3000 < 40000 + 30000
+    mi_standard_deduction_tier_two_increase_eligible_count: true
+    

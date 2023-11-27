@@ -322,7 +322,7 @@
     household:
       members: [person1]
       state_code: MI
-  output: # 20000 + 0 - 1000 - 5000 > 20000
+  output: # 20000 + 0 - 1000 - 5000 < 20000
     mi_standard_deduction_and_pension_benefit: 14_000
 
 - name: 2022 single filer who is at the tier 1 retirement and pension benefits and interest, dividends, and capital gains deduction threshold, $13000 interest, dividends, and capital gains income
