@@ -1,104 +1,43 @@
-- name: Itemized deduction for married filing separately (miscellaneous deductions below the floow, medical deduction zero)
+- name: Itemized deduction for married filing separately
   period: 2022
   input:
     people:
       person1:
+        is_tax_unit_head: true
         ar_agi_person: 100_000
-        medical_expense: 10_000
         real_estate_taxes: 200
       person2:
+        is_tax_unit_head: false
         ar_agi_person: 140_000
-        medical_expense: 9_000
         real_estate_taxes: 300
     tax_units:
       tax_unit:
         members: [person1, person2]
         ar_agi: 240_000
+        ar_itemized_deductions_sum: 5_000
         filing_status: SEPARATE
         charitable_deduction: 800
         interest_deduction: 400
         casualty_loss_deduction: 1_300
-        ar_post_secondary_education_tuition_deduction: 800
-        misc_deduction: 1_000 # below 0.02*240_000 = 4_800
     households:
       household:
         members: [person1, person2]
         state_code: AR 
   output:
-    # 4800*(100_000/240_000) = 1583.3333
-    ar_itemized_deductions: 2_000
+    # 8000*(100_000/240_000) = 3333.3333
+    ar_itemized_deductions: 3333.3333
 
-- name: Itemized deduction for married filing separately (miscellaneous deductions below the floow, medical deduction not zero)
-  period: 2022
+- name: Itemized deduction for married filing jointly
+  period: 2019
   input:
     people:
       person1:
+        is_tax_unit_head: true
         ar_agi_person: 100_000
-        medical_expense: 12_000
         real_estate_taxes: 200
       person2:
-        ar_agi_person: 140_000
-        medical_expense: 12_500
-        real_estate_taxes: 300
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
-        charitable_deduction: 100
-        interest_deduction: 200
-        casualty_loss_deduction: 200
-        ar_agi: 240_000
-        filing_status: SEPARATE
-        ar_post_secondary_education_tuition_deduction: 800
-        misc_deduction: 1_000 # below 0.02*240_000 = 4_800
-    households:
-      household:
-        members: [person1, person2]
-        state_code: AR 
-  output:
-    # 8300*(100_000/240_000) = 958.3333
-    ar_itemized_deductions: 3_458.3333
-
-- name: Itemized deduction for married filing separately (miscellaneous deductions above the floor, medical deduction zero)
-  period: 2022
-  input:
-    people:
-      person1:
-        ar_agi_person: 30_000
-        medical_expense: 2_000
-        real_estate_taxes: 200
-      person2:
-        ar_agi_person: 50_000
-        medical_expense: 5_000
-        real_estate_taxes: 300
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
-        charitable_deduction: 300
-        interest_deduction: 300
-        casualty_loss_deduction: 400
-        ar_agi: 80_000
-        filing_status: SEPARATE
-        ar_post_secondary_education_tuition_deduction: 800
-        misc_deduction: 2_000    # above 0.02*80_000 = 1_600, so it would be 400
-    households:
-      household:
-        members: [person1, person2]
-        state_code: AR 
-  output:
-    # 3_700 * (30_000/80_000) = 1012.5
-    ar_itemized_deductions: 1_387.5
-
-- name: Itemized deduction for married filing jointly (miscellaneous deductions below the floor, medical deduction not zero)
-  period: 2022
-  input:
-    people:
-      person1:
-        ar_agi_person: 100_000
-        medical_expense: 10_000
-        real_estate_taxes: 200
-      person2:
+        is_tax_unit_head: false
         ar_agi_person: 120_000
-        medical_expense: 12_500
         real_estate_taxes: 300
     tax_units:
       tax_unit:
@@ -106,53 +45,51 @@
         charitable_deduction: 800
         interest_deduction: 300
         casualty_loss_deduction: 400
+        ar_itemized_deductions_sum: 7_000
         ar_agi: 220_000
         filing_status: JOINT
-        ar_post_secondary_education_tuition_deduction: 800
-        misc_deduction: 1_000 # below 0.02*220_000 = 4_400
     households:
       household:
         members: [person1, person2]
         state_code: AR 
-  output:
-    ar_itemized_deductions: 8_800
+  output: 
+    ar_itemized_deductions: 9_000
 
-- name: Itemized deduction for single filing status (miscellaneous deductions below the floor, medical deduction not zero)
-  period: 2022
+- name: Itemized deduction for single filing status
+  period: 2015
   input:
     people:
       person1:
+        is_tax_unit_head: true
         ar_agi_person: 100_000
-        medical_expense: 10_500
         real_estate_taxes: 500
     tax_units:
       tax_unit:
         members: [person1]
-        charitable_deduction: 20
-        interest_deduction: 150
-        casualty_loss_deduction: 30
+        charitable_deduction: 800
+        interest_deduction: 300
+        casualty_loss_deduction: 400
+        ar_itemized_deductions_sum: 4_000
         ar_agi: 100_000
         filing_status: SINGLE
-        ar_post_secondary_education_tuition_deduction: 800
-        misc_deduction: 1_000 # below 0.02*100_000 = 2_000
     households:
       household:
         members: [person1]
         state_code: AR
   output:
-    ar_itemized_deductions: 4_499.9995
+    ar_itemized_deductions: 6_000
 
-- name: Itemized deduction for head of household filing status (miscellaneous deductions below the floor, medical deduction not zero)
+- name: Itemized deduction for head of household filing status 
   period: 2022
   input:
     people:
       person1:
         ar_agi_person: 100_000
-        medical_expense: 11_250
+        is_tax_unit_head: true
         real_estate_taxes: 100
       person2:
         ar_agi_person: 130_000
-        medical_expense: 12_000
+        is_tax_unit_head: false
         real_estate_taxes: 400
     tax_units:
       tax_unit:
@@ -162,22 +99,21 @@
         casualty_loss_deduction: 300
         ar_agi: 230_000
         filing_status: HEAD_OF_HOUSEHOLD
-        ar_post_secondary_education_tuition_deduction: 800
-        misc_deduction: 1_000 # below 0.02*230_000 = 4_600
+        ar_itemized_deductions_sum: 6_000
     households:
       household:
         members: [person1, person2]
         state_code: AR
   output:
-    ar_itemized_deductions: 8_600
+    ar_itemized_deductions: 7_800
 
-- name: Itemized deduction for widow filing status (miscellaneous deductions below the floor, medical deduction not zero)
+- name: Itemized deduction for widow filing status
   period: 2022
   input:
     people:
       person1:
         ar_agi_person: 100_000
-        medical_expense: 7_900
+        is_tax_unit_head: true
         real_estate_taxes: 500
     tax_units:
       tax_unit:
@@ -187,36 +123,11 @@
         casualty_loss_deduction: 300
         ar_agi: 100_000
         filing_status: WIDOW
-        ar_post_secondary_education_tuition_deduction: 800
-        misc_deduction: 1_000 # below 0.02*100_000 = 2_000
+        ar_itemized_deductions_sum: 4_000
     households:
       household:
         members: [person1]
         state_code: AR
   output:
-    ar_itemized_deductions: 2_499.9995
+    ar_itemized_deductions: 5_300
 
-- name: Itemized deduction for widow filing status (miscellaneous deductions below the floor, medical deduction zero)
-  period: 2016
-  input:
-    people:
-      person1:
-        ar_agi_person: 100_000
-        medical_expense: 7_900
-        real_estate_taxes: 500
-    tax_units:
-      tax_unit:
-        members: [person1]
-        charitable_deduction: 100
-        interest_deduction: 400
-        casualty_loss_deduction: 300
-        ar_agi: 100_000
-        filing_status: WIDOW
-        ar_post_secondary_education_tuition_deduction: 800
-        misc_deduction: 1_000 # below 0.02*100_000 = 2_000
-    households:
-      household:
-        members: [person1]
-        state_code: AR
-  output:
-    ar_itemized_deductions: 2_100

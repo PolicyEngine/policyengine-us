@@ -14,7 +14,7 @@ class ar_itemized_deductions(Variable):
         person = tax_unit.members
         year = period.start.year
 
-        # We need to include this condition to be able to test the medical expense rate 
+        # We need to include this condition to be able to test the medical expense rate
         # as the itemized deductions list currently only back dates to 2018
 
         if year < 2018:
@@ -22,6 +22,7 @@ class ar_itemized_deductions(Variable):
         else:
             instant_str = f"{year}-01-01"
         p_ded = parameters(instant_str).gov.irs.deductions
+
         agi = tax_unit("ar_agi", period)
         head = person("is_tax_unit_head", period)
         person_agi = person("ar_agi_person", period)
@@ -42,30 +43,10 @@ class ar_itemized_deductions(Variable):
         # Real estate tax + Personal property tax
         real_estate_deds = add(tax_unit, period, ["real_estate_taxes"])
 
-        # Post-secondary Education Tuition Deduction
-        tuition_deds = tax_unit(
-            "ar_post_secondary_education_tuition_deduction", period
-        )
+        ar_itemized_deds = tax_unit("ar_itemized_deductions_sum", period)
 
-        # Limitation on several items
-        # Medical and Dental Expense
-        medical_deds = tax_unit("ar_medical_expense_deduction", period)
-
-        # Miscellaneous Deductions
-        misc_deds = tax_unit("ar_msc_deduction", period)
-
-        itemized_deductions = [
-            "ar_msc_deduction",
-            "ar_medical_expense_deduction",
-            "ar_post_secondary_education_tuition_deduction",
-            ""
-        ]
         total_itemized_deduction = (
-            less_salt_deds
-            + medical_deds
-            + real_estate_deds
-            + tuition_deds
-            + misc_deds
+            less_salt_deds + real_estate_deds + ar_itemized_deds
         )
 
         # Prorated itemized deductions

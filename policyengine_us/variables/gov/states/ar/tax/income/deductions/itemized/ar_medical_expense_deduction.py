@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ar_medical_exepense_deduction(Variable):
+class ar_medical_expense_deduction(Variable):
     value_type = float
     entity = TaxUnit
     label = "Arkansas medical and dental expense deduction"
