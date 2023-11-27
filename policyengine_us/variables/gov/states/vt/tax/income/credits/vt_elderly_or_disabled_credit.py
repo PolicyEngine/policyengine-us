@@ -16,7 +16,7 @@ class vt_elderly_or_disabled_credit(Variable):
     # these are currently not included
 
     def formula(tax_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.vt.tax.income.agi.exclusions.elderly_or_disabled
-        return p.match * tax_unit("elderly_disabled_credit", period)
+        p = parameters(period).gov.states.vt.tax.income.credits
+        return p.elderly_or_disabled * tax_unit(
+            "elderly_disabled_credit", period
+        )
