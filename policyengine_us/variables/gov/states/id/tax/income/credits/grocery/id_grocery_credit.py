@@ -12,7 +12,7 @@ class id_grocery_credit(Variable):
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
 
-        # Incaracrated people are not eligible for the grocery credit
+        # Incarcerated people are not eligible for the grocery credit
         incarcerated = person("is_incarcerated", period)
         total_incacerated = tax_unit.sum(incarcerated)
         # Each person in the tax unit is eligible for the base grocery credit
@@ -22,10 +22,9 @@ class id_grocery_credit(Variable):
         )
         p = parameters(period).gov.states.id.tax.income.credits.grocery.amount
         base_credit = tax_unit_size_less_incarcerated * p.base
-        # Aged head and spouse are eligible for an additional grocery creit amount
+        # Aged head and spouse are eligible for an additional grocery credit amount
         age = person("age", period)
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        eligible_aged = age * head_or_spouse * ~incarcerated
-        aged_amount = p.aged.calc(eligible_aged)
-        total_aged_amount = tax_unit.sum(aged_amount)
-        return base_credit + total_aged_amount
+        eligible_aged = head_or_spouse * ~incarcerated
+        aged_amount = p.aged.calc(age)
+        return base_credit + tax_unit.sum(eligible_aged * aged_amount)
