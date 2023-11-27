@@ -28,26 +28,7 @@ class ar_itemized_deductions(Variable):
         person_agi = person("ar_agi_person", period)
         total_person_agi = tax_unit.sum(person_agi * head)
 
-        # Less salt deduction
-        deductions = [
-            deduction
-            for deduction in p_ded.itemized_deductions
-            if deduction
-            not in [
-                "salt_deduction",
-                "medical_expense_deduction",
-            ]
-        ]
-        less_salt_deds = add(tax_unit, period, deductions)
-
-        # Real estate tax + Personal property tax
-        real_estate_deds = add(tax_unit, period, ["real_estate_taxes"])
-
         ar_itemized_deds = tax_unit("ar_itemized_deductions_sum", period)
-
-        total_itemized_deduction = (
-            less_salt_deds + real_estate_deds + ar_itemized_deds
-        )
 
         # Prorated itemized deductions
         filing_status = tax_unit("filing_status", period)
