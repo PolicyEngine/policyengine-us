@@ -25,7 +25,7 @@ def create_remove_standard_deduction_head_of_household() -> Reform:
             is_widowed = tax_unit.any(person("is_widowed", period))
             return select(
                 [
-                    has_dependents & ~has_spouse,
+                    ~has_spouse,
                     has_spouse,
                     is_separated,
                     is_widowed,
