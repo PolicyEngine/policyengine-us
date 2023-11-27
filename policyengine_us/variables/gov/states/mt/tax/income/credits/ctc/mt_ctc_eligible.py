@@ -14,7 +14,7 @@ class mt_ctc_eligible(Variable):
             period
         ).gov.states.mt.tax.income.credits.ctc.income_limit
         agi = tax_unit("adjusted_gross_income", period)
-        income_eligible = agi <= p.agi
+        agi_eligible = agi <= p.agi
         # CTC limited to filers with investment income below a certain threshold
         investment_income_eligible = (
             tax_unit("earned_income_disqualified_income", period)
@@ -22,10 +22,8 @@ class mt_ctc_eligible(Variable):
         )
 
         earned_income = tax_unit("tax_unit_earned_income", period)
-        earned_income_eligible = earned_income > 0
+        receives_earned_income = earned_income > 0
 
         return (
-            income_eligible
-            & investment_income_eligible
-            & earned_income_eligible
+            agi_eligible & investment_income_eligible & receives_earned_income
         )

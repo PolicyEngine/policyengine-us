@@ -14,10 +14,10 @@ class mt_ctc(Variable):
         p = parameters(period).gov.states.mt.tax.income.credits.ctc
         person = tax_unit.members
         age = person("age", period)
-        child_credit = tax_unit.sum(p.amount.calc(age))
+        credit_amount = tax_unit.sum(p.amount.calc(age))
         # Credit gets reduced by an amount for each increment that AGI exceeds a certain threshold
         agi = tax_unit("adjusted_gross_income", period)
         excess = max_(agi - p.reduction.threshold, 0)
         increments = excess // p.reduction.increment
         reduction = p.reduction.amount * increments
-        return max_(child_credit - reduction, 0)
+        return max_(credit_amount - reduction, 0)
