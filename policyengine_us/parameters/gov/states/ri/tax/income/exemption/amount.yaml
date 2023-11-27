@@ -1,0 +1,21 @@
+description: Rhode Island provides the following amount for each exemption in the tax unit.
+values:
+  2021-01-01: 4_250
+  2022-01-01: 4_350
+
+
+metadata:
+  label: Rhode Island exemption amount 
+  period: year
+  unit: currency-USD
+  reference:
+  # The tax form points to this worksheet: Exemption Worksheet for RI-1040NR, Page 1, line 6)
+  - title: Rhode Island Tax Rate Schedule and Worksheet 2022 (Exemption Worksheet line 1)
+    href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-12/2022%20Tax%20Rate%20and%20Worksheets.pdf#page=1
+  # The tax form points to this worksheet: Exemption Worksheet for RI-1040 or RI-1040NR, Page 1, line 6)
+  - title: Rhode Island Tax Rate Schedule and Worksheet 2021 (Exemption Worksheet line 1)
+    href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2021-11/2021-tax-rate-and-worksheets.pdf#page=1
+  # Legal code specifies $3,400, inflation adjusted from 1989.
+  # Tax form specifies $4,250 in 2021 and $4,350 in 2022, which are the amount used here.
+  - title: Rhode Island Legal Code R.I. Gen. Laws § 44-30-2.6 (E), (1)&(3)
+    href: http://webserver.rilin.state.ri.us/Statutes/TITLE44/44-30/44-30-2.6.HTM
