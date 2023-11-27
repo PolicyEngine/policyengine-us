@@ -3,56 +3,45 @@
   input:
     people:
       person1:
-        is_tax_unit_head_or_spouse: true
+        az_aged_exemption_eligible: true
         age: 66
       person2:
-        is_tax_unit_head_or_spouse: true
+        az_aged_exemption_eligible: true
         age: 66
     tax_units:
       tax_unit:
         members: [person1, person2]
-        az_aged_exemption_eligible: true
   output:
     az_aged_exemption: 4_200
 
-- name: Case 2
+- name: case 2
   period: 2022
   input:
     people:
       person1:
-        is_tax_unit_head_or_spouse: true
+        az_aged_exemption_eligible: false
         age: 66
       person2:
-        is_tax_unit_head_or_spouse: true
+        az_aged_exemption_eligible: false
         age: 66
     tax_units:
       tax_unit:
         members: [person1, person2]
-        az_aged_exemption_eligible: false
   output:
     az_aged_exemption: 0
 
-- name: Case 3
-  period: 2023
-  input:
-    age: 
-    az_aged_exemption_eligible: false
-  output:
-    az_aged_exemption: 0
-
-- name: Case 4
-  period: 2023
+- name: case 3
+  period: 2022
   input:
     people:
       person1:
-        is_tax_unit_head_or_spouse: true
-        age: 66
+        az_aged_exemption_eligible: true
+        age: 60
       person2:
-        is_tax_unit_head_or_spouse: true
-        age: 64
+        az_aged_exemption_eligible: true
+        age: 66
     tax_units:
       tax_unit:
         members: [person1, person2]
-        az_aged_exemption_eligible: true
   output:
     az_aged_exemption: 2_100
