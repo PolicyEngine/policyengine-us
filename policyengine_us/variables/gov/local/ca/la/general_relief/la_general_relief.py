@@ -4,6 +4,7 @@ from policyengine_us.model_api import *
 class la_general_relief(Variable):
     value_type = float
     entity = SPMUnit
+    unit = USD
     label = "Los Angeles County General Relief"
     definition_period = MONTH
     defined_for = "la_general_relief_eligible"

@@ -12,7 +12,9 @@ class la_general_relief_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         age_eligible = spm_unit("la_general_relief_age_eligible", period)
-        cash_eligible = spm_unit("la_general_relief_cash_eligible", period)
+        cash_eligible = spm_unit(
+            "la_general_relief_cash_asset_eligible", period
+        )
         home_value_eligible = spm_unit(
             "la_general_relief_home_value_eligible", period
         )
@@ -35,5 +37,4 @@ class la_general_relief_eligible(Variable):
             & motor_vehicle_value_eligible
             & net_income_eligible
             & personal_property_eligible
-            & disability_eligible
-        )
+        ) | disability_eligible

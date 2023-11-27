@@ -12,7 +12,7 @@ class la_general_relief_age_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.local.ca.la.general_relief.eligibility
-        # Based on the fact sheet and questionaire, assuming that just the head
+        # Based on the fact sheet and questionnaire, assuming that just the head
         # has to be over the age threshold
         age = add(spm_unit, period, ["age_head"])
         # Person has to reach a certain age

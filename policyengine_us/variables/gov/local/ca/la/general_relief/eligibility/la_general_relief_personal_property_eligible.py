@@ -9,4 +9,8 @@ class la_general_relief_personal_property_eligible(Variable):
     # Person has to be a resident of LA County
     defined_for = "in_la"
     reference = "https://drive.google.com/file/d/1Oc7UuRFxJj-eDwTeox92PtmRVGnG9RjW/view?usp=sharing"
-    default_value = True
+
+    def formula(spm_unit, period, parameters):
+        personal_property = add(spm_unit, period, ["personal_property"])
+        p = parameters(period).gov.local.ca.la.general_relief.eligibility.limit
+        return personal_property < p.personal_property
