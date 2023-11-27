@@ -4,13 +4,28 @@ from policyengine_us.model_api import *
 class id_grocery_credit(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Idaho grocery credit"
+    label = "Idaho base grocery credit"
     unit = USD
     definition_period = YEAR
-    defined_for = "id_grocery_credit_eligible"
+    defined_for = StateCode.ID
 
-    adds = [
-        "id_base_grocery_credit",
-        "id_enhanced_grocery_credit",
-        "id_aged_grocery_credit",
-    ]
+    def formula(tax_unit, period, parameters):
+        person = tax_unit.members
+
+        # Incaracrated people are not eligible for the grocery credit
+        incarcerated = person("is_incarcerated", period)
+        total_incacerated = tax_unit.sum(incarcerated)
+        # Each person in the tax unit is eligible for the base grocery credit
+        tax_unit_size = tax_unit("tax_unit_size", period)
+        tax_unit_size_less_incarcerated = max_(
+            tax_unit_size - total_incacerated, 0
+        )
+        p = parameters(period).gov.states.id.tax.income.credits.grocery.amount
+        base_credit = tax_unit_size_less_incarcerated * p.base
+        # Aged head and spouse are eligible for an additional grocery creit amount
+        age = person("age", period)
+        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+        eligible_aged = age * head_or_spouse * ~incarcerated
+        aged_amount = p.aged.calc(eligible_aged)
+        total_aged_amount = tax_unit.sum(aged_amount)
+        return base_credit + total_aged_amount
