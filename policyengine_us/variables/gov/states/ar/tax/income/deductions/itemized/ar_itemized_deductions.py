@@ -13,7 +13,7 @@ class ar_itemized_deductions(Variable):
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
         year = period.start.year
-        
+
         # We need to include this condition to be able to test the medical expense rate
         # as the itemized deductions list currently only back dates to 2018
 
