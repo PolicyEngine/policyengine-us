@@ -1,4 +1,5 @@
-- name: Arkansas eligible exemption for retirement or disability benefits- case 1
+- name: Arkansas eligible exemption for retirement or disability benefits (case 1)
+  period: 2021
   input:
     people:
       head:
@@ -17,7 +18,7 @@
   output:
     ar_retirement_or_disability_benefits_exemption_eligible_person: [1,1]
 
-- name: Arkansas eligible exemption for retirement or disability benefits- case 2
+- name: Arkansas eligible exemption for retirement or disability benefits (case 2)
   period: 2021
   input:
     people:
@@ -37,7 +38,7 @@
   output:
     ar_retirement_or_disability_benefits_exemption_eligible_person: [0,1]
 
-- name: Arkansas eligible exemption for retirement or disability benefits- case 3
+- name: Arkansas eligible exemption for retirement or disability benefits (case 3)
   period: 2021
   input:
     people:
@@ -57,7 +58,7 @@
   output:
     ar_retirement_or_disability_benefits_exemption_eligible_person: [1,0]
 
-- name: Arkansas ineligible exemption for retirement or disability benefits 
+- name: Arkansas ineligible exemption for retirement or disability benefits (case 4)
   period: 2021
   input:
     people:
