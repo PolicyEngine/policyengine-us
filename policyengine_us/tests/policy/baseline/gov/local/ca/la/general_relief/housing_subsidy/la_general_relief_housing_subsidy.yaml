@@ -4,6 +4,7 @@
     is_married: false
     la_general_relief_housing_subsidy_eligible: true
     rent: 7_000
+    la_general_relief_rent_contribution: 100
   output:
     la_general_relief_housing_subsidy: 575
 
@@ -13,6 +14,7 @@
     is_married: true
     la_general_relief_housing_subsidy_eligible: true
     rent: 14_000
+    la_general_relief_rent_contribution: 200
   output:
     la_general_relief_housing_subsidy: 1_150
 
@@ -22,6 +24,7 @@
     is_married: true
     la_general_relief_housing_subsidy_eligible: true
     rent: 6_900
+    la_general_relief_rent_contribution: 200
   output:
     la_general_relief_housing_subsidy: 575
 
@@ -31,5 +34,6 @@
     is_married: false
     la_general_relief_housing_subsidy_eligible: false
     rent: 7_000
+    la_general_relief_rent_contribution: 100
   output:
     la_general_relief_housing_subsidy: 0
