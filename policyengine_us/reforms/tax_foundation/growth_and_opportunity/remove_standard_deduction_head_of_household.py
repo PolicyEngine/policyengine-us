@@ -20,7 +20,6 @@ def create_remove_standard_deduction_head_of_household() -> Reform:
 
         def formula(tax_unit, period, parameters):
             has_spouse = add(tax_unit, period, ["is_tax_unit_spouse"]) > 0
-            has_dependents = tax_unit("tax_unit_dependents", period) > 0
             person = tax_unit.members
             is_separated = tax_unit.any(person("is_separated", period))
             is_widowed = tax_unit.any(person("is_widowed", period))
