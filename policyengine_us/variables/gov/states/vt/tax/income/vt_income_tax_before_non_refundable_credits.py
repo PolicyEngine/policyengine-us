@@ -20,7 +20,7 @@ class vt_income_tax_before_non_refundable_credits(Variable):
         status = filing_status.possible_values
         p = parameters(period).gov.states.vt.tax.income.rates
         vt_amt = tax_unit("vt_amt", period)
-        income_tax = select(
+        normal_income_tax = select(
             [
                 filing_status == status.SINGLE,
                 filing_status == status.JOINT,
@@ -36,4 +36,4 @@ class vt_income_tax_before_non_refundable_credits(Variable):
                 p.head_of_household.calc(income),
             ],
         )
-        return max_(income_tax, vt_amt)
+        return max_(normal_income_tax, vt_amt)

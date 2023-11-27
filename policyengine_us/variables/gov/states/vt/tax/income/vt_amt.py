@@ -22,17 +22,9 @@ class vt_amt(Variable):
         # The reduction of AGI by U.S. obligations is mentioned only in the tax forms, but
         # not in the legal code (Vermont §5822 (a)(6)).
         federal_agi = tax_unit("adjusted_gross_income", period)
-        minimum_tax_eligible = (
-            federal_agi > p.alternative_minimum_tax.amt.thresholds
-        )
         us_govt_interest = tax_unit("us_govt_interest", period)
         alt_minimum_tax = max_(
-            (p.alternative_minimum_tax.amt.rates * federal_agi)
-            - us_govt_interest,
+            (p.amt.calc(federal_agi) * federal_agi) - us_govt_interest,
             0,
         )
-        return where(
-            minimum_tax_eligible,
-            alt_minimum_tax,
-            0,
-        )
+        return alt_minimum_tax
