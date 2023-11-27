@@ -1,4 +1,4 @@
-- name: Itemized deduction for married filing separately
+- name: Itemized deduction for married filing separately status
   period: 2022
   input:
     people:
@@ -27,7 +27,7 @@
     # 8000*(100_000/240_000) = 3333.3333
     ar_itemized_deductions: 3333.3333
 
-- name: Itemized deduction for married filing jointly
+- name: Itemized deduction for married filing jointly status
   period: 2019
   input:
     people:
