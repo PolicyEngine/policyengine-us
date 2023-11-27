@@ -23,14 +23,14 @@ class ar_retirement_or_disability_benefits_exemption_indv(Variable):
             person("taxable_pension_income", period) * head_or_spouse
         )
         # Filers over a certain age can deduct IRA distributions in addition to pension income
-        pension_distribution = (
+        pension_contributions  = (
             person("pension_contributions", period) * eligible_person
         )
-        eligible_pension_income = pension_income + pension_distribution
+        eligible_pension_income = pension_income + pension_contributions
         military_retirement_exemption = person(
             "ar_military_retirement_exemption", period
         )
-        eligible_exemption = max_(
+        capped_exemption  = max_(
             eligible_pension_income, military_retirement_exemption
         )
-        return min_(eligible_exemption, p.cap)
+        return min_(capped_exemption, p.cap)
