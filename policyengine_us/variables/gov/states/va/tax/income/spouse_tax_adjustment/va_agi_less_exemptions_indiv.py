@@ -17,7 +17,6 @@ class va_agi_less_exemptions_indiv(Variable):
         head_or_spouse_agi = agi * head_or_spouse
         # Step 2: Check whether the filer is eligible for age and blind exemptions
         # and compute the value
-        # age -
         p = parameters(period).gov.states.va.tax.income.exemptions
         # Check whether the filer is eligible for age and blind exemptions
         personal_exemption_age_eligible = (
