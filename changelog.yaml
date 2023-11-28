@@ -5052,3 +5052,28 @@
     - South Carolina subtractions.
     - South Carolina additions.
   date: 2023-11-23 18:53:34
+- bump: patch
+  changes:
+    fixed:
+    - Hawaii CDCC min head spouse earned variable.
+  date: 2023-11-26 14:23:47
+- bump: patch
+  changes:
+    fixed:
+    - Downgrade policyengine-core to fix Microsimulation bug.
+  date: 2023-11-27 22:53:52
+- bump: minor
+  changes:
+    added:
+    - Vermont elderly or permanently totally disabled tax credit.
+  date: 2023-11-27 23:23:24
+- bump: minor
+  changes:
+    fixed:
+    - Bug preventing reforms from working with a Core update.
+  date: 2023-11-28 11:23:21
+- bump: minor
+  changes:
+    changed:
+    - Fix definition of income used to calculate Maine fairness credits.
+  date: 2023-11-28 18:30:28
