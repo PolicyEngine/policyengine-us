@@ -19,7 +19,12 @@ class mt_itemized_deductions(Variable):
         itm_deds = [
             deduction
             for deduction in p.itemized_deductions
-            if deduction not in ["salt_deduction", "casualty_loss_deduction"]
+            if deduction
+            not in [
+                "salt_deduction",
+                "casualty_loss_deduction",
+                "medical_expense_deduction",
+            ]
         ]
         filing_status = tax_unit("filing_status", period)
         us_itm_deds_less_salt = add(tax_unit, period, itm_deds) + tax_unit(
@@ -29,5 +34,12 @@ class mt_itemized_deductions(Variable):
             add(tax_unit, period, ["real_estate_taxes"]),
             p.itemized.salt_and_real_estate.cap[filing_status],
         )
+        mt_medical_expense_deduction = tax_unit(
+            "mt_medical_expense_deduction", period
+        )
 
-        return us_itm_deds_less_salt + capped_property_taxes
+        return (
+            us_itm_deds_less_salt
+            + capped_property_taxes
+            + mt_medical_expense_deduction
+        )
