@@ -16,7 +16,7 @@ class ga_military_retirement_exclusion(Variable):
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
-        p = parameters(period).gov.states.ga.tax.income.agi.exclusions.military
+        p = parameters(period).gov.states.ga.tax.income.agi.exclusions.military_retirement
         earned_income = person("earned_income", period)
         additional_income_eligible = (
             earned_income > p.additional.threshold.earned_income

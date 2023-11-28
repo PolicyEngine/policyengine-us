@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ga_retirement_income(Variable):
+class ga_retirement_income_exclusion_retirement_income(Variable):
     value_type = float
     entity = Person
     label = "Georgia retirement income for the retirement income exclusion"

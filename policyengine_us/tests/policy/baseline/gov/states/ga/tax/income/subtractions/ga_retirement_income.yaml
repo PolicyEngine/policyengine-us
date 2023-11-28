@@ -9,7 +9,7 @@
     ga_retirement_exclusion_countable_earned_income: 3_000
     state_code: GA
   output:
-    ga_retirement_income: 3_500
+    ga_retirement_income_exclusion_retirement_income: 3_500
 
 - name: 2023 total retiremnet income
   period: 2023
@@ -22,4 +22,4 @@
     ga_retirement_exclusion_countable_earned_income: 4_000
     state_code: GA
   output:
-    ga_retirement_income: 9_000
+    ga_retirement_income_exclusion_retirement_income: 9_000
