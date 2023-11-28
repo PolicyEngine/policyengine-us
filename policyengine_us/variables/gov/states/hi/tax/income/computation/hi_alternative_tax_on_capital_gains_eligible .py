@@ -16,4 +16,3 @@ class hi_alternative_tax_on_capital_gains_eligible(Variable):
         income_eligible = taxable_income > income_threshold
 
         return p.availability & income_eligible
-        

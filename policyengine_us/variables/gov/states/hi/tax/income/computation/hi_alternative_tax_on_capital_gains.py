@@ -13,10 +13,13 @@ class hi_alternative_tax_on_capital_gains(Variable):
         p = parameters(period).gov.states.hi.tax.income.alternative_tax
         filing_status = tax_unit("filing_status", period)
         taxable_income = tax_unit("hi_taxable_income", period)  # line 1
+        # line 4 of Hawaii Tax on Capital Gains Worksheet
+        # on Hawaii Resident Income Tax Instructions N-11 Rev.2022, page=33
         net_lt_capital_gain = add(
             tax_unit, period, ["long_term_capital_gains"]
-        )  # line 4
-        net_capital_gain = tax_unit("net_capital_gain", period)  # line 7
+        )
+        # line 7
+        net_capital_gain = tax_unit("net_capital_gain", period)
         smaller_net_capital_gain = min_(
             net_capital_gain, net_lt_capital_gain
         )  # line 8
@@ -51,7 +54,7 @@ class hi_alternative_tax_on_capital_gains(Variable):
                 rate_p.head_of_household.calc(capped_reduced_income),
             ],
         )
-        eligible_capital_gains_tax = eligible_capital_gains * p.rate  # Line 16
-        return (
-            tax_on_capped_reduced_income + eligible_capital_gains_tax
-        )  # Line 17
+        # Line 16
+        eligible_capital_gains_tax = eligible_capital_gains * p.rate
+        # line 17
+        return tax_on_capped_reduced_income + eligible_capital_gains_tax
