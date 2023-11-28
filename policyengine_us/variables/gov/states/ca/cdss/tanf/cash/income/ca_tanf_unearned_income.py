@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ca_tanf_unearned_income(Variable):
+class ca_tanf_other_unearned_income(Variable):
     value_type = float
     entity = SPMUnit
     label = "California CalWORKs Other Unearned Income"
