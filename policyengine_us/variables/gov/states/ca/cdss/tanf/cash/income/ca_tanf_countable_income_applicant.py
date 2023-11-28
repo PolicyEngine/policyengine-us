@@ -18,6 +18,6 @@ class ca_tanf_countable_income_applicant(Variable):
             spm_unit("ca_tanf_earned_income", period) - p.flat, 0
         )
         db_unearned = spm_unit("ca_tanf_db_unearned_income", period)
-        unearned = spm_unit("ca_tanf_unearned_income", period)
+        other_unearned = spm_unit("ca_tanf_other_unearned_income", period)
 
-        return countable_earned + db_unearned + unearned
+        return countable_earned + db_unearned + other_unearned
