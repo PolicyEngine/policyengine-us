@@ -5,7 +5,7 @@
     filing_status: SINGLE
     adjusted_gross_income: 80_000
     income_tax: 10_000
-    earned_income_tax_credit: 0
+    eitc: 0
   output:
     or_federal_tax_liability_subtraction: 7_050
 
@@ -16,7 +16,7 @@
     filing_status: SINGLE
     adjusted_gross_income: 80_000
     income_tax: 6_000
-    earned_income_tax_credit: 1_000
+    eitc: 1_000
   output:
     or_federal_tax_liability_subtraction: 7_000
 
@@ -27,7 +27,7 @@
     filing_status: SINGLE
     adjusted_gross_income: 145_000
     income_tax: 10_000
-    earned_income_tax_credit: 0
+    eitc: 0
   output:
     or_federal_tax_liability_subtraction: 0
 
@@ -38,7 +38,7 @@
     filing_status: SEPARATE
     adjusted_gross_income: 80_000
     income_tax: 10_000
-    earned_income_tax_credit: 0
+    eitc: 0
   output:
     or_federal_tax_liability_subtraction: 3_525
 
@@ -49,7 +49,7 @@
     filing_status: SEPARATE
     adjusted_gross_income: 145_000
     income_tax: 10_000
-    earned_income_tax_credit: 0
+    eitc: 0
   output:
     or_federal_tax_liability_subtraction: 0
 
@@ -60,7 +60,7 @@
     filing_status: JOINT
     adjusted_gross_income: 80_000
     income_tax: 10_000
-    earned_income_tax_credit: 0 
+    eitc: 0 
   output:
     or_federal_tax_liability_subtraction: 7_050
 
@@ -71,6 +71,6 @@
     filing_status: JOINT
     adjusted_gross_income: 290_000
     income_tax: 10_000
-    earned_income_tax_credit: 0
+    eitc: 0
   output:
     or_federal_tax_liability_subtraction: 0

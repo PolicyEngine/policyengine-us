@@ -1,0 +1,38 @@
+description: Ohio provides this credit amount under the pension based retirement income credit, depending on retirement income.
+brackets:
+  - threshold:
+      2021-01-01: 0
+    amount:
+      2021-01-01: 0
+  - threshold: 
+      2021-01-01: 500
+    amount:
+      2021-01-01: 25
+  - threshold:
+      2021-01-01: 1_500
+    amount:
+      2021-01-01: 50
+  - threshold:
+      2021-01-01: 3_000
+    amount:
+      2021-01-01: 80
+  - threshold:
+      2021-01-01: 5_000
+    amount:
+      2021-01-01: 130
+  - threshold:
+      2021-01-01: 8_000
+    amount:
+      2021-01-01: 200
+metadata:
+  threshold_unit: currency-USD
+  amount_unit: currency-USD
+  type: single_amount
+  label: Ohio pension based retirement income credit amount
+  reference:
+    - title: Ohio Income Tax Form Lump Sum Retirement Credit Worksheet Table 2
+      href: https://tax.ohio.gov/static/forms/ohio_individual/individual/2021/pit-it1040-booklet.pdf#page=29
+    - title: Ohio 2022 Instructions for Filing Original and Amended - Line 2 – Retirement Income Credit R.C. 5747.055(B)
+      href: https://tax.ohio.gov/static/forms/ohio_individual/individual/2022/it1040-sd100-instruction-booklet.pdf#page=20
+    - title: Ohio Revised Code, Title 57 Taxation, Chapter 5747 Income Tax, Section 5747.055(B), Tax credit for retirement income
+      href: https://codes.ohio.gov/ohio-revised-code/section-5747.055
