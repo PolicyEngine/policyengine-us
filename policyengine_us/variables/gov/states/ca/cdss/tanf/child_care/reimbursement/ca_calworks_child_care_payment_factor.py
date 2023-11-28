@@ -28,5 +28,5 @@ class ca_calworks_child_care_payment_factor(Variable):
                 p.exceptional_needs,
                 p.severely_disabled,
             ],
-            default=1,
+            default=1
         )
