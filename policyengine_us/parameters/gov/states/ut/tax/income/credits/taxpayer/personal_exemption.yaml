@@ -1,6 +1,14 @@
 description: This exemption is added to federal standard or itemized deductions for the taxpayer credit.
 values:
+  2021-01-01: 1_750
   2022-01-01: 1_802
 metadata:
   unit: currency-USD
   label: Utah taxpayer credit personal exemption
+  reference:
+    - title: Utah Code §59-10-1018 (6)
+      href: https://le.utah.gov/xcode/Title59/Chapter10/59-10-S1018.html?v=C59-10-S1018_2021050520210505#59-10-1018(6)
+    - title: Utah Form TC-40 (2021) line 11
+      href: https://www.taxformfinder.org/forms/2021/2021-utah-tc-40-full-packet.pdf#page=9
+
+
