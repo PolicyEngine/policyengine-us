@@ -1,26 +1,14 @@
-description: Georgia limits retirement income exclusion to the following amount, based on age.  
+description: Georgia limits retirement income exclusion for an older age eligibility to the following amount.
 metadata:
-  label: Georgia retirement income exclusion max amount  
-  threshold_unit: year  
-  amount_unit: currency-USD
-  type: single_amount
+  label: Georgia retirement income exclusion older age cap
+  period: year
+  unit: currency-USD
   reference: 
-  - title: 2021 IT-511 Individual Income Tax Booklet - Subtractions(1) #page=15
+  - title: 2021 IT-511 Individual Income Tax Booklet - Subtractions(1), Page 15 
     href: https://dor.georgia.gov/document/booklet/2021-it-511-individual-income-tax-booklet/download
-  - title: 2022 IT-511 Individual Income Tax Booklet - Subtractions(1) #page=15
+  - title: 2022 IT-511 Individual Income Tax Booklet - Subtractions(1), Page 15 
     href: https://dor.georgia.gov/document/document/2022-it-511-individual-income-tax-booklet/download
   - title: Official Code of Georgia Annotated | CH17 Income Taxes | O.C.G.A. § 48-7-27 | (a)-(5)-(A)-(xiii)
     href: https://advance.lexis.com/documentpage/?pdmfid=1000516&crid=fb5db531-a80f-4790-bddb-eefc8327ef60&config=00JAA1MDBlYzczZi1lYjFlLTQxMTgtYWE3OS02YTgyOGM2NWJlMDYKAFBvZENhdGFsb2feed0oM9qoQOMCSJFX5qkd&pddocfullpath=%2Fshared%2Fdocument%2Fstatutes-legislation%2Furn%3AcontentItem%3A65D2-CDH3-CGX8-044N-00008-00&pdcontentcomponentid=234186&pdteaserkey=sr1&pditab=allpods&ecomp=8s65kkk&earg=sr1&prid=66f02b0a-c5ae-4162-9535-127751546807
-brackets:
-  - threshold:
-      2012-01-01: 0
-    amount:
-      2012-01-01: 0
-  - threshold:
-      2012-01-01: 62
-    amount:
-      2012-01-01: 35_000
-  - threshold:
-      2012-01-01: 65
-    amount:
-      2012-01-01: 65_000
+values:
+  2012-01-01: 65_000

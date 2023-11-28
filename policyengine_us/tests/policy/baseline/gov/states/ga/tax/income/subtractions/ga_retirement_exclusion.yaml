@@ -1,4 +1,4 @@
-- name: head is disabled, so eligible for lower cap
+- name: head is disabled, so eligible for younger cap
   period: 2023
   input:
     people:
@@ -36,7 +36,7 @@
   output:
     ga_retirement_exclusion: 0
 
-- name: head is eligible for higher cap and spouse is eligible for lower cap
+- name: head is eligible for older cap and spouse is eligible for younger cap
   period: 2023
   input:
     people:
@@ -60,7 +60,7 @@
   output:
     ga_retirement_exclusion: 100_000
 
-- name: both are eligible for higher cap
+- name: both are eligible for older cap
   period: 2023
   input:
     people:
