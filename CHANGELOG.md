@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.540.0] - 2023-11-28 11:23:21
+
+### Fixed
+
+- Bug preventing reforms from working with a Core update.
+
 ## [0.539.0] - 2023-11-27 23:23:24
 
 ### Added
@@ -5985,6 +5991,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.540.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.539.0...0.540.0
 [0.539.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.538.2...0.539.0
 [0.538.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.538.1...0.538.2
 [0.538.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.538.0...0.538.1
