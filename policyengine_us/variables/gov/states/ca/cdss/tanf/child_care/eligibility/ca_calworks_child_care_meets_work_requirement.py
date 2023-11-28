@@ -15,4 +15,5 @@ class ca_calworks_child_care_meets_work_requirement(Variable):
             "ca_calworks_child_care_welfare_to_work", period
         )
         earned = person("earned_income", period)
-        return spm_unit.any(welfare_to_work > 0) | spm_unit.any(earned > 0)
+        eligible_person = (welfare_to_work + earned) > 0
+        return spm_unit.any(eligible_person)

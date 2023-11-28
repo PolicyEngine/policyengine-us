@@ -30,4 +30,4 @@ class ca_tanf_maximum_payment(Variable):
                 p.region2.non_exempt[au_size],
             ),
         )
-        return max_monthly_payment * MONTHS_IN_YEAR
+        return max_monthly_payment

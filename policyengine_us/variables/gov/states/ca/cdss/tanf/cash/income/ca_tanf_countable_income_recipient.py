@@ -16,12 +16,13 @@ class ca_tanf_countable_income_recipient(Variable):
         ).gov.states.ca.cdss.tanf.cash.income.disregards.recipient
         earned = spm_unit("ca_tanf_earned_income", period)
         db_unearned = spm_unit("ca_tanf_db_unearned_income", period)
-        unearned = spm_unit("ca_tanf_unearned_income", period)
+        other_unearned = spm_unit("ca_tanf_other_unearned_income", period)
 
+        # Flat exlusion only applies to disability-based unearned income and earned income.
         countable_db_unearned = max_(db_unearned - p.flat, 0)
         remaining_flat_exclusion = max_(p.flat - db_unearned, 0)
         countable_earned = max_(earned - remaining_flat_exclusion, 0) * (
             1 - p.percentage
         )
 
-        return countable_earned + countable_db_unearned + unearned
+        return countable_earned + countable_db_unearned + other_unearned

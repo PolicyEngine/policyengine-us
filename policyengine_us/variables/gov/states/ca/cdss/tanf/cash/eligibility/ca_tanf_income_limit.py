@@ -26,7 +26,4 @@ class ca_tanf_income_limit(Variable):
             region1, p.region1.additional, p.region2.additional
         )
 
-        monthly_limit = (
-            main_limit + increase_per_additional_person * additional_people
-        )
-        return monthly_limit * MONTHS_IN_YEAR
+        return main_limit + increase_per_additional_person * additional_people

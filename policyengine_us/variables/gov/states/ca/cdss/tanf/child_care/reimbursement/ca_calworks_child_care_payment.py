@@ -16,9 +16,10 @@ class ca_calworks_child_care_payment(Variable):
         time_coefficient = person(
             "ca_calworks_child_care_time_coefficient", period
         )
+
         payment_factor = person(
             "ca_calworks_child_care_payment_factor", period
-        )
+        )  # Payment factor depends on the service type such as weekend service, disabled service
 
         return spm_unit.sum(
             payment_standard * time_coefficient * payment_factor

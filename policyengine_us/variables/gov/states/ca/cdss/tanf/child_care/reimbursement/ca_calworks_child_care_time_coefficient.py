@@ -27,5 +27,5 @@ class ca_calworks_child_care_time_coefficient(Variable):
                 time_category == time_categories.WEEKLY,
             ],
             [hours_per_day * days_per_month, days_per_month, weeks_per_month],
-            default=1,
+            default=1,  # Monthly.
         )

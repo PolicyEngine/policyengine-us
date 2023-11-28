@@ -14,4 +14,4 @@ class ca_tanf_region1(Variable):
         region1_counties = parameters(
             period
         ).gov.states.ca.cdss.tanf.cash.region1_counties
-        return county in region1_counties
+        return np.isin(county, region1_counties)
