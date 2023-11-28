@@ -5035,3 +5035,35 @@
     fixed:
     - Fix UT retirement credit birth year parameter.
   date: 2023-11-20 23:32:21
+- bump: minor
+  changes:
+    added:
+    - Ohio lump sum retirement credit.
+  date: 2023-11-22 00:37:55
+- bump: patch
+  changes:
+    fixes:
+    - Ohio senior citizen credit formula.
+  date: 2023-11-22 01:31:58
+- bump: minor
+  changes:
+    added:
+    - South Carolina dependent exemption.
+    - South Carolina subtractions.
+    - South Carolina additions.
+  date: 2023-11-23 18:53:34
+- bump: patch
+  changes:
+    fixed:
+    - Hawaii CDCC min head spouse earned variable.
+  date: 2023-11-26 14:23:47
+- bump: patch
+  changes:
+    fixed:
+    - Downgrade policyengine-core to fix Microsimulation bug.
+  date: 2023-11-27 22:53:52
+- bump: minor
+  changes:
+    added:
+    - Vermont elderly or permanently totally disabled tax credit.
+  date: 2023-11-27 23:23:24
