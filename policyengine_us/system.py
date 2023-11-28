@@ -32,9 +32,8 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
     ]
     modelled_policies = COUNTRY_DIR / "modelled_policies.yaml"
 
-    def __init__(self):
-        # We initialize our tax and benefit system with the general constructor
-        super().__init__(entities)
+    def __init__(self, reform=None):
+        super().__init__(entities, reform=reform)
 
         reform = create_structural_reforms_from_parameters(
             self.parameters, "2023-01-01"
