@@ -19,12 +19,9 @@ class va_agi_less_exemptions_indiv(Variable):
         # and compute the value
         # age -
         p = parameters(period).gov.states.va.tax.income.exemptions
-        p1 = parameters(
-            period
-        ).gov.states.va.tax.income.exemptions.spouse_tax_adjustment
         # Check whether the filer is eligible for age and blind exemptions
         personal_exemption_age_eligible = (
-            person("age", period) >= p1.age_threshold
+            person("age", period) >= p.spouse_tax_adjustment.age_threshold
         ).astype(int)
         personal_exemption_blind_eligible = person("is_blind", period).astype(
             int
