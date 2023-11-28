@@ -15,7 +15,5 @@ class hi_alternative_tax_on_capital_gains_eligible(Variable):
         income_threshold = p.income_threshold[filing_status]
         income_eligible = taxable_income > income_threshold
 
-        if p.availability:
-            return income_eligible
-        else:
-            return False
+        return p.availability & income_eligible
+        
