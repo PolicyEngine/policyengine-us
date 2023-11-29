@@ -11,7 +11,7 @@
         members: [person1, person2]
         state_code: ID
   output:
-    id_grocery_credit_eligible: [true,false]
+    id_grocery_credit_eligible: [false, true]
 
 - name: person 2 was incarcerated
   period: 2022
@@ -26,7 +26,7 @@
         members: [person1, person2]
         state_code: ID
   output:
-    id_grocery_credit_eligible: [false,true]
+    id_grocery_credit_eligible: [true, false]
 
 - name: no person was incarcerated
   period: 2022
@@ -41,7 +41,7 @@
         members: [person1, person2]
         state_code: ID
   output:
-    id_grocery_credit_eligible: [false,false]
+    id_grocery_credit_eligible: [true,true]
 
 - name: both person were incarcerated
   period: 2022
@@ -56,4 +56,4 @@
         members: [person1, person2]
         state_code: ID
   output:
-    id_grocery_credit_eligible: [true,true]
+    id_grocery_credit_eligible: [false,false]

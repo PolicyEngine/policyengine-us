@@ -7,7 +7,6 @@ class id_grocery_credit(Variable):
     label = "Idaho grocery credit"
     unit = USD
     definition_period = YEAR
-    defined_for = "id_grocery_credit_eligible"
+    defined_for = StateCode.ID
 
-    def formula(tax_unit, period, parameters):
-        adds = ["id_grocery_credit_base", "id_grocery_credit_aged"]
+    adds = ["id_grocery_credit_base", "id_grocery_credit_aged"]

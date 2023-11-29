@@ -14,6 +14,6 @@ class id_grocery_credit_aged(Variable):
         # Aged head and spouse are eligible for an additional grocery credit amount
         age = person("age", period)
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        aged_amount = p.aged.calc(age)
+        amount_if_eligible = p.aged.calc(age)
 
-        return person.tax_unit.sum(aged_amount)
+        return sum(head_or_spouse * amount_if_eligible)

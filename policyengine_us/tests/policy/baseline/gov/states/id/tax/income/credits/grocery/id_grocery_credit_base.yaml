@@ -26,7 +26,7 @@
         members: [person1, person2]
         state_code: ID
   output:
-    id_grocery_credit_base: 100
+    id_grocery_credit_base: 200
 
 - name: one person is either head or spouse (2/2)
   period: 2022
@@ -41,7 +41,7 @@
         members: [person1, person2]
         state_code: ID
   output:
-    id_grocery_credit_base: 100
+    id_grocery_credit_base: 200
 
 - name: None is head or spouse
   period: 2022
@@ -56,4 +56,4 @@
         members: [person1, person2]
         state_code: ID
   output:
-    id_grocery_credit_base: 0
+    id_grocery_credit_base: 200

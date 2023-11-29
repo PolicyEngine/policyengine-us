@@ -10,6 +10,4 @@ class id_grocery_credit_eligible(Variable):
 
     def formula(person, period, parameters):
         # Incarcerated people are not eligible for the grocery credit
-        incarcerated = person("is_incarcerated", period)
-
-        return incarcerated
+        return ~person("is_incarcerated", period)
