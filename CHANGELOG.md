@@ -5,6 +5,114 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.541.1] - 2023-11-28 18:49:38
+
+### Fixed
+
+- Clean up years in system.py.
+- Update default computation year to 2023.
+
+## [0.541.0] - 2023-11-28 18:30:28
+
+### Changed
+
+- Fix definition of income used to calculate Maine fairness credits.
+
+## [0.540.0] - 2023-11-28 11:23:21
+
+### Fixed
+
+- Bug preventing reforms from working with a Core update.
+
+## [0.539.0] - 2023-11-27 23:23:24
+
+### Added
+
+- Vermont elderly or permanently totally disabled tax credit.
+
+## [0.538.2] - 2023-11-27 22:53:52
+
+### Fixed
+
+- Downgrade policyengine-core to fix Microsimulation bug.
+
+## [0.538.1] - 2023-11-26 14:23:47
+
+### Fixed
+
+- Hawaii CDCC min head spouse earned variable.
+
+## [0.538.0] - 2023-11-23 18:53:34
+
+### Added
+
+- South Carolina dependent exemption.
+- South Carolina subtractions.
+- South Carolina additions.
+
+## [0.537.1] - 2023-11-22 01:31:58
+
+## [0.537.0] - 2023-11-22 00:37:55
+
+### Added
+
+- Ohio lump sum retirement credit.
+
+## [0.536.1] - 2023-11-20 23:32:21
+
+### Fixed
+
+- Fix UT retirement credit birth year parameter.
+
+## [0.536.0] - 2023-11-20 14:46:37
+
+### Changed
+
+- Add missing 2021 Utah parameter values.
+- Utah retirement credit fixed.
+
+## [0.535.1] - 2023-11-17 21:05:55
+
+### Added
+
+- Twelve new CalEITC integration tests.
+
+## [0.535.0] - 2023-11-17 17:46:39
+
+### Added
+
+- Hawaii child and dependent care expenses tax credit.
+
+## [0.534.0] - 2023-11-15 20:45:57
+
+### Added
+
+- Replicated Child and Dependent Care Expenses Credit to include California limitations.
+
+## [0.533.1] - 2023-11-15 20:42:44
+
+### Fixed
+
+- Duplicate Ohio income tax parameter name deductions.
+
+## [0.533.0] - 2023-11-15 19:02:07
+
+### Added
+
+- Ohio AGI additions and deductions parameters and variables.
+
+## [0.532.0] - 2023-11-15 06:28:33
+
+### Added
+
+- Kentucky tuition tax credit.
+
+## [0.531.0] - 2023-11-15 06:22:47
+
+### Added
+
+- Montana senior interest income exclusion.
+
 ## [0.530.1] - 2023-11-14 23:03:24
 
 ### Fixed
@@ -5896,6 +6004,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.541.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.541.0...0.541.1
+[0.541.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.540.0...0.541.0
+[0.540.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.539.0...0.540.0
+[0.539.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.538.2...0.539.0
+[0.538.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.538.1...0.538.2
+[0.538.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.538.0...0.538.1
+[0.538.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.537.1...0.538.0
+[0.537.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.537.0...0.537.1
+[0.537.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.536.1...0.537.0
+[0.536.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.536.0...0.536.1
+[0.536.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.535.1...0.536.0
+[0.535.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.535.0...0.535.1
+[0.535.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.534.0...0.535.0
+[0.534.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.533.1...0.534.0
+[0.533.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.533.0...0.533.1
+[0.533.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.532.0...0.533.0
+[0.532.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.531.0...0.532.0
+[0.531.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.530.1...0.531.0
 [0.530.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.530.0...0.530.1
 [0.530.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.529.0...0.530.0
 [0.529.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.528.0...0.529.0
