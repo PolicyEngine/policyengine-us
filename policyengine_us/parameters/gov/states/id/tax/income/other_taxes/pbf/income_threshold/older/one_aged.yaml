@@ -1,6 +1,5 @@
-description: Idaho exempts tax units with one older filer from the permanent building fund tax with income at or below this amount, depending on filing status and married filing jointly.
-metadata:
-  label: Idaho permanent building fund tax one older spouse income threshold
+description: Idaho exempts tax units with at least one older filer from the permanent building fund tax with income at or below this amount, depending on filing status and married filing jointly.
+  label: Idaho permanent building fund tax minimum one older spouse income threshold
   period: year
   unit: currency-USD
   breakdown:
@@ -10,14 +9,16 @@ metadata:
     href: https://tax.idaho.gov/wp-content/uploads/forms/EIN00046/EIN00046_03-01-2023.pdf#page=10
   - title: Idaho Individual Income Tax General Information 2021.
     href: https://tax.idaho.gov/wp-content/uploads/forms/EIN00046/EIN00046_11-15-2021.pdf#page=10
-  # The income threshold is in the Resident Filing Requirement and not in the legale code
+  # The income threshold is referred to as the Resident Filing Requirement and is not explicitly mentioned in the legal code
+  - title: 2022 Idaho Code Title 63 - REVENUE AND TAXATION Chapter 30 - INCOME TAX Section 63-3030 - PERSONS REQUIRED TO MAKE RETURNS OF INCOME
+    hred: https://law.justia.com/codes/idaho/2022/title-63/chapter-30/section-63-3030/
   - title: Idaho Admin. Code r. 35.01.01.855 - PERMANENT BUILDING FUND TAX
     href: https://www.law.cornell.edu/regulations/idaho/IDAPA-35.01.01.855
 
 SINGLE:
   2021-01-01: 14_250
   2022-01-01: 14_700
-# One spouses
+# One spouses in joint condition
 JOINT: 
   2021-01-01: 26_450 
   2022-01-01: 27_300
