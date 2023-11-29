@@ -1,11 +1,19 @@
-description: Vermont allows a charitable contributions credit of this fraction of charitable contributions in excess of the contributions threshold.
-values:
-  2021-01-01: 0.05
-
+description: Vermont caps the charitable contributions at this amount.
+brackets:
+  - threshold:
+      2018-01-01: 0
+    rate:
+      2018-01-01: 0.05
+  - threshold:
+      2018-01-01: 20_000
+    rate:
+      2018-01-01: 0
 metadata:
-  period: year
-  unit: /1
-  label: Vermont charitable contribution credit rate
+  threshold_unit: currency_USD
+  rate_unit: /1
+  threshold_period: year
+  type: marginal_rate
+  label: Vermont charitable contribution credit threshold
   reference:
   - title: Vermont Statutes Title 32 - Taxation and Finance § 5822-(d)-3
     href: https://law.justia.com/codes/vermont/2022/title-32/chapter-151/section-5822/
