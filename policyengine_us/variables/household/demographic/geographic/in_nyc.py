@@ -6,12 +6,6 @@ class in_nyc(Variable):
     entity = Household
     definition_period = YEAR
     label = "Is in NYC"
-    # Currently disabled to allow entry until we collect county.
-    # County of the below list.
-    # NYC_COUNTIES = [
-    #   "NEW_YORK_COUNTY_NY",
-    #   "KINGS_COUNTY_NY",
-    #   "QUEENS_COUNTY_NY",
-    #   "RICHMOND_COUNTY_NY",
-    #   "BRONX_COUNTY_NY",
-    # ]
+    # No formula by design given that in_nyc is included in CPS datasets.
+    # For details, see the add_household_variables method in the
+    # policyengine_us/data/datasets/cps/cps.py module.
