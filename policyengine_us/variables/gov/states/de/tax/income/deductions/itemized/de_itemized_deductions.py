@@ -8,7 +8,7 @@ class de_itemized_deductions(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://revenuefiles.delaware.gov/2022/TY22_PIT-RSA_2022-02_PaperInteractive.pdf",
+        "https://revenuefiles.delaware.gov/2022/TY22_PIT-RSA_2022-02_PaperInteractive.pdf",  # § 1109
         "https://delcode.delaware.gov/title30/c011/sc02/index.html",
     )
     defined_for = StateCode.DE
@@ -19,7 +19,7 @@ class de_itemized_deductions(Variable):
         deductions = [
             deduction
             for deduction in p.itemized_deductions
-            if deduction not in ["interest_deduction", "salt_deduction"]
+            if deduction not in ["salt_deduction"]
         ]
         federal_deductions = add(tax_unit, period, deductions)
 
@@ -29,10 +29,5 @@ class de_itemized_deductions(Variable):
             real_estate_tax, p.itemized.salt_and_real_estate.cap[filing_status]
         )
 
-        interest_deduction = add(
-            tax_unit,
-            period,
-            ["mortgage_interest", "investment_income_form_4952"],
-        )
 
-        return federal_deductions + capped_real_estate_tax + interest_deduction
+        return federal_deductions + capped_real_estate_tax 
