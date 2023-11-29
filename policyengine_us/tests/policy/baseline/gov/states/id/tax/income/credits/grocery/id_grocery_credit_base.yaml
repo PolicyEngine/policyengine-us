@@ -1,59 +1,45 @@
-- name: two person are head and spouse
+- name: two person are eligible
   period: 2022
   input:
     people:
       person1:
-        is_tax_unit_head_or_spouse: true
+        id_grocery_credit_eligible: true
       person2:
-        is_tax_unit_head_or_spouse: true
+        id_grocery_credit_eligible: true
     households: 
       household:
         members: [person1, person2]
         state_code: ID
   output:
-    id_grocery_credit_base: 200
+    id_grocery_credit_base: [100,100]
 
-- name: one person is either head or spouse (1/2)
+- name: one person is eligible, one not
   period: 2022
   input:
     people:
       person1:
-        is_tax_unit_head_or_spouse: true
+        id_grocery_credit_eligible: true
       person2:
-        is_tax_unit_head_or_spouse: false
+        id_grocery_credit_eligible: false
     households: 
       household:
         members: [person1, person2]
         state_code: ID
   output:
-    id_grocery_credit_base: 200
+    id_grocery_credit_base: [100,0]
 
-- name: one person is either head or spouse (2/2)
+- name: two person are not eligible 
   period: 2022
   input:
     people:
       person1:
-        is_tax_unit_head_or_spouse: false
+        id_grocery_credit_eligible: false
       person2:
-        is_tax_unit_head_or_spouse: true
+        id_grocery_credit_eligible: false
     households: 
       household:
         members: [person1, person2]
         state_code: ID
   output:
-    id_grocery_credit_base: 200
+    id_grocery_credit_base: [0,0]
 
-- name: None is head or spouse
-  period: 2022
-  input:
-    people:
-      person1:
-        is_tax_unit_head_or_spouse: false
-      person2:
-        is_tax_unit_head_or_spouse: false
-    households: 
-      household:
-        members: [person1, person2]
-        state_code: ID
-  output:
-    id_grocery_credit_base: 200

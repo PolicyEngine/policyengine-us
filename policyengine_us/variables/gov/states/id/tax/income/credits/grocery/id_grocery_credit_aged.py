@@ -7,7 +7,7 @@ class id_grocery_credit_aged(Variable):
     label = "Idaho aged grocery credit"
     unit = USD
     definition_period = YEAR
-    defined_for = StateCode.ID
+    defined_for = "id_grocery_credit_eligible"
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.id.tax.income.credits.grocery.amount
@@ -16,4 +16,4 @@ class id_grocery_credit_aged(Variable):
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         amount_if_eligible = p.aged.calc(age)
 
-        return sum(head_or_spouse * amount_if_eligible)
+        return head_or_spouse * amount_if_eligible
