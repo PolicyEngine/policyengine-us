@@ -1,10 +1,10 @@
-- name: Test case 1 #salt has a cap of 5000 for separate
+- name: Test case 1 # filing separate
   period: 2021
   input:
      filing_status: SEPARATE
      charitable_deduction: 800
      interest_deduction: 265
-     real_estate_taxes: 6_000 #5000
+     mt_salt_deduction: 5_000
      mt_medical_expense_deduction: 1_000
      casualty_loss_deduction: 400
      mt_child_dependent_care_expense_deduction: 123
@@ -18,7 +18,7 @@
      filing_status: HEAD_OF_HOUSEHOLD
      charitable_deduction: 0
      interest_deduction: 1_234
-     real_estate_taxes: 11_000
+     mt_salt_deduction: 10_000
      mt_medical_expense_deduction: 3_000 
      casualty_loss_deduction: 0
      mt_child_dependent_care_expense_deduction: 0
@@ -32,7 +32,7 @@
      filing_status: SINGLE
      charitable_deduction: 1_000
      interest_deduction: 34
-     real_estate_taxes: 1_035
+     mt_salt_deduction: 1_035
      mt_medical_expense_deduction: 3_000
      casualty_loss_deduction: 745
      mt_child_dependent_care_expense_deduction: 1_004

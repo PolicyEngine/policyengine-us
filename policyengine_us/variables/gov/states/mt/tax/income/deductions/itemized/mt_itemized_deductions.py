@@ -26,20 +26,13 @@ class mt_itemized_deductions(Variable):
                 "medical_expense_deduction",
             ]
         ]
-        filing_status = tax_unit("filing_status", period)
-        us_itm_deds_less_salt = add(tax_unit, period, itm_deds) + tax_unit(
-            "mt_misc_deductions", period
-        )
-        capped_property_taxes = min_(
-            add(tax_unit, period, ["real_estate_taxes"]),
-            p.itemized.salt_and_real_estate.cap[filing_status],
-        )
-        mt_medical_expense_deduction = tax_unit(
-            "mt_medical_expense_deduction", period
-        )
-
-        return (
-            us_itm_deds_less_salt
-            + capped_property_taxes
-            + mt_medical_expense_deduction
+        return add(
+            tax_unit,
+            period,
+            itm_deds
+            + [
+                "mt_misc_deductions",
+                "mt_medical_expense_deduction",
+                "mt_salt_deduction",
+            ],
         )
