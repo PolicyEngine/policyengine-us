@@ -6,7 +6,7 @@
     state_code: SC
   output:
     # no tax before 3_200
-    sc_income_tax_before_credits: 0
+    sc_income_tax_before_non_refundable_credits: 0
 
 - name: income in 2nd tax bracket
   period: 2022
@@ -18,7 +18,7 @@
     # 12_000*0.03 - 96
     # $96 is mechanically determined by the rate structure
     # $3,200 * 3% = $96
-    sc_income_tax_before_credits: 264
+    sc_income_tax_before_non_refundable_credits: 264
 
 - name: income in 3rd tax bracket
   period: 2022
@@ -31,4 +31,4 @@
     # $694 is mechanically determined by the rate structure
     # 6.5% * $20,800-(0% * $3,200 + (3% * ($16,040 - $3,200)) + 6.5% * ($20,800 - $16,040))
     # $96 + 6.5% * ($16,040 - $3,200) = $96 + 6.5% * $12,840 = $96 + $834
-    sc_income_tax_before_credits: 694
+    sc_income_tax_before_non_refundable_credits: 694
