@@ -5,6 +5,80 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.546.1] - 2023-11-30 18:10:45
+
+### Fixed
+
+- Relocate some ACA parameters to clarify their role.
+- Rename one ACA variable to clarify its role.
+
+## [0.546.0] - 2023-11-30 02:27:14
+
+### Added
+
+- Montana itemized deductions.
+
+## [0.545.0] - 2023-11-30 02:19:29
+
+### Added
+
+- Delaware itemized deductions.
+
+## [0.544.0] - 2023-11-30 02:16:16
+
+### Added
+
+- Idaho grocery credit.
+
+## [0.543.0] - 2023-11-29 21:19:00
+
+### Added
+
+- Improved ACA premium tax credit for California.
+
+## [0.542.0] - 2023-11-29 20:52:16
+
+### Added
+
+- South Carolina income tax.
+
+## [0.541.1] - 2023-11-28 18:49:38
+
+### Fixed
+
+- Clean up years in system.py.
+- Update default computation year to 2023.
+
+## [0.541.0] - 2023-11-28 18:30:28
+
+### Changed
+
+- Fix definition of income used to calculate Maine fairness credits.
+
+## [0.540.0] - 2023-11-28 11:23:21
+
+### Fixed
+
+- Bug preventing reforms from working with a Core update.
+
+## [0.539.0] - 2023-11-27 23:23:24
+
+### Added
+
+- Vermont elderly or permanently totally disabled tax credit.
+
+## [0.538.2] - 2023-11-27 22:53:52
+
+### Fixed
+
+- Downgrade policyengine-core to fix Microsimulation bug.
+
+## [0.538.1] - 2023-11-26 14:23:47
+
+### Fixed
+
+- Hawaii CDCC min head spouse earned variable.
+
 ## [0.538.0] - 2023-11-23 18:53:34
 
 ### Added
@@ -5967,6 +6041,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.546.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.546.0...0.546.1
+[0.546.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.545.0...0.546.0
+[0.545.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.544.0...0.545.0
+[0.544.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.543.0...0.544.0
+[0.543.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.542.0...0.543.0
+[0.542.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.541.1...0.542.0
+[0.541.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.541.0...0.541.1
+[0.541.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.540.0...0.541.0
+[0.540.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.539.0...0.540.0
+[0.539.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.538.2...0.539.0
+[0.538.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.538.1...0.538.2
+[0.538.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.538.0...0.538.1
 [0.538.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.537.1...0.538.0
 [0.537.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.537.0...0.537.1
 [0.537.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.536.1...0.537.0
