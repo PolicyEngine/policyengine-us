@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class snap_net_income(Variable):
     value_type = float
     entity = SPMUnit
-    definition_period = YEAR
+    definition_period = MONTH
     documentation = "Final net income, after all deductions"
     label = "SNAP net income"
     unit = USD

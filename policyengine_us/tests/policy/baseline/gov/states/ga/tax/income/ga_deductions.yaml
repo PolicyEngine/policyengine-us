@@ -1,0 +1,19 @@
+- name: test1
+  period: 2022
+  input:
+    tax_unit_itemizes: true
+    ga_standard_deduction: 8_000
+    itemized_deductions_less_salt: 9_000
+    state_code: GA
+  output:
+    ga_deductions: 9_000
+
+- name: test2
+  period: 2022
+  input:
+    tax_unit_itemizes: false
+    ga_standard_deduction: 10_000
+    itemized_deductions_less_salt: 9_000
+    state_code: GA
+  output:
+    ga_deductions: 10_000
