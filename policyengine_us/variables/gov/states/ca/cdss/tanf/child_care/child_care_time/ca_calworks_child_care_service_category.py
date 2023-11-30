@@ -43,5 +43,5 @@ class ca_calworks_child_care_service_category(Variable):
                 CaCalworksChildCareServiceCategory.FULL_TIME,
                 CaCalworksChildCareServiceCategory.PART_TIME,
                 CaCalworksChildCareServiceCategory.FULL_TIME,
-            ]
+            ],
         )

@@ -22,5 +22,5 @@ class ca_calworks_child_care_payment_standard(Variable):
                 p.standard.younger[provider][time][service],
                 p.standard.older[provider][time][service],
             ],
-            default=p.standard.middle[provider][time][service]
+            default=p.standard.middle[provider][time][service],
         )
