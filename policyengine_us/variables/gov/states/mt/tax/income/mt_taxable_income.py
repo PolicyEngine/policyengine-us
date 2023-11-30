@@ -8,6 +8,7 @@ class mt_taxable_income(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.MT
+    reference: "https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2023/05/Montana-Idividiual-Income-Tax-Return-Form-2-2022v6.2.pdf#page=1"
 
     def formula(tax_unit, period, parameters):
         mt_agi = tax_unit("mt_agi", period)
@@ -16,6 +17,8 @@ class mt_taxable_income(Variable):
         itemized_deductions_less_salt = tax_unit(
             "mt_itemized_deductions_less_salt", period
         )
-        deductions = where(itemizes, itemized_deductions_less_salt, standard_deduction)
+        deductions = where(
+            itemizes, itemized_deductions_less_salt, standard_deduction
+        )
         exemptions = tax_unit("mt_exemptions", period)
         return max_(0, mt_agi - deductions - exemptions)

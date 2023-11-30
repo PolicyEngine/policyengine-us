@@ -9,4 +9,3 @@ class mt_itemized_deductions_less_salt(Variable):
     definition_period = YEAR
     adds = ["mt_itemzied_deductions"]
     subtracts = ["mt_salt_deductions"]
-    
