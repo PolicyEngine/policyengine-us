@@ -15,7 +15,7 @@ class ar_itemized_deductions(Variable):
         agi = tax_unit("ar_agi", period)
         head = person("is_tax_unit_head", period)
         person_agi = person("ar_agi_person", period)
-        total_person_agi = tax_unit.sum(person_agi * head)
+        total_head_agi = tax_unit.sum(person_agi * head)
 
         ar_itemized_deds = tax_unit("ar_itemized_deductions_sources", period)
 
@@ -24,7 +24,7 @@ class ar_itemized_deductions(Variable):
         separate = filing_status == filing_status.possible_values.SEPARATE
         prorate = np.zeros_like(agi)
         mask = agi > 0
-        prorate[mask] = total_person_agi[mask] / agi[mask]
-        separated_itemized_deduction = ar_itemized_deds * prorate
+        prorate[mask] = total_head_agi[mask] / agi[mask]
+        prorated_itemized_deductions = ar_itemized_deds * prorate
 
-        return where(separate, separated_itemized_deduction, ar_itemized_deds)
+        return where(separate, prorated_itemized_deductions, ar_itemized_deds)
