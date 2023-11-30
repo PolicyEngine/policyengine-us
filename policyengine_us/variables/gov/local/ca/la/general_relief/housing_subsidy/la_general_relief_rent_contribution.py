@@ -25,6 +25,4 @@ class la_general_relief_rent_contribution(Variable):
             p.housing_subsidy.rent_contribution.single,
         )
 
-        return where(
-            receive_housing_subsidy, rent_contributions, 0
-        )
+        return where(receive_housing_subsidy, rent_contributions, 0)

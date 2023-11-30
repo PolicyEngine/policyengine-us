@@ -30,6 +30,9 @@ class la_general_relief_eligible(Variable):
         disability_eligible = spm_unit(
             "la_general_relief_disability_eligible", period
         )
+        immigration_status_eligible = spm_unit(
+            "la_general_relief_immigration_status_eligible", period
+        )
         return (
             age_eligible
             & cash_eligible
@@ -37,4 +40,5 @@ class la_general_relief_eligible(Variable):
             & motor_vehicle_value_eligible
             & net_income_eligible
             & personal_property_eligible
+            & immigration_status_eligible
         ) | disability_eligible

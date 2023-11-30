@@ -18,9 +18,18 @@ class la_general_relief_housing_subsidy_eligible(Variable):
         # Considering people who are about to loose housing as homeless
         homeless = household("is_homeless", period)
         # Person has to be aprt of other specific programs to be eligible for the housing subsidy
-        program_eligible = spm_unit("la_general_relief_housing_subsidy_program_eligible", period)
+        program_eligible = spm_unit(
+            "la_general_relief_housing_subsidy_program_eligible", period
+        )
         # Person or couple can not have dependents
         dependents = add(spm_unit, period, ["tax_unit_dependents"])
         # General relief cannot be under the rent subsidy amounts
-        gr_amount_eligible = spm_unit("la_general_relief_housing_subsidy_base_amount_eligible", period)
-        return program_eligible & homeless & (dependents == 0) & gr_amount_eligible
+        gr_amount_eligible = spm_unit(
+            "la_general_relief_housing_subsidy_base_amount_eligible", period
+        )
+        return (
+            program_eligible
+            & homeless
+            & (dependents == 0)
+            & gr_amount_eligible
+        )

@@ -16,7 +16,9 @@ class la_general_relief_housing_subsidy(Variable):
         subsidy_amount = where(married, p.amount.married, p.amount.single)
         # If filers are receiving the housing subsidy, they are obligated
         # to contribute an amount of their GR towards rent
-        rent_contributions = spm_unit("la_general_relief_rent_contribution", period)
+        rent_contributions = spm_unit(
+            "la_general_relief_rent_contribution", period
+        )
         # The amount can not exceed rent
         rent = add(spm_unit, period, ["rent"])
         return min_(rent, subsidy_amount + rent_contributions)

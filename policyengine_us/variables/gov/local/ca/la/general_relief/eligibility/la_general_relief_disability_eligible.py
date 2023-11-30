@@ -10,3 +10,5 @@ class la_general_relief_disability_eligible(Variable):
     # which is curently not implemented
     defined_for = "is_disabled"
     reference = "https://drive.google.com/file/d/1Oc7UuRFxJj-eDwTeox92PtmRVGnG9RjW/view?usp=sharing"
+
+    # def formula(spm_unit, period, parameters):
