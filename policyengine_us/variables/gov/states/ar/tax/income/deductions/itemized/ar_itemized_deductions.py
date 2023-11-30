@@ -27,6 +27,4 @@ class ar_itemized_deductions(Variable):
         prorate[mask] = total_person_agi[mask] / agi[mask]
         separated_itemized_deduction = ar_itemized_deds * prorate
 
-        return where(
-            separate, separated_itemized_deduction, ar_itemized_deds
-        )
+        return where(separate, separated_itemized_deduction, ar_itemized_deds)
