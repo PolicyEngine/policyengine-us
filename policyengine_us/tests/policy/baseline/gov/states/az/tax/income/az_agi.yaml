@@ -1,4 +1,4 @@
-- name: case 1
+- name: Reduction of AGI with additions
   period: 2023
   input:
     state_code: AZ
@@ -9,7 +9,7 @@
   output:
     az_agi: 9_500
 
-- name: case 2
+- name: Capped at 0
   period: 2023
   input:
     state_code: AZ

@@ -18,9 +18,8 @@ class az_aged_exemption_eligible_person(Variable):
         separate = filing_status == filing_status.possible_values.SEPARATE
 
         dependent_head = tax_unit("head_is_dependent_elsewhere", period)
-        head_eligible = ~dependent_head
 
         dependent_spouse = tax_unit("spouse_is_dependent_elsewhere", period)
-        spouse_eligible = ~dependent_spouse * ~separate
+        spouse_eligible_condition = ~dependent_spouse * ~separate
 
-        return (head & head_eligible) | (spouse & spouse_eligible)
+        return (head & ~dependent_head) | (spouse & spouse_eligible_condition)
