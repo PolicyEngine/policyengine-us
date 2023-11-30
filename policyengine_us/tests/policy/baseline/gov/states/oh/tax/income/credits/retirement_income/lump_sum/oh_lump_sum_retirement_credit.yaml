@@ -1,0 +1,91 @@
+- name: Lump sum retirement credit eligible
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        pension_income: 8_000
+        age: 65
+      person2:
+        is_tax_unit_head_or_spouse: true
+        pension_income: 20_000
+        age: 65
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        oh_lump_sum_retirement_credit_eligible: true
+  output:
+    oh_lump_sum_retirement_credit: 500
+
+- name: Lump sum retirement credit not eligible
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        pension_income: 8_000
+        age: 65
+      person2:
+        is_tax_unit_head_or_spouse: false
+        pension_income: 20_000
+        age: 65
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        oh_lump_sum_retirement_credit_eligible: true
+  output:
+    oh_lump_sum_retirement_credit: 0
+
+- name: Age ineligible and only one spouse
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: false
+        pension_income: 20_000
+        age: 65
+      person2:
+        is_tax_unit_head_or_spouse: true
+        pension_income: 20_000
+        age: 64
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        oh_lump_sum_retirement_credit_eligible: true
+  output:
+    oh_lump_sum_retirement_credit: 0
+
+- name: Two eligible spouses
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        pension_income: 20_000
+        age: 65
+      person2:
+        is_tax_unit_head_or_spouse: true
+        pension_income: 20_000
+        age: 65
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        oh_lump_sum_retirement_credit_eligible: true
+  output:
+    oh_lump_sum_retirement_credit: 1_000

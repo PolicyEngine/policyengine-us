@@ -10,6 +10,6 @@ class ri_eitc(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        fed_eitc = tax_unit("earned_income_tax_credit", period)
+        federal_eitc = tax_unit("eitc", period)
         rate = parameters(period).gov.states.ri.tax.income.credits.eitc.match
-        return fed_eitc * rate
+        return federal_eitc * rate

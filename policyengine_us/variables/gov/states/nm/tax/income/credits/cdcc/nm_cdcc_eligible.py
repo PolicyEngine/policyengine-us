@@ -14,7 +14,7 @@ class nm_cdcc_eligible(Variable):
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
         # Filer can not be a dependent on another tax return
-        dependent_on_another_return = tax_unit("dsi", period)
+        dependent_elsewhere = tax_unit("head_is_dependent_elsewhere", period)
         p = parameters(period).gov.states.nm.tax.income.credits.cdcc
         # Filer has to be be gainfully employed to receive credit
         has_earnings = person("earned_income", period) > 0
@@ -43,7 +43,7 @@ class nm_cdcc_eligible(Variable):
         )
         income_eligible = nm_modified_gross_income <= income_limit
         return (
-            ~dependent_on_another_return
+            ~dependent_elsewhere
             & employment_eligible
             & ~receives_tanf
             & income_eligible
