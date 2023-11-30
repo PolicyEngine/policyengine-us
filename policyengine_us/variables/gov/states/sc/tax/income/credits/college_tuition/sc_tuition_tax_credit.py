@@ -13,7 +13,7 @@ class sc_tuition_tax_credit(Variable):
         "https://www.scstatehouse.gov/code/t12c006.php"
         # South Carolina Legal Code | SECTION 12-6-3385 (A)
     )
-    
+
     def formula(person, period, parameters):
         p = parameters(period).gov.states.sc.tax.income.credits.college_tuition
 
