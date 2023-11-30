@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class mt_salt_deduction(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Montana salt deduction"
+    label = "Montana state and local tax deduction"
     unit = USD
     definition_period = YEAR
     reference = (
