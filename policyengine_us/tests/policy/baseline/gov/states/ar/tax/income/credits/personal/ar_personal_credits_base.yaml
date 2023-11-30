@@ -22,11 +22,10 @@
       tax_unit:
         members: [person1, person2]
         filing_status: WIDOW
-        ar_personal_credit_dependent_amount: 0
   output:
     ar_personal_credits_base: 319
 
-- name: Head and spouse eligible for the maximum amount of personal tax credits with dependent amount
+- name: Head and spouse eligible for the maximum amount of personal tax credits 
   period: 2022
   input:
     people:
@@ -50,9 +49,8 @@
       tax_unit:
         members: [person1, person2]
         filing_status: WIDOW
-        ar_personal_credit_dependent_amount: 200
   output:
-    ar_personal_credits_base: 519
+    ar_personal_credits_base: 319
 
 - name: Head and spouse ineligible for the aged credit amounts 
   period: 2022
@@ -78,7 +76,6 @@
       tax_unit:
         members: [person1, person2]
         filing_status: WIDOW
-        ar_personal_credit_dependent_amount: 0
   output:
     ar_personal_credits_base: 203
 
@@ -106,7 +103,6 @@
       tax_unit:
         members: [person1, person2]
         filing_status: WIDOW
-        ar_personal_credit_dependent_amount: 0
   output:
     ar_personal_credits_base: 261
 
@@ -140,7 +136,6 @@
       tax_unit:
         members: [person1, person2, person3]
         filing_status: WIDOW
-        ar_personal_credit_dependent_amount: 0
   output:
     ar_personal_credits_base: 319
 
@@ -168,7 +163,6 @@
       tax_unit:
         members: [person1, person2]
         filing_status: JOINT
-        ar_personal_credit_dependent_amount: 0
   output:
     ar_personal_credits_base: 290
 
@@ -196,6 +190,5 @@
       tax_unit:
         members: [person1, person2]
         filing_status: WIDOW
-        ar_personal_credit_dependent_amount: 0
   output:
     ar_personal_credits_base: 203
