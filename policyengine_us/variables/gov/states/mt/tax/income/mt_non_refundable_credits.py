@@ -1,13 +1,12 @@
 from policyengine_us.model_api import *
 
 
-class mt_agi(Variable):
+class mt_non_refundable_credits(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Montana Adjusted Gross Income"
+    label = "Montana non_refundable credits"
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.MT
 
-    adds = ["mt_additions", "adjusted_gross_income"]
-    subtracts = ["mt_subtractions"]
+    adds = "gov.states.mt.tax.income.credits.non_refundable"
