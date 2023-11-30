@@ -3,8 +3,9 @@
   input:
     people:
       person1:
-        ga_retirement_exclusion_eligible_person: true
-        ga_retirement_income_exclusion_retirement_income: 69_000
+        is_tax_unit_head: true
+        is_disabled: true
+        age: 50
     tax_units:
       tax_unit:
         members: [person1]
@@ -13,7 +14,7 @@
       household:
         state_code: GA
   output:
-    ga_retirement_exclusion: 35_000
+    ga_retirement_exclusion_eligible_person: true
 
 - name: head not eligible
   period: 2023
@@ -23,7 +24,6 @@
         is_tax_unit_head: true
         is_disabled: false
         age: 50
-        ga_retirement_income_exclusion_retirement_income: 69_000
     tax_units:
       tax_unit:
         members: [person1]
@@ -32,7 +32,7 @@
       household:
         state_code: GA
   output:
-    ga_retirement_exclusion: 0
+    ga_retirement_exclusion_eligible_person: false
 
 - name: head is eligible for older cap and spouse is eligible for younger cap
   period: 2023
@@ -42,10 +42,10 @@
         is_tax_unit_head: true
         is_disabled: false
         age: 65
-        ga_retirement_income_exclusion_retirement_income: 67_000
       person2:
-        ga_retirement_exclusion_eligible_person: true
-        ga_retirement_income_exclusion_retirement_income: 37_700
+        is_tax_unit_spouse: true
+        is_disabled: true
+        age: 60
     tax_units:
       tax_unit:
         members: [person1,person2]
@@ -54,7 +54,8 @@
       household:
         state_code: GA
   output:
-    ga_retirement_exclusion: 100_000
+    ga_retirement_exclusion_eligible_person: [false, true]
+
 
 - name: both are eligible for older cap
   period: 2023
@@ -64,12 +65,10 @@
         is_tax_unit_head: true
         is_disabled: false
         age: 65
-        ga_retirement_income_exclusion_retirement_income: 37_700
       person2:
         is_tax_unit_spouse: true
         is_disabled: true
         age: 65
-        ga_retirement_income_exclusion_retirement_income: 65_000
     tax_units:
       tax_unit:
         members: [person1,person2]
@@ -78,4 +77,4 @@
       household:
         state_code: GA
   output:
-    ga_retirement_exclusion: 102_700
+    ga_retirement_exclusion_eligible_person: false
