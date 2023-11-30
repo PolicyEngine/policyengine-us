@@ -11,4 +11,4 @@ class al_federal_income_tax_deduction(Variable):
     defined_for = StateCode.AL
 
     adds = "gov.states.al.tax.income.deductions.federal_tax.countable_sources"
-    subtracts = ["al_federal_income_tax_deduction_credits"]
+    subtracts = "gov.states.al.tax.income.deductions.federal_tax.credits"
