@@ -21,7 +21,7 @@ class mi_standard_deduction_tier_two(Variable):
         filing_status = tax_unit("filing_status", period)
 
         eligible_people = tax_unit(
-            "mi_standard_deduction_tier_two_increase_eligible_count", period
+            "mi_standard_deduction_tier_two_increase_eligible_people", period
         )
         # The standard deduction is reduced by any amounts reported on
         # line 11 (military retirement benefits) and any military pay included on line 14

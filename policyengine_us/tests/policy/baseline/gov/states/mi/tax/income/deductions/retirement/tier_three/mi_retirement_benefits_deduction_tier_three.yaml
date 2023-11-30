@@ -1,94 +1,19 @@
-- name: 2022 joint filer and their spouse are at the tier 3 retirement and pension benefits threshold, both receive retirement benefits from SSA employment exempt and one retired before 2013
+- name: 2022 filer with tier 3 retirement and pension benefits, ss_exempt_retired larger than ss_exempt_not_retired amount
   period: 2022
   input:
-    people:
-      person1:
-        taxable_pension_income: 20_000
-        taxable_public_pension_income: 10_000
-        taxable_private_pension_income: 10_000
-        military_retirement_pay: 1_000
-        military_service_income: 0
-        taxable_social_security: 0
-        year_of_retirement: 0
-        retirement_benefits_from_ss_exempt_employment: 2_000
-        taxable_interest_income: 0
-        dividend_income: 0
-        capital_gains: 0
-        is_tax_unit_head_or_spouse: true
-      person2:
-        taxable_pension_income: 40_000
-        taxable_public_pension_income: 30_000
-        taxable_private_pension_income: 10_000
-        military_retirement_pay: 1_000
-        military_service_income: 0
-        taxable_social_security: 0
-        year_of_retirement: 2010
-        retirement_benefits_from_ss_exempt_employment: 4_000
-        taxable_interest_income: 0
-        dividend_income: 0
-        capital_gains: 0
-        is_tax_unit_head_or_spouse: true
-    tax_units:
-      tax_unit:
-        greater_age_head_spouse: 66
-        elderly_disabled_credit: 0
-        mi_exemptions: 0
-        members: [person1, person2]
-        filing_status: JOINT
-    household:
-      members: [person1, person2]
-      state_code: MI
-  output: # 30000 < 55000 < 20000 + 40000
-    mi_retirement_benefits_deduction_tier_three: 5_5000
+    mi_retirement_benefits_deduction_tier_three_eligible: true
+    mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired: 15_000
+    mi_retirement_benefits_deduction_tier_three_ss_exempt_retired: 40_000
+    state_code: MI
+  output: # 40000 > 15000
+    mi_retirement_benefits_deduction_tier_three: 40_000
 
-- name: 2022 joint filer and their spouse are at the tier 3 standard deduction age threshold, and with one more household member
+- name: 2022 filer with tier 3 retirement and pension benefits, ss_exempt_retired smaller than ss_exempt_not_retired amount
   period: 2022
   input:
-    people:
-      person1:
-        taxable_pension_income: 40_000
-        taxable_public_pension_income: 20_000
-        taxable_private_pension_income: 20_000
-        taxable_social_security: 2_000
-        military_retirement_pay: 1_000
-        military_service_income: 5_000
-        year_of_retirement: 2015
-        retirement_benefits_from_ss_exempt_employment: 0
-        taxable_interest_income: 500
-        dividend_income: 400
-        capital_gains: 100
-        is_tax_unit_head_or_spouse: true
-      person2:
-        taxable_pension_income: 30_000
-        taxable_social_security: 0
-        military_retirement_pay: 2_000
-        military_service_income: 3_000
-        year_of_retirement: 2018
-        retirement_benefits_from_ss_exempt_employment: 0
-        taxable_interest_income: 500
-        dividend_income: 400
-        capital_gains: 100
-        is_tax_unit_head_or_spouse: true
-      person3:
-        taxable_pension_income: 30_000
-        taxable_social_security: 300
-        military_retirement_pay: 2_000
-        military_service_income: 3_000
-        year_of_retirement: 2012
-        retirement_benefits_from_ss_exempt_employment: 300
-        taxable_interest_income: 500
-        dividend_income: 400
-        capital_gains: 100
-        is_tax_unit_head_or_spouse: false
-    tax_units:
-      tax_unit:
-        greater_age_head_spouse: 67
-        elderly_disabled_credit: 300
-        mi_exemptions: 2_000
-        members: [person1, person2, person3]
-        filing_status: JOINT
-    household:
-      members: [person1, person2, person3]
-      state_code: MI
-  output: # 40000 - 2000 - 1000 - 5000 - 2000 - 3000 - 2000 < 40000 + 30000
-    mi_retirement_benefits_deduction_tier_three: 0
+    mi_retirement_benefits_deduction_tier_three_eligible: true
+    mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired: 30_000
+    mi_retirement_benefits_deduction_tier_three_ss_exempt_retired: 0
+    state_code: MI
+  output: # 30000 > 0
+    mi_retirement_benefits_deduction_tier_three: 30_000

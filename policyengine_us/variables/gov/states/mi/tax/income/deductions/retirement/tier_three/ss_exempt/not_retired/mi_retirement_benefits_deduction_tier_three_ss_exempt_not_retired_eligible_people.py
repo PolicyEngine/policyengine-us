@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired_eligible_count(
+class mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired_eligible_people(
     Variable
 ):
     value_type = int
@@ -28,9 +28,9 @@ class mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired_eligible
 
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
 
-        eligible_person = (
+        eligible_people = (
             has_retirement_benefits_from_ss_exempt_employment
             * is_head_or_spouse
         )
 
-        return tax_unit.sum(eligible_person)
+        return tax_unit.sum(eligible_people)
