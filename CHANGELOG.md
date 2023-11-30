@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.546.1] - 2023-11-30 18:10:45
+
+### Fixed
+
+- Relocate some ACA parameters to clarify their role.
+- Rename one ACA variable to clarify its role.
+
 ## [0.546.0] - 2023-11-30 02:27:14
 
 ### Added
@@ -6034,6 +6041,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.546.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.546.0...0.546.1
 [0.546.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.545.0...0.546.0
 [0.545.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.544.0...0.545.0
 [0.544.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.543.0...0.544.0
