@@ -1,4 +1,4 @@
-- name: Unit test 1.
+- name: Tax filer with federal agi of $200,000 and interest on U.S. government obligations of $1,000.
   period: 2022
   input:
     adjusted_gross_income: 200_000
@@ -7,7 +7,7 @@
   output:
     vt_amt: 5_000
 
-- name: Unit test 2.
+- name: Tax filer with federal agi of $100,000 and interest on U.S. government obligations of $1,000.
   period: 2022
   input:
     adjusted_gross_income: 100_000

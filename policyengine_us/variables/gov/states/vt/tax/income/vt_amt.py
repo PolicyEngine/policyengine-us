@@ -23,8 +23,6 @@ class vt_amt(Variable):
         # not in the legal code (Vermont §5822 (a)(6)).
         federal_agi = tax_unit("adjusted_gross_income", period)
         us_govt_interest = tax_unit("us_govt_interest", period)
-        alt_minimum_tax = max_(
-            (p.amt.calc(federal_agi) * federal_agi) - us_govt_interest,
-            0,
-        )
-        return alt_minimum_tax
+        amt_rate = p.amt.calc(federal_agi)
+        base_amt = amt_rate * federal_agi
+        return max_(base_amt - us_govt_interest, 0)
