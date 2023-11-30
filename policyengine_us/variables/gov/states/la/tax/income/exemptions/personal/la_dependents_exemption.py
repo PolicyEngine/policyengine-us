@@ -5,10 +5,10 @@ class la_dependents_exemption(Variable):
     value_type = float
     entity = TaxUnit
     label = "Louisiana qualified dependents exemption"
-    reference = (
+    reference = [
         "https://www.revenue.louisiana.gov/taxforms/6935(11_02)F.pdf#page=1",
-        "https://revenue.louisiana.gov/TaxForms/IT540iWEB(2022)D1.pdf#page=2"
-    )
+        "https://revenue.louisiana.gov/TaxForms/IT540iWEB(2022)D1.pdf#page=2",
+    ]
     # Even though the tax computation worksheet refers "dependent exemption" as credits, the instructions for
     # preparing tax form line 6a-6b specifies it as exemption.
     unit = USD
