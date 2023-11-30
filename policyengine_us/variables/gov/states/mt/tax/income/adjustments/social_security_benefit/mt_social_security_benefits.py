@@ -31,20 +31,18 @@ class mt_social_security_benefits(Variable):
             exceeding_income, exceeding_income_cap
         )  # Line 14
 
-        exceeding_income_fraction = (
-            p.excess_income.exceeding_income_fraction
-        ) 
+        exceeding_income_fraction = p.excess_income.exceeding_income_fraction
 
         net_benefits = tax_unit.spm_unit("spm_unit_benefits", period)
         halved_capped_income = (
             capped_exceeding_income * exceeding_income_fraction,
         )  # Line 15
-        total_benefit_fraction1 = p.fraction.income 
+        total_benefit_fraction1 = p.fraction.income
         capped_benefit_amount = min_(
             halved_capped_income,
             net_benefits * total_benefit_fraction1,
         )  # Line 16
-        extra_income_fraction = p.fraction.total_income  
+        extra_income_fraction = p.fraction.total_income
         reduced_exceeding_income_fraction = (
             reduced_exceeding_income * extra_income_fraction
         )  # Line 17

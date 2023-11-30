@@ -7,9 +7,9 @@ class mt_subtractions(Variable):
     label = "Montana subtractions from federal AGI"
     unit = USD
     definition_period = YEAR
-    reference =  (
+    reference = (
         "https://rules.mt.gov/gateway/Subchapterhome.asp?scn=42%2E15%2E2",
-        "https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2023/05/Montana-Idividiual-Income-Tax-Return-Form-2-2022v6.2.pdf#page=5"
+        "https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2023/05/Montana-Idividiual-Income-Tax-Return-Form-2-2022v6.2.pdf#page=5",
     )
     defined_for = StateCode.MT
 
