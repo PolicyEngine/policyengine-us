@@ -24,7 +24,7 @@
         filing_status: WIDOW
         ar_personal_credit_dependent_amount: 0
   output:
-    ar_personal_credits: 319
+    ar_personal_credits_base: 319
 
 - name: Head and spouse eligible for the maximum amount of personal tax credits with dependent amount
   period: 2022
@@ -52,7 +52,7 @@
         filing_status: WIDOW
         ar_personal_credit_dependent_amount: 200
   output:
-    ar_personal_credits: 519
+    ar_personal_credits_base: 519
 
 - name: Head and spouse ineligible for the aged credit amounts 
   period: 2022
@@ -80,7 +80,7 @@
         filing_status: WIDOW
         ar_personal_credit_dependent_amount: 0
   output:
-    ar_personal_credits: 203
+    ar_personal_credits_base: 203
 
 - name: Head and spouse ineligible for the aged special credit amounts 
   period: 2022
@@ -108,7 +108,7 @@
         filing_status: WIDOW
         ar_personal_credit_dependent_amount: 0
   output:
-    ar_personal_credits: 261
+    ar_personal_credits_base: 261
 
 - name: Not head or spouse are ineligible for any credits
   period: 2022
@@ -142,7 +142,7 @@
         filing_status: WIDOW
         ar_personal_credit_dependent_amount: 0
   output:
-    ar_personal_credits: 319
+    ar_personal_credits_base: 319
 
 - name: Joint filers are ineligible for the filing status
   period: 2022
@@ -170,7 +170,7 @@
         filing_status: JOINT
         ar_personal_credit_dependent_amount: 0
   output:
-    ar_personal_credits: 290
+    ar_personal_credits_base: 290
 
 - name: Not blind or deaf filers are not receiving the blind or deaf amounts
   period: 2022
@@ -198,4 +198,4 @@
         filing_status: WIDOW
         ar_personal_credit_dependent_amount: 0
   output:
-    ar_personal_credits: 203
+    ar_personal_credits_base: 203

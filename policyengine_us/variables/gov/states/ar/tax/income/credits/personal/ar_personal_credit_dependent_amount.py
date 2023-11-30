@@ -16,9 +16,6 @@ class ar_personal_credit_dependent_amount(Variable):
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
-        p = parameters(
-            period
-        ).gov.states.ar.tax.income.credits.personal.amount.dependent
         dependent = person("is_tax_unit_dependent", period)
         total_dependents = tax_unit.sum(dependent)
         disabled = person("is_disabled", period)
