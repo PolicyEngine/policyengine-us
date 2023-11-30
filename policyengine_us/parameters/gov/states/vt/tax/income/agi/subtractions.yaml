@@ -1,0 +1,17 @@
+description: Vermont subtracts these sources from adjusted gross income.
+values:
+  2021-01-01:
+    - us_govt_interest
+    - vt_medical_expense_deduction
+    - student_loan_interest
+    - vt_capital_gains_exclusion
+metadata:
+  unit: list
+  label: Vermont subtractions
+  reference:
+    - title: Instruction for 2022 SCHEDULE IN-112 # PART 1 SUBTRACTIONS TO FEDERAL ADJUSTED GROSS INCOME
+      href: https://tax.vermont.gov/sites/tax/files/documents/IN-112-2022.pdf#page=1
+    - title: Instruction for 2021 SCHEDULE IN-112 # PART 1 SUBTRACTIONS TO FEDERAL ADJUSTED GROSS INCOME
+      href: https://tax.vermont.gov/sites/tax/files/documents/IN-112-2021.pdf#page=1
+    - title: Titl. 32 V.S.A. § 5811(21)(B)(i), (C)(iv), (B)(vi), (B)(ii), (B)(iv)
+      href: https://legislature.vermont.gov/statutes/section/32/151/05811
