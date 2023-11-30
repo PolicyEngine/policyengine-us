@@ -16,7 +16,7 @@
       members: [person1, person2]
       state_code: AZ
   output:
-    az_aged_exemption_eligible: [true, false]
+    az_aged_exemption_eligible_person: [true, false]
 
 - name: Case 2
   period: 2023
@@ -36,7 +36,7 @@
       members: [person1, person2]
       state_code: AZ
   output:
-    az_aged_exemption_eligible: [false, false]
+    az_aged_exemption_eligible_person: [false, false]
 
 - name: Case 3
   period: 2023
@@ -56,7 +56,7 @@
       members: [person1, person2]
       state_code: AZ
   output:
-    az_aged_exemption_eligible: [true, false]
+    az_aged_exemption_eligible_person: [true, false]
 
 - name: Case 4
   period: 2023
@@ -79,4 +79,4 @@
       members: [person1, person2, person3]
       state_code: AZ
   output:
-    az_aged_exemption_eligible: [true, false, false]
+    az_aged_exemption_eligible_person: [true, false, false]

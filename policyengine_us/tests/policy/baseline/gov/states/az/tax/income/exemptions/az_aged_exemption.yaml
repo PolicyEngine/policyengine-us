@@ -3,10 +3,10 @@
   input:
     people:
       person1:
-        az_aged_exemption_eligible: true
+        az_aged_exemption_eligible_person: true
         age: 66
       person2:
-        az_aged_exemption_eligible: true
+        az_aged_exemption_eligible_person: true
         age: 66
     tax_units:
       tax_unit:
@@ -19,10 +19,10 @@
   input:
     people:
       person1:
-        az_aged_exemption_eligible: false
+        az_aged_exemption_eligible_person: false
         age: 66
       person2:
-        az_aged_exemption_eligible: false
+        az_aged_exemption_eligible_person: false
         age: 66
     tax_units:
       tax_unit:
@@ -35,10 +35,10 @@
   input:
     people:
       person1:
-        az_aged_exemption_eligible: true
+        az_aged_exemption_eligible_person: true
         age: 60
       person2:
-        az_aged_exemption_eligible: true
+        az_aged_exemption_eligible_person: true
         age: 66
     tax_units:
       tax_unit:

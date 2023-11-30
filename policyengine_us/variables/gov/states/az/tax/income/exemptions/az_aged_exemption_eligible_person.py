@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class az_aged_exemption_eligible(Variable):
+class az_aged_exemption_eligible_person(Variable):
     value_type = float
     entity = Person
-    label = "Eligible for the Arizona aged exemption"
+    label = "Eligible person for the Arizona aged exemption"
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.AZ
