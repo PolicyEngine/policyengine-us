@@ -1,0 +1,34 @@
+- name: Arkansas special itemized deduction summation (after 2017)
+  period: 2022
+  input:
+    people:
+      person1:
+        medical_expense: 5_000
+        qualified_tuition_expenses: 4_800 # 4800*0.5=2400>2272
+        is_full_time_college_student: true
+        four_year_college_student: false
+        real_estate_taxes: 200
+      person2:
+        medical_expense: 18_000
+        qualified_tuition_expenses: 4_200 # 4750*0.5=2100<2272
+        is_full_time_college_student: true
+        four_year_college_student: false
+        real_estate_taxes: 300
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ar_agi: 240_000
+        misc_deduction: 2_000 # 240000*0.02=2400
+        charitable_deduction: 800
+        interest_deduction: 400
+        casualty_loss_deduction: 1_300
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR 
+  output:
+    # ar_medical_expense_deduction: 5_000
+    # ar_post_secondary_education_tuition_deduction: 4_372
+    # ar_msc_deduction: 0
+    ar_itemized_deductions_sources: 12_372
+

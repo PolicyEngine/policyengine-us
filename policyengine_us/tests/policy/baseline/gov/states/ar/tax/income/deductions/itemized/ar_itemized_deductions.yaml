@@ -5,27 +5,22 @@
       person1:
         is_tax_unit_head: true
         ar_agi_person: 100_000
-        real_estate_taxes: 200
       person2:
         is_tax_unit_head: false
         ar_agi_person: 140_000
-        real_estate_taxes: 300
     tax_units:
       tax_unit:
         members: [person1, person2]
         ar_agi: 240_000
-        ar_itemized_deductions_sum: 5_000
+        ar_itemized_deductions_sources: 5_000
         filing_status: SEPARATE
-        charitable_deduction: 800
-        interest_deduction: 400
-        casualty_loss_deduction: 1_300
     households:
       household:
         members: [person1, person2]
         state_code: AR 
   output:
-    # 8000*(100_000/240_000) = 3333.3333
-    ar_itemized_deductions: 3333.3333
+    # 5000*(100_000/240_000) = 2083.3333
+    ar_itemized_deductions: 2083.3333
 
 - name: Itemized deduction for married filing jointly status
   period: 2019
@@ -34,18 +29,13 @@
       person1:
         is_tax_unit_head: true
         ar_agi_person: 100_000
-        real_estate_taxes: 200
       person2:
         is_tax_unit_head: false
         ar_agi_person: 120_000
-        real_estate_taxes: 300
     tax_units:
       tax_unit:
         members: [person1, person2]
-        charitable_deduction: 800
-        interest_deduction: 300
-        casualty_loss_deduction: 400
-        ar_itemized_deductions_sum: 7_000
+        ar_itemized_deductions_sources: 7_000
         ar_agi: 220_000
         filing_status: JOINT
     households:
@@ -53,7 +43,7 @@
         members: [person1, person2]
         state_code: AR 
   output: 
-    ar_itemized_deductions: 9_000
+    ar_itemized_deductions: 7_000
 
 - name: Itemized deduction for single filing status
   period: 2015
@@ -62,14 +52,10 @@
       person1:
         is_tax_unit_head: true
         ar_agi_person: 100_000
-        real_estate_taxes: 500
     tax_units:
       tax_unit:
         members: [person1]
-        charitable_deduction: 800
-        interest_deduction: 300
-        casualty_loss_deduction: 400
-        ar_itemized_deductions_sum: 4_000
+        ar_itemized_deductions_sources: 4_000
         ar_agi: 100_000
         filing_status: SINGLE
     households:
@@ -77,7 +63,7 @@
         members: [person1]
         state_code: AR
   output:
-    ar_itemized_deductions: 6_000
+    ar_itemized_deductions: 4_000
 
 - name: Itemized deduction for head of household filing status 
   period: 2022
@@ -86,26 +72,21 @@
       person1:
         ar_agi_person: 100_000
         is_tax_unit_head: true
-        real_estate_taxes: 100
       person2:
         ar_agi_person: 130_000
         is_tax_unit_head: false
-        real_estate_taxes: 400
     tax_units:
       tax_unit:
         members: [person1, person2]
-        charitable_deduction: 600
-        interest_deduction: 400
-        casualty_loss_deduction: 300
         ar_agi: 230_000
         filing_status: HEAD_OF_HOUSEHOLD
-        ar_itemized_deductions_sum: 6_000
+        ar_itemized_deductions_sources: 6_000
     households:
       household:
         members: [person1, person2]
         state_code: AR
   output:
-    ar_itemized_deductions: 7_800
+    ar_itemized_deductions: 6_000
 
 - name: Itemized deduction for widow filing status
   period: 2022
@@ -114,20 +95,16 @@
       person1:
         ar_agi_person: 100_000
         is_tax_unit_head: true
-        real_estate_taxes: 500
     tax_units:
       tax_unit:
         members: [person1]
-        charitable_deduction: 100
-        interest_deduction: 400
-        casualty_loss_deduction: 300
         ar_agi: 100_000
         filing_status: WIDOW
-        ar_itemized_deductions_sum: 4_000
+        ar_itemized_deductions_sources: 4_000
     households:
       household:
         members: [person1]
         state_code: AR
   output:
-    ar_itemized_deductions: 5_300
+    ar_itemized_deductions: 4_000
 

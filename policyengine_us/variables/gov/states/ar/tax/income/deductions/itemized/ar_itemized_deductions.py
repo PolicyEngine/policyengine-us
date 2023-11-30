@@ -12,23 +12,12 @@ class ar_itemized_deductions(Variable):
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
-        year = period.start.year
-
-        # We need to include this condition to be able to test the medical expense rate
-        # as the itemized deductions list currently only back dates to 2018
-
-        if year < 2018:
-            instant_str = f"2018-01-01"
-        else:
-            instant_str = f"{year}-01-01"
-        p_ded = parameters(instant_str).gov.irs.deductions
-
         agi = tax_unit("ar_agi", period)
         head = person("is_tax_unit_head", period)
         person_agi = person("ar_agi_person", period)
         total_person_agi = tax_unit.sum(person_agi * head)
 
-        ar_itemized_deds = tax_unit("ar_itemized_deductions_sum", period)
+        ar_itemized_deds = tax_unit("ar_itemized_deductions_sources", period)
 
         # Prorated itemized deductions
         filing_status = tax_unit("filing_status", period)
@@ -36,8 +25,8 @@ class ar_itemized_deductions(Variable):
         prorate = np.zeros_like(agi)
         mask = agi > 0
         prorate[mask] = total_person_agi[mask] / agi[mask]
-        separated_itemized_deduction = total_itemized_deduction * prorate
+        separated_itemized_deduction = ar_itemized_deds * prorate
 
         return where(
-            separate, separated_itemized_deduction, total_itemized_deduction
+            separate, separated_itemized_deduction, ar_itemized_deds
         )
