@@ -8,6 +8,7 @@ class mt_modified_income(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
+        "https://law.justia.com/codes/montana/2022/title-15/chapter-30/part-21/section-15-30-2110/",
         "https://mtrevenue.gov/wp-content/uploads/mdocs/form%202%202021.pdf#page=6",
         "https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2023/05/Montana-Idividiual-Income-Tax-Return-Form-2-2022v6.2.pdf#page=6",
     )
@@ -26,7 +27,7 @@ class mt_modified_income(Variable):
             person("social_security", period) * is_head_or_spouse
         )  # Line1
         # Line 2 multiply benefits by a fraction
-        halved_benefits = net_benefits * p.fraction.amount
+        halved_benefits = net_benefits * p.fraction.income
         # Line 3 subtract taxable ss benefits from gross income
         gross_income = tax_unit.sum(
             person("irs_gross_income", period) * is_head_or_spouse

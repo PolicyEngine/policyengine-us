@@ -1,15 +1,25 @@
-description: Montana allows adjustments from US AGI of the lesser of US-taxable social security and an alternative amount with the complex calculation including this fraction which is applied to total social security benefits.
-values:
-  2021-01-01: 0.85
-
+description: Montana calculates the taxable social security benefits for for filers with modified gross income above this threshold.
 metadata:
+  label: Montana taxable social security modified income threshold
   period: year
-  unit: /1
-  label: Montana social security subtraction total benefit fraction 2 # change later
+  unit: currency-USD
+  breakdown:
+  - filing_status
   reference:
   - title: Montana Code Annotated 2021 TITLE 15. TAXATION CHAPTER 30. INDIVIDUAL INCOME TAX Part 21. Rate and General Provisions (5)
-    href: https://leg.mt.gov/bills/mca/title_0150/chapter_0300/part_0210/section_0100/0150-0300-0210-0100.html
+    href: https://law.justia.com/codes/montana/2022/title-15/chapter-30/part-21/section-15-30-2110/
   - title: 2022 Montana Individual Income Tax Return Form, Taxable Social Security Benefits Schedule, Line 15
     href: https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2023/05/Montana-Idividiual-Income-Tax-Return-Form-2-2022v6.2.pdf#page=6
   - title: 2021 Montana Individual Income Tax Return Form, Taxable Social Security Benefits Schedule, Line 15
     href: https://mtrevenue.gov/wp-content/uploads/mdocs/form%202%202021.pdf#page=6
+
+JOINT:
+  2021-01-01: 32_000
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 25_000
+WIDOW:
+  2021-01-01: 25_000
+SINGLE:
+  2021-01-01: 25_000
+SEPARATE:
+  2021-01-01: 16_000

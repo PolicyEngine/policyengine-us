@@ -7,7 +7,9 @@ class mt_other_subtractions(Variable):
     label = "Montana subtractions except subtraction from federal taxable social security benefits"
     unit = USD
     definition_period = YEAR
-    reference = "https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2023/05/Montana-Idividiual-Income-Tax-Return-Form-2-2022v6.2.pdf#page=5"
+    reference = (
+        "https://rules.mt.gov/gateway/Subchapterhome.asp?scn=42%2E15%2E2",
+        "https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2023/05/Montana-Idividiual-Income-Tax-Return-Form-2-2022v6.2.pdf#page=5"
+    )
     defined_for = StateCode.MT
-    adds = ["us_govt_interest"]
-    # what about mt_interest_exemption, this is in subtractions.yaml
+    adds = "gov.states.mt.tax.income.subtractions.subtractions"
