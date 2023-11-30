@@ -11,20 +11,28 @@ metadata:
       href: https://casetext.com/regulation/idaho-administrative-code/title-idapa-35-tax-commission-state/rule-350101-income-tax-administrative-rules/section-350101075-tax-on-individuals-estates-and-trusts
     - title: IDAHO STATUTES, TITLE 63, CHAPTER 30, SECTION 63-3024
       href: https://legislature.idaho.gov/statutesrules/idstat/title63/t63ch30/sect63-3024/ 
+    - title: IDAHO Tax Update for Summer 2023
+      href: https://tax.idaho.gov/taxes/tax-pros/tax-update/tax-update-summer-2023/#:~:text=Idaho's%20tax%20rate%20is%20now,if%20you're%20filing%20jointly
+    - title: IDAHO 2023 Legislation
+      href: https://legislature.idaho.gov/sessioninfo/2023/legislation/H0172/
 brackets:
   - threshold:
       2021-01-01: 0
     rate:
       2021-01-01: 0.01
+      2023-01-01: 0
   - threshold:
       2021-01-01: 3_176
       2022-01-01: 3_324
+      2023-01-01: 8_978
     rate:
       2021-01-01: 0.031
       2022-01-01: 0.03
+      2023-01-01: 0.058
   - threshold:
       2021-01-01: 9_526
       2022-01-01: 9_974
+      2023-01-01: .inf
     rate:
       2021-01-01: 0.045
   - threshold:
