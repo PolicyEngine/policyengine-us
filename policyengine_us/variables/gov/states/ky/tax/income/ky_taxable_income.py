@@ -15,6 +15,7 @@ class ky_taxable_income(Variable):
         # current model does not have itemized deduction --> create a dummy one
         standard_deduction = tax_unit("ky_standard_deduction", period)
         itemized_deduction = tax_unit("ky_itemized_deduction", period)
+        # if filler itemized deductions exceed standard deductions, it will benefit filler to itemize.
         deduction = where(itemized_deduction > standard_deduction, itemized_deduction, standard_deduction)
 
         return max_(0, ky_agi - deduction)
