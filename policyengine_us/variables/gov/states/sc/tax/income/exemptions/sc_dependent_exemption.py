@@ -9,8 +9,8 @@ class sc_dependent_exemption(Variable):
     definition_period = YEAR
     reference = (
         "https://dor.sc.gov/forms-site/Forms/SC1040_2022.pdf#page=2",
-        # SECTION 12-6-1160
         "https://www.scstatehouse.gov/code/t12c006.php",
+        # SECTION 12-6-1140 (13)
     )
     defined_for = StateCode.SC
 
