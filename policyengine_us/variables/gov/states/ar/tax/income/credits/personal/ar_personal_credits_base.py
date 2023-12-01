@@ -30,14 +30,14 @@ class ar_personal_credits_base(Variable):
         )
         aged_special = aged & ~receives_retirement_or_disability_exemption
         # Blind filers get an additional personal tax credit amount
-        blind = person("is_blind", period) 
+        blind = person("is_blind", period)
         # Deaf filers get an additional personal tax credit amount
-        deaf = person("is_deaf", period) 
+        deaf = person("is_deaf", period)
         # Widowed and head of household filers receive an additional credit amount
         filing_status = tax_unit("filing_status", period)
-        statuses = filing_status.possible_values  
-        widow = filing_status == statuses.WIDOW  
-        hoh = filing_status == statuses.HEAD_OF_HOUSEHOLD  
+        statuses = filing_status.possible_values
+        widow = filing_status == statuses.WIDOW
+        hoh = filing_status == statuses.HEAD_OF_HOUSEHOLD
         filing_status_eligible = widow | hoh
 
         personal_credit_count = tax_unit.sum(

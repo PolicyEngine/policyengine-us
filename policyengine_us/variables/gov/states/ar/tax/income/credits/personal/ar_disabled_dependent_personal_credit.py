@@ -20,7 +20,5 @@ class ar_disabled_dependent_personal_credit(Variable):
         disabled = person("is_disabled", period)
         disabled_dependent = disabled & dependent
         count_disabled_dependent = tax_unit.sum(disabled_dependent)
-        p = parameters(
-            period
-        ).gov.states.ar.tax.income.credits.personal.amount
+        p = parameters(period).gov.states.ar.tax.income.credits.personal.amount
         return count_disabled_dependent * p.disabled_dependent
