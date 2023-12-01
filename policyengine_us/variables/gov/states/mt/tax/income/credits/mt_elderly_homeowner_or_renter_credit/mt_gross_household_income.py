@@ -9,6 +9,5 @@ class mt_gross_household_income(Variable):
     definition_period = YEAR
     defined_for = StateCode.MT
 
-    adds = "gov.states.mt.tax.income.credits.elderly_renter.gross_income_sources"
-
+    adds = "gov.states.mt.tax.income.credits.elderly_homeowner_or_renter_credit.gross_income_sources"
     subtracts = ["tax_exempt_social_security"]
