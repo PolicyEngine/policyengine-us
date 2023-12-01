@@ -21,7 +21,9 @@ class mt_elderly_homeowner_or_renter_credit(Variable):
             gross_household_income - standard_exclusion, 0
         )
         net_household_income = (
-            p.net_household_income.reduction_rate.calc(reduced_household_income)
+            p.net_household_income.reduction_rate.calc(
+                reduced_household_income
+            )
             * reduced_household_income
         )
 
@@ -29,9 +31,10 @@ class mt_elderly_homeowner_or_renter_credit(Variable):
         property_tax = add(tax_unit, period, ["real_estate_taxes"])
         rent = add(tax_unit, period, ["rent"])
         credit_amount = max_(
-            rent * p.rent_equivalent_tax_rate + property_tax - net_household_income, 0
+            rent * p.rent_equivalent_tax_rate
+            + property_tax
+            - net_household_income,
+            0,
         )
         capped_credit = min_(credit_amount, p.max_amount)
-        return (
-            p.credit_multiplier.calc(gross_household_income) * capped_credit
-        )
+        return p.credit_multiplier.calc(gross_household_income) * capped_credit

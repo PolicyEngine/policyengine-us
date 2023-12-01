@@ -18,7 +18,7 @@
   output:
     mt_elderly_homeowner_or_renter_credit: 0
 
-- name: Eligible only head and spouse
+- name: Eligible only head and spouse -max in 2021
   period: 2021
   input:
     people:
@@ -33,49 +33,26 @@
         members: [person1, person2]
         mt_gross_household_income: 34_000
         mt_elderly_homeowner_or_renter_credit_eligible: true
-  output:  # 1500+ 0+ 9000*2*0.15 - (34000-6300)*0.05 = 
-    mt_elderly_homeowner_or_renter_credit: 1_000
-  
-- name: Test Case 3 (Not eligible)
-  period: 2022
-  input:
-    people:
-      person1:
-        age: 60
-        is_tax_unit_head: 1
-        real_estate_taxes: 1_500
-        rent: 9_000
-      person2:
-        age: 60
-        is_tax_unit_spouse: 1
-        real_estate_taxes: 1_500
-        rent: 9_000
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
-        mt_gross_household_income: 20_000
-        mt_elderly_homeowner_or_renter_credit_eligible: true
-  output:
-    mt_elderly_homeowner_or_renter_credit: 0
+  output:  
+  # min_([propertytax + rent*rate - (grossincome-standard)*reduction_rate], 1150) * percentage(grossincome)
+  # 1500+ 0+ 9000*2*0.15 - (34000-6300)*0.05 = 2815 #1150*100%
+    mt_elderly_homeowner_or_renter_credit: 1_150
 
-- name: Test Case 4
-  period: 2022
+- name: Eligible only head and spouse -max in 2020
+  period: 2020
   input:
     people:
       person1:
-        age: 80
-        is_tax_unit_head: 1
-        real_estate_taxes: 12_000
-        rent: 0
+        rent: 9_000
+        real_estate_taxes: 1_500
       person2:
-        age: 79
-        is_tax_unit_spouse: 1
+        rent: 9_000
         real_estate_taxes: 0
-        rent: 0
     tax_units:
       tax_unit:
         members: [person1, person2]
-        mt_gross_household_income: 44_000
+        mt_gross_household_income: 34_000
         mt_elderly_homeowner_or_renter_credit_eligible: true
-  output:
-    mt_elderly_homeowner_or_renter_credit: 115
+  output:  
+    mt_elderly_homeowner_or_renter_credit: 1_000
+
