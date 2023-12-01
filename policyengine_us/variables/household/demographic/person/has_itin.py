@@ -1,8 +1,9 @@
 from policyengine_us.model_api import *
 
 
-class is_citizen(Variable):
+class has_itin(Variable):
     value_type = bool
     entity = Person
-    label = "Is a U.S. citizen"
+    label = "Has ITIN or SSN"
     definition_period = YEAR
+    default_value = True
