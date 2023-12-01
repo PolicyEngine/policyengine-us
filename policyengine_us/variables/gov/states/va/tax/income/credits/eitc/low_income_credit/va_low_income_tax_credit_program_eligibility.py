@@ -18,6 +18,6 @@ class va_low_income_tax_credit_program_eligibility(Variable):
 
         # Criteria 2: Not qualified to claim EITC if the filier is claimed as a dependent on another taxpayer's return
 
-        criteria_2 = 
-        
+        criteria_2 = ~tax_unit("head_is_dependent_elsewhere.py", period)
+
         return criteria_1 & criteria_2

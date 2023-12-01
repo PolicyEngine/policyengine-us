@@ -12,7 +12,7 @@ class va_low_income_tax_credit(Variable):
     )
 
     definition_period = YEAR
-    defined_for = "va_low_income_tax_credit_eligible"
+    defined_for = "va_low_income_tax_credit_agi_eligible"
 
     def formula(tax_unit, period, parameters):
         exemptions = tax_unit("exemptions", period)
