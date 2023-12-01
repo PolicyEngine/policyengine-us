@@ -8,7 +8,7 @@ class va_refundable_eitc(Variable):
     unit = USD
     documentation = "Refundable EITC credit reducing Virginia State income tax"
     definition_period = YEAR
-    reference = "https://www.tax.virginia.gov/sites/default/files/vatax-pdf/2022-760-instructions.pdf#page=26"
+    reference = "https://www.tax.virginia.gov/sites/default/files/vatax-pdf/2022-760-instructions.pdf#page=32"
     defined_for = "va_claims_refundable_eitc"
 
     adds = ["va_refundable_eitc_if_claimed"]

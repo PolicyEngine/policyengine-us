@@ -8,7 +8,7 @@ class va_eitc(Variable):
     unit = USD
     documentation = "Refundable or non-refundable Virginia EITC"
     definition_period = YEAR
-    reference = "https://www.tax.virginia.gov/sites/default/files/vatax-pdf/2022-760-instructions.pdf#page=26"
+    reference = "https://www.tax.virginia.gov/sites/default/files/vatax-pdf/2022-760-instructions.pdf#page=32"
     defined_for = StateCode.VA
 
     def formula(tax_unit, period, parameters):

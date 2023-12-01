@@ -8,7 +8,7 @@ class va_refundable_eitc_if_claimed(Variable):
     unit = USD
     documentation = "Refundable earned income tax credit credit reducing Virginia State income tax page 26."
     definition_period = YEAR
-    reference = "https://www.tax.virginia.gov/sites/default/files/vatax-pdf/2022-760-instructions.pdf#page=26"
+    reference = "https://www.tax.virginia.gov/sites/default/files/vatax-pdf/2022-760-instructions.pdf#page=32"
     defined_for = StateCode.VA
 
     def formula(tax_unit, period, parameters):
