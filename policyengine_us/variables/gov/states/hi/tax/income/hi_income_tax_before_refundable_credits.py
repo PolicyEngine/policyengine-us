@@ -8,8 +8,7 @@ class hi_income_tax_before_refundable_credits(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.HI
-
-    def formula(tax_unit, period, parameters):
-        # Since Hawaii model does not have non_refundable_credits
-        # only return refundable credits
-        return tax_unit("hi_income_tax_before_credits", period)
+    # Old: "return max_(hi_income_tax_before_credits - non_refundable_credits, 0)"
+    # Since Hawaii model does not have non_refundable_credits
+    # only return hi_income_tax_before_credits
+    adds = ["hi_income_tax_before_credits"]
