@@ -20,7 +20,6 @@ class ar_personal_credits_base(Variable):
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         p = parameters(period).gov.states.ar.tax.income.credits.personal
         aged = person("age", period) >= p.age_threshold
-        p = parameters(period).gov.states.ar.tax.income.credits.personal
         # Arkansas provides an additional "aged special" credit for people who
         # do not receive retirement or disability benefit exemptions.
         receives_retirement_or_disability_exemption = (
@@ -31,16 +30,15 @@ class ar_personal_credits_base(Variable):
         )
         aged_special = aged & ~receives_retirement_or_disability_exemption
         # Blind filers get an additional personal tax credit amount
-        blind = person("is_blind", period) * head_or_spouse
+        blind = person("is_blind", period) 
         # Deaf filers get an additional personal tax credit amount
-        deaf = person("is_deaf", period) * head_or_spouse
-        # Widowed and heqad of household filer can receive an additional credit amount
+        deaf = person("is_deaf", period) 
+        # Widowed and head of household filers receive an additional credit amount
         filing_status = tax_unit("filing_status", period)
-        widow = filing_status == filing_status.possible_values.WIDOW
-        head_of_household = (
-            filing_status == filing_status.possible_values.HEAD_OF_HOUSEHOLD
-        )
-        filing_status_eligible = widow | head_of_household
+        statuses = filing_status.possible_values  
+        widow = filing_status == statuses.WIDOW  
+        hoh = filing_status == statuses.HEAD_OF_HOUSEHOLD  
+        filing_status_eligible = widow | hoh
 
         personal_credit_count = tax_unit.sum(
             head_or_spouse

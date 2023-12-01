@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class ar_personal_credit_dependent_amount(Variable):
+class ar_disabled_dependent_personal_credit(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Arkansas personal tax credit dependent amount"
+    label = "Arkansas disabled dependent personal tax credit amount"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -17,13 +17,10 @@ class ar_personal_credit_dependent_amount(Variable):
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
         dependent = person("is_tax_unit_dependent", period)
-        total_dependents = tax_unit.sum(dependent)
         disabled = person("is_disabled", period)
         disabled_dependent = disabled & dependent
         count_disabled_dependent = tax_unit.sum(disabled_dependent)
         p = parameters(
             period
-        ).gov.states.ar.tax.income.credits.personal.amount.dependent
-        return (
-            total_dependents * p.base + count_disabled_dependent * p.disabled
-        )
+        ).gov.states.ar.tax.income.credits.personal.amount
+        return count_disabled_dependent * p.disabled_dependent
