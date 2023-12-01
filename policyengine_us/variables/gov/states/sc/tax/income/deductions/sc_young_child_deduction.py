@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class sc_young_child_exemption(Variable):
+class sc_young_child_deduction(Variable):
     value_type = float
     entity = TaxUnit
-    label = "South Carolina young child exemption"
+    label = "South Carolina young child deduction"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -16,7 +16,7 @@ class sc_young_child_exemption(Variable):
 
     def formula(tax_unit, period, parameters):
         # Get relevant parameter subtree.
-        p = parameters(period).gov.states.sc.tax.income.exemptions.young_child
+        p = parameters(period).gov.states.sc.tax.income.deductions.young_child
         # Determine eligibility for each person in the tax unit.
         person = tax_unit.members
         meets_age_limit = person("age", period) < p.ineligible_age
