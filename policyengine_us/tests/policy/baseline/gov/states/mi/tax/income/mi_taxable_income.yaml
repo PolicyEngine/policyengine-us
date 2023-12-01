@@ -43,5 +43,5 @@
     # mi_interest_dividends_capital_gains_deduction:
     mi_exemptions: 5_000
     state_code: MI
-  output:
-    mi_taxable_income: 13_000 - 1_000 - 3_000 - 2_000 - 4_000 - 5_000
+  output: # 13_000 - 1_000 - 3_000 - 2_000 - 4_000 - 5_000 < 0
+    mi_taxable_income: 0
