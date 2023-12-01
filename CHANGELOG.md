@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.551.0] - 2023-12-01 08:38:03
+
+### Added
+
+- Vermont minimum income tax.
+
 ## [0.550.0] - 2023-12-01 08:12:56
 
 ### Added
@@ -6065,6 +6071,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.551.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.550.0...0.551.0
 [0.550.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.549.0...0.550.0
 [0.549.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.548.0...0.549.0
 [0.548.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.547.0...0.548.0
