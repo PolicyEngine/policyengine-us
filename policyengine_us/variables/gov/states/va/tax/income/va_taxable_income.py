@@ -11,3 +11,9 @@ class va_taxable_income(Variable):
         "https://law.lis.virginia.gov/vacodefull/title58.1/chapter3/article2/"
     )
     defined_for = StateCode.VA
+
+    def formula(tax_unit, period, parameters):
+        agi = tax_unit("va_afagi", period)
+        deductions = tax_unit("va_standard_deduction", period)
+        exemptions = tax_unit("va_total_exemptions", period)
+        return max_(agi - deductions - exemptions, 0)
