@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class id_aged_or_disabled_deduction_eligible_person(Variable):
     value_type = bool
     entity = Person
-    label = "Idaho aged or disabled deduction eligible person"
+    label = "Eligible person for the Idaho aged or disabled deduction"
     definition_period = YEAR
     defined_for = StateCode.ID
 
