@@ -36,12 +36,13 @@
     mi_retirement_benefits_deduction_tier_three_ss_exempt_retired: 0
     mi_retirement_benefits_deduction_tier_three_eligible: false
     mi_retirement_benefits_deduction_tier_three: 0
+    mi_pension_benefit: 60_000
     mi_standard_deduction_tier_three_eligible: false
     mi_standard_deduction_tier_three: 0
     mi_standard_deduction_tier_two_eligible: false
     mi_standard_deduction_tier_two_increase_eligible_people: 0
     mi_standard_deduction_tier_two: 0
-    mi_standard_deduction_and_pension_benefit: 60_000
+    mi_standard_deduction: 0
 
 - name: 2022 joint filer and their spouse are at the tier 3 standard deduction age threshold, and with one more household member
   period: 2022
@@ -103,10 +104,10 @@
     mi_retirement_benefits_deduction_tier_three_ss_exempt_retired: 0
     mi_retirement_benefits_deduction_tier_three_eligible: false
     mi_retirement_benefits_deduction_tier_three: 0
+    mi_pension_benefit: 0
     mi_standard_deduction_tier_three_eligible: true
     mi_standard_deduction_tier_three: 25_000
     mi_standard_deduction_tier_two_eligible: false
     mi_standard_deduction_tier_two_increase_eligible_people: 0
     mi_standard_deduction_tier_two: 0
-    mi_standard_deduction_and_pension_benefit: 25_000
-    
+    mi_standard_deduction: 25_000
