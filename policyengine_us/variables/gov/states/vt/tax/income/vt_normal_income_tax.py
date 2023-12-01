@@ -35,4 +35,3 @@ class vt_normal_income_tax(Variable):
                 p.head_of_household.calc(income),
             ],
         )
-        return normal_income_tax
