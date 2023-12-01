@@ -5,6 +5,36 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.551.0] - 2023-12-01 08:38:03
+
+### Added
+
+- Vermont minimum income tax.
+
+## [0.550.0] - 2023-12-01 08:12:56
+
+### Added
+
+- Hawaii military reserve or national guard duty pay exclusion.
+
+## [0.549.0] - 2023-12-01 08:10:00
+
+### Fixed
+
+- Updated Virginia 2021 parameter values.
+
+## [0.548.0] - 2023-12-01 05:02:13
+
+### Added
+
+- Alabama federal income tax deduction.
+
+## [0.547.0] - 2023-12-01 04:21:59
+
+### Fixed
+
+- South Carolina young child exemption.
+
 ## [0.546.1] - 2023-11-30 18:10:45
 
 ### Fixed
@@ -6041,6 +6071,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.551.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.550.0...0.551.0
+[0.550.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.549.0...0.550.0
+[0.549.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.548.0...0.549.0
+[0.548.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.547.0...0.548.0
+[0.547.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.546.1...0.547.0
 [0.546.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.546.0...0.546.1
 [0.546.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.545.0...0.546.0
 [0.545.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.544.0...0.545.0
