@@ -1,0 +1,43 @@
+- name: Case 1, agi higher than itemized deduction
+  period: 2021
+  input:
+    adjusted_gross_income: 30_000
+    itemized_deductions_less_salt: 20_000
+    standard_deduction: 15_000
+    tax_unit_itemizes: true
+    state_code: SC
+  output:
+    sc_federal_taxable_income_without_salt_deduction: 10_000
+
+- name: Case 2, agi less than itemized deduction
+  period: 2021
+  input:
+    adjusted_gross_income: 30_000
+    itemized_deductions_less_salt: 35_000
+    standard_deduction: 15_000
+    tax_unit_itemizes: true
+    state_code: SC
+  output:
+    sc_federal_taxable_income_without_salt_deduction: 0
+
+- name: Case 3, not itemizes, agi higher than standard deduction
+  period: 2021
+  input:
+    adjusted_gross_income: 30_000
+    itemized_deductions_less_salt: 20_000
+    standard_deduction: 25_000
+    tax_unit_itemizes: false
+    state_code: SC
+  output:
+    sc_federal_taxable_income_without_salt_deduction: 5_000
+
+- name: Case 3, not itemizes, agi less than standard deduction
+  period: 2021
+  input:
+    adjusted_gross_income: 30_000
+    itemized_deductions_less_salt: 20_000
+    standard_deduction: 50_000
+    tax_unit_itemizes: false
+    state_code: SC
+  output:
+    sc_federal_taxable_income_without_salt_deduction: 0

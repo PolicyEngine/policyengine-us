@@ -10,15 +10,13 @@ class or_retirement_credit_eligible(Variable):
     defined_for = StateCode.OR
 
     def formula(person, period, parameters):
-        # The filer or spouse have to be over 61 for their pension income to count
+        # taxpayer or spouse must be age 62+ for their pension income to count
         age = person("age", period)
-        head = person("is_tax_unit_head", period)
-        spouse = person("is_tax_unit_spouse", period)
+        is_head = person("is_tax_unit_head", period)
+        is_spouse = person("is_tax_unit_spouse", period)
         p = (
             parameters(period)
             .gov.states["or"]
             .tax.income.credits.retirement_income
         )
-        head_eligible = (age >= p.age_eligibility) & head
-        spouse_eligible = (age >= p.age_eligibility) & spouse
-        return head_eligible | spouse_eligible
+        return (age >= p.age_eligibility) & (is_head | is_spouse)

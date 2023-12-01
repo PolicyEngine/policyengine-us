@@ -1,0 +1,31 @@
+description: Rhode Island counts these income sources when calculating its property tax credit.
+values:
+  2021-01-01:
+    - employment_income # Line 14
+    - self_employment_income # Line 14
+    - dividend_income # Line 15
+    - interest_income # Line 15
+    - salt_refund_income # Line 16
+    - alimony_income # Line 17
+    - qualified_business_income # Line 18
+    - capital_gains # Line 19
+    - ira_contributions # Line 20
+    - pension_income # Line 20
+    - rental_income # Line 21
+    - farm_income # Line 22
+    - unemployment_compensation # Line 23
+    - social_security # Line 24
+    - tanf # Line 29
+    - workers_compensation # Line 30
+    - child_support_expense # Line 30
+
+metadata:
+  unit: list
+  label: Rhode Island property tax credit household income sources
+  reference:
+    - title: 2022 Form RI-1040H Rhode Island Property Tax Relief Claim Line 32
+      href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-12/2022%20RI-1040H_v2_w.pdf#page=2
+    - title: 2021 Form RI-1040H Rhode Island Property Tax Relief Claim Line 32
+      href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-01/2021-ri-1040h_w.pdf#page=2
+    - title: 2022 Rhode Island General Laws § 44-33-3. Definitions. (7)
+      href: https://law.justia.com/codes/rhode-island/2022/title-44/chapter-44-33/section-44-33-3/
