@@ -16,7 +16,7 @@ class id_aged_or_disabled_deduction_eligible_person(Variable):
         age = person("age", period)
         # Aged eligible individuals cannot be the head or spouse.
         age_eligible = (age >= p.age_threshold) & ~head_or_spouse
-        # Disabled-eligible individuals can include head and spouse.
+        # Disabled eligible individuals can include head and spouse.
         disabled_eligible = person("is_disabled", period)
         # To claim aged or disabled credit, filers also have to maintain a household for family members
         # and provide more than one-half of the family member’s support for the year
