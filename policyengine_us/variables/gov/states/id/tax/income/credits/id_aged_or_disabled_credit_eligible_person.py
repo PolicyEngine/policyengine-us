@@ -4,8 +4,7 @@ from policyengine_us.model_api import *
 class id_aged_or_disabled_credit_eligible_person(Variable):
     value_type = bool
     entity = Person
-    label = "Idaho aged or disabled credit eligible person"
-    unit = USD
+    label = "Eligible person for the Idaho aged or disabled credit"
     definition_period = YEAR
     defined_for = StateCode.ID
 
@@ -15,7 +14,7 @@ class id_aged_or_disabled_credit_eligible_person(Variable):
         ).gov.states.id.tax.income.subtractions.aged_or_disabled
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         age = person("age", period)
-        # Aged-eligible individuals cannot be head or spouse.
+        # Aged-eligible individuals cannot be the head or spouse.
         age_eligible = (age >= p.age_threshold) & ~head_or_spouse
         # Disabled-eligible individuals can include head and spouse.
         disabled_eligible = person("is_disabled", period)
@@ -25,5 +24,4 @@ class id_aged_or_disabled_credit_eligible_person(Variable):
             "share_of_care_and_support_costs_paid_by_tax_filer", period
         )
         payment_eligible = support_payment_ratio > p.support_fraction_threshold
-        eligible_person = (age_eligible | disabled_eligible) & payment_eligible
-        return eligible_person
+        return (age_eligible | disabled_eligible) & payment_eligible
