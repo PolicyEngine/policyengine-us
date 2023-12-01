@@ -1,0 +1,41 @@
+- name: wi_unemployment_compensation_subtraction unit test 1
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    taxable_unemployment_compensation: 0
+    state_code: WI
+  output:
+    wi_unemployment_compensation_subtraction: 0
+
+- name: wi_unemployment_compensation_subtraction unit test 2
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    taxable_unemployment_compensation: 600
+    adjusted_gross_income: 12_000
+    filing_status: SINGLE
+    state_code: WI
+  output:
+    wi_unemployment_compensation_subtraction: 600
+
+- name: wi_unemployment_compensation_subtraction unit test 3
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    taxable_unemployment_compensation: 600
+    adjusted_gross_income: 13_000
+    filing_status: SINGLE
+    state_code: WI
+  output:
+    wi_unemployment_compensation_subtraction: 100
+
+- name: wi_unemployment_compensation_subtraction unit test 4
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    taxable_unemployment_compensation: 600
+    adjusted_gross_income: 14_000
+    filing_status: SINGLE
+    state_code: WI
+  output:
+    wi_unemployment_compensation_subtraction: 0

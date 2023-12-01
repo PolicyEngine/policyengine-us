@@ -1,0 +1,15 @@
+- name: No EITC
+  period: 2022
+  input:
+    state_code: DE
+    eitc: 0
+  output:
+    de_non_refundable_eitc_if_claimed: 0
+
+- name: Non refundable rate of 20%
+  period: 2022
+  input:
+    state_code: DE
+    eitc: 1_000
+  output:
+    de_non_refundable_eitc_if_claimed: 200

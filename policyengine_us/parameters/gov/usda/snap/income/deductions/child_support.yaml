@@ -1,4 +1,4 @@
-description: Whether legally mandated child support payments can be deducted from net income for SNAP.
+description: Whether legally mandated child support payments can be deducted from gross income for SNAP.
 AK:
   2010-01-01: false
   2021-10-01: true
@@ -17,6 +17,13 @@ CA:
 CO:
   2010-01-01: false
   2021-10-01: false
+  # May have changed prior to 2022-11-30.
+  2022-11-30:
+    value: true
+    metadata:
+      reference:
+        - title: Code of Colorado Regulations | Rule Manual Volume 4, SNAP | 4.407.5(A) (page 111)
+          href: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=10492&fileName=10%20CCR%202506-1
 CT:
   2010-01-01: false
   2021-10-01: true
@@ -160,7 +167,7 @@ WY:
   2021-10-01: true
 metadata:
   unit: bool
-  label: SNAP child support deduction
+  label: SNAP child support gross income deduction
   breakdown:
   - state_code
   reference:

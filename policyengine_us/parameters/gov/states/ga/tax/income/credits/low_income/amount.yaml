@@ -1,0 +1,38 @@
+description: Georgia provides the following low income tax credit amount based on adjusted gross income.
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: currency-USD
+  label: Georgia low income tax credit amount
+  reference:
+    - title: 2022 Form 500 Instructions
+      href: https://houpl.org/wp-content/uploads/2023/01/2022-IT-511_Individual_Income_Tax_-Booklet-compressed.pdf#page=12
+    - title: 2021 Form 500 Instructions
+      href: https://www.zillionforms.com/2021/I2122607361.PDF#page=21
+    - title: Official Code of Georgia Annotated | CH17 Income Taxes | O.C.G.A. § § 48-7A-3 (b)
+      href: https://advance.lexis.com/documentpage/?pdmfid=1000516&crid=0d6fd3c6-6e65-4928-9679-0b33bed98769&config=00JAA1MDBlYzczZi1lYjFlLTQxMTgtYWE3OS02YTgyOGM2NWJlMDYKAFBvZENhdGFsb2feed0oM9qoQOMCSJFX5qkd&pddocfullpath=%2Fshared%2Fdocument%2Fstatutes-legislation%2Furn%3AcontentItem%3A6348-G0H1-DYB7-W3SK-00008-00&pdcontentcomponentid=234186&pdteaserkey=sr0&pditab=allpods&ecomp=7s65kkk&earg=sr0&prid=8be67d32-0de2-4977-a057-d9d01bc94c88
+brackets:
+  - threshold:
+      2021-01-01: 0
+    amount:
+      2021-01-01: 26
+  - threshold:
+      2021-01-01: 6_000
+    amount:
+      2021-01-01: 20
+  - threshold:
+      2021-01-01: 8_000
+    amount:
+      2021-01-01: 14
+  - threshold:
+      2021-01-01: 10_000
+    amount:
+      2021-01-01: 8
+  - threshold:
+      2021-01-01: 15_000
+    amount:
+      2021-01-01: 5
+  - threshold:
+      2021-01-01: 20_000
+    amount:
+      2021-01-01: 0

@@ -1,0 +1,35 @@
+- name: No capital gains
+  period: 2021
+  input:
+    filing_status: SINGLE
+    capital_gains: 0
+    state_code: NM
+  output:
+    nm_net_capital_gains_deduction: 0
+
+- name: 40% if capital gains if larger than $1,000 - separate filing
+  period: 2021
+  input:
+    filing_status: SEPARATE
+    capital_gains: 10_000
+    state_code: NM
+  output:
+    nm_net_capital_gains_deduction: 2_000
+
+- name: Allows for a $1,000 max amount if 40% of capital gains is less than $1,000 - joint
+  period: 2021
+  input:
+    filing_status: JOINT
+    capital_gains: 2_000
+    state_code: NM
+  output:
+    nm_net_capital_gains_deduction: 1_000
+
+- name: Allows for a $500 max amount if 40% of capital gains is less than $500 - separate
+  period: 2021
+  input:
+    filing_status: SEPARATE
+    capital_gains: 1_000
+    state_code: NM
+  output:
+    nm_net_capital_gains_deduction: 500

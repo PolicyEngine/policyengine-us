@@ -1,0 +1,104 @@
+description: New Mexico provides the following low income comprehensive tax rebate for filers with six or more exemptions.
+brackets:
+  - threshold:
+      2021-01-01: 0
+    amount:
+      2021-01-01: 520
+  - threshold: 
+      2021-01-01: 1_001
+    amount:
+      2021-01-01: 675
+  - threshold: 
+      2021-01-01: 1_501
+    amount:
+      2021-01-01: 705
+  - threshold: 
+      2021-01-01: 2_501
+    amount:
+      2021-01-01: 730
+  - threshold:
+      2021-01-01: 8_001
+    amount:
+      2021-01-01: 700
+  - threshold: 
+      2021-01-01: 9_001
+    amount: 
+      2021-01-01: 665
+  - threshold: 
+      2021-01-01: 10_001
+    amount: 
+      2021-01-01: 600
+  - threshold: 
+      2021-01-01: 11_501
+    amount: 
+      2021-01-01: 480
+  - threshold: 
+      2021-01-01: 13_001
+    amount: 
+      2021-01-01: 390
+  - threshold: 
+      2021-01-01: 14_501
+    amount: 
+      2021-01-01: 335
+  - threshold: 
+      2021-01-01: 16_501
+    amount: 
+      2021-01-01: 300
+  - threshold: 
+      2021-01-01: 18_001
+    amount: 
+      2021-01-01: 260
+  - threshold: 
+      2021-01-01: 19_501
+    amount: 
+      2021-01-01: 230
+  - threshold: 
+      2021-01-01: 23_001
+    amount: 
+      2021-01-01: 195
+  - threshold: 
+      2021-01-01: 24_501
+    amount: 
+      2021-01-01: 180
+  - threshold: 
+      2021-01-01: 26_001
+    amount: 
+      2021-01-01: 170
+  - threshold: 
+      2021-01-01: 27_501
+    amount: 
+      2021-01-01: 155
+  - threshold: 
+      2021-01-01: 29_501
+    amount: 
+      2021-01-01: 130
+  - threshold: 
+      2021-01-01: 31_001
+    amount: 
+      2021-01-01: 105
+  - threshold: 
+      2021-01-01: 32_501
+    amount: 
+      2021-01-01: 90
+  - threshold: 
+      2021-01-01: 34_001
+    amount: 
+      2021-01-01: 75
+  - threshold: 
+      2021-01-01: 36_001
+    amount: 
+      2021-01-01: 0
+metadata:
+  threshold_unit: currency-USD
+  amount_unit: currency-USD
+  type: single_amount
+  label: New Mexico comprehensive low income tax rebate six exemptions amount
+  reference:
+    - title: New Mexico 2022 PIT-RC, page 58, SECTION II LOW INCOME COMPREHENSIVE TAX REBATE
+      href: https://klvg4oyd4j.execute-api.us-west-2.amazonaws.com/prod/PublicFiles/34821a9573ca43e7b06dfad20f5183fd/1afc56af-ea90-4d48-82e5-1f9aeb43255a/PITbook2022.pdf#page=58
+    - title: New Mexico 2022 PIT-RC, page 70, TABLE 1 - 2022 Low Income Comprehensive Tax Rebate Table
+      href: https://klvg4oyd4j.execute-api.us-west-2.amazonaws.com/prod/PublicFiles/34821a9573ca43e7b06dfad20f5183fd/1afc56af-ea90-4d48-82e5-1f9aeb43255a/PITbook2022.pdf#page=70
+    - title: New Mexico 2021 PIT-RC, page 60, SECTION II Line 14, TABLE 1
+      href: https://klvg4oyd4j.execute-api.us-west-2.amazonaws.com/prod/PublicFiles/34821a9573ca43e7b06dfad20f5183fd/608063af-0c4c-4f28-ba42-cf40e04557ca/PITbook2021.pdf#page=60
+    - title: N.M. Stat. § 7-2-14(D)
+      href: https://casetext.com/statute/new-mexico-statutes-1978/chapter-7-taxation/article-2-income-tax-general-provisions/section-7-2-14-low-income-comprehensive-tax-rebate?sort=relevance&type=regulation&tab=keyword&jxs=&resultsNav=false

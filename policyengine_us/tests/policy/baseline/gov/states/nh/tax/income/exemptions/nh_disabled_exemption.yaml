@@ -1,0 +1,196 @@
+- name: If filing jointly, head is disabled at the age below 65 but spouse is not disabled, they will get this exemption.
+  period: 2022
+  input:
+    state_code: NH
+    disabled_head: true
+    age_head: 60
+    disabled_spouse: false
+  output:
+    nh_disabled_exemption: 1_200
+
+- name: If filing jointly, head is disabled at the age of 65 but spouse is not disabled, they will not get this exemption.
+  period: 2022
+  input:
+    state_code: NH
+    disabled_head: true
+    age_head: 65
+    disabled_spouse: false
+  output:
+    nh_disabled_exemption: 0
+
+- name: If filing jointly in or after 2027, head is disabled at the age of 65 but spouse is not disabled, they will not get this exemption.
+  period: 2027
+  input:
+    state_code: NH
+    disabled_head: true
+    age_head: 65
+    disabled_spouse: false
+  output:
+    nh_disabled_exemption: 0
+  
+- name: If filing jointly in or after 2027, head is disabled at the age below 65 but spouse is not disabled, they will not get this exemption.
+  period: 2027
+  input:
+    state_code: NH
+    disabled_head: true
+    age_head: 60
+    disabled_spouse: false
+  output:
+    nh_disabled_exemption: 0
+
+- name: If filing jointly, spouse is disabled at the age below 65 but head is not disabled, they will get this exemption.
+  period: 2022
+  input:
+    state_code: NH
+    disabled_head: false
+    age_head: 60
+    disabled_spouse: true
+  output:
+    nh_disabled_exemption: 1_200
+
+- name: If filing jointly, spouse is disabled at the age of 65 but head is not disabled, they will not get this exemption.
+  period: 2022
+  input:
+    state_code: NH
+    disabled_head: false
+    age_spouse: 65
+    disabled_spouse: true
+  output:
+    nh_disabled_exemption: 0
+
+- name: If filing jointly in or after 2027, spouse is disabled at the age of 65 but head is not disabled, they will not get not this exemption.
+  period: 2027
+  input:
+    state_code: NH
+    disabled_head: false
+    age_head: 65
+    disabled_spouse: true
+  output:
+    nh_disabled_exemption: 0
+
+- name: If filing jointly in or after 2027, spouse is disabled at the age below 65 but head is not disabled, they will not get not this exemption.
+  period: 2027
+  input:
+    state_code: NH
+    disabled_head: false
+    age_head: 60
+    disabled_spouse: true
+  output:
+    nh_disabled_exemption: 0
+
+- name: If filing jointly, head is disabled at the age below 65 and spouse is disabled at the age below 65, they will get exemptions.
+  period: 2022
+  input:
+    state_code: NH
+    disabled_head: true
+    age_head: 60
+    disabled_spouse: true
+    age_spouse: 60
+  output:
+    nh_disabled_exemption: 2_400
+
+- name: If filing jointly, head is disabled at the age below 65 and spouse is disabled at the age of 65, they will get one exemption.
+  period: 2022
+  input:
+    state_code: NH
+    disabled_head: true
+    age_head: 60
+    disabled_spouse: true
+    age_spouse: 65
+  output:
+    nh_disabled_exemption: 1_200
+
+- name: If filing jointly, head is disabled at the age of 65 and spouse is disabled at the age below 65, they will get one exemption.
+  period: 2022
+  input:
+    state_code: NH
+    disabled_head: true
+    age_head: 65
+    disabled_spouse: true
+    age_spouse: 60
+  output:
+    nh_disabled_exemption: 1_200
+
+- name: If filing jointly in or after 2027, head is disabled at the age below 65 and spouse is disabled at the age below 65, they will get no exemption.
+  period: 2027
+  input:
+    state_code: NH
+    disabled_head: true
+    age_head: 60
+    disabled_spouse: true
+    age_spouse: 60
+  output:
+    nh_disabled_exemption: 0
+
+# for filing seperately, no disabled_spouse input
+- name: If filing seperately, the filer is disabled at the age below 65, the filer will get this exemption.
+  period: 2022
+  input:
+    state_code: NH
+    disabled_head: true
+    age_head: 60
+  output:
+    nh_disabled_exemption: 1_200
+
+- name: If filing seperately, the filer is not disabled at the age below 65, the filer will not get this exemption.
+  period: 2022
+  input:
+    state_code: NH
+    disabled_head: false
+    age_head: 60
+  output:
+    nh_disabled_exemption: 0
+
+- name: If filing seperately, the filer is not disabled at the age of 65, the filer will not get this exemption.
+  period: 2022
+  input:
+    state_code: NH
+    disabled_head: false
+    age_head: 65
+  output:
+    nh_disabled_exemption: 0
+
+- name: If filing seperately, the filer is disabled at the age of 65, the filer will not get this exemption.
+  period: 2022
+  input:
+    state_code: NH
+    disabled_head: true
+    age_head: 65
+  output:
+    nh_disabled_exemption: 0
+
+- name: If filing seperately in or after 2027, the filer is disabled at the age below 65, the filer will not get this exemption.
+  period: 2027
+  input:
+    state_code: NH
+    disabled_head: true
+    age_head: 60
+  output:
+    nh_disabled_exemption: 0
+
+- name: If filing seperately in or after 2027, the filer is disabled at the age of 65, the filer will not get this exemption.
+  period: 2027
+  input:
+    state_code: NH
+    disabled_head: true
+    age_head: 65
+  output:
+    nh_disabled_exemption: 0
+
+- name: If filing seperately in or after 2027, the filer is not disabled at the age of 65, the filer will not get this exemption.
+  period: 2027
+  input:
+    state_code: NH
+    disabled_head: false
+    age_head: 65
+  output:
+    nh_disabled_exemption: 0
+
+- name: If filing seperately in or after 2027, the filer is not disabled at the age below 65, the filer will not get this exemption.
+  period: 2027
+  input:
+    state_code: NH
+    disabled_head: false
+    age_head: 60
+  output:
+    nh_disabled_exemption: 0

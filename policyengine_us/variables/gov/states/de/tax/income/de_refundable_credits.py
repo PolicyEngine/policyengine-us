@@ -8,3 +8,5 @@ class de_refundable_credits(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.DE
+
+    adds = "gov.states.de.tax.income.credits.refundable"

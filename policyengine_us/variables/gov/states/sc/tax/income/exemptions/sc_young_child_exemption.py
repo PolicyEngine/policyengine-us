@@ -7,7 +7,11 @@ class sc_young_child_exemption(Variable):
     label = "South Carolina young child exemption"
     unit = USD
     definition_period = YEAR
-    reference = "https://dor.sc.gov/forms-site/Forms/SC1040_2022.pdf"
+    reference = (
+        "https://dor.sc.gov/forms-site/Forms/SC1040_2022.pdf#page=2",
+        "https://www.scstatehouse.gov/code/t12c006.php"
+        # SECTION 12-6-1160
+    )
     defined_for = StateCode.SC
 
     def formula(tax_unit, period, parameters):

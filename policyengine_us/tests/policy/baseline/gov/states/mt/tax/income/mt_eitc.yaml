@@ -1,0 +1,26 @@
+- name: No EITC from federal (test 1)
+  period: 2021
+  input:
+    filing_status: SINGLE
+    eitc: 0
+    state_code: MT
+  output: 
+    mt_eitc: 0
+
+- name: EITC from federal (test 2)
+  period: 2023
+  input:
+    filing_status: JOINT
+    eitc: 1_000
+    state_code: MT
+  output: 
+    mt_eitc: 30
+
+- name: EITC from federal but exclude SEPERATE (test 3)
+  period: 2023
+  input:
+    filing_status: SEPARATE
+    eitc: 2_000
+    state_code: MT
+  output: 
+    mt_eitc: 0

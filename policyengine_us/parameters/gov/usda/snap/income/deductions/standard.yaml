@@ -6,132 +6,163 @@ CONTIGUOUS_US:
     2020-10-01: 167
     2021-10-01: 177
     2022-10-01: 193
+    2023-10-01: 198
   2:
     2020-10-01: 167
     2021-10-01: 177
     2022-10-01: 193
+    2023-10-01: 198
   3:
     2020-10-01: 167
     2021-10-01: 177
     2022-10-01: 193
+    2023-10-01: 198
   4:
     2020-10-01: 181
     2021-10-01: 184
     2022-10-01: 193
+    2023-10-01: 208
   5:
     2020-10-01: 212
     2021-10-01: 215
     2022-10-01: 225
+    2023-10-01: 244
   6:
     2020-10-01: 243
     2021-10-01: 246
     2022-10-01: 258
+    2023-10-01: 279
 AK:
   1:
     2020-10-01: 286
     2021-10-01: 303
     2022-10-01: 330
+    2023-10-01: 338
   2:
     2020-10-01: 286
     2021-10-01: 303
     2022-10-01: 330
+    2023-10-01: 338
   3:
     2020-10-01: 286
     2021-10-01: 303
     2022-10-01: 330
+    2023-10-01: 338
   4:
     2020-10-01: 286
     2021-10-01: 303
     2022-10-01: 330
+    2023-10-01: 338
   5:
     2020-10-01: 286
     2021-10-01: 303
     2022-10-01: 330
+    2023-10-01: 338
   6:
     2020-10-01: 304
     2021-10-01: 308
     2022-10-01: 330
+    2023-10-01: 349
 GU:
   1:
     2020-10-01: 336
     2021-10-01: 356
     2022-10-01: 387
+    2023-10-01: 397
   2:
     2020-10-01: 336
     2021-10-01: 356
     2022-10-01: 387
+    2023-10-01: 397
   3:
     2020-10-01: 336
     2021-10-01: 356
     2022-10-01: 387
+    2023-10-01: 397
   4:
     2020-10-01: 363
     2021-10-01: 367
     2022-10-01: 387
+    2023-10-01: 416
   5:
     2020-10-01: 425
     2021-10-01: 430
     2022-10-01: 450
+    2023-10-01: 487
   6:
     2020-10-01: 487
     2021-10-01: 493
     2022-10-01: 515
+    2023-10-01: 558
 HI:
   1:
     2020-10-01: 236
     2021-10-01: 250
     2022-10-01: 272
+    2023-10-01: 279
   2:
     2020-10-01: 236
     2021-10-01: 250
     2022-10-01: 272
+    2023-10-01: 279
   3:
     2020-10-01: 236
     2021-10-01: 250
     2022-10-01: 272
+    2023-10-01: 279
   4:
     2020-10-01: 236
     2021-10-01: 250
     2022-10-01: 272
+    2023-10-01: 279
   5:
     2020-10-01: 244
     2021-10-01: 250
     2022-10-01: 272
+    2023-10-01: 280
   6:
     2020-10-01: 280
     2021-10-01: 283
     2022-10-01: 296
+    2023-10-01: 321
 VI:
   1:
     2020-10-01: 147
     2021-10-01: 156
     2022-10-01: 170
+    2023-10-01: 174
   2:
     2020-10-01: 147
     2021-10-01: 156
     2022-10-01: 170
+    2023-10-01: 174
   3:
     2020-10-01: 150
     2021-10-01: 156
     2022-10-01: 170
+    2023-10-01: 174
   4:
     2020-10-01: 181
     2021-10-01: 184
     2022-10-01: 192
+    2023-10-01: 208
   5:
     2020-10-01: 212
     2021-10-01: 215
     2022-10-01: 225
+    2023-10-01: 244
   6:
     2020-10-01: 243
     2021-10-01: 246
     2022-10-01: 258
+    2023-10-01: 279
 
 metadata:
   unit: currency-USD
-  name: snap_standard_deduction
   label: SNAP standard deduction
   reference:
+    - title: Supplemental Nutrition Assistance Program (SNAP) Fiscal Year (FY) 2024 Maximum Allotments and Deductions
+      href: https://fns-prod.azureedge.us/sites/default/files/media/file/FY24-Maximum-Allotments-and-Deductions.pdf#page=2
     - title: Supplemental Nutrition Assistance Program (SNAP) Fiscal Year (FY) 2022 Maximum Allotments and Deductions
       href: https://fns-prod.azureedge.us/sites/default/files/media/file/FY22-Maximum-Allotments-Deductions.pdf
     - title: Supplemental Nutrition Assistance Program (SNAP) Fiscal Year (FY) 2021 Maximum Allotments and Deductions
@@ -139,6 +170,8 @@ metadata:
     # This page links to other PDFs.
     - title: USDA Cost of Living Adjustments
       href: https://www.fns.usda.gov/snap/allotment/COLA
+    - title: Supplemental Nutrition Assistance Program (SNAP) Fiscal Year (FY) 2024 Income Eligibility Standards
+      href: https://fns-prod.azureedge.us/sites/default/files/media/file/FY24-Maximum-Allotments-and-Deductions.pdf
   period: month
   breakdown:
     - state_group
