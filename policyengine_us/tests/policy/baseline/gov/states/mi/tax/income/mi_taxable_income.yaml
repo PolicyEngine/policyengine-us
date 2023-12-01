@@ -2,31 +2,46 @@
   period: 2021
   input:
     adjusted_gross_income: 90_000
-    mi_standard_deduction_and_pension_benefit: 20_000
-    itemized_taxable_income_deductions: 9_000
+    us_govt_interest: 1_000
+    military_retirement_pay: 3_000
+    taxable_social_security: 2_000
+    military_service_income: 4_000
+    # mi_standard_deduction: 
+    # mi_pension_benefit: 
+    # mi_interest_dividends_capital_gains_deduction:
     mi_exemptions: 5_000
     state_code: MI
   output:
-    mi_taxable_income: 90_000 - 20_000 - 5_000
+    mi_taxable_income: 90_000 - 1_000 - 3_000 - 2_000 - 4_000 - 5_000
 
 - name: MI taxable income unit test 2
   period: 2021
   input:
-    adjusted_gross_income: 90_000
-    mi_standard_deduction_and_pension_benefit: 15_000
-    itemized_taxable_income_deductions: 16_000
+    adjusted_gross_income: 20_000
+    us_govt_interest: 10_000
+    military_retirement_pay: 3_000
+    taxable_social_security: 2_000
+    military_service_income: 4_000
+    # mi_standard_deduction: 
+    # mi_pension_benefit: 
+    # mi_interest_dividends_capital_gains_deduction:
     mi_exemptions: 5_000
     state_code: MI
-  output:
-    mi_taxable_income: 90_000 - 16_000 - 5_000
+  output: # 20_000 - 10_000 - 3_000 - 2_000 - 4_000 - 5_000 < 0 
+    mi_taxable_income: 0
 
 - name: MI taxable income unit test 3
   period: 2022
   input:
     adjusted_gross_income: 13_000
-    mi_standard_deduction_and_pension_benefit: 20_000
-    itemized_taxable_income_deductions: 9_000
+    us_govt_interest: 1_000
+    military_retirement_pay: 3_000
+    taxable_social_security: 2_000
+    military_service_income: 4_000
+    # mi_standard_deduction: 
+    # mi_pension_benefit: 
+    # mi_interest_dividends_capital_gains_deduction:
     mi_exemptions: 5_000
     state_code: MI
   output:
-    mi_taxable_income: 0
+    mi_taxable_income: 13_000 - 1_000 - 3_000 - 2_000 - 4_000 - 5_000
