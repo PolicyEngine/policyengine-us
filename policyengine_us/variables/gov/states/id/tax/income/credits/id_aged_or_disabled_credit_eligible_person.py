@@ -5,7 +5,6 @@ class id_aged_or_disabled_credit_eligible_person(Variable):
     value_type = bool
     entity = Person
     label = "Idaho aged or disabled credit eligible person"
-    unit = USD
     definition_period = YEAR
     defined_for = StateCode.ID
 
