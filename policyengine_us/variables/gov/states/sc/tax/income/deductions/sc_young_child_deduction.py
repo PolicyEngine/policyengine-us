@@ -20,7 +20,9 @@ class sc_young_child_deduction(Variable):
         # Determine eligibility for each person in the tax unit.
         person = tax_unit.members
         meets_age_limit = person("age", period) < p.ineligible_age
-        eligible_dependent = meets_age_limit & person("is_tax_unit_dependent", period)
+        eligible_dependent = meets_age_limit & person(
+            "is_tax_unit_dependent", period
+        )
         # Count number of eligible people in the tax unit.
         total_eligible_dependents = tax_unit.sum(eligible_dependent)
         # Multiply by the amount per eligible dependent.
