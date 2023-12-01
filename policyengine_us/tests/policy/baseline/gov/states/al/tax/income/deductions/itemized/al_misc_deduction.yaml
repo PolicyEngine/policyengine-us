@@ -1,0 +1,20 @@
+- name: Alabama work related itemized deductions unit test 1
+  period: 2021
+  input:
+    misc_deduction: 2_000
+    al_agi: 70_000
+    state_code: AL
+  output:
+    al_misc_deduction: 600
+#2000-70000*0.2=600
+
+
+- name: Alabama work related itemized deductions unit test 2
+  period: 2021
+  input:
+    misc_deduction: 7_000
+    al_agi: 30_000
+    state_code: AL
+  output:
+    al_misc_deduction: 6_400
+#7000-30000*0.02=6400
