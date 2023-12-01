@@ -23,8 +23,8 @@ class ca_calworks_child_care_payment_factor(Variable):
                 factor_category == factor_categories.SEVERELY_DISABLED,
             ],
             [
-                p.evening_or_weekend_I,
-                p.evening_or_weekend_II,
+                p.evening_or_weekend_i,
+                p.evening_or_weekend_ii,
                 p.exceptional_needs,
                 p.severely_disabled,
             ],
