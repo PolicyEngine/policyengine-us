@@ -1,26 +1,29 @@
-- name: base test
+- name: larger itemized_deduction
   period: 2022
   input:
     ky_agi: 1_000
     ky_standard_deduction: 100
-    state_code: KY
-  output:
-    ky_taxable_income: 900
-
-- name: different ky_standard_deduction
-  period: 2022
-  input:
-    ky_agi: 1_000
-    ky_standard_deduction: 200
+    ky_itemized_deduction: 200
     state_code: KY
   output:
     ky_taxable_income: 800
+
+- name: larger standard_deduction
+  period: 2022
+  input:
+    ky_agi: 1_000
+    ky_standard_deduction: 100
+    ky_itemized_deduction: 10
+    state_code: KY
+  output:
+    ky_taxable_income: 900
 
 - name: smaller than 0
   period: 2022
   input:
     ky_agi: 1_000
     ky_standard_deduction: 2_000
+    ky_itemized_deduction: 3_000
     state_code: KY
   output:
     ky_taxable_income: 0

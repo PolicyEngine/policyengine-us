@@ -12,8 +12,9 @@ class ky_taxable_income(Variable):
 
     def formula(tax_unit, period, parameters):
         ky_agi = tax_unit("ky_agi", period)
-        # current model does not have itemized deduction
-        # Note: If filing a joint return, only standard deduction is allowed.
+        # current model does not have itemized deduction --> create a dummy one
         standard_deduction = tax_unit("ky_standard_deduction", period)
+        itemized_deduction = tax_unit("ky_itemized_deduction", period)
+        deduction = where(itemized_deduction > standard_deduction, itemized_deduction, standard_deduction)
 
-        return max_(0, ky_agi - standard_deduction)
+        return max_(0, ky_agi - deduction)
