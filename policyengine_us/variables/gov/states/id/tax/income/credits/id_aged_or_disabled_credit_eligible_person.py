@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class id_aged_or_disabled_credit_eligible_person(Variable):
     value_type = bool
     entity = Person
-    label = "Eligible person for the Idaho aged or disabled credit"
+    label = "Idaho aged or disabled credit eligible person"
     definition_period = YEAR
     defined_for = StateCode.ID
 
