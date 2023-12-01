@@ -19,7 +19,7 @@ class vt_normal_income_tax(Variable):
         filing_status = tax_unit("filing_status", period)
         status = filing_status.possible_values
         p = parameters(period).gov.states.vt.tax.income.rates
-        normal_income_tax = select(
+        return select(
             [
                 filing_status == status.SINGLE,
                 filing_status == status.JOINT,
