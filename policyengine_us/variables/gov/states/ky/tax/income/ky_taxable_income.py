@@ -16,6 +16,10 @@ class ky_taxable_income(Variable):
         standard_deduction = tax_unit("ky_standard_deduction", period)
         itemized_deduction = tax_unit("ky_itemized_deduction", period)
         # if filler itemized deductions exceed standard deductions, it will benefit filler to itemize.
-        deduction = where(itemized_deduction > standard_deduction, itemized_deduction, standard_deduction)
+        deduction = where(
+            itemized_deduction > standard_deduction,
+            itemized_deduction,
+            standard_deduction,
+        )
 
         return max_(0, ky_agi - deduction)
