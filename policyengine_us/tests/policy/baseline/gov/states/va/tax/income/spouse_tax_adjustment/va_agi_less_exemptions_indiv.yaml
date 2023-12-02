@@ -1,16 +1,16 @@
-- name: Virginia agi less exemptions unit test 1
+- name: Virginia AGI less exemptions unit test 1
   period: 2021
   absolute_error_margin: 0.1
   input:
     people:
       person1:
         is_tax_unit_head: true
-        va_agi: 40_000
+        va_agi_individual: 40_000
         age: 68
         is_blind: true
       person2:
         is_tax_unit_spouse: false
-        va_agi: 40_000
+        va_agi_individual: 40_000
         age: 68
         is_blind: true
     households:
@@ -24,7 +24,7 @@
   period: 2022
   absolute_error_margin: 0.1
   input:
-    va_agi: 0
+    va_agi_individual: 0
     state_code: VA
     is_tax_unit_head_or_spouse: true
     is_blind: true
@@ -37,7 +37,7 @@
   period: 2022
   absolute_error_margin: 0.1
   input:
-    va_agi: 3_000
+    va_agi_individual: 3_000
     state_code: VA
     is_tax_unit_head_or_spouse: true
     is_blind: true
@@ -50,7 +50,7 @@
   period: 2022
   absolute_error_margin: 0.1
   input:
-    va_agi: 3_000
+    va_agi_individual: 3_000
     state_code: VA
     is_tax_unit_head_or_spouse: false
     is_blind: true
@@ -62,7 +62,7 @@
   period: 2022
   absolute_error_margin: 0.1
   input:
-    va_agi: 3_000
+    va_agi_individual: 3_000
     state_code: VA
     is_tax_unit_head_or_spouse: true
     is_blind: false
