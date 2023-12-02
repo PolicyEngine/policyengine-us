@@ -5072,3 +5072,75 @@
     fixed:
     - Bug preventing reforms from working with a Core update.
   date: 2023-11-28 11:23:21
+- bump: minor
+  changes:
+    changed:
+    - Fix definition of income used to calculate Maine fairness credits.
+  date: 2023-11-28 18:30:28
+- bump: patch
+  changes:
+    fixed:
+    - Clean up years in system.py.
+    - Update default computation year to 2023.
+  date: 2023-11-28 18:49:38
+- bump: minor
+  changes:
+    added:
+    - South Carolina income tax.
+  date: 2023-11-29 20:52:16
+- bump: minor
+  changes:
+    added:
+    - Improved ACA premium tax credit for California.
+  date: 2023-11-29 21:19:00
+- bump: minor
+  changes:
+    added:
+    - Idaho grocery credit.
+  date: 2023-11-30 02:16:16
+- bump: minor
+  changes:
+    added:
+    - Delaware itemized deductions.
+  date: 2023-11-30 02:19:29
+- bump: minor
+  changes:
+    added:
+    - Montana itemized deductions.
+  date: 2023-11-30 02:27:14
+- bump: patch
+  changes:
+    fixed:
+    - Relocate some ACA parameters to clarify their role.
+    - Rename one ACA variable to clarify its role.
+  date: 2023-11-30 18:10:45
+- bump: minor
+  changes:
+    fixed:
+    - South Carolina young child exemption.
+  date: 2023-12-01 04:21:59
+- bump: minor
+  changes:
+    added:
+    - Alabama federal income tax deduction.
+  date: 2023-12-01 05:02:13
+- bump: minor
+  changes:
+    fixed:
+    - Updated Virginia 2021 parameter values.
+  date: 2023-12-01 08:10:00
+- bump: minor
+  changes:
+    added:
+    - Hawaii military reserve or national guard duty pay exclusion.
+  date: 2023-12-01 08:12:56
+- bump: minor
+  changes:
+    added:
+    - Vermont minimum income tax.
+  date: 2023-12-01 08:38:03
+- bump: minor
+  changes:
+    added:
+    - Add Hawaii income tax calculation logic.
+  date: 2023-12-01 21:12:49
