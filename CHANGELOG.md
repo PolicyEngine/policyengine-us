@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.552.2] - 2023-12-02 19:32:01
+
+### Changed
+
+- Moved DC in alphabetical order.
+
 ## [0.552.1] - 2023-12-02 17:16:11
 
 ### Fixed
@@ -6083,6 +6089,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.552.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.552.1...0.552.2
 [0.552.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.552.0...0.552.1
 [0.552.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.551.0...0.552.0
 [0.551.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.550.0...0.551.0
