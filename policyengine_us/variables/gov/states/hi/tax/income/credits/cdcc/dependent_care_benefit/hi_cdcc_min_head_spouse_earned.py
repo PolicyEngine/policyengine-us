@@ -22,7 +22,7 @@ class hi_cdcc_min_head_spouse_earned(Variable):
         earnings = person("earned_income", period)
         # Head or spouse are eligible for an income floor if disabled or a student
         # Start with case with only one floor-eligible spouse.
-        qualified_children = tax_unit("count_cdcc_eligible", period)
+        qualified_children = person.tax_unit("count_cdcc_eligible", period)
         # Floor depends on number of eligible dependents
         floor = p.disabled_student_income_floor.calc(qualified_children)
         floor_eligible = person("hi_cdcc_income_floor_eligible", period)

@@ -1,0 +1,13 @@
+description: Idaho provides these refundable tax credits.  
+metadata:
+  unit: variable
+  label: Idaho refundable credits
+  reference:
+    - title: IDAHO STATUTES - TITLE 63 - 067 - SECTION 63-3029L (1) # Idaho Child Tax Credit 
+      href: https://legislature.idaho.gov/statutesrules/idstat/Title63/T63CH30/SECT63-3029L/
+    - title: IDAHO ADMINISTRATIVE CODE || 35.01.01.771 # Idaho grocery credit
+      href: https://adminrules.idaho.gov/rules/current/35/350101.pdf#page=107
+values:
+  2021-01-01:
+    - id_ctc  # Idaho Child Tax Credit 
+    - id_grocery_credit  # Idaho grocery credit
