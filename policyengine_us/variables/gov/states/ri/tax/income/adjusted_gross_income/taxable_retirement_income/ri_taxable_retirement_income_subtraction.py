@@ -12,7 +12,9 @@ class ri_taxable_retirement_income_subtraction(Variable):
 
     def formula(tax_unit, period, parameters):
         taxable_pension = tax_unit.members("taxable_pension_income", period)
+        head_or_spouse = tax_unit.members("is_tax_unit_head_or_spouse", period)
         p = parameters(
             period
         ).gov.states.ri.tax.income.adjusted_gross_income.subtractions.taxable_retirement_income
-        return min_(taxable_pension, p.cap)
+        total_taxable_pension = tax_unit.sum(taxable_pension * head_or_spouse)
+        return min_(total_taxable_pension, p.cap)

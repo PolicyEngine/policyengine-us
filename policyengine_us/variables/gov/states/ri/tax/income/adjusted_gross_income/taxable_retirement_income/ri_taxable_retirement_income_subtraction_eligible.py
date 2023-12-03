@@ -23,11 +23,11 @@ class ri_taxable_retirement_income_subtraction_eligible(Variable):
             period
         ).gov.states.ri.tax.income.adjusted_gross_income.subtractions.social_security.threshold
 
-        # Age-based eligibility.
+        # Age eligibility.
         age_conditions = birth_year <= p.birth_year
-        age_is_eligible = tax_unit.any(age_conditions & head_or_spouse)
+        age_eligible = tax_unit.any(age_conditions & head_or_spouse)
 
-        # Status eligibility.
-        status_is_eligible = income < p.income[filing_status]
+        # Income eligibility.
+        income_eligible = income < p.income[filing_status]
 
-        return age_is_eligible & status_is_eligible
+        return age_eligible & income_eligible

@@ -20,23 +20,19 @@ class ri_social_security_modification(Variable):
             period
         ).gov.states.ri.tax.income.adjusted_gross_income.subtractions.social_security.threshold
 
-        # Age-based eligibility.
+        # Age eligibility.
         age_conditions = birth_year <= p.birth_year
         head_or_spouse_eligible = head_or_spouse & age_conditions
 
         total_social_security = person("social_security", period)
-        taxable_social_security = person("taxable_social_security", period)
-
-        final_ss = tax_unit.sum(
-            total_social_security * head_or_spouse_eligible
-        )
+        final_ss = tax_unit.sum(total_social_security * head_or_spouse_eligible)
         total_ss = tax_unit.sum(total_social_security * head_or_spouse)
 
         percentage_social_security = np.zeros_like(total_ss)
         mask = total_ss != 0
         percentage_social_security[mask] = final_ss[mask] / total_ss[mask]
-        total_taxable_ss = tax_unit.sum(
-            taxable_social_security * head_or_spouse
-        )
+        
+        taxable_social_security = person("taxable_social_security", period)
+        total_taxable_ss = tax_unit.sum(taxable_social_security * head_or_spouse)
 
         return total_taxable_ss * percentage_social_security
