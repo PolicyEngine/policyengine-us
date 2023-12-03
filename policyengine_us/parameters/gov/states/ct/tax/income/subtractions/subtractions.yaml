@@ -1,15 +1,15 @@
 description: Connecticut counts these sources as subtractions.
 values:
   2021-01-01:
-    - us_govt_interest # (a) (5)
+    - us_govt_interest #ln 39
     # ct_federal_bonus_depreciation
-    - ct_federal_deduction
-    - ct_pension_annuity_subtraction
+    - ct_federal_deduction #ln 48a
+    - ct_pension_annuity_subtraction #ln 48b
     # ct_exempt_interest_mutual_funds
-    - ct_social_security_benefit_subtraction
+    - ct_social_security_benefit_subtraction #ln 41
     # ct_refunds_of_federal_state_tax
     # ct_railroad_retirement
-    - military_retirement_pay
+    - military_retirement_pay #ln 44
     # ct_teachers_retirement
     # ct_share_fiduciary_income
     # ct_gain_on_sale_bonds
