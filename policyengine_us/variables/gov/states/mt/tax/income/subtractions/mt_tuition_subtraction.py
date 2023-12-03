@@ -11,6 +11,7 @@ class mt_tuition_subtraction(Variable):
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
+        filing_status = tax_unit("filing_status", period)
         p = parameters(period).gov.states.mt.tax.income.subtractions.tuition
         # investment_in_529_plan_indv = add(
         #     person, period, ["investment_in_529_plan"]
