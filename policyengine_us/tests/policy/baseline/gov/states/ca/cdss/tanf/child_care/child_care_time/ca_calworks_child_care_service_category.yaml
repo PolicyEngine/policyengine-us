@@ -5,7 +5,7 @@
     childcare_hours_per_week: 29
     state_code: CA
   output:
-    ca_calworks_child_care_service_category: PART_TIME
+  ca_calworks_child_care_service_category: PART_TIME
 
 - name: Hourly child care with weekly hours more than 30 is part time service.
   period: 2023

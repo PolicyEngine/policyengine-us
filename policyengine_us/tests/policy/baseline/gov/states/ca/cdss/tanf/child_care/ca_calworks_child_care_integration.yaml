@@ -1,0 +1,72 @@
+- name: NEG-01 CalWORKS Benefit Program Participant who is not engaging in any eligible activity.
+  period: 2023
+  input:
+    people:
+      parent:
+        is_child: false
+        ca_calworks_child_care_welfare_to_work: 0
+        earned_income: 0
+      child:
+        is_child: true
+        age: 12
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        ca_tanf: 100
+    households:
+      household:
+        members: [parent, child]
+        state_code: CA
+  output:
+    ca_calworks_child_care_eligible: false
+
+- name: POS-07 CalWORKS Benefit Program Participant who is not engaging in any eligible activity.
+  period: 2023
+  input:
+    people:
+      parent:
+        is_child: false
+        ca_calworks_child_care_welfare_to_work: 0
+        earned_income: 1
+      child1:
+        is_child: true
+        age: 3
+        is_disabled: false
+      child2:
+        is_child: true
+        age: 4
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+        ca_tanf: 100
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: CA
+  output:
+    ca_calworks_child_care_eligible: true
+
+- name: NEG-06 CalWORKS Benefit Program Participant who is not engaging in any eligible activity.
+  period: 2023
+  input:
+    people:
+      parent:
+        is_child: false
+        ca_calworks_child_care_welfare_to_work: 1
+        earned_income: 0
+      child:
+        is_child: true
+        age: 12
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        ca_tanf: 100
+    households:
+      household:
+        members: [parent, child]
+        state_code: CA
+  output:
+    ca_calworks_child_care_eligible: true
