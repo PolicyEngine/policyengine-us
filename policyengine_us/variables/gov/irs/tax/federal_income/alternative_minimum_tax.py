@@ -43,6 +43,9 @@ class regular_tax_before_credits(Variable):
     unit = USD
 
     def formula(tax_unit, period, parameters):
+
+        p = parameters(period).gov.irs.income.amt
+
         filing_status = tax_unit("filing_status", period)
         dwks1 = tax_unit("taxable_income", period)
 
@@ -74,8 +77,10 @@ class regular_tax_before_credits(Variable):
         dwks10 = tax_unit("dwks10", period)
         dwks34 = dwks10 + dwks19
         dwks36 = max_(0, dwks34 - dwks1)
-        dwks37 = max_(0, dwks33 - dwks36)
-        dwks38 = 0.25 * dwks37
+        dwks37 = max_(0, dwks33 - dwks36)5
+
+        #parameterized
+        dwks38 = p.capital_gain_excess_tax_rate * dwks37
         # Break in worksheet lines
         dwks39 = dwks19 + dwks20 + dwks28 + dwks31 + dwks37
         dwks40 = dwks1 - dwks39
