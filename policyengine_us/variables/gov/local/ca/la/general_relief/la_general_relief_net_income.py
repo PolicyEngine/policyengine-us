@@ -14,7 +14,9 @@ class la_general_relief_net_income(Variable):
         gross_income = add(
             spm_unit, period, ["la_general_relief_gross_income"]
         )
-        state_federal_deductions = add(spm_unit, period, ["ca_deductions", "taxable_income_deductions"])
+        state_federal_deductions = add(
+            spm_unit, period, ["ca_deductions", "taxable_income_deductions"]
+        )
         return max_(
             gross_income - state_federal_deductions,
             0,
