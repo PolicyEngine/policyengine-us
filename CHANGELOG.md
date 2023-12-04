@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.554.0] - 2023-12-04 00:58:18
+
+### Added
+
+- Montana tuition subtraction.
+
 ## [0.553.1] - 2023-12-03 05:10:35
 
 ### Fixed
@@ -6101,6 +6107,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.554.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.553.1...0.554.0
 [0.553.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.553.0...0.553.1
 [0.553.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.552.2...0.553.0
 [0.552.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.552.1...0.552.2
