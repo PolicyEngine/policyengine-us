@@ -24,10 +24,11 @@
   input:
     is_married: false
     la_general_relief_eligible: true
-    la_general_relief_net_income: 3_612
+    la_general_relief_net_income: 3_612 # 301 monthly
     la_general_relief_recipient: true
   output:
-    la_general_relief_base_amount: 52.74
+    # 221 - (221 * (301 - 201) / (620 - 201) ) = 168.25
+    la_general_relief_base_amount: 168.25
 
 - name: Married amount fully phased out
   period: 2022-01
