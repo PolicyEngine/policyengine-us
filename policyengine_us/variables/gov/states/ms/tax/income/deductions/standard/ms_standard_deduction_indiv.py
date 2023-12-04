@@ -30,7 +30,6 @@ class ms_standard_deduction_indiv(Variable):
                 fsvals.WIDOW,
             ],
         )
-        is_head = person("is_tax_unit_head", period)
-        is_spouse = person("is_tax_unit_spouse", period)
+        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         p = parameters(period).gov.states.ms.tax.income.deductions.standard
-        return (is_head | is_spouse) * p.amount[filing_status]
+        return head_or_spouse * p.amount[filing_status]
