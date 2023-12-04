@@ -31,15 +31,13 @@ class mi_retirement_benefits_deduction_tier_three_ss_exempt_retired(Variable):
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
 
         # Where one or two people in the household qualify determines the amount of deduction
-        qualified_amount = where(
-            ss_retired_eligible_people == 1,
-            p.single_qualifying_amount[filing_status],
-            p.both_qualifying_amount[filing_status],
-        )
-        cap = where(
-            ss_retired_eligible_people == 0,
-            0,
-            qualified_amount,
+        cap = select(
+            [ss_retired_eligible_people == 1, ss_retired_eligible_people > 1],
+            [
+                p.single_qualifying_amount[filing_status],
+                p.both_qualifying_amount[filing_status],
+            ],
+            default=0,
         )
 
         return min_(
