@@ -1,0 +1,28 @@
+- name: ohio lump sum distribution credit test 1
+  period: 2021
+  input:
+    age: 10
+    state_code: OH
+  output: 
+    oh_distribution_credit: 0
+- name: ohio lump sum distribution credit test 2
+  period: 2021
+  input:
+    age: 77
+    state_code: OH
+  output: 
+    oh_distribution_credit: 560
+- name: ohio lump sum distribution credit test 3
+  period: 2021
+  input:
+    age: 56
+    state_code: OH
+  output: 
+    oh_distribution_credit: 0
+- name: ohio lump sum distribution credit test 4
+  period: 2021
+  input:
+    age: 90
+    state_code: OH
+  output: 
+    oh_distribution_credit: 250
