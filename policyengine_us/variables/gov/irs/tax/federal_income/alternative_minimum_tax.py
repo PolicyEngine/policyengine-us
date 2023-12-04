@@ -75,7 +75,7 @@ class regular_tax_before_credits(Variable):
         dwks10 = tax_unit("dwks10", period)
         dwks34 = dwks10 + dwks19
         dwks36 = max_(0, dwks34 - dwks1)
-        dwks37 = max_(0, dwks33 - dwks36)5
+        dwks37 = max_(0, dwks33 - dwks36)
 
         #parameterized
         p = parameters(period).gov.irs.income
