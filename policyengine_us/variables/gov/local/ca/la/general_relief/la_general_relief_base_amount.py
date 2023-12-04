@@ -17,11 +17,9 @@ class la_general_relief_base_amount(Variable):
         # The base amount phases out for recipients
         net_income = spm_unit("la_general_relief_net_income", period)
         excess_net_income = max_(net_income - p.phase_out.start, 0)
-        divisor = p.phase_out.max - p.phase_out.start
-        phase_out_rate = 1 - (min_(excess_net_income / divisor, 1))
+        phase_out_width = p.phase_out.max - p.phase_out.start  
+        reduction_percent = min_(excess_net_income / phase_out_width, 1)
         recipient = spm_unit("la_general_relief_recipient", period)
-        phase_out_amount = where(recipient, base_amount * phase_out_rate, 0)
-        print(excess_net_income / divisor)
-        print(phase_out_rate)
-        print(phase_out_amount)
-        return max_(base_amount - phase_out_amount, 0)
+        # LA only reduces the amount for recipients, not new registrants.
+        reduction = recipient * base_amount * reduction_percent
+        return max_(base_amount - reduction, 0)

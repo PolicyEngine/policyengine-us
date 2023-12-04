@@ -11,11 +11,10 @@ class la_general_relief_immigration_status_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         person = spm_unit.members
-        # person = spm_unit.members
         # Undocuemnted as well as DACA classified filers are ineligible for the GR
         istatus = person("immigration_status", period)
         daca_tps = istatus == istatus.possible_values.DACA_TPS
         undocumented = istatus == istatus.possible_values.UNDOCUMENTED
-        # Assuming that the filers immigartion status is recorded
+        # Assuming that the applicant's immigration status is recorded
         ineligible_status = daca_tps | undocumented
         return ~spm_unit.any(ineligible_status)

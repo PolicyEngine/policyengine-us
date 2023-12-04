@@ -21,5 +21,5 @@ class la_general_relief_motor_vehicle_value_eligible(Variable):
             is_homeless, p.value.homeless, p.value.resident
         )
         vehicle_value_eligible = vehicle_value <= vehicle_value_limit
-        vehciles_owned = household("household_vehicles_owned", period)
-        return vehicle_value_eligible & (vehciles_owned <= p.cap)
+        vehicles_owned = household("household_vehicles_owned", period)
+        return vehicle_value_eligible & (vehicles_owned <= p.cap)
