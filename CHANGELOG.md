@@ -5,6 +5,42 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.554.1] - 2023-12-04 06:37:53
+
+### Fixed
+
+- Fix NYC School Tax Credit Rate Reduction Amount Income Limit parameter label.
+
+## [0.554.0] - 2023-12-04 00:58:18
+
+### Added
+
+- Montana tuition subtraction.
+
+## [0.553.1] - 2023-12-03 05:10:35
+
+### Fixed
+
+- Basic income taxability bool unit.
+
+## [0.553.0] - 2023-12-03 04:41:43
+
+### Added
+
+- Add formula for the ky_taxable_income variable.
+
+## [0.552.2] - 2023-12-02 19:32:01
+
+### Changed
+
+- Moved DC in alphabetical order.
+
+## [0.552.1] - 2023-12-02 17:16:11
+
+### Fixed
+
+- South Carolina young child deduction and tax rate.
+
 ## [0.552.0] - 2023-12-01 21:12:49
 
 ### Added
@@ -6077,6 +6113,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.554.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.554.0...0.554.1
+[0.554.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.553.1...0.554.0
+[0.553.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.553.0...0.553.1
+[0.553.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.552.2...0.553.0
+[0.552.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.552.1...0.552.2
+[0.552.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.552.0...0.552.1
 [0.552.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.551.0...0.552.0
 [0.551.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.550.0...0.551.0
 [0.550.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.549.0...0.550.0

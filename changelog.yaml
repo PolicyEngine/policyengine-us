@@ -5144,3 +5144,33 @@
     added:
     - Add Hawaii income tax calculation logic.
   date: 2023-12-01 21:12:49
+- bump: patch
+  changes:
+    fixed:
+    - South Carolina young child deduction and tax rate.
+  date: 2023-12-02 17:16:11
+- bump: patch
+  changes:
+    changed:
+    - Moved DC in alphabetical order.
+  date: 2023-12-02 19:32:01
+- bump: minor
+  changes:
+    added:
+    - Add formula for the ky_taxable_income variable.
+  date: 2023-12-03 04:41:43
+- bump: patch
+  changes:
+    fixed:
+    - Basic income taxability bool unit.
+  date: 2023-12-03 05:10:35
+- bump: minor
+  changes:
+    added:
+    - Montana tuition subtraction.
+  date: 2023-12-04 00:58:18
+- bump: patch
+  changes:
+    fixed:
+    - Fix NYC School Tax Credit Rate Reduction Amount Income Limit parameter label.
+  date: 2023-12-04 06:37:53
