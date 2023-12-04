@@ -13,7 +13,7 @@
         members: [parent, child]
         state_code: SC
   output:
-    sc_young_child_exemption: 4_430
+    sc_young_child_deduction: 4_430
 
 - name: Family with a child age 6 and two children age 4 gets two young child exemptions.
   period: 2022
@@ -34,4 +34,4 @@
         members: [parent, child1, child2, child3]
         state_code: SC
   output:
-    sc_young_child_exemption: 8_860
+    sc_young_child_deduction: 8_860
