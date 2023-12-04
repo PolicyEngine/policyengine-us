@@ -1,0 +1,17 @@
+- name: Income capped at 0
+  period: 2022
+  input:
+    ut_income_tax_before_credits: 1_000
+    state_code: UT
+    ut_non_refundable_credits: 1_200
+  output:
+    ut_income_tax_before_refundable_credits: 0
+
+- name: Calculation
+  period: 2022
+  input:
+    ut_income_tax_before_credits: 1_000
+    state_code: UT
+    ut_non_refundable_credits: 500
+  output:
+    ut_income_tax_before_refundable_credits: 500

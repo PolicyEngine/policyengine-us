@@ -1,0 +1,34 @@
+- name: Alabama deductions unit test 1
+  period: 2021
+  input:
+    al_itemized_deductions: 3
+    al_standard_deduction: 9
+    al_personal_exemption: 2
+    al_dependent_exemption: 2
+    state_code: AL
+  output:
+    al_deductions: 13
+
+- name: Alabama deductions unit test 2
+  period: 2021
+  input:
+    al_itemized_deductions: 7
+    al_standard_deduction: 4
+    al_personal_exemption: 2
+    al_federal_income_tax_deduction: 0
+    al_dependent_exemption: 2
+    state_code: AL
+  output:
+    al_deductions: 11
+
+- name: Alabama deductions with federal deduction
+  period: 2022
+  input:
+    al_itemized_deductions: 7
+    al_standard_deduction: 4
+    al_personal_exemption: 2
+    al_federal_income_tax_deduction: 10
+    al_dependent_exemption: 2
+    state_code: AL
+  output:
+    al_deductions: 21

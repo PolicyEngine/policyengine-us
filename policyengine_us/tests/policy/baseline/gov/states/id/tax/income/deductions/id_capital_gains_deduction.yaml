@@ -1,0 +1,17 @@
+- name: No capital gains
+  period: 2022
+  absolute_error_margin: 0.001
+  input:
+    property_sales_net_capital_gain: 0
+    state_code: ID
+  output:
+    id_capital_gains_deduction: 0
+
+- name: 60% net capital gains 
+  period: 2022 
+  absolute_error_margin: 0.001
+  input:
+    property_sales_net_capital_gain: 6_000
+    state_code: ID
+  output:
+    id_capital_gains_deduction: 3_600
