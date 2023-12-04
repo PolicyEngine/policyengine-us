@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ct_amt_income_subtractions(Variable):
+class ct_amt_subtractions(Variable):
     value_type = float
     entity = TaxUnit
     label = "Connecticut subtractions from federal alternative minimum taxable income"

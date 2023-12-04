@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ct_adjusted_amt_income(Variable):
+class ct_amt_income(Variable):
     value_type = float
     entity = TaxUnit
     label = "Connecticut adjusted gross income"
@@ -12,6 +12,14 @@ class ct_adjusted_amt_income(Variable):
 
     adds = [
         "amt_income",
-        "ct_amt_income_additions",
+        "ct_amt_subtractions",
     ]  # Line 3 = Line 1 + Line 2
-    subtracts = ["ct_amt_income_subtractions"]  # Line 4
+    subtracts = ["ct_amt_subtractions"]  # Line 4
+
+
+# Comments:
+# rename ct_amt_income_additions to ct_amt_additions; same for subtarctions
+
+
+# rename this file to ct_amt_income
+

@@ -36,6 +36,14 @@ class ct_federal_alternative_minimum_tax(Variable):
                                                 else complete 6251 part 3 and part2, then enter line 52
                                             else if line 11 (line 1 + line 2 - line 4 (=line 5) - (line 6 - line 9 (=line 10))) is 206,100 (103,050) or less, then line 11 * .26
                                             else line 11 * 0.28 - 4,122 (2,061 if separately)) """
+        
+        if tax_unit(ct_amt_income_additions, period) == 0 and tax_unit(ct_amt_income_subtractions, period) == 0:
+            line12 = tax_unit(foreign_earned_income_exclusion, period)
+        elif 
         # line 13 = Alternative minimum tax foreign tax credit from federal Form 6251, Line 8
         # line 14 = line 12 - line 13
         # return line14
+
+
+# For line 6 and 7 -> do not create new parameters but use the federal ones
+# 
