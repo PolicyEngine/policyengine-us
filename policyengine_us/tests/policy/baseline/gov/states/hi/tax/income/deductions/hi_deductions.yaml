@@ -7,7 +7,7 @@
     hi_agi: 1_000
     hi_total_itemized_deduction: 5_000
     hi_reduced_itemized_deduction: 1_000
-    dsi: false
+    head_is_dependent_elsewhere: false
   output:
     hi_deductions: 5_000
     
@@ -20,7 +20,7 @@
     hi_agi: 1_000_000
     hi_total_itemized_deduction: 5_000
     hi_reduced_itemized_deduction: 1_000
-    dsi: false
+    head_is_dependent_elsewhere: false
   output:
     hi_deductions: 4_400
 
@@ -33,7 +33,7 @@
     hi_agi: 1_000
     hi_total_itemized_deduction: 1_000
     hi_reduced_itemized_deduction: 1_000
-    dsi: false
+    head_is_dependent_elsewhere: false
   output:
     hi_deductions: 4_400
 
@@ -46,7 +46,7 @@
     hi_agi: 1_000_000
     hi_total_itemized_deduction: 5_000
     hi_reduced_itemized_deduction: 1_000
-    dsi: false
+    head_is_dependent_elsewhere: false
   output:
     hi_deductions: 2_200
 
@@ -59,6 +59,6 @@
     hi_agi: 1_000_000
     hi_total_itemized_deduction: 5_000
     hi_reduced_itemized_deduction: 4_500
-    dsi: false
+    head_is_dependent_elsewhere: false
   output:
     hi_deductions: 4_500

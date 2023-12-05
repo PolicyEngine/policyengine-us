@@ -2,7 +2,7 @@
   period: 2021
   input:
     state_code: OR
-    exemptions: 3
+    exemptions_count: 3
   output:
     or_regular_exemptions: 3
 
@@ -12,7 +12,7 @@
     state_code: OR
     adjusted_gross_income: 200_000
     filing_status: JOINT
-    exemptions: 2
+    exemptions_count: 2
   output:
     or_regular_exemptions: 2
 
@@ -22,7 +22,7 @@
     state_code: OR
     adjusted_gross_income: 200_001
     filing_status: JOINT
-    exemptions: 2
+    exemptions_count: 2
   output:
     or_regular_exemptions: 0
 
@@ -32,7 +32,7 @@
     state_code: OR
     adjusted_gross_income: 100_000
     filing_status: SINGLE
-    exemptions: 3
+    exemptions_count: 3
   output:
     or_regular_exemptions: 3
 
@@ -42,7 +42,7 @@
     state_code: OR
     adjusted_gross_income: 100_001
     filing_status: SINGLE
-    exemptions: 3
+    exemptions_count: 3
   output:
     or_regular_exemptions: 0
 

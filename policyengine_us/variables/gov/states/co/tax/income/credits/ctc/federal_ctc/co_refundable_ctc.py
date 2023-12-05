@@ -53,8 +53,10 @@ class co_refundable_ctc(Variable):
         social_security_tax = add(tax_unit, period, SS_ADD_VARIABLES) - add(
             tax_unit, period, SS_SUBTRACT_VARIABLES
         )  # Line 14 - 16
-        eitc = tax_unit("eitc", period)  # Line 17a
-        social_security_excess = max_(0, social_security_tax - eitc)  # Line 18
+        federal_eitc = tax_unit("eitc", period)  # Line 17a
+        social_security_excess = max_(
+            0, social_security_tax - federal_eitc
+        )  # Line 18
         tax_increase = where(
             children
             < p.refundable.phase_in.min_children_for_ss_taxes_minus_eitc,
