@@ -1,0 +1,669 @@
+# The 2023 integration tests in this file are derived from a test suite for
+# the Social Benefits Navigator (SBN) for Los Angeles County, California.
+
+# NOTE: In Policyengine-US these person variables have the following
+# default values:
+#       the default value of immigration_status is CITIZEN,
+#       the default value of has_itin is True, and
+#       the default value of is_pregnant is False.
+# Test cases in which these variables are not present use those default values.
+
+- name: ACA-NEG-01
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 33
+        is_aca_eshi_eligible: false
+      person2:
+        age: 33
+        is_aca_eshi_eligible: false
+      person3:
+        age: 9
+        is_aca_eshi_eligible: false
+      person4:
+        age: 7
+        is_aca_eshi_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_fips: 41  # Oregon
+  output:
+    is_aca_ptc_eligible_ca: [false, false, false, false]
+
+- name: ACA-NEG-02
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 33
+        employment_income: 60_000
+        is_aca_eshi_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_fips: 6  # California
+  output:
+    is_aca_ptc_eligible_ca: [true]
+    # SBN test assumes ineligible because person is above ACA income limit,
+    # but that income limit has been removed for the 2021-2025 plan years
+    # by the following federal legislation:
+    #   American Rescue Plan Act for 2021-2022
+    #   Inflation Reduction Act for 2023-2025
+    # See the CMS document at the following URL:
+    # https://www.cms.gov/marketplace/technical-assistance-resources/aptc-csr-basics.pdf#page=6
+
+- name: ACA-NEG-03
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 33
+        employment_income: 60_000
+        is_aca_eshi_eligible: false
+      person2:
+        age: 33
+        employment_income: 60_000
+        is_aca_eshi_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 6  # California
+  output:
+    is_aca_ptc_eligible_ca: [true, true]
+    # SBN test assumes ineligible because tax unit is above ACA income limit,
+    # but that income limit has been removed for the 2021-2025 plan years
+    # by the following federal legislation:
+    #   American Rescue Plan Act for 2021-2022
+    #   Inflation Reduction Act for 2023-2025
+    # See the CMS document at the following URL:
+    # https://www.cms.gov/marketplace/technical-assistance-resources/aptc-csr-basics.pdf#page=6
+
+- name: ACA-NEG-04
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 33
+        employment_income: 60_000
+        is_aca_eshi_eligible: false
+      person2:
+        age: 33
+        employment_income: 60_000
+        is_aca_eshi_eligible: false
+      person3:
+        age: 8
+        is_aca_eshi_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_fips: 6  # California
+  output:
+    is_aca_ptc_eligible_ca: [true, true, true]
+    # SBN test assumes ineligible because tax unit is above ACA income limit,
+    # but that income limit has been removed for the 2021-2025 plan years
+    # by the following federal legislation:
+    #   American Rescue Plan Act for 2021-2022
+    #   Inflation Reduction Act for 2023-2025
+    # See the CMS document at the following URL:
+    # https://www.cms.gov/marketplace/technical-assistance-resources/aptc-csr-basics.pdf#page=6
+
+- name: ACA-NEG-05
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 33
+        employment_income: 90_000
+        is_aca_eshi_eligible: false
+      person2:
+        age: 33
+        employment_income: 80_000
+        is_aca_eshi_eligible: false
+      person3:
+        age: 8
+        is_aca_eshi_eligible: false
+      person4:
+        age: 6
+        is_aca_eshi_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_fips: 6  # California
+  output:
+    is_aca_ptc_eligible_ca: [true, true, true, true]
+    # SBN test assumes ineligible because tax unit is above ACA income limit,
+    # but that income limit has been removed for the 2021-2025 plan years
+    # by the following federal legislation:
+    #   American Rescue Plan Act for 2021-2022
+    #   Inflation Reduction Act for 2023-2025
+    # See the CMS document at the following URL:
+    # https://www.cms.gov/marketplace/technical-assistance-resources/aptc-csr-basics.pdf#page=6
+
+- name: ACA-NEG-06
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 33
+        employment_income: 90_000
+        is_aca_eshi_eligible: false
+      person2:
+        age: 33
+        employment_income: 80_000
+        is_aca_eshi_eligible: false
+      person3:
+        age: 8
+        is_aca_eshi_eligible: false
+      person4:
+        age: 6
+        is_aca_eshi_eligible: false
+      person5:
+        age: 4
+        is_aca_eshi_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_fips: 6  # California
+  output:
+    is_aca_ptc_eligible_ca: [true, true, true, true, true]
+    # SBN test assumes ineligible because tax unit is above ACA income limit,
+    # but that income limit has been removed for the 2021-2025 plan years
+    # by the following federal legislation:
+    #   American Rescue Plan Act for 2021-2022
+    #   Inflation Reduction Act for 2023-2025
+    # See the CMS document at the following URL:
+    # https://www.cms.gov/marketplace/technical-assistance-resources/aptc-csr-basics.pdf#page=6
+
+- name: ACA-NEG-07
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 33
+        employment_income: 24_000  # above 100% FPL, so is ACA income elgible
+        is_aca_eshi_eligible: true  # is eligible for plan at work
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_fips: 6  # California
+  output:
+    is_aca_ptc_eligible_ca: [false]
+    # this person will always be ineligible for ACA because is eligible
+    # for employer-sponsored health insurance
+
+- name: ACA-NEG-08
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 33
+        employment_income: 50_000
+        is_aca_eshi_eligible: true
+      person2:
+        age: 33
+        employment_income: 50_000
+        is_aca_eshi_eligible: true
+      person3:
+        age: 8
+        is_aca_eshi_eligible: true
+      person4:
+        age: 6
+        is_aca_eshi_eligible: true
+      person5:
+        age: 4
+        is_aca_eshi_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_fips: 6  # California
+  output:
+    is_aca_ptc_eligible_ca: [false, false, false, false, false]
+    # this tax unit will always be ineligible for ACA because is eligible
+    # for employer-sponsored health insurance
+
+- name: ACA-NEG-09
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 33
+        immigration_status: DACA_TPS
+        has_itin: true
+        employment_income: 24_000  # above 100% FPL, so is ACA income elgible
+        is_aca_eshi_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_fips: 6  # California
+  output:
+    is_aca_ptc_eligible_ca: [false]
+
+- name: ACA-NEG-10
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 33
+        immigration_status: DACA_TPS
+        has_itin: false
+        employment_income: 24_000  # above 100% FPL, so is ACA income elgible
+        is_aca_eshi_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_fips: 6  # California
+  output:
+    is_aca_ptc_eligible_ca: [false]
+
+- name: ACA-NEG-11
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 33
+        immigration_status: UNDOCUMENTED
+        has_itin: true
+        employment_income: 24_000  # above 100% FPL, so is ACA income elgible
+        is_aca_eshi_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_fips: 6  # California
+  output:
+    is_aca_ptc_eligible_ca: [false]
+
+- name: ACA-NEG-12
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 33
+        immigration_status: UNDOCUMENTED
+        has_itin: false
+        employment_income: 24_000  # above 100% FPL, so is ACA income elgible
+        is_aca_eshi_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_fips: 6  # California
+  output:
+    is_aca_ptc_eligible_ca: [false]
+
+- name: ACA-POS-01
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 33
+        employment_income: 24_000
+        is_aca_eshi_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_fips: 6  # California
+  output:
+    is_aca_ptc_eligible_ca: [true]
+
+- name: ACA-POS-02
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 33
+        employment_income: 24_000
+        is_aca_eshi_eligible: false
+      person2:
+        age: 33
+        employment_income: 24_000
+        is_aca_eshi_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 6  # California
+  output:
+    is_aca_ptc_eligible_ca: [true, true]
+
+- name: ACA-POS-03
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 33
+        immigration_status: UNDOCUMENTED
+        has_itin: true
+        employment_income: 70_000
+        is_aca_eshi_eligible: false
+      person2:
+        age: 9
+        is_aca_eshi_eligible: false
+      person3:
+        age: 7
+        is_aca_eshi_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_fips: 6  # California
+  output:
+    is_medicaid_eligible: [false, false, false]
+    is_aca_ptc_eligible_ca: [false, true, true]
+
+- name: ACA-POS-04
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 33
+        immigration_status: UNDOCUMENTED
+        has_itin: false
+        employment_income: 70_000
+        is_aca_eshi_eligible: false
+      person2:
+        age: 9
+        is_aca_eshi_eligible: false
+      person3:
+        age: 7
+        is_aca_eshi_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_fips: 6  # California
+  output:
+    is_medicaid_eligible: [false, false, false]
+    is_aca_ptc_eligible_ca: [false, false, false]
+
+- name: ACA-POS-05
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 33
+        immigration_status: UNDOCUMENTED
+        has_itin: true
+        employment_income: 50_000
+        is_aca_eshi_eligible: false
+      person2:
+        age: 33
+        employment_income: 50_000
+        is_aca_eshi_eligible: false
+      person3:
+        age: 9
+        is_aca_eshi_eligible: false
+      person4:
+        age: 7
+        is_aca_eshi_eligible: false
+      person5:
+        age: 5
+        is_aca_eshi_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_fips: 6  # California
+  output:
+    is_medicaid_eligible: [false, false, false, false, false]
+    is_aca_ptc_eligible_ca: [false, true, true, true, true]
+
+- name: ACA-POS-06
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 33
+        immigration_status: UNDOCUMENTED
+        has_itin: false
+        employment_income: 50_000
+        is_aca_eshi_eligible: false
+      person2:
+        age: 33
+        has_itin: false
+        employment_income: 50_000
+        is_aca_eshi_eligible: false
+      person3:
+        age: 9
+        is_aca_eshi_eligible: false
+      person4:
+        age: 7
+        is_aca_eshi_eligible: false
+      person5:
+        age: 5
+        is_aca_eshi_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_fips: 6  # California
+  output:
+    is_medicaid_eligible: [false, false, false, false, false]
+    is_aca_ptc_eligible_ca: [false, false, false, false, false]
+    # nobody is ACA PTC eligible because neither head nor spouse have an ITIN;
+    # either having an ITIN would make the spouse and children ACA eligible
+
+- name: MED-ACA-COMB-01
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 33
+        is_pregnant: true
+        employment_income: 40_000
+        is_aca_eshi_eligible: false
+      person2:
+        age: 9
+        is_aca_eshi_eligible: false
+      person3:
+        age: 7
+        is_aca_eshi_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_fips: 6  # California
+  output:
+    is_medicaid_eligible: [true, true, true]
+    is_aca_ptc_eligible_ca: [false, false, false]
+
+- name: MED-ACA-COMB-02
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 33
+        is_pregnant: false
+        employment_income: 40_000
+        is_aca_eshi_eligible: false
+      person2:
+        age: 9
+        is_aca_eshi_eligible: false
+      person3:
+        age: 7
+        is_aca_eshi_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_fips: 6  # California
+  output:
+    is_medicaid_eligible: [false, true, true]
+    is_aca_ptc_eligible_ca: [true, false, false]
+
+- name: MED-ACA-COMB-03
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 33
+        employment_income: 60_000
+        is_aca_eshi_eligible: false
+      person2:
+        age: 9
+        is_aca_eshi_eligible: false
+      person3:
+        age: 7
+        is_aca_eshi_eligible: false
+      person4:
+        age: 5
+        is_aca_eshi_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_fips: 6  # California
+  output:
+    is_medicaid_eligible: [false, true, true, true]
+    is_aca_ptc_eligible_ca: [true, false, false, false]
+
+- name: MED-ACA-COMB-04
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 33
+        employment_income: 70_000
+        is_aca_eshi_eligible: false
+      person2:
+        age: 11
+        is_aca_eshi_eligible: false
+      person3:
+        age: 9
+        is_aca_eshi_eligible: false
+      person4:
+        age: 7
+        is_aca_eshi_eligible: false
+      person5:
+        age: 5
+        is_aca_eshi_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_fips: 6  # California
+  output:
+    is_medicaid_eligible: [false, true, true, true, true]
+    is_aca_ptc_eligible_ca: [true, false, false, false, false]
+
+- name: MED-ACA-COMB-05
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 50_000
+        is_aca_eshi_eligible: false
+      person2:
+        age: 30
+        is_aca_eshi_eligible: false
+        is_pregnant: true
+      person3:
+        age: 5
+        is_aca_eshi_eligible: false
+      person4:
+        age: 3
+        is_aca_eshi_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_fips: 6  # California
+  output:
+    is_medicaid_eligible: [false, true, true, true]
+    is_aca_ptc_eligible_ca: [true, false, false, false]
+
+- name: MED-ACA-COMB-06
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: UNDOCUMENTED
+        employment_income: 94_000
+        has_itin: true
+        is_aca_eshi_eligible: false
+      person2:
+        age: 30
+        is_aca_eshi_eligible: false
+      person3:
+        age: 5
+        is_aca_eshi_eligible: false
+      person4:
+        age: 3
+        is_aca_eshi_eligible: false
+      person5:
+        age: 1
+        is_aca_eshi_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_fips: 6  # California
+  output:
+    #is_medicaid_eligible: [false, false, false, false, false]
+    is_aca_ptc_eligible_ca: [false, true, true, true, true]
+    # with $93K income PEUS gets three kids Medicaid eligible and hence
+    #                            only spouse is ACA eligible
+    # with $94K income PEUS gets nobody Medicaid eligible and hence
+    #                            spouse and three kids are ACA eligible
