@@ -4,8 +4,9 @@ from policyengine_us.model_api import *
 class ky_military_personal_tax_credits(Variable):
     value_type = float
     entity = Person
-    label = "Kentucky personal tax credits amount for filers with military service income"
-    reference = "https://apps.legislature.ky.gov/law/statutes/statute.aspx?id=53500"  # (3) (a)
+    label = "Kentucky personal tax credits military service amount"
+    reference = "https://apps.legislature.ky.gov/law/statutes/statute.aspx?id=53500#page=3"  # (3) (a)
+    unit = USD
     definition_period = YEAR
     defined_for = StateCode.KY
 

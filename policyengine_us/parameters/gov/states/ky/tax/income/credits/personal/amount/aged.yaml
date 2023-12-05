@@ -1,9 +1,10 @@
-description: Kentucky provides this personal tax credits amount, depending on filers' age.
+description: Kentucky provides this aged personal tax credits amount, depending on filers age.
 metadata:
   type: single_amount
   threshold_unit: year
   amount_unit: currency-USD
-  label: Kentucky personal tax credits amount depending on age
+  label: Kentucky personal tax credits aged amount 
+  period: year
   reference:
     - title: Schedule ITC Section B 2022
       href: https://revenue.ky.gov/Forms/Schedule%20ITC%202022.pdf#page=2
