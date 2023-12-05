@@ -19,7 +19,6 @@ class ga_retirement_exclusion(Variable):
         p = parameters(
             period
         ).gov.states.ga.tax.income.agi.exclusions.retirement
-        # age_older = person("age", period) >= p.age.older
         cap = where(
             person("age", period) >= p.age.older, p.cap.older, p.cap.younger
         )
