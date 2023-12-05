@@ -1,4 +1,4 @@
-- name: Test case 1, higher than 0
+- name: Test case 1, the tax filer chooses itemized deductions and the calculated taxable income is greater than 0.
   period: 2021
   input:
     mt_agi: 6_000
@@ -10,7 +10,7 @@
   output: 
     mt_taxable_income: 290
 
-- name: Test case 2, less than 0 
+- name: Test case 2, the tax filer chooses itemized deductions and the calculated taxable income is less than 0.
   period: 2021
   input:
     mt_agi: 5_000
@@ -22,7 +22,7 @@
   output: 
     mt_taxable_income: 0
 
-- name: Test case 2, less than 0, use standard deductions.
+- name: Test case 3, the tax filer chooses standard deductions and the calculated taxable income is less than 0.
   period: 2021
   input:
     mt_agi: 5_000
