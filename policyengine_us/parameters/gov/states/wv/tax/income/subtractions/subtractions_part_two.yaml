@@ -1,0 +1,26 @@
+description: West Virginia subtracts these sources from adjusted gross income for senior citizen or disability deduction.
+values:
+  2021-01-01:
+    # Line 33-44
+    # ASSETS HELD BY SUBCHAPTER S CORPORATION Line 33
+    - military_service_income # Line 34
+    # ACTIVE MILITARY SEPARATION Line 35
+    - salt_refund_income # Line 36
+    # CONTRIBUTIONS TO THE WEST VIRGINIA PREPAID TUITION TRUST/WEST VIRGINIA SAVINGS PLAN Line 37
+    #
+    #
+    #
+    #
+
+metadata:
+  unit: list
+  label: West Virginia subtractions part two
+  reference:
+    - title: 2022 West Virginia Personal Income Tax Forms & Instructions
+      href: https://tax.wv.gov/Documents/PIT/2022/PersonalIncomeTaxFormsAndInstructions.2022.pdf#page=3
+    - title: 2021 West Virginia Personal Income Tax Forms & Instructions
+      href: https://tax.wv.gov/Documents/TaxForms/2021/it140.pdf#page=3
+    - title: Code of West Virginia §11-21-12
+      href: https://code.wvlegislature.gov/11-21-12/
+    - title: West Virginia Personal Income Tax Forms And Instructions 2022 Line 46
+      href: https://tax.wv.gov/Documents/PIT/2022/PersonalIncomeTaxFormsAndInstructions.2022.pdf#page=27

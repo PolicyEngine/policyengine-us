@@ -13,7 +13,7 @@ class wv_senior_citizen_disability_deduction_eligible_person(Variable):
 
     def formula(person, period, parameters):
         wv_total_modification = person("wv_total_modification", period)
-        wv_agi = person("wv_agi", period)
+        wv_agi_person = person("wv_agi_person", period)
 
         p = parameters(
             period
@@ -25,7 +25,7 @@ class wv_senior_citizen_disability_deduction_eligible_person(Variable):
         modification_eligible = (
             wv_total_modification < p.total_modification_threshold
         )
-        agi_eligible = wv_agi >= p.agi_limit
+        agi_eligible = wv_agi_person >= p.agi_limit
 
         return (
             (disabled_eligible | age_eligible)
