@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class va_eitc(Variable):
+class va_eitc_indiv(Variable):
     value_type = float
-    entity = TaxUnit
-    label = "Virginia Earned Income Tax Credit"
+    entity = Person
+    label = "Virginia Earned Income Tax Credit per individual when married filing seperately"
     unit = USD
     documentation = "Refundable or non-refundable Virginia EITC"
     definition_period = YEAR
@@ -15,8 +15,4 @@ class va_eitc(Variable):
         refundable_eitc = tax_unit("va_refundable_eitc", period)
         non_refundable_eitc = tax_unit("va_non_refundable_eitc", period)
         claims_refundable = tax_unit("va_claims_refundable_eitc", period)
-        amount = where(claims_refundable, refundable_eitc, non_refundable_eitc)
-        filing_status = tax_unit("filing_status", period)
-        is_separate = filing_status == filing_status.possible_values.SEPARATE
-        return where(is_separate, Person("va_eitc_indiv", period), amount)
-        # return where(claims_refundable, refundable_eitc, non_refundable_eitc)
+        return where(claims_refundable, refundable_eitc, non_refundable_eitc) *Person("va_prorate_fraction", period)
