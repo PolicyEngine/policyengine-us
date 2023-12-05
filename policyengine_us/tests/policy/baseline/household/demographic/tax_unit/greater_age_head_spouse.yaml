@@ -1,0 +1,23 @@
+- name: Head's age is larger than spouse's age
+  period: 2022
+  input:
+    age_head: 40
+    age_spouse: 35
+  output:
+    greater_age_head_spouse: 40
+
+- name: Head's age is smaller than spouse's age
+  period: 2022
+  input:
+    age_head: 65
+    age_spouse: 66
+  output:
+    greater_age_head_spouse: 66
+
+- name: Head's age is the same as spouse's age
+  period: 2022
+  input:
+    age_head: 76
+    age_spouse: 76
+  output:
+    greater_age_head_spouse: 76
