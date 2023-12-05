@@ -1,0 +1,21 @@
+description: Hawaii caps the military reserve or Hawaii national guard duty pay exclusion at this amount.
+values: 
+  2021-01-01: 7_345
+
+metadata:
+  label: Hawaii military reserve or national guard duty pay exclusion cap
+  period: year
+  unit: currency-USD
+  reference:
+  - title: Hawaii Resident Income Tax Instructions N-11 Rev.2022 
+    href: https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=13
+  - title: Hawaii 2022 Individual Income Tax Return N-11 From Rev.2022
+    href: https://files.hawaii.gov/tax/forms/2022/n11_i.pdf#page=2
+  - title: Hawaii Resident Income Tax Instructions N-11 Rev.2021 
+    href: https://files.hawaii.gov/tax/forms/2021/n11ins.pdf#page=13
+  - title: Hawaii 2021 Individual Income Tax Return N-11 From Rev.2021
+    href: https://files.hawaii.gov/tax/forms/2021/n11_i.pdf#page=2  
+  # The value of the subtraction is derived from compensation for  
+  # performance of duty, equivalent to pay received for forty-eight drills 
+  - title: Hawaii Income Tax Law, Chapter 235, Section 235-7, (a) (7)  
+    href: https://files.hawaii.gov/tax/legal/hrs/hrs_235.pdf#page=22 
