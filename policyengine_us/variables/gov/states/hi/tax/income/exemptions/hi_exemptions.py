@@ -11,12 +11,9 @@ class hi_exemptions(Variable):
     )
     definition_period = YEAR
     defined_for = StateCode.HI
-<<<<<<< HEAD
-=======
 
     def formula(tax_unit, period, parameters):
         return max_(
             tax_unit("hi_regular_exemptions", period),
             tax_unit("hi_disabled_exemptions", period),
         )
->>>>>>> 377c21b6915dbd0615ceaf143b48b3304602ced6

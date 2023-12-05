@@ -1,24 +1,3 @@
-<<<<<<< HEAD
-- name: below 0
-  period: 2022
-  input:
-    state_code: HI
-    hi_agi: 1_000
-    hi_deductions: 1_000
-    hi_exemptions: 1_000
-  output:
-    hi_taxable_income: 0
-
-- name: above 0
-  period: 2022
-  input:
-    state_code: HI
-    hi_agi: 3_000
-    hi_deductions: 1_000
-    hi_exemptions: 1_000
-  output:
-    hi_taxable_income: 1_000
-=======
 - name: Hawaii taxable income
   period: 2021
   input:
@@ -38,4 +17,3 @@
     state_code: HI
   output:
     hi_taxable_income: 0 
->>>>>>> 377c21b6915dbd0615ceaf143b48b3304602ced6
