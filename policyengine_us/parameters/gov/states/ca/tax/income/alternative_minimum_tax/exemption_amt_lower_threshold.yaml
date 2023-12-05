@@ -1,0 +1,30 @@
+description: California provides a flat exemption amount for filers having Alternative Minimum Taxable Income lower than this amount.
+metadata:
+  label: California lower threshold for exemption amount
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  reference:
+  - title: 2021 Schedule P (540) Alternative Minimum Tax and Credit Limitations - Residents
+    href: https://www.ftb.ca.gov/forms/2021/2021-540-p.pdf#page=1
+  - title: 2022 Schedule P (540) Alternative Minimum Tax and Credit Limitations - Residents
+    href: https://www.ftb.ca.gov/forms/2022/2022-540-p.pdf#page1
+  - title: 
+    href: 
+
+JOINT:
+  2021-01-01: 390_351
+  2022-01-01: 422_750
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 292_763
+  2022-01-01: 317_062
+WIDOW:
+  2021-01-01: 390_351
+  2022-01-01: 422_750
+SINGLE:
+  2021-01-01: 292_763
+  2022-01-01: 317_062
+SEPARATE:
+  2021-01-01: 195_172
+  2022-01-01: 211_371
