@@ -12,9 +12,10 @@ class hi_eligible_capital_gain_alternative_tax(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.hi.tax.income.alternative_tax
         filing_status = tax_unit("filing_status", period)
-        taxable_income = tax_unit("hi_taxable_income", period)  # line 1
-        # line 4 of Hawaii Tax on Capital Gains Worksheet
+        # line 1 of Hawaii Tax on Capital Gains Worksheet
         # on Hawaii Resident Income Tax Instructions N-11 Rev.2022, page=33
+        taxable_income = tax_unit("hi_taxable_income", period)
+        # line 4
         net_lt_capital_gain = add(
             tax_unit, period, ["long_term_capital_gains"]
         )
