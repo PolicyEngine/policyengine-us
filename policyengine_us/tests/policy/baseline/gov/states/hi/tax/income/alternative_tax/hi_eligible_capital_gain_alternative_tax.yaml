@@ -7,7 +7,7 @@
     long_term_capital_gains: 5_000
     net_capital_gain: 4_000
   output:
-    hi_alternative_tax_on_capital_gains: 0
+    hi_eligible_capital_gain_alternative_tax: 0
 
 - name: Hawaii alternative tax on capital gains for filing as Single
   period: 2021
@@ -18,7 +18,7 @@
     long_term_capital_gains: 5_000
     net_capital_gain: 4_000
   output:
-    hi_alternative_tax_on_capital_gains: 3_267.6
+    hi_eligible_capital_gain_alternative_tax: 290 #3_267.6
 
 - name: Hawaii alternative tax on capital gains for filing Separately
   period: 2021
@@ -29,7 +29,7 @@
     long_term_capital_gains: 3_000
     net_capital_gain: 4_000
   output:
-    hi_alternative_tax_on_capital_gains: 1_787.1
+    hi_eligible_capital_gain_alternative_tax: 217.5 #1_787.1
 
 - name: Hawaii alternative tax on capital gains for filing as head of household
   period: 2021
@@ -40,7 +40,7 @@
     long_term_capital_gains: 5_000
     net_capital_gain: 6_000
   output:
-    hi_alternative_tax_on_capital_gains: 0
+    hi_eligible_capital_gain_alternative_tax: 0
 
 - name: Hawaii alternative tax on capital gains for filing as a widow
   period: 2021
@@ -51,5 +51,5 @@
     long_term_capital_gains: 5_000
     net_capital_gain: 7_000
   output:
-    hi_alternative_tax_on_capital_gains: 5_130.7
+    hi_eligible_capital_gain_alternative_tax: 362.5 #5_130.7
 

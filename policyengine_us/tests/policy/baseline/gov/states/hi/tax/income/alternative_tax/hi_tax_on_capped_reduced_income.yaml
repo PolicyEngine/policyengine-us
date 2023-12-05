@@ -1,0 +1,54 @@
+- name: Hawaii tax on capped reduced income for filing Jointly
+  period: 2021
+  input:
+    filing_status: JOINT
+    hi_alternative_tax_on_capital_gains_eligible: false
+    hi_taxable_income: 10_000
+    long_term_capital_gains: 5_000
+    net_capital_gain: 4_000
+  output:
+    hi_tax_on_capped_reduced_income: 0
+
+- name: Hawaii tax on capped reduced income for filing as Single
+  period: 2021
+  input:
+    filing_status: SINGLE
+    hi_alternative_tax_on_capital_gains_eligible: true
+    hi_taxable_income: 50_000
+    long_term_capital_gains: 5_000
+    net_capital_gain: 4_000
+  output:
+    hi_tax_on_capped_reduced_income: 2_977.6
+
+- name: Hawaii tax on capped reduced income for filing Separately
+  period: 2021
+  input:
+    filing_status: SEPARATE
+    hi_alternative_tax_on_capital_gains_eligible: true
+    hi_taxable_income: 30_000
+    long_term_capital_gains: 3_000
+    net_capital_gain: 4_000
+  output:
+    hi_tax_on_capped_reduced_income: 1_569.6
+
+- name: Hawaii tax on capped reduced income for filing as head of household
+  period: 2021
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    hi_alternative_tax_on_capital_gains_eligible: false
+    hi_taxable_income: 40_000
+    long_term_capital_gains: 5_000
+    net_capital_gain: 6_000
+  output:
+    hi_tax_on_capped_reduced_income: 0
+
+- name: Hawaii tax on capped reduced income for filing as a widow
+  period: 2021
+  input:
+    filing_status: JOINT
+    hi_alternative_tax_on_capital_gains_eligible: true
+    hi_taxable_income: 80_000
+    long_term_capital_gains: 5_000
+    net_capital_gain: 7_000
+  output:
+    hi_tax_on_capped_reduced_income: 4_768.2
