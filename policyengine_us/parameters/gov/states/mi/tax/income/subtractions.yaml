@@ -1,4 +1,4 @@
-description: Michigan counts these sources as subtractions.
+description: Michigan subtracts these sources to federal adjusted gross income when computing taxable income. 
 values:
   2017-01-01:
     - us_govt_interest # Line 10
@@ -10,7 +10,7 @@ values:
     - mi_interest_dividends_capital_gains_deduction # Line 27
 metadata:
   unit: list  
-  label: Michigan subtraction sources  
+  label: Michigan taxable income subtraction sources  
   period: year  
   reference:
     - title: 2022 Michigan Schedule 1 Additions and Subtractions
@@ -23,5 +23,3 @@ metadata:
       href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2022/2022-IIT-Forms/BOOK_MI-1040.pdf
     - title: Michigan Retirement and Pension Benefits
       href: https://www.michigan.gov/taxes/iit/retirement-and-pension-benefits
-    - title: 2021 Michigan Taxpayer Assistance Manual
-      href: https://www.michigan.gov/-/media/Project/Websites/taxes/2022RM/UNCAT/2019_Taxpayer_Assistance_Manual.pdf
