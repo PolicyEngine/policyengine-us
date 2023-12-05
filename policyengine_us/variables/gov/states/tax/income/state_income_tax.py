@@ -49,7 +49,7 @@ class state_income_tax(Variable):
         # "or_income_tax",  --- activating will cause circular logic errors
         "pa_income_tax",
         "ri_income_tax",
-        "sc_income_tax",
+        # "sc_income_tax",  --- activating will cause circular logic errors
         # "sd_income_tax",  --- no state income tax
         # "tn_income_tax",  --- no state income tax
         # "tx_income_tax",  --- no state income tax
