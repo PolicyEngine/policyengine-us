@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class mi_additions(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Michigan additions"
+    label = "Michigan taxable income additions"
     unit = USD
     definition_period = YEAR
     reference = (
