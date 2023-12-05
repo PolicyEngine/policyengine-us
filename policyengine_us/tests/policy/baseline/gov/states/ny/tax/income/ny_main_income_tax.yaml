@@ -1,0 +1,9 @@
+- name: Unit test for 2021 ny_supplemental_tax single filer
+  absolute_error_margin: 1
+  period: 2021
+  input:
+    state_code: NY
+    filing_status: SINGLE
+    ny_taxable_income: 230_000
+  output:
+    ny_main_income_tax: 14_109

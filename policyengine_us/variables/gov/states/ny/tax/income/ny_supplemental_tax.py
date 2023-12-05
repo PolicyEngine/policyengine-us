@@ -38,7 +38,7 @@ class ny_supplemental_tax(Variable):
         previous_agi_threshold = select(
             in_each_status,
             [
-                get_previous_threshold(ny_agi, scale.thresholds)
+                get_previous_threshold(ny_taxable_income, scale.thresholds)
                 for scale in scales
             ],
         )
