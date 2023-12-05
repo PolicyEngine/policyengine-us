@@ -25,6 +25,8 @@ class ga_retirement_exclusion(Variable):
         retirement_income = person(
             "ga_retirement_income_exclusion_retirement_income", period
         )
-        exclusion = min_(retirement_income, cap)
-        eligible = person("ga_retirement_exclusion_eligible_person", period)
-        return tax_unit.sum(exclusion * eligible)
+        capped_retirement_income = min_(retirement_income, cap)
+        eligible_person = person(
+            "ga_retirement_exclusion_eligible_person", period
+        )
+        return tax_unit.sum(capped_retirement_income * eligible_person)
