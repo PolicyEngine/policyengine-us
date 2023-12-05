@@ -7,3 +7,4 @@ class ca_state_disability_insurance(Variable):
     label = "California state disability insurance (SDI)"
     unit = USD
     definition_period = YEAR
+    defined_for = StateCode.CA
