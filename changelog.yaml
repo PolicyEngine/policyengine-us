@@ -5144,3 +5144,68 @@
     added:
     - Add Hawaii income tax calculation logic.
   date: 2023-12-01 21:12:49
+- bump: patch
+  changes:
+    fixed:
+    - South Carolina young child deduction and tax rate.
+  date: 2023-12-02 17:16:11
+- bump: patch
+  changes:
+    changed:
+    - Moved DC in alphabetical order.
+  date: 2023-12-02 19:32:01
+- bump: minor
+  changes:
+    added:
+    - Add formula for the ky_taxable_income variable.
+  date: 2023-12-03 04:41:43
+- bump: patch
+  changes:
+    fixed:
+    - Basic income taxability bool unit.
+  date: 2023-12-03 05:10:35
+- bump: minor
+  changes:
+    added:
+    - Montana tuition subtraction.
+  date: 2023-12-04 00:58:18
+- bump: patch
+  changes:
+    fixed:
+    - Fix NYC School Tax Credit Rate Reduction Amount Income Limit parameter label.
+  date: 2023-12-04 06:37:53
+- bump: minor
+  changes:
+    added:
+    - Michigan standard deduction and pension benefit.
+  date: 2023-12-04 12:21:44
+- bump: patch
+  changes:
+    fixed:
+    - Military retirement pay variable.
+  date: 2023-12-04 14:52:43
+- bump: minor
+  changes:
+    added:
+    - Arkansas personal tax credits.
+  date: 2023-12-04 15:27:14
+- bump: minor
+  changes:
+    added:
+    - General Relief Program (GR) - Los Angeles County.
+  date: 2023-12-05 01:54:33
+- bump: minor
+  changes:
+    added:
+    - Vermont charitable contributions credit.
+  date: 2023-12-05 14:34:03
+- bump: patch
+  changes:
+    fixed:
+    - Bug in LA general relief.
+  date: 2023-12-05 16:37:05
+- bump: minor
+  changes:
+    added:
+    - Michigan additions and subtractions.
+  date: 2023-12-05 18:11:49
