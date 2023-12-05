@@ -1,75 +1,41 @@
-- name: A household that has a child age 13 is eligible.
+- name: A household that has any eligible child is eligible to participate the program.
   period: 2023
   input:
     people:
-      mother:
-        is_child: false
-      father:
-        is_child: false
-      child:
-        is_child: true
-        age: 13
-        is_disabled: false
-    households:
-      household:
-        members: [mother, father, child]
-        state_code: CA
+      child1:
+        ca_calworks_child_care_age_child_eligible: true
+      child2:
+        ca_calworks_child_care_age_child_eligible: true
+    spm_units:
+      spm_unit:
+        members: [child1, child2]
   output:
     ca_calworks_child_care_age_eligible: true
 
-- name: A household that has a child age 14 is ineligible.
+- name: A household that has any eligible child is eligible to participate the program.
   period: 2023
   input:
     people:
-      mother:
-        is_child: false
-      father:
-        is_child: false
-      child:
-        is_child: true
-        age: 14
-        is_disabled: false
-    households:
-      household:
-        members: [mother, father, child]
-        state_code: CA
-  output:
-    ca_calworks_child_care_age_eligible: false
-
-- name: A household that has a child age 18 and disabled is eligible.
-  period: 2023
-  input:
-    people:
-      mother:
-        is_child: false
-      father:
-        is_child: false
-      child:
-        is_child: true
-        age: 18
-        is_disabled: true
-    households:
-      household:
-        members: [mother, father, child]
-        state_code: CA
+      child1:
+        ca_calworks_child_care_age_child_eligible: true
+      child2:
+        ca_calworks_child_care_age_child_eligible: false
+    spm_units:
+      spm_unit:
+        members: [child1, child2]
   output:
     ca_calworks_child_care_age_eligible: true
 
-- name: A household that has a child age 19 and disabled is eligible.
+- name: A household that does not have any eligible child is not eligible to participate the program.
   period: 2023
   input:
     people:
-      mother:
-        is_child: false
-      father:
-        is_child: false
-      child:
-        is_child: true
-        age: 19
-        is_disabled: true
-    households:
-      household:
-        members: [mother, father, child]
-        state_code: CA
+      child1:
+        ca_calworks_child_care_age_child_eligible: false
+      child2:
+        ca_calworks_child_care_age_child_eligible: false
+    spm_units:
+      spm_unit:
+        members: [child1, child2]
   output:
     ca_calworks_child_care_age_eligible: false
