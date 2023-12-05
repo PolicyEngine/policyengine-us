@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class mi_homestead_property_tax_credit(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Michigan Homestead Property Tax Credit"
+    label = "Michigan homestead property tax credit"
     unit = USD
     definition_period = YEAR
     defined_for = "mi_homestead_eligible"

@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class mi_homestead_non_refundable(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Michigan non-refundable Homestead Property Tax Credit"
+    label = "Michigan non-refundable homestead property tax credit"
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.MI
