@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ky_aged_personal_tax_credits(Variable):
     value_type = float
     entity = Person
-    label = "Kentucky aged personal tax credits"  
+    label = "Kentucky aged personal tax credits"
     documentation = (
         "https://apps.legislature.ky.gov/law/statutes/statute.aspx?id=53500"
     )

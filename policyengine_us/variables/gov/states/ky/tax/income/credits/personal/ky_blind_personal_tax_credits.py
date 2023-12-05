@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ky_blind_personal_tax_credits(Variable):
     value_type = float
     entity = Person
-    label = "Kentucky blind personal tax credits amount"  
+    label = "Kentucky blind personal tax credits amount"
     documentation = (
         "https://apps.legislature.ky.gov/law/statutes/statute.aspx?id=53500"
     )
