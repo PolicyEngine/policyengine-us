@@ -1,0 +1,17 @@
+- name: Tax filer with normal income tax of $9,500 and AMT of $0.
+  period: 2022
+  input:
+    vt_amt: 0
+    vt_normal_income_tax: 9_500
+    state_code: VT
+  output:
+    vt_income_tax_before_non_refundable_credits: 9_500
+
+- name: Tax filer with normal income tax of $9,636 and AMT of $10,000.
+  period: 2022
+  input:
+    vt_amt: 10_000
+    vt_normal_income_tax: 9_636
+    state_code: VT
+  output:
+    vt_income_tax_before_non_refundable_credits: 10_000

@@ -1,0 +1,63 @@
+description: Maine allows for this property tax fairness credit amount, based on filing status and number of dependents.
+SINGLE:
+  0:
+    2021-01-01: 2_100
+    2022-01-01: 2_200
+  1:
+    2021-01-01: 2_100
+    2022-01-01: 2_200
+  2:
+    2021-01-01: 2_100
+    2022-01-01: 2_200
+HEAD_OF_HOUSEHOLD:
+  0:
+    2021-01-01: 2_750
+    2022-01-01: 2_800
+  1:
+    2021-01-01: 2_750
+    2022-01-01: 2_800
+  2:
+    2021-01-01: 3_400
+    2022-01-01: 3_450
+JOINT:
+  0:
+    2021-01-01: 2_750
+    2022-01-01: 2_800
+  1:
+    2021-01-01: 3_400
+    2022-01-01: 3_450
+  2:
+    2021-01-01: 3_400
+    2022-01-01: 3_450
+WIDOW:
+  0:
+    2021-01-01: 2_750
+    2022-01-01: 2_800
+  1:
+    2021-01-01: 3_400
+    2022-01-01: 3_450
+  2:
+    2021-01-01: 3_400
+    2022-01-01: 3_450
+SEPARATE:
+  0:
+    2021-01-01: 0
+  1:
+    2021-01-01: 0
+  2:
+    2021-01-01: 0
+metadata:
+  unit: currency-USD
+  reference:
+    # Legal specifies inflation unadjusted amounts
+    - title: §5219-KK. Property tax fairness credit for tax (1) (A-1)
+      href: https://legislature.maine.gov/statutes/36/title36sec5219-KK.html
+    - title: 2021 Form 1040ME Property Tax Fairness Credit / Sales Tax Fairness Credit 
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/21_1040me_sched_pstfc_dwnldff.pdf#page=2
+    - title: 2022 Form 1040ME Property Tax Fairness Credit / Sales Tax Fairness Credit 
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/22_1040me_sched_pstfc_ff.pdf#page=2
+  period: year
+  label: Maine property tax fairness credit amount
+  breakdown:
+    - filing_status
+    - range(0, 3)

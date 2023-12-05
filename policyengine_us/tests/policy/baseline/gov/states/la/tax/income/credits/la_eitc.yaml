@@ -1,0 +1,15 @@
+- name: 5% of federal EITC after 2019.
+  period: 2023
+  input:
+    eitc: 100
+    state_code: LA
+  output:
+    la_eitc: 5
+
+- name: If no federal EITC, no Louisiana EITC.
+  period: 2023
+  input:
+    eitc: 0
+    state_code: LA
+  output:
+    la_eitc: 0

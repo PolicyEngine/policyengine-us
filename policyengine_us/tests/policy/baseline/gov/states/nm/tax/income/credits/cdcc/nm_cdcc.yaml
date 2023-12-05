@@ -1,29 +1,42 @@
-- name: State CDCC over federal CDCC
+- name: nm_cdcc unit test 1
   period: 2022
   input:
-    nm_cdcc_max_amount: 1_000
+    nm_cdcc_max_amount: 800
     state_code: NM
-    cdcc: 500
+    cdcc: 300
     nm_cdcc_eligible: true
+    income_tax_before_credits: 400
   output:
-    nm_cdcc: 0
+    nm_cdcc: 500
 
-- name: Ineligible 
+- name: nm_cdcc unit test 2
   period: 2022
   input:
-    nm_cdcc_max_amount: 1_000
+    nm_cdcc_max_amount: 300
     state_code: NM
-    cdcc: 5_000
+    cdcc: 200
+    nm_cdcc_eligible: true
+    income_tax_before_credits: 0
+  output:
+    nm_cdcc: 300
+
+- name: nm_cdcc unit test 3
+  period: 2023
+  input:
+    nm_cdcc_max_amount: 900
+    state_code: NM
+    cdcc: 200
     nm_cdcc_eligible: false
   output:
     nm_cdcc: 0
 
-- name: Calculation # 5_000 - 1_000 
-  period: 2022
+- name: nm_cdcc unit test 4
+  period: 2021
   input:
-    nm_cdcc_max_amount: 1_000
+    nm_cdcc_max_amount: 900
     state_code: NM
-    cdcc: 5_000
+    cdcc: 200
+    income_tax_before_credits: 0
     nm_cdcc_eligible: true
   output:
-    nm_cdcc: 4_000
+    nm_cdcc: 700

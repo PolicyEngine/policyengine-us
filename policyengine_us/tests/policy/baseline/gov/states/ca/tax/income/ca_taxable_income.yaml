@@ -2,8 +2,7 @@
   period: 2021
   input:
     ca_agi: 10_000
-    ca_itemized_deductions: 4_800
-    filing_status: SINGLE
+    ca_deductions: 4_803
     state_code: CA
   output:
     ca_taxable_income: 10_000 - 4_803
@@ -12,8 +11,7 @@
   period: 2021
   input:
     ca_agi: 10_000
-    ca_itemized_deductions: 4_900
-    filing_status: SINGLE
+    ca_deductions: 4_900
     state_code: CA
   output:
     ca_taxable_income: 10_000 - 4_900

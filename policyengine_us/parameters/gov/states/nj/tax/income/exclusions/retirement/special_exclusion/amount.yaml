@@ -1,0 +1,22 @@
+description: Filers that will never be eligible for social security or railroad benefits get this exclusion.
+metadata:
+  unit: currency-USD
+  label: NJ other retirement income special exclusion.
+  breakdown:
+    - filing_status
+  reference:
+    - title: 2022 New Jersey Revised Statutes Title 54A - New Jersey Gross Income Tax Act Section 54A:6-15(3)(b) - Other retirement income.
+      href: https://law.justia.com/codes/new-jersey/2022/title-54a/section-54a-6-15/
+    - title: Instructions for Form NJ-1040 (line 28b)
+      href: https://www.state.nj.us/treasury/taxation/pdf/current/1040i.pdf#page=24
+
+SINGLE:
+  2021-01-01: 3_000
+SEPARATE:
+  2021-01-01: 3_000
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 6_000
+JOINT:
+  2021-01-01: 6_000
+WIDOW:
+  2021-01-01: 6_000

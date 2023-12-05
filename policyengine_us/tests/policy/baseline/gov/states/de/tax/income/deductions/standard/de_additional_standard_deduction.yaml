@@ -1,0 +1,54 @@
+- name: yourself and spouse are both above 65 and blind.
+  period: 2023
+  input:
+    state_code: DE
+    age_head: 65
+    age_spouse: 65
+    blind_head: true
+    blind_spouse: true
+  output:
+    de_additional_standard_deduction: 10_000
+
+- name: yourself >= age 65 but spouse is not, and both are blind.
+  period: 2023
+  input:
+    state_code: DE
+    age_head: 65
+    age_spouse: 64
+    blind_head: true
+    blind_spouse: true
+  output:
+    de_additional_standard_deduction: 7_500
+
+- name: both yourself and spouse < age 65, and both are blind.
+  period: 2023
+  input:
+    state_code: DE
+    age_head: 64
+    age_spouse: 64
+    blind_head: true
+    blind_spouse: true   
+  output:
+    de_additional_standard_deduction: 5_000
+
+- name: yourself < age 65 and blind, spouse >= age 65 and not blind
+  period: 2023
+  input:
+    state_code: DE
+    age_head: 64
+    age_spouse: 65
+    blind_head: true
+    blind_spouse: false  
+  output:
+    de_additional_standard_deduction: 5_000
+
+- name: both yourself and spouse under 65, and neither are blind.
+  period: 2023
+  input:
+    state_code: DE
+    age_head: 64
+    age_spouse: 64
+    blind_head: false
+    blind_spouse: false  
+  output:
+    de_additional_standard_deduction: 0

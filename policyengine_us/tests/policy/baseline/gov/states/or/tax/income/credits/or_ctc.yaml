@@ -1,0 +1,97 @@
+- name: Was not in effect in 2022.
+  period: 2022
+  input:
+    state_code: OR
+    age: 5
+    or_income_after_subtractions: 0
+  output:
+    or_ctc: 0
+
+- name: $1,000 maximum in 2023.
+  period: 2023
+  input:
+    state_code: OR
+    age: 5
+    is_tax_unit_dependent: true
+    or_income_after_subtractions: 0
+  output:
+    or_ctc: 1_000
+
+- name: Only in Oregon.
+  period: 2023
+  input:
+    state_code: CA
+    age: 5
+    is_tax_unit_dependent: true
+    or_income_after_subtractions: 0
+  output:
+    or_ctc: 0
+
+- name: Age six is disqualified.
+  period: 2023
+  input:
+    state_code: OR
+    age: 6
+    is_tax_unit_dependent: true
+    or_income_after_subtractions: 0
+  output:
+    or_ctc: 0
+
+- name: Fully phases out at $30,000.
+  period: 2023
+  input:
+    state_code: OR
+    age: 5
+    is_tax_unit_dependent: true
+    or_income_after_subtractions: 30_000
+  output:
+    or_ctc: 0
+
+- name: Check we're not creating a negative value.
+  period: 2023
+  input:
+    state_code: OR
+    age: 5
+    is_tax_unit_dependent: true
+    or_income_after_subtractions: 100_000
+  output:
+    or_ctc: 0
+
+- name: Halfway phased out at $27,500.
+  period: 2023
+  input:
+    state_code: OR
+    age: 5
+    is_tax_unit_dependent: true
+    or_income_after_subtractions: 27_500
+  output:
+    or_ctc: 500
+
+- name: Maximum of five qualifying children.
+  period: 2023
+  input:
+    people:
+      parent:
+        age: 30
+      child1:
+        age: 5
+      child2:
+        age: 5
+      child3:
+        age: 5
+      child4:
+        age: 5
+      child5:
+        age: 5
+      child6:
+        age: 5
+    households:
+      household:
+        members: [parent, child1, child2, child3, child4, child5, child6]
+        state_code: OR
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2, child3, child4, child5, child6]
+        or_income_after_subtractions: 25_000
+  output:
+    or_ctc: 5_000
