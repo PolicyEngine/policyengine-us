@@ -6,17 +6,10 @@ class ky_personal_tax_credits(Variable):
     entity = TaxUnit
     label = "Kentucky personal tax credits"
     unit = USD
-    documentation = (
-        "https://apps.legislature.ky.gov/law/statutes/statute.aspx?id=53500"
+    reference = (
+        "https://apps.legislature.ky.gov/law/statutes/statute.aspx?id=53500" # (3) (a) 
     )
     definition_period = YEAR
     defined_for = StateCode.KY
 
-    def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.ky.tax.income.credits.personal
-        adds = [
-            "ky_personal_tax_credits_blind",
-            "ky_personal_tax_credits_aged",
-            "ky_personal_tax_credits_military",
-        ]
-        return add(tax_unit, period, adds)
+    adds = ["ky_blind_personal_tax_credits", "ky_aged_personal_tax_credits", "ky_military_personal_tax_credits"]

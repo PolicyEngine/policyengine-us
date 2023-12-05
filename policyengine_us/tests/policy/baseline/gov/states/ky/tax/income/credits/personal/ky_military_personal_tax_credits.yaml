@@ -5,7 +5,7 @@
     military_service_income: 10_000
     is_tax_unit_head_or_spouse: true
   output:
-    ky_personal_tax_credits_military: 20
+    ky_military_personal_tax_credits: 20
 
 - name: Kentucky head or spouse, not military
   period: 2022
@@ -14,7 +14,7 @@
     military_service_income: 0
     is_tax_unit_head_or_spouse: true
   output:
-    ky_personal_tax_credits_military: 0
+    ky_military_personal_tax_credits: 0
 
 
 - name: Kentucky not head or spouse, not military
@@ -24,7 +24,7 @@
     military_service_income: 0
     is_tax_unit_head_or_spouse: false
   output:
-    ky_personal_tax_credits_military: 0
+    ky_military_personal_tax_credits: 0
 
 - name: Kentucky not head or spouse, military
   period: 2022
@@ -33,4 +33,4 @@
     military_service_income: 10_000
     is_tax_unit_head_or_spouse: false
   output:
-    ky_personal_tax_credits_military: 0
+    ky_military_personal_tax_credits: 0

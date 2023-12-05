@@ -3,9 +3,9 @@
   input:
     people:
       person1:
-        ky_personal_tax_credits_aged: 0
-        ky_personal_tax_credits_blind: 0
-        ky_personal_tax_credits_military: 0
+        ky_aged_personal_tax_credits: 0
+        ky_blind_personal_tax_credits: 0
+        ky_military_personal_tax_credits: 0
     tax_units:
       tax_unit:
         members: [person1]
@@ -22,9 +22,9 @@
   input:
     people:
       person1:
-        ky_personal_tax_credits_aged: 40
-        ky_personal_tax_credits_blind: 0
-        ky_personal_tax_credits_military: 0
+        ky_aged_personal_tax_credits: 40
+        ky_blind_personal_tax_credits: 0
+        ky_military_personal_tax_credits: 0
     tax_units:
       tax_unit:
         members: [person1]
@@ -41,9 +41,9 @@
   input:
     people:
       person1:
-        ky_personal_tax_credits_aged: 40
-        ky_personal_tax_credits_blind: 0
-        ky_personal_tax_credits_military: 20
+        ky_aged_personal_tax_credits: 40
+        ky_blind_personal_tax_credits: 0
+        ky_military_personal_tax_credits: 20
     tax_units:
       tax_unit:
         members: [person1]
@@ -60,9 +60,9 @@
   input:
     people:
       person1:
-        ky_personal_tax_credits_aged: 40
-        ky_personal_tax_credits_blind: 40
-        ky_personal_tax_credits_military: 20
+        ky_aged_personal_tax_credits: 40
+        ky_blind_personal_tax_credits: 40
+        ky_military_personal_tax_credits: 20
     tax_units:
       tax_unit:
         members: [person1]
@@ -79,13 +79,13 @@
   input:
     people:
       person1:
-        ky_personal_tax_credits_aged: 0
-        ky_personal_tax_credits_blind: 0
-        ky_personal_tax_credits_military: 0
+        ky_aged_personal_tax_credits: 0
+        ky_blind_personal_tax_credits: 0
+        ky_military_personal_tax_credits: 0
       person2:
-        ky_personal_tax_credits_aged: 0
-        ky_personal_tax_credits_blind: 0
-        ky_personal_tax_credits_military: 0
+        ky_aged_personal_tax_credits: 0
+        ky_blind_personal_tax_credits: 0
+        ky_military_personal_tax_credits: 0
     tax_units:
       tax_unit:
         members: [person1,person2]
@@ -102,13 +102,13 @@
   input:
     people:
       person1:
-        ky_personal_tax_credits_aged: 40
-        ky_personal_tax_credits_blind: 0
-        ky_personal_tax_credits_military: 0
+        ky_aged_personal_tax_credits: 40
+        ky_blind_personal_tax_credits: 0
+        ky_military_personal_tax_credits: 0
       person2:
-        ky_personal_tax_credits_aged: 0
-        ky_personal_tax_credits_blind: 0
-        ky_personal_tax_credits_military: 20
+        ky_aged_personal_tax_credits: 0
+        ky_blind_personal_tax_credits: 0
+        ky_military_personal_tax_credits: 20
     tax_units:
       tax_unit:
         members: [person1,person2]
@@ -125,13 +125,13 @@
   input:
     people:
       person1:
-        ky_personal_tax_credits_aged: 40
-        ky_personal_tax_credits_blind: 40
-        ky_personal_tax_credits_military: 20
+        ky_aged_personal_tax_credits: 40
+        ky_blind_personal_tax_credits: 40
+        ky_military_personal_tax_credits: 20
       person2:
-        ky_personal_tax_credits_aged: 0
-        ky_personal_tax_credits_blind: 0
-        ky_personal_tax_credits_military: 0
+        ky_aged_personal_tax_credits: 0
+        ky_blind_personal_tax_credits: 0
+        ky_military_personal_tax_credits: 0
     tax_units:
       tax_unit:
         members: [person1,person2]
@@ -148,13 +148,13 @@
   input:
     people:
       person1:
-        ky_personal_tax_credits_aged: 0
-        ky_personal_tax_credits_blind: 0
-        ky_personal_tax_credits_military: 0
+        ky_aged_personal_tax_credits: 0
+        ky_blind_personal_tax_credits: 0
+        ky_military_personal_tax_credits: 0
       person2:
-        ky_personal_tax_credits_aged: 0
-        ky_personal_tax_credits_blind: 0
-        ky_personal_tax_credits_military: 0
+        ky_aged_personal_tax_credits: 0
+        ky_blind_personal_tax_credits: 0
+        ky_military_personal_tax_credits: 0
     tax_units:
       tax_unit:
         members: [person1,person2]
@@ -171,13 +171,13 @@
   input:
     people:
       person1:
-        ky_personal_tax_credits_aged: 40
-        ky_personal_tax_credits_blind: 0
-        ky_personal_tax_credits_military: 20
+        ky_aged_personal_tax_credits: 40
+        ky_blind_personal_tax_credits: 0
+        ky_military_personal_tax_credits: 20
       person2:
-        ky_personal_tax_credits_aged: 0
-        ky_personal_tax_credits_blind: 0
-        ky_personal_tax_credits_military: 0
+        ky_aged_personal_tax_credits: 0
+        ky_blind_personal_tax_credits: 0
+        ky_military_personal_tax_credits: 0
     tax_units:
       tax_unit:
         members: [person1,person2]
