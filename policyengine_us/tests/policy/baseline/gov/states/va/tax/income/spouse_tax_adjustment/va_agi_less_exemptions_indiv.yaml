@@ -5,12 +5,12 @@
     people:
       person1:
         is_tax_unit_head: true
-        va_agi_individual: 40_000
+        va_agi_indiv: 40_000
         age: 68
         is_blind: true
       person2:
         is_tax_unit_spouse: false
-        va_agi_individual: 40_000
+        va_agi_indiv: 40_000
         age: 68
         is_blind: true
     households:
@@ -24,7 +24,7 @@
   period: 2022
   absolute_error_margin: 0.1
   input:
-    va_agi_individual: 0
+    va_agi_indiv: 0
     state_code: VA
     is_tax_unit_head_or_spouse: true
     is_blind: true
@@ -37,7 +37,7 @@
   period: 2022
   absolute_error_margin: 0.1
   input:
-    va_agi_individual: 3_000
+    va_agi_indiv: 3_000
     state_code: VA
     is_tax_unit_head_or_spouse: true
     is_blind: true
@@ -50,7 +50,7 @@
   period: 2022
   absolute_error_margin: 0.1
   input:
-    va_agi_individual: 3_000
+    va_agi_indiv: 3_000
     state_code: VA
     is_tax_unit_head_or_spouse: false
     is_blind: true
@@ -62,7 +62,7 @@
   period: 2022
   absolute_error_margin: 0.1
   input:
-    va_agi_individual: 3_000
+    va_agi_indiv: 3_000
     state_code: VA
     is_tax_unit_head_or_spouse: true
     is_blind: false

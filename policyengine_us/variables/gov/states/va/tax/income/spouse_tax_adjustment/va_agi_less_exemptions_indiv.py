@@ -12,7 +12,7 @@ class va_agi_less_exemptions_indiv(Variable):
 
     def formula(person, period, parameters):
         # Step 1: take person level AGI from head and sposue
-        agi = person("va_agi_individual", period)
+        agi = person("va_agi_indiv", period)
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         head_or_spouse_agi = agi * head_or_spouse
         # Step 2: Check whether the filer is eligible for age and blind exemptions

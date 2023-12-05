@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class va_agi_individual(Variable):
+class va_agi_indiv(Variable):
     value_type = float
     entity = Person
-    label = "Virginia Adjusted Gross Income (VAGI)"
+    label = "Virginia adjusted gross income per individual"
     unit = USD
     definition_period = YEAR
     # Virginia includes an individual level definition for AGI
