@@ -19,18 +19,13 @@ class ga_retirement_exclusion(Variable):
         p = parameters(
             period
         ).gov.states.ga.tax.income.agi.exclusions.retirement
-        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        age_older = person("age", period) >= p.age.older
-        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        older_cap_eligible = head_or_spouse & age_older
-        younger_cap_eligible = person(
-            "ga_retirement_exclusion_eligible_person", period
+        # age_older = person("age", period) >= p.age.older
+        cap = where(
+            person("age", period) >= p.age.older, p.cap.older, p.cap.younger
         )
         retirement_income = person(
             "ga_retirement_income_exclusion_retirement_income", period
         )
-        capped_younger_exclusion = min_(retirement_income, p.cap.younger)
-        capped_older_exclusion = min_(retirement_income, p.cap.older)
-        older_exclusion = older_cap_eligible * capped_older_exclusion
-        younger_exclusion = younger_cap_eligible * capped_younger_exclusion
-        return tax_unit.sum(older_exclusion + younger_exclusion)
+        exclusion = min_(retirement_income, cap)
+        eligible = person("ga_retirement_exclusion_eligible_person", period)
+        return tax_unit.sum(exclusion * eligible)

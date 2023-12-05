@@ -3,6 +3,8 @@
   input:
     people:
       person1:
+        is_disabled: true
+        age: 50
         ga_retirement_exclusion_eligible_person: true
         ga_retirement_income_exclusion_retirement_income: 69_000
     tax_units:
@@ -21,8 +23,8 @@
     people:
       person1:
         is_tax_unit_head: true
-        is_disabled: false
         age: 50
+        ga_retirement_exclusion_eligible_person: false
         ga_retirement_income_exclusion_retirement_income: 69_000
     tax_units:
       tax_unit:
@@ -40,10 +42,12 @@
     people:
       person1:
         is_tax_unit_head: true
-        is_disabled: false
         age: 65
+        ga_retirement_exclusion_eligible_person: true
         ga_retirement_income_exclusion_retirement_income: 67_000
       person2:
+        is_tax_unit_spouse: true
+        age: 63
         ga_retirement_exclusion_eligible_person: true
         ga_retirement_income_exclusion_retirement_income: 37_700
     tax_units:
@@ -64,10 +68,12 @@
         is_tax_unit_head: true
         is_disabled: false
         age: 65
+        ga_retirement_exclusion_eligible_person: true
         ga_retirement_income_exclusion_retirement_income: 37_700
       person2:
         is_tax_unit_spouse: true
         is_disabled: true
+        ga_retirement_exclusion_eligible_person: true
         age: 65
         ga_retirement_income_exclusion_retirement_income: 65_000
     tax_units:
