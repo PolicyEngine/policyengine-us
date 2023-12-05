@@ -1,0 +1,29 @@
+- name: No deductions
+  period: 2022
+  input:
+    la_general_relief_gross_income: 1_000
+    in_la: true
+    taxable_income_deductions: 0
+    ca_deductions: 0
+  output:
+    la_general_relief_net_income: 1_000
+
+- name: Capped at 0
+  period: 2022
+  input:
+    la_general_relief_gross_income: 1_000
+    in_la: true
+    taxable_income_deductions: 900
+    ca_deductions: 200
+  output:
+    la_general_relief_net_income: 0
+
+- name: Some deduction amount
+  period: 2022
+  input:
+    la_general_relief_gross_income: 1_000
+    in_la: true
+    taxable_income_deductions: 300
+    ca_deductions: 200
+  output:
+    la_general_relief_net_income: 500
