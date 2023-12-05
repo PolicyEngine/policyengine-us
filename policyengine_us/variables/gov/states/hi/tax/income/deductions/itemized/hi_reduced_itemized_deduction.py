@@ -23,13 +23,11 @@ class hi_reduced_itemized_deduction(Variable):
             "investment_income_form_4952",
             "hi_casualty_loss_deduction",
         ]
-        partial_total_deductions = add(
-            tax_unit, period, partial_itemized_deductions
-        )
+        partial_deductions = add(tax_unit, period, partial_itemized_deductions)
 
         # eligible check 1: deduction_difference need to be greater than 0 to have reduced deduction
-        difference_eligible = partial_total_deductions < total_deductions
-        deduction_difference = total_deductions - partial_total_deductions
+        difference_eligible = partial_deductions < total_deductions
+        deduction_difference = total_deductions - partial_deductions
         reduced_difference = deduction_difference * p_irs.amount
         # eligible check 2: actual AGI need to be smaller than AGI cap
         hi_agi = tax_unit("hi_agi", period)
