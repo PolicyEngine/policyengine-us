@@ -22,8 +22,11 @@ class ga_retirement_exclusion(Variable):
         cap = where(
             person("age", period) >= p.age.older, p.cap.older, p.cap.younger
         )
-        retirement_income = person(
-            "ga_retirement_income_exclusion_retirement_income", period
+        add(tax_unit, period, ["taxable_interest_income"])
+        retirement_income = add(
+            person,
+            period,
+            ["ga_retirement_income_exclusion_retirement_income"],
         )
         capped_retirement_income = min_(retirement_income, cap)
         eligible_person = person(
