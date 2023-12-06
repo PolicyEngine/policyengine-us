@@ -4,8 +4,9 @@ values:
     - taxable_pension_income
     - military_retirement_pay
 metadata:
-  unit: variable
+  unit: list
   label: Idaho retirement benefits deduction income sources
+  period: year
   reference:
     - title: Individual Income Tax General Information 2022
       href: https://tax.idaho.gov/wp-content/uploads/forms/EIN00046/EIN00046_03-01-2023.pdf#page=32

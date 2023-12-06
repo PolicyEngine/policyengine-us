@@ -21,8 +21,6 @@ class id_retirement_benefits_deduction_eligible_person(Variable):
         )
         meets_age_requirement = person("age", period) >= age_threshold
 
-        head = person("is_tax_unit_head", period)
-        spouse = person("is_tax_unit_spouse", period)
-        head_or_spouse = head | spouse
+        head_or_spouse = person("is_tax_unit_head_or_spouse", person)  
 
         return head_or_spouse * meets_age_requirement
