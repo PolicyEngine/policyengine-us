@@ -21,8 +21,8 @@ class ca_calworks_child_care_payment(Variable):
         payment_factor = person(
             "ca_calworks_child_care_payment_factor", period
         )
-        expense = person(
-            "ca_calworks_child_care_expense", period
+        expense = person("ca_calworks_child_care_expense", period)
+
+        return min_(
+            payment_standard * time_coefficient * payment_factor, expense
         )
-        
-        return min_(payment_standard * time_coefficient * payment_factor, expense)

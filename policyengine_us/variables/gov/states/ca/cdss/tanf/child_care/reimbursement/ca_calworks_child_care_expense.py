@@ -8,4 +8,3 @@ class ca_calworks_child_care_expense(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.CA
-
