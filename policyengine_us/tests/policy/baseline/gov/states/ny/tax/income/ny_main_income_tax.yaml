@@ -1,0 +1,9 @@
+- name: Unit test 3 for 2021 ny_supplemental_tax joint filer - corner case with taxable income < $43,000
+  absolute_error_margin: 1
+  period: 2021
+  input:
+    state_code: NY
+    filing_status: JOINT
+    ny_taxable_income: 27_900
+  output:
+    ny_main_income_tax: 1_202
