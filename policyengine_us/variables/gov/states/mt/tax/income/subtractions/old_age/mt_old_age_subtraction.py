@@ -11,6 +11,6 @@ class mt_old_age_subtraction(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.mt.tax.income.subtractions.old_age
-        # Aged taxpayers are eligible for an additional subtraction amount
+        # Aged taxpayers are eligible for a subtraction amount
         age = person("age", period)
         return p.amount.calc(age)
