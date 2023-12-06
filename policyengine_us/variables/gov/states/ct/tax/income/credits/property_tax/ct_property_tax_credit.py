@@ -14,15 +14,14 @@ class ct_property_tax_credit(Variable):
         agi = tax_unit("ct_agi", period)
         filing_status = tax_unit("filing_status", period)
         p = parameters(period).gov.states.ct.tax.income.credits.property_tax
-        rate = p.reduction.rate
-        start = p.reduction.start[filing_status]
         real_estate_taxes = add(tax_unit, period, ["real_estate_taxes"])
         max_amount = p.max_amount
-        increment = p.reduction.increment[filing_status]
         max_credit = min_(real_estate_taxes, max_amount)
-        excess = max_(agi - start, 0)
-        total_increments = np.ceil(excess / increment)
-        reduction_percent = rate * total_increments
+        excess = max_(agi - p.reduction.start[filing_status], 0)
+        total_increments = np.ceil(
+            excess / p.reduction.increment[filing_status]
+        )
+        reduction_percent = p.reduction.rate * total_increments
         reduction = max_credit * reduction_percent
         return where(
             reduction <= max_credit,
