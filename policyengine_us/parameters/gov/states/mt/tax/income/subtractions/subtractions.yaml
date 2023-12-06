@@ -5,9 +5,11 @@ values:
     - mt_tuition_subtraction
   2024-01-01:
     - mt_interest_exemption
+    - mt_tuition_subtraction
     - mt_old_age_subtraction
 metadata:
   unit: list
+  period: year
   label: Montana adjusted gross income subtractions
   reference:
     - title: 2021 Montana Form 2 | Montana Subtractions Schedule
