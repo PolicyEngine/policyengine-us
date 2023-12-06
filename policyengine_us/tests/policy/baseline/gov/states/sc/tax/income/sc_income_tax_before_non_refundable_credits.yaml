@@ -12,10 +12,11 @@
   period: 2022
   absolute_error_margin: 1
   input:
-    sc_taxable_income: 12_000
+    sc_taxable_income: 12_100
     state_code: SC
   output:
-    # 12_000*0.03 - 96
+    # Result confirmed with the SC Tax Table
+    # 12_100*0.03 - 96
     # $96 is mechanically determined by the rate structure
     # $3,200 * 3% = $96
     sc_income_tax_before_non_refundable_credits: 266
@@ -27,6 +28,7 @@
     sc_taxable_income: 20_800
     state_code: SC
   output:
+    # Result confirmed with the SC Tax Table
     # 20_800*0.065 - 658 = 694
     # $694 is mechanically determined by the rate structure
     # 6.5% * $20,800-(0% * $3,200 + (3% * ($16,040 - $3,200)) + 6.5% * ($20,800 - $16,040))
@@ -39,7 +41,7 @@
     sc_taxable_income: 6_800
     state_code: SC
   output:
-    # no tax before 3_200
+    # Result confirmed with the SC Tax Table
     sc_income_tax_before_non_refundable_credits: 116.5
 
 - name: 2021 test for the highest income tax bracket
@@ -48,5 +50,5 @@
     sc_taxable_income: 16_200
     state_code: SC
   output:
-    # no tax before 3_200
+    # Result confirmed with the SC Tax Table
     sc_income_tax_before_non_refundable_credits: 605.2
