@@ -1,0 +1,23 @@
+description: Vermont provides a credit for this fraction of charitable contributions, depending on the amount.
+brackets:
+  - threshold:
+      2018-01-01: 0
+    rate:
+      2018-01-01: 0.05
+  - threshold:
+      2018-01-01: 20_000
+    rate:
+      2018-01-01: 0
+metadata:
+  threshold_unit: currency_USD
+  rate_unit: /1
+  threshold_period: year
+  type: marginal_rate
+  label: Vermont charitable contribution credit rate
+  reference:
+  - title: Vermont Statutes Title 32 - Taxation and Finance § 5822-(d)-3
+    href: https://law.justia.com/codes/vermont/2022/title-32/chapter-151/section-5822/
+  - title: 2022 Vermont Income Tax Return Form Line 10
+    href: https://tax.vermont.gov/sites/tax/files/documents/IN-111-2022.pdf#page=1
+  - title: 2021 Vermont Income Tax Return Form Line 10
+    href: https://tax.vermont.gov/sites/tax/files/documents/IN-111-2021.pdf#page=1
