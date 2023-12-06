@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.560.0] - 2023-12-06 17:21:04
+
+### Changed
+
+- Colorado EITC to 50% for 2023 due to new legislation.
+
 ## [0.559.0] - 2023-12-05 18:11:49
 
 ### Added
@@ -6155,6 +6161,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.560.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.559.0...0.560.0
 [0.559.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.558.1...0.559.0
 [0.558.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.558.0...0.558.1
 [0.558.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.557.0...0.558.0
