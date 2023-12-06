@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class ct_income_tax_with_alternative_minimum_tax(Variable):
+class ct_income_tax_after_amt(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Connecticut income tax with alternative minimum tax"
+    label = "Connecticut income tax after the addition of the alternative minimum tax"
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.CT
