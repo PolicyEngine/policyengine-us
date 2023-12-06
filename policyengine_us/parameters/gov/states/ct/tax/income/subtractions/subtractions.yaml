@@ -1,0 +1,26 @@
+description: Connecticut counts these sources as subtractions.
+values:
+  2021-01-01:
+    - us_govt_interest #ln 39
+    # ct_federal_bonus_depreciation
+    - ct_federal_deduction #ln 48a
+    - ct_pension_annuity_subtraction #ln 48b
+    # ct_exempt_interest_mutual_funds
+    - ct_social_security_benefit_subtraction #ln 41
+    # ct_refunds_of_federal_state_tax
+    # ct_railroad_retirement
+    - military_retirement_pay #ln 44
+    # ct_teachers_retirement
+    # ct_share_fiduciary_income
+    # ct_gain_on_sale_bonds
+    # ct_higher_education_trust
+metadata:
+  unit: list
+  label: Connecticut adjusted gross income subtractions
+  reference:
+    - title: 2021 Form CT-1040 Connecticut Resident Income Tax Return Instructions
+      href: https://portal.ct.gov/-/media/DRS/Forms/2021/Income/CT-1040-Online-Booklet_1221.pdf#page=24
+    - title: Connecticut Administrative Code Title 12 - Taxation 740(a) - INCOME TAX - Modifications decreasing federal adjusted gross income
+      href: https://regulations.justia.com/states/connecticut/title-12/subtitle-740-a/part-i/section-12-701-a-20-3/
+    - title: 2022 Form CT-1040 Connecticut Resident Income Tax Return Instructions, Line 44
+      href: https://portal.ct.gov/-/media/DRS/Forms/2022/Income/2022-CT-1040-Instructions_1222.pdf#page=9

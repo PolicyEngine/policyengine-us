@@ -1,12 +1,12 @@
 from policyengine_us.model_api import *
 
 
-class iitax(Variable):
+class income_tax(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
     unit = USD
-    label = "federal income tax"
+    label = "Federal income tax"
     documentation = "Total federal individual income tax liability."
     adds = [
         "income_tax_before_credits",
@@ -25,9 +25,6 @@ class iitax(Variable):
         ).gov.contrib.ubi_center.flat_tax.abolish_federal_income_tax:
             return 0
         else:
-            added_components = add(person, period, iitax.adds)
-            subtracted_components = add(person, period, iitax.subtracts)
+            added_components = add(person, period, income_tax.adds)
+            subtracted_components = add(person, period, income_tax.subtracts)
             return added_components - subtracted_components
-
-
-income_tax = variable_alias("income_tax", iitax)
