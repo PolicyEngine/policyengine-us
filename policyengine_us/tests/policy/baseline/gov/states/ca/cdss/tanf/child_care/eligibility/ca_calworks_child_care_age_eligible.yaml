@@ -3,9 +3,9 @@
   input:
     people:
       child1:
-        ca_calworks_child_care_age_child_eligible: true
+        ca_calworks_child_care_age_personal_eligible: true
       child2:
-        ca_calworks_child_care_age_child_eligible: true
+        ca_calworks_child_care_age_personal_eligible: true
     spm_units:
       spm_unit:
         members: [child1, child2]
@@ -17,9 +17,9 @@
   input:
     people:
       child1:
-        ca_calworks_child_care_age_child_eligible: true
+        ca_calworks_child_care_age_personal_eligible: true
       child2:
-        ca_calworks_child_care_age_child_eligible: false
+        ca_calworks_child_care_age_personal_eligible: false
     spm_units:
       spm_unit:
         members: [child1, child2]
@@ -31,9 +31,9 @@
   input:
     people:
       child1:
-        ca_calworks_child_care_age_child_eligible: false
+        ca_calworks_child_care_age_personal_eligible: false
       child2:
-        ca_calworks_child_care_age_child_eligible: false
+        ca_calworks_child_care_age_personal_eligible: false
     spm_units:
       spm_unit:
         members: [child1, child2]
