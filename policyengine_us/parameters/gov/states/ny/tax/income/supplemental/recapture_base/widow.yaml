@@ -1,0 +1,34 @@
+description: NY supplemental tax recapture base amount for a widow filer. 
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: currency-USD
+  label: NY supplemental tax recapture base amount for widow filers
+  reference:
+    - title: Section 601 Imposition of tax, (d-2) for 2021 and (d-3) for 2022
+      href: https://www.nysenate.gov/legislation/laws/TAX/601
+brackets:
+  - threshold:
+      2021-01-01: 43_000
+    amount:
+      2021-01-01: 0
+  - threshold:
+      2021-01-01: 161_550
+    amount:
+      2021-01-01: 474
+  - threshold:
+      2021-01-01: 323_300
+    amount:
+      2021-01-01: 0  
+  - threshold:
+      2021-01-01: 2_155_350
+    amount:
+      2021-01-01: 1_056
+  - threshold:
+      2021-01-01: 5_000_000
+    amount:
+      2021-01-01: 2_736
+  - threshold:
+      2021-01-01: 5_000_000
+    amount:
+      2021-01-01: 63_086

@@ -52,16 +52,55 @@ class ny_supplemental_tax(Variable):
             applicable_amount / sup_tax.phase_in_length,
         )
 
-        rate = select(
-            in_each_status,
+        recapture_base = select(
             [
-                scale.marginal_rates(
-                    max_(sup_tax.min_agi + 1, ny_taxable_income)
-                )
-                for scale in scales
+                filing_status == status.SINGLE,
+                filing_status == status.SEPARATE,
+                filing_status == status.JOINT,
+                filing_status == status.HEAD_OF_HOUSEHOLD,
+                filing_status == status.WIDOW,
+            ],
+            [
+                sup_tax.recapture_base.single.calc(ny_taxable_income),
+                sup_tax.recapture_base.separate.calc(ny_taxable_income),
+                sup_tax.recapture_base.joint.calc(ny_taxable_income),
+                sup_tax.recapture_base.head_of_household.calc(
+                    ny_taxable_income
+                ),
+                sup_tax.recapture_base.widow.calc(ny_taxable_income),
             ],
         )
 
-        target_tax = rate * ny_taxable_income
-        difference = target_tax - tax_unit("ny_main_income_tax", period)
-        return phase_in_fraction * difference
+        incremental_benefit = select(
+            [
+                filing_status == status.SINGLE,
+                filing_status == status.SEPARATE,
+                filing_status == status.JOINT,
+                filing_status == status.HEAD_OF_HOUSEHOLD,
+                filing_status == status.WIDOW,
+            ],
+            [
+                sup_tax.incremental_benefit.single.calc(ny_taxable_income),
+                sup_tax.incremental_benefit.separate.calc(ny_taxable_income),
+                sup_tax.incremental_benefit.joint.calc(ny_taxable_income),
+                sup_tax.incremental_benefit.head_of_household.calc(
+                    ny_taxable_income
+                ),
+                sup_tax.incremental_benefit.widow.calc(ny_taxable_income),
+            ],
+        )
+
+        return recapture_base + phase_in_fraction * incremental_benefit
+        # rate = select(
+        #     in_each_status,
+        #     [
+        #         scale.marginal_rates(
+        #             max_(sup_tax.min_agi + 1, ny_taxable_income)
+        #         )
+        #         for scale in scales
+        #     ],
+        # )
+
+        # target_tax = rate * ny_taxable_income
+        # difference = target_tax - tax_unit("ny_main_income_tax", period)
+        # return phase_in_fraction * difference
