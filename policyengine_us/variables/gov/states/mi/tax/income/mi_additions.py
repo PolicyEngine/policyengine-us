@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class mi_taxable_income(Variable):
+class mi_additions(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Michigan taxable income"
+    label = "Michigan taxable income additions"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -14,12 +14,4 @@ class mi_taxable_income(Variable):
     )
     defined_for = StateCode.MI
 
-    def formula(tax_unit, period, parameters):
-        # Michigan computes taxable income from federal AGI, additions, subtractions,
-        # and exemptions
-        agi = tax_unit("adjusted_gross_income", period)
-        additions = tax_unit("mi_additions", period)
-        subtractions = tax_unit("mi_subtractions", period)
-        exemptions = tax_unit("mi_exemptions", period)
-
-        return max_(agi + additions - subtractions - exemptions, 0)
+    adds = "gov.states.mi.tax.income.additions"

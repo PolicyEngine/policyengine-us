@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class ca_taxable_income(Variable):
+class ca_deductions(Variable):
     value_type = float
     entity = TaxUnit
-    label = "CA taxable income"
+    label = "California deductions"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -14,6 +14,6 @@ class ca_taxable_income(Variable):
     defined_for = StateCode.CA
 
     def formula(tax_unit, period, parameters):
-        ded = tax_unit("ca_deductions", period)
-        agi = tax_unit("ca_agi", period)
-        return max_(0, agi - ded)
+        std_ded = tax_unit("ca_standard_deduction", period)
+        itm_ded = tax_unit("ca_itemized_deductions", period)
+        return where(itm_ded > std_ded, itm_ded, std_ded)
