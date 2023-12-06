@@ -1,12 +1,17 @@
-description: Ohio uses this rates for calculating the lumpsum distribution credit.
+description: Ohio multiplies this credit amount by this rate, based on age.
 metadata:
   type: single_amount 
   threshold_unit: year
+  period: year
   amount_unit: /1
-  label: Ohio lump sum distribution credit rates
+  label: Ohio lump sum distribution credit rate
   reference:
     - title:  Ohio 2021 Instructions for Filing Original and Amended Individual Income Tax (IT 1040) and  School District Income Tax (SD 100)
       href: https://tax.ohio.gov/static/forms/ohio_individual/individual/2021/pit-it1040-booklet.pdf#page=20
+    - title: Ohio Laws and Administrative Rules Section 5747.055 (G)
+      href: https://codes.ohio.gov/ohio-revised-code/section-5747.05
+    - title: Ohio 2022 IT 1040 Form
+      href: https://tax.ohio.gov/static/forms/ohio_individual/individual/2022/it1040-bundle.pdf#page=7
 brackets:
   - threshold:
       2021-01-01: 0

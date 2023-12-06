@@ -19,5 +19,4 @@ class oh_distribution_credit(Variable):
         amount = p.lump_sum_distribution.amount
         age_threshold = p.senior_citizen.age_threshold
         rate = p.lump_sum_distribution.rate.calc(age)
-        result = where(age >= age_threshold, amount * rate, 0)
-        return result
+        return where(age >= age_threshold, amount * rate, 0)

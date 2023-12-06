@@ -1,9 +1,14 @@
-description: Ohio uses this amount to multiply with age related ratio to get lump sum distribution credit.
+description: Ohio provides this amount under the lump sum distribution credit.
 values:
   2021-01-01: 50
 metadata:
   unit: currency-USD
-  label: Lump sum distribution credit amount
+  period: year
+  label: Ohio lump sum distribution credit amount 
   reference:
     - title:  Ohio 2021 Instructions for Filing Original and Amended Individual Income Tax (IT 1040) and  School District Income Tax (SD 100)
       href: https://tax.ohio.gov/static/forms/ohio_individual/individual/2021/pit-it1040-booklet.pdf#page=20
+    - title: Ohio Laws and Administrative Rules Section 5747.055 (G)
+      href: https://codes.ohio.gov/ohio-revised-code/section-5747.05
+    - title: Ohio 2022 IT 1040 Form
+      href: https://tax.ohio.gov/static/forms/ohio_individual/individual/2022/it1040-bundle.pdf#page=7
