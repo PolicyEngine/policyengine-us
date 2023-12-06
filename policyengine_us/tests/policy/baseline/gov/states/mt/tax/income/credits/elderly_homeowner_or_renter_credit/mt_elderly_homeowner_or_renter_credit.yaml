@@ -3,22 +3,17 @@
   input:
     people:
       person1:
-        age: 62
         real_estate_taxes: 12_000
-        rent: 0
-      person2:
-        age: 60
-        real_estate_taxes: 0
         rent: 0
     tax_units:
       tax_unit:
-        members: [person1, person2]
+        members: [person1]
         mt_gross_household_income: 48_000
-        mt_elderly_homeowner_or_renter_credit_eligible: true
+        mt_elderly_homeowner_or_renter_credit_eligible: false
   output:
     mt_elderly_homeowner_or_renter_credit: 0
 
-- name: Eligible only head and spouse -max in 2021
+- name: Eligible couple in 2021 -max_amount
   period: 2021
   input:
     people:
@@ -34,11 +29,11 @@
         mt_gross_household_income: 34_000
         mt_elderly_homeowner_or_renter_credit_eligible: true
   output:  
-  # min_([propertytax + rent*rate - (grossincome-standard)*reduction_rate], 1150) * percentage(grossincome)
-  # 1500+ 0+ 9000*2*0.15 - (34000-6300)*0.05 = 2815 #1150*100%
+  # min_((propertytax + rent*rate - (grossincome-standard)*reduction_rate), 1150) * percentage(grossincome)
+  # 1500+ 9000*2*0.15 - (34000-12600)*0.05 = 3130 # 1150*100%
     mt_elderly_homeowner_or_renter_credit: 1_150
 
-- name: Eligible only head and spouse -max in 2020
+- name: Eligible couple in 2020 -max_amount
   period: 2020
   input:
     people:
@@ -54,5 +49,30 @@
         mt_gross_household_income: 34_000
         mt_elderly_homeowner_or_renter_credit_eligible: true
   output:  
+  # min_((propertytax + rent*rate - (grossincome-standard)*reduction_rate), 1000) * percentage(grossincome)
+  # 1500+ 9000*2*0.15 - (34000-6300)*0.05 = 2815 # 1000*100%
     mt_elderly_homeowner_or_renter_credit: 1_000
+
+- name: Eligible household in 2022
+  period: 2022
+  input:
+    people:
+      person1:
+        rent: 4_000
+        real_estate_taxes: 500
+      person2:
+        rent: 4_000
+        real_estate_taxes: 500
+      person3:
+        rent: 1_000
+        real_estate_taxes: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        mt_gross_household_income: 43_000
+        mt_elderly_homeowner_or_renter_credit_eligible: true
+  output:  
+  # min_((propertytax + rent*rate - (grossincome-standard)*reduction_rate), 1150) * percentage(grossincome)
+  # 1000+ 9000*0.15 - (43000-12600)*0.05 = 830 # 830*10% = 83
+    mt_elderly_homeowner_or_renter_credit: 83
 

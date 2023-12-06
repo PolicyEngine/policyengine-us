@@ -1,4 +1,4 @@
-description: Montana gross income sources for the elderly residential property tax credit.
+description: Montana gross income sources for the calculation of elderly homeowner or renter credit.
 metadata:
   unit: list
   label: Monatna elderly homeowner or renter credit gross income sources
@@ -7,12 +7,14 @@ metadata:
     href: https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2022/12/Form-2-2022-Instructions.pdf#page=47
 
 values:
-  2021-01-01:
-    - adjusted_gross_income
-    - tax_exempt_interest
-    - tax_exempt_pension_income
-    - 
-# This will create a circular reference to the renter / homeowner credit
-#   - mt_refudable_credits
+  2009-01-01:
+    - adjusted_gross_income # Line1: federal adjusted gross income
+    - tax_exempt_interest   # Line2: exempt interest
+    - regular_ira_distributions # Line3: IRA distribution reported
+    - roth_ira_distributions 
+    - pension_income # Line4: pensions and annuities
+    - tax_exempt_social_security # Line6: Social Security Payment not reported
+    - mt_refundable_credits # Line7: All refundable credits including elderly hownowner/renter credit
+    # This will create a circular reference to the renter / homeowner credit
+    # We created another mt_refundable_credits_before_renter_credit.py 
 
-#TODO : create a mt_refundable_credits_before_renter_credit.py 

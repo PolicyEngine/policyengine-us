@@ -26,7 +26,6 @@ class mt_elderly_homeowner_or_renter_credit(Variable):
             )
             * reduced_household_income
         )
-
         # Credit Computation
         property_tax = add(tax_unit, period, ["real_estate_taxes"])
         rent = add(tax_unit, period, ["rent"])
