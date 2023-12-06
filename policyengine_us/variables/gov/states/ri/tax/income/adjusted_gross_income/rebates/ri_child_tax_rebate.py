@@ -19,10 +19,6 @@ class ri_child_tax_rebate(Variable):
         ).gov.states.ri.tax.income.adjusted_gross_income.subtractions.child_tax_rebate
         age_eligibility = age <= p.threshold.age
         eligible_child = age_eligibility & dependent
-        child_count = tax_unit.sum(eligible_child)
-        total_children = where(
-            child_count >= p.child_cap,
-            p.child_cap,
-            child_count,
-        )
-        return total_children * p.amount
+        total_eligible_children = tax_unit.sum(eligible_child)
+        capped_eligible_children = min_(p.child_cap, total_eligible_children)
+        return capped_eligible_children * p.amount

@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ri_child_tax_rebate_eligible(Variable):
     value_type = bool
     entity = TaxUnit
-    label = "Rhode Island Child Tax Rebate"
+    label = "Eligible for the Rhode Island Child Tax Rebate"
     definition_period = YEAR
     reference = "https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-08/H7123Aaa_CTR_0.pdf"
     defined_for = StateCode.RI
