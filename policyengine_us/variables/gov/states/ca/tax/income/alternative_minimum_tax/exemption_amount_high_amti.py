@@ -19,11 +19,11 @@ class exemption_amount_high_amti(Variable):
         exemption_amount_low = p.exemption_amt_lower_threshold[filing_status]
         exemption_amount_high = max_(exemption_amount_initial - (amti - exemption_amount_low) * p.amti_rate, 0) # line 6
         
-        #person = tax_unit.members
-        #eligible_child = person("exemption_child_eligible", period) # how to calculate person in tax unit
+        person = tax_unit.members
+        eligible_child = person("exemption_child_eligible", period) # how to calculate person in tax unit
         exemption_amount_child = p.exemption_amount_child
-        earned_income = ""
-        exemption_amount_child_total = exemption_amount_child + earned_income # line 9
+        earned_income = person("head_earned", period)
+        exemption_amount_child_total = exemption_amount_child * eligible_child + earned_income # line 9
 
         if eligible_child == True:
             return where(tax_unit("ca_amti", period) >= p.exemption_amt_upper_threshold[filing_status],
