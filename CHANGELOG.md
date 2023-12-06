@@ -5,6 +5,48 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.559.0] - 2023-12-05 18:11:49
+
+### Added
+
+- Michigan additions and subtractions.
+
+## [0.558.1] - 2023-12-05 16:37:05
+
+### Fixed
+
+- Bug in LA general relief.
+
+## [0.558.0] - 2023-12-05 14:34:03
+
+### Added
+
+- Vermont charitable contributions credit.
+
+## [0.557.0] - 2023-12-05 01:54:33
+
+### Added
+
+- General Relief Program (GR) - Los Angeles County.
+
+## [0.556.0] - 2023-12-04 15:27:14
+
+### Added
+
+- Arkansas personal tax credits.
+
+## [0.555.1] - 2023-12-04 14:52:43
+
+### Fixed
+
+- Military retirement pay variable.
+
+## [0.555.0] - 2023-12-04 12:21:44
+
+### Added
+
+- Michigan standard deduction and pension benefit.
+
 ## [0.554.1] - 2023-12-04 06:37:53
 
 ### Fixed
@@ -6113,6 +6155,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.559.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.558.1...0.559.0
+[0.558.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.558.0...0.558.1
+[0.558.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.557.0...0.558.0
+[0.557.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.556.0...0.557.0
+[0.556.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.555.1...0.556.0
+[0.555.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.555.0...0.555.1
+[0.555.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.554.1...0.555.0
 [0.554.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.554.0...0.554.1
 [0.554.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.553.1...0.554.0
 [0.553.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.553.0...0.553.1
