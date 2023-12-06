@@ -40,4 +40,6 @@ class hi_disabled_exemptions(Variable):
             disabled_exemption_non_disabled_spouse,
         )
 
-        return (disabled_exemption_head + disabled_exemption_spouse) * disabled_head
+        return (
+            disabled_exemption_head + disabled_exemption_spouse
+        ) * disabled_head
