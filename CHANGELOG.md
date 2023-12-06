@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.562.0] - 2023-12-06 18:10:30
+
+### Added
+
+- Kentucky personal tax credits.
+
 ## [0.561.1] - 2023-12-06 18:01:17
 
 ### Fixed
@@ -6173,6 +6179,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.562.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.561.1...0.562.0
 [0.561.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.561.0...0.561.1
 [0.561.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.560.0...0.561.0
 [0.560.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.559.0...0.560.0
