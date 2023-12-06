@@ -3,8 +3,7 @@
   input:
     mt_agi: 6_000
     mt_standard_deduction: 2_000
-    mt_itemized_deductions_less_salt: 3_000
-    tax_unit_itemizes: true
+    mt_itemized_deductions: 3_000
     mt_exemptions: 2_710
     state_code: MT
   output: 
@@ -15,8 +14,7 @@
   input:
     mt_agi: 5_000
     mt_standard_deduction: 2_000
-    mt_itemized_deductions_less_salt: 3_000
-    tax_unit_itemizes: true
+    mt_itemized_deductions: 3_000
     mt_exemptions: 2_710
     state_code: MT
   output: 
@@ -27,9 +25,19 @@
   input:
     mt_agi: 5_000
     mt_standard_deduction: 3_000
-    mt_itemized_deductions_less_salt: 2_000
-    tax_unit_itemizes: false
+    mt_itemized_deductions: 2_000
     mt_exemptions: 2_710
     state_code: MT
   output: 
     mt_taxable_income: 0
+
+- name: Test case 4, the tax filer chooses standard deductions and the calculated taxable income is greater than 0.
+  period: 2021
+  input:
+    mt_agi: 7_000
+    mt_standard_deduction: 3_000
+    mt_itemized_deductions: 2_000
+    mt_exemptions: 2_710
+    state_code: MT
+  output: 
+    mt_taxable_income: 1_290
