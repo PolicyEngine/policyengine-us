@@ -1,5 +1,5 @@
 - name: Unit test 1 for 2021 ny_supplemental_tax joint filer
-  absolute_error_margin: 1
+  absolute_error_margin: 0.1
   period: 2021
   input:
     state_code: NY
@@ -8,10 +8,10 @@
     ny_taxable_income: 238_950
     ny_main_income_tax: 14_069.755
   output:
-    ny_supplemental_tax: 1_055.78
+    ny_supplemental_tax: 1_056
 
 - name: Unit test 2 for 2021 ny_supplemental_tax joint filer
-  absolute_error_margin: 1
+  absolute_error_margin: 0.1
   period: 2021
   input:
     state_code: NY
@@ -20,10 +20,10 @@
     ny_taxable_income: 307_980
     ny_main_income_tax: 18_439.35
   output:
-    ny_supplemental_tax: 1_055.78
+    ny_supplemental_tax: 1_056
 
 - name: Unit test 3 for 2021 ny_supplemental_tax joint filer - corner case with taxable income < $43,000
-  absolute_error_margin: 1
+  absolute_error_margin: 0.1
   period: 2021
   input:
     state_code: NY
@@ -35,7 +35,7 @@
     ny_supplemental_tax: 1609.136 # 27900*5.97%-(110000-107650)/50000*1202
 
 - name: Unit test 4 for 2021 ny_supplemental_tax joint filer - corner case with agi>$25,000,000
-  absolute_error_margin: 1
+  absolute_error_margin: 0.1
   period: 2021
   input:
     state_code: NY
@@ -47,7 +47,7 @@
     ny_supplemental_tax: 245_586.22 #26,000,000*10.9%-2,588,413.78
 
 - name: Unit test for 2021 ny_supplemental_tax single filer
-  absolute_error_margin: 1
+  absolute_error_margin: 0.1
   period: 2021
   input:
     state_code: NY
@@ -59,7 +59,7 @@
     ny_supplemental_tax: 1_435.44 #526+0.812*1120
 
 - name: Unit test for 2021 ny_supplemental_tax head of household
-  absolute_error_margin: 1
+  absolute_error_margin: 0.1
   period: 2021
   input:
     state_code: NY

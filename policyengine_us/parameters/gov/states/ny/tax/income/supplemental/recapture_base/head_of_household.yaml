@@ -1,12 +1,14 @@
-description: NY supplemental tax recapture base amount for a head of household filer. 
+description: New York supplemental tax recapture base amount for a head of household filer.
 metadata:
   type: single_amount
   threshold_unit: currency-USD
   amount_unit: currency-USD
-  label: NY supplemental tax recapture base amount for head of household filers
+  label: New York supplemental tax recapture base head of household amount
   reference:
     - title: Section 601 Imposition of tax, (d-2) for 2021 and (d-3) for 2022
       href: https://www.nysenate.gov/legislation/laws/TAX/601
+    - title: 2021 NY Form IT-201 Instructions - Head of household
+      href: https://www.tax.ny.gov/pdf/2021/inc/it201i_2021.pdf#page=56
 brackets:
   - threshold:
       2021-01-01: 107_650

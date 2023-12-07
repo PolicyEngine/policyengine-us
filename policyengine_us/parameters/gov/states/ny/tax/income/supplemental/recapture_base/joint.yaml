@@ -1,12 +1,14 @@
-description: NY supplemental tax recapture base amount for a joint filer. 
+description: New York supplemental tax recapture base amount for a joint filer.
 metadata:
   type: single_amount
   threshold_unit: currency-USD
   amount_unit: currency-USD
-  label: NY supplemental tax recapture base amount for joint filers
+  label: New York supplemental tax recapture base joint amount
   reference:
     - title: Section 601 Imposition of tax, (d-2) for 2021 and (d-3) for 2022
       href: https://www.nysenate.gov/legislation/laws/TAX/601
+    - title: 2021 NY Form IT-201 Instructions - Married filing jointly and qualifying widow(er)
+      href: https://www.tax.ny.gov/pdf/2021/inc/it201i_2021.pdf#page=52
 brackets:
   - threshold:
       2021-01-01: 43_000

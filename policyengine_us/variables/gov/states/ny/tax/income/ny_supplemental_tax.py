@@ -15,7 +15,7 @@ class ny_supplemental_tax(Variable):
         ny_agi = tax_unit("ny_agi", period)
         ny_main_income_tax = tax_unit("ny_main_income_tax", period)
         tax = parameters(period).gov.states.ny.tax.income
-        sup_tax = tax.supplemental
+        p = tax.supplemental
 
         filing_status = tax_unit("filing_status", period)
         status = filing_status.possible_values
@@ -45,70 +45,51 @@ class ny_supplemental_tax(Variable):
         )
 
         applicable_amount = max_(
-            0, ny_agi - max_(previous_agi_threshold, sup_tax.min_agi)
+            0, ny_agi - max_(previous_agi_threshold, p.min_agi)
         )
 
         phase_in_fraction = min_(
             1,
-            applicable_amount / sup_tax.phase_in_length,
+            applicable_amount / p.phase_in_length,
         )
 
         recapture_base = select(
+            in_each_status,
             [
-                filing_status == status.SINGLE,
-                filing_status == status.SEPARATE,
-                filing_status == status.JOINT,
-                filing_status == status.HEAD_OF_HOUSEHOLD,
-                filing_status == status.WIDOW,
-            ],
-            [
-                sup_tax.recapture_base.single.calc(ny_taxable_income),
-                sup_tax.recapture_base.separate.calc(ny_taxable_income),
-                sup_tax.recapture_base.joint.calc(ny_taxable_income),
-                sup_tax.recapture_base.head_of_household.calc(
-                    ny_taxable_income
-                ),
-                sup_tax.recapture_base.widow.calc(ny_taxable_income),
+                p.recapture_base.single.calc(ny_taxable_income),
+                p.recapture_base.joint.calc(ny_taxable_income),
+                p.recapture_base.head_of_household.calc(ny_taxable_income),
+                p.recapture_base.widow.calc(ny_taxable_income),
+                p.recapture_base.separate.calc(ny_taxable_income),
             ],
         )
 
         incremental_benefit = select(
+            in_each_status,
             [
-                filing_status == status.SINGLE,
-                filing_status == status.SEPARATE,
-                filing_status == status.JOINT,
-                filing_status == status.HEAD_OF_HOUSEHOLD,
-                filing_status == status.WIDOW,
-            ],
-            [
-                sup_tax.incremental_benefit.single.calc(ny_taxable_income),
-                sup_tax.incremental_benefit.separate.calc(ny_taxable_income),
-                sup_tax.incremental_benefit.joint.calc(ny_taxable_income),
-                sup_tax.incremental_benefit.head_of_household.calc(
+                p.incremental_benefit.single.calc(ny_taxable_income),
+                p.incremental_benefit.joint.calc(ny_taxable_income),
+                p.incremental_benefit.head_of_household.calc(
                     ny_taxable_income
                 ),
-                sup_tax.incremental_benefit.widow.calc(ny_taxable_income),
+                p.incremental_benefit.widow.calc(ny_taxable_income),
+                p.incremental_benefit.separate.calc(ny_taxable_income),
             ],
         )
+
         supplemental_tax_general = (
             recapture_base + phase_in_fraction * incremental_benefit
         )
 
         # edge case for low income
         min_taxable_income = select(
+            in_each_status,
             [
-                filing_status == status.SINGLE,
-                filing_status == status.SEPARATE,
-                filing_status == status.JOINT,
-                filing_status == status.HEAD_OF_HOUSEHOLD,
-                filing_status == status.WIDOW,
-            ],
-            [
-                sup_tax.incremental_benefit.single.thresholds[0],
-                sup_tax.incremental_benefit.separate.thresholds[0],
-                sup_tax.incremental_benefit.joint.thresholds[0],
-                sup_tax.incremental_benefit.head_of_household.thresholds[0],
-                sup_tax.incremental_benefit.widow.thresholds[0],
+                p.incremental_benefit.single.thresholds[0],
+                p.incremental_benefit.joint.thresholds[0],
+                p.incremental_benefit.head_of_household.thresholds[0],
+                p.incremental_benefit.widow.thresholds[0],
+                p.incremental_benefit.separate.thresholds[0],
             ],
         )
         low_income_rate = select(
@@ -120,34 +101,30 @@ class ny_supplemental_tax(Variable):
             - phase_in_fraction * ny_main_income_tax
         )
 
-        # edge case for high agi > $25,000,000 TODO: check length
-        high_income_rate = select(
+        # edge case for high agi
+        agi_limit = select(
             in_each_status,
-            [scale.marginal_rates(sup_tax.max_agi) for scale in scales],
+            [
+                single.thresholds[-1],
+                joint.thresholds[-1],
+                hoh.thresholds[-1],
+                widow.thresholds[-1],
+                separate.thresholds[-1],
+            ],
+        )
+        high_agi_rate = select(
+            in_each_status,
+            [scale.marginal_rates(agi_limit + 1) for scale in scales],
         )
 
-        # supplemental_tax_high_income = (
-        #     ny_taxable_income * high_income_rate - ny_main_income_tax
-        # )
+        supplemental_tax_high_agi = (
+            ny_taxable_income * high_agi_rate - ny_main_income_tax
+        )
 
-        # supplemental_tax = select(
-        #     [ny_taxable_income < min_taxable_income, ny_agi > max_agi],
-        #     [supplemental_tax_low_income, supplemental_tax_high_income],
-        #     default=supplemental_tax_general,
-        # )
+        supplemental_tax = select(
+            [ny_taxable_income < min_taxable_income, ny_agi > agi_limit],
+            [supplemental_tax_low_income, supplemental_tax_high_agi],
+            default=supplemental_tax_general,
+        )
 
-        return sup_tax.max_agi
-
-        # rate = select(
-        #     in_each_status,
-        #     [
-        #         scale.marginal_rates(
-        #             max_(sup_tax.min_agi + 1, ny_taxable_income)
-        #         )
-        #         for scale in scales
-        #     ],
-        # )
-
-        # target_tax = rate * ny_taxable_income
-        # difference = target_tax - tax_unit("ny_main_income_tax", period)
-        # return phase_in_fraction * difference
+        return supplemental_tax
