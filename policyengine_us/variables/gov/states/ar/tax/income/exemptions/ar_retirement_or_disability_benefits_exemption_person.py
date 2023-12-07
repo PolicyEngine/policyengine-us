@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ar_retirement_or_disability_benefits_exemption_indv(Variable):
+class ar_retirement_or_disability_benefits_exemption_person(Variable):
     value_type = float
     entity = Person
     label = "Arkansas individual retirement or disability benefits exemption"
