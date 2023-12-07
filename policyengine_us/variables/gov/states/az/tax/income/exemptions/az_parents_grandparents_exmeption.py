@@ -13,7 +13,6 @@ class az_parents_grandparents_exemption(Variable):
         p = parameters(
             period
         ).gov.states.az.tax.income.exemptions.parent_grandparent
-        tax_unit = person.tax_unit
 
         parent = person("is_parent_of_filer_or_spouse", period)
         grandparent = person("is_grandparent_of_filer_or_spouse", period)
@@ -26,6 +25,8 @@ class az_parents_grandparents_exemption(Variable):
         )
         ratio_eligible = ratio >= p.cost_rate
 
-        eligible = (parent | grandparent) & age_eligible & ratio_eligible
+        eligible_parent_or_grandparent = (
+            (parent | grandparent) & age_eligible & ratio_eligible
+        )
 
-        return p.amount * tax_unit.sum(eligible)
+        return p.amount * eligible_parent_or_grandparent

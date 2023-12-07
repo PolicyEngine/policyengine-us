@@ -17,7 +17,7 @@
         members: [person1, person2]
         state_code: AZ
   output:
-    az_parents_grandparents_exemption: 10_000
+    az_parents_grandparents_exemption: [0, 10_000]
 
 - name: 2 eligible grandparents
   period: 2023
@@ -38,7 +38,7 @@
         members: [person1, person2]
         state_code: AZ
   output:
-    az_parents_grandparents_exemption: 20_000
+    az_parents_grandparents_exemption: [10_000, 10_000]
 
 - name: 3 eligible parents and grandparents
   period: 2023
@@ -69,7 +69,7 @@
         members: [person1, person2, person3, person4]
         state_code: AZ
   output:
-    az_parents_grandparents_exemption: 30_000
+    az_parents_grandparents_exemption: [0, 10_000, 10_000, 10_000]
 
 - name:  parents and grandparents not eligible for age 
   period: 2023
@@ -90,7 +90,7 @@
         members: [person1, person2]
         state_code: AZ
   output:
-    az_parents_grandparents_exemption: 0
+    az_parents_grandparents_exemption: [0, 0]
 
 - name: parents and grandparents not eligible for support payment
   period: 2023
@@ -111,4 +111,4 @@
         members: [person1, person2]
         state_code: AZ
   output:
-    az_parents_grandparents_exemption: 0
+    az_parents_grandparents_exemption: [0, 0]

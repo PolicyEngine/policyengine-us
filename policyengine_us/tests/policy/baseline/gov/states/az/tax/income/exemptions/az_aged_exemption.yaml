@@ -8,14 +8,11 @@
       person2:
         az_aged_exemption_eligible_person: true
         age: 66
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
     household:
       members: [person1, person2]
       state_code: AZ
   output:
-    az_aged_exemption: 4_200
+    az_aged_exemption: [2_100, 2_100]
 
 - name: case 2
   period: 2022
@@ -27,14 +24,11 @@
       person2:
         az_aged_exemption_eligible_person: false
         age: 66
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
     household:
       members: [person1, person2]
       state_code: AZ
   output:
-    az_aged_exemption: 0
+    az_aged_exemption: [0, 0]
 
 - name: case 3
   period: 2022
@@ -46,11 +40,8 @@
       person2:
         az_aged_exemption_eligible_person: true
         age: 66
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
     household:
       members: [person1, person2]
       state_code: AZ
   output:
-    az_aged_exemption: 2_100
+    az_aged_exemption: [0, 2_100]
