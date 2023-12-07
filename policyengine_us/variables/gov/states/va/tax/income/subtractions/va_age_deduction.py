@@ -1,7 +1,6 @@
 from policyengine_us.model_api import *
 
 
-
 class va_age_deduction(Variable):
     value_type = float
     entity = TaxUnit
@@ -66,7 +65,9 @@ class va_age_deduction(Variable):
         )  # divisor is 2 if and only if the couple is married filling seprately, and both are eligible
 
         # Calculate the age deduction amount for each filing
-        reduced_max_deduction = max_(maximum_allowable_deduction - reduction, 0)
+        reduced_max_deduction = max_(
+            maximum_allowable_deduction - reduction, 0
+        )
         age_deduction = np.zeros_like(divisor)
         mask = divisor != 0
         age_deduction[mask] = reduced_max_deduction[mask] / divisor[mask]
