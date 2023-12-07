@@ -1,0 +1,41 @@
+- name: Test case 1 # filing separate
+  period: 2021
+  input:
+     filing_status: SEPARATE
+     charitable_deduction: 800
+     interest_deduction: 265
+     mt_salt_deduction: 5_000
+     mt_medical_expense_deduction: 1_000
+     casualty_loss_deduction: 400
+     mt_child_dependent_care_expense_deduction: 123
+     state_code: MT
+  output:
+    mt_itemized_deductions: 7_588
+
+- name: Test case 2 #salt has a cap of 10000 for single, head of household and joint
+  period: 2022
+  input:
+     filing_status: HEAD_OF_HOUSEHOLD
+     charitable_deduction: 0
+     interest_deduction: 1_234
+     mt_salt_deduction: 10_000
+     mt_medical_expense_deduction: 3_000 
+     casualty_loss_deduction: 0
+     mt_child_dependent_care_expense_deduction: 0
+     state_code: MT
+  output:
+    mt_itemized_deductions: 14_234
+
+- name: Test case 3 #sum all terms
+  period: 2021
+  input:
+     filing_status: SINGLE
+     charitable_deduction: 1_000
+     interest_deduction: 34
+     mt_salt_deduction: 1_035
+     mt_medical_expense_deduction: 3_000
+     casualty_loss_deduction: 745
+     mt_child_dependent_care_expense_deduction: 1_004
+     state_code: MT
+  output:
+    mt_itemized_deductions: 6_818
