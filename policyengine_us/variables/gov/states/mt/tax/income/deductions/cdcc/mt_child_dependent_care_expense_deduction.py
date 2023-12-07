@@ -22,5 +22,5 @@ class mt_child_dependent_care_expense_deduction(Variable):
         care_expenses = tax_unit("tax_unit_childcare_expenses", period)
         capped_expenses = min_(care_expenses, cap)  # Line 2
         agi = tax_unit("mt_agi", period)  # Line 3
-        reduction = p.reduction.calc(agi)  # Line 6
+        reduction = p.phase_out.calc(agi)  # Line 6
         return max_(0, care_expenses - reduction)
