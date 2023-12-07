@@ -10,4 +10,4 @@ class ar_retirement_or_disability_benefits_exemption(Variable):
     reference = "https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2022_AR1000F_and_AR1000NR_Instructions.pdf#page=13"
     defined_for = StateCode.AR
 
-    adds = ["ar_retirement_or_disability_benefits_exemption_capped"]
+    adds = ["ar_capped_retirement_or_disability_benefits_exemption_person"]
