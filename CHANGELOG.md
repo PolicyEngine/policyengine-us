@@ -5,6 +5,42 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.564.0] - 2023-12-07 11:59:21
+
+### Added
+
+- Arizona exemptions.
+
+## [0.563.1] - 2023-12-07 03:33:31
+
+### Fixed
+
+- 2021 South Carolina tax bracket parameters.
+
+## [0.563.0] - 2023-12-06 19:28:36
+
+### Added
+
+- Montana old age subtraction.
+
+## [0.562.0] - 2023-12-06 18:10:30
+
+### Added
+
+- Kentucky personal tax credits.
+
+## [0.561.1] - 2023-12-06 18:01:17
+
+### Fixed
+
+- Remove Maine index file.
+
+## [0.561.0] - 2023-12-06 17:41:47
+
+### Added
+
+- Connecticut additions and subtractions.
+
 ## [0.560.0] - 2023-12-06 17:21:04
 
 ### Changed
@@ -6161,6 +6197,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.564.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.563.1...0.564.0
+[0.563.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.563.0...0.563.1
+[0.563.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.562.0...0.563.0
+[0.562.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.561.1...0.562.0
+[0.561.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.561.0...0.561.1
+[0.561.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.560.0...0.561.0
 [0.560.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.559.0...0.560.0
 [0.559.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.558.1...0.559.0
 [0.558.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.558.0...0.558.1
