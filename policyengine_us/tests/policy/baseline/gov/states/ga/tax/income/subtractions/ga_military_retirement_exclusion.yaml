@@ -1,66 +1,34 @@
-- name: test1
+- name: one person has military retirement exclusion
   period: 2023
   input:
-    people:
-      person1:
-        is_tax_unit_head: true
-        age: 60
-        military_retirement_pay: 20_000
-        earned_income: 17_000
-      person2:
-        is_tax_unit_spouse: false
-        age: 60
-        military_retirement_pay: 20_000
-        earned_income: 17_000
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
-        filing_status: JOINT
-    households:
-      household:
-        state_code: GA
-  output:
-    ga_military_retirement_exclusion: 17_500
-
-- name: test2
-  period: 2023
-  input:
-    people:
-      person1:
-        is_tax_unit_head: true
-        age: 60
-        military_retirement_pay: 10_000
-        earned_income: 17_000
-      person2:
-        is_tax_unit_spouse: true
-        age: 60
-        military_retirement_pay: 20_000
-        earned_income: 17_900
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
-        filing_status: JOINT
-    households:
-      household:
-        state_code: GA
+    ga_military_retirement_exclusion_person: 30_000
   output:
     ga_military_retirement_exclusion: 30_000
 
-- name: test3
+- name: both have military retirement exclusion
   period: 2023
   input:
     people:
       person1:
-        is_tax_unit_head: true
-        age: 60
-        military_retirement_pay: 17_600
-        earned_income: 0
+        ga_military_retirement_exclusion_person: 17_500
+      person2:
+        ga_military_retirement_exclusion_person: 17_500
     tax_units:
       tax_unit:
-        members: [person1]
-        filing_status: SINGLE
-    households:
-      household:
-        state_code: GA
+        members: [person1, person2]
+  output:
+    ga_military_retirement_exclusion: 17_500*2
+
+- name: one has, the other does not
+  period: 2023
+  input:
+    people:
+      person1:
+        ga_military_retirement_exclusion_person: 0
+      person2:
+        ga_military_retirement_exclusion_person: 17_500
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
   output:
     ga_military_retirement_exclusion: 17_500

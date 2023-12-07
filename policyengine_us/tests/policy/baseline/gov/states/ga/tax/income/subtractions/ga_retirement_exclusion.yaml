@@ -1,87 +1,27 @@
-- name: head is disabled, so eligible for younger cap
+- name: no exclusion
   period: 2023
   input:
-    people:
-      person1:
-        is_disabled: true
-        age: 50
-        ga_retirement_exclusion_eligible_person: true
-        ga_retirement_income_exclusion_retirement_income: 69_000
-    tax_units:
-      tax_unit:
-        members: [person1]
-        filing_status: SINGLE
-    households:
-      household:
-        state_code: GA
-  output:
-    ga_retirement_exclusion: 35_000
-
-- name: head not eligible
-  period: 2023
-  input:
-    people:
-      person1:
-        is_tax_unit_head: true
-        age: 50
-        ga_retirement_exclusion_eligible_person: false
-        ga_retirement_income_exclusion_retirement_income: 69_000
-    tax_units:
-      tax_unit:
-        members: [person1]
-        filing_status: SINGLE
-    households:
-      household:
-        state_code: GA
+    ga_retirement_exclusion_person: 0
   output:
     ga_retirement_exclusion: 0
 
-- name: head is eligible for older cap and spouse is eligible for younger cap
+- name: head has ga retirement
   period: 2023
   input:
-    people:
-      person1:
-        is_tax_unit_head: true
-        age: 65
-        ga_retirement_exclusion_eligible_person: true
-        ga_retirement_income_exclusion_retirement_income: 67_000
-      person2:
-        is_tax_unit_spouse: true
-        age: 63
-        ga_retirement_exclusion_eligible_person: true
-        ga_retirement_income_exclusion_retirement_income: 37_700
-    tax_units:
-      tax_unit:
-        members: [person1,person2]
-        filing_status: JOINT
-    households:
-      household:
-        state_code: GA
+    ga_retirement_exclusion_person: 35_000
   output:
-    ga_retirement_exclusion: 100_000
+    ga_retirement_exclusion: 35_000
 
-- name: both are eligible for older cap
+- name: head and spouse have ga retirement
   period: 2023
   input:
     people:
       person1:
-        is_tax_unit_head: true
-        is_disabled: false
-        age: 65
-        ga_retirement_exclusion_eligible_person: true
-        ga_retirement_income_exclusion_retirement_income: 37_700
+        ga_retirement_exclusion_person: 5_000
       person2:
-        is_tax_unit_spouse: true
-        is_disabled: true
-        ga_retirement_exclusion_eligible_person: true
-        age: 65
-        ga_retirement_income_exclusion_retirement_income: 65_000
+        ga_retirement_exclusion_person: 35_000
     tax_units:
       tax_unit:
         members: [person1,person2]
-        filing_status: JOINT
-    households:
-      household:
-        state_code: GA
   output:
-    ga_retirement_exclusion: 102_700
+    ga_retirement_exclusion: 40_000
