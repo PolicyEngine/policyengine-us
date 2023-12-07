@@ -1,0 +1,17 @@
+- name: Reduction of AGI
+  period: 2023
+  input:
+    state_code: AZ
+    az_agi: 2_000
+    az_deductions: 500
+  output:
+    az_taxable_income: 1_500
+
+- name: Capped at 0
+  period: 2023
+  input:
+    state_code: AZ
+    az_agi: 2_000
+    az_deductions: 4_000
+  output:
+    az_taxable_income: 0
