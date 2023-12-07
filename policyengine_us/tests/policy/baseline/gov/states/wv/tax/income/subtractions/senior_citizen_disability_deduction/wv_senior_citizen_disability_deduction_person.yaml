@@ -1,0 +1,30 @@
+- name: West Virginia senior citizen disability deduction if this person is ineligible with $1,000 total modification and $8,000 subtractions part two.
+  period: 2022
+  input:
+    wv_senior_citizen_disability_deduction_eligible_person: false
+    wv_total_modification: 1_000
+    wv_agi_person: 20_000
+    wv_subtractions_part_two: 8_000
+  output:
+    wv_senior_citizen_disability_deduction_person: 0
+    # min(wv_agi_person - wv_subtractions_part_two,8000)- wv_total_modification
+
+- name: West Virginia senior citizen disability deduction if this person is eligible with $3,000 total modification and $5,000 subtractions part two.
+  period: 2022
+  input:
+    wv_senior_citizen_disability_deduction_eligible_person: true
+    wv_total_modification: 3_000
+    wv_agi_person: 20_000
+    wv_subtractions_part_two: 5_000
+  output:
+    wv_senior_citizen_disability_deduction_person: 5_000
+
+- name: West Virginia senior citizen disability deduction if this person is eligible with $3,000 total modification and $5,000 subtractions part two.
+  period: 2022
+  input:
+    wv_senior_citizen_disability_deduction_eligible_person: true
+    wv_total_modification: 3_000
+    wv_agi_person: 10_000
+    wv_subtractions_part_two: 5_000
+  output:
+    wv_senior_citizen_disability_deduction_person: 2_000

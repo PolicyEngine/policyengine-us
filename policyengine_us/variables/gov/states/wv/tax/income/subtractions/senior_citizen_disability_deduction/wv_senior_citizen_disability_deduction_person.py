@@ -19,5 +19,3 @@ class wv_senior_citizen_disability_deduction_person(Variable):
         income_modified = min_(p.cap, wv_agi_person - wv_subtractions_part_two)
         modification_amount = person("wv_total_modification", period)
         return max_(0, income_modified - modification_amount)
-
-        # is_tax_unit_spouse

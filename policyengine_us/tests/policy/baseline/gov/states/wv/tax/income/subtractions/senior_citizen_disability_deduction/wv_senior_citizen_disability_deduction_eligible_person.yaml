@@ -4,7 +4,7 @@
     wv_total_modification: 10_000
     age: 20
     is_disabled: true
-    wv_agi: 20_000
+    wv_agi_person: 20_000
     state_code: WV
   output:
     wv_senior_citizen_disability_deduction_eligible_person: false
@@ -15,7 +15,7 @@
     wv_total_modification: 7_500
     age: 70
     is_disabled: false
-    wv_agi: 20_000
+    wv_agi_person: 20_000
     state_code: WV
   output:
     wv_senior_citizen_disability_deduction_eligible_person: true
@@ -26,7 +26,7 @@
     wv_total_modification: 7_500
     age: 30
     is_disabled: true
-    wv_agi: 20_000
+    wv_agi_person: 20_000
     state_code: WV
   output:
     wv_senior_citizen_disability_deduction_eligible_person: true
@@ -37,7 +37,7 @@
     wv_total_modification: 7_500
     age: 30
     is_disabled: false
-    wv_agi: 20_000
+    wv_agi_person: 20_000
     state_code: WV
   output:
     wv_senior_citizen_disability_deduction_eligible_person: false
