@@ -34,7 +34,7 @@
   output:
     hi_disabled_exemptions: 8_144
 
-- name: spouse is disabled and aged, head is aged
+- name: spouse is disabled, head is aged
   period: 2021
   input:
     state_code: HI
@@ -46,7 +46,7 @@
   output:
     hi_disabled_exemptions: 9_288
   
-- name: spouse is disabled and aged, head is not aged
+- name: spouse is disabled, head is not aged
   period: 2021
   input:
     state_code: HI
