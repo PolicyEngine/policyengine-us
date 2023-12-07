@@ -13,7 +13,7 @@ class ar_retirement_or_disability_benefits_exemption_indv(Variable):
     def formula(person, period, parameters):
         p = parameters(
             period
-        ).gov.states.ar.tax.income.exemptions.retirement_or_disability_benefits
+        ).gov.irs.income.exemption.traditional_distribution
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         pension_income = (
             person("taxable_pension_income", period) * head_or_spouse
