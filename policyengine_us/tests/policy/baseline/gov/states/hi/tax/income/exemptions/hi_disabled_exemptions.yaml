@@ -1,4 +1,4 @@
-- name: Disabled exemptions (both disabled)
+- name: both disabled
   period: 2021
   input:
     state_code: HI
@@ -6,10 +6,11 @@
     spouse_is_disabled: true
     age_head: 65
     age_spouse: 65
+    filing_status: JOINT
   output:
     hi_disabled_exemptions: 14_000
 
-- name: Disabled exemptions (either disabled, another aged)
+- name: head is disabled and aged, spouse is aged
   period: 2021
   input:
     state_code: HI
@@ -17,10 +18,11 @@
     spouse_is_disabled: false
     age_head: 65
     age_spouse: 65
+    filing_status: JOINT
   output:
     hi_disabled_exemptions: 9_288
 
-- name: Disabled exemptions (either disabled, another not aged)
+- name: head is disabled and aged, spouse is not aged
   period: 2021
   input:
     state_code: HI
@@ -28,10 +30,35 @@
     spouse_is_disabled: false
     age_head: 65
     age_spouse: 63
+    filing_status: JOINT
   output:
     hi_disabled_exemptions: 8_144
 
-- name: Disabled exemptions (neither disabled)
+- name: spouse is disabled and aged, head is aged
+  period: 2021
+  input:
+    state_code: HI
+    head_is_disabled: false
+    spouse_is_disabled: true
+    age_head: 65
+    age_spouse: 63
+    filing_status: JOINT
+  output:
+    hi_disabled_exemptions: 9_288
+  
+- name: spouse is disabled and aged, head is not aged
+  period: 2021
+  input:
+    state_code: HI
+    head_is_disabled: false
+    spouse_is_disabled: true
+    age_head: 60
+    age_spouse: 63
+    filing_status: JOINT
+  output:
+    hi_disabled_exemptions: 8_144
+
+- name: both not disabled
   period: 2021
   input:
     state_code: HI
@@ -39,10 +66,11 @@
     spouse_is_disabled: false
     age_head: 63
     age_spouse: 65
+    filing_status: JOINT
   output:
     hi_disabled_exemptions: 0
 
-- name: Hawaii disabled exemption bug
+- name: single, under 65, not disabled
   absolute_error_margin: 0.01
   period: 2021
   input:
@@ -53,11 +81,30 @@
     tax_units:
       tax_unit:
         members: [person1]
+        filing_status: SINGLE
     households:
       household:
         members: [person1]
         state_fips: 15  # HI
   output:  # expected results from hand-calculation with N-15 form/instructions
-    hi_regular_exemptions: 1_144
     hi_disabled_exemptions: 0     
-    hi_exemptions: 1_144          
+
+- name: single, over 65, disabled
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 48_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        head_is_disabled: true
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_fips: 15  # HI
+  output:  
+    hi_disabled_exemptions: 7_000           
