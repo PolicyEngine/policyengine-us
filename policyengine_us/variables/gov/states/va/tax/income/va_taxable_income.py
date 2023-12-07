@@ -14,7 +14,7 @@ class va_taxable_income(Variable):
     defined_for = StateCode.VA
 
     def formula(tax_unit, period, parameters):
-        afagi = tax_unit("va_afagi", period)
+        afagi = tax_unit("va_agi", period)
         age_ded = tax_unit("va_age_deduction", period)
         std_ded = tax_unit("va_standard_deduction", period)
         itm_ded = tax_unit("va_itemized_deductions", period)

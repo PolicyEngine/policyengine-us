@@ -27,7 +27,7 @@ class va_age_deduction(Variable):
         birth_year_head = period.start.year - age_head
         birth_year_spouse = period.start.year - age_spouse
 
-        afagi = tax_unit("va_afagi", period)
+        agi = tax_unit("va_agi", period)
 
         # Calculate the number of people who are eligible for an age deduction
         head_eligible = age_head >= p.age_minimum
@@ -52,7 +52,7 @@ class va_age_deduction(Variable):
         maximum_allowable_deduction = p.amount * count_eligible
 
         # Calculate the amount that the adjusted federal AGI exceeds the threshold
-        excess = max_(afagi - p.threshold[filing_status], 0)
+        excess = max_(agi - p.threshold[filing_status], 0)
 
         # Reduce by the entire excess, unless both head and spouse (or head only if single)
         # are eligible for the full deduction
