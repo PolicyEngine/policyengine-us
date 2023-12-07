@@ -16,4 +16,4 @@ class va_income_tax_before_credits(Variable):
         taxable_income = tax_unit("va_taxable_income", period)
         p = parameters(period).gov.states.va.tax.income.rates
         va_income_tax_before_credits = p.calc(taxable_income)
-        return np.floor(va_income_tax_before_credits + 0.5).astype(int)
+        return (np.floor(va_income_tax_before_credits + 0.5)).astype(int)
