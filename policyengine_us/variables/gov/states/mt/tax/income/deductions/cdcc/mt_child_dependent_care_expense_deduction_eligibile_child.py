@@ -1,9 +1,12 @@
 from policyengine_us.model_api import *
 
+
 class mt_child_dependent_care_expense_deduction_eligible_child(Variable):
     value_type = bool
     entity = Person
-    label = "Eligible child for the Montana child dependent care expense deduction"
+    label = (
+        "Eligible child for the Montana child dependent care expense deduction"
+    )
     definition_period = YEAR
     defined_for = StateCode.MT
 
