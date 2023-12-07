@@ -19,7 +19,6 @@
         members: [person1, person2]
         state_code: AR 
   output:
-    # 5000*(100_000/240_000) = 2083.3333
     ar_itemized_deductions: 2083.3333
 
 - name: Itemized deduction for married filing jointly status
