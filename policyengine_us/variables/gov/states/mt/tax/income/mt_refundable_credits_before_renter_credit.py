@@ -6,14 +6,8 @@ class mt_refundable_credits_before_renter_credit(Variable):
     entity = TaxUnit
     label = "Montana refundable credits"
     unit = USD
+    reference = "https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2022/12/Form-2-2022-Instructions.pdf#page=48"
     definition_period = YEAR
     defined_for = StateCode.MT
-
-    def formula(tax_unit, period, parameters):
-        mt_refundable_credits = tax_unit("mt_refundable_credits", period)
-        mt_elderly_homeowner_or_renter_credit = tax_unit(
-            "mt_elderly_homeowner_or_renter_credit", period
-        )
-        return max_(
-            mt_refundable_credits - mt_elderly_homeowner_or_renter_credit, 0
-        )
+    # In gross income sources, we include the elderly homeowner or renter credit in refundable credits
+    # This will create a circular reference (check reference Line7)

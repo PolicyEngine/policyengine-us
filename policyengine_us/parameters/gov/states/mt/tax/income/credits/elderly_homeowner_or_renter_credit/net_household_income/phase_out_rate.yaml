@@ -1,9 +1,10 @@
-description: Montana uses this reduction amount for the computation based of the elderly homeowner or renter credit.
+description: Montana phases the net household income out at this rate under the elderly homeowner or renter credit.
 metadata:
-  label: Montana household income reduction amount
+  label: Montana elderly or homeowner credit household income reduction amount
   type: single_amount
   threshold_unit: currency-USD
   amount_unit: /1
+  period: year
   reference:
   - title: MT Code, Taxation - Individual Income Tax, § 15-30-2340 (4)
     href: https://leg.mt.gov/bills/mca/title_0150/chapter_0300/part_0230/section_0400/0150-0300-0230-0400.html

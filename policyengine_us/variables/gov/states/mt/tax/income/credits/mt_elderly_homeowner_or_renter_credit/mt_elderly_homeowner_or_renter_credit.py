@@ -15,13 +15,13 @@ class mt_elderly_homeowner_or_renter_credit(Variable):
         ).gov.states.mt.tax.income.credits.elderly_homeowner_or_renter_credit
 
         # Calculate net_household_income
-        standard_exclusion = p.net_household_income.standard_exclusion
+        standard_exclusion = p.net_household_income.standard_exclusion_amount
         gross_household_income = tax_unit("mt_gross_household_income", period)
         reduced_household_income = max_(
             gross_household_income - standard_exclusion, 0
         )
         net_household_income = (
-            p.net_household_income.reduction_rate.calc(
+            p.net_household_income.phase_out_rate.calc(
                 reduced_household_income
             )
             * reduced_household_income
@@ -35,5 +35,5 @@ class mt_elderly_homeowner_or_renter_credit(Variable):
             - net_household_income,
             0,
         )
-        capped_credit = min_(credit_amount, p.max_amount)
-        return p.credit_multiplier.calc(gross_household_income) * capped_credit
+        capped_credit = min_(credit_amount, p.cap)
+        return p.multiplier.calc(gross_household_income) * capped_credit
