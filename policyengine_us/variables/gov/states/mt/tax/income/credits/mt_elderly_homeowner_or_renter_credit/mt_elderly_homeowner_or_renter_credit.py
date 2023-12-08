@@ -13,20 +13,11 @@ class mt_elderly_homeowner_or_renter_credit(Variable):
         p = parameters(
             period
         ).gov.states.mt.tax.income.credits.elderly_homeowner_or_renter_credit
-
-        # Calculate net_household_income
-        # Only one claim is allowed per household
-        # married taxpayer who are living apart may qualify for only one credit per year
-        standard_exclusion = p.net_household_income.standard_exclusion_amount
         gross_household_income = tax_unit("mt_gross_household_income", period)
-        reduced_household_income = max_(
-            gross_household_income - standard_exclusion, 0
-        )
-        net_household_income = (
-            p.net_household_income.phase_out_rate.calc(
-                reduced_household_income
-            )
-            * reduced_household_income
+        # Get net_household_income
+        net_household_income = tax_unit(
+            "mt_elderly_homeowner_or_renter_credit_net_household_income",
+            period,
         )
         # Credit Computation
         property_tax = add(tax_unit, period, ["real_estate_taxes"])
