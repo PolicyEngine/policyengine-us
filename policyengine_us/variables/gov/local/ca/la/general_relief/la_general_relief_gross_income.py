@@ -10,4 +10,4 @@ class la_general_relief_gross_income(Variable):
     defined_for = "in_la"
     reference = "https://drive.google.com/file/d/1Oc7UuRFxJj-eDwTeox92PtmRVGnG9RjW/view?usp=sharing"
 
-    adds = "gov.local.la.general_relief.income_sources"
+    adds = "gov.local.ca.la.general_relief.income_sources"
