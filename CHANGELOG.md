@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.564.0] - 2023-12-07 11:59:21
+
+### Added
+
+- Arizona exemptions.
+
 ## [0.563.1] - 2023-12-07 03:33:31
 
 ### Fixed
@@ -6191,6 +6197,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.564.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.563.1...0.564.0
 [0.563.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.563.0...0.563.1
 [0.563.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.562.0...0.563.0
 [0.562.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.561.1...0.562.0
