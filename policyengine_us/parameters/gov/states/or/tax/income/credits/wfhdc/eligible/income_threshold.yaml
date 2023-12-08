@@ -6,8 +6,12 @@ metadata:
   type: single_amount
   label: Oregon WFHDC income threshold
   reference:
+    - title: 2021 Oregon Form OR-40 (Individual Income Tax Form)
+      href: https://www.oregon.gov/dor/forms/FormsPubs/form-or-40_101-040_2021.pdf
     - title: 2021 Oregon Form OR-17 (Individual Income Tax Guide)
       href: https://www.oregon.gov/dor/forms/FormsPubs/publication-or-17_101-431_2021.pdf#page=121
+    - title: 2022 Oregon Form OR-17 (Individual Income Tax Guide)
+      href: https://www.oregon.gov/dor/forms/FormsPubs/publication-or-17_101-431_2022.pdf#page=124
 brackets:
   - threshold:
       2021-01-01: -.inf

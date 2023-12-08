@@ -6,7 +6,7 @@ class or_wfhdc_eligible(Variable):
     entity = TaxUnit
     label = "Oregon income eligible for WFHDC"
     unit = USD
-    documentation = "Oregon househod income eligible for Working Family Household and Dependent Care Credit"
+    documentation = "Oregon Working Family Household and Dependent Care Credit household eligibility"
     definition_period = YEAR
     reference = (
         "https://www.oregon.gov/dor/forms/FormsPubs/publication-or-17_101-431_2021.pdf#page=121",

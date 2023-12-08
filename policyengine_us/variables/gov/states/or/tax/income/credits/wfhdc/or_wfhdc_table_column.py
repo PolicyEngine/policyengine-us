@@ -12,7 +12,7 @@ class or_wfhdc_table_column(Variable):
     default_value = ""
 
     def formula(tax_unit, period, parameters):
-        # Column determined by age/disability of youngest child.
+        # Column determined by age of youngest child and whether they have a disability.
 
         # Get the age of the youngest qualifying child.
         person = tax_unit.members
