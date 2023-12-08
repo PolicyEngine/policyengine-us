@@ -1,12 +1,14 @@
-- Not eligible for age deduction
-period: 2021
-input:
-  age: 35
-output:
-  is_irs_aged: 0
-- Eligible for age deduction
-period: 2021
-input:
-  age: 70
-output:
-  is_irs_aged: 1
+- name: Not eligible for age deduction.
+  period: 2021
+  input:
+    age: 35
+  output:
+    is_irs_aged: 0
+
+- name: Eligible for age deduction.
+  period: 2021
+  input:
+    age: 70
+  output:
+    is_irs_aged: 1
+
