@@ -16,12 +16,13 @@ class va_spouse_tax_adjustment(Variable):
         # Line 4, enter the taxable income
         taxable_income = tax_unit("va_taxable_income", period)
         # Line 5, enter the AGI less exemptions:
-        agi_less_exemptions = person("va_agi_less_exemptions_indiv", period)
+        agi_less_exemptions = person("va_agi_less_exemptions_person", period)
+        capped_agi_less_exemptions = max_(agi_less_exemptions, 0)
         # If the tax filer is the head or the spouse of the tax unit, take his/hers corresponding value
         # Set the value for dependent amount to infinity as we will need the smaller amount for
         # further calculations
         smaller_agi_less_exemptions = tax_unit.min(
-            where(head_or_spouse, agi_less_exemptions, np.inf)
+            where(head_or_spouse, capped_agi_less_exemptions, np.inf)
         )
         # Line 6, subtract
         reduced_taxable_income = max_(
