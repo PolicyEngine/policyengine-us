@@ -17,5 +17,6 @@ values:
     - roth_ira_distributions 
     - pension_income # Line4: pensions and annuities
     - tax_exempt_social_security # Line6: Social Security Payment not reported
-    - mt_refundable_credits # Line7: All refundable credits including elderly hownowner/renter credit 
-
+    - mt_refundable_credits_before_renter_credit # Line7: Refundable credits
+# exclude the renter credit from the gross income computation 
+# due to circle reference
