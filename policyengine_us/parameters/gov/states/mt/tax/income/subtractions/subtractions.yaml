@@ -1,22 +1,7 @@
-<<<<<<< HEAD
-description: Montana counts the following sources as subtractions.
+description: Montana counts these sources as subtractions.
 values:
   2010-01-01:
     - mt_disability_income_subtraction
-metadata:
-  unit: list
-  label: Montana adjusted gross income subtractions
-  reference:
-  - title: 2022 Montana form 2 instructions, page 19 #subtraction overview 
-    href: https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2022/12/Form-2-2022-Instructions.pdf#page=25
-  - title: Montana disability income exclusion rule 42.15.217-1 # Disability income subtraction
-    href: https://rules.mt.gov/gateway/RuleNo.asp?RN=42%2E15%2E217
-  - title: 2022 Montana individual income tax return, line 32
-    href: https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2023/05/Montana-Idividiual-Income-Tax-Return-Form-2-2022v6.2.pdf#page=5
-
-=======
-description: Montana counts these sources as subtractions.
-values:
   2021-01-01:
     - mt_interest_exemption
     - mt_tuition_subtraction
@@ -38,4 +23,3 @@ metadata:
     # Reference link for the old age subtraction
     - title: Montana 67th Legislature || SENATE BILL NO. 399 || Section1 (3) (g)
       href: https://leg.mt.gov/bills/2021/SB0399/SB0399_3.pdf#page=4
->>>>>>> 0b18b97ddb2f18c9454ec4b8ee40100feb1222b4
