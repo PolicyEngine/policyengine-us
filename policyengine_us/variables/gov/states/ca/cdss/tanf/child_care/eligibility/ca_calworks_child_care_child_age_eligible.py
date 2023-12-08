@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ca_calworks_child_care_age_personal_eligible(Variable):
+class ca_calworks_child_care_child_age_eligible(Variable):
     value_type = bool
     entity = Person
     label = "Eligible child for the California CalWORKs Child Care based on age"
