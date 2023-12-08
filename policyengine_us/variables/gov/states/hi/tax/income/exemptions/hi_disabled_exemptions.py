@@ -24,7 +24,7 @@ class hi_disabled_exemptions(Variable):
         aged_spouse = (
             tax_unit("age_spouse", period) >= p.aged_threshold
         ).astype(int)
-        disabled_head = tax_unit("head_is_disabled", period)
+        disabled_head = tax_unit("head_is_disabled", period).astype(int)
         disabled_exemption_disabled_head = disabled_head * p.disabled
         disabled_exemption_non_disabled_head = p.base * (1 + aged_head)
         disabled_exemption_head = where(
@@ -36,7 +36,7 @@ class hi_disabled_exemptions(Variable):
             disabled_exemption_non_disabled_head,
         )
         # Same for spouse.
-        disabled_spouse = tax_unit("spouse_is_disabled", period)
+        disabled_spouse = tax_unit("spouse_is_disabled", period).astype(int)
         disabled_exemption_disabled_spouse = disabled_spouse * p.disabled
         disabled_exemption_non_disabled_spouse = p.base * (1 + aged_spouse)
         disabled_exemption_spouse = where(
@@ -57,7 +57,7 @@ class hi_disabled_exemptions(Variable):
             0,
         )
         no_disabled_head_or_spouse = (
-            tax_unit.sum(disabled_head + disabled_spouse) == 0
+            (disabled_head + disabled_spouse) == 0
         )
         return where(
             no_disabled_head_or_spouse,
