@@ -56,9 +56,7 @@ class hi_disabled_exemptions(Variable):
             disabled_exemption_spouse,
             0,
         )
-        no_disabled_head_or_spouse = (
-            (disabled_head + disabled_spouse) == 0
-        )
+        no_disabled_head_or_spouse = (disabled_head + disabled_spouse) == 0
         return where(
             no_disabled_head_or_spouse,
             0,
