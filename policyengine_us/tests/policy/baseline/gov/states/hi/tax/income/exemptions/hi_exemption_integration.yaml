@@ -1,0 +1,19 @@
+- name: failed Hawaii disabled exemption test before fixing bugs
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 48_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_fips: 15  # HI
+  output:  # expected results from hand-calculation with N-15 form/instructions
+    hi_regular_exemptions: 1_144
+    hi_disabled_exemptions: 0     
+    hi_exemptions: 1_144          
