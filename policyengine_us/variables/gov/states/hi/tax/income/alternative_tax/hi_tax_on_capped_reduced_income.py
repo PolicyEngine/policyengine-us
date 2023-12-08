@@ -38,7 +38,7 @@ class hi_tax_on_capped_reduced_income(Variable):
         # tax --- line 15
         statuses = filing_status.possible_values
         rate_p = parameters(period).gov.states.hi.tax.income.rates
-        tax_on_capped_reduced_income = select(
+        return select(
             [
                 filing_status == statuses.SINGLE,
                 filing_status == statuses.SEPARATE,
@@ -54,4 +54,3 @@ class hi_tax_on_capped_reduced_income(Variable):
                 rate_p.head_of_household.calc(capped_reduced_income),
             ],
         )
-        return tax_on_capped_reduced_income
