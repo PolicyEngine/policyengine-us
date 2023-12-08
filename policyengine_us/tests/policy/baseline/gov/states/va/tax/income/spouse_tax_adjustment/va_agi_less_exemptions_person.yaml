@@ -5,12 +5,12 @@
     people:
       person1:
         is_tax_unit_head: true
-        va_agi_indiv: 40_000
+        va_agi_person: 40_000
         age: 68
         is_blind: true
       person2:
         is_tax_unit_spouse: false
-        va_agi_indiv: 40_000
+        va_agi_person: 40_000
         age: 68
         is_blind: true
     households:
@@ -18,54 +18,54 @@
         members: [person1, person2]
         state_code: VA
   output:
-    va_agi_less_exemptions_indiv: [37_470, 0]
+    va_agi_less_exemptions_person: [37_470, 0]
 
 - name: Blind and aged filer without AGI
   period: 2022
   absolute_error_margin: 0.1
   input:
-    va_agi_indiv: 0
+    va_agi_person: 0
     state_code: VA
     is_tax_unit_head_or_spouse: true
     is_blind: true
     age: 65
   output:
     # 0 - (800 * 2 + 930) 
-    va_agi_less_exemptions_indiv: -2_530
+    va_agi_less_exemptions_person: -2_530
 
 - name: Blind and aged filer with AGI
   period: 2022
   absolute_error_margin: 0.1
   input:
-    va_agi_indiv: 3_000
+    va_agi_person: 3_000
     state_code: VA
     is_tax_unit_head_or_spouse: true
     is_blind: true
     age: 65
   output:
     # 0 - (800 * 2 + 930) 
-    va_agi_less_exemptions_indiv: 470
+    va_agi_less_exemptions_person: 470
 
 - name: Non-head-or-spouse filer with AGI
   period: 2022
   absolute_error_margin: 0.1
   input:
-    va_agi_indiv: 3_000
+    va_agi_person: 3_000
     state_code: VA
     is_tax_unit_head_or_spouse: false
     is_blind: true
     age: 65
   output:
-    va_agi_less_exemptions_indiv: 0
+    va_agi_less_exemptions_person: 0
 
 - name: Aged filer with AGI
   period: 2022
   absolute_error_margin: 0.1
   input:
-    va_agi_indiv: 3_000
+    va_agi_person: 3_000
     state_code: VA
     is_tax_unit_head_or_spouse: true
     is_blind: false
     age: 65
   output:
-    va_agi_less_exemptions_indiv: 1_270
+    va_agi_less_exemptions_person: 1_270

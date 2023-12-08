@@ -4,10 +4,10 @@
     people:
       person1:
         is_tax_unit_head: true
-        va_agi_less_exemptions_indiv: 6_000
+        va_agi_less_exemptions_person: 6_000
       person2:
         is_tax_unit_spouse: true
-        va_agi_less_exemptions_indiv: 6_000
+        va_agi_less_exemptions_person: 6_000
     households:
       household:
         members: [person1, person2]
@@ -26,10 +26,10 @@
     people:
       person1:
         is_tax_unit_head: true
-        va_agi_less_exemptions_indiv: 19_470
+        va_agi_less_exemptions_person: 19_470
       person2:
         is_tax_unit_spouse: true
-        va_agi_less_exemptions_indiv: 34_000
+        va_agi_less_exemptions_person: 34_000
     households:
       household:
         members: [person1, person2]
@@ -49,10 +49,10 @@
     people:
       person1:
         is_tax_unit_head: true
-        va_agi_less_exemptions_indiv: 19_470
+        va_agi_less_exemptions_person: 19_470
       person2:
         is_tax_unit_spouse: true
-        va_agi_less_exemptions_indiv: 34_000
+        va_agi_less_exemptions_person: 34_000
     households:
       household:
         members: [person1, person2]
@@ -71,10 +71,10 @@
     people:
       person1:
         is_tax_unit_head: true
-        va_agi_less_exemptions_indiv: 7_000
+        va_agi_less_exemptions_person: 7_000
       person2:
         is_tax_unit_spouse: true
-        va_agi_less_exemptions_indiv: 6_000
+        va_agi_less_exemptions_person: 6_000
     households:
       household:
         members: [person1, person2]
