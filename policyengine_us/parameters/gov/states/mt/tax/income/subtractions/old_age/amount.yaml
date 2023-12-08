@@ -1,0 +1,20 @@
+description: Montana provides an old age subtraction of this amount for each taxpayer, based on age.  
+metadata:
+  type: single_amount
+  threshold_unit: year
+  amount_unit: currency-USD
+  period: year
+  label: Montana old age subtraction amount
+  reference:
+    # The old age subtraction was introduced for the tax year 2024 in the Bill No. 399
+    - title: Montana 67th Legislature || SENATE BILL NO. 399 || Section1 (3) (g)
+      href: https://leg.mt.gov/bills/2021/SB0399/SB0399_3.pdf#page=4
+brackets:
+  - threshold:
+      2024-01-01: 0
+    amount:
+      2024-01-01: 0
+  - threshold:
+      2024-01-01: 65
+    amount:
+      2024-01-01: 5_500
