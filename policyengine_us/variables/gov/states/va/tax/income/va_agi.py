@@ -16,13 +16,4 @@ class va_agi(Variable):
         "adjusted_gross_income",
         "va_additions",
     ]
-    subtracts = [
-        "va_military_basic_pay_subtraction",
-        "va_age_deduction",
-        "va_disability_income_subtraction",
-        "va_federal_state_employees_subtraction",
-        "va_military_benefit_subtraction",
-        "va_retirement_plan_taxed_subtraction",
-        "va_unemployment_compensation_benefit_subtraction",
-        "va_real_estate_investment_trust_subtraction",
-    ]
+    subtracts = ["va_subtractions"]
