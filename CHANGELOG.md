@@ -5,6 +5,132 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.564.0] - 2023-12-07 11:59:21
+
+### Added
+
+- Arizona exemptions.
+
+## [0.563.1] - 2023-12-07 03:33:31
+
+### Fixed
+
+- 2021 South Carolina tax bracket parameters.
+
+## [0.563.0] - 2023-12-06 19:28:36
+
+### Added
+
+- Montana old age subtraction.
+
+## [0.562.0] - 2023-12-06 18:10:30
+
+### Added
+
+- Kentucky personal tax credits.
+
+## [0.561.1] - 2023-12-06 18:01:17
+
+### Fixed
+
+- Remove Maine index file.
+
+## [0.561.0] - 2023-12-06 17:41:47
+
+### Added
+
+- Connecticut additions and subtractions.
+
+## [0.560.0] - 2023-12-06 17:21:04
+
+### Changed
+
+- Colorado EITC to 50% for 2023 due to new legislation.
+
+## [0.559.0] - 2023-12-05 18:11:49
+
+### Added
+
+- Michigan additions and subtractions.
+
+## [0.558.1] - 2023-12-05 16:37:05
+
+### Fixed
+
+- Bug in LA general relief.
+
+## [0.558.0] - 2023-12-05 14:34:03
+
+### Added
+
+- Vermont charitable contributions credit.
+
+## [0.557.0] - 2023-12-05 01:54:33
+
+### Added
+
+- General Relief Program (GR) - Los Angeles County.
+
+## [0.556.0] - 2023-12-04 15:27:14
+
+### Added
+
+- Arkansas personal tax credits.
+
+## [0.555.1] - 2023-12-04 14:52:43
+
+### Fixed
+
+- Military retirement pay variable.
+
+## [0.555.0] - 2023-12-04 12:21:44
+
+### Added
+
+- Michigan standard deduction and pension benefit.
+
+## [0.554.1] - 2023-12-04 06:37:53
+
+### Fixed
+
+- Fix NYC School Tax Credit Rate Reduction Amount Income Limit parameter label.
+
+## [0.554.0] - 2023-12-04 00:58:18
+
+### Added
+
+- Montana tuition subtraction.
+
+## [0.553.1] - 2023-12-03 05:10:35
+
+### Fixed
+
+- Basic income taxability bool unit.
+
+## [0.553.0] - 2023-12-03 04:41:43
+
+### Added
+
+- Add formula for the ky_taxable_income variable.
+
+## [0.552.2] - 2023-12-02 19:32:01
+
+### Changed
+
+- Moved DC in alphabetical order.
+
+## [0.552.1] - 2023-12-02 17:16:11
+
+### Fixed
+
+- South Carolina young child deduction and tax rate.
+
+## [0.552.0] - 2023-12-01 21:12:49
+
+### Added
+
+- Add Hawaii income tax calculation logic.
+
 ## [0.551.0] - 2023-12-01 08:38:03
 
 ### Added
@@ -6071,6 +6197,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.564.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.563.1...0.564.0
+[0.563.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.563.0...0.563.1
+[0.563.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.562.0...0.563.0
+[0.562.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.561.1...0.562.0
+[0.561.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.561.0...0.561.1
+[0.561.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.560.0...0.561.0
+[0.560.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.559.0...0.560.0
+[0.559.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.558.1...0.559.0
+[0.558.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.558.0...0.558.1
+[0.558.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.557.0...0.558.0
+[0.557.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.556.0...0.557.0
+[0.556.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.555.1...0.556.0
+[0.555.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.555.0...0.555.1
+[0.555.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.554.1...0.555.0
+[0.554.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.554.0...0.554.1
+[0.554.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.553.1...0.554.0
+[0.553.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.553.0...0.553.1
+[0.553.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.552.2...0.553.0
+[0.552.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.552.1...0.552.2
+[0.552.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.552.0...0.552.1
+[0.552.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.551.0...0.552.0
 [0.551.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.550.0...0.551.0
 [0.550.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.549.0...0.550.0
 [0.549.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.548.0...0.549.0
