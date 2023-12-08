@@ -15,7 +15,7 @@
         members: [person1]
         state_code: MT
   output:
-    mt_disability_income_subtraction: 0
+    mt_disability_income_exclusion: 0
 
 - name: MT disability income for retired under age 65, but not permenently and totally disabled 
   period: 2022
@@ -35,9 +35,9 @@
         members: [person1]
         state_code: MT
   output:
-    mt_disability_income_subtraction: 0
+    mt_disability_income_exclusion: 0
 
-- name: MT disability income for retired under age 65, and permenently and totally disabled 
+- name: MT disability income for retired under age 65, and permenently and totally disabled, but above cap amount 5200
   period: 2022
   input:
     people:
@@ -55,20 +55,20 @@
         members: [person1]
         state_code: MT
   output:
-    mt_disability_income_subtraction: 15_000
+    mt_disability_income_exclusion: 5_200
 
 - name: MT disability income for retired under age 65, and permenently and totally disabled, both head and spouse qualified
   period: 2022
   input:
     people:
       person1:
-        disability_benefits: 15_000
+        disability_benefits: 5_000
         is_tax_unit_head: true
         retired_on_total_disability: true
         is_disabled: true
         age: 64
       person2:
-        disability_benefits: 12_000
+        disability_benefits: 2_000
         is_tax_unit_spouse: true
         retired_on_total_disability: true
         is_disabled: true
@@ -81,4 +81,4 @@
         members: [person1,person2]
         state_code: MT
   output:
-    mt_disability_income_subtraction: 27_000
+    mt_disability_income_exclusion: 7_000

@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class mt_disability_income_subtraction_person(Variable):
+class mt_disability_income_exclusion_eligible_person(Variable):
     value_type = float
     entity = Person
-    label = "Montana disability income subtraction at person level"
+    label = "Montana disability income exclusion eligible person"
     defined_for = StateCode.MT
     unit = USD
     definition_period = YEAR
@@ -12,8 +12,7 @@ class mt_disability_income_subtraction_person(Variable):
 
     def formula(person, period, parameters):
         # first select head and spouse with ages below the specific threshold, and
-        # select those who are retired on total disability and disabled, and
-        # calculate the corresbonding disability benefits.
+        # select those who are retired on total disability and disabled.
         p = parameters(
             period
         ).gov.states.mt.tax.income.subtractions.disability_income
@@ -26,7 +25,4 @@ class mt_disability_income_subtraction_person(Variable):
         is_disabled = person("is_disabled", period)
         disabled_retiree = eligible_retiree & is_disabled
         qualified_head_or_spouse = disabled_retiree & head_or_spouse
-        eligible_benefits = (
-            person("disability_benefits", period) * qualified_head_or_spouse
-        )
-        return eligible_benefits
+        return qualified_head_or_spouse
