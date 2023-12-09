@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.567.0] - 2023-12-09 21:58:18
+
+### Added
+
+- Add formulas for Arizona income tax credits.
+
 ## [0.566.0] - 2023-12-09 21:15:31
 
 ### Added
@@ -6215,6 +6221,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.567.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.566.0...0.567.0
 [0.566.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.565.0...0.566.0
 [0.565.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.564.1...0.565.0
 [0.564.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.564.0...0.564.1
