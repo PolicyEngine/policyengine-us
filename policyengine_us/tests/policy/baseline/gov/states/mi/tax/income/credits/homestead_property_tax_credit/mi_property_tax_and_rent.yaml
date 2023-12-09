@@ -1,0 +1,33 @@
+- name: no property tax and rent
+  period: 2022
+  input:
+    assessed_property_value: 0
+    rent: 0
+    state_code: MI
+  output:
+    mi_property_tax_and_rent: 0
+
+- name: property tax
+  period: 2022
+  input:
+    assessed_property_value: 1_000
+    state_code: MI
+  output: 
+    mi_property_tax_and_rent: 1_000
+
+- name: rent
+  period: 2022
+  input:
+    rent: 4_300
+    state_code: MI
+  output: # 4300 * 0.23
+    mi_property_tax_and_rent: 989
+
+- name: property tax and rent
+  period: 2022
+  input:
+    assessed_property_value: 800
+    rent: 10_000
+    state_code: MI
+  output: # 10000 * 0.23 + 800
+    mi_property_tax_and_rent: 3_100

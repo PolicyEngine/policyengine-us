@@ -7,6 +7,10 @@ class mi_homestead_property_tax_credit(Variable):
     label = "Michigan homestead property tax credit"
     unit = USD
     definition_period = YEAR
+    reference = (
+        "http://legislature.mi.gov/doc.aspx?mcl-206-508",
+        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2022/2022-IIT-Forms/MI-1040CR.pdf#page=2",
+    )
     defined_for = "mi_homestead_eligible"
 
     def formula(tax_unit, period, parameters):
@@ -15,8 +19,12 @@ class mi_homestead_property_tax_credit(Variable):
         ).gov.states.mi.tax.income.credits.homestead_property_tax_credit
 
         total_household_resources = tax_unit("mi_household_resources", period)
-        homestead_allowable = tax_unit("mi_homestead_allowable", period)
+        homestead_allowable = tax_unit(
+            "mi_homestead_allowable", period
+        )  # Line 42
 
-        phase_out_rate = p.rate.phase_out.calc(total_household_resources)
+        phase_out_rate = p.rate.phase_out.calc(
+            total_household_resources
+        )  # Line 43
 
-        return phase_out_rate * homestead_allowable
+        return phase_out_rate * homestead_allowable  # Line 44

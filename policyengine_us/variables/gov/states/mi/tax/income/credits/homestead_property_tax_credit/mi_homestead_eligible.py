@@ -6,6 +6,11 @@ class mi_homestead_eligible(Variable):
     entity = TaxUnit
     label = "Eligible for the Michigan homestead property tax credit"
     definition_period = YEAR
+    reference = (
+        "http://legislature.mi.gov/doc.aspx?mcl-206-508",
+        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2022/2022-IIT-Forms/MI-1040CR.pdf#page=2",
+        "https://www.legislature.mi.gov/Publications/TaxpayerGuide.pdf#page=16",
+    )
     defined_for = StateCode.MI
 
     def formula(tax_unit, period, parameters):
@@ -18,8 +23,9 @@ class mi_homestead_eligible(Variable):
             <= p.max.property_value
         )
 
-        refundable_amount_eligible = (
-            tax_unit("mi_homestead_refundable", period) > 0
+        exceed_amount_eligible = (
+            tax_unit("mi_homestead_property_tax_credit_non_refundable", period)
+            > 0
         )
 
-        return refundable_amount_eligible & property_value_eligible
+        return exceed_amount_eligible & property_value_eligible
