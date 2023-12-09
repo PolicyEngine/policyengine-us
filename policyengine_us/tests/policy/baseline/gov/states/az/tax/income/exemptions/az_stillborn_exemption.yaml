@@ -1,0 +1,15 @@
+- name: 2 stillborn children
+  period: 2023
+  input:
+    state_code: AZ
+    tax_unit_stillborn_children: 2
+  output:
+    az_stillborn_exemption: 4_600
+
+- name: no stillborn children
+  period: 2023
+  input:
+    state_code: AZ
+    tax_unit_stillborn_children: 0
+  output:
+    az_stillborn_exemption: 0
