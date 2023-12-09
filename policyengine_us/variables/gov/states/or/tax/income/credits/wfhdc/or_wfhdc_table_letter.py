@@ -8,7 +8,7 @@ class or_wfhdc_table_letter(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = "or_wfhdc_eligible"
-    reference = "https://www.oregon.gov/dor/forms/FormsPubs/publication-or-wfhdc-tb_101-458_2022.pdf"
+    reference = "https://www.oregon.gov/dor/forms/FormsPubs/publication-or-wfhdc-tb_101-458_2021.pdf#page=1"
     default_value = ""
 
     def formula(tax_unit, period, parameters):

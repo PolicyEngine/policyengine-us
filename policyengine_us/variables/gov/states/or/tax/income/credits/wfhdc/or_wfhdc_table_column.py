@@ -8,7 +8,7 @@ class or_wfhdc_table_column(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = "or_wfhdc_eligible"
-    reference = "https://www.oregon.gov/dor/forms/FormsPubs/publication-or-wfhdc-tb_101-458_2022.pdf"
+    reference = "https://www.oregon.gov/dor/forms/FormsPubs/publication-or-wfhdc-tb_101-458_2021.pdf#page=1"
     default_value = ""
 
     def formula(tax_unit, period, parameters):
@@ -26,7 +26,11 @@ class or_wfhdc_table_column(Variable):
 
         # This will be true if any child with the lowest age is disabled.
         youngest_is_disabled = youngest_and_disabled.sum() > 0
-
+        p = (
+            parameters(period)
+            .gov.states["or"]
+            .tax.income.credits.wfhdc.age_parameter
+        )
         conditions = [
             min_age < 3,
             min_age < 6,
