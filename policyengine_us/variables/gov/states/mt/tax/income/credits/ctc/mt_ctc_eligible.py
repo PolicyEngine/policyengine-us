@@ -17,7 +17,7 @@ class mt_ctc_eligible(Variable):
         agi_eligible = agi <= p.agi
         # CTC limited to filers with investment income below a certain threshold
         investment_income_eligible = (
-            tax_unit("disqualified_earned_income", period) < p.investment
+            tax_unit("eitc_relevant_investment_income", period) < p.investment
         )
 
         earned_income = tax_unit("tax_unit_earned_income", period)
