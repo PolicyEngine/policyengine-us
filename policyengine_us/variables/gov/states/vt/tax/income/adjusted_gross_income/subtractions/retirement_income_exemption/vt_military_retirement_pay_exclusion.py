@@ -25,5 +25,7 @@ class vt_military_retirement_pay_exclusion(Variable):
         tax_unit_military_retirement_pay = add(
             tax_unit, period, ["military_retirement_pay"]
         )
-        # Retirement income from systems other than social security have maximum amount and assume that filers will always choose the largest one
-        return min_(tax_unit_military_retirement_pay, p.cap)
+        # Retirement income from systems other than social security have maximum amount.
+        return min_(
+            tax_unit_military_retirement_pay, p.military_retirement.amount
+        )

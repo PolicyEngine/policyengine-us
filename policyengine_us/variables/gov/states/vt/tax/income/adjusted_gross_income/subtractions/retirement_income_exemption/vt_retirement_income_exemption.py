@@ -13,17 +13,14 @@ class vt_retirement_income_exemption(Variable):
         "https://tax.vermont.gov/individuals/seniors-and-retirees",  # Instruction for exemption from different retirement system
     )
     unit = USD
-    defined_for = "vt_retirement_income_exemption_eligible"
     documentation = "Vermont retirement benefits exempt from Vermont taxation."
 
     def formula(tax_unit, period, parameters):
         # Filer can choose from one of Social Security,
         # Civil Service Retirement System (CSRS), Military Retirement Income
         # or other eligible retirement systems
-        # to calculate retirement income exemption.
-        p = parameters(
-            period
-        ).gov.states.vt.tax.income.agi.retirement_income_exemption
+        # to determine eligibility and calculate retirement income exemption.
+
         # Get social security amount
         tax_unit_taxable_social_security = tax_unit(
             "tax_unit_taxable_social_security", period
@@ -47,31 +44,50 @@ class vt_retirement_income_exemption(Variable):
         )
         filing_status = tax_unit("filing_status", period)
         agi = tax_unit("adjusted_gross_income", period)
-
-        # List of fully qualified tax unit (SECTION I Q3)
-        fully_qualified = agi < p.threshold.reduction[filing_status]
-
-        # List of partial qualified tax unit(SECTION II)
-        partial_qualified = (agi >= p.threshold.reduction[filing_status]) & (
-            agi < p.threshold.income[filing_status]
+        # Get which retirement system the filer use
+        use_ss = tax_unit_taxable_social_security == chosen_retirement_income
+        use_csrs = vt_csrs_retirement_pay_exclusion == chosen_retirement_income
+        use_military_retirement = (
+            vt_military_retirement_pay_exclusion == chosen_retirement_income
         )
-
+        # Get which parameter file to use
+        root_p = parameters(
+            period
+        ).gov.states.vt.tax.income.agi.retirement_income_exemption
+        p = select(
+            [use_ss, use_csrs, use_military_retirement],
+            [
+                root_p.social_security.reduction,
+                root_p.csrs.reduction,
+                root_p.csrs.reduction,
+            ],
+        )
+        # List of tax unit that is not qualified (SECTION I Q1,2)
+        not_qualified = (agi >= p.end[filing_status]) | (
+            chosen_retirement_income == 0
+        )
+        # List of fully qualified tax unit (SECTION I Q3)
+        fully_qualified = (agi < p.start[filing_status]) & (
+            chosen_retirement_income != 0
+        )
+        # List of partial qualified tax unit(SECTION II)
+        partial_qualified = (
+            (agi >= p.start[filing_status])
+            & (agi < p.end[filing_status])
+            & (chosen_retirement_income != 0)
+        )
         # Calculate the exemption ratio
-        partial_exemption_ratio = max_(
-            p.threshold.income[filing_status] - agi, 0
-        ) / (p.divisor)
-
+        partial_exemption_ratio = max_(p.end[filing_status] - agi, 0) / (
+            root_p.divisor
+        )
         # Round the exemption ratio to two decimal point
         partial_exemption_ratio = round_(partial_exemption_ratio, 2)
-
         # The exemption ratio should be below one
         partial_exemption_ratio = min_(partial_exemption_ratio, 1)
-
         # Calculate parital exemption amount
         partial_exemption = chosen_retirement_income * partial_exemption_ratio
-
         # Return final exemption amount based on eligibility status
         return select(
-            [partial_qualified, fully_qualified],
-            [partial_exemption, chosen_retirement_income],
+            [partial_qualified, fully_qualified, not_qualified],
+            [partial_exemption, chosen_retirement_income, 0],
         )
