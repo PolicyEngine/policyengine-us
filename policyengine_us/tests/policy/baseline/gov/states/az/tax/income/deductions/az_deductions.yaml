@@ -1,0 +1,19 @@
+- name: Tax Unit itemizes
+  period: 2023
+  input:
+    state_code: AZ
+    az_itemized_deductions: 2_000
+    az_standard_deduction: 4_000
+    tax_unit_itemizes: true
+  output:
+    az_deductions: 2_000
+
+- name: Does not itemize
+  period: 2023
+  input:
+    state_code: AZ
+    az_itemized_deductions: 5_000
+    az_standard_deduction: 3_000
+    tax_unit_itemizes: false
+  output:
+    az_deductions: 3_000
