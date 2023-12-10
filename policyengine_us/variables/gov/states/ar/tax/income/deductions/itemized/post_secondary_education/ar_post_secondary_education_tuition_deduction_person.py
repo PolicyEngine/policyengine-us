@@ -13,34 +13,23 @@ class ar_post_secondary_education_tuition_deduction_person(Variable):
     def formula(person, period, parameters):
         p = parameters(
             period
-        ).gov.states.ar.tax.income.deductions.itemized.tuition_deduction
+        ).gov.states.ar.tax.income.deductions.itemized.tuition
         tuition_expenses = person("qualified_tuition_expenses", period)
-        technical_institution_student_or_not = person(
-            "technical_institution_student", period
-        )
-        four_year_college_student = person("four_year_college_student", period)
+        # technical_institution_student_or_not = person(
+        #    "technical_institution_student", period
+        # )
+        # four_year_college_student = person("four_year_college_student", period)
 
-        four_year_student_deduction = min_(
-            p.rate * tuition_expenses,
-            p.weighted_average_tuition.four_year_college,
+        uncapped = p.rate * tuition_expenses
+        cap = select(
+            [
+                person("technical_institution_student", period),
+                person("four_year_college_student", period),
+            ],
+            [
+                p.weighted_average_tuition.technical_institutes,
+                p.weighted_average_tuition.four_year_college,
+            ],
+            default=p.weighted_average_tuition.two_year_college,
         )
-        two_year_student_deduction = min_(
-            p.rate * tuition_expenses,
-            p.weighted_average_tuition.two_year_college,
-        )
-        technical_institute_student_deduction = min_(
-            p.rate * tuition_expenses,
-            p.weighted_average_tuition.technical_institutes,
-        )
-
-        four_or_two_year_institution_deduction = where(
-            four_year_college_student,
-            four_year_student_deduction,
-            two_year_student_deduction,
-        )
-
-        return where(
-            technical_institution_student_or_not,
-            four_or_two_year_institution_deduction,
-            technical_institute_student_deduction,
-        )
+        return min_(uncapped, cap)
