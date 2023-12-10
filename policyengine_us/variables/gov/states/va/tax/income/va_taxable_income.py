@@ -18,7 +18,7 @@ class va_taxable_income(Variable):
         age_ded = tax_unit("va_age_deduction", period)
         std_ded = tax_unit("va_standard_deduction", period)
         itm_ded = tax_unit("va_itemized_deductions", period)
-        vagi = agi - age_ded
+        agi_less_age_ded = agi - age_ded
         ded = where(itm_ded > 0, itm_ded, std_ded)
         exemptions = tax_unit("va_total_exemptions", period)
-        return max_(vagi - ded - exemptions, 0)
+        return max_(agi_less_age_ded - ded - exemptions, 0)
