@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class va_credits(Variable):
+class va_refundable_credits(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Virginia income tax credits"
+    label = "Virginia refundable income tax credits"
     unit = USD
     definition_period = YEAR
     reference = (
