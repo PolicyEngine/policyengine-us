@@ -2,11 +2,10 @@ from policyengine_us.model_api import *
 
 
 class mt_disability_income_exclusion_eligible_person(Variable):
-    value_type = float
+    value_type = bool
     entity = Person
     label = "Montana disability income exclusion eligible person"
     defined_for = StateCode.MT
-    unit = USD
     definition_period = YEAR
     reference = "https://rules.mt.gov/gateway/RuleNo.asp?RN=42%2E15%2E217"
 
