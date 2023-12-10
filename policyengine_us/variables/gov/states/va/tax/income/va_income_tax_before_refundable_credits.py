@@ -13,6 +13,10 @@ class va_income_tax_before_refundable_credits(Variable):
     defined_for = StateCode.VA
 
     def formula(tax_unit, period, parameters):
-        tax_before_non_refundable_credits = tax_unit("va_income_tax_before_non_refundable_credits", period)
+        tax_before_non_refundable_credits = tax_unit(
+            "va_income_tax_before_non_refundable_credits", period
+        )
         non_refundable_credits = tax_unit("va_non_refundable_credits", period)
-        return max_(tax_before_non_refundable_credits - non_refundable_credits, 0)
+        return max_(
+            tax_before_non_refundable_credits - non_refundable_credits, 0
+        )
