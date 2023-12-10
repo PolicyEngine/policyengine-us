@@ -41,5 +41,5 @@ class person_aca_slspc_ca(Variable):
         gra = aca_gra[in_state * idx].astype(int)
         # specify ACA second-lowest silver-plan cost
         aca_slspc = ptree.gov.aca.ca_.slspc(period)
-        age = person("aca_trimmed_age", period)
+        age = person("aca_slspc_trimmed_age", period)
         return aca_slspc[gra][age]
