@@ -1,0 +1,35 @@
+- name: Married Eligible
+  period: 2022-01
+  input:
+    is_married: true
+    la_general_relief_eligible: true
+    la_general_relief_base_amount: 200
+  output:
+    la_general_relief_housing_subsidy_base_amount_eligible: true
+
+- name: Married Ineligible
+  period: 2022-01
+  input:
+    is_married: true
+    la_general_relief_eligible: true
+    la_general_relief_base_amount: 199
+  output:
+    la_general_relief_housing_subsidy_base_amount_eligible: false
+
+- name: Single Eligible
+  period: 2022-01
+  input:
+    is_married: false
+    la_general_relief_eligible: true
+    la_general_relief_base_amount: 100
+  output:
+    la_general_relief_housing_subsidy_base_amount_eligible: true
+
+- name: Single Ineligible
+  period: 2022-01
+  input:
+    is_married: false
+    la_general_relief_eligible: true
+    la_general_relief_base_amount: 99
+  output:
+    la_general_relief_housing_subsidy_base_amount_eligible: false
