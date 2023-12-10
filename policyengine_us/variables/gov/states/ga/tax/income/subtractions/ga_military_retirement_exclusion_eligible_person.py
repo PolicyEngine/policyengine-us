@@ -17,5 +17,5 @@ class ga_military_retirement_exclusion_eligible_person(Variable):
             period
         ).gov.states.ga.tax.income.agi.exclusions.military_retirement
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        age_eligible = person("age", period) < p.age
+        age_eligible = person("age", period) < p.age_limit
         return head_or_spouse & age_eligible
