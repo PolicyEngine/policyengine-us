@@ -17,12 +17,11 @@ class mt_disability_income_exclusion_eligible_person(Variable):
             period
         ).gov.states.mt.tax.income.subtractions.disability_income
         age_eligible = person("age", period) < p.age_threshold
-        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         is_retired_on_disability = person(
             "retired_on_total_disability", period
         )
         eligible_retiree = age_eligible & is_retired_on_disability
         is_disabled = person("is_disabled", period)
         disabled_retiree = eligible_retiree & is_disabled
-        qualified_head_or_spouse = disabled_retiree & head_or_spouse
-        return qualified_head_or_spouse
+        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+        return disabled_retiree & head_or_spouse

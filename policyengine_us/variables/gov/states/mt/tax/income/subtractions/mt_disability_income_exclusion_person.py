@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class mt_disability_income_exclusion_person(Variable):
     value_type = float
     entity = Person
-    label = "Montana disability income exclusion at person level"
+    label = "Montana disability income exclusion for each person"
     defined_for = "mt_disability_income_exclusion_eligible_person"
     unit = USD
     definition_period = YEAR
@@ -14,6 +14,4 @@ class mt_disability_income_exclusion_person(Variable):
         p = parameters(
             period
         ).gov.states.mt.tax.income.subtractions.disability_income
-        return min_(
-            p.disability_income_cap, person("disability_benefits", period)
-        )
+        return min_(p.cap, person("disability_benefits", period))
