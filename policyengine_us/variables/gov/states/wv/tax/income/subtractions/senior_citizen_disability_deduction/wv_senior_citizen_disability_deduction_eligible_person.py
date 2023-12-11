@@ -27,9 +27,11 @@ class wv_senior_citizen_disability_deduction_eligible_person(Variable):
             wv_total_modifications < p.total_modifications.limit
         )
         agi_eligible = wv_agi_person >= p.agi_limit
+        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
 
         return (
             (disabled_eligible | age_eligible)
             & modification_eligible
             & agi_eligible
+            & head_or_spouse
         )

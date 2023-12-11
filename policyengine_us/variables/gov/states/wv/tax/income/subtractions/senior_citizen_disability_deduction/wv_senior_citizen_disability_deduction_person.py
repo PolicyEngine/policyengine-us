@@ -24,5 +24,3 @@ class wv_senior_citizen_disability_deduction_person(Variable):
             period,
         )
         return max_(0, income_modified - wv_total_modifications)
-
-        # is_tax_unit_head total_income

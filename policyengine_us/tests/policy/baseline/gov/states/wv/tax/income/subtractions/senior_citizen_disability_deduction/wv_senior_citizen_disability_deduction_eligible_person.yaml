@@ -5,6 +5,7 @@
     age: 20
     is_disabled: true
     wv_agi_person: 20_000
+    is_tax_unit_head_or_spouse: false
     state_code: WV
   output:
     wv_senior_citizen_disability_deduction_eligible_person: false
@@ -16,6 +17,7 @@
     age: 70
     is_disabled: false
     wv_agi_person: 20_000
+    is_tax_unit_head_or_spouse: true
     state_code: WV
   output:
     wv_senior_citizen_disability_deduction_eligible_person: true
@@ -27,6 +29,7 @@
     age: 30
     is_disabled: true
     wv_agi_person: 20_000
+    is_tax_unit_head_or_spouse: true
     state_code: WV
   output:
     wv_senior_citizen_disability_deduction_eligible_person: true
@@ -38,6 +41,7 @@
     age: 30
     is_disabled: false
     wv_agi_person: 20_000
+    is_tax_unit_head_or_spouse: true
     state_code: WV
   output:
     wv_senior_citizen_disability_deduction_eligible_person: false
