@@ -5,7 +5,7 @@
     state_code: VA
   output:
     #round(2_000 * 0.02)
-    va_income_tax_before_credits: 40
+    va_income_tax_before_non_refundable_credits: 40
 
 - name: VA income tax rates - taxable income from $3,001 to $5,000
   period: 2022
@@ -14,7 +14,7 @@
     state_code: VA
   output:
     # 60 + (4000-3000) * 0.03
-    va_income_tax_before_credits: 90
+    va_income_tax_before_non_refundable_credits: 90
 
 - name: VA income tax rates - taxable income from $5,001 to $17,000
   period: 2022
@@ -23,7 +23,7 @@
     state_code: VA
   output:
     # 120 + round(5_000 * 0.05)
-    va_income_tax_before_credits: 370
+    va_income_tax_before_non_refundable_credits: 370
 
 - name: VA income tax rates - taxable income for income over $17,000
   period: 2022
@@ -33,4 +33,4 @@
   output:
     # 720 + 3_000 * 0.0575 = 892.5
     # 720 + round(3_000 * 0.0575) = 893
-    va_income_tax_before_credits: 893
+    va_income_tax_before_non_refundable_credits: 893
