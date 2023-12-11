@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.570.1] - 2023-12-11 01:32:26
+
+### Fixed
+
+- Montana income tax brackets and rates.
+
 ## [0.570.0] - 2023-12-10 19:11:01
 
 ### Added
@@ -6239,6 +6245,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.570.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.570.0...0.570.1
 [0.570.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.569.0...0.570.0
 [0.569.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.568.0...0.569.0
 [0.568.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.567.0...0.568.0
