@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class mi_income_tax_before_credits(Variable):
+class mi_income_tax_before_non_refundable_credits(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Michigan income tax before credits"
+    label = "Michigan income tax before non-refundable credits"
     defined_for = StateCode.MI
     unit = USD
     definition_period = YEAR
