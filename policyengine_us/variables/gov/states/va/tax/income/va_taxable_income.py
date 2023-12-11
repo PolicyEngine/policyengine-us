@@ -21,4 +21,5 @@ class va_taxable_income(Variable):
         itemizes = tax_unit("tax_unit_itemizes", period)
         ded = where(itemizes, itm_ded, std_ded)
         exemptions = tax_unit("va_total_exemptions", period)
-        return max_(agi_less_age_ded - ded - exemptions, 0)
+        total_deductions = age_ded + ded + exemptions
+        return max_(agi - total_deductions, 0)
