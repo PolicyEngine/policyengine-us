@@ -1,22 +1,23 @@
-description: West Virginia uses these sources as total modification as a limit for senior citizen or disability deduction.
+description: West Virginia senior citizen or disability deduction modification sources
 
 values:
   1986-01-01:
     - us_govt_interest # Line 27
-    - CERTAIN FEDERAL LAW ENFORCEMENT RETIREMENT # Line 28
-    # WEST VIRGINIA STATE OR LOCAL POLICE, DEPUTY SHERIFFS’ OR FIREMEN’S RETIREMENT # Line 29
+    # certain federal law enforcement retirement # Line 28
+    # West Virginia state or local police, deputy sheriff's or firemen's retirement # Line 29
     - military_retirement_pay # Line 30
-    - wv_public_pension_subtraction.py # Line 31
+    - wv_public_pension_subtraction # Line 31
     - wv_social_security_benefits_subtraction # Line 32
 
 metadata:
   unit: list
-  label: West Virginia total modification as a limit for senior citizen or disability deduction
+  period: year
+  label: West Virginia senior citizen or disability deduction modification sources
   reference:
     - title: West Virginia Personal Income Tax Forms And Instructions 2022 Line 46
       href: https://tax.wv.gov/Documents/PIT/2022/PersonalIncomeTaxFormsAndInstructions.2022.pdf#page=26
     - title: 2021 West Virginia Personal Income Tax Forms And Instructions-2021 FAMILY TAX CREDIT TABLES Line 45
       href: https://tax.wv.gov/Documents/TaxForms/2021/it140.pdf#page=20 
-    - title: Code of West Virginia §11-21-12 (c)(9)
+    - title: Code of West Virginia §11-21-12 (c)(1)(2)(5)(6)(7)(8)(9)(i)(ii)
       href: https://code.wvlegislature.gov/11-21-12/
 
