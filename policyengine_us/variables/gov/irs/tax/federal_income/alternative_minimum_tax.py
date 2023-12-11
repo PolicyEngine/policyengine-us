@@ -79,7 +79,7 @@ class regular_tax_before_credits(Variable):
         # parameterized
         p = parameters(period).gov.irs.income
 
-        dwks38 = p.amt.capital_gain_excess_tax_rate * dwks37
+        dwks38 = p.amt.capital_gains.capital_gain_excess_tax_rate * dwks37
         # Break in worksheet lines
         dwks39 = dwks19 + dwks20 + dwks28 + dwks31 + dwks37
         dwks40 = dwks1 - dwks39
