@@ -19,7 +19,7 @@ class ar_itemized_deductions(Variable):
 
         ar_itemized_deds = tax_unit("ar_itemized_deductions_sources", period)
 
-        # Prorated itemized deductions only apply to filers of separate filing status
+       # Prorated itemized deductions only apply to married filers filing separately 
         filing_status = tax_unit("filing_status", period)
         separate = filing_status == filing_status.possible_values.SEPARATE
         prorate = np.zeros_like(agi)

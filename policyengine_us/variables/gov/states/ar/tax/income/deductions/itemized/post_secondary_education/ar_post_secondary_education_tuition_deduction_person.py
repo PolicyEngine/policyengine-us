@@ -15,11 +15,6 @@ class ar_post_secondary_education_tuition_deduction_person(Variable):
             period
         ).gov.states.ar.tax.income.deductions.itemized.tuition
         tuition_expenses = person("qualified_tuition_expenses", period)
-        # technical_institution_student_or_not = person(
-        #    "technical_institution_student", period
-        # )
-        # four_year_college_student = person("four_year_college_student", period)
-
         uncapped = p.rate * tuition_expenses
         cap = select(
             [
