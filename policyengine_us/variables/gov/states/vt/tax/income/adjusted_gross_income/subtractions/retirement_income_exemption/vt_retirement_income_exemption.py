@@ -14,6 +14,7 @@ class vt_retirement_income_exemption(Variable):
     )
     unit = USD
     documentation = "Vermont retirement benefits exempt from Vermont taxation."
+    defined_for = "vt_retirement_income_exemption_eligible"
 
     def formula(tax_unit, period, parameters):
         # Filer can choose from one of Social Security,
@@ -54,17 +55,8 @@ class vt_retirement_income_exemption(Variable):
         root_p = parameters(
             period
         ).gov.states.vt.tax.income.agi.retirement_income_exemption
-        p = select(
-            [use_ss, use_csrs, use_military_retirement],
-            [
-                root_p.social_security.reduction,
-                root_p.csrs.reduction,
-                root_p.csrs.reduction,
-            ],
-        )
-        # List of tax unit that is not qualified (SECTION I Q1,2)
-        not_qualified = (agi >= p.end[filing_status]) | (
-            chosen_retirement_income == 0
+        p = where(
+            use_ss, root_p.social_security.reduction, root_p.csrs.reduction
         )
         # List of fully qualified tax unit (SECTION I Q3)
         fully_qualified = (agi < p.start[filing_status]) & (
@@ -88,6 +80,6 @@ class vt_retirement_income_exemption(Variable):
         partial_exemption = chosen_retirement_income * partial_exemption_ratio
         # Return final exemption amount based on eligibility status
         return select(
-            [partial_qualified, fully_qualified, not_qualified],
-            [partial_exemption, chosen_retirement_income, 0],
+            [partial_qualified, fully_qualified],
+            [partial_exemption, chosen_retirement_income],
         )
