@@ -5,6 +5,48 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.571.2] - 2023-12-11 12:15:20
+
+### Fixed
+
+- Tax abolition bug.
+
+## [0.571.1] - 2023-12-11 04:51:50
+
+### Fixed
+
+- Invalid Montana EITC rate YAML.
+
+## [0.571.0] - 2023-12-11 03:04:06
+
+### Added
+
+- Virginia taxable income.
+
+## [0.570.4] - 2023-12-11 02:21:11
+
+### Fixed
+
+- Montana 2023 earned income tax credit rate.
+
+## [0.570.3] - 2023-12-11 02:10:02
+
+### Fixed
+
+- Los Angeles county General Relief disability eligibility.
+
+## [0.570.2] - 2023-12-11 01:41:43
+
+### Fixed
+
+- Arizona adjusted gross income subtractions.
+
+## [0.570.1] - 2023-12-11 01:32:26
+
+### Fixed
+
+- Montana income tax brackets and rates.
+
 ## [0.570.0] - 2023-12-10 19:11:01
 
 ### Added
@@ -6239,6 +6281,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.571.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.571.1...0.571.2
+[0.571.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.571.0...0.571.1
+[0.571.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.570.4...0.571.0
+[0.570.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.570.3...0.570.4
+[0.570.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.570.2...0.570.3
+[0.570.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.570.1...0.570.2
+[0.570.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.570.0...0.570.1
 [0.570.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.569.0...0.570.0
 [0.569.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.568.0...0.569.0
 [0.568.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.567.0...0.568.0
