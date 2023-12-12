@@ -34,6 +34,7 @@ class sc_senior_exemption_person(Variable):
             ],
         )
 
-        # Calculate senior exemption. The exemption can not be less than 0. 
+        # Calculate senior exemption. The exemption can not be less than 0.
         reduced_max_amount = max_(p.amount - total_deductions, 0)
+        
         return where(eligible, reduced_max_amount, 0)
