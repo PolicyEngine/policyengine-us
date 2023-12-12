@@ -54,7 +54,7 @@ class state_income_tax(Variable):
         # "tn_income_tax",  --- no state income tax
         # "tx_income_tax",  --- no state income tax
         # "ut_income_tax",  --- activating will cause circular logic errors
-        "va_income_tax",
+        # "va_income_tax",  --- activating will cause circular logic errors
         # "vt_income_tax",  --- activating will cause circular logic errors
         "wa_income_tax",
         "wi_income_tax",
