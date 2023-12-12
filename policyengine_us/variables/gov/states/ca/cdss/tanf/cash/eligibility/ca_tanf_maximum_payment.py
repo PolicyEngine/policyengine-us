@@ -14,20 +14,13 @@ class ca_tanf_maximum_payment(Variable):
         p = parameters(period).gov.states.ca.cdss.tanf.cash.monthly_payment
         unit_size = spm_unit("spm_unit_size", period)
         au_size = min_(unit_size, p.max_au_size)
-        region1 = spm_unit("ca_tanf_region1", period)
+        region1 = spm_unit.household("ca_tanf_region1", period)
         exempt = spm_unit("ca_tanf_exempt", period)
-
-        max_monthly_payment = where(
+        # Indexing on exempt_name works, but not a similar string for region.
+        # Use a where instead.
+        exempt_name = where(exempt, "exempt", "non_exempt")
+        return where(
             region1,
-            where(
-                exempt,
-                p.region1.exempt[au_size],
-                p.region1.non_exempt[au_size],
-            ),
-            where(
-                exempt,
-                p.region2.exempt[au_size],
-                p.region2.non_exempt[au_size],
-            ),
+            p.region1[exempt_name][au_size],
+            p.region2[exempt_name][au_size],
         )
-        return max_monthly_payment

@@ -21,11 +21,9 @@ class ca_calworks_child_care_payment_standard(Variable):
         is_full_time = person("ca_calworks_child_care_full_time", period)
         age = person("age", period)
 
-        return select(
+        age_group = select(
             [age < p.age_threshold.lower, age > p.age_threshold.higher],
-            [
-                p.standard.younger[provider][time][is_full_time],
-                p.standard.older[provider][time][is_full_time],
-            ],
-            default=p.standard.middle[provider][time][is_full_time],
+            ["younger", "older"],
+            default="middle",
         )
+        return p.standard[age_group][provider][time][is_full_time]
