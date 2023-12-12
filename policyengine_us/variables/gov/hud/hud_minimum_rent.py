@@ -13,5 +13,3 @@ class hud_minimum_rent(Variable):
     def formula(spm_unit, period, parameters):
         # Assume all Section 8. Public housing is $50.
         return 25
-
-    
