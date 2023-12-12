@@ -5,7 +5,7 @@
     ca_calworks_child_care_payment_standard: 400
     ca_calworks_child_care_time_coefficient: 2
     ca_calworks_child_care_payment_factor: 1
-    ca_calworks_child_care_expense: 500
+    childcare_expenses_per_child: 500
   output:
     ca_calworks_child_care_payment: 500
 
@@ -16,7 +16,7 @@
     ca_calworks_child_care_payment_standard: 60
     ca_calworks_child_care_time_coefficient: 20
     ca_calworks_child_care_payment_factor: 1.25
-    ca_calworks_child_care_expense: 2_000
+    childcare_expenses_per_child: 2_000
   output:
     ca_calworks_child_care_payment: 1_500
 
@@ -27,6 +27,6 @@
     ca_calworks_child_care_payment_standard: 60
     ca_calworks_child_care_time_coefficient: 20
     ca_calworks_child_care_payment_factor: 1.5
-    ca_calworks_child_care_expense: 1_800
+    childcare_expenses_per_child: 1_800
   output:
     ca_calworks_child_care_payment: 0

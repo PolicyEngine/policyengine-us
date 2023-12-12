@@ -11,8 +11,8 @@ class ca_calworks_child_care_age_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         person = spm_unit.members
-        personal_age_eligible = person(
+        child_age_eligible = person(
             "ca_calworks_child_care_child_age_eligible", period
         )
 
-        return spm_unit.any(personal_age_eligible)
+        return spm_unit.any(child_age_eligible)

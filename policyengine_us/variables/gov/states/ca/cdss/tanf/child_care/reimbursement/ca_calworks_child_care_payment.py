@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ca_calworks_child_care_payment(Variable):
     value_type = float
     entity = Person
-    label = "California CalWORKs Child Care final payment"
+    label = "California CalWORKs Child Care payment"
     unit = USD
     definition_period = YEAR
     defined_for = "ca_calworks_child_care_eligible"
@@ -21,8 +21,9 @@ class ca_calworks_child_care_payment(Variable):
         payment_factor = person(
             "ca_calworks_child_care_payment_factor", period
         )
-        expense = person("ca_calworks_child_care_expense", period)
+        childcare_expenses = person("childcare_expenses_per_child", period)
 
         return min_(
-            payment_standard * time_coefficient * payment_factor, expense
+            payment_standard * time_coefficient * payment_factor,
+            childcare_expenses,
         )
