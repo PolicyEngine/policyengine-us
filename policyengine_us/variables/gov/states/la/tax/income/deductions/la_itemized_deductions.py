@@ -8,7 +8,8 @@ class la_itemized_deductions(Variable):
     unit = USD
     definition_period = YEAR
     reference = [
-        "https://revenue.louisiana.gov/TaxForms/IT540iWEB(2022)D1.pdf",
+        "https://revenue.louisiana.gov/TaxForms/IT540iWEB(2022)D1.pdf#page=2",  # 2022 line 8B-line 8C
+        "https://revenue.louisiana.gov/TaxForms/IT540i(2021)%20Instructions.pdf#page=3",  # 2021 line 8A-line 8C
         "https://www.legis.la.gov/Legis/Law.aspx?d=101760",  # (3)
     ]
     defined_for = StateCode.LA
@@ -19,18 +20,17 @@ class la_itemized_deductions(Variable):
         ).gov.states.la.tax.income.deductions.itemized.medical_expenses.exceedance
         p_us = parameters(period).gov.irs.deductions
         us_itemizing = tax_unit("tax_unit_itemizes", period)
-        federal_itemized_deduction = (
+        us_itemized_deduction = (
             tax_unit("itemized_deductions_less_salt", period) * us_itemizing
         )
-        federal_standard_deduction = tax_unit("standard_deduction", period)
+        us_standard_deduction = tax_unit("standard_deduction", period)
         reduced_itm_deductions = max_(
-            0, federal_itemized_deduction - federal_standard_deduction
+            0, us_itemized_deduction - us_standard_deduction
         )
         medical_expenses = add(tax_unit, period, ["medical_expense"])
         if p.availability:
-            item_ded = (
-                max_(medical_expenses - federal_standard_deduction, 0) * p.rate
-            )
+            return (
+                max_(medical_expenses - us_standard_deduction, 0) * p.rate
+            )  # 2022 itemized deductions
         else:
-            item_ded = reduced_itm_deductions
-        return item_ded
+            return reduced_itm_deductions  # 2021 itemized deductions
