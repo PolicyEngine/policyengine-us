@@ -27,5 +27,5 @@ class ga_military_retirement_exclusion_person(Variable):
             p.additional.amount,
             0,
         )
-        uncapped_exclusion_amount = p.base_amount + additional_amount
+        uncapped_exclusion_amount = p.base + additional_amount
         return min_(uncapped_exclusion_amount, military_retirement_income)
