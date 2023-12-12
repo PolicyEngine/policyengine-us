@@ -3,7 +3,7 @@ values:
   2021-01-01:
     - mt_interest_exemption
     - us_govt_interest
-  # need to refactor taxable social security
+  # Need to refactor the taxable social security variable
   # for the full montana social security benefits subtraction calculation
     - tax_unit_taxable_social_security
     - mt_tuition_subtraction
