@@ -1,7 +1,9 @@
 description: Montana counts these sources as additions.
 values:
   2021-01-01:
-    - 
+  # need to refactor taxable social security
+  # for the full montana social security benefits subtraction calculation
+    - mt_social_security_benefits
 metadata:
   unit: list
   label: Montana adjusted gross income additions

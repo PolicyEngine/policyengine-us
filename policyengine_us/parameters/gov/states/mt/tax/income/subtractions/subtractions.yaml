@@ -3,6 +3,9 @@ values:
   2021-01-01:
     - mt_interest_exemption
     - us_govt_interest
+  # need to refactor taxable social security
+  # for the full montana social security benefits subtraction calculation
+    - tax_unit_taxable_social_security
 metadata:
   unit: list
   label: Montana adjusted gross income subtractions
