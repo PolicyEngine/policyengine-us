@@ -121,10 +121,8 @@ class ny_supplemental_tax(Variable):
             ny_taxable_income * high_agi_rate - ny_main_income_tax
         )
 
-        supplemental_tax = select(
+        return select(
             [ny_taxable_income < min_taxable_income, ny_agi > agi_limit],
             [supplemental_tax_low_income, supplemental_tax_high_agi],
             default=supplemental_tax_general,
         )
-
-        return supplemental_tax
