@@ -26,11 +26,6 @@ class or_wfhdc_table_column(Variable):
 
         # This will be true if any child with the lowest age is disabled.
         youngest_is_disabled = youngest_and_disabled.sum() > 0
-        p = (
-            parameters(period)
-            .gov.states["or"]
-            .tax.income.credits.wfhdc.age_parameter
-        )
         conditions = [
             min_age < 3,
             min_age < 6,
