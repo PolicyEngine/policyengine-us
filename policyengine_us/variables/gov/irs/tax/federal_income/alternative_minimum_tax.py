@@ -76,7 +76,6 @@ class regular_tax_before_credits(Variable):
         dwks36 = max_(0, dwks34 - dwks1)
         dwks37 = max_(0, dwks33 - dwks36)
 
-        # parameterized
         p = parameters(period).gov.irs.income
 
         dwks38 = p.amt.capital_gains.capital_gain_excess_tax_rate * dwks37
