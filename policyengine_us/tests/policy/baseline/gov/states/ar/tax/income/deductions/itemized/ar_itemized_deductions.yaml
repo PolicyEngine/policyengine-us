@@ -1,0 +1,109 @@
+- name: Itemized deduction for married filing separately status
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        ar_agi_person: 100_000
+      person2:
+        is_tax_unit_head: false
+        ar_agi_person: 140_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ar_agi: 240_000
+        ar_itemized_deductions_sources: 5_000
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR 
+  output:
+    ar_itemized_deductions: 2083.3333
+
+- name: Itemized deduction for married filing jointly status
+  period: 2019
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        ar_agi_person: 100_000
+      person2:
+        is_tax_unit_head: false
+        ar_agi_person: 120_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ar_itemized_deductions_sources: 7_000
+        ar_agi: 220_000
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR 
+  output: 
+    ar_itemized_deductions: 7_000
+
+- name: Itemized deduction for single filing status
+  period: 2015
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        ar_agi_person: 100_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        ar_itemized_deductions_sources: 4_000
+        ar_agi: 100_000
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_itemized_deductions: 4_000
+
+- name: Itemized deduction for head of household filing status 
+  period: 2022
+  input:
+    people:
+      person1:
+        ar_agi_person: 100_000
+        is_tax_unit_head: true
+      person2:
+        ar_agi_person: 130_000
+        is_tax_unit_head: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ar_agi: 230_000
+        filing_status: HEAD_OF_HOUSEHOLD
+        ar_itemized_deductions_sources: 6_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    ar_itemized_deductions: 6_000
+
+- name: Itemized deduction for widow filing status
+  period: 2022
+  input:
+    people:
+      person1:
+        ar_agi_person: 100_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        ar_agi: 100_000
+        filing_status: WIDOW
+        ar_itemized_deductions_sources: 4_000
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_itemized_deductions: 4_000
+
