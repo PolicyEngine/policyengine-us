@@ -1,12 +1,17 @@
 description: Maximum dependents for MA dependent credit.
 values:
   2021-01-01: 2
+  2023-01-01: .inf
 metadata:
   reference:
     - title: Form 1 2021 Massachusetts Resident Income Tax (line 46)
       href: https://www.mass.gov/doc/2021-form-1-instructions/download#page=17
     - title: Form 1 2022 Massachusetts Resident Income Tax (line 46)
       href: https://www.mass.gov/doc/2022-form-1-instructions/download#page=17
+    - title: Draft Form 1 2023 Massachusetts Resident Income Tax (line 46)
+      href: https://www.mass.gov/doc/draft-2023-form-1-instructions/download#page=17
+    - title: Governor Healey Signs First Tax Cuts in More Than 20 Years
+      href: https://www.mass.gov/news/governor-healey-signs-first-tax-cuts-in-more-than-20-years
   unit: people
   period: year
   label: MA dependent credit dependent cap
