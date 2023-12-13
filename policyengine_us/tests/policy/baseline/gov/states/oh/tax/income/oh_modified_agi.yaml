@@ -1,0 +1,27 @@
+- name:  Ohio filer with exemption of 10000 and AGI of 100_000
+  period: 2021
+  input:
+    state_code: OH
+    oh_agi: 100_000
+    oh_personal_exemptions: 10000
+  output:
+    oh_modified_agi: 90_000
+
+- name:  Ohio filer with exemption of 5000 and AGI of 110_000
+  period: 2021
+  input:
+    state_code: OH
+    oh_agi: 110_000
+    oh_personal_exemptions: 5_000
+  output:
+    oh_modified_agi: 105_000
+
+- name:  Ohio filer with exemption of 15000 and AGI of 50_000
+  period: 2021
+  input:
+    state_code: OH
+    oh_agi: 50_000
+    oh_personal_exemptions: 15_000
+  output:
+    oh_modified_agi: 35_000
+

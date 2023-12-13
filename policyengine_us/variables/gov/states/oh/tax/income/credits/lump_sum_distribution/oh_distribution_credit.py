@@ -10,13 +10,4 @@ class oh_distribution_credit(Variable):
     reference = (
         "https://tax.ohio.gov/static/forms/ohio_individual/individual/2021/pit-it1040-booklet.pdf#page=29",
     )
-    defined_for = StateCode.OH
-
-    def formula(tax_unit, period, parameters):
-        person = tax_unit.members
-        p = parameters(period).gov.states.oh.tax.income.credits
-        age = person("age", period)
-        amount = p.lump_sum_distribution.amount
-        age_threshold = p.senior_citizen.age_threshold
-        rate = p.lump_sum_distribution.rate.calc(age)
-        return where(age >= age_threshold, amount * rate, 0)
+    defined_for = "oh_distribution_credit_eligible"
