@@ -1,0 +1,44 @@
+- name: Single household with $101,002 taxable income 
+  period: 2022
+  input:
+    state_code: AR
+    ar_taxable_income: 101_002
+    filing_status: SINGLE
+  output:
+    ar_inflation_relief_credit: 0
+
+- name: Separate household with $100,000 taxable income
+  period: 2022
+  input:
+    state_code: AR
+    ar_taxable_income: 100_000
+    filing_status: SEPARATE
+  output:
+    ar_inflation_relief_credit: 20
+
+- name: Head of household with $98,200 taxable income
+  period: 2022
+  input:
+    state_code: AR
+    ar_taxable_income: 98_200
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    ar_inflation_relief_credit: 30
+
+- name: Joint household with $175,000 taxable income
+  period: 2022
+  input:
+    state_code: AR
+    ar_taxable_income: 175_000
+    filing_status: JOINT
+  output:
+    ar_inflation_relief_credit: 280
+
+- name: Widow household with $80,000 taxable income
+  period: 2022
+  input:
+    state_code: AR
+    ar_taxable_income: 80_000
+    filing_status: WIDOW
+  output:
+    ar_inflation_relief_credit: 150

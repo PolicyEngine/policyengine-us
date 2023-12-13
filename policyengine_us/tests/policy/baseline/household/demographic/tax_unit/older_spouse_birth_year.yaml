@@ -1,0 +1,20 @@
+- name: Head's age is 40
+  period: 2022
+  input:
+    greater_age_head_spouse: 40
+  output:
+    older_spouse_birth_year: 1982
+
+- name: Head's age is 64
+  period: 2022
+  input:
+    greater_age_head_spouse: 64
+  output:
+    older_spouse_birth_year: 1958
+
+- name: Head's age is 79
+  period: 2022
+  input:
+    greater_age_head_spouse: 79
+  output:
+    older_spouse_birth_year: 1943
