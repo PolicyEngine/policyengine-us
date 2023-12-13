@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class va_agi(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Virginia Adjusted Gross Income (VAGI)"
+    label = "Virginia adjusted federal adjusted gross income"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -14,6 +14,8 @@ class va_agi(Variable):
 
     adds = [
         "adjusted_gross_income",
+        "va_age_deduction",
         "va_additions",
+        "taxable_social_security",
     ]
     subtracts = ["va_subtractions"]
