@@ -22,4 +22,4 @@ class la_general_relief_motor_vehicle_value_eligible(Variable):
         )
         vehicle_value_eligible = vehicle_value <= vehicle_value_limit
         vehicles_owned = household("household_vehicles_owned", period)
-        return vehicle_value_eligible & (vehicles_owned <= p.cap)
+        return vehicle_value_eligible & (0 < vehicles_owned <= p.cap)
