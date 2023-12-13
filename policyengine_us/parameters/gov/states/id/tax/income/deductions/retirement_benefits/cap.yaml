@@ -1,7 +1,7 @@
-description: Idaho allows for this maximum retirement benefits deduction amount, based on filing status.
+description: Idaho caps the retirement benefits deduction to this amount, based on filing status.
 
 metadata:
-  label: Idaho retirement benefit deduction amount
+  label: Idaho retirement benefit deduction cap
   period: year
   unit: currency-USD
   breakdown:
@@ -11,7 +11,7 @@ metadata:
       href: https://tax.idaho.gov/wp-content/uploads/forms/EIN00046/EIN00046_03-01-2023.pdf#page=32
     - title: Form 39R Resident Supplemental Schedule 2022
       href: https://tax.idaho.gov/wp-content/uploads/forms/EFO00088/EFO00088_12-30-2022.pdf#page=1
-    # amount not specified in legal code
+    # The cap is specified in legal code as the maximum retirement benefits under the social security act
     - title: TITLE 63 REVENUE AND TAXATION CHAPTER 30 INCOME TAX 63-3022A 
       href: https://legislature.idaho.gov/statutesrules/idstat/title63/t63ch30/sect63-3022a/
     - title: Individual Income Tax Forms and Instructions 2021
