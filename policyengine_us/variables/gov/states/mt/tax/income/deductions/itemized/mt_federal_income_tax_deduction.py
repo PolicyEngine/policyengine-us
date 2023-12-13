@@ -15,8 +15,10 @@ class mt_federal_income_tax_deduction(Variable):
 
     def formula(tax_unit, period, parameters):
         filing_status = tax_unit("filing_status", period)
-        p = parameters(period).gov.states.mt.tax.income.deductions.itemized
-        federal_income_tax_limit = p.federal_income_tax_limit[filing_status]
+        p = parameters(
+            period
+        ).gov.states.mt.tax.income.deductions.itemized.federal_income_tax
+        federal_income_tax_limit = p.cap[filing_status]
 
         federal_income_tax = tax_unit("income_tax", period)
 
