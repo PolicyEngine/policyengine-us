@@ -6,7 +6,7 @@ class id_retirement_benefits_deduction_income_sources(Variable):
     entity = Person
     label = "Idaho retirement benefits deduction income sources"
     unit = USD
-    documentation = "https://legislature.idaho.gov/statutesrules/idstat/title63/t63ch30/sect63-3022a/"
+    reference = "https://legislature.idaho.gov/statutesrules/idstat/title63/t63ch30/sect63-3022a/"
     definition_period = YEAR
     defined_for = "id_retirement_benefits_deduction_eligible_person"
 

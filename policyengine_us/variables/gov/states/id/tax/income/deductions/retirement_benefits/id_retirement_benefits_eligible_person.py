@@ -5,7 +5,7 @@ class id_retirement_benefits_deduction_eligible_person(Variable):
     value_type = bool
     entity = Person
     label = "Eligible person for the Idaho retirement benefits deduction"
-    documentation = "https://legislature.idaho.gov/statutesrules/idstat/title63/t63ch30/sect63-3022a/"
+    reference = "https://legislature.idaho.gov/statutesrules/idstat/title63/t63ch30/sect63-3022a/"
     definition_period = YEAR
     defined_for = StateCode.ID
 
