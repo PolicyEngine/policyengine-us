@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.576.0] - 2023-12-13 23:49:32
+
+### Added
+
+- Idaho 2023 income tax rate.
+
 ## [0.575.0] - 2023-12-12 19:14:28
 
 ### Fixed
@@ -6311,6 +6317,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.576.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.575.0...0.576.0
 [0.575.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.574.1...0.575.0
 [0.574.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.574.0...0.574.1
 [0.574.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.573.0...0.574.0
