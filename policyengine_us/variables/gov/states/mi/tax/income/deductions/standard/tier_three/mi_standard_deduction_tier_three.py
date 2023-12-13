@@ -21,25 +21,28 @@ class mi_standard_deduction_tier_three(Variable):
         # Line 1: enter base amount, based on filing status
         filing_status = tax_unit("filing_status", period)
         base_amount = p.amount[filing_status]
-        
+
         # Exemption(s), taxable Social Security benefits,
         # military compensation (including retirement benefits),
         # Michigan National Guard retirement benefits and railroad
         # retirement benefits included in AGI may reduce the amount
         # eligible to be claimed on this deduction.
-        
-        is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+
         person = tax_unit.members
+        is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         # Line 2: enter military retirement pay
         military_retirement_pay = person("military_retirement_pay", period)
-        # Line 3: enter military service income and taxable social security
+        # Line 3: enter military service income or taxable social security
         taxable_ss = person("taxable_social_security", period)
         military_service_income = person("military_service_income", period)
         larger_ss_or_military_pay = max_(taxable_ss, military_service_income)
         # Line 4 are personal (and stillborn) exemptions
         mi_personal_exemptions = tax_unit("mi_personal_exemptions", period)
         # Line 5: add lines 2 through 4
-        total_person_reductions = tax_unit.sum(is_head_or_spouse * (military_retirement_pay + larger_ss_or_military_pay))
+        total_person_reductions = tax_unit.sum(
+            is_head_or_spouse
+            * (military_retirement_pay + larger_ss_or_military_pay)
+        )
         total_reductions = total_person_reductions + mi_personal_exemptions
-        # Line 6: subtract line 5 from line 1 
+        # Line 6: subtract line 5 from line 1
         return max_(base_amount - total_reductions, 0)

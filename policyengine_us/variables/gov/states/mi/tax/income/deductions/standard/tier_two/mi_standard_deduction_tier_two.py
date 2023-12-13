@@ -15,15 +15,14 @@ class mi_standard_deduction_tier_two(Variable):
     defined_for = "mi_standard_deduction_tier_two_eligible"
 
     def formula(tax_unit, period, parameters):
-        # First: add the base amount, based on filing status 
+        # First: add the base amount, based on filing status
         p = parameters(
             period
         ).gov.states.mi.tax.income.deductions.standard.tier_two
         filing_status = tax_unit("filing_status", period)
         base_amount = p.amount.base[filing_status]
-        # Next: add the additional amount based on the number of qualifying people        
+        # Next: add the additional amount based on the number of qualifying people
         # # If you checked either box 23C or 23G your standard deduction is increased
-        increased_amount = p.amount.increase * eligible_people
         eligible_people = tax_unit(
             "mi_standard_deduction_tier_two_increase_eligible_people", period
         )
@@ -38,5 +37,7 @@ class mi_standard_deduction_tier_two(Variable):
             ["military_retirement_pay", "military_service_income"],
         )
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        head_or_spouse_military_pay = is_head_or_spouse * military_pay
+        head_or_spouse_military_pay = tax_unit.sum(
+            military_pay * is_head_or_spouse
+        )
         return max_(increased_base_amount - head_or_spouse_military_pay, 0)

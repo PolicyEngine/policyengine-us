@@ -19,5 +19,5 @@ class mi_standard_deduction_tier_two_eligible(Variable):
         ).gov.states.mi.tax.income.deductions.standard.tier_two
 
         older_spouse_birth_year = tax_unit("older_spouse_birth_year", period)
-     
+
         return p.birth_year.calc(older_spouse_birth_year)
