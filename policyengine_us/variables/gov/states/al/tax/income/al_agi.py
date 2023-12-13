@@ -11,5 +11,5 @@ class al_agi(Variable):
     # The Code of Alabama 1975
     reference = " https://alisondb.legislature.state.al.us/alison/CodeOfAlabama/1975/Coatoc.htm"
 
-    adds = "gov.states.al.tax.income.income_sources"
-    subtracts = "gov.states.al.tax.income.adjustments"
+    adds = "gov.states.al.tax.income.gross_income_sources"
+    subtracts = "gov.states.al.tax.income.deductions"
