@@ -1,0 +1,49 @@
+- name: Is demographic eligible, income eligible and resource eligible.
+  period: 2023
+  input:
+    state_code: CA
+    is_demographic_tanf_eligible: true
+    ca_tanf_financial_eligible: true
+    ca_tanf_resources_eligible: true
+  output:
+    ca_tanf_eligible: true
+
+- name: Is demographic ineligible, income eligible and resource eligible.
+  period: 2023
+  input:
+    state_code: CA
+    is_demographic_tanf_eligible: false
+    ca_tanf_financial_eligible: true
+    ca_tanf_resources_eligible: true
+  output:
+    ca_tanf_eligible: false
+
+- name: Is demographic ineligible, income ineligible and resource eligible.
+  period: 2023
+  input:
+    state_code: CA
+    is_demographic_tanf_eligible: true
+    ca_tanf_financial_eligible: false
+    ca_tanf_resources_eligible: true
+  output:
+    ca_tanf_eligible: false
+
+- name: Is demographic ineligible, income ineligible and resource ineligible.
+  period: 2023
+  input:
+    state_code: CA
+    is_demographic_tanf_eligible: true
+    ca_tanf_financial_eligible: true
+    ca_tanf_resources_eligible: false
+  output:
+    ca_tanf_eligible: false
+
+- name: Is demographic ineligible, income ineligible and resource ineligible.
+  period: 2023
+  input:
+    state_code: CA
+    is_demographic_tanf_eligible: false
+    ca_tanf_financial_eligible: false
+    ca_tanf_resources_eligible: false
+  output:
+    ca_tanf_eligible: false

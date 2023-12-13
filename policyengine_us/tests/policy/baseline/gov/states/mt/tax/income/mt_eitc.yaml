@@ -7,8 +7,17 @@
   output: 
     mt_eitc: 0
 
-- name: EITC from federal (test 2)
+- name: 2023 EITC from federal (test 2)
   period: 2023
+  input:
+    filing_status: JOINT
+    eitc: 1_000
+    state_code: MT
+  output: 
+    mt_eitc: 100
+
+- name: 2022 EITC from federal (test 2)
+  period: 2022
   input:
     filing_status: JOINT
     eitc: 1_000
