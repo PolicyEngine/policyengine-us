@@ -12,8 +12,11 @@ class mt_elderly_homeowner_or_renter_credit(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(
             period
-        ).gov.states.mt.tax.income.credits.elderly_homeowner_or_renter_credit
-        gross_household_income = tax_unit("mt_gross_household_income", period)
+        ).gov.states.mt.tax.income.credits.elderly_homeowner_or_renter
+        gross_household_income = tax_unit(
+            "mt_elderly_homeowner_or_renter_credit_gross_household_income",
+            period,
+        )
         # Get net_household_income
         net_household_income = tax_unit(
             "mt_elderly_homeowner_or_renter_credit_net_household_income",
@@ -22,11 +25,11 @@ class mt_elderly_homeowner_or_renter_credit(Variable):
         # Credit Computation
         property_tax = add(tax_unit, period, ["real_estate_taxes"])
         rent = add(tax_unit, period, ["rent"])
-        credit_amount = max_(
-            rent * p.rent_equivalent_tax_rate
-            + property_tax
-            - net_household_income,
-            0,
+        countable_rent = rent * p.rent_equivalent_tax_rate
+        countable_rent_property_tax = property_tax + countable_rent
+        uncapped_credit = max_(
+            countable_rent_property_tax - net_household_income, 0
         )
-        capped_credit = min_(credit_amount, p.cap)
-        return p.multiplier.calc(gross_household_income) * capped_credit
+        capped_credit = min_(uncapped_credit, p.cap)
+        multiplier = p.multiplier.calc(gross_household_income)
+        return capped_credit * multiplier
