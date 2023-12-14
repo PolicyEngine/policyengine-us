@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class oh_distribution_credit_eligible(Variable):
     value_type = bool
     entity = TaxUnit
-    label = "Eligible for the Ohio lump sum distribution credit" 
+    label = "Eligible for the Ohio lump sum distribution credit"
     definition_period = YEAR
     reference = (
         "https://tax.ohio.gov/static/forms/ohio_individual/individual/2021/pit-it1040-booklet.pdf#page=29",
@@ -12,7 +12,9 @@ class oh_distribution_credit_eligible(Variable):
     defined_for = StateCode.OH
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.oh.tax.income.credits.lump_sum_distribution
+        p = parameters(
+            period
+        ).gov.states.oh.tax.income.credits.lump_sum_distribution
         distribution_received = (
             tax_unit("form_4972_lumpsum_distributions", period) > 0
         )
