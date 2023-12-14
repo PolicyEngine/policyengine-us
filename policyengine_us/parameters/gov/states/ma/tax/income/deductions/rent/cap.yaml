@@ -1,14 +1,19 @@
 description: Maximum rental deduction for MA income taxes.
 SINGLE:
-  2011-01-01: 4_000
+  2011-01-01: 3_000
+  2023-01-01: 4_000
 WIDOW:
-  2011-01-01: 4_000
+  2011-01-01: 3_000
+  2023-01-01: 4_000
 JOINT:
-  2011-01-01: 4_000
+  2011-01-01: 3_000
+  2023-01-01: 4_000
 HEAD_OF_HOUSEHOLD:
-  2011-01-01: 4_000
+  2011-01-01: 3_000
+  2023-01-01: 4_000
 SEPARATE:
-  2011-01-01: 2_000
+  2011-01-01: 1_500
+  2023-01-01: 2_000
 metadata:
   reference:
     # Legislation only mentions the $3,000.
