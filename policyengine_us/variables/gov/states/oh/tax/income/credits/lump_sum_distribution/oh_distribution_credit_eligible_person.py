@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class oh_distribution_credit_eligible_person(Variable):
     value_type = bool
     entity = Person
-    label = "Ohio lump sum distribution credit eligibility"
+    label = "Eligible person for the Ohio lump sum distribution credit"
     definition_period = YEAR
     reference = (
         "https://tax.ohio.gov/static/forms/ohio_individual/individual/2021/pit-it1040-booklet.pdf#page=29",
@@ -13,5 +13,4 @@ class oh_distribution_credit_eligible_person(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.oh.tax.income.credits
-        age_eligible = person("age", period) >= p.senior_citizen.age_threshold
-        return age_eligible
+        return person("age", period) >= p.senior_citizen.age_threshold
