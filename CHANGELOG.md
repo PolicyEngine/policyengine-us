@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.577.0] - 2023-12-14 17:57:39
+
+### Added
+
+- Montana federal income tax deduction.
+
 ## [0.576.1] - 2023-12-13 23:57:10
 
 ### Fixed
@@ -6323,6 +6329,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.577.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.576.1...0.577.0
 [0.576.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.576.0...0.576.1
 [0.576.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.575.0...0.576.0
 [0.575.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.574.1...0.575.0
