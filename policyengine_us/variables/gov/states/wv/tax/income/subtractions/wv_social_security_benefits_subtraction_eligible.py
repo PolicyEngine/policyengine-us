@@ -26,4 +26,4 @@ class wv_social_security_benefits_subtraction_eligible(Variable):
         p = parameters(
             period
         ).gov.states.wv.tax.income.subtractions.social_security_benefits
-        return agi <= p.income_threshold[filing_status]
+        return agi <= p.income_limit[filing_status]
