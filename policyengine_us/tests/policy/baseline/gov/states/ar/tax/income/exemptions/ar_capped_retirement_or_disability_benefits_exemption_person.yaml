@@ -1,4 +1,4 @@
-- name: Arkansas capped exemption for retirement or disability benefits (below cap)
+- name: Arkansas capped exemption for retirement or disability benefits (below the cap)
   period: 2021
   input:
     people:
@@ -15,7 +15,7 @@
   output:
     ar_capped_retirement_or_disability_benefits_exemption_person: 5_000
 
-- name: Arkansas capped exemption for retirement or disability benefits (over cap)
+- name: Arkansas capped exemption for retirement or disability benefits (over the cap)
   period: 2021
   input:
     people:
