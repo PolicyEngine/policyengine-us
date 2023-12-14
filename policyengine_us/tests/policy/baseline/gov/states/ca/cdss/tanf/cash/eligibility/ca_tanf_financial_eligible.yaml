@@ -1,0 +1,79 @@
+- name: Enrolled households that only need to pass the recipient financial test will be financially eligible.
+  period: 2023
+  input:
+    state_code: CA
+    is_tanf_enrolled: true
+    ca_tanf_applicant_financial_test: true
+    ca_tanf_recipient_financial_test: true
+  output:
+    ca_tanf_financial_eligible: true
+
+- name: Enrolled households that only need to pass the recipient financial test will be financially eligible.
+  period: 2023
+  input:
+    state_code: CA
+    is_tanf_enrolled: true
+    ca_tanf_applicant_financial_test: false
+    ca_tanf_recipient_financial_test: true
+  output:
+    ca_tanf_financial_eligible: true
+
+- name: Enrolled households that only need to pass the recipient financial test will be financially eligible.
+  period: 2023
+  input:
+    state_code: CA
+    is_tanf_enrolled: true
+    ca_tanf_applicant_financial_test: true
+    ca_tanf_recipient_financial_test: true
+  output:
+    ca_tanf_financial_eligible: true
+
+- name: Enrolled households that do not pass the recipient financial test will be not financially eligible.
+  period: 2023
+  input:
+    state_code: CA
+    is_tanf_enrolled: true
+    ca_tanf_applicant_financial_test: true
+    ca_tanf_recipient_financial_test: false
+  output:
+    ca_tanf_financial_eligible: false
+
+- name: First-time applying households that pass both the applicant and recipient financial test will be financially eligible.
+  period: 2023
+  input:
+    state_code: CA
+    is_tanf_enrolled: false
+    ca_tanf_applicant_financial_test: true
+    ca_tanf_recipient_financial_test: true
+  output:
+    ca_tanf_financial_eligible: true
+
+- name: First-time applying households that do not pass either the applicant or recipient financial test will not be financially eligible.
+  period: 2023
+  input:
+    state_code: CA
+    is_tanf_enrolled: false
+    ca_tanf_applicant_financial_test: false
+    ca_tanf_recipient_financial_test: true
+  output:
+    ca_tanf_financial_eligible: false
+
+- name: First-time applying households that do not pass either the applicant or recipient financial test will not be financially eligible.
+  period: 2023
+  input:
+    state_code: CA
+    is_tanf_enrolled: false
+    ca_tanf_applicant_financial_test: true
+    ca_tanf_recipient_financial_test: false
+  output:
+    ca_tanf_financial_eligible: false
+
+- name: First-time applying households that do not pass either the applicant or recipient financial test will not be financially eligible.
+  period: 2023
+  input:
+    state_code: CA
+    is_tanf_enrolled: false
+    ca_tanf_applicant_financial_test: false
+    ca_tanf_recipient_financial_test: false
+  output:
+    ca_tanf_financial_eligible: false
