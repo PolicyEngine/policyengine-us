@@ -20,6 +20,8 @@ class mt_federal_income_tax_deduction(Variable):
         ).gov.states.mt.tax.income.deductions.itemized.federal_income_tax
         federal_income_tax_limit = p.cap[filing_status]
 
-        federal_income_tax = tax_unit("income_tax", period)
+        federal_income_tax = tax_unit(
+            "income_tax_before_refundable_credits", period
+        )
 
         return min_(federal_income_tax, federal_income_tax_limit)
