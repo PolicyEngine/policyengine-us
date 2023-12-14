@@ -1,4 +1,4 @@
-- name: Outside Maine, no refundable ME child care credit
+- name: Outside Maine, no refundable Maine child care credit
   period: 2022
   absolute_error_margin: 0
   input:
@@ -7,7 +7,7 @@
   output:
     me_refundable_child_care_credit: 0
 
-- name: No fed child care credit, no credit 
+- name: No federal child care credit, no refundable child care credit 
   period: 2022
   absolute_error_margin: 0
   input:
