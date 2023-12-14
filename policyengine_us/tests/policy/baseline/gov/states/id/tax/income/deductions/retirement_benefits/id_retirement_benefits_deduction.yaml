@@ -5,7 +5,7 @@
       person1:
         is_tax_unit_head_or_spouse: true
         social_security_retirement: 10_000
-        id_retirement_benefits_deduction_income_sources: 45_000
+        id_retirement_benefits_deduction_relevant_income: 45_000
       person2:
         is_tax_unit_head_or_spouse: false
     tax_units:
@@ -26,7 +26,7 @@
       person1:
         is_tax_unit_head_or_spouse: false
         social_security_retirement: 45_000
-        id_retirement_benefits_deduction_income_sources: 0
+        id_retirement_benefits_deduction_relevant_income: 0
     tax_units:
       tax_unit:
         members: [person1]
@@ -45,7 +45,7 @@
       person1:
         is_tax_unit_head_or_spouse: true
         social_security_retirement: 40_140
-        id_retirement_benefits_deduction_income_sources: 38_700
+        id_retirement_benefits_deduction_relevant_income: 38_700
     tax_units:
       tax_unit:
         members: [person1]
@@ -64,7 +64,7 @@
       person1:
         is_tax_unit_head_or_spouse: true
         social_security_retirement: 15_000
-        id_retirement_benefits_deduction_income_sources: 45_000
+        id_retirement_benefits_deduction_relevant_income: 45_000
       person2:
         is_tax_unit_head_or_spouse: true
         social_security_retirement: 10_000
@@ -89,7 +89,7 @@
       person1:
         id_retirement_benefits_deduction_eligible_person: true
         social_security_retirement: 10_000
-        id_retirement_benefits_deduction_income_sources: 30_000
+        id_retirement_benefits_deduction_relevant_income: 30_000
       person2:
         id_retirement_benefits_deduction_eligible_person: false
     tax_units:

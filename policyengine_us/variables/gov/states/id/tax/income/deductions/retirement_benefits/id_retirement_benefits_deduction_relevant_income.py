@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class id_retirement_benefits_deduction_income_sources(Variable):
+class id_retirement_benefits_deduction_relevant_income(Variable):
     value_type = float
     entity = Person
     label = "Idaho retirement benefits deduction income sources"

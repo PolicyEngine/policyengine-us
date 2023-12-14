@@ -25,20 +25,18 @@ class id_retirement_benefits_deduction(Variable):
         # Social Security retirement benefits received
         person = tax_unit.members
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        ss_amount = (
-            person("social_security_retirement", period) * head_or_spouse
-        )
-        total_ss_amt = tax_unit.sum(ss_amount)
+        ss_retirement = person("social_security_retirement", period)
+        total_head_spouse_ss = tax_unit.sum(ss_retirement * head_or_spouse)
         # Line 8d
         # Base amount minus social Security benefits received
-        ded_amt = max_(cap - total_ss_amt, 0)
+        ded_amt = max_(cap - total_head_spouse_ss, 0)
         # Line 8e
         # Qualified retirement benefits included in federal income
         # The head or spouse condition is included in the eligible person variable
         relevant_income = add(
             tax_unit,
             period,
-            ["id_retirement_benefits_deduction_income_sources"],
+            ["id_retirement_benefits_deduction_relevant_income"],
         )
         # Line 8f
         return min_(ded_amt, relevant_income)
