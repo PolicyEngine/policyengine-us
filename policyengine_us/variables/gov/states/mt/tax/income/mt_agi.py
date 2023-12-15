@@ -8,3 +8,6 @@ class mt_agi(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.MT
+
+    adds = ["mt_additions", "adjusted_gross_income"]
+    subtracts = ["mt_subtractions"]
