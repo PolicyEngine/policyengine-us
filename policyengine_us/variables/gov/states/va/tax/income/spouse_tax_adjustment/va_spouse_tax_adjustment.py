@@ -51,7 +51,7 @@ class va_spouse_tax_adjustment(Variable):
         )
         # Line 11, enter income tax before credits
         income_tax_before_credits = tax_unit(
-            "va_income_tax_before_credits", period
+            "va_income_tax_before_non_refundable_credits", period
         )
         # Line 12, subtract line 10 from line 11
         reduced_tax = max_(income_tax_before_credits - addition_of_tax, 0)
