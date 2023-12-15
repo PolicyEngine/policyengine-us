@@ -1,0 +1,7 @@
+- name: Calculation 2023 # 3%
+  period: 2023
+  input:
+    state_code: MS
+    ms_taxable_income_indiv: 1_000
+  output:
+    ms_income_tax_before_credits_indiv: 0

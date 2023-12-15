@@ -5,30 +5,35 @@ SINGLE:
   2021-01-01: 1_700
   2022-01-01: 1_750
   2023-01-01: 1_850
+  2024-01-01: 1_950
 JOINT:
   2018-01-01: 1_300
   2019-01-01: 1_300
   2021-01-01: 1_350
   2022-01-01: 1_400
   2023-01-01: 1_500
+  2024-01-01: 1_550
 SEPARATE:
   2018-01-01: 1_300
   2019-01-01: 1_300
   2021-01-01: 1_350
   2022-01-01: 1_400
   2023-01-01: 1_500
+  2024-01-01: 1_550
 HEAD_OF_HOUSEHOLD:
   2018-01-01: 1_600
   2019-01-01: 1_650
   2021-01-01: 1_700
   2022-01-01: 1_750
   2023-01-01: 1_850
+  2024-01-01: 1_950
 WIDOW:
   2018-01-01: 1_300
   2019-01-01: 1_300
   2021-01-01: 1_350
   2022-01-01: 1_400
   2023-01-01: 1_500
+  2024-01-01: 1_550
 metadata:
   unit: currency-USD
   name: aged_blind_std
@@ -37,6 +42,8 @@ metadata:
   label: Additional standard deduction for the blind and aged
   period: year
   reference:
+    - title: 2024 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-23-34.pdf#page=14
     - title: 2023 IRS data release
       href: https://www.irs.gov/pub/irs-drop/rp-22-38.pdf#page=14
     - title: 2022 IRS data release

@@ -7,12 +7,9 @@ class ut_income_tax_before_refundable_credits(Variable):
     label = "Utah income tax"
     unit = USD
     definition_period = YEAR
-    adds = ["ut_income_tax_before_credits"]
-    subtracts = [
-        "ut_taxpayer_credit",
-        "ut_eitc",
-        "ut_retirement_credit",
-        "ut_ss_benefits_credit",
-        "ut_at_home_parent_credit",
-    ]
     defined_for = StateCode.UT
+
+    def formula(tax_unit, period, parameters):
+        income = tax_unit("ut_income_tax_before_credits", period)
+        credits = tax_unit("ut_non_refundable_credits", period)
+        return max_(income - credits, 0)

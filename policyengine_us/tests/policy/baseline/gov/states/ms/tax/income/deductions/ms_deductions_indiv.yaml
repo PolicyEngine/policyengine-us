@@ -1,0 +1,17 @@
+- name: MS deductions indiv unit test 1
+  period: 2020
+  input:
+    ms_standard_deduction_indiv: 10_000
+    ms_itemized_deductions: 9_000
+    state_code: MS
+  output:
+    ms_deductions_indiv: 10_000
+
+- name: MS deductions indiv unit test 2
+  period: 2020
+  input:
+    ms_standard_deduction_indiv: 9_000
+    ms_itemized_deductions: 9_002
+    state_code: MS
+  output:
+    ms_deductions_indiv: 9_002
