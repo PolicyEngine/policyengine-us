@@ -1,19 +1,19 @@
 from policyengine_us.model_api import *
 
 
-class ms_income_tax_indiv(Variable):
+class ms_income_tax(Variable):
     value_type = float
-    entity = Person
+    entity = TaxUnit
     label = "Mississippi income tax filing seperately"
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.MS
 
-    def formula(person, period, parameters):
-        before_non_refundable_credits = person(
-            "ms_income_tax_before_credits_indiv", period
+    def formula(tax_unit, period, parameters):
+        before_non_refundable_credits = tax_unit(
+            "ms_income_tax_before_credits", period
         )
-        non_refundable_credits = person.tax_unit(
+        non_refundable_credits = tax_unit(
             "ms_non_refundable_credits", period
         )
         return max_(before_non_refundable_credits - non_refundable_credits, 0)

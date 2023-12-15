@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ms_agi(Variable):
+class ms_agi_joint(Variable):
     value_type = float
     entity = TaxUnit
     label = "Mississippi adjusted gross income"

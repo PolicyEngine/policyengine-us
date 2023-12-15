@@ -14,7 +14,8 @@ class ms_taxable_income_indiv(Variable):
     defined_for = StateCode.MS
 
     def formula(person, period, parameters):
-        agi = person.tax_unit("ms_agi", period)
-        deductions = person("ms_deductions_indiv", period)
-        exemptions = person.tax_unit("ms_total_exemptions", period)
+        agi = person("ms_agi_indv", period)
+        deductions = person("ms_deductions_indv", period)
+        exemptions = person.tax_unit("ms_total_exemptions_indv", period)
         return max_(agi - deductions - exemptions, 0)
+    

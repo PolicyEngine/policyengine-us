@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class ms_standard_deduction(Variable):
+class ms_standard_deduction_join(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Mississippi personal standard deduction"
+    label = "Mississippi personal standard deduction when married couples file jointly"
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.MS
