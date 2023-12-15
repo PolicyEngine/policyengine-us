@@ -26,6 +26,7 @@ class mt_itemized_deductions(Variable):
                 "medical_expense_deduction",
             ]
         ]
+
         return add(
             tax_unit,
             period,
@@ -34,5 +35,6 @@ class mt_itemized_deductions(Variable):
                 "mt_misc_deductions",
                 "mt_medical_expense_deduction",
                 "mt_salt_deduction",
+                "mt_federal_income_tax_deduction",
             ],
         )
