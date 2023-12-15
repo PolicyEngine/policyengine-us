@@ -16,7 +16,8 @@ class va_spouse_tax_adjustment_eligible(Variable):
             "va_agi_less_exemptions_person", period
         )
         agi_less_exemptions = where(
-            head_or_spouse, agi_less_exemptions_person, -np.inf
+            head_or_spouse, agi_less_exemptions_person, np.inf
         )
         smaller_exemptions = tax_unit.min(agi_less_exemptions)
-        return smaller_exemptions > 0
+        joint = tax_unit("tax_unit_is_joint", period)
+        return (smaller_exemptions > 0) & joint

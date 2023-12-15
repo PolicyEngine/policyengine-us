@@ -1,12 +1,12 @@
-- name: Virginia spouse tax adjustment eligibility unit test 1
+- name: Spouse with AGI less exemptions at 0
   period: 2021
   input:
     people:
       person1:
-        is_tax_unit_head: true
+        is_tax_unit_head_or_spouse: true
         va_agi_less_exemptions_person: 1_470
       person2:
-        is_tax_unit_spouse: true
+        is_tax_unit_head_or_spouse: true
         va_agi_less_exemptions_person: 0
     households:
       household:
@@ -18,15 +18,15 @@
   output:
     va_spouse_tax_adjustment_eligible: false
 
-- name: Virginia spouse tax adjustment eligibility unit test 2
+- name: Spouse with AGI less exemptions below 0
   period: 2021
   input:
     people:
       person1:
-        is_tax_unit_head: true
+        is_tax_unit_head_or_spouse: true
         va_agi_less_exemptions_person: 1_470
       person2:
-        is_tax_unit_spouse: true
+        is_tax_unit_head_or_spouse: true
         va_agi_less_exemptions_person: -2_000
     households:
       household:
@@ -35,18 +35,19 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
+        tax_unit_is_joint: true
   output:
     va_spouse_tax_adjustment_eligible: false
 
-- name: Virginia spouse tax adjustment eligibility unit test 3
+- name: Not filing joint
   period: 2021
   input:
     people:
       person1:
-        is_tax_unit_head: true
+        is_tax_unit_head_or_spouse: true
         va_agi_less_exemptions_person: 1_470
       person2:
-        is_tax_unit_spouse: false
+        is_tax_unit_head_or_spouse: false
         va_agi_less_exemptions_person: 0
     households:
       household:
@@ -55,18 +56,19 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
+        tax_unit_is_joint: false
   output:
     va_spouse_tax_adjustment_eligible: false
   
-- name: Virginia spouse tax adjustment eligibility unit test 4
+- name: Both head and spouse are eligible 
   period: 2021
   input:
     people:
       person1:
-        is_tax_unit_head: true
+        is_tax_unit_head_or_spouse: true
         va_agi_less_exemptions_person: 1_470
       person2:
-        is_tax_unit_spouse: true
+        is_tax_unit_head_or_spouse: true
         va_agi_less_exemptions_person: 3_000
     households:
       household:
@@ -75,5 +77,54 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
+        tax_unit_is_joint: true
   output:
     va_spouse_tax_adjustment_eligible: true
+
+- name: Head and spouse with AGI less exemptions above 0 with a dependent 
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        va_agi_less_exemptions_person: 1_470
+      person2:
+        is_tax_unit_head_or_spouse: true
+        va_agi_less_exemptions_person: 3_000
+      person3:
+        is_tax_unit_head_or_spouse: false
+        va_agi_less_exemptions_person: 3_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: VA
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        tax_unit_is_joint: true
+  output:
+    va_spouse_tax_adjustment_eligible: true
+
+- name: Spouse and Head with AGI less exemption at 0 
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        va_agi_less_exemptions_person: 0
+      person2:
+        is_tax_unit_head_or_spouse: true
+        va_agi_less_exemptions_person: 0
+      person3:
+        is_tax_unit_head_or_spouse: false
+        va_agi_less_exemptions_person: 3_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: VA
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        tax_unit_is_joint: true
+  output:
+    va_spouse_tax_adjustment_eligible: false
