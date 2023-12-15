@@ -19,7 +19,7 @@ class id_aged_or_disabled_deduction_eligible_person(Variable):
         # Disabled eligible individuals can include head and spouse.
         disabled_eligible = person("is_disabled", period)
         # To claim aged or disabled credit, filers also have to maintain a household for family members
-        # and provide more than one-half of the family member’s support for the year
+        # and provide more than one-half of the family member’s support for the year.
         support_payment_ratio = person(
             "share_of_care_and_support_costs_paid_by_tax_filer", period
         )
