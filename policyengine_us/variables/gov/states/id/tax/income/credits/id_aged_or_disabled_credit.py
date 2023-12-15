@@ -24,7 +24,5 @@ class id_aged_or_disabled_credit(Variable):
         credit_amount = capped_eligible_people * p.amount
         # Filers cannot claim the credit if they claim the subtraction.
         # This variable verifies that.
-        eligible = tax_unit(
-            "receid_receives_aged_or_disabled_creditives_credit", period
-        )
+        eligible = tax_unit("id_receives_aged_or_disabled_credit", period)
         return eligible * credit_amount
