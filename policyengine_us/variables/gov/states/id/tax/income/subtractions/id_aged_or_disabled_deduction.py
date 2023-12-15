@@ -22,7 +22,6 @@ class id_aged_or_disabled_deduction(Variable):
         total_eligible_people = tax_unit.sum(eligible_person)
         capped_eligible_people = min_(total_eligible_people, p.person_cap)
         deduction_amount = capped_eligible_people * p.amount
-        receive_credit = tax_unit(
-            "id_receives_aged_or_disabled_credit", period
-        )
-        return where(receive_credit, 0, deduction_amount)
+        # Filers cannot claim the subtraction if they claim the credit.
+        eligible = ~tax_unit("receives_credit", period)
+        return eligible * deduction_amount
