@@ -48,7 +48,7 @@ class hi_disabled_exemptions(Variable):
             disabled_exemption_non_disabled_spouse,
         )
 
-        # if filling status is not join, the disabled_exemption_spouse should be zero
+        # if filling status is not joint, the disabled_exemption_spouse should be zero
         # The taxpayer shall not take additional exemptions with regard to the taxpayer’s disability.
         filing_status = tax_unit("filing_status", period)
         disabled_exemption_spouse = where(
