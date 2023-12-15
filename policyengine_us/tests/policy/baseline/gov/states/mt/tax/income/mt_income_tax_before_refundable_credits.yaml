@@ -7,14 +7,24 @@
   output:
     mt_income_tax_before_refundable_credits: 0
 
-- name: Temporary rate calculation #((5_000 - 2_900) * 0.02 + 2_900 * 0.01)
+- name: Temporary rate calculation #((5_000 -3_100) * 0.02 + 3_100 * 0.01)
   period: 2021
   input:
      filing_status: SINGLE
      mt_taxable_income: 5_000
      state_code: MT
   output:
-    mt_income_tax_before_refundable_credits: 71
+    mt_income_tax_before_refundable_credits: 69
+
+- name: Widow calculation, top rate
+  period: 2021
+  absolute_error_margin: 0.2
+  input:
+     filing_status: WIDOW
+     mt_taxable_income: 30_000
+     state_code: MT
+  output:
+    mt_income_tax_before_refundable_credits: 1_471
 
 - name: Progressive rate - Joint filing # 5_000 * 0.047
   period: 2024
