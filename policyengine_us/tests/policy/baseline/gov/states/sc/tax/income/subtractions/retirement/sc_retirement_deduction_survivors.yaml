@@ -1,0 +1,39 @@
+- name: Case 1, in 2022, above age threshold
+  period: 2022
+  input:
+    pension_survivors: 1_000
+    military_retirement_pay_survivors: 4_000
+    age: 70
+    state_code: SC
+  output:
+    sc_retirement_deduction_survivors: 1_000
+
+- name: Case 2, in 2022, below age threshold
+  period: 2022
+  input:
+    pension_survivors: 4_000
+    military_retirement_pay_survivors: 6_000
+    age: 64
+    state_code: SC
+  output:
+    sc_retirement_deduction_survivors: 3_000
+
+- name: Case 3, in 2021, above age threshold
+  period: 2021
+  input:
+    pension_survivors: 2_000
+    military_retirement_pay_survivors: 4_000
+    age: 70
+    state_code: SC
+  output:
+    sc_retirement_deduction_survivors: 2_000
+
+- name: Case 4, in 2021, below age threshold
+  period: 2021
+  input:
+    pension_survivors: 4_000
+    military_retirement_pay_survivors: 6_000
+    age: 64
+    state_code: SC
+  output:
+    sc_retirement_deduction_survivors: 0

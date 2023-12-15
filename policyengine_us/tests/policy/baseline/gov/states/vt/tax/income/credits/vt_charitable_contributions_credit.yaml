@@ -1,0 +1,17 @@
+- name: Filer has 1,000 of total charitable donations 
+  period: 2021
+  input:
+    charitable_cash_donations: 500
+    charitable_non_cash_donations: 500
+    state_code: VT
+  output:
+    vt_charitable_contribution_credit: 50
+
+- name: Filer has 30,000 of total charitable donations, capped at $1,000
+  period: 2022
+  input:
+    charitable_cash_donations: 20_000
+    charitable_non_cash_donations: 10_000
+    state_code: VT
+  output:
+    vt_charitable_contribution_credit: 1_000

@@ -1,0 +1,98 @@
+- name: LA cdcc test with no cdcc
+  period: 2006
+  input:
+    adjusted_gross_income: 23_000
+    cdcc: 0
+    state_code: LA
+  output:
+    la_cdcc: 0
+
+- name: LA cdcc test with no income
+  period: 2006
+  input:
+    adjusted_gross_income: 0
+    cdcc: 2_000
+    state_code: LA
+  output:
+    la_cdcc: 0  
+    
+- name: LA refundable cdcc 
+  period: 2006
+  input:
+    adjusted_gross_income: 23_000
+    cdcc: 2_000
+    state_code: LA
+  output:
+    la_cdcc: 500 # 0.25 * 2_000
+
+- name: Refundable cdcc # 2,000 * 0,5
+  period: 2007
+  input:
+    adjusted_gross_income: 23_000
+    cdcc: 2_000
+    state_code: LA
+  output:
+    la_cdcc: 1_000
+
+- name: LA nonrefundable cdcc unit test 2
+  period: 2006
+  input:
+    adjusted_gross_income: 30_000
+    cdcc: 2_000
+    state_code: LA
+  output:
+    la_cdcc: 600 # 2_000 * 0.3
+
+- name: LA nonrefundable cdcc unit test 4
+  period: 2006
+  input:
+    adjusted_gross_income: 70_000
+    cdcc: 200
+    state_code: LA
+  output:
+    la_cdcc:  20 # 200 * 0.1
+
+- name: Upper bracket amount cdcc test
+  period: 2006
+  input:
+    adjusted_gross_income: 60_001
+    cdcc: 300
+    state_code: LA
+  output:
+    la_cdcc: 25 # 300 * 0.1 >25
+
+- name: LA nonrefundable cdcc unit test 6
+  period: 2006
+  input:
+    adjusted_gross_income: 25_000
+    cdcc: 200
+    state_code: LA
+  output:
+    la_cdcc: 50 # 
+
+- name: LA refundable cdcc unit test 2
+  period: 2007
+  input:
+    adjusted_gross_income: 23_000
+    cdcc: 2_000
+    state_code: LA
+  output:
+    la_cdcc: 1_000 # 0.5 * 2_000
+
+- name: LA refundable cdcc unit test 3
+  period: 2006
+  input:
+    adjusted_gross_income: 35_000
+    cdcc: 900
+    state_code: LA
+  output:
+    la_cdcc: 270 # 900 * 0.3
+
+- name: LA refundable cdcc unit test 4
+  period: 2007
+  input:
+    adjusted_gross_income: 25_000
+    cdcc: 2_000
+    state_code: LA
+  output:
+    la_cdcc: 1_000 # 2_000*0.5

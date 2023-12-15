@@ -1,0 +1,16 @@
+description: Colorado accounts for these income sources for the modified adjusted gross income.
+values:
+  1999-01-01:
+    - adjusted_gross_income
+    - tax_exempt_social_security
+#    - non_taxable_interest_income_from_state_and_local_bonds
+metadata:
+  unit: list
+  label: Colorado modified adjusted gross income sources
+  reference:
+  - title: Colo. Code Regs. 39-22-2003 State Sales Tax Refund (1.5)
+    href: https://law.justia.com/codes/colorado/2022/title-39/article-22/part-20/section-39-22-2003/
+  - title: 2022 Colorado Individual Income Tax Filing Guide
+    href: https://tax.colorado.gov/sites/tax/files/documents/DR_0104_Book_2022.pdf#page=23
+  - title: 2021 Colorado Individual Income Tax Filing Guide
+    href: https://tax.colorado.gov/sites/tax/files/documents/DR_104_Book_2021.pdf#page=21

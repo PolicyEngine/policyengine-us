@@ -1,0 +1,26 @@
+- name: Test case filing separate with income tax over limit
+  period: 2021
+  input:
+     filing_status: SEPARATE
+     income_tax_before_refundable_credits: 6_000 # >5,000
+     state_code: MT
+  output:
+    mt_federal_income_tax_deduction: 5_000
+
+- name: Test case filing single with income tax below limit
+  period: 2021
+  input:
+     filing_status: SINGLE
+     income_tax_before_refundable_credits: 2_000 # <5,000
+     state_code: MT
+  output:
+    mt_federal_income_tax_deduction: 2_000
+
+- name: Test case filing joint with income tax below limit
+  period: 2021
+  input:
+     filing_status: JOINT
+     income_tax_before_refundable_credits: 7_000 #<10,000
+     state_code: MT
+  output:
+    mt_federal_income_tax_deduction: 7_000
