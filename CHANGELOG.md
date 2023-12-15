@@ -5,6 +5,48 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.582.2] - 2023-12-15 19:35:40
+
+### Added
+
+- Alabama dependent exemption.
+
+## [0.582.1] - 2023-12-15 17:16:18
+
+### Fixed
+
+- Michigan standard deduction calculation.
+
+## [0.582.0] - 2023-12-15 16:27:51
+
+### Added
+
+- Illinois 2022 personal exemption amount.
+
+## [0.581.1] - 2023-12-15 14:43:19
+
+### Fixed
+
+- Alabama standard deduction.
+
+## [0.581.0] - 2023-12-15 14:37:23
+
+### Added
+
+- Montana social security benefit adjustment.
+
+## [0.580.1] - 2023-12-15 14:22:33
+
+### Fixed
+
+- Connecticut pension subtraction.
+
+## [0.580.0] - 2023-12-15 12:21:47
+
+### Added
+
+- Alabama income tax variable formula.
+
 ## [0.579.1] - 2023-12-14 19:03:15
 
 ## [0.579.0] - 2023-12-14 18:51:52
@@ -6343,6 +6385,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.582.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.582.1...0.582.2
+[0.582.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.582.0...0.582.1
+[0.582.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.581.1...0.582.0
+[0.581.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.581.0...0.581.1
+[0.581.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.580.1...0.581.0
+[0.580.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.580.0...0.580.1
+[0.580.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.579.1...0.580.0
 [0.579.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.579.0...0.579.1
 [0.579.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.578.0...0.579.0
 [0.578.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.577.0...0.578.0
