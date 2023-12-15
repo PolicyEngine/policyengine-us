@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.582.2] - 2023-12-15 19:35:40
+
+### Added
+
+- Alabama dependent exemption.
+
 ## [0.582.1] - 2023-12-15 17:16:18
 
 ### Fixed
@@ -6379,6 +6385,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.582.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.582.1...0.582.2
 [0.582.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.582.0...0.582.1
 [0.582.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.581.1...0.582.0
 [0.581.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.581.0...0.581.1
