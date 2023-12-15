@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class md_local_income_tax_before_non_refundable_credits(Variable):
+class md_local_income_tax_before_credits(Variable):
     value_type = float
     entity = TaxUnit
     label = "MD local income tax before credits"
