@@ -11,6 +11,6 @@ class ms_files_separately(Variable):
     defined_for = StateCode.MS
 
     def formula(tax_unit, period, parameters):
-        itax_indiv = tax_unit("ms_income_tax_indiv", period)
-        itax_joint = tax_unit("ms_income_tax_joint", period)
+        itax_indiv = add(tax_unit, period, ["ms_taxable_income_indiv"])
+        itax_joint = tax_unit("ms_taxable_income_joint", period)
         return itax_indiv < itax_joint
