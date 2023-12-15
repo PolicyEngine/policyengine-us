@@ -1,4 +1,4 @@
-description: Montana caps the disability income at this amount.
+description: Montana caps the individual disability income exclusion at this amount.
 values: 
   2021-01-01: 5_200
 
@@ -7,7 +7,7 @@ metadata:
   period: year
   unit: currency-USD
   reference:
-  #Only the tax form instructions mentions this cap amount, yet the legal code does not mention the cap.
+  # Only the tax form instructions mentions this cap amount, yet the legal code does not mention the cap.
   - title: 2022 Montana form 2 individual income tax instructions, page 31, line 32
     href: https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2022/12/Form-2-2022-Instructions.pdf#page=31
   - title: 2021 Montana form 2 individual income tax instructions, page 29, line 33
