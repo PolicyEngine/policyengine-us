@@ -24,13 +24,19 @@ class la_itemized_deductions(Variable):
             tax_unit("itemized_deductions_less_salt", period) * us_itemizing
         )
         us_standard_deduction = tax_unit("standard_deduction", period)
-        reduced_itm_deductions = max_(
-            0, us_itemized_deduction - us_standard_deduction
+        medical_expense_deduction = add(
+            tax_unit, period, ["medical_expense_deduction"]
         )
-        medical_expenses = add(tax_unit, period, ["medical_expense"])
-        if p.availability:
+        # In 2022 Louisiana limits the itemized deductions to the amount of federal medical
+        # expense deduction
+        if p.limit_to_medical_expense_deduction:
+            # In the legal code the deduction is multiplied by a certain rate, which is not
+            # represented in the tax form
             return (
-                max_(medical_expenses - us_standard_deduction, 0) * p.rate
+                max_(medical_expense_deduction - us_standard_deduction, 0)
+                * p.rate
             )  # 2022 itemized deductions
         else:
-            return reduced_itm_deductions  # 2021 itemized deductions
+            return max_(
+                0, us_itemized_deduction - us_standard_deduction
+            )  # 2021 itemized deductions
