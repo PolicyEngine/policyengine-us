@@ -22,14 +22,14 @@ class mi_standard_deduction_tier_two(Variable):
         filing_status = tax_unit("filing_status", period)
         base_amount = p.amount.base[filing_status]
         # Next: add the additional amount based on the number of qualifying people
-        # # If you checked either box 23C or 23G your standard deduction is increased
+        # If you checked either box 23C or 23G your standard deduction is increased
         eligible_people = tax_unit(
             "mi_standard_deduction_tier_two_increase_eligible_people", period
         )
         increased_amount = p.amount.increase * eligible_people
         increased_base_amount = base_amount + increased_amount
         # After that we reduce the amount by the amounts from line 11 and line 14
-        # just applicatble to head and spouse
+        # just applicable to head and spouse
         person = tax_unit.members
         military_pay = add(
             person,
