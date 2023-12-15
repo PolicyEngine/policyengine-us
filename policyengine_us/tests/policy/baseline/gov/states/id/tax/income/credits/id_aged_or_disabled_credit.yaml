@@ -13,7 +13,7 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
-        receives_credit: true
+        id_receives_aged_or_disabled_credit: true
   output:  
     id_aged_or_disabled_credit: 100
 
@@ -32,7 +32,7 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
-        receives_credit: true
+        id_receives_aged_or_disabled_credit: true
   output:  
     id_aged_or_disabled_credit: 0
 
@@ -51,7 +51,7 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
-        receives_credit: false
+        id_receives_aged_or_disabled_credit: false
   output:  
     id_aged_or_disabled_credit: 0
 
@@ -74,6 +74,6 @@
     tax_units:
       tax_unit:
         members: [person1, person2, person3, person4]
-        receives_credit: true
+        id_receives_aged_or_disabled_credit: true
   output:  
     id_aged_or_disabled_credit: 300

@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class receives_credit(Variable):
+class id_receives_aged_or_disabled_credit(Variable):
     value_type = bool
     entity = TaxUnit
     label = (
