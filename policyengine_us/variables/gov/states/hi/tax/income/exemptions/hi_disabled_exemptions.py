@@ -24,11 +24,11 @@ class hi_disabled_exemptions(Variable):
             tax_unit("filing_status", period)
             == tax_unit("filing_status", period).possible_values.JOINT
         )
-        head_exemption = max(
+        head_exemption = max_(
             disabled_head * p.disabled, p.base * (1 + aged_head)
         )
         spouse_exemption = (
-            max(disabled_spouse * p.disabled, p.base * (1 + aged_spouse))
+            max_(disabled_spouse * p.disabled, p.base * (1 + aged_spouse))
             * joint_filing
         )
         return where(
