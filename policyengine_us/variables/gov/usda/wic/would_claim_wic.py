@@ -10,7 +10,7 @@ class would_claim_wic(Variable):
     def formula(person, period, parameters):
         # Assign households WIC takeup probabilistically in microsimulation.
         # Assume all take up in individual simulation.
-        if hasattr(benunit.simulation, "dataset"):
+        if hasattr(person.simulation, "dataset"):
             category = person("wic_category", period)
             takeup = parameters(period).gov.usda.wic.takeup
             return random(person) < takeup[category]
