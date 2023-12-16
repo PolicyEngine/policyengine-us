@@ -15,34 +15,29 @@ class mi_standard_deduction_tier_two(Variable):
     defined_for = "mi_standard_deduction_tier_two_eligible"
 
     def formula(tax_unit, period, parameters):
+        # First: add the base amount, based on filing status
         p = parameters(
             period
         ).gov.states.mi.tax.income.deductions.standard.tier_two
         filing_status = tax_unit("filing_status", period)
-
+        base_amount = p.amount.base[filing_status]
+        # Next: add the additional amount based on the number of qualifying people
+        # If you checked either box 23C or 23G your standard deduction is increased
         eligible_people = tax_unit(
             "mi_standard_deduction_tier_two_increase_eligible_people", period
         )
-        # The standard deduction is reduced by any amounts reported on
-        # line 11 (military retirement benefits) and any military pay included on line 14
+        increased_amount = p.amount.increase * eligible_people
+        increased_base_amount = base_amount + increased_amount
+        # After that we reduce the amount by the amounts from line 11 and line 14
+        # just applicable to head and spouse
         person = tax_unit.members
-        uncapped_pension_income = person("taxable_pension_income", period)
-        military_eligible_pay = add(
+        military_pay = add(
             person,
             period,
             ["military_retirement_pay", "military_service_income"],
         )
-
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-
-        cap_reduction = tax_unit.sum(military_eligible_pay * is_head_or_spouse)
-        # If you checked either box 23C or 23G your standard deduction is increased
-        increased_amount = p.amount.increase * eligible_people
-        cap = max_(
-            p.amount.base[filing_status] + increased_amount - cap_reduction,
-            0,
+        head_or_spouse_military_pay = tax_unit.sum(
+            military_pay * is_head_or_spouse
         )
-
-        return min_(
-            tax_unit.sum(uncapped_pension_income * is_head_or_spouse), cap
-        )
+        return max_(increased_base_amount - head_or_spouse_military_pay, 0)
