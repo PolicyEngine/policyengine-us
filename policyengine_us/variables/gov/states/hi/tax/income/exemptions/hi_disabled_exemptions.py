@@ -14,38 +14,25 @@ class hi_disabled_exemptions(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.hi.tax.income.exemptions
-        aged_head = (tax_unit("age_head", period) >= p.aged_threshold).astype(
-            int
-        )
-        aged_spouse = (
-            tax_unit("age_spouse", period) >= p.aged_threshold
-        ).astype(int)
-        disabled_head = tax_unit("head_is_disabled", period).astype(int)
-        disabled_spouse = tax_unit("spouse_is_disabled", period).astype(int)
-        non_disabled_head = p.base * (1 + aged_head)
-        non_disabled_spouse = p.base * (1 + aged_spouse)
-        disabled_exemption_head = where(
-            disabled_head,
-            max(disabled_head * p.disabled, non_disabled_head),
-            non_disabled_head,
-        )
+        aged_head = tax_unit("age_head", period) >= p.aged_threshold
+        aged_spouse = tax_unit("age_spouse", period) >= p.aged_threshold
+        disabled_head = tax_unit("head_is_disabled", period)
+        disabled_spouse = tax_unit("spouse_is_disabled", period)
         # if filing status is not joint, the disabled_exemption_spouse should be zero
-        # The taxpayer shall not take additional exemptions with regard to spouse disability
-        joint_filing_status = (
+        # The taxpayer shall not take additional exemptions with regard to spouse disability.
+        joint_filing = (
             tax_unit("filing_status", period)
             == tax_unit("filing_status", period).possible_values.JOINT
         )
-        disabled_exemption_spouse = (
-            where(
-                disabled_spouse,
-                max(disabled_spouse * p.disabled, non_disabled_spouse),
-                non_disabled_spouse,
-            )
-            * joint_filing_status
+        head_exemption = max(
+            disabled_head * p.disabled, p.base * (1 + aged_head)
         )
-
+        spouse_exemption = (
+            max(disabled_spouse * p.disabled, p.base * (1 + aged_spouse))
+            * joint_filing
+        )
         return where(
-            (disabled_head + disabled_spouse * joint_filing_status) > 0,
-            disabled_exemption_head + disabled_exemption_spouse,
+            (disabled_head + disabled_spouse * joint_filing) > 0,
+            head_exemption + spouse_exemption,
             0,
         )

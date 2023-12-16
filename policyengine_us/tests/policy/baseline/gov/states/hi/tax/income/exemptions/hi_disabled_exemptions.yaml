@@ -131,4 +131,16 @@
     age_spouse: 63
     filing_status: SEPARATE
   output:
-    hi_disabled_exemptions: 7_000       
+    hi_disabled_exemptions: 7_000   
+
+- name: separate, head is disabled, spouse is aged
+  period: 2021
+  input:
+    state_code: HI
+    head_is_disabled: true
+    spouse_is_disabled: false
+    age_head: 60
+    age_spouse: 70
+    filing_status: SEPARATE
+  output:
+    hi_disabled_exemptions: 7_000    
