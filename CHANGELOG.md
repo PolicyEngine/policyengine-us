@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.583.1] - 2023-12-16 18:18:33
+
+### Fixed
+
+- Set WIC take-up deterministically for individual simulations.
+
 ## [0.583.0] - 2023-12-16 03:36:40
 
 ### Added
@@ -6391,6 +6397,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.583.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.583.0...0.583.1
 [0.583.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.582.2...0.583.0
 [0.582.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.582.1...0.582.2
 [0.582.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.582.0...0.582.1
