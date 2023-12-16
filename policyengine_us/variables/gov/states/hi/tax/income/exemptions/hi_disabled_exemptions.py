@@ -13,10 +13,6 @@ class hi_disabled_exemptions(Variable):
     defined_for = StateCode.HI
 
     def formula(tax_unit, period, parameters):
-        # Compute the exemptions if head or spouse have a disability.
-        # In this case, the disabled head/spouse gets a higher amount, but they cannot claim dependent
-        # exemptions.
-        # Start by computing for the head.
         p = parameters(period).gov.states.hi.tax.income.exemptions
         aged_head = (tax_unit("age_head", period) >= p.aged_threshold).astype(
             int
@@ -25,40 +21,31 @@ class hi_disabled_exemptions(Variable):
             tax_unit("age_spouse", period) >= p.aged_threshold
         ).astype(int)
         disabled_head = tax_unit("head_is_disabled", period).astype(int)
-        disabled_exemption_disabled_head = disabled_head * p.disabled
-        disabled_exemption_non_disabled_head = p.base * (1 + aged_head)
+        disabled_spouse = tax_unit("spouse_is_disabled", period).astype(int)
+        non_disabled_head = p.base * (1 + aged_head)
+        non_disabled_spouse = p.base * (1 + aged_spouse)
         disabled_exemption_head = where(
             disabled_head,
-            max_(
-                disabled_exemption_disabled_head,
-                disabled_exemption_non_disabled_head,
-            ),
-            disabled_exemption_non_disabled_head,
+            max(disabled_head * p.disabled, non_disabled_head),
+            non_disabled_head,
         )
-        # Same for spouse.
-        disabled_spouse = tax_unit("spouse_is_disabled", period).astype(int)
-        disabled_exemption_disabled_spouse = disabled_spouse * p.disabled
-        disabled_exemption_non_disabled_spouse = p.base * (1 + aged_spouse)
-        disabled_exemption_spouse = where(
-            disabled_spouse,
-            max_(
-                disabled_exemption_disabled_spouse,
-                disabled_exemption_non_disabled_spouse,
-            ),
-            disabled_exemption_non_disabled_spouse,
+        # if filing status is not joint, the disabled_exemption_spouse should be zero
+        # The taxpayer shall not take additional exemptions with regard to spouse disability
+        joint_filing_status = (
+            tax_unit("filing_status", period)
+            == tax_unit("filing_status", period).possible_values.JOINT
+        )
+        disabled_exemption_spouse = (
+            where(
+                disabled_spouse,
+                max(disabled_spouse * p.disabled, non_disabled_spouse),
+                non_disabled_spouse,
+            )
+            * joint_filing_status
         )
 
-        # if filing status is not joint, the disabled_exemption_spouse should be zero
-        # The taxpayer shall not take additional exemptions with regard to the taxpayer’s disability.
-        filing_status = tax_unit("filing_status", period)
-        disabled_exemption_spouse = where(
-            filing_status == filing_status.possible_values.JOINT,
-            disabled_exemption_spouse,
-            0,
-        )
-        no_disabled_head_or_spouse = (disabled_head + disabled_spouse) == 0
         return where(
-            no_disabled_head_or_spouse,
-            0,
+            (disabled_head + disabled_spouse * joint_filing_status) > 0,
             disabled_exemption_head + disabled_exemption_spouse,
+            0,
         )

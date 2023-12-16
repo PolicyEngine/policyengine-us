@@ -107,4 +107,28 @@
         members: [person1]
         state_fips: 15  # HI
   output:  
-    hi_disabled_exemptions: 7_000           
+    hi_disabled_exemptions: 7_000 
+
+- name: separate, spouse is disabled, head is not aged
+  period: 2021
+  input:
+    state_code: HI
+    head_is_disabled: false
+    spouse_is_disabled: true
+    age_head: 60
+    age_spouse: 63
+    filing_status: SEPARATE
+  output:
+    hi_disabled_exemptions: 0 
+
+- name: separate, both disabled, spouse is not aged
+  period: 2021
+  input:
+    state_code: HI
+    head_is_disabled: true
+    spouse_is_disabled: false
+    age_head: 60
+    age_spouse: 63
+    filing_status: SEPARATE
+  output:
+    hi_disabled_exemptions: 7_000       
