@@ -5369,3 +5369,53 @@
     fixes:
     - Maine child care credit format.
   date: 2023-12-14 19:03:15
+- bump: minor
+  changes:
+    added:
+    - Alabama income tax variable formula.
+  date: 2023-12-15 12:21:47
+- bump: patch
+  changes:
+    fixed:
+    - Connecticut pension subtraction.
+  date: 2023-12-15 14:22:33
+- bump: minor
+  changes:
+    added:
+    - Montana social security benefit adjustment.
+  date: 2023-12-15 14:37:23
+- bump: patch
+  changes:
+    fixed:
+    - Alabama standard deduction.
+  date: 2023-12-15 14:43:19
+- bump: minor
+  changes:
+    added:
+    - Illinois 2022 personal exemption amount.
+  date: 2023-12-15 16:27:51
+- bump: patch
+  changes:
+    fixed:
+    - Michigan standard deduction calculation.
+  date: 2023-12-15 17:16:18
+- bump: patch
+  changes:
+    added:
+    - Alabama dependent exemption.
+  date: 2023-12-15 19:35:40
+- bump: minor
+  changes:
+    added:
+    - Massachusetts 2023 child and dependent tax credit rules.
+  date: 2023-12-16 03:36:40
+- bump: patch
+  changes:
+    fixed:
+    - Set WIC take-up deterministically for individual simulations.
+  date: 2023-12-16 18:18:33
+- bump: patch
+  changes:
+    fixed:
+    - Bump policyengine-core to capture random microsimulation bug fixes.
+  date: 2023-12-16 18:54:42
