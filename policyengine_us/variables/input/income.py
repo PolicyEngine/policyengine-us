@@ -4,6 +4,14 @@ from policyengine_us.model_api import *
 label = "Income"
 
 
+class employment_income_before_lsr(Variable):
+    value_type = float
+    entity = Person
+    label = "employment income before labour supply responses"
+    unit = USD
+    definition_period = YEAR
+
+
 class employment_income(Variable):
     value_type = float
     entity = Person
@@ -11,6 +19,7 @@ class employment_income(Variable):
     documentation = "Wages and salaries, including tips and commissions."
     unit = USD
     definition_period = YEAR
+    adds = ["employment_income_before_lsr", "labor_supply_response"]
 
 
 class self_employment_income(Variable):
