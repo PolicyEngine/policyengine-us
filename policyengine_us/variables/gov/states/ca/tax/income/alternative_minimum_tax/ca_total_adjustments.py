@@ -12,9 +12,14 @@ class ca_total_adjustments(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.ca.tax.income.alternative_minimum_tax
-        
-        return where(tax_unit("ca_itemized_deductions", period) > 0, 
-                                  add(tax_unit, period, p.amti_sources) - tax_unit("ca_standard_deduction", period), # if itemized, line 1 = 0
-                                  add(tax_unit, period, p.amti_sources) # if not itemized, sum up line 1-6 
-        )        
-         
+
+        return where(
+            tax_unit("ca_itemized_deductions", period) > 0,
+            add(tax_unit, period, p.amti_sources)
+            - tax_unit(
+                "ca_standard_deduction", period
+            ),  # if itemized, line 1 = 0
+            add(
+                tax_unit, period, p.amti_sources
+            ),  # if not itemized, sum up line 1-6
+        )
