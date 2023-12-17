@@ -1,0 +1,35 @@
+- name: Virginia itemized deduction for a single filer
+  period: 2021
+  input:
+    filing_status: SINGLE
+    itemized_deductions_less_salt: 20_000
+    real_estate_taxes: 5_000
+    adjusted_gross_income: 80_000 # < $278,450
+    state_and_local_sales_or_income_tax: 1_000
+    state_code: VA
+  output:
+    va_itemized_deductions: 25_000 # 20000+5000
+
+- name: Virginia limited itemized deduction for a single filer
+  period: 2021
+  input:
+    filing_status: SINGLE
+    itemized_deductions_less_salt: 20_000
+    real_estate_taxes: 5_000
+    adjusted_gross_income: 300_000 # > $278,450
+    state_and_local_sales_or_income_tax: 1_000
+    state_code: VA
+  output:
+    va_itemized_deductions: 0 #min(3%*(300000-278450),80%*(20000+5000))-1000*(1-0.02586) = max(0,646.5-974.14)
+
+- name: Virginia limited itemized deduction a head of household filer
+  period: 2021
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    itemized_deductions_less_salt: 20_000
+    real_estate_taxes: 50_000
+    adjusted_gross_income: 800_000 # > $306,300
+    state_and_local_sales_or_income_tax: 10_000
+    state_code: VA
+  output:
+    va_itemized_deductions: 6926.8571
