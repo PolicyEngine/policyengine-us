@@ -8,16 +8,18 @@ class ca_amti_calc(Variable):
     defined_for = StateCode.CA
     unit = USD
     definition_period = YEAR
-    reference = ""
+    reference = "https://www.ftb.ca.gov/forms/2022/2022-540-p.pdf"
 
     def formula(tax_unit, period, parameters):
         filing_status = tax_unit("filing_status", period)
         p = parameters(period).gov.states.ca.tax.income.alternative_minimum_tax
 
         amti_before_ded = tax_unit("ca_amti", period)
+        separate = filing_status == filing_status.possible_values.SEPARATE
 
-        if filing_status == "SEPARATE" and amti_before_ded < p.exemption_amt_upper_threshold[filing_status]:
-            return min_((amti_before_ded - p.exemption_amt_upper_threshold[filing_status]) * p.amti_rate, 
-                        p.exemption_amt[filing_status]) + amti_before_ded
-        else:
-            return amti_before_ded
+        return where(separate & (amti_before_ded > p.exemption_amt_upper_threshold[filing_status]),
+                        min_((amti_before_ded - p.exemption_amt_upper_threshold[filing_status]) * p.amti_rate, 
+                        p.exemption_amt[filing_status]) + amti_before_ded,
+                        amti_before_ded)
+
+        

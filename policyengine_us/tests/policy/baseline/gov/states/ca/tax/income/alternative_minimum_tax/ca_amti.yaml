@@ -1,0 +1,39 @@
+- name: California Alternative Minimum Taxable Income (AMTI) test 1
+  period: 2021
+  input:
+    state_code: CA
+    ca_total_adjustments: 10_000
+    ca_taxable_income: 140_000
+    ca_itemized_ded_limitation: 0
+  output:
+    ca_amti: 150_000
+
+- name: California Alternative Minimum Taxable Income (AMTI) test 2
+  period: 2021
+  input:
+    state_code: CA
+    ca_total_adjustments: 10_000
+    ca_taxable_income: 340_000
+    ca_itemized_ded_limitation: 5_000
+  output:
+    ca_amti: 355_000
+
+- name: California Alternative Minimum Taxable Income (AMTI) test 3
+  period: 2022
+  input:
+    state_code: CA
+    ca_total_adjustments: 10_000
+    ca_taxable_income: 140_000
+    ca_itemized_ded_limitation: 0
+  output:
+    ca_amti: 150_000
+
+- name: California Alternative Minimum Taxable Income (AMTI) test 4
+  period: 2022
+  input:
+    state_code: CA
+    ca_total_adjustments: 10_000
+    ca_taxable_income: 340_000
+    ca_itemized_ded_limitation: 5_000
+  output:
+    ca_amti: 355_000
