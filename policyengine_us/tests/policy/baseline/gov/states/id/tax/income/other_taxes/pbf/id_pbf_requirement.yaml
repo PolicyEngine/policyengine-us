@@ -1,10 +1,7 @@
 - name: Eligible
   period: 2021
   input:
-    adjusted_gross_income: 20_000
-    filing_status: HEAD_OF_HOUSEHOLD
-    age_head: 60
-    age_spouse: 63
+    id_income_tax_before_non_refundable_credits: 500
     tanf: 0
     blind_head: false
     blind_spouse: false
@@ -16,10 +13,7 @@
 - name: Income not eligible
   period: 2021
   input:
-    adjusted_gross_income: 10_000
-    filing_status: HEAD_OF_HOUSEHOLD
-    age_head: 60
-    age_spouse: 63
+    id_income_tax_before_non_refundable_credits: 0
     tanf: 0
     blind_head: false
     blind_spouse: false

@@ -10,40 +10,14 @@ class id_pbf_requirement(Variable):
     defined_for = StateCode.ID
 
     def formula(tax_unit, period, parameters):
-        spm_unit = tax_unit.spm_unit
-        p = parameters(period).gov.states.id.tax.income.other_taxes.pbf
+        #spm_unit = tax_unit.spm_unit
+        #p = parameters(period).gov.states.id.tax.income.other_taxes.pbf
 
         # eligible if income less than filing status specified amount
-        income = tax_unit("adjusted_gross_income", period)
-        filing_status = tax_unit("filing_status", period)
-
-        elder_head = tax_unit("age_head", period) >= p.age_threshold
-        elder_spouse = tax_unit("age_spouse", period) >= p.age_threshold
-
-        # income check for three age conditions
-        income_ineligible_older_two_aged = (
-            income < p.income_threshold.older.two_aged[filing_status]
-        )
-        income_ineligible_older_one_aged = (
-            income < p.income_threshold.older.one_aged[filing_status]
-        )
-        income_ineligible_younger = (
-            income < p.income_threshold.younger[filing_status]
-        )
-
-        income_ineligible_check = where(
-            elder_head | elder_spouse,
-            income_ineligible_older_one_aged,
-            income_ineligible_younger,
-        )
-        income_ineligible = where(
-            elder_head & elder_spouse,
-            income_ineligible_older_two_aged,
-            income_ineligible_check,
-        )
+        income_ineligible = tax_unit("id_income_tax_before_non_refundable_credits", period) <= 0
 
         # eligible if receiving public assistance tanf
-        tanf_received = spm_unit("tanf", period)
+        tanf_received = tax_unit("tanf", period)
         tanf_ineligible = tanf_received > 0
 
         # eligible if head or spouse is blind
