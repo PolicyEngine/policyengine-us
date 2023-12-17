@@ -5019,3 +5019,403 @@
     added:
     - Hawaii child and dependent care expenses tax credit.
   date: 2023-11-17 17:46:39
+- bump: patch
+  changes:
+    added:
+    - Twelve new CalEITC integration tests.
+  date: 2023-11-17 21:05:55
+- bump: minor
+  changes:
+    changed:
+    - Add missing 2021 Utah parameter values.
+    - Utah retirement credit fixed.
+  date: 2023-11-20 14:46:37
+- bump: patch
+  changes:
+    fixed:
+    - Fix UT retirement credit birth year parameter.
+  date: 2023-11-20 23:32:21
+- bump: minor
+  changes:
+    added:
+    - Ohio lump sum retirement credit.
+  date: 2023-11-22 00:37:55
+- bump: patch
+  changes:
+    fixes:
+    - Ohio senior citizen credit formula.
+  date: 2023-11-22 01:31:58
+- bump: minor
+  changes:
+    added:
+    - South Carolina dependent exemption.
+    - South Carolina subtractions.
+    - South Carolina additions.
+  date: 2023-11-23 18:53:34
+- bump: patch
+  changes:
+    fixed:
+    - Hawaii CDCC min head spouse earned variable.
+  date: 2023-11-26 14:23:47
+- bump: patch
+  changes:
+    fixed:
+    - Downgrade policyengine-core to fix Microsimulation bug.
+  date: 2023-11-27 22:53:52
+- bump: minor
+  changes:
+    added:
+    - Vermont elderly or permanently totally disabled tax credit.
+  date: 2023-11-27 23:23:24
+- bump: minor
+  changes:
+    fixed:
+    - Bug preventing reforms from working with a Core update.
+  date: 2023-11-28 11:23:21
+- bump: minor
+  changes:
+    changed:
+    - Fix definition of income used to calculate Maine fairness credits.
+  date: 2023-11-28 18:30:28
+- bump: patch
+  changes:
+    fixed:
+    - Clean up years in system.py.
+    - Update default computation year to 2023.
+  date: 2023-11-28 18:49:38
+- bump: minor
+  changes:
+    added:
+    - South Carolina income tax.
+  date: 2023-11-29 20:52:16
+- bump: minor
+  changes:
+    added:
+    - Improved ACA premium tax credit for California.
+  date: 2023-11-29 21:19:00
+- bump: minor
+  changes:
+    added:
+    - Idaho grocery credit.
+  date: 2023-11-30 02:16:16
+- bump: minor
+  changes:
+    added:
+    - Delaware itemized deductions.
+  date: 2023-11-30 02:19:29
+- bump: minor
+  changes:
+    added:
+    - Montana itemized deductions.
+  date: 2023-11-30 02:27:14
+- bump: patch
+  changes:
+    fixed:
+    - Relocate some ACA parameters to clarify their role.
+    - Rename one ACA variable to clarify its role.
+  date: 2023-11-30 18:10:45
+- bump: minor
+  changes:
+    fixed:
+    - South Carolina young child exemption.
+  date: 2023-12-01 04:21:59
+- bump: minor
+  changes:
+    added:
+    - Alabama federal income tax deduction.
+  date: 2023-12-01 05:02:13
+- bump: minor
+  changes:
+    fixed:
+    - Updated Virginia 2021 parameter values.
+  date: 2023-12-01 08:10:00
+- bump: minor
+  changes:
+    added:
+    - Hawaii military reserve or national guard duty pay exclusion.
+  date: 2023-12-01 08:12:56
+- bump: minor
+  changes:
+    added:
+    - Vermont minimum income tax.
+  date: 2023-12-01 08:38:03
+- bump: minor
+  changes:
+    added:
+    - Add Hawaii income tax calculation logic.
+  date: 2023-12-01 21:12:49
+- bump: patch
+  changes:
+    fixed:
+    - South Carolina young child deduction and tax rate.
+  date: 2023-12-02 17:16:11
+- bump: patch
+  changes:
+    changed:
+    - Moved DC in alphabetical order.
+  date: 2023-12-02 19:32:01
+- bump: minor
+  changes:
+    added:
+    - Add formula for the ky_taxable_income variable.
+  date: 2023-12-03 04:41:43
+- bump: patch
+  changes:
+    fixed:
+    - Basic income taxability bool unit.
+  date: 2023-12-03 05:10:35
+- bump: minor
+  changes:
+    added:
+    - Montana tuition subtraction.
+  date: 2023-12-04 00:58:18
+- bump: patch
+  changes:
+    fixed:
+    - Fix NYC School Tax Credit Rate Reduction Amount Income Limit parameter label.
+  date: 2023-12-04 06:37:53
+- bump: minor
+  changes:
+    added:
+    - Michigan standard deduction and pension benefit.
+  date: 2023-12-04 12:21:44
+- bump: patch
+  changes:
+    fixed:
+    - Military retirement pay variable.
+  date: 2023-12-04 14:52:43
+- bump: minor
+  changes:
+    added:
+    - Arkansas personal tax credits.
+  date: 2023-12-04 15:27:14
+- bump: minor
+  changes:
+    added:
+    - General Relief Program (GR) - Los Angeles County.
+  date: 2023-12-05 01:54:33
+- bump: minor
+  changes:
+    added:
+    - Vermont charitable contributions credit.
+  date: 2023-12-05 14:34:03
+- bump: patch
+  changes:
+    fixed:
+    - Bug in LA general relief.
+  date: 2023-12-05 16:37:05
+- bump: minor
+  changes:
+    added:
+    - Michigan additions and subtractions.
+  date: 2023-12-05 18:11:49
+- bump: minor
+  changes:
+    changed:
+    - Colorado EITC to 50% for 2023 due to new legislation.
+  date: 2023-12-06 17:21:04
+- bump: minor
+  changes:
+    added:
+    - Connecticut additions and subtractions.
+  date: 2023-12-06 17:41:47
+- bump: patch
+  changes:
+    fixed:
+    - Remove Maine index file.
+  date: 2023-12-06 18:01:17
+- bump: minor
+  changes:
+    added:
+    - Kentucky personal tax credits.
+  date: 2023-12-06 18:10:30
+- bump: minor
+  changes:
+    added:
+    - Montana old age subtraction.
+  date: 2023-12-06 19:28:36
+- bump: patch
+  changes:
+    fixed:
+    - 2021 South Carolina tax bracket parameters.
+  date: 2023-12-07 03:33:31
+- bump: minor
+  changes:
+    added:
+    - Arizona exemptions.
+  date: 2023-12-07 11:59:21
+- bump: patch
+  changes:
+    fixed:
+    - Michigan Miscellaneous subtractions section 22 income.
+  date: 2023-12-08 11:43:18
+- bump: minor
+  changes:
+    changed:
+    - Backdate Alabama parameter values to 2021.
+  date: 2023-12-08 21:11:34
+- bump: minor
+  changes:
+    added:
+    - Michigan income tax variable formula.
+  date: 2023-12-09 21:15:31
+- bump: minor
+  changes:
+    added:
+    - Add formulas for Arizona income tax credits.
+  date: 2023-12-09 21:58:18
+- bump: minor
+  changes:
+    added:
+    - Montana taxable income.
+  date: 2023-12-09 23:29:06
+- bump: minor
+  changes:
+    added:
+    - Montana child and dependent care expense deduction.
+  date: 2023-12-10 00:10:48
+- bump: minor
+  changes:
+    added:
+    - Montana child tax credit.
+  date: 2023-12-10 19:11:01
+- bump: patch
+  changes:
+    fixed:
+    - Montana income tax brackets and rates.
+  date: 2023-12-11 01:32:26
+- bump: patch
+  changes:
+    fixed:
+    - Arizona adjusted gross income subtractions.
+  date: 2023-12-11 01:41:43
+- bump: patch
+  changes:
+    fixed:
+    - Los Angeles county General Relief disability eligibility.
+  date: 2023-12-11 02:10:02
+- bump: patch
+  changes:
+    fixed:
+    - Montana 2023 earned income tax credit rate.
+  date: 2023-12-11 02:21:11
+- bump: minor
+  changes:
+    added:
+    - Virginia taxable income.
+  date: 2023-12-11 03:04:06
+- bump: patch
+  changes:
+    fixed:
+    - Invalid Montana EITC rate YAML.
+  date: 2023-12-11 04:51:50
+- bump: patch
+  changes:
+    fixed:
+    - Tax abolition bug.
+  date: 2023-12-11 12:15:20
+- bump: minor
+  changes:
+    added:
+    - Arkansas itemized deductions.
+  date: 2023-12-11 16:19:00
+- bump: minor
+  changes:
+    added:
+    - California CARE and FERA integration tests.
+  date: 2023-12-12 04:40:40
+- bump: minor
+  changes:
+    added:
+    - California CalWORKs.
+  date: 2023-12-12 16:17:08
+- bump: patch
+  changes:
+    fixed:
+    - South Carolina senior exemption.
+  date: 2023-12-12 19:08:33
+- bump: minor
+  changes:
+    fixed:
+    - Connecticut alternative minimum tax.
+  date: 2023-12-12 19:14:28
+- bump: minor
+  changes:
+    added:
+    - Idaho 2023 income tax rate.
+  date: 2023-12-13 23:49:32
+- bump: patch
+  changes:
+    fixed:
+    - Arizona AGI long-term capital gains subtraction.
+  date: 2023-12-13 23:57:10
+- bump: minor
+  changes:
+    added:
+    - Montana federal income tax deduction.
+  date: 2023-12-14 17:57:39
+- bump: minor
+  changes:
+    added:
+    - Idaho retirement benefit deductions.
+  date: 2023-12-14 18:21:47
+- bump: minor
+  changes:
+    added:
+    - Alabama adjusted gross income.
+  date: 2023-12-14 18:51:52
+- bump: patch
+  changes:
+    fixes:
+    - Maine child care credit format.
+  date: 2023-12-14 19:03:15
+- bump: minor
+  changes:
+    added:
+    - Alabama income tax variable formula.
+  date: 2023-12-15 12:21:47
+- bump: patch
+  changes:
+    fixed:
+    - Connecticut pension subtraction.
+  date: 2023-12-15 14:22:33
+- bump: minor
+  changes:
+    added:
+    - Montana social security benefit adjustment.
+  date: 2023-12-15 14:37:23
+- bump: patch
+  changes:
+    fixed:
+    - Alabama standard deduction.
+  date: 2023-12-15 14:43:19
+- bump: minor
+  changes:
+    added:
+    - Illinois 2022 personal exemption amount.
+  date: 2023-12-15 16:27:51
+- bump: patch
+  changes:
+    fixed:
+    - Michigan standard deduction calculation.
+  date: 2023-12-15 17:16:18
+- bump: patch
+  changes:
+    added:
+    - Alabama dependent exemption.
+  date: 2023-12-15 19:35:40
+- bump: minor
+  changes:
+    added:
+    - Massachusetts 2023 child and dependent tax credit rules.
+  date: 2023-12-16 03:36:40
+- bump: patch
+  changes:
+    fixed:
+    - Set WIC take-up deterministically for individual simulations.
+  date: 2023-12-16 18:18:33
+- bump: patch
+  changes:
+    fixed:
+    - Bump policyengine-core to capture random microsimulation bug fixes.
+  date: 2023-12-16 18:54:42
