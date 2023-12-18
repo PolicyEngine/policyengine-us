@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class ky_additions(Variable):
+class ky_subtractions_joint(Variable):
     value_type = float
-    entity = TaxUnit
-    label = "Kentucky additions"
+    entity = Person
+    label = "Kentucky subtractions when married couples file jointly"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -15,3 +15,4 @@ class ky_additions(Variable):
         "https://taxsim.nber.org/historical_state_tax_forms/KY/2021/Form%20740%20Packet%20Instructions-2021.pdf#page=27"
     )
     defined_for = StateCode.KY
+    adds = "gov.states.ky.tax.income.subtractions"
