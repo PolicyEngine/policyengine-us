@@ -1,0 +1,13 @@
+- name: Remove head of household filing status
+  period: 2023
+  input:
+    gov.contrib.congress.romney.family_security_act.remove_head_of_household : true
+    people:
+      head: {}
+      child:
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [head, child]
+  output:
+    filing_status: SINGLE
