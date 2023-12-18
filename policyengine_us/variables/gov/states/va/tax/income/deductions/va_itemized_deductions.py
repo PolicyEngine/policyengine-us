@@ -42,5 +42,5 @@ class va_itemized_deductions(Variable):
         return where(
             federal_agi > applicable_amount, va_limited_itm_deds, va_itm_deds
         )
-        # TODO: Foreign Income Taxes. 
-        # TODO: filing status is different for federal and Virginia 
+        # TODO: Foreign Income Taxes.
+        # TODO: filing status is different for federal and Virginia
