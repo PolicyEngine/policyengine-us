@@ -10,6 +10,7 @@ from .congress.romney.family_security_act import (
 from .cbo.payroll import (
     create_increase_taxable_earnings_for_social_security_reform,
 )
+from .scott_budow.end_entrenched_poverty import (create_end_entrenched_poverty_credit_reform,)
 from policyengine_core.reforms import Reform
 import warnings
 
@@ -31,6 +32,7 @@ def create_structural_reforms_from_parameters(parameters, period):
             parameters, period
         )
     )
+    end_entrenched_poverty_credit = (create_end_entrenched_poverty_credit_reform(parameters, period))
 
     reforms = [
         afa_reform,
@@ -39,6 +41,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         dc_tax_threshold_joint_ratio_reform,
         remove_head_of_household,
         increase_taxable_earnings_for_social_security_reform,
+        end_entrenched_poverty_credit,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
 
