@@ -5435,3 +5435,8 @@
     fixed:
     - Import all FilingStatus values when repealing head of household.
   date: 2023-12-18 04:09:27
+- bump: patch
+  changes:
+    fixes:
+    - Parameterized 25% of the Alternative Minimum Tax calculation.
+  date: 2023-12-18 16:33:00
