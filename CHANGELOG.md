@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.583.3] - 2023-12-17 23:52:20
+
+### Fixed
+
+- Alabama federal tax deduction.
+
+## [0.583.2] - 2023-12-16 18:54:42
+
+### Fixed
+
+- Bump policyengine-core to capture random microsimulation bug fixes.
+
 ## [0.583.1] - 2023-12-16 18:18:33
 
 ### Fixed
@@ -6397,6 +6409,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.583.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.583.2...0.583.3
+[0.583.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.583.1...0.583.2
 [0.583.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.583.0...0.583.1
 [0.583.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.582.2...0.583.0
 [0.582.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.582.1...0.582.2
