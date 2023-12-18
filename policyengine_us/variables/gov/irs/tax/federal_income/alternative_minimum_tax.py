@@ -75,7 +75,10 @@ class regular_tax_before_credits(Variable):
         dwks34 = dwks10 + dwks19
         dwks36 = max_(0, dwks34 - dwks1)
         dwks37 = max_(0, dwks33 - dwks36)
-        dwks38 = 0.25 * dwks37
+
+        p = parameters(period).gov.irs.income
+
+        dwks38 = p.amt.capital_gains.capital_gain_excess_tax_rate * dwks37
         # Break in worksheet lines
         dwks39 = dwks19 + dwks20 + dwks28 + dwks31 + dwks37
         dwks40 = dwks1 - dwks39
@@ -83,7 +86,6 @@ class regular_tax_before_credits(Variable):
 
         # Compute regular tax using bracket rates and thresholds
         reg_taxinc = max_(0, dwks19)
-        p = parameters(period).gov.irs.income
         bracket_tops = p.bracket.thresholds
         bracket_rates = p.bracket.rates
         reg_tax = 0

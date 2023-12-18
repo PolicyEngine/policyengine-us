@@ -4,6 +4,9 @@ from .winship import create_eitc_winship_reform
 from .dc_tax_threshold_joint_ratio import (
     create_dc_tax_threshold_joint_ratio_reform,
 )
+from .congress.romney.family_security_act import (
+    create_remove_head_of_household_reform,
+)
 from .cbo.payroll import (
     create_increase_taxable_earnings_for_social_security_reform,
 )
@@ -20,6 +23,9 @@ def create_structural_reforms_from_parameters(parameters, period):
     dc_tax_threshold_joint_ratio_reform = (
         create_dc_tax_threshold_joint_ratio_reform(parameters, period)
     )
+    remove_head_of_household = create_remove_head_of_household_reform(
+        parameters, period
+    )
     increase_taxable_earnings_for_social_security_reform = (
         create_increase_taxable_earnings_for_social_security_reform(
             parameters, period
@@ -31,6 +37,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         winship_reform,
         dc_kccatc_reform,
         dc_tax_threshold_joint_ratio_reform,
+        remove_head_of_household,
         increase_taxable_earnings_for_social_security_reform,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
