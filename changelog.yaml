@@ -5319,3 +5319,129 @@
     added:
     - Arkansas itemized deductions.
   date: 2023-12-11 16:19:00
+- bump: minor
+  changes:
+    added:
+    - California CARE and FERA integration tests.
+  date: 2023-12-12 04:40:40
+- bump: minor
+  changes:
+    added:
+    - California CalWORKs.
+  date: 2023-12-12 16:17:08
+- bump: patch
+  changes:
+    fixed:
+    - South Carolina senior exemption.
+  date: 2023-12-12 19:08:33
+- bump: minor
+  changes:
+    fixed:
+    - Connecticut alternative minimum tax.
+  date: 2023-12-12 19:14:28
+- bump: minor
+  changes:
+    added:
+    - Idaho 2023 income tax rate.
+  date: 2023-12-13 23:49:32
+- bump: patch
+  changes:
+    fixed:
+    - Arizona AGI long-term capital gains subtraction.
+  date: 2023-12-13 23:57:10
+- bump: minor
+  changes:
+    added:
+    - Montana federal income tax deduction.
+  date: 2023-12-14 17:57:39
+- bump: minor
+  changes:
+    added:
+    - Idaho retirement benefit deductions.
+  date: 2023-12-14 18:21:47
+- bump: minor
+  changes:
+    added:
+    - Alabama adjusted gross income.
+  date: 2023-12-14 18:51:52
+- bump: patch
+  changes:
+    fixes:
+    - Maine child care credit format.
+  date: 2023-12-14 19:03:15
+- bump: minor
+  changes:
+    added:
+    - Alabama income tax variable formula.
+  date: 2023-12-15 12:21:47
+- bump: patch
+  changes:
+    fixed:
+    - Connecticut pension subtraction.
+  date: 2023-12-15 14:22:33
+- bump: minor
+  changes:
+    added:
+    - Montana social security benefit adjustment.
+  date: 2023-12-15 14:37:23
+- bump: patch
+  changes:
+    fixed:
+    - Alabama standard deduction.
+  date: 2023-12-15 14:43:19
+- bump: minor
+  changes:
+    added:
+    - Illinois 2022 personal exemption amount.
+  date: 2023-12-15 16:27:51
+- bump: patch
+  changes:
+    fixed:
+    - Michigan standard deduction calculation.
+  date: 2023-12-15 17:16:18
+- bump: patch
+  changes:
+    added:
+    - Alabama dependent exemption.
+  date: 2023-12-15 19:35:40
+- bump: minor
+  changes:
+    added:
+    - Massachusetts 2023 child and dependent tax credit rules.
+  date: 2023-12-16 03:36:40
+- bump: patch
+  changes:
+    fixed:
+    - Set WIC take-up deterministically for individual simulations.
+  date: 2023-12-16 18:18:33
+- bump: patch
+  changes:
+    fixed:
+    - Bump policyengine-core to capture random microsimulation bug fixes.
+  date: 2023-12-16 18:54:42
+- bump: patch
+  changes:
+    fixed:
+    - Alabama federal tax deduction.
+  date: 2023-12-17 23:52:20
+- bump: minor
+  changes:
+    added:
+    - Reform for repealing head of household filing status, as Senator Romney proposed
+      in his Family Security Act.
+  date: 2023-12-18 01:50:30
+- bump: patch
+  changes:
+    fixed:
+    - Import all FilingStatus values when repealing head of household.
+  date: 2023-12-18 04:09:27
+- bump: patch
+  changes:
+    fixes:
+    - Parameterized 25% of the Alternative Minimum Tax calculation.
+  date: 2023-12-18 16:33:00
+- bump: patch
+  changes:
+    fixed:
+    - Alabama capital gains inclusion in AGI.
+  date: 2023-12-18 20:13:09
