@@ -15,10 +15,14 @@ class ky_taxable_income_joint(Variable):
         ky_agi = person("ky_agi", period)
         standard_deduction = person("ky_standard_deduction", period)
         itemized_deductions = person("ky_itemized_deductions", period)
-        
+
         head_agi = is_head * person.tax_unit.sum(ky_agi)
-        head_standard_deduction = is_head * person.tax_unit.sum(standard_deduction)
-        head_itemized_deductions = is_head * person.tax_unit.sum(itemized_deductions)
+        head_standard_deduction = is_head * person.tax_unit.sum(
+            standard_deduction
+        )
+        head_itemized_deductions = is_head * person.tax_unit.sum(
+            itemized_deductions
+        )
         # Assume that filers itemize if itemized deductions exceed the standard deduction.
         # They do not need to follow their federal itemization choice.
         deduction = max_(head_standard_deduction, head_itemized_deductions)
