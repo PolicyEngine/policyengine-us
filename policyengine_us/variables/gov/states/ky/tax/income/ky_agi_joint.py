@@ -12,9 +12,11 @@ class ky_agi_joint(Variable):
 
     def formula(person, period, parameters):
         is_head = person("is_tax_unit_head", period)
-        additions = person("ky_additions_joint", period)
+        additions = person(
+            "ky_additions_joint", period
+        )  # Is ky_additions_joint enough?
         agi = person.tax_unit("adjusted_gross_income", period)
-        subtractions = person("ky_subtractions_joint", period)
+        subtractions = person("ky_subtractions_joint", period)  # similarly
 
         head_agi = is_head * person.tax_unit.sum(agi)
         head_additions = is_head * person.tax_unit.sum(additions)
