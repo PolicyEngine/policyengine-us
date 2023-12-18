@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.584.1] - 2023-12-18 04:09:27
+
+### Fixed
+
+- Import all FilingStatus values when repealing head of household.
+
 ## [0.584.0] - 2023-12-18 01:50:30
 
 ### Added
@@ -6415,6 +6421,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.584.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.584.0...0.584.1
 [0.584.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.583.3...0.584.0
 [0.583.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.583.2...0.583.3
 [0.583.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.583.1...0.583.2
