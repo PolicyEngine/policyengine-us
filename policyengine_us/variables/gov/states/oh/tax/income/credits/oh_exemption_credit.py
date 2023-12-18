@@ -17,7 +17,8 @@ class oh_exemption_credit(Variable):
         personal_exemptions = tax_unit("oh_personal_exemptions", period)
         # Per tax form, amount can be negative
         modified_agi = agi - personal_exemptions
+        amount_per_exemption = p.amount.calc(modified_agi, right=True)
 
         exemptions = tax_unit("exemptions_count", period)
 
-        return p.amount.calc(modified_agi) * exemptions
+        return amount_per_exemption * exemptions
