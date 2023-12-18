@@ -1,13 +1,10 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.household.demographic.tax_unit.filing_status import (
+    FilingStatus,
+)
 
 
 def create_remove_head_of_household() -> Reform:
-    class FilingStatus(Enum):
-        SINGLE = "Single"
-        JOINT = "Joint"
-        SEPARATE = "Separate"
-        WIDOW = "Widow(er)"
-
     class filing_status(Variable):
         value_type = Enum
         entity = TaxUnit
