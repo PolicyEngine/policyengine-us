@@ -1,5 +1,6 @@
 from policyengine_us.model_api import *
 
+
 def create_end_entrenched_poverty_credit() -> Reform:
     class end_entrenched_poverty_credit(Variable):
         value_type = float
@@ -14,12 +15,14 @@ def create_end_entrenched_poverty_credit() -> Reform:
             income = tax_unit.household("household_net_income", period)
             federal_poverty_guidelines = tax_unit("tax_unit_fpg", period)
             children = tax_unit("tax_unit_children", period)
-            p = parameters(period).gov.contrib.scott_budow.end_entrenched_poverty.amount
+            p = parameters(
+                period
+            ).gov.contrib.scott_budow.end_entrenched_poverty.amount
             fpg_ratio = income / federal_poverty_guidelines
             children_amount = p.child.calc(fpg_ratio) * children
             adult_amount = p.adult.calc(fpg_ratio)
             return children_amount + adult_amount
-    
+
     class ny_refundable_credits(Variable):
         value_type = float
         entity = TaxUnit
@@ -29,8 +32,14 @@ def create_end_entrenched_poverty_credit() -> Reform:
         defined_for = StateCode.NY
 
         def formula(tax_unit, period, parameters):
-            old_credits = add(tax_unit, period, parameters(period).gov.states.ny.tax.income.credits.refundable)
-            end_entrenched_poverty = tax_unit("end_entrenched_poverty_credit", period)
+            old_credits = add(
+                tax_unit,
+                period,
+                parameters(period).gov.states.ny.tax.income.credits.refundable,
+            )
+            end_entrenched_poverty = tax_unit(
+                "end_entrenched_poverty_credit", period
+            )
             return old_credits + end_entrenched_poverty
 
     class reform(Reform):
@@ -40,13 +49,16 @@ def create_end_entrenched_poverty_credit() -> Reform:
 
     return reform
 
+
 def create_end_entrenched_poverty_credit_reform(
     parameters, period, bypass: bool = False
 ):
     if bypass:
         return create_end_entrenched_poverty_credit()
 
-    p = parameters(period).gov.contrib.scott_budow.end_entrenched_poverty.amount
+    p = parameters(
+        period
+    ).gov.contrib.scott_budow.end_entrenched_poverty.amount
 
     if p.child > 0:
         return create_end_entrenched_poverty_credit()

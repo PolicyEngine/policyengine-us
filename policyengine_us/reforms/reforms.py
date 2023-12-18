@@ -10,7 +10,9 @@ from .congress.romney.family_security_act import (
 from .cbo.payroll import (
     create_increase_taxable_earnings_for_social_security_reform,
 )
-from .scott_budow.end_entrenched_poverty import (create_end_entrenched_poverty_credit_reform,)
+from .scott_budow.end_entrenched_poverty import (
+    create_end_entrenched_poverty_credit_reform,
+)
 from policyengine_core.reforms import Reform
 import warnings
 
@@ -32,7 +34,9 @@ def create_structural_reforms_from_parameters(parameters, period):
             parameters, period
         )
     )
-    end_entrenched_poverty_credit = (create_end_entrenched_poverty_credit_reform(parameters, period))
+    end_entrenched_poverty_credit = (
+        create_end_entrenched_poverty_credit_reform(parameters, period)
+    )
 
     reforms = [
         afa_reform,

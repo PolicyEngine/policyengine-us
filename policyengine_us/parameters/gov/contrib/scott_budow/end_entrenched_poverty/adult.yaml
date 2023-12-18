@@ -1,9 +1,9 @@
-description: New York provides cash assistance for each child living under the poverty line of this amount, under Scott Budow's end entrenched poverty proposal.
+description: New York provides cash assistance for each adult living under the poverty line of this amount, under Scott Budow's end entrenched poverty proposal.
   type: single_amount
   threshold_unit: currency-USD
   amount_unit: /1
   period: month
-  label: New York Scott Budow end entrenched poverty child amount
+  label: New York Scott Budow end entrenched poverty adult amount
   reference:
     - title: Scott Budow End Entrenched Poverty
       href: https://www.scottbudow.com/issues?id=f5b39b46-f3ca-4fc8-a546-9229dbfbd487
@@ -11,8 +11,9 @@ brackets:
   - threshold:
       2022-01-01: 0
     amount:
-      2022-01-01: 0 # proposal includes $300
+      2022-01-01: 0 # proposal includes $100
   - threshold:
-      2022-01-01: 1
+      2022-01-01: 2
     amount:
       2022-01-01: 0
+
