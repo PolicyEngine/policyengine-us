@@ -14,13 +14,10 @@ class wv_senior_citizen_disability_deduction_person(Variable):
             period
         ).gov.states.wv.tax.income.subtractions.senior_citizen_disability_deduction
 
-        wv_agi_person = person("wv_agi_person", period)
-        wv_subtractions = person(
-            "wv_senior_citizen_disability_deduction_subtractions", period
-        )
-        income_modified = min_(p.cap, wv_agi_person - wv_subtractions)
-        wv_total_modifications = person(
+        wv_agi_person = person("adjusted_gross_income_person", period)
+        capped_agi = min_(p.cap, agi_person)
+        total_modifications = person(
             "wv_senior_citizen_disability_deduction_total_modifications",
             period,
         )
-        return max_(0, income_modified - wv_total_modifications)
+        return max_(0, capped_agi - total_modifications)

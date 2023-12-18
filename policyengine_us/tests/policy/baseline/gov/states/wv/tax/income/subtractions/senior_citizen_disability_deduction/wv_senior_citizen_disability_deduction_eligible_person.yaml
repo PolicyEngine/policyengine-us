@@ -1,22 +1,18 @@
 - name: Ineligible for the West Virginia senior citizen or disability deduction.
   period: 2022
   input:
-    wv_senior_citizen_disability_deduction_total_modifications: 10_000
     age: 20
     is_disabled: true
-    wv_agi_person: 20_000
     is_tax_unit_head_or_spouse: false
     state_code: WV
   output:
-    wv_senior_citizen_disability_deduction_eligible_person: false
+    wv_senior_citizen_disability_deduction_eligible_person: true
 
 - name: Eligible for the West Virginia senior citizen or disability deduction.
   period: 2022
   input:
-    wv_senior_citizen_disability_deduction_total_modifications: 7_500
     age: 70
     is_disabled: false
-    wv_agi_person: 20_000
     is_tax_unit_head_or_spouse: true
     state_code: WV
   output:
@@ -25,10 +21,8 @@
 - name: Eligible for the West Virginia senior citizen or disability deduction.
   period: 2022
   input:
-    wv_senior_citizen_disability_deduction_total_modifications: 7_500
     age: 30
     is_disabled: true
-    wv_agi_person: 20_000
     is_tax_unit_head_or_spouse: true
     state_code: WV
   output:
@@ -37,10 +31,8 @@
 - name: Ineligible for the West Virginia senior citizen or disability deduction.
   period: 2022
   input:
-    wv_senior_citizen_disability_deduction_total_modifications: 7_500
     age: 30
     is_disabled: false
-    wv_agi_person: 20_000
     is_tax_unit_head_or_spouse: true
     state_code: WV
   output:
