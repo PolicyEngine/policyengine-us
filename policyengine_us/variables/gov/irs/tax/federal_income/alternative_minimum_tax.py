@@ -82,7 +82,8 @@ class regular_tax_before_credits(Variable):
         # Break in worksheet lines
         dwks39 = dwks19 + dwks20 + dwks28 + dwks31 + dwks37
         dwks40 = dwks1 - dwks39
-        dwks41 = 0.28 * dwks40
+        # dwks41 = 0.28 * dwks40
+        dwsk41 = p.bracket.thresholds[2] * dwks40
 
         # Compute regular tax using bracket rates and thresholds
         reg_taxinc = max_(0, dwks19)
@@ -155,9 +156,9 @@ class alternative_minimum_tax(Variable):
             1.0,
         )
         amount_over_threshold = (
-            line30 - brackets.thresholds["1"] * bracket_fraction
+            line30 - brackets.thresholds[0] * bracket_fraction
         )
-        line3163 = brackets.rates["1"] * line30 + brackets.rates["2"] * max_(
+        line3163 = brackets.amounts[0] * line30 + brackets.amounts[2] * max_(
             0, amount_over_threshold
         )
         dwks10, dwks13, dwks14, dwks19, e24515 = [
@@ -191,11 +192,11 @@ class alternative_minimum_tax(Variable):
         line40 = min_(line30, line39)
         line41 = max_(0, line30 - line40)
         amount_over_threshold = max_(
-            0, line41 - amt.brackets.thresholds["1"] * bracket_fraction
+            0, line41 - amt.brackets.thresholds[0] * bracket_fraction
         )
         line42 = (
-            amt.brackets.rates["1"] * line41
-            + amt.brackets.rates["2"] * amount_over_threshold
+            amt.brackets.amounts[0] * line41
+            + amt.brackets.amounts[2] * amount_over_threshold
         )
         line44 = dwks14
         cg = amt.capital_gains.brackets
