@@ -10,9 +10,6 @@ class id_pbf_requirement(Variable):
     defined_for = StateCode.ID
 
     def formula(tax_unit, period, parameters):
-        # spm_unit = tax_unit.spm_unit
-        # p = parameters(period).gov.states.id.tax.income.other_taxes.pbf
-
         # eligible if income less than filing status specified amount
         income_ineligible = (
             tax_unit("id_income_tax_before_non_refundable_credits", period)
@@ -20,12 +17,11 @@ class id_pbf_requirement(Variable):
         )
 
         # eligible if receiving public assistance tanf
-        tanf_received = tax_unit("tanf", period)
-        tanf_ineligible = tanf_received > 0
+        tanf_received = tax_unit.spm_unit("tanf", period) > 0
 
         # eligible if head or spouse is blind
         blind_head = tax_unit("blind_head", period)
         blind_spouse = tax_unit("blind_spouse", period)
         blind_ineligible = blind_head | blind_spouse
 
-        return ~income_ineligible & ~tanf_ineligible & ~blind_ineligible
+        return ~income_ineligible & ~tanf_received & ~blind_ineligible

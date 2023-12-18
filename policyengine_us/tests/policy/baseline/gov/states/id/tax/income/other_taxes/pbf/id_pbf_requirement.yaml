@@ -1,22 +1,87 @@
-- name: Eligible
+- name: Not required due to lower income
   period: 2021
   input:
-    id_income_tax_before_non_refundable_credits: 500
-    tanf: 0
-    blind_head: false
-    blind_spouse: false
-    state_code: ID
+    people:
+      p1: {}
+    tax_units:
+      tax_unit:
+        members: [p1]
+        id_income_tax_before_non_refundable_credits: 0
+        blind_head: false
+        blind_spouse: false
+    spm_units:
+      spm_unit: 
+        tanf: 0
+        members: [p1]
+    households:
+      household:
+        members: [p1]
+        state_code: ID
+  output:
+    id_pbf_requirement: false
+
+- name: All required
+  period: 2021
+  input:
+    people:
+      p1: {}
+    tax_units:
+      tax_unit:
+        members: [p1]
+        id_income_tax_before_non_refundable_credits: 500
+        blind_head: false
+        blind_spouse: false
+    spm_units:
+      spm_unit: 
+        tanf: 0
+        members: [p1]
+    households:
+      household:
+        members: [p1]
+        state_code: ID
   output:
     id_pbf_requirement: true
 
-
-- name: Income not eligible
+- name: Blind not required 
   period: 2021
   input:
-    id_income_tax_before_non_refundable_credits: 0
-    tanf: 0
-    blind_head: false
-    blind_spouse: false
-    state_code: ID
+    people:
+      p1: {}
+    tax_units:
+      tax_unit:
+        members: [p1]
+        id_income_tax_before_non_refundable_credits: 500
+        blind_head: true
+        blind_spouse: false
+    spm_units:
+      spm_unit: 
+        tanf: 0
+        members: [p1]
+    households:
+      household:
+        members: [p1]
+        state_code: ID
+  output:
+    id_pbf_requirement: false
+
+- name: Not required if receiving tanf 
+  period: 2021
+  input:
+    people:
+      p1: {}
+    tax_units:
+      tax_unit:
+        members: [p1]
+        id_income_tax_before_non_refundable_credits: 500
+        blind_head: false
+        blind_spouse: false
+    spm_units:
+      spm_unit: 
+        tanf: 1
+        members: [p1]
+    households:
+      household:
+        members: [p1]
+        state_code: ID
   output:
     id_pbf_requirement: false
