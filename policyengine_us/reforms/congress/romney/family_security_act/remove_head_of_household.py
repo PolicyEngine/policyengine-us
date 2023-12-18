@@ -22,11 +22,7 @@ def create_remove_head_of_household() -> Reform:
             is_separated = tax_unit.any(person("is_separated", period))
             is_widowed = tax_unit.any(person("is_widowed", period))
             return select(
-                [
-                    has_spouse,
-                    is_separated,
-                    is_widowed,
-                ],
+                [has_spouse, is_separated, is_widowed],
                 [
                     FilingStatus.JOINT,
                     FilingStatus.SEPARATE,
