@@ -6,8 +6,7 @@ class ms_files_separately(Variable):
     entity = TaxUnit
     label = "married couple files separately on Mississippi tax return"
     definition_period = YEAR
-    reference = (
-    )
+    reference = ()
     defined_for = StateCode.MS
 
     def formula(tax_unit, period, parameters):

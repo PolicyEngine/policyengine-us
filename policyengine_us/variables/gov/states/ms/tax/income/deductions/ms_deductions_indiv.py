@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ms_deductions_joint(Variable):
+class ms_deductions_indiv(Variable):
     value_type = float
     entity = TaxUnit
     label = "Mississippi deductions filing jointly"
@@ -15,6 +15,6 @@ class ms_deductions_joint(Variable):
 
     def formula(tax_unit, period, parameters):
         return max_(
-            tax_unit("ms_standard_deduction", period),
-            tax_unit("ms_itemized_deductions", period),
+            add(tax_unit, period, ["ms_standard_deduction_indiv"]),
+            tax_unit("ms_itemized_deductions_indiv", period),
         )

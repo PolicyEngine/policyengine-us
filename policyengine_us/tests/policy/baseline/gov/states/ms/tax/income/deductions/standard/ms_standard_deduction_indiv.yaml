@@ -1,0 +1,19 @@
+- name: MS Standard deduction joint unit test 1
+  absolute_error_margin: 0.01
+  period: 2020
+  input:
+    filing_status: JOINT
+    is_tax_unit_head: true
+    state_code: MS
+  output:
+    ms_standard_deduction_indiv: 4_600
+
+- name: MS Standard deduction joint unit test 1
+  absolute_error_margin: 0.01
+  period: 2020
+  input:
+    filing_status: JOINT
+    is_tax_unit_head: false
+    state_code: MS
+  output:
+    ms_standard_deduction_indiv: 0

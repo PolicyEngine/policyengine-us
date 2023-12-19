@@ -13,9 +13,11 @@ class ms_income_tax_before_credits(Variable):
         filing_separately = tax_unit("ms_files_separately", period)
         income_separate = add(tax_unit, period, ["ms_taxable_income_indiv"])
         income_joint = tax_unit("ms_taxable_income_joint", period)
-        
-        applicable_income = where(filing_separately, income_separate, income_joint)
+
+        applicable_income = where(
+            filing_separately, income_separate, income_joint
+        )
 
         rate = parameters(period).gov.states.ms.tax.income.rate
-        
+
         return rate.calc(applicable_income)

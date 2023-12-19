@@ -1,0 +1,17 @@
+- name: MS deductions unit test 1
+  period: 2020
+  input:
+    ms_standard_deduction_joint: 10_000
+    ms_itemized_deductions_joint: 9_000
+    state_code: MS
+  output:
+    ms_deductions_joint: 10_000
+
+- name: MS deductions unit test 2
+  period: 2020
+  input:
+    ms_standard_deduction_joint: 9_000
+    ms_itemized_deductions_joint: 9_002
+    state_code: MS
+  output:
+    ms_deductions_joint: 9_002

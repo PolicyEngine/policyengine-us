@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ms_standard_deduction_join(Variable):
+class ms_standard_deduction_joint(Variable):
     value_type = float
     entity = TaxUnit
     label = "Mississippi personal standard deduction when married couples file jointly"

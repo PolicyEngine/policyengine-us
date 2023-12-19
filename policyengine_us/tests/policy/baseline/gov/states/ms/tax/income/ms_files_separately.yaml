@@ -1,0 +1,19 @@
+- name: MS filing seperate test 1
+  absolute_error_margin: 0.01
+  period: 2020
+  input:
+    state_code: MS
+    ms_taxable_income_indiv: 5_000
+    ms_taxable_income_joint: 3_000
+  output:
+    ms_files_separately: false
+  
+- name: MS filing seperate test 2
+  absolute_error_margin: 0.01
+  period: 2020
+  input:
+    state_code: MS
+    ms_taxable_income_indiv: 3_000
+    ms_taxable_income_joint: 5_000
+  output:
+    ms_files_separately: true
