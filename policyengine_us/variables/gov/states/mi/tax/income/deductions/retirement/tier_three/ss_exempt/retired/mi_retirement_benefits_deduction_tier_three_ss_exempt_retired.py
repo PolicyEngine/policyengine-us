@@ -40,6 +40,21 @@ class mi_retirement_benefits_deduction_tier_three_ss_exempt_retired(Variable):
             default=0,
         )
 
-        return min_(
+        base_amount = min_(
             tax_unit.sum(uncapped_pension_income * is_head_or_spouse), cap
+        )  # Line 9
+
+        military_retirement_pay_eligible = (
+            tax_unit.sum(person("military_retirement_pay", period)) > 0
         )
+
+        tier_one_amount = tax_unit(
+            "mi_retirement_benefits_deduction_tier_one_amount",
+            period,
+        )  # Line 8
+
+        return where(
+            military_retirement_pay_eligible,
+            min_(base_amount, tier_one_amount),
+            base_amount,
+        )  # Line 10
