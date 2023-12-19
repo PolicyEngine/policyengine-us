@@ -17,5 +17,9 @@ class ms_agi_indiv(Variable):
     adds = "gov.states.ms.tax.income.income_sources"
     subtracts = ["ms_agi_adjustments"]
 
-
-# TODO: make this a formula and add head or spouse
+    def formula(person, period, parameters):
+        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+        ms_agi = person.tax_unit("ms_agi_joint", period)
+        # Per the atx form, the exemption amount is split in half between the head
+        # and the spouse of the household
+        return head_or_spouse * (0.5 * ms_agi)

@@ -1,7 +1,19 @@
-- name: MS itemized deduction joint unit test 1
+- name: MS agi unit test 1
   absolute_error_margin: 0.01
   period: 2020
   input:
     state_code: MS
+    is_tax_unit_head_or_spouse: true
+    ms_agi_joint: 5_000
   output:
-    ms_agi_indiv: 4_600
+    ms_agi_indiv: 2_500
+
+- name: MS agi unit test 2
+  absolute_error_margin: 0.01
+  period: 2020
+  input:
+    state_code: MS
+    is_tax_unit_head_or_spouse: false
+    ms_agi_joint: 5_000
+  output:
+    ms_agi_indiv: 0

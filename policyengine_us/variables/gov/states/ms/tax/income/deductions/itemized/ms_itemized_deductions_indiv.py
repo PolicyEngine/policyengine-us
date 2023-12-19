@@ -15,10 +15,12 @@ class ms_itemized_deductions_indiv(Variable):
     )
     defined_for = StateCode.MS
 
-    adds = ["itemized_deductions_less_salt", "misc_deduction"]
+    def formula(person, period, parameters):
+        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+        itemized_exemptions = person.tax_unit(
+            "ms_itemized_deductions_joint", period
+        )
 
-    # Mississippi allows itemized deductions for gaming establishments and gender transition procedures
-    # which are currently not modeled
-
-
-# TODO: head or spouse + formula
+        # Per the atx form, the exemption amount is split in half between the head
+        # and the spouse of the household
+        return head_or_spouse * (0.5 * itemized_exemptions)
