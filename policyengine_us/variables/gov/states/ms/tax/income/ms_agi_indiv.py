@@ -16,3 +16,6 @@ class ms_agi_indiv(Variable):
     # AGI = Income - Total adjustments from gross income
     adds = "gov.states.ms.tax.income.income_sources"
     subtracts = ["ms_agi_adjustments"]
+
+
+# TODO: make this a formula and add head or spouse

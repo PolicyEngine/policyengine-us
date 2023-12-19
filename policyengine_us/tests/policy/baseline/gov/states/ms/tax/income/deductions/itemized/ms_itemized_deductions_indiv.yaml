@@ -1,0 +1,9 @@
+- name: MS itemized deduction joint unit test 1
+  absolute_error_margin: 0.01
+  period: 2020
+  input:
+    filing_status: JOINT
+    is_tax_unit_head: true
+    state_code: MS
+  output:
+    ms_itemized_deduction_indiv: 4_600

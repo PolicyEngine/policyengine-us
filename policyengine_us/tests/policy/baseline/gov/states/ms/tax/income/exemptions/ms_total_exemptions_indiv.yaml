@@ -1,0 +1,17 @@
+- name: Filling combined gets half of total exemptions.
+  period: 2022
+  input:
+    state_code: MS
+    is_tax_unit_head_or_spouse: true
+    ms_total_exemptions_joint: 50_000
+  output:
+    ms_total_exemptions_indiv: 25_000
+  
+- name: Filling combined gets half of total exemptions.
+  period: 2022
+  input:
+    state_code: MS
+    is_tax_unit_head_or_spouse: false
+    ms_total_exemptions_joint: 50_000
+  output:
+    ms_total_exemptions_indiv: 0

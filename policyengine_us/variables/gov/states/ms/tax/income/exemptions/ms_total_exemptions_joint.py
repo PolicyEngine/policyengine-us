@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ms_total_exemptions(Variable):
+class ms_total_exemptions_joint(Variable):
     value_type = float
     entity = TaxUnit
     label = "Mississippi total exemptions"

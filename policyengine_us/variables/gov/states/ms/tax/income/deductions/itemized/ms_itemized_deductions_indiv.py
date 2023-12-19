@@ -19,3 +19,6 @@ class ms_itemized_deductions_indiv(Variable):
 
     # Mississippi allows itemized deductions for gaming establishments and gender transition procedures
     # which are currently not modeled
+
+
+# TODO: head or spouse + formula
