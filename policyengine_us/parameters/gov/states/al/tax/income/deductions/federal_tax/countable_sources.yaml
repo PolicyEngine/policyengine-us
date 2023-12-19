@@ -1,11 +1,12 @@
 description: Alabama counts these sources as income for the federal tax deduction. 
 values:
   2021-01-01:
-    - income_tax_before_credits
+    - income_tax_before_refundable_credits
     - net_investment_income_tax
 
 metadata:
   unit: list
+  period: year
   label: Alabama countable income sources for the federal tax deduction
   reference:
     - title: 2022 Alabama Form 40A Instructions
@@ -14,4 +15,3 @@ metadata:
       href: https://www.revenue.alabama.gov/wp-content/uploads/2022/06/21f40abk.pdf#page=20
     - title: Alabama Code Title 40. Revenue and Taxation § 40-18-35.2
       href: https://www.legislature.state.al.us/legacy/CodeOfAlabama/1975/Coatoc.htm
-   
