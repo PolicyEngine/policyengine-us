@@ -1,0 +1,95 @@
+- name: Kentucky joint ineligible
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        ky_aged_personal_tax_credits: 0
+        ky_blind_personal_tax_credits: 0
+        ky_military_personal_tax_credits: 0
+      person2:
+        ky_aged_personal_tax_credits: 0
+        ky_blind_personal_tax_credits: 0
+        ky_military_personal_tax_credits: 0
+    tax_units:
+      tax_unit:
+        members: [person1,person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1,person2]
+        state_code: KY
+  output:
+    ky_personal_tax_credits_joint: [0, 0]
+
+- name: Kentucky joint eligible
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        ky_aged_personal_tax_credits: 40
+        ky_blind_personal_tax_credits: 0
+        ky_military_personal_tax_credits: 0
+      person2:
+        ky_aged_personal_tax_credits: 0
+        ky_blind_personal_tax_credits: 0
+        ky_military_personal_tax_credits: 20
+    tax_units:
+      tax_unit:
+        members: [person1,person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1,person2]
+        state_code: KY
+  output:
+    ky_personal_tax_credits_joint: [60, 0]
+
+- name: Kentucky joint eligible 2
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        ky_aged_personal_tax_credits: 40
+        ky_blind_personal_tax_credits: 40
+        ky_military_personal_tax_credits: 20
+      person2:
+        ky_aged_personal_tax_credits: 0
+        ky_blind_personal_tax_credits: 20
+        ky_military_personal_tax_credits: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1,person2]
+        state_code: KY
+  output:
+    ky_personal_tax_credits_joint: [120, 0]
+
+- name: Kentucky JOINT eligible
+  period: 2022
+  input:
+    people:
+      person1:
+        ky_aged_personal_tax_credits: 40
+        ky_blind_personal_tax_credits: 0
+        ky_military_personal_tax_credits: 20
+      person2:
+        is_tax_unit_head: true
+        ky_aged_personal_tax_credits: 0
+        ky_blind_personal_tax_credits: 0
+        ky_military_personal_tax_credits: 10
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1,person2]
+        state_code: KY
+  output:
+    ky_personal_tax_credits_joint: [0, 70]

@@ -15,7 +15,7 @@
         members: [person1]
         state_code: KY
   output:
-    ky_personal_tax_credits: 0
+    ky_personal_tax_credits_indiv: 0
 
 - name: Kentucky single eligible - aged
   period: 2022
@@ -34,7 +34,7 @@
         members: [person1]
         state_code: KY
   output:
-    ky_personal_tax_credits: 40
+    ky_personal_tax_credits_indiv: 40
 
 - name: Kentucky single eligible - aged and military
   period: 2022
@@ -53,7 +53,7 @@
         members: [person1]
         state_code: KY
   output:
-    ky_personal_tax_credits: 60
+    ky_personal_tax_credits_indiv: 60
 
 - name: Kentucky single eligible - aged, blind and military
   period: 2022
@@ -72,7 +72,7 @@
         members: [person1]
         state_code: KY
   output:
-    ky_personal_tax_credits: 100
+    ky_personal_tax_credits_indiv: 100
 
 - name: Kentucky joint ineligible
   period: 2022
@@ -95,7 +95,7 @@
         members: [person1,person2]
         state_code: KY
   output:
-    ky_personal_tax_credits: 0
+    ky_personal_tax_credits_indiv: 0
 
 - name: Kentucky joint eligible
   period: 2022
@@ -118,7 +118,7 @@
         members: [person1,person2]
         state_code: KY
   output:
-    ky_personal_tax_credits: 60
+    ky_personal_tax_credits_indiv: [40, 20]
 
 - name: Kentucky joint eligible 2
   period: 2022
@@ -134,14 +134,14 @@
         ky_military_personal_tax_credits: 0
     tax_units:
       tax_unit:
-        members: [person1,person2]
+        members: [person1, person2]
         filing_status: JOINT
     households:
       household:
         members: [person1,person2]
         state_code: KY
   output:
-    ky_personal_tax_credits: 100
+    ky_personal_tax_credits_indiv: [100, 0]
 
 - name: Kentucky separate ineligible
   period: 2022
@@ -164,7 +164,7 @@
         members: [person1,person2]
         state_code: KY
   output:
-    ky_personal_tax_credits: 0
+    ky_personal_tax_credits_indiv: [0, 0]
 
 - name: Kentucky separate eligible
   period: 2022
@@ -187,4 +187,4 @@
         members: [person1,person2]
         state_code: KY
   output:
-    ky_personal_tax_credits: 60
+    ky_personal_tax_credits_indiv: [60, 0]
