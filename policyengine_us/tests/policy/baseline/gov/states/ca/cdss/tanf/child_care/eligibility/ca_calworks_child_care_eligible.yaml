@@ -1,0 +1,35 @@
+- name: A household that is tanf eligible, age eligible, and meet work requirement is eligible.
+  period: 2023
+  input:
+    ca_tanf_eligible: true
+    ca_calworks_child_care_age_eligible: true
+    ca_calworks_child_care_meets_work_requirement: true
+  output:
+    ca_calworks_child_care_eligible: true
+
+- name: A household that is tanf ineligible, age eligible, and meet work requirement is ineligible.
+  period: 2023
+  input:
+    ca_tanf_eligible: false
+    ca_calworks_child_care_age_eligible: true
+    ca_calworks_child_care_meets_work_requirement: true
+  output:
+    ca_calworks_child_care_eligible: false
+
+- name: A household that is tanf ineligible, age ineligible, and meet work requirement is ineligible.
+  period: 2023
+  input:
+    ca_tanf_eligible: true
+    ca_calworks_child_care_age_eligible: false
+    ca_calworks_child_care_meets_work_requirement: true
+  output:
+    ca_calworks_child_care_eligible: false
+
+- name: A household that is tanf ineligible, age eligible, and does not meet work requirement is ineligible.
+  period: 2023
+  input:
+    ca_tanf_eligible: true
+    ca_calworks_child_care_age_eligible: true
+    ca_calworks_child_care_meets_work_requirement: false
+  output:
+    ca_calworks_child_care_eligible: false
