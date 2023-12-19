@@ -15,13 +15,30 @@ class ky_personal_tax_credits_joint(Variable):
         "ky_aged_personal_tax_credits",
         "ky_military_personal_tax_credits",
     ]
+
     def formula(person, period, parameters):
         is_head = person("is_tax_unit_head", period)
-        blind_personal_tax_credits = person("ky_blind_personal_tax_credits", period)
-        aged_personal_tax_credits = person("ky_aged_personal_tax_credits", period)
-        military_personal_tax_credits = person("ky_military_personal_tax_credits", period)
-        head_blind_personal_tax_credits = is_head * person.tax_unit.sum(blind_personal_tax_credits)
-        head_aged_personal_tax_credits = is_head * person.tax_unit.sum(aged_personal_tax_credits)
-        head_military_personal_tax_credits = is_head * person.tax_unit.sum(military_personal_tax_credits)
-        
-        return head_blind_personal_tax_credits + head_aged_personal_tax_credits + head_military_personal_tax_credits
+        blind_personal_tax_credits = person(
+            "ky_blind_personal_tax_credits", period
+        )
+        aged_personal_tax_credits = person(
+            "ky_aged_personal_tax_credits", period
+        )
+        military_personal_tax_credits = person(
+            "ky_military_personal_tax_credits", period
+        )
+        head_blind_personal_tax_credits = is_head * person.tax_unit.sum(
+            blind_personal_tax_credits
+        )
+        head_aged_personal_tax_credits = is_head * person.tax_unit.sum(
+            aged_personal_tax_credits
+        )
+        head_military_personal_tax_credits = is_head * person.tax_unit.sum(
+            military_personal_tax_credits
+        )
+
+        return (
+            head_blind_personal_tax_credits
+            + head_aged_personal_tax_credits
+            + head_military_personal_tax_credits
+        )

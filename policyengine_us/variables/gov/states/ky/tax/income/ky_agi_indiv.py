@@ -14,5 +14,5 @@ class ky_agi_indiv(Variable):
     adds = [
         "ky_additions_indiv",
         "adjusted_gross_income_person",
-    ] 
+    ]
     subtracts = ["ky_subtractions_indiv"]
