@@ -22,7 +22,7 @@
   input:
     state_code: IA
   output:
-    ia_prorate_fraction: 1
+    ia_prorate_fraction: 1c
 
 - name: If no net income, assign to head.
   period: 2021

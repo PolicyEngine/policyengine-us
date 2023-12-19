@@ -11,7 +11,7 @@ class va_prorate_fraction(Variable):
     defined_for = StateCode.VA
 
     def formula(person, period, parameters):
-        agi = person("va_agi_individual", period)
+        agi = person("va_agi_person", period)
         total_agi = person.tax_unit.sum(agi)
         # avoid divide-by-zero warnings when using where() function
         fraction = np.zeros_like(total_agi)

@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class va_agi_individual(Variable):
+class va_agi_person(Variable):
     value_type = float
     entity = Person
     label = "Virginia Adjusted Gross Income (VAGI) for each individual"
