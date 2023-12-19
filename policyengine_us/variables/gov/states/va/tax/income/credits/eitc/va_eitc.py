@@ -19,6 +19,5 @@ class va_eitc(Variable):
         filing_status = tax_unit("filing_status", period)
         is_separate = filing_status == filing_status.possible_values.SEPARATE
         person = tax_unit.members
-        va_eitc_personal = person("va_eitc_indiv", period)
-        return where(is_separate, va_eitc_personal, amount)
-        # return where(claims_refundable, refundable_eitc, non_refundable_eitc)
+        va_eitc_indiv = person("va_eitc_indiv", period)
+        return where(is_separate, va_eitc_indiv, amount)
