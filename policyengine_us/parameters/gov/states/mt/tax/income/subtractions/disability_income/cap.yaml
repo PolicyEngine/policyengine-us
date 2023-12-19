@@ -3,6 +3,8 @@ values:
   2021-01-01: 5_200
 
 metadata:
+  # The legal code uses the term "exclusion" while the tax form uses "exemption".
+  # We adopt the legal code verbiage.
   label: Montana disability income exclusion cap
   period: year
   unit: currency-USD

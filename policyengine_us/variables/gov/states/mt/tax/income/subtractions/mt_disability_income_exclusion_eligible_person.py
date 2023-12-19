@@ -20,7 +20,5 @@ class mt_disability_income_exclusion_eligible_person(Variable):
             "retired_on_total_disability", period
         )
         eligible_retiree = age_eligible & is_retired_on_disability
-        is_disabled = person("is_disabled", period)
-        disabled_retiree = eligible_retiree & is_disabled
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        return disabled_retiree & head_or_spouse
+        return eligible_retiree & head_or_spouse
