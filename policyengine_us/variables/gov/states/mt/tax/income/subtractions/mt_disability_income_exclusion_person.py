@@ -1,6 +1,5 @@
 from policyengine_us.model_api import *
 
-
 class mt_disability_income_exclusion_person(Variable):
     value_type = float
     entity = Person
