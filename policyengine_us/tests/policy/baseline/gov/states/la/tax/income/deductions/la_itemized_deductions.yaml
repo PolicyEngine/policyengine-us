@@ -3,7 +3,7 @@
   input:
     state_code: NY
     standard_deduction: 12_950
-    tax_unit_itemizes: 0
+    tax_unit_itemizes: false
   output:
     la_itemized_deductions: 0
 
@@ -13,7 +13,7 @@
     state_code: LA
     standard_deduction: 12_950
     medical_expense_deduction: 20_000
-    tax_unit_itemizes: 1
+    tax_unit_itemizes: true
   output:
     la_itemized_deductions: 7_050
 
@@ -23,7 +23,7 @@
     state_code: LA
     standard_deduction: 12_950
     medical_expense_deduction: 20_000
-    tax_unit_itemizes: 1
+    tax_unit_itemizes: true
   output:
     la_itemized_deductions: 7_050
 
@@ -34,9 +34,10 @@
     standard_deduction: 12_550
     medical_expense_deduction: 20_000
     itemized_deductions_less_salt: 30_000
-    tax_unit_itemizes: 1
+    tax_unit_itemizes: true
   output:
-    la_itemized_deductions: 17_450         #30_000-12_550
+    la_itemized_deductions: 17_450
+    #30_000-12_550
 
 - name: 2021 Louisiana deduction given Single status, with federal itemized deductions 10_000
   period: 2021
@@ -45,9 +46,10 @@
     standard_deduction: 12_550
     medical_expense_deduction: 20_000
     itemized_deductions_less_salt: 10_000
-    tax_unit_itemizes: 1
+    tax_unit_itemizes: true
   output:
-    la_itemized_deductions: 0     #10_000-12_550<0
+    la_itemized_deductions: 0
+    #10_000-12_550<0
 
 - name: 2022 Louisiana deduction given Head of Household status, with medical expense deduction 20_000
   period: 2022
@@ -55,7 +57,7 @@
     state_code: LA
     standard_deduction: 19_400
     medical_expense_deduction: 20_000
-    tax_unit_itemizes: 1
+    tax_unit_itemizes: true
   output:
     la_itemized_deductions: 600
 
@@ -65,6 +67,6 @@
     state_code: LA
     standard_deduction: 25_900
     medical_expense_deduction: 20_000
-    tax_unit_itemizes: 1
+    tax_unit_itemizes: true
   output:
     la_itemized_deductions: 0
