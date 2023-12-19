@@ -12,6 +12,6 @@ class va_refundable_eitc_if_claimed(Variable):
     defined_for = StateCode.VA
 
     def formula(tax_unit, period, parameters):
-        federal_eitc = tax_unit("earned_income_tax_credit", period)
+        federal_eitc = tax_unit("eitc", period)
         p = parameters(period).gov.states.va.tax.income.credits.eitc.match
         return p.refundable * federal_eitc

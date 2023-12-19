@@ -11,10 +11,12 @@ class va_eitc_indiv(Variable):
     reference = "https://www.tax.virginia.gov/sites/default/files/vatax-pdf/2022-760-instructions.pdf#page=32"
     defined_for = StateCode.VA
 
-    def formula(tax_unit, period, parameters):
-        refundable_eitc = tax_unit("va_refundable_eitc", period)
-        non_refundable_eitc = tax_unit("va_non_refundable_eitc", period)
-        claims_refundable = tax_unit("va_claims_refundable_eitc", period)
+    def formula(person, period, parameters):
+        refundable_eitc = person.tax_unit("va_refundable_eitc", period)
+        non_refundable_eitc = person.tax_unit("va_non_refundable_eitc", period)
+        claims_refundable = person.tax_unit(
+            "va_claims_refundable_eitc", period
+        )
         va_prorate_fraction = person("va_prorate_fraction", period)
         return (
             where(claims_refundable, refundable_eitc, non_refundable_eitc)

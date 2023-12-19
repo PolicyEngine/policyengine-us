@@ -3,8 +3,30 @@
   input:
     va_refundable_eitc: 800
     va_non_refundable_eitc: 400
-    va_claims_refundable_eitc: 1
-    va_prorate_fraction: [0.8, 0.2]
+    va_claims_refundable_eitc: true
+    va_prorate_fraction: 0.8
+    state_code: VA
+  output:
+    va_eitc_indiv: 640
+
+- name: Claims refundable eitc.
+  period: 2021
+  input:
+    people:
+      p1:
+        va_prorate_fraction: 0.8
+      p2:
+        va_prorate_fraction: 0.2
+    tax_units:
+      tax_unit:
+        members: [p1, p2]
+        va_refundable_eitc: 800
+        va_non_refundable_eitc: 400
+        va_claims_refundable_eitc: true
+    households:
+      household:
+        members: [p1, p2]
+        state_code: VA
   output:
     va_eitc_indiv: [640, 160]
 
@@ -13,7 +35,29 @@
   input:
     va_refundable_eitc: 50
     va_non_refundable_eitc: 100
-    va_claims_refundable_eitc: 0
-    va_prorate_fraction: [0.8, 0.2]
+    va_claims_refundable_eitc: false
+    va_prorate_fraction: 0.8
+    state_code: VA
+  output:
+    va_eitc_indiv: 80
+
+- name: Claims refundable eitc.
+  period: 2021
+  input:
+    people:
+      p1:
+        va_prorate_fraction: 0.8
+      p2:
+        va_prorate_fraction: 0.2
+    tax_units:
+      tax_unit:
+        members: [p1, p2]
+        va_refundable_eitc: 50
+        va_non_refundable_eitc: 100
+        va_claims_refundable_eitc: false
+    households:
+      household:
+        members: [p1, p2]
+        state_code: VA
   output:
     va_eitc_indiv: [80, 20]
