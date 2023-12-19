@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class mi_retirement_benefits_deduction_tier_one_amount(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Michigan retirement benefits deduction amount for tier one"
+    label = "Michigan retirement benefits deduction amount for tier one, regardless of eligiblity"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -15,8 +15,11 @@ class mi_retirement_benefits_deduction_tier_one_amount(Variable):
     )
     defined_for = StateCode.MI
 
-    # Modeled after 2022 MICHIGAN Pension Schedule (Form 4884) Section A
+    # This file computes the Michigan Tier one retirement benefits deduction, regardless
+    # of the eligibility, as the amount will be needed for the computation of the tier three
+    # retirement benefits deduction
     def formula(tax_unit, period, parameters):
+        # Modeled after 2022 MICHIGAN Pension Schedule (Form 4884) Section A
         p = parameters(
             period
         ).gov.states.mi.tax.income.deductions.retirement_benefits.tier_one

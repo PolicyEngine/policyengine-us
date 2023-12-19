@@ -13,6 +13,7 @@ class mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired(
         "http://legislature.mi.gov/doc.aspx?mcl-206-30",  # (9)(d)
         "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2022/2022-IIT-Forms/BOOK_MI-1040.pdf#page=17",
         "https://www.michigan.gov/taxes/iit/retirement-and-pension-benefits",
+        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2022/2022-IIT-Forms/4884.pdf",
         "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2022/2022-IIT-Forms/Form-4884-Section-C-worksheet.pdf",
     )
     defined_for = "mi_retirement_benefits_deduction_tier_three_eligible"
@@ -32,13 +33,14 @@ class mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired(
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
 
         # Head and spouse both are eligible to receive an equal deduction amount
-        cap = p.amount * eligible_people
+        cap = p.amount * eligible_people  # Line 9
+        uncapped_head_or_spouse_pension = tax_unit.sum(
+            uncapped_pension_income * is_head_or_spouse
+        )
 
-        base_amount = min_(
-            tax_unit.sum(uncapped_pension_income * is_head_or_spouse), cap
-        )  # Line 9
-
-        military_retirement_pay_eligible = (
+        # If a filer is recieving military retirement pay, the calculation includes the smaller of
+        # the tier one or tier three deduction amount
+        military_retirement_pay_received = (
             tax_unit.sum(person("military_retirement_pay", period)) > 0
         )
 
@@ -46,9 +48,13 @@ class mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired(
             "mi_retirement_benefits_deduction_tier_one_amount",
             period,
         )  # Line 8
-
-        return where(
-            military_retirement_pay_eligible,
-            min_(base_amount, tier_one_amount),
-            base_amount,
+        smaller_of_cap_or_tier_one_amount = min_(
+            cap, tier_one_amount
         )  # Line 10
+
+        eligible_deduction = where(
+            military_retirement_pay_received,
+            smaller_of_cap_or_tier_one_amount,
+            cap,
+        )
+        return min_(uncapped_head_or_spouse_pension, eligible_deduction)

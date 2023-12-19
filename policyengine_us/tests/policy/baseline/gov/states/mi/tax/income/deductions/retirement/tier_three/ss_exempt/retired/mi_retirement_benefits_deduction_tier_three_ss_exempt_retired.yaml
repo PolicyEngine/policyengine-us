@@ -19,7 +19,7 @@
     household:
       members: [person1, person2]
       state_code: MI
-  output: # min(70000 > 20000 + 40000, 80000)
+  output: # min(70000 < 80000, 20000 + 40000)
     mi_retirement_benefits_deduction_tier_three_ss_exempt_retired: 60_000
 
 - name: 2022 joint filer and their spouse with tier 3 retirement and pension benefits, one receive retirement benefits from SSA employment exempt and retired before 2013, smaller than taxable pension income, and with one more household member
@@ -46,7 +46,7 @@
     household:
       members: [person1, person2, person3]
       state_code: MI
-  output: # min(55000 < 40000 + 30000, 60000)
+  output: # min(55000 < 60000, 40000 + 30000)
     mi_retirement_benefits_deduction_tier_three_ss_exempt_retired: 55_000
 
 - name: 2022 single filer with tier 3 retirement and pension benefits, receive retirement benefits from SSA employment exempt and retired before 2013, larger than tier 1 retirement and pension benefits
@@ -67,5 +67,5 @@
     household:
       members: [person1]
       state_code: MI
-  output: # min(35000 < 40000, 10000)
+  output: # min(35000 < 10000, 40000)
     mi_retirement_benefits_deduction_tier_three_ss_exempt_retired: 10_000
