@@ -11,9 +11,9 @@ class id_pbf_requirement(Variable):
 
     def formula(tax_unit, period, parameters):
         # Not required to pay if there is no income tax
-        income_ineligible = (
+        income_tax_payment = (
             tax_unit("id_income_tax_before_non_refundable_credits", period)
-            <= 0
+            > 0
         )
 
         # Not required to pay if receiving public assistance, tanf
@@ -22,6 +22,6 @@ class id_pbf_requirement(Variable):
         # Not required to pay if head or spouse is blind
         blind_head = tax_unit("blind_head", period)
         blind_spouse = tax_unit("blind_spouse", period)
-        blind_ineligible = blind_head | blind_spouse
+        blind_head_or_spouse = blind_head | blind_spouse
 
-        return ~income_ineligible & ~tanf_received & ~blind_ineligible
+        return income_tax_payment & ~tanf_received & ~blind_head_or_spouse
