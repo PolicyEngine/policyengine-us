@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.585.0] - 2023-12-19 11:31:05
+
+### Added
+
+- Income and substitution elasticities of labor supply.
+
 ## [0.584.3] - 2023-12-18 20:13:09
 
 ### Fixed
@@ -6429,6 +6435,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.585.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.584.3...0.585.0
 [0.584.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.584.2...0.584.3
 [0.584.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.584.1...0.584.2
 [0.584.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.584.0...0.584.1
