@@ -130,6 +130,11 @@ class employment_income_behavioral_response(Variable):
                 "employment_income_behavioral_response"
             )
 
-        return person("income_elasticity_lsr", period) + person(
-            "substitution_elasticity_lsr", period
+        return add(
+            person,
+            period,
+            [
+                "income_elasticity_lsr",
+                "substitution_elasticity_lsr",
+            ],
         )
