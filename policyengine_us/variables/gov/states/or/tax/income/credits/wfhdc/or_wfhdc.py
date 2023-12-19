@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class or_wfhdc(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Oregon WFHDC"
+    label = "Oregon working family household and dependent care credit"
     unit = USD
     definition_period = YEAR
     defined_for = "or_wfhdc_eligible"

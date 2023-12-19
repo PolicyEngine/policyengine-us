@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class or_wfhdc_eligible(Variable):
     value_type = bool
     entity = TaxUnit
-    label = "Oregon income eligible for WFHDC"
+    label = "Eligible for the Oregon working family household and dependent care credit"
     unit = USD
     documentation = "Oregon Working Family Household and Dependent Care Credit household eligibility"
     definition_period = YEAR
@@ -29,7 +29,8 @@ class or_wfhdc_eligible(Variable):
         size_eligible = household_size >= p.min_household_size
 
         # Get the income threshold based on household size.
-        income_threshold = p.income_threshold.calc(household_size)
+        fpg = tax_unit("tax_unit_fpg", period)
+        income_threshold = fpg * p.fpg_rate
 
         # Get household income, the larger of federal and Oregon AGI.
         federal_agi = tax_unit("adjusted_gross_income", period)
@@ -45,9 +46,9 @@ class or_wfhdc_eligible(Variable):
         age = person("age", period)
         disabled = person("is_disabled", period)
         head = person("is_tax_unit_head", period)
-        qualifying_individuals = (
-            age <= p.max_qualifying_nondisabled_child_age
-        ) | (disabled & ~head)
+        qualifying_individuals = (age <= p.child_age_threshold) | (
+            disabled & ~head
+        )
         has_qualified_individual = tax_unit.any(qualifying_individuals)
 
         # Determine if the household is eligible for the WFHDC.

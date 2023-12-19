@@ -1,13 +1,13 @@
-description: Oregon qualifies filers for the working family household and dependent care credit with a minimum household size of this number.  
+description: Oregon qualifies children without disabilities for the working family household and dependent care credit at or below this age threshold.  
 metadata:
   type: single_amount
-  unit: people
+  unit: year
   period: year
-  label: Oregon working family household and dependent care credit minimum household size
+  label: Oregon working family household and dependent care credit child age threshold  
   reference:
     - title: Schedule OR-WFHDC form (2021)
       href: https://taxsim.nber.org/historical_state_tax_forms/OR/2021/schedule-or-wfhdc_101-195_2021.pdf
     - title: Schedule OR-WFHDC Oregon Working Family Household and Dependent Care Credit Instructions
       href: https://www.oregon.gov/dor/forms/FormsPubs/schedule-or-wfhdc-inst_101-195-1_2022.pdf#page=1
 values:
-  2015-01-01: 2
+  2015-01-01: 12

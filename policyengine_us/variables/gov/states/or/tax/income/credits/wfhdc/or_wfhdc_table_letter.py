@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class or_wfhdc_table_letter(Variable):
     value_type = str
     entity = TaxUnit
-    label = "Oregon WFHDC percentage table row letter"
+    label = "Oregon working family household and dependent care credit percentage table row letter"
     unit = USD
     definition_period = YEAR
     defined_for = "or_wfhdc_eligible"
@@ -16,7 +16,7 @@ class or_wfhdc_table_letter(Variable):
         p = (
             parameters(period)
             .gov.states["or"]
-            .tax.income.credits.wfhdc.table_letter
+            .tax.income.credits.wfhdc.household_size
         )
 
         # Get the household size.
@@ -39,13 +39,13 @@ class or_wfhdc_table_letter(Variable):
                 household_size >= 8,
             ],
             [
-                p.household_size_2.calc(household_income, right=True),
-                p.household_size_3.calc(household_income, right=True),
-                p.household_size_4.calc(household_income, right=True),
-                p.household_size_5.calc(household_income, right=True),
-                p.household_size_6.calc(household_income, right=True),
-                p.household_size_7.calc(household_income, right=True),
-                p.household_size_8_or_more.calc(household_income, right=True),
+                p.two.calc(household_income, right=True),
+                p.three.calc(household_income, right=True),
+                p.four.calc(household_income, right=True),
+                p.five.calc(household_income, right=True),
+                p.six.calc(household_income, right=True),
+                p.seven.calc(household_income, right=True),
+                p.eight_or_more.calc(household_income, right=True),
             ],
             default="",
         )

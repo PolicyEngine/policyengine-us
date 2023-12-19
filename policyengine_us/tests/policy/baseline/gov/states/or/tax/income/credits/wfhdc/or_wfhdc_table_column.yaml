@@ -1,11 +1,11 @@
-- name: Not eligible for WFHDC should have default value (empty string).
+- name: Not eligible for WFHDC should have default value NONE.
   period: 2022
   absolute_error_margin: 0
   input:
     state_code: OR
     or_wfhdc_eligible: false
   output:
-    or_wfhdc_table_column: [""]
+    or_wfhdc_table_column: ["NONE"]
 
 - name: Youngest child is 5 and not disabled.
   period: 2022
