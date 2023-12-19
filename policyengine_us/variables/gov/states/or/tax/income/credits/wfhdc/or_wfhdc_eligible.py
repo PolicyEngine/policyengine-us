@@ -5,7 +5,6 @@ class or_wfhdc_eligible(Variable):
     value_type = bool
     entity = TaxUnit
     label = "Eligible for the Oregon working family household and dependent care credit"
-    unit = USD
     documentation = "Oregon Working Family Household and Dependent Care Credit household eligibility"
     definition_period = YEAR
     reference = (
