@@ -5,6 +5,298 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.584.3] - 2023-12-18 20:13:09
+
+### Fixed
+
+- Alabama capital gains inclusion in AGI.
+
+## [0.584.2] - 2023-12-18 16:33:00
+
+## [0.584.1] - 2023-12-18 04:09:27
+
+### Fixed
+
+- Import all FilingStatus values when repealing head of household.
+
+## [0.584.0] - 2023-12-18 01:50:30
+
+### Added
+
+- Reform for repealing head of household filing status, as Senator Romney proposed in his Family Security Act.
+
+## [0.583.3] - 2023-12-17 23:52:20
+
+### Fixed
+
+- Alabama federal tax deduction.
+
+## [0.583.2] - 2023-12-16 18:54:42
+
+### Fixed
+
+- Bump policyengine-core to capture random microsimulation bug fixes.
+
+## [0.583.1] - 2023-12-16 18:18:33
+
+### Fixed
+
+- Set WIC take-up deterministically for individual simulations.
+
+## [0.583.0] - 2023-12-16 03:36:40
+
+### Added
+
+- Massachusetts 2023 child and dependent tax credit rules.
+
+## [0.582.2] - 2023-12-15 19:35:40
+
+### Added
+
+- Alabama dependent exemption.
+
+## [0.582.1] - 2023-12-15 17:16:18
+
+### Fixed
+
+- Michigan standard deduction calculation.
+
+## [0.582.0] - 2023-12-15 16:27:51
+
+### Added
+
+- Illinois 2022 personal exemption amount.
+
+## [0.581.1] - 2023-12-15 14:43:19
+
+### Fixed
+
+- Alabama standard deduction.
+
+## [0.581.0] - 2023-12-15 14:37:23
+
+### Added
+
+- Montana social security benefit adjustment.
+
+## [0.580.1] - 2023-12-15 14:22:33
+
+### Fixed
+
+- Connecticut pension subtraction.
+
+## [0.580.0] - 2023-12-15 12:21:47
+
+### Added
+
+- Alabama income tax variable formula.
+
+## [0.579.1] - 2023-12-14 19:03:15
+
+## [0.579.0] - 2023-12-14 18:51:52
+
+### Added
+
+- Alabama adjusted gross income.
+
+## [0.578.0] - 2023-12-14 18:21:47
+
+### Added
+
+- Idaho retirement benefit deductions.
+
+## [0.577.0] - 2023-12-14 17:57:39
+
+### Added
+
+- Montana federal income tax deduction.
+
+## [0.576.1] - 2023-12-13 23:57:10
+
+### Fixed
+
+- Arizona AGI long-term capital gains subtraction.
+
+## [0.576.0] - 2023-12-13 23:49:32
+
+### Added
+
+- Idaho 2023 income tax rate.
+
+## [0.575.0] - 2023-12-12 19:14:28
+
+### Fixed
+
+- Connecticut alternative minimum tax.
+
+## [0.574.1] - 2023-12-12 19:08:33
+
+### Fixed
+
+- South Carolina senior exemption.
+
+## [0.574.0] - 2023-12-12 16:17:08
+
+### Added
+
+- California CalWORKs.
+
+## [0.573.0] - 2023-12-12 04:40:40
+
+### Added
+
+- California CARE and FERA integration tests.
+
+## [0.572.0] - 2023-12-11 16:19:00
+
+### Added
+
+- Arkansas itemized deductions.
+
+## [0.571.2] - 2023-12-11 12:15:20
+
+### Fixed
+
+- Tax abolition bug.
+
+## [0.571.1] - 2023-12-11 04:51:50
+
+### Fixed
+
+- Invalid Montana EITC rate YAML.
+
+## [0.571.0] - 2023-12-11 03:04:06
+
+### Added
+
+- Virginia taxable income.
+
+## [0.570.4] - 2023-12-11 02:21:11
+
+### Fixed
+
+- Montana 2023 earned income tax credit rate.
+
+## [0.570.3] - 2023-12-11 02:10:02
+
+### Fixed
+
+- Los Angeles county General Relief disability eligibility.
+
+## [0.570.2] - 2023-12-11 01:41:43
+
+### Fixed
+
+- Arizona adjusted gross income subtractions.
+
+## [0.570.1] - 2023-12-11 01:32:26
+
+### Fixed
+
+- Montana income tax brackets and rates.
+
+## [0.570.0] - 2023-12-10 19:11:01
+
+### Added
+
+- Montana child tax credit.
+
+## [0.569.0] - 2023-12-10 00:10:48
+
+### Added
+
+- Montana child and dependent care expense deduction.
+
+## [0.568.0] - 2023-12-09 23:29:06
+
+### Added
+
+- Montana taxable income.
+
+## [0.567.0] - 2023-12-09 21:58:18
+
+### Added
+
+- Add formulas for Arizona income tax credits.
+
+## [0.566.0] - 2023-12-09 21:15:31
+
+### Added
+
+- Michigan income tax variable formula.
+
+## [0.565.0] - 2023-12-08 21:11:34
+
+### Changed
+
+- Backdate Alabama parameter values to 2021.
+
+## [0.564.1] - 2023-12-08 11:43:18
+
+### Fixed
+
+- Michigan Miscellaneous subtractions section 22 income.
+
+## [0.564.0] - 2023-12-07 11:59:21
+
+### Added
+
+- Arizona exemptions.
+
+## [0.563.1] - 2023-12-07 03:33:31
+
+### Fixed
+
+- 2021 South Carolina tax bracket parameters.
+
+## [0.563.0] - 2023-12-06 19:28:36
+
+### Added
+
+- Montana old age subtraction.
+
+## [0.562.0] - 2023-12-06 18:10:30
+
+### Added
+
+- Kentucky personal tax credits.
+
+## [0.561.1] - 2023-12-06 18:01:17
+
+### Fixed
+
+- Remove Maine index file.
+
+## [0.561.0] - 2023-12-06 17:41:47
+
+### Added
+
+- Connecticut additions and subtractions.
+
+## [0.560.0] - 2023-12-06 17:21:04
+
+### Changed
+
+- Colorado EITC to 50% for 2023 due to new legislation.
+
+## [0.559.0] - 2023-12-05 18:11:49
+
+### Added
+
+- Michigan additions and subtractions.
+
+## [0.558.1] - 2023-12-05 16:37:05
+
+### Fixed
+
+- Bug in LA general relief.
+
+## [0.558.0] - 2023-12-05 14:34:03
+
+### Added
+
+- Vermont charitable contributions credit.
+
 ## [0.557.0] - 2023-12-05 01:54:33
 
 ### Added
@@ -6137,6 +6429,56 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.584.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.584.2...0.584.3
+[0.584.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.584.1...0.584.2
+[0.584.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.584.0...0.584.1
+[0.584.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.583.3...0.584.0
+[0.583.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.583.2...0.583.3
+[0.583.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.583.1...0.583.2
+[0.583.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.583.0...0.583.1
+[0.583.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.582.2...0.583.0
+[0.582.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.582.1...0.582.2
+[0.582.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.582.0...0.582.1
+[0.582.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.581.1...0.582.0
+[0.581.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.581.0...0.581.1
+[0.581.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.580.1...0.581.0
+[0.580.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.580.0...0.580.1
+[0.580.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.579.1...0.580.0
+[0.579.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.579.0...0.579.1
+[0.579.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.578.0...0.579.0
+[0.578.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.577.0...0.578.0
+[0.577.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.576.1...0.577.0
+[0.576.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.576.0...0.576.1
+[0.576.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.575.0...0.576.0
+[0.575.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.574.1...0.575.0
+[0.574.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.574.0...0.574.1
+[0.574.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.573.0...0.574.0
+[0.573.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.572.0...0.573.0
+[0.572.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.571.2...0.572.0
+[0.571.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.571.1...0.571.2
+[0.571.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.571.0...0.571.1
+[0.571.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.570.4...0.571.0
+[0.570.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.570.3...0.570.4
+[0.570.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.570.2...0.570.3
+[0.570.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.570.1...0.570.2
+[0.570.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.570.0...0.570.1
+[0.570.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.569.0...0.570.0
+[0.569.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.568.0...0.569.0
+[0.568.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.567.0...0.568.0
+[0.567.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.566.0...0.567.0
+[0.566.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.565.0...0.566.0
+[0.565.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.564.1...0.565.0
+[0.564.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.564.0...0.564.1
+[0.564.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.563.1...0.564.0
+[0.563.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.563.0...0.563.1
+[0.563.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.562.0...0.563.0
+[0.562.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.561.1...0.562.0
+[0.561.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.561.0...0.561.1
+[0.561.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.560.0...0.561.0
+[0.560.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.559.0...0.560.0
+[0.559.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.558.1...0.559.0
+[0.558.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.558.0...0.558.1
+[0.558.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.557.0...0.558.0
 [0.557.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.556.0...0.557.0
 [0.556.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.555.1...0.556.0
 [0.555.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.555.0...0.555.1
