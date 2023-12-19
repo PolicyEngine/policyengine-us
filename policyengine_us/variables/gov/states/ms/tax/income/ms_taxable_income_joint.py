@@ -16,5 +16,5 @@ class ms_taxable_income_joint(Variable):
     def formula(tax_unit, period, parameters):
         agi = tax_unit("ms_agi_joint", period)
         deductions = tax_unit("ms_deductions_joint", period)
-        exemptions = tax_unit("ms_total_exemptions_joint", period)
+        exemptions = tax_unit("ms_total_exemptions", period)
         return max_(agi - deductions - exemptions, 0)

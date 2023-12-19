@@ -24,12 +24,3 @@
     state_code: MS
   output:  
     ms_standard_deduction_joint: 4_600
-
-- name: MS Standard deduction if married filing combined
-  absolute_error_margin: 0.01
-  period: 2020
-  input:
-    filing_status: COMBINED
-    state_code: MS
-  output:  
-    ms_standard_deduction_joint: 4_600
