@@ -17,7 +17,7 @@ def create_end_entrenched_poverty_credit() -> Reform:
             children = tax_unit("tax_unit_children", period)
             p = parameters(
                 period
-            ).gov.contrib.scott_budow.end_entrenched_poverty.amount
+            ).gov.contrib.scott_budow.end_entrenched_poverty
             fpg_ratio = income / federal_poverty_guidelines
             children_amount = (p.child.calc(fpg_ratio) * children) * MONTHS_IN_YEAR
             adult_amount = p.adult.calc(fpg_ratio) * MONTHS_IN_YEAR
@@ -58,9 +58,9 @@ def create_end_entrenched_poverty_credit_reform(
 
     p = parameters(
         period
-    ).gov.contrib.scott_budow.end_entrenched_poverty.amount
+    ).gov.contrib.scott_budow.end_entrenched_poverty
 
-    if p.child > 0:
+    if p.child.amounts[0] > 0:
         return create_end_entrenched_poverty_credit()
 
     else:

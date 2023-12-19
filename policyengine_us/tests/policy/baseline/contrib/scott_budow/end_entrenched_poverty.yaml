@@ -1,0 +1,19 @@
+- name: One child single parent under poverty line
+  period: 2022
+  # reforms: policyengine_us.reforms.scott_budow.end_entrenched_poverty.end_entrenched_poverty_credit
+  input:
+    gov.contrib.scott_budow.end_entrenched_poverty.child.amounts[0]: 300
+    people:
+      head: {}
+      child: {}
+    tax_units:
+      tax_unit: 
+        members: [head, child]
+        tax_unit_children: 1
+        tax_unit_fpg: 1_000
+    households:
+      household:
+        members: [head, child]
+        household_net_income: 0
+  output:
+    end_entrenched_poverty_credit: 300
