@@ -7,7 +7,7 @@ class relative_income_change(Variable):
     label = "relative income change"
     unit = "/1"
     definition_period = YEAR
-    requires_computation_after = "labor_supply_response"
+    requires_computation_after = "employment_income_behavioral_response"
 
     def formula(person, period, parameters):
         simulation = person.simulation
@@ -23,14 +23,18 @@ class relative_income_change(Variable):
         net_income = measurement_person.household(
             "household_net_income", period
         )
-        baseline_net_income_c = np.where(
-            baseline_net_income == 0, 1, baseline_net_income
-        )
-        net_income_c = np.where(net_income == 0, 1, net_income)
+        income_change_bound = parameters(
+            period
+        ).gov.simulation.labor_supply_responses.bounds.income_change
+        # _c suffix for "clipped"
+        baseline_net_income_c = np.clip(baseline_net_income, 1, None)
+        net_income_c = np.clip(net_income, 1, None)
         relative_change = (
             net_income_c - baseline_net_income_c
         ) / baseline_net_income_c
-        return np.clip(relative_change, -1, 1)
+        return np.clip(
+            relative_change, -income_change_bound, income_change_bound
+        )
 
 
 class relative_wage_change(Variable):
@@ -39,7 +43,7 @@ class relative_wage_change(Variable):
     label = "relative wage change"
     unit = "/1"
     definition_period = YEAR
-    requires_computation_after = "labor_supply_response"
+    requires_computation_after = "employment_income_behavioral_response"
 
     def formula(person, period, parameters):
         simulation = person.simulation
@@ -52,11 +56,15 @@ class relative_wage_change(Variable):
         baseline_mtr = baseline_person("marginal_tax_rate", period)
         baseline_wage = 1 - baseline_mtr
         mtr = measurement_person("marginal_tax_rate", period)
-        wage = 1 - mtr
-        baseline_wage_c = np.where(baseline_wage == 0, 1, baseline_wage)
-        wage_c = np.where(wage == 0, 1, wage)
-        relative_change = (wage_c - baseline_wage_c) / baseline_wage_c
-        return np.clip(relative_change, -1, 1)
+        wage_rate = 1 - mtr
+        # _c suffix for "clipped"
+        baseline_wage_c = np.where(baseline_wage == 0, 0.01, baseline_wage)
+        wage_rate_c = np.where(wage_rate == 0, 0.01, wage_rate)
+        relative_change = (wage_rate_c - baseline_wage_c) / baseline_wage_c
+        wage_change_bound = parameters(
+            period
+        ).gov.simulation.labor_supply_responses.bounds.effective_wage_rate_change
+        return np.clip(relative_change, -wage_change_bound, wage_change_bound)
 
 
 class income_elasticity_lsr(Variable):
@@ -65,7 +73,7 @@ class income_elasticity_lsr(Variable):
     label = "income elasticity of labor supply response"
     unit = USD
     definition_period = YEAR
-    requires_computation_after = "labor_supply_response"
+    requires_computation_after = "employment_income_behavioral_response"
 
     def formula(person, period, parameters):
         lsr = parameters(period).gov.simulation.labor_supply_responses
@@ -81,7 +89,7 @@ class substitution_elasticity_lsr(Variable):
     label = "substitution elasticity of labor supply response"
     unit = USD
     definition_period = YEAR
-    requires_computation_after = "labor_supply_response"
+    requires_computation_after = "employment_income_behavioral_response"
 
     def formula(person, period, parameters):
         lsr = parameters(period).gov.simulation.labor_supply_responses
@@ -91,7 +99,7 @@ class substitution_elasticity_lsr(Variable):
         return employment_income * wage_change * lsr.substitution_elasticity
 
 
-class labor_supply_response(Variable):
+class employment_income_behavioral_response(Variable):
     value_type = float
     entity = Person
     label = "income-related labor supply change"
@@ -119,7 +127,7 @@ class labor_supply_response(Variable):
 
         for branch in [measurement_branch, baseline_branch]:
             branch.tax_benefit_system.neutralize_variable(
-                "labor_supply_response"
+                "employment_income_behavioral_response"
             )
 
         return person("income_elasticity_lsr", period) + person(

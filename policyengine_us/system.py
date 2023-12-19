@@ -70,7 +70,7 @@ class Simulation(CoreSimulation):
         if reform is not None:
             self.apply_reform(reform)
 
-        # Labour supply responses
+        # Labor supply responses
 
         employment_income = self.get_holder("employment_income")
         for known_period in employment_income.get_known_periods():
@@ -98,7 +98,7 @@ class Microsimulation(CoreMicrosimulation):
         if reform is not None:
             self.apply_reform(reform)
 
-        # Labour supply responses
+        # Labor supply responses
 
         employment_income = self.get_holder("employment_income")
         for known_period in employment_income.get_known_periods():

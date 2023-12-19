@@ -7,7 +7,7 @@ label = "Income"
 class employment_income_before_lsr(Variable):
     value_type = float
     entity = Person
-    label = "employment income before labour supply responses"
+    label = "employment income before labor supply responses"
     unit = USD
     definition_period = YEAR
 
@@ -19,7 +19,10 @@ class employment_income(Variable):
     documentation = "Wages and salaries, including tips and commissions."
     unit = USD
     definition_period = YEAR
-    adds = ["employment_income_before_lsr", "labor_supply_response"]
+    adds = [
+        "employment_income_before_lsr",
+        "employment_income_behavioral_response",
+    ]
 
 
 class self_employment_income(Variable):
