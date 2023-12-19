@@ -15,4 +15,8 @@ class va_eitc_indiv(Variable):
         refundable_eitc = tax_unit("va_refundable_eitc", period)
         non_refundable_eitc = tax_unit("va_non_refundable_eitc", period)
         claims_refundable = tax_unit("va_claims_refundable_eitc", period)
-        return where(claims_refundable, refundable_eitc, non_refundable_eitc) *Person("va_prorate_fraction", period)
+        va_prorate_fraction = person("va_prorate_fraction", period)
+        return (
+            where(claims_refundable, refundable_eitc, non_refundable_eitc)
+            * va_prorate_fraction
+        )

@@ -1,4 +1,4 @@
-- name: VA prorate fraction unit test 1
+- name: Positive income for both the head and the spouse in the household.
   period: 2021
   input:
     people:
@@ -16,13 +16,6 @@
         state_code: VA
   output:
     va_prorate_fraction: [0.2, 0.8]
-
-- name: If no adjusted gross income and single, assign entirely to them as head.
-  period: 2021
-  input:
-    state_code: VA
-  output:
-    va_prorate_fraction: 1
 
 - name: If no adjusted gross income, assign to head.
   period: 2021

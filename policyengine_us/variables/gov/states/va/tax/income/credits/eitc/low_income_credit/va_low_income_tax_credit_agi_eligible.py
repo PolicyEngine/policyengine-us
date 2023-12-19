@@ -6,7 +6,7 @@ class va_low_income_tax_credit_agi_eligible(Variable):
     entity = TaxUnit
     label = "Eligible for the Virginia low income tax credit"
     definition_period = YEAR
-    defined_for = va_low_income_tax_credit_program_elibility
+    defined_for = "va_low_income_tax_credit_program_eligibility"
 
     def formula(tax_unit, period, parameters):
         agi = tax_unit("va_agi", period)

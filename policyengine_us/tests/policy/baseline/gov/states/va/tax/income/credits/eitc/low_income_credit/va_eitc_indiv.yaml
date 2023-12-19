@@ -1,0 +1,19 @@
+- name: Claims refundable eitc.
+  period: 2021
+  input:
+    va_refundable_eitc: 800
+    va_non_refundable_eitc: 400
+    va_claims_refundable_eitc: 1
+    va_prorate_fraction: [0.8, 0.2]
+  output:
+    va_eitc_indiv: [640, 160]
+
+- name: Claims non-refundable eitc.
+  period: 2021
+  input:
+    va_refundable_eitc: 50
+    va_non_refundable_eitc: 100
+    va_claims_refundable_eitc: 0
+    va_prorate_fraction: [0.8, 0.2]
+  output:
+    va_eitc_indiv: [80, 20]

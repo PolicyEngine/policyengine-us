@@ -9,7 +9,7 @@
     va_federal_state_employees_substraction: 0
     va_agi: 0
   output:
-    va_low_income_tax_credit_agi_eligible: false
+    va_low_income_tax_credit_program_eligibility: false
 
 - name: Not eligible for the low income tax credit program because filled for items that disqualify him/her.
   period: 2021
@@ -22,7 +22,7 @@
     va_federal_state_employees_substraction: 0
     va_agi: 0
   output:
-    va_low_income_tax_credit_agi_eligible: false
+    va_low_income_tax_credit_program_eligibility: false
 
 - name: Eligible for the low income tax credit program.
   period: 2021
@@ -35,4 +35,4 @@
     va_federal_state_employees_substraction: 0
     va_agi: 0
   output:
-    va_low_income_tax_credit_agi_eligible: true
+    va_low_income_tax_credit_program_eligibility: true
