@@ -1,0 +1,32 @@
+- name: 2022 deduction
+  period: 2022
+  input:
+    state_code: KY
+  output:
+    ky_standard_deduction_joint: 2_770
+
+- name: 2021 deduction
+  period: 2021
+  input:
+    state_code: KY
+  output:
+    ky_standard_deduction_joint: 2_690
+
+- name: two people, JOINT
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+      person2:
+        is_tax_unit_head: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1,person2]
+        state_code: KY
+  output:
+    ky_standard_deduction_joint: [2_770, 0]

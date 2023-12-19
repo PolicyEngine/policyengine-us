@@ -74,7 +74,7 @@
   output:
     ky_personal_tax_credits_indiv: 100
 
-- name: Kentucky joint ineligible
+- name: Kentucky ineligible
   period: 2022
   input:
     people:
@@ -89,7 +89,6 @@
     tax_units:
       tax_unit:
         members: [person1,person2]
-        filing_status: JOINT
     households:
       household:
         members: [person1,person2]
@@ -97,7 +96,7 @@
   output:
     ky_personal_tax_credits_indiv: 0
 
-- name: Kentucky joint eligible
+- name: Kentucky eligible
   period: 2022
   input:
     people:
@@ -112,7 +111,6 @@
     tax_units:
       tax_unit:
         members: [person1,person2]
-        filing_status: JOINT
     households:
       household:
         members: [person1,person2]
@@ -120,7 +118,7 @@
   output:
     ky_personal_tax_credits_indiv: [40, 20]
 
-- name: Kentucky joint eligible 2
+- name: Kentucky eligible 2
   period: 2022
   input:
     people:
@@ -135,7 +133,6 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
-        filing_status: JOINT
     households:
       household:
         members: [person1,person2]

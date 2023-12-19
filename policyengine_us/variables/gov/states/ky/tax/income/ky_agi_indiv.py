@@ -13,6 +13,6 @@ class ky_agi_indiv(Variable):
     defined_for = StateCode.KY
     adds = [
         "ky_additions_indiv",
-        "adjusted_gross_income",
-    ]  ##### adjusted_gross_income is a TaxUnit variable
+        "adjusted_gross_income_person",
+    ] 
     subtracts = ["ky_subtractions_indiv"]
