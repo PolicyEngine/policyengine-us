@@ -5419,3 +5419,34 @@
     fixed:
     - Bump policyengine-core to capture random microsimulation bug fixes.
   date: 2023-12-16 18:54:42
+- bump: patch
+  changes:
+    fixed:
+    - Alabama federal tax deduction.
+  date: 2023-12-17 23:52:20
+- bump: minor
+  changes:
+    added:
+    - Reform for repealing head of household filing status, as Senator Romney proposed
+      in his Family Security Act.
+  date: 2023-12-18 01:50:30
+- bump: patch
+  changes:
+    fixed:
+    - Import all FilingStatus values when repealing head of household.
+  date: 2023-12-18 04:09:27
+- bump: patch
+  changes:
+    fixes:
+    - Parameterized 25% of the Alternative Minimum Tax calculation.
+  date: 2023-12-18 16:33:00
+- bump: patch
+  changes:
+    fixed:
+    - Alabama capital gains inclusion in AGI.
+  date: 2023-12-18 20:13:09
+- bump: minor
+  changes:
+    added:
+    - Income and substitution elasticities of labor supply.
+  date: 2023-12-19 11:31:05
