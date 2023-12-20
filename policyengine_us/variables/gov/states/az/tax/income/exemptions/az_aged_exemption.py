@@ -11,7 +11,7 @@ class az_aged_exemption(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.az.tax.income.exemptions
-        
+
         age = person("age", period)
         amount = p.aged.calc(age)
 
