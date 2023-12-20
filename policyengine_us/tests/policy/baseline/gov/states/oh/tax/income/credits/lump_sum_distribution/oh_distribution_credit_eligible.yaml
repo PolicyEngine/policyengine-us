@@ -1,4 +1,4 @@
-- name:  Ohio lump sum distribution credit eligibility for filer with modified AGI of 90_000 and form 4972 lump sum distributions of 70
+- name:  Ohio lump sum distribution credit eligibility for filer with modified Adjusted Gross Income of 90_000 and form 4972 lump sum distributions of 70
   period: 2021
   input:
     state_code: OH
@@ -7,7 +7,7 @@
   output:
     oh_distribution_credit_eligible: true
 
-- name:  Ohio lump sum distribution credit eligibility for filer with modified AGI of 100_000 and form 4972 lump sum distributions of 800
+- name:  Ohio lump sum distribution credit eligibility for filer with modified Adjusted Gross Income of 100_000 and form 4972 lump sum distributions of 800
   period: 2021
   input:
     state_code: OH
@@ -16,7 +16,7 @@
   output:
     oh_distribution_credit_eligible: false
 
-- name:  Ohio lump sum distribution credit eligibility for filer with modified AGI of 90_000 and form 4972 lump sum distributions of 0
+- name:  Ohio lump sum distribution credit eligibility for filer with modified Adjusted Gross Income of 90_000 and form 4972 lump sum distributions of 0
   period: 2021
   input:
     state_code: OH
