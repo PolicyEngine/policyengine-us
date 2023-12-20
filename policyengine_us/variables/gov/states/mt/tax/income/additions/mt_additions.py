@@ -3,7 +3,7 @@ from policyengine_us.model_api import *
 
 class mt_additions(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     label = "Montana additions to federal adjusted gross income"
     unit = USD
     definition_period = YEAR

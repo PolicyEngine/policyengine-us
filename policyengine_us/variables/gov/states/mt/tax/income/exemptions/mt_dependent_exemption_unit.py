@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class mt_dependent_exemption_count(Variable):
+class mt_dependent_exemption_unit(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Number of Montana dependent exemptions"
+    label = "Montana dependent exemptions for the tax unit"
     unit = USD
     definition_period = YEAR
     reference = "https://regulations.justia.com/states/montana/department-42/chapter-42-15/subchapter-42-15-4/rule-42-15-403/"
