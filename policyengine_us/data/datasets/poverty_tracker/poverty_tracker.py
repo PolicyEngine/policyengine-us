@@ -91,14 +91,42 @@ class PovertyTracker(Dataset):
         # Download raw data from PovertyTracker website.
         pt = pd.read_csv(url)
 
-        columns_to_rename = {
-            # "imp_qearnhd_tc": "hh_head_earnings", # not currently used
-            # "imp_qearnsp_tc": "spouse_earnings", # not currently used
-            "imp_qage_tc": "age",
-            "qopmres": "income",
-        }
+        # Filter to only 2019 and 2020 (else q16surveyyear is NaN).
+        pt = pt[pt["q16surveyyear"].notnull()].reset_index(drop=True)
 
-        return pt.rename(columns=columns_to_rename)
+        # Other adult and child household income.
+        pt["other_household_income"] = pt[
+            [
+                "imp_q16incothhh_adult_tc",
+                "imp_q16incothhh_child_tc",
+                "imp_q16incothhh_tc",
+            ]
+        ].sum(axis=1)
+
+        # Rename columns.
+        COLUMNS_TO_RENAME = {
+            "q16a3_age_tc": "age",
+            "imp_q16earnhd_tc": "household_head_income",
+            "imp_q16earnsp_tc": "spouse_income",
+            "imp_q16moop_tc": "medical_out_of_pocket_expenses",
+            "imp_q16chwoop_tc": "childcare_and_work_expenses",
+            "imp_q16incsnap_tc": "snap_income",
+            "imp_q16incret_tc": "retirement_income",
+            "imp_q16incdis_tc": "disability_income",
+            "imp_q16incui_tc": "unemployment_income",
+            "q16a4": "respondent_lives_with_others",  # 1/2/97/98/99 Yes/No/NoAnswer/Don't know/Refused
+            # "qopmres": "income",
+        }
+        for i in range(1, 10):
+            COLUMNS_TO_RENAME[f"q16a4_rel{i}"] = f"relationship_to_relative{i}"
+            COLUMNS_TO_RENAME[f"q16a4_age{i}_tc"] = f"age_of_relative{i}"
+
+        pt.rename(columns=COLUMNS_TO_RENAME, inplace=True)
+
+        # Replace 970 (unknown) with 40 (default age)
+        pt["age"] = pt["age"].replace(970, 40)
+
+        return pt.rename(columns=COLUMNS_TO_RENAME)
 
 
 def extract_hh_data(observation: pd.Series) -> dict:
@@ -108,18 +136,20 @@ def extract_hh_data(observation: pd.Series) -> dict:
     """
     relatives_dict = {}
 
-    # If someone(s) else lives with respondent, q16a4 = 1.
-    if observation["q16a4"] != 1:
+    if observation["respondent_lives_with_others"] != 1:
         return relatives_dict
 
     var_number = 1
-    relative_var = "q16a4_rel" + str(var_number)
+    relative_var = f"relationship_to_relative{var_number}"
     dependent_counter = 1
     while pd.notnull(relative_var) and var_number < 10:
         if observation[relative_var] == 1:  # Spouse
-            partner_age = observation[f"q16a4_age{var_number}_tc"]
+            partner_age = observation[f"age_of_relative{var_number}"]
             relatives_dict["your partner"] = {
-                "age": partner_age if partner_age != 970 else 40
+                "age": partner_age if partner_age != 970 else 40,
+                "employment_income": {
+                    TAX_YEAR_STR: observation["spouse_income"]
+                },
             }
 
         elif observation[relative_var] in [
@@ -128,7 +158,7 @@ def extract_hh_data(observation: pd.Series) -> dict:
             5,
             7,
         ]:  # child, stepchild, grandchild, or foster child
-            relative_age = observation[f"q16a4_age{var_number}_tc"]
+            relative_age = observation[f"age_of_relative{var_number}"]
             if relative_age < 18:  # assume only children are dependents
                 relatives_dict[f"dependent{dependent_counter}"] = {
                     "age": relative_age if relative_age != 970 else 40
@@ -149,7 +179,12 @@ def get_hh_situtation(row: pd.Series):
         "people": {
             "you": {
                 "age": {TAX_YEAR_STR: row["age"]},
-                "employment_income": {TAX_YEAR_STR: row["income"]},
+                "employment_income": {
+                    TAX_YEAR_STR: row["household_head_income"]
+                },
+                "medical_out_of_pocket_expenses": {
+                    TAX_YEAR_STR: row["medical_out_of_pocket_expenses"]
+                },
             }
         },
         "families": {"your family": {"members": ["you"]}},
@@ -159,9 +194,11 @@ def get_hh_situtation(row: pd.Series):
             "your household": {
                 "members": [
                     "you",
-                    # "your partner",
-                    # "your first dependent"
-                ]
+                ],
+                "childcare_expenses": {
+                    TAX_YEAR_STR: row["childcare_and_work_expenses"]
+                },
+                "snap": {TAX_YEAR_STR: row["snap_income"]},
             }
         },
         "households": {

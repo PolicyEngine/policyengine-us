@@ -1,0 +1,82 @@
+- name: 2022 single filer with tier 1 retirement and pension benefits and interest, dividends, and capital gains deduction larger than interest, dividends, and capital gains income
+  period: 2022
+  input:
+    people:
+      person1:
+        taxable_pension_income: 10_000
+        military_retirement_pay: 1_000
+        taxable_interest_income: 500
+        dividend_income: 400
+        capital_gains: 100
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        mi_interest_dividends_capital_gains_deduction_eligible: true
+        elderly_disabled_credit: 300
+        members: [person1]
+        filing_status: SINGLE
+    household:
+      members: [person1]
+      state_code: MI
+  output: # 12697 - 10000 - 1000 - 300 = 1397 > 500 + 400 + 100
+    mi_interest_dividends_capital_gains_deduction: 1_000
+
+- name: 2022 joint filer and their spouse with tier 1 retirement and pension benefits and interest, dividends, and capital gains deduction smaller than 0, and with one more household member
+  period: 2022
+  input:
+    people:
+      person1:
+        taxable_pension_income: 40_000
+        military_retirement_pay: 1_000
+        taxable_interest_income: 500
+        dividend_income: 400
+        capital_gains: 100
+        is_tax_unit_head_or_spouse: true
+      person2:
+        taxable_pension_income: 30_000
+        military_retirement_pay: 2_000
+        taxable_interest_income: 500
+        dividend_income: 400
+        capital_gains: 100
+        is_tax_unit_head_or_spouse: true
+      person3:
+        taxable_pension_income: 30_000
+        military_retirement_pay: 2_000
+        taxable_interest_income: 500
+        dividend_income: 400
+        capital_gains: 100
+        is_tax_unit_head_or_spouse: false
+    tax_units:
+      tax_unit:
+        mi_interest_dividends_capital_gains_deduction_eligible: true
+        elderly_disabled_credit: 300
+        members: [person1, person2, person3]
+        filing_status: JOINT
+    household:
+      members: [person1, person2, person3]
+      state_code: MI
+  output: # 25394 - 40000 - 30000 - 1000 - 2000 - 300 < 0
+    mi_interest_dividends_capital_gains_deduction: 0
+
+- name: 2022 single filer with tier 1 retirement and pension benefits and interest, dividends, and capital gains deduction smaller than interest, dividends, and capital gains income
+  period: 2022
+  input:
+    people:
+      person1:
+        taxable_pension_income: 10_000
+        military_retirement_pay: 1_000
+        taxable_interest_income: 5000
+        dividend_income: 400
+        capital_gains: 100
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        mi_interest_dividends_capital_gains_deduction_eligible: true
+        elderly_disabled_credit: 300
+        members: [person1]
+        filing_status: SINGLE
+    household:
+      members: [person1]
+      state_code: MI
+  output: # 12697 - 10000 - 1000 - 300 = 1397 < 5000 + 400 + 100
+    mi_interest_dividends_capital_gains_deduction: 1_397

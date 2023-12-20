@@ -1,0 +1,26 @@
+- name: DSI ineligible
+  period: 2022
+  input:
+    state_code: ME
+    head_is_dependent_elsewhere: true
+    filing_status: JOINT
+  output:
+    me_sales_tax_fairness_credit_eligible: false
+
+- name: Eligible
+  period: 2022
+  input:
+    state_code: ME
+    head_is_dependent_elsewhere: false
+    filing_status: SINGLE
+  output:
+    me_sales_tax_fairness_credit_eligible: true
+
+- name: Filing status ineligible
+  period: 2022
+  input:
+    state_code: ME
+    head_is_dependent_elsewhere: true
+    filing_status: SEPARATE
+  output:
+    me_sales_tax_fairness_credit_eligible: false
