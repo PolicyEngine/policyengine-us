@@ -47,31 +47,21 @@ class vt_retirement_income_exemption(Variable):
         agi = tax_unit("adjusted_gross_income", period)
         # Get which retirement system the filer use
         use_ss = tax_unit_taxable_social_security == chosen_retirement_income
-        use_csrs = vt_csrs_retirement_pay_exclusion == chosen_retirement_income
-        use_military_retirement = (
-            vt_military_retirement_pay_exclusion == chosen_retirement_income
-        )
         # Get which parameter file to use
-        root_p = parameters(
+        p = parameters(
             period
         ).gov.states.vt.tax.income.agi.retirement_income_exemption
-        p = where(
-            use_ss, root_p.social_security.reduction, root_p.csrs.reduction
-        )
-        # List of fully qualified tax unit (SECTION I Q3)
-        fully_qualified = (agi < p.start[filing_status]) & (
-            chosen_retirement_income != 0
-        )
+        subfolder = where(use_ss, "social_security", "csrs")
         # List of partial qualified tax unit(SECTION II)
         partial_qualified = (
-            (agi >= p.start[filing_status])
-            & (agi < p.end[filing_status])
+            (agi >= p[subfolder].reduction.start[filing_status])
+            & (agi < p[subfolder].reduction.end[filing_status])
             & (chosen_retirement_income != 0)
         )
         # Calculate the exemption ratio
-        partial_exemption_ratio = max_(p.end[filing_status] - agi, 0) / (
-            root_p.divisor
-        )
+        partial_exemption_ratio = max_(
+            p[subfolder].reduction.end[filing_status] - agi, 0
+        ) / (p.divisor)
         # Round the exemption ratio to two decimal point
         partial_exemption_ratio = round_(partial_exemption_ratio, 2)
         # The exemption ratio should be below one
@@ -79,7 +69,6 @@ class vt_retirement_income_exemption(Variable):
         # Calculate parital exemption amount
         partial_exemption = chosen_retirement_income * partial_exemption_ratio
         # Return final exemption amount based on eligibility status
-        return select(
-            [partial_qualified, fully_qualified],
-            [partial_exemption, chosen_retirement_income],
+        return where(
+            partial_qualified, partial_exemption, chosen_retirement_income
         )
