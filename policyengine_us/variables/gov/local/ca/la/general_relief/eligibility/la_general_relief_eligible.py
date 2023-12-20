@@ -41,4 +41,4 @@ class la_general_relief_eligible(Variable):
             & net_income_eligible
             & personal_property_eligible
             & immigration_status_eligible
-        ) | disability_eligible
+        )
