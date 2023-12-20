@@ -12,8 +12,7 @@ class id_pbf_requirement(Variable):
     def formula(tax_unit, period, parameters):
         # Not required to pay if there is no income tax
         income_tax_payment = (
-            tax_unit("id_income_tax_before_non_refundable_credits", period)
-            > 0
+            tax_unit("id_income_tax_before_non_refundable_credits", period) > 0
         )
 
         # Not required to pay if receiving public assistance, tanf
