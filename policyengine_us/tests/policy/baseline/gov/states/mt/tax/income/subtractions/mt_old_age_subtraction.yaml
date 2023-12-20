@@ -1,0 +1,15 @@
+- name: Age ineligible
+  period: 2024
+  input:
+    age: 64
+    state_code: MT
+  output: 
+    mt_old_age_subtraction: 0
+
+- name: Age eligible
+  period: 2024
+  input:
+    age: 65
+    state_code: MT
+  output: 
+    mt_old_age_subtraction: 5_500
