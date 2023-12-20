@@ -17,7 +17,10 @@ class mi_exemptions(Variable):
         p = parameters(period).gov.states.mi.tax.income.exemptions
 
         # Personal Exemptions & Stillborn Exemptions
-        personal_exemption = tax_unit("mi_personal_exemptions", period)
+        exemptions = add(
+            tax_unit, period, ["tax_unit_size", "tax_unit_stillborn_children"]
+        )
+        personal_exemption = exemptions * p.personal
 
         # Disabled exemptions
         disabled_people = add(tax_unit, period, ["is_disabled"])

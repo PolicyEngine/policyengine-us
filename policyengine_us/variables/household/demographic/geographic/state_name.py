@@ -11,7 +11,6 @@ class StateName(Enum):
     CA = "California"
     CO = "Colorado"
     CT = "Connecticut"
-    DC = "District of Columbia"
     DE = "Delaware"
     FL = "Florida"
     GA = "Georgia"
@@ -55,6 +54,7 @@ class StateName(Enum):
     WV = "West Virginia"
     WI = "Wisconsin"
     WY = "Wyoming"
+    DC = "District of Columbia"
     # Territories.
     GU = "Guam"
     MP = "Northern Mariana Islands"

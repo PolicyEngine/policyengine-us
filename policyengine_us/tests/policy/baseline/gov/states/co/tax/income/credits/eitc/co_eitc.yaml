@@ -1,4 +1,4 @@
-- name: Colorado matched 10% of EITC in 2021.
+- name: co_eitc unit test 1
   period: 2021
   input:
     eitc: 100
@@ -6,7 +6,7 @@
   output:
     co_eitc: 10
 
-- name: Colorado matched 20% of EITC in 2022.
+- name: co_eitc unit test 2
   period: 2022
   input:
     eitc: 100
@@ -14,18 +14,19 @@
   output:
     co_eitc: 20
 
-- name: Colorado matched 50% of EITC in 2021.
+- name: co_eitc unit test 3
   period: 2023
   input:
     eitc: 100
     state_code: CO
   output:
-    co_eitc: 50
+    co_eitc: 25
 
-- name: Zero EITC -> Zero Colorado EITC.
+- name: co_eitc unit test 4
   period: 2023
   input:
     eitc: 0
     state_code: CO
   output:
     co_eitc: 0
+

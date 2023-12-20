@@ -1,4 +1,29 @@
-- name: is disabled, is not a dependent
+- name: no dependents, is not stillborn parent, not disabled, is not a dependent
+  period: 2022
+  input:
+    tax_unit_size: 1
+    state_code: MI
+  output:
+    mi_exemptions: 5_000
+
+- name: 2 dependents, no stillborn parent, no disabled, is not a dependent
+  period: 2022
+  input:
+    tax_unit_size: 3
+    state_code: MI
+  output: # 5_000 * 3
+    mi_exemptions: 15_000
+
+- name: no dependents, is stillborn parent, not disabled, is not a dependent
+  period: 2022
+  input:
+    tax_unit_size: 1
+    tax_unit_stillborn_children: 1
+    state_code: MI
+  output: # 5_000 + 5_000
+    mi_exemptions: 10_000
+
+- name: no dependents, is not stillborn parent, is disabled, is not a dependent
   period: 2022
   input:
     people:
@@ -6,7 +31,7 @@
         is_disabled: true
     tax_units:
       tax_unit:
-        mi_personal_exemptions: 5_000
+        tax_unit_size: 1
         members: [person1]
     household:
       members: [person1]
@@ -14,7 +39,7 @@
   output: # 5_000 + 2_900
     mi_exemptions: 7_900
 
-- name: is disabled, is disabled veteran, is not a dependent
+- name: no dependents, is not stillborn parent, is disabled, is disabled veteran, is not a dependent
   period: 2022
   input:
     people:
@@ -23,7 +48,7 @@
         is_disabled: true
     tax_units:
       tax_unit:
-        mi_personal_exemptions: 5_000
+        tax_unit_size: 1
         members: [person1]
     household:
       members: [person1]
@@ -31,7 +56,7 @@
   output: # 5_000 + 2_900 + 400
     mi_exemptions: 8_300
 
-- name: 2 people, 2 disabled, 1 disabled veteran, is not a dependent
+- name: 1 dependent, no stillborn parent, 2 disabled, 1 disabled veteran, is not a dependent
   period: 2022
   input:
     people:
@@ -43,30 +68,40 @@
         is_disabled: true
     tax_units:
       tax_unit:
-        mi_personal_exemptions: 10_000
+        tax_unit_size: 2
         members: [person1, person2]
     household:
       members: [person1, person2]
       state_code: MI
-  output: # 10_000 + 2_900 * 2 + 400
+  output: # 5_000 * 2 + 2_900 * 2 + 400
     mi_exemptions: 16_200
 
-- name: 2021 not disabled, is a dependent, single
+- name: no dependents, is not stillborn parent, not disabled, is a dependent, single
   period: 2021
   input:
-    mi_personal_exemptions: 5_000
+    tax_unit_size: 1
     head_is_dependent_elsewhere: true
     filing_status: SINGLE
     state_code: MI
   output: 
     mi_exemptions: 1_500
 
-- name: not disabled, is a dependent, married
+- name: no dependents, is not stillborn parent, not disabled, is a dependent, married
   period: 2021
   input:
-    mi_personal_exemptions: 10_000
+    tax_unit_size: 1
     head_is_dependent_elsewhere: true
     filing_status: JOINT
     state_code: MI
   output: 
     mi_exemptions: 3_000
+
+- name: no dependents, is not stillborn parent, not disabled, is a dependent, single
+  period: 2022
+  input:
+    tax_unit_size: 1
+    head_is_dependent_elsewhere: true
+    filing_status: SINGLE
+    state_code: MI
+  output: 
+    mi_exemptions: 1_500
