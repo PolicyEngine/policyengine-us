@@ -16,5 +16,6 @@ class oh_distribution_credit_person(Variable):
         p = parameters(
             period
         ).gov.states.oh.tax.income.credits.lump_sum_distribution
+        p2 = parameters(period).gov.irs.credits.lump_sum_distribution
         age = person("age", period)
-        return p.base_amount * p.rate.calc(age)
+        return p.base_amount * p2.expected_remaining_years_of_life.calc(age)
