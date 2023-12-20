@@ -15,7 +15,7 @@ class mt_elderly_homeowner_or_renter_credit_net_household_income(Variable):
         ).gov.states.mt.tax.income.credits.elderly_homeowner_or_renter
         # Only one claim is allowed per household
         # married taxpayer who are living apart may qualify for only one credit per year
-        standard_exclusion = p.net_household_income.remove_amount
+        standard_exclusion = p.net_household_income.standard_exclusion
         gross_household_income = tax_unit(
             "mt_elderly_homeowner_or_renter_credit_gross_household_income",
             period,
