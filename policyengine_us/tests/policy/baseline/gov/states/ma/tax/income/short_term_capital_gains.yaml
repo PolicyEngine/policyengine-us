@@ -1,0 +1,7 @@
+- name: Short-term capital gains after 2023
+  period: 2023
+  input:
+    short_term_capital_gains: 1_000
+    state_code: MA
+  output:
+    ma_short_term_capital_gains: 85
