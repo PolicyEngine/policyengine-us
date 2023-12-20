@@ -21,16 +21,20 @@ class ct_social_security_benefit_adjustment(Variable):
         ).gov.states.ct.tax.income.subtractions.social_security
         filing_status = tax_unit("filing_status", period)
 
-        ss_rate = p.rate
+        ss_rate = p.rate.social_security
+        magi_rate = p.rate.magi_excess
         # Line 41, Part A and Part B
-        total_ss = add(tax_unit, period, ["social_security"])
-        ss_fraction = total_ss * ss_rate
+        us_taxable_ss = tax_unit("tax_unit_taxable_social_security", period)
+        ss_fraction = us_taxable_ss * ss_rate
         excess = tax_unit("ct_magi_excess_over_base", period)
         # Line 41, Part C and Part D
-        max_inclusion = min_(ss_fraction, ss_rate * excess)
+        # Lesser of 25% of MAGI excess and 25% of taxable social security benefits
+        max_inclusion = min_(ss_fraction, magi_rate * excess)
 
         agi = tax_unit("adjusted_gross_income", period)
         # Line 41, Part E and Part F
-        adjusted_ss_benefit = max_(total_ss - max_inclusion, 0)
+        # Difference between taxable social security benefits and lesser amount from above
+        adjusted_ss_benefit = max_(us_taxable_ss - max_inclusion, 0)
         income_limit = p.income_limit[filing_status]
-        return where(agi < income_limit, total_ss, adjusted_ss_benefit)
+        # Adjustment determined based on AGI amount compared to income limit
+        return where(agi < income_limit, us_taxable_ss, adjusted_ss_benefit)

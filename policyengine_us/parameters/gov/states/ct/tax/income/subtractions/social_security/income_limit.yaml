@@ -1,8 +1,8 @@
-description: Connecticut qualifies filers for the social security benefit adjustment with adjusted gross income below this amount, based on filing status.
+description: Connecticut subtracts all taxable Social Security benefits from state adjusted gross income for filers with adjusted gross income below this amount, based on filing status; otherwise it subtracts only part.  
 metadata:
   period: year
   unit: currency-USD
-  label: Connecticut social security benefit adjustment income threshold
+  label: Connecticut income limit for full social security subtraction
   breakdown:
     - filing_status
   reference:

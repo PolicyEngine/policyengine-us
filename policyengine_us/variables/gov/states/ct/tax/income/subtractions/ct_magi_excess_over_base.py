@@ -19,13 +19,13 @@ class ct_magi_excess_over_base(Variable):
     def formula(tax_unit, period, parameters):
         ss = parameters(period).gov.irs.social_security.taxability
         gross_ss = tax_unit("tax_unit_social_security", period)
-
+        # Modified adjusted gross income plus 50% of social security benefits
         ss_fraction = ss.rate.lower * gross_ss
         modified_agi_plus_half_ss = (
             tax_unit("taxable_ss_magi", period) + ss_fraction
         )
+        # Base amount for social security threshold based on filing status
         filing_status = tax_unit("filing_status", period)
-
         base_amount = ss.threshold.lower[filing_status]
-
+        # Difference between MAGI calculation and base amount
         return max_(0, modified_agi_plus_half_ss - base_amount)
