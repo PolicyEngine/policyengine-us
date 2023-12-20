@@ -16,7 +16,5 @@ class va_agi(Variable):
     adds = ["adjusted_gross_income", "va_additions"]
 
     subtracts = [
-        "va_subtractions",
-        "va_age_deduction",
-        "taxable_social_security",
+        "va_subtractions"
     ]
