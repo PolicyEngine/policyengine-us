@@ -2,7 +2,7 @@
   period: 2022
   # reforms: policyengine_us.reforms.scott_budow.end_entrenched_poverty.end_entrenched_poverty_credit
   input:
-    gov.contrib.scott_budow.end_entrenched_poverty.child.amounts[0]: 300
+    gov.contrib.scott_budow.end_entrenched_poverty.child[0].amount: 300
     people:
       head: {}
       child: {}
