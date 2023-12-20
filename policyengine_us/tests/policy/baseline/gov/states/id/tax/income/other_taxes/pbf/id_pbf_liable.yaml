@@ -1,4 +1,4 @@
-- name: Not required due to lower income
+- name: Not liable due to lower income
   period: 2021
   input:
     people:
@@ -18,9 +18,9 @@
         members: [p1]
         state_code: ID
   output:
-    id_pbf_requirement: false
+    id_pbf_liable: false
 
-- name: All required
+- name: All liable
   period: 2021
   input:
     people:
@@ -40,9 +40,9 @@
         members: [p1]
         state_code: ID
   output:
-    id_pbf_requirement: true
+    id_pbf_liable: true
 
-- name: Blind not required 
+- name: Blind not liable 
   period: 2021
   input:
     people:
@@ -62,9 +62,9 @@
         members: [p1]
         state_code: ID
   output:
-    id_pbf_requirement: false
+    id_pbf_liable: false
 
-- name: Not required if receiving tanf 
+- name: Not liable if receiving tanf 
   period: 2021
   input:
     people:
@@ -84,4 +84,4 @@
         members: [p1]
         state_code: ID
   output:
-    id_pbf_requirement: false
+    id_pbf_liable: false
