@@ -11,9 +11,7 @@ class va_itemized_deductions(Variable):
     defined_for = StateCode.VA
 
     def formula(tax_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.va.tax.income.deductions.itemized.limitation
+        p = parameters(period).gov.irs.deductions.itemized.limitation
         # va itemized deductions
         itm_deds_less_salt = tax_unit("itemized_deductions_less_salt", period)
         uncapped_property_taxes = add(tax_unit, period, ["real_estate_taxes"])
@@ -29,7 +27,13 @@ class va_itemized_deductions(Variable):
         va_itm_deds_adjustment = min_(agi_adjustment, itm_deds_adjustment)
 
         # Part B: state and local income tax modification
-        adjustment_fraction = va_itm_deds_adjustment / va_itm_deds
+        # the foreign income tax is considered but not modelled here
+        adjustment_fraction = np.zeros_like(va_itm_deds)
+        mask = va_itm_deds != 0
+        adjustment_fraction[mask] = (
+            va_itm_deds_adjustment[mask] / va_itm_deds[mask]
+        )
+
         salt = tax_unit("state_and_local_sales_or_income_tax", period)
         state_and_local_income_tax_adjustment = (
             salt - salt * adjustment_fraction
@@ -42,5 +46,3 @@ class va_itemized_deductions(Variable):
         return where(
             federal_agi > applicable_amount, va_limited_itm_deds, va_itm_deds
         )
-        # TODO: Foreign Income Taxes.
-        # TODO: filing status is different for federal and Virginia
