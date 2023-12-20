@@ -7,7 +7,7 @@ class OrTableColumn(Enum):
     age_6_to_13 = "age_6_to_13"
     disabled_13_to_18 = "disabled_13_to_18"
     disabled_18_and_over = "disabled_18_and_over"
-    NONE = "Empty String"
+    NONE = "Empty String"  ### this is causing error
 
 
 class or_wfhdc_table_column(Variable):

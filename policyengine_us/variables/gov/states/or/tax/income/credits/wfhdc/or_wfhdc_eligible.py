@@ -15,11 +15,7 @@ class or_wfhdc_eligible(Variable):
 
     def formula(tax_unit, period, parameters):
         # Get the parameter tree for the Oregon WFHDC.
-        p = (
-            parameters(period)
-            .gov.states["or"]
-            .tax.income.credits.wfhdc.eligible
-        )
+        p = parameters(period).gov.states["or"].tax.income.credits.wfhdc
 
         # Get the household size.
         household_size = tax_unit("tax_unit_size", period)
@@ -45,7 +41,7 @@ class or_wfhdc_eligible(Variable):
         age = person("age", period)
         disabled = person("is_disabled", period)
         head = person("is_tax_unit_head", period)
-        qualifying_individuals = (age <= p.child_age_threshold) | (
+        qualifying_individuals = (age <= p.child_age_limit) | (
             disabled & ~head
         )
         has_qualified_individual = tax_unit.any(qualifying_individuals)
