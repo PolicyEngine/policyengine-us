@@ -21,6 +21,6 @@ class ms_itemized_deductions_indiv(Variable):
             "ms_itemized_deductions_joint", period
         )
 
-        # Per the atx form, the exemption amount is split in half between the head
+        # Per the tax form, the exemption amount is split in half between the head
         # and the spouse of the household
         return head_or_spouse * (0.5 * itemized_exemptions)
