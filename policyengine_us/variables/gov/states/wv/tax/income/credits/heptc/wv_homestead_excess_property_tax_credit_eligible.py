@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class wv_heptc_eligible(Variable):
+class wv_homestead_excess_property_tax_credit_eligible(Variable):
     value_type = bool
     entity = TaxUnit
     label = (
@@ -17,16 +17,12 @@ class wv_heptc_eligible(Variable):
 
     def formula(tax_unit, period, parameters):
         federal_agi = tax_unit("adjusted_gross_income", period)
-        n = tax_unit("tax_unit_size", period)
         wv_sctc = tax_unit("wv_sctc", period)
         property_tax = tax_unit("property_tax_primary_residence", period)
         wv_ghi = tax_unit("wv_gross_household_income", period)
 
         p = parameters(period).gov.states.wv.tax.income.credits.heptc
-        p_lig = p.low_income_guidelines
-        low_income_guidelines = (
-            p_lig.first_person + p_lig.additional_person * (n - 1)
-        )
+        low_income_guidelines = p.fpg_rate * tax_unit_fpg
         lig_condition = federal_agi <= low_income_guidelines
         property_tax_value = property_tax - wv_sctc
         ghi_amount = p.ghi_percentage * wv_ghi

@@ -1,11 +1,11 @@
 from policyengine_us.model_api import *
 
 
-class wv_heptc(Variable):
+class wv_homestead_excess_property_tax_credit(Variable):
     value_type = float
     entity = TaxUnit
     label = "West Virginia homestead excess property tax credit"
-    defined_for = "wv_heptc_eligible"
+    defined_for = "wv_homestead_excess_property_tax_credit_eligible"
     unit = USD
     definition_period = YEAR
     reference = (

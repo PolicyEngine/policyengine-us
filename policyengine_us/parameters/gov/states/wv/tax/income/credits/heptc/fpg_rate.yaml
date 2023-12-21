@@ -1,12 +1,12 @@
-description: West Virginia qualifies filers for the homestead excess property tax credit with income below this low income poverty guidelines.  
-first_person:
-  2012-01-01: 40_770
+description: West Virginia use this to muliple poverty guidelines as homestead excess property tax credit low income poverty guidelines.
 
-additional_person:
-  2012-01-01: 14_160
+values:
+  2008-01-01: 300%
 
 metadata:
+  period: year
   unit: currency-USD
+  label: West Virginia homestead excess property tax credit low income poverty guidelines
   reference:
   - title: West Virginia Personal Income Tax Forms And Instructions 2022
     href: https://tax.wv.gov/Documents/PIT/2022/PersonalIncomeTaxFormsAndInstructions.2022.pdf#page=14
@@ -14,7 +14,5 @@ metadata:
     href: https://tax.wv.gov/Documents/TaxForms/2021/it140.pdf#page=13 
   - title: Code of West Virginia §11-21-23 (h)(2)
     href: https://code.wvlegislature.gov/11-21-23/
-  period: year
-  label: West Virginia homestead excess property tax credit low income poverty guidelines  
-  breakdown:
-    - [first_person, additional_person]
+  
+
