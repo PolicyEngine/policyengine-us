@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.588.0] - 2023-12-21 17:24:36
+
+### Added
+
+- Virginia Adjusted Gross Income.
+
+## [0.587.0] - 2023-12-21 17:14:33
+
+### Added
+
+- Ohio Exemption Credit.
+- Ohio Personal Exemptions.
+
+## [0.586.2] - 2023-12-21 12:39:42
+
+### Added
+
+- Test for no-reform microsim impacts.
+
 ## [0.586.1] - 2023-12-21 07:13:29
 
 ### Fixed
@@ -6459,6 +6478,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.588.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.587.0...0.588.0
+[0.587.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.586.2...0.587.0
+[0.586.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.586.1...0.586.2
 [0.586.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.586.0...0.586.1
 [0.586.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.585.2...0.586.0
 [0.585.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.585.1...0.585.2
