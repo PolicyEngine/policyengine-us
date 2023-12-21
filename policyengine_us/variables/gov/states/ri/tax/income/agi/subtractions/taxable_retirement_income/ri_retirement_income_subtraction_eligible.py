@@ -4,9 +4,7 @@ from policyengine_us.model_api import *
 class ri_retirement_income_subtraction_eligible(Variable):
     value_type = bool
     entity = TaxUnit
-    label = (
-        "Eligible for the Rhode Island retirement income subtraction"
-    )
+    label = "Eligible for the Rhode Island retirement income subtraction"
     definition_period = YEAR
     reference = "http://webserver.rilin.state.ri.us/Statutes/title44/44-30/44-30-12.HTM"
     # Eligibility is the same as Social Security's eligibility
