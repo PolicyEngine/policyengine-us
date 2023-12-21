@@ -10,4 +10,4 @@ class birth_year(Variable):
 
     def formula(person, period, parameters):
         age = person("age", period)
-        return -(age - period.start.year)
+        return period.start.year - person("age", period)
