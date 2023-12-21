@@ -11,8 +11,9 @@ class ri_retirement_income_subtraction(Variable):
     defined_for = "ri_retirement_income_subtraction_eligible"
 
     def formula(tax_unit, period, parameters):
-        taxable_pension = tax_unit.members("taxable_pension_income", period)
-        head_or_spouse = tax_unit.members("is_tax_unit_head_or_spouse", period)
+        person = tax_unit.members
+        taxable_pension = person("taxable_pension_income", period)
+        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         p = parameters(
             period
         ).gov.states.ri.tax.income.agi.subtractions.taxable_retirement_income

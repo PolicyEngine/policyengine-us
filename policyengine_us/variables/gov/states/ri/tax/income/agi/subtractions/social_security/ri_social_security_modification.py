@@ -31,7 +31,7 @@ class ri_social_security_modification(Variable):
             total_social_security * head_or_spouse
         )
         # The social security modification is calculated as the percentage of social security
-        # received by the aged head or spouse relative to the total taxable social security received
+        # received by the aged head or spouse relative to the total social security received
         aged_ss_as_a_percentage_of_total_ss = np.zeros_like(head_or_spouse_ss)
         mask = head_or_spouse_ss != 0
         aged_ss_as_a_percentage_of_total_ss[mask] = (
@@ -39,7 +39,7 @@ class ri_social_security_modification(Variable):
         )
 
         taxable_social_security = person("taxable_social_security", period)
-        thead_or_spouse_taxable_ss = tax_unit.sum(
+        head_or_spouse_taxable_ss = tax_unit.sum(
             taxable_social_security * head_or_spouse
         )
-        return thead_or_spouse_taxable_ss * aged_ss_as_a_percentage_of_total_ss
+        return head_or_spouse_taxable_ss * aged_ss_as_a_percentage_of_total_ss
