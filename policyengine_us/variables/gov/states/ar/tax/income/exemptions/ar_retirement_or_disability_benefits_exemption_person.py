@@ -26,4 +26,5 @@ class ar_retirement_or_disability_benefits_exemption_person(Variable):
             person("regular_ira_distributions", period)
             * eligible_for_ira_exemption
         )
-        return eligible_pension_income + eligible_ira_distributions
+        eligible_disability_benefits = person("disability_benefits", period) * head_or_spouse
+        return eligible_pension_income + eligible_ira_distributions + eligible_disability_benefits
