@@ -2,8 +2,8 @@ description: Alabama allows for the following itemized deductions.
 values:
   2021-01-01:
     - real_estate_taxes # Section (a), (3), (d)
-    # - employee_payroll_tax # Section (a), (3), (a)
-    # - self_employment_tax # Section (a), (3), (a)
+    - employee_payroll_tax # Section (a), (3), (a)
+    - self_employment_tax # Section (a), (3), (a)
     # Legal code specifies charitable contributions to the extent deductible in federal law.
     # Tax form allows deducting all contributions, not capped by AGI as in federal law.
     # We adopt the legal code definition.
