@@ -7,12 +7,12 @@
         is_tax_unit_head: true
         social_security: 47_000
         taxable_social_security: 48_000
-        age: 30
+        birth_year: 1991
       person2:
         is_tax_unit_spouse: true
         social_security: 47_000
         taxable_social_security: 48_000
-        age: 30
+        birth_year: 1991
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -29,12 +29,12 @@
         is_tax_unit_head: true
         social_security: 47_000
         taxable_social_security: 48_000
-        age: 78
+        birth_year: 1943
       person2:
         is_tax_unit_spouse: true
         social_security: 47_000
         taxable_social_security: 48_000
-        age: 79
+        birth_year: 1942
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -51,12 +51,12 @@
         is_tax_unit_head: true
         social_security: 47_000
         taxable_social_security: 48_000
-        age: 60
+        age: 1961
       person2:
         is_tax_unit_spouse: true
         social_security: 46_500
         taxable_social_security: 48_000
-        age: 78
+        birth_year: 1943
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -73,12 +73,12 @@
         is_tax_unit_head: true
         social_security: 47_000
         taxable_social_security: 48_000
-        age: 79
+        birth_year: 1942
       person2:
         is_tax_unit_spouse: true
         social_security: 47_500
         taxable_social_security: 48_000
-        age: 60
+        birth_year: 1961
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -97,12 +97,12 @@
         is_tax_unit_head: true
         social_security: 47_000
         taxable_social_security: 48_000
-        age: 78
+        birth_year: 1943
       person2:
         is_tax_unit_spouse: true
         social_security: 47_000
         taxable_social_security: 48_000
-        age: 79
+        birth_year: 1942
     tax_units:
       tax_unit:
         members: [person1, person2]

@@ -13,8 +13,7 @@ class ri_social_security_modification(Variable):
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        age = person("age", period)
-        birth_year = -(age - period.start.year)
+        birth_year = person("birth_year", period)
 
         p = parameters(
             period

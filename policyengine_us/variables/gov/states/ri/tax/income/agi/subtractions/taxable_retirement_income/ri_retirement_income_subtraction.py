@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ri_retirement_income_subtraction(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Rhode Island Taxable retirement income subtraction"
+    label = "Rhode Island retirement income subtraction"
     unit = USD
     definition_period = YEAR
     reference = "http://webserver.rilin.state.ri.us/Statutes/title44/44-30/44-30-12.HTM"
