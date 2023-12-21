@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ms_itemized_deductions_joint(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Mississippi itemized deductions"
+    label = "Mississippi itemized deductions for the tax unit"
     unit = USD
     definition_period = YEAR
 
