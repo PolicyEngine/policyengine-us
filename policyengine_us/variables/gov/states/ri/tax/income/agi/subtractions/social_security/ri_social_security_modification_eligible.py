@@ -21,12 +21,12 @@ class ri_social_security_modification_eligible(Variable):
         ).gov.states.ri.tax.income.agi.subtractions.social_security.limit
 
         # Age eligibility.
-        age_conditions = birth_year <= p.birth_year
-        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        age_eligible = tax_unit.any(age_conditions & head_or_spouse)
+        aged = birth_year <= p.birth_year
+        head_or_spouse = tax_unit.any(person("is_tax_unit_head_or_spouse", period))
+        aged_head_or_spouse = (aged & head_or_spouse)
 
         # Income eligibility.
         income_limit = p.income[filing_status]
         income_eligible = income < income_limit
 
-        return age_eligible & income_eligible
+        return aged_head_or_spouse & income_eligible
