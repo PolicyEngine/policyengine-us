@@ -11,8 +11,7 @@ values:
     - al_medical_expense_deduction # Section (a), (13)
     # - al_casualty_loss_deduction # Section (a), (6)
     - al_misc_deduction # Section (a), (23)
-    - mortgage_interest # Section (a), (2)
-    # - interest_income # Section (a), (2)
+    - al_interest_deduction # Section (a), (2)
 
 metadata:
   unit: list

@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class al_investment_interest(Variable):
+class al_interest_deduction(Variable):
     value_type = float
     entity = TaxUnit
     label = "Alabama investment interest"
@@ -13,3 +13,5 @@ class al_investment_interest(Variable):
         "https://www.revenue.alabama.gov/ultraviewer/viewer/basic_viewer/index.html?form=2022/06/21f40schabdc_blk.pdf#page=1"  # 2021 Schedule A (Form 1040)
     )
     defined_for = StateCode.AL
+
+    adds = ["mortgage_interest", "investment_interest"]
