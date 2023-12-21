@@ -18,7 +18,9 @@ class ri_retirement_income_subtraction_eligible(Variable):
         income = tax_unit("adjusted_gross_income", period)
         filing_status = tax_unit("filing_status", period)
         person = tax_unit.members
-        head_or_spouse = tax_unit.any(person("is_tax_unit_head_or_spouse", period))
+        head_or_spouse = tax_unit.any(
+            person("is_tax_unit_head_or_spouse", period)
+        )
         birth_year = tax_unit("older_spouse_birth_year", period)
 
         p = parameters(
