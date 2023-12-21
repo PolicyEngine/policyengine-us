@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class oh_income_tax_before_credits(Variable):
     value_type = float
     entity = TaxUnit
-    label = "OH income tax before credits"
+    label = "Ohio income tax before credits"
     defined_for = StateCode.OH
     unit = USD
     definition_period = YEAR
