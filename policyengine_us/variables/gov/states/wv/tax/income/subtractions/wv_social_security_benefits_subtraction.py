@@ -26,7 +26,7 @@ class wv_social_security_benefits_subtraction(Variable):
         person = tax_unit.members
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         # Federal adjusted gross income includes
-        # social security benefits paid by the Social Security Administration as Old Age, 
+        # social security benefits paid by the Social Security Administration as Old Age,
         # Survivors and Disability Insurance Benefits
         taxable_ss = person("taxable_social_security", period)
         total_eligible_ss = tax_unit.sum(taxable_ss * head_or_spouse)
