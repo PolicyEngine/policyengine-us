@@ -16,11 +16,11 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
-        ri_social_security_modification_eligible: false
+        ri_social_security_modification_eligible: true
   output:
     ri_social_security_modification: 0
 
-- name: Income not eligible for social security modification
+- name: Not eligible for social security modification
   absolute_error_margin: 0.01
   period: 2021
   input:
@@ -64,7 +64,7 @@
   output:
     ri_social_security_modification: 47_743.316
 
-- name: Head age eligible for social security modification
+- name: Head aged under the social security modification
   absolute_error_margin: 0.01
   period: 2021
   input:
@@ -85,6 +85,8 @@
         ri_social_security_modification_eligible: true
   output:
     ri_social_security_modification: 47_746.032
+
+   # (47,000 / (47,000 + 47,500)) * 48,000 * 2  
 
 - name: Both age eligible for social security modification
   absolute_error_margin: 0.01

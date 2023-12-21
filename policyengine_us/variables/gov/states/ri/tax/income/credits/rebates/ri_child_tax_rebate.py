@@ -20,9 +20,5 @@ class ri_child_tax_rebate(Variable):
         age_eligibility = age <= p.limit.age
         eligible_child = age_eligibility & dependent
         child_count = tax_unit.sum(eligible_child)
-        total_children = where(
-            child_count >= p.limit.children,
-            p.limit.children,
-            child_count,
-        )
-        return total_children * p.amount
+        capped_children = min_(child_count, p.limit.child)
+        return capped_children * p.amount

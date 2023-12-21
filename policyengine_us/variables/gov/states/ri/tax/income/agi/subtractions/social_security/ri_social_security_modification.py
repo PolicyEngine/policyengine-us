@@ -13,29 +13,33 @@ class ri_social_security_modification(Variable):
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        birth_year = tax_unit("older_spouse_birth_year", period)
+        age = person("age", period)
+        birth_year = -(age - period.start.year)
 
         p = parameters(
             period
         ).gov.states.ri.tax.income.agi.subtractions.social_security.limit
 
-        # Age eligibility.
-        age_conditions = birth_year <= p.birth_year
-        head_or_spouse_eligible = head_or_spouse & age_conditions
+        aged = birth_year <= p.birth_year
+        head_or_spouse_aged = head_or_spouse & aged
 
         total_social_security = person("social_security", period)
-        final_ss = tax_unit.sum(
-            total_social_security * head_or_spouse_eligible
+        aged_head_or_spouse_ss = tax_unit.sum(
+            total_social_security * head_or_spouse_aged
         )
-        total_ss = tax_unit.sum(total_social_security * head_or_spouse)
-
-        percentage_social_security = np.zeros_like(total_ss)
-        mask = total_ss != 0
-        percentage_social_security[mask] = final_ss[mask] / total_ss[mask]
+        head_or_spouse_ss = tax_unit.sum(
+            total_social_security * head_or_spouse
+        )
+        # The social security modification is calculated as the percentage of social security
+        # received by the aged head or spouse relative to the total taxable social security received
+        aged_ss_as_a_percentage_of_total_ss = np.zeros_like(head_or_spouse_ss)
+        mask = head_or_spouse_ss != 0
+        aged_ss_as_a_percentage_of_total_ss[mask] = (
+            aged_head_or_spouse_ss[mask] / head_or_spouse_ss[mask]
+        )
 
         taxable_social_security = person("taxable_social_security", period)
-        total_taxable_ss = tax_unit.sum(
+        thead_or_spouse_taxable_ss = tax_unit.sum(
             taxable_social_security * head_or_spouse
         )
-
-        return total_taxable_ss * percentage_social_security
+        return thead_or_spouse_taxable_ss * aged_ss_as_a_percentage_of_total_ss

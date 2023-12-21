@@ -14,5 +14,5 @@ class ri_child_tax_rebate_eligible(Variable):
         filing_status = tax_unit("filing_status", period)
         p = parameters(
             period
-        ).gov.states.ri.tax.income.agi.subtractions.child_tax_rebate.limit
+        ).gov.states.ri.tax.income.credits.child_tax_rebate.limit
         return income <= p.income[filing_status]
