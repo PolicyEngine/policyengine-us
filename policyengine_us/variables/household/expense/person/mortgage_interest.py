@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class mortgage_interest_expense(Variable):
+class mortgage_interest(Variable):
     value_type = float
     entity = Person
     label = "Mortgage interest expense"

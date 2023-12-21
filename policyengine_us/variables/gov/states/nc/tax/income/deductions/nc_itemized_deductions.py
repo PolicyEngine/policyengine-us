@@ -14,9 +14,7 @@ class nc_itemized_deductions(Variable):
         # Qualified Mortgage Interest and Real Estate Property Taxes.
         filing_status = tax_unit("filing_status", period)
 
-        mortgage_interest = add(
-            tax_unit, period, ["mortgage_interest_expense"]
-        )
+        mortgage_interest = add(tax_unit, period, ["mortgage_interest"])
         pirs = parameters(
             period
         ).gov.irs.deductions.itemized.salt_and_real_estate
