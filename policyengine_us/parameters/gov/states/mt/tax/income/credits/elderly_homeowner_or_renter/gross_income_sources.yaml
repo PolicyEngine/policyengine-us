@@ -19,4 +19,4 @@ values:
     - tax_exempt_social_security # Line 6: Social Security Payment not reported
     - mt_refundable_credits_before_renter_credit # Line 7: Refundable credits
 # exclude the renter credit from the gross income computation 
-# due to circle reference
+# due to a potential circular reference

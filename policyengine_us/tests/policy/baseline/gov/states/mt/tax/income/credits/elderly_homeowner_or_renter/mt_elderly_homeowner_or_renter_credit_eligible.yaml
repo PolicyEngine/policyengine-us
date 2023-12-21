@@ -1,38 +1,14 @@
 - name: Ineligible -age
   period: 2022
   input:
-    age_head: 60
-    age_spouse: 60
     greater_age_head_spouse: 60
     state_code: MT
   output:
     mt_elderly_homeowner_or_renter_credit_eligible: false
 
-- name: Head eligible
+- name: Eligible
   period: 2022
   input:
-    age_head: 62
-    age_spouse: 60
-    greater_age_head_spouse: 62
-    state_code: MT
-  output:
-    mt_elderly_homeowner_or_renter_credit_eligible: true
-
-- name: Spouse eligible
-  period: 2022
-  input:
-    age_head: 60
-    age_spouse: 62
-    greater_age_head_spouse: 62
-    state_code: MT
-  output:
-    mt_elderly_homeowner_or_renter_credit_eligible: true
-
-- name: Both eligible
-  period: 2022
-  input:
-    age_head: 62
-    age_spouse: 63
     greater_age_head_spouse: 63
     state_code: MT
   output:

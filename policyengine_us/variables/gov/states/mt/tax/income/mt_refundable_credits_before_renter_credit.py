@@ -11,4 +11,4 @@ class mt_refundable_credits_before_renter_credit(Variable):
     defined_for = StateCode.MT
     adds = "gov.states.mt.tax.income.credits.refundable"
     # In gross income sources, we include the elderly homeowner or renter credit in refundable credits
-    # This will create a circular reference (check reference Line7)
+    # This will create a circular reference (check reference Line 7)

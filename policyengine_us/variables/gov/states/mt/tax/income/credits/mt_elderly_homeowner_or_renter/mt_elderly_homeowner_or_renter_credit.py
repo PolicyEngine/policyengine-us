@@ -26,9 +26,9 @@ class mt_elderly_homeowner_or_renter_credit(Variable):
         property_tax = add(tax_unit, period, ["real_estate_taxes"])
         rent = add(tax_unit, period, ["rent"])
         countable_rent = rent * p.rent_equivalent_tax_rate
-        countable_rent_property_tax = property_tax + countable_rent
+        countable_rent_and_property_tax = property_tax + countable_rent
         uncapped_credit = max_(
-            countable_rent_property_tax - net_household_income, 0
+            countable_rent_and_property_tax - net_household_income, 0
         )
         capped_credit = min_(uncapped_credit, p.cap)
         multiplier = p.multiplier.calc(gross_household_income)

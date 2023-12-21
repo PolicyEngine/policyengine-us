@@ -12,8 +12,6 @@ class mt_elderly_homeowner_or_renter_credit_eligible(Variable):
         p = parameters(
             period
         ).gov.states.mt.tax.income.credits.elderly_homeowner_or_renter
-        age_head = tax_unit("age_head", period)
-        age_spouse = tax_unit("age_spouse", period)
         # If the filer is married and both spouses owned or rent the residence
         # Only one of them must meet the age requierments
         # reference: https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2022/12/Form-2-2022-Instructions.pdf#page=47
