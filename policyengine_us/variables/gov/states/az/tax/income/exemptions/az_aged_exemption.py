@@ -15,4 +15,3 @@ class az_aged_exemption(Variable):
         age = person("age", period)
         amount = p.aged.calc(age)
 
-        return amount
