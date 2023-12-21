@@ -53,12 +53,11 @@ class az_itemized_deductions(Variable):
             charitable_deduction - charitable_contributions_credit, 0
         )
 
-        # Adjustment to State Income Taxes - add back real estate taxes
-        real_estate_taxes = add(tax_unit, period, ["real_estate_taxes"])
-
+        salt_deduction = tax_unit("az_salt_deduction", period)
+        
         return (
             federal_deductions
             + az_medical_expense_deduction
             + charitable_deduction_after_credit
-            + real_estate_taxes
+            + salt_deduction
         )
