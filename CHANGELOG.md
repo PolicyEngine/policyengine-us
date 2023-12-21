@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.590.0] - 2023-12-21 19:02:40
+
+### Added
+
+- Montana disability income subtraction.
+
 ## [0.589.1] - 2023-12-21 18:46:53
 
 ### Fixed
@@ -6503,6 +6509,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.590.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.589.1...0.590.0
 [0.589.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.589.0...0.589.1
 [0.589.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.588.2...0.589.0
 [0.588.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.588.1...0.588.2
