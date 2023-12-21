@@ -13,7 +13,7 @@
     mt_elderly_homeowner_or_renter_credit_eligible: true
   output:
     # (34000-12600)*0.05
-    mt_elderly_homeowner_or_renter_credit_net_household_income: 1070
+    mt_elderly_homeowner_or_renter_credit_net_household_income: 1_070
 
 - name: Eligible - standard_exclusion in 2020 is 6300
   period: 2020
@@ -22,4 +22,4 @@
     mt_elderly_homeowner_or_renter_credit_eligible: true
   output:
     # (34000-6300)*0.05
-    mt_elderly_homeowner_or_renter_credit_net_household_income: 1385
+    mt_elderly_homeowner_or_renter_credit_net_household_income: 1_385

@@ -28,7 +28,7 @@
       tax_unit:
         members: [person1, person2]
         mt_elderly_homeowner_or_renter_credit_gross_household_income: 34_000
-        mt_elderly_homeowner_or_renter_credit_net_household_income: 1070
+        mt_elderly_homeowner_or_renter_credit_net_household_income: 1_070
         mt_elderly_homeowner_or_renter_credit_eligible: true
   output:  
   # min_((propertytax + rent*rate - (grossincome-standard)*reduction_rate), 1150) * percentage(grossincome)
@@ -49,7 +49,7 @@
       tax_unit:
         members: [person1, person2]
         mt_elderly_homeowner_or_renter_credit_gross_household_income: 34_000
-        mt_elderly_homeowner_or_renter_credit_net_household_income: 1385
+        mt_elderly_homeowner_or_renter_credit_net_household_income: 1_385
         mt_elderly_homeowner_or_renter_credit_eligible: true
   output:  
   # min_((propertytax + rent*rate - (grossincome-standard)*reduction_rate), 1000) * percentage(grossincome)
@@ -73,7 +73,7 @@
       tax_unit:
         members: [person1, person2, person3]
         mt_elderly_homeowner_or_renter_credit_gross_household_income: 43_000
-        mt_elderly_homeowner_or_renter_credit_net_household_income: 1520
+        mt_elderly_homeowner_or_renter_credit_net_household_income: 1_520
         mt_elderly_homeowner_or_renter_credit_eligible: true
   output:  
   # min_((propertytax + rent*rate - (grossincome-standard)*reduction_rate), 1150) * percentage(grossincome)
