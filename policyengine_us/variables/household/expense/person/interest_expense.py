@@ -7,4 +7,4 @@ class interest_expense(Variable):
     label = "Interest paid on all loans"
     unit = USD
     definition_period = YEAR
-    adds = ["mortgage_interest", "non_mortgage_interest"]
+    adds = ["mortgage_interest_expense", "non_mortgage_interest_expense"]

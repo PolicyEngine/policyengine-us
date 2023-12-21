@@ -1,9 +1,9 @@
 from policyengine_us.model_api import *
 
 
-class investment_interest(Variable):
+class personal_interest_expense(Variable):
     value_type = float
     entity = Person
-    label = "Investment interest"
+    label = "Personal interest expense"
     unit = USD
     definition_period = YEAR

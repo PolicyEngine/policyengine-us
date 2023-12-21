@@ -14,4 +14,4 @@ class al_interest_deduction(Variable):
     )
     defined_for = StateCode.AL
 
-    adds = ["mortgage_interest", "investment_interest"]
+    adds = ["mortgage_interest_expense", "investment_interest_expense"]
