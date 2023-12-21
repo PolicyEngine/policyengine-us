@@ -22,7 +22,7 @@ class ri_taxable_retirement_income_subtraction_eligible(Variable):
 
         p = parameters(
             period
-        ).gov.states.ri.tax.income.agi.subtractions.social_security.threshold
+        ).gov.states.ri.tax.income.agi.subtractions.social_security.limit
 
         # Age eligibility.
         age_conditions = birth_year <= p.birth_year
