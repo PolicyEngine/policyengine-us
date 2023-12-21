@@ -32,7 +32,6 @@ class az_itemized_deductions(Variable):
         # Arizona allows a complete deduction for medical and dental expenses
         medical_expenses = add(tax_unit, period, ["medical_expense"])
 
-
         # Adjustments to Charitable Contributions
         # Amount of charitable contributions for which you are claiming
         # a credit under Arizona law.
@@ -40,15 +39,15 @@ class az_itemized_deductions(Variable):
         charitable_contributions_credit = tax_unit(
             "az_charitable_contributions_credit", period
         )
-        # The charitable deduction is reduced by the amount which is used for the 
-        # Arizona charitable contributions credit, 
+        # The charitable deduction is reduced by the amount which is used for the
+        # Arizona charitable contributions credit,
         # assuming that the same charitable contributions
         charitable_deduction_after_credit = max_(
             charitable_deduction - charitable_contributions_credit, 0
         )
-        # The state and local income tax is reduced by the amount which is used 
+        # The state and local income tax is reduced by the amount which is used
         # to claim the Arizona charitable contributions credit
-        # Since the Arizona charitable contributions credit is based on contributions 
+        # Since the Arizona charitable contributions credit is based on contributions
         # to qulalifying foster care organizations, we do not reduce the salt deduction
         return (
             federal_deductions
