@@ -16,7 +16,7 @@ class ri_child_tax_rebate(Variable):
         dependent = person("is_tax_unit_dependent", period)
         p = parameters(
             period
-        ).gov.states.ri.tax.income.agi.credits.child_tax_rebate
+        ).gov.states.ri.tax.income.credits.child_tax_rebate
         age_eligibility = age <= p.limit.age
         eligible_child = age_eligibility & dependent
         child_count = tax_unit.sum(eligible_child)
