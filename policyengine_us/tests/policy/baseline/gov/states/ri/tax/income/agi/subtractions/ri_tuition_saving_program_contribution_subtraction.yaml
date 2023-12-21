@@ -5,7 +5,7 @@
     investment_in_529_plan: 2_000
     filing_status: JOINT
   output:
-    ri_tuition_saving_program_contribution: 1_000
+    ri_tuition_saving_program_contribution_subtraction: 1_000
 
 - name: Single filer with 400 tuition investment
   period: 2022
@@ -14,4 +14,4 @@
     investment_in_529_plan: 400
     filing_status: SINGLE
   output:
-    ri_tuition_saving_program_contribution: 400
+    ri_tuition_saving_program_contribution_subtraction: 400

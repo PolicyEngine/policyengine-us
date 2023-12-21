@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ri_tuition_saving_program_contribution(Variable):
+class ri_tuition_saving_program_contribution_subtraction(Variable):
     value_type = float
     entity = TaxUnit
     label = "Rhode Island tuition saving program contribution subtraction"
