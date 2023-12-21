@@ -1,0 +1,38 @@
+description: Rhode Island subtracts taxable social security benefits for filers with federal adjusted gross income below this amount, based on filing status.
+
+metadata:
+  label: Rhode Island social security subtraction income limit
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  reference:
+  # The tax form points to this worksheet: Social Security modification on Schedule M, line 1s.
+  - title: Rhode Island 2021 Modification for Taxable social security income worksheet
+    href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-01/social-security-worksheet_b_0.pdf#page=1
+  # The tax form points to this worksheet: Social Security modification on Schedule M, line 1t.
+  - title: Rhode Island 2022 Modification for Taxable social security income worksheet
+    href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-12/Social%20Security%20Worksheet_w.pdf#page=1
+  - title: R.I. Gen. Laws § 44-30-12 (c), (8), (i)&(ii)
+    href: http://webserver.rilin.state.ri.us/Statutes/title44/44-30/44-30-12.HTM 
+
+JOINT:
+  2016-01-01: 100_000
+  2021-01-01: 111_200
+  2022-01-01: 119_750
+HEAD_OF_HOUSEHOLD:
+  2016-01-01: 80_000
+  2021-01-01: 88_950
+  2022-01-01: 95_800
+WIDOW:
+  2016-01-01: 100_000
+  2021-01-01: 111_200
+  2022-01-01: 119_750
+SINGLE:
+  2016-01-01: 80_000
+  2021-01-01: 88_950
+  2022-01-01: 95_800
+SEPARATE:
+  2016-01-01: 80_000
+  2021-01-01: 88_975
+  2022-01-01: 95_800
