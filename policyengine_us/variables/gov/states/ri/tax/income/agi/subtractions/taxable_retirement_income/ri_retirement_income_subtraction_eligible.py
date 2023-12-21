@@ -17,16 +17,16 @@ class ri_retirement_income_subtraction_eligible(Variable):
     def formula(tax_unit, period, parameters):
         income = tax_unit("adjusted_gross_income", period)
         filing_status = tax_unit("filing_status", period)
-        head_or_spouse = tax_unit.members("is_tax_unit_head_or_spouse", period)
+        person = tax_unit.members
+        head_or_spouse = tax_unit.any(person("is_tax_unit_head_or_spouse", period))
         birth_year = tax_unit("older_spouse_birth_year", period)
 
         p = parameters(
             period
         ).gov.states.ri.tax.income.agi.subtractions.social_security.limit
 
-        # Age eligibility.
-        age_conditions = birth_year <= p.birth_year
-        age_eligible = tax_unit.any(age_conditions & head_or_spouse)
+        aged = birth_year <= p.birth_year
+        age_eligible = aged & head_or_spouse
 
         # Income eligibility.
         income_eligible = income < p.income[filing_status]
