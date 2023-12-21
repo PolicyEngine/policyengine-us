@@ -9,4 +9,4 @@ class ri_non_refundable_credits(Variable):
     unit = USD
     definition_period = YEAR
 
-    # adds = "gov.states.ri.tax.income.credits.non_refundable"
+    adds = "gov.states.ri.tax.income.credits.non_refundable"
