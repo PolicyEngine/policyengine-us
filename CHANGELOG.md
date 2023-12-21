@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.586.1] - 2023-12-21 07:13:29
+
+### Fixed
+
+- Arizona itemized deductions.
+
 ## [0.586.0] - 2023-12-20 22:28:46
 
 ### Added
@@ -6453,6 +6459,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.586.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.586.0...0.586.1
 [0.586.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.585.2...0.586.0
 [0.585.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.585.1...0.585.2
 [0.585.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.585.0...0.585.1
