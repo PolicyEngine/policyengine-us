@@ -10,7 +10,7 @@ class ut_eitc(Variable):
     definition_period = YEAR
     defined_for = StateCode.UT
 
-    def formula_2022(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.ut.tax.income.credits.earned_income
         federal_eitc = tax_unit("eitc", period)
         return p.rate * federal_eitc
