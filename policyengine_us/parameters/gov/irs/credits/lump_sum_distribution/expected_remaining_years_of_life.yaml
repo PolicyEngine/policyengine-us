@@ -1,13 +1,17 @@
-description: The IRS provides the following multiples corresponding to the lump sum recipient's expected remaining years of life. 
+description: The IRS provides the following multiples corresponding to the filer's expected remaining years of life. 
 metadata:
   type: single_amount 
   threshold_unit: year
   period: year
   amount_unit: /1
-  label: Lump sum distribution credit expected remaining years of life
+  label: Expected remaining years of life
+  #The tables provided in the actuarial values reference do not show the exact values that Ohio uses for the expected remaining years of life and the ones we have here are the ones from the Ohio table
   reference:
       - title: Actuarial Values 3A Publication 1457 (Rev. 5-2009)
-        href: https://www.irs.gov/pub/irs-tege/table-s-2000cm.xlsx
+        href: https://www.irs.gov/retirement-plans/actuarial-tables
+      - title: Ohio Laws and Administrative Rules Section 5747.055 (G)
+        href: https://codes.ohio.gov/ohio-revised-code/section-5747.055#:~:text=(G)%20A%20taxpayer%20sixty%2D,Code%2C%20as%20shown%20on%20an
+      
 brackets:
   - threshold:
       2021-01-01: 0

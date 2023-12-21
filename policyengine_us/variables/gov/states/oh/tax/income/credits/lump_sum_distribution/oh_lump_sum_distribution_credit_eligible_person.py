@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class oh_distribution_credit_eligible_person(Variable):
+class oh_lump_sum_distribution_credit_eligible_person(Variable):
     value_type = bool
     entity = Person
     label = "Eligible person for the Ohio lump sum distribution credit"

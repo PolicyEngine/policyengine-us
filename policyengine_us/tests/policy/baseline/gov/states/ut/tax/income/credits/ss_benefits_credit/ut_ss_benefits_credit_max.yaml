@@ -41,3 +41,14 @@
     state_code: UT
   output:
     ut_ss_benefits_credit_max: 0  # no taxable social security income
+
+- name: 2021, UT Social Security Benefits Credit max unit test 1
+  period: 2021
+  input:
+    taxable_social_security: 100_000
+    ut_total_income: 20_000
+    tax_exempt_interest_income: 20_000
+    filing_status: single
+    state_code: UT
+  output:
+    ut_ss_benefits_credit_max: 4_700  

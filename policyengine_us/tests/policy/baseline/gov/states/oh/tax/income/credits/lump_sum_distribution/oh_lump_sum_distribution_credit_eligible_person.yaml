@@ -5,7 +5,7 @@
     age: 10
     is_tax_unit_head_or_spouse: true
   output:
-    oh_distribution_credit_eligible_person: false
+    oh_lump_sum_distribution_credit_eligible_person: false
 
 - name:  Ohio lump sum distribution credit eligibility for filer aged 70
   period: 2021
@@ -14,7 +14,7 @@
     age: 70
     is_tax_unit_head_or_spouse: true
   output:
-    oh_distribution_credit_eligible_person: true
+    oh_lump_sum_distribution_credit_eligible_person: true
 
 - name:  Ohio lump sum distribution credit eligibility for filer aged 65
   period: 2021
@@ -23,7 +23,7 @@
     age: 65
     is_tax_unit_head_or_spouse: true
   output:
-    oh_distribution_credit_eligible_person: true
+    oh_lump_sum_distribution_credit_eligible_person: true
 
 - name:  Ohio lump sum distribution credit eligibility for filer aged 65 who is not head_or_spouse
   period: 2021
@@ -32,5 +32,5 @@
     age: 65
     is_tax_unit_head_or_spouse: false
   output:
-    oh_distribution_credit_eligible_person: false
+    oh_lump_sum_distribution_credit_eligible_person: false
 

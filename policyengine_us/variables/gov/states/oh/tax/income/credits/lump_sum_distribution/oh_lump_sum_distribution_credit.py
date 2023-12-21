@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class oh_distribution_credit(Variable):
+class oh_lump_sum_distribution_credit(Variable):
     value_type = float
     entity = TaxUnit
     label = "Ohio lump sum distribution credit"
@@ -10,4 +10,4 @@ class oh_distribution_credit(Variable):
     reference = (
         "https://tax.ohio.gov/static/forms/ohio_individual/individual/2021/pit-it1040-booklet.pdf#page=29",
     )
-    defined_for = "oh_distribution_credit_eligible"
+    defined_for = "oh_lump_sum_distribution_credit_eligible"
