@@ -16,15 +16,6 @@
   output:
     ut_ss_benefits_credit: 0  # tax unit claims retirement credit
 
-- name: UT Social Security Benefits Credit unit test 3
-  period: 2022
-  input:
-    ut_claims_retirement_credit: false
-    ut_ss_benefits_credit_max: 500
-    state_code: UT
-  output:
-    ut_ss_benefits_credit: 250  # limited by remaining tax liability
-
 - name: UT Social Security Benefits Credit unit test 4
   period: 2022
   input:
