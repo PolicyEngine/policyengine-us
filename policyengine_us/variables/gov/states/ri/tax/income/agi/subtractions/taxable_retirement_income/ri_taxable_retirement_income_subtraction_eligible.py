@@ -9,7 +9,9 @@ class ri_taxable_retirement_income_subtraction_eligible(Variable):
     )
     definition_period = YEAR
     reference = "http://webserver.rilin.state.ri.us/Statutes/title44/44-30/44-30-12.HTM"
-    # Eligibility is the same as Social Security's eligibility https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-12/Social%20Security%20Worksheet_w.pdf STEP 1: Eligibility
+    # Eligibility is the same as Social Security's eligibility 
+    # https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-12/Social%20Security%20Worksheet_w.pdf 
+    # STEP 1: Eligibility
     defined_for = StateCode.RI
 
     def formula(tax_unit, period, parameters):
