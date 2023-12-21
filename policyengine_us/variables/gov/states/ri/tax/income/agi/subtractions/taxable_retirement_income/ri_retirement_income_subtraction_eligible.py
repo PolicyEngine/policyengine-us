@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ri_taxable_retirement_income_subtraction_eligible(Variable):
+class ri_retirement_income_subtraction_eligible(Variable):
     value_type = bool
     entity = TaxUnit
     label = (

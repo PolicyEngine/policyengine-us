@@ -2,16 +2,16 @@
   period: 2022
   input:
     state_code: RI
-    ri_taxable_retirement_income_subtraction_eligible: false
+    ri_retirement_income_subtraction_eligible: false
     taxable_pension_income: 10_000
   output:
-    ri_taxable_retirement_income_subtraction: 0
+    ri_retirement_income_subtraction: 0
 
 - name: Eligible for maximum taxable retirement income modification
   period: 2022
   input:
     state_code: RI
-    ri_taxable_retirement_income_subtraction_eligible: true
+    ri_retirement_income_subtraction_eligible: true
     taxable_pension_income: 20_000
   output:
-    ri_taxable_retirement_income_subtraction: 15_000
+    ri_retirement_income_subtraction: 15_000
