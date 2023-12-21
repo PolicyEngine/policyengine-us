@@ -1,0 +1,29 @@
+- name: Head or spouse not claimed elsewhere
+  period: 2021
+  input:
+    state_code: OH
+    is_tax_unit_head_or_spouse: true
+    claimed_as_dependent_on_another_return: false
+    is_tax_unit_dependent: false
+  output:
+    oh_personal_exemptions_eligible_person: true
+
+- name: Not the head or spouse but claimed elsewhere
+  period: 2021
+  input:
+    state_code: OH
+    is_tax_unit_head_or_spouse: false
+    claimed_as_dependent_on_another_return: true
+    is_tax_unit_dependent: false
+  output:
+    oh_personal_exemptions_eligible_person: false
+    
+- name: Dependent 
+  period: 2021
+  input:
+    state_code: OH
+    is_tax_unit_head_or_spouse: false
+    claimed_as_dependent_on_another_return: true
+    is_tax_unit_dependent: true
+  output:
+    oh_personal_exemptions_eligible_person: true
