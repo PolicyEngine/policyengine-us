@@ -17,7 +17,7 @@ class ms_itemized_deductions_indiv(Variable):
 
     def formula(person, period, parameters):
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        itemized_exemptions = person.tax_unit(
+        total_itemized_deductions = person.tax_unit(
             "ms_itemized_deductions_joint", period
         )
 
