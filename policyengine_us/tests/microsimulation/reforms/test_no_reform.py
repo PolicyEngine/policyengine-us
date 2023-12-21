@@ -8,7 +8,7 @@ def test_no_reform_has_no_change():
         parameters.gov.usda.snap.income.deductions.earned_income.update(
             start=instant("2023-01-01"),
             stop=instant("2028-12-31"),
-            value=0.20001,
+            value=0.20000001,
         )
         return parameters
 
@@ -22,4 +22,4 @@ def test_no_reform_has_no_change():
     gain = reformed.calculate("household_net_income") - baseline.calculate(
         "household_net_income"
     )
-    assert (gain.abs() > 10).mean() < 0.001
+    assert (gain.abs() > 1).mean() < 0.001
