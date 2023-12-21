@@ -1,20 +1,31 @@
-- name: Head's age is 40
+- name: One spouse older
   period: 2022
   input:
-    greater_age_head_spouse: 40
+    people:
+      person1:
+        birth_year: 1968
+        is_tax_unit_head_or_spouse: true
+      person2:
+        birth_year: 1969
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
   output:
-    older_spouse_birth_year: 1982
+    older_spouse_birth_year: 1968
 
-- name: Head's age is 64
+- name: Not spouse or head are not included
   period: 2022
   input:
-    greater_age_head_spouse: 64
+    people:
+      person1:
+        birth_year: 1968
+        is_tax_unit_head_or_spouse: true
+      person2:
+        birth_year: 1967
+        is_tax_unit_head_or_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
   output:
-    older_spouse_birth_year: 1958
-
-- name: Head's age is 79
-  period: 2022
-  input:
-    greater_age_head_spouse: 79
-  output:
-    older_spouse_birth_year: 1943
+    older_spouse_birth_year: 1968

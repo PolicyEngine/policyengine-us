@@ -1,12 +1,12 @@
 from policyengine_us.model_api import *
 
 
-class age(Variable):
-    value_type = float
+class birth_year(Variable):
+    value_type = int
     entity = Person
-    label = "age"
+    label = "Birth year"
+    unit = "year"
     definition_period = YEAR
-    default_value = 40
 
     def formula(person, period, parameters):
         age = person("age", period)

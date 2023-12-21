@@ -4,7 +4,7 @@
     state_code: RI
     adjusted_gross_income: 22_000
     filing_status: JOINT
-    age: 40
+    older_spouse_birth_year: 1957
   output:
     ri_retirement_income_subtraction_eligible: false
 
@@ -12,9 +12,9 @@
   period: 2022
   input:
     state_code: RI
-    adjusted_gross_income: 90_000
+    adjusted_gross_income: 95_799
     filing_status: SINGLE
-    age: 70
+    older_spouse_birth_year: 1956
   output:
     ri_retirement_income_subtraction_eligible: true
 
@@ -22,8 +22,18 @@
   period: 2022
   input:
     state_code: RI
-    adjusted_gross_income: 90_000
+    adjusted_gross_income: 119_749
     filing_status: WIDOW
-    age: 70
+    older_spouse_birth_year: 1956
   output:
     ri_retirement_income_subtraction_eligible: true
+
+- name: Widow filer ineligible 
+  period: 2022
+  input:
+    state_code: RI
+    adjusted_gross_income: 119_750
+    filing_status: WIDOW
+    older_spouse_birth_year: 1956
+  output:
+    ri_retirement_income_subtraction_eligible: false

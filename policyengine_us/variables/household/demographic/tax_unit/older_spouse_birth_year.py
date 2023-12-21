@@ -10,4 +10,11 @@ class older_spouse_birth_year(Variable):
     unit = "year"
 
     def formula(tax_unit, period, parameters):
-        return period.start.year - tax_unit("greater_age_head_spouse", period)
+        person = tax_unit.members
+        birth_year = person("birth_year", period)
+        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+        # Set the value for dependents to .inf to avoid 0 values
+        excluding_dependents_birth_year = where(
+            head_or_spouse, birth_year, np.inf
+        )
+        return tax_unit.min(excluding_dependents_birth_year)
