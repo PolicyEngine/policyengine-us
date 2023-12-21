@@ -1,0 +1,23 @@
+description: Ohio provides this exemption credit amount to filers, based on modified adjusted gross income.
+brackets:
+  - threshold:
+      2021-01-01: 0
+    amount:
+      2021-01-01: 20
+  - threshold:
+      2021-01-01: 30_000
+    amount:
+      2021-01-01: 0
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  rate_unit: currency-USD
+  period: year
+  label: Ohio Exemption Credit amount
+  reference:
+    - title: Ohio Revised Code - Section 5747.022： Tax credits for exemptions
+      href: https://law.justia.com/codes/ohio/2022/title-57/chapter-5747/section-5747-022/
+    - title: 2022 Ohio IT 1040 Individual Income Tax Return Form Instructions (Line 9)
+      href: https://tax.ohio.gov/static/forms/ohio_individual/individual/2022/it1040-sd100-instruction-booklet.pdf#page=20
+    - title: 2021 Ohio IT 1040 Individual Income Tax Return Form Instructions (Line 9)
+      href: https://tax.ohio.gov/static/forms/ohio_individual/individual/2021/pit-it1040-booklet.pdf#page=20
