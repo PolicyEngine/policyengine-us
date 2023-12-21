@@ -4,19 +4,12 @@ from policyengine_us.model_api import *
 class oh_personal_exemptions(Variable):
     value_type = float
     entity = TaxUnit
-<<<<<<< HEAD
-    label = "Ohio Personal Exemptions"
-=======
     label = "Ohio personal exemptions"
->>>>>>> 3c3d7556e955dfb3d368fea0219b480cc95ea78d
     unit = USD
     definition_period = YEAR
     reference = (
         "https://tax.ohio.gov/static/forms/ohio_individual/individual/2021/pit-it1040-booklet.pdf#page=14",
     )
-<<<<<<< HEAD
-    defined_for = "oh_personal_exemptions_eligible"
-=======
     defined_for = StateCode.OH
 
     def formula(tax_unit, period, parameters):
@@ -30,4 +23,3 @@ class oh_personal_exemptions(Variable):
         credit_amount = p.amount.calc(agi, right=True)
 
         return eligible_exemptions * credit_amount
->>>>>>> 3c3d7556e955dfb3d368fea0219b480cc95ea78d
