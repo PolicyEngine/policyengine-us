@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class la_itemized_deductions(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Louisiana itemized deduction"
+    label = "Louisiana itemized deductions"
     unit = USD
     definition_period = YEAR
     reference = [
@@ -18,7 +18,7 @@ class la_itemized_deductions(Variable):
         p = parameters(
             period
         ).gov.states.la.tax.income.deductions.itemized.medical_expenses.exceedance
-        us_standard_deduction = tax_unit("standard_deduction", period)
+        federal_standard_deduction = tax_unit("standard_deduction", period)
         itemizing = tax_unit("tax_unit_itemizes", period)
         # In 2022 Louisiana limits the itemized deductions to the amount of federal medical
         # expense deduction less the federal standard deduction
@@ -29,8 +29,8 @@ class la_itemized_deductions(Variable):
                 tax_unit, period, ["medical_expense_deduction"]
             )
             medical_exepense_ded_less_standard_ded = (
-                max_(medical_expense_deduction - us_standard_deduction, 0)
-                * p.rate
+                max_(medical_expense_deduction - federal_standard_deduction, 0)
+                * p.excess_fraction
             )
             return where(
                 itemizing, medical_exepense_ded_less_standard_ded, 0
@@ -38,11 +38,11 @@ class la_itemized_deductions(Variable):
         # In 2021 Louisiana limits the state itemized deductions value to the value of the federal
         # itemized deductions less the federal standard deduction
         else:
-            us_itemized_deduction = tax_unit(
+            federal_itemized_deduction = tax_unit(
                 "itemized_deductions_less_salt", period
             )
             itemized_less_standard_ded = max_(
-                0, us_itemized_deduction - us_standard_deduction
+                0, federal_itemized_deduction - federal_standard_deduction
             )
             return where(
                 itemizing, itemized_less_standard_ded, 0

@@ -1,11 +1,11 @@
-description: Louisiana subtracts from adjusted gross income this fraction of the excess of the federal medical itemized deduction over the federal standard deduction.
+description: Louisiana subtracts this fraction of the excess of the either the federal itemized deductions or the medical expense deduction amount over the federal standard deduction from adjusted gross income.
 values:
   2022-01-01: 1
 
 metadata:
   unit: /1
   period: year
-  label: Louisiana excess itemized deduction fraction
+  label: Louisiana itemized deduction excess fraction
   reference:
      # This policy parameter was introduced in 2022
     - title: Louisiana legal code | RS 47:293 (3)
