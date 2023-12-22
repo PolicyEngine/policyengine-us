@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class va_eitc_indiv(Variable):
+class va_eitc_person(Variable):
     value_type = float
     entity = Person
     label = "Virginia Earned Income Tax Credit per individual when married filing seperately"

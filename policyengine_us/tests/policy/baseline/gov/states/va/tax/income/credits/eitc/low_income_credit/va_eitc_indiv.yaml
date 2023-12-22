@@ -7,7 +7,7 @@
     va_prorate_fraction: 0.8
     state_code: VA
   output:
-    va_eitc_indiv: 640
+    va_eitc_person: 640
 
 - name: Claims refundable eitc.
   period: 2021
@@ -28,7 +28,7 @@
         members: [p1, p2]
         state_code: VA
   output:
-    va_eitc_indiv: [640, 160]
+    va_eitc_person: [640, 160]
 
 - name: Claims non-refundable eitc.
   period: 2021
@@ -39,7 +39,7 @@
     va_prorate_fraction: 0.8
     state_code: VA
   output:
-    va_eitc_indiv: 80
+    va_eitc_person: 80
 
 - name: Claims refundable eitc.
   period: 2021
@@ -60,4 +60,4 @@
         members: [p1, p2]
         state_code: VA
   output:
-    va_eitc_indiv: [80, 20]
+    va_eitc_person: [80, 20]
