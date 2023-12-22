@@ -1,0 +1,24 @@
+- name: An eligible primary head and an ineligible spouse, both have income below 25000 dollars
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        earned_income: 23000
+        ca_fytc_eligible: true
+      person2:
+        is_tax_unit_spouse: true
+        ca_fytc_eligible: true
+      person3:
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        ca_fytc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+  output:
+    ca_fytc: 2166
