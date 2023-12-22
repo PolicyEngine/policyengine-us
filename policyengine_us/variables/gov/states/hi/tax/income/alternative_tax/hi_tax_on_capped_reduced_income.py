@@ -40,17 +40,16 @@ class hi_tax_on_capped_reduced_income(Variable):
         rate_p = parameters(period).gov.states.hi.tax.income.rates
         return select(
             [
-                filing_status == statuses.SINGLE,
                 filing_status == statuses.SEPARATE,
                 filing_status == statuses.JOINT,
                 filing_status == statuses.WIDOW,
                 filing_status == statuses.HEAD_OF_HOUSEHOLD,
             ],
             [
-                rate_p.single.calc(capped_reduced_income),
                 rate_p.separate.calc(capped_reduced_income),
                 rate_p.joint.calc(capped_reduced_income),
                 rate_p.widow.calc(capped_reduced_income),
                 rate_p.head_of_household.calc(capped_reduced_income),
             ],
+            default= rate_p.single.calc(capped_reduced_income),
         )

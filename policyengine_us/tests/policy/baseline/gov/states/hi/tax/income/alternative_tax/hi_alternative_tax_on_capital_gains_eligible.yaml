@@ -3,7 +3,7 @@
   input:
     state_code: HI
     filing_status: SINGLE
-    taxable_income: 25_000
+    hi_taxable_income: 25_000
   output:
     hi_alternative_tax_on_capital_gains_eligible: true
 
@@ -12,7 +12,7 @@
   input:
     state_code: HI
     filing_status: SEPARATE
-    taxable_income: 23_000
+    hi_taxable_income: 23_000
   output:
     hi_alternative_tax_on_capital_gains_eligible: false
 
@@ -21,7 +21,7 @@
   input:
     state_code: HI
     filing_status: JOINT
-    taxable_income: 35_000
+    hi_taxable_income: 35_000
   output:
     hi_alternative_tax_on_capital_gains_eligible: false
 
@@ -30,7 +30,7 @@
   input:
     state_code: HI
     filing_status: HEAD_OF_HOUSEHOLD
-    taxable_income: 35_000
+    hi_taxable_income: 35_000
   output:
     hi_alternative_tax_on_capital_gains_eligible: false
 
@@ -39,7 +39,7 @@
   input:
     state_code: HI
     filing_status: WIDOW
-    taxable_income: 50_000
+    hi_taxable_income: 50_000
   output:
     hi_alternative_tax_on_capital_gains_eligible: false
 
@@ -48,6 +48,6 @@
   input:
     state_code: HI
     filing_status: SINGLE
-    taxable_income: 25_000
+    hi_taxable_income: 25_000
   output:
     hi_alternative_tax_on_capital_gains_eligible: false
