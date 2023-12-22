@@ -16,21 +16,15 @@ class ar_retirement_or_disability_benefits_exemption_person(Variable):
         ).gov.irs.income.exemption.traditional_distribution
         # Only head or spouse of the tax unit will have this exemption
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        pension_income = person("taxable_pension_income", period)
-        eligible_pension_income = pension_income * head_or_spouse
+        disability_benefits_and_taxable_pensions = add(
+            person, period, ["disability_benefits", "taxable_pension_income"]
+        )
         # Filers over a certain age can deduct IRA distributions in addition to pension income
-        eligible_for_ira_exemption = (
-            person("age", period) >= p.age_threshold
-        ) & head_or_spouse
-        eligible_ira_distributions = (
-            person("regular_ira_distributions", period)
-            * eligible_for_ira_exemption
+        ira_age_eligible = person("age", period) >= p.age_threshold
+        age_eligible_ira_distributions = ira_age_eligible * person(
+            "regular_ira_distributions", period
         )
-        eligible_disability_benefits = (
-            person("disability_benefits", period) * head_or_spouse
-        )
-        return (
-            eligible_pension_income
-            + eligible_ira_distributions
-            + eligible_disability_benefits
+        return head_or_spouse * (
+            disability_benefits_and_taxable_pensions
+            + age_eligible_ira_distributions
         )
