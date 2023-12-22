@@ -18,8 +18,11 @@ class ga_retirement_exclusion_person(Variable):
         p = parameters(
             period
         ).gov.states.ga.tax.income.agi.exclusions.retirement
+        older_age_threshold_cap_eligible = (
+            person("age", period) >= p.age_threshold.older
+        )
         cap = where(
-            person("age", period) >= p.age.older, p.cap.older, p.cap.younger
+            older_age_threshold_cap_eligible, p.cap.older, p.cap.younger
         )
         retirement_income = person(
             "ga_retirement_income_exclusion_retirement_income", period

@@ -19,7 +19,7 @@ class ga_retirement_exclusion_eligible_person(Variable):
         ).gov.states.ga.tax.income.agi.exclusions.retirement
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         age = person("age", period)
-        age_eligible = age >= p.age.younger
+        age_eligible = age >= p.age_threshold.younger
         # Disabled filers can qualify for the younger age cap amount if they are below the age threshold.
         disabled = person("is_disabled", period)
         return head_or_spouse & (age_eligible | disabled)

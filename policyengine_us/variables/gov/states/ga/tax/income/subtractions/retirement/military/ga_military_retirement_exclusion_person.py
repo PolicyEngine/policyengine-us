@@ -18,12 +18,12 @@ class ga_military_retirement_exclusion_person(Variable):
             period
         ).gov.states.ga.tax.income.agi.exclusions.military_retirement
         earned_income = person("earned_income", period)
-        additional_income_eligible = (
-            earned_income > p.additional.threshold.earned_income
+        additional_subtraction_eligible = (
+            earned_income > p.additional.earned_income_threshold
         )
         military_retirement_income = person("military_retirement_pay", period)
         additional_amount = where(
-            additional_income_eligible,
+            additional_subtraction_eligible,
             p.additional.amount,
             0,
         )
