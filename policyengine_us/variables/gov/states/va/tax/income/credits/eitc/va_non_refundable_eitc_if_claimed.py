@@ -18,4 +18,4 @@ class va_non_refundable_eitc_if_claimed(Variable):
         p = parameters(period).gov.states.va.tax.income.credits.eitc.match
         # The filer can either claim the non-refundable EITC or the
         eitc = p.non_refundable * federal_eitc
-        return max_(eitc, low_income_tax_credit)
+        return max_(eitc, tax_unit("va_low_income_tax_credit", period))
