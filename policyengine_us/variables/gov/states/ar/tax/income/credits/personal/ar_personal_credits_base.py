@@ -24,7 +24,7 @@ class ar_personal_credits_base(Variable):
         # do not receive retirement or disability benefit exemptions.
         receives_retirement_or_disability_exemption = (
             person(
-                "ar_retirement_or_disability_benefits_exemptions_indv", period
+                "ar_retirement_or_disability_benefits_exemption_person", period
             )
             > 0
         )
