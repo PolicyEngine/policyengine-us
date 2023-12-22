@@ -1,0 +1,40 @@
+- name: Standard Rate Ceilings
+  period: 2023
+  input:
+    ca_calworks_child_care_factor_category: STANDARD
+    state_code: CA
+  output:
+    ca_calworks_child_care_payment_factor: 1
+
+- name: Evening/Weekend Care Rate Ceilings (50% or more of time)
+  period: 2023
+  input:
+    ca_calworks_child_care_factor_category: EVENING_AND_WEEKEND_I
+    state_code: CA
+  output:
+    ca_calworks_child_care_payment_factor: 1.25
+
+- name: Evening/Weekend Care Rate Ceilings (at least 10% but less than 50% of time) 
+  period: 2023
+  input:
+    ca_calworks_child_care_factor_category: EVENING_AND_WEEKEND_II
+    state_code: CA
+  output:
+    ca_calworks_child_care_payment_factor: 1.125
+
+- name: Exceptional Needs Care Rate Ceilings
+  period: 2023
+  input:
+    ca_calworks_child_care_factor_category: EXCEPTIONAL_NEEDS
+    state_code: CA
+  output:
+    ca_calworks_child_care_payment_factor: 1.2
+
+- name: Severely Disabled Care Rate Ceilings
+  period: 2023
+  input:
+    ca_calworks_child_care_factor_category: SEVERELY_DISABLED
+    state_code: CA
+  output:
+    ca_calworks_child_care_payment_factor: 1.5
+
