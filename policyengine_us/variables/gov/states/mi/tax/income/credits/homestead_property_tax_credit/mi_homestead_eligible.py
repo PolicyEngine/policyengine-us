@@ -20,7 +20,7 @@ class mi_homestead_eligible(Variable):
 
         property_value_eligible = (
             add(tax_unit, period, ["assessed_property_value"])
-            <= p.max.property_value
+            <= p.property_value_limit
         )
 
         exceed_amount_eligible = (

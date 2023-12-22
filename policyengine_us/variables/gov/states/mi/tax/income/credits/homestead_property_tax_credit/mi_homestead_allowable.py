@@ -33,7 +33,7 @@ class mi_homestead_allowable(Variable):
         )  # Line 37
         senior_allowable = min_(
             phase_out_rate * exceed_amount,
-            p.max.amount,
+            p.cap,
         )  # Line 38
 
         # disabled or disabled & seniors
@@ -49,7 +49,7 @@ class mi_homestead_allowable(Variable):
         both_eligible = age_older_eligible & disabled_eligible
         disabled_both_allowable = min_(
             exceed_amount,
-            p.max.amount,
+            p.cap,
         )  # Line 39
 
         # others
@@ -57,11 +57,11 @@ class mi_homestead_allowable(Variable):
         credit_rate = p.rate.credit
         other_allowable = min_(
             credit_rate * exceed_amount,
-            p.max.amount,
+            p.cap,
         )  # Line 41
 
         return select(
             [(disabled_eligible | both_eligible), age_older_eligible],
             [disabled_both_allowable, senior_allowable],
             default=other_allowable,
-        )
+        )  # Line 42

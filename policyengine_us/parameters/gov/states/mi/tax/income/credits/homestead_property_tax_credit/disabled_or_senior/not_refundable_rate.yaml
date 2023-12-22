@@ -1,5 +1,9 @@
-description: Michigan homestead property tax credit provides the following percentage of the property taxes not refundable for disabled.
+description: Michigan attributes this percentage of the homestead property tax credit for disabled filers as the non-refundable part, based on household resources. 
 brackets:
+  - threshold:
+      2018-01-01: 0
+    amount:
+      2018-01-01: 0
   - threshold:
       2018-01-01: 3_000
     amount:
@@ -19,7 +23,6 @@ brackets:
   - threshold:
       2018-01-01: 6_001
     amount:
-      2013-01-01: 0.035
       2018-01-01: 0.032
       
 metadata:

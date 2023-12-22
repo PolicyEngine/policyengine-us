@@ -1,4 +1,4 @@
-description: Michigan allows for the following resources to be utilized for the homestead property tax credit calculation.
+description: Michigan accounts for the following household resources under the homestead property tax credit. 
 values:
   2021-01-01:
     - employment_income
@@ -28,6 +28,7 @@ values:
     - general_assistance
 metadata:
   unit: list
+  period: year
   label: Michigan homestead property tax credit household resources list
   reference:
     - title: 2022 MI-1040 Instructions
