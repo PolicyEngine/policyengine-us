@@ -1,0 +1,21 @@
+description: Arkansas caps the retirement and benefit exemption at this amount.
+values:
+  2021-01-01: 6_000
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Arkansas retirement or disability benefits exemption cap
+  reference:
+    - title: Arkansas 2022 Individual Income Tax 
+      href: https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2022_AR1000F_and_AR1000NR_Instructions.pdf#page=13
+    - title: Arkansas 2021 Individual Income Tax 
+      href: https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2021_AR1000F_and_AR1000NR_Instructions.pdf#page=13
+    - title: 2022 AR1000F ARKANSAS INDIVIDUAL INCOME TAX RETURN Full Year Resident
+      href: https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2022_AR1000F_FullYearResidentIndividualIncomeTaxReturn.pdf#page=2
+    - title: 2021 AR1000F ARKANSAS INDIVIDUAL INCOME TAX RETURN Full Year Resident
+      href: https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2021_AR1000F_FullYearResidentIndividualIncomeTaxReturn.pdf#page=2
+    # The tax forms do not make the distinction between public or private retirement benefits
+    - title: Arkansas code Title26, Subtitle5, Chapter 51, Section 26-51-307 -(a)-(1)
+      href: https://casetext.com/statute/arkansas-code-of-1987/title-26-taxation/subtitle-5-state-taxes/chapter-51-income-taxes/subchapter-3-exemptions-and-reduced-tax-rates/section-26-51-307-retirement-or-disability-benefits-definition  
+    
