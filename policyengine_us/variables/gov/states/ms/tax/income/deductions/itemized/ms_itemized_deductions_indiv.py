@@ -4,9 +4,7 @@ from policyengine_us.model_api import *
 class ms_itemized_deductions_indiv(Variable):
     value_type = float
     entity = Person
-    label = (
-        "Mississippi itemized deductions when married couples file separately"
-    )
+    label = "Mississippi itemized deductions"
     unit = USD
     definition_period = YEAR
 
