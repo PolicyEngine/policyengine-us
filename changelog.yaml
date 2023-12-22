@@ -5324,3 +5324,217 @@
     added:
     - California CARE and FERA integration tests.
   date: 2023-12-12 04:40:40
+- bump: minor
+  changes:
+    added:
+    - California CalWORKs.
+  date: 2023-12-12 16:17:08
+- bump: patch
+  changes:
+    fixed:
+    - South Carolina senior exemption.
+  date: 2023-12-12 19:08:33
+- bump: minor
+  changes:
+    fixed:
+    - Connecticut alternative minimum tax.
+  date: 2023-12-12 19:14:28
+- bump: minor
+  changes:
+    added:
+    - Idaho 2023 income tax rate.
+  date: 2023-12-13 23:49:32
+- bump: patch
+  changes:
+    fixed:
+    - Arizona AGI long-term capital gains subtraction.
+  date: 2023-12-13 23:57:10
+- bump: minor
+  changes:
+    added:
+    - Montana federal income tax deduction.
+  date: 2023-12-14 17:57:39
+- bump: minor
+  changes:
+    added:
+    - Idaho retirement benefit deductions.
+  date: 2023-12-14 18:21:47
+- bump: minor
+  changes:
+    added:
+    - Alabama adjusted gross income.
+  date: 2023-12-14 18:51:52
+- bump: patch
+  changes:
+    fixes:
+    - Maine child care credit format.
+  date: 2023-12-14 19:03:15
+- bump: minor
+  changes:
+    added:
+    - Alabama income tax variable formula.
+  date: 2023-12-15 12:21:47
+- bump: patch
+  changes:
+    fixed:
+    - Connecticut pension subtraction.
+  date: 2023-12-15 14:22:33
+- bump: minor
+  changes:
+    added:
+    - Montana social security benefit adjustment.
+  date: 2023-12-15 14:37:23
+- bump: patch
+  changes:
+    fixed:
+    - Alabama standard deduction.
+  date: 2023-12-15 14:43:19
+- bump: minor
+  changes:
+    added:
+    - Illinois 2022 personal exemption amount.
+  date: 2023-12-15 16:27:51
+- bump: patch
+  changes:
+    fixed:
+    - Michigan standard deduction calculation.
+  date: 2023-12-15 17:16:18
+- bump: patch
+  changes:
+    added:
+    - Alabama dependent exemption.
+  date: 2023-12-15 19:35:40
+- bump: minor
+  changes:
+    added:
+    - Massachusetts 2023 child and dependent tax credit rules.
+  date: 2023-12-16 03:36:40
+- bump: patch
+  changes:
+    fixed:
+    - Set WIC take-up deterministically for individual simulations.
+  date: 2023-12-16 18:18:33
+- bump: patch
+  changes:
+    fixed:
+    - Bump policyengine-core to capture random microsimulation bug fixes.
+  date: 2023-12-16 18:54:42
+- bump: patch
+  changes:
+    fixed:
+    - Alabama federal tax deduction.
+  date: 2023-12-17 23:52:20
+- bump: minor
+  changes:
+    added:
+    - Reform for repealing head of household filing status, as Senator Romney proposed
+      in his Family Security Act.
+  date: 2023-12-18 01:50:30
+- bump: patch
+  changes:
+    fixed:
+    - Import all FilingStatus values when repealing head of household.
+  date: 2023-12-18 04:09:27
+- bump: patch
+  changes:
+    fixes:
+    - Parameterized 25% of the Alternative Minimum Tax calculation.
+  date: 2023-12-18 16:33:00
+- bump: patch
+  changes:
+    fixed:
+    - Alabama capital gains inclusion in AGI.
+  date: 2023-12-18 20:13:09
+- bump: minor
+  changes:
+    added:
+    - Income and substitution elasticities of labor supply.
+  date: 2023-12-19 11:31:05
+- bump: patch
+  changes:
+    fixed:
+    - Test failures in automated variable tests.
+  date: 2023-12-20 10:56:22
+- bump: patch
+  changes:
+    fixed:
+    - Alabama itemized deductions.
+  date: 2023-12-20 12:59:03
+- bump: minor
+  changes:
+    added:
+    - SSI 2024 updated amounts
+  date: 2023-12-20 22:28:46
+- bump: patch
+  changes:
+    fixed:
+    - Arizona itemized deductions.
+  date: 2023-12-21 07:13:29
+- bump: patch
+  changes:
+    added:
+    - Test for no-reform microsim impacts.
+  date: 2023-12-21 12:39:42
+- bump: minor
+  changes:
+    added:
+    - Ohio Exemption Credit.
+    - Ohio Personal Exemptions.
+  date: 2023-12-21 17:14:33
+- bump: minor
+  changes:
+    added:
+    - Virginia Adjusted Gross Income.
+  date: 2023-12-21 17:24:36
+- bump: patch
+  changes:
+    fixed:
+    - Alabama itemized deduction.
+  date: 2023-12-21 18:04:33
+- bump: patch
+  changes:
+    fixed:
+    - Utah social security benefits credit variable.
+    - Utah earned income tax credit variable.
+  date: 2023-12-21 18:09:07
+- bump: minor
+  changes:
+    added:
+    - Idaho aged and disabled deduction.
+  date: 2023-12-21 18:40:08
+- bump: patch
+  changes:
+    fixed:
+    - New York supplemental tax calculation.
+  date: 2023-12-21 18:46:53
+- bump: minor
+  changes:
+    added:
+    - Montana disability income subtraction.
+  date: 2023-12-21 19:02:40
+- bump: minor
+  changes:
+    added:
+    - West Virginia social security benefits subtraction.
+  date: 2023-12-21 19:05:34
+- bump: patch
+  changes:
+    fixed:
+    - Adjust the az_aged_exemption variable formula to calculate eligibility through
+      a defined_for attribute.
+  date: 2023-12-22 01:04:14
+- bump: minor
+  changes:
+    fixed:
+    - South Carolina net capital gain deduction.
+  date: 2023-12-22 04:42:23
+- bump: minor
+  changes:
+    added:
+    - Arkansas retirement or disability benefits exemption.
+  date: 2023-12-22 05:01:15
+- bump: minor
+  changes:
+    added:
+    - Rhode Island adjusted gross income modifications.
+  date: 2023-12-22 09:59:02

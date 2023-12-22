@@ -1,0 +1,33 @@
+description: California CalWORKs provides up to this amount of monthly payments for non-exempt Region 1 receivers, by household size.
+
+metadata:
+  unit: currency-USD
+  period: month
+  breakdown:
+    - range(1, 11)
+  label: California CalWORKs monthly payment level - non-exempt map region 1
+  reference:
+    - title: County of San Diego CalWORKS Program Guide | CalWORKs Payment Standards Chart
+      href: https://hhsaprogramguides.sandiegocounty.gov/CalWORKS/44-300/CalWORKs_Payment_Standards/G_CalWORKs_Payment_Standards.pdf
+
+1:
+  2023-01-01: 732
+2:
+  2023-01-01: 927
+3:
+  2023-01-01: 1_171
+4:
+  2023-01-01: 1_412
+5:
+  2023-01-01: 1_654
+6:
+  2023-01-01: 1_896
+7:
+  2023-01-01: 2_139
+8:
+  2023-01-01: 2_382
+9:
+  2023-01-01: 2_623
+10:
+  2023-01-01: 2_867
+# Actual date: 2023-10-01
