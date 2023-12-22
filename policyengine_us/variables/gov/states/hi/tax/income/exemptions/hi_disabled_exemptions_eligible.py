@@ -24,5 +24,6 @@ class hi_disabled_exemptions_eligible(Variable):
             filing_status == filing_status.possible_values.JOINT
         )
         # How to handle edge case that head is disabled and separate filing in a Tax_unit level formula?
+        # It would influence eligible in hi_disabled_exemptions_person
         return (is_head & disabled) | (is_spouse & disabled & joint_filing)
         
