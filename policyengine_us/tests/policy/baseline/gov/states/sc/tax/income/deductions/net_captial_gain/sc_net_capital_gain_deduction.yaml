@@ -2,9 +2,8 @@
   period: 2021
   input:
     state_code: SC
-    long_term_capital_gains: 800
+    long_term_capital_gains: 900
     short_term_capital_gains: 100
-    qualified_dividend_income: 100
   output: 
     sc_net_capital_gain_deduction: 440
 
@@ -14,6 +13,5 @@
     state_code: SC
     long_term_capital_gains: 600
     short_term_capital_gains: -700
-    qualified_dividend_income: 50
   output: 
     sc_net_capital_gain_deduction: 0
