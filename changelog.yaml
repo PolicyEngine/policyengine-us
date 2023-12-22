@@ -5517,3 +5517,9 @@
     added:
     - West Virginia social security benefits subtraction.
   date: 2023-12-21 19:05:34
+- bump: patch
+  changes:
+    fixed:
+    - Adjust the az_aged_exemption variable formula to calculate eligibility through
+      a defined_for attribute.
+  date: 2023-12-22 01:04:14
