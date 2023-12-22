@@ -10,7 +10,6 @@
         age: 66
     household:
       members: [person1, person2]
-      state_code: AZ
   output:
     az_aged_exemption: [2_100, 2_100]
 
@@ -26,7 +25,6 @@
         age: 66
     household:
       members: [person1, person2]
-      state_code: AZ
   output:
     az_aged_exemption: [0, 0]
 
@@ -42,6 +40,5 @@
         age: 66
     household:
       members: [person1, person2]
-      state_code: AZ
   output:
     az_aged_exemption: [0, 2_100]
