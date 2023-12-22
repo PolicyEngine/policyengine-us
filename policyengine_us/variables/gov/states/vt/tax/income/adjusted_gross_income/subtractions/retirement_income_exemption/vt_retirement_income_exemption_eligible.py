@@ -39,11 +39,16 @@ class vt_retirement_income_exemption_eligible(Variable):
             period
         ).gov.states.vt.tax.income.agi.retirement_income_exemption.csrs.reduction
         # One of the retirement income should be greater than 0
-        retirement_income_qualified = (
-            tax_unit_taxable_social_security
-            + tax_unit_military_retirement_pay
-            + tax_unit_csrs_retirement_pay
-        ) != 0
+        retirement_income = add(
+            tax_unit,
+            period,
+            [
+                "tax_unit_taxable_social_security",
+                "military_retirement_pay",
+                "csrs_retirement_pay",
+            ],
+        )
+        retirement_income_qualified = retirement_income > 0
         # The agi should below threshold
         agi_qualified = agi < p.end[filing_status]
         # Both qualified then the filer is qualified for vermont retirement
