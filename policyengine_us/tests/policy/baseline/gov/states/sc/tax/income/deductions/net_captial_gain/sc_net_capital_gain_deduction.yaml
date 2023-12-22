@@ -1,11 +1,20 @@
-- name: Case 1, base is positive
+- name: Case 1, base is positive, stcg are positive
   period: 2021
   input:
     state_code: SC
     long_term_capital_gains: 900
     short_term_capital_gains: 100
   output: 
-    sc_net_capital_gain_deduction: 440
+    sc_net_capital_gain_deduction: 396
+
+- name: Case 1, base is positive, stcg are positive
+  period: 2021
+  input:
+    state_code: SC
+    long_term_capital_gains: 900
+    short_term_capital_gains: -100
+  output: 
+    sc_net_capital_gain_deduction: 352
 
 - name: Case 2, base is negative
   period: 2021
