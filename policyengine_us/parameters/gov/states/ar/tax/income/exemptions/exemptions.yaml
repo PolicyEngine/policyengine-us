@@ -1,7 +1,8 @@
 description: Arkansas accounts for these exemptions when calculating the state adjusted gross income.
 values:
   2021-01-01:
-    - military_retirement_pay # Item 1
+    #  Included in the ar_retirement_or_disability_benefits_exemption calculation
+    #- military_retirement_pay # Item 1
     - child_support_received # Item 4
     - us_govt_interest # Item 7
     - workers_compensation # Item 8
@@ -10,6 +11,7 @@ values:
     - disability_benefits # Item 10
     # disability benefits pursuant to IRS §104
     - military_basic_pay # Item 11
+    - ar_retirement_or_disability_benefits_exemption # Item 12
 
 metadata:
   unit: list
