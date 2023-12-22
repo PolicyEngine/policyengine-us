@@ -13,6 +13,7 @@ class mt_refundable_credits(Variable):
         "mt_refundable_credits_before_renter_credit",
         "mt_elderly_homeowner_or_renter_credit",
     ]
-    # In the gross income sources, we include the elderly homeowner or renter credit in refundable credits
-    # This will create a circular reference (check reference Line7)
-    # So we created another variable mt_refundable_credits_before_renter_credit.py
+    # Under the gross income sources computation, the elderly homeowner or renter credit
+    # is included in the list of refundable credits
+    # This will create a potential circular reference (check reference Line7)
+    # mt_refundable_credits_before_renter_credit was created to circumvent this
