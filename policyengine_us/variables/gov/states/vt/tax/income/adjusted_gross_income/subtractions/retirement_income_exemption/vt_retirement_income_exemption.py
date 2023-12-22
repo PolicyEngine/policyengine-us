@@ -59,9 +59,10 @@ class vt_retirement_income_exemption(Variable):
             & (chosen_retirement_income != 0)
         )
         # Calculate the exemption ratio
-        partial_exemption_ratio = max_(
-            p[subfolder].reduction.end[filing_status] - agi, 0
-        ) / (p.divisor)
+        partial_exemption_ratio = (
+            max_(p[subfolder].reduction.end[filing_status] - agi, 0)
+            / p.divisor
+        )
         # Round the exemption ratio to two decimal point
         partial_exemption_ratio = round_(partial_exemption_ratio, 2)
         # The exemption ratio should be below one
