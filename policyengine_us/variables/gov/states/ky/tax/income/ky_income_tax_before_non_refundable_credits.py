@@ -10,16 +10,11 @@ class ky_income_tax_before_non_refundable_credits(Variable):
     defined_for = StateCode.KY
 
     def formula(tax_unit, period, paramters):
-        joint_filing = (
-            tax_unit("filing_status", period)
-            == tax_unit("filing_status", period).possible_values.JOINT
+        filing_separately = tax_unit("ky_files_separately", period)
+        taxable_income = where(
+            filing_separately,
+            add(tax_unit, period, ["ky_taxable_income_indiv"]),
+            add(tax_unit, period, ["ky_taxable_income_joint"])
         )
-        person = tax_unit.members
-        person_income = where(
-            joint_filing,
-            person("ky_taxable_income_joint", period),
-            person("ky_taxable_income_indiv", period),
-        )
-        income = tax_unit.sum(person_income)
         rate = paramters(period).gov.states.ky.tax.income.rate
-        return income * rate
+        return taxable_income * rate
