@@ -4,7 +4,9 @@ from policyengine_us.model_api import *
 class ms_itemized_deductions_indiv(Variable):
     value_type = float
     entity = Person
-    label = "Mississippi itemized deductions"
+    label = (
+        "Mississippi itemized deductions when married couples file separately"
+    )
     unit = USD
     definition_period = YEAR
 
@@ -17,10 +19,10 @@ class ms_itemized_deductions_indiv(Variable):
 
     def formula(person, period, parameters):
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        itemized_exemptions = person.tax_unit(
+        total_itemized_deductions = person.tax_unit(
             "ms_itemized_deductions_joint", period
         )
 
-        # Per the atx form, the exemption amount is split in half between the head
+        # Per the tax form, the exemption amount is split in half between the head
         # and the spouse of the household
-        return head_or_spouse * (0.5 * itemized_exemptions)
+        return head_or_spouse * (0.5 * total_itemized_deductions)

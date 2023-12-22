@@ -1,4 +1,4 @@
-- name: MS itemized deduction unit test 1
+- name: MS itemized deduction filing separately unit test 1
   absolute_error_margin: 0.01
   period: 2022
   input:
@@ -8,7 +8,7 @@
   output:
     ms_itemized_deductions_indiv: 2_500
 
-- name: MS itemized deduction unit test 2
+- name: MS itemized deduction filing separately unit test 2
   absolute_error_margin: 0.01
   period: 2022
   input:
