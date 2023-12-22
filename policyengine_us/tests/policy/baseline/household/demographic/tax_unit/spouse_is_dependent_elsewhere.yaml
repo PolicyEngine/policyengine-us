@@ -1,0 +1,15 @@
+- name: Spouse is a dependent elsewhere.
+  period: 2022
+  input:
+    claimed_as_dependent_on_another_return: true
+    is_tax_unit_spouse: true
+  output:
+    spouse_is_dependent_elsewhere: true
+    
+- name: Spouse is not a dependent elsewhere.
+  period: 2022
+  input:
+    claimed_as_dependent_on_another_return: false
+    is_tax_unit_spouse: true
+  output:
+    spouse_is_dependent_elsewhere: false
