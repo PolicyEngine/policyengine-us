@@ -143,25 +143,3 @@
         state_fips: 15  # HI
   output:  
     hi_disabled_exemptions_person: [0]    
-
-# - name: disabled integration test
-#   period: 2021
-#   input:
-#     people:
-#       person1:
-#         age: 65
-#         is_disabled: true
-#         is_tax_unit_head_or_spouse: true
-#       person2:
-#         age: 60
-#         is_disabled: false
-#         is_tax_unit_head_or_spouse: true
-#     tax_units:
-#       tax_unit:
-#         members: [person1, person2]
-#     households:
-#       household:
-#         members: [person1, person2]
-#         state_fips: 15  # HI
-#   output:  
-#     hi_disabled_exemptions_person: [7_000, 1_144] 
