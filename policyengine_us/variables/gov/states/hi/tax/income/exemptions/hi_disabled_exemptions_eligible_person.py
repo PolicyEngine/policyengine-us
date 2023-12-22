@@ -6,9 +6,7 @@ class hi_disabled_exemptions_eligible_person(Variable):
     entity = Person
     label = "Eligible person for the Hawaii disabled exemptions"
     unit = USD
-    documentation = (
-        "https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=20"
-    )
+    documentation = "https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=20"
     definition_period = YEAR
     defined_for = StateCode.HI
 
