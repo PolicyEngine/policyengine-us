@@ -1,0 +1,23 @@
+- name: 2022 test, both partners eligible
+  period: 2022
+  input:
+    il_personal_exemption_eligibility_status: BOTH_ELIGIBLE
+    state_code: IL
+  output:
+    il_personal_exemption: 4_850
+
+- name: 2022 test, one partner eligible
+  period: 2022
+  input:
+    il_personal_exemption_eligibility_status: PARTIALLY_ELIGIBLE
+    state_code: IL
+  output:
+    il_personal_exemption: 2_425
+
+- name: 2021 test, one partner eligible
+  period: 2021
+  input:
+    il_personal_exemption_eligibility_status: PARTIALLY_ELIGIBLE
+    state_code: IL
+  output:
+    il_personal_exemption: 2_375
