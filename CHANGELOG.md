@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.593.0] - 2023-12-22 05:01:15
+
+### Added
+
+- Arkansas retirement or disability benefits exemption.
+
 ## [0.592.0] - 2023-12-22 04:42:23
 
 ### Fixed
@@ -6527,6 +6533,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.593.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.592.0...0.593.0
 [0.592.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.591.1...0.592.0
 [0.591.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.591.0...0.591.1
 [0.591.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.590.0...0.591.0
