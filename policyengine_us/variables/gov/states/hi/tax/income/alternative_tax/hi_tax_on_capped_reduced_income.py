@@ -51,5 +51,5 @@ class hi_tax_on_capped_reduced_income(Variable):
                 rate_p.widow.calc(capped_reduced_income),
                 rate_p.head_of_household.calc(capped_reduced_income),
             ],
-            default= rate_p.single.calc(capped_reduced_income),
+            default=rate_p.single.calc(capped_reduced_income),
         )

@@ -29,7 +29,7 @@ class hi_eligible_capital_gain_alternative_tax(Variable):
         # Line 12
         cap = p.income_threshold[filing_status]
         # Line 13
-        
+
         capped_reduced_income = max_(
             reduced_taxable_income,
             cap,
