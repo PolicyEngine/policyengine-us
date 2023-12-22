@@ -5,6 +5,110 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.594.0] - 2023-12-22 09:59:02
+
+### Added
+
+- Rhode Island adjusted gross income modifications.
+
+## [0.593.0] - 2023-12-22 05:01:15
+
+### Added
+
+- Arkansas retirement or disability benefits exemption.
+
+## [0.592.0] - 2023-12-22 04:42:23
+
+### Fixed
+
+- South Carolina net capital gain deduction.
+
+## [0.591.1] - 2023-12-22 01:04:14
+
+### Fixed
+
+- Adjust the az_aged_exemption variable formula to calculate eligibility through a defined_for attribute.
+
+## [0.591.0] - 2023-12-21 19:05:34
+
+### Added
+
+- West Virginia social security benefits subtraction.
+
+## [0.590.0] - 2023-12-21 19:02:40
+
+### Added
+
+- Montana disability income subtraction.
+
+## [0.589.1] - 2023-12-21 18:46:53
+
+### Fixed
+
+- New York supplemental tax calculation.
+
+## [0.589.0] - 2023-12-21 18:40:08
+
+### Added
+
+- Idaho aged and disabled deduction.
+
+## [0.588.2] - 2023-12-21 18:09:07
+
+### Fixed
+
+- Utah social security benefits credit variable.
+- Utah earned income tax credit variable.
+
+## [0.588.1] - 2023-12-21 18:04:33
+
+### Fixed
+
+- Alabama itemized deduction.
+
+## [0.588.0] - 2023-12-21 17:24:36
+
+### Added
+
+- Virginia Adjusted Gross Income.
+
+## [0.587.0] - 2023-12-21 17:14:33
+
+### Added
+
+- Ohio Exemption Credit.
+- Ohio Personal Exemptions.
+
+## [0.586.2] - 2023-12-21 12:39:42
+
+### Added
+
+- Test for no-reform microsim impacts.
+
+## [0.586.1] - 2023-12-21 07:13:29
+
+### Fixed
+
+- Arizona itemized deductions.
+
+## [0.586.0] - 2023-12-20 22:28:46
+
+### Added
+
+- SSI 2024 updated amounts
+
+## [0.585.2] - 2023-12-20 12:59:03
+
+### Fixed
+
+- Alabama itemized deductions.
+
+## [0.585.1] - 2023-12-20 10:56:22
+
+### Fixed
+
+- Test failures in automated variable tests.
+
 ## [0.585.0] - 2023-12-19 11:31:05
 
 ### Added
@@ -6435,6 +6539,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.594.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.593.0...0.594.0
+[0.593.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.592.0...0.593.0
+[0.592.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.591.1...0.592.0
+[0.591.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.591.0...0.591.1
+[0.591.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.590.0...0.591.0
+[0.590.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.589.1...0.590.0
+[0.589.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.589.0...0.589.1
+[0.589.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.588.2...0.589.0
+[0.588.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.588.1...0.588.2
+[0.588.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.588.0...0.588.1
+[0.588.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.587.0...0.588.0
+[0.587.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.586.2...0.587.0
+[0.586.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.586.1...0.586.2
+[0.586.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.586.0...0.586.1
+[0.586.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.585.2...0.586.0
+[0.585.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.585.1...0.585.2
+[0.585.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.585.0...0.585.1
 [0.585.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.584.3...0.585.0
 [0.584.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.584.2...0.584.3
 [0.584.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.584.1...0.584.2
