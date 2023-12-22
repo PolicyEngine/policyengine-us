@@ -1,78 +1,29 @@
-- name: Kentucky JOINT 2022
-  period: 2022
+- name: 2021, separate
+  period: 2021
   input:
-    people:
-      person1:
-        is_tax_unit_head: true
-        ky_taxable_income_joint: 1_000
-      person2:
-        ky_taxable_income_joint: 0
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
-        filing_status: JOINT
-    households:
-      household:
-        members: [person1,person2]
-        state_code: KY
+    ky_files_separately: true
+    ky_taxable_income_indiv: 100
+    ky_taxable_income_joint: 200
+    state_code: KY
   output:
-    ky_income_tax_before_non_refundable_credits: 50
+    ky_income_tax_before_non_refundable_credits: 5
 
-- name: Kentucky JOINT 2023
+- name: 2021, joint
+  period: 2021
+  input:
+    ky_files_separately: false
+    ky_taxable_income_indiv: 100
+    ky_taxable_income_joint: 200
+    state_code: KY
+  output:
+    ky_income_tax_before_non_refundable_credits: 10
+
+- name: 2023, joint
   period: 2023
   input:
-    people:
-      person1:
-        is_tax_unit_head: true
-        ky_taxable_income_joint: 1_000
-      person2:
-        ky_taxable_income_joint: 0
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
-        filing_status: JOINT
-    households:
-      household:
-        members: [person1,person2]
-        state_code: KY
+    ky_files_separately: false
+    ky_taxable_income_indiv: 100
+    ky_taxable_income_joint: 200
+    state_code: KY
   output:
-    ky_income_tax_before_non_refundable_credits: 45
-
-- name: Kentucky SEPARATE 2023
-  period: 2023
-  input:
-    people:
-      person1:
-        is_tax_unit_head: true
-        ky_taxable_income_indiv: 1_000
-      person2:
-        ky_taxable_income_indiv: 1_000
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
-        filing_status: SEPARATE
-    households:
-      household:
-        members: [person1,person2]
-        state_code: KY
-  output:
-    ky_income_tax_before_non_refundable_credits: 90
-
-- name: Kentucky SINGLE 2023
-  period: 2023
-  input:
-    people:
-      person1:
-        is_tax_unit_head: true
-        ky_taxable_income_indiv: 1_000
-    tax_units:
-      tax_unit:
-        members: [person1]
-        filing_status: SINGLE
-    households:
-      household:
-        members: [person1]
-        state_code: KY
-  output:
-    ky_income_tax_before_non_refundable_credits: 45
-    
+    ky_income_tax_before_non_refundable_credits: 9

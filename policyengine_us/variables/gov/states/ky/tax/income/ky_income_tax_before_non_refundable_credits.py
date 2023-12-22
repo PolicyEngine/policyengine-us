@@ -14,7 +14,7 @@ class ky_income_tax_before_non_refundable_credits(Variable):
         taxable_income = where(
             filing_separately,
             add(tax_unit, period, ["ky_taxable_income_indiv"]),
-            add(tax_unit, period, ["ky_taxable_income_joint"])
+            add(tax_unit, period, ["ky_taxable_income_joint"]),
         )
         rate = paramters(period).gov.states.ky.tax.income.rate
         return taxable_income * rate
