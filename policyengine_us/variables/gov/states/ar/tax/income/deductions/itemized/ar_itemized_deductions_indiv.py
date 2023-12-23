@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ar_itemized_deductions_indiv(Variable):
     value_type = float
     entity = Person
-    label = "Arkansas itemized deductions when married filing separately"
+    label = "Arkansas itemized deductions when married couples are filing separately"
     unit = USD
     definition_period = YEAR
     reference = "https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2022_AR3_ItemizedDeduction.pdf"

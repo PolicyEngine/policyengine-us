@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ar_standard_deduction_indiv(Variable):
     value_type = float
     entity = Person
-    label = "Arkansas standard deduction when married filing separately"
+    label = "Arkansas standard deduction when married couples are filing separately"
     unit = USD
     definition_period = YEAR
     reference = "https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2022_AR1000F_and_AR1000NR_Instructions.pdf#page=14"
@@ -22,7 +22,7 @@ class ar_standard_deduction_indiv(Variable):
                 us_filing_status == fsvals.WIDOW,
             ],
             [
-                fsvals.SEPARATE,  # couples are filing separately on Iowa form
+                fsvals.SEPARATE,  # couples are filing separately on Arkansas form
                 fsvals.SINGLE,
                 fsvals.SEPARATE,
                 fsvals.HEAD_OF_HOUSEHOLD,
