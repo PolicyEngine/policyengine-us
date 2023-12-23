@@ -4,7 +4,9 @@ from policyengine_us.model_api import *
 class ar_taxable_income_indiv(Variable):
     value_type = float
     entity = Person
-    label = "Arkansas taxable income when married couples are filing separately"
+    label = (
+        "Arkansas taxable income when married couples are filing separately"
+    )
     unit = USD
     definition_period = YEAR
     reference = (
