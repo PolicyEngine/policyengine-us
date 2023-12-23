@@ -16,7 +16,9 @@ class ar_inflation_relief_credit_person(Variable):
         income_joint = person("ar_taxable_income_joint", period)
         income_indiv = person("ar_taxable_income_indiv", period)
         # When filing separartely, the credit is calculated based on individual income
-        income = where(filing_separately, income_indiv, person.tax_unit.sum(income_joint))
+        income = where(
+            filing_separately, income_indiv, person.tax_unit.sum(income_joint)
+        )
         p = parameters(
             period
         ).gov.states.ar.tax.income.credits.inflationary_relief
