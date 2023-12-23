@@ -18,7 +18,9 @@ class or_wfhdc_eligible(Variable):
         p = parameters(period).gov.states["or"].tax.income.credits.wfhdc
 
         # Check that the household size is large enough.
-        size_eligible = tax_unit("tax_unit_size", period) >= p.min_tax_unit_size
+        size_eligible = (
+            tax_unit("tax_unit_size", period) >= p.min_tax_unit_size
+        )
 
         # Get the income threshold based on household size.
         fpg = tax_unit("tax_unit_fpg", period)
