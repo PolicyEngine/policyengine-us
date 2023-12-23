@@ -15,5 +15,8 @@ class ar_taxable_income_joint(Variable):
 
     def formula(person, period, parameters):
         agi = person("ar_agi", period)
+        is_head = person("is_tax_unit_head", period)
+        total_agi = is_head * person.tax_unit.sum(agi)
         deductions = person("ar_deduction_joint", period)
-        return max_(0, agi - deductions)
+        total_deductions = person.tax_unit.sum(deductions)
+        return max_(0, total_agi - total_deductions)
