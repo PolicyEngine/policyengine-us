@@ -9,4 +9,4 @@ class ar_exemptions(Variable):
     defined_for = StateCode.AR
     unit = USD
     definition_period = YEAR
-    adds = "gov.states.ar.tax.income.exemptions"
+    adds = "gov.states.ar.tax.income.exemptions.exemptions"
