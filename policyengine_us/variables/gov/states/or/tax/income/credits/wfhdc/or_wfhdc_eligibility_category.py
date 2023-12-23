@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class OrTableColumn(Enum):
+class OregonWFHDCEligibilityCategory(Enum):
     age_under_3 = "age_under_3"
     age_3_to_6 = "age_3_to_6"
     age_6_to_13 = "age_6_to_13"
@@ -10,16 +10,16 @@ class OrTableColumn(Enum):
     NONE = "Empty String"
 
 
-class or_wfhdc_table_column(Variable):
+class or_wfhdc_eligibility_category(Variable):
     value_type = Enum
-    possible_values = OrTableColumn
+    possible_values = OregonWFHDCEligibilityCategory
     entity = TaxUnit
     label = "Oregon working family household and dependent care credit percentage table column"
     unit = USD
     definition_period = YEAR
     defined_for = "or_wfhdc_eligible"
     reference = "https://www.oregon.gov/dor/forms/FormsPubs/publication-or-wfhdc-tb_101-458_2021.pdf#page=1"
-    default_value = OrTableColumn.NONE
+    default_value = OregonWFHDCEligibilityCategory.NONE
 
     def formula(tax_unit, period, parameters):
         # Column determined by age of youngest child and whether they have a disability.
@@ -33,7 +33,7 @@ class or_wfhdc_table_column(Variable):
         # Get the age of the youngest qualifying child.
         person = tax_unit.members
         age = person("age", period)
-        min_age = age.min()
+        min_age = tax_unit.min(age)
 
         # Determine if the youngest qualifying individual is disabled.
         # The household has at least one qualifying individual because they are WFHDC eligible.
@@ -41,7 +41,7 @@ class or_wfhdc_table_column(Variable):
         youngest_and_disabled = (age == min_age) & disabled
 
         # This will be true if any child with the lowest age is disabled.
-        youngest_is_disabled = youngest_and_disabled.sum() > 0
+        youngest_is_disabled = tax_unit.sum(youngest_and_disabled) > 0  
         conditions = [
             min_age < p.three,
             min_age < p.six,
@@ -50,11 +50,11 @@ class or_wfhdc_table_column(Variable):
             youngest_is_disabled,
         ]
         values = [
-            OrTableColumn.age_under_3,
-            OrTableColumn.age_3_to_6,
-            OrTableColumn.age_6_to_13,
-            OrTableColumn.disabled_13_to_18,
-            OrTableColumn.disabled_18_and_over,
+            OregonWFHDCEligibilityCategory.age_under_3,
+            OregonWFHDCEligibilityCategory.age_3_to_6,
+            OregonWFHDCEligibilityCategory.age_6_to_13,
+            OregonWFHDCEligibilityCategory.disabled_13_to_18,
+            OregonWFHDCEligibilityCategory.disabled_18_and_over,
         ]
 
-        return select(conditions, values, default=OrTableColumn.NONE)
+        return select(conditions, values, default=OregonWFHDCEligibilityCategory.NONE)

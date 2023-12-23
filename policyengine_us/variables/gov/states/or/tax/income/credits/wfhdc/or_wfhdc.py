@@ -15,13 +15,13 @@ class or_wfhdc(Variable):
         p = parameters(period).gov.states["or"].tax.income.credits.wfhdc
 
         # Get the corresponding table letter for each household.
-        table_letter = tax_unit("or_wfhdc_table_letter", period)
+        income_category = tax_unit("or_wfhdc_income_category", period)
 
         # Get the corresponding table column for each household.
-        table_column = tax_unit("or_wfhdc_table_column", period)
+        eligibility_category = tax_unit("or_wfhdc_eligibility_category", period)
 
         # Get the OR WFHDC percentage based on the table letter and column.
-        percentage = p.table_threshold[table_letter][table_column]
+        percentage = p.table_threshold[income_category][eligibility_category]
 
         # Get the relevant expenses.
         expenses = tax_unit("cdcc_relevant_expenses", period)

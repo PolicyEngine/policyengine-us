@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class or_wfhdc_table_letter(Variable):
+class or_wfhdc_income_category(Variable):
     value_type = str
     entity = TaxUnit
     label = "Oregon working family household and dependent care credit percentage table row letter"
@@ -9,7 +9,6 @@ class or_wfhdc_table_letter(Variable):
     definition_period = YEAR
     defined_for = "or_wfhdc_eligible"
     reference = "https://www.oregon.gov/dor/forms/FormsPubs/publication-or-wfhdc-tb_101-458_2021.pdf#page=1"
-    default_value = ""
 
     def formula(tax_unit, period, parameters):
         # Get the parameter tree for the WFHDC table row letter.
@@ -47,11 +46,12 @@ class or_wfhdc_table_letter(Variable):
                 p.seven.calc(household_income, right=True),
                 p.eight_or_more.calc(household_income, right=True),
             ],
-            default="",
+            default=0,
         )
 
         # Create a mapping of numbers 1-26 to letters A-Z.
-        letter_map = {
+        LETTER_MAP = {
+            0: "-",
             1: "A",
             2: "B",
             3: "C",
@@ -81,5 +81,4 @@ class or_wfhdc_table_letter(Variable):
         }
 
         # Get the corresponding letter from the mapping.
-        row_number = pd.Series(row_number).astype(int)
-        return row_number.map(letter_map)
+        return pd.Series(row_number).map(LETTER_MAP)
