@@ -15,6 +15,8 @@ class oh_alternative_agi(Variable):
     )
     defined_for = StateCode.OH
 
-    adds = ["oh_alternative_agi_additions"]
+    adds = ["oh_agi"]
 
-    subtracts = ["oh_alternative_agi_subtractions"]
+    subtracts = (
+        "gov.states.oh.tax.income.credits.joint_filing.agi_subtractions"
+    )

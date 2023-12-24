@@ -1,19 +1,15 @@
-description: Ohio adds these items  when computing Ohio alternative adjusted gross income.
+description: Ohio caps the joint filing credit at this amount.
+values:
+  2021-01-01: 650
 
 metadata:
-  unit: list
+  period: year
+  unit: currency-USD
+  label: Ohio joint filing credit cap
   reference:
   - title: 2021 Ohio IT 1040 Individual Income Tax Return Form Instructions Line 12
     href: https://tax.ohio.gov/static/forms/ohio_individual/individual/2021/pit-it1040-booklet.pdf#page=20
   - title: 2022 Ohio IT 1040 Individual Income Tax Return Form Instructions Line 12
     href: https://tax.ohio.gov/static/forms/ohio_individual/individual/2022/it1040-sd100-instruction-booklet.pdf#page=20
-  - title: Ohio Revised Code - Section 5747.05 Tax credits. 
+  - title: Ohio Revised Code - Section 5747.05 Tax credits. (E) (1)
     href: https://codes.ohio.gov/ohio-revised-code/section-5747.05
-  period: year
-  label: Ohio alternative adjusted gross income additions
-
-  values:
-    2021-01-01:
-      - oh_alternative_adjusted_gross_income
-      - oh_bonus_depreciation_add_back
-      - oh_other_add_backs
