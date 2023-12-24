@@ -1,0 +1,25 @@
+- name: Joint filing, eligible
+  period: 2022
+  input:
+    people:
+      person1:
+        employment_income: 10_000
+        age: 30
+        is_tax_unit_head: true
+        retired_on_total_disability: true
+        disability_benefits: 1_000
+      person2:
+        employment_income: 19_000
+        age: 28
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SEPARATE
+        mt_interest_exemption_eligible: true
+    households:
+      household:
+        state_code: MT
+  output:
+    mt_agi: [9_000, 19_000]
+    mt_standard_deduction_indiv: [2_260, 3_800]

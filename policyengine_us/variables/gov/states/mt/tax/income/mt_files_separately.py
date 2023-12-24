@@ -1,16 +1,15 @@
 from policyengine_us.model_api import *
 
 
-class mt_income_tax(Variable):
-    value_type = float
+class mt_files_separately(Variable):
+    value_type = bool
     entity = TaxUnit
-    label = "Montana income tax"
+    label = "married couple files separately on Montana tax return"
     unit = USD
     definition_period = YEAR
-    defined_for = StateCode.MT
-    
+    defined_for = StateCode.IA
+
     def formula(tax_unit, period, parameters):
-        filing_separately = tax_unit("mt_files_separately", period)
         itax_indiv = add(tax_unit, period, ["mt_income_tax_indiv"])
         itax_joint = add(tax_unit, period, ["mt_income_tax_joint"])
-        return where (filing_separately, itax_indiv, itax_joint)
+        return itax_indiv < itax_joint
