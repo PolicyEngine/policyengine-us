@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class mi_home_heating_credit(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Michigan household heating cost credit"
+    label = "Michigan home heating credit"
     defined_for = "mi_home_heating_credit_eligible"
     unit = USD
     definition_period = YEAR
