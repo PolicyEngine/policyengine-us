@@ -1,9 +1,9 @@
-description: Michigan caps the total household resources for eligible filers.
+description: Michigan caps the total household resources at this amount under the alternate home heating credit, based on the number of exemptions.
 metadata:
   type: single_amount
   threshold_unit: people
   amount_unit: currency-USD
-  label: Michigan alternate home heating credit household resource max amount
+  label: Michigan alternate home heating credit household resource cap
   reference:
     # Legal Code diverges from the tax form - here we model the tax form structure
     - title: Michigan Section 206.527a, Income Tax Act of 1967(Exerpt)Act 281 of 1967, (1)(c)(ii)
