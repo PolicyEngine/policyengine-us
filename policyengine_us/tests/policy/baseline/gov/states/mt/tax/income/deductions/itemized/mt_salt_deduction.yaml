@@ -1,0 +1,37 @@
+- name: Test case 1, filing separate, higher than cap
+  period: 2021
+  input:
+     filing_status: SEPARATE
+     real_estate_taxes: 6_000
+     state_code: MT
+  output:
+     mt_salt_deduction: 5_000
+
+- name: Test case 2, filing single, less than cap
+  period: 2021
+  input:
+     filing_status: SINGLE
+     real_estate_taxes: 3_000
+     state_code: MT
+  output:
+     mt_salt_deduction: 3_000
+
+
+- name: Test case 3, filing jointly, lower than cap
+  period: 2021
+  input:
+     filing_status: JOINT
+     real_estate_taxes: 6_000
+     state_code: MT
+  output:
+     mt_salt_deduction: 6_000
+
+- name: Test case 4, filing jointly, higher than cap
+  period: 2021
+  input:
+     filing_status: JOINT
+     real_estate_taxes: 11_000
+     state_code: MT
+  output:
+     mt_salt_deduction: 10_000
+
