@@ -14,7 +14,7 @@ class wv_senior_citizen_disability_deduction_eligible_person(Variable):
             period
         ).gov.states.wv.tax.income.subtractions.senior_citizen_disability_deduction
 
-        disabled = person("is_disabled", period)
+        disabled = person("is_permanently_and_totally_disabled", period)
         age = person("age", period)
         age_eligible = age >= p.age_threshold
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
