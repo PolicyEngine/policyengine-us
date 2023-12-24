@@ -12,12 +12,14 @@ class ca_fytc(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.ca.tax.income.credits.foster_youth
 
-        eligible = tax_unit("ca_fytc_eligible", period)
+        eligible_people = tax_unit("ca_fytc_eligible_people", period)
 
-        earned_income = tax_unit("filer_adjusted_earnings", period)
-        is_tax_unit_spouse = person("is_tax_unit_spouse", period)
-        is_tax_unit_head = person("is_tax_unit_head",period)
+        head_earned_income = tax_unit("head_earned", period)
 
-        reduction_amount = max_(0, (earned_income - p.threshold) * p.reduction)
+        spouse_earned_income = tax_unit("spouse_earned", period)
+        
+        head_and_spouse_earned = head_earned_income + spouse_earned_income
 
-        return tax_unit.sum(min_(p.max_amount, earned_income - reduction_amount) * eligible * (is_tax_unit_head|is_tax_unit_spouse))
+        reduction_amount = max_(0, (head_and_spouse_earned - p.threshold) * p.reduction)
+
+        return min_(p.max_amount, head_and_spouse_earned - reduction_amount) * eligible_people 
