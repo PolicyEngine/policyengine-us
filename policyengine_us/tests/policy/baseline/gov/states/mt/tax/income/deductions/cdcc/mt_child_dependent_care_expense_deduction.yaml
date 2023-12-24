@@ -7,7 +7,7 @@
     mt_agi: 18_000 #No reduction needed
     state_code: MT
   output:
-    mt_child_dependent_care_expense_deduction: 2_400
+    mt_child_dependent_care_expense_deduction: 1_200
 
 - name: Care expense greater than maximum amount with moderate AGI and 1 child
   period: 2021
@@ -18,7 +18,7 @@
     mt_agi: 20_000 #Partial reduction needed
     state_code: MT
   output:
-    mt_child_dependent_care_expense_deduction: 1_400
+    mt_child_dependent_care_expense_deduction: 700
 
 - name: Care expense greater than maximum amount with high AGI and 1 child
   period: 2021
@@ -39,7 +39,7 @@
     mt_agi: 18_000 #No reduction needed
     state_code: MT
   output:
-    mt_child_dependent_care_expense_deduction: 3_600
+    mt_child_dependent_care_expense_deduction: 1_800
 
 - name: Care expense greater than maximum amount with moderate AGI and 2 children
   period: 2021
@@ -50,7 +50,7 @@
     mt_agi: 22_000 #Partial reduction needed
     state_code: MT
   output:
-    mt_child_dependent_care_expense_deduction: 1_600
+    mt_child_dependent_care_expense_deduction: 800
 
 - name: Care expense greater than maximum amount with high AGI and 2 children
   period: 2021
@@ -71,7 +71,7 @@
     mt_agi: 18_000 #No reduction needed
     state_code: MT
   output:
-    mt_child_dependent_care_expense_deduction: 4_800
+    mt_child_dependent_care_expense_deduction: 2_400
 
 - name: Care expense greater than maximum amount with moderate AGI and 3 children
   period: 2021
@@ -82,7 +82,7 @@
     mt_agi: 24_000 #Partial reduction needed
     state_code: MT
   output:
-    mt_child_dependent_care_expense_deduction: 1_800
+    mt_child_dependent_care_expense_deduction: 900
 
 - name: Care expense greater than maximum amount with high AGI and 3 children
   period: 2021
@@ -102,7 +102,7 @@
     mt_agi: 18_000 #No reduction needed
     state_code: MT
   output:
-    mt_child_dependent_care_expense_deduction: 2_000
+    mt_child_dependent_care_expense_deduction: 1_000
 
 - name: Care expense less than maximum amount with high AGI and 1 child
   period: 2021
@@ -122,7 +122,7 @@
     mt_agi: 18_000 #No reduction needed
     state_code: MT
   output:
-    mt_child_dependent_care_expense_deduction: 3_000
+    mt_child_dependent_care_expense_deduction: 1_500
 
 - name: Care expense less than maximum amount with high AGI and 2 children
   period: 2021
@@ -144,7 +144,7 @@
     mt_agi: 18_000 #No reduction needed
     state_code: MT
   output:
-    mt_child_dependent_care_expense_deduction: 4_000
+    mt_child_dependent_care_expense_deduction: 2_000
 
 - name: Care expense less than maximum amount with high AGI and 3 children
   period: 2021
@@ -156,3 +156,51 @@
     state_code: MT
   output:
     mt_child_dependent_care_expense_deduction: 0
+
+- name: Amount distributed equitably between head and spouse
+  period: 2021
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        mt_agi: 10_000
+      person2:
+        is_tax_unit_head_or_spouse: true
+        mt_agi: 8_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        mt_child_dependent_care_expense_deduction_eligible_children: 3
+        tax_unit_childcare_expenses: 4_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_child_dependent_care_expense_deduction: [2_000, 2_000]
+
+- name: Amount distributed equitably between head and spouse, not including dependents
+  period: 2021
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        mt_agi: 10_000
+      person2:
+        is_tax_unit_head_or_spouse: true
+        mt_agi: 8_000
+      person3:
+        is_tax_unit_head_or_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        mt_child_dependent_care_expense_deduction_eligible_children: 3
+        tax_unit_childcare_expenses: 4_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    mt_child_dependent_care_expense_deduction: [2_000, 2_000, 0]

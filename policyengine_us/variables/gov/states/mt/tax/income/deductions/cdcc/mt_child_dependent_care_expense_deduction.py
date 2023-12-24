@@ -25,4 +25,4 @@ class mt_child_dependent_care_expense_deduction(Variable):
         reduction = p.phase_out.calc(agi)  # Line 6
         # The deduction has to be allocated equally between spouses
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        return head_or_spouse * (max_(0, capped_expenses - reduction) / 0.5)
+        return head_or_spouse * (max_(0, capped_expenses - reduction) * 0.5)
