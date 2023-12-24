@@ -4,7 +4,9 @@ from policyengine_us.model_api import *
 class wv_senior_citizen_disability_deduction_person(Variable):
     value_type = float
     entity = Person
-    label = "West Virginia senior citizen or disability deduction"
+    label = (
+        "West Virginia senior citizen or disability deduction for each person"
+    )
     unit = USD
     definition_period = YEAR
     defined_for = "wv_senior_citizen_disability_deduction_eligible_person"
