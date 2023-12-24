@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class mt_refundable_credits(Variable):
+class mt_non_refundable_credits(Variable):
     value_type = float
     entity = Person
     label = "Montana refundable credits"

@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class mt_exemption_joint(Variable):
+class mt_exemptions_joint(Variable):
     value_type = float
     entity = TaxUnit
     label = "Montana exemptions when married couple files jointly"

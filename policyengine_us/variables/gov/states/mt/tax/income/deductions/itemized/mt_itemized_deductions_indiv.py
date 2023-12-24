@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class mt_itemized_deductions(Variable):
+class mt_itemized_deductions_indiv(Variable):
     value_type = float
-    entity = TaxUnit
-    label = "Montana itemized deductions"
+    entity = Person
+    label = "Montana itemized deductions when married couples are filing separately"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -14,7 +14,7 @@ class mt_itemized_deductions(Variable):
     )
     defined_for = StateCode.MT
 
-    def formula(tax_unit, period, parameters):
+    def formula(person, period, parameters):
         p = parameters(period).gov.irs.deductions
         itm_deds = [
             deduction
@@ -26,14 +26,14 @@ class mt_itemized_deductions(Variable):
                 "medical_expense_deduction",
             ]
         ]
-
-        return add(
-            tax_unit,
+        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+        return head_or_spouse * add(
+            person,
             period,
             itm_deds
             + [
                 "mt_misc_deductions",
-                "mt_medical_expense_deduction",
+                "mt_medical_expense_deduction_indiv",
                 "mt_salt_deduction",
                 "mt_federal_income_tax_deduction",
             ],
