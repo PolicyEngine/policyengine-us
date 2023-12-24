@@ -8,3 +8,5 @@ class ri_refundable_credits(Variable):
     defined_for = StateCode.RI
     unit = USD
     definition_period = YEAR
+
+    adds = "gov.states.ri.tax.income.credits.refundable"
