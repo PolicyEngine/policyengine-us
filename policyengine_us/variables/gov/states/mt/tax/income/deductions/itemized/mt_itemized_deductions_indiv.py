@@ -16,25 +16,25 @@ class mt_itemized_deductions_indiv(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.irs.deductions
-        itm_deds = [
-            deduction
-            for deduction in p.itemized_deductions
-            if deduction
-            not in [
-                "salt_deduction",
-                "casualty_loss_deduction",
-                "medical_expense_deduction",
-            ]
-        ]
+        # Since we only compute the federal charitable deduction at the tax unit level,
+        # we will split the value between each spouse
+        charitable_deduction = (
+            person.tax_unit("charitable_deduction", period) * 0.5
+        )
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        return head_or_spouse * add(
+        # The interest deduction is the sum of mortagage and investment interest expenses
+        investment_interest = person("investment_interest_expense", period)
+        mortgage_interest = person("mortgage_interest", period) 
+        interest_ded = investment_interest + mortgage_interest
+        other_deductions = add(
             person,
             period,
-            itm_deds
-            + [
+            [
                 "mt_misc_deductions",
                 "mt_medical_expense_deduction_indiv",
                 "mt_salt_deduction",
                 "mt_federal_income_tax_deduction",
             ],
         )
+        return head_or_spouse * (interest_ded + charitable_deduction + other_deductions)
+

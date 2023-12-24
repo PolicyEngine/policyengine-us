@@ -14,4 +14,6 @@ class mt_exemptions_count_indiv(Variable):
         blind = person("is_blind", period)
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         blind_head_or_spouse = (blind & head_or_spouse).astype(int)
-        return head_or_spouse * (1 + aged_exemption + dependent_exemption + blind_head_or_spouse)
+        return head_or_spouse * (
+            1 + aged_exemption + dependent_exemption + blind_head_or_spouse
+        )

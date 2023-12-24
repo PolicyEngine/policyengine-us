@@ -4,7 +4,9 @@ from policyengine_us.model_api import *
 class mt_standard_deduction_joint(Variable):
     value_type = float
     entity = Person
-    label = "Montana standard deduction when married couples are filing jointly"
+    label = (
+        "Montana standard deduction when married couples are filing jointly"
+    )
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.MT
@@ -12,7 +14,7 @@ class mt_standard_deduction_joint(Variable):
     def formula(person, period, parameters):
         filing_status = person.tax_unit("filing_status", period)
         p = parameters(period).gov.states.mt.tax.income.deductions.standard
-        agi = person("mt_agi", period)
+        agi = add(person.tax_unit, period, ["mt_agi"])
         # standard deduction is a percentage of AGI that
         # is bounded by a min/max by filing status.
         min_amount = p.min[filing_status]

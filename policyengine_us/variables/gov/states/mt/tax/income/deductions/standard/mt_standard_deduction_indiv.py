@@ -4,7 +4,9 @@ from policyengine_us.model_api import *
 class mt_standard_deduction_indiv(Variable):
     value_type = float
     entity = Person
-    label = "Montana standard deduction when married couples are filing separately"
+    label = (
+        "Montana standard deduction when married couples are filing separately"
+    )
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.MT

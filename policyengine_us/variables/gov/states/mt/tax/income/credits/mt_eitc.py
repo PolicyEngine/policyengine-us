@@ -12,7 +12,7 @@ class mt_eitc(Variable):
     def formula(person, period, parameters):
         federal_eitc = person.tax_unit("eitc", period)
         rate = parameters(period).gov.states.mt.tax.income.credits.eitc.rate
-        # Since the eitc amount can be attributed to either spouse, we will allocate the 
+        # Since the eitc amount can be attributed to either spouse, we will allocate the
         # value to the head
         is_head = person("is_tax_unit_head", period)
         state_eitc = federal_eitc * rate

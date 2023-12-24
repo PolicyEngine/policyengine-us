@@ -11,7 +11,9 @@ class mt_dependent_exemption_indiv(Variable):
     defined_for = StateCode.MT
 
     def formula(person, period, parameters):
-        total_dependent_exemptions = person.tax_unit("mt_dependent_exemption_unit", period)
+        total_dependent_exemptions = person.tax_unit(
+            "mt_dependent_exemption_unit", period
+        )
         # Only the head will claim the dependent exemption in the case when a married
         # couple files separately on the same return
         head = person("is_tax_unit_head", period)

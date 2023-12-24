@@ -34,7 +34,7 @@
   output:
     mt_federal_income_tax_deduction: 7_000
 
-- name: Amount distributed to0 the head
+- name: Amount distributed to the head
   period: 2021
   absolute_error_margin: 1
   input:
@@ -53,4 +53,4 @@
         members: [person1, person2]
         state_code: MT
   output:
-    mt_child_dependent_care_expense_deduction: [7_000, 0]
+    mt_federal_income_tax_deduction: [7_000, 0]
