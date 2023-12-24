@@ -1,0 +1,32 @@
+- name: Age not eligible for social security modification
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    adjusted_gross_income: 70_000
+    filing_status: HEAD_OF_HOUSEHOLD
+    older_spouse_birth_year: 1956
+    state_code: RI
+  output:
+    ri_social_security_modification_eligible: false
+
+- name: Income not eligible for social security modification
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    adjusted_gross_income: 100_000
+    filing_status: HEAD_OF_HOUSEHOLD
+    older_spouse_birth_year: 1955
+    state_code: RI
+  output:
+    ri_social_security_modification_eligible: false
+
+- name: Eligible for the social security modification
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    adjusted_gross_income: 70_000
+    filing_status: HEAD_OF_HOUSEHOLD
+    older_spouse_birth_year: 1955
+    state_code: RI
+  output:
+    ri_social_security_modification_eligible: true

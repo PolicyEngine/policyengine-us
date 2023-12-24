@@ -2,7 +2,7 @@
   period: 2021
   input:
     state_code: OH
-    oh_income_tax_before_credits: 800
+    oh_income_tax_before_non_refundable_credits: 800
     oh_non_refundable_credits: 900
   output:
     oh_income_tax_before_refundable_credits: 0
@@ -11,7 +11,7 @@
   period: 2021
   input:
     state_code: OH
-    oh_income_tax_before_credits: 800
+    oh_income_tax_before_non_refundable_credits: 800
     oh_non_refundable_credits: 600
   output:
     oh_income_tax_before_refundable_credits: 200
