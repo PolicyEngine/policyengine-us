@@ -11,7 +11,7 @@ class oh_joint_filing_credit(Variable):
     defined_for = "oh_joint_filing_credit_eligible"
 
     def formula(tax_unit, period, parameters):
-        tax_before_joint_filing_crdedit = tax_unit(
+        tax_before_joint_filing_credit = tax_unit(
             "oh_tax_before_joint_filing_credit", period
         )
         p = parameters(period).gov.states.oh.tax.income.credits.joint_filing
@@ -19,7 +19,7 @@ class oh_joint_filing_credit(Variable):
         # the addition of the business income deduction, which is currently not included in the model,
         # hence, we use the Ohio AGI for the credit computation
         oh_agi = tax_unit("oh_agi", period)
-        exemption = tax_unit("oh_personal_exemptions", period)
-        agi_less_exepmtion = max_(oh_agi - exemption, 0)
-        percentage = p.rate.calc(agi_less_exepmtion)
-        return min_(tax_before_joint_filing_crdedit * percentage, p.cap)
+        exemptions = tax_unit("oh_personal_exemptions", period)
+        agi_less_exepmtions = max_(oh_agi - exemptions, 0)
+        percentage = p.rate.calc(agi_less_exepmtions)
+        return min_(tax_before_joint_filing_credit * percentage, p.cap)
