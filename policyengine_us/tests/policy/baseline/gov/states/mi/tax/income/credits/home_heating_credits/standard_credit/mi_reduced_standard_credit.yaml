@@ -3,7 +3,7 @@
   input:
     mi_household_resources: 25_000
     mi_standard_allowance: 20_000
-    heating_costs_included_in_rent: true
+    utilities_included_in_rent: true
     state_code: MI
   output:
     mi_reduced_standard_credit: 9_562.5
@@ -13,7 +13,7 @@
   input:
     mi_household_resources: 25_000
     mi_standard_allowance: 20_000
-    heating_costs_included_in_rent: false
+    utilities_included_in_rent: false
     state_code: MI
   output:
     mi_reduced_standard_credit: 19_125
@@ -23,7 +23,7 @@
   input:
     mi_household_resources: 25_000
     mi_standard_allowance: 800
-    heating_costs_included_in_rent: false
+    utilities_included_in_rent: false
     state_code: MI
   output:
     mi_reduced_standard_credit: 0

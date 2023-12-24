@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class mi_standard_allowance_heating_credit_eligible(Variable):
+class mi_standard_home_heating_credit_eligible(Variable):
     value_type = bool
     entity = TaxUnit
-    label = "Eligible for the Michigan home heating credit standard allowance"
+    label = "Eligible for the Michigan home heating standard credit"
     definition_period = YEAR
     defined_for = StateCode.MI
 

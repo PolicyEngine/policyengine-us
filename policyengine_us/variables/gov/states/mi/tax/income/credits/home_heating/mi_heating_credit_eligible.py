@@ -10,10 +10,15 @@ class mi_heating_credit_eligible(Variable):
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
-        is_not_dsi = ~tax_unit("dsi", period)
+        head_not_dependent_elsewhere = ~tax_unit("spouse_is_dependent_elsewhere", period)
+        spouse_not_dependent_elsewhere = ~tax_unit("spouse_is_dependent_elsewhere", period)
         is_not_ft_student = ~person("is_full_time_student", period)
-        is_head = person("is_tax_unit_head", period)
-        is_spouse = person("is_tax_unit_spouse", period)
-        head_or_spouse = is_head | is_spouse
 
-        return is_not_dsi & tax_unit.any(is_not_ft_student & head_or_spouse)
+        student_eligible = tax_unit.any(is_not_ft_student) & (head_not_dependent_elsewhere | spouse_not_dependent_elsewhere)
+
+        # Tax units can not have household resources greater than 110% of the poverty guidelines
+        household_resources = tax_unit("mi_household_resources", period)
+        fpg = tax_unit("tax_unit_fpg", period)
+        p = parameters(period).gov.states.mi.tax.income.credits.home_heating
+        resource_eligible = household_resources < fpg * p.fpg_rate
+        return student_eligible & resource_eligible
