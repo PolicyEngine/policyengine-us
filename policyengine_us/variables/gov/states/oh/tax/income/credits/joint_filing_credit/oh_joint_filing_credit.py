@@ -15,7 +15,7 @@ class oh_joint_filing_credit(Variable):
             "oh_tax_before_joint_filing_credit", period
         )
         p = parameters(period).gov.states.oh.tax.income.credits.joint_filing
-        # Ohio use MAGI for the credit computation, which is Ohio AGI with
+        # Ohio uses MAGI for the credit computation, which is Ohio AGI with
         # the addition of the business income deduction, which is currently not included in the model,
         # hence, we use the Ohio AGI for the credit computation
         oh_agi = tax_unit("oh_agi", period)
