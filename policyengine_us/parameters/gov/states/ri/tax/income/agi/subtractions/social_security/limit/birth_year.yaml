@@ -1,0 +1,20 @@
+description: Rhode Island allows social security modifications for taxpayers or spouses born on or before this date.
+metadata:
+  unit: year
+  label: Rhode Island social security modification birth year threshold
+  period: year
+  reference:
+  # The tax form points to this worksheet: Social Security modification on Schedule M, line 1s.
+  - title: Rhode Island 2021 Modification for Taxable social security income worksheet
+    href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-01/social-security-worksheet_b_0.pdf#page=1
+  # The tax form points to this worksheet: Social Security modification on Schedule M, line 1t.
+  - title: Rhode Island 2022 Modification for Taxable social security income worksheet
+    href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-12/Social%20Security%20Worksheet_w.pdf#page=1
+  # The legal code refers to the "attained the age used for calculating 
+  # full or unreduced social security retirement benefits"
+  - title: R.I. Gen. Laws § 44-30-12 (c), (8), (i), (A)
+    href: http://webserver.rilin.state.ri.us/Statutes/title44/44-30/44-30-12.HTM 
+
+values:
+  2021-01-01: 1955
+  2022-01-01: 1956
