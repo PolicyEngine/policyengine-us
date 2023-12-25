@@ -22,6 +22,7 @@ class oh_uninsured_unreimbursed_medical_care_expenses(Variable):
         )
         status = employer_premium_contribution.possible_values
         health_insurance_premiums = person("health_insurance_premiums", period)
+        # Premiums only count if the employer paid none.
         hipaid = select(
             [
                 employer_premium_contribution == status.NONE,

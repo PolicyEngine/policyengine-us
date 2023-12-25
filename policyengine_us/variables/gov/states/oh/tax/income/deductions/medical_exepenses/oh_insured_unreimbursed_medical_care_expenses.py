@@ -23,8 +23,10 @@ class oh_insured_unreimbursed_medical_care_expenses(Variable):
         status = employer_premium_contribution.possible_values
         medicare_eligible = person("is_medicare_eligible", period)
         # Line 3
-        eligible_premiums_expenses = person("health_insurance_premiums", period) * medicare_eligible
-
+        eligible_premiums = (
+            person("health_insurance_premiums", period) * medicare_eligible
+        )
+        # Premiums only count if the employer paid none.
         hipaid = select(
             [
                 employer_premium_contribution == status.NONE,
@@ -32,7 +34,7 @@ class oh_insured_unreimbursed_medical_care_expenses(Variable):
                 employer_premium_contribution == status.ALL,
                 employer_premium_contribution == status.NA,
             ],
-            [eligible_premiums_expenses, 0, 0, 0],
+            [eligible_premiums, 0, 0, 0],
         )
         total_hipaid = tax_unit.sum(hipaid)
         # Line 4
