@@ -17,7 +17,7 @@ class la_blind_exemption(Variable):
     defined_for = StateCode.LA
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.la.tax.income.exemptions.personal
+        p = parameters(period).gov.states.la.tax.income.exemptions
         blind_head = tax_unit("blind_head", period).astype(int)
         blind_spouse = tax_unit("blind_spouse", period).astype(int)
         return (blind_head + blind_spouse) * p.blind

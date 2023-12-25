@@ -2,7 +2,7 @@
   period: 2020
   input:
     state_code: LA
-    adjusted_gross_income: 3_000
+    la_agi: 3_000
     la_itemized_deductions: 1_000
     la_exemptions: 1_000
   output:
@@ -12,7 +12,7 @@
   period: 2020
   input:
     state_code: LA
-    adjusted_gross_income: 3_000
+    la_agi: 3_000
     la_itemized_deductions: 2_000
     la_exemptions: 2_000
   output:
