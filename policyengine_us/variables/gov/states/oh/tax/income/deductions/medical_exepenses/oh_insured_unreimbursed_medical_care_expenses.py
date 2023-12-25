@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class oh_unreimbursed_medical_care_expense_deduction(Variable):
+class oh_insured_unreimbursed_medical_care_expenses(Variable):
     value_type = float
     entity = TaxUnit
     label = "Ohio Unreimbursed Medical and Health Care Expense Deduction"
@@ -21,7 +21,9 @@ class oh_unreimbursed_medical_care_expense_deduction(Variable):
             period,
         )
         status = employer_premium_contribution.possible_values
-        premiums_expenses = person("health_insurance_premiums", period)
+        medicare_eligible = person("is_medicare_eligible", period)
+        # Line 3
+        eligible_premiums_expenses = person("health_insurance_premiums", period) * medicare_eligible
 
         hipaid = select(
             [
@@ -30,17 +32,23 @@ class oh_unreimbursed_medical_care_expense_deduction(Variable):
                 employer_premium_contribution == status.ALL,
                 employer_premium_contribution == status.NA,
             ],
-            [premiums_expenses, 0, 0, 0],
+            [eligible_premiums_expenses, 0, 0, 0],
         )
+        total_hipaid = tax_unit.sum(hipaid)
+        # Line 4
         medical_expenses = add(
             tax_unit, period, ["medical_out_of_pocket_expenses"]
         )
+        # Line 5
+        total_expenses = total_hipaid + medical_expenses
+        # Line 6
         federal_agi = tax_unit("adjusted_gross_income", period)
 
         # Can deduct medical expenses in excess of 7.5% of federal AGI.
+        # Line 7
         rate = parameters(
             period
         ).gov.states.oh.tax.income.deductions.unreimbursed_medical_care_expenses.rate
         agi_floor = federal_agi * rate
-        adjusted_moop = max_(0, medical_expenses - agi_floor)
-        return tax_unit.sum(hipaid) + adjusted_moop
+        # Line 8
+        return max_(0, total_expenses - agi_floor)
