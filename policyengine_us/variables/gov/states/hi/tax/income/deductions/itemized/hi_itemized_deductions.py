@@ -14,7 +14,7 @@ class hi_itemized_deductions(Variable):
     defined_for = StateCode.HI
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.hi.tax.income.deductions.itemized
+        p = parameters(period).gov.irs.deductions.itemized.reduction
 
         # Hawaii did not suspend the overall limitation on itemized deductions
         # You may not be able to deduct all of your itemized deductions if agi reach the cap
@@ -22,7 +22,7 @@ class hi_itemized_deductions(Variable):
         hi_agi = tax_unit("hi_agi", period)
         filing_status = tax_unit("filing_status", period)
         total_itemized_deduction_eligibility = (
-            hi_agi < p.cap.agi[filing_status]
+            hi_agi < p.agi_threshold[filing_status]
         )
 
         return where(

@@ -14,7 +14,7 @@ class hi_interest_deduction(Variable):
     defined_for = StateCode.HI
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.hi.tax.income.deductions.itemized
+        p = parameters(period).gov.irs.deductions.itemized.interest.mortgage
 
         # 3. interest_deduction: worksheet A-3
         # Hawaii did not
@@ -23,8 +23,10 @@ class hi_interest_deduction(Variable):
         filing_status = tax_unit("filing_status", period)
         home_mortgage_interest = min_(
             add(tax_unit, period, ["mortgage_interest"]),
-            p.cap.home_mortgage_interest[filing_status],
+            p.cap[filing_status],
         )
-        investment_interest = add(tax_unit, period, ["investment_interest_expense"])
+        investment_interest = add(
+            tax_unit, period, ["investment_interest_expense"]
+        )
 
         return max_(0, home_mortgage_interest + investment_interest)

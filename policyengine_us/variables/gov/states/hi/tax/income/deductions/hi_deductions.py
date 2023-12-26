@@ -23,7 +23,7 @@ class hi_deductions(Variable):
 
         # check itemized deduction eligibility
         filing_status_eligible = (
-            itemized_deduction > p.threshold.filing_status[filing_status]
+            itemized_deduction > p.threshold.deductions[filing_status]
         )
         is_dependent_on_another_return = tax_unit(
             "head_is_dependent_elsewhere", period
