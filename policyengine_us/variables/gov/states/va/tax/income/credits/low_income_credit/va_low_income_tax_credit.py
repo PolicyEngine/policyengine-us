@@ -16,5 +16,7 @@ class va_low_income_tax_credit(Variable):
 
     def formula(tax_unit, period, parameters):
         exemptions = tax_unit("va_personal_exemption", period)
-        p = parameters(period).gov.states.va.tax.income.credits.eitc.low_income_tax
+        p = parameters(
+            period
+        ).gov.states.va.tax.income.credits.eitc.low_income_tax
         return p.base * exemptions
