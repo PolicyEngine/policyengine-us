@@ -17,7 +17,10 @@ class va_eitc(Variable):
         claims_refundable = tax_unit("va_claims_refundable_eitc", period)
         amount = where(claims_refundable, refundable_eitc, non_refundable_eitc)
         filing_status = tax_unit("filing_status", period)
+        # In the case of separated individuals, the EITC amount is prorated
         is_separate = filing_status == filing_status.possible_values.SEPARATE
         person = tax_unit.members
-        va_eitc_person = person("va_eitc_person", period)
-        return where(is_separate, va_eitc_person, amount)
+        eitc_person = person("va_eitc_person", period)
+        is_head = person("is_tax_unit_head", period)
+        head_eitc = tax_unit.sum(eitc_person * is_head)
+        return where(is_separate, head_eitc, amount)
