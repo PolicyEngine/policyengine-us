@@ -3,23 +3,23 @@
   input:
     people:
       person1:
-        investment_interest_expense: 2_000
+        investment_interest_expense: 100
       person2:
-        investment_interest_expense: 1_000
+        investment_interest_expense: 100
     tax_units:
       tax_unit:
         filing_status: JOINT
-        hi_medical_expense_deduction: 
-        hi_casualty_loss_deduction: 
+        hi_medical_expense_deduction: 300
+        hi_casualty_loss_deduction: 400
         hi_agi: 200_000
         members: [person1, person2]
-        hi_total_itemized_deductions: 
+        hi_total_itemized_deductions: 10_000
     households:
       household:
         members: [person1, person2]
         state_code: HI
   output:
-    hi_reduced_itemized_deductions: 4_004
+    hi_reduced_itemized_deductions: 2_720
 
 - name: not eligible
   period: 2022

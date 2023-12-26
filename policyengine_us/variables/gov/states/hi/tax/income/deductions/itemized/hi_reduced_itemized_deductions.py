@@ -28,21 +28,24 @@ class hi_reduced_itemized_deductions(Variable):
 
         # eligible check 1: deduction_difference need to be greater than 0 to have reduced deduction
         partial_deductions_less_than_total = partial_deductions < total_deductions
-        deduction_difference = total_deductions - partial_deductions
-        reduced_difference = deduction_difference * p_irs.amount
+        total_less_partial_ded_amount = total_deductions - partial_deductions
+        # Take a percentage of the difference between the total and partial deductions
+        total_less_partial_ded_percentage = total_less_partial_ded_amount * p_irs.amount
         # eligible check 2: actual AGI need to be smaller than AGI cap
         hi_agi = tax_unit("hi_agi", period)
         filing_status = tax_unit("filing_status", period)
         agi_threshold = p.cap.agi[filing_status]
-        agi__over_threshold = agi_threshold < hi_agi
-        agi_cap_difference = hi_agi - agi_threshold
-        reduced_agi_difference = agi_cap_difference * p_irs.excess_agi
+        agi_over_threshold = agi_threshold < hi_agi
+        # If the AGI is over a threshold, the AGI amount is reduced by the threshold and multiplied 
+        # by a rate
+        reduced_agi = hi_agi - agi_threshold
+        reduced_agi_percentage = reduced_agi * p_irs.excess_agi
 
-        smaller_reduced = min_(reduced_difference, reduced_agi_difference)
+        smaller_reduced = min_(total_less_partial_ded_percentage, reduced_agi_percentage)
         reduced_deductions = max_(0, total_deductions - smaller_reduced)
 
         return where(
-            (partial_deductions_less_than_total & agi__over_threshold),
+            (partial_deductions_less_than_total & agi_over_threshold),
             reduced_deductions,
             0,
         )
