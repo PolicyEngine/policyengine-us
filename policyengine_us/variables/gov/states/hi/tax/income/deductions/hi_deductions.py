@@ -17,7 +17,7 @@ class hi_deductions(Variable):
         p = parameters(period).gov.states.hi.tax.income.deductions.itemized
 
         standard_deduction = tax_unit("hi_standard_deduction", period)
-        itemized_deduction = tax_unit("hi_itemized_deduction", period)
+        itemized_deduction = tax_unit("hi_itemized_deductions", period)
         tax_unit_earned_income = tax_unit("tax_unit_earned_income", period)
         filing_status = tax_unit("filing_status", period)
 

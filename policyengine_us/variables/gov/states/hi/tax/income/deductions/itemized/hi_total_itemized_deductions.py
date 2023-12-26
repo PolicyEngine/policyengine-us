@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class hi_total_itemized_deduction(Variable):
+class hi_total_itemized_deductions(Variable):
     value_type = float
     entity = TaxUnit
     label = "Hawaii total itemized deduction"

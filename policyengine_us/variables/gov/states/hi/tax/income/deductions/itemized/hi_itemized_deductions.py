@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class hi_itemized_deduction(Variable):
+class hi_itemized_deductions(Variable):
     value_type = float
     entity = TaxUnit
     label = "Hawaii itemized deduction"
@@ -27,6 +27,6 @@ class hi_itemized_deduction(Variable):
 
         return where(
             total_itemized_deduction_eligibility,
-            tax_unit("hi_total_itemized_deduction", period),
-            tax_unit("hi_reduced_itemized_deduction", period),
+            tax_unit("hi_total_itemized_deductions", period),
+            tax_unit("hi_reduced_itemized_deductions", period),
         )
