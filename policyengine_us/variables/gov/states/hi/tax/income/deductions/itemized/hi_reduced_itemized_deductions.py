@@ -41,9 +41,8 @@ class hi_reduced_itemized_deductions(Variable):
         reduced_agi = hi_agi - agi_threshold
         reduced_agi_percentage = reduced_agi * p_irs.excess_agi
 
-        smaller_reduced = min_(total_less_partial_ded_percentage, reduced_agi_percentage)
-        reduced_deductions = max_(0, total_deductions - smaller_reduced)
-
+        smaller_reduced_ded = min_(total_less_partial_ded_percentage, reduced_agi_percentage)
+        reduced_deductions = max_(0, total_deductions - smaller_reduced_ded)
         return where(
             (partial_deductions_less_than_total & agi_over_threshold),
             reduced_deductions,
