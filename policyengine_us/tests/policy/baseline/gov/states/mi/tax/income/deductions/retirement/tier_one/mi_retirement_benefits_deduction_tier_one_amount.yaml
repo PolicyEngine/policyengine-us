@@ -9,14 +9,13 @@
         is_tax_unit_head_or_spouse: true
     tax_units:
       tax_unit:
-        mi_retirement_benefits_deduction_tier_one_eligible: true
         members: [person1]
         filing_status: SINGLE
     household:
       members: [person1]
       state_code: MI
   output: # min(56961 - 1000 - 60000 < 0, 10000) + 60000
-    mi_retirement_benefits_deduction_tier_one: 60_000
+    mi_retirement_benefits_deduction_tier_one_amount: 60_000
 
 - name: 2022 joint filer and their spouse with tier 1 retirement and pension benefits deduction equal to sum of taxable public pension income and taxable private pension income, and with one more household member
   period: 2022
@@ -39,14 +38,13 @@
         is_tax_unit_head_or_spouse: false
     tax_units:
       tax_unit:
-        mi_retirement_benefits_deduction_tier_one_eligible: true
         members: [person1, person2, person3]
         filing_status: JOINT
     household:
       members: [person1, person2, person3]
       state_code: MI
   output: # min(113922 - 1000 - 2000 - 20000 - 30000 = 60922, 20000 + 40000) + 20000 + 30000
-    mi_retirement_benefits_deduction_tier_one: 110_000
+    mi_retirement_benefits_deduction_tier_one_amount: 110_000
     
 - name: 2022 joint filer and their spouse with tier 1 retirement and pension benefits deduction larger than sum of taxable public pension income and taxable private pension income
   period: 2022
@@ -64,11 +62,10 @@
         is_tax_unit_head_or_spouse: true
     tax_units:
       tax_unit:
-        mi_retirement_benefits_deduction_tier_one_eligible: true
         members: [person1, person2]
         filing_status: JOINT
     household:
       members: [person1, person2]
       state_code: MI
   output: # min(113922 - 1000 - 2000 - 20000 - 30000 = 60922, 30000 + 40000) + 20000 + 30000
-    mi_retirement_benefits_deduction_tier_one: 110_922
+    mi_retirement_benefits_deduction_tier_one_amount: 110_922

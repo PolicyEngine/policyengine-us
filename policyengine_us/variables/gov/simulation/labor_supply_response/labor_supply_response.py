@@ -129,6 +129,11 @@ class employment_income_behavioral_response(Variable):
             branch.tax_benefit_system.neutralize_variable(
                 "employment_income_behavioral_response"
             )
+            branch.set_input(
+                "employment_income_before_lsr",
+                period,
+                person("employment_income_before_lsr", period),
+            )
 
         return add(
             person,
