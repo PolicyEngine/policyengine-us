@@ -13,7 +13,7 @@
     or_wfhdc_eligible: true
     tax_unit_size: 2
     adjusted_gross_income: 1_831
-    or_income_after_subtractions: 1_831
+    or_agi: 1_831
   output:
     or_wfhdc_income_category: ["A"]
 
@@ -24,7 +24,7 @@
     or_wfhdc_eligible: true
     tax_unit_size: 2
     adjusted_gross_income: 3_662
-    or_income_after_subtractions: 3_662
+    or_agi: 3_662
   output:
     or_wfhdc_income_category: ["B"]
 
@@ -35,6 +35,6 @@
     or_wfhdc_eligible: true
     tax_unit_size: 3
     adjusted_gross_income: 2_303
-    or_income_after_subtractions: 2_303
+    or_agi: 2_303
   output:
     or_wfhdc_income_category: ["A"]

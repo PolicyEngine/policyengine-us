@@ -3,17 +3,17 @@ values:
   2019-01-01:
   - or_eitc
   - or_kicker
-  #- or_wfhdc
+  - or_wfhdc
   2023-01-01:
   - or_eitc
   - or_kicker
   - or_ctc
-  #- or_wfhdc
+  - or_wfhdc
   # Child Tax Credit legislation ends in 2029.
   2029-01-01:
   - or_eitc
   - or_kicker
-  #- or_wfhdc
+  - or_wfhdc
 metadata:
   unit: list
   label: OR refundable tax credits

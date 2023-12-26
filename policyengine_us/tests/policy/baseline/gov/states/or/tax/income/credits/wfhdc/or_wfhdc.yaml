@@ -13,7 +13,7 @@
       tax_unit:
         members: [person1, person2]
         adjusted_gross_income: 1_800
-        or_income_after_subtractions: 1_800
+        or_agi: 1_800
         cdcc_relevant_expenses: 100
     households:
       household:
@@ -37,7 +37,7 @@
       tax_unit:
         members: [person1, person2]
         adjusted_gross_income: 1_800
-        or_income_after_subtractions: 1_800
+        or_agi: 1_800
         cdcc_relevant_expenses: 100
     households:
       household:
@@ -61,7 +61,7 @@
       tax_unit:
         members: [person1, person2]
         adjusted_gross_income: 10_000
-        or_income_after_subtractions: 10_000
+        or_agi: 10_000
         cdcc_relevant_expenses: 100
         or_wfhdc_eligible: false
     households:
@@ -86,7 +86,7 @@
       tax_unit:
         members: [person1, person2]
         adjusted_gross_income: 2_000
-        or_income_after_subtractions: 2_000
+        or_agi: 2_000
         cdcc_relevant_expenses: 100
     households:
       household:
@@ -113,7 +113,7 @@
       tax_unit:
         members: [person1, person2, person3]
         adjusted_gross_income: 1_800
-        or_income_after_subtractions: 1_800
+        or_agi: 1_800
         cdcc_relevant_expenses: 100
     households:
       household:
@@ -144,7 +144,7 @@
       tax_unit:
         members: [person1, person2, person3, person4]
         adjusted_gross_income: 1_800
-        or_income_after_subtractions: 1_800
+        or_agi: 1_800
         cdcc_relevant_expenses: 100
     households:
       household:
@@ -177,7 +177,7 @@
       tax_unit:
         members: [person1, person2, person3, person4, person5]
         adjusted_gross_income: 1_800
-        or_income_after_subtractions: 1_800
+        or_agi: 1_800
         cdcc_relevant_expenses: 100
     households:
       household:
@@ -213,7 +213,7 @@
       tax_unit:
         members: [person1, person2, person3, person4, person5, person6]
         adjusted_gross_income: 1_800
-        or_income_after_subtractions: 1_800
+        or_agi: 1_800
         cdcc_relevant_expenses: 100
     households:
       household:
@@ -252,7 +252,7 @@
       tax_unit:
         members: [person1, person2, person3, person4, person5,person6,person7]
         adjusted_gross_income: 1_800
-        or_income_after_subtractions: 1_800
+        or_agi: 1_800
         cdcc_relevant_expenses: 100
     households:
       household:
@@ -294,7 +294,7 @@
       tax_unit:
         members: [person1, person2, person3, person4, person5,person6,person7,person8]
         adjusted_gross_income: 1_800
-        or_income_after_subtractions: 1_800
+        or_agi: 1_800
         cdcc_relevant_expenses: 100
     households:
       household:
