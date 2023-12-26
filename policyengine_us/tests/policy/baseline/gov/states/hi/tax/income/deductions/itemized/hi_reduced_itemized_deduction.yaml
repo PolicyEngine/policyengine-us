@@ -4,6 +4,7 @@
     people:
       person1:
         mortgage_interest: 1_000
+        investment_interest_expense: 2_000
         medical_expense: 1_000
         casualty_loss: 1_000
       person2:
@@ -14,7 +15,6 @@
       tax_unit:
         filing_status: JOINT
         charitable_deduction: 1_000
-        investment_income_form_4952: 2_000
         hi_agi: 200_000
         members: [person1, person2]
     households:
@@ -22,7 +22,7 @@
         members: [person1, person2]
         state_code: HI
   output:
-    hi_reduced_itemized_deduction: 4004
+    hi_reduced_itemized_deduction: 4_004
 
 - name: not eligible
   period: 2022
@@ -31,6 +31,7 @@
       person1:
         mortgage_interest: 1_000
         medical_expense: 1_000
+        investment_interest_expense: 2_000
         casualty_loss: 1_000
       person2:
         mortgage_interest: 1_000
@@ -40,7 +41,6 @@
       tax_unit:
         filing_status: JOINT
         charitable_deduction: 1_000
-        investment_income_form_4952: 2_000
         hi_agi: 20_000
         members: [person1, person2]
     households:
@@ -48,7 +48,7 @@
         members: [person1, person2]
         state_code: HI
   output:
-    hi_reduced_itemized_deduction: 5500
+    hi_reduced_itemized_deduction: 5_500
 
 - name: different investment interest
   period: 2022
@@ -61,12 +61,12 @@
       person2:
         mortgage_interest: 1_000
         medical_expense: 1_000
+        investment_interest_expense: 3_000
         casualty_loss: 1_000
     tax_units:
       tax_unit:
         filing_status: JOINT
         charitable_deduction: 1_000
-        investment_income_form_4952: 3_000
         hi_agi: 200_000
         members: [person1, person2]
     households:
@@ -74,7 +74,7 @@
         members: [person1, person2]
         state_code: HI
   output:
-    hi_reduced_itemized_deduction: 5004
+    hi_reduced_itemized_deduction: 5_004
 
 - name: larger medical expense
   period: 2022
@@ -86,13 +86,13 @@
         casualty_loss: 1_000
       person2:
         mortgage_interest: 1_000
+        investment_interest_expense: 2_000
         medical_expense: 1_000
         casualty_loss: 1_000
     tax_units:
       tax_unit:
         filing_status: JOINT
         charitable_deduction: 1_000
-        investment_income_form_4952: 2_000
         hi_agi: 200_000
         members: [person1, person2]
     households:
@@ -100,7 +100,7 @@
         members: [person1, person2]
         state_code: HI
   output:
-    hi_reduced_itemized_deduction: 10003.999
+    hi_reduced_itemized_deduction: 10_003.999
 
 - name: smaller AGI
   period: 2022
@@ -113,12 +113,12 @@
       person2:
         mortgage_interest: 1_000
         medical_expense: 1_000
+        investment_interest_expense: 2_000
         casualty_loss: 1_000
     tax_units:
       tax_unit:
         filing_status: JOINT
         charitable_deduction: 1_000
-        investment_income_form_4952: 2_000
         hi_agi: 166_900
         members: [person1, person2]
     households:
@@ -126,7 +126,7 @@
         members: [person1, person2]
         state_code: HI
   output:
-    hi_reduced_itemized_deduction: 4997
+    hi_reduced_itemized_deduction: 4_997
 
 - name: separate, smaller AGI difference
   period: 2022
@@ -135,6 +135,7 @@
       person1:
         mortgage_interest: 1_000
         medical_expense: 1_000
+        investment_interest_expense: 2_000
         casualty_loss: 1_000
       person2:
         mortgage_interest: 1_000
@@ -144,7 +145,6 @@
       tax_unit:
         filing_status: SEPARATE
         charitable_deduction: 1_000
-        investment_income_form_4952: 2_000
         hi_agi: 84_000
         members: [person1, person2]
     households:
@@ -152,5 +152,5 @@
         members: [person1, person2]
         state_code: HI
   output:
-    hi_reduced_itemized_deduction: 4982
+    hi_reduced_itemized_deduction: 4_982
     

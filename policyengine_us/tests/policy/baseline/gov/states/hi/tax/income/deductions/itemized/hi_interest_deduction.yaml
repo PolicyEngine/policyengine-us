@@ -4,12 +4,13 @@
     people:
       person1:
         mortgage_interest: 100
+        investment_interest_expense: 100
       person2:
         mortgage_interest: 100
+        investment_interest_expense: 100
     tax_units:
       tax_unit:
         filing_status: JOINT
-        investment_income_form_4952: 200
         members: [person1, person2]
     households:
       household:
@@ -24,12 +25,13 @@
     people:
       person1:
         mortgage_interest: 1_000_000
+        investment_interest_expense: 100
       person2:
         mortgage_interest: 2_000_000
+        investment_interest_expense: 100
     tax_units:
       tax_unit:
         filing_status: JOINT
-        investment_income_form_4952: 200
         members: [person1, person2]
     households:
       household:
@@ -44,12 +46,13 @@
     people:
       person1:
         mortgage_interest: 100
+        investment_interest_expense: 200
       person2:
         mortgage_interest: 100
+        investment_interest_expense: 100
     tax_units:
       tax_unit:
         filing_status: JOINT
-        investment_income_form_4952: 300
         members: [person1, person2]
     households:
       household:
@@ -64,12 +67,13 @@
     people:
       person1:
         mortgage_interest: 1_000_000
+        investment_interest_expense: 200
       person2:
         mortgage_interest: 2_000_000
+        investment_interest_expense: 0
     tax_units:
       tax_unit:
         filing_status: SEPARATE
-        investment_income_form_4952: 200
         members: [person1, person2]
     households:
       household:

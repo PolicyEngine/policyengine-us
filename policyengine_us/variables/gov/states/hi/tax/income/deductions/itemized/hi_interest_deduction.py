@@ -25,6 +25,6 @@ class hi_interest_deduction(Variable):
             add(tax_unit, period, ["mortgage_interest"]),
             p.cap.home_mortgage_interest[filing_status],
         )
-        investment_interest = tax_unit("investment_income_form_4952", period)
+        investment_interest = add(tax_unit, period, ["investment_interest_expense"])
 
         return max_(0, home_mortgage_interest + investment_interest)

@@ -13,6 +13,8 @@ class hi_reduced_itemized_deduction(Variable):
     definition_period = YEAR
     defined_for = StateCode.HI
 
+    # If the state AGI of the filer exceeds a certain amount, only partial itemized deductions 
+    # can be deducted.
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.hi.tax.income.deductions.itemized
         p_irs = parameters(period).gov.irs.deductions.itemized.reduced_rate

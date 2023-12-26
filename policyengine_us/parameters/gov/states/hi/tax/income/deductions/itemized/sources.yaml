@@ -5,8 +5,10 @@ values:
     - hi_medical_expense_deduction
     - hi_interest_deduction
     - hi_casualty_loss_deduction
+    - hi_salt_deduction
 metadata:
   unit: list
+  period: year
   label: Hawaii itemized deductions sources
   reference:
     - title: 2022 Hawaii Resident Income Tax Instructions Itemized Deductions Worksheet
