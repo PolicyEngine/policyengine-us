@@ -11,3 +11,7 @@ class va_agi_person(Variable):
         "https://law.lis.virginia.gov/vacodefull/title58.1/chapter3/article2/"
     )
     defined_for = StateCode.VA
+
+    adds = ["adjusted_gross_income_person", "va_additions"]
+
+    subtracts = ["va_subtractions"]
