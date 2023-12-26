@@ -21,5 +21,6 @@
   input:
     state_code: VA
     eitc: 2_000
+    va_low_income_tax_credit: 100
   output:
     va_non_refundable_eitc_if_claimed: 400

@@ -14,10 +14,10 @@ class va_low_income_tax_credit_program_eligibility(Variable):
         age = tax_unit("va_age_deduction", period)
         military = tax_unit("va_military_benefit_subtraction", period)
         federal = tax_unit("va_federal_state_employees_subtraction", period)
-        criteria_1 = (age_blind + age + military + federal) <= 0
+        program_eligible = (age_blind + age + military + federal) <= 0
 
         # Criteria 2: Not qualified to claim EITC if the filier is claimed as a dependent on another taxpayer's return
 
-        criteria_2 = ~tax_unit("head_is_dependent_elsewhere", period)
+        head_is_not_dependent_elsewhere = ~tax_unit("head_is_dependent_elsewhere", period)
 
-        return criteria_1 & criteria_2
+        return program_eligible & head_is_not_dependent_elsewhere

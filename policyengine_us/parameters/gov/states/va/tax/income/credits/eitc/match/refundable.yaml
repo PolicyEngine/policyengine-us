@@ -1,11 +1,12 @@
-description: Virginia matches this percent of the federal EITC as a refundable credit.
+description: Virginia matches this percent of the federal earned income tax credit as a refundable credit.
 values:
+  2021-01-01: 0
   2022-01-01: 0.15
 
 metadata:
   period: year
   unit: /1
-  label: Virginia refundable EITC match
+  label: Virginia refundable earned income tax credit match
   reference:
   - title: Virginia 2021 Form 760 Resident Individual Income Tax Booklet
     href: https://www.tax.virginia.gov/sites/default/files/vatax-pdf/2021-760-instructions.pdf#page=32

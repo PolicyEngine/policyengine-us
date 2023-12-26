@@ -11,9 +11,5 @@ class va_low_income_tax_credit_agi_eligible(Variable):
     def formula(tax_unit, period, parameters):
         agi = tax_unit("va_agi", period)
         # Virginia does not account for blind or aged exemptions
-        n = tax_unit("exemptions", period)
-        state_group = "CONTIGUOUS_US"
-        p_fpg = parameters(period).gov.hhs.fpg
-        p1 = p_fpg.first_person[state_group]
-        pn = p_fpg.additional_person[state_group]
-        return agi <= p1 + pn * (n - 1)
+        fpg = tax_unit("tax_unit_fpg", period)
+        return agi <= fpg

@@ -15,6 +15,6 @@ class va_low_income_tax_credit(Variable):
     defined_for = "va_low_income_tax_credit_agi_eligible"
 
     def formula(tax_unit, period, parameters):
-        exemptions = tax_unit("exemptions", period)
-        p = parameters(period).gov.states.va.tax.income.credits.eitc
-        return p.exemption_multiplier * exemptions
+        exemptions = tax_unit("va_personal_exemption", period)
+        p = parameters(period).gov.states.va.tax.income.credits.eitc.low_income_tax
+        return p.base * exemptions
