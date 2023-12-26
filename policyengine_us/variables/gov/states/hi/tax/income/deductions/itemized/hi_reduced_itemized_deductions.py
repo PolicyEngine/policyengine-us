@@ -34,15 +34,15 @@ class hi_reduced_itemized_deductions(Variable):
         hi_agi = tax_unit("hi_agi", period)
         filing_status = tax_unit("filing_status", period)
         agi_threshold = p.cap.agi[filing_status]
-        agi__overthreshold = agi_threshold < hi_agi
-        agi_cap_difference = hi_agi - agi_cap
+        agi__over_threshold = agi_threshold < hi_agi
+        agi_cap_difference = hi_agi - agi_threshold
         reduced_agi_difference = agi_cap_difference * p_irs.excess_agi
 
         smaller_reduced = min_(reduced_difference, reduced_agi_difference)
         reduced_deductions = max_(0, total_deductions - smaller_reduced)
 
         return where(
-            (partial_deductions_less_than_total & agi__overthreshold),
+            (partial_deductions_less_than_total & agi__over_threshold),
             reduced_deductions,
             0,
         )
