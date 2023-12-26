@@ -30,13 +30,13 @@ class hi_eligible_capital_gain_alternative_tax(Variable):
         cap = p.income_threshold[filing_status]
         # Line 13
 
-        capped_reduced_income = max_(
+        floored_reduced_income = max_(
             reduced_taxable_income,
             cap,
         )
         # net capital gains eligible for alternative tax, Line 14
         eligible_capital_gains = max_(
-            0, taxable_income - capped_reduced_income
+            0, taxable_income - floored_reduced_income
         )
         # line 15 alternative tax for eligible capital gains
         return eligible_capital_gains * p.rate
