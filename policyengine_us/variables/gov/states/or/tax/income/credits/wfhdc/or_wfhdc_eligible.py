@@ -28,7 +28,7 @@ class or_wfhdc_eligible(Variable):
 
         # Get household income, the larger of federal and Oregon AGI.
         federal_agi = tax_unit("adjusted_gross_income", period)
-        or_agi = tax_unit("or_income_after_subtractions", period)
+        or_agi = tax_unit("or_agi", period)
         household_income = max_(federal_agi, or_agi)
 
         # Check if household income is below the threshold.
