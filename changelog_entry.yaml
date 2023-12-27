@@ -1,4 +1,4 @@
 - bump: patch
   changes:
     fixed:
-    - Resolved HDF5 installation error in Python 3.9 Conda environment (Issue #1988).
+    - Add hdf5 to conda environment to avoid installation errors.
