@@ -1,53 +1,23 @@
-- name: Hawaii eligible alternative tax on capital gains for Single
+- name: Before 2023 and net capitals gains present
   period: 2021
   input:
     state_code: HI
-    filing_status: SINGLE
-    hi_taxable_income: 25_000
+    net_capital_gain: 1_000
   output:
     hi_alternative_tax_on_capital_gains_eligible: true
 
-- name: Hawaii eligible alternative tax on capital gains for arried filing separately
+- name: Before 2023 and no net capitals gains present
   period: 2021
   input:
     state_code: HI
-    filing_status: SEPARATE
-    hi_taxable_income: 23_000
+    net_capital_gain: 0
   output:
     hi_alternative_tax_on_capital_gains_eligible: false
 
-- name: Hawaii eligible alternative tax on capital gains for married filing jointly
-  period: 2021
-  input:
-    state_code: HI
-    filing_status: JOINT
-    hi_taxable_income: 35_000
-  output:
-    hi_alternative_tax_on_capital_gains_eligible: false
-
-- name: Hawaii eligible alternative tax on capital gains for head of household
-  period: 2021
-  input:
-    state_code: HI
-    filing_status: HEAD_OF_HOUSEHOLD
-    hi_taxable_income: 35_000
-  output:
-    hi_alternative_tax_on_capital_gains_eligible: false
-
-- name: Hawaii eligible alternative tax on capital gains for widow
+- name: After 2023 and net capitals gains present
   period: 2023
   input:
     state_code: HI
-    filing_status: WIDOW
-    hi_taxable_income: 50_000
-  output:
-    hi_alternative_tax_on_capital_gains_eligible: false
-
-- name: Hawaii alternative tax on capital gains for Single (not eligible in 2023)
-  period: 2023
-  input:
-    state_code: HI
-    filing_status: SINGLE
-    hi_taxable_income: 25_000
+    net_capital_gain: 1_000
   output:
     hi_alternative_tax_on_capital_gains_eligible: false
