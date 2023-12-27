@@ -21,16 +21,13 @@
       parent1:
         age: 45
         employment_income: 3_000 * 12
+        rent: 1_000 * 12
       parent2:
         age: 45
       dependent1:
         age: 12
       dependent2:
         age: 12
-    spm_units:
-      spm_unit:
-        hud_gross_rent: 1_000 * 12
-        members: [parent1, parent2, dependent1, dependent2]
     households:
       household:
         bedrooms: 3
@@ -52,7 +49,9 @@
     hud_max_subsidy: 31_068
     # Lesser of max subsidy and (rent - TTP)
     # Rent - TTP = 12_000 - 10_512 = 1,488
-    hud_hap: 1_488
+    hud_utility_allowance: 375 * 12
+    hud_gross_rent: 1_375 * 12
+    hud_hap: 5_988
     # Eligibility
     hud_income_level: ESPECIALLY_LOW
-    housing_assistance: 1_488
+    housing_assistance: 5_988
