@@ -5,6 +5,245 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.597.2] - 2023-12-27 01:17:17
+
+### Fixed
+
+- Add hdf5 to conda environment to avoid installation errors.
+
+## [0.597.1] - 2023-12-25 00:14:47
+
+### Added
+
+- README.md to aca parameter folder.
+
+## [0.597.0] - 2023-12-24 23:34:48
+
+### Added
+
+- Ohio joint filing credit.
+
+## [0.596.0] - 2023-12-24 23:11:31
+
+### Added
+
+- West Virginia senior citizen or disability deduction.
+
+## [0.595.3] - 2023-12-24 22:19:24
+
+### Fixed
+
+- Michigan retirement deduction calculation.
+
+## [0.595.2] - 2023-12-24 01:05:33
+
+### Fixed
+
+- Pension income allocated at the lowest possible level.
+- Bug in LSR branching setup.
+
+## [0.595.1] - 2023-12-23 01:36:50
+
+### Fixed
+
+- Massachusetts 2023 EITC rate.
+
+## [0.595.0] - 2023-12-22 16:24:22
+
+### Added
+
+- Disability-based UBI.
+
+## [0.594.0] - 2023-12-22 09:59:02
+
+### Added
+
+- Rhode Island adjusted gross income modifications.
+
+## [0.593.0] - 2023-12-22 05:01:15
+
+### Added
+
+- Arkansas retirement or disability benefits exemption.
+
+## [0.592.0] - 2023-12-22 04:42:23
+
+### Fixed
+
+- South Carolina net capital gain deduction.
+
+## [0.591.1] - 2023-12-22 01:04:14
+
+### Fixed
+
+- Adjust the az_aged_exemption variable formula to calculate eligibility through a defined_for attribute.
+
+## [0.591.0] - 2023-12-21 19:05:34
+
+### Added
+
+- West Virginia social security benefits subtraction.
+
+## [0.590.0] - 2023-12-21 19:02:40
+
+### Added
+
+- Montana disability income subtraction.
+
+## [0.589.1] - 2023-12-21 18:46:53
+
+### Fixed
+
+- New York supplemental tax calculation.
+
+## [0.589.0] - 2023-12-21 18:40:08
+
+### Added
+
+- Idaho aged and disabled deduction.
+
+## [0.588.2] - 2023-12-21 18:09:07
+
+### Fixed
+
+- Utah social security benefits credit variable.
+- Utah earned income tax credit variable.
+
+## [0.588.1] - 2023-12-21 18:04:33
+
+### Fixed
+
+- Alabama itemized deduction.
+
+## [0.588.0] - 2023-12-21 17:24:36
+
+### Added
+
+- Virginia Adjusted Gross Income.
+
+## [0.587.0] - 2023-12-21 17:14:33
+
+### Added
+
+- Ohio Exemption Credit.
+- Ohio Personal Exemptions.
+
+## [0.586.2] - 2023-12-21 12:39:42
+
+### Added
+
+- Test for no-reform microsim impacts.
+
+## [0.586.1] - 2023-12-21 07:13:29
+
+### Fixed
+
+- Arizona itemized deductions.
+
+## [0.586.0] - 2023-12-20 22:28:46
+
+### Added
+
+- SSI 2024 updated amounts
+
+## [0.585.2] - 2023-12-20 12:59:03
+
+### Fixed
+
+- Alabama itemized deductions.
+
+## [0.585.1] - 2023-12-20 10:56:22
+
+### Fixed
+
+- Test failures in automated variable tests.
+
+## [0.585.0] - 2023-12-19 11:31:05
+
+### Added
+
+- Income and substitution elasticities of labor supply.
+
+## [0.584.3] - 2023-12-18 20:13:09
+
+### Fixed
+
+- Alabama capital gains inclusion in AGI.
+
+## [0.584.2] - 2023-12-18 16:33:00
+
+## [0.584.1] - 2023-12-18 04:09:27
+
+### Fixed
+
+- Import all FilingStatus values when repealing head of household.
+
+## [0.584.0] - 2023-12-18 01:50:30
+
+### Added
+
+- Reform for repealing head of household filing status, as Senator Romney proposed in his Family Security Act.
+
+## [0.583.3] - 2023-12-17 23:52:20
+
+### Fixed
+
+- Alabama federal tax deduction.
+
+## [0.583.2] - 2023-12-16 18:54:42
+
+### Fixed
+
+- Bump policyengine-core to capture random microsimulation bug fixes.
+
+## [0.583.1] - 2023-12-16 18:18:33
+
+### Fixed
+
+- Set WIC take-up deterministically for individual simulations.
+
+## [0.583.0] - 2023-12-16 03:36:40
+
+### Added
+
+- Massachusetts 2023 child and dependent tax credit rules.
+
+## [0.582.2] - 2023-12-15 19:35:40
+
+### Added
+
+- Alabama dependent exemption.
+
+## [0.582.1] - 2023-12-15 17:16:18
+
+### Fixed
+
+- Michigan standard deduction calculation.
+
+## [0.582.0] - 2023-12-15 16:27:51
+
+### Added
+
+- Illinois 2022 personal exemption amount.
+
+## [0.581.1] - 2023-12-15 14:43:19
+
+### Fixed
+
+- Alabama standard deduction.
+
+## [0.581.0] - 2023-12-15 14:37:23
+
+### Added
+
+- Montana social security benefit adjustment.
+
+## [0.580.1] - 2023-12-15 14:22:33
+
+### Fixed
+
+- Connecticut pension subtraction.
+
 ## [0.580.0] - 2023-12-15 12:21:47
 
 ### Added
@@ -6349,6 +6588,46 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.597.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.597.1...0.597.2
+[0.597.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.597.0...0.597.1
+[0.597.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.596.0...0.597.0
+[0.596.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.595.3...0.596.0
+[0.595.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.595.2...0.595.3
+[0.595.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.595.1...0.595.2
+[0.595.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.595.0...0.595.1
+[0.595.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.594.0...0.595.0
+[0.594.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.593.0...0.594.0
+[0.593.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.592.0...0.593.0
+[0.592.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.591.1...0.592.0
+[0.591.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.591.0...0.591.1
+[0.591.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.590.0...0.591.0
+[0.590.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.589.1...0.590.0
+[0.589.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.589.0...0.589.1
+[0.589.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.588.2...0.589.0
+[0.588.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.588.1...0.588.2
+[0.588.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.588.0...0.588.1
+[0.588.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.587.0...0.588.0
+[0.587.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.586.2...0.587.0
+[0.586.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.586.1...0.586.2
+[0.586.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.586.0...0.586.1
+[0.586.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.585.2...0.586.0
+[0.585.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.585.1...0.585.2
+[0.585.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.585.0...0.585.1
+[0.585.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.584.3...0.585.0
+[0.584.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.584.2...0.584.3
+[0.584.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.584.1...0.584.2
+[0.584.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.584.0...0.584.1
+[0.584.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.583.3...0.584.0
+[0.583.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.583.2...0.583.3
+[0.583.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.583.1...0.583.2
+[0.583.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.583.0...0.583.1
+[0.583.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.582.2...0.583.0
+[0.582.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.582.1...0.582.2
+[0.582.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.582.0...0.582.1
+[0.582.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.581.1...0.582.0
+[0.581.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.581.0...0.581.1
+[0.581.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.580.1...0.581.0
+[0.580.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.580.0...0.580.1
 [0.580.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.579.1...0.580.0
 [0.579.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.579.0...0.579.1
 [0.579.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.578.0...0.579.0

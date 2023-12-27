@@ -18,33 +18,31 @@ class mi_standard_deduction_tier_three(Variable):
         p = parameters(
             period
         ).gov.states.mi.tax.income.deductions.standard.tier_three
+        # Line 1: enter base amount, based on filing status
         filing_status = tax_unit("filing_status", period)
+        base_amount = p.amount[filing_status]
+
         # Exemption(s), taxable Social Security benefits,
         # military compensation (including retirement benefits),
         # Michigan National Guard retirement benefits and railroad
         # retirement benefits included in AGI may reduce the amount
         # eligible to be claimed on this deduction.
+
         person = tax_unit.members
-        uncapped_pension_income = person("taxable_pension_income", period)
-        reductions = add(
-            person,
-            period,
-            [
-                "military_retirement_pay",
-                "military_service_income",
-                "taxable_social_security",
-            ],
-        )
-        mi_exemptions = tax_unit("mi_exemptions", period)
-
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-
-        cap_reduction = tax_unit.sum(reductions * is_head_or_spouse)
-        cap = max_(
-            p.amount[filing_status] - cap_reduction - mi_exemptions,
-            0,
+        # Line 2: enter military retirement pay
+        military_retirement_pay = person("military_retirement_pay", period)
+        # Line 3: enter military service income or taxable social security
+        taxable_ss = person("taxable_social_security", period)
+        military_service_income = person("military_service_income", period)
+        larger_ss_or_military_pay = max_(taxable_ss, military_service_income)
+        # Line 4 are personal (and stillborn) exemptions
+        mi_personal_exemptions = tax_unit("mi_personal_exemptions", period)
+        # Line 5: add lines 2 through 4
+        total_person_reductions = tax_unit.sum(
+            is_head_or_spouse
+            * (military_retirement_pay + larger_ss_or_military_pay)
         )
-
-        return min_(
-            tax_unit.sum(uncapped_pension_income * is_head_or_spouse), cap
-        )
+        total_reductions = total_person_reductions + mi_personal_exemptions
+        # Line 6: subtract line 5 from line 1
+        return max_(base_amount - total_reductions, 0)
