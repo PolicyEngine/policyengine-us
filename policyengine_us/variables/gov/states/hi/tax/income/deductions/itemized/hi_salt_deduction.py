@@ -13,4 +13,7 @@ class hi_salt_deduction(Variable):
     definition_period = YEAR
     defined_for = StateCode.HI
 
+        # Hawaii's state income tax allows an itemized deduction for state income taxes paid.
+    # Hawaii does not cap the SALT deduction as the US does.
+
     adds = ["state_and_local_sales_or_income_tax", "real_estate_tax"]

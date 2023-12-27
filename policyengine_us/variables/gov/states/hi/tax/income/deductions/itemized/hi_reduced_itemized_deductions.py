@@ -51,8 +51,5 @@ class hi_reduced_itemized_deductions(Variable):
             total_less_partial_ded_percentage, reduced_agi_percentage
         )
         reduced_deductions = max_(0, total_deductions - smaller_reduced_ded)
-        return where(
-            (partial_deductions_less_than_total & agi_over_threshold),
-            reduced_deductions,
-            0,
-        )
+        eligible = partial_deductions_less_than_total & agi_over_threshold
+        return eligible * reduced_deductions,
