@@ -21,11 +21,10 @@ class wv_homestead_excess_property_tax_credit_eligible(Variable):
         property_tax = tax_unit("property_tax_primary_residence", period)
         wv_ghi = tax_unit("wv_gross_household_income", period)
         wv_tax_unit_fpg = tax_unit("tax_unit_fpg", period)
-
-        p = parameters(period).gov.states.wv.tax.income.credits.heptc
+        p = parameters(period).gov.states.wv.tax.income.credits.heptc.rate
         low_income_guidelines = p.fpg_rate * wv_tax_unit_fpg
         lig_condition = federal_agi <= low_income_guidelines
         property_tax_value = property_tax - wv_sctc
-        ghi_amount = p.ghi_percentage * wv_ghi
-        property_tax_condition = property_tax_value > ghi_amount
-        return lig_condition & property_tax_condition
+        ghi_amount = p.household_income * wv_ghi
+        property_tax_eligible = property_tax_value > ghi_amount
+        return lig_condition & property_tax_eligible

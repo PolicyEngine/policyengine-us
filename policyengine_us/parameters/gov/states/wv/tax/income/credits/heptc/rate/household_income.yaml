@@ -1,4 +1,4 @@
-description: West Virginia provides up to this fraction of gross household income in the homestead excess property tax credit, after subtracting the senior citizens tax credit.  
+description: West Virginia caps the homestead property tax credit to this fraction of gross household income less the amount of the senior citizen tax credit. 
 
 values:
   2012-01-01: 0.04
@@ -6,7 +6,7 @@ values:
 metadata:
   period: year
   unit: /1
-  label: West Virginia homestead excess property tax credit income fraction  
+  label: West Virginia homestead excess property tax credit gross household income rate
   reference:
   - title: West Virginia Personal Income Tax Forms And Instructions 2022
     href: https://tax.wv.gov/Documents/PIT/2022/PersonalIncomeTaxFormsAndInstructions.2022.pdf#page=35
