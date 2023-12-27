@@ -22,6 +22,6 @@ class wv_homestead_excess_property_tax_credit(Variable):
         wv_ghi = tax_unit("wv_gross_household_income", period)
 
         p = parameters(period).gov.states.wv.tax.income.credits.heptc
-        heptc_amount = property_tax - wv_sctc - p.ghi_percentage * wv_ghi
+        heptc_amount = property_tax - wv_sctc - p.rate.household_income * wv_ghi
 
         return min_(heptc_amount, p.cap)
