@@ -12,5 +12,4 @@ class hud_utility_allowance(Variable):
 
     def formula(spm_unit, period, parameters):
         # LA County: https://www.lacda.org/docs/librariesprovider25/public-documents/utility-allowance/utility-allownce-2022.pdf
-        
-        
+        return 0

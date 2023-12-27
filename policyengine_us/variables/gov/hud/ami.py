@@ -5,7 +5,7 @@ class ami(Variable):
     value_type = float
     entity = Household
     label = "Area median income"
-    documentation = "Area median income"
+    documentation = "Area median income for a four-person household"
     definition_period = YEAR
 
     def formula(household, period, parameters):
