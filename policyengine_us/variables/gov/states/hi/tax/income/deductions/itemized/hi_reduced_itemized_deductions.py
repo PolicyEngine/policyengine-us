@@ -33,7 +33,12 @@ class hi_reduced_itemized_deductions(Variable):
         )
         total_less_partial_ded_amount = total_deductions - partial_deductions
         # Take a percentage of the difference between the total and partial deductions
-        p_irs = parameters(period).gov.irs.deductions.itemized.reduction
+        # Hawaii applies federal limits which have been revoked in 2018
+        if period.start.year >= 2017:
+            instant_str = f"2017-01-01"
+        else:
+            instant_str = period.start.year
+        p_irs = parameters(instant_str).gov.irs.deductions.itemized.reduction
         total_less_partial_ded_percentage = (
             total_less_partial_ded_amount * p_irs.rate.base
         )
@@ -52,4 +57,4 @@ class hi_reduced_itemized_deductions(Variable):
         )
         reduced_deductions = max_(0, total_deductions - smaller_reduced_ded)
         eligible = partial_deductions_less_than_total & agi_over_threshold
-        return eligible * reduced_deductions,
+        return (eligible * reduced_deductions,)

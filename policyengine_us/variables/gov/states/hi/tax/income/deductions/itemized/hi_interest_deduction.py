@@ -13,16 +13,4 @@ class hi_interest_deduction(Variable):
     definition_period = YEAR
     defined_for = StateCode.HI
 
-    def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.irs.deductions.itemized.interest.mortgage
-
-        # 3. interest_deduction: worksheet A-3
-        # Hawaii did not
-        #     (1) suspend the deduction for interest paid on home equity loans
-        #     (2) lower the dollar limit on mortgages qualifying for the home mortgage interest deduction
-        capped_home_mortgage_interest = add(tax_unit, period, ["mortgage_interest"])
-        investment_interest = add(
-            tax_unit, period, ["investment_interest_expense"]
-        )
-
-        return max_(0, capped_home_mortgage_interest + investment_interest)
+    adds = ["investment_interest_expense", "mortgage_interest"]
