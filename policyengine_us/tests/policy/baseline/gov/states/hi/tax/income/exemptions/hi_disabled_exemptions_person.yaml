@@ -5,11 +5,9 @@
       person1:
         age: 65
         is_disabled: true
-        hi_disabled_exemptions_eligible_person: true
       person2:
         age: 60
         is_disabled: false
-        hi_disabled_exemptions_eligible_person: true
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -18,7 +16,7 @@
         members: [person1, person2]
         state_fips: 15  # HI
   output:  
-    hi_disabled_exemptions_person: [7_000, 1_144] 
+    hi_head_or_spouse_exemptions_person: [7_000, 1_144] 
 
 - name: one disabled, spouse is aged
   period: 2021
@@ -27,11 +25,9 @@
       person1:
         age: 65
         is_disabled: true
-        hi_disabled_exemptions_eligible_person: true
       person2:
         age: 65
         is_disabled: false
-        hi_disabled_exemptions_eligible_person: true
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -40,7 +36,7 @@
         members: [person1, person2]
         state_fips: 15  # HI
   output:  
-    hi_disabled_exemptions_person: [7_000, 2_288]      
+    hi_head_or_spouse_exemptions_person: [7_000, 2_288]      
 
 - name: two disabled, one is aged
   period: 2021
@@ -49,11 +45,9 @@
       person1:
         age: 65
         is_disabled: true
-        hi_disabled_exemptions_eligible_person: true
       person2:
         age: 65
-        is_disabled: true
-        hi_disabled_exemptions_eligible_person: true
+        is_disabled: true 
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -62,7 +56,7 @@
         members: [person1, person2]
         state_fips: 15  # HI
   output:  
-    hi_disabled_exemptions_person: [7_000, 7_000]     
+    hi_head_or_spouse_exemptions_person: [7_000, 7_000]     
 
 - name: one disabled, not eligible (not joint status)
   period: 2021
@@ -71,11 +65,9 @@
       person1:
         age: 65
         is_disabled: false
-        hi_disabled_exemptions_eligible_person: false
       person2:
         age: 65
         is_disabled: true
-        hi_disabled_exemptions_eligible_person: false
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -84,7 +76,7 @@
         members: [person1, person2]
         state_fips: 15  # HI
   output:  
-    hi_disabled_exemptions_person: [0, 0]  
+    hi_head_or_spouse_exemptions_person: [2_288, 7_000]  
 
 - name: one disabled, spouse is aged
   period: 2021
@@ -93,11 +85,9 @@
       person1:
         age: 65
         is_disabled: false
-        hi_disabled_exemptions_eligible_person: true
       person2:
         age: 65
         is_disabled: true
-        hi_disabled_exemptions_eligible_person: true
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -106,7 +96,7 @@
         members: [person1, person2]
         state_fips: 15  # HI
   output:  
-    hi_disabled_exemptions_person: [2_288, 7_000]    
+    hi_head_or_spouse_exemptions_person: [2_288, 7_000]    
 
 - name: one disabled, single
   period: 2021
@@ -115,7 +105,6 @@
       person1:
         age: 65
         is_disabled: true
-        hi_disabled_exemptions_eligible_person: true
     tax_units:
       tax_unit:
         members: [person1]
@@ -124,16 +113,15 @@
         members: [person1]
         state_fips: 15  # HI
   output:  
-    hi_disabled_exemptions_person: [7_000]      
+    hi_head_or_spouse_exemptions_person: [7_000]      
 
-- name: no disabled, single
+- name: no disabled, single, aged
   period: 2021
   input:
     people:
       person1:
         age: 65
         is_disabled: false
-        hi_disabled_exemptions_eligible_person: false
     tax_units:
       tax_unit:
         members: [person1]
@@ -142,4 +130,4 @@
         members: [person1]
         state_fips: 15  # HI
   output:  
-    hi_disabled_exemptions_person: [0]    
+    hi_head_or_spouse_exemptions_person: [2_288]    

@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class hi_disabled_exemptions(Variable):
+class hi_head_or_spouse_exemptions(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Hawaii disabled exemptions"
+    label = "Hawaii exemptions amount for the head and spouse"
     unit = USD
     documentation = (
         "https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=20"
@@ -12,4 +12,4 @@ class hi_disabled_exemptions(Variable):
     definition_period = YEAR
     defined_for = StateCode.HI
 
-    adds = ["hi_disabled_exemptions_person"]
+    adds = ["hi_head_or_spouse_exemptions_person"]

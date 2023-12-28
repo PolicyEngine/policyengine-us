@@ -13,15 +13,12 @@ class hi_regular_exemptions(Variable):
     defined_for = StateCode.HI
 
     def formula(tax_unit, period, parameters):
+        person = tax_unit.members
         p = parameters(period).gov.states.hi.tax.income.exemptions
-        # aged exemption
-        aged_head = (tax_unit("age_head", period) >= p.aged_threshold).astype(
-            int
-        )
-        aged_spouse = (
-            tax_unit("age_spouse", period) >= p.aged_threshold
-        ).astype(int)
-        exemption_count = (
-            tax_unit("exemptions_count", period) + aged_head + aged_spouse
-        )
+        # The total exemptions are reduced by the head and spouse as those are
+        # calculated separately.
+        head = tax_unit.any(person("is_tax_unit_head", period)).astype(int)
+        spouse = tax_unit.any(person("is_tax_unit_spouse", period)).astype(int)
+
+        exemption_count = tax_unit("exemptions_count", period) - head - spouse
         return p.base * exemption_count
