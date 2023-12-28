@@ -1,38 +1,20 @@
-- name: Only head and spouse
+- name: Head disbabled, not eligible
   period: 2021
   input:
-    people:
-      person1:
-        is_tax_unit_head: true
-      person2:
-        is_tax_unit_spouse: true
-    households:
-      household:
-        members: [person1, person2]
-        state_code: HI
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
-        exemptions_count: 2
+    tax_unit_dependents: 3
+    head_disabled: true
+    spouse_disabled: false
   output:
-    hi_regular_exemptions: 0
+    hi_dependent_exemptions: 0
     
-- name: Only head 
+- name: Spouse disbabled, not eligible
   period: 2021
   input:
-    people:
-      person1:
-        is_tax_unit_head: true
-    households:
-      household:
-        members: [person1]
-        state_code: HI
-    tax_units:
-      tax_unit:
-        members: [person1]
-        exemptions_count: 1
+    tax_unit_dependents: 3
+    head_disabled: false
+    spouse_disabled: true
   output:
-    hi_regular_exemptions: 0
+    hi_dependent_exemptions: 0
 
 - name: Two dependents
   period: 2021
