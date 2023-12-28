@@ -5589,3 +5589,8 @@
     added:
     - Hawaii itemized deduction.
   date: 2023-12-28 00:52:05
+- bump: minor
+  changes:
+    fixed:
+    - is_ssi_disabled always uses the microdata.
+  date: 2023-12-28 20:25:42
