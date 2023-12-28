@@ -34,33 +34,29 @@ class hi_reduced_itemized_deductions(Variable):
         total_less_partial_ded_amount = total_deductions - partial_deductions
         # Take a percentage of the difference between the total and partial deductions
         # Hawaii applies federal limits which have been revoked in 2018
-        if period.start.year >= 2017:
-            instant_str = f"2017-01-01"
-        else:
-            instant_str = period.start.year
-        p_irs = parameters(instant_str).gov.irs.deductions.itemized.reduction
+        p_2017 = parameters(
+            f"2017-01-01"
+        ).gov.irs.deductions.itemized.reduction
         total_less_partial_ded_percentage = (
-            total_less_partial_ded_amount * p_irs.rate.base
+            total_less_partial_ded_amount * p_2017.rate.base
         )
         # eligible check 2: actual AGI need to be smaller than AGI cap
         hi_agi = tax_unit("hi_agi", period)
         filing_status = tax_unit("filing_status", period)
         # Hawaii applies an federal AGI limit which has been introduced in 2009
-        if period.start.year >= 2009:
-            date = f"2009-01-01"
-        else:
-            date = period.start.year
-        p_agi = parameters(date).gov.irs.deductions.itemized.reduction
-        agi_threshold = p_agi.agi_threshold[filing_status]
+        p_2009 = parameters(
+            f"2009-01-01"
+        ).gov.irs.deductions.itemized.reduction
+        agi_threshold = p_2009.agi_threshold[filing_status]
         agi_over_threshold = agi_threshold < hi_agi
         # If the AGI is over a threshold, the AGI amount is reduced by the threshold and multiplied
         # by a rate
         reduced_agi = hi_agi - agi_threshold
-        reduced_agi_percentage = reduced_agi * p_irs.rate.excess_agi
+        reduced_agi_percentage = reduced_agi * p_2017.rate.excess_agi
 
         smaller_reduced_ded = min_(
             total_less_partial_ded_percentage, reduced_agi_percentage
         )
         reduced_deductions = max_(0, total_deductions - smaller_reduced_ded)
         eligible = partial_deductions_less_than_total & agi_over_threshold
-        return (eligible * reduced_deductions,)
+        return eligible * reduced_deductions
