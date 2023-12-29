@@ -14,7 +14,7 @@
         members: [person1]
         state_fips: 15  # HI
   output:  # expected results from hand-calculation with N-15 form/instructions
-    hi_regular_exemptions: 0
+    hi_dependent_exemptions: 0
     hi_head_or_spouse_exemptions_person: 1_144
     hi_exemptions: 1_144          
 
@@ -33,7 +33,7 @@
         members: [person1, person2]
         state_code: HI
   output:  
-    hi_regular_exemptions: 0
+    hi_dependent_exemptions: 0
     hi_head_or_spouse_exemptions_person: [1_144, 7_000]
     hi_head_or_spouse_exemptions: 8_144
 
@@ -60,7 +60,7 @@
         members: [person1, person2]
         state_fips: 15  # HI
   output:  
-    hi_regular_exemptions: 0
+    hi_dependent_exemptions: 0
     hi_head_or_spouse_exemptions_person: [1_144, 1_144]     
     hi_exemptions: 2_288  
 
@@ -87,7 +87,7 @@
         members: [person1, person2]
         state_fips: 15  # HI
   output:  
-    hi_regular_exemptions: 0
+    hi_dependent_exemptions: 0
     hi_head_or_spouse_exemptions_person: [1_144, 7_000]   
     hi_exemptions: 8_144  
 
@@ -120,6 +120,6 @@
         members: [person1, person2, person3]
         state_fips: 15  # HI
   output:  
-    hi_regular_exemptions: 1_144
+    hi_dependent_exemptions: 0
     hi_head_or_spouse_exemptions_person: [1_144, 7_000, 0]   
-    hi_exemptions: 9_288
+    hi_exemptions: 8_144
