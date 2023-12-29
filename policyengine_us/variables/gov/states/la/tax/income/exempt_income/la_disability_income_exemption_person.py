@@ -11,10 +11,10 @@ class la_disability_income_exemption_person(Variable):
     defined_for = StateCode.LA
 
     def formula(person, period, parameters):
-        cap = parameters(
+        p = parameters(
             period
-        ).gov.states.la.tax.income.exempt_income.disability.cap
+        ).gov.states.la.tax.income.exempt_income.disability
         disability_benefits = person("disability_benefits", period)
-        capped_disability_benefits = min_(disability_benefits, cap)
+        capped_disability_benefits = min_(disability_benefits, p.cap)
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         return capped_disability_benefits * is_head_or_spouse

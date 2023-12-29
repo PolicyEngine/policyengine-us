@@ -10,9 +10,13 @@ class la_taxable_income(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
+        itemizes = tax_unit("tax_unit_itemizes", period)
+        # Louisana does not provide a standard deduction
+        itemized_deductions = tax_unit("la_itemized_deductions", period)
+        la_itemizes = where(itemizes, itemized_deductions, 0)
         return max_(
             tax_unit("la_agi", period)
-            - tax_unit("la_itemized_deductions", period)
+            - la_itemizes
             - tax_unit("la_exemptions", period),
             0,
         )
