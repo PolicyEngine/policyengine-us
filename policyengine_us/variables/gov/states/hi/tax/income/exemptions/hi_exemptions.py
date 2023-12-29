@@ -12,4 +12,4 @@ class hi_exemptions(Variable):
     definition_period = YEAR
     defined_for = StateCode.HI
 
-    adds = ["hi_regular_exemptions", "hi_head_or_spouse_exemptions"]
+    adds = ["hi_dependent_exemptions", "hi_head_or_spouse_exemptions"]

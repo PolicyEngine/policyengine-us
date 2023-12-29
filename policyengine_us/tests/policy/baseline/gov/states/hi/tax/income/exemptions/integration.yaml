@@ -123,3 +123,28 @@
     hi_dependent_exemptions: 0
     hi_head_or_spouse_exemptions_person: [1_144, 7_000, 0]   
     hi_exemptions: 8_144
+
+- name: single, not disabled with one dependent
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 48_000
+        is_tax_unit_head: true
+      person2:
+        age: 12
+        is_tax_unit_spouse: false
+        is_tax_unit_head: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 15  # HI
+  output:  # expected results from hand-calculation with N-15 form/instructions
+    hi_dependent_exemptions: 1_144
+    hi_head_or_spouse_exemptions_person: [1_144, 0]
+    hi_exemptions: 2_288
