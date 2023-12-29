@@ -10,14 +10,13 @@ class income_tax(Variable):
     documentation = "Total federal individual income tax liability."
     adds = [
         "income_tax_before_credits",
+        "income_tax_before_refundable_credits"
     ]
     subtracts = [
         "income_tax_refundable_credits",
         "income_tax_capped_non_refundable_credits",
+        "income_tax_refundable_credits"
     ]
-
-    adds = ["income_tax_before_refundable_credits"]
-    subtracts = ["income_tax_refundable_credits"]
 
     def formula(person, period, parameters):
         if parameters(
