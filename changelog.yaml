@@ -5589,3 +5589,19 @@
     added:
     - Hawaii itemized deduction.
   date: 2023-12-28 00:52:05
+- bump: minor
+  changes:
+    fixed:
+    - is_ssi_disabled always uses the microdata.
+  date: 2023-12-28 20:25:42
+- bump: patch
+  changes:
+    fixed:
+    - Bug causing cliffs to not be calculated in SNAP.
+  date: 2023-12-28 21:41:40
+- bump: minor
+  changes:
+    added:
+    - West Virginia homestead excess property tax credit.
+    - West Virginia gross household income.
+  date: 2023-12-29 01:48:49
