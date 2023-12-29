@@ -14,6 +14,7 @@ class la_disability_income_exemption_person(Variable):
         p = parameters(
             period
         ).gov.states.la.tax.income.exempt_income.disability
+        # All disability benefits are exempt from income tax
         disability_benefits = person("disability_benefits", period)
         capped_disability_benefits = min_(disability_benefits, p.cap)
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
