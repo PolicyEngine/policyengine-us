@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.601.1] - 2023-12-30 00:25:33
+
+### Fixed
+
+- Parameter computing Ohio partial non-refundable credits.
+
 ## [0.601.0] - 2023-12-29 01:48:49
 
 ### Added
@@ -6619,6 +6625,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.601.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.601.0...0.601.1
 [0.601.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.600.1...0.601.0
 [0.600.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.600.0...0.600.1
 [0.600.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.599.0...0.600.0
