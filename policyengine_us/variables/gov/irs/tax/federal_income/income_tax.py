@@ -15,13 +15,18 @@ class income_tax(Variable):
         ).gov.contrib.ubi_center.flat_tax.abolish_federal_income_tax:
             return 0
         else:
-            added_components = add(person, period, [
-                "income_tax_before_credits",
-                "income_tax_before_refundable_credits"
-            ])
-            subtracted_components = add(person, period, [
-                "income_tax_refundable_credits",
-                "income_tax_capped_non_refundable_credits",
-                "income_tax_refundable_credits"
-            ])
+            added_components = add(
+                person,
+                period,
+                ["income_tax_before_credits", "income_tax_before_refundable_credits"],
+            )
+            subtracted_components = add(
+                person,
+                period,
+                [
+                    "income_tax_refundable_credits",
+                    "income_tax_capped_non_refundable_credits",
+                    "income_tax_refundable_credits",
+                ],
+            )
             return added_components - subtracted_components
