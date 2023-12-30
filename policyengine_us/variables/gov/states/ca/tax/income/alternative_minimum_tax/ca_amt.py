@@ -16,8 +16,8 @@ class ca_amt(Variable):
 
         exemption_amount = where(
             tax_unit("ca_amti_calc", period)
-            <= p.exemption_amt_lower_threshold[filing_status],
-            p.exemption_amt[filing_status],
+            <= p.exemption.amt_threshold.lower[filing_status],
+            p.exemption.amount[filing_status],
             tax_unit("ca_exemption_amount_high_amti", period),
         )  # complete the Exemption Worksheet to figure the amount to enter on line 22.
         amti_sub_eamt = max_(

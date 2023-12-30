@@ -16,35 +16,39 @@ class ca_exemption_amount_high_amti(Variable):
         filing_status = tax_unit("filing_status", period)
         p = parameters(period).gov.states.ca.tax.income.alternative_minimum_tax
 
-        exemption_amount_initial = p.exemption_amt[filing_status]
+        exemption_amount_initial = p.exemption.amount[filing_status]
         amti = tax_unit("ca_amti", period)
-        exemption_amount_low = p.exemption_amt_lower_threshold[filing_status]
+        exemption_amount_low = p.exemption.amt_threshold.lower[filing_status]
         exemption_amount_high = max_(
             exemption_amount_initial
-            - (amti - exemption_amount_low) * p.amti_rate,
+            - (amti - exemption_amount_low) * p.amti.rate,
             0,
-        )  # line 6
+        )  # Instructions for Schedule P 540, line 22, Exemption Worksheet, line 6
 
         person = tax_unit.members
         eligible_child = person("ca_exemption_child_eligible", period)
         eligible_child_present = tax_unit.any(eligible_child)
-        exemption_amount_child = p.exemption_amount_child
+        exemption_amount_child = p.exemption.amount_child
         earned_income = tax_unit("head_earned", period)
         exemption_amount_child_total = (
             exemption_amount_child * eligible_child_present + earned_income
-        )  # line 9
+        )  # Instructions for Schedule P 540, line 22, Exemption Worksheet, line 9
 
         over_threshold = (
             tax_unit("ca_amti", period)
-            >= p.exemption_amt_upper_threshold[filing_status]
+            >= p.exemption.amt_threshold.upper[filing_status]
         )
 
-        return where(
-            eligible_child_present,
-            where(
+        exemption_amt_eligible_child = where(
                 over_threshold,
                 0,
                 min_(exemption_amount_high, exemption_amount_child_total),
-            ),
-            where(over_threshold, 0, exemption_amount_high),
+            )
+
+        exemption_amt_no_eligible_child = where(over_threshold, 0, exemption_amount_high)
+
+        return where(
+            eligible_child_present,
+            exemption_amt_eligible_child,
+            exemption_amt_no_eligible_child,
         )

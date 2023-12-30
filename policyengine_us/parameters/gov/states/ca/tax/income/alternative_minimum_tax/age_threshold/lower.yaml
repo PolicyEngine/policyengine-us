@@ -1,19 +1,19 @@
-description: California uses this amount as minimum exemption amount for children
+description: California limits the exemption amount for filers with age below this amount.
 values:
-  2021-01-01: 8_300
+  2021-01-01: 18
 
 metadata:
-  label: California minimum exemption amount for children
+  label: California age threshold for minimum exemption amount
   period: year
-  unit: currency-USD
+  unit: year
   reference:
     - title: 2021 Schedule P (540) Alternative Minimum Tax and Credit Limitations - Residents
       href: https://www.ftb.ca.gov/forms/2021/2021-540-p.pdf#page=1
     - title: 2022 Schedule P (540) Alternative Minimum Tax and Credit Limitations - Residents
-      href: https://www.ftb.ca.gov/forms/2022/2022-540-p.pdf#page1
+      href: https://www.ftb.ca.gov/forms/2022/2022-540-p.pdf#page=1
     - title: 2022 Instructions for Schedule P (540) Line 22
       href: https://www.ftb.ca.gov/forms/2022/2022-540-p-instructions.html
     - title: 2021 Instructions for Schedule P (540) Line 22
       href: https://www.ftb.ca.gov/forms/2021/2021-540-p-instructions.html
-    - title: Cal. Rev. & Tax. Code § 17062 
+    - title: Cal. Rev. & Tax. Code § 17062 # age not specified
       href: https://casetext.com/statute/california-codes/california-revenue-and-taxation-code/division-2-other-taxes/part-10-personal-income-tax/chapter-21-alternative-minimum-tax/section-17062-alternative-minimum-tax

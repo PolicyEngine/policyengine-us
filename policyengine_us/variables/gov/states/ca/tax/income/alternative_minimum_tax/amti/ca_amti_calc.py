@@ -13,24 +13,23 @@ class ca_amti_calc(Variable):
     def formula(tax_unit, period, parameters):
         filing_status = tax_unit("filing_status", period)
         p = parameters(period).gov.states.ca.tax.income.alternative_minimum_tax
+        p2 = parameters(period).gov.irs.income.amt.capital_gains
 
         amti_before_ded = tax_unit("ca_amti", period)
         separate = filing_status == filing_status.possible_values.SEPARATE
-
-        return where(
-            separate
-            & (
-                amti_before_ded
-                > p.exemption_amt_upper_threshold[filing_status]
-            ),
-            min_(
+        separate_threshold = amti_before_ded > p.exemption.amt_threshold.upper[filing_status]
+        separate_amti_calc = min_(
                 (
                     amti_before_ded
-                    - p.exemption_amt_upper_threshold[filing_status]
+                    - p.exemption.amt_threshold.upper[filing_status]
                 )
-                * p.amti_rate,
-                p.exemption_amt[filing_status],
+                * p2.capital_gain_excess_tax_rate,
+                p.exemption.amount[filing_status],
             )
-            + amti_before_ded,
+
+        # line 21
+        return where(
+            separate & separate_threshold,
+            separate_amti_calc + amti_before_ded,
             amti_before_ded,
         )

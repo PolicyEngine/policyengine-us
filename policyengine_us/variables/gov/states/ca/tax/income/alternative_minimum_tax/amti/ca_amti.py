@@ -15,7 +15,7 @@ class ca_amti(Variable):
         p = parameters(period).gov.states.ca.tax.income.alternative_minimum_tax
 
         total_adjustments = tax_unit(
-            "ca_total_adjustments", period
+            "ca_amti_total_adjustments", period
         )  # line 14 Total Adjustments and Preferences
         taxable_income = tax_unit(
             "ca_taxable_income", period

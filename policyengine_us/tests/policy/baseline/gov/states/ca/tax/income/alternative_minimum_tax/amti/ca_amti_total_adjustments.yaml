@@ -9,7 +9,7 @@
     mortgage_interest: 0 
     misc_deduction: 0
   output:
-    ca_total_adjustments: 7_000
+    ca_amti_total_adjustments: 7_000
 
 - name: California Alternative Minimum Taxable Income total adjustments - 2021 filer doesn't itemizes deductions
   period: 2021
@@ -22,7 +22,7 @@
     mortgage_interest: 0 
     misc_deduction: 0
   output:
-    ca_total_adjustments: 12_000
+    ca_amti_total_adjustments: 12_000
 
 - name: California Alternative Minimum Taxable Income total adjustments - 2022 filer itemizes deductions
   period: 2022
@@ -35,7 +35,7 @@
     mortgage_interest: 0 
     misc_deduction: 0
   output:
-    ca_total_adjustments: 7_000
+    ca_amti_total_adjustments: 7_000
 
 - name: California Alternative Minimum Taxable Income total adjustments - 2022 filer doesn't itemizes deductions
   period: 2022
@@ -48,4 +48,4 @@
     mortgage_interest: 0 
     misc_deduction: 0
   output:
-    ca_total_adjustments: 12_000
+    ca_amti_total_adjustments: 12_000

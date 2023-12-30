@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class ca_total_adjustments(Variable):
+class ca_amti_total_adjustments(Variable):
     value_type = float
     entity = TaxUnit
-    label = "California total adjustments and preferences for AMTI calculation"
+    label = "California total adjustments and preferences for the AMTI calculation"
     defined_for = StateCode.CA
     unit = USD
     definition_period = YEAR
@@ -13,6 +13,7 @@ class ca_total_adjustments(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.ca.tax.income.alternative_minimum_tax
 
+        # line 14
         return where(
             tax_unit("ca_itemized_deductions", period) > 0,
             add(tax_unit, period, p.amti_sources)

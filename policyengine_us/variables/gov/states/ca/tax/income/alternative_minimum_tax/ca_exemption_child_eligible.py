@@ -15,14 +15,14 @@ class ca_exemption_child_eligible(Variable):
         p = parameters(period).gov.states.ca.tax.income.alternative_minimum_tax
 
         head = person("is_tax_unit_head", period)
-        child = person("age", period) < p.age_lower_threshold
-        no_income = (person("age", period) == p.age_lower_threshold) & (
+        child = person("age", period) < p.age_threshold.lower
+        no_income = (person("age", period) == p.age_threshold.lower) & (
             person("earned_income", period) == 0
         )
         student_no_income = (
             person("is_full_time_student", period)
             & (person("earned_income", period) == 0)
-            & (person("age", period) < p.age_upper_threshold)
+            & (person("age", period) < p.age_threshold.upper)
         )
 
         return head & (child | no_income | student_no_income)
