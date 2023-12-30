@@ -10,7 +10,9 @@ class income_tax(Variable):
     documentation = "Total federal individual income tax liability."
 
     def formula(person, period, parameters):
-        if parameters(period).gov.contrib.ubi_center.flat_tax.abolish_federal_income_tax:
+        if parameters(
+            period
+        ).gov.contrib.ubi_center.flat_tax.abolish_federal_income_tax:
             return 0
         else:
             added_components = add(person, period, [
