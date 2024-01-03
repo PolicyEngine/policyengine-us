@@ -5574,3 +5574,44 @@
     added:
     - README.md to aca parameter folder.
   date: 2023-12-25 00:14:47
+- bump: patch
+  changes:
+    fixed:
+    - Add hdf5 to conda environment to avoid installation errors.
+  date: 2023-12-27 01:17:17
+- bump: minor
+  changes:
+    added:
+    - Populate AMI and PHA payment standard for LA County.
+  date: 2023-12-28 00:29:20
+- bump: minor
+  changes:
+    added:
+    - Hawaii itemized deduction.
+  date: 2023-12-28 00:52:05
+- bump: minor
+  changes:
+    fixed:
+    - is_ssi_disabled always uses the microdata.
+  date: 2023-12-28 20:25:42
+- bump: patch
+  changes:
+    fixed:
+    - Bug causing cliffs to not be calculated in SNAP.
+  date: 2023-12-28 21:41:40
+- bump: minor
+  changes:
+    added:
+    - West Virginia homestead excess property tax credit.
+    - West Virginia gross household income.
+  date: 2023-12-29 01:48:49
+- bump: patch
+  changes:
+    fixed:
+    - Parameter computing Ohio partial non-refundable credits.
+  date: 2023-12-30 00:25:33
+- bump: patch
+  changes:
+    fixed:
+    - 2023 Massachusetts short term capital gains.
+  date: 2024-01-03 07:08:43
