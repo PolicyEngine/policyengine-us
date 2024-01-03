@@ -34,7 +34,7 @@ class hi_taxable_income_for_alternative_tax(Variable):
         cap_separate = p.rates.separate.thresholds[6]
         cap_hoh = p.rates.head_of_household.thresholds[6]
         statuses = filing_status.possible_values
-        capped_taxable_inocme = select(
+        cap = select(
             [
                 filing_status == statuses.SINGLE,
                 filing_status == statuses.JOINT,
@@ -43,11 +43,12 @@ class hi_taxable_income_for_alternative_tax(Variable):
                 filing_status == statuses.HEAD_OF_HOUSEHOLD,
             ],
             [
-                min_(taxable_income, cap_single),
-                min_(taxable_income, cap_joint),
-                min_(taxable_income, cap_widow),
-                min_(taxable_income, cap_separate),
-                min_(taxable_income, cap_hoh),
+                cap_single,
+                cap_joint,
+                cap_widow,
+                cap_separate,
+                cap_hoh,
             ],
         )
-        return max_(reduced_taxable_income, capped_taxable_inocme)
+        capped_taxable_income = min_(taxable_income, cap)
+        return max_(reduced_taxable_income, capped_taxable_income)
