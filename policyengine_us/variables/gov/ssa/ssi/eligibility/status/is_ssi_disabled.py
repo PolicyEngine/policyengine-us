@@ -13,4 +13,6 @@ class is_ssi_disabled(Variable):
         aged = person("is_ssi_aged", period)
         blind = person("is_blind", period)
         reported_receipt = person("ssi_reported", period) > 0
-        return reported_receipt & ~aged & ~blind
+        return (reported_receipt & ~aged & ~blind) | person(
+            "is_disabled", period
+        )
