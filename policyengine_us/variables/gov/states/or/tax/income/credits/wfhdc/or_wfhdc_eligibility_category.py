@@ -40,10 +40,10 @@ class or_wfhdc_eligibility_category(Variable):
         disabled = person("is_disabled", period)
         disabled_rank = person.get_rank(tax_unit, age, disabled)
         is_first_disabled = disabled_rank == 0
-        youngest_and_disabled = (age == min_age) & is_first_disabled
+        # youngest_and_disabled = (age == min_age) & is_first_disabled
 
         # This will be true if any child with the lowest age is disabled.
-        youngest_is_disabled = tax_unit.sum(youngest_and_disabled) > 0
+        youngest_is_disabled = tax_unit.sum(age*is_first_disabled) > 0
         conditions = [
             min_age < p.three,
             min_age < p.six,
