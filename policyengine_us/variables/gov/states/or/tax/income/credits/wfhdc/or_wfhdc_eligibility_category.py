@@ -38,7 +38,9 @@ class or_wfhdc_eligibility_category(Variable):
         # Determine if the youngest qualifying individual is disabled.
         # The household has at least one qualifying individual because they are WFHDC eligible.
         disabled = person("is_disabled", period)
-        youngest_and_disabled = (age == min_age) & disabled
+        disabled_rank = person.get_rank(tax_unit, age, disabled)
+        is_first_disabled = disabled_rank == 0
+        youngest_and_disabled = (age == min_age) & is_first_disabled
 
         # This will be true if any child with the lowest age is disabled.
         youngest_is_disabled = tax_unit.sum(youngest_and_disabled) > 0
