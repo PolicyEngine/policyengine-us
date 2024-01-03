@@ -22,10 +22,8 @@ class ga_military_retirement_exclusion_person(Variable):
             earned_income > p.additional.earned_income_threshold
         )
         military_retirement_income = person("military_retirement_pay", period)
-        additional_amount = where(
-            additional_subtraction_eligible,
-            p.additional.amount,
-            0,
+        additional_amount = (
+            additional_subtraction_eligible * p.additional.amount
         )
         uncapped_exclusion_amount = p.base + additional_amount
         return min_(uncapped_exclusion_amount, military_retirement_income)
