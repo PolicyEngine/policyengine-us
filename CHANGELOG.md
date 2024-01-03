@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.603.0] - 2024-01-03 17:40:03
+
+### Added
+
+- Georgia retirement income exclusions.
+- Georgia military retirement income exclusion.
+
 ## [0.602.1] - 2024-01-03 17:35:14
 
 ## [0.602.0] - 2024-01-03 15:31:42
@@ -6639,6 +6646,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.603.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.602.1...0.603.0
 [0.602.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.602.0...0.602.1
 [0.602.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.601.2...0.602.0
 [0.601.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.601.1...0.601.2
