@@ -23,7 +23,9 @@ class or_wfhdc_income_category(Variable):
 
         # Get the household income, considered the larger of federal and Oregon AGI.
         federal_agi = tax_unit("adjusted_gross_income", period)
-        or_income_after_subtractions = tax_unit("or_income_after_subtractions", period)
+        or_income_after_subtractions = tax_unit(
+            "or_income_after_subtractions", period
+        )
         household_income = max_(federal_agi, or_income_after_subtractions)
 
         # Get the table row number based on household size and income.
