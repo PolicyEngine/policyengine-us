@@ -19,20 +19,6 @@ class vt_retirement_income_exemption_eligible(Variable):
         # Filer can choose from one of Social Security,
         # Civil Service Retirement System (CSRS), Military Retirement Income
         # or other eligible retirement systems to determine eligibility
-        person = tax_unit.members
-        # Get social security amount
-        tax_unit_taxable_social_security = tax_unit(
-            "tax_unit_taxable_social_security", period
-        )
-        # Get retirement amount from military retirement system
-        tax_unit_military_retirement_pay = tax_unit.sum(
-            person("military_retirement_pay", period)
-        )
-        # Get retirement amount from CSRS
-        tax_unit_csrs_retirement_pay = tax_unit.sum(
-            person("csrs_retirement_pay", period)
-        )
-
         filing_status = tax_unit("filing_status", period)
         agi = tax_unit("adjusted_gross_income", period)
         p = parameters(
