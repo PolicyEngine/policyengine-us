@@ -1,0 +1,15 @@
+- name: Three exemptions
+  period: 2021
+  input:
+    exemptions_count: 3
+    state_code: HI
+  output:
+    hi_regular_exemptions: 3_432
+    
+- name: No exemptions
+  period: 2021
+  input:
+    exemptions_count: 0
+    state_code: HI
+  output:
+    hi_regular_exemptions: 0
