@@ -2,7 +2,7 @@ from policyengine_us.model_api import *
 
 
 class or_wfhdc_income_category(Variable):
-    value_type = str
+    value_type = int
     entity = TaxUnit
     label = "Oregon working family household and dependent care credit percentage table row letter"
     unit = USD
@@ -50,37 +50,37 @@ class or_wfhdc_income_category(Variable):
             ],
             default=0,
         )
+        return row_number 
+        # # Create a mapping of numbers 1-26 to letters A-Z.
+        # LETTER_MAP = {
+        #     0: "-",
+        #     1: "A",
+        #     2: "B",
+        #     3: "C",
+        #     4: "D",
+        #     5: "E",
+        #     6: "F",
+        #     7: "G",
+        #     8: "H",
+        #     9: "I",
+        #     10: "J",
+        #     11: "K",
+        #     12: "L",
+        #     13: "M",
+        #     14: "N",
+        #     15: "O",
+        #     16: "P",
+        #     17: "Q",
+        #     18: "R",
+        #     19: "S",
+        #     20: "T",
+        #     21: "U",
+        #     22: "V",
+        #     23: "W",
+        #     24: "X",
+        #     25: "Y",
+        #     26: "Z",
+        # }
 
-        # Create a mapping of numbers 1-26 to letters A-Z.
-        LETTER_MAP = {
-            0: "-",
-            1: "A",
-            2: "B",
-            3: "C",
-            4: "D",
-            5: "E",
-            6: "F",
-            7: "G",
-            8: "H",
-            9: "I",
-            10: "J",
-            11: "K",
-            12: "L",
-            13: "M",
-            14: "N",
-            15: "O",
-            16: "P",
-            17: "Q",
-            18: "R",
-            19: "S",
-            20: "T",
-            21: "U",
-            22: "V",
-            23: "W",
-            24: "X",
-            25: "Y",
-            26: "Z",
-        }
-
-        # Get the corresponding letter from the mapping.
-        return pd.Series(row_number).map(LETTER_MAP)
+        # # Get the corresponding letter from the mapping.
+        # return pd.Series(row_number).map(LETTER_MAP)

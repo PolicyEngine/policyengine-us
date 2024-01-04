@@ -1,9 +1,10 @@
 description: Oregon matches this fraction of qualifying childcare expenses based on income and eligibility categories.
 metadata:
-  threshold_unit: currency-USD
-  amount_unit: /1
-  threshold_period: year
-  type: single_amount
+  unit: currency-USD
+  period: year
+  breakdown: 
+  - list(range(0,24))
+  - or_wfhdc_eligibility_category
   label: Oregon working family household and dependent care credit credit rate 
   reference:
     - title: 2021 Oregon Form OR-17 (Individual Income Tax Guide)
@@ -13,7 +14,7 @@ metadata:
     - title: 2022 Oregon Working Family Household and Dependent Care (WFHDC) Tables
       href: https://www.oregon.gov/dor/forms/FormsPubs/publication-or-wfhdc-tb_101-458_2022.pdf#page=6
 
-A:
+1:
   age_under_3:    
     2021-01-01: 0.10
   age_3_to_6:
@@ -27,7 +28,7 @@ A:
   NONE:
     2021-01-01: 0
 
-B:
+2:
   age_under_3:
     2021-01-01: 0.20
   age_3_to_6:
@@ -41,7 +42,7 @@ B:
   NONE:
     2021-01-01: 0
   
-C:
+3:
   age_under_3:
     2021-01-01: 0.30
   age_3_to_6:
@@ -55,7 +56,7 @@ C:
   NONE:
     2021-01-01: 0
 
-D:
+4:
   age_under_3:
     2021-01-01: 0.40
   age_3_to_6:
@@ -69,7 +70,7 @@ D:
   NONE:
     2021-01-01: 0
 
-E:
+5:
   age_under_3:
     2021-01-01: 0.50
   age_3_to_6:
@@ -83,7 +84,7 @@ E:
   NONE:
     2021-01-01: 0
 
-F:
+6:
   age_under_3:
     2021-01-01: 0.55
   age_3_to_6:
@@ -97,7 +98,7 @@ F:
   NONE:
     2021-01-01: 0
 
-G:
+7:
   age_under_3:
     2021-01-01: 0.60
   age_3_to_6:
@@ -111,7 +112,7 @@ G:
   NONE:
     2021-01-01: 0
 
-H:
+8:
   age_under_3:
     2021-01-01: 0.65
   age_3_to_6:
@@ -125,7 +126,7 @@ H:
   NONE:
     2021-01-01: 0
 
-I:
+9:
   age_under_3:
     2021-01-01: 0.70
   age_3_to_6:
@@ -139,7 +140,7 @@ I:
   NONE:
     2021-01-01: 0
 
-J:
+10:
   age_under_3:
     2021-01-01: 0.75
   age_3_to_6:
@@ -153,7 +154,7 @@ J:
   NONE:
     2021-01-01: 0
 
-K:
+11:
   age_under_3:
     2021-01-01: 0.71
   age_3_to_6:
@@ -167,7 +168,7 @@ K:
   NONE:
     2021-01-01: 0
 
-L:
+12:
   age_under_3:
     2021-01-01: 0.66
   age_3_to_6:
@@ -181,7 +182,7 @@ L:
   NONE:
     2021-01-01: 0
 
-M:
+13:
   age_under_3:
     2021-01-01: 0.61
   age_3_to_6:
@@ -195,7 +196,7 @@ M:
   NONE:
     2021-01-01: 0
 
-N:
+14:
   age_under_3:
     2021-01-01: 0.55
   age_3_to_6:
@@ -209,7 +210,7 @@ N:
   NONE:
     2021-01-01: 0
 
-O:
+15:
   age_under_3:
     2021-01-01: 0.50
   age_3_to_6:
@@ -223,7 +224,7 @@ O:
   NONE:
     2021-01-01: 0
 
-P:
+16:
   age_under_3:
     2021-01-01: 0.47
   age_3_to_6:
@@ -237,7 +238,7 @@ P:
   NONE:
     2021-01-01: 0
     
-Q:
+17:
   age_under_3:
     2021-01-01: 0.45
   age_3_to_6:
@@ -251,7 +252,7 @@ Q:
   NONE:
     2021-01-01: 0
 
-R:
+18:
   age_under_3:
     2021-01-01: 0.30
   age_3_to_6:
@@ -265,7 +266,7 @@ R:
   NONE:
     2021-01-01: 0
 
-S:
+19:
   age_under_3:
     2021-01-01: 0.35
   age_3_to_6:
@@ -279,7 +280,7 @@ S:
   NONE:
     2021-01-01: 0
 
-T:
+20:
   age_under_3:
     2021-01-01: 0.30
   age_3_to_6:
@@ -293,7 +294,7 @@ T:
   NONE:
     2021-01-01: 0
 
-U:
+21:
   age_under_3:
     2021-01-01: 0.20
   age_3_to_6:
@@ -307,7 +308,7 @@ U:
   NONE:
     2021-01-01: 0
 
-V:
+22:
   age_under_3:
     2021-01-01: 0.10
   age_3_to_6:
@@ -321,7 +322,7 @@ V:
   NONE:
     2021-01-01: 0
 
-W:
+23:
   age_under_3:
     2021-01-01: 0.06
   age_3_to_6:
@@ -335,7 +336,7 @@ W:
   NONE:
     2021-01-01: 0
 
-X:
+24:
   age_under_3:
     2021-01-01: 0.04
   age_3_to_6:
@@ -349,7 +350,7 @@ X:
   NONE:
     2021-01-01: 0
 
-Y:
+25:
   age_under_3:
     2021-01-01: 0
   age_3_to_6:
