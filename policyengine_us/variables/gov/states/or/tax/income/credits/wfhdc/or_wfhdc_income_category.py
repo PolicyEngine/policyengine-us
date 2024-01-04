@@ -50,7 +50,7 @@ class or_wfhdc_income_category(Variable):
             ],
             default=0,
         )
-        return row_number 
+        return row_number
         # # Create a mapping of numbers 1-26 to letters A-Z.
         # LETTER_MAP = {
         #     0: "-",
