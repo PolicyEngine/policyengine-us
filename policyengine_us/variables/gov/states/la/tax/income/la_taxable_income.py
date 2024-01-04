@@ -13,10 +13,10 @@ class la_taxable_income(Variable):
         itemizes = tax_unit("tax_unit_itemizes", period)
         # Louisana does not provide a standard deduction
         itemized_deductions = tax_unit("la_itemized_deductions", period)
-        la_itemizes = where(itemizes, itemized_deductions, 0)
+        claimed_itemized_deductions = itemizes * itemized_deductions
         return max_(
             tax_unit("la_agi", period)
-            - la_itemizes
+            - claimed_itemized_deductions
             - tax_unit("la_exemptions", period),
             0,
         )

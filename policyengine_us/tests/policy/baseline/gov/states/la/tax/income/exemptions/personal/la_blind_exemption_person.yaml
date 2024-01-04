@@ -1,15 +1,13 @@
-- name: Disability benefits less than disability income exemption.
-  period: 2022
+- name: Blind head and not blind spouse
+  period: 2021
   input:
     people:
       person1:
         is_tax_unit_head_or_spouse: true
-        disability_benefits: 3_000
-        la_blind_exemption_person: 0
+        is_blind: true
       person2:
         is_tax_unit_head_or_spouse: true
-        disability_benefits: 0
-        la_blind_exemption_person: 0
+        is_blind: false
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -18,20 +16,18 @@
         members: [person1, person2]
         state_code: LA
   output:
-    la_disability_income_exemption_person: [3_000, 0]
+    la_blind_exemption_person: [1_000, 0]
 
-- name: Disability benefits greater than disability income exemption.
-  period: 2022
+- name: Both blind
+  period: 2021
   input:
     people:
       person1:
         is_tax_unit_head_or_spouse: true
-        disability_benefits: 0
-        la_blind_exemption_person: 0
+        is_blind: true
       person2:
         is_tax_unit_head_or_spouse: true
-        disability_benefits: 7_000
-        la_blind_exemption_person: 0
+        is_blind: true
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -40,20 +36,18 @@
         members: [person1, person2]
         state_code: LA
   output:
-    la_disability_income_exemption_person: [0, 6_000]
+    la_blind_exemption_person: [1_000, 1_000]
 
-- name: Person receiving teh blind exemption
-  period: 2022
+- name: No blind people
+  period: 2021
   input:
     people:
       person1:
-        is_tax_unit_head_or_spouse: true
-        disability_benefits: 0
-        la_blind_exemption_person: 0
+        is_tax_unit_head: true
+        is_blind: false
       person2:
-        is_tax_unit_head_or_spouse: true
-        disability_benefits: 7_000
-        la_blind_exemption_person: 1_000
+        is_tax_unit_spouse: true
+        is_blind: false
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -62,4 +56,24 @@
         members: [person1, person2]
         state_code: LA
   output:
-    la_disability_income_exemption_person: [0, 0]
+    la_blind_exemption_person: [0, 0]
+
+- name: Blind non head or spouse
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        is_blind: true
+      person2:
+        is_tax_unit_head_or_spouse: false
+        is_blind: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    la_blind_exemption_person: [1_000, 0]

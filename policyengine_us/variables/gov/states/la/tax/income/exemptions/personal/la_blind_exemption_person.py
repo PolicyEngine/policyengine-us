@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class la_blind_exemption(Variable):
+class la_blind_exemption_person(Variable):
     value_type = float
-    entity = TaxUnit
-    label = "Louisiana blind exemption"
+    entity = Person
+    label = "Louisiana blind exemption for each individual"
     unit = USD
     definition_period = YEAR
     reference = [
@@ -16,4 +16,9 @@ class la_blind_exemption(Variable):
     # but they are not mentioned either in the tax computation worksheet or tax form.)
     defined_for = StateCode.LA
 
-    adds = ["la_blind_exemption_person"]
+    def formula(person, period, parameters):
+        p = parameters(period).gov.states.la.tax.income.exemptions
+        blind = person("is_blind", period).astype(int)
+        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+        blind_head_or_spouse = head_or_spouse & blind
+        return blind_head_or_spouse * p.blind

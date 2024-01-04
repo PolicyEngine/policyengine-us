@@ -14,8 +14,16 @@ class la_disability_income_exemption_person(Variable):
         p = parameters(
             period
         ).gov.states.la.tax.income.exempt_income.disability
-        # All disability benefits are exempt from income tax
+        # The disability_benefits variable includes only taxable disability benefits.
         disability_benefits = person("disability_benefits", period)
         capped_disability_benefits = min_(disability_benefits, p.cap)
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        return capped_disability_benefits * is_head_or_spouse
+        total_disablity_exemption = (
+            capped_disability_benefits * is_head_or_spouse
+        )
+        # People who reveive the blind exemption are not eligible for
+        # the disability income exemption
+        blind_exemption_received = (
+            person("la_blind_exemption_person", period) > 0
+        )
+        return where(blind_exemption_received, 0, total_disablity_exemption)
