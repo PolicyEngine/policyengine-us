@@ -14,7 +14,7 @@ class la_blind_exemption_person(Variable):
     # Even though the tax computation worksheet refers "blind exemption" as credits, the instructions for
     # preparing tax form line 6a-6b specifies it as exemption. (the legal code also mentions deaf and totally disabled conditions,
     # but they are not mentioned either in the tax computation worksheet or tax form.)
-    defined_for = StateCode.LA
+    defined_for = "la_receives_blind_exemption"
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.la.tax.income.exemptions

@@ -23,7 +23,7 @@ class la_disability_income_exemption_person(Variable):
         )
         # People who reveive the blind exemption are not eligible for
         # the disability income exemption
-        blind_exemption_received = (
-            person("la_blind_exemption_person", period) > 0
+        blind_exemption_received = person(
+            "la_receives_blind_exemption", period
         )
         return where(blind_exemption_received, 0, total_disablity_exemption)
