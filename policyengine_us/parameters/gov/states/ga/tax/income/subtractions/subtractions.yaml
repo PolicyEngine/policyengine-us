@@ -1,16 +1,21 @@
-description: Colorado counts these sources as subtractions.
+description: Georgia subtracts these sources from adjusted gross income.  
 values:
   2021-01-01:
-    - us_govt_interest
-    - ga_retirement_exclusion
-    - ga_military_retirement_exclusion
-    - taxable_social_security
-    - ga_investment_in_529_plan_deduction 
- 
-
+    - us_govt_interest  
+    - ga_retirement_exclusion  
+    - taxable_social_security  
+    - ga_investment_in_529_plan_deduction
+  2022-01-01:
+    - us_govt_interest  
+    - ga_retirement_exclusion  
+    - ga_military_retirement_exclusion  
+    - taxable_social_security  
+    - ga_investment_in_529_plan_deduction
+    
 metadata:
   unit: list
-  label: Georgia adjusted gross income subtractions
+  label: Georgia adjusted gross income subtractions  
+  period: year  
   reference:
     - title: 2022 Form 500 Instructions
       href: https://apps.dor.ga.gov/FillableForms/PDFViewer/Index?form=2022GA500
