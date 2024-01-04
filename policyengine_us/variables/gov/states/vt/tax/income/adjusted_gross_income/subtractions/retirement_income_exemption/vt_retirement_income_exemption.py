@@ -51,18 +51,24 @@ class vt_retirement_income_exemption(Variable):
         p = parameters(
             period
         ).gov.states.vt.tax.income.agi.retirement_income_exemption
-        subfolder = where(use_ss, "social_security", "csrs")
+        reduction_start = where(
+            use_ss,
+            p.social_security.reduction.start[filing_status],
+            p.csrs.reduction.start[filing_status],
+        )
+        reduction_end = where(
+            use_ss,
+            p.social_security.reduction.end[filing_status],
+            p.csrs.reduction.end[filing_status],
+        )
         # List of partial qualified tax unit(SECTION II)
         partial_qualified = (
-            (agi >= p[subfolder].reduction.start[filing_status])
-            & (agi < p[subfolder].reduction.end[filing_status])
+            (agi >= reduction_start)
+            & (agi < reduction_end)
             & (chosen_retirement_income != 0)
         )
         # Calculate the exemption ratio
-        partial_exemption_ratio = (
-            max_(p[subfolder].reduction.end[filing_status] - agi, 0)
-            / p.divisor
-        )
+        partial_exemption_ratio = max_(reduction_end - agi, 0) / p.divisor
         # Round the exemption ratio to two decimal point
         partial_exemption_ratio = round_(partial_exemption_ratio, 2)
         # The exemption ratio should be below one
