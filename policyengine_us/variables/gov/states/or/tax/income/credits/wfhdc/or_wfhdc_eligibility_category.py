@@ -43,10 +43,10 @@ class or_wfhdc_eligibility_category(Variable):
         # This will be true if any child with the lowest age is disabled.
         youngest_is_disabled = tax_unit.sum(youngest_and_disabled) > 0
         conditions = [
-            min_age < p.three,
-            min_age < p.six,
-            min_age < p.thirteen,
-            (min_age < p.eighteen) & youngest_is_disabled,
+            min_age < p.youngest,
+            min_age < p.young,
+            min_age < p.old,
+            (min_age < p.oldest) & youngest_is_disabled,
             youngest_is_disabled,
         ]
         values = [
