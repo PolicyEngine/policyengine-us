@@ -1,0 +1,14 @@
+description: Rhode Island provides this child tax rebate amount for each eligible child.
+metadata:
+  label: Rhode Island child tax rebate amount
+  period: year
+  unit: currency-USD
+  reference:
+  # The child tax rebate was introduced in 2022
+  - title: 2022 RI Schedule M - page 1 RI Modifications to Federal AGI line 1v
+    href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-12/2022%20RI%20Schedule%20M_w.pdf#page=1
+  - title: R.I. Gen. Laws § 44-30-103  44-30-103. Child tax rebates. (b), (1)
+    href: http://webserver.rilin.state.ri.us/Statutes/TITLE44/44-30/44-VI/44-30-103.htm
+
+values:
+  2022-01-01: 250

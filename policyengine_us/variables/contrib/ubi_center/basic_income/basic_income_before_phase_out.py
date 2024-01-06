@@ -20,4 +20,13 @@ class basic_income_before_phase_out(Variable):
         # Now compute FPG amount.
         fpg = tax_unit("tax_unit_fpg", period)
         fpg_amount = p.tax_unit.fpg_percent * fpg
-        return total_flat_amount + total_amount_by_age + fpg_amount
+
+        # Disability amount
+        disabled = person("is_ssi_disabled", period)
+        disabled_amount = tax_unit.sum(disabled * p.person.disability)
+        return (
+            total_flat_amount
+            + total_amount_by_age
+            + fpg_amount
+            + disabled_amount
+        )

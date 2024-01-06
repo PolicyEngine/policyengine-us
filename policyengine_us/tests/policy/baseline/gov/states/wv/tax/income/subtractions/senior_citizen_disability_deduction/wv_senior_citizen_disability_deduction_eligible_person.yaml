@@ -1,0 +1,39 @@
+- name: Other than head or spouse are ineligible for the West Virginia senior citizen or disability deduction.
+  period: 2022
+  input:
+    age: 20
+    is_permanently_and_totally_disabled: true
+    is_tax_unit_head_or_spouse: false
+    state_code: WV
+  output:
+    wv_senior_citizen_disability_deduction_eligible_person: false
+
+- name: Aged head or spouse are eligible for the West Virginia senior citizen or disability deduction.
+  period: 2022
+  input:
+    age: 70
+    is_permanently_and_totally_disabled: false
+    is_tax_unit_head_or_spouse: true
+    state_code: WV
+  output:
+    wv_senior_citizen_disability_deduction_eligible_person: true
+
+- name: Disabled head or spouse filers are eligible for the West Virginia senior citizen or disability deduction.
+  period: 2022
+  input:
+    age: 30
+    is_permanently_and_totally_disabled: true
+    is_tax_unit_head_or_spouse: true
+    state_code: WV
+  output:
+    wv_senior_citizen_disability_deduction_eligible_person: true
+
+- name: Non-disabled and young are ineligible for the West Virginia senior citizen or disability deduction.
+  period: 2022
+  input:
+    age: 30
+    is_permanently_and_totally_disabled: false
+    is_tax_unit_head_or_spouse: true
+    state_code: WV
+  output:
+    wv_senior_citizen_disability_deduction_eligible_person: false
