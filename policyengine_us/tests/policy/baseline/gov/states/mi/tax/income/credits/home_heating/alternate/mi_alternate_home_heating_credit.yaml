@@ -2,7 +2,7 @@
   period: 2022
   input:
     mi_household_resources: 1_000
-    heating_costs: 1_000
+    heating_expenses: 1_000
     mi_alternate_home_heating_credit_eligible: true
   output:
     mi_alternate_home_heating_credit: 623
@@ -11,7 +11,7 @@
   period: 2022
   input:
     mi_household_resources: 1_000
-    heating_costs: 4_000
+    heating_expenses: 4_000
     mi_alternate_home_heating_credit_eligible: true
   output:
     mi_alternate_home_heating_credit: 2_261
@@ -20,7 +20,7 @@
   period: 2022
   input:
     mi_household_resources: 3_000
-    heating_costs: 300
+    heating_expenses: 300
     mi_alternate_home_heating_credit_eligible: true
   output:
     mi_alternate_home_heating_credit: 0

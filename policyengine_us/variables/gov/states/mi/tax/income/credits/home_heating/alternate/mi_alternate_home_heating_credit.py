@@ -22,16 +22,16 @@ class mi_alternate_home_heating_credit(Variable):
         ).gov.states.mi.tax.income.credits.home_heating.alternate
 
         household_resources = tax_unit("mi_household_resources", period)
-        heating_costs = tax_unit("heating_costs", period)
+        heating_expenses = tax_unit("heating_expenses", period)
         # Line 42
-        capped_heating_costs = min_(heating_costs, p.heating_costs.cap)
+        capped_heating_expenses = min_(heating_expenses, p.heating_costs.cap)
         # Line 43
         reduced_household_resources = (
             household_resources * p.household_resources.rate
         )
         # Line 44
         reduced_capped_heating_costs = max_(
-            capped_heating_costs - reduced_household_resources, 0
+            capped_heating_expenses - reduced_household_resources, 0
         )
         # Line 45
         return p.heating_costs.rate * reduced_capped_heating_costs

@@ -5,7 +5,7 @@ class mi_home_heating_credit(Variable):
     value_type = float
     entity = TaxUnit
     label = "Michigan home heating credit"
-    defined_for = "mi_home_heating_credit_eligible"
+    defined_for = StateCode.MI
     unit = USD
     definition_period = YEAR
     reference = (
@@ -17,5 +17,7 @@ class mi_home_heating_credit(Variable):
         standard_credit = tax_unit("mi_standard_home_heating_credit", period)
         alternate_credit = tax_unit("mi_alternate_home_heating_credit", period)
         p = parameters(period).gov.states.mi.tax.income.credits.home_heating
-        credit_percentage = p.credit_percentage
-        return max_(standard_credit, alternate_credit) * credit_percentage
+        larger_credit = max_(standard_credit, alternate_credit)
+        total_credit = larger_credit * p.credit_percentage
+        rate = tax_unit("mi_home_heating_credit_eligible_rate", period)
+        return total_credit * rate

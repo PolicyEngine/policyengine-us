@@ -17,5 +17,5 @@ class mi_standard_home_heating_credit_eligible(Variable):
         # the poverty guidelines are determined by the number of exemptions
         # which is a function of the tax_unit_size which is used in tax_unit_fpg
         fpg = tax_unit("tax_unit_fpg", period)
-
-        return mi_household_resources <= (fpg * p.fpg_rate)
+        limit = fpg * p.fpg_rate
+        return mi_household_resources <= limit

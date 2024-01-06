@@ -22,7 +22,6 @@ class mi_alternate_home_heating_credit_eligible(Variable):
         p = parameters(
             period
         ).gov.states.mi.tax.income.credits.home_heating.alternate
-        resource_eligible = (
-            household_resources < p.household_resources.cap.calc(exemptions)
-        )
+        resource_cap = p.household_resources.cap.calc(exemptions)
+        resource_eligible = household_resources < resource_cap
         return utilities_not_included_in_rent & resource_eligible
