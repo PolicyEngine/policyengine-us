@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.607.0] - 2024-01-06 17:47:15
+
+### Added
+
+- Louisiana exemptions.
+
 ## [0.606.1] - 2024-01-06 15:23:54
 
 ### Fixed
@@ -6696,6 +6702,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.607.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.606.1...0.607.0
 [0.606.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.606.0...0.606.1
 [0.606.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.605.0...0.606.0
 [0.605.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.604.2...0.605.0
