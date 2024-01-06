@@ -4,7 +4,9 @@ from policyengine_us.model_api import *
 class mt_elderly_homeowner_or_renter_credit_net_household_income(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Montana Net Household Income"
+    label = (
+        "Net household income for Montana elderly homeowner or renter credit"
+    )
     unit = USD
     definition_period = YEAR
     defined_for = "mt_elderly_homeowner_or_renter_credit_eligible"
