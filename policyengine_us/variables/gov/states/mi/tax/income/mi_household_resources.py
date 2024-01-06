@@ -8,5 +8,5 @@ class mi_household_resources(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.MI
-    reference = "http://www.legislature.mi.gov/(S(keapvg1h2vndkn25rtmpyyse))/mileg.aspx?page=getObject&objectName=mcl-206-527a"
+    reference = "https://law.justia.com/codes/michigan/2022/chapter-206/statute-act-281-of-1967/division-281-1967-1/division-281-1967-1-9/section-206-508/"
     adds = "gov.states.mi.tax.income.household_resources"
