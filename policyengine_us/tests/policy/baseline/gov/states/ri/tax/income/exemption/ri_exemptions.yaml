@@ -1,0 +1,53 @@
+- name: Household with 1 exemption and income of 200,000
+  period: 2022
+  input:
+    state_code: RI
+    ri_agi: 200_000
+    exemptions_count: 1
+  output:
+    ri_exemptions: 4_350
+
+- name: Household with 2 exemptions and income of 217,100
+  period: 2022
+  input:
+    state_code: RI
+    ri_agi: 217_100
+    exemptions_count: 2
+  output:
+    ri_exemptions: 6_960
+
+- name: Household with 3 exemptions and income of 240,000
+  period: 2022
+  input:
+    state_code: RI
+    ri_agi: 240_000
+    exemptions_count: 3
+  output:
+    ri_exemptions: 2_610
+
+- name: Household with 4 exemptions and income of 250,000
+  period: 2022
+  input:
+    state_code: RI
+    ri_agi: 250_000
+    exemptions_count: 4
+  output:
+    ri_exemptions: 0
+
+- name: Household with 1 exemption and income of 200,000
+  period: 2021
+  input:
+    state_code: RI
+    ri_agi: 200_000
+    exemptions_count: 1
+  output:
+    ri_exemptions: 4_250
+
+- name: Household with 2 exemptions and income of 211,000
+  period: 2021
+  input:
+    state_code: RI
+    ri_agi: 211_000
+    exemptions_count: 2
+  output:
+    ri_exemptions: 6_800
