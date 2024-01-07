@@ -33,7 +33,7 @@
     state_code: LA
     standard_deduction: 12_550
     medical_expense_deduction: 20_000
-    itemized_deductions_less_salt: 30_000
+    taxable_income_deductions_if_itemizing: 30_000
     tax_unit_itemizes: true
   output:
     la_itemized_deductions: 17_450
@@ -45,7 +45,7 @@
     state_code: LA
     standard_deduction: 12_550
     medical_expense_deduction: 20_000
-    itemized_deductions_less_salt: 10_000
+    taxable_income_deductions_if_itemizing: 10_000
     tax_unit_itemizes: true
   output:
     la_itemized_deductions: 0
