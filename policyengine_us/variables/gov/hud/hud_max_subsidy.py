@@ -12,5 +12,7 @@ class hud_max_subsidy(Variable):
 
     def formula(spm_unit, period, parameters):
         ttp = spm_unit("hud_ttp", period)
-        pha_payment_standard = spm_unit("pha_payment_standard", period)
+        pha_payment_standard = spm_unit.household(
+            "pha_payment_standard", period
+        )
         return max_(0, pha_payment_standard - ttp)

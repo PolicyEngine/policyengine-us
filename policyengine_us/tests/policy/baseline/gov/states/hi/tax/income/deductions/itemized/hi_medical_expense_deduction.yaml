@@ -1,0 +1,75 @@
+- name: base test
+  period: 2022
+  input:
+    people:
+      person1:
+        medical_expense: 100
+      person2:
+        medical_expense: 100
+    tax_units:
+      tax_unit:
+        hi_agi: 1_000
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    hi_medical_expense_deduction: 125
+
+- name: larger expense
+  period: 2022
+  input:
+    people:
+      person1:
+        medical_expense: 200
+      person2:
+        medical_expense: 100
+    tax_units:
+      tax_unit:
+        hi_agi: 1_000
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    hi_medical_expense_deduction: 225
+  
+- name: larger AGI
+  period: 2022
+  input:
+    people:
+      person1:
+        medical_expense: 100
+      person2:
+        medical_expense: 100
+    tax_units:
+      tax_unit:
+        hi_agi: 2_000
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    hi_medical_expense_deduction: 50
+
+- name: exceed 0
+  period: 2022
+  input:
+    people:
+      person1:
+        medical_expense: 100
+      person2:
+        medical_expense: 100
+    tax_units:
+      tax_unit:
+        hi_agi: 10_000
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    hi_medical_expense_deduction: 0

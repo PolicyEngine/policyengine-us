@@ -11,7 +11,6 @@ class az_deductions(Variable):
     reference = "https://azdor.gov/sites/default/files/2023-08/FORMS_INDIVIDUAL_2022_140f.pdf"  # Line 43
 
     def formula(tax_unit, period, parameters):
-        itemized = tax_unit("tax_unit_itemizes", period)
         itemized_ded = tax_unit("az_itemized_deductions", period)
         standard_ded = tax_unit("az_standard_deduction", period)
-        return where(itemized, itemized_ded, standard_ded)
+        return max_(itemized_ded, standard_ded)

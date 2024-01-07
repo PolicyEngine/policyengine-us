@@ -1,0 +1,43 @@
+- name: head is eligible for military retirement exclusions
+  period: 2022
+  input:
+    is_tax_unit_head: true
+    age: 50
+    state_code: GA
+  output:
+    ga_military_retirement_exclusion_eligible_person: true
+
+- name: no spouse is eligible for military retirement exclusions
+  period: 2023
+  input:
+    is_tax_unit_head: false
+    is_tax_unit_spouse: false
+    age: 50
+    state_code: GA
+  output:
+    ga_military_retirement_exclusion_eligible_person: false
+
+- name: head is not age eligible and no spouse
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 65
+      person2:
+        is_tax_unit_spouse: false
+        age: 50
+    households:
+      household:
+        state_code: GA
+  output:
+    ga_military_retirement_exclusion_eligible_person: false
+
+- name: head is not age eligible for military retirement exclusions
+  period: 2022
+  input:
+    is_tax_unit_head: true
+    age: 62
+    state_code: GA
+  output:
+    ga_military_retirement_exclusion_eligible_person: false
