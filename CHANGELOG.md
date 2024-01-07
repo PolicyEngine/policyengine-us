@@ -5,6 +5,83 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.607.0] - 2024-01-06 17:47:15
+
+### Added
+
+- Louisiana exemptions.
+
+## [0.606.1] - 2024-01-06 15:23:54
+
+### Fixed
+
+- Removed extraneous add/subtract pairs in income_tax calculation logic.
+
+## [0.606.0] - 2024-01-06 15:19:01
+
+### Added
+
+- Kentucky itemized deductions.
+
+## [0.605.0] - 2024-01-06 13:51:28
+
+### Added
+
+- Montana elderly homeowner/renter credit.
+
+## [0.604.2] - 2024-01-05 14:55:37
+
+### Fixed
+
+- West Virginia senior citizen or disability deduction source.
+
+## [0.604.1] - 2024-01-04 18:24:35
+
+### Fixed
+
+- Arizona deductions formula.
+
+## [0.604.0] - 2024-01-04 04:49:41
+
+### Added
+
+- Vermont retirement income exemption.
+
+## [0.603.3] - 2024-01-04 01:12:31
+
+## [0.603.2] - 2024-01-04 01:03:25
+
+### Fixed
+
+- Rhode Island exemptions formula.
+
+## [0.603.1] - 2024-01-03 22:49:51
+
+### Fixed
+
+- Defined CalWORKS income limit as annual.
+
+## [0.603.0] - 2024-01-03 17:40:03
+
+### Added
+
+- Georgia retirement income exclusions.
+- Georgia military retirement income exclusion.
+
+## [0.602.1] - 2024-01-03 17:35:14
+
+## [0.602.0] - 2024-01-03 15:31:42
+
+### Added
+
+- Hawaii alternative tax on capital gains.
+
+## [0.601.2] - 2024-01-03 07:08:43
+
+### Fixed
+
+- 2023 Massachusetts short term capital gains.
+
 ## [0.601.1] - 2023-12-30 00:25:33
 
 ### Fixed
@@ -6625,6 +6702,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.607.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.606.1...0.607.0
+[0.606.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.606.0...0.606.1
+[0.606.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.605.0...0.606.0
+[0.605.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.604.2...0.605.0
+[0.604.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.604.1...0.604.2
+[0.604.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.604.0...0.604.1
+[0.604.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.603.3...0.604.0
+[0.603.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.603.2...0.603.3
+[0.603.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.603.1...0.603.2
+[0.603.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.603.0...0.603.1
+[0.603.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.602.1...0.603.0
+[0.602.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.602.0...0.602.1
+[0.602.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.601.2...0.602.0
+[0.601.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.601.1...0.601.2
 [0.601.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.601.0...0.601.1
 [0.601.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.600.1...0.601.0
 [0.600.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.600.0...0.600.1

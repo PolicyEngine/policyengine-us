@@ -13,7 +13,7 @@ class ri_exemptions(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.ri.tax.income.exemption
 
-        exemptions_count = tax_unit("exemptions", period)
+        exemptions_count = tax_unit("exemptions_count", period)
 
         exemption_amount = exemptions_count * p.amount
 
