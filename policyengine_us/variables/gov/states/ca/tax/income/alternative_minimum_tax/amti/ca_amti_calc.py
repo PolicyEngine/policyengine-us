@@ -17,15 +17,14 @@ class ca_amti_calc(Variable):
 
         amti_before_ded = tax_unit("ca_amti", period)
         separate = filing_status == filing_status.possible_values.SEPARATE
-        separate_threshold = amti_before_ded > p.exemption.amt_threshold.upper[filing_status]
+        separate_threshold = (
+            amti_before_ded > p.exemption.amt_threshold.upper[filing_status]
+        )
         separate_amti_calc = min_(
-                (
-                    amti_before_ded
-                    - p.exemption.amt_threshold.upper[filing_status]
-                )
-                * p2.capital_gain_excess_tax_rate,
-                p.exemption.amount[filing_status],
-            )
+            (amti_before_ded - p.exemption.amt_threshold.upper[filing_status])
+            * p2.capital_gain_excess_tax_rate,
+            p.exemption.amount[filing_status],
+        )
 
         # line 21
         return where(

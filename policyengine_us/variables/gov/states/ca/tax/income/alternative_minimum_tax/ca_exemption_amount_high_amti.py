@@ -40,12 +40,14 @@ class ca_exemption_amount_high_amti(Variable):
         )
 
         exemption_amt_eligible_child = where(
-                over_threshold,
-                0,
-                min_(exemption_amount_high, exemption_amount_child_total),
-            )
+            over_threshold,
+            0,
+            min_(exemption_amount_high, exemption_amount_child_total),
+        )
 
-        exemption_amt_no_eligible_child = where(over_threshold, 0, exemption_amount_high)
+        exemption_amt_no_eligible_child = where(
+            over_threshold, 0, exemption_amount_high
+        )
 
         return where(
             eligible_child_present,

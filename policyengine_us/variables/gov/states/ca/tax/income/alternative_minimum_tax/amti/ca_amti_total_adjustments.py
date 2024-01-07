@@ -4,7 +4,9 @@ from policyengine_us.model_api import *
 class ca_amti_total_adjustments(Variable):
     value_type = float
     entity = TaxUnit
-    label = "California total adjustments and preferences for the AMTI calculation"
+    label = (
+        "California total adjustments and preferences for the AMTI calculation"
+    )
     defined_for = StateCode.CA
     unit = USD
     definition_period = YEAR
