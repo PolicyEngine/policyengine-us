@@ -5450,3 +5450,244 @@
     added:
     - Income and substitution elasticities of labor supply.
   date: 2023-12-19 11:31:05
+- bump: patch
+  changes:
+    fixed:
+    - Test failures in automated variable tests.
+  date: 2023-12-20 10:56:22
+- bump: patch
+  changes:
+    fixed:
+    - Alabama itemized deductions.
+  date: 2023-12-20 12:59:03
+- bump: minor
+  changes:
+    added:
+    - SSI 2024 updated amounts
+  date: 2023-12-20 22:28:46
+- bump: patch
+  changes:
+    fixed:
+    - Arizona itemized deductions.
+  date: 2023-12-21 07:13:29
+- bump: patch
+  changes:
+    added:
+    - Test for no-reform microsim impacts.
+  date: 2023-12-21 12:39:42
+- bump: minor
+  changes:
+    added:
+    - Ohio Exemption Credit.
+    - Ohio Personal Exemptions.
+  date: 2023-12-21 17:14:33
+- bump: minor
+  changes:
+    added:
+    - Virginia Adjusted Gross Income.
+  date: 2023-12-21 17:24:36
+- bump: patch
+  changes:
+    fixed:
+    - Alabama itemized deduction.
+  date: 2023-12-21 18:04:33
+- bump: patch
+  changes:
+    fixed:
+    - Utah social security benefits credit variable.
+    - Utah earned income tax credit variable.
+  date: 2023-12-21 18:09:07
+- bump: minor
+  changes:
+    added:
+    - Idaho aged and disabled deduction.
+  date: 2023-12-21 18:40:08
+- bump: patch
+  changes:
+    fixed:
+    - New York supplemental tax calculation.
+  date: 2023-12-21 18:46:53
+- bump: minor
+  changes:
+    added:
+    - Montana disability income subtraction.
+  date: 2023-12-21 19:02:40
+- bump: minor
+  changes:
+    added:
+    - West Virginia social security benefits subtraction.
+  date: 2023-12-21 19:05:34
+- bump: patch
+  changes:
+    fixed:
+    - Adjust the az_aged_exemption variable formula to calculate eligibility through
+      a defined_for attribute.
+  date: 2023-12-22 01:04:14
+- bump: minor
+  changes:
+    fixed:
+    - South Carolina net capital gain deduction.
+  date: 2023-12-22 04:42:23
+- bump: minor
+  changes:
+    added:
+    - Arkansas retirement or disability benefits exemption.
+  date: 2023-12-22 05:01:15
+- bump: minor
+  changes:
+    added:
+    - Rhode Island adjusted gross income modifications.
+  date: 2023-12-22 09:59:02
+- bump: minor
+  changes:
+    added:
+    - Disability-based UBI.
+  date: 2023-12-22 16:24:22
+- bump: patch
+  changes:
+    fixed:
+    - Massachusetts 2023 EITC rate.
+  date: 2023-12-23 01:36:50
+- bump: patch
+  changes:
+    fixed:
+    - Pension income allocated at the lowest possible level.
+    - Bug in LSR branching setup.
+  date: 2023-12-24 01:05:33
+- bump: patch
+  changes:
+    fixed:
+    - Michigan retirement deduction calculation.
+  date: 2023-12-24 22:19:24
+- bump: minor
+  changes:
+    added:
+    - West Virginia senior citizen or disability deduction.
+  date: 2023-12-24 23:11:31
+- bump: minor
+  changes:
+    added:
+    - Ohio joint filing credit.
+  date: 2023-12-24 23:34:48
+- bump: patch
+  changes:
+    added:
+    - README.md to aca parameter folder.
+  date: 2023-12-25 00:14:47
+- bump: patch
+  changes:
+    fixed:
+    - Add hdf5 to conda environment to avoid installation errors.
+  date: 2023-12-27 01:17:17
+- bump: minor
+  changes:
+    added:
+    - Populate AMI and PHA payment standard for LA County.
+  date: 2023-12-28 00:29:20
+- bump: minor
+  changes:
+    added:
+    - Hawaii itemized deduction.
+  date: 2023-12-28 00:52:05
+- bump: minor
+  changes:
+    fixed:
+    - is_ssi_disabled always uses the microdata.
+  date: 2023-12-28 20:25:42
+- bump: patch
+  changes:
+    fixed:
+    - Bug causing cliffs to not be calculated in SNAP.
+  date: 2023-12-28 21:41:40
+- bump: minor
+  changes:
+    added:
+    - West Virginia homestead excess property tax credit.
+    - West Virginia gross household income.
+  date: 2023-12-29 01:48:49
+- bump: patch
+  changes:
+    fixed:
+    - Parameter computing Ohio partial non-refundable credits.
+  date: 2023-12-30 00:25:33
+- bump: patch
+  changes:
+    fixed:
+    - 2023 Massachusetts short term capital gains.
+  date: 2024-01-03 07:08:43
+- bump: minor
+  changes:
+    added:
+    - Hawaii alternative tax on capital gains.
+  date: 2024-01-03 15:31:42
+- bump: patch
+  changes:
+    fixes:
+    - Fix Virginia military benefits subtraction formula.
+  date: 2024-01-03 17:35:14
+- bump: minor
+  changes:
+    added:
+    - Georgia retirement income exclusions.
+    - Georgia military retirement income exclusion.
+  date: 2024-01-03 17:40:03
+- bump: patch
+  changes:
+    fixed:
+    - Defined CalWORKS income limit as annual.
+  date: 2024-01-03 22:49:51
+- bump: patch
+  changes:
+    fixed:
+    - Rhode Island exemptions formula.
+  date: 2024-01-04 01:03:25
+- bump: patch
+  changes:
+    fixes:
+    - South Carolina taxable income calculation.
+  date: 2024-01-04 01:12:31
+- bump: minor
+  changes:
+    added:
+    - Vermont retirement income exemption.
+  date: 2024-01-04 04:49:41
+- bump: patch
+  changes:
+    fixed:
+    - Arizona deductions formula.
+  date: 2024-01-04 18:24:35
+- bump: patch
+  changes:
+    fixed:
+    - West Virginia senior citizen or disability deduction source.
+  date: 2024-01-05 14:55:37
+- bump: minor
+  changes:
+    added:
+    - Montana elderly homeowner/renter credit.
+  date: 2024-01-06 13:51:28
+- bump: minor
+  changes:
+    added:
+    - Kentucky itemized deductions.
+  date: 2024-01-06 15:19:01
+- bump: patch
+  changes:
+    fixed:
+    - Removed extraneous add/subtract pairs in income_tax calculation logic.
+  date: 2024-01-06 15:23:54
+- bump: minor
+  changes:
+    added:
+    - Louisiana exemptions.
+  date: 2024-01-06 17:47:15
+- bump: minor
+  changes:
+    added:
+    - Louisiana itemized deductions.
+  date: 2024-01-07 19:10:57
+- bump: minor
+  changes:
+    added:
+    - Idaho permanent building fund tax.
+  date: 2024-01-07 22:34:28

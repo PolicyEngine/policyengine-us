@@ -1,0 +1,107 @@
+- name: Unit test 1 for 2021 ny_supplemental_tax joint filer
+  absolute_error_margin: 0.1
+  period: 2021
+  input:
+    state_code: NY
+    filing_status: JOINT
+    ny_agi: 256_000
+    ny_taxable_income: 238_950
+    ny_main_income_tax: 14_069.755
+  output:
+    ny_supplemental_tax: 1_056 #474+582
+
+- name: Unit test 2 for 2021 ny_supplemental_tax joint filer
+  absolute_error_margin: 0.1
+  period: 2021
+  input:
+    state_code: NY
+    filing_status: JOINT
+    ny_agi: 324_030
+    ny_taxable_income: 307_980
+    ny_main_income_tax: 18_439.35
+  output:
+    ny_supplemental_tax: 1_056 #474+582
+
+- name: Unit test 3 for 2021 ny_supplemental_tax joint filer - corner case with taxable income < $43,000
+  absolute_error_margin: 0.1
+  period: 2021
+  input:
+    state_code: NY
+    filing_status: JOINT
+    ny_agi: 110_000
+    ny_taxable_income: 27_900
+    ny_main_income_tax: 1_202
+  output:
+    ny_supplemental_tax: 1609.136 # 27900*5.97%-(110000-107650)/50000*1202
+
+- name: Unit test 4 for 2021 ny_supplemental_tax joint filer - corner case with agi>$25,000,000
+  absolute_error_margin: 0.1
+  period: 2021
+  input:
+    state_code: NY
+    filing_status: JOINT
+    ny_agi: 30_000_000
+    ny_taxable_income: 26_000_000
+    ny_main_income_tax: 2_588_413.78
+  output:
+    ny_supplemental_tax: 245_586.22 #26,000,000*10.9%-2,588,413.78
+
+- name: Unit test for 2021 ny_supplemental_tax single filer
+  absolute_error_margin: 0.1
+  period: 2021
+  input:
+    state_code: NY
+    filing_status: SINGLE
+    ny_agi: 256_000
+    ny_taxable_income: 230_000
+    ny_main_income_tax: 14_109
+  output:
+    ny_supplemental_tax: 1_435.44 #526+0.812*1120
+
+- name: Unit test for 2021 ny_supplemental_tax head of household
+  absolute_error_margin: 0.1
+  period: 2021
+  input:
+    state_code: NY
+    filing_status: HEAD_OF_HOUSEHOLD
+    ny_agi: 256_000
+    ny_taxable_income: 238_950
+    ny_main_income_tax: 14_383.23
+  output:
+    ny_supplemental_tax: 742 #0+742
+
+- name: Unit test for 2022 ny_supplemental_tax joint filer
+  absolute_error_margin: 0.1
+  period: 2022
+  input:
+    state_code: NY
+    filing_status: JOINT
+    ny_agi: 120_000
+    ny_taxable_income: 40_000
+    ny_main_income_tax: 1_909.85
+  output:
+    ny_supplemental_tax: 106.21 #0+420*0.247
+
+- name: Unit test for 2022 ny_supplemental_tax head of household filers
+  absolute_error_margin: 0.1
+  period: 2022
+  input:
+    state_code: NY
+    filing_status: HEAD_OF_HOUSEHOLD 
+    ny_agi: 130_000
+    ny_taxable_income: 120_000
+    ny_main_income_tax: 6698.225
+  output:
+    ny_supplemental_tax: 336.144 #0+752*0.447
+
+- name: Unit test for 2022 ny_supplemental_tax separate filers
+  absolute_error_margin: 0.1
+  period: 2022
+  input:
+    state_code: NY
+    filing_status: SEPARATE 
+    ny_agi: 220_000
+    ny_taxable_income: 200_000
+    ny_main_income_tax: 11_963.755
+  output:
+    ny_supplemental_tax: 536 #0+536*1
