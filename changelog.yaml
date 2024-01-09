@@ -5579,3 +5579,115 @@
     fixed:
     - Add hdf5 to conda environment to avoid installation errors.
   date: 2023-12-27 01:17:17
+- bump: minor
+  changes:
+    added:
+    - Populate AMI and PHA payment standard for LA County.
+  date: 2023-12-28 00:29:20
+- bump: minor
+  changes:
+    added:
+    - Hawaii itemized deduction.
+  date: 2023-12-28 00:52:05
+- bump: minor
+  changes:
+    fixed:
+    - is_ssi_disabled always uses the microdata.
+  date: 2023-12-28 20:25:42
+- bump: patch
+  changes:
+    fixed:
+    - Bug causing cliffs to not be calculated in SNAP.
+  date: 2023-12-28 21:41:40
+- bump: minor
+  changes:
+    added:
+    - West Virginia homestead excess property tax credit.
+    - West Virginia gross household income.
+  date: 2023-12-29 01:48:49
+- bump: patch
+  changes:
+    fixed:
+    - Parameter computing Ohio partial non-refundable credits.
+  date: 2023-12-30 00:25:33
+- bump: patch
+  changes:
+    fixed:
+    - 2023 Massachusetts short term capital gains.
+  date: 2024-01-03 07:08:43
+- bump: minor
+  changes:
+    added:
+    - Hawaii alternative tax on capital gains.
+  date: 2024-01-03 15:31:42
+- bump: patch
+  changes:
+    fixes:
+    - Fix Virginia military benefits subtraction formula.
+  date: 2024-01-03 17:35:14
+- bump: minor
+  changes:
+    added:
+    - Georgia retirement income exclusions.
+    - Georgia military retirement income exclusion.
+  date: 2024-01-03 17:40:03
+- bump: patch
+  changes:
+    fixed:
+    - Defined CalWORKS income limit as annual.
+  date: 2024-01-03 22:49:51
+- bump: patch
+  changes:
+    fixed:
+    - Rhode Island exemptions formula.
+  date: 2024-01-04 01:03:25
+- bump: patch
+  changes:
+    fixes:
+    - South Carolina taxable income calculation.
+  date: 2024-01-04 01:12:31
+- bump: minor
+  changes:
+    added:
+    - Vermont retirement income exemption.
+  date: 2024-01-04 04:49:41
+- bump: patch
+  changes:
+    fixed:
+    - Arizona deductions formula.
+  date: 2024-01-04 18:24:35
+- bump: patch
+  changes:
+    fixed:
+    - West Virginia senior citizen or disability deduction source.
+  date: 2024-01-05 14:55:37
+- bump: minor
+  changes:
+    added:
+    - Montana elderly homeowner/renter credit.
+  date: 2024-01-06 13:51:28
+- bump: minor
+  changes:
+    added:
+    - Kentucky itemized deductions.
+  date: 2024-01-06 15:19:01
+- bump: patch
+  changes:
+    fixed:
+    - Removed extraneous add/subtract pairs in income_tax calculation logic.
+  date: 2024-01-06 15:23:54
+- bump: minor
+  changes:
+    added:
+    - Louisiana exemptions.
+  date: 2024-01-06 17:47:15
+- bump: minor
+  changes:
+    added:
+    - Louisiana itemized deductions.
+  date: 2024-01-07 19:10:57
+- bump: minor
+  changes:
+    added:
+    - Idaho permanent building fund tax.
+  date: 2024-01-07 22:34:28

@@ -1,0 +1,35 @@
+- name: person is disabled, so eligible for younger cap
+  period: 2023
+  input:
+    age: 50
+    ga_retirement_exclusion_eligible_person: true
+    ga_retirement_income_exclusion_retirement_income: 69_000
+  output:
+    ga_retirement_exclusion_person: 35_000
+
+- name: person is not eligible
+  period: 2023
+  input:
+    age: 50
+    ga_retirement_exclusion_eligible_person: false
+    ga_retirement_income_exclusion_retirement_income: 69_000
+  output:
+    ga_retirement_exclusion_person: 0
+
+- name: person is eligible for older cap
+  period: 2023
+  input:
+    age: 65
+    ga_retirement_exclusion_eligible_person: true
+    ga_retirement_income_exclusion_retirement_income: 60_000
+  output:
+    ga_retirement_exclusion_person: 60_000
+
+- name: person is eligible for younger cap
+  period: 2023
+  input:
+    age: 63
+    ga_retirement_exclusion_eligible_person: true
+    ga_retirement_income_exclusion_retirement_income: 37_700
+  output:
+    ga_retirement_exclusion_person: 35_000
