@@ -17,7 +17,7 @@ class or_wfhdc_eligible(Variable):
         # Get the parameter tree for the Oregon WFHDC.
         p = parameters(period).gov.states["or"].tax.income.credits.wfhdc
 
-        # Check that the household size is large enough.
+        # Over two individuals have to be present in the tax unit.
         household_size_eligible = (
             tax_unit("tax_unit_size", period) >= p.min_tax_unit_size
         )

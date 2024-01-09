@@ -6,7 +6,7 @@
     or_wfhdc_eligibility_category: age_under_3
     cdcc_relevant_expenses: 100
   output:
-    or_wfhdc: 10
+    or_working_family_household_and_dependent_care_credit: 10
 
 - name: Not category eligible
   period: 2022
@@ -16,7 +16,7 @@
     or_wfhdc_eligibility_category: NONE
     cdcc_relevant_expenses: 100
   output:
-    or_wfhdc: 0
+    or_working_family_household_and_dependent_care_credit: 0
 
 - name: Not category eligible
   period: 2022
@@ -26,7 +26,7 @@
     or_wfhdc_eligibility_category: NONE
     cdcc_relevant_expenses: 100
   output:
-    or_wfhdc: 0
+    or_working_family_household_and_dependent_care_credit: 0
 
 - name: 230 - 240% of fpg and disabled child 13 to 18
   period: 2022
@@ -36,4 +36,4 @@
     or_wfhdc_eligibility_category: disabled_13_to_18
     cdcc_relevant_expenses: 100
   output:
-    or_wfhdc: 25
+    or_working_family_household_and_dependent_care_credit: 25

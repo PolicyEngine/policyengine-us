@@ -7,7 +7,7 @@ class OregonWFHDCEligibilityCategory(Enum):
     age_6_to_13 = "age_6_to_13"
     disabled_13_to_18 = "disabled_13_to_18"
     disabled_18_and_over = "disabled_18_and_over"
-    NONE = "Empty String"
+    NONE = "None"
 
 
 class or_wfhdc_eligibility_category(Variable):
@@ -15,7 +15,6 @@ class or_wfhdc_eligibility_category(Variable):
     possible_values = OregonWFHDCEligibilityCategory
     entity = TaxUnit
     label = "Oregon working family household and dependent care credit percentage table column"
-    unit = USD
     definition_period = YEAR
     defined_for = "or_wfhdc_eligible"
     reference = "https://www.oregon.gov/dor/forms/FormsPubs/publication-or-wfhdc-tb_101-458_2021.pdf#page=1"
@@ -24,7 +23,6 @@ class or_wfhdc_eligibility_category(Variable):
     def formula(tax_unit, period, parameters):
         # Column determined by age of youngest child and whether they have a disability.
 
-        # Get parameters
         p = (
             parameters(period)
             .gov.states["or"]

@@ -49,7 +49,6 @@
 
 - name: Youngest child is above 18 and disabled.
   period: 2022
-  absolute_error_margin: 0
   input:
     people:
       person1:
@@ -67,3 +66,20 @@
         state_code: OR
   output:
     or_wfhdc_eligibility_category: ["disabled_18_and_over"]
+
+- name: None output
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 40
+        is_disabled: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: OR
+  output:
+    or_wfhdc_eligibility_category: ["NONE"]
