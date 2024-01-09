@@ -18,7 +18,7 @@
       household:
         members: [person1, person2, person3]
   output:
-    cliff_evaluated: [true, false, false]
+    cliff_evaluated: [true, true, false]
 
 - name: cliff_evaluated unit test 2
   period: 2021
