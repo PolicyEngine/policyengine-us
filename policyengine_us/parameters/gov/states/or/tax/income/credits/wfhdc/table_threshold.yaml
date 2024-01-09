@@ -3,7 +3,7 @@ metadata:
   unit: /1
   period: year
   breakdown: 
-  - list(range(0,24))
+  - list(range(0,30))
   - or_wfhdc_eligibility_category
   label: Oregon working family household and dependent care credit credit rate 
   reference:
@@ -16,7 +16,7 @@ metadata:
     - title: OR Rev Stat § 315.264 (2)
       href: https://law.justia.com/codes/oregon/2021/volume-08/chapter-315/section-315-264/
 
-1:
+1: # 0 - 10% of fpg
   age_under_3:    
     2021-01-01: 0.10
   age_3_to_6:
@@ -30,7 +30,7 @@ metadata:
   NONE:
     2021-01-01: 0
 
-2:
+2: # 10% - 20% of fpg
   age_under_3:
     2021-01-01: 0.20
   age_3_to_6:
@@ -44,7 +44,7 @@ metadata:
   NONE:
     2021-01-01: 0
   
-3:
+3: # 20% - 30% of fpg
   age_under_3:
     2021-01-01: 0.30
   age_3_to_6:
@@ -58,7 +58,7 @@ metadata:
   NONE:
     2021-01-01: 0
 
-4:
+4: # 30% - 40% of fpg
   age_under_3:
     2021-01-01: 0.40
   age_3_to_6:
@@ -72,7 +72,7 @@ metadata:
   NONE:
     2021-01-01: 0
 
-5:
+5: # 40% - 50% of fpg
   age_under_3:
     2021-01-01: 0.50
   age_3_to_6:
@@ -86,7 +86,7 @@ metadata:
   NONE:
     2021-01-01: 0
 
-6:
+6: # 50% - 60% of fpg
   age_under_3:
     2021-01-01: 0.55
   age_3_to_6:
@@ -100,7 +100,7 @@ metadata:
   NONE:
     2021-01-01: 0
 
-7:
+7: # 60% - 70% of fpg
   age_under_3:
     2021-01-01: 0.60
   age_3_to_6:
@@ -114,7 +114,7 @@ metadata:
   NONE:
     2021-01-01: 0
 
-8:
+8: # 70% - 80% of fpg
   age_under_3:
     2021-01-01: 0.65
   age_3_to_6:
@@ -128,7 +128,7 @@ metadata:
   NONE:
     2021-01-01: 0
 
-9:
+9: # 80% - 90% of fpg
   age_under_3:
     2021-01-01: 0.70
   age_3_to_6:
@@ -142,7 +142,7 @@ metadata:
   NONE:
     2021-01-01: 0
 
-10:
+10: # 90% - 100% of fpg
   age_under_3:
     2021-01-01: 0.75
   age_3_to_6:
@@ -156,7 +156,21 @@ metadata:
   NONE:
     2021-01-01: 0
 
-11:
+11: # 100% - 110% of fpg
+  age_under_3:
+    2021-01-01: 0.75
+  age_3_to_6:
+    2021-01-01: 0.73
+  age_6_to_13:
+    2021-01-01: 0.70
+  disabled_13_to_18:
+    2021-01-01: 0.70
+  disabled_18_and_over:
+    2021-01-01: 0.55
+  NONE:
+    2021-01-01: 0
+
+12: # 110% - 120% of fpg
   age_under_3:
     2021-01-01: 0.71
   age_3_to_6:
@@ -170,7 +184,7 @@ metadata:
   NONE:
     2021-01-01: 0
 
-12:
+13: # 120% - 130% of fpg
   age_under_3:
     2021-01-01: 0.66
   age_3_to_6:
@@ -184,7 +198,7 @@ metadata:
   NONE:
     2021-01-01: 0
 
-13:
+14: # 130% - 140% of fpg
   age_under_3:
     2021-01-01: 0.61
   age_3_to_6:
@@ -198,7 +212,7 @@ metadata:
   NONE:
     2021-01-01: 0
 
-14:
+15: # 140% - 150% of fpg
   age_under_3:
     2021-01-01: 0.55
   age_3_to_6:
@@ -212,7 +226,7 @@ metadata:
   NONE:
     2021-01-01: 0
 
-15:
+16: # 150% - 160% of fpg
   age_under_3:
     2021-01-01: 0.50
   age_3_to_6:
@@ -226,7 +240,7 @@ metadata:
   NONE:
     2021-01-01: 0
 
-16:
+17: # 160% - 170% of fpg
   age_under_3:
     2021-01-01: 0.47
   age_3_to_6:
@@ -240,7 +254,49 @@ metadata:
   NONE:
     2021-01-01: 0
     
-17:
+18: # 170% - 180% of fpg
+  age_under_3:
+    2021-01-01: 0.47
+  age_3_to_6:
+    2021-01-01: 0.45
+  age_6_to_13:
+    2021-01-01: 0.42
+  disabled_13_to_18:
+    2021-01-01: 0.42
+  disabled_18_and_over:
+    2021-01-01: 0.25
+  NONE:
+    2021-01-01: 0
+
+19: # 180% - 190% of fpg
+  age_under_3:
+    2021-01-01: 0.47
+  age_3_to_6:
+    2021-01-01: 0.45
+  age_6_to_13:
+    2021-01-01: 0.42
+  disabled_13_to_18:
+    2021-01-01: 0.42
+  disabled_18_and_over:
+    2021-01-01: 0.25
+  NONE:
+    2021-01-01: 0
+
+20: # 190% - 200% of fpg
+  age_under_3:
+    2021-01-01: 0.47
+  age_3_to_6:
+    2021-01-01: 0.45
+  age_6_to_13:
+    2021-01-01: 0.42
+  disabled_13_to_18:
+    2021-01-01: 0.42
+  disabled_18_and_over:
+    2021-01-01: 0.25
+  NONE:
+    2021-01-01: 0
+
+21: # 200% - 210% of fpg
   age_under_3:
     2021-01-01: 0.45
   age_3_to_6:
@@ -254,7 +310,7 @@ metadata:
   NONE:
     2021-01-01: 0
 
-18:
+22: # 210% - 220% of fpg
   age_under_3:
     2021-01-01: 0.30
   age_3_to_6:
@@ -268,7 +324,7 @@ metadata:
   NONE:
     2021-01-01: 0
 
-19:
+23: # 220% - 230% of fpg
   age_under_3:
     2021-01-01: 0.35
   age_3_to_6:
@@ -282,7 +338,7 @@ metadata:
   NONE:
     2021-01-01: 0
 
-20:
+24: # 230% - 240% of fpg
   age_under_3:
     2021-01-01: 0.30
   age_3_to_6:
@@ -296,7 +352,7 @@ metadata:
   NONE:
     2021-01-01: 0
 
-21:
+25: # 240% - 250% of fpg
   age_under_3:
     2021-01-01: 0.20
   age_3_to_6:
@@ -310,7 +366,7 @@ metadata:
   NONE:
     2021-01-01: 0
 
-22:
+26: # 250% - 260% of fpg
   age_under_3:
     2021-01-01: 0.10
   age_3_to_6:
@@ -324,7 +380,7 @@ metadata:
   NONE:
     2021-01-01: 0
 
-23:
+27: # 260% - 270% of fpg
   age_under_3:
     2021-01-01: 0.06
   age_3_to_6:
@@ -338,7 +394,21 @@ metadata:
   NONE:
     2021-01-01: 0
 
-24:
+28: # 270% - 280% of fpg
+  age_under_3:
+    2021-01-01: 0.06
+  age_3_to_6:
+    2021-01-01: 0.06
+  age_6_to_13:
+    2021-01-01: 0.04
+  disabled_13_to_18:
+    2021-01-01: 0.04
+  disabled_18_and_over:
+    2021-01-01: 0.04
+  NONE:
+    2021-01-01: 0
+
+29: # 280% - 290% of fpg
   age_under_3:
     2021-01-01: 0.04
   age_3_to_6:
@@ -352,16 +422,16 @@ metadata:
   NONE:
     2021-01-01: 0
 
-25:
+30: # 290% - 300% of fpg
   age_under_3:
-    2021-01-01: 0
+    2021-01-01: 0.04
   age_3_to_6:
-    2021-01-01: 0
+    2021-01-01: 0.04
   age_6_to_13:
-    2021-01-01: 0
+    2021-01-01: 0.04
   disabled_13_to_18:
-    2021-01-01: 0
+    2021-01-01: 0.04
   disabled_18_and_over:
-    2021-01-01: 0
+    2021-01-01: 0.04
   NONE:
     2021-01-01: 0
