@@ -15,8 +15,11 @@ class sc_net_capital_gain_deduction(Variable):
     )
 
     def formula(tax_unit, period, parameters):
+        ltcg = add(tax_unit, period, ["long_term_capital_gains"])
+        stcg = add(tax_unit, period, ["short_term_capital_gains"])
+        capped_stcg = min_(0, stcg)
+        base = max_(0, ltcg + capped_stcg)
         p = parameters(
             period
         ).gov.states.sc.tax.income.deductions.net_capital_gain
-        capital_gains = tax_unit("net_capital_gain", period)
-        return capital_gains * p.rate
+        return base * p.rate
