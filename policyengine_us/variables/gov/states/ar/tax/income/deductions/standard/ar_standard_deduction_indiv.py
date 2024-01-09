@@ -11,25 +11,7 @@ class ar_standard_deduction_indiv(Variable):
     defined_for = StateCode.AR
 
     def formula(person, period, parameters):
-        us_filing_status = person.tax_unit("filing_status", period)
-        fsvals = us_filing_status.possible_values
-        filing_status = select(
-            [
-                us_filing_status == fsvals.JOINT,
-                us_filing_status == fsvals.SINGLE,
-                us_filing_status == fsvals.SEPARATE,
-                us_filing_status == fsvals.HEAD_OF_HOUSEHOLD,
-                us_filing_status == fsvals.WIDOW,
-            ],
-            [
-                fsvals.SEPARATE,  # couples are filing separately on Arkansas form
-                fsvals.SINGLE,
-                fsvals.SEPARATE,
-                fsvals.HEAD_OF_HOUSEHOLD,
-                fsvals.WIDOW,
-            ],
-        )
-        is_head = person("is_tax_unit_head", period)
-        is_spouse = person("is_tax_unit_spouse", period)
+        filing_status = person.tax_unit("state_filing_status_if_married_filing_separately_on_same_return", period)
+        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         p = parameters(period).gov.states.ar.tax.income.deductions
-        return (is_head | is_spouse) * p.standard[filing_status]
+        return head_or_spouse * p.standard[filing_status]

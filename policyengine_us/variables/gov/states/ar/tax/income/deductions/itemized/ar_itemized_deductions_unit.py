@@ -10,4 +10,5 @@ class ar_itemized_deductions_unit(Variable):
     reference = "https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2022_AR1000F_and_AR1000NR_Instructions.pdf#page=21"
     defined_for = StateCode.AR
 
-    adds = ["ar_itemized_deductions_sources"]
+    # Arkansas does not tie itemization choice to federal choice.
+    adds = "gov.states.ar.tax.income.deductions.itemized.sources"
