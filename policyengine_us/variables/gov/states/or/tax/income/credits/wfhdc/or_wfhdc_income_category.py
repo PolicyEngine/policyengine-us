@@ -11,7 +11,6 @@ class or_wfhdc_income_category(Variable):
     reference = "https://www.oregon.gov/dor/forms/FormsPubs/publication-or-wfhdc-tb_101-458_2021.pdf#page=1"
 
     def formula(tax_unit, period, parameters):
-
         # Get the household income, considered the larger of federal and Oregon AGI.
         federal_agi = tax_unit("adjusted_gross_income", period)
         or_income_after_subtractions = tax_unit(
