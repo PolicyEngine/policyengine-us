@@ -7,8 +7,8 @@
   output:
     mi_property_tax_and_rent: 0
     mi_homestead_property_tax_credit_non_refundable: 0
-    mi_homestead_eligible: false
-    mi_homestead_allowable: 0
+    mi_homestead_property_tax_credit_eligible: false
+    mi_allowable_homestead_property_tax_credit: 0
     mi_homestead_property_tax_credit: 0
 
 - name: taxable value greater than $143,000
@@ -20,8 +20,8 @@
   output:
     mi_property_tax_and_rent: 143_001
     mi_homestead_property_tax_credit_non_refundable: 143_001
-    mi_homestead_eligible: false
-    mi_homestead_allowable: 0
+    mi_homestead_property_tax_credit_eligible: false
+    mi_allowable_homestead_property_tax_credit: 0
     mi_homestead_property_tax_credit: 0
 
 - name: not senior, negative property difference
@@ -33,8 +33,8 @@
   output: # 1000 < 31_251 * 0.032
     mi_property_tax_and_rent: 1_000
     mi_homestead_property_tax_credit_non_refundable: 0
-    mi_homestead_eligible: false
-    mi_homestead_allowable: 0
+    mi_homestead_property_tax_credit_eligible: false
+    mi_allowable_homestead_property_tax_credit: 0
     mi_homestead_property_tax_credit: 0
 
 - name: not senior, 0% credit
@@ -46,8 +46,8 @@
   output:
     mi_property_tax_and_rent: 2_100
     mi_homestead_property_tax_credit_non_refundable: 80.8
-    mi_homestead_eligible: true
-    mi_homestead_allowable: 48.48
+    mi_homestead_property_tax_credit_eligible: true
+    mi_allowable_homestead_property_tax_credit: 48.48
     mi_homestead_property_tax_credit: 0
 
 - name: not senior, 70% credit
@@ -60,8 +60,8 @@
   output: # (1809 - 56500 * 0.032) * 0.6 * 0.7
     mi_property_tax_and_rent: 1_809
     mi_homestead_property_tax_credit_non_refundable: 1
-    mi_homestead_eligible: true
-    mi_homestead_allowable: 0.6
+    mi_homestead_property_tax_credit_eligible: true
+    mi_allowable_homestead_property_tax_credit: 0.6
     mi_homestead_property_tax_credit: 0.42
 
 - name: not senior, 100% credit
@@ -74,8 +74,8 @@
   output: # (3329 - 54000 * 0.032) * 0.6
     mi_property_tax_and_rent: 3_329
     mi_homestead_property_tax_credit_non_refundable: 1_601
-    mi_homestead_eligible: true
-    mi_homestead_allowable: 960.6
+    mi_homestead_property_tax_credit_eligible: true
+    mi_allowable_homestead_property_tax_credit: 960.6
     mi_homestead_property_tax_credit: 960.6
 
 - name: not senior, 20% credit
@@ -87,8 +87,8 @@
   output: # (5000 - 58900 * 0.032) * 0.6 > 1500
     mi_property_tax_and_rent: 5_000
     mi_homestead_property_tax_credit_non_refundable: 3_115.2
-    mi_homestead_eligible: true
-    mi_homestead_allowable: 1_500
+    mi_homestead_property_tax_credit_eligible: true
+    mi_allowable_homestead_property_tax_credit: 1_500
     mi_homestead_property_tax_credit: 300
 
 - name: not senior, 10% credit
@@ -101,8 +101,8 @@
   output: # (3200 - 62001 * 0.032) * 0.6 * 0.1
     mi_property_tax_and_rent: 3_200
     mi_homestead_property_tax_credit_non_refundable: 1_215.968
-    mi_homestead_eligible: true
-    mi_homestead_allowable: 729.5808
+    mi_homestead_property_tax_credit_eligible: true
+    mi_allowable_homestead_property_tax_credit: 729.5808
     mi_homestead_property_tax_credit: 72.95808
 
 - name: not senior, negative rent difference
@@ -114,8 +114,8 @@
   output: # 4347 * 0.23 < 31_251 * 0.032
     mi_property_tax_and_rent: 999.81
     mi_homestead_property_tax_credit_non_refundable: 0
-    mi_homestead_eligible: false
-    mi_homestead_allowable: 0
+    mi_homestead_property_tax_credit_eligible: false
+    mi_allowable_homestead_property_tax_credit: 0
     mi_homestead_property_tax_credit: 0
 
 - name: not senior, rent, 50% credit
@@ -128,8 +128,8 @@
   output: # (8695 * 0.23 - 58001 * 0.032) * 0.6 * 0.5
     mi_property_tax_and_rent: 1_999.85
     mi_homestead_property_tax_credit_non_refundable: 143.818
-    mi_homestead_eligible: true
-    mi_homestead_allowable: 86.2908
+    mi_homestead_property_tax_credit_eligible: true
+    mi_allowable_homestead_property_tax_credit: 86.2908
     mi_homestead_property_tax_credit: 43.1454
 
 - name: senior, negative property difference
@@ -142,8 +142,8 @@
   output: # 1000 < 31_251 * 0.032
     mi_property_tax_and_rent: 1_000
     mi_homestead_property_tax_credit_non_refundable: 0
-    mi_homestead_eligible: false
-    mi_homestead_allowable: 0
+    mi_homestead_property_tax_credit_eligible: false
+    mi_allowable_homestead_property_tax_credit: 0
     mi_homestead_property_tax_credit: 0
 
 - name: senior, 100% credit
@@ -156,8 +156,8 @@
   output: # 1500 - 20000 * 0.032
     mi_property_tax_and_rent: 1_500
     mi_homestead_property_tax_credit_non_refundable: 860
-    mi_homestead_eligible: true
-    mi_homestead_allowable: 860
+    mi_homestead_property_tax_credit_eligible: true
+    mi_allowable_homestead_property_tax_credit: 860
     mi_homestead_property_tax_credit: 860
   
 - name: senior, 84% credit and 100% credit
@@ -170,8 +170,8 @@
   output: # (2100 - 25000 * 0.032) * 0.84 * 1
     mi_property_tax_and_rent: 2_100
     mi_homestead_property_tax_credit_non_refundable: 1_300
-    mi_homestead_eligible: true
-    mi_homestead_allowable: 1_092
+    mi_homestead_property_tax_credit_eligible: true
+    mi_allowable_homestead_property_tax_credit: 1_092
     mi_homestead_property_tax_credit: 1_092
 
 - name: senior, 60% credit and 50% credit
@@ -184,8 +184,8 @@
   output: # (2500 - 56000 * 0.032) * 0.6 * 0.5
     mi_property_tax_and_rent: 2_500
     mi_homestead_property_tax_credit_non_refundable: 708
-    mi_homestead_eligible: true
-    mi_homestead_allowable: 424.8
+    mi_homestead_property_tax_credit_eligible: true
+    mi_allowable_homestead_property_tax_credit: 424.8
     mi_homestead_property_tax_credit: 212.4
 
 - name: senior, negative rent difference
@@ -198,8 +198,8 @@
   output: # 4347 * 0.23 < 31_251 * 0.032
     mi_property_tax_and_rent: 999.81
     mi_homestead_property_tax_credit_non_refundable: 0
-    mi_homestead_eligible: false
-    mi_homestead_allowable: 0
+    mi_homestead_property_tax_credit_eligible: false
+    mi_allowable_homestead_property_tax_credit: 0
     mi_homestead_property_tax_credit: 0
 
 - name: senior, rent, 60% credit and 100% credit
@@ -212,8 +212,8 @@
   output: # (7200 * 0.23 - 35000 * 0.032) * 0.6 * 1
     mi_property_tax_and_rent: 1_656
     mi_homestead_property_tax_credit_non_refundable: 536
-    mi_homestead_eligible: true
-    mi_homestead_allowable: 321.6
+    mi_homestead_property_tax_credit_eligible: true
+    mi_allowable_homestead_property_tax_credit: 321.6
     mi_homestead_property_tax_credit: 321.6
 
 - name: senior, 1% not refundable percent, rent, 100% credit
@@ -226,8 +226,8 @@
   output: # 7200 * 0.23 - 4000 * 0.01 > 1600
     mi_property_tax_and_rent: 1_656
     mi_homestead_property_tax_credit_non_refundable: 1_616
-    mi_homestead_eligible: true
-    mi_homestead_allowable: 1_600
+    mi_homestead_property_tax_credit_eligible: true
+    mi_allowable_homestead_property_tax_credit: 1_600
     mi_homestead_property_tax_credit: 1_600
   
 - name: not senior, disabled, 2% not refundable percent, 100% credit
@@ -248,8 +248,8 @@
   output: # 2000 - 5000 * 0.02 > 1600
     mi_property_tax_and_rent: 2_000
     mi_homestead_property_tax_credit_non_refundable: 1_900
-    mi_homestead_eligible: true
-    mi_homestead_allowable: 1_600
+    mi_homestead_property_tax_credit_eligible: true
+    mi_allowable_homestead_property_tax_credit: 1_600
     mi_homestead_property_tax_credit: 1_600
 
 - name: senior, disabled, 2% not refundable percent, 100% credit
@@ -271,6 +271,6 @@
   output: # 1300 - 5000 * 0.02
     mi_property_tax_and_rent: 1_300
     mi_homestead_property_tax_credit_non_refundable: 1_200
-    mi_homestead_eligible: true
-    mi_homestead_allowable: 1_200
+    mi_homestead_property_tax_credit_eligible: true
+    mi_allowable_homestead_property_tax_credit: 1_200
     mi_homestead_property_tax_credit: 1_200

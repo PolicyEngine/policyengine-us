@@ -11,7 +11,7 @@ class mi_homestead_property_tax_credit(Variable):
         "http://legislature.mi.gov/doc.aspx?mcl-206-508",
         "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2022/2022-IIT-Forms/MI-1040CR.pdf#page=2",
     )
-    defined_for = "mi_homestead_eligible"
+    defined_for = "mi_homestead_property_tax_credit_eligible"
 
     def formula(tax_unit, period, parameters):
         p = parameters(
@@ -20,7 +20,7 @@ class mi_homestead_property_tax_credit(Variable):
 
         total_household_resources = tax_unit("mi_household_resources", period)
         homestead_allowable = tax_unit(
-            "mi_homestead_allowable", period
+            "mi_allowable_homestead_property_tax_credit", period
         )  # Line 42
 
         phase_out_rate = p.rate.phase_out.calc(

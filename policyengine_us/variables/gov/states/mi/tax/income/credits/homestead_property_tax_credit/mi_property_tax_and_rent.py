@@ -19,6 +19,6 @@ class mi_property_tax_and_rent(Variable):
         ).gov.states.mi.tax.income.credits.homestead_property_tax_credit.rate
 
         property_value = add(tax_unit, period, ["assessed_property_value"])
-        rents = add(tax_unit, period, ["rent"])
+        rent_amount = add(tax_unit, period, ["rent"])
 
-        return property_value + rents * p.rent  # Line 13
+        return property_value + rent_amount * p.rent  # Line 13

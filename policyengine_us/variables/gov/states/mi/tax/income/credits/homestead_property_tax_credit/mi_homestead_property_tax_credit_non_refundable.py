@@ -36,7 +36,7 @@ class mi_homestead_property_tax_credit_non_refundable(Variable):
         senior_eligible = age_older >= p.senior.min_age
 
         non_refundable_rate = where(
-            disabled_eligible or senior_eligible,
+            disabled_eligible | senior_eligible,
             p.disabled_or_senior.not_refundable_rate.calc(
                 total_household_resources
             ),

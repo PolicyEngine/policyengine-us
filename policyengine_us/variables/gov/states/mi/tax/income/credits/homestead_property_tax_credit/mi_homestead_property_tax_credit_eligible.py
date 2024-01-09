@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class mi_homestead_eligible(Variable):
+class mi_homestead_property_tax_credit_eligible(Variable):
     value_type = bool
     entity = TaxUnit
     label = "Eligible for the Michigan homestead property tax credit"
