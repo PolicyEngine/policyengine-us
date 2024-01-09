@@ -14,9 +14,7 @@ class ca_fytc(Variable):
 
         eligible_people = add(tax_unit, period ["ca_eitc_eligible"])
 
-        head_earned_income = tax_unit("head_earned", period)
-
-        spouse_earned_income = tax_unit("spouse_earned", period)
+        earned_income = add(tax_unit, period, ["earned_income"])
         
         head_and_spouse_earned = head_earned_income + spouse_earned_income
 
