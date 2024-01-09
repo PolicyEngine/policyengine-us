@@ -9,7 +9,6 @@
 
 - name: Youngest child is 5 and not disabled.
   period: 2022
-  absolute_error_margin: 0
   input:
     people:
       person1:
@@ -30,7 +29,6 @@
 
 - name: Youngest child is under 18 and disabled.
   period: 2022
-  absolute_error_margin: 0
   input:
     people:
       person1:
