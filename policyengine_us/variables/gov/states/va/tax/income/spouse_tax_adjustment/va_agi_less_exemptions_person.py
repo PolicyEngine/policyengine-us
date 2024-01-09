@@ -10,8 +10,15 @@ class va_agi_less_exemptions_person(Variable):
     definition_period = YEAR
     reference = "https://www.tax.virginia.gov/sites/default/files/vatax-pdf/2022-760-instructions.pdf#page=19"
 
-    adds = ["va_agi_person"]
-    subtracts = [
-        "va_aged_blind_exemption_person",
-        "va_personal_exemption_person",
-    ]
+    def formula(person, period, parameters):
+        # Get the individual's VAGI.
+        vagi = person("va_agi_person", period)
+
+        # Get the individual's personal exemption amount.
+        personal_exemption = person("va_personal_exemption_person", period)
+
+        # Get the individual's aged/blind exemption amount.
+        aged_blind_exemption = person("va_aged_blind_exemption_person", period)
+
+        # Subtract the exemptions from the VAGI.
+        return max_(vagi - personal_exemption - aged_blind_exemption, 0)
