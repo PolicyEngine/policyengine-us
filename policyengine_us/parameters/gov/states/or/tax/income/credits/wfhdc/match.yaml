@@ -16,6 +16,20 @@ metadata:
     - title: OR Rev Stat § 315.264 (2) 
       href: https://law.justia.com/codes/oregon/2021/volume-08/chapter-315/section-315-264/
 
+0: # No income
+  age_under_3:    
+    2021-01-01: 0.10
+  age_3_to_6:
+    2021-01-01: 0.08
+  age_6_to_13:
+    2021-01-01: 0.05
+  disabled_13_to_18:
+    2021-01-01: 0.05
+  disabled_18_and_over:
+    2021-01-01: 0.05
+  NONE:
+    2021-01-01: 0
+
 1: # 0 - 10% of fpg
   age_under_3:    
     2021-01-01: 0.10
