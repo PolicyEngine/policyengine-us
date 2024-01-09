@@ -12,7 +12,7 @@ class ca_fytc(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.ca.tax.income.credits.foster_youth
 
-        eligible_people = tax_unit("ca_fytc_eligible_people", period)
+        eligible_people = add(tax_unit, period ["ca_eitc_eligible"])
 
         head_earned_income = tax_unit("head_earned", period)
 
