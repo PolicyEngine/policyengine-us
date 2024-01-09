@@ -23,10 +23,10 @@ class or_wfhdc(Variable):
         )
 
         # Get the OR WFHDC percentage based on the table letter and column.
-        percentage = p.table_threshold[income_category][eligibility_category]
+        match_percentage = p.match[income_category][eligibility_category]
 
         # Get the relevant expenses.
         expenses = tax_unit("cdcc_relevant_expenses", period)
 
         # Return the share of federal CDCC matched by Oregon.
-        return expenses * percentage
+        return expenses * match_percentage
