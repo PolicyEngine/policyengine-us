@@ -24,5 +24,5 @@ class ca_calworks_child_care_child_age_eligible(Variable):
         citizen = immigration_status == status.CITIZEN
         resident = immigration_status == status.RESIDENT
         eligible_status = citizen | resident
-        age_eligible = age <= age_limit 
+        age_eligible = age <= age_limit
         return age_eligible & eligible_status
