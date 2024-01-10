@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.610.1] - 2024-01-10 11:27:40
+
+## [0.610.0] - 2024-01-10 01:10:28
+
+### Added
+
+- Michigan home heating credit.
+
+## [0.609.1] - 2024-01-09 23:52:23
+
+### Fixed
+
+- Massachusetts 2023 rent deduction cap increase.
+
 ## [0.609.0] - 2024-01-07 22:34:28
 
 ### Added
@@ -6714,6 +6728,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.610.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.610.0...0.610.1
+[0.610.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.609.1...0.610.0
+[0.609.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.609.0...0.609.1
 [0.609.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.608.0...0.609.0
 [0.608.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.607.0...0.608.0
 [0.607.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.606.1...0.607.0
