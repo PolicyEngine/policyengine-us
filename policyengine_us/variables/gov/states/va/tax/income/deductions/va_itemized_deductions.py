@@ -11,13 +11,13 @@ class va_itemized_deductions(Variable):
     defined_for = StateCode.VA
 
     def formula(tax_unit, period, parameters):
+        # The federal limitation on itemized deductions does not apply during the TCJA period
+        # Virginia still applies the limitation
         year = period.start.year
-        # Viginia applies the federal itemized deduction rate which was established before 2018
         if year >= 2018 and year <= 2026:
             instant_str = f"2017-01-01"
-
         irs = parameters(instant_str).gov.irs.deductions.itemized.limitation
-        p = parameters(period).gov.irs.deductions.itemized.limitation
+        va = parameters(period).gov.states.va.tax.income.deductions.itemized
         # va itemized deductions
         itm_deds_less_salt = tax_unit("itemized_deductions_less_salt", period)
         uncapped_property_taxes = add(tax_unit, period, ["real_estate_taxes"])
@@ -27,7 +27,11 @@ class va_itemized_deductions(Variable):
         # limitations to the itemized deduction are applied
         federal_agi = tax_unit("adjusted_gross_income", period)
         filing_status = tax_unit("filing_status", period)
-        applicable_amount = p.applicable_amount[filing_status]
+        applicable_amount = where(
+            year >= 2018 & year <= 2026,
+            va.applicable_amount[filing_status],
+            irs.applicable_amount[filing_status],
+        )
         agi_adjustment = irs.agi_rate * max_(
             federal_agi - applicable_amount, 0
         )
