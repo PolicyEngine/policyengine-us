@@ -11,29 +11,38 @@ class va_itemized_deductions(Variable):
     defined_for = StateCode.VA
 
     def formula(tax_unit, period, parameters):
+        year = period.start.year
+        # Viginia applies the federal itemized deduction rate which was established before 2018
+        if year >= 2018 and year <= 2026:
+            instant_str = f"2017-01-01"
+
+        irs = parameters(instant_str).gov.irs.deductions.itemized.limitation
         p = parameters(period).gov.irs.deductions.itemized.limitation
         # va itemized deductions
         itm_deds_less_salt = tax_unit("itemized_deductions_less_salt", period)
         uncapped_property_taxes = add(tax_unit, period, ["real_estate_taxes"])
         va_itm_deds = itm_deds_less_salt + uncapped_property_taxes
 
-        # Itemized Deduction Limitation
-        # Part A: if agi from federal return is over certain amount, then limited itemized deduction applied
+        # Part A: If AGI from federal return is over a certain amount, then
+        # limitations to the itemized deduction are applied
         federal_agi = tax_unit("adjusted_gross_income", period)
         filing_status = tax_unit("filing_status", period)
         applicable_amount = p.applicable_amount[filing_status]
-        agi_adjustment = p.agi_rate * max_(federal_agi - applicable_amount, 0)
-        itm_deds_adjustment = p.itemized_deduction_rate * va_itm_deds
+        agi_adjustment = irs.agi_rate * max_(
+            federal_agi - applicable_amount, 0
+        )
+        itm_deds_adjustment = irs.itemized_deduction_rate * va_itm_deds
         va_itm_deds_adjustment = min_(agi_adjustment, itm_deds_adjustment)
 
         # Part B: state and local income tax modification
-        # the foreign income tax is considered but not modelled here
+        # the foreign income tax is considered but not modeled here
         adjustment_fraction = np.zeros_like(va_itm_deds)
         mask = va_itm_deds != 0
         adjustment_fraction[mask] = (
             va_itm_deds_adjustment[mask] / va_itm_deds[mask]
         )
 
+        # Virginia Schedule A fails to mention if state and local income taxes cannot be negative
         salt = tax_unit("state_and_local_sales_or_income_tax", period)
         state_and_local_income_tax_adjustment = (
             salt - salt * adjustment_fraction
