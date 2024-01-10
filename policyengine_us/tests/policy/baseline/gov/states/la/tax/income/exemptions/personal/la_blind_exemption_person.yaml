@@ -1,0 +1,105 @@
+- name: Blind head and not blind spouse
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        is_blind: true
+        la_receives_blind_exemption: true
+      person2:
+        is_tax_unit_head_or_spouse: true
+        is_blind: false
+        la_receives_blind_exemption: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    la_blind_exemption_person: [1_000, 0]
+
+- name: Both blind
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        is_blind: true
+        la_receives_blind_exemption: true
+      person2:
+        is_tax_unit_head_or_spouse: true
+        is_blind: true
+        la_receives_blind_exemption: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    la_blind_exemption_person: [1_000, 1_000]
+
+- name: No blind people
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        is_blind: false
+      person2:
+        is_tax_unit_spouse: true
+        is_blind: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    la_blind_exemption_person: [0, 0]
+
+- name: Blind non head or spouse
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        is_blind: true
+      person2:
+        is_tax_unit_head_or_spouse: false
+        is_blind: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    la_blind_exemption_person: [1_000, 0]
+
+- name: Does not receive blind exemption
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        is_blind: true
+        la_receives_blind_exemption: false
+      person2:
+        is_tax_unit_head_or_spouse: false
+        is_blind: true
+        la_receives_blind_exemption: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    la_blind_exemption_person: [0, 0]

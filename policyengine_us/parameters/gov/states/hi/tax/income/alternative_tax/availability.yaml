@@ -1,0 +1,15 @@
+description: Hawaii allows for an alternative tax on capital gains calculation if this is true.
+values:
+  2021-01-01: true  
+  2023-01-01: false
+metadata:
+  unit: bool
+  period: year
+  label: Hawaii alternative tax on capital gain availability
+  reference:
+    - title: House of Representatives Thirty-Second Legislature, 2023. State of Hawaii, A Bill For An Act
+      href: https://www.capitol.hawaii.gov/sessions/session2023/bills/HB232_.htm
+    - title: 2022 N-15 Hawaii Nonresident and Part-Year Resident Income Tax Instructions - Tax Computation line 44
+      href: https://files.hawaii.gov/tax/forms/2022/n15ins.pdf#page=28      
+    - title: 2022 Hawaii Revised Statutes Title 14. Taxation.235. Income Tax Law.235-51 Tax imposed on individuals; rates.-(f).(2)
+      href: https://law.justia.com/codes/hawaii/2022/title-14/chapter-235/section-235-51/

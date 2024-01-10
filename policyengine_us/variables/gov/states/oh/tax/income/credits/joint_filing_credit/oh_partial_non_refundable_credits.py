@@ -15,6 +15,4 @@ class oh_partial_non_refundable_credits(Variable):
     definition_period = YEAR
     defined_for = StateCode.OH
 
-    adds = (
-        "gov.states.oh.tax.income.credits.joint_filing.non_refundable_credits"
-    )
+    adds = "gov.states.oh.tax.income.credits.joint_filing.other_non_refundable_credits"

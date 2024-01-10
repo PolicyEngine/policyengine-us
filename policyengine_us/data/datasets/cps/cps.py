@@ -161,7 +161,7 @@ def add_personal_variables(cps: h5py.File, person: DataFrame) -> None:
     DISABILITY_FLAGS = [
         "PEDIS" + i for i in ["DRS", "EAR", "EYE", "OUT", "PHY", "REM"]
     ]
-    cps["is_ssi_disabled"] = (person[DISABILITY_FLAGS] == 1).any(axis=1)
+    cps["is_disabled"] = (person[DISABILITY_FLAGS] == 1).any(axis=1)
 
     def children_per_parent(col: str) -> pd.DataFrame:
         """Calculate number of children in the household using parental
