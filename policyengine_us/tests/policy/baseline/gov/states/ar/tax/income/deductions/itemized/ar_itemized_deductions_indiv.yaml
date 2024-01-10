@@ -12,6 +12,7 @@
       tax_unit:
         members: [person1, person2]
         ar_itemized_deductions_unit: 1_000
+        ar_can_file_separate_on_same_return: true
     households:
       household:
         members: [person1, person2]
@@ -33,6 +34,7 @@
       tax_unit:
         members: [person1, person2]
         ar_itemized_deductions_unit: 1_000
+        ar_can_file_separate_on_same_return: true
     households:
       household:
         members: [person1, person2]
@@ -52,6 +54,7 @@
       tax_unit:
         members: [person1, person2]
         ar_itemized_deductions_unit: 1_000
+        ar_can_file_separate_on_same_return: true
     households:
       household:
         members: [person1, person2]

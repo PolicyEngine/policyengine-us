@@ -20,6 +20,7 @@
         ar_files_separately: true
         filing_status: SEPARATE
         ar_non_refundable_credits: 0
+        ar_can_file_separate_on_same_return: true
     households:
       household:
         members: [person1, person2]
@@ -53,6 +54,7 @@
         ar_files_separately: false
         filing_status: JOINT
         ar_non_refundable_credits: 0
+        ar_can_file_separate_on_same_return: true
     households:
       household:
         members: [person1, person2]

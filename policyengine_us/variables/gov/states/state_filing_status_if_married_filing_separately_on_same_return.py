@@ -8,11 +8,15 @@ class StateFilingStatusIfMarriedFilingSeparatelyOnSameReturn(Enum):
     WIDOW = "Widow(er)"
 
 
-class state_filing_status_if_married_filing_separately_on_same_return(Variable):
+class state_filing_status_if_married_filing_separately_on_same_return(
+    Variable
+):
     value_type = Enum
     entity = TaxUnit
     possible_values = StateFilingStatusIfMarriedFilingSeparatelyOnSameReturn
-    default_value = StateFilingStatusIfMarriedFilingSeparatelyOnSameReturn.SINGLE
+    default_value = (
+        StateFilingStatusIfMarriedFilingSeparatelyOnSameReturn.SINGLE
+    )
     definition_period = YEAR
     label = "State filing status for the tax unit if married couple file separately on same return"
 
@@ -29,7 +33,7 @@ class state_filing_status_if_married_filing_separately_on_same_return(Variable):
             ],
             [
                 # Simulate scenario where joint filers file separately on Arkansas return.
-                fsvals.SEPARATE,  
+                fsvals.SEPARATE,
                 fsvals.SINGLE,
                 fsvals.SEPARATE,
                 fsvals.HEAD_OF_HOUSEHOLD,
