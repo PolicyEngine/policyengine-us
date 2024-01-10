@@ -23,4 +23,4 @@ class ca_tanf_maximum_payment(Variable):
             region1,
             p.region1[exempt_name][au_size],
             p.region2[exempt_name][au_size],
-        )
+        ) * MONTHS_IN_YEAR
