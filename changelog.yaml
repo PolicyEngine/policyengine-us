@@ -5671,3 +5671,38 @@
     added:
     - Kentucky itemized deductions.
   date: 2024-01-06 15:19:01
+- bump: patch
+  changes:
+    fixed:
+    - Removed extraneous add/subtract pairs in income_tax calculation logic.
+  date: 2024-01-06 15:23:54
+- bump: minor
+  changes:
+    added:
+    - Louisiana exemptions.
+  date: 2024-01-06 17:47:15
+- bump: minor
+  changes:
+    added:
+    - Louisiana itemized deductions.
+  date: 2024-01-07 19:10:57
+- bump: minor
+  changes:
+    added:
+    - Idaho permanent building fund tax.
+  date: 2024-01-07 22:34:28
+- bump: patch
+  changes:
+    fixed:
+    - Massachusetts 2023 rent deduction cap increase.
+  date: 2024-01-09 23:52:23
+- bump: minor
+  changes:
+    added:
+    - Michigan home heating credit.
+  date: 2024-01-10 01:10:28
+- bump: patch
+  changes:
+    fixes:
+    - California CalWORKS TANF monthly income variables.
+  date: 2024-01-10 11:27:40
