@@ -16,7 +16,7 @@ class ca_tanf_countable_income_recipient(Variable):
         ).gov.states.ca.cdss.tanf.cash.income.disregards.recipient
         earned = spm_unit("ca_tanf_earned_income", period) / MONTHS_IN_YEAR
         db_unearned = (
-            spm_unit("ca_tanf_db_unearned_income", period) 
+            spm_unit("ca_tanf_db_unearned_income", period)
         ) / MONTHS_IN_YEAR
         other_unearned = (
             spm_unit("ca_tanf_other_unearned_income", period)
