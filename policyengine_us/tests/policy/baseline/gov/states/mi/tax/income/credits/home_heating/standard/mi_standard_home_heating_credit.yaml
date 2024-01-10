@@ -1,0 +1,41 @@
+- name: standard allowance, exemption of 3 at 25_000 household income
+  period: 2022
+  input:
+    mi_exemptions: 3
+    # base = 888
+    mi_household_resources: 25_000
+    mi_standard_home_heating_credit_eligible: true
+    utilities_included_in_rent: false
+  output:
+    mi_standard_home_heating_credit: 13
+
+- name: standard allowance, exemption of 4 at 35_000 household income
+  period: 2022
+  input:
+    mi_exemptions: 4
+    mi_household_resources: 35_000
+    mi_standard_home_heating_credit_eligible: true
+    utilities_included_in_rent: false
+  output:
+    mi_standard_home_heating_credit: 0
+
+- name: standard allowance, exemption of 7 at 35_000 household income
+  period: 2022
+  input:
+    mi_exemptions: 7
+    mi_household_resources: 45_000
+    mi_standard_home_heating_credit_eligible: true
+    utilities_included_in_rent: false
+  output:
+    mi_standard_home_heating_credit: 40
+
+- name: standard allowance, exemption of 7 at 50_000 household income
+  period: 2022
+  input:
+    mi_exemptions: 7
+    # base = 1_433 + 182
+    mi_household_resources: 50_000
+    mi_standard_home_heating_credit_eligible: true
+    utilities_included_in_rent: false
+  output:
+    mi_standard_home_heating_credit: 0
