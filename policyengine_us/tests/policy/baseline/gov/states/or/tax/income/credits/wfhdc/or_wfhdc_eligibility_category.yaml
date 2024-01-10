@@ -25,7 +25,7 @@
         members: [person1, person2]
         state_code: OR
   output:
-    or_wfhdc_eligibility_category: ["age_3_to_6"]
+    or_wfhdc_eligibility_category: ["YOUNG"]
 
 - name: Youngest child is under 18 and disabled.
   period: 2022
@@ -45,7 +45,7 @@
         members: [person1, person2]
         state_code: OR
   output:
-    or_wfhdc_eligibility_category: ["disabled_13_to_18"]
+    or_wfhdc_eligibility_category: ["DISABLED_TEENS"]
 
 - name: Youngest child is above 18 and disabled.
   period: 2022
@@ -65,7 +65,7 @@
         members: [person1, person2]
         state_code: OR
   output:
-    or_wfhdc_eligibility_category: ["disabled_18_and_over"]
+    or_wfhdc_eligibility_category: ["DISABLED_ADULTS"]
 
 - name: None output
   period: 2022

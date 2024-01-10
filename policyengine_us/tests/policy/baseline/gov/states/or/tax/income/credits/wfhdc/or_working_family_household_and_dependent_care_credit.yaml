@@ -3,7 +3,7 @@
   input:
     or_wfhdc_eligible: true
     or_wfhdc_income_category: 1
-    or_wfhdc_eligibility_category: age_under_3
+    or_wfhdc_eligibility_category: YOUNGEST
     cdcc_relevant_expenses: 100
   output:
     or_working_family_household_and_dependent_care_credit: 10
@@ -33,7 +33,7 @@
   input:
     or_wfhdc_eligible: true
     or_wfhdc_income_category: 24
-    or_wfhdc_eligibility_category: disabled_13_to_18
+    or_wfhdc_eligibility_category: DISABLED_TEENS
     cdcc_relevant_expenses: 100
   output:
     or_working_family_household_and_dependent_care_credit: 25

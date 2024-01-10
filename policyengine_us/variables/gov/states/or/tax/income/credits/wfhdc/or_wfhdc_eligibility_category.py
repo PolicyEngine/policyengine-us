@@ -2,11 +2,11 @@ from policyengine_us.model_api import *
 
 
 class OregonWFHDCEligibilityCategory(Enum):
-    age_under_3 = "age_under_3"
-    age_3_to_6 = "age_3_to_6"
-    age_6_to_13 = "age_6_to_13"
-    disabled_13_to_18 = "disabled_13_to_18"
-    disabled_18_and_over = "disabled_18_and_over"
+    YOUNGEST = "age_under_3"
+    YOUNG = "age_3_to_6"
+    OLD = "age_6_to_13"
+    DISABLED_TEENS = "disabled_13_to_18"
+    DISABLED_ADULTS = "disabled_18_and_over"
     NONE = "None"
 
 
@@ -49,11 +49,11 @@ class or_wfhdc_eligibility_category(Variable):
             youngest_is_disabled,
         ]
         values = [
-            OregonWFHDCEligibilityCategory.age_under_3,
-            OregonWFHDCEligibilityCategory.age_3_to_6,
-            OregonWFHDCEligibilityCategory.age_6_to_13,
-            OregonWFHDCEligibilityCategory.disabled_13_to_18,
-            OregonWFHDCEligibilityCategory.disabled_18_and_over,
+            OregonWFHDCEligibilityCategory.YOUNGEST,
+            OregonWFHDCEligibilityCategory.YOUNG,
+            OregonWFHDCEligibilityCategory.OLD,
+            OregonWFHDCEligibilityCategory.DISABLED_TEENS,
+            OregonWFHDCEligibilityCategory.DISABLED_ADULTS,
         ]
         return select(
             conditions, values, default=OregonWFHDCEligibilityCategory.NONE
