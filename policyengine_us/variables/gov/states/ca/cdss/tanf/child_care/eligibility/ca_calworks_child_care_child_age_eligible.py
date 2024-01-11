@@ -22,7 +22,9 @@ class ca_calworks_child_care_child_age_eligible(Variable):
         immigration_status = person("immigration_status", period)
         status = immigration_status.possible_values
         citizen = immigration_status == status.CITIZEN
-        resident = immigration_status == status.LEGAL_PERMANENT_RESIDENT
-        eligible_status = citizen | resident
+        legal_permanent_resident = (
+            immigration_status == status.LEGAL_PERMANENT_RESIDENT
+        )
+        eligible_status = citizen | legal_permanent_resident
         age_eligible = age <= age_limit
         return age_eligible & eligible_status
