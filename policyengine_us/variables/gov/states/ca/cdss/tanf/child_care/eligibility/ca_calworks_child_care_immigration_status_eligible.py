@@ -17,6 +17,6 @@ class ca_calworks_child_care_immigration_status_eligible(Variable):
         immigration_status = person("immigration_status", period)
         status = immigration_status.possible_values
         citizen = immigration_status == status.CITIZEN
-        resident = immigration_status == status.RESIDENT
+        resident = immigration_status == status.LEGAL_PERMANENT_RESIDENT
         head_eligible = head & (citizen | resident)
         return spm_unit.any(head_eligible)
