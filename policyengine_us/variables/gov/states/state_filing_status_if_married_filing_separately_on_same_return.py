@@ -33,10 +33,10 @@ class state_filing_status_if_married_filing_separately_on_same_return(
             ],
             [
                 # Simulate scenario where joint filers file separately on Arkansas return.
-                fsvals.SEPARATE,
-                fsvals.SINGLE,
-                fsvals.SEPARATE,
-                fsvals.HEAD_OF_HOUSEHOLD,
-                fsvals.WIDOW,
+                StateFilingStatusIfMarriedFilingSeparatelyOnSameReturn.SEPARATE,
+                StateFilingStatusIfMarriedFilingSeparatelyOnSameReturn.SINGLE,
+                StateFilingStatusIfMarriedFilingSeparatelyOnSameReturn.SEPARATE,
+                StateFilingStatusIfMarriedFilingSeparatelyOnSameReturn.HEAD_OF_HOUSEHOLD,
+                StateFilingStatusIfMarriedFilingSeparatelyOnSameReturn.WIDOW,
             ],
         )
