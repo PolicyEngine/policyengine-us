@@ -32,9 +32,8 @@ def create_structural_reforms_from_parameters(parameters, period):
             parameters, period
         )
     )
-    ctc_expansion = (
-        create_ctc_expansion_reform(parameters, period))
-    
+    ctc_expansion = create_ctc_expansion_reform(parameters, period)
+
     reforms = [
         afa_reform,
         winship_reform,

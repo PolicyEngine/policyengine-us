@@ -1,14 +1,15 @@
 from policyengine_us.model_api import *
 
 
-
 def create_ctc_expansion() -> Reform:
     class refundable_ctc(Variable):
         value_type = float
         entity = TaxUnit
         label = "refundable CTC"
         unit = USD
-        documentation = "The portion of the Child Tax Credit that is refundable."
+        documentation = (
+            "The portion of the Child Tax Credit that is refundable."
+        )
         definition_period = YEAR
         reference = "https://www.law.cornell.edu/uscode/text/26/24#d"
 
@@ -43,7 +44,9 @@ def create_ctc_expansion() -> Reform:
             qualifying_children = tax_unit("ctc_qualifying_children", period)
 
             relevant_earnings = (
-                earnings_over_threshold * ctc.refundable.phase_in.rate * qualifying_children
+                earnings_over_threshold
+                * ctc.refundable.phase_in.rate
+                * qualifying_children
             )
 
             # Compute "Social Security taxes" as defined in the US Code for the ACTC.
@@ -59,9 +62,9 @@ def create_ctc_expansion() -> Reform:
                 "additional_medicare_tax",
             ]
             SS_SUBTRACT_VARIABLES = ["excess_payroll_tax_withheld"]
-            social_security_tax = add(tax_unit, period, SS_ADD_VARIABLES) - add(
-                tax_unit, period, SS_SUBTRACT_VARIABLES
-            )
+            social_security_tax = add(
+                tax_unit, period, SS_ADD_VARIABLES
+            ) - add(tax_unit, period, SS_SUBTRACT_VARIABLES)
             eitc = tax_unit("eitc", period)
             social_security_excess = max_(0, social_security_tax - eitc)
             qualifying_children = tax_unit("ctc_qualifying_children", period)
@@ -81,7 +84,7 @@ def create_ctc_expansion() -> Reform:
             )
 
             return min_(maximum_refundable_ctc, amount_ctc_would_increase)
-    
+
     class reform(Reform):
         def apply(self):
             self.update_variable(refundable_ctc)
@@ -89,9 +92,7 @@ def create_ctc_expansion() -> Reform:
     return reform
 
 
-def create_ctc_expansion_reform(
-    parameters, period, bypass: bool = False
-):
+def create_ctc_expansion_reform(parameters, period, bypass: bool = False):
     if bypass:
         return create_ctc_expansion()
 
@@ -103,6 +104,4 @@ def create_ctc_expansion_reform(
         return None
 
 
-ctc_expansion = create_ctc_expansion_reform(
-    None, None, bypass=True
-)
+ctc_expansion = create_ctc_expansion_reform(None, None, bypass=True)
