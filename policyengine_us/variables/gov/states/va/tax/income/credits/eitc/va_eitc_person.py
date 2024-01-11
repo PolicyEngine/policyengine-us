@@ -6,7 +6,6 @@ class va_eitc_person(Variable):
     entity = Person
     label = "Virginia Earned Income Tax Credit per individual when married filing seperately"
     unit = USD
-    documentation = "Refundable or non-refundable Virginia EITC"
     definition_period = YEAR
     reference = "https://www.tax.virginia.gov/sites/default/files/vatax-pdf/2022-760-instructions.pdf#page=32"
     defined_for = StateCode.VA
