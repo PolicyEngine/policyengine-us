@@ -1,1 +1,1 @@
-from .ctc_expansion import create_ctc_expansion
+from .ctc_expansion import create_ctc_expansion_reform
