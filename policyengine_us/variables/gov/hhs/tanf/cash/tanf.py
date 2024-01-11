@@ -11,4 +11,4 @@ class tanf(Variable):
     )
     unit = USD
 
-    adds = ["ca_tanf", "co_tanf", "dc_tanf", "ny_tanf"]
+    adds = "gov.hhs.tanf.state_programs"
