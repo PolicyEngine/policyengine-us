@@ -1,0 +1,29 @@
+- name: Ineligible
+  period: 2021
+  input:
+    filing_status: JOINT
+    hi_alternative_tax_on_capital_gains_eligible: false
+    hi_taxable_income_for_alternative_tax: 10_000
+    hi_taxable_income: 5_000
+  output:
+    hi_alternative_tax_on_capital_gains: 0
+
+- name: Just the progressive tax rate
+  period: 2021
+  input:
+    filing_status: JOINT
+    hi_alternative_tax_on_capital_gains_eligible: true
+    hi_taxable_income_for_alternative_tax: 10_000
+    hi_taxable_income: 10_000
+  output:
+    hi_alternative_tax_on_capital_gains: 242.8
+
+- name: Progressive tax rate with 1,000 of flat taxed rate
+  period: 2021
+  input:
+    filing_status: JOINT
+    hi_alternative_tax_on_capital_gains_eligible: true
+    hi_taxable_income_for_alternative_tax: 10_000
+    hi_taxable_income: 11_000
+  output:
+    hi_alternative_tax_on_capital_gains: 315.3
