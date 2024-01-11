@@ -2,11 +2,13 @@ from policyengine_us.model_api import *
 
 
 class OregonWFHDCEligibilityCategory(Enum):
-    YOUNGEST = "under 3 years old"
-    YOUNG = "between 3 and 6 years old"
-    OLD = "between 6 and 13 years old"
-    DISABLED_TEENS = "disabled teenagers that are between 13 and 18 years old"
-    DISABLED_ADULTS = "disabled adults that are over 18 years old"
+    YOUNGEST = "Youngest"  # under 3 years old
+    YOUNG = "Young"  # between 3 and 6 years old
+    OLD = "Old"  # between 6 and 13 years old
+    DISABLED_TEENS = "Disabled teenagers"  # disabled teenagers that are between 13 and 18 years old
+    DISABLED_ADULTS = (
+        "Disabled adults"  # disabled adults that are over 18 years old
+    )
     NONE = "None"
 
 
