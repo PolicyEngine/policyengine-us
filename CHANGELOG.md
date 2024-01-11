@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.614.0] - 2024-01-11 13:23:48
+
+### Added
+
+- Reform to phase in ACTC on a per-child basis.
+
 ## [0.613.0] - 2024-01-11 11:56:03
 
 ### Added
@@ -6746,6 +6752,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.614.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.613.0...0.614.0
 [0.613.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.612.0...0.613.0
 [0.612.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.611.0...0.612.0
 [0.611.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.610.1...0.611.0
