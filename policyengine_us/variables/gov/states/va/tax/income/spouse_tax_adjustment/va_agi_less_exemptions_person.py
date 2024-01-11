@@ -12,7 +12,7 @@ class va_agi_less_exemptions_person(Variable):
 
     def formula(person, period, parameters):
         # Get the individual's VAGI.
-        vagi = person("va_agi_person", period)
+        va_agi = person("va_agi_person", period)
 
         # Get the individual's personal exemption amount.
         personal_exemption = person("va_personal_exemption_person", period)
@@ -21,4 +21,4 @@ class va_agi_less_exemptions_person(Variable):
         aged_blind_exemption = person("va_aged_blind_exemption_person", period)
 
         # Subtract the exemptions from the VAGI.
-        return max_(vagi - personal_exemption - aged_blind_exemption, 0)
+        return max_(va_agi - personal_exemption - aged_blind_exemption, 0)

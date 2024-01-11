@@ -16,5 +16,5 @@ class va_aged_blind_exemption_person(Variable):
         p = parameters(period).gov.states.va.tax.income.exemptions
         aged_person = person("is_irs_aged", period).astype(int)
         blind_person = person("is_blind", period).astype(int)
-        aged_or_blind = aged_person + blind_person
-        return aged_or_blind * p.aged_blind
+        aged_blind_count = aged_person + blind_person
+        return aged_blind_count * p.aged_blind

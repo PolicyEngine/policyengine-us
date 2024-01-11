@@ -33,7 +33,7 @@ class va_spouse_tax_adjustment(Variable):
             period
         ).gov.states.va.tax.income.exemptions.spouse_tax_adjustment
         half_of_taxable_income = taxable_income / p.divisor
-        # Line 8, take the smaller of the tax caluculated on line 5 or line 7
+        # Line 8, take the smaller of the tax calculated on line 5 or line 7
         p1 = parameters(period).gov.states.va.tax.income
         smaller_agi_or_taxable_income = min_(
             p1.rates.calc(smaller_agi_less_exemptions),
