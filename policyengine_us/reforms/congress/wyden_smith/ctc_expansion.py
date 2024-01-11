@@ -43,11 +43,9 @@ def create_ctc_expansion() -> Reform:
             )
             qualifying_children = tax_unit("ctc_qualifying_children", period)
 
-            relevant_rate = min_(ctc.refundable.phase_in.rate * qualifying_children, 100)
+            phase_in_rate = ctc.refundable.phase_in.rate * qualifying_children
 
-            relevant_earnings = (
-                earnings_over_threshold
-                * relevant_rate)
+            relevant_earnings = earnings_over_threshold * phase_in_rate
 
             # Compute "Social Security taxes" as defined in the US Code for the ACTC.
             # This includes OASDI and Medicare payroll taxes, as well as half
@@ -98,7 +96,7 @@ def create_ctc_expansion_reform(parameters, period, bypass: bool = False):
 
     p = parameters(period).gov.contrib.congress.wyden_smith
 
-    if p.ctc_expansion is True:
+    if p.ctc_expansion:
         return create_ctc_expansion()
     else:
         return None
