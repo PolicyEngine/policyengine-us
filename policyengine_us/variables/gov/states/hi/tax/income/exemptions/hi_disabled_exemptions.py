@@ -13,31 +13,32 @@ class hi_disabled_exemptions(Variable):
     defined_for = StateCode.HI
 
     def formula(tax_unit, period, parameters):
-        # Compute the exemptions if head or spouse have a disability.
-        # In this case, the disabled head/spouse gets a higher amount, but they cannot claim dependent
-        # exemptions.
-        # Start by computing for the head.
+        person = tax_unit.members
         p = parameters(period).gov.states.hi.tax.income.exemptions
-        aged_head = (tax_unit("age_head", period) >= p.aged_threshold).astype(
-            int
+        # The tax unit can claim exemptions for each dependent
+        dependents = tax_unit("tax_unit_dependents", period)
+        # If the head or the spouse is disabled, they take the disabled rather than dependent exemption.
+        disabled = person("is_disabled", period)
+        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+        disabled_head_or_spouse = disabled & head_or_spouse
+        any_disabled_head_or_spouse = tax_unit.any(disabled & head_or_spouse)
+        dependent_amount = p.base * dependents
+        conditional_dependent_amount = where(
+            any_disabled_head_or_spouse, 0, dependent_amount
         )
-        aged_spouse = (
-            tax_unit("age_spouse", period) >= p.aged_threshold
-        ).astype(int)
-        disabled_head = tax_unit("head_is_disabled", period)
-        disabled_exemption_disabled_head = disabled_head * p.disabled
-        disabled_exemption_non_disabled_head = p.base * (1 + aged_head)
-        disabled_exemption_head = max_(
-            disabled_exemption_disabled_head,
-            disabled_exemption_non_disabled_head,
+        aged = person("age", period) >= p.aged_threshold
+        # Filer can claim greater of the disabled or base exemption.
+        disabled_exemption = disabled_head_or_spouse * p.disabled
+        # Aged individuals get an extra base exemption.
+        head_or_spouse_amount = p.base * (1 + aged) * head_or_spouse
+        conditional_head_or_spouse_amount = max_(
+            disabled_exemption, head_or_spouse_amount
         )
-        # Same for spouse.
-        disabled_spouse = tax_unit("spouse_is_disabled", period)
-        disabled_exemption_disabled_spouse = disabled_spouse * p.disabled
-        disabled_exemption_non_disabled_spouse = p.base * (1 + aged_spouse)
-        disabled_exemption_spouse = max_(
-            disabled_exemption_disabled_spouse,
-            disabled_exemption_non_disabled_spouse,
+        total_conditional_head_or_spouse_amount = tax_unit.sum(
+            conditional_head_or_spouse_amount
         )
-
-        return disabled_exemption_head + disabled_exemption_spouse
+        total_amount = (
+            conditional_dependent_amount
+            + total_conditional_head_or_spouse_amount
+        )
+        return where(any_disabled_head_or_spouse, total_amount, 0)

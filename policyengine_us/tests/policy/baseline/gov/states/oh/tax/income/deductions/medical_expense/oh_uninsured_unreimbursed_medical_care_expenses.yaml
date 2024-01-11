@@ -1,0 +1,29 @@
+- name: None of the expenses paid for by the employer
+  period: 2022
+  input:
+    state_code: OH
+    is_medicare_eligible: false
+    health_insurance_premiums: 500
+    employer_contribution_to_health_insurance_premiums_category: "NONE"
+  output:
+    oh_uninsured_unreimbursed_medical_care_expenses: 500
+
+- name: Is medicare eligible
+  period: 2022
+  input:
+    state_code: OH
+    is_medicare_eligible: true
+    health_insurance_premiums: 500
+    employer_contribution_to_health_insurance_premiums_category: "NONE"
+  output:
+    oh_uninsured_unreimbursed_medical_care_expenses: 0
+
+- name: All of the expenses paid for by the employer
+  period: 2022
+  input:
+    state_code: OH
+    is_medicare_eligible: false
+    health_insurance_premiums: 500
+    employer_contribution_to_health_insurance_premiums_category: "ALL"
+  output:
+    oh_uninsured_unreimbursed_medical_care_expenses: 0
