@@ -4,7 +4,9 @@ from policyengine_us.model_api import *
 class oh_insured_unreimbursed_medical_care_expenses(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Ohio Unreimbursed Medical and Health Care Expense Deduction"
+    label = (
+        "Ohio insured unreimbursed medical and health care expense deduction"
+    )
     unit = USD
     definition_period = YEAR
     reference = (
@@ -25,18 +27,9 @@ class oh_insured_unreimbursed_medical_care_expenses(Variable):
         # Line 3
         eligible_premiums = (
             person("health_insurance_premiums", period) * medicare_eligible
-        )
+        ) * (employer_premium_contribution == status.NONE)
         # Premiums only count if the employer paid none.
-        hipaid = select(
-            [
-                employer_premium_contribution == status.NONE,
-                employer_premium_contribution == status.SOME,
-                employer_premium_contribution == status.ALL,
-                employer_premium_contribution == status.NA,
-            ],
-            [eligible_premiums, 0, 0, 0],
-        )
-        total_hipaid = tax_unit.sum(hipaid)
+        total_hipaid = tax_unit.sum(eligible_premiums)
         # Line 4
         medical_expenses = add(
             tax_unit, period, ["medical_out_of_pocket_expenses"]

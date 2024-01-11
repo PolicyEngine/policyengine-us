@@ -17,5 +17,5 @@ class oh_unreimbursed_medical_care_expense_deduction(Variable):
     adds = [
         "oh_insured_unreimbursed_medical_care_expenses",
         "oh_uninsured_unreimbursed_medical_care_expenses",
-        "oh_unreimbursed_long_term_care_premiums",
+        "long_term_care_insurance_premiums",
     ]
