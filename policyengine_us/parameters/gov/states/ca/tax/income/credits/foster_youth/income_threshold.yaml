@@ -1,8 +1,9 @@
-description: California Foster Youth Tax Credit is limited to person this age and below.
+description: California Foster Youth Tax Credit has a threshold for the total earned income
 values:
-  2022-01-01: 25
+  2022-01-01: 25000
 metadata:
-  unit: year
+  unit: currency-USD
+  period: year
   label: California Foster Youth Tax Credit maximum age
   reference:
     - title: 2022 California Foster Youth Tax Credit

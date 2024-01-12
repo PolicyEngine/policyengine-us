@@ -2,7 +2,7 @@ from policyengine_us.model_api import *
 
 
 class ca_fytc_eligible(Variable):
-    value_type = bool
+    value_type = int
     entity = Person
     label = "Eligible for the California foster youth tax credit"
     definition_period = YEAR
@@ -13,19 +13,14 @@ class ca_fytc_eligible(Variable):
 
         age = person("age", period)
 
-        meets_age_requirements = (
-            (age >= p.min_age)
-            & (age <= p.max_age)
-        )
+        meet_age = p.threshold.calc(age)
 
-        eitc_eligibility = person.tax_unit(
-            "ca_eitc_eligible", period
-        )
+        eitc_eligibility = person.tax_unit("ca_eitc_eligible", period)
 
-        in_foster_care = person("ca_foster_care", period)
+        in_foster_care = person(
+            "ca_in_qualifying_foster_care_facility", period
+        )
 
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
 
-        return meets_age_requirements & eitc_eligibility & in_foster_care & head_or_spouse
-
-#TODO: create a ca_foster_care.py -> empty bool | person level 
+        return meet_age * eitc_eligibility * in_foster_care * head_or_spouse

@@ -4,10 +4,10 @@
     age: 16
     is_tax_unit_head_or_spouse: true
     ca_eitc_eligible: true
-    ca_foster_care: true
+    ca_in_qualifying_foster_care_facility: true
     state_code: CA
   output:
-    ca_fytc_eligible: false
+    ca_fytc_eligible: 0
 
 - name: Age above 25
   period: 2022
@@ -15,10 +15,10 @@
     age: 26
     is_tax_unit_head_or_spouse: true
     ca_eitc_eligible: true
-    ca_foster_care: true
+    ca_in_qualifying_foster_care_facility: true
     state_code: CA
   output:
-    ca_fytc_eligible: false
+    ca_fytc_eligible: 0
 
 - name: Not a head or spouse
   period: 2022
@@ -26,10 +26,10 @@
     age: 20
     is_tax_unit_head_or_spouse: false
     ca_eitc_eligible: true
-    ca_foster_care: true
+    ca_in_qualifying_foster_care_facility: true
     state_code: CA
   output:
-    ca_fytc_eligible: false
+    ca_fytc_eligible: 0
 
 - name: Not Caleitc eligible
   period: 2022
@@ -37,10 +37,10 @@
     age: 20
     is_tax_unit_head_or_spouse: true
     ca_eitc_eligible: false
-    ca_foster_care: true
+    ca_in_qualifying_foster_care_facility: true
     state_code: CA
   output:
-    ca_fytc_eligible: false
+    ca_fytc_eligible: 0
 
 - name: Not in foster care
   period: 2022
@@ -48,18 +48,18 @@
     age: 20
     is_tax_unit_head_or_spouse: true
     ca_eitc_eligible: true
-    ca_foster_care: false
+    ca_in_qualifying_foster_care_facility: false
     state_code: CA
   output:
-    ca_fytc_eligible: false
+    ca_fytc_eligible: 0
 
-  - name: All conditions satistified
+- name: All conditions satistified
   period: 2022
   input:
     age: 20
     is_tax_unit_head_or_spouse: true
     ca_eitc_eligible: true
-    ca_foster_care: true
+    ca_in_qualifying_foster_care_facility: true
     state_code: CA
   output:
-    ca_fytc_eligible: true
+    ca_fytc_eligible: 1083
