@@ -25,4 +25,6 @@ class la_federal_tax_deduction(Variable):
         )
         premium_tax_credit = tax_unit("premium_tax_credit", period)
         reductions = lump_sum_distributions + premium_tax_credit
-        return max_(0, fed_tax - reductions)
+        # The deduction was discontinued in 2022
+        p = parameters(period).gov.states.la.tax.income.deductions.federal_tax
+        return max_(0, fed_tax - reductions) * p.availability
