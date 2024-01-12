@@ -1,0 +1,45 @@
+description: Michigan provides this base amount of standard home heating credit, based on the number of exemptions.
+metadata:
+  type: single_amount
+  threshold_unit: people
+  amount_unit: currency-USD
+  label: Michigan standard home heating credit base amount
+  reference:
+    # The legal code provides inflation undajusted amounts
+    - title: Michigan Section 206.527a, Income Tax Act of 1967(Exerpt)Act 281 of 1967, (1)(a)
+      href: http://www.legislature.mi.gov/(S(keapvg1h2vndkn25rtmpyyse))/mileg.aspx?page=getObject&objectName=mcl-206-527a
+    - title: Michigan 2021 Book MI-1040CR7 Home Heating Insctructions, Page 19, Table A
+      href: https://www.michigan.gov/-/media/Project/Websites/taxes/2022RM/IIT/BOOK_MI-1040CR-7.pdf?rev=d7990c15e0034d768a43c47b6d3ba0ac
+    - title: Michigan 2022 Home Heating Credit Claim Instructions, Page 19, Table A
+      href: https://drive.google.com/file/d/1-bCwQn3nV9W-bIPlrVViTHes0ovWgLBr/view?usp=sharing
+brackets:
+  - threshold:
+      2021-01-01: 0
+    amount:
+      2021-01-01: 497
+      2022-01-01: 524
+  - threshold:
+      2021-01-01: 2
+    amount:
+      2021-01-01: 672
+      2022-01-01: 706
+  - threshold:
+      2021-01-01: 3
+    amount:
+      2021-01-01: 846
+      2022-01-01: 888
+  - threshold:
+      2021-01-01: 4 
+    amount:
+      2021-01-01: 1_021
+      2022-01-01: 1_069
+  - threshold:
+      2021-01-01: 5
+    amount:
+      2021-01-01: 1_196
+      2022-01-01: 1_251
+  - threshold:
+      2021-01-01: 6
+    amount:
+      2021-01-01: 1_371
+      2022-01-01: 1_433
