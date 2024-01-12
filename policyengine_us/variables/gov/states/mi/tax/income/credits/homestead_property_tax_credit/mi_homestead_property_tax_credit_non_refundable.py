@@ -46,9 +46,7 @@ class mi_homestead_property_tax_credit_non_refundable(Variable):
             total_household_resources * non_refundable_rate, 0
         )  # Line 34
 
-        property_tax_and_rent = tax_unit(
-            "mi_property_tax_and_rent", period
+        property_and_rent = tax_unit(
+            "mi_homestead_property_tax_credit_property_and_rent_value", period
         )  # Line 13
-        return max_(
-            property_tax_and_rent - non_refundable_amount, 0
-        )  # Line 35
+        return max_(property_and_rent - non_refundable_amount, 0)  # Line 35

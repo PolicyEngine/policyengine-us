@@ -31,7 +31,8 @@ class mi_allowable_homestead_property_tax_credit(Variable):
         phase_out_rate = p.senior.phase_out_rate.calc(
             total_household_resources
         )  # Line 37
-        senior_amount = min_(phase_out_rate * excess_amount, p.cap)  # Line 38
+        uncapped_senior_amount = phase_out_rate * excess_amount
+        senior_amount = min_(uncapped_senior_amount, p.cap)  # Line 38
 
         # disabled or (disabled & seniors)
         # SECTION B: DISABLED CLAIMANTS (if you checked only box 5b, or both boxes 5a and 5b)
@@ -53,8 +54,9 @@ class mi_allowable_homestead_property_tax_credit(Variable):
 
         # others
         # SECTION C: ALL OTHER CLAIMANTS (if you did not check box 5a or 5b)
+        uncapped_credit_amount = p.rate.credit * excess_amount
         other_amount = min_(
-            p.rate.credit * excess_amount,
+            uncapped_credit_amount,
             p.cap,
         )  # Line 41
 

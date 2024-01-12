@@ -5,7 +5,7 @@
     rent: 0
     state_code: MI
   output:
-    mi_property_tax_and_rent: 0
+    mi_homestead_property_tax_credit_property_and_rent_value: 0
 
 - name: property tax
   period: 2022
@@ -13,7 +13,7 @@
     assessed_property_value: 1_000
     state_code: MI
   output: 
-    mi_property_tax_and_rent: 1_000
+    mi_homestead_property_tax_credit_property_and_rent_value: 1_000
 
 - name: rent
   period: 2022
@@ -21,7 +21,7 @@
     rent: 4_300
     state_code: MI
   output: # 4300 * 0.23
-    mi_property_tax_and_rent: 989
+    mi_homestead_property_tax_credit_property_and_rent_value: 989
 
 - name: property tax and rent
   period: 2022
@@ -30,4 +30,4 @@
     rent: 10_000
     state_code: MI
   output: # 10000 * 0.23 + 800
-    mi_property_tax_and_rent: 3_100
+    mi_homestead_property_tax_credit_property_and_rent_value: 3_100

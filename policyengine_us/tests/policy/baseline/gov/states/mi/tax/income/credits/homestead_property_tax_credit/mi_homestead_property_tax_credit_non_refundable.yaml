@@ -2,7 +2,7 @@
   period: 2022
   input:
     mi_household_resources: 0
-    mi_property_tax_and_rent: 0
+    mi_homestead_property_tax_credit_property_and_rent_value: 0
     state_code: MI
   output:
     mi_homestead_property_tax_credit_non_refundable: 0
@@ -11,7 +11,7 @@
   period: 2022
   input:
     mi_household_resources: 31_250
-    mi_property_tax_and_rent: 2_000
+    mi_homestead_property_tax_credit_property_and_rent_value: 2_000
     state_code: MI
   output: # 2_000 - 31_250 * 0.032
     mi_homestead_property_tax_credit_non_refundable: 1_000
@@ -20,7 +20,7 @@
   period: 2022
   input:
     mi_household_resources: 31_250
-    mi_property_tax_and_rent: 800
+    mi_homestead_property_tax_credit_property_and_rent_value: 800
     state_code: MI
   output: # 800 - 31_250 * 0.032 < 0
     mi_homestead_property_tax_credit_non_refundable: 0
@@ -29,7 +29,7 @@
   period: 2022
   input:
     mi_household_resources: 20_000
-    mi_property_tax_and_rent: 2_000
+    mi_homestead_property_tax_credit_property_and_rent_value: 2_000
     greater_age_head_spouse: 66
     state_code: MI
   output: # 2000 - 20000 * 0.032
@@ -39,7 +39,7 @@
   period: 2022
   input:
     mi_household_resources: 4_000
-    mi_property_tax_and_rent: 2_000
+    mi_homestead_property_tax_credit_property_and_rent_value: 2_000
     greater_age_head_spouse: 66
     state_code: MI
   output: # 2000 - 4000 * 0.01
@@ -55,7 +55,7 @@
     tax_units:
       tax_unit:
         mi_household_resources: 5_000
-        mi_property_tax_and_rent: 2_000
+        mi_homestead_property_tax_credit_property_and_rent_value: 2_000
         members: [person1]
     household:
       members: [person1]
@@ -76,7 +76,7 @@
     tax_units:
       tax_unit:
         mi_household_resources: 31_250
-        mi_property_tax_and_rent: 2_000
+        mi_homestead_property_tax_credit_property_and_rent_value: 2_000
         members: [person1, person2]
     household:
       members: [person1, person2]

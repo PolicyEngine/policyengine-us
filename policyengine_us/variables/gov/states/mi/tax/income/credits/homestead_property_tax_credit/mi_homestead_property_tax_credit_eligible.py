@@ -18,14 +18,7 @@ class mi_homestead_property_tax_credit_eligible(Variable):
             period
         ).gov.states.mi.tax.income.credits.homestead_property_tax_credit
 
-        property_value_eligible = (
+        return (
             add(tax_unit, period, ["assessed_property_value"])
             <= p.property_value_limit
         )
-
-        exceed_amount_eligible = (
-            tax_unit("mi_homestead_property_tax_credit_non_refundable", period)
-            > 0
-        )
-
-        return exceed_amount_eligible & property_value_eligible

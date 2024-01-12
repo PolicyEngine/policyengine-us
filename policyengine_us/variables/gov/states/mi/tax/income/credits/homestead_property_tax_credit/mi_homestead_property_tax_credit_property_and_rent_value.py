@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class mi_property_tax_and_rent(Variable):
+class mi_homestead_property_tax_credit_property_and_rent_value(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Michigan property tax and rent"
+    label = "Michigan homestead property tax credit property and rent value"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -21,4 +21,5 @@ class mi_property_tax_and_rent(Variable):
         property_value = add(tax_unit, period, ["assessed_property_value"])
         rent_amount = add(tax_unit, period, ["rent"])
 
-        return property_value + rent_amount * p.rent  # Line 13
+        applicable_rent = rent_amount * p.rent
+        return property_value + applicable_rent  # Line 13
