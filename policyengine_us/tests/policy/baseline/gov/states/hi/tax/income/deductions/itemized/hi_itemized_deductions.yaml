@@ -1,0 +1,33 @@
+- name: Total deduction amount, single
+  period: 2022
+  input:
+    state_code: HI
+    filing_status: SINGLE
+    hi_agi: 166_779
+    hi_total_itemized_deductions: 5_000
+    hi_reduced_itemized_deductions: 1_000
+  output:
+    hi_itemized_deductions: 5_000
+
+
+- name: Total deduction amount joint
+  period: 2022
+  input:
+    state_code: HI
+    filing_status: JOINT
+    hi_agi: 166_779
+    hi_total_itemized_deductions: 5_000
+    hi_reduced_itemized_deductions: 4_500
+  output:
+    hi_itemized_deductions: 5_000
+
+- name: Separate, have reduced deduction
+  period: 2022
+  input:
+    state_code: HI
+    filing_status: JOINT
+    hi_agi: 166_880
+    hi_total_itemized_deductions: 5_000
+    hi_reduced_itemized_deductions: 4_500
+  output:
+    hi_itemized_deductions: 4_500
