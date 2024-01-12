@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class la_federal_tax_deduction(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Louisiana federal tax deductions"
+    label = "Louisiana federal tax deduction"
     unit = USD
     definition_period = YEAR
     reference = [
@@ -15,9 +15,11 @@ class la_federal_tax_deduction(Variable):
     defined_for = StateCode.LA
 
     def formula(tax_unit, period, parameters):
-        ustax = tax_unit("income_tax_before_refundable_credits", period)
+        tax_before_refundable_credits = tax_unit(
+            "income_tax_before_refundable_credits", period
+        )
         investment_tax = tax_unit("net_investment_income_tax", period)
-        fed_tax = ustax + investment_tax
+        fed_tax = tax_before_refundable_credits + investment_tax
         lump_sum_distributions = tax_unit(
             "form_4972_lumpsum_distributions", period
         )
