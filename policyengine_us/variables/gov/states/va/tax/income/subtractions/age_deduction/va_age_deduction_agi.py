@@ -8,7 +8,7 @@ class va_age_deduction_agi(Variable):
     unit = USD
     definition_period = YEAR
     reference = [
-        "https://law.lis.virginia.gov/vacodefull/title58.1/chapter3/article2/",  # § 58.1-322.03.(5)(a)(b)
+        "https://law.lis.virginia.gov/vacodefull/title58.1/chapter3/article2/",  # § 58.1-322.03.(5)(b)
         "https://www.tax.virginia.gov/sites/default/files/vatax-pdf/2022-760-instructions.pdf#page=17",
     ]
     defined_for = StateCode.VA
