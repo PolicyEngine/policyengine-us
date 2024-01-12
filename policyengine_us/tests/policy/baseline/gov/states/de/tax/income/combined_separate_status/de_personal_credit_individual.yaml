@@ -1,4 +1,4 @@
-- name: Delaware personal credit for spouse
+- name: Delaware personal credit for spouse with combined separate status
   period: 2021
   input:
     people:
@@ -18,7 +18,7 @@
   output:
     de_personal_credit_individual: 110
   
-- name: Delaware personal credit for head
+- name: Delaware personal credit for head with combined separate status
   period: 2021
   input:
     people:
