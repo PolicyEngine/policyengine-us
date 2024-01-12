@@ -19,7 +19,9 @@ def create_end_entrenched_poverty_credit() -> Reform:
                 period
             ).gov.contrib.scott_budow.end_entrenched_poverty
             fpg_ratio = income / federal_poverty_guidelines
-            children_amount = (p.child.calc(fpg_ratio) * children) * MONTHS_IN_YEAR
+            children_amount = (
+                p.child.calc(fpg_ratio) * children
+            ) * MONTHS_IN_YEAR
             adult_amount = p.adult.calc(fpg_ratio) * MONTHS_IN_YEAR
             return children_amount + adult_amount
 
@@ -56,9 +58,7 @@ def create_end_entrenched_poverty_credit_reform(
     if bypass:
         return create_end_entrenched_poverty_credit()
 
-    p = parameters(
-        period
-    ).gov.contrib.scott_budow.end_entrenched_poverty
+    p = parameters(period).gov.contrib.scott_budow.end_entrenched_poverty
 
     if p.child.amounts[0] > 0:
         return create_end_entrenched_poverty_credit()
