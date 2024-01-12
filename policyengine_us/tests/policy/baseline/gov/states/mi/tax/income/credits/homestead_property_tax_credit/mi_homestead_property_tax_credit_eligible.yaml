@@ -1,20 +1,12 @@
-- name: no exceed amount
+- name: property value smaller than max
   period: 2022
   input:
-    assessed_property_value: 1_000
-    state_code: MI
-  output:
-    mi_homestead_property_tax_credit_eligible: false
-
-- name: positive exceed amount
-  period: 2022
-  input:
-    assessed_property_value: 1_000
+    assessed_property_value: 143_000
     state_code: MI
   output: 
     mi_homestead_property_tax_credit_eligible: true
 
-- name: positive exceed amount, property value larger than max
+- name: property value larger than max
   period: 2022
   input:
     assessed_property_value: 143_001

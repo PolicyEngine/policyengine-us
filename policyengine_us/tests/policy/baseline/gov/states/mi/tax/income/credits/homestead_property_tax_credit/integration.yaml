@@ -5,9 +5,9 @@
     assessed_property_value: 0
     state_code: MI
   output:
-    mi_property_tax_and_rent: 0
+    mi_homestead_property_tax_credit_property_and_rent_value: 0
     mi_homestead_property_tax_credit_non_refundable: 0
-    mi_homestead_property_tax_credit_eligible: false
+    mi_homestead_property_tax_credit_eligible: true
     mi_allowable_homestead_property_tax_credit: 0
     mi_homestead_property_tax_credit: 0
 
@@ -18,7 +18,7 @@
     assessed_property_value: 143_001
     state_code: MI
   output:
-    mi_property_tax_and_rent: 143_001
+    mi_homestead_property_tax_credit_property_and_rent_value: 143_001
     mi_homestead_property_tax_credit_non_refundable: 143_001
     mi_homestead_property_tax_credit_eligible: false
     mi_allowable_homestead_property_tax_credit: 0
@@ -31,9 +31,9 @@
     assessed_property_value: 1_000
     state_code: MI
   output: # 1000 < 31_251 * 0.032
-    mi_property_tax_and_rent: 1_000
+    mi_homestead_property_tax_credit_property_and_rent_value: 1_000
     mi_homestead_property_tax_credit_non_refundable: 0
-    mi_homestead_property_tax_credit_eligible: false
+    mi_homestead_property_tax_credit_eligible: true
     mi_allowable_homestead_property_tax_credit: 0
     mi_homestead_property_tax_credit: 0
 
@@ -44,7 +44,7 @@
     assessed_property_value: 2_100
     state_code: MI
   output:
-    mi_property_tax_and_rent: 2_100
+    mi_homestead_property_tax_credit_property_and_rent_value: 2_100
     mi_homestead_property_tax_credit_non_refundable: 80.8
     mi_homestead_property_tax_credit_eligible: true
     mi_allowable_homestead_property_tax_credit: 48.48
@@ -58,7 +58,7 @@
     assessed_property_value: 1_809
     state_code: MI
   output: # (1809 - 56500 * 0.032) * 0.6 * 0.7
-    mi_property_tax_and_rent: 1_809
+    mi_homestead_property_tax_credit_property_and_rent_value: 1_809
     mi_homestead_property_tax_credit_non_refundable: 1
     mi_homestead_property_tax_credit_eligible: true
     mi_allowable_homestead_property_tax_credit: 0.6
@@ -72,7 +72,7 @@
     assessed_property_value: 3_329
     state_code: MI
   output: # (3329 - 54000 * 0.032) * 0.6
-    mi_property_tax_and_rent: 3_329
+    mi_homestead_property_tax_credit_property_and_rent_value: 3_329
     mi_homestead_property_tax_credit_non_refundable: 1_601
     mi_homestead_property_tax_credit_eligible: true
     mi_allowable_homestead_property_tax_credit: 960.6
@@ -85,7 +85,7 @@
     assessed_property_value: 5_000
     state_code: MI
   output: # (5000 - 58900 * 0.032) * 0.6 > 1500
-    mi_property_tax_and_rent: 5_000
+    mi_homestead_property_tax_credit_property_and_rent_value: 5_000
     mi_homestead_property_tax_credit_non_refundable: 3_115.2
     mi_homestead_property_tax_credit_eligible: true
     mi_allowable_homestead_property_tax_credit: 1_500
@@ -99,7 +99,7 @@
     assessed_property_value: 3_200
     state_code: MI
   output: # (3200 - 62001 * 0.032) * 0.6 * 0.1
-    mi_property_tax_and_rent: 3_200
+    mi_homestead_property_tax_credit_property_and_rent_value: 3_200
     mi_homestead_property_tax_credit_non_refundable: 1_215.968
     mi_homestead_property_tax_credit_eligible: true
     mi_allowable_homestead_property_tax_credit: 729.5808
@@ -112,9 +112,9 @@
     rent: 4_347
     state_code: MI
   output: # 4347 * 0.23 < 31_251 * 0.032
-    mi_property_tax_and_rent: 999.81
+    mi_homestead_property_tax_credit_property_and_rent_value: 999.81
     mi_homestead_property_tax_credit_non_refundable: 0
-    mi_homestead_property_tax_credit_eligible: false
+    mi_homestead_property_tax_credit_eligible: true
     mi_allowable_homestead_property_tax_credit: 0
     mi_homestead_property_tax_credit: 0
 
@@ -126,7 +126,7 @@
     rent: 8_695
     state_code: MI
   output: # (8695 * 0.23 - 58001 * 0.032) * 0.6 * 0.5
-    mi_property_tax_and_rent: 1_999.85
+    mi_homestead_property_tax_credit_property_and_rent_value: 1_999.85
     mi_homestead_property_tax_credit_non_refundable: 143.818
     mi_homestead_property_tax_credit_eligible: true
     mi_allowable_homestead_property_tax_credit: 86.2908
@@ -140,9 +140,9 @@
     greater_age_head_spouse: 66
     state_code: MI
   output: # 1000 < 31_251 * 0.032
-    mi_property_tax_and_rent: 1_000
+    mi_homestead_property_tax_credit_property_and_rent_value: 1_000
     mi_homestead_property_tax_credit_non_refundable: 0
-    mi_homestead_property_tax_credit_eligible: false
+    mi_homestead_property_tax_credit_eligible: true
     mi_allowable_homestead_property_tax_credit: 0
     mi_homestead_property_tax_credit: 0
 
@@ -154,7 +154,7 @@
     greater_age_head_spouse: 66
     state_code: MI
   output: # 1500 - 20000 * 0.032
-    mi_property_tax_and_rent: 1_500
+    mi_homestead_property_tax_credit_property_and_rent_value: 1_500
     mi_homestead_property_tax_credit_non_refundable: 860
     mi_homestead_property_tax_credit_eligible: true
     mi_allowable_homestead_property_tax_credit: 860
@@ -168,7 +168,7 @@
     greater_age_head_spouse: 66
     state_code: MI
   output: # (2100 - 25000 * 0.032) * 0.84 * 1
-    mi_property_tax_and_rent: 2_100
+    mi_homestead_property_tax_credit_property_and_rent_value: 2_100
     mi_homestead_property_tax_credit_non_refundable: 1_300
     mi_homestead_property_tax_credit_eligible: true
     mi_allowable_homestead_property_tax_credit: 1_092
@@ -182,7 +182,7 @@
     greater_age_head_spouse: 66
     state_code: MI
   output: # (2500 - 56000 * 0.032) * 0.6 * 0.5
-    mi_property_tax_and_rent: 2_500
+    mi_homestead_property_tax_credit_property_and_rent_value: 2_500
     mi_homestead_property_tax_credit_non_refundable: 708
     mi_homestead_property_tax_credit_eligible: true
     mi_allowable_homestead_property_tax_credit: 424.8
@@ -196,9 +196,9 @@
     greater_age_head_spouse: 66
     state_code: MI
   output: # 4347 * 0.23 < 31_251 * 0.032
-    mi_property_tax_and_rent: 999.81
+    mi_homestead_property_tax_credit_property_and_rent_value: 999.81
     mi_homestead_property_tax_credit_non_refundable: 0
-    mi_homestead_property_tax_credit_eligible: false
+    mi_homestead_property_tax_credit_eligible: true
     mi_allowable_homestead_property_tax_credit: 0
     mi_homestead_property_tax_credit: 0
 
@@ -210,7 +210,7 @@
     greater_age_head_spouse: 66
     state_code: MI
   output: # (7200 * 0.23 - 35000 * 0.032) * 0.6 * 1
-    mi_property_tax_and_rent: 1_656
+    mi_homestead_property_tax_credit_property_and_rent_value: 1_656
     mi_homestead_property_tax_credit_non_refundable: 536
     mi_homestead_property_tax_credit_eligible: true
     mi_allowable_homestead_property_tax_credit: 321.6
@@ -224,7 +224,7 @@
     greater_age_head_spouse: 66
     state_code: MI
   output: # 7200 * 0.23 - 4000 * 0.01 > 1600
-    mi_property_tax_and_rent: 1_656
+    mi_homestead_property_tax_credit_property_and_rent_value: 1_656
     mi_homestead_property_tax_credit_non_refundable: 1_616
     mi_homestead_property_tax_credit_eligible: true
     mi_allowable_homestead_property_tax_credit: 1_600
@@ -246,7 +246,7 @@
       members: [person1]
       state_code: MI
   output: # 2000 - 5000 * 0.02 > 1600
-    mi_property_tax_and_rent: 2_000
+    mi_homestead_property_tax_credit_property_and_rent_value: 2_000
     mi_homestead_property_tax_credit_non_refundable: 1_900
     mi_homestead_property_tax_credit_eligible: true
     mi_allowable_homestead_property_tax_credit: 1_600
@@ -269,7 +269,7 @@
       members: [person1]
       state_code: MI
   output: # 1300 - 5000 * 0.02
-    mi_property_tax_and_rent: 1_300
+    mi_homestead_property_tax_credit_property_and_rent_value: 1_300
     mi_homestead_property_tax_credit_non_refundable: 1_200
     mi_homestead_property_tax_credit_eligible: true
     mi_allowable_homestead_property_tax_credit: 1_200
