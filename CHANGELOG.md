@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.618.1] - 2024-01-12 19:56:01
+
+### Fixed
+
+- Virginia age deduction AGI.
+
 ## [0.618.0] - 2024-01-12 19:50:01
 
 ### Added
@@ -6788,6 +6794,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.618.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.618.0...0.618.1
 [0.618.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.617.2...0.618.0
 [0.617.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.617.1...0.617.2
 [0.617.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.617.0...0.617.1
