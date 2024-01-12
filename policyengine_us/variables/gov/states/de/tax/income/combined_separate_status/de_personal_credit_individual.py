@@ -21,12 +21,12 @@ class de_personal_credit_individual(Variable):
         # Regular personal credit
         regular_personal_credit = select(
             [
-                person("is_tax_unit_spoue", period),
+                person("is_tax_unit_spouse", period),
                 person("is_tax_unit_head", period),
             ],
             [p.personal, (exemptions_count - head_spouse_count) * p.personal],
             default=0,
         )
         # Aged personal credit
-        aged_personal_credit = p.aged.cal(person("age", period))
+        aged_personal_credit = p.aged.calc(person("age", period))
         return regular_personal_credit + aged_personal_credit
