@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.617.0] - 2024-01-12 13:06:44
+
+### Added
+
+- Arizona 529 college savings plans subtraction.
+
 ## [0.616.0] - 2024-01-12 13:03:39
 
 ### Added
@@ -6764,6 +6770,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.617.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.616.0...0.617.0
 [0.616.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.615.0...0.616.0
 [0.615.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.614.0...0.615.0
 [0.614.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.613.0...0.614.0
