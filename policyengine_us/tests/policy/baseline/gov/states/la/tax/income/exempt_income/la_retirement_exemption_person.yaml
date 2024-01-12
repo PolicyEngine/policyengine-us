@@ -1,0 +1,97 @@
+- name: Aged head
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 65
+        is_tax_unit_head: 1
+        taxable_pension_income: 3_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_retirement_exemption_person: 3_000
+
+- name: Aged head with pension income lower than cap amount
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 67
+        is_tax_unit_head: 1
+        taxable_pension_income: 3_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_retirement_exemption_person: 3_000
+
+- name: Aged head with pension income higher than cap amount
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 67
+        is_tax_unit_head: 1
+        taxable_pension_income: 7_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_retirement_exemption_person: 6_000
+
+- name: Aged spouse
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 64
+        is_tax_unit_head: 1
+        taxable_pension_income: 2_000
+      person2:
+        age: 65
+        is_tax_unit_spouse: 1
+        taxable_pension_income: 3_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    la_retirement_exemption_person: [0, 3_000]
+
+- name: Aged head and spouse
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 66
+        is_tax_unit_head: 1
+        taxable_pension_income: 3_000
+      person2:
+        age: 65
+        is_tax_unit_spouse: 1
+        taxable_pension_income: 7_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    la_retirement_exemption_person: [3_000, 6_000]
