@@ -4,7 +4,7 @@
     qualified_adoption_assistance_expense: 1_000
     age: 10
     state_code: OH
-    is_adopted: true
+    adopted_this_year: true
   output: 
     oh_adoption_credit: 0
 
@@ -14,7 +14,7 @@
     qualified_adoption_assistance_expense: 1_000
     age: 18
     state_code: OH
-    is_adopted: true
+    adopted_this_year: true
   output: 
     oh_adoption_credit: 0
 
@@ -24,7 +24,7 @@
     qualified_adoption_assistance_expense: 1_000
     age: 10
     state_code: OH
-    is_adopted: true
+    adopted_this_year: true
   output: 
     oh_adoption_credit: 1_500
 
@@ -34,7 +34,7 @@
     qualified_adoption_assistance_expense: 1_500
     age: 10
     state_code: OH
-    is_adopted: true
+    adopted_this_year: true
   output: 
     oh_adoption_credit: 1_500
 
@@ -44,7 +44,7 @@
     qualified_adoption_assistance_expense: 3_000
     age: 10
     state_code: OH
-    is_adopted: true
+    adopted_this_year: true
   output: 
     oh_adoption_credit: 3_000
 
@@ -52,7 +52,7 @@
   period: 2021
   input:
     qualified_adoption_assistance_expense: 10_000
-    is_adopted: true
+    adopted_this_year: true
     age: 10
     state_code: OH
   output: 
@@ -64,7 +64,7 @@
     qualified_adoption_assistance_expense: 15_000
     age: 10
     state_code: OH
-    is_adopted: true
+    adopted_this_year: true
   output: 
     oh_adoption_credit: 10_000
 
@@ -75,11 +75,11 @@
       child1: 
         qualified_adoption_assistance_expense: 1_000
         age: 10
-        is_adopted: true
+        adopted_this_year: true
       child2:
         qualified_adoption_assistance_expense: 1_200
         age: 5
-        is_adopted: true
+        adopted_this_year: true
     households:
       household:
         members: [child1, child2]
@@ -94,11 +94,11 @@
       child1: 
         qualified_adoption_assistance_expense: 1_000
         age: 10
-        is_adopted: true
+        adopted_this_year: true
       child2:
         qualified_adoption_assistance_expense: 5_000
         age: 2
-        is_adopted: true
+        adopted_this_year: true
     households:
       household:
         members: [child1, child2]
@@ -113,11 +113,11 @@
       child1: 
         qualified_adoption_assistance_expense: 8_000
         age: 10
-        is_adopted: true
+        adopted_this_year: true
       child2:
         qualified_adoption_assistance_expense: 5_000
         age: 6
-        is_adopted: true
+        adopted_this_year: true
     households:
       household:
         members: [child1, child2]
@@ -132,11 +132,11 @@
       child1: 
         qualified_adoption_assistance_expense: 8_000
         age: 7
-        is_adopted: true
+        adopted_this_year: true
       child2:
         qualified_adoption_assistance_expense: 15_000
         age: 4
-        is_adopted: true
+        adopted_this_year: true
     households:
       household:
         members: [child1, child2]
@@ -151,11 +151,11 @@
       child1: 
         qualified_adoption_assistance_expense: 15_000
         age: 10
-        is_adopted: true
+        adopted_this_year: true
       child2:
         qualified_adoption_assistance_expense: 20_000
         age: 8
-        is_adopted: true
+        adopted_this_year: true
     households:
       household:
         members: [child1, child2]
@@ -170,11 +170,11 @@
       child1: 
         qualified_adoption_assistance_expense: 15_000
         age: 10
-        is_adopted: true
+        adopted_this_year: true
       child2:
         qualified_adoption_assistance_expense: 20_000
         age: 18
-        is_adopted: true
+        adopted_this_year: true
     households:
       household:
         members: [child1, child2]
@@ -189,19 +189,19 @@
       child1: 
         qualified_adoption_assistance_expense: 1_000
         age: 10
-        is_adopted: true
+        adopted_this_year: true
       child2:
         qualified_adoption_assistance_expense: 1_500
         age: 15
-        is_adopted: true
+        adopted_this_year: true
       child3: 
         qualified_adoption_assistance_expense: 10_000
         age: 7
-        is_adopted: true
+        adopted_this_year: true
       child4:
         qualified_adoption_assistance_expense: 15_000      
         age: 2
-        is_adopted: true
+        adopted_this_year: true
     households:
       household:
         members: [child1, child2, child3, child4]
@@ -216,19 +216,19 @@
       child1: 
         qualified_adoption_assistance_expense: 1_000
         age: 10
-        is_adopted: false
+        adopted_this_year: false
       child2:
         qualified_adoption_assistance_expense: 1_500
         age: 15
-        is_adopted: false
+        adopted_this_year: false
       child3: 
         qualified_adoption_assistance_expense: 10_000
         age: 7
-        is_adopted: false
+        adopted_this_year: false
       child4:
         qualified_adoption_assistance_expense: 15_000      
         age: 2
-        is_adopted: false
+        adopted_this_year: false
     households:
       household:
         members: [child1, child2, child3, child4]
@@ -244,19 +244,19 @@
       child1: 
         qualified_adoption_assistance_expense: 1_000
         age: 10
-        is_adopted: true
+        adopted_this_year: true
       child2:
         qualified_adoption_assistance_expense: 1_500
         age: 15
-        is_adopted: false
+        adopted_this_year: false
       child3: 
         qualified_adoption_assistance_expense: 10_000
         age: 7
-        is_adopted: false
+        adopted_this_year: false
       child4:
         qualified_adoption_assistance_expense: 15_000      
         age: 2
-        is_adopted: false
+        adopted_this_year: false
     households:
       household:
         members: [child1, child2, child3, child4]

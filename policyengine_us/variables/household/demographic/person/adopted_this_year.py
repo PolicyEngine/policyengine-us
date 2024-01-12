@@ -1,8 +1,8 @@
 from policyengine_us.model_api import *
 
 
-class is_adopted(Variable):
+class adopted_this_year(Variable):
     value_type = bool
     entity = Person
-    label = "Is adopted"
+    label = "Person was adopted this year"
     definition_period = YEAR
