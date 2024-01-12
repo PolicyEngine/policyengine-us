@@ -7,6 +7,7 @@ class ca_fytc_eligible(Variable):
     label = "Eligible for the California foster youth tax credit"
     definition_period = YEAR
     reference = "https://www.ftb.ca.gov/forms/2022/2022-3514.pdf#page=4"
+    defined_for = StateCode.CA
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.ca.tax.income.credits.foster_youth
