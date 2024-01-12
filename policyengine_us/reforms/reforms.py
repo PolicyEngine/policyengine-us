@@ -13,6 +13,7 @@ from .cbo.payroll import (
 from .scott_budow.end_entrenched_poverty import (
     create_end_entrenched_poverty_credit_reform,
 )
+from .congress.wyden_smith import create_ctc_expansion_reform
 from policyengine_core.reforms import Reform
 import warnings
 
@@ -34,6 +35,8 @@ def create_structural_reforms_from_parameters(parameters, period):
             parameters, period
         )
     )
+    ctc_expansion = create_ctc_expansion_reform(parameters, period)
+
     end_entrenched_poverty_credit = (
         create_end_entrenched_poverty_credit_reform(parameters, period)
     )
@@ -45,6 +48,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         dc_tax_threshold_joint_ratio_reform,
         remove_head_of_household,
         increase_taxable_earnings_for_social_security_reform,
+        ctc_expansion,
         end_entrenched_poverty_credit,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
