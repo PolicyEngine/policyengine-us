@@ -1,38 +1,109 @@
-- name: An eligible primary head and an eligible spouse, both have income below 25000 dollars
+- name: An eligible primary head and an eligible spouse, have total income is below 25000 dollars
   period: 2022
   input:
-    ca_fytc_eligible: 2166
-    earned_income: 23_000
-    state_code: CA
+    people:
+      person_1:
+        age: 23
+        ca_fytc_eligible: true
+        earned_income: 1_000
+      person_2:
+        age: 20
+        ca_fytc_eligible: true
+        earned_income: 1_000
+    tax_units:
+      tax_unit:
+        members: [person_1, person_2]
+    households:
+      household:
+        members: [person_1, person_2]
+        state_code: CA
   output:
     ca_fytc: 2166
 
-- name: An eligible primary head and an ineligible spouse, both have income below 25000 dollars
+- name: An eligible primary head and an ineligible spouse, have total income below 25000 dollars
   period: 2022
   input:
-    ca_fytc_eligible: 1083
-    earned_income: 23_000
-    state_code: CA
+    people:
+      person_1:
+        age: 23
+        ca_fytc_eligible: true
+        earned_income: 1_000
+      person_2:
+        age: 20
+        ca_fytc_eligible: false
+        earned_income: 1_000
+    tax_units:
+      tax_unit:
+        members: [person_1, person_2]
+    households:
+      household:
+        members: [person_1, person_2]
+        state_code: CA
   output:
     ca_fytc: 1083
   
-- name: An eligible primary head that has income above 25000 dollars
+- name: An eligible primary head that has income above 25000 dollars in 2022
   period: 2022
   input:
-    ca_fytc_eligible: 1083
-    earned_income: 26_000
-    state_code: CA
+    people:
+      person_1:
+        age: 23
+        ca_fytc_eligible: true
+        earned_income: 1_000
+    tax_units:
+      tax_unit:
+        members: person_1
+    households:
+      household:
+        members: person_1
+        state_code: CA
   output:
   # 1083 - (26000 - 25000) * 0.2166 =  866 
   # round to the nearest whole dollar
     ca_fytc: 866
   
-- name: An ineligible primary head that has income below 25000 dollars
+- name: An ineligible primary head and an ineligible spouse that have total income below 25000 dollars
   period: 2022
   input:
-    ca_fytc_eligible: 0
-    earned_income: 26_000
-    state_code: CA
+    people:
+      person_1:
+        age: 26
+        ca_fytc_eligible: true
+        earned_income: 1_000
+      person_2:
+        age: 20
+        ca_fytc_eligible: false
+        earned_income: 1_000
+    tax_units:
+      tax_unit:
+        members: [person_1, person_2]
+    households:
+      household:
+        members: [person_1, person_2]
+        state_code: CA
   output:
     ca_fytc: 0
+
+- name: An eligible primary head and an ineligible spouse that have total earned income above 25000 dollars in 2021
+  period: 2021
+  input:
+    people:
+      person_1:
+        age: 23
+        ca_fytc_eligible: true
+        earned_income: 25_000
+      person_2:
+        age: 20
+        ca_fytc_eligible: false
+        earned_income: 1_000
+    tax_units:
+      tax_unit:
+        members: [person_1, person_2]
+    households:
+      household:
+        members: [person_1, person_2]
+        state_code: CA
+  output:
+  # 1000 - (26000 - 25000) * 0.20 =  800
+    ca_fytc: 800
 

@@ -12,12 +12,16 @@ class ca_fytc(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.ca.tax.income.credits.foster_youth
 
-        max_amount = add(tax_unit, period, ["ca_fytc_eligible"])
+        age = person ("age", period)
+
+        meet_age = p.age_threshold.calc(age)
+
+        number_of_people = add(tax_unit, period, ["ca_fytc_eligible"])
 
         earned_income = add(tax_unit, period, ["earned_income"])
 
         reduction_amount = max_(
-            0, (earned_income - p.income_threshold) * p.marginal_rate
+            0, (earned_income - meet_age) * p.marginal_rate
         )
 
-        return min_(max_amount, earned_income - reduction_amount)
+        return min_(max_amount, earned_income - reduction_amount) * number_of_people
