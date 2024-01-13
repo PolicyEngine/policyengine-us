@@ -25,5 +25,9 @@ class ca_fytc(Variable):
         reduction_amount = max_(
             0, excess_earned_income * p.marginal_rate
         )
+        #If age_eligible is 0, the amount of fytc should be 0
+        age_condition = excess_earned == earned_income
 
-        return min_(p.max_amount, earned_income - reduction_amount) * number_of_people
+        fytc_amount = min_(p.max_amount, earned_income - reduction_amount)
+
+        return where(age_condition, 0, fytc_amount) * number_of_people
