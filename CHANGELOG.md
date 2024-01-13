@@ -5,6 +5,42 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.618.1] - 2024-01-12 19:56:01
+
+### Fixed
+
+- Virginia age deduction AGI.
+
+## [0.618.0] - 2024-01-12 19:50:01
+
+### Added
+
+- Add Alabama to the net income tree.
+
+## [0.617.2] - 2024-01-12 17:36:51
+
+### Fixed
+
+- Ohio adoption credit variable.
+
+## [0.617.1] - 2024-01-12 17:18:32
+
+### Fixed
+
+- Hawaii taxable income formula.
+
+## [0.617.0] - 2024-01-12 13:06:44
+
+### Added
+
+- Arizona 529 college savings plans subtraction.
+
+## [0.616.0] - 2024-01-12 13:03:39
+
+### Added
+
+- Enable Alabama income tax structure.
+
 ## [0.615.0] - 2024-01-11 16:21:57
 
 ### Added
@@ -6758,6 +6794,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.618.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.618.0...0.618.1
+[0.618.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.617.2...0.618.0
+[0.617.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.617.1...0.617.2
+[0.617.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.617.0...0.617.1
+[0.617.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.616.0...0.617.0
+[0.616.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.615.0...0.616.0
 [0.615.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.614.0...0.615.0
 [0.614.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.613.0...0.614.0
 [0.613.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.612.0...0.613.0
