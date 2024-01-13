@@ -19,7 +19,7 @@ class mi_homestead_property_tax_credit(Variable):
         ).gov.states.mi.tax.income.credits.homestead_property_tax_credit
 
         total_household_resources = tax_unit("mi_household_resources", period)
-        homestead_allowable = tax_unit(
+        homestead_allowable_credit = tax_unit(
             "mi_allowable_homestead_property_tax_credit", period
         )  # Line 42
 
@@ -27,4 +27,4 @@ class mi_homestead_property_tax_credit(Variable):
             total_household_resources
         )  # Line 43
 
-        return phase_out_rate * homestead_allowable  # Line 44
+        return phase_out_rate * homestead_allowable_credit  # Line 44

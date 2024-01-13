@@ -1,4 +1,4 @@
-description: Michigan attributes this percentage of the homestead property tax credit for disabled or senior filers as the non-refundable part, based on household resources. 
+description: Michigan allocated this fraction of the homestead property tax credit for disabled or senior filers as the non-refundable credit.
 brackets:
   - threshold:
       2018-01-01: 0
@@ -31,7 +31,7 @@ metadata:
   threshold_unit: currency-USD
   period: year
 
-  label: Michigan homestead property tax credit not refundable phase out percentage for disabled or seniors
+  label: Michigan homestead property tax credit disabled or senior non-refundable phase out rate  
   reference:
     - title: Michigan Income Tax Act 206.522 - (1)(c)
       href: http://legislature.mi.gov/doc.aspx?mcl-206-522
