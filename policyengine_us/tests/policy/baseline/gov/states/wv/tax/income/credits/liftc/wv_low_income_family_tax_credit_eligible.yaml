@@ -1,0 +1,15 @@
+- name: Claiming AMT
+  period: 2022
+  input:
+    state_code: WV
+    alternative_minimum_tax: 1
+  output:
+   wv_low_income_family_tax_credit_eligible: false
+
+- name: Not claiming AMT
+  period: 2022
+  input:
+    state_code: WV
+    alternative_minimum_tax: 0
+  output:
+   wv_low_income_family_tax_credit_eligible: true
