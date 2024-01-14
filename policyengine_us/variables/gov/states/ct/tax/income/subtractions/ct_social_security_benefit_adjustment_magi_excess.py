@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ct_magi_excess_over_base(Variable):
+class ct_social_security_benefit_adjustment_magi_excess(Variable):
     value_type = float
     entity = TaxUnit
     unit = USD

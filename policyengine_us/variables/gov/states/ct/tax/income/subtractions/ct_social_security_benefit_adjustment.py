@@ -22,7 +22,7 @@ class ct_social_security_benefit_adjustment(Variable):
         us_taxable_ss = tax_unit("tax_unit_taxable_social_security", period)
         ss_rate = p.social_security.rate.social_security
         ss_fraction = us_taxable_ss * ss_rate
-        excess = tax_unit("ct_magi_excess_over_base", period)
+        excess = tax_unit("ct_social_security_benefit_adjustment_magi_excess", period)
         # Line 41, Part C and Part D
         # Lesser of 25% of MAGI excess and 25% of taxable social security benefits
         magi_rate = p.magi_excess
