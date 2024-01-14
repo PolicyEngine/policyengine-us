@@ -8,5 +8,5 @@ class ga_income_tax(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.GA
-    adds = ["ga_income_tax_before_refundable_credits"]
+    adds = ["ga_income_tax_before_non_refundable_credits"]
     subtracts = ["ga_refundable_credits"]
