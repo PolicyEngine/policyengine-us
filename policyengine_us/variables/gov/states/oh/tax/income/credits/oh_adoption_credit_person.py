@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class oh_adoption_credit_person(Variable):
     value_type = float
     entity = Person
-    label = "Ohio adoption credit person"
+    label = "Ohio adoption credit for each person"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -32,5 +32,4 @@ class oh_adoption_credit_person(Variable):
             max_(eligible_adoption_related_expenses, p.amount.min),
             p.amount.max,
         )
-        credit = credit_if_eligible * age_eligible_adopted_child
-        return credit
+        return credit_if_eligible * age_eligible_adopted_child
