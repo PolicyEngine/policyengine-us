@@ -8,7 +8,7 @@ class wv_low_income_family_tax_credit_agi(Variable):
     unit = USD
     definition_period = YEAR
     reference = "https://code.wvlegislature.gov/11-21-12/"  # §11-21-12 (b)
-    defined_for = StateCode.WV
+    defined_for = "wv_low_income_family_tax_credit_eligible"
 
     adds = [
         "adjusted_gross_income",
