@@ -1,0 +1,23 @@
+- name: 30% phase-in rate with two children
+  period: 2023
+  reforms: policyengine_us.reforms.congress.wyden_smith.ctc_expansion.ctc_expansion
+  input:
+    gov.contrib.congress.wyden_smith.ctc_expansion: True
+    people:
+      head:
+        employment_income: 20_000
+      spouse:
+        employment_income: 30_000
+      child_1:
+        age: 5
+      child_2:
+        age: 6
+    tax_units:
+      tax_unit: 
+        members: [head, spouse, child_1, child_2]
+        tax_unit_earned_income: 10_000
+        ctc_qualifying_children: 2
+        ctc: 20_000
+  output:
+    # 10,000 - 2,500 = 7,500 | 7,500 * 0.3 = 2,250
+    refundable_ctc: 2_250
