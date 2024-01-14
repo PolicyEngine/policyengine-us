@@ -3,7 +3,7 @@ from policyengine_us.model_api import *
 
 class oh_adoption_credit_person(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     label = "Ohio adoption credit person"
     unit = USD
     definition_period = YEAR
