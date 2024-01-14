@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.619.0] - 2024-01-14 03:06:31
+
+### Added
+
+- Add Alabama income tax to the modelled_policies.yaml file.
+
 ## [0.618.3] - 2024-01-13 22:01:49
 
 ## [0.618.2] - 2024-01-13 21:11:58
@@ -6802,6 +6808,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.619.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.618.3...0.619.0
 [0.618.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.618.2...0.618.3
 [0.618.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.618.1...0.618.2
 [0.618.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.618.0...0.618.1
