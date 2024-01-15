@@ -25,7 +25,7 @@
     mi_household_resources: 20_504
     mi_exemptions: 2
     state_code: MI
-  output:
+  output: # 20_504 >= 20_504
     mi_alternate_home_heating_credit_eligible: false
 
 - name: Househould resource ineligible, 7 exemptions
@@ -35,5 +35,5 @@
     mi_household_resources: 27_700
     mi_exemptions: 7
     state_code: MI
-  output:
+  output: # 27_700 >= 27_700
     mi_alternate_home_heating_credit_eligible: false

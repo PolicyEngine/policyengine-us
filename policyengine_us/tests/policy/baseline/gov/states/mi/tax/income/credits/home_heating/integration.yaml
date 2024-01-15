@@ -1,0 +1,76 @@
+- name: integretion test 1
+  period: 2022
+  input:
+    people:
+      person1:
+        is_full_time_student: false
+        claimed_as_dependent_on_another_return: false
+      person2:
+        is_full_time_student: true
+        claimed_as_dependent_on_another_return: false
+      person3:
+        is_full_time_student: true
+        claimed_as_dependent_on_another_return: false
+    tax_units:
+      tax_unit:
+        mi_household_resources: 1_000
+        mi_exemptions: 2
+        heating_expenses: 1_000
+        tax_unit_fpg: 23_030
+        utilities_included_in_rent: false
+        members: [person1, person2, person3]
+        tax_unit_size: 3
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MI
+  output: 
+    mi_alternate_home_heating_credit_eligible: true
+    # (1_000 - 1_000 * 0.11) * 0.7
+    mi_alternate_home_heating_credit: 623
+    mi_standard_home_heating_credit_eligible: true
+    # 706 - 1000 * 0.035
+    mi_standard_home_heating_credit: 671
+    mi_home_heating_credit_eligible_rate: 1
+    # 671 * 0.9
+    mi_home_heating_credit: 603.9
+
+- name: integretion test 2, an elderly couple with $12,020 income and four dependents
+  period: 2022
+  input:
+    people:
+      person1:
+        is_full_time_student: false
+        claimed_as_dependent_on_another_return: false
+      person2:
+        is_full_time_student: true
+        claimed_as_dependent_on_another_return: false
+      person3:
+        is_full_time_student: true
+        claimed_as_dependent_on_another_return: false
+      person4:
+        is_full_time_student: false
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        mi_household_resources: 12_020
+        mi_exemptions: 6
+        heating_expenses: 1_000
+        tax_unit_fpg: 23_030
+        utilities_included_in_rent: false
+        members: [person1, person2, person3, person4]
+        tax_unit_size: 4
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: MI
+  output: 
+    mi_alternate_home_heating_credit_eligible: true
+    # (1_000 - 12_020 * 0.11) * 0.7 < 0
+    mi_alternate_home_heating_credit: 0
+    mi_standard_home_heating_credit_eligible: true
+    # 1433 - 12_020 * 0.035
+    mi_standard_home_heating_credit: 1012.3
+    mi_home_heating_credit_eligible_rate: 1
+    # 1012.3 * 0.9
+    mi_home_heating_credit: 911.07
