@@ -8,10 +8,8 @@ class hi_alternative_tax_on_capital_gains_eligible(Variable):
     definition_period = YEAR
     defined_for = StateCode.HI
 
+    # The tax form spcifies an income threshold which is not defined in the law
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.hi.tax.income.alternative_tax
-        filing_status = tax_unit("filing_status", period)
-        taxable_income = tax_unit("taxable_income", period)
-        income_threshold = p.income_threshold[filing_status]
-        income_eligible = taxable_income > income_threshold
-        return p.availability & income_eligible
+        net_capital_gains = tax_unit("net_capital_gain", period)
+        return p.availability & (net_capital_gains > 0)
