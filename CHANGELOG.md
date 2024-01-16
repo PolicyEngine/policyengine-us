@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.622.0] - 2024-01-16 22:26:28
+
+### Added
+
+- Virginia itemized deductions.
+
 ## [0.621.0] - 2024-01-16 21:49:29
 
 ### Added
@@ -6839,6 +6845,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.622.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.621.0...0.622.0
 [0.621.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.620.3...0.621.0
 [0.620.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.620.2...0.620.3
 [0.620.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.620.1...0.620.2
