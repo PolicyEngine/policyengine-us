@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ca_fytc_eligible(Variable):
+class ca_foster_youth_tax_credit_eligible(Variable):
     value_type = bool
     entity = Person
     label = "Eligible person for the California foster youth tax credit"
@@ -12,7 +12,7 @@ class ca_fytc_eligible(Variable):
     def formula(person, period, parameters):
         p = parameters(period).gov.states.ca.tax.income.credits.foster_youth
 
-        eitc_eligibility = person("ca_eitc_eligible", period)
+        eitc_eligibility = person("ca_eitc_eligible_person", period)
 
         in_foster_care = person(
             "ca_in_qualifying_foster_care_facility", period

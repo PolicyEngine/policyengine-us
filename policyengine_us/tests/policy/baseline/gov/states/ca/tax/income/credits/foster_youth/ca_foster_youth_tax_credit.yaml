@@ -4,11 +4,11 @@
     people:
       person_1:
         age: 23
-        ca_fytc_eligible: true
+        ca_foster_youth_tax_credit_eligible: true
         earned_income: 1_000
       person_2:
         age: 20
-        ca_fytc_eligible: true
+        ca_foster_youth_tax_credit_eligible: true
         earned_income: 1_000
     tax_units:
       tax_unit:
@@ -18,7 +18,7 @@
         members: [person_1, person_2]
         state_code: CA
   output:
-    ca_fytc: 2_166
+    ca_foster_youth_tax_credit: 2_166
 
 - name: An eligible primary head and an ineligible spouse, have total income below 25000 dollars
   period: 2022
@@ -26,11 +26,11 @@
     people:
       person_1:
         age: 23
-        ca_fytc_eligible: true
+        ca_foster_youth_tax_credit_eligible: true
         earned_income: 1_000
       person_2:
         age: 20
-        ca_fytc_eligible: false
+        ca_foster_youth_tax_credit_eligible: false
         earned_income: 1_000
     tax_units:
       tax_unit:
@@ -40,7 +40,7 @@
         members: [person_1, person_2]
         state_code: CA
   output:
-    ca_fytc: 1083
+    ca_foster_youth_tax_credit: 1083
   
 - name: An eligible primary head that has income above 25000 dollars in 2022
   period: 2022
@@ -48,19 +48,19 @@
     people:
       person_1:
         age: 23
-        ca_fytc_eligible: true
+        ca_foster_youth_tax_credit: true
         earned_income: 1_000
     tax_units:
       tax_unit:
-        members: person_1
+        members: [person_1]
     households:
       household:
-        members: person_1
+        members: [person_1]
         state_code: CA
   output:
   # 1083 - (26000 - 25000) * 0.2166 =  866 
   # round to the nearest whole dollar
-    ca_fytc: 866
+    ca_foster_youth_tax_credit: 866
   
 - name: An ineligible primary head and an ineligible spouse that have total income below 25000 dollars
   period: 2022
@@ -68,11 +68,11 @@
     people:
       person_1:
         age: 26
-        ca_fytc_eligible: true
+        ca_foster_youth_tax_credit_eligible: true
         earned_income: 1_000
       person_2:
         age: 20
-        ca_fytc_eligible: false
+        ca_foster_youth_tax_credit_eligible: false
         earned_income: 1_000
     tax_units:
       tax_unit:
@@ -82,7 +82,7 @@
         members: [person_1, person_2]
         state_code: CA
   output:
-    ca_fytc: 0
+    ca_foster_youth_tax_credit: 0
 
 - name: An eligible primary head and an ineligible spouse that have total earned income above 25000 dollars in 2021
   period: 2021
@@ -90,11 +90,11 @@
     people:
       person_1:
         age: 23
-        ca_fytc_eligible: true
+        ca_foster_youth_tax_credit_eligible: true
         earned_income: 25_000
       person_2:
         age: 20
-        ca_fytc_eligible: false
+        ca_foster_youth_tax_credit_eligible: false
         earned_income: 1_000
     tax_units:
       tax_unit:
@@ -105,5 +105,5 @@
         state_code: CA
   output:
   # 1000 - (26000 - 25000) * 0.20 =  800
-    ca_fytc: 800
+    ca_foster_youth_tax_credit: 800
 
