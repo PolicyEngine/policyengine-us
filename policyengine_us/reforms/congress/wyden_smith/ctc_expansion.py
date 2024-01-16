@@ -21,6 +21,7 @@ def create_ctc_expansion() -> Reform:
             # TCJA provision.
 
             ctc = parameters(period).gov.irs.credits.ctc
+            wyden_smith = parameters(period).gov.contrib.congress.wyden_smith
 
             maximum_amount = tax_unit("ctc_refundable_maximum", period)
 
@@ -37,7 +38,14 @@ def create_ctc_expansion() -> Reform:
             # - Social Security tax minus the EITC
             # First, we find tax_increase:
 
-            earnings = tax_unit("tax_unit_earned_income", period)
+            current_year_earnings = tax_unit("tax_unit_earned_income", period)
+            if wyden_smith.lookback:
+                prior_year_earnings = tax_unit(
+                    "tax_unit_earned_income_last_year", period
+                )
+                earnings = max_(current_year_earnings, prior_year_earnings)
+            else:
+                earnings = current_year_earnings
             earnings_over_threshold = max_(
                 0, earnings - ctc.refundable.phase_in.threshold
             )
