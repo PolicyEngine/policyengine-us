@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.621.0] - 2024-01-16 21:49:29
+
+### Added
+
+- Prior-year earnings imputation.
+- Wyden-Smith CTC lookback provision.
+
 ## [0.620.3] - 2024-01-15 11:19:42
 
 ### Fixed
@@ -6832,6 +6839,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.621.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.620.3...0.621.0
 [0.620.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.620.2...0.620.3
 [0.620.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.620.1...0.620.2
 [0.620.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.620.0...0.620.1
