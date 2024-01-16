@@ -16,17 +16,15 @@ class de_refundable_eitc(Variable):
         combined separate returns for Delaware, the credit may only be applied against the tax
         imposed on the spouse with the higher taxable income reported on Line 22
         """
-        p = parameters(
-            period
-        ).gov.states.de.tax.income.credits.eitc
+        p = parameters(period).gov.states.de.tax.income.credits.eitc
         # How to Get the higher tax_after_non_refundable_credits between head and spouse
-        tax_after_non_refundable_credit = tax_unit("de_income_tax_before_non_refundable_credits", period) - tax_unit("de_non_refundable_credits", period)
-        
+        tax_after_non_refundable_credit = tax_unit(
+            "de_income_tax_before_non_refundable_credits", period
+        ) - tax_unit("de_non_refundable_credits", period)
+
         federal_eitc = tax_unit("eitc", period)
         refundable_eitc_cal = federal_eitc * p.refundable
-        refundabele_eitc_eligibility = refundable_eitc_cal >= tax_after_non_refundable_credit
-        return where(
-            refundabele_eitc_eligibility,
-            refundable_eitc_cal,
-            0
+        refundabele_eitc_eligibility = (
+            refundable_eitc_cal >= tax_after_non_refundable_credit
         )
+        return where(refundabele_eitc_eligibility, refundable_eitc_cal, 0)
