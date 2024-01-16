@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ca_fytc(Variable):
+class ca_foster_youth_tax_credit(Variable):
     value_type = float
     entity = TaxUnit
     label = "California foster youth tax credit"
