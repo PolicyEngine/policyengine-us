@@ -18,8 +18,8 @@ class va_itemized_deductions(Variable):
             instant_str = f"2017-01-01"
         else:
             instant_str = period
-        irs = parameters(instant_str).gov.irs.deductions.itemized.limitation
-        va = parameters(period).gov.states.va.tax.income.deductions.itemized
+        p_irs = parameters(instant_str).gov.irs.deductions.itemized.limitation
+        p_va = parameters(period).gov.states.va.tax.income.deductions.itemized
 
         # va itemized deductions
         itm_deds_less_salt = tax_unit("itemized_deductions_less_salt", period)
@@ -30,11 +30,11 @@ class va_itemized_deductions(Variable):
         # limitations to the itemized deduction are applied
         federal_agi = tax_unit("adjusted_gross_income", period)
         filing_status = tax_unit("filing_status", period)
-        applicable_amount = va.applicable_amount[filing_status]
-        agi_adjustment = irs.agi_rate * max_(
-            federal_agi - applicable_amount, 0
-        )
-        itm_deds_adjustment = irs.itemized_deduction_rate * va_itm_deds
+        applicable_amount = p_va.applicable_amount[filing_status]
+        excess = max_(federal_agi - applicable_amount, 0)
+        agi_adjustment = p_irs.agi_rate * excess
+
+        itm_deds_adjustment = p_irs.itemized_deduction_rate * va_itm_deds
         va_itm_deds_adjustment = min_(agi_adjustment, itm_deds_adjustment)
 
         # Part B: state and local income tax modification
@@ -47,8 +47,8 @@ class va_itemized_deductions(Variable):
 
         # Virginia Schedule A fails to mention if state and local income taxes cannot be negative
         salt = tax_unit("state_and_local_sales_or_income_tax", period)
-        state_and_local_income_tax_adjustment = (
-            salt - salt * adjustment_fraction
+        state_and_local_income_tax_adjustment = salt * (
+            1 - adjustment_fraction
         )
 
         va_limited_itm_deds = max_(

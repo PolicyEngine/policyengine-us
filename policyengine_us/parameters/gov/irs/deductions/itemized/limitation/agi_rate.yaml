@@ -1,4 +1,4 @@
-description: Itemized deductions are limited to this percenatge of the excess of adjusted gross income over the applicable amount.
+description: The US limits itemized deductions to this fraction of the excess of adjusted gross income over the applicable amount.
 values:
   2017-01-01: 0.03
   2018-01-01: .inf
@@ -6,7 +6,7 @@ values:
 metadata:
   unit: /1
   period: year
-  label: Itemized deductions adjusted gross income rate
+  label: The US itemized deductions limitation fraction
   reference:
     - title: 26 U.S. Code § 68 - Overall limitation on itemized deductions (a)(1)
       href: https://www.law.cornell.edu/uscode/text/26/68#a_1
