@@ -14,7 +14,7 @@ class ca_fytc(Variable):
 
         age = person("age", period)
 
-        age_eligible = p.age_threshold.calc(age)
+        max_credit_amounr = p.age_threshold.calc(age)
 
         number_of_people = add(tax_unit, period, ["ca_fytc_eligible"])
 
