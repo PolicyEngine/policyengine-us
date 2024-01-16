@@ -289,6 +289,31 @@ values:
   2023-10-01: 171.838
   2023-11-01: 171.459
   2023-12-01: 171.255
+  # Move to Projected CPI-U by the CBO
+  2024-01-01: 172.271 # 3.0% increase in Q1 of 2024
+  2024-02-01: 173.252 # 3.0% increase in Q1 of 2024
+  2024-03-01: 173.857 # 3.0% increase in Q1 of 2024
+  2024-04-01: 173.810 # 2.5% increase in Q2 of 2024
+  2024-05-01: 174.227 # 2.5% increase in Q2 of 2024
+  2024-06-01: 174.782 # 2.5% increase in Q2 of 2024
+  2024-07-01: 175.393 # 2.7% increase in 2024
+  2024-08-01: 176.164 # 2.7% increase in 2024
+  2024-09-01: 176.561 # 2.7% increase in 2024
+  2024-10-01: 176.478 # 2.7% increase in 2024
+  2024-11-01: 176.088 # 2.7% increase in 2024
+  2024-12-01: 175.879 # 2.7% increase in 2024
+  2025-01-01: 176.061 # 2.2% increase in 2025
+  2025-02-01: 177.064 # 2.2% increase in 2025
+  2025-03-01: 177.682 # 2.2% increase in 2025
+  2025-04-01: 177.634 # 2.2% increase in 2025
+  2025-05-01: 178.056 # 2.2% increase in 2025
+  2025-06-01: 178.627 # 2.2% increase in 2025
+  2025-07-01: 179.252 # 2.2% increase in 2025
+  2025-08-01: 180.040 # 2.2% increase in 2025
+  2025-09-01: 180.445 # 2.2% increase in 2025
+  2025-10-01: 180.361 # 2.2% increase in 2025
+  2025-11-01: 179.962 # 2.2% increase in 2025
+  2025-12-01: 179.748 # 2.2% increase in 2025
 
 metadata:
   unit: currency-USD
@@ -297,3 +322,5 @@ metadata:
   reference:
     - title: "su.data.0.Current (SUUR0000SA0)"
       href: https://download.bls.gov/pub/time.series/su/su.data.0.Current
+    - title: Congressional Budget Office, Economic Outlook; 2023 to 2025
+      href: https://www.cbo.gov/publication/59431
