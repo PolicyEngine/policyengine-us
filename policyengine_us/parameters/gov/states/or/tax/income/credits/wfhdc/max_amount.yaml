@@ -1,0 +1,11 @@
+description: Oregon limits its working family household and dependent care expense to this amount or less per depenent. 
+metadata:
+  unit: currency-USD
+  period: year
+  label: Oregon maximum child and dependent care expenses per dependent.
+  reference:
+    - title: OR Rev Stat § 315.264 (1)(c)(C)
+      href: https://law.justia.com/codes/oregon/2021/volume-08/chapter-315/section-315-264/
+values:
+  2016-01-01: 12_000
+  # applies to tax years beginning on or after January 1, 2016, and before January 1, 2028
