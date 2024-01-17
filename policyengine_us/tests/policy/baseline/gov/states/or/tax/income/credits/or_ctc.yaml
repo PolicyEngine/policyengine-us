@@ -3,7 +3,7 @@
   input:
     state_code: OR
     age: 5
-    or_income_after_subtractions: 0
+    or_agi: 0
   output:
     or_ctc: 0
 
@@ -13,7 +13,7 @@
     state_code: OR
     age: 5
     is_tax_unit_dependent: true
-    or_income_after_subtractions: 0
+    or_agi: 0
   output:
     or_ctc: 1_000
 
@@ -23,7 +23,7 @@
     state_code: CA
     age: 5
     is_tax_unit_dependent: true
-    or_income_after_subtractions: 0
+    or_agi: 0
   output:
     or_ctc: 0
 
@@ -33,7 +33,7 @@
     state_code: OR
     age: 6
     is_tax_unit_dependent: true
-    or_income_after_subtractions: 0
+    or_agi: 0
   output:
     or_ctc: 0
 
@@ -43,7 +43,7 @@
     state_code: OR
     age: 5
     is_tax_unit_dependent: true
-    or_income_after_subtractions: 30_000
+    or_agi: 30_000
   output:
     or_ctc: 0
 
@@ -53,7 +53,7 @@
     state_code: OR
     age: 5
     is_tax_unit_dependent: true
-    or_income_after_subtractions: 100_000
+    or_agi: 100_000
   output:
     or_ctc: 0
 
@@ -63,7 +63,7 @@
     state_code: OR
     age: 5
     is_tax_unit_dependent: true
-    or_income_after_subtractions: 27_500
+    or_agi: 27_500
   output:
     or_ctc: 500
 
@@ -92,6 +92,6 @@
     tax_units:
       tax_unit:
         members: [parent, child1, child2, child3, child4, child5, child6]
-        or_income_after_subtractions: 25_000
+        or_agi: 25_000
   output:
     or_ctc: 5_000
