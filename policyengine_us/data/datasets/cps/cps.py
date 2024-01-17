@@ -100,7 +100,6 @@ def add_id_variables(
 
     # Add weights
     # Weights are multiplied by 100 to avoid decimals
-    cps["person_weight"] = person.A_FNLWGT / 1e2
     cps["family_weight"] = family.FSUP_WGT / 1e2
 
     # Tax unit weight is the weight of the containing family.
