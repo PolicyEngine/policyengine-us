@@ -4,14 +4,9 @@ from policyengine_us.model_api import *
 class va_agi_person(Variable):
     value_type = float
     entity = Person
-    label = "Virginia Adjusted Gross Income (VAGI) for each individual"
+    label = "Virginia adjusted gross income for each person"
     unit = USD
     definition_period = YEAR
-    reference = (
-        "https://law.lis.virginia.gov/vacodefull/title58.1/chapter3/article2/"
-    )
+    # Virginia includes an individual level definition for AGI
+    reference = "https://www.tax.virginia.gov/laws-rules-decisions/rulings-tax-commissioner/13-5"
     defined_for = StateCode.VA
-
-    adds = ["adjusted_gross_income_person", "va_additions"]
-
-    subtracts = ["va_subtractions"]

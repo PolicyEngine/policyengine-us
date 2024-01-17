@@ -26,7 +26,7 @@ class va_age_deduction(Variable):
         birth_year_head = period.start.year - age_head
         birth_year_spouse = period.start.year - age_spouse
 
-        agi = tax_unit("adjusted_gross_income", period)
+        agi = tax_unit("va_age_deduction_agi", period)
 
         # Calculate the number of people who are eligible for an age deduction
         head_eligible = age_head >= p.age_minimum
