@@ -20,11 +20,12 @@ def create_ctc_expansion() -> Reform:
             # This is the full CTC. This is then limited to the maximum refundable amount per child as per the
             # TCJA provision.
 
-            ctc = parameters(period).gov.irs.credits.ctc
+            p_ctc = parameters(period).gov.irs.credits.ctc
+            p_wyden_smith = parameters(period).gov.contrib.congress.wyden_smith
 
             maximum_amount = tax_unit("ctc_refundable_maximum", period)
 
-            if ctc.refundable.fully_refundable:
+            if p_ctc.refundable.fully_refundable:
                 reduction = tax_unit("ctc_phase_out", period)
                 return max_(0, maximum_amount - reduction)
 
@@ -37,13 +38,25 @@ def create_ctc_expansion() -> Reform:
             # - Social Security tax minus the EITC
             # First, we find tax_increase:
 
-            earnings = tax_unit("tax_unit_earned_income", period)
+            current_year_earnings = tax_unit("tax_unit_earned_income", period)
+            if p_wyden_smith.actc_lookback:
+                prior_year_earnings = tax_unit(
+                    "tax_unit_earned_income_last_year", period
+                )
+                earnings = max_(current_year_earnings, prior_year_earnings)
+            else:
+                earnings = current_year_earnings
             earnings_over_threshold = max_(
-                0, earnings - ctc.refundable.phase_in.threshold
+                0, earnings - p_ctc.refundable.phase_in.threshold
             )
             qualifying_children = tax_unit("ctc_qualifying_children", period)
 
-            phase_in_rate = ctc.refundable.phase_in.rate * qualifying_children
+            if p_wyden_smith.per_child_actc_phase_in:
+                phase_in_rate = (
+                    p_ctc.refundable.phase_in.rate * qualifying_children
+                )
+            else:
+                phase_in_rate = p_ctc.refundable.phase_in.rate
 
             relevant_earnings = earnings_over_threshold * phase_in_rate
 
@@ -68,7 +81,7 @@ def create_ctc_expansion() -> Reform:
             qualifying_children = tax_unit("ctc_qualifying_children", period)
             tax_increase = where(
                 qualifying_children
-                < ctc.refundable.phase_in.min_children_for_ss_taxes_minus_eitc,
+                < p_ctc.refundable.phase_in.min_children_for_ss_taxes_minus_eitc,
                 relevant_earnings,
                 max_(relevant_earnings, social_security_excess),
             )
@@ -96,7 +109,7 @@ def create_ctc_expansion_reform(parameters, period, bypass: bool = False):
 
     p = parameters(period).gov.contrib.congress.wyden_smith
 
-    if p.ctc_expansion:
+    if p.actc_lookback or p.per_child_actc_phase_in:
         return create_ctc_expansion()
     else:
         return None
