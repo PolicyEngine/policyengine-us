@@ -10,6 +10,11 @@ core:
     - WIC
 filtered:
   state_name:
+    AL:
+      modelled:
+      - Alabama state income tax
+      not_modelled:
+      - Alabama TANF
     CA:
       modelled:
       - California state income tax

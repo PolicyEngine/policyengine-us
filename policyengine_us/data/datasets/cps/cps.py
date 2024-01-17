@@ -21,6 +21,7 @@ class CPS(Dataset):
     name = "cps"
     label = "CPS"
     raw_cps: Type[RawCPS] = None
+    previous_year_raw_cps: Type[RawCPS] = None
     data_format = Dataset.ARRAYS
 
     def generate(self):
@@ -39,6 +40,7 @@ class CPS(Dataset):
         add_id_variables(cps, person, tax_unit, family, spm_unit, household)
         add_personal_variables(cps, person)
         add_personal_income_variables(cps, person, self.raw_cps.time_period)
+        add_previous_year_income(self, cps)
         add_spm_variables(cps, spm_unit)
         add_household_variables(cps, household)
 
@@ -161,7 +163,7 @@ def add_personal_variables(cps: h5py.File, person: DataFrame) -> None:
     DISABILITY_FLAGS = [
         "PEDIS" + i for i in ["DRS", "EAR", "EYE", "OUT", "PHY", "REM"]
     ]
-    cps["is_ssi_disabled"] = (person[DISABILITY_FLAGS] == 1).any(axis=1)
+    cps["is_disabled"] = (person[DISABILITY_FLAGS] == 1).any(axis=1)
 
     def children_per_parent(col: str) -> pd.DataFrame:
         """Calculate number of children in the household using parental
@@ -250,10 +252,10 @@ def add_personal_income_variables(
     cps["unemployment_compensation"] = person.UC_VAL
     # Add pensions and annuities.
     cps_pensions = person.PNSN_VAL + person.ANN_VAL
-    cps["taxable_pension_income"] = cps_pensions * (
+    cps["taxable_private_pension_income"] = cps_pensions * (
         p["taxable_pension_fraction"][year]
     )
-    cps["tax_exempt_pension_income"] = cps_pensions * (
+    cps["tax_exempt_private_pension_income"] = cps_pensions * (
         1 - p["taxable_pension_fraction"][year]
     )
     # Other income (OI_VAL) is a catch-all for all other income sources.
@@ -343,6 +345,105 @@ def add_household_variables(cps: h5py.File, household: DataFrame) -> None:
     cps["in_nyc"] = np.isin(state_county_fips, nyc_full_county_fips)
 
 
+def add_previous_year_income(self, cps: h5py.File) -> None:
+    if self.previous_year_raw_cps is None:
+        print(
+            "No previous year data available for this dataset, skipping previous year income imputation."
+        )
+        return
+
+    from survey_enhance.impute import Imputation
+
+    cps_current_year_data = self.raw_cps().load()
+    cps_previous_year_data = self.previous_year_raw_cps().load()
+    cps_previous_year = cps_previous_year_data.person.set_index(
+        cps_previous_year_data.person.PERIDNUM
+    )
+    cps_current_year = cps_current_year_data.person.set_index(
+        cps_current_year_data.person.PERIDNUM
+    )
+
+    PREDICTORS = [
+        "WSAL_VAL",
+        "SEMP_VAL",
+        "A_AGE",
+        "A_SEX",
+        "DIV_VAL",
+        "INT_VAL",
+        "SS_VAL",
+        "ANN_VAL",
+        "PNSN_VAL",
+        "UC_VAL",
+        "CAP_VAL",
+        "CSP_VAL",
+        "CHSP_VAL",
+        "PAW_VAL",
+        "SSI_VAL",
+        "WICYN",
+        "PHIP_VAL",
+        "MOOP",
+    ]
+
+    in_sample = cps_previous_year_data.person.PERIDNUM[
+        cps_previous_year_data.person.PERIDNUM.isin(
+            cps_current_year_data.person.PERIDNUM
+        )
+    ]
+    cps_prev_long_subset = cps_previous_year.loc[in_sample]
+    cps_cur_long_subset = cps_current_year.set_index(
+        cps_current_year.PERIDNUM
+    ).loc[in_sample]
+
+    data_prev = cps_prev_long_subset[PREDICTORS].rename(
+        columns={x: x + "_prev" for x in PREDICTORS}
+    )
+    data_cur = cps_cur_long_subset[PREDICTORS].rename(
+        columns={x: x + "_cur" for x in PREDICTORS}
+    )
+    data = pd.concat([data_prev, data_cur], axis=1)
+
+    X = data[[column + "_cur" for column in PREDICTORS]]
+    y = data[["WSAL_VAL_prev", "SEMP_VAL_prev"]]
+
+    income_last_year = Imputation()
+    income_last_year.train(X, y)
+
+    df = pd.DataFrame()
+    df["person_id"] = cps_current_year.index
+    cps_cur_record_in_sample = cps_current_year.index.isin(
+        cps_previous_year.index
+    )
+    df["in_sample"] = cps_cur_record_in_sample
+    df["employment_income_prev"] = np.ones(len(df)) * np.nan
+    df["employment_income_prev"][
+        cps_cur_record_in_sample
+    ] = cps_previous_year.loc[
+        cps_current_year.index[cps_cur_record_in_sample]
+    ].WSAL_VAL.values
+    df["self_employment_income_prev"] = np.ones(len(df)) * np.nan
+    df["self_employment_income_prev"][
+        cps_cur_record_in_sample
+    ] = cps_previous_year.loc[
+        cps_current_year.index[cps_cur_record_in_sample]
+    ].SEMP_VAL.values
+
+    X = cps_current_year[PREDICTORS][~cps_cur_record_in_sample]
+    X = X.rename(columns={x: x + "_cur" for x in PREDICTORS})
+    Y_pred = income_last_year.predict(X)
+    df["employment_income_prev"][
+        ~cps_cur_record_in_sample
+    ] = Y_pred.WSAL_VAL_prev.values
+    df["self_employment_income_prev"][
+        ~cps_cur_record_in_sample
+    ] = Y_pred.SEMP_VAL_prev.values
+
+    cps["employment_income_last_year"] = df["employment_income_prev"].values
+    cps["self_employment_income_last_year"] = df[
+        "self_employment_income_prev"
+    ].values
+    cps["previous_year_income_imputed"] = df["in_sample"].values
+
+
 class CPS_2020(CPS):
     name = "cps_2020"
     label = "CPS 2020"
@@ -363,9 +464,9 @@ class CPS_2022(CPS):
     name = "cps_2022"
     label = "CPS 2022"
     raw_cps = RawCPS_2022
+    previous_year_raw_cps = RawCPS_2021
     file_path = STORAGE_FOLDER / "cps_2022.h5"
     time_period = 2022
-    # url = None
 
 
 CPS_2023 = UpratedCPS.from_dataset(
