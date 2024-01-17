@@ -1,0 +1,14 @@
+- name: immigration_status test
+  period: 2023
+  input:
+    people:
+      person1:
+        immigration_status_str: "UNDOCUMENTED"
+      person2:
+        immigration_status_str: "LEGAL_PERMANENT_RESIDENT"
+      person3:
+        immigration_status_str: "CITIZEN"
+      person4:
+        immigration_status_str: "DACA_TPS"
+  output:
+    immigration_status: [UNDOCUMENTED, LEGAL_PERMANENT_RESIDENT, CITIZEN, DACA_TPS]

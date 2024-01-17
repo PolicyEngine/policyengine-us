@@ -1,0 +1,23 @@
+- name: Two dependents gets $2k exemption.
+  period: 2022
+  input:
+    state_code: LA
+    tax_unit_dependents: 2
+  output:
+    la_dependents_exemption: 2_000
+
+- name: One dependent gets $1k exemption.
+  period: 2022
+  input:
+    state_code: LA
+    tax_unit_dependents: 1
+  output:
+    la_dependents_exemption: 1_000
+
+- name: No dependent gets $0 exemption.
+  period: 2022
+  input:
+    state_code: LA
+    tax_unit_dependents: 0
+  output:
+    la_dependents_exemption: 0

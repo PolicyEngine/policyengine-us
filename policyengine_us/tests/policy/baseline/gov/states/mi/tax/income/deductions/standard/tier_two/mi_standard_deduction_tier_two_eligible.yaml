@@ -1,0 +1,23 @@
+- name: 2022 filer who is at the tier 2 standard deduction age threshold
+  period: 2022
+  input:
+    older_spouse_birth_year: 1946
+    state_code: MI
+  output: 
+    mi_standard_deduction_tier_two_eligible: true
+
+- name: 2022 filer who is below the tier 2 standard deduction age threshold
+  period: 2022
+  input:
+    older_spouse_birth_year: 1945
+    state_code: MI
+  output: 
+    mi_standard_deduction_tier_two_eligible: false
+    
+- name: 2022 filer who is above the tier 2 standard deduction age threshold
+  period: 2022
+  input:
+    older_spouse_birth_year: 1953
+    state_code: MI
+  output: 
+    mi_standard_deduction_tier_two_eligible: false

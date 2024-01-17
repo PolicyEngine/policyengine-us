@@ -1,0 +1,36 @@
+- name: The federal poverty guidelines for family size of 4 is $27,750.
+  period: 2022
+  input:
+    tax_unit_size: 4
+    state_group: CONTIGUOUS_US
+    wv_low_income_family_tax_credit_eligible: true
+  output:
+    wv_low_income_family_tax_credit_fpg: 27_750
+
+- name: The federal poverty guidelines for family size of 2 is $18,310.
+  period: 2022
+  input:
+    tax_unit_size: 2
+    state_group: CONTIGUOUS_US
+    wv_low_income_family_tax_credit_eligible: true
+  output:
+    wv_low_income_family_tax_credit_fpg: 18_310
+
+- name: The federal poverty guidelines for family size of 8 is $46,630.
+  period: 2022
+  input:
+    tax_unit_size: 8
+    state_group: CONTIGUOUS_US
+    wv_low_income_family_tax_credit_eligible: true
+  output:
+    # 14_580 + 7 * 5_140
+    wv_low_income_family_tax_credit_fpg: 46_630
+
+- name: The federal poverty guidelines for family size of 10 is $46,630.
+  period: 2022
+  input:
+    tax_unit_size: 10
+    state_group: CONTIGUOUS_US
+    wv_low_income_family_tax_credit_eligible: true
+  output:
+    wv_low_income_family_tax_credit_fpg: 46_630

@@ -1,16 +1,20 @@
-description: Oregon refundable tax credits.
+description: Oregon provides these refundable tax credits. 
 values:
   2019-01-01:
   - or_eitc
   - or_kicker
+  - or_working_family_household_and_dependent_care_credit
   2023-01-01:
   - or_eitc
   - or_kicker
   - or_ctc
+  - or_working_family_household_and_dependent_care_credit
   # Child Tax Credit legislation ends in 2029.
   2029-01-01:
   - or_eitc
   - or_kicker
+  - or_working_family_household_and_dependent_care_credit
 metadata:
   unit: list
-  label: OR refundable tax credits
+  period: year
+  label: Oregon refundable tax credits

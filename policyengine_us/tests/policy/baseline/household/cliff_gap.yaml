@@ -1,0 +1,149 @@
+- name: household_net_income test TX-netinc-base
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    age: 40
+    employment_income: 100_000
+    taxable_interest_income: 100_000
+    state_fips: 48  # TX
+  output:
+    spm_unit_net_income: 151_539.00
+    household_net_income: 151_539.00
+
+- name: household_net_income test TX-netinc-alt
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    age: 40
+    employment_income: 100_000 + 2_000
+    taxable_interest_income: 100_000
+    state_fips: 48  # TX
+  output:
+    spm_unit_net_income: 152_670.00
+    household_net_income: 152_670.00
+
+- name: cliff_gap test TX-cliff_gap
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    age: 40
+    employment_income: 100_000
+    taxable_interest_income: 100_000
+    state_fips: 48  # TX
+  output:  # as expected from above two test results
+    cliff_gap: 0
+
+- name: household_net_income test 1 DC-netinc-base
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    age: 70
+    employment_income: 76_500
+    rent: 24_000
+    state_fips: 11  # DC
+  output:
+    adjusted_gross_income: 76_500
+    dc_ptc: 1_225
+    household_net_income: 59_718
+
+- name: household_net_income test 1 DC-netinc-alt
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    age: 70
+    employment_income: 76_500 + 1_000
+    rent: 24_000
+    state_fips: 11  # DC
+  output:
+    adjusted_gross_income: 76_500 + 1_000
+    dc_ptc: 0
+    household_net_income: 58_831.5
+
+- name: cliff_gap test 1 DC-cliff_gap
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    simulation.cliff_delta: 1_000
+    age: 70
+    employment_income: 76_500
+    rent: 24_000
+    state_fips: 11  # DC
+  output:  # as expected from above two test results
+    cliff_gap: 886.5
+
+- name: household_net_income test 2 DC-netinc-base
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 76_500
+        rent: 24_000
+      person2:
+        age: 69
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 11  # DC
+  output:
+    adjusted_gross_income: 76_500
+    dc_ptc: 1_225
+    household_net_income: 66_461.25
+
+- name: household_net_income test 2 DC-netinc-alt
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 76_500 + 1_000
+        rent: 24_000
+      person2:
+        age: 69
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 11  # DC
+  output:
+    adjusted_gross_income: 76_500 + 1_000
+    dc_ptc: 0
+    household_net_income: 65_974.75
+
+- name: cliff_gap test 2 DC-cliff_gap
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    simulation.cliff_delta: 1_000
+    people:
+      person1:
+        age: 70
+        employment_income: 76_500
+        rent: 24_000
+      person2:
+        age: 69
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 11  # DC
+  output:  # as expected from above two test results
+    cliff_gap: [486.5, 470.47]
