@@ -13,10 +13,6 @@ class ms_agi_indiv(Variable):
     )
     defined_for = StateCode.MS
 
-    # AGI = Income - Total adjustments from gross income
-    adds = "gov.states.ms.tax.income.income_sources"
-    subtracts = ["ms_agi_adjustments"]
-
     def formula(person, period, parameters):
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         ms_agi = person.tax_unit("ms_agi_joint", period)
