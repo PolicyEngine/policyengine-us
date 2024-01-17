@@ -9,9 +9,9 @@
   output:
     ct_social_security_benefit_adjustment: 20_000
 
+- name: Single filing with adjusted gross income at least as much as the max amount
   period: 2022
-  input:- name: Single filing with adjusted gross income at least as much as the max amount
-
+  input:
     state_code: CT
     tax_unit_taxable_social_security: 20_000
     adjusted_gross_income: 80_000
