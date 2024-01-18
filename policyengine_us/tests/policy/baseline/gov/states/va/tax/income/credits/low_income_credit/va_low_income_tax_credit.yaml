@@ -1,0 +1,15 @@
+- name: No exemptions
+  period: 2022
+  input:
+    state_code: VA
+    va_personal_exemption: 0
+  output:
+    va_low_income_tax_credit: 0
+
+- name: Three exemptions
+  period: 2022
+  input:
+    state_code: VA
+    va_personal_exemption: 3
+  output:
+    va_low_income_tax_credit: 900

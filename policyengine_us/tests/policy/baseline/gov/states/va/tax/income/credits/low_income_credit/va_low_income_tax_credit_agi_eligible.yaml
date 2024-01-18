@@ -1,0 +1,35 @@
+- name: No income
+  period: 2021
+  input:
+    va_low_income_tax_credit_eligible: true
+    tax_unit_fpg: 1_000
+    va_agi: 0
+  output:
+    va_low_income_tax_credit_agi_eligible: true
+
+- name: Low income (low exemptions)
+  period: 2021
+  input:
+    va_low_income_tax_credit_eligible: true
+    tax_unit_fpg: 1_980
+    va_agi: 1_980
+  output:
+    va_low_income_tax_credit_agi_eligible: true
+
+- name: Low income (a few exemptions)
+  period: 2021
+  input:
+    va_low_income_tax_credit_eligible: true
+    tax_unit_fpg: 10_001
+    va_agi: 10_000
+  output:
+    va_low_income_tax_credit_agi_eligible: true
+
+- name: High income (low exemptions), ineligible
+  period: 2021
+  input:
+    va_low_income_tax_credit_eligible: false
+    tax_unit_fpg: 39_999
+    va_agi: 40_000
+  output:
+    va_low_income_tax_credit_agi_eligible: false
