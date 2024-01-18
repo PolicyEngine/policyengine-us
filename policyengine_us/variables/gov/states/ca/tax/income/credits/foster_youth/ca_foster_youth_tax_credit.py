@@ -15,20 +15,18 @@ class ca_foster_youth_tax_credit(Variable):
 
         age = person("age", period)
 
-        max_credit_amount = p.age_threshold.calc(age)
+        base_credit = p.age_threshold.calc(age)
 
-        number_of_people = add(tax_unit, period, ["ca_foster_youth_tax_credit_eligible"])
+        eligible_people = add(tax_unit, period, ["ca_foster_youth_tax_credit_eligible"])
 
         earned_income = add(tax_unit, period, ["earned_income"])
 
-        excess_earned_income = earned_income - max_credit_amount
+        excess_earned_income = earned_income - base_credit
 
         reduction_amount = max_(
             0, excess_earned_income * p.reduction_rate
         )
         #If age_eligible is 0, the amount of fytc should be 0
-        age_condition = excess_earned_income == earned_income
+        person_amount = min_(p.max_amount, earned_income - reduction_amount)
 
-        fytc_amount = min_(p.max_amount, earned_income - reduction_amount)
-
-        return where(age_condition, 0, fytc_amount) * number_of_people
+        return person_amount * eligible_people
