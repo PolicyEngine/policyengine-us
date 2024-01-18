@@ -40,6 +40,7 @@ class household_state_income_tax(Variable):
     ]
     subtracts = [
         "al_refundable_credits",  # Alabama.
+        "az_refundable_credits",  # Arizona.
         "ca_refundable_credits",  # California.
         "co_refundable_credits",  # Colorado
         "dc_refundable_credits",  # District of Columbia.
