@@ -15,8 +15,6 @@ from .congress.wyden_smith import create_ctc_expansion_reform
 from .congress.tlaib.end_child_poverty_act import create_ecpa_adult_dependent_credit_reform
 from .congress.tlaib.end_child_poverty_act import create_ecpa_filer_credit_reform
 
-from .williamson import create_universal_child_allowance_reform
-
 from policyengine_core.reforms import Reform
 import warnings
 
@@ -44,8 +42,6 @@ def create_structural_reforms_from_parameters(parameters, period):
 
     ecpa_filer_credit = create_ecpa_filer_credit_reform(parameters, period)
 
-    universal_child_allowance = create_universal_child_allowance_reform(parameters, period)
-
     reforms = [
         afa_reform,
         winship_reform,
@@ -56,7 +52,6 @@ def create_structural_reforms_from_parameters(parameters, period):
         ctc_expansion,
         ecpa_adult_dependent_credit,
         ecpa_filer_credit,
-        universal_child_allowance,
     ]
 
     reforms = tuple(filter(lambda x: x is not None, reforms))
