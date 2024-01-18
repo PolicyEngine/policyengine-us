@@ -1,0 +1,129 @@
+- name: Hawaii disabled exemption bug
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 48_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_fips: 15  # HI
+  output:  # expected results from hand-calculation with N-15 form/instructions
+    hi_regular_exemptions: 1_144
+    hi_disabled_exemptions: 0 
+    hi_exemptions: 1_144          
+
+- name: no disabled people
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 65
+        is_disabled: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        tax_unit_dependents: 3
+    households:
+      household:
+        members: [person1]
+        state_fips: 15  # HI
+  output:  
+    hi_exemptions: 2_288
+
+- name: Disabled head and spouse
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 65
+        is_disabled: true
+      person2:
+        age: 65
+        is_disabled: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_dependents: 0
+    households:
+      household:
+        members: [person1]
+        state_fips: 15  # HI
+  output:  
+    hi_exemptions: 14_000
+
+- name: Disabled head and aged spouse
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 65
+        is_disabled: true
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 65
+        is_disabled: false
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_dependents: 0
+    households:
+      household:
+        members: [person1]
+        state_fips: 15  # HI
+  output:  
+    hi_exemptions: 9_288
+
+- name: Disabled head and not aged spouse
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 65
+        is_disabled: true
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 64
+        is_disabled: false
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_dependents: 3
+    households:
+      household:
+        members: [person1]
+        state_fips: 15  # HI
+  output:  
+    hi_exemptions: 8_144
+
+- name: Disabled head but enough dependents to offset the disabled amount
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 65
+        is_disabled: true
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 64
+        is_disabled: false
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        exemptions_count: 10
+    households:
+      household:
+        members: [person1]
+        state_fips: 15  # HI
+  output:  
+    hi_regular_exemptions: 12_584
+    hi_disabled_exemptions: 8_144
+    hi_exemptions: 12_584    

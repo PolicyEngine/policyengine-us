@@ -11,9 +11,11 @@ values:
     - spm_unit_pell_grant
     - educator_expense
     - disability_benefits
+    - oh_unreimbursed_medical_care_expense_deduction
     
 metadata:
   unit: list
+  period: year
   label: Ohio deductions
   reference:
     - title: Ohio 2021 Instructions for Filing Original and Amended
