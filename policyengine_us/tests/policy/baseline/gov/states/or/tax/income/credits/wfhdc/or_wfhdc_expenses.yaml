@@ -1,4 +1,4 @@
-- name: Oregen wfhdc expenses for 1 dependent household with childcare expense over max allowed amount
+- name: Oregon wfhdc expenses for 1 dependent household with childcare expense over max allowed amount
   period: 2022
   input:
     tax_unit_childcare_expenses: 20_000  # > $12,000
@@ -8,7 +8,7 @@
   output:
     or_wfhdc_expenses: 12_000 # min(12000,30000)
 
-- name: Oregen wfhdc expenses for 1 dependent household with childcare expense below max allowed amount
+- name: Oregon wfhdc expenses for 1 dependent household with childcare expense below max allowed amount
   period: 2022
   input:
     tax_unit_childcare_expenses: 10_000 # < $12,000
@@ -18,7 +18,7 @@
   output:
     or_wfhdc_expenses: 10_000 # min(10000,30000)
 
-- name: Oregen wfhdc expenses for 3 dependent household with childcare expense over max allowed amount
+- name: Oregon wfhdc expenses for 3 dependent household with childcare expense over max allowed amount
   period: 2022
   input:
     tax_unit_childcare_expenses: 50_000 # > min(3,2) * $12,000 = $24,000
