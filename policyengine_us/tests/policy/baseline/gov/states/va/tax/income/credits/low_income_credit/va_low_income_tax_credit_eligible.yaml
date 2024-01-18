@@ -8,7 +8,7 @@
     va_military_benefit_subtraction: 0
     va_federal_state_employees_subtraction: 0
   output:
-    va_low_income_tax_credit_program_eligibility: false
+    va_low_income_tax_credit_eligible: false
 
 - name: Not eligible for the low income tax credit program because filled for items that disqualify him/her.
   period: 2021
@@ -20,7 +20,7 @@
     va_military_benefit_subtraction: 0
     va_federal_state_employees_subtraction: 0
   output:
-    va_low_income_tax_credit_program_eligibility: false
+    va_low_income_tax_credit_eligible: false
 
 - name: Eligible for the low income tax credit program.
   period: 2021
@@ -32,4 +32,4 @@
     va_military_benefit_subtraction: 0
     va_federal_state_employees_subtraction: 0
   output:
-    va_low_income_tax_credit_program_eligibility: true
+    va_low_income_tax_credit_eligible: true

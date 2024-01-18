@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class va_prorate_fraction(Variable):
+class va_agi_share(Variable):
     value_type = float
     entity = Person
-    label = "Virginia adjusted gross income proration fraction"
+    label = "Virginia share of state adjusted gross income of each person"
     unit = USD
     definition_period = YEAR
     reference = "https://www.tax.virginia.gov/sites/default/files/vatax-pdf/2021-760-instructions.pdf#page=20"

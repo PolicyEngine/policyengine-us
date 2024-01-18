@@ -16,8 +16,8 @@ class va_eitc_person(Variable):
         claims_refundable = person.tax_unit(
             "va_claims_refundable_eitc", period
         )
-        va_prorate_fraction = person("va_prorate_fraction", period)
-        return (
-            where(claims_refundable, refundable_eitc, non_refundable_eitc)
-            * va_prorate_fraction
+        va_agi_share = person("va_agi_share", period)
+        eitc_claimed = where(
+            claims_refundable, refundable_eitc, non_refundable_eitc
         )
+        return eitc_claimed * va_agi_share

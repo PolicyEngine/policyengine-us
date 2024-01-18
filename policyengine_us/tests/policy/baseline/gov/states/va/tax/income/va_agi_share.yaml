@@ -15,7 +15,7 @@
         members: [person1, person2]
         state_code: VA
   output:
-    va_prorate_fraction: [0.2, 0.8]
+    va_agi_share: [0.2, 0.8]
 
 - name: If no adjusted gross income, assign to head.
   period: 2021
@@ -30,11 +30,11 @@
         members: [person1, person2]
         state_code: VA
   output:
-    va_prorate_fraction: [1, 0]
+    va_agi_share: [1, 0]
 
 - name: If no net income and single, assign entirely to them as head.
   period: 2021
   input:
     state_code: VA
   output:
-    va_prorate_fraction: 1
+    va_agi_share: 1
