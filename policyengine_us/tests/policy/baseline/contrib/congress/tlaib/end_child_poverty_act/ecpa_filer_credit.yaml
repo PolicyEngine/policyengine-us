@@ -1,5 +1,6 @@
 - name: Seniors do not qualify for the ECPA filer credit
   period: 2022
+  reforms: policyengine_us.reforms.congress.tlaib.end_child_poverty_act.ecpa_filer_credit
   input:
     gov.contrib.congress.tlaib.end_child_poverty_act.adult_dependent_credit.amount: 600
     gov.contrib.congress.tlaib.end_child_poverty_act.adult_dependent_credit.min_age: 19
