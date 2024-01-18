@@ -5,6 +5,67 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.624.0] - 2024-01-18 12:46:05
+
+### Added
+
+- Virginia earned income tax credit.
+
+## [0.623.0] - 2024-01-17 14:40:43
+
+### Added
+
+- CBO inflation projections.
+
+## [0.622.1] - 2024-01-17 13:34:14
+
+### Fixed
+
+- Bug causing the Wyden-Smith CTC to not create in 2024.
+
+## [0.622.0] - 2024-01-16 22:26:28
+
+### Added
+
+- Virginia itemized deductions.
+
+## [0.621.0] - 2024-01-16 21:49:29
+
+### Added
+
+- Prior-year earnings imputation.
+- Wyden-Smith CTC lookback provision.
+
+## [0.620.3] - 2024-01-15 11:19:42
+
+### Fixed
+
+- West Virginia family tax credit.
+
+## [0.620.2] - 2024-01-14 22:52:58
+
+### Added
+
+- Ohio adoption credit person level variable.
+
+## [0.620.1] - 2024-01-14 19:23:50
+
+### Fixed
+
+- Idaho income tax rates.
+
+## [0.620.0] - 2024-01-14 18:21:30
+
+### Added
+
+- Georgia non-refundable credits structure.
+
+## [0.619.0] - 2024-01-14 03:06:31
+
+### Added
+
+- Add Alabama income tax to the modelled_policies.yaml file.
+
 ## [0.618.3] - 2024-01-13 22:01:49
 
 ## [0.618.2] - 2024-01-13 21:11:58
@@ -6802,6 +6863,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.624.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.623.0...0.624.0
+[0.623.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.622.1...0.623.0
+[0.622.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.622.0...0.622.1
+[0.622.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.621.0...0.622.0
+[0.621.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.620.3...0.621.0
+[0.620.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.620.2...0.620.3
+[0.620.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.620.1...0.620.2
+[0.620.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.620.0...0.620.1
+[0.620.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.619.0...0.620.0
+[0.619.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.618.3...0.619.0
 [0.618.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.618.2...0.618.3
 [0.618.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.618.1...0.618.2
 [0.618.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.618.0...0.618.1
