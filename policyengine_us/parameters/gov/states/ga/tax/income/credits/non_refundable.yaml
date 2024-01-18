@@ -1,0 +1,16 @@
+description: Georgia provides these non-refundable income tax credits.
+values:
+  2021-01-01:
+    - ga_cdcc
+    - ga_low_income_credit
+metadata:
+  unit: list
+  period: year
+  label: Georgia non-refundable tax credits
+  reference:
+    # Low income credit.
+    - title: Official Code of Georgia Annotated | CH17 Income Taxes | O.C.G.A. § 48-7A-3 (c)
+      href: https://law.justia.com/codes/georgia/2022/title-48/chapter-7a/section-48-7a-3/
+    # Child and dependent care credit.
+    - title: Official Code of Georgia Annotated |  O.C.G.A. § 48-7-29.10(b)
+      href: https://law.justia.com/codes/georgia/2022/title-48/chapter-7/article-2/section-48-7-29-10/
