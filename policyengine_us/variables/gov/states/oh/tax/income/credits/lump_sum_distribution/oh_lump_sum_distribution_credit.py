@@ -10,4 +10,5 @@ class oh_lump_sum_distribution_credit(Variable):
     reference = (
         "https://tax.ohio.gov/static/forms/ohio_individual/individual/2021/pit-it1040-booklet.pdf#page=29",
     )
-    defined_for = "oh_lump_sum_distribution_credit_eligible"
+
+    adds = ["oh_lump_sum_distribution_credit_person"]
