@@ -17,11 +17,9 @@ class ca_eitc_eligible_person(Variable):
         eitc_investment_income = tax_unit(
             "eitc_relevant_investment_income", period
         )
-
-        meets_requirements = tax_unit.any(
+        return(
             (age >= p.eligibility.age.min)
             & (age <= p.eligibility.age.max)
             & ~is_dependent
             & eitc_investment_income <= p.eligibility.max_investment_income
         )
-        return meets_requirements
