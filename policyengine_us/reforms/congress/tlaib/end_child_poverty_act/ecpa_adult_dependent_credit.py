@@ -10,7 +10,7 @@ def create_ecpa_adult_dependent_credit() -> Reform:
         unit = USD
         label = "End Child Poverty Act Adult Dependent Credit"
 
-        def formula_2022(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):
             person = tax_unit.members
             p = parameters(
                 period
@@ -22,9 +22,7 @@ def create_ecpa_adult_dependent_credit() -> Reform:
 
     class reform(Reform):
         def apply(self):
-            self.update_variable(ecpa_adult_dependent_credit)
-
-
+            self.add_variable(ecpa_adult_dependent_credit)
 
     return reform
 

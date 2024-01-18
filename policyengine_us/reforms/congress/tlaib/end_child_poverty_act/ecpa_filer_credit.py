@@ -10,7 +10,7 @@ def create_ecpa_filer_credit() -> Reform:
         label = "End Child Poverty Act Filer Credit"
         reference = "https://tlaib.house.gov/sites/tlaib.house.gov/files/EndChildPovertyAct.pdf"
 
-        def formula_2022(tax_unit, period, parameters):
+        def formula(tax_unit, period, parameters):
             # Filer credit.
             # Define eligibility based on age.
             age_head = tax_unit("age_head", period)
@@ -41,28 +41,28 @@ def create_ecpa_filer_credit() -> Reform:
 
     class reform(Reform):
         def apply(self):
-            self.update_variable(ecpa_filer_credit)
+            self.add_variable(ecpa_filer_credit)
+
 
     return reform
 
 
 def create_ecpa_filer_credit_reform(
-     parameters, period, tax_unit, bypass: bool = False,
+     parameters, period, bypass: bool = False,
 ):
     if bypass:
         return create_ecpa_filer_credit()
 
-    filing_status = tax_unit("filing_status", period)
 
     p = parameters(
         period
     ).gov.contrib.congress.tlaib.end_child_poverty_act.filer_credit
 
 
-    if p.amount[filing_status] > 0:
+    if p.amount.SINGLE + p.amount.JOINT + p.amount.WIDOW +  p.amount.HEAD_OF_HOUSEHOLD +  p.amount.SEPARATE > 0:
         return create_ecpa_filer_credit()
     else:
         return None
 
 
-ecpa_filer_credit = create_ecpa_filer_credit_reform( None, None, None, bypass=True)
+ecpa_filer_credit = create_ecpa_filer_credit_reform( None, None, bypass=True)
