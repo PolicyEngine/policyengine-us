@@ -15,7 +15,7 @@ class ca_foster_youth_tax_credit_eligible(Variable):
         eitc_eligibility = person("ca_eitc_eligible_person", period)
 
         in_foster_care = person(
-            "ca_in_qualifying_foster_care_facility", period
+            "ca_was_in_qualifying_foster_care_facility", period
         )
 
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
