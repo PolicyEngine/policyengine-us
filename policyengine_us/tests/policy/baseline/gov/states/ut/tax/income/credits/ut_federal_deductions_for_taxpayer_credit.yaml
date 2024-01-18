@@ -1,4 +1,4 @@
-- name: Separate filing status, total SALT < SALT cap
+- name: Case 1:Separate filing status, total SALT < cap
   period: 2021
   input:
     filing_status: SEPARATE
@@ -11,7 +11,7 @@
     ut_federal_deductions_for_taxpayer_credit: 3_000
 
   
-- name: Separate filing status, total SALT > SALT cap
+- name: Case 2:Separate filing status, total SALT > cap
   period: 2021
   input:
     filing_status: SEPARATE
@@ -23,7 +23,7 @@
   output:
     ut_federal_deductions_for_taxpayer_credit: 7_000
   
-- name: Joint filling status, total SALT > SALT cap
+- name: Case 3:Joint filling status, total SALT > cap
   period: 2021
   input:
     filing_status: JOINT
@@ -35,7 +35,7 @@
   output:
     ut_federal_deductions_for_taxpayer_credit: 12_000
     
-- name: Joint filling status, total SALT < SALT cap
+- name: Case 4:Joint filling status, total SALT < cap
   period: 2021
   input:
     filing_status: JOINT
