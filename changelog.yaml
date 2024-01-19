@@ -5543,3 +5543,292 @@
     added:
     - Disability-based UBI.
   date: 2023-12-22 16:24:22
+- bump: patch
+  changes:
+    fixed:
+    - Massachusetts 2023 EITC rate.
+  date: 2023-12-23 01:36:50
+- bump: patch
+  changes:
+    fixed:
+    - Pension income allocated at the lowest possible level.
+    - Bug in LSR branching setup.
+  date: 2023-12-24 01:05:33
+- bump: patch
+  changes:
+    fixed:
+    - Michigan retirement deduction calculation.
+  date: 2023-12-24 22:19:24
+- bump: minor
+  changes:
+    added:
+    - West Virginia senior citizen or disability deduction.
+  date: 2023-12-24 23:11:31
+- bump: minor
+  changes:
+    added:
+    - Ohio joint filing credit.
+  date: 2023-12-24 23:34:48
+- bump: patch
+  changes:
+    added:
+    - README.md to aca parameter folder.
+  date: 2023-12-25 00:14:47
+- bump: patch
+  changes:
+    fixed:
+    - Add hdf5 to conda environment to avoid installation errors.
+  date: 2023-12-27 01:17:17
+- bump: minor
+  changes:
+    added:
+    - Populate AMI and PHA payment standard for LA County.
+  date: 2023-12-28 00:29:20
+- bump: minor
+  changes:
+    added:
+    - Hawaii itemized deduction.
+  date: 2023-12-28 00:52:05
+- bump: minor
+  changes:
+    fixed:
+    - is_ssi_disabled always uses the microdata.
+  date: 2023-12-28 20:25:42
+- bump: patch
+  changes:
+    fixed:
+    - Bug causing cliffs to not be calculated in SNAP.
+  date: 2023-12-28 21:41:40
+- bump: minor
+  changes:
+    added:
+    - West Virginia homestead excess property tax credit.
+    - West Virginia gross household income.
+  date: 2023-12-29 01:48:49
+- bump: patch
+  changes:
+    fixed:
+    - Parameter computing Ohio partial non-refundable credits.
+  date: 2023-12-30 00:25:33
+- bump: patch
+  changes:
+    fixed:
+    - 2023 Massachusetts short term capital gains.
+  date: 2024-01-03 07:08:43
+- bump: minor
+  changes:
+    added:
+    - Hawaii alternative tax on capital gains.
+  date: 2024-01-03 15:31:42
+- bump: patch
+  changes:
+    fixes:
+    - Fix Virginia military benefits subtraction formula.
+  date: 2024-01-03 17:35:14
+- bump: minor
+  changes:
+    added:
+    - Georgia retirement income exclusions.
+    - Georgia military retirement income exclusion.
+  date: 2024-01-03 17:40:03
+- bump: patch
+  changes:
+    fixed:
+    - Defined CalWORKS income limit as annual.
+  date: 2024-01-03 22:49:51
+- bump: patch
+  changes:
+    fixed:
+    - Rhode Island exemptions formula.
+  date: 2024-01-04 01:03:25
+- bump: patch
+  changes:
+    fixes:
+    - South Carolina taxable income calculation.
+  date: 2024-01-04 01:12:31
+- bump: minor
+  changes:
+    added:
+    - Vermont retirement income exemption.
+  date: 2024-01-04 04:49:41
+- bump: patch
+  changes:
+    fixed:
+    - Arizona deductions formula.
+  date: 2024-01-04 18:24:35
+- bump: patch
+  changes:
+    fixed:
+    - West Virginia senior citizen or disability deduction source.
+  date: 2024-01-05 14:55:37
+- bump: minor
+  changes:
+    added:
+    - Montana elderly homeowner/renter credit.
+  date: 2024-01-06 13:51:28
+- bump: minor
+  changes:
+    added:
+    - Kentucky itemized deductions.
+  date: 2024-01-06 15:19:01
+- bump: patch
+  changes:
+    fixed:
+    - Removed extraneous add/subtract pairs in income_tax calculation logic.
+  date: 2024-01-06 15:23:54
+- bump: minor
+  changes:
+    added:
+    - Louisiana exemptions.
+  date: 2024-01-06 17:47:15
+- bump: minor
+  changes:
+    added:
+    - Louisiana itemized deductions.
+  date: 2024-01-07 19:10:57
+- bump: minor
+  changes:
+    added:
+    - Idaho permanent building fund tax.
+  date: 2024-01-07 22:34:28
+- bump: patch
+  changes:
+    fixed:
+    - Massachusetts 2023 rent deduction cap increase.
+  date: 2024-01-09 23:52:23
+- bump: minor
+  changes:
+    added:
+    - Michigan home heating credit.
+  date: 2024-01-10 01:10:28
+- bump: patch
+  changes:
+    fixes:
+    - California CalWORKS TANF monthly income variables.
+  date: 2024-01-10 11:27:40
+- bump: minor
+  changes:
+    added:
+    - Fix Hawaii disabled exemption formula.
+  date: 2024-01-11 08:34:23
+- bump: minor
+  changes:
+    added:
+    - Ohio unreimbursed medical care expense deduction.
+  date: 2024-01-11 10:29:17
+- bump: minor
+  changes:
+    added:
+    - Virginia spouse tax adjustment.
+  date: 2024-01-11 11:56:03
+- bump: minor
+  changes:
+    added:
+    - Reform to phase in ACTC on a per-child basis.
+  date: 2024-01-11 13:23:48
+- bump: minor
+  changes:
+    added:
+    - Oregon working family household and dependent care credit.
+  date: 2024-01-11 16:21:57
+- bump: minor
+  changes:
+    added:
+    - Enable Alabama income tax structure.
+  date: 2024-01-12 13:03:39
+- bump: minor
+  changes:
+    added:
+    - Arizona 529 college savings plans subtraction.
+  date: 2024-01-12 13:06:44
+- bump: patch
+  changes:
+    fixed:
+    - Hawaii taxable income formula.
+  date: 2024-01-12 17:18:32
+- bump: patch
+  changes:
+    fixed:
+    - Ohio adoption credit variable.
+  date: 2024-01-12 17:36:51
+- bump: minor
+  changes:
+    added:
+    - Add Alabama to the net income tree.
+  date: 2024-01-12 19:50:01
+- bump: patch
+  changes:
+    fixed:
+    - Virginia age deduction AGI.
+  date: 2024-01-12 19:56:01
+- bump: patch
+  changes:
+    fixed:
+    - 2021 Rhode Island income tax brackets.
+  date: 2024-01-13 21:11:58
+- bump: patch
+  changes:
+    fixes:
+    - Immigration rules for CalWORKS Child Care program.
+  date: 2024-01-13 22:01:49
+- bump: minor
+  changes:
+    added:
+    - Add Alabama income tax to the modelled_policies.yaml file.
+  date: 2024-01-14 03:06:31
+- bump: minor
+  changes:
+    added:
+    - Georgia non-refundable credits structure.
+  date: 2024-01-14 18:21:30
+- bump: patch
+  changes:
+    fixed:
+    - Idaho income tax rates.
+  date: 2024-01-14 19:23:50
+- bump: patch
+  changes:
+    added:
+    - Ohio adoption credit person level variable.
+  date: 2024-01-14 22:52:58
+- bump: patch
+  changes:
+    fixed:
+    - West Virginia family tax credit.
+  date: 2024-01-15 11:19:42
+- bump: minor
+  changes:
+    added:
+    - Prior-year earnings imputation.
+    - Wyden-Smith CTC lookback provision.
+  date: 2024-01-16 21:49:29
+- bump: minor
+  changes:
+    added:
+    - Virginia itemized deductions.
+  date: 2024-01-16 22:26:28
+- bump: patch
+  changes:
+    fixed:
+    - Bug causing the Wyden-Smith CTC to not create in 2024.
+  date: 2024-01-17 13:34:14
+- bump: minor
+  changes:
+    added:
+    - CBO inflation projections.
+  date: 2024-01-17 14:40:43
+- bump: minor
+  changes:
+    added:
+    - Virginia earned income tax credit.
+  date: 2024-01-18 12:46:05
+- bump: minor
+  changes:
+    added:
+    - Consolidate Oregon AGI logic according to the model standards.
+  date: 2024-01-18 23:25:24
+- bump: patch
+  changes:
+    fixed:
+    - Michigan disability exemptions.
+  date: 2024-01-19 05:05:00
