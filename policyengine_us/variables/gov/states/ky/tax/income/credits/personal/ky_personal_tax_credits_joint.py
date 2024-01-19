@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ky_personal_tax_credits_person(Variable):
     value_type = float
     entity = Person
-    label = "Kentucky personal tax credits when married couple file jointly"
+    label = "Kentucky personal tax credits for each person"
     unit = USD
     reference = "https://apps.legislature.ky.gov/law/statutes/statute.aspx?id=53500#page=3"  # (3) (a)
     definition_period = YEAR
