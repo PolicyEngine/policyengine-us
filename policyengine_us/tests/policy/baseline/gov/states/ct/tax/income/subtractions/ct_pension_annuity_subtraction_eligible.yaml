@@ -1,0 +1,35 @@
+- name: Eligibility of Single filer 2022 with adjusted gross income below $65,000
+  period: 2022
+  input:
+    state_code: CT
+    filing_status: SINGLE
+    adjusted_gross_income: 65_000
+  output:
+    ct_pension_annuity_subtraction_eligible: True
+
+- name: Eligibility of Joint filer 2022 with adjusted gross income below $99,000
+  period: 2021
+  input:
+    state_code: CT
+    filing_status: JOINT
+    adjusted_gross_income: 99_000
+  output:
+    ct_pension_annuity_subtraction_eligible: True
+
+- name: Eligibility of Single filer 2022 with adjusted gross income below $85,000
+  period: 2022
+  input:
+    state_code: CT
+    filing_status: SINGLE
+    adjusted_gross_income: 85_000
+  output:
+    ct_pension_annuity_subtraction_eligible: False
+
+- name: Eligibility of Joint filer 2022 with adjusted gross income below $105,000
+  period: 2022
+  input:
+    state_code: CT
+    filing_status: JOINT
+    adjusted_gross_income: 105_000
+  output:
+    ct_pension_annuity_subtraction_eligible: False

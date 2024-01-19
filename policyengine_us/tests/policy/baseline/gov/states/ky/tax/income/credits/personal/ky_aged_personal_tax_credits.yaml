@@ -1,0 +1,35 @@
+- name: Kentucky head or spouse, under eligible age 
+  period: 2022
+  input:
+    state_code: KY
+    age: 61
+    is_tax_unit_head_or_spouse: true
+  output:
+    ky_aged_personal_tax_credits: 0
+
+- name: Kentucky head or spouse, over eligible age 
+  period: 2022
+  input:
+    state_code: KY
+    age: 70
+    is_tax_unit_head_or_spouse: true
+  output:
+    ky_aged_personal_tax_credits: 40
+
+- name: Kentucky not head or spouse, over eligible age 
+  period: 2022
+  input:
+    state_code: KY
+    age: 70
+    is_tax_unit_head_or_spouse: false
+  output:
+    ky_aged_personal_tax_credits: 0
+
+- name: Kentucky not head or spouse, under eligible age 
+  period: 2022
+  input:
+    state_code: KY
+    age: 60
+    is_tax_unit_head_or_spouse: false
+  output:
+    ky_aged_personal_tax_credits: 0

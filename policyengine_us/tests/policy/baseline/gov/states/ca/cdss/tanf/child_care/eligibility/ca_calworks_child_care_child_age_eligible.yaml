@@ -1,0 +1,52 @@
+- name: A child age 13 is eligible.
+  period: 2023
+  input:
+    age: 13
+    is_disabled: false
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+  output:
+    ca_calworks_child_care_child_age_eligible: true
+
+- name: A child age 14 is ineligible.
+  period: 2023
+  input:
+    age: 14
+    is_disabled: false
+  output:
+    ca_calworks_child_care_child_age_eligible: false
+
+- name: A disabled child age 18 is eligible.
+  period: 2023
+  input:
+    age: 18
+    is_disabled: true
+    immigration_status: CITIZEN
+  output:
+    ca_calworks_child_care_child_age_eligible: true
+
+- name: A disabled child age 19 is ineligible.
+  period: 2023
+  input:
+    age: 19
+    is_disabled: true
+  output:
+    ca_calworks_child_care_child_age_eligible: false
+
+
+- name: Ineligible if child is undokumented
+  period: 2023
+  input:
+    age: 18
+    is_disabled: true
+    immigration_status: UNDOCUMENTED
+  output:
+    ca_calworks_child_care_child_age_eligible: false
+
+- name: Ineligible if child is TPS
+  period: 2023
+  input:
+    age: 18
+    is_disabled: true
+    immigration_status: DACA_TPS
+  output:
+    ca_calworks_child_care_child_age_eligible: false
