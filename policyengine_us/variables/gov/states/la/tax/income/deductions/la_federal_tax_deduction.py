@@ -20,11 +20,11 @@ class la_federal_tax_deduction(Variable):
         )
         investment_tax = tax_unit("net_investment_income_tax", period)
         fed_tax = tax_before_refundable_credits + investment_tax
-        lump_sum_distributions = tax_unit(
-            "form_4972_lumpsum_distributions", period
+        reductions = add(
+            tax_unit,
+            period,
+            ["form_4972_lumpsum_distributions", "premium_tax_credit"],
         )
-        premium_tax_credit = tax_unit("premium_tax_credit", period)
-        reductions = lump_sum_distributions + premium_tax_credit
         # The deduction was discontinued in 2022
         p = parameters(period).gov.states.la.tax.income.deductions.federal_tax
         return max_(0, fed_tax - reductions) * p.availability
