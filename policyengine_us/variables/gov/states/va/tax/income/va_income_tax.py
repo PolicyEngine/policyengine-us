@@ -8,6 +8,5 @@ class va_income_tax(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.VA
-
     adds = ["va_income_tax_before_refundable_credits"]
     subtracts = ["va_refundable_credits"]
