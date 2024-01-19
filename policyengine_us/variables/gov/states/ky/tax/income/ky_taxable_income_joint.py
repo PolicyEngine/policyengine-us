@@ -14,8 +14,7 @@ class ky_taxable_income_joint(Variable):
         agi = person("ky_agi_joint", period)
         standard_deduction = person("ky_standard_deduction_joint", period)
         itemized_deductions = person("ky_itemized_deductions_joint", period)
-        # Assume that filers itemize if itemized deductions exceed the standard deduction.
-        # They do not need to follow their federal itemization choice.
+        # The itemization choice is not dependent on the federal itemization
         deduction = max_(standard_deduction, itemized_deductions)
 
         return max_(0, agi - deduction)
