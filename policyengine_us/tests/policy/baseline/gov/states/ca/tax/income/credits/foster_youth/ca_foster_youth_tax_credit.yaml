@@ -1,4 +1,4 @@
-- name: An eligible primary head and an eligible spouse, have total income is below 25000 dollars
+- name: An eligible primary head and an eligible spouse, have total income below 25000 dollars
   period: 2022
   input:
     people:
@@ -19,6 +19,29 @@
         state_code: CA
   output:
     ca_foster_youth_tax_credit: 2_166
+
+- name: An eligible primary head and an eligible spouse, have total income above 25000 dollars
+  period: 2022
+  input:
+    people:
+      person_1:
+        age: 23
+        ca_foster_youth_tax_credit_eligible: true
+        earned_income: 20_000
+      person_2:
+        age: 20
+        ca_foster_youth_tax_credit_eligible: true
+        earned_income: 6_000
+    tax_units:
+      tax_unit:
+        members: [person_1, person_2]
+    households:
+      household:
+        members: [person_1, person_2]
+        state_code: CA
+  output:
+    #2166 - 1000 * 0.2166= 1949.4
+    ca_foster_youth_tax_credit: 1949.4
 
 - name: An eligible primary head and an ineligible spouse, have total income below 25000 dollars
   period: 2022
@@ -58,9 +81,8 @@
         members: [person_1]
         state_code: CA
   output:
-  # 1083 - (26000 - 25000) * 0.2166 =  866 
-  # round to the nearest whole dollar
-    ca_foster_youth_tax_credit: 866
+  # 1083 - (26000 - 25000) * 0.2166 =  866.4
+    ca_foster_youth_tax_credit: 866.4
   
 - name: An ineligible primary head and an ineligible spouse that have total income below 25000 dollars
   period: 2022

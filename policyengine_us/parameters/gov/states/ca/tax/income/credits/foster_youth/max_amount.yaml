@@ -1,11 +1,12 @@
-description: California provides the foster youth tax credit for this maximum amount
+description: California provides the foster youth tax credit with an income threshold of 25000 dollars
 values: 
-  2021-01-01: 1_000
-  2022-01-01: 1_083
+  #2021-01-01: 1_000
+  #2022-01-01: 1_083
+  2021-01-01: 25_000
 metadata:
   unit: currency-USD
   period: year
-  label: California foster youth tax credit maximum amount
+  label: California foster youth tax credit income threshold
   reference:
     - title: California Foster Youth Tax Credit
       href: https://www.ftb.ca.gov/file/personal/credits/foster-youth-tax-credit.html
