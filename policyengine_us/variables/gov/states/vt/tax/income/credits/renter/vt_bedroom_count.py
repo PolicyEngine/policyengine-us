@@ -8,9 +8,7 @@ class vt_bedroom_count(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.VT
-    reference = (
-        "https://tax.vermont.gov/sites/tax/files/documents/Income%20Booklet-2022.pdf#page=35"
-    )
+    reference = "https://tax.vermont.gov/sites/tax/files/documents/Income%20Booklet-2022.pdf#page=35"
 
     def formula(tax_unit, period, parameters):
         is_joint = tax_unit("tax_unit_is_joint", period)
