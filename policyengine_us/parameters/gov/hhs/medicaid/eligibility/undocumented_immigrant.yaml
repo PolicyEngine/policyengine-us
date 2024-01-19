@@ -1,13 +1,13 @@
-description: The following states cover undocumented immigrats under the medicaid program.
+description: The following states provide Medicaid coverage to undocumented immigrants.
 metadata:
   unit: bool
   period: year
-  label: Medicaid state immigration status eligibility
+  label: Medicaid undocumented immigrant eligibility 
   breakdown:
   - state_code
   reference:
     - title: "Medicaid Financial Eligibility for Seniors and People with Disabilities: Findings from a 50-State Survey | KFF"
-      href: https://files.kff.org/attachment/Table-3-Medicaid-and-CHIP-Eligibility-and-Enrollment-Policies-as-of-January-2021.pdf
+      href: https://files.kff.org/attachment/Table-3-State-Adoption-of-Options-to-Cover-Immigrant-Populations-January-2021.pdf
 
 AL:
   2021-01-01: false

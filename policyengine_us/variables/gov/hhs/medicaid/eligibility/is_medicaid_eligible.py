@@ -19,7 +19,7 @@ class is_medicaid_eligible(Variable):
         state_immigration_eligible = person(
             "medicaid_state_immigration_eligible", period
         )
-        immigrations_status_eligible = (
+        immigration_status_eligible = (
             ~undocumented | undocumented & state_immigration_eligible
         )
-        return categorically_eligible & immigrations_status_eligible
+        return categorically_eligible & immigration_status_eligible
