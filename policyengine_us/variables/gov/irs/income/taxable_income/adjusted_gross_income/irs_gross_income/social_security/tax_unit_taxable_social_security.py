@@ -14,6 +14,9 @@ class tax_unit_taxable_social_security(Variable):
         ss = parameters(period).gov.irs.social_security.taxability
         gross_ss = tax_unit("tax_unit_social_security", period)
 
+        if ss.fully_taxable:
+            return gross_ss
+
         # The legislation directs the usage an income definition that is
         # a particularly modified AGI, plus half of gross Social Security
         # payments. We assume that the 'half' here is the same underlying
