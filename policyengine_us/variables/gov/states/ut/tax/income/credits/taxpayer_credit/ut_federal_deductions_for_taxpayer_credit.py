@@ -24,7 +24,7 @@ class ut_federal_deductions_for_taxpayer_credit(Variable):
             for deduction in p.itemized_deductions
             if deduction not in ["salt_deduction"]
         ]
-        ite_ded = add(tax_unit, period, deductions)
+        item_ded = add(tax_unit, period, deductions)
 
         # Include Real Estate Taxes in Itemized Deductions
         real_estate_tax = add(tax_unit, period, ["real_estate_taxes"])
@@ -34,4 +34,5 @@ class ut_federal_deductions_for_taxpayer_credit(Variable):
         )
 
         # Line 12. Federal Standard or Itemized Deductions
-        return where(us_itemizing, ite_ded + capped_real_estate_tax, std_ded)
+        total_item_ded = item_ded + capped_real_estate_tax
+        return where(us_itemizing, total_item_ded, std_ded)
