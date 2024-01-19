@@ -45,9 +45,31 @@ class or_wfhdc_eligible(Variable):
         )
         has_qualified_individual = tax_unit.any(qualifying_individuals)
 
+        # employment status
+        # 1) you are working
+        earned_income = person("earned_income", period)
+        earned_income_eligible = tax_unit.any(head * earned_income) > 0
+        # 2)  you are single and you attended school (full-time or part-time)
+        filing_status = tax_unit("filing_status", period)
+        attend_school = tax_unit.any(head & person("is_in_school", period))
+        # 3) you are married filing jointly and one spouse attended school (full-time) or was disabled
+        is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+        is_full_time_student = person("is_full_time_student", period)
+        married_eligible = tax_unit.any(
+            is_full_time_student & is_head_or_spouse
+        )
+
+        if filing_status == "SINGLE":
+            employment_eligible = attend_school
+        elif filing_status == "JOINT":
+            employment_eligible = married_eligible
+        else:
+            employment_eligible = earned_income_eligible
+
         # Determine if the household is eligible for the WFHDC.
         return (
             household_size_eligible
             & income_eligible
             & has_qualified_individual
+            & employment_eligible
         )
