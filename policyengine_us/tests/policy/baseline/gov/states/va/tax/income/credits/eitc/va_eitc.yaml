@@ -1,0 +1,64 @@
+- name: Claims refundable
+  period: 2022
+  input:
+    state_code: VA
+    va_refundable_eitc: 100
+    va_non_refundable_eitc: 90
+    va_claims_refundable_eitc: true
+  output:
+    va_eitc: 100
+
+- name: Claims non-refundable
+  period: 2022
+  input:
+    state_code: VA
+    va_refundable_eitc: 90
+    va_non_refundable_eitc: 100
+    va_claims_refundable_eitc: false
+  output:
+    va_eitc: 100
+
+# Virginia started matching the refundable EITC in 2022
+- name: Claims refundable
+  period: 2021
+  input:
+    state_code: VA
+    va_refundable_eitc: 0
+    va_non_refundable_eitc: 90
+    va_claims_refundable_eitc: false
+  output:
+    va_eitc: 90
+
+- name: Claims non-refundable
+  period: 2021
+  input:
+    state_code: VA
+    va_refundable_eitc: 0
+    va_non_refundable_eitc: 100
+    va_claims_refundable_eitc: false
+  output:
+    va_eitc: 100
+
+- name: Prorated eitc for the head of the tax unit
+  period: 2021
+  input:
+    people:
+      person1:
+        va_eitc_person: 1_000
+        is_tax_unit_head: true
+      person2:
+        va_eitc_person: 500
+        is_tax_unit_head: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        va_refundable_eitc: 0
+        va_non_refundable_eitc: 100
+        va_claims_refundable_eitc: false
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    va_eitc: 1_000

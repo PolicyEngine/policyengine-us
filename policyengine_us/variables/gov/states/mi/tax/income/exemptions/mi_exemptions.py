@@ -20,14 +20,18 @@ class mi_exemptions(Variable):
         personal_exemption = tax_unit("mi_personal_exemptions", period)
 
         # Disabled exemptions
-        disabled_people = add(tax_unit, period, ["is_disabled"])
-        disabled_exemption = disabled_people * p.disabled
+        disabled_people = add(
+            tax_unit, period, ["mi_disabled_exemption_eligible_person"]
+        )
+        disabled_exemption = disabled_people * p.disabled.amount.base
 
         # Disabled veteran exemptions
         disabled_veterans = add(
             tax_unit, period, ["is_fully_disabled_service_connected_veteran"]
         )
-        disabled_veteran_exemption = disabled_veterans * p.disabled_veteran
+        disabled_veteran_exemption = (
+            disabled_veterans * p.disabled.amount.veteran
+        )
 
         # Dependent-on-other-return exemptions
         filing_status = tax_unit("filing_status", period)
