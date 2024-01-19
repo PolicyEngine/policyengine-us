@@ -10,8 +10,7 @@ class ky_standard_deduction_indiv(Variable):
     defined_for = StateCode.KY
 
     def formula(person, period, parameters):
-        is_head = person("is_tax_unit_head", period)
-        is_spouse = person("is_tax_unit_spouse", period)
-        return (is_head | is_spouse) * parameters(
+        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+        return head_or_spouse * parameters(
             period
         ).gov.states.ky.tax.income.deductions.standard
