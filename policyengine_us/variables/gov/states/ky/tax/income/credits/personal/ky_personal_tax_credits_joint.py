@@ -10,11 +10,6 @@ class ky_personal_tax_credits_joint(Variable):
     definition_period = YEAR
     defined_for = StateCode.KY
 
-    adds = [
-        "ky_blind_personal_tax_credits",
-        "ky_aged_personal_tax_credits",
-        "ky_military_personal_tax_credits",
-    ]
 
     def formula(person, period, parameters):
         is_head = person("is_tax_unit_head", period)
