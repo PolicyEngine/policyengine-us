@@ -54,20 +54,20 @@
   output:
     is_medicaid_eligible: true
 
-- name: Eligible undocumented immigrant due to state rules
+- name: Eligible undocumented immigrant due to state rules in California
   period: 2022
   input:
     medicaid_category: PARENT
     immigration_status: UNDOCUMENTED
-    medicaid_state_immigration_eligible: true
+    state_code_str: CA
   output:
     is_medicaid_eligible: true
 
-- name: Ineligible undocumented immigrant due to state rules
+- name: Ineligible undocumented immigrant due to state rules in colorado
   period: 2022
   input:
     medicaid_category: PARENT
     immigration_status: UNDOCUMENTED
-    medicaid_state_immigration_eligible: false
+    state_code_str: CO
   output:
     is_medicaid_eligible: false
