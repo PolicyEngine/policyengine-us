@@ -17,7 +17,7 @@ class mi_alternate_home_heating_credit_eligible(Variable):
             "utilities_included_in_rent", period
         )
         household_resources = tax_unit("mi_household_resources", period)
-        exemptions = tax_unit("mi_exemptions", period)
+        exemptions = tax_unit("mi_exemptions_count", period)
 
         p = parameters(
             period

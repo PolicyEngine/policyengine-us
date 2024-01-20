@@ -1,4 +1,4 @@
-- name: integretion test 1
+- name: integration test 1
   period: 2022
   input:
     people:
@@ -14,7 +14,7 @@
     tax_units:
       tax_unit:
         mi_household_resources: 1_000
-        mi_exemptions: 2
+        mi_exemptions_count: 2
         heating_expenses: 1_000
         tax_unit_fpg: 23_030
         utilities_included_in_rent: false
@@ -35,7 +35,7 @@
     # 671 * 0.9
     mi_home_heating_credit: 603.9
 
-- name: integretion test 2, an elderly couple with $12,020 income and four dependents
+- name: integration test 2, an elderly couple with $12,020 income and four dependents
   period: 2022
   input:
     people:
@@ -54,7 +54,7 @@
     tax_units:
       tax_unit:
         mi_household_resources: 12_020
-        mi_exemptions: 6
+        mi_exemptions_count: 6
         heating_expenses: 1_000
         tax_unit_fpg: 23_030
         utilities_included_in_rent: false
@@ -74,3 +74,46 @@
     mi_home_heating_credit_eligible_rate: 1
     # 1012.3 * 0.9
     mi_home_heating_credit: 911.07
+
+- name: integration test 3, an elderly couple with $12,020 income and four dependents
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 65
+        employment_income: 6_000
+      person2:
+        age: 65
+        employment_income: 6_020
+      person3:
+        age: 10
+        employment_income: 0
+      person4:
+        age: 8
+        employment_income: 0
+      person5:
+        age: 6
+        employment_income: 0
+      person6:
+        age: 4
+        employment_income: 0
+    tax_units:
+      tax_unit:
+        # heating_expenses: 1_000
+        # utilities_included_in_rent: false
+        members: [person1, person2, person3, person4, person5, person6]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code: MI
+  output: 
+    mi_alternate_home_heating_credit_eligible: true
+    # (1_000 - 12_020 * 0.11) * 0.7 < 0
+    mi_alternate_home_heating_credit: 0
+    mi_standard_home_heating_credit_eligible: true
+    # 1433 - 24_662 * 0.035
+    mi_standard_home_heating_credit: 569.83
+    mi_home_heating_credit_eligible_rate: 1
+    # 569.83 * 0.9
+    mi_home_heating_credit: 512.85
