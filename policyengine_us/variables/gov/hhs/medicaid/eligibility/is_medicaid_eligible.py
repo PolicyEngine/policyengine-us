@@ -18,8 +18,10 @@ class is_medicaid_eligible(Variable):
         undocumented = istatus == istatus.possible_values.UNDOCUMENTED
         state = person.household("state_code_str", period)
         p = parameters(period).gov.hhs.medicaid.eligibility
-        eligible_undocumented_immigrant = p.undocumented_immigrant[state].astype(bool)
+        state_covers_undocumented = p.undocumented_immigrant[state].astype(
+            bool
+        )
         immigration_status_eligible = (
-            ~undocumented | undocumented & eligible_undocumented_immigrant
+            ~undocumented | undocumented & state_covers_undocumented
         )
         return categorically_eligible & immigration_status_eligible
