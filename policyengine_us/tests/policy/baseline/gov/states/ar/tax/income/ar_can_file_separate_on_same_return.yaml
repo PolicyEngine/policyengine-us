@@ -1,0 +1,23 @@
+- name: Separate state filing status
+  period: 2022
+  input:
+    state_filing_status_if_married_filing_separately_on_same_return: SEPARATE
+    state_code: AR
+  output:
+    ar_can_file_separate_on_same_return: true
+
+- name: Single state filing status, not eligible
+  period: 2022
+  input:
+    state_filing_status_if_married_filing_separately_on_same_return: SINGLE
+    state_code: AR
+  output:
+    ar_can_file_separate_on_same_return: false
+
+- name: Widow(er) state filing status, not eligible
+  period: 2022
+  input:
+    state_filing_status_if_married_filing_separately_on_same_return: WIDOW
+    state_code: AR
+  output:
+    ar_can_file_separate_on_same_return: false

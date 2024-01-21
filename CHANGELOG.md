@@ -5,6 +5,183 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.629.0] - 2024-01-21 02:02:28
+
+### Added
+
+- Arkansas married filing separately logic.
+
+## [0.628.0] - 2024-01-20 23:25:12
+
+### Added
+
+- Enable the Arizona state income tax calculation.
+
+## [0.627.1] - 2024-01-20 17:09:14
+
+### Fixed
+
+- Utah taxpayer credit.
+
+## [0.627.0] - 2024-01-20 12:57:40
+
+### Added
+
+- Medicaid state immigration status eligibility.
+
+## [0.626.0] - 2024-01-19 23:23:38
+
+### Added
+
+- Louisiana federal tax deduction.
+
+## [0.625.1] - 2024-01-19 05:05:00
+
+### Fixed
+
+- Michigan disability exemptions.
+
+## [0.625.0] - 2024-01-18 23:25:24
+
+### Added
+
+- Consolidate Oregon AGI logic according to the model standards.
+
+## [0.624.0] - 2024-01-18 12:46:05
+
+### Added
+
+- Virginia earned income tax credit.
+
+## [0.623.0] - 2024-01-17 14:40:43
+
+### Added
+
+- CBO inflation projections.
+
+## [0.622.1] - 2024-01-17 13:34:14
+
+### Fixed
+
+- Bug causing the Wyden-Smith CTC to not create in 2024.
+
+## [0.622.0] - 2024-01-16 22:26:28
+
+### Added
+
+- Virginia itemized deductions.
+
+## [0.621.0] - 2024-01-16 21:49:29
+
+### Added
+
+- Prior-year earnings imputation.
+- Wyden-Smith CTC lookback provision.
+
+## [0.620.3] - 2024-01-15 11:19:42
+
+### Fixed
+
+- West Virginia family tax credit.
+
+## [0.620.2] - 2024-01-14 22:52:58
+
+### Added
+
+- Ohio adoption credit person level variable.
+
+## [0.620.1] - 2024-01-14 19:23:50
+
+### Fixed
+
+- Idaho income tax rates.
+
+## [0.620.0] - 2024-01-14 18:21:30
+
+### Added
+
+- Georgia non-refundable credits structure.
+
+## [0.619.0] - 2024-01-14 03:06:31
+
+### Added
+
+- Add Alabama income tax to the modelled_policies.yaml file.
+
+## [0.618.3] - 2024-01-13 22:01:49
+
+## [0.618.2] - 2024-01-13 21:11:58
+
+### Fixed
+
+- 2021 Rhode Island income tax brackets.
+
+## [0.618.1] - 2024-01-12 19:56:01
+
+### Fixed
+
+- Virginia age deduction AGI.
+
+## [0.618.0] - 2024-01-12 19:50:01
+
+### Added
+
+- Add Alabama to the net income tree.
+
+## [0.617.2] - 2024-01-12 17:36:51
+
+### Fixed
+
+- Ohio adoption credit variable.
+
+## [0.617.1] - 2024-01-12 17:18:32
+
+### Fixed
+
+- Hawaii taxable income formula.
+
+## [0.617.0] - 2024-01-12 13:06:44
+
+### Added
+
+- Arizona 529 college savings plans subtraction.
+
+## [0.616.0] - 2024-01-12 13:03:39
+
+### Added
+
+- Enable Alabama income tax structure.
+
+## [0.615.0] - 2024-01-11 16:21:57
+
+### Added
+
+- Oregon working family household and dependent care credit.
+
+## [0.614.0] - 2024-01-11 13:23:48
+
+### Added
+
+- Reform to phase in ACTC on a per-child basis.
+
+## [0.613.0] - 2024-01-11 11:56:03
+
+### Added
+
+- Virginia spouse tax adjustment.
+
+## [0.612.0] - 2024-01-11 10:29:17
+
+### Added
+
+- Ohio unreimbursed medical care expense deduction.
+
+## [0.611.0] - 2024-01-11 08:34:23
+
+### Added
+
+- Fix Hawaii disabled exemption formula.
+
 ## [0.610.1] - 2024-01-10 11:27:40
 
 ## [0.610.0] - 2024-01-10 01:10:28
@@ -6728,6 +6905,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.629.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.628.0...0.629.0
+[0.628.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.627.1...0.628.0
+[0.627.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.627.0...0.627.1
+[0.627.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.626.0...0.627.0
+[0.626.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.625.1...0.626.0
+[0.625.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.625.0...0.625.1
+[0.625.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.624.0...0.625.0
+[0.624.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.623.0...0.624.0
+[0.623.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.622.1...0.623.0
+[0.622.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.622.0...0.622.1
+[0.622.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.621.0...0.622.0
+[0.621.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.620.3...0.621.0
+[0.620.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.620.2...0.620.3
+[0.620.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.620.1...0.620.2
+[0.620.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.620.0...0.620.1
+[0.620.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.619.0...0.620.0
+[0.619.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.618.3...0.619.0
+[0.618.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.618.2...0.618.3
+[0.618.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.618.1...0.618.2
+[0.618.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.618.0...0.618.1
+[0.618.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.617.2...0.618.0
+[0.617.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.617.1...0.617.2
+[0.617.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.617.0...0.617.1
+[0.617.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.616.0...0.617.0
+[0.616.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.615.0...0.616.0
+[0.615.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.614.0...0.615.0
+[0.614.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.613.0...0.614.0
+[0.613.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.612.0...0.613.0
+[0.612.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.611.0...0.612.0
+[0.611.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.610.1...0.611.0
 [0.610.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.610.0...0.610.1
 [0.610.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.609.1...0.610.0
 [0.609.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.609.0...0.609.1
