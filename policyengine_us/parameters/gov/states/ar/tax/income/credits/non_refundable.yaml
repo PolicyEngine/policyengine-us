@@ -1,5 +1,7 @@
-description: Arkansas provides these nonrefundable income tax credits.
+description: Arkansas provides these non-refundable income tax credits.
 values:
+  2021-01-01:    
+    - ar_personal_credits
   2022-01-01:
     - ar_inflation_relief_credit
     - ar_personal_credits
@@ -12,4 +14,4 @@ metadata:
     
   unit: list
   period: year
-  label: Arkansas nonrefundable income tax credits
+  label: Arkansas non-refundable income tax credits
