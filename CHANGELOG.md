@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.629.0] - 2024-01-21 02:02:28
+
+### Added
+
+- Arkansas married filing separately logic.
+
 ## [0.628.0] - 2024-01-20 23:25:12
 
 ### Added
@@ -6899,6 +6905,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.629.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.628.0...0.629.0
 [0.628.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.627.1...0.628.0
 [0.627.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.627.0...0.627.1
 [0.627.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.626.0...0.627.0
