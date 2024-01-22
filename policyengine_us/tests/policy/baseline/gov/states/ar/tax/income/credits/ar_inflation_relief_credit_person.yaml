@@ -1,0 +1,128 @@
+- name: Single household with $101,002 taxable income 
+  period: 2022
+  input:
+    people:
+      person1:
+        ar_taxable_income_indiv: 0
+        ar_taxable_income_joint: 101_002
+      person2:
+        ar_taxable_income_indiv: 0
+        ar_taxable_income_joint: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ar_files_separately: false
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    ar_inflation_relief_credit_person: 0
+
+- name: Single household with $100,000 taxable income 
+  period: 2022
+  input:
+    people:
+      person1:
+        ar_taxable_income_indiv: 100_000
+        ar_taxable_income_joint: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+        ar_files_separately: true
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_inflation_relief_credit_person: 20
+
+- name: Single household with $100,000 taxable income 
+  period: 2022
+  input:
+    people:
+      person1:
+        ar_taxable_income_indiv: 10_000
+        ar_taxable_income_joint: 0
+      person2:
+        ar_taxable_income_indiv: 90_000
+        ar_taxable_income_joint: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ar_files_separately: true
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    ar_inflation_relief_credit_person: [150, 120]
+
+- name: HoH household with $98,200 taxable income
+  period: 2022
+  input:
+    people:
+      person1:
+        ar_taxable_income_indiv: 0
+        ar_taxable_income_joint: 98_200
+      person2:
+        ar_taxable_income_indiv: 0
+        ar_taxable_income_joint: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ar_files_separately: false
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    ar_inflation_relief_credit_person: 30
+
+- name: Joint household with $175,000 taxable income
+  period: 2022
+  input:
+    people:
+      person1:
+        ar_taxable_income_indiv: 0
+        ar_taxable_income_joint: 175_000
+      person2:
+        ar_taxable_income_indiv: 0
+        ar_taxable_income_joint: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ar_files_separately: false
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    ar_inflation_relief_credit_person: 280
+
+- name: Widow household with $80,000 taxable income
+  period: 2022
+  input:
+    people:
+      person1:
+        ar_taxable_income_indiv: 0
+        ar_taxable_income_joint: 80_000
+      person2:
+        ar_taxable_income_indiv: 0
+        ar_taxable_income_joint: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ar_files_separately: false
+        filing_status: WIDOW
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    ar_inflation_relief_credit_person: 150
