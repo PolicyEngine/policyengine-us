@@ -11,6 +11,7 @@
         members: [person1]
         adjusted_gross_income: 10_000
         or_agi: 10_000
+        filing_status: SINGLE
     households:
       household:
         members: [person1]
@@ -33,6 +34,7 @@
         members: [person1, person2]
         adjusted_gross_income: 52_261
         or_agi: 52_259
+        filing_status: SINGLE
     households:
       household:
         members: [person1, person2]
@@ -55,6 +57,7 @@
         members: [person1, person2]
         adjusted_gross_income: 52_259
         or_agi: 52_261
+        filing_status: SINGLE
     households:
       household:
         members: [person1, person2]
@@ -77,6 +80,7 @@
         members: [person1, person2]
         adjusted_gross_income: 10_000
         or_agi: 10_000
+        filing_status: JOINT
     households:
       household:
         members: [person1, person2]
@@ -84,7 +88,7 @@
   output:
     or_wfhdc_eligible: false
 
-- name: Household of size 2 with a disabled member is eligible.
+- name: Household of size 2 with a disabled member and working head is eligible.
   period: 2021
   input:
     people:
@@ -161,6 +165,32 @@
   output:
     or_wfhdc_eligible: false
 
+- name: Household of size 2 with non-working but student head is eligible
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 40
+        is_disabled: false
+        is_tax_unit_head: true
+        earned_income: 0
+        is_in_school: true
+      person2:
+        age: 12
+        is_disabled: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        adjusted_gross_income: 10_000
+        or_agi: 10_000
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OR
+  output:
+    or_wfhdc_eligible: true
+
 - name: Household of size 2 with working head is eligible.
   period: 2021
   input:
@@ -173,6 +203,35 @@
         earned_income: 30_000
         is_in_school: false
         is_full_time_student: false
+      person2:
+        age: 30
+        is_disabled: true
+        is_tax_unit_head: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        adjusted_gross_income: 10_000
+        or_agi: 10_000
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OR
+  output:
+    or_wfhdc_eligible: true
+
+- name: Household of size 2 with non-working couple but one in full-time school is eligible.
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+        is_tax_unit_head: true
+        is_tax_unit_head_or_spouse: true
+        earned_income: 0
+        is_in_school: true
+        is_full_time_student: true
       person2:
         age: 30
         is_disabled: true

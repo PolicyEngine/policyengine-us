@@ -27,6 +27,7 @@
         min_head_spouse_earned: 50_000
         tax_unit_childcare_expenses: 6_000 
         disabled_spouse_care_expenses: 4_000 # $6,000+$4,000 = $10,000 < $12,000
+        filing_status: JOINT
     households:
       household:
         members: [head, spouse, child]
