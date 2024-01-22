@@ -1,4 +1,4 @@
-description: California adds the following items to calculate the total adjustments and preferences for alternative minimum taxable income
+description: California adds the following items to calculate the total adjustments for the alternative minimum taxable income.
 values:
    2021-01-01:
      - ca_standard_deduction # line 1 standard deduction, if itemized then skip this line
@@ -11,7 +11,7 @@ values:
 metadata:
    unit: list  
    period: year 
-   label: California altenative minimum taxable income total adjustments and preferences
+   label: California altenative minimum taxable income total adjustments 
    references: 
     - title: 2021 Schedule P (540) Alternative Minimum Tax and Credit Limitations - Residents
       href: https://www.ftb.ca.gov/forms/2021/2021-540-p.pdf#page=1
