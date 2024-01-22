@@ -3,11 +3,9 @@
   input:
     people:
       person1:
-        is_tax_unit_head_or_spouse: true
         mi_disabled_exemption_eligible_person: true
         is_fully_disabled_service_connected_veteran: false
       person2:
-        is_tax_unit_head_or_spouse: true
         mi_disabled_exemption_eligible_person: true
         is_fully_disabled_service_connected_veteran: true
       person3:
@@ -21,12 +19,11 @@
         is_fully_disabled_service_connected_veteran: true
     tax_units:
       tax_unit:
-        tax_unit_dependents: 3
         members: [person1, person2, person3, person4, person5]
     household:
       members: [person1, person2, person3, person4, person5]
       state_code: MI
-  output: # 2 + 3 + 2 + 2 + 1
+  output: # 5 + 3 + 2
     mi_exemptions_count: 10
 
 - name: 2 head and spouse, 4 dependents
@@ -34,11 +31,9 @@
   input:
     people:
       person1:
-        is_tax_unit_head_or_spouse: true
         mi_disabled_exemption_eligible_person: false
         is_fully_disabled_service_connected_veteran: false
       person2:
-        is_tax_unit_head_or_spouse: true
         mi_disabled_exemption_eligible_person: false
         is_fully_disabled_service_connected_veteran: false
       person3:
@@ -55,10 +50,9 @@
         is_fully_disabled_service_connected_veteran: false
     tax_units:
       tax_unit:
-        tax_unit_dependents: 4
         members: [person1, person2, person3, person4, person5, person6]
     household:
       members: [person1, person2, person3, person4, person5, person6]
       state_code: MI
-  output: # 2 + 4
+  output: # 6 + 0
     mi_exemptions_count: 6
