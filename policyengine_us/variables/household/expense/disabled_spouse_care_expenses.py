@@ -8,3 +8,8 @@ class disabled_spouse_care_expenses(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = "disabled_spouse"
+
+    def formula(tax_unit, period, parameters):
+        person = tax_unit.members
+        expenses = person("care_expenses", period)
+        return tax_unit.sum(expenses)
