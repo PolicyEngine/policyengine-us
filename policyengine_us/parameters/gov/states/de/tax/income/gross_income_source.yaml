@@ -1,0 +1,26 @@
+description: Delaware accounts for these sources when calculating the gross income.
+values:
+  2021-01-01:
+    # PIT-RES LINE 1 WORKSHEET
+    - employment_income # Item 1
+    - self_employment_income #        # business income # Item 6 ??
+    - interest_income # Item 2
+    - dividend_income # Item 3
+    - alimony_income # Item 5
+    - capital_gains # Item 7a
+    - regular_ira_distributions # Item 8
+    - taxable_pension_income # Item 9
+    - rental_income # Item 10
+    - farm_rent_income # Item 11
+    - unemployment_compensation # Item 12
+    #- taxable social security benefits # Item 13
+    #- military_service_income # didn't find in the worksheet
+
+metadata:
+  unit: list
+  period: year
+  label: Delaware gross income sources
+  reference:
+    - title: Delaware 2022 PIT-RES Individual Income Tax Return Instructions
+      href: https://revenuefiles.delaware.gov/2022/PIT-RES_TY22_2022-02_Instructions.pdf#page=6
+    
