@@ -1,14 +1,12 @@
-description: Vermont allows this amount to qualify the full credit income limits based on income and county
+description: Vermont limits the full renter credit to filers with income below this threshold. 
 metadata:
-  unit: /1
+  unit: currency-USD 
   period: year
   breakdown: 
     - list(range(1,8))
     - county_str
-  label: Vermont full credit income limits 
+  label: Vermont credit income limit
   reference:
-    - title: 32 V.S.A. §6066. Homestead Property Tax Credit and Renter Credit (b)
-      href: https://law.justia.com/codes/vermont/2022/title-32/chapter-154/section-6066/
     - title: 2023 Vermont Full Credit Income Limits by County
       href: https://tax.vermont.gov/individuals/renter-credit/income-eligibility-limits
     - title: 2022 Vermont instruction booklet

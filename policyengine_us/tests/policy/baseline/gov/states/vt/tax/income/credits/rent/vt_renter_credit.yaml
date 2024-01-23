@@ -2,10 +2,10 @@
   period: 2022
   input:
     vt_renter_credit_income: 24_500
-    county_str: ADDISON_COUNTY_VT
+    county: ADDISON_COUNTY_VT
     tax_unit_size: 2
-    vt_share_rent: false
-    vt_subsidy: false
+    share_rent: false
+    rent_is_subsidized: false
     rents: 1000
     state_code: VT
   output:
@@ -15,10 +15,10 @@
   period: 2022
   input:
     vt_renter_credit_income: 24_500
-    county_str: ADDISON_COUNTY_VT
+    county: ADDISON_COUNTY_VT
     tax_unit_size: 2
-    vt_share_rent: false
-    vt_subsidy: true
+    share_rent: false
+    rent_is_subsidized: true
     rents: 5_000
     state_code: VT
   output:
