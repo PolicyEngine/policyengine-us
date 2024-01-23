@@ -2,6 +2,7 @@
   period: 2022
   input:
     state_code: KY
+    ky_can_file_separate_on_same_return: true
   output:
     ky_standard_deduction_indiv: 2_770
 
@@ -9,6 +10,7 @@
   period: 2021
   input:
     state_code: KY
+    ky_can_file_separate_on_same_return: true
   output:
     ky_standard_deduction_indiv: 2_690
 
@@ -20,6 +22,10 @@
         is_tax_unit_head: true
       person2:
         is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ky_can_file_separate_on_same_return: true
     households:
       household:
         members: [person1, person2]
