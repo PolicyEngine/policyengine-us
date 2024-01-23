@@ -5,6 +5,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.631.0] - 2024-01-23 11:52:39
+
+### Added
+
+- Parameter for using reported SNAP values.
+
+## [0.630.0] - 2024-01-23 02:11:13
+
+### Added
+
+- Arkansas low income tax table.
+
+## [0.629.2] - 2024-01-22 16:31:45
+
+### Fixed
+
+- Cap SNAP excess shelter deduction after applying utility allowance.
+
+## [0.629.1] - 2024-01-22 16:28:34
+
+### Fixed
+
+- Michigan home heating credit.
+
 ## [0.629.0] - 2024-01-21 02:02:28
 
 ### Added
@@ -6905,6 +6929,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.631.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.630.0...0.631.0
+[0.630.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.629.2...0.630.0
+[0.629.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.629.1...0.629.2
+[0.629.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.629.0...0.629.1
 [0.629.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.628.0...0.629.0
 [0.628.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.627.1...0.628.0
 [0.627.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.627.0...0.627.1
