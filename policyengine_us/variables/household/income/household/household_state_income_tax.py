@@ -10,6 +10,7 @@ class household_state_income_tax(Variable):
     definition_period = YEAR
     adds = [
         "al_income_tax_before_refundable_credits",
+        "az_income_tax_before_refundable_credits",
         "ca_income_tax_before_refundable_credits",
         "co_income_tax_before_refundable_credits",
         "dc_income_tax_before_refundable_credits",
@@ -39,6 +40,7 @@ class household_state_income_tax(Variable):
     ]
     subtracts = [
         "al_refundable_credits",  # Alabama.
+        "az_refundable_credits",  # Arizona.
         "ca_refundable_credits",  # California.
         "co_refundable_credits",  # Colorado
         "dc_refundable_credits",  # District of Columbia.
