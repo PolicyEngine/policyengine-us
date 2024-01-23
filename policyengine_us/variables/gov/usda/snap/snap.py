@@ -14,6 +14,8 @@ class snap(Variable):
     def formula(spm_unit, period, parameters):
         if parameters(period).gov.usda.snap.abolish_snap:
             return 0
+        elif parameters(period).gov.simulation.reported_snap:
+            return spm_unit("snap_reported", period) / MONTHS_IN_YEAR
         else:
             added_components = add(spm_unit, period, snap.adds)
             return added_components
