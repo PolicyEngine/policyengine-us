@@ -13,21 +13,8 @@ class ca_eitc_eligible(Variable):
         person = tax_unit.members
         p = parameters(period).gov.states.ca.tax.income.credits.earned_income
 
-        age = person("age", period)
-        is_dependent = person("is_tax_unit_dependent", period)
+        ca_eitc_eligible_person = person("ca_eitc_eligible_person", period)
 
-        meets_age_requirements = tax_unit.any(
-            (age >= p.eligibility.age.min)
-            & (age <= p.eligibility.age.max)
-            & ~is_dependent
-        )
+        return tax_unit.any(ca_eitc_eligible_person)
 
-        eitc_investment_income = tax_unit(
-            "eitc_relevant_investment_income", period
-        )
-
-        meets_investment_income_requirements = (
-            eitc_investment_income <= p.eligibility.max_investment_income
-        )
-
-        return meets_age_requirements & meets_investment_income_requirements
+    

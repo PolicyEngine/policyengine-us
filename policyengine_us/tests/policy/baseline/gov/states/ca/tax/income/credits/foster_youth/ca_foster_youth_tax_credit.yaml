@@ -18,7 +18,8 @@
         members: [person_1, person_2]
         state_code: CA
   output:
-    ca_foster_youth_tax_credit: 2_166
+    #1176*0.85*2
+    ca_foster_youth_tax_credit: 1_999.2
 
 - name: An eligible primary head and an eligible spouse, have total income above 25000 dollars
   period: 2022
@@ -40,8 +41,8 @@
         members: [person_1, person_2]
         state_code: CA
   output:
-    #2166 - 1000 * 0.2166= 1949.4
-    ca_foster_youth_tax_credit: 1949.4
+    #1999.2 - 1000 * 0.2= 1799.2
+    ca_foster_youth_tax_credit: 1799.2
 
 - name: An eligible primary head and an ineligible spouse, have total income below 25000 dollars
   period: 2022
@@ -63,7 +64,7 @@
         members: [person_1, person_2]
         state_code: CA
   output:
-    ca_foster_youth_tax_credit: 1_083
+    ca_foster_youth_tax_credit: 999.6
   
 - name: An eligible primary head that has income above 25000 dollars in 2022
   period: 2022
@@ -71,8 +72,8 @@
     people:
       person_1:
         age: 23
-        ca_foster_youth_tax_credit: true
-        earned_income: 1_000
+        ca_foster_youth_tax_credit_eligible: true
+        earned_income: 26_000
     tax_units:
       tax_unit:
         members: [person_1]
@@ -81,8 +82,8 @@
         members: [person_1]
         state_code: CA
   output:
-  # 1083 - (26000 - 25000) * 0.2166 =  866.4
-    ca_foster_youth_tax_credit: 866.4
+  # 999.6 - (26000 - 25000) * 0.2 =  799.6
+    ca_foster_youth_tax_credit: 799.6
   
 - name: An ineligible primary head and an ineligible spouse that have total income below 25000 dollars
   period: 2022
@@ -105,27 +106,4 @@
         state_code: CA
   output:
     ca_foster_youth_tax_credit: 0
-
-- name: An eligible primary head and an ineligible spouse that have total earned income above 25000 dollars in 2021
-  period: 2021
-  input:
-    people:
-      person_1:
-        age: 23
-        ca_foster_youth_tax_credit_eligible: true
-        earned_income: 25_000
-      person_2:
-        age: 20
-        ca_foster_youth_tax_credit_eligible: false
-        earned_income: 1_000
-    tax_units:
-      tax_unit:
-        members: [person_1, person_2]
-    households:
-      household:
-        members: [person_1, person_2]
-        state_code: CA
-  output:
-  # 1000 - (26000 - 25000) * 0.20 =  800
-    ca_foster_youth_tax_credit: 800
 

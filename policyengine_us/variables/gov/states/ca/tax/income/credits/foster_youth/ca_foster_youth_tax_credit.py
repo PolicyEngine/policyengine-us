@@ -17,7 +17,9 @@ class ca_foster_youth_tax_credit(Variable):
 
         is_eligible = person("ca_foster_youth_tax_credit_eligible", period)
 
-        base_credit = p.age_threshold.calc(age) * is_eligible
+        adjustment_factor = parameters(period).gov.states.ca.tax.income.credits.earned_income.adjustment.factor
+
+        base_credit = p.base.calc(age) * adjustment_factor * is_eligible 
 
         total_base_credit = tax_unit.sum(base_credit)
         
@@ -25,14 +27,12 @@ class ca_foster_youth_tax_credit(Variable):
 
         earned_income = add(tax_unit, period, ["earned_income"])
 
-        excess_earned_income = earned_income - p.max_amount
+        excess_earned_income = max_(earned_income - p.phase_out.start, 0)  
 
         reduction_amount = max_(
-            0, excess_earned_income * p.reduction_rate
+            0, (excess_earned_income / p.phase_out.increment) * p.phase_out.step
         )
 
-        excess_threshold = excess_earned_income <= 0
-
-        person_amount = where(excess_threshold, total_base_credit, total_base_credit - reduction_amount)
+        person_amount = min_(total_base_credit, total_base_credit - reduction_amount)
 
         return person_amount
