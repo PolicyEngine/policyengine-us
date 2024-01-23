@@ -52,7 +52,7 @@ class or_wfhdc_eligible(Variable):
         # 2)  you are single and you attended school (full-time or part-time)
         filing_status = tax_unit("filing_status", period)
         status = filing_status.possible_values
-        attend_school = tax_unit.any(head & person("is_in_school", period))
+        attend_school = tax_unit.any(head & person("is_in_k12_school", period))
         # 3) you are married filing jointly and one spouse attended school (full-time) or was disabled
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         is_full_time_student = person("is_full_time_student", period)

@@ -25,8 +25,7 @@
         adjusted_gross_income: 111_000
         or_agi: 80_000 # income eligible: max($111,000, 80,000) < $150,000
         min_head_spouse_earned: 50_000
-        tax_unit_childcare_expenses: 6_000 
-        disabled_spouse_care_expenses: 4_000 # $6,000+$4,000 = $10,000 < $12,000
+        tax_unit_childcare_expenses: 10_000 # < $12,000
         filing_status: JOINT
     households:
       household:
@@ -36,5 +35,5 @@
     or_wfhdc_eligible: true
     or_wfhdc_income_category: 23
     or_wfhdc_eligibility_category: ["OLD"] 
-    or_cdcc_relevent_expenses: 10_000
+    or_cdcc_relevant_expenses: 10_000
     or_working_family_household_and_dependent_care_credit: 3_000 # $10,000 * 0.30(match percentage)
