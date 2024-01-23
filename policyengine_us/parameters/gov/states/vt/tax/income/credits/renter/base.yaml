@@ -4,7 +4,7 @@ metadata:
   period: year
   breakdown: 
     - list(range(1,9))
-    - county
+    - county_str
   label: Vermont renter credit base amount 
   reference: 
     - title: 2023 Vermont Credit Amounts Based on HUD Data Based on Number of Bedrooms
