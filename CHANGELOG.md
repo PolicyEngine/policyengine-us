@@ -5,6 +5,97 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.630.0] - 2024-01-23 02:11:13
+
+### Added
+
+- Arkansas low income tax table.
+
+## [0.629.2] - 2024-01-22 16:31:45
+
+### Fixed
+
+- Cap SNAP excess shelter deduction after applying utility allowance.
+
+## [0.629.1] - 2024-01-22 16:28:34
+
+### Fixed
+
+- Michigan home heating credit.
+
+## [0.629.0] - 2024-01-21 02:02:28
+
+### Added
+
+- Arkansas married filing separately logic.
+
+## [0.628.0] - 2024-01-20 23:25:12
+
+### Added
+
+- Enable the Arizona state income tax calculation.
+
+## [0.627.1] - 2024-01-20 17:09:14
+
+### Fixed
+
+- Utah taxpayer credit.
+
+## [0.627.0] - 2024-01-20 12:57:40
+
+### Added
+
+- Medicaid state immigration status eligibility.
+
+## [0.626.0] - 2024-01-19 23:23:38
+
+### Added
+
+- Louisiana federal tax deduction.
+
+## [0.625.1] - 2024-01-19 05:05:00
+
+### Fixed
+
+- Michigan disability exemptions.
+
+## [0.625.0] - 2024-01-18 23:25:24
+
+### Added
+
+- Consolidate Oregon AGI logic according to the model standards.
+
+## [0.624.0] - 2024-01-18 12:46:05
+
+### Added
+
+- Virginia earned income tax credit.
+
+## [0.623.0] - 2024-01-17 14:40:43
+
+### Added
+
+- CBO inflation projections.
+
+## [0.622.1] - 2024-01-17 13:34:14
+
+### Fixed
+
+- Bug causing the Wyden-Smith CTC to not create in 2024.
+
+## [0.622.0] - 2024-01-16 22:26:28
+
+### Added
+
+- Virginia itemized deductions.
+
+## [0.621.0] - 2024-01-16 21:49:29
+
+### Added
+
+- Prior-year earnings imputation.
+- Wyden-Smith CTC lookback provision.
+
 ## [0.620.3] - 2024-01-15 11:19:42
 
 ### Fixed
@@ -6832,6 +6923,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.630.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.629.2...0.630.0
+[0.629.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.629.1...0.629.2
+[0.629.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.629.0...0.629.1
+[0.629.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.628.0...0.629.0
+[0.628.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.627.1...0.628.0
+[0.627.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.627.0...0.627.1
+[0.627.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.626.0...0.627.0
+[0.626.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.625.1...0.626.0
+[0.625.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.625.0...0.625.1
+[0.625.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.624.0...0.625.0
+[0.624.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.623.0...0.624.0
+[0.623.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.622.1...0.623.0
+[0.622.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.622.0...0.622.1
+[0.622.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.621.0...0.622.0
+[0.621.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.620.3...0.621.0
 [0.620.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.620.2...0.620.3
 [0.620.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.620.1...0.620.2
 [0.620.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.620.0...0.620.1
