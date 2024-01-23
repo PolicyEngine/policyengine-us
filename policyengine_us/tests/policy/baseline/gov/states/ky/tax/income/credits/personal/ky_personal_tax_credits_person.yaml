@@ -20,7 +20,7 @@
         members: [person1,person2]
         state_code: KY
   output:
-    ky_personal_tax_credits_joint: [0, 0]
+    ky_personal_tax_credits_person: [0, 0]
 
 - name: Kentucky joint eligible
   period: 2022
@@ -44,7 +44,7 @@
         members: [person1,person2]
         state_code: KY
   output:
-    ky_personal_tax_credits_joint: [60, 0]
+    ky_personal_tax_credits_person: [60, 0]
 
 - name: Kentucky joint eligible 2
   period: 2022
@@ -68,7 +68,7 @@
         members: [person1,person2]
         state_code: KY
   output:
-    ky_personal_tax_credits_joint: [120, 0]
+    ky_personal_tax_credits_person: [120, 0]
 
 - name: Kentucky JOINT eligible
   period: 2022
@@ -92,4 +92,4 @@
         members: [person1,person2]
         state_code: KY
   output:
-    ky_personal_tax_credits_joint: [0, 70]
+    ky_personal_tax_credits_person: [0, 70]

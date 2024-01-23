@@ -10,7 +10,6 @@ class ky_personal_tax_credits_person(Variable):
     definition_period = YEAR
     defined_for = StateCode.KY
 
-
     def formula(person, period, parameters):
         is_head = person("is_tax_unit_head", period)
         blind_personal_tax_credits = person(
