@@ -110,6 +110,7 @@ PERSON_COLUMNS = [
     "PRDTRACE",
     "PRDTHSP",
     "A_MARITL",
+    "PERIDNUM",
 ]
 
 

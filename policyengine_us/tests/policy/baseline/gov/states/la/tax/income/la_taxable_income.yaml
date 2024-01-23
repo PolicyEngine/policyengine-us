@@ -1,0 +1,47 @@
+- name: Unit test 1
+  period: 2020
+  input:
+    state_code: LA
+    la_agi: 3_000
+    tax_unit_itemizes: true
+    la_itemized_deductions: 1_000
+    la_exemptions: 1_000
+    la_federal_tax_deduction: 0
+  output:
+    la_taxable_income: 1_000 #3_000-1_000-1_000=1_000>0 
+
+- name: Unit test 2
+  period: 2020
+  input:
+    state_code: LA
+    la_agi: 3_000
+    tax_unit_itemizes: true
+    la_itemized_deductions: 2_000
+    la_exemptions: 2_000
+    la_federal_tax_deduction: 0
+  output:
+    la_taxable_income: 0 #3_000-2_000-2_000<0 
+
+- name: Tax unit does not itemize
+  period: 2020
+  input:
+    state_code: LA
+    la_agi: 3_000
+    tax_unit_itemizes: false
+    la_itemized_deductions: 1_000
+    la_exemptions: 1_000
+    la_federal_tax_deduction: 0
+  output:
+    la_taxable_income: 2_000 #3_000-1_000=2_000>0 
+
+- name: Tax unit does not itemize but takes federal tax deduction
+  period: 2020
+  input:
+    state_code: LA
+    la_agi: 3_000
+    tax_unit_itemizes: false
+    la_itemized_deductions: 1_000
+    la_exemptions: 1_000
+    la_federal_tax_deduction: 400
+  output:
+    la_taxable_income: 1_600 #3_000-1_000-400=600>0 
