@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class ky_additions_indiv(Variable):
+class ky_additions(Variable):
     value_type = float
     entity = Person
-    label = "Kentucky additions when married couples file separately"
+    label = "Kentucky additions"
     unit = USD
     definition_period = YEAR
     reference = (

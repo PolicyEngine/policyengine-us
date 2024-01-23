@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class ky_subtractions_joint(Variable):
+class ky_subtractions(Variable):
     value_type = float
     entity = Person
-    label = "Kentucky subtractions when married couples file jointly"
+    label = "Kentucky subtractions"
     unit = USD
     definition_period = YEAR
     reference = (

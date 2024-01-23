@@ -4,13 +4,13 @@
     people:
       person1:
         is_tax_unit_head: true
-        ky_additions_joint: 0
-        ky_subtractions_joint: 0
+        ky_additions: 0
+        ky_subtractions: 0
         adjusted_gross_income_person: 0
       person2:
         is_tax_unit_head: false
-        ky_additions_joint: 0
-        ky_subtractions_joint: 0
+        ky_additions: 0
+        ky_subtractions: 0
         adjusted_gross_income_person: 0
     tax_units:
       tax_unit:
@@ -29,13 +29,13 @@
     people:
       person1:
         is_tax_unit_head: true
-        ky_additions_joint: 100
-        ky_subtractions_joint: 200
+        ky_additions: 100
+        ky_subtractions: 200
         adjusted_gross_income_person: 300
       person2:
         is_tax_unit_head: false
-        ky_additions_joint: 0
-        ky_subtractions_joint: 0
+        ky_additions: 0
+        ky_subtractions: 0
         adjusted_gross_income_person: 400
     tax_units:
       tax_unit:
@@ -54,13 +54,13 @@
     people:
       person1:
         is_tax_unit_head: true
-        ky_additions_joint: 100
-        ky_subtractions_joint: 1_000
+        ky_additions: 100
+        ky_subtractions: 1_000
         adjusted_gross_income_person: 300
       person2:
         is_tax_unit_head: false
-        ky_additions_joint: 0
-        ky_subtractions_joint: 0
+        ky_additions: 0
+        ky_subtractions: 0
         adjusted_gross_income_person: 500
     tax_units:
       tax_unit:
