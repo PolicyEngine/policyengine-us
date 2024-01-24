@@ -12,8 +12,6 @@ class ky_itemized_deductions_indiv(Variable):
         "https://law.justia.com/codes/kentucky/2022/chapter-141/section-141-019/"  # (2)(i)
     )
     defined_for = "ky_can_file_separate_on_same_return"
-    adds = ["itemized_deductions_less_salt"]
-    subtracts = ["medical_expense_deduction"]
 
     def formula(person, period, parameters):
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)

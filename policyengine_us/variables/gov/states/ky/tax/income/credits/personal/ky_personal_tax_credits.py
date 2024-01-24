@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ky_personal_tax_credits_indiv(Variable):
+class ky_personal_tax_credits(Variable):
     value_type = float
     entity = Person
     label = "Kentucky personal tax credits"

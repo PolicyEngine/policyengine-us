@@ -19,7 +19,7 @@ class ky_modified_agi(Variable):
         )
         total_fed_agi = fed_agi + tax_exempt_lump_sum
         person = tax_unit.members
-        ky_agi = tax_unit.sum(person("ky_agi_joint", period))
+        ky_agi = tax_unit.sum(person("ky_agi", period))
         # Lump sum distributions which are not included in federal AGI are added to the state AGI
         total_ky_agi = ky_agi + tax_exempt_lump_sum
         return max_(total_fed_agi, total_ky_agi)
