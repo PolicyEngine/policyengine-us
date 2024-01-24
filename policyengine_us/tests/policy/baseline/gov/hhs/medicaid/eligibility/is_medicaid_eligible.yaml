@@ -53,3 +53,21 @@
     is_ssi_recipient_for_medicaid: true
   output:
     is_medicaid_eligible: true
+
+- name: Eligible undocumented immigrant due to state rules in California
+  period: 2022
+  input:
+    medicaid_category: PARENT
+    immigration_status: UNDOCUMENTED
+    state_code_str: CA
+  output:
+    is_medicaid_eligible: true
+
+- name: Ineligible undocumented immigrant due to state rules in colorado
+  period: 2022
+  input:
+    medicaid_category: PARENT
+    immigration_status: UNDOCUMENTED
+    state_code_str: CO
+  output:
+    is_medicaid_eligible: false

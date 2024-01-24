@@ -5827,3 +5827,53 @@
     added:
     - Consolidate Oregon AGI logic according to the model standards.
   date: 2024-01-18 23:25:24
+- bump: patch
+  changes:
+    fixed:
+    - Michigan disability exemptions.
+  date: 2024-01-19 05:05:00
+- bump: minor
+  changes:
+    added:
+    - Louisiana federal tax deduction.
+  date: 2024-01-19 23:23:38
+- bump: minor
+  changes:
+    added:
+    - Medicaid state immigration status eligibility.
+  date: 2024-01-20 12:57:40
+- bump: patch
+  changes:
+    fixed:
+    - Utah taxpayer credit.
+  date: 2024-01-20 17:09:14
+- bump: minor
+  changes:
+    added:
+    - Enable the Arizona state income tax calculation.
+  date: 2024-01-20 23:25:12
+- bump: minor
+  changes:
+    added:
+    - Arkansas married filing separately logic.
+  date: 2024-01-21 02:02:28
+- bump: patch
+  changes:
+    fixed:
+    - Michigan home heating credit.
+  date: 2024-01-22 16:28:34
+- bump: patch
+  changes:
+    fixed:
+    - Cap SNAP excess shelter deduction after applying utility allowance.
+  date: 2024-01-22 16:31:45
+- bump: minor
+  changes:
+    added:
+    - Arkansas low income tax table.
+  date: 2024-01-23 02:11:13
+- bump: minor
+  changes:
+    added:
+    - Parameter for using reported SNAP values.
+  date: 2024-01-23 11:52:39
