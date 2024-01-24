@@ -5,7 +5,7 @@ class ky_agi(Variable):
     value_type = float
     entity = Person
     label = (
-        "Kentucky adjusted gross income when married couples file separately"
+        "Kentucky adjusted gross income when married couples file"
     )
     unit = USD
     definition_period = YEAR
@@ -13,7 +13,7 @@ class ky_agi(Variable):
     defined_for = StateCode.KY
 
     adds = [
-        "ky_subtractions",
+        "ky_additions",
         "adjusted_gross_income_person",
     ]
     subtracts = ["ky_subtractions"]

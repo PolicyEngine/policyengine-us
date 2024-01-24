@@ -1,0 +1,55 @@
+- name: Tax unit files separately
+  period: 2022
+  # High error margin because of rounding in the tax tables
+  absolute_error_margin: 2
+  input:
+    people:
+      person1:
+        adjusted_gross_income_person: 20_000
+        is_tax_unit_head: true
+      person2:
+        adjusted_gross_income_person: 19_000
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SEPARATE
+        ky_files_separately: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY 
+  output:
+    # ky_agi: [19_900, 19_200]
+    # ky_standard_deduction_indiv: [2_270, 2_270]
+    # ky_taxable_income_indiv: [17_630, 16_930]
+    # ky_income_tax_before_non_refundable_credits: [336, 313]
+    # ky_income_tax_before_refundable_credits: [649]
+
+- name: Tax unit files jointly
+  period: 2022
+  # High error margin because of rounding in the tax tables
+  absolute_error_margin: 2
+  input:
+    people:
+      person1:
+        employment_income: 20_000
+        is_tax_unit_head: true
+      person2:
+        self_employment_income: 19_000
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        ky_files_separately: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY 
+  output:
+    # ky_agi: [19_900, 19_200]
+    # ky_standard_deduction_joint: [4_540, 0]
+    # ky_taxable_income_joint: [34_560, 0]
+    # ky_income_tax_before_non_refundable_credits: [1_065, 0]
+    # ky_income_tax_before_refundable_credits: [1_065]

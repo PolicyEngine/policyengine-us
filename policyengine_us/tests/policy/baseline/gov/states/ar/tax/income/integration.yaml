@@ -32,7 +32,7 @@
     ar_income_tax_before_non_refundable_credits_indiv: [336, 313]
     ar_income_tax_before_refundable_credits: [649]
 
-- name: Tax unit files separately
+- name: Tax unit files jointly
   period: 2022
   # High error margin because of rounding in the tax tables
   absolute_error_margin: 2
