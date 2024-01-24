@@ -3,7 +3,7 @@
   input:
     ssi_amount_if_eligible: 100
     meets_ssi_resource_test: true
-    ssi_income_eligible: true
+    ssi_income_in_sga: true
     is_ssi_eligible_individual: true
     ssi_countable_income: 0
   output:
@@ -14,7 +14,7 @@
   input:
     ssi_amount_if_eligible: 100
     meets_ssi_resource_test: true
-    ssi_income_eligible: true
+    ssi_income_in_sga: true
     is_ssi_eligible_individual: true
     ssi_countable_income: 99
   output:
@@ -25,7 +25,7 @@
   input:
     ssi_amount_if_eligible: 100
     meets_ssi_resource_test: true
-    ssi_income_eligible: true
+    ssi_income_in_sga: true
     is_ssi_eligible_individual: true
     ssi_countable_income: 101
   output:
@@ -36,7 +36,7 @@
   input:
     ssi_amount_if_eligible: 100
     meets_ssi_resource_test: false
-    ssi_income_eligible: true
+    ssi_income_in_sga: true
     is_ssi_eligible_individual: true
     ssi_countable_income: 0
   output:
@@ -47,7 +47,7 @@
   input:
     ssi_amount_if_eligible: 100
     meets_ssi_resource_test: true
-    ssi_income_eligible: false
+    ssi_income_in_sga: false
     is_ssi_eligible_individual: true
     ssi_countable_income: 0
   output:
@@ -58,7 +58,7 @@
   input:
     ssi_amount_if_eligible: 100
     meets_ssi_resource_test: true
-    ssi_income_eligible: true
+    ssi_income_in_sga: true
     is_ssi_eligible_individual: false
     ssi_countable_income: 0
   output:

@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ssi_income_eligible(Variable):
+class ssi_income_in_sga(Variable):
     value_type = bool
     entity = Person
     label = "Income less than the SGA limit"
