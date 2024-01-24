@@ -4,7 +4,7 @@ metadata:
   period: year
   breakdown: 
     - list(range(1,8))
-    - county_str
+    - county
   label: Vermont partial renter credit income limit  
   reference:
     - title: 32 V.S.A. §6066. Homestead Property Tax Credit and Renter Credit (b)
@@ -78,7 +78,7 @@ metadata:
 2: 
   ADDISON_COUNTY_VT:
     2021-01-01: 33_500
-    2022-01-01: 37_750
+    2022-01-01: 37_450
     2023-01-01: 39_650
   BENNINGTON_COUNTY_VT:
     2021-01-01: 31_350

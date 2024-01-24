@@ -17,16 +17,16 @@ class vt_renter_credit(Variable):
         # income > uppder cap, then credit is 0
         # income < lower cap, then credit is fair market rent
         # income is between upper cap and lower cap:
-        ## if no subsidized: (upper cap - lower cap)/(upper cap - income) * fair market rent * 0.5 if shared rent
+        ## if no subsidized: (upper cap - income)/(upper cap - lower cap) * fair market rent * 0.5 if shared rent
 
-        ## if subsidized: (upper cap - lower cap)/(upper cap - income) * actual pay rent amount * 0.1  * 0.5 if shared rent
+        ## if subsidized: (upper cap - income)/(upper cap - lower cap) * actual pay rent amount * 0.1  * 0.5 if shared rent
         p = parameters(period).gov.states.vt.tax.income.credits.renter
         vt_renter_credit_income = tax_unit("vt_renter_credit_income", period)
         family_size = tax_unit("tax_unit_size", period)
-        county = tax_unit.household("county_str", period)
+        county = tax_unit.household("county", period)
         share_rent = tax_unit("share_rent", period)
         subsidized = tax_unit("rent_is_subsidized", period)
-        rent_pay = tax_unit("rents", period)
+        rent_pay = add(tax_unit, period, ["rent"])
         match_full_credit_income = p.limit.full_credit_income[family_size][
             county
         ]
@@ -35,18 +35,24 @@ class vt_renter_credit(Variable):
         ][county]
         match_base_credit_amount = p.base[family_size][county]
         percent_reabte_claimable = (
-            match_partial_credit_income - match_full_credit_income
-        ) / (match_partial_credit_income - vt_renter_credit_income)
+            match_partial_credit_income - vt_renter_credit_income
+        ) / (match_partial_credit_income - match_full_credit_income)
         conditions = [
             vt_renter_credit_income > match_partial_credit_income,
-            vt_renter_credit_income < match_full_credit_income & ~subsidized,
-            vt_renter_credit_income < match_full_credit_income & subsidized,
-            match_full_credit_income
-            <= vt_renter_credit_income
-            <= match_partial_credit_income & ~subsidized,
-            match_full_credit_income
-            <= vt_renter_credit_income
-            <= match_partial_credit_income & subsidized,
+            (vt_renter_credit_income < match_full_credit_income) & ~subsidized,
+            (vt_renter_credit_income < match_full_credit_income) & subsidized,
+            (
+                match_full_credit_income
+                <= vt_renter_credit_income
+                <= match_partial_credit_income
+            )
+            & ~subsidized,
+            (
+                match_full_credit_income
+                <= vt_renter_credit_income
+                <= match_partial_credit_income
+            )
+            & subsidized,
         ]
         values = [
             0,
@@ -60,4 +66,4 @@ class vt_renter_credit(Variable):
             * p.rent_rate
             * p.share_rent_rate**share_rent,
         ]
-        return select(conditions, values)
+        return np.round(select(conditions, values), 0)
