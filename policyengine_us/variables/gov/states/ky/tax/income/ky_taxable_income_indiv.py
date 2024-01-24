@@ -12,10 +12,6 @@ class ky_taxable_income_indiv(Variable):
 
     def formula(person, period, parameters):
         ky_agi = person("ky_agi", period)
-        standard_deduction = person("ky_standard_deduction_indiv", period)
-        itemized_deductions = person("ky_itemized_deductions_indiv", period)
-        # Assume that filers itemize if itemized deductions exceed the standard deduction.
-        # They do not need to follow their federal itemization choice.
-        deduction = max_(standard_deduction, itemized_deductions)
+        deduction = person("ky_deductions_indiv", period)
 
         return max_(0, ky_agi - deduction)
