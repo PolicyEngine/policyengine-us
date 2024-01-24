@@ -2,10 +2,9 @@ from policyengine_us.model_api import *
 
 
 class ssi_income_eligible(Variable):
-    value_type = float
+    value_type = bool
     entity = Person
     label = "Income less than the SGA limit"
-    unit = USD
     definition_period = YEAR
 
     def formula(person, period, parameters):
