@@ -6,6 +6,7 @@ class ssi_income_in_sga(Variable):
     entity = Person
     label = "Income less than the SGA limit"
     definition_period = YEAR
+    reference = "https://www.ssa.gov/OP_Home/cfr20/416/416-0971.htm"
 
     def formula(person, period, parameters):
         income = person("ssi_earned_income", period)

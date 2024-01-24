@@ -1,4 +1,4 @@
-description: Maximum income that a member can earn to be eligible for SSI
+description: The Social Security Administration considers non-blind individuals earning more than this amount, net of impairment-related work expenses, to be engaging in Substantial Gainful Activity.
 
 values:
   1975-01-01: 200
@@ -33,7 +33,7 @@ values:
   2023-01-01: 1_470
   2024-01-01: 1_550
 metadata:
-  label: Substantial Gainful Activity
+  label: Non-blind Substantial Gainful Activity limit
   unit: currency-USD
   period: monthly
   reference:
