@@ -13,7 +13,7 @@
         members: [person1, person2]
         state_code: WV
   output:
-    wv_public_pension_subtraction: 2_000
+    wv_public_pension_subtraction_person: 2_000
 
 - name: West Virgina public pension subtraction if two people in the household, one is not dependent with $1000 public pension and the other is not dependent with $500 public pension.
   period: 2022
@@ -30,7 +30,7 @@
         members: [person1, person2]
         state_code: WV
   output:
-    wv_public_pension_subtraction: 1_500
+    wv_public_pension_subtraction_person: 1_500
 
 
 - name: West Virgina public pension subtraction if two people in the household, one is dependent with $1000 public pension and the other is dependent with $500 public pension.
@@ -48,7 +48,7 @@
         members: [person1, person2]
         state_code: WV
   output:
-    wv_public_pension_subtraction: 0
+    wv_public_pension_subtraction_person: 0
 
 - name: West Virgina public pension subtraction if three people in the household, one is not dependent with $1000 public pension, one is dependent with $800 public pension and another is not dependent with $500 public pension.
   period: 2022
@@ -68,4 +68,4 @@
         members: [person1, person2,person3]
         state_code: WV
   output:
-    wv_public_pension_subtraction: 1_500
+    wv_public_pension_subtraction_person: 1_500
