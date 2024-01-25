@@ -3,7 +3,7 @@ from policyengine_us.model_api import *
 
 class va_additions(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     label = "Virginia additions to Federal Adjusted Gross Income"
     unit = USD
     definition_period = YEAR

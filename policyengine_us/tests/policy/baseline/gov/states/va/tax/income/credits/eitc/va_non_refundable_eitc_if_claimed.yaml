@@ -1,0 +1,26 @@
+- name: No EITC
+  period: 2022
+  input:
+    state_code: VA
+    eitc: 0
+    va_low_income_tax_credit: 0
+  output:
+    va_non_refundable_eitc_if_claimed: 0
+
+- name: Non refundable rate of 20%
+  period: 2022
+  input:
+    state_code: VA
+    eitc: 1_000
+    va_low_income_tax_credit: 0
+  output:
+    va_non_refundable_eitc_if_claimed: 200
+
+- name: Non refundable rate of 20%
+  period: 2022
+  input:
+    state_code: VA
+    eitc: 2_000
+    va_low_income_tax_credit: 100
+  output:
+    va_non_refundable_eitc_if_claimed: 400

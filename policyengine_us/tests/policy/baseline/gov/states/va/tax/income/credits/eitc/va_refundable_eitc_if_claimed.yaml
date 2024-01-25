@@ -1,0 +1,15 @@
+- name: Refundable rate at 15%
+  period: 2022
+  input:
+    state_code: VA
+    eitc: 1_000
+  output:
+    va_refundable_eitc_if_claimed: 150
+
+- name: No EITC
+  period: 2022
+  input:
+    state_code: VA
+    eitc: 0
+  output:
+    va_refundable_eitc_if_claimed: 0

@@ -11,7 +11,7 @@ class ar_income_tax_before_refundable_credits(Variable):
 
     def formula(tax_unit, period, parameters):
         before_non_refundable_credits = tax_unit(
-            "ar_income_tax_before_non_refundable_credits", period
+            "ar_income_tax_before_non_refundable_credits_unit", period
         )
         non_refundable_credits = tax_unit("ar_non_refundable_credits", period)
         return max_(before_non_refundable_credits - non_refundable_credits, 0)

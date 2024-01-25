@@ -3,10 +3,10 @@
   input:
     people:
       person1: 
-        is_tax_unit_head: true
+        is_tax_unit_head_or_spouse: true
         taxable_public_pension_income: 2_000
       person2:
-        is_tax_unit_spouse: true
+        is_tax_unit_head_or_spouse: true
         taxable_public_pension_income: 1_500
     tax_units:
       tax_unit:
@@ -24,10 +24,10 @@
   input:
     people:
       person1: 
-        is_tax_unit_head: true
+        is_tax_unit_head_or_spouse: true
         taxable_public_pension_income: 2_000
       person2:
-        is_tax_unit_spouse: true
+        is_tax_unit_head_or_spouse: true
         taxable_public_pension_income: 1_500
     tax_units:
       tax_unit:
@@ -45,7 +45,7 @@
   input:
     people:
       person1:
-        is_tax_unit_head: true
+        is_tax_unit_head_or_spouse: true
         taxable_public_pension_income: 2_000
     tax_units:
       tax_unit:
@@ -63,7 +63,7 @@
   input:
     people:
       person1:
-        is_tax_unit_head: true
+        is_tax_unit_head_or_spouse: true
         taxable_public_pension_income: 3_000
     tax_units:
       tax_unit:
@@ -81,10 +81,10 @@
   input:
     people:
       person1: 
-        is_tax_unit_head: true
+        is_tax_unit_head_or_spouse: true
         taxable_public_pension_income: 3_000
       person2:
-        is_tax_unit_spouse: true
+        is_tax_unit_head_or_spouse: true
         taxable_public_pension_income: 3_000
     tax_units:
       tax_unit:

@@ -1,0 +1,67 @@
+- name: Tax unit files separately
+  period: 2022
+  # High error margin because of rounding in the tax tables
+  absolute_error_margin: 2
+  input:
+    people:
+      person1:
+        employment_income: 20_000
+        rental_income: 100
+        child_support_received: 200
+        is_tax_unit_head: true
+      person2:
+        self_employment_income: 19_000
+        capital_gains: 500
+        social_security: 300
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ar_files_separately: true
+        filing_status: SEPARATE
+        ar_non_refundable_credits: 0
+        ar_can_file_separate_on_same_return: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR 
+  output:
+    ar_agi: [19_900, 19_200]
+    ar_standard_deduction_indiv: [2_270, 2_270]
+    ar_taxable_income_indiv: [17_630, 16_930]
+    ar_income_tax_before_non_refundable_credits_indiv: [336, 313]
+    ar_income_tax_before_refundable_credits: [649]
+
+- name: Tax unit files separately
+  period: 2022
+  # High error margin because of rounding in the tax tables
+  absolute_error_margin: 2
+  input:
+    people:
+      person1:
+        employment_income: 20_000
+        rental_income: 100
+        child_support_received: 200
+        is_tax_unit_head: true
+      person2:
+        self_employment_income: 19_000
+        capital_gains: 500
+        social_security: 300
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ar_files_separately: false
+        filing_status: JOINT
+        ar_non_refundable_credits: 0
+        ar_can_file_separate_on_same_return: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR 
+  output:
+    ar_agi: [19_900, 19_200]
+    ar_standard_deduction_joint: [4_540, 0]
+    ar_taxable_income_joint: [34_560, 0]
+    ar_income_tax_before_non_refundable_credits_joint: [1_065, 0]
+    ar_income_tax_before_refundable_credits: [1_065]

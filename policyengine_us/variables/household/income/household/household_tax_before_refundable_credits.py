@@ -13,6 +13,7 @@ class household_tax_before_refundable_credits(Variable):
         "self_employment_tax",
         "income_tax_before_refundable_credits",  # Federal.
         "al_income_tax_before_refundable_credits",
+        "az_income_tax_before_refundable_credits",
         "ca_income_tax_before_refundable_credits",
         "co_income_tax_before_refundable_credits",
         "dc_income_tax_before_refundable_credits",

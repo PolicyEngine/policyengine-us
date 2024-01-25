@@ -1,0 +1,17 @@
+- name: Capped at 0
+  period: 2022
+  input:
+    hi_income_tax_before_non_refundable_credits: 5_000
+    hi_non_refundable_credits: 6_000
+    state_code: HI
+  output:
+    hi_income_tax_before_refundable_credits: 0
+
+- name: Reduction
+  period: 2022
+  input:
+    hi_income_tax_before_non_refundable_credits: 5_000
+    hi_non_refundable_credits: 2_000
+    state_code: HI
+  output:
+    hi_income_tax_before_refundable_credits: 3_000

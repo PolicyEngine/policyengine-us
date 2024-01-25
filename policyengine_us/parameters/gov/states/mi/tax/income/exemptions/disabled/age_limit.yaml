@@ -1,0 +1,16 @@
+description: Michigan limits the disabled exemption to totally and permanently disabled filers under this age.
+values:
+  2021-01-01: 66
+
+metadata:
+  period: year
+  unit: currency-USD
+  label: Michigan disabled exemption age limit
+  reference:
+  # The legal code does not explictly specify an age limit, but the taxpayer's guide does.
+  - title: Michigan Legal Code Section 206.30 - (3)(a)
+    href: http://legislature.mi.gov/doc.aspx?mcl-206-30
+  - title: 2022 Michigan 1040 Instructions - Page 9
+    href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2022/2022-IIT-Forms/BOOK_MI-1040.pdf?rev=86a928564e3f42449c531309673f5da7&hash=7147C48E7C9B1B8171B72DC34A66642A
+  - title: 2021 Michigan 1040 Instructions - Page 9
+    href: https://www.michigan.gov/-/media/Project/Websites/taxes/2022RM/IIT/Book_1040_Instructions_Only.pdf?rev=a485e68cd41544d89165f4327221cde9

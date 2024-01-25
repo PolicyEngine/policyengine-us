@@ -20,7 +20,7 @@
       tax_unit:
         members: [person1, person2, person3]
         tax_unit_size: 3
-  output:  
+  output: 
     mi_home_heating_credit_eligible_rate: 1
 
 - name: Two eligible people
@@ -45,7 +45,7 @@
       tax_unit:
         members: [person1, person2, person3]
         tax_unit_size: 3
-  output:  
+  output: # 2/3
     mi_home_heating_credit_eligible_rate: 0.666
 
 - name: No eligible people

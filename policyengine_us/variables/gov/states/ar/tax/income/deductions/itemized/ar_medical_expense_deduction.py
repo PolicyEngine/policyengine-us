@@ -12,7 +12,7 @@ class ar_medical_expense_deduction(Variable):
 
     def formula(tax_unit, period, parameters):
         year = period.start.year
-        agi = tax_unit("ar_agi", period)
+        agi = add(tax_unit, period, ["ar_agi"])
         # Arkansas applies the federal medical expense floor rate which was established in 2013
         if year >= 2017:
             instant_str = f"2017-01-01"

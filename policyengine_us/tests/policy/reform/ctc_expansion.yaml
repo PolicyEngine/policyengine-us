@@ -1,0 +1,43 @@
+- name: 30% phase-in rate with two children
+  period: 2023
+  reforms: policyengine_us.reforms.congress.wyden_smith.ctc_expansion.ctc_expansion
+  input:
+    gov.contrib.congress.wyden_smith.per_child_actc_phase_in: True
+    gov.contrib.congress.wyden_smith.actc_lookback: True
+    tax_unit_earned_income: 10_000
+    ctc_qualifying_children: 2
+    ctc: 4_000
+    ctc_refundable_maximum: 3_200  # $1,600 * 2
+  output:
+    # 10,000 - 2,500 = 9,500 | 9,500 * 0.3 = 2,250
+    refundable_ctc: 2_250
+
+- name: 30% phase-in rate with two children, greater income in previous year
+  period: 2023
+  reforms: policyengine_us.reforms.congress.wyden_smith.ctc_expansion.ctc_expansion
+  input:
+    gov.contrib.congress.wyden_smith.per_child_actc_phase_in: True
+    gov.contrib.congress.wyden_smith.actc_lookback: True
+    tax_unit_earned_income: 8_000
+    ctc_qualifying_children: 2
+    tax_unit_earned_income_last_year: 9_000
+    ctc: 4_000
+    ctc_refundable_maximum: 3_200 # $1,600 * 2
+  output:
+    # 9,000 - 2,500 = 6,500 | 7,500 * 0.3 = 1,950
+    refundable_ctc: 1_950
+
+- name: 30% phase-in rate with two children
+  period: 2024
+  reforms: policyengine_us.reforms.congress.wyden_smith.ctc_expansion.ctc_expansion
+  input:
+    gov.contrib.congress.wyden_smith.per_child_actc_phase_in: True
+    gov.contrib.congress.wyden_smith.actc_lookback: True
+    tax_unit_earned_income: 8_000
+    tax_unit_earned_income_last_year: 10_000
+    ctc_qualifying_children: 2
+    ctc: 4_000
+    ctc_refundable_maximum: 3_200  # $1,600 * 2
+  output:
+    # 10,000 - 2,500 = 9,500 | 9,500 * 0.3 = 2,250
+    refundable_ctc: 2_250

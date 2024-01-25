@@ -1,0 +1,95 @@
+- name: 2021 Virginia itemized deduction for a single filer
+  period: 2021
+  input:
+    filing_status: SINGLE
+    itemized_deductions_less_salt: 20_000
+    real_estate_taxes: 5_000
+    adjusted_gross_income: 80_000 # < $278,450
+    state_and_local_sales_or_income_tax: 1_000
+    state_code: VA
+  output:
+    va_itemized_deductions: 25_000 # 20000+5000
+
+- name: 2022 Virginia itemized deduction for a single filer
+  period: 2022
+  input:
+    filing_status: SINGLE
+    itemized_deductions_less_salt: 20_000
+    real_estate_taxes: 5_000
+    adjusted_gross_income: 280_000 # < $286,800
+    state_and_local_sales_or_income_tax: 1_000
+    state_code: VA
+  output:
+    va_itemized_deductions: 25_000 # 20000+5000
+
+- name: 2021 Virginia limited itemized deduction for a single filer
+  period: 2021
+  input:
+    filing_status: SINGLE
+    itemized_deductions_less_salt: 20_000
+    real_estate_taxes: 5_000
+    adjusted_gross_income: 300_000 # > $278,450
+    state_and_local_sales_or_income_tax: 1_000
+    state_code: VA
+  output:
+    va_itemized_deductions: 0 #min(3%*(300000-278450),80%*(20000+5000))-1000*(1-0.02586) = max(0,646.5-974.14)
+
+- name: 2021 Virginia limited itemized deduction for a head of household filer
+  period: 2021
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    itemized_deductions_less_salt: 20_000
+    real_estate_taxes: 50_000
+    adjusted_gross_income: 800_000 # > $306,300
+    state_and_local_sales_or_income_tax: 10_000
+    state_code: VA
+  output:
+    va_itemized_deductions: 6_926.8571
+
+- name: Virginia itemized deduction for a joint filer (before 2018)
+  period: 2017
+  input:
+    filing_status: JOINT
+    itemized_deductions_less_salt: 20_000
+    real_estate_taxes: 10_000
+    adjusted_gross_income: 250_000 # < $313_800
+    state_and_local_sales_or_income_tax: 10_000
+    state_code: VA
+  output:
+    va_itemized_deductions: 30_000 #20_000+10_000
+
+- name: Virginia limited itemized deduction for a joint filer (before 2018)
+  period: 2017
+  input:
+    filing_status: JOINT
+    itemized_deductions_less_salt: 20_000
+    real_estate_taxes: 20_000
+    adjusted_gross_income: 800_000 # > $313_800
+    state_and_local_sales_or_income_tax: 10_000
+    state_code: VA
+  output:
+    va_itemized_deductions: 8_232.5
+
+- name: Virginia itemized deduction for a joint filer in 2018
+  period: 2018
+  input:
+    filing_status: JOINT
+    itemized_deductions_less_salt: 20_000
+    real_estate_taxes: 10_000
+    adjusted_gross_income: 250_000 # no limitation
+    state_and_local_sales_or_income_tax: 10_000
+    state_code: VA
+  output:
+    va_itemized_deductions: 30_000 #20_000+10_000
+
+- name: Virginia limited itemized deduction for a joint filer in 2018
+  period: 2018
+  input:
+    filing_status: JOINT
+    itemized_deductions_less_salt: 20_000
+    real_estate_taxes: 20_000
+    adjusted_gross_income: 800_000 # no limitation
+    state_and_local_sales_or_income_tax: 10_000
+    state_code: VA
+  output:
+    va_itemized_deductions: 40_000 #20,000+20,000

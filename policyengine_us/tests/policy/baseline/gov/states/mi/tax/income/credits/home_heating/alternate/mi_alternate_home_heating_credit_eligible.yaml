@@ -3,7 +3,7 @@
   input:
     utilities_included_in_rent: false
     mi_household_resources: 1_000
-    mi_exemptions: 2
+    mi_exemptions_count: 2
     state_code: MI
   output:
     mi_alternate_home_heating_credit_eligible: true
@@ -13,7 +13,7 @@
   input:
     utilities_included_in_rent: true
     mi_household_resources: 1_000
-    mi_exemptions: 2
+    mi_exemptions_count: 2
     state_code: MI
   output:
     mi_alternate_home_heating_credit_eligible: false
@@ -23,9 +23,9 @@
   input:
     utilities_included_in_rent: false
     mi_household_resources: 20_504
-    mi_exemptions: 2
+    mi_exemptions_count: 2
     state_code: MI
-  output:
+  output: # 20_504 >= 20_504
     mi_alternate_home_heating_credit_eligible: false
 
 - name: Househould resource ineligible, 7 exemptions
@@ -33,7 +33,7 @@
   input:
     utilities_included_in_rent: false
     mi_household_resources: 27_700
-    mi_exemptions: 7
+    mi_exemptions_count: 7
     state_code: MI
-  output:
+  output: # 27_700 >= 27_700
     mi_alternate_home_heating_credit_eligible: false

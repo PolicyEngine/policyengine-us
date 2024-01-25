@@ -44,3 +44,16 @@
     housing_cost: 1
   output:
     snap_excess_shelter_expense_deduction: 159.73
+
+- name: Caps at $701 per month in GU with housing costs and utility allowance added.
+  period: 2022-01
+  input:
+    snap_net_income_pre_shelter: 0
+    snap_region_str: GU
+    housing_cost: 4_800 # 400 monthly 
+    snap_utility_allowance: 300 
+    has_usda_elderly_disabled: false
+    is_homeless: false
+  output:
+    # cap at 701, 
+    snap_excess_shelter_expense_deduction: 700
