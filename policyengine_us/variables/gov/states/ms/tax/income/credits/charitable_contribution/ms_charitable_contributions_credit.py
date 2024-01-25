@@ -21,7 +21,4 @@ class ms_charitable_contributions_credit(Variable):
         )
         filing_status = tax_unit("filing_status", period)
 
-        capped_foster_care_contributions = min_(
-            foster_care_contributions, p.qualifying_foster[filing_status]
-        )
-        return capped_foster_care_contributions
+        return min_(foster_care_contributions, p.cap[filing_status])
