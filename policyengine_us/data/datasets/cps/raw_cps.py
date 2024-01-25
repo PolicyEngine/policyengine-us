@@ -25,6 +25,7 @@ SPM_UNIT_COLUMNS = [
     "CAPWKCCXPNS",
     "CHILDCAREXPNS",
     "CHILDSUPPD",
+    "EIP",
     "EITC",
     "ENGVAL",
     "EQUIVSCALE",
