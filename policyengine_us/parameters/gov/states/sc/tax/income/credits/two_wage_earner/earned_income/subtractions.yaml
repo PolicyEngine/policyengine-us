@@ -1,11 +1,9 @@
 description: South Carolina subtarcts the following from the gross earned income under the two wage earner credit.
 values:
   2021-01-01:
-    # Trade and Business Deductions
-    - qualified_business_income_deduction
+    - self_employment_tax_ald_person
+    - self_employed_health_insurance_ald_person
     - self_employed_pension_contribution_ald_person
-    - ira_contributions
-
 
 metadata:
   unit: list

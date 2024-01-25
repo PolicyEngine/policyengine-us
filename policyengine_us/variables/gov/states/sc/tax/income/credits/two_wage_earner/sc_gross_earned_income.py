@@ -10,7 +10,10 @@ class sc_gross_earned_income(Variable):
     defined_for = StateCode.SC
 
     def formula(person, period, parameters):
-        p = parameters(period).gov.states.sc.tax.income.credits.two_wage_earner.earned_income
-        income_sources = add(person, period, p.sources)
-        subtarctions = add(person, period, p.subtractions)
-        return max_(0, income_sources - subtarctions)
+        p = parameters(
+            period
+        ).gov.states.sc.tax.income.credits.two_wage_earner.earned_income
+        # Based on the legal code and tax form worksheet, we use earned income as an inpput
+        earned_income = person("earned_income", period)
+        subtractions = add(person, period, p.subtractions)
+        return max_(0, earned_income - subtractions)
