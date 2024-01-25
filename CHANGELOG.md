@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.631.5] - 2024-01-25 17:01:06
+
+### Fixed
+
+- Rhode Island property tax calculation.
+
 ## [0.631.4] - 2024-01-25 14:45:34
 
 ### Fixed
@@ -6953,6 +6959,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.631.5]: https://github.com/PolicyEngine/policyengine-us/compare/0.631.4...0.631.5
 [0.631.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.631.3...0.631.4
 [0.631.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.631.2...0.631.3
 [0.631.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.631.1...0.631.2
