@@ -33,6 +33,6 @@ class ca_foster_youth_tax_credit(Variable):
             0, (excess_earned_income / p.phase_out.increment) * p.phase_out.step
         )
 
-        person_amount = min_(total_base_credit, total_base_credit - reduction_amount)
+        return min_(total_base_credit, total_base_credit - reduction_amount)
 
         return person_amount
