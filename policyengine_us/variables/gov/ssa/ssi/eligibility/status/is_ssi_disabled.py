@@ -22,5 +22,3 @@ class is_ssi_disabled(Variable):
         is_disabled = person("is_disabled", period)
         engaged_in_ssa = person("ssi_engaged_in_sga", period)
         return (reported_disabled_ssi | is_disabled) & ~engaged_in_ssa
-        in_sga = person("ssi_engaged_in_sga", period)
-        return (reported_receipt & ~aged & ~blind) | (is_disabled & ~in_sga)
