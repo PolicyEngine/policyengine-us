@@ -27,7 +27,7 @@ class wv_social_security_benefits_subtraction_person(Variable):
         # Federal adjusted gross income includes
         # social security benefits paid by the Social Security Administration as Old Age,
         # Survivors and Disability Insurance Benefits
-        taxable_ss = person("taxable_social_security", period)
+        taxable_ss = person("taxable_social_security", period) 
         total_eligible_ss = taxable_ss * head_or_spouse
 
         return total_eligible_ss * p.rate

@@ -16,11 +16,9 @@ class wv_public_pension_subtraction_person(Variable):
         federal_pension_income = person(
             "taxable_federal_pension_income", period
         )
+        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+        head_or_spouse_pension_income = federal_pension_income * head_or_spouse
         p = parameters(
             period
         ).gov.states.wv.tax.income.subtractions.public_pension
-        person_capped = min_(federal_pension_income, p.max_amount)
-        # Only applies to head and spouse.
-        return person_capped * person(
-            "is_tax_unit_head_or_spouse", period
-        )
+        return min_(head_or_spouse_pension_income, p.max_amount)
