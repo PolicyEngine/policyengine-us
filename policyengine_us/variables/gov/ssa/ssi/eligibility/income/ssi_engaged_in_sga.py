@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ssi_income_in_sga(Variable):
+class ssi_engaged_in_sga(Variable):
     value_type = bool
     entity = Person
     label = "Income less than the SGA limit"
@@ -16,4 +16,4 @@ class ssi_income_in_sga(Variable):
         # SGA does not apply to blind individuals
         is_blind = person("is_blind", period)
 
-        return (monthly_income < sga) | is_blind
+        return (monthly_income > sga) & ~is_blind
