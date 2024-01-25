@@ -10,15 +10,11 @@ class nm_2021_income_rebate(Variable):
     defined_for = StateCode.NM
 
     def formula(tax_unit, period, parameters):
-        dependent_on_another_return = tax_unit("dsi", period)
-        income = tax_unit("adjusted_gross_income", period)
-        p = (
-            parameters(period)
-            .gov.states.nm.tax.income.rebates["2021_income"]
-            .main
-        )
+        dependent_elsewhere = tax_unit("head_is_dependent_elsewhere", period)
+        agi = tax_unit("adjusted_gross_income", period)
         filing_status = tax_unit("filing_status", period)
-        income_eligible = income < p.income_limit[filing_status]
-        eligible = income_eligible & ~dependent_on_another_return
-        amount_if_eligible = p.amount[filing_status]
+        p = parameters(period).gov.states.nm.tax.income.rebates["2021_income"]
+        income_eligible = agi < p.main.income_limit[filing_status]
+        eligible = income_eligible & ~dependent_elsewhere
+        amount_if_eligible = p.main.amount[filing_status]
         return eligible * amount_if_eligible

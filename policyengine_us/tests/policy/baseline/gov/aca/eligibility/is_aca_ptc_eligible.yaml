@@ -1,0 +1,85 @@
+- name: is_aca_ptc_eligible unit test 1 --- coverage A
+  period: 2022
+  input:
+    is_medicaid_eligible: false
+    is_aca_eshi_eligible: false
+    is_medicare_eligible: false
+    aca_magi_fraction: 2.50
+  output:
+    is_aca_ptc_eligible: true
+
+- name: is_aca_ptc_eligible unit test 2 --- coverage B
+  period: 2022
+  input:
+    is_medicaid_eligible: false
+    is_aca_eshi_eligible: false
+    is_medicare_eligible: true
+    aca_magi_fraction: 2.50
+  output:
+    is_aca_ptc_eligible: false
+
+- name: is_aca_ptc_eligible unit test 3 --- coverage C
+  period: 2022
+  input:
+    is_medicaid_eligible: true
+    is_aca_eshi_eligible: false
+    is_medicare_eligible: false
+    aca_magi_fraction: 2.50
+  output:
+    is_aca_ptc_eligible: false
+
+- name: is_aca_ptc_eligible unit test 4 --- income A
+  period: 2022
+  input:
+    #is_medicaid_eligible: false
+    #is_aca_eshi_eligible: false
+    #is_medicare_eligible: false
+    aca_magi_fraction: 0.90
+  output:
+    is_aca_ptc_eligible: false
+
+- name: is_aca_ptc_eligible unit test 5 --- income B
+  period: 2022
+  input:
+    is_medicaid_eligible: false
+    is_aca_eshi_eligible: false
+    is_medicare_eligible: false
+    aca_magi_fraction: 6.50
+  output:
+     is_aca_ptc_eligible: true
+
+- name: is_aca_ptc_eligible unit test 6 --- max three children pay ACA premium
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 40
+        is_medicaid_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+      person2:
+        age: 16
+        is_medicaid_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+      person3:
+        age: 14
+        is_medicaid_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+      person4:
+        age: 12
+        is_medicaid_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+      person5:
+        age: 10
+        is_medicaid_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+        aca_magi_fraction: 2.50
+  output:
+     is_aca_ptc_eligible: [true, true, true, true, false]

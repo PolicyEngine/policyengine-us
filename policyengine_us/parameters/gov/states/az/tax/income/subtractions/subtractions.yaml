@@ -1,11 +1,17 @@
 description: Arizona counts these sources as subtractions.
 values:
   2021-01-01:
-    # salt_refund_income
-    # - us_govt_interest
-    - az_public_pension_exclusion
+    - us_govt_interest # Line 28
+    - az_public_pension_exclusion # Line 29a
+    - az_long_term_capital_gains_subtraction # Line 20 - 24
+    - az_military_retirement_subtraction # Line 29b
+    - taxable_social_security # Line 30
+    - military_service_income # Line 32
+    - az_529_college_savings_plan_subtraction # Line 34
 metadata:
   unit: list
+  period: year
+  label: Arizona adjusted gross income subtractions
   reference:
     - title: 2022 Arizona Form 140 Resident Personal Income Tax Booklet
       href: https://azdor.gov/sites/default/files/2023-03/FORMS_INDIVIDUAL_2022_140BOOKLET.pdf#page=30

@@ -22,11 +22,12 @@
     snap_excess_shelter_expense_deduction: 3_000 # Uncapped since less than 597 * 12 = $7,164.
 
 - name: Caps at $597 per month in contiguous US.
-  period: 2022
+  period: 2022-01
   input:
-    housing_cost: 600 * 12
+    housing_cost: 
+      2022: 600 * 12
   output:
-    snap_excess_shelter_expense_deduction: 597 * 12
+    snap_excess_shelter_expense_deduction: 597
 
 - name: Uncapped if includes elderly or disabled people.
   period: 2022
@@ -37,9 +38,22 @@
     snap_excess_shelter_expense_deduction: 600 * 12
 
 - name: Homeless households get a flat benefit.
-  period: 2022
+  period: 2022-01
   input:
     is_homeless: true
     housing_cost: 1
   output:
-    snap_excess_shelter_expense_deduction: 159.73 * 12
+    snap_excess_shelter_expense_deduction: 159.73
+
+- name: Caps at $701 per month in GU with housing costs and utility allowance added.
+  period: 2022-01
+  input:
+    snap_net_income_pre_shelter: 0
+    snap_region_str: GU
+    housing_cost: 4_800 # 400 monthly 
+    snap_utility_allowance: 300 
+    has_usda_elderly_disabled: false
+    is_homeless: false
+  output:
+    # cap at 701, 
+    snap_excess_shelter_expense_deduction: 700

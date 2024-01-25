@@ -1,0 +1,39 @@
+- name: Eligible for alternate home heating credit
+  period: 2022
+  input:
+    utilities_included_in_rent: false
+    mi_household_resources: 1_000
+    mi_exemptions_count: 2
+    state_code: MI
+  output:
+    mi_alternate_home_heating_credit_eligible: true
+
+- name: Ineligible for alternate home heating credit as utilities are included in rent
+  period: 2022
+  input:
+    utilities_included_in_rent: true
+    mi_household_resources: 1_000
+    mi_exemptions_count: 2
+    state_code: MI
+  output:
+    mi_alternate_home_heating_credit_eligible: false
+
+- name: Househould resource ineligible, 2 exemptions
+  period: 2021
+  input:
+    utilities_included_in_rent: false
+    mi_household_resources: 20_504
+    mi_exemptions_count: 2
+    state_code: MI
+  output: # 20_504 >= 20_504
+    mi_alternate_home_heating_credit_eligible: false
+
+- name: Househould resource ineligible, 7 exemptions
+  period: 2021
+  input:
+    utilities_included_in_rent: false
+    mi_household_resources: 27_700
+    mi_exemptions_count: 7
+    state_code: MI
+  output: # 27_700 >= 27_700
+    mi_alternate_home_heating_credit_eligible: false

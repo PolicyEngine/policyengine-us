@@ -6,13 +6,14 @@ class cliff_evaluated(Variable):
     entity = Person
     label = "cliff evaluated"
     unit = USD
-    documentation = "Whether this person's cliff has been simulated. If not, then the cliff gap is assumed to be zero."
+    documentation = "Whether this person's cliff has been simulated. If not, the cliff gap is assumed to be zero."
     definition_period = YEAR
 
     def formula(person, period, parameters):
         adult_index_values = person("adult_index", period)
         cliff_adult_count = parameters(period).simulation.cliff_adults
-        return adult_index_values <= cliff_adult_count
+        is_adult = person("is_adult", period)
+        return is_adult & (adult_index_values <= cliff_adult_count)
 
 
 class cliff_gap(Variable):
@@ -20,36 +21,41 @@ class cliff_gap(Variable):
     entity = Person
     label = "cliff gap"
     unit = USD
-    documentation = "Amount of income lost if this person's employment income increased by $2,000."
+    documentation = "Amount of income lost if this person's employment income increased by delta amount."
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        simulation = person.simulation
-        alt_simulation = simulation.get_branch(f"all_adults_2k_pay_rise")
-        delta = parameters(period).simulation.cliff_threshold
-        for variable in simulation.tax_benefit_system.variables:
-            if variable not in simulation.input_variables:
-                alt_simulation.delete_arrays(variable)
-        alt_simulation.set_input(
-            "employment_income",
-            period,
-            person("employment_income", period)
-            + person("is_adult", period) * delta,
-        )
-        alt_person = alt_simulation.person
-        household_net_income = person.spm_unit("spm_unit_net_income", period)
-        household_net_income_higher_earnings = alt_person.spm_unit(
-            "spm_unit_net_income", period
-        )
-        increase = household_net_income_higher_earnings - household_net_income
-        return where(person("is_adult", period) & (increase < 0), -increase, 0)
+        netinc_base = person.household("household_net_income", period)
+        delta = parameters(period).simulation.cliff_delta
+        adult_count = parameters(period).simulation.cliff_adults
+        sim = person.simulation
+        increase = np.zeros(person.count, dtype=np.float32)
+        adult_indexes = person("adult_index", period)
+        for adult_index in range(1, 1 + adult_count):
+            alt_sim = sim.get_branch(f"cliff_for_adult_{adult_index}")
+            for variable in sim.tax_benefit_system.variables:
+                if (
+                    variable not in sim.input_variables
+                    or variable == "employment_income"
+                ):
+                    alt_sim.delete_arrays(variable)
+            mask = adult_index == adult_indexes
+            alt_sim.set_input(
+                "employment_income",
+                period,
+                person("employment_income", period) + mask * delta,
+            )
+            alt_person = alt_sim.person
+            netinc_alt = alt_person.household("household_net_income", period)
+            increase[mask] += netinc_alt[mask] - netinc_base[mask]
+        return where(increase < 0, -increase, 0)
 
 
 class is_on_cliff(Variable):
     value_type = bool
     entity = Person
     label = "is on a tax-benefit cliff"
-    documentation = "Whether this person would be worse off if their employment income were $2,000 higher."
+    documentation = "Whether this person would be worse off if their employment income were higher."
     definition_period = YEAR
 
     def formula(person, period, parameters):

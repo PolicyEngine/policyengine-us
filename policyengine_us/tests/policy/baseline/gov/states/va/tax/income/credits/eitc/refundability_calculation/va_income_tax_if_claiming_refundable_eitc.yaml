@@ -1,0 +1,14 @@
+- name: One person with zero earnings pays no tax.
+  period: 2022
+  input:
+    state_code: VA
+  output:
+    va_income_tax_if_claiming_refundable_eitc: 0
+
+- name: One person with zero earnings pays no tax.
+  period: 2022
+  input:
+    state_code: VA
+    va_refundable_eitc: 100
+  output:
+    va_income_tax_if_claiming_refundable_eitc: -100
