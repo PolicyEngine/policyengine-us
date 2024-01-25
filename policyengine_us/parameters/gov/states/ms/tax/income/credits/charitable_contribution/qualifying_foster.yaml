@@ -1,0 +1,20 @@
+description: Mississippi caps the credit for contributions to a qualifying foster care charitable organization at this amount.
+metadata:
+  label: Mississippi credit for contributions to foster organizations cap
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  reference:
+    - title: Mississippi Income Tax Instructions 2023 - House Bill 1671
+      href: https://www.dor.ms.gov/sites/default/files/Forms/Individual/80100231.pdf#page=3
+
+JOINT:
+  2023-01-01: 3_000
+HEAD_OF_HOUSEHOLD:
+  2023-01-01: 1_500
+WIDOW:
+  2023-01-01: 1_500
+SINGLE:
+  2023-01-01: 1_500
+SEPARATE:
+  2023-01-01: 1_500
