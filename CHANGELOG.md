@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.632.0] - 2024-01-25 20:08:04
+
+### Added
+
+- SSI Substantial Gainful Activity
+
 ## [0.631.6] - 2024-01-25 18:46:12
 
 ### Fixed
@@ -6965,6 +6971,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.632.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.631.6...0.632.0
 [0.631.6]: https://github.com/PolicyEngine/policyengine-us/compare/0.631.5...0.631.6
 [0.631.5]: https://github.com/PolicyEngine/policyengine-us/compare/0.631.4...0.631.5
 [0.631.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.631.3...0.631.4
