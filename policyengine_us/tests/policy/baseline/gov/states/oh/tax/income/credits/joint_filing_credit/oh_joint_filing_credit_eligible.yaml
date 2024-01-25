@@ -5,10 +5,10 @@
     people:
       person1:
         is_tax_unit_head: true
-        oh_alternative_agi: 400
+        oh_joint_filing_credit_qualifying_income: 400
       person2:
         is_tax_unit_spouse: true
-        oh_alternative_agi: 700
+        oh_joint_filing_credit_qualifying_income: 700
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -26,10 +26,10 @@
     people:
       person1:
         is_tax_unit_head: true
-        oh_alternative_agi: 600
+        oh_joint_filing_credit_qualifying_income: 600
       person2:
         is_tax_unit_spouse: true
-        oh_alternative_agi: 700
+        oh_joint_filing_credit_qualifying_income: 700
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -47,10 +47,10 @@
     people:
       person1:
         is_tax_unit_head: true
-        oh_alternative_agi: 600
+        oh_joint_filing_credit_qualifying_income: 600
       person2:
         is_tax_unit_spouse: true
-        oh_alternative_agi: 700
+        oh_joint_filing_credit_qualifying_income: 700
     tax_units:
       tax_unit:
         members: [person1, person2]

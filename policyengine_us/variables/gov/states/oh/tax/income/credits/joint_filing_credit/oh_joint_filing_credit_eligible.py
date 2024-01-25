@@ -15,7 +15,7 @@ class oh_joint_filing_credit_eligible(Variable):
         is_head = person("is_tax_unit_head", period)
         is_spouse = person("is_tax_unit_spouse", period)
         p = parameters(period).gov.states.oh.tax.income.credits.joint_filing
-        income = person("oh_alternative_agi", period)
+        income = person("oh_joint_filing_credit_qualifying_income", period)
         # The head and the spouse have to meet the income requirement individually
         income_eligible = income >= p.income_threshold
         head_eligible = tax_unit.any(is_head & income_eligible)

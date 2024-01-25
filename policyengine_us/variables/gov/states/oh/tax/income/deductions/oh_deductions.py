@@ -3,7 +3,7 @@ from policyengine_us.model_api import *
 
 class oh_deductions(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     label = "Ohio deductions"
     unit = USD
     definition_period = YEAR
