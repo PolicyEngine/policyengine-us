@@ -21,7 +21,6 @@ class household_benefits(Variable):
         "wic",
         "free_school_meals",
         "reduced_price_school_meals",
-        "lifeline",
         "spm_unit_broadband_subsidy",
         "tanf",
         "high_efficiency_electric_home_rebate",
