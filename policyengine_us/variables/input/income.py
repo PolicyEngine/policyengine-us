@@ -10,6 +10,7 @@ class employment_income_before_lsr(Variable):
     label = "employment income before labor supply responses"
     unit = USD
     definition_period = YEAR
+    uprating = "calibration.gov.irs.soi.employment_income"
 
 
 class employment_income(Variable):
@@ -32,6 +33,7 @@ class self_employment_income(Variable):
     unit = USD
     documentation = "Self-employment non-farm income."
     definition_period = YEAR
+    uprating = "calibration.gov.irs.soi.self_employment_income"
 
 
 class farm_income(Variable):

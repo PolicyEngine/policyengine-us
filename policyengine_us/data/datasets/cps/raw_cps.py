@@ -129,6 +129,8 @@ class RawCPS(Dataset):
         file_year_code = str(file_year)[-2:]
 
         CPS_URL_BY_YEAR = {
+            2018: "https://www2.census.gov/programs-surveys/cps/datasets/2019/march/asecpub19csv.zip",
+            2019: "https://www2.census.gov/programs-surveys/cps/datasets/2020/march/asecpub20csv.zip",
             2020: "https://www2.census.gov/programs-surveys/cps/datasets/2021/march/asecpub21csv.zip",
             2021: "https://www2.census.gov/programs-surveys/cps/datasets/2022/march/asecpub22csv.zip",
             2022: "https://www2.census.gov/programs-surveys/cps/datasets/2023/march/asecpub23csv.zip",
@@ -206,6 +208,20 @@ class RawCPS(Dataset):
     @staticmethod
     def _create_spm_unit_table(person: pd.DataFrame) -> pd.DataFrame:
         return person[SPM_UNIT_COLUMNS].groupby(person.SPM_ID).first()
+
+
+class RawCPS_2018(RawCPS):
+    time_period = 2018
+    name = "raw_cps_2018"
+    label = "Raw CPS 2018"
+    file_path = STORAGE_FOLDER / "raw_cps_2018.h5"
+
+
+class RawCPS_2019(RawCPS):
+    time_period = 2019
+    name = "raw_cps_2019"
+    label = "Raw CPS 2019"
+    file_path = STORAGE_FOLDER / "raw_cps_2019.h5"
 
 
 class RawCPS_2020(RawCPS):
