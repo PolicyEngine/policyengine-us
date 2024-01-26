@@ -3,8 +3,8 @@ from policyengine_us.model_api import *
 
 class de_subtractions(Variable):
     value_type = float
-    entity = TaxUnit
-    label = "Delaware subtractions"
+    entity = Person
+    label = "Delaware individual subtractions"
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.DE
