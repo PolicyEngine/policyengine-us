@@ -107,3 +107,27 @@
   output:
     ca_foster_youth_tax_credit: 0
 
+- name: An eligible primary head and an eligible spouse that have credit reduced over 0 
+  period: 2022
+  input:
+    people:
+      person_1:
+        age: 20
+        ca_foster_youth_tax_credit_eligible: true
+        earned_income: 30_000
+      person_2:
+        age: 20
+        ca_foster_youth_tax_credit_eligible: true
+        earned_income: 30_000
+    tax_units:
+      tax_unit:
+        members: [person_1, person_2]
+    households:
+      household:
+        members: [person_1, person_2]
+        state_code: CA
+  output:
+    ca_foster_youth_tax_credit: 0
+
+
+

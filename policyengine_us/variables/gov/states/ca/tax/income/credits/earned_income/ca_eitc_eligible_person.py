@@ -11,15 +11,12 @@ class ca_eitc_eligible_person(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.ca.tax.income.credits.earned_income
+        tax_unit = person.tax_unit
         age = person("age", period)
         is_dependent = person("is_tax_unit_dependent", period)
-
+        
         eitc_investment_income = tax_unit(
             "eitc_relevant_investment_income", period
         )
-        return(
-            (age >= p.eligibility.age.min)
-            & (age <= p.eligibility.age.max)
-            & ~is_dependent
-            & eitc_investment_income <= p.eligibility.max_investment_income
-        )
+        return (age >= p.eligibility.age.min) & (age <= p.eligibility.age.max) & (~is_dependent) & (eitc_investment_income <= p.eligibility.max_investment_income)
+        

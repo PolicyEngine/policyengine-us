@@ -11,8 +11,7 @@ class ca_eitc_eligible(Variable):
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
-        p = parameters(period).gov.states.ca.tax.income.credits.earned_income
-
+        
         ca_eitc_eligible_person = person("ca_eitc_eligible_person", period)
 
         return tax_unit.any(ca_eitc_eligible_person)
