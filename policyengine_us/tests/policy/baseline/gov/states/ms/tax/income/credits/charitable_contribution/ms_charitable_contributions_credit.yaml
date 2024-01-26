@@ -33,3 +33,30 @@
     ms_charitable_contributions_to_qualifying_foster_care_organizations: 5_000
   output:
     ms_charitable_contributions_credit: 3_000
+
+- name: For married couple filing a joint making voluntary cash contributions totaling $800.
+  period: 2022
+  input:
+    state_code: MS
+    filing_status: JOINT
+    ms_charitable_contributions_to_qualifying_foster_care_organizations: 800
+  output:
+    ms_charitable_contributions_credit: 800
+
+- name: For married couple filing a joint making voluntary cash contributions totaling $1000.
+  period: 2022
+  input:
+    state_code: MS
+    filing_status: JOINT
+    ms_charitable_contributions_to_qualifying_foster_care_organizations: 1_500
+  output:
+    ms_charitable_contributions_credit: 800
+
+- name: For a single individual making voluntary cash contributions totaling $500.
+  period: 2022
+  input:
+    state_code: MS
+    filing_status: SINGLE
+    ms_charitable_contributions_to_qualifying_foster_care_organizations: 500
+  output:
+    ms_charitable_contributions_credit: 400
