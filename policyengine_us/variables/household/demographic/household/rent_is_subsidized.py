@@ -1,8 +1,8 @@
 from policyengine_us.model_api import *
 
 
-class share_rent(Variable):
+class rent_is_subsidized(Variable):
     value_type = bool
     entity = TaxUnit
-    label = "The household share rent with others"
+    label = "Whether the rent of this household is subsidied"
     definition_period = YEAR

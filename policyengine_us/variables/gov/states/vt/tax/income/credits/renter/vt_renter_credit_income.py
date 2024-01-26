@@ -22,15 +22,18 @@ class vt_renter_credit_income(Variable):
         taxable_social_security = tax_unit(
             "tax_unit_taxable_social_security", period
         )
+        non_taxable_ss_cap = max(
+            0, total_social_security - taxable_social_security
+        )
         non_taxable_social_security = (
-            total_social_security - taxable_social_security
-        ) * p.non_taxable_ss_rate
+            non_taxable_ss_cap * p.rate.non_taxable_ss
+        )
         # line 12
         tax_emempt_interest_income = add(
             tax_unit, period, ["tax_exempt_interest_income"]
         )
-        #  line 13  skip
-        # add line 10 through 13
+        #  line 13  we do not include loss add-bacls in the calculation
+        # add line 10 through 12
         return (
             irs_gross_income
             + non_taxable_social_security

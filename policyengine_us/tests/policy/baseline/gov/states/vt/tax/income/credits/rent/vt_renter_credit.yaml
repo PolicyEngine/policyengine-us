@@ -75,3 +75,17 @@
     state_code: VT
   output:
     vt_renter_credit: 874
+
+- name: test 7 test for 0 situations in formula 
+  period: 2022
+  input:
+    vt_renter_credit_income: 24_500
+    county: BENNINGTON_COUNTY_VT
+    tax_unit_size: 2
+    share_rent: false
+    rent_is_subsidized: false
+    rent: 1_000
+    state_code: VT
+  output:
+    vt_renter_credit: 874
+    
