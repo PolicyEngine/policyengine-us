@@ -304,6 +304,7 @@ def add_spm_variables(cps: h5py.File, spm_unit: DataFrame) -> None:
         free_school_meals_reported="SPM_SCHLUNCH",
         spm_unit_energy_subsidy_reported="SPM_ENGVAL",
         spm_unit_wic_reported="SPM_WICVAL",
+        spm_unit_broadband_subsidy_reported="SPM_BBSUBVAL",
         spm_unit_payroll_tax_reported="SPM_FICA",
         spm_unit_federal_tax_reported="SPM_FEDTAX",
         spm_unit_state_tax_reported="SPM_STTAX",
