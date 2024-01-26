@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class share_rent(Variable):
+class rent_is_shared_with_another_tax_unit(Variable):
     value_type = bool
     entity = TaxUnit
     label = "Whether the household shares rent with others"

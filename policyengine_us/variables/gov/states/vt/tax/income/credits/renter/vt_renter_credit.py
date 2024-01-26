@@ -25,8 +25,8 @@ class vt_renter_credit(Variable):
         vt_renter_credit_income = tax_unit("vt_renter_credit_income", period)
         family_size = tax_unit("tax_unit_size", period)
         county = tax_unit.household("county", period)
-        share_rent = tax_unit("share_rent", period)
-        subsidized = tax_unit("rent_is_subsidized", period)
+        shared_rent = tax_unit("rent_is_shared_with_another_tax_unit", period)
+        subsidized_rent = tax_unit("rent_is_subsidized", period)
         rent_pay = add(tax_unit, period, ["rent"])
 
         # locate the values by family size and county
@@ -41,11 +41,11 @@ class vt_renter_credit(Variable):
         )
 
         # Compute percent reabte claimable amount
-        percent_reabte_claimable = (
-            match_partial_credit_income - vt_renter_credit_income
-        ) / (match_partial_credit_income - match_full_credit_income)
+        income_diff = match_partial_credit_income - vt_renter_credit_income
+        partial_full_income_diff = match_partial_credit_income - match_full_credit_income
+        percent_reabte_claimable = income_diff/partial_full_income_diff
         # if share rent, miltiple by share rent rate
-        share = p.rate.share_rent**share_rent
+        share = p.rate.share_rent**shared_rent
         # if subsidized, get base credit
         base_credit_subsidized = rent_pay * p.rate.rent
 
@@ -59,10 +59,10 @@ class vt_renter_credit(Variable):
         credit_value = select(
             [
                 high_income,
-                low_income & ~subsidized,
-                low_income & subsidized,
-                mid_income & ~subsidized,
-                mid_income & subsidized,
+                low_income & ~subsidized_rent,
+                low_income & subsidized_rent,
+                mid_income & ~subsidized_rent,
+                mid_income & subsidized_rent,
             ],
             [
                 0,
