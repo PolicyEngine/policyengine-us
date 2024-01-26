@@ -3,6 +3,8 @@ from policyengine_core.data import Dataset
 from policyengine_us.data.storage import STORAGE_FOLDER
 import h5py
 from policyengine_us.data.datasets.cps.raw_cps import (
+    RawCPS_2018,
+    RawCPS_2019,
     RawCPS_2020,
     RawCPS_2021,
     RawCPS_2022,
@@ -392,6 +394,14 @@ def add_previous_year_income(self, cps: h5py.File) -> None:
         "previous_year_income_available"
     ].values
 
+
+class CPS_2019(CPS):
+    name = "cps_2019"
+    label = "CPS 2019"
+    raw_cps = RawCPS_2019
+    previous_year_raw_cps = RawCPS_2018
+    file_path = STORAGE_FOLDER / "cps_2019.h5"
+    time_period = 2019
 
 class CPS_2020(CPS):
     name = "cps_2020"

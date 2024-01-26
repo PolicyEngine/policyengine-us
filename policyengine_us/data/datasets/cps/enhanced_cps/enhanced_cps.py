@@ -41,6 +41,7 @@ class EnhancedCPS_2023(Dataset):
     def generate(self):
         new_data = {}
         cps = CalibratedPUFExtendedCPS()
+        from policyengine_us.data.datasets.cps.cps import CPS_2019
         cps_data = cps.load()
         for variable in cps.variables:
             new_data[variable] = cps_data[variable][...]
@@ -48,7 +49,7 @@ class EnhancedCPS_2023(Dataset):
         # Add imputation of prior year income
         from policyengine_us import Microsimulation
 
-        sim = Microsimulation(dataset=cps)
+        sim = Microsimulation(dataset=CPS_2019)
 
         VARIABLES = [
             "previous_year_income_available",
@@ -65,11 +66,7 @@ class EnhancedCPS_2023(Dataset):
             "is_blind",
             "is_married",
             "tax_unit_children",
-            "snap_reported",
-            "ssi_reported",
-            "spm_unit_wic",
             "pension_income",
-            "household_net_income",
         ]
 
         OUTPUTS = [
@@ -78,7 +75,7 @@ class EnhancedCPS_2023(Dataset):
         ]
 
         df = sim.calculate_dataframe(
-            VARIABLES + OUTPUTS, 2023, map_to="person"
+            VARIABLES + OUTPUTS, 2019, map_to="person"
         )
         df_train = df[df.previous_year_income_available]
 
@@ -89,6 +86,12 @@ class EnhancedCPS_2023(Dataset):
         y = df_train[OUTPUTS]
 
         income_last_year.train(X, y)
+
+        sim = Microsimulation(dataset=cps)
+
+        df = sim.calculate_dataframe(
+            VARIABLES + OUTPUTS, 2023, map_to="person"
+        )
         # Path to targets:
         # /policyengine_us/parameters/calibration/agi_by_source/projections.yaml {employment_income, self_employment_income}
 

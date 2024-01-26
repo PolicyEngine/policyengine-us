@@ -170,7 +170,15 @@ class RawCPS(Dataset):
                 progress_bar.total = content_length_actual
                 progress_bar.close()
                 zipfile = ZipFile(file)
-                with zipfile.open(f"pppub{file_year_code}.csv") as f:
+                # Print out file structure
+                print(zipfile.namelist())
+                if file_year_code == "19":
+                    # In the 2018 CPS, the file is within prod/data/2019
+                    # instead of at the top level.
+                    file_prefix = "cpspb/asec/prod/data/2019/"
+                else:
+                    file_prefix = ""
+                with zipfile.open(f"{file_prefix}pppub{file_year_code}.csv") as f:
                     storage["person"] = pd.read_csv(
                         f,
                         usecols=PERSON_COLUMNS
@@ -178,13 +186,13 @@ class RawCPS(Dataset):
                         + TAX_UNIT_COLUMNS,
                     ).fillna(0)
                     person = storage["person"]
-                with zipfile.open(f"ffpub{file_year_code}.csv") as f:
+                with zipfile.open(f"{file_prefix}ffpub{file_year_code}.csv") as f:
                     person_family_id = person.PH_SEQ * 10 + person.PF_SEQ
                     family = pd.read_csv(f).fillna(0)
                     family_id = family.FH_SEQ * 10 + family.FFPOS
                     family = family[family_id.isin(person_family_id)]
                     storage["family"] = family
-                with zipfile.open(f"hhpub{file_year_code}.csv") as f:
+                with zipfile.open(f"{file_prefix}hhpub{file_year_code}.csv") as f:
                     person_household_id = person.PH_SEQ
                     household = pd.read_csv(f).fillna(0)
                     household_id = household.H_SEQ
