@@ -42,6 +42,7 @@ class EnhancedCPS_2023(Dataset):
         new_data = {}
         cps = CalibratedPUFExtendedCPS()
         from policyengine_us.data.datasets.cps.cps import CPS_2019
+
         cps_data = cps.load()
         for variable in cps.variables:
             new_data[variable] = cps_data[variable][...]

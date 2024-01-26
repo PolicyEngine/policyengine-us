@@ -403,6 +403,7 @@ class CPS_2019(CPS):
     file_path = STORAGE_FOLDER / "cps_2019.h5"
     time_period = 2019
 
+
 class CPS_2020(CPS):
     name = "cps_2020"
     label = "CPS 2020"

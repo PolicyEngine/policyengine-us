@@ -178,7 +178,9 @@ class RawCPS(Dataset):
                     file_prefix = "cpspb/asec/prod/data/2019/"
                 else:
                     file_prefix = ""
-                with zipfile.open(f"{file_prefix}pppub{file_year_code}.csv") as f:
+                with zipfile.open(
+                    f"{file_prefix}pppub{file_year_code}.csv"
+                ) as f:
                     storage["person"] = pd.read_csv(
                         f,
                         usecols=PERSON_COLUMNS
@@ -186,13 +188,17 @@ class RawCPS(Dataset):
                         + TAX_UNIT_COLUMNS,
                     ).fillna(0)
                     person = storage["person"]
-                with zipfile.open(f"{file_prefix}ffpub{file_year_code}.csv") as f:
+                with zipfile.open(
+                    f"{file_prefix}ffpub{file_year_code}.csv"
+                ) as f:
                     person_family_id = person.PH_SEQ * 10 + person.PF_SEQ
                     family = pd.read_csv(f).fillna(0)
                     family_id = family.FH_SEQ * 10 + family.FFPOS
                     family = family[family_id.isin(person_family_id)]
                     storage["family"] = family
-                with zipfile.open(f"{file_prefix}hhpub{file_year_code}.csv") as f:
+                with zipfile.open(
+                    f"{file_prefix}hhpub{file_year_code}.csv"
+                ) as f:
                     person_household_id = person.PH_SEQ
                     household = pd.read_csv(f).fillna(0)
                     household_id = household.H_SEQ
