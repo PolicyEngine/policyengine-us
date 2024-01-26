@@ -42,8 +42,10 @@ class vt_renter_credit(Variable):
 
         # Compute percent reabte claimable amount
         income_diff = match_partial_credit_income - vt_renter_credit_income
-        partial_full_income_diff = match_partial_credit_income - match_full_credit_income
-        percent_reabte_claimable = income_diff/partial_full_income_diff
+        partial_full_income_diff = (
+            match_partial_credit_income - match_full_credit_income
+        )
+        percent_reabte_claimable = income_diff / partial_full_income_diff
         # if share rent, miltiple by share rent rate
         share = p.rate.share_rent**shared_rent
         # if subsidized, get base credit
