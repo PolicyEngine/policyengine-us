@@ -1,0 +1,53 @@
+- name: If the household has one person and is located in region 1, income limit is $862/yr.
+  period: 2023
+  input:
+    state_code: CA
+    spm_unit_size: 1
+    ca_tanf_region1: true
+  output:
+    ca_tanf_income_limit: 862 * 12
+
+- name: If the household has ten people and is located in region 1, income limit is $3,760/yr.
+  period: 2023
+  input:
+    state_code: CA
+    spm_unit_size: 10
+    ca_tanf_region1: true
+  output:
+    ca_tanf_income_limit: 3_760 * 12
+
+- name: If the household has eleven people and is located in region 1, income limit is $3,794/yr.
+  period: 2023
+  input:
+    state_code: CA
+    spm_unit_size: 11
+    ca_tanf_region1: true
+  output:
+    ca_tanf_income_limit: (3_760 + 34) * 12
+
+- name: If the household has one person and is located in region 2, income limit is $818/yr.
+  period: 2023
+  input:
+    state_code: CA
+    spm_unit_size: 1
+    ca_tanf_region1: false
+  output:
+    ca_tanf_income_limit: 818 * 12
+
+- name: If the household has ten people and is located in region 2, income limit is $3,576/yr.
+  period: 2023
+  input:
+    state_code: CA
+    spm_unit_size: 10
+    ca_tanf_region1: false
+  output:
+    ca_tanf_income_limit: 3_576 * 12
+
+- name: If the household has twelve people and is located in region 2, income limit is $3,644/yr.
+  period: 2023
+  input:
+    state_code: CA
+    spm_unit_size: 12
+    ca_tanf_region1: false
+  output:
+    ca_tanf_income_limit: (3_576 + 2 * 34) * 12

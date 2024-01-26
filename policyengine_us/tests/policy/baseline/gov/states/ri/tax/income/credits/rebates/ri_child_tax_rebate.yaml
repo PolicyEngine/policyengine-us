@@ -1,0 +1,106 @@
+- name: Not eligible for child tax rebate, one child
+  period: 2022
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_dependent: false
+      child1: 
+        age: 19
+        is_tax_unit_dependent: true
+      child2:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_units:
+        members: [head, child1, child2]
+        ri_child_tax_rebate_eligible: false
+    households:
+      households:
+        state_code: RI
+  output:
+    ri_child_tax_rebate: 0
+
+- name: Eligible for child tax rebate, one child
+  period: 2022
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_dependent: false
+      child1: 
+        age: 19
+        is_tax_unit_dependent: true
+      child2:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_units:
+        members: [head, child1, child2]
+        ri_child_tax_rebate_eligible: true
+    households:
+      households:
+        state_code: RI
+  output:
+    ri_child_tax_rebate: 250
+
+- name: Eligible for child tax rebate, four children
+  period: 2022
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_dependent: false
+      child1: 
+        age: 17
+        is_tax_unit_dependent: true
+      child2:
+        age: 8
+        is_tax_unit_dependent: true
+      child3:
+        age: 5
+        is_tax_unit_dependent: true
+      child4:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_units:
+        members: [head, child1, child2, child3, child4]
+        ri_child_tax_rebate_eligible: true
+    households:
+      households:
+        state_code: RI
+  output:
+    ri_child_tax_rebate: 750
+
+- name: Eligible for child tax rebate, five children
+  period: 2022
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_dependent: false
+      child1: 
+        age: 17
+        is_tax_unit_dependent: true
+      child2:
+        age: 8
+        is_tax_unit_dependent: true
+      child3:
+        age: 5
+        is_tax_unit_dependent: true
+      child4:
+        age: 10
+        is_tax_unit_dependent: true
+      child5:
+        age: 14
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_units:
+        members: [head, child1, child2, child3, child4, child5]
+        ri_child_tax_rebate_eligible: true
+    households:
+      households:
+        state_code: RI
+  output:
+    ri_child_tax_rebate: 750

@@ -1,0 +1,31 @@
+- name: 2022 filer who is also at the tier 3 standard deduction age threshold
+  period: 2022
+  input:
+    older_spouse_birth_year: 1953
+    state_code: MI
+  output: 
+    mi_standard_deduction_tier_three_eligible: true
+    
+- name: 2022 filer who is below the tier 3 standard deduction age threshold
+  period: 2022
+  input:
+    older_spouse_birth_year: 1952
+    state_code: MI
+  output: 
+    mi_standard_deduction_tier_three_eligible: false
+
+- name: 2021 filer who is above the tier 3 standard deduction age threshold
+  period: 2021
+  input:
+    older_spouse_birth_year: 1955
+    state_code: MI
+  output: 
+    mi_standard_deduction_tier_three_eligible: false
+    
+- name: 2021 filer who is at the tier 3 standard deduction age threshold
+  period: 2021
+  input:
+    older_spouse_birth_year: 1954
+    state_code: MI
+  output: 
+    mi_standard_deduction_tier_three_eligible: true

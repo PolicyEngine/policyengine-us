@@ -1,0 +1,128 @@
+- name: Household of size 1 is not eligible.
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 20
+        is_disabled: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 10_000
+        or_agi: 10_000
+    households:
+      household:
+        members: [person1]
+        state_code: OR
+  output:
+    or_wfhdc_eligible: false
+
+- name: Household with AGI above $52,260 is not eligible.
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 40
+        is_disabled: false
+      person2:
+        age: 12
+        is_disabled: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        adjusted_gross_income: 52_261
+        or_agi: 52_259
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OR
+  output:
+    or_wfhdc_eligible: false
+
+- name: Household with OR income above $52,260 is not eligible.
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 40
+        is_disabled: false
+      person2:
+        age: 12
+        is_disabled: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        adjusted_gross_income: 52_259
+        or_agi: 52_261
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OR
+  output:
+    or_wfhdc_eligible: false
+
+- name: Household of size 2 but no children under 13 without a disability is not eligible.
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 40
+        is_disabled: false
+      person2:
+        age: 15
+        is_disabled: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        adjusted_gross_income: 10_000
+        or_agi: 10_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OR
+  output:
+    or_wfhdc_eligible: false
+
+- name: Household of size 2 with a disabled member is eligible.
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 40
+        is_disabled: false
+      person2:
+        age: 19
+        is_disabled: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        adjusted_gross_income: 10_000
+        or_agi: 10_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OR
+  output:
+    or_wfhdc_eligible: true
+
+- name: Household of size 2 with a child under 13 is eligible.
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 40
+        is_disabled: false
+      person2:
+        age: 12
+        is_disabled: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        adjusted_gross_income: 10_000
+        or_agi: 10_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OR
+  output:
+    or_wfhdc_eligible: true

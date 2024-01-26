@@ -1,0 +1,20 @@
+description: Rhode Island provides these refundable income tax credits.
+values:
+  2021-01-01:
+    - ri_eitc
+    - ri_property_tax_credit
+  2022-01-01:
+    - ri_eitc
+    - ri_property_tax_credit
+    - ri_child_tax_rebate
+
+metadata:
+  reference:
+  - title: Rhode Island Form 1040
+    href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-12/2022_1040WE_w_0.pdf#page=2
+  # Child tax rebate source
+  - title: R.I. Gen. Law §44-30-103. Child Tax Rebates.
+    href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-08/H7123Aaa_CTR_0.pdf#page=1
+  unit: list
+  period: year
+  label: Rhode Island refundable income tax credits

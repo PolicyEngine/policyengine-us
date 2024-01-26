@@ -1,0 +1,49 @@
+- name: heating credit not eligible
+  period: 2022
+  input:
+    mi_standard_home_heating_credit: 100
+    mi_alternate_home_heating_credit: 200
+    mi_home_heating_credit_eligible_rate: 0
+    state_code: MI
+  output:
+    mi_home_heating_credit: 0
+
+- name: Alternate over standard
+  period: 2022
+  input:
+    mi_standard_home_heating_credit: 100
+    mi_alternate_home_heating_credit: 200
+    mi_home_heating_credit_eligible_rate: 1
+    state_code: MI
+  output: # 200 * 0.9
+    mi_home_heating_credit: 180
+
+- name: Alternate over standard in 2021
+  period: 2021
+  input:
+    mi_standard_home_heating_credit: 100
+    mi_alternate_home_heating_credit: 200
+    mi_home_heating_credit_eligible_rate: 1
+    state_code: MI
+  output: # 200 * 1
+    mi_home_heating_credit: 200
+
+- name: Standard over alternate
+  period: 2022
+  input:
+    mi_standard_home_heating_credit: 210
+    mi_alternate_home_heating_credit: 100
+    mi_home_heating_credit_eligible_rate: 1
+    state_code: MI
+  output: # 210 * 0.9
+    mi_home_heating_credit: 189
+
+- name: Standard over alternate with 20% rate
+  period: 2022
+  input:
+    mi_standard_home_heating_credit: 210
+    mi_alternate_home_heating_credit: 100
+    mi_home_heating_credit_eligible_rate: 0.2
+    state_code: MI
+  output: # 210 * 0.9 * 0.2
+    mi_home_heating_credit: 37.8
