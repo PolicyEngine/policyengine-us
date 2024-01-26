@@ -304,6 +304,7 @@ def add_spm_variables(cps: h5py.File, spm_unit: DataFrame) -> None:
         free_school_meals_reported="SPM_SCHLUNCH",
         spm_unit_energy_subsidy_reported="SPM_ENGVAL",
         spm_unit_wic_reported="SPM_WICVAL",
+        spm_unit_broadband_subsidy_reported="SPM_BBSUBVAL",
         spm_unit_payroll_tax_reported="SPM_FICA",
         spm_unit_federal_tax_reported="SPM_FEDTAX",
         spm_unit_state_tax_reported="SPM_STTAX",
@@ -415,17 +416,17 @@ def add_previous_year_income(self, cps: h5py.File) -> None:
     )
     df["in_sample"] = cps_cur_record_in_sample
     df["employment_income_prev"] = np.ones(len(df)) * np.nan
-    df["employment_income_prev"][
-        cps_cur_record_in_sample
-    ] = cps_previous_year.loc[
-        cps_current_year.index[cps_cur_record_in_sample]
-    ].WSAL_VAL.values
+    df["employment_income_prev"][cps_cur_record_in_sample] = (
+        cps_previous_year.loc[
+            cps_current_year.index[cps_cur_record_in_sample]
+        ].WSAL_VAL.values
+    )
     df["self_employment_income_prev"] = np.ones(len(df)) * np.nan
-    df["self_employment_income_prev"][
-        cps_cur_record_in_sample
-    ] = cps_previous_year.loc[
-        cps_current_year.index[cps_cur_record_in_sample]
-    ].SEMP_VAL.values
+    df["self_employment_income_prev"][cps_cur_record_in_sample] = (
+        cps_previous_year.loc[
+            cps_current_year.index[cps_cur_record_in_sample]
+        ].SEMP_VAL.values
+    )
 
     X = cps_current_year[PREDICTORS][~cps_cur_record_in_sample]
     X = X.rename(columns={x: x + "_cur" for x in PREDICTORS})

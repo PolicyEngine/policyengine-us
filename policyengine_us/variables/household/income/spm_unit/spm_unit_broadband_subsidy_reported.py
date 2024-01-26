@@ -1,9 +1,9 @@
 from policyengine_us.model_api import *
 
 
-class spm_unit_wic_reported(Variable):
+class spm_unit_broadband_subsidy_reported(Variable):
     value_type = float
     entity = SPMUnit
-    label = "SPM unit reported WIC"
+    label = "SPM unit reported broadband subsidy"
     definition_period = YEAR
     unit = USD
