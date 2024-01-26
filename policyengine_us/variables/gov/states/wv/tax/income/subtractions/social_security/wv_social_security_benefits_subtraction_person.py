@@ -4,7 +4,9 @@ from policyengine_us.model_api import *
 class wv_social_security_benefits_subtraction_person(Variable):
     value_type = float
     entity = Person
-    label = "West Virginia social security benefits subtraction for each Person"
+    label = (
+        "West Virginia social security benefits subtraction for each person"
+    )
     unit = USD
     definition_period = YEAR
     reference = (
@@ -27,7 +29,7 @@ class wv_social_security_benefits_subtraction_person(Variable):
         # Federal adjusted gross income includes
         # social security benefits paid by the Social Security Administration as Old Age,
         # Survivors and Disability Insurance Benefits
-        taxable_ss = person("taxable_social_security", period) 
+        taxable_ss = person("taxable_social_security", period)
         total_eligible_ss = taxable_ss * head_or_spouse
 
         return total_eligible_ss * p.rate
