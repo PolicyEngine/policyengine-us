@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.633.2] - 2024-01-27 19:26:08
+
+### Fixed
+
+- Added remaining components to SPM net income.
+- Inflation-index SPM-related variables.
+
 ## [0.633.1] - 2024-01-26 16:34:55
 
 ### Fixed
@@ -6983,6 +6990,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.633.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.633.1...0.633.2
 [0.633.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.633.0...0.633.1
 [0.633.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.632.0...0.633.0
 [0.632.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.631.6...0.632.0
