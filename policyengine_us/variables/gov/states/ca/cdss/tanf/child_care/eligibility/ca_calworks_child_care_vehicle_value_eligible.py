@@ -14,4 +14,4 @@ class ca_calworks_child_care_vehicle_value_eligible(Variable):
         p = parameters(
             period
         ).gov.states.ca.cdss.tanf.child_care.eligibility.resource_limit
-        return vehicle_value <= p.vehicle_value
+        return vehicle_value <= p.vehicle
