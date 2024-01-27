@@ -24,7 +24,6 @@ class spm_unit_benefits(Variable):
             "free_school_meals",
             "reduced_price_school_meals",
             "spm_unit_broadband_subsidy",
-            "spm_unit_capped_housing_subsidy",
             "spm_unit_energy_subsidy",
             "tanf",
             "high_efficiency_electric_home_rebate",
