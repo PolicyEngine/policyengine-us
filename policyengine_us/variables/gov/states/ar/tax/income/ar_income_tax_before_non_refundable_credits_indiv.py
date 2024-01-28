@@ -14,4 +14,7 @@ class ar_income_tax_before_non_refundable_credits_indiv(Variable):
         rate = parameters(period).gov.states.ar.tax.income.rates.main
         taxable_income = person("ar_taxable_income_indiv", period)
 
-        return rate.calc(taxable_income)
+        main_rate = rate.calc(taxable_income)
+        # Assuming that the filer will pick the option which will reduce tax liability the most
+        low_income_tax = person("ar_low_income_tax_indiv", period)
+        return min_(main_rate, low_income_tax)
