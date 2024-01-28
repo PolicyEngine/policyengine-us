@@ -29,27 +29,21 @@ class co_ccap_parent_fee(Variable):
         # The numbers below are weights copied from government spreadsheet
         # (url: https://docs.google.com/spreadsheets/d/1EEc3z8Iwu_KRTlBtd2NssDDEx_FITqVq/edit#gid=468321263,
         #       https://docs.google.com/spreadsheets/d/1HtPiC2qxclzWfBa7LRo2Uohrg-RCBkyZ/edit#gid=582762342)
-        first_multiplication_factor = (
-            p.base_parent_fee.first_multiplication_factor
-        )
-        second_multiplication_factor = (
-            p.base_parent_fee.second_multiplication_factor
+        multiplication_factors = (
+            p.base_parent_fee.first_and_second_multiplication_factor
         )
         third_multiplication_factor = (
             p.add_on_parent_fee.third_multiplication_factor
         )
-        # Calculate base parent fee (note income is monthly):
-        # When income <= fpg: income * 0.01
-        # When income > fpg: [fpg * 0.01 + (income - fpg) * 0.14]
-        base_parent_fee = np.round(
-            where(
-                gross_income <= fpg,
-                gross_income * first_multiplication_factor,
-                fpg * first_multiplication_factor
-                + (gross_income - fpg) * second_multiplication_factor,
-            ),
-            2,
+        # Calculate base parent fee scaled (note income is monthly):
+        # When income_scaled <= 1: income_scaled * 0.01
+        # When income_scaled > 1: [1 * 0.01 + (income_scaled - 1) * 0.14]
+        # Multiply by fpg afterward to scale back up
+        gross_income_scaled = gross_income / fpg
+        base_parent_fee_scaled = multiplication_factors.calc(
+            gross_income_scaled
         )
+        base_parent_fee = np.round(base_parent_fee_scaled * fpg, 2)
         # Calculate add-on parent fee based on the number of eligible
         # children in a household and income:
         # When income <= fpg: 0
@@ -85,15 +79,7 @@ class co_ccap_parent_fee(Variable):
         rating = person(
             "co_quality_rating_of_child_care_facility", period.this_year
         )
-        discount_eligible = (
-            spm_unit.sum(
-                p.is_quality_rating_discounted.calc(rating)
-                * child_age_eligible
-            )
-            > 0
-        )
-        discounted_rate = p.quality_rating_discounted_rate
-        unrounded = non_discounted_fee * where(
-            discount_eligible, discounted_rate, 1
-        )
+        maximum_rating = spm_unit.max(rating * child_age_eligible)
+        discounted_rate = p.is_quality_rating_discounted.calc(maximum_rating)
+        unrounded = non_discounted_fee * discounted_rate
         return np.round(unrounded, 2)
