@@ -35,6 +35,11 @@ filtered:
       modelled:
       - District of Columbia income tax
       - District of Columbia TANF
+    GA:
+      modelled:
+      - Georgia state income tax
+      not_modelled:
+      - Georgia TANF
     IA:
       modelled:
       - Iowa state income tax
