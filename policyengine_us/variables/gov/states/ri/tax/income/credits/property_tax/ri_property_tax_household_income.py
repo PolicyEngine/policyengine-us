@@ -10,4 +10,3 @@ class ri_property_tax_household_income(Variable):
     unit = USD
     definition_period = YEAR
     adds = "gov.states.ri.tax.income.credits.property_tax.income_sources"
-    subtracts = ["above_the_line_deductions"]  # Form RI-1040H Line 27

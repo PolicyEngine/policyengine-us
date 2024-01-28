@@ -5877,3 +5877,69 @@
     added:
     - Parameter for using reported SNAP values.
   date: 2024-01-23 11:52:39
+- bump: patch
+  changes:
+    fixed:
+    - Virginia taxable income formula.
+  date: 2024-01-25 00:40:23
+- bump: patch
+  changes:
+    fixed:
+    - Hawaii EITC refundability.
+  date: 2024-01-25 02:26:10
+- bump: patch
+  changes:
+    fixed:
+    - Idaho CTC refundability status.
+  date: 2024-01-25 14:18:33
+- bump: patch
+  changes:
+    fixed:
+    - Georgia retirement subtraction income sources.
+  date: 2024-01-25 14:45:34
+- bump: patch
+  changes:
+    fixed:
+    - Rhode Island property tax calculation.
+  date: 2024-01-25 17:01:06
+- bump: patch
+  changes:
+    fixed:
+    - South Carolina two-wage-earner credit.
+  date: 2024-01-25 18:46:12
+- bump: minor
+  changes:
+    added:
+    - SSI Substantial Gainful Activity
+  date: 2024-01-25 20:08:04
+- bump: minor
+  changes:
+    added:
+    - Broadband subsidies from CPS.
+  date: 2024-01-26 14:10:01
+- bump: patch
+  changes:
+    fixed:
+    - LA General relief computation to include withholding rules.
+  date: 2024-01-26 16:34:55
+- bump: patch
+  changes:
+    fixed:
+    - Added remaining components to SPM net income.
+    - Inflation-index SPM-related variables.
+  date: 2024-01-27 19:26:08
+- bump: patch
+  changes:
+    fixed:
+    - CA TANF monthly applicant income disregards.
+  date: 2024-01-28 03:52:36
+- bump: patch
+  changes:
+    fixed:
+    - Georgia itemized deduction calculation.
+  date: 2024-01-28 05:48:37
+- bump: minor
+  changes:
+    added:
+    - Enable Georgia state income tax computation.
+  date: 2024-01-28 19:06:09

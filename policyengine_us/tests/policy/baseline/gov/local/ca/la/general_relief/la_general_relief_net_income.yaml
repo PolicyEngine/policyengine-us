@@ -3,8 +3,7 @@
   input:
     la_general_relief_gross_income: 1_000
     in_la: true
-    taxable_income_deductions: 0
-    ca_deductions: 0
+    spm_unit_paycheck_withholdings: 0
   output:
     la_general_relief_net_income: 1_000
 
@@ -13,8 +12,7 @@
   input:
     la_general_relief_gross_income: 1_000
     in_la: true
-    taxable_income_deductions: 900
-    ca_deductions: 200
+    spm_unit_paycheck_withholdings: 1_100
   output:
     la_general_relief_net_income: 0
 
@@ -23,7 +21,6 @@
   input:
     la_general_relief_gross_income: 1_000
     in_la: true
-    taxable_income_deductions: 300
-    ca_deductions: 200
+    spm_unit_paycheck_withholdings: 500
   output:
     la_general_relief_net_income: 500
