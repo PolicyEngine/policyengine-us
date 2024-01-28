@@ -18,8 +18,6 @@ class la_federal_tax_deduction(Variable):
         tax_before_refundable_credits = tax_unit(
             "income_tax_before_refundable_credits", period
         )
-        investment_tax = tax_unit("net_investment_income_tax", period)
-        fed_tax = tax_before_refundable_credits + investment_tax
         reductions = add(
             tax_unit,
             period,
@@ -27,4 +25,7 @@ class la_federal_tax_deduction(Variable):
         )
         # The deduction was discontinued in 2022
         p = parameters(period).gov.states.la.tax.income.deductions.federal_tax
-        return max_(0, fed_tax - reductions) * p.availability
+        return (
+            max_(0, tax_before_refundable_credits - reductions)
+            * p.availability
+        )
