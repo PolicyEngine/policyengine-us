@@ -14,8 +14,11 @@ class ky_itemized_deductions_indiv(Variable):
     defined_for = "ky_can_file_separate_on_same_return"
 
     def formula(person, period, parameters):
-
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        itemized_deductions = person.tax_unit("ky_itemized_deductions_unit", period)
+        ky_agi = person("ky_agi", period) * head_or_spouse
+        ky_agi_proportion = ky_agi / person.tax_unit.sum(ky_agi)
+        itemized_deductions = person.tax_unit(
+            "ky_itemized_deductions_unit", period
+        )
 
-        return head_or_spouse * itemized_deductions
+        return ky_agi_proportion * itemized_deductions

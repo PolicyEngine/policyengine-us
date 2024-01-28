@@ -16,7 +16,8 @@ class ky_itemized_deductions_joint(Variable):
     def formula(person, period, parameters):
         # If filing a joint return, only one standard deduction is allowed
         is_head = person("is_tax_unit_head", period)
-        itemized_deductions = person.tax_unit("ky_itemized_deductions_unit", period)
-        
-        
+        itemized_deductions = person.tax_unit(
+            "ky_itemized_deductions_unit", period
+        )
+
         return is_head * itemized_deductions
