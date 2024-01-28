@@ -28,6 +28,6 @@ class ga_deductions(Variable):
         # 48-7-27(a)(1) states:
         # "Either the sum of all itemized nonbusiness deductions used in computing
         #  such taxpayer’s federal taxable income or..."
-        # We remove SALT to avoid a circular reference.
-        itemized = tax_unit("itemized_deductions_less_salt", period)
+        p = parameters(period).gov.irs.deductions
+        itemized = add(tax_unit, period, p.itemized_deductions)
         return where(itemizes, itemized, sd)
