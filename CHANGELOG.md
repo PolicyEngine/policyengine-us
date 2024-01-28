@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.634.0] - 2024-01-28 19:06:09
+
+### Added
+
+- Enable Georgia state income tax computation.
+
 ## [0.633.4] - 2024-01-28 05:48:37
 
 ### Fixed
@@ -7002,6 +7008,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.634.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.633.4...0.634.0
 [0.633.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.633.3...0.633.4
 [0.633.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.633.2...0.633.3
 [0.633.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.633.1...0.633.2
