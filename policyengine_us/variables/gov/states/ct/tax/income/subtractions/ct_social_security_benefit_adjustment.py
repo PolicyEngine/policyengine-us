@@ -16,11 +16,11 @@ class ct_social_security_benefit_adjustment(Variable):
     defined_for = StateCode.CT
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.ct.tax.income.subtractions
+        p = parameters(period).gov.states.ct.tax.income.subtractions.social_security
         filing_status = tax_unit("filing_status", period)
         # Line 41, Part A and Part B
         us_taxable_ss = tax_unit("tax_unit_taxable_social_security", period)
-        ss_rate = p.social_security.rate.social_security
+        ss_rate = p.rate.social_security
         ss_fraction = us_taxable_ss * ss_rate
         excess = tax_unit(
             "ct_social_security_benefit_adjustment_magi_excess", period
@@ -34,7 +34,7 @@ class ct_social_security_benefit_adjustment(Variable):
         # Line 41, Part E and Part F
         # Difference between taxable social security benefits and capped social security fraction
         adjusted_ss_benefit = max_(us_taxable_ss - capped_ss_fraction, 0)
-        reduction_threshold = p.social_security.reduction_threshold[
+        reduction_threshold = p.reduction_threshold[
             filing_status
         ]
         # Adjustment determined based on AGI amount compared to reduction threshold
