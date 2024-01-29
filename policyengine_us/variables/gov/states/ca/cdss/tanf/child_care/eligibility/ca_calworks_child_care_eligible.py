@@ -18,17 +18,9 @@ class ca_calworks_child_care_eligible(Variable):
         immigration_eligible = spm_unit(
             "ca_calworks_child_care_immigration_status_eligible", period
         )
-        vehicle_value_eligible = spm_unit(
-            "ca_calworks_child_care_vehicle_value_eligible", period
-        )
-        property_value_eligible = spm_unit(
-            "ca_calworks_child_care_property_value_eligible", period
-        )
         return (
             receives_tanf
             & age_eligible
             & work_requirement
             & immigration_eligible
-            & vehicle_value_eligible
-            & property_value_eligible
         )

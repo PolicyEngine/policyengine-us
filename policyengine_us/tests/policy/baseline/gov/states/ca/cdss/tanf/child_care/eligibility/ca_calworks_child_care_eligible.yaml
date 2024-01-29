@@ -44,25 +44,3 @@
     ca_calworks_child_care_immigration_status_eligible: false
   output:
     ca_calworks_child_care_eligible: false
-
-- name: Property value ineligible
-  period: 2023
-  input:
-    ca_tanf_eligible: true
-    ca_calworks_child_care_age_eligible: true
-    ca_calworks_child_care_meets_work_requirement: true
-    ca_calworks_child_care_vehicle_value_eligible: true
-    ca_calworks_child_care_property_value_eligible: false
-  output:
-    ca_calworks_child_care_eligible: false
-
-- name: Vehicle value ineligible
-  period: 2023
-  input:
-    ca_tanf_eligible: true
-    ca_calworks_child_care_age_eligible: true
-    ca_calworks_child_care_meets_work_requirement: true
-    ca_calworks_child_care_vehicle_value_eligible: false
-    ca_calworks_child_care_property_value_eligible: true
-  output:
-    ca_calworks_child_care_eligible: false
