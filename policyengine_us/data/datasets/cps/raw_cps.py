@@ -130,6 +130,8 @@ class RawCPS(Dataset):
         file_year_code = str(file_year)[-2:]
 
         CPS_URL_BY_YEAR = {
+            2018: "https://www2.census.gov/programs-surveys/cps/datasets/2019/march/asecpub19csv.zip",
+            2019: "https://www2.census.gov/programs-surveys/cps/datasets/2020/march/asecpub20csv.zip",
             2020: "https://www2.census.gov/programs-surveys/cps/datasets/2021/march/asecpub21csv.zip",
             2021: "https://www2.census.gov/programs-surveys/cps/datasets/2022/march/asecpub22csv.zip",
             2022: "https://www2.census.gov/programs-surveys/cps/datasets/2023/march/asecpub23csv.zip",
@@ -169,7 +171,17 @@ class RawCPS(Dataset):
                 progress_bar.total = content_length_actual
                 progress_bar.close()
                 zipfile = ZipFile(file)
-                with zipfile.open(f"pppub{file_year_code}.csv") as f:
+                # Print out file structure
+                print(zipfile.namelist())
+                if file_year_code == "19":
+                    # In the 2018 CPS, the file is within prod/data/2019
+                    # instead of at the top level.
+                    file_prefix = "cpspb/asec/prod/data/2019/"
+                else:
+                    file_prefix = ""
+                with zipfile.open(
+                    f"{file_prefix}pppub{file_year_code}.csv"
+                ) as f:
                     storage["person"] = pd.read_csv(
                         f,
                         usecols=PERSON_COLUMNS
@@ -177,13 +189,17 @@ class RawCPS(Dataset):
                         + TAX_UNIT_COLUMNS,
                     ).fillna(0)
                     person = storage["person"]
-                with zipfile.open(f"ffpub{file_year_code}.csv") as f:
+                with zipfile.open(
+                    f"{file_prefix}ffpub{file_year_code}.csv"
+                ) as f:
                     person_family_id = person.PH_SEQ * 10 + person.PF_SEQ
                     family = pd.read_csv(f).fillna(0)
                     family_id = family.FH_SEQ * 10 + family.FFPOS
                     family = family[family_id.isin(person_family_id)]
                     storage["family"] = family
-                with zipfile.open(f"hhpub{file_year_code}.csv") as f:
+                with zipfile.open(
+                    f"{file_prefix}hhpub{file_year_code}.csv"
+                ) as f:
                     person_household_id = person.PH_SEQ
                     household = pd.read_csv(f).fillna(0)
                     household_id = household.H_SEQ
@@ -207,6 +223,20 @@ class RawCPS(Dataset):
     @staticmethod
     def _create_spm_unit_table(person: pd.DataFrame) -> pd.DataFrame:
         return person[SPM_UNIT_COLUMNS].groupby(person.SPM_ID).first()
+
+
+class RawCPS_2018(RawCPS):
+    time_period = 2018
+    name = "raw_cps_2018"
+    label = "Raw CPS 2018"
+    file_path = STORAGE_FOLDER / "raw_cps_2018.h5"
+
+
+class RawCPS_2019(RawCPS):
+    time_period = 2019
+    name = "raw_cps_2019"
+    label = "Raw CPS 2019"
+    file_path = STORAGE_FOLDER / "raw_cps_2019.h5"
 
 
 class RawCPS_2020(RawCPS):
