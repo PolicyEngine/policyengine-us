@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.634.3] - 2024-01-29 01:13:40
+
+### Fixed
+
+- Removed duplicate NIIT addition from Louisiana federal tax deduction.
+
 ## [0.634.2] - 2024-01-29 01:05:00
 
 ### Fixed
@@ -7020,6 +7026,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.634.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.634.2...0.634.3
 [0.634.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.634.1...0.634.2
 [0.634.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.634.0...0.634.1
 [0.634.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.633.4...0.634.0
