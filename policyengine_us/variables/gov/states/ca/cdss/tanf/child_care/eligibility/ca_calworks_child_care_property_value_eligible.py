@@ -25,9 +25,4 @@ class ca_calworks_child_care_property_value_eligible(Variable):
             p.property.aged_or_disabled,
             p.property.base,
         )
-        # The excess of the vehicle value over the vehicle value limit is accounted towards
-        # assets for the purpose of the property value limit
-        vehicle_value = add(spm_unit, period, ["household_vehicles_value"])
-        excess_vehicle_value = max_(0, vehicle_value - p.vehicle)
-        total_assets = assets + excess_vehicle_value
-        return total_assets <= value_limit
+        return assets <= value_limit

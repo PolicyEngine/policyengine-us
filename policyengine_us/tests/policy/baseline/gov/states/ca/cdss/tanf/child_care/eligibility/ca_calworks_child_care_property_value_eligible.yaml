@@ -15,7 +15,6 @@
     households:
       household:
         members: [person1, person2]
-        household_vehicles_value: 0
   output:
     ca_calworks_child_care_property_value_eligible: true
 
@@ -36,7 +35,6 @@
     households:
       household:
         members: [person1, person2]
-        household_vehicles_value: 0
   output:
     ca_calworks_child_care_property_value_eligible: false
 
@@ -57,7 +55,6 @@
     households:
       household:
         members: [person1, person2]
-        household_vehicles_value: 32_045
   output:
     ca_calworks_child_care_property_value_eligible: true
 
@@ -78,7 +75,6 @@
     households:
       household:
         members: [person1, person2]
-        household_vehicles_value: 20_045
   output:
     ca_calworks_child_care_property_value_eligible: true
 
@@ -99,27 +95,5 @@
     households:
       household:
         members: [person1, person2]
-        household_vehicles_value: 0
-  output:
-    ca_calworks_child_care_property_value_eligible: false
-
-- name: No aged or disabled members, ineligible due to increased vehicle value 
-  period: 2023
-  input:
-    people:
-      person1:
-        age: 59
-        is_disabled: false
-      person2:
-        age: 59
-        is_disabled: false
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-        spm_unit_cash_assets: 10_888
-    households:
-      household:
-        members: [person1, person2]
-        household_vehicles_value: 32_100
   output:
     ca_calworks_child_care_property_value_eligible: false
