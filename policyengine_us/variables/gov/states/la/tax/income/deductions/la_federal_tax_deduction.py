@@ -23,9 +23,8 @@ class la_federal_tax_deduction(Variable):
             period,
             ["form_4972_lumpsum_distributions", "premium_tax_credit"],
         )
+        amount = max_(0, tax_before_refundable_credits - reductions)
+
         # The deduction was discontinued in 2022
         p = parameters(period).gov.states.la.tax.income.deductions.federal_tax
-        return (
-            max_(0, tax_before_refundable_credits - reductions)
-            * p.availability
-        )
+        return amount * p.availability
