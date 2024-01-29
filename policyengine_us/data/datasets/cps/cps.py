@@ -308,7 +308,7 @@ def add_spm_variables(cps: h5py.File, spm_unit: DataFrame) -> None:
         spm_unit_work_childcare_expenses="SPM_CAPWKCCXPNS",
         spm_unit_medical_expenses="SPM_MEDXPNS",
         spm_unit_spm_threshold="SPM_POVTHRESHOLD",
-        spm_unit_net_income_reported="SPM_RESOURCES",
+        spm_resources_reported="SPM_RESOURCES",
         childcare_expenses="SPM_CHILDCAREXPNS",
     )
 
