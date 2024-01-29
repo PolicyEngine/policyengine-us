@@ -14,9 +14,10 @@ class ri_property_tax_credit_eligible(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.ri.tax.income.credits.property_tax
         # minimum age eligibility
-        head_age = tax_unit("age_head", period)
-        spouse_age = tax_unit("age_spouse", period)
-        age_eligible = max_(head_age, spouse_age) >= p.age_threshold
+        greater_head_or_spouse_age = tax_unit(
+            "greater_age_head_spouse", period
+        )
+        age_eligible = greater_head_or_spouse_age >= p.age_threshold
         # disability eligibility
         head_is_disabled = tax_unit("head_is_disabled", period)
         spouse_is_disabled = tax_unit("spouse_is_disabled", period)

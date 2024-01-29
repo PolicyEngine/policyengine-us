@@ -2,8 +2,7 @@
   period: 2022
   input:
     state_code: RI
-    age_head: 65
-    age_spouse: 64
+    greater_age_head_spouse: 65
     head_is_disabled: true
     spouse_is_disabled: false
   output:
@@ -13,8 +12,7 @@
   period: 2022
   input:
     state_code: RI
-    age_head: 65
-    age_spouse: 64
+    greater_age_head_spouse: 65
     head_is_disabled: false
     spouse_is_disabled: false
   output:
@@ -24,8 +22,7 @@
   period: 2022
   input:
     state_code: RI
-    age_head: 64
-    age_spouse: 64
+    greater_age_head_spouse: 64
     head_is_disabled: true
     spouse_is_disabled: false
   output:
@@ -35,8 +32,7 @@
   period: 2021
   input:
     state_code: RI
-    age_head: 64
-    age_spouse: 65
+    greater_age_head_spouse: 65
     head_is_disabled: false
     spouse_is_disabled: false
   output:
@@ -46,8 +42,7 @@
   period: 2021
   input:
     state_code: RI
-    age_head: 64
-    age_spouse: 64
+    greater_age_head_spouse: 64
     head_is_disabled: false
     spouse_is_disabled: false
   output:
@@ -57,8 +52,7 @@
   period: 2021
   input:
     state_code: RI
-    age_head: 64
-    age_spouse: 64
+    greater_age_head_spouse: 64
     head_is_disabled: false
     spouse_is_disabled: true
   output:
