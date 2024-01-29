@@ -1,0 +1,37 @@
+# hosuehold_income
+# benefit_amount
+
+description: The direct cash benefit would changes based on household income
+metadata:
+  label: Direct Cash Benefit Amount
+  type: single_amount # marginal_rate?
+  threshold_unit: currency-USD
+  amount_unit: /1
+  reference:
+  - title: Automatic Stabilizer Distributions by Household Income
+    href: https://racepowerpolicy.org/wp-content/uploads/2023/12/Direct-Cash-Payments-in-the-Next-Recession_FINAL.pdf#page=13
+brackets:
+  - threshold:
+      2023-01-01: 0
+    amount:
+      2023-01-01: 3_665
+  - threshold:
+      2023-01-01: 9_396
+    amount:
+      2023-01-01: 4_618
+  - threshold:
+      2023-01-01: 15_616
+    amount:
+      2023-01-01: 4_884  
+  - threshold:
+      2023-01-01: 33_281
+    amount:
+      2023-01-01: 6_384
+  - threshold:
+      2023-01-01: 68_000
+    amount:
+      2023-01-01: 3_939
+  - threshold:
+      2023-01-01: #income at 56% percentile
+    amount:
+      2023-01-01: 0
