@@ -319,7 +319,8 @@ def add_spm_variables(cps: h5py.File, spm_unit: DataFrame) -> None:
     )
 
     for openfisca_variable, asec_variable in SPM_RENAMES.items():
-        cps[openfisca_variable] = spm_unit[asec_variable]
+        if asec_variable in spm_unit.columns:
+            cps[openfisca_variable] = spm_unit[asec_variable]
 
     cps["reduced_price_school_meals_reported"] = (
         cps["free_school_meals_reported"][...] * 0
@@ -367,7 +368,9 @@ def add_previous_year_income(self, cps: h5py.File) -> None:
         cps_current_year_data.person.PERIDNUM
     )
 
-    previous_year_data = cps_previous_year[["WSAL_VAL", "SEMP_VAL"]].rename(
+    previous_year_data = cps_previous_year[
+        ["WSAL_VAL", "SEMP_VAL", "I_ERNVAL", "I_SEVAL"]
+    ].rename(
         {
             "WSAL_VAL": "employment_income_last_year",
             "SEMP_VAL": "self_employment_income_last_year",
@@ -375,14 +378,27 @@ def add_previous_year_income(self, cps: h5py.File) -> None:
         axis=1,
     )
 
+    previous_year_data = previous_year_data[
+        (previous_year_data.I_ERNVAL == 0) & (previous_year_data.I_SEVAL == 0)
+    ]
+
+    previous_year_data.drop(["I_ERNVAL", "I_SEVAL"], axis=1, inplace=True)
+
     joined_data = cps_current_year.join(previous_year_data)[
-        ["employment_income_last_year", "self_employment_income_last_year"]
+        [
+            "employment_income_last_year",
+            "self_employment_income_last_year",
+            "I_ERNVAL",
+            "I_SEVAL",
+        ]
     ]
     joined_data["previous_year_income_available"] = (
         ~joined_data.employment_income_last_year.isna()
         & ~joined_data.self_employment_income_last_year.isna()
+        & (joined_data.I_ERNVAL == 0)
+        & (joined_data.I_SEVAL == 0)
     )
-    joined_data = joined_data.fillna(-1)
+    joined_data = joined_data.fillna(-1).drop(["I_ERNVAL", "I_SEVAL"], axis=1)
 
     # CPS already ordered by PERIDNUM, so the join wouldn't change the order.
     cps["employment_income_last_year"] = joined_data[

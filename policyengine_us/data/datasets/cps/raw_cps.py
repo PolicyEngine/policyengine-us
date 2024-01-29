@@ -112,6 +112,8 @@ PERSON_COLUMNS = [
     "PRDTHSP",
     "A_MARITL",
     "PERIDNUM",
+    "I_ERNVAL",
+    "I_SEVAL",
 ]
 
 
@@ -144,6 +146,12 @@ class RawCPS(Dataset):
 
         url = CPS_URL_BY_YEAR[self.time_period]
 
+        spm_unit_columns = SPM_UNIT_COLUMNS
+        if self.time_period < 2020:
+            spm_unit_columns = [
+                col for col in spm_unit_columns if col != "SPM_BBSUBVAL"
+            ]
+
         response = requests.get(url, stream=True)
         total_size_in_bytes = int(
             response.headers.get("content-length", 200e6)
@@ -171,8 +179,6 @@ class RawCPS(Dataset):
                 progress_bar.total = content_length_actual
                 progress_bar.close()
                 zipfile = ZipFile(file)
-                # Print out file structure
-                print(zipfile.namelist())
                 if file_year_code == "19":
                     # In the 2018 CPS, the file is within prod/data/2019
                     # instead of at the top level.
@@ -185,7 +191,7 @@ class RawCPS(Dataset):
                     storage["person"] = pd.read_csv(
                         f,
                         usecols=PERSON_COLUMNS
-                        + SPM_UNIT_COLUMNS
+                        + spm_unit_columns
                         + TAX_UNIT_COLUMNS,
                     ).fillna(0)
                     person = storage["person"]
@@ -208,7 +214,9 @@ class RawCPS(Dataset):
                     ]
                     storage["household"] = household
                 storage["tax_unit"] = RawCPS._create_tax_unit_table(person)
-                storage["spm_unit"] = RawCPS._create_spm_unit_table(person)
+                storage["spm_unit"] = RawCPS._create_spm_unit_table(
+                    person, self.time_period
+                )
         except Exception as e:
             raise ValueError(
                 f"Attempted to extract and save the CSV files, but encountered an error: {e} (removed the intermediate dataset)."
@@ -221,8 +229,15 @@ class RawCPS(Dataset):
         return tax_unit_df
 
     @staticmethod
-    def _create_spm_unit_table(person: pd.DataFrame) -> pd.DataFrame:
-        return person[SPM_UNIT_COLUMNS].groupby(person.SPM_ID).first()
+    def _create_spm_unit_table(
+        person: pd.DataFrame, time_period: int
+    ) -> pd.DataFrame:
+        spm_unit_columns = SPM_UNIT_COLUMNS
+        if time_period < 2020:
+            spm_unit_columns = [
+                col for col in spm_unit_columns if col != "SPM_BBSUBVAL"
+            ]
+        return person[spm_unit_columns].groupby(person.SPM_ID).first()
 
 
 class RawCPS_2018(RawCPS):
