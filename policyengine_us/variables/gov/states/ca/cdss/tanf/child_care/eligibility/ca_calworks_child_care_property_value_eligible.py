@@ -19,9 +19,9 @@ class ca_calworks_child_care_property_value_eligible(Variable):
             period
         ).gov.states.ca.cdss.tanf.child_care.eligibility.resource_limit
         aged = age >= p.property.age_threshold
-        aged_or_disabled_person = spm_unit.any(aged | disabled)
+        has_aged_or_disabled_person = spm_unit.any(aged | disabled)
         value_limit = where(
-            aged_or_disabled_person,
+            has_aged_or_disabled_person,
             p.property.aged_or_disabled,
             p.property.base,
         )
