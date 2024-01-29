@@ -5928,3 +5928,18 @@
     - Added remaining components to SPM net income.
     - Inflation-index SPM-related variables.
   date: 2024-01-27 19:26:08
+- bump: patch
+  changes:
+    fixed:
+    - CA TANF monthly applicant income disregards.
+  date: 2024-01-28 03:52:36
+- bump: patch
+  changes:
+    fixed:
+    - Georgia itemized deduction calculation.
+  date: 2024-01-28 05:48:37
+- bump: minor
+  changes:
+    added:
+    - Enable Georgia state income tax computation.
+  date: 2024-01-28 19:06:09
