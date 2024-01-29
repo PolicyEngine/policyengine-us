@@ -10,7 +10,5 @@ class id_income_tax_liable(Variable):
     defined_for = StateCode.ID
 
     def formula(tax_unit, period, parameters):
-        agi = tax_unit("id_agi", period)
-        standard_deduction = tax_unit("standard_deduction", period)
-        reduced_agi = max_(agi - standard_deduction, 0)
-        return reduced_agi > 0
+        gross_income = tax_unit("gross_income", period)
+        tax_unit("standard_deduction", period)
