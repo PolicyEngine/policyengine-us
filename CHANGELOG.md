@@ -5,6 +5,181 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.634.4] - 2024-01-29 04:29:46
+
+### Added
+
+- 2024 federal poverty guidelines.
+
+## [0.634.3] - 2024-01-29 01:13:40
+
+### Fixed
+
+- Removed duplicate NIIT addition from Louisiana federal tax deduction.
+
+## [0.634.2] - 2024-01-29 01:05:00
+
+### Fixed
+
+- Idaho permanent building fund tax calculation.
+
+## [0.634.1] - 2024-01-29 01:00:09
+
+### Fixed
+
+- Adjust the adds function in the hi_subtractions variable.
+
+## [0.634.0] - 2024-01-28 19:06:09
+
+### Added
+
+- Enable Georgia state income tax computation.
+
+## [0.633.4] - 2024-01-28 05:48:37
+
+### Fixed
+
+- Georgia itemized deduction calculation.
+
+## [0.633.3] - 2024-01-28 03:52:36
+
+### Fixed
+
+- CA TANF monthly applicant income disregards.
+
+## [0.633.2] - 2024-01-27 19:26:08
+
+### Fixed
+
+- Added remaining components to SPM net income.
+- Inflation-index SPM-related variables.
+
+## [0.633.1] - 2024-01-26 16:34:55
+
+### Fixed
+
+- LA General relief computation to include withholding rules.
+
+## [0.633.0] - 2024-01-26 14:10:01
+
+### Added
+
+- Broadband subsidies from CPS.
+
+## [0.632.0] - 2024-01-25 20:08:04
+
+### Added
+
+- SSI Substantial Gainful Activity
+
+## [0.631.6] - 2024-01-25 18:46:12
+
+### Fixed
+
+- South Carolina two-wage-earner credit.
+
+## [0.631.5] - 2024-01-25 17:01:06
+
+### Fixed
+
+- Rhode Island property tax calculation.
+
+## [0.631.4] - 2024-01-25 14:45:34
+
+### Fixed
+
+- Georgia retirement subtraction income sources.
+
+## [0.631.3] - 2024-01-25 14:18:33
+
+### Fixed
+
+- Idaho CTC refundability status.
+
+## [0.631.2] - 2024-01-25 02:26:10
+
+### Fixed
+
+- Hawaii EITC refundability.
+
+## [0.631.1] - 2024-01-25 00:40:23
+
+### Fixed
+
+- Virginia taxable income formula.
+
+## [0.631.0] - 2024-01-23 11:52:39
+
+### Added
+
+- Parameter for using reported SNAP values.
+
+## [0.630.0] - 2024-01-23 02:11:13
+
+### Added
+
+- Arkansas low income tax table.
+
+## [0.629.2] - 2024-01-22 16:31:45
+
+### Fixed
+
+- Cap SNAP excess shelter deduction after applying utility allowance.
+
+## [0.629.1] - 2024-01-22 16:28:34
+
+### Fixed
+
+- Michigan home heating credit.
+
+## [0.629.0] - 2024-01-21 02:02:28
+
+### Added
+
+- Arkansas married filing separately logic.
+
+## [0.628.0] - 2024-01-20 23:25:12
+
+### Added
+
+- Enable the Arizona state income tax calculation.
+
+## [0.627.1] - 2024-01-20 17:09:14
+
+### Fixed
+
+- Utah taxpayer credit.
+
+## [0.627.0] - 2024-01-20 12:57:40
+
+### Added
+
+- Medicaid state immigration status eligibility.
+
+## [0.626.0] - 2024-01-19 23:23:38
+
+### Added
+
+- Louisiana federal tax deduction.
+
+## [0.625.1] - 2024-01-19 05:05:00
+
+### Fixed
+
+- Michigan disability exemptions.
+
+## [0.625.0] - 2024-01-18 23:25:24
+
+### Added
+
+- Consolidate Oregon AGI logic according to the model standards.
+
+## [0.624.0] - 2024-01-18 12:46:05
+
+### Added
+
+- Virginia earned income tax credit.
+
 ## [0.623.0] - 2024-01-17 14:40:43
 
 ### Added
@@ -6857,6 +7032,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.634.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.634.3...0.634.4
+[0.634.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.634.2...0.634.3
+[0.634.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.634.1...0.634.2
+[0.634.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.634.0...0.634.1
+[0.634.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.633.4...0.634.0
+[0.633.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.633.3...0.633.4
+[0.633.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.633.2...0.633.3
+[0.633.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.633.1...0.633.2
+[0.633.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.633.0...0.633.1
+[0.633.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.632.0...0.633.0
+[0.632.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.631.6...0.632.0
+[0.631.6]: https://github.com/PolicyEngine/policyengine-us/compare/0.631.5...0.631.6
+[0.631.5]: https://github.com/PolicyEngine/policyengine-us/compare/0.631.4...0.631.5
+[0.631.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.631.3...0.631.4
+[0.631.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.631.2...0.631.3
+[0.631.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.631.1...0.631.2
+[0.631.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.631.0...0.631.1
+[0.631.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.630.0...0.631.0
+[0.630.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.629.2...0.630.0
+[0.629.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.629.1...0.629.2
+[0.629.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.629.0...0.629.1
+[0.629.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.628.0...0.629.0
+[0.628.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.627.1...0.628.0
+[0.627.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.627.0...0.627.1
+[0.627.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.626.0...0.627.0
+[0.626.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.625.1...0.626.0
+[0.625.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.625.0...0.625.1
+[0.625.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.624.0...0.625.0
+[0.624.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.623.0...0.624.0
 [0.623.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.622.1...0.623.0
 [0.622.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.622.0...0.622.1
 [0.622.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.621.0...0.622.0
