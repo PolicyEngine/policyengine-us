@@ -1,0 +1,87 @@
+- name: Household with no children under 13 without a disability is not eligible.
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 40
+        is_disabled: false
+        is_tax_unit_head: true
+      person2:
+        age: 15
+        is_disabled: false
+        is_tax_unit_head: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OR
+  output:
+    or_wfhdc_has_qualified_individual_eligible: false
+
+- name: Household with children under 13 without a disability is eligible.
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 40
+        is_disabled: false
+        is_tax_unit_head: true
+      person2:
+        age: 11
+        is_disabled: false
+        is_tax_unit_head: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OR
+  output:
+    or_wfhdc_has_qualified_individual_eligible: true
+
+- name: Household with disabled non-head member is eligible
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 40
+        is_disabled: false
+        is_tax_unit_head: true
+      person2:
+        age: 35
+        is_disabled: true
+        is_tax_unit_head: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OR
+  output:
+    or_wfhdc_has_qualified_individual_eligible: true
+
+- name: Household with disabled head member is not eligible
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 40
+        is_disabled: true
+        is_tax_unit_head: true
+      person2:
+        age: 35
+        is_disabled: false
+        is_tax_unit_head: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OR
+  output:
+    or_wfhdc_has_qualified_individual_eligible: false

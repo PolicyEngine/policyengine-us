@@ -15,9 +15,7 @@ class or_cdcc_relevant_expenses(Variable):
 
         # First, cap based on the number of eligible care receivers
         expenses = tax_unit("tax_unit_childcare_expenses", period)
-
-        eligible_people = tax_unit("count_cdcc_eligible", period)
-        capped_eligible_people = min_(p_cdcc.eligibility.max, eligible_people)
+        capped_eligible_people = tax_unit("capped_count_cdcc_eligible", period)
 
         total_max_amount = p_or.cap * capped_eligible_people
         capped_eligible_expenses = min_(expenses, total_max_amount)
