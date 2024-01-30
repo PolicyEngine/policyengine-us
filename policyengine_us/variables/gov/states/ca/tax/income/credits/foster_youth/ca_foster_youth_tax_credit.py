@@ -31,4 +31,4 @@ class ca_foster_youth_tax_credit(Variable):
             0, (excess_earned_income / p.phase_out.increment) * p.phase_out.amount
         )
 
-        return max_(0,min_(total_base_credit, total_base_credit - reduction_amount))
+        return max_(0, total_base_credit - reduction_amount)
