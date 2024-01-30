@@ -1,0 +1,29 @@
+- name: Oregon wfhdc expenses for 1 dependent household with qualified expense over max allowed amount
+  period: 2022
+  input:
+    tax_unit_childcare_expenses: 20_000  # > $12,000
+    capped_count_cdcc_eligible: 1
+    min_head_spouse_earned: 30_000
+    state_code: OR
+  output:
+    or_cdcc_relevant_expenses: 12_000 # min(12000,30000)
+
+- name: Oregon wfhdc expenses for 1 dependent household with qualified expense below max allowed amount
+  period: 2022
+  input:
+    tax_unit_childcare_expenses: 10_000 # < $12,000
+    capped_count_cdcc_eligible: 1 
+    min_head_spouse_earned: 30_000
+    state_code: OR
+  output:
+    or_cdcc_relevant_expenses: 10_000 # min(10000,30000)
+
+- name: Oregon wfhdc expenses for 3 dependent household with childcare expense over max allowed amount
+  period: 2022
+  input:
+    tax_unit_childcare_expenses: 40_000 # 40,000 > 2 * $12,000 = $24,000
+    capped_count_cdcc_eligible: 2
+    min_head_spouse_earned: 30_000
+    state_code: OR
+  output:
+    or_cdcc_relevant_expenses: 24_000 # min(24000,30000)

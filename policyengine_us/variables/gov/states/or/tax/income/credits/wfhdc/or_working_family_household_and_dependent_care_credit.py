@@ -26,7 +26,7 @@ class or_working_family_household_and_dependent_care_credit(Variable):
         match_percentage = p.match[income_category][eligibility_category]
 
         # Get the relevant expenses.
-        expenses = tax_unit("cdcc_relevant_expenses", period)
+        expenses = tax_unit("or_cdcc_relevant_expenses", period)
 
         # Return the share of federal CDCC matched by Oregon.
         return expenses * match_percentage

@@ -1,0 +1,15 @@
+- name: Household of size 1 is not eligible.
+  period: 2021
+  input:
+    tax_unit_size: 1
+    state_code: OR
+  output:
+    or_wfhdc_household_size_eligible: false
+
+- name: Household of size 2 is eligible.
+  period: 2021
+  input:
+    tax_unit_size: 2
+    state_code: OR
+  output:
+    or_wfhdc_household_size_eligible: true
