@@ -15,6 +15,7 @@ class household_refundable_tax_credits(Variable):
         "co_refundable_credits",  # Colorado.
         "dc_refundable_credits",  # District of Columbia.
         "de_refundable_credits",  # Delaware.
+        "ga_refundable_credits",  # Georgia.
         "ia_refundable_credits",  # Iowa.
         "il_refundable_credits",  # Illinois.
         "in_refundable_credits",  # Indiana.
