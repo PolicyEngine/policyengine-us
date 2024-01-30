@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class oh_other_add_backs(Variable):
     value_type = float
     entity = Person
-    label = "OH other add backs"
+    label = "Ohio other add backs"
     definition_period = YEAR
     documentation = ""
     reference = ""

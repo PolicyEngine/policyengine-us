@@ -1,9 +1,9 @@
 from policyengine_us.model_api import *
 
 
-class oh_agi(Variable):
+class oh_agi_person(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     label = "Ohio adjusted gross income"
     unit = USD
     definition_period = YEAR
@@ -13,4 +13,6 @@ class oh_agi(Variable):
     )
     defined_for = StateCode.OH
 
-    adds = ["oh_agi_person"]
+    adds = ["adjusted_gross_income_person", "oh_additions"]
+
+    subtracts = ["oh_deductions"]

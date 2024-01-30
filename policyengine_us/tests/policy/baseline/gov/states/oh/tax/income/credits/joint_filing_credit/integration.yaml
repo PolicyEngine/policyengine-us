@@ -5,14 +5,14 @@
     people:
       person1:
         age: 26
-        taxable_interest_income: 5505
+        taxable_interest_income: 5_505
         ssi: 0  # not in TAXSIM35
         state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
       person2:
         age: 26
-        employment_income: 160010
-        taxable_interest_income: 5505
+        employment_income: 160_010
+        taxable_interest_income: 5_505
         ssi: 0  # not in TAXSIM35
         state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
@@ -32,5 +32,8 @@
         members: [person1, person2]
         state_fips: 39  # OH
   output:  # expected results from patched TAXSIM35 2024-01-11 version
+    oh_joint_filing_credit_agi_subtractions: [5_505, 5_505]
+    oh_joint_filing_credit_qualifying_income: [0, 160_010]
+    oh_joint_filing_credit_eligible: false
     oh_joint_filing_credit: 0
-    oh_income_tax: 5380.28
+    oh_income_tax: 5_380.28

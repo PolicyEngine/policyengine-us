@@ -1,0 +1,56 @@
+- name: Allocated deduction with two eligible people
+  period: 2022
+  input:
+    people:
+      head:
+        oh_insured_unreimbursed_medical_care_expense_amount: 300
+      spouse:
+        oh_insured_unreimbursed_medical_care_expense_amount: 100
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        oh_insured_unreimbursed_medical_care_expenses: 1_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: OH
+  output:
+    oh_insured_unreimbursed_medical_care_expenses_person: [750, 250]
+
+- name: Allocated deduction with one eligible person
+  period: 2022
+  input:
+    people:
+      head:
+        oh_insured_unreimbursed_medical_care_expense_amount: 300
+      spouse:
+        oh_insured_unreimbursed_medical_care_expense_amount: 0
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        oh_insured_unreimbursed_medical_care_expenses: 1_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: OH
+  output:
+    oh_insured_unreimbursed_medical_care_expenses_person: [1_000, 0]
+
+- name: Allocated deduction with no eligible people
+  period: 2022
+  input:
+    people:
+      head:
+        oh_insured_unreimbursed_medical_care_expense_amount: 0
+      spouse:
+        oh_insured_unreimbursed_medical_care_expense_amount: 0
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        oh_insured_unreimbursed_medical_care_expenses: 1_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: OH
+  output:
+    oh_insured_unreimbursed_medical_care_expenses_person: [0, 0]

@@ -1,12 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class oh_insured_unreimbursed_medical_care_expenses(Variable):
+class oh_insured_unreimbursed_medical_care_expense_amount(Variable):
     value_type = float
-    entity = TaxUnit
-    label = (
-        "Ohio insured unreimbursed medical and health care expense deduction"
-    )
+    entity = Person
+    label = "Ohio insured unreimbursed medical and health care expense amount"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -16,8 +14,7 @@ class oh_insured_unreimbursed_medical_care_expenses(Variable):
     )
     defined_for = StateCode.OH
 
-    def formula(tax_unit, period, parameters):
-        person = tax_unit.members
+    def formula(person, period, parameters):
         employer_premium_contribution = person(
             "employer_contribution_to_health_insurance_premiums_category",
             period,
@@ -29,21 +26,8 @@ class oh_insured_unreimbursed_medical_care_expenses(Variable):
             person("health_insurance_premiums", period) * medicare_eligible
         ) * (employer_premium_contribution == status.NONE)
         # Premiums only count if the employer paid none.
-        total_hipaid = tax_unit.sum(eligible_premiums)
         # Line 4
-        medical_expenses = add(
-            tax_unit, period, ["medical_out_of_pocket_expenses"]
+        medical_out_of_pocket_expenses = person(
+            "medical_out_of_pocket_expenses", period
         )
-        # Line 5
-        total_expenses = total_hipaid + medical_expenses
-        # Line 6
-        federal_agi = tax_unit("adjusted_gross_income", period)
-
-        # Can deduct medical expenses in excess of 7.5% of federal AGI.
-        # Line 7
-        rate = parameters(
-            period
-        ).gov.states.oh.tax.income.deductions.unreimbursed_medical_care_expenses.rate
-        agi_floor = federal_agi * rate
-        # Line 8
-        return max_(0, total_expenses - agi_floor)
+        return eligible_premiums + medical_out_of_pocket_expenses

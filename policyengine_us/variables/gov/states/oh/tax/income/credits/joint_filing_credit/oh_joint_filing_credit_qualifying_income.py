@@ -4,9 +4,7 @@ from policyengine_us.model_api import *
 class oh_joint_filing_credit_qualifying_income(Variable):
     value_type = float
     entity = Person
-    label = (
-        "Ohio qualifying income for the joint filing credit"
-    )
+    label = "Ohio qualifying income for the joint filing credit"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -15,8 +13,6 @@ class oh_joint_filing_credit_qualifying_income(Variable):
     )
     defined_for = StateCode.OH
 
-    adds = ["oh_agi"]
+    adds = ["oh_agi_person"]
 
-    subtracts = (
-        "gov.states.oh.tax.income.credits.joint_filing.agi_subtractions"
-    )
+    subtracts = ["oh_joint_filing_credit_agi_subtractions"]
