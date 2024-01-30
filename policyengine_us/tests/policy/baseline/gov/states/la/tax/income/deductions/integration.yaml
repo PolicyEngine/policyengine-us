@@ -1,0 +1,36 @@
+- name: Test of LA federal tax deduction
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 44
+        employment_income: 159_010
+        taxable_interest_income: 5_505
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person2:
+        age: 44
+        employment_income: 160_010
+        taxable_interest_income: 5_505
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        premium_tax_credit: 0  # not in TAXSIM35
+        local_income_tax: 0  # not in TAXSIM35
+        state_sales_tax: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 22  # LA
+  output:  # expected results from patched TAXSIM35 2024-01-27 version
+    la_federal_tax_deduction: 61_643.58
