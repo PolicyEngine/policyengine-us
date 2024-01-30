@@ -1,0 +1,56 @@
+- name: Eligible for eitc
+  period: 2022
+  input:
+    people:
+      person_1:
+        ca_eitc_eligible_person: true
+      person_2:
+        ca_eitc_eligible_person: true
+    tax_units:
+      tax_unit:
+        members: [person_1, person_2]
+    households:
+      household:
+        members: [person_1, person_2]
+        state_code: CA
+  output:
+    ca_eitc_eligible: true
+
+- name: Ineligible for eitc
+  period: 2022
+  input:
+    people:
+      person_1:
+        ca_eitc_eligible_person: false
+      person_2:
+        ca_eitc_eligible_person: false
+    tax_units:
+      tax_unit:
+        members: [person_1, person_2]
+    households:
+      household:
+        members: [person_1, person_2]
+        state_code: CA
+  output:
+    ca_eitc_eligible: false
+
+- name: Eligible for eitc
+  period: 2021
+  input:
+    people:
+      person_1:
+        ca_eitc_eligible_person: true
+      person_2:
+        ca_eitc_eligible_person: false
+    tax_units:
+      tax_unit:
+        members: [person_1, person_2]
+    households:
+      household:
+        members: [person_1, person_2]
+        state_code: CA
+  output:
+    ca_eitc_eligible: true
+
+
+
