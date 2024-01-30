@@ -25,6 +25,6 @@ class az_property_tax_credit(Variable):
         property_tax = add(tax_unit, period, ["real_estate_taxes"])
         rent = add(tax_unit, period, ["rent"])
         payment_credit = property_tax + rent
-        # property_tax and rent are equally weighted (tax form says just sum them up)
+        # property_tax and rent are equally weighted
 
         return min_(cap, payment_credit)

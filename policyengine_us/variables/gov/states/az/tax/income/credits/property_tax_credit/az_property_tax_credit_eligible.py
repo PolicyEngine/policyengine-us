@@ -25,7 +25,7 @@ class az_property_tax_credit_eligible(Variable):
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
 
         return tax_unit.any(
-            (is_head_or_spouse)
+            is_head_or_spouse
             & (age_eligible | ssi_eligible)
             & payment_eligible
         )
