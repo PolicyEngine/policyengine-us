@@ -13,12 +13,13 @@ class oh_529_plan_deduction_person(Variable):
     defined_for = StateCode.OH
 
     def formula(person, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.oh.tax.income.deductions.plan_529_contributions
+        # Allocating the deduction amount to each person in the tax unit based on their contribution amount
         contribution_amount = person("investment_in_529_plan_indv", period)
-        beneficiaries = person("count_529_contribution_beneficiaries", period)
-        total_beneficiaries = person.tax_unit.sum(beneficiaries)
-        cap = p.cap * total_beneficiaries
-        total_contributions = person.tax_unit.sum(contribution_amount)
-        return min_(total_contributions, cap)
+        total_contribtions = person.tax_unit.sum(contribution_amount)
+        total_deduction = person.tax_unit("oh_529_plan_deduction", period)
+        contributions_rate = np.zeros_like(total_contribtions)
+        mask = total_contribtions != 0
+        contributions_rate[mask] = (
+            contribution_amount[mask] / total_contribtions[mask]
+        )
+        return contributions_rate * total_deduction

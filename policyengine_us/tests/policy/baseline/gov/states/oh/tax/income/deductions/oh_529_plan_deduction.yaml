@@ -5,7 +5,7 @@
     investment_in_529_plan_indv: 4_500
     count_529_contribution_beneficiaries: 1
   output:
-    oh_529_plan_deduction_person: 4_000
+    oh_529_plan_deduction: 4_000
 
 - name: Two beneficiaries increases the cap
   period: 2021
@@ -25,7 +25,7 @@
         members: [person1, person2]
         state_code: OH
   output:
-    oh_529_plan_deduction_person: 8_000
+    oh_529_plan_deduction: 8_000
 
 - name: One beneficiary
   period: 2021
@@ -45,4 +45,4 @@
         members: [person1, person2]
         state_code: OH
   output:
-    oh_529_plan_deduction_person: 4_000
+    oh_529_plan_deduction: 4_000
