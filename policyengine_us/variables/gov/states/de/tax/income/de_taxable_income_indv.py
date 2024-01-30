@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class de_taxable_income_joint(Variable):
+class de_taxable_income_indv(Variable):
     value_type = float
     entity = Person
     label = (
