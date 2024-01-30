@@ -1,0 +1,15 @@
+description: Louisiana allows for a federal tax deduction if this is true.
+values:
+  2021-01-01: true  
+  2022-01-01: false
+metadata:
+  unit: bool
+  period: year
+  label: Louisiana federal tax deduction availability
+  reference:
+    - title: 2021 Louisiana IT540i Instructions
+      href: https://revenue.louisiana.gov/TaxForms/IT540i(2021)%20Instructions.pdf#page=3
+    - title: 2022 Louisiana IT540i Instructions
+      href: https://revenue.louisiana.gov/TaxForms/IT540iWEB(2022)D1.pdf#page=2
+    - title: Title 47 - Revenue and Taxation §298. Repealed by Acts 2021, No. 39
+      href: https://law.justia.com/codes/louisiana/2021/revised-statutes/title-47/rs-298/

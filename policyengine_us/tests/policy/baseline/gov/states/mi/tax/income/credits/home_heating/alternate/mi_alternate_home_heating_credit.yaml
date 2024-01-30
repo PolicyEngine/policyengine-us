@@ -1,0 +1,26 @@
+- name: alternate heating credit, heating costs below 3_340
+  period: 2022
+  input:
+    mi_household_resources: 1_000
+    heating_expenses: 1_000
+    mi_alternate_home_heating_credit_eligible: true
+  output: # (1_000 - 1_000 * 0.11) * 0.7
+    mi_alternate_home_heating_credit: 623
+
+- name: alternate heating credit, heating costs over 3_340
+  period: 2022
+  input:
+    mi_household_resources: 1_000
+    heating_expenses: 4_000
+    mi_alternate_home_heating_credit_eligible: true
+  output: # (3_340 - 1_000 * 0.11) * 0.7
+    mi_alternate_home_heating_credit: 2_261
+
+- name: alternate heating credit, alternate credit is 0
+  period: 2022
+  input:
+    mi_household_resources: 3_000
+    heating_expenses: 300
+    mi_alternate_home_heating_credit_eligible: true
+  output: # (300 - 3_000 * 0.11) * 0.7 < 0
+    mi_alternate_home_heating_credit: 0

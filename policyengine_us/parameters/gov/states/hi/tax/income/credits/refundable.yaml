@@ -1,0 +1,24 @@
+description: Hawaii provides the following refundable tax credits.
+values:
+  2021-01-01:
+    - hi_food_excise_credit
+    - hi_cdcc
+    - hi_tax_credit_for_low_income_household_renters
+
+  2023-01-01:
+    - hi_food_excise_credit
+    - hi_cdcc
+    - hi_tax_credit_for_low_income_household_renters
+    - hi_eitc
+
+metadata:
+  unit: list
+  period: year
+  label: Hawaii refundable tax credits
+  reference:
+    - title: 2022 Hawaii N-11 Tax Form
+      href: https://files.hawaii.gov/tax/forms/2022/n11_i.pdf#page=3
+    - title: 2021 Hawaii N-11 Tax Form
+      href: https://files.hawaii.gov/tax/forms/2021/n11_i.pdf#page=3
+    - title: Hawaii Income Tax Law, Chapter 235, Section 235-55.675 # Refundable EITC law
+      href: https://www.capitol.hawaii.gov/hrscurrent/Vol04_Ch0201-0257/HRS0235/HRS_0235-0055_0075.htm

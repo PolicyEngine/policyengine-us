@@ -34,7 +34,10 @@ class cliff_gap(Variable):
         for adult_index in range(1, 1 + adult_count):
             alt_sim = sim.get_branch(f"cliff_for_adult_{adult_index}")
             for variable in sim.tax_benefit_system.variables:
-                if variable not in sim.input_variables:
+                if (
+                    variable not in sim.input_variables
+                    or variable == "employment_income"
+                ):
                     alt_sim.delete_arrays(variable)
             mask = adult_index == adult_indexes
             alt_sim.set_input(

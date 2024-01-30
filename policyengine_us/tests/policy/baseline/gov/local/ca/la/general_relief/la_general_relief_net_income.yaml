@@ -1,0 +1,26 @@
+- name: No deductions
+  period: 2022
+  input:
+    la_general_relief_gross_income: 1_000
+    in_la: true
+    spm_unit_paycheck_withholdings: 0
+  output:
+    la_general_relief_net_income: 1_000
+
+- name: Capped at 0
+  period: 2022
+  input:
+    la_general_relief_gross_income: 1_000
+    in_la: true
+    spm_unit_paycheck_withholdings: 1_100
+  output:
+    la_general_relief_net_income: 0
+
+- name: Some deduction amount
+  period: 2022
+  input:
+    la_general_relief_gross_income: 1_000
+    in_la: true
+    spm_unit_paycheck_withholdings: 500
+  output:
+    la_general_relief_net_income: 500

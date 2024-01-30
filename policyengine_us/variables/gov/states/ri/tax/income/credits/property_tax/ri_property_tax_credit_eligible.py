@@ -21,4 +21,8 @@ class ri_property_tax_credit_eligible(Variable):
         head_is_disabled = tax_unit("head_is_disabled", period)
         spouse_is_disabled = tax_unit("spouse_is_disabled", period)
         is_disabled = head_is_disabled | spouse_is_disabled
-        return age_eligible | is_disabled
+        household_income = tax_unit("ri_property_tax_household_income", period)
+        household_income_eligible = (
+            household_income <= p.rate.one_person.thresholds[0]
+        )
+        return (age_eligible | is_disabled) & household_income_eligible

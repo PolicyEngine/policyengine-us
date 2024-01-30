@@ -10,6 +10,16 @@ core:
     - WIC
 filtered:
   state_name:
+    AL:
+      modelled:
+      - Alabama state income tax
+      not_modelled:
+      - Alabama TANF
+    AZ: 
+      modelled:
+      - Arizona state income tax
+      not_modelled:
+      - Arizona TANF
     CA:
       modelled:
       - California state income tax
@@ -25,6 +35,11 @@ filtered:
       modelled:
       - District of Columbia income tax
       - District of Columbia TANF
+    GA:
+      modelled:
+      - Georgia state income tax
+      not_modelled:
+      - Georgia TANF
     IA:
       modelled:
       - Iowa state income tax

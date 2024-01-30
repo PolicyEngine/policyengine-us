@@ -12,10 +12,13 @@ class household_tax_before_refundable_credits(Variable):
         "employee_payroll_tax",
         "self_employment_tax",
         "income_tax_before_refundable_credits",  # Federal.
+        "al_income_tax_before_refundable_credits",
+        "az_income_tax_before_refundable_credits",
         "ca_income_tax_before_refundable_credits",
         "co_income_tax_before_refundable_credits",
         "dc_income_tax_before_refundable_credits",
         "de_income_tax_before_refundable_credits",
+        "ga_income_tax_before_refundable_credits",
         "ia_income_tax_before_refundable_credits",
         "il_total_tax",
         "in_income_tax_before_refundable_credits",
@@ -47,6 +50,14 @@ class household_tax_before_refundable_credits(Variable):
         added_components = household_tax_before_refundable_credits.adds
         params = parameters(period)
         flat_tax = params.gov.contrib.ubi_center.flat_tax
+        if params.simulation.reported_state_income_tax:
+            added_components = [
+                "employee_payroll_tax",
+                "self_employment_tax",
+                "income_tax_before_refundable_credits",  # Federal.
+                "flat_tax",
+                "spm_unit_state_tax_reported",
+            ]
         if flat_tax.abolish_payroll_tax:
             added_components = [
                 c for c in added_components if c != "employee_payroll_tax"
@@ -56,13 +67,5 @@ class household_tax_before_refundable_credits(Variable):
                 c
                 for c in added_components
                 if c != "income_tax_before_refundable_credits"
-            ]
-        if params.simulation.reported_state_income_tax:
-            added_components = [
-                "employee_payroll_tax",
-                "self_employment_tax",
-                "income_tax_before_refundable_credits",  # Federal.
-                "flat_tax",
-                "spm_unit_state_tax_reported",
             ]
         return add(household, period, added_components)

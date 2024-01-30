@@ -1,0 +1,18 @@
+description: Alabama subtracts the following credits for the federal tax deduction.
+values:
+  2021-01-01:
+    - eitc
+    - american_opportunity_credit
+    - refundable_ctc
+
+metadata:
+  unit: list
+  period: year
+  label: Alabama federal tax deduction subtractable credits
+  reference:
+    - title: 2022 Alabama Form 40A Instructions
+      href: https://www.revenue.alabama.gov/ultraviewer/viewer/basic_viewer/index.html?form=2023/01/22f40abk.pdf#page=20
+    - title: 2021 Alabama Form 40A Instructions
+      href: https://www.revenue.alabama.gov/wp-content/uploads/2022/06/21f40abk.pdf#page=20
+    - title: Alabama Code Title 40. Revenue and Taxation § 40-18-21
+      href: https://www.legislature.state.al.us/legacy/CodeOfAlabama/1975/Coatoc.htm

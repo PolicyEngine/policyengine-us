@@ -1,0 +1,17 @@
+- name: Idaho deductions less than AGI
+  period: 2021
+  input:
+    irs_gross_income: 1_000
+    standard_deduction: 500
+    state_code: ID
+  output:
+    id_income_tax_liable: true
+
+- name: Capped at 0
+  period: 2021
+  input:
+    irs_gross_income: 300
+    standard_deduction: 500
+    state_code: ID
+  output:
+    id_income_tax_liable: false
