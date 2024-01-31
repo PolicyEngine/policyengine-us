@@ -1,9 +1,9 @@
-description: Colorado Child Care Assistance Program multiplies adjusted gross income below or above federal poverty guidelines with these factors to calculate base parent fee.
+description: Colorado Child Care Assistance Program multiplies adjusted gross income by the following factor to calculate base parent fee, based on gross income relative to the federal poverty guidelines.  
 metadata:
   type: marginal_rate
   threshold_unit: currency-USD
   rate_unit: /1
-  label: Colorado Child Care Assistance Program multiplication factors
+  label: Colorado Child Care Assistance Program multiplication factor
   reference:
     # This factor is included in the calculation of base parent fee in the spreadsheets
     - title: At 100% FPG Parent Fee Tool
