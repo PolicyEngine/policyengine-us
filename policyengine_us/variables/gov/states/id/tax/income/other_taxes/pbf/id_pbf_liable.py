@@ -6,7 +6,7 @@ class id_pbf_liable(Variable):
     entity = TaxUnit
     label = "Liable for the Idaho permanent building fund tax"
     definition_period = YEAR
-    reference = "https://tax.idaho.gov/wp-content/uploads/forms/EIN00046/EIN00046_11-15-2021.pdf#page=10"
+    reference = "https://tax.idaho.gov/wp-content/uploads/forms/EIN00046/EIN00046_11-15-2021.pdf#page=3"
     defined_for = StateCode.ID
 
     def formula(tax_unit, period, parameters):

@@ -10,9 +10,9 @@ class self_employment_income_last_year(Variable):
     definition_period = YEAR
 
 
-class previous_year_income_imputed(Variable):
+class previous_year_income_available(Variable):
     value_type = bool
     entity = Person
-    label = "Imputed prior-year income"
-    documentation = "Whether prior-year income was imputed or based on reported income in a panel."
+    label = "Prior-year income available"
+    documentation = "Whether prior-year income was available in the survey."
     definition_period = YEAR

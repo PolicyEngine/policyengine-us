@@ -5943,3 +5943,58 @@
     added:
     - Enable Georgia state income tax computation.
   date: 2024-01-28 19:06:09
+- bump: patch
+  changes:
+    fixed:
+    - Adjust the adds function in the hi_subtractions variable.
+  date: 2024-01-29 01:00:09
+- bump: patch
+  changes:
+    fixed:
+    - Idaho permanent building fund tax calculation.
+  date: 2024-01-29 01:05:00
+- bump: patch
+  changes:
+    fixed:
+    - Removed duplicate NIIT addition from Louisiana federal tax deduction.
+  date: 2024-01-29 01:13:40
+- bump: patch
+  changes:
+    added:
+    - 2024 federal poverty guidelines.
+  date: 2024-01-29 04:29:46
+- bump: minor
+  changes:
+    changed:
+    - Improved CPS previous year imputations.
+  date: 2024-01-29 18:12:34
+- bump: patch
+  changes:
+    fixed:
+    - Georgia ga_income_tax_before_refundable_credits label.
+  date: 2024-01-29 18:47:44
+- bump: minor
+  changes:
+    added:
+    - California CalWORKs vehicle value limit.
+  date: 2024-01-29 23:18:35
+- bump: patch
+  changes:
+    fixed:
+    - Rhode Island property tax credit maximum amount and eligibility criteria.
+  date: 2024-01-30 04:21:54
+- bump: patch
+  changes:
+    fixed:
+    - Oregon working family household and dependent care credit calculation.
+  date: 2024-01-30 20:13:53
+- bump: minor
+  changes:
+    added:
+    - Hawaii renter credit calculation.
+  date: 2024-01-31 00:26:07
+- bump: patch
+  changes:
+    fixed:
+    - Rhode Island retirement income subtraction calculation.
+  date: 2024-01-31 01:48:14
