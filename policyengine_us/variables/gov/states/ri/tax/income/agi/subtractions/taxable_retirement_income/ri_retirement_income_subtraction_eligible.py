@@ -17,7 +17,6 @@ class ri_retirement_income_subtraction_eligible(Variable):
         filing_status = tax_unit("filing_status", period)
         older_spouse_birth_year = tax_unit("older_spouse_birth_year", period)
 
-
         p_ss = parameters(
             period
         ).gov.states.ri.tax.income.agi.subtractions.social_security.limit
