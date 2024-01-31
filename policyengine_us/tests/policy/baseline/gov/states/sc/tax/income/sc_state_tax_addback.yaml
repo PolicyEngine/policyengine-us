@@ -2,7 +2,7 @@
   period: 2021
   input:
     filing_status: SEPARATE
-    tax_unit_itemizes: true
+    salt_deduction: 4_000 #3_000+1_000
     charitable_deduction: 1_000
     interest_deduction: 1_000
     medical_expense_deduction: 0
@@ -13,7 +13,7 @@
     state_code: SC
   output:
     sc_state_tax_addback: 1_000
-    # line 3 = 2000 - 0 = 2000
+    # line 3 = 6000 - 0 = 6000
     # line 4 = 1000
     # line 5 = 5000 - 3000 = 2000
   
@@ -21,7 +21,7 @@
   period: 2021
   input:
     filing_status: JOINT
-    tax_unit_itemizes: true
+    salt_deduction: 4_000
     charitable_deduction: 1_000
     interest_deduction: 1_000
     medical_expense_deduction: 0
@@ -31,8 +31,8 @@
     state_and_local_sales_or_income_tax: 1_000
     state_code: SC
   output:
-    sc_state_tax_addback: 0
-    # line 3 = 2000 - 4000 = 0 
+    sc_state_tax_addback: 1_000
+    # line 3 = 6000 - 4000 = 2000
     # line 4 = 1000
     # line 5 = 10000 - 3000 = 7000
 
@@ -40,7 +40,7 @@
   period: 2021
   input:
     filing_status: JOINT
-    tax_unit_itemizes: true
+    salt_deduction: 10_000 # min(10000, 6000+8000)
     charitable_deduction: 3_000
     interest_deduction: 1_000
     medical_expense_deduction: 0
@@ -51,7 +51,7 @@
     state_code: SC
   output:
     sc_state_tax_addback: 2_000
-    # line 3 = 4000 - 1000 = 3000 
+    # line 3 = 14000 - 1000 = 13000 
     # line 4 = 6000
     # line 5 = 10000 - 8000 = 2000
     
@@ -59,7 +59,7 @@
   period: 2021
   input:
     filing_status: JOINT
-    tax_unit_itemizes: true
+    salt_deduction: 4_000
     charitable_deduction: 1_000
     interest_deduction: 1_000
     medical_expense_deduction: 0
@@ -69,26 +69,26 @@
     state_and_local_sales_or_income_tax: 1_000
     state_code: SC
   output:
-    sc_state_tax_addback: 0
-    # line 3 = 2000 - 4000 = 0 
+    sc_state_tax_addback: 1_000
+    # line 3 = 6000 - 4000 = 2000
     # line 4 = 1000
     # line 5 = 10000 - 3000 = 7000
 
-- name: Test case 5 #salt has a cap of 10000 for JOINT
+- name: Test case 5 # if federal standard deduction > itemized deductoins
   period: 2021
   input:
     filing_status: JOINT
-    tax_unit_itemizes: false
-    charitable_deduction: 3_000
+    salt_deduction: 4_000
+    charitable_deduction: 1_000
     interest_deduction: 1_000
     medical_expense_deduction: 0
     casualty_loss_deduction: 0
-    standard_deduction: 1_000
-    real_estate_taxes: 8_000
-    state_and_local_sales_or_income_tax: 6_000
+    standard_deduction: 8_000
+    real_estate_taxes: 3_000
+    state_and_local_sales_or_income_tax: 1_000
     state_code: SC
   output:
     sc_state_tax_addback: 0
-    # line 3 = 0 - 1000 = 0  tax_unit_itemizes false
-    # line 4 = 6000
-    # line 5 = 10000 - 8000 = 2000
+    # line 3 = max(0, 6000 - 8000) = 0
+    # line 4 = 1000
+    # line 5 = 10000 - 3000 = 7000
