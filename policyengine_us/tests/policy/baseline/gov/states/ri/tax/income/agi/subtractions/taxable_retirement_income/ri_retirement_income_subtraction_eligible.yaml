@@ -37,3 +37,13 @@
     older_spouse_birth_year: 1956
   output:
     ri_retirement_income_subtraction_eligible: false
+
+- name: Widow filer ineligible in 2021
+  period: 2021
+  input:
+    state_code: RI
+    adjusted_gross_income: 109_050
+    filing_status: WIDOW
+    older_spouse_birth_year: 1956
+  output:
+    ri_retirement_income_subtraction_eligible: false
