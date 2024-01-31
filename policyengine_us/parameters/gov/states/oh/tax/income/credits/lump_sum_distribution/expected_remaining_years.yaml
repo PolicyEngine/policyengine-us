@@ -1,18 +1,21 @@
-description: The IRS provides the following multiples corresponding to the filer's expected remaining years of life. 
+description: Ohio provides the following multiples corresponding to the lump sum recipient’s age. 
 metadata:
   type: single_amount 
   threshold_unit: year
   period: year
   amount_unit: /1
-  label: Expected remaining years of life
+  label: Ohio lump sum distribution credit multiples
   reference:
-      - title: Actuarial Values 3A Publication 1457 (Rev. 5-2009)
-        href: https://www.irs.gov/pub/irs-tege/table-s-2000cm.xlsx
-      # While the Ohio legal code reference the remaining years of life tables issues by the IRS  
-      # the values seem to deviate from the tables provided in the ITS spreadsheets  
-      - title: Ohio Laws and Administrative Rules Section 5747.055 (G)  
-        href: https://codes.ohio.gov/ohio-revised-code/section-5747.055#:~:text=(G)%20A%20taxpayer%20sixty%2D,Code%2C%20as%20shown%20on%20an
-      
+    - title:  Ohio 2021 Instructions for Filing Original and Amended Individual Income Tax (IT 1040) and  School District Income Tax (SD 100)
+      href: https://tax.ohio.gov/static/forms/ohio_individual/individual/2021/pit-it1040-booklet.pdf#page=29
+    - title: Ohio 2021 Instructions for Filing Original and Amended Individual Income Tax (IT 1040) and  School District Income Tax (SD 100)
+      href: https://tax.ohio.gov/static/forms/ohio_individual/individual/2022/it1040-sd100-instruction-booklet.pdf#page=29
+    - title: Ohio Laws and Administrative Rules Section 5747.055 (G)
+      href: https://codes.ohio.gov/ohio-revised-code/section-5747.055#:~:text=(G)%20A%20taxpayer%20sixty%2D,Code%2C%20as%20shown%20on%20an
+    - title: Ohio 2022 IT 1040 Form section 7 line 5
+      href: https://tax.ohio.gov/static/forms/ohio_individual/individual/2022/it1040-bundle.pdf#page=7
+    - title: Ohio 2022 Instructions for Filing Original and Amended Individual Income Tax (IT 1040) and  School District Income Tax (SD 100)
+      href: https://tax.ohio.gov/static/forms/ohio_individual/individual/2022/it1040-sd100-instruction-booklet.pdf#page=29
 brackets:
   - threshold:
       2021-01-01: 0
