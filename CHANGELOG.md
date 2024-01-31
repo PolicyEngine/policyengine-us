@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.637.1] - 2024-01-31 01:48:14
+
+### Fixed
+
+- Rhode Island retirement income subtraction calculation.
+
 ## [0.637.0] - 2024-01-31 00:26:07
 
 ### Added
@@ -7068,6 +7074,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.637.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.637.0...0.637.1
 [0.637.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.636.2...0.637.0
 [0.636.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.636.1...0.636.2
 [0.636.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.636.0...0.636.1
