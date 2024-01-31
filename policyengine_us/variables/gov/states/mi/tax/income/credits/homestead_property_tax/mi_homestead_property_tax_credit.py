@@ -24,8 +24,6 @@ class mi_homestead_property_tax_credit(Variable):
         )
         # Line 43
         # The reduction is specified as going from 100% to 0% rather than vice-versa.
-        phase_out_rate = p.reduction.no_senior_disabled.calc(
-            total_household_resources
-        )
+        phase_out_rate = p.reduction.calc(total_household_resources)
         # Line 44
         return phase_out_rate * homestead_allowable_credit

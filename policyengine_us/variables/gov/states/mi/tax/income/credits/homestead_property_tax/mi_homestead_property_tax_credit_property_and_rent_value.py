@@ -16,11 +16,11 @@ class mi_homestead_property_tax_credit_property_and_rent_value(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(
             period
-        ).gov.states.mi.tax.income.credits.homestead_property_tax.rate
+        ).gov.states.mi.tax.income.credits.homestead_property_tax
 
         property_value = add(tax_unit, period, ["assessed_property_value"])
         rent = add(tax_unit, period, ["rent"])
 
-        applicable_rent = rent * p.rent
+        applicable_rent = rent * p.rent_equivalization
         # Line 13
         return property_value + applicable_rent

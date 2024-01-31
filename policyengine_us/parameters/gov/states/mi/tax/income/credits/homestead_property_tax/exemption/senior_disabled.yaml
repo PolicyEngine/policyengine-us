@@ -1,4 +1,4 @@
-description: Michigan reduces the total amount of household resources by this fraction for disabled or senior filers, based on the income under the homestead property tax credit.
+description: Michigan reduces the total amount of household resources by this fraction for disabled or senior filers, based on household resources. 
 brackets:
   - threshold:
       2018-01-01: 0
@@ -31,7 +31,7 @@ metadata:
   threshold_unit: currency-USD
   period: year
 
-  label: Michigan homestead property tax credit disabled or senior non-refundable phase out rate  
+  label: Michigan homestead property tax credit disabled or senior exemption rate  
   reference:
     - title: Michigan Income Tax Act 206.522 - (1)(c)
       href: http://legislature.mi.gov/doc.aspx?mcl-206-522

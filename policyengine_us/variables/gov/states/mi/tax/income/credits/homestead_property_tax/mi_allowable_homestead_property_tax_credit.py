@@ -31,7 +31,7 @@ class mi_allowable_homestead_property_tax_credit(Variable):
         )
         # Line 37
         # The reduction is specified as going from 100% to 0% rather than vice-versa.
-        phase_out_rate = p.reduction.senior.calc(total_household_resources)
+        phase_out_rate = p.rate.senior.calc(total_household_resources)
         # Line 38
         uncapped_senior_amount = phase_out_rate * excess_amount
         senior_amount = min_(uncapped_senior_amount, p.cap)
@@ -57,7 +57,7 @@ class mi_allowable_homestead_property_tax_credit(Variable):
         # others
         # SECTION C: ALL OTHER CLAIMANTS (if you did not check box 5a or 5b)
         # Line 41
-        uncapped_credit_amount = p.rate.credit * excess_amount
+        uncapped_credit_amount = p.rate.non_senior_disabled * excess_amount
         other_amount = min_(
             uncapped_credit_amount,
             p.cap,
