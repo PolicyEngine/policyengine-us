@@ -15,7 +15,7 @@ class ca_foster_youth_tax_credit(Variable):
 
         age = person("age", period)
 
-        is_eligible = person("ca_foster_youth_tax_credit_eligible", period)
+        eligible_person = person("ca_foster_youth_tax_credit_eligible", period)
 
         adjustment_factor = parameters(period).gov.states.ca.tax.income.credits.earned_income.adjustment.factor
 
