@@ -14,7 +14,7 @@
     filing_status: JOINT
     az_taxable_income: 60_000
   output:
-    az_income_tax_before_non_refundable_credits: 1500
+    az_income_tax_before_non_refundable_credits: 1_500
 
 - name: Joint calculation 2019
   period: 2019
@@ -23,7 +23,7 @@
     filing_status: JOINT
     az_taxable_income: 60_000
   output:
-    az_income_tax_before_non_refundable_credits: 1606.5
+    az_income_tax_before_non_refundable_credits: 1_606.5
 
 - name: Separate calculation 
   period: 2023
@@ -41,4 +41,4 @@
     filing_status: HEAD_OF_HOUSEHOLD
     az_taxable_income: 70_000
   output:
-    az_income_tax_before_non_refundable_credits: 1750
+    az_income_tax_before_non_refundable_credits: 1_750
