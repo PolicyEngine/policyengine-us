@@ -1,6 +1,5 @@
 - name: California doesn't deduct child support.
   period: 2022
-  absolute_error_margin: 0
   input:
     child_support_expense: 100
   output:
@@ -8,7 +7,6 @@
 
 - name: Alaska does deduct child support.
   period: 2022
-  absolute_error_margin: 0
   input:
     state_code: AK
     child_support_expense: 100

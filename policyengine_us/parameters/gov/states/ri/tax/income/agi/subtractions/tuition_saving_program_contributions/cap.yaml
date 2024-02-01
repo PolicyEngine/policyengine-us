@@ -1,0 +1,25 @@
+description: Rhode Island subtracts up to this amount of tuition saving program (section 529 accounts) contributions from state adjusted gross income.
+metadata:
+  unit: currency-USD
+  period: year
+  label: Rhode Island tuition saving program contribution deduction cap
+  reference:
+    - title: 2021 RI Schedule M - page 1 RI Modifications to Federal AGI line 1g
+      href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-01/2021-ri-schedule-m_w.pdf#page=1
+    - title: 2022 RI Schedule M - page 1 RI Modifications to Federal AGI line 1g
+      href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-12/2022%20RI%20Schedule%20M_w.pdf#page=1
+    - title: § 44-30-12.  Rhode Island income of a resident individual. (c), (4), (i)
+      href: http://webserver.rilin.state.ri.us/Statutes/title44/44-30/44-30-12.HTM
+  breakdown:
+  - filing_status
+
+SINGLE:
+  2021-01-01: 500
+JOINT:
+  2021-01-01: 1_000
+SEPARATE:
+  2021-01-01: 500
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 500
+WIDOW:
+  2021-01-01: 500

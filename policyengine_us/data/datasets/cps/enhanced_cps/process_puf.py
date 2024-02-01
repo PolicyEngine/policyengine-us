@@ -283,7 +283,7 @@ FINANCIAL_SUBSET = [
     "partnership_s_corp_income",
     "farm_income",
     "farm_rent_income",
-    "short_term_capital_gains",
+    # "short_term_capital_gains",
     "long_term_capital_gains",
     "taxable_interest_income",
     "tax_exempt_interest_income",
@@ -465,7 +465,7 @@ def generate_puf_style_cps() -> pd.DataFrame:
 
     cps_demographics["gender_primary_filer"] = tax_unit_filer_gender
 
-    filer_earned = sim.calculate("filer_earned")
+    filer_earned = sim.calculate("head_earned")
     spouse_earned = sim.calculate("spouse_earned")
     filing_status = sim.calculate("filing_status")
 

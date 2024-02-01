@@ -1,0 +1,55 @@
+- name: Joint filing, eligible
+  period: 2023
+  input:
+    people:
+      person1:
+        taxable_interest_income: 1_000
+      person2:
+        taxable_interest_income: 900
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        mt_interest_exemption_eligible: true
+    households:
+      household:
+        state_code: MT
+  output:
+    mt_interest_exemption: 1_600
+
+- name: Joint filing, not eligible
+  period: 2023
+  input:
+    people:
+      person1:
+        taxable_interest_income: 1_000
+      person2:
+        taxable_interest_income: 900
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        mt_interest_exemption_eligible: false
+    households:
+      household:
+        state_code: MT
+  output:
+    mt_interest_exemption: 0
+
+- name: Single filing, eligible
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        taxable_interest_income: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        mt_interest_exemption_eligible: true
+    households:
+      household:
+        state_code: MT
+  output:
+    mt_interest_exemption: 800

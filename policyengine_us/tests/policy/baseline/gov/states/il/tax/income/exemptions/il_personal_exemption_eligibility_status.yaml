@@ -1,0 +1,105 @@
+- name: "Joint household, both claimable elsewhere, base income less than $4,750"
+  period: 2021
+  input:
+    filing_status: JOINT
+    head_is_dependent_elsewhere: true
+    spouse_is_dependent_elsewhere: true
+    il_base_income: 2_000 # Less than $2,375 personal exemption.
+    state_code: IL
+  output:
+    il_personal_exemption_eligibility_status: BOTH_ELIGIBLE
+
+- name: "Joint household, both claimable elsewhere, base income greater than $4,750"
+  period: 2021
+  input:
+    filing_status: JOINT
+    head_is_dependent_elsewhere: true
+    spouse_is_dependent_elsewhere: true
+    il_base_income: 5_000 # More than $2,375 personal exemption.
+    state_code: IL
+  output:
+    il_personal_exemption_eligibility_status: PARTIALLY_ELIGIBLE
+
+- name: "Joint household, one claimable elsewhere, base income less than $2,375"
+  period: 2021
+  input:
+    filing_status: JOINT
+    head_is_dependent_elsewhere: true
+    spouse_is_dependent_elsewhere: false
+    il_base_income: 2_000 # Less than $2,375 personal exemption.
+    state_code: IL
+  output:
+    il_personal_exemption_eligibility_status: BOTH_ELIGIBLE
+
+- name: "Joint household, one claimable elsewhere, base income greater than $2,375"
+  period: 2021
+  input:
+    filing_status: JOINT
+    head_is_dependent_elsewhere: true
+    spouse_is_dependent_elsewhere: false
+    il_base_income: 5_000 # More than $2,375 personal exemption.
+    state_code: IL
+  output:
+    il_personal_exemption_eligibility_status: PARTIALLY_ELIGIBLE
+
+- name: "Joint household, neither claimable elsewhere, base income less than $4,750"
+  period: 2021
+  input:
+    filing_status: JOINT
+    head_is_dependent_elsewhere: false
+    spouse_is_dependent_elsewhere: false
+    il_base_income: 2_000 # Less than $2,375 personal exemption.
+    state_code: IL
+  output:
+    il_personal_exemption_eligibility_status: BOTH_ELIGIBLE
+
+- name: "Joint household, neither claimable elsewhere, base income greater than $4,750"
+  period: 2021
+  input:
+    filing_status: JOINT
+    head_is_dependent_elsewhere: false
+    spouse_is_dependent_elsewhere: false
+    il_base_income: 5_000 # More than $2,375 personal exemption.
+    state_code: IL
+  output:
+    il_personal_exemption_eligibility_status: BOTH_ELIGIBLE
+
+- name: "Single household, claimable elsewhere, base income less than $2,375"
+  period: 2021
+  input:
+    filing_status: SINGLE
+    head_is_dependent_elsewhere: true
+    il_base_income: 2_000 # Less than $2,375 personal exemption.
+    state_code: IL
+  output:
+    il_personal_exemption_eligibility_status: PARTIALLY_ELIGIBLE
+
+- name: "Single household, claimable elsewhere, base income greater than $2,375"
+  period: 2021
+  input:
+    filing_status: SINGLE
+    head_is_dependent_elsewhere: true
+    il_base_income: 5_000 # More than $2,375 personal exemption.
+    state_code: IL
+  output:
+    il_personal_exemption_eligibility_status: NOT_ELIGIBLE
+
+- name: "Single household, not claimable elsewhere, base income less than $2,375"
+  period: 2021
+  input:
+    filing_status: SINGLE
+    head_is_dependent_elsewhere: false
+    il_base_income: 2_000 # Less than $2,375 personal exemption.
+    state_code: IL
+  output:
+    il_personal_exemption_eligibility_status: PARTIALLY_ELIGIBLE
+
+- name: "Single household, not claimable elsewhere, base income greater than $2,375"
+  period: 2021
+  input:
+    filing_status: SINGLE
+    head_is_dependent_elsewhere: false
+    il_base_income: 5_000  # More than $2,375 personal exemption.
+    state_code: IL
+  output:
+    il_personal_exemption_eligibility_status: PARTIALLY_ELIGIBLE

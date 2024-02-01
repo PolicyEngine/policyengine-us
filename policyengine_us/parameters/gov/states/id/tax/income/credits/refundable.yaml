@@ -1,0 +1,18 @@
+description: Idaho provides these refundable tax credits.  
+metadata:
+  unit: list
+  label: Idaho refundable tax credits
+  reference: 
+    - title: Form 40, Individual Income Tax Return and Instructions 2022, Line 44 # Idaho aged or disabled credit
+      href: https://www.cassia.gov/media/Assessor/Forms/Forms_Property/PTR_Tax%20Form-40.pdf#page=2
+    - title: IDAHO STATUTES - TITLE 63 - 067 - SECTION 63-3029L (1) # Idaho Child Tax Credit 
+      href: https://legislature.idaho.gov/statutesrules/idstat/Title63/T63CH30/SECT63-3029L/
+    - title: IDAHO ADMINISTRATIVE CODE || 35.01.01.771 # Idaho grocery credit
+      href: https://adminrules.idaho.gov/rules/current/35/350101.pdf#page=107
+
+values:
+  2002-01-01:
+    - id_aged_or_disabled_credit # Idaho aged or disabled credit
+  2021-01-01:
+    - id_grocery_credit  # Idaho grocery credit
+    - id_aged_or_disabled_credit # Idaho aged or disabled credit

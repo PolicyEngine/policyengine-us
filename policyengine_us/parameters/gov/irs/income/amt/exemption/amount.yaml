@@ -3,6 +3,8 @@ metadata:
   unit: currency-USD
   period: year
   reference:
+    - title: 2024 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-23-34.pdf#page=11
     - title: 2023 IRS data release
       href: https://www.irs.gov/pub/irs-drop/rp-22-38.pdf#page=11
     - title: 2022 IRS data release
@@ -28,6 +30,7 @@ HEAD_OF_HOUSEHOLD:
     2021-01-01: 73_600
     2022-01-01: 75_900
     2023-01-01: 81_300
+    2024-01-01: 85_700
     2026-01-01: 62_898
 JOINT:
   values:
@@ -42,6 +45,7 @@ JOINT:
     2021-01-01: 114_600
     2022-01-01: 118_100
     2023-01-01: 126_500
+    2024-01-01: 133_300
     2026-01-01: 97_880
 SEPARATE:
   values:
@@ -56,6 +60,7 @@ SEPARATE:
     2021-01-01: 57_300
     2022-01-01: 59_050
     2023-01-01: 63_250
+    2024-01-01: 66_650
     2026-01-01: 48_940
 SINGLE:
   values:
@@ -70,6 +75,7 @@ SINGLE:
     2021-01-01: 73_600
     2022-01-01: 75_900
     2023-01-01: 81_300
+    2024-01-01: 85_700
     2026-01-01: 62_898
 WIDOW:
   values:
@@ -84,4 +90,5 @@ WIDOW:
     2021-01-01: 114_600
     2022-01-01: 118_100
     2023-01-01: 126_500
+    2024-01-01: 133_300
     2026-01-01: 97_880

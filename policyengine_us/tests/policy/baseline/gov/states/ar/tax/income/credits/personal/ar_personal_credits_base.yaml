@@ -1,0 +1,194 @@
+- name: Head and spouse eligible for the maximum amount of personal tax credits
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 66
+        is_tax_unit_head_or_spouse: true
+        ar_retirement_or_disability_benefits_exemption_person: 0
+        is_blind: true
+        is_deaf: true
+      person2:
+        age: 67
+        is_tax_unit_head_or_spouse: true
+        ar_retirement_or_disability_benefits_exemption_person: 0
+        is_blind: true
+        is_deaf: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: WIDOW
+  output:
+    ar_personal_credits_base: 319
+
+- name: Head and spouse eligible for the maximum amount of personal tax credits 
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 66
+        is_tax_unit_head_or_spouse: true
+        ar_retirement_or_disability_benefits_exemption_person: 0
+        is_blind: true
+        is_deaf: true
+      person2:
+        age: 67
+        is_tax_unit_head_or_spouse: true
+        ar_retirement_or_disability_benefits_exemption_person: 0
+        is_blind: true
+        is_deaf: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: WIDOW
+  output:
+    ar_personal_credits_base: 319
+
+- name: Head and spouse ineligible for the aged credit amounts 
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 23
+        is_tax_unit_head_or_spouse: true
+        ar_retirement_or_disability_benefits_exemption_person: 0
+        is_blind: true
+        is_deaf: true
+      person2:
+        age: 24
+        is_tax_unit_head_or_spouse: true
+        ar_retirement_or_disability_benefits_exemption_person: 0
+        is_blind: true
+        is_deaf: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: WIDOW
+  output:
+    ar_personal_credits_base: 203
+
+- name: Head and spouse ineligible for the aged special credit amounts 
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 66
+        is_tax_unit_head_or_spouse: true
+        ar_retirement_or_disability_benefits_exemption_person: 1
+        is_blind: true
+        is_deaf: true
+      person2:
+        age: 67
+        is_tax_unit_head_or_spouse: true
+        ar_retirement_or_disability_benefits_exemption_person: 1
+        is_blind: true
+        is_deaf: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: WIDOW
+  output:
+    ar_personal_credits_base: 261
+
+- name: Not head or spouse are ineligible for any credits
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 66
+        is_tax_unit_head_or_spouse: true
+        ar_retirement_or_disability_benefits_exemption_person: 0
+        is_blind: true
+        is_deaf: true
+      person2:
+        age: 67
+        is_tax_unit_head_or_spouse: true
+        ar_retirement_or_disability_benefits_exemption_person: 0
+        is_blind: true
+        is_deaf: true
+      person3:
+        age: 67
+        is_tax_unit_head_or_spouse: false
+        ar_retirement_or_disability_benefits_exemption_person: 0
+        is_blind: true
+        is_deaf: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AR
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        filing_status: WIDOW
+  output:
+    ar_personal_credits_base: 319
+
+- name: Joint filers are ineligible for the filing status
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 66
+        is_tax_unit_head_or_spouse: true
+        ar_retirement_or_disability_benefits_exemption_person: 0
+        is_blind: true
+        is_deaf: true
+      person2:
+        age: 67
+        is_tax_unit_head_or_spouse: true
+        ar_retirement_or_disability_benefits_exemption_person: 0
+        is_blind: true
+        is_deaf: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+  output:
+    ar_personal_credits_base: 290
+
+- name: Not blind or deaf filers are not receiving the blind or deaf amounts
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 66
+        is_tax_unit_head_or_spouse: true
+        ar_retirement_or_disability_benefits_exemption_person: 0
+        is_blind: false
+        is_deaf: false
+      person2:
+        age: 67
+        is_tax_unit_head_or_spouse: true
+        ar_retirement_or_disability_benefits_exemption_person: 0
+        is_blind: false
+        is_deaf: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: WIDOW
+  output:
+    ar_personal_credits_base: 203

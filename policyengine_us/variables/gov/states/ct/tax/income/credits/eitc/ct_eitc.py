@@ -14,6 +14,6 @@ class ct_eitc(Variable):
     defined_for = StateCode.CT
 
     def formula(tax_unit, period, parameters):
-        eitc = tax_unit("earned_income_tax_credit", period)
+        federal_eitc = tax_unit("eitc", period)
         rate = parameters(period).gov.states.ct.tax.income.credits.eitc.match
-        return eitc * rate
+        return federal_eitc * rate

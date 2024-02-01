@@ -9,9 +9,13 @@ class household_refundable_tax_credits(Variable):
     unit = USD
     adds = [
         "income_tax_refundable_credits",  # Federal.
+        "al_refundable_credits",  # Alabama.
+        "az_refundable_credits",  # Arizona.
         "ca_refundable_credits",  # California.
         "co_refundable_credits",  # Colorado.
         "dc_refundable_credits",  # District of Columbia.
+        "de_refundable_credits",  # Delaware.
+        "ga_refundable_credits",  # Georgia.
         "ia_refundable_credits",  # Iowa.
         "il_refundable_credits",  # Illinois.
         "in_refundable_credits",  # Indiana.
@@ -28,6 +32,7 @@ class household_refundable_tax_credits(Variable):
         "nj_refundable_credits",  # New Jersey.
         "nm_refundable_credits",  # New Mexico.
         "ny_refundable_credits",  # New York.
+        "ok_refundable_credits",  # Oklahoma.
         "or_refundable_credits",  # Oregon.
         # Skip PA, which has no refundable credits.
         "wa_refundable_credits",  # Washington.

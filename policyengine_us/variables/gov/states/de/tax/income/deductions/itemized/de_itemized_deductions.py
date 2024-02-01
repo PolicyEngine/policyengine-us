@@ -8,13 +8,25 @@ class de_itemized_deductions(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://revenuefiles.delaware.gov/2022/PIT-RES_TY22_2022-02_Instructions.pdf#page=7"
-        "https://revenuefiles.delaware.gov/2022/PIT-RES_TY22_2022-02_Instructions.pdf#page=11"
-        "https://casetext.com/statute/delaware-code/title-30-state-taxes/part-ii-income-inheritance-and-estate-taxes/chapter-11-personal-income-tax/subchapter-ii-resident-individuals/section-1109-itemized-deductions-for-application-of-this-section-see-66-del-laws-c-86-section-8"
+        "https://revenuefiles.delaware.gov/2022/TY22_PIT-RSA_2022-02_PaperInteractive.pdf",  # § 1109
+        "https://delcode.delaware.gov/title30/c011/sc02/index.html",
     )
     defined_for = StateCode.DE
 
-    adds = ["itemized_deductions_less_salt"]
-    # Per Law: Self employed filers can deduct the health insurance premiums
-    # less the amount allowed as a deduction on the federal return
-    # We omit this because it is not on the tax form.
+    def formula(tax_unit, period, parameters):
+        p = parameters(period).gov.irs.deductions
+        filing_status = tax_unit("filing_status", period)
+        deductions = [
+            deduction
+            for deduction in p.itemized_deductions
+            if deduction not in ["salt_deduction"]
+        ]
+        federal_deductions = add(tax_unit, period, deductions)
+
+        real_estate_tax = add(tax_unit, period, ["real_estate_taxes"])
+
+        capped_real_estate_tax = min_(
+            real_estate_tax, p.itemized.salt_and_real_estate.cap[filing_status]
+        )
+
+        return federal_deductions + capped_real_estate_tax

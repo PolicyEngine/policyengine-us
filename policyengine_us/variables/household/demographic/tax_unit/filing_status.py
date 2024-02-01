@@ -39,7 +39,3 @@ class filing_status(Variable):
                 FilingStatus.SINGLE,
             ],
         )
-
-
-# For Tax-Calculator.
-mars = variable_alias("mars", filing_status)

@@ -1,0 +1,45 @@
+- name: two person are eligible
+  period: 2022
+  input:
+    people:
+      person1:
+        id_grocery_credit_eligible: true
+      person2:
+        id_grocery_credit_eligible: true
+    households: 
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    id_grocery_credit_base: [100,100]
+
+- name: one person is eligible, one not
+  period: 2022
+  input:
+    people:
+      person1:
+        id_grocery_credit_eligible: true
+      person2:
+        id_grocery_credit_eligible: false
+    households: 
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    id_grocery_credit_base: [100,0]
+
+- name: two person are not eligible 
+  period: 2022
+  input:
+    people:
+      person1:
+        id_grocery_credit_eligible: false
+      person2:
+        id_grocery_credit_eligible: false
+    households: 
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    id_grocery_credit_base: [0,0]
+

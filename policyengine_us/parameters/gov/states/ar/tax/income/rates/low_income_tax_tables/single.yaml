@@ -1,0 +1,186 @@
+description: Arkansas reduces the tax liability of low-income single filers to the following amount, in lieu of a standard or itemized deduction.
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: currency-USD
+  label: Arkanasas low income tax table single amount
+  reference:
+    - title: Arkansas Code § 26-51-301, Individuals exempt from taxation or qualifying for the low-income tax credit
+      href: https://law.justia.com/codes/arkansas/2020/title-26/subtitle-5/chapter-51/subchapter-3/section-26-51-301/
+    - title: Arkansas Income Tax Instructions, 2022, Low Income Tax Tables
+      href: https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2022_AR1000F_and_AR1000NR_Instructions.pdf#page=29
+    - title: Arkansas Income Tax Instructions, 2021, Low Income Tax Tables
+      href: https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2021_AR1000F_and_AR1000NR_Instructions.pdf#page=26
+brackets:
+  - threshold:
+      2021-01-01: 0
+    amount:
+      2021-01-01: 0
+  - threshold:
+      2021-01-01: 13_054
+      2022-01-01: 13_446
+    amount:
+      2021-01-01: 27
+      2022-01-01: 26
+  - threshold:
+      2021-01-01: 13_100
+      2022-01-01: 13_500
+    amount:
+      2021-01-01: 34
+      2022-01-01: 33
+  - threshold:
+      2021-01-01: 13_200
+      2022-01-01: 13_600
+    amount:
+      2021-01-01: 41
+      2022-01-01: 40
+  - threshold:
+      2021-01-01: 13_300
+      2022-01-01: 13_700
+    amount:
+      2021-01-01: 48
+      2022-01-01: 47
+  - threshold:
+      2021-01-01: 13_400
+      2022-01-01: 13_800
+    amount:
+      2021-01-01: 55
+      2022-01-01: 54
+  - threshold:
+      2021-01-01: 13_500
+      2022-01-01: 13_900
+    amount:
+      2021-01-01: 62
+      2022-01-01: 61
+  - threshold:
+      2021-01-01: 13_600
+      2022-01-01: 14_000
+    amount:
+      2021-01-01: 69
+      2022-01-01: 68
+  - threshold:
+      2021-01-01: 13_700
+      2022-01-01: 14_100
+    amount:
+      2021-01-01: 76
+      2022-01-01: 75
+  - threshold:
+      2021-01-01: 13_800
+      2022-01-01: 14_200
+    amount:
+      2021-01-01: 83
+      2022-01-01: 82
+  - threshold:
+      2021-01-01: 13_900
+      2022-01-01: 14_300
+    amount:
+      2021-01-01: 90
+      2022-01-01: 89
+  - threshold:
+      2021-01-01: 14_000
+      2022-01-01: 14_400
+    amount:
+      2021-01-01: 97
+      2022-01-01: 96
+  - threshold:
+      2021-01-01: 14_100
+      2022-01-01: 14_500
+    amount:
+      2021-01-01: 104
+      2022-01-01: 103
+  - threshold:
+      2021-01-01: 14_200
+      2022-01-01: 14_600
+    amount:
+      2021-01-01: 111
+      2022-01-01: 110
+  - threshold:
+      2021-01-01: 14_300
+      2022-01-01: 14_700
+    amount:
+      2021-01-01: 118
+      2022-01-01: 117
+  - threshold:
+      2021-01-01: 14_400
+      2022-01-01: 14_800
+    amount:
+      2021-01-01: 125
+      2022-01-01: 124
+  - threshold:
+      2021-01-01: 14_500
+      2022-01-01: 14_900
+    amount:
+      2021-01-01: 132
+      2022-01-01: 131
+  - threshold:
+      2021-01-01: 14_600
+      2022-01-01: 15_000
+    amount:
+      2021-01-01: 139
+      2022-01-01: 138
+  - threshold:
+      2021-01-01: 14_700
+      2022-01-01: 15_100
+    amount:
+      2021-01-01: 146
+      2022-01-01: 145
+  - threshold:
+      2021-01-01: 14_800
+      2022-01-01: 15_200
+    amount:
+      2021-01-01: 153
+      2022-01-01: 152
+  - threshold:
+      2021-01-01: 14_900
+      2022-01-01: 15_300
+    amount:
+      2021-01-01: 160
+      2022-01-01: 159
+  - threshold:
+      2021-01-01: 15_000
+      2022-01-01: 15_400
+    amount:
+      2021-01-01: 167
+      2022-01-01: 166
+  - threshold:
+      2021-01-01: 15_100
+      2022-01-01: 15_500
+    amount:
+      2021-01-01: 174
+      2022-01-01: 173
+  - threshold:
+      2021-01-01: 15_200
+      2022-01-01: 15_600
+    amount:
+      2021-01-01: 181
+      2022-01-01: 180
+  - threshold:
+      2021-01-01: 15_300
+      2022-01-01: 15_700
+    amount:
+      2021-01-01: 188
+      2022-01-01: 187
+  - threshold:
+      2021-01-01: 15_400
+      2022-01-01: 15_800
+    amount:
+      2021-01-01: 195
+      2022-01-01: 194
+  - threshold:
+      2021-01-01: 15_500
+      2022-01-01: 15_900
+    amount:
+      2021-01-01: 202
+      2022-01-01: 201
+  - threshold:
+      2021-01-01: 15_600
+      2022-01-01: 16_000
+    amount:
+      2021-01-01: 209
+      2022-01-01: .inf
+  - threshold:
+      2021-01-01: 15_700
+      2022-01-01: .inf
+    amount:
+      2021-01-01: .inf
+      2022-01-01: .inf

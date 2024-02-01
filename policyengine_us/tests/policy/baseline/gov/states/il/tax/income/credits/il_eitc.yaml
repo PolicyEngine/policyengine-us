@@ -1,0 +1,8 @@
+- name: Illinois has a 18% EITC match
+  period: 2021
+  absolute_error_margin: 0.0001
+  input:
+    eitc: 1_000
+    state_code: IL
+  output:
+    il_eitc: 1_000 * 0.18

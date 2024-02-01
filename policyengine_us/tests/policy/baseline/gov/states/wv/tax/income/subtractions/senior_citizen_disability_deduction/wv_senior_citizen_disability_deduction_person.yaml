@@ -1,0 +1,36 @@
+- name: Not eligible person.
+  period: 2022
+  input:
+    wv_senior_citizen_disability_deduction_eligible_person: false
+    wv_senior_citizen_disability_deduction_total_modifications: 1_000
+    adjusted_gross_income_person: 20_000
+  output:
+    wv_senior_citizen_disability_deduction_person: 0
+    # min(adjusted_gross_income_person,8000) - wv_total_modification
+
+- name: Capped AGI is reduced by the modifications amount.
+  period: 2022
+  input:
+    wv_senior_citizen_disability_deduction_eligible_person: true
+    wv_senior_citizen_disability_deduction_total_modifications: 3_000
+    adjusted_gross_income_person: 20_000
+  output:
+    wv_senior_citizen_disability_deduction_person: 5_000
+
+- name: Uncapped AGI is reduced by the modifications amount.
+  period: 2022
+  input:
+    wv_senior_citizen_disability_deduction_eligible_person: true
+    wv_senior_citizen_disability_deduction_total_modifications: 3_000
+    adjusted_gross_income_person: 5_000
+  output:
+    wv_senior_citizen_disability_deduction_person: 2_000
+
+- name: Capped AGI is reduced by the modifications.
+  period: 2022
+  input:
+    wv_senior_citizen_disability_deduction_eligible_person: true
+    wv_senior_citizen_disability_deduction_total_modifications: 9_000
+    adjusted_gross_income_person: 20_000
+  output:
+    wv_senior_citizen_disability_deduction_person: 0

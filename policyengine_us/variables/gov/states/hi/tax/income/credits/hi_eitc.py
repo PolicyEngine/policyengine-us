@@ -11,6 +11,6 @@ class hi_eitc(Variable):
     reference = "https://www.capitol.hawaii.gov/hrscurrent/Vol04_Ch0201-0257/HRS0235/HRS_0235-0055_0075.htm"
 
     def formula(tax_unit, period, parameters):
-        federal_eitc = tax_unit("earned_income_tax_credit", period)
+        federal_eitc = tax_unit("eitc", period)
         rate = parameters(period).gov.states.hi.tax.income.credits.eitc.match
         return rate * federal_eitc

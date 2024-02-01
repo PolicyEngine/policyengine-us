@@ -1,7 +1,7 @@
 - name: $0 federal EITC
   period: 2021
   input:
-    earned_income_tax_credit: 0
+    eitc: 0
     state_code: VT
   output: 
     vt_eitc: 0
@@ -9,7 +9,7 @@
 - name: $1000 federal EITC
   period: 2022
   input:
-    earned_income_tax_credit: 1_000
+    eitc: 1_000
     state_code: VT
   output: 
     vt_eitc: 380
@@ -17,7 +17,7 @@
 - name: $2000 federal EITC
   period: 2021
   input:
-    earned_income_tax_credit: 2_000
+    eitc: 2_000
     state_code: VT
   output: 
     vt_eitc: 720

@@ -1,0 +1,21 @@
+- name: 5 people in tax unit and have adjusted gross income of $30,000.
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    oh_agi: 30_000
+    state_code: OH
+    oh_personal_exemptions: 6_000
+    exemptions_count: 5
+  output: 
+    oh_exemption_credit: 100
+
+- name: 3 people in tax unit and have adjusted gross income of $80,000.
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    exemptions_count: 3
+    oh_agi: 80_000
+    state_code: OH
+    oh_personal_exemptions: 6_000
+  output: 
+    oh_exemption_credit: 0

@@ -77,6 +77,3 @@ class refundable_ctc(Variable):
         )
 
         return min_(maximum_refundable_ctc, amount_ctc_would_increase)
-
-
-c11070 = variable_alias("c11070", refundable_ctc)

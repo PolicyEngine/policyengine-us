@@ -1,0 +1,105 @@
+- name: Two younger filers with head capped pension income and spouse uncapped military retirement pay
+  period: 2022
+  input:
+    people:
+      person1:
+        # 2_000
+        age: 59
+        military_retirement_pay: 1_000
+        taxable_pension_income: 10_000
+        is_tax_unit_head: true
+        de_pension_exclusion_income: 10_000
+      person2:
+        age: 59
+        military_retirement_pay: 3_000
+        taxable_pension_income: 10_000
+        is_tax_unit_spouse: true
+        de_pension_exclusion_income: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    de_pension_exclusion: 5_000 # 2000 + 3000
+
+- name: Two younger filers with head capped pension income and spouse capped military retirement pay
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 59
+        military_retirement_pay: 1_000
+        taxable_pension_income: 10_000
+        de_pension_exclusion_income: 0
+        is_tax_unit_head: true
+      person2:
+        age: 59
+        military_retirement_pay: 15_000
+        taxable_pension_income: 10_000
+        is_tax_unit_spouse: true
+        de_pension_exclusion_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    de_pension_exclusion: 14_500 
+
+- name: In 2021 the military pay is not taken into account
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 59
+        military_retirement_pay: 1_000
+        taxable_pension_income: 0
+        is_tax_unit_head: true
+        de_pension_exclusion_income: 10_000
+      person2:
+        age: 60
+        military_retirement_pay: 3_000
+        taxable_pension_income: 1_000
+        is_tax_unit_spouse: true
+        de_pension_exclusion_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    de_pension_exclusion: 10_000
+
+
+- name: Over 60 amount capped at 12_500 per filer
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 60
+        military_retirement_pay: 1_000
+        taxable_pension_income: 0
+        is_tax_unit_head: true
+        de_pension_exclusion_income: 20_000
+      person2:
+        age: 60
+        military_retirement_pay: 3_000
+        taxable_pension_income: 10_000
+        is_tax_unit_spouse: true
+        de_pension_exclusion_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    de_pension_exclusion: 22_500

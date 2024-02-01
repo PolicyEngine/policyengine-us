@@ -1,0 +1,111 @@
+- name: Separate ineligible
+  period: 2022
+  input:
+    rent: 1_000
+    real_estate_taxes: 0
+    filing_status: SEPARATE
+    me_property_tax_fairness_credit_eligible: true
+    ctc_qualifying_children: 5
+    utilities_included_in_rent: false
+    utility_expense: 0
+    me_sales_and_property_tax_fairness_credit_income: 0
+    age_head: 64
+    age_spouse: 65
+  output:
+    me_property_tax_fairness_credit: 0
+
+- name: Single filer with no income and rent without utilities
+  period: 2022
+  input:
+    rent: 1_000
+    real_estate_taxes: 0
+    filing_status: SINGLE
+    me_property_tax_fairness_credit_eligible: true
+    ctc_qualifying_children: 5
+    utilities_included_in_rent: false
+    utility_expense: 0
+    me_sales_and_property_tax_fairness_credit_income: 0
+    age_head: 64
+    age_spouse: 65
+  output:
+    me_property_tax_fairness_credit: 150
+
+- name: Single filer with no income and rent without utilities, capped at higher amount
+  period: 2022
+  input:
+    rent: 100_000
+    real_estate_taxes: 0
+    filing_status: SINGLE
+    me_property_tax_fairness_credit_eligible: true
+    ctc_qualifying_children: 5
+    utilities_included_in_rent: false
+    utility_expense: 0
+    me_sales_and_property_tax_fairness_credit_income: 0
+    age_head: 64
+    age_spouse: 65
+  output:
+    me_property_tax_fairness_credit: 1_500
+
+- name: Joint filer with no income and rent without utilities, capped at lower amount
+  period: 2022
+  input:
+    rent: 100_000
+    real_estate_taxes: 0
+    filing_status: SINGLE
+    me_property_tax_fairness_credit_eligible: true
+    ctc_qualifying_children: 5
+    utilities_included_in_rent: false
+    utility_expense: 0
+    me_sales_and_property_tax_fairness_credit_income: 0
+    age_head: 64
+    age_spouse: 64
+  output:
+    me_property_tax_fairness_credit: 1_000
+
+- name: Single filer with no income and rent with utilities
+  period: 2022
+  input:
+    rent: 2_000
+    real_estate_taxes: 0
+    filing_status: SINGLE
+    me_property_tax_fairness_credit_eligible: true
+    ctc_qualifying_children: 5
+    utilities_included_in_rent: true
+    utility_expense: 100
+    me_sales_and_property_tax_fairness_credit_income: 0
+    age_head: 64
+    age_spouse: 65
+  output:
+    me_property_tax_fairness_credit: 285
+
+- name: Single filer with no income and rent without utilities, reduced by income
+  period: 2022
+  input:
+    rent: 2_000
+    real_estate_taxes: 0
+    filing_status: SINGLE
+    me_property_tax_fairness_credit_eligible: true
+    ctc_qualifying_children: 5
+    utilities_included_in_rent: true
+    utility_expense: 100
+    me_sales_and_property_tax_fairness_credit_income: 1_000
+    age_head: 64
+    age_spouse: 65
+  output:
+    me_property_tax_fairness_credit: 245
+
+- name: Widow filer with no income and rent without utilities, reduced by income, no dependents
+  period: 2022
+  input:
+    rent: 100_000
+    real_estate_taxes: 0
+    filing_status: WIDOW
+    me_property_tax_fairness_credit_eligible: true
+    ctc_qualifying_children: 0
+    utilities_included_in_rent: true
+    utility_expense: 100
+    me_sales_and_property_tax_fairness_credit_income: 1_000
+    age_head: 64
+    age_spouse: 65
+  output:
+    me_property_tax_fairness_credit: 1_500

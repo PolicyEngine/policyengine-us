@@ -13,7 +13,7 @@ class in_eitc(Variable):
     def formula(tax_unit, period, parameters):
         ip = parameters(period).gov.states["in"].tax.income.credits
         if not ip.earned_income.decoupled:
-            federal_eitc = tax_unit("earned_income_tax_credit", period)
+            federal_eitc = tax_unit("eitc", period)
             return federal_eitc * ip.earned_income.match_rate
         # if Indiana EITC is decoupled from federal EITC
         fp = parameters(period).gov.irs.credits
@@ -37,7 +37,7 @@ class in_eitc(Variable):
             po_start = where(kids == 0, po_start0, po_start)
             po_rate = where(kids == 0, po_rate0, po_rate)
         # ... calculate eitc phase-in amount
-        earnings = max_(0, tax_unit("filer_earned", period))
+        earnings = tax_unit("filer_adjusted_earnings", period)
         phase_in_amount = min_(earnings * pi_rate, maximum)
         # ... calculate eitc reduction
         federal_agi = tax_unit("adjusted_gross_income", period)

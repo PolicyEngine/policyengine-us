@@ -13,7 +13,7 @@ class in_eitc_eligible(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states["in"].tax.income
         # check federal eitc receipt
-        gets_federal_eitc = tax_unit("earned_income_tax_credit", period) > 0
+        gets_federal_eitc = tax_unit("eitc", period) > 0
         if not p.credits.earned_income.decoupled:
             return gets_federal_eitc
         # if Indiana EITC is decoupled from federal EITC
