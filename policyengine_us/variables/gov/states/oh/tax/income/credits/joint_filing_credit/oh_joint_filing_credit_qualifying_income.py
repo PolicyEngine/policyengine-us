@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class oh_agi(Variable):
+class oh_joint_filing_credit_qualifying_income(Variable):
     value_type = float
-    entity = TaxUnit
-    label = "Ohio adjusted gross income"
+    entity = Person
+    label = "Ohio qualifying income for the joint filing credit"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -14,3 +14,5 @@ class oh_agi(Variable):
     defined_for = StateCode.OH
 
     adds = ["oh_agi_person"]
+
+    subtracts = ["oh_joint_filing_credit_agi_subtractions"]
