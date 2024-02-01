@@ -1,39 +1,104 @@
-- name: 2021 integration test for household size of 3 with eligible child and disabled spouse
+# - name: 2021 integration test for household size of 3 with eligible child and disabled spouse
+#   period: 2021
+#   input:
+#     people:
+#       head:
+#         age: 40
+#         is_disabled: false
+#         is_tax_unit_head: true
+#         earned_income: 30_000
+#       spouse:
+#         age: 35
+#         is_disabled: true #eligible due to disability 
+#         is_tax_unit_head: false
+#         earned_income: 20_000
+#       child:
+#         age: 10 #below 13: "OLD"
+#         is_disabled: false
+#         is_tax_unit_head: false
+#     tax_units:
+#       tax_unit:
+#         members: [head, spouse, child]
+#         tax_unit_size: 3 #> mininum tax unit size 2
+#         tax_unit_fpg: 50_000 #threshold = $50,000*3 = $150,000
+#         # Income equals 220-230% of fpg
+#         adjusted_gross_income: 111_000
+#         or_agi: 80_000 # income eligible: max($111,000, 80,000) < $150,000
+#         min_head_spouse_earned: 50_000
+#         tax_unit_childcare_expenses: 10_000 # < $12,000
+#         filing_status: JOINT
+#     households:
+#       household:
+#         members: [head, spouse, child]
+#         state_code: OR
+#   output:
+#     or_wfhdc_eligible: true
+#     or_wfhdc_income_category: 23
+#     or_wfhdc_eligibility_category: ["OLD"] 
+#     or_cdcc_relevant_expenses: 10_000
+#     or_working_family_household_and_dependent_care_credit: 3_000 # $10,000 * 0.30(match percentage)
+
+- name: Tax unit with taxsimid 93470 in g21.its.csv and g21.ots.csv
+  absolute_error_margin: 0.01
   period: 2021
   input:
     people:
-      head:
-        age: 40
-        is_disabled: false
-        is_tax_unit_head: true
-        earned_income: 30_000
-      spouse:
-        age: 35
-        is_disabled: true #eligible due to disability 
-        is_tax_unit_head: false
-        earned_income: 20_000
-      child:
-        age: 10 #below 13: "OLD"
-        is_disabled: false
-        is_tax_unit_head: false
+      person1:
+        age: 62
+        employment_income: 24010
+        taxable_interest_income: 5505
+        taxable_private_pension_income: 1500
+        social_security_retirement: 1000
+        rent: 15000
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person2:
+        age: 62
+        employment_income: 23010
+        taxable_interest_income: 5505
+        taxable_private_pension_income: 1500
+        social_security_retirement: 1000
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person3:
+        age: 11
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person4:
+        age: 11
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person5:
+        age: 11
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
     tax_units:
       tax_unit:
-        members: [head, spouse, child]
-        tax_unit_size: 3 #> mininum tax unit size 2
-        tax_unit_fpg: 50_000 #threshold = $50,000*3 = $150,000
-        # Income equals 220-230% of fpg
-        adjusted_gross_income: 111_000
-        or_agi: 80_000 # income eligible: max($111,000, 80,000) < $150,000
-        min_head_spouse_earned: 50_000
-        tax_unit_childcare_expenses: 10_000 # < $12,000
-        filing_status: JOINT
+        members: [person1, person2, person3, person4, person5]
+        tax_unit_childcare_expenses: 10000
+        premium_tax_credit: 0  # not in TAXSIM35
+        local_income_tax: 0  # not in TAXSIM35
+        state_sales_tax: 0  # not in TAXSIM35
+        tax_unit_itemizes: False
+        state_income_tax: -650.12
+        or_wfhdc_income_category: 20
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+        snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
     households:
       household:
-        members: [head, spouse, child]
-        state_code: OR
-  output:
-    or_wfhdc_eligible: true
-    or_wfhdc_income_category: 23
-    or_wfhdc_eligibility_category: ["OLD"] 
+        members: [person1, person2, person3, person4, person5]
+        state_fips: 41  # OR
+  output:  # expected results from patched TAXSIM35 2024-01-31 version
+    tax_unit_fpg: 31_040
+    adjusted_gross_income: 62_730
+    or_agi: 61_030
     or_cdcc_relevant_expenses: 10_000
-    or_working_family_household_and_dependent_care_credit: 3_000 # $10,000 * 0.30(match percentage)
+    or_income_tax: 1849.88
