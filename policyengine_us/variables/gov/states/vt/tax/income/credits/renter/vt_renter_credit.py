@@ -37,7 +37,9 @@ class vt_renter_credit(Variable):
             family_size
         ][county]
         match_base_credit_amount = (
-            p.fair_market_rent[family_size][county] * p.rate.rent
+            p.fair_market_rent[family_size][county]
+            * MONTHS_IN_YEAR
+            * p.rate.rent
         )
 
         # Compute percent reabte claimable amount
