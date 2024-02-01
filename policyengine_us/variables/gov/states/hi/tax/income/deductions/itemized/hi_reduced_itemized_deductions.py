@@ -16,7 +16,9 @@ class hi_reduced_itemized_deductions(Variable):
     # If the state AGI of the filer exceeds a certain amount, only partial itemized deductions
     # can be deducted.
     def formula(tax_unit, period, parameters):
+        # Line 1
         total_deductions = tax_unit("hi_total_itemized_deductions", period)
+        # Line 3
         partial_deductions = add(
             tax_unit,
             period,
@@ -31,7 +33,8 @@ class hi_reduced_itemized_deductions(Variable):
         partial_deductions_less_than_total = (
             partial_deductions < total_deductions
         )
-        total_less_partial_ded_amount = total_deductions - partial_deductions
+        # Line 4
+        total_less_partial_ded_amount = max_(total_deductions - partial_deductions, 0)
         # Take a percentage of the difference between the total and partial deductions
         # Hawaii applies federal limits which have been revoked in 2018
         p_2017 = parameters(

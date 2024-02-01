@@ -1,0 +1,42 @@
+- name: Tax unit with taxsimid 50310 in k21.its.csv and k21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 48
+        employment_income: 131_010
+        qualified_dividend_income: 6_010
+        taxable_interest_income: 11_010
+        short_term_capital_gains: 3_010
+        long_term_capital_gains: 2_010
+        rental_income: 8_010
+        real_estate_taxes: 24000
+        mortgage_interest: 1_000
+        self_employment_income: 139_010
+        business_is_qualified: true
+        business_is_sstb: false
+        w2_wages_from_qualified_business: 100e6
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+    tax_units:
+      tax_unit:
+        members: [person1]
+        premium_tax_credit: 0  # not in TAXSIM35
+        local_income_tax: 0  # not in TAXSIM35
+        state_sales_tax: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1]
+        state_fips: 15  # HI
+  output:  # expected results from patched TAXSIM35 2024-01-31 version
+    hi_agi: 297_477.56
+    hi_total_itemized_deductions: 25_000
+    hi_itemized_deductions: 21_079.674 # rounded to 21_080 in tax form
+    hi_income_tax: 22_145.18
