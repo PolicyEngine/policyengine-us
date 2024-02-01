@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class oh_has_taken_oh_lump_sum_credits(Variable):
     value_type = bool
     entity = Person
-    label = "Ohio flag for having not taken ohio lump sum credits"
+    label = "Ohio flag for having taken ohio lump sum credits"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -12,4 +12,3 @@ class oh_has_taken_oh_lump_sum_credits(Variable):
         "https://codes.ohio.gov/ohio-revised-code/section-5747.055",
     )
     defined_for = StateCode.OH
-    default_value = False
