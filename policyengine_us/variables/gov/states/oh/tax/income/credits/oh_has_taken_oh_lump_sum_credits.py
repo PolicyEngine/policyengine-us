@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class oh_has_taken_oh_lump_sum_credits(Variable):
     value_type = bool
     entity = Person
-    label = "Ohio flag for having taken ohio lump sum credits"
+    label = "Whether a person has taken Ohio lump sum credits"
     unit = USD
     definition_period = YEAR
     reference = (
