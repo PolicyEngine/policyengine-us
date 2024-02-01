@@ -1,10 +1,9 @@
 from policyengine_us.model_api import *
 
 
-class oh_other_add_backs(Variable):
+class pre_subsidy_rent(Variable):
     value_type = float
     entity = Person
-    label = "Ohio other add backs"
+    label = "Pre subsidy rent"
+    unit = USD
     definition_period = YEAR
-    documentation = ""
-    reference = ""
