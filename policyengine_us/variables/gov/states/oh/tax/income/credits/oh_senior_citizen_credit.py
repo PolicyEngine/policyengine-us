@@ -17,8 +17,8 @@ class oh_senior_citizen_credit(Variable):
         p = parameters(period).gov.states.oh.tax.income.credits.senior_citizen
         person = tax_unit.members
 
-        has_not_taken_lump_sum_distribution = person(
-            "oh_has_not_taken_oh_lump_sum_credits", period
+        has_not_taken_lump_sum_distribution = ~person(
+            "oh_has_taken_oh_lump_sum_credits", period
         )
 
         age = person("age", period)
