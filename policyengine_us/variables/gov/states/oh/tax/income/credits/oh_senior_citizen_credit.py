@@ -26,5 +26,4 @@ class oh_senior_citizen_credit(Variable):
         eligible = has_not_taken_lump_sum_distribution & elderly
         count_eligible = tax_unit.sum(eligible)
         credit_amount_per_person = p.agi_limit.calc(tax_unit("oh_agi", period))
-
         return count_eligible * credit_amount_per_person
