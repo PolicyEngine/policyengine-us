@@ -13,6 +13,7 @@ class state_income_tax_before_refundable_credits(Variable):
         "co_income_tax_before_refundable_credits",
         "dc_income_tax_before_refundable_credits",
         "de_income_tax_before_refundable_credits",
+        "ga_income_tax_before_refundable_credits",
         "ia_income_tax_before_refundable_credits",
         "il_total_tax",
         "in_income_tax_before_refundable_credits",
