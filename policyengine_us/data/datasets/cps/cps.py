@@ -368,83 +368,47 @@ def add_previous_year_income(self, cps: h5py.File) -> None:
         cps_current_year_data.person.PERIDNUM
     )
 
-    PREDICTORS = [
-        "WSAL_VAL",
-        "SEMP_VAL",
-        "A_AGE",
-        "A_SEX",
-        "DIV_VAL",
-        "INT_VAL",
-        "SS_VAL",
-        "ANN_VAL",
-        "PNSN_VAL",
-        "UC_VAL",
-        "CAP_VAL",
-        "CSP_VAL",
-        "CHSP_VAL",
-        "PAW_VAL",
-        "SSI_VAL",
-        "WICYN",
-        "PHIP_VAL",
-        "MOOP",
+    previous_year_data = cps_previous_year[
+        ["WSAL_VAL", "SEMP_VAL", "I_ERNVAL", "I_SEVAL"]
+    ].rename(
+        {
+            "WSAL_VAL": "employment_income_last_year",
+            "SEMP_VAL": "self_employment_income_last_year",
+        },
+        axis=1,
+    )
+
+    previous_year_data = previous_year_data[
+        (previous_year_data.I_ERNVAL == 0) & (previous_year_data.I_SEVAL == 0)
     ]
 
-    in_sample = cps_previous_year_data.person.PERIDNUM[
-        cps_previous_year_data.person.PERIDNUM.isin(
-            cps_current_year_data.person.PERIDNUM
-        )
+    previous_year_data.drop(["I_ERNVAL", "I_SEVAL"], axis=1, inplace=True)
+
+    joined_data = cps_current_year.join(previous_year_data)[
+        [
+            "employment_income_last_year",
+            "self_employment_income_last_year",
+            "I_ERNVAL",
+            "I_SEVAL",
+        ]
     ]
-    cps_prev_long_subset = cps_previous_year.loc[in_sample]
-    cps_cur_long_subset = cps_current_year.set_index(
-        cps_current_year.PERIDNUM
-    ).loc[in_sample]
-
-    data_prev = cps_prev_long_subset[PREDICTORS].rename(
-        columns={x: x + "_prev" for x in PREDICTORS}
+    joined_data["previous_year_income_available"] = (
+        ~joined_data.employment_income_last_year.isna()
+        & ~joined_data.self_employment_income_last_year.isna()
+        & (joined_data.I_ERNVAL == 0)
+        & (joined_data.I_SEVAL == 0)
     )
-    data_cur = cps_cur_long_subset[PREDICTORS].rename(
-        columns={x: x + "_cur" for x in PREDICTORS}
-    )
-    data = pd.concat([data_prev, data_cur], axis=1)
+    joined_data = joined_data.fillna(-1).drop(["I_ERNVAL", "I_SEVAL"], axis=1)
 
-    X = data[[column + "_cur" for column in PREDICTORS]]
-    y = data[["WSAL_VAL_prev", "SEMP_VAL_prev"]]
-
-    income_last_year = Imputation()
-    income_last_year.train(X, y)
-
-    df = pd.DataFrame()
-    df["person_id"] = cps_current_year.index
-    cps_cur_record_in_sample = cps_current_year.index.isin(
-        cps_previous_year.index
-    )
-    df["in_sample"] = cps_cur_record_in_sample
-    df["employment_income_prev"] = np.ones(len(df)) * np.nan
-    df["employment_income_prev"][cps_cur_record_in_sample] = (
-        cps_previous_year.loc[
-            cps_current_year.index[cps_cur_record_in_sample]
-        ].WSAL_VAL.values
-    )
-    df["self_employment_income_prev"] = np.ones(len(df)) * np.nan
-    df["self_employment_income_prev"][cps_cur_record_in_sample] = (
-        cps_previous_year.loc[
-            cps_current_year.index[cps_cur_record_in_sample]
-        ].SEMP_VAL.values
-    )
-
-    X = cps_current_year[PREDICTORS][~cps_cur_record_in_sample]
-    X = X.rename(columns={x: x + "_cur" for x in PREDICTORS})
-    Y_pred = income_last_year.predict(X)
-    df["employment_income_prev"][
-        ~cps_cur_record_in_sample
-    ] = Y_pred.WSAL_VAL_prev.values
-    df["self_employment_income_prev"][
-        ~cps_cur_record_in_sample
-    ] = Y_pred.SEMP_VAL_prev.values
-
-    cps["employment_income_last_year"] = df["employment_income_prev"].values
-    cps["self_employment_income_last_year"] = df[
-        "self_employment_income_prev"
+    # CPS already ordered by PERIDNUM, so the join wouldn't change the order.
+    cps["employment_income_last_year"] = joined_data[
+        "employment_income_last_year"
+    ].values
+    cps["self_employment_income_last_year"] = joined_data[
+        "self_employment_income_last_year"
+    ].values
+    cps["previous_year_income_available"] = joined_data[
+        "previous_year_income_available"
     ].values
 
 
