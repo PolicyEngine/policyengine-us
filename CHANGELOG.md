@@ -5,6 +5,43 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.637.2] - 2024-02-01 03:21:37
+
+### Fixed
+
+- Ohio joint filing credit.
+- Ohio person level adjusted gross income.
+
+## [0.637.1] - 2024-01-31 01:48:14
+
+### Fixed
+
+- Rhode Island retirement income subtraction calculation.
+
+## [0.637.0] - 2024-01-31 00:26:07
+
+### Added
+
+- Hawaii renter credit calculation.
+
+## [0.636.2] - 2024-01-30 20:13:53
+
+### Fixed
+
+- Oregon working family household and dependent care credit calculation.
+
+## [0.636.1] - 2024-01-30 04:21:54
+
+### Fixed
+
+- Rhode Island property tax credit maximum amount and eligibility criteria.
+
+## [0.636.0] - 2024-01-29 23:18:35
+
+### Added
+
+- California CalWORKs vehicle value limit.
+
 ## [0.635.1] - 2024-01-29 18:47:44
 
 ### Fixed
@@ -7044,6 +7081,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.637.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.637.1...0.637.2
+[0.637.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.637.0...0.637.1
+[0.637.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.636.2...0.637.0
+[0.636.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.636.1...0.636.2
+[0.636.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.636.0...0.636.1
+[0.636.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.635.1...0.636.0
 [0.635.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.635.0...0.635.1
 [0.635.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.634.4...0.635.0
 [0.634.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.634.3...0.634.4
