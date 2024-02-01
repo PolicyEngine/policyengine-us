@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.637.3] - 2024-02-01 18:04:08
+
+### Fixed
+
+- Pre subsidy rent variable.
+
 ## [0.637.2] - 2024-02-01 03:21:37
 
 ### Fixed
@@ -7081,6 +7087,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.637.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.637.2...0.637.3
 [0.637.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.637.1...0.637.2
 [0.637.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.637.0...0.637.1
 [0.637.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.636.2...0.637.0
