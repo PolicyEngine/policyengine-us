@@ -12,7 +12,7 @@ class ca_foster_youth_tax_credit_eligible(Variable):
     def formula(person, period, parameters):
         p = parameters(period).gov.states.ca.tax.income.credits.foster_youth
 
-        eitc_eligibility = person("ca_eitc_eligible_person", period)
+        eitc_eligibile = person("ca_eitc_eligible_person", period)
 
         in_foster_care = person(
             "ca_was_in_qualifying_foster_care_facility", period
