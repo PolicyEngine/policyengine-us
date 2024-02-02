@@ -1,0 +1,15 @@
+- name: Uncapped before 2023
+  period: 2022
+  input:
+    cdcc_relevant_expenses: 13_000
+    state_code: ID
+  output:
+    id_household_and_dependent_care_expense_deduction: 13_000
+
+- name: Capped after 2023
+  period: 2023
+  input:
+    cdcc_relevant_expenses: 13_000
+    state_code: ID
+  output:
+    id_household_and_dependent_care_expense_deduction: 12_000
