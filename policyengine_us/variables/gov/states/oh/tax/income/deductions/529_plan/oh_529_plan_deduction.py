@@ -17,4 +17,8 @@ class oh_529_plan_deduction(Variable):
             period
         ).gov.states.oh.tax.income.deductions.plan_529_contributions
         contribution_amount = tax_unit("investment_in_529_plan", period)
-        return min_(contribution_amount, p.cap)
+        beneficiaries = add(
+            tax_unit, period, ["count_529_contribution_beneficiaries"]
+        )
+        cap = p.cap * beneficiaries
+        return min_(contribution_amount, cap)
