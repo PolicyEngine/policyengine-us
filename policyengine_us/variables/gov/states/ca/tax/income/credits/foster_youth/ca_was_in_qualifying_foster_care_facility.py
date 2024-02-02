@@ -8,4 +8,3 @@ class ca_was_in_qualifying_foster_care_facility(Variable):
     definition_period = YEAR
     reference = "https://www.ftb.ca.gov/forms/2022/2022-3514.pdf#page=4"
     defined_for = StateCode.CA
-

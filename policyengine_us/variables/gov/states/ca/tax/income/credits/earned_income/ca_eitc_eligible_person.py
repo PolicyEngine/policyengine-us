@@ -14,11 +14,14 @@ class ca_eitc_eligible_person(Variable):
         tax_unit = person.tax_unit
         age = person("age", period)
         is_dependent = person("is_tax_unit_dependent", period)
-        
+
         eitc_investment_income = tax_unit(
             "eitc_relevant_investment_income", period
         )
-        age_eligible = (age >= p.eligibility.age.min) & (age <= p.eligibility.age.max)
-        investment_income_eligible = eitc_investment_income <= p.eligibility.max_investment_income
+        age_eligible = (age >= p.eligibility.age.min) & (
+            age <= p.eligibility.age.max
+        )
+        investment_income_eligible = (
+            eitc_investment_income <= p.eligibility.max_investment_income
+        )
         return age_eligible & ~is_dependent & investment_income_eligible
-        
