@@ -6,7 +6,7 @@ class de_can_file_separate_on_same_return(Variable):
     entity = TaxUnit
     label = "Whether married couples in Delaware can file separately on the same return"
     definition_period = YEAR
-    defined_for = StateCode.AR
+    defined_for = StateCode.DE
     default_value = False
 
     def formula(tax_unit, period, parameters):

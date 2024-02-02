@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class de_base_standard_deduction_indiv(Variable):
+class de_base_standard_deduction_indv(Variable):
     value_type = float
     entity = Person
     label = "Delaware base standard deduction when married couples are filing separately"

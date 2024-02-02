@@ -11,6 +11,6 @@ class de_files_separately(Variable):
     defined_for = StateCode.DE
 
     def formula(tax_unit, period, parameters):
-        itax_indiv = add(tax_unit, period, ["de_taxable_income_indiv"])
+        itax_indiv = add(tax_unit, period, ["de_taxable_income_indv"])
         itax_joint = add(tax_unit, period, ["de_taxable_income_joint"])
         return itax_indiv < itax_joint

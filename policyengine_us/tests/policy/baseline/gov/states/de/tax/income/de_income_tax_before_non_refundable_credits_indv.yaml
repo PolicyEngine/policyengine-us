@@ -1,0 +1,15 @@
+- name: No income
+  period: 2022
+  input:
+    de_taxable_income_indv: 0
+    de_can_file_separate_on_same_return: true
+  output:
+    de_income_tax_before_non_refundable_credits_indv: 0
+
+- name: $4_000 income #((4_000 - 2_000) * 0.022)
+  period: 2022
+  input:
+    de_taxable_income_indv: 4_000
+    de_can_file_separate_on_same_return: true
+  output:
+    de_income_tax_before_non_refundable_credits_indv: 44

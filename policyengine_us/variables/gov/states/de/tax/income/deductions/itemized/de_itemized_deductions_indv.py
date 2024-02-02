@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class de_itemized_deductions_indiv(Variable):
+class de_itemized_deductions_indv(Variable):
     value_type = float
     entity = Person
     label = "Delaware itemized deductions when married couples are filing separately"
@@ -14,10 +14,8 @@ class de_itemized_deductions_indiv(Variable):
     defined_for = "de_can_file_separate_on_same_return"
 
     def formula(person, period, parameters):
-        p = parameters(period).gov.irs.deductions
-        filing_status = person.tax_unit("filing_status", period)
         unit_deds = person.tax_unit("de_itemized_deductions_unit", period)
-        person_agi = person("ar_agi", period)
+        person_agi = person("de_agi", period)
         total_agi = person.tax_unit.sum(person_agi)
 
         prorate = np.zeros_like(total_agi)

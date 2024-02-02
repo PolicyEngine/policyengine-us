@@ -1,0 +1,15 @@
+- name: No income
+  period: 2022
+  input:
+    de_taxable_income_joint: 0
+    state_code: DE
+  output:
+    de_income_tax_before_non_refundable_credits_joint: 0
+
+- name: $4_000 income #((4_000 - 2_000) * 0.022)
+  period: 2022
+  input:
+    de_taxable_income_joint: 4_000
+    state_code: DE
+  output:
+    de_income_tax_before_non_refundable_credits_joint: 44

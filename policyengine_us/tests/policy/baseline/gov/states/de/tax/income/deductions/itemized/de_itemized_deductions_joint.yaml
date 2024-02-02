@@ -1,0 +1,18 @@
+- name: Head gets the itemized deductions amount
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+      person2:
+        is_tax_unit_head: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        de_itemized_deductions_unit: 1_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    de_itemized_deductions_joint: [1_000, 0]

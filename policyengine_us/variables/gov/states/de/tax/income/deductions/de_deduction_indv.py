@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class de_deduction_indiv(Variable):
+class de_deduction_indv(Variable):
     value_type = float
     entity = Person
     label = "Delaware deduction when married couples are filing separately"
