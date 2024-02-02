@@ -29,19 +29,15 @@ class co_ccap_parent_fee(Variable):
         # The numbers below are weights copied from government spreadsheet
         # (url: https://docs.google.com/spreadsheets/d/1EEc3z8Iwu_KRTlBtd2NssDDEx_FITqVq/edit#gid=468321263,
         #       https://docs.google.com/spreadsheets/d/1HtPiC2qxclzWfBa7LRo2Uohrg-RCBkyZ/edit#gid=582762342)
-        multiplication_factors = (
-            p.base_parent_fee.first_and_second_multiplication_factor
-        )
-        third_multiplication_factor = (
-            p.add_on_parent_fee.third_multiplication_factor
-        )
+        multiplication_factors = p.parent_fee.base
+        third_multiplication_factor = p.parent_fee.add_on
         # Calculate base parent fee scaled (note income is monthly):
         # When income_scaled <= 1: income_scaled * 0.01
         # When income_scaled > 1: [1 * 0.01 + (income_scaled - 1) * 0.14]
         # Multiply by fpg afterward to scale back up
-        gross_income_scaled = gross_income / fpg
+        gross_income_fpg_ratio = gross_income / fpg
         base_parent_fee_scaled = multiplication_factors.calc(
-            gross_income_scaled
+            gross_income_fpg_ratio
         )
         base_parent_fee = np.round(base_parent_fee_scaled * fpg, 2)
         # Calculate add-on parent fee based on the number of eligible
