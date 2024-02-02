@@ -14,8 +14,4 @@ class oh_unreimbursed_medical_care_expense_deduction(Variable):
     )
     defined_for = StateCode.OH
 
-    adds = [
-        "oh_insured_unreimbursed_medical_care_expenses",
-        "oh_uninsured_unreimbursed_medical_care_expenses",
-        "long_term_care_insurance_premiums",
-    ]
+    adds = ["oh_unreimbursed_medical_care_expense_deduction_person"]
