@@ -3,7 +3,7 @@
   input:
     state_code: OH
     age: 65
-    oh_has_not_taken_oh_lump_sum_credits: True
+    oh_has_taken_oh_lump_sum_credits: False
     oh_agi: 99_999
   output:
     oh_senior_citizen_credit: 50
@@ -13,7 +13,7 @@
   input:
     state_code: OH
     age: 64
-    oh_has_not_taken_oh_lump_sum_credits: True
+    oh_has_taken_oh_lump_sum_credits: False
     oh_agi: 90_000
   output:
     oh_senior_citizen_credit: 0
@@ -23,7 +23,7 @@
   input:
     state_code: OH
     age: 66
-    oh_has_not_taken_oh_lump_sum_credits: False
+    oh_has_taken_oh_lump_sum_credits: True
     oh_agi: 90_000
   output:
     oh_senior_citizen_credit: 0
@@ -33,7 +33,7 @@
   input:
     state_code: OH
     age: 66
-    oh_has_not_taken_oh_lump_sum_credits: True
+    oh_has_taken_oh_lump_sum_credits: False
     oh_agi: 100_000
   output:
     oh_senior_citizen_credit: 0
