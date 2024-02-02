@@ -25,7 +25,7 @@ class or_ctc(Variable):
         # Get maximum credit amount.
         max_credit = p.amount * capped_count_eligible
         # Get Oregon adjusted gross income.
-        or_agi = tax_unit("or_income_after_subtractions", period)
+        or_agi = tax_unit("or_agi", period)
         # Reduce credit amount over the phaseout range.
         excess_agi = max_(or_agi - p.reduction.start, 0)
         percent_reduction = min_(excess_agi / p.reduction.width, 1)

@@ -1,0 +1,41 @@
+- name: Tax unit files separately
+  period: 2022
+  input:
+    people:
+      person1:
+        ar_income_tax_before_non_refundable_credits_indiv: 0
+        ar_income_tax_before_non_refundable_credits_joint: 100
+      person2:
+        ar_income_tax_before_non_refundable_credits_indiv: 100
+        ar_income_tax_before_non_refundable_credits_joint: 500
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ar_files_separately: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR 
+  output:
+    ar_income_tax_before_non_refundable_credits_unit: 100
+
+- name: Tax unit files jointly
+  period: 2022
+  input:
+    people:
+      person1:
+        ar_income_tax_before_non_refundable_credits_indiv: 0
+        ar_income_tax_before_non_refundable_credits_joint: 100
+      person2:
+        ar_income_tax_before_non_refundable_credits_indiv: 100
+        ar_income_tax_before_non_refundable_credits_joint: 500
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ar_files_separately: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR 
+  output:
+    ar_income_tax_before_non_refundable_credits_unit: 600

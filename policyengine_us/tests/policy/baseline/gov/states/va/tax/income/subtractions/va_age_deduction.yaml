@@ -207,9 +207,9 @@
   period: 2022
   input:
     state_code: VA
-    va_age_deduction_agi: 80_000
     filing_status: SEPARATE
     age_head: 90
+    va_age_deduction_agi: 80_000
     age_spouse: 80
   output:
     va_age_deduction: 9_500
