@@ -10,8 +10,13 @@ class ms_income_tax(Variable):
     defined_for = StateCode.MS
 
     def formula(tax_unit, period, parameters):
-        before_non_refundable_credits = tax_unit(
-            "ms_income_tax_before_credits", period
+        ia_files_separately = tax_unit("ms_files_separately", period)
+        itax_indiv = add(
+            tax_unit, period["ms_income_tax_before_credits_indiv"]
         )
+        itax_joint = add(
+            tax_unit, period["ms_income_tax_before_credits_joint"]
+        )
+        tax_before_credits = where(ia_files_separately, itax_indiv, itax_joint)
         non_refundable_credits = tax_unit("ms_non_refundable_credits", period)
-        return max_(before_non_refundable_credits - non_refundable_credits, 0)
+        return max_(tax_before_credits - non_refundable_credits, 0)

@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class ms_taxable_income(Variable):
+class ms_taxable_income_indiv(Variable):
     value_type = float
-    entity = TaxUnit
-    label = "Mississippi taxable income"
+    entity = Person
+    label = "Mississippi taxable income when married couple file separately"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -13,8 +13,8 @@ class ms_taxable_income(Variable):
     )
     defined_for = StateCode.MS
 
-    def formula(tax_unit, period, parameters):
-        agi = tax_unit("ms_agi", period)
-        deductions = tax_unit("ms_deductions", period)
-        exemptions = tax_unit("ms_total_exemptions", period)
+    def formula(person, period, parameters):
+        agi = person("ms_agi", period)
+        deductions = person("ms_deductions_indiv", period)
+        exemptions = person("ms_total_exemptions_indiv", period)
         return max_(agi - deductions - exemptions, 0)
