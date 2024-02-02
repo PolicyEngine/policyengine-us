@@ -16,7 +16,7 @@ class mi_homestead_property_tax_credit(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(
             period
-        ).gov.states.mi.tax.income.credits.homestead_property_tax
+        ).gov.states.mi.tax.income.credits.homestead_property_tax.reduction
         # Line 42
         total_household_resources = tax_unit("mi_household_resources", period)
         homestead_allowable_credit = tax_unit(
@@ -24,6 +24,11 @@ class mi_homestead_property_tax_credit(Variable):
         )
         # Line 43
         # The reduction is specified as going from 100% to 0% rather than vice-versa.
-        phase_out_rate = p.reduction.calc(total_household_resources)
+        start = p.start
+        increment = p.increment
+        rate_per_increment = p.rate
+        excess = max_(total_household_resources - start, 0)
+        increments = np.ceil(excess / increment)
+        phase_out_rate = max_(1 - increments * rate_per_increment, 0)
         # Line 44
         return phase_out_rate * homestead_allowable_credit

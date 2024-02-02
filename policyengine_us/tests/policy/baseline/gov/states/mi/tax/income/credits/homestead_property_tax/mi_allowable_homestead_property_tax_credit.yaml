@@ -1,7 +1,7 @@
 - name: not eligible
   period: 2022
   input:
-    mi_homestead_property_tax_credit_non_refundable: 1_000
+    mi_homestead_property_tax_credit_household_resource_exemption: 1_000
     mi_homestead_property_tax_credit_eligible: false
   output:
     mi_allowable_homestead_property_tax_credit: 0
@@ -9,7 +9,7 @@
 - name: not senior, not disabled
   period: 2022
   input:
-    mi_homestead_property_tax_credit_non_refundable: 2_000
+    mi_homestead_property_tax_credit_household_resource_exemption: 2_000
     mi_homestead_property_tax_credit_eligible: true
   output: # 2000 * 0.6
     mi_allowable_homestead_property_tax_credit: 1_200
@@ -18,7 +18,7 @@
   period: 2022
   input:
     mi_household_resources: 31_251
-    mi_homestead_property_tax_credit_non_refundable: 1_000
+    mi_homestead_property_tax_credit_household_resource_exemption: 1_000
     greater_age_head_spouse: 66
     mi_homestead_property_tax_credit_eligible: false
   output: 
@@ -28,7 +28,7 @@
   period: 2022
   input:
     mi_household_resources: 20_000
-    mi_homestead_property_tax_credit_non_refundable: 860
+    mi_homestead_property_tax_credit_household_resource_exemption: 860
     greater_age_head_spouse: 66
     mi_homestead_property_tax_credit_eligible: true
   output: 
@@ -38,7 +38,7 @@
   period: 2022
   input:
     mi_household_resources: 25_000
-    mi_homestead_property_tax_credit_non_refundable: 1_300
+    mi_homestead_property_tax_credit_household_resource_exemption: 1_300
     greater_age_head_spouse: 66
     mi_homestead_property_tax_credit_eligible: true
   output: # 1300 * 0.84
@@ -53,7 +53,7 @@
         is_tax_unit_head_or_spouse: true
     tax_units:
       tax_unit:
-        mi_homestead_property_tax_credit_non_refundable: 1_300
+        mi_homestead_property_tax_credit_household_resource_exemption: 1_300
         mi_homestead_property_tax_credit_eligible: true
         members: [person1]
     household:
@@ -70,7 +70,7 @@
         is_tax_unit_head_or_spouse: true
     tax_units:
       tax_unit:
-        mi_homestead_property_tax_credit_non_refundable: 1_300
+        mi_homestead_property_tax_credit_household_resource_exemption: 1_300
         greater_age_head_spouse: 66
         mi_homestead_property_tax_credit_eligible: true
         members: [person1]
@@ -82,7 +82,7 @@
 - name: larger than max
   period: 2022
   input:
-    mi_homestead_property_tax_credit_non_refundable: 2_800
+    mi_homestead_property_tax_credit_household_resource_exemption: 2_800
     mi_homestead_property_tax_credit_eligible: true
   output: # 2800 * 0.6 > 1600
     mi_allowable_homestead_property_tax_credit: 1_600

@@ -20,8 +20,9 @@ class mi_allowable_homestead_property_tax_credit(Variable):
         p2 = parameters(period).gov.states.mi.tax.income
 
         total_household_resources = tax_unit("mi_household_resources", period)
-        excess_amount = tax_unit(
-            "mi_homestead_property_tax_credit_non_refundable", period
+        exemption_amount = tax_unit(
+            "mi_homestead_property_tax_credit_household_resource_exemption",
+            period,
         )
 
         # seniors
@@ -33,7 +34,7 @@ class mi_allowable_homestead_property_tax_credit(Variable):
         # The reduction is specified as going from 100% to 0% rather than vice-versa.
         phase_out_rate = p.rate.senior.calc(total_household_resources)
         # Line 38
-        uncapped_senior_amount = phase_out_rate * excess_amount
+        uncapped_senior_amount = phase_out_rate * exemption_amount
         senior_amount = min_(uncapped_senior_amount, p.cap)
 
         # disabled or (disabled & seniors)
@@ -50,14 +51,14 @@ class mi_allowable_homestead_property_tax_credit(Variable):
         )
         # Line 39
         head_and_spouse_disabled_amount = min_(
-            excess_amount,
+            exemption_amount,
             p.cap,
         )
 
         # others
         # SECTION C: ALL OTHER CLAIMANTS (if you did not check box 5a or 5b)
         # Line 41
-        uncapped_credit_amount = p.rate.non_senior_disabled * excess_amount
+        uncapped_credit_amount = p.rate.non_senior_disabled * exemption_amount
         other_amount = min_(
             uncapped_credit_amount,
             p.cap,
