@@ -19,6 +19,7 @@
         is_disabled: false
     tax_units:
       tax_unit:
+        or_wfhdc_eligible: true
         members: [person1, person2]
     households:
       household:
@@ -39,6 +40,7 @@
         is_disabled: true
     tax_units:
       tax_unit:
+        or_wfhdc_eligible: true
         members: [person1, person2]
     households:
       household:
@@ -59,6 +61,7 @@
         is_disabled: true
     tax_units:
       tax_unit:
+        or_wfhdc_eligible: true
         members: [person1, person2]
     households:
       household:
@@ -76,6 +79,7 @@
         is_disabled: false
     tax_units:
       tax_unit:
+        or_wfhdc_eligible: false
         members: [person1]
     households:
       household:
