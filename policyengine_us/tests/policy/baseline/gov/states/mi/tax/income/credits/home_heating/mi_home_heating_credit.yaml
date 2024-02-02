@@ -15,7 +15,7 @@
     mi_alternate_home_heating_credit: 200
     mi_home_heating_credit_eligible_rate: 1
     state_code: MI
-  output:
+  output: # 200 * 0.9
     mi_home_heating_credit: 180
 
 - name: Alternate over standard in 2021
@@ -25,7 +25,7 @@
     mi_alternate_home_heating_credit: 200
     mi_home_heating_credit_eligible_rate: 1
     state_code: MI
-  output:
+  output: # 200 * 1
     mi_home_heating_credit: 200
 
 - name: Standard over alternate
@@ -35,7 +35,7 @@
     mi_alternate_home_heating_credit: 100
     mi_home_heating_credit_eligible_rate: 1
     state_code: MI
-  output:
+  output: # 210 * 0.9
     mi_home_heating_credit: 189
 
 - name: Standard over alternate with 20% rate
@@ -45,5 +45,5 @@
     mi_alternate_home_heating_credit: 100
     mi_home_heating_credit_eligible_rate: 0.2
     state_code: MI
-  output:
+  output: # 210 * 0.9 * 0.2
     mi_home_heating_credit: 37.8

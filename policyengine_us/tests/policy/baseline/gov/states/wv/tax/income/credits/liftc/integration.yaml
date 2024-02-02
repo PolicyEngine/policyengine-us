@@ -33,6 +33,7 @@
         members: [person1, person2]
         state_fips: 54  # WV
   output:  # expected results from patched TAXSIM35 2023-10-05 version
+    alternative_minimum_tax: 0
     wv_income_tax_before_non_refundable_credits: 20_001.95
     wv_low_income_family_tax_credit: 0  # PEUS 0.507.1 produces 2_000.20
     wv_income_tax: 20_001.95  # PEUS 0.507.1 produces 18_001.75

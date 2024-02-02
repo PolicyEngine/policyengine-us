@@ -12,7 +12,7 @@
     or_wfhdc_eligible: true
     tax_unit_fpg: 18_333
     adjusted_gross_income: 1_831
-    or_income_after_subtractions: 1_831
+    or_agi: 1_831
   output:
     or_wfhdc_income_category: 1
 
@@ -23,7 +23,7 @@
     or_wfhdc_eligible: true
     tax_unit_size: 2
     adjusted_gross_income: 3_662
-    or_income_after_subtractions: 3_662
+    or_agi: 3_662
   output:
     or_wfhdc_income_category: 2
 
@@ -34,20 +34,19 @@
     or_wfhdc_eligible: true
     tax_unit_size: 3
     adjusted_gross_income: 2_303
-    or_income_after_subtractions: 2_303
+    or_agi: 2_303
   output:
     or_wfhdc_income_category: 1
 
-- name: Over 300% of fpg
+- name: Over 300% of fpg - ineligible (integration test)
   period: 2022
   input:
     state_code: OR
-    or_wfhdc_eligible: true
     tax_unit_fpg: 1_000
     adjusted_gross_income: 100_000
-    or_income_after_subtractions: 100_000
+    or_agi: 100_000
   output:
-    or_wfhdc_income_category: 30
+    or_wfhdc_income_category: 0
 
 - name: Income equals 130 - 140% of fpg
   period: 2022
@@ -56,7 +55,7 @@
     or_wfhdc_eligible: true
     tax_unit_fpg: 1_000
     adjusted_gross_income: 1_379
-    or_income_after_subtractions: 1_000
+    or_agi: 1_000
   output:
     or_wfhdc_income_category: 14
 
@@ -67,7 +66,7 @@
     or_wfhdc_eligible: true
     tax_unit_fpg: 1_000
     adjusted_gross_income: 1_379
-    or_income_after_subtractions: 2_300
+    or_agi: 2_300
   output:
     or_wfhdc_income_category: 23
 
@@ -78,6 +77,7 @@
     or_wfhdc_eligible: true
     tax_unit_fpg: 1_000
     adjusted_gross_income: 1_379
-    or_income_after_subtractions: 2_301
+    or_agi: 2_301
   output:
     or_wfhdc_income_category: 24
+

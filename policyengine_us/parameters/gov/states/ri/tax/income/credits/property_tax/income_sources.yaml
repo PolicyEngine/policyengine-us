@@ -1,23 +1,17 @@
 description: Rhode Island counts these income sources when calculating its property tax credit.
 values:
   2021-01-01:
-    - employment_income # Line 14
-    - self_employment_income # Line 14
-    - dividend_income # Line 15
-    - interest_income # Line 15
-    - salt_refund_income # Line 16
-    - alimony_income # Line 17
-    - qualified_business_income # Line 18
-    - capital_gains # Line 19
-    - ira_contributions # Line 20
-    - pension_income # Line 20
-    - rental_income # Line 21
-    - farm_income # Line 22
-    - unemployment_compensation # Line 23
-    - social_security # Line 24
-    - tanf # Line 29
-    - workers_compensation # Line 30
-    - child_support_expense # Line 30
+    - adjusted_gross_income
+    - tax_exempt_pension_income
+    - tax_exempt_interest_income
+    - tax_exempt_social_security
+    - tax_exempt_unemployment_compensation
+    - capital_gains_excluded_from_taxable_income
+    - alimony_income
+    - tanf
+    - child_support_received
+    - workers_compensation
+
 
 metadata:
   unit: list
