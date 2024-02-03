@@ -2,7 +2,7 @@
   period: 2022
   input:
     tax_unit_childcare_expenses: 13_000
-    capped_count_cdcc_eligible: 2
+    cdcc_limit: 6_000
     min_head_spouse_earned: 4_000
     state_code: ID
   output:
@@ -12,7 +12,7 @@
   period: 2023
   input:
     tax_unit_childcare_expenses: 13_000
-    capped_count_cdcc_eligible: 2
+    cdcc_limit: 6_000
     min_head_spouse_earned: 14_000    
     state_code: ID
   output:

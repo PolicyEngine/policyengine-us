@@ -12,18 +12,11 @@ class id_household_and_dependent_care_expense_deduction(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(
             period
-        ).gov.states.id.tax.income.deductions.dependent_care_expenses.cap
+        ).gov.states.id.tax.income.deductions.dependent_care_expenses
         expenses = tax_unit("tax_unit_childcare_expenses", period)
         # In 2023 Idaho implemented an increased cap independent of the number of children
-        if p.applies:
-            expense_cap = p.amount
-        else:
-            capped_count_cdcc_eligible = tax_unit(
-                "capped_count_cdcc_eligible", period
-            )
-            cdcc = parameters(period).gov.irs.credits.cdcc
-            expense_cap = cdcc.max * capped_count_cdcc_eligible
-        eligible_capped_expenses = min_(expenses, expense_cap)
+        limit = max_(tax_unit("cdcc_limit", period), p.cap)
+        eligible_capped_expenses = min_(expenses, limit)
         # cap further to the lowest earnings between the taxpayer and spouse
         return min_(
             eligible_capped_expenses,
