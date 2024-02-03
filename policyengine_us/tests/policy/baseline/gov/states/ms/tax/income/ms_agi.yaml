@@ -22,13 +22,13 @@
         members: [person1, person2, person3]
         state_code: MS
   output:
-    ms_agi: [12_000, 10_000]
+    ms_agi: [12_000, 10_000, 0]
 
 - name: Capped at 0
-  period: 2018
+  period: 2021
   input:
     state_code: MS
     ms_agi_adjustments: 1_000
     employment_income: 500
   output:
-    ms_income_tax_before_credits: 0
+    ms_agi: 0

@@ -13,14 +13,14 @@
     households:
       household:
         members: [person1, person2]
-        state_code: IA
+        state_code: MS
   output:
     ms_prorate_fraction: [0.2, 0.8]
 
 - name: If no net income and single, assign entirely to them as head.
   period: 2021
   input:
-    state_code: IA
+    state_code: MS
   output:
     ms_prorate_fraction: 1
 
@@ -35,6 +35,6 @@
     households:
       household:
         members: [person1, person2]
-        state_code: IA
+        state_code: MS
   output:
     ms_prorate_fraction: [1, 0]

@@ -17,5 +17,5 @@ class ms_standard_deduction_indiv(Variable):
             period,
         )
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        p = parameters(period).gov.states.ia.tax.income
+        p = parameters(period).gov.states.ms.tax.income
         return is_head_or_spouse * p.deductions.standard[filing_status]

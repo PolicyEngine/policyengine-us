@@ -3,7 +3,7 @@ from policyengine_us.model_api import *
 
 class ms_agi(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     label = "Mississippi adjusted gross income"
     unit = USD
     definition_period = YEAR
@@ -17,7 +17,7 @@ class ms_agi(Variable):
         p = parameters(period).gov.states.ms.tax.income
         gross_income = add(person, period, p.income_sources)
         adjustements = person("ms_agi_adjustments", period)
-        net_income = gross_income - adjustements
+        net_income = max_(gross_income - adjustements, 0)
         # allocate any dependent Income to tax unit head
         is_dependent = person("is_tax_unit_dependent", period)
         sum_dep_net_income = person.tax_unit.sum(is_dependent * net_income)

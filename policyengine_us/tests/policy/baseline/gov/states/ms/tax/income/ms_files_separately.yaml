@@ -5,7 +5,7 @@
     ms_income_tax_before_credits_indiv: 1_000
     ms_income_tax_before_credits_joint: 400
   output:
-    ms_income_tax_before_credits: false
+    ms_files_separately: false
 
 - name: Individual income tax below joint
   period: 2023
@@ -14,7 +14,7 @@
     ms_income_tax_before_credits_indiv: 1_000
     ms_income_tax_before_credits_joint: 1_200
   output:
-    ms_income_tax_before_credits: true
+    ms_files_separately: true
 
 - name: Individual income tax equal joint
   period: 2023
@@ -23,4 +23,4 @@
     ms_income_tax_before_credits_indiv: 1_000
     ms_income_tax_before_credits_joint: 1_000
   output:
-    ms_income_tax_before_credits: false
+    ms_files_separately: false
