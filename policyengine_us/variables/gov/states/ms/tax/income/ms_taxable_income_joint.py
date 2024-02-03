@@ -14,7 +14,10 @@ class ms_taxable_income_joint(Variable):
     defined_for = StateCode.MS
 
     def formula(person, period, parameters):
+        # assign total net_income to tax unit head
+        is_head = person("is_tax_unit_head", period)
         agi = person("ms_agi", period)
-        deductions = person("ms_deductions_joint", period)
-        exemptions = person.tax_unit("ms_total_exemptions", period)
-        return max_(agi - deductions - exemptions, 0)
+        head_agi = is_head * person.tax_unit.sum(agi)
+        deductions = add(person.tax_unit, period, ["ms_deductions_joint"])
+        exemptions = add(person.tax_unit, period, ["ms_total_exemptions_joint"])
+        return max_(head_agi - deductions - exemptions, 0)
