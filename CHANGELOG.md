@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.639.0] - 2024-02-03 01:21:48
+
+### Added
+
+- Idaho household and dependent care expense deduction.
+
 ## [0.638.1] - 2024-02-03 01:00:25
 
 ### Fixed
@@ -7117,6 +7123,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.639.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.638.1...0.639.0
 [0.638.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.638.0...0.638.1
 [0.638.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.637.6...0.638.0
 [0.637.6]: https://github.com/PolicyEngine/policyengine-us/compare/0.637.5...0.637.6
