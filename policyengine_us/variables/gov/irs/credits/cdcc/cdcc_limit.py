@@ -7,9 +7,7 @@ class cdcc_limit(Variable):
     label = "CDCC-relevant care expense limit"
     unit = USD
     definition_period = YEAR
-    reference = (
-        "https://www.law.cornell.edu/uscode/text/26/21#c"
-    )
+    reference = "https://www.law.cornell.edu/uscode/text/26/21#c"
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.irs.credits.cdcc
