@@ -8,7 +8,7 @@ class mt_interest_exemption_person(Variable):
     unit = USD
     definition_period = YEAR
     reference = "https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2022/12/Form-2-2022-Instructions.pdf#page=25"
-    defined_for = "mt_interest_exemption_eligible"
+    defined_for = "mt_interest_exemption_eligible_person"
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.mt.tax.income.exemptions.interest

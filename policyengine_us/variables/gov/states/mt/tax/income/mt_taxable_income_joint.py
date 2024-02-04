@@ -22,4 +22,4 @@ class mt_taxable_income_joint(Variable):
         deductions = max_(itemized_deductions, standard_deduction)
         total_deductions = add(person.tax_unit, period, deductions)
         exemptions = add(person.tax_unit, period, "mt_exemptions_joint")
-        return max_(0, head_agi - total_deductions - exemptions)
+        return max_(0, head_agi - total_deductions - exemptions)\
