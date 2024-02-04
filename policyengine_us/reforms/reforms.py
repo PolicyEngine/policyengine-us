@@ -10,6 +10,7 @@ from .congress.romney.family_security_act import (
 from .cbo.payroll import (
     create_increase_taxable_earnings_for_social_security_reform,
 )
+from .congress.wyden_smith import create_ctc_expansion_reform
 from policyengine_core.reforms import Reform
 import warnings
 
@@ -31,6 +32,7 @@ def create_structural_reforms_from_parameters(parameters, period):
             parameters, period
         )
     )
+    ctc_expansion = create_ctc_expansion_reform(parameters, period)
 
     reforms = [
         afa_reform,
@@ -39,6 +41,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         dc_tax_threshold_joint_ratio_reform,
         remove_head_of_household,
         increase_taxable_earnings_for_social_security_reform,
+        ctc_expansion,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
 

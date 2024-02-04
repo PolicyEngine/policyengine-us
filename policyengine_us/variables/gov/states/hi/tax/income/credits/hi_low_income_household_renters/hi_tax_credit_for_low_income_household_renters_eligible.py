@@ -12,7 +12,7 @@ class hi_tax_credit_for_low_income_household_renters_eligible(Variable):
     def formula(tax_unit, period, parameters):
         dependent_elsewhere = tax_unit("head_is_dependent_elsewhere", period)
         p = parameters(period).gov.states.hi.tax.income.credits.lihrtc
-        agi = tax_unit("adjusted_gross_income", period)
+        agi = tax_unit("hi_agi", period)
         rent = add(tax_unit, period, ["rent"])
         return (
             (rent > p.eligibility.rent_threshold)

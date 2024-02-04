@@ -1,7 +1,6 @@
 from policyengine_us.model_api import *
 
 
-# This credit is Non-refundable
 class oh_eitc(Variable):
     value_type = float
     entity = TaxUnit

@@ -1,0 +1,63 @@
+- name: Claims refundable eitc.
+  period: 2021
+  input:
+    va_refundable_eitc: 800
+    va_non_refundable_eitc: 400
+    va_claims_refundable_eitc: true
+    va_agi_share: 0.8
+    state_code: VA
+  output:
+    va_eitc_person: 640
+
+- name: Claims refundable eitc.
+  period: 2021
+  input:
+    people:
+      p1:
+        va_agi_share: 0.8
+      p2:
+        va_agi_share: 0.2
+    tax_units:
+      tax_unit:
+        members: [p1, p2]
+        va_refundable_eitc: 800
+        va_non_refundable_eitc: 400
+        va_claims_refundable_eitc: true
+    households:
+      household:
+        members: [p1, p2]
+        state_code: VA
+  output:
+    va_eitc_person: [640, 160]
+
+- name: Claims non-refundable eitc.
+  period: 2021
+  input:
+    va_refundable_eitc: 50
+    va_non_refundable_eitc: 100
+    va_claims_refundable_eitc: false
+    va_agi_share: 0.8
+    state_code: VA
+  output:
+    va_eitc_person: 80
+
+- name: Claims refundable eitc.
+  period: 2021
+  input:
+    people:
+      p1:
+        va_agi_share: 0.8
+      p2:
+        va_agi_share: 0.2
+    tax_units:
+      tax_unit:
+        members: [p1, p2]
+        va_refundable_eitc: 50
+        va_non_refundable_eitc: 100
+        va_claims_refundable_eitc: false
+    households:
+      household:
+        members: [p1, p2]
+        state_code: VA
+  output:
+    va_eitc_person: [80, 20]

@@ -1,7 +1,10 @@
 import logging
 from policyengine_core.data import Dataset
+from policyengine_us.data.storage import STORAGE_FOLDER
 import h5py
 from policyengine_us.data.datasets.cps.raw_cps import (
+    RawCPS_2018,
+    RawCPS_2019,
     RawCPS_2020,
     RawCPS_2021,
     RawCPS_2022,
@@ -21,6 +24,7 @@ class CPS(Dataset):
     name = "cps"
     label = "CPS"
     raw_cps: Type[RawCPS] = None
+    previous_year_raw_cps: Type[RawCPS] = None
     data_format = Dataset.ARRAYS
 
     def generate(self):
@@ -39,6 +43,7 @@ class CPS(Dataset):
         add_id_variables(cps, person, tax_unit, family, spm_unit, household)
         add_personal_variables(cps, person)
         add_personal_income_variables(cps, person, self.raw_cps.time_period)
+        add_previous_year_income(self, cps)
         add_spm_variables(cps, spm_unit)
         add_household_variables(cps, household)
 
@@ -161,7 +166,7 @@ def add_personal_variables(cps: h5py.File, person: DataFrame) -> None:
     DISABILITY_FLAGS = [
         "PEDIS" + i for i in ["DRS", "EAR", "EYE", "OUT", "PHY", "REM"]
     ]
-    cps["is_ssi_disabled"] = (person[DISABILITY_FLAGS] == 1).any(axis=1)
+    cps["is_disabled"] = (person[DISABILITY_FLAGS] == 1).any(axis=1)
 
     def children_per_parent(col: str) -> pd.DataFrame:
         """Calculate number of children in the household using parental
@@ -250,10 +255,10 @@ def add_personal_income_variables(
     cps["unemployment_compensation"] = person.UC_VAL
     # Add pensions and annuities.
     cps_pensions = person.PNSN_VAL + person.ANN_VAL
-    cps["taxable_pension_income"] = cps_pensions * (
+    cps["taxable_private_pension_income"] = cps_pensions * (
         p["taxable_pension_fraction"][year]
     )
-    cps["tax_exempt_pension_income"] = cps_pensions * (
+    cps["tax_exempt_private_pension_income"] = cps_pensions * (
         1 - p["taxable_pension_fraction"][year]
     )
     # Other income (OI_VAL) is a catch-all for all other income sources.
@@ -302,10 +307,11 @@ def add_spm_variables(cps: h5py.File, spm_unit: DataFrame) -> None:
         free_school_meals_reported="SPM_SCHLUNCH",
         spm_unit_energy_subsidy_reported="SPM_ENGVAL",
         spm_unit_wic_reported="SPM_WICVAL",
+        spm_unit_broadband_subsidy_reported="SPM_BBSUBVAL",
         spm_unit_payroll_tax_reported="SPM_FICA",
         spm_unit_federal_tax_reported="SPM_FEDTAX",
         spm_unit_state_tax_reported="SPM_STTAX",
-        spm_unit_work_childcare_expenses="SPM_CAPWKCCXPNS",
+        spm_unit_capped_work_childcare_expenses="SPM_CAPWKCCXPNS",
         spm_unit_medical_expenses="SPM_MEDXPNS",
         spm_unit_spm_threshold="SPM_POVTHRESHOLD",
         spm_unit_net_income_reported="SPM_RESOURCES",
@@ -313,7 +319,8 @@ def add_spm_variables(cps: h5py.File, spm_unit: DataFrame) -> None:
     )
 
     for openfisca_variable, asec_variable in SPM_RENAMES.items():
-        cps[openfisca_variable] = spm_unit[asec_variable]
+        if asec_variable in spm_unit.columns:
+            cps[openfisca_variable] = spm_unit[asec_variable]
 
     cps["reduced_price_school_meals_reported"] = (
         cps["free_school_meals_reported"][...] * 0
@@ -343,6 +350,77 @@ def add_household_variables(cps: h5py.File, household: DataFrame) -> None:
     cps["in_nyc"] = np.isin(state_county_fips, nyc_full_county_fips)
 
 
+def add_previous_year_income(self, cps: h5py.File) -> None:
+    if self.previous_year_raw_cps is None:
+        print(
+            "No previous year data available for this dataset, skipping previous year income imputation."
+        )
+        return
+
+    from survey_enhance.impute import Imputation
+
+    cps_current_year_data = self.raw_cps().load()
+    cps_previous_year_data = self.previous_year_raw_cps().load()
+    cps_previous_year = cps_previous_year_data.person.set_index(
+        cps_previous_year_data.person.PERIDNUM
+    )
+    cps_current_year = cps_current_year_data.person.set_index(
+        cps_current_year_data.person.PERIDNUM
+    )
+
+    previous_year_data = cps_previous_year[
+        ["WSAL_VAL", "SEMP_VAL", "I_ERNVAL", "I_SEVAL"]
+    ].rename(
+        {
+            "WSAL_VAL": "employment_income_last_year",
+            "SEMP_VAL": "self_employment_income_last_year",
+        },
+        axis=1,
+    )
+
+    previous_year_data = previous_year_data[
+        (previous_year_data.I_ERNVAL == 0) & (previous_year_data.I_SEVAL == 0)
+    ]
+
+    previous_year_data.drop(["I_ERNVAL", "I_SEVAL"], axis=1, inplace=True)
+
+    joined_data = cps_current_year.join(previous_year_data)[
+        [
+            "employment_income_last_year",
+            "self_employment_income_last_year",
+            "I_ERNVAL",
+            "I_SEVAL",
+        ]
+    ]
+    joined_data["previous_year_income_available"] = (
+        ~joined_data.employment_income_last_year.isna()
+        & ~joined_data.self_employment_income_last_year.isna()
+        & (joined_data.I_ERNVAL == 0)
+        & (joined_data.I_SEVAL == 0)
+    )
+    joined_data = joined_data.fillna(-1).drop(["I_ERNVAL", "I_SEVAL"], axis=1)
+
+    # CPS already ordered by PERIDNUM, so the join wouldn't change the order.
+    cps["employment_income_last_year"] = joined_data[
+        "employment_income_last_year"
+    ].values
+    cps["self_employment_income_last_year"] = joined_data[
+        "self_employment_income_last_year"
+    ].values
+    cps["previous_year_income_available"] = joined_data[
+        "previous_year_income_available"
+    ].values
+
+
+class CPS_2019(CPS):
+    name = "cps_2019"
+    label = "CPS 2019"
+    raw_cps = RawCPS_2019
+    previous_year_raw_cps = RawCPS_2018
+    file_path = STORAGE_FOLDER / "cps_2019.h5"
+    time_period = 2019
+
+
 class CPS_2020(CPS):
     name = "cps_2020"
     label = "CPS 2020"
@@ -363,9 +441,9 @@ class CPS_2022(CPS):
     name = "cps_2022"
     label = "CPS 2022"
     raw_cps = RawCPS_2022
+    previous_year_raw_cps = RawCPS_2021
     file_path = STORAGE_FOLDER / "cps_2022.h5"
     time_period = 2022
-    # url = None
 
 
 CPS_2023 = UpratedCPS.from_dataset(
