@@ -15,6 +15,9 @@ class ms_taxable_income_indiv(Variable):
 
     def formula(person, period, parameters):
         agi = person("ms_agi", period)
-        deductions = person("ms_deductions_indiv", period)
-        exemptions = person("ms_total_exemptions_indiv", period)
-        return max_(agi - deductions - exemptions, 0)
+        deductions_and_exemptions = add(
+            person,
+            period,
+            ["ms_deductions_indiv", "ms_total_exemptions_indiv"],
+        )
+        return max_(agi - deductions_and_exemptions, 0)

@@ -16,9 +16,9 @@ class ms_agi(Variable):
     def formula(person, period, parameters):
         p = parameters(period).gov.states.ms.tax.income
         gross_income = add(person, period, p.income_sources)
-        adjustements = person("ms_agi_adjustments", period)
-        net_income = max_(gross_income - adjustements, 0)
-        # allocate any dependent Income to tax unit head
+        adjustments = person("ms_agi_adjustments", period)
+        net_income = max_(gross_income - adjustments, 0)
+        # Allocate income from dependents to tax unit head.
         is_dependent = person("is_tax_unit_dependent", period)
         sum_dep_net_income = person.tax_unit.sum(is_dependent * net_income)
         is_head = person("is_tax_unit_head", period)
