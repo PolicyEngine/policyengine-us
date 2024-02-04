@@ -1,54 +1,29 @@
+- name: Calculation
+  period: 2021
+  input:
+     mt_non_refundable_credits: 1_000
+     mt_income_tax_before_non_refundable_credits_indiv: 1_400
+     state_code: MT
+     is_tax_unit_head_or_spouse: true
+  output:
+    mt_income_tax_before_non_refundable_credits_indiv: 400
+
 - name: No income 
   period: 2021
   input:
-     filing_status: SINGLE
-     mt_taxable_income: 0
+     mt_non_refundable_credits: 1_000
+     mt_income_tax_before_non_refundable_credits_indiv: 500
      state_code: MT
+     is_tax_unit_head_or_spouse: true
   output:
-    mt_income_tax_before_refundable_credits: 0
+    mt_income_tax_before_non_refundable_credits_indiv: 0
 
-- name: Temporary rate calculation #((5_000 -3_100) * 0.02 + 3_100 * 0.01)
+- name: Not head or spouse
   period: 2021
   input:
-     filing_status: SINGLE
-     mt_taxable_income: 5_000
+     mt_non_refundable_credits: 1_000
+     mt_income_tax_before_non_refundable_credits_indiv: 2_000
      state_code: MT
+     is_tax_unit_head_or_spouse: false
   output:
-    mt_income_tax_before_refundable_credits: 69
-
-- name: Widow calculation, top rate
-  period: 2021
-  absolute_error_margin: 0.2
-  input:
-     filing_status: WIDOW
-     mt_taxable_income: 30_000
-     state_code: MT
-  output:
-    mt_income_tax_before_refundable_credits: 1_471
-
-- name: Progressive rate - Joint filing # 5_000 * 0.047
-  period: 2024
-  input:
-     filing_status: JOINT
-     mt_taxable_income: 5_000
-     state_code: MT
-  output:
-    mt_income_tax_before_refundable_credits: 235
-
-- name: Progressive rate - Single filing # ((25_000 - 20_500) * 0.065 + 20_500 * 0.047)
-  period: 2025
-  input:
-     filing_status: SINGLE
-     mt_taxable_income: 25_000
-     state_code: MT
-  output:
-    mt_income_tax_before_refundable_credits: 1_256
-
-- name: Progressive rate - head of household # ((35_000 - 30_750) * 0.065 + 30_750 * 0.047)
-  period: 2025
-  input:
-     filing_status: HEAD_OF_HOUSEHOLD
-     mt_taxable_income: 35_000
-     state_code: MT
-  output:
-    mt_income_tax_before_refundable_credits: 1_721.5
+    mt_income_tax_before_non_refundable_credits_indiv: 0
