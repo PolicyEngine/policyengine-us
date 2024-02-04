@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class ms_deductions(Variable):
+class ms_deductions_joint(Variable):
     value_type = float
-    entity = TaxUnit
-    label = "Mississippi deductions"
+    entity = Person
+    label = "Mississippi deductions when married couples file jointly"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -13,7 +13,7 @@ class ms_deductions(Variable):
     )
     defined_for = StateCode.MS
 
-    def formula(tax_unit, period, parameters):
-        itemized = tax_unit("ms_itemized_deductions", period)
-        standard = tax_unit("ms_standard_deduction", period)
+    def formula(person, period, parameters):
+        itemized = person("ms_itemized_deductions_joint", period)
+        standard = person("ms_standard_deduction_joint", period)
         return max_(itemized, standard)
