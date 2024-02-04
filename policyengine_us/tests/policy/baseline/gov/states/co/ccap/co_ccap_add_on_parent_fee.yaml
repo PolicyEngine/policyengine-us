@@ -1,0 +1,39 @@
+- name: One eligible child for cccap, gross income is less than the family poverty guideline.
+  period: 2023
+  input:
+    co_ccap_eligible_children: 1
+    co_ccap_countable_income: 60_000
+    snap_fpg: 120_000
+  output:
+    co_ccap_add_on_parent_fee: 
+      2023-01: 0
+
+- name: One eligible child for cccap, gross income is more than the family poverty guideline.
+  period: 2023
+  input:
+    co_ccap_eligible_children: 1
+    co_ccap_countable_income: 80_000
+    snap_fpg: 40_000
+  output:
+    co_ccap_add_on_parent_fee: 
+      2023-01: 0
+
+- name: Two eligible children for cccap, gross income is less than the family poverty guideline.
+  period: 2023
+  input:
+    co_ccap_eligible_children: 2
+    co_ccap_countable_income: 60_000
+    snap_fpg: 120_000
+  output:
+    co_ccap_add_on_parent_fee: 
+      2023-01: 0
+
+- name: Two eligible children for cccap, gross income is less than the family poverty guideline.
+  period: 2023
+  input:
+    co_ccap_eligible_children: 2
+    co_ccap_countable_income: 80_000
+    snap_fpg: 40_000
+  output:
+    co_ccap_add_on_parent_fee: 
+      2023-01: 15

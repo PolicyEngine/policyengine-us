@@ -2,6 +2,8 @@
   absolute_error_margin: 0.1
   period: 2023
   input:
+    # co_ccap_base_parent_fee: 287.17498811
+    # co_ccap_add_on_parent_fee: 15
     people:
       parent:
         is_disabled: false
@@ -25,6 +27,8 @@
         co_ccap_eligible: 
           2023-01: true
         co_ccap_countable_income: 46_000
+        co_ccap_base_parent_fee: 287.17498811
+        co_ccap_add_on_parent_fee: 15
     households:
       household: 
         members: [parent, child1, child2]
@@ -68,6 +72,8 @@
         co_ccap_eligible: 
           2023-01: true
         co_ccap_countable_income: 90_000
+        co_ccap_base_parent_fee: 749.37499166
+        co_ccap_add_on_parent_fee: 15
     households:
       household: 
         members: [parent1, parent2, child1, child2]
@@ -111,6 +117,8 @@
         co_ccap_eligible: 
           2023-01: true
         co_ccap_countable_income: 20_000
+        co_ccap_base_parent_fee: 16.66666638
+        co_ccap_add_on_parent_fee: 0
     households:
       household: 
         members: [parent1, parent2, child1, child2]
@@ -148,6 +156,8 @@
         co_ccap_eligible: 
           2023-01: true
         co_ccap_countable_income: 20_000
+        co_ccap_base_parent_fee: 16.66666598
+        co_ccap_add_on_parent_fee: 0
     households:
       household: 
         members: [parent1, parent2, child1]
@@ -191,6 +201,8 @@
         co_ccap_eligible: 
           2022-12: true
         co_ccap_countable_income: 20_000
+        co_ccap_base_parent_fee: 16.66666638
+        co_ccap_add_on_parent_fee: 0
     households:
       household: 
         members: [parent1, parent2, child1, child2]
@@ -230,6 +242,8 @@
         co_ccap_eligible: 
           2022-12: true
         co_ccap_countable_income: 46_000
+        co_ccap_base_parent_fee: 287.17498811
+        co_ccap_add_on_parent_fee: 0
     households:
       household: 
         members: [parent, child1, child2]
