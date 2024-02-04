@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class mi_allowable_homestead_property_tax_credit(Variable):
+class mi_total_homestead_property_tax_credit(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Michigan allowable homestead property tax credit"
+    label = "Michigan total homestead property tax credit before the phase-out"
     unit = USD
     definition_period = YEAR
     reference = (

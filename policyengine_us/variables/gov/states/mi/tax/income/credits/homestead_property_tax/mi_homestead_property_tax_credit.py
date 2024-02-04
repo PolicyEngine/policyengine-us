@@ -20,7 +20,7 @@ class mi_homestead_property_tax_credit(Variable):
         # Line 42
         total_household_resources = tax_unit("mi_household_resources", period)
         homestead_allowable_credit = tax_unit(
-            "mi_allowable_homestead_property_tax_credit", period
+            "mi_total_homestead_property_tax_credit", period
         )
         # Line 43
         # The reduction is specified as going from 100% to 0% rather than vice-versa.
