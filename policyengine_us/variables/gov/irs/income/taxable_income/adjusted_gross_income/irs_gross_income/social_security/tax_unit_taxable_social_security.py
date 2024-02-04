@@ -28,19 +28,21 @@ class tax_unit_taxable_social_security(Variable):
 
         base_amount = ss.threshold.lower[filing_status]
         adjusted_base_amount = ss.threshold.upper[filing_status]
-
+        modified_agi_plus_half_ss = (
+            tax_unit("taxable_ss_magi", period) + ss_fraction
+        )
         under_first_threshold = modified_agi_plus_half_ss < base_amount
         under_second_threshold = (
             modified_agi_plus_half_ss < adjusted_base_amount
         )
 
-        excess_over_base = max_(0, modified_agi_plus_half_ss - base_amount)
+        magi_excess = tax_unit("tax_unit_magi_excess", period)
         excess_over_adjusted_base = max_(
             0, modified_agi_plus_half_ss - adjusted_base_amount
         )
 
         amount_if_under_second_threshold = ss.rate.lower * min_(
-            excess_over_base, gross_ss
+            magi_excess, gross_ss
         )
         amount_if_over_second_threshold = min_(
             ss.rate.upper * excess_over_adjusted_base

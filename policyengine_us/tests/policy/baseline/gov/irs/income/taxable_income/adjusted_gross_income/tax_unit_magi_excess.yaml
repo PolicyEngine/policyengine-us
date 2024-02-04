@@ -1,99 +1,89 @@
 - name: Single filing with sum of modified adjusted gross and adjusted social security greater than base amount
   period: 2022
   input:
-    state_code: CT
     tax_unit_social_security: 20_000
     taxable_ss_magi: 70_000
     filing_status: SINGLE
   output:
-    ct_social_security_benefit_adjustment_magi_excess: 55_000
+    tax_unit_magi_excess: 55_000
 
 - name: Single filing with sum of modified adjusted gross and adjusted social security less than base amount
   period: 2022
   input:
-    state_code: CT
     tax_unit_social_security: 10_000
     taxable_ss_magi: 10_000
     filing_status: SINGLE
   output:
-    ct_social_security_benefit_adjustment_magi_excess: 0
+    tax_unit_magi_excess: 0
 
 - name: Joint filing with sum of modified adjusted gross and adjusted social security greater than base amount
   period: 2022
   input:
-    state_code: CT
     tax_unit_social_security: 20_000
     taxable_ss_magi: 70_000
     filing_status: JOINT
   output:
-    ct_social_security_benefit_adjustment_magi_excess: 48_000
+    tax_unit_magi_excess: 48_000
 
 - name: Joint filing with sum of modified adjusted gross and adjusted social security less than base amount
   period: 2022
   input:
-    state_code: CT
     tax_unit_social_security: 20_000
     taxable_ss_magi: 20_000
     filing_status: JOINT
   output:
-    ct_social_security_benefit_adjustment_magi_excess: 0
+    tax_unit_magi_excess: 0
 
 - name: Head of household filing with sum of modified adjusted gross and adjusted social security greater than base amount
   period: 2022
   input:
-    state_code: CT
     tax_unit_social_security: 20_000
     taxable_ss_magi: 70_000
     filing_status: HEAD_OF_HOUSEHOLD
   output:
-    ct_social_security_benefit_adjustment_magi_excess: 55_000
+    tax_unit_magi_excess: 55_000
 
 - name: Head of household filing with sum of modified adjusted gross and adjusted social security less than base amount
   period: 2022
   input:
-    state_code: CT
     tax_unit_social_security: 10_000
     taxable_ss_magi: 10_000
     filing_status: HEAD_OF_HOUSEHOLD
   output:
-    ct_social_security_benefit_adjustment_magi_excess: 0
+    tax_unit_magi_excess: 0
 
 - name: Separate filing with sum of modified adjusted gross and adjusted social security greater than base amount
   period: 2022
   input:
-    state_code: CT
     tax_unit_social_security: 20_000
     taxable_ss_magi: 70_000
     filing_status: SEPARATE
   output:
-    ct_social_security_benefit_adjustment_magi_excess: 55_000
+    tax_unit_magi_excess: 55_000
 
 - name: Separate filing with sum of modified adjusted gross and adjusted social security less than base amount
   period: 2022
   input:
-    state_code: CT
     tax_unit_social_security: 10_000
     taxable_ss_magi: 10_000
     filing_status: SEPARATE
   output:
-    ct_social_security_benefit_adjustment_magi_excess: 0
+    tax_unit_magi_excess: 0
 
 - name: Widow filing with sum of modified adjusted gross and adjusted social security greater than base amount
   period: 2022
   input:
-    state_code: CT
     tax_unit_social_security: 20_000
     taxable_ss_magi: 70_000
     filing_status: WIDOW
   output:
-    ct_social_security_benefit_adjustment_magi_excess: 55_000
+    tax_unit_magi_excess: 55_000
 
 - name: Widow filing with sum of modified adjusted gross and adjusted social security less than base amount
   period: 2022
   input:
-    state_code: CT
     tax_unit_social_security: 10_000
     taxable_ss_magi: 10_000
     filing_status: WIDOW
   output:
-    ct_social_security_benefit_adjustment_magi_excess: 0
+    tax_unit_magi_excess: 0
