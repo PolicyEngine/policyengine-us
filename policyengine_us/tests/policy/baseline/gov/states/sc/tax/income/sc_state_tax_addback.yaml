@@ -2,6 +2,7 @@
   period: 2021
   input:
     filing_status: SEPARATE
+    tax_unit_itemizes: true
     salt_deduction: 4_000 #3_000+1_000
     charitable_deduction: 1_000
     interest_deduction: 1_000
@@ -21,6 +22,7 @@
   period: 2021
   input:
     filing_status: JOINT
+    tax_unit_itemizes: true
     salt_deduction: 4_000
     charitable_deduction: 1_000
     interest_deduction: 1_000
@@ -40,6 +42,7 @@
   period: 2021
   input:
     filing_status: JOINT
+    tax_unit_itemizes: true
     salt_deduction: 10_000 # min(10000, 6000+8000)
     charitable_deduction: 3_000
     interest_deduction: 1_000
@@ -59,6 +62,7 @@
   period: 2021
   input:
     filing_status: JOINT
+    tax_unit_itemizes: true
     salt_deduction: 4_000
     charitable_deduction: 1_000
     interest_deduction: 1_000
@@ -78,6 +82,7 @@
   period: 2021
   input:
     filing_status: JOINT
+    tax_unit_itemizes: true
     salt_deduction: 4_000
     charitable_deduction: 1_000
     interest_deduction: 1_000
@@ -92,3 +97,20 @@
     # line 3 = max(0, 6000 - 8000) = 0
     # line 4 = 1000
     # line 5 = 10000 - 3000 = 7000
+
+- name: Test case 6 # not eligible for federal itemized deductoins
+  period: 2021
+  input:
+    filing_status: JOINT
+    tax_unit_itemizes: false
+    salt_deduction: 4_000
+    charitable_deduction: 1_000
+    interest_deduction: 1_000
+    medical_expense_deduction: 0
+    casualty_loss_deduction: 0
+    standard_deduction: 2_000
+    real_estate_taxes: 3_000
+    state_and_local_sales_or_income_tax: 1_000
+    state_code: SC
+  output:
+    sc_state_tax_addback: 0
