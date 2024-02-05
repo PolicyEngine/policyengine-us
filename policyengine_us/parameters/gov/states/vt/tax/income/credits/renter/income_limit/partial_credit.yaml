@@ -1,4 +1,4 @@
-description: Vermont limits the partial renter credit to filers with income below this amount.
+description: Vermont limits the partial renter credit to filers with income below this amount, based on the county and household size.
 metadata:
   unit: /1
   period: year
@@ -7,7 +7,7 @@ metadata:
     - county
   label: Vermont partial renter credit income limit  
   reference:
-    # In legal code, these values are called very low-income limit. The table can be found on the official Vermont government website.
+     # The table is derived from the official Vermont government website. The legal code refers to area median income.
     - title: 32 V.S.A. §6066. Homestead Property Tax Credit and Renter Credit (b)(B)
       href: https://law.justia.com/codes/vermont/2022/title-32/chapter-154/section-6066/
     - title: 2023 Vermont Partial Credit Income Limits by County

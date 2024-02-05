@@ -1,13 +1,14 @@
-description: Vermont provides this monthly fair market rent amount.
+description: Vermont sets these fair market rent amounts, based on the county and household size.
 metadata:
   unit: currency-USD  
-  period: year
+  period: month
   breakdown: 
     - list(range(1,9))
     - county
-  label: Vermont monthly fair market rent amount 
+  label: Vermont fair market rent amount 
   reference: 
-    # These values are based on the table found on the official Veromnt government website, multiple by 10/12  
+    # The values are derived from the renter credit computation tables which represent 10% of the 
+    # yearly fair market rent  
     - title: 32 V.S.A. §6066. Homestead Property Tax Credit and Renter Credit (b)(A)
       href: https://law.justia.com/codes/vermont/2022/title-32/chapter-154/section-6066/
     - title: 2023 Vermont Credit Amounts Based on HUD Data Based on Number of Bedrooms

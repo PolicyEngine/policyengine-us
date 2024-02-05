@@ -27,38 +27,38 @@ class vt_renter_credit(Variable):
         county = tax_unit.household("county", period)
         shared_rent = tax_unit("rent_is_shared_with_another_tax_unit", period)
         subsidized_rent = tax_unit("rent_is_subsidized", period)
-        rent_pay = add(tax_unit, period, ["rent"])
+        rent_amount = add(tax_unit, period, ["rent"])
 
         # locate the values by family size and county
-        match_full_credit_income = p.income_limit.full_credit[family_size][
+        full_credit_income_limit = p.income_limit.full_credit[family_size][
             county
         ]
-        match_partial_credit_income = p.income_limit.partial_credit[
+        partial_credit_income_limit = p.income_limit.partial_credit[
             family_size
         ][county]
-        match_base_credit_amount = (
+        base_credit_amount = (
             p.fair_market_rent[family_size][county]
             * MONTHS_IN_YEAR
             * p.rate.rent
         )
 
         # Compute percent reabte claimable amount
-        income_diff = match_partial_credit_income - vt_renter_credit_income
-        partial_full_income_diff = (
-            match_partial_credit_income - match_full_credit_income
+        income_diff = partial_credit_income_limit - vt_renter_credit_income
+        income_threshold_diff = (
+            partial_credit_income_limit - full_credit_income_limit
         )
-        percent_reabte_claimable = income_diff / partial_full_income_diff
+        percent_reabte_claimable = income_diff / income_threshold_diff
         # if share rent, miltiple by share rent rate
         share = p.rate.share_rent**shared_rent
         # if subsidized, get base credit
-        base_credit_subsidized = rent_pay * p.rate.rent
+        base_credit_subsidized = rent_amount * p.rate.rent
 
-        high_income = vt_renter_credit_income > match_partial_credit_income
-        low_income = vt_renter_credit_income < match_full_credit_income
+        high_income = vt_renter_credit_income > partial_credit_income_limit
+        low_income = vt_renter_credit_income < full_credit_income_limit
         mid_income = (
-            match_full_credit_income
+            full_credit_income_limit
             <= vt_renter_credit_income
-            <= match_partial_credit_income
+            <= partial_credit_income_limit
         )
         credit_value = select(
             [
@@ -70,9 +70,9 @@ class vt_renter_credit(Variable):
             ],
             [
                 0,
-                match_base_credit_amount,
+                base_credit_amount,
                 base_credit_subsidized,
-                percent_reabte_claimable * match_base_credit_amount,
+                percent_reabte_claimable * base_credit_amount,
                 percent_reabte_claimable * base_credit_subsidized,
             ],
         )
