@@ -16,9 +16,9 @@ class ct_property_tax_credit_eligible(Variable):
             p = parameters(
                 period
             ).gov.states.ct.tax.income.credits.property_tax
-            dependent_eligible = tax_unit("tax_unit_dependents", period) > 0
+            dependents_present = tax_unit("tax_unit_dependents", period) > 0
             age_eligible = (age_head | age_spouse) >= p.threshold.age
 
-            return dependent_eligible | age_eligible
+            return dependents_present | age_eligible
         else:
             return True

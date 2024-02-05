@@ -23,8 +23,10 @@ class ct_property_tax_credit(Variable):
         )
         reduction_percent = p.reduction.rate * total_increments
         reduction = max_credit * reduction_percent
+        is_rereduction_less = reduction < max_credit
+        result_amount = max_credit - reduction
         return where(
-            reduction <= max_credit,
-            max_credit - reduction,
+            is_rereduction_less,
+            result_amount,
             0,
         )
