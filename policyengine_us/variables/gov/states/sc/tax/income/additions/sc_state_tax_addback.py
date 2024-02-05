@@ -23,7 +23,8 @@ class sc_state_tax_addback(Variable):
         eligible = filing_status != filing_status.possible_values.SEPARATE
         # line 1
         federal_itemized_deduction = (
-            add(tax_unit, period, p_us.itemized_deductions) * us_itemizing
+            tax_unit("itemized_taxable_income_deductions", period)
+            * us_itemizing
         )
         # line 2
         federal_standard_deduction = standard_deduction * eligible
