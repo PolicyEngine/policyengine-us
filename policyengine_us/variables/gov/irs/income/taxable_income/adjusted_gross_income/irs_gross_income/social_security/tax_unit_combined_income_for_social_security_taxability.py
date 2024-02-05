@@ -1,17 +1,21 @@
 from policyengine_us.model_api import *
 
 
-class tax_unit_magi_excess(Variable):
+class tax_unit_combined_income_for_social_security_taxability(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
-    label = "Taxable Social Security modified adjusted gross income excess over base amount"
+    label = "Taxable Social Security combined income"
     documentation = "Social security (OASDI) benefits included in AGI, including tier 1 railroad retirement benefits."
     unit = USD
-    reference = "https://www.law.cornell.edu/uscode/text/26/86"
+    reference = (
+        "https://www.law.cornell.edu/uscode/text/26/86"
+        "https://www.ssa.gov/benefits/retirement/planner/taxes.html"
+    )
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.irs.social_security.taxability
+        gross_ss = tax_unit("tax_unit_social_security", period)
 
         # The legislation directs the usage an income definition that is
         # a particularly modified AGI, plus half of gross Social Security
@@ -19,10 +23,5 @@ class tax_unit_magi_excess(Variable):
         # parameter as the lower taxability marginal rate (also 50% in the
         # baseline), and that they would be mechanically the same parameter.
 
-        combined_income = tax_unit(
-            "tax_unit_combined_income_for_social_security_taxability", period
-        )
-        filing_status = tax_unit("filing_status", period)
-
-        base_amount = p.threshold.lower[filing_status]
-        return max_(0, combined_income - base_amount)
+        ss_fraction = p.rate.lower * gross_ss
+        return tax_unit("taxable_ss_magi", period) + ss_fraction
