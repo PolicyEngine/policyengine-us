@@ -11,7 +11,7 @@ class tax_unit_taxable_social_security(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/26/86"
 
     def formula(tax_unit, period, parameters):
-        ss = parameters(period).gov.irs.social_security.taxability
+        p = parameters(period).gov.irs.social_security.taxability
         gross_ss = tax_unit("tax_unit_social_security", period)
 
         # The legislation directs the usage an income definition that is
@@ -25,8 +25,8 @@ class tax_unit_taxable_social_security(Variable):
         )
         filing_status = tax_unit("filing_status", period)
 
-        base_amount = ss.threshold.lower[filing_status]
-        adjusted_base_amount = ss.threshold.upper[filing_status]
+        base_amount = p.threshold.lower[filing_status]
+        adjusted_base_amount = p.threshold.upper[filing_status]
 
         under_first_threshold = combined_income < base_amount
         under_second_threshold = combined_income < adjusted_base_amount
@@ -36,16 +36,16 @@ class tax_unit_taxable_social_security(Variable):
             0, combined_income - adjusted_base_amount
         )
 
-        amount_if_under_second_threshold = ss.rate.lower * min_(
+        amount_if_under_second_threshold = p.rate.lower * min_(
             magi_excess, gross_ss
         )
         amount_if_over_second_threshold = min_(
-            ss.rate.upper * excess_over_adjusted_base
+            p.rate.upper * excess_over_adjusted_base
             + min_(
                 amount_if_under_second_threshold,
-                ss.rate.lower * (adjusted_base_amount - base_amount),
+                p.rate.lower * (adjusted_base_amount - base_amount),
             ),
-            ss.rate.upper * gross_ss,
+            p.rate.upper * gross_ss,
         )
         return select(
             [
