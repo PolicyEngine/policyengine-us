@@ -17,14 +17,16 @@ class oh_senior_citizen_credit(Variable):
         p = parameters(period).gov.states.oh.tax.income.credits.senior_citizen
         person = tax_unit.members
 
-        has_not_taken_lump_sum_distribution = person(
-            "oh_has_not_taken_oh_lump_sum_credits", period
+        has_not_taken_lump_sum_distribution = ~person(
+            "oh_has_taken_oh_lump_sum_credits", period
         )
 
         age = person("age", period)
         elderly = age >= p.age_threshold
         eligible = has_not_taken_lump_sum_distribution & elderly
         count_eligible = tax_unit.sum(eligible)
-        credit_amount_per_person = p.agi_limit.calc(tax_unit("oh_agi", period))
-
+        agi = tax_unit("oh_agi", period)
+        exemptions = tax_unit("oh_personal_exemptions", period)
+        applicable_income = max_(agi - exemptions, 0)
+        credit_amount_per_person = p.amount.calc(applicable_income)
         return count_eligible * credit_amount_per_person
