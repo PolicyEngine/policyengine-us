@@ -16,7 +16,6 @@ values:
     - regular_ira_distributions # Line 3: IRA distribution reported
     - roth_ira_distributions 
     - pension_income # Line 4: Pensions and annuities
-    - tax_exempt_social_security # Line 6: Social Security Payment not reported
     - mt_refundable_credits_before_renter_credit # Line 7: Refundable credits
 # exclude the renter credit from the gross income computation 
 # due to a potential circular reference
