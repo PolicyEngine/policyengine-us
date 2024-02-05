@@ -9,7 +9,7 @@ class vt_renter_credit_income(Variable):
     definition_period = YEAR
     reference = (
         "https://law.justia.com/codes/vermont/2022/title-32/chapter-154/section-6066/"  # b
-        "https://tax.vermont.gov/sites/tax/files/documents/Income%20Booklet-2022.pdf#page=35"
+        "https://tax.vermont.gov/sites/tax/files/documents/Income%20Booklet-2022.pdf#page=36"
     )
     defined_for = StateCode.VT
 

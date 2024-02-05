@@ -9,3 +9,13 @@
   output:
     vt_renter_credit_income: 275
 
+- name: Test 2 
+  period: 2022
+  input:
+    irs_gross_income: 100
+    tax_unit_social_security: 100
+    tax_unit_taxable_social_security: 200
+    tax_exempt_interest_income: 100
+    state_code: VT
+  output:
+    vt_renter_credit_income: 200

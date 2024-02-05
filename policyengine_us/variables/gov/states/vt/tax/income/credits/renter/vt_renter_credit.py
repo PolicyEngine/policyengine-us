@@ -10,7 +10,8 @@ class vt_renter_credit(Variable):
     reference = (
         "https://law.justia.com/codes/vermont/2022/title-32/chapter-154/section-6066/"  # b
         "https://tax.vermont.gov/sites/tax/files/documents/Income%20Booklet-2022.pdf#page=35"
-        # the formula used in this file is based on the excel sheet download from the official Vermont government website
+        # the formula used in this file is based on the excel sheet provided on the official Vermont government website
+        "https://tax.vermont.gov/individuals/renter-credit/calculator-and-credit-amounts" # link for the excel sheet 
     )
     defined_for = StateCode.VT
 
@@ -26,7 +27,7 @@ class vt_renter_credit(Variable):
         family_size = tax_unit("tax_unit_size", period)
         county = tax_unit.household("county", period)
         shared_rent = tax_unit("rent_is_shared_with_another_tax_unit", period)
-        subsidized_rent = tax_unit("rent_is_subsidized", period)
+        subsidized_rent = tax_unit.spm_unit(("housing_assistance"), period) > 0 
         rent_amount = add(tax_unit, period, ["rent"])
 
         # locate the values by family size and county
