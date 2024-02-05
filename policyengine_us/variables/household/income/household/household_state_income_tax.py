@@ -34,6 +34,7 @@ class household_state_income_tax(Variable):
         "ok_income_tax_before_refundable_credits",
         "or_income_tax_before_refundable_credits",
         "pa_income_tax",
+        "ri_income_tax_before_refundable_credits",
         "wa_income_tax_before_refundable_credits",
         "nyc_income_tax_before_refundable_credits",
         "ut_income_tax_before_refundable_credits",
@@ -64,6 +65,7 @@ class household_state_income_tax(Variable):
         "ok_refundable_credits",  # Oklahoma.
         "or_refundable_credits",  # Oregon.
         # Skip PA, which has no refundable credits.
+        "ri_refundable_credits",  # Rhode Island.
         "wa_refundable_credits",  # Washington.
         "nyc_refundable_credits",  # New York City.
         "ut_refundable_credits",  # Utah.
