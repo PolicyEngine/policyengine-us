@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.641.0] - 2024-02-05 18:36:12
+
+### Added
+
+- Enable Rhode Island state income tax model and add it to the net income tree.
+
 ## [0.640.1] - 2024-02-04 22:04:16
 
 ### Fixed
@@ -7135,6 +7141,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.641.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.640.1...0.641.0
 [0.640.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.640.0...0.640.1
 [0.640.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.639.0...0.640.0
 [0.639.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.638.1...0.639.0
