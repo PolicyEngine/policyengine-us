@@ -2,6 +2,9 @@
   period: 2021
   input:
     people:
+      person1:
+        is_eitc_qualifying_child: false
+        is_disabled: false
       person3:
         is_eitc_qualifying_child: false
         is_disabled: false
@@ -10,18 +13,19 @@
         is_disabled: false
     tax_units:
       tax_unit:
-        members: [person3, person4]
+        members: [person1, person3, person4]
     households:
       household:
-        members: [person3, person4]
+        members: [person1, person3, person4]
         state_code: MT
   output:
-    mt_dependent_exemption_count: 1
+    mt_dependent_exemption_person: [0, 0, 1]
 
 - name: Two dependents in 2022 - two eligible
   period: 2022
   input:
     people:
+      person1: {}
       person3:
         is_eitc_qualifying_child: true
         is_disabled: false
@@ -30,18 +34,20 @@
         is_disabled: false
     tax_units:
       tax_unit:
-        members: [person3, person4]
+        members: [person1, person3, person4]
     households:
       household:
-        members: [person3, person4]
+        members: [person1, person3, person4]
         state_code: MT
   output:
-    mt_dependent_exemption_count: 2
+    mt_dependent_exemption_person: [0, 1, 1]
 
 - name: Two dependents in 2022 - two eligible, one disabled
   period: 2022
   input:
     people:
+      person1:
+        is_tax_unit_head: true
       person3:
         is_eitc_qualifying_child: true
         is_disabled: false
@@ -50,18 +56,20 @@
         is_disabled: true
     tax_units:
       tax_unit:
-        members: [person3, person4]
+        members: [person1, person3, person4]
     households:
       household:
-        members: [person3, person4]
+        members: [person1, person3, person4]
         state_code: MT
   output:
-    mt_dependent_exemption_count: 3
+    mt_dependent_exemption_person: [0, 1, 2]
 
 - name: Two dependents in 2022 - no eligible
   period: 2022
   input:
     people:
+      person1:
+        is_tax_unit_head: true
       person3:
         is_eitc_qualifying_child: false
         is_disabled: false
@@ -70,10 +78,10 @@
         is_disabled: true
     tax_units:
       tax_unit:
-        members: [person3, person4]
+        members: [person1, person3, person4]
     households:
       household:
-        members: [person3, person4]
+        members: [person1, person3, person4]
         state_code: MT
   output:
-    mt_dependent_exemption_count: 0
+    mt_dependent_exemption_person: [0, 0, 0]

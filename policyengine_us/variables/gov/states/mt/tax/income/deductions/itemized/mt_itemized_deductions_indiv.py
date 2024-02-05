@@ -24,7 +24,7 @@ class mt_itemized_deductions_indiv(Variable):
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         # The interest deduction is the sum of mortagage and investment interest expenses
         investment_interest = person("investment_interest_expense", period)
-        mortgage_interest = person("mortgage_interest", period) 
+        mortgage_interest = person("mortgage_interest", period)
         interest_ded = investment_interest + mortgage_interest
         other_deductions = add(
             person,
@@ -36,5 +36,6 @@ class mt_itemized_deductions_indiv(Variable):
                 "mt_federal_income_tax_deduction",
             ],
         )
-        return head_or_spouse * (interest_ded + charitable_deduction + other_deductions)
-
+        return head_or_spouse * (
+            interest_ded + charitable_deduction + other_deductions
+        )

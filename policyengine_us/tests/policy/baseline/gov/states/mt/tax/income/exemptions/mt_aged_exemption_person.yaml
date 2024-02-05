@@ -5,7 +5,7 @@
     is_tax_unit_head_or_spouse: true
     state_code: MT
   output: 
-    mt_aged_exemption_indiv: true
+    mt_aged_exemption_person: true
 
 - name: Age not eligible
   period: 2023
@@ -14,7 +14,7 @@
     is_tax_unit_head_or_spouse: true
     state_code: MT
   output: 
-    mt_aged_exemption_indiv: false
+    mt_aged_exemption_person: false
 
 - name: Not head or spouse
   period: 2023
@@ -23,4 +23,4 @@
     is_tax_unit_head_or_spouse: false
     state_code: MT
   output: 
-    mt_aged_exemption_indiv: false
+    mt_aged_exemption_person: false

@@ -1,0 +1,17 @@
+- name: Four exemptions for the head
+  period: 2023
+  input:
+    mt_exemptions_count: 4
+    is_tax_unit_head_or_spouse: true
+    state_code: MT
+  output: 
+    mt_exemptions_indiv: 10_840
+
+- name: Not allocated to not head or spouse
+  period: 2023
+  input:
+    mt_exemptions_count: 4
+    is_tax_unit_head_or_spouse: false
+    state_code: MT
+  output: 
+    mt_exemptions_indiv: 0

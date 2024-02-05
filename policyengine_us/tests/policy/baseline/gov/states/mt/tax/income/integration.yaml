@@ -1,25 +1,29 @@
-- name: Joint filing, eligible
+- name: Two people with employment income and one dependent
   period: 2022
   input:
     people:
       person1:
         employment_income: 10_000
         age: 30
-        is_tax_unit_head: true
-        retired_on_total_disability: true
-        disability_benefits: 1_000
       person2:
         employment_income: 19_000
         age: 28
-        is_tax_unit_spouse: true
+      person3:
+        age: 11
+        employment_income: 0
     tax_units:
       tax_unit:
-        members: [person1, person2]
-        filing_status: SEPARATE
-        mt_interest_exemption_eligible: true
+        members: [person1, person2, person3]
+        filing_status: JOINT
     households:
       household:
         state_code: MT
   output:
-    mt_agi: [9_000, 19_000]
-    mt_standard_deduction_indiv: [2_260, 3_800]
+    mt_exemptions_count: [2, 1, 1]
+    mt_exemptions_indiv: [8_130, 2_710, 0]
+    mt_exemptions_joint: [10_840, 0, 0]
+    mt_agi: [10_000, 19_000, 0]
+    mt_standard_deduction_indiv: [2_140, 3_800, 0]
+    mt_standard_deduction_joint: [5_800, 0, 0]
+    mt_taxable_income_indiv: [0, 12_490, 0]
+    mt_taxable_income_joint: [12_360, 0, 0]

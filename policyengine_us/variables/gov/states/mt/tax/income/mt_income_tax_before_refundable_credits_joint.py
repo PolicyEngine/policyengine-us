@@ -10,6 +10,10 @@ class mt_income_tax_before_refundable_credits_joint(Variable):
     defined_for = StateCode.MT
 
     def formula(tax_unit, period, parameters):
-        income_before_credits = tax_unit("mt_income_tax_before_non_refundable_credits_joint", period)
-        non_refundable_credits = add(tax_unit, period, ["mt_non_refundable_credits"])
+        income_before_credits = tax_unit(
+            "mt_income_tax_before_non_refundable_credits_joint", period
+        )
+        non_refundable_credits = add(
+            tax_unit, period, ["mt_non_refundable_credits"]
+        )
         return max_(income_before_credits - non_refundable_credits, 0)

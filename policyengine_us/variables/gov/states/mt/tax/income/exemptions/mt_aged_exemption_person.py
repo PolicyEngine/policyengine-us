@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class mt_aged_exemption_indiv(Variable):
+class mt_aged_exemption_person(Variable):
     value_type = bool
     entity = Person
     label = "Montana aged exemptions when married couples file separately"

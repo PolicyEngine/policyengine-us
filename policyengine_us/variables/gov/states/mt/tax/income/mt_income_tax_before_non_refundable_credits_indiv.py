@@ -12,7 +12,10 @@ class mt_income_tax_before_non_refundable_credits_indiv(Variable):
     def formula(person, period, parameters):
         income = person("mt_taxable_income_indiv", period)
         p = parameters(period).gov.states.mt.tax.income.main
-        filing_status = person.tax_unit("state_filing_status_if_married_filing_separately_on_same_return", period)
+        filing_status = person.tax_unit(
+            "state_filing_status_if_married_filing_separately_on_same_return",
+            period,
+        )
         status = filing_status.possible_values
         return select(
             [

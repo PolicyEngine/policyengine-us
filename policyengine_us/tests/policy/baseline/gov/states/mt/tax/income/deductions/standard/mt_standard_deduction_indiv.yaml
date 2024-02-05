@@ -3,7 +3,7 @@
   input:
     state_code: MT
     mt_agi: 12_950
-    filing_status: SINGLE
+    state_filing_status_if_married_filing_separately_on_same_return: SINGLE
   output:
     mt_standard_deduction_indiv: 2_590
 
@@ -12,7 +12,7 @@
   input:
     state_code: MT
     mt_agi: 8_000
-    filing_status: WIDOW
+    state_filing_status_if_married_filing_separately_on_same_return: WIDOW
   output:
     mt_standard_deduction_indiv: 2_140
 
@@ -21,7 +21,7 @@
   input:
     state_code: MT
     mt_agi: 30_000
-    filing_status: SEPARATE
+    state_filing_status_if_married_filing_separately_on_same_return: SEPARATE
   output:
     mt_standard_deduction_indiv: 4_830
 
@@ -30,18 +30,9 @@
   input:
     state_code: MT
     mt_agi: 25_180
-    filing_status: HEAD_OF_HOUSEHOLD
+    state_filing_status_if_married_filing_separately_on_same_return: HEAD_OF_HOUSEHOLD
   output:
     mt_standard_deduction_indiv: 5_036
-
-- name: Filing separately on same return -> separate cap and not joint
-  period: 2022
-  input:
-    state_code: MT
-    mt_agi: 15_000
-    filing_status: JOINT
-  output:
-    mt_standard_deduction_indiv: 3_000
 
 - name: head and spouse each get a SD value
   period: 2022
@@ -60,7 +51,7 @@
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
-        filing_status: JOINT
+        state_filing_status_if_married_filing_separately_on_same_return: SEPARATE
     households:
       household:
         members: [person1, person2, person3]

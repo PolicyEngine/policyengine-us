@@ -3,13 +3,15 @@ from policyengine_us.model_api import *
 
 class mt_exemptions_joint(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     label = "Montana exemptions when married couple files jointly"
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.MT
 
-    def formula(tax_unit, period, parameters):
-        exemption_count = tax_unit("mt_exemptions_count_joint", period)
+    def formula(person, period, parameters):
+        # Allocate the exemptions to the head
+        head = person("is_tax_unit_head", period)
+        exemption_count = add(person.tax_unit, period, ["mt_exemptions_count"])
         p = parameters(period).gov.states.mt.tax.income.exemptions
-        return exemption_count * p.amount
+        return exemption_count * p.amount * head

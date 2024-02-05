@@ -10,6 +10,9 @@ class mt_exemptions_indiv(Variable):
     defined_for = StateCode.MT
 
     def formula(person, period, parameters):
-        exemption_count = person("mt_exemptions_count_indiv", period)
+        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+        exemption_count = head_or_spouse * person(
+            "mt_exemptions_count", period
+        )
         p = parameters(period).gov.states.mt.tax.income.exemptions
         return exemption_count * p.amount

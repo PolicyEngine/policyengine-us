@@ -11,8 +11,12 @@ class mt_interest_exemption_person(Variable):
     defined_for = "mt_interest_exemption_eligible_person"
 
     def formula(person, period, parameters):
-        p = parameters(period).gov.states.mt.tax.income.exemptions.interest
-        filing_status = person.tax_unit("filing_status", period)
-        cap = p.cap[filing_status]
         interest_income = person("taxable_interest_income", period)
-        return min_(cap, interest_income)
+        total_interest_income = person.tax_unit.sum(interest_income)
+        total_deduction = person.tax_unit("mt_interest_exemption", period)
+        deduction_rate = np.zeros_like(total_interest_income)
+        mask = total_interest_income != 0
+        deduction_rate[mask] = (
+            interest_income[mask] / total_interest_income[mask]
+        )
+        return total_deduction * deduction_rate
