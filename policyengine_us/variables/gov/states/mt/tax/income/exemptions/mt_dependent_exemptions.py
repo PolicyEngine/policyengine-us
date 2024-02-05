@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class mt_dependent_exemption_person(Variable):
-    value_type = float
+class mt_dependent_exemptions(Variable):
+    value_type = int
     entity = Person
-    label = "Montana dependent exemption for each person"
+    label = "Montana number of dependent exemption for each dependent"
     unit = USD
     definition_period = YEAR
     reference = "https://regulations.justia.com/states/montana/department-42/chapter-42-15/subchapter-42-15-4/rule-42-15-403/"
@@ -17,5 +17,4 @@ class mt_dependent_exemption_person(Variable):
         disabled = where(
             qualifying_child, person("is_disabled", period).astype(int), 0
         )
-        # Allocate the dependent exemptions to the head
         return qualifying_child + disabled

@@ -19,11 +19,18 @@
       household:
         state_code: MT
   output:
-    mt_exemptions_count: [2, 1, 1]
-    mt_exemptions_indiv: [8_130, 2_710, 0]
-    mt_exemptions_joint: [10_840, 0, 0]
+    mt_exemptions_indiv: [5_420, 2_710, 0]
+    mt_exemptions_joint: [8_130, 0, 0]
     mt_agi: [10_000, 19_000, 0]
-    mt_standard_deduction_indiv: [2_140, 3_800, 0]
+    mt_standard_deduction_indiv: [2_260, 3_800, 0]
     mt_standard_deduction_joint: [5_800, 0, 0]
-    mt_taxable_income_indiv: [0, 12_490, 0]
-    mt_taxable_income_joint: [12_360, 0, 0]
+    mt_taxable_income_indiv: [2_320, 12_490, 0]
+    mt_taxable_income_joint: [15_070, 0, 0]
+    mt_income_tax_before_non_refundable_credits_indiv: [23.2, 628.5, 0]
+    mt_income_tax_before_non_refundable_credits_joint: 1_076
+    mt_non_refundable_credits: [0, 0, 0]
+    mt_income_tax_before_refundable_credits_indiv: [23.2, 415.6, 0]
+    mt_income_tax_before_refundable_credits_joint: 1_076
+    mt_income_tax_indiv: [23.2, 415.6, 0]
+    mt_income_tax_joint: 1_076
+    mt_income_tax: 438.8
