@@ -1,0 +1,41 @@
+- name: A household that has anyone work or participate in welfare-to-work activity is eligible.
+  period: 2023
+  input:
+    people:
+      person:
+        ca_calworks_child_care_welfare_to_work: 0
+        earned_income: 1_000
+    households:
+      household:
+        members: [person]
+        state_code: CA
+  output:
+    ca_calworks_child_care_meets_work_requirement: true
+
+- name: A household that has anyone work or participate in welfare-to-work activity is eligible.
+  period: 2023
+  input:
+    people:
+      person:
+        ca_calworks_child_care_welfare_to_work: 20
+        earned_income: 0
+    households:
+      household:
+        members: [person]
+        state_code: CA
+  output:
+    ca_calworks_child_care_meets_work_requirement: true
+
+- name: A household that has nobody neither work or participate in welfare-to-work activity is ineligible.
+  period: 2023
+  input:
+    people:
+      person:
+        ca_calworks_child_care_welfare_to_work: 0
+        earned_income: 0
+    households:
+      household:
+        members: [person]
+        state_code: CA
+  output:
+    ca_calworks_child_care_meets_work_requirement: false

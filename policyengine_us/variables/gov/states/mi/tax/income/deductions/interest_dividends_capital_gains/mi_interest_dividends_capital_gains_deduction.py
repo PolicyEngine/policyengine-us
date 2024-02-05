@@ -38,8 +38,9 @@ class mi_interest_dividends_capital_gains_deduction(Variable):
 
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
 
-        reductions = tax_unit.sum(
-            (reductions_pay + elderly_disabled_credit) * is_head_or_spouse
+        reductions = (
+            tax_unit.sum(reductions_pay * is_head_or_spouse)
+            + elderly_disabled_credit
         )
         reduced_amount = max_(0, p.amount[filing_status] - reductions)
 

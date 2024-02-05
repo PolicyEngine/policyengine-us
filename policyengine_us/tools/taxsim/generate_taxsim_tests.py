@@ -132,9 +132,11 @@ class TaxSim35:
         else:
             input_csv = pd.DataFrame(
                 {
-                    col: [value]
-                    if not isinstance(value, collections.Sequence)
-                    else value
+                    col: (
+                        [value]
+                        if not isinstance(value, collections.Sequence)
+                        else value
+                    )
                     for col, value in input_data.items()
                 }
             )

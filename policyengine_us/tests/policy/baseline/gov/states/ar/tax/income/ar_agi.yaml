@@ -1,0 +1,46 @@
+- name: The head and spouse AGI gets split
+  period: 2022
+  input:
+    people:
+      person1:
+        ar_gross_income: 1_000
+        ar_exemptions: 100
+        is_tax_unit_dependent: false
+        is_tax_unit_head: true
+      person2:
+        ar_gross_income: 2_000
+        ar_exemptions: 200
+        is_tax_unit_dependent: false
+        is_tax_unit_head: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR 
+  output:
+    ar_agi: [900, 1_800]
+
+- name: Dependent AGI gets attributed to the head, AGI capped at 0
+  period: 2022
+  input:
+    people:
+      person1:
+        ar_gross_income: 1_000
+        ar_exemptions: 100
+        is_tax_unit_dependent: false
+        is_tax_unit_head: true
+      person2:
+        ar_gross_income: 100
+        ar_exemptions: 200
+        is_tax_unit_dependent: false
+        is_tax_unit_head: false
+      person3:
+        ar_gross_income: 500
+        ar_exemptions: 200
+        is_tax_unit_dependent: true
+        is_tax_unit_head: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AR 
+  output:
+    ar_agi: [1_200, 0, 0]

@@ -1,0 +1,59 @@
+- name: Outside Maine, no refundable Maine child care credit
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: NY
+    filing_status: SINGLE
+  output:
+    me_refundable_child_care_credit: 0
+
+- name: No federal child care credit, no refundable child care credit 
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: ME
+    filing_status: SINGLE
+    cdcc: 0
+  output:
+    me_refundable_child_care_credit: 0
+
+- name: $1000 federal child care credit, all regular, 25% received in Maine credit ($250), all will be refundable
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: ME
+    filing_status: SINGLE
+    cdcc: 1_000
+    me_step_4_share_of_child_care_expenses: 0 
+  output:
+    me_child_care_credit: 250
+    me_refundable_child_care_credit: 250
+    me_non_refundable_child_care_credit: 0 
+
+- name: $4000 federal child care credit, 50% received in Maine credit ($2000), only some (500, the max) will be refundable, rest unrefundable 
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: ME
+    filing_status: SINGLE
+    tax_unit_childcare_expenses: 4_000
+    me_step_4_share_of_child_care_expenses: 1 
+    cdcc: 4_000
+  output:
+    me_child_care_credit: 2_000
+    me_refundable_child_care_credit: 500
+    me_non_refundable_child_care_credit: 1_500
+
+- name: $2000 federal child care credit, 0.5 step 4 expenses, half cdcc multiplied by step 4 factor, half by regular factor  
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: ME
+    filing_status: SINGLE
+    tax_unit_childcare_expenses: 2_000
+    me_step_4_share_of_child_care_expenses: 0.5 
+    cdcc: 2_000
+  output:
+    me_child_care_credit: 750
+    me_refundable_child_care_credit: 500
+    me_non_refundable_child_care_credit: 250

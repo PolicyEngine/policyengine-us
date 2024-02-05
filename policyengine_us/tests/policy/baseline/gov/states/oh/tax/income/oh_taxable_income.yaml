@@ -1,0 +1,17 @@
+- name: $9000 ohio agi, $100 personal exemptions
+  period: 2021
+  input:
+    state_code: OH
+    oh_agi: 9_000
+    oh_personal_exemptions: 100
+  output:
+    oh_taxable_income: 8_900
+
+- name: $1000 ohio agi, $1500 personal exemptions
+  period: 2021
+  input:
+    state_code: OH
+    oh_agi: 1_000
+    oh_personal_exemptions: 1_500
+  output:
+    oh_taxable_income: 0

@@ -10,24 +10,24 @@ class state_income_tax(Variable):
     adds = [
         # state income tax variables listed in alphabetical order:
         # "ak_income_tax",  --- no state income tax
-        "al_income_tax",
+        # "al_income_tax",  --- activating will cause circular logic errors
         "ar_income_tax",
-        "az_income_tax",
+        # "az_income_tax",  --- activating will cause circular logic errors
         # "ca_income_tax",  --- activating will cause circular logic errors
         # "co_income_tax",  --- activating will cause circular logic errors
-        "ct_income_tax",
+        # "ct_income_tax",  --- activating will cause circular logic errors
         # "dc_income_tax",  --- activating will cause circular logic errors
         "de_income_tax",
         # "fl_income_tax",  --- no state income tax
         # "ga_income_tax",  --- activating will cause circular logic errors
-        "hi_income_tax",
+        # "hi_income_tax",  --- activating will cause circular logic errors
         # "ia_income_tax",  --- activating will cause circular logic errors
         "id_income_tax",
         "il_income_tax",
         "in_income_tax",
         "ks_income_tax",
         "ky_income_tax",
-        "la_income_tax",
+        # "la_income_tax",  --- activating will cause circular logic errors
         # "ma_income_tax",  --- activating will cause circular logic errors
         # "md_income_tax",  --- activating will cause circular logic errors
         # "me_income_tax",  --- activating will cause circular logic errors
@@ -35,7 +35,7 @@ class state_income_tax(Variable):
         "mn_income_tax",
         # "mo_income_tax",  --- activating will cause circular logic errors
         "ms_income_tax",
-        "mt_income_tax",
+        # "mt_income_tax",  --- activating will cause circular logic errors
         "nc_income_tax",
         # "nd_income_tax",  --- activating will cause circular logic errors
         # "ne_income_tax",  --- activating will cause circular logic errors
@@ -48,17 +48,17 @@ class state_income_tax(Variable):
         # "ok_income_tax",  --- activating will cause circular logic errors
         # "or_income_tax",  --- activating will cause circular logic errors
         "pa_income_tax",
-        "ri_income_tax",
+        # "ri_income_tax",  --- activating will cause circular logic errors
         # "sc_income_tax",  --- activating will cause circular logic errors
         # "sd_income_tax",  --- no state income tax
         # "tn_income_tax",  --- no state income tax
         # "tx_income_tax",  --- no state income tax
         # "ut_income_tax",  --- activating will cause circular logic errors
-        "va_income_tax",
+        # "va_income_tax",  --- activating will cause circular logic errors
         # "vt_income_tax",  --- activating will cause circular logic errors
         "wa_income_tax",
         "wi_income_tax",
-        "wv_income_tax",
+        # "wv_income_tax",  --- activating will cause circular logic errors
         # "wy_income_tax",  --- no state income tax
     ]
 
