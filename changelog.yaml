@@ -6039,3 +6039,14 @@
     added:
     - Idaho household and dependent care expense deduction.
   date: 2024-02-03 01:21:48
+- bump: minor
+  changes:
+    added:
+    - Married filing separately logic to the Mississippi income tax.
+  date: 2024-02-04 20:07:05
+- bump: patch
+  changes:
+    fixed:
+    - Remove capital_gains_excluded_from_taxable_income from the Rhode Island property
+      tax credit income sources.
+  date: 2024-02-04 22:04:16
