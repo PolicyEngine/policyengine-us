@@ -14,4 +14,4 @@ class ky_itemized_deductions_unit(Variable):
     defined_for = StateCode.KY
 
     adds = ["itemized_deductions_less_salt"]
-    subtracts =["medical_expense_deduction"]
+    subtracts = ["medical_expense_deduction"]
