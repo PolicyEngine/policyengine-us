@@ -30,7 +30,7 @@ class ct_social_security_benefit_adjustment(Variable):
 
         agi = tax_unit("adjusted_gross_income", period)
         # Line 41, Part E and Part F
-        # Difference between taxable social security benefits and capped social security fraction
+        # Difference between taxable social security benefits and capped social security portion
         adjusted_ss_benefit = max_(us_taxable_ss - capped_ss_portion, 0)
         reduction_threshold = p.reduction_threshold[filing_status]
         # Adjustment determined based on AGI amount compared to reduction threshold
