@@ -39,6 +39,7 @@ class household_tax_before_refundable_credits(Variable):
         "ok_income_tax_before_refundable_credits",
         "pa_income_tax",  # PA has no refundable credits.
         "ri_income_tax_before_refundable_credits",
+        "sc_income_tax_before_refundable_credits",
         "wa_income_tax_before_refundable_credits",
         "flat_tax",
         "nyc_income_tax_before_refundable_credits",
