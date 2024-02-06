@@ -1,4 +1,3 @@
-# Actually the same code as de_itemized_deductions.py
 from policyengine_us.model_api import *
 
 
@@ -14,20 +13,4 @@ class de_itemized_deductions_unit(Variable):
     )
     defined_for = StateCode.DE
 
-    def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.irs.deductions
-        filing_status = tax_unit("filing_status", period)
-        deductions = [
-            deduction
-            for deduction in p.itemized_deductions
-            if deduction not in ["salt_deduction"]
-        ]
-        federal_deductions = add(tax_unit, period, deductions)
-
-        real_estate_tax = add(tax_unit, period, ["real_estate_taxes"])
-
-        capped_real_estate_tax = min_(
-            real_estate_tax, p.itemized.salt_and_real_estate.cap[filing_status]
-        )
-
-        return federal_deductions + capped_real_estate_tax
+    adds = "gov.states.de.tax.income.deductions.itemized.sources"
