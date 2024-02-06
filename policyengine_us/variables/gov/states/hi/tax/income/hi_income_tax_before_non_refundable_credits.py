@@ -1,5 +1,6 @@
 from policyengine_us.model_api import *
 
+
 class hi_income_tax_before_non_refundable_credits(Variable):
     value_type = float
     entity = TaxUnit
@@ -9,7 +10,7 @@ class hi_income_tax_before_non_refundable_credits(Variable):
     definition_period = YEAR
     # Hawaii Tax Rate Schedules
     reference = " https://tax.hawaii.gov/forms/d_18table-on/d_18table-on_p13/"
-    
+
     def formula(tax_unit, period, parameters):
         filing_status = tax_unit("filing_status", period)
         taxable_income = tax_unit("hi_taxable_income", period)

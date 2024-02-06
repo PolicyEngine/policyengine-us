@@ -12,13 +12,14 @@ class de_capped_real_estate_tax(Variable):
         "https://delcode.delaware.gov/title30/c011/sc02/index.html",
     )
     defined_for = StateCode.DE
-    
-def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.irs.deductions
-        filing_status = tax_unit("filing_status", period)
-        real_estate_tax = add(tax_unit, period, ["real_estate_taxes"])
-        capped_real_estate_tax = min_(
-            real_estate_tax, p.itemized.salt_and_real_estate.cap[filing_status]
-        )
 
-        return capped_real_estate_tax
+
+def formula(tax_unit, period, parameters):
+    p = parameters(period).gov.irs.deductions
+    filing_status = tax_unit("filing_status", period)
+    real_estate_tax = add(tax_unit, period, ["real_estate_taxes"])
+    capped_real_estate_tax = min_(
+        real_estate_tax, p.itemized.salt_and_real_estate.cap[filing_status]
+    )
+
+    return capped_real_estate_tax
