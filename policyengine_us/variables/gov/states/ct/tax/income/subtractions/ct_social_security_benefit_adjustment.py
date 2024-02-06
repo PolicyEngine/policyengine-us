@@ -34,7 +34,6 @@ class ct_social_security_benefit_adjustment(Variable):
         adjusted_ss_benefit = max_(us_taxable_ss - capped_ss_portion, 0)
         reduction_threshold = p.reduction_threshold[filing_status]
         # Adjustment determined based on AGI amount compared to reduction threshold
-        agi_under_reduction_threshold = agi < reduction_threshold
         return where(
-            agi_under_reduction_threshold, us_taxable_ss, adjusted_ss_benefit
+            agi < reduction_threshold, us_taxable_ss, adjusted_ss_benefit
         )
