@@ -1,7 +1,10 @@
 import logging
 from policyengine_core.data import Dataset
+from policyengine_us.data.storage import STORAGE_FOLDER
 import h5py
 from policyengine_us.data.datasets.cps.raw_cps import (
+    RawCPS_2018,
+    RawCPS_2019,
     RawCPS_2020,
     RawCPS_2021,
     RawCPS_2022,
@@ -304,10 +307,11 @@ def add_spm_variables(cps: h5py.File, spm_unit: DataFrame) -> None:
         free_school_meals_reported="SPM_SCHLUNCH",
         spm_unit_energy_subsidy_reported="SPM_ENGVAL",
         spm_unit_wic_reported="SPM_WICVAL",
+        spm_unit_broadband_subsidy_reported="SPM_BBSUBVAL",
         spm_unit_payroll_tax_reported="SPM_FICA",
         spm_unit_federal_tax_reported="SPM_FEDTAX",
         spm_unit_state_tax_reported="SPM_STTAX",
-        spm_unit_work_childcare_expenses="SPM_CAPWKCCXPNS",
+        spm_unit_capped_work_childcare_expenses="SPM_CAPWKCCXPNS",
         spm_unit_medical_expenses="SPM_MEDXPNS",
         spm_unit_spm_threshold="SPM_POVTHRESHOLD",
         spm_unit_net_income_reported="SPM_RESOURCES",
@@ -315,7 +319,8 @@ def add_spm_variables(cps: h5py.File, spm_unit: DataFrame) -> None:
     )
 
     for openfisca_variable, asec_variable in SPM_RENAMES.items():
-        cps[openfisca_variable] = spm_unit[asec_variable]
+        if asec_variable in spm_unit.columns:
+            cps[openfisca_variable] = spm_unit[asec_variable]
 
     cps["reduced_price_school_meals_reported"] = (
         cps["free_school_meals_reported"][...] * 0
@@ -363,31 +368,18 @@ def add_previous_year_income(self, cps: h5py.File) -> None:
         cps_current_year_data.person.PERIDNUM
     )
 
-    PREDICTORS = [
-        "WSAL_VAL",
-        "SEMP_VAL",
-        "A_AGE",
-        "A_SEX",
-        "DIV_VAL",
-        "INT_VAL",
-        "SS_VAL",
-        "ANN_VAL",
-        "PNSN_VAL",
-        "UC_VAL",
-        "CAP_VAL",
-        "CSP_VAL",
-        "CHSP_VAL",
-        "PAW_VAL",
-        "SSI_VAL",
-        "WICYN",
-        "PHIP_VAL",
-        "MOOP",
-    ]
+    previous_year_data = cps_previous_year[
+        ["WSAL_VAL", "SEMP_VAL", "I_ERNVAL", "I_SEVAL"]
+    ].rename(
+        {
+            "WSAL_VAL": "employment_income_last_year",
+            "SEMP_VAL": "self_employment_income_last_year",
+        },
+        axis=1,
+    )
 
-    in_sample = cps_previous_year_data.person.PERIDNUM[
-        cps_previous_year_data.person.PERIDNUM.isin(
-            cps_current_year_data.person.PERIDNUM
-        )
+    previous_year_data = previous_year_data[
+        (previous_year_data.I_ERNVAL == 0) & (previous_year_data.I_SEVAL == 0)
     ]
     cps_prev_long_subset = cps_previous_year.loc[in_sample]
     cps_cur_long_subset = cps_current_year.set_index(
@@ -415,17 +407,17 @@ def add_previous_year_income(self, cps: h5py.File) -> None:
     )
     df["in_sample"] = cps_cur_record_in_sample
     df["employment_income_prev"] = np.ones(len(df)) * np.nan
-    df["employment_income_prev"][cps_cur_record_in_sample] = (
-        cps_previous_year.loc[
-            cps_current_year.index[cps_cur_record_in_sample]
-        ].WSAL_VAL.values
-    )
+    df["employment_income_prev"][
+        cps_cur_record_in_sample
+    ] = cps_previous_year.loc[
+        cps_current_year.index[cps_cur_record_in_sample]
+    ].WSAL_VAL.values
     df["self_employment_income_prev"] = np.ones(len(df)) * np.nan
-    df["self_employment_income_prev"][cps_cur_record_in_sample] = (
-        cps_previous_year.loc[
-            cps_current_year.index[cps_cur_record_in_sample]
-        ].SEMP_VAL.values
-    )
+    df["self_employment_income_prev"][
+        cps_cur_record_in_sample
+    ] = cps_previous_year.loc[
+        cps_current_year.index[cps_cur_record_in_sample]
+    ].SEMP_VAL.values
 
     X = cps_current_year[PREDICTORS][~cps_cur_record_in_sample]
     X = X.rename(columns={x: x + "_cur" for x in PREDICTORS})
@@ -441,7 +433,15 @@ def add_previous_year_income(self, cps: h5py.File) -> None:
     cps["self_employment_income_last_year"] = df[
         "self_employment_income_prev"
     ].values
-    cps["previous_year_income_imputed"] = df["in_sample"].values
+
+
+class CPS_2019(CPS):
+    name = "cps_2019"
+    label = "CPS 2019"
+    raw_cps = RawCPS_2019
+    previous_year_raw_cps = RawCPS_2018
+    file_path = STORAGE_FOLDER / "cps_2019.h5"
+    time_period = 2019
 
 
 class CPS_2020(CPS):

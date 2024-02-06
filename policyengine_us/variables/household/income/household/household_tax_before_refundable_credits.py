@@ -18,6 +18,7 @@ class household_tax_before_refundable_credits(Variable):
         "co_income_tax_before_refundable_credits",
         "dc_income_tax_before_refundable_credits",
         "de_income_tax_before_refundable_credits",
+        "ga_income_tax_before_refundable_credits",
         "ia_income_tax_before_refundable_credits",
         "il_total_tax",
         "in_income_tax_before_refundable_credits",
@@ -37,6 +38,8 @@ class household_tax_before_refundable_credits(Variable):
         "or_income_tax_before_refundable_credits",
         "ok_income_tax_before_refundable_credits",
         "pa_income_tax",  # PA has no refundable credits.
+        "ri_income_tax_before_refundable_credits",
+        "sc_income_tax_before_refundable_credits",
         "wa_income_tax_before_refundable_credits",
         "flat_tax",
         "nyc_income_tax_before_refundable_credits",

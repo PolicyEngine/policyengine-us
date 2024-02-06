@@ -5872,3 +5872,196 @@
     added:
     - Arkansas low income tax table.
   date: 2024-01-23 02:11:13
+- bump: minor
+  changes:
+    added:
+    - Parameter for using reported SNAP values.
+  date: 2024-01-23 11:52:39
+- bump: patch
+  changes:
+    fixed:
+    - Virginia taxable income formula.
+  date: 2024-01-25 00:40:23
+- bump: patch
+  changes:
+    fixed:
+    - Hawaii EITC refundability.
+  date: 2024-01-25 02:26:10
+- bump: patch
+  changes:
+    fixed:
+    - Idaho CTC refundability status.
+  date: 2024-01-25 14:18:33
+- bump: patch
+  changes:
+    fixed:
+    - Georgia retirement subtraction income sources.
+  date: 2024-01-25 14:45:34
+- bump: patch
+  changes:
+    fixed:
+    - Rhode Island property tax calculation.
+  date: 2024-01-25 17:01:06
+- bump: patch
+  changes:
+    fixed:
+    - South Carolina two-wage-earner credit.
+  date: 2024-01-25 18:46:12
+- bump: minor
+  changes:
+    added:
+    - SSI Substantial Gainful Activity
+  date: 2024-01-25 20:08:04
+- bump: minor
+  changes:
+    added:
+    - Broadband subsidies from CPS.
+  date: 2024-01-26 14:10:01
+- bump: patch
+  changes:
+    fixed:
+    - LA General relief computation to include withholding rules.
+  date: 2024-01-26 16:34:55
+- bump: patch
+  changes:
+    fixed:
+    - Added remaining components to SPM net income.
+    - Inflation-index SPM-related variables.
+  date: 2024-01-27 19:26:08
+- bump: patch
+  changes:
+    fixed:
+    - CA TANF monthly applicant income disregards.
+  date: 2024-01-28 03:52:36
+- bump: patch
+  changes:
+    fixed:
+    - Georgia itemized deduction calculation.
+  date: 2024-01-28 05:48:37
+- bump: minor
+  changes:
+    added:
+    - Enable Georgia state income tax computation.
+  date: 2024-01-28 19:06:09
+- bump: patch
+  changes:
+    fixed:
+    - Adjust the adds function in the hi_subtractions variable.
+  date: 2024-01-29 01:00:09
+- bump: patch
+  changes:
+    fixed:
+    - Idaho permanent building fund tax calculation.
+  date: 2024-01-29 01:05:00
+- bump: patch
+  changes:
+    fixed:
+    - Removed duplicate NIIT addition from Louisiana federal tax deduction.
+  date: 2024-01-29 01:13:40
+- bump: patch
+  changes:
+    added:
+    - 2024 federal poverty guidelines.
+  date: 2024-01-29 04:29:46
+- bump: minor
+  changes:
+    changed:
+    - Improved CPS previous year imputations.
+  date: 2024-01-29 18:12:34
+- bump: patch
+  changes:
+    fixed:
+    - Georgia ga_income_tax_before_refundable_credits label.
+  date: 2024-01-29 18:47:44
+- bump: minor
+  changes:
+    added:
+    - California CalWORKs vehicle value limit.
+  date: 2024-01-29 23:18:35
+- bump: patch
+  changes:
+    fixed:
+    - Rhode Island property tax credit maximum amount and eligibility criteria.
+  date: 2024-01-30 04:21:54
+- bump: patch
+  changes:
+    fixed:
+    - Oregon working family household and dependent care credit calculation.
+  date: 2024-01-30 20:13:53
+- bump: minor
+  changes:
+    added:
+    - Hawaii renter credit calculation.
+  date: 2024-01-31 00:26:07
+- bump: patch
+  changes:
+    fixed:
+    - Rhode Island retirement income subtraction calculation.
+  date: 2024-01-31 01:48:14
+- bump: patch
+  changes:
+    fixed:
+    - Ohio joint filing credit.
+    - Ohio person level adjusted gross income.
+  date: 2024-02-01 03:21:37
+- bump: patch
+  changes:
+    fixed:
+    - Pre subsidy rent variable.
+  date: 2024-02-01 18:04:08
+- bump: patch
+  changes:
+    fixed:
+    - Ohio senior citizen credit.
+  date: 2024-02-01 20:49:24
+- bump: patch
+  changes:
+    fixed:
+    - Oregon WFHDC variable consolidation.
+  date: 2024-02-01 23:29:41
+- bump: patch
+  changes:
+    fixed:
+    - Add the exemption credits to the list of non-refundable credits.
+  date: 2024-02-02 06:52:55
+- bump: minor
+  changes:
+    added:
+    - Add Idaho net capital gain deduction to the income tree.
+  date: 2024-02-02 13:15:58
+- bump: patch
+  changes:
+    fixed:
+    - Add the exemption amount to the senior citizen credit income calculation.
+  date: 2024-02-03 01:00:25
+- bump: minor
+  changes:
+    added:
+    - Idaho household and dependent care expense deduction.
+  date: 2024-02-03 01:21:48
+- bump: minor
+  changes:
+    added:
+    - Married filing separately logic to the Mississippi income tax.
+  date: 2024-02-04 20:07:05
+- bump: patch
+  changes:
+    fixed:
+    - Remove capital_gains_excluded_from_taxable_income from the Rhode Island property
+      tax credit income sources.
+  date: 2024-02-04 22:04:16
+- bump: minor
+  changes:
+    added:
+    - Enable Rhode Island state income tax model and add it to the net income tree.
+  date: 2024-02-05 18:36:12
+- bump: patch
+  changes:
+    fixed:
+    - South Carolina state tax addback.
+  date: 2024-02-05 19:46:09
+- bump: minor
+  changes:
+    added:
+    - Enable South Carolina state income tax model and add it to the net income tree.
+  date: 2024-02-06 01:09:24

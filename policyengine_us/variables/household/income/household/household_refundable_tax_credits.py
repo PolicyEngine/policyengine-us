@@ -15,6 +15,7 @@ class household_refundable_tax_credits(Variable):
         "co_refundable_credits",  # Colorado.
         "dc_refundable_credits",  # District of Columbia.
         "de_refundable_credits",  # Delaware.
+        "ga_refundable_credits",  # Georgia.
         "ia_refundable_credits",  # Iowa.
         "il_refundable_credits",  # Illinois.
         "in_refundable_credits",  # Indiana.
@@ -34,6 +35,8 @@ class household_refundable_tax_credits(Variable):
         "ok_refundable_credits",  # Oklahoma.
         "or_refundable_credits",  # Oregon.
         # Skip PA, which has no refundable credits.
+        "ri_refundable_credits",  # Rhode Island.
+        "sc_refundable_credits",  # South Carolina.
         "wa_refundable_credits",  # Washington.
         "ut_refundable_credits",  # Utah.
         "vt_refundable_credits",  # Vermont.
