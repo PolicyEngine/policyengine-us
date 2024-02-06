@@ -6,7 +6,6 @@ class tax_unit_combined_income_for_social_security_taxability(Variable):
     entity = TaxUnit
     definition_period = YEAR
     label = "Taxable Social Security combined income"
-    documentation = "Social security (OASDI) benefits included in AGI, including tier 1 railroad retirement benefits."
     unit = USD
     reference = (
         "https://www.law.cornell.edu/uscode/text/26/86"
