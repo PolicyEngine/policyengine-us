@@ -13,15 +13,5 @@ class ky_itemized_deductions_unit(Variable):
     )
     defined_for = StateCode.KY
 
-    def formula(tax_unit, period, parameters):
-        itemized_deductions_less_salt = tax_unit(
-            "itemized_deductions_less_salt", period
-        )
-        medical_expense_deduction = tax_unit(
-            "medical_expense_deduction", period
-        )
-
-        itemized_deductions = (
-            itemized_deductions_less_salt - medical_expense_deduction
-        )
-        return itemized_deductions
+    adds = ["itemized_deductions_less_salt"]
+    subtracts =["medical_expense_deduction"]
