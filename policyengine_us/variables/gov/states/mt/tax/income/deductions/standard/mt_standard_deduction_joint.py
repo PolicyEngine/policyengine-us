@@ -17,9 +17,9 @@ class mt_standard_deduction_joint(Variable):
         agi = add(person.tax_unit, period, ["mt_agi"])
         # standard deduction is a percentage of AGI that
         # is bounded by a min/max by filing status.
-        min_amount = p.min[filing_status]
-        max_amount = p.max[filing_status]
+        floor = p.floor[filing_status]
+        cap = p.cap[filing_status]
         uncapped_amount = p.rate * agi
-        deduction_amount = min_(uncapped_amount, max_amount)
+        deduction_amount = max_(min_(uncapped_amount, cap), floor)
         is_head = person("is_tax_unit_head", period)
-        return is_head * max_(deduction_amount, min_amount)
+        return is_head * deduction_amount

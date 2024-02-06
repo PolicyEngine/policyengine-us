@@ -9,9 +9,5 @@ class mt_income_tax_joint(Variable):
     definition_period = YEAR
     defined_for = StateCode.MT
 
-    def formula(tax_unit, period, parameters):
-        income_tax_before_credits = tax_unit(
-            "mt_income_tax_before_refundable_credits_joint", period
-        )
-        refundable_credits = add(tax_unit, period, ["mt_refundable_credits"])
-        return income_tax_before_credits - refundable_credits
+    adds = ["mt_income_tax_before_refundable_credits_joint"]
+    subtracts = ["mt_refundable_credits"]

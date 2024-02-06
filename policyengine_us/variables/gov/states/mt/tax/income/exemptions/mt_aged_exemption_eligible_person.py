@@ -13,6 +13,5 @@ class mt_aged_exemption_eligible_person(Variable):
         p = parameters(period).gov.states.mt.tax.income.exemptions
         age = person("age", period)
         aged = age >= p.age_threshold
-        head_or_spuse = person("is_tax_unit_head_or_spouse", period)
 
-        return aged & head_or_spuse
+        return aged & person("is_tax_unit_head_or_spouse", period)

@@ -11,6 +11,7 @@ class mt_interest_exemption_person(Variable):
     defined_for = "mt_interest_exemption_eligible_person"
 
     def formula(person, period, parameters):
+        # Allocate the interest exemption to head/spouse based on share of interest income.
         interest_income = person("taxable_interest_income", period)
         total_interest_income = person.tax_unit.sum(interest_income)
         total_deduction = person.tax_unit("mt_interest_exemption", period)

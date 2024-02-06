@@ -11,18 +11,23 @@ class mt_child_dependent_care_expense_deduction(Variable):
     defined_for = StateCode.MT
 
     def formula(person, period, parameters):
-        eligible_children = person.tax_unit(
+        tax_unit = person.tax_unit
+        # Line 1
+        eligible_children = tax_unit(
             "mt_child_dependent_care_expense_deduction_eligible_children",
             period,
-        )  # Line 1
+        )
         p = parameters(
             period
         ).gov.states.mt.tax.income.deductions.child_dependent_care_expense
         cap = p.cap.calc(eligible_children)
-        care_expenses = person.tax_unit("tax_unit_childcare_expenses", period)
-        capped_expenses = min_(care_expenses, cap)  # Line 2
-        agi = person("mt_agi", period)  # Line 3
-        reduction = p.phase_out.calc(agi)  # Line 6
+        care_expenses = tax_unit("tax_unit_childcare_expenses", period)
+        # Line 2
+        capped_expenses = min_(care_expenses, cap)
+        # Line 3
+        agi = person("mt_agi", period)
+        # Line 6
+        reduction = p.phase_out.calc(agi)
         # The deduction has to be allocated equally between spouses
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         return head_or_spouse * (max_(0, capped_expenses - reduction) * 0.5)

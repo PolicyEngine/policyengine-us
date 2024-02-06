@@ -16,9 +16,9 @@ class mt_medical_expense_deduction_indiv(Variable):
 
     def formula(person, period, parameters):
         expense = person("medical_expense", period)
-        medical = parameters(period).gov.irs.deductions.itemized.medical
+        p = parameters(period).gov.irs.deductions.itemized.medical
         # Law does not define Montana AGI as the cap.
         # Tax form points to page 1, line 14, which is Montana AGI.
-        medical_floor = medical.floor * person("mt_agi", period)
+        medical_floor = p.floor * person("mt_agi", period)
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         return is_head_or_spouse * max_(0, expense - medical_floor)

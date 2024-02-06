@@ -16,7 +16,7 @@ class mt_taxable_income_joint(Variable):
     def formula(person, period, parameters):
         is_head = person("is_tax_unit_head", period)
         agi = person("mt_agi", period)
-        head_agi = is_head * person.tax_unit.sum(agi)
+        total_agi = is_head * person.tax_unit.sum(agi)
         standard_deduction = add(
             person.tax_unit, period, ["mt_standard_deduction_joint"]
         )
@@ -26,4 +26,4 @@ class mt_taxable_income_joint(Variable):
         # Tax units can claim the larger of the itemized or standard deductions
         deductions = max_(itemized_deductions, standard_deduction)
         exemptions = add(person.tax_unit, period, ["mt_exemptions_joint"])
-        return max_(0, head_agi - deductions - exemptions)
+        return max_(0, total_agi - deductions - exemptions)
