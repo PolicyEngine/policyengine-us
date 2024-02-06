@@ -36,6 +36,7 @@ class household_refundable_tax_credits(Variable):
         "or_refundable_credits",  # Oregon.
         # Skip PA, which has no refundable credits.
         "ri_refundable_credits",  # Rhode Island.
+        "sc_refundable_credits",  # South Carolina.
         "wa_refundable_credits",  # Washington.
         "ut_refundable_credits",  # Utah.
         "vt_refundable_credits",  # Vermont.
