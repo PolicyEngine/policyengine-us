@@ -14,8 +14,10 @@ values:
     # ct_share_fiduciary_income
     # ct_gain_on_sale_bonds
     # ct_higher_education_trust
+    - ct_social_security_benefit_adjustment
 metadata:
   unit: list
+  period: year
   label: Connecticut adjusted gross income subtractions
   reference:
     - title: 2021 Form CT-1040 Connecticut Resident Income Tax Return Instructions
