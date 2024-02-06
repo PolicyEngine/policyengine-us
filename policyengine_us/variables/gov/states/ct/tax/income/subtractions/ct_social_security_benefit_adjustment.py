@@ -23,10 +23,14 @@ class ct_social_security_benefit_adjustment(Variable):
         # Line 41, Part A and Part B
         us_taxable_ss = tax_unit("tax_unit_taxable_social_security", period)
         ss_portion = us_taxable_ss * p.rate.social_security
-        excess = tax_unit("tax_unit_ss_combined_income_excess", period)
+        combined_income_excess = tax_unit(
+            "tax_unit_ss_combined_income_excess", period
+        )
         # Line 41, Part C and Part D
-        # Lesser of 25% of MAGI excess and 25% of taxable social security benefits
-        capped_ss_portion = min_(ss_portion, p.magi_excess * excess)
+        # Lesser of 25% of combined income excess and 25% of taxable social security benefits
+        capped_ss_portion = min_(
+            ss_portion, p.combined_income_excess * combined_income_excess
+        )
 
         agi = tax_unit("adjusted_gross_income", period)
         # Line 41, Part E and Part F
