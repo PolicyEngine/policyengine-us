@@ -12,6 +12,6 @@ class de_base_standard_deduction_joint(Variable):
 
     def formula(person, period, parameters):
         filing_status = person.tax_unit("filing_status", period)
-        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+        is_head = person("is_tax_unit_head", period)
         p = parameters(period).gov.states.de.tax.income.deductions.standard
-        return head_or_spouse * p.amount[filing_status]
+        return is_head * p.amount[filing_status]

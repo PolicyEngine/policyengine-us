@@ -11,6 +11,6 @@ class de_deduction_indv(Variable):
     defined_for = "de_can_file_separate_on_same_return"
 
     def formula(person, period, parameters):
-        itemized = person("de_itemized_deductions_indiv", period)
-        standard = person("de_standard_deduction_indiv", period)
+        itemized = person("de_itemized_deductions_indv", period)
+        standard = person("de_standard_deduction_indv", period)
         return max_(itemized, standard)
