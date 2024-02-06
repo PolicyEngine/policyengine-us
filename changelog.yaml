@@ -6029,3 +6029,39 @@
     added:
     - Add Idaho net capital gain deduction to the income tree.
   date: 2024-02-02 13:15:58
+- bump: patch
+  changes:
+    fixed:
+    - Add the exemption amount to the senior citizen credit income calculation.
+  date: 2024-02-03 01:00:25
+- bump: minor
+  changes:
+    added:
+    - Idaho household and dependent care expense deduction.
+  date: 2024-02-03 01:21:48
+- bump: minor
+  changes:
+    added:
+    - Married filing separately logic to the Mississippi income tax.
+  date: 2024-02-04 20:07:05
+- bump: patch
+  changes:
+    fixed:
+    - Remove capital_gains_excluded_from_taxable_income from the Rhode Island property
+      tax credit income sources.
+  date: 2024-02-04 22:04:16
+- bump: minor
+  changes:
+    added:
+    - Enable Rhode Island state income tax model and add it to the net income tree.
+  date: 2024-02-05 18:36:12
+- bump: patch
+  changes:
+    fixed:
+    - South Carolina state tax addback.
+  date: 2024-02-05 19:46:09
+- bump: minor
+  changes:
+    added:
+    - Enable South Carolina state income tax model and add it to the net income tree.
+  date: 2024-02-06 01:09:24
