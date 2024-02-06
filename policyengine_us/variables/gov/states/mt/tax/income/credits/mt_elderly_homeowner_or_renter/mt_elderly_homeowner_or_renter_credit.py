@@ -19,11 +19,18 @@ class mt_elderly_homeowner_or_renter_credit(Variable):
         )
         # Get net_household_income and allocate it to the head
         head = person("is_tax_unit_head", period)
-        net_household_income = add(person.tax_unit, period, [
-            "mt_elderly_homeowner_or_renter_credit_net_household_income"]
-        ) * head
+        net_household_income = (
+            add(
+                person.tax_unit,
+                period,
+                ["mt_elderly_homeowner_or_renter_credit_net_household_income"],
+            )
+            * head
+        )
         # Credit Computation
-        property_tax = add(person.tax_unit, period, ["real_estate_taxes"]) * head
+        property_tax = (
+            add(person.tax_unit, period, ["real_estate_taxes"]) * head
+        )
         rent = add(person.tax_unit, period, ["rent"]) * head
         countable_rent = rent * p.rent_equivalent_tax_rate
         countable_rent_and_property_tax = property_tax + countable_rent

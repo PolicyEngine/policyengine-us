@@ -20,9 +20,16 @@ class mt_elderly_homeowner_or_renter_credit_net_household_income(Variable):
         standard_exclusion = p.net_household_income.standard_exclusion
         # Allocate the income to the head
         head = person("is_tax_unit_head", period)
-        gross_household_income = add(person.tax_unit, period, [
-            "mt_elderly_homeowner_or_renter_credit_gross_household_income"]
-        ) * head
+        gross_household_income = (
+            add(
+                person.tax_unit,
+                period,
+                [
+                    "mt_elderly_homeowner_or_renter_credit_gross_household_income"
+                ],
+            )
+            * head
+        )
         reduced_household_income = max_(
             gross_household_income - standard_exclusion, 0
         )
