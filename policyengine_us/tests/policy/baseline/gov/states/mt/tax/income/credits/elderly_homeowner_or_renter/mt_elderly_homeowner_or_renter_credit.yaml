@@ -80,3 +80,28 @@
   # 1000+ 9000*0.15 - (43000-12600)*0.05 = 830 # 830*10% = 83
     mt_elderly_homeowner_or_renter_credit: 83
 
+- name: Integration test
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        employment_income: 1_000
+        real_estate_taxes: 5_000
+        age: 67
+        mt_income_tax_before_refundable_credits_indiv: 1_000
+      person2:
+        employment_income: 2_000
+        mt_income_tax_before_refundable_credits_indiv: 800
+        rent: 5_000
+        age: 60
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        state_code: MT
+  output:
+    mt_elderly_homeowner_or_renter_credit: [1_150, 0]
+    mt_income_tax_indiv: [-150, 800]

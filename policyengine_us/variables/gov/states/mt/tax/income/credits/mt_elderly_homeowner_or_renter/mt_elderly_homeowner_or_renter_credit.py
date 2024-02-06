@@ -3,28 +3,28 @@ from policyengine_us.model_api import *
 
 class mt_elderly_homeowner_or_renter_credit(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     label = "Montana Elderly Homeowner/Renter Credit"
     unit = USD
     definition_period = YEAR
     defined_for = "mt_elderly_homeowner_or_renter_credit_eligible"
 
-    def formula(tax_unit, period, parameters):
+    def formula(person, period, parameters):
         p = parameters(
             period
         ).gov.states.mt.tax.income.credits.elderly_homeowner_or_renter
-        gross_household_income = tax_unit(
+        gross_household_income = person(
             "mt_elderly_homeowner_or_renter_credit_gross_household_income",
             period,
         )
-        # Get net_household_income
-        net_household_income = tax_unit(
-            "mt_elderly_homeowner_or_renter_credit_net_household_income",
-            period,
-        )
+        # Get net_household_income and allocate it to the head
+        head = person("is_tax_unit_head", period)
+        net_household_income = add(person.tax_unit, period, [
+            "mt_elderly_homeowner_or_renter_credit_net_household_income"]
+        ) * head
         # Credit Computation
-        property_tax = add(tax_unit, period, ["real_estate_taxes"])
-        rent = add(tax_unit, period, ["rent"])
+        property_tax = add(person.tax_unit, period, ["real_estate_taxes"]) * head
+        rent = add(person.tax_unit, period, ["rent"]) * head
         countable_rent = rent * p.rent_equivalent_tax_rate
         countable_rent_and_property_tax = property_tax + countable_rent
         uncapped_credit = max_(

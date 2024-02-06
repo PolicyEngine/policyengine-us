@@ -1,25 +1,20 @@
-- name: Not eligible - gross_household_income larger than 45_000
-  period: 2021
+- name: The amount of the credit is allocated to the head and reduced combined
+  period: 2022
   input:
-    mt_elderly_homeowner_or_renter_credit_gross_household_income: 48_000
-    mt_elderly_homeowner_or_renter_credit_eligible: false
+    people:
+      person1: 
+        is_tax_unit_head: true
+        mt_elderly_homeowner_or_renter_credit_gross_household_income: 2_000
+        mt_elderly_homeowner_or_renter_credit_eligible: true
+      person2: 
+        mt_elderly_homeowner_or_renter_credit_gross_household_income: 3_000
+        mt_elderly_homeowner_or_renter_credit_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
   output:
-    mt_elderly_homeowner_or_renter_credit_net_household_income: 0
-
-- name: Eligible - standard_exclusion in 2021 is 12600
-  period: 2021
-  input:
-    mt_elderly_homeowner_or_renter_credit_gross_household_income: 34_000
-    mt_elderly_homeowner_or_renter_credit_eligible: true
-  output:
-    # (34000-12600)*0.05
-    mt_elderly_homeowner_or_renter_credit_net_household_income: 1_070
-
-- name: Eligible - standard_exclusion in 2020 is 6300
-  period: 2020
-  input:
-    mt_elderly_homeowner_or_renter_credit_gross_household_income: 34_000
-    mt_elderly_homeowner_or_renter_credit_eligible: true
-  output:
-    # (34000-6300)*0.05
-    mt_elderly_homeowner_or_renter_credit_net_household_income: 1_385
+    mt_elderly_homeowner_or_renter_credit_net_household_income: [4_860, 0]
