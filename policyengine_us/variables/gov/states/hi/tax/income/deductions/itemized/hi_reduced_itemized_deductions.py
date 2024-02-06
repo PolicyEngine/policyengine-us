@@ -34,7 +34,9 @@ class hi_reduced_itemized_deductions(Variable):
             partial_deductions < total_deductions
         )
         # Line 4
-        total_less_partial_ded_amount = max_(total_deductions - partial_deductions, 0)
+        total_less_partial_ded_amount = max_(
+            total_deductions - partial_deductions, 0
+        )
         # Take a percentage of the difference between the total and partial deductions
         # Hawaii applies federal limits which have been revoked in 2018
         p_2017 = parameters(
