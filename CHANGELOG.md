@@ -5,6 +5,60 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.642.0] - 2024-02-06 01:09:24
+
+### Added
+
+- Enable South Carolina state income tax model and add it to the net income tree.
+
+## [0.641.1] - 2024-02-05 19:46:09
+
+### Fixed
+
+- South Carolina state tax addback.
+
+## [0.641.0] - 2024-02-05 18:36:12
+
+### Added
+
+- Enable Rhode Island state income tax model and add it to the net income tree.
+
+## [0.640.1] - 2024-02-04 22:04:16
+
+### Fixed
+
+- Remove capital_gains_excluded_from_taxable_income from the Rhode Island property tax credit income sources.
+
+## [0.640.0] - 2024-02-04 20:07:05
+
+### Added
+
+- Married filing separately logic to the Mississippi income tax.
+
+## [0.639.0] - 2024-02-03 01:21:48
+
+### Added
+
+- Idaho household and dependent care expense deduction.
+
+## [0.638.1] - 2024-02-03 01:00:25
+
+### Fixed
+
+- Add the exemption amount to the senior citizen credit income calculation.
+
+## [0.638.0] - 2024-02-02 13:15:58
+
+### Added
+
+- Add Idaho net capital gain deduction to the income tree.
+
+## [0.637.6] - 2024-02-02 06:52:55
+
+### Fixed
+
+- Add the exemption credits to the list of non-refundable credits.
+
 ## [0.637.5] - 2024-02-01 23:29:41
 
 ### Fixed
@@ -7099,6 +7153,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.642.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.641.1...0.642.0
+[0.641.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.641.0...0.641.1
+[0.641.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.640.1...0.641.0
+[0.640.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.640.0...0.640.1
+[0.640.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.639.0...0.640.0
+[0.639.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.638.1...0.639.0
+[0.638.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.638.0...0.638.1
+[0.638.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.637.6...0.638.0
+[0.637.6]: https://github.com/PolicyEngine/policyengine-us/compare/0.637.5...0.637.6
 [0.637.5]: https://github.com/PolicyEngine/policyengine-us/compare/0.637.4...0.637.5
 [0.637.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.637.3...0.637.4
 [0.637.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.637.2...0.637.3

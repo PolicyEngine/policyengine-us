@@ -7,7 +7,7 @@ values:
     - oh_senior_citizen_credit
     - oh_retirement_credit
     - oh_non_public_school_credits
-    - oh_exemption_credits
+    - oh_exemption_credit
     - oh_joint_filing_credit
   2023-01-01:
     - oh_eitc
@@ -15,10 +15,11 @@ values:
     - oh_senior_citizen_credit
     - oh_retirement_credit
     - oh_non_public_school_credits
-    - oh_exemption_credits   
+    - oh_exemption_credit   
     - oh_joint_filing_credit
 metadata:
   unit: list
+  period: year
   label: Ohio non-refundable tax credits
   reference:
     - title: 2021 Ohio Schedule of Credits

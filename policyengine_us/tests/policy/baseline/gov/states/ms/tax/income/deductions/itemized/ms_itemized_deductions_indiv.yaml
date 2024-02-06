@@ -1,0 +1,18 @@
+- name: Itemized deductions are prorated based on the AGI 
+  period: 2021
+  input:
+    people:
+      person1:
+        ms_prorate_fraction: 0.6
+      person2:
+        ms_prorate_fraction: 0.4
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ms_itemized_deductions_unit: 1_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+  output:
+    ms_itemized_deductions_indiv: [600, 400]
