@@ -1,14 +1,13 @@
 from policyengine_us.model_api import *
 
 
-class tax_unit_magi_excess(Variable):
+class tax_unit_ss_combined_income_excess(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
     label = "Taxable Social Security modified adjusted gross income excess over base amount"
-    documentation = "Social security (OASDI) benefits included in AGI, including tier 1 railroad retirement benefits."
     unit = USD
-    reference = "https://www.law.cornell.edu/uscode/text/26/86"
+    reference = "https://www.law.cornell.edu/uscode/text/26/86#b_1"
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.irs.social_security.taxability

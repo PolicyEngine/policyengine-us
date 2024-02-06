@@ -22,19 +22,16 @@ class ct_social_security_benefit_adjustment(Variable):
         filing_status = tax_unit("filing_status", period)
         # Line 41, Part A and Part B
         us_taxable_ss = tax_unit("tax_unit_taxable_social_security", period)
-        ss_fraction = us_taxable_ss * p.rate.social_security
-        # excess = tax_unit(
-        #     "ct_social_security_benefit_adjustment_magi_excess", period
-        # )
-        excess = tax_unit("tax_unit_magi_excess", period)
+        ss_portion = us_taxable_ss * p.rate.social_security
+        excess = tax_unit("tax_unit_ss_combined_income_excess", period)
         # Line 41, Part C and Part D
         # Lesser of 25% of MAGI excess and 25% of taxable social security benefits
-        capped_ss_fraction = min_(ss_fraction, p.magi_excess * excess)
+        capped_ss_portion = min_(ss_portion, p.magi_excess * excess)
 
         agi = tax_unit("adjusted_gross_income", period)
         # Line 41, Part E and Part F
         # Difference between taxable social security benefits and capped social security fraction
-        adjusted_ss_benefit = max_(us_taxable_ss - capped_ss_fraction, 0)
+        adjusted_ss_benefit = max_(us_taxable_ss - capped_ss_portion, 0)
         reduction_threshold = p.reduction_threshold[filing_status]
         # Adjustment determined based on AGI amount compared to reduction threshold
         agi_under_reduction_threshold = agi < reduction_threshold

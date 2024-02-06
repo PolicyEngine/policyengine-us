@@ -4,7 +4,7 @@
     state_code: CT
     tax_unit_taxable_social_security: 20_000
     adjusted_gross_income: 70_000
-    tax_unit_magi_excess: 20_000
+    tax_unit_ss_combined_income_excess: 20_000
     filing_status: SINGLE
   output:
     ct_social_security_benefit_adjustment: 20_000
@@ -15,7 +15,7 @@
     state_code: CT
     tax_unit_taxable_social_security: 20_000
     adjusted_gross_income: 80_000
-    tax_unit_magi_excess: 20_000
+    tax_unit_ss_combined_income_excess: 20_000
     filing_status: SINGLE
   output:
     ct_social_security_benefit_adjustment: 15_000
@@ -26,7 +26,7 @@
     state_code: CT
     tax_unit_taxable_social_security: 20_000
     adjusted_gross_income: 70_000
-    tax_unit_magi_excess: 20_000
+    tax_unit_ss_combined_income_excess: 20_000
     filing_status: JOINT
   output:
     ct_social_security_benefit_adjustment: 20_000
@@ -37,7 +37,7 @@
     state_code: CT
     tax_unit_taxable_social_security: 20_000
     adjusted_gross_income: 120_000
-    tax_unit_magi_excess: 20_000
+    tax_unit_ss_combined_income_excess: 20_000
     filing_status: JOINT
   output:
     ct_social_security_benefit_adjustment: 15_000
@@ -48,7 +48,7 @@
     state_code: CT
     tax_unit_taxable_social_security: 20_000
     adjusted_gross_income: 70_000
-    tax_unit_magi_excess: 20_000
+    tax_unit_ss_combined_income_excess: 20_000
     filing_status: HEAD_OF_HOUSEHOLD
   output:
     ct_social_security_benefit_adjustment: 20_000
@@ -59,7 +59,7 @@
     state_code: CT
     tax_unit_taxable_social_security: 20_000
     adjusted_gross_income: 120_000
-    tax_unit_magi_excess: 20_000
+    tax_unit_ss_combined_income_excess: 20_000
     filing_status: HEAD_OF_HOUSEHOLD
   output:
     ct_social_security_benefit_adjustment: 15_000
@@ -70,7 +70,7 @@
     state_code: CT
     tax_unit_taxable_social_security: 20_000
     adjusted_gross_income: 70_000
-    tax_unit_magi_excess: 20_000
+    tax_unit_ss_combined_income_excess: 20_000
     filing_status: SEPARATE
   output:
     ct_social_security_benefit_adjustment: 20_000
@@ -81,7 +81,7 @@
     state_code: CT
     tax_unit_taxable_social_security: 20_000
     adjusted_gross_income: 120_000
-    tax_unit_magi_excess: 20_000
+    tax_unit_ss_combined_income_excess: 20_000
     filing_status: SEPARATE
   output:
     ct_social_security_benefit_adjustment: 15_000
@@ -92,7 +92,7 @@
     state_code: CT
     tax_unit_taxable_social_security: 20_000
     adjusted_gross_income: 70_000
-    tax_unit_magi_excess: 20_000
+    tax_unit_ss_combined_income_excess: 20_000
     filing_status: WIDOW
   output:
     ct_social_security_benefit_adjustment: 20_000
@@ -103,7 +103,7 @@
     state_code: CT
     tax_unit_taxable_social_security: 20_000
     adjusted_gross_income: 120_000
-    tax_unit_magi_excess: 20_000
+    tax_unit_ss_combined_income_excess: 20_000
     filing_status: WIDOW
   output:
     ct_social_security_benefit_adjustment: 15_000

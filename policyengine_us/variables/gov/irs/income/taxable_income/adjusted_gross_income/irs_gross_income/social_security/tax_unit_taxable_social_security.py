@@ -31,7 +31,7 @@ class tax_unit_taxable_social_security(Variable):
         under_first_threshold = combined_income < base_amount
         under_second_threshold = combined_income < adjusted_base_amount
 
-        magi_excess = tax_unit("tax_unit_magi_excess", period)
+        magi_excess = tax_unit("tax_unit_ss_combined_income_excess", period)
         excess_over_adjusted_base = max_(
             0, combined_income - adjusted_base_amount
         )
