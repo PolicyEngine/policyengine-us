@@ -7,7 +7,7 @@ class ky_taxable_income_indiv(Variable):
     label = "Kentucky taxable income when married couples file separately"
     unit = USD
     definition_period = YEAR
-    defined_for = "ky_can_file_separate_on_same_return"
+    defined_for = StateCode.KY
     reference = "https://revenue.ky.gov/Forms/740%20Packet%20Instructions%205-9-23.pdf#page=11"
 
     def formula(person, period, parameters):

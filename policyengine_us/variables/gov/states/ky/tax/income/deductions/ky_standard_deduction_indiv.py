@@ -7,7 +7,7 @@ class ky_standard_deduction_indiv(Variable):
     label = "Kentucky standard deduction when married couples file separately"
     unit = USD
     definition_period = YEAR
-    defined_for = "ky_can_file_separate_on_same_return"
+    defined_for = StateCode.KY
 
     def formula(person, period, parameters):
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)

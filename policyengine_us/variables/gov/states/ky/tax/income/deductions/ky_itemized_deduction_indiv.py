@@ -11,7 +11,7 @@ class ky_itemized_deductions_indiv(Variable):
         "https://revenue.ky.gov/Forms/Form%20740%20Schedule%20A%202022.pdf"
         "https://law.justia.com/codes/kentucky/2022/chapter-141/section-141-019/"  # (2)(i)
     )
-    defined_for = "ky_can_file_separate_on_same_return"
+    defined_for = StateCode.KY
 
     def formula(person, period, parameters):
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)

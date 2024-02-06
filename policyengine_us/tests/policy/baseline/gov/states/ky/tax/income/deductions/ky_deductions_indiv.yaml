@@ -3,7 +3,6 @@
   input:
     ky_itemized_deductions_indiv: 100
     ky_standard_deduction_indiv: 99
-    ky_can_file_separate_on_same_return: true
     state_code: KY
   output:
     ky_deductions_indiv: 100
@@ -13,7 +12,6 @@
   input:
     ky_itemized_deductions_indiv: 2_769
     ky_standard_deduction_indiv: 2_770
-    ky_can_file_separate_on_same_return: true
     state_code: KY
   output:
     ky_deductions_indiv: 2_770
