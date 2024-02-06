@@ -5,7 +5,7 @@ class tax_unit_ss_combined_income_excess(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
-    label = "Taxable Social Security modified adjusted gross income excess over base amount"
+    label = "Taxable Social Security combined income excess over base amount"
     unit = USD
     reference = "https://www.law.cornell.edu/uscode/text/26/86#b_1"
 
