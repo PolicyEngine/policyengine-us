@@ -407,17 +407,17 @@ def add_previous_year_income(self, cps: h5py.File) -> None:
     )
     df["in_sample"] = cps_cur_record_in_sample
     df["employment_income_prev"] = np.ones(len(df)) * np.nan
-    df["employment_income_prev"][
-        cps_cur_record_in_sample
-    ] = cps_previous_year.loc[
-        cps_current_year.index[cps_cur_record_in_sample]
-    ].WSAL_VAL.values
+    df["employment_income_prev"][cps_cur_record_in_sample] = (
+        cps_previous_year.loc[
+            cps_current_year.index[cps_cur_record_in_sample]
+        ].WSAL_VAL.values
+    )
     df["self_employment_income_prev"] = np.ones(len(df)) * np.nan
-    df["self_employment_income_prev"][
-        cps_cur_record_in_sample
-    ] = cps_previous_year.loc[
-        cps_current_year.index[cps_cur_record_in_sample]
-    ].SEMP_VAL.values
+    df["self_employment_income_prev"][cps_cur_record_in_sample] = (
+        cps_previous_year.loc[
+            cps_current_year.index[cps_cur_record_in_sample]
+        ].SEMP_VAL.values
+    )
 
     X = cps_current_year[PREDICTORS][~cps_cur_record_in_sample]
     X = X.rename(columns={x: x + "_cur" for x in PREDICTORS})
