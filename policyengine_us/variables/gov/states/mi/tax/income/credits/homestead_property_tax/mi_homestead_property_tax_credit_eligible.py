@@ -19,6 +19,6 @@ class mi_homestead_property_tax_credit_eligible(Variable):
         ).gov.states.mi.tax.income.credits.homestead_property_tax
         # Line 38 & 39 & 41
         return (
-            add(tax_unit, period, ["assessed_property_value"])
-            <= p.property_value_limit
+            add(tax_unit, period, ["real_estate_taxes"])
+            <= p.real_estate_tax_limit
         )

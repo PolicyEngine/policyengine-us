@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class mi_total_homestead_property_tax_credit(Variable):
+class mi_allowable_homestead_property_tax_credit(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Michigan total homestead property tax credit before the phase-out"
+    label = "Michigan allowable homestead property tax credit"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -17,7 +17,6 @@ class mi_total_homestead_property_tax_credit(Variable):
         p = parameters(
             period
         ).gov.states.mi.tax.income.credits.homestead_property_tax
-        p2 = parameters(period).gov.states.mi.tax.income
 
         total_household_resources = tax_unit("mi_household_resources", period)
         exemption_amount = tax_unit(
@@ -27,9 +26,7 @@ class mi_total_homestead_property_tax_credit(Variable):
 
         # seniors
         # SECTION A: SENIOR CLAIMANTS (if you checked only box 5a)
-        older_spouse_age_eligible = (
-            tax_unit("greater_age_head_spouse", period) >= p2.senior_age
-        )
+        senior_eligible = tax_unit("mi_is_senior_for_tax", period)
         # Line 37
         # The reduction is specified as going from 100% to 0% rather than vice-versa.
         phase_out_rate = p.rate.senior.calc(total_household_resources)
@@ -40,34 +37,23 @@ class mi_total_homestead_property_tax_credit(Variable):
         # disabled or (disabled & seniors)
         # SECTION B: DISABLED CLAIMANTS (if you checked only box 5b, or both boxes 5a and 5b)
         # Line 5
-        person = tax_unit.members
-        is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        is_disabled = person("is_disabled", period)
-        disabled_head_or_spouse = (
-            tax_unit.sum(is_disabled & is_head_or_spouse) > 0
+        disabled_head_or_spouse = tax_unit(
+            "disabled_tax_unit_head_or_spouse", period
         )
-        head_and_spouse_eligible = (
-            older_spouse_age_eligible & disabled_head_or_spouse
-        )
+        head_and_spouse_eligible = senior_eligible & disabled_head_or_spouse
         # Line 39
-        head_and_spouse_disabled_amount = min_(
-            exemption_amount,
-            p.cap,
-        )
+        head_and_spouse_disabled_amount = min_(exemption_amount, p.cap)
 
         # others
         # SECTION C: ALL OTHER CLAIMANTS (if you did not check box 5a or 5b)
         # Line 41
         uncapped_credit_amount = p.rate.non_senior_disabled * exemption_amount
-        other_amount = min_(
-            uncapped_credit_amount,
-            p.cap,
-        )
+        other_amount = min_(uncapped_credit_amount, p.cap)
         # Line 42
         return select(
             [
                 (disabled_head_or_spouse | head_and_spouse_eligible),
-                older_spouse_age_eligible,
+                senior_eligible,
             ],
             [head_and_spouse_disabled_amount, senior_amount],
             default=other_amount,

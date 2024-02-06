@@ -20,15 +20,12 @@ class mi_homestead_property_tax_credit(Variable):
         # Line 42
         total_household_resources = tax_unit("mi_household_resources", period)
         homestead_allowable_credit = tax_unit(
-            "mi_total_homestead_property_tax_credit", period
+            "mi_allowable_homestead_property_tax_credit", period
         )
         # Line 43
         # The reduction is specified as going from 100% to 0% rather than vice-versa.
-        start = p.start
-        increment = p.increment
-        rate_per_increment = p.rate
-        excess = max_(total_household_resources - start, 0)
-        increments = np.ceil(excess / increment)
-        phase_out_rate = max_(1 - increments * rate_per_increment, 0)
+        excess = max_(total_household_resources - p.start, 0)
+        increments = np.ceil(excess / p.increment)
+        phase_out_rate = max_(1 - increments * p.rate, 0)
         # Line 44
         return phase_out_rate * homestead_allowable_credit
