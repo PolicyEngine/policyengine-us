@@ -16,6 +16,5 @@ class oh_lump_sum_distribution_credit_eligible_person(Variable):
             period
         ).gov.states.oh.tax.income.credits.lump_sum_distribution
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        age = person("age", period)
-        head_or_spouse_age = age * is_head_or_spouse
-        return head_or_spouse_age >= p.age_threshold
+        age_eligible = person("age", period) >= p.age_threshold
+        return is_head_or_spouse & age_eligible
