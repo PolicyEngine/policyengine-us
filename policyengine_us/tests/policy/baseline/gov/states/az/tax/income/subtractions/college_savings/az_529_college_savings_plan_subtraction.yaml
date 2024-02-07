@@ -16,7 +16,7 @@
         members: [person1, person2]
         state_code: AZ
   output:
-    az_529_college_savings_plans_subtraction: 8_000
+    az_529_college_savings_plan_subtraction: 8_000
 
 - name: single filers with countribute $1500 to 529 college savings plans
   period: 2023
@@ -26,7 +26,7 @@
       investment_in_529_plan: 1_500
       state_code: AZ
   output:
-    az_529_college_savings_plans_subtraction: 1_500
+    az_529_college_savings_plan_subtraction: 1_500
 
 - name: separate filers with both spouses countribute $3000 to 529 college savings plans
   period: 2023
@@ -46,5 +46,4 @@
         members: [person1, person2]
         state_code: AZ
   output:
-    az_529_college_savings_plans_subtraction: 6_000
-
+    az_529_college_savings_plan_subtraction: 6_000

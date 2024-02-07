@@ -10,6 +10,6 @@ class spm_unit_spm_expenses(Variable):
 
     adds = [
         "child_support_expense",
-        "medical_out_of_pocket_expense",
+        "medical_out_of_pocket_expenses",
         "spm_unit_capped_work_childcare_expenses",
     ]

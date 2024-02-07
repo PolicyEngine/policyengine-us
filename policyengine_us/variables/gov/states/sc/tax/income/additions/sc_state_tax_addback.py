@@ -16,18 +16,15 @@ class sc_state_tax_addback(Variable):
 
     def formula(tax_unit, period, parameters):
         p_us = parameters(period).gov.irs.deductions
-        itm_deds = [
-            deduction
-            for deduction in p_us.itemized_deductions
-            if deduction not in ["salt_deduction"]
-        ]
+
         us_itemizing = tax_unit("tax_unit_itemizes", period)
         standard_deduction = tax_unit("standard_deduction", period)
         filing_status = tax_unit("filing_status", period)
         eligible = filing_status != filing_status.possible_values.SEPARATE
         # line 1
         federal_itemized_deduction = (
-            add(tax_unit, period, itm_deds) * us_itemizing
+            tax_unit("itemized_taxable_income_deductions", period)
+            * us_itemizing
         )
         # line 2
         federal_standard_deduction = standard_deduction * eligible
