@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class mt_income_tax_before_refundable_credits(Variable):
+class mt_income_tax_before_non_refundable_credits_joint(Variable):
     value_type = float
     entity = TaxUnit
     label = "Montana income tax before refundable credits"
@@ -10,7 +10,7 @@ class mt_income_tax_before_refundable_credits(Variable):
     defined_for = StateCode.MT
 
     def formula(tax_unit, period, parameters):
-        income = tax_unit("mt_taxable_income", period)
+        income = add(tax_unit, period, ["mt_taxable_income_joint"])
         p = parameters(period).gov.states.mt.tax.income.main
         filing_status = tax_unit("filing_status", period)
         status = filing_status.possible_values
