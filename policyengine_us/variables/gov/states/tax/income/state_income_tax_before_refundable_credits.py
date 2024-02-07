@@ -33,6 +33,7 @@ class state_income_tax_before_refundable_credits(Variable):
         "or_income_tax_before_refundable_credits",
         "pa_income_tax",  # PA has no refundable credits.
         "ri_income_tax_before_refundable_credits",
+        "sc_income_tax_before_refundable_credits",
         "vt_income_tax_before_refundable_credits",
         "wa_income_tax_before_refundable_credits",
         "wi_income_tax_before_refundable_credits",
