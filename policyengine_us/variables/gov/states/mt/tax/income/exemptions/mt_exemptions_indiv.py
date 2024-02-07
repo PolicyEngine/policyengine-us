@@ -10,9 +10,7 @@ class mt_exemptions_indiv(Variable):
     defined_for = StateCode.MT
 
     def formula(person, period, parameters):
-        head_or_spouse = person("is_tax_unit_head_or_spouse", period).astype(
-            int
-        )
+        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         blind = person("is_blind", period)
         blind_head_or_spouse = blind * head_or_spouse
         # Allocate the dependent exemption to the head
@@ -21,14 +19,12 @@ class mt_exemptions_indiv(Variable):
         total_dependent_exemption = (
             person.tax_unit.sum(dependent_exemption) * head
         )
-        aged_exemption = person(
-            "mt_aged_exemption_eligible_person", period
-        ).astype(int)
+        aged_exemption = person("mt_aged_exemption_eligible_person", period)
         exemption_count = (
-            head_or_spouse
-            + blind_head_or_spouse
-            + total_dependent_exemption
-            + aged_exemption
+            head_or_spouse.astype(int)
+            + blind_head_or_spouse.astype(int)
+            + total_dependent_exemption.astype(int)
+            + aged_exemption.astype(int)
         )
         p = parameters(period).gov.states.mt.tax.income.exemptions
         return exemption_count * p.amount
