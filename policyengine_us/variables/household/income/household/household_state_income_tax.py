@@ -23,6 +23,6 @@ class household_state_income_tax(Variable):
             )
         else:
             p = parameters(period)
-            return add(tax_unit, period, p.gov.household_state_income_tax) - add(
-                tax_unit, period, p.gov.state_refundable_credits
-            )
+            return add(
+                tax_unit, period, p.gov.household_state_income_tax
+            ) - add(tax_unit, period, p.gov.state_refundable_credits)
