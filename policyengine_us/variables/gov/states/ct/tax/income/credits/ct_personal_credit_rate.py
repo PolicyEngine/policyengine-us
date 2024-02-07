@@ -13,7 +13,7 @@ class ct_personal_credit_rate(Variable):
         agi = tax_unit("ct_agi", period)
         filing_status = tax_unit("filing_status", period)
         status = filing_status.possible_values
-        p = parameters(period).gov.states.ct.tax.income.credits.agi
+        p = parameters(period).gov.states.ct.tax.income.agi
 
         return select(
             [

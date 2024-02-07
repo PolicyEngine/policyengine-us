@@ -9,4 +9,4 @@ class ct_non_refundable_credits(Variable):
     definition_period = YEAR
     defined_for = StateCode.CT
 
-    adds = ["ct_property_tax_credit"]
+    adds = "gov.states.ct.tax.income.credits.non_refundable"
