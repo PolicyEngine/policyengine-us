@@ -238,7 +238,7 @@ for i in range(len(agi_returns_thresholds)):
 values_df["U.S. population"] = simulation.calculate(
     "people", map_to="household"
 ).values
-targets["U.S. population"] = parameters.populations.total
+targets["U.S. population"] = parameters.gov.census.populations.total
 equivalisation["U.S. population"] = POPULATION_EQUIVALISATION
 
 # Population by 10-year age group and sex

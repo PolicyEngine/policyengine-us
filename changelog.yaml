@@ -6050,3 +6050,28 @@
     - Remove capital_gains_excluded_from_taxable_income from the Rhode Island property
       tax credit income sources.
   date: 2024-02-04 22:04:16
+- bump: minor
+  changes:
+    added:
+    - Enable Rhode Island state income tax model and add it to the net income tree.
+  date: 2024-02-05 18:36:12
+- bump: patch
+  changes:
+    fixed:
+    - South Carolina state tax addback.
+  date: 2024-02-05 19:46:09
+- bump: minor
+  changes:
+    added:
+    - Enable South Carolina state income tax model and add it to the net income tree.
+  date: 2024-02-06 01:09:24
+- bump: minor
+  changes:
+    added:
+    - Connecticut social security benefit adjustment.
+  date: 2024-02-06 16:07:06
+- bump: minor
+  changes:
+    added:
+    - Enhanced CPS now has weights and imputations for 2024 and 2025.
+  date: 2024-02-06 17:23:36
