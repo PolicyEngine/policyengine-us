@@ -77,5 +77,4 @@ class refundable_ctc(Variable):
         amount_ctc_would_increase = (
             ctc_capped_by_increased_tax - ctc_capped_by_tax
         )
-        print(max_(0, maximum_amount - reduction))
         return min_(maximum_refundable_ctc, amount_ctc_would_increase)
