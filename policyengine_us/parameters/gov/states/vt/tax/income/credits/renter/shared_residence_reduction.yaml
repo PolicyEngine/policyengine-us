@@ -1,10 +1,10 @@
-description: Vermont multiplies the renter credit value by the following rate for filers that share rent. 
+description: Vermont reduces the renter credit by this fraction for filers who reside with people outside their filing unit.
 values:
-  2021-01-01: 0.5
+  2021-01-01: 2
 metadata:
   unit: /1
   period: year
-  label: Vermont renter credit shared rent rate
+  label: Vermont renter credit shared rent fraction
   reference:
     - title: 32 V.S.A. §6066. Homestead Property Tax Credit and Renter Credit (b)(2)
       href: https://law.justia.com/codes/vermont/2022/title-32/chapter-154/section-6066/
