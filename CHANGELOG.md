@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.645.0] - 2024-02-07 16:40:25
+
+### Added
+
+- Pin policyengine-core below 2.14.
+
 ## [0.644.0] - 2024-02-06 17:23:36
 
 ### Added
@@ -7165,6 +7171,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.645.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.644.0...0.645.0
 [0.644.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.643.0...0.644.0
 [0.643.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.642.0...0.643.0
 [0.642.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.641.1...0.642.0
