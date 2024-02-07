@@ -61,14 +61,12 @@ class vt_renter_credit(Variable):
         mid_income = ~(high_income | low_income)
         credit_value = select(
             [
-                high_income,
                 low_income & ~has_housing_assistance,
                 low_income & has_housing_assistance,
                 mid_income & ~has_housing_assistance,
                 mid_income & has_housing_assistance,
             ],
             [
-                0,
                 base_credit_amount,
                 base_credit_subsidized,
                 percent_reabte_claimable * base_credit_amount,
