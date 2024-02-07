@@ -14,11 +14,45 @@ class or_federal_tax_liability_subtraction(Variable):
     defined_for = StateCode.OR
 
     def formula(tax_unit, period, parameters):
-        # calculate Oregon concept of federal income tax
+        # Federal tax liability
         federal_itax = tax_unit("income_tax", period)
-        federal_eitc = tax_unit("eitc", period)
-        seca = add(tax_unit, period, ["self_employment_tax"])
-        or_federal_income_tax = max_(0, federal_itax - seca + federal_eitc)
+        # child and dependent tax credit, excluding 2022 and on
+        non_refundable_ctc = tax_unit("non_refundable_ctc", period)
+        refundable_ctc = tax_unit("refundable_ctc", period)
+        cdcc = tax_unit("cdcc", period)
+
+        year = period.start.year
+        if year >= 2022:
+            non_refundable_ctc = refundable_ctc = cdcc = 0
+        # else:
+        #     instant_str = period
+        ## Excess advance premium tax credit - need to substract, not modelled here
+        # Other taxes and any additions to tax
+        other_taxes = tax_unit("income_tax_before_refundable_credits", period)
+        # American opportunity credit
+        american_opportunity_credit = tax_unit(
+            "american_opportunity_credit", period
+        )
+        # Federal economic stimulus payments - need to substract, not modelled here
+        # recovery rebate credit
+        recovery_rebate_credit = tax_unit("recovery_rebate_credit", period)
+        # Premium tax credit
+        premium_tax_credit = tax_unit("premium_tax_credit", period)
+
+        federal_itax_inclusive = (
+            federal_itax + non_refundable_ctc + other_taxes
+        )
+        other_taxes_exclusive = (
+            refundable_ctc
+            + american_opportunity_credit
+            + recovery_rebate_credit
+            + premium_tax_credit
+            + cdcc
+        )
+        or_federal_income_tax = max_(
+            0, federal_itax_inclusive - other_taxes_exclusive
+        )
+
         # limit subtraction based on caps scaled to federal AGI
         filing_status = tax_unit("filing_status", period)
         status = filing_status.possible_values
