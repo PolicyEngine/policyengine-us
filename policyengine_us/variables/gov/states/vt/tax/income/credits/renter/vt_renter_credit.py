@@ -27,7 +27,9 @@ class vt_renter_credit(Variable):
         tax_unit_size = tax_unit("tax_unit_size", period)
         county = tax_unit.household("county", period)
         shared_rent = tax_unit("rent_is_shared_with_another_tax_unit", period)
-        has_housing_assistance = tax_unit.spm_unit(("housing_assistance"), period) > 0
+        has_housing_assistance = (
+            tax_unit.spm_unit(("housing_assistance"), period) > 0
+        )
         rent_amount = add(tax_unit, period, ["rent"])
 
         # locate the values by family size and county
@@ -50,7 +52,7 @@ class vt_renter_credit(Variable):
         )
         percent_reabte_claimable = income_diff / income_threshold_diff
         # if share rent, miltiple by share rent rate
-        share = where(shared_rent, 1/p.shared_residence_reduction, 1)        
+        share = where(shared_rent, 1 / p.shared_residence_reduction, 1)
         # if subsidized, get base credit
         base_credit_subsidized = rent_amount * p.fmr_rate
 
@@ -72,6 +74,6 @@ class vt_renter_credit(Variable):
                 percent_reabte_claimable * base_credit_amount,
                 percent_reabte_claimable * base_credit_subsidized,
             ],
-            default = 0
+            default=0,
         )
         return np.round(credit_value * share, 0)
