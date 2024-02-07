@@ -24,4 +24,4 @@ class state_income_tax(Variable):
             )
         else:
             p = parameters(period)
-            return add(tax_unit, period, p.state_income_tax)
+            return add(tax_unit, period, p.gov.state_income_tax)
