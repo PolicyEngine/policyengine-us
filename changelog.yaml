@@ -6085,3 +6085,8 @@
     added:
     - Ohio lump sum distribution credit.
   date: 2024-02-07 17:44:33
+- bump: patch
+  changes:
+    fixed:
+    - Avoid negative values of non_refundable_ctc.
+  date: 2024-02-07 20:51:32
