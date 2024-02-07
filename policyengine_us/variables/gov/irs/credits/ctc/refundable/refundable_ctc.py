@@ -21,11 +21,13 @@ class refundable_ctc(Variable):
 
         maximum_amount = tax_unit("ctc_refundable_maximum", period)
 
+        total_ctc = tax_unit("ctc", period)
+
         if ctc.refundable.fully_refundable:
             reduction = tax_unit("ctc_phase_out", period)
-            return max_(0, maximum_amount - reduction)
+            reduced_max_amount = max_(0, maximum_amount - reduction)
+            return min_(reduced_max_amount, total_ctc)
 
-        total_ctc = tax_unit("ctc", period)
         maximum_refundable_ctc = min_(maximum_amount, total_ctc)
 
         # The other part of the "lesser of" statement is: "the amount by which [the non-refundable CTC]
@@ -75,5 +77,5 @@ class refundable_ctc(Variable):
         amount_ctc_would_increase = (
             ctc_capped_by_increased_tax - ctc_capped_by_tax
         )
-
+        print(max_(0, maximum_amount - reduction))
         return min_(maximum_refundable_ctc, amount_ctc_would_increase)
