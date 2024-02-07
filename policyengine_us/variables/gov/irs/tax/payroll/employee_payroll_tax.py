@@ -14,7 +14,7 @@ class employee_payroll_tax(Variable):
         ).gov.contrib.ubi_center.flat_tax.abolish_payroll_tax:
             return 0
         else:
-            added_components = add(
+            return add(
                 person,
                 period,
                 [
@@ -23,4 +23,3 @@ class employee_payroll_tax(Variable):
                     "additional_medicare_tax",
                 ],
             )
-            return added_components
