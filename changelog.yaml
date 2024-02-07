@@ -6085,3 +6085,23 @@
     added:
     - Ohio lump sum distribution credit.
   date: 2024-02-07 17:44:33
+- bump: patch
+  changes:
+    fixed:
+    - Avoid negative values of non_refundable_ctc.
+  date: 2024-02-07 20:51:32
+- bump: minor
+  changes:
+    added:
+    - Montana married filing separately on same form logic.
+  date: 2024-02-07 21:00:05
+- bump: patch
+  changes:
+    fixed:
+    - Adjust the list in the oh_partial_non_refundable_credits variable.
+  date: 2024-02-07 21:07:12
+- bump: minor
+  changes:
+    added:
+    - Remove redundant formula/adds+subtracts combos.
+  date: 2024-02-07 21:15:22
