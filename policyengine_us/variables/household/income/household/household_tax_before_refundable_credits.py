@@ -35,4 +35,4 @@ class household_tax_before_refundable_credits(Variable):
                 for c in added_components
                 if c != "income_tax_before_refundable_credits"
             ]
-        return add(household, period, added_components)
+        return added_components

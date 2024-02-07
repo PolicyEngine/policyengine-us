@@ -24,4 +24,4 @@ class household_refundable_tax_credits(Variable):
             added_components = [
                 "income_tax_refundable_credits",  # Federal.
             ]
-        return add(household, period, added_components)
+        return added_components
