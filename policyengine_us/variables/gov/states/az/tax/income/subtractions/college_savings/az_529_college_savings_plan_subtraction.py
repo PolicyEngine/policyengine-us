@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class az_529_college_savings_plans_subtraction(Variable):
+class az_529_college_savings_plan_subtraction(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Arizona 529 college savings plans subtraction"
+    label = "Arizona 529 college savings plan subtraction"
     unit = USD
     documentation = "https://azdor.gov/sites/default/files/2023-03/FORMS_INDIVIDUAL_2022_140i.pdf#page=15"
     definition_period = YEAR
