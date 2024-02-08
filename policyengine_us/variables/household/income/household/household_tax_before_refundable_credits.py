@@ -10,7 +10,7 @@ class household_tax_before_refundable_credits(Variable):
     definition_period = YEAR
 
     def formula(household, period, parameters):
-        params = parameters(period)
+        p = parameters(period)
         added_components = params.gov.household_tax_before_refundable_credits
         flat_tax = params.gov.contrib.ubi_center.flat_tax
         if params.simulation.reported_state_income_tax:
