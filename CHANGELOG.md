@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.648.2] - 2024-02-08 18:50:37
+
+### Fixed
+
+- Adjusting references to Colorado Child Care Assistance Program files.
+
 ## [0.648.1] - 2024-02-08 15:55:48
 
 ### Added
@@ -7207,6 +7213,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.648.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.648.1...0.648.2
 [0.648.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.648.0...0.648.1
 [0.648.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.647.1...0.648.0
 [0.647.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.647.0...0.647.1
