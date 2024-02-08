@@ -5,6 +5,54 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.648.2] - 2024-02-08 18:50:37
+
+### Fixed
+
+- Adjusting references to Colorado Child Care Assistance Program files.
+
+## [0.648.1] - 2024-02-08 15:55:48
+
+### Added
+
+- Enable the Hawaii state income tax model and add it to the net income tree.
+
+## [0.648.0] - 2024-02-07 21:15:22
+
+### Added
+
+- Remove redundant formula/adds+subtracts combos.
+
+## [0.647.1] - 2024-02-07 21:07:12
+
+### Fixed
+
+- Adjust the list in the oh_partial_non_refundable_credits variable.
+
+## [0.647.0] - 2024-02-07 21:00:05
+
+### Added
+
+- Montana married filing separately on same form logic.
+
+## [0.646.1] - 2024-02-07 20:51:32
+
+### Fixed
+
+- Avoid negative values of non_refundable_ctc.
+
+## [0.646.0] - 2024-02-07 17:44:33
+
+### Added
+
+- Ohio lump sum distribution credit.
+
+## [0.645.0] - 2024-02-07 16:40:25
+
+### Added
+
+- Pin policyengine-core below 2.14.
+
 ## [0.644.0] - 2024-02-06 17:23:36
 
 ### Added
@@ -7165,6 +7213,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.648.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.648.1...0.648.2
+[0.648.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.648.0...0.648.1
+[0.648.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.647.1...0.648.0
+[0.647.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.647.0...0.647.1
+[0.647.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.646.1...0.647.0
+[0.646.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.646.0...0.646.1
+[0.646.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.645.0...0.646.0
+[0.645.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.644.0...0.645.0
 [0.644.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.643.0...0.644.0
 [0.643.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.642.0...0.643.0
 [0.642.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.641.1...0.642.0
