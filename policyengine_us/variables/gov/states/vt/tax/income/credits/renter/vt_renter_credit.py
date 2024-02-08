@@ -15,47 +15,42 @@ class vt_renter_credit(Variable):
     )
     defined_for = StateCode.VT
 
-    def formula(tax_unit, period, parameters):
-        # income > uppder cap, then credit is 0
-        # income < lower cap, then credit is fair market rent
-        # income is between upper cap and lower cap:
-        ## if no subsidized: (upper cap - income)/(upper cap - lower cap) * fair market rent
-        ## if subsidized: (upper cap - income)/(upper cap - lower cap) * actual pay rent amount * rent rate
-        # for all of the above situations, mulitple by the share rent rate if the the rental unit was shared
+    def formula(tax_unit, period, parameters):   
         p = parameters(period).gov.states.vt.tax.income.credits.renter
-        vt_renter_credit_income = tax_unit("vt_renter_credit_income", period)
+        # get tax unit size and county.
         tax_unit_size = tax_unit("tax_unit_size", period)
         county = tax_unit.household("county", period)
-        shared_rent = tax_unit("rent_is_shared_with_another_tax_unit", period)
-        has_housing_assistance = (
-            tax_unit.spm_unit(("housing_assistance"), period) > 0
-        )
-        rent_amount = add(tax_unit, period, ["rent"])
-
         # locate the values by family size and county
-        full_credit_income_limit = p.income_limit.full_credit[tax_unit_size][
+        full_credit_income_limit = p.income_limit_ami.thirty_percent[tax_unit_size][
             county
         ]
-        partial_credit_income_limit = p.income_limit.partial_credit[
+        partial_credit_income_limit = p.income_limit_ami.fifty_percent[
             tax_unit_size
         ][county]
-        base_credit_amount = (
-            p.fair_market_rent[tax_unit_size][county]
-            * MONTHS_IN_YEAR
-            * p.fmr_rate
-        )
+        fmr = p.fair_market_rent[tax_unit_size][county]  
+        base_credit_amount = fmr * MONTHS_IN_YEAR * p.fmr_rate
 
-        # Compute percent reabte claimable amount
+        # Compute what the spreadsheet calls the "percent reabte claimable"
+        vt_renter_credit_income = tax_unit("vt_renter_credit_income", period)
         income_diff = partial_credit_income_limit - vt_renter_credit_income
         income_threshold_diff = (
             partial_credit_income_limit - full_credit_income_limit
         )
         percent_reabte_claimable = income_diff / income_threshold_diff
-        # if share rent, miltiple by share rent rate
-        share = where(shared_rent, 1 / p.shared_residence_reduction, 1)
+        # If shared residence, reduce by a given fraction. 
+        shared_rent = tax_unit("rent_is_shared_with_another_tax_unit", period)
+        shared_residence_reduction = shared_rent * p.shared_residence_reduction
         # if subsidized, get base credit
+        has_housing_assistance = tax_unit.spm_unit("housing_assistance", period) > 0
+        rent_amount = add(tax_unit, period, ["rent"])
         base_credit_subsidized = rent_amount * p.fmr_rate
 
+        # income > partial credit income limit, then credit is 0
+        # income < full credit income limit, then credit is fair market rent
+        # income is between partial credit income limit and full credit income limit:
+        ## if no subsidized: (partial credit income limit - income)/(partial credit income limit - full credit income limit) * fair market rent
+        ## if subsidized: (partial credit income limit - income)/(partial credit income limit - full credit income limit) * actual pay rent amount * rent rate
+        # for all of the above situations, mulitple by the share rent rate if the the rental unit was shared
         high_income = vt_renter_credit_income > partial_credit_income_limit
         low_income = vt_renter_credit_income < full_credit_income_limit
         mid_income = ~(high_income | low_income)
@@ -74,4 +69,5 @@ class vt_renter_credit(Variable):
             ],
             default=0,
         )
-        return np.round(credit_value * share, 0)
+        unrounded = credit_value * (1 - shared_residence_reduction)  
+        return np.round(unrounded) 
