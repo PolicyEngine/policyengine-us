@@ -20,5 +20,5 @@ class mi_homestead_property_tax_credit_eligible(Variable):
         # Line 38 & 39 & 41
         return (
             add(tax_unit, period, ["real_estate_taxes"])
-            <= p.real_estate_tax_limit
+            <= p.property_value_limit
         )
