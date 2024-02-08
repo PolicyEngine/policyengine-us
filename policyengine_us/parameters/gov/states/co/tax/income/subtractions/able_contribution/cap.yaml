@@ -1,8 +1,8 @@
-description: Colorado limits the ABLE contribution subtraction to this maximum amount.
+description: Colorado caps the ABLE contribution subtraction to this amount, based on filing status.
 metadata:
   unit: currency-USD
   period: year
-  label: Colorado ABLE contribution subtraction limit
+  label: Colorado ABLE contribution subtraction cap
   breakdown:
     - filing_status
   reference:
@@ -13,3 +13,10 @@ JOINT:
   2023-01-01: 31_000
 SINGLE:
   2023-01-01: 20_700
+WIDOW:
+  2023-01-01: 20_700
+HEAD_OF_HOUSEHOLD:
+  2023-01-01: 20_700
+SEPERATE:
+  2023-01-01: 20_700
+
