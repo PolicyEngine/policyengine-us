@@ -17,11 +17,7 @@ class ca_foster_youth_tax_credit(Variable):
 
         eligible_person = person("ca_foster_youth_tax_credit_eligible", period)
 
-        adjustment_factor = parameters(
-            period
-        ).gov.states.ca.tax.income.credits.earned_income.adjustment.factor
-
-        base_credit = p.base.calc(age) * adjustment_factor * eligible_person
+        base_credit = p.base.calc(age) * eligible_person
 
         total_base_credit = tax_unit.sum(base_credit)
 
