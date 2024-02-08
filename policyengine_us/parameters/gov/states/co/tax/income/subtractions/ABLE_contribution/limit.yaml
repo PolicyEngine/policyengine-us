@@ -1,0 +1,15 @@
+description: Colorado limits the ABLE contribution subtraction to this maximum amount.
+metadata:
+  unit: currency-USD
+  period: year
+  label: Colorado ABLE contribution subtraction limit
+  breakdown:
+    - filing_status
+  reference:
+    - title: 2023 Colorado Individual Tax Filing Guide 104 Book 
+      href: https://tax.colorado.gov/sites/tax/files/documents/Book0104_2023.pdf#page=14
+
+JOINT:
+  2023-01-01: 31_000
+SINGLE:
+  2023-01-01: 20_700
