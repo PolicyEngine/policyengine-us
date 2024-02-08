@@ -11,7 +11,7 @@ class household_refundable_tax_credits(Variable):
     def formula(household, period, parameters):
         p = parameters(period)
         added_components = params.gov.household_refundable_credits
-        if p.abolish_federal_income_tax:
+        if p.gov.contrib.ubi_center.flat_tax.abolish_federal_income_tax:
             added_components = [
                 c
                 for c in added_components
