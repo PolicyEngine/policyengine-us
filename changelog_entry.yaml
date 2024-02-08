@@ -1,6 +1,6 @@
 - bump: patch
   changes:
     changed:
-    - Refactored household_refundable_tax_credits and
+    - Refactored household_refundable_tax_credits and household_tax_before_refundable_credits to remove erroneous variable overwrite.
        household_tax_before_refundable_credits to remove
        erroneous variable overwrite
