@@ -5,6 +5,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.648.4] - 2024-02-09 01:35:14
+
+### Fixed
+
+- Fix the ar_low_income_tax_joint calculation.
+
+## [0.648.3] - 2024-02-08 21:27:43
+
+### Fixed
+
+- Refactored household_refundable_tax_credits and household_tax_before_refundable_credits to remove erroneous variable overwrite. household_tax_before_refundable_credits to remove erroneous variable overwrite
+
+## [0.648.2] - 2024-02-08 18:50:37
+
+### Fixed
+
+- Adjusting references to Colorado Child Care Assistance Program files.
+
+## [0.648.1] - 2024-02-08 15:55:48
+
+### Added
+
+- Enable the Hawaii state income tax model and add it to the net income tree.
+
 ## [0.648.0] - 2024-02-07 21:15:22
 
 ### Added
@@ -7201,6 +7225,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.648.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.648.3...0.648.4
+[0.648.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.648.2...0.648.3
+[0.648.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.648.1...0.648.2
+[0.648.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.648.0...0.648.1
 [0.648.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.647.1...0.648.0
 [0.647.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.647.0...0.647.1
 [0.647.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.646.1...0.647.0

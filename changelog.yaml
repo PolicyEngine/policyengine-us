@@ -6105,3 +6105,25 @@
     added:
     - Remove redundant formula/adds+subtracts combos.
   date: 2024-02-07 21:15:22
+- bump: patch
+  changes:
+    added:
+    - Enable the Hawaii state income tax model and add it to the net income tree.
+  date: 2024-02-08 15:55:48
+- bump: patch
+  changes:
+    fixed:
+    - Adjusting references to Colorado Child Care Assistance Program files.
+  date: 2024-02-08 18:50:37
+- bump: patch
+  changes:
+    fixed:
+    - Refactored household_refundable_tax_credits and household_tax_before_refundable_credits
+      to remove erroneous variable overwrite. household_tax_before_refundable_credits
+      to remove erroneous variable overwrite
+  date: 2024-02-08 21:27:43
+- bump: patch
+  changes:
+    fixed:
+    - Fix the ar_low_income_tax_joint calculation.
+  date: 2024-02-09 01:35:14
