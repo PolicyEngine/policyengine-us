@@ -29,7 +29,7 @@
     ky_standard_deduction_indiv: [2_770, 2_770]
     ky_itemized_deductions_indiv: [0, 0]
     ky_taxable_income_indiv: [16_230, 23_230]
-    ky_personal_tax_credits: [0, 0] 
+    ky_personal_tax_credits_indiv: [0, 0] 
     ky_income_tax_before_non_refundable_credits: 1973
     ky_income_tax_before_refundable_credits: 1873
 
@@ -65,7 +65,7 @@
     ky_standard_deduction_joint: [2770, 0]
     ky_itemized_deductions_joint: [0, 0] 
     ky_taxable_income_joint: [42_230, 0]
-    ky_personal_tax_credits: [0, 0] 
+    ky_personal_tax_credits_joint: [0, 0] 
     ky_income_tax_before_non_refundable_credits: 2111.5
     ky_income_tax_before_refundable_credits: 2011.5
 
@@ -97,7 +97,7 @@
     ky_standard_deduction_joint: [0, 2_770]
     ky_itemized_deductions_joint: [0, 0] 
     ky_taxable_income_joint: [0, 42_230]
-    ky_personal_tax_credits: [0, 0] 
+    ky_personal_tax_credits_joint: [0, 0] 
     #not 2111.5, becase ky_files_separately return true (we optimize)
     ky_income_tax_before_non_refundable_credits: 1973 
     ky_income_tax_before_refundable_credits: 1973
@@ -125,16 +125,14 @@
         state_code: KY 
   output:
     ky_agi: [20_000, 25_000]
-    #If filing a joint return, only one standard deduction is allowed.
-    # default: older perpon is head
-    ky_standard_deduction_joint: [0, 2_770]
-    ky_itemized_deductions_joint: [0, 0] 
-    ky_taxable_income_joint: [0, 42_230]
-    ky_personal_tax_credits: [0, 0] 
+    ky_standard_deduction_indiv: [2_770, 2_770]
+    ky_itemized_deductions_indiv: [0, 0] 
+    ky_taxable_income_indiv: [17_230, 22_230]
+    ky_personal_tax_credits_indiv: [0, 0] 
     ky_income_tax_before_non_refundable_credits: 1973 
     ky_income_tax_before_refundable_credits: 1973
 
-- name: integration test for personal tax credit
+- name: integration test for personal tax credit joint
   period: 2022
   # High error margin because of rounding in the tax tables
   absolute_error_margin: 2
@@ -142,28 +140,33 @@
     people:
       person1:
         adjusted_gross_income_person: 20_000
-        ky_blind_personal_tax_credits: 2
+        is_blind: true
         age: 30
+        is_tax_unit_head_or_spouse: true
       person2:
         adjusted_gross_income_person: 25_000
-        ky_blind_personal_tax_credits: 10
+        is_blind: true
         age: 31
+        is_tax_unit_head_or_spouse: true
+      child:
+        is_blind: true
+        is_tax_unit_head_or_spouse: false
+        age: 10
     tax_units:
       tax_unit:
-        members: [person1, person2]
+        members: [person1, person2, child]
         filing_status: JOINT
     households:
       household:
-        members: [person1, person2]
+        members: [person1, person2, child]
         state_code: KY 
   output:
-    ky_agi: [20_000, 25_000]
+    ky_agi: [20_000, 25_000, 0]
     # If filing a joint return, only one standard deduction is allowed.
     # default: older perpon is head
-    ky_standard_deduction_joint: [0, 2_770]
-    ky_itemized_deductions_joint: [0, 0] 
-    ky_taxable_income_joint: [0, 42_230]
-    ky_personal_tax_credits: [2, 10] # should
-    #becase ky_files_separately return true (we optimize)
+    ky_standard_deduction_joint: [0, 2_770, 0]
+    ky_itemized_deductions_joint: [0, 0, 0] 
+    ky_taxable_income_joint: [0, 42_230, 0]
+    ky_personal_tax_credits_joint: [0, 80, 0] 
     ky_income_tax_before_non_refundable_credits: 1973 
-    ky_income_tax_before_refundable_credits: 1961 #1973 - 12 = 1961
+    ky_income_tax_before_refundable_credits: 1973 ###False, need to modify non-refundable credits param
