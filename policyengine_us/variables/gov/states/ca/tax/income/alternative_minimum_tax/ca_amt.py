@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ca_amt(Variable):
     value_type = float
     entity = TaxUnit
-    label = "CA alternative minimum tax"
+    label = "California alternative minimum tax"
     defined_for = StateCode.CA
     unit = USD
     definition_period = YEAR

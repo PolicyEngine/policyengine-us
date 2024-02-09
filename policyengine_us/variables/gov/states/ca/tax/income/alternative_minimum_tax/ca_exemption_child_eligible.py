@@ -15,14 +15,19 @@ class ca_exemption_child_eligible(Variable):
         p = parameters(period).gov.states.ca.tax.income.alternative_minimum_tax
 
         head = person("is_tax_unit_head", period)
-        child = person("age", period) < p.age_threshold.lower
-        no_income = (person("age", period) == p.age_threshold.lower) & (
-            person("earned_income", period) == 0
-        )
+        lower_age_threshold = person("age", period) < p.age_threshold.lower
+        # Assuming that 
+        income = person("earned_income", period)
+        support_costs = person("care_and_support_costs", period)
+
+        income_rate = np.zeros_like(support_costs)
+        mask = support_costs != 0
+        income_rate[mask] = income[mask] / support_costs[mask]
+        income_rate_eligible = income_rate < 0.5
         student_no_income = (
             person("is_full_time_student", period)
-            & (person("earned_income", period) == 0)
+            & income_rate_eligible
             & (person("age", period) < p.age_threshold.upper)
         )
 
-        return head & (child | no_income | student_no_income)
+        return head & (lower_age_threshold | income_rate_eligible | student_no_income)
