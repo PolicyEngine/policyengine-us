@@ -13,7 +13,7 @@ class ar_taxable_income_indiv(Variable):
         "https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2022_AR1000F_and_AR1000NR_Instructions.pdf"
         "https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2022_AR1000F_FullYearResidentIndividualIncomeTaxReturn.pdf"
     )
-    defined_for = "ar_can_file_separate_on_same_return"
+    defined_for = StateCode.AR
 
     def formula(person, period, parameters):
         agi = person("ar_agi", period)
