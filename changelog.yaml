@@ -6122,3 +6122,8 @@
       to remove erroneous variable overwrite. household_tax_before_refundable_credits
       to remove erroneous variable overwrite
   date: 2024-02-08 21:27:43
+- bump: patch
+  changes:
+    fixed:
+    - Fix the ar_low_income_tax_joint calculation.
+  date: 2024-02-09 01:35:14
