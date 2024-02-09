@@ -155,12 +155,18 @@ def generate_model_variables(dataset: str, time_period: str = "2023") -> Tuple:
     values_df["U.S. population"] = simulation.calculate(
         "people", map_to="household"
     ).values
-    targets["U.S. population"] = parameters.populations.total
+    targets["U.S. population"] = parameters.gov.census.populations.total
     equivalisation["U.S. population"] = POPULATION_EQUIVALISATION
 
     # Population by 10-year age group and sex
     age = simulation.calculate("age").values
     is_male = simulation.calculate("is_male")
+    population_in_21 = simulation.tax_benefit_system.parameters.calibration.gov.census.populations.total(
+        "2021-01-01"
+    )
+    population_growth = (
+        parameters.gov.census.populations.total / population_in_21
+    )
     for lower_age_group in range(0, 90, 10):
         for possible_is_male in (True, False):
             in_age_range = (age >= lower_age_group) & (
@@ -175,7 +181,7 @@ def generate_model_variables(dataset: str, time_period: str = "2023") -> Tuple:
             values_df[name] = count_people_in_range
             targets[name] = (
                 household_weights.numpy() * count_people_in_range
-            ).sum()
+            ).sum() * population_growth
             equivalisation[name] = POPULATION_EQUIVALISATION
 
     # Household population by number of adults and children
@@ -196,7 +202,9 @@ def generate_model_variables(dataset: str, time_period: str = "2023") -> Tuple:
             )
             name = f"{count_adults}-adult, {count_children}-child household population"
             values_df[name] = in_criteria
-            targets[name] = (household_weights.numpy() * in_criteria).sum()
+            targets[name] = (
+                household_weights.numpy() * in_criteria
+            ).sum() * population_growth
             equivalisation[name] = POPULATION_EQUIVALISATION
 
     # Tax filing unit counts by filing status
@@ -212,7 +220,7 @@ def generate_model_variables(dataset: str, time_period: str = "2023") -> Tuple:
         values_df[name] = household_filing_status_unit_counts
         targets[name] = (
             household_weights.numpy() * household_filing_status_unit_counts
-        ).sum()
+        ).sum() * population_growth
         equivalisation[name] = POPULATION_EQUIVALISATION
 
     targets_array = torch.tensor(list(targets.values()), dtype=torch.float32)
@@ -244,7 +252,7 @@ def calibrate(
     dataset: str,
     time_period: str = "2023",
     training_log_path: str = "training_log.csv.gz",
-    learning_rate: float = 1e-1,
+    learning_rate: float = 2e-1,
     epochs: int = 250_000,
 ) -> np.ndarray:
     (
@@ -288,6 +296,7 @@ def calibrate(
                             "epoch": [i] * len(targets) + [i],
                             "value": list(current_aggregates) + [current_loss],
                             "target": list(targets.values()) + [0],
+                            "time_period": time_period,
                         }
                     ),
                 ]

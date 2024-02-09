@@ -1,0 +1,39 @@
+- name: Two people with employment income and one dependent
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        employment_income: 10_000
+        age: 30
+      person2:
+        employment_income: 19_000
+        age: 28
+      person3:
+        age: 11
+        employment_income: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        filing_status: JOINT
+    households:
+      household:
+        state_code: MT
+  output:
+    mt_exemptions_indiv: [5_420, 2_710, 0]
+    mt_exemptions_joint: [8_130, 0, 0]
+    mt_agi: [10_000, 19_000, 0]
+    mt_standard_deduction_indiv: [2_260, 3_800, 0]
+    mt_standard_deduction_joint: [5_800, 0, 0]
+    mt_taxable_income_indiv: [2_320, 12_490, 0]
+    mt_taxable_income_joint: [15_070, 0, 0]
+    mt_income_tax_before_non_refundable_credits_indiv: [23.2, 324.5, 0]
+    mt_income_tax_before_non_refundable_credits_joint: 453.5
+    mt_non_refundable_credits: [0, 0, 0]
+    mt_income_tax_before_refundable_credits_indiv: [23.2, 324.5, 0]
+    mt_income_tax_before_refundable_credits_joint: 453.5
+    mt_eitc: [98.854, 0, 0]
+    mt_income_tax_indiv: [-75.65, 324.5, 0]
+    mt_income_tax_joint: 354.65
+    mt_income_tax: 248.85
+
