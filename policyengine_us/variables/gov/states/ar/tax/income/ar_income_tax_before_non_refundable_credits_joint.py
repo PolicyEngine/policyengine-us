@@ -14,4 +14,7 @@ class ar_income_tax_before_non_refundable_credits_joint(Variable):
         rate = parameters(period).gov.states.ar.tax.income.rates.main
         taxable_income = person("ar_taxable_income_joint", period)
 
-        return rate.calc(taxable_income)
+        main_rate = rate.calc(taxable_income)
+
+        low_income_tax = person("ar_low_income_tax_indiv", period)
+        return min_(main_rate, low_income_tax)

@@ -10,8 +10,7 @@ metadata:
 
 values:
   2017-12-20:
-    - state_disability_insurance
-    - private_disability_insurance
-    - vdc_benefits
+    - ca_state_disability_insurance
+    # Also private disability insurance and VDC benefits.
     - workers_compensation
-    - social_security_disability_benefits
+    - social_security_disability
