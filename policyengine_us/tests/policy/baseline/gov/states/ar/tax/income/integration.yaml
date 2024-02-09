@@ -20,7 +20,6 @@
         ar_files_separately: true
         filing_status: SEPARATE
         ar_non_refundable_credits: 0
-        ar_can_file_separate_on_same_return: true
     households:
       household:
         members: [person1, person2]
@@ -54,7 +53,6 @@
         ar_files_separately: false
         filing_status: JOINT
         ar_non_refundable_credits: 0
-        ar_can_file_separate_on_same_return: true
     households:
       household:
         members: [person1, person2]
@@ -65,3 +63,15 @@
     ar_taxable_income_joint: [34_560, 0]
     ar_income_tax_before_non_refundable_credits_joint: [1_065, 0]
     ar_income_tax_before_refundable_credits: [1_065]
+
+
+- name: High taxable income
+  period: 2022
+  # High error margin because of rounding in the tax tables
+  absolute_error_margin: 2
+  input:
+    ar_agi: 168_820
+    ar_taxable_income_joint: 168_820
+    state_code: AR
+  output:
+    ar_income_tax_before_non_refundable_credits_joint: 7_643.88
