@@ -1,0 +1,76 @@
+- name: Test case 1 # filing separate
+  period: 2021
+  input:
+     charitable_deduction: 800
+     investment_interest_expense: 265
+     mt_salt_deduction: 5_000
+     mt_medical_expense_deduction_indiv: 1_000
+     casualty_loss_deduction: 400
+     mt_child_dependent_care_expense_deduction: 123
+     mt_federal_income_tax_deduction: 2_000
+     state_code: MT
+  output:
+    mt_itemized_deductions_indiv: 9_188 
+
+- name: Test case 2 #salt has a cap of 10000 for single, head of household and joint
+  period: 2022
+  input:
+     charitable_deduction: 0
+     investment_interest_expense: 1_234
+     mt_salt_deduction: 10_000
+     mt_medical_expense_deduction_indiv: 3_000 
+     casualty_loss_deduction: 0
+     mt_child_dependent_care_expense_deduction: 0
+     mt_federal_income_tax_deduction: 2_000
+     state_code: MT
+  output:
+    mt_itemized_deductions_indiv: 16_234
+
+- name: Test case 3 #sum all terms
+  period: 2021
+  input:
+     charitable_deduction: 1_000
+     mortgage_interest: 34
+     mt_salt_deduction: 1_035
+     mt_medical_expense_deduction_indiv: 3_000
+     casualty_loss_deduction: 745
+     mt_child_dependent_care_expense_deduction: 1_004
+     mt_federal_income_tax_deduction: 2_000
+     state_code: MT
+  output:
+    mt_itemized_deductions_indiv: 8_318
+
+- name: Amount only distributed to the head and spouse
+  period: 2021
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        mt_misc_deductions: 100
+        mt_medical_expense_deduction_indiv: 200
+        mt_salt_deduction: 300
+        mt_federal_income_tax_deduction: 400
+      person2:
+        is_tax_unit_head_or_spouse: true
+        mt_misc_deductions: 100
+        mt_medical_expense_deduction_indiv: 200
+        mt_salt_deduction: 300
+        mt_federal_income_tax_deduction: 100
+      person3:
+        is_tax_unit_head_or_spouse: false
+        is_tax_unit_dependent: true
+        mt_misc_deductions: 100
+        mt_medical_expense_deduction_indiv: 12
+        mt_salt_deduction: 200
+        mt_federal_income_tax_deduction: 100
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        charitable_deduction: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    mt_itemized_deductions_indiv: [1_000, 700, 0]

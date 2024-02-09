@@ -3,6 +3,7 @@ from policyengine_us.model_api import *
 
 class school_meal_fpg_ratio(Variable):
     value_type = float
+    label = "School meal FPG ratio"
     entity = SPMUnit
     definition_period = YEAR
     documentation = "SPM unit's federal poverty ratio for school meal program"

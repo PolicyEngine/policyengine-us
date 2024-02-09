@@ -2,7 +2,7 @@
   period: 2022
   input:
     disability_benefits: 15_000
-    mt_disability_income_exclusion_eligible_person: 0
+    mt_disability_income_exclusion_eligible_person: false
     state_code: MT
   output:
     mt_disability_income_exclusion_person: 0
@@ -11,7 +11,7 @@
   period: 2022
   input:
     disability_benefits: 15_000
-    mt_disability_income_exclusion_eligible_person: 1
+    mt_disability_income_exclusion_eligible_person: true
     state_code: MT
   output:
     mt_disability_income_exclusion_person: 5_200
@@ -20,7 +20,7 @@
   period: 2022
   input:
     disability_benefits: 5_000
-    mt_disability_income_exclusion_eligible_person: 1
+    mt_disability_income_exclusion_eligible_person: true
     state_code: MT
   output:
     mt_disability_income_exclusion_person: 5_000

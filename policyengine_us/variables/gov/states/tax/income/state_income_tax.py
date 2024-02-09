@@ -77,4 +77,5 @@ class state_income_tax(Variable):
                 0,
             )
         else:
-            return add(tax_unit, period, state_income_tax.adds)
+            p = parameters(period)
+            return add(tax_unit, period, p.gov.state_income_tax)
