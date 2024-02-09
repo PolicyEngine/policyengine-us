@@ -1,0 +1,67 @@
+- name: If filing SINGLE, age eligible.
+  period: 2023
+  input:
+    earned_income: 2_499
+    state_filing_status_if_married_filing_separately_on_same_return: SINGLE
+    is_disabled: false
+    age: 61
+    de_pre_exclusions_agi: 10_000
+    state_code: DE
+    is_tax_unit_head_or_spouse: true
+  output:
+    de_elderly_or_disabled_income_exclusion_eligible_person: true    
+
+- name: If filing SINGLE, disability eligible.
+  period: 2023
+  input:
+    earned_income: 2_499
+    state_filing_status_if_married_filing_separately_on_same_return: SINGLE
+    is_disabled: true
+    age: 59
+    de_pre_exclusions_agi: 10_000
+    state_code: DE
+    is_tax_unit_head_or_spouse: true
+  output:
+    de_elderly_or_disabled_income_exclusion_eligible_person: true
+
+- name: If filing SINGLE, earned income ineligible.
+  period: 2023
+  input:
+    earned_income: 2_500
+    filing_status: SINGLE
+    is_disabled: true
+    age: 61
+    de_pre_exclusions_agi: 10_000
+    state_code: DE
+    is_tax_unit_head_or_spouse: true
+  output:
+    de_elderly_or_disabled_income_exclusion_eligible_person: false
+
+- name: If filing SINGLE, agi ineligible.
+  period: 2023
+  input:
+    earned_income: 2_499
+    filing_status: SINGLE
+    is_disabled: true
+    age: 60
+    de_pre_exclusions_agi: 10_001
+    state_code: DE
+    is_tax_unit_head_or_spouse: true
+  output:
+    de_elderly_or_disabled_income_exclusion_eligible_person: false
+
+- name: If filing SEPARATE, eligible.
+  period: 2023
+  input:
+    earned_income: 2_499
+    filing_status: SEPARATE
+    is_disabled: false
+    age: 61
+    de_pre_exclusions_agi: 10_000
+    state_code: DE
+    is_tax_unit_head_or_spouse: true
+  output:
+    de_elderly_or_disabled_income_exclusion_eligible_person: true
+
+
+

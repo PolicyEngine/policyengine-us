@@ -11,7 +11,7 @@ class de_itemized_deductions_indv(Variable):
         "https://revenuefiles.delaware.gov/2022/TY22_PIT-RSA_2022-02_PaperInteractive.pdf",  # § 1109
         "https://delcode.delaware.gov/title30/c011/sc02/index.html",
     )
-    defined_for = "de_can_file_separate_on_same_return"
+    defined_for = StateCode.DE
 
     def formula(person, period, parameters):
         unit_deds = person.tax_unit("de_itemized_deductions_unit", period)

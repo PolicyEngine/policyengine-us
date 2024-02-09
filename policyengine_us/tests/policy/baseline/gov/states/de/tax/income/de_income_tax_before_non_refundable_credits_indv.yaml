@@ -2,7 +2,7 @@
   period: 2022
   input:
     de_taxable_income_indv: 0
-    de_can_file_separate_on_same_return: true
+    state_code: DE
   output:
     de_income_tax_before_non_refundable_credits_indv: 0
 
@@ -10,6 +10,6 @@
   period: 2022
   input:
     de_taxable_income_indv: 4_000
-    de_can_file_separate_on_same_return: true
+    state_code: DE
   output:
     de_income_tax_before_non_refundable_credits_indv: 44

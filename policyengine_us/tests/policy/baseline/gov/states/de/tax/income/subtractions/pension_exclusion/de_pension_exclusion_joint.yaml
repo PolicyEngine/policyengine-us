@@ -1,0 +1,19 @@
+- name: Head capped pension income, spouse uncapped military retirement pay
+  period: 2023
+  input:
+    people:
+      person1:
+        de_pension_exclusion_indv: 2_000
+        is_tax_unit_head: true
+      person2:
+        de_pension_exclusion_indv: 3_000
+        is_tax_unit_head: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    de_pension_exclusion_joint: [5_000, 0]

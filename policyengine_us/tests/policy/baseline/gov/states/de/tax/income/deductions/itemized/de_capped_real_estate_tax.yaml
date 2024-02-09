@@ -3,16 +3,16 @@
   input:
     people:
       person1:
-        real_estate_taxes: 6_000
+        real_estate_taxes: 1_000
       person2:
-        real_estate_taxes: 8_000
+        real_estate_taxes: 1_000
     tax_units:
       tax_unit:
         members: [person1, person2]
-        filing_status: JOINT
+        filing_status: SEPARATE
     households:
       household:
         members: [person1, person2]
         state_code: DE
   output:
-    de_capped_real_estate_tax: 10_000
+    de_capped_real_estate_tax: 2_000

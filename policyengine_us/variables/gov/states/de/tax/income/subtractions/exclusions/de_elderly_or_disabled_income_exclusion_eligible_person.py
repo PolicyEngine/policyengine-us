@@ -1,16 +1,21 @@
 from policyengine_us.model_api import *
 
 
-class de_elderly_or_disabled_income_exclusion_eligible_indv(Variable):
+class de_elderly_or_disabled_income_exclusion_eligible_person(Variable):
     value_type = bool
     entity = Person
-    label = "Individual Eligibility for the Delaware elderly or disabled income exclusion"
+    label = (
+        "Eligible person for the Delaware elderly or disabled income exclusion"
+    )
     definition_period = YEAR
-    defined_for = "de_can_file_separate_on_same_return"
+    defined_for = StateCode.DE
 
     def formula(person, period, parameters):
         # First get their filing status.
-        filing_status = person.tax_unit("filing_status", period)
+        filing_status = person.tax_unit(
+            "state_filing_status_if_married_filing_separately_on_same_return",
+            period,
+        )
         p = parameters(
             period
         ).gov.states.de.tax.income.subtractions.exclusions.elderly_or_disabled
@@ -20,7 +25,7 @@ class de_elderly_or_disabled_income_exclusion_eligible_indv(Variable):
 
         # Get the individual filer's age and eligibility.
         age = person("age", period)
-        age_eligible = age > p.eligibility.age_threshold
+        age_eligible = age >= p.eligibility.age_threshold
 
         # Get the tax unit income
         earned_income = person("earned_income", period)
@@ -34,8 +39,11 @@ class de_elderly_or_disabled_income_exclusion_eligible_indv(Variable):
             pre_exclusions_agi <= p.eligibility.agi_limit[filing_status]
         )
 
+        is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+
         return (
             (age_eligible | disability_eligible)
             & income_eligible
             & agi_eligible
+            & is_head_or_spouse
         )

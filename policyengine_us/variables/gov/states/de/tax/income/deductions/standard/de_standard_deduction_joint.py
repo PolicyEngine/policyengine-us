@@ -12,5 +12,5 @@ class de_standard_deduction_joint(Variable):
 
     adds = [
         "de_base_standard_deduction_joint",
-        "de_additional_standard_deduction_joint",
+        "de_additional_standard_deduction",
     ]

@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class de_pension_exclusion_indv(Variable):
     value_type = float
     entity = Person
-    label = "Delaware individual pension exclusion"
+    label = "Delaware individual pension exclusion when married couples filing separately"
     unit = USD
     definition_period = YEAR
     reference = (

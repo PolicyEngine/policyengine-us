@@ -8,7 +8,7 @@ class de_deduction_indv(Variable):
     unit = USD
     definition_period = YEAR
     reference = "https://delcode.delaware.gov/title30/c011/sc02/index.html title 30, chapter 11, subchapter II, section 1108"
-    defined_for = "de_can_file_separate_on_same_return"
+    defined_for = StateCode.DE
 
     def formula(person, period, parameters):
         itemized = person("de_itemized_deductions_indv", period)
