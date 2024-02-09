@@ -11,7 +11,10 @@
         members: [person1, person2]
         state_filing_status_if_married_filing_separately_on_same_return: SEPARATE
         tax_unit_dependents: 2
-        ar_can_file_separate_on_same_return: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
   output:
     ar_low_income_tax_indiv: [0, 0]
 
@@ -27,7 +30,10 @@
         members: [person1]
         state_filing_status_if_married_filing_separately_on_same_return: HEAD_OF_HOUSEHOLD
         tax_unit_dependents: 1
-        ar_can_file_separate_on_same_return: true
+    households:
+      household:
+        members: [person1]
+        state_code: AR
   output:
     ar_low_income_tax_indiv: 419
 
@@ -42,6 +48,9 @@
         members: [person1]
         state_filing_status_if_married_filing_separately_on_same_return: HEAD_OF_HOUSEHOLD
         tax_unit_dependents: 2
-        ar_can_file_separate_on_same_return: true
+    households:
+      household:
+        members: [person1]
+        state_code: AR
   output:
     ar_low_income_tax_indiv: 110
