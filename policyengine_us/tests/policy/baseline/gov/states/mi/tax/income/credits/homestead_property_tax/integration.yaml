@@ -15,11 +15,12 @@
   period: 2022
   input:
     employment_income: 0
-    real_estate_taxes: 143_001
+    assessed_property_value: 143_001
+    real_estate_taxes: 1_000
     state_code: MI
   output:
-    mi_homestead_property_tax_credit_countable_property_tax: 143_001
-    mi_homestead_property_tax_credit_household_resource_exemption: 143_001
+    mi_homestead_property_tax_credit_countable_property_tax: 1_000
+    mi_homestead_property_tax_credit_household_resource_exemption: 1_000
     mi_homestead_property_tax_credit_eligible: false
     mi_allowable_homestead_property_tax_credit: 0
     mi_homestead_property_tax_credit: 0

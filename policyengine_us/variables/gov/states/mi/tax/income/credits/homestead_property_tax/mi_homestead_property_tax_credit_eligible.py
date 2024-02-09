@@ -8,7 +8,7 @@ class mi_homestead_property_tax_credit_eligible(Variable):
     definition_period = YEAR
     reference = (
         "http://legislature.mi.gov/doc.aspx?mcl-206-508",
-        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2022/2022-IIT-Forms/MI-1040CR.pdf#page=2",
+        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2022/2022-IIT-Forms/MI-1040CR.pdf#page=1",
         "https://www.legislature.mi.gov/Publications/TaxpayerGuide.pdf#page=16",
     )
     defined_for = StateCode.MI
@@ -19,6 +19,6 @@ class mi_homestead_property_tax_credit_eligible(Variable):
         ).gov.states.mi.tax.income.credits.homestead_property_tax
         # Line 38 & 39 & 41
         return (
-            add(tax_unit, period, ["real_estate_taxes"])
+            add(tax_unit, period, ["assessed_property_value"])
             <= p.property_value_limit
         )

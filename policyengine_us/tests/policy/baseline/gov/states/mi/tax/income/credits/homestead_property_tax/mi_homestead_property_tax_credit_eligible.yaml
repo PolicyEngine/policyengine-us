@@ -1,7 +1,7 @@
 - name: property value smaller than max
   period: 2022
   input:
-    real_estate_taxes: 143_000
+    assessed_property_value: 143_000
     state_code: MI
   output: 
     mi_homestead_property_tax_credit_eligible: true
@@ -9,7 +9,7 @@
 - name: property value larger than max
   period: 2022
   input:
-    real_estate_taxes: 143_001
+    assessed_property_value: 143_001
     state_code: MI
   output: 
     mi_homestead_property_tax_credit_eligible: false

@@ -40,7 +40,9 @@ class mi_allowable_homestead_property_tax_credit(Variable):
         disabled_head_or_spouse = tax_unit(
             "disabled_tax_unit_head_or_spouse", period
         )
-        head_and_spouse_eligible = senior_eligible & disabled_head_or_spouse
+        senior_and_disabled_head_or_spouse = (
+            senior_eligible & disabled_head_or_spouse
+        )
         # Line 39
         head_and_spouse_disabled_amount = min_(exemption_amount, p.cap)
 
@@ -52,7 +54,7 @@ class mi_allowable_homestead_property_tax_credit(Variable):
         # Line 42
         return select(
             [
-                (disabled_head_or_spouse | head_and_spouse_eligible),
+                disabled_head_or_spouse | senior_and_disabled_head_or_spouse,
                 senior_eligible,
             ],
             [head_and_spouse_disabled_amount, senior_amount],

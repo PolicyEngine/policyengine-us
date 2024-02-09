@@ -17,10 +17,11 @@ class mi_homestead_property_tax_credit_countable_property_tax(Variable):
         p = parameters(
             period
         ).gov.states.mi.tax.income.credits.homestead_property_tax
-
+        # Line 10
         property_tax = add(tax_unit, period, ["real_estate_taxes"])
+        # Line 11
         rent = add(tax_unit, period, ["rent"])
-
+        # Line 12
         applicable_rent = rent * p.rent_equivalization
         # Line 13
         return property_tax + applicable_rent
