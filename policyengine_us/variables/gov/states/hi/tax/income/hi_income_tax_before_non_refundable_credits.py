@@ -22,6 +22,15 @@ class hi_income_tax_before_non_refundable_credits(Variable):
             [
                 filing_status == statuses.SINGLE,
                 filing_status == statuses.SEPARATE,
+                filing_status == statuses.JOINT,
+                filing_status == statuses.WIDOW,
+                filing_status == statuses.HEAD_OF_HOUSEHOLD,
+            ],
+            [
+                p.single.calc(taxable_income),
+                p.separate.calc(taxable_income),
+                p.joint.calc(taxable_income),
+                p.widow.calc(taxable_income),
                 p.head_of_household.calc(taxable_income),
             ],
         )
