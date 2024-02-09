@@ -36,7 +36,7 @@ class vt_renter_credit(Variable):
         income_threshold_diff = (
             partial_credit_income_limit - full_credit_income_limit
         )
-        percent_reabte_claimable = income_diff / income_threshold_diff
+        percent_rebate_claimable = income_diff / income_threshold_diff
         # If shared residence, reduce by a given fraction.
         shared_rent = tax_unit("rent_is_shared_with_another_tax_unit", period)
         shared_residence_reduction = shared_rent * p.shared_residence_reduction
@@ -66,8 +66,8 @@ class vt_renter_credit(Variable):
             [
                 base_credit_amount,
                 base_credit_subsidized,
-                percent_reabte_claimable * base_credit_amount,
-                percent_reabte_claimable * base_credit_subsidized,
+                percent_rebate_claimable * base_credit_amount,
+                percent_rebate_claimable * base_credit_subsidized,
             ],
             default=0,
         )
