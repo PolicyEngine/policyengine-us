@@ -1,39 +1,53 @@
-- name: California Alternative Minimum Taxable Income (AMTI) test 1
+- name: California Alternative Minimum Taxable Income (AMTI) calculation - test 1
   period: 2021
   input:
     state_code: CA
-    ca_amti_total_adjustments: 10_000
-    ca_taxable_income: 140_000
-    ca_itemized_ded_limitation: 0
+    ca_pre_exemption_amti: 150_000
+    filing_status: SINGLE
   output:
     ca_amti: 150_000
 
-- name: California Alternative Minimum Taxable Income (AMTI) test 2
+- name: California Alternative Minimum Taxable Income (AMTI) calculation - test 2
   period: 2021
   input:
     state_code: CA
-    ca_amti_total_adjustments: 10_000
-    ca_taxable_income: 340_000
-    ca_itemized_ded_limitation: 5_000
+    ca_pre_exemption_amti: 350_000
+    filing_status: SEPARATE
   output:
-    ca_amti: 355_000
+    ca_amti: 350_000
 
-- name: California Alternative Minimum Taxable Income (AMTI) test 3
+- name: California Alternative Minimum Taxable Income (AMTI) calculation - test 3
+  period: 2021
+  input:
+    state_code: CA
+    ca_pre_exemption_amti: 420_000
+    filing_status: SEPARATE
+  output:
+    ca_amti: 424_163
+
+- name: California Alternative Minimum Taxable Income (AMTI) calculation - test 4
   period: 2022
   input:
     state_code: CA
-    ca_amti_total_adjustments: 10_000
-    ca_taxable_income: 140_000
-    ca_itemized_ded_limitation: 0
+    ca_pre_exemption_amti: 150_000
+    filing_status: SINGLE
   output:
     ca_amti: 150_000
 
-- name: California Alternative Minimum Taxable Income (AMTI) test 4
+- name: California Alternative Minimum Taxable Income (AMTI) calculation - test 5
   period: 2022
   input:
     state_code: CA
-    ca_amti_total_adjustments: 10_000
-    ca_taxable_income: 340_000
-    ca_itemized_ded_limitation: 5_000
+    ca_pre_exemption_amti: 350_000
+    filing_status: SEPARATE
   output:
-    ca_amti: 355_000
+    ca_amti: 350_000
+
+- name: California Alternative Minimum Taxable Income (AMTI) calculation - test 6
+  period: 2022
+  input:
+    state_code: CA
+    ca_pre_exemption_amti: 440_000
+    filing_status: SEPARATE
+  output:
+    ca_amti: 440_793.25
