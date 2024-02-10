@@ -14,7 +14,7 @@ class tax_unit_taxable_social_security(Variable):
         p = parameters(period).gov.irs.social_security.taxability
         gross_ss = tax_unit("tax_unit_social_security", period)
 
-        if ss.fully_taxable:
+        if p.fully_taxable:
             return gross_ss
 
         # The legislation directs the usage an income definition that is
