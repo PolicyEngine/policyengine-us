@@ -1,0 +1,30 @@
+- name: Abolish federal income tax
+  period: 2021
+  input:
+    gov.contrib.ubi_center.flat_tax.abolish_federal_income_tax: true
+    ia_refundable_credits: 3_000
+    de_refundable_credits: 2_000
+    income_tax_refundable_credits: 100
+  output:
+    household_refundable_tax_credits: 5_000
+
+- name: Reported state income tax sim
+  period: 2021
+  input:
+    simulation.reported_state_income_tax: true
+    ia_refundable_credits: 3_000
+    de_refundable_credits: 2_000
+    income_tax_refundable_credits: 100
+  output:
+    household_refundable_tax_credits: 100
+
+- name: Abolish federal income tax
+  period: 2021
+  input:
+    gov.contrib.ubi_center.flat_tax.abolish_federal_income_tax: false
+    simulation.reported_state_income_tax: false
+    ia_refundable_credits: 3_000
+    de_refundable_credits: 2_000
+    income_tax_refundable_credits: 100
+  output:
+    household_refundable_tax_credits: 5_100

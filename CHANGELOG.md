@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.651.0] - 2024-02-09 21:57:38
+
+### Added
+
+- Add tests to the household_refundable_tax_credits and household_tax_before_refundable_credits vars.
+
+## [0.650.0] - 2024-02-09 14:32:01
+
+### Added
+
+- Populate ca_tanf_other_unearned_income.
+
+## [0.649.0] - 2024-02-09 14:20:13
+
+### Added
+
+- Vermont renter credit.
+
 ## [0.648.4] - 2024-02-09 01:35:14
 
 ### Fixed
@@ -7225,6 +7243,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.651.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.650.0...0.651.0
+[0.650.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.649.0...0.650.0
+[0.649.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.648.4...0.649.0
 [0.648.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.648.3...0.648.4
 [0.648.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.648.2...0.648.3
 [0.648.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.648.1...0.648.2
