@@ -1,0 +1,51 @@
+- name: Tax unit with taxsimid 96310 in e21.its.csv and e21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 69
+        employment_income: 29_010
+        taxable_interest_income: 11_010
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person2:
+        age: 11
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person3:
+        age: 11
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person4:
+        age: 11
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person5:
+        age: 11
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+        premium_tax_credit: 0  # not in TAXSIM35
+        local_income_tax: 0  # not in TAXSIM35
+        state_sales_tax: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+        snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_fips: 39  # OH
+  output:  # expected results from patched TAXSIM35 2024-01-31 version
+    oh_senior_citizen_credit: 50
+    oh_exemption_credit: 100
+    oh_income_tax: 314.32
