@@ -1,0 +1,42 @@
+- name: No EITC from federal (test 1)
+  period: 2021
+  input:
+    eitc: 0
+    state_code: MT
+  output: 
+    mt_eitc: 0
+
+- name: 2023 EITC from federal (test 2)
+  period: 2023
+  input:
+    eitc: 1_000
+    state_code: MT
+  output: 
+    mt_eitc: 100
+
+- name: 2022 EITC from federal (test 2)
+  period: 2022
+  input:
+    eitc: 1_000
+    state_code: MT
+  output: 
+    mt_eitc: 30
+
+- name: Amount attributed to the head
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+      person2:
+        is_tax_unit_head: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        eitc: 1_000
+    households:
+      household:
+        state_code: MT
+  output:
+    mt_eitc: [30, 0]
