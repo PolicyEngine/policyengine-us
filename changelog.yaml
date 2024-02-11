@@ -6127,3 +6127,24 @@
     fixed:
     - Fix the ar_low_income_tax_joint calculation.
   date: 2024-02-09 01:35:14
+- bump: minor
+  changes:
+    added:
+    - Vermont renter credit.
+  date: 2024-02-09 14:20:13
+- bump: minor
+  changes:
+    added:
+    - Populate ca_tanf_other_unearned_income.
+  date: 2024-02-09 14:32:01
+- bump: minor
+  changes:
+    added:
+    - Add tests to the household_refundable_tax_credits and household_tax_before_refundable_credits
+      vars.
+  date: 2024-02-09 21:57:38
+- bump: patch
+  changes:
+    fixed:
+    - Arkansas low income tax variables.
+  date: 2024-02-11 00:35:31

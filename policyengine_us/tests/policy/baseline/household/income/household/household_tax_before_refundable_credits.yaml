@@ -1,0 +1,49 @@
+- name: Reported state income tax sim
+  period: 2021
+  input:
+    simulation.reported_state_income_tax: true
+    ca_income_tax_before_refundable_credits: 3_000
+    nj_income_tax_before_refundable_credits: 1_000
+    employee_payroll_tax: 500
+    flat_tax: 600
+    income_tax_before_refundable_credits: 400
+  output:
+    household_tax_before_refundable_credits: 1_500
+
+- name: Abolish payroll tax
+  period: 2021
+  input:
+    gov.contrib.ubi_center.flat_tax.abolish_payroll_tax: true
+    ca_income_tax_before_refundable_credits: 3_000
+    nj_income_tax_before_refundable_credits: 1_000
+    employee_payroll_tax: 500
+    flat_tax: 600
+    income_tax_before_refundable_credits: 400
+  output:
+    household_tax_before_refundable_credits: 5_000
+
+- name: Abolish payroll tax
+  period: 2021
+  input:
+    gov.contrib.ubi_center.flat_tax.abolish_federal_income_tax: true
+    ca_income_tax_before_refundable_credits: 3_000
+    nj_income_tax_before_refundable_credits: 1_000
+    employee_payroll_tax: 500
+    flat_tax: 600
+    income_tax_before_refundable_credits: 400
+  output:
+    household_tax_before_refundable_credits: 5_100
+
+- name: Abolish payroll tax
+  period: 2021
+  input:
+    gov.contrib.ubi_center.flat_tax.abolish_federal_income_tax: false
+    gov.contrib.ubi_center.flat_tax.abolish_payroll_tax: false
+    simulation.reported_state_income_tax: false
+    ca_income_tax_before_refundable_credits: 3_000
+    nj_income_tax_before_refundable_credits: 1_000
+    employee_payroll_tax: 500
+    flat_tax: 600
+    income_tax_before_refundable_credits: 400
+  output:
+    household_tax_before_refundable_credits: 5_500
