@@ -5,6 +5,90 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.651.1] - 2024-02-11 00:35:31
+
+### Fixed
+
+- Arkansas low income tax variables.
+
+## [0.651.0] - 2024-02-09 21:57:38
+
+### Added
+
+- Add tests to the household_refundable_tax_credits and household_tax_before_refundable_credits vars.
+
+## [0.650.0] - 2024-02-09 14:32:01
+
+### Added
+
+- Populate ca_tanf_other_unearned_income.
+
+## [0.649.0] - 2024-02-09 14:20:13
+
+### Added
+
+- Vermont renter credit.
+
+## [0.648.4] - 2024-02-09 01:35:14
+
+### Fixed
+
+- Fix the ar_low_income_tax_joint calculation.
+
+## [0.648.3] - 2024-02-08 21:27:43
+
+### Fixed
+
+- Refactored household_refundable_tax_credits and household_tax_before_refundable_credits to remove erroneous variable overwrite. household_tax_before_refundable_credits to remove erroneous variable overwrite
+
+## [0.648.2] - 2024-02-08 18:50:37
+
+### Fixed
+
+- Adjusting references to Colorado Child Care Assistance Program files.
+
+## [0.648.1] - 2024-02-08 15:55:48
+
+### Added
+
+- Enable the Hawaii state income tax model and add it to the net income tree.
+
+## [0.648.0] - 2024-02-07 21:15:22
+
+### Added
+
+- Remove redundant formula/adds+subtracts combos.
+
+## [0.647.1] - 2024-02-07 21:07:12
+
+### Fixed
+
+- Adjust the list in the oh_partial_non_refundable_credits variable.
+
+## [0.647.0] - 2024-02-07 21:00:05
+
+### Added
+
+- Montana married filing separately on same form logic.
+
+## [0.646.1] - 2024-02-07 20:51:32
+
+### Fixed
+
+- Avoid negative values of non_refundable_ctc.
+
+## [0.646.0] - 2024-02-07 17:44:33
+
+### Added
+
+- Ohio lump sum distribution credit.
+
+## [0.645.0] - 2024-02-07 16:40:25
+
+### Added
+
+- Pin policyengine-core below 2.14.
+
 ## [0.644.0] - 2024-02-06 17:23:36
 
 ### Added
@@ -7165,6 +7249,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.651.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.651.0...0.651.1
+[0.651.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.650.0...0.651.0
+[0.650.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.649.0...0.650.0
+[0.649.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.648.4...0.649.0
+[0.648.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.648.3...0.648.4
+[0.648.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.648.2...0.648.3
+[0.648.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.648.1...0.648.2
+[0.648.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.648.0...0.648.1
+[0.648.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.647.1...0.648.0
+[0.647.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.647.0...0.647.1
+[0.647.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.646.1...0.647.0
+[0.646.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.646.0...0.646.1
+[0.646.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.645.0...0.646.0
+[0.645.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.644.0...0.645.0
 [0.644.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.643.0...0.644.0
 [0.643.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.642.0...0.643.0
 [0.642.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.641.1...0.642.0
