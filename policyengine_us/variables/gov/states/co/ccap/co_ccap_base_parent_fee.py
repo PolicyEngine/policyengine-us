@@ -6,8 +6,6 @@ class co_ccap_base_parent_fee(Variable):
     entity = SPMUnit
     label = "Colorado Child Care Assistance Program base parent fee"
     reference = (
-        "https://docs.google.com/spreadsheets/d/1EEc3z8Iwu_KRTlBtd2NssDDEx_FITqVq/edit#gid=468321263",
-        "https://docs.google.com/spreadsheets/d/1HtPiC2qxclzWfBa7LRo2Uohrg-RCBkyZ/edit#gid=582762342",
         "https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=11042&fileName=8%20CCR%201403-1#page=41",
         "https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=11042&fileName=8%20CCR%201403-1#page=62",
     )
@@ -25,9 +23,6 @@ class co_ccap_base_parent_fee(Variable):
         gross_income = spm_unit("co_ccap_countable_income", period)
         # snap_fpg is monthly.
         fpg = spm_unit("snap_fpg", period)
-        # The numbers below are weights copied from government spreadsheet
-        # (url: https://docs.google.com/spreadsheets/d/1EEc3z8Iwu_KRTlBtd2NssDDEx_FITqVq/edit#gid=468321263,
-        #       https://docs.google.com/spreadsheets/d/1HtPiC2qxclzWfBa7LRo2Uohrg-RCBkyZ/edit#gid=582762342)
         # Calculate base parent fee scaled (note income is monthly):
         # When income_scaled <= 1: income_scaled * 0.01
         # When income_scaled > 1: [1 * 0.01 + (income_scaled - 1) * 0.14]

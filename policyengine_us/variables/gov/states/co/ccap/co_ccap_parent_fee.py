@@ -6,8 +6,6 @@ class co_ccap_parent_fee(Variable):
     entity = SPMUnit
     label = "Colorado Child Care Assistance Program parent fee"
     reference = (
-        "https://docs.google.com/spreadsheets/d/1EEc3z8Iwu_KRTlBtd2NssDDEx_FITqVq/edit#gid=468321263",
-        "https://docs.google.com/spreadsheets/d/1HtPiC2qxclzWfBa7LRo2Uohrg-RCBkyZ/edit#gid=582762342",
         "https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=11042&fileName=8%20CCR%201403-1#page=41",
         "https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=11042&fileName=8%20CCR%201403-1#page=62",
     )
@@ -22,9 +20,6 @@ class co_ccap_parent_fee(Variable):
             instant_str = f"{year - 1}-10-01"
         p = parameters(instant_str).gov.states.co.ccap
         eligible_children = spm_unit("co_ccap_eligible_children", period)
-        # The numbers below are weights copied from government spreadsheet
-        # (url: https://docs.google.com/spreadsheets/d/1EEc3z8Iwu_KRTlBtd2NssDDEx_FITqVq/edit#gid=468321263,
-        #       https://docs.google.com/spreadsheets/d/1HtPiC2qxclzWfBa7LRo2Uohrg-RCBkyZ/edit#gid=582762342)
         base_parent_fee = spm_unit("co_ccap_base_parent_fee", period)
         add_on_parent_fee = spm_unit("co_ccap_add_on_parent_fee", period)
 
