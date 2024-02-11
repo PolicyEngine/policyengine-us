@@ -1,9 +1,9 @@
-description: California limits the exemption amount to filers with age below this lower threshold.
+description: California limits the child exemption amount to filers with age below this lower threshold.
 values:
   2021-01-01: 18
 
 metadata:
-  label: California alternative minimum tax lower age threshold 
+  label: California alternative minimum tax child exemption lower age threshold 
   period: year
   unit: year
   reference:
@@ -15,5 +15,6 @@ metadata:
       href: https://www.ftb.ca.gov/forms/2022/2022-540-p-instructions.html
     - title: 2021 Instructions for Schedule P (540) Line 22
       href: https://www.ftb.ca.gov/forms/2021/2021-540-p-instructions.html
-    - title: Cal. Rev. & Tax. Code § 17062 # age not specified
+    # The legal code does not specify the age threshold
+    - title: Cal. Rev. & Tax. Code § 17062 
       href: https://casetext.com/statute/california-codes/california-revenue-and-taxation-code/division-2-other-taxes/part-10-personal-income-tax/chapter-21-alternative-minimum-tax/section-17062-alternative-minimum-tax

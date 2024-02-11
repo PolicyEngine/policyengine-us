@@ -1,9 +1,9 @@
-description: California provides this minimum exemption amount for children.  
+description: California provides this alternative minimum tax minimum exemption amount for children.  
 values:
   2021-01-01: 8_300
 
 metadata:
-  label: California minimum children exemption amount 
+  label: California alternative minimum tax minimum child exemption amount 
   period: year
   unit: currency-USD
   reference:
@@ -15,5 +15,6 @@ metadata:
       href: https://www.ftb.ca.gov/forms/2022/2022-540-p-instructions.html
     - title: 2021 Instructions for Schedule P (540) Line 22
       href: https://www.ftb.ca.gov/forms/2021/2021-540-p-instructions.html
-    - title: Cal. Rev. & Tax. Code § 17062 # amount not specified
+    # The legal code does not specify the exemption amount
+    - title: Cal. Rev. & Tax. Code § 17062 
       href: https://casetext.com/statute/california-codes/california-revenue-and-taxation-code/division-2-other-taxes/part-10-personal-income-tax/chapter-21-alternative-minimum-tax/section-17062-alternative-minimum-tax
