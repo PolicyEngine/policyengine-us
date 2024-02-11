@@ -12,7 +12,9 @@ class ca_amti(Variable):
 
     def formula(tax_unit, period, parameters):
         filing_status = tax_unit("filing_status", period)
-        p = parameters(period).gov.states.ca.tax.income.alternative_minimum_tax
+        p = parameters(
+            period
+        ).gov.states.ca.tax.income.alternative_minimum_tax.exemption
         p2 = parameters(period).gov.irs.income.amt.capital_gains
 
         amti_before_ded = tax_unit("ca_pre_exemption_amti", period)
@@ -20,15 +22,13 @@ class ca_amti(Variable):
         # Calculation from Scehdule 540 P Line 21 Separate calculation
         # line 1 - total amti
         # Line 2
-        maximum_exemption = p.exemption.amt_threshold.upper[filing_status]
+        maximum_exemption = p.amti.threshold.upper[filing_status]
         # Line 3
         reduced_amti = max_(amti_before_ded - maximum_exemption, 0)
         # Line 4
         reduced_amti_rate = reduced_amti * p2.capital_gain_excess_tax_rate
         # Line 5
-        separate_amti_calc = min_(
-            reduced_amti_rate, p.exemption.amount[filing_status]
-        )
+        separate_amti_calc = min_(reduced_amti_rate, p.amount[filing_status])
 
         # line 21
         return where(
