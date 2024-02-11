@@ -27,7 +27,7 @@ class nd_mpc(Variable):
         eligible = joint & hi_taxinc
         # determine minimum qualified income between head and spouse
         qinc_sources = [
-            "employment_income",
+            "taxable_employment_income",
             "self_employment_income",
             "taxable_pension_income",
         ]
