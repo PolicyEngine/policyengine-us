@@ -10,5 +10,4 @@ class hud_gross_rent(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/cfr/text/24/982.503"
 
-    # TODO: Add utility costs.
-    adds = ["housing_cost", "hud_utility_allowance"]
+    adds = ["pre_subsidy_rent", "hud_utility_allowance"]

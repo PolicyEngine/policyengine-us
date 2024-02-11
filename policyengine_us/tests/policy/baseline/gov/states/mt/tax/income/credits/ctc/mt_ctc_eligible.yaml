@@ -1,0 +1,39 @@
+- name: Eligible 
+  period: 2023
+  input:
+    tax_unit_earned_income: 66_298
+    adjusted_gross_income: 55_999
+    eitc_relevant_investment_income: 10_299
+    state_code: MT
+  output: 
+    mt_ctc_eligible: true
+
+- name: AGI ineligible 
+  period: 2023
+  input:
+    tax_unit_earned_income: 66_300
+    adjusted_gross_income: 56_001
+    eitc_relevant_investment_income: 10_299
+    state_code: MT
+  output: 
+    mt_ctc_eligible: false
+
+- name: Investment income ineligible 
+  period: 2023
+  input:
+    tax_unit_earned_income: 66_300
+    adjusted_gross_income: 56_000
+    eitc_relevant_investment_income: 10_300
+    state_code: MT
+  output: 
+    mt_ctc_eligible: false
+
+- name: Earned income ineligible  
+  period: 2023
+  input:
+    tax_unit_earned_income: 0
+    adjusted_gross_income: 0
+    eitc_relevant_investment_income: 0
+    state_code: MT
+  output: 
+    mt_ctc_eligible: false

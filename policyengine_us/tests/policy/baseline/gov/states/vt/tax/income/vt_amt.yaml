@@ -1,0 +1,17 @@
+- name: Tax filer with federal agi of $200,000 and interest on U.S. government obligations of $1,000.
+  period: 2022
+  input:
+    adjusted_gross_income: 200_000
+    us_govt_interest: 1_000
+    state_code: VT
+  output:
+    vt_amt: 5_000
+
+- name: Tax filer with federal agi of $100,000 and interest on U.S. government obligations of $1,000.
+  period: 2022
+  input:
+    adjusted_gross_income: 100_000
+    us_govt_interest: 1_000
+    state_code: VT
+  output:
+    vt_amt: 0

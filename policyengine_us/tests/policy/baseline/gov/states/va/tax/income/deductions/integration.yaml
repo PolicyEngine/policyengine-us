@@ -1,0 +1,22 @@
+- name: Test to check circular reference error
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 66
+        employment_income: 20_000
+      person2:
+        age: 62
+        employment_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:  
+    va_agi: 6_000
+    va_age_deduction: 12_000
+    va_income_tax: 0

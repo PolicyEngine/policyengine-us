@@ -1,0 +1,36 @@
+- name: Kentucky head or spouse, military
+  period: 2022
+  input:
+    state_code: KY
+    military_service_income: 10_000
+    is_tax_unit_head_or_spouse: true
+  output:
+    ky_military_personal_tax_credits: 20
+
+- name: Kentucky head or spouse, not military
+  period: 2022
+  input:
+    state_code: KY
+    military_service_income: 0
+    is_tax_unit_head_or_spouse: true
+  output:
+    ky_military_personal_tax_credits: 0
+
+
+- name: Kentucky not head or spouse, not military
+  period: 2022
+  input:
+    state_code: KY
+    military_service_income: 0
+    is_tax_unit_head_or_spouse: false
+  output:
+    ky_military_personal_tax_credits: 0
+
+- name: Kentucky not head or spouse, military
+  period: 2022
+  input:
+    state_code: KY
+    military_service_income: 10_000
+    is_tax_unit_head_or_spouse: false
+  output:
+    ky_military_personal_tax_credits: 0

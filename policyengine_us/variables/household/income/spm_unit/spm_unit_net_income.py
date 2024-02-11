@@ -9,4 +9,4 @@ class spm_resources(Variable):
     unit = USD
 
     adds = ["spm_unit_market_income", "spm_unit_benefits"]
-    subtracts = ["spm_unit_taxes"]
+    subtracts = ["spm_unit_taxes", "spm_unit_spm_expenses"]

@@ -9,10 +9,10 @@ class ct_pension_annuity_subtraction_eligible(Variable):
     defined_for = StateCode.CT
 
     def formula(tax_unit, period, parameters):
-        ct_agi = tax_unit("ct_agi", period)
+        agi = tax_unit("adjusted_gross_income", period)
         filing_status = tax_unit("filing_status", period)
         p = parameters(period).gov.states.ct.tax.income.subtractions
         ct_pension_threshold = p.pensions_or_annuity.income_limit[
             filing_status
         ]
-        return ct_agi < ct_pension_threshold
+        return agi < ct_pension_threshold

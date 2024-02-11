@@ -1,0 +1,14 @@
+description: The US limits itemized deductions to this fraction of the amount of the itemized deductions otherwise allowable for such taxable year.
+values:
+  2017-01-01: 0.8
+  2018-01-01: .inf
+  2026-01-01: 0.8
+metadata:
+  unit: /1
+  period: year
+  label: The US itemized deductions limitation rate
+  reference:
+    - title: 26 U.S. Code § 68 - Overall limitation on itemized deductions (a)(2)
+      href: https://www.law.cornell.edu/uscode/text/26/68#a_2
+      # 80 percent of the amount of the itemized deductions otherwise allowable for such taxable year
+  # This section of the legal code was repealed between 2018 and 2026.  
