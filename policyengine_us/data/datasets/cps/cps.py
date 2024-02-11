@@ -220,7 +220,8 @@ def add_personal_income_variables(
     """
     # Get income imputation parameters.
     yamlfilename = os.path.join(
-        os.path.abspath(os.path.dirname(__file__)), "income_parameters.yaml"
+        os.path.abspath(os.path.dirname(__file__)),
+        "imputation_parameters.yaml",
     )
     with open(yamlfilename, "r", encoding="utf-8") as yamlfile:
         p = yaml.safe_load(yamlfile)
