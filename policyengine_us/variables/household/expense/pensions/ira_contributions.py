@@ -1,10 +1,12 @@
 from policyengine_us.model_api import *
 
 
-class ira_contributions(Variable):
+class traditional_ira_contributions(Variable):
     value_type = float
     entity = Person
-    label = "IRA contributions"
+    label = "Traditional IRA contributions"
     unit = USD
-    documentation = "Contributions to Individual Retirement Accounts."
+    documentation = (
+        "Contributions to traditional Individual Retirement Accounts."
+    )
     definition_period = YEAR
