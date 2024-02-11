@@ -13,44 +13,40 @@ class ca_amt_exemption(Variable):
     )
 
     def formula(tax_unit, period, parameters):
-        filing_status = tax_unit("filing_status", period)
         p = parameters(period).gov.states.ca.tax.income.alternative_minimum_tax
-
-        exemption_amount_initial = p.exemption.amount[filing_status]
+        filing_status = tax_unit("filing_status", period)
+        exemption_eligiblity_threshold = p.exemption.amt_threshold.upper[
+            filing_status
+        ]
         amti = tax_unit("ca_amti", period)
-        exemption_amount_low = p.exemption.amt_threshold.lower[filing_status]
-        exemption_amount_high = max_(
-            exemption_amount_initial
-            - (amti - exemption_amount_low) * p.amti.rate,
-            0,
-        )  # Instructions for Schedule P 540, line 22, Exemption Worksheet, line 6
-
+        exemption_eligible = amti < exemption_eligiblity_threshold
+        # Instructions for Schedule P 540, line 22, Exemption Worksheet,
+        # Line 1
+        exemption_mac_amount = p.exemption.amount[filing_status]
+        # Line 2 - AMTI
+        # Line 3
+        lower_exemption_threshold = p.exemption.amt_threshold.lower[
+            filing_status
+        ]
+        # Line 4
+        reduced_amti = max_(amti - lower_exemption_threshold, 0)
+        # Line 5
+        reduced_amti_rate = reduced_amti * p.amti.rate
+        # Line 6
+        adult_exemption = max_(exemption_mac_amount - reduced_amti_rate, 0)
+        # Eligible children receive an increased exemption amount
         person = tax_unit.members
         eligible_child = person("ca_child_exemption_eligible", period)
-        eligible_child_present = tax_unit.any(eligible_child)
+        head_is_eligible_child = tax_unit.any(eligible_child)
+        # Line 7
         exemption_amount_child = p.exemption.amount_child
+        # Line 8
         earned_income = tax_unit("head_earned", period)
-        exemption_amount_child_total = (
-            exemption_amount_child * eligible_child_present + earned_income
-        )  # Instructions for Schedule P 540, line 22, Exemption Worksheet, line 9
-
-        over_threshold = (
-            tax_unit("ca_amti", period)
-            >= p.exemption.amt_threshold.upper[filing_status]
+        # Line 9
+        total_reduced_exemption_amount = exemption_amount_child + earned_income
+        # Line 10
+        child_exemption = min_(total_reduced_exemption_amount, adult_exemption)
+        total_exemption = where(
+            head_is_eligible_child, child_exemption, adult_exemption
         )
-
-        exemption_amt_eligible_child = where(
-            over_threshold,
-            0,
-            min_(exemption_amount_high, exemption_amount_child_total),
-        )
-
-        exemption_amt_no_eligible_child = where(
-            over_threshold, 0, exemption_amount_high
-        )
-
-        return where(
-            eligible_child_present,
-            exemption_amt_eligible_child,
-            exemption_amt_no_eligible_child,
-        )
+        return where(exemption_eligible, total_exemption, 0)

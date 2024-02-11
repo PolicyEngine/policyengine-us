@@ -11,19 +11,17 @@ class ca_amt(Variable):
     reference = "https://www.ftb.ca.gov/forms/2022/2022-540-p.pdf"
 
     def formula(tax_unit, period, parameters):
-        filing_status = tax_unit("filing_status", period)
-        p = parameters(period).gov.states.ca.tax.income.alternative_minimum_tax
         amti = tax_unit("ca_amti", period)
-        exemption_amount = where(
-            amti <= p.exemption.amt_threshold.lower[filing_status],
-            p.exemption.amount[filing_status],
-            tax_unit("ca_amt_exemption", period),
-        )  # complete the Exemption Worksheet to figure the amount to enter on line 22.
-        amti_sub_eamt = max_(
-            amti - exemption_amount, 0
-        )  # Subtract line 22 from line 21.
-        tentative_minimum_tax = amti_sub_eamt * p.tentative_min_tax_rate
+        # Line 22
+        exemption_amount = tax_unit("ca_amt_exemption", period)
+        # Line 23
+        reduced_amti = max_(amti - exemption_amount, 0)
+        # Line 24
+        p = parameters(period).gov.states.ca.tax.income.alternative_minimum_tax
+        tentative_minimum_tax = reduced_amti * p.tentative_min_tax_rate
+        # Line 25
         regular_tax_before_credits = tax_unit(
             "ca_income_tax_before_credits", period
-        )  # line 25 from Form 540, line 31
+        )
+        # Line 26
         return max_(tentative_minimum_tax - regular_tax_before_credits, 0)
