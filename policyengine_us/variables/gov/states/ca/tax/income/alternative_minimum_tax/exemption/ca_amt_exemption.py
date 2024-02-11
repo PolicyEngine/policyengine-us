@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class ca_exemption_amount_high_amti(Variable):
+class ca_amt_exemption(Variable):
     value_type = float
     entity = TaxUnit
-    label = "California exemption amount for AMTI higher than threshold"
+    label = "California AMT exemption amount"
     defined_for = StateCode.CA
     unit = USD
     definition_period = YEAR
@@ -26,7 +26,7 @@ class ca_exemption_amount_high_amti(Variable):
         )  # Instructions for Schedule P 540, line 22, Exemption Worksheet, line 6
 
         person = tax_unit.members
-        eligible_child = person("ca_exemption_child_eligible", period)
+        eligible_child = person("ca_child_exemption_eligible", period)
         eligible_child_present = tax_unit.any(eligible_child)
         exemption_amount_child = p.exemption.amount_child
         earned_income = tax_unit("head_earned", period)

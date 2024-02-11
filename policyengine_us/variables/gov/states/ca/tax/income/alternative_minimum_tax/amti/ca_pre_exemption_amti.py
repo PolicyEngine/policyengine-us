@@ -9,6 +9,10 @@ class ca_pre_exemption_amti(Variable):
     unit = USD
     definition_period = YEAR
     reference = "https://www.ftb.ca.gov/forms/2022/2022-540-p.pdf"
-    
-    # Line 14 - 20
-    adds = ["ca_amti_total_adjustments", "ca_taxable_income", "ca_itemized_ded_limitation"]  
+
+    # Line 19
+    adds = [
+        "ca_amti_adjustments",
+        "ca_taxable_income",
+        "ca_itemized_ded_limitation",
+    ]

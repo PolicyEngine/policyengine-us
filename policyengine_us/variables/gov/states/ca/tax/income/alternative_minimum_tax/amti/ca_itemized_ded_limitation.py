@@ -15,18 +15,20 @@ class ca_itemized_ded_limitation(Variable):
         p = parameters(
             period
         ).gov.states.ca.tax.income.deductions.itemized.limit
+        agi = tax_unit("ca_agi", period)
+        itemized_ded = tax_unit("ca_itemized_deductions", period)
+        agi_with_itemized_deductions = agi + itemized_ded
 
         itemized_ded_over_limitation = where(
-            tax_unit("ca_agi", period)
-            + tax_unit("ca_itemized_deductions", period)
-            > p.agi_threshold[filing_status],
-            tax_unit("ca_itemized_deductions", period),
+            agi_with_itemized_deductions > p.agi_threshold[filing_status],
+            itemized_ded,
             0,
-        )  # Instructions for Schedule P 540, line 18
+        )
+        # Instructions for Schedule P 540, line 18
 
         # line 18
         return where(
-            tax_unit("ca_agi", period) < p.agi_threshold[filing_status],
+            agi < p.agi_threshold[filing_status],
             0,
             itemized_ded_over_limitation,
         )

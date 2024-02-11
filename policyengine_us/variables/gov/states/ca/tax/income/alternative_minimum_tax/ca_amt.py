@@ -13,15 +13,14 @@ class ca_amt(Variable):
     def formula(tax_unit, period, parameters):
         filing_status = tax_unit("filing_status", period)
         p = parameters(period).gov.states.ca.tax.income.alternative_minimum_tax
-
+        amti = tax_unit("ca_amti", period)
         exemption_amount = where(
-            tax_unit("ca_amti_calc", period)
-            <= p.exemption.amt_threshold.lower[filing_status],
+            amti <= p.exemption.amt_threshold.lower[filing_status],
             p.exemption.amount[filing_status],
-            tax_unit("ca_exemption_amount_high_amti", period),
+            tax_unit("ca_amt_exemption", period),
         )  # complete the Exemption Worksheet to figure the amount to enter on line 22.
         amti_sub_eamt = max_(
-            tax_unit("ca_amti_calc", period) - exemption_amount, 0
+            amti - exemption_amount, 0
         )  # Subtract line 22 from line 21.
         tentative_minimum_tax = amti_sub_eamt * p.tentative_min_tax_rate
         regular_tax_before_credits = tax_unit(

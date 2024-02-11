@@ -3,7 +3,7 @@
   input:
     people:
       person1:
-        ca_exemption_child_eligible: false 
+        ca_child_exemption_eligible: false 
     tax_units:
       tax_unit:
         members: [person1]
@@ -15,16 +15,16 @@
         members: [person1]
         state_code: CA
   output:
-    ca_exemption_amount_high_amti: 83815.5
+    ca_amt_exemption: 83815.5
 
 - name: California exemption amount calculation for high amti - no eligible child, amti over upper threshold
   period: 2022
   input:
     people:
       person1:
-        ca_exemption_child_eligible: false 
+        ca_child_exemption_eligible: false 
       person2: 
-        ca_exemption_child_eligible: false 
+        ca_child_exemption_eligible: false 
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -36,14 +36,14 @@
         members: [person1, person2]
         state_code: CA
   output:
-    ca_exemption_amount_high_amti: 0
+    ca_amt_exemption: 0
 
 - name: California exemption amount calculation for high amti - eligible child, amti not over upper threshold
   period: 2022
   input:
     people:
       person1:
-        ca_exemption_child_eligible: true
+        ca_child_exemption_eligible: true
     tax_units:
       tax_unit:
         members: [person1]
@@ -55,4 +55,4 @@
         members: [person1]
         state_code: CA
   output:
-    ca_exemption_amount_high_amti: 78_300
+    ca_amt_exemption: 78_300

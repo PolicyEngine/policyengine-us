@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class ca_exemption_child_eligible(Variable):
+class ca_child_exemption_eligible(Variable):
     value_type = bool
     entity = Person
-    label = "Eligible person for the California Minimum exemption amount"
+    label = "Eligible person for the California child exemption amount"
     documentation = (
         "https://www.ftb.ca.gov/forms/2022/2022-540-p-instructions.html"
     )
@@ -16,7 +16,6 @@ class ca_exemption_child_eligible(Variable):
 
         head = person("is_tax_unit_head", period)
         lower_age_threshold = person("age", period) < p.age_threshold.lower
-        # Assuming that 
         income = person("earned_income", period)
         support_costs = person("care_and_support_costs", period)
 
@@ -30,4 +29,6 @@ class ca_exemption_child_eligible(Variable):
             & (person("age", period) < p.age_threshold.upper)
         )
 
-        return head & (lower_age_threshold | income_rate_eligible | student_no_income)
+        return head & (
+            lower_age_threshold | income_rate_eligible | student_no_income
+        )

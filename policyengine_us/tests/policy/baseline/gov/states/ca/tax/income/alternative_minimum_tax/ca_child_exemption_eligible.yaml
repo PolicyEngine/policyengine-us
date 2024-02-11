@@ -7,7 +7,7 @@
     is_full_time_student: true
     age: 17
   output:
-    ca_exemption_child_eligible: false
+    ca_child_exemption_eligible: false
 
 - name: California exemption child eligible - head, age not eligible
   period: 2021
@@ -15,10 +15,11 @@
     state_code: CA
     is_tax_unit_head: true
     earned_income: 50_000
+    care_and_support_costs: 50_000
     is_full_time_student: true
     age: 25
   output:
-    ca_exemption_child_eligible: false
+    ca_child_exemption_eligible: false
 
 - name: California exemption child eligible - head, eligible - child
   period: 2021
@@ -29,7 +30,7 @@
     is_full_time_student: false
     age: 16
   output:
-    ca_exemption_child_eligible: true
+    ca_child_exemption_eligible: true
 
 - name: California exemption child eligible - head, eligible - 18 years old and no income
   period: 2021
@@ -40,7 +41,7 @@
     is_full_time_student: false
     age: 18
   output:
-    ca_exemption_child_eligible: true
+    ca_child_exemption_eligible: true
 
 - name: California exemption child eligible - head, eligible - full time student, no income, age < 24
   period: 2021
@@ -51,5 +52,4 @@
     is_full_time_student: true
     age: 23
   output:
-    ca_exemption_child_eligible: true
-
+    ca_child_exemption_eligible: true
