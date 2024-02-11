@@ -18,10 +18,9 @@ values:
     - ira_contributions # (f)
     - sep_simple_qualified_plan_contributions # (f)
     - early_withdrawal_penalty # (h)
-    - self_employment_tax_ald  
+    - self_employment_tax_ald
 metadata:
   unit: variable
-  name: ma_ald_disallowed
   label: MA Above-the-line deductions disallowed
   reference:
     - title: Mass. General Laws c.62 § 2(d)(1)(A)

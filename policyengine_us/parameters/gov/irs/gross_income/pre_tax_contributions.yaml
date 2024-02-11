@@ -2,8 +2,10 @@ description: The US subtracts these payroll deductions from wages and salaries w
 values:
   2010-01-01:
     # Assumes all are pre-tax.
-    - retirement_contributions
+    - traditional_401k_contributions
     # Assumes employer for now.
     - health_insurance_premiums
 metadata:
   label: Pre-tax contributions
+  unit: list
+  period: year

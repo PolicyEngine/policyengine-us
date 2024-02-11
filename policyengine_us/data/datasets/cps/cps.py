@@ -271,7 +271,9 @@ def add_personal_income_variables(
     # They could also include General Assistance.
     cps["tanf_reported"] = person.PAW_VAL
     cps["ssi_reported"] = person.SSI_VAL
-    cps["pension_contributions"] = person.RETCB_VAL
+    # Assume all retirement contributions are traditional 401(k) for now.
+    cps["traditional_401k_contributions"] = person.RETCB_VAL
+    # Allocate capital gains into long-term and short-term based on aggregate split.
     cps["long_term_capital_gains"] = person.CAP_VAL * (
         p["long_term_capgain_fraction"][year]
     )
