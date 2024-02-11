@@ -19,10 +19,9 @@ class va_age_deduction(Variable):
         filing_statuses = filing_status.possible_values
         joint = filing_status == filing_statuses.JOINT
         separate = filing_status == filing_statuses.SEPARATE
-        single = filing_status == filing_statuses.SINGLE
         
         age_head = tax_unit("age_head", period)
-        age_spouse = where(single, 0, tax_unit("age_spouse", period))
+        age_spouse = tax_unit("age_spouse", period)
         birth_year_head = period.start.year - age_head
         birth_year_spouse = period.start.year - age_spouse
 
