@@ -5,6 +5,44 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.652.1] - 2024-02-12 18:35:09
+
+### Fixed
+
+- Create person-level subtractions in WV.
+
+## [0.652.0] - 2024-02-12 03:09:26
+
+### Added
+
+- Michigan homestead property tax credit.
+
+## [0.651.4] - 2024-02-12 03:02:41
+
+## [0.651.3] - 2024-02-12 02:59:35
+
+### Fixed
+
+- Virginia age deduction calculation and taxunit level subtractions.
+
+## [0.651.2] - 2024-02-12 01:03:25
+
+### Fixed
+
+- Subtract pre-tax contributions from taxable wages and salaries.
+
+## [0.651.1] - 2024-02-11 00:35:31
+
+### Fixed
+
+- Arkansas low income tax variables.
+
+## [0.651.0] - 2024-02-09 21:57:38
+
+### Added
+
+- Add tests to the household_refundable_tax_credits and household_tax_before_refundable_credits vars.
+
 ## [0.650.0] - 2024-02-09 14:32:01
 
 ### Added
@@ -7237,6 +7275,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.652.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.652.0...0.652.1
+[0.652.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.651.4...0.652.0
+[0.651.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.651.3...0.651.4
+[0.651.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.651.2...0.651.3
+[0.651.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.651.1...0.651.2
+[0.651.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.651.0...0.651.1
+[0.651.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.650.0...0.651.0
 [0.650.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.649.0...0.650.0
 [0.649.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.648.4...0.649.0
 [0.648.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.648.3...0.648.4
