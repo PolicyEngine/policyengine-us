@@ -13,7 +13,9 @@ class ar_low_income_tax_joint(Variable):
     defined_for = StateCode.AR
 
     def formula(person, period, parameters):
-        agi = person("ar_agi", period)
+        agi = add(person.tax_unit, period, ["ar_agi"])
+        head = person("is_tax_unit_head", period)
+        agi_attributed_to_head = agi * head
         p = parameters(
             period
         ).gov.states.ar.tax.income.rates.low_income_tax_tables
@@ -34,16 +36,26 @@ class ar_low_income_tax_joint(Variable):
                 (filing_status_separate == status.JOINT) & (dependents > 1),
             ],
             [
-                p.single.calc(agi, right=True),
-                p.head_of_household.no_or_one_dependent.calc(agi, right=True),
-                p.head_of_household.two_or_more_dependents.calc(
-                    agi, right=True
+                p.single.calc(agi_attributed_to_head, right=True),
+                p.head_of_household.no_or_one_dependent.calc(
+                    agi_attributed_to_head, right=True
                 ),
-                p.separate.calc(agi, right=True),
-                p.widow.no_or_one_dependent.calc(agi, right=True),
-                p.widow.two_or_more_dependents.calc(agi, right=True),
-                p.joint.no_or_one_dependent.calc(agi, right=True),
-                p.joint.two_or_more_dependents.calc(agi, right=True),
+                p.head_of_household.two_or_more_dependents.calc(
+                    agi_attributed_to_head, right=True
+                ),
+                p.separate.calc(agi_attributed_to_head, right=True),
+                p.widow.no_or_one_dependent.calc(
+                    agi_attributed_to_head, right=True
+                ),
+                p.widow.two_or_more_dependents.calc(
+                    agi_attributed_to_head, right=True
+                ),
+                p.joint.no_or_one_dependent.calc(
+                    agi_attributed_to_head, right=True
+                ),
+                p.joint.two_or_more_dependents.calc(
+                    agi_attributed_to_head, right=True
+                ),
             ],
             default=0,
         )
