@@ -30,6 +30,5 @@ class wv_social_security_benefits_subtraction_person(Variable):
         # social security benefits paid by the Social Security Administration as Old Age,
         # Survivors and Disability Insurance Benefits
         taxable_ss = person("taxable_social_security", period)
-        total_eligible_ss = taxable_ss * head_or_spouse
-
-        return total_eligible_ss * p.rate
+        amount_if_eligible = taxable_ss * p.rate
+        return amount_if_eligible * head_or_spouse
