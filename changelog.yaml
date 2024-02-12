@@ -6158,3 +6158,9 @@
     fixed:
     - Virginia age deduction calculation and taxunit level subtractions.
   date: 2024-02-12 02:59:35
+- bump: patch
+  changes:
+    fixes:
+    - Adjust the Arkansas files separately formula to rely on ar_income_tax_before_non_refundable_credits
+      comparisons.
+  date: 2024-02-12 03:02:41
