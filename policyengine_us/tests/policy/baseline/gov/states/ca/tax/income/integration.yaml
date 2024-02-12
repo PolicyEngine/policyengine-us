@@ -1,0 +1,11 @@
+- name: two people
+  period: 2023
+  input:
+    state_code: CA
+    filing_status: JOINT
+    ca_agi: 90_000
+    ca_itemized_deductions: 10_000
+  output:
+    ca_standard_deduction: 10_726
+    ca_deductions: 10_726
+    ca_taxable_income: 79_274
