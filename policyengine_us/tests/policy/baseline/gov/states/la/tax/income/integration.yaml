@@ -57,3 +57,27 @@
     refundable_ctc: 8_000
     non_refundable_ctc: 0
     la_taxable_income: 231_826.42
+
+- name: Tax unit with taxsimid 99960 in e21.its.csv and e21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 55
+        employment_income: 145_010
+        taxable_interest_income: 5_505.0
+      person2:
+        age: 55
+        employment_income: 118_010
+        taxable_interest_income: 5_505.0
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 22  # LA
+  output:  # expected results from patched TAXSIM35 2024-02-05 version
+    la_taxable_income: 216_826.42
+    la_income_tax_before_non_refundable_credits: 10_869.59
+    la_income_tax_before_refundable_credits: 10_869.59
+    la_refundable_credits: 0
+    la_income_tax: 10_869.59
