@@ -17,8 +17,6 @@ values:
   - rental_income # royalties included in the rental income
   - capital_gains
   - alimony_income  
-  - taxable_pension_income  
-  # Also includes taxable IRA distributions.  
-  - roth_ira_distributions
-  - regular_ira_distributions
+  - taxable_pension_income
+  - taxable_ira_distributions
   - ga_retirement_exclusion_countable_earned_income # earned income: capped

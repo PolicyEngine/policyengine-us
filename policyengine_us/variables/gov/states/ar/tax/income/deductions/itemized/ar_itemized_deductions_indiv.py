@@ -8,7 +8,7 @@ class ar_itemized_deductions_indiv(Variable):
     unit = USD
     definition_period = YEAR
     reference = "https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2022_AR3_ItemizedDeduction.pdf"
-    defined_for = "ar_can_file_separate_on_same_return"
+    defined_for = StateCode.AR
 
     def formula(person, period, parameters):
         # Arkansas does not tie itemization choice to federal choice.

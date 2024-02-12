@@ -3,7 +3,7 @@
   absolute_error_margin: 1
   input:
     ar_taxable_income_indiv: 5_100
-    ar_can_file_separate_on_same_return: true
+    state_code: AR
     ar_low_income_tax_indiv: 500
   output:
     #round(5_100 * 0.00)
@@ -14,7 +14,7 @@
   absolute_error_margin: 1
   input:
     ar_taxable_income_indiv: 10_000
-    ar_can_file_separate_on_same_return: true
+    state_code: AR
     ar_low_income_tax_indiv: 500
   output:
     # (10_000-5_101) * 0.02
@@ -25,7 +25,7 @@
   absolute_error_margin: 1
   input:
     ar_taxable_income_indiv: 11_000
-    ar_can_file_separate_on_same_return: true
+    state_code: AR
     ar_low_income_tax_indiv: 500
   output:
     # 104 + round((11_000 - 10_301)* 0.03)
@@ -36,7 +36,7 @@
   absolute_error_margin: 1
   input:
     ar_taxable_income_indiv: 20_000
-    ar_can_file_separate_on_same_return: true
+    state_code: AR
     ar_low_income_tax_indiv: 500
   output:
   # 236 + round((20_000 - 14_701)* 0.034)
@@ -47,7 +47,7 @@
   absolute_error_margin: 1
   input:
     ar_taxable_income_indiv: 25_000
-    ar_can_file_separate_on_same_return: true
+    state_code: AR
     ar_low_income_tax_indiv: 1_000
   output:
     # 562.366 + round((25_000-24_301) * 0.049) = 596
@@ -58,7 +58,7 @@
   absolute_error_margin: 1
   input:
     ar_taxable_income_indiv: 25_000
-    ar_can_file_separate_on_same_return: true
+    state_code: AR
     ar_low_income_tax_indiv: 500
   output:
     ar_income_tax_before_non_refundable_credits_indiv: 500
