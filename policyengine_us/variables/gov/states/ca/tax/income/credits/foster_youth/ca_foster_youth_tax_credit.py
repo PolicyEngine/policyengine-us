@@ -14,7 +14,7 @@ class ca_foster_youth_tax_credit(Variable):
         person = tax_unit.members
         age = person("age", period)
         eligible_person = person("ca_foster_youth_tax_credit_eligible", period)
-        base_credit = p.base.calc(age) * eligible_person
+        base_credit = p.amount.calc(age) * eligible_person
         total_base_credit = tax_unit.sum(base_credit)
         earned_income = tax_unit("tax_unit_earned_income", period)
         excess_earned_income = max_(earned_income - p.phase_out.start, 0)
