@@ -6153,3 +6153,19 @@
     fixed:
     - Subtract pre-tax contributions from taxable wages and salaries.
   date: 2024-02-12 01:03:25
+- bump: patch
+  changes:
+    fixed:
+    - Virginia age deduction calculation and taxunit level subtractions.
+  date: 2024-02-12 02:59:35
+- bump: patch
+  changes:
+    fixes:
+    - Adjust the Arkansas files separately formula to rely on ar_income_tax_before_non_refundable_credits
+      comparisons.
+  date: 2024-02-12 03:02:41
+- bump: minor
+  changes:
+    added:
+    - Michigan homestead property tax credit.
+  date: 2024-02-12 03:09:26
