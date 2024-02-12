@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.652.0] - 2024-02-12 03:09:26
+
+### Added
+
+- Michigan homestead property tax credit.
+
 ## [0.651.4] - 2024-02-12 03:02:41
 
 ## [0.651.3] - 2024-02-12 02:59:35
@@ -7263,6 +7269,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.652.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.651.4...0.652.0
 [0.651.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.651.3...0.651.4
 [0.651.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.651.2...0.651.3
 [0.651.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.651.1...0.651.2
