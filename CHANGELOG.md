@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.651.2] - 2024-02-12 01:03:25
+
+### Fixed
+
+- Subtract pre-tax contributions from taxable wages and salaries.
+
 ## [0.651.1] - 2024-02-11 00:35:31
 
 ### Fixed
@@ -7249,6 +7255,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.651.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.651.1...0.651.2
 [0.651.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.651.0...0.651.1
 [0.651.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.650.0...0.651.0
 [0.650.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.649.0...0.650.0
