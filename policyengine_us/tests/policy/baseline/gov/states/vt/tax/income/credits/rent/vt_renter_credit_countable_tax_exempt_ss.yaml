@@ -1,0 +1,15 @@
+- name: Test 1 
+  period: 2022
+  input:
+    tax_exempt_social_security: 100
+    state_code: VT
+  output:
+    vt_renter_credit_countable_tax_exempt_ss: 75
+
+- name: Test 2
+  period: 2022
+  input:
+    tax_exempt_social_security: 0
+    state_code: VT
+  output:
+    vt_renter_credit_countable_tax_exempt_ss: 0

@@ -1,11 +1,11 @@
-- name: Separate filers with 2 dependents, under the tax threshold
+- name: Separate filer with 2 dependents
   period: 2022
   input:
     people:
       person1:
         ar_agi: 13_445
       person2:
-        ar_agi: 13_445
+        ar_agi: 0
     tax_units:
       tax_unit:
         members: [person1, person2]

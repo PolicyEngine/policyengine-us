@@ -5,6 +5,7 @@ class capped_energy_efficient_window_credit(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
+    label = "Capped energy efficient window credit"
     documentation = (
         "Capped credit on energy-efficient exterior window and skylights"
     )
