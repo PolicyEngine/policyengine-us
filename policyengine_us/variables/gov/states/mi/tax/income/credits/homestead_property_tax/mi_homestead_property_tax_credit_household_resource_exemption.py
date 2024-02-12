@@ -31,7 +31,7 @@ class mi_homestead_property_tax_credit_household_resource_exemption(Variable):
         senior_eligible = tax_unit("mi_is_senior_for_tax", period)
         # Line 34
         disabled_or_senior_exemption_rate = p.exemption.senior_disabled.calc(
-            total_household_resources
+            total_household_resources, right=True
         )
         exemption_rate = where(
             disabled_head_or_spouse | senior_eligible,
