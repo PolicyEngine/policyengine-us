@@ -1,0 +1,26 @@
+- name: Ohio lump sum distribution credit for filer aged 65
+  period: 2021
+  input:
+    state_code: OH
+    oh_lump_sum_distribution_credit_eligible_person: true
+    age: 65
+  output: 
+    oh_lump_sum_distribution_credit_person: 1_000
+
+- name: Ohio lump sum distribution credit for filer aged 50
+  period: 2021
+  input:
+    state_code: OH
+    oh_lump_sum_distribution_credit_eligible_person: false
+    age: 50
+  output: 
+    oh_lump_sum_distribution_credit_person: 0
+
+- name: Ohio lump sum distribution credit for filer aged 70
+  period: 2021
+  input:
+    state_code: OH
+    oh_lump_sum_distribution_credit_eligible_person: true
+    age: 70
+  output: 
+    oh_lump_sum_distribution_credit_person: 800

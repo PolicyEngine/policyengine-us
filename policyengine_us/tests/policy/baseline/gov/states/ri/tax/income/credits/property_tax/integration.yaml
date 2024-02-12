@@ -75,3 +75,20 @@
     ri_property_tax_credit_eligible: true
     ri_property_tax_credit: 415
     ri_income_tax: -415.00
+
+- name: Property tax income test
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      you:
+        long_term_capital_gains: 1_000
+        qualified_dividend_income: 2_000
+    households:
+      household:
+        members: [you]
+        state_code: RI
+  output:
+    capital_gains_excluded_from_taxable_income: 3_000
+    adjusted_gross_income: 3_000
+    ri_property_tax_household_income: 3_000
