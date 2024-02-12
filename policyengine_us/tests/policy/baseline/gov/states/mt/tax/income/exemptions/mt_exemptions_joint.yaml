@@ -1,0 +1,33 @@
+- name: The exemptions are allocated to the head
+  period: 2021
+  input:
+    people:
+      person3:
+        is_tax_unit_head: true
+        mt_exemptions_indiv: 1_000
+      person4:
+        is_tax_unit_head: false
+        mt_exemptions_indiv: 3_000
+    households:
+      household:
+        members: [person3, person4]
+        state_code: MT
+  output:
+    mt_exemptions_joint: [4_000, 0]
+
+- name: The exemptions are allocated to the head, even if the head does not recieve an exemption amount
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        mt_exemptions_indiv: 0
+      person2:
+        is_tax_unit_head: false
+        mt_exemptions_indiv: 3_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_exemptions_joint: [3_000, 0]
