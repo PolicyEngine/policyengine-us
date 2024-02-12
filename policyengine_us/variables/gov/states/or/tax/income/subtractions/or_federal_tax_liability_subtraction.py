@@ -24,24 +24,17 @@ class or_federal_tax_liability_subtraction(Variable):
         year = period.start.year
         if year >= 2022:
             non_refundable_ctc = refundable_ctc = cdcc = 0
-        # else:
-        #     instant_str = period
-        ## Excess advance premium tax credit - need to substract, not modelled here
-        # Other taxes and any additions to tax
-        other_taxes = tax_unit("income_tax_before_refundable_credits", period)
+
         # American opportunity credit
         american_opportunity_credit = tax_unit(
             "american_opportunity_credit", period
         )
-        # Federal economic stimulus payments - need to substract, not modelled here
         # recovery rebate credit
         recovery_rebate_credit = tax_unit("recovery_rebate_credit", period)
         # Premium tax credit
         premium_tax_credit = tax_unit("premium_tax_credit", period)
 
-        federal_itax_inclusive = (
-            federal_itax + non_refundable_ctc + other_taxes
-        )
+        federal_itax_inclusive = federal_itax + non_refundable_ctc
         other_taxes_exclusive = (
             refundable_ctc
             + american_opportunity_credit
@@ -49,6 +42,9 @@ class or_federal_tax_liability_subtraction(Variable):
             + premium_tax_credit
             + cdcc
         )
+        # Other taxes and any additions to tax - not modelled here
+        # Federal economic stimulus payments - not modelled here
+        # Excess advance premium tax credit - not modelled here
         or_federal_income_tax = max_(
             0, federal_itax_inclusive - other_taxes_exclusive
         )
