@@ -13,8 +13,9 @@ values:
   2009-01-01:
     - adjusted_gross_income_person # Line 1: Federal adjusted gross income
     - tax_exempt_interest_income # Line 2: Exempt interest
-    - regular_ira_distributions # Line 3: IRA distribution reported
-    - roth_ira_distributions 
+    - taxable_ira_distributions # Line 3: IRA distribution reported
+    # Requests 4a from 1040, which includes Roth IRA distributions.
+    - tax_exempt_ira_distributions
     - pension_income # Line 4: Pensions and annuities
     - mt_refundable_credits_before_renter_credit # Line 7: Refundable credits
 # exclude the renter credit from the gross income computation 
