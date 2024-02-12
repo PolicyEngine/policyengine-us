@@ -16,10 +16,7 @@ class va_age_deduction(Variable):
         ).gov.states.va.tax.income.subtractions.age_deduction
 
         filing_status = tax_unit("filing_status", period)
-        filing_statuses = filing_status.possible_values
-        joint = filing_status == filing_statuses.JOINT
-        separate = filing_status == filing_statuses.SEPARATE
-        
+
         age_head = tax_unit("age_head", period)
         age_spouse = tax_unit("age_spouse", period)
         birth_year_head = period.start.year - age_head
@@ -58,17 +55,4 @@ class va_age_deduction(Variable):
             count_eligible == count_eligible_for_full_deduction, 0, 1
         )
 
-        # Special case: for all married taxpayers, the age deduction will differ when filing separately vs. filing jointly.
-        divisor = where(
-            joint, 1, count_eligible
-        )  # divisor is 2 if and only if the couple is married filling seprately, and both are eligible
-
-        # Calculate the age deduction amount for each filing
-        reduced_max_deduction = max_(
-            maximum_allowable_deduction - reduction, 0
-        )
-        age_deduction = np.zeros_like(divisor)
-        mask = divisor != 0
-        age_deduction[mask] = reduced_max_deduction[mask] / divisor[mask]
-
-        return age_deduction
+        return max_(maximum_allowable_deduction - reduction, 0)
