@@ -13,11 +13,11 @@ class de_capped_real_estate_tax(Variable):
     )
     defined_for = StateCode.DE
 
-
-def formula(tax_unit, period, parameters):
-    p = parameters(period).gov.irs.deductions
-    filing_status = tax_unit("filing_status", period)
-    real_estate_tax = add(tax_unit, period, ["real_estate_taxes"])
-    return min_(
-        real_estate_tax, p.itemized.salt_and_real_estate.cap[filing_status]
-    )
+    def formula(tax_unit, period, parameters):
+        p = parameters(period).gov.irs.deductions
+        filing_status = tax_unit("filing_status", period)
+        real_estate_tax = add(tax_unit, period, ["real_estate_taxes"])
+        print(real_estate_tax)
+        return min_(
+            real_estate_tax, p.itemized.salt_and_real_estate.cap[filing_status]
+        )
