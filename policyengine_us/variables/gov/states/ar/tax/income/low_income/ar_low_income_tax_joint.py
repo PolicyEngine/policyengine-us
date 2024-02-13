@@ -43,7 +43,8 @@ class ar_low_income_tax_joint(Variable):
                 p.head_of_household.two_or_more_dependents.calc(
                     agi_attributed_to_head, right=True
                 ),
-                p.separate.calc(agi_attributed_to_head, right=True),
+                # Separate filers are ineligible to use the low income tax tables
+                np.inf,
                 p.widow.no_or_one_dependent.calc(
                     agi_attributed_to_head, right=True
                 ),
