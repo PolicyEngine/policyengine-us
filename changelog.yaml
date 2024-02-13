@@ -6184,3 +6184,9 @@
     added:
     - Update California SNAP parameters.
   date: 2024-02-13 16:00:56
+- bump: patch
+  changes:
+    fixed:
+    - SNAP individual utility allowances should filter to utility expenses the household
+      incurred.
+  date: 2024-02-13 16:17:14
