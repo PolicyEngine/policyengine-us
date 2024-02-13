@@ -81,25 +81,7 @@ class ny_supplemental_tax(Variable):
             recapture_base + phase_in_fraction * incremental_benefit
         )
 
-        # edge case for low income
-        min_taxable_income = select(
-            in_each_status,
-            [
-                p.incremental_benefit.single.thresholds[0],
-                p.incremental_benefit.joint.thresholds[0],
-                p.incremental_benefit.head_of_household.thresholds[0],
-                p.incremental_benefit.widow.thresholds[0],
-                p.incremental_benefit.separate.thresholds[0],
-            ],
-        )
-        low_income_rate = select(
-            in_each_status,
-            [scale.marginal_rates(min_taxable_income + 1) for scale in scales],
-        )
-        supplemental_tax_low_income = (
-            ny_taxable_income * low_income_rate
-            - phase_in_fraction * ny_main_income_tax
-        )
+        # edge case for low taxable income < $43,000 - not modelled here
 
         # edge case for high agi
         agi_limit = select(
@@ -121,8 +103,8 @@ class ny_supplemental_tax(Variable):
             ny_taxable_income * high_agi_rate - ny_main_income_tax
         )
 
-        return select(
-            [ny_taxable_income < min_taxable_income, ny_agi > agi_limit],
-            [supplemental_tax_low_income, supplemental_tax_high_agi],
-            default=supplemental_tax_general,
+        return where(
+            ny_agi > agi_limit,
+            supplemental_tax_high_agi,
+            supplemental_tax_general,
         )

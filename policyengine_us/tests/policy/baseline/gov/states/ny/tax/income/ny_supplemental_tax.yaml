@@ -8,7 +8,7 @@
     ny_taxable_income: 27_900 # <$161,550
     ny_main_income_tax: 1_202
   output:
-    ny_supplemental_tax: 1609.136 # 27900*5.97%-(110000-107650)/50000*1202
+    ny_supplemental_tax: 22.278
     # 2021 NY Form IT-201 Instructions Tax computation worksheet 1 
 
 - name: Unit test 2 for 2021 New York supplemental tax married filing jointly and qualifying widow(er)
