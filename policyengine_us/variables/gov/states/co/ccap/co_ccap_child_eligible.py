@@ -5,10 +5,7 @@ class co_ccap_child_eligible(Variable):
     value_type = bool
     entity = Person
     label = "Child eligibility for Colorado Child Care Assistance Program"
-    reference = (
-        "https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=11042&fileName=8%20CCR%201403-1#page=6",
-        "https://docs.google.com/spreadsheets/d/1WzobLnLoxGbN_JfTuw3jUCZV5N7IA_0uvwEkIoMt3Wk/edit#gid=1350122430",
-    )
+    reference = "https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=11042&fileName=8%20CCR%201403-1#page=6"
     definition_period = MONTH
     # defined_for = StateCode.CO
 

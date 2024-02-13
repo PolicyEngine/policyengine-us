@@ -11,11 +11,7 @@ class household_tax_before_refundable_credits(Variable):
 
     def formula(household, period, parameters):
         p = parameters(period)
-        added_components = add(
-            household,
-            period,
-            p.gov.household_tax_before_refundable_credits,
-        )
+        added_components = p.gov.household_tax_before_refundable_credits
         flat_tax = p.gov.contrib.ubi_center.flat_tax
         if p.simulation.reported_state_income_tax:
             added_components = [
@@ -35,4 +31,4 @@ class household_tax_before_refundable_credits(Variable):
                 for c in added_components
                 if c != "income_tax_before_refundable_credits"
             ]
-        return added_components
+        return add(household, period, added_components)
