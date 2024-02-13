@@ -10,7 +10,7 @@ class va_income_tax_before_non_refundable_credits(Variable):
     reference = (
         "https://law.lis.virginia.gov/vacodefull/title58.1/chapter3/article2/"
     )
-    defined_for = StateCode.VA
+    defined_for = "va_must_file"
 
     def formula(tax_unit, period, parameters):
         taxable_income = tax_unit("va_taxable_income", period)
