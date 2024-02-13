@@ -6,8 +6,8 @@ values:
     # certain federal law enforcement retirement Line 28
     # West Virginia state or local police, deputy sheriff's or firemen's retirement Line 29
     - military_retirement_pay # Line 30
-    - wv_public_pension_subtraction # Line 31
-    - wv_social_security_benefits_subtraction # Line 32
+    - wv_public_pension_subtraction_person # Line 31
+    - wv_social_security_benefits_subtraction_person # Line 32
 
 metadata:
   unit: list

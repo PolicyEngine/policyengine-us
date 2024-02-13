@@ -1,7 +1,7 @@
 description: Mississippi counts these income sources toward adjusted gross income.
 values:
   2021-01-01:
-    - employment_income # Wages, salaries, tips, etc.
+    - irs_employment_income # Wages, salaries, tips, etc.
     - self_employment_income
     - qualified_business_income
     - capital_gains
