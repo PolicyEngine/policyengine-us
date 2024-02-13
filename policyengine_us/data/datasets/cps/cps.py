@@ -448,6 +448,34 @@ def add_previous_year_income(self, cps: h5py.File) -> None:
     previous_year_data = previous_year_data[
         (previous_year_data.I_ERNVAL == 0) & (previous_year_data.I_SEVAL == 0)
     ]
+
+    previous_year_data.drop(["I_ERNVAL", "I_SEVAL"], axis=1, inplace=True)
+
+    joined_data = cps_current_year.join(previous_year_data)[
+        [
+            "employment_income_last_year",
+            "self_employment_income_last_year",
+            "I_ERNVAL",
+            "I_SEVAL",
+        ]
+    ]
+    joined_data["previous_year_income_available"] = (
+        ~joined_data.employment_income_last_year.isna()
+        & ~joined_data.self_employment_income_last_year.isna()
+        & (joined_data.I_ERNVAL == 0)
+        & (joined_data.I_SEVAL == 0)
+    )
+    joined_data = joined_data.fillna(-1).drop(["I_ERNVAL", "I_SEVAL"], axis=1)
+
+    # CPS already ordered by PERIDNUM, so the join wouldn't change the order.
+    cps["employment_income_last_year"] = joined_data[
+        "employment_income_last_year"
+    ].values
+    cps["self_employment_income_last_year"] = joined_data[
+        "self_employment_income_last_year"
+    ].values
+    cps["previous_year_income_available"] = joined_data[
+        "previous_year_income_available"].values
     cps_prev_long_subset = cps_previous_year.loc[in_sample]
     cps_cur_long_subset = cps_current_year.set_index(
         cps_current_year.PERIDNUM
