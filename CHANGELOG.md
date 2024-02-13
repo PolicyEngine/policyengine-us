@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.653.0] - 2024-02-12 20:55:26
+
+### Added
+
+- Add the homestead property tax credit to the list of refundable credits.
+
+## [0.652.1] - 2024-02-12 18:35:09
+
+### Fixed
+
+- Create person-level subtractions in WV.
+
 ## [0.652.0] - 2024-02-12 03:09:26
 
 ### Added
@@ -7269,6 +7281,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.653.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.652.1...0.653.0
+[0.652.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.652.0...0.652.1
 [0.652.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.651.4...0.652.0
 [0.651.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.651.3...0.651.4
 [0.651.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.651.2...0.651.3

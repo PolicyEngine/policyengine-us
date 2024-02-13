@@ -19,16 +19,4 @@ class wv_social_security_benefits_subtraction(Variable):
     )
     defined_for = "wv_social_security_benefits_subtraction_eligible"
 
-    def formula(tax_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.wv.tax.income.subtractions.social_security_benefits
-        person = tax_unit.members
-        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        # Federal adjusted gross income includes
-        # social security benefits paid by the Social Security Administration as Old Age,
-        # Survivors and Disability Insurance Benefits
-        taxable_ss = person("taxable_social_security", period)
-        total_eligible_ss = tax_unit.sum(taxable_ss * head_or_spouse)
-
-        return total_eligible_ss * p.rate
+    adds = ["wv_social_security_benefits_subtraction_person"]
