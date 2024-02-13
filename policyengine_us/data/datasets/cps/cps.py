@@ -475,7 +475,8 @@ def add_previous_year_income(self, cps: h5py.File) -> None:
         "self_employment_income_last_year"
     ].values
     cps["previous_year_income_available"] = joined_data[
-        "previous_year_income_available"].values
+        "previous_year_income_available"
+    ].values
     cps_prev_long_subset = cps_previous_year.loc[in_sample]
     cps_cur_long_subset = cps_current_year.set_index(
         cps_current_year.PERIDNUM
