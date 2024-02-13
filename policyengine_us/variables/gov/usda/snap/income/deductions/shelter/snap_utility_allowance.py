@@ -31,17 +31,16 @@ class snap_utility_allowance(Variable):
                 spm_unit("phone_expense", period),
                 spm_unit("trash_expense", period),
                 spm_unit("water_expense", period),
-                spm_unit("sewage_expense", period),]
-                [
-                    utility.single.electricity[region],
-                    utility.single.gas_and_fuel[region],
-                    utility.single.phone[region],
-                    utility.single.trash[region],
-                    utility.single.water[region],
-                    utility.single.sewage[region],
-                ],
+                spm_unit("sewage_expense", period),
+            ][
+                utility.single.electricity[region],
+                utility.single.gas_and_fuel[region],
+                utility.single.phone[region],
+                utility.single.trash[region],
+                utility.single.water[region],
+                utility.single.sewage[region],
+            ],
         )
-
 
         iua_due = where(
             allowance_type == allowance_types.IUA,

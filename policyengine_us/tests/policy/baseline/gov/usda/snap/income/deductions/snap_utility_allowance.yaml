@@ -3,9 +3,7 @@
   input:
     snap_utility_allowance_type: IUA
     snap_utility_region_str: CA
-    electricity_expense: 20
     phone_expense: 20
-    water_expense: 1
   output:
     snap_utility_allowance: 228 # 19 * 12
 
@@ -14,8 +12,6 @@
   input:
     snap_utility_allowance_type: IUA
     snap_utility_region_str: CA
-    electricity_expense: 20
-    phone_expense: 0
     water_expense: 1
   output:
     snap_utility_allowance: 0 
