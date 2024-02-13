@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.655.0] - 2024-02-13 18:04:02
+
+### Added
+
+- Virginia filing requirement variable.
+
 ## [0.654.2] - 2024-02-13 17:31:59
 
 ### Fixed
@@ -7299,6 +7305,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.655.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.654.2...0.655.0
 [0.654.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.654.1...0.654.2
 [0.654.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.654.0...0.654.1
 [0.654.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.653.0...0.654.0
