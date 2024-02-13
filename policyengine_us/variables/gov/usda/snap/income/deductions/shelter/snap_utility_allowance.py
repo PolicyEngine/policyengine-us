@@ -22,16 +22,49 @@ class snap_utility_allowance(Variable):
             utility.limited.allowance[region],
             0,
         )
-        expense_types = utility.single.utility_types
-        sum_of_individual_allowances = sum(
-            [
-                utility.single[expense.replace("_expense", "")][region]
-                for expense in expense_types
-            ]
+        # Make sure that only the subsidy amount which corresponds to the
+        # utility expense is included in the individual subsidies
+        electricty_subsidy = where(
+            spm_unit("electricity_expense", period) > 0,
+            utility.single.electricity[region],
+            0,
+        )
+        gas_subsidy = where(
+            spm_unit("gas_expense", period) > 0,
+            utility.single.gas_and_fuel[region],
+            0,
+        )
+        phone_subsidy = where(
+            spm_unit("phone_expense", period) > 0,
+            utility.single.phone[region],
+            0,
+        )
+        trash_subsidy = where(
+            spm_unit("trash_expense", period) > 0,
+            utility.single.trash[region],
+            0,
+        )
+        water_subsidy = where(
+            spm_unit("water_expense", period) > 0,
+            utility.single.water[region],
+            0,
+        )
+        sewage_subsidy = where(
+            spm_unit("sewage_expense", period) > 0,
+            utility.single.sewage[region],
+            0,
+        )
+        total_subsidies = (
+            electricty_subsidy
+            + gas_subsidy
+            + phone_subsidy
+            + trash_subsidy
+            + water_subsidy
+            + sewage_subsidy
         )
         iua_due = where(
             allowance_type == allowance_types.IUA,
-            sum_of_individual_allowances,
+            total_subsidies,
             0,
         )
         return sua_due + lua_due + iua_due
