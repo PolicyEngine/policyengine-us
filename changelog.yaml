@@ -6148,3 +6148,34 @@
     fixed:
     - Arkansas low income tax variables.
   date: 2024-02-11 00:35:31
+- bump: patch
+  changes:
+    fixed:
+    - Subtract pre-tax contributions from taxable wages and salaries.
+  date: 2024-02-12 01:03:25
+- bump: patch
+  changes:
+    fixed:
+    - Virginia age deduction calculation and taxunit level subtractions.
+  date: 2024-02-12 02:59:35
+- bump: patch
+  changes:
+    fixes:
+    - Adjust the Arkansas files separately formula to rely on ar_income_tax_before_non_refundable_credits
+      comparisons.
+  date: 2024-02-12 03:02:41
+- bump: minor
+  changes:
+    added:
+    - Michigan homestead property tax credit.
+  date: 2024-02-12 03:09:26
+- bump: patch
+  changes:
+    fixed:
+    - Create person-level subtractions in WV.
+  date: 2024-02-12 18:35:09
+- bump: minor
+  changes:
+    added:
+    - Add the homestead property tax credit to the list of refundable credits.
+  date: 2024-02-12 20:55:26
