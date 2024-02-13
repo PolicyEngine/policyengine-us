@@ -33,4 +33,12 @@
   output:
     # 720 + 3_000 * 0.0575 = 892.5
     # 720 + round(3_000 * 0.0575) = 893
-    va_income_tax_before_non_refundable_credits: 893
+    va_income_tax_before_non_refundable_credits: 892.5
+
+- name: VA income tax rates - taxable income of 30,000
+  period: 2022
+  input:
+    va_taxable_income: 30_000
+    state_code: VA
+  output:
+    va_income_tax_before_non_refundable_credits: 1_467.5

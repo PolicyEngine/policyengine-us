@@ -15,7 +15,4 @@ class va_income_tax_before_non_refundable_credits(Variable):
     def formula(tax_unit, period, parameters):
         taxable_income = tax_unit("va_taxable_income", period)
         p = parameters(period).gov.states.va.tax.income.rates
-        va_income_tax_before_non_refundable_credits = p.calc(taxable_income)
-        return (
-            np.floor(va_income_tax_before_non_refundable_credits + 0.5)
-        ).astype(int)
+        return p.calc(taxable_income)
