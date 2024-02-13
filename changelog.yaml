@@ -5897,3 +5897,301 @@
     fixed:
     - Georgia retirement subtraction income sources.
   date: 2024-01-25 14:45:34
+- bump: patch
+  changes:
+    fixed:
+    - Rhode Island property tax calculation.
+  date: 2024-01-25 17:01:06
+- bump: patch
+  changes:
+    fixed:
+    - South Carolina two-wage-earner credit.
+  date: 2024-01-25 18:46:12
+- bump: minor
+  changes:
+    added:
+    - SSI Substantial Gainful Activity
+  date: 2024-01-25 20:08:04
+- bump: minor
+  changes:
+    added:
+    - Broadband subsidies from CPS.
+  date: 2024-01-26 14:10:01
+- bump: patch
+  changes:
+    fixed:
+    - LA General relief computation to include withholding rules.
+  date: 2024-01-26 16:34:55
+- bump: patch
+  changes:
+    fixed:
+    - Added remaining components to SPM net income.
+    - Inflation-index SPM-related variables.
+  date: 2024-01-27 19:26:08
+- bump: patch
+  changes:
+    fixed:
+    - CA TANF monthly applicant income disregards.
+  date: 2024-01-28 03:52:36
+- bump: patch
+  changes:
+    fixed:
+    - Georgia itemized deduction calculation.
+  date: 2024-01-28 05:48:37
+- bump: minor
+  changes:
+    added:
+    - Enable Georgia state income tax computation.
+  date: 2024-01-28 19:06:09
+- bump: patch
+  changes:
+    fixed:
+    - Adjust the adds function in the hi_subtractions variable.
+  date: 2024-01-29 01:00:09
+- bump: patch
+  changes:
+    fixed:
+    - Idaho permanent building fund tax calculation.
+  date: 2024-01-29 01:05:00
+- bump: patch
+  changes:
+    fixed:
+    - Removed duplicate NIIT addition from Louisiana federal tax deduction.
+  date: 2024-01-29 01:13:40
+- bump: patch
+  changes:
+    added:
+    - 2024 federal poverty guidelines.
+  date: 2024-01-29 04:29:46
+- bump: minor
+  changes:
+    changed:
+    - Improved CPS previous year imputations.
+  date: 2024-01-29 18:12:34
+- bump: patch
+  changes:
+    fixed:
+    - Georgia ga_income_tax_before_refundable_credits label.
+  date: 2024-01-29 18:47:44
+- bump: minor
+  changes:
+    added:
+    - California CalWORKs vehicle value limit.
+  date: 2024-01-29 23:18:35
+- bump: patch
+  changes:
+    fixed:
+    - Rhode Island property tax credit maximum amount and eligibility criteria.
+  date: 2024-01-30 04:21:54
+- bump: patch
+  changes:
+    fixed:
+    - Oregon working family household and dependent care credit calculation.
+  date: 2024-01-30 20:13:53
+- bump: minor
+  changes:
+    added:
+    - Hawaii renter credit calculation.
+  date: 2024-01-31 00:26:07
+- bump: patch
+  changes:
+    fixed:
+    - Rhode Island retirement income subtraction calculation.
+  date: 2024-01-31 01:48:14
+- bump: patch
+  changes:
+    fixed:
+    - Ohio joint filing credit.
+    - Ohio person level adjusted gross income.
+  date: 2024-02-01 03:21:37
+- bump: patch
+  changes:
+    fixed:
+    - Pre subsidy rent variable.
+  date: 2024-02-01 18:04:08
+- bump: patch
+  changes:
+    fixed:
+    - Ohio senior citizen credit.
+  date: 2024-02-01 20:49:24
+- bump: patch
+  changes:
+    fixed:
+    - Oregon WFHDC variable consolidation.
+  date: 2024-02-01 23:29:41
+- bump: patch
+  changes:
+    fixed:
+    - Add the exemption credits to the list of non-refundable credits.
+  date: 2024-02-02 06:52:55
+- bump: minor
+  changes:
+    added:
+    - Add Idaho net capital gain deduction to the income tree.
+  date: 2024-02-02 13:15:58
+- bump: patch
+  changes:
+    fixed:
+    - Add the exemption amount to the senior citizen credit income calculation.
+  date: 2024-02-03 01:00:25
+- bump: minor
+  changes:
+    added:
+    - Idaho household and dependent care expense deduction.
+  date: 2024-02-03 01:21:48
+- bump: minor
+  changes:
+    added:
+    - Married filing separately logic to the Mississippi income tax.
+  date: 2024-02-04 20:07:05
+- bump: patch
+  changes:
+    fixed:
+    - Remove capital_gains_excluded_from_taxable_income from the Rhode Island property
+      tax credit income sources.
+  date: 2024-02-04 22:04:16
+- bump: minor
+  changes:
+    added:
+    - Enable Rhode Island state income tax model and add it to the net income tree.
+  date: 2024-02-05 18:36:12
+- bump: patch
+  changes:
+    fixed:
+    - South Carolina state tax addback.
+  date: 2024-02-05 19:46:09
+- bump: minor
+  changes:
+    added:
+    - Enable South Carolina state income tax model and add it to the net income tree.
+  date: 2024-02-06 01:09:24
+- bump: minor
+  changes:
+    added:
+    - Connecticut social security benefit adjustment.
+  date: 2024-02-06 16:07:06
+- bump: minor
+  changes:
+    added:
+    - Enhanced CPS now has weights and imputations for 2024 and 2025.
+  date: 2024-02-06 17:23:36
+- bump: minor
+  changes:
+    added:
+    - Pin policyengine-core below 2.14.
+  date: 2024-02-07 16:40:25
+- bump: minor
+  changes:
+    added:
+    - Ohio lump sum distribution credit.
+  date: 2024-02-07 17:44:33
+- bump: patch
+  changes:
+    fixed:
+    - Avoid negative values of non_refundable_ctc.
+  date: 2024-02-07 20:51:32
+- bump: minor
+  changes:
+    added:
+    - Montana married filing separately on same form logic.
+  date: 2024-02-07 21:00:05
+- bump: patch
+  changes:
+    fixed:
+    - Adjust the list in the oh_partial_non_refundable_credits variable.
+  date: 2024-02-07 21:07:12
+- bump: minor
+  changes:
+    added:
+    - Remove redundant formula/adds+subtracts combos.
+  date: 2024-02-07 21:15:22
+- bump: patch
+  changes:
+    added:
+    - Enable the Hawaii state income tax model and add it to the net income tree.
+  date: 2024-02-08 15:55:48
+- bump: patch
+  changes:
+    fixed:
+    - Adjusting references to Colorado Child Care Assistance Program files.
+  date: 2024-02-08 18:50:37
+- bump: patch
+  changes:
+    fixed:
+    - Refactored household_refundable_tax_credits and household_tax_before_refundable_credits
+      to remove erroneous variable overwrite. household_tax_before_refundable_credits
+      to remove erroneous variable overwrite
+  date: 2024-02-08 21:27:43
+- bump: patch
+  changes:
+    fixed:
+    - Fix the ar_low_income_tax_joint calculation.
+  date: 2024-02-09 01:35:14
+- bump: minor
+  changes:
+    added:
+    - Vermont renter credit.
+  date: 2024-02-09 14:20:13
+- bump: minor
+  changes:
+    added:
+    - Populate ca_tanf_other_unearned_income.
+  date: 2024-02-09 14:32:01
+- bump: minor
+  changes:
+    added:
+    - Add tests to the household_refundable_tax_credits and household_tax_before_refundable_credits
+      vars.
+  date: 2024-02-09 21:57:38
+- bump: patch
+  changes:
+    fixed:
+    - Arkansas low income tax variables.
+  date: 2024-02-11 00:35:31
+- bump: patch
+  changes:
+    fixed:
+    - Subtract pre-tax contributions from taxable wages and salaries.
+  date: 2024-02-12 01:03:25
+- bump: patch
+  changes:
+    fixed:
+    - Virginia age deduction calculation and taxunit level subtractions.
+  date: 2024-02-12 02:59:35
+- bump: patch
+  changes:
+    fixes:
+    - Adjust the Arkansas files separately formula to rely on ar_income_tax_before_non_refundable_credits
+      comparisons.
+  date: 2024-02-12 03:02:41
+- bump: minor
+  changes:
+    added:
+    - Michigan homestead property tax credit.
+  date: 2024-02-12 03:09:26
+- bump: patch
+  changes:
+    fixed:
+    - Create person-level subtractions in WV.
+  date: 2024-02-12 18:35:09
+- bump: minor
+  changes:
+    added:
+    - Add the homestead property tax credit to the list of refundable credits.
+  date: 2024-02-12 20:55:26
+- bump: minor
+  changes:
+    added:
+    - Update California SNAP parameters.
+  date: 2024-02-13 16:00:56
+- bump: patch
+  changes:
+    fixed:
+    - SNAP individual utility allowances should filter to utility expenses the household
+      incurred.
+  date: 2024-02-13 16:17:14
+- bump: patch
+  changes:
+    fixed:
+    - Refactoring Colorado child-care assistance parent fee code.
+  date: 2024-02-13 17:31:59

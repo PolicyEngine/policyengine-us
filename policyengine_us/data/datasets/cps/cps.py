@@ -1,7 +1,10 @@
 import logging
 from policyengine_core.data import Dataset
+from policyengine_us.data.storage import STORAGE_FOLDER
 import h5py
 from policyengine_us.data.datasets.cps.raw_cps import (
+    RawCPS_2018,
+    RawCPS_2019,
     RawCPS_2020,
     RawCPS_2021,
     RawCPS_2022,
@@ -217,7 +220,8 @@ def add_personal_income_variables(
     """
     # Get income imputation parameters.
     yamlfilename = os.path.join(
-        os.path.abspath(os.path.dirname(__file__)), "income_parameters.yaml"
+        os.path.abspath(os.path.dirname(__file__)),
+        "imputation_parameters.yaml",
     )
     with open(yamlfilename, "r", encoding="utf-8") as yamlfile:
         p = yaml.safe_load(yamlfile)
@@ -226,18 +230,18 @@ def add_personal_income_variables(
     # Assign CPS variables.
     cps["employment_income"] = person.WSAL_VAL
     cps["taxable_interest_income"] = person.INT_VAL * (
-        p["taxable_interest_fraction"][year]
+        p["taxable_interest_fraction"]
     )
     cps["tax_exempt_interest_income"] = person.INT_VAL * (
-        1 - p["taxable_interest_fraction"][year]
+        1 - p["taxable_interest_fraction"]
     )
     cps["self_employment_income"] = person.SEMP_VAL
     cps["farm_income"] = person.FRSE_VAL
     cps["qualified_dividend_income"] = person.DIV_VAL * (
-        p["qualified_dividend_fraction"][year]
+        p["qualified_dividend_fraction"]
     )
     cps["non_qualified_dividend_income"] = person.DIV_VAL * (
-        1 - p["qualified_dividend_fraction"][year]
+        1 - p["qualified_dividend_fraction"]
     )
     cps["rental_income"] = person.RNT_VAL
     # Assign Social Security retirement benefits if at least 62.
@@ -252,11 +256,12 @@ def add_personal_income_variables(
     cps["unemployment_compensation"] = person.UC_VAL
     # Add pensions and annuities.
     cps_pensions = person.PNSN_VAL + person.ANN_VAL
-    cps["taxable_private_pension_income"] = cps_pensions * (
-        p["taxable_pension_fraction"][year]
+    # Assume a constant fraction of pension income is taxable.
+    cps["taxable_private_pension_income"] = (
+        cps_pensions * p["taxable_pension_fraction"]
     )
     cps["tax_exempt_private_pension_income"] = cps_pensions * (
-        1 - p["taxable_pension_fraction"][year]
+        1 - p["taxable_pension_fraction"]
     )
     # Other income (OI_VAL) is a catch-all for all other income sources.
     # The code for alimony income is 20.
@@ -268,12 +273,77 @@ def add_personal_income_variables(
     # They could also include General Assistance.
     cps["tanf_reported"] = person.PAW_VAL
     cps["ssi_reported"] = person.SSI_VAL
-    cps["pension_contributions"] = person.RETCB_VAL
+    # Assume all retirement contributions are traditional 401(k) for now.
+    # Procedure for allocating retirement contributions:
+    # 1) If they report any self-employment income, allocate entirely to
+    #    self-employed pension contributions.
+    # 2) If they report any wage and salary income, allocate in this order:
+    #    a) Traditional 401(k) contributions up to to limit
+    #    b) Roth 401(k) contributions up to the limit
+    #    c) IRA contributions up to the limit, split according to administrative fractions
+    #    d) Other retirement contributions
+    # Disregard reported pension contributions from people who report neither wage and salary
+    # nor self-employment income.
+    # Assume no 403(b) or 457 contributions for now.
+    LIMIT_401K_2022 = 20_500
+    LIMIT_401K_CATCH_UP_2022 = 6_500
+    LIMIT_IRA_2022 = 6_000
+    LIMIT_IRA_CATCH_UP_2022 = 1_000
+    CATCH_UP_AGE_2022 = 50
+    retirement_contributions = person.RETCB_VAL
+    cps["self_employment_retirement_contributions"] = np.where(
+        person.SEMP_VAL > 0, retirement_contributions, 0
+    )
+    remaining_retirement_contributions = np.maximum(
+        retirement_contributions
+        - cps["self_employment_retirement_contributions"],
+        0,
+    )
+    # Compute the 401(k) limit for the person's age.
+    catch_up_eligible = person.A_AGE >= CATCH_UP_AGE_2022
+    limit_401k = LIMIT_401K_2022 + catch_up_eligible * LIMIT_401K_CATCH_UP_2022
+    limit_ira = LIMIT_IRA_2022 + catch_up_eligible * LIMIT_IRA_CATCH_UP_2022
+    cps["traditional_401k_contributions"] = np.where(
+        person.WSAL_VAL > 0,
+        np.minimum(remaining_retirement_contributions, limit_401k),
+        0,
+    )
+    remaining_retirement_contributions = np.maximum(
+        remaining_retirement_contributions
+        - cps["traditional_401k_contributions"],
+        0,
+    )
+    cps["roth_401k_contributions"] = np.where(
+        person.WSAL_VAL > 0,
+        np.minimum(remaining_retirement_contributions, limit_401k),
+        0,
+    )
+    remaining_retirement_contributions = np.maximum(
+        remaining_retirement_contributions - cps["roth_401k_contributions"],
+        0,
+    )
+    cps["traditional_ira_contributions"] = np.where(
+        person.WSAL_VAL > 0,
+        np.minimum(remaining_retirement_contributions, limit_ira),
+        0,
+    )
+    remaining_retirement_contributions = np.maximum(
+        remaining_retirement_contributions
+        - cps["traditional_ira_contributions"],
+        0,
+    )
+    roth_ira_limit = limit_ira - cps["traditional_ira_contributions"]
+    cps["roth_ira_contributions"] = np.where(
+        person.WSAL_VAL > 0,
+        np.minimum(remaining_retirement_contributions, roth_ira_limit),
+        0,
+    )
+    # Allocate capital gains into long-term and short-term based on aggregate split.
     cps["long_term_capital_gains"] = person.CAP_VAL * (
-        p["long_term_capgain_fraction"][year]
+        p["long_term_capgain_fraction"]
     )
     cps["short_term_capital_gains"] = person.CAP_VAL * (
-        1 - p["long_term_capgain_fraction"][year]
+        1 - p["long_term_capgain_fraction"]
     )
     cps["receives_wic"] = person.WICYN == 1
     cps["veterans_benefits"] = person.VET_VAL
@@ -304,10 +374,11 @@ def add_spm_variables(cps: h5py.File, spm_unit: DataFrame) -> None:
         free_school_meals_reported="SPM_SCHLUNCH",
         spm_unit_energy_subsidy_reported="SPM_ENGVAL",
         spm_unit_wic_reported="SPM_WICVAL",
+        spm_unit_broadband_subsidy_reported="SPM_BBSUBVAL",
         spm_unit_payroll_tax_reported="SPM_FICA",
         spm_unit_federal_tax_reported="SPM_FEDTAX",
         spm_unit_state_tax_reported="SPM_STTAX",
-        spm_unit_work_childcare_expenses="SPM_CAPWKCCXPNS",
+        spm_unit_capped_work_childcare_expenses="SPM_CAPWKCCXPNS",
         spm_unit_medical_expenses="SPM_MEDXPNS",
         spm_unit_spm_threshold="SPM_POVTHRESHOLD",
         spm_unit_net_income_reported="SPM_RESOURCES",
@@ -315,7 +386,8 @@ def add_spm_variables(cps: h5py.File, spm_unit: DataFrame) -> None:
     )
 
     for openfisca_variable, asec_variable in SPM_RENAMES.items():
-        cps[openfisca_variable] = spm_unit[asec_variable]
+        if asec_variable in spm_unit.columns:
+            cps[openfisca_variable] = spm_unit[asec_variable]
 
     cps["reduced_price_school_meals_reported"] = (
         cps["free_school_meals_reported"][...] * 0
@@ -363,85 +435,57 @@ def add_previous_year_income(self, cps: h5py.File) -> None:
         cps_current_year_data.person.PERIDNUM
     )
 
-    PREDICTORS = [
-        "WSAL_VAL",
-        "SEMP_VAL",
-        "A_AGE",
-        "A_SEX",
-        "DIV_VAL",
-        "INT_VAL",
-        "SS_VAL",
-        "ANN_VAL",
-        "PNSN_VAL",
-        "UC_VAL",
-        "CAP_VAL",
-        "CSP_VAL",
-        "CHSP_VAL",
-        "PAW_VAL",
-        "SSI_VAL",
-        "WICYN",
-        "PHIP_VAL",
-        "MOOP",
+    previous_year_data = cps_previous_year[
+        ["WSAL_VAL", "SEMP_VAL", "I_ERNVAL", "I_SEVAL"]
+    ].rename(
+        {
+            "WSAL_VAL": "employment_income_last_year",
+            "SEMP_VAL": "self_employment_income_last_year",
+        },
+        axis=1,
+    )
+
+    previous_year_data = previous_year_data[
+        (previous_year_data.I_ERNVAL == 0) & (previous_year_data.I_SEVAL == 0)
     ]
 
-    in_sample = cps_previous_year_data.person.PERIDNUM[
-        cps_previous_year_data.person.PERIDNUM.isin(
-            cps_current_year_data.person.PERIDNUM
-        )
+    previous_year_data.drop(["I_ERNVAL", "I_SEVAL"], axis=1, inplace=True)
+
+    joined_data = cps_current_year.join(previous_year_data)[
+        [
+            "employment_income_last_year",
+            "self_employment_income_last_year",
+            "I_ERNVAL",
+            "I_SEVAL",
+        ]
     ]
-    cps_prev_long_subset = cps_previous_year.loc[in_sample]
-    cps_cur_long_subset = cps_current_year.set_index(
-        cps_current_year.PERIDNUM
-    ).loc[in_sample]
-
-    data_prev = cps_prev_long_subset[PREDICTORS].rename(
-        columns={x: x + "_prev" for x in PREDICTORS}
+    joined_data["previous_year_income_available"] = (
+        ~joined_data.employment_income_last_year.isna()
+        & ~joined_data.self_employment_income_last_year.isna()
+        & (joined_data.I_ERNVAL == 0)
+        & (joined_data.I_SEVAL == 0)
     )
-    data_cur = cps_cur_long_subset[PREDICTORS].rename(
-        columns={x: x + "_cur" for x in PREDICTORS}
-    )
-    data = pd.concat([data_prev, data_cur], axis=1)
+    joined_data = joined_data.fillna(-1).drop(["I_ERNVAL", "I_SEVAL"], axis=1)
 
-    X = data[[column + "_cur" for column in PREDICTORS]]
-    y = data[["WSAL_VAL_prev", "SEMP_VAL_prev"]]
-
-    income_last_year = Imputation()
-    income_last_year.train(X, y)
-
-    df = pd.DataFrame()
-    df["person_id"] = cps_current_year.index
-    cps_cur_record_in_sample = cps_current_year.index.isin(
-        cps_previous_year.index
-    )
-    df["in_sample"] = cps_cur_record_in_sample
-    df["employment_income_prev"] = np.ones(len(df)) * np.nan
-    df["employment_income_prev"][
-        cps_cur_record_in_sample
-    ] = cps_previous_year.loc[
-        cps_current_year.index[cps_cur_record_in_sample]
-    ].WSAL_VAL.values
-    df["self_employment_income_prev"] = np.ones(len(df)) * np.nan
-    df["self_employment_income_prev"][
-        cps_cur_record_in_sample
-    ] = cps_previous_year.loc[
-        cps_current_year.index[cps_cur_record_in_sample]
-    ].SEMP_VAL.values
-
-    X = cps_current_year[PREDICTORS][~cps_cur_record_in_sample]
-    X = X.rename(columns={x: x + "_cur" for x in PREDICTORS})
-    Y_pred = income_last_year.predict(X)
-    df["employment_income_prev"][
-        ~cps_cur_record_in_sample
-    ] = Y_pred.WSAL_VAL_prev.values
-    df["self_employment_income_prev"][
-        ~cps_cur_record_in_sample
-    ] = Y_pred.SEMP_VAL_prev.values
-
-    cps["employment_income_last_year"] = df["employment_income_prev"].values
-    cps["self_employment_income_last_year"] = df[
-        "self_employment_income_prev"
+    # CPS already ordered by PERIDNUM, so the join wouldn't change the order.
+    cps["employment_income_last_year"] = joined_data[
+        "employment_income_last_year"
     ].values
-    cps["previous_year_income_imputed"] = df["in_sample"].values
+    cps["self_employment_income_last_year"] = joined_data[
+        "self_employment_income_last_year"
+    ].values
+    cps["previous_year_income_available"] = joined_data[
+        "previous_year_income_available"
+    ].values
+
+
+class CPS_2019(CPS):
+    name = "cps_2019"
+    label = "CPS 2019"
+    raw_cps = RawCPS_2019
+    previous_year_raw_cps = RawCPS_2018
+    file_path = STORAGE_FOLDER / "cps_2019.h5"
+    time_period = 2019
 
 
 class CPS_2020(CPS):

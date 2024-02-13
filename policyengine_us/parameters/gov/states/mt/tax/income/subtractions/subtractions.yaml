@@ -1,18 +1,18 @@
 description: Montana counts these sources as subtractions.
 values:
   2010-01-01:
-    - mt_disability_income_exclusion
+    - mt_disability_income_exclusion_person
   2021-01-01:
-    - mt_interest_exemption
+    - mt_interest_exemption_person
     - us_govt_interest
     - taxable_social_security
-    - mt_tuition_subtraction
-    - mt_disability_income_exclusion
+    - mt_tuition_subtraction_person
+    - mt_disability_income_exclusion_person
   2024-01-01:
-    - mt_interest_exemption
-    - mt_tuition_subtraction
+    - mt_interest_exemption_person
+    - mt_tuition_subtraction_person
     - mt_old_age_subtraction
-    - mt_disability_income_exclusion
+    - mt_disability_income_exclusion_person
 metadata:
   unit: list
   period: year
