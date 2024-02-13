@@ -12,10 +12,10 @@ class ca_child_exemption_eligible(Variable):
     defined_for = StateCode.CA
 
     def formula(person, period, parameters):
-        p = parameters(period).gov.states.ca.tax.income.alternative_minimum_tax
+        p = parameters(period).gov.irs.income.amt.exemption.child.age_limit
 
         head = person("is_tax_unit_head", period)
-        lower_age_threshold = person("age", period) < p.age_threshold.lower
+        lower_age_threshold = person("age", period) <= p.base
         income = person("earned_income", period)
         support_costs = person("care_and_support_costs", period)
 
@@ -26,7 +26,7 @@ class ca_child_exemption_eligible(Variable):
         student_no_income = (
             person("is_full_time_student", period)
             & income_rate_eligible
-            & (person("age", period) < p.age_threshold.upper)
+            & (person("age", period) < p.student)
         )
 
         return head & (

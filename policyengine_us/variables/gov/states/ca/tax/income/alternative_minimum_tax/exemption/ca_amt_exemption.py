@@ -37,7 +37,8 @@ class ca_amt_exemption(Variable):
         eligible_child = person("ca_child_exemption_eligible", period)
         head_is_eligible_child = tax_unit.any(eligible_child)
         # Line 7
-        exemption_amount_child = p.amount_child
+        p_irs = parameters(period).gov.irs.income.amt.exemption.child
+        exemption_amount_child = p_irs.amount
         # Line 8
         earned_income = tax_unit("head_earned", period)
         # Line 9
