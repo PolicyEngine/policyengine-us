@@ -26,13 +26,14 @@ class snap_utility_allowance(Variable):
         # utility expense is included in the individual subsidies
         indiv_subsidy = select(
             [
-                spm_unit("electricity_expense", period),
-                spm_unit("gas_expense", period),
-                spm_unit("phone_expense", period),
-                spm_unit("trash_expense", period),
-                spm_unit("water_expense", period),
-                spm_unit("sewage_expense", period),
-            ][
+                spm_unit("electricity_expense", period) > 0,
+                spm_unit("gas_expense", period) > 0,
+                spm_unit("phone_expense", period) > 0,
+                spm_unit("trash_expense", period) > 0,
+                spm_unit("water_expense", period) > 0,
+                spm_unit("sewage_expense", period) > 0,
+            ],
+            [
                 utility.single.electricity[region],
                 utility.single.gas_and_fuel[region],
                 utility.single.phone[region],
@@ -40,6 +41,7 @@ class snap_utility_allowance(Variable):
                 utility.single.water[region],
                 utility.single.sewage[region],
             ],
+            default=0,
         )
 
         iua_due = where(

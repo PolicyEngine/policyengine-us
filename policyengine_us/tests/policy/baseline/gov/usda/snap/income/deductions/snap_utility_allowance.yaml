@@ -40,3 +40,17 @@
     water_expense: 1
   output:
     snap_utility_allowance: 1_728 # 144 * 12
+
+- name: No expenses
+  period: 2022
+  input:
+    snap_utility_allowance_type: NONE
+    snap_utility_region_str: CA
+    electricity_expense: 0
+    gas_expense: 0
+    phone_expense: 0
+    water_expense: 0
+    trash_expense: 0
+    sewage_expense: 0
+  output:
+    snap_utility_allowance: 0
