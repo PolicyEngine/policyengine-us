@@ -43,7 +43,7 @@
   output:
     va_income_tax_before_non_refundable_credits: 1_467.5
 
-- name: VA must not file
+- name: VA does not need to file
   period: 2022
   input:
     va_taxable_income: 30_000
