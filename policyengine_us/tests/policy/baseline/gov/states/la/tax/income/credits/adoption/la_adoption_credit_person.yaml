@@ -1,4 +1,4 @@
-- name: In 2023, taxpayer adopted 1 children, age >2, the louisiana adoption credit was 0
+- name: In 2023, taxpayer adopted 1 child, age >2, the louisiana adoption credit was 0
   period: 2023
   input:
     age: 3
@@ -7,7 +7,7 @@
   output: 
     la_adoption_credit_person: 0
 
-- name: In 2023, taxpayer adopted 1 children, age <= 2, the louisiana adoption credit was 5000
+- name: In 2023, taxpayer adopted 1 child, age <= 2, the louisiana adoption credit was 5000
   period: 2023
   input:
     age: 2
