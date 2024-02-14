@@ -37,3 +37,30 @@
     mt_income_tax_joint: 354.65
     mt_income_tax: 248.85
 
+- name: Tax unit with taxsimid 21195 in e21.its.csv and e21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 55
+        employment_income: 13010
+        taxable_interest_income: 5505.0
+      person2:
+        age: 55
+        employment_income: 146010
+        taxable_interest_income: 5505.0
+      person3:
+        age: 16
+      person4:
+        age: 16
+      person5:
+        age: 16
+      person6:
+        age: 16
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_fips: 30  # MT
+  output:  # expected results from patched TAXSIM35 2024-02-05 version
+    mt_income_tax: 8887.64

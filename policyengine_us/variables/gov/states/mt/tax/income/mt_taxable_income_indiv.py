@@ -15,9 +15,20 @@ class mt_taxable_income_indiv(Variable):
 
     def formula(person, period, parameters):
         mt_agi = person("mt_agi", period)
+
         standard_deduction = person("mt_standard_deduction_indiv", period)
         itemized_deductions = person("mt_itemized_deductions_indiv", period)
         # Tax units can claim the larger of the itemized or standard deductions
         deductions = max_(itemized_deductions, standard_deduction)
         exemptions = person("mt_exemptions_indiv", period)
-        return max_(0, mt_agi - deductions - exemptions)
+        deductions_and_exemptions = deductions + exemptions
+        # allocata the deduction and exemption amounts based on the difference between and spouse AGI
+        head_agi = person("is_tax_unit_head", period) * mt_agi
+        spouse_agi = person("is_tax_unit_spouse", period) * mt_agi
+        head_over_spouse_agi = head_agi > spouse_agi
+        difference = min_(abs(head_agi - spouse_agi), deductions_and_exemptions)
+        halved_excess_deduction = max_(deductions_and_exemptions - difference, 0) / 2
+        head_reduced_agi = head_agi - halved_excess_deduction
+        spouse_reduced_agi = spouse_agi - halved_excess_deduction
+        final_agi = where(head_over_spouse_agi, )
+        return max_(0, mt_agi - )
