@@ -1,0 +1,35 @@
+- name: Single applicant
+  period: 2022
+  input:
+    in_la: true
+    la_general_relief_recipient: false
+    is_married: false
+  output:
+    la_general_relief_cash_asset_limit: 100
+
+- name: Married applicant
+  period: 2022
+  input:
+    in_la: true
+    la_general_relief_recipient: false
+    is_married: true
+  output:
+    la_general_relief_cash_asset_limit: 200
+
+- name: Married recipient
+  period: 2022
+  input:
+    in_la: true
+    la_general_relief_recipient: true
+    is_married: true
+  output:
+    la_general_relief_cash_asset_limit: 1_500
+
+- name: Single recipient
+  period: 2022
+  input:
+    in_la: true
+    la_general_relief_recipient: true
+    is_married: false
+  output:
+    la_general_relief_cash_asset_limit: 1_500

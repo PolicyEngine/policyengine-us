@@ -1,0 +1,39 @@
+- name: Idaho disabled head or spouse under eligible age
+  period: 2022
+  input:
+    state_code: ID
+    age: 61
+    is_disabled: true
+    is_tax_unit_head_or_spouse: true
+  output:
+    id_retirement_benefits_deduction_eligible_person: false
+
+- name: Idaho disabled head or spouse over eligible age
+  period: 2022
+  input:
+    state_code: ID
+    age: 65
+    is_disabled: true
+    is_tax_unit_head_or_spouse: true
+  output:
+    id_retirement_benefits_deduction_eligible_person: true
+
+- name: Idaho head or spouse under eligible age
+  period: 2022
+  input:
+    state_code: ID
+    age: 64
+    is_disabled: false
+    is_tax_unit_head_or_spouse: true
+  output:
+    id_retirement_benefits_deduction_eligible_person: false
+
+- name: Idaho head or spouse over eligible age
+  period: 2022
+  input:
+    state_code: ID
+    age: 66
+    is_disabled: false
+    is_tax_unit_head_or_spouse: true
+  output:
+    id_retirement_benefits_deduction_eligible_person: true

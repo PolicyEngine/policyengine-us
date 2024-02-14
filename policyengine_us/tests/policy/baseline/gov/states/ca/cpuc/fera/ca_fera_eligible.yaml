@@ -9,7 +9,7 @@
   output:
     ca_fera_eligible: true
 
-- name: A two-peson household with an income equal to 250% of poverty line is not eligible.
+- name: A two-person household with an income equal to 250% of poverty line is not eligible.
   period: 2023
   input:
     household_size: 2

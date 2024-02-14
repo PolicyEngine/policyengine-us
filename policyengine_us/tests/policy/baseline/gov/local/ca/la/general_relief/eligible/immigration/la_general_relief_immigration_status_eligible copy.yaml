@@ -1,0 +1,39 @@
+- name: Citizens are eligible
+  period: 2022
+  input:
+    in_la: true
+    immigration_status: CITIZEN
+  output:
+    la_general_relief_immigration_status_eligible_person: true
+
+- name: Residents are eligible
+  period: 2022
+  input:
+    in_la: true
+    immigration_status: RESIDENT
+  output:
+    la_general_relief_immigration_status_eligible_person: true
+
+- name: Daca classified are ineligible
+  period: 2022
+  input:
+    in_la: true
+    immigration_status: DACA_TPS
+  output:
+    la_general_relief_immigration_status_eligible_person: false
+
+- name: Undocumented immigrants are ineligible
+  period: 2022
+  input:
+    in_la: true
+    immigration_status: UNDOCUMENTED
+  output:
+    la_general_relief_immigration_status_eligible_person: false
+
+- name: Undocumented immigrants are ineligible
+  period: 2022
+  input:
+    in_la: true
+    immigration_status: UNDOCUMENTED
+  output:
+    la_general_relief_immigration_status_eligible_person: false

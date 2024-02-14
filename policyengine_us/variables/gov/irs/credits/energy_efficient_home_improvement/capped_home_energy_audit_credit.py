@@ -4,6 +4,7 @@ from policyengine_us.model_api import *
 class capped_home_energy_audit_credit(Variable):
     value_type = float
     entity = TaxUnit
+    label = "Capped home energy audit credit"
     definition_period = YEAR
     documentation = "Capped home energy audit credit"
     unit = USD

@@ -1,0 +1,31 @@
+- name: Single filer gets $4500 exemption.
+  period: 2022
+  input:
+    state_code: LA
+    filing_status: SINGLE
+  output:
+    la_personal_exemption: 4_500
+
+- name: Joint filer gets $9k exemption.
+  period: 2022
+  input:
+    state_code: LA
+    filing_status: JOINT
+  output:
+    la_personal_exemption: 9_000
+
+- name: Head of household filer gets $9k exemption.
+  period: 2022
+  input:
+    state_code: LA
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    la_personal_exemption: 9_000
+
+- name: Separate filer gets $4500 exemption.
+  period: 2022
+  input:
+    state_code: LA
+    filing_status: SEPARATE
+  output:
+    la_personal_exemption: 4_500

@@ -13,7 +13,6 @@ class hi_exemptions(Variable):
     defined_for = StateCode.HI
 
     def formula(tax_unit, period, parameters):
-        return max_(
-            tax_unit("hi_regular_exemptions", period),
-            tax_unit("hi_disabled_exemptions", period),
-        )
+        regular_exemptions = tax_unit("hi_regular_exemptions", period)
+        disabled_exemptions = tax_unit("hi_disabled_exemptions", period)
+        return max_(regular_exemptions, disabled_exemptions)

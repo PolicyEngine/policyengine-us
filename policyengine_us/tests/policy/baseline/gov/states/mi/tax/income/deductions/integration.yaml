@@ -1,0 +1,113 @@
+- name: 2022 single filer who is above the standard deduction age threshold but at the tier 1 retirement and pension benefits and interest, dividends, and capital gains deduction age threshold, $1000 interest, dividends, and capital gains income
+  period: 2022
+  input:
+    people:
+      person1:
+        taxable_pension_income: 70_000
+        taxable_public_pension_income: 60_000
+        taxable_private_pension_income: 10_000
+        military_retirement_pay: 1_000
+        military_service_income: 0
+        taxable_social_security: 0
+        year_of_retirement: 2012
+        retirement_benefits_from_ss_exempt_employment: 0
+        taxable_interest_income: 500
+        dividend_income: 400
+        capital_gains: 100
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        older_spouse_birth_year: 1945
+        elderly_disabled_credit: 300
+        mi_personal_exemptions: 2_000
+        members: [person1]
+        filing_status: SINGLE
+    household:
+      members: [person1]
+      state_code: MI
+  output: # 0 + (min(56961 - 1000 - 60000 < 0, 10000) + 60000) + 0 + (12697 - 60000 - 1000 - 300 < 0)
+    mi_interest_dividends_capital_gains_deduction_eligible: true
+    mi_interest_dividends_capital_gains_deduction: 0
+    mi_retirement_benefits_deduction_tier_one_eligible: true
+    mi_retirement_benefits_deduction_tier_one: 60_000
+    mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired_eligible_people: 0
+    mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired: 0
+    mi_retirement_benefits_deduction_tier_three_ss_exempt_retired_eligible_people: 0
+    mi_retirement_benefits_deduction_tier_three_ss_exempt_retired: 0
+    mi_retirement_benefits_deduction_tier_three_eligible: false
+    mi_retirement_benefits_deduction_tier_three: 0
+    mi_pension_benefit: 60_000
+    mi_standard_deduction_tier_three_eligible: false
+    mi_standard_deduction_tier_three: 0
+    mi_standard_deduction_tier_two_eligible: false
+    mi_standard_deduction_tier_two_increase_eligible_people: 0
+    mi_standard_deduction_tier_two: 0
+    mi_standard_deduction: 0
+
+- name: 2022 joint filer and their spouse are at the tier 3 standard deduction age threshold, and with one more household member
+  period: 2022
+  input:
+    people:
+      person1:
+        taxable_pension_income: 40_000
+        taxable_public_pension_income: 20_000
+        taxable_private_pension_income: 20_000
+        taxable_social_security: 2_000
+        military_retirement_pay: 1_000
+        military_service_income: 5_000
+        year_of_retirement: 2015
+        retirement_benefits_from_ss_exempt_employment: 0
+        taxable_interest_income: 500
+        dividend_income: 400
+        capital_gains: 100
+        is_tax_unit_head_or_spouse: true
+      person2:
+        taxable_pension_income: 30_000
+        taxable_social_security: 0
+        military_retirement_pay: 2_000
+        military_service_income: 3_000
+        year_of_retirement: 2018
+        retirement_benefits_from_ss_exempt_employment: 0
+        taxable_interest_income: 500
+        dividend_income: 400
+        capital_gains: 100
+        is_tax_unit_head_or_spouse: true
+      person3:
+        taxable_pension_income: 30_000
+        taxable_social_security: 300
+        military_retirement_pay: 2_000
+        military_service_income: 3_000
+        year_of_retirement: 2012
+        retirement_benefits_from_ss_exempt_employment: 300
+        taxable_interest_income: 500
+        dividend_income: 400
+        capital_gains: 100
+        is_tax_unit_head_or_spouse: false
+    tax_units:
+      tax_unit:
+        older_spouse_birth_year: 1955
+        elderly_disabled_credit: 300
+        mi_personal_exemptions: 2_000
+        members: [person1, person2, person3]
+        filing_status: JOINT
+    household:
+      members: [person1, person2, person3]
+      state_code: MI
+  output: # 40000 - 2000 - 1000 - (5000 > 2000) - (3000 > 0) - 2000 > 0
+    mi_interest_dividends_capital_gains_deduction_eligible: false
+    mi_interest_dividends_capital_gains_deduction: 0
+    mi_retirement_benefits_deduction_tier_one_eligible: false
+    mi_retirement_benefits_deduction_tier_one: 0
+    mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired_eligible_people: 0
+    mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired: 0
+    mi_retirement_benefits_deduction_tier_three_ss_exempt_retired_eligible_people: 0
+    mi_retirement_benefits_deduction_tier_three_ss_exempt_retired: 0
+    mi_retirement_benefits_deduction_tier_three_eligible: false
+    mi_retirement_benefits_deduction_tier_three: 0
+    mi_pension_benefit: 0
+    mi_standard_deduction_tier_three_eligible: true
+    mi_standard_deduction_tier_three: 27_000
+    mi_standard_deduction_tier_two_eligible: false
+    mi_standard_deduction_tier_two_increase_eligible_people: 0
+    mi_standard_deduction_tier_two: 0
+    mi_standard_deduction: 27_000

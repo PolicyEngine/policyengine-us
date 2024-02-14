@@ -3,12 +3,19 @@ values:
   2021-01-01:
     - salt_refund_income # (2)
     - us_govt_interest # (3)(a)
-    - taxable_social_security # (5)
     - military_service_income # (4)
+    - taxable_social_security # (5)
+    - id_household_and_dependent_care_expense_deduction # (6)
+    - id_aged_or_disabled_deduction # (8)
+    - id_capital_gains_deduction # (10)
     - workers_compensation # (13)
+    - id_retirement_benefits_deduction # (15)
+
 
 metadata:
   unit: list
+  period: year
+  label: Idaho adjusted gross income subtractions
   references: 
   - title: 2022 Idaho CodeSection 63-3022D - deduction of expenses for household and dependent care services
     href: https://law.justia.com/codes/idaho/2022/title-63/chapter-30/section-63-3022d/

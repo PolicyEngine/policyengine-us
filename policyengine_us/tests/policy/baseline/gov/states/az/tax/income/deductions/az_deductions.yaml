@@ -1,0 +1,17 @@
+- name: Standard deduction larger than itemized deductions
+  period: 2023
+  input:
+    state_code: AZ
+    az_itemized_deductions: 2_000
+    az_standard_deduction: 4_000
+  output:
+    az_deductions: 4_000
+
+- name: Itemized deductions larger than standard deduction
+  period: 2023
+  input:
+    state_code: AZ
+    az_itemized_deductions: 5_000
+    az_standard_deduction: 3_000
+  output:
+    az_deductions: 5_000

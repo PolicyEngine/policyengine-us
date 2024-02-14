@@ -21,3 +21,4 @@ class mt_medical_expense_deduction(Variable):
         # Tax form points to page 1, line 14, which is Montana AGI.
         medical_floor = medical.floor * tax_unit("mt_agi", period)
         return max_(0, expense - medical_floor)
+
