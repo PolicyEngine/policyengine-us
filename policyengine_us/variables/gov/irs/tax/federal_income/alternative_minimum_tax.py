@@ -140,7 +140,9 @@ class alternative_minimum_tax(Variable):
         age_head = tax_unit("age_head", period)
         child = amt.exemption.child
         young_head = (age_head != 0) & (age_head < child.age_limit.base)
-        no_or_young_spouse = tax_unit("age_spouse", period) < child.age_limit.base
+        no_or_young_spouse = (
+            tax_unit("age_spouse", period) < child.age_limit.base
+        )
         adj_earnings = tax_unit("filer_adjusted_earnings", period)
         if period.start.year >= 2019:
             child_amount = 0
