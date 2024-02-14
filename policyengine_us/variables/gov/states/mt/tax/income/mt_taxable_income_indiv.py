@@ -30,5 +30,4 @@ class mt_taxable_income_indiv(Variable):
         halved_excess_deduction = max_(deductions_and_exemptions - difference, 0) / 2
         head_reduced_agi = head_agi - halved_excess_deduction
         spouse_reduced_agi = spouse_agi - halved_excess_deduction
-        final_agi = where(head_over_spouse_agi, )
-        return max_(0, mt_agi - )
+        return where(head_over_spouse_agi, max_(head_reduced_agi - difference, 0), max_(spouse_reduced_agi - difference, 0))
