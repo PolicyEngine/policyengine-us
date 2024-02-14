@@ -81,8 +81,6 @@ class ny_supplemental_tax(Variable):
             recapture_base + phase_in_fraction * incremental_benefit
         )
 
-        # edge case for low taxable income < $43,000 - not modelled here
-
         # edge case for high agi
         agi_limit = select(
             in_each_status,
