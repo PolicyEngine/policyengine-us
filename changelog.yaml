@@ -6148,3 +6148,65 @@
     fixed:
     - Arkansas low income tax variables.
   date: 2024-02-11 00:35:31
+- bump: patch
+  changes:
+    fixed:
+    - Subtract pre-tax contributions from taxable wages and salaries.
+  date: 2024-02-12 01:03:25
+- bump: patch
+  changes:
+    fixed:
+    - Virginia age deduction calculation and taxunit level subtractions.
+  date: 2024-02-12 02:59:35
+- bump: patch
+  changes:
+    fixes:
+    - Adjust the Arkansas files separately formula to rely on ar_income_tax_before_non_refundable_credits
+      comparisons.
+  date: 2024-02-12 03:02:41
+- bump: minor
+  changes:
+    added:
+    - Michigan homestead property tax credit.
+  date: 2024-02-12 03:09:26
+- bump: patch
+  changes:
+    fixed:
+    - Create person-level subtractions in WV.
+  date: 2024-02-12 18:35:09
+- bump: minor
+  changes:
+    added:
+    - Add the homestead property tax credit to the list of refundable credits.
+  date: 2024-02-12 20:55:26
+- bump: minor
+  changes:
+    added:
+    - Update California SNAP parameters.
+  date: 2024-02-13 16:00:56
+- bump: patch
+  changes:
+    fixed:
+    - SNAP individual utility allowances should filter to utility expenses the household
+      incurred.
+  date: 2024-02-13 16:17:14
+- bump: patch
+  changes:
+    fixed:
+    - Refactoring Colorado child-care assistance parent fee code.
+  date: 2024-02-13 17:31:59
+- bump: minor
+  changes:
+    added:
+    - Virginia filing requirement variable.
+  date: 2024-02-13 18:04:02
+- bump: patch
+  changes:
+    fixed:
+    - Remove the low income table calculation from the married filing separate scenario.
+  date: 2024-02-13 18:10:07
+- bump: patch
+  changes:
+    fixed:
+    - Oregon federal tax liability subtractions.
+  date: 2024-02-13 23:39:19

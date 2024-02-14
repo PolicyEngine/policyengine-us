@@ -5,6 +5,74 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.655.2] - 2024-02-13 23:39:19
+
+### Fixed
+
+- Oregon federal tax liability subtractions.
+
+## [0.655.1] - 2024-02-13 18:10:07
+
+### Fixed
+
+- Remove the low income table calculation from the married filing separate scenario.
+
+## [0.655.0] - 2024-02-13 18:04:02
+
+### Added
+
+- Virginia filing requirement variable.
+
+## [0.654.2] - 2024-02-13 17:31:59
+
+### Fixed
+
+- Refactoring Colorado child-care assistance parent fee code.
+
+## [0.654.1] - 2024-02-13 16:17:14
+
+### Fixed
+
+- SNAP individual utility allowances should filter to utility expenses the household incurred.
+
+## [0.654.0] - 2024-02-13 16:00:56
+
+### Added
+
+- Update California SNAP parameters.
+
+## [0.653.0] - 2024-02-12 20:55:26
+
+### Added
+
+- Add the homestead property tax credit to the list of refundable credits.
+
+## [0.652.1] - 2024-02-12 18:35:09
+
+### Fixed
+
+- Create person-level subtractions in WV.
+
+## [0.652.0] - 2024-02-12 03:09:26
+
+### Added
+
+- Michigan homestead property tax credit.
+
+## [0.651.4] - 2024-02-12 03:02:41
+
+## [0.651.3] - 2024-02-12 02:59:35
+
+### Fixed
+
+- Virginia age deduction calculation and taxunit level subtractions.
+
+## [0.651.2] - 2024-02-12 01:03:25
+
+### Fixed
+
+- Subtract pre-tax contributions from taxable wages and salaries.
+
 ## [0.651.1] - 2024-02-11 00:35:31
 
 ### Fixed
@@ -7249,6 +7317,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.655.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.655.1...0.655.2
+[0.655.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.655.0...0.655.1
+[0.655.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.654.2...0.655.0
+[0.654.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.654.1...0.654.2
+[0.654.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.654.0...0.654.1
+[0.654.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.653.0...0.654.0
+[0.653.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.652.1...0.653.0
+[0.652.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.652.0...0.652.1
+[0.652.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.651.4...0.652.0
+[0.651.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.651.3...0.651.4
+[0.651.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.651.2...0.651.3
+[0.651.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.651.1...0.651.2
 [0.651.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.651.0...0.651.1
 [0.651.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.650.0...0.651.0
 [0.650.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.649.0...0.650.0
