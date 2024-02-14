@@ -9,7 +9,7 @@ class sc_young_child_exemption(Variable):
     definition_period = YEAR
     reference = (
         "https://dor.sc.gov/forms-site/Forms/SC1040_2022.pdf#page=2",
-        "https://www.scstatehouse.gov/code/t12c006.php"
+        "https://www.scstatehouse.gov/code/t12c006.php",
         # SECTION 12-6-1160
     )
     defined_for = StateCode.SC
