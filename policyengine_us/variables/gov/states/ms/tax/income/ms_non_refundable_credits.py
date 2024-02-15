@@ -8,3 +8,5 @@ class ms_non_refundable_credits(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.MS
+
+    adds = "ms_charitable_contributions_credit"
