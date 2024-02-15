@@ -20,10 +20,16 @@ class vt_percentage_capital_gains_exclusion(Variable):
         adjusted_net_capital_gain = tax_unit(
             "adjusted_net_capital_gain", period
         )
+        dividend_income = add(tax_unit, period, ["qualified_dividend_income"])
+        reduced_adjusted_net_capital_gain = max_(
+            adjusted_net_capital_gain - dividend_income, 0
+        )
         p = parameters(
             period
         ).gov.states.vt.tax.income.agi.exclusions.capital_gain
         # The percentage exclusion equals to a percentage of
         # the adjusted net capital gain and has a maximum value
-        percentage_exclusion = adjusted_net_capital_gain * p.percentage.rate
+        percentage_exclusion = (
+            reduced_adjusted_net_capital_gain * p.percentage.rate
+        )
         return min_(percentage_exclusion, p.percentage.cap)

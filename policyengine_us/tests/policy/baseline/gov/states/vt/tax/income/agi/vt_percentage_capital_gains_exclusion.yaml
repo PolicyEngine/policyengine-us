@@ -29,3 +29,12 @@
     adjusted_net_capital_gain: 900_000
   output:
     vt_percentage_capital_gains_exclusion: 350_000      
+
+- name: Adjusted net capital reduced by dividend income
+  period: 2022
+  input:
+    state_code: VT
+    adjusted_net_capital_gain: 900_000
+    qualified_dividend_income: 1_000_000
+  output:
+    vt_percentage_capital_gains_exclusion: 0
