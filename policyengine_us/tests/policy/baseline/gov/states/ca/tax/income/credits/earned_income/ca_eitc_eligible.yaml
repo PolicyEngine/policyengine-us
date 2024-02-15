@@ -1,4 +1,4 @@
-- name: Eligible for eitc
+- name: Eligible for EITC
   period: 2022
   input:
     people:
@@ -16,7 +16,7 @@
   output:
     ca_eitc_eligible: true
 
-- name: Ineligible for eitc
+- name: Ineligible for EITC
   period: 2022
   input:
     people:
@@ -34,7 +34,7 @@
   output:
     ca_eitc_eligible: false
 
-- name: Eligible for eitc
+- name: Eligible for EITC
   period: 2021
   input:
     people:
