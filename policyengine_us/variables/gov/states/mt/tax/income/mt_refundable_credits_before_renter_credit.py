@@ -3,7 +3,7 @@ from policyengine_us.model_api import *
 
 class mt_refundable_credits_before_renter_credit(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     label = "Montana refundable credits before adding the elderly homeowner or renter credit"
     unit = USD
     reference = "https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2022/12/Form-2-2022-Instructions.pdf#page=48"

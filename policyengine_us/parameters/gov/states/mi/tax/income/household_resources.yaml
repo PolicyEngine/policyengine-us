@@ -1,7 +1,7 @@
 description: Michigan accounts for the following income sources as the household resources.
 values:
   2021-01-01:
-    - employment_income
+    - irs_employment_income
     - self_employment_income
     - strike_benefits
     - dividend_income
@@ -17,8 +17,7 @@ values:
     - ssi 
     - child_support_received
     - unemployment_compensation
-    - # Gifts received or 
-    - # Expenses paid on your behalf
+    # Gifts received or expenses paid on your behalf
     - miscellaneous_income
     - veterans_benefits
     - workers_compensation

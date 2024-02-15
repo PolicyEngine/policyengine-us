@@ -1,0 +1,109 @@
+- name: Single filing with adjusted gross income less than max amount
+  period: 2022
+  input:
+    state_code: CT
+    tax_unit_taxable_social_security: 20_000
+    adjusted_gross_income: 70_000
+    tax_unit_ss_combined_income_excess: 20_000
+    filing_status: SINGLE
+  output:
+    ct_social_security_benefit_adjustment: 20_000
+
+- name: Single filing with adjusted gross income at least as much as the max amount
+  period: 2022
+  input:
+    state_code: CT
+    tax_unit_taxable_social_security: 20_000
+    adjusted_gross_income: 80_000
+    tax_unit_ss_combined_income_excess: 20_000
+    filing_status: SINGLE
+  output:
+    ct_social_security_benefit_adjustment: 15_000
+
+- name: Joint filing with adjusted gross income less than max amount
+  period: 2022
+  input:
+    state_code: CT
+    tax_unit_taxable_social_security: 20_000
+    adjusted_gross_income: 70_000
+    tax_unit_ss_combined_income_excess: 20_000
+    filing_status: JOINT
+  output:
+    ct_social_security_benefit_adjustment: 20_000
+
+- name: Joint filing with adjusted gross income at least as much as the max amount
+  period: 2022
+  input:
+    state_code: CT
+    tax_unit_taxable_social_security: 20_000
+    adjusted_gross_income: 120_000
+    tax_unit_ss_combined_income_excess: 20_000
+    filing_status: JOINT
+  output:
+    ct_social_security_benefit_adjustment: 15_000
+
+- name: Head of household filing with adjusted gross income less than max amount
+  period: 2022
+  input:
+    state_code: CT
+    tax_unit_taxable_social_security: 20_000
+    adjusted_gross_income: 70_000
+    tax_unit_ss_combined_income_excess: 20_000
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    ct_social_security_benefit_adjustment: 20_000
+
+- name: Head of household filing with adjusted gross income at least as much as the max amount
+  period: 2022
+  input:
+    state_code: CT
+    tax_unit_taxable_social_security: 20_000
+    adjusted_gross_income: 120_000
+    tax_unit_ss_combined_income_excess: 20_000
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    ct_social_security_benefit_adjustment: 15_000
+
+- name: Separate filing with adjusted gross income less than max amount
+  period: 2022
+  input:
+    state_code: CT
+    tax_unit_taxable_social_security: 20_000
+    adjusted_gross_income: 70_000
+    tax_unit_ss_combined_income_excess: 20_000
+    filing_status: SEPARATE
+  output:
+    ct_social_security_benefit_adjustment: 20_000
+
+- name: Separate filing with adjusted gross income at least as much as the max amount
+  period: 2022
+  input:
+    state_code: CT
+    tax_unit_taxable_social_security: 20_000
+    adjusted_gross_income: 120_000
+    tax_unit_ss_combined_income_excess: 20_000
+    filing_status: SEPARATE
+  output:
+    ct_social_security_benefit_adjustment: 15_000
+
+- name: Widow filing with adjusted gross income less than max amount
+  period: 2022
+  input:
+    state_code: CT
+    tax_unit_taxable_social_security: 20_000
+    adjusted_gross_income: 70_000
+    tax_unit_ss_combined_income_excess: 20_000
+    filing_status: WIDOW
+  output:
+    ct_social_security_benefit_adjustment: 20_000
+
+- name: Widow filing with adjusted gross income at least as much as the max amount
+  period: 2022
+  input:
+    state_code: CT
+    tax_unit_taxable_social_security: 20_000
+    adjusted_gross_income: 120_000
+    tax_unit_ss_combined_income_excess: 20_000
+    filing_status: WIDOW
+  output:
+    ct_social_security_benefit_adjustment: 15_000

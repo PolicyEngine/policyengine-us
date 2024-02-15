@@ -1,0 +1,56 @@
+- name: Inidivudal Utility Allowance with three types of expenses
+  period: 2023
+  input:
+    snap_utility_allowance_type: IUA
+    snap_utility_region_str: CA
+    phone_expense: 20
+  output:
+    snap_utility_allowance: 228 # 19 * 12
+
+- name: Inidivudal Utility Allowance with no phone expenses
+  period: 2023
+  input:
+    snap_utility_allowance_type: IUA
+    snap_utility_region_str: CA
+    water_expense: 1
+  output:
+    snap_utility_allowance: 0 
+
+- name: Standard Utility Allowance with no phone expenses
+  period: 2022
+  input:
+    snap_utility_allowance_type: SUA
+    snap_utility_region_str: CA
+    electricity_expense: 20
+    gas_expense: 20
+    phone_expense: 300
+    water_expense: 1
+    trash_expense: 400
+    sewage_expense: 1
+  output:
+    snap_utility_allowance: 5_844 # 487 * 12
+
+- name: Limited Utility Allowance with no phone expenses
+  period: 2022
+  input:
+    snap_utility_allowance_type: LUA
+    snap_utility_region_str: CA
+    electricity_expense: 20
+    phone_expense: 20
+    water_expense: 1
+  output:
+    snap_utility_allowance: 1_728 # 144 * 12
+
+- name: No expenses
+  period: 2022
+  input:
+    snap_utility_allowance_type: NONE
+    snap_utility_region_str: CA
+    electricity_expense: 0
+    gas_expense: 0
+    phone_expense: 0
+    water_expense: 0
+    trash_expense: 0
+    sewage_expense: 0
+  output:
+    snap_utility_allowance: 0

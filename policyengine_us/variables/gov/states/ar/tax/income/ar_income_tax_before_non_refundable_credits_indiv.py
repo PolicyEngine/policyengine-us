@@ -8,13 +8,12 @@ class ar_income_tax_before_non_refundable_credits_indiv(Variable):
     unit = USD
     definition_period = YEAR
     reference = "https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2023_Final_AR1000ES.pdf"
-    defined_for = "ar_can_file_separate_on_same_return"
+    defined_for = StateCode.AR
 
     def formula(person, period, parameters):
-        rate = parameters(period).gov.states.ar.tax.income.rates.main
+        p = parameters(period).gov.states.ar.tax.income.rates.main
         taxable_income = person("ar_taxable_income_indiv", period)
-
-        main_rate = rate.calc(taxable_income)
-        # Assuming that the filer will pick the option which will reduce tax liability the most
-        low_income_tax = person("ar_low_income_tax_indiv", period)
-        return min_(main_rate, low_income_tax)
+        main_rate = p.rate.calc(taxable_income)
+        pre_reduction_tax = main_rate * taxable_income
+        reduction = p.reduction.calc(taxable_income)
+        return max_(pre_reduction_tax - reduction, 0)

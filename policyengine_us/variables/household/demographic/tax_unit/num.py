@@ -4,6 +4,7 @@ from policyengine_us.model_api import *
 class num(Variable):
     value_type = int
     entity = TaxUnit
+    label = "Numeric value whether the filing status is married filing jointly"
     definition_period = YEAR
     documentation = (
         "2 when filing_status is married filing jointly; otherwise 1"
