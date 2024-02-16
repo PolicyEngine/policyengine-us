@@ -11,18 +11,13 @@ class ky_personal_tax_credits_joint(Variable):
     defined_for = StateCode.KY
 
     def formula(person, period, parameters):
-        ky_blind_personal_tax_credits = person(
-            "ky_blind_personal_tax_credits", period
+        total_credits = add(
+            person.tax_unit,
+            period,
+            [
+                "ky_blind_personal_tax_credits",
+                "ky_aged_personal_tax_credits",
+                "ky_military_personal_tax_credits",
+            ],
         )
-        ky_aged_personal_tax_credits = person(
-            "ky_aged_personal_tax_credits", period
-        )
-        ky_military_personal_tax_credits = person(
-            "ky_military_personal_tax_credits", period
-        )
-        is_head = person("is_tax_unit_head", period)
-        total_blind = person.tax_unit.sum(ky_blind_personal_tax_credits)
-        total_aged = person.tax_unit.sum(ky_aged_personal_tax_credits)
-        total_military = person.tax_unit.sum(ky_military_personal_tax_credits)
-
-        return is_head * (total_blind + total_aged + total_military)
+        return total_credits * person("is_tax_unit_head", period)
