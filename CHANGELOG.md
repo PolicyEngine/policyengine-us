@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.659.0] - 2024-02-16 21:13:27
+
+### Added
+
+- Add Kentucky married combined separate filing status.
+
 ## [0.658.1] - 2024-02-16 04:54:04
 
 ### Fixed
@@ -7347,6 +7353,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.659.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.658.1...0.659.0
 [0.658.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.658.0...0.658.1
 [0.658.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.657.0...0.658.0
 [0.657.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.656.1...0.657.0

@@ -1,0 +1,16 @@
+- name: 2021, joint
+  period: 2021
+  input:
+    ky_taxable_income_joint: 100
+    state_code: KY
+  output:
+    ky_income_tax_before_non_refundable_credits_joint: 5
+
+- name: 2023, joint
+  period: 2023
+  input:
+    ky_taxable_income_joint: 100
+    state_code: KY
+  output:
+    ky_income_tax_before_non_refundable_credits_joint: 4.5
+
