@@ -25,7 +25,7 @@
     va_age_deduction: 24_000
     va_agi: 47_030
 
-- name: Test to check circular reference error
+- name: Test to check circular reference error - below filing requirement
   absolute_error_margin: 0.01
   period: 2021
   input:
@@ -46,4 +46,4 @@
   output:  
     va_age_deduction: 12_000
     va_agi: 18_000
-    va_income_tax: 187
+    va_income_tax: 0
