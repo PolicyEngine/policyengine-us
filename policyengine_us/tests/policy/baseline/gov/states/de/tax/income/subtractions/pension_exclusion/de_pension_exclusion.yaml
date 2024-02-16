@@ -8,7 +8,7 @@
     de_pension_exclusion_income: 10_000
     state_code: DE
   output:
-    de_pension_exclusion_indv: 2_000
+    de_pension_exclusion: 2_000
 
 - name: Uncapped military retirement pay
   period: 2023
@@ -20,7 +20,7 @@
     de_pension_exclusion_income: 0
     state_code: DE
   output:
-    de_pension_exclusion_indv: 3_000
+    de_pension_exclusion: 3_000
 
 - name: Capped military retirement pay
   period: 2023
@@ -32,7 +32,7 @@
     de_pension_exclusion_income: 20_000
     state_code: DE
   output:
-    de_pension_exclusion_indv: 12_500
+    de_pension_exclusion: 12_500
 
 - name: Military retirement pay not valid, only retirement income
   period: 2021
@@ -44,7 +44,7 @@
     de_pension_exclusion_income: 10_000
     state_code: DE
   output:
-    de_pension_exclusion_indv: 10_000
+    de_pension_exclusion: 10_000
 
 - name: Capped retirement income
   period: 2022
@@ -56,4 +56,4 @@
     de_pension_exclusion_income: 20_000
     state_code: DE
   output:
-    de_pension_exclusion_indv: 12_500
+    de_pension_exclusion: 12_500

@@ -12,7 +12,7 @@ class de_agi(Variable):
     def formula(person, period, parameters):
         pre_exclusions_agi = person("de_pre_exclusions_agi", period)
         indv_exclusions = person(
-            "de_elderly_or_disabled_income_exclusion_indv", period
+            "de_elderly_or_disabled_income_exclusion", period
         )
         net_income = max_(pre_exclusions_agi - indv_exclusions, 0)
         # allocate any dependent gross income to tax unit head

@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class de_subtractions(Variable):
     value_type = float
     entity = Person
-    label = "Delaware individual subtractions"
+    label = "Delaware subtractions"
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.DE
