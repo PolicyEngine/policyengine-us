@@ -36,7 +36,7 @@ class mt_taxable_income_indiv(Variable):
         head_over_spouse_agi = head_agi > spouse_agi_attributed_to_head
         # 2. Determine the difference between the two AGIs and cap the deductions at that amount
         difference = person.tax_unit.sum(
-            abs(head_agi - spouse_agi_attributed_to_head)
+            np.abs(head_agi - spouse_agi_attributed_to_head)
         )
         deductions_capped_at_agi_difference = min_(
             difference, deductions_and_exemptions
