@@ -10,11 +10,11 @@ class ky_files_separately(Variable):
     defined_for = StateCode.KY
 
     def formula(tax_unit, period, parameters):
-        taxable_income_indiv = add(
-            tax_unit, period, ["ky_taxable_income_indiv"]
+        itax_indiv = add(
+            tax_unit, period, ["ky_income_tax_before_non_refundable_credits_indiv"]
         )
 
-        taxable_income_joint = add(
-            tax_unit, period, ["ky_taxable_income_joint"]
+        itax_joint = add(
+            tax_unit, period, ["ky_income_tax_before_non_refundable_credits_joint"]
         )
-        return taxable_income_indiv < taxable_income_joint
+        return itax_indiv < itax_joint

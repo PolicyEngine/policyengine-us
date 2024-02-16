@@ -30,7 +30,7 @@
     ky_taxable_income_indiv: [16_230, 23_230]
     ky_files_separately: true
     ky_personal_tax_credits_indiv: [0, 0] 
-    ky_income_tax_before_non_refundable_credits: 1973
+    ky_income_tax_before_non_refundable_credits_unit: 1973
     ky_income_tax_before_refundable_credits: 1873
 
 - name: Tax unit files jointly
@@ -67,7 +67,7 @@
     ky_files_separately: true
     ky_personal_tax_credits_joint: [0, 0] 
     # take separate result to maximize benefit
-    ky_income_tax_before_non_refundable_credits: 1973 
+    ky_income_tax_before_non_refundable_credits_unit: 1973 
     ky_income_tax_before_refundable_credits: 1873
 
 #new baseline integration test
@@ -100,7 +100,7 @@
     ky_taxable_income_joint: [0, 42_230]
     ky_personal_tax_credits_joint: [0, 0] 
     #not 2111.5, becase ky_files_separately return true (we optimize)
-    ky_income_tax_before_non_refundable_credits: 1973 
+    ky_income_tax_before_non_refundable_credits_unit: 1973 
     ky_income_tax_before_refundable_credits: 1973
 
 #new baseline integration test
@@ -130,7 +130,7 @@
     ky_itemized_deductions_indiv: [0, 0] 
     ky_taxable_income_indiv: [17_230, 22_230]
     ky_personal_tax_credits_indiv: [0, 0] 
-    ky_income_tax_before_non_refundable_credits: 1973 
+    ky_income_tax_before_non_refundable_credits_unit: 1973 
     ky_income_tax_before_refundable_credits: 1973
 
 - name: integration test for personal tax credit joint
@@ -169,5 +169,5 @@
     ky_itemized_deductions_joint: [0, 0, 0] 
     ky_taxable_income_joint: [0, 42_230, 0]
     ky_personal_tax_credits_joint: [0, 80, 0] 
-    ky_income_tax_before_non_refundable_credits: 1973 
+    ky_income_tax_before_non_refundable_credits_unit: 1973 
     ky_income_tax_before_refundable_credits: 1893

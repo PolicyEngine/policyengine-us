@@ -11,7 +11,7 @@ class ky_income_tax_before_refundable_credits(Variable):
 
     def formula(tax_unit, period, paramters):
         tax_before_non_refundable = tax_unit(
-            "ky_income_tax_before_non_refundable_credits", period
+            "ky_income_tax_before_non_refundable_credits_unit", period
         )
         ky_files_separately = tax_unit("ky_files_separately", period)
         person = tax_unit.members
