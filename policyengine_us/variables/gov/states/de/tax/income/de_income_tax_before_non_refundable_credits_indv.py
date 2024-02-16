@@ -11,6 +11,5 @@ class de_income_tax_before_non_refundable_credits_indv(Variable):
 
     def formula(person, period, parameters):
         taxable_income = person("de_taxable_income_indv", period)
-        return parameters(period).gov.states.de.tax.income.rate.calc(
-            taxable_income
-        )
+        p = parameters(period).gov.states.de.tax.income
+        return p.rate.calc(taxable_income)

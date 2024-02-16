@@ -62,11 +62,10 @@ class de_pension_exclusion(Variable):
             )
             # Filers under the age threshold, post 2022, can subtract their military retirement
             # income which is capped at a larger amount
-            exclusion_amount = where(
+            return where(
                 eligible_for_pension_exclusion_income,
                 capped_eligible_pension_income,
                 younger_amount,
             )
         else:
-            exclusion_amount = capped_eligible_pension_income
-        return exclusion_amount
+            return capped_eligible_pension_income
