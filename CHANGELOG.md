@@ -5,6 +5,60 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.658.1] - 2024-02-16 04:54:04
+
+### Fixed
+
+- Limiting the Ohio senior citizen credit to one amount.
+
+## [0.658.0] - 2024-02-15 17:38:14
+
+### Added
+
+- Pennsylvania 2023 income tax references.
+
+## [0.657.0] - 2024-02-15 17:10:46
+
+### Added
+
+- Formula for the CT subtractions variable.
+
+## [0.656.1] - 2024-02-14 18:00:30
+
+### Fixed
+
+- New York supplemental tax calculation.
+
+## [0.656.0] - 2024-02-14 17:44:19
+
+### Added
+
+- Projections from Feb 2024 CBO baseline.
+
+## [0.655.2] - 2024-02-13 23:39:19
+
+### Fixed
+
+- Oregon federal tax liability subtractions.
+
+## [0.655.1] - 2024-02-13 18:10:07
+
+### Fixed
+
+- Remove the low income table calculation from the married filing separate scenario.
+
+## [0.655.0] - 2024-02-13 18:04:02
+
+### Added
+
+- Virginia filing requirement variable.
+
+## [0.654.2] - 2024-02-13 17:31:59
+
+### Fixed
+
+- Refactoring Colorado child-care assistance parent fee code.
+
 ## [0.654.1] - 2024-02-13 16:17:14
 
 ### Fixed
@@ -7293,6 +7347,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.658.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.658.0...0.658.1
+[0.658.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.657.0...0.658.0
+[0.657.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.656.1...0.657.0
+[0.656.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.656.0...0.656.1
+[0.656.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.655.2...0.656.0
+[0.655.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.655.1...0.655.2
+[0.655.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.655.0...0.655.1
+[0.655.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.654.2...0.655.0
+[0.654.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.654.1...0.654.2
 [0.654.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.654.0...0.654.1
 [0.654.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.653.0...0.654.0
 [0.653.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.652.1...0.653.0
