@@ -11,10 +11,14 @@ class ky_files_separately(Variable):
 
     def formula(tax_unit, period, parameters):
         itax_indiv = add(
-            tax_unit, period, ["ky_income_tax_before_non_refundable_credits_indiv"]
+            tax_unit,
+            period,
+            ["ky_income_tax_before_non_refundable_credits_indiv"],
         )
 
         itax_joint = add(
-            tax_unit, period, ["ky_income_tax_before_non_refundable_credits_joint"]
+            tax_unit,
+            period,
+            ["ky_income_tax_before_non_refundable_credits_joint"],
         )
         return itax_indiv < itax_joint
