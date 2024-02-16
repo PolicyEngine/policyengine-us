@@ -19,7 +19,7 @@ class ky_itemized_deductions_indiv(Variable):
         ky_agi_sum = person.tax_unit.sum(ky_agi)
         ky_agi_proportion = np.zeros_like(ky_agi_sum)
         mask = ky_agi_sum > 0
-        ky_agi_proportion[mask] = (ky_agi[mask] / ky_agi_sum[mask])
+        ky_agi_proportion[mask] = ky_agi[mask] / ky_agi_sum[mask]
         itemized_deductions = person.tax_unit(
             "ky_itemized_deductions_unit", period
         )

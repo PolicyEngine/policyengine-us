@@ -12,7 +12,4 @@ class ky_standard_deduction_indiv(Variable):
     def formula(person, period, parameters):
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         p = parameters(period).gov.states.ky.tax.income.deductions
-        return (
-            head_or_spouse
-            * p.standard
-        )
+        return head_or_spouse * p.standard
