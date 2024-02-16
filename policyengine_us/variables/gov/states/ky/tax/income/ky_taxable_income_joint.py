@@ -14,7 +14,6 @@ class ky_taxable_income_joint(Variable):
         ky_agi = person("ky_agi", period)
         is_head = person("is_tax_unit_head", period)
         total_agi = is_head * person.tax_unit.sum(ky_agi)
-        deductions = person("ky_deductions_joint", period)
-        total_deductions = person.tax_unit.sum(deductions)
+        deductions = add(person.tax_unit, period, ["ky_deductions_joint"])
 
-        return max_(0, total_agi - total_deductions)
+        return max_(0, total_agi - deductions)
