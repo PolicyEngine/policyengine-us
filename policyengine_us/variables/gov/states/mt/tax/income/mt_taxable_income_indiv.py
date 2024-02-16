@@ -43,13 +43,19 @@ class mt_taxable_income_indiv(Variable):
         )
         # 3. Halve the remaining deductions amount
         halved_capped_deductions = (
-            (deductions_and_exemptions - deductions_capped_at_agi_difference)
-            * 0.5 ) 
-        halved_deductions_allocated_to_head_or_spouse = halved_capped_deductions * (head | spouse)
+            deductions_and_exemptions - deductions_capped_at_agi_difference
+        ) * 0.5
+        halved_deductions_allocated_to_head_or_spouse = (
+            halved_capped_deductions * (head | spouse)
+        )
         # 4. Allocate the difference to the higher AGI and the halved deductions to each head and spouse
         difference_applied_to_larger_agi = (
             deductions_capped_at_agi_difference
             * where(head_over_spouse_agi, head, spouse)
         )
-        reduced_agi = mt_agi - difference_applied_to_larger_agi - halved_deductions_allocated_to_head_or_spouse
+        reduced_agi = (
+            mt_agi
+            - difference_applied_to_larger_agi
+            - halved_deductions_allocated_to_head_or_spouse
+        )
         return max_(reduced_agi, 0)
