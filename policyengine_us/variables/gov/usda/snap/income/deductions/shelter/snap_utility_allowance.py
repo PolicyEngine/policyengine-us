@@ -8,4 +8,8 @@ class snap_utility_allowance(Variable):
     documentation = "The regular utility allowance deduction for SNAP"
     definition_period = MONTH
 
-    adds=['snap_standard_utility_allowance','snap_limited_utility_allowance','snap_individual_utility_allowance']
+    adds = [
+        "snap_standard_utility_allowance",
+        "snap_limited_utility_allowance",
+        "snap_individual_utility_allowance",
+    ]
