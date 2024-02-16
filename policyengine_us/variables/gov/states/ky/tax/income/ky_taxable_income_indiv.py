@@ -12,6 +12,6 @@ class ky_taxable_income_indiv(Variable):
 
     def formula(person, period, parameters):
         ky_agi = person("ky_agi", period)
-        deduction = person("ky_deductions_indiv", period)
+        deductions = person("ky_deductions_indiv", period)
 
-        return max_(0, ky_agi - deduction)
+        return max_(0, ky_agi - deductions)

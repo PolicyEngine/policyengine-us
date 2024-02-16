@@ -12,7 +12,5 @@ class ky_standard_deduction_joint(Variable):
     def formula(person, period, parameters):
         # If filing a joint return, only one standard deduction is allowed
         is_head = person("is_tax_unit_head", period)
-        return (
-            is_head
-            * parameters(period).gov.states.ky.tax.income.deductions.standard
-        )
+        p = parameters(period).gov.states.ky.tax.income.deductions
+        return is_head * p.standard
