@@ -63,3 +63,72 @@
     oh_personal_exemptions: 20_000
   output:
     oh_senior_citizen_credit: 0
+
+- name: Credit for eligible head
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        oh_has_taken_oh_lump_sum_credits: false
+      person2:
+        is_tax_unit_head: false
+        oh_has_taken_oh_lump_sum_credits: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        age_head: 65
+        oh_agi: 100_000
+        oh_personal_exemptions: 1
+  output:
+    oh_senior_citizen_credit: 50
+
+- name: Head received lump sum distributions
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        oh_has_taken_oh_lump_sum_credits: true
+      person2:
+        is_tax_unit_head: false
+        oh_has_taken_oh_lump_sum_credits: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        age_head: 65
+        oh_agi: 100_000
+        oh_personal_exemptions: 1
+  output:
+    oh_senior_citizen_credit: 0
+
+- name: Spouse received lump sum distributions
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        oh_has_taken_oh_lump_sum_credits: false
+      person2:
+        is_tax_unit_head: false
+        oh_has_taken_oh_lump_sum_credits: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        age_head: 65
+        oh_agi: 100_000
+        oh_personal_exemptions: 1
+  output:
+    oh_senior_citizen_credit: 50
