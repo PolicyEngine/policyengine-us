@@ -45,7 +45,7 @@
     is_tax_unit_dependent: true
     or_agi: 30_000
   output:
-    or_ctc: 0
+    or_ctc: 1_000
 
 - name: Check we're not creating a negative value.
   period: 2023
@@ -65,7 +65,7 @@
     is_tax_unit_dependent: true
     or_agi: 27_500
   output:
-    or_ctc: 500
+    or_ctc: 1_000
 
 - name: Maximum of five qualifying children.
   period: 2023
@@ -95,3 +95,14 @@
         or_agi: 25_000
   output:
     or_ctc: 5_000
+
+- name: Fully phases out at $30,000.
+  period: 2022
+  input:
+    state_code: OR
+    age: 5
+    is_tax_unit_dependent: true
+    or_agi: 30_000
+  output:
+    or_ctc: 0
+
