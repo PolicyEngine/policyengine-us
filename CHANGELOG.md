@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.661.0] - 2024-02-17 02:46:56
+
+### Added
+
+- AMT capital gains rates and child exemption parameters through 2024.
+- AMT references.
+
 ## [0.660.0] - 2024-02-17 00:04:29
 
 ### Added
@@ -7359,6 +7366,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.661.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.660.0...0.661.0
 [0.660.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.659.0...0.660.0
 [0.659.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.658.1...0.659.0
 [0.658.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.658.0...0.658.1
