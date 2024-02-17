@@ -6257,3 +6257,8 @@
     - Reduce the adjusted_net_capital_gain by the qualified dividend income in the
       vt_capital_gains_exclusion calcualtion.
   date: 2024-02-17 04:50:37
+- bump: patch
+  changes:
+    changed:
+    - Assign households with negative income to the -1 decile.
+  date: 2024-02-17 21:13:13

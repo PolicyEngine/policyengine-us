@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.661.2] - 2024-02-17 21:13:13
+
+### Changed
+
+- Assign households with negative income to the -1 decile.
+
 ## [0.661.1] - 2024-02-17 04:50:37
 
 ### Fixed
@@ -7372,6 +7378,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.661.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.661.1...0.661.2
 [0.661.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.661.0...0.661.1
 [0.661.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.660.0...0.661.0
 [0.660.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.659.0...0.660.0
