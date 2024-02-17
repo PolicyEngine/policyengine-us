@@ -6251,3 +6251,9 @@
     - AMT capital gains rates and child exemption parameters through 2024.
     - AMT references.
   date: 2024-02-17 02:46:56
+- bump: patch
+  changes:
+    fixed:
+    - Reduce the adjusted_net_capital_gain by the qualified dividend income in the
+      vt_capital_gains_exclusion calcualtion.
+  date: 2024-02-17 04:50:37
