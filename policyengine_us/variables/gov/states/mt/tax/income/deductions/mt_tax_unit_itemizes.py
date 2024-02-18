@@ -5,7 +5,6 @@ class mt_tax_unit_itemizes(Variable):
     value_type = bool
     entity = TaxUnit
     label = "Whether the tax unit in Montana itemizes the deductions when married filing separately"
-    unit = USD
     definition_period = YEAR
     defined_for = StateCode.MT
 
