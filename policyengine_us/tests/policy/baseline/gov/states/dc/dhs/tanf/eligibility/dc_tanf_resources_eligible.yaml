@@ -3,7 +3,7 @@
   input:
     state_code: DC
     age: 60
-    dc_tanf_countable_resources: 3_000
+    dc_tanf_countable_resources: 3_250
   output:
     dc_tanf_resources_eligible: true
 
@@ -13,7 +13,7 @@
   input:
     state_code: DC
     age: 60
-    dc_tanf_countable_resources: 3_001
+    dc_tanf_countable_resources: 3_251
   output:
     dc_tanf_resources_eligible: false
 
@@ -23,7 +23,7 @@
   input:
     state_code: DC
     age: 59
-    dc_tanf_countable_resources: 2_000
+    dc_tanf_countable_resources: 2_250
   output:
     dc_tanf_resources_eligible: true
 
@@ -32,6 +32,6 @@
   input:
     state_code: DC
     age: 59
-    dc_tanf_countable_resources: 2_001
+    dc_tanf_countable_resources: 2_251
   output:
     dc_tanf_resources_eligible: false
