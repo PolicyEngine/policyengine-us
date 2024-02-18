@@ -7,7 +7,7 @@
     qualified_tuition_expenses: 6_000
     college_semesters_attended: 1
   output:
-    sc_tuition_tax_credit: 1_500
+    sc_tuition_credit: 1_500
     #12,268*15/30 = 6134, 6,000* 0.5 = 3,000
 
 - name: $2k tuition, 12 semester hours
@@ -18,7 +18,7 @@
     qualified_tuition_expenses: 2_000
     college_semesters_attended: 1
   output:
-    sc_tuition_tax_credit: 0
+    sc_tuition_credit: 0
     # not eligible
 
 - name: $15k tuition, 30 semester hours
@@ -30,7 +30,7 @@
     qualified_tuition_expenses: 15_000
     college_semesters_attended: 1
   output:
-    sc_tuition_tax_credit: 1_500
+    sc_tuition_credit: 1_500
     # 12,268*30/30 = 12,268 12,268*0.5 = 6,134
 
 - name: $2.5k tuition, 15 semester hours
@@ -42,7 +42,7 @@
     qualified_tuition_expenses: 2_500
     college_semesters_attended: 1
   output:
-    sc_tuition_tax_credit: 1_250
+    sc_tuition_credit: 1_250
 
 - name: $0, 0 semester.
   period: 2022
@@ -53,7 +53,7 @@
     qualified_tuition_expenses: 0
     college_semesters_attended: 0
   output:
-    sc_tuition_tax_credit: 0
+    sc_tuition_credit: 0
 
 - name: $15k tuition, 29 semester hours
   period: 2022
@@ -64,5 +64,5 @@
     qualified_tuition_expenses: 15_000
     college_semesters_attended: 2
   output:
-    sc_tuition_tax_credit: 0
+    sc_tuition_credit: 0
     # not eligible

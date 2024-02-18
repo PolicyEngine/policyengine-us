@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class sc_tuition_tax_credit(Variable):
+class sc_tuition_credit(Variable):
     value_type = float
     entity = Person
     label = "South Carolina Tuition Credit"
