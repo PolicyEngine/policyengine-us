@@ -2,7 +2,7 @@
   period: 2022
   input:
     state_code: SC
-    total_college_hours: 15
+    sc_total_college_hours: 15
     college_semesters_attended: 1
   output:
     sc_tuition_credit_eligible: true
@@ -11,7 +11,7 @@
   period: 2022
   input:
     state_code: SC
-    total_college_hours: 30
+    sc_total_college_hours: 30
     college_semesters_attended: 2
   output:
     sc_tuition_credit_eligible: true
@@ -20,7 +20,7 @@
   period: 2022
   input:
     state_code: SC
-    total_college_hours: 14
+    sc_total_college_hours: 14
     college_semesters_attended: 1
   output:
     sc_tuition_credit_eligible: false
@@ -29,7 +29,7 @@
   period: 2022
   input:
     state_code: SC
-    total_college_hours: 29
+    sc_total_college_hours: 29
     college_semesters_attended: 2
   output:
     sc_tuition_credit_eligible: 0
@@ -38,7 +38,7 @@
   period: 2022
   input:
     state_code: SC
-    total_college_hours: 0
+    sc_total_college_hours: 0
     college_semesters_attended: 0
   output:
     sc_tuition_credit_eligible: false
