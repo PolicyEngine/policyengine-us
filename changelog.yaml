@@ -6240,3 +6240,37 @@
     added:
     - Add Kentucky married combined separate filing status.
   date: 2024-02-16 21:13:27
+- bump: minor
+  changes:
+    added:
+    - Add Delaware married combined separate filing status.
+  date: 2024-02-17 00:04:29
+- bump: minor
+  changes:
+    added:
+    - AMT capital gains rates and child exemption parameters through 2024.
+    - AMT references.
+  date: 2024-02-17 02:46:56
+- bump: patch
+  changes:
+    fixed:
+    - Reduce the adjusted_net_capital_gain by the qualified dividend income in the
+      vt_capital_gains_exclusion calcualtion.
+  date: 2024-02-17 04:50:37
+- bump: patch
+  changes:
+    changed:
+    - Assign households with negative income to the -1 decile.
+  date: 2024-02-17 21:13:13
+- bump: minor
+  changes:
+    added:
+    - Non-chained CPI trend and forecast.
+    changed:
+    - Uprate benefits using non-chained CPI.
+  date: 2024-02-18 16:36:02
+- bump: minor
+  changes:
+    added:
+    - Enable the Vermont state income tax model and add it to the net income tree.
+  date: 2024-02-18 17:45:25

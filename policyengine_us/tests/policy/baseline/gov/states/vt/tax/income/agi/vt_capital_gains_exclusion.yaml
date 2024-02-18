@@ -47,3 +47,14 @@
     vt_percentage_capital_gains_exclusion: 5_040
   output:
     vt_capital_gains_exclusion: 5_000 # min(5040,5000) = 5000
+
+- name: Adjusted net capital gain is reduced by the dividend income
+  period: 2022
+  input:
+    state_code: VT
+    adjusted_net_capital_gain: 6_000
+    taxable_income: 12_600
+    vt_percentage_capital_gains_exclusion: 1_000
+    qualified_dividend_income: 4_000
+  output:
+    vt_capital_gains_exclusion: 2_000

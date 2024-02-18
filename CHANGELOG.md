@@ -5,6 +5,47 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.663.0] - 2024-02-18 17:45:25
+
+### Added
+
+- Enable the Vermont state income tax model and add it to the net income tree.
+
+## [0.662.0] - 2024-02-18 16:36:02
+
+### Added
+
+- Non-chained CPI trend and forecast.
+
+### Changed
+
+- Uprate benefits using non-chained CPI.
+
+## [0.661.2] - 2024-02-17 21:13:13
+
+### Changed
+
+- Assign households with negative income to the -1 decile.
+
+## [0.661.1] - 2024-02-17 04:50:37
+
+### Fixed
+
+- Reduce the adjusted_net_capital_gain by the qualified dividend income in the vt_capital_gains_exclusion calcualtion.
+
+## [0.661.0] - 2024-02-17 02:46:56
+
+### Added
+
+- AMT capital gains rates and child exemption parameters through 2024.
+- AMT references.
+
+## [0.660.0] - 2024-02-17 00:04:29
+
+### Added
+
+- Add Delaware married combined separate filing status.
+
 ## [0.659.0] - 2024-02-16 21:13:27
 
 ### Added
@@ -7353,6 +7394,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.663.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.662.0...0.663.0
+[0.662.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.661.2...0.662.0
+[0.661.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.661.1...0.661.2
+[0.661.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.661.0...0.661.1
+[0.661.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.660.0...0.661.0
+[0.660.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.659.0...0.660.0
 [0.659.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.658.1...0.659.0
 [0.658.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.658.0...0.658.1
 [0.658.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.657.0...0.658.0
