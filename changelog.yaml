@@ -6262,3 +6262,10 @@
     changed:
     - Assign households with negative income to the -1 decile.
   date: 2024-02-17 21:13:13
+- bump: minor
+  changes:
+    added:
+    - Non-chained CPI trend and forecast.
+    changed:
+    - Uprate benefits using non-chained CPI.
+  date: 2024-02-18 16:36:02

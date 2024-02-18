@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.662.0] - 2024-02-18 16:36:02
+
+### Added
+
+- Non-chained CPI trend and forecast.
+
+### Changed
+
+- Uprate benefits using non-chained CPI.
+
 ## [0.661.2] - 2024-02-17 21:13:13
 
 ### Changed
@@ -7378,6 +7388,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.662.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.661.2...0.662.0
 [0.661.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.661.1...0.661.2
 [0.661.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.661.0...0.661.1
 [0.661.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.660.0...0.661.0
