@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.663.0] - 2024-02-18 17:45:25
+
+### Added
+
+- Enable the Vermont state income tax model and add it to the net income tree.
+
 ## [0.662.0] - 2024-02-18 16:36:02
 
 ### Added
@@ -7388,6 +7394,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.663.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.662.0...0.663.0
 [0.662.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.661.2...0.662.0
 [0.661.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.661.1...0.661.2
 [0.661.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.661.0...0.661.1
