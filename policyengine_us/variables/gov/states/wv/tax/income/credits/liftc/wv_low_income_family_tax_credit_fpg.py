@@ -7,7 +7,7 @@ class wv_low_income_family_tax_credit_fpg(Variable):
     label = "Federal poverty guidelines for the West Virginia low-income family tax credit"
     unit = USD
     definition_period = YEAR
-    defined_for = StateCode.WV
+    defined_for = "wv_low_income_family_tax_credit_eligible"
 
     def formula(tax_unit, period, parameters):
         p = parameters(

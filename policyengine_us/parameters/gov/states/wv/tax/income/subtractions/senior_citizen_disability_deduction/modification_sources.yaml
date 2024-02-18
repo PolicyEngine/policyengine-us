@@ -1,0 +1,22 @@
+description: West Virginia reduces the adjusted gross income by the total value of these modifications under the senior citizen or disability deduction.
+
+values:
+  1986-01-01:
+    - us_govt_interest # Line 27
+    # certain federal law enforcement retirement Line 28
+    # West Virginia state or local police, deputy sheriff's or firemen's retirement Line 29
+    - military_retirement_pay # Line 30
+    - wv_public_pension_subtraction_person # Line 31
+    - wv_social_security_benefits_subtraction_person # Line 32
+
+metadata:
+  unit: list
+  period: year
+  label: West Virginia senior citizen or disability deduction modification sources
+  reference:
+    - title: West Virginia Personal Income Tax Forms And Instructions 2022 Line 46
+      href: https://tax.wv.gov/Documents/PIT/2022/PersonalIncomeTaxFormsAndInstructions.2022.pdf#page=26
+    - title: 2021 West Virginia Personal Income Tax Forms And Instructions-2021 FAMILY TAX CREDIT TABLES Line 45
+      href: https://tax.wv.gov/Documents/TaxForms/2021/it140.pdf#page=20 
+    - title: Code of West Virginia §11-21-12 (c)(9)
+      href: https://code.wvlegislature.gov/11-21-12/

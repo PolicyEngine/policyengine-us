@@ -1,0 +1,54 @@
+- name: AR income tax rates - taxable income not exceeding $5100
+  period: 2022
+  absolute_error_margin: 1
+  input:
+    ar_taxable_income_joint: 5_100
+    ar_low_income_tax_joint: 500
+    state_code: AR
+  output:
+    #round(5_100 * 0.00)
+    ar_income_tax_before_non_refundable_credits_joint: 0
+
+- name: AR income tax rates - taxable income from $5,101 to $10,300
+  period: 2022
+  absolute_error_margin: 1
+  input:
+    ar_taxable_income_joint: 10_000
+    ar_low_income_tax_joint: 500
+    state_code: AR
+  output:
+    # (10_000-5_101) * 0.02
+    ar_income_tax_before_non_refundable_credits_joint: 98
+
+- name: AR income tax rates - taxable income from $10,301 to $14,700
+  period: 2022
+  absolute_error_margin: 1
+  input:
+    ar_taxable_income_joint: 11_000
+    ar_low_income_tax_joint: 500
+    state_code: AR
+  output:
+    # 104 + round((11_000 - 10_301)* 0.03)
+    ar_income_tax_before_non_refundable_credits_joint: 125
+
+- name: AR income tax rates - taxable income from $14,701 to $24,300
+  period: 2022
+  absolute_error_margin: 1
+  input:
+    ar_taxable_income_joint: 20_000
+    ar_low_income_tax_joint: 500
+    state_code: AR
+  output:
+  # 236 + round((20_000 - 14_701)* 0.034)
+    ar_income_tax_before_non_refundable_credits_joint: 416
+
+- name: AR income tax rates - taxable income for income over $24,301
+  period: 2022
+  absolute_error_margin: 1
+  input:
+    ar_taxable_income_joint: 25_000
+    ar_low_income_tax_joint: 1_000
+    state_code: AR
+  output:
+    # 562.366 + round((25_000-24_301) * 0.049) = 596
+    ar_income_tax_before_non_refundable_credits_joint: 596

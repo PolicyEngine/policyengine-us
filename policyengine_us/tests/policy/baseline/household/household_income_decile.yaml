@@ -1,0 +1,8 @@
+# Can't easily test deciles given they rely on the income distribution.
+# Instead test that negative values get a -1 decile.
+- name: Negative value will get a decile of -1.
+  period: 2024
+  input:
+    household_net_income: -1
+  output:
+    household_income_decile: -1

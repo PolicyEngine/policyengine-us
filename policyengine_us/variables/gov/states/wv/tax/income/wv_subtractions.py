@@ -8,5 +8,4 @@ class wv_subtractions(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.WV
-
     adds = "gov.states.wv.tax.income.subtractions.subtractions"

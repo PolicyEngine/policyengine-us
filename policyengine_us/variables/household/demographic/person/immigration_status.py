@@ -3,7 +3,7 @@ from policyengine_us.model_api import *
 
 class ImmigrationStatus(Enum):
     CITIZEN = "Citizen"
-    RESIDENT = "Legal Permanent Resident"
+    LEGAL_PERMANENT_RESIDENT = "Legal Permanent Resident"
     DACA_TPS = (
         "Deferred Action for Childhood Arrivals or Temporary Protected Status"
     )
