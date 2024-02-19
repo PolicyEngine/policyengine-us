@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.667.1] - 2024-02-19 17:00:50
+
+### Fixed
+
+- Remove pension income from the MS AGI computation.
+
+## [0.667.0] - 2024-02-19 16:36:06
+
+### Changed
+
+- Uprate OASDI and SSI by CPI-W.
+
 ## [0.666.1] - 2024-02-19 00:12:47
 
 ### Added
@@ -7418,6 +7430,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.667.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.667.0...0.667.1
+[0.667.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.666.1...0.667.0
 [0.666.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.666.0...0.666.1
 [0.666.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.665.0...0.666.0
 [0.665.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.664.0...0.665.0

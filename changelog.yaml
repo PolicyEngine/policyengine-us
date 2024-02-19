@@ -6296,3 +6296,13 @@
     added:
     - Add the wv_homestead_excess_property_tax_credit to the state income tree.
   date: 2024-02-19 00:12:47
+- bump: minor
+  changes:
+    changed:
+    - Uprate OASDI and SSI by CPI-W.
+  date: 2024-02-19 16:36:06
+- bump: patch
+  changes:
+    fixed:
+    - Remove pension income from the MS AGI computation.
+  date: 2024-02-19 17:00:50
