@@ -16,7 +16,4 @@ class ar_income_tax_before_non_refundable_credits_indiv(Variable):
         main_rate = p.rate.calc(taxable_income)
         pre_reduction_tax = main_rate * taxable_income
         reduction = p.reduction.calc(taxable_income)
-        total_main_rate = max_(pre_reduction_tax - reduction, 0)
-        # Assuming that the filer will pick the option which will reduce tax liability the most
-        low_income_tax = person("ar_low_income_tax_indiv", period)
-        return min_(total_main_rate, low_income_tax)
+        return max_(pre_reduction_tax - reduction, 0)

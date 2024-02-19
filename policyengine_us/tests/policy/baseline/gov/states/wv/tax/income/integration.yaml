@@ -1,0 +1,38 @@
+- name: Tax unit with taxsimid 99997 in k21.its.csv and k21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 72
+        employment_income: 8_010
+        qualified_dividend_income: 4_010
+        taxable_interest_income: 11_010
+        short_term_capital_gains: 3_010
+        long_term_capital_gains: 1_010
+        rental_income: 3_010
+        taxable_private_pension_income: 9_000
+        social_security_retirement: 1_000
+        real_estate_taxes: 8_000
+        mortgage_interest: 3_000
+        self_employment_income: 38_010
+        business_is_qualified: true
+        business_is_sstb: true
+        w2_wages_from_qualified_business: 100e6
+      person2:
+        age: 11
+      person3:
+        age: 11
+      person4:
+        age: 16
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        tax_unit_itemizes: False
+        state_income_tax: 2729.08
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_fips: 54  # WV
+  output:  # expected results from patched TAXSIM35 2024-02-18 version
+    wv_income_tax: 1_729.08

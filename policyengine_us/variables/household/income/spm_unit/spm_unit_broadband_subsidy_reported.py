@@ -7,4 +7,4 @@ class spm_unit_broadband_subsidy_reported(Variable):
     label = "SPM unit reported broadband subsidy"
     definition_period = YEAR
     unit = USD
-    uprating = "gov.bls.cpi.c_cpi_u"
+    uprating = "gov.bls.cpi.cpi_u"
