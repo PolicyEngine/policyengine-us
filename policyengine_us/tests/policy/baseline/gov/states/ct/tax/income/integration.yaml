@@ -1,0 +1,27 @@
+- name: Tax unit with taxsimid 84846 in f21.its.csv and f21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 71
+        employment_income: 10_010
+        taxable_interest_income: 5_505
+        taxable_private_pension_income: 6_000
+        social_security_retirement: 12_000
+      person2:
+        age: 71
+        employment_income: 19_010
+        taxable_interest_income: 5_505
+        taxable_private_pension_income: 6_000
+        social_security_retirement: 12_000
+      person3:
+        age: 11
+      person4:
+        age: 11
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_fips: 9  # CT
+  output:  # expected results from patched TAXSIM35 2024-02-05 version
+    ct_income_tax: 637.08
