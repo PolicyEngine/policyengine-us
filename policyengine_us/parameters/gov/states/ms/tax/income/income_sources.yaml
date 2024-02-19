@@ -10,12 +10,12 @@ values:
     - interest_income
     - qualified_dividend_income
     - alimony_income
-    - taxable_pension_income
     - unemployment_compensation
 
 metadata:
   label: Mississippi AGI income sources
   unit: list
+  period: year
   reference: 
     - title: Mississippi Resident INCOME TAX Instructions
       href: https://www.dor.ms.gov/sites/default/files/Forms/Individual/80100221.pdf#page=10 # Line 38 - 48
