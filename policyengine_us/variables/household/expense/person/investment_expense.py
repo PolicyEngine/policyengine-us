@@ -1,9 +1,9 @@
 from policyengine_us.model_api import *
 
 
-class investment_expense(Variable):
+class investment_expenses(Variable):
     value_type = float
     entity = Person
-    label = "Investment expense"
+    label = "Investment expenses"
     unit = USD
     definition_period = YEAR
