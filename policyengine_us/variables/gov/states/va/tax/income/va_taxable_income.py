@@ -21,4 +21,5 @@ class va_taxable_income(Variable):
         ded = where(itemizes, itm_ded, std_ded)
         exemptions = tax_unit("va_total_exemptions", period)
         total_deductions = ded + exemptions
-        return max_(agi - total_deductions, 0)
+        cdcc_exepenses = tax_unit("cdcc_relevant_expenses", period)
+        return max_(agi - total_deductions - cdcc_exepenses, 0)
