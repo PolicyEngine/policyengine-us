@@ -1,0 +1,13 @@
+- name: Net income for family of 4.
+  period: 2021
+  input:
+    spm_resources: 2_000
+  output:
+    spm_unit_oecd_equiv_net_income: 1_000
+
+- name: Net income for family of 9.
+  period: 2021
+  input:
+    spm_resources: 3_000
+  output:
+    spm_unit_oecd_equiv_net_income: 1_000
