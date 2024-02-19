@@ -6274,3 +6274,25 @@
     added:
     - Enable the Vermont state income tax model and add it to the net income tree.
   date: 2024-02-18 17:45:25
+- bump: minor
+  changes:
+    added:
+    - Allocate the Montana deductions and exemptions optimally to the head and spouse
+      if filing separately.
+  date: 2024-02-18 19:52:14
+- bump: minor
+  changes:
+    added:
+    - Use income tax before non refundable credit as a comparison in the Delaware
+      files separately variable.
+  date: 2024-02-18 21:25:48
+- bump: minor
+  changes:
+    added:
+    - Disabled the cdcc cap increase in 2021 for the id_household_and_dependent_care_expense_deduction.
+  date: 2024-02-18 23:58:28
+- bump: patch
+  changes:
+    added:
+    - Add the wv_homestead_excess_property_tax_credit to the state income tree.
+  date: 2024-02-19 00:12:47
