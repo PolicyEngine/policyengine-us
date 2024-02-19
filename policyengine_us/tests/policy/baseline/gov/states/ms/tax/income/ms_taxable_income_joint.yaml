@@ -1,0 +1,40 @@
+- name: Calculation 
+  period: 2023
+  input:
+    state_code: MS
+    ms_agi: 2_000
+    ms_deductions_joint: 200
+    ms_total_exemptions: 300
+  output:
+    ms_taxable_income_joint: 1_500
+
+- name: Capped at 0 
+  period: 2023
+  input:
+    state_code: MS
+    ms_agi: 100
+    ms_deductions_joint: 200
+    ms_total_exemptions: 300
+  output:
+    ms_taxable_income_joint: 0
+
+- name: MS prorate fraction unit test 1
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        ms_agi: 5_000
+        ms_deductions_joint: 1_000
+        ms_total_exemptions_joint: 1_500
+      person2:
+        is_tax_unit_head: false
+        ms_agi: 3_000
+        ms_deductions_joint: 0
+        ms_total_exemptions_joint: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+  output:
+    ms_taxable_income_joint: [5_500, 0]

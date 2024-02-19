@@ -1,0 +1,32 @@
+- name: Medicare eligible with moop
+  period: 2022
+  input:
+    state_code: OH
+    is_medicare_eligible: true
+    health_insurance_premiums: 500
+    medical_out_of_pocket_expenses: 600
+    employer_contribution_to_health_insurance_premiums_category: "NONE"
+  output:
+    oh_insured_unreimbursed_medical_care_expense_amount: 1_100
+
+- name: Medicare ineligible with moop
+  period: 2022
+  input:
+    state_code: OH
+    is_medicare_eligible: true
+    health_insurance_premiums: 500
+    medical_out_of_pocket_expenses: 600
+    employer_contribution_to_health_insurance_premiums_category: "SOME"
+  output:
+    oh_insured_unreimbursed_medical_care_expense_amount: 600
+
+- name: Medicare ineligible without moop
+  period: 2022
+  input:
+    state_code: OH
+    is_medicare_eligible: true
+    health_insurance_premiums: 500
+    medical_out_of_pocket_expenses: 0
+    employer_contribution_to_health_insurance_premiums_category: "SOME"
+  output:
+    oh_insured_unreimbursed_medical_care_expense_amount: 0

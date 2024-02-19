@@ -25,7 +25,7 @@ class co_sales_tax_refund_eligible(Variable):
         # Filers that had Colorado tax withheld are also eligible.
         # Use employment income as a proxy.
         employment_income_eligible = (
-            add(tax_unit, period, ["employment_income"]) > 0
+            add(tax_unit, period, ["irs_employment_income"]) > 0
         )
         income_eligible = employment_income_eligible | income_tax_eligible
         age_eligible = head_age_eligible | spouse_age_eligible

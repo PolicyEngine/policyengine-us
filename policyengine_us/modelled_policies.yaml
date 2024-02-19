@@ -40,6 +40,11 @@ filtered:
       - Georgia state income tax
       not_modelled:
       - Georgia TANF
+    HI:
+      modelled:
+      - Hawaii state income tax
+      not_modelled:
+      - Hawaii TANF
     IA:
       modelled:
       - Iowa state income tax
@@ -128,11 +133,26 @@ filtered:
       - Pennsylvania state income tax
       not_modelled:
       - Pennsylvania TANF
+    RI:
+      modelled:
+      - Rhode Island state income tax
+      not_modelled:
+      - Rhode Island TANF
+    SC:
+      modelled:
+      - South Carolina state income tax
+      not_modelled:
+      - South Carolina TANF
     UT:
       modelled:
       - Utah state income tax
       not_modelled:
       - Utah TANF
+    VT:
+      modelled:
+      - Vermont state income tax
+      not_modelled:
+      - Vermont TANF
     WA:
       modelled:
       - Washington state income tax
