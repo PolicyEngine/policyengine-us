@@ -1,0 +1,29 @@
+- name: Household income exceeds income threshold $78,000
+  period: 2023
+  reforms: policyengine_us.reforms.the_new_school.chris_hughes.direct_cash_benefit.direct_cash_benefit
+  input:
+    household_net_income: 80_000
+    household_count_people: 3
+  output:
+    direct_cash_benefit: 0
+
+- name: Household income between income threshold and phase-out threshold
+  period: 2023
+  reforms: policyengine_us.reforms.the_new_school.chris_hughes.direct_cash_benefit.direct_cash_benefit
+  input:
+    household_net_income: 50_000
+    household_count_people: 3
+  output:
+    # 6384 * 3 = 19044
+    direct_cash_benefit: 19_044
+
+- name: Household income exceeds phase-out threshold 64_800
+  period: 2023
+  reforms: policyengine_us.reforms.the_new_school.chris_hughes.direct_cash_benefit.direct_cash_benefit
+  input:
+    household_net_income: 70_000
+    household_count_people: 3
+  output:
+    # phase-out rate = 6480 / (78000-64800) = 0.49
+    # phase-out cash amount = (78000 - 70000) * 0.49 = 3927
+    direct_cash_benefit: 11_781

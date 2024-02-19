@@ -1,0 +1,24 @@
+# phase-out starts at lower threshold and ends at upper threshold
+# and is linearly decreasing
+
+description: The cash benefit payments phase out threshold
+
+metadata:
+  label: Cash benefit phase out threshold
+  type: single_amount
+  threshold_unit: currency-USD  # household income
+  amount_unit: currency-USD  # benefit amount per capita
+  reference:
+    - title: Automatic Stabilizer Distributions by Household Income
+      href: https://racepowerpolicy.org/wp-content/uploads/2023/12/Direct-Cash-Payments-in-the-Next-Recession_FINAL.pdf#page=16
+brackets:  
+  - threshold:
+      2023-01-01: 64_800
+    amount:
+      2023-01-01: 6_480
+  - threshold:
+      2023-01-01: 78_000
+    amount:
+      2023-01-01: 0
+
+  # I separate it to two parameters? not sure whether this is useful
