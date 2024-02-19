@@ -35,7 +35,7 @@ def create_direct_cash_benefit() -> Reform:
                 ) * phase_out_rate
                 return count_people * max(0, phase_out_amount)
             else:
-                return count_people * p_chris_hughes.amount.cal(
+                return count_people * p_chris_hughes.amount.calc(
                     household_income
                 )
 
