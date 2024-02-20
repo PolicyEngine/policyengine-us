@@ -2,6 +2,7 @@
   period: 2021
   input:
     oh_agi: 99_999
+    oh_personal_exemptions: 0 
     state_code: OH
   output:
     oh_pension_based_retirement_income_credit_eligible: true
@@ -10,6 +11,16 @@
   period: 2021
   input:
     oh_agi: 100_000
+    oh_personal_exemptions: 0
     state_code: OH
   output:
     oh_pension_based_retirement_income_credit_eligible: false
+
+- name: AGI reduced by exemptions 
+  period: 2021
+  input:
+    oh_agi: 100_000
+    oh_personal_exemptions: 2
+    state_code: OH
+  output:
+    oh_pension_based_retirement_income_credit_eligible: true
