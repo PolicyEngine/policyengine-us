@@ -1,0 +1,17 @@
+- name: Itemizes
+  period: 2021
+  input:
+    state_code: MT
+    mt_itemized_deductions_indiv: 12_950
+    mt_standard_deduction_indiv: 10_000
+  output:
+    mt_tax_unit_itemizes: true
+
+- name: Does not itemize
+  period: 2021
+  input:
+    state_code: MT
+    mt_itemized_deductions_indiv: 9_000
+    mt_standard_deduction_indiv: 10_000
+  output:
+    mt_tax_unit_itemizes: false
