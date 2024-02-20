@@ -46,7 +46,7 @@ def create_end_entrenched_poverty_credit() -> Reform:
 
     class reform(Reform):
         def apply(self):
-            self.update_variable(end_entrenched_poverty_credit)
+            self.create_variable(end_entrenched_poverty_credit)
             self.update_variable(ny_refundable_credits)
 
     return reform
