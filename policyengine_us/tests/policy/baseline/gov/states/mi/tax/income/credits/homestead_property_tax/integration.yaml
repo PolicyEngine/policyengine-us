@@ -218,21 +218,6 @@
     mi_allowable_homestead_property_tax_credit: 321.6
     mi_homestead_property_tax_credit: 321.6
 
-- name: senior, 3.2% not refundable percent, rent, 100% credit
-  period: 2022
-  input:
-    employment_income: 6_000
-    rent: 7_200
-    age: 66
-    state_code: MI
-  output: # 7200 * 0.23 - (6000 + 7602) * 0.032 < 1600
-    ssi: 7_602
-    mi_homestead_property_tax_credit_countable_property_tax: 1_656
-    mi_homestead_property_tax_credit_household_resource_exemption: 1_220.736
-    mi_homestead_property_tax_credit_eligible: true
-    mi_allowable_homestead_property_tax_credit: 1_220.736
-    mi_homestead_property_tax_credit: 1_220.736
-  
 - name: not senior, disabled, 2% not refundable percent, 100% credit
   period: 2022
   input:

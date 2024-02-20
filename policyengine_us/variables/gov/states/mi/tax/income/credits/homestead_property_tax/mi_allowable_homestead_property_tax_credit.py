@@ -29,7 +29,7 @@ class mi_allowable_homestead_property_tax_credit(Variable):
         senior_eligible = tax_unit("mi_is_senior_for_tax", period)
         # Line 37
         # The reduction is specified as going from 100% to 0% rather than vice-versa.
-        phase_out_rate = p.rate.senior.calc(
+        phase_out_rate = p.rate.senior.base.calc(
             total_household_resources, right=True
         )
         # Line 38
