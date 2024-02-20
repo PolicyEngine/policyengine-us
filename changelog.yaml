@@ -6327,3 +6327,19 @@
     - Enable the West Virginia state income tax model and add it to the net income
       tree.
   date: 2024-02-20 00:59:09
+- bump: patch
+  changes:
+    fixed:
+    - Adjust the Montana head deductions exemptions variable.
+  date: 2024-02-20 03:35:22
+- bump: minor
+  changes:
+    added:
+    - 2023 school meal values.
+    - School meal CPI uprating.
+  date: 2024-02-20 05:06:07
+- bump: minor
+  changes:
+    added:
+    - Poverty guideline uprating based on 12mo average CPI-U.
+  date: 2024-02-20 05:54:45
