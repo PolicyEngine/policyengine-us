@@ -18,10 +18,10 @@ class mt_head_deductions_exemptions_indiv(Variable):
         spouse = person("is_tax_unit_spouse", period)
         head_agi = mt_agi * head
         spouse_agi = mt_agi * spouse
-        spouse_agi_attributed_to_head = person.tax_unit.sum(spouse_agi) * head
+        spouse_agi_attributed_to_head = tax_unit.sum(spouse_agi) * head
         head_over_spouse_agi = head_agi > spouse_agi_attributed_to_head
         # Determine the difference between the two AGIs and cap the deductions at that amount
-        difference = person.tax_unit.sum(
+        difference = tax_unit.sum(
             np.abs(head_agi - spouse_agi_attributed_to_head)
         )
         deductions_capped_at_agi_difference = min_(
