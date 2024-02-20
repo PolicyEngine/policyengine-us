@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.672.1] - 2024-02-20 17:45:08
+
+### Added
+
+- Alternate senior renter computation of the Michigan homestead property tax credit.
+
 ## [0.672.0] - 2024-02-20 16:32:04
 
 ### Added
@@ -7482,6 +7488,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.672.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.672.0...0.672.1
 [0.672.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.671.1...0.672.0
 [0.671.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.671.0...0.671.1
 [0.671.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.670.0...0.671.0
