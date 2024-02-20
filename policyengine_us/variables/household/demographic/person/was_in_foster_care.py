@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ca_was_in_qualifying_foster_care_facility(Variable):
+class was_in_foster_care(Variable):
     value_type = bool
     entity = Person
     label = "Person was in the a qualifying california foster care institution"

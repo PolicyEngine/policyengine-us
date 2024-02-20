@@ -1,39 +1,80 @@
 - name: All conditions satistified
-  period: 2021
+  period: 2022
   input:
-    is_tax_unit_head_or_spouse: true
-    ca_eitc_eligible_person: true
-    ca_was_in_qualifying_foster_care_facility: true
-    state_code: CA
+    people:
+      person_1:
+        is_tax_unit_head_or_spouse: true
+        was_in_foster_care: true
+      person_2:
+        is_tax_unit_head_or_spouse: true
+        was_in_foster_care: true
+    tax_units:
+      tax_unit:
+        members: [person_1, person_2]
+    households:
+      household:
+        members: [person_1, person_2]
+        state_code: CA
   output:
-    ca_foster_youth_tax_credit_eligible: true
+    ca_foster_youth_tax_credit_eligible_person: 2
+
 
 - name: Not a head or spouse
-  period: 2021
+  period: 2022
   input:
-    is_tax_unit_head_or_spouse: false
-    ca_eitc_eligible_person: true
-    ca_was_in_qualifying_foster_care_facility: true
-    state_code: CA
+    people:
+      person_1:
+        is_tax_unit_head_or_spouse: false
+        was_in_foster_care: true
+      person_2:
+        is_tax_unit_head_or_spouse: true
+        was_in_foster_care: true
+    tax_units:
+      tax_unit:
+        members: [person_1, person_2]
+    households:
+      household:
+        members: [person_1, person_2]
+        state_code: CA
   output:
-    ca_foster_youth_tax_credit_eligible: false
-
-- name: Not Caleitc eligible
-  period: 2021
-  input:
-    is_tax_unit_head_or_spouse: true
-    ca_eitc_eligible_person: false
-    ca_was_in_qualifying_foster_care_facility: true
-    state_code: CA
-  output:
-    ca_foster_youth_tax_credit_eligible: false
-
+    ca_foster_youth_tax_credit_eligible_person: 1
+  
 - name: Not in foster care
-  period: 2021
+  period: 2022
   input:
-    is_tax_unit_head_or_spouse: true
-    ca_eitc_eligible_person: true
-    ca_was_in_qualifying_foster_care_facility: false
-    state_code: CA
+    people:
+      person_1:
+        is_tax_unit_head_or_spouse: true
+        was_in_foster_care: false
+      person_2:
+        is_tax_unit_head_or_spouse: true
+        was_in_foster_care: true
+    tax_units:
+      tax_unit:
+        members: [person_1, person_2]
+    households:
+      household:
+        members: [person_1, person_2]
+        state_code: CA
   output:
-    ca_foster_youth_tax_credit_eligible: false
+    ca_foster_youth_tax_credit_eligible_person: 1
+
+- name: None of the conditions is satistfied
+  period: 2022
+  input:
+    people:
+      person_1:
+        is_tax_unit_head_or_spouse: false
+        was_in_foster_care: false
+      person_2:
+        is_tax_unit_head_or_spouse: false
+        was_in_foster_care: false
+    tax_units:
+      tax_unit:
+        members: [person_1, person_2]
+    households:
+      household:
+        members: [person_1, person_2]
+        state_code: CA
+  output:
+    ca_foster_youth_tax_credit_eligible_person: 0
