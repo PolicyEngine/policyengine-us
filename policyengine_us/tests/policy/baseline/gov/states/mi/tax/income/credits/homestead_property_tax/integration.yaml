@@ -9,6 +9,7 @@
     mi_homestead_property_tax_credit_household_resource_exemption: 0
     mi_homestead_property_tax_credit_eligible: true
     mi_allowable_homestead_property_tax_credit: 0
+    mi_homestead_property_tax_credit_pre_alternate_senior_amount: 0
     mi_homestead_property_tax_credit: 0
 
 - name: taxable value greater than $143,000
@@ -23,6 +24,7 @@
     mi_homestead_property_tax_credit_household_resource_exemption: 1_000
     mi_homestead_property_tax_credit_eligible: false
     mi_allowable_homestead_property_tax_credit: 0
+    mi_homestead_property_tax_credit_pre_alternate_senior_amount: 0
     mi_homestead_property_tax_credit: 0
 
 - name: not senior, negative property difference
@@ -36,6 +38,7 @@
     mi_homestead_property_tax_credit_household_resource_exemption: 0
     mi_homestead_property_tax_credit_eligible: true
     mi_allowable_homestead_property_tax_credit: 0
+    mi_homestead_property_tax_credit_pre_alternate_senior_amount: 0
     mi_homestead_property_tax_credit: 0
 
 - name: not senior, 0% credit
@@ -49,6 +52,7 @@
     mi_homestead_property_tax_credit_household_resource_exemption: 80.8
     mi_homestead_property_tax_credit_eligible: true
     mi_allowable_homestead_property_tax_credit: 48.48
+    mi_homestead_property_tax_credit_pre_alternate_senior_amount: 0
     mi_homestead_property_tax_credit: 0
 
 - name: not senior, 70% credit
@@ -64,6 +68,7 @@
     mi_homestead_property_tax_credit_eligible: true
     mi_allowable_homestead_property_tax_credit: 0.6
     mi_homestead_property_tax_credit: 0.42
+    mi_homestead_property_tax_credit_pre_alternate_senior_amount: 0.42
 
 - name: not senior, 100% credit
   period: 2022
@@ -76,6 +81,7 @@
     mi_homestead_property_tax_credit_countable_property_tax: 3_329
     mi_homestead_property_tax_credit_household_resource_exemption: 1_601
     mi_homestead_property_tax_credit_eligible: true
+    mi_homestead_property_tax_credit_pre_alternate_senior_amount: 960.6
     mi_allowable_homestead_property_tax_credit: 960.6
     mi_homestead_property_tax_credit: 960.6
 
@@ -85,11 +91,13 @@
     employment_income: 58_900
     real_estate_taxes: 5_000
     state_code: MI
+    mi_is_senior_for_tax: false
   output: # (5000 - 58900 * 0.032) * 0.6 > 1500
     mi_homestead_property_tax_credit_countable_property_tax: 5_000
     mi_homestead_property_tax_credit_household_resource_exemption: 3_115.2
     mi_homestead_property_tax_credit_eligible: true
     mi_allowable_homestead_property_tax_credit: 1_500
+    mi_homestead_property_tax_credit_pre_alternate_senior_amount: 300
     mi_homestead_property_tax_credit: 300
 
 - name: not senior, 10% credit
@@ -99,11 +107,13 @@
     employment_income: 62_001
     real_estate_taxes: 3_200
     state_code: MI
+    mi_is_senior_for_tax: false
   output: # (3200 - 62001 * 0.032) * 0.6 * 0.1
     mi_homestead_property_tax_credit_countable_property_tax: 3_200
     mi_homestead_property_tax_credit_household_resource_exemption: 1_215.968
     mi_homestead_property_tax_credit_eligible: true
     mi_allowable_homestead_property_tax_credit: 729.5808
+    mi_homestead_property_tax_credit_pre_alternate_senior_amount: 72.95
     mi_homestead_property_tax_credit: 72.95808
 
 - name: not senior, negative rent difference
@@ -117,6 +127,7 @@
     mi_homestead_property_tax_credit_household_resource_exemption: 0
     mi_homestead_property_tax_credit_eligible: true
     mi_allowable_homestead_property_tax_credit: 0
+    mi_homestead_property_tax_credit_pre_alternate_senior_amount: 0
     mi_homestead_property_tax_credit: 0
 
 - name: not senior, rent, 50% credit
@@ -124,6 +135,7 @@
   absolute_error_margin: 0.1
   input:
     employment_income: 58_001
+    mi_is_senior_for_tax: false
     rent: 8_695
     state_code: MI
   output: # (8695 * 0.23 - 58001 * 0.032) * 0.6 * 0.5
@@ -131,6 +143,7 @@
     mi_homestead_property_tax_credit_household_resource_exemption: 143.818
     mi_homestead_property_tax_credit_eligible: true
     mi_allowable_homestead_property_tax_credit: 86.2908
+    mi_homestead_property_tax_credit_pre_alternate_senior_amount: 43.1
     mi_homestead_property_tax_credit: 43.1454
 
 - name: senior, negative property difference
@@ -145,6 +158,7 @@
     mi_homestead_property_tax_credit_household_resource_exemption: 0
     mi_homestead_property_tax_credit_eligible: true
     mi_allowable_homestead_property_tax_credit: 0
+    mi_homestead_property_tax_credit_pre_alternate_senior_amount: 0
     mi_homestead_property_tax_credit: 0
 
 - name: senior, 100% credit
@@ -160,6 +174,7 @@
     mi_homestead_property_tax_credit_household_resource_exemption: 860
     mi_homestead_property_tax_credit_eligible: true
     mi_allowable_homestead_property_tax_credit: 860
+    mi_homestead_property_tax_credit_pre_alternate_senior_amount: 860
     mi_homestead_property_tax_credit: 860
   
 - name: senior, 84% credit and 100% credit
@@ -174,6 +189,7 @@
     mi_homestead_property_tax_credit_household_resource_exemption: 1_300
     mi_homestead_property_tax_credit_eligible: true
     mi_allowable_homestead_property_tax_credit: 1_092
+    mi_homestead_property_tax_credit_pre_alternate_senior_amount: 1_092
     mi_homestead_property_tax_credit: 1_092
 
 - name: senior, 60% credit and 50% credit
@@ -188,6 +204,7 @@
     mi_homestead_property_tax_credit_household_resource_exemption: 708
     mi_homestead_property_tax_credit_eligible: true
     mi_allowable_homestead_property_tax_credit: 424.8
+    mi_homestead_property_tax_credit_pre_alternate_senior_amount: 212.4
     mi_homestead_property_tax_credit: 212.4
 
 - name: senior, negative rent difference
@@ -202,6 +219,7 @@
     mi_homestead_property_tax_credit_household_resource_exemption: 0
     mi_homestead_property_tax_credit_eligible: true
     mi_allowable_homestead_property_tax_credit: 0
+    mi_homestead_property_tax_credit_pre_alternate_senior_amount: 0
     mi_homestead_property_tax_credit: 0
 
 - name: senior, rent, 60% credit and 100% credit
@@ -216,6 +234,7 @@
     mi_homestead_property_tax_credit_household_resource_exemption: 536
     mi_homestead_property_tax_credit_eligible: true
     mi_allowable_homestead_property_tax_credit: 321.6
+    mi_homestead_property_tax_credit_pre_alternate_senior_amount: 321.6
     mi_homestead_property_tax_credit: 321.6
 
 - name: not senior, disabled, 2% not refundable percent, 100% credit
@@ -232,6 +251,7 @@
     mi_homestead_property_tax_credit_household_resource_exemption: 1_900
     mi_homestead_property_tax_credit_eligible: true
     mi_allowable_homestead_property_tax_credit: 1_600
+    mi_homestead_property_tax_credit_pre_alternate_senior_amount: 1_600
     mi_homestead_property_tax_credit: 1_600
 
 - name: not senior, disabled, 3.2% not refundable percent, 100% credit
@@ -248,6 +268,7 @@
     mi_homestead_property_tax_credit_household_resource_exemption: 1_580.736
     mi_homestead_property_tax_credit_eligible: true
     mi_allowable_homestead_property_tax_credit: 1_580.736
+    mi_homestead_property_tax_credit_pre_alternate_senior_amount: 1_580.736
     mi_homestead_property_tax_credit: 1_580.736
 
 - name: senior, disabled, 2% not refundable percent, 100% credit
@@ -265,6 +286,7 @@
     mi_homestead_property_tax_credit_household_resource_exemption: 1_200
     mi_homestead_property_tax_credit_eligible: true
     mi_allowable_homestead_property_tax_credit: 1_200
+    mi_homestead_property_tax_credit_pre_alternate_senior_amount: 1_200
     mi_homestead_property_tax_credit: 1_200
 
 - name: filing jointly, one disabled, one senior, 3.2% not refundable percent, 100% credit
@@ -292,4 +314,5 @@
     mi_homestead_property_tax_credit_household_resource_exemption: 2_123.456
     mi_homestead_property_tax_credit_eligible: true
     mi_allowable_homestead_property_tax_credit: 1_600
+    mi_homestead_property_tax_credit_pre_alternate_senior_amount: 1_600
     mi_homestead_property_tax_credit: 1_600
