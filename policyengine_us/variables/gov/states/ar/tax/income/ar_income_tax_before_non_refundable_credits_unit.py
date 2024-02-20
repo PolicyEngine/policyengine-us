@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ar_income_tax_before_non_refundable_credits_unit(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Arkansas income tax before non refundable credits comboined"
+    label = "Arkansas income tax before non refundable credits combined"
     unit = USD
     definition_period = YEAR
     reference = "https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2023_Final_AR1000ES.pdf"

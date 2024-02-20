@@ -7,4 +7,4 @@ class spm_unit_capped_work_childcare_expenses(Variable):
     label = "SPM unit work and childcare expenses"
     definition_period = YEAR
     unit = USD
-    uprating = "gov.bls.cpi.c_cpi_u"
+    uprating = "gov.bls.cpi.cpi_u"

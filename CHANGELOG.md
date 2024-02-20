@@ -5,6 +5,140 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.670.0] - 2024-02-20 05:06:07
+
+### Added
+
+- 2023 school meal values.
+- School meal CPI uprating.
+
+## [0.669.1] - 2024-02-20 03:35:22
+
+### Fixed
+
+- Adjust the Montana head deductions exemptions variable.
+
+## [0.669.0] - 2024-02-20 00:59:09
+
+### Added
+
+- Enable the West Virginia state income tax model and add it to the net income tree.
+
+## [0.668.1] - 2024-02-19 23:39:26
+
+### Added
+
+- Virginia child and dependent care expenses deduction.
+
+## [0.668.0] - 2024-02-19 23:30:53
+
+## [0.667.2] - 2024-02-19 22:58:16
+
+### Fixed
+
+- Include pension income in the Mississippi AGI calculation.
+
+## [0.667.1] - 2024-02-19 17:00:50
+
+### Fixed
+
+- Remove pension income from the MS AGI computation.
+
+## [0.667.0] - 2024-02-19 16:36:06
+
+### Changed
+
+- Uprate OASDI and SSI by CPI-W.
+
+## [0.666.1] - 2024-02-19 00:12:47
+
+### Added
+
+- Add the wv_homestead_excess_property_tax_credit to the state income tree.
+
+## [0.666.0] - 2024-02-18 23:58:28
+
+### Added
+
+- Disabled the cdcc cap increase in 2021 for the id_household_and_dependent_care_expense_deduction.
+
+## [0.665.0] - 2024-02-18 21:25:48
+
+### Added
+
+- Use income tax before non refundable credit as a comparison in the Delaware files separately variable.
+
+## [0.664.0] - 2024-02-18 19:52:14
+
+### Added
+
+- Allocate the Montana deductions and exemptions optimally to the head and spouse if filing separately.
+
+## [0.663.0] - 2024-02-18 17:45:25
+
+### Added
+
+- Enable the Vermont state income tax model and add it to the net income tree.
+
+## [0.662.0] - 2024-02-18 16:36:02
+
+### Added
+
+- Non-chained CPI trend and forecast.
+
+### Changed
+
+- Uprate benefits using non-chained CPI.
+
+## [0.661.2] - 2024-02-17 21:13:13
+
+### Changed
+
+- Assign households with negative income to the -1 decile.
+
+## [0.661.1] - 2024-02-17 04:50:37
+
+### Fixed
+
+- Reduce the adjusted_net_capital_gain by the qualified dividend income in the vt_capital_gains_exclusion calcualtion.
+
+## [0.661.0] - 2024-02-17 02:46:56
+
+### Added
+
+- AMT capital gains rates and child exemption parameters through 2024.
+- AMT references.
+
+## [0.660.0] - 2024-02-17 00:04:29
+
+### Added
+
+- Add Delaware married combined separate filing status.
+
+## [0.659.0] - 2024-02-16 21:13:27
+
+### Added
+
+- Add Kentucky married combined separate filing status.
+
+## [0.658.1] - 2024-02-16 04:54:04
+
+### Fixed
+
+- Limiting the Ohio senior citizen credit to one amount.
+
+## [0.658.0] - 2024-02-15 17:38:14
+
+### Added
+
+- Pennsylvania 2023 income tax references.
+
+## [0.657.0] - 2024-02-15 17:10:46
+
+### Added
+
+- Formula for the CT subtractions variable.
+
 ## [0.656.1] - 2024-02-14 18:00:30
 
 ### Fixed
@@ -7329,6 +7463,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.670.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.669.1...0.670.0
+[0.669.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.669.0...0.669.1
+[0.669.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.668.1...0.669.0
+[0.668.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.668.0...0.668.1
+[0.668.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.667.2...0.668.0
+[0.667.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.667.1...0.667.2
+[0.667.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.667.0...0.667.1
+[0.667.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.666.1...0.667.0
+[0.666.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.666.0...0.666.1
+[0.666.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.665.0...0.666.0
+[0.665.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.664.0...0.665.0
+[0.664.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.663.0...0.664.0
+[0.663.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.662.0...0.663.0
+[0.662.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.661.2...0.662.0
+[0.661.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.661.1...0.661.2
+[0.661.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.661.0...0.661.1
+[0.661.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.660.0...0.661.0
+[0.660.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.659.0...0.660.0
+[0.659.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.658.1...0.659.0
+[0.658.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.658.0...0.658.1
+[0.658.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.657.0...0.658.0
+[0.657.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.656.1...0.657.0
 [0.656.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.656.0...0.656.1
 [0.656.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.655.2...0.656.0
 [0.655.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.655.1...0.655.2
