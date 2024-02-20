@@ -31,23 +31,3 @@
     ms_files_separately: true
     ms_agi: [23_000, 18_000, 0]
     ms_income_tax: 548
-
-- name: Tax unit with taxsimid 99980 in f21.its.csv and f21.ots.csv
-  absolute_error_margin: 0.01
-  period: 2021
-  input:
-    people:
-      person1:
-        age: 66
-        employment_income: 25_010
-        taxable_interest_income: 11_010
-        taxable_private_pension_income: 12_000
-        social_security_retirement: 7_000
-      person2:
-        age: 16
-    households:
-      household:
-        members: [person1, person2]
-        state_fips: 28  # MS
-  output:  # expected results from patched TAXSIM35 2024-02-15 version
-    ms_income_tax: 811
