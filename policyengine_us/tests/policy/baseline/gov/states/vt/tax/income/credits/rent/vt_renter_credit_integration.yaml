@@ -1,0 +1,70 @@
+- name: integration test 1
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 20_000
+        rent: 8_000
+        social_security: 300
+        tax_exempt_interest_income: 500
+      person2:
+        is_tax_unit_spouse: true
+        age: 38
+        employment_income: 10_000
+        rent: 4_000
+        social_security: 200
+        tax_exempt_interest_income: 500
+      person3:
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        rent_is_shared_with_another_tax_unit: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        county: ADDISON_COUNTY_VT
+        state_code: VT
+  output:
+    tax_unit_social_security: 500
+    tax_unit_taxable_social_security: 0
+    vt_renter_credit_income: 31_375
+    vt_renter_credit: 1_097
+
+- name: integration test 2
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 20_000
+        rent: 8_000
+        social_security: 3_000
+        tax_exempt_interest_income: 500
+      person2:
+        is_tax_unit_spouse: true
+        age: 38
+        employment_income: 10_000
+        rent: 4_000
+        social_security: 2_000
+        tax_exempt_interest_income: 500
+      person3:
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        rent_is_shared_with_another_tax_unit: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        county: ADDISON_COUNTY_VT
+        state_code: VT
+  output:
+    tax_unit_social_security: 5_000
+    tax_unit_taxable_social_security: 750
+    vt_renter_credit_income: 34_937.5
+    vt_renter_credit: 734
+    

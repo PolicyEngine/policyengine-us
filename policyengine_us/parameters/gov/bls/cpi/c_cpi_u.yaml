@@ -1,4 +1,4 @@
-description: Chained CPI-U.
+description: The Bureau of Labor Statistics estimates this Chained Consumer Price Index for All Urban Consumers.
 values:
   1999-12-01: 100.000
   2000-01-01: 100.300
@@ -280,41 +280,30 @@ values:
   2023-01-01: 167.253
   2023-02-01: 168.206
   2023-03-01: 168.793
-  2023-04-01: 169.571
-  2023-05-01: 169.978
-  2023-06-01: 170.519
-  2023-07-01: 170.782
-  2023-08-01: 171.533
-  2023-09-01: 171.919
-  2023-10-01: 171.838
-  2023-11-01: 171.459
-  2023-12-01: 171.255
-  # Move to Projected CPI-U by the CBO
-  2024-01-01: 172.271 # 3.0% increase in Q1 of 2024
-  2024-02-01: 173.252 # 3.0% increase in Q1 of 2024
-  2024-03-01: 173.857 # 3.0% increase in Q1 of 2024
-  2024-04-01: 173.810 # 2.5% increase in Q2 of 2024
-  2024-05-01: 174.227 # 2.5% increase in Q2 of 2024
-  2024-06-01: 174.782 # 2.5% increase in Q2 of 2024
-  2024-07-01: 175.393 # 2.7% increase in 2024
-  2024-08-01: 176.164 # 2.7% increase in 2024
-  2024-09-01: 176.561 # 2.7% increase in 2024
-  2024-10-01: 176.478 # 2.7% increase in 2024
-  2024-11-01: 176.088 # 2.7% increase in 2024
-  2024-12-01: 175.879 # 2.7% increase in 2024
-  2025-01-01: 176.061 # 2.2% increase in 2025
-  2025-02-01: 177.064 # 2.2% increase in 2025
-  2025-03-01: 177.682 # 2.2% increase in 2025
-  2025-04-01: 177.634 # 2.2% increase in 2025
-  2025-05-01: 178.056 # 2.2% increase in 2025
-  2025-06-01: 178.627 # 2.2% increase in 2025
-  2025-07-01: 179.252 # 2.2% increase in 2025
-  2025-08-01: 180.040 # 2.2% increase in 2025
-  2025-09-01: 180.445 # 2.2% increase in 2025
-  2025-10-01: 180.361 # 2.2% increase in 2025
-  2025-11-01: 179.962 # 2.2% increase in 2025
-  2025-12-01: 179.748 # 2.2% increase in 2025
-
+  2023-04-01: 169.332
+  2023-05-01: 169.738
+  2023-06-01: 170.279
+  2023-07-01: 170.541
+  2023-08-01: 171.291
+  2023-09-01: 171.677
+  2023-10-01: 171.595
+  2023-11-01: 171.219
+  2023-12-01: 171.015
+  2024-01-01: 171.910
+  # CBO projections.
+  # Since CBO projects the relevant tax parameter,
+  # which is the average over the 12mo ending August,
+  # we place that in February of each year.
+  2024-02-01: 172.8 # 2025 value.
+  2025-02-01: 176.6 # 2026 value.
+  2026-02-01: 180.2 # 2027 value.
+  2027-02-01: 183.7 # 2028 value.
+  2028-02-01: 187.3 # 2029 value.
+  2029-02-01: 191.0 # 2030 value.
+  2030-02-01: 194.8 # 2031 value.
+  2031-02-01: 198.6 # 2032 value.
+  2032-02-01: 202.6 # 2033 value.
+  2033-02-01: 206.7 # 2034 value.
 metadata:
   unit: currency-USD
   label: Chained CPI-U
@@ -322,5 +311,7 @@ metadata:
   reference:
     - title: "su.data.0.Current (SUUR0000SA0)"
       href: https://download.bls.gov/pub/time.series/su/su.data.0.Current
-    - title: Congressional Budget Office, Economic Outlook; 2023 to 2025
-      href: https://www.cbo.gov/publication/59431
+    - title: CBO | Tax Parameters and Effective Marginal Tax Rates | Feb 2024
+      # Source: https://www.cbo.gov/data/budget-economic-data#10
+      # Row: 158
+      href: https://www.cbo.gov/system/files/2024-02/53724-2024-02-Tax-Parameters.xlsx

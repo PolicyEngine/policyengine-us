@@ -22,16 +22,31 @@ class snap_utility_allowance(Variable):
             utility.limited.allowance[region],
             0,
         )
-        expense_types = utility.single.utility_types
-        sum_of_individual_allowances = sum(
+        # Make sure that only the subsidy amount which corresponds to the
+        # utility expense is included in the individual subsidies
+        indiv_subsidy = select(
             [
-                utility.single[expense.replace("_expense", "")][region]
-                for expense in expense_types
-            ]
+                spm_unit("electricity_expense", period) > 0,
+                spm_unit("gas_expense", period) > 0,
+                spm_unit("phone_expense", period) > 0,
+                spm_unit("trash_expense", period) > 0,
+                spm_unit("water_expense", period) > 0,
+                spm_unit("sewage_expense", period) > 0,
+            ],
+            [
+                utility.single.electricity[region],
+                utility.single.gas_and_fuel[region],
+                utility.single.phone[region],
+                utility.single.trash[region],
+                utility.single.water[region],
+                utility.single.sewage[region],
+            ],
+            default=0,
         )
+
         iua_due = where(
             allowance_type == allowance_types.IUA,
-            sum_of_individual_allowances,
+            indiv_subsidy,
             0,
         )
         return sua_due + lua_due + iua_due

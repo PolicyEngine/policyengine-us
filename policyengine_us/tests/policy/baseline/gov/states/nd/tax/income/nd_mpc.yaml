@@ -6,11 +6,11 @@
       person1:
         is_tax_unit_head: true
         age: 40
-        employment_income: 20_000
+        irs_employment_income: 20_000
       person2:
         is_tax_unit_spouse: true
         age: 40
-        employment_income: 15_000
+        irs_employment_income: 15_000
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -32,11 +32,11 @@
       person1:
         is_tax_unit_head: true
         age: 41
-        employment_income: 200_000
+        irs_employment_income: 200_000
       person2:
         is_tax_unit_spouse: true
         age: 41
-        employment_income: 180_000
+        irs_employment_income: 180_000
     spm_units:
       spm_unit:
         members: [person1, person2]
