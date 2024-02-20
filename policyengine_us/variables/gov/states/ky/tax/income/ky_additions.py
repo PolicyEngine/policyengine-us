@@ -3,7 +3,7 @@ from policyengine_us.model_api import *
 
 class ky_additions(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     label = "Kentucky additions"
     unit = USD
     definition_period = YEAR
