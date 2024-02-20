@@ -1,43 +1,17 @@
-- name: Senior, renter, larger credit than cap
-  period: 2021
+- name: Alternate amount over standard
+  period: 2022
   input:
-    mi_is_senior_for_tax: true
-    rent: 14_000
-    mi_homestead_property_tax_credit_pre_alternate_senior_amount: 1_336.416
-    mi_household_resources: 31_020
+    mi_homestead_property_tax_credit_pre_alternate_senior_amount: 1_000
+    mi_homestead_property_tax_credit_alternate_senior_amount: 999
     mi_homestead_property_tax_credit_eligible: true
-  output: # 14000 - 31020 * 0.4 = 1592 > 1500
-    mi_homestead_property_tax_credit: 1_500
+  output:
+    mi_homestead_property_tax_credit: 1_000
 
-- name: Non-senior
-  period: 2021
+- name: Alternate amount under standard
+  period: 2022
   input:
-    mi_is_senior_for_tax: false
-    rent: 14_000
-    mi_homestead_property_tax_credit_pre_alternate_senior_amount: 1_336.416
-    mi_household_resources: 31_020
+    mi_homestead_property_tax_credit_pre_alternate_senior_amount: 998
+    mi_homestead_property_tax_credit_alternate_senior_amount: 999
     mi_homestead_property_tax_credit_eligible: true
-  output: 
-    mi_homestead_property_tax_credit: 1_336.416
-
-- name: Senior, no rent
-  period: 2021
-  input:
-    mi_is_senior_for_tax: true
-    rent: 0
-    mi_homestead_property_tax_credit_pre_alternate_senior_amount: 1_200
-    mi_household_resources: 31_020
-    mi_homestead_property_tax_credit_eligible: true
-  output: 
-    mi_homestead_property_tax_credit: 1_200
-
-- name: Senior, rent below 40% of household resources
-  period: 2021
-  input:
-    mi_is_senior_for_tax: true
-    rent: 2_000
-    mi_homestead_property_tax_credit_pre_alternate_senior_amount: 1_200
-    mi_household_resources: 31_020
-    mi_homestead_property_tax_credit_eligible: true
-  output: 
-    mi_homestead_property_tax_credit: 1_200
+  output:
+    mi_homestead_property_tax_credit: 999

@@ -23,7 +23,6 @@ class mi_allowable_homestead_property_tax_credit(Variable):
             "mi_homestead_property_tax_credit_household_resource_exemption",
             period,
         )
-
         # seniors
         # SECTION A: SENIOR CLAIMANTS (if you checked only box 5a)
         senior_eligible = tax_unit("mi_is_senior_for_tax", period)

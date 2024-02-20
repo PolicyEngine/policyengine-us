@@ -4,9 +4,7 @@ from policyengine_us.model_api import *
 class mi_homestead_property_tax_credit(Variable):
     value_type = float
     entity = TaxUnit
-    label = (
-        "Michigan alternate senior renter homestead property tax credit amount"
-    )
+    label = "Michigan homestead property tax credit"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -16,24 +14,11 @@ class mi_homestead_property_tax_credit(Variable):
     defined_for = "mi_homestead_property_tax_credit_eligible"
 
     def formula(tax_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.mi.tax.income.credits.homestead_property_tax
-        senior_eligible = tax_unit("mi_is_senior_for_tax", period)
-        # Line A
         allowable_credit_amount = tax_unit(
             "mi_homestead_property_tax_credit_pre_alternate_senior_amount",
             period,
         )
-        # Line B
-        rent = add(tax_unit, period, ["rent"])
-        # Line C
-        household_resources = tax_unit("mi_household_resources", period)
-        applicable_resources = p.rate.senior.alternate * household_resources
-        # Line D
-        reduced_rent = max_(rent - applicable_resources, 0)
-        senior_amount = max_(allowable_credit_amount, reduced_rent)
-        capped_senior_amount = min_(senior_amount, p.cap)
-        return where(
-            senior_eligible, capped_senior_amount, allowable_credit_amount
+        senior_credit_amount = tax_unit(
+            "mi_homestead_property_tax_credit_alternate_senior_amount", period
         )
+        return max_(allowable_credit_amount, senior_credit_amount)
