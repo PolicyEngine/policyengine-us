@@ -1,0 +1,17 @@
+- name: Itemized deductions are larger than standard deduction.
+  period: 2023
+  input:
+    ky_itemized_deductions_indiv: 100
+    ky_standard_deduction_indiv: 99
+    state_code: KY
+  output:
+    ky_deductions_indiv: 100
+
+- name: Standard deduction is larger than itemized deductions.
+  period: 2023
+  input:
+    ky_itemized_deductions_indiv: 2_769
+    ky_standard_deduction_indiv: 2_770
+    state_code: KY
+  output:
+    ky_deductions_indiv: 2_770

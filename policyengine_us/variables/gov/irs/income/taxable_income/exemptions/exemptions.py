@@ -4,6 +4,7 @@ from policyengine_us.model_api import *
 class exemptions(Variable):
     value_type = float
     entity = TaxUnit
+    label = "Exemptions"
     definition_period = YEAR
     documentation = "Personal exemptions amount after phase-out"
     unit = USD

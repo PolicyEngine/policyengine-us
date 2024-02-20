@@ -1,0 +1,39 @@
+- name: 2021 integration test for household size of 3 with eligible child and disabled spouse
+  period: 2021
+  input:
+    people:
+      head:
+        age: 40
+        is_disabled: false
+        is_tax_unit_head: true
+        earned_income: 30_000
+      spouse:
+        age: 35
+        is_disabled: true #eligible due to disability 
+        is_tax_unit_head: false
+        earned_income: 20_000
+      child:
+        age: 10 #below 13: "OLD"
+        is_disabled: false
+        is_tax_unit_head: false
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        tax_unit_size: 3 #> mininum tax unit size 2
+        tax_unit_fpg: 50_000 #threshold = $50,000*3 = $150,000
+        # Income equals 220-230% of fpg
+        adjusted_gross_income: 111_000
+        or_agi: 80_000 # income eligible: max($111,000, 80,000) < $150,000
+        min_head_spouse_earned: 50_000
+        tax_unit_childcare_expenses: 10_000 # < $12,000
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: OR
+  output:
+    or_wfhdc_eligible: true
+    or_wfhdc_income_category: 23
+    or_wfhdc_eligibility_category: ["OLD"] 
+    or_cdcc_relevant_expenses: 10_000
+    or_working_family_household_and_dependent_care_credit: 3_000 # $10,000 * 0.30(match percentage)

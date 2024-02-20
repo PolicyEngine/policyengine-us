@@ -1,0 +1,72 @@
+- name: not eligible
+  period: 2022
+  input:
+    mi_homestead_property_tax_credit_household_resource_exemption: 1_000
+    mi_homestead_property_tax_credit_eligible: false
+  output:
+    mi_allowable_homestead_property_tax_credit: 0
+
+- name: not senior, not disabled
+  period: 2022
+  input:
+    mi_homestead_property_tax_credit_household_resource_exemption: 2_000
+    mi_homestead_property_tax_credit_eligible: true
+  output: # 2000 * 0.6
+    mi_allowable_homestead_property_tax_credit: 1_200
+
+- name: senior, not eligible
+  period: 2022
+  input:
+    mi_household_resources: 31_251
+    mi_homestead_property_tax_credit_household_resource_exemption: 1_000
+    mi_is_senior_for_tax: true
+    mi_homestead_property_tax_credit_eligible: false
+  output: 
+    mi_allowable_homestead_property_tax_credit: 0
+
+- name: senior, 100% credit
+  period: 2022
+  input:
+    mi_household_resources: 20_000
+    mi_homestead_property_tax_credit_household_resource_exemption: 860
+    mi_is_senior_for_tax: true
+    mi_homestead_property_tax_credit_eligible: true
+  output: 
+    mi_allowable_homestead_property_tax_credit: 860
+  
+- name: senior, 84% credit
+  period: 2022
+  input:
+    mi_household_resources: 25_000
+    mi_homestead_property_tax_credit_household_resource_exemption: 1_300
+    mi_is_senior_for_tax: true
+    mi_homestead_property_tax_credit_eligible: true
+  output: # 1300 * 0.84
+    mi_allowable_homestead_property_tax_credit: 1_092
+
+- name: disabled
+  period: 2022
+  input:
+    disabled_tax_unit_head_or_spouse: true
+    mi_homestead_property_tax_credit_household_resource_exemption: 1_300
+    mi_homestead_property_tax_credit_eligible: true
+  output: 
+    mi_allowable_homestead_property_tax_credit: 1_300
+
+- name: senior, disabled
+  period: 2022
+  input:
+    disabled_tax_unit_head_or_spouse: true
+    mi_homestead_property_tax_credit_household_resource_exemption: 1_300
+    mi_is_senior_for_tax: true
+    mi_homestead_property_tax_credit_eligible: true
+  output: 
+    mi_allowable_homestead_property_tax_credit: 1_300
+   
+- name: larger than max
+  period: 2022
+  input:
+    mi_homestead_property_tax_credit_household_resource_exemption: 2_800
+    mi_homestead_property_tax_credit_eligible: true
+  output: # 2800 * 0.6 > 1600
+    mi_allowable_homestead_property_tax_credit: 1_600
