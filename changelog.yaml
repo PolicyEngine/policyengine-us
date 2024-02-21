@@ -6374,3 +6374,18 @@
     added:
     - Remove vectorization from the mt_head_deductions_exemptions_indiv variable.
   date: 2024-02-21 01:41:58
+- bump: minor
+  changes:
+    added:
+    - SNAP uprating (approximated by CPI-U).
+  date: 2024-02-21 12:23:33
+- bump: patch
+  changes:
+    fixed:
+    - Apply the Louisiana exemption amount to the bottom tax bracket.
+  date: 2024-02-21 14:48:48
+- bump: minor
+  changes:
+    added:
+    - Arizona property tax credit.
+  date: 2024-02-21 17:20:43
