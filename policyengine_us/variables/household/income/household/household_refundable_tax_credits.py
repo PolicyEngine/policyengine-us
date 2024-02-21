@@ -8,6 +8,8 @@ class household_refundable_tax_credits(Variable):
     definition_period = YEAR
     unit = USD
 
+    adds = "gov.household_refundable_credits"
+
     def formula(household, period, parameters):
         p = parameters(period)
         added_components = p.gov.household_refundable_credits
@@ -18,6 +20,9 @@ class household_refundable_tax_credits(Variable):
                 if c != "income_tax_refundable_credits"
             ]
         if p.simulation.reported_state_income_tax:
+            # State tax reported in ASEC includes refundable credits.
+            # So we get refundable credits in household_tax_before_refundable_credits
+            # via spm_unit_state_tax_reported.
             added_components = [
                 "income_tax_refundable_credits",  # Federal.
             ]
