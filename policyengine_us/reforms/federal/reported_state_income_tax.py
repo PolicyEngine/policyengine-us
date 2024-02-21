@@ -10,7 +10,13 @@ def create_reported_state_income_tax() -> Reform:
         unit = USD
         definition_period = YEAR
 
-        adds = ["income_tax_before_refundable_credits", "self_employment_tax", "income_tax_before_refundable_credits", "spm_unit_state_tax_reported", "flat_tax"]
+        adds = [
+            "income_tax_before_refundable_credits",
+            "self_employment_tax",
+            "income_tax_before_refundable_credits",
+            "spm_unit_state_tax_reported",
+            "flat_tax",
+        ]
 
     class household_refundable_tax_credits(Variable):
         value_type = float
