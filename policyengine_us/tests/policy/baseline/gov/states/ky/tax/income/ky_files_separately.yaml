@@ -1,0 +1,17 @@
+- name: joint
+  period: 2022
+  input:
+    ky_taxable_income_indiv: 200
+    ky_taxable_income_joint: 100
+    state_code: KY
+  output:
+    ky_files_separately: false
+
+- name: separate
+  period: 2022
+  input:
+    ky_taxable_income_indiv: 100
+    ky_taxable_income_joint: 200
+    state_code: KY
+  output:
+    ky_files_separately: true
