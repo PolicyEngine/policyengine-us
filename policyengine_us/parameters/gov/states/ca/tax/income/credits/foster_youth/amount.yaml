@@ -1,8 +1,21 @@
 description: California provides the following foster youth tax credit amount, based on age.  
-values:
-  2022-01-01: 1_083
+brackets:
+  - threshold:  
+      2022-01-01: 0  
+    amount:  
+      2022-01-01: 0  
+  - threshold:  
+      2022-01-01: 18  
+    amount:  
+      2022-01-01: 1_083
+  - threshold:  
+      2022-01-01: 26
+    amount:  
+      2022-01-01: 0 
 metadata:
-  unit: currency-USD
+  threshold_unit: year
+  type: single_amount
+  amount_unit: currency-USD
   period: year
   label: California foster youth tax credit base  
   reference:
