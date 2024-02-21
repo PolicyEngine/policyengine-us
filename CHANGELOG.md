@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.674.0] - 2024-02-21 01:11:31
+
+### Added
+
+- Use adds for household_refundable_tax_credits and household_tax_before_refundable_credits.
+
 ## [0.673.0] - 2024-02-20 22:09:07
 
 ### Added
@@ -7494,6 +7500,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.674.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.673.0...0.674.0
 [0.673.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.672.1...0.673.0
 [0.672.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.672.0...0.672.1
 [0.672.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.671.1...0.672.0
