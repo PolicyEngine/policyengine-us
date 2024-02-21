@@ -35,6 +35,4 @@ class la_income_tax_before_non_refundable_credits(Variable):
                 p.head_of_household.calc(income),
             ],
         )
-        print(bottom_tax_rate)
-        print(exempt_income_tax)
         return max_(pre_exemption_tax_amount - exempt_income_tax, 0)
