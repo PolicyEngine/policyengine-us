@@ -11,7 +11,7 @@ class co_ccap_eligible(Variable):
         "https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=11042&fileName=8%20CCR%201403-1#page=31",
     )
     definition_period = MONTH
-    # defined_for = StateCode.CO
+    defined_for = StateCode.CO
 
     def formula(spm_unit, period, parameters):
         in_entry_process = spm_unit("co_ccap_is_in_entry_process", period)

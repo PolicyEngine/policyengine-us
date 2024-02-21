@@ -1,0 +1,63 @@
+- name: no household resources
+  period: 2022
+  input:
+    mi_household_resources: 0
+    mi_allowable_homestead_property_tax_credit: 0
+    mi_homestead_property_tax_credit_eligible: false
+  output:
+    mi_homestead_property_tax_credit_pre_alternate_senior_amount: 0
+
+- name: not eligible
+  period: 2022
+  input:
+    mi_household_resources: 5_000
+    mi_allowable_homestead_property_tax_credit: 1_000
+    mi_homestead_property_tax_credit_eligible: false
+  output:
+    mi_homestead_property_tax_credit_pre_alternate_senior_amount: 0
+
+- name: 0% credit
+  period: 2022
+  input:
+    mi_household_resources: 63_001
+    mi_allowable_homestead_property_tax_credit: 2_000
+    mi_homestead_property_tax_credit_eligible: true
+  output:
+    mi_homestead_property_tax_credit_pre_alternate_senior_amount: 0
+
+- name: 70% credit
+  period: 2022
+  input:
+    mi_household_resources: 56_500
+    mi_allowable_homestead_property_tax_credit: 1_000
+    mi_homestead_property_tax_credit_eligible: true
+  output: # 1000 * 0.7
+    mi_homestead_property_tax_credit_pre_alternate_senior_amount: 700
+
+- name: 100% credit
+  period: 2022
+  input:
+    mi_household_resources: 54_000
+    mi_allowable_homestead_property_tax_credit: 1_600
+    mi_homestead_property_tax_credit_eligible: true
+  output: 
+    mi_homestead_property_tax_credit_pre_alternate_senior_amount: 1_600
+
+- name: 20% credit
+  period: 2021
+  input:
+    mi_household_resources: 58_900
+    mi_allowable_homestead_property_tax_credit: 3_115
+    mi_homestead_property_tax_credit_eligible: true
+  output: # 3115 * 0.2
+    mi_homestead_property_tax_credit_pre_alternate_senior_amount: 623
+
+- name: 10% credit
+  period: 2022
+  absolute_error_margin: 0.1
+  input:
+    mi_household_resources: 62_001
+    mi_allowable_homestead_property_tax_credit: 1_215
+    mi_homestead_property_tax_credit_eligible: true
+  output: # 1215 * 0.1
+    mi_homestead_property_tax_credit_pre_alternate_senior_amount: 121.5

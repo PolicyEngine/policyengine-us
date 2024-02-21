@@ -1,0 +1,30 @@
+description: The US sets SNAP benefits at the Thrifty Food Plan each year, updating in October. This approximates that uprating via CPI-U.
+values:
+  # Actuals from June of each year.
+  2020-10-01: 257.797 # 2020-06.
+  2021-10-01: 271.696 # 2021-06.
+  2022-10-01: 296.311 # 2022-06.
+  2023-10-01: 305.109 # 2023-06.
+  # Forecasts from CBO's Q2 forecasts.
+  2024-10-01: 311.6 # 2024Q2
+  # Quarterly numbers. Just grab the Q2 ones (first, fifth, ninth, etc.)
+  # 319.5	321.4	323.3	325.2	327.0	328.8	330.6	332.4	334.2	336.0	337.8	339.6	341.5	343.3	345.2	347.1	349.0	351.0	352.9	354.8	356.8	358.8	360.8	362.8	364.8	366.8	368.9	370.9	373.0	375.1	377.2	379.3	381.4	383.6	385.7	387.9	390.0	392.2	394.4
+  2025-10-01: 319.5 # 2025Q2
+  2026-01-01: 327.0 # 2026Q2
+  2027-01-01: 334.2 # 2027Q2
+  2028-01-01: 341.5 # 2028Q2
+  2029-01-01: 349.0 # 2029Q2
+  2030-01-01: 356.8 # 2030Q2
+  2031-01-01: 364.8 # 2031Q2
+  2032-01-01: 373.0 # 2032Q2
+  2033-01-01: 381.4 # 2033Q2
+  2034-01-01: 390.0 # 2034Q2
+metadata:
+  unit: currency-USD
+  label: SNAP uprating
+  economy: false
+  reference:
+    - title: 7 U.S. Code § 2012(u)(4)
+      href: https://www.law.cornell.edu/uscode/text/7/2012#u_4
+    - title: CBO Economic Projections, February 2024.
+      href: https://www.cbo.gov/publication/59710
