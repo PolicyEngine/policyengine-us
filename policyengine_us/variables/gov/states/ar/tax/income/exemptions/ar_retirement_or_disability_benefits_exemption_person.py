@@ -22,7 +22,7 @@ class ar_retirement_or_disability_benefits_exemption_person(Variable):
         # Filers over a certain age can deduct IRA distributions in addition to pension income
         ira_age_eligible = person("age", period) >= p.age_threshold
         age_eligible_ira_distributions = ira_age_eligible * person(
-            "regular_ira_distributions", period
+            "taxable_ira_distributions", period
         )
         return head_or_spouse * (
             disability_benefits_and_taxable_pensions

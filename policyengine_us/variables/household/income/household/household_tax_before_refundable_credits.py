@@ -9,13 +9,11 @@ class household_tax_before_refundable_credits(Variable):
     unit = USD
     definition_period = YEAR
 
+    adds = "gov.household_tax_before_refundable_credits"
+
     def formula(household, period, parameters):
         p = parameters(period)
-        added_components = add(
-            household,
-            period,
-            p.gov.household_tax_before_refundable_credits,
-        )
+        added_components = p.gov.household_tax_before_refundable_credits
         flat_tax = p.gov.contrib.ubi_center.flat_tax
         if p.simulation.reported_state_income_tax:
             added_components = [
@@ -23,6 +21,7 @@ class household_tax_before_refundable_credits(Variable):
                 "self_employment_tax",
                 "income_tax_before_refundable_credits",  # Federal.
                 "flat_tax",
+                # State tax reported in ASEC includes refundable credits.
                 "spm_unit_state_tax_reported",
             ]
         if flat_tax.abolish_payroll_tax:
@@ -35,4 +34,4 @@ class household_tax_before_refundable_credits(Variable):
                 for c in added_components
                 if c != "income_tax_before_refundable_credits"
             ]
-        return added_components
+        return add(household, period, added_components)

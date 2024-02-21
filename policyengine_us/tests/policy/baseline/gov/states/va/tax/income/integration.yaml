@@ -1,0 +1,49 @@
+- name: Positive income for both the head and the spouse in the household.
+  period: 2021
+  input:
+    people:
+      person1:
+        employment_income: 20_000
+        age: 80
+      person2:
+        employment_income: 1_000
+        age: 80
+      person3:
+        age: 13
+      person4:
+        age: 11
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: VA
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        adjusted_gross_income: 71_030
+  output:
+    va_additions: 0
+    va_age_deduction: 24_000
+    va_agi: 47_030
+
+- name: Test to check circular reference error - below filing requirement
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 66
+        employment_income: 20_000
+      person2:
+        age: 62
+        employment_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:  
+    va_age_deduction: 12_000
+    va_agi: 18_000
+    va_income_tax: 0

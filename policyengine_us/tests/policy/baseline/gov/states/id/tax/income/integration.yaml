@@ -1,0 +1,26 @@
+- name: Tax unit with taxsimid 99980 in g21.its.csv and g21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 46
+        employment_income: 134_010
+        taxable_interest_income: 5_505
+        rent: 17_000
+      person2:
+        age: 46
+        employment_income: 24_010
+        taxable_interest_income: 5_505
+      person3:
+        age: 11
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        tax_unit_childcare_expenses: 10_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_fips: 16  # ID
+  output:  # expected results from patched TAXSIM35 2024-02-15 version
+    id_income_tax: 8_179.59

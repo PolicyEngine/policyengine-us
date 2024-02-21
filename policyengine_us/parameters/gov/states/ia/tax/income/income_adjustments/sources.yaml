@@ -1,13 +1,14 @@
-description: Iowa gross income adjustments sources.
+description: Iowa subtracts these sources from gross income.
 values:
   2021-01-01:
-    - pension_contributions
+    - traditional_ira_contributions
     - self_employment_tax_ald_person
     - alimony_expense
     - ia_pension_exclusion
 
 metadata:
-  unit: variable
+  unit: list
+  period: year
   label: Iowa gross income adjustments sources
   reference:
   - title: 2021 IA1040 Iowa Income Tax Return, Lines 16-24
