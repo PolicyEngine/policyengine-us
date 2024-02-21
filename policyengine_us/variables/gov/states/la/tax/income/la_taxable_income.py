@@ -18,7 +18,6 @@ class la_taxable_income(Variable):
         return max_(
             tax_unit("la_agi", period)
             - claimed_itemized_deductions
-            - tax_unit("la_exemptions", period)
             - fed_tax_deduction,
             0,
         )
