@@ -26,7 +26,9 @@ class snap_utility_allowance(Variable):
         # utility expense is included in the individual subsidies
         indiv_subsidy = select(
             [
-                spm_unit("electricity_expense", period) > 0,
+                # Use pre-subsidy expenses to avoid circular references
+                # since electricity subsidies depend on SNAP enrollment.
+                spm_unit("pre_subsidy_electricity_expense", period) > 0,
                 spm_unit("gas_expense", period) > 0,
                 spm_unit("phone_expense", period) > 0,
                 spm_unit("trash_expense", period) > 0,
