@@ -1,0 +1,44 @@
+- name: DE Standard deduction if single filer
+  period: 2022
+  input:
+    filing_status: SINGLE
+    is_tax_unit_head: true
+    state_code: DE
+  output:
+    de_base_standard_deduction_joint: 3_250
+
+- name: DE Standard deduction if married filing jointly
+  period: 2022
+  input:
+    filing_status: JOINT
+    is_tax_unit_head: true
+    state_code: DE
+  output:
+    de_base_standard_deduction_joint: 6_500
+
+- name: DE Standard deduction if surviving spouse
+  period: 2022
+  input:
+    filing_status: WIDOW
+    is_tax_unit_head: true
+    state_code: DE
+  output:
+    de_base_standard_deduction_joint: 3_250
+
+- name: DE Standard deduction if married filing separately
+  period: 2022
+  input:
+    filing_status: SEPARATE
+    is_tax_unit_head: true
+    state_code: DE
+  output:
+    de_base_standard_deduction_joint: 3_250
+
+- name: DE Standard deduction if head of household
+  period: 2022
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    is_tax_unit_head: true
+    state_code: DE
+  output:
+    de_base_standard_deduction_joint: 3_250 

@@ -26,7 +26,7 @@ class oh_senior_citizen_credit(Variable):
             tax_unit.any(head_has_not_taken_lump_sum_distribution)
             & elderly_head
         )
-        agi = tax_unit("oh_agi", period)
+        agi = tax_unit("oh_modified_agi", period)
         exemptions = tax_unit("oh_personal_exemptions", period)
         applicable_income = max_(agi - exemptions, 0)
         credit_amount = p.amount.calc(applicable_income)
