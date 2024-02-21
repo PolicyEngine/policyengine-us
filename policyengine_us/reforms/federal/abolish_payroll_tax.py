@@ -33,7 +33,7 @@ def create_abolish_payroll_tax_reform(
 
     p = parameters(period).gov.contrib.ubi_center.flat_tax
 
-    if p.abolish_payroll_tax == True:
+    if p.abolish_payroll_tax:
         return create_abolish_payroll_tax()
     else:
         return None
