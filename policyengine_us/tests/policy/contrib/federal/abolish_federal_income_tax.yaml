@@ -1,0 +1,12 @@
+- name: Abolish federal income tax reform
+  period: 2022
+  reforms: policyengine_us.reforms.federal.abolish_federal_income_tax.abolish_federal_income_tax
+  input:
+    gov.contrib.ubi_center.flat_tax.abolish_federal_income_tax: true
+    income_tax_before_refundable_credits: 1_200
+    income_tax_refundable_credits: 800
+    co_income_tax_before_refundable_credits: 1_000
+    hi_refundable_credits: 600
+  output:
+    household_refundable_tax_credits: 600
+    household_tax_before_refundable_credits: 1_000
