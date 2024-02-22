@@ -33,7 +33,7 @@ class ct_social_security_benefit_adjustment(Variable):
         p = parameters(
             period
         ).gov.states.ct.tax.income.subtractions.social_security
-        capped_social_secuirty_percentage = (
+        capped_social_security_portion = (
             capped_social_security * p.rate.social_security
         )
         # Part E (Line 18 from federal social security worksheet)
@@ -41,7 +41,7 @@ class ct_social_security_benefit_adjustment(Variable):
         adjusted_gross_social_security = gross_ss * p_irs.rate.upper
         # Part F
         reduced_taxable_social_security = max_(
-            adjusted_gross_social_security - capped_social_secuirty_percentage,
+            adjusted_gross_social_security - capped_social_security_portion,
             0,
         )
         # Filers with AGI below the threshold can subtract the full amount of their
