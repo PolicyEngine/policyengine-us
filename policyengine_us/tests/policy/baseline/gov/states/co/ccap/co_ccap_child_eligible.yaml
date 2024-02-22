@@ -4,6 +4,7 @@
     is_disabled: false
     is_tax_unit_dependent: true
     age: 12
+    state_code: CO
   output:
     co_ccap_child_eligible: 
       2023-01: true
@@ -14,6 +15,7 @@
     is_disabled: false
     is_tax_unit_dependent: true
     age: 13
+    state_code: CO
   output:
     co_ccap_child_eligible: 
       2023-01: false
@@ -24,6 +26,7 @@
     is_disabled: true
     is_tax_unit_dependent: true
     age: 18
+    state_code: CO
   output:
     co_ccap_child_eligible: 
       2022-12: true
@@ -34,6 +37,7 @@
     is_disabled: true
     is_tax_unit_dependent: true
     age: 19
+    state_code: CO
   output:
     co_ccap_child_eligible: 
       2022-12: false
