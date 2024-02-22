@@ -21,7 +21,7 @@
   input:
     snap_utility_allowance_type: SUA
     snap_utility_region_str: CA
-    electricity_expense: 20
+    pre_subsidy_electricity_expense: 20
     gas_expense: 20
     phone_expense: 300
     water_expense: 1
@@ -35,7 +35,7 @@
   input:
     snap_utility_allowance_type: LUA
     snap_utility_region_str: CA
-    electricity_expense: 20
+    pre_subsidy_electricity_expense: 20
     phone_expense: 20
     water_expense: 1
   output:
@@ -46,7 +46,7 @@
   input:
     snap_utility_allowance_type: NONE
     snap_utility_region_str: CA
-    electricity_expense: 0
+    pre_subsidy_electricity_expense: 0
     gas_expense: 0
     phone_expense: 0
     water_expense: 0

@@ -5,6 +5,74 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.677.0] - 2024-02-21 17:20:43
+
+### Added
+
+- Arizona property tax credit.
+
+## [0.676.1] - 2024-02-21 14:48:48
+
+### Fixed
+
+- Apply the Louisiana exemption amount to the bottom tax bracket.
+
+## [0.676.0] - 2024-02-21 12:23:33
+
+### Added
+
+- SNAP uprating (approximated by CPI-U).
+
+## [0.675.0] - 2024-02-21 01:41:58
+
+### Added
+
+- Remove vectorization from the mt_head_deductions_exemptions_indiv variable.
+
+## [0.674.0] - 2024-02-21 01:11:31
+
+### Added
+
+- Use adds for household_refundable_tax_credits and household_tax_before_refundable_credits.
+
+## [0.673.0] - 2024-02-20 22:09:07
+
+### Added
+
+- Add pre-subsidy electricity, care, and childcare expenses.
+
+## [0.672.1] - 2024-02-20 17:45:08
+
+### Added
+
+- Alternate senior renter computation of the Michigan homestead property tax credit.
+
+## [0.672.0] - 2024-02-20 16:32:04
+
+### Added
+
+- Georgia 2023 Individual Income Tax Parameters.
+
+## [0.671.1] - 2024-02-20 14:34:59
+
+### Fixed
+
+- Ohio retirement credit eligiblity and applicable pension income.
+- Use Ohio modified income in various credits.
+
+## [0.671.0] - 2024-02-20 05:54:45
+
+### Added
+
+- Poverty guideline uprating based on 12mo average CPI-U.
+
+## [0.670.0] - 2024-02-20 05:06:07
+
+### Added
+
+- 2023 school meal values.
+- School meal CPI uprating.
+
 ## [0.669.1] - 2024-02-20 03:35:22
 
 ### Fixed
@@ -7456,6 +7524,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.677.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.676.1...0.677.0
+[0.676.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.676.0...0.676.1
+[0.676.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.675.0...0.676.0
+[0.675.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.674.0...0.675.0
+[0.674.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.673.0...0.674.0
+[0.673.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.672.1...0.673.0
+[0.672.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.672.0...0.672.1
+[0.672.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.671.1...0.672.0
+[0.671.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.671.0...0.671.1
+[0.671.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.670.0...0.671.0
+[0.670.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.669.1...0.670.0
 [0.669.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.669.0...0.669.1
 [0.669.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.668.1...0.669.0
 [0.668.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.668.0...0.668.1
