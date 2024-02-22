@@ -9,11 +9,8 @@ class oh_modified_agi(Variable):
     definition_period = YEAR
     reference = (
         "https://codes.ohio.gov/ohio-revised-code/section-5747.71",
-        "https://tax.ohio.gov/static/forms/ohio_individual/individual/2022/it1040-sd100-instruction-booklet.pdf#page=21",
+        "https://tax.ohio.gov/static/forms/ohio_individual/individual/2022/it1040-sd100-instruction-booklet.pdf#page=31",
     )
     defined_for = StateCode.OH
 
-    def formula(tax_unit, period, parameters):
-        agi = tax_unit("oh_agi", period)
-        exemptions = tax_unit("oh_personal_exemptions", period)
-        return max_(agi - exemptions, 0)
+    adds = ["oh_agi", "qualified_business_income_deduction"]

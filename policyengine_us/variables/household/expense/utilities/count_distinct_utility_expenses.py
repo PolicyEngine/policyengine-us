@@ -11,7 +11,9 @@ class count_distinct_utility_expenses(Variable):
     def formula(spm_unit, period, parameters):
         UTILITIES = [
             "heating_cooling",
-            "electricity",
+            # Use pre-subsidy expenses to avoid circular references
+            # since electricity subsidies depend on SNAP enrollment.
+            "pre_subsidy_electricity",
             "gas",
             "phone",
             "trash",

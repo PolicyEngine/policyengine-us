@@ -377,6 +377,7 @@ def add_spm_variables(cps: h5py.File, spm_unit: DataFrame) -> None:
         spm_unit_broadband_subsidy_reported="SPM_BBSUBVAL",
         spm_unit_payroll_tax_reported="SPM_FICA",
         spm_unit_federal_tax_reported="SPM_FEDTAX",
+        # State tax includes refundable credits.
         spm_unit_state_tax_reported="SPM_STTAX",
         spm_unit_capped_work_childcare_expenses="SPM_CAPWKCCXPNS",
         spm_unit_medical_expenses="SPM_MEDXPNS",
