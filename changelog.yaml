@@ -6343,3 +6343,49 @@
     added:
     - Poverty guideline uprating based on 12mo average CPI-U.
   date: 2024-02-20 05:54:45
+- bump: patch
+  changes:
+    fixed:
+    - Ohio retirement credit eligiblity and applicable pension income.
+    - Use Ohio modified income in various credits.
+  date: 2024-02-20 14:34:59
+- bump: minor
+  changes:
+    added:
+    - Georgia 2023 Individual Income Tax Parameters.
+  date: 2024-02-20 16:32:04
+- bump: patch
+  changes:
+    added:
+    - Alternate senior renter computation of the Michigan homestead property tax credit.
+  date: 2024-02-20 17:45:08
+- bump: minor
+  changes:
+    added:
+    - Add pre-subsidy electricity, care, and childcare expenses.
+  date: 2024-02-20 22:09:07
+- bump: minor
+  changes:
+    added:
+    - Use adds for household_refundable_tax_credits and household_tax_before_refundable_credits.
+  date: 2024-02-21 01:11:31
+- bump: minor
+  changes:
+    added:
+    - Remove vectorization from the mt_head_deductions_exemptions_indiv variable.
+  date: 2024-02-21 01:41:58
+- bump: minor
+  changes:
+    added:
+    - SNAP uprating (approximated by CPI-U).
+  date: 2024-02-21 12:23:33
+- bump: patch
+  changes:
+    fixed:
+    - Apply the Louisiana exemption amount to the bottom tax bracket.
+  date: 2024-02-21 14:48:48
+- bump: minor
+  changes:
+    added:
+    - Arizona property tax credit.
+  date: 2024-02-21 17:20:43
