@@ -15,7 +15,7 @@ class co_able_contribution(Variable):
     defined_for = StateCode.CO
 
     def formula(tax_unit, period, parameters):
-        contribution_amount = tax_unit("co_contributions", period)
+        contribution_amount = tax_unit("able_contributions", period)
         p = parameters(
             period
         ).gov.states.co.tax.income.subtractions.able_contribution
