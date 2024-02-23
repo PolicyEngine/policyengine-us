@@ -13,6 +13,7 @@ from .process_puf import (
     FINANCIAL_SUBSET as FINANCIAL_VARIABLES,
     puf_imputed_cps_person_level,
 )
+from pathlib import Path
 from typing import Tuple
 
 
@@ -55,6 +56,11 @@ def generate_model_variables(dataset: str, time_period: str = "2023") -> Tuple:
     FINANCIAL_EQUIVALISATION = COUNT_HOUSEHOLDS
     POPULATION_EQUIVALISATION = COUNT_HOUSEHOLDS / 1e5
 
+    is_filer = simulation.calculate("tax_unit_is_filer").values
+    household_has_filers = (
+        simulation.map_result(is_filer, "tax_unit", "household") > 0
+    )
+
     for variable_name in FINANCIAL_VARIABLES:
         if variable_name not in parameters.gov.irs.soi:
             continue
@@ -62,9 +68,10 @@ def generate_model_variables(dataset: str, time_period: str = "2023") -> Tuple:
             simulation.tax_benefit_system.variables[variable_name].label
             + " aggregate"
         )
-        values_df[label] = simulation.calculate(
-            variable_name, map_to="household"
-        ).values
+        values_df[label] = (
+            simulation.calculate(variable_name, map_to="household").values
+            * household_has_filers
+        )
         targets[label] = parameters.gov.irs.soi[variable_name]
         equivalisation[label] = FINANCIAL_EQUIVALISATION
 
@@ -105,6 +112,7 @@ def generate_model_variables(dataset: str, time_period: str = "2023") -> Tuple:
         targets[f"{label} participants"] = participation
         equivalisation[f"{label} participants"] = POPULATION_EQUIVALISATION
 
+    """
     # Number of tax returns by AGI size
 
     agi_returns_thresholds = (
@@ -150,6 +158,8 @@ def generate_model_variables(dataset: str, time_period: str = "2023") -> Tuple:
         values_df[name] = household_agi_in_range
         targets[name] = agi_returns_values[i]
         equivalisation[name] = FINANCIAL_EQUIVALISATION
+
+    """
 
     # Total population
     values_df["U.S. population"] = simulation.calculate(
@@ -248,12 +258,53 @@ def aggregate(
     return weighted_values
 
 
+def get_snapshot(
+    dataset: str,
+    time_period: str = "2023",
+) -> pd.DataFrame:
+    """Returns a snapshot of the training metrics without training the model.
+
+    Args:
+        dataset (str): The name of the dataset to use.
+        time_period (str, optional): The time period to use. Defaults to "2023".
+
+    Returns:
+        pd.DataFrame: A DataFrame containing the training metrics.
+    """
+    (
+        household_weights,
+        weight_adjustment,
+        values_df,
+        targets,
+        targets_array,
+        equivalisation_factors_array,
+    ) = generate_model_variables(dataset, time_period)
+    adjusted_weights = torch.relu(household_weights + weight_adjustment)
+    result = (
+        aggregate(adjusted_weights, values_df) / equivalisation_factors_array
+    )
+    target = targets_array / equivalisation_factors_array
+    current_aggregates = (
+        (result * equivalisation_factors_array).detach().numpy()[0]
+    )
+    loss = torch.mean(((result / target - 1) ** 2) * np.log2(np.abs(target)))
+    current_loss = loss.item()
+    return pd.DataFrame(
+        {
+            "name": list(targets.keys()) + ["total"],
+            "value": list(current_aggregates) + [current_loss],
+            "target": list(targets.values()) + [0],
+            "time_period": time_period,
+        }
+    )
+
+
 def calibrate(
     dataset: str,
     time_period: str = "2023",
     training_log_path: str = "training_log.csv.gz",
-    learning_rate: float = 2e-1,
-    epochs: int = 250_000,
+    learning_rate: float = 1e1,
+    epochs: int = 10_000,
 ) -> np.ndarray:
     (
         household_weights,
@@ -263,27 +314,33 @@ def calibrate(
         targets_array,
         equivalisation_factors_array,
     ) = generate_model_variables(dataset, time_period)
-    training_log_df = pd.DataFrame()
+    training_log_path = Path(training_log_path)
+    if training_log_path.exists():
+        training_log_df = pd.read_csv(training_log_path, compression="gzip")
+    else:
+        training_log_df = pd.DataFrame()
 
     progress_bar = tqdm(range(epochs), desc="Calibrating weights")
-    starting_loss = None
+    optimizer = torch.optim.Adam([weight_adjustment], lr=learning_rate)
     for i in progress_bar:
         adjusted_weights = torch.relu(household_weights + weight_adjustment)
         result = (
             aggregate(adjusted_weights, values_df)
             / equivalisation_factors_array
         )
+        target = targets_array / equivalisation_factors_array
         loss = torch.mean(
-            (result - targets_array / equivalisation_factors_array) ** 2
+            ((result / target - 1) ** 2) * np.log2(np.abs(target))
         )
-        if i == 0:
-            starting_loss = loss.item()
+        optimizer.zero_grad()
         loss.backward()
-        if i % 20 == 0:
+        optimizer.step()
+        if i % 10 == 0:
             current_loss = loss.item()
             progress_bar.set_description_str(
-                f"Calibrating weights | Loss = {current_loss:,.0f}"
+                f"Calibrating weights | Loss = {current_loss:,.3f}"
             )
+        if i % 250 == 0:
             current_aggregates = (
                 (result * equivalisation_factors_array).detach().numpy()[0]
             )
@@ -301,13 +358,6 @@ def calibrate(
                     ),
                 ]
             )
-        weight_adjustment.data -= learning_rate * weight_adjustment.grad
-        weight_adjustment.grad.zero_()
-
-    training_log_df.to_csv(training_log_path, compression="gzip")
-
-    loss_reduction = loss.item() / starting_loss - 1
-
-    print(f"Loss reduction: {loss_reduction:.2%}")
+            training_log_df.to_csv(training_log_path, compression="gzip")
 
     return adjusted_weights.detach().numpy()

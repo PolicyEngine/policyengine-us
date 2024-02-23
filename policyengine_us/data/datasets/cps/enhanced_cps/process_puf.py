@@ -21,14 +21,14 @@ codebook = {
     "E01000": "net_capital_gain_loss",
     "E01100": "capital_gain_distributions",
     "E01200": "other_gains_loss",
-    "E01400": "taxable_ira_distribution",
+    "E01400": "taxable_ira_distributions",
     "E01500": "total_pensions_annuities_received",
     "E01700": "taxable_pension_income",
     "E02000": "schedule_e_net_income_loss",
     "E02100": "schedule_f_net_profit_loss",
-    "E02300": "unemployment_compensation_in_agi",
+    "E02300": "taxable_unemployment_compensation",
     "E02400": "social_security",
-    "E02500": "social_security_benefits_in_agi",
+    "E02500": "taxable_social_security",
     "E03150": "total_deductible_ira_payments",
     "E03210": "student_loan_interest_deduction",
     "E03220": "educator_expenses",
@@ -283,7 +283,6 @@ FINANCIAL_SUBSET = [
     "partnership_s_corp_income",
     "farm_income",
     "farm_rent_income",
-    # "short_term_capital_gains",
     "long_term_capital_gains",
     "taxable_interest_income",
     "tax_exempt_interest_income",
@@ -292,6 +291,10 @@ FINANCIAL_SUBSET = [
     "non_qualified_dividend_income",
     "taxable_pension_income",
     "social_security",
+    "short_term_capital_gains",
+    "taxable_unemployment_compensation",
+    "taxable_social_security",
+    "taxable_ira_distributions",
 ]
 
 
@@ -341,13 +344,18 @@ def impute_missing_demographics(
         puf.return_id.isin(demographics.return_id)
     ].merge(demographics, on="return_id")
 
-    soi = system.parameters.calibration.gov.irs.soi
+    gov = system.parameters.calibration.gov
+    soi = gov.irs.soi
 
     # Uprate the financial subset
 
     for variable_name in FINANCIAL_SUBSET:
-        value_in_2015 = soi.children[variable_name]("2015-01-01")
-        value_in_2023 = soi.children[variable_name]("2023-01-01")
+        if variable_name not in soi.children:
+            uprater = gov.cbo.income_by_source.adjusted_gross_income
+        else:
+            uprater = soi.children[variable_name]
+        value_in_2015 = uprater("2015-01-01")
+        value_in_2023 = uprater("2023-01-01")
         uprating_factor = value_in_2023 / value_in_2015
         puf_with_demographics[variable_name] = (
             puf_with_demographics[variable_name] * uprating_factor
