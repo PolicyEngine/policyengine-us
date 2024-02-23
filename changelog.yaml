@@ -6389,3 +6389,24 @@
     added:
     - Arizona property tax credit.
   date: 2024-02-21 17:20:43
+- bump: minor
+  changes:
+    added:
+    - Pennsylvania Child and Dependent Care Tax Credit.
+  date: 2024-02-22 15:29:21
+- bump: patch
+  changes:
+    fixes:
+    - Remove formula from household_tax_before_refundable_credits and household_refundable_tax_credits.
+  date: 2024-02-22 15:35:37
+- bump: patch
+  changes:
+    fixes:
+    - Adjust the ct_social_security_benefit_adjustment variable to reflect the worksheet
+      in the tax forms.
+  date: 2024-02-22 16:58:33
+- bump: minor
+  changes:
+    added:
+    - Georgia 2024 Standard Deduction Parameters.
+  date: 2024-02-23 06:10:17

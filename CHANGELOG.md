@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.679.0] - 2024-02-23 06:10:17
+
+### Added
+
+- Georgia 2024 Standard Deduction Parameters.
+
+## [0.678.2] - 2024-02-22 16:58:33
+
+## [0.678.1] - 2024-02-22 15:35:37
+
+## [0.678.0] - 2024-02-22 15:29:21
+
+### Added
+
+- Pennsylvania Child and Dependent Care Tax Credit.
+
 ## [0.677.0] - 2024-02-21 17:20:43
 
 ### Added
@@ -7524,6 +7540,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.679.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.678.2...0.679.0
+[0.678.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.678.1...0.678.2
+[0.678.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.678.0...0.678.1
+[0.678.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.677.0...0.678.0
 [0.677.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.676.1...0.677.0
 [0.676.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.676.0...0.676.1
 [0.676.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.675.0...0.676.0
