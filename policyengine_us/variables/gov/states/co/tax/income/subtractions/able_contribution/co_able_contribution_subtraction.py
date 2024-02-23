@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class co_able_contribution(Variable):
+class co_able_contribution_subtraction(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Colorado able contribution"
+    label = "Colorado able contribution subtraction"
     unit = USD
     definition_period = YEAR
     reference = (
