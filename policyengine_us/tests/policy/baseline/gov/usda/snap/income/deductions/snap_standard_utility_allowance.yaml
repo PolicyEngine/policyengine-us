@@ -1,0 +1,13 @@
+- name: Standard Utility Allowance 
+  period: 2022
+  input:
+    snap_utility_allowance_type: SUA
+    snap_utility_region_str: CA
+    electricity_expense: 20
+    gas_expense: 20
+    phone_expense: 300
+    water_expense: 1
+    trash_expense: 400
+    sewage_expense: 1
+  output:
+    snap_standard_utility_allowance: 5_844 # 487 * 12

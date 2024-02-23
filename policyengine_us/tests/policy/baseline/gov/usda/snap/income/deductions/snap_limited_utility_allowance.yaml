@@ -1,0 +1,10 @@
+- name: Limited Utility Allowance 
+  period: 2022
+  input:
+    snap_utility_allowance_type: LUA
+    snap_utility_region_str: CA
+    electricity_expense: 20
+    phone_expense: 20
+    water_expense: 1
+  output:
+    snap_limited_utility_allowance: 1_728 # 144 * 12

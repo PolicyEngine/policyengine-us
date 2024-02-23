@@ -1,0 +1,8 @@
+- name: Inidivudal Utility Allowance
+  period: 2023
+  input:
+    snap_utility_allowance_type: IUA
+    snap_utility_region_str: CA
+    phone_expense: 20
+  output:
+    snap_individual_utility_allowance: 228 # 19 * 12
