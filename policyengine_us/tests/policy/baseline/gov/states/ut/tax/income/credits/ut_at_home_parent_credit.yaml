@@ -18,14 +18,6 @@
         irs_employment_income: 0
         self_employment_income: 0
         is_tax_unit_dependent: true
-    tax_units:
-      tax_unit:
-        members: [person1, person2, person3]
-        ut_income_tax_before_credits: 1_200
-        ut_taxpayer_credit: 100
-        ut_eitc: 50
-        ut_retirement_credit: 200
-        ut_ss_benefits_credit: 150
     households:
       household:
         members: [person1, person2, person3]
@@ -57,11 +49,6 @@
       tax_unit:
         members: [person1, person2, person3]
         adjusted_gross_income: 80_000
-        ut_income_tax_before_credits: 2_000
-        ut_taxpayer_credit: 100
-        ut_eitc: 50
-        ut_retirement_credit: 200
-        ut_ss_benefits_credit: 150
     households:
       household:
         members: [person1, person2, person3]

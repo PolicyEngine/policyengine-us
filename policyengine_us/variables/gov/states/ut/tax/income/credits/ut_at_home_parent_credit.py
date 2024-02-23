@@ -23,19 +23,9 @@ class ut_at_home_parent_credit(Variable):
         tax_unit_qualifies = (
             tax_unit("adjusted_gross_income", period) < p.max_agi
         )
-        max_credit = (
+        return (
             p.amount
             * count_children
             * one_parent_qualifies
             * tax_unit_qualifies
         )
-        if p.refundable:
-            limiting_liability = (
-                tax_unit("ut_income_tax_before_credits", period)
-                - tax_unit("ut_taxpayer_credit", period)
-                - tax_unit("ut_eitc", period)
-                - tax_unit("ut_retirement_credit", period)
-                - tax_unit("ut_ss_benefits_credit", period)
-            )
-            return min_(max_credit, limiting_liability)
-        return max_credit
