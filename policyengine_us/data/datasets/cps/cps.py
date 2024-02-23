@@ -478,58 +478,6 @@ def add_previous_year_income(self, cps: h5py.File) -> None:
     cps["previous_year_income_available"] = joined_data[
         "previous_year_income_available"
     ].values
-    cps_prev_long_subset = cps_previous_year.loc[in_sample]
-    cps_cur_long_subset = cps_current_year.set_index(
-        cps_current_year.PERIDNUM
-    ).loc[in_sample]
-
-    data_prev = cps_prev_long_subset[PREDICTORS].rename(
-        columns={x: x + "_prev" for x in PREDICTORS}
-    )
-    data_cur = cps_cur_long_subset[PREDICTORS].rename(
-        columns={x: x + "_cur" for x in PREDICTORS}
-    )
-    data = pd.concat([data_prev, data_cur], axis=1)
-
-    X = data[[column + "_cur" for column in PREDICTORS]]
-    y = data[["WSAL_VAL_prev", "SEMP_VAL_prev"]]
-
-    income_last_year = Imputation()
-    income_last_year.train(X, y)
-
-    df = pd.DataFrame()
-    df["person_id"] = cps_current_year.index
-    cps_cur_record_in_sample = cps_current_year.index.isin(
-        cps_previous_year.index
-    )
-    df["in_sample"] = cps_cur_record_in_sample
-    df["employment_income_prev"] = np.ones(len(df)) * np.nan
-    df["employment_income_prev"][cps_cur_record_in_sample] = (
-        cps_previous_year.loc[
-            cps_current_year.index[cps_cur_record_in_sample]
-        ].WSAL_VAL.values
-    )
-    df["self_employment_income_prev"] = np.ones(len(df)) * np.nan
-    df["self_employment_income_prev"][cps_cur_record_in_sample] = (
-        cps_previous_year.loc[
-            cps_current_year.index[cps_cur_record_in_sample]
-        ].SEMP_VAL.values
-    )
-
-    X = cps_current_year[PREDICTORS][~cps_cur_record_in_sample]
-    X = X.rename(columns={x: x + "_cur" for x in PREDICTORS})
-    Y_pred = income_last_year.predict(X)
-    df["employment_income_prev"][
-        ~cps_cur_record_in_sample
-    ] = Y_pred.WSAL_VAL_prev.values
-    df["self_employment_income_prev"][
-        ~cps_cur_record_in_sample
-    ] = Y_pred.SEMP_VAL_prev.values
-
-    cps["employment_income_last_year"] = df["employment_income_prev"].values
-    cps["self_employment_income_last_year"] = df[
-        "self_employment_income_prev"
-    ].values
 
 
 class CPS_2019(CPS):
