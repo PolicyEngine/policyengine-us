@@ -39,7 +39,8 @@ def create_structural_reforms_from_parameters(parameters, period):
         )
     )
     ctc_expansion = create_ctc_expansion_reform(parameters, period)
-
+    end_entrenched_poverty_credit = (
+        create_end_entrenched_poverty_credit_reform(parameters, period)
     abolish_federal_income_tax = create_abolish_federal_income_tax_reform(
         parameters, period
     )
@@ -59,6 +60,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         abolish_federal_income_tax,
         abolish_payroll_tax,
         reported_state_income_tax,
+        end_entrenched_poverty_credit,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
 
