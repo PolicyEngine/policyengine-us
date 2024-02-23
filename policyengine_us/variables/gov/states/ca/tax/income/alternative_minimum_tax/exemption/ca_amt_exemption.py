@@ -35,7 +35,7 @@ class ca_amt_exemption(Variable):
         adult_exemption = max_(exemption_mac_amount - reduced_amti_rate, 0)
         # Eligible children receive an increased exemption amount
         person = tax_unit.members
-        eligible_child = person("ca_child_exemption_eligible", period)
+        eligible_child = person("is_eitc_qualifying_child", period)
         head_is_eligible_child = tax_unit.any(eligible_child)
         # Line 7
         exemption_amount_child = p_irs.child.amount
@@ -48,4 +48,4 @@ class ca_amt_exemption(Variable):
         total_exemption = where(
             head_is_eligible_child, child_exemption, adult_exemption
         )
-        return where(exemption_eligible, total_exemption, 0)
+        return exemption_eligible * total_exemption

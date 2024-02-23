@@ -14,5 +14,5 @@ class ca_pre_exemption_amti(Variable):
     adds = [
         "ca_amti_adjustments",
         "ca_taxable_income",
-        "ca_itemized_ded_limitation",
+        "ca_itemized_deductions_pre_limitation",
     ]
