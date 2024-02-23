@@ -1,7 +1,7 @@
 - name: Subtractions
   period: 2023
   input:
-    ky_income_tax_before_non_refundable_credits: 1_100
+    ky_income_tax_before_non_refundable_credits_unit: 1_100
     state_code: KY
     ky_non_refundable_credits: 1_000
   output:
@@ -10,7 +10,7 @@
 - name: Capped at 0
   period: 2023
   input:
-    ky_income_tax_before_non_refundable_credits: 1_000
+    ky_income_tax_before_non_refundable_credits_unit: 1_000
     state_code: KY
     ky_non_refundable_credits: 1_100
   output:

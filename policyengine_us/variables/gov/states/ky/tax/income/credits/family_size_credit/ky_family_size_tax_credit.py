@@ -15,6 +15,6 @@ class ky_family_size_tax_credit(Variable):
     def formula(tax_unit, period, parameters):
         rate = tax_unit("ky_family_size_tax_credit_rate", period)
         income = tax_unit(
-            "ky_income_tax_before_non_refundable_credits", period
+            "ky_income_tax_before_non_refundable_credits_unit", period
         )
         return rate * income

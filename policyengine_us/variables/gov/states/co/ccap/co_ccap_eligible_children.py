@@ -6,5 +6,5 @@ class co_ccap_eligible_children(Variable):
     entity = SPMUnit
     label = "Number of children eligible for Colorado Child Care Assistance Program"
     definition_period = MONTH
-    # defined_for = StateCode.CO
+    defined_for = StateCode.CO
     adds = ["co_ccap_child_eligible"]

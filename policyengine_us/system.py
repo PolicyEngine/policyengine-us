@@ -18,7 +18,7 @@ from policyengine_us.reforms import create_structural_reforms_from_parameters
 
 COUNTRY_DIR = Path(__file__).parent
 
-CURRENT_YEAR = 2023
+CURRENT_YEAR = 2024
 year_start = str(CURRENT_YEAR) + "-01-01"
 
 

@@ -1,0 +1,251 @@
+description: Arkansas reduces the tax liability of low-income widow(er) filers with up to one dependent to the following amount, in lieu of a standard or itemized deduction.
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: currency-USD
+  label: Arkanasas low income tax table widow(er) amount no or one dependent
+  reference:
+    - title: Arkansas Code § 26-51-301, Individuals exempt from taxation or qualifying for the low-income tax credit
+      href: https://law.justia.com/codes/arkansas/2020/title-26/subtitle-5/chapter-51/subchapter-3/section-26-51-301/
+    - title: Arkansas Income Tax Instructions, 2022, Low Income Tax Tables
+      href: https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2022_AR1000F_and_AR1000NR_Instructions.pdf#page=29
+    - title: Arkansas Income Tax Instructions, 2021, Low Income Tax Tables
+      href: https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2021_AR1000F_and_AR1000NR_Instructions.pdf#page=26
+brackets:
+  - threshold:
+      2021-01-01: 0
+    amount:
+      2021-01-01: 0
+  - threshold:
+      2021-01-01: 18_560
+      2022-01-01: 19_117
+    amount:
+      2021-01-01: 62
+  - threshold:
+      2021-01-01: 18_600
+      2022-01-01: 19_200
+    amount:
+      2021-01-01: 71
+      2022-01-01: 72
+  - threshold:
+      2021-01-01: 18_700
+      2022-01-01: 19_300
+    amount:
+      2021-01-01: 81
+  - threshold:
+      2021-01-01: 18_800
+      2022-01-01: 19_400
+    amount:
+      2021-01-01: 90
+  - threshold:
+      2021-01-01: 18_900
+      2022-01-01: 19_500
+    amount:
+      2021-01-01: 99
+      2022-01-01: 100
+  - threshold:
+      2021-01-01: 19_000
+      2022-01-01: 19_600
+    amount:
+      2021-01-01: 109
+  - threshold:
+      2021-01-01: 19_100
+      2022-01-01: 19_700
+    amount:
+      2021-01-01: 118
+      2022-01-01: 119
+  - threshold:
+      2021-01-01: 19_200
+      2022-01-01: 19_800
+    amount:
+      2021-01-01: 128
+  - threshold:
+      2021-01-01: 19_300
+      2022-01-01: 19_900
+    amount:
+      2021-01-01: 137
+  - threshold:
+      2021-01-01: 19_400
+      2022-01-01: 20_000
+    amount:
+      2021-01-01: 146
+      2022-01-01: 147
+  - threshold:
+      2021-01-01: 19_500
+      2022-01-01: 20_100
+    amount:
+      2021-01-01: 156
+  - threshold:
+      2021-01-01: 19_600
+      2022-01-01: 20_200
+    amount:
+      2021-01-01: 165
+      2022-01-01: 166
+  - threshold:
+      2021-01-01: 19_700
+      2022-01-01: 20_300
+    amount:
+      2021-01-01: 175
+  - threshold:
+      2021-01-01: 19_800
+      2022-01-01: 20_400
+    amount:
+      2021-01-01: 184
+  - threshold:
+      2021-01-01: 19_900
+      2022-01-01: 20_500
+    amount:
+      2021-01-01: 193
+      2022-01-01: 194
+  - threshold:
+      2021-01-01: 20_000
+      2022-01-01: 20_600
+    amount:
+      2021-01-01: 203
+  - threshold:
+      2021-01-01: 20_100
+      2022-01-01: 20_700
+    amount:
+      2021-01-01: 212
+      2022-01-01: 213
+  - threshold:
+      2021-01-01: 20_200
+      2022-01-01: 20_800
+    amount:
+      2021-01-01: 222
+  - threshold:
+      2021-01-01: 20_300
+      2022-01-01: 20_900
+    amount:
+      2021-01-01: 231
+  - threshold:
+      2021-01-01: 20_400
+      2022-01-01: 21_000
+    amount:
+      2021-01-01: 240
+      2022-01-01: 241
+  - threshold:
+      2021-01-01: 20_500
+      2022-01-01: 21_100
+    amount:
+      2021-01-01: 250
+  - threshold:
+      2021-01-01: 20_600
+      2022-01-01: 21_200
+    amount:
+      2021-01-01: 259
+      2022-01-01: 260
+  - threshold:
+      2021-01-01: 20_700
+      2022-01-01: 21_300
+    amount:
+      2021-01-01: 269
+  - threshold:
+      2021-01-01: 20_800
+      2022-01-01: 21_400
+    amount:
+      2021-01-01: 278
+  - threshold:
+      2021-01-01: 20_900
+      2022-01-01: 21_500
+    amount:
+      2021-01-01: 287
+      2022-01-01: 288
+  - threshold:
+      2021-01-01: 21_000
+      2022-01-01: 21_600
+    amount:
+      2021-01-01: 297
+  - threshold:
+      2021-01-01: 21_100
+      2022-01-01: 21_700
+    amount:
+      2021-01-01: 306
+      2022-01-01: 307
+  - threshold:
+      2021-01-01: 21_200
+      2022-01-01: 21_800
+    amount:
+      2021-01-01: 316
+  - threshold:
+      2021-01-01: 21_300
+      2022-01-01: 21_900
+    amount:
+      2021-01-01: 325
+  - threshold:
+      2021-01-01: 21_400
+      2022-01-01: 22_000
+    amount:
+      2021-01-01: 334
+      2022-01-01: 335
+  - threshold:
+      2021-01-01: 21_500
+      2022-01-01: 22_100
+    amount:
+      2021-01-01: 344
+  - threshold:
+      2021-01-01: 21_600
+      2022-01-01: 22_200
+    amount:
+      2021-01-01: 353
+      2022-01-01: 354
+  - threshold:
+      2021-01-01: 21_700
+      2022-01-01: 22_300
+    amount:
+      2021-01-01: 363
+  - threshold:
+      2021-01-01: 21_800
+      2022-01-01: 22_400
+    amount:
+      2021-01-01: 372
+  - threshold:
+      2021-01-01: 21_900
+      2022-01-01: 22_500
+    amount:
+      2021-01-01: 381
+      2022-01-01: 382
+  - threshold:
+      2021-01-01: 22_000
+      2022-01-01: 22_600
+    amount:
+      2021-01-01: 391
+  - threshold:
+      2021-01-01: 22_100
+      2022-01-01: 22_700
+    amount:
+      2021-01-01: 400
+      2022-01-01: 401
+  - threshold:
+      2021-01-01: 22_200
+      2022-01-01: 22_800
+    amount:
+      2021-01-01: 410
+  - threshold:
+      2021-01-01: 22_300
+      2022-01-01: 22_900
+    amount:
+      2021-01-01: 419
+  - threshold:
+      2021-01-01: 22_400
+      2022-01-01: 23_000
+    amount:
+      2021-01-01: 428
+      2022-01-01: 429
+  - threshold:
+      2021-01-01: 22_500
+      2022-01-01: 23_100
+    amount:
+      2021-01-01: 438
+  - threshold:
+      2021-01-01: 22_600
+      2022-01-01: 23_200
+    amount:
+      2021-01-01: .inf
+      2022-01-01: 448
+  - threshold:
+      2021-01-01: .inf
+      2022-01-01: 23_300
+    amount:
+      2021-01-01: .inf
+      2022-01-01: .inf

@@ -1,0 +1,21 @@
+description: Ohio provides the following senior citizen credit, based on the adjusted gross income less exemptions.
+brackets:
+  - threshold:
+      2021-01-01: 0
+    amount:
+      2021-01-01: 50
+  - threshold:
+      2021-01-01: 100_000
+    amount:
+      2021-01-01: 0
+metadata:
+  threshold_unit: currency-USD
+  amount_unit: currency-USD
+  period: year
+  type: single_amount
+  label: Ohio senior citizen credit amount
+  reference:
+    - title: Ohio 2021 Instructions for Filing Original and Amended - Line 4 – Senior Citizen Credit
+      href: https://tax.ohio.gov/static/forms/ohio_individual/individual/2021/pit-it1040-booklet.pdf#page=20
+    - title: Ohio Section R.C. 5747.055(F), Tax credit for retirement income.
+      href: https://codes.ohio.gov/ohio-revised-code/section-5747.055

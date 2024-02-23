@@ -60,4 +60,12 @@ class PUFExtendedCPS_2023(Dataset):
                         [cps_data[variable][...], cps_data[variable][...]]
                     )
 
+        # Flag if record is from imputed from PUF or straight from CPS.
+        new_data["is_imputed_from_puf"] = np.concatenate(
+            [
+                np.zeros_like(cps_data["age"][...]),
+                np.ones_like(cps_data["age"][...]),
+            ]
+        ).astype(bool)
+
         self.save_dataset(new_data)
