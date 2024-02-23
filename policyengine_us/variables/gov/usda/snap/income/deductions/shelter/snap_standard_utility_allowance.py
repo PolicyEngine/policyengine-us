@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class snap_standard_utility_allowance(Variable):
     value_type = float
     entity = SPMUnit
-    label = "Standard Utility Allowance"
+    label = "SNAP Standard Utility Allowance"
     unit = USD
     documentation = "The regular utility allowance deduction for SNAP"
     definition_period = MONTH
