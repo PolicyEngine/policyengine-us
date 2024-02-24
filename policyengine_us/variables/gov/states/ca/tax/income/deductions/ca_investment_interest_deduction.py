@@ -11,7 +11,6 @@ class ca_investment_interest_deduction(Variable):
     defined_for = StateCode.CA
 
     def formula(tax_unit, period, parameters):
-        # Lines 2, 3, 4a, 4b, 4c, 4d, 4e, 4f, 7 from tax form not included in calculations
         # Line 1
         investment_interest_expense = add(
             tax_unit, period, ["investment_interest_expense"]
@@ -29,6 +28,4 @@ class ca_investment_interest_deduction(Variable):
         # Line 9
         form_4952_amount = tax_unit("investment_income_form_4952", period)
         # Line 10
-        return np.absolute(
-            form_4952_amount - investment_interest_expense_deduction
-        )
+        return np.abs(form_4952_amount - investment_interest_expense_deduction)
