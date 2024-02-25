@@ -12,8 +12,10 @@ class id_grocery_credit_aged(Variable):
     def formula(person, period, parameters):
         p = parameters(period).gov.states.id.tax.income.credits.grocery.amount
         # Aged head and spouse are eligible for an additional grocery credit amount
-        age = person("age", period) 
+        age = person("age", period)
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         amount_if_eligible = p.aged.calc(age)
-        prorated_eligiblitity = person("id_grocery_credit_months_eligible_prorated", period)
+        prorated_eligiblitity = person(
+            "id_grocery_credit_months_eligible_prorated", period
+        )
         return (head_or_spouse * amount_if_eligible) * prorated_eligiblitity
