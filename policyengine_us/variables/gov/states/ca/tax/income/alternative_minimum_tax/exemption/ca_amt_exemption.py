@@ -15,7 +15,7 @@ class ca_amt_exemption(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(
             period
-        ).gov.states.ca.tax.income.alternative_minimum_tax.exemption
+        ).gov.states.ca.tax.income.amt.exemption
         filing_status = tax_unit("filing_status", period)
         exemption_eligiblity_threshold = p.amti.threshold.upper[filing_status]
         amti = tax_unit("ca_amti", period)

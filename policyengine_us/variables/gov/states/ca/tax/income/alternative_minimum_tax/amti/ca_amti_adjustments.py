@@ -12,12 +12,12 @@ class ca_amti_adjustments(Variable):
 
     def formula(tax_unit, period, parameters):
         # Line 1 -14
-        p = parameters(period).gov.states.ca.tax.income.alternative_minimum_tax
+        p = parameters(period).gov.states.ca.tax.income.amt
         itemized_ded = tax_unit("ca_itemized_deductions", period)
         standard_ded = tax_unit("ca_standard_deduction", period)
         # Assuming that tax filer claimed itemized deducions if above standard ded amount
         itemizes = itemized_ded > standard_ded
-        itemized_sources = add(tax_unit, period, p.amti_sources)
+        itemized_sources = add(tax_unit, period, p.amti.sources)
         # Line 6
         deductions = where(itemizes, itemized_sources, standard_ded)
         # Line 7

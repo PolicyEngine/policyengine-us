@@ -14,7 +14,7 @@ class ca_amti(Variable):
         filing_status = tax_unit("filing_status", period)
         p = parameters(
             period
-        ).gov.states.ca.tax.income.alternative_minimum_tax.exemption
+        ).gov.states.ca.tax.income.amt.exemption
         p2 = parameters(period).gov.irs.income.amt.capital_gains
 
         amti_before_ded = tax_unit("ca_pre_exemption_amti", period)
