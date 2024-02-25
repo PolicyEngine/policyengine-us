@@ -6405,3 +6405,18 @@
     - Adjust the ct_social_security_benefit_adjustment variable to reflect the worksheet
       in the tax forms.
   date: 2024-02-22 16:58:33
+- bump: minor
+  changes:
+    added:
+    - Georgia 2024 Standard Deduction Parameters.
+  date: 2024-02-23 06:10:17
+- bump: patch
+  changes:
+    added:
+    - Include social security, SSI and TANF in the HUD annual income variable.
+  date: 2024-02-24 00:03:16
+- bump: minor
+  changes:
+    added:
+    - Enable Idaho income tax model and include in the net income tree.
+  date: 2024-02-24 01:13:23
