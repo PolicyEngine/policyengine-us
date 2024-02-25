@@ -17,7 +17,7 @@ class ca_amti(Variable):
 
         amti_before_ded = tax_unit("ca_pre_exemption_amti", period)
         separate = filing_status == filing_status.possible_values.SEPARATE
-        # Calculation from Scehdule 540 P Line 21 Separate calculation
+        # Calculation from Schedule 540 P Line 21 Separate calculation
         # line 1 - total amti
         # Line 2
         maximum_exemption = p.amti.threshold.upper[filing_status]

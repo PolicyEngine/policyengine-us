@@ -18,7 +18,7 @@ class ca_amt_exemption(Variable):
         amti = tax_unit("ca_amti", period)
         # Instructions for Schedule P 540, line 22, Exemption Worksheet,
         # Line 1
-        exemption_mac_amount = p.amount[filing_status]
+        exemption_max_amount = p.amount[filing_status]
         # Line 2 - AMTI
         # Line 3
         lower_exemption_threshold = p.amti.threshold.lower[filing_status]
@@ -28,7 +28,7 @@ class ca_amt_exemption(Variable):
         p_irs = parameters(period).gov.irs.income.amt.exemption
         reduced_amti_rate = reduced_amti * p_irs.phase_out.rate
         # Line 6
-        adult_exemption = max_(exemption_mac_amount - reduced_amti_rate, 0)
+        adult_exemption = max_(exemption_max_amount - reduced_amti_rate, 0)
         # Eligible children receive an increased exemption amount
         person = tax_unit.members
         eligible_child = person("is_eitc_qualifying_child", period)
