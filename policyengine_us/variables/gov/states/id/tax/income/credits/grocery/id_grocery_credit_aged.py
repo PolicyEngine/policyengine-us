@@ -15,7 +15,7 @@ class id_grocery_credit_aged(Variable):
         age = person("age", period)
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         amount_if_eligible = p.aged.calc(age)
-        prorated_eligiblitity = person(
-            "id_grocery_credit_months_eligible_prorated", period
+        eligibility_fraction = person(
+            "id_grocery_credit_prorated_eligiblity_fraction", period
         )
-        return (head_or_spouse * amount_if_eligible) * prorated_eligiblitity
+        return (head_or_spouse * amount_if_eligible) * eligibility_fraction

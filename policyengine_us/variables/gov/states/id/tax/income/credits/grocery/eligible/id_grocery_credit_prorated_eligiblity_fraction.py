@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class id_grocery_credit_months_eligible_prorated(Variable):
+class id_grocery_credit_prorated_eligiblity_fraction(Variable):
     value_type = float
     entity = Person
     label = "Eligible for the Idaho grocery credit"

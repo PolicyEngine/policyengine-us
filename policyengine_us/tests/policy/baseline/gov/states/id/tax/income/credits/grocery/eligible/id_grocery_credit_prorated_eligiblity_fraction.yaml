@@ -16,7 +16,7 @@
       2022-12: true
     state_code: ID
   output:
-    id_grocery_credit_months_eligible_prorated: 0.916 # 11 months
+    id_grocery_credit_prorated_eligiblity_fraction: 0.916 # 11 months
 
 - name: No months eligible
   period: 2022
@@ -36,7 +36,7 @@
       2022-12: false
     state_code: ID
   output:
-    id_grocery_credit_months_eligible_prorated: 0
+    id_grocery_credit_prorated_eligiblity_fraction: 0
 
 - name: All year eligible
   period: 2022
@@ -56,4 +56,4 @@
       2022-12: true
     state_code: ID
   output:
-    id_grocery_credit_months_eligible_prorated: 1
+    id_grocery_credit_prorated_eligiblity_fraction: 1

@@ -13,7 +13,7 @@ class id_grocery_credit_base(Variable):
         base = parameters(
             period
         ).gov.states.id.tax.income.credits.grocery.amount.base
-        prorated_eligiblitity = person(
-            "id_grocery_credit_months_eligible_prorated", period
+        eligibility_fraction = person(
+            "id_grocery_credit_prorated_eligiblity_fraction", period
         )
-        return base * prorated_eligiblitity
+        return base * eligibility_fraction

@@ -3,9 +3,9 @@
   input:
     people:
       person1:
-        id_grocery_credit_months_eligible_prorated: 1
+        id_grocery_credit_prorated_eligiblity_fraction: 1
       person2:
-        id_grocery_credit_months_eligible_prorated: 1
+        id_grocery_credit_prorated_eligiblity_fraction: 1
     households: 
       household:
         members: [person1, person2]
@@ -18,9 +18,9 @@
   input:
     people:
       person1:
-        id_grocery_credit_months_eligible_prorated: 1
+        id_grocery_credit_prorated_eligiblity_fraction: 1
       person2:
-        id_grocery_credit_months_eligible_prorated: 0
+        id_grocery_credit_prorated_eligiblity_fraction: 0
     households: 
       household:
         members: [person1, person2]
@@ -33,9 +33,9 @@
   input:
     people:
       person1:
-        id_grocery_credit_months_eligible_prorated: 0
+        id_grocery_credit_prorated_eligiblity_fraction: 0
       person2:
-        id_grocery_credit_months_eligible_prorated: 0
+        id_grocery_credit_prorated_eligiblity_fraction: 0
     households: 
       household:
         members: [person1, person2]
@@ -48,9 +48,9 @@
   input:
     people:
       person1:
-        id_grocery_credit_months_eligible_prorated: 0.5
+        id_grocery_credit_prorated_eligiblity_fraction: 0.5
       person2:
-        id_grocery_credit_months_eligible_prorated: 0.35
+        id_grocery_credit_prorated_eligiblity_fraction: 0.35
     households: 
       household:
         members: [person1, person2]
