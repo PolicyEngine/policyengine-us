@@ -3,9 +3,9 @@
   input:
     people:
       person1:
-        id_grocery_credit_eligible: true
+        id_grocery_credit_months_eligible_prorated: 1
       person2:
-        id_grocery_credit_eligible: true
+        id_grocery_credit_months_eligible_prorated: 1
     households: 
       household:
         members: [person1, person2]
@@ -18,9 +18,9 @@
   input:
     people:
       person1:
-        id_grocery_credit_eligible: true
+        id_grocery_credit_months_eligible_prorated: 1
       person2:
-        id_grocery_credit_eligible: false
+        id_grocery_credit_months_eligible_prorated: 0
     households: 
       household:
         members: [person1, person2]
@@ -33,9 +33,9 @@
   input:
     people:
       person1:
-        id_grocery_credit_eligible: false
+        id_grocery_credit_months_eligible_prorated: 0
       person2:
-        id_grocery_credit_eligible: false
+        id_grocery_credit_months_eligible_prorated: 0
     households: 
       household:
         members: [person1, person2]
@@ -43,3 +43,17 @@
   output:
     id_grocery_credit_base: [0,0]
 
+- name: Two people partially eligible
+  period: 2022
+  input:
+    people:
+      person1:
+        id_grocery_credit_months_eligible_prorated: 0.5
+      person2:
+        id_grocery_credit_months_eligible_prorated: 0.35
+    households: 
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    id_grocery_credit_base: [50,35]
