@@ -5,9 +5,11 @@ class id_grocery_credit_eligible(Variable):
     value_type = bool
     entity = Person
     label = "Eligible for the Idaho grocery credit"
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = StateCode.ID
 
     def formula(person, period, parameters):
         # Incarcerated people are not eligible for the grocery credit
-        return ~person("is_incarcerated", period)
+        spm_unit = person.spm_unit
+        snap_received = spm_unit("snap", period) > 0
+        return ~person("is_incarcerated", period) & ~snap_received

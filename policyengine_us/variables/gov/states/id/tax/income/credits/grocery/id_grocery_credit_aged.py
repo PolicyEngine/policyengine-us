@@ -6,14 +6,13 @@ class id_grocery_credit_aged(Variable):
     entity = Person
     label = "Idaho aged grocery credit"
     unit = USD
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = "id_grocery_credit_eligible"
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.id.tax.income.credits.grocery.amount
         # Aged head and spouse are eligible for an additional grocery credit amount
-        age = person("age", period)
+        age = person("age", period) * MONTHS_IN_YEAR
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         amount_if_eligible = p.aged.calc(age)
-
-        return head_or_spouse * amount_if_eligible
+        return (head_or_spouse * amount_if_eligible) / MONTHS_IN_YEAR

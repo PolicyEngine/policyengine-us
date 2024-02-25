@@ -10,6 +10,10 @@
       household:
         members: [person1, person2]
         state_code: ID
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0
   output:
     id_grocery_credit_eligible: [false, true]
 
@@ -25,6 +29,10 @@
       household:
         members: [person1, person2]
         state_code: ID
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0
   output:
     id_grocery_credit_eligible: [true, false]
 
@@ -40,6 +48,10 @@
       household:
         members: [person1, person2]
         state_code: ID
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0
   output:
     id_grocery_credit_eligible: [true,true]
 
@@ -57,3 +69,41 @@
         state_code: ID
   output:
     id_grocery_credit_eligible: [false,false]
+
+- name: both person were not incarcerated, no snap
+  period: 2022
+  input:
+    people:
+      person1:
+        is_incarcerated: false
+      person2:
+        is_incarcerated: false
+    households: 
+      household:
+        members: [person1, person2]
+        state_code: ID
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0
+  output:
+    id_grocery_credit_eligible: [true, true]
+
+- name: both person were not incarcerated, with snap
+  period: 2022-01
+  input:
+    people:
+      person1:
+        is_incarcerated: false
+      person2:
+        is_incarcerated: false
+    households: 
+      household:
+        members: [person1, person2]
+        state_code: ID
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 1
+  output:
+    id_grocery_credit_eligible: [false, false]

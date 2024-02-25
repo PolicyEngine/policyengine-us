@@ -6,10 +6,11 @@ class id_grocery_credit_base(Variable):
     entity = Person
     label = "Idaho base grocery credit"
     unit = USD
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = "id_grocery_credit_eligible"
 
     def formula(person, period, parameters):
-        return parameters(
+        base = parameters(
             period
         ).gov.states.id.tax.income.credits.grocery.amount.base
+        return base / MONTHS_IN_YEAR
