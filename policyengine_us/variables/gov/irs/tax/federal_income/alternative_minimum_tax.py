@@ -147,12 +147,12 @@ class alternative_minimum_tax(Variable):
         else:
             child_amount = amt.exemption.child.amount
 
-        line29 = where(
-            young_head & no_or_young_spouse,
-            min_(line29, adj_earnings + child_amount),
-            line29,
+        line29_cap_applies = young_head & no_or_young_spouse
+        line29_cap = where(
+            line29_cap_applies, adj_earnings + child_amount, np.inf
         )
-        line30 = max_(0, amt_income - line29)
+        line29_capped = min_(line29, line29_cap)
+        line30 = max_(0, amt_income - line29_capped)
         brackets = amt.brackets
         bracket_fraction = where(
             filing_status == filing_status.possible_values.SEPARATE,

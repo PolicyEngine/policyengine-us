@@ -13,7 +13,7 @@ class is_eitc_qualifying_child(Variable):
         disabled = person("is_permanently_and_totally_disabled", period)
         age = person("age", period)
         student = person("is_full_time_student", period)
-        p = parameters(period).gov.irs.dependent.max_age
-        max_age = where(student, p.student, p.non_student)
-        age_qualifies = age < max_age
+        p = parameters(period).gov.irs.dependent.ineligible_age
+        ineligible_age = where(student, p.student, p.non_student)
+        age_qualifies = age < ineligible_age
         return dependent & (age_qualifies | disabled)
