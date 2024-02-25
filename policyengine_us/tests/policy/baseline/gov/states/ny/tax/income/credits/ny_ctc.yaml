@@ -40,7 +40,7 @@
         members: [parent, child]
         state_code: NY
   output:
-    ny_ctc: 100
+    ny_ctc: 330
 
 - name: Parent of four-year old child with no income gets minimum credit
   period: 2022
@@ -59,7 +59,7 @@
         members: [parent, child]
         state_code: NY
   output:
-    ny_ctc: 100
+    ny_ctc: 330
 
 - name: Simpler calculation if not set to pre-TCJA.
   period: 2022
