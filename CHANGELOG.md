@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.681.0] - 2024-02-25 23:55:29
+
+### Added
+
+- California alternative minimum tax calculations.
+
 ## [0.680.0] - 2024-02-24 01:13:23
 
 ### Added
@@ -7552,6 +7558,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.681.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.680.0...0.681.0
 [0.680.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.679.1...0.680.0
 [0.679.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.679.0...0.679.1
 [0.679.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.678.2...0.679.0
