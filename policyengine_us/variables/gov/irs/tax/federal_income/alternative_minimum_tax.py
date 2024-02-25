@@ -140,9 +140,7 @@ class alternative_minimum_tax(Variable):
         age_head = tax_unit("age_head", period)
         child = parameters(period).gov.irs.dependent.max_age
         young_head = (age_head != 0) & (age_head < child.non_student)
-        no_or_young_spouse = (
-            tax_unit("age_spouse", period) < child.non_student
-        )
+        no_or_young_spouse = tax_unit("age_spouse", period) < child.non_student
         adj_earnings = tax_unit("filer_adjusted_earnings", period)
         if period.start.year >= 2019:
             child_amount = 0

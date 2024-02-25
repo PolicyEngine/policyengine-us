@@ -13,13 +13,9 @@ class ca_amt_exemption(Variable):
     )
 
     def formula(tax_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.ca.tax.income.amt.exemption
+        p = parameters(period).gov.states.ca.tax.income.amt.exemption
         filing_status = tax_unit("filing_status", period)
-        exemption_eligiblity_threshold = p.amti.threshold.upper[filing_status]
         amti = tax_unit("ca_amti", period)
-        exemption_eligible = amti < exemption_eligiblity_threshold
         # Instructions for Schedule P 540, line 22, Exemption Worksheet,
         # Line 1
         exemption_mac_amount = p.amount[filing_status]
@@ -45,7 +41,4 @@ class ca_amt_exemption(Variable):
         total_reduced_exemption_amount = exemption_amount_child + earned_income
         # Line 10
         child_exemption = min_(total_reduced_exemption_amount, adult_exemption)
-        total_exemption = where(
-            head_is_eligible_child, child_exemption, adult_exemption
-        )
-        return exemption_eligible * total_exemption
+        return where(head_is_eligible_child, child_exemption, adult_exemption)

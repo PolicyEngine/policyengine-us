@@ -14,7 +14,9 @@ class ca_itemized_deductions(Variable):
     defined_for = StateCode.CA
 
     def formula(tax_unit, period, parameters):
-        itm_deds_max = tax_unit("ca_itemized_deductions_pre_limitation", period)
+        itm_deds_max = tax_unit(
+            "ca_itemized_deductions_pre_limitation", period
+        )
         # compute high-AGI limit on itemized deductions
         p = parameters(period).gov.states.ca.tax.income.deductions.itemized
         # ... determine part of itemized deductions subject to limit

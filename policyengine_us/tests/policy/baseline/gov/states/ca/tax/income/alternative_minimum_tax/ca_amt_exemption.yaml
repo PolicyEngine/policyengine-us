@@ -52,3 +52,21 @@
         state_code: CA
   output:
     ca_amt_exemption: 104_094
+
+- name: AMTI amount exceeds the eligibility threshold, single
+  period: 2021
+  input:
+    people:
+      person1: {}
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        ca_amti: 605_043
+        head_earned: 320_000
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_amt_exemption: 0
