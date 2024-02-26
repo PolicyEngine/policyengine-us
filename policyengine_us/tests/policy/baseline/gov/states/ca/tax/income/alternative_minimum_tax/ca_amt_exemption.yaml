@@ -1,0 +1,72 @@
+- name: California exemption amount calculation for high amti - no eligible child, amti not over upper threshold
+  period: 2022
+  input:
+    people:
+      person1: {}
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        ca_amti: 320_000
+        head_earned: 320_000
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_amt_exemption: 83_815.5
+
+- name: California exemption amount calculation for high amti - no eligible child, amti over upper threshold
+  period: 2022
+  input:
+    people:
+      person1: {}
+      person2: {}
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        ca_amti: 900_000
+        head_earned: 700_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    ca_amt_exemption: 0
+
+- name: Widow with AMTI below reduction amount
+  period: 2021
+  input:
+    people:
+      person1: {}
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: WIDOW
+        ca_amti: 390_351
+        head_earned: 320_000
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_amt_exemption: 104_094
+
+- name: AMTI amount exceeds the eligibility threshold, single
+  period: 2021
+  input:
+    people:
+      person1: {}
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        ca_amti: 605_043
+        head_earned: 320_000
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_amt_exemption: 0
