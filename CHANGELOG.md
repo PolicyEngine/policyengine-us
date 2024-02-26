@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.682.0] - 2024-02-26 20:57:25
+
+### Added
+
+- Update the CalWORKs Child Care payment standard with the 2022 rates.
+
 ## [0.681.1] - 2024-02-26 20:50:21
 
 ### Fixed
@@ -7564,6 +7570,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.682.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.681.1...0.682.0
 [0.681.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.681.0...0.681.1
 [0.681.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.680.0...0.681.0
 [0.680.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.679.1...0.680.0
