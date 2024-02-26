@@ -1,12 +1,16 @@
 from policyengine_us.model_api import *
 
 
-class id_grocery_credit_prorated_eligiblity_fraction(Variable):
+class id_grocery_credit_qualified_months(Variable):
     value_type = float
     entity = Person
     label = "Eligible for the Idaho grocery credit"
     definition_period = YEAR
     defined_for = StateCode.ID
+    reference = (
+        "https://law.justia.com/codes/idaho/2022/title-63/chapter-30/section-63-3024a/",
+        "https://tax.idaho.gov/wp-content/uploads/forms/EFO00089/EFO00089_12-30-2022.pdf#page=7",
+    )
 
     def formula(person, period, parameters):
         eligible_months_sum = 0
@@ -16,4 +20,4 @@ class id_grocery_credit_prorated_eligiblity_fraction(Variable):
             eligible_months_sum += person(
                 "id_grocery_credit_eligible", monthly_period_str
             )
-        return eligible_months_sum / MONTHS_IN_YEAR
+        return eligible_months_sum

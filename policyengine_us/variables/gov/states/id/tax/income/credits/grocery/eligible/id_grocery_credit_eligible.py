@@ -7,6 +7,10 @@ class id_grocery_credit_eligible(Variable):
     label = "Eligible for the Idaho grocery credit"
     definition_period = MONTH
     defined_for = StateCode.ID
+    reference = (
+        "https://law.justia.com/codes/idaho/2022/title-63/chapter-30/section-63-3024a/",
+        "https://tax.idaho.gov/wp-content/uploads/forms/EFO00089/EFO00089_12-30-2022.pdf#page=7",
+    )
 
     def formula(person, period, parameters):
         # Incarcerated people are not eligible for the grocery credit

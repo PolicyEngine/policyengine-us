@@ -8,6 +8,10 @@ class id_grocery_credit_aged(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.ID
+    reference = (
+        "https://law.justia.com/codes/idaho/2022/title-63/chapter-30/section-63-3024a/",
+        "https://tax.idaho.gov/wp-content/uploads/forms/EFO00089/EFO00089_12-30-2022.pdf#page=7",
+    )
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.id.tax.income.credits.grocery.amount
@@ -15,7 +19,4 @@ class id_grocery_credit_aged(Variable):
         age = person("age", period)
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         amount_if_eligible = p.aged.calc(age)
-        eligibility_fraction = person(
-            "id_grocery_credit_prorated_eligiblity_fraction", period
-        )
-        return (head_or_spouse * amount_if_eligible) * eligibility_fraction
+        return head_or_spouse * amount_if_eligible

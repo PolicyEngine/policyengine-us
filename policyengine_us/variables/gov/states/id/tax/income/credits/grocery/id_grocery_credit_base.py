@@ -8,12 +8,12 @@ class id_grocery_credit_base(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.ID
+    reference = (
+        "https://law.justia.com/codes/idaho/2022/title-63/chapter-30/section-63-3024a/",
+        "https://tax.idaho.gov/wp-content/uploads/forms/EFO00089/EFO00089_12-30-2022.pdf#page=7",
+    )
 
     def formula(person, period, parameters):
-        base = parameters(
+        return parameters(
             period
         ).gov.states.id.tax.income.credits.grocery.amount.base
-        eligibility_fraction = person(
-            "id_grocery_credit_prorated_eligiblity_fraction", period
-        )
-        return base * eligibility_fraction
