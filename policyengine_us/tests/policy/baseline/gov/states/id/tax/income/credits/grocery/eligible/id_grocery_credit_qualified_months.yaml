@@ -1,7 +1,7 @@
 - name: All but one month eligible
   period: 2022
   input:
-    id_grocery_credit_eligible:
+    id_grocery_credit_qualifying_month:
       2022-01: true
       2022-02: true
       2022-03: true
@@ -21,7 +21,7 @@
 - name: No months eligible
   period: 2022
   input:
-    id_grocery_credit_eligible:
+    id_grocery_credit_qualifying_month:
       2022-01: false
       2022-02: false
       2022-03: false
@@ -41,7 +41,7 @@
 - name: All year eligible
   period: 2022
   input:
-    id_grocery_credit_eligible:
+    id_grocery_credit_qualifying_month:
       2022-01: true
       2022-02: true
       2022-03: true

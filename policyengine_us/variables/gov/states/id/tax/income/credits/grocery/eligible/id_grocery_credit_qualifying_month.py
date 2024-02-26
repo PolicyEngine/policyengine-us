@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class id_grocery_credit_eligible(Variable):
+class id_grocery_credit_qualifying_month(Variable):
     value_type = bool
     entity = Person
-    label = "Eligible for the Idaho grocery credit"
+    label = "Qualifies for the Idaho grocery credit in the given month"
     definition_period = MONTH
     defined_for = StateCode.ID
     reference = (
@@ -13,7 +13,6 @@ class id_grocery_credit_eligible(Variable):
     )
 
     def formula(person, period, parameters):
+        snap_received = person.spm_unit("snap", period) > 0
         # Incarcerated people are not eligible for the grocery credit
-        spm_unit = person.spm_unit
-        snap_received = spm_unit("snap", period) > 0
         return ~person("is_incarcerated", period) & ~snap_received

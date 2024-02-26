@@ -15,7 +15,7 @@
         members: [person1, person2]
         snap: 0
   output:
-    id_grocery_credit_eligible: [false, true]
+    id_grocery_credit_qualifying_month: [false, true]
 
 - name: person 2 was incarcerated
   period: 2022
@@ -34,7 +34,7 @@
         members: [person1, person2]
         snap: 0
   output:
-    id_grocery_credit_eligible: [true, false]
+    id_grocery_credit_qualifying_month: [true, false]
 
 - name: no person was incarcerated
   period: 2022
@@ -53,7 +53,7 @@
         members: [person1, person2]
         snap: 0
   output:
-    id_grocery_credit_eligible: [true,true]
+    id_grocery_credit_qualifying_month: [true,true]
 
 - name: both person were incarcerated
   period: 2022
@@ -68,7 +68,7 @@
         members: [person1, person2]
         state_code: ID
   output:
-    id_grocery_credit_eligible: [false,false]
+    id_grocery_credit_qualifying_month: [false,false]
 
 - name: both person were not incarcerated, no snap
   period: 2022
@@ -87,7 +87,7 @@
         members: [person1, person2]
         snap: 0
   output:
-    id_grocery_credit_eligible: [true, true]
+    id_grocery_credit_qualifying_month: [true, true]
 
 - name: both person were not incarcerated, with snap
   period: 2022-01
@@ -106,4 +106,4 @@
         members: [person1, person2]
         snap: 1
   output:
-    id_grocery_credit_eligible: [false, false]
+    id_grocery_credit_qualifying_month: [false, false]
