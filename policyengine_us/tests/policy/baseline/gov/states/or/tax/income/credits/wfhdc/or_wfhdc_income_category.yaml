@@ -38,16 +38,15 @@
   output:
     or_wfhdc_income_category: 1
 
-- name: Over 300% of fpg
+- name: Over 300% of fpg - ineligible (integration test)
   period: 2022
   input:
     state_code: OR
-    or_wfhdc_eligible: true
     tax_unit_fpg: 1_000
     adjusted_gross_income: 100_000
     or_agi: 100_000
   output:
-    or_wfhdc_income_category: 30
+    or_wfhdc_income_category: 0
 
 - name: Income equals 130 - 140% of fpg
   period: 2022
@@ -81,3 +80,4 @@
     or_agi: 2_301
   output:
     or_wfhdc_income_category: 24
+

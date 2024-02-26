@@ -1,0 +1,26 @@
+description: Virginia requires tax units to file a return if their state adjusted gross income meets or exceeds this amount.  
+metadata:
+  label: Virginia filing requirement
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  reference:
+  # The legal additionally a deduction from AGI which is not specified in the tax form
+  - title: Code of Virginia § 58.1-321. Exemptions and exclusions. (A)
+    href: https://law.lis.virginia.gov/vacodefull/title58.1/chapter3/article2/
+  - title: Virginia 2022 Form 760 Resident Individual Income Tax Booklet
+    href: https://www.tax.virginia.gov/sites/default/files/vatax-pdf/2022-760-instructions.pdf#page=10
+  - title: Virginia 2021 Form 760 Resident Individual Income Tax Booklet
+    href: https://www.tax.virginia.gov/sites/default/files/vatax-pdf/2021-760-instructions.pdf#page=11
+
+JOINT:
+  2021-01-01: 23_900
+SINGLE:
+  2021-01-01: 11_950
+SEPARATE:
+  2021-01-01: 11_950
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 11_950
+WIDOW:
+  2021-01-01: 11_950

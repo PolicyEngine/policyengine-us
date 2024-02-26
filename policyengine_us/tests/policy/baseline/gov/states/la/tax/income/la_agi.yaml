@@ -12,6 +12,6 @@
   input:
     state_code: LA
     adjusted_gross_income: 1_000
-    la_itemized_deductions: 2_000
+    la_agi_exempt_income: 2_000
   output:
-    la_taxable_income: 0 
+    la_agi: 0 

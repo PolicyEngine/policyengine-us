@@ -3,11 +3,11 @@
   input:
     people:
       person1:
-        ar_taxable_income_indiv: 1_000
-        ar_taxable_income_joint: 100
+        ar_income_tax_before_non_refundable_credits_indiv: 1_000
+        ar_income_tax_before_non_refundable_credits_joint: 100
       person2:
-        ar_taxable_income_indiv: 100
-        ar_taxable_income_joint: 500
+        ar_income_tax_before_non_refundable_credits_indiv: 100
+        ar_income_tax_before_non_refundable_credits_joint: 500
     households:
       household:
         members: [person1, person2]
@@ -20,11 +20,11 @@
   input:
     people:
       person1:
-        ar_taxable_income_indiv: 0
-        ar_taxable_income_joint: 100
+        ar_income_tax_before_non_refundable_credits_indiv: 0
+        ar_income_tax_before_non_refundable_credits_joint: 100
       person2:
-        ar_taxable_income_indiv: 100
-        ar_taxable_income_joint: 500
+        ar_income_tax_before_non_refundable_credits_indiv: 100
+        ar_income_tax_before_non_refundable_credits_joint: 500
     households:
       household:
         members: [person1, person2]

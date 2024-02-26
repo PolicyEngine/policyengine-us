@@ -1,0 +1,51 @@
+- name: All the income is allocated to the head of the household
+  period: 2021
+  input:
+    people: 
+      person1:
+        is_tax_unit_head: true
+        mt_agi: 10_000
+        mt_standard_deduction_joint: 3_000
+        mt_itemized_deductions_joint: 1_000
+        mt_exemptions_joint: 500
+      person2:
+        is_tax_unit_head: false
+        mt_agi: 5_000
+        mt_standard_deduction_joint: 100
+        mt_itemized_deductions_joint: 1_000
+        mt_exemptions_joint: 3_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_taxable_income_joint: [8_400, 0]
+
+- name: Itemized deductions over standard
+  period: 2021
+  input:
+    people: 
+      person1:
+        is_tax_unit_head: true
+        mt_agi: 10_000
+        mt_standard_deduction_joint: 0
+        mt_itemized_deductions_joint: 1_000
+        mt_exemptions_joint: 500
+      person2:
+        is_tax_unit_head: false
+        mt_agi: 5_000
+        mt_standard_deduction_joint: 100
+        mt_itemized_deductions_joint: 1_000
+        mt_exemptions_joint: 3_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_taxable_income_joint: [9_500, 0]
