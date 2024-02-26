@@ -7,7 +7,7 @@ class ca_foster_youth_tax_credit(Variable):
     label = "California foster youth tax credit"
     unit = USD
     definition_period = YEAR
-    defined_for = StateCode.CA
+    defined_for = "ca_eitc_eligible"
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.ca.tax.income.credits.foster_youth
