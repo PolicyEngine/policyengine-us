@@ -1,0 +1,10 @@
+description: The IRS permits filers to claim dependents who are full-time students if they are younger than this age at the end of the year.
+metadata:
+  unit: year
+  period: year
+  label: IRS student dependent age limit
+  reference:
+    - title: 26 U.S. Code § 152 - Dependent defined
+      href: https://www.law.cornell.edu/uscode/text/26/152#c_3_A_ii
+values:
+  2018-01-01: 24
