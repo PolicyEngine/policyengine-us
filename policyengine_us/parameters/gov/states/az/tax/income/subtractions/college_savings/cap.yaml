@@ -4,15 +4,13 @@ metadata:
   unit: currency-USD
   label: Arizona college savings plan subtraction cap
   breakdown:
-    - filing_status
+    - az_filing_status  
 SINGLE:
   2021-01-01: 2_000
 HEAD_OF_HOUSEHOLD:
   2021-01-01: 2_000
 JOINT:
   2021-01-01: 4_000
-WIDOW:
-  2021-01-01: 2_000
 SEPARATE:
   2021-01-01: 4_000
 reference:
