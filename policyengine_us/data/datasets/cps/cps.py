@@ -549,5 +549,5 @@ CPS_2023 = UpratedCPS.from_dataset(
     "cps_2023",
     "CPS 2023",
     STORAGE_FOLDER / "cps_2023.h5",
-    # new_url="release://policyengine/policyengine-us/cps-2023/cps_2023.h5",
+    new_url="release://policyengine/policyengine-us/cps-2023/cps_2023.h5",
 )
