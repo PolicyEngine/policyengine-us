@@ -128,7 +128,7 @@ class EnhancedCPS_2023(Dataset):
                 sim.calculate(
                     "household_weight", time_period, map_to="person"
                 ).values,
-                max_iterations=7,
+                max_iterations=3,
             )
 
             y_pred = income_last_year.predict(

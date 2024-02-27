@@ -320,15 +320,14 @@ def load_puf() -> Tuple[pd.DataFrame, pd.DataFrame]:
     demographics = demographics.rename(columns=codebook)
     return puf, demographics
 
+
 def uprate_puf(puf: pd.DataFrame) -> pd.DataFrame:
     gov = system.parameters.calibration.gov
     soi = gov.irs.soi
 
     # Uprate the financial subset
 
-    puf = MicroDataFrame(
-        puf, weights="decimal_weight"
-    )
+    puf = MicroDataFrame(puf, weights="decimal_weight")
 
     for variable_name in FINANCIAL_SUBSET:
         if variable_name not in soi.children:
@@ -338,12 +337,9 @@ def uprate_puf(puf: pd.DataFrame) -> pd.DataFrame:
         value_in_2015 = uprater("2015-01-01")
         value_in_2023 = uprater("2023-01-01")
         uprating_factor = value_in_2023 / value_in_2015
-        puf[variable_name] = (
-            puf[variable_name] * uprating_factor
-        )
-    
+        puf[variable_name] = puf[variable_name] * uprating_factor
+
     return puf
-    
 
 
 def impute_missing_demographics(

@@ -19,14 +19,18 @@ with left:
 with right:
     time_period = st.selectbox("Time period", df.time_period.unique())
 
-df.dataset = df.dataset.replace({
-    "cps_2023": "CPS (2022)",
-    "calibrated_puf_extended_cps": "Enhanced CPS",
-    "puf_2023": "PUF (2015)",
-})
+df.dataset = df.dataset.replace(
+    {
+        "cps_2023": "CPS (2022)",
+        "calibrated_puf_extended_cps": "Enhanced CPS",
+        "puf_2023": "PUF (2015)",
+    }
+)
+
 
 def capitalise(string):
     return string[0].upper() + string[1:]
+
 
 fig = px.bar(
     df[(df.name == metric) & (df.time_period == time_period)],
@@ -47,7 +51,9 @@ fig = px.bar(
 
 # Add dotted line for truth
 
-true_value = df[(df.name == metric) & (df.time_period == time_period)].target.mean()
+true_value = df[
+    (df.name == metric) & (df.time_period == time_period)
+].target.mean()
 fig.add_shape(
     type="line",
     x0=-0.5,

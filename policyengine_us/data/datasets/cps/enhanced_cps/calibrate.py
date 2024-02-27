@@ -17,7 +17,9 @@ from pathlib import Path
 from typing import Tuple
 
 
-def generate_model_variables(dataset: str, time_period: str = "2023", no_weight_adjustment: bool = False) -> Tuple:
+def generate_model_variables(
+    dataset: str, time_period: str = "2023", no_weight_adjustment: bool = False
+) -> Tuple:
     """Generates variables needed for the calibration process.
 
     Args:
@@ -82,6 +84,7 @@ def generate_model_variables(dataset: str, time_period: str = "2023", no_weight_
     # Program spending from CBO baseline projections
 
     PROGRAMS = [
+        "income_tax",
         "snap",
         "social_security",
         "ssi",
@@ -89,7 +92,10 @@ def generate_model_variables(dataset: str, time_period: str = "2023", no_weight_
     ]
 
     for variable_name in PROGRAMS:
-        label = simulation.tax_benefit_system.variables[variable_name].label + " (CBO)"
+        label = (
+            simulation.tax_benefit_system.variables[variable_name].label
+            + " (CBO)"
+        )
         values_df[label] = simulation.calculate(
             variable_name, map_to="household"
         ).values
@@ -132,10 +138,12 @@ def generate_model_variables(dataset: str, time_period: str = "2023", no_weight_
     population_in_21 = demographics_sim.tax_benefit_system.parameters.calibration.gov.census.populations.total(
         "2021-01-01"
     )
-    population_growth = (
+    population_growth_since_21 = (
         parameters.gov.census.populations.total / population_in_21
     )
-    cps_household_weights = demographics_sim.calculate("household_weight").values
+    cps_household_weights = demographics_sim.calculate(
+        "household_weight"
+    ).values
     for lower_age_group in range(0, 90, 10):
         for possible_is_male in (True, False):
             in_age_range = (age >= lower_age_group) & (
@@ -160,7 +168,7 @@ def generate_model_variables(dataset: str, time_period: str = "2023", no_weight_
             values_df[name] = count_people_in_range
             targets[name] = (
                 cps_household_weights * count_people_in_range_cps
-            ).sum() * population_growth
+            ).sum() * population_growth_since_21
             equivalisation[name] = POPULATION_EQUIVALISATION
 
     # Household population by number of adults and children
@@ -195,8 +203,120 @@ def generate_model_variables(dataset: str, time_period: str = "2023", no_weight_
             values_df[name] = in_criteria
             targets[name] = (
                 cps_household_weights * in_criteria_cps
-            ).sum() * population_growth
+            ).sum() * population_growth_since_21
             equivalisation[name] = POPULATION_EQUIVALISATION
+
+    # Number of tax returns by AGI category
+
+    # is_filer
+
+    agi = simulation.calculate("adjusted_gross_income").values
+
+    BOUNDS = [
+        -np.inf,
+        1,
+        5e3,
+        10e3,
+        15e3,
+        20e3,
+        25e3,
+        30e3,
+        40e3,
+        50e3,
+        75e3,
+        100e3,
+        200e3,
+        500e3,
+        1e6,
+        1.5e6,
+        2e6,
+        5e6,
+        10e6,
+        np.inf,
+    ]
+    COUNTS = [
+        4_098_522,
+        8_487_025,
+        8_944_908,
+        10_056_377,
+        9_786_580,
+        8_863_570,
+        8_787_576,
+        16_123_068,
+        12_782_334,
+        22_653_934,
+        14_657_726,
+        24_044_481,
+        9_045_567,
+        1_617_144,
+        376_859,
+        156_020,
+        233_838,
+        63_406,
+        45_404,
+    ]
+    VALUES = [
+        -171_836_364,
+        19_987_243,
+        67_651_359,
+        125_912_056,
+        170_836_129,
+        199_508_960,
+        241_347_179,
+        561_386_434,
+        573_155_378,
+        1_392_395_599,
+        1_271_699_391,
+        3_297_058_075,
+        2_619_188_471,
+        1_092_599_034,
+        454_552_875,
+        268_278_123,
+        698_923_219,
+        435_242_550,
+        1_477_728_359,
+        13_879_929_368,
+        -12_835_378,
+        451_204,
+        1_358_544,
+        14_362_205,
+        57_643_020,
+        101_727_915,
+        141_934_070,
+        382_385_416,
+        457_336_377,
+        1_238_178_360,
+        1_206_614_503,
+        3_252_746_502,
+        2_613_795_014,
+        1_091_571_914,
+        3_332_659_702,
+    ]
+
+    for i in range(len(BOUNDS) - 1):
+        lower_bound = BOUNDS[i]
+        upper_bound = BOUNDS[i + 1]
+        in_range = (agi >= lower_bound) * (agi < upper_bound) * is_filer
+        household_filers = simulation.map_result(
+            in_range, "tax_unit", "household"
+        )
+        if lower_bound == -np.inf:
+            lower_bound_str = "negative infinity"
+        else:
+            lower_bound_str = f"{lower_bound:,.0f}"
+        name = f"tax returns with AGI between ${lower_bound_str} and ${upper_bound:,.0f}"
+        values_df[name] = household_filers
+        targets[name] = COUNTS[i]
+        equivalisation[name] = POPULATION_EQUIVALISATION
+
+        agi_in_range = agi * in_range
+        household_agi = simulation.map_result(
+            agi_in_range, "tax_unit", "household"
+        )
+        name = f"total AGI from tax returns with AGI between ${lower_bound_str} and ${upper_bound:,.0f}"
+        values_df[name] = household_agi
+        targets[name] = VALUES[i] * population_growth_since_21 * 1e3
+        equivalisation[name] = FINANCIAL_EQUIVALISATION
 
     targets_array = torch.tensor(list(targets.values()), dtype=torch.float32)
     equivalisation_factors_array = torch.tensor(
@@ -243,7 +363,9 @@ def get_snapshot(
         targets,
         targets_array,
         equivalisation_factors_array,
-    ) = generate_model_variables(dataset, time_period, no_weight_adjustment=True)
+    ) = generate_model_variables(
+        dataset, time_period, no_weight_adjustment=True
+    )
     adjusted_weights = torch.relu(household_weights + weight_adjustment)
     result = (
         aggregate(adjusted_weights, values_df) / equivalisation_factors_array
@@ -269,7 +391,7 @@ def calibrate(
     time_period: str = "2023",
     training_log_path: str = "training_log.csv.gz",
     learning_rate: float = 2e1,
-    epochs: int = 10_000,
+    epochs: int = 20_000,
 ) -> np.ndarray:
     (
         household_weights,
@@ -305,7 +427,7 @@ def calibrate(
             progress_bar.set_description_str(
                 f"Calibrating weights | Loss = {current_loss:,.3f}"
             )
-        if i % 250 == 0:
+        if i % 2_000 == 0:
             current_aggregates = (
                 (result * equivalisation_factors_array).detach().numpy()[0]
             )

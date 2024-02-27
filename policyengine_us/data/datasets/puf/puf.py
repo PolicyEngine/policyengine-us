@@ -17,6 +17,7 @@ class PUF_2023(Dataset):
             load_puf,
             impute_missing_demographics,
         )
+
         puf, demographics = load_puf()
         puf = impute_missing_demographics(puf, demographics)
 

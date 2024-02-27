@@ -282,7 +282,8 @@ def add_personal_income_variables(
         cps[f"{description}_distributions"] = tmp
     # Allocate retirement distributions by taxability.
     cps["taxable_401k_distributions"] = (
-        cps["401k_distributions"][...] * p["taxable_401k_distribution_fraction"]
+        cps["401k_distributions"][...]
+        * p["taxable_401k_distribution_fraction"]
     )
     cps["tax_exempt_401k_distributions"] = cps["401k_distributions"][...] * (
         1 - p["taxable_401k_distribution_fraction"]
