@@ -1,0 +1,62 @@
+- name: Joint
+  period: 2021
+  input:
+    state_code: NM
+    filing_status: JOINT
+    head_is_dependent_elsewhere: false
+  output:
+    nm_additional_2021_income_rebate: 1_000
+
+- name: Single
+  period: 2021
+  input:
+    state_code: NM
+    filing_status: SINGLE
+    head_is_dependent_elsewhere: false
+  output:
+    nm_additional_2021_income_rebate: 500
+
+- name: Separate
+  period: 2021
+  input:
+    state_code: NM
+    filing_status: SEPARATE
+    head_is_dependent_elsewhere: false
+  output:
+    nm_additional_2021_income_rebate: 500
+
+- name: Widow
+  period: 2021
+  input:
+    state_code: NM
+    filing_status: WIDOW
+    head_is_dependent_elsewhere: false
+  output:
+    nm_additional_2021_income_rebate: 1_000
+
+- name: Head of Household
+  period: 2021
+  input:
+    state_code: NM
+    filing_status: HEAD_OF_HOUSEHOLD
+    head_is_dependent_elsewhere: false
+  output:
+    nm_additional_2021_income_rebate: 1_000
+
+- name: Only available in 2021
+  period: 2022
+  input:
+    state_code: NM
+    filing_status: SEPARATE
+    head_is_dependent_elsewhere: false
+  output:
+    nm_additional_2021_income_rebate: 0
+
+- name: Ineligible if depedent on another return
+  period: 2021
+  input:
+    state_code: NM
+    filing_status: SEPARATE
+    head_is_dependent_elsewhere: true
+  output:
+    nm_additional_2021_income_rebate: 0

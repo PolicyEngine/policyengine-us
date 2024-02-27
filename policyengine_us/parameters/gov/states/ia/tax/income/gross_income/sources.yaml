@@ -1,7 +1,7 @@
 description: Iowa gross income sources.
 values:
   2021-01-01:
-    - employment_income
+    - irs_employment_income
     - taxable_interest_income
     - dividend_income
     - alimony_income
@@ -9,6 +9,7 @@ values:
     - capital_gains
     - taxable_pension_income
     - partnership_s_corp_income
+    - rental_income
     - farm_income
     - taxable_unemployment_compensation
     - miscellaneous_income

@@ -1,0 +1,46 @@
+description: DC limits the keep child care affordable tax credit to those whose DC taxable income does not exceed this limit.
+metadata:
+  unit: year
+  label: DC KCCATC DC taxable income limit
+  breakdown:
+    - filing_status
+  period: year
+  reference:
+    - title: Code of the District of Columbia § 47–1806.15(d)(5)
+      href: https://code.dccouncil.gov/us/dc/council/code/sections/47-1806.15#(d)(5)
+    - title: 2020 DC Schedule ELC
+      href: https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2020_Schedule_ELC.pdf#page=2
+    - title: 2021 DC Form D-40 Booklet, Schedule ELC
+      href: https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/52926_D-40_12.21.21_Final_Rev011122.pdf#page=68
+    - title: 2022 DC Form D-40 Booklet, Schedule ELC
+      href: https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2022_D-40_Booklet_Final_blk_01_23_23_Ordc.pdf#page=60
+
+SINGLE:
+  2018-01-01: 750_000 # (A)
+  2019-01-01: 150_000 # (B)
+  2021-01-01: 153_400
+  2022-01-01: 157_200
+JOINT:
+  2018-01-01: 750_000 # (A)
+  2019-01-01: 150_000 # (B)
+  2020-01-01: 151_900
+  2021-01-01: 153_400
+  2022-01-01: 157_200
+SEPARATE:
+  2018-01-01: 375_000 # (A)
+  2019-01-01: 75_000 # (B)
+  2020-01-01: 151_900
+  2021-01-01: 76_700
+  2022-01-01: 78_600
+HEAD_OF_HOUSEHOLD:
+  2018-01-01: 750_000 # (A)
+  2019-01-01: 150_000 # (B)
+  2020-01-01: 151_900
+  2021-01-01: 153_400
+  2022-01-01: 157_200
+WIDOW:
+  2018-01-01: 750_000 # (A)
+  2019-01-01: 150_000 # (B)
+  2020-01-01: 151_900
+  2021-01-01: 153_400
+  2022-01-01: 157_200

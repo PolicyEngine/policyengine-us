@@ -1,0 +1,26 @@
+description: Social Security total outlays.
+values:
+  2022-01-01: 1_212_000_000_000
+  # Actual (CBO)
+  2023-01-01: 1_348_000_000_000
+  # Projected
+  2024-01-01: 1_453_000_000_000
+  2025-01-01: 1_545_000_000_000
+  2026-01-01: 1_640_000_000_000
+  2027-01-01: 1_734_000_000_000
+  2028-01-01: 1_832_000_000_000
+  2029-01-01: 1_930_000_000_000
+  2030-01-01: 2_032_000_000_000
+  2031-01-01: 2_137_000_000_000
+  2032-01-01: 2_245_000_000_000
+  2033-01-01: 2_355_000_000_000
+  2034-01-01: 2_471_000_000_000
+metadata:
+  unit: currency-USD
+  label: Social Security outlays
+  reference:
+    - title: CBO 10-Year Budget Projections (Feb 2024)
+      # Source: https://www.cbo.gov/data/budget-economic-data#9
+      # Table 1-4
+      # Row 12: Subtotal, Social Security
+      href: https://www.cbo.gov/system/files/2024-02/51118-2024-02-Budget-Projections.xlsx

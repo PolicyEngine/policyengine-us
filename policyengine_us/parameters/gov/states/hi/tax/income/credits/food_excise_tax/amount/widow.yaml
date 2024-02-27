@@ -1,0 +1,46 @@
+description: Hawaii provides this amount under the food excise tax credit for widow(er) filers.
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: currency-USD
+  label: Hawaii Food/Excise Tax Credit widow amount
+  reference:
+    - title: Hawaii Income Tax Law, Chapter 235, Section 235-55.85, (b)
+      href: https://files.hawaii.gov/tax/legal/hrs/hrs_235.pdf#page=44
+    - title: Hawaii Tax Form N-311 2022 
+      href: https://files.hawaii.gov/tax/forms/2022/n311_i.pdf#page=1
+    - title: Hawaii Tax Form N-311 2021 page 1
+      href: https://www.dochub.com/jsfiller-desk14/?mode=cors&lang=en&ref=https://www.dochub.com&projectId=1317406362&loader=tips&MEDIUM_PDFJS=true&PAGE_REARRANGE_V2_MVP=true&isPageRearrangeV2MVP=true&jsf-page-rearrange-v2=true&jsf-new-header=false#ede2dc134a0b435eb2449575bffabfdb
+brackets:
+  - threshold:
+      2021-01-01: 0
+    amount:
+      2021-01-01: 110
+  - threshold:
+      2021-01-01: 5_000
+    amount:
+      2021-01-01: 100
+  - threshold:
+      2021-01-01: 10_000
+    amount:
+      2021-01-01: 85
+  - threshold:
+      2021-01-01: 15_000
+    amount:
+      2021-01-01: 70
+  - threshold:
+      2021-01-01: 20_000
+    amount:
+      2021-01-01: 55
+  - threshold:
+      2021-01-01: 30_000
+    amount:
+      2021-01-01: 45
+  - threshold:
+      2021-01-01: 40_000
+    amount:
+      2021-01-01: 35
+  - threshold:
+      2021-01-01: 50_000
+    amount:
+      2021-01-01: 0

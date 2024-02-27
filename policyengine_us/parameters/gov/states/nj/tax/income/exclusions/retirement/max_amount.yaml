@@ -1,0 +1,62 @@
+description: Filers (and/or spouses) can exclude no more than this amount of retirement income from taxable income
+metadata:
+  unit: currency-USD
+  label: NJ pension/retirement maximum exclusion amount
+  reference:
+    - title: 2022 New Jersey Revised Statutes Title 54A - New Jersey Gross Income Tax Act Section 54A:6-10 - Pensions and annuities.
+      href: https://law.justia.com/codes/new-jersey/2022/title-54a/section-54a-6-10/
+    - title: 2022 New Jersey Revised Statutes Title 54A - New Jersey Gross Income Tax Act Section 54A:6-15 - Other retirement income.
+      href: https://law.justia.com/codes/new-jersey/2022/title-54a/section-54a-6-15/
+    - title: Instructions for Form NJ-1040 (lines 28a-28b)
+      href: https://www.state.nj.us/treasury/taxation/pdf/current/1040i.pdf#page=21
+    - filing_status
+SINGLE:
+  2000-01-01: 9_375
+  2001-01-01: 11_250
+  2002-01-01: 13_125
+  2003-01-01: 15_000
+  2017-01-01: 30_000
+  2018-01-01: 45_000
+  2019-01-01: 60_000
+  2020-01-01: 75_000
+  2021-01-01: 75_000
+SEPARATE:
+  2000-01-01: 6_250
+  2001-01-01: 7_500
+  2002-01-01: 8_750
+  2003-01-01: 10_000
+  2017-01-01: 20_000
+  2018-01-01: 30_000
+  2019-01-01: 40_000
+  2020-01-01: 50_000
+  2021-01-01: 50_000
+HEAD_OF_HOUSEHOLD:
+  2000-01-01: 9_375
+  2001-01-01: 11_250
+  2002-01-01: 13_125
+  2003-01-01: 15_000
+  2017-01-01: 30_000
+  2018-01-01: 45_000
+  2019-01-01: 60_000
+  2020-01-01: 75_000
+  2021-01-01: 75_000
+JOINT:
+  2000-01-01: 12_500
+  2001-01-01: 15_000
+  2002-01-01: 17_500
+  2003-01-01: 20_000
+  2017-01-01: 40_000
+  2018-01-01: 60_000
+  2019-01-01: 80_000
+  2020-01-01: 100_000
+  2021-01-01: 100_000
+WIDOW:
+  2000-01-01: 9_375
+  2001-01-01: 11_250
+  2002-01-01: 13_125
+  2003-01-01: 15_000
+  2017-01-01: 30_000
+  2018-01-01: 45_000
+  2019-01-01: 60_000
+  2020-01-01: 75_000
+  2021-01-01: 75_000

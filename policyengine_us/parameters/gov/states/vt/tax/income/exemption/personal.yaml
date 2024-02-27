@@ -1,0 +1,16 @@
+description: Vermont provides the following personal exemption amount.
+values:
+  2021-01-01: 4_350
+  2022-01-01: 4_500
+metadata:
+  unit: currency-USD
+  period: year
+  label: Vermont personal exemption amount
+  reference:
+    # Legal code specifies $4,150. Date unknown.
+    - title: Legal Code Titl. 32 V.S.A. § 5811(21)(C)(i)
+      href: http://legislature.vermont.gov/statutes/section/32/151/05811
+    - title: 2022 Vermont Income Tax Return Form Line 5
+      href: https://tax.vermont.gov/sites/tax/files/documents/IN-111-2022.pdf
+    - title: 2021 Vermont Income Tax Return Form Line 5
+      href: https://tax.vermont.gov/sites/tax/files/documents/IN-111-2021.pdf

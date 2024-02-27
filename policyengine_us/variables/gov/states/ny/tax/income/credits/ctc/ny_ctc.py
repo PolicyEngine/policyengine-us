@@ -1,9 +1,5 @@
 from policyengine_us.model_api import *
 from policyengine_core.periods import instant
-import warnings
-
-warnings.filterwarnings("ignore")
-warnings.simplefilter("ignore")
 
 
 class ny_ctc(Variable):

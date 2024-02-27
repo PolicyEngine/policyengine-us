@@ -1,0 +1,44 @@
+- name: DC KCCATC for a single parent of three with $12k in child care expenses
+  period: 2023
+  reforms: policyengine_us.reforms.dc_kccatc.dc_kccatc_reform
+  input:
+    gov.contrib.dc_kccatc.active: true
+    gov.contrib.dc_kccatc.expenses.max: 12_000
+    gov.contrib.dc_kccatc.expenses.rate: 0.5
+    gov.contrib.dc_kccatc.phase_out.rate: 0.1
+    gov.contrib.dc_kccatc.phase_out.threshold.HEAD_OF_HOUSEHOLD: 200_000
+    gov.contrib.dc_kccatc.phase_out.threshold.JOINT: 400_000
+    gov.contrib.dc_kccatc.phase_out.threshold.SEPARATE: 200_000
+    gov.contrib.dc_kccatc.phase_out.threshold.SINGLE: 200_000
+    gov.contrib.dc_kccatc.phase_out.threshold.WIDOW: 200_000
+    # Household
+    count_cdcc_eligible: 3
+    filing_status: HEAD_OF_HOUSEHOLD
+    tax_unit_childcare_expenses: 12_000
+    adjusted_gross_income: 150_000
+    state_code: DC
+  output:
+    dc_kccatc: 6_000
+
+
+- name: DC KCCATC for a single parent of three with $12k in child care expenses in the phase-out region
+  period: 2023
+  reforms: policyengine_us.reforms.dc_kccatc.dc_kccatc_reform
+  input:
+    gov.contrib.dc_kccatc.active: true
+    gov.contrib.dc_kccatc.expenses.max: 12_000
+    gov.contrib.dc_kccatc.expenses.rate: 0.5
+    gov.contrib.dc_kccatc.phase_out.rate: 0.1
+    gov.contrib.dc_kccatc.phase_out.threshold.HEAD_OF_HOUSEHOLD: 200_000
+    gov.contrib.dc_kccatc.phase_out.threshold.JOINT: 400_000
+    gov.contrib.dc_kccatc.phase_out.threshold.SEPARATE: 200_000
+    gov.contrib.dc_kccatc.phase_out.threshold.SINGLE: 200_000
+    gov.contrib.dc_kccatc.phase_out.threshold.WIDOW: 200_000
+    # Household
+    count_cdcc_eligible: 3
+    filing_status: HEAD_OF_HOUSEHOLD
+    tax_unit_childcare_expenses: 12_000
+    adjusted_gross_income: 230_000
+    state_code: DC
+  output:
+    dc_kccatc: 3_000

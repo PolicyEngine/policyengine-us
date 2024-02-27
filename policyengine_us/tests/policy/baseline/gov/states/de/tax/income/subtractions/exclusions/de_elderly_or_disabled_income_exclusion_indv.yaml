@@ -1,0 +1,15 @@
+- name: Eligible individual exclusion
+  period: 2023
+  input:
+    state_filing_status_if_married_filing_separately_on_same_return: SEPARATE
+    de_elderly_or_disabled_income_exclusion_eligible_person: true
+  output:
+    de_elderly_or_disabled_income_exclusion: 2_000
+
+- name: Ineligible individual exclusion
+  period: 2023
+  input:
+    state_filing_status_if_married_filing_separately_on_same_return: SEPARATE
+    de_elderly_or_disabled_income_exclusion_eligible_person: false
+  output:
+    de_elderly_or_disabled_income_exclusion: 0

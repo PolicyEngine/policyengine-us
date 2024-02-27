@@ -12,5 +12,5 @@ class nj_refundable_credits(Variable):
         "nj_property_tax_credit",
         "nj_eitc",
         "nj_cdcc",
-        "nj_child_tax_credit",
+        "nj_ctc",
     ]

@@ -1,0 +1,39 @@
+description: Arizona taxes the personal income for head of household filers at this rate.
+metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  label: Arizona income tax rate head of household filers
+  reference:
+    - title: Arizona State Legislature Title 43 - Taxation of Income, Chapter 10, Article 5, 43-1011
+      href: https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/43/01011.htm
+    - title: 2022 Arizona Form 140 Resident Personal Income Tax Booklet
+      href: https://azdor.gov/sites/default/files/2023-03/FORMS_INDIVIDUAL_2022_140BOOKLET.pdf
+    - title: 2021 Arizona Form 140 Resident Personal Income Tax Booklet
+      href: https://azdor.gov/sites/default/files/2023-03/FORMS_INDIVIDUAL_2021_140BOOKLET.pdf 
+brackets:
+  - threshold:
+      2019-01-01: 0
+    rate:
+      2019-01-01: 0.0259
+      2022-01-01: 0.0255
+  - threshold:
+      2019-01-01: 53_000
+      2021-01-01: 55_615
+      2022-01-01: 57_305
+    rate:
+      2019-01-01: 0.0334
+      2022-01-01: 0.0298
+  - threshold:
+      2019-01-01: 106_000
+      2021-01-01: 111_229
+      2022-01-01: .inf
+    rate:
+      2019-01-01: 0.0417
+  - threshold:
+      2019-01-01: 318_000
+      2021-01-01: 333_684
+      2022-01-01: .inf
+    # in 2021 Arizona broke the highest income tax rate up into a 1.00% base rate and 3.5% surcharge
+    rate:
+      2019-01-01: 0.045

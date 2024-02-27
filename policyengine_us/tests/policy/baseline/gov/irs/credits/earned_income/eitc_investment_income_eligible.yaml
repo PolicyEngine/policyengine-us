@@ -1,0 +1,13 @@
+- name: Investment income ineligible in 2022.
+  period: 2022
+  input:
+    eitc_relevant_investment_income: 10_301
+  output:
+    eitc_investment_income_eligible: false
+
+- name: Investment income eligible in 2023.
+  period: 2023
+  input:
+    eitc_relevant_investment_income: 11_000
+  output:
+    eitc_investment_income_eligible: true

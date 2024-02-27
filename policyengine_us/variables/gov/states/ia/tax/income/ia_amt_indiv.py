@@ -20,9 +20,11 @@ class ia_amt_indiv(Variable):
         reg_taxinc = person("ia_taxable_income_indiv", period)
         std_ded = person("ia_standard_deduction_indiv", period)
         itm_ded = person("ia_itemized_deductions_indiv", period)
+        prorate_frac = person("ia_prorate_fraction", period)
+        proptax = add(person.tax_unit, period, ["real_estate_taxes"])
         amt_taxinc = where(
             itm_ded > std_ded,
-            reg_taxinc + person("real_estate_taxes", period),
+            reg_taxinc + prorate_frac * proptax,
             reg_taxinc,
         )
         # compute AMT amount

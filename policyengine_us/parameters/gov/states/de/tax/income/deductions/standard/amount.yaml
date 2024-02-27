@@ -1,0 +1,22 @@
+description: Delaware provides this standard deduction based on filing status.
+metadata:
+  reference:
+    - title: Delaware individual income tax instructions for 2022
+      href: https://revenuefiles.delaware.gov/2022/PIT-RES_TY22_2022-02_Instructions.pdf#page=7
+    - title: The Delaware Code - Title 30 - Chapter 11 - Subchapter II - § 1109 - (a) - (3)
+      href: https://delcode.delaware.gov/title30/c011/sc02/index.html
+  label: Delaware Standard Deduction
+  unit: currency-USD
+  period: year
+  breakdown:
+    - filing_status
+JOINT:
+  2000-01-01: 6_500
+SINGLE:
+  2000-01-01: 3_250
+SEPARATE:
+  2000-01-01: 3_250
+HEAD_OF_HOUSEHOLD:
+  2000-01-01: 3_250
+WIDOW:
+  2000-01-01: 3_250

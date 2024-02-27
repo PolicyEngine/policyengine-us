@@ -1,0 +1,17 @@
+description: Arizona caps the military retirement subtraction at this amount for each eligible individual.
+values:
+  2018-01-01: 2_500
+  2019-01-01: 3_500
+  2021-01-01: .inf
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Arizona military retirement subtraction max amount
+  reference:
+    - title: Subtractions from Arizona gross income 43-1022(26) 
+      href: https://www.azleg.gov/ars/43/01022.htm
+    - title: 2021 Form 140 - Arizona Resident Personal Income Tax Booklet, 29b
+      href: https://azdor.gov/sites/default/files/2023-03/FORMS_INDIVIDUAL_2021_140BOOKLET.pdf#page=27
+    - title: 2022 Form 140 - Arizona Resident Personal Income Tax Booklet, 29b
+      href: https://azdor.gov/sites/default/files/2023-03/FORMS_INDIVIDUAL_2022_140BOOKLET.pdf#page=25

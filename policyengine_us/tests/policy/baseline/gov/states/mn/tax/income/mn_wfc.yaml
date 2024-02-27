@@ -5,7 +5,7 @@
     mn_wfc_eligible: true
     filing_status: JOINT
     eitc_child_count: 2
-    filer_earned: 20_050
+    filer_adjusted_earnings: 20_050
     adjusted_gross_income: 20_050
     state_code: MN
   output:  # expected output from lookup table in Form M1 instructions
@@ -18,7 +18,7 @@
     mn_wfc_eligible: true
     filing_status: HEAD_OF_HOUSEHOLD
     eitc_child_count: 1
-    filer_earned: 30_050
+    filer_adjusted_earnings: 30_050
     adjusted_gross_income: 30_050
     state_code: MN
   output:  # expected output from lookup table in Form M1 instructions
@@ -31,7 +31,7 @@
     mn_wfc_eligible: true
     filing_status: JOINT
     eitc_child_count: 2
-    filer_earned: 20_050
+    filer_adjusted_earnings: 20_050
     adjusted_gross_income: 20_050
     state_code: MN
   output:  # expected output from lookup table in Form M1 instructions
@@ -44,7 +44,7 @@
     mn_wfc_eligible: true
     filing_status: HEAD_OF_HOUSEHOLD
     eitc_child_count: 1
-    filer_earned: 30_050
+    filer_adjusted_earnings: 30_050
     adjusted_gross_income: 30_050
     state_code: MN
   output:  # expected output from lookup table in Form M1 instructions

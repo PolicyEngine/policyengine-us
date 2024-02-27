@@ -1,0 +1,121 @@
+- name: Head and spouse in 2018, capped at 2500 each
+  period: 2018
+  input:
+    people:
+      person1:
+        military_retirement_pay: 2_501
+        is_tax_unit_head_or_spouse: true
+      person2:
+        military_retirement_pay: 2_400
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    az_military_retirement_subtraction: 4_900
+
+- name:  Head in 2018, capped at 2500
+  period: 2018
+  input:
+    people:
+      person1:
+        military_retirement_pay: 2_501
+        is_tax_unit_head_or_spouse: true
+      person2:
+        military_retirement_pay: 2_500
+        is_tax_unit_head_or_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    az_military_retirement_subtraction: 2_500
+
+- name: Head, spouse, and dependent in 2018, capped at 2500 each
+  period: 2018
+  input:
+    people:
+      person1:
+        military_retirement_pay: 2_501
+        is_tax_unit_head_or_spouse: true
+      person2:
+        military_retirement_pay: 2_400
+        is_tax_unit_head_or_spouse: true
+      person3:
+        is_tax_unit_head_or_spouse: false 
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AZ
+  output:
+    az_military_retirement_subtraction: 4_900
+
+- name: No military retirement pay
+  period: 2018
+  input:
+    people:
+      person1:
+        military_retirement_pay: 0
+        is_tax_unit_head_or_spouse: true
+      person2:
+        military_retirement_pay: 0
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    az_military_retirement_subtraction: 0
+
+- name: Head and spouse in 2019, capped at 3500 each
+  period: 2019
+  input:
+    people:
+      person1:
+        military_retirement_pay: 3_501
+        is_tax_unit_head_or_spouse: true
+      person2:
+        military_retirement_pay: 3_000
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    az_military_retirement_subtraction: 6_500
+  
+- name: Head and spouse after 2019, uncapped
+  period: 2021
+  input:
+    people:
+      person1:
+        military_retirement_pay: 4_000
+        is_tax_unit_head_or_spouse: true
+      person2:
+        military_retirement_pay: 5_000
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    az_military_retirement_subtraction: 9_000

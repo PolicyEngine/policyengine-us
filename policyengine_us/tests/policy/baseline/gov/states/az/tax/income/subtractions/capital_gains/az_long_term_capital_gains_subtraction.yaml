@@ -1,0 +1,23 @@
+- name: Long term capital gains are $20,000
+  period: 2023
+  input:
+    state_code: AZ
+    long_term_capital_gains: 20_000
+  output:
+    az_long_term_capital_gains_subtraction: 5_000
+
+- name: Long term capital gains are zero
+  period: 2023
+  input:
+    state_code: AZ
+    long_term_capital_gains: 0
+  output:
+    az_long_term_capital_gains_subtraction: 0
+
+- name: Long term capital gains can not be negative
+  period: 2023
+  input:
+    state_code: AZ
+    long_term_capital_gains: -1_000
+  output:
+    az_long_term_capital_gains_subtraction: 0

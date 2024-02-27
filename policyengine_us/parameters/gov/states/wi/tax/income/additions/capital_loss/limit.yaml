@@ -1,0 +1,12 @@
+description: Wisconsin limits capital losses to this amount.
+metadata:
+  unit: currency-USD
+  label: Wisconsin capital loss limit
+  period: year
+  reference:
+    - title: 2021 Wisconsin Form 1 Schedule WB, Line 28
+      href: https://www.revenue.wi.gov/TaxForms2021/2021-ScheduleWDf.pdf#page=2
+    - title: 2022 Wisconsin Form 1 Schedule WB, Line 28
+      href: https://www.revenue.wi.gov/TaxForms2022/2022-ScheduleWDf.pdf#page=2
+values:
+  2021-01-01: 500  # maximum loss expressed as a positive number

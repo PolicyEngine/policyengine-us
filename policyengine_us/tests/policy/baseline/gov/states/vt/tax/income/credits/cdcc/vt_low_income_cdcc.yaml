@@ -1,0 +1,26 @@
+- name: Vermont low-income CDCC unit test 1
+  period: 2021
+  input:
+    state_code: VT
+    capped_cdcc: 1_000
+    vt_low_income_cdcc_eligible: false
+  output:
+    vt_low_income_cdcc: 0 
+
+- name: Vermont low-income CDCC unit test 2
+  period: 2021
+  input:
+    state_code: VT
+    capped_cdcc: 1_000
+    vt_low_income_cdcc_eligible: true
+  output:
+    vt_low_income_cdcc: 500
+
+- name: Vermont low-income CDCC unit test 3
+  period: 2020
+  input:
+    state_code: VT
+    capped_cdcc: 1_000
+    vt_low_income_cdcc_eligible: true
+  output:
+    vt_low_income_cdcc: 500

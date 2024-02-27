@@ -1,0 +1,35 @@
+description: Georgia taxes the personal income of head of household filers at this rate.
+ 
+metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  label: Georgia income tax rate joint filers
+  reference:
+    - title: Depertment of Revenue - Tax Tables & Georgia Tax Rate Schedule
+      href: https://dor.georgia.gov/tax-tables-georgia-tax-rate-schedule
+brackets:
+  - threshold:
+      2022-01-01: 0
+    rate:
+      2022-01-01: 0.01
+  - threshold:
+      2022-01-01: 1_000
+    rate:
+      2022-01-01: 0.02
+  - threshold:
+      2022-01-01: 3_000
+    rate:
+      2022-01-01: 0.03
+  - threshold:
+      2022-01-01: 5_000
+    rate:
+      2022-01-01: 0.04
+  - threshold:
+      2022-01-01: 7_000
+    rate:
+      2022-01-01: 0.05
+  - threshold:
+      2022-01-01: 10_000
+    rate:
+      2022-01-01: 0.0575

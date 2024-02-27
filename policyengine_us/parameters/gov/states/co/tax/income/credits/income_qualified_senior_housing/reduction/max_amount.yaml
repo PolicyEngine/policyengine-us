@@ -1,0 +1,25 @@
+description: Colorado allows for the following maximum income qualified senior housing income tax credit, based on filing status.
+metadata:
+  period: year
+  unit: currency-USD
+  label: Colorado income qualified senior housing income tax credit max amount
+  breakdown:
+    - filing_status
+  reference:
+    - title: Income Qualified Senior Housing Income Tax Credit
+      href: https://tax.colorado.gov/income-qualified-senior-housing-income-tax-credit
+    - title: 2022 Colorado Individual Income Tax Filing Guide
+      href: https://tax.colorado.gov/sites/tax/files/documents/DR_104_Book_2022.pdf#page=17
+    - title: C.R.S. 39-22-544 (4)
+      href: https://advance.lexis.com/documentpage/?pdmfid=1000516&crid=36044aec-3814-40aa-973a-a3c829f9fd0b&action=pawlinkdoc&pdcomponentid=&pddocfullpath=%2fshared%2fdocument%2fstatutes-legislation%2furn%3acontentItem%3a6633-05N3-GXF6-81C6-00008-00&pdtocnodeidentifier=ABPAACAACAABAAGACL&config=014FJAAyNGJkY2Y4Zi1mNjgyLTRkN2YtYmE4OS03NTYzNzYzOTg0OGEKAFBvZENhdGFsb2d592qv2Kywlf8caKqYROP5&ecomp=k2vckkk&prid=0823b89b-e2f2-4942-affb-ba0d59f746b8
+      
+SINGLE:
+  2022-01-01: 1_000
+HEAD_OF_HOUSEHOLD:
+  2022-01-01: 1_000
+JOINT:
+  2022-01-01: 1_000
+WIDOW:
+  2022-01-01: 1_000
+SEPARATE:
+  2022-01-01: 500 

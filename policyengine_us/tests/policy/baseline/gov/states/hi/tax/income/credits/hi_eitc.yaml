@@ -1,0 +1,15 @@
+- name: No EITC
+  period: 2022
+  input:
+    eitc: 0
+    state_code: HI
+  output:
+    hi_eitc: 0
+
+- name: 20% match of fed EITC
+  period: 2022
+  input:
+    eitc: 1_000
+    state_code: HI
+  output:
+    hi_eitc: 200

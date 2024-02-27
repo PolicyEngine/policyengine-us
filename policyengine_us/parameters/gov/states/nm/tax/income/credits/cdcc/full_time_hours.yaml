@@ -1,0 +1,18 @@
+description: New Mexico provides the credit for child and dependent day care for filers with modified gross income based on these full time working hours.
+  # Per law - maximum income is derived from the annual income that would
+  # be derived from earnings at double the federal minimum wage 
+  # Per Tax Form - $30,160 = 7.25 * 40 * 52 * 2
+metadata:
+  unit: hours
+  label: New Mexico credit for dependent day care full time hours 
+  reference:
+    - title: New Mexico Statetus Annotated 1978, 7-2-18.1. part G (2) 
+      href: https://nmonesource.com/nmos/nmsa/en/item/4340/index.do#!fragment/zoupio-_Toc140503752/BQCwhgziBcwMYgK4DsDWszIQewE4BUBTADwBdoAvbRABwEtsBaAfX2zgEYAWABgFYeAZgDsfAEwBKADTJspQhACKiQrgCe0AOSapEQmFwJlqjdt37DIAMp5SAIQ0AlAKIAZZwDUAggDkAws5SpGAARtCk7BISQA
+    # Tax Form references only the calculation that derives the annual gross income.
+    - title: 2022 New Mexico Income Tax Form Intructions SECTION V, New Mexico Child Day Care Credit. 
+      href: https://klvg4oyd4j.execute-api.us-west-2.amazonaws.com/prod/PublicFiles/34821a9573ca43e7b06dfad20f5183fd/1afc56af-ea90-4d48-82e5-1f9aeb43255a/PITbook2022.pdf#page=72 
+    # Tax Form references only the calculation that derives the annual gross income.
+    - title: 2021 New Mexico Income Tax Form Intructions SECTION V, New Mexico Child Day Care Credit. 
+      href: https://klvg4oyd4j.execute-api.us-west-2.amazonaws.com/prod/PublicFiles/34821a9573ca43e7b06dfad20f5183fd/608063af-0c4c-4f28-ba42-cf40e04557ca/PITbook2021.pdf#page=62
+values:
+  2021-01-01: 40

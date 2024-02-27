@@ -1,0 +1,11 @@
+description: Total taxable pension income.
+values:
+  2015-01-01: 689_991_999_000
+  2020-01-01: 827_597_726_000
+metadata:
+  unit: currency-USD
+  label: SOI taxable pension income
+  uprating: calibration.gov.cbo.income_by_source.taxable_pension_income
+  reference:
+    - title: IRS SOI Tax Stats - Individual Statistical Tables by Size of Adjusted Gross Income
+      href: https://www.irs.gov/statistics/soi-tax-stats-individual-statistical-tables-by-size-of-adjusted-gross-income

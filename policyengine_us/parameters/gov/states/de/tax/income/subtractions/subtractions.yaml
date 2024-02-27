@@ -1,0 +1,13 @@
+description: Delaware subtracts these items when calculating state adjusted gross income.
+values:
+  2021-01-01:
+    - de_pension_exclusion # (4)
+    # The elderly or disabled income exclusion is computed separately
+    # - de_elderly_or_disabled_income_exclusion # (2)
+
+metadata:
+  unit: list
+  label: Delaware adjusted gross income subtractions
+  references: 
+  - title: Delaware Code, § 1106 Modifcations (b)
+    href: https://delcode.delaware.gov/title30/c011/sc02/index.html

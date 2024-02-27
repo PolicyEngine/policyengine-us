@@ -1,0 +1,29 @@
+- name: Ineligible SINGLE
+  period: 2023
+  input:
+    state_code: NM
+    filing_status: SINGLE
+    adjusted_gross_income: 36_668
+    exemptions_count: 1
+  output:
+    nm_low_and_middle_income_exemption: 0
+
+- name: Joint with 2 exemptions and no reduction
+  period: 2023
+  input:
+    state_code: NM
+    filing_status: JOINT
+    adjusted_gross_income: 30_000
+    exemptions_count: 2
+  output:
+    nm_low_and_middle_income_exemption: 5_000
+
+- name: Widow with 3 exemptions + reduction # 2_500 - ((40_000 - 30_000) * 0.1) = 1_500 * 3
+  period: 2023
+  input:
+    state_code: NM
+    filing_status: WIDOW
+    adjusted_gross_income: 40_000
+    exemptions_count: 3
+  output:
+    nm_low_and_middle_income_exemption: 4_500

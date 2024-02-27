@@ -1,0 +1,64 @@
+- name: Below age eligibility
+  period: 2023
+  input:
+    state_code: NM
+    age: 64
+    medical_expense: 30_000
+    head_is_dependent_elsewhere: false
+  output:
+    nm_medical_expense_credit: 0
+
+- name: Below expense eligibility
+  period: 2023
+  input:
+    state_code: NM
+    age: 65
+    medical_expense: 27_999
+    filing_status: JOINT
+    head_is_dependent_elsewhere: false
+  output:
+    nm_medical_expense_credit: 0
+
+- name: Eligible
+  period: 2023
+  input:
+    state_code: NM
+    age: 65
+    medical_expense: 28_000
+    filing_status: JOINT
+    head_is_dependent_elsewhere: false
+  output:
+    nm_medical_expense_credit: 2_800
+
+- name: Eligible - halved for separate filers
+  period: 2023
+  input:
+    state_code: NM
+    age: 65
+    medical_expense: 28_000
+    filing_status: SEPARATE
+    head_is_dependent_elsewhere: false
+  output:
+    nm_medical_expense_credit: 1_400
+
+- name: Output always $2,800
+  period: 2023
+  input:
+    state_code: NM
+    age: 65
+    medical_expense: 40_000
+    filing_status: SINGLE
+    head_is_dependent_elsewhere: false
+  output:
+    nm_medical_expense_credit: 2_800
+
+- name: Ineligible if dependent on another return
+  period: 2023
+  input:
+    state_code: NM
+    age: 65
+    medical_expense: 40_000
+    filing_status: SINGLE
+    head_is_dependent_elsewhere: true
+  output:
+    nm_medical_expense_credit: 0

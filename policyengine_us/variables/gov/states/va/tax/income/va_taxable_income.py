@@ -9,5 +9,19 @@ class va_taxable_income(Variable):
     definition_period = YEAR
     reference = (
         "https://law.lis.virginia.gov/vacodefull/title58.1/chapter3/article2/"
+        "https://www.tax.virginia.gov/sites/default/files/taxforms/individual-income-tax/2022/760-2022.pdf#page=1"
     )
     defined_for = StateCode.VA
+
+    def formula(tax_unit, period, parameters):
+        agi = tax_unit("va_agi", period)
+        std_ded = tax_unit("va_standard_deduction", period)
+        itm_ded = tax_unit("va_itemized_deductions", period)
+        itemizes = tax_unit("tax_unit_itemizes", period)
+        ded = where(itemizes, itm_ded, std_ded)
+        exemptions = tax_unit("va_total_exemptions", period)
+        total_deductions = ded + exemptions
+        # Virginia allows a deduction (atop itemized deductions) for the
+        # relevant expenses for the federal Child and Dependent Care Credit.
+        cdcc_expenses = tax_unit("cdcc_relevant_expenses", period)
+        return max_(agi - total_deductions - cdcc_expenses, 0)

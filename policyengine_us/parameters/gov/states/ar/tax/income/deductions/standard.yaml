@@ -1,0 +1,35 @@
+description: Arkansas provides a standard deduction of this amount, based on filing status.
+metadata:
+  label: Arkansas standard deduction
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  reference:
+  - title: Code of Arkansas Public Access A.C.A. Subchapter 4. § 26-51-430.(b).(1).(A)
+    href: https://advance.lexis.com/documentpage/?pdmfid=1000516&crid=8a0a4a46-62e0-41b6-8539-42452c3a9e46&nodeid=ABAAAFAACAAFABG&nodepath=%2FROOT%2FABA%2FABAAAF%2FABAAAFAAC%2FABAAAFAACAAF%2FABAAAFAACAAFABG&level=5&haschildren=&populated=false&title=26-51-430.+Deductions+%E2%80%94+Standard+deduction+%E2%80%94+Definition.&config=00JAA2ZjZiM2VhNS0wNTVlLTQ3NzUtYjQzYy0yYWZmODJiODRmMDYKAFBvZENhdGFsb2fXiYCnsel0plIgqpYkw9PK&pddocfullpath=%2Fshared%2Fdocument%2Fstatutes-legislation%2Furn%3AcontentItem%3A649P-FBD0-R03K-54BT-00008-00&ecomp=7gf5kkk&prid=4b6d04eb-5f42-47a5-b744-f8596299a894
+  - title: Arkansas 2022 Individual Income Tax Forms and Instructions
+    href: https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2022_AR1000F_and_AR1000NR_Instructions.pdf#page=14
+  - title: Arkansas 2021 Individual Income Tax Forms and Instructions
+    href: https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2021_AR1000F_and_AR1000NR_Instructions.pdf#page=13
+
+JOINT:
+  # $4,400 in 2015 + COLA, rounded by $10.
+  2021-01-01: 4_400
+  2022-01-01: 4_540
+SINGLE:
+  # $2_200 in 2015 + COLA, rounded by $10.
+  2021-01-01: 2_200
+  2022-01-01: 2_270
+SEPARATE:
+  # $2,200 in 2015 + COLA, rounded by $10.
+  2021-01-01: 2_200
+  2022-01-01: 2_270
+HEAD_OF_HOUSEHOLD:
+ # $2,200 in 2015 + COLA, rounded by $10.
+  2021-01-01: 2_200
+  2022-01-01: 2_270
+WIDOW: 
+ # $2,200 in 2015 + COLA, rounded by $10.
+  2021-01-01: 2_200
+  2022-01-01: 2_270

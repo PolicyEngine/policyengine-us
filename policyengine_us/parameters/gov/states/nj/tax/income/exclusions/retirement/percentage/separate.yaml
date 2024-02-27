@@ -1,0 +1,27 @@
+description: New Jersey allows the exclusion of this fraction of retirement income depending on total income.
+metadata:
+  threshold_unit: currency-USD
+  amount_unit: /1
+  threshold_period: year
+  type: single_amount
+  label: New Jersey pension/retirement exclusion fraction
+  reference:
+    - title: Instructions for Form NJ-1040 (line 64)
+      href: https://www.state.nj.us/treasury/taxation/pdf/current/1040i.pdf#page=21
+brackets:
+  - threshold:
+      2021-01-01: -.inf
+    amount:
+      2021-01-01: 1
+  - threshold:
+      2021-01-01: 100_000
+    amount:
+      2021-01-01: 0.25
+  - threshold:
+      2021-01-01: 125_000
+    amount:
+      2021-01-01: 0.125
+  - threshold:
+      2021-01-01: 150_000
+    amount:
+      2021-01-01: 0

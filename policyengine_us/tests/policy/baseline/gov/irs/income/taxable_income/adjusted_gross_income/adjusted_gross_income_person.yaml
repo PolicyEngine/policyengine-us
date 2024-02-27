@@ -1,0 +1,109 @@
+- name: adjusted_gross_income_person unit test 1
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        employment_income: 200_000
+      person2:
+        is_tax_unit_spouse: true
+        employment_income: 100_000
+      person3:
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+  output:
+    adjusted_gross_income: 300_000
+    adjusted_gross_income_person: [200_000, 100_000, 0]
+
+- name: adjusted_gross_income_person unit test 2
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        employment_income: 200_000
+      person2:
+        is_tax_unit_spouse: true
+        employment_income: 100_000
+      person3:
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        puerto_rico_income: 6_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+  output:
+    adjusted_gross_income: 300_000 - 6_000
+    adjusted_gross_income_person: [197_000, 97_000, 0]
+
+- name: adjusted_gross_income_person unit test 3
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        employment_income: 60_000
+        self_employment_income: -10_000
+      person2:
+        is_tax_unit_spouse: true
+        employment_income: 40_000
+        self_employment_income: 0
+      person3:
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+  output:
+    adjusted_gross_income: 90_000
+    # self-employment loss is shared evenly by the head and spouse
+    adjusted_gross_income_person: [55_000, 35_000, 0]
+
+- name: adjusted_gross_income_person unit test 4
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    gov.contrib.ubi_center.basic_income.taxable: true
+    people:
+      person1:
+        is_tax_unit_head: true
+        employment_income: 200_000
+      person2:
+        is_tax_unit_spouse: true
+        employment_income: 100_000
+      person3:
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        basic_income: 800
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+  output:
+    adjusted_gross_income: 300_800
+    adjusted_gross_income_person: [200_400, 100_400, 0]

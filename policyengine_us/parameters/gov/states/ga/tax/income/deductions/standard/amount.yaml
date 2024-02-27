@@ -1,0 +1,36 @@
+description: Georgia provides filers a standard deduction of this amount, depending on filing status.
+metadata:
+  label: Georgia standard deduction amount
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  reference: 
+  - title: 2021 IT-511 Individual Income Tax Booklet - page 12 - FORM 500, LINE 11a
+    href: https://dor.georgia.gov/document/booklet/2021-it-511-individual-income-tax-booklet/download
+  - title: 2022 IT-511 Individual Income Tax Booklet - - page 12 - FORM 500, LINE 11a
+    href: https://dor.georgia.gov/document/document/2022-it-511-individual-income-tax-booklet/download
+  - title: 2023 IT-511 Individual Income Tax Booklet - page 12 - FORM 500, LINE 11a
+    href: https://dor.georgia.gov/document/document/2023-it-511-individual-income-tax-booklet/download
+  - title: Official Code of Georgia Annotated | CH17 Income Taxes | O.C.G.A. § 48-7-27 | (a)(1)(B)
+    href: https://advance.lexis.com/documentpage/?pdmfid=1000516&crid=f2f03a7b-4dec-4c65-b2f5-c74b75791422&nodeid=ABWAALAADAAM&nodepath=%2fROOT%2fABW%2fABWAAL%2fABWAALAAD%2fABWAALAADAAM&level=4&haschildren=&populated=false&title=48-7-27.+%5bEffective+January+1%2c+2024.+See+note.%5d+Computation+of+taxable+net+income.&config=00JAA1MDBlYzczZi1lYjFlLTQxMTgtYWE3OS02YTgyOGM2NWJlMDYKAFBvZENhdGFsb2feed0oM9qoQOMCSJFX5qkd&pddocfullpath=%2fshared%2fdocument%2fstatutes-legislation%2furn%3acontentItem%3a65BG-DWN3-CGX8-02TS-00008-00&ecomp=bgf5kkk&prid=0bbf9da8-e012-45ee-8089-7ab2fc1bfa02
+JOINT:
+  2021-01-01: 6_000
+  2022-01-01: 7_100
+  2024-01-01: 24_000
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 4_600
+  2022-01-01: 5_400
+  2024-01-01: 12_000
+SINGLE:
+  2021-01-01: 4_600
+  2022-01-01: 5_400
+  2024-01-01: 12_000
+SEPARATE:
+  2021-01-01: 3_000
+  2022-01-01: 3_550
+  2024-01-01: 12_000
+WIDOW:
+  2021-01-01: 4_600
+  2022-01-01: 5_400
+  2024-01-01: 12_000

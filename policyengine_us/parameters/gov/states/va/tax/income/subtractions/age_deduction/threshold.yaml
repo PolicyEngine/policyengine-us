@@ -1,0 +1,26 @@
+description: Virginia reduces its age deduction for filers of different filling statuses with adjusted federal AGI exceeding this amount.
+
+metadata:
+  period: year
+  unit: currency-USD
+  label: Adjusted federal AGI threshold for VA taxpayers eligible for an age deduction
+  breakdown:
+  - filing_status
+  reference:
+  - title: Virginia 2022 Form 760 Resident Individual Income Tax Booklet
+    href: https://www.tax.virginia.gov/sites/default/files/vatax-pdf/2022-760-instructions.pdf#page=16
+  - title: Code of Virginia § 58.1-322.03.(5)(a)(b)
+    href: https://law.lis.virginia.gov/vacodefull/title58.1/chapter3/article2/
+  - title: Virginia 2021 Form 760 Resident Individual Income Tax Booklet
+    href: https://www.tax.virginia.gov/sites/default/files/vatax-pdf/2021-760-instructions.pdf#page=18
+
+JOINT:
+  2021-01-01: 75_000
+SINGLE:
+  2021-01-01: 50_000
+SEPARATE:
+  2021-01-01: 75_000
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 50_000
+WIDOW:
+  2021-01-01: 50_000  

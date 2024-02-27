@@ -1,0 +1,23 @@
+- name: Capped at 0
+  period: 2023
+  input:
+    adjusted_gross_income: 100
+    nm_additions: 100
+    nm_deductions: 200
+    nm_exemptions: 300
+    nm_other_deductions_and_exemptions: 400
+    state_code: NM
+  output:
+    nm_taxable_income: 0
+
+- name: Calculation
+  period: 2023
+  input:
+    adjusted_gross_income: 1_500
+    nm_additions: 100
+    nm_deductions: 200
+    nm_exemptions: 300
+    nm_other_deductions_and_exemptions: 400
+    state_code: NM
+  output:
+    nm_taxable_income: 700

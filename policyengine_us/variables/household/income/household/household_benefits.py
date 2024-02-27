@@ -13,6 +13,7 @@ class household_benefits(Variable):
         "state_supplement",
         "co_state_supplement",
         "co_oap",
+        "co_ccap_subsidy",
         "ca_cvrp",  # California Clean Vehicle Rebate Project.
         "ca_care",
         "ca_fera",
@@ -20,12 +21,11 @@ class household_benefits(Variable):
         "wic",
         "free_school_meals",
         "reduced_price_school_meals",
-        "lifeline",
-        "acp",
-        "ebb",
+        "spm_unit_broadband_subsidy",
         "tanf",
         "high_efficiency_electric_home_rebate",
         "residential_efficiency_electrification_rebate",
+        "unemployment_compensation",
         # Contributed.
         "basic_income",
         "spm_unit_capped_housing_subsidy",

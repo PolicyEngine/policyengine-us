@@ -1,0 +1,26 @@
+description: Wisconsin limits eligibility for retirement income subtraction to this maximum federal AGI.
+metadata:
+  breakdown:
+    - filing_status
+  period: year
+  unit: currency-USD
+  reference:
+    - title: 2021 Wisconsin Form 1 Schedule SB instructions, Line 17
+      href: https://www.revenue.wi.gov/TaxForms2021/2021-ScheduleSB-Inst.pdf#page=9
+    - title: 2022 Wisconsin Form 1 Schedule SB instructions, Line 16
+      href: https://www.revenue.wi.gov/TaxForms2021/2021-ScheduleSB-Inst.pdf#page=7
+SINGLE:
+  values:
+    2021-01-01: 15_000
+JOINT:
+  values:
+    2021-01-01: 30_000
+WIDOW:
+  values:
+    2021-01-01: 15_000
+SEPARATE:
+  values:
+    2021-01-01:  15_000
+HEAD_OF_HOUSEHOLD:
+  values:
+    2021-01-01: 15_000

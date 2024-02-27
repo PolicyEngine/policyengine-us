@@ -1,0 +1,12 @@
+description: Colorado qualifies children for the child tax credit under this federal eligibility.
+values:
+  2021-01-01:
+    - ctc_qualifying_child
+  2024-01-01:
+    - is_eitc_qualifying_child
+metadata:
+  unit: list
+  label: Colorado child tax credit child eligibility
+  reference:
+    - title: House Bill 23-1112, Section 2, (1), (a)
+      href: https://leg.colorado.gov/sites/default/files/2023a_1112_signed.pdf#page=4

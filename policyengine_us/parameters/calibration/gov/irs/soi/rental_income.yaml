@@ -1,0 +1,11 @@
+description: Total rental income.
+values:
+  2015-01-01: 100_311_600_000
+  2020-01-01: 104_600_610_000
+metadata:
+  unit: currency-USD
+  label: SOI rental income
+  uprating: calibration.gov.cbo.income_by_source.adjusted_gross_income
+  reference:
+    - title: IRS SOI Tax Stats - Individual Statistical Tables by Size of Adjusted Gross Income
+      href: https://www.irs.gov/statistics/soi-tax-stats-individual-statistical-tables-by-size-of-adjusted-gross-income

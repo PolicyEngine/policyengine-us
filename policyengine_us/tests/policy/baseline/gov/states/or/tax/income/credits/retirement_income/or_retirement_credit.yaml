@@ -1,0 +1,199 @@
+- name: No eligible people
+  period: 2022
+  input:
+    people:
+      person1:
+        or_retirement_credit_eligible: false
+        taxable_pension_income: 1_000
+        social_security: 0
+      person2:
+        or_retirement_credit_eligible: false
+        taxable_pension_income: 1_000
+        social_security: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SEPARATE
+        or_retirement_credit_household_income: 1_000
+        or_federal_pension_subtraction: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OR
+  output:
+    or_retirement_credit: 0
+
+- name: Pension subtraction over pension income
+  period: 2022
+  input:
+    people:
+      person1:
+        or_retirement_credit_eligible: true
+        taxable_pension_income: 1_000
+        social_security: 0
+      person2:
+        or_retirement_credit_eligible: true
+        taxable_pension_income: 900
+        social_security: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: WIDOW
+        or_retirement_credit_household_income: 1_000
+        or_federal_pension_subtraction: 2_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OR
+  output:
+    or_retirement_credit: 0
+
+- name: Pension income reduced by the pension subtraction
+  period: 2022
+  input:
+    people:
+      person1:
+        or_retirement_credit_eligible: true
+        taxable_pension_income: 2_000
+        social_security: 0
+      person2:
+        or_retirement_credit_eligible: true
+        taxable_pension_income: 3_000
+        social_security: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SINGLE
+        or_retirement_credit_household_income: 1_000
+        or_federal_pension_subtraction: 4_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OR
+  output:
+    or_retirement_credit: 90 # 5,000 - 4,000 * 0.09 
+
+- name: Calculation of unreduced base amount
+  period: 2022
+  input:
+    people:
+      person1:
+        or_retirement_credit_eligible: true
+        taxable_pension_income: 9_000
+        social_security: 0
+      person2:
+        or_retirement_credit_eligible: true
+        taxable_pension_income: 6_001
+        social_security: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        or_retirement_credit_household_income: 30_000
+        or_federal_pension_subtraction: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OR
+  output:
+    or_retirement_credit: 1_350
+
+- name: Base amount reduced by excess household income
+  period: 2022
+  input:
+    people:
+      person1:
+        or_retirement_credit_eligible: true
+        taxable_pension_income: 9_000
+        social_security: 0
+      person2:
+        or_retirement_credit_eligible: true
+        taxable_pension_income: 6_001
+        social_security: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        or_retirement_credit_household_income: 40_000
+        or_federal_pension_subtraction: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OR
+  output:
+    or_retirement_credit: 450
+
+- name: Base amount reduced by social secuirty benefits
+  period: 2022
+  input:
+    people:
+      person1:
+        or_retirement_credit_eligible: true
+        taxable_pension_income: 9_000
+        social_security: 500
+      person2:
+        or_retirement_credit_eligible: true
+        taxable_pension_income: 6_001
+        social_security: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        or_retirement_credit_household_income: 30_000
+        or_federal_pension_subtraction: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OR
+  output:
+    or_retirement_credit: 1_215
+
+- name: Base amount fully reduced by social secuirty benefits
+  period: 2022
+  input:
+    people:
+      person1:
+        or_retirement_credit_eligible: true
+        taxable_pension_income: 1_000
+        social_security: 12_000
+      person2:
+        or_retirement_credit_eligible: true
+        taxable_pension_income: 0
+        social_security: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        or_retirement_credit_household_income: 30_000
+        or_federal_pension_subtraction: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OR
+  output:
+    or_retirement_credit: 0
+
+- name: Base amount fully reduced by excess household income
+  period: 2022
+  input:
+    people:
+      person1:
+        or_retirement_credit_eligible: true
+        taxable_pension_income: 1_000
+        social_security: 0
+      person2:
+        or_retirement_credit_eligible: true
+        taxable_pension_income: 0
+        social_security: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        or_retirement_credit_household_income: 90_000
+        or_federal_pension_subtraction: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OR
+  output:
+    or_retirement_credit: 0

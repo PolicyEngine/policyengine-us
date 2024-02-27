@@ -1,0 +1,91 @@
+- name: The AGI difference is attributed to the person with the higher AGI and the rest is halved
+  period: 2021
+  input:
+    people: 
+      person1:
+        is_tax_unit_head: true
+        mt_agi: 20_000
+      person2:
+        is_tax_unit_spouse: true
+        mt_agi: 18_000
+      person3:
+        mt_agi: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        mt_tax_unit_deductions_exemptions_indiv: 10_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    mt_head_deductions_exemptions_indiv: 6_000
+
+- name: The AGI difference is attributed to the person with the higher AGI and the rest is halved, spouse larger AGI
+  period: 2021
+  input:
+    people: 
+      person1:
+        is_tax_unit_head: true
+        mt_agi: 10_000
+      person2:
+        is_tax_unit_spouse: true
+        mt_agi: 18_000
+      person3:
+        mt_agi: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        mt_tax_unit_deductions_exemptions_indiv: 10_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    mt_head_deductions_exemptions_indiv: 1_000
+
+- name: Head has greater AGI and deductions are below the delta
+  period: 2021
+  input:
+    people: 
+      person1:
+        is_tax_unit_head: true
+        mt_agi: 20_000
+      person2:
+        is_tax_unit_spouse: true
+        mt_agi: 18_000
+      person3:
+        mt_agi: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        mt_tax_unit_deductions_exemptions_indiv: 1_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    mt_head_deductions_exemptions_indiv: 1_000
+
+- name: Spouse has greater AGI and deductions are below the delta
+  period: 2021
+  input:
+    people: 
+      person1:
+        is_tax_unit_head: true
+        mt_agi: 18_000
+      person2:
+        is_tax_unit_spouse: true
+        mt_agi: 20_000
+      person3:
+        mt_agi: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        mt_tax_unit_deductions_exemptions_indiv: 1_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    mt_head_deductions_exemptions_indiv: 0

@@ -1,0 +1,35 @@
+description: North Carolina provides this standard deduction amount.
+metadata:
+  label: North Carolina standard deduction amount
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  reference:
+  - title: 2021 North Carolina Form D-401, Line 11
+    href: https://www.ncdor.gov/2021-d-401-individual-income-tax-instructions/open#page=14
+  - title: 2022 North Carolina Form D-401, Line 11
+    href: https://www.ncdor.gov/2022-d-401-individual-income-tax-instructions/open#page=14
+  - title: Code of North Carolina | § 105-153.10 (a) (1)
+    href: https://law.justia.com/codes/north-carolina/2022/chapter-105/article-4/section-105-153-5/
+    
+SINGLE:
+  2019-01-01: 10_000
+  2020-01-01: 10_750
+  2022-01-01: 12_750
+JOINT:
+  2019-01-01: 20_000
+  2020-01-01: 21_500
+  2022-01-01: 25_500
+WIDOW:
+  2019-01-01: 20_000
+  2020-01-01: 21_500
+  2022-01-01: 25_500
+SEPARATE:
+  2019-01-01: 10_000
+  2020-01-01: 10_750
+  2022-01-01: 12_750
+HEAD_OF_HOUSEHOLD:
+  2019-01-01: 15_000
+  2020-01-01: 16_125
+  2022-01-01: 19_125

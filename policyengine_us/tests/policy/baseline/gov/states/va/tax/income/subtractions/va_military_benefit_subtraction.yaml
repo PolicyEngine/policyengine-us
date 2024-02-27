@@ -1,0 +1,193 @@
+- name: VA military benefit of amount less than $10,000, only person in tax unit, 55 or older
+  period: 2022
+  input:
+    people:
+      person1:
+        military_retirement_pay: 9_000
+        is_tax_unit_head: true
+        age: 60
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+  output:
+    va_military_benefit_subtraction: 9_000
+
+- name: VA military benefit of amount less than $10,000, only person in tax unit, not 55 or older
+  period: 2022
+  input:
+    people:
+      person1:
+        military_retirement_pay: 9_000
+        is_tax_unit_head: true
+        age: 45
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+  output:
+    # $0 since the individual has to be 55 or older to be eligible for the subtraction
+    va_military_benefit_subtraction: 0
+
+- name: VA military benefit of amount less than $10,000, both head and spouse eligible in tax unit, both older than 55
+  period: 2022
+  input:
+    people:
+      person1:
+        military_retirement_pay: 9_000
+        is_tax_unit_head: true
+        age: 60
+      person2:
+        military_retirement_pay: 8_000
+        is_tax_unit_spouse: true
+        age: 60
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # 9,000+8,000
+    va_military_benefit_subtraction: 17_000
+
+- name: VA military benefit of amount less than $10,000, both head and spouse eligible in tax unit, only spouse older than 55
+  period: 2022
+  input:
+    people:
+      person1:
+        military_retirement_pay: 9_000
+        is_tax_unit_head: true
+        age: 50
+      person2:
+        military_retirement_pay: 8_000
+        is_tax_unit_spouse: true
+        age: 60
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # 8,000 since the individual has to be older than 55
+    va_military_benefit_subtraction: 8_000
+
+- name: VA military benefit of amount more than $10,000 for spouse but less than $10,000 for head, both older than 55
+  period: 2022
+  input:
+    people:
+      person1:
+        military_retirement_pay: 9_000
+        is_tax_unit_head: true
+        age: 87
+      person2:
+        military_retirement_pay: 16_000
+        is_tax_unit_spouse: true
+        age: 85
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # $9,000 + $10,000 (max is $10,000)
+    va_military_benefit_subtraction: 19_000
+    
+- name: VA military benefit of amount less than $10,000 for spouse, head and a dependent, all older than 55
+  period: 2022
+  input:
+    people:
+      person1:
+        military_retirement_pay: 9_000
+        is_tax_unit_head: true
+        age: 87
+      person2:
+        military_retirement_pay: 5_000
+        is_tax_unit_spouse: true
+        age: 85
+      person3:
+        military_retirement_pay: 9_000
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: VA
+  output:
+    # $9,000+$5,000 since dependents should be excluded
+    va_military_benefit_subtraction: 14_000
+
+- name: VA military benefit of amount more than $10,000, 55 or older
+  period: 2022
+  input:
+    people:
+      person1:
+        military_retirement_pay: 20_000
+        is_tax_unit_head: true
+        age: 84
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+  output:
+    va_military_benefit_subtraction: 10_000
+
+- name: VA military benefit of amount more than $10,000, 55 or older with head and spouse variable
+  period: 2022
+  input:
+    people:
+      person1:
+        military_retirement_pay: 20_000
+        is_tax_unit_head_or_spouse: true
+        age: 84
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+  output:
+    va_military_benefit_subtraction: 10_000
+
+- name: VA military benefit of amount less than $10,000 for spouse, head and a dependent, all older than 55
+  period: 2022
+  input:
+    people:
+      person1:
+        military_retirement_pay: 9_000
+        is_tax_unit_head_or_spouse: true
+        age: 87
+      person2:
+        military_retirement_pay: 5_000
+        is_tax_unit_head_or_spouse: true
+        age: 85
+      person3:
+        military_retirement_pay: 9_000
+        is_tax_unit_head_or_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: VA
+  output:
+    # $9,000+$5,000 since dependents should be excluded
+    va_military_benefit_subtraction: 14_000

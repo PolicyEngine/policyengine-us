@@ -1,0 +1,29 @@
+description: Wisconsin provides this standard deduction amount before phase out.
+metadata:
+  breakdown:
+    - filing_status
+  period: year
+  unit: currency-USD
+  reference:
+    - title: Wisconsin Tax Brackets, Rates, Forms, and Standard Deductions
+      href: https://www.efile.com/wisconsin-tax-brackets-rates-and-forms/
+SINGLE:
+  values:
+    2021-01-01: 11_200
+    2022-01-01: 11_790
+JOINT:
+  values:
+    2021-01-01: 20_730
+    2022-01-01: 21_820
+WIDOW:
+  values:
+    2021-01-01: 20_730
+    2022-01-01: 21_820
+SEPARATE:
+  values:
+    2021-01-01:  9_850
+    2022-01-01: 10_370
+HEAD_OF_HOUSEHOLD:
+  values:
+    2021-01-01: 14_470
+    2022-01-01: 15_230

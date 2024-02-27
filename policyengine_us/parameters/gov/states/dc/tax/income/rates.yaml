@@ -1,0 +1,46 @@
+description: DC uses these income tax brackets and rates for all filing units.
+metadata:
+  type: marginal_rate
+  threshold_period: year
+  threshold_unit: currency-USD  # non-negative DC taxable income
+  rate_unit: /1
+  reference:
+    - title: 2021 Form D-40 Booklet
+      href: https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/52926_D-40_12.21.21_Final_Rev011122.pdf#page=19
+    - title: 2022 Form D-40 Booklet
+      href: https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2022_D-40_Booklet_Final_blk_01_23_23_Ordc.pdf#page=17
+brackets:
+  - threshold:
+      2021-01-01: 0
+    rate:
+      2021-01-01: 0.04
+  - threshold:
+      2021-01-01: 10_000
+    rate:
+      2021-01-01: 0.06
+  - threshold:
+      2021-01-01: 40_000
+    rate:
+      2021-01-01: 0.065
+  - threshold:
+      2021-01-01: 60_000
+    rate:
+      2021-01-01: 0.085
+  - threshold:
+      2021-01-01: 350_000
+      2022-01-01: 250_000
+    rate:
+      2021-01-01: 0.0875
+      2022-01-01: 0.0925
+  - threshold:
+      2021-01-01: 1_000_000
+      2022-01-01: 500_000
+    rate:
+      2021-01-01: 0.0895
+      2022-01-01: 0.0975
+  - threshold:
+      2021-01-01: .inf
+      2022-01-01: 1_000_000
+    rate:
+      2021-01-01: 0
+      2022-01-01: 0.1075

@@ -1,0 +1,25 @@
+description: Unemployment compensation total outlays.
+values:
+  2022-01-01: 33_000_000_000
+  2023-01-01: 35_000_000_000
+  # Projected.
+  2024-01-01: 36_794_000_000
+  2025-01-01: 42_543_000_000
+  2026-01-01: 44_042_000_000
+  2027-01-01: 45_957_000_000
+  2028-01-01: 47_952_000_000
+  2029-01-01: 50_186_000_000
+  2030-01-01: 52_431_000_000
+  2031-01-01: 54_401_000_000
+  2032-01-01: 56_085_000_000
+  2033-01-01: 57_740_000_000
+  2034-01-01: 59_380_000_000
+metadata:
+  unit: currency-USD
+  label: Unemployment compensation outlays
+  reference:
+    - title: CBO Details About Baseline Projections for Selected Programs | Unemployment Compensation | Feb 2024
+      # Source: https://www.cbo.gov/data/baseline-projections-selected-programs#24
+      # Row 15: Estimated Outlays
+      # Note: Includes TAA, a small amount that might be included in microdata.
+      href: https://www.cbo.gov/system/files/2024-02/51316-2024-02-unemployment.xlsx

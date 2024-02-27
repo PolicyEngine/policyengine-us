@@ -1,0 +1,60 @@
+- name: If filing jointly, head and spouse are both above 65
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: SC
+    age: 65
+    sc_retirement_deduction_indv: 0
+    sc_military_deduction_indv: 2_000
+    is_tax_unit_head_or_spouse: true
+  output:
+    # (15,000 - 2_000 - 0) = 13,000
+    sc_senior_exemption_person: 13_000
+
+- name: Age ineligible
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: SC
+    age: 64
+    sc_retirement_deduction_indv: 0
+    sc_military_deduction_indv: 2_000
+    is_tax_unit_head_or_spouse: true
+  output:
+    sc_senior_exemption_person: 0
+
+- name: Not head or spouse so ineligible
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: SC
+    age: 65
+    sc_retirement_deduction_indv: 0
+    sc_military_deduction_indv: 2_000
+    is_tax_unit_head_or_spouse: false
+  output:
+    sc_senior_exemption_person: 0
+
+- name: Fully reduced
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: SC
+    age: 65
+    sc_retirement_deduction_indv: 15_000
+    sc_military_deduction_indv: 2_000
+    is_tax_unit_head_or_spouse: true
+  output:
+    sc_senior_exemption_person: 0
+
+- name: No reduction
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: SC
+    age: 65
+    sc_retirement_deduction_indv: 0
+    sc_military_deduction_indv: 0
+    is_tax_unit_head_or_spouse: true
+  output:
+    sc_senior_exemption_person: 15_000

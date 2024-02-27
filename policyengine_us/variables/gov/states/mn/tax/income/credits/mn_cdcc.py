@@ -25,7 +25,7 @@ class mn_cdcc(Variable):
         qualifies_by_age = age < p.cdcc.child_age
         # ... disability
         non_head = ~person("is_tax_unit_head", period)
-        disabled = person("incapable_of_self_care", period)
+        disabled = person("is_incapable_of_self_care", period)
         qualifies_by_disability = non_head & disabled
         dep_count = tax_unit.sum(qualifies_by_age | qualifies_by_disability)
         # calculate qualifying care expenses

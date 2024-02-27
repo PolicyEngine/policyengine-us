@@ -1,0 +1,16 @@
+description: Kentucky provides this standard deduction amount.
+values:
+  2021-01-01: 2_690
+  2022-01-01: 2_770
+metadata:
+  label: Kentucky standard deduction amount
+  period: year
+  unit: currency-USD
+  reference:
+  # Legal code specifies $1,700 in 1999, CPI-inflated since.
+  - title: Kentucky Revised Statutes, KRS Chapter 141.081 Optional standard deduction for individuals - Exception.
+    href: https://apps.legislature.ky.gov/law/statutes/statute.aspx?id=29067
+  - title: 2022 KENTUCKY Form 2022
+    href: https://revenue.ky.gov/Forms/Form%20740%205-9-23.pdf
+  - title: 2021 KENTUCKY Form 740
+    href: https://www.taxformfinder.org/forms/2021/2021-kentucky-form-740.pdf
