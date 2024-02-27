@@ -1,0 +1,78 @@
+- name: both qualify
+  period: 2022
+  input:
+    people:
+      person1:
+        irs_employment_income: 48_000
+        self_employment_income: 0
+      person2:
+        irs_employment_income: 1_000
+        self_employment_income: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output: # 1 * 1
+    ut_at_home_parent_credit_eligibility: true
+
+- name: one parent qualifies, tax unit not qualify
+  period: 2022
+  input:
+    people:
+      person1:
+        irs_employment_income: 48_000
+        self_employment_income: 0
+      person2:
+        irs_employment_income: 1_000
+        self_employment_income: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        adjusted_gross_income: 80_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output: # 1 * 0
+    ut_at_home_parent_credit_eligibility: false
+
+- name: one parent not qualify, tax unit qualifies
+  period: 2022
+  input:
+    people:
+      person1:
+        irs_employment_income: 48_000
+        self_employment_income: 0
+      person2:
+        irs_employment_income: 10_000
+        self_employment_income: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output: # 0 * 1
+    ut_at_home_parent_credit_eligibility: false
+
+- name: both not qualify
+  period: 2022
+  input:
+    people:
+      person1:
+        irs_employment_income: 70_000
+        self_employment_income: 0
+      person2:
+        irs_employment_income: 10_000
+        self_employment_income: 0
+      person3:
+        irs_employment_income: 0
+        self_employment_income: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        adjusted_gross_income: 80_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: UT
+  output: # 0 * 0
+    ut_at_home_parent_credit_eligibility: false

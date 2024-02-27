@@ -5,24 +5,22 @@
       person1:
         is_tax_unit_head: true
         age: 45
-        irs_employment_income: 48_000
-        self_employment_income: 0
         is_tax_unit_dependent: false
       person2:
         age: 40
-        irs_employment_income: 1_000
-        self_employment_income: 0
         is_tax_unit_dependent: false
       person3:
         age: 0
-        irs_employment_income: 0
-        self_employment_income: 0
         is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        ut_at_home_parent_credit_eligibility: true
     households:
       household:
         members: [person1, person2, person3]
         state_code: UT
-  output:
+  output: # 100 * 1
     ut_at_home_parent_credit: 100
 
 - name: UT at-home parent credit unit test 2
@@ -32,26 +30,45 @@
       person1:
         is_tax_unit_head: true
         age: 50
-        irs_employment_income: 70_000
-        self_employment_income: 0
         is_tax_unit_dependent: false
       person2:
         age: 45
-        irs_employment_income: 10_000
-        self_employment_income: 0
         is_tax_unit_dependent: false
       person3:
         age: 0
-        irs_employment_income: 0
-        self_employment_income: 0
         is_tax_unit_dependent: true
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
-        adjusted_gross_income: 80_000
+        ut_at_home_parent_credit_eligibility: false
     households:
       household:
         members: [person1, person2, person3]
         state_code: UT
   output:
     ut_at_home_parent_credit: 0
+
+- name: UT at-home parent credit unit test 3
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 45
+        is_tax_unit_dependent: false
+      person2:
+        age: 0
+        is_tax_unit_dependent: true
+      person3:
+        age: 0
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        ut_at_home_parent_credit_eligibility: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: UT
+  output: # 100 * 2
+    ut_at_home_parent_credit: 200
