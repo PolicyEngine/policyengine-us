@@ -17,12 +17,13 @@ from pathlib import Path
 from typing import Tuple
 
 
-def generate_model_variables(dataset: str, time_period: str = "2023") -> Tuple:
+def generate_model_variables(dataset: str, time_period: str = "2023", no_weight_adjustment: bool = False) -> Tuple:
     """Generates variables needed for the calibration process.
 
     Args:
         dataset (str): The name of the dataset to use.
         time_period (str, optional): The time period to use. Defaults to "2023".
+        no_weight_adjustment (bool, optional): Whether to skip the weight adjustment. Defaults to False.
 
     Returns:
         household_weights (torch.Tensor): The household weights.
@@ -47,6 +48,9 @@ def generate_model_variables(dataset: str, time_period: str = "2023") -> Tuple:
         dtype=torch.float32,
     )
 
+    if no_weight_adjustment:
+        weight_adjustment = torch.zeros_like(household_weights)
+
     values_df = pd.DataFrame()
     targets = {}
     equivalisation = {}
@@ -66,7 +70,7 @@ def generate_model_variables(dataset: str, time_period: str = "2023") -> Tuple:
             continue
         label = (
             simulation.tax_benefit_system.variables[variable_name].label
-            + " aggregate"
+            + " (IRS SOI)"
         )
         values_df[label] = (
             simulation.calculate(variable_name, map_to="household").values
@@ -78,7 +82,6 @@ def generate_model_variables(dataset: str, time_period: str = "2023") -> Tuple:
     # Program spending from CBO baseline projections
 
     PROGRAMS = [
-        "income_tax",
         "snap",
         "social_security",
         "ssi",
@@ -86,7 +89,7 @@ def generate_model_variables(dataset: str, time_period: str = "2023") -> Tuple:
     ]
 
     for variable_name in PROGRAMS:
-        label = simulation.tax_benefit_system.variables[variable_name].label
+        label = simulation.tax_benefit_system.variables[variable_name].label + " (CBO)"
         values_df[label] = simulation.calculate(
             variable_name, map_to="household"
         ).values
@@ -112,54 +115,7 @@ def generate_model_variables(dataset: str, time_period: str = "2023") -> Tuple:
         targets[f"{label} participants"] = participation
         equivalisation[f"{label} participants"] = POPULATION_EQUIVALISATION
 
-    """
-    # Number of tax returns by AGI size
-
-    agi_returns_thresholds = (
-        parameters.gov.irs.soi.agi.number_of_returns.thresholds
-    )
-    agi_returns_values = parameters.gov.irs.soi.agi.number_of_returns.amounts
-    agi = simulation.calculate("adjusted_gross_income").values
-    is_filer = simulation.calculate("income_tax").values != 0
-    for i in range(len(agi_returns_thresholds)):
-        lower = agi_returns_thresholds[i]
-        if i == len(agi_returns_thresholds) - 1:
-            upper = np.inf
-        else:
-            upper = agi_returns_thresholds[i + 1]
-
-        in_range = (agi >= lower) * (agi < upper) * is_filer
-        household_returns_in_range = simulation.map_result(
-            in_range, "tax_unit", "household"
-        )
-
-        name = f"Tax returns with ${lower:,.0f} <= AGI < ${upper:,.0f}"
-        values_df[name] = household_returns_in_range
-        targets[name] = agi_returns_values[i]
-        equivalisation[name] = POPULATION_EQUIVALISATION
-    # Total AGI aggregate by AGI band
-
-    agi_returns_thresholds = parameters.gov.irs.soi.agi.total_agi.thresholds
-    agi_returns_values = parameters.gov.irs.soi.agi.total_agi.amounts
-    for i in range(len(agi_returns_thresholds)):
-        lower = agi_returns_thresholds[i]
-        if i == len(agi_returns_thresholds) - 1:
-            upper = np.inf
-        else:
-            upper = agi_returns_thresholds[i + 1]
-
-        in_range = (agi >= lower) * (agi < upper) * is_filer
-        agi_in_range = agi * in_range
-        household_agi_in_range = simulation.map_result(
-            agi_in_range, "tax_unit", "household"
-        )
-
-        name = f"Total AGI from tax returns with ${lower:,.0f} <= AGI < ${upper:,.0f}"
-        values_df[name] = household_agi_in_range
-        targets[name] = agi_returns_values[i]
-        equivalisation[name] = FINANCIAL_EQUIVALISATION
-
-    """
+    demographics_sim = Microsimulation(dataset="cps_2023")
 
     # Total population
     values_df["U.S. population"] = simulation.calculate(
@@ -169,14 +125,17 @@ def generate_model_variables(dataset: str, time_period: str = "2023") -> Tuple:
     equivalisation["U.S. population"] = POPULATION_EQUIVALISATION
 
     # Population by 10-year age group and sex
+    age_cps = demographics_sim.calculate("age").values
+    is_male_cps = demographics_sim.calculate("is_male")
     age = simulation.calculate("age").values
     is_male = simulation.calculate("is_male")
-    population_in_21 = simulation.tax_benefit_system.parameters.calibration.gov.census.populations.total(
+    population_in_21 = demographics_sim.tax_benefit_system.parameters.calibration.gov.census.populations.total(
         "2021-01-01"
     )
     population_growth = (
         parameters.gov.census.populations.total / population_in_21
     )
+    cps_household_weights = demographics_sim.calculate("household_weight").values
     for lower_age_group in range(0, 90, 10):
         for possible_is_male in (True, False):
             in_age_range = (age >= lower_age_group) & (
@@ -186,15 +145,32 @@ def generate_model_variables(dataset: str, time_period: str = "2023") -> Tuple:
             count_people_in_range = simulation.map_result(
                 in_age_range * in_sex_category, "person", "household"
             )
+            in_age_range_cps = (age_cps >= lower_age_group) & (
+                age_cps < lower_age_group + 5
+            )
+            in_sex_category_cps = is_male_cps == possible_is_male
+            count_people_in_range_cps = demographics_sim.map_result(
+                in_age_range_cps * in_sex_category_cps, "person", "household"
+            )
+            count_people_in_range = simulation.map_result(
+                in_age_range * in_sex_category, "person", "household"
+            )
             sex_category = "male" if possible_is_male else "female"
             name = f"{lower_age_group} to {lower_age_group + 5} and {sex_category} population"
             values_df[name] = count_people_in_range
             targets[name] = (
-                household_weights.numpy() * count_people_in_range
+                cps_household_weights * count_people_in_range_cps
             ).sum() * population_growth
             equivalisation[name] = POPULATION_EQUIVALISATION
 
     # Household population by number of adults and children
+
+    household_count_adults_cps = demographics_sim.map_result(
+        age_cps >= 18, "person", "household"
+    )
+    household_count_children_cps = demographics_sim.map_result(
+        age_cps < 18, "person", "household"
+    )
 
     household_count_adults = simulation.map_result(
         age >= 18, "person", "household"
@@ -210,28 +186,17 @@ def generate_model_variables(dataset: str, time_period: str = "2023") -> Tuple:
                 * (household_count_children == count_children)
                 * 1.0
             )
+            in_criteria_cps = (
+                (household_count_adults_cps == count_adults)
+                * (household_count_children_cps == count_children)
+                * 1.0
+            )
             name = f"{count_adults}-adult, {count_children}-child household population"
             values_df[name] = in_criteria
             targets[name] = (
-                household_weights.numpy() * in_criteria
+                cps_household_weights * in_criteria_cps
             ).sum() * population_growth
             equivalisation[name] = POPULATION_EQUIVALISATION
-
-    # Tax filing unit counts by filing status
-
-    filing_status = simulation.calculate("filing_status").values
-
-    for filing_status_value in np.unique(filing_status):
-        is_filing_status = filing_status == filing_status_value
-        name = f"Filing status {filing_status_value.lower()} population"
-        household_filing_status_unit_counts = simulation.map_result(
-            is_filing_status, "tax_unit", "household"
-        )
-        values_df[name] = household_filing_status_unit_counts
-        targets[name] = (
-            household_weights.numpy() * household_filing_status_unit_counts
-        ).sum() * population_growth
-        equivalisation[name] = POPULATION_EQUIVALISATION
 
     targets_array = torch.tensor(list(targets.values()), dtype=torch.float32)
     equivalisation_factors_array = torch.tensor(
@@ -278,7 +243,7 @@ def get_snapshot(
         targets,
         targets_array,
         equivalisation_factors_array,
-    ) = generate_model_variables(dataset, time_period)
+    ) = generate_model_variables(dataset, time_period, no_weight_adjustment=True)
     adjusted_weights = torch.relu(household_weights + weight_adjustment)
     result = (
         aggregate(adjusted_weights, values_df) / equivalisation_factors_array
@@ -303,7 +268,7 @@ def calibrate(
     dataset: str,
     time_period: str = "2023",
     training_log_path: str = "training_log.csv.gz",
-    learning_rate: float = 1e1,
+    learning_rate: float = 2e1,
     epochs: int = 10_000,
 ) -> np.ndarray:
     (

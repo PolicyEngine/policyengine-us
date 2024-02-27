@@ -11,7 +11,7 @@ PUF_DEMOGRAPHICS_FILE_PATH = "~/Downloads/demographics_2015.csv"
 
 codebook = {
     "E00200": "employment_income",
-    "E00300": "interest_received",
+    "E00300": "taxable_interest_income",
     "E00400": "tax_exempt_interest_income",
     "E00600": "dividends_included_in_agi",
     "E00650": "qualified_dividend_income",
@@ -25,7 +25,7 @@ codebook = {
     "E01500": "total_pensions_annuities_received",
     "E01700": "taxable_pension_income",
     "E02000": "schedule_e_net_income_loss",
-    "E02100": "schedule_f_net_profit_loss",
+    "E02100": "farm_income",
     "E02300": "taxable_unemployment_compensation",
     "E02400": "social_security",
     "E02500": "taxable_social_security",
@@ -121,10 +121,10 @@ codebook = {
     "E24598": "schedule_d_15_percent_tax_amount",
     "E24615": "schedule_d_25_percent_tax_amount",
     "E24570": "schedule_d_28_percent_tax_amount",
-    "P25350": "rental_income",
+    "P25350": "total_rents_received",
     "P25380": "rent_royalty_interest_expenses",
     "E25550": "total_depreciation_depletion_all_property",
-    "P25700": "rent_royalty_net_income_loss",
+    "P25700": "rental_income",
     "E25820": "deductible_rental_loss",
     "E25850": "rent_royalty_net_income",
     "E25860": "rent_royalty_net_loss",
@@ -164,7 +164,7 @@ codebook = {
     "P65400": "total_passive_losses_form_8582",
     "E68000": "total_losses_allowed_passive_activities",
     "E82200": "carry_forward_minimum_tax_credit_form_8801",
-    "T27800": "farm_income",
+    "T27800": "farm_elected_income",
     "S27860": "tentative_current_prior_year_tax_schedule_j",
     "P27895": "actual_prior_year_tax_schedule_j",
     "P87482": "american_opportunity_qualified_expenses_form_8863",
@@ -308,14 +308,10 @@ def load_puf() -> Tuple[pd.DataFrame, pd.DataFrame]:
     puf = pd.read_csv("~/Downloads/puf_2015.csv")
     demographics = pd.read_csv("~/Downloads/demographics_2015.csv")
 
-    puf = puf.dropna()
     demographics = demographics.dropna()
 
     puf.S006 = puf.S006 / 100
 
-    puf["taxable_interest_income"] = (
-        puf.E00300 - puf.E00400
-    )  # Taxable interest income = interest received - tax-exempt interest income
     puf["non_qualified_dividend_income"] = (
         puf.E00600 - puf.E00650
     )  # Non-qualified dividend income = dividends included in AGI - qualified dividend income
@@ -323,6 +319,31 @@ def load_puf() -> Tuple[pd.DataFrame, pd.DataFrame]:
     puf = puf.rename(columns=codebook)
     demographics = demographics.rename(columns=codebook)
     return puf, demographics
+
+def uprate_puf(puf: pd.DataFrame) -> pd.DataFrame:
+    gov = system.parameters.calibration.gov
+    soi = gov.irs.soi
+
+    # Uprate the financial subset
+
+    puf = MicroDataFrame(
+        puf, weights="decimal_weight"
+    )
+
+    for variable_name in FINANCIAL_SUBSET:
+        if variable_name not in soi.children:
+            uprater = gov.cbo.income_by_source.adjusted_gross_income
+        else:
+            uprater = soi.children[variable_name]
+        value_in_2015 = uprater("2015-01-01")
+        value_in_2023 = uprater("2023-01-01")
+        uprating_factor = value_in_2023 / value_in_2015
+        puf[variable_name] = (
+            puf[variable_name] * uprating_factor
+        )
+    
+    return puf
+    
 
 
 def impute_missing_demographics(
@@ -340,26 +361,10 @@ def impute_missing_demographics(
     """
 
     demographics_from_puf = Imputation()
+    puf = uprate_puf(puf)
     puf_with_demographics = puf[
         puf.return_id.isin(demographics.return_id)
     ].merge(demographics, on="return_id")
-
-    gov = system.parameters.calibration.gov
-    soi = gov.irs.soi
-
-    # Uprate the financial subset
-
-    for variable_name in FINANCIAL_SUBSET:
-        if variable_name not in soi.children:
-            uprater = gov.cbo.income_by_source.adjusted_gross_income
-        else:
-            uprater = soi.children[variable_name]
-        value_in_2015 = uprater("2015-01-01")
-        value_in_2023 = uprater("2023-01-01")
-        uprating_factor = value_in_2023 / value_in_2015
-        puf_with_demographics[variable_name] = (
-            puf_with_demographics[variable_name] * uprating_factor
-        )
 
     demographics_from_puf.train(
         puf_with_demographics[FINANCIAL_VARIABLES],
@@ -377,7 +382,7 @@ def impute_missing_demographics(
         )
     )  # Aggregated returns -> single
     predicted_demographics = demographics_from_puf.predict(
-        puf_without_demographics[FINANCIAL_VARIABLES]
+        puf_without_demographics[FINANCIAL_VARIABLES].fillna(0)
     )
     puf_with_imputed_demographics = pd.concat(
         [puf_without_demographics, predicted_demographics], axis=1

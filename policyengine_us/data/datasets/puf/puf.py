@@ -1,26 +1,22 @@
 from policyengine_core.data import Dataset
-from typing import Type
-import h5py
 import numpy as np
-from policyengine_us import Microsimulation
 from policyengine_us.data.storage import STORAGE_FOLDER
 from tqdm import tqdm
-from policyengine_us.data.datasets.cps.enhanced_cps.process_puf import (
-    load_puf,
-    impute_missing_demographics,
-)
 
 
 class PUF_2023(Dataset):
-    name = "cps"
-    label = "CPS"
+    name = "puf_2023"
+    label = "PUF"
     time_period = "2023"
     data_format = Dataset.ARRAYS
     file_path = STORAGE_FOLDER / "puf_2023.h5"
 
     def generate(self):
         # First pass: single person tax units.
-
+        from policyengine_us.data.datasets.cps.enhanced_cps.process_puf import (
+            load_puf,
+            impute_missing_demographics,
+        )
         puf, demographics = load_puf()
         puf = impute_missing_demographics(puf, demographics)
 
@@ -39,6 +35,7 @@ class PUF_2023(Dataset):
             "age",
             "employment_income",
             "household_weight",
+            "is_male",
         ] + list(FINANCE_VARIABLE_RENAMES.values())
 
         self.holder = {variable: [] for variable in VARIABLES}
@@ -113,6 +110,8 @@ class PUF_2023(Dataset):
 
         self.holder["household_weight"].append(row["decimal_weight"])
 
+        self.holder["is_male"].append(row["gender_primary_filer"] == 1)
+
         for key in FINANCE_VARIABLE_RENAMES:
             self.holder[FINANCE_VARIABLE_RENAMES[key]].append(row[key])
 
@@ -144,6 +143,15 @@ class PUF_2023(Dataset):
             row["employment_income"] * earnings_percentage
         )
 
+        # 96% of joint filers are opposite-gender
+
+        is_opposite_gender = np.random.uniform() < 0.96
+        opposite_gender_code = 0 if row["gender_primary_filer"] == 1 else 1
+        same_gender_code = 1 - opposite_gender_code
+        self.holder["is_male"].append(
+            opposite_gender_code if is_opposite_gender else same_gender_code
+        )
+
         for key in FINANCE_VARIABLE_RENAMES:
             self.holder[FINANCE_VARIABLE_RENAMES[key]].append(0)
 
@@ -162,10 +170,11 @@ class PUF_2023(Dataset):
         for key in FINANCE_VARIABLE_RENAMES:
             self.holder[FINANCE_VARIABLE_RENAMES[key]].append(0)
 
+        self.holder["is_male"].append(np.random.choice([0, 1]))
+
 
 FINANCE_VARIABLE_RENAMES = dict(
     self_employment_income="self_employment_income",
-    interest_received="interest_income",
     taxable_interest_income="taxable_interest_income",
     tax_exempt_interest_income="tax_exempt_interest_income",
     qualified_dividend_income="qualified_dividend_income",
@@ -175,7 +184,7 @@ FINANCE_VARIABLE_RENAMES = dict(
     long_term_capital_gains="long_term_capital_gains",
     short_term_capital_gains="short_term_capital_gains",
     rental_income="rental_income",
-    farm_rent_income="farm_rental_income",
+    farm_rent_income="farm_rent_income",
     farm_income="farm_income",
     partnership_s_corp_income="partnership_s_corp_income",
 )
