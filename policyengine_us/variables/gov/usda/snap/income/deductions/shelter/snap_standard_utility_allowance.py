@@ -6,7 +6,7 @@ class snap_standard_utility_allowance(Variable):
     entity = SPMUnit
     label = "SNAP Standard Utility Allowance"
     unit = USD
-    documentation = "The regular utility allowance deduction for SNAP"
+    documentation = "The standard utility allowance deduction for SNAP"
     definition_period = MONTH
 
     def formula(spm_unit, period, parameters):

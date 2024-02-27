@@ -5,6 +5,7 @@ class snap_utility_allowance(Variable):
     value_type = float
     entity = SPMUnit
     label = "Standard Utility Allowance"
+    unit = USD
     documentation = "The regular utility allowance deduction for SNAP"
     definition_period = MONTH
 
