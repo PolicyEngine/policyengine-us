@@ -7,7 +7,7 @@ class ut_at_home_parent_credit(Variable):
     label = "Utah at-home parent credit"
     unit = USD
     definition_period = YEAR
-    defined_for = "ut_at_home_parent_credit_eligibility"
+    defined_for = "ut_at_home_parent_credit_eligibile"
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members

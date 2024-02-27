@@ -1,4 +1,4 @@
-- name: both qualify
+- name: Both parents qualify
   period: 2022
   input:
     people:
@@ -13,9 +13,9 @@
         members: [person1, person2]
         state_code: UT
   output: # 1 * 1
-    ut_at_home_parent_credit_eligibility: true
+    ut_at_home_parent_credit_eligibile: true
 
-- name: one parent qualifies, tax unit not qualify
+- name: Employment income qualifies, agi does not qualify
   period: 2022
   input:
     people:
@@ -34,9 +34,9 @@
         members: [person1, person2]
         state_code: UT
   output: # 1 * 0
-    ut_at_home_parent_credit_eligibility: false
+    ut_at_home_parent_credit_eligibile: false
 
-- name: one parent not qualify, tax unit qualifies
+- name: Employment income does not qualify, agi qualifies
   period: 2022
   input:
     people:
@@ -51,9 +51,9 @@
         members: [person1, person2]
         state_code: UT
   output: # 0 * 1
-    ut_at_home_parent_credit_eligibility: false
+    ut_at_home_parent_credit_eligibile: false
 
-- name: both not qualify
+- name: Both parents do not qualify
   period: 2022
   input:
     people:
@@ -75,4 +75,4 @@
         members: [person1, person2, person3]
         state_code: UT
   output: # 0 * 0
-    ut_at_home_parent_credit_eligibility: false
+    ut_at_home_parent_credit_eligibile: false
