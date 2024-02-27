@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ut_at_home_parent_credit_eligibile(Variable):
     value_type = bool
     entity = TaxUnit
-    label = "Eligible Tax Unit for the Utah at-home parent credit"
+    label = "Eligible for the Utah at-home parent credit"
     definition_period = YEAR
     defined_for = StateCode.UT
 
