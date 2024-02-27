@@ -4,9 +4,6 @@ from policyengine_us.data.datasets.cps.enhanced_cps.calibrate import (
 from policyengine_us.data.storage import STORAGE_FOLDER
 import pandas as pd
 
-from policyengine_us.data.datasets.puf import PUF_2023
-from policyengine_us.data import EnhancedCPS_2023, CalibratedPUFExtendedCPS
-
 
 def main():
     for file in STORAGE_FOLDER.glob("*.h5"):
@@ -16,7 +13,7 @@ def main():
         file.unlink()
 
     YEARS = ["2023", "2024", "2025"]
-    DATASETS = ["puf_2023", "cps_2023", "calibrated_puf_extended_cps"]
+    DATASETS = ["puf_2023", "cps_2023", "enhanced_cps_2023"]
 
     dfs = []
 
