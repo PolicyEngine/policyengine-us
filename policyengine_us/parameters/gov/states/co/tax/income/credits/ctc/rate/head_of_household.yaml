@@ -1,5 +1,6 @@
 description: Colorado matches this fraction of the federal child tax credit for head of household filers, depending on federal adjusted gross income.
 metadata:
+  period: year
   type: single_amount
   threshold_unit: currency-USD
   rate_unit: /1
@@ -15,6 +16,9 @@ metadata:
       href: https://tax.colorado.gov/sites/tax/files/documents/Book0104_2023.pdf#page=18
     - title: 2023 Colorado Child Tax Credit, Applicable Percentage Table
       href: https://tax.colorado.gov/sites/tax/files/documents/DR0104CN_2023.pdf#page=6
+    - title: 2021 Colorado Individual Income Tax Filing Guide
+      href: https://tax.colorado.gov/sites/tax/files/documents/DR0104Book_2021_V3.pdf#page=15
+      # The child rax credit was introduced in 2022.
 brackets:
   - threshold:
       2022-01-01: 0
