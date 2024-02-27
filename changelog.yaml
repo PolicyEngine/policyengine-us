@@ -6410,3 +6410,33 @@
     added:
     - Georgia 2024 Standard Deduction Parameters.
   date: 2024-02-23 06:10:17
+- bump: patch
+  changes:
+    added:
+    - Include social security, SSI and TANF in the HUD annual income variable.
+  date: 2024-02-24 00:03:16
+- bump: minor
+  changes:
+    added:
+    - Enable Idaho income tax model and include in the net income tree.
+  date: 2024-02-24 01:13:23
+- bump: minor
+  changes:
+    added:
+    - California alternative minimum tax calculations.
+  date: 2024-02-25 23:55:29
+- bump: patch
+  changes:
+    fixed:
+    - Add employee payroll tax to the reported state income tax reform.
+  date: 2024-02-26 20:50:21
+- bump: minor
+  changes:
+    added:
+    - Update the CalWORKs Child Care payment standard with the 2022 rates.
+  date: 2024-02-26 20:57:25
+- bump: patch
+  changes:
+    fixed:
+    - Limit the Idaho Grocery Credit to households not enrolled in SNAP.
+  date: 2024-02-26 21:59:44

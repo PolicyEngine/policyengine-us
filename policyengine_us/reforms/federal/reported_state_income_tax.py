@@ -11,7 +11,7 @@ def create_reported_state_income_tax() -> Reform:
         definition_period = YEAR
 
         adds = [
-            "income_tax_before_refundable_credits",
+            "employee_payroll_tax",
             "self_employment_tax",
             "income_tax_before_refundable_credits",
             "spm_unit_state_tax_reported",
