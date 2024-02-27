@@ -1,0 +1,21 @@
+description: Ohio provides a joint filing credit equal to a fraction of tax liability less these non-refundable tax credits.
+values:
+  2021-01-01:
+    - oh_cdcc # Line 6
+    - oh_senior_citizen_credit # Line 3
+    - oh_retirement_credit # Line 2
+    - oh_exemption_credit # Line 9
+  2023-01-01:
+    - oh_cdcc # Line 6
+    - oh_senior_citizen_credit # Line 3
+    - oh_retirement_credit # Line 2
+    - oh_exemption_credit # Line 9
+metadata:
+  unit: list
+  period: year
+  label: Ohio non-refundable tax credits prior to the joint filing credit
+  reference:
+    - title: 2021 Ohio Schedule of Credits
+      href: https://tax.ohio.gov/static/forms/ohio_individual/individual/2021/sch-cre.pdf
+    - title: 2022 Ohio Schedule of Credits
+      href: https://tax.ohio.gov/static/forms/ohio_individual/individual/2022/itschedule-credits.pdf

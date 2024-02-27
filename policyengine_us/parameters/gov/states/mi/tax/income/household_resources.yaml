@@ -1,0 +1,36 @@
+description: Michigan accounts for the following income sources as the household resources.
+values:
+  2021-01-01:
+    - irs_employment_income
+    - self_employment_income
+    - strike_benefits
+    - dividend_income
+    - interest_income
+    - farm_income
+    - qualified_business_income
+    - rental_income
+    - farm_rent_income
+    - pension_income
+    - net_capital_gain
+    - alimony_income
+    - social_security
+    - ssi 
+    - child_support_received
+    - unemployment_compensation
+    # Gifts received or expenses paid on your behalf
+    - miscellaneous_income
+    - veterans_benefits
+    - workers_compensation
+    - disability_benefits
+    - gi_cash_assistance
+    - tanf
+    - general_assistance
+metadata:
+  unit: list
+  period: year
+  label: Michigan household resources
+  reference:
+  - title: 2021 MICHIGAN Home Heating Credit Claim MI-1040CR-7, Page 2, Total Household Resources
+    href: https://www.michigan.gov/-/media/Project/Websites/taxes/2022RM/IIT/MI-1040CR7.pdf?rev=84f72df3f8664b96903aa6b655dc34d2
+  - title: Michigan Compiled Laws Chapter 9 Section 206.508 - Definitions. (4)
+    href: https://law.justia.com/codes/michigan/2022/chapter-206/statute-act-281-of-1967/division-281-1967-1/division-281-1967-1-9/section-206-508/

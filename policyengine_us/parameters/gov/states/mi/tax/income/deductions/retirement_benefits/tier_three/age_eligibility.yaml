@@ -19,6 +19,8 @@ metadata:
   period: year  
   label: Michigan tier three retirement and pension benefits age range
   reference:
+    # The legal code specifies age over the birth year, while the 
+    # tax forms include the birth year conditions.
     - title: Michigan Legal Code Section 206.30 - (9)(d)
       href: http://legislature.mi.gov/doc.aspx?mcl-206-30
     - title: Michigan Retirement and Pension Benefits

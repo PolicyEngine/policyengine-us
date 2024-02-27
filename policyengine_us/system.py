@@ -18,7 +18,7 @@ from policyengine_us.reforms import create_structural_reforms_from_parameters
 
 COUNTRY_DIR = Path(__file__).parent
 
-CURRENT_YEAR = 2023
+CURRENT_YEAR = 2024
 year_start = str(CURRENT_YEAR) + "-01-01"
 
 
@@ -70,6 +70,14 @@ class Simulation(CoreSimulation):
         if reform is not None:
             self.apply_reform(reform)
 
+        # Labor supply responses
+
+        employment_income = self.get_holder("employment_income")
+        for known_period in employment_income.get_known_periods():
+            array = employment_income.get_array(known_period)
+            self.set_input("employment_income_before_lsr", known_period, array)
+            employment_income.delete_arrays(known_period)
+
 
 class Microsimulation(CoreMicrosimulation):
     default_tax_benefit_system = CountryTaxBenefitSystem
@@ -89,6 +97,14 @@ class Microsimulation(CoreMicrosimulation):
         )
         if reform is not None:
             self.apply_reform(reform)
+
+        # Labor supply responses
+
+        employment_income = self.get_holder("employment_income")
+        for known_period in employment_income.get_known_periods():
+            array = employment_income.get_array(known_period)
+            self.set_input("employment_income_before_lsr", known_period, array)
+            employment_income.delete_arrays(known_period)
 
 
 class IndividualSim(CoreIndividualSim):  # Deprecated

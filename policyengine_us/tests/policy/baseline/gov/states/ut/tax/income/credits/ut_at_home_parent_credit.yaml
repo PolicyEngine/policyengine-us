@@ -5,17 +5,17 @@
       person1:
         is_tax_unit_head: true
         age: 45
-        employment_income: 48_000
+        irs_employment_income: 48_000
         self_employment_income: 0
         is_tax_unit_dependent: false
       person2:
         age: 40
-        employment_income: 1_000
+        irs_employment_income: 1_000
         self_employment_income: 0
         is_tax_unit_dependent: false
       person3:
         age: 0
-        employment_income: 0
+        irs_employment_income: 0
         self_employment_income: 0
         is_tax_unit_dependent: true
     tax_units:
@@ -40,17 +40,17 @@
       person1:
         is_tax_unit_head: true
         age: 50
-        employment_income: 70_000
+        irs_employment_income: 70_000
         self_employment_income: 0
         is_tax_unit_dependent: false
       person2:
         age: 45
-        employment_income: 10_000
+        irs_employment_income: 10_000
         self_employment_income: 0
         is_tax_unit_dependent: false
       person3:
         age: 0
-        employment_income: 0
+        irs_employment_income: 0
         self_employment_income: 0
         is_tax_unit_dependent: true
     tax_units:

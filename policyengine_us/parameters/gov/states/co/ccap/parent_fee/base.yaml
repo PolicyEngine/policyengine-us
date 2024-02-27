@@ -1,0 +1,19 @@
+description: Colorado multiplies the ratio of countable income to the federal poverty guideline by this rate under the Child Care Assistance Program to calculate the base parent fee.  
+metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  period: month
+  label: Colorado Child Care Assistance Program parent fee base rate
+  reference:
+    - title: Colorado Child Care Assistance Program Rules and Regulations - 3.111(P)
+      href: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=11042&fileName=8%20CCR%201403-1#page=43  
+brackets:
+  - rate:
+      2022-10-01: 0.01
+    threshold:
+      2022-10-01: 0
+  - rate:
+      2022-10-01: 0.14
+    threshold:
+      2022-10-01: 1

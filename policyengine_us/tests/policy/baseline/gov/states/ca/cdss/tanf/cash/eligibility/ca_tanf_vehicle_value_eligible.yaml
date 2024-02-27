@@ -1,0 +1,15 @@
+- name: Vehicle value eligible
+  period: 2023
+  input:
+    state_code: CA
+    household_vehicles_value: 32_045
+  output:
+    ca_tanf_vehicle_value_eligible: true
+
+- name: Vehicle value ineligible
+  period: 2023
+  input:
+    state_code: CA
+    household_vehicles_value: 32_046
+  output:
+    ca_tanf_vehicle_value_eligible: false
