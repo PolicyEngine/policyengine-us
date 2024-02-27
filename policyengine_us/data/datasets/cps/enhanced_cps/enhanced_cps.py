@@ -45,7 +45,7 @@ class EnhancedCPS_2023(Dataset):
     data_format = Dataset.TIME_PERIOD_ARRAYS
     time_period = 2023
     num_years: int = 3
-    # url = "release://policyengine/policyengine-us/enhanced-cps-2023/enhanced_cps.h5"
+    url = "release://policyengine/policyengine-us/enhanced-cps-2023/enhanced_cps.h5"
 
     def generate(self):
         self.remove()
