@@ -306,7 +306,7 @@ def generate_model_variables(
             lower_bound_str = f"{lower_bound:,.0f}"
         name = f"tax returns with AGI between ${lower_bound_str} and ${upper_bound:,.0f}"
         values_df[name] = household_filers
-        targets[name] = COUNTS[i]
+        targets[name] = COUNTS[i] * population_growth_since_21
         equivalisation[name] = POPULATION_EQUIVALISATION
 
         agi_in_range = agi * in_range
