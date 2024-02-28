@@ -1,4 +1,5 @@
 from .cps import (
+    CPS_2019,
     CPS_2020,
     CPS_2021,
     CPS_2022,
@@ -9,11 +10,15 @@ from .cps import (
     EnhancedCPS_2023,
     PUFExtendedCPS_2023,
     CalibratedCPS_2023,
+    CalibratedPUFExtendedCPS,
 )
+
+from .puf import PUF_2023
 
 from .poverty_tracker.poverty_tracker import PovertyTracker
 
 DATASETS = [
+    CPS_2019,
     CPS_2020,
     CPS_2021,
     CPS_2022,
@@ -21,5 +26,7 @@ DATASETS = [
     EnhancedCPS_2023,
     PUFExtendedCPS_2023,
     CalibratedCPS_2023,
+    CalibratedPUFExtendedCPS,
     PovertyTracker,
+    PUF_2023,
 ]

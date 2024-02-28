@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.683.1] - 2024-02-27 22:54:30
+
+### Fixed
+
+- Replaced data download URLs for CPS and Enhanced CPS files.
+
+## [0.683.0] - 2024-02-27 22:50:14
+
+### Added
+
+- Retirement income from CPS.
+
+### Changed
+
+- Improvements to calibration routine.
+
 ## [0.682.1] - 2024-02-26 21:59:44
 
 ### Fixed
@@ -7576,6 +7592,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.683.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.683.0...0.683.1
+[0.683.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.682.1...0.683.0
 [0.682.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.682.0...0.682.1
 [0.682.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.681.1...0.682.0
 [0.681.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.681.0...0.681.1
