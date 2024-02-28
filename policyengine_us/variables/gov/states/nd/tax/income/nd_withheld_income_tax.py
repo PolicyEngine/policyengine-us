@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class nd_withheld_income_tax(Variable):
     value_type = float
     entity = Person
-    label = "North Dacota withheld income tax"
+    label = "North Dakota withheld income tax"
     defined_for = StateCode.ND
     unit = USD
     definition_period = YEAR

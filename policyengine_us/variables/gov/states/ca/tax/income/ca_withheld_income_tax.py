@@ -12,6 +12,6 @@ class ca_withheld_income_tax(Variable):
     def formula(person, period, parameters):
         employment_income = person("irs_employment_income", period)
         p = parameters(period).gov.states.ca.tax.income
-        standard__deduction = p.deductions.standard.amount["SINGLE"]
-        reduced_employment_income = max_(employment_income - standard__deduction, 0)
+        standard_deduction = p.deductions.standard.amount["SINGLE"]
+        reduced_employment_income = max_(employment_income - standard_deduction, 0)
         return p.rates.single.calc(reduced_employment_income)
