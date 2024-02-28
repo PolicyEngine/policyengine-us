@@ -6457,3 +6457,9 @@
     added:
     - CBO uprating factors for all tax parameters through 2034.
   date: 2024-02-28 10:24:15
+- bump: minor
+  changes:
+    added:
+    - Create state withheld income tax variables for all states which cause a circular
+      reference.
+  date: 2024-02-28 17:28:50
