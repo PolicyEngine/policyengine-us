@@ -1,11 +1,11 @@
 from policyengine_us.model_api import *
 
 
-class wv_withheld_income_tax(Variable):
+class va_withheld_income_tax(Variable):
     value_type = float
     entity = Person
     label = "Virginia withheld income tax"
-    defined_for = StateCode.UT
+    defined_for = StateCode.VA
     unit = USD
     definition_period = YEAR
 
