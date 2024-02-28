@@ -1,0 +1,62 @@
+- name: joint with one eligible person
+  period: 2021
+  input:
+    people:
+      person1:
+        retirement_saving_eligible_person: ture
+        adjusted_gross_income_person: 39_000
+        traditional_ira_contributions: 3_000
+        roth_ira_contributions: 2_000
+      person2:
+        retirement_saving_eligible_person: false
+        adjusted_gross_income_person: 0
+        traditional_ira_contributions: 0
+        roth_ira_contributions: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+  output:
+    retirement_saving_credit: 1_000
+
+- name: joint with over agi
+  period: 2021
+  input:
+    people:
+      person1:
+        retirement_saving_eligible_person: ture
+        adjusted_gross_income_person: 39_000
+        traditional_ira_contributions: 3_000
+        roth_ira_contributions: 2_000
+      person2:
+        retirement_saving_eligible_person: ture
+        adjusted_gross_income_person: 50_000
+        traditional_ira_contributions: 3_000
+        roth_ira_contributions: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+  output:
+    retirement_saving_credit: 0
+
+- name: head of household with over agi but capped ira
+  period: 2023
+  input:
+    people:
+      person1:
+        retirement_saving_eligible_person: ture
+        adjusted_gross_income_person: 39_000
+        traditional_ira_contributions: 3_000
+        roth_ira_contributions: 2_000
+      person2:
+        retirement_saving_eligible_person: ture
+        adjusted_gross_income_person: 0
+        traditional_ira_contributions: 3_000
+        roth_ira_contributions: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    retirement_saving_credit: 400
