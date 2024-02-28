@@ -15,5 +15,5 @@ class la_withheld_income_tax(Variable):
         # We apply the base standard deduction amount
         standard_deduction = p_irs.amount["SINGLE"]
         reduced_employment_income = max_(employment_income - standard_deduction, 0)
-        p = parameters(period).gov.states.ia.tax.income
+        p = parameters(period).gov.states.la.tax.income
         return p.main.single.calc(reduced_employment_income)

@@ -11,7 +11,7 @@ class wv_withheld_income_tax(Variable):
 
     def formula(person, period, parameters):
         employment_income = person("irs_employment_income", period)
-        p = parameters(period).gov.states.va.tax.income
+        p = parameters(period).gov.states.wv.tax.income
         # We apply the base standard deduction amount
         standard_deduction = p.deductions.standard.base["SINGLE"]
         reduced_employment_income = max_(employment_income - standard_deduction, 0)
