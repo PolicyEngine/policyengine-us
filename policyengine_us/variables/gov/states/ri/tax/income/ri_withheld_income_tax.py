@@ -14,5 +14,7 @@ class ri_withheld_income_tax(Variable):
         p = parameters(period).gov.states.ri.tax.income
         # We apply the maximum standard deduction
         standard_deduction = p.deductions.standard.amount["SINGLE"]
-        reduced_employment_income = max_(employment_income - standard_deduction, 0)
+        reduced_employment_income = max_(
+            employment_income - standard_deduction, 0
+        )
         return p.rate.calc(reduced_employment_income)

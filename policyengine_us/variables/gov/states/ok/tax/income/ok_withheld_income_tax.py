@@ -13,5 +13,7 @@ class ok_withheld_income_tax(Variable):
         employment_income = person("irs_employment_income", period)
         p = parameters(period).gov.states.ok.tax.income
         standard_deduction = p.deductions.standard.amount["SINGLE"]
-        reduced_employment_income = max_(employment_income - standard_deduction, 0)
+        reduced_employment_income = max_(
+            employment_income - standard_deduction, 0
+        )
         return p.rates.single.calc(reduced_employment_income)

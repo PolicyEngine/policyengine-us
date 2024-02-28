@@ -11,9 +11,11 @@ class co_withheld_income_tax(Variable):
 
     def formula(person, period, parameters):
         employment_income = person("irs_employment_income", period)
-        # Colorado adopts federal taxable income, so use federal standard deduction.  
-        p_irs = parameters(period).gov.irs.deductions.standard  
+        # Colorado adopts federal taxable income, so use federal standard deduction.
+        p_irs = parameters(period).gov.irs.deductions.standard
         standard__deduction = p_irs.amount["SINGLE"]
-        reduced_employment_income = max_(employment_income - standard__deduction, 0)
-        p = parameters(period).gov.states.co.tax.income  
+        reduced_employment_income = max_(
+            employment_income - standard__deduction, 0
+        )
+        p = parameters(period).gov.states.co.tax.income
         return p.rate * reduced_employment_income

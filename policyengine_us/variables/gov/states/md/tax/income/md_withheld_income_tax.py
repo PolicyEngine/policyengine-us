@@ -14,5 +14,7 @@ class md_withheld_income_tax(Variable):
         p = parameters(period).gov.states.md.tax.income
         # We apply the maximum standard deduction amount
         standard_deduction = p.deductions.standard.max["SINGLE"]
-        reduced_employment_income = max_(employment_income - standard_deduction, 0)
+        reduced_employment_income = max_(
+            employment_income - standard_deduction, 0
+        )
         return p.rates.single.calc(reduced_employment_income)

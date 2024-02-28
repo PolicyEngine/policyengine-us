@@ -13,5 +13,7 @@ class az_withheld_income_tax(Variable):
         employment_income = person("irs_employment_income", period)
         p = parameters(period).gov.states.az.tax.income
         standard__deduction = p.deductions.standard.amount["SINGLE"]
-        reduced_employment_income = max_(employment_income - standard__deduction, 0)
+        reduced_employment_income = max_(
+            employment_income - standard__deduction, 0
+        )
         return p.main.single.calc(reduced_employment_income)

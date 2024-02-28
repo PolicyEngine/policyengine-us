@@ -14,5 +14,7 @@ class al_withheld_income_tax(Variable):
         # Assigning the maximum standard deduction amount
         p = parameters(period).gov.states.al.tax.income
         standard__deduction = p.deductions.standard.amount.max["SINGLE"]
-        reduced_employment_income = max_(employment_income - standard__deduction, 0)
+        reduced_employment_income = max_(
+            employment_income - standard__deduction, 0
+        )
         return p.rates.single.calc(reduced_employment_income)

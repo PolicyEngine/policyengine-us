@@ -14,5 +14,7 @@ class ga_withheld_income_tax(Variable):
         p = parameters(period).gov.states.ga.tax.income
         # We apply the base standard deduction amount
         personal_exemptions = p.deductions.standard.amount["SINGLE"]
-        reduced_employment_income = max_(employment_income - personal_exemptions, 0)
+        reduced_employment_income = max_(
+            employment_income - personal_exemptions, 0
+        )
         return p.main.single.calc(reduced_employment_income)
