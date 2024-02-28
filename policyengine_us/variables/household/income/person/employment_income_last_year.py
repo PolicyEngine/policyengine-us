@@ -12,7 +12,6 @@ class employment_income_last_year(Variable):
     definition_period = YEAR
 
     def formula_2024(person, period, parameters):
-        print("running formula")
         employment_income_target = (
             parameters.calibration.gov.irs.soi.employment_income
         )
@@ -22,7 +21,4 @@ class employment_income_last_year(Variable):
         )
         values = person("employment_income_last_year", period.last_year)
         uprating_factor = value_last_year / value_year_before_last
-        print(
-            f"Uprating factor: {uprating_factor}, last year: {value_last_year}, year before last: {value_year_before_last}"
-        )
         return values * uprating_factor
