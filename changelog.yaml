@@ -6463,3 +6463,8 @@
     - Create state withheld income tax variables for all states which cause a circular
       reference.
   date: 2024-02-28 17:28:50
+- bump: patch
+  changes:
+    added:
+    - Decompose snap_utility_allowance into three variables for SUA, LUA, and IUA.
+  date: 2024-02-28 19:05:54
