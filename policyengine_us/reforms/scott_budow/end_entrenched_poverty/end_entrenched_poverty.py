@@ -19,11 +19,10 @@ def create_end_entrenched_poverty_credit() -> Reform:
                 period
             ).gov.contrib.scott_budow.end_entrenched_poverty
             fpg_ratio = income / federal_poverty_guidelines
-            children_amount = (
-                p.child.calc(fpg_ratio) * children
-            ) * MONTHS_IN_YEAR
-            adult_amount = p.adult.calc(fpg_ratio) * MONTHS_IN_YEAR
-            return children_amount + adult_amount
+            children_amount = p.child.calc(fpg_ratio) * children
+            family_size = tax_unit("tax_unit_size", period)
+            base_amount = p.base.calc(fpg_ratio) * family_size
+            return children_amount + base_amount
 
     class ny_refundable_credits(Variable):
         value_type = float
@@ -46,7 +45,7 @@ def create_end_entrenched_poverty_credit() -> Reform:
 
     class reform(Reform):
         def apply(self):
-            self.create_variable(end_entrenched_poverty_credit)
+            self.update_variable(end_entrenched_poverty_credit)
             self.update_variable(ny_refundable_credits)
 
     return reform

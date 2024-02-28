@@ -2,7 +2,7 @@
   period: 2022
   reforms: policyengine_us.reforms.scott_budow.end_entrenched_poverty.end_entrenched_poverty.end_entrenched_poverty_credit
   input:
-    gov.contrib.scott_budow.end_entrenched_poverty.child[0].amount: 300
+    gov.contrib.scott_budow.end_entrenched_poverty.child[0].amount: 3_600
     people:
       head: {}
       child: {}
@@ -11,9 +11,126 @@
         members: [head, child]
         tax_unit_children: 1
         tax_unit_fpg: 1_000
+        ny_supplemental_eitc: 0
+        ny_ctc: 0
+        ny_cdcc: 0
+        ny_real_property_tax_credit: 0
+        ny_college_tuition_credit: 0
     households:
       household:
+        state_code: NY
         members: [head, child]
-        household_net_income: 0
+        household_net_income: 10
   output:
-    end_entrenched_poverty_credit: 300
+    end_entrenched_poverty_credit: 3_600
+    ny_refundable_credits: 3_600
+
+- name: Two children single parent under poverty line with ctc
+  period: 2022
+  reforms: policyengine_us.reforms.scott_budow.end_entrenched_poverty.end_entrenched_poverty.end_entrenched_poverty_credit
+  input:
+    gov.contrib.scott_budow.end_entrenched_poverty.child[0].amount: 3_600
+    people:
+      head: {}
+      child: {}
+      child2: {}
+    tax_units:
+      tax_unit: 
+        members: [head, child, child2]
+        tax_unit_children: 2
+        tax_unit_fpg: 1_000
+        ny_supplemental_eitc: 0
+        ny_ctc: 200
+        ny_cdcc: 0
+        ny_real_property_tax_credit: 0
+        ny_college_tuition_credit: 0
+    households:
+      household:
+        state_code: NY
+        members: [head, child, child2]
+        household_net_income: 10
+  output:
+    end_entrenched_poverty_credit: 7_200
+    ny_refundable_credits: 7_400
+
+- name: One child single parent under poverty line, no reform
+  period: 2022
+  reforms: policyengine_us.reforms.scott_budow.end_entrenched_poverty.end_entrenched_poverty.end_entrenched_poverty_credit
+  input:
+    people:
+      head: {}
+      child: {}
+    tax_units:
+      tax_unit: 
+        members: [head, child]
+        tax_unit_children: 1
+        tax_unit_fpg: 1_000
+        ny_supplemental_eitc: 0
+        ny_ctc: 0
+        ny_cdcc: 0
+        ny_real_property_tax_credit: 0
+        ny_college_tuition_credit: 0
+    households:
+      household:
+        state_code: NY
+        members: [head, child]
+        household_net_income: 10
+  output:
+    end_entrenched_poverty_credit: 0
+    ny_refundable_credits: 0
+
+- name: One child single parent under poverty line, both people under two times poverty line
+  period: 2022
+  reforms: policyengine_us.reforms.scott_budow.end_entrenched_poverty.end_entrenched_poverty.end_entrenched_poverty_credit
+  input:
+    gov.contrib.scott_budow.end_entrenched_poverty.child[0].amount: 3_600
+    gov.contrib.scott_budow.end_entrenched_poverty.base[0].amount: 1_200
+    people:
+      head: {}
+      child: {}
+    tax_units:
+      tax_unit: 
+        members: [head, child]
+        tax_unit_children: 1
+        tax_unit_fpg: 1_000
+        ny_supplemental_eitc: 0
+        ny_ctc: 0
+        ny_cdcc: 0
+        ny_real_property_tax_credit: 0
+        ny_college_tuition_credit: 0
+    households:
+      household:
+        state_code: NY
+        members: [head, child]
+        household_net_income: 10
+  output:
+    end_entrenched_poverty_credit: 6_000
+    ny_refundable_credits: 6_000
+
+- name: One child single parent under one time poverty line, both people under two times poverty line
+  period: 2022
+  reforms: policyengine_us.reforms.scott_budow.end_entrenched_poverty.end_entrenched_poverty.end_entrenched_poverty_credit
+  input:
+    gov.contrib.scott_budow.end_entrenched_poverty.child[0].amount: 3_600
+    gov.contrib.scott_budow.end_entrenched_poverty.base[0].amount: 1_200
+    people:
+      head: {}
+      child: {}
+    tax_units:
+      tax_unit: 
+        members: [head, child]
+        tax_unit_children: 1
+        tax_unit_fpg: 1_000
+        ny_supplemental_eitc: 0
+        ny_ctc: 0
+        ny_cdcc: 0
+        ny_real_property_tax_credit: 0
+        ny_college_tuition_credit: 0
+    households:
+      household:
+        state_code: NY
+        members: [head, child]
+        household_net_income: 10
+  output:
+    end_entrenched_poverty_credit: 6_000
+    ny_refundable_credits: 6_000
