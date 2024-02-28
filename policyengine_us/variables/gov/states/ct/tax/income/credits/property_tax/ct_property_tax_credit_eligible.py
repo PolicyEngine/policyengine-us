@@ -7,6 +7,8 @@ class ct_property_tax_credit_eligible(Variable):
     label = "Eligible for the Connecticut Property Tax Credit"
     definition_period = YEAR
     defined_for = StateCode.CT
+    # (b)(2)
+    reference = "https://www.cga.ct.gov/current/pub/chap_229.htm#sec_12-704c"
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.ct.tax.income.credits.property_tax
