@@ -1,0 +1,18 @@
+description: Arizona accounts for the following income sources for the property tax credit.
+values:
+  2021-01-01:
+    - capital_gains_excluded_from_taxable_income
+    - tax_exempt_interest_income
+    - public_pension_income
+    - az_agi
+metadata:
+  unit: list
+  period: year
+  label: Arizona property tax credit income sources
+  reference:
+    - title: 43-1072. Earned credit for property taxes; residents sixty-five years of age or older(H-6)
+      href: https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/43/01072.htm
+    - title: 2022 Property Tax Refund (Credit) Claim Form 140PTC
+      href: https://azdor.gov/sites/default/files/2023-03/FORMS_INDIVIDUAL_2022_140PTC.pdf#page=2
+    - title: 2021 Property Tax Refund (Credit) Claim Form 140PTC
+      href: https://azdor.gov/sites/default/files/2023-03/FORMS_INDIVIDUAL_2021_140PTC.pdf#page=2

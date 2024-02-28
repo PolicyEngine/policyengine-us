@@ -50,6 +50,11 @@ filtered:
       - Iowa state income tax
       not_modelled:
       - Iowa TANF
+    ID:
+      modelled:
+      - Idaho state income tax
+      not_modelled:
+      - Idaho TANF
     IL:
       modelled:
       - Illinois state income tax
@@ -163,3 +168,8 @@ filtered:
       - Wisconsin state income tax
       not_modelled:
       - Wisconsin TANF
+    WV:
+      modelled:
+      - West Virginia state income tax
+      not_modelled:
+      - West Virginia TANF

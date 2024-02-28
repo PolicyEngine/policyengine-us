@@ -27,6 +27,16 @@ first_person:
     2022-01-01: 15_630
     2023-01-01: 16_770
     2024-01-01: 17_310
+  # Add placeholders for Guam, Puerto Rico, and the Virgin Islands.
+  # Poverty guidelines do not apply to these areas, but we include them for
+  # completeness and to avoid errors arising from uprating and breakdown
+  # metadata fields.
+  GU:
+    2024-01-01: 0
+  PR:
+    2024-01-01: 0
+  VI:
+    2024-01-01: 0
 additional_person:
   # Calculated by subtracting a two-person household's line from a one-person's.
   # This difference is always the same for larger households.
@@ -57,6 +67,14 @@ additional_person:
     2022-01-01: 5_430
     2023-01-01: 5_910
     2024-01-01: 6_190
+  # Add placeholders for Guam, Puerto Rico, and the Virgin Islands.
+  GU:
+    2024-01-01: 0
+  PR:
+    2024-01-01: 0
+  VI:
+    2024-01-01: 0
+
 metadata:
   unit: currency-USD
   reference:
@@ -69,3 +87,4 @@ metadata:
   breakdown:
     - [first_person, additional_person]
     - state_group
+  uprating: gov.hhs.uprating
