@@ -8,51 +8,51 @@ values:
     - az_withheld_income_tax  
     - ca_withheld_income_tax  
     - co_withheld_income_tax 
-    - ct_withheld_income_tax  --- activating will cause circular logic errors
-    # dc_income_tax  --- activating will cause circular logic errors
+    - ct_withheld_income_tax  
+    # dc_income_tax  
     - de_income_tax
     # fl_income_tax  --- no state income tax
-    - ga_withheld_income_tax  --- activating will cause circular logic errors
-    - hi_withheld_income_tax  --- activating will cause circular logic errors
-    - ia_withheld_income_tax  --- activating will cause circular logic errors
+    - ga_withheld_income_tax  
+    - hi_withheld_income_tax  
+    - ia_withheld_income_tax  
     - id_income_tax
     - il_income_tax
     - in_income_tax
     - ks_income_tax
     - ky_income_tax
     - la_withheld_income_tax  
-    # ma_income_tax  --- activating will cause circular logic errors
+    # ma_income_tax  
     - md_withheld_income_tax  
-    - me_withheld_income_tax  --- activating will cause circular logic errors
+    - me_withheld_income_tax  
     - mi_income_tax
     - mn_income_tax
-    - me_withheld_income_tax  --- activating will cause circular logic errors
+    - me_withheld_income_tax  
     - ms_income_tax
-    - mt_withheld_income_tax  --- activating will cause circular logic errors
+    - mt_withheld_income_tax  
     - nc_income_tax
-    - nd_withheld_income_tax  --- activating will cause circular logic errors
-    - ne_withheld_income_tax  --- activating will cause circular logic errors
+    - nd_withheld_income_tax  
+    - ne_withheld_income_tax  
     - nh_income_tax
     - nj_income_tax
-    - nm_withheld_income_tax  --- activating will cause circular logic errors
+    - nm_withheld_income_tax  
     # nv_income_tax  --- no state income tax
-    - ny_withheld_income_tax  --- activating will cause circular logic errors
-    - oh_withheld_income_tax  --- activating will cause circular logic errors
-    - ok_withheld_income_tax  --- activating will cause circular logic errors
-    - or_withheld_income_tax  --- activating will cause circular logic errors
+    - ny_withheld_income_tax  
+    - oh_withheld_income_tax  
+    - ok_withheld_income_tax  
+    - or_withheld_income_tax  
     - pa_income_tax
-    - ri_withheld_income_tax  --- activating will cause circular logic errors
-    - sc_withheld_income_tax  --- activating will cause circular logic errors
+    - ri_withheld_income_tax  
+    - sc_withheld_income_tax  
     # sd_income_tax  --- no state income tax
     # tn_income_tax  --- no state income tax
     # tx_income_tax  --- no state income tax
-    - ut_withheld_income_tax  --- activating will cause circular logic errors
-    - va_withheld_income_tax  --- activating will cause circular logic errors
-    - vt_withheld_income_tax  --- activating will cause circular logic errors
+    - ut_withheld_income_tax  
+    - va_withheld_income_tax  
+    - vt_withheld_income_tax  
     - wa_income_tax
     - wi_income_tax
-    # wv_income_tax  --- activating will cause circular logic errors
-    - wv_withheld_income_tax  --- no state income tax
+    # wv_income_tax  
+    - wv_withheld_income_tax  
 
 metadata:
   unit: list
