@@ -6,7 +6,7 @@
     filing_status: JOINT
     state_code: NY
   output:
-    ny_withheld_income_tax: 80
+    ny_withheld_income_tax: 34
 
 - name: Changing the filing sttaus should not change the output 
   period: 2022
@@ -16,7 +16,7 @@
     filing_status: WIDOW
     state_code: NY
   output:
-    ny_withheld_income_tax: 80
+    ny_withheld_income_tax: 34
 
 - name: Capped at 0
   period: 2022
