@@ -1,16 +1,13 @@
 from policyengine_core.data import Dataset
-from policyengine_us.data.datasets.cps.cps import CPS_2023
+from policyengine_us.data.datasets.cps.cps import CPS_2023, CPS_2022
 from policyengine_us.data.storage import STORAGE_FOLDER
 import numpy as np
 import pandas as pd
 
 
-class PUFExtendedCPS_2023(Dataset):
-    name = "puf_extended_cps_2023"
-    label = "PUF-extended CPS (2023)"
-    file_path = STORAGE_FOLDER / "puf_extended_cps_2023.h5"
+class PUFExtendedCPS(Dataset):
     data_format = Dataset.ARRAYS
-    time_period = "2023"
+    cps = None
 
     def generate(self):
         from .process_puf import (
@@ -18,9 +15,9 @@ class PUFExtendedCPS_2023(Dataset):
             puf_imputed_cps_person_level,
         )
 
-        person_df = puf_imputed_cps_person_level()
+        person_df = puf_imputed_cps_person_level(time_period=self.time_period)
         new_data = {}
-        cps = CPS_2023()
+        cps = self.cps()
         cps_data = cps.load()
         for variable in list(set(cps.variables) | set(FINANCIAL_VARIABLES)):
             if "_id" in variable:
@@ -69,3 +66,17 @@ class PUFExtendedCPS_2023(Dataset):
         ).astype(bool)
 
         self.save_dataset(new_data)
+
+
+class PUFExtendedCPS_2022(PUFExtendedCPS):
+    time_period = 2022
+    name = "puf_extended_cps_2022"
+    label = "PUF-extended CPS (2022)"
+    cps = CPS_2022
+
+
+class PUFExtendedCPS_2023(PUFExtendedCPS):
+    time_period = 2023
+    name = "puf_extended_cps_2023"
+    label = "PUF-extended CPS (2023)"
+    cps = CPS_2023

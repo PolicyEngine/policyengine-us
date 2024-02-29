@@ -321,7 +321,7 @@ def load_puf() -> Tuple[pd.DataFrame, pd.DataFrame]:
     return puf, demographics
 
 
-def uprate_puf(puf: pd.DataFrame) -> pd.DataFrame:
+def uprate_puf(puf: pd.DataFrame, time_period: str) -> pd.DataFrame:
     gov = system.parameters.calibration.gov
     soi = gov.irs.soi
 
@@ -335,8 +335,8 @@ def uprate_puf(puf: pd.DataFrame) -> pd.DataFrame:
         else:
             uprater = soi.children[variable_name]
         value_in_2015 = uprater("2015-01-01")
-        value_in_2023 = uprater("2023-01-01")
-        uprating_factor = value_in_2023 / value_in_2015
+        value_now = uprater(f"{time_period}-01-01")
+        uprating_factor = value_now / value_in_2015
         puf[variable_name] = puf[variable_name] * uprating_factor
 
     return puf
@@ -357,7 +357,6 @@ def impute_missing_demographics(
     """
 
     demographics_from_puf = Imputation()
-    puf = uprate_puf(puf)
     puf_with_demographics = puf[
         puf.return_id.isin(demographics.return_id)
     ].merge(demographics, on="return_id")
@@ -586,6 +585,7 @@ def project_tax_unit_cps_to_person_level(
 
 def puf_imputed_cps_person_level(
     verbose: bool = False,
+    time_period: str = "2023",
 ) -> pd.DataFrame:
     """Generate a PUF-imputed CPS at the person level.
 
@@ -598,6 +598,8 @@ def puf_imputed_cps_person_level(
     if verbose:
         print("Loading PUF and demographics")
     puf, demographics = load_puf()
+
+    puf = uprate_puf(puf, time_period)
 
     if verbose:
         print("Imputing missing demographics")

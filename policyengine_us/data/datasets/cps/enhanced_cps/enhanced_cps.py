@@ -1,56 +1,24 @@
 from policyengine_us.data.storage import STORAGE_FOLDER
 from policyengine_core.data import Dataset
 import pandas as pd
+from policyengine_us.data.datasets.cps.enhanced_cps.calibrated_cps import (
+    CalibratedPUFExtendedCPS_2022,
+)
 
 
-class CalibratedPUFExtendedCPS(Dataset):
-    name = "calibrated_puf_extended_cps"
-    label = "Calibrated PUF-extended CPS (2023)"
-    file_path = STORAGE_FOLDER / "calibrated_puf_extended_cps.h5"
-    data_format = Dataset.TIME_PERIOD_ARRAYS
-    time_period = 2023
-    num_years: int = 3
-
-    def generate(self):
-        from .calibrate import calibrate
-        from .puf_extended_cps import PUFExtendedCPS_2023
-
-        new_data = {}
-        cps = PUFExtendedCPS_2023()
-        cps_data = cps.load()
-        for year in range(self.time_period, self.time_period + self.num_years):
-            year = str(year)
-            adjusted_weights = calibrate(
-                "puf_extended_cps_2023",
-                time_period=year,
-                training_log_path=STORAGE_FOLDER / "calibration_log.csv.gz",
-            )
-            for variable in cps.variables:
-                if variable not in new_data:
-                    new_data[variable] = {}
-                if variable == "household_weight":
-                    new_data[variable][year] = adjusted_weights
-                elif "_weight" not in variable and (
-                    (year == str(self.time_period)) or ("_id" in variable)
-                ):
-                    new_data[variable][year] = cps_data[variable][...]
-
-        self.save_dataset(new_data)
-
-
-class EnhancedCPS_2023(Dataset):
-    name = "enhanced_cps_2023"
-    label = "Enhanced CPS (2023)"
+class EnhancedCPS_2022(Dataset):
+    name = "enhanced_cps_2022_25"
+    label = "Enhanced CPS (2022-25)"
     file_path = STORAGE_FOLDER / "enhanced_cps.h5"
     data_format = Dataset.TIME_PERIOD_ARRAYS
-    time_period = 2023
-    num_years: int = 3
-    url = "release://policyengine/policyengine-us/enhanced-cps-2023/enhanced_cps.h5"
+    time_period = 2022
+    num_years: int = 4
+    # url = "release://policyengine/policyengine-us/enhanced-cps-2023/enhanced_cps.h5"
 
     def generate(self):
         self.remove()
         new_data = {}
-        cps = CalibratedPUFExtendedCPS()
+        cps = CalibratedPUFExtendedCPS_2022()
         from policyengine_us.data.datasets.cps.cps import CPS_2019
 
         cps_data = cps.load()

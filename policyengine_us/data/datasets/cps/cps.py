@@ -32,7 +32,7 @@ class CPS(Dataset):
         Technical documentation and codebook here: https://www2.census.gov/programs-surveys/cps/techdocs/cpsmar21.pdf
         """
 
-        raw_data = self.raw_cps().load()
+        raw_data = self.raw_cps(require=True).load()
         cps = h5py.File(self.file_path, mode="w")
 
         ENTITIES = ("person", "tax_unit", "family", "spm_unit", "household")
@@ -51,8 +51,6 @@ class CPS(Dataset):
         cps.close()
 
         cps = h5py.File(self.file_path, mode="a")
-        if self.time_period == 2022:
-            add_silver_plan_cost(self, cps, 2022)
         cps.close()
 
 
@@ -270,8 +268,8 @@ def add_personal_income_variables(
         2: "403b",
         3: "roth_ira",
         4: "regular_ira",
-        5: "keogh_plan",
-        6: "sep_plan",  # Simplified Employee Pension plan
+        5: "keogh",
+        6: "sep",  # Simplified Employee Pension plan
         7: "other_type_retirement_account",
     }
     for code, description in RETIREMENT_CODES.items():
@@ -281,13 +279,22 @@ def add_personal_income_variables(
             tmp += (person["DST_SC" + i] == code) * person["DST_VAL" + i]
         cps[f"{description}_distributions"] = tmp
     # Allocate retirement distributions by taxability.
-    cps["taxable_401k_distributions"] = (
-        cps["401k_distributions"][...]
-        * p["taxable_401k_distribution_fraction"]
-    )
-    cps["tax_exempt_401k_distributions"] = cps["401k_distributions"][...] * (
-        1 - p["taxable_401k_distribution_fraction"]
-    )
+    for source_with_taxable_fraction in ["401k", "403b", "sep"]:
+        cps[f"taxable_{source_with_taxable_fraction}_distributions"] = (
+            cps[f"{source_with_taxable_fraction}_distributions"][...]
+            * p[
+                f"taxable_{source_with_taxable_fraction}_distribution_fraction"
+            ]
+        )
+        cps[f"tax_exempt_{source_with_taxable_fraction}_distributions"] = cps[
+            f"{source_with_taxable_fraction}_distributions"
+        ][...] * (
+            1
+            - p[
+                f"taxable_{source_with_taxable_fraction}_distribution_fraction"
+            ]
+        )
+
     # Assume all regular IRA distributions are taxable,
     # and all Roth IRA distributions are not.
     cps["taxable_ira_distributions"] = cps["regular_ira_distributions"]
@@ -320,12 +327,12 @@ def add_personal_income_variables(
     LIMIT_IRA_CATCH_UP_2022 = 1_000
     CATCH_UP_AGE_2022 = 50
     retirement_contributions = person.RETCB_VAL
-    cps["self_employment_retirement_contributions"] = np.where(
+    cps["self_employment_pension_contributions"] = np.where(
         person.SEMP_VAL > 0, retirement_contributions, 0
     )
     remaining_retirement_contributions = np.maximum(
         retirement_contributions
-        - cps["self_employment_retirement_contributions"],
+        - cps["self_employment_pension_contributions"],
         0,
     )
     # Compute the 401(k) limit for the person's age.
@@ -456,8 +463,8 @@ def add_previous_year_income(self, cps: h5py.File) -> None:
 
     from survey_enhance.impute import Imputation
 
-    cps_current_year_data = self.raw_cps().load()
-    cps_previous_year_data = self.previous_year_raw_cps().load()
+    cps_current_year_data = self.raw_cps(require=True).load()
+    cps_previous_year_data = self.previous_year_raw_cps(require=True).load()
     cps_previous_year = cps_previous_year_data.person.set_index(
         cps_previous_year_data.person.PERIDNUM
     )
