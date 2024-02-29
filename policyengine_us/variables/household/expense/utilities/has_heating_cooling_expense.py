@@ -8,4 +8,8 @@ class has_heating_cooling_expense(Variable):
     definition_period = YEAR
 
     def formula(spm_unit, period, parameters):
-        return add(spm_unit, period, ["heating_cooling_expense"]) > 0
+        person = spm_unit.members
+        heating_expense = person("heating_expense", period)
+        cooling_expense = person("cooling_expense", period)
+        return spm_unit.sum(heating_expense + cooling_expense) > 0
+        # return add(spm_unit, period, ["heating_cooling_expense"]) > 0
