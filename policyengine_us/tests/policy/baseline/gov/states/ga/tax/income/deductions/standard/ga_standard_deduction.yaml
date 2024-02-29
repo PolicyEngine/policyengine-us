@@ -53,3 +53,25 @@
     state_code: GA
   output:
     ga_standard_deduction: 12_300
+
+- name: Joint filing - aged and blind head + aged and blind spouse
+  period: 2024
+  input:
+    filing_status: JOINT
+    age_head: 66
+    blind_head: true
+    age_spouse: 65
+    blind_spouse: true
+    state_code: GA
+  output:
+    ga_standard_deduction: 29_200
+
+- name: Head of household  - one blind and aged head
+  period: 2024
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    age_head: 65
+    blind_head: true
+    state_code: GA
+  output:
+    ga_standard_deduction: 14_600

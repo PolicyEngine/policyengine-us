@@ -22,3 +22,7 @@ changelog:
 	bump-version changelog.yaml setup.py
 	rm changelog_entry.yaml || true
 	touch changelog_entry.yaml
+dashboard:
+	python policyengine_us/data/datasets/cps/enhanced_cps/update_dashboard.py
+calibration:
+	python policyengine_us/data/datasets/cps/enhanced_cps/run_calibration.py

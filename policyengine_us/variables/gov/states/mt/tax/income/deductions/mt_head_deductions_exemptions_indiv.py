@@ -16,29 +16,22 @@ class mt_head_deductions_exemptions_indiv(Variable):
         )
         head = person("is_tax_unit_head", period)
         spouse = person("is_tax_unit_spouse", period)
-        head_agi = mt_agi * head
-        spouse_agi = mt_agi * spouse
-        spouse_agi_attributed_to_head = person.tax_unit.sum(spouse_agi) * head
-        head_over_spouse_agi = head_agi > spouse_agi_attributed_to_head
-        # Determine the difference between the two AGIs and cap the deductions at that amount
-        difference = person.tax_unit.sum(
-            np.abs(head_agi - spouse_agi_attributed_to_head)
-        )
+        head_agi = tax_unit.sum(mt_agi * head)
+        spouse_agi = tax_unit.sum(mt_agi * spouse)
+        head_exceeds_spouse_agi = head_agi > spouse_agi
+        # Determine the difference between the two AGIs and cap the deductions at that amount.
+        # The head only gets this portion if they have larger AGI.
+        agi_difference = np.abs(head_agi - spouse_agi)
         deductions_capped_at_agi_difference = min_(
-            difference, total_deductions_exemptions
+            agi_difference, total_deductions_exemptions
+        )
+        equalizing_amount = (
+            deductions_capped_at_agi_difference * head_exceeds_spouse_agi
         )
         # Halve the remaining deductions amount
-        halved_capped_deductions = (
+        # Both head and spouse receive this amount.
+        remaining_deductions_exemptions = (
             total_deductions_exemptions - deductions_capped_at_agi_difference
-        ) * 0.5
-        halved_deductions_allocated_to_head_or_spouse = (
-            halved_capped_deductions * head
         )
-        difference_applied_to_agi = (
-            deductions_capped_at_agi_difference
-            * where(head_over_spouse_agi, 1, 0)
-        )
-        return tax_unit.sum(
-            difference_applied_to_agi
-            + halved_deductions_allocated_to_head_or_spouse
-        )
+        halved_remaining_deductions = remaining_deductions_exemptions / 2
+        return halved_remaining_deductions + equalizing_amount

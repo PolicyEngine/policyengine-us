@@ -51,7 +51,8 @@ class CPS(Dataset):
         cps.close()
 
         cps = h5py.File(self.file_path, mode="a")
-        add_silver_plan_cost(self, cps, 2022)
+        if self.time_period == 2022:
+            add_silver_plan_cost(self, cps, 2022)
         cps.close()
 
 
@@ -263,6 +264,34 @@ def add_personal_income_variables(
     cps["tax_exempt_private_pension_income"] = cps_pensions * (
         1 - p["taxable_pension_fraction"]
     )
+    # Retirement account distributions.
+    RETIREMENT_CODES = {
+        1: "401k",
+        2: "403b",
+        3: "roth_ira",
+        4: "regular_ira",
+        5: "keogh_plan",
+        6: "sep_plan",  # Simplified Employee Pension plan
+        7: "other_type_retirement_account",
+    }
+    for code, description in RETIREMENT_CODES.items():
+        tmp = 0
+        # The ASEC splits distributions across four variable pairs.
+        for i in ["1", "2", "1_YNG", "2_YNG"]:
+            tmp += (person["DST_SC" + i] == code) * person["DST_VAL" + i]
+        cps[f"{description}_distributions"] = tmp
+    # Allocate retirement distributions by taxability.
+    cps["taxable_401k_distributions"] = (
+        cps["401k_distributions"][...]
+        * p["taxable_401k_distribution_fraction"]
+    )
+    cps["tax_exempt_401k_distributions"] = cps["401k_distributions"][...] * (
+        1 - p["taxable_401k_distribution_fraction"]
+    )
+    # Assume all regular IRA distributions are taxable,
+    # and all Roth IRA distributions are not.
+    cps["taxable_ira_distributions"] = cps["regular_ira_distributions"]
+    cps["tax_exempt_ira_distributions"] = cps["roth_ira_distributions"]
     # Other income (OI_VAL) is a catch-all for all other income sources.
     # The code for alimony income is 20.
     cps["alimony_income"] = (person.OI_OFF == 20) * person.OI_VAL
@@ -377,6 +406,7 @@ def add_spm_variables(cps: h5py.File, spm_unit: DataFrame) -> None:
         spm_unit_broadband_subsidy_reported="SPM_BBSUBVAL",
         spm_unit_payroll_tax_reported="SPM_FICA",
         spm_unit_federal_tax_reported="SPM_FEDTAX",
+        # State tax includes refundable credits.
         spm_unit_state_tax_reported="SPM_STTAX",
         spm_unit_capped_work_childcare_expenses="SPM_CAPWKCCXPNS",
         spm_unit_medical_expenses="SPM_MEDXPNS",
