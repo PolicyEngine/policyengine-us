@@ -20,7 +20,7 @@ class wi_earned_income_credit(Variable):
         p = parameters(period).gov.states.wi.tax.income.credits.earned_income
         inv_income = tax_unit("eitc_relevant_investment_income", period)
         # In 2023 Wisconsin adopted the federal EITC investment income limit
-        if p.apply_federal_investment_income_limit == True:
+        if p.apply_federal_investment_income_limit:
             p_irs = parameters(period).gov.irs.credits.eitc.phase_out
             threshold = p_irs.max_investment_income
         else:
