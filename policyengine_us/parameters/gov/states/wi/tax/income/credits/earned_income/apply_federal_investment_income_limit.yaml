@@ -1,8 +1,8 @@
-description: Wisconsin limits EITC eligibility to this investment income amount.
+description: Wisconsin applies the federal investment income limit for the earned income tax credit if this is true.
 metadata:
-  unit: currency-USD
+  unit: bool
   period: year
-  label: Wisconsin EITC investment income limit
+  label: Wisconsin EITC apply federal investment income limit
   reference:
     - title: 2021 Wisconsin Form 1 instructions for Line 26
       href: https://www.revenue.wi.gov/TaxForms2021/2021-Form1-Inst.pdf#page=27
@@ -13,5 +13,5 @@ metadata:
       href: https://www.revenue.wi.gov/TaxForms2023/2023-Form1-Inst.pdf#page=27
 
 values:
-  2021-01-01: 3_650
-  2022-01-01: 3_800
+  2021-01-01: false
+  2023-01-01: true
