@@ -283,6 +283,7 @@ FINANCIAL_SUBSET = [
     "partnership_s_corp_income",
     "farm_income",
     "farm_rent_income",
+    "short_term_capital_gains",
     "long_term_capital_gains",
     "taxable_interest_income",
     "tax_exempt_interest_income",
@@ -326,8 +327,6 @@ def uprate_puf(puf: pd.DataFrame, time_period: str) -> pd.DataFrame:
     soi = gov.irs.soi
 
     # Uprate the financial subset
-
-    puf = MicroDataFrame(puf, weights="decimal_weight")
 
     for variable_name in FINANCIAL_SUBSET:
         if variable_name not in soi.children:
@@ -396,7 +395,6 @@ def impute_missing_demographics(
             weighted_puf_with_imputed_demographics,
         ]
     )
-    puf_combined = MicroDataFrame(puf_combined, weights="decimal_weight")
 
     return puf_combined
 
@@ -498,7 +496,7 @@ def generate_puf_style_cps() -> pd.DataFrame:
     cps_demographics["tax_unit_weight"] = sim.calculate(
         "tax_unit_weight"
     ).values
-    return cps_demographics
+    return pd.DataFrame(cps_demographics)
 
 
 def impute_puf_financials_to_cps(

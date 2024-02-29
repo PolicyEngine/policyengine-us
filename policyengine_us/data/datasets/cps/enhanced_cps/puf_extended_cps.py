@@ -73,10 +73,4 @@ class PUFExtendedCPS_2022(PUFExtendedCPS):
     name = "puf_extended_cps_2022"
     label = "PUF-extended CPS (2022)"
     cps = CPS_2022
-
-
-class PUFExtendedCPS_2023(PUFExtendedCPS):
-    time_period = 2023
-    name = "puf_extended_cps_2023"
-    label = "PUF-extended CPS (2023)"
-    cps = CPS_2023
+    file_path = STORAGE_FOLDER / "puf_extended_cps_2022.h5"

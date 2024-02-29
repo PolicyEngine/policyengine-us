@@ -14,7 +14,7 @@ class CalibratedDataset(Dataset):
         from .calibrate import calibrate
 
         new_data = {}
-        cps = self.input_dataset()
+        cps = self.input_dataset(require=True)
         cps_data = cps.load()
         for year in range(self.time_period, self.time_period + self.num_years):
             year = str(year)
@@ -42,3 +42,4 @@ class CalibratedPUFExtendedCPS_2022(CalibratedDataset):
     input_dataset = PUFExtendedCPS_2022
     time_period = 2022
     num_years = 4
+    file_path = STORAGE_FOLDER / "calibrated_puf_extended_cps_2022.h5"
