@@ -4,8 +4,10 @@
     people:
       person1:
         earned_income: 48_000
+        is_tax_unit_head_or_spouse: true
       person2:
         earned_income: 1_000
+        is_tax_unit_head_or_spouse: true
     households:
       household:
         members: [person1, person2]
@@ -19,8 +21,10 @@
     people:
       person1:
         earned_income: 48_000
+        is_tax_unit_head_or_spouse: true
       person2:
         earned_income: 1_000
+        is_tax_unit_head_or_spouse: true
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -38,8 +42,10 @@
     people:
       person1:
         earned_income: 48_000
+        is_tax_unit_head_or_spouse: true
       person2:
         earned_income: 10_000
+        is_tax_unit_head_or_spouse: true
     households:
       household:
         members: [person1, person2]
@@ -53,8 +59,10 @@
     people:
       person1:
         earned_income: 70_000
+        is_tax_unit_head_or_spouse: true
       person2:
         earned_income: 10_000
+        is_tax_unit_head_or_spouse: true
       person3:
         earned_income: 0
     tax_units:
@@ -66,4 +74,20 @@
         members: [person1, person2, person3]
         state_code: UT
   output: # 0 * 0
+    ut_at_home_parent_credit_eligible: false
+
+- name: No parents qualify
+  period: 2022
+  input:
+    people:
+      person1:
+        earned_income: 48_000
+        is_tax_unit_head_or_spouse: true
+      person2:
+        earned_income: 1_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output: # 0 * 1
     ut_at_home_parent_credit_eligible: false

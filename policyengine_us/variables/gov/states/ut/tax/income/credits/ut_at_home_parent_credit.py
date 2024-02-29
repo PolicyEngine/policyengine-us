@@ -8,6 +8,10 @@ class ut_at_home_parent_credit(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = "ut_at_home_parent_credit_eligible"
+    reference = (
+        "https://le.utah.gov/xcode/Title59/Chapter10/59-10-S1005.html",
+        "https://www.taxformfinder.org/forms/2021/2021-utah-tc-40-full-packet.pdf#page=23",
+    )
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
