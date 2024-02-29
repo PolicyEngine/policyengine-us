@@ -6452,3 +6452,24 @@
     fixed:
     - Replaced data download URLs for CPS and Enhanced CPS files.
   date: 2024-02-27 22:54:30
+- bump: minor
+  changes:
+    added:
+    - CBO uprating factors for all tax parameters through 2034.
+  date: 2024-02-28 10:24:15
+- bump: minor
+  changes:
+    added:
+    - Create state withheld income tax variables for all states which cause a circular
+      reference.
+  date: 2024-02-28 17:28:50
+- bump: patch
+  changes:
+    added:
+    - Decompose snap_utility_allowance into three variables for SUA, LUA, and IUA.
+  date: 2024-02-28 19:05:54
+- bump: minor
+  changes:
+    added:
+    - 2023 Wisconsin income tax parameters.
+  date: 2024-02-29 02:00:39

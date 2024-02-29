@@ -5,6 +5,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.686.0] - 2024-02-29 02:00:39
+
+### Added
+
+- 2023 Wisconsin income tax parameters.
+
+## [0.685.1] - 2024-02-28 19:05:54
+
+### Added
+
+- Decompose snap_utility_allowance into three variables for SUA, LUA, and IUA.
+
+## [0.685.0] - 2024-02-28 17:28:50
+
+### Added
+
+- Create state withheld income tax variables for all states which cause a circular reference.
+
+## [0.684.0] - 2024-02-28 10:24:15
+
+### Added
+
+- CBO uprating factors for all tax parameters through 2034.
+
 ## [0.683.1] - 2024-02-27 22:54:30
 
 ### Fixed
@@ -7592,6 +7616,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.686.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.685.1...0.686.0
+[0.685.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.685.0...0.685.1
+[0.685.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.684.0...0.685.0
+[0.684.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.683.1...0.684.0
 [0.683.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.683.0...0.683.1
 [0.683.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.682.1...0.683.0
 [0.682.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.682.0...0.682.1
