@@ -36,7 +36,8 @@ class ar_low_income_tax_eligible(Variable):
                 != np.inf,
                 p.head_of_household.two_or_more_dependents.calc(
                     agi, right=True
-                )!= np.inf,
+                )
+                != np.inf,
                 # Separate filers are ineligible to use the low income tax tables
                 False,
                 p.widow.no_or_one_dependent.calc(agi, right=True) != np.inf,
