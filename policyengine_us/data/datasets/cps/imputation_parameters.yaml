@@ -8,7 +8,8 @@ taxable_interest_fraction: 0.680
 qualified_dividend_fraction: 0.448
 
 # no SOI data, so arbitrary assumption
-taxable_pension_fraction: 1.000  
+taxable_pension_fraction: 1.0
+taxable_401k_distribution_fraction: 1.0
 
 # SOI 2012 data
 long_term_capgain_fraction: 0.880  
