@@ -15,9 +15,14 @@ class mt_taxable_income_indiv(Variable):
 
     def formula(person, period, parameters):
         mt_agi = person("mt_agi", period)
-        standard_deduction = person("mt_standard_deduction_indiv", period)
-        itemized_deductions = person("mt_itemized_deductions_indiv", period)
-        # Tax units can claim the larger of the itemized or standard deductions
-        deductions = max_(itemized_deductions, standard_deduction)
-        exemptions = person("mt_exemptions_indiv", period)
-        return max_(0, mt_agi - deductions - exemptions)
+        deductions_and_exemptions = person.tax_unit(
+            "mt_tax_unit_deductions_exemptions_indiv", period
+        )
+        head = person("is_tax_unit_head", period)
+        head_deductions = person.tax_unit(
+            "mt_head_deductions_exemptions_indiv", period
+        )
+        spouse_deductions = deductions_and_exemptions - head_deductions
+        capped_head_agi = max_(mt_agi - head_deductions, 0)
+        capped_spouse_agi = max_(mt_agi - spouse_deductions, 0)
+        return where(head, capped_head_agi, capped_spouse_agi)

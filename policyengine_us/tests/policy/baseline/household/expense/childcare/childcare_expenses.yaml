@@ -1,0 +1,17 @@
+- name: Some subsidies
+  period: 2022
+  input:
+    pre_subsidy_childcare_expenses: 100
+    ca_calworks_child_care: 5
+    co_ccap_subsidy: 15
+  output:
+    childcare_expenses: 80
+
+- name: Capped at 0
+  period: 2022
+  input:
+    pre_subsidy_childcare_expenses: 18
+    ca_calworks_child_care: 5
+    co_ccap_subsidy: 15
+  output:
+    childcare_expenses: 0

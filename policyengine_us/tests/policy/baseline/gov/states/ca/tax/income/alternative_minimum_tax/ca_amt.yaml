@@ -1,0 +1,43 @@
+- name: California Alternative Minimum Tax test 1 - ca_amti less than threshold
+  period: 2022
+  input:
+    state_code: CA
+    filing_status: SINGLE
+    ca_amti: 250_000
+    ca_amt_exemption: 0
+    ca_income_tax_before_credits: 30_000
+  output:
+    ca_amt: 0
+
+- name: California Alternative Minimum Tax test 2 - ca_amti more than threshold
+  period: 2022
+  input:
+    state_code: CA
+    filing_status: SINGLE
+    ca_amti: 350_000
+    ca_amt_exemption: 40_000
+    ca_income_tax_before_credits: 55_000
+  output:
+    ca_amt: 0
+
+- name: California Alternative Minimum Tax test 3 - ca_amti less than threshold
+  period: 2021
+  input:
+    state_code: CA
+    filing_status: SINGLE
+    ca_amti: 250_000
+    ca_amt_exemption: 0
+    ca_income_tax_before_credits: 30_000
+  output:
+    ca_amt: 0
+
+- name: California Alternative Minimum Tax test 4 - ca_amti more than threshold
+  period: 2021
+  input:
+    state_code: CA
+    filing_status: SINGLE
+    ca_amti: 350_000
+    ca_amt_exemption: 40_000
+    ca_income_tax_before_credits: 55_000
+  output:
+    ca_amt: 0

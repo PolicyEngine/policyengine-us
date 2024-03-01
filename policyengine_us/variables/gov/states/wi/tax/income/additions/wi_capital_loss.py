@@ -19,5 +19,6 @@ class wi_capital_loss(Variable):
         netcg = add(tax_unit, period, GAIN_SOURCES)
         # return Schedule WD, Line 28, as a positive amount as on form
         p = parameters(period).gov.states.wi.tax.income.additions
-        limit = p.capital_loss.limit
+        filing_status = tax_unit("filing_status", period)
+        limit = p.capital_loss.limit[filing_status]
         return where(netcg < 0, min_(limit, -netcg), 0)

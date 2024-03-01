@@ -1,0 +1,17 @@
+- name: Some subsidies
+  period: 2022
+  input:
+    pre_subsidy_electricity_expense: 100
+    ca_care: 5
+    ca_fera: 15
+  output:
+    electricity_expense: 80
+
+- name: Capped at 0
+  period: 2022
+  input:
+    pre_subsidy_electricity_expense: 100
+    ca_care: 90
+    ca_fera: 30
+  output:
+    electricity_expense: 0
