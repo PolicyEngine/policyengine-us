@@ -20,4 +20,8 @@ class ut_at_home_parent_credit(Variable):
         p = parameters(period).gov.states.ut.tax.income.credits.at_home_parent
         count_children = tax_unit.sum((age < p.max_child_age) & is_dependent)
 
-        return p.amount * count_children
+        is_joint = tax_unit("tax_unit_is_joint", period)
+        at_home_parent_credit = p.amount * count_children
+        return where(
+            is_joint, at_home_parent_credit * 2, at_home_parent_credit
+        )

@@ -18,12 +18,12 @@ class ut_at_home_parent_credit_eligible(Variable):
 
         head_or_spouse_eligible = person("is_tax_unit_head_or_spouse", period)
         one_parent_income_eligible = (
-            person("earned_income", period) < p.parent_max_earnings
+            person("earned_income", period) <= p.parent_max_earnings
         )
         employment_income_eligible = (
             tax_unit.sum(head_or_spouse_eligible * one_parent_income_eligible)
             > 0
         )
-        agi_eligible = tax_unit("adjusted_gross_income", period) < p.max_agi
+        agi_eligible = tax_unit("adjusted_gross_income", period) <= p.max_agi
 
         return employment_income_eligible & agi_eligible
