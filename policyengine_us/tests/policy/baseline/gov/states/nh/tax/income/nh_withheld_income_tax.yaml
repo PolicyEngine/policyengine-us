@@ -1,29 +1,29 @@
-- name: Person with income over the standard deduction amount
+- name: Person with income over the regular personal exemption amount
   period: 2022
   absolute_error_margin: 0.01
   input:
     irs_employment_income: 15_000
     filing_status: JOINT
-    state_code: 
+    state_code: NH
   output:
-    _withheld_income_tax: 
+    nh_withheld_income_tax: 630 #0.05*(15000-2400)
 
-- name: Changing the filing sttaus should not change the output 
+- name: Changing the filing status should not change the output 
   period: 2022
   absolute_error_margin: 0.01
   input:
     irs_employment_income: 15_000
     filing_status: WIDOW
-    state_code: 
+    state_code: NH
   output:
-    _withheld_income_tax: 
+    nh_withheld_income_tax: 630
 
 - name: Capped at 0
   period: 2022
   absolute_error_margin: 0.01
   input:
-    irs_employment_income: 12_000
+    irs_employment_income: 2_000
     filing_status: WIDOW
-    state_code: 
+    state_code: NH
   output:
-    _withheld_income_tax: 0
+    nh_withheld_income_tax: 0

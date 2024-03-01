@@ -11,9 +11,11 @@ class nh_withheld_income_tax(Variable):
 
     def formula(person, period, parameters):
         employment_income = person("irs_employment_income", period)
-        p = parameters(period).gov.states.ca.tax.income
-        standard_deduction = p.deductions.standard.amount["SINGLE"]
+        p = parameters(period).gov.states.nh.tax.income
+        # Since New Hampshire does not have a standard deduction
+        # we apply the base personal exemption amount
+        personal_exemptions = p.exemptions.amount.base["SINGLE"]
         reduced_employment_income = max_(
-            employment_income - standard_deduction, 0
+            employment_income - personal_exemptions, 0
         )
-        return p.rates.single.calc(reduced_employment_income)
+        return p.rate * reduced_employment_income
