@@ -11,8 +11,9 @@ class mn_withheld_income_tax(Variable):
 
     def formula(person, period, parameters):
         employment_income = person("irs_employment_income", period)
-        p = parameters(period).gov.states.ca.tax.income
-        standard_deduction = p.deductions.standard.amount["SINGLE"]
+        p = parameters(period).gov.states.mn.tax.income
+        # We apply the base standard deduction amount
+        standard_deduction = p.deductions.standard.base["SINGLE"]
         reduced_employment_income = max_(
             employment_income - standard_deduction, 0
         )
