@@ -12,4 +12,3 @@ class pa_withheld_income_tax(Variable):
     def formula(person, period, parameters):
         employment_income = person("irs_employment_income", period)
         p = parameters(period).gov.states.pa.tax.income
-
