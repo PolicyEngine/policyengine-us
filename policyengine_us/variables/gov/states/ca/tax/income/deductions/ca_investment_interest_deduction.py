@@ -6,7 +6,10 @@ class ca_investment_interest_deduction(Variable):
     entity = TaxUnit
     label = "California investment interest deduction"
     unit = USD
-    documentation = "https://www.ftb.ca.gov/forms/2021/2021-3526.pdf"
+    reference = (
+        "https://www.ftb.ca.gov/forms/2021/2021-3526.pdf"
+        "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=RTC&sectionNum=17145"
+    )
     definition_period = YEAR
     defined_for = StateCode.CA
 
