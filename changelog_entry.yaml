@@ -1,0 +1,7 @@
+- bump: minor
+  changes:
+    fixed:
+    - Randomness in baseline tax results across model runs.
+    added:
+    - Social security benefit taxation parameter that allows
+      specification of a tax expenditure "reform".
