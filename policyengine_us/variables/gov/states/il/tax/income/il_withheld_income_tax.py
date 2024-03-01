@@ -11,9 +11,11 @@ class il_withheld_income_tax(Variable):
 
     def formula(person, period, parameters):
         employment_income = person("irs_employment_income", period)
-        p = parameters(period).gov.states.ca.tax.income
-        standard_deduction = p.deductions.standard.amount["SINGLE"]
+        p = parameters(period).gov.states.il.tax.income
+        # Since Illinois does not have a standard deduction, we apply the maximum
+        # personal exemption amount
+        personal_exemptions = p.exemption.personal
         reduced_employment_income = max_(
-            employment_income - standard_deduction, 0
+            employment_income - personal_exemptions, 0
         )
-        return p.rates.single.calc(reduced_employment_income)
+        return p.rate * reduced_employment_income
