@@ -6457,3 +6457,29 @@
     added:
     - CBO uprating factors for all tax parameters through 2034.
   date: 2024-02-28 10:24:15
+- bump: minor
+  changes:
+    added:
+    - Create state withheld income tax variables for all states which cause a circular
+      reference.
+  date: 2024-02-28 17:28:50
+- bump: patch
+  changes:
+    added:
+    - Decompose snap_utility_allowance into three variables for SUA, LUA, and IUA.
+  date: 2024-02-28 19:05:54
+- bump: minor
+  changes:
+    added:
+    - 2023 Wisconsin income tax parameters.
+  date: 2024-02-29 02:00:39
+- bump: patch
+  changes:
+    fixed:
+    - Minnesota Working Family Credit eligibility logic.
+  date: 2024-03-01 01:53:48
+- bump: patch
+  changes:
+    fixes:
+    - Refactor the Utah tax rate yaml file.
+  date: 2024-03-01 13:39:44
