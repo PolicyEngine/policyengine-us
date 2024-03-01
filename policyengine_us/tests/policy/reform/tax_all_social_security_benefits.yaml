@@ -1,0 +1,7 @@
+- name: Include all social security benefits in federal AGI
+  period: 2021
+  input:
+    gov.irs.social_security.taxability.fully_taxable: true
+    tax_unit_social_security: 900
+  output:
+    tax_unit_taxable_social_security: 900
