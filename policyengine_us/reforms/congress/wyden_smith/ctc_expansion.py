@@ -125,7 +125,6 @@ def create_ctc_expansion_reform(parameters, period, bypass: bool = False):
         current_period = current_period.offset(1, "year")
 
     if reform_active:
-        print("creating reform")
         return create_ctc_expansion()
     else:
         return None

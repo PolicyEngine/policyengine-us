@@ -5,6 +5,104 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.686.1] - 2024-03-01 01:53:48
+
+### Fixed
+
+- Minnesota Working Family Credit eligibility logic.
+
+## [0.686.0] - 2024-02-29 02:00:39
+
+### Added
+
+- 2023 Wisconsin income tax parameters.
+
+## [0.685.1] - 2024-02-28 19:05:54
+
+### Added
+
+- Decompose snap_utility_allowance into three variables for SUA, LUA, and IUA.
+
+## [0.685.0] - 2024-02-28 17:28:50
+
+### Added
+
+- Create state withheld income tax variables for all states which cause a circular reference.
+
+## [0.684.0] - 2024-02-28 10:24:15
+
+### Added
+
+- CBO uprating factors for all tax parameters through 2034.
+
+## [0.683.1] - 2024-02-27 22:54:30
+
+### Fixed
+
+- Replaced data download URLs for CPS and Enhanced CPS files.
+
+## [0.683.0] - 2024-02-27 22:50:14
+
+### Added
+
+- Retirement income from CPS.
+
+### Changed
+
+- Improvements to calibration routine.
+
+## [0.682.1] - 2024-02-26 21:59:44
+
+### Fixed
+
+- Limit the Idaho Grocery Credit to households not enrolled in SNAP.
+
+## [0.682.0] - 2024-02-26 20:57:25
+
+### Added
+
+- Update the CalWORKs Child Care payment standard with the 2022 rates.
+
+## [0.681.1] - 2024-02-26 20:50:21
+
+### Fixed
+
+- Add employee payroll tax to the reported state income tax reform.
+
+## [0.681.0] - 2024-02-25 23:55:29
+
+### Added
+
+- California alternative minimum tax calculations.
+
+## [0.680.0] - 2024-02-24 01:13:23
+
+### Added
+
+- Enable Idaho income tax model and include in the net income tree.
+
+## [0.679.1] - 2024-02-24 00:03:16
+
+### Added
+
+- Include social security, SSI and TANF in the HUD annual income variable.
+
+## [0.679.0] - 2024-02-23 06:10:17
+
+### Added
+
+- Georgia 2024 Standard Deduction Parameters.
+
+## [0.678.2] - 2024-02-22 16:58:33
+
+## [0.678.1] - 2024-02-22 15:35:37
+
+## [0.678.0] - 2024-02-22 15:29:21
+
+### Added
+
+- Pennsylvania Child and Dependent Care Tax Credit.
+
 ## [0.677.0] - 2024-02-21 17:20:43
 
 ### Added
@@ -7524,6 +7622,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.686.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.686.0...0.686.1
+[0.686.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.685.1...0.686.0
+[0.685.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.685.0...0.685.1
+[0.685.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.684.0...0.685.0
+[0.684.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.683.1...0.684.0
+[0.683.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.683.0...0.683.1
+[0.683.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.682.1...0.683.0
+[0.682.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.682.0...0.682.1
+[0.682.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.681.1...0.682.0
+[0.681.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.681.0...0.681.1
+[0.681.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.680.0...0.681.0
+[0.680.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.679.1...0.680.0
+[0.679.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.679.0...0.679.1
+[0.679.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.678.2...0.679.0
+[0.678.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.678.1...0.678.2
+[0.678.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.678.0...0.678.1
+[0.678.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.677.0...0.678.0
 [0.677.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.676.1...0.677.0
 [0.676.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.676.0...0.676.1
 [0.676.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.675.0...0.676.0

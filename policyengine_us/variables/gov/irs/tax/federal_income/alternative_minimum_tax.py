@@ -138,16 +138,21 @@ class alternative_minimum_tax(Variable):
             ),
         )
         age_head = tax_unit("age_head", period)
-        child = amt.exemption.child
-        young_head = (age_head != 0) & (age_head < child.max_age)
-        no_or_young_spouse = tax_unit("age_spouse", period) < child.max_age
+        child = parameters(period).gov.irs.dependent.ineligible_age
+        young_head = (age_head != 0) & (age_head < child.non_student)
+        no_or_young_spouse = tax_unit("age_spouse", period) < child.non_student
         adj_earnings = tax_unit("filer_adjusted_earnings", period)
-        line29 = where(
-            young_head & no_or_young_spouse,
-            min_(line29, adj_earnings + child.amount),
-            line29,
+        if period.start.year >= 2019:
+            child_amount = 0
+        else:
+            child_amount = amt.exemption.child.amount
+
+        line29_cap_applies = young_head & no_or_young_spouse
+        line29_cap = where(
+            line29_cap_applies, adj_earnings + child_amount, np.inf
         )
-        line30 = max_(0, amt_income - line29)
+        line29_capped = min_(line29, line29_cap)
+        line30 = max_(0, amt_income - line29_capped)
         brackets = amt.brackets
         bracket_fraction = where(
             filing_status == filing_status.possible_values.SEPARATE,
