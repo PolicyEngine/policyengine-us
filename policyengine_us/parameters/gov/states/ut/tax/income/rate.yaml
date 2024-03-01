@@ -1,15 +1,11 @@
 description: Utah main income tax rate.
 values:
-  2008-01-01: 
-    value: 0.05
-  2018-05-08:
-    value: 0.0495
-  2022-01-01:
-    value: 0.0485
-  2023-01-01:
-    value: 0.0465
+  2008-01-01: 0.05
+  2018-05-08: 0.0495
+  2022-01-01: 0.0485
+  2023-01-01: 0.0465
 metadata:
-  unit: bool
+  unit: /1
   label: Utah income tax rate
   reference:
     - title: Utah Code 59-10-104 (2) (b) #2018-01-01
