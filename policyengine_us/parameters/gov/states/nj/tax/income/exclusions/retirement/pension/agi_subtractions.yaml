@@ -2,8 +2,24 @@ description: Deductions from AGI to calculate qualifying income for pension reti
 values:
   2021-01-01:
     - tax_exempt_interest_income
+    - social_security_retirement
+    - railroad_benefits
     - tax_exempt_pension_income
-    - taxable_social_security
+    - military_retirement_pay
+
 metadata:
-  unit: variable
+  period: year
+  unit: list
   label: AGI subtractions for qualifying income for pension retirement exclusion
+  reference: 
+    - title: 2021 New Jersey NJ-1040 Resident Return Line 28a
+      href: https://www.state.nj.us/treasury/taxation/pdf/other_forms/tgi-ee/2021/1040i.pdf#page=21
+    - title: 2023 NJ-1040 Instructions Line 28a
+      href: https://www.state.nj.us/treasury/taxation/pdf/current/1040i.pdf#page=21
+    - title: 2022 NJ-1040 Instructions Line 28a
+      href: https://www.nj.gov/treasury/taxation/pdf/other_forms/tgi-ee/2022/1040i.pdf#page=22
+    - title: 2023 NJ-1040 Instructions Line 20b
+      href: https://www.state.nj.us/treasury/taxation/pdf/current/1040i.pdf#page=17
+    - title: 2023 NJ-1040 Instructions Line 16b
+      href: https://www.state.nj.us/treasury/taxation/pdf/current/1040i.pdf#page=12
+
