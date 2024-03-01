@@ -23,7 +23,7 @@ class CalibratedPUFExtendedCPS(Dataset):
             adjusted_weights = calibrate(
                 "puf_extended_cps_2023",
                 time_period=year,
-                training_log_path="calibration_log.csv.gz",
+                training_log_path=STORAGE_FOLDER / "calibration_log.csv.gz",
             )
             for variable in cps.variables:
                 if variable not in new_data:
@@ -128,7 +128,7 @@ class EnhancedCPS_2023(Dataset):
                 sim.calculate(
                     "household_weight", time_period, map_to="person"
                 ).values,
-                max_iterations=7,
+                max_iterations=3,
             )
 
             y_pred = income_last_year.predict(
