@@ -1,0 +1,15 @@
+- name: Not qualify
+  period: 2022
+  input:
+    adjusted_gross_income: 80_000
+    state_code: UT
+  output: 
+    ut_at_home_parent_credit_agi_eligible: false
+
+- name: Qualify
+  period: 2022
+  input:
+    adjusted_gross_income: 0
+    state_code: UT
+  output: 
+    ut_at_home_parent_credit_agi_eligible: true

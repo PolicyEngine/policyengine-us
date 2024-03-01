@@ -1,0 +1,35 @@
+- name: Income does not qualify, parent
+  period: 2022
+  input:
+    earned_income: 48_000
+    is_tax_unit_head_or_spouse: true
+    state_code: UT
+  output: 
+    ut_at_home_parent_credit_one_parent_income_eligible: false
+
+- name: Income qualifies, parent
+  period: 2022
+  input:
+    earned_income: 1_000
+    is_tax_unit_head_or_spouse: true
+    state_code: UT
+  output: 
+    ut_at_home_parent_credit_one_parent_income_eligible: true
+
+- name: Income qualifies, not parent
+  period: 2022
+  input:
+    earned_income: 1_000
+    is_tax_unit_head_or_spouse: false
+    state_code: UT
+  output: 
+    ut_at_home_parent_credit_one_parent_income_eligible: false
+
+- name: Income does not qualify, not parent
+  period: 2022
+  input:
+    earned_income: 48_000
+    is_tax_unit_head_or_spouse: false
+    state_code: UT
+  output: 
+    ut_at_home_parent_credit_one_parent_income_eligible: false
