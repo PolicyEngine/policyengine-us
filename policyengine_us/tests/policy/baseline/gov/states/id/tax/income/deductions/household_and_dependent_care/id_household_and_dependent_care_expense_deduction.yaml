@@ -1,0 +1,100 @@
+- name: Federal cdcc calculation with a cap at earned income
+  period: 2022
+  input:
+    tax_unit_childcare_expenses: 13_000
+    id_cdcc_limit: 6_000
+    min_head_spouse_earned: 4_000
+    state_code: ID
+  output:
+    id_household_and_dependent_care_expense_deduction: 4_000
+
+- name: Capped after 2023
+  period: 2023
+  input:
+    tax_unit_childcare_expenses: 13_000
+    id_cdcc_limit: 6_000
+    min_head_spouse_earned: 14_000    
+    state_code: ID
+  output:
+    id_household_and_dependent_care_expense_deduction: 12_000
+
+- name: Integration test for the 2022 calculation
+  period: 2022
+  input:
+    people:
+      person1: 
+        earned_income: 7_000
+        age: 40
+      person2:
+        earned_income: 10_000
+        age: 40
+      person3:
+        age: 10
+      person4:
+        age: 10
+      person5:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+        tax_unit_childcare_expenses: 10_000
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: ID
+  output:
+    id_household_and_dependent_care_expense_deduction: 6_000
+
+- name: Integration test for the 2022 calculation
+  period: 2023
+  input:
+    people:
+      person1: 
+        earned_income: 14_000
+        age: 40
+      person2:
+        earned_income: 18_000
+        age: 40
+      person3:
+        age: 10
+      person4:
+        age: 10
+      person5:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+        tax_unit_childcare_expenses: 17_000
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: ID
+  output:
+    id_household_and_dependent_care_expense_deduction: 12_000
+
+- name: In 2021 the federal limit is not applied
+  period: 2021
+  input:
+    people:
+      person1: 
+        earned_income: 14_000
+        age: 40
+      person2:
+        earned_income: 18_000
+        age: 40
+      person3:
+        age: 10
+      person4:
+        age: 10
+      person5:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+        tax_unit_childcare_expenses: 17_000
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: ID
+  output:
+    id_household_and_dependent_care_expense_deduction: 6_000

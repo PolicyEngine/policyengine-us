@@ -1,0 +1,31 @@
+description: California provides the following alternative minimum tax exemption amount.  
+metadata:
+  label: California exemption amount
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  reference:
+  - title: 2021 Schedule P (540) Alternative Minimum Tax and Credit Limitations - Residents
+    href: https://www.ftb.ca.gov/forms/2021/2021-540-p.pdf#page=1
+  - title: 2022 Schedule P (540) Alternative Minimum Tax and Credit Limitations - Residents
+    href: https://www.ftb.ca.gov/forms/2022/2022-540-p.pdf#page=1
+  # The legal code provides the amounts as of 1998, before inflation adjustments.
+  - title: Cal. Rev. & Tax. Code § 17062(b)(5)
+    href: https://casetext.com/statute/california-codes/california-revenue-and-taxation-code/division-2-other-taxes/part-10-personal-income-tax/chapter-21-alternative-minimum-tax/section-17062-alternative-minimum-tax
+
+JOINT:
+  2021-01-01: 104_094
+  2022-01-01: 112_734
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 78_070
+  2022-01-01: 84_550
+WIDOW:
+  2021-01-01: 104_094
+  2022-01-01: 112_734
+SINGLE:
+  2021-01-01: 78_070
+  2022-01-01: 84_550
+SEPARATE:
+  2021-01-01: 52_044
+  2022-01-01: 56_364

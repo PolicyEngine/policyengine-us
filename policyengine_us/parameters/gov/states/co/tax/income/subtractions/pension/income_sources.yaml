@@ -3,12 +3,12 @@ values:
   2021-01-01:
     - taxable_pension_income
     - taxable_social_security
-    - ira_contributions
+    - taxable_ira_distributions
     - disability_benefits
-# In 2022 the taxable social security is calculated separately
+  # In 2022 the taxable social security is calculated separately.
   2022-01-01:
     - taxable_pension_income
-    - ira_contributions
+    - taxable_ira_distributions
     - disability_benefits
 metadata:
   unit: list

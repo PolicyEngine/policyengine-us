@@ -13,15 +13,19 @@ from .process_puf import (
     FINANCIAL_SUBSET as FINANCIAL_VARIABLES,
     puf_imputed_cps_person_level,
 )
+from pathlib import Path
 from typing import Tuple
 
 
-def generate_model_variables(dataset: str, time_period: str = "2023") -> Tuple:
+def generate_model_variables(
+    dataset: str, time_period: str = "2023", no_weight_adjustment: bool = False
+) -> Tuple:
     """Generates variables needed for the calibration process.
 
     Args:
         dataset (str): The name of the dataset to use.
         time_period (str, optional): The time period to use. Defaults to "2023".
+        no_weight_adjustment (bool, optional): Whether to skip the weight adjustment. Defaults to False.
 
     Returns:
         household_weights (torch.Tensor): The household weights.
@@ -46,6 +50,9 @@ def generate_model_variables(dataset: str, time_period: str = "2023") -> Tuple:
         dtype=torch.float32,
     )
 
+    if no_weight_adjustment:
+        weight_adjustment = torch.zeros_like(household_weights)
+
     values_df = pd.DataFrame()
     targets = {}
     equivalisation = {}
@@ -55,16 +62,22 @@ def generate_model_variables(dataset: str, time_period: str = "2023") -> Tuple:
     FINANCIAL_EQUIVALISATION = COUNT_HOUSEHOLDS
     POPULATION_EQUIVALISATION = COUNT_HOUSEHOLDS / 1e5
 
+    is_filer = simulation.calculate("tax_unit_is_filer").values
+    household_has_filers = (
+        simulation.map_result(is_filer, "tax_unit", "household") > 0
+    )
+
     for variable_name in FINANCIAL_VARIABLES:
         if variable_name not in parameters.gov.irs.soi:
             continue
         label = (
             simulation.tax_benefit_system.variables[variable_name].label
-            + " aggregate"
+            + " (IRS SOI)"
         )
-        values_df[label] = simulation.calculate(
-            variable_name, map_to="household"
-        ).values
+        values_df[label] = (
+            simulation.calculate(variable_name, map_to="household").values
+            * household_has_filers
+        )
         targets[label] = parameters.gov.irs.soi[variable_name]
         equivalisation[label] = FINANCIAL_EQUIVALISATION
 
@@ -79,7 +92,10 @@ def generate_model_variables(dataset: str, time_period: str = "2023") -> Tuple:
     ]
 
     for variable_name in PROGRAMS:
-        label = simulation.tax_benefit_system.variables[variable_name].label
+        label = (
+            simulation.tax_benefit_system.variables[variable_name].label
+            + " (CBO)"
+        )
         values_df[label] = simulation.calculate(
             variable_name, map_to="household"
         ).values
@@ -105,62 +121,29 @@ def generate_model_variables(dataset: str, time_period: str = "2023") -> Tuple:
         targets[f"{label} participants"] = participation
         equivalisation[f"{label} participants"] = POPULATION_EQUIVALISATION
 
-    # Number of tax returns by AGI size
-
-    agi_returns_thresholds = (
-        parameters.gov.irs.soi.agi.number_of_returns.thresholds
-    )
-    agi_returns_values = parameters.gov.irs.soi.agi.number_of_returns.amounts
-    agi = simulation.calculate("adjusted_gross_income").values
-    is_filer = simulation.calculate("income_tax").values != 0
-    for i in range(len(agi_returns_thresholds)):
-        lower = agi_returns_thresholds[i]
-        if i == len(agi_returns_thresholds) - 1:
-            upper = np.inf
-        else:
-            upper = agi_returns_thresholds[i + 1]
-
-        in_range = (agi >= lower) * (agi < upper) * is_filer
-        household_returns_in_range = simulation.map_result(
-            in_range, "tax_unit", "household"
-        )
-
-        name = f"Tax returns with ${lower:,.0f} <= AGI < ${upper:,.0f}"
-        values_df[name] = household_returns_in_range
-        targets[name] = agi_returns_values[i]
-        equivalisation[name] = POPULATION_EQUIVALISATION
-    # Total AGI aggregate by AGI band
-
-    agi_returns_thresholds = parameters.gov.irs.soi.agi.total_agi.thresholds
-    agi_returns_values = parameters.gov.irs.soi.agi.total_agi.amounts
-    for i in range(len(agi_returns_thresholds)):
-        lower = agi_returns_thresholds[i]
-        if i == len(agi_returns_thresholds) - 1:
-            upper = np.inf
-        else:
-            upper = agi_returns_thresholds[i + 1]
-
-        in_range = (agi >= lower) * (agi < upper) * is_filer
-        agi_in_range = agi * in_range
-        household_agi_in_range = simulation.map_result(
-            agi_in_range, "tax_unit", "household"
-        )
-
-        name = f"Total AGI from tax returns with ${lower:,.0f} <= AGI < ${upper:,.0f}"
-        values_df[name] = household_agi_in_range
-        targets[name] = agi_returns_values[i]
-        equivalisation[name] = FINANCIAL_EQUIVALISATION
+    demographics_sim = Microsimulation(dataset="cps_2023")
 
     # Total population
     values_df["U.S. population"] = simulation.calculate(
         "people", map_to="household"
     ).values
-    targets["U.S. population"] = parameters.populations.total
+    targets["U.S. population"] = parameters.gov.census.populations.total
     equivalisation["U.S. population"] = POPULATION_EQUIVALISATION
 
     # Population by 10-year age group and sex
+    age_cps = demographics_sim.calculate("age").values
+    is_male_cps = demographics_sim.calculate("is_male")
     age = simulation.calculate("age").values
     is_male = simulation.calculate("is_male")
+    population_in_21 = demographics_sim.tax_benefit_system.parameters.calibration.gov.census.populations.total(
+        "2021-01-01"
+    )
+    population_growth_since_21 = (
+        parameters.gov.census.populations.total / population_in_21
+    )
+    cps_household_weights = demographics_sim.calculate(
+        "household_weight"
+    ).values
     for lower_age_group in range(0, 90, 10):
         for possible_is_male in (True, False):
             in_age_range = (age >= lower_age_group) & (
@@ -170,15 +153,32 @@ def generate_model_variables(dataset: str, time_period: str = "2023") -> Tuple:
             count_people_in_range = simulation.map_result(
                 in_age_range * in_sex_category, "person", "household"
             )
+            in_age_range_cps = (age_cps >= lower_age_group) & (
+                age_cps < lower_age_group + 5
+            )
+            in_sex_category_cps = is_male_cps == possible_is_male
+            count_people_in_range_cps = demographics_sim.map_result(
+                in_age_range_cps * in_sex_category_cps, "person", "household"
+            )
+            count_people_in_range = simulation.map_result(
+                in_age_range * in_sex_category, "person", "household"
+            )
             sex_category = "male" if possible_is_male else "female"
             name = f"{lower_age_group} to {lower_age_group + 5} and {sex_category} population"
             values_df[name] = count_people_in_range
             targets[name] = (
-                household_weights.numpy() * count_people_in_range
-            ).sum()
+                cps_household_weights * count_people_in_range_cps
+            ).sum() * population_growth_since_21
             equivalisation[name] = POPULATION_EQUIVALISATION
 
     # Household population by number of adults and children
+
+    household_count_adults_cps = demographics_sim.map_result(
+        age_cps >= 18, "person", "household"
+    )
+    household_count_children_cps = demographics_sim.map_result(
+        age_cps < 18, "person", "household"
+    )
 
     household_count_adults = simulation.map_result(
         age >= 18, "person", "household"
@@ -194,26 +194,129 @@ def generate_model_variables(dataset: str, time_period: str = "2023") -> Tuple:
                 * (household_count_children == count_children)
                 * 1.0
             )
+            in_criteria_cps = (
+                (household_count_adults_cps == count_adults)
+                * (household_count_children_cps == count_children)
+                * 1.0
+            )
             name = f"{count_adults}-adult, {count_children}-child household population"
             values_df[name] = in_criteria
-            targets[name] = (household_weights.numpy() * in_criteria).sum()
+            targets[name] = (
+                cps_household_weights * in_criteria_cps
+            ).sum() * population_growth_since_21
             equivalisation[name] = POPULATION_EQUIVALISATION
 
-    # Tax filing unit counts by filing status
+    # Number of tax returns by AGI category
 
-    filing_status = simulation.calculate("filing_status").values
+    # is_filer
 
-    for filing_status_value in np.unique(filing_status):
-        is_filing_status = filing_status == filing_status_value
-        name = f"Filing status {filing_status_value.lower()} population"
-        household_filing_status_unit_counts = simulation.map_result(
-            is_filing_status, "tax_unit", "household"
+    agi = simulation.calculate("adjusted_gross_income").values
+
+    BOUNDS = [
+        -np.inf,
+        1,
+        5e3,
+        10e3,
+        15e3,
+        20e3,
+        25e3,
+        30e3,
+        40e3,
+        50e3,
+        75e3,
+        100e3,
+        200e3,
+        500e3,
+        1e6,
+        1.5e6,
+        2e6,
+        5e6,
+        10e6,
+        np.inf,
+    ]
+    COUNTS = [
+        4_098_522,
+        8_487_025,
+        8_944_908,
+        10_056_377,
+        9_786_580,
+        8_863_570,
+        8_787_576,
+        16_123_068,
+        12_782_334,
+        22_653_934,
+        14_657_726,
+        24_044_481,
+        9_045_567,
+        1_617_144,
+        376_859,
+        156_020,
+        233_838,
+        63_406,
+        45_404,
+    ]
+    VALUES = [
+        -171_836_364,
+        19_987_243,
+        67_651_359,
+        125_912_056,
+        170_836_129,
+        199_508_960,
+        241_347_179,
+        561_386_434,
+        573_155_378,
+        1_392_395_599,
+        1_271_699_391,
+        3_297_058_075,
+        2_619_188_471,
+        1_092_599_034,
+        454_552_875,
+        268_278_123,
+        698_923_219,
+        435_242_550,
+        1_477_728_359,
+        13_879_929_368,
+        -12_835_378,
+        451_204,
+        1_358_544,
+        14_362_205,
+        57_643_020,
+        101_727_915,
+        141_934_070,
+        382_385_416,
+        457_336_377,
+        1_238_178_360,
+        1_206_614_503,
+        3_252_746_502,
+        2_613_795_014,
+        1_091_571_914,
+        3_332_659_702,
+    ]
+
+    for i in range(len(BOUNDS) - 1):
+        lower_bound = BOUNDS[i]
+        upper_bound = BOUNDS[i + 1]
+        in_range = (agi >= lower_bound) * (agi < upper_bound) * is_filer
+        household_filers = simulation.map_result(
+            in_range, "tax_unit", "household"
         )
-        values_df[name] = household_filing_status_unit_counts
-        targets[name] = (
-            household_weights.numpy() * household_filing_status_unit_counts
-        ).sum()
+        if lower_bound == -np.inf:
+            lower_bound_str = "negative infinity"
+        else:
+            lower_bound_str = f"{lower_bound:,.0f}"
+        name = f"tax returns with AGI between ${lower_bound_str} and ${upper_bound:,.0f}"
+        values_df[name] = household_filers
+        targets[name] = COUNTS[i] * population_growth_since_21
         equivalisation[name] = POPULATION_EQUIVALISATION
+
+        agi_in_range = agi * in_range
+        household_agi = simulation.map_result(
+            agi_in_range, "tax_unit", "household"
+        )
+        name = f"total AGI from tax returns with AGI between ${lower_bound_str} and ${upper_bound:,.0f}"
+        values_df[name] = household_agi
+        targets[name] = VALUES[i] * population_growth_since_21 * 1e3
+        equivalisation[name] = FINANCIAL_EQUIVALISATION
 
     targets_array = torch.tensor(list(targets.values()), dtype=torch.float32)
     equivalisation_factors_array = torch.tensor(
@@ -240,12 +343,55 @@ def aggregate(
     return weighted_values
 
 
+def get_snapshot(
+    dataset: str,
+    time_period: str = "2023",
+) -> pd.DataFrame:
+    """Returns a snapshot of the training metrics without training the model.
+
+    Args:
+        dataset (str): The name of the dataset to use.
+        time_period (str, optional): The time period to use. Defaults to "2023".
+
+    Returns:
+        pd.DataFrame: A DataFrame containing the training metrics.
+    """
+    (
+        household_weights,
+        weight_adjustment,
+        values_df,
+        targets,
+        targets_array,
+        equivalisation_factors_array,
+    ) = generate_model_variables(
+        dataset, time_period, no_weight_adjustment=True
+    )
+    adjusted_weights = torch.relu(household_weights + weight_adjustment)
+    result = (
+        aggregate(adjusted_weights, values_df) / equivalisation_factors_array
+    )
+    target = targets_array / equivalisation_factors_array
+    current_aggregates = (
+        (result * equivalisation_factors_array).detach().numpy()[0]
+    )
+    loss = torch.mean(((result / target - 1) ** 2) * np.log2(np.abs(target)))
+    current_loss = loss.item()
+    return pd.DataFrame(
+        {
+            "name": list(targets.keys()) + ["total"],
+            "value": list(current_aggregates) + [current_loss],
+            "target": list(targets.values()) + [0],
+            "time_period": time_period,
+        }
+    )
+
+
 def calibrate(
     dataset: str,
     time_period: str = "2023",
     training_log_path: str = "training_log.csv.gz",
-    learning_rate: float = 1e-1,
-    epochs: int = 250_000,
+    learning_rate: float = 2e1,
+    epochs: int = 20_000,
 ) -> np.ndarray:
     (
         household_weights,
@@ -255,27 +401,33 @@ def calibrate(
         targets_array,
         equivalisation_factors_array,
     ) = generate_model_variables(dataset, time_period)
-    training_log_df = pd.DataFrame()
+    training_log_path = Path(training_log_path)
+    if training_log_path.exists():
+        training_log_df = pd.read_csv(training_log_path, compression="gzip")
+    else:
+        training_log_df = pd.DataFrame()
 
     progress_bar = tqdm(range(epochs), desc="Calibrating weights")
-    starting_loss = None
+    optimizer = torch.optim.Adam([weight_adjustment], lr=learning_rate)
     for i in progress_bar:
         adjusted_weights = torch.relu(household_weights + weight_adjustment)
         result = (
             aggregate(adjusted_weights, values_df)
             / equivalisation_factors_array
         )
+        target = targets_array / equivalisation_factors_array
         loss = torch.mean(
-            (result - targets_array / equivalisation_factors_array) ** 2
+            ((result / target - 1) ** 2) * np.log2(np.abs(target))
         )
-        if i == 0:
-            starting_loss = loss.item()
+        optimizer.zero_grad()
         loss.backward()
-        if i % 20 == 0:
+        optimizer.step()
+        if i % 10 == 0:
             current_loss = loss.item()
             progress_bar.set_description_str(
-                f"Calibrating weights | Loss = {current_loss:,.0f}"
+                f"Calibrating weights | Loss = {current_loss:,.3f}"
             )
+        if i % 2_000 == 0:
             current_aggregates = (
                 (result * equivalisation_factors_array).detach().numpy()[0]
             )
@@ -288,17 +440,11 @@ def calibrate(
                             "epoch": [i] * len(targets) + [i],
                             "value": list(current_aggregates) + [current_loss],
                             "target": list(targets.values()) + [0],
+                            "time_period": time_period,
                         }
                     ),
                 ]
             )
-        weight_adjustment.data -= learning_rate * weight_adjustment.grad
-        weight_adjustment.grad.zero_()
-
-    training_log_df.to_csv(training_log_path, compression="gzip")
-
-    loss_reduction = loss.item() / starting_loss - 1
-
-    print(f"Loss reduction: {loss_reduction:.2%}")
+            training_log_df.to_csv(training_log_path, compression="gzip")
 
     return adjusted_weights.detach().numpy()
