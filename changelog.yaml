@@ -6493,3 +6493,10 @@
     added:
     - List of Louisiana non refundable credits in a parameter file
   date: 2024-03-02 11:09:14
+- bump: patch
+  changes:
+    fixed:
+    - Populate Social Security dependents and survivors benefits as zero in cps.py.
+    - Remove uprating from Social Security dependents and survivors benefits.
+    - Split up SPM unit pre-subsidy childcare expenses into individual expenses.
+  date: 2024-03-02 18:37:00

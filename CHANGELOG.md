@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.688.1] - 2024-03-02 18:37:00
+
+### Fixed
+
+- Populate Social Security dependents and survivors benefits as zero in cps.py.
+- Remove uprating from Social Security dependents and survivors benefits.
+- Split up SPM unit pre-subsidy childcare expenses into individual expenses.
+
 ## [0.688.0] - 2024-03-02 11:09:14
 
 ### Added
@@ -7632,6 +7640,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.688.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.688.0...0.688.1
 [0.688.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.687.0...0.688.0
 [0.687.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.686.2...0.687.0
 [0.686.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.686.1...0.686.2
