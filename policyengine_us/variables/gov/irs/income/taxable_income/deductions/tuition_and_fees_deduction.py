@@ -9,7 +9,9 @@ class tuition_and_fees_deduction(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        qualified_tuition_expenses = add(tax_unit, period, ["qualified_tuition_expenses"])
+        qualified_tuition_expenses = add(
+            tax_unit, period, ["qualified_tuition_expenses"]
+        )
         adjusted_gross_income = tax_unit("adjusted_gross_income", period)
         filing_status = tax_unit("filing_status", period)
         p = parameters(period).gov.irs.deductions.tuition_and_fees
@@ -23,4 +25,4 @@ class tuition_and_fees_deduction(Variable):
                 p.non_joint.calc(adjusted_gross_income),
             ],
         )
-        return min_(qualified_tuition_expenses,limit)
+        return min_(qualified_tuition_expenses, limit)
