@@ -16,7 +16,9 @@ class EnhancedCPS(Dataset):
         self.remove()
         new_data = {}
         cps = self.input_dataset()
-        from policyengine_us.data.datasets.cps.cps import CPS_2019 # Always use CPS 2019 for previous year imputations
+        from policyengine_us.data.datasets.cps.cps import (
+            CPS_2019,
+        )  # Always use CPS 2019 for previous year imputations
 
         cps_data = cps.load()
         for variable in cps.variables:
@@ -109,6 +111,7 @@ class EnhancedCPS(Dataset):
             ].values
 
         self.save_dataset(new_data)
+
 
 class EnhancedCPS_2022(EnhancedCPS):
     name = "enhanced_cps_2022"

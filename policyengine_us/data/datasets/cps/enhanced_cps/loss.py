@@ -322,9 +322,7 @@ def aggregate_np(
     adjusted_weights: np.ndarray, values: pd.DataFrame
 ) -> np.ndarray:
     broadcasted_weights = adjusted_weights.reshape(-1, 1)
-    weighted_values = np.matmul(
-        broadcasted_weights.T, values.values
-    )
+    weighted_values = np.matmul(broadcasted_weights.T, values.values)
     return weighted_values
 
 
@@ -353,12 +351,11 @@ def get_snapshot(
     )
     adjusted_weights = np.maximum(household_weights + weight_adjustment, 0)
     result = (
-        aggregate_np(adjusted_weights, values_df) / equivalisation_factors_array
+        aggregate_np(adjusted_weights, values_df)
+        / equivalisation_factors_array
     )
     target = targets_array / equivalisation_factors_array
-    current_aggregates = (
-        (result * equivalisation_factors_array)[0]
-    )
+    current_aggregates = (result * equivalisation_factors_array)[0]
     loss = np.mean(((result / target - 1) ** 2) * np.log2(np.abs(target)))
     current_loss = loss.item()
     return pd.DataFrame(

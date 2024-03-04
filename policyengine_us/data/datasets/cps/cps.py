@@ -332,8 +332,7 @@ def add_personal_income_variables(
         person.SEMP_VAL > 0, retirement_contributions, 0
     )
     remaining_retirement_contributions = np.maximum(
-        retirement_contributions
-        - cps["self_employed_pension_contributions"],
+        retirement_contributions - cps["self_employed_pension_contributions"],
         0,
     )
     # Compute the 401(k) limit for the person's age.

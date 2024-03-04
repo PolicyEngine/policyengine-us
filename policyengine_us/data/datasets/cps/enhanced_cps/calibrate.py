@@ -15,7 +15,10 @@ from .process_puf import (
 )
 from pathlib import Path
 from typing import Tuple
-from policyengine_us.data.datasets.cps.enhanced_cps.loss import generate_model_variables
+from policyengine_us.data.datasets.cps.enhanced_cps.loss import (
+    generate_model_variables,
+)
+
 
 def aggregate(
     adjusted_weights: torch.Tensor, values: pd.DataFrame
@@ -43,7 +46,9 @@ def calibrate(
         equivalisation_factors_array,
     ) = generate_model_variables(dataset, time_period)
     household_weights = torch.tensor(household_weights, dtype=torch.float32)
-    weight_adjustment = torch.tensor(weight_adjustment, dtype=torch.float32, requires_grad=True)
+    weight_adjustment = torch.tensor(
+        weight_adjustment, dtype=torch.float32, requires_grad=True
+    )
     targets_array = torch.tensor(targets_array, dtype=torch.float32)
     equivalisation_factors_array = torch.tensor(
         equivalisation_factors_array, dtype=torch.float32

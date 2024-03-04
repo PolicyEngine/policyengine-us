@@ -17,7 +17,9 @@ class PUFExtendedCPS(Dataset):
         from policyengine_us.system import system
         from policyengine_us import Microsimulation
 
-        person_df, tax_unit_df = puf_imputed_cps_person_level(time_period=self.time_period)
+        person_df, tax_unit_df = puf_imputed_cps_person_level(
+            time_period=self.time_period
+        )
         new_data = {}
         cps = self.cps()
         input_data_sim = Microsimulation(dataset=self.cps)
@@ -45,8 +47,14 @@ class PUFExtendedCPS(Dataset):
                             cps_data[f"{entity}_id"][...]
                         )
                     else:
-                        original_values = input_data_sim.calculate(variable, self.time_period).values
-                    imputed_data = person_df[variable].values if variable in person_df else tax_unit_df[variable].values
+                        original_values = input_data_sim.calculate(
+                            variable, self.time_period
+                        ).values
+                    imputed_data = (
+                        person_df[variable].values
+                        if variable in person_df
+                        else tax_unit_df[variable].values
+                    )
                     new_data[variable] = np.concatenate(
                         [original_values, imputed_data]
                     )

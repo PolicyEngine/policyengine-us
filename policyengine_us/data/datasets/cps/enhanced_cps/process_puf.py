@@ -343,9 +343,7 @@ def load_puf() -> Tuple[pd.DataFrame, pd.DataFrame]:
 
     # Non-qualified dividend income =
     # dividends included in AGI - qualified dividend income
-    puf["non_qualified_dividend_income"] = (
-        puf.E00600 - puf.E00650
-    )
+    puf["non_qualified_dividend_income"] = puf.E00600 - puf.E00650
 
     puf = puf.rename(columns=codebook)
     demographics = demographics.rename(columns=codebook)
@@ -356,9 +354,12 @@ def load_puf() -> Tuple[pd.DataFrame, pd.DataFrame]:
     # Self-employed health insurance deduction is in reality capped at
     # self-employment income. We do not currently impute total premiums
     # for self-employed people.
-    puf["health_insurance_premiums"] = puf["self_employed_health_insurance_deduction"]
-    puf["long_term_capital_gains_on_collectibles"] = puf["capital_gains_28_percent_rate_gain"] # Assume all 28p capital gains are on collectibles.
-    
+    puf["health_insurance_premiums"] = puf[
+        "self_employed_health_insurance_deduction"
+    ]
+    puf["long_term_capital_gains_on_collectibles"] = puf[
+        "capital_gains_28_percent_rate_gain"
+    ]  # Assume all 28p capital gains are on collectibles.
 
     return puf, demographics
 
@@ -576,8 +577,7 @@ def impute_puf_financials_to_cps(
 
 
 def project_tax_unit_cps_to_person_level(
-    puf_style_cps: pd.DataFrame,
-    time_period: str
+    puf_style_cps: pd.DataFrame, time_period: str
 ) -> pd.DataFrame:
     """Project tax unit CPS to person level.
 
@@ -625,7 +625,8 @@ def project_tax_unit_cps_to_person_level(
                 puf_style_cps[variable].values, "tax_unit", "person"
             )
             person_df[variable] = (
-                cps_share_of_tax_unit_original_total * mapped_down_imputed_values
+                cps_share_of_tax_unit_original_total
+                * mapped_down_imputed_values
             )
 
     person_df = person_df.fillna(0)
@@ -666,9 +667,11 @@ def puf_imputed_cps_person_level(
 
     if verbose:
         print("Projecting tax unit CPS to person level")
-    person_level_puf_imputed_cps, tax_unit_level_puf_imputed_cps = project_tax_unit_cps_to_person_level(
-        puf_imputed_cps,
-        time_period,
+    person_level_puf_imputed_cps, tax_unit_level_puf_imputed_cps = (
+        project_tax_unit_cps_to_person_level(
+            puf_imputed_cps,
+            time_period,
+        )
     )
 
     if verbose:
