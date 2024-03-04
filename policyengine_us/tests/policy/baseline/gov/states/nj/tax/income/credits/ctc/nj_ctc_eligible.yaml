@@ -1,0 +1,26 @@
+- name: Eligible for the New Jersey child tax credit.
+  period: 2022
+  input:
+    nj_taxable_income: 20_000
+    filing_status: SINGLE
+    state_code: NJ
+  output:
+    nj_ctc_eligible: true
+
+- name: Eligible for the New Jersey child tax credit.
+  period: 2022
+  input:
+    nj_taxable_income: 100_000
+    filing_status: SINGLE
+    state_code: NJ
+  output:
+    nj_ctc_eligible: false
+
+- name: Ineligible for the New Jersey child tax credit.
+  period: 2022
+  input:
+    nj_taxable_income: 20_000
+    filing_status: SEPARATE
+    state_code: NJ
+  output:
+    nj_ctc_eligible: false

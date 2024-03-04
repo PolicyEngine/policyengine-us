@@ -4,6 +4,7 @@
   input:
     nj_property_tax_credit_eligible: true
     nj_taking_property_tax_deduction: false
+    filing_status: JOINT
     state_code: NJ
   output:
     nj_property_tax_credit: 50
@@ -14,6 +15,7 @@
   input:
     nj_property_tax_credit_eligible: true
     nj_taking_property_tax_deduction: true
+    filing_status: JOINT
     state_code: NJ
   output:
     nj_property_tax_credit: 0

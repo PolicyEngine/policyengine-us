@@ -7,8 +7,13 @@ class nj_ctc(Variable):
     label = "New Jersey Child Tax Credit"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.state.nj.us/treasury/taxation/pdf/current/1040i.pdf#page=45"
-    defined_for = StateCode.NJ
+    reference = (
+        "https://law.justia.com/codes/new-jersey/2022/title-54a/section-54a-4-17-1/"
+        "https://www.nj.gov/treasury/taxation/pdf/other_forms/tgi-ee/2021/1040i.pdf#page=44"
+        "https://www.nj.gov/treasury/taxation/pdf/other_forms/tgi-ee/2022/1040i.pdf#page=44"
+        "https://www.state.nj.us/treasury/taxation/pdf/current/1040i.pdf#page=46"
+    )
+    defined_for = "nj_ctc_eligible"
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.nj.tax.income.credits.ctc
@@ -17,18 +22,12 @@ class nj_ctc(Variable):
         taxable_income = tax_unit("nj_taxable_income", period)
         amount_per_qualifying_child = p.amount.calc(taxable_income)
 
-        # Get number of eligible children dependents
+        # Get the number of eligible children dependents
         person = tax_unit.members
-        meets_age_limit = person("age", period) < p.ineligible_age
+        age_eligible = person("age", period) < p.age_limit
         dependent = person("is_tax_unit_dependent", period)
-        age_dependent_eligible = meets_age_limit & dependent
+        age_dependent_eligible = age_eligible & dependent
         count_eligible = tax_unit.sum(age_dependent_eligible)
 
-        # Exclude married filing separately filers.
-        filing_status = tax_unit("filing_status", period)
-        filing_eligible = (
-            filing_status != filing_status.possible_values.SEPARATE
-        )
-
         # Calculate total child tax credit
-        return count_eligible * amount_per_qualifying_child * filing_eligible
+        return count_eligible * amount_per_qualifying_child
