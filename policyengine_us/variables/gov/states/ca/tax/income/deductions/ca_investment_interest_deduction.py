@@ -8,7 +8,7 @@ class ca_investment_interest_deduction(Variable):
     unit = USD
     reference = (
         "https://www.ftb.ca.gov/forms/2021/2021-3526.pdf"
-        "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=RTC&sectionNum=17145"
+        "https://law.justia.com/codes/california/2022/code-rtc/division-2/part-11/chapter-7/article-1/section-24344/"
     )
     definition_period = YEAR
     defined_for = StateCode.CA
