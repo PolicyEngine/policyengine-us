@@ -14,10 +14,13 @@ class PUFExtendedCPS(Dataset):
             FINANCIAL_SUBSET as FINANCIAL_VARIABLES,
             puf_imputed_cps_person_level,
         )
+        from policyengine_us.system import system
+        from policyengine_us import Microsimulation
 
-        person_df = puf_imputed_cps_person_level(time_period=self.time_period)
+        person_df, tax_unit_df = puf_imputed_cps_person_level(time_period=self.time_period)
         new_data = {}
         cps = self.cps()
+        input_data_sim = Microsimulation(dataset=self.cps)
         cps_data = cps.load()
         for variable in list(set(cps.variables) | set(FINANCIAL_VARIABLES)):
             if "_id" in variable:
@@ -37,20 +40,15 @@ class PUFExtendedCPS(Dataset):
                 # Append on a copy
                 if variable in FINANCIAL_VARIABLES:
                     if variable not in cps.variables:
-                        if variable == "social_security":
-                            ## SS is an edge case
-                            original_values = (
-                                cps_data["social_security_retirement"][...]
-                                + cps_data["social_security_disability"][...]
-                            )
-                        else:
-                            original_values = np.zeros_like(
-                                cps_data["employment_income"][...]
-                            )
+                        entity = system.variables[variable].entity.key
+                        original_values = np.zeros_like(
+                            cps_data[f"{entity}_id"][...]
+                        )
                     else:
-                        original_values = cps_data[variable][...]
+                        original_values = input_data_sim.calculate(variable, self.time_period).values
+                    imputed_data = person_df[variable].values if variable in person_df else tax_unit_df[variable].values
                     new_data[variable] = np.concatenate(
-                        [original_values, person_df[variable].values]
+                        [original_values, imputed_data]
                     )
                 else:
                     new_data[variable] = np.concatenate(

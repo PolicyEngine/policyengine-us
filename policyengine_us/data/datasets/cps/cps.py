@@ -294,6 +294,7 @@ def add_personal_income_variables(
                 f"taxable_{source_with_taxable_fraction}_distribution_fraction"
             ]
         )
+        del cps[f"{source_with_taxable_fraction}_distributions"]
 
     # Assume all regular IRA distributions are taxable,
     # and all Roth IRA distributions are not.
@@ -327,12 +328,12 @@ def add_personal_income_variables(
     LIMIT_IRA_CATCH_UP_2022 = 1_000
     CATCH_UP_AGE_2022 = 50
     retirement_contributions = person.RETCB_VAL
-    cps["self_employment_pension_contributions"] = np.where(
+    cps["self_employed_pension_contributions"] = np.where(
         person.SEMP_VAL > 0, retirement_contributions, 0
     )
     remaining_retirement_contributions = np.maximum(
         retirement_contributions
-        - cps["self_employment_pension_contributions"],
+        - cps["self_employed_pension_contributions"],
         0,
     )
     # Compute the 401(k) limit for the person's age.

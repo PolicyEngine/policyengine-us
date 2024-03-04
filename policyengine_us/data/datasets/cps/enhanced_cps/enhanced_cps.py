@@ -6,20 +6,17 @@ from policyengine_us.data.datasets.cps.enhanced_cps.calibrated_cps import (
 )
 
 
-class EnhancedCPS_2022(Dataset):
-    name = "enhanced_cps_2022_25"
-    label = "Enhanced CPS (2022-25)"
-    file_path = STORAGE_FOLDER / "enhanced_cps.h5"
+class EnhancedCPS(Dataset):
     data_format = Dataset.TIME_PERIOD_ARRAYS
-    time_period = 2022
-    num_years: int = 4
-    # url = "release://policyengine/policyengine-us/enhanced-cps-2023/enhanced_cps.h5"
+    time_period = None
+    num_years: int = None
+    input_dataset = None
 
     def generate(self):
         self.remove()
         new_data = {}
-        cps = CalibratedPUFExtendedCPS_2022()
-        from policyengine_us.data.datasets.cps.cps import CPS_2019
+        cps = self.input_dataset()
+        from policyengine_us.data.datasets.cps.cps import CPS_2019 # Always use CPS 2019 for previous year imputations
 
         cps_data = cps.load()
         for variable in cps.variables:
@@ -73,7 +70,7 @@ class EnhancedCPS_2022(Dataset):
         sim = Microsimulation(dataset=cps)
 
         df = sim.calculate_dataframe(
-            VARIABLES + OUTPUTS, 2023, map_to="person"
+            VARIABLES + OUTPUTS, self.time_period, map_to="person"
         )
 
         parameters = sim.tax_benefit_system.parameters
@@ -96,7 +93,7 @@ class EnhancedCPS_2022(Dataset):
                 sim.calculate(
                     "household_weight", time_period, map_to="person"
                 ).values,
-                max_iterations=3,
+                max_iterations=2,
             )
 
             y_pred = income_last_year.predict(
@@ -112,3 +109,12 @@ class EnhancedCPS_2022(Dataset):
             ].values
 
         self.save_dataset(new_data)
+
+class EnhancedCPS_2022(EnhancedCPS):
+    name = "enhanced_cps_2022"
+    label = "Enhanced CPS (2022-25)"
+    input_dataset = CalibratedPUFExtendedCPS_2022
+    time_period = 2022
+    num_years = 4
+    file_path = STORAGE_FOLDER / "enhanced_cps_2022.h5"
+    url = "release://policyengine/policyengine-us/enhanced-cps-2023/enhanced_cps.h5"

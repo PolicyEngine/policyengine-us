@@ -19,7 +19,7 @@ class CalibratedDataset(Dataset):
         for year in range(self.time_period, self.time_period + self.num_years):
             year = str(year)
             adjusted_weights = calibrate(
-                cps.name,
+                cps,
                 time_period=year,
                 training_log_path=STORAGE_FOLDER / "calibration_log.csv.gz",
             )
@@ -38,7 +38,7 @@ class CalibratedDataset(Dataset):
 
 class CalibratedPUFExtendedCPS_2022(CalibratedDataset):
     name = "calibrated_puf_extended_cps_2022"
-    label = "Calibrated PUF-extended CPS (2022-25)"
+    label = "Calibrated PUF-extended CPS (2022-34)"
     input_dataset = PUFExtendedCPS_2022
     time_period = 2022
     num_years = 4

@@ -106,6 +106,8 @@ class Microsimulation(CoreMicrosimulation):
             self.set_input("employment_income_before_lsr", known_period, array)
             employment_income.delete_arrays(known_period)
 
+        self.input_variables = [variable for variable in self.input_variables if variable != "employment_income"] + ["employment_income_before_lsr"]
+
 
 class IndividualSim(CoreIndividualSim):  # Deprecated
     tax_benefit_system = CountryTaxBenefitSystem
