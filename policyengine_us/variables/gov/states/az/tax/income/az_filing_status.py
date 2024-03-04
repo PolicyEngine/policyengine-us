@@ -28,7 +28,7 @@ class az_filing_status(Variable):
                 us_filing_status == fsvals.WIDOW,
             ],
             [
-                # Simulate scenario where joint filers file separately on Arkansas return.
+                # In Arkansas, widowed filers are treated as heads of households.
                 ArizonaFilingStatus.JOINT,
                 ArizonaFilingStatus.SINGLE,
                 ArizonaFilingStatus.SEPARATE,
