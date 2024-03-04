@@ -1,11 +1,11 @@
-- name: UT at-home parent credit unit test 1
+- name: 1 eligible parent with 1 child
   period: 2022
   input:
     people:
       person1:
         age: 45
         is_tax_unit_dependent: false
-        ut_at_home_parent_credit_one_parent_income_eligible: true
+        ut_at_home_parent_credit_earned_income_eligible_person: true
       person2:
         age: 0
         is_tax_unit_dependent: true
@@ -20,14 +20,14 @@
   output: # 100 * 1
     ut_at_home_parent_credit: 100
 
-- name: UT at-home parent credit unit test 2
+- name: Earned income eligible, agi not eligible
   period: 2022
   input:
     people:
       person1:
         age: 50
         is_tax_unit_dependent: false
-        ut_at_home_parent_credit_one_parent_income_eligible: true
+        ut_at_home_parent_credit_earned_income_eligible_person: true
       person2:
         age: 45
         is_tax_unit_dependent: false
@@ -45,14 +45,14 @@
   output:
     ut_at_home_parent_credit: 0
 
-- name: UT at-home parent credit unit test 3
+- name: 2 eligible parents with 1 child
   period: 2022
   input:
     people:
       person1:
         age: 45
         is_tax_unit_dependent: false
-        ut_at_home_parent_credit_one_parent_income_eligible: true
+        ut_at_home_parent_credit_earned_income_eligible_person: true
       person2:
         age: 0
         is_tax_unit_dependent: true
@@ -70,18 +70,18 @@
   output: # 100 * 2
     ut_at_home_parent_credit: 200
 
-- name: UT at-home parent credit unit test 4
+- name: 2 eligible parents with 2 children
   period: 2022
   input:
     people:
       person1:
         age: 45
         is_tax_unit_dependent: false
-        ut_at_home_parent_credit_one_parent_income_eligible: true
+        ut_at_home_parent_credit_earned_income_eligible_person: true
       person2:
         age: 44
         is_tax_unit_dependent: false
-        ut_at_home_parent_credit_one_parent_income_eligible: true
+        ut_at_home_parent_credit_earned_income_eligible_person: true
       person3:
         age: 0
         is_tax_unit_dependent: true

@@ -21,7 +21,7 @@ class ut_at_home_parent_credit(Variable):
         count_children = tax_unit.sum((age < p.max_child_age) & is_dependent)
 
         one_parent_income_eligible = person(
-            "ut_at_home_parent_credit_one_parent_income_eligible", period
+            "ut_at_home_parent_credit_earned_income_eligible_person", period
         )
         return tax_unit.sum(
             p.amount * count_children * one_parent_income_eligible
