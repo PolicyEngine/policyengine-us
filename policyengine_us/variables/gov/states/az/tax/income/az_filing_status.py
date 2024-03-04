@@ -1,21 +1,18 @@
 from policyengine_us.model_api import *
 
 
-class StateFilingStatusIfMarriedFilingSeparatelyOnSameReturn(Enum):
+class ArizonaFilingStatus(Enum):
     SINGLE = "Single"
     SEPARATE = "Separate"
     HEAD_OF_HOUSEHOLD = "Head of household"
-    WIDOW = "Widow(er)"
     JOINT = "Joint"
 
 
 class az_filing_status(Variable):
     value_type = Enum
     entity = TaxUnit
-    possible_values = StateFilingStatusIfMarriedFilingSeparatelyOnSameReturn
-    default_value = (
-        StateFilingStatusIfMarriedFilingSeparatelyOnSameReturn.SINGLE
-    )
+    possible_values = ArizonaFilingStatus
+    default_value = ArizonaFilingStatus.SINGLE
     definition_period = YEAR
     label = "Arizona filing status"
 
@@ -32,10 +29,10 @@ class az_filing_status(Variable):
             ],
             [
                 # Simulate scenario where joint filers file separately on Arkansas return.
-                StateFilingStatusIfMarriedFilingSeparatelyOnSameReturn.JOINT,
-                StateFilingStatusIfMarriedFilingSeparatelyOnSameReturn.SINGLE,
-                StateFilingStatusIfMarriedFilingSeparatelyOnSameReturn.SEPARATE,
-                StateFilingStatusIfMarriedFilingSeparatelyOnSameReturn.HEAD_OF_HOUSEHOLD,
-                StateFilingStatusIfMarriedFilingSeparatelyOnSameReturn.HEAD_OF_HOUSEHOLD,
+                ArizonaFilingStatus.JOINT,
+                ArizonaFilingStatus.SINGLE,
+                ArizonaFilingStatus.SEPARATE,
+                ArizonaFilingStatus.HEAD_OF_HOUSEHOLD,
+                ArizonaFilingStatus.HEAD_OF_HOUSEHOLD,
             ],
         )
