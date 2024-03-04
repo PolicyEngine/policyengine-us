@@ -1,0 +1,87 @@
+- name: Reduction of total income amount
+  period: 2021
+  input:
+    people: 
+      person1:
+        self_employment_income: 300
+        partnership_s_corp_income: 1_000
+      person2:
+        farm_income: 200
+        farm_rent_income: 600
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        qualified_business_income_deduction: 1_000
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    oh_business_income_deduction: 1_100
+
+- name: Capped at 0
+  period: 2021
+  input:
+    people: 
+      person1:
+        self_employment_income: 300
+        partnership_s_corp_income: 1_000
+      person2:
+        farm_income: 200
+        farm_rent_income: 600
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        qualified_business_income_deduction: 5_000
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    oh_business_income_deduction: 0
+
+- name: Total deduction capped at a certain amount.
+  period: 2021
+  input:
+    people: 
+      person1:
+        self_employment_income: 200_000
+        partnership_s_corp_income: 1_000
+      person2:
+        farm_income: 200
+        farm_rent_income: 100_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        qualified_business_income_deduction: 5_000
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    oh_business_income_deduction: 250_000
+
+- name: Reduced cap for separate filers
+  period: 2021
+  input:
+    people: 
+      person1:
+        self_employment_income: 200_000
+        partnership_s_corp_income: 1_000
+      person2:
+        farm_income: 200
+        farm_rent_income: 100_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        qualified_business_income_deduction: 5_000
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    oh_business_income_deduction: 125_000

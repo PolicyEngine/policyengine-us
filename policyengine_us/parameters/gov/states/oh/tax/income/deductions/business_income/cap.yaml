@@ -1,0 +1,25 @@
+description: Ohio caps the business income deduction to this amount, based on filing status.
+metadata:
+  unit: currency-USD
+  period: year
+  label: Ohio business income deduction cap
+  reference:
+    - title: Ohio 2021 Instructions for Filing Original and Amended 
+      href: https://tax.ohio.gov/static/forms/ohio_individual/individual/2021/pit-it1040-booklet.pdf#page=10
+    - title: Ohio Revised Code, Title 57 Taxation, Chapter 5747 Income Tax, Section 5747.01
+      href: https://law.justia.com/codes/ohio/2022/title-57/chapter-5747/section-5747-01/
+    - title: Ohio 2022 Tax Form - Line 31 – Contributions to an Ohio 529 Plan (A)(28)
+      href: https://tax.ohio.gov/static/forms/ohio_individual/individual/2022/it1040-sd100-instruction-booklet.pdf#page=10
+  breakdown:
+    - filing_status
+
+JOINT:
+  2021-01-01: 250_000
+SINGLE:
+  2021-01-01: 250_000
+SEPARATE:
+  2021-01-01: 125_000
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 250_000
+WIDOW:
+  2021-01-01: 250_000
