@@ -2,9 +2,9 @@
   period: 2021
   input:
     simulation.reported_state_income_tax: false
-    de_income_tax: 1_000
-    in_income_tax: 300
-    pa_income_tax: 600
+    de_withheld_income_tax: 1_000
+    in_withheld_income_tax: 300
+    pa_withheld_income_tax: 600
   output:
     state_income_tax: 1_900
 
