@@ -1,0 +1,18 @@
+description: Modified adjusted gross income limit for tuition and fees deduction. 
+metadata:
+  unit: currency-USD
+  reference:
+    - title: 2020 Form 8917
+      href: https://www.irs.gov/pub/irs-pdf/f8917.pdf#page=2
+    - title: I.R.C. § 222(b)(2)(B)(ii)
+      href: https://irc.bloombergtax.com/public/uscode/doc/irc/section_222
+HEAD_OF_HOUSEHOLD:
+  2004-01-01: 80_000
+JOINT:
+  2004-01-01: 160_000
+SEPARATE:
+  2004-01-01: 80_000
+SINGLE:
+  2013-01-01: 80_000
+WIDOW:
+  2013-01-01: 80_000
