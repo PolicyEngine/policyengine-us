@@ -6425,3 +6425,78 @@
     added:
     - California alternative minimum tax calculations.
   date: 2024-02-25 23:55:29
+- bump: patch
+  changes:
+    fixed:
+    - Add employee payroll tax to the reported state income tax reform.
+  date: 2024-02-26 20:50:21
+- bump: minor
+  changes:
+    added:
+    - Update the CalWORKs Child Care payment standard with the 2022 rates.
+  date: 2024-02-26 20:57:25
+- bump: patch
+  changes:
+    fixed:
+    - Limit the Idaho Grocery Credit to households not enrolled in SNAP.
+  date: 2024-02-26 21:59:44
+- bump: minor
+  changes:
+    added:
+    - Retirement income from CPS.
+    changed:
+    - Improvements to calibration routine.
+  date: 2024-02-27 22:50:14
+- bump: patch
+  changes:
+    fixed:
+    - Replaced data download URLs for CPS and Enhanced CPS files.
+  date: 2024-02-27 22:54:30
+- bump: minor
+  changes:
+    added:
+    - CBO uprating factors for all tax parameters through 2034.
+  date: 2024-02-28 10:24:15
+- bump: minor
+  changes:
+    added:
+    - Create state withheld income tax variables for all states which cause a circular
+      reference.
+  date: 2024-02-28 17:28:50
+- bump: patch
+  changes:
+    added:
+    - Decompose snap_utility_allowance into three variables for SUA, LUA, and IUA.
+  date: 2024-02-28 19:05:54
+- bump: minor
+  changes:
+    added:
+    - 2023 Wisconsin income tax parameters.
+  date: 2024-02-29 02:00:39
+- bump: patch
+  changes:
+    fixed:
+    - Minnesota Working Family Credit eligibility logic.
+  date: 2024-03-01 01:53:48
+- bump: patch
+  changes:
+    fixes:
+    - Refactor the Utah tax rate yaml file.
+  date: 2024-03-01 13:39:44
+- bump: minor
+  changes:
+    fixes:
+    - Add 2024 Georgia income tax values.
+  date: 2024-03-01 17:12:59
+- bump: minor
+  changes:
+    added:
+    - List of Louisiana non refundable credits in a parameter file
+  date: 2024-03-02 11:09:14
+- bump: patch
+  changes:
+    fixed:
+    - Populate Social Security dependents and survivors benefits as zero in cps.py.
+    - Remove uprating from Social Security dependents and survivors benefits.
+    - Split up SPM unit pre-subsidy childcare expenses into individual expenses.
+  date: 2024-03-02 18:37:00
