@@ -1,0 +1,38 @@
+- name: Default is zero
+  period: 2022
+  output:
+    spm_unit_childcare_expenses: 0
+
+- name: Subtraction of subsidies
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        pre_subsidy_childcare_expenses: 2_000
+      person2:
+        pre_subsidy_childcare_expenses: 1_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        co_ccap_subsidy: 300
+        ca_calworks_child_care: 1_000
+  output:
+    spm_unit_childcare_expenses: 1_700
+
+- name: Capped at 0
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        pre_subsidy_childcare_expenses: 500
+      person2:
+        pre_subsidy_childcare_expenses: 1_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        co_ccap_subsidy: 1_300
+        ca_calworks_child_care: 1_000
+  output:
+    spm_unit_childcare_expenses: 0
