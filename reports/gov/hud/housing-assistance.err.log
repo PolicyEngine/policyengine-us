@@ -42,12 +42,12 @@ print(
 
 [0;31m---------------------------------------------------------------------------[0m
 [0;31mValueError[0m                                Traceback (most recent call last)
-File [0;32m/opt/hostedtoolcache/Python/3.9.18/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation_builder.py:545[0m, in [0;36mSimulationBuilder.init_variable_values[0;34m(self, entity, instance_object, instance_id)[0m
-[1;32m    544[0m [38;5;28;01mtry[39;00m:
-[0;32m--> 545[0m     [43mentity[49m[38;5;241;43m.[39;49m[43mcheck_variable_defined_for_entity[49m[43m([49m[43mvariable_name[49m[43m)[49m
-[1;32m    546[0m [38;5;28;01mexcept[39;00m (
-[1;32m    547[0m     [38;5;167;01mValueError[39;00m
-[1;32m    548[0m ) [38;5;28;01mas[39;00m e:  [38;5;66;03m# The variable is defined for another entity[39;00m
+File [0;32m/opt/hostedtoolcache/Python/3.9.18/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation_builder.py:549[0m, in [0;36mSimulationBuilder.init_variable_values[0;34m(self, entity, instance_object, instance_id)[0m
+[1;32m    548[0m [38;5;28;01mtry[39;00m:
+[0;32m--> 549[0m     [43mentity[49m[38;5;241;43m.[39;49m[43mcheck_variable_defined_for_entity[49m[43m([49m[43mvariable_name[49m[43m)[49m
+[1;32m    550[0m [38;5;28;01mexcept[39;00m (
+[1;32m    551[0m     [38;5;167;01mValueError[39;00m
+[1;32m    552[0m ) [38;5;28;01mas[39;00m e:  [38;5;66;03m# The variable is defined for another entity[39;00m
 
 File [0;32m/opt/hostedtoolcache/Python/3.9.18/x64/lib/python3.9/site-packages/policyengine_core/entities/entity.py:52[0m, in [0;36mEntity.check_variable_defined_for_entity[0;34m(self, variable_name)[0m
 [1;32m     40[0m message [38;5;241m=[39m os[38;5;241m.[39mlinesep[38;5;241m.[39mjoin(
@@ -79,35 +79,35 @@ Cell [0;32mIn[1], line 21[0m
 [0;32m---> 21[0m     [38;5;28mround[39m([43msim_emp[49m[38;5;241;43m.[39;49m[43mcalc[49m[43m([49m[38;5;124;43m"[39;49m[38;5;124;43mhousing_assistance[39;49m[38;5;124;43m"[39;49m[43m)[49m[[38;5;241m0[39m] [38;5;241m/[39m [38;5;241m12[39m),
 [1;32m     22[0m )
 
-File [0;32m/opt/hostedtoolcache/Python/3.9.18/x64/lib/python3.9/site-packages/policyengine_core/simulations/individual_sim.py:239[0m, in [0;36mIndividualSim.calc[0;34m(self, var, period, target, index, map_to, reform)[0m
-[1;32m    226[0m [38;5;250m[39m[38;5;124;03m"""Calculates the value of a variable, executing any required formulas.[39;00m
-[1;32m    227[0m 
-[1;32m    228[0m [38;5;124;03mArgs:[39;00m
+File [0;32m/opt/hostedtoolcache/Python/3.9.18/x64/lib/python3.9/site-packages/policyengine_core/simulations/individual_sim.py:240[0m, in [0;36mIndividualSim.calc[0;34m(self, var, period, target, index, map_to, reform)[0m
+[1;32m    227[0m [38;5;250m[39m[38;5;124;03m"""Calculates the value of a variable, executing any required formulas.[39;00m
+[1;32m    228[0m 
+[1;32m    229[0m [38;5;124;03mArgs:[39;00m
 [0;32m   (...)[0m
-[1;32m    236[0m [38;5;124;03m    np.array: The resulting values.[39;00m
-[1;32m    237[0m [38;5;124;03m"""[39;00m
-[1;32m    238[0m [38;5;28;01mif[39;00m [38;5;129;01mnot[39;00m [38;5;28mhasattr[39m([38;5;28mself[39m, [38;5;124m"[39m[38;5;124msimulation[39m[38;5;124m"[39m):
-[0;32m--> 239[0m     [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mbuild[49m[43m([49m[43m)[49m
-[1;32m    241[0m [38;5;28;01mif[39;00m [38;5;28mself[39m[38;5;241m.[39mparametric_vary [38;5;129;01mand[39;00m reform [38;5;129;01mis[39;00m [38;5;28;01mNone[39;00m:
-[1;32m    242[0m     results [38;5;241m=[39m [
-[1;32m    243[0m         [38;5;28mself[39m[38;5;241m.[39mcalc(
-[1;32m    244[0m             var,
+[1;32m    237[0m [38;5;124;03m    np.array: The resulting values.[39;00m
+[1;32m    238[0m [38;5;124;03m"""[39;00m
+[1;32m    239[0m [38;5;28;01mif[39;00m [38;5;129;01mnot[39;00m [38;5;28mhasattr[39m([38;5;28mself[39m, [38;5;124m"[39m[38;5;124msimulation[39m[38;5;124m"[39m):
+[0;32m--> 240[0m     [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mbuild[49m[43m([49m[43m)[49m
+[1;32m    242[0m [38;5;28;01mif[39;00m [38;5;28mself[39m[38;5;241m.[39mparametric_vary [38;5;129;01mand[39;00m reform [38;5;129;01mis[39;00m [38;5;28;01mNone[39;00m:
+[1;32m    243[0m     results [38;5;241m=[39m [
+[1;32m    244[0m         [38;5;28mself[39m[38;5;241m.[39mcalc(
+[1;32m    245[0m             var,
 [0;32m   (...)[0m
-[1;32m    251[0m         [38;5;28;01mfor[39;00m reform [38;5;129;01min[39;00m [38;5;28mself[39m[38;5;241m.[39mparametric_reforms
-[1;32m    252[0m     ]
+[1;32m    252[0m         [38;5;28;01mfor[39;00m reform [38;5;129;01min[39;00m [38;5;28mself[39m[38;5;241m.[39mparametric_reforms
+[1;32m    253[0m     ]
 
-File [0;32m/opt/hostedtoolcache/Python/3.9.18/x64/lib/python3.9/site-packages/policyengine_core/simulations/individual_sim.py:87[0m, in [0;36mIndividualSim.build[0;34m(self)[0m
-[1;32m     83[0m             [38;5;28mself[39m[38;5;241m.[39msituation_data[entity_metadata[38;5;241m.[39mplural][entity][
-[1;32m     84[0m                 default_role[38;5;241m.[39mplural
-[1;32m     85[0m             ] [38;5;241m=[39m members
-[1;32m     86[0m     [38;5;66;03m# Add missing entities with specified default roles[39;00m
-[0;32m---> 87[0m [38;5;28mself[39m[38;5;241m.[39msimulation [38;5;241m=[39m [43mSimulation[49m[43m([49m
-[1;32m     88[0m [43m    [49m[43mtax_benefit_system[49m[38;5;241;43m=[39;49m[38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43msystem[49m[43m,[49m
-[1;32m     89[0m [43m    [49m[43msituation[49m[38;5;241;43m=[39;49m[38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43msituation_data[49m[43m,[49m
-[1;32m     90[0m [43m    [49m[43mreform[49m[38;5;241;43m=[39;49m[38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mreform[49m[43m,[49m
-[1;32m     91[0m [43m[49m[43m)[49m
-[1;32m     92[0m [38;5;28mself[39m[38;5;241m.[39msimulation[38;5;241m.[39mtrace [38;5;241m=[39m [38;5;28;01mTrue[39;00m
-[1;32m     93[0m [38;5;28mself[39m[38;5;241m.[39msim [38;5;241m=[39m [38;5;28mself[39m[38;5;241m.[39msimulation
+File [0;32m/opt/hostedtoolcache/Python/3.9.18/x64/lib/python3.9/site-packages/policyengine_core/simulations/individual_sim.py:88[0m, in [0;36mIndividualSim.build[0;34m(self)[0m
+[1;32m     84[0m             [38;5;28mself[39m[38;5;241m.[39msituation_data[entity_metadata[38;5;241m.[39mplural][entity][
+[1;32m     85[0m                 default_role[38;5;241m.[39mplural
+[1;32m     86[0m             ] [38;5;241m=[39m members
+[1;32m     87[0m     [38;5;66;03m# Add missing entities with specified default roles[39;00m
+[0;32m---> 88[0m [38;5;28mself[39m[38;5;241m.[39msimulation [38;5;241m=[39m [43mSimulation[49m[43m([49m
+[1;32m     89[0m [43m    [49m[43mtax_benefit_system[49m[38;5;241;43m=[39;49m[38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43msystem[49m[43m,[49m
+[1;32m     90[0m [43m    [49m[43msituation[49m[38;5;241;43m=[39;49m[38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43msituation_data[49m[43m,[49m
+[1;32m     91[0m [43m    [49m[43mreform[49m[38;5;241;43m=[39;49m[38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mreform[49m[43m,[49m
+[1;32m     92[0m [43m[49m[43m)[49m
+[1;32m     93[0m [38;5;28mself[39m[38;5;241m.[39msimulation[38;5;241m.[39mtrace [38;5;241m=[39m [38;5;28;01mTrue[39;00m
+[1;32m     94[0m [38;5;28mself[39m[38;5;241m.[39msim [38;5;241m=[39m [38;5;28mself[39m[38;5;241m.[39msimulation
 
 File [0;32m/opt/hostedtoolcache/Python/3.9.18/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:139[0m, in [0;36mSimulation.__init__[0;34m(self, tax_benefit_system, populations, situation, dataset, reform, trace)[0m
 [1;32m    137[0m     builder [38;5;241m=[39m SimulationBuilder()
@@ -116,53 +116,53 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.18/x64/lib/python3.9/site-packages/p
 [1;32m    140[0m     [38;5;28mself[39m[38;5;241m.[39mhas_axes [38;5;241m=[39m builder[38;5;241m.[39mhas_axes
 [1;32m    142[0m [38;5;28;01mif[39;00m populations [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m:
 
-File [0;32m/opt/hostedtoolcache/Python/3.9.18/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation_builder.py:82[0m, in [0;36mSimulationBuilder.build_from_dict[0;34m(self, tax_benefit_system, input_dict, simulation)[0m
-[1;32m     75[0m input_dict [38;5;241m=[39m [38;5;28mself[39m[38;5;241m.[39mexplicit_singular_entities(
-[1;32m     76[0m     tax_benefit_system, input_dict
-[1;32m     77[0m )
-[1;32m     78[0m [38;5;28;01mif[39;00m [38;5;28many[39m(
-[1;32m     79[0m     key [38;5;129;01min[39;00m tax_benefit_system[38;5;241m.[39mentities_plural()
-[1;32m     80[0m     [38;5;28;01mfor[39;00m key [38;5;129;01min[39;00m input_dict[38;5;241m.[39mkeys()
-[1;32m     81[0m ):
-[0;32m---> 82[0m     simulation [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mbuild_from_entities[49m[43m([49m
-[1;32m     83[0m [43m        [49m[43mtax_benefit_system[49m[43m,[49m[43m [49m[43minput_dict[49m[43m,[49m[43m [49m[43msimulation[49m
-[1;32m     84[0m [43m    [49m[43m)[49m
-[1;32m     85[0m [38;5;28;01melse[39;00m:
-[1;32m     86[0m     simulation [38;5;241m=[39m [38;5;28mself[39m[38;5;241m.[39mbuild_from_variables(
-[1;32m     87[0m         tax_benefit_system, input_dict, simulation
-[1;32m     88[0m     )
+File [0;32m/opt/hostedtoolcache/Python/3.9.18/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation_builder.py:86[0m, in [0;36mSimulationBuilder.build_from_dict[0;34m(self, tax_benefit_system, input_dict, simulation)[0m
+[1;32m     79[0m input_dict [38;5;241m=[39m [38;5;28mself[39m[38;5;241m.[39mexplicit_singular_entities(
+[1;32m     80[0m     tax_benefit_system, input_dict
+[1;32m     81[0m )
+[1;32m     82[0m [38;5;28;01mif[39;00m [38;5;28many[39m(
+[1;32m     83[0m     key [38;5;129;01min[39;00m tax_benefit_system[38;5;241m.[39mentities_plural()
+[1;32m     84[0m     [38;5;28;01mfor[39;00m key [38;5;129;01min[39;00m input_dict[38;5;241m.[39mkeys()
+[1;32m     85[0m ):
+[0;32m---> 86[0m     simulation [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mbuild_from_entities[49m[43m([49m
+[1;32m     87[0m [43m        [49m[43mtax_benefit_system[49m[43m,[49m[43m [49m[43minput_dict[49m[43m,[49m[43m [49m[43msimulation[49m
+[1;32m     88[0m [43m    [49m[43m)[49m
+[1;32m     89[0m [38;5;28;01melse[39;00m:
+[1;32m     90[0m     simulation [38;5;241m=[39m [38;5;28mself[39m[38;5;241m.[39mbuild_from_variables(
+[1;32m     91[0m         tax_benefit_system, input_dict, simulation
+[1;32m     92[0m     )
 
-File [0;32m/opt/hostedtoolcache/Python/3.9.18/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation_builder.py:172[0m, in [0;36mSimulationBuilder.build_from_entities[0;34m(self, tax_benefit_system, input_dict, simulation)[0m
-[1;32m    170[0m instances_json [38;5;241m=[39m input_dict[38;5;241m.[39mget(entity_class[38;5;241m.[39mplural)
-[1;32m    171[0m [38;5;28;01mif[39;00m instances_json [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m:
-[0;32m--> 172[0m     [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43madd_group_entity[49m[43m([49m
-[1;32m    173[0m [43m        [49m[38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mpersons_plural[49m[43m,[49m
-[1;32m    174[0m [43m        [49m[43mpersons_ids[49m[43m,[49m
-[1;32m    175[0m [43m        [49m[43mentity_class[49m[43m,[49m
-[1;32m    176[0m [43m        [49m[43minstances_json[49m[43m,[49m
-[1;32m    177[0m [43m    [49m[43m)[49m
-[1;32m    178[0m [38;5;28;01melse[39;00m:
-[1;32m    179[0m     [38;5;28mself[39m[38;5;241m.[39madd_default_group_entity(persons_ids, entity_class)
+File [0;32m/opt/hostedtoolcache/Python/3.9.18/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation_builder.py:176[0m, in [0;36mSimulationBuilder.build_from_entities[0;34m(self, tax_benefit_system, input_dict, simulation)[0m
+[1;32m    174[0m instances_json [38;5;241m=[39m input_dict[38;5;241m.[39mget(entity_class[38;5;241m.[39mplural)
+[1;32m    175[0m [38;5;28;01mif[39;00m instances_json [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m:
+[0;32m--> 176[0m     [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43madd_group_entity[49m[43m([49m
+[1;32m    177[0m [43m        [49m[38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mpersons_plural[49m[43m,[49m
+[1;32m    178[0m [43m        [49m[43mpersons_ids[49m[43m,[49m
+[1;32m    179[0m [43m        [49m[43mentity_class[49m[43m,[49m
+[1;32m    180[0m [43m        [49m[43minstances_json[49m[43m,[49m
+[1;32m    181[0m [43m    [49m[43m)[49m
+[1;32m    182[0m [38;5;28;01melse[39;00m:
+[1;32m    183[0m     [38;5;28mself[39m[38;5;241m.[39madd_default_group_entity(persons_ids, entity_class)
 
-File [0;32m/opt/hostedtoolcache/Python/3.9.18/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation_builder.py:481[0m, in [0;36mSimulationBuilder.add_group_entity[0;34m(self, persons_plural, persons_ids, entity, instances_json)[0m
-[1;32m    474[0m             person_role [38;5;241m=[39m (
-[1;32m    475[0m                 role[38;5;241m.[39msubroles[index_within_role]
-[1;32m    476[0m                 [38;5;28;01mif[39;00m role[38;5;241m.[39msubroles
-[1;32m    477[0m                 [38;5;28;01melse[39;00m role
-[1;32m    478[0m             )
-[1;32m    479[0m             [38;5;28mself[39m[38;5;241m.[39mroles[entity[38;5;241m.[39mplural][person_index] [38;5;241m=[39m person_role
-[0;32m--> 481[0m     [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43minit_variable_values[49m[43m([49m[43mentity[49m[43m,[49m[43m [49m[43mvariables_json[49m[43m,[49m[43m [49m[43minstance_id[49m[43m)[49m
-[1;32m    483[0m [38;5;28;01mif[39;00m persons_to_allocate:
-[1;32m    484[0m     entity_ids [38;5;241m=[39m entity_ids [38;5;241m+[39m [38;5;28mlist[39m(persons_to_allocate)
+File [0;32m/opt/hostedtoolcache/Python/3.9.18/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation_builder.py:485[0m, in [0;36mSimulationBuilder.add_group_entity[0;34m(self, persons_plural, persons_ids, entity, instances_json)[0m
+[1;32m    478[0m             person_role [38;5;241m=[39m (
+[1;32m    479[0m                 role[38;5;241m.[39msubroles[index_within_role]
+[1;32m    480[0m                 [38;5;28;01mif[39;00m role[38;5;241m.[39msubroles
+[1;32m    481[0m                 [38;5;28;01melse[39;00m role
+[1;32m    482[0m             )
+[1;32m    483[0m             [38;5;28mself[39m[38;5;241m.[39mroles[entity[38;5;241m.[39mplural][person_index] [38;5;241m=[39m person_role
+[0;32m--> 485[0m     [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43minit_variable_values[49m[43m([49m[43mentity[49m[43m,[49m[43m [49m[43mvariables_json[49m[43m,[49m[43m [49m[43minstance_id[49m[43m)[49m
+[1;32m    487[0m [38;5;28;01mif[39;00m persons_to_allocate:
+[1;32m    488[0m     entity_ids [38;5;241m=[39m entity_ids [38;5;241m+[39m [38;5;28mlist[39m(persons_to_allocate)
 
-File [0;32m/opt/hostedtoolcache/Python/3.9.18/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation_builder.py:549[0m, in [0;36mSimulationBuilder.init_variable_values[0;34m(self, entity, instance_object, instance_id)[0m
-[1;32m    545[0m     entity[38;5;241m.[39mcheck_variable_defined_for_entity(variable_name)
-[1;32m    546[0m [38;5;28;01mexcept[39;00m (
-[1;32m    547[0m     [38;5;167;01mValueError[39;00m
-[1;32m    548[0m ) [38;5;28;01mas[39;00m e:  [38;5;66;03m# The variable is defined for another entity[39;00m
-[0;32m--> 549[0m     [38;5;28;01mraise[39;00m SituationParsingError(path_in_json, e[38;5;241m.[39margs[[38;5;241m0[39m])
-[1;32m    550[0m [38;5;28;01mexcept[39;00m VariableNotFoundError [38;5;28;01mas[39;00m e:  [38;5;66;03m# The variable doesn't exist[39;00m
-[1;32m    551[0m     [38;5;28;01mraise[39;00m SituationParsingError(path_in_json, [38;5;28mstr[39m(e), code[38;5;241m=[39m[38;5;241m404[39m)
+File [0;32m/opt/hostedtoolcache/Python/3.9.18/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation_builder.py:553[0m, in [0;36mSimulationBuilder.init_variable_values[0;34m(self, entity, instance_object, instance_id)[0m
+[1;32m    549[0m     entity[38;5;241m.[39mcheck_variable_defined_for_entity(variable_name)
+[1;32m    550[0m [38;5;28;01mexcept[39;00m (
+[1;32m    551[0m     [38;5;167;01mValueError[39;00m
+[1;32m    552[0m ) [38;5;28;01mas[39;00m e:  [38;5;66;03m# The variable is defined for another entity[39;00m
+[0;32m--> 553[0m     [38;5;28;01mraise[39;00m SituationParsingError(path_in_json, e[38;5;241m.[39margs[[38;5;241m0[39m])
+[1;32m    554[0m [38;5;28;01mexcept[39;00m VariableNotFoundError [38;5;28;01mas[39;00m e:  [38;5;66;03m# The variable doesn't exist[39;00m
+[1;32m    555[0m     [38;5;28;01mraise[39;00m SituationParsingError(path_in_json, [38;5;28mstr[39m(e), code[38;5;241m=[39m[38;5;241m404[39m)
 
 [0;31mSituationParsingError[0m: {'spm_units': {'spm_unit': {'ami': "You tried to compute the variable 'ami' for the entity 'spm_units'; however the variable 'ami' is defined for 'households'. Learn more about entities in our documentation: <https://openfisca.org/doc/coding-the-legislation/50_entities.html>."}}}
 

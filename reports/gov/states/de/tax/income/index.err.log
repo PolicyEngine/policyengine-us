@@ -72,35 +72,35 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.18/x64/lib/python3.9/site-packages/p
 [1;32m    263[0m [38;5;124;03m    """[39;00m
 [0;32m--> 264[0m     [38;5;28;01mreturn[39;00m [43mmake_figure[49m[43m([49m[43margs[49m[38;5;241;43m=[39;49m[38;5;28;43mlocals[39;49m[43m([49m[43m)[49m[43m,[49m[43m [49m[43mconstructor[49m[38;5;241;43m=[39;49m[43mgo[49m[38;5;241;43m.[39;49m[43mScatter[49m[43m)[49m
 
-File [0;32m/opt/hostedtoolcache/Python/3.9.18/x64/lib/python3.9/site-packages/plotly/express/_core.py:2076[0m, in [0;36mmake_figure[0;34m(args, constructor, trace_patch, layout_patch)[0m
-[1;32m   2073[0m layout_patch [38;5;241m=[39m layout_patch [38;5;129;01mor[39;00m {}
-[1;32m   2074[0m apply_default_cascade(args)
-[0;32m-> 2076[0m args [38;5;241m=[39m [43mbuild_dataframe[49m[43m([49m[43margs[49m[43m,[49m[43m [49m[43mconstructor[49m[43m)[49m
-[1;32m   2077[0m [38;5;28;01mif[39;00m constructor [38;5;129;01min[39;00m [go[38;5;241m.[39mTreemap, go[38;5;241m.[39mSunburst, go[38;5;241m.[39mIcicle] [38;5;129;01mand[39;00m args[[38;5;124m"[39m[38;5;124mpath[39m[38;5;124m"[39m] [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m:
-[1;32m   2078[0m     args [38;5;241m=[39m process_dataframe_hierarchy(args)
+File [0;32m/opt/hostedtoolcache/Python/3.9.18/x64/lib/python3.9/site-packages/plotly/express/_core.py:2090[0m, in [0;36mmake_figure[0;34m(args, constructor, trace_patch, layout_patch)[0m
+[1;32m   2087[0m layout_patch [38;5;241m=[39m layout_patch [38;5;129;01mor[39;00m {}
+[1;32m   2088[0m apply_default_cascade(args)
+[0;32m-> 2090[0m args [38;5;241m=[39m [43mbuild_dataframe[49m[43m([49m[43margs[49m[43m,[49m[43m [49m[43mconstructor[49m[43m)[49m
+[1;32m   2091[0m [38;5;28;01mif[39;00m constructor [38;5;129;01min[39;00m [go[38;5;241m.[39mTreemap, go[38;5;241m.[39mSunburst, go[38;5;241m.[39mIcicle] [38;5;129;01mand[39;00m args[[38;5;124m"[39m[38;5;124mpath[39m[38;5;124m"[39m] [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m:
+[1;32m   2092[0m     args [38;5;241m=[39m process_dataframe_hierarchy(args)
 
-File [0;32m/opt/hostedtoolcache/Python/3.9.18/x64/lib/python3.9/site-packages/plotly/express/_core.py:1485[0m, in [0;36mbuild_dataframe[0;34m(args, constructor)[0m
-[1;32m   1482[0m     args[[38;5;124m"[39m[38;5;124mcolor[39m[38;5;124m"[39m] [38;5;241m=[39m [38;5;28;01mNone[39;00m
-[1;32m   1483[0m [38;5;66;03m# now that things have been prepped, we do the systematic rewriting of `args`[39;00m
-[0;32m-> 1485[0m df_output, wide_id_vars [38;5;241m=[39m [43mprocess_args_into_dataframe[49m[43m([49m
-[1;32m   1486[0m [43m    [49m[43margs[49m[43m,[49m[43m [49m[43mwide_mode[49m[43m,[49m[43m [49m[43mvar_name[49m[43m,[49m[43m [49m[43mvalue_name[49m
-[1;32m   1487[0m [43m[49m[43m)[49m
-[1;32m   1489[0m [38;5;66;03m# now that `df_output` exists and `args` contains only references, we complete[39;00m
-[1;32m   1490[0m [38;5;66;03m# the special-case and wide-mode handling by further rewriting args and/or mutating[39;00m
-[1;32m   1491[0m [38;5;66;03m# df_output[39;00m
-[1;32m   1493[0m count_name [38;5;241m=[39m _escape_col_name(df_output, [38;5;124m"[39m[38;5;124mcount[39m[38;5;124m"[39m, [var_name, value_name])
+File [0;32m/opt/hostedtoolcache/Python/3.9.18/x64/lib/python3.9/site-packages/plotly/express/_core.py:1492[0m, in [0;36mbuild_dataframe[0;34m(args, constructor)[0m
+[1;32m   1489[0m     args[[38;5;124m"[39m[38;5;124mcolor[39m[38;5;124m"[39m] [38;5;241m=[39m [38;5;28;01mNone[39;00m
+[1;32m   1490[0m [38;5;66;03m# now that things have been prepped, we do the systematic rewriting of `args`[39;00m
+[0;32m-> 1492[0m df_output, wide_id_vars [38;5;241m=[39m [43mprocess_args_into_dataframe[49m[43m([49m
+[1;32m   1493[0m [43m    [49m[43margs[49m[43m,[49m[43m [49m[43mwide_mode[49m[43m,[49m[43m [49m[43mvar_name[49m[43m,[49m[43m [49m[43mvalue_name[49m
+[1;32m   1494[0m [43m[49m[43m)[49m
+[1;32m   1496[0m [38;5;66;03m# now that `df_output` exists and `args` contains only references, we complete[39;00m
+[1;32m   1497[0m [38;5;66;03m# the special-case and wide-mode handling by further rewriting args and/or mutating[39;00m
+[1;32m   1498[0m [38;5;66;03m# df_output[39;00m
+[1;32m   1500[0m count_name [38;5;241m=[39m _escape_col_name(df_output, [38;5;124m"[39m[38;5;124mcount[39m[38;5;124m"[39m, [var_name, value_name])
 
-File [0;32m/opt/hostedtoolcache/Python/3.9.18/x64/lib/python3.9/site-packages/plotly/express/_core.py:1210[0m, in [0;36mprocess_args_into_dataframe[0;34m(args, wide_mode, var_name, value_name)[0m
-[1;32m   1208[0m         [38;5;28;01mif[39;00m argument [38;5;241m==[39m [38;5;124m"[39m[38;5;124mindex[39m[38;5;124m"[39m:
-[1;32m   1209[0m             err_msg [38;5;241m+[39m[38;5;241m=[39m [38;5;124m"[39m[38;5;130;01m\n[39;00m[38;5;124m To use the index, pass it in directly as `df.index`.[39m[38;5;124m"[39m
-[0;32m-> 1210[0m         [38;5;28;01mraise[39;00m [38;5;167;01mValueError[39;00m(err_msg)
-[1;32m   1211[0m [38;5;28;01melif[39;00m length [38;5;129;01mand[39;00m [38;5;28mlen[39m(df_input[argument]) [38;5;241m!=[39m length:
-[1;32m   1212[0m     [38;5;28;01mraise[39;00m [38;5;167;01mValueError[39;00m(
-[1;32m   1213[0m         [38;5;124m"[39m[38;5;124mAll arguments should have the same length. [39m[38;5;124m"[39m
-[1;32m   1214[0m         [38;5;124m"[39m[38;5;124mThe length of column argument `df[[39m[38;5;132;01m%s[39;00m[38;5;124m]` is [39m[38;5;132;01m%d[39;00m[38;5;124m, whereas the [39m[38;5;124m"[39m
+File [0;32m/opt/hostedtoolcache/Python/3.9.18/x64/lib/python3.9/site-packages/plotly/express/_core.py:1213[0m, in [0;36mprocess_args_into_dataframe[0;34m(args, wide_mode, var_name, value_name)[0m
+[1;32m   1211[0m         [38;5;28;01mif[39;00m argument [38;5;241m==[39m [38;5;124m"[39m[38;5;124mindex[39m[38;5;124m"[39m:
+[1;32m   1212[0m             err_msg [38;5;241m+[39m[38;5;241m=[39m [38;5;124m"[39m[38;5;130;01m\n[39;00m[38;5;124m To use the index, pass it in directly as `df.index`.[39m[38;5;124m"[39m
+[0;32m-> 1213[0m         [38;5;28;01mraise[39;00m [38;5;167;01mValueError[39;00m(err_msg)
+[1;32m   1214[0m [38;5;28;01melif[39;00m length [38;5;129;01mand[39;00m [38;5;28mlen[39m(df_input[argument]) [38;5;241m!=[39m length:
+[1;32m   1215[0m     [38;5;28;01mraise[39;00m [38;5;167;01mValueError[39;00m(
+[1;32m   1216[0m         [38;5;124m"[39m[38;5;124mAll arguments should have the same length. [39m[38;5;124m"[39m
+[1;32m   1217[0m         [38;5;124m"[39m[38;5;124mThe length of column argument `df[[39m[38;5;132;01m%s[39;00m[38;5;124m]` is [39m[38;5;132;01m%d[39;00m[38;5;124m, whereas the [39m[38;5;124m"[39m
 [0;32m   (...)[0m
-[1;32m   1221[0m         )
-[1;32m   1222[0m     )
+[1;32m   1224[0m         )
+[1;32m   1225[0m     )
 
 [0;31mValueError[0m: Value of 'y' is not the name of a column in 'data_frame'. Expected one of ['employment_income', 'de_income_tax', 'de_eitc', 'de_refundable_eitc', 'de_non_refundable_eitc', 'mtr', 'adults', 'children'] but received: ma_limited_income_tax_credit
 
