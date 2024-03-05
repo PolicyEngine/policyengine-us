@@ -10,7 +10,7 @@ class ar_low_income_tax_joint(Variable):
     unit = USD
     definition_period = YEAR
     reference = "https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2022_AR1000F_and_AR1000NR_Instructions.pdf#page=29"
-    defined_for = StateCode.AR
+    defined_for = "ar_low_income_tax_eligible"
 
     def formula(person, period, parameters):
         agi = add(person.tax_unit, period, ["ar_agi"])

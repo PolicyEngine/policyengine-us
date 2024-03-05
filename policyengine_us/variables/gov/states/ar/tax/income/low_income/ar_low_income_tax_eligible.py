@@ -4,8 +4,7 @@ from policyengine_us.model_api import *
 class ar_low_income_tax_eligible(Variable):
     value_type = bool
     entity = Person
-    label = "Arkansas individual low income eligibility"
-    unit = USD
+    label = "Eligible person to utilize the Arkansas individual low income tax tables"
     definition_period = YEAR
     reference = "https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2023_TaxTables.pdf"
     defined_for = StateCode.AR
