@@ -252,6 +252,14 @@ def add_personal_income_variables(
     cps["social_security_disability"] = (
         person.SS_VAL - cps["social_security_retirement"]
     )
+    # Provide placeholders for other Social Security inputs to avoid creating
+    # NaNs as they're uprated.
+    cps["social_security_dependents"] = np.zeros_like(
+        cps["social_security_retirement"]
+    )
+    cps["social_security_survivors"] = np.zeros_like(
+        cps["social_security_retirement"]
+    )
     cps["unemployment_compensation"] = person.UC_VAL
     # Add pensions and annuities.
     cps_pensions = person.PNSN_VAL + person.ANN_VAL
@@ -419,7 +427,7 @@ def add_spm_variables(cps: h5py.File, spm_unit: DataFrame) -> None:
         spm_unit_medical_expenses="SPM_MEDXPNS",
         spm_unit_spm_threshold="SPM_POVTHRESHOLD",
         spm_unit_net_income_reported="SPM_RESOURCES",
-        childcare_expenses="SPM_CHILDCAREXPNS",
+        spm_unit_pre_subsidy_childcare_expenses="SPM_CHILDCAREXPNS",
     )
 
     for openfisca_variable, asec_variable in SPM_RENAMES.items():
