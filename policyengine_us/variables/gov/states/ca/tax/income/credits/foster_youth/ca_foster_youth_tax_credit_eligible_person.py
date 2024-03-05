@@ -6,7 +6,7 @@ class ca_foster_youth_tax_credit_eligible_person(Variable):
     entity = Person
     label = "Eligible person for the California foster youth tax credit"
     definition_period = YEAR
-    reference = "https://www.ftb.ca.gov/forms/2022/2022-3514.pdf#page=4"
+    reference = "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=RTC&sectionNum=17052.2."
     defined_for = StateCode.CA
 
     def formula(person, period, parameters):

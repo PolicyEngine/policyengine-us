@@ -10,4 +10,3 @@ class ca_foster_youth_tax_credit(Variable):
     defined_for = "ca_eitc_eligible"
 
     adds = ["ca_foster_youth_tax_credit_person"]
-

@@ -7,6 +7,7 @@ class ca_foster_youth_tax_credit_person(Variable):
     label = "California foster youth tax credit"
     unit = USD
     definition_period = YEAR
+    reference = "https://www.ftb.ca.gov/forms/2022/2022-3514.pdf#page=4"
     defined_for = "ca_foster_youth_tax_credit_eligible_person"
 
     def formula(person, period, parameters):
