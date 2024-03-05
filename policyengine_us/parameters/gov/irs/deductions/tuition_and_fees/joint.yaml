@@ -1,4 +1,4 @@
-description: Modified adjusted gross income limit of tuition and fees deduction for joint filers.
+description: The IRS limits the tuition and fees deduction to joint filers to this amount, based on adjusted gross income.
 brackets:
   - threshold:
       2002-01-01: 0
@@ -18,8 +18,9 @@ brackets:
 metadata:
   threshold_unit: currency_USD
   amount_unit: currency_USD
-  amount_period: year
+  period: year
   type: single_amount
+  label: Tuition and fees deduction cap to joint filers
   reference:
     - title: 2020 Form 8917
       href: https://www.irs.gov/pub/irs-pdf/f8917.pdf#page=2
