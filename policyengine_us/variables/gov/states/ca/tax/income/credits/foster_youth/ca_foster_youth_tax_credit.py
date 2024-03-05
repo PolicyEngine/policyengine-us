@@ -9,5 +9,5 @@ class ca_foster_youth_tax_credit(Variable):
     definition_period = YEAR
     defined_for = "ca_eitc_eligible"
 
-    adds = ['ca_foster_youth_credit_person']
+    adds = ["ca_foster_youth_tax_credit_person"]
 
