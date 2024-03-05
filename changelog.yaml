@@ -6500,3 +6500,28 @@
     - Remove uprating from Social Security dependents and survivors benefits.
     - Split up SPM unit pre-subsidy childcare expenses into individual expenses.
   date: 2024-03-02 18:37:00
+- bump: patch
+  changes:
+    fixes:
+    - Remove qualified_business_income_deduction_person from the list of Ohio deductions.
+  date: 2024-03-04 19:38:02
+- bump: patch
+  changes:
+    fixes:
+    - Remove not used haircut parameters.
+  date: 2024-03-05 00:49:48
+- bump: patch
+  changes:
+    fixed:
+    - Add taxable security to the list of Louisiana exemptions from AGI.
+  date: 2024-03-05 00:57:54
+- bump: patch
+  changes:
+    fixed:
+    - Remove rent from the list of Mississippi income sources.
+  date: 2024-03-05 04:27:45
+- bump: minor
+  changes:
+    fixed:
+    - Fix 'make install' in Makefile.
+  date: 2024-03-05 05:56:46
