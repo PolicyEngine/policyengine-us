@@ -1,9 +1,10 @@
 description: Louisiana exempts these sources from adjusted gross income.
 values:
   2021-01-01:
-    - la_military_pay_exclusion 
-    - la_disability_income_exemption_person 
-    - la_retirement_exemption_person
+    - la_military_pay_exclusion # 10E
+    - la_disability_income_exemption_person # 49E
+    - la_retirement_exemption_person # 06E
+    - taxable_social_security # 07E
 metadata:
   unit: list  
   label: Louisiana adjusted gross income exempt income
