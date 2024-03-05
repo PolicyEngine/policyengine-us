@@ -20,9 +20,10 @@ class ut_at_home_parent_credit(Variable):
         p = parameters(period).gov.states.ut.tax.income.credits.at_home_parent
         count_children = tax_unit.sum((age < p.max_child_age) & is_dependent)
 
-        one_parent_income_eligible = person(
+        income_eligible_person = person(
             "ut_at_home_parent_credit_earned_income_eligible_person", period
         )
-        return tax_unit.sum(
-            p.amount * count_children * one_parent_income_eligible
+        individual_credit_amount = (
+            p.amount * count_children * income_eligible_person
         )
+        return tax_unit.sum(individual_credit_amount)

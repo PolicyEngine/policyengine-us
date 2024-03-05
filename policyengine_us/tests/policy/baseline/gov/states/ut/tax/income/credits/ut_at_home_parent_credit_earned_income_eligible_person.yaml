@@ -1,4 +1,4 @@
-- name: Income does not qualify, parent
+- name: Income over the limit, head or spouse
   period: 2022
   input:
     earned_income: 3_001
@@ -7,7 +7,7 @@
   output: 
     ut_at_home_parent_credit_earned_income_eligible_person: false
 
-- name: Income qualifies, parent
+- name: Income qualifies, head or spouse
   period: 2022
   input:
     earned_income: 3_000
@@ -16,7 +16,7 @@
   output: 
     ut_at_home_parent_credit_earned_income_eligible_person: true
 
-- name: Income qualifies, not parent
+- name: Income qualifies, not head or spouse
   period: 2022
   input:
     earned_income: 3_000
@@ -25,7 +25,7 @@
   output: 
     ut_at_home_parent_credit_earned_income_eligible_person: false
 
-- name: Income does not qualify, not parent
+- name: Income over the limit, not head or spouse
   period: 2022
   input:
     earned_income: 3_001
