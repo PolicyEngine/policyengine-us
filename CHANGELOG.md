@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.688.5] - 2024-03-05 04:27:45
+
+### Fixed
+
+- Remove rent from the list of Mississippi income sources.
+
 ## [0.688.4] - 2024-03-05 00:57:54
 
 ### Fixed
@@ -7650,6 +7656,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.688.5]: https://github.com/PolicyEngine/policyengine-us/compare/0.688.4...0.688.5
 [0.688.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.688.3...0.688.4
 [0.688.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.688.2...0.688.3
 [0.688.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.688.1...0.688.2
