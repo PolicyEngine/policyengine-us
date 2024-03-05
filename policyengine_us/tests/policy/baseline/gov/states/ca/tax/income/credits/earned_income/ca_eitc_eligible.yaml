@@ -61,7 +61,7 @@
   output:
     ca_eitc_eligible: false
 
-- name: Ineligible for EITC because of being a dependent
+- name: Dependents are ineligible for the EITC
   period: 2021
   input:
     people:
