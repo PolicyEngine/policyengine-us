@@ -1,0 +1,59 @@
+- name: All but one month eligible
+  period: 2022
+  input:
+    id_grocery_credit_qualifying_month:
+      2022-01: true
+      2022-02: true
+      2022-03: true
+      2022-04: true
+      2022-05: true
+      2022-06: true
+      2022-07: true
+      2022-08: false
+      2022-09: true
+      2022-10: true
+      2022-11: true
+      2022-12: true
+    state_code: ID
+  output:
+    id_grocery_credit_qualified_months: 11
+
+- name: No months eligible
+  period: 2022
+  input:
+    id_grocery_credit_qualifying_month:
+      2022-01: false
+      2022-02: false
+      2022-03: false
+      2022-04: false
+      2022-05: false
+      2022-06: false
+      2022-07: false
+      2022-08: false
+      2022-09: false
+      2022-10: false
+      2022-11: false
+      2022-12: false
+    state_code: ID
+  output:
+    id_grocery_credit_qualified_months: 0
+
+- name: All year eligible
+  period: 2022
+  input:
+    id_grocery_credit_qualifying_month:
+      2022-01: true
+      2022-02: true
+      2022-03: true
+      2022-04: true
+      2022-05: true
+      2022-06: true
+      2022-07: true
+      2022-08: true
+      2022-09: true
+      2022-10: true
+      2022-11: true
+      2022-12: true
+    state_code: ID
+  output:
+    id_grocery_credit_qualified_months: 12
