@@ -1,0 +1,44 @@
+- name: Single, below AGI limit
+  period: 2022
+  input:
+    state_code: CO
+    adjusted_gross_income: 500_000
+    filing_status: SINGLE
+  output:
+    co_qualified_business_income_deduction_addback_required: false
+
+- name: Single, above AGI limit
+  period: 2022
+  input:
+    state_code: CO
+    adjusted_gross_income: 500_001
+    filing_status: SINGLE
+  output:
+    co_qualified_business_income_deduction_addback_required: true
+
+- name: Joint, above AGI limit
+  period: 2022
+  input:
+    state_code: CO
+    adjusted_gross_income: 1_000_001
+    filing_status: JOINT
+  output:
+    co_qualified_business_income_deduction_addback_required: true
+
+- name: Joint, below AGI limit
+  period: 2022
+  input:
+    state_code: CO
+    adjusted_gross_income: 1_000_000
+    filing_status: JOINT
+  output:
+    co_qualified_business_income_deduction_addback_required: false
+
+- name: Widow, below AGI limit
+  period: 2022
+  input:
+    state_code: CO
+    adjusted_gross_income: 500_000
+    filing_status: WIDOW
+  output:
+    co_qualified_business_income_deduction_addback_required: false

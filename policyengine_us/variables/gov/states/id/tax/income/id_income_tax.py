@@ -8,5 +8,5 @@ class id_income_tax(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.ID
-    adds = ["id_income_tax_before_refundable_credits"]
+    adds = ["id_income_tax_before_refundable_credits", "id_pbf"]
     subtracts = ["id_refundable_credits"]

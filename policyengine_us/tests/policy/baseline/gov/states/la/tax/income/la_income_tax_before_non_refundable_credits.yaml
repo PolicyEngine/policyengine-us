@@ -1,0 +1,45 @@
+- name: Single family with 10,000 of income
+  period: 2021
+  absolute_error_margin: 1
+  input:
+    la_taxable_income: 10_000
+    state_code: LA
+    filing_status: SINGLE
+  output:
+    # Output from the LA taxtables
+    la_income_tax_before_non_refundable_credits: 110
+
+- name: Joint family with 40,000 of income
+  period: 2021
+  absolute_error_margin: 1
+  input:
+    la_taxable_income: 40_000
+    state_code: LA
+    filing_status: JOINT 
+  output:
+    # Output from the LA taxtables
+    la_income_tax_before_non_refundable_credits: 920
+
+- name: Widow filer with 20,000 of income 
+  period: 2021
+  absolute_error_margin: 1
+  input:
+    la_taxable_income: 20_000
+    state_code: LA
+    filing_status: WIDOW
+  output:
+    # Output from the LA taxtables
+    la_income_tax_before_non_refundable_credits: 220
+
+- name: Widow filer with 20,000 of income and 5 exemptions
+  period: 2021
+  absolute_error_margin: 1
+  input:
+    la_taxable_income: 20_000
+    # In the tax table, 5 exemptions equal to an exemption amount of 12,000
+    la_exemptions: 12_000
+    state_code: LA
+    filing_status: WIDOW
+  output:
+    # Output from the LA taxtables
+    la_income_tax_before_non_refundable_credits: 160

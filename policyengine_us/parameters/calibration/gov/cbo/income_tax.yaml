@@ -1,0 +1,24 @@
+description: Individual income tax revenue projections (excludes the Premium Tax Credit).
+values:
+  2022-01-01: 2_632_000_000_000
+  2023-01-01: 2_176_000_000_000
+  2024-01-01: 2_469_000_000_000
+  2025-01-01: 2_520_000_000_000
+  2026-01-01: 2_789_000_000_000
+  2027-01-01: 3_031_000_000_000
+  2028-01-01: 3_124_000_000_000
+  2029-01-01: 3_251_000_000_000
+  2030-01-01: 3_381_000_000_000
+  2031-01-01: 3_511_000_000_000
+  2032-01-01: 3_634_000_000_000
+  2033-01-01: 3_793_000_000_000
+  2034-01-01: 3_973_000_000_000
+metadata:
+  unit: currency-USD
+  label: Income tax revenue
+  reference:
+    - title: Revenue Projections, by Category | Congressional Budget Office | Feb 2024
+      # Source: https://www.cbo.gov/data/budget-economic-data
+      # Sheet 3.Individual Income Tax Details
+      # Row 73: Individual income yax receipts ($B, FY)m
+      href: https://www.cbo.gov/system/files/2024-02/51138-2024-02-Revenue.xlsx

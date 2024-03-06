@@ -1,0 +1,31 @@
+- name: Single filer 2022
+  period: 2022
+  input:
+    state_code: AZ
+    filing_status: SINGLE
+  output:
+    az_base_standard_deduction: 12_950
+
+- name: Joint filer 2022
+  period: 2022
+  input:
+    state_code: AZ
+    filing_status: JOINT
+  output:
+    az_base_standard_deduction: 25_900
+
+- name: Joint filer 2021
+  period: 2021
+  input:
+    state_code: AZ
+    filing_status: JOINT
+  output:
+    az_base_standard_deduction: 25_100
+
+- name: Widow filer 2021
+  period: 2021
+  input:
+    state_code: AZ
+    filing_status: WIDOW
+  output:
+    az_base_standard_deduction: 25_100

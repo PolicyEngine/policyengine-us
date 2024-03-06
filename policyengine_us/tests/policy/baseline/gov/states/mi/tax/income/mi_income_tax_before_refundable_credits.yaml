@@ -1,0 +1,17 @@
+- name: Reduction
+  period: 2022
+  input:
+    mi_income_tax_before_non_refundable_credits: 20_000
+    mi_non_refundable_credits: 5_000
+    state_code: MI
+  output:
+    mi_income_tax_before_refundable_credits: 15_000
+
+- name: Capped at 0
+  period: 2022
+  input:
+    mi_income_tax_before_non_refundable_credits: 2_000
+    mi_non_refundable_credits: 5_000
+    state_code: MI
+  output:
+    mi_income_tax_before_refundable_credits: 0

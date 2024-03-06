@@ -1,0 +1,125 @@
+- name: Tax unit files separately
+  period: 2022
+  # High error margin because of rounding in the tax tables
+  absolute_error_margin: 2
+  input:
+    people:
+      person1:
+        adjusted_gross_income_person: 20_000
+        de_additions: 1_000
+        de_subtractions: 2_000
+        is_tax_unit_head: true
+      person2:
+        adjusted_gross_income_person: 25_000
+        de_additions: 2_000
+        de_subtractions: 1_000
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SEPARATE
+        de_files_separately: true
+        de_non_refundable_credits: 100
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE 
+  output:
+    de_agi: [19_000, 26_000]
+    de_standard_deduction_indv: [3_250, 3_250]
+    de_itemized_deductions_indv: [0, 0]
+    de_taxable_income_indv: [15_750, 22_750]
+    de_income_tax_before_non_refundable_credits_unit: 1_421   
+    de_income_tax_before_refundable_credits: 1_321
+
+- name: Tax unit files jointly
+  period: 2022
+  # High error margin because of rounding in the tax tables
+  absolute_error_margin: 2
+  input:
+    people:
+      person1:
+        adjusted_gross_income_person: 20_000
+        de_additions: 1_000
+        de_subtractions: 2_000
+        is_tax_unit_head: true
+      person2:
+        adjusted_gross_income_person: 25_000
+        de_additions: 2_000
+        de_subtractions: 1_000
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        de_files_separately: false
+        de_non_refundable_credits: 100
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE 
+  output:
+    de_agi: [19_000, 26_000]
+    #If filing a joint return, only one standard deduction is allowed.
+    de_standard_deduction_joint: [6_500, 0]
+    de_itemized_deductions_joint: [0, 0] 
+    de_taxable_income_joint: [38_500, 0]
+    de_income_tax_before_non_refundable_credits_unit: 1_750.25
+    de_income_tax_before_refundable_credits: 1_650.25
+
+#new baseline integration test
+- name: baseline integration test separate
+  period: 2022
+  # High error margin because of rounding in the tax tables
+  absolute_error_margin: 2
+  input:
+    people:
+      person1:
+        adjusted_gross_income_person: 20_000
+        age: 30
+      person2:
+        adjusted_gross_income_person: 25_000
+        age: 31
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    de_agi: [20_000, 25_000]
+    de_standard_deduction_indv: [3_250, 3_250]
+    de_itemized_deductions_indv: [0, 0] 
+    de_taxable_income_indv: [16_750, 21_750] 
+    de_income_tax_before_non_refundable_credits_unit: 1_417 
+    de_income_tax_before_refundable_credits: 1_197
+
+- name: Tax unit with taxsimid 99988 in e21.its.csv and e21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 24
+        employment_income: 60_010
+        taxable_interest_income: 5_505
+      person2:
+        age: 24
+        employment_income: 96_010
+        taxable_interest_income: 5_505
+      person3:
+        age: 11
+      person4:
+        age: 16
+      person5:
+        age: 16
+      person6:
+        age: 16
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_fips: 10  # DE
+  output:  # expected results from patched TAXSIM35 2024-02-15 version
+    de_income_tax: 7_901.98

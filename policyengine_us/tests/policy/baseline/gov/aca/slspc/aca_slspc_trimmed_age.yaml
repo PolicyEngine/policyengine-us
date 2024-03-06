@@ -1,0 +1,6 @@
+- name: aca_slspc_trimmed_age unit test 1
+  period: 2022
+  input:
+    age: [0, 11, 15, 20, 21, 30, 40, 50, 60, 64, 65, 70]
+  output:
+    aca_slspc_trimmed_age: [14, 14, 15, 20, 21, 30, 40, 50, 60, 64, 64, 64]

@@ -10,5 +10,5 @@ class or_retirement_credit_household_income(Variable):
     reference = "https://casetext.com/statute/oregon-revised-statutes/title-29-revenue-and-taxation/chapter-316-personal-income-tax/additional-credits/retirement-income/section-316157-credit-for-retirement-income"
     defined_for = StateCode.OR
 
-    adds = ["adjusted_gross_income"]
+    adds = ["adjusted_gross_income", "tax_exempt_interest_income"]
     subtracts = ["taxable_social_security"]

@@ -23,17 +23,9 @@ class va_military_benefit_subtraction(Variable):
         )
 
         age = person("age", period)
-        head = person("is_tax_unit_head", period)
-        head_age = tax_unit.max(age * head)
-
-        spouse = person("is_tax_unit_spouse", period)
-        spouse_age = tax_unit.max(age * spouse)
-
-        head_pass_age_threshold = head_age >= p.age_threshold
-        spouse_pass_age_threshold = spouse_age >= p.age_threshold
-
-        head_eligible = head & head_pass_age_threshold
-        spouse_eligible = spouse & spouse_pass_age_threshold
-
-        is_eligible = head_eligible | spouse_eligible
-        return tax_unit.sum(subtractable_military_benefit * is_eligible)
+        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+        age_eligible = age >= p.age_threshold
+        head_or_spouse_eligible = head_or_spouse & age_eligible
+        return tax_unit.sum(
+            subtractable_military_benefit * head_or_spouse_eligible
+        )

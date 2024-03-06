@@ -1,0 +1,24 @@
+description: Maine reduces the sales tax fairness credit for each of these increments of income exceeding the threshold, based on filing status.
+metadata:
+  unit: currency-USD
+  label: Maine sales tax fairness credit phase-out increment
+  reference:
+    - title: §5213-A. Sales tax fairness credit (4)
+      href: https://legislature.maine.gov/statutes/36/title36sec5213-A.html
+  # Reduction parameters only specified in the law
+    - title: 2021 Form 1040ME Property Tax Fairness Credit / Sales Tax Fairness Credit 
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/21_1040me_sched_pstfc_dwnldff.pdf#page=4
+    - title: 2022 Form 1040ME Property Tax Fairness Credit / Sales Tax Fairness Credit 
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/22_1040me_sched_pstfc_ff.pdf#page=4
+  breakdown:
+    - filing_status
+SINGLE:
+  2021-01-01: 500
+SEPARATE:
+  2021-01-01: 0
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 750
+JOINT:
+  2021-01-01: 1_000
+WIDOW:
+  2021-01-01: 1_000

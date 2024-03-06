@@ -1,0 +1,36 @@
+description: Rhode Island provides a property tax credit for property taxes exceeding this fraction of income, for filers in a one-person household, depending on income.
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: /1
+  label: Rhode Island property tax credit income threshold for one-person households
+  reference:
+    - title: Property Tax Relief R.I. Gen. Laws § 44-33-9 (1)
+      href: http://webserver.rilin.state.ri.us/Statutes/TITLE44/44-33/44-33-9.htm
+    - title: 2021 Form RI-1040H Rhode Island Property Tax Relief Claim
+      href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-01/2021-ri-1040h_w.pdf#page=3
+    - title: 2022 Form RI-1040H Rhode Island Property Tax Relief Claim
+      href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-12/2022%20RI-1040H_v2_w.pdf#page=3
+
+brackets:
+  - threshold:
+      2021-01-01: 0
+    amount:
+      2021-01-01: 0.03
+  - threshold:
+      2021-01-01: 6_000
+    amount:
+      2021-01-01: 0.04
+  - threshold:
+      2021-01-01: 9_000
+    amount:
+      2021-01-01: 0.05
+  - threshold:
+      2021-01-01: 12_000
+    amount:
+      2021-01-01: 0.06
+  - threshold:
+      2021-01-01: 30_000
+      2022-01-01: 35_000
+    amount:
+      2021-01-01: 0

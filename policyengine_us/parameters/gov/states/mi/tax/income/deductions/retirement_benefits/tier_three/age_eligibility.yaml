@@ -1,0 +1,31 @@
+description: Michigan limits the tier three retirement and pension benefits to filers, based on their age. 
+brackets:
+  - threshold:
+      2017-01-01: 0
+    amount:
+      2017-01-01: false
+  - threshold:
+      2017-01-01: 62
+    amount:
+      2017-01-01: true
+  - threshold:
+      2017-01-01: 67
+    amount:
+      2017-01-01: false
+metadata:
+  type: single_amount
+  amount_unit: bool
+  threshold_unit: year
+  period: year  
+  label: Michigan tier three retirement and pension benefits age range
+  reference:
+    # The legal code specifies age over the birth year, while the 
+    # tax forms include the birth year conditions.
+    - title: Michigan Legal Code Section 206.30 - (9)(d)
+      href: http://legislature.mi.gov/doc.aspx?mcl-206-30
+    - title: Michigan Retirement and Pension Benefits
+      href: https://www.michigan.gov/taxes/iit/retirement-and-pension-benefits
+    - title: Michigan 2022 MI-1040 Individual Income Tax FORMS AND INSTRUCTIONS
+      href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2022/2022-IIT-Forms/BOOK_MI-1040.pdf#page=17
+    - title: 2021 Michigan Taxpayer Assistance Manual
+      href: https://www.michigan.gov/-/media/Project/Websites/taxes/2022RM/UNCAT/2019_Taxpayer_Assistance_Manual.pdf#page=42

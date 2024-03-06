@@ -1,0 +1,60 @@
+- name: Split the itemized deductions 60% and 40%
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        ar_agi: 60_000
+      person2:
+        is_tax_unit_head: false
+        ar_agi: 40_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ar_itemized_deductions_unit: 1_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR 
+  output:
+    ar_itemized_deductions_indiv: [600, 400]
+
+- name: No head AGI
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        ar_agi: 0
+      person2:
+        is_tax_unit_head: false
+        ar_agi: 40_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ar_itemized_deductions_unit: 1_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR 
+  output:
+    ar_itemized_deductions_indiv: [0, 1_000]
+
+- name: No spouse AGI
+  period: 2022
+  input:
+    people:
+      person1:
+        ar_agi: 1_000
+      person2:
+        ar_agi: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ar_itemized_deductions_unit: 1_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR 
+  output:
+    ar_itemized_deductions_indiv: [1_000, 0]

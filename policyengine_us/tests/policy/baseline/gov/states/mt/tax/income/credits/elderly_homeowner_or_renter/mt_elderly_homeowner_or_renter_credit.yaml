@@ -1,0 +1,120 @@
+- name: Not eligible - gross_household_income larger than 45_000
+  period: 2022
+  input:
+    people:
+      person1:
+        real_estate_taxes: 12_000
+        mt_elderly_homeowner_or_renter_credit_gross_household_income: 48_000
+        mt_elderly_homeowner_or_renter_credit_net_household_income: 0
+        mt_elderly_homeowner_or_renter_credit_eligible: false
+        rent: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    mt_elderly_homeowner_or_renter_credit: 0
+
+- name: Eligible couple in 2022 -max_amount
+  period: 2022
+  input:
+    people:
+      person1:
+        rent: 9_000
+        real_estate_taxes: 1_500
+        mt_elderly_homeowner_or_renter_credit_gross_household_income: 20_000
+        mt_elderly_homeowner_or_renter_credit_net_household_income: 1_070
+        mt_elderly_homeowner_or_renter_credit_eligible: true
+      person2:
+        rent: 9_000
+        real_estate_taxes: 0
+        mt_elderly_homeowner_or_renter_credit_gross_household_income: 14_000
+        mt_elderly_homeowner_or_renter_credit_net_household_income: 0
+        mt_elderly_homeowner_or_renter_credit_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:  
+  # min_((propertytax + rent*rate - (grossincome-standard)*reduction_rate), 1150) * percentage(grossincome)
+  # 1500+ 9000*2*0.15 - (34000-12600)*0.05 = 3130 # 1150*100%
+    mt_elderly_homeowner_or_renter_credit: [1_150, 0]
+
+- name: Eligible couple in 2020 -max_amount
+  period: 2020
+  input:
+    people:
+      person1:
+        rent: 9_000
+        real_estate_taxes: 1_500
+        mt_elderly_homeowner_or_renter_credit_gross_household_income: 20_000
+        mt_elderly_homeowner_or_renter_credit_net_household_income: 1_385
+        mt_elderly_homeowner_or_renter_credit_eligible: true
+      person2:
+        rent: 9_000
+        real_estate_taxes: 0
+        mt_elderly_homeowner_or_renter_credit_gross_household_income: 14_000
+        mt_elderly_homeowner_or_renter_credit_net_household_income: 0
+        mt_elderly_homeowner_or_renter_credit_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:  
+  # min_((propertytax + rent*rate - (grossincome-standard)*reduction_rate), 1000) * percentage(grossincome)
+  # 1500+ 9000*2*0.15 - (34000-6300)*0.05 = 2815 # 1000*100%
+    mt_elderly_homeowner_or_renter_credit: [1_000, 0]
+
+- name: Eligible household in 2022
+  period: 2022
+  input:
+    people:
+      person1:
+        rent: 4_000
+        real_estate_taxes: 500
+        mt_elderly_homeowner_or_renter_credit_gross_household_income: 43_000
+        mt_elderly_homeowner_or_renter_credit_net_household_income: 1_520
+        mt_elderly_homeowner_or_renter_credit_eligible: true
+      person2:
+        rent: 4_000
+        real_estate_taxes: 500
+        mt_elderly_homeowner_or_renter_credit_gross_household_income: 0
+        mt_elderly_homeowner_or_renter_credit_net_household_income: 0
+        mt_elderly_homeowner_or_renter_credit_eligible: true
+      person3:
+        rent: 1_000
+        real_estate_taxes: 0
+        mt_elderly_homeowner_or_renter_credit_gross_household_income: 0
+        mt_elderly_homeowner_or_renter_credit_net_household_income: 0
+        mt_elderly_homeowner_or_renter_credit_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+  output:  
+  # min_((propertytax + rent*rate - (grossincome-standard)*reduction_rate), 1150) * percentage(grossincome)
+  # 1000+ 9000*0.15 - (43000-12600)*0.05 = 830 # 830*10% = 83
+    mt_elderly_homeowner_or_renter_credit: [83, 0, 0]
+
+- name: Integration test
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        employment_income: 1_000
+        real_estate_taxes: 5_000
+        age: 67
+        mt_income_tax_before_refundable_credits_indiv: 1_000
+        mt_refundable_credits_before_renter_credit: 0
+      person2:
+        employment_income: 2_000
+        mt_income_tax_before_refundable_credits_indiv: 800
+        rent: 5_000
+        age: 60
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        state_code: MT
+  output:
+    mt_elderly_homeowner_or_renter_credit: [1_150, 0]
+    mt_income_tax_indiv: [-150, 800]

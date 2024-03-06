@@ -1,0 +1,211 @@
+- name: Filer with no taxable social security benefit or retirement income
+  period: 2022
+  input:
+    people:
+      person1:
+        military_retirement_pay: 0
+        csrs_retirement_pay: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        tax_unit_taxable_social_security: 0
+        adjusted_gross_income: 40_000
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_retirement_income_exemption_eligible: False  # Not qualified
+
+- name: 2021, use social security, filing jointly with federal agi more than 70,000
+  period: 2021
+  input:
+    people:
+      person1:
+        military_retirement_pay: 0
+        csrs_retirement_pay: 0
+      person2:
+        military_retirement_pay: 0
+        csrs_retirement_pay: 0  
+    tax_units:
+      tax_unit:
+        members: [person1,person2]
+        filing_status: JOINT
+        adjusted_gross_income: 80_000
+        tax_unit_taxable_social_security: 1_000
+    households:
+      household:
+        members: [person1,person2]
+        state_code: VT
+  output:
+    vt_retirement_income_exemption_eligible: False  # Not qualified
+
+- name: 2022, use social security, not filing jointly with federal agi more than 60,000
+  period: 2022
+  input:
+    people:
+      person1:
+        military_retirement_pay: 0
+        csrs_retirement_pay: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 70_000
+        tax_unit_taxable_social_security: 1_000
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_retirement_income_exemption_eligible: False  # Not qualified 
+
+- name: 2021, use social security, filing jointly with federal agi less than 60,000
+  period: 2021
+  input:
+    people:
+      person1:
+        military_retirement_pay: 0
+        csrs_retirement_pay: 0
+      person2:
+        military_retirement_pay: 0
+        csrs_retirement_pay: 0   
+    tax_units:
+      tax_unit:
+        members: [person1,person2]
+        filing_status: JOINT
+        adjusted_gross_income: 50_000
+        tax_unit_taxable_social_security: 1_000
+    households:
+      household:
+        members: [person1,person2]
+        state_code: VT 
+  output:
+    vt_retirement_income_exemption_eligible: True # Fully qualified
+
+- name: 2022, use social security, not filing jointly with federal agi less than 50,000
+  period: 2022
+  input:
+    people:
+      person1:
+        military_retirement_pay: 0
+        csrs_retirement_pay: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 40_000
+        tax_unit_taxable_social_security: 1_000
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_retirement_income_exemption_eligible: True  # Fully qualified
+
+- name: 2021, use social security, filing jointly with federal agi between 60,000 and 70,000
+  period: 2021
+  input:
+    people:
+      person1:
+        military_retirement_pay: 0
+        csrs_retirement_pay: 0
+      person2:
+        military_retirement_pay: 0
+        csrs_retirement_pay: 0  
+    tax_units:
+      tax_unit:
+        members: [person1,person2]
+        filing_status: JOINT
+        adjusted_gross_income: 65_000
+        tax_unit_taxable_social_security: 1_000
+    households:
+      household:
+        members: [person1,person2]
+        state_code: VT 
+  output:
+    vt_retirement_income_exemption_eligible: True  # Partial qualified 1000*0.50
+
+- name: 2022, use social security, not filing jointly with federal agi between 50,000 and 60,000
+  period: 2022
+  input:
+    people:
+      person1:
+        military_retirement_pay: 0
+        csrs_retirement_pay: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 57_500
+        tax_unit_taxable_social_security: 1_000
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_retirement_income_exemption_eligible: True  # Partial qualified 1000*0.25
+
+- name: 2022, use military retirement system, not filing jointly with federal agi less than 50,000
+  period: 2022
+  input:
+    people:
+      person1:
+        military_retirement_pay: 1_000
+        csrs_retirement_pay: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 40_000
+        tax_unit_taxable_social_security: 0
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_retirement_income_exemption_eligible: True  # Fully qualified
+
+- name: 2021, use CSRS, filing jointly with federal agi between 60,000 and 70,000
+  period: 2021
+  input:
+    people:
+      person1:
+        military_retirement_pay: 0
+        csrs_retirement_pay: 500
+      person2:
+        military_retirement_pay: 0
+        csrs_retirement_pay: 500   
+    tax_units:
+      tax_unit:
+        members: [person1,person2]
+        filing_status: JOINT
+        adjusted_gross_income: 65_000
+        tax_unit_taxable_social_security: 0
+    households:
+      household:
+        members: [person1,person2]
+        state_code: VT
+  output:
+    vt_retirement_income_exemption_eligible: True  # Partial qualified 1000*0.50
+
+- name: 2022, use military retirement system, have csrs retirement pay, not filing jointly with federal agi less than 50,000
+  period: 2022
+  input:
+    people:
+      person1:
+        military_retirement_pay: 1_000
+        csrs_retirement_pay: 500
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 40_000
+        tax_unit_taxable_social_security: 0
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_retirement_income_exemption_eligible: True  # Fully qualified

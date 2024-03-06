@@ -1,0 +1,46 @@
+- name: Low Income, household size of 1 # 3000*3%=90>50
+  period: 2022
+  input:
+    ri_property_tax_household_income: 3_000
+    tax_unit_size: 1
+    real_estate_taxes: 50
+    rent: 0
+    ri_property_tax_credit_eligible: true
+  output:
+    ri_property_tax_credit: 0
+
+- name: High Income, household size of 1 # 20000*6%=1200, 1000+5000*0.2-1200=800>600
+  period: 2022
+  input:
+    state_code: RI
+    ri_property_tax_household_income: 20_000
+    tax_unit_size: 1
+    real_estate_taxes: 1_000
+    rent: 5_000
+    ri_property_tax_credit_eligible: true
+  output:
+    ri_property_tax_credit: 600
+
+- name: Low Income, household of 2 or more #3000*3%=90, 150-90=60
+  period: 2022
+  input:
+    state_code: RI
+    ri_property_tax_household_income: 3_000
+    tax_unit_size: 2
+    real_estate_taxes: 150
+    rent: 0
+    ri_property_tax_credit_eligible: true
+  output:
+    ri_property_tax_credit: 60
+
+- name: High Income, household of 2 or more # 13000*5%=650, 3500*0.2-650=50
+  period: 2022
+  input:
+    state_code: RI
+    ri_property_tax_household_income: 13_000
+    tax_unit_size: 2
+    real_estate_taxes: 0
+    rent: 3_500
+    ri_property_tax_credit_eligible: true
+  output:
+    ri_property_tax_credit: 50

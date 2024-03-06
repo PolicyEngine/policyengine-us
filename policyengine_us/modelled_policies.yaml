@@ -10,23 +10,60 @@ core:
     - WIC
 filtered:
   state_name:
+    AL:
+      modelled:
+      - Alabama state income tax
+      not_modelled:
+      - Alabama TANF
+    AZ: 
+      modelled:
+      - Arizona state income tax
+      not_modelled:
+      - Arizona TANF
     CA:
       modelled:
       - California state income tax
       - California TANF
+      - California's Clean Vehicle Rebate Project
+    CO:
+      modelled:
+      - Colorado state income tax
+      - Colorado Old Age Pension
+      - Colorado State Supplement
+      - Colorado TANF
     DC:
       modelled:
       - District of Columbia income tax
       - District of Columbia TANF
+    GA:
+      modelled:
+      - Georgia state income tax
+      not_modelled:
+      - Georgia TANF
+    HI:
+      modelled:
+      - Hawaii state income tax
+      not_modelled:
+      - Hawaii TANF
     IA:
       modelled:
       - Iowa state income tax
       not_modelled:
       - Iowa TANF
+    ID:
+      modelled:
+      - Idaho state income tax
+      not_modelled:
+      - Idaho TANF
     IL:
       modelled:
       - Illinois state income tax
       - Illinois TANF
+    IN: 
+      modelled:
+      - Indiana state income tax
+      not_modelled:
+      - Indiana TANF
     KS:
       modelled:
       - Kansas state income tax
@@ -52,6 +89,11 @@ filtered:
       - Missouri state income tax
       not_modelled:
       - Missouri TANF
+    NC:
+      modelled:
+      - North Carolina state income tax
+      not_modelled:
+      - North Carolina TANF
     ND:
       modelled:
       - North Dakota state income tax
@@ -67,6 +109,11 @@ filtered:
       - New Hampshire state income tax
       not_modelled:
       - New Hampshire TANF
+    NJ:
+      modelled:
+      - New Jersey state income tax
+      not_modelled:
+      - New Jersey TANF
     NM:
       modelled:
       - New Mexico state income tax
@@ -91,11 +138,26 @@ filtered:
       - Pennsylvania state income tax
       not_modelled:
       - Pennsylvania TANF
+    RI:
+      modelled:
+      - Rhode Island state income tax
+      not_modelled:
+      - Rhode Island TANF
+    SC:
+      modelled:
+      - South Carolina state income tax
+      not_modelled:
+      - South Carolina TANF
     UT:
       modelled:
       - Utah state income tax
       not_modelled:
       - Utah TANF
+    VT:
+      modelled:
+      - Vermont state income tax
+      not_modelled:
+      - Vermont TANF
     WA:
       modelled:
       - Washington state income tax
@@ -106,3 +168,8 @@ filtered:
       - Wisconsin state income tax
       not_modelled:
       - Wisconsin TANF
+    WV:
+      modelled:
+      - West Virginia state income tax
+      not_modelled:
+      - West Virginia TANF

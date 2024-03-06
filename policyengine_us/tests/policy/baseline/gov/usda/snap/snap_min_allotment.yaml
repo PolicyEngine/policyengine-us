@@ -7,7 +7,7 @@
     # Eligible as a family of 2.
     # $250/mo is the maximum SNAP benefit for 1-person households in the
     # contiguous US.
-    snap_min_allotment: 250 * 0.08 * 12
+    snap_min_allotment: 250 * 0.08 * 9 + 281 * 0.08 * 3 # Maximum allotments change every October.
 
 - name: Family of 3
   period: 2022

@@ -1,0 +1,35 @@
+- name: both filer and spouse not blind
+  period: 2023
+  input:
+    state_code: AZ
+    blind_head: false
+    blind_spouse: false
+  output:
+    az_blind_exemption: 0
+
+- name: filer blind and spouse not blind
+  period: 2023
+  input:
+    state_code: AZ
+    blind_head: true
+    blind_spouse: false
+  output:
+    az_blind_exemption: 1_500
+
+- name: filer not blind and spouse blind
+  period: 2023
+  input:
+    state_code: AZ
+    blind_head: false
+    blind_spouse: true
+  output:
+    az_blind_exemption: 1_500
+
+- name: both filer and spouse blind
+  period: 2023
+  input:
+    state_code: AZ
+    blind_head: true
+    blind_spouse: true
+  output:
+    az_blind_exemption: 3_000

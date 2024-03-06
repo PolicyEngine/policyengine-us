@@ -2,8 +2,8 @@
   period: 2022
   input:
     filing_status: JOINT
-    tax_unit_dependent_elsewhere: true
-    tax_unit_spouse_dependent_elsewhere: true
+    head_is_dependent_elsewhere: true
+    spouse_is_dependent_elsewhere: true
     tax_unit_count_dependents: 0
     state_code: VT
   output:
@@ -13,8 +13,8 @@
   period: 2022
   input:
     filing_status: JOINT
-    tax_unit_dependent_elsewhere: true
-    tax_unit_spouse_dependent_elsewhere: true
+    head_is_dependent_elsewhere: true
+    spouse_is_dependent_elsewhere: true
     tax_unit_count_dependents: 2
     state_code: VT
   output:
@@ -24,8 +24,8 @@
   period: 2022
   input:
     filing_status: JOINT
-    tax_unit_dependent_elsewhere: true
-    tax_unit_spouse_dependent_elsewhere: false
+    head_is_dependent_elsewhere: true
+    spouse_is_dependent_elsewhere: false
     tax_unit_count_dependents: 0
     state_code: VT
   output:
@@ -35,8 +35,8 @@
   period: 2022
   input:
     filing_status: JOINT
-    tax_unit_dependent_elsewhere: true
-    tax_unit_spouse_dependent_elsewhere: false
+    head_is_dependent_elsewhere: true
+    spouse_is_dependent_elsewhere: false
     tax_unit_count_dependents: 2
     state_code: VT
   output:
@@ -46,8 +46,8 @@
   period: 2022
   input:
     filing_status: JOINT
-    tax_unit_dependent_elsewhere: false
-    tax_unit_spouse_dependent_elsewhere: false
+    head_is_dependent_elsewhere: false
+    spouse_is_dependent_elsewhere: false
     tax_unit_count_dependents: 0
     state_code: VT
   output:
@@ -57,8 +57,8 @@
   period: 2022
   input:
     filing_status: JOINT
-    tax_unit_dependent_elsewhere: false
-    tax_unit_spouse_dependent_elsewhere: false
+    head_is_dependent_elsewhere: false
+    spouse_is_dependent_elsewhere: false
     tax_unit_count_dependents: 2
     state_code: VT
   output:
@@ -68,7 +68,7 @@
   period: 2022
   input:
     filing_status: SINGLE
-    tax_unit_dependent_elsewhere: true
+    head_is_dependent_elsewhere: true
     tax_unit_count_dependents: 0
     state_code: VT
   output:
@@ -78,7 +78,7 @@
   period: 2022
   input:
     filing_status: SINGLE
-    tax_unit_dependent_elsewhere: true
+    head_is_dependent_elsewhere: true
     tax_unit_count_dependents: 2
     state_code: VT
   output:
@@ -88,7 +88,7 @@
   period: 2022
   input:
     filing_status: SINGLE
-    tax_unit_dependent_elsewhere: false
+    head_is_dependent_elsewhere: false
     tax_unit_count_dependents: 0
     state_code: VT
   output:
@@ -98,7 +98,7 @@
   period: 2022
   input:
     filing_status: SINGLE
-    tax_unit_dependent_elsewhere: false
+    head_is_dependent_elsewhere: false
     tax_unit_count_dependents: 2
     state_code: VT
   output:
@@ -108,7 +108,7 @@
   period: 2022
   input:
     filing_status: SINGLE
-    tax_unit_dependent_elsewhere: false
+    head_is_dependent_elsewhere: false
     tax_unit_count_dependents: 0
     state_code: NY
   output:
@@ -118,7 +118,7 @@
   period: 2022
   input:
     filing_status: HEAD_OF_HOUSEHOLD
-    tax_unit_dependent_elsewhere: false
+    head_is_dependent_elsewhere: false
     tax_unit_count_dependents: 2
     state_code: VT
   output:
@@ -128,7 +128,7 @@
   period: 2021
   input:
     filing_status: HEAD_OF_HOUSEHOLD
-    tax_unit_dependent_elsewhere: false
+    head_is_dependent_elsewhere: false
     tax_unit_count_dependents: 2
     state_code: VT
   output:
@@ -138,7 +138,7 @@
   period: 2021
   input:
     filing_status: HEAD_OF_HOUSEHOLD
-    tax_unit_dependent_elsewhere: false
+    head_is_dependent_elsewhere: false
     tax_unit_count_dependents: 2
     state_code: VT
   output:

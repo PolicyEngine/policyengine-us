@@ -11,8 +11,8 @@ class ny_eitc(Variable):
     defined_for = StateCode.NY
 
     def formula(tax_unit, period, parameters):
-        eitc = tax_unit("earned_income_tax_credit", period)
-        rate = parameters(period).gov.states.ny.tax.income.credits.eitc.match
-        tentative_nys_eic = eitc * rate
+        federal_eitc = tax_unit("eitc", period)
+        p = parameters(period).gov.states.ny.tax.income.credits
+        tentative_nys_eitc = federal_eitc * p.eitc.match
         household_credit = tax_unit("ny_household_credit", period)
-        return max_(0, tentative_nys_eic - household_credit)
+        return max_(0, tentative_nys_eitc - household_credit)

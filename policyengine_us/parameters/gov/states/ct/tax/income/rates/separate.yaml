@@ -1,0 +1,40 @@
+description: Connecticut taxes income of separate filers at these rates.
+metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  label: Connecticut income tax rate separate filers
+  reference:
+    - title: Connecticut General Statutes, Chapter 229, Sec. 12-700, (9), (A)
+      href: https://www.cga.ct.gov/current/pub/chap_229.htm#sec_12-700 
+    - title: 2022 Form CT-1040 Connecticut Resident Income Tax Return Instructions
+      href: https://portal.ct.gov/-/media/DRS/Forms/2022/Income/2022-CT-1040-Instructions_1222.pdf#page=20
+brackets:
+  - threshold:
+      2015-01-01: 0
+    rate:
+      2015-01-01: 0.03
+  - threshold:
+      2015-01-01: 10_000
+    rate:
+      2015-01-01: 0.05 
+  - threshold:
+      2015-01-01: 50_000
+    rate:
+      2015-01-01: 0.055
+  - threshold:
+      2015-01-01: 100_000
+    rate:
+      2015-01-01: 0.06
+  - threshold:
+      2015-01-01: 200_000
+    rate:
+      2015-01-01: 0.065
+  - threshold:
+      2015-01-01: 250_000
+    rate:
+      2015-01-01: 0.069
+  - threshold:
+      2015-01-01: 500_000
+    rate:
+      2015-01-01: 0.0699

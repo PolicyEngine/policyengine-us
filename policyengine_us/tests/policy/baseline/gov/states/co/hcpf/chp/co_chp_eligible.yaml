@@ -1,0 +1,54 @@
+- name: Not Medicaid eligible
+  period: 2023
+  input:
+    state_code: CO
+    is_medicaid_eligible: true
+    medicaid_income_level: 0
+    age: 1
+    is_pregnant: false
+  output:
+    co_chp_eligible: false
+
+- name: Too much income
+  period: 2023
+  input:
+    state_code: CO
+    is_medicaid_eligible: false
+    medicaid_income_level: 2.7
+    age: 1
+    is_pregnant: false
+  output:
+    co_chp_eligible: false
+
+- name: Ineligible adult
+  period: 2023
+  input:
+    state_code: CO
+    is_medicaid_eligible: false
+    medicaid_income_level: 0
+    age: 19
+    is_pregnant: false
+  output:
+    co_chp_eligible: false
+
+- name: Eligible child
+  period: 2023
+  input:
+    state_code: CO
+    is_medicaid_eligible: false
+    medicaid_income_level: 2.6
+    age: 18
+    is_pregnant: false
+  output:
+    co_chp_eligible: true
+
+- name: Eligible pregnant woman
+  period: 2023
+  input:
+    state_code: CO
+    is_medicaid_eligible: false
+    medicaid_income_level: 2.6
+    age: 19
+    is_pregnant: true
+  output:
+    co_chp_eligible: true

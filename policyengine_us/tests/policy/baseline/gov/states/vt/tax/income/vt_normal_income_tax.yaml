@@ -1,0 +1,131 @@
+- name: 1 Single filer, taxable income is $250K in 2021.
+  period: 2021
+  input:
+    vt_taxable_income: 250_000
+    filing_status: SINGLE
+    state_code: VT
+  output:
+    # .0335*40950 + .066*(99200-40950) + .076*(206950-99200) + .0875*(250000-206950) = 17172.20
+    vt_normal_income_tax: 17_172.20
+
+- name: 2 Joint filer, taxable income is $300K in 2021.
+  period: 2021
+  input:
+    vt_taxable_income: 300_000
+    filing_status: JOINT
+    state_code: VT
+  output:
+    # .0335*68400 + .066*(165350-68400) + .076*(251950-165350) + .0875*(300000-251950) = 19476.074
+    vt_normal_income_tax: 19_476.074
+
+- name: 3 Head of household filer, taxable income is $250K in 2021.
+  period: 2021
+  input:
+    vt_taxable_income: 250_000
+    filing_status: HEAD_OF_HOUSEHOLD
+    state_code: VT
+  output:
+    # .0335*54850 + .066*(141700-54850) + .076*(229450-141700) + .0875*(250000-229450) = 16036.7
+    vt_normal_income_tax: 16_036.70
+
+- name: 4 Widow filer, taxable income is $300K in 2021.
+  period: 2021
+  input:
+    vt_taxable_income: 300_000
+    filing_status: WIDOW
+    state_code: VT
+  output:
+    # .0335*68400 + .066*(165350-68400) + .076*(251950-165350) + .0875*(300000-251950) = 19476.074
+    vt_normal_income_tax: 19_476.074
+
+- name: 5 Separate filer, taxable income is $150K in 2021.
+  period: 2021
+  absolute_error_margin: 1
+  input:
+    vt_taxable_income: 150_000
+    filing_status: SEPARATE
+    state_code: VT
+  output:
+    # .0335*34200 + .066*(82675-34200) + .076*(125975-82675) + .0875*(150000-125975) = 9738.037
+    vt_normal_income_tax: 9_738.037
+
+- name: 6 Single filer, taxable income is $20K in 2022.
+  period: 2022
+  input:
+    vt_taxable_income: 20_000
+    filing_status: SINGLE
+    state_code: VT
+  output:
+    # .0335*20000 = 670
+    vt_normal_income_tax: 670
+
+- name: 7 Single filer, taxable income is $50K in 2022.
+  period: 2022
+  input:
+    vt_taxable_income: 50_000
+    filing_status: SINGLE
+    state_code: VT
+  output:
+    # .0335*42150 + .066*(50000-42150) = 1930.125
+    vt_normal_income_tax: 1_930.125
+
+- name: 8 Single filer, taxable income is $150K in 2022.
+  period: 2022
+  input:
+    vt_taxable_income: 150_000
+    filing_status: SINGLE
+    state_code: VT
+  output:
+    # .0335*42150 + .066*(102200-42150) + .076*(150000-102200) = 9008.125
+    vt_normal_income_tax: 9_008.125
+
+- name: 9 Single filer, taxable income is $250K in 2022.
+  period: 2022
+  input:
+    vt_taxable_income: 250_000
+    filing_status: SINGLE
+    state_code: VT
+  output:
+    # .0335*42150 + .066*(102200-42150) + .076*(213150-102200) + .0875*(250000-213150) = 17031.9
+    vt_normal_income_tax: 17_031.9
+
+- name: 10 Joint filer, taxable income is $300K in 2022.
+  period: 2022
+  input:
+    vt_taxable_income: 300_000
+    filing_status: JOINT
+    state_code: VT
+  output:
+    # .0335*70450 + .066*(170300-70450) + .076*(259500-170300) + .0875*(300000-259500) = 19273.125
+    vt_normal_income_tax: 19_273.125
+
+- name: 11 Head of household filer, taxable income is $250K in 2022.
+  period: 2022
+  input:
+    vt_taxable_income: 250_000
+    filing_status: HEAD_OF_HOUSEHOLD
+    state_code: VT
+  output:
+    # .0335*56500 + .066*(145950-56500) + .076*(236350-145950) + .0875*(250000-236350) = 15861.225
+    vt_normal_income_tax: 15_861.225
+
+- name: 12 Widow filer, taxable income is $300K in 2022.
+  period: 2022
+  input:
+    vt_taxable_income: 300_000
+    filing_status: WIDOW
+    state_code: VT
+  output:
+    # .0335*70450 + .066*(170300-70450) + .076*(259500-170300) + .0875*(300000-259500) = 19273.125
+    vt_normal_income_tax: 19_273.125
+
+- name: 13 Separate filer, taxable income is $150K in 2022.
+  period: 2022
+  absolute_error_margin: 1
+  input:
+    vt_taxable_income: 150_000
+    filing_status: SEPARATE
+    state_code: VT
+  output:
+    # .0335*35255 + .066*(85150-35255) + .076*(129750-85150) + .0875*(150000-129750) = 9636.5625
+    vt_normal_income_tax: 9_636.5625

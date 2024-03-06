@@ -1,0 +1,16 @@
+description: Louisiana makes its child and dependent care credit refundable if a filer's federal adjusted gross income is equal to or less than this amount; otherwise, they allow the credit to be carried forward for up to five years, in which case PolicyEngine treats it as non-refundable.
+
+values:
+  2006-01-01: 25_000
+
+metadata:
+  period: year
+  unit: currency-USD
+  label: Louisiana CDCC refundability income threshold
+  reference:
+    - title: §297.4. Reduction to tax due; certain child care expenses, part (B)
+      href: http://legis.la.gov/Legis/Law.aspx?d=101769
+    - title: 2022 Louisiana Resident Income Tax Return
+      href: https://revenue.louisiana.gov/TaxForms/IT540WEB(2022)%20F%20D2.pdf#page=14
+    - title: 2021 Louisiana Resident Income Tax Return
+      href: https://revenue.louisiana.gov/TaxForms/IT540WEB(2021)%20F.pdf#page=14
