@@ -1,0 +1,32 @@
+- name: Limited Utility Allowance 1
+  period: 2022
+  input:
+    snap_utility_allowance_type: LUA
+    snap_utility_region_str: CA
+    electricity_expense: 20
+    phone_expense: 20
+    water_expense: 1
+  output:
+    snap_limited_utility_allowance: 1_728 # 144 * 12
+
+- name: Limited Utility Allowance 2
+  period: 2021
+  input:
+    snap_utility_allowance_type: LUA
+    snap_utility_region_str: CA
+    electricity_expense: 20
+    phone_expense: 20
+    water_expense: 1
+  output:
+    snap_limited_utility_allowance: 432 # 144 * 3
+
+- name: Limited Utility Allowance 3
+  period: 2023
+  input:
+    snap_utility_allowance_type: LUA
+    snap_utility_region_str: CA
+    electricity_expense: 20
+    phone_expense: 20
+    water_expense: 1
+  output:
+    snap_limited_utility_allowance: 1_770 # 144 * 9 + 158 * 3

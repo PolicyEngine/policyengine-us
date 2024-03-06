@@ -4,7 +4,6 @@ format:
 	linecheck . --fix
 install:
 	pip install -e .[dev]
-	pip install --upgrade jupyter-book
 test:
 	coverage run -a --branch -m policyengine_core.scripts.policyengine_command test policyengine_us/tests/policy/ -c policyengine_us
 	coverage xml -i
@@ -22,3 +21,7 @@ changelog:
 	bump-version changelog.yaml setup.py
 	rm changelog_entry.yaml || true
 	touch changelog_entry.yaml
+dashboard:
+	python policyengine_us/data/datasets/cps/enhanced_cps/update_dashboard.py
+calibration:
+	python policyengine_us/data/datasets/cps/enhanced_cps/run_calibration.py

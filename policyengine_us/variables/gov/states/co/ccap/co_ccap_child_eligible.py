@@ -7,7 +7,7 @@ class co_ccap_child_eligible(Variable):
     label = "Child eligibility for Colorado Child Care Assistance Program"
     reference = "https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=11042&fileName=8%20CCR%201403-1#page=6"
     definition_period = MONTH
-    # defined_for = StateCode.CO
+    defined_for = StateCode.CO
 
     def formula(person, period, parameters):
         year = period.start.year

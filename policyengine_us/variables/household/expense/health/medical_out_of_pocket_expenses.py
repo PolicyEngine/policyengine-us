@@ -7,4 +7,4 @@ class medical_out_of_pocket_expenses(Variable):
     label = "Medical out of pocket expenses"
     unit = USD
     definition_period = YEAR
-    uprating = "gov.bls.cpi.c_cpi_u"
+    uprating = "gov.bls.cpi.cpi_u"

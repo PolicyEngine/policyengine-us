@@ -37,3 +37,13 @@
     charitable_deduction: 10_000
   output:
     ca_itemized_deductions: 7_000  # charity subject to limitation
+
+- name: Single filer with high AGI and large maximum deductions
+  period: 2021
+  input:
+    state_code: CA
+    filing_status: SINGLE
+    adjusted_gross_income: 212_288 + 50_000
+    ca_itemized_deductions_pre_limitation: 10_000
+  output:
+    ca_itemized_deductions: 7_000  # charity subject to limitation
