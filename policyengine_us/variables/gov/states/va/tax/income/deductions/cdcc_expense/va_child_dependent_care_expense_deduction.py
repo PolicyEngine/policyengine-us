@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class va_cdcc_exepense_deduction(Variable):
+class va_child_dependent_care_expense_deduction(Variable):
     value_type = float
     entity = TaxUnit
     label = "Virginia child and dependent care expense deduction"
