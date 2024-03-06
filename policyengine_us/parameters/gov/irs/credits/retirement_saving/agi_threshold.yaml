@@ -1,0 +1,32 @@
+description: The IRS limits the saver's credit to taxpayers over following AGI threshold.  
+metadata:
+  unit: year
+  period: year
+  label: Retirement Savings Contributions Credit (Saver’s Credit) AGI threshold
+  breakdown:
+    - filing_status
+  reference:
+    - title: 26 U.S. Code § 25B(c)(1)
+      href: https://www.law.cornell.edu/uscode/text/26/25B
+    - title: IRS | Retirement Savings Contributions Credit (Saver’s Credit)
+      href: https://www.irs.gov/retirement-plans/plan-participant-employee/retirement-savings-contributions-savers-credit
+    - title: 2022 Publication 590-A
+      href: https://www.irs.gov/pub/irs-pdf/p590a.pdf#page=45
+    - title: Form 8880 - 2023 Credit for Qualified Retirement Savings Contributions
+      href: https://www.irs.gov/pub/irs-pdf/f8880.pdf
+
+JOINT:
+  2023-01-01: 73_000
+  2024-01-01: 76_500
+SINGLE:
+  2023-01-01: 36_500
+  2024-01-01: 38_250
+SEPARATE:
+  2023-01-01: 36_500
+  2024-01-01: 38_250
+HEAD_OF_HOUSEHOLD:
+  2023-01-01: 54_750
+  2024-01-01: 57_375
+WIDOW:
+  2023-01-01: 36_500
+  2024-01-01: 38_250

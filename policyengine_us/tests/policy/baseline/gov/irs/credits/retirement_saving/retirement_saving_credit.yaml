@@ -17,7 +17,7 @@
         members: [person1, person2]
         filing_status: JOINT
   output:
-    retirement_saving_credit: 1_000
+    savers_credit: 1_000
 
 - name: joint with over agi
   period: 2021
@@ -38,7 +38,7 @@
         members: [person1, person2]
         filing_status: JOINT
   output:
-    retirement_saving_credit: 0
+    savers_credit: 0
 
 - name: head of household with over agi but capped ira
   period: 2023
@@ -59,4 +59,4 @@
         members: [person1, person2]
         filing_status: HEAD_OF_HOUSEHOLD
   output:
-    retirement_saving_credit: 400
+    savers_credit: 400

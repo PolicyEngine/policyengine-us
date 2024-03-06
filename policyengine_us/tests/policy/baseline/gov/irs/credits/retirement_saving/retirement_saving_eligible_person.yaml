@@ -8,13 +8,12 @@
   output:
     retirement_saving_eligible_person: true
 
-- name: not eligible person
+- name: not eligible person, under age threshold
   period: 2021
   input:
     age: 17
     is_tax_unit_spouse: true
     spouse_is_dependent_elsewhere: false
     is_full_time_student: false
-
   output:
     retirement_saving_eligible_person: false

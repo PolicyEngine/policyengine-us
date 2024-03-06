@@ -1,11 +1,13 @@
-description: the maximum contribution amount that may qualify for the credit is this amount
+description: The IRS limits the saver's credit to taxpayers over and equal to following age threshold.  
 values:
-  2019-01-01: 2_000
+  2019-01-01: 18
 metadata:
-  unit: currency-USD
+  unit: year
   period: year
-  label: qualified contribution cap amount
+  label: Retirement Savings Contributions Credit (Saver’s Credit) age threshold
   reference:
+    - title: 26 U.S. Code § 25B(c)(1)
+      href: https://www.law.cornell.edu/uscode/text/26/25B 
     - title: IRS | Retirement Savings Contributions Credit (Saver’s Credit)
       href: https://www.irs.gov/retirement-plans/plan-participant-employee/retirement-savings-contributions-savers-credit
     - title: 2022 Publication 590-A

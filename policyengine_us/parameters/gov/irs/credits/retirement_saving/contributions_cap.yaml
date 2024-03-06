@@ -1,11 +1,13 @@
-description: Taxpayers over following age are eligible for the saver's credit.
+description: The IRS limits the saver's credit to the following maximum contribution amount.
 values:
-  2019-01-01: 18
+  2019-01-01: 2_000
 metadata:
-  unit: year
-  name: saver's credit age
-  label: Retirement Savings Contributions Credit (Saver’s Credit) age
+  unit: currency-USD
+  period: year
+  label: Retirement Savings Contributions Credit (Saver’s Credit) contributions cap
   reference:
+    - title: 26 U.S. Code § 25B(a)
+      href: https://www.law.cornell.edu/uscode/text/26/25B
     - title: IRS | Retirement Savings Contributions Credit (Saver’s Credit)
       href: https://www.irs.gov/retirement-plans/plan-participant-employee/retirement-savings-contributions-savers-credit
     - title: 2022 Publication 590-A

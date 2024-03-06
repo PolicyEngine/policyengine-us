@@ -1,11 +1,13 @@
-description: single saver's credit threshold and rate
+description: The IRS provides the following rate of adjusted gross income under the savor's credit.
 metadata:
   threshold_unit: currency_USD
   amount_unit: /1
-  threshold_period: year
+  period: year
   type: single_amount
-  label: single saver's credit rate
-  reference: 
+  label: Retirement Savings Contributions Credit (Saver’s Credit) single rate
+  reference:
+    - title: 26 U.S. Code § 25B(b)(1)
+      href: https://www.law.cornell.edu/uscode/text/26/25B 
     - title: IRS | Retirement Savings Contributions Credit (Saver’s Credit)
       href: https://www.irs.gov/retirement-plans/plan-participant-employee/retirement-savings-contributions-savers-credit
     - title: 2022 Publication 590-A

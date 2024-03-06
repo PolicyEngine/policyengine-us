@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class retirement_saving_credit(Variable):
+class savers_credit(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
@@ -20,14 +20,19 @@ class retirement_saving_credit(Variable):
         ira_contributions = add(
             person,
             period,
-            ["traditional_ira_contributions", "roth_ira_contributions"],
+            [
+                "traditional_ira_contributions",
+                "roth_ira_contributions",
+                "roth_401k_contributions",
+                "traditional_401k_contributions",
+            ],
         )
-        capped_ira_contributions = min_(ira_contributions, p.cap)
-        qualified_ira = tax_unit.sum(capped_ira_contributions)
+        capped_ira_contributions = min_(ira_contributions, p.contributions_cap)
+        qualified_ira_contributions = tax_unit.sum(capped_ira_contributions)
         filing_status = tax_unit("filing_status", period)
         statuses = filing_status.possible_values
 
-        return select(
+        credit_rate = select(
             [
                 filing_status == statuses.SINGLE,
                 filing_status == statuses.SEPARATE,
@@ -36,10 +41,11 @@ class retirement_saving_credit(Variable):
                 filing_status == statuses.HEAD_OF_HOUSEHOLD,
             ],
             [
-                p.rate.single.calc(total_agi) * qualified_ira,
-                p.rate.separate.calc(total_agi) * qualified_ira,
-                p.rate.joint.calc(total_agi) * qualified_ira,
-                p.rate.widow.calc(total_agi) * qualified_ira,
-                p.rate.head_of_household.calc(total_agi) * qualified_ira,
+                p.rate.single.calc(total_agi),
+                p.rate.separate.calc(total_agi),
+                p.rate.joint.calc(total_agi),
+                p.rate.widow.calc(total_agi),
+                p.rate.head_of_household.calc(total_agi),
             ],
         )
+        return credit_rate * qualified_ira_contributions

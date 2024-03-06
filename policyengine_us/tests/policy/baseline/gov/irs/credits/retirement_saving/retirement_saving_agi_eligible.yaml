@@ -1,0 +1,15 @@
+- name: not agi eligible - single
+  period: 2023
+  input:
+    adjusted_gross_income: 40_000
+    filing_status: SINGLE
+  output:
+    retirement_saving_agi_eligible: false
+
+- name: agi eligible - head of household
+  period: 2023
+  input:
+    adjusted_gross_income: 50_000
+    filing_status:  HEAD_OF_HOUSEHOLD
+  output:
+    retirement_saving_agi_eligible: true
