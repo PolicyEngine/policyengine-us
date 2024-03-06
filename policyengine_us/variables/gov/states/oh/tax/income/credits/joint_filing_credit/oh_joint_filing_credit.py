@@ -18,7 +18,7 @@ class oh_joint_filing_credit(Variable):
         # Ohio uses MAGI for the credit computation, which is Ohio AGI with
         # the addition of the business income deduction, which is currently not included in the model,
         # hence, we use the Ohio AGI for the credit computation
-        oh_agi = tax_unit("oh_agi", period)
+        oh_agi = tax_unit("oh_modified_agi", period)
         exemptions = tax_unit("oh_personal_exemptions", period)
         agi_less_exepmtions = max_(oh_agi - exemptions, 0)
         percentage = p.rate.calc(agi_less_exepmtions)

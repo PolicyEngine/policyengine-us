@@ -1,0 +1,71 @@
+- name: tax unit head meet the criteria
+  period: 2023
+  input:
+    state_code: AZ
+    cohabitating_spouses: true
+    az_property_tax_credit_income: 5_000
+    az_property_tax_credit_eligible: true
+    real_estate_taxes: 0
+    rent: 1_000
+  output:
+    az_property_tax_credit: 123
+
+- name: filer at 50 meets criteria
+  period: 2023
+  input:
+    state_code: AZ
+    cohabitating_spouses: false
+    az_property_tax_credit_income: 2_800   
+    az_property_tax_credit_eligible: true
+    real_estate_taxes: 100
+    rent: 0
+  output:
+    az_property_tax_credit: 100
+
+- name: filer at 45 does not receive ssi
+  period: 2023
+  input:
+    state_code: AZ
+    cohabitating_spouses: false
+    az_property_tax_credit_income: 3_000   
+    az_property_tax_credit_eligible: false
+    real_estate_taxes: 100
+    rent: 0
+  output:
+    az_property_tax_credit: 0
+
+- name: tax filer does not paid property tax and rent
+  period: 2023
+  input:
+    state_code: AZ
+    cohabitating_spouses: true
+    az_property_tax_credit_income: 4_000
+    az_property_tax_credit_eligible: false
+    real_estate_taxes: 100
+    rent: 0
+  output:
+    az_property_tax_credit: 0
+
+- name: filer at 79 meets criteria
+  period: 2023
+  input:
+    state_code: AZ
+    cohabitating_spouses: true
+    az_property_tax_credit_income: 5_500
+    az_property_tax_credit_eligible: true
+    real_estate_taxes: 100
+    rent: 1_500
+  output:
+    az_property_tax_credit: 0
+
+- name: tax unit head does not meet the criteria
+  period: 2023
+  input:
+    state_code: AZ
+    cohabitating_spouses: true
+    az_property_tax_credit_income: 6_500
+    az_property_tax_credit_eligible: false
+    real_estate_taxes: 100
+    rent: 1_000
+  output:
+    az_property_tax_credit: 0

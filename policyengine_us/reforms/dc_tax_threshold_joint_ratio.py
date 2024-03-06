@@ -37,7 +37,6 @@ def create_dc_tax_threshold_joint_ratio_reform(
 
     class reform(Reform):
         def apply(self):
-            print("updating dc_income_tax_before_credits_joint")
             self.update_variable(dc_income_tax_before_credits_joint)
 
     if bypass or joint_ratio != 1:
