@@ -2,8 +2,9 @@ description: Oregon taxes income at these rates for individuals filing as head o
 metadata:
   type: marginal_rate
   threshold_unit: currency-USD
+  period: year
   rate_unit: /1
-  label: OR State income tax rate for head of household filers.
+  label: Oregon State income tax rate for head of household filers.
   reference:
     - title: Chapter 316 - Personal Income Tax
       href: https://www.oregonlegislature.gov/bills_laws/ors/ors316.html #3160.037 (1)(a)
