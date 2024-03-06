@@ -22,13 +22,18 @@ class filing_status(Variable):
         has_dependents = tax_unit("tax_unit_dependents", period) > 0
         person = tax_unit.members
         is_separated = tax_unit.any(person("is_separated", period))
-        is_widowed = tax_unit.any(person("is_widowed", period))
+        # The widowed filing status should only apply to widowed heads
+        # who maintain a household for at least one dependent
+        is_head = person("is_tax_unit_head", period)
+        is_widowed = person("is_widowed", period)
+        widowed_head = tax_unit.any(is_head & is_widowed)
+        widowed_head_with_dependents = widowed_head & has_dependents
         return select(
             [
-                has_dependents & ~has_spouse,
+                has_dependents & ~has_spouse & ~widowed_head,
                 has_spouse,
                 is_separated,
-                is_widowed,
+                widowed_head_with_dependents,
                 True,
             ],
             [
