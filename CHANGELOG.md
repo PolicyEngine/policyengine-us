@@ -5,6 +5,134 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.689.1] - 2024-03-05 20:13:22
+
+### Fixed
+
+- Subtract the QBID from Idaho AGI.
+
+## [0.689.0] - 2024-03-05 05:56:46
+
+### Fixed
+
+- Fix 'make install' in Makefile.
+
+## [0.688.5] - 2024-03-05 04:27:45
+
+### Fixed
+
+- Remove rent from the list of Mississippi income sources.
+
+## [0.688.4] - 2024-03-05 00:57:54
+
+### Fixed
+
+- Add taxable security to the list of Louisiana exemptions from AGI.
+
+## [0.688.3] - 2024-03-05 00:49:48
+
+## [0.688.2] - 2024-03-04 19:38:02
+
+## [0.688.1] - 2024-03-02 18:37:00
+
+### Fixed
+
+- Populate Social Security dependents and survivors benefits as zero in cps.py.
+- Remove uprating from Social Security dependents and survivors benefits.
+- Split up SPM unit pre-subsidy childcare expenses into individual expenses.
+
+## [0.688.0] - 2024-03-02 11:09:14
+
+### Added
+
+- List of Louisiana non refundable credits in a parameter file
+
+## [0.687.0] - 2024-03-01 17:12:59
+
+## [0.686.2] - 2024-03-01 13:39:44
+
+## [0.686.1] - 2024-03-01 01:53:48
+
+### Fixed
+
+- Minnesota Working Family Credit eligibility logic.
+
+## [0.686.0] - 2024-02-29 02:00:39
+
+### Added
+
+- 2023 Wisconsin income tax parameters.
+
+## [0.685.1] - 2024-02-28 19:05:54
+
+### Added
+
+- Decompose snap_utility_allowance into three variables for SUA, LUA, and IUA.
+
+## [0.685.0] - 2024-02-28 17:28:50
+
+### Added
+
+- Create state withheld income tax variables for all states which cause a circular reference.
+
+## [0.684.0] - 2024-02-28 10:24:15
+
+### Added
+
+- CBO uprating factors for all tax parameters through 2034.
+
+## [0.683.1] - 2024-02-27 22:54:30
+
+### Fixed
+
+- Replaced data download URLs for CPS and Enhanced CPS files.
+
+## [0.683.0] - 2024-02-27 22:50:14
+
+### Added
+
+- Retirement income from CPS.
+
+### Changed
+
+- Improvements to calibration routine.
+
+## [0.682.1] - 2024-02-26 21:59:44
+
+### Fixed
+
+- Limit the Idaho Grocery Credit to households not enrolled in SNAP.
+
+## [0.682.0] - 2024-02-26 20:57:25
+
+### Added
+
+- Update the CalWORKs Child Care payment standard with the 2022 rates.
+
+## [0.681.1] - 2024-02-26 20:50:21
+
+### Fixed
+
+- Add employee payroll tax to the reported state income tax reform.
+
+## [0.681.0] - 2024-02-25 23:55:29
+
+### Added
+
+- California alternative minimum tax calculations.
+
+## [0.680.0] - 2024-02-24 01:13:23
+
+### Added
+
+- Enable Idaho income tax model and include in the net income tree.
+
+## [0.679.1] - 2024-02-24 00:03:16
+
+### Added
+
+- Include social security, SSI and TANF in the HUD annual income variable.
+
 ## [0.679.0] - 2024-02-23 06:10:17
 
 ### Added
@@ -7540,6 +7668,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.689.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.689.0...0.689.1
+[0.689.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.688.5...0.689.0
+[0.688.5]: https://github.com/PolicyEngine/policyengine-us/compare/0.688.4...0.688.5
+[0.688.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.688.3...0.688.4
+[0.688.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.688.2...0.688.3
+[0.688.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.688.1...0.688.2
+[0.688.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.688.0...0.688.1
+[0.688.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.687.0...0.688.0
+[0.687.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.686.2...0.687.0
+[0.686.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.686.1...0.686.2
+[0.686.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.686.0...0.686.1
+[0.686.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.685.1...0.686.0
+[0.685.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.685.0...0.685.1
+[0.685.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.684.0...0.685.0
+[0.684.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.683.1...0.684.0
+[0.683.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.683.0...0.683.1
+[0.683.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.682.1...0.683.0
+[0.682.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.682.0...0.682.1
+[0.682.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.681.1...0.682.0
+[0.681.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.681.0...0.681.1
+[0.681.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.680.0...0.681.0
+[0.680.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.679.1...0.680.0
+[0.679.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.679.0...0.679.1
 [0.679.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.678.2...0.679.0
 [0.678.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.678.1...0.678.2
 [0.678.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.678.0...0.678.1
