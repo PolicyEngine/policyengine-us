@@ -41,5 +41,5 @@ class filing_status(Variable):
                 FilingStatus.SEPARATE,
                 FilingStatus.WIDOW,
             ],
-            default = FilingStatus.SINGLE,
+            default=FilingStatus.SINGLE,
         )
