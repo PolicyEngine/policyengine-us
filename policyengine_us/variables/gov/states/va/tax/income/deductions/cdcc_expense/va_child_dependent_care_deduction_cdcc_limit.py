@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class va_cdcc_limit(Variable):
+class va_child_dependent_care_deduction_cdcc_limit(Variable):
     value_type = float
     entity = TaxUnit
     label = (

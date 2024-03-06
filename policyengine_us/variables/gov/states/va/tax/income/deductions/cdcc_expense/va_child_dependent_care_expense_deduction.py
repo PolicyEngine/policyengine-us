@@ -12,7 +12,9 @@ class va_child_dependent_care_expense_deduction(Variable):
 
     def formula(tax_unit, period, parameters):
         expenses = tax_unit("tax_unit_childcare_expenses", period)
-        cdcc_limit = tax_unit("va_cdcc_limit", period)
+        cdcc_limit = tax_unit(
+            "va_child_dependent_care_deduction_cdcc_limit", period
+        )
         eligible_capped_expenses = min_(expenses, cdcc_limit)
         # cap further to the lowest earnings between the taxpayer and spouse
         return min_(

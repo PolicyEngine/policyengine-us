@@ -4,7 +4,7 @@
     capped_count_cdcc_eligible: 1
     state_code: VA
   output:
-    va_cdcc_limit: 3_000
+    va_child_dependent_care_deduction_cdcc_limit: 3_000
 
 - name: Federal cdcc limit is not applied in 2021
   period: 2021
@@ -12,4 +12,4 @@
     capped_count_cdcc_eligible: 1
     state_code: VA
   output:
-    va_cdcc_limit: 3_000
+    va_child_dependent_care_deduction_cdcc_limit: 3_000
