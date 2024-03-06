@@ -16,7 +16,7 @@ CA:
   2021-10-01: 120
 CO:
   2010-01-01: 0
-  2016-10-01:
+  2022-10-01:
     value: 165
     metadata:
       reference:
@@ -172,3 +172,4 @@ metadata:
   breakdown:
   - state_code
   uprating: gov.usda.snap.uprating
+  propagate_metadata_to_children: true
