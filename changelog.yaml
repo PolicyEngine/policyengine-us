@@ -445,7 +445,7 @@
 - bump: minor
   changes:
     changed:
-    - Added `is_child_dependent` variable to improve EITC child logic.
+    - Added `is_eitc_qualifying_child` variable to improve EITC child logic.
     - Split `is_in_school` into `is_in_k12_school` and `is_full_time_student`.
   date: 2022-03-28 11:34:53
 - bump: minor
