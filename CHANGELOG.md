@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.691.0] - 2024-03-06 21:11:12
+
+### Added
+
+- Limit the CDCC relevant expense deduction to 2020 amounts in Virginia.
+
 ## [0.690.0] - 2024-03-06 11:19:30
 
 ### Changed
@@ -7674,6 +7680,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.691.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.690.0...0.691.0
 [0.690.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.689.1...0.690.0
 [0.689.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.689.0...0.689.1
 [0.689.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.688.5...0.689.0
