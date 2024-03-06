@@ -18,9 +18,9 @@ class filing_status(Variable):
     label = "Filing status for the tax unit"
 
     def formula(tax_unit, period, parameters):
-        has_spouse = add(tax_unit, period, ["is_tax_unit_spouse"]) > 0
-        has_dependents = tax_unit("tax_unit_dependents", period) > 0
         person = tax_unit.members
+        has_spouse = tax_unit.any(person("is_tax_unit_spouse", period))
+        has_dependents = tax_unit.any(person("is_child_dependent", period))
         is_separated = tax_unit.any(person("is_separated", period))
         # The widowed filing status should only apply to widowed heads
         # who maintain a household for at least one dependent
@@ -34,13 +34,12 @@ class filing_status(Variable):
                 has_spouse,
                 is_separated,
                 widowed_head_with_dependents,
-                True,
             ],
             [
                 FilingStatus.HEAD_OF_HOUSEHOLD,
                 FilingStatus.JOINT,
                 FilingStatus.SEPARATE,
                 FilingStatus.WIDOW,
-                FilingStatus.SINGLE,
             ],
+            default = FilingStatus.SINGLE,
         )

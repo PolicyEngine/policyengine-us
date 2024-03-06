@@ -24,7 +24,7 @@
       spouse:
         is_tax_unit_spouse: true
       child:
-        is_tax_unit_dependent: true
+        is_child_dependent: true
     tax_units:
       tax_unit:
         members: [head, spouse, child]
@@ -38,6 +38,7 @@
       head: {}
       child:
         is_tax_unit_spouse: false
+        age: 17
     tax_units:
       tax_unit:
         members: [head, child]
@@ -61,9 +62,11 @@
   input:
     people:
       head: 
+        is_tax_unit_head: true
         is_widowed: true
       child:
         is_tax_unit_spouse: false
+        age: 17
     tax_units:
       tax_unit:
         members: [head, child]
@@ -79,6 +82,7 @@
       child:
         is_tax_unit_spouse: false
         is_widowed: true
+        age: 17
     tax_units:
       tax_unit:
         members: [head, child]
