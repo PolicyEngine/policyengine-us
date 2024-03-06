@@ -7129,7 +7129,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Added `is_eitc_qualifying_child` variable to improve EITC child logic.
+- Added `is_child_dependent` variable to improve EITC child logic.
 - Split `is_in_school` into `is_in_k12_school` and `is_full_time_student`.
 
 ## [0.38.2] - 2022-03-28 10:55:27
