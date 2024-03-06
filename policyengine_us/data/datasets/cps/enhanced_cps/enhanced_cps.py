@@ -95,7 +95,7 @@ class EnhancedCPS(Dataset):
                 sim.calculate(
                     "household_weight", time_period, map_to="person"
                 ).values,
-                max_iterations=2,
+                max_iterations=6,
             )
 
             y_pred = income_last_year.predict(
