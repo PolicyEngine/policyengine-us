@@ -43,10 +43,16 @@ def create_end_entrenched_poverty_credit() -> Reform:
             )
             return old_credits + end_entrenched_poverty
 
+    def modify_parameters(parameters):
+        parameters.gov.states.ny.tax.income.credits.refundable.update(
+            period="2019-01", value="end_entrenched_poverty_credit"
+        )
+        return parameters
+
     class reform(Reform):
         def apply(self):
-            self.update_variable(end_entrenched_poverty_credit)
-            self.update_variable(ny_refundable_credits)
+            self.add_variable(end_entrenched_poverty_credit)
+            self.modify_parameters(modify_parameters)
 
     return reform
 
