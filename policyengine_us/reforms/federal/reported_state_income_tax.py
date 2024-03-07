@@ -69,7 +69,6 @@ def create_reported_state_income_tax_reform(
     p = parameters(period).simulation
 
     if p.reported_state_income_tax:
-        print("Creating reported state income tax reform")
         return create_reported_state_income_tax()
     else:
         return None

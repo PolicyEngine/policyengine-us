@@ -24,7 +24,7 @@
       spouse:
         is_tax_unit_spouse: true
       child:
-        is_tax_unit_dependent: true
+        is_child_dependent: true
     tax_units:
       tax_unit:
         members: [head, spouse, child]
@@ -38,6 +38,51 @@
       head: {}
       child:
         is_tax_unit_spouse: false
+        age: 17
+    tax_units:
+      tax_unit:
+        members: [head, child]
+  output:
+    filing_status: HEAD_OF_HOUSEHOLD
+
+- name: Widowed head without dependents files as single.
+  period: 2022
+  input:
+    people:
+      head: 
+        is_widowed: true
+    tax_units:
+      tax_unit:
+        members: [head]
+  output:
+    filing_status: SINGLE
+
+- name: Widowed head with one dependents files as widow.
+  period: 2022
+  input:
+    people:
+      head: 
+        is_tax_unit_head: true
+        is_widowed: true
+      child:
+        is_tax_unit_spouse: false
+        age: 17
+    tax_units:
+      tax_unit:
+        members: [head, child]
+  output:
+    filing_status: WIDOW
+
+- name: Widowed dependent in a tax unit should file as HOH.
+  period: 2022
+  input:
+    people:
+      head: 
+        is_tax_unit_head: true
+      child:
+        is_tax_unit_spouse: false
+        is_widowed: true
+        age: 17
     tax_units:
       tax_unit:
         members: [head, child]
