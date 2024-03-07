@@ -7,6 +7,11 @@ class tuition_and_fees_deduction(Variable):
     label = "Tuition and fees deduction"
     unit = USD
     definition_period = YEAR
+    reference = (
+        "https://www.irs.gov/pub/irs-pdf/f8917.pdf#page=2"
+        # Law was repealed in 2021
+        "https://irc.bloombergtax.com/public/uscode/doc/irc/section_222"
+    )
 
     def formula(tax_unit, period, parameters):
         qualified_tuition_expenses = add(
@@ -15,8 +20,9 @@ class tuition_and_fees_deduction(Variable):
         adjusted_gross_income = tax_unit("adjusted_gross_income", period)
         filing_status = tax_unit("filing_status", period)
         p = parameters(period).gov.irs.deductions.tuition_and_fees
+        joint = filing_status == filing_status.possible_values.JOINT
         cap = where(
-            filing_status == filing_status.possible_values.JOINT,
+            joint,
             p.joint.calc(adjusted_gross_income),
             p.non_joint.calc(adjusted_gross_income),
         )
