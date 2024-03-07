@@ -1,7 +1,6 @@
-description: New Jersey limits earned income tax credit eligibility for filers without children to those this age or older.
+description: New Jersey offers a earned income tax credit of this amount.
+
 metadata:
-  unit: year
-  label: New Jersey earned income tax credit minimum childless age
   reference:
     - title: 54A:4-7 New Jersey Earned Income Tax Credit program.
       href: https://law.justia.com/codes/new-jersey/2022/title-54a/section-54a-4-7/
@@ -11,5 +10,11 @@ metadata:
       href: https://www.nj.gov/treasury/taxation/pdf/other_forms/tgi-ee/2022/1040i.pdf#page=43
     - title: 2023 NJ-1040 Instructions (line 58)
       href: https://www.state.nj.us/treasury/taxation/pdf/current/1040i.pdf#page=45
+  unit: currency-USD
+  period: year
+  label: New Jersey earned income tax credit amount
+
 values:
-  2021-01-01: 18
+  2021-01-01: 601
+  2022-01-01: 224
+  2023-01-01: 240

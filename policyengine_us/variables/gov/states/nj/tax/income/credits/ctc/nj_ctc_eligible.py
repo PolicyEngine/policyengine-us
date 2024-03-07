@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class nj_ctc_eligible(Variable):
     value_type = bool
     entity = TaxUnit
-    label = "New Jersey child tax credit eligibility"
+    label = "Eligible for the New Jersey child tax credit"
     definition_period = YEAR
     reference = (
         "https://law.justia.com/codes/new-jersey/2022/title-54a/section-54a-4-17-1/"
@@ -23,8 +23,5 @@ class nj_ctc_eligible(Variable):
             filing_status != filing_status.possible_values.SEPARATE
         )
 
-        taxable_income = tax_unit("nj_taxable_income", period)
-        income_eligible = taxable_income <= p.income_limit
-
         # Calculate total child tax credit
-        return filing_eligible & income_eligible
+        return filing_eligible
