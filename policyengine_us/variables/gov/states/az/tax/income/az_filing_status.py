@@ -15,6 +15,7 @@ class az_filing_status(Variable):
     default_value = ArizonaFilingStatus.SINGLE
     definition_period = YEAR
     label = "Arizona filing status"
+    defined_for = StateCode.AZ
 
     def formula(tax_unit, period, parameters):
         us_filing_status = tax_unit("filing_status", period)

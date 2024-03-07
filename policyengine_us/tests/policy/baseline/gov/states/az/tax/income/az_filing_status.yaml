@@ -1,0 +1,7 @@
+- name: Arizona widow filing status is identified the same as head of household
+  period: 2023
+  input:
+    state_code: AZ
+    filing_status: WIDOW
+  output:
+    az_filing_status: HEAD_OF_HOUSEHOLD
