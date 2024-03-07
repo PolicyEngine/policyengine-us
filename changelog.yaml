@@ -6555,3 +6555,9 @@
     changed:
     - California foster youth tax credit.
   date: 2024-03-07 16:44:16
+- bump: patch
+  changes:
+    fixes:
+    - Replace state income tax with estimated withholding for all states in income
+      tax used for SALT deduction.
+  date: 2024-03-07 19:52:18
