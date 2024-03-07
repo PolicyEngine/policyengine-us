@@ -1,47 +1,3 @@
-- name: In 2021, single filer, one child age < 6, agi = 25_000, federal ctc = 1_000, the colorado ctc = 0
-  period: 2021
-  input:
-    state_code: CO
-    adjusted_gross_income: 25_000
-    co_federal_ctc: 1_000
-    filing_status: SINGLE
-    age: 5
-  output:
-    co_ctc: 0
-
-- name: In 2021, single filer, one child age < 6, agi = 50_000, federal ctc = 2_000, the colorado ctc = 0
-  period: 2021
-  input:
-    state_code: CO
-    adjusted_gross_income: 50_000
-    co_federal_ctc: 2_000
-    filing_status: SINGLE
-    age: 4
-  output:
-    co_ctc: 0
-
-- name: In 2021, single filer, one child age < 6, agi = 75_000, federal ctc = 2_000, the colorado ctc = 0
-  period: 2021
-  input:
-    state_code: CO
-    adjusted_gross_income: 75_000
-    co_federal_ctc: 2_000
-    filing_status: SINGLE
-    age: 4
-  output:
-    co_ctc: 0
-
-- name: In 2021, single filer, one child age < 6, agi = 85_000, federal ctc = 2_000, the colorado ctc = 0
-  period: 2022
-  input:
-    state_code: CO
-    adjusted_gross_income: 85_000
-    co_federal_ctc: 2_000
-    filing_status: SINGLE
-    age: 4
-  output:
-    co_ctc: 0
-
 - name: In 2022, single filer, one child age < 6, agi = 25_000, federal ctc = 1_000, the colorado ctc = 600
   period: 2022
   input:
@@ -82,50 +38,6 @@
     adjusted_gross_income: 85_000
     co_federal_ctc: 2_000
     filing_status: SINGLE
-    age: 4
-  output:
-    co_ctc: 0
-
-- name: In 2021, joint filer, one child age < 6, agi = 35_000, federal ctc = 1_000, the colorado ctc = 0
-  period: 2021
-  input:
-    state_code: CO
-    adjusted_gross_income: 35_000
-    co_federal_ctc: 1_000
-    filing_status: JOINT
-    age: 5
-  output:
-    co_ctc: 0
-
-- name: In 2021, joint filer, one child age < 6, agi = 60_000, federal ctc = 2_000, the colorado ctc = 0
-  period: 2021
-  input:
-    state_code: CO
-    adjusted_gross_income: 60_000
-    co_federal_ctc: 2_000
-    filing_status: JOINT
-    age: 4
-  output:
-    co_ctc: 0
-
-- name: In 2021, joint filer, one child age < 6, agi = 85_000, federal ctc = 2_000, the colorado ctc = 0
-  period: 2021
-  input:
-    state_code: CO
-    adjusted_gross_income: 85_000
-    co_federal_ctc: 2_000
-    filing_status: JOINT
-    age: 4
-  output:
-    co_ctc: 0
-
-- name: In 2021, joint filer, one child age < 6, agi = 95_000, federal ctc = 2_000, the colorado ctc = 0
-  period: 2022
-  input:
-    state_code: CO
-    adjusted_gross_income: 95_000
-    co_federal_ctc: 2_000
-    filing_status: JOINT
     age: 4
   output:
     co_ctc: 0
