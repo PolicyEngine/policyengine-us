@@ -12,9 +12,6 @@ class mi_withheld_income_tax(Variable):
     def formula(person, period, parameters):
         employment_income = person("irs_employment_income", period)
         p = parameters(period).gov.states.mi.tax.income
-        # We apply the tier 3 standard deduction amount
-        standard_deduction = p.deductions.standard.tier_three.amount["SINGLE"]
-        reduced_employment_income = max_(
-            employment_income - standard_deduction, 0
-        )
-        return p.rate * reduced_employment_income
+        # The MI standard deduction only applys for elderly
+        # Wo do not apply deductions here
+        return p.rate * employment_income
