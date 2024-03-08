@@ -6530,3 +6530,34 @@
     fixed:
     - Subtract the QBID from Idaho AGI.
   date: 2024-03-05 20:13:22
+- bump: minor
+  changes:
+    changed:
+    - Calibration improvements.
+  date: 2024-03-06 11:19:30
+- bump: minor
+  changes:
+    added:
+    - Limit the CDCC relevant expense deduction to 2020 amounts in Virginia.
+  date: 2024-03-06 21:11:12
+- bump: patch
+  changes:
+    fixed:
+    - Limit WIDOW filing status to widowed head with child dependents.
+  date: 2024-03-06 23:17:06
+- bump: minor
+  changes:
+    added:
+    - Colorado 2023 income tax updates.
+  date: 2024-03-07 15:52:31
+- bump: minor
+  changes:
+    changed:
+    - California foster youth tax credit.
+  date: 2024-03-07 16:44:16
+- bump: patch
+  changes:
+    fixes:
+    - Replace state income tax with estimated withholding for all states in income
+      tax used for SALT deduction.
+  date: 2024-03-07 19:52:18
