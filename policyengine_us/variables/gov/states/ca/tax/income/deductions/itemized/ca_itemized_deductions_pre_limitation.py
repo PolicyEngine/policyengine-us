@@ -13,4 +13,8 @@ class ca_itemized_deductions_pre_limitation(Variable):
     )
     defined_for = StateCode.CA
 
-    adds = ["real_estate_taxes", "itemized_deductions_less_salt"]
+    adds = [
+        "ca_investment_interest_deduction",
+        "real_estate_taxes",
+        "itemized_deductions_less_salt",
+    ]
