@@ -1,0 +1,24 @@
+description: Colorado caps the ABLE contribution subtraction to this amount, based on filing status.
+metadata:
+  unit: currency-USD
+  period: year
+  label: Colorado ABLE contribution subtraction cap
+  breakdown:
+    - filing_status
+  reference:
+    - title: 2023 Colorado Individual Tax Filing Guide 104 Book 
+      href: https://tax.colorado.gov/sites/tax/files/documents/Book0104_2023.pdf#page=14
+    - title: C.R.S. 39-22-104(4)(i)(II)(B)
+      href: https://advance.lexis.com/documentpage/?pdmfid=1000516&crid=28da6d1b-814f-4ace-b369-4a0d0233db83&config=014FJAAyNGJkY2Y4Zi1mNjgyLTRkN2YtYmE4OS03NTYzNzYzOTg0OGEKAFBvZENhdGFsb2d592qv2Kywlf8caKqYROP5&pddocfullpath=%2Fshared%2Fdocument%2Fstatutes-legislation%2Furn%3AcontentItem%3A689J-29B3-GXF6-81G9-00008-00&pdcontentcomponentid=234176&pdteaserkey=sr2&pditab=allpods&ecomp=bs65kkk&earg=sr2&prid=a5cd01c5-3332-4547-a3ff-d2bd6bcc868f
+
+JOINT:
+  2023-01-01: 31_000
+SINGLE:
+  2023-01-01: 20_700
+WIDOW:
+  2023-01-01: 20_700
+HEAD_OF_HOUSEHOLD:
+  2023-01-01: 20_700
+SEPARATE:
+  2023-01-01: 20_700
+
