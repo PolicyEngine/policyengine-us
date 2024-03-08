@@ -90,7 +90,7 @@
   output:
     ar_low_income_tax_eligible: false
 
-- name: Joint filers with two dependents, one over the limit, and another not
+- name: Joint filers with two dependents, one over the limit, and another below the limit
   period: 2023
   input:
     people:
