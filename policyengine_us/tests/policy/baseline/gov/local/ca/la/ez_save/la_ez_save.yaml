@@ -1,0 +1,15 @@
+- name: Eligible person, large utility expenses
+  period: 2022
+  input:
+    electricity_expense: 1_000
+    la_ez_save_eligible: true
+  output:
+    la_ez_save: 16.34
+
+- name: Eligible person, program capped at utility expenses
+  period: 2022
+  input:
+    electricity_expense: 10
+    la_ez_save_eligible: true
+  output:
+    la_ez_save: 10
