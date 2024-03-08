@@ -1,0 +1,12 @@
+- name: One person with $1,000 of employment income
+  period: 2022
+  input:
+    state_code: AL
+    childcare_expenses: 0
+    care_expenses: 0 
+    spm_unit_size: 1
+    employment_income: 1_000
+    unemployment_compensation: 0
+    social_security: 0
+  output:
+    al_tanf_financial_eligibility: true
