@@ -8,4 +8,4 @@ class la_ez_save_countable_income(Variable):
     label = "Los Angeles County EZ Save program countable income"
     defined_for = "in_la"
 
-    adds = "gov.local.ca.la.ez_save.income_sources"
+    adds = "gov.local.ca.la.dwp.ez_save.income_sources"

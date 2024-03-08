@@ -13,7 +13,7 @@ class la_ez_save_eligible(Variable):
         household_size = spm_unit("spm_unit_size", period)
         p = parameters(
             period
-        ).gov.local.ca.la.ez_save.eligibility.income_threshold
+        ).gov.local.ca.la.dwp.ez_save.eligibility.income_threshold
         # The income threshold is increased for each member of the household over a certain size
         applicable_household_size = max_(
             household_size - p.base.household_size, 0
