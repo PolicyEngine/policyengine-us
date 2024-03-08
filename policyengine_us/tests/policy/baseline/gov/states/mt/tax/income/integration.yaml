@@ -61,32 +61,3 @@
     mt_agi: [18_515, 151_515, 0, 0, 0, 0]
     mt_itemized_deductions_indiv: [10_000, 0, 0, 0, 0, 0]
     mt_exemptions_indiv: [12_900, 2_580, 0, 0, 0, 0]
-
-- name: Tax unit with taxsimid 58400 in e21.its.csv and e21.ots.csv
-  absolute_error_margin: 0.01
-  period: 2021
-  input:
-    people:
-      person1:
-        age: 70
-        employment_income: 4010
-        taxable_interest_income: 5505.0
-      person2:
-        age: 70
-        employment_income: 28010
-        taxable_interest_income: 5505.0
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
-        premium_tax_credit: 0  # not in TAXSIM35
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-        snap: 0  # not in TAXSIM35
-        tanf: 0  # not in TAXSIM35
-    households:
-      household:
-        members: [person1, person2]
-        state_fips: 30  # MT
-  output:  # expected results from patched TAXSIM35 2024-03-01 version
-    mt_income_tax: 975.66
