@@ -89,3 +89,23 @@
         state_code: AR
   output:
     ar_low_income_tax_eligible: false
+
+- name: Joint filers with two dependents, one over the limit, and another not
+  period: 2023
+  input:
+    people:
+      person1:
+        ar_agi: 31_200
+      person2:
+        ar_agi: 35_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        tax_unit_dependents: 2
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    ar_low_income_tax_eligible: [true, false]

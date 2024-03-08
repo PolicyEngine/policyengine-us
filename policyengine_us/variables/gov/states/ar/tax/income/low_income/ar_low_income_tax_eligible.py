@@ -17,7 +17,7 @@ class ar_low_income_tax_eligible(Variable):
         filing_status = person.tax_unit("filing_status", period)
         status = filing_status.possible_values
         dependents = person.tax_unit("tax_unit_dependents", period)
-        return select(
+        low_income_tax = select(
             [
                 filing_status == status.SINGLE,
                 (filing_status == status.HEAD_OF_HOUSEHOLD)
@@ -30,19 +30,18 @@ class ar_low_income_tax_eligible(Variable):
                 (filing_status == status.JOINT) & (dependents > 1),
             ],
             [
-                p.single.calc(agi, right=True) != np.inf,
-                p.head_of_household.no_or_one_dependent.calc(agi, right=True)
-                != np.inf,
+                p.single.calc(agi, right=True),
+                p.head_of_household.no_or_one_dependent.calc(agi, right=True),
                 p.head_of_household.two_or_more_dependents.calc(
                     agi, right=True
-                )
-                != np.inf,
+                ),
                 # Separate filers are ineligible to use the low income tax tables
-                False,
-                p.widow.no_or_one_dependent.calc(agi, right=True) != np.inf,
-                p.widow.two_or_more_dependents.calc(agi, right=True) != np.inf,
-                p.joint.no_or_one_dependent.calc(agi, right=True) != np.inf,
-                p.joint.two_or_more_dependents.calc(agi, right=True) != np.inf,
+                np.inf,
+                p.widow.no_or_one_dependent.calc(agi, right=True),
+                p.widow.two_or_more_dependents.calc(agi, right=True),
+                p.joint.no_or_one_dependent.calc(agi, right=True),
+                p.joint.two_or_more_dependents.calc(agi, right=True),
             ],
-            default=False,
+            default=0,
         )
+        return low_income_tax != np.inf
