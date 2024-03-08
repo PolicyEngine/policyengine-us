@@ -5,6 +5,56 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.695.0] - 2024-03-08 03:32:43
+
+### Fixed
+
+- Add South Carolina 2023 income tax rules
+
+## [0.694.0] - 2024-03-08 01:19:52
+
+### Added
+
+- California investment interest expense deduction.
+
+## [0.693.1] - 2024-03-07 19:52:18
+
+## [0.693.0] - 2024-03-07 16:44:16
+
+### Changed
+
+- California foster youth tax credit.
+
+## [0.692.0] - 2024-03-07 15:52:31
+
+### Added
+
+- Colorado 2023 income tax updates.
+
+## [0.691.1] - 2024-03-06 23:17:06
+
+### Fixed
+
+- Limit WIDOW filing status to widowed head with child dependents.
+
+## [0.691.0] - 2024-03-06 21:11:12
+
+### Added
+
+- Limit the CDCC relevant expense deduction to 2020 amounts in Virginia.
+
+## [0.690.0] - 2024-03-06 11:19:30
+
+### Changed
+
+- Calibration improvements.
+
+## [0.689.1] - 2024-03-05 20:13:22
+
+### Fixed
+
+- Subtract the QBID from Idaho AGI.
+
 ## [0.689.0] - 2024-03-05 05:56:46
 
 ### Fixed
@@ -7662,6 +7712,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.695.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.694.0...0.695.0
+[0.694.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.693.1...0.694.0
+[0.693.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.693.0...0.693.1
+[0.693.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.692.0...0.693.0
+[0.692.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.691.1...0.692.0
+[0.691.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.691.0...0.691.1
+[0.691.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.690.0...0.691.0
+[0.690.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.689.1...0.690.0
+[0.689.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.689.0...0.689.1
 [0.689.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.688.5...0.689.0
 [0.688.5]: https://github.com/PolicyEngine/policyengine-us/compare/0.688.4...0.688.5
 [0.688.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.688.3...0.688.4
