@@ -1,11 +1,11 @@
-description: Los Angeles County limits the EZ Save program to filers with income below this base threshold, which can increase with the household size.
+description: Los Angeles County increases the fpg limit by this percentage under the EZ Save program. 
 metadata:
-  unit: currency-USD
+  unit: /1
   period: year
-  label: Los Angeles County EZ Save income threshold base amount
+  label: Los Angeles County EZ Save fpg limit increase
   reference: 
   - title: Los Angeles Department of Water and Power, Residential Services, Assistance Programs, EZ Save Program
     href: https://www.ladwp.com/residential-services/assistance-programs/ez-save-program#what-is-ez-save
 
 values:
-  2022-01-01: 39_440
+  2022-01-01: 2
