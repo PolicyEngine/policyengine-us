@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.695.1] - 2024-03-08 21:27:20
+
+### Fixed
+
+- Attribute the Montana exemptions to each spouse respectively.
+
+## [0.695.0] - 2024-03-08 03:32:43
+
+### Fixed
+
+- Add South Carolina 2023 income tax rules
+
 ## [0.694.0] - 2024-03-08 01:19:52
 
 ### Added
@@ -7706,6 +7718,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.695.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.695.0...0.695.1
+[0.695.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.694.0...0.695.0
 [0.694.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.693.1...0.694.0
 [0.693.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.693.0...0.693.1
 [0.693.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.692.0...0.693.0
