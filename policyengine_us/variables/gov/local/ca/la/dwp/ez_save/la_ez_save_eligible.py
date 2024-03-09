@@ -16,7 +16,7 @@ class la_ez_save_eligible(Variable):
         state_group = spm_unit.household("state_group_str", period)
         p_fpg = parameters(period).gov.hhs.fpg
         p1 = p_fpg.first_person[state_group]
-        pn = p_fpg.additional_person[state_group] 
+        pn = p_fpg.additional_person[state_group]
         fpg = p1 + pn * (increased_household_size - 1)
         increased_fpg = fpg * p.fpg_limit_increase
         return income <= increased_fpg
