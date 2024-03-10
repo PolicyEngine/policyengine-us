@@ -35,7 +35,12 @@ class nj_childless_eitc_age_eligible(Variable):
             no_qualifying_children & age_eligible & investment_income_eligible
         )
 
+        # check if the filer is separate claimed as dependent on another return
+        dependent_on_another_return = tax_unit(
+            "claimed_as_dependent_on_another_return", period
+        )
+
         # check if the filer is separate.
         filing_status = tax_unit("filing_status", period)
         separate = filing_status == filing_status.possible_values.SEPARATE
-        return eligible & ~separate
+        return eligible & ~separate & ~dependent_on_another_return

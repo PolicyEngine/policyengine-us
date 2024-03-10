@@ -19,9 +19,4 @@ class nj_ctc_eligible(Variable):
 
         # Exclude married filing separately filers.
         filing_status = tax_unit("filing_status", period)
-        filing_eligible = (
-            filing_status != filing_status.possible_values.SEPARATE
-        )
-
-        # Calculate total child tax credit
-        return filing_eligible
+        return filing_status != filing_status.possible_values.SEPARATE

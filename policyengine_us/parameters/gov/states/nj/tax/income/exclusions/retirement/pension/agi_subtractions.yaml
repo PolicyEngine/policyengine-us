@@ -1,12 +1,12 @@
 description: Deductions from AGI to calculate qualifying income for pension retirement exclusion.
 values:
   2021-01-01:
-    - tax_exempt_interest_income
-    - social_security_retirement
-    - railroad_benefits
-    - tax_exempt_pension_income
-    - military_retirement_pay
-    - tax_exempt_ira_distributions
+    - tax_exempt_interest_income # Line 16b
+    - social_security_retirement # Line 20a
+    - railroad_benefits # Line 20a
+    - tax_exempt_pension_income # Line 20a
+    - military_retirement_pay # Line 20a
+    - tax_exempt_ira_distributions # Line 20b
 
 metadata:
   period: year
@@ -23,4 +23,6 @@ metadata:
       href: https://www.state.nj.us/treasury/taxation/pdf/current/1040i.pdf#page=17
     - title: 2023 NJ-1040 Instructions Line 16b
       href: https://www.state.nj.us/treasury/taxation/pdf/current/1040i.pdf#page=12
+    - title: Pension exclusion
+      href: https://www.nj.gov/treasury/taxation/njit7.shtml
 
