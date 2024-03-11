@@ -6545,3 +6545,54 @@
     fixed:
     - Limit WIDOW filing status to widowed head with child dependents.
   date: 2024-03-06 23:17:06
+- bump: minor
+  changes:
+    added:
+    - Colorado 2023 income tax updates.
+  date: 2024-03-07 15:52:31
+- bump: minor
+  changes:
+    changed:
+    - California foster youth tax credit.
+  date: 2024-03-07 16:44:16
+- bump: patch
+  changes:
+    fixes:
+    - Replace state income tax with estimated withholding for all states in income
+      tax used for SALT deduction.
+  date: 2024-03-07 19:52:18
+- bump: minor
+  changes:
+    added:
+    - California investment interest expense deduction.
+  date: 2024-03-08 01:19:52
+- bump: minor
+  changes:
+    fixed:
+    - Add South Carolina 2023 income tax rules
+  date: 2024-03-08 03:32:43
+- bump: patch
+  changes:
+    fixed:
+    - Attribute the Montana exemptions to each spouse respectively.
+  date: 2024-03-08 21:27:20
+- bump: patch
+  changes:
+    changed:
+    - Bump policyengine-core to address uprating issue.
+  date: 2024-03-10 15:34:07
+- bump: patch
+  changes:
+    fixed:
+    - Add short term capital gains to the Michigan household resources.
+  date: 2024-03-10 19:53:56
+- bump: minor
+  changes:
+    added:
+    - SSI and Social Security as income sources for LA County General Relief.
+  date: 2024-03-10 20:31:23
+- bump: patch
+  changes:
+    added:
+    - README file to the Idaho tax parameters.
+  date: 2024-03-11 05:47:32
