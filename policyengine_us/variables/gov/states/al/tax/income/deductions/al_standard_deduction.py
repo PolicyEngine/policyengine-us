@@ -21,8 +21,8 @@ class al_standard_deduction(Variable):
         threshold = p.phase_out.threshold[filing_status]
         al_agi = tax_unit("al_agi", period)
         # No "or fraction thereof" clause, so use integer (floor) division rather than ceiling.
-        excess_income = max(0, al_agi - threshold)
+        excess_income = max_(0, al_agi - threshold)
         increments = excess_income // increment
         reduction = increments * rate
 
-        return max(base_amount - reduction, min_amount)
+        return max_(base_amount - reduction, min_amount)

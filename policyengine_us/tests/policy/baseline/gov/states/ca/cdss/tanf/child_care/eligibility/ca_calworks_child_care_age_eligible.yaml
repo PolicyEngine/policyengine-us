@@ -1,0 +1,41 @@
+- name: A household that has any eligible child is eligible to participate the program.
+  period: 2023
+  input:
+    people:
+      child1:
+        ca_calworks_child_care_child_age_eligible: true
+      child2:
+        ca_calworks_child_care_child_age_eligible: true
+    spm_units:
+      spm_unit:
+        members: [child1, child2]
+  output:
+    ca_calworks_child_care_age_eligible: true
+
+- name: A household that has any eligible child is eligible to participate the program.
+  period: 2023
+  input:
+    people:
+      child1:
+        ca_calworks_child_care_child_age_eligible: true
+      child2:
+        ca_calworks_child_care_child_age_eligible: false
+    spm_units:
+      spm_unit:
+        members: [child1, child2]
+  output:
+    ca_calworks_child_care_age_eligible: true
+
+- name: A household that does not have any eligible child is not eligible to participate the program.
+  period: 2023
+  input:
+    people:
+      child1:
+        ca_calworks_child_care_child_age_eligible: false
+      child2:
+        ca_calworks_child_care_child_age_eligible: false
+    spm_units:
+      spm_unit:
+        members: [child1, child2]
+  output:
+    ca_calworks_child_care_age_eligible: false

@@ -3,7 +3,7 @@ from policyengine_us.model_api import *
 
 class ms_self_employment_adjustment(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     label = "Mississippi self employment adjustment"
     unit = USD
     definition_period = YEAR
@@ -13,8 +13,8 @@ class ms_self_employment_adjustment(Variable):
     ]
     defined_for = StateCode.MS
 
-    def formula(tax_unit, period, parameters):
-        self_employment_tax = add(tax_unit, period, ["self_employment_tax"])
+    def formula(person, period, parameters):
+        self_employment_tax = person("self_employment_tax", period)
         p = parameters(
             period
         ).gov.states.ms.tax.income.adjustments.self_employment

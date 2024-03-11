@@ -1,0 +1,34 @@
+- name: The dependent income is allocated to the head
+  period: 2021
+  input:
+    people:
+      person1:
+        employment_income: 10_000
+        is_tax_unit_head: true
+        ms_agi_adjustments: 1_000
+      person2:
+        employment_income: 12_000
+        is_tax_unit_head: false
+        ms_agi_adjustments: 2_000
+      person3:
+        employment_income: 3_000
+        is_tax_unit_head: false
+        ms_agi_adjustments: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MS
+  output:
+    ms_agi: [12_000, 10_000, 0]
+
+- name: Capped at 0
+  period: 2021
+  input:
+    state_code: MS
+    ms_agi_adjustments: 1_000
+    employment_income: 500
+  output:
+    ms_agi: 0

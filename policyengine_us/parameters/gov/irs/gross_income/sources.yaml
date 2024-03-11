@@ -1,7 +1,7 @@
 description: Income sources counted as gross income for tax purposes.
 values:
   2010-01-01:
-    - employment_income
+    - irs_employment_income
     - self_employment_income
     - partnership_s_corp_income
     - farm_income
@@ -19,6 +19,11 @@ values:
     - taxable_unemployment_compensation
     - taxable_social_security
     - illicit_income
+    - taxable_ira_distributions
+    - taxable_401k_distributions
+    - taxable_sep_distributions
+    - taxable_403b_distributions
+    - keogh_distributions # Keogh plans don't have a Roth option.
     - miscellaneous_income
 metadata:
   unit: currency-USD

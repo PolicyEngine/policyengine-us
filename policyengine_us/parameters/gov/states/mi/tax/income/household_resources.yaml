@@ -1,0 +1,43 @@
+description: Michigan accounts for the following income sources as the household resources.
+values:
+  2021-01-01:
+    - irs_employment_income
+    - self_employment_income
+    - strike_benefits
+    - dividend_income
+    - interest_income
+    - farm_income
+    - qualified_business_income
+    - rental_income
+    - farm_rent_income
+    - pension_income
+    - retirement_benefits_from_ss_exempt_employment
+    - net_capital_gains
+    - alimony_income
+    - gambling_winnings
+    - social_security
+    - ssi 
+    - railroad_benefits
+    - child_support_received
+    - unemployment_compensation
+    # Gifts received or expenses paid on your behalf
+    - miscellaneous_income
+    - veterans_benefits
+    - workers_compensation
+    - disability_benefits
+    - gi_cash_assistance
+    - tanf
+    - general_assistance
+metadata:
+  unit: list
+  period: year
+  label: Michigan household resources
+  reference:
+  - title: 2021 MICHIGAN Home Heating Credit Claim MI-1040CR-7, Page 2, Total Household Resources
+    href: https://www.michigan.gov/-/media/Project/Websites/taxes/2022RM/IIT/MI-1040CR7.pdf#page=2
+  - title: 2022 MI-1040CR Tax Form
+    href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2022/2022-IIT-Forms/MI-1040CR.pdf#page=1
+  - title: 2022 MI-1040 Instructions
+    href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2022/2022-IIT-Forms/BOOK_MI-1040.pdf#page=31
+  - title: Michigan Compiled Laws Chapter 9 Section 206.508 - Definitions. (4)
+    href: https://law.justia.com/codes/michigan/2022/chapter-206/statute-act-281-of-1967/division-281-1967-1/division-281-1967-1-9/section-206-508/

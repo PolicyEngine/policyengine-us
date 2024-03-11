@@ -24,22 +24,13 @@ class az_itemized_deductions(Variable):
             for deduction in p.itemized_deductions
             if deduction
             not in [
-                "salt_deduction",
                 "medical_expense_deduction",
                 "charitable_deduction",
             ]
         ]
         federal_deductions = add(tax_unit, period, deductions)
-        # Arizona allows a deduction for medical and dental expenses
-        # that cannot be deducted from federal income taxes.
-        medical_expense = add(tax_unit, period, ["medical_expense"])
-        medical_expense_deduction = tax_unit(
-            "medical_expense_deduction", period
-        )
-
-        az_medical_expense_deduction = max_(
-            0, medical_expense - medical_expense_deduction
-        )
+        # Arizona allows a complete deduction for medical and dental expenses
+        medical_expenses = add(tax_unit, period, ["medical_expense"])
 
         # Adjustments to Charitable Contributions
         # Amount of charitable contributions for which you are claiming
@@ -48,17 +39,18 @@ class az_itemized_deductions(Variable):
         charitable_contributions_credit = tax_unit(
             "az_charitable_contributions_credit", period
         )
-
+        # The charitable deduction is reduced by the amount which is used for the
+        # Arizona charitable contributions credit,
+        # assuming that the same charitable contributions
         charitable_deduction_after_credit = max_(
             charitable_deduction - charitable_contributions_credit, 0
         )
-
-        # Adjustment to State Income Taxes - add back real estate taxes
-        real_estate_taxes = add(tax_unit, period, ["real_estate_taxes"])
-
+        # The state and local income tax is reduced by the amount which is used
+        # to claim the Arizona charitable contributions credit
+        # Since the Arizona charitable contributions credit is based on contributions
+        # to qulalifying foster care organizations, we do not reduce the salt deduction
         return (
             federal_deductions
-            + az_medical_expense_deduction
+            + medical_expenses
             + charitable_deduction_after_credit
-            + real_estate_taxes
         )

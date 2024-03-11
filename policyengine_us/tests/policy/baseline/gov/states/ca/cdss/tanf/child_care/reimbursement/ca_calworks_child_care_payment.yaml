@@ -1,0 +1,32 @@
+- name: A eligible child with 2 weeks' Standard Ceilings.
+  period: 2023
+  input:
+    ca_calworks_child_care_eligible: true
+    ca_calworks_child_care_payment_standard: 400
+    ca_calworks_child_care_time_coefficient: 2
+    ca_calworks_child_care_payment_factor: 1
+    pre_subsidy_childcare_expenses: 500
+  output:
+    ca_calworks_child_care_payment: 500
+
+- name: A eligible child with 20 days' Evening/Weekend Ceilings.
+  period: 2023
+  input:
+    ca_calworks_child_care_eligible: true
+    ca_calworks_child_care_payment_standard: 60
+    ca_calworks_child_care_time_coefficient: 20
+    ca_calworks_child_care_payment_factor: 1.25
+    pre_subsidy_childcare_expenses: 2_000
+  output:
+    ca_calworks_child_care_payment: 1_500
+
+- name: A ineligible child.
+  period: 2023
+  input:
+    ca_calworks_child_care_eligible: false
+    ca_calworks_child_care_payment_standard: 60
+    ca_calworks_child_care_time_coefficient: 20
+    ca_calworks_child_care_payment_factor: 1.5
+    pre_subsidy_childcare_expenses: 1_800
+  output:
+    ca_calworks_child_care_payment: 0

@@ -1,0 +1,30 @@
+description: Vermont reduces the retirement income exemption from social security for filers with income above this threshold, based on filing status.
+metadata:
+  label: Vermont social security retirement income exemption reduction threshold
+  period: year
+  unit: currency-USD
+  breakdown:
+    - filing_status
+  reference:
+    - title: Instruction for 2022 SCHEDULE IN-112 - RETIREMENT INCOME EXEMPTION WORKSHEET
+      href: https://tax.vermont.gov/sites/tax/files/documents/IN-112%20Instr-2022.pdf#page=3
+    - title: Instruction for 2021 SCHEDULE IN-112 - SOCIAL SECURITY EXEMPTION WORKSHEET
+      href: https://tax.vermont.gov/sites/tax/files/documents/IN-112%20Instr-2021.pdf#page=2
+     # Legal code specify reduction threshold at $50,000 for non filing jointly filer and at $65,000 for filing jointly filer. Date unknown.
+    - title: Legal Code Titl. 32 V.S.A. § 5830e(a)(1)(B), (a)(2)(B)
+      href: https://legislature.vermont.gov/statutes/section/32/151/05830e
+JOINT:
+  2021-01-01: 60_000
+  2022-01-01: 65_000
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 45_000
+  2022-01-01: 50_000
+WIDOW:
+  2021-01-01: 45_000
+  2022-01-01: 50_000
+SINGLE:
+  2021-01-01: 45_000
+  2022-01-01: 50_000
+SEPARATE:
+  2021-01-01: 45_000
+  2022-01-01: 50_000

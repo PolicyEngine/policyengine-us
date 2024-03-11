@@ -7,3 +7,4 @@ class social_security_disability(Variable):
     definition_period = YEAR
     label = "Social Security disability benefits (SSDI)"
     unit = USD
+    uprating = "gov.ssa.uprating"

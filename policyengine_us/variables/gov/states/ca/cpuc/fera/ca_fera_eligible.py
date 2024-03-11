@@ -18,13 +18,13 @@ class ca_fera_eligible(Variable):
         care_eligible = household("ca_care_eligible", period)
         # Check at least 3 people in household
         n = household("household_size", period)
-        # TODO: Make 3 a parameter.
         p = parameters(period).gov.states.ca.cpuc.fera.eligibility
-        n_eligible = n >= p.minimum_household_size
+        eligible_household_size = n >= p.minimum_household_size
         # Check income eligibility with respect to percent of the poverty line.
         # Must be above 200% of the poverty line (CARE requirements), but less
         # than or equal to 250% of the poverty line.
         income = household("household_market_income", period)
         ca_care_poverty_line = household("ca_care_poverty_line", period)
-        income_eligible = income <= (ca_care_poverty_line * p.fpl_limit)
-        return (income_eligible) & (n_eligible) & (~care_eligible)
+        income_limit = ca_care_poverty_line * p.fpl_limit
+        income_eligible = income <= income_limit
+        return income_eligible & eligible_household_size & ~care_eligible

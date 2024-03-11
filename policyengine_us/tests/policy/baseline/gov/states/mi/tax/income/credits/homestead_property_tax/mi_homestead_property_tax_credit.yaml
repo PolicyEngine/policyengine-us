@@ -1,0 +1,17 @@
+- name: Alternate amount over standard
+  period: 2022
+  input:
+    mi_homestead_property_tax_credit_pre_alternate_senior_amount: 1_000
+    mi_homestead_property_tax_credit_alternate_senior_amount: 999
+    mi_homestead_property_tax_credit_eligible: true
+  output:
+    mi_homestead_property_tax_credit: 1_000
+
+- name: Alternate amount under standard
+  period: 2022
+  input:
+    mi_homestead_property_tax_credit_pre_alternate_senior_amount: 998
+    mi_homestead_property_tax_credit_alternate_senior_amount: 999
+    mi_homestead_property_tax_credit_eligible: true
+  output:
+    mi_homestead_property_tax_credit: 999

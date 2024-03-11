@@ -1,0 +1,17 @@
+description: Louisiana subtracts this fraction of the excess of the either the federal itemized deductions or the medical expense deduction amount over the federal standard deduction from adjusted gross income.
+values:
+  2007-01-01: 0.575
+  2008-01-01: 0.65
+  # In 2022, switched from 100% of the excess of all itemized deductions to
+  # 100% of excess of medical expenses over the standard deduction.
+  2009-01-01: 1
+
+metadata:
+  unit: /1
+  period: year
+  label: Louisiana itemized deductions excess fraction
+  reference:
+    - title: Louisiana legal code | RS 47:293 (3)
+      href: https://www.legis.la.gov/Legis/Law.aspx?d=101760
+    - title: General Information for Filing Your 2022 Louisiana Resident Individual Income Tax Return, page 2
+      href: https://revenue.louisiana.gov/TaxForms/IT540iWEB(2022)D1.pdf#page=2

@@ -1,0 +1,27 @@
+- name: Ineligible person's disability income
+  period: 2022
+  input:
+    disability_benefits: 15_000
+    mt_disability_income_exclusion_eligible_person: false
+    state_code: MT
+  output:
+    mt_disability_income_exclusion_person: 0
+
+- name: Eligible person's disability income, greater than the cap amount
+  period: 2022
+  input:
+    disability_benefits: 15_000
+    mt_disability_income_exclusion_eligible_person: true
+    state_code: MT
+  output:
+    mt_disability_income_exclusion_person: 5_200
+
+- name: Eligible person's disability income, below the cap amount
+  period: 2022
+  input:
+    disability_benefits: 5_000
+    mt_disability_income_exclusion_eligible_person: true
+    state_code: MT
+  output:
+    mt_disability_income_exclusion_person: 5_000
+

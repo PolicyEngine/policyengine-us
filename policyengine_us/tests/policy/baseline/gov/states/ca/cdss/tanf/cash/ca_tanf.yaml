@@ -1,0 +1,17 @@
+- name: If ineligible, CA TANF is $0.
+  period: 2023
+  input:
+    ca_tanf_eligible: false
+    ca_tanf_maximum_payment: 1_000
+    ca_tanf_countable_income_recipient: 0
+  output:
+    ca_tanf: 0
+
+- name: If eligible, CA TANF is the difference between maximum payment and countable income.
+  period: 2023
+  input:
+    ca_tanf_eligible: true
+    ca_tanf_maximum_payment: 1_000
+    ca_tanf_countable_income_recipient: 1
+  output:
+    ca_tanf: 999

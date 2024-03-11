@@ -1,0 +1,15 @@
+- name: Person is a dependent
+  period: 2022
+  input:
+    is_tax_unit_dependent: true
+    state_code: AR
+  output: 
+    ar_personal_credit_dependent: 29
+
+- name: Person is not a dependent
+  period: 2022
+  input:
+    is_tax_unit_dependent: false
+    state_code: AR
+  output: 
+    ar_personal_credit_dependent: 0

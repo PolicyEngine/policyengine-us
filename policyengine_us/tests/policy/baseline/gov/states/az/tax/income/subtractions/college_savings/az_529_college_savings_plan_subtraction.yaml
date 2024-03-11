@@ -1,0 +1,49 @@
+- name: joint filers with both spouses countribute $5000 to 529 college savings plans
+  period: 2023
+  input:
+    people:
+      person1: 
+        count_529_contribution_beneficiaries: true
+      person2:
+        count_529_contribution_beneficiaries: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        investment_in_529_plan: 10_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    az_529_college_savings_plan_subtraction: 8_000
+
+- name: single filers with countribute $1500 to 529 college savings plans
+  period: 2023
+  input:
+      count_529_contribution_beneficiaries: true
+      filing_status: SINGLE
+      investment_in_529_plan: 1_500
+      state_code: AZ
+  output:
+    az_529_college_savings_plan_subtraction: 1_500
+
+- name: separate filers with both spouses countribute $3000 to 529 college savings plans
+  period: 2023
+  input:
+    people:
+      person1: 
+        count_529_contribution_beneficiaries: true
+      person2:
+        count_529_contribution_beneficiaries: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SEPARATE
+        investment_in_529_plan: 6_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    az_529_college_savings_plan_subtraction: 6_000

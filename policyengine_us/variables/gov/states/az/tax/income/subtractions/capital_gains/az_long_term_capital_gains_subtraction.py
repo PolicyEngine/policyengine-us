@@ -19,4 +19,4 @@ class az_long_term_capital_gains_subtraction(Variable):
             tax_unit, period, ["long_term_capital_gains"]
         )
 
-        return long_term_capital_gains * p.rate
+        return max_(0, long_term_capital_gains) * p.rate
