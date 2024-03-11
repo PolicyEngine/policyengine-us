@@ -17,7 +17,7 @@ class savers_credit(Variable):
             person("adjusted_gross_income_person", period) * person_eligible
         )
         total_agi = tax_unit.sum(agi_person)
-        ira_contributions = add(
+        qualified_contributions = add(
             person,
             period,
             [
@@ -27,8 +27,12 @@ class savers_credit(Variable):
                 "traditional_401k_contributions",
             ],
         )
-        capped_ira_contributions = min_(ira_contributions, p.contributions_cap)
-        qualified_ira_contributions = tax_unit.sum(capped_ira_contributions)
+        capped_qualified_contributions = min_(
+            qualified_contributions, p.contributions_cap
+        )
+        qualified_ira_contributions = tax_unit.sum(
+            capped_qualified_contributions
+        )
         filing_status = tax_unit("filing_status", period)
         statuses = filing_status.possible_values
 

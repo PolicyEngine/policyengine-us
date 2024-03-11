@@ -12,6 +12,6 @@ class retirement_saving_agi_eligible(Variable):
         p = parameters(period).gov.irs.credits.retirement_saving
         agi = tax_unit("adjusted_gross_income", period)
         filing_status = tax_unit("filing_status", period)
-        agi_threshold = p.agi_threshold[filing_status]
+        agi_threshold = p.threshold.agi[filing_status]
 
         return agi <= agi_threshold
