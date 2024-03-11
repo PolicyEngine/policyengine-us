@@ -11,5 +11,5 @@ class la_ez_save(Variable):
     def formula(spm_unit, period, parameters):
         electricity_expense = spm_unit("electricity_expense", period)
         p = parameters(period).gov.local.ca.la.dwp.ez_save
-        uncapped_amount = p.amount * p.applicable_months
+        uncapped_amount = p.amount * MONTHS_IN_YEAR
         return min_(electricity_expense, uncapped_amount)
