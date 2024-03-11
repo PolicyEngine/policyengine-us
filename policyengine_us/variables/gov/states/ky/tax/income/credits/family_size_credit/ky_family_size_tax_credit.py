@@ -17,4 +17,5 @@ class ky_family_size_tax_credit(Variable):
         income = tax_unit(
             "ky_income_tax_before_non_refundable_credits_unit", period
         )
-        return rate * income
+        eligible_income = income - tax_unit("ky_personal_tax_credits", period)
+        return rate * eligible_income
