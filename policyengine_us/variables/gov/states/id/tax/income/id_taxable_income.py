@@ -14,4 +14,5 @@ class id_taxable_income(Variable):
     def formula(tax_unit, period, parameters):
         agi = tax_unit("id_agi", period)
         deductions = tax_unit("id_deductions", period)
-        return max_(0, agi - deductions)
+        qbid = tax_unit("qualified_business_income_deduction", period)
+        return max_(0, agi - deductions - qbid)
