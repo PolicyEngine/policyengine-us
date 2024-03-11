@@ -15,4 +15,6 @@ class md_eitc(Variable):
         "md_non_single_childless_non_refundable_eitc",
         "md_non_single_childless_refundable_eitc",
         "md_single_childless_eitc",
+        "md_refundable_eitc",
+        "md_non_refundable_eitc"
     ]
