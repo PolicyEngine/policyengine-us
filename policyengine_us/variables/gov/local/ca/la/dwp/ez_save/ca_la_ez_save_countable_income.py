@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class la_ez_save_countable_income(Variable):
+class ca_la_ez_save_countable_income(Variable):
     value_type = float
     entity = SPMUnit
     definition_period = YEAR
