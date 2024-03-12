@@ -11,7 +11,9 @@ class nj_childless_eitc_age_eligible(Variable):
 
     def formula(tax_unit, period, parameters):
         # Return True if all federal EITC conditions are met, except with modified age paramaters and household has no children.
-
+        # Check if filing status is separate.
+        filing_status = tax_unit("filing_status", period)
+        separate = filing_status == filing_status.possible_values.SEPARATE
         # Check if tax unit has any EITC qualifying children.
         person = tax_unit.members
         no_qualifying_children = tax_unit("eitc_child_count", period) == 0
@@ -25,22 +27,9 @@ class nj_childless_eitc_age_eligible(Variable):
         max_age = p.eligibility.age.max
         age_eligible = (age >= min_age) & (age <= max_age)
 
-        # federal EITC conditions without age and a qualifying child
-        eitc = parameters.gov.irs.credits.eitc(period)
-        investment_income_eligible = tax_unit(
-            "eitc_investment_income_eligible", period
+        return (
+            ~separate
+            & no_qualifying_children
+            & tax_unit.any(age_eligible)
+            & tax_unit("nj_eitc_income_eligible", period)
         )
-        # Define eligibility before considering separate filer limitation.
-        eligible = (
-            no_qualifying_children & age_eligible & investment_income_eligible
-        )
-
-        # check if the filer is separate claimed as dependent on another return
-        dependent_on_another_return = tax_unit(
-            "claimed_as_dependent_on_another_return", period
-        )
-
-        # check if the filer is separate.
-        filing_status = tax_unit("filing_status", period)
-        separate = filing_status == filing_status.possible_values.SEPARATE
-        return eligible & ~separate & ~dependent_on_another_return
