@@ -8,7 +8,7 @@
   output:
     mt_withheld_income_tax: 19.1
 
-- name: Changing the filing sttaus should not change the output 
+- name: Changing the filing status should not change the output 
   period: 2022
   absolute_error_margin: 0.01
   input:

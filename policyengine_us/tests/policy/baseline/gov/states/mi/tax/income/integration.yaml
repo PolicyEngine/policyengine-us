@@ -27,3 +27,28 @@
     mi_allowable_homestead_property_tax_credit: 1_336.2
     mi_homestead_property_tax_credit: 1_500
     mi_income_tax: -1_095.40
+
+- name: Tax unit with taxsimid 97725 in h21.its.csv and h21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 37
+        employment_income: 31010
+        taxable_interest_income: 5505.0
+        short_term_capital_gains: 5005.0
+        rental_income: 2505.0
+        rent: 23000
+      person2:
+        age: 37
+        employment_income: 4010
+        taxable_interest_income: 5505.0
+        short_term_capital_gains: 5005.0
+        rental_income: 2505.0
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 26  # MI
+  output:  # expected results from patched TAXSIM35 2024-03-06 version
+    mi_income_tax: 2178.13
