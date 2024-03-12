@@ -20,4 +20,5 @@ class ar_income_tax_before_non_refundable_credits_joint(Variable):
         total_main_rate = max_(pre_reduction_tax - reduction, 0)
 
         low_income_tax = person("ar_low_income_tax_joint", period)
-        return min_(total_main_rate, low_income_tax)
+        eligibility = person("ar_low_income_tax_eligible", period)
+        return where(eligibility, low_income_tax, total_main_rate)
