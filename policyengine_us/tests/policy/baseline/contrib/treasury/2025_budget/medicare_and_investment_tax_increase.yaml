@@ -1,9 +1,8 @@
-- name: "California household with one parent with $40,000 income, two children, and one grandparent."
-  period: 2022
+- name: Household with increased medicare and NII tax 
+  period: 2024
   input:
-    # ECPA parameters.
-    gov.contrib.treasury.budget.medicare.rate[0].rate: 0.012
-    gov.contrib.treasury.budget.net_investment_income.rate[0].rate: 0.012
+    gov.contrib.treasury.budget.medicare.rate[-1].rate: 0.012
+    gov.contrib.treasury.budget.net_investment_income.rate[-1].rate: 0.012
     # Household.
     people:
       head:

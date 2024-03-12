@@ -22,6 +22,7 @@ def create_medicare_and_investment_tax_increase() -> Reform:
             base_tax = amc.rate * base
             p_ref = parameters(period).gov.contrib.treasury.budget.medicare
             add_tax = p_ref.rate.calc(wages_plus_se)
+            print(base_tax)
             print(add_tax)
             return base_tax + add_tax
 
@@ -64,7 +65,7 @@ def create_medicare_and_investment_tax_increase_reform(
     if bypass:
         return create_medicare_and_investment_tax_increase()
 
-    p = parameters(period).gov.contrib.congress.treasury.budget
+    p = parameters(period).gov.contrib.treasury.budget
 
     if (p.medicare.rate.rates[-1] > 0) | (p.net_investment_income.rate.rates[-1] > 0):
         return create_medicare_and_investment_tax_increase()
