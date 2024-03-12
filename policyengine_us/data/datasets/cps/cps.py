@@ -32,7 +32,7 @@ class CPS(Dataset):
         Technical documentation and codebook here: https://www2.census.gov/programs-surveys/cps/techdocs/cpsmar21.pdf
         """
 
-        raw_data = self.raw_cps().load()
+        raw_data = self.raw_cps(require=True).load()
         cps = h5py.File(self.file_path, mode="w")
 
         ENTITIES = ("person", "tax_unit", "family", "spm_unit", "household")
@@ -51,7 +51,6 @@ class CPS(Dataset):
         cps.close()
 
         cps = h5py.File(self.file_path, mode="a")
-        add_silver_plan_cost(self, cps, 2022)
         cps.close()
 
 
@@ -253,6 +252,14 @@ def add_personal_income_variables(
     cps["social_security_disability"] = (
         person.SS_VAL - cps["social_security_retirement"]
     )
+    # Provide placeholders for other Social Security inputs to avoid creating
+    # NaNs as they're uprated.
+    cps["social_security_dependents"] = np.zeros_like(
+        cps["social_security_retirement"]
+    )
+    cps["social_security_survivors"] = np.zeros_like(
+        cps["social_security_retirement"]
+    )
     cps["unemployment_compensation"] = person.UC_VAL
     # Add pensions and annuities.
     cps_pensions = person.PNSN_VAL + person.ANN_VAL
@@ -263,6 +270,44 @@ def add_personal_income_variables(
     cps["tax_exempt_private_pension_income"] = cps_pensions * (
         1 - p["taxable_pension_fraction"]
     )
+    # Retirement account distributions.
+    RETIREMENT_CODES = {
+        1: "401k",
+        2: "403b",
+        3: "roth_ira",
+        4: "regular_ira",
+        5: "keogh",
+        6: "sep",  # Simplified Employee Pension plan
+        7: "other_type_retirement_account",
+    }
+    for code, description in RETIREMENT_CODES.items():
+        tmp = 0
+        # The ASEC splits distributions across four variable pairs.
+        for i in ["1", "2", "1_YNG", "2_YNG"]:
+            tmp += (person["DST_SC" + i] == code) * person["DST_VAL" + i]
+        cps[f"{description}_distributions"] = tmp
+    # Allocate retirement distributions by taxability.
+    for source_with_taxable_fraction in ["401k", "403b", "sep"]:
+        cps[f"taxable_{source_with_taxable_fraction}_distributions"] = (
+            cps[f"{source_with_taxable_fraction}_distributions"][...]
+            * p[
+                f"taxable_{source_with_taxable_fraction}_distribution_fraction"
+            ]
+        )
+        cps[f"tax_exempt_{source_with_taxable_fraction}_distributions"] = cps[
+            f"{source_with_taxable_fraction}_distributions"
+        ][...] * (
+            1
+            - p[
+                f"taxable_{source_with_taxable_fraction}_distribution_fraction"
+            ]
+        )
+        del cps[f"{source_with_taxable_fraction}_distributions"]
+
+    # Assume all regular IRA distributions are taxable,
+    # and all Roth IRA distributions are not.
+    cps["taxable_ira_distributions"] = cps["regular_ira_distributions"]
+    cps["tax_exempt_ira_distributions"] = cps["roth_ira_distributions"]
     # Other income (OI_VAL) is a catch-all for all other income sources.
     # The code for alimony income is 20.
     cps["alimony_income"] = (person.OI_OFF == 20) * person.OI_VAL
@@ -291,12 +336,11 @@ def add_personal_income_variables(
     LIMIT_IRA_CATCH_UP_2022 = 1_000
     CATCH_UP_AGE_2022 = 50
     retirement_contributions = person.RETCB_VAL
-    cps["self_employment_retirement_contributions"] = np.where(
+    cps["self_employed_pension_contributions"] = np.where(
         person.SEMP_VAL > 0, retirement_contributions, 0
     )
     remaining_retirement_contributions = np.maximum(
-        retirement_contributions
-        - cps["self_employment_retirement_contributions"],
+        retirement_contributions - cps["self_employed_pension_contributions"],
         0,
     )
     # Compute the 401(k) limit for the person's age.
@@ -377,12 +421,13 @@ def add_spm_variables(cps: h5py.File, spm_unit: DataFrame) -> None:
         spm_unit_broadband_subsidy_reported="SPM_BBSUBVAL",
         spm_unit_payroll_tax_reported="SPM_FICA",
         spm_unit_federal_tax_reported="SPM_FEDTAX",
+        # State tax includes refundable credits.
         spm_unit_state_tax_reported="SPM_STTAX",
         spm_unit_capped_work_childcare_expenses="SPM_CAPWKCCXPNS",
         spm_unit_medical_expenses="SPM_MEDXPNS",
         spm_unit_spm_threshold="SPM_POVTHRESHOLD",
         spm_unit_net_income_reported="SPM_RESOURCES",
-        childcare_expenses="SPM_CHILDCAREXPNS",
+        spm_unit_pre_subsidy_childcare_expenses="SPM_CHILDCAREXPNS",
     )
 
     for openfisca_variable, asec_variable in SPM_RENAMES.items():
@@ -426,8 +471,8 @@ def add_previous_year_income(self, cps: h5py.File) -> None:
 
     from survey_enhance.impute import Imputation
 
-    cps_current_year_data = self.raw_cps().load()
-    cps_previous_year_data = self.previous_year_raw_cps().load()
+    cps_current_year_data = self.raw_cps(require=True).load()
+    cps_previous_year_data = self.previous_year_raw_cps(require=True).load()
     cps_previous_year = cps_previous_year_data.person.set_index(
         cps_previous_year_data.person.PERIDNUM
     )

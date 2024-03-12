@@ -16,28 +16,42 @@ class ct_social_security_benefit_adjustment(Variable):
     defined_for = StateCode.CT
 
     def formula(tax_unit, period, parameters):
+        filing_status = tax_unit("filing_status", period)
+        # Part A
+        social_security = tax_unit("tax_unit_social_security", period)
+        # Part B
+        p_irs = parameters(period).gov.irs.social_security.taxability
+        ss_combined_income_excess = tax_unit(
+            "tax_unit_ss_combined_income_excess", period
+        )
+        # Part C
+        capped_social_security = min_(
+            social_security, ss_combined_income_excess
+        )
+        # Part D
         p = parameters(
             period
         ).gov.states.ct.tax.income.subtractions.social_security
-        filing_status = tax_unit("filing_status", period)
-        # Line 41, Part A and Part B
-        us_taxable_ss = tax_unit("tax_unit_taxable_social_security", period)
-        ss_portion = us_taxable_ss * p.rate.social_security
-        combined_income_excess = tax_unit(
-            "tax_unit_ss_combined_income_excess", period
+        capped_social_security_portion = (
+            capped_social_security * p.rate.social_security
         )
-        # Line 41, Part C and Part D
-        # Lesser of 25% of combined income excess and 25% of taxable social security benefits
-        capped_ss_portion = min_(
-            ss_portion, p.combined_income_excess * combined_income_excess
+        # Part E (Line 18 from federal social security worksheet)
+        gross_ss = tax_unit("tax_unit_social_security", period)
+        adjusted_gross_social_security = gross_ss * p_irs.rate.upper
+        # Part F
+        reduced_taxable_social_security = max_(
+            adjusted_gross_social_security - capped_social_security_portion,
+            0,
         )
-
+        # Filers with AGI below the threshold can subtract the full amount of their
+        # taxable social security benefits
         agi = tax_unit("adjusted_gross_income", period)
-        # Line 41, Part E and Part F
-        # Difference between taxable social security benefits and capped social security portion
-        adjusted_ss_benefit = max_(us_taxable_ss - capped_ss_portion, 0)
-        reduction_threshold = p.reduction_threshold[filing_status]
-        # Adjustment determined based on AGI amount compared to reduction threshold
+        full_adjustment_eligible = agi < p.reduction_threshold[filing_status]
+        taxable_social_security = tax_unit(
+            "tax_unit_taxable_social_security", period
+        )
         return where(
-            agi < reduction_threshold, us_taxable_ss, adjusted_ss_benefit
+            full_adjustment_eligible,
+            taxable_social_security,
+            reduced_taxable_social_security,
         )

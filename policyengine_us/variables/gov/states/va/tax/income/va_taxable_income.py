@@ -21,4 +21,9 @@ class va_taxable_income(Variable):
         ded = where(itemizes, itm_ded, std_ded)
         exemptions = tax_unit("va_total_exemptions", period)
         total_deductions = ded + exemptions
-        return max_(agi - total_deductions, 0)
+        # Virginia allows a deduction (atop itemized deductions) for the
+        # relevant expenses for the federal Child and Dependent Care Credit.
+        cdcc_expense_deduction = tax_unit(
+            "va_child_dependent_care_expense_deduction", period
+        )
+        return max_(agi - total_deductions - cdcc_expense_deduction, 0)

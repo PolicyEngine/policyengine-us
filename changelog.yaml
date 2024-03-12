@@ -6240,3 +6240,364 @@
     added:
     - Add Kentucky married combined separate filing status.
   date: 2024-02-16 21:13:27
+- bump: minor
+  changes:
+    added:
+    - Add Delaware married combined separate filing status.
+  date: 2024-02-17 00:04:29
+- bump: minor
+  changes:
+    added:
+    - AMT capital gains rates and child exemption parameters through 2024.
+    - AMT references.
+  date: 2024-02-17 02:46:56
+- bump: patch
+  changes:
+    fixed:
+    - Reduce the adjusted_net_capital_gain by the qualified dividend income in the
+      vt_capital_gains_exclusion calcualtion.
+  date: 2024-02-17 04:50:37
+- bump: patch
+  changes:
+    changed:
+    - Assign households with negative income to the -1 decile.
+  date: 2024-02-17 21:13:13
+- bump: minor
+  changes:
+    added:
+    - Non-chained CPI trend and forecast.
+    changed:
+    - Uprate benefits using non-chained CPI.
+  date: 2024-02-18 16:36:02
+- bump: minor
+  changes:
+    added:
+    - Enable the Vermont state income tax model and add it to the net income tree.
+  date: 2024-02-18 17:45:25
+- bump: minor
+  changes:
+    added:
+    - Allocate the Montana deductions and exemptions optimally to the head and spouse
+      if filing separately.
+  date: 2024-02-18 19:52:14
+- bump: minor
+  changes:
+    added:
+    - Use income tax before non refundable credit as a comparison in the Delaware
+      files separately variable.
+  date: 2024-02-18 21:25:48
+- bump: minor
+  changes:
+    added:
+    - Disabled the cdcc cap increase in 2021 for the id_household_and_dependent_care_expense_deduction.
+  date: 2024-02-18 23:58:28
+- bump: patch
+  changes:
+    added:
+    - Add the wv_homestead_excess_property_tax_credit to the state income tree.
+  date: 2024-02-19 00:12:47
+- bump: minor
+  changes:
+    changed:
+    - Uprate OASDI and SSI by CPI-W.
+  date: 2024-02-19 16:36:06
+- bump: patch
+  changes:
+    fixed:
+    - Remove pension income from the MS AGI computation.
+  date: 2024-02-19 17:00:50
+- bump: patch
+  changes:
+    fixed:
+    - Include pension income in the Mississippi AGI calculation.
+  date: 2024-02-19 22:58:16
+- bump: minor
+  changes:
+    fixes:
+    - Update 2024 Maximum Taxable Earnings Each Year.
+  date: 2024-02-19 23:30:53
+- bump: patch
+  changes:
+    added:
+    - Virginia child and dependent care expenses deduction.
+  date: 2024-02-19 23:39:26
+- bump: minor
+  changes:
+    added:
+    - Enable the West Virginia state income tax model and add it to the net income
+      tree.
+  date: 2024-02-20 00:59:09
+- bump: patch
+  changes:
+    fixed:
+    - Adjust the Montana head deductions exemptions variable.
+  date: 2024-02-20 03:35:22
+- bump: minor
+  changes:
+    added:
+    - 2023 school meal values.
+    - School meal CPI uprating.
+  date: 2024-02-20 05:06:07
+- bump: minor
+  changes:
+    added:
+    - Poverty guideline uprating based on 12mo average CPI-U.
+  date: 2024-02-20 05:54:45
+- bump: patch
+  changes:
+    fixed:
+    - Ohio retirement credit eligiblity and applicable pension income.
+    - Use Ohio modified income in various credits.
+  date: 2024-02-20 14:34:59
+- bump: minor
+  changes:
+    added:
+    - Georgia 2023 Individual Income Tax Parameters.
+  date: 2024-02-20 16:32:04
+- bump: patch
+  changes:
+    added:
+    - Alternate senior renter computation of the Michigan homestead property tax credit.
+  date: 2024-02-20 17:45:08
+- bump: minor
+  changes:
+    added:
+    - Add pre-subsidy electricity, care, and childcare expenses.
+  date: 2024-02-20 22:09:07
+- bump: minor
+  changes:
+    added:
+    - Use adds for household_refundable_tax_credits and household_tax_before_refundable_credits.
+  date: 2024-02-21 01:11:31
+- bump: minor
+  changes:
+    added:
+    - Remove vectorization from the mt_head_deductions_exemptions_indiv variable.
+  date: 2024-02-21 01:41:58
+- bump: minor
+  changes:
+    added:
+    - SNAP uprating (approximated by CPI-U).
+  date: 2024-02-21 12:23:33
+- bump: patch
+  changes:
+    fixed:
+    - Apply the Louisiana exemption amount to the bottom tax bracket.
+  date: 2024-02-21 14:48:48
+- bump: minor
+  changes:
+    added:
+    - Arizona property tax credit.
+  date: 2024-02-21 17:20:43
+- bump: minor
+  changes:
+    added:
+    - Pennsylvania Child and Dependent Care Tax Credit.
+  date: 2024-02-22 15:29:21
+- bump: patch
+  changes:
+    fixes:
+    - Remove formula from household_tax_before_refundable_credits and household_refundable_tax_credits.
+  date: 2024-02-22 15:35:37
+- bump: patch
+  changes:
+    fixes:
+    - Adjust the ct_social_security_benefit_adjustment variable to reflect the worksheet
+      in the tax forms.
+  date: 2024-02-22 16:58:33
+- bump: minor
+  changes:
+    added:
+    - Georgia 2024 Standard Deduction Parameters.
+  date: 2024-02-23 06:10:17
+- bump: patch
+  changes:
+    added:
+    - Include social security, SSI and TANF in the HUD annual income variable.
+  date: 2024-02-24 00:03:16
+- bump: minor
+  changes:
+    added:
+    - Enable Idaho income tax model and include in the net income tree.
+  date: 2024-02-24 01:13:23
+- bump: minor
+  changes:
+    added:
+    - California alternative minimum tax calculations.
+  date: 2024-02-25 23:55:29
+- bump: patch
+  changes:
+    fixed:
+    - Add employee payroll tax to the reported state income tax reform.
+  date: 2024-02-26 20:50:21
+- bump: minor
+  changes:
+    added:
+    - Update the CalWORKs Child Care payment standard with the 2022 rates.
+  date: 2024-02-26 20:57:25
+- bump: patch
+  changes:
+    fixed:
+    - Limit the Idaho Grocery Credit to households not enrolled in SNAP.
+  date: 2024-02-26 21:59:44
+- bump: minor
+  changes:
+    added:
+    - Retirement income from CPS.
+    changed:
+    - Improvements to calibration routine.
+  date: 2024-02-27 22:50:14
+- bump: patch
+  changes:
+    fixed:
+    - Replaced data download URLs for CPS and Enhanced CPS files.
+  date: 2024-02-27 22:54:30
+- bump: minor
+  changes:
+    added:
+    - CBO uprating factors for all tax parameters through 2034.
+  date: 2024-02-28 10:24:15
+- bump: minor
+  changes:
+    added:
+    - Create state withheld income tax variables for all states which cause a circular
+      reference.
+  date: 2024-02-28 17:28:50
+- bump: patch
+  changes:
+    added:
+    - Decompose snap_utility_allowance into three variables for SUA, LUA, and IUA.
+  date: 2024-02-28 19:05:54
+- bump: minor
+  changes:
+    added:
+    - 2023 Wisconsin income tax parameters.
+  date: 2024-02-29 02:00:39
+- bump: patch
+  changes:
+    fixed:
+    - Minnesota Working Family Credit eligibility logic.
+  date: 2024-03-01 01:53:48
+- bump: patch
+  changes:
+    fixes:
+    - Refactor the Utah tax rate yaml file.
+  date: 2024-03-01 13:39:44
+- bump: minor
+  changes:
+    fixes:
+    - Add 2024 Georgia income tax values.
+  date: 2024-03-01 17:12:59
+- bump: minor
+  changes:
+    added:
+    - List of Louisiana non refundable credits in a parameter file
+  date: 2024-03-02 11:09:14
+- bump: patch
+  changes:
+    fixed:
+    - Populate Social Security dependents and survivors benefits as zero in cps.py.
+    - Remove uprating from Social Security dependents and survivors benefits.
+    - Split up SPM unit pre-subsidy childcare expenses into individual expenses.
+  date: 2024-03-02 18:37:00
+- bump: patch
+  changes:
+    fixes:
+    - Remove qualified_business_income_deduction_person from the list of Ohio deductions.
+  date: 2024-03-04 19:38:02
+- bump: patch
+  changes:
+    fixes:
+    - Remove not used haircut parameters.
+  date: 2024-03-05 00:49:48
+- bump: patch
+  changes:
+    fixed:
+    - Add taxable security to the list of Louisiana exemptions from AGI.
+  date: 2024-03-05 00:57:54
+- bump: patch
+  changes:
+    fixed:
+    - Remove rent from the list of Mississippi income sources.
+  date: 2024-03-05 04:27:45
+- bump: minor
+  changes:
+    fixed:
+    - Fix 'make install' in Makefile.
+  date: 2024-03-05 05:56:46
+- bump: patch
+  changes:
+    fixed:
+    - Subtract the QBID from Idaho AGI.
+  date: 2024-03-05 20:13:22
+- bump: minor
+  changes:
+    changed:
+    - Calibration improvements.
+  date: 2024-03-06 11:19:30
+- bump: minor
+  changes:
+    added:
+    - Limit the CDCC relevant expense deduction to 2020 amounts in Virginia.
+  date: 2024-03-06 21:11:12
+- bump: patch
+  changes:
+    fixed:
+    - Limit WIDOW filing status to widowed head with child dependents.
+  date: 2024-03-06 23:17:06
+- bump: minor
+  changes:
+    added:
+    - Colorado 2023 income tax updates.
+  date: 2024-03-07 15:52:31
+- bump: minor
+  changes:
+    changed:
+    - California foster youth tax credit.
+  date: 2024-03-07 16:44:16
+- bump: patch
+  changes:
+    fixes:
+    - Replace state income tax with estimated withholding for all states in income
+      tax used for SALT deduction.
+  date: 2024-03-07 19:52:18
+- bump: minor
+  changes:
+    added:
+    - California investment interest expense deduction.
+  date: 2024-03-08 01:19:52
+- bump: minor
+  changes:
+    fixed:
+    - Add South Carolina 2023 income tax rules
+  date: 2024-03-08 03:32:43
+- bump: patch
+  changes:
+    fixed:
+    - Attribute the Montana exemptions to each spouse respectively.
+  date: 2024-03-08 21:27:20
+- bump: patch
+  changes:
+    changed:
+    - Bump policyengine-core to address uprating issue.
+  date: 2024-03-10 15:34:07
+- bump: patch
+  changes:
+    fixed:
+    - Add short term capital gains to the Michigan household resources.
+  date: 2024-03-10 19:53:56
+- bump: minor
+  changes:
+    added:
+    - SSI and Social Security as income sources for LA County General Relief.
+  date: 2024-03-10 20:31:23
+- bump: patch
+  changes:
+    added:
+    - README file to the Idaho tax parameters.
+  date: 2024-03-11 05:47:32
+- bump: patch
+  changes:
+    fixed:
+    - Kentucky family size tax credit.
+  date: 2024-03-11 23:01:08

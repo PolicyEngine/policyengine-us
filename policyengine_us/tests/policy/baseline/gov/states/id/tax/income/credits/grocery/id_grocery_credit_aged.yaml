@@ -5,11 +5,11 @@
       person1:
         age: 20
         is_tax_unit_head_or_spouse: true
-        id_grocery_credit_eligible: true
+        id_grocery_credit_qualifying_month: true
       person2:
         age: 22
         is_tax_unit_head_or_spouse: true
-        id_grocery_credit_eligible: true
+        id_grocery_credit_qualifying_month: true
     households: 
       household:
         members: [person1, person2]
@@ -24,11 +24,11 @@
       person1:
         age: 65
         is_tax_unit_head_or_spouse: true
-        id_grocery_credit_eligible: true
+        id_grocery_credit_qualifying_month: true
       person2:
         age: 64
         is_tax_unit_head_or_spouse: true
-        id_grocery_credit_eligible: true
+        id_grocery_credit_qualifying_month: true
     households: 
       household:
         members: [person1, person2]
@@ -43,11 +43,11 @@
       person1:
         age: 64
         is_tax_unit_head_or_spouse: true
-        id_grocery_credit_eligible: true
+        id_grocery_credit_qualifying_month: true
       person2:
         age: 65
         is_tax_unit_head_or_spouse: true
-        id_grocery_credit_eligible: true
+        id_grocery_credit_qualifying_month: true
     households: 
       household:
         members: [person1, person2]
@@ -62,11 +62,11 @@
       person1:
         age: 65
         is_tax_unit_head_or_spouse: true
-        id_grocery_credit_eligible: true
+        id_grocery_credit_qualifying_month: true
       person2:
         age: 65
         is_tax_unit_head_or_spouse: true
-        id_grocery_credit_eligible: true
+        id_grocery_credit_qualifying_month: true
     households: 
       household:
         members: [person1, person2]
