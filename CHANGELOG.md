@@ -5,6 +5,48 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.697.0] - 2024-03-12 02:25:22
+
+### Added
+
+- Retirement distributions as unearned income for SNAP, school meals, and SSI.
+
+## [0.696.2] - 2024-03-11 23:01:08
+
+### Fixed
+
+- Kentucky family size tax credit.
+
+## [0.696.1] - 2024-03-11 05:47:32
+
+### Added
+
+- README file to the Idaho tax parameters.
+
+## [0.696.0] - 2024-03-10 20:31:23
+
+### Added
+
+- SSI and Social Security as income sources for LA County General Relief.
+
+## [0.695.3] - 2024-03-10 19:53:56
+
+### Fixed
+
+- Add short term capital gains to the Michigan household resources.
+
+## [0.695.2] - 2024-03-10 15:34:07
+
+### Changed
+
+- Bump policyengine-core to address uprating issue.
+
+## [0.695.1] - 2024-03-08 21:27:20
+
+### Fixed
+
+- Attribute the Montana exemptions to each spouse respectively.
+
 ## [0.695.0] - 2024-03-08 03:32:43
 
 ### Fixed
@@ -7712,6 +7754,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.697.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.696.2...0.697.0
+[0.696.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.696.1...0.696.2
+[0.696.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.696.0...0.696.1
+[0.696.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.695.3...0.696.0
+[0.695.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.695.2...0.695.3
+[0.695.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.695.1...0.695.2
+[0.695.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.695.0...0.695.1
 [0.695.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.694.0...0.695.0
 [0.694.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.693.1...0.694.0
 [0.693.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.693.0...0.693.1

@@ -7,3 +7,4 @@ class sep_distributions(Variable):
     label = "SEP distributions"
     unit = USD
     definition_period = YEAR
+    adds = ["taxable_sep_distributions", "tax_exempt_sep_distributions"]
