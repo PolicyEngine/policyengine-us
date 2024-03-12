@@ -30,7 +30,7 @@ class savers_credit(Variable):
         capped_qualified_contributions = min_(
             qualified_contributions, p.contributions_cap
         )
-        qualified_ira_contributions = tax_unit.sum(
+        total_capped_qualified_contributions = tax_unit.sum(
             capped_qualified_contributions
         )
         filing_status = tax_unit("filing_status", period)
@@ -52,4 +52,4 @@ class savers_credit(Variable):
                 p.rate.head_of_household.calc(total_agi),
             ],
         )
-        return credit_rate * qualified_ira_contributions
+        return credit_rate * total_capped_qualified_contributions
