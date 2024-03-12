@@ -1,0 +1,21 @@
+- name: "California household with one parent with $40,000 income, two children, and one grandparent."
+  period: 2022
+  input:
+    # ECPA parameters.
+    gov.contrib.treasury.budget.medicare.rate[0].rate: 0.012
+    gov.contrib.treasury.budget.net_investment_income.rate[0].rate: 0.012
+    # Household.
+    people:
+      head:
+        age: 36
+        is_tax_unit_head: True
+        irs_employment_income: 500_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        adjusted_gross_income: 500_000
+        net_investment_income: 1_000
+        filing_status: SINGLE
+  output:
+    additional_medicare_tax: 2_700 + 1_200
+    net_investment_income_tax: 550 
