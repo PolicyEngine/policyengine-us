@@ -9,8 +9,12 @@ values:
     # Income from a job of any type.
     - irs_employment_income
     - self_employment_income
+    - ssi
+    - social_security
+    - tanf
 metadata:
   unit: list
+  period: year
   label: Los Angeles County general relief income sources
   reference:
     - title: ABP 392 General Relief Information Sheet Form rev 07-2021
