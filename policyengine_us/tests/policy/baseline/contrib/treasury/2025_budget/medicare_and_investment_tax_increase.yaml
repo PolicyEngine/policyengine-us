@@ -1,7 +1,7 @@
 - name: Household with increased medicare and NII tax 
   period: 2024
   input:
-    gov.contrib.treasury.budget.medicare.rate[-1].rate: 0.012
+    gov.contrib.treasury.budget.medicare.rate[-1].rates: 0.012
     gov.contrib.treasury.budget.net_investment_income.rate[-1].rate: 0.012
     # Household.
     people:
