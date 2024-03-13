@@ -9,37 +9,40 @@ import numpy as np
 PUF_FILE_PATH = "~/Downloads/puf_2015.csv"
 PUF_DEMOGRAPHICS_FILE_PATH = "~/Downloads/demographics_2015.csv"
 
+# This is the full codebook, but we only use the variables in DEMOGRAPHIC_VARIABLES and FINANCIAL_SUBSET.
+
 codebook = {
     "E00200": "employment_income",
-    "E00300": "interest_received",
+    "E00300": "taxable_interest_income",
     "E00400": "tax_exempt_interest_income",
     "E00600": "dividends_included_in_agi",
     "E00650": "qualified_dividend_income",
     "E00700": "state_income_tax_refunds",
-    "E00800": "alimony_received",
+    "E00800": "alimony_income",
     "E00900": "self_employment_income",
     "E01000": "net_capital_gain_loss",
     "E01100": "capital_gain_distributions",
-    "E01200": "other_gains_loss",
-    "E01400": "taxable_ira_distribution",
+    "E01200": "other_net_gain",
+    "E01400": "taxable_ira_distributions",
     "E01500": "total_pensions_annuities_received",
     "E01700": "taxable_pension_income",
     "E02000": "schedule_e_net_income_loss",
-    "E02100": "schedule_f_net_profit_loss",
-    "E02300": "unemployment_compensation_in_agi",
+    "E02100": "farm_income",
+    "E02300": "taxable_unemployment_compensation",
     "E02400": "social_security",
-    "E02500": "social_security_benefits_in_agi",
-    "E03150": "total_deductible_ira_payments",
-    "E03210": "student_loan_interest_deduction",
-    "E03220": "educator_expenses",
-    "E03230": "tuition_fees_deduction",
+    "E02500": "taxable_social_security",
+    "E03150": "traditional_ira_contributions",
+    "E03210": "student_loan_interest",
+    "E03220": "educator_expense",
+    "E03230": "qualified_tuition_expenses",
     "E03260": "self_employment_tax_deduction",
     "E03270": "self_employed_health_insurance_deduction",
-    "E03240": "domestic_production_activities_deduction",
-    "E03290": "health_savings_account_deduction",
-    "E03300": "payments_to_keogh_accounts",
-    "E03400": "forfeited_interest_penalty",
-    "E03500": "alimony_paid",
+    "E03240": "domestic_production_ald",
+    "E03290": "health_savings_account_ald",
+    # This includes SEP, SIMPLE, and other qualified plans.
+    "E03300": "self_employed_pension_contributions",
+    "E03400": "early_withdrawal_penalty",
+    "E03500": "alimony_expense",
     "E00100": "adjusted_gross_income",
     "P04470": "total_deductions_standard_itemized",
     "E04600": "exemption_amount",
@@ -98,17 +101,17 @@ codebook = {
     "E12200": "predetermined_estimated_tax_penalty",
     "E17500": "medical_dental_expenses_reduction_agi_limit",
     "E18400": "state_local_taxes",
-    "E18500": "real_estate_tax_deductions",
+    "E18500": "real_estate_taxes",
     "E19200": "total_interest_paid_deduction",
     "E19550": "qualified_mortgage_insurance_premiums",
-    "E19800": "cash_contributions",
-    "E20100": "other_than_cash_contributions",
+    "E19800": "charitable_cash_donations",
+    "E20100": "charitable_non_cash_donations",
     "E19700": "contributions_deduction_total",
     "E20550": "unreimbursed_employee_business_expense",
     "E20600": "tax_preparation_fee",
-    "E20400": "miscellaneous_deductions_agi_limitation_total",
+    "E20400": "misc_deduction",
     "E20800": "net_limited_miscellaneous_deductions",
-    "E20500": "net_casualty_theft_loss",
+    "E20500": "casualty_loss",
     "E21040": "itemized_deduction_limitation",
     "P22250": "short_term_capital_gains",
     "E22320": "long_term_capital_gains_1",
@@ -120,11 +123,11 @@ codebook = {
     "E24560": "non_schedule_d_tax",
     "E24598": "schedule_d_15_percent_tax_amount",
     "E24615": "schedule_d_25_percent_tax_amount",
-    "E24570": "schedule_d_28_percent_tax_amount",
-    "P25350": "rental_income",
+    "E24570": "capital_gains_28_percent_rate_gain",
+    "P25350": "total_rents_received",
     "P25380": "rent_royalty_interest_expenses",
     "E25550": "total_depreciation_depletion_all_property",
-    "P25700": "rent_royalty_net_income_loss",
+    "P25700": "rental_income",
     "E25820": "deductible_rental_loss",
     "E25850": "rent_royalty_net_income",
     "E25860": "rent_royalty_net_loss",
@@ -164,7 +167,7 @@ codebook = {
     "P65400": "total_passive_losses_form_8582",
     "E68000": "total_losses_allowed_passive_activities",
     "E82200": "carry_forward_minimum_tax_credit_form_8801",
-    "T27800": "farm_income",
+    "T27800": "farm_elected_income",
     "S27860": "tentative_current_prior_year_tax_schedule_j",
     "P27895": "actual_prior_year_tax_schedule_j",
     "P87482": "american_opportunity_qualified_expenses_form_8863",
@@ -190,6 +193,8 @@ codebook = {
     "WSAMP": "sample_code",
     "TXRT": "marginal_tax_rate",
 }
+
+# This update statement describes the second section of the first PUF codebook.
 
 codebook.update(
     {
@@ -239,6 +244,7 @@ codebook.update(
     }
 )
 
+# This update statement describes the demographic supplement.
 codebook.update(
     {
         "AGEDP1": "age_dependent_1",
@@ -251,7 +257,7 @@ codebook.update(
     }
 )
 
-CPS_DATASET = "cps_2023"
+CPS_DATASET = "cps_2022"
 
 
 DEMOGRAPHIC_VARIABLES = [
@@ -283,7 +289,7 @@ FINANCIAL_SUBSET = [
     "partnership_s_corp_income",
     "farm_income",
     "farm_rent_income",
-    # "short_term_capital_gains",
+    "short_term_capital_gains",
     "long_term_capital_gains",
     "taxable_interest_income",
     "tax_exempt_interest_income",
@@ -292,6 +298,32 @@ FINANCIAL_SUBSET = [
     "non_qualified_dividend_income",
     "taxable_pension_income",
     "social_security",
+    "taxable_unemployment_compensation",
+    "taxable_social_security",
+    "taxable_ira_distributions",
+    "casualty_loss",
+    "retirement_savings_credit",
+    "misc_deduction",
+    "interest_expense",
+    "unrecaptured_section_1250_gain",
+    "domestic_production_ald",
+    "charitable_cash_donations",
+    "charitable_non_cash_donations",
+    "other_net_gain",
+    # Note this is separate from the pre-tax HSA contributions,
+    # which would be made through payroll deductions.
+    "health_savings_account_ald",
+    "capital_gains_28_percent_rate_gain",
+    "foreign_tax_credit",
+    "alimony_expense",
+    "student_loan_interest",
+    "educator_expense",
+    "traditional_ira_contributions",
+    "early_withdrawal_penalty",
+    "self_employed_pension_contributions",
+    "real_estate_taxes",
+    "qualified_tuition_expenses",
+    "alimony_income",
 ]
 
 
@@ -302,24 +334,53 @@ def load_puf() -> Tuple[pd.DataFrame, pd.DataFrame]:
         puf (pd.DataFrame): The PUF data.
         puf_with_demographics (pd.DataFrame): The subset of the PUF data that has demographic information.
     """
-    puf = pd.read_csv("~/Downloads/puf_2015.csv")
+    puf = pd.read_csv("~/Downloads/puf_2015.csv").fillna(0)
     demographics = pd.read_csv("~/Downloads/demographics_2015.csv")
 
-    puf = puf.dropna()
     demographics = demographics.dropna()
 
     puf.S006 = puf.S006 / 100
 
-    puf["taxable_interest_income"] = (
-        puf.E00300 - puf.E00400
-    )  # Taxable interest income = interest received - tax-exempt interest income
-    puf["non_qualified_dividend_income"] = (
-        puf.E00600 - puf.E00650
-    )  # Non-qualified dividend income = dividends included in AGI - qualified dividend income
+    # Non-qualified dividend income =
+    # dividends included in AGI - qualified dividend income
+    puf["non_qualified_dividend_income"] = puf.E00600 - puf.E00650
 
     puf = puf.rename(columns=codebook)
     demographics = demographics.rename(columns=codebook)
+
+    # Adjustments and derivations from the PUF
+
+    puf["interest_expense"] = puf["total_interest_paid_deduction"]
+    # Self-employed health insurance deduction is in reality capped at
+    # self-employment income. We do not currently impute total premiums
+    # for self-employed people.
+    puf["health_insurance_premiums"] = puf[
+        "self_employed_health_insurance_deduction"
+    ]
+    puf["long_term_capital_gains_on_collectibles"] = puf[
+        "capital_gains_28_percent_rate_gain"
+    ]  # Assume all 28p capital gains are on collectibles.
+
     return puf, demographics
+
+
+def uprate_puf(puf: pd.DataFrame, time_period: str) -> pd.DataFrame:
+    gov = system.parameters.calibration.gov
+    soi = gov.irs.soi
+
+    # Uprate the financial subset
+
+    for variable_name in FINANCIAL_SUBSET:
+        if variable_name not in soi.children:
+            uprater = gov.cbo.income_by_source.adjusted_gross_income
+        else:
+            uprater = soi.children[variable_name]
+        value_in_2015 = uprater("2015-01-01")
+        value_now = uprater(f"{time_period}-01-01")
+        uprating_factor = value_now / value_in_2015
+        puf[variable_name] = puf[variable_name] * uprating_factor
+
+    return puf
 
 
 def impute_missing_demographics(
@@ -341,18 +402,6 @@ def impute_missing_demographics(
         puf.return_id.isin(demographics.return_id)
     ].merge(demographics, on="return_id")
 
-    soi = system.parameters.calibration.gov.irs.soi
-
-    # Uprate the financial subset
-
-    for variable_name in FINANCIAL_SUBSET:
-        value_in_2015 = soi.children[variable_name]("2015-01-01")
-        value_in_2023 = soi.children[variable_name]("2023-01-01")
-        uprating_factor = value_in_2023 / value_in_2015
-        puf_with_demographics[variable_name] = (
-            puf_with_demographics[variable_name] * uprating_factor
-        )
-
     demographics_from_puf.train(
         puf_with_demographics[FINANCIAL_VARIABLES],
         puf_with_demographics[DEMOGRAPHIC_VARIABLES],
@@ -369,7 +418,7 @@ def impute_missing_demographics(
         )
     )  # Aggregated returns -> single
     predicted_demographics = demographics_from_puf.predict(
-        puf_without_demographics[FINANCIAL_VARIABLES]
+        puf_without_demographics[FINANCIAL_VARIABLES].fillna(0)
     )
     puf_with_imputed_demographics = pd.concat(
         [puf_without_demographics, predicted_demographics], axis=1
@@ -388,19 +437,18 @@ def impute_missing_demographics(
             weighted_puf_with_imputed_demographics,
         ]
     )
-    puf_combined = MicroDataFrame(puf_combined, weights="decimal_weight")
 
     return puf_combined
 
 
-def generate_puf_style_cps() -> pd.DataFrame:
+def generate_puf_style_cps(time_period: str) -> pd.DataFrame:
     """Generate a PUF-style table from the CPS.
 
     Returns:
         cps (pd.DataFrame): The CPS data.
     """
 
-    sim = Microsimulation(dataset=CPS_DATASET)
+    sim = Microsimulation(dataset=f"cps_{time_period}")
 
     cps_demographics = pd.DataFrame(index=sim.calculate("tax_unit_id").values)
 
@@ -490,7 +538,7 @@ def generate_puf_style_cps() -> pd.DataFrame:
     cps_demographics["tax_unit_weight"] = sim.calculate(
         "tax_unit_weight"
     ).values
-    return cps_demographics
+    return pd.DataFrame(cps_demographics)
 
 
 def impute_puf_financials_to_cps(
@@ -516,7 +564,7 @@ def impute_puf_financials_to_cps(
 
     cps_financial_predictions = income_from_demographics.predict(
         cps_demographics[DEMOGRAPHIC_VARIABLES],
-        mean_quantile=[0.9] + [0.5] * (len(FINANCIAL_SUBSET) - 1),
+        mean_quantile=[0.8] + [0.5] * (len(FINANCIAL_SUBSET) - 1),
     )
     cps_imputed = pd.concat(
         [cps_demographics, cps_financial_predictions], axis=1
@@ -529,7 +577,7 @@ def impute_puf_financials_to_cps(
 
 
 def project_tax_unit_cps_to_person_level(
-    puf_style_cps: pd.DataFrame,
+    puf_style_cps: pd.DataFrame, time_period: str
 ) -> pd.DataFrame:
     """Project tax unit CPS to person level.
 
@@ -539,7 +587,7 @@ def project_tax_unit_cps_to_person_level(
     Returns:
         person_df (pd.DataFrame): The CPS data with imputed financial information projected to the person level.
     """
-    sim = Microsimulation(dataset=CPS_DATASET)
+    sim = Microsimulation(dataset=f"cps_{time_period}")
     person_df = pd.DataFrame(
         dict(
             person_id=sim.calculate("person_id").values,
@@ -547,41 +595,54 @@ def project_tax_unit_cps_to_person_level(
         )
     )
 
+    tax_unit_df = pd.DataFrame(
+        dict(
+            tax_unit_id=sim.calculate("tax_unit_id").values,
+        ),
+    )
+
     person_is_tax_filer_head = sim.calculate("is_tax_unit_head").values
 
     for variable in FINANCIAL_SUBSET:
-        cps_original_value = sim.calculate(variable).values
-        cps_tax_unit_original_total = sim.map_result(
-            sim.map_result(cps_original_value, "person", "tax_unit"),
-            "tax_unit",
-            "person",
-        )
-        cps_share_of_tax_unit_original_total = (
-            cps_original_value / cps_tax_unit_original_total
-        )
-        cps_share_of_tax_unit_original_total = np.where(
-            np.isnan(cps_share_of_tax_unit_original_total),
-            person_is_tax_filer_head,
-            cps_share_of_tax_unit_original_total,
-        )
-        mapped_down_imputed_values = sim.map_result(
-            puf_style_cps[variable].values, "tax_unit", "person"
-        )
-        person_df[variable] = (
-            cps_share_of_tax_unit_original_total * mapped_down_imputed_values
-        )
+        if sim.tax_benefit_system.variables[variable].entity.key == "tax_unit":
+            tax_unit_df[variable] = puf_style_cps[variable].values
+        else:
+            cps_original_value = sim.calculate(variable).values
+            cps_tax_unit_original_total = sim.map_result(
+                sim.map_result(cps_original_value, "person", "tax_unit"),
+                "tax_unit",
+                "person",
+            )
+            cps_share_of_tax_unit_original_total = (
+                cps_original_value / cps_tax_unit_original_total
+            )
+            cps_share_of_tax_unit_original_total = np.where(
+                np.isnan(cps_share_of_tax_unit_original_total),
+                person_is_tax_filer_head,
+                cps_share_of_tax_unit_original_total,
+            )
+            mapped_down_imputed_values = sim.map_result(
+                puf_style_cps[variable].values, "tax_unit", "person"
+            )
+            person_df[variable] = (
+                cps_share_of_tax_unit_original_total
+                * mapped_down_imputed_values
+            )
 
     person_df = person_df.fillna(0)
-    return person_df
+    tax_unit_df = tax_unit_df.fillna(0)
+    return person_df, tax_unit_df
 
 
 def puf_imputed_cps_person_level(
-    verbose: bool = False,
+    verbose: bool = True,
+    time_period: str = "2022",
 ) -> pd.DataFrame:
     """Generate a PUF-imputed CPS at the person level.
 
     Args:
         verbose (bool): Whether to print progress statements.
+        time_period (str): The time period to uprate the PUF to.
 
     Returns:
         person_level_puf_imputed_cps (pd.DataFrame): The PUF-imputed CPS at the person level.
@@ -590,13 +651,15 @@ def puf_imputed_cps_person_level(
         print("Loading PUF and demographics")
     puf, demographics = load_puf()
 
+    puf = uprate_puf(puf, time_period)
+
     if verbose:
         print("Imputing missing demographics")
     puf = impute_missing_demographics(puf, demographics)
 
     if verbose:
         print("Generating PUF-style CPS")
-    puf_style_cps = generate_puf_style_cps()
+    puf_style_cps = generate_puf_style_cps(time_period)
 
     if verbose:
         print("Imputing PUF financials to CPS")
@@ -604,13 +667,17 @@ def puf_imputed_cps_person_level(
 
     if verbose:
         print("Projecting tax unit CPS to person level")
-    person_level_puf_imputed_cps = project_tax_unit_cps_to_person_level(
-        puf_imputed_cps
+    (
+        person_level_puf_imputed_cps,
+        tax_unit_level_puf_imputed_cps,
+    ) = project_tax_unit_cps_to_person_level(
+        puf_imputed_cps,
+        time_period,
     )
 
     if verbose:
         print("Done")
-    return person_level_puf_imputed_cps
+    return person_level_puf_imputed_cps, tax_unit_level_puf_imputed_cps
 
 
 if __name__ == "__main__":

@@ -1,0 +1,41 @@
+- name: California Alternative Minimum Taxable Income total adjustments - 2021 filer itemizes deductions
+  period: 2021
+  input:
+    state_code: CA
+    ca_itemized_deductions: 10_000
+    ca_standard_deduction: 5_000
+    medical_expense_deduction: 1_000 
+    real_estate_taxes: 6_000 
+    mortgage_interest: 0 
+    misc_deduction: 0
+    ca_investment_interest_deduction: 0
+  output:
+    ca_amti_adjustments: 7_000
+
+- name: California Alternative Minimum Taxable Income total adjustments - 2021 filer doesn't itemizes deductions
+  period: 2021
+  input:
+    state_code: CA
+    ca_itemized_deductions: 0
+    ca_standard_deduction: 5_000
+    medical_expense_deduction: 1_000 
+    real_estate_taxes: 6_000 
+    mortgage_interest: 0 
+    misc_deduction: 0
+    ca_investment_interest_deduction: 0
+  output:
+    ca_amti_adjustments: 5_000
+
+- name: California Alternative Minimum Taxable Income total adjustments - 2022 filer itemizes deductions and invetsment interest
+  period: 2022
+  input:
+    state_code: CA
+    ca_itemized_deductions: 10_000
+    ca_standard_deduction: 5_000
+    medical_expense_deduction: 1_000 
+    real_estate_taxes: 6_000 
+    mortgage_interest: 0 
+    misc_deduction: 0
+    ca_investment_interest_deduction: 500
+  output:
+    ca_amti_adjustments: 7_500
