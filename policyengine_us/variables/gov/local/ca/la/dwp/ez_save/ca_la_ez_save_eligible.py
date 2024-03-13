@@ -11,7 +11,7 @@ class ca_la_ez_save_eligible(Variable):
     def formula(household, period, parameters):
         p = parameters(period).gov.local.ca.la.dwp.ez_save.eligibility
         income = add(household, period, ["ca_la_ez_save_countable_income"])
-        household_size = add(household, period, ["spm_unit_size"])
+        household_size = household("household_size", period)
         floored_household_size = max_(p.household_size_floor, household_size)
         state_group = household("state_group_str", period)
         p_fpg = parameters(period).gov.hhs.fpg
