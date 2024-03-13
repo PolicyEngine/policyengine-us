@@ -15,7 +15,10 @@ def create_medicare_and_investment_tax_increase() -> Reform:
         def formula(tax_unit, period, parameters):
             amc = parameters(period).gov.irs.payroll.medicare.additional
             # Wage and self-employment income are taxed the same.
-            ELEMENTS = ["irs_employment_income", "taxable_self_employment_income"]
+            ELEMENTS = [
+                "irs_employment_income",
+                "taxable_self_employment_income",
+            ]
             wages_plus_se = add(tax_unit, period, ELEMENTS)
             exclusion = amc.exclusion[tax_unit("filing_status", period)]
             base = max_(0, wages_plus_se - exclusion)
@@ -24,7 +27,6 @@ def create_medicare_and_investment_tax_increase() -> Reform:
             add_threshold = max_(wages_plus_se - p_ref.threshold, 0)
             add_tax = p_ref.rate * add_threshold
             return base_tax + add_tax
-
 
     class net_investment_income_tax(Variable):
         value_type = float
@@ -38,24 +40,24 @@ def create_medicare_and_investment_tax_increase() -> Reform:
             p = parameters(period).gov.irs.investment.net_investment_income_tax
             threshold = p.threshold[tax_unit("filing_status", period)]
             agi = tax_unit("adjusted_gross_income", period)
-            excess_agi = max_(
-                0, agi - threshold
-            )
+            excess_agi = max_(0, agi - threshold)
             base = min_(
                 max_(0, tax_unit("net_investment_income", period)),
                 excess_agi,
             )
             base_tax = p.rate * base
-            p_ref = parameters(period).gov.contrib.biden.budget.net_investment_income
+            p_ref = parameters(
+                period
+            ).gov.contrib.biden.budget.net_investment_income
             add_threshold = max_(agi - p_ref.threshold, 0)
             add_tax = p_ref.rate * add_threshold
             return base_tax + add_tax
-
 
     class reform(Reform):
         def apply(self):
             self.update_variable(additional_medicare_tax)
             self.update_variable(net_investment_income_tax)
+
     return reform
 
 
@@ -73,6 +75,6 @@ def create_medicare_and_investment_tax_increase_reform(
         return None
 
 
-medicare_and_investment_tax_increase = create_medicare_and_investment_tax_increase_reform(
-    None, None, bypass=True
+medicare_and_investment_tax_increase = (
+    create_medicare_and_investment_tax_increase_reform(None, None, bypass=True)
 )

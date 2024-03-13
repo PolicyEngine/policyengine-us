@@ -36,7 +36,9 @@ def create_structural_reforms_from_parameters(parameters, period):
             parameters, period
         )
     )
-    medicare_and_investment_tax_increase = create_medicare_and_investment_tax_increase_reform(parameters, period)
+    medicare_and_investment_tax_increase = (
+        create_medicare_and_investment_tax_increase_reform(parameters, period)
+    )
     ctc_expansion = create_ctc_expansion_reform(parameters, period)
 
     abolish_federal_income_tax = create_abolish_federal_income_tax_reform(
