@@ -22,7 +22,7 @@ class az_family_tax_credit_eligible(Variable):
                 filing_status == status.JOINT,
                 filing_status == status.HEAD_OF_HOUSEHOLD,
                 filing_status == status.SEPARATE,
-                filing_status == status.WIDOW,
+                filing_status == status.SURVIVING_SPOUSE,
             ],
             [
                 p.income_limit.single,

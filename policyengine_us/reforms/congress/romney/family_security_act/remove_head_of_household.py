@@ -23,7 +23,7 @@ def create_remove_head_of_household() -> Reform:
                 [
                     FilingStatus.JOINT,
                     FilingStatus.SEPARATE,
-                    FilingStatus.WIDOW,
+                    FilingStatus.SURVIVING_SPOUSE,
                 ],
                 default=FilingStatus.SINGLE,
             )

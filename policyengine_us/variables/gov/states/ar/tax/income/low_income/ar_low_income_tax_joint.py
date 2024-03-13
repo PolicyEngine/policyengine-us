@@ -30,8 +30,8 @@ class ar_low_income_tax_joint(Variable):
                 (filing_status_separate == status.HEAD_OF_HOUSEHOLD)
                 & (dependents > 1),
                 filing_status_separate == status.SEPARATE,
-                (filing_status_separate == status.WIDOW) & (dependents <= 1),
-                (filing_status_separate == status.WIDOW) & (dependents > 1),
+                (filing_status_separate == status.SURVIVING_SPOUSE) & (dependents <= 1),
+                (filing_status_separate == status.SURVIVING_SPOUSE) & (dependents > 1),
                 (filing_status_separate == status.JOINT) & (dependents <= 1),
                 (filing_status_separate == status.JOINT) & (dependents > 1),
             ],

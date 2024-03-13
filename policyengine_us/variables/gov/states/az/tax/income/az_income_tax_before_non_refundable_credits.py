@@ -20,7 +20,7 @@ class az_income_tax_before_non_refundable_credits(Variable):
                 filing_status == status.HEAD_OF_HOUSEHOLD,
                 filing_status == status.JOINT,
                 filing_status == status.SEPARATE,
-                filing_status == status.WIDOW,
+                filing_status == status.SURVIVING_SPOUSE,
             ],
             [
                 p.single.calc(income),

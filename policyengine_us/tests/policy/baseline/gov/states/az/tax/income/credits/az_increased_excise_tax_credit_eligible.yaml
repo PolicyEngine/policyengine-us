@@ -70,7 +70,7 @@
   output:
     az_increased_excise_tax_credit_eligible: False
 
-- name: WIDOW with $25,000 agi is eligible for AZ increased excise tax credit
+- name: SURVIVING_SPOUSE with $25,000 agi is eligible for AZ increased excise tax credit
   period: 2023
   input:
     state_code: AZ
@@ -79,7 +79,7 @@
   output:
     az_increased_excise_tax_credit_eligible: True
 
-- name: WIDOW with $25,001 agi is ineligible for AZ increased excise tax credit
+- name: SURVIVING_SPOUSE with $25,001 agi is ineligible for AZ increased excise tax credit
   period: 2023
   input:
     state_code: AZ

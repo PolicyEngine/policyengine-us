@@ -71,7 +71,7 @@
       tax_unit:
         members: [head, child]
   output:
-    filing_status: WIDOW
+    filing_status: SURVIVING_SPOUSE
 
 - name: Widowed dependent in a tax unit should file as HOH.
   period: 2022

@@ -38,7 +38,7 @@ class hi_taxable_income_for_alternative_tax(Variable):
             [
                 filing_status == statuses.SINGLE,
                 filing_status == statuses.JOINT,
-                filing_status == statuses.WIDOW,
+                filing_status == statuses.SURVIVING_SPOUSE,
                 filing_status == statuses.SEPARATE,
                 filing_status == statuses.HEAD_OF_HOUSEHOLD,
             ],

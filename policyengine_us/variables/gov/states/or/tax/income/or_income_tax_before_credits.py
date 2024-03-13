@@ -24,7 +24,7 @@ class or_income_tax_before_credits(Variable):
                 filing_status == statuses.JOINT,
                 filing_status == statuses.HEAD_OF_HOUSEHOLD,
                 filing_status == statuses.SEPARATE,
-                filing_status == statuses.WIDOW,
+                filing_status == statuses.SURVIVING_SPOUSE,
             ],
             [
                 rates.single.calc(income),
