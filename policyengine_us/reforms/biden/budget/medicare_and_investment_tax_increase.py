@@ -20,11 +20,9 @@ def create_medicare_and_investment_tax_increase() -> Reform:
             exclusion = amc.exclusion[tax_unit("filing_status", period)]
             base = max_(0, wages_plus_se - exclusion)
             base_tax = amc.rate * base
-            p_ref = parameters(period).gov.contrib.treasury.budget.medicare
-            add_tax = p_ref.rate.calc(wages_plus_se)
-            print(base_tax)
-            print(wages_plus_se)
-            print(add_tax)
+            p_ref = parameters(period).gov.contrib.biden.budget.medicare
+            add_threshold = max_(wages_plus_se - p_ref.threshold, 0)
+            add_tax = p_ref.rate * add_threshold
             return base_tax + add_tax
 
 
@@ -48,8 +46,9 @@ def create_medicare_and_investment_tax_increase() -> Reform:
                 excess_agi,
             )
             base_tax = p.rate * base
-            p_ref = parameters(period).gov.contrib.treasury.budget.net_investment_income
-            add_tax = p_ref.rate.calc(agi)
+            p_ref = parameters(period).gov.contrib.biden.budget.net_investment_income
+            add_threshold = max_(agi - p_ref.threshold, 0)
+            add_tax = p_ref.rate * add_threshold
             return base_tax + add_tax
 
 
@@ -66,9 +65,9 @@ def create_medicare_and_investment_tax_increase_reform(
     if bypass:
         return create_medicare_and_investment_tax_increase()
 
-    p = parameters(period).gov.contrib.treasury.budget
+    p = parameters(period).gov.contrib.biden.budget
 
-    if (p.medicare.rate.rates[-1] > 0) | (p.net_investment_income.rate.rates[-1] > 0):
+    if (p.medicare.rate > 0) | (p.net_investment_income.rate > 0):
         return create_medicare_and_investment_tax_increase()
     else:
         return None
