@@ -39,7 +39,7 @@ class hi_food_excise_exemption_amount(Variable):
                 p.amount.joint.calc(income),
                 p.amount.head_of_household.calc(income),
                 p.amount.separate.calc(income),
-                p.amount.widow.calc(income),
+                p.amount.surviving_spouse.calc(income),
             ],
         )
 

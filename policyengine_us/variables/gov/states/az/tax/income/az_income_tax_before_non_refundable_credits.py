@@ -27,6 +27,6 @@ class az_income_tax_before_non_refundable_credits(Variable):
                 p.head_of_household.calc(income),
                 p.joint.calc(income),
                 p.separate.calc(income),
-                p.widow.calc(income),
+                p.surviving_spouse.calc(income),
             ],
         )

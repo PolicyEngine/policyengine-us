@@ -30,7 +30,7 @@ class hi_alternative_tax_on_capital_gains(Variable):
                 p.rates.single.calc(eligible_taxable_income),
                 p.rates.separate.calc(eligible_taxable_income),
                 p.rates.joint.calc(eligible_taxable_income),
-                p.rates.widow.calc(eligible_taxable_income),
+                p.rates.surviving_spouse.calc(eligible_taxable_income),
                 p.rates.head_of_household.calc(eligible_taxable_income),
             ],
         )

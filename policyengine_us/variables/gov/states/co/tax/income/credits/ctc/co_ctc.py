@@ -38,7 +38,7 @@ class co_ctc(Variable):
                     p.rate.single.calc(agi, right=True),
                     p.rate.joint.calc(agi, right=True),
                     p.rate.separate.calc(agi, right=True),
-                    p.rate.widow.calc(agi, right=True),
+                    p.rate.surviving_spouse.calc(agi, right=True),
                     p.rate.head_of_household.calc(agi, right=True),
                 ],
             )
@@ -63,7 +63,7 @@ class co_ctc(Variable):
                     p.amount.single.calc(agi, right=True),
                     p.amount.joint.calc(agi, right=True),
                     p.amount.separate.calc(agi, right=True),
-                    p.amount.widow.calc(agi, right=True),
+                    p.amount.surviving_spouse.calc(agi, right=True),
                     p.amount.head_of_household.calc(agi, right=True),
                 ],
             )

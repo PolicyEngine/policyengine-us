@@ -45,10 +45,10 @@ class ar_low_income_tax_joint(Variable):
                 ),
                 # Separate filers are ineligible to use the low income tax tables
                 np.inf,
-                p.widow.no_or_one_dependent.calc(
+                p.surviving_spouse.no_or_one_dependent.calc(
                     agi_attributed_to_head, right=True
                 ),
-                p.widow.two_or_more_dependents.calc(
+                p.surviving_spouse.two_or_more_dependents.calc(
                     agi_attributed_to_head, right=True
                 ),
                 p.joint.no_or_one_dependent.calc(

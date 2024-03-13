@@ -27,6 +27,6 @@ class ga_income_tax_before_non_refundable_credits(Variable):
                 p.separate.calc(income),
                 p.joint.calc(income),
                 p.head_of_household.calc(income),
-                p.widow.calc(income),
+                p.surviving_spouse.calc(income),
             ],
         )
