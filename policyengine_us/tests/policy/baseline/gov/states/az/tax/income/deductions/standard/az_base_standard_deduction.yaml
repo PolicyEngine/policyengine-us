@@ -29,3 +29,11 @@
     az_filing_status: HEAD_OF_HOUSEHOLD
   output:
     az_base_standard_deduction: 18_800
+
+- name: Separate filer 2021
+  period: 2021
+  input:
+    state_code: AZ
+    az_filing_status: SEPARATE
+  output:
+    az_base_standard_deduction: 12_550

@@ -14,7 +14,9 @@ class az_filing_status(Variable):
     possible_values = ArizonaFilingStatus
     default_value = ArizonaFilingStatus.SINGLE
     definition_period = YEAR
+    documentation = "https://azdor.gov/forms/individual/form-140a-arizona-resident-personal-income-tax-booklet"  # Page 5, Box 5 
     label = "Arizona filing status"
+
     defined_for = StateCode.AZ
 
     def formula(tax_unit, period, parameters):
@@ -25,15 +27,12 @@ class az_filing_status(Variable):
                 us_filing_status == fsvals.JOINT,
                 us_filing_status == fsvals.SINGLE,
                 us_filing_status == fsvals.SEPARATE,
-                us_filing_status == fsvals.HEAD_OF_HOUSEHOLD,
-                us_filing_status == fsvals.WIDOW,
             ],
             [
-                # In Arkansas, widowed filers are treated as heads of households.
+                # In Arizona, widowed filers are treated as heads of households.
                 ArizonaFilingStatus.JOINT,
                 ArizonaFilingStatus.SINGLE,
                 ArizonaFilingStatus.SEPARATE,
-                ArizonaFilingStatus.HEAD_OF_HOUSEHOLD,
-                ArizonaFilingStatus.HEAD_OF_HOUSEHOLD,
             ],
+            default=ArizonaFilingStatus.HEAD_OF_HOUSEHOLD,
         )
