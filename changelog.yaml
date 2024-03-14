@@ -6571,3 +6571,91 @@
     fixed:
     - Add South Carolina 2023 income tax rules
   date: 2024-03-08 03:32:43
+- bump: patch
+  changes:
+    fixed:
+    - Attribute the Montana exemptions to each spouse respectively.
+  date: 2024-03-08 21:27:20
+- bump: patch
+  changes:
+    changed:
+    - Bump policyengine-core to address uprating issue.
+  date: 2024-03-10 15:34:07
+- bump: patch
+  changes:
+    fixed:
+    - Add short term capital gains to the Michigan household resources.
+  date: 2024-03-10 19:53:56
+- bump: minor
+  changes:
+    added:
+    - SSI and Social Security as income sources for LA County General Relief.
+  date: 2024-03-10 20:31:23
+- bump: patch
+  changes:
+    added:
+    - README file to the Idaho tax parameters.
+  date: 2024-03-11 05:47:32
+- bump: patch
+  changes:
+    fixed:
+    - Kentucky family size tax credit.
+  date: 2024-03-11 23:01:08
+- bump: minor
+  changes:
+    added:
+    - Retirement distributions as unearned income for SNAP, school meals, and SSI.
+  date: 2024-03-12 02:25:22
+- bump: patch
+  changes:
+    fixed:
+    - Arkansas exempt gross income components.
+  date: 2024-03-12 15:15:31
+- bump: patch
+  changes:
+    fixed:
+    - Make the Connecticut personal tax credit brackets inclusive.
+  date: 2024-03-12 20:39:56
+- bump: minor
+  changes:
+    added:
+    - Los Angeles County EZ Save program.
+  date: 2024-03-13 15:48:05
+- bump: minor
+  changes:
+    added:
+    - Arkansas parameter update for 2023
+  date: 2024-03-13 20:24:41
+- bump: patch
+  changes:
+    fixed:
+    - Make the EZ save program household level and use pre-subsidy electricity expenses.
+  date: 2024-03-14 11:55:42
+- bump: patch
+  changes:
+    fixed:
+    - Utah at-home parent credit refundability and format.
+  date: 2024-03-14 12:29:44
+- bump: minor
+  changes:
+    added:
+    - 2025 Budget proposal to impose an the additional Medicare tax rate and NIIT
+      rate for high-income tax payers.
+  date: 2024-03-14 13:14:33
+- bump: minor
+  changes:
+    added:
+    - 2023 Massachusetts Senior Circuit Breaker Credit Parameters
+  date: 2024-03-14 15:00:02
+- bump: minor
+  changes:
+    added:
+    - Arizona 2023 income tax parameters.
+    - Arizona filing status variable.
+  date: 2024-03-14 15:33:17
+- bump: minor
+  changes:
+    added:
+    - Uprate the Biden Budget Medicare and NIIT proposal thresholds.
+    - Cap the NIIT increase threshold at investment income.
+  date: 2024-03-14 17:21:34
