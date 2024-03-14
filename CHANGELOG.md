@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.703.0] - 2024-03-14 17:21:34
+
+### Added
+
+- Uprate the Biden Budget Medicare and NIIT proposal thresholds.
+- Cap the NIIT increase threshold at investment income.
+
 ## [0.702.0] - 2024-03-14 15:33:17
 
 ### Added
@@ -7809,6 +7816,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.703.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.702.0...0.703.0
 [0.702.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.701.0...0.702.0
 [0.701.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.700.0...0.701.0
 [0.700.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.699.2...0.700.0
