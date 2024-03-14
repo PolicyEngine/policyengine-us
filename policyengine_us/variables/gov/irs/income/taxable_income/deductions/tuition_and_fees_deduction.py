@@ -26,7 +26,9 @@ class tuition_and_fees_deduction(Variable):
             "american_opportunity_credit", period
         )
         lifetime_learning_credit = tax_unit("lifetime_learning_credit", period)
-        eligible = (american_opportunity_credit + lifetime_learning_credit) == 0
+        eligible = (
+            american_opportunity_credit + lifetime_learning_credit
+        ) == 0
         p = parameters(period).gov.irs.deductions.tuition_and_fees
         joint = filing_status == filing_status.possible_values.JOINT
         cap = where(
@@ -34,5 +36,4 @@ class tuition_and_fees_deduction(Variable):
             p.joint.calc(adjusted_gross_income),
             p.non_joint.calc(adjusted_gross_income),
         )
-        return min_(qualified_tuition_expenses* eligible* not_separate, cap)
-       
+        return min_(qualified_tuition_expenses * eligible * not_separate, cap)
