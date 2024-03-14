@@ -28,4 +28,4 @@ class ut_at_home_parent_credit(Variable):
             ["ut_at_home_parent_credit_earned_income_eligible_person"],
         )
 
-        return p.amount * count_children * income_eligible_person
+        return p.amount * count_qualifying_children * income_eligible_person
