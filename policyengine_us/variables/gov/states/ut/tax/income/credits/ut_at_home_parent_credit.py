@@ -18,7 +18,8 @@ class ut_at_home_parent_credit(Variable):
         age = person("age", period)
         is_dependent = person("is_tax_unit_dependent", period)
         p = parameters(period).gov.states.ut.tax.income.credits.at_home_parent
-        count_children = tax_unit.sum((age < p.max_child_age) & is_dependent)
+        qualifying_child = (age < p.max_child_age) & is_dependent
+        count_qualifying_children = tax_unit.sum(qualifying_child)
 
         # Multiply by each qualifying parent; they can claim it separately.
         income_eligible_person = add(
