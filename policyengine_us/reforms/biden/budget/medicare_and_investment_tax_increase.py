@@ -23,9 +23,9 @@ def create_medicare_and_investment_tax_increase() -> Reform:
             exclusion = amc.exclusion[tax_unit("filing_status", period)]
             base = max_(0, wages_plus_se - exclusion)
             base_tax = amc.rate * base
-            p_reference = parameters(period).gov.contrib.biden.budget.medicare
-            add_excess = max_(wages_plus_se - p_reference.threshold, 0)
-            add_tax = p_reference.rate * add_excess
+            p_reform = parameters(period).gov.contrib.biden.budget.medicare
+            add_excess = max_(wages_plus_se - p_reform.threshold, 0)
+            add_tax = p_reform.rate * add_excess
             return base_tax + add_tax
 
     class net_investment_income_tax(Variable):
@@ -46,11 +46,11 @@ def create_medicare_and_investment_tax_increase() -> Reform:
                 excess_agi,
             )
             base_tax = p.rate * base
-            p_reference = parameters(
+            p_reform = parameters(
                 period
             ).gov.contrib.biden.budget.net_investment_income
-            add_excess = max_(agi - p_reference.threshold, 0)
-            add_tax = p_reference.rate * add_excess
+            add_excess = max_(agi - p_reform.threshold, 0)
+            add_tax = p_reform.rate * add_excess
             return base_tax + add_tax
 
     class reform(Reform):
