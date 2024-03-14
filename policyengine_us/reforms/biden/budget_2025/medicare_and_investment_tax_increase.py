@@ -23,7 +23,9 @@ def create_medicare_and_investment_tax_increase() -> Reform:
             exclusion = amc.exclusion[tax_unit("filing_status", period)]
             base = max_(0, wages_plus_se - exclusion)
             base_tax = amc.rate * base
-            p_reform = parameters(period).gov.contrib.biden.budget.medicare
+            p_reform = parameters(
+                period
+            ).gov.contrib.biden.budget_2025.medicare
             add_excess = max_(wages_plus_se - p_reform.threshold, 0)
             add_tax = p_reform.rate * add_excess
             return base_tax + add_tax
@@ -41,16 +43,21 @@ def create_medicare_and_investment_tax_increase() -> Reform:
             threshold = p.threshold[tax_unit("filing_status", period)]
             agi = tax_unit("adjusted_gross_income", period)
             excess_agi = max_(0, agi - threshold)
+            investment_income = tax_unit("net_investment_income", period)
+            capped_investment_income = max_(0, investment_income)
             base = min_(
-                max_(0, tax_unit("net_investment_income", period)),
+                capped_investment_income,
                 excess_agi,
             )
             base_tax = p.rate * base
             p_reform = parameters(
                 period
-            ).gov.contrib.biden.budget.net_investment_income
-            add_excess = max_(agi - p_reform.threshold, 0)
-            add_tax = p_reform.rate * add_excess
+            ).gov.contrib.biden.budget_2025.net_investment_income
+            add_excess_agi = max_(agi - p_reform.threshold, 0)
+            lesser_of_excess_and_inv_income = min_(
+                add_excess_agi, capped_investment_income
+            )
+            add_tax = p_reform.rate * lesser_of_excess_and_inv_income
             return base_tax + add_tax
 
     class reform(Reform):
@@ -67,7 +74,7 @@ def create_medicare_and_investment_tax_increase_reform(
     if bypass:
         return create_medicare_and_investment_tax_increase()
 
-    p = parameters(period).gov.contrib.biden.budget
+    p = parameters(period).gov.contrib.biden.budget_2025
 
     if (p.medicare.rate > 0) | (p.net_investment_income.rate > 0):
         return create_medicare_and_investment_tax_increase()
