@@ -1,9 +1,9 @@
 - name: Household with increased medicare and NII tax 
   period: 2024
-  reforms: policyengine_us.reforms.biden.budget.medicare_and_investment_tax_increase.medicare_and_investment_tax_increase
+  reforms: policyengine_us.reforms.biden.budget_2025.medicare_and_investment_tax_increase.medicare_and_investment_tax_increase
   input:
-    gov.contrib.biden.budget.medicare.rate: 0.012
-    gov.contrib.biden.budget.net_investment_income.rate: 0.012
+    gov.contrib.biden.budget_2025.medicare.rate: 0.012
+    gov.contrib.biden.budget_2025.net_investment_income.rate: 0.012
     # Household.
     people:
       head:
@@ -18,4 +18,4 @@
         filing_status: SINGLE
   output:
     additional_medicare_tax: 2_700 + 1_200
-    net_investment_income_tax: 1_238 
+    net_investment_income_tax: 50 
