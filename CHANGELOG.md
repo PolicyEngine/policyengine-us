@@ -5,6 +5,116 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.700.0] - 2024-03-14 13:14:33
+
+### Added
+
+- 2025 Budget proposal to impose an the additional Medicare tax rate and NIIT rate for high-income tax payers.
+
+## [0.699.2] - 2024-03-14 12:29:44
+
+### Fixed
+
+- Utah at-home parent credit refundability and format.
+
+## [0.699.1] - 2024-03-14 11:55:42
+
+### Fixed
+
+- Make the EZ save program household level and use pre-subsidy electricity expenses.
+
+## [0.699.0] - 2024-03-13 20:24:41
+
+### Added
+
+- Arkansas parameter update for 2023
+
+## [0.698.0] - 2024-03-13 15:48:05
+
+### Added
+
+- Los Angeles County EZ Save program.
+
+## [0.697.2] - 2024-03-12 20:39:56
+
+### Fixed
+
+- Make the Connecticut personal tax credit brackets inclusive.
+
+## [0.697.1] - 2024-03-12 15:15:31
+
+### Fixed
+
+- Arkansas exempt gross income components.
+
+## [0.697.0] - 2024-03-12 02:25:22
+
+### Added
+
+- Retirement distributions as unearned income for SNAP, school meals, and SSI.
+
+## [0.696.2] - 2024-03-11 23:01:08
+
+### Fixed
+
+- Kentucky family size tax credit.
+
+## [0.696.1] - 2024-03-11 05:47:32
+
+### Added
+
+- README file to the Idaho tax parameters.
+
+## [0.696.0] - 2024-03-10 20:31:23
+
+### Added
+
+- SSI and Social Security as income sources for LA County General Relief.
+
+## [0.695.3] - 2024-03-10 19:53:56
+
+### Fixed
+
+- Add short term capital gains to the Michigan household resources.
+
+## [0.695.2] - 2024-03-10 15:34:07
+
+### Changed
+
+- Bump policyengine-core to address uprating issue.
+
+## [0.695.1] - 2024-03-08 21:27:20
+
+### Fixed
+
+- Attribute the Montana exemptions to each spouse respectively.
+
+## [0.695.0] - 2024-03-08 03:32:43
+
+### Fixed
+
+- Add South Carolina 2023 income tax rules
+
+## [0.694.0] - 2024-03-08 01:19:52
+
+### Added
+
+- California investment interest expense deduction.
+
+## [0.693.1] - 2024-03-07 19:52:18
+
+## [0.693.0] - 2024-03-07 16:44:16
+
+### Changed
+
+- California foster youth tax credit.
+
+## [0.692.0] - 2024-03-07 15:52:31
+
+### Added
+
+- Colorado 2023 income tax updates.
+
 ## [0.691.1] - 2024-03-06 23:17:06
 
 ### Fixed
@@ -7686,6 +7796,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.700.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.699.2...0.700.0
+[0.699.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.699.1...0.699.2
+[0.699.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.699.0...0.699.1
+[0.699.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.698.0...0.699.0
+[0.698.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.697.2...0.698.0
+[0.697.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.697.1...0.697.2
+[0.697.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.697.0...0.697.1
+[0.697.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.696.2...0.697.0
+[0.696.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.696.1...0.696.2
+[0.696.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.696.0...0.696.1
+[0.696.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.695.3...0.696.0
+[0.695.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.695.2...0.695.3
+[0.695.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.695.1...0.695.2
+[0.695.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.695.0...0.695.1
+[0.695.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.694.0...0.695.0
+[0.694.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.693.1...0.694.0
+[0.693.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.693.0...0.693.1
+[0.693.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.692.0...0.693.0
+[0.692.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.691.1...0.692.0
 [0.691.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.691.0...0.691.1
 [0.691.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.690.0...0.691.0
 [0.690.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.689.1...0.690.0

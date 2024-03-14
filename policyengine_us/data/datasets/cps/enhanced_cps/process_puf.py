@@ -667,11 +667,12 @@ def puf_imputed_cps_person_level(
 
     if verbose:
         print("Projecting tax unit CPS to person level")
-    person_level_puf_imputed_cps, tax_unit_level_puf_imputed_cps = (
-        project_tax_unit_cps_to_person_level(
-            puf_imputed_cps,
-            time_period,
-        )
+    (
+        person_level_puf_imputed_cps,
+        tax_unit_level_puf_imputed_cps,
+    ) = project_tax_unit_cps_to_person_level(
+        puf_imputed_cps,
+        time_period,
     )
 
     if verbose:
