@@ -1,13 +1,16 @@
 description: Alabama counts these income sources for the state gross income.
 values:
   2021-01-01:
-    - employment_income
+    - irs_employment_income
     - self_employment_income
     - interest_income
     - dividend_income
     - alimony_income
-    - regular_ira_distributions
-    - roth_ira_distributions
+    - taxable_ira_distributions
+    - taxable_401k_distributions
+    - taxable_sep_distributions
+    - taxable_403b_distributions
+    - keogh_distributions # Keogh plans don't have a Roth option.
     - pension_income
     - rental_income
     - capital_gains

@@ -1,0 +1,79 @@
+- name: Single filing with combined income greater than base amount
+  period: 2022
+  input:
+    tax_unit_combined_income_for_social_security_taxability: 80_000
+    filing_status: SINGLE
+  output:
+    tax_unit_ss_combined_income_excess: 55_000
+
+- name: Single filing with combined income less than base amount
+  period: 2022
+  input:
+    tax_unit_combined_income_for_social_security_taxability: 15_000
+    filing_status: SINGLE
+  output:
+    tax_unit_ss_combined_income_excess: 0
+
+- name: Joint filing with combined income greater than base amount
+  period: 2022
+  input:
+    tax_unit_combined_income_for_social_security_taxability: 80_000
+    filing_status: JOINT
+  output:
+    tax_unit_ss_combined_income_excess: 48_000
+
+- name: Joint filing with combined income less than base amount
+  period: 2022
+  input:
+    tax_unit_combined_income_for_social_security_taxability: 30_000
+    filing_status: JOINT
+  output:
+    tax_unit_ss_combined_income_excess: 0
+
+- name: Head of household filing with combined income greater than base amount
+  period: 2022
+  input:
+    tax_unit_combined_income_for_social_security_taxability: 80_000
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    tax_unit_ss_combined_income_excess: 55_000
+
+- name: Head of household filing with combined income less than base amount
+  period: 2022
+  input:
+    tax_unit_combined_income_for_social_security_taxability: 15_000
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    tax_unit_ss_combined_income_excess: 0
+
+- name: Separate filing with combined income greater than base amount
+  period: 2022
+  input:
+    tax_unit_combined_income_for_social_security_taxability: 80_000
+    filing_status: SEPARATE
+  output:
+    tax_unit_ss_combined_income_excess: 55_000
+
+- name: Separate filing with combined income less than base amount
+  period: 2022
+  input:
+    tax_unit_combined_income_for_social_security_taxability: 15_000
+    filing_status: SEPARATE
+  output:
+    tax_unit_ss_combined_income_excess: 0
+
+- name: Widow filing with combined income greater than base amount
+  period: 2022
+  input:
+    tax_unit_combined_income_for_social_security_taxability: 80_000
+    filing_status: WIDOW
+  output:
+    tax_unit_ss_combined_income_excess: 55_000
+
+- name: Widow filing with combined income less than base amount
+  period: 2022
+  input:
+    tax_unit_combined_income_for_social_security_taxability: 15_000
+    filing_status: WIDOW
+  output:
+    tax_unit_ss_combined_income_excess: 0

@@ -13,9 +13,9 @@ class oh_lump_sum_retirement_credit_eligible(Variable):
         p = parameters(
             period
         ).gov.states.oh.tax.income.credits.retirement.lump_sum
-        agi = tax_unit("oh_agi", period)
+        modified_agi = tax_unit("oh_modified_agi", period)
         distribution_received = (
             tax_unit("form_4972_lumpsum_distributions", period) > 0
         )
-        agi_eligible = agi < p.income_limit
+        agi_eligible = modified_agi < p.income_limit
         return distribution_received & agi_eligible

@@ -5,6 +5,7 @@ class capped_energy_efficient_insulation_credit(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
+    label = "Capped energy efficient insulation credit"
     documentation = "Capped credit on energy-efficient insulation material"
     unit = USD
     reference = "https://www.democrats.senate.gov/imo/media/doc/inflation_reduction_act_of_2022.pdf#page=339"

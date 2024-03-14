@@ -1,0 +1,23 @@
+- name: Combined income for non-zero MAGI and tax unit social security
+  period: 2022
+  input:
+    tax_unit_social_security: 20_000
+    taxable_ss_magi: 70_000
+  output:
+    tax_unit_combined_income_for_social_security_taxability: 80_000
+
+- name: Combined income for no tax unit social security and positive MAGI
+  period: 2022
+  input:
+    tax_unit_social_security: 0
+    taxable_ss_magi: 70_000
+  output:
+    tax_unit_combined_income_for_social_security_taxability: 70_000
+
+- name: Combined income for non=zero tax unit social security and no MAGI
+  period: 2022
+  input:
+    tax_unit_social_security: 10_000
+    taxable_ss_magi: 0
+  output:
+    tax_unit_combined_income_for_social_security_taxability: 5_000

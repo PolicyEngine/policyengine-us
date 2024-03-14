@@ -14,6 +14,7 @@ AZ:
 CA:
   2010-01-01: 0
   2021-10-01: 144
+  2023-10-01: 158
 CO:
   2010-01-01: 0
   2021-10-01: 314
@@ -174,3 +175,5 @@ metadata:
       href: https://www.snapscreener.com/?p=table
   breakdown:
   - snap_utility_region
+  uprating: gov.usda.snap.uprating
+  propagate_metadata_to_children: true

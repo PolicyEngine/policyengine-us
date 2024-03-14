@@ -11,7 +11,13 @@ class ar_income_tax_before_non_refundable_credits_joint(Variable):
     defined_for = StateCode.AR
 
     def formula(person, period, parameters):
-        rate = parameters(period).gov.states.ar.tax.income.rates.main
+        p = parameters(period).gov.states.ar.tax.income.rates.main
         taxable_income = person("ar_taxable_income_joint", period)
 
-        return rate.calc(taxable_income)
+        main_rate = p.rate.calc(taxable_income)
+        pre_reduction_tax = main_rate * taxable_income
+        reduction = p.reduction.calc(taxable_income)
+        total_main_rate = max_(pre_reduction_tax - reduction, 0)
+
+        low_income_tax = person("ar_low_income_tax_joint", period)
+        return min_(total_main_rate, low_income_tax)

@@ -1,0 +1,13 @@
+description: The US subtracts these payroll deductions from wages and salaries when determining the taxable amount.
+values:
+  2010-01-01:
+    # Assumes all are pre-tax.
+    - traditional_401k_contributions
+    # Assumes employer for now.
+    - health_insurance_premiums
+    # HSA contributions can be either through pre-tax.
+    - health_savings_account_payroll_contributions
+metadata:
+  label: Pre-tax contributions
+  unit: list
+  period: year

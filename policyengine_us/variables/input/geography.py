@@ -146,6 +146,7 @@ class reported_slspc(Variable):
 
 class county_fips(Variable):
     value_type = int
+    label = "County FIPS code"
     entity = Household
     definition_period = YEAR
     documentation = "County FIPS code"
@@ -153,6 +154,7 @@ class county_fips(Variable):
 
 class state_fips(Variable):
     value_type = int
+    label = "State FIPS code"
     entity = Household
     definition_period = YEAR
     documentation = "State FIPS code"

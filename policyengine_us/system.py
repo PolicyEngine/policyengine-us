@@ -15,15 +15,26 @@ from policyengine_us.variables.household.demographic.geographic.state.in_state i
 )
 from policyengine_us.tools.parameters import backdate_parameters
 from policyengine_us.reforms import create_structural_reforms_from_parameters
+from policyengine_core.parameters.operations.homogenize_parameters import (
+    homogenize_parameter_structures,
+)
+from policyengine_core.parameters.operations.interpolate_parameters import (
+    interpolate_parameters,
+)
+from policyengine_core.parameters.operations.propagate_parameter_metadata import (
+    propagate_parameter_metadata,
+)
+from policyengine_core.parameters.operations.uprate_parameters import (
+    uprate_parameters,
+)
 
 COUNTRY_DIR = Path(__file__).parent
 
-CURRENT_YEAR = 2023
+CURRENT_YEAR = 2024
 year_start = str(CURRENT_YEAR) + "-01-01"
 
 
 class CountryTaxBenefitSystem(TaxBenefitSystem):
-    parameters_dir = COUNTRY_DIR / "parameters"
     variables_dir = COUNTRY_DIR / "variables"
     auto_carry_over_input_variables = True
     basic_inputs = [
@@ -35,6 +46,18 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
 
     def __init__(self, reform=None):
         super().__init__(entities, reform=reform)
+        self.load_parameters(COUNTRY_DIR / "parameters")
+        if reform:
+            self.apply_reform_set(reform)
+        self.parameters = set_irs_uprating_parameter(self.parameters)
+        self.parameters = homogenize_parameter_structures(
+            self.parameters, self.variables
+        )
+        self.parameters = propagate_parameter_metadata(self.parameters)
+        self.parameters = interpolate_parameters(self.parameters)
+        self.parameters = uprate_parameters(self.parameters)
+        self.parameters = propagate_parameter_metadata(self.parameters)
+        self.add_abolition_parameters()
 
         reform = create_structural_reforms_from_parameters(
             self.parameters, year_start
@@ -44,7 +67,6 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
 
         self.add_variables(*create_50_state_variables())
 
-        self.parameters = set_irs_uprating_parameter(self.parameters)
         self.parameters = backdate_parameters(
             self.parameters, first_instant="2020-01-01"
         )
@@ -105,6 +127,12 @@ class Microsimulation(CoreMicrosimulation):
             array = employment_income.get_array(known_period)
             self.set_input("employment_income_before_lsr", known_period, array)
             employment_income.delete_arrays(known_period)
+
+        self.input_variables = [
+            variable
+            for variable in self.input_variables
+            if variable != "employment_income"
+        ] + ["employment_income_before_lsr"]
 
 
 class IndividualSim(CoreIndividualSim):  # Deprecated
