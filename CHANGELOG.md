@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.700.0] - 2024-03-14 13:14:33
+
+### Added
+
+- 2025 Budget proposal to impose an the additional Medicare tax rate and NIIT rate for high-income tax payers.
+
 ## [0.699.2] - 2024-03-14 12:29:44
 
 ### Fixed
@@ -7790,6 +7796,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.700.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.699.2...0.700.0
 [0.699.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.699.1...0.699.2
 [0.699.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.699.0...0.699.1
 [0.699.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.698.0...0.699.0
