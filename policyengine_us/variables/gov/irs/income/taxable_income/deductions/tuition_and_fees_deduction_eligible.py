@@ -17,7 +17,7 @@ class tuition_and_fees_deduction_eligible(Variable):
         # Married filing separately are not eligible for this deduction.
         filing_status = tax_unit("filing_status", period)
         separate = filing_status == filing_status.possible_values.SEPARATE
-        # Can't caim this deduction if the household has taken the
+        # Can't claim this deduction if the household has taken the
         # American Oppportunity or Lifetime Learning Credit.
         aoc_llc = add(
             tax_unit,
