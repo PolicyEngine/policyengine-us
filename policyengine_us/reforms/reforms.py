@@ -14,6 +14,7 @@ from .congress.wyden_smith import create_ctc_expansion_reform
 from .federal import create_abolish_federal_income_tax_reform
 from .federal import create_abolish_payroll_tax_reform
 from .federal import create_reported_state_income_tax_reform
+from .biden.budget import create_medicare_and_investment_tax_increase_reform
 from policyengine_core.reforms import Reform
 import warnings
 
@@ -34,6 +35,9 @@ def create_structural_reforms_from_parameters(parameters, period):
         create_increase_taxable_earnings_for_social_security_reform(
             parameters, period
         )
+    )
+    medicare_and_investment_tax_increase = (
+        create_medicare_and_investment_tax_increase_reform(parameters, period)
     )
     ctc_expansion = create_ctc_expansion_reform(parameters, period)
 
@@ -56,6 +60,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         abolish_federal_income_tax,
         abolish_payroll_tax,
         reported_state_income_tax,
+        medicare_and_investment_tax_increase,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
 
