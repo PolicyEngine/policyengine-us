@@ -4,8 +4,7 @@
     filing_status: SEPARATE
     qualified_tuition_expenses: 2_500
     adjusted_gross_income: 55_000
-    american_opportunity_credit: 0 
-    lifetime_learning_credit: 0 
+    tuition_and_fees_deduction_eligible: false 
   output:
     tuition_and_fees_deduction: 0
    # married filing separate are not qualify 
@@ -16,8 +15,7 @@
     filing_status: JOINT
     qualified_tuition_expenses: 2_500
     adjusted_gross_income: 125_000
-    american_opportunity_credit: 0 
-    lifetime_learning_credit: 0 
+    tuition_and_fees_deduction_eligible: true
   output:
     tuition_and_fees_deduction: 2_500
     # limit = 4_000
@@ -29,8 +27,7 @@
     filing_status: JOINT
     qualified_tuition_expenses: 4_500
     adjusted_gross_income: 125_000
-    american_opportunity_credit: 0 
-    lifetime_learning_credit: 0 
+    tuition_and_fees_deduction_eligible: true 
   output:
     tuition_and_fees_deduction: 4_000
     # limit = 4_000
@@ -42,8 +39,7 @@
     filing_status: JOINT
     qualified_tuition_expenses: 1_500
     adjusted_gross_income: 155_000
-    american_opportunity_credit: 0 
-    lifetime_learning_credit: 0 
+    tuition_and_fees_deduction_eligible: true 
   output:
     tuition_and_fees_deduction: 1_500
     # limit = 2_000
@@ -55,8 +51,7 @@
     filing_status: JOINT
     qualified_tuition_expenses: 4_500
     adjusted_gross_income: 155_000
-    american_opportunity_credit: 0 
-    lifetime_learning_credit: 0 
+    tuition_and_fees_deduction_eligible: true 
   output:
     tuition_and_fees_deduction: 2_000
     # limit = 2_000
@@ -68,8 +63,7 @@
     filing_status: JOINT
     qualified_tuition_expenses: 1_500
     adjusted_gross_income: 185_000
-    american_opportunity_credit: 0 
-    lifetime_learning_credit: 0 
+    tuition_and_fees_deduction_eligible: true 
   output:
     tuition_and_fees_deduction: 0
     # agi > 160000
@@ -81,8 +75,7 @@
     filing_status: JOINT
     qualified_tuition_expenses: 4_500
     adjusted_gross_income: 155_000
-    american_opportunity_credit: 100 
-    lifetime_learning_credit: 0 
+    tuition_and_fees_deduction_eligible: false 
   output:
     tuition_and_fees_deduction: 0
-    # not eligible if american opportunity credit or lifetime learning credit > 0 
+     
