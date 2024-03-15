@@ -6694,3 +6694,9 @@
     fixed:
     - Remove long-term capital gains from the list of Virginia subtractions.
   date: 2024-03-15 14:48:22
+- bump: patch
+  changes:
+    fixed:
+    - Adjust the remove_head_of_household reform to reflect the new filing_status.py
+      logic.
+  date: 2024-03-15 21:19:02
