@@ -7,3 +7,4 @@ class spm_unit_spm_threshold(Variable):
     label = "SPM unit's SPM poverty threshold"
     definition_period = YEAR
     unit = USD
+    uprating = "gov.bls.cpi.cpi_u"

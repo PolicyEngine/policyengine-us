@@ -19,8 +19,11 @@ class ca_tanf_maximum_payment(Variable):
         # Indexing on exempt_name works, but not a similar string for region.
         # Use a where instead.
         exempt_name = where(exempt, "exempt", "non_exempt")
-        return where(
-            region1,
-            p.region1[exempt_name][au_size],
-            p.region2[exempt_name][au_size],
+        return (
+            where(
+                region1,
+                p.region1[exempt_name][au_size],
+                p.region2[exempt_name][au_size],
+            )
+            * MONTHS_IN_YEAR
         )

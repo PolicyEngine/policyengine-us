@@ -3,10 +3,14 @@ values:
   2021-01-01:
     - salt_refund_income # (2)
     - us_govt_interest # (3)(a)
-    - taxable_social_security # (5)
     - military_service_income # (4)
-    - id_retirement_benefits_deduction # (8)
+    - taxable_social_security # (5)
+    - id_household_and_dependent_care_expense_deduction # (6)
+    - id_aged_or_disabled_deduction # (8)
+    - id_capital_gains_deduction # (10)
     - workers_compensation # (13)
+    - id_retirement_benefits_deduction # (15)
+
 
 metadata:
   unit: list

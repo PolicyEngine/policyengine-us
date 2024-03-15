@@ -1,0 +1,16 @@
+description: The US limits annual IRA contributions to this amount.
+values:
+  2018-01-01: 5_500
+  2019-01-01: 6_000
+  2023-01-01: 6_500
+  2024-01-01: 7_000
+metadata:
+  unit: currency-USD
+  period: year
+  label: IRA contribution limit
+  references:
+  - title: 26 U.S. Code § 219 - Retirement savings (b)(5)(A)
+    href: https://www.law.cornell.edu/uscode/text/26/219
+  # Inflation adjusted amounts
+  - title: Cost-of-Living Adjustments for Retirement Items
+    href: https://www.irs.gov/pub/irs-tege/cola-table.pdf#page=2

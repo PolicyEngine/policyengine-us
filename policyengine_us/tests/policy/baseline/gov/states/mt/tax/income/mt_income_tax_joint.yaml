@@ -1,0 +1,56 @@
+- name: Calculation of added refundable credits
+  period: 2021
+  input:
+    people: 
+      person1:
+        mt_refundable_credits: 1_000
+      person2:
+        mt_refundable_credits: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        mt_income_tax_before_refundable_credits_joint: 4_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_income_tax_joint: 1_000
+
+- name: Uncapped
+  period: 2021
+  input:
+    people: 
+      person1:
+        mt_refundable_credits: 1_000
+      person2:
+        mt_refundable_credits: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        mt_income_tax_before_refundable_credits_joint: 2_500
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_income_tax_joint: -500
+
+- name: Calculation with only one person with credits
+  period: 2021
+  input:
+    people: 
+      person1:
+        mt_refundable_credits: 1_000
+      person2:
+        mt_refundable_credits: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        mt_income_tax_before_refundable_credits_joint: 2_500
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_income_tax_joint: 1_500

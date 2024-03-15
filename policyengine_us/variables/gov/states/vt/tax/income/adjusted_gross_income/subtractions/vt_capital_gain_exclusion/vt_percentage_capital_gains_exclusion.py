@@ -6,7 +6,7 @@ class vt_percentage_capital_gains_exclusion(Variable):
     entity = TaxUnit
     label = "Vermont percentage capital gains exclusion"
     unit = USD
-    documentation = "This can be selected to be subtracted from federal adjusted gross income in Vermont as percentage captial gains exclusion."
+    documentation = "This can be selected to be subtracted from federal adjusted gross income in Vermont as percentage capital gains exclusion."
     definition_period = YEAR
     defined_for = StateCode.VT
     reference = (
@@ -20,10 +20,18 @@ class vt_percentage_capital_gains_exclusion(Variable):
         adjusted_net_capital_gain = tax_unit(
             "adjusted_net_capital_gain", period
         )
+        qualified_dividend_income = add(
+            tax_unit, period, ["qualified_dividend_income"]
+        )
+        reduced_adjusted_net_capital_gain = max_(
+            adjusted_net_capital_gain - qualified_dividend_income, 0
+        )
         p = parameters(
             period
         ).gov.states.vt.tax.income.agi.exclusions.capital_gain
         # The percentage exclusion equals to a percentage of
         # the adjusted net capital gain and has a maximum value
-        percentage_exclusion = adjusted_net_capital_gain * p.percentage.rate
+        percentage_exclusion = (
+            reduced_adjusted_net_capital_gain * p.percentage.rate
+        )
         return min_(percentage_exclusion, p.percentage.cap)

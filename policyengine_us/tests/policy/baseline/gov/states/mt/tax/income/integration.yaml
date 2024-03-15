@@ -1,0 +1,63 @@
+- name: Two people with employment income and one dependent
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        employment_income: 10_000
+        age: 30
+      person2:
+        employment_income: 19_000
+        age: 28
+      person3:
+        age: 11
+        employment_income: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        filing_status: JOINT
+    households:
+      household:
+        state_code: MT
+  output:
+    mt_exemptions_indiv: [5_420, 2_710, 0]
+    mt_exemptions_joint: [8_130, 0, 0]
+    mt_agi: [10_000, 19_000, 0]
+    mt_standard_deduction_indiv: [2_260, 3_800, 0]
+    mt_standard_deduction_joint: [5_800, 0, 0]
+    mt_taxable_income_joint: [15_070, 0, 0]
+    mt_income_tax_before_non_refundable_credits_joint: 453.5
+    mt_non_refundable_credits: [0, 0, 0]
+    mt_income_tax_before_refundable_credits_joint: 453.5
+    mt_eitc: [98.854, 0, 0]
+    mt_income_tax_joint: 354.65
+
+- name: Tax unit with taxsimid 21195 in e21.its.csv and e21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 55
+        employment_income: 13_010
+        taxable_interest_income: 5_505.0
+      person2:
+        age: 55
+        employment_income: 146_010
+        taxable_interest_income: 5_505.0
+      person3:
+        age: 16
+      person4:
+        age: 16
+      person5:
+        age: 16
+      person6:
+        age: 16
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_fips: 30  # MT
+  output:  # expected results from patched TAXSIM35 2024-02-05 version
+    mt_agi: [18_515, 151_515, 0, 0, 0, 0]
+    mt_itemized_deductions_indiv: [10_000, 0, 0, 0, 0, 0]
+    mt_exemptions_indiv: [12_900, 2_580, 0, 0, 0, 0]

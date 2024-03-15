@@ -1,11 +1,13 @@
-description: Illinois personal exemption allowance
+description: Illinois provides the following personal exemption allowance amount.
 values:
   2021-01-01: 2_375
+  2022-01-01: 2_425
 metadata:
   unit: currency-USD
   period: year
-  name: il_personal_exemption
-  label: IL personal exemption
+  label: Illinois personal exemption amount
   reference:
     - title: Illinois Income Tax Act, 35 ILCS 5/204 (b)
       href: https://witnessslips.ilga.gov/legislation/ilcs/ilcs5.asp?ActID=577&ChapterID=8
+    - title: Illinois 2022 Form IL-1040 Instructions
+      href: https://tax.illinois.gov/content/dam/soi/en/web/tax/forms/incometax/documents/currentyear/individual/il-1040-instr.pdf#page=8

@@ -1,0 +1,54 @@
+- name: Tax unit with taxsimid 95112 in g21.its.csv and g21.ots.csv
+  absolute_error_margin: 1
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 67
+        employment_income: 10_010
+        taxable_interest_income: 11_010
+        taxable_private_pension_income: 7_000
+        social_security_retirement: 3_000
+        rent: 14_000
+      person2:
+        age: 11
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_childcare_expenses: 5_000
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 26  # MI
+  output:  # expected results from patched TAXSIM35 2024-02-15 version
+    mi_homestead_property_tax_credit_countable_property_tax: 3_220
+    mi_household_resources: 31_020
+    mi_homestead_property_tax_credit_household_resource_exemption: 2_227
+    mi_allowable_homestead_property_tax_credit: 1_336.2
+    mi_homestead_property_tax_credit: 1_500
+    mi_income_tax: -1_095.40
+
+- name: Tax unit with taxsimid 97725 in h21.its.csv and h21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 37
+        employment_income: 31010
+        taxable_interest_income: 5505.0
+        short_term_capital_gains: 5005.0
+        rental_income: 2505.0
+        rent: 23000
+      person2:
+        age: 37
+        employment_income: 4010
+        taxable_interest_income: 5505.0
+        short_term_capital_gains: 5005.0
+        rental_income: 2505.0
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 26  # MI
+  output:  # expected results from patched TAXSIM35 2024-03-06 version
+    mi_income_tax: 2178.13

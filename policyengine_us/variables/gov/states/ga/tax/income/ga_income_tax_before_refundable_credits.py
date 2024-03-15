@@ -10,23 +10,8 @@ class ga_income_tax_before_refundable_credits(Variable):
     defined_for = StateCode.GA
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.ga.tax.income.main
-        filing_status = tax_unit("filing_status", period)
-        status = filing_status.possible_values
-        income = tax_unit("ga_taxable_income", period)
-        return select(
-            [
-                filing_status == status.SINGLE,
-                filing_status == status.SEPARATE,
-                filing_status == status.JOINT,
-                filing_status == status.HEAD_OF_HOUSEHOLD,
-                filing_status == status.WIDOW,
-            ],
-            [
-                p.single.calc(income),
-                p.separate.calc(income),
-                p.joint.calc(income),
-                p.head_of_household.calc(income),
-                p.widow.calc(income),
-            ],
+        tax_before_refundable_credits = tax_unit(
+            "ga_income_tax_before_non_refundable_credits", period
         )
+        credits = tax_unit("ga_non_refundable_credits", period)
+        return max_(0, tax_before_refundable_credits - credits)

@@ -1,0 +1,63 @@
+- name: The dependent income is allocated to the head
+  period: 2021
+  input:
+    people:
+      person1:
+        employment_income: 20_000
+        age: 66
+      person2:
+        employment_income: 18_000
+        age: 40
+      person3:
+        employment_income: 3_000
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MS
+  output:
+    ms_deductions_indiv: [2_300, 2_300, 0]
+    ms_deductions_joint: [4_600, 0, 0]
+    ms_total_exemptions_indiv: [7_500, 7_500, 0]
+    ms_total_exemptions_joint: [15_000, 0, 0]
+    ms_total_exemptions: 15_000
+    ms_taxable_income_indiv: [13_200, 8_200, 0]
+    ms_taxable_income_joint: [21_400, 0, 0]
+    ms_income_tax_before_credits_indiv: [390, 158, 0]
+    ms_income_tax_before_credits_joint: [800, 0, 0]
+    ms_files_separately: true
+    ms_agi: [23_000, 18_000, 0]
+    ms_income_tax: 548
+
+- name: Tax unit with taxsimid 99991 in g21.its.csv and g21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 64
+        employment_income: 41_010
+        taxable_interest_income: 11_010
+        taxable_private_pension_income: 12_000
+        social_security_retirement: 19_000
+        rent: 24_000
+      person2:
+        age: 11
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        premium_tax_credit: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 28  # MS
+  output:  # expected results from patched TAXSIM35 2024-02-19 version
+    ms_income_tax: 2_286
