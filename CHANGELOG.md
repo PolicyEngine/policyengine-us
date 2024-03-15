@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.704.0] - 2024-03-15 02:24:03
+
+### Added
+
+- Connecticut property tax credit.
+
 ## [0.703.0] - 2024-03-14 17:21:34
 
 ### Added
@@ -7816,6 +7822,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.704.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.703.0...0.704.0
 [0.703.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.702.0...0.703.0
 [0.702.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.701.0...0.702.0
 [0.701.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.700.0...0.701.0
