@@ -13,20 +13,30 @@ def create_remove_head_of_household() -> Reform:
         definition_period = YEAR
         label = "Filing status"
 
-        def formula(tax_unit, period, parameters):
-            has_spouse = add(tax_unit, period, ["is_tax_unit_spouse"]) > 0
-            person = tax_unit.members
-            is_separated = tax_unit.any(person("is_separated", period))
-            is_widowed = tax_unit.any(person("is_widowed", period))
-            return select(
-                [has_spouse, is_separated, is_widowed],
-                [
-                    FilingStatus.JOINT,
-                    FilingStatus.SEPARATE,
-                    FilingStatus.WIDOW,
-                ],
-                default=FilingStatus.SINGLE,
-            )
+    def formula(tax_unit, period, parameters):
+        person = tax_unit.members
+        has_spouse = tax_unit.any(person("is_tax_unit_spouse", period))
+        has_dependents = tax_unit.any(person("is_child_dependent", period))
+        is_separated = tax_unit.any(person("is_separated", period))
+        # The widowed filing status should only apply to widowed heads
+        # who maintain a household for at least one dependent
+        is_head = person("is_tax_unit_head", period)
+        is_widowed = person("is_widowed", period)
+        widowed_head = tax_unit.any(is_head & is_widowed)
+        widowed_head_with_dependents = widowed_head & has_dependents
+        return select(
+            [
+                has_spouse,
+                is_separated,
+                widowed_head_with_dependents,
+            ],
+            [
+                FilingStatus.JOINT,
+                FilingStatus.SEPARATE,
+                FilingStatus.WIDOW,
+            ],
+            default=FilingStatus.SINGLE,
+        )
 
     class reform(Reform):
         def apply(self):
