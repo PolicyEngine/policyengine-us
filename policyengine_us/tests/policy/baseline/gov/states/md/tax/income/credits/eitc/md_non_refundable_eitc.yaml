@@ -3,6 +3,7 @@
   input:
     eitc: 100
     eitc_child_count: 0
+    md_income_tax_before_credits: 200
     state_code: MD
   output:
     md_non_refundable_eitc: 100
@@ -12,6 +13,7 @@
   input:
     eitc: 531
     eitc_child_count: 0
+    md_income_tax_before_credits: 600
     state_code: MD
   output:
     md_non_refundable_eitc: 530
@@ -21,6 +23,17 @@
   input:
     eitc: 100
     eitc_child_count: 2
+    md_income_tax_before_credits: 600
     state_code: MD
   output:
     md_non_refundable_eitc: 50
+
+- name: Cap by state income tax
+  period: 2021
+  input:
+    eitc: 400
+    eitc_child_count: 0
+    md_income_tax_before_credits: 300
+    state_code: MD
+  output:
+    md_non_refundable_eitc: 300

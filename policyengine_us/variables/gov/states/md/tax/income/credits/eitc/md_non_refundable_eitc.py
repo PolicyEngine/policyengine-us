@@ -12,11 +12,18 @@ class md_non_refundable_eitc(Variable):
     defined_for = StateCode.MD
 
     def formula(tax_unit, period, parameters):
+        # the credit allowed against the State income tax is the lesser of:
+        # (a) 50% of the earned income credit allowable for the taxable year
         federal_eitc = tax_unit("eitc", period)
         p = parameters(period).gov.states.md.tax.income.credits.eitc
         childless = tax_unit("eitc_child_count", period) == 0
-        return where(
+        md_eitc_allowed = where(
             childless,
             min_(p.childless.max_amount, federal_eitc),
             p.match.non_refundable * federal_eitc,
         )
+            
+        # the State income tax for the taxable year.
+        md_income_tax_before_credits = tax_unit("md_income_tax_before_credits", period)
+
+        return min_(md_eitc_allowed, md_income_tax_before_credits)
