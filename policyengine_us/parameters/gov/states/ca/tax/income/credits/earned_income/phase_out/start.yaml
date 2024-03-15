@@ -16,15 +16,24 @@ brackets:
   - threshold:
       2021-01-01: 0
     amount:
-      2021-01-01: 3_922
-      2022-01-01: 4_248
+      values:
+        2021-01-01: 3_922
+        2022-01-01: 4_248
+      metadata:
+        uprating: gov.states.ca.cpi
   - threshold:
       2021-01-01: 1
     amount:
-      2021-01-01: 5_890
-      2022-01-01: 6_379
+      values:
+        2021-01-01: 5_890
+        2022-01-01: 6_379
+      metadata:
+        uprating: gov.states.ca.cpi
   - threshold:
       2021-01-01: 2
     amount:
-      2021-01-01: 8_268
-      2022-01-01: 8_954
+      values:
+        2021-01-01: 8_268
+        2022-01-01: 8_954
+      metadata:
+        uprating: gov.states.ca.cpi

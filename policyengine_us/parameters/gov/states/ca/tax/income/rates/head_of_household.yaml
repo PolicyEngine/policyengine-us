@@ -5,51 +5,75 @@ brackets:
     rate:
       2021-01-01: 0.01
   - threshold:
-      2021-01-01: 18_663
-      2022-01-01: 20_212
-      2023-01-01: 20_839
+      values:
+        2021-01-01: 18_663
+        2022-01-01: 20_212
+        2023-01-01: 20_839
+      metadata:
+        uprating: gov.states.ca.cpi
     rate:
       2021-01-01: 0.02
   - threshold:
-      2021-01-01: 44_217
-      2022-01-01: 47_887
-      2023-01-01: 49_371
+      values:
+        2021-01-01: 44_217
+        2022-01-01: 47_887
+        2023-01-01: 49_371
+      metadata:
+        uprating: gov.states.ca.cpi
     rate:
       2021-01-01: 0.04
   - threshold:
-      2021-01-01: 56_999
-      2022-01-01: 61_730
-      2023-01-01: 63_644
+      values:
+        2021-01-01: 56_999
+        2022-01-01: 61_730
+        2023-01-01: 63_644
+      metadata:
+        uprating: gov.states.ca.cpi
     rate:
       2021-01-01: 0.06
   - threshold:
-      2021-01-01: 70_542
-      2022-01-01: 76_397
-      2023-01-01: 78_765
+      values:
+        2021-01-01: 70_542
+        2022-01-01: 76_397
+        2023-01-01: 78_765
+      metadata:
+        uprating: gov.states.ca.cpi
     rate:
       2021-01-01: 0.08
   - threshold:
-      2021-01-01: 83_324
-      2022-01-01: 90_240
-      2023-01-01: 93_037
+      values:
+        2021-01-01: 83_324
+        2022-01-01: 90_240
+        2023-01-01: 93_037
+      metadata:
+        uprating: gov.states.ca.cpi
     rate:
       2021-01-01: 0.093
   - threshold:
-      2021-01-01: 425_251
-      2022-01-01: 460_547
-      2023-01-01: 474_824
+      values:
+        2021-01-01: 425_251
+        2022-01-01: 460_547
+        2023-01-01: 474_824
+      metadata:
+        uprating: gov.states.ca.cpi
     rate:
       2021-01-01: 0.103
   - threshold:
-      2021-01-01: 510_303
-      2022-01-01: 552_658
-      2023-01-01: 569_790
+      values:
+        2021-01-01: 510_303
+        2022-01-01: 552_658
+        2023-01-01: 569_790
+      metadata:
+        uprating: gov.states.ca.cpi
     rate:
       2021-01-01: 0.113
   - threshold:
-      2021-01-01: 850_503
-      2022-01-01: 921_059
-      2023-01-01: 949_649
+      values:
+        2021-01-01: 850_503
+        2022-01-01: 921_059
+        2023-01-01: 949_649
+      metadata:
+        uprating: gov.states.ca.cpi
     rate:
       2021-01-01: 0.123
 
@@ -58,7 +82,7 @@ metadata:
   rate_unit: /1
   threshold_period: year
   type: marginal_rate
-  label: CA head of household income tax rate
+  label: California head of household income tax rate
   reference: 
     - title: California Income Tax Rate Schedules for 2021
       href: https://www.ftb.ca.gov/forms/2021/2021-540-tax-rate-schedules.pdf
