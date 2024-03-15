@@ -1,0 +1,31 @@
+- name: Not head or spouse, disabled
+  period: 2022
+  input:
+    is_tax_unit_head_or_spouse: false
+    is_disabled: true
+  output:
+    disabled_tax_unit_head_or_spouse: false
+
+- name: Head or spouse, not disabled 
+  period: 2022
+  input:
+    is_tax_unit_head_or_spouse: true
+    is_disabled: false
+  output:
+    disabled_tax_unit_head_or_spouse: false
+
+- name: Head or spouse, disabled 
+  period: 2022
+  input:
+    is_tax_unit_head_or_spouse: true
+    is_disabled: true
+  output:
+    disabled_tax_unit_head_or_spouse: true
+
+- name: Not head or spouse, not disabled
+  period: 2022
+  input:
+    is_tax_unit_head_or_spouse: false
+    is_disabled: false
+  output:
+    disabled_tax_unit_head_or_spouse: false

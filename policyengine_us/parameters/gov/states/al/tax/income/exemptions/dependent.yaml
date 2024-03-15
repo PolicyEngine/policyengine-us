@@ -1,4 +1,4 @@
-description: Alabama provides dependent exemption amounts based on the filed AGI amount.
+description: Alabama provides this dependent exemption amount, based on adjusted gross income.
 
 brackets:
 - threshold:
@@ -20,7 +20,7 @@ metadata:
   amount_unit: currency-USD
   threshold_period: year
   type: single_amount
-  label: Alabama dependent exemption
+  label: Alabama dependent exemption amount
   reference:
   - title: 2022 Alabama Department of Revenue 
     href: https://www.revenue.alabama.gov/ultraviewer/viewer/basic_viewer/index.html?form=2023/01/22f40bk.pdf#page=10

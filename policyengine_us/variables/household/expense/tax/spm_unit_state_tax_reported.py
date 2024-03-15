@@ -7,3 +7,4 @@ class spm_unit_state_tax_reported(Variable):
     label = "State income tax (reported)"
     definition_period = YEAR
     unit = USD
+    uprating = "gov.bls.cpi.cpi_u"

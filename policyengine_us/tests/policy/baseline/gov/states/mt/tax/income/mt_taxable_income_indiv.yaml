@@ -1,0 +1,126 @@
+- name: Test case 1, the tax filer chooses itemized deductions and the calculated taxable income is greater than 0.
+  period: 2021
+  input:
+    mt_agi: 6_000
+    mt_standard_deduction_indiv: 2_000
+    mt_itemized_deductions_indiv: 3_000
+    mt_exemptions_indiv: 2_710
+    state_code: MT
+  output: 
+    mt_taxable_income_indiv: 290
+
+- name: Test case 2, the tax filer chooses itemized deductions and the calculated taxable income is less than 0.
+  period: 2021
+  input:
+    mt_agi: 5_000
+    mt_standard_deduction_indiv: 2_000
+    mt_itemized_deductions_indiv: 3_000
+    mt_exemptions_indiv: 2_710
+    state_code: MT
+  output: 
+    mt_taxable_income_indiv: 0
+
+- name: Test case 3, the tax filer chooses standard deductions and the calculated taxable income is less than 0.
+  period: 2021
+  input:
+    mt_agi: 5_000
+    mt_standard_deduction_indiv: 3_000
+    mt_itemized_deductions_indiv: 2_000
+    mt_exemptions_indiv: 2_710
+    state_code: MT
+  output: 
+    mt_taxable_income_indiv: 0
+
+- name: Test case 4, the tax filer chooses standard deductions and the calculated taxable income is greater than 0.
+  period: 2021
+  input:
+    mt_agi: 7_000
+    mt_standard_deduction_indiv: 3_000
+    mt_itemized_deductions_indiv: 2_000
+    mt_exemptions_indiv: 2_710
+    state_code: MT
+  output: 
+    mt_taxable_income_indiv: 1_290
+
+- name: Head and spouse combined AGI below combined deduction and exemption amount
+  period: 2021
+  input:
+    people: 
+      person1:
+        is_tax_unit_head: true
+        mt_agi: 10_000
+        mt_standard_deduction_indiv: 5_000
+        mt_itemized_deductions_indiv: 0
+        mt_exemptions_indiv: 4_000
+      person2:
+        is_tax_unit_spouse: true
+        mt_agi: 12_000
+        mt_standard_deduction_indiv: 15_000
+        mt_itemized_deductions_indiv: 0
+        mt_exemptions_indiv: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        mt_tax_unit_itemizes: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_taxable_income_indiv: [0, 0]
+
+- name: First, the gap between spouse and head is closed, after which the amount is allocated equally
+  period: 2021
+  input:
+    people: 
+      person1:
+        is_tax_unit_head: true
+        mt_agi: 10_000
+        mt_standard_deduction_indiv: 1_000
+        mt_itemized_deductions_indiv: 5_000
+        mt_exemptions_indiv: 3_000
+      person2:
+        is_tax_unit_spouse: true
+        mt_agi: 12_000
+        mt_standard_deduction_indiv: 2_000
+        mt_itemized_deductions_indiv: 3_000
+        mt_exemptions_indiv: 3_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        mt_tax_unit_itemizes: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_taxable_income_indiv: [4_000, 4_000]
+
+- name: If the AGI is equal, the amount is allocated equally, excluding the exemptions
+  period: 2021
+  input:
+    people: 
+      person1:
+        is_tax_unit_head: true
+        mt_agi: 20_000
+        mt_standard_deduction_indiv: 1_000
+        mt_itemized_deductions_indiv: 5_000
+        mt_exemptions_indiv: 4_000
+      person2:
+        is_tax_unit_spouse: true
+        mt_agi: 20_000
+        mt_standard_deduction_indiv: 2_000
+        mt_itemized_deductions_indiv: 3_000
+        mt_exemptions_indiv: 2_000
+      person3:
+        mt_agi: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        mt_tax_unit_itemizes: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    mt_taxable_income_indiv: [12_000, 14_000, 0]

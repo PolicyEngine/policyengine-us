@@ -16,7 +16,7 @@ class oh_pension_based_retirement_income_credit(Variable):
         ).gov.states.oh.tax.income.credits.retirement.pension_based
 
         person = tax_unit.members
-        pension_income = person("pension_income", period)
+        pension_income = person("taxable_pension_income", period)
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         eligible_pension = pension_income * head_or_spouse
         total_pension_income = tax_unit.sum(eligible_pension)

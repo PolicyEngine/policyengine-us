@@ -2,8 +2,7 @@ description: Alabama provides these deductions for the state adjusted gross inco
 values:
   2021-01-01:
   # IRA distributions prior to 1982 are not deductible.
-    - roth_ira_distributions # Line 1 
-    - regular_ira_distributions # Line 1 
+    - traditional_ira_contributions # Line 1 
     - alimony_expense # Line 4
     - self_employed_health_insurance_ald # Line 7
 

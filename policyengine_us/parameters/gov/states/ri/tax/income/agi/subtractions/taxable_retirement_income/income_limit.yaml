@@ -1,0 +1,33 @@
+description: Rhode Island subtracts taxable retirement income for filers with federal adjusted gross income below this amount, based on filing status.
+
+metadata:
+  label: Rhode Island taxable retirement income subtraction income limit
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  reference:
+  - title: Rhode Island 2021 RI-1040 Instructions
+    href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2021-12/2021-1040r-instructions.pdf#page=8
+  - title: Rhode Island 2022 RI-1040 Instructions
+    href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-12/2022%20NR%20Instructions_v4_w.pdf#page=11
+  # The law points to the secial security modification (c) (8) while the actual amounts differ
+  # in the tax forms
+  - title: R.I. Gen. Laws § 44-30-12 (c), (8), (i)&(ii)
+    href: http://webserver.rilin.state.ri.us/Statutes/title44/44-30/44-30-12.HTM 
+
+JOINT:
+  2021-01-01: 109_050
+  2022-01-01: 119_750
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 87_200
+  2022-01-01: 95_800
+WIDOW:
+  2021-01-01: 109_050
+  2022-01-01: 119_750
+SINGLE:
+  2021-01-01: 87_200
+  2022-01-01: 95_800
+SEPARATE:
+  2021-01-01: 87_200
+  2022-01-01: 95_800
