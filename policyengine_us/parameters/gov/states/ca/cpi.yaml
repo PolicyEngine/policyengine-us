@@ -7,3 +7,7 @@ values:
 metadata:
   unit: currency-USD
   label: California income tax CPI uprating
+  uprating: gov.irs.uprating
+  reference:  
+    - title: California Consumer Price Index  
+      href: https://www.dir.ca.gov/oprl/CPI/EntireCCPI.PDF
