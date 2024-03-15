@@ -15,7 +15,7 @@ class az_529_college_savings_plan_subtraction(Variable):
             period
         ).gov.states.az.tax.income.subtractions.college_savings
 
-        filing_status = tax_unit("filing_status", period)
+        filing_status = tax_unit("az_filing_status", period)
         contributions_529 = tax_unit("investment_in_529_plan", period)
 
         cap_per_beneficiary = p.cap[filing_status]

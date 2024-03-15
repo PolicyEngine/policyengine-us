@@ -12,5 +12,5 @@ class az_base_standard_deduction(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.az.tax.income.deductions.standard
-        filing_status = tax_unit("filing_status", period)
+        filing_status = tax_unit("az_filing_status", period)
         return p.amount[filing_status]

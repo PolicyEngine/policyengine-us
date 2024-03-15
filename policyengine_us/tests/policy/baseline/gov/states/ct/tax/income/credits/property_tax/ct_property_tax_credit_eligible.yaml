@@ -1,0 +1,53 @@
+- name: Eligibility for CT property tax credit of filers age 65 and 70 and 0 dependents in 2017
+  period: 2017
+  input:
+    state_code: CT
+    tax_unit_dependents: 0
+    greater_age_head_spouse: 70
+  output:
+    ct_property_tax_credit_eligible: true
+
+- name: Eligibility for CT property tax credit of filer with age 60 and 0 dependants in 2023
+  period: 2023
+  input:
+    state_code: CT
+    tax_unit_dependents: 0
+    greater_age_head_spouse: 60
+  output:
+    ct_property_tax_credit_eligible: true
+
+- name: Eligibility for CT property tax credit of filer with age 75 and spouse age 60 and 3 dependants in 2018
+  period: 2018
+  input:
+    state_code: CT
+    tax_unit_dependents: 3
+    greater_age_head_spouse: 65
+  output:
+    ct_property_tax_credit_eligible: true
+
+- name: Eligibility for CT property tax credit of filer with age 60 and spouse age 50 and 3 dependants in 2018
+  period: 2017
+  input:
+    state_code: CT
+    tax_unit_dependents: 3
+    greater_age_head_spouse: 60
+  output:
+    ct_property_tax_credit_eligible: true
+
+- name: Eligibility for CT property tax credit of filer with age 64 and spouse age 64 and 0 dependants in 2021
+  period: 2021
+  input:
+    state_code: CT
+    tax_unit_dependents: 0
+    greater_age_head_spouse: 64
+  output:
+    ct_property_tax_credit_eligible: false
+
+- name: Eligibility for CT property tax credit of filer with age 64 and spouse age 64 and 0 dependants in 2022
+  period: 2022
+  input:
+    state_code: CT
+    tax_unit_dependents: 0
+    greater_age_head_spouse: 64
+  output:
+    ct_property_tax_credit_eligible: true

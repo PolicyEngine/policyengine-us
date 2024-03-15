@@ -1,0 +1,35 @@
+- name: Income over the limit, head or spouse
+  period: 2022
+  input:
+    earned_income: 3_001
+    is_tax_unit_head_or_spouse: true
+    state_code: UT
+  output: 
+    ut_at_home_parent_credit_earned_income_eligible_person: false
+
+- name: Income qualifies, head or spouse
+  period: 2022
+  input:
+    earned_income: 3_000
+    is_tax_unit_head_or_spouse: true
+    state_code: UT
+  output: 
+    ut_at_home_parent_credit_earned_income_eligible_person: true
+
+- name: Income qualifies, not head or spouse
+  period: 2022
+  input:
+    earned_income: 3_000
+    is_tax_unit_head_or_spouse: false
+    state_code: UT
+  output: 
+    ut_at_home_parent_credit_earned_income_eligible_person: false
+
+- name: Income over the limit, not head or spouse
+  period: 2022
+  input:
+    earned_income: 3_001
+    is_tax_unit_head_or_spouse: false
+    state_code: UT
+  output: 
+    ut_at_home_parent_credit_earned_income_eligible_person: false

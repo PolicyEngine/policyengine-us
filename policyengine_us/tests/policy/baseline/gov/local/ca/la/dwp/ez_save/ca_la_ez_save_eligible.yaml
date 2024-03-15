@@ -1,0 +1,35 @@
+- name: Two people household size does receive an increase in the income threshold, eligible
+  period: 2023
+  input:
+    in_la: true
+    ca_la_ez_save_countable_income: 39_440
+    household_size: 2
+  output:
+    ca_la_ez_save_eligible: true
+
+- name: Two people household size does receive an increase in the income threshold, ineligible
+  period: 2023
+  input:
+    in_la: true
+    ca_la_ez_save_countable_income: 39_441
+    household_size: 1
+  output:
+    ca_la_ez_save_eligible: false
+
+- name: Twelve people household size receives an increase in the income threshold, eligible
+  period: 2023
+  input:
+    in_la: true
+    ca_la_ez_save_countable_income: 142_240
+    household_size: 12
+  output:
+    ca_la_ez_save_eligible: true
+
+- name: Twelve people household size receives an increase in the income threshold, ineligible
+  period: 2023
+  input:
+    in_la: true
+    ca_la_ez_save_countable_income: 142_241
+    household_size: 12
+  output:
+    ca_la_ez_save_eligible: false

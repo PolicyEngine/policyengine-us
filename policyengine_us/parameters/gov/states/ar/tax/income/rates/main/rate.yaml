@@ -12,7 +12,9 @@ metadata:
     href: https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/TaxBrackets_2022.pdf#page=1
   - title: 2021 Indexed Tax Brackets
     href: https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/TaxBrackets_2021.pdf#page=1
-
+  - title: 2023 Indexed Tax Brackets
+    href: https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/TaxBrackets_2023.pdf#page=1
+    
 brackets:
   - threshold:
       2021-01-01: 0
@@ -21,27 +23,33 @@ brackets:
   - threshold:
       2021-01-01: 4_800
       2022-01-01: 5_100
+      2023-01-01: 5_300
     amount:
       2021-01-01: 0.02
   - threshold:
       2021-01-01: 9_500
       2022-01-01: 10_300
+      2023-01-01: 10_600
     amount:
       2021-01-01: 0.03
   - threshold:
       2021-01-01: 14_300
       2022-01-01: 14_700
+      2023-01-01: 15_100
     amount:
       2021-01-01: 0.034
   - threshold:
       2021-01-01: 23_600
       2022-01-01: 24_300
+      2023-01-01: 25_000
     amount:
       2021-01-01: 0.05
       2022-01-01: 0.049
+      2023-01-01: 0.047
   - threshold:
       2021-01-01: 39_700
       2022-01-01: .inf
     amount:
       2021-01-01: 0.059
       2022-01-01: 0.049
+      2023-01-01: 0.047
