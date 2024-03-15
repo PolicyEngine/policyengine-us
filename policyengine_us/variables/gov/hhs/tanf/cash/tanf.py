@@ -11,4 +11,9 @@ class tanf(Variable):
     )
     unit = USD
 
-    adds = "gov.hhs.tanf.state_programs"
+    def formula(spm_unit, period, parameters):
+        eligible = spm_unit("is_tanf_eligible", period)
+        federal_amount_if_eligible = spm_unit("tanf_amount_if_eligible", period)
+        p = parameters(period).gov.hhs.tanf
+        return where(eligible, federal_amount_if_eligible, 0) + p.state_programs
+
