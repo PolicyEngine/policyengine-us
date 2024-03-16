@@ -22,5 +22,6 @@
       tax_unit:
         members: [head, child]
         tax_unit_child_dependents: 1
+        tax_unit_married: false
   output:
     surviving_spouse_eligible: true
