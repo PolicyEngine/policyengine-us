@@ -6700,3 +6700,9 @@
     - Adjust the remove_head_of_household reform to reflect the new filing_status.py
       logic.
   date: 2024-03-15 21:19:02
+- bump: patch
+  changes:
+    changed:
+    - Break filing_status out into multiple variables.
+    - Simplify and test reform to repeal head of household filing status.
+  date: 2024-03-16 03:02:17
