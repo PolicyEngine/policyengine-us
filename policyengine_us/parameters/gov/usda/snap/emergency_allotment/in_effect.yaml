@@ -133,6 +133,7 @@ metadata:
     - title: "SNAP Screener: SNAP Emergency Allotments & Maximum Benefit Amounts"
       href: https://www.snapscreener.com/blog/emergency-allotments
   unit: bool
+  propagate_metadata_to_children: true
   label: SNAP emergency allotment in effect
   breakdown:
   - state_code
