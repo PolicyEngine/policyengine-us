@@ -36,6 +36,3 @@ class nj_eitc(Variable):
         )
 
         return federal_eitc * p.percent_of_federal_eitc
-
-
-#

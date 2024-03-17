@@ -26,8 +26,8 @@ class nj_ctc(Variable):
         person = tax_unit.members
         age_eligible = person("age", period) < p.age_limit
         dependent = person("is_tax_unit_dependent", period)
-        age_dependent_eligible = age_eligible & dependent
-        count_eligible = tax_unit.sum(age_dependent_eligible)
+        age_eligible_dependent = age_eligible & dependent
+        count_eligible = tax_unit.sum(age_eligible_dependent)
 
         # Calculate total child tax credit
         return count_eligible * amount_per_qualifying_child
