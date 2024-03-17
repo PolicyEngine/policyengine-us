@@ -14,7 +14,6 @@ class childcare_expenses(Variable):
         )
         # States where we model childcare subsidies.
         STATES_WITH_CHILD_CARE_SUBSIDIES = ["CA", "CO"]
-        # Create list of ca_child_care_subsidies from the list.
         subsidy_variables = [
             i.lower() + "_child_care_subsidies"
             for i in STATES_WITH_CHILD_CARE_SUBSIDIES
