@@ -12,11 +12,13 @@ class household_benefits(Variable):
         "ssi",
         "state_supplement",
         "co_state_supplement",
-        "co_oap",
-        "co_ccap_subsidy",
+        # State child care subsidies.
+        "ca_child_care_subsidies",
+        "co_child_care_subsidies",
         "ca_cvrp",  # California Clean Vehicle Rebate Project.
         "ca_care",
         "ca_fera",
+        "co_oap",
         "snap",
         "wic",
         "free_school_meals",
