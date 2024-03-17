@@ -36,5 +36,5 @@ class ok_stc(Variable):
         # determine overall eligibility
         eligible = ~tanf_ineligible & (income_eligible1 | income_eligible2)
         # calculate credit if eligible
-        qualified_exemptions = tax_unit("num", period) + count_dependents
+        qualified_exemptions = tax_unit("tax_unit_size", period)
         return eligible * qualified_exemptions * p.amount
