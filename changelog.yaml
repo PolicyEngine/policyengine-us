@@ -6706,3 +6706,9 @@
     - Break filing_status out into multiple variables.
     - Simplify and test reform to repeal head of household filing status.
   date: 2024-03-16 03:02:17
+- bump: patch
+  changes:
+    added:
+    - A defined_for statement to ca_calworks_child_care for faster execution.
+    - Intermediate variables for state child care subsidies.
+  date: 2024-03-17 15:13:36
