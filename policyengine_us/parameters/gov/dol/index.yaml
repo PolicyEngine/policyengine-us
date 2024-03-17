@@ -1,0 +1,8 @@
+metadata:
+  propagate_metadata_to_children: true
+  # The minimum wage only affects a state-level tax credit.
+  # In the meantime it has confused users into thinking we 
+  # model the dynamic effects of minimum wage changes.
+  # For now we will hide it.
+  economy: false
+  household: false

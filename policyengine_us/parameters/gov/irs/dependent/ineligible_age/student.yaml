@@ -3,6 +3,8 @@ metadata:
   unit: year
   period: year
   label: IRS student dependent age limit
+  # Our microdata does not have student status.
+  economy: false
   reference:
     - title: 26 U.S. Code § 152 - Dependent defined
       href: https://www.law.cornell.edu/uscode/text/26/152#c_3_A_ii
