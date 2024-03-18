@@ -17,4 +17,5 @@ class ia_alternate_tax_joint(Variable):
 
     def formula(person, period, parameters):
         alt_tax = person.tax_unit("ia_alternate_tax_unit", period)
-        return alt_tax * person("is_tax_unit_head", period)
+        # Multiplying creates NaN values since alt_tax can be infinite.
+        return where(person("is_tax_unit_head", period), alt_tax, 0)

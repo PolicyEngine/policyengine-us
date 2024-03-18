@@ -19,10 +19,12 @@ class ia_alternate_tax_unit(Variable):
         # compute alternate tax following worksheet in the instructions
         p = parameters(period).gov.states.ia.tax.income.alternate_tax
         # ... determine alternate tax deduction
-        elder_head = tax_unit("age_head", period) >= p.elderly_age
-        elder_spouse = tax_unit("age_spouse", period) >= p.elderly_age
-        is_elder = elder_head | elder_spouse
-        alt_ded = where(is_elder, p.deduction.elderly, p.deduction.nonelderly)
+        elder_head_or_spouse = (
+            tax_unit("greater_age_head_spouse", period) >= p.elderly_age
+        )
+        alt_ded = where(
+            elder_head_or_spouse, p.deduction.elderly, p.deduction.nonelderly
+        )
         # ... determine alternate tax amount
         alt_taxinc = max_(0, tax_unit("ia_modified_income", period) - alt_ded)
         alt_tax = alt_taxinc * p.rate
