@@ -8,5 +8,5 @@ class md_income_tax(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.MD
-    adds = ["md_income_tax_before_refundable_credits"]
+    adds = ["md_income_tax_before_credits"]
     subtracts = ["md_refundable_credits"]

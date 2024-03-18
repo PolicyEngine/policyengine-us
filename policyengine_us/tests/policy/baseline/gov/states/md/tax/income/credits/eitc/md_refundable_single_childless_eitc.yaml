@@ -6,7 +6,7 @@
     md_income_tax_before_credits: 20
     state_code: MD
   output:
-    md_single_childless_eitc: 80
+    md_refundable_single_childless_eitc: 80
 
 - name: Capped by $530.
   period: 2021
@@ -16,7 +16,7 @@
     md_income_tax_before_credits: 100
     state_code: MD
   output:
-    md_single_childless_eitc: 430
+    md_refundable_single_childless_eitc: 430
 
 - name: Requires eligibility.
   period: 2021
@@ -26,4 +26,4 @@
     md_income_tax_before_credits: 20
     state_code: MD
   output:
-    md_single_childless_eitc: 0
+    md_refundable_single_childless_eitc: 0

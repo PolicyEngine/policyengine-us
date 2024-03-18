@@ -137,7 +137,10 @@
         members: [person1]
         state_fips: 24  # MD
   output:  # expected results from patched TAXSIM35 2024-03-08 version
-    md_single_childless_eitc: 249.6
+    md_income_tax_before_credits: 280.40
+    md_refundable_single_childless_eitc: 249.6
+    md_refundable_credits: 249.6 # md_refundable_single_childless_eitc
+    md_non_refundable_credits: 0
     md_non_refundable_eitc: 280.4
     md_poverty_line_credit: 0
     md_income_tax: -249.60

@@ -22,8 +22,10 @@ class md_non_refundable_eitc(Variable):
             min_(p.childless.max_amount, federal_eitc),
             p.match.non_refundable * federal_eitc,
         )
-            
+
         # the State income tax for the taxable year.
-        md_income_tax_before_credits = tax_unit("md_income_tax_before_credits", period)
+        md_income_tax_before_credits = tax_unit(
+            "md_income_tax_before_credits", period
+        )
 
         return min_(md_eitc_allowed, md_income_tax_before_credits)

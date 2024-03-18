@@ -35,11 +35,11 @@ class is_eligible_md_poverty_line_credit(Variable):
         # (iv) for whom the credit allowed under § 10–704(a)(1) is less than the State income tax.
         # § 10–704(a)(1) is the MD total nonrefundable EITC
         # This appears to refer to MD nonrefundable EITC < state income tax
-        md_non_refundable_eitc = tax_unit(
-            "md_non_refundable_eitc", period
-        )
+        md_non_refundable_eitc = tax_unit("md_non_refundable_eitc", period)
         md_income_tax_before_credits = tax_unit(
             "md_income_tax_before_credits", period
         )
-        eitc_less_than_income_tax = md_non_refundable_eitc < md_income_tax_before_credits
+        eitc_less_than_income_tax = (
+            md_non_refundable_eitc < md_income_tax_before_credits
+        )
         return agi_below_fpg & earnings_below_fpg & eitc_less_than_income_tax
