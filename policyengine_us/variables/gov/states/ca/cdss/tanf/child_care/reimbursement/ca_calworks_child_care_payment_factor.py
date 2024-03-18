@@ -5,7 +5,7 @@ class ca_calworks_child_care_payment_factor(Variable):
     value_type = float
     entity = Person
     label = "California CalWORKs Child Care payment factor"
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = StateCode.CA
     reference = "http://epolicy.dpss.lacounty.gov/epolicy/epolicy/server/general/projects_responsive/ePolicyMaster/index.htm?&area=general&type=responsivehelp&ctxid=&project=ePolicyMaster#t=mergedProjects%2FChild%20Care%2FChild_Care%2F1210_8_Regional_Market_Rate_Ceilings%2F1210_8_Regional_Market_Rate_Ceilings.htm%23Referencesbc-11&rhtocid=_3_3_8_10"
 
