@@ -1,0 +1,24 @@
+- name: All conditions are satistified
+  period: 2022
+  input:
+    is_tax_unit_head_or_spouse: true
+    was_in_foster_care: true
+  output:
+    ca_foster_youth_tax_credit_eligible_person: true
+
+
+- name: Not a head or spouse
+  period: 2022
+  input:
+    is_tax_unit_head_or_spouse: false
+    was_in_foster_care: true
+  output:
+    ca_foster_youth_tax_credit_eligible_person: false
+
+- name: None of the conditions is satistfied
+  period: 2022
+  input:
+    is_tax_unit_head_or_spouse: false
+    was_in_foster_care: false
+  output:
+    ca_foster_youth_tax_credit_eligible_person: false

@@ -12,7 +12,7 @@ class mt_dependent_exemptions(Variable):
 
     def formula(person, period, parameters):
         # Qualifying child under IRC 152(c), which defines for the EITC
-        qualifying_child = person("is_eitc_qualifying_child", period)
+        qualifying_child = person("is_child_dependent", period)
         # Disabled dependents get an additional exemption.
         disabled = person("is_disabled", period)
         return qualifying_child * (1 + disabled)

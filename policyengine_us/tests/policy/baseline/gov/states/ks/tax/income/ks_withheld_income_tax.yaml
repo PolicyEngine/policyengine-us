@@ -1,0 +1,29 @@
+- name: Person with income over the standard deduction amount
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    irs_employment_income: 15_000
+    filing_status: SINGLE
+    state_code: KS
+  output:
+    ks_withheld_income_tax: 356.5
+
+- name: Changing the filing status should not change the output 
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    irs_employment_income: 15_000
+    filing_status: WIDOW
+    state_code: KS
+  output:
+    ks_withheld_income_tax: 356.5
+
+- name: Capped at 0
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    irs_employment_income: 3_000
+    filing_status: WIDOW
+    state_code: KS
+  output:
+    ks_withheld_income_tax: 0

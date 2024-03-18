@@ -108,6 +108,14 @@ PERSON_COLUMNS = [
     "PEPAR2",
     "DIS_SC1",
     "DIS_SC2",
+    "DST_SC1",
+    "DST_SC2",
+    "DST_SC1_YNG",
+    "DST_SC2_YNG",
+    "DST_VAL1",
+    "DST_VAL2",
+    "DST_VAL1_YNG",
+    "DST_VAL2_YNG",
     "PRDTRACE",
     "PRDTHSP",
     "A_MARITL",
@@ -147,7 +155,7 @@ class RawCPS(Dataset):
         url = CPS_URL_BY_YEAR[self.time_period]
 
         spm_unit_columns = SPM_UNIT_COLUMNS
-        if self.time_period < 2020:
+        if self.time_period <= 2020:
             spm_unit_columns = [
                 col for col in spm_unit_columns if col != "SPM_BBSUBVAL"
             ]
@@ -233,7 +241,7 @@ class RawCPS(Dataset):
         person: pd.DataFrame, time_period: int
     ) -> pd.DataFrame:
         spm_unit_columns = SPM_UNIT_COLUMNS
-        if time_period < 2020:
+        if time_period <= 2020:
             spm_unit_columns = [
                 col for col in spm_unit_columns if col != "SPM_BBSUBVAL"
             ]
