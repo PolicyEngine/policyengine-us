@@ -6,9 +6,9 @@
     claimed_as_dependent_on_another_return: false
     is_full_time_student: false
   output:
-    retirement_saving_eligible_person: true
+    savers_credit_eligible_person: true
 
-- name: not eligible person, under age threshold
+- name: Not an eligible person, under age threshold  
   period: 2021
   input:
     age: 17
@@ -16,4 +16,4 @@
     spouse_is_dependent_elsewhere: false
     is_full_time_student: false
   output:
-    retirement_saving_eligible_person: false
+    savers_credit_eligible_person: false

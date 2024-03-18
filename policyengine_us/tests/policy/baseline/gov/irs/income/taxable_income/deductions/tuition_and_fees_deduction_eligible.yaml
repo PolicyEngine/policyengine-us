@@ -1,0 +1,28 @@
+- name: Test case 1 #Separate filing
+  period: 2020
+  input:
+    filing_status: SEPARATE
+    american_opportunity_credit: 0 
+    lifetime_learning_credit: 0 
+  output:
+    tuition_and_fees_deduction_eligible: false
+   # Married filing separate are not qualify 
+
+- name: Test case 2
+  period: 2020
+  input:
+    filing_status: JOINT
+    american_opportunity_credit: 0 
+    lifetime_learning_credit: 0 
+  output:
+    tuition_and_fees_deduction_eligible: true
+
+- name: Test case 3
+  period: 2020
+  input:
+    filing_status: JOINT
+    american_opportunity_credit: 100 
+    lifetime_learning_credit: 0 
+  output:
+    tuition_and_fees_deduction_eligible: false
+  # Can't claim this deduction if the household has taken the American Oppportunity or Lifetime Learning Credit.

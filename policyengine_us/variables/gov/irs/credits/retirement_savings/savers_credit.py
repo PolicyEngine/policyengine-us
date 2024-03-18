@@ -12,11 +12,10 @@ class savers_credit(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.irs.credits.retirement_saving
         person = tax_unit.members
-        person_eligible = person("retirement_saving_eligible_person", period)
-        agi_person = (
-            person("adjusted_gross_income_person", period) * person_eligible
-        )
-        total_agi = tax_unit.sum(agi_person)
+        eligible_person = person("savers_credit_eligible_person", period)
+        agi = person("adjusted_gross_income_person", period) * eligible_person
+        total_agi = tax_unit.sum(agi)
+
         qualified_contributions = add(
             person,
             period,
@@ -52,4 +51,10 @@ class savers_credit(Variable):
                 p.rate.head_of_household.calc(total_agi),
             ],
         )
-        return credit_rate * total_capped_qualified_contributions
+        tax_unit_agi_eligible = tax_unit("savers_credit_agi_eligible", period)
+
+        return (
+            credit_rate
+            * total_capped_qualified_contributions
+            * tax_unit_agi_eligible
+        )

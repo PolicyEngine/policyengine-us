@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class retirement_saving_agi_eligible(Variable):
+class savers_credit_agi_eligible(Variable):
     entity = TaxUnit
     definition_period = YEAR
-    label = "Eligible person for the retirement saving contributions credit"
+    label = "Eligible tax unit for the retirement saving contributions credit"
     value_type = bool
     reference = "https://www.irs.gov/pub/irs-pdf/f8880.pdf"
 

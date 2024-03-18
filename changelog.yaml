@@ -6601,3 +6601,125 @@
     fixed:
     - Kentucky family size tax credit.
   date: 2024-03-11 23:01:08
+- bump: minor
+  changes:
+    added:
+    - Retirement distributions as unearned income for SNAP, school meals, and SSI.
+  date: 2024-03-12 02:25:22
+- bump: patch
+  changes:
+    fixed:
+    - Arkansas exempt gross income components.
+  date: 2024-03-12 15:15:31
+- bump: patch
+  changes:
+    fixed:
+    - Make the Connecticut personal tax credit brackets inclusive.
+  date: 2024-03-12 20:39:56
+- bump: minor
+  changes:
+    added:
+    - Los Angeles County EZ Save program.
+  date: 2024-03-13 15:48:05
+- bump: minor
+  changes:
+    added:
+    - Arkansas parameter update for 2023
+  date: 2024-03-13 20:24:41
+- bump: patch
+  changes:
+    fixed:
+    - Make the EZ save program household level and use pre-subsidy electricity expenses.
+  date: 2024-03-14 11:55:42
+- bump: patch
+  changes:
+    fixed:
+    - Utah at-home parent credit refundability and format.
+  date: 2024-03-14 12:29:44
+- bump: minor
+  changes:
+    added:
+    - 2025 Budget proposal to impose an the additional Medicare tax rate and NIIT
+      rate for high-income tax payers.
+  date: 2024-03-14 13:14:33
+- bump: minor
+  changes:
+    added:
+    - 2023 Massachusetts Senior Circuit Breaker Credit Parameters
+  date: 2024-03-14 15:00:02
+- bump: minor
+  changes:
+    added:
+    - Arizona 2023 income tax parameters.
+    - Arizona filing status variable.
+  date: 2024-03-14 15:33:17
+- bump: minor
+  changes:
+    added:
+    - Uprate the Biden Budget Medicare and NIIT proposal thresholds.
+    - Cap the NIIT increase threshold at investment income.
+  date: 2024-03-14 17:21:34
+- bump: minor
+  changes:
+    added:
+    - Connecticut property tax credit.
+  date: 2024-03-15 02:24:03
+- bump: minor
+  changes:
+    added:
+    - Change the start date of SNAP uprating.
+  date: 2024-03-15 03:47:15
+- bump: minor
+  changes:
+    added:
+    - Tuition and fees deduction.
+  date: 2024-03-15 04:21:11
+- bump: minor
+  changes:
+    added:
+    - Update 2023 California income tax parameters.
+  date: 2024-03-15 12:03:13
+- bump: minor
+  changes:
+    added:
+    - 2023 California CPI.
+  date: 2024-03-15 13:29:27
+- bump: patch
+  changes:
+    added:
+    - PSL_catalog.json.
+  date: 2024-03-15 14:43:16
+- bump: patch
+  changes:
+    fixed:
+    - Remove long-term capital gains from the list of Virginia subtractions.
+  date: 2024-03-15 14:48:22
+- bump: patch
+  changes:
+    fixed:
+    - Adjust the remove_head_of_household reform to reflect the new filing_status.py
+      logic.
+  date: 2024-03-15 21:19:02
+- bump: patch
+  changes:
+    changed:
+    - Break filing_status out into multiple variables.
+    - Simplify and test reform to repeal head of household filing status.
+  date: 2024-03-16 03:02:17
+- bump: patch
+  changes:
+    added:
+    - A defined_for statement to ca_calworks_child_care for faster execution.
+    - Intermediate variables for state child care subsidies.
+  date: 2024-03-17 15:13:36
+- bump: patch
+  changes:
+    fixed:
+    - Remove the qualified business income deduction from the retirement credit eligibility
+      calculation.
+  date: 2024-03-17 18:48:55
+- bump: patch
+  changes:
+    fixed:
+    - Adjust the Calworks reimbursement variables to represent monthly values.
+  date: 2024-03-18 18:52:52

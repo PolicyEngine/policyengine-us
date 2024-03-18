@@ -1,6 +1,6 @@
 description: The IRS limits the saver's credit to taxpayers with adjusted gross income below or equal to this, based on filing status.  
 metadata:
-  unit: year
+  unit: currency-USD
   period: year
   label: Retirement Savings Contributions Credit (Saver’s Credit) AGI threshold
   breakdown:
@@ -15,17 +15,37 @@ metadata:
     - title: Form 8880 - 2023 Credit for Qualified Retirement Savings Contributions
       href: https://www.irs.gov/pub/irs-pdf/f8880.pdf#page=1
 JOINT:
+  2019-01-01: 64_000
+  2020-01-01: 65_000
+  2021-01-01: 66_000
+  2022-01-01: 68_000
   2023-01-01: 73_000
   2024-01-01: 76_500
 SINGLE:
-  2023-01-01: 36_500
+  2019-01-01: 32_000
+  2020-01-01: 32_500
+  2021-01-01: 33_000
+  2022-01-01: 34_000
+  2023-01-01: 35_500
   2024-01-01: 38_250
 SEPARATE:
-  2023-01-01: 36_500
+  2019-01-01: 32_000
+  2020-01-01: 32_500
+  2021-01-01: 33_000
+  2022-01-01: 34_000
+  2023-01-01: 35_500
   2024-01-01: 38_250
 HEAD_OF_HOUSEHOLD:
+  2019-01-01: 48_000
+  2020-01-01: 48_750
+  2021-01-01: 49_500
+  2022-01-01: 34_000
   2023-01-01: 54_750
   2024-01-01: 57_375
 WIDOW:
-  2023-01-01: 36_500
+  2019-01-01: 32_000
+  2020-01-01: 32_500
+  2021-01-01: 33_000
+  2022-01-01: 34_000
+  2023-01-01: 35_500
   2024-01-01: 38_250
