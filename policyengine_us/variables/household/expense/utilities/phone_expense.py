@@ -3,7 +3,7 @@ from policyengine_us.model_api import *
 
 class phone_expense(Variable):
     value_type = float
-    entity = SPMUnit
+    entity = Household
     label = "Phone expense"
     unit = USD
     definition_period = YEAR
