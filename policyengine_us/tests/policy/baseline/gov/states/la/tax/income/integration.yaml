@@ -1,0 +1,114 @@
+- name: Tax unit with taxsimid 98672 in e21.its.csv and e21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 50
+        employment_income: 131_010
+        taxable_interest_income: 5_505
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person2:
+        age: 50
+        employment_income: 157_010
+        taxable_interest_income: 5_505
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person3:
+        age: 16
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person4:
+        age: 16
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person5:
+        age: 16
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person6:
+        age: 16
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+        premium_tax_credit: 0  # not in TAXSIM35
+        local_income_tax: 0  # not in TAXSIM35
+        state_sales_tax: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+        snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_fips: 22  # LA
+  output:  # expected results from patched TAXSIM35 2024-01-30 version
+    ctc: 8_000
+    refundable_ctc: 8_000
+    non_refundable_ctc: 0
+    la_exemptions: 13_000
+    la_taxable_income: 244_826.42
+
+- name: Tax unit with taxsimid 99960 in e21.its.csv and e21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 55
+        employment_income: 145010
+        taxable_interest_income: 5505.0
+      person2:
+        age: 55
+        employment_income: 118010
+        taxable_interest_income: 5505.0
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 22  # LA
+  output:  # expected results from patched TAXSIM35 2024-02-05 version
+    la_income_tax: 10869.59
+
+- name: Tax unit with taxsimid 47193 in f21.its.csv and f21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 63
+        employment_income: 40010
+        taxable_interest_income: 11010
+        taxable_private_pension_income: 10000
+        social_security_retirement: 24000
+      person2:
+        age: 16
+      person3:
+        age: 16
+      person4:
+        age: 16
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        premium_tax_credit: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_fips: 22  # LA
+  output:  # expected results from patched TAXSIM35 2024-03-04 version
+    la_agi: 61020
+    la_income_tax: 1686.86

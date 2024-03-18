@@ -1,0 +1,14 @@
+description: Louisiana reduces taxable income by this amount for each qualifying widow(er).
+values:
+  1983-01-01: 1_000
+
+metadata:
+  reference:
+    # The widow exemption amount is not defined in the legal code but is present in the tax forms
+    - title: Louisiana Laws Revised Statutes, Title 47 — Revenue and taxation, RS 47:294 —  Personal exemptions and credit for dependents, B
+      href: https://www.legis.la.gov/legis/Law.aspx?d=101761
+    - title: 2022 Louisiana Individual Income Tax Return IT-540
+      href: https://revenue.louisiana.gov/TaxForms/IT540WEB(2022)%20F%20D2.pdf#page=2
+  unit: currency-USD
+  period: year
+  label: Louisiana qualifying widow exemption amount

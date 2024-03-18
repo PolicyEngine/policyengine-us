@@ -1,0 +1,47 @@
+- name: Part time hourly child care center service.
+  period: 2018
+  input:
+    age: 1
+    ca_calworks_child_care_provider_category: CHILD_CARE_CENTER
+    ca_calworks_child_care_time_category: HOURLY
+    ca_calworks_child_care_full_time: false
+    ca_calworks_child_care_child_age_eligible: true
+    state_code: CA
+  output:
+    ca_calworks_child_care_payment_standard: 16.28
+
+- name: Full time weekly family child care home service.
+  period: 2018
+  input:
+    age: 2
+    ca_calworks_child_care_provider_category: FAMILY_CHILD_CARE_HOME
+    ca_calworks_child_care_time_category: WEEKLY
+    ca_calworks_child_care_full_time: true
+    ca_calworks_child_care_child_age_eligible: true
+    state_code: CA
+  output:
+    ca_calworks_child_care_payment_standard: 214.55
+
+- name: Full time monthly license exempt service.
+  period: 2018
+  input:
+    age: 6
+    ca_calworks_child_care_provider_category: LICENSE_EXEMPT
+    ca_calworks_child_care_time_category: MONTHLY
+    ca_calworks_child_care_full_time: true
+    ca_calworks_child_care_child_age_eligible: true
+    state_code: CA
+  output:
+    ca_calworks_child_care_payment_standard: 460.09
+
+- name: Full time monthly family child care home service but is not a child.
+  period: 2021
+  input:
+    age: 3
+    ca_calworks_child_care_provider_category: FAMILY_CHILD_CARE_HOME
+    ca_calworks_child_care_time_category: MONTHLY
+    ca_calworks_child_care_full_time: true
+    ca_calworks_child_care_child_age_eligible: false
+    state_code: CA
+  output:
+    ca_calworks_child_care_payment_standard: 0

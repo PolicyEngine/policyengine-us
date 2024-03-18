@@ -18,28 +18,20 @@ class filing_status(Variable):
     label = "Filing status for the tax unit"
 
     def formula(tax_unit, period, parameters):
-        has_spouse = add(tax_unit, period, ["is_tax_unit_spouse"]) > 0
-        has_dependents = tax_unit("tax_unit_dependents", period) > 0
         person = tax_unit.members
         is_separated = tax_unit.any(person("is_separated", period))
-        is_widowed = tax_unit.any(person("is_widowed", period))
         return select(
             [
-                has_dependents & ~has_spouse,
-                has_spouse,
                 is_separated,
-                is_widowed,
-                True,
+                tax_unit("tax_unit_married", period),
+                tax_unit("surviving_spouse_eligible", period),
+                tax_unit("head_of_household_eligible", period),
             ],
             [
-                FilingStatus.HEAD_OF_HOUSEHOLD,
-                FilingStatus.JOINT,
                 FilingStatus.SEPARATE,
+                FilingStatus.JOINT,
                 FilingStatus.WIDOW,
-                FilingStatus.SINGLE,
+                FilingStatus.HEAD_OF_HOUSEHOLD,
             ],
+            default=FilingStatus.SINGLE,
         )
-
-
-# For Tax-Calculator.
-mars = variable_alias("mars", filing_status)

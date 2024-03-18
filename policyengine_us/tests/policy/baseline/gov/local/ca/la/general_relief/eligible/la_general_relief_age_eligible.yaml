@@ -1,0 +1,15 @@
+- name: Eligible
+  period: 2022
+  input:
+    in_la: true
+    age_head: 18
+  output:
+    la_general_relief_age_eligible: true
+
+- name: Ineligible
+  period: 2022
+  input:
+    in_la: true
+    age_head: 17
+  output:
+    la_general_relief_age_eligible: false

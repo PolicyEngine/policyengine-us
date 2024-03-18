@@ -1,4 +1,4 @@
-- name: PA income tax before forgiveness is 3.07%.
+- name: PA use tax rate amount for the lowest income bracket in Philadelphia county.
   period: 2021
   input:
     state_code: PA
@@ -8,7 +8,7 @@
     pa_use_tax: 8
   
 
-- name: PA income tax before forgiveness is 3.07%.
+- name: PA use tax rate amount for the lowest income bracket in Allegheny county.
   period: 2021
   input:
     state_code: PA
@@ -18,10 +18,11 @@
     pa_use_tax: 7
 
 
-- name: PA income tax before forgiveness is 3.07%.
+- name: PA use tax rate amount for the lowest income bracket in the rest of PA.
   period: 2021
   input:
     state_code: PA
     pa_total_taxable_income: 8_000
+    county: BLAIR_COUNTY_PA
   output:
     pa_use_tax: 6

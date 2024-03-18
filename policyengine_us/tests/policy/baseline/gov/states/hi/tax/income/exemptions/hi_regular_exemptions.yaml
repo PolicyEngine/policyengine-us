@@ -1,0 +1,58 @@
+- name: Three exemptions
+  period: 2021
+  input:
+    exemptions_count: 3
+    state_code: HI
+  output:
+    hi_regular_exemptions: 3_432
+    
+- name: No exemptions
+  period: 2021
+  input:
+    exemptions_count: 0
+    state_code: HI
+  output:
+    hi_regular_exemptions: 0
+
+- name: Two people with head aged
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 65
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 64
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        exemptions_count: 2
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI  
+  output: 
+    hi_regular_exemptions: 3_432 
+
+- name: Two people with head and spouse aged
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 65
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 65
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        exemptions_count: 2
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI  
+  output: 
+    hi_regular_exemptions: 4_576
+ 

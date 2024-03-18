@@ -1,0 +1,29 @@
+- name: Person with income over the standard deduction amount
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    irs_employment_income: 10_000
+    filing_status: JOINT
+    state_code: OK
+  output:
+    ok_withheld_income_tax: 33.875
+
+- name: Changing the filing status should not change the output 
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    irs_employment_income: 10_000
+    filing_status: WIDOW
+    state_code: OK
+  output:
+    ok_withheld_income_tax: 33.875
+
+- name: Capped at 0
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    irs_employment_income: 6_300
+    filing_status: WIDOW
+    state_code: OK
+  output:
+    ok_withheld_income_tax: 0

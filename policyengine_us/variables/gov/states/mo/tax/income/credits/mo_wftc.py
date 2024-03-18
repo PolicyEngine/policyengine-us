@@ -11,7 +11,7 @@ class mo_wftc(Variable):
     defined_for = StateCode.MO
 
     def formula_2023(tax_unit, period, parameters):
-        federal_eitc = tax_unit("earned_income_tax_credit", period)
+        federal_eitc = tax_unit("eitc", period)
         rate = parameters(
             period
         ).gov.states.mo.tax.income.credits.wftc.eitc_match

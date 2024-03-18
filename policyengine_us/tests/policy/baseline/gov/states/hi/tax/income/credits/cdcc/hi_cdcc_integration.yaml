@@ -1,0 +1,125 @@
+- name: integration test 1
+  period: 2022
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        is_disabled: false
+        is_full_time_student: false
+        earned_income: 20_000
+        dependent_care_employer_benefits: 1_000
+      spouse:
+        is_tax_unit_spouse: true
+        is_disabled: false
+        is_full_time_student: false
+        earned_income: 30_000
+        dependent_care_employer_benefits: 2_000
+    tax_units:
+      tax_unit:
+        hi_agi: 49_000
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 4_000
+        members: [head, spouse]
+        count_cdcc_eligible: 2
+    households:
+      household:
+        members: [head, spouse]
+        state_code: HI
+  output:
+    hi_cdcc_income_floor_eligible: [false, false]
+    hi_cdcc_min_head_spouse_earned: 20_000
+    hi_dependent_care_benefits: 1_800
+    hi_cdcc: 360
+
+- name: integration test 2, single parent
+  period: 2022
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        is_disabled: false
+        is_full_time_student: false
+        earned_income: 20_000
+        dependent_care_employer_benefits: 1_000
+    tax_units:
+      tax_unit:
+        hi_agi: 19_000
+        filing_status: SINGLE
+        tax_unit_childcare_expenses: 4_000
+        members: [head]
+        count_cdcc_eligible: 2
+    households:
+      household:
+        members: [head]
+        state_code: HI
+  output:
+    hi_cdcc_income_floor_eligible: false
+    hi_cdcc_min_head_spouse_earned: 20_000
+    hi_dependent_care_benefits: 3_800
+    hi_cdcc: 950
+
+- name: integration test 3, one disabled parent, one child
+  period: 2022
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        is_disabled: false
+        is_full_time_student: false
+        earned_income: 20_000
+        dependent_care_employer_benefits: 1_000
+      spouse:
+        is_tax_unit_spouse: true
+        is_disabled: true
+        is_full_time_student: false
+        earned_income: 0
+        dependent_care_employer_benefits: 0
+    tax_units:
+      tax_unit:
+        hi_agi: 19_000
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 4_000
+        members: [head, spouse]
+        count_cdcc_eligible: 1
+    households:
+      household:
+        members: [head, spouse]
+        state_code: HI
+  output:
+    hi_cdcc_income_floor_eligible: [false, true]
+    hi_cdcc_min_head_spouse_earned: 2_400
+    hi_dependent_care_benefits: 1_400
+    hi_cdcc: 350
+
+- name: integration test 4, one disabled parent, one child, large benefit
+  period: 2022
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        is_disabled: false
+        is_full_time_student: false
+        earned_income: 20_000
+        dependent_care_employer_benefits: 5_000
+      spouse:
+        is_tax_unit_spouse: true
+        is_disabled: true
+        is_full_time_student: false
+        earned_income: 0
+        dependent_care_employer_benefits: 0
+    tax_units:
+      tax_unit:
+        hi_agi: 19_000
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 4_000
+        members: [head, spouse]
+        count_cdcc_eligible: 1
+    households:
+      household:
+        members: [head, spouse]
+        state_code: HI
+  output:
+    hi_cdcc_income_floor_eligible: [false, true]
+    hi_cdcc_min_head_spouse_earned: 2_400
+    hi_dependent_care_benefits: 0
+    hi_cdcc: 0

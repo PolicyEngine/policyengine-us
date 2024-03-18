@@ -1,0 +1,18 @@
+- name: Individual Utility Allowance 1
+  period: 2023
+  absolute_error_margin: 1
+  input:
+    snap_utility_allowance_type: IUA
+    snap_utility_region_str: CA
+    phone_expense: 20
+  output:
+    snap_individual_utility_allowance: 250.50
+
+- name: Individual Utility Allowance 2
+  period: 2023
+  input:
+    snap_utility_allowance_type: IUA
+    snap_utility_region_str: AK
+    trash_expense: 20
+  output:
+    snap_individual_utility_allowance: 3942.11

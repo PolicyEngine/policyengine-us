@@ -1,0 +1,20 @@
+description: Louisiana exempts these sources from adjusted gross income.
+values:
+  2021-01-01:
+    - la_military_pay_exclusion # 10E
+    - la_disability_income_exemption_person # 49E
+    - la_retirement_exemption_person # 06E
+    - taxable_social_security # 07E
+metadata:
+  unit: list  
+  label: Louisiana adjusted gross income exempt income
+  period: year  
+  reference:
+    - title: General Information for Filing Your 2022 Louisiana Resident Individual Income Tax Return | Exemption Code 49E
+      href: https://revenue.louisiana.gov/TaxForms/IT540iWEB(2022)D1.pdf#page=8
+    - title: Louisiana statutes, RS 47:44 - Annual retirement or disability income; exemption from taxation (B)
+      href: https://www.legis.la.gov/legis/Law.aspx?d=102133
+    - title: Louisiana statutes, RS 47:44 - Annual retirement or disability income; exemption from taxation (A)
+      href: https://www.legis.la.gov/legis/Law.aspx?d=102133
+    - title: R.S. 47:293(9)(e) 
+      href: http://www.legis.la.gov/legis/Law.aspx?d=101760

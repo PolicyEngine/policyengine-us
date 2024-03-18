@@ -1,7 +1,7 @@
 - name: 5% of federal EITC after 2019.
   period: 2023
   input:
-    earned_income_tax_credit: 100
+    eitc: 100
     state_code: LA
   output:
     la_eitc: 5
@@ -9,7 +9,7 @@
 - name: If no federal EITC, no Louisiana EITC.
   period: 2023
   input:
-    earned_income_tax_credit: 0
+    eitc: 0
     state_code: LA
   output:
     la_eitc: 0

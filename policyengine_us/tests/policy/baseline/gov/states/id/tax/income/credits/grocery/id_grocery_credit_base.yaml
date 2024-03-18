@@ -1,0 +1,24 @@
+- name: two person are eligible
+  period: 2022
+  input:
+    people:
+      person1: {}
+      person2: {}
+    households: 
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    id_grocery_credit_base: [100,100]
+
+- name: One person
+  period: 2022
+  input:
+    people:
+      person1: {}
+    households: 
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    id_grocery_credit_base: [100]

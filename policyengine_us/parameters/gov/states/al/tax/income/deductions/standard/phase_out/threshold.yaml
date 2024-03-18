@@ -1,6 +1,6 @@
-description:  Income threshold of the Alabama standard deductions.
+description: Alabama phases its standard deduction out for filers with adjusted gross income above this threshold, based on filing status.
 metadata:
-  label: Alabama standard deduction
+  label: Alabama standard deduction phase-out threshold
   period: year
   unit: currency-USD
   breakdown:
@@ -8,16 +8,24 @@ metadata:
   reference:
   - title: The Code of Alabama 1975 Section 40-18-15(b)(4)
     href: https://alisondb.legislature.state.al.us/alison/CodeOfAlabama/1975/Coatoc.htm
-  - title: 2022 Alabama Department of Revenue -Form 40 Booklet Page9
+  - title: The Code of Alabama 1975 Section 40-18-15(b)(3)
+    href: https://alisondb.legislature.state.al.us/alison/CodeOfAlabama/1975/Coatoc.htm
+  - title: 2022 Alabama Department of Revenue -Form 40 Booklet Page 9
     href: https://www.revenue.alabama.gov/ultraviewer/viewer/basic_viewer/index.html?form=2023/01/22f40bk.pdf
-
+  - title: 2021 Alabama Department of Revenue -Form 40 Booklet Page 9
+    href: https://www.revenue.alabama.gov/wp-content/uploads/2022/06/21f40abk.pdf#page=9 
 JOINT:
+  2021-01-01: 23_000
   2022-01-01: 25_500
 HEAD_OF_HOUSEHOLD:
+  2021-01-01: 23_000
   2022-01-01: 25_500
 WIDOW:
+  2021-01-01: 23_000
   2022-01-01: 25_500
 SINGLE:
+  2021-01-01: 23_000
   2022-01-01: 25_500
 SEPARATE:
+  2021-01-01: 10_500
   2022-01-01: 12_750

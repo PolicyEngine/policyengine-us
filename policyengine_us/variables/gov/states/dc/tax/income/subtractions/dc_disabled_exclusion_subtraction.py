@@ -9,23 +9,34 @@ class dc_disabled_exclusion_subtraction(Variable):
     definition_period = YEAR
     reference = (
         "https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/52926_D-40_12.21.21_Final_Rev011122.pdf#page=63"
-        "https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2021_D-2440.pdf"
         "https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2022_D-40_Booklet_Final_blk_01_23_23_Ordc.pdf#page=55"
-        "https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2022_D-2440.pdf"
+        # More details on page 56.
+        "https://code.dccouncil.gov/us/dc/council/code/titles/47/chapters/18/subchapters/III"
     )
     defined_for = StateCode.DC
 
     def formula(person, period, parameters):
-        # determine disablity-related eligibility
+        # Determine disablity-related eligibility
         is_disabled = person("is_permanently_and_totally_disabled", period)
-        gets_ssi = person("ssi", period) > 0
-        gets_ssdi = person("social_security_disability", period) > 0
-        disabled_eligible = is_disabled & (gets_ssi | gets_ssdi)
-        # determine income-related eligibility
-        INCOME_SOURCES = ["household_market_income", "household_benefits"]
-        household_income = add(person.household, period, INCOME_SOURCES)
-        p = parameters(period).gov.states.dc.tax.income.subtractions
-        income_eligible = household_income < p.disabled_exclusion.income_limit
-        # return subtraction amount if meet both eligibilty requirements
-        subtraction_amount = p.disabled_exclusion.amount
-        return (disabled_eligible & income_eligible) * subtraction_amount
+        gets_ssi_or_ssdi = (
+            add(person, period, ["ssi", "social_security_disability"]) > 0
+        )
+        disabled_eligible = is_disabled & gets_ssi_or_ssdi
+        # Determine income-related eligibility
+        p = parameters(
+            period
+        ).gov.states.dc.tax.income.subtractions.disabled_exclusion
+        # Program counts AGI of all persons residing in a household, except
+        # those under a written lease.
+        # Assume tax unit for no
+        tax_unit = person.tax_unit
+        agi = tax_unit("adjusted_gross_income", period)
+        income_eligible = agi < p.income_limit
+        # Return subtraction amount if meet both eligibility requirements.
+        # Use total household income, even that excluded from federal AGI.
+        # Limit to IRS countable income as inclusion of benefits are unclear.
+        household_gross_income = add(
+            person.household, period, ["irs_gross_income"]
+        )
+        capped_amount = min_(household_gross_income, p.amount)
+        return disabled_eligible * income_eligible * capped_amount
