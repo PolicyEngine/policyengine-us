@@ -1,0 +1,35 @@
+description: Raised maximum SNAP allotment in District of Columbia and household size in 2024.
+metadata:
+  unit: currency-USD
+  label: DC SNAP max allotment
+  breakdown:
+      - range(1, 8)
+  reference:
+    # Effective date from 2024-01-01 to 2024-10-01.
+    - title: Supplemental Nutrition Assistance Program (SNAP) raise in District of Columbia in 2024.
+      href: https://dhs.dc.gov/page/give-snap-raise-heres-what-expect
+  DC:
+    1:
+      2024-01-01: 320
+      2024-10-01: 291
+    2:
+      2024-01-01: 588
+      2024-10-01: 535
+    3:
+      2024-01-01: 842
+      2024-10-01: 766
+    4:
+      2024-01-01: 1070
+      2024-10-01: 973
+    5:
+      2024-01-01: 1270
+      2024-10-01: 1155
+    6:
+      2024-01-01: 1524
+      2024-10-01: 1386
+    7:
+      2024-01-01: 1685
+      2024-10-01: 1532
+    8:
+      2024-01-01: 1926
+      2024-10-01: 1751
