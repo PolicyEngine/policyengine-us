@@ -5,6 +5,7 @@ class energy_efficient_home_improvement_credit(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
+    label = "Energy efficient home improvement credit"
     documentation = "Residential clean energy credit"
     unit = USD
     reference = "https://www.law.cornell.edu/uscode/text/26/25C"

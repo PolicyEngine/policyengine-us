@@ -1,0 +1,41 @@
+description: Michigan reduces the total amount of household resources by this fraction for disabled or senior filers, based on household resources. 
+brackets:
+  - threshold:
+      2018-01-01: 0
+    amount:
+      2018-01-01: 0
+  - threshold:
+      2018-01-01: 3_000
+    amount:
+      2018-01-01: 0.01
+  - threshold:
+      2018-01-01: 4_000
+    amount:
+      2018-01-01: 0.02
+  - threshold:
+      2018-01-01: 5_000
+    amount:
+      2018-01-01: 0.03
+  - threshold:
+      2018-01-01: 6_000
+    amount:
+      2018-01-01: 0.032
+      
+metadata:
+  type: single_amount
+  amount_unit: /1
+  threshold_unit: currency-USD
+  period: year
+
+  label: Michigan homestead property tax credit disabled or senior exemption rate  
+  reference:
+    - title: Michigan Income Tax Act 206.522 - (1)(c)
+      href: http://legislature.mi.gov/doc.aspx?mcl-206-522
+    - title: 2021 Michigan Taxpayer Assistance Manual
+      href: https://www.michigan.gov/-/media/Project/Websites/taxes/2022RM/UNCAT/2019_Taxpayer_Assistance_Manual.pdf#page=58
+    - title: 2023 Michigan Taxpayer Assistance Manual
+      href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/MISC/Tax-Professionals/Taxpayer_Assistance_Manual.pdf#page=58
+    - title: 2022 MI-1040 Instructions
+      href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2022/2022-IIT-Forms/BOOK_MI-1040.pdf#page=33
+    - title: 2023 MI-1040 Instructions
+      href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2023/2023-IIT-Forms/BOOK_MI-1040.pdf#page=32

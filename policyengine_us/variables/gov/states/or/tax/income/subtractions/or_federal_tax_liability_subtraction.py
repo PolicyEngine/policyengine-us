@@ -17,12 +17,11 @@ class or_federal_tax_liability_subtraction(Variable):
         # calculate Oregon concept of federal income tax
         federal_itax = tax_unit("income_tax", period)
         federal_eitc = tax_unit("eitc", period)
-        seca = add(tax_unit, period, ["self_employment_tax"])
-        or_federal_income_tax = max_(0, federal_itax - seca + federal_eitc)
+        or_federal_income_tax = max_(0, federal_itax + federal_eitc)
         # limit subtraction based on caps scaled to federal AGI
         filing_status = tax_unit("filing_status", period)
         status = filing_status.possible_values
-        caps = (
+        p = (
             parameters(period)
             .gov.states["or"]
             .tax.income.subtractions.federal_tax_liability.cap
@@ -37,11 +36,11 @@ class or_federal_tax_liability_subtraction(Variable):
                 filing_status == status.WIDOW,
             ],
             [
-                caps.single.calc(federal_agi),
-                caps.joint.calc(federal_agi),
-                caps.head_of_household.calc(federal_agi),
-                caps.separate.calc(federal_agi),
-                caps.widow.calc(federal_agi),
+                p.single.calc(federal_agi),
+                p.joint.calc(federal_agi),
+                p.head_of_household.calc(federal_agi),
+                p.separate.calc(federal_agi),
+                p.widow.calc(federal_agi),
             ],
         )
         return min_(or_federal_income_tax, cap)

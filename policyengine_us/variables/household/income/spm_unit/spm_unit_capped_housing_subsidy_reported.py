@@ -7,4 +7,4 @@ class spm_unit_capped_housing_subsidy_reported(Variable):
     label = "SPM unit capped housing subsidy"
     definition_period = YEAR
     unit = USD
-    uprating = "gov.bls.cpi.c_cpi_u"
+    uprating = "gov.bls.cpi.cpi_u"

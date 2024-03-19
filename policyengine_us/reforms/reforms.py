@@ -11,6 +11,12 @@ from .cbo.payroll import (
     create_increase_taxable_earnings_for_social_security_reform,
 )
 from .congress.wyden_smith import create_ctc_expansion_reform
+from .federal import create_abolish_federal_income_tax_reform
+from .federal import create_abolish_payroll_tax_reform
+from .federal import create_reported_state_income_tax_reform
+from .biden.budget_2025 import (
+    create_medicare_and_investment_tax_increase_reform,
+)
 from policyengine_core.reforms import Reform
 import warnings
 
@@ -32,7 +38,18 @@ def create_structural_reforms_from_parameters(parameters, period):
             parameters, period
         )
     )
+    medicare_and_investment_tax_increase = (
+        create_medicare_and_investment_tax_increase_reform(parameters, period)
+    )
     ctc_expansion = create_ctc_expansion_reform(parameters, period)
+
+    abolish_federal_income_tax = create_abolish_federal_income_tax_reform(
+        parameters, period
+    )
+    abolish_payroll_tax = create_abolish_payroll_tax_reform(parameters, period)
+    reported_state_income_tax = create_reported_state_income_tax_reform(
+        parameters, period
+    )
 
     reforms = [
         afa_reform,
@@ -42,6 +59,10 @@ def create_structural_reforms_from_parameters(parameters, period):
         remove_head_of_household,
         increase_taxable_earnings_for_social_security_reform,
         ctc_expansion,
+        abolish_federal_income_tax,
+        abolish_payroll_tax,
+        reported_state_income_tax,
+        medicare_and_investment_tax_increase,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
 
