@@ -1,7 +1,4 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.household.demographic.tax_unit.filing_status import (
-    FilingStatus,
-)
 
 
 def create_remove_head_of_household() -> Reform:
@@ -30,7 +27,7 @@ def create_remove_head_of_household() -> Reform:
 
     class reform(Reform):
         def apply(self):
-            self.update_variable(filing_status)
+            self.neutralize_variable("head_of_household_eligible")
 
     return reform
 
@@ -43,7 +40,7 @@ def create_remove_head_of_household_reform(
 
     p = parameters(period).gov.contrib.congress.romney.family_security_act
 
-    if p.remove_head_of_household is True:
+    if p.remove_head_of_household:
         return create_remove_head_of_household()
     else:
         return None

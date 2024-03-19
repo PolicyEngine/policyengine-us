@@ -13,7 +13,7 @@ class az_family_tax_credit_eligible(Variable):
             period
         ).gov.states.az.tax.income.credits.family_tax_credits
         income = tax_unit("az_agi", period)
-        filing_status = tax_unit("filing_status", period)
+        filing_status = tax_unit("az_filing_status", period)
         status = filing_status.possible_values
         dependents = tax_unit("tax_unit_dependents", period)
         income_limit = select(
