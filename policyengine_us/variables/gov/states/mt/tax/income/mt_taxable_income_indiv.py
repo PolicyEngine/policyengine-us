@@ -15,7 +15,7 @@ class mt_taxable_income_indiv(Variable):
 
     def formula(person, period, parameters):
         mt_agi = person("mt_agi", period)
-        exemptions = person("mt_exemptions_indiv", period)
+        exemptions = person("mt_personal_exemptions_indiv", period)
         reduced_agi = max_(mt_agi - exemptions, 0)
         deductions_and_exemptions = person.tax_unit(
             "mt_tax_unit_deductions_exemptions_indiv", period
