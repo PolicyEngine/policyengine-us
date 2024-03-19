@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class mt_exemptions_indiv(Variable):
+class mt_personal_exemptions_indiv(Variable):
     value_type = float
     entity = Person
     label = "Montana exemptions when married couples file separately"
@@ -15,15 +15,10 @@ class mt_exemptions_indiv(Variable):
         blind_head_or_spouse = blind * head_or_spouse
         # Allocate the dependent exemption to the head
         head = person("is_tax_unit_head", period)
-        dependent_exemption = person("mt_dependent_exemptions", period)
-        total_dependent_exemption = (
-            person.tax_unit.sum(dependent_exemption) * head
-        )
         aged_exemption = person("mt_aged_exemption_eligible_person", period)
         exemption_count = (
             head_or_spouse.astype(int)
             + blind_head_or_spouse.astype(int)
-            + total_dependent_exemption.astype(int)
             + aged_exemption.astype(int)
         )
         p = parameters(period).gov.states.mt.tax.income.exemptions
