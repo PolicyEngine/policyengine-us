@@ -2,6 +2,8 @@ description: Number of returns by filing status and AGI band.
 metadata:
   label: Returns by filing status
   unit: return
+  uprating: calibration.gov.census.populations.total
+  propagate_metadata_to_children: true
 
 SINGLE:
   metadata:
