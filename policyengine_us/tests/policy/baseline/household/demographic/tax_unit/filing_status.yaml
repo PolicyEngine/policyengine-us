@@ -3,88 +3,30 @@
   output:
     filing_status: SINGLE
 
-- name: Married people file as joint.
+- name: Separated file as SEPARATE.
   period: 2022
   input:
-    people:
-      head: {}
-      spouse:
-        is_tax_unit_spouse: true
-    tax_units:
-      tax_unit:
-        members: [head, spouse]
+    is_separated: true
+  output:
+    filing_status: SEPARATE
+
+- name: Married people file as JOINT.
+  period: 2022
+  input:
+    tax_unit_married: true
   output:
     filing_status: JOINT
 
-- name: Married people with dependents file as joint.
+- name: Surviving spouses file as WIDOW.
   period: 2022
   input:
-    people:
-      head: {}
-      spouse:
-        is_tax_unit_spouse: true
-      child:
-        is_child_dependent: true
-    tax_units:
-      tax_unit:
-        members: [head, spouse, child]
-  output:
-    filing_status: JOINT
-
-- name: Single person with dependents files as head of household.
-  period: 2022
-  input:
-    people:
-      head: {}
-      child:
-        is_tax_unit_spouse: false
-        age: 17
-    tax_units:
-      tax_unit:
-        members: [head, child]
-  output:
-    filing_status: HEAD_OF_HOUSEHOLD
-
-- name: Widowed head without dependents files as single.
-  period: 2022
-  input:
-    people:
-      head: 
-        is_widowed: true
-    tax_units:
-      tax_unit:
-        members: [head]
-  output:
-    filing_status: SINGLE
-
-- name: Widowed head with one dependents files as widow.
-  period: 2022
-  input:
-    people:
-      head: 
-        is_tax_unit_head: true
-        is_widowed: true
-      child:
-        is_tax_unit_spouse: false
-        age: 17
-    tax_units:
-      tax_unit:
-        members: [head, child]
+    surviving_spouse_eligible: true
   output:
     filing_status: WIDOW
 
-- name: Widowed dependent in a tax unit should file as HOH.
+- name: Head of household files as such.
   period: 2022
   input:
-    people:
-      head: 
-        is_tax_unit_head: true
-      child:
-        is_tax_unit_spouse: false
-        is_widowed: true
-        age: 17
-    tax_units:
-      tax_unit:
-        members: [head, child]
+    head_of_household_eligible: true
   output:
     filing_status: HEAD_OF_HOUSEHOLD

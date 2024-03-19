@@ -14,7 +14,9 @@ from .congress.wyden_smith import create_ctc_expansion_reform
 from .federal import create_abolish_federal_income_tax_reform
 from .federal import create_abolish_payroll_tax_reform
 from .federal import create_reported_state_income_tax_reform
-from .biden.budget import create_medicare_and_investment_tax_increase_reform
+from .biden.budget_2025 import (
+    create_medicare_and_investment_tax_increase_reform,
+)
 from policyengine_core.reforms import Reform
 import warnings
 

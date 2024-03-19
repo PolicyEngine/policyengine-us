@@ -25,5 +25,10 @@ class mt_taxable_income_joint(Variable):
         )
         # Tax units can claim the larger of the itemized or standard deductions
         deductions = max_(itemized_deductions, standard_deduction)
-        exemptions = add(person.tax_unit, period, ["mt_exemptions_joint"])
+        exemptions = add(
+            person.tax_unit,
+            period,
+            ["mt_personal_exemptions_joint", "mt_dependent_exemptions_person"],
+        )
+
         return max_(0, total_agi - deductions - exemptions)
