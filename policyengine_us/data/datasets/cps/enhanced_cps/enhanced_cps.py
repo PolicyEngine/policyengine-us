@@ -120,4 +120,4 @@ class EnhancedCPS_2022(EnhancedCPS):
     time_period = 2022
     num_years = 4
     file_path = STORAGE_FOLDER / "enhanced_cps_2022.h5"
-    url = "release://policyengine/policyengine-us/enhanced-cps-2023/enhanced_cps.h5"
+    url = "release://policyengine/policyengine-us/enhanced-cps-2023/enhanced_cps_2024_03_19.h5"
