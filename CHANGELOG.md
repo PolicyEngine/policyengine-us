@@ -5,6 +5,44 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.709.0] - 2024-03-19 03:00:29
+
+### Added
+
+- 2023 Connecticut tax rules.
+
+## [0.708.8] - 2024-03-19 02:52:32
+
+### Fixed
+
+- Allocate the Montana dependent exemptions optimally if the filing status is married filing separately.
+
+## [0.708.7] - 2024-03-18 18:52:52
+
+### Fixed
+
+- Adjust the Calworks reimbursement variables to represent monthly values.
+
+## [0.708.6] - 2024-03-17 18:48:55
+
+### Fixed
+
+- Remove the qualified business income deduction from the retirement credit eligibility calculation.
+
+## [0.708.5] - 2024-03-17 15:13:36
+
+### Added
+
+- A defined_for statement to ca_calworks_child_care for faster execution.
+- Intermediate variables for state child care subsidies.
+
+## [0.708.4] - 2024-03-16 03:02:17
+
+### Changed
+
+- Break filing_status out into multiple variables.
+- Simplify and test reform to repeal head of household filing status.
+
 ## [0.708.3] - 2024-03-15 21:19:02
 
 ### Fixed
@@ -7864,6 +7902,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.709.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.708.8...0.709.0
+[0.708.8]: https://github.com/PolicyEngine/policyengine-us/compare/0.708.7...0.708.8
+[0.708.7]: https://github.com/PolicyEngine/policyengine-us/compare/0.708.6...0.708.7
+[0.708.6]: https://github.com/PolicyEngine/policyengine-us/compare/0.708.5...0.708.6
+[0.708.5]: https://github.com/PolicyEngine/policyengine-us/compare/0.708.4...0.708.5
+[0.708.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.708.3...0.708.4
 [0.708.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.708.2...0.708.3
 [0.708.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.708.1...0.708.2
 [0.708.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.708.0...0.708.1

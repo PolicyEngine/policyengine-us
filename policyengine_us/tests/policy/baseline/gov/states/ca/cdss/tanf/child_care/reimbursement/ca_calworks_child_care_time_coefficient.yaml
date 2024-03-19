@@ -1,5 +1,5 @@
 - name: Hourly child care service time coefficient equals to hours per day times days per month.
-  period: 2023
+  period: 2023-01
   input:
     ca_calworks_child_care_time_category: HOURLY
     childcare_hours_per_day: 5
@@ -10,7 +10,7 @@
     ca_calworks_child_care_time_coefficient: 50
 
 - name: Hourly child care service time coefficient equals to days per month.
-  period: 2023
+  period: 2023-01
   input:
     ca_calworks_child_care_time_category: DAILY
     childcare_hours_per_day: 5
@@ -21,7 +21,7 @@
     ca_calworks_child_care_time_coefficient: 10
 
 - name: Hourly child care service time coefficient equals to days per month.
-  period: 2023
+  period: 2023-01
   input:
     ca_calworks_child_care_time_category: WEEKLY
     childcare_hours_per_day: 5
@@ -32,7 +32,7 @@
     ca_calworks_child_care_time_coefficient: 2
 
 - name: Hourly child care service time coefficient equals to days per month.
-  period: 2023
+  period: 2023-01
   input:
     ca_calworks_child_care_time_category: MONTHLY
     childcare_hours_per_day: 5

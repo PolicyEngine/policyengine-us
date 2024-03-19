@@ -6700,3 +6700,37 @@
     - Adjust the remove_head_of_household reform to reflect the new filing_status.py
       logic.
   date: 2024-03-15 21:19:02
+- bump: patch
+  changes:
+    changed:
+    - Break filing_status out into multiple variables.
+    - Simplify and test reform to repeal head of household filing status.
+  date: 2024-03-16 03:02:17
+- bump: patch
+  changes:
+    added:
+    - A defined_for statement to ca_calworks_child_care for faster execution.
+    - Intermediate variables for state child care subsidies.
+  date: 2024-03-17 15:13:36
+- bump: patch
+  changes:
+    fixed:
+    - Remove the qualified business income deduction from the retirement credit eligibility
+      calculation.
+  date: 2024-03-17 18:48:55
+- bump: patch
+  changes:
+    fixed:
+    - Adjust the Calworks reimbursement variables to represent monthly values.
+  date: 2024-03-18 18:52:52
+- bump: patch
+  changes:
+    fixed:
+    - Allocate the Montana dependent exemptions optimally if the filing status is
+      married filing separately.
+  date: 2024-03-19 02:52:32
+- bump: minor
+  changes:
+    added:
+    - 2023 Connecticut tax rules.
+  date: 2024-03-19 03:00:29
