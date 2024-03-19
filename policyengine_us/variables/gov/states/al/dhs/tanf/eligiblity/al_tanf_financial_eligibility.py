@@ -23,5 +23,6 @@ class al_tanf_financial_eligibility(Variable):
         reduced_income = max_(income - total_disregard, 0)
         # The payment standard is dependent on the number of people in the household
         unit_size = spm_unit("spm_unit_size", period)
-        payment_standard = p.payment_standard[unit_size] * MONTHS_IN_YEAR
+        capped_unit_size = min_(unit_size, p.max_unit_size)
+        payment_standard = p.payment_standard[capped_unit_size] * MONTHS_IN_YEAR
         return reduced_income < payment_standard
