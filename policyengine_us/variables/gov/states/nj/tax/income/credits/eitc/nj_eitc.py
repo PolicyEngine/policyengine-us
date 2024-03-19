@@ -35,4 +35,4 @@ class nj_eitc(Variable):
             default=0,
         )
 
-        return federal_eitc * p.percent_of_federal_eitc
+        return federal_eitc * p.match

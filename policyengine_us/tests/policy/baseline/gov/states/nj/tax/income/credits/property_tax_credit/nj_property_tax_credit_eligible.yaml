@@ -3,7 +3,7 @@
   absolute_error_margin: 0
   input:
     nj_property_tax_deduction_eligible: false
-    rents: 900
+    rents: true
     age_head: 64
     age_spouse: 64
     blind_head: false
@@ -21,7 +21,7 @@
   absolute_error_margin: 0
   input:
     nj_property_tax_deduction_eligible: true
-    rents: 900
+    rents: true
     age_head: 64
     age_spouse: 64
     blind_head: false
@@ -39,7 +39,7 @@
   absolute_error_margin: 0
   input:
     nj_property_tax_deduction_eligible: false
-    rents: 900
+    rents: true
     age_head: 66
     age_spouse: 64
     blind_head: false
@@ -57,7 +57,7 @@
   absolute_error_margin: 0
   input:
     nj_property_tax_deduction_eligible: false
-    rents: 900
+    rents: true
     age_head: 64
     age_spouse: 64
     blind_head: false
@@ -75,7 +75,7 @@
   absolute_error_margin: 0
   input:
     nj_property_tax_deduction_eligible: false
-    rents: 0
+    rents: false
     age_head: 66
     age_spouse: 64
     blind_head: false
@@ -93,7 +93,7 @@
   absolute_error_margin: 0
   input:
     nj_property_tax_deduction_eligible: true
-    rents: 900
+    rents: true
     age_head: 64
     age_spouse: 64
     blind_head: false
