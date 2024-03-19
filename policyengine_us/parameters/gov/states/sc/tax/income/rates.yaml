@@ -9,15 +9,18 @@ brackets:
      1994-01-01: 2_220
      2021-01-01: 3_110
      2022-01-01: 3_200
+     2023-01-01: 3_330
    rate:
      1994-01-01: 0.03
  - threshold:
      1994-01-01: 4_440
      2021-01-01: 6_220
      2022-01-01: 16_040
+     2023-01-01: 16_680
    rate:
      1994-01-01: 0.04
      2022-01-01: 0.065
+     2023-01-01: 0.064
  - threshold:
      1994-01-01: 6_660
      2021-01-01: 9_330
@@ -40,9 +43,12 @@ brackets:
  - threshold:
      1994-01-01: .inf
 
+ 
 
 metadata:
   reference:
+    - title: SC 1040ES Instructions 2023
+      href: https://dor.sc.gov/forms-site/Forms/SC1040ES_2023.pdf#page=4
     - title: SC 2022 Income Tax Chart
       href: https://dor.sc.gov/forms-site/Forms/SC1040TT_2022.pdf
     - title: SC 2021 Income Tax Chart

@@ -17,4 +17,7 @@ class ky_family_size_tax_credit(Variable):
         income = tax_unit(
             "ky_income_tax_before_non_refundable_credits_unit", period
         )
-        return rate * income
+        personal_credits = tax_unit("ky_personal_tax_credits", period)
+        reduced_income = max_(income - personal_credits, 0)
+
+        return rate * reduced_income
