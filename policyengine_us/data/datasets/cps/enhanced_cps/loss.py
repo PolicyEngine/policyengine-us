@@ -305,6 +305,35 @@ def generate_model_variables(
         targets[name] = VALUES[i] * population_growth_since_21 * 1e3
         equivalisation[name] = FINANCIAL_EQUIVALISATION
 
+    # Tax return counts by filing status
+
+    filing_status = (
+        simulation.calculate("filing_status").replace("WIDOW", "JOINT").values
+    )
+    for filing_status_value in [
+        "SINGLE",
+        "JOINT",
+        "HEAD_OF_HOUSEHOLD",
+        "SEPARATE",
+    ]:
+        parameter = parameters.gov.irs.soi.returns_by_filing_status[
+            filing_status_value
+        ]
+        in_filing_status = filing_status == filing_status_value
+        household_filers = simulation.map_result(
+            in_filing_status * is_filer, "tax_unit", "household"
+        )
+        labels = {
+            "SINGLE": "single",
+            "JOINT": "joint and widow(er)",
+            "HEAD_OF_HOUSEHOLD": "head of household",
+            "SEPARATE": "separate",
+        }
+        label = labels.get(filing_status_value) + " returns (IRS SOI)"
+        values_df[label] = household_filers
+        targets[label] = parameter
+        equivalisation[label] = POPULATION_EQUIVALISATION
+
     targets_array = np.array(list(targets.values()))
     equivalisation_factors_array = np.array(list(equivalisation.values()))
 
