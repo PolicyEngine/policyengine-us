@@ -2,25 +2,31 @@ description: California limits the renter credit to filers with California AGI b
 SINGLE:
   2021-01-01: 45_448
   2022-01-01: 49_220
+  2023-01-01: 50_746
 SEPARATE:
   2021-01-01: 45_448
   2022-01-01: 49_220
+  2023-01-01: 50_746
 WIDOW:
   2021-01-01: 90_896
   2022-01-01: 98_440
+  2023-01-01: 101_492
 JOINT:
   2021-01-01: 90_896
   2022-01-01: 98_440
+  2023-01-01: 101_492
 HEAD_OF_HOUSEHOLD:
   2021-01-01: 90_896
   2022-01-01: 98_440
+  2023-01-01: 101_492
 
 metadata:
   period: year
   unit: currency-USD
   breakdown:
   - filing_status
-  label: "California renter tax credit AGI cap"
+  label: California renter tax credit AGI cap
+  uprating: gov.states.ca.cpi
   # single/separate: $25,000 starting in 1998 indexed by California CPI
   # widow/joint/head: $50,000 starting in 1998 indexed by California CPI
   reference:
@@ -30,4 +36,6 @@ metadata:
     href: https://www.ftb.ca.gov/forms/2021/2021-540-booklet.html
   - title: 2022 California Form 540 instructions
     href: https://www.ftb.ca.gov/forms/2022/2022-540-booklet.html
+  - title: 2023 California Form 540 instructions
+    href: https://www.ftb.ca.gov/forms/2023/2023-540-booklet.html
   economy: false

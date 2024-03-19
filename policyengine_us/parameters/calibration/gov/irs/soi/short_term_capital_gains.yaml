@@ -1,0 +1,8 @@
+description: Total short-term capital gains. Taken from the IRS PUF in the absence of a SOI target.
+values:
+  2015-01-01: -45_000_000_000 # -72 * 63% (same uprating as long-term capital gains)
+  2022-01-01: -72_000_000_000
+metadata:
+  unit: currency-USD
+  label: SOI short-term capital gains
+  uprating: calibration.gov.cbo.income_by_source.net_capital_gain
