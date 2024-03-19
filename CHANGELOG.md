@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.710.1] - 2024-03-19 14:53:23
+
+### Added
+
+- 2023 Michigan Tax Rules.
+
 ## [0.710.0] - 2024-03-19 14:27:50
 
 ### Added
@@ -7908,6 +7914,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.710.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.710.0...0.710.1
 [0.710.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.709.0...0.710.0
 [0.709.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.708.8...0.709.0
 [0.708.8]: https://github.com/PolicyEngine/policyengine-us/compare/0.708.7...0.708.8
