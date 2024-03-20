@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.711.1] - 2024-03-20 04:55:01
+
+### Fixed
+
+- Include the self employment deduction to the list of Michigan additions.
+- Remove the self employment income from the list of household resources.
+- Subtract the above the line deductions from the household resources.
+
 ## [0.711.0] - 2024-03-20 00:27:02
 
 ### Added
@@ -7920,6 +7928,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.711.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.711.0...0.711.1
 [0.711.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.710.1...0.711.0
 [0.710.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.710.0...0.710.1
 [0.710.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.709.0...0.710.0
