@@ -35,7 +35,7 @@ def calibrate(
     time_period: str = "2023",
     training_log_path: str = "training_log.csv.gz",
     learning_rate: float = 2e1,
-    epochs: int = 20_000,
+    epochs: int = 10_000,
 ) -> np.ndarray:
     (
         household_weights,
