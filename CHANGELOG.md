@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.711.2] - 2024-03-20 13:32:09
+
+### Fixed
+
+- Among joint filers, limit the Delaware elderly or disabled exclusion to filers with both head and spouse eligible.
+
 ## [0.711.1] - 2024-03-20 04:55:01
 
 ### Fixed
@@ -7928,6 +7934,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.711.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.711.1...0.711.2
 [0.711.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.711.0...0.711.1
 [0.711.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.710.1...0.711.0
 [0.710.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.710.0...0.710.1
