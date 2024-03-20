@@ -11,16 +11,14 @@ class de_elderly_or_disabled_income_exclusion(Variable):
     defined_for = "de_elderly_or_disabled_income_exclusion_eligible_person"
 
     def formula(person, period, parameters):
+        tax_unit = person.tax_unit
         # First get their filing status.
-        filing_status = person.tax_unit(
-            "filing_status",
-            period,
-        )
+        filing_status = tax_unit("filing_status", period)
         p = parameters(
             period
         ).gov.states.de.tax.income.subtractions.exclusions.elderly_or_disabled
 
-        # If filing jointly, both spouses have to be eligible,
+        # If filing jointly, both spouses have to be eligible.
         joint = filing_status == filing_status.possible_values.JOINT
 
         head = person("is_tax_unit_head", period)
@@ -31,9 +29,9 @@ class de_elderly_or_disabled_income_exclusion(Variable):
             "de_elderly_or_disabled_income_exclusion_eligible_person", period
         )
 
-        eligible_head_present = person.tax_unit.any(head & eligible_person)
+        eligible_head_present = tax_unit.any(head & eligible_person)
 
-        eligible_spouse_present = person.tax_unit.any(spouse & eligible_person)
+        eligible_spouse_present = tax_unit.any(spouse & eligible_person)
 
         eligible_joint_unit = eligible_head_present & eligible_spouse_present
 
