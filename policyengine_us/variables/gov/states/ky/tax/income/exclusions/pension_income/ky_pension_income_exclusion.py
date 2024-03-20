@@ -39,6 +39,6 @@ class ky_pension_income_exclusion(Variable):
             + non_exempt_amount
         )
         # Apply cap (towards just other income if exemption eligible).
-        base = min_(other_income, p.threshold)  
-        exemption = exemption_eligible * exempt_amount  
+        base = min_(other_income, p.threshold)
+        exemption = exemption_eligible * exempt_amount
         return base + exemption
