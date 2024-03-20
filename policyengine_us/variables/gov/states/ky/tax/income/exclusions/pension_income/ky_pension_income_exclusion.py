@@ -38,10 +38,9 @@ class ky_pension_income_exclusion(Variable):
             add(person, period, p.other_retirement_income_sources)
             + non_exempt_amount
         )
-
         # Apply cap (towards just other income if exemption eligible).
         return where(
             exemption_eligible,
             exempt_amount + min_(other_income, p.threshold),
-            min_(pension_income + other_income, p.threshold),
+            min_(other_income, p.threshold),
         )
