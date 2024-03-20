@@ -6749,3 +6749,26 @@
     added:
     - 2023 North Carolina Tax Rules.
   date: 2024-03-20 00:27:02
+- bump: patch
+  changes:
+    fixed:
+    - Include the self employment deduction to the list of Michigan additions.
+    - Remove the self employment income from the list of household resources.
+    - Subtract the above the line deductions from the household resources.
+  date: 2024-03-20 04:55:01
+- bump: patch
+  changes:
+    fixed:
+    - Among joint filers, limit the Delaware elderly or disabled exclusion to filers
+      with both head and spouse eligible.
+  date: 2024-03-20 13:32:09
+- bump: patch
+  changes:
+    fixed:
+    - Adjust the Kentucky pension income exclusion to not count pension twice.
+  date: 2024-03-20 19:07:38
+- bump: patch
+  changes:
+    fixed:
+    - Make Arkansas childcare expense credit non-refundable.
+  date: 2024-03-20 19:56:27
