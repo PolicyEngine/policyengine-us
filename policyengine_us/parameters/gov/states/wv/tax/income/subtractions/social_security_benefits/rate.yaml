@@ -1,0 +1,18 @@
+description: West Virginia subtracts this fraction of taxable social security benefits from adjusted gross income.
+metadata:
+  period: year
+  unit: /1
+  label: West Virginia social security benefits subtraction rate
+  reference:
+  - title: West Virginia Personal Income Tax Forms And Instructions 2020 LINE 33
+    href: https://tax.wv.gov/Documents/TaxForms/2020/it140.booklet.pdf#page=24
+  - title: West Virginia Personal Income Tax Forms And Instructions 2020 LINE 32
+    href: https://tax.wv.gov/Documents/TaxForms/2021/it140.booklet.pdf#page=24
+  - title: West Virginia Personal Income Tax Forms And Instructions 2022 LINE 32
+    href: https://tax.wv.gov/Documents/PIT/2022/PersonalIncomeTaxFormsAndInstructions.2022.pdf#page=25
+  - title: Code of West Virginia §11-21-12 (c)(8)(A) - (c)(8)(C)
+    href: https://code.wvlegislature.gov/11-21-12/
+values:
+  2020-01-01: 0.35
+  2021-01-01: 0.65
+  2022-01-01: 1

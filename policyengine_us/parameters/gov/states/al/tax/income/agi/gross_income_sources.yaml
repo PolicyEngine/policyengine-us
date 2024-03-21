@@ -1,0 +1,28 @@
+description: Alabama counts these income sources for the state gross income.
+values:
+  2021-01-01:
+    - irs_employment_income
+    - self_employment_income
+    - interest_income
+    - dividend_income
+    - alimony_income
+    - taxable_ira_distributions
+    - taxable_401k_distributions
+    - taxable_sep_distributions
+    - taxable_403b_distributions
+    - keogh_distributions # Keogh plans don't have a Roth option.
+    - pension_income
+    - rental_income
+    - capital_gains
+
+metadata:
+  unit: list
+  period: year
+  label: Alabama gross income income sources
+  reference:
+    - title: 2022 Alabama Department of Revenue Form 40
+      href: https://www.revenue.alabama.gov/wp-content/uploads/2023/01/22f40blk.pdf#page=2
+    - title: 2021 Alabama Department of Revenue Form 40
+      href: https://www.revenue.alabama.gov/forms/2021-alabama-individual-income-tax-return-2/
+    - title: The Code of Alabama 1975 Section 40-18-14 
+      href: https://alisondb.legislature.state.al.us/alison/CodeOfAlabama/1975/Coatoc.htm

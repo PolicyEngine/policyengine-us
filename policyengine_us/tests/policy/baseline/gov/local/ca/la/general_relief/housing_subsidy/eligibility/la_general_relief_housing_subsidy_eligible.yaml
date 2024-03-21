@@ -1,0 +1,65 @@
+- name: Eligible
+  period: 2022
+  input:
+    is_homeless: true
+    la_general_relief_eligible: true
+    la_general_relief_housing_subsidy_program_eligible: true
+    tax_unit_dependents: 0
+    la_general_relief_housing_subsidy_base_amount_eligible: true
+  output:
+    la_general_relief_housing_subsidy_eligible: true
+
+- name: Dependents ineligible
+  period: 2022
+  input:
+    is_homeless: true
+    la_general_relief_eligible: true
+    la_general_relief_housing_subsidy_program_eligible: true
+    tax_unit_dependents: 1
+    la_general_relief_housing_subsidy_base_amount_eligible: true
+  output:
+    la_general_relief_housing_subsidy_eligible: false
+
+- name: Base amount ineligible
+  period: 2022
+  input:
+    is_homeless: true
+    la_general_relief_eligible: true
+    la_general_relief_housing_subsidy_program_eligible: true
+    tax_unit_dependents: 0
+    la_general_relief_housing_subsidy_base_amount_eligible: false
+  output:
+    la_general_relief_housing_subsidy_eligible: false
+
+- name: Housing subsidy ineligible
+  period: 2022
+  input:
+    is_homeless: true
+    la_general_relief_eligible: true
+    la_general_relief_housing_subsidy_program_eligible: false
+    tax_unit_dependents: 0
+    la_general_relief_housing_subsidy_base_amount_eligible: true
+  output:
+    la_general_relief_housing_subsidy_eligible: false
+
+- name: Not homeless
+  period: 2022
+  input:
+    is_homeless: false
+    la_general_relief_eligible: true
+    la_general_relief_housing_subsidy_program_eligible: true
+    tax_unit_dependents: 0
+    la_general_relief_housing_subsidy_base_amount_eligible: true
+  output:
+    la_general_relief_housing_subsidy_eligible: false
+
+- name: General relief ineligible
+  period: 2022
+  input:
+    is_homeless: true
+    la_general_relief_eligible: false
+    la_general_relief_housing_subsidy_program_eligible: true
+    tax_unit_dependents: 0
+    la_general_relief_housing_subsidy_base_amount_eligible: true
+  output:
+    la_general_relief_housing_subsidy_eligible: false

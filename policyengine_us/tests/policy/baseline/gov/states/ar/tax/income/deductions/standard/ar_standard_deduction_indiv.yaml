@@ -1,0 +1,77 @@
+- name: In the joint case, the head and spouse get the separate standard deduction amount
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+      person2:
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        state_filing_status_if_married_filing_separately_on_same_return: SEPARATE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    ar_standard_deduction_indiv: [2_270, 2_270]
+
+- name: Separate filers 
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+      person2:
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        state_filing_status_if_married_filing_separately_on_same_return: SEPARATE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    ar_standard_deduction_indiv: [2_270, 2_270]
+
+- name: Single filers 
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+      person2:
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        state_filing_status_if_married_filing_separately_on_same_return: SINGLE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    ar_standard_deduction_indiv: [2_270, 2_270]
+
+- name: No deduction for dependents 
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+      person2:
+        is_tax_unit_head_or_spouse: true
+      person3:
+        is_tax_unit_head_or_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        state_filing_status_if_married_filing_separately_on_same_return: SEPARATE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    ar_standard_deduction_indiv: [2_270, 2_270, 0]
