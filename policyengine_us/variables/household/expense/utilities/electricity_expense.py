@@ -8,10 +8,10 @@ class electricity_expense(Variable):
     unit = USD
     definition_period = YEAR
 
-    def formula(spm_unit, period, parameters):
-        pre_subsidy_electricity_expenses = spm_unit.household(
+    def formula(household, period, parameters):
+        pre_subsidy_electricity_expenses = household(
             "pre_subsidy_electricity_expense", period
         )
         p = parameters(period).household.expense.utilities
-        subsidies = add(spm_unit, period, p.subsidies)
+        subsidies = add(household, period, p.subsidies)
         return max_(pre_subsidy_electricity_expenses - subsidies, 0)
