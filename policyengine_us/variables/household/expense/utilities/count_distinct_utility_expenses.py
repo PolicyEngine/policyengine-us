@@ -22,7 +22,7 @@ class count_distinct_utility_expenses(Variable):
         ]
         return sum(
             [
-                spm_unit(variable + "_expense", period) > 0
+                spm_unit.household(variable + "_expense", period) > 0
                 for variable in UTILITIES
             ]
         )

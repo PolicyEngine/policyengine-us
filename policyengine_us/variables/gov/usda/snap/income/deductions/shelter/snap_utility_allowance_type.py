@@ -30,7 +30,7 @@ class snap_utility_allowance_type(Variable):
         lua_is_defined = lua.active[region].astype(bool)
         return select(
             [
-                spm_unit("has_heating_cooling_expense", period),
+                spm_unit.household("has_heating_cooling_expense", period),
                 lua_is_defined & (distinct_utility_bills >= 2),
                 distinct_utility_bills > 0,
             ],

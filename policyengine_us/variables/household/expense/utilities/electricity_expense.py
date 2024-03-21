@@ -9,7 +9,7 @@ class electricity_expense(Variable):
     definition_period = YEAR
 
     def formula(spm_unit, period, parameters):
-        pre_subsidy_electricity_expenses = spm_unit(
+        pre_subsidy_electricity_expenses = spm_unit.household(
             "pre_subsidy_electricity_expense", period
         )
         p = parameters(period).household.expense.utilities
