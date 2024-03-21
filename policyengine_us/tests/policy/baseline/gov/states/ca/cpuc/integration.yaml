@@ -60,10 +60,10 @@
     spm_units:
       spm_unit:
         members: [parent, child1, child2]
-        pre_subsidy_electricity_expense: 100
     households:
       household:
         members: [parent, child1, child2]
+        pre_subsidy_electricity_expense: 100
         state_code: CA
   output:
     # Eligible due to child Medicaid.
@@ -87,10 +87,10 @@
     spm_units:
       spm_unit:
         members: [adult1, adult2, adult3]
-        pre_subsidy_electricity_expense: 100
     households:
       household:
         members: [adult1, adult2, adult3]
+        pre_subsidy_electricity_expense: 100
         state_code: CA
   output:
     ca_care_categorically_eligible: false
