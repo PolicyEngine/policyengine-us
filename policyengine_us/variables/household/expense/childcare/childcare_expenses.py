@@ -12,6 +12,11 @@ class childcare_expenses(Variable):
         pre_subsidy_childcare_expenses = add(
             spm_unit, period, ["pre_subsidy_childcare_expenses"]
         )
-        p = parameters(period).household.expense.childcare
-        subsidies = add(spm_unit, period, p.subsidies)
+        # States where we model childcare subsidies.
+        STATES_WITH_CHILD_CARE_SUBSIDIES = ["CA", "CO"]
+        subsidy_variables = [
+            i.lower() + "_child_care_subsidies"
+            for i in STATES_WITH_CHILD_CARE_SUBSIDIES
+        ]
+        subsidies = add(spm_unit, period, subsidy_variables)
         return max_(pre_subsidy_childcare_expenses - subsidies, 0)
