@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class md_unmarried_childless_non_refundable_eitc(Variable):
     value_type = float
     entity = TaxUnit
-    label = "MD unmarried childless EITC"
+    label = "Maryland unmarried childless EITC"
     unit = USD
     definition_period = YEAR
     reference = "https://casetext.com/statute/code-of-maryland/article-tax-general/title-10-income-tax/subtitle-7-income-tax-credits/section-10-704-effective-until-6302023-for-earned-income"  # (c)(3)
@@ -18,6 +18,6 @@ class md_unmarried_childless_non_refundable_eitc(Variable):
         p = parameters(
             period
         ).gov.states.md.tax.income.credits.eitc.non_refundable.unmarried_childless
-        match = p.percent_match * federal_eitc_without_age_minimum
+        match = p.match * federal_eitc_without_age_minimum
         cap = p.max_amount
         return min_(match, cap)

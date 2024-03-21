@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class md_married_or_has_child_refundable_eitc(Variable):
     value_type = float
     entity = TaxUnit
-    label = "MD refundable EITC for filers who are married or have qualifying child"
+    label = "Maryland refundable EITC for filers who are married or have qualifying child"
     unit = USD
     definition_period = YEAR
     reference = "https://www.marylandtaxes.gov/forms/21_forms/Resident_Booklet.pdf#page=23"
