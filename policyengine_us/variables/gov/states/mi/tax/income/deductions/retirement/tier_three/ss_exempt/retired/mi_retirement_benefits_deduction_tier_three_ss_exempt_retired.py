@@ -16,6 +16,7 @@ class mi_retirement_benefits_deduction_tier_three_ss_exempt_retired(Variable):
     defined_for = "mi_retirement_benefits_deduction_tier_three_eligible"
 
     def formula(tax_unit, period, parameters):
+        # Modeled after 2022 MICHIGAN Pension Schedule (Form 4884) Section B
         p = parameters(
             period
         ).gov.states.mi.tax.income.deductions.retirement_benefits.tier_three.ss_exempt.retired
@@ -44,6 +45,10 @@ class mi_retirement_benefits_deduction_tier_three_ss_exempt_retired(Variable):
             uncapped_pension_income * is_head_or_spouse
         )
 
+        # Modeled after Worksheet 3 for Filers with Taxable Railroad Retirement Benefits or
+        # Qualifying Retirement and Pension Benefits from Service in the U.S. Armed Forces or
+        # Michigan National Guard and Completing Section B of Form 4884
+
         # If a filer is recieving military retirement pay, the calculation includes the smaller of
         # the tier one or tier three deduction amount
         military_retirement_pay_eligible = (
@@ -63,4 +68,6 @@ class mi_retirement_benefits_deduction_tier_three_ss_exempt_retired(Variable):
             smaller_of_cap_or_tier_one_amount,
             cap,
         )
-        return min_(uncapped_head_or_spouse_pension, eligible_deduction)
+        return min_(
+            uncapped_head_or_spouse_pension, eligible_deduction
+        )  # Line 17

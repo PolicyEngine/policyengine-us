@@ -28,6 +28,8 @@
   output: # 0 + (min(56961 - 1000 - 60000 < 0, 10000) + 60000) + 0 + (12697 - 60000 - 1000 - 300 < 0)
     mi_interest_dividends_capital_gains_deduction_eligible: true
     mi_interest_dividends_capital_gains_deduction: 0
+    mi_retirement_benefits_deduction_expanded_eligible: false
+    mi_retirement_benefits_deduction_expanded: 0
     mi_retirement_benefits_deduction_tier_one_eligible: true
     mi_retirement_benefits_deduction_tier_one: 60_000
     mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired_eligible_people: 0
@@ -96,6 +98,8 @@
   output: # 40000 - 2000 - 1000 - (5000 > 2000) - (3000 > 0) - 2000 > 0
     mi_interest_dividends_capital_gains_deduction_eligible: false
     mi_interest_dividends_capital_gains_deduction: 0
+    mi_retirement_benefits_deduction_expanded_eligible: false
+    mi_retirement_benefits_deduction_expanded: 0
     mi_retirement_benefits_deduction_tier_one_eligible: false
     mi_retirement_benefits_deduction_tier_one: 0
     mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired_eligible_people: 0

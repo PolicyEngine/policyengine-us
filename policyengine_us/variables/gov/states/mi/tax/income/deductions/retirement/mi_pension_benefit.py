@@ -20,4 +20,5 @@ class mi_pension_benefit(Variable):
     adds = [
         "mi_retirement_benefits_deduction_tier_one",
         "mi_retirement_benefits_deduction_tier_three",
+        "mi_retirement_benefits_deduction_expanded",
     ]

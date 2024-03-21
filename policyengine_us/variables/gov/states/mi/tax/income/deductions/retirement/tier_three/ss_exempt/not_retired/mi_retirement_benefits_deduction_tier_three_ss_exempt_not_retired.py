@@ -19,6 +19,7 @@ class mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired(
     defined_for = "mi_retirement_benefits_deduction_tier_three_eligible"
 
     def formula(tax_unit, period, parameters):
+        # Modeled after 2022 MICHIGAN Pension Schedule (Form 4884) Section C
         p = parameters(
             period
         ).gov.states.mi.tax.income.deductions.retirement_benefits.tier_three.ss_exempt.not_retired
@@ -57,4 +58,6 @@ class mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired(
             smaller_of_cap_or_tier_one_amount,
             cap,
         )
-        return min_(uncapped_head_or_spouse_pension, eligible_deduction)
+        return min_(
+            uncapped_head_or_spouse_pension, eligible_deduction
+        )  # Line 18
