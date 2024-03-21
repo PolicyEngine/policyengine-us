@@ -12,10 +12,12 @@ class mt_tax_unit_deductions_exemptions_indiv(Variable):
         standard_deduction = add(
             tax_unit, period, ["mt_standard_deduction_indiv"]
         )
+        dependent_exemptions = add(
+            tax_unit, period, ["mt_dependent_exemptions_person"]
+        )
         itemized_deductions = add(
             tax_unit, period, ["mt_itemized_deductions_indiv"]
         )
         itemizes = tax_unit("mt_tax_unit_itemizes", period)
         deductions = where(itemizes, itemized_deductions, standard_deduction)
-        exemptions = add(tax_unit, period, ["mt_exemptions_indiv"])
-        return deductions + exemptions
+        return deductions + dependent_exemptions
