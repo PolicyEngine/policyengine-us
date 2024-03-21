@@ -10,6 +10,6 @@ class poverty_gap(Variable):
     definition_period = YEAR
 
     def formula(spm_unit, period, parameters):
-        income = spm_unit("spm_resources", period)
+        resources = spm_unit("spm_resources", period)
         poverty_threshold = spm_unit("spm_unit_spm_threshold", period)
         return max_(poverty_threshold - income, 0)
