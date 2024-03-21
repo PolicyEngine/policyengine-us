@@ -26,10 +26,14 @@ class SCF(Dataset):
     _scf_mapper = {
             'age'           : {  'name' : 'age'
                                , 'map'  : (lambda x : x) }
+        ,   'asset'         : {  'name' : 'spm_unit_assets'
+                               , 'map'  : (lambda x : x) }
         ,   'hhsex'         : {  'name' : 'gender'
-                               , 'map'  : {1 : 0, 2 : 1}}
+                               , 'map'  : {1 : 0, 2 : 1} }
         ,   'married'       : {  'name' : 'marital_status'
-                               , 'map'  : {1 : 0, 2 : 1}}
+                               , 'map'  : {1 : 0, 2 : 1} }
+        ,   'vehic'         : {  'name' : 'household_vehicles_value'
+                               , 'map'  : (lambda x : x) }
         }
 
     def generate(self):

@@ -69,8 +69,3 @@ class RawSCF_2022(RawSCF):
     file_path = os.path.join( STORAGE_FOLDER, f"raw_scf_{time_period}.h5" )
 
 
-
-# Test code
-if( __name__ == "__main__") :
-    x = RawSCF_2022()
-    x.generate()
