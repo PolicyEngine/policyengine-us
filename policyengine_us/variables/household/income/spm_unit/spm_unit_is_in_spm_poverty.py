@@ -10,4 +10,4 @@ class spm_unit_is_in_spm_poverty(Variable):
     def formula(spm_unit, period, parameters):
         resources = spm_unit("spm_resources", period)
         poverty_threshold = spm_unit("spm_unit_spm_threshold", period)
-        return income < poverty_threshold
+        return resources < poverty_threshold
