@@ -30,8 +30,13 @@ class SCF(Dataset):
                                , 'map'  : (lambda x : x) }
         ,   'hhsex'         : {  'name' : 'gender'
                                , 'map'  : {1 : 0, 2 : 1} }
-        ,   'married'       : {  'name' : 'marital_status'
-                               , 'map'  : {1 : 0, 2 : 1} }
+        ,   'kids'          : {  'name' : 'spm_unit_count_children'
+                               , 'map'  : (lambda x : x) }
+        ,   'married'       : {  'name' : 'is_married'
+                               , 'map'  : {1 : True, 2 : False} }
+        ,   'race'          : {  'name' : 'cps_race'
+                               , 'map'  : {1 : 1, 2 : 2, 3: 0, 4: -1, 5: 4} }
+                               # White -> White; Black -> Black; Hispanic -> Unknown; Undefined -> Undefined; Other -> Asian
         ,   'vehic'         : {  'name' : 'household_vehicles_value'
                                , 'map'  : (lambda x : x) }
         }
