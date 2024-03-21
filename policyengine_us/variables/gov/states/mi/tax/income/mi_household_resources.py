@@ -10,4 +10,4 @@ class mi_household_resources(Variable):
     defined_for = StateCode.MI
     reference = "https://law.justia.com/codes/michigan/2022/chapter-206/statute-act-281-of-1967/division-281-1967-1/division-281-1967-1-9/section-206-508/"
     adds = "gov.states.mi.tax.income.household_resources"
-    subtracts = ["health_insurance_premiums"]
+    subtracts = ["health_insurance_premiums", "above_the_line_deductions"]
