@@ -19,7 +19,7 @@
         members: [person1, person3, person4]
         state_code: MT
   output:
-    mt_dependent_exemptions: [0, 0, 1]
+    mt_dependent_exemptions_person: [0, 0, 2_580]
 
 - name: Two dependents in 2022 - two eligible
   period: 2022
@@ -40,7 +40,7 @@
         members: [person1, person3, person4]
         state_code: MT
   output:
-    mt_dependent_exemptions: [0, 1, 1]
+    mt_dependent_exemptions_person: [0, 2_710, 2_710]
 
 - name: Two dependents in 2022 - two eligible, one disabled
   period: 2022
@@ -62,7 +62,7 @@
         members: [person1, person3, person4]
         state_code: MT
   output:
-    mt_dependent_exemptions: [0, 1, 2]
+    mt_dependent_exemptions_person: [0, 2_710, 5_420]
 
 - name: Two dependents in 2022 - no eligible
   period: 2022
@@ -84,4 +84,4 @@
         members: [person1, person3, person4]
         state_code: MT
   output:
-    mt_dependent_exemptions: [0, 0, 0]
+    mt_dependent_exemptions_person: [0, 0, 0]
