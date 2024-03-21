@@ -4,10 +4,9 @@
     is_tax_unit_head: true
     is_blind: false
     state_code: MT
-    mt_dependent_exemptions: 2
     mt_aged_exemption_eligible_person: true
   output: 
-    mt_exemptions_indiv: 10_840
+    mt_personal_exemptions_indiv: 5_420
 
 - name: No exemptions for the dependent 
   period: 2023
@@ -16,12 +15,11 @@
     is_blind: false
     is_tax_unit_head_or_spouse: false
     state_code: MT
-    mt_dependent_exemptions: 2
     mt_aged_exemption_eligible_person: false
   output: 
-    mt_exemptions_indiv: 0
+    mt_personal_exemptions_indiv: 0
 
-- name: The exemptions are allocated to the head
+- name: No dependent exemptions are not allocated under the personal exemptions
   period: 2022
   input:
     people:
@@ -32,10 +30,10 @@
         is_tax_unit_spouse: true
         mt_aged_exemption_eligible_person: true
       person3:
-        mt_dependent_exemptions: true
+        mt_dependent_exemptions_person: true
     households:
       household:
         members: [person1, person2, person3]
         state_code: MT
   output:
-    mt_exemptions_indiv: [8_130, 5_420, 0]
+    mt_personal_exemptions_indiv: [5_420, 5_420, 0]
