@@ -4,9 +4,7 @@ from policyengine_us import Microsimulation
 import numpy as np
 from policyengine_us import Microsimulation
 import pandas as pd
-from .process_puf import (
-    FINANCIAL_SUBSET as FINANCIAL_VARIABLES,
-)
+from .process_puf import FINANCIAL_SUBSET as FINANCIAL_VARIABLES
 from typing import Tuple
 
 
