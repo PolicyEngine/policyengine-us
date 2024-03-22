@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class md_unmarried_childless_refundable_eitc(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Maryland unmarried childless EITC"
+    label = "Maryland unmarried childless refundable EITC"
     unit = USD
     definition_period = YEAR
     reference = "https://www.marylandtaxes.gov/forms/21_forms/Resident_Booklet.pdf#page=19"

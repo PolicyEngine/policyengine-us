@@ -12,7 +12,7 @@ class md_married_or_has_child_refundable_eitc(Variable):
 
     def formula(tax_unit, period, parameters):
         # Limited to filers who are married or have child
-        married_or_has_child = ~tax_unit(
+        does_not_qualify_for_unmarried_childless_eitc = ~tax_unit(
             "md_qualifies_for_unmarried_childless_eitc", period
         )
 
@@ -21,6 +21,13 @@ class md_married_or_has_child_refundable_eitc(Variable):
         p = parameters(
             period
         ).gov.states.md.tax.income.credits.eitc.refundable.married_or_has_child
-        md_refundable_eitc_allowed = max_(federal_eitc * p.match - md_tax, 0)
 
-        return married_or_has_child * md_refundable_eitc_allowed
+        total_refundable_eitc_amount = federal_eitc * p.match
+        applicable_refundable_eitc = max_(
+            total_refundable_eitc_amount - md_tax, 0
+        )
+
+        return (
+            does_not_qualify_for_unmarried_childless_eitc
+            * applicable_refundable_eitc
+        )
