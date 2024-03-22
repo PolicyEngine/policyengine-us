@@ -123,6 +123,11 @@ filtered:
       modelled:
       - New York state and city income tax
       - New York TANF
+    OH:
+      modelled:
+      - Ohio state income tax
+      not_modelled:
+      - Ohio TANF
     OK:
       modelled:
       - Oklahoma state income tax
