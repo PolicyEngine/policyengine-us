@@ -25,37 +25,41 @@ class ar_low_income_tax_joint(Variable):
         return select(
             [
                 filing_status_separate == status.SINGLE,
-                (filing_status_separate == status.HEAD_OF_HOUSEHOLD)
-                & (dependents <= 1),
-                (filing_status_separate == status.HEAD_OF_HOUSEHOLD)
-                & (dependents > 1),
+                filing_status_separate == status.HEAD_OF_HOUSEHOLD,
                 filing_status_separate == status.SEPARATE,
-                (filing_status_separate == status.WIDOW) & (dependents <= 1),
-                (filing_status_separate == status.WIDOW) & (dependents > 1),
-                (filing_status_separate == status.JOINT) & (dependents <= 1),
-                (filing_status_separate == status.JOINT) & (dependents > 1),
+                filing_status_separate == status.WIDOW,
+                filing_status_separate == status.JOINT,
             ],
             [
                 p.single.calc(agi_attributed_to_head, right=True),
-                p.head_of_household.no_or_one_dependent.calc(
-                    agi_attributed_to_head, right=True
-                ),
-                p.head_of_household.two_or_more_dependents.calc(
-                    agi_attributed_to_head, right=True
+                where(
+                    dependents <= 1,
+                    p.head_of_household.no_or_one_dependent.calc(
+                        agi_attributed_to_head, right=True
+                    ),
+                    p.head_of_household.two_or_more_dependents.calc(
+                        agi_attributed_to_head, right=True
+                    ),
                 ),
                 # Separate filers are ineligible to use the low income tax tables
                 np.inf,
-                p.widow.no_or_one_dependent.calc(
-                    agi_attributed_to_head, right=True
+                where(
+                    dependents <= 1,
+                    p.widow.no_or_one_dependent.calc(
+                        agi_attributed_to_head, right=True
+                    ),
+                    p.widow.two_or_more_dependents.calc(
+                        agi_attributed_to_head, right=True
+                    ),
                 ),
-                p.widow.two_or_more_dependents.calc(
-                    agi_attributed_to_head, right=True
-                ),
-                p.joint.no_or_one_dependent.calc(
-                    agi_attributed_to_head, right=True
-                ),
-                p.joint.two_or_more_dependents.calc(
-                    agi_attributed_to_head, right=True
+                where(
+                    dependents <= 1,
+                    p.joint.no_or_one_dependent.calc(
+                        agi_attributed_to_head, right=True
+                    ),
+                    p.joint.two_or_more_dependents.calc(
+                        agi_attributed_to_head, right=True
+                    ),
                 ),
             ],
             default=0,
