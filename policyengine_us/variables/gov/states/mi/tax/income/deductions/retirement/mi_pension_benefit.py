@@ -17,8 +17,24 @@ class mi_pension_benefit(Variable):
     )
     defined_for = StateCode.MI
 
-    adds = [
-        "mi_retirement_benefits_deduction_tier_one",
-        "mi_retirement_benefits_deduction_tier_three",
-        "mi_retirement_benefits_deduction_expanded",
-    ]
+    def formula(tax_unit, period, parameters):
+        p = parameters(
+            period
+        ).gov.states.mi.tax.income.deductions.retirement_benefits.expanded
+
+        retirement_benefits_deduction = [
+            "mi_retirement_benefits_deduction_tier_one",
+            "mi_retirement_benefits_deduction_tier_three",
+        ]
+
+        if p.availability:
+            expanded_retirement_benefits_deduction = [
+                "mi_retirement_benefits_deduction_tier_one",
+                "mi_retirement_benefits_deduction_tier_three",
+                "mi_expanded_retirement_benefits_deduction",
+            ]
+            return add(
+                tax_unit, period, expanded_retirement_benefits_deduction
+            )
+        else:
+            return add(tax_unit, period, retirement_benefits_deduction)

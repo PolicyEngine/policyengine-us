@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class mi_retirement_benefits_deduction_expanded_eligible(Variable):
+class mi_expanded_retirement_benefits_deduction_eligible(Variable):
     value_type = bool
     entity = TaxUnit
     label = "Eligible for the Michigan expanded retirement benefits deduction"
