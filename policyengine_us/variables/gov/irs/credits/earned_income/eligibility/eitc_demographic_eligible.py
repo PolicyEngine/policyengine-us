@@ -10,7 +10,7 @@ class eitc_demographic_eligible(Variable):
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
-        has_child = tax_unit("tax_unit_children", period) > 0
+        has_child = tax_unit("eitc_child_count", period) > 0
         age = person("age", period)
         # Relative parameter reference break branching in some states that
         # modify EITC age limits.

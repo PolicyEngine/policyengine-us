@@ -4,12 +4,14 @@
     age: 24
   output:
     eitc_demographic_eligible: false
+
 - name: No children and over 25, eligible.
   period: 2022
   input:
     age: 25
   output:
     eitc_demographic_eligible: true
+
 - name: Children and under 25, eligible.
   period: 2022
   input:
