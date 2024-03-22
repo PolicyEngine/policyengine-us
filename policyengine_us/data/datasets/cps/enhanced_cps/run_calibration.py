@@ -8,9 +8,6 @@ from policyengine_us.data import CalibratedPUFExtendedCPS_2022
 
 
 def main():
-    # for file in STORAGE_FOLDER.glob("*.h5"):
-    #    if "raw" not in file.name:
-    #        file.unlink()
 
     CalibratedPUFExtendedCPS_2022().generate()
 
