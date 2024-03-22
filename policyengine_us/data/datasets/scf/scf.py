@@ -10,6 +10,7 @@ import pandas as pd
 import os
 from typing import Type, Any, Tuple
 
+from policyengine_us.variables.household.demographic.person.race import Race
 
 class SCF(Dataset):
     name = "scf"
@@ -26,23 +27,42 @@ class SCF(Dataset):
     _scf_mapper = {
             'age'           : {  'name' : 'age'
                                , 'map'  : (lambda x : x) }
-        ,   'asset'         : {  'name' : 'spm_unit_assets'
-                               , 'map'  : (lambda x : x) }
-        ,   'hhsex'         : {  'name' : 'gender'
-                               , 'map'  : {1 : 0, 2 : 1} }
+        ,   'hhsex'         : {  'name' : 'is_female'
+                               , 'map'  : {1 : False, 2 : True} }
         ,   'kids'          : {  'name' : 'spm_unit_count_children'
                                , 'map'  : (lambda x : x) }
         ,   'married'       : {  'name' : 'is_married'
                                , 'map'  : {1 : True, 2 : False} }
-        ,   'race'          : {  'name' : 'cps_race'
-                               , 'map'  : {1 : 1, 2 : 2, 3: 0, 4: -1, 5: 4} }
-                               # White -> White; Black -> Black; Hispanic -> Unknown; Undefined -> Undefined; Other -> Asian
+        ,   'race'          : {  'name' : 'race'
+                               , 'map'  : {  1 : Race.WHITE.value       # 1 = White
+                                           , 2 : Race.BLACK.value       # 2 = Black
+                                           , 3 : Race.HISPANIC.value    # 3 = Hispanic
+                                           , 4 : Race.OTHER.value       # 4 = not defined in SDA SCF codebook, but seems to be in SCF data
+                                           , 5 : Race.OTHER.value} }    # 5 = Other
+                            # TBD: Race Enum would be better as int vs str
+        ,   'nown'          : {  'name' : 'household_vehicles_owned'
+                               , 'map'  : (lambda x : x) }
         ,   'vehic'         : {  'name' : 'household_vehicles_value'
                                , 'map'  : (lambda x : x) }
+        ,   'income'        : {  'name' : 'household_net_income'
+                               , 'map'  : (lambda x : x) }
+        ,   'wageinc'       : {  'name' : 'employment_income_last_year'
+                               , 'map'  : (lambda x : x) }
+
+        ,   'asset'         : {  'name' : 'spm_unit_assets'
+                               , 'map'  : (lambda x : x) }
+        ,   'fin'           : {  'name' : 'assets_financial'
+                               , 'map'  : (lambda x : x) }
+        ,   'houses'        : {  'name' : 'assets_value_primary_residence'
+                               , 'map'  : (lambda x : x) }
+        ,   'homeeq'        : {  'name' : 'assets_equity_primary_residence'
+                               , 'map'  : (lambda x : x) }
+
         }
 
     def generate(self):
-        """Generates the Survey of Consumer Finances dataset for PolicyEngine US microsimulations.
+        """
+        Generates the Survey of Consumer Finances dataset for PolicyEngine US microsimulations.
         """
 
         raw_data = self.raw_scf(require=True).load()
@@ -51,6 +71,11 @@ class SCF(Dataset):
         hh_data  = raw_data['household']
         for scf_var in self._scf_mapper.keys() :
             microsim_var, vals = _remap_variable(scf_var, hh_data[scf_var], self._scf_mapper)
+            if( vals.dtype == '<U19' ) :
+                _vals    = scf.create_dataset("string_data", shape=(len(vals),), dtype=h5py.string_dtype(length=32))
+                _vals[:] = vals.tolist()
+                vals     = _vals
+
             scf[microsim_var] = vals
 
         raw_data.close()
