@@ -13,8 +13,8 @@ def main():
     for file in STORAGE_FOLDER.glob("*.csv.gz"):
         file.unlink()
 
-    YEARS = ["2023", "2024", "2025"]
-    DATASETS = ["cps_2023", "calibrated_puf_extended_cps_2022"]
+    YEARS = ["2022", "2023", "2024", "2025"]
+    DATASETS = ["cps_2022", "calibrated_puf_extended_cps_2022"]
 
     dfs = []
 

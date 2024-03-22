@@ -5,6 +5,58 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.713.0] - 2024-03-22 11:49:33
+
+## [0.712.0] - 2024-03-22 01:44:40
+
+### Added
+
+- Enable Ohio income tax model and include in the net income tree.
+
+## [0.711.6] - 2024-03-20 22:53:10
+
+### Fixed
+
+- Add the Connecticut EITC to the list of refundable credits.
+
+## [0.711.5] - 2024-03-20 21:17:09
+
+### Fixed
+
+- Reduce the itemized deductions in Idaho by the SALT amount.
+
+## [0.711.4] - 2024-03-20 19:56:27
+
+### Fixed
+
+- Make Arkansas childcare expense credit non-refundable.
+
+## [0.711.3] - 2024-03-20 19:07:38
+
+### Fixed
+
+- Adjust the Kentucky pension income exclusion to not count pension twice.
+
+## [0.711.2] - 2024-03-20 13:32:09
+
+### Fixed
+
+- Among joint filers, limit the Delaware elderly or disabled exclusion to filers with both head and spouse eligible.
+
+## [0.711.1] - 2024-03-20 04:55:01
+
+### Fixed
+
+- Include the self employment deduction to the list of Michigan additions.
+- Remove the self employment income from the list of household resources.
+- Subtract the above the line deductions from the household resources.
+
+## [0.711.0] - 2024-03-20 00:27:02
+
+### Added
+
+- 2023 North Carolina Tax Rules.
+
 ## [0.710.1] - 2024-03-19 14:53:23
 
 ### Added
@@ -7914,6 +7966,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.713.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.712.0...0.713.0
+[0.712.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.711.6...0.712.0
+[0.711.6]: https://github.com/PolicyEngine/policyengine-us/compare/0.711.5...0.711.6
+[0.711.5]: https://github.com/PolicyEngine/policyengine-us/compare/0.711.4...0.711.5
+[0.711.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.711.3...0.711.4
+[0.711.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.711.2...0.711.3
+[0.711.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.711.1...0.711.2
+[0.711.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.711.0...0.711.1
+[0.711.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.710.1...0.711.0
 [0.710.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.710.0...0.710.1
 [0.710.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.709.0...0.710.0
 [0.709.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.708.8...0.709.0
