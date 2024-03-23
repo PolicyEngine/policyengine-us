@@ -20,7 +20,7 @@ DATASETS = [
     CPS_2021,
     CPS_2022,
     EnhancedCPS_2022,
-    CPS_2022edPUFExtendedCPS_2022,
+    CalibratedPUFExtendedCPS_2022,
     PovertyTracker,
     PUF_2023,
 ]
