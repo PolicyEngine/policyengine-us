@@ -1,12 +1,13 @@
 from policyengine_us.model_api import *
 
 
-class sc_tanf_income_eligible(Variable):
-    value_type = bool
+class sc_tanf(Variable):
+    value_type = float
     entity = SPMUnit
-    label = "South Carolina TANF income eligible"
+    label = "South Carolina TANF"
+    unit = USD
     definition_period = YEAR
-    defined_for = StateCode.SC
+    # defined_for = "sc_tanf_eligible"
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.sc.tanf.income
@@ -32,5 +33,9 @@ class sc_tanf_income_eligible(Variable):
         # G
         unearned_income = add(spm_unit, period, ["sc_tanf_unearned_income"])
         total_net_income = unearned_income + net_earned_income
-        # H
-        return (total_net_income < need_standard) & eligible_for_disregard
+        # I 
+        p1 = parameters(period).gov.states.sc.tanf.payment
+        tanf = (need_standard-total_net_income)*p1.rate/MONTHS_IN_YEAR
+        return tanf
+
+    

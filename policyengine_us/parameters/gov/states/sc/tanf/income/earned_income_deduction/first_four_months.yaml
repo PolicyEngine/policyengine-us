@@ -1,10 +1,10 @@
-description: South Carolina disregards this share of earnings from the TANF earned income. 
+description: Only the first four month can apply the 50% disregard. 
 values:
-  2022-01-01: 0.5
+  2022-01-01: 4
 
 metadata:
-  unit: /1
-  period: year
+  unit: int
+  period: month
   label: South Carolina TANF earnings exclusion percent for self-employed individuals
   reference:
     - title: The South Carolina Department of Social Services TANF Policy Manual 

@@ -1,23 +1,25 @@
-description: South Carolina TANF counts these as resources.
+description: South Carolina counts these as resources under the TANF program.
 values:
   2022-01-01:
-    - Bank/financial accounts
-    - Cash
-    - Cash from sale of real property
-    - Cash received from estate settlements
-    - Individual Retirement Account or Arrangement (IRA)/Simple IRA/ Simplified Employee Pension (SEP) IRA/Keogh
-    - Lump sum payments
-    - Prepaid burial contract
-    - Refunds of security deposits
-    - Revocable trust account
-    - Saving certificate
-    - Stocks/bonds
-    - Vehicles
-    - Building(s) not associated with homestead
-    - Non-hoestead property
+    #- Bank/financial accounts
+    #- Cash
+    #- Cash from sale of real property
+    #- Cash received from estate settlements
+    #- Individual Retirement Account or Arrangement (IRA)/Simple IRA/ Simplified Employee Pension (SEP) IRA/Keogh
+    #- Lump sum payments
+    #- Prepaid burial contract
+    #- Refunds of security deposits
+    #- Revocable trust account
+    #- Saving certificate
+    #- Stocks/bonds
+    - household_vehicles_value
+    #- Building(s) not associated with homestead
+    #- Non-hoestead property
 
 metadata:
   unit: list
+  period: year
+  label: South Carolina resources list 
   reference:
     - title: The South Carolina Department of Social Services TANF Policy Manual 
       href: https://dss.sc.gov/media/3926/tanf_policy_manual_vol-60.pdf#page=91
