@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.713.2] - 2024-03-24 03:38:17
+
+### Added
+
+- Longer history and source for Social Security benefits target.
+
 ## [0.713.1] - 2024-03-22 18:58:11
 
 ## [0.713.0] - 2024-03-22 11:49:33
@@ -7968,6 +7974,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.713.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.713.1...0.713.2
 [0.713.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.713.0...0.713.1
 [0.713.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.712.0...0.713.0
 [0.712.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.711.6...0.712.0
