@@ -3,7 +3,6 @@ from policyengine_us.data import (
     CPS_2020,
     CPS_2021,
     CPS_2022,
-    CPS_2023,
     CalibratedPUFExtendedCPS_2022,
     EnhancedCPS_2022,
 )
@@ -14,7 +13,6 @@ datasets = [
     CPS_2020,
     CPS_2021,
     CPS_2022,
-    CPS_2023,
     CalibratedPUFExtendedCPS_2022,
     EnhancedCPS_2022,
 ]
