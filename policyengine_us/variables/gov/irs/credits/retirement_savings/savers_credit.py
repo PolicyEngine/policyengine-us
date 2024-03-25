@@ -8,6 +8,7 @@ class savers_credit(Variable):
     label = "Retirement Savings Credit"
     unit = USD
     reference = "https://www.irs.gov/pub/irs-pdf/f8880.pdf"
+    defined_for = "savers_credit_agi_eligible"
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.irs.credits.retirement_saving
@@ -32,29 +33,42 @@ class savers_credit(Variable):
         total_capped_qualified_contributions = tax_unit.sum(
             capped_qualified_contributions
         )
+
+        # AGI threshold for the rate
         filing_status = tax_unit("filing_status", period)
         statuses = filing_status.possible_values
-
-        credit_rate = select(
+        # Joint as the base
+        agi_threshold_joint = p.rate.joint.threshold
+        # Match others filing status based on the joint
+        match = select(
             [
                 filing_status == statuses.SINGLE,
                 filing_status == statuses.SEPARATE,
-                filing_status == statuses.JOINT,
                 filing_status == statuses.WIDOW,
                 filing_status == statuses.HEAD_OF_HOUSEHOLD,
             ],
             [
-                p.rate.single.calc(total_agi),
-                p.rate.separate.calc(total_agi),
-                p.rate.joint.calc(total_agi),
-                p.rate.widow.calc(total_agi),
-                p.rate.head_of_household.calc(total_agi),
+                p.rate.match.single,
+                p.rate.match.separate,
+                p.rate.match.widow,
+                p.rate.match.head_of_household,
             ],
+            default=1,
         )
-        tax_unit_agi_eligible = tax_unit("savers_credit_agi_eligible", period)
+        # Credit rate
+        rate = p.rate.joint.rate
+        credit_rate = select(
+            [
+                total_agi < agi_threshold_joint.lower * match,
+                total_agi < agi_threshold_joint.middle * match,
+                total_agi < agi_threshold_joint.higher * match,
+            ],
+            [
+                rate.lower,
+                rate.middle,
+                rate.higher,
+            ],
+            default=0,
+        )
 
-        return (
-            credit_rate
-            * total_capped_qualified_contributions
-            * tax_unit_agi_eligible
-        )
+        return credit_rate * total_capped_qualified_contributions

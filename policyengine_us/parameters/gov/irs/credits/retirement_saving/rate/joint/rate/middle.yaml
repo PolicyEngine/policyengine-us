@@ -1,0 +1,14 @@
+description: IRS multiplies the qualified contributions by the following rate for joint filers, based on middle adjusted gross income threshold under the savor's credit.  
+metadata:
+  unit: currency-USD
+  period: year
+  label: Saver’s Credit rate based on joint middle threshold
+  reference: 
+    - title: 26 U.S. Code § 25B(b)(1)
+      href: https://www.law.cornell.edu/uscode/text/26/25B 
+    - title: IRS | Retirement Savings Contributions Credit (Saver’s Credit)
+      href: https://www.irs.gov/retirement-plans/plan-participant-employee/retirement-savings-contributions-savers-credit
+    - title: Form 8880 - 2023 Credit for Qualified Retirement Savings Contributions
+      href: https://www.irs.gov/pub/irs-pdf/f8880.pdf#page=1
+values:
+  2019-01-01: 0.2
