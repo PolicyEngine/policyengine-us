@@ -6,7 +6,7 @@ class dc_snap_temporary_local_benefit(Variable):
     entity = SPMUnit
     definition_period = MONTH
     documentation = "DC temporary SNAP benefit amount"
-    label = "DC SNAP amount"
+    label = "DC temporary local SNAP benefit amount"
     reference = "https://dhs.dc.gov/page/give-snap-raise-heres-what-expect"
     unit = USD
     defined_for = StateCode.DC
@@ -17,6 +17,7 @@ class dc_snap_temporary_local_benefit(Variable):
         max_allotments = parameters(period).gov.usda.snap.max_allotment
 
         snap_region = spm_unit.household("snap_region_str", period)
+        household_size = spm_unit("spm_unit_size", period).astype(str)
 
         applicable_months = min_(MONTHS_IN_YEAR, p.max_months)
 
@@ -26,4 +27,6 @@ class dc_snap_temporary_local_benefit(Variable):
             * applicable_months
         )
 
-        return dc_local_allotment
+        dc_monthly_local_allotment = dc_local_allotment / MONTHS_IN_YEAR
+
+        return dc_monthly_local_allotment
