@@ -38,8 +38,10 @@ def create_capital_gains_tax_increase() -> Reform:
                 taxable_income, 0, second_threshold
             )
 
-            # Under the 2025 bidem reform, long_term cg and dividends are
-            # taxed at the income tax rates for filers with income over $1M
+            # The 2025 Biden Budget taxes the excess of long-term capital gains and qualified dividends
+            # over $1 million as ordinary income.
+            # We apply this only to ANCG, not Unrecaptured Section 1250 Gain or the 28% rate CG.
+            
             p_reform = parameters(
                 period
             ).gov.contrib.biden.budget_2025.capital_gains
@@ -144,13 +146,7 @@ def create_capital_gains_tax_increase_reform(
 
     p = parameters(period).gov.contrib.biden.budget_2025.capital_gains
 
-    if (
-        (p.income_threshold.JOINT > 0)
-        | (p.income_threshold.SEPARATE > 0)
-        | (p.income_threshold.WIDOW > 0)
-        | (p.income_threshold.SINGLE > 0)
-        | (p.income_threshold.SEPARATE > 0)
-    ):
+    if p.active is True:
         return create_capital_gains_tax_increase()
     else:
         return None
