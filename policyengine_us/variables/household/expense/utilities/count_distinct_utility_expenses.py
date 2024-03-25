@@ -3,7 +3,7 @@ from policyengine_us.model_api import *
 
 class count_distinct_utility_expenses(Variable):
     value_type = int
-    entity = SPMUnit
+    entity = Household
     label = "Number of distinct utility expenses"
     documentation = "The number of distinct utility expenses."
     definition_period = YEAR
