@@ -1,6 +1,9 @@
 description: Delaware provides this income exclusion to elderly and disabled filers, based on filing status.
+# The joint amount is defined as double of the Single amount, 
+# we encode it as 1/2 of the joint total as we calculate the 
+# amount on a person level
 JOINT:
-  2021-01-01: 4_000
+  2021-01-01: 2_000
 HEAD_OF_HOUSEHOLD:
   2021-01-01: 2_000
 WIDOW:

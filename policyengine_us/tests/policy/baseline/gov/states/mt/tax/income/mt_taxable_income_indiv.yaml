@@ -4,7 +4,7 @@
     mt_agi: 6_000
     mt_standard_deduction_indiv: 2_000
     mt_itemized_deductions_indiv: 3_000
-    mt_exemptions_indiv: 2_710
+    mt_personal_exemptions_indiv: 2_710
     state_code: MT
   output: 
     mt_taxable_income_indiv: 290
@@ -15,7 +15,7 @@
     mt_agi: 5_000
     mt_standard_deduction_indiv: 2_000
     mt_itemized_deductions_indiv: 3_000
-    mt_exemptions_indiv: 2_710
+    mt_personal_exemptions_indiv: 2_710
     state_code: MT
   output: 
     mt_taxable_income_indiv: 0
@@ -26,7 +26,7 @@
     mt_agi: 5_000
     mt_standard_deduction_indiv: 3_000
     mt_itemized_deductions_indiv: 2_000
-    mt_exemptions_indiv: 2_710
+    mt_personal_exemptions_indiv: 2_710
     state_code: MT
   output: 
     mt_taxable_income_indiv: 0
@@ -37,7 +37,7 @@
     mt_agi: 7_000
     mt_standard_deduction_indiv: 3_000
     mt_itemized_deductions_indiv: 2_000
-    mt_exemptions_indiv: 2_710
+    mt_personal_exemptions_indiv: 2_710
     state_code: MT
   output: 
     mt_taxable_income_indiv: 1_290
@@ -51,13 +51,13 @@
         mt_agi: 10_000
         mt_standard_deduction_indiv: 5_000
         mt_itemized_deductions_indiv: 0
-        mt_exemptions_indiv: 4_000
+        mt_personal_exemptions_indiv: 4_000
       person2:
         is_tax_unit_spouse: true
         mt_agi: 12_000
         mt_standard_deduction_indiv: 15_000
         mt_itemized_deductions_indiv: 0
-        mt_exemptions_indiv: 2_000
+        mt_personal_exemptions_indiv: 2_000
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -78,13 +78,13 @@
         mt_agi: 10_000
         mt_standard_deduction_indiv: 1_000
         mt_itemized_deductions_indiv: 5_000
-        mt_exemptions_indiv: 3_000
+        mt_personal_exemptions_indiv: 3_000
       person2:
         is_tax_unit_spouse: true
         mt_agi: 12_000
         mt_standard_deduction_indiv: 2_000
         mt_itemized_deductions_indiv: 3_000
-        mt_exemptions_indiv: 3_000
+        mt_personal_exemptions_indiv: 3_000
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -105,13 +105,13 @@
         mt_agi: 20_000
         mt_standard_deduction_indiv: 1_000
         mt_itemized_deductions_indiv: 5_000
-        mt_exemptions_indiv: 4_000
+        mt_personal_exemptions_indiv: 4_000
       person2:
         is_tax_unit_spouse: true
         mt_agi: 20_000
         mt_standard_deduction_indiv: 2_000
         mt_itemized_deductions_indiv: 3_000
-        mt_exemptions_indiv: 2_000
+        mt_personal_exemptions_indiv: 2_000
       person3:
         mt_agi: 0
     tax_units:
