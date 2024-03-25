@@ -8,7 +8,7 @@ class count_distinct_utility_expenses(Variable):
     documentation = "The number of distinct utility expenses."
     definition_period = YEAR
 
-    def formula(spm_unit, period, parameters):
+    def formula(household, period, parameters):
         UTILITIES = [
             "heating_cooling",
             # Use pre-subsidy expenses to avoid circular references
@@ -22,7 +22,7 @@ class count_distinct_utility_expenses(Variable):
         ]
         return sum(
             [
-                spm_unit.household(variable + "_expense", period) > 0
+                household(variable + "_expense", period) > 0
                 for variable in UTILITIES
             ]
         )
