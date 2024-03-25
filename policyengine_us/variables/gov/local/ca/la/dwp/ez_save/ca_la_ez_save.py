@@ -5,7 +5,7 @@ class ca_la_ez_save(Variable):
     value_type = float
     entity = Household
     definition_period = YEAR
-    label = "Los Angeles County EZ Save program monthly benefit amount"
+    label = "Los Angeles County EZ Save program"
     defined_for = "ca_la_ez_save_eligible"
 
     def formula(household, period, parameters):
