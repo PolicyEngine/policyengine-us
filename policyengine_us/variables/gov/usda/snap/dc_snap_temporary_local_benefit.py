@@ -9,6 +9,7 @@ class dc_snap_temporary_local_benefit(Variable):
     label = "DC SNAP amount"
     reference = "https://dhs.dc.gov/page/give-snap-raise-heres-what-expect"
     unit = USD
+    defined_for = StateCode.DC
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.dc.snap
@@ -17,10 +18,12 @@ class dc_snap_temporary_local_benefit(Variable):
 
         snap_region = spm_unit.household("snap_region_str", period)
 
-        month = min_(MONTHS_IN_YEAR, p.max_months)
+        applicable_months = min_(MONTHS_IN_YEAR, p.max_months)
 
         dc_local_allotment = (
-            max_allotments.main[snap_region][household_size] * p.rate * month
+            max_allotments.main[snap_region][household_size]
+            * p.rate
+            * applicable_months
         )
 
         return dc_local_allotment
