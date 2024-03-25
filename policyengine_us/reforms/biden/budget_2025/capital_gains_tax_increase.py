@@ -41,7 +41,7 @@ def create_capital_gains_tax_increase() -> Reform:
             # The 2025 Biden Budget taxes the excess of long-term capital gains and qualified dividends
             # over $1 million as ordinary income.
             # We apply this only to ANCG, not Unrecaptured Section 1250 Gain or the 28% rate CG.
-            
+
             p_reform = parameters(
                 period
             ).gov.contrib.biden.budget_2025.capital_gains
@@ -146,7 +146,7 @@ def create_capital_gains_tax_increase_reform(
 
     p = parameters(period).gov.contrib.biden.budget_2025.capital_gains
 
-    if p.active is True:
+    if p.active:
         return create_capital_gains_tax_increase()
     else:
         return None
