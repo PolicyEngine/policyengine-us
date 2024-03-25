@@ -7,30 +7,20 @@ class sc_tanf_income_eligible(Variable):
     label = "South Carolina TANF income eligible"
     definition_period = YEAR
     defined_for = StateCode.SC
+    reference = (
+        "https://dss.sc.gov/media/3926/tanf_policy_manual_vol-60.pdf#page=131"
+    )
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.sc.tanf.income
-        # A
-        gross_earned_income = add(spm_unit, period, ["sc_tanf_earned_income"])
-        # C
         fpg = add(spm_unit, period, ["tax_unit_fpg"])
+        # get need standard
         need_standard = fpg * p.need_standard.rate
+        # get gross income limit
         gross_income_limit = need_standard * p.gross_income_limit
+        # check eligible for income disregard
+        gross_earned_income = add(spm_unit, period, ["sc_tanf_earned_income"])
         eligible_for_disregard = gross_earned_income <= gross_income_limit
-        p_deduction = p.earned_income_deduction
-        earned_income_after_disregard = max_(0,(
-            gross_earned_income
-            * p_deduction.percent
-            * p_deduction.first_four_months
-            / MONTHS_IN_YEAR
-            + (gross_earned_income / MONTHS_IN_YEAR - p_deduction.amount)
-            * (MONTHS_IN_YEAR - p_deduction.first_four_months)
-        ))
-        # D
-        child_support = add(spm_unit, period, ["child_support_received"])
-        net_earned_income = earned_income_after_disregard - child_support
-        # G
-        unearned_income = add(spm_unit, period, ["sc_tanf_unearned_income"])
-        total_net_income = unearned_income + net_earned_income
-        # H
+        # get total net income and compare it with need standard
+        total_net_income = spm_unit("sc_tanf_total_net_income", period)
         return (total_net_income < need_standard) & eligible_for_disregard

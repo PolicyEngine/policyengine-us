@@ -13,5 +13,7 @@ class sc_tanf_resources_eligible(Variable):
         resource_limit = parameters(
             period
         ).gov.states.sc.tanf.eligibility.resource_limit
-        countable_resources = add(spm_unit, period, ["sc_tanf_countable_resources"])
+        countable_resources = add(
+            spm_unit, period, ["sc_tanf_countable_resources"]
+        )
         return countable_resources <= resource_limit

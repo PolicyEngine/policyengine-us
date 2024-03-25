@@ -2,20 +2,18 @@
   period: 2022
   input:
     state_code: SC
-    sc_tanf_earned_income: 0
-    sc_tanf_unearned_income: 0
-    child_support_received: 0
+    sc_tanf_total_net_income: 0 
+    sc_tanf_income_eligible: true
     tax_unit_size: 2
   output:
-    sc_tanf: 256
+    sc_tanf: 257
 
-- name: Case 2, did not pass the gross income pass.
+- name: Case 2, did not pass the gross income test.
   period: 2022
   input:
     state_code: SC
-    sc_tanf_earned_income: 24_000
-    sc_tanf_unearned_income: 0
-    child_support_received: 0
+    sc_tanf_total_net_income: 19_200
+    sc_tanf_income_eligible: false
     tax_unit_size: 2
   output:
     sc_tanf: 0
@@ -24,12 +22,11 @@
   period: 2022
   input:
     state_code: SC
-    sc_tanf_earned_income: 10_750
-    sc_tanf_unearned_income: 0
-    child_support_received: 0
+    sc_tanf_total_net_income: 8_158
+    sc_tanf_income_eligible: true
     tax_unit_size: 2
   output:
     sc_tanf: 28
-  # total net income = 10750 * 0.5 * 4/12 + (10750/12-100)*8 = 8158
-  # standard need = 762*12 = 9144
-  # tanf = (9144 - 8158)*0.3372/12 = 27.7
+    # need standard for size 2 is 9144. (9155)
+    # tanf = (9144 - 8158)*0.3372/12 = 27.7
+
