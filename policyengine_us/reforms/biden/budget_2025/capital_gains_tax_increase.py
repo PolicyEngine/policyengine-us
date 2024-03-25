@@ -34,7 +34,6 @@ def create_capital_gains_tax_increase() -> Reform:
                 taxable_income, 0, first_threshold
             )
 
-
             income_ordinarily_under_third_rate = clip(
                 taxable_income, 0, second_threshold
             )
@@ -47,8 +46,6 @@ def create_capital_gains_tax_increase() -> Reform:
             income_threshold = p_reform.income_threshold[filing_status]
             excess_income = max_(0, taxable_income - income_threshold)
 
-
-
             cg_in_top_bracket = min_(adjusted_net_cg, excess_income)
 
             income_tax = parameters(period).gov.irs.income.bracket.rates["7"]
@@ -59,32 +56,45 @@ def create_capital_gains_tax_increase() -> Reform:
                 0, income_ordinarily_under_second_rate - income_less_ancg
             )
 
-            cg_in_first_bracket_below_top_bracket = max_(cg_in_first_bracket - cg_in_top_bracket, 0)
-
+            cg_in_first_bracket_below_top_bracket = max_(
+                cg_in_first_bracket - cg_in_top_bracket, 0
+            )
 
             cg_in_second_bracket = min_(
-                max_(0, adjusted_net_cg - cg_in_first_bracket_below_top_bracket),
+                max_(
+                    0, adjusted_net_cg - cg_in_first_bracket_below_top_bracket
+                ),
                 max_(
                     0,
                     income_ordinarily_under_third_rate
-                    - (non_cg_taxable_income + cg_in_first_bracket_below_top_bracket),
+                    - (
+                        non_cg_taxable_income
+                        + cg_in_first_bracket_below_top_bracket
+                    ),
                 ),
             )
 
-            cg_in_second_bracket_below_top_bracket = max_(cg_in_second_bracket - cg_in_top_bracket, 0)
-
+            cg_in_second_bracket_below_top_bracket = max_(
+                cg_in_second_bracket - cg_in_top_bracket, 0
+            )
 
             cg_in_third_bracket = max_(
-                adjusted_net_cg - cg_in_first_bracket_below_top_bracket - cg_in_second_bracket_below_top_bracket,
+                adjusted_net_cg
+                - cg_in_first_bracket_below_top_bracket
+                - cg_in_second_bracket_below_top_bracket,
                 0,
             )
 
-            cg_in_third_bracket_below_top_bracket = max_(cg_in_third_bracket - cg_in_top_bracket, 0)
+            cg_in_third_bracket_below_top_bracket = max_(
+                cg_in_third_bracket - cg_in_top_bracket, 0
+            )
 
             main_cg_tax = (
                 cg_in_first_bracket_below_top_bracket * cg.brackets.rates["1"]
-                + cg_in_second_bracket_below_top_bracket * cg.brackets.rates["2"]
-                + cg_in_third_bracket_below_top_bracket * cg.brackets.rates["3"]
+                + cg_in_second_bracket_below_top_bracket
+                * cg.brackets.rates["2"]
+                + cg_in_third_bracket_below_top_bracket
+                * cg.brackets.rates["3"]
                 + new_cg_tax
             )
 
