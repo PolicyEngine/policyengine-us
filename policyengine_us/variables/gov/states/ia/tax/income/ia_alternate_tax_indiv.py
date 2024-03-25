@@ -17,4 +17,6 @@ class ia_alternate_tax_indiv(Variable):
 
     def formula(person, period, parameters):
         alt_tax = person.tax_unit("ia_alternate_tax_unit", period)
-        return alt_tax * person("ia_prorate_fraction", period)
+        # Multiplying creates NaN values since alt_tax can be infinite.
+        prorate_fraction = person("ia_prorate_fraction", period)
+        return where(prorate_fraction == 0, 0, alt_tax * prorate_fraction)

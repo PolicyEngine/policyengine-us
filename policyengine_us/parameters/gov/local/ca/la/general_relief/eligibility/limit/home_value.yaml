@@ -3,6 +3,8 @@ metadata:
   label: Los Angeles County general relief home value limit
   unit: currency_USD
   period: year
+  # Our microdata does not have assets.
+  economy: false
   reference:
     - title: ABP 392 General Relief Information Sheet Form rev 07-2021
       href: https://drive.google.com/file/d/1Oc7UuRFxJj-eDwTeox92PtmRVGnG9RjW/view?usp=sharing 

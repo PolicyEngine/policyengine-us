@@ -4,10 +4,9 @@ from policyengine_us.model_api import *
 class il_property_tax_credit(Variable):
     value_type = float
     entity = TaxUnit
-    label = "IL Property Tax Credit"
+    label = "Illinois Property Tax Credit"
     unit = USD
     definition_period = YEAR
-
     defined_for = "il_is_exemption_eligible"
 
     def formula(tax_unit, period, parameters):
