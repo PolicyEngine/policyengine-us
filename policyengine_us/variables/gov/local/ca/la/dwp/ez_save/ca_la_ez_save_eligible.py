@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ca_la_ez_save_eligible(Variable):
     value_type = bool
     entity = Household
-    definition_period = YEAR
+    definition_period = MONTH
     label = "Eligible for the Los Angeles County EZ Save program"
     defined_for = "in_la"
 
