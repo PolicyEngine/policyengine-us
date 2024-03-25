@@ -1,6 +1,5 @@
 from policyengine_us.data.storage import STORAGE_FOLDER
 from policyengine_core.data import Dataset
-import pandas as pd
 from policyengine_us.data.datasets.cps.enhanced_cps.calibrated_cps import (
     CalibratedPUFExtendedCPS_2022,
 )
@@ -120,4 +119,4 @@ class EnhancedCPS_2022(EnhancedCPS):
     time_period = 2022
     num_years = 4
     file_path = STORAGE_FOLDER / "enhanced_cps_2022.h5"
-    url = "release://policyengine/policyengine-us/enhanced-cps-2023/enhanced_cps_2024_03_19.h5"
+    url = "release://policyengine/policyengine-us/enhanced-cps-2022/enhanced_cps_2022.h5"
