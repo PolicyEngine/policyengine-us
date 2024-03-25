@@ -3,17 +3,19 @@
   input:
     state_code: SC
     sc_tanf_total_net_income: 0 
-    sc_tanf_income_eligible: true
+    sc_tanf_eligible: true
     tax_unit_size: 2
   output:
-    sc_tanf: 257
+    sc_tanf: 3087
+    # tanf = 9155*0.3372 = 3087.1
+    # tanf = 9144*0.3372 = 3083.4
 
 - name: Case 2, did not pass the gross income test.
   period: 2022
   input:
     state_code: SC
     sc_tanf_total_net_income: 19_200
-    sc_tanf_income_eligible: false
+    sc_tanf_eligible: false
     tax_unit_size: 2
   output:
     sc_tanf: 0
@@ -23,10 +25,11 @@
   input:
     state_code: SC
     sc_tanf_total_net_income: 8_158
-    sc_tanf_income_eligible: true
+    sc_tanf_eligible: true
     tax_unit_size: 2
   output:
-    sc_tanf: 28
+    sc_tanf: 336
     # need standard for size 2 is 9144. (9155)
-    # tanf = (9144 - 8158)*0.3372/12 = 27.7
+    # tanf = (9144 - 8158)*0.3372 = 332.5
+    # tanf = (9155 - 8158)*0.3372 = 336.2
 

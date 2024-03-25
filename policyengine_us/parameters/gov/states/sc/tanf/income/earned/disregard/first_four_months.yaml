@@ -1,11 +1,11 @@
-description: Only the first four month can apply the 50% disregard. 
+description: South Carolina applies a percentage disregard to the earned income for this number of months, under the TANF program. 
 values:
   2022-01-01: 4
 
 metadata:
-  unit: int
+  unit: month
   period: month
-  label: South Carolina TANF earnings exclusion percent for self-employed individuals
+  label: South Carolina TANF percentage earnings exclusion applicable months
   reference:
     - title: The South Carolina Department of Social Services TANF Policy Manual 
       href: https://dss.sc.gov/media/3926/tanf_policy_manual_vol-60.pdf#page=130 

@@ -13,16 +13,12 @@ class sc_tanf(Variable):
     )
 
     def formula(spm_unit, period, parameters):
-        p_income = parameters(period).gov.states.sc.tanf.income.need_standard
-        p_payment = parameters(period).gov.states.sc.tanf.payment
+        p = parameters(period).gov.states.sc.tanf
         # Compute need standard based on ferderal poverty guidlines
         fpg = add(spm_unit, period, ["tax_unit_fpg"])
-        need_standard = fpg * p_income.rate
+        need_standard = fpg * p.income.need_standard.rate 
         # G
         total_net_income = spm_unit("sc_tanf_total_net_income", period)
         # I
-        return (
-            (need_standard - total_net_income)
-            * p_payment.rate
-            / MONTHS_IN_YEAR
-        )
+        excess_income = need_standard - total_net_income
+        return np.floor(excess_income * p.payment.rate)
