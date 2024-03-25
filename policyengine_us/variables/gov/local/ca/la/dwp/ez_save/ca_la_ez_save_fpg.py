@@ -20,9 +20,9 @@ class ca_la_ez_save_fpg(Variable):
         year = period.start.year
         month = period.start.month
         if month >= 7:
-            instant_str = f"{year}-10-01"
+            instant_str = f"{year}-07-01"
         else:
-            instant_str = f"{year - 1}-10-01"
+            instant_str = f"{year - 1}-07-01"
         p_fpg = parameters(instant_str).gov.hhs.fpg
 
         p1 = p_fpg.first_person[state_group] / MONTHS_IN_YEAR

@@ -7,6 +7,24 @@
   output:
     ca_la_ez_save_eligible: true
 
+- name: Two people household in 2022, ineligible
+  period: 2022
+  input:
+    in_la: true
+    ca_la_ez_save_countable_income: 38_030
+    household_size: 2
+  output:
+    ca_la_ez_save_eligible: false
+
+- name: Two people household in 2022, eligible
+  period: 2022
+  input:
+    in_la: true
+    ca_la_ez_save_countable_income: 35_272
+    household_size: 2
+  output:
+    ca_la_ez_save_eligible: true
+
 - name: Two people household size does receive an increase in the income threshold, ineligible
   period: 2023
   input:
@@ -20,7 +38,8 @@
   period: 2023
   input:
     in_la: true
-    ca_la_ez_save_countable_income: 142_240
+    ca_la_ez_save_countable_income: 136_630
+    ca_la_ez_save_fpg: 68_315
     household_size: 12
   output:
     ca_la_ez_save_eligible: true
@@ -29,7 +48,7 @@
   period: 2023
   input:
     in_la: true
-    ca_la_ez_save_countable_income: 142_241
-    household_size: 12
+    ca_la_ez_save_countable_income: 136_631
+    ca_la_ez_save_fpg: 68_315
   output:
     ca_la_ez_save_eligible: false

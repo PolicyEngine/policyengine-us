@@ -4,8 +4,8 @@ from policyengine_us.model_api import *
 class ca_la_ez_save(Variable):
     value_type = float
     entity = Household
-    definition_period = MONTH
-    label = "Los Angeles County EZ Save program"
+    definition_period = YEAR
+    label = "Los Angeles County EZ Save program monthly benefit amount"
     defined_for = "ca_la_ez_save_eligible"
 
     def formula(household, period, parameters):
