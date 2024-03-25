@@ -6,9 +6,7 @@ class ca_la_ez_save_fpg(Variable):
     entity = Household
     label = "Los Angeles County EZ save federal poverty guideline"
     unit = USD
-    documentation = (
-        "The federal poverty guideline used to determine LA ez save eligibility."
-    )
+    documentation = "The federal poverty guideline used to determine LA ez save eligibility."
     definition_period = MONTH
     defined_for = "in_la"
 

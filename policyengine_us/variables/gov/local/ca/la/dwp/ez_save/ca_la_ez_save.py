@@ -13,5 +13,5 @@ class ca_la_ez_save(Variable):
             household, period, ["pre_subsidy_electricity_expense"]
         )
         p = parameters(period).gov.local.ca.la.dwp.ez_save
-        uncapped_amount = p.amount 
+        uncapped_amount = p.amount
         return min_(electricity_expense, uncapped_amount)
