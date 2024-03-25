@@ -6723,3 +6723,83 @@
     fixed:
     - Adjust the Calworks reimbursement variables to represent monthly values.
   date: 2024-03-18 18:52:52
+- bump: patch
+  changes:
+    fixed:
+    - Allocate the Montana dependent exemptions optimally if the filing status is
+      married filing separately.
+  date: 2024-03-19 02:52:32
+- bump: minor
+  changes:
+    added:
+    - 2023 Connecticut tax rules.
+  date: 2024-03-19 03:00:29
+- bump: minor
+  changes:
+    added:
+    - Calibration of returns by filing status.
+  date: 2024-03-19 14:27:50
+- bump: patch
+  changes:
+    added:
+    - 2023 Michigan Tax Rules.
+  date: 2024-03-19 14:53:23
+- bump: minor
+  changes:
+    added:
+    - 2023 North Carolina Tax Rules.
+  date: 2024-03-20 00:27:02
+- bump: patch
+  changes:
+    fixed:
+    - Include the self employment deduction to the list of Michigan additions.
+    - Remove the self employment income from the list of household resources.
+    - Subtract the above the line deductions from the household resources.
+  date: 2024-03-20 04:55:01
+- bump: patch
+  changes:
+    fixed:
+    - Among joint filers, limit the Delaware elderly or disabled exclusion to filers
+      with both head and spouse eligible.
+  date: 2024-03-20 13:32:09
+- bump: patch
+  changes:
+    fixed:
+    - Adjust the Kentucky pension income exclusion to not count pension twice.
+  date: 2024-03-20 19:07:38
+- bump: patch
+  changes:
+    fixed:
+    - Make Arkansas childcare expense credit non-refundable.
+  date: 2024-03-20 19:56:27
+- bump: patch
+  changes:
+    fixed:
+    - Reduce the itemized deductions in Idaho by the SALT amount.
+  date: 2024-03-20 21:17:09
+- bump: patch
+  changes:
+    fixed:
+    - Add the Connecticut EITC to the list of refundable credits.
+  date: 2024-03-20 22:53:10
+- bump: minor
+  changes:
+    added:
+    - Enable Ohio income tax model and include in the net income tree.
+  date: 2024-03-22 01:44:40
+- bump: minor
+  changes:
+  - Add college student status from CPS.
+  - Add minimum student age to EITC for 2021.
+  - Use EITC qualifying child count for eligibility.
+  date: 2024-03-22 11:49:33
+- bump: patch
+  changes:
+  - changed:
+    - Remove 2023 CPS and update default to 2022.
+  date: 2024-03-22 18:58:11
+- bump: patch
+  changes:
+    added:
+    - Longer history and source for Social Security benefits target.
+  date: 2024-03-24 03:38:17

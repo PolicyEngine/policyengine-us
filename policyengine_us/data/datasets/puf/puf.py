@@ -4,21 +4,23 @@ from policyengine_us.data.storage import STORAGE_FOLDER
 from tqdm import tqdm
 
 
-class PUF_2023(Dataset):
-    name = "puf_2023"
+class PUF_2022(Dataset):
+    name = "puf_2022"
     label = "PUF"
-    time_period = "2023"
+    time_period = "2022"
     data_format = Dataset.ARRAYS
-    file_path = STORAGE_FOLDER / "puf_2023.h5"
+    file_path = STORAGE_FOLDER / "puf_2022.h5"
 
     def generate(self):
         # First pass: single person tax units.
         from policyengine_us.data.datasets.cps.enhanced_cps.process_puf import (
             load_puf,
             impute_missing_demographics,
+            uprate_puf,
         )
 
         puf, demographics = load_puf()
+        puf = uprate_puf(puf, self.time_period)
         puf = impute_missing_demographics(puf, demographics)
 
         VARIABLES = [
