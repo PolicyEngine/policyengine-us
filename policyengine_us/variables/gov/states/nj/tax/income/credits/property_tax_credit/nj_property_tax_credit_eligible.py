@@ -14,9 +14,7 @@ class nj_property_tax_credit_eligible(Variable):
     defined_for = StateCode.NJ
 
     def formula(tax_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.nj.tax.income.credits.property_tax_credit
+        p = parameters(period).gov.states.nj.tax.income.credits.property_tax
 
         # determine if pays property taxes via home ownership or renting
         owner_pays_ptax = add(tax_unit, period, ["real_estate_taxes"]) > 0

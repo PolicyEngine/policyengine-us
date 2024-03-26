@@ -20,9 +20,7 @@ class nj_property_tax_credit(Variable):
         status = filing_status.possible_values
         separate = filing_status == status.SEPARATE
         cohabitating = tax_unit("cohabitating_spouses", period)
-        p = parameters(
-            period
-        ).gov.states.nj.tax.income.credits.property_tax_credit
+        p = parameters(period).gov.states.nj.tax.income.credits.property_tax
         credit_amount = p.amount / (1 + separate * cohabitating)
 
         # taking credit if not taking deduction
