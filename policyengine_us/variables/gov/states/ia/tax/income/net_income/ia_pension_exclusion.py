@@ -15,6 +15,7 @@ class ia_pension_exclusion(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.ia.tax.income.pension_exclusion
+        cap_eligible = p.cap_eligible
         # determine eligibility for pension exclusion
         is_head = person("is_tax_unit_head", period)
         is_spouse = person("is_tax_unit_spouse", period)
@@ -30,4 +31,8 @@ class ia_pension_exclusion(Variable):
         pension = person("taxable_pension_income", period)
         filing_status = person.tax_unit("filing_status", period)
         exclusion_cap = p.maximum_amount[filing_status]
-        return is_eligible * min_(pension, exclusion_cap)
+        return where(
+            cap_eligible,
+            is_eligible * min_(pension, exclusion_cap),
+            is_eligible * pension,
+        )
