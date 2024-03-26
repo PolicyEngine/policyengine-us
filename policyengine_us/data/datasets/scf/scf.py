@@ -72,11 +72,10 @@ class SCF(Dataset):
         for scf_var in self._scf_mapper.keys() :
             microsim_var, vals = _remap_variable(scf_var, hh_data[scf_var], self._scf_mapper)
             if( vals.dtype == '<U19' ) :
-                _vals    = scf.create_dataset("string_data", shape=(len(vals),), dtype=h5py.string_dtype(length=32))
+                _vals    = scf.create_dataset(microsim_var, shape=(len(vals),), dtype=h5py.string_dtype(length=32))
                 _vals[:] = vals.tolist()
-                vals     = _vals
-
-            scf[microsim_var] = vals
+            else :
+                scf[microsim_var] = vals
 
         raw_data.close()
         scf.close()
