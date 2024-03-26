@@ -92,7 +92,7 @@
   period: 2022
   absolute_error_margin: 0
   input:
-    nj_property_tax_deduction_eligible: true
+    nj_property_tax_deduction_eligible: false
     rents: true
     age_head: 64
     age_spouse: 64
@@ -104,4 +104,4 @@
     adjusted_gross_income: 20_000
     state_code: NJ
   output:
-    nj_property_tax_credit_eligible: false
+    nj_property_tax_credit_eligible: true
