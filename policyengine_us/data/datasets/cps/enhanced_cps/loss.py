@@ -197,9 +197,9 @@ def generate_model_variables(
 
     agi = simulation.calculate("adjusted_gross_income").values
 
-    bounds = parameters.gov.irs.soi.ragi.number_of_returns.thresholds
-    counts = parameters.gov.irs.soi.ragi.number_of_returns.amounts
-    values = parameters.gov.irs.soi.ragi.number_of_returns.values
+    bounds = parameters.gov.irs.soi.agi.number_of_returns.thresholds
+    counts = parameters.gov.irs.soi.agi.number_of_returns.amounts
+    values = parameters.gov.irs.soi.agi.number_of_returns.values
 
     for i in range(len(bounds) - 1):
         lower_bound = bounds[i]
