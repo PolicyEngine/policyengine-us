@@ -199,7 +199,7 @@ def generate_model_variables(
 
     bounds = parameters.gov.irs.soi.agi.number_of_returns.thresholds
     counts = parameters.gov.irs.soi.agi.number_of_returns.amounts
-    values = parameters.gov.irs.soi.agi.number_of_returns.values
+    values = parameters.gov.irs.soi.agi.total_agi.amounts
 
     for i in range(len(bounds) - 1):
         lower_bound = bounds[i]
