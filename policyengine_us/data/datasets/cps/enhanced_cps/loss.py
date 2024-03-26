@@ -47,9 +47,9 @@ def generate_model_variables(
     FINANCIAL_EQUIVALISATION = COUNT_HOUSEHOLDS
     POPULATION_EQUIVALISATION = COUNT_HOUSEHOLDS / 1e5
 
-    is_filer = simulation.calculate("tax_unit_is_filer").values
-    household_has_filers = (
-        simulation.map_result(is_filer, "tax_unit", "household") > 0
+    is_taxable = simulation.calculate("income_tax").values > 0
+    household_has_taxable_filers = (
+        simulation.map_result(is_taxable, "tax_unit", "household") > 0
     )
 
     for variable_name in FINANCIAL_VARIABLES:
@@ -61,7 +61,7 @@ def generate_model_variables(
         )
         values_df[label] = (
             simulation.calculate(variable_name, map_to="household").values
-            * household_has_filers
+            * household_has_taxable_filers
         )
         targets[label] = parameters.gov.irs.soi[variable_name]
         equivalisation[label] = FINANCIAL_EQUIVALISATION
@@ -197,91 +197,14 @@ def generate_model_variables(
 
     agi = simulation.calculate("adjusted_gross_income").values
 
-    BOUNDS = [
-        -np.inf,
-        1,
-        5e3,
-        10e3,
-        15e3,
-        20e3,
-        25e3,
-        30e3,
-        40e3,
-        50e3,
-        75e3,
-        100e3,
-        200e3,
-        500e3,
-        1e6,
-        1.5e6,
-        2e6,
-        5e6,
-        10e6,
-        np.inf,
-    ]
-    COUNTS = [
-        4_098_522,
-        8_487_025,
-        8_944_908,
-        10_056_377,
-        9_786_580,
-        8_863_570,
-        8_787_576,
-        16_123_068,
-        12_782_334,
-        22_653_934,
-        14_657_726,
-        24_044_481,
-        9_045_567,
-        1_617_144,
-        376_859,
-        156_020,
-        233_838,
-        63_406,
-        45_404,
-    ]
-    VALUES = [
-        -171_836_364,
-        19_987_243,
-        67_651_359,
-        125_912_056,
-        170_836_129,
-        199_508_960,
-        241_347_179,
-        561_386_434,
-        573_155_378,
-        1_392_395_599,
-        1_271_699_391,
-        3_297_058_075,
-        2_619_188_471,
-        1_092_599_034,
-        454_552_875,
-        268_278_123,
-        698_923_219,
-        435_242_550,
-        1_477_728_359,
-        13_879_929_368,
-        -12_835_378,
-        451_204,
-        1_358_544,
-        14_362_205,
-        57_643_020,
-        101_727_915,
-        141_934_070,
-        382_385_416,
-        457_336_377,
-        1_238_178_360,
-        1_206_614_503,
-        3_252_746_502,
-        2_613_795_014,
-        1_091_571_914,
-        3_332_659_702,
-    ]
+    bounds = parameters.gov.irs.soi.ragi.number_of_returns.thresholds
+    counts = parameters.gov.irs.soi.ragi.number_of_returns.amounts
+    values = parameters.gov.irs.soi.ragi.number_of_returns.values
 
-    for i in range(len(BOUNDS) - 1):
-        lower_bound = BOUNDS[i]
-        upper_bound = BOUNDS[i + 1]
-        in_range = (agi >= lower_bound) * (agi < upper_bound) * is_filer
+    for i in range(len(bounds) - 1):
+        lower_bound = bounds[i]
+        upper_bound = bounds[i + 1]
+        in_range = (agi >= lower_bound) * (agi < upper_bound) * is_taxable
         household_filers = simulation.map_result(
             in_range, "tax_unit", "household"
         )
@@ -291,7 +214,7 @@ def generate_model_variables(
             lower_bound_str = f"{lower_bound:,.0f}"
         name = f"tax returns with AGI between ${lower_bound_str} and ${upper_bound:,.0f}"
         values_df[name] = household_filers
-        targets[name] = COUNTS[i] * population_growth_since_21
+        targets[name] = counts[i] * population_growth_since_21
         equivalisation[name] = POPULATION_EQUIVALISATION
 
         agi_in_range = agi * in_range
@@ -300,7 +223,7 @@ def generate_model_variables(
         )
         name = f"total AGI from tax returns with AGI between ${lower_bound_str} and ${upper_bound:,.0f}"
         values_df[name] = household_agi
-        targets[name] = VALUES[i] * population_growth_since_21 * 1e3
+        targets[name] = values[i] * population_growth_since_21 * 1e3
         equivalisation[name] = FINANCIAL_EQUIVALISATION
 
     # Tax return counts by filing status
