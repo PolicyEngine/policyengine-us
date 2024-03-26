@@ -16,6 +16,9 @@
         nj_ctc_eligible: true
         nj_taxable_income: 20_000
         members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
         state_code: NJ
   output:
     nj_ctc: 1_000
@@ -37,6 +40,9 @@
       tax_unit:
         nj_ctc_eligible: true
         nj_taxable_income: 20_000
+        members: [person1, person2, person3]
+    households:
+      household:
         members: [person1, person2, person3]
         state_code: NJ
   output:
@@ -61,6 +67,9 @@
       tax_unit:
         nj_ctc_eligible: true
         nj_taxable_income: 35_000
+        members: [person1, person2, person3, person4]
+    households:
+      household:
         members: [person1, person2, person3, person4]
         state_code: NJ
   output:
@@ -87,6 +96,9 @@
         nj_ctc_eligible: true
         nj_taxable_income: 35_000
         members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
         state_code: NJ
   output:
     nj_ctc: 2_400
@@ -112,6 +124,9 @@
         nj_ctc_eligible: true
         nj_taxable_income: 45_000
         members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
         state_code: NJ
   output:
     nj_ctc: 900
@@ -136,6 +151,9 @@
       tax_unit:
         nj_ctc_eligible: true
         nj_taxable_income: 45_000
+        members: [person1, person2, person3, person4]
+    households:
+      household:
         members: [person1, person2, person3, person4]
         state_code: NJ
   output:
@@ -165,6 +183,9 @@
         nj_ctc_eligible: true
         nj_taxable_income: 55_000
         members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
         state_code: NJ
   output:
     nj_ctc: 800
@@ -193,6 +214,9 @@
         nj_ctc_eligible: true
         nj_taxable_income: 55_000
         members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
         state_code: NJ
   output:
     nj_ctc: 1_600
@@ -212,6 +236,9 @@
         nj_ctc_eligible: true
         nj_taxable_income: 65_000
         members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
         state_code: NJ
   output:
     nj_ctc: 100
@@ -230,6 +257,9 @@
       tax_unit:
         nj_ctc_eligible: true
         nj_taxable_income: 65_000
+        members: [person1, person2]
+    households:
+      household:
         members: [person1, person2]
         state_code: NJ
   output:
@@ -252,6 +282,9 @@
       tax_unit:
         nj_ctc_eligible: false
         nj_taxable_income: 20_000
+        members: [person1, person2, person3]
+    households:
+      household:
         members: [person1, person2, person3]
         state_code: NJ
   output:
