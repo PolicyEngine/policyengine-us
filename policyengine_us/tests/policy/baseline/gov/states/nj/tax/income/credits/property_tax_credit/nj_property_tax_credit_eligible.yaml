@@ -88,7 +88,7 @@
   output:
     nj_property_tax_credit_eligible: false
 
-- name: 7 Ineligible for property tax deduction, therefore eligible for credit.
+- name: 7 Ineligible for property tax deduction, therefore ineligible for credit.
   period: 2022
   absolute_error_margin: 0
   input:
@@ -104,4 +104,4 @@
     adjusted_gross_income: 20_000
     state_code: NJ
   output:
-    nj_property_tax_credit_eligible: true
+    nj_property_tax_credit_eligible: false
