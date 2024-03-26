@@ -1,5 +1,6 @@
 from policyengine_us.model_api import *
 
+
 class al_tanf(Variable):
     value_type = float
     entity = SPMUnit
@@ -16,7 +17,7 @@ class al_tanf(Variable):
         capped_family_size = min_(family_size, p.max_unit_size)
 
         # Second check the payment standard based on the family size
-    
+
         payment_standard = p.payment_standard[capped_family_size]
 
         # Return payment standard
