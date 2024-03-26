@@ -29,9 +29,8 @@ class filing_status(Variable):
             ],
             [
                 FilingStatus.SEPARATE,
-                FilingStatus.SURVIVING_SPOUSE,
                 FilingStatus.JOINT,
-                FilingStatus.WIDOW,
+                FilingStatus.SURVIVING_SPOUSE,
                 FilingStatus.HEAD_OF_HOUSEHOLD,
             ],
             default=FilingStatus.SINGLE,

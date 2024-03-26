@@ -308,7 +308,9 @@ def generate_model_variables(
     # Tax return counts by filing status
 
     filing_status = (
-        simulation.calculate("filing_status").replace("WIDOW", "JOINT").values
+        simulation.calculate("filing_status")
+        .replace("SURVIVING_SPOUSE", "JOINT")
+        .values
     )
     for filing_status_value in [
         "SINGLE",
