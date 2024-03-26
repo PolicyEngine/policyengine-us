@@ -1,8 +1,7 @@
 from policyengine_core.data import Dataset
-from policyengine_us.data.datasets.cps.cps import CPS_2023, CPS_2022
+from policyengine_us.data.datasets.cps.cps import CPS_2022
 from policyengine_us.data.storage import STORAGE_FOLDER
 import numpy as np
-import pandas as pd
 
 
 class PUFExtendedCPS(Dataset):

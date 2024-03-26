@@ -237,3 +237,32 @@
         state_fips: 21  # KY
   output:  # expected results from patched TAXSIM35 2024-03-04 version
     ky_income_tax: 100.25
+
+- name: Tax unit with taxsimid 99980 in f21.its.csv and f21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 66
+        employment_income: 25010
+        taxable_interest_income: 11010
+        taxable_private_pension_income: 12000
+        social_security_retirement: 7000
+      person2:
+        age: 16
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        premium_tax_credit: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 21  # KY
+  output:  # expected results from patched TAXSIM35 2024-03-16 version
+    ky_pension_income_exclusion: [12000, 0]
+    ky_income_tax: 1626.50

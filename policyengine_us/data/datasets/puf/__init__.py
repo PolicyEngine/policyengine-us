@@ -1,1 +1,1 @@
-from .puf import PUF_2023
+from .puf import PUF_2022
