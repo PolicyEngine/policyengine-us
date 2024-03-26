@@ -18,4 +18,7 @@ class ia_files_separately(Variable):
     def formula(tax_unit, period, parameters):
         itax_indiv = tax_unit("ia_income_tax_indiv", period)
         itax_joint = tax_unit("ia_income_tax_joint", period)
-        return itax_indiv < itax_joint
+        p = parameters(period).gov.states.ia.tax.income.files_separate
+        if p.if_files_separate:
+            return itax_indiv < itax_joint
+        return False

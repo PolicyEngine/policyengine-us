@@ -37,4 +37,6 @@ class ia_amt_joint(Variable):
         amount = max_(0, amt_threshold - netinc * amt.fraction)  # Line 27
         gross_amt = max_(0, amt_taxinc - amount) * amt.rate  # Line 29
         base_tax = person("ia_base_tax_joint", period)  # Line 30
-        return max_(0, gross_amt - base_tax)  # Line 31
+        if amt.amt_available:
+            return max_(0, gross_amt - base_tax)  # Line 31
+        return 0
