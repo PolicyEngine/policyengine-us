@@ -8,4 +8,10 @@ class ca_la_ez_save(Variable):
     label = "Los Angeles County EZ Save program"
     defined_for = "ca_la_ez_save_eligible"
 
-    adds = ["ca_la_ez_save_amount"]
+    def formula(household, period, parameters):
+        electricity_expense = add(
+            household, period, ["pre_subsidy_electricity_expense"]
+        )
+        p = parameters(period).gov.local.ca.la.dwp.ez_save
+        uncapped_amount = p.amount
+        return min_(electricity_expense, uncapped_amount)
