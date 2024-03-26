@@ -6787,3 +6787,40 @@
     added:
     - Enable Ohio income tax model and include in the net income tree.
   date: 2024-03-22 01:44:40
+- bump: minor
+  changes:
+  - Add college student status from CPS.
+  - Add minimum student age to EITC for 2021.
+  - Use EITC qualifying child count for eligibility.
+  date: 2024-03-22 11:49:33
+- bump: patch
+  changes:
+  - changed:
+    - Remove 2023 CPS and update default to 2022.
+  date: 2024-03-22 18:58:11
+- bump: patch
+  changes:
+    added:
+    - Longer history and source for Social Security benefits target.
+  date: 2024-03-24 03:38:17
+- bump: patch
+  changes:
+    fixed:
+    - Bug in filing status logic causing tax unit spouses to appear in separate returns.
+  date: 2024-03-25 15:14:47
+- bump: minor
+  changes:
+    fixed:
+    - Maryland earned income tax credit.
+  date: 2024-03-25 15:54:18
+- bump: minor
+  changes:
+    added:
+    - Biden reform to tax LTCG and qualified dividends as ordinary income for high-income
+      filers.
+  date: 2024-03-25 18:10:17
+- bump: minor
+  changes:
+    added:
+    - Enable the Connecticut income tax model and include in the net income tree.
+  date: 2024-03-25 22:46:18

@@ -11,12 +11,7 @@ class md_non_refundable_eitc(Variable):
     reference = "https://casetext.com/statute/code-of-maryland/article-tax-general/title-10-income-tax/subtitle-7-income-tax-credits/section-10-704-effective-until-6302023-for-earned-income"
     defined_for = StateCode.MD
 
-    def formula(tax_unit, period, parameters):
-        federal_eitc = tax_unit("eitc", period)
-        p = parameters(period).gov.states.md.tax.income.credits.eitc
-        childless = tax_unit("eitc_child_count", period) == 0
-        return where(
-            childless,
-            min_(p.childless.max_amount, federal_eitc),
-            p.match.non_refundable * federal_eitc,
-        )
+    adds = [
+        "md_married_or_has_child_non_refundable_eitc",
+        "md_unmarried_childless_non_refundable_eitc",
+    ]

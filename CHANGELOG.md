@@ -5,6 +5,40 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.716.0] - 2024-03-25 22:46:18
+
+### Added
+
+- Enable the Connecticut income tax model and include in the net income tree.
+
+## [0.715.0] - 2024-03-25 18:10:17
+
+### Added
+
+- Biden reform to tax LTCG and qualified dividends as ordinary income for high-income filers.
+
+## [0.714.0] - 2024-03-25 15:54:18
+
+### Fixed
+
+- Maryland earned income tax credit.
+
+## [0.713.3] - 2024-03-25 15:14:47
+
+### Fixed
+
+- Bug in filing status logic causing tax unit spouses to appear in separate returns.
+
+## [0.713.2] - 2024-03-24 03:38:17
+
+### Added
+
+- Longer history and source for Social Security benefits target.
+
+## [0.713.1] - 2024-03-22 18:58:11
+
+## [0.713.0] - 2024-03-22 11:49:33
+
 ## [0.712.0] - 2024-03-22 01:44:40
 
 ### Added
@@ -7964,6 +7998,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.716.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.715.0...0.716.0
+[0.715.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.714.0...0.715.0
+[0.714.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.713.3...0.714.0
+[0.713.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.713.2...0.713.3
+[0.713.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.713.1...0.713.2
+[0.713.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.713.0...0.713.1
+[0.713.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.712.0...0.713.0
 [0.712.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.711.6...0.712.0
 [0.711.6]: https://github.com/PolicyEngine/policyengine-us/compare/0.711.5...0.711.6
 [0.711.5]: https://github.com/PolicyEngine/policyengine-us/compare/0.711.4...0.711.5
