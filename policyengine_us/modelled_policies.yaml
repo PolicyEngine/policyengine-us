@@ -10,6 +10,16 @@ core:
     - WIC
 filtered:
   state_name:
+    AL:
+      modelled:
+      - Alabama state income tax
+      not_modelled:
+      - Alabama TANF
+    AZ: 
+      modelled:
+      - Arizona state income tax
+      not_modelled:
+      - Arizona TANF
     CA:
       modelled:
       - California state income tax
@@ -21,15 +31,35 @@ filtered:
       - Colorado Old Age Pension
       - Colorado State Supplement
       - Colorado TANF
+    CT:
+      modelled:
+      - Connecticut state income tax
+      not_modelled:
+      - Connecticut TANF
     DC:
       modelled:
       - District of Columbia income tax
       - District of Columbia TANF
+    GA:
+      modelled:
+      - Georgia state income tax
+      not_modelled:
+      - Georgia TANF
+    HI:
+      modelled:
+      - Hawaii state income tax
+      not_modelled:
+      - Hawaii TANF
     IA:
       modelled:
       - Iowa state income tax
       not_modelled:
       - Iowa TANF
+    ID:
+      modelled:
+      - Idaho state income tax
+      not_modelled:
+      - Idaho TANF
     IL:
       modelled:
       - Illinois state income tax
@@ -98,6 +128,11 @@ filtered:
       modelled:
       - New York state and city income tax
       - New York TANF
+    OH:
+      modelled:
+      - Ohio state income tax
+      not_modelled:
+      - Ohio TANF
     OK:
       modelled:
       - Oklahoma state income tax
@@ -113,11 +148,26 @@ filtered:
       - Pennsylvania state income tax
       not_modelled:
       - Pennsylvania TANF
+    RI:
+      modelled:
+      - Rhode Island state income tax
+      not_modelled:
+      - Rhode Island TANF
+    SC:
+      modelled:
+      - South Carolina state income tax
+      not_modelled:
+      - South Carolina TANF
     UT:
       modelled:
       - Utah state income tax
       not_modelled:
       - Utah TANF
+    VT:
+      modelled:
+      - Vermont state income tax
+      not_modelled:
+      - Vermont TANF
     WA:
       modelled:
       - Washington state income tax
@@ -128,3 +178,8 @@ filtered:
       - Wisconsin state income tax
       not_modelled:
       - Wisconsin TANF
+    WV:
+      modelled:
+      - West Virginia state income tax
+      not_modelled:
+      - West Virginia TANF

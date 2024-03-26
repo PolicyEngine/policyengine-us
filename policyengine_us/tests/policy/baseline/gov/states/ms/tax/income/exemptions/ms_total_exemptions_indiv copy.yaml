@@ -1,0 +1,18 @@
+- name: The exemption is only attributed to the head
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+      person2:
+        is_tax_unit_head: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ms_total_exemptions: 1_500
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+  output:
+    ms_total_exemptions_joint: [1_500, 0]

@@ -1,0 +1,138 @@
+- name: Tax unit with taxsimid 99980 in g21.its.csv and g21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 46
+        employment_income: 134_010
+        taxable_interest_income: 5_505
+        rent: 17_000
+      person2:
+        age: 46
+        employment_income: 24_010
+        taxable_interest_income: 5_505
+      person3:
+        age: 11
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        tax_unit_childcare_expenses: 10_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_fips: 16  # ID
+  output:  # expected results from patched TAXSIM35 2024-02-15 version
+    id_income_tax: 8_179.59
+
+- name: Tax unit with taxsimid 78871 in j21.its.csv and j21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 47
+        employment_income: 144010
+        qualified_dividend_income: 1005.0
+        taxable_interest_income: 5505.0
+        short_term_capital_gains: 505.0
+        long_term_capital_gains: 1505.0
+        rental_income: 2005.0
+        self_employment_income: 160010
+        business_is_qualified: true
+        business_is_sstb: false
+        w2_wages_from_qualified_business: 100e6
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+        ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
+      person2:
+        age: 47
+        employment_income: 109010
+        qualified_dividend_income: 1005.0
+        taxable_interest_income: 5505.0
+        short_term_capital_gains: 505.0
+        long_term_capital_gains: 1505.0
+        rental_income: 2005.0
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+        ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
+      person3:
+        age: 16
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+        ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        premium_tax_credit: 0  # not in TAXSIM35
+        local_income_tax: 0  # not in TAXSIM35
+        state_sales_tax: 0  # not in TAXSIM35
+        ca_use_tax: 0  # not in TAXSIM35
+        il_use_tax: 0  # not in TAXSIM35
+        nm_2021_income_rebate: 0  # not in TAXSIM35
+        nm_additional_2021_income_rebate: 0  # not in TAXSIM35
+        nm_supplemental_2021_income_rebate: 0  # not in TAXSIM35
+        ny_supplemental_eitc: 0  # not in TAXSIM35
+        ok_use_tax: 0  # not in TAXSIM35
+        pa_use_tax: 0  # not in TAXSIM35
+        vt_renter_credit: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_fips: 16  # ID
+  output:  # expected results from patched TAXSIM35 2024-02-19 version
+    id_income_tax: 23411.29
+
+- name: Tax unit with taxsimid 58820 in k21.its.csv and k21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 56
+        employment_income: 110010
+        qualified_dividend_income: 1005
+        taxable_interest_income: 5505
+        short_term_capital_gains: 3505
+        long_term_capital_gains: 1505
+        rental_income: 1005
+        taxable_private_pension_income: 2500
+        real_estate_taxes: 4000
+        mortgage_interest: 36000
+        self_employment_income: 127010
+        business_is_qualified: true
+        business_is_sstb: false
+        w2_wages_from_qualified_business: 100e6
+      person2:
+        age: 56
+        employment_income: 141010
+        qualified_dividend_income: 1005
+        taxable_interest_income: 5505
+        short_term_capital_gains: 3505
+        long_term_capital_gains: 1505
+        rental_income: 1005
+        taxable_private_pension_income: 2500
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_itemizes: True
+        state_income_tax: 21664.05
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 16  # ID
+  output:  # expected results from patched TAXSIM35 2024-03-17 version
+    id_income_tax: 21404.06

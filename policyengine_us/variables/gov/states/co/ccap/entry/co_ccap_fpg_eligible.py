@@ -5,10 +5,7 @@ class co_ccap_fpg_eligible(Variable):
     value_type = bool
     entity = SPMUnit
     label = "Meets Colorado Child Care Assistance Program poverty-based income eligibility test"
-    reference = (
-        "https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=11042&fileName=8%20CCR%201403-1#page=19",
-        "https://docs.google.com/spreadsheets/d/1WzobLnLoxGbN_JfTuw3jUCZV5N7IA_0uvwEkIoMt3Wk/edit#gid=1350122430",
-    )
+    reference = "https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=11042&fileName=8%20CCR%201403-1#page=19"
     definition_period = MONTH
     # defined_for = StateCode.CO
 

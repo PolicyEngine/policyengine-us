@@ -1,0 +1,38 @@
+description: New York provides this supplemental tax incremental benefit amount for a widow filers.
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: currency-USD
+  label: New York supplemental tax incremental benefit widow amount
+  reference:
+    - title: Section 601 Imposition of tax, (d-2) for 2021 and (d-3) for 2022
+      href: https://www.nysenate.gov/legislation/laws/TAX/601
+    - title: 2021 NY Form IT-201 Instructions - Married filing jointly and qualifying widow(er)
+      href: https://www.tax.ny.gov/pdf/2021/inc/it201i_2021.pdf#page=52
+    - title: 2022 NY Form IT-201 Instructions - Married filing jointly and qualifying surviving spouse
+      href: https://www.tax.ny.gov/pdf/2022/printable-pdfs/inc/it201i-2022.pdf#page=45
+brackets:
+  - threshold:
+      2021-01-01: 0 
+    amount:
+      2021-01-01: 474
+      2022-01-01: 430
+  - threshold:
+      2021-01-01: 161_550
+    amount:
+      2021-01-01: 582
+      2022-01-01: 646
+  - threshold:
+      2021-01-01: 323_300
+    amount:
+      2021-01-01: 1_680
+      2022-01-01: 1_940
+  - threshold:
+      2021-01-01: 2_155_350
+    amount:
+      2021-01-01: 60_350
+      2022-01-01: 60_349
+  - threshold:
+      2021-01-01: 5_000_000
+    amount:
+      2021-01-01: 32_500

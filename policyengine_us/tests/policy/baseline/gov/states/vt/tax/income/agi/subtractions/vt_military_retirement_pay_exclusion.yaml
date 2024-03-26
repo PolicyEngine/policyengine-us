@@ -1,0 +1,54 @@
+- name: Military reitrement pay exclusion test 1
+  period: 2021
+  input:
+    people:
+      person1:
+        military_retirement_pay: 11_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_military_retirement_pay_exclusion: 0
+
+- name: Military reitrement pay exclusion test 2
+  period: 2022
+  input:
+    people:
+      person1:
+        military_retirement_pay: 9_000
+      person2:
+        military_retirement_pay: 9_000
+    tax_units:
+      tax_unit:
+        members: [person1,person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1,person2]
+        state_code: VT
+  output:
+    vt_military_retirement_pay_exclusion: 10_000
+
+- name: Military reitrement pay exclusion test 3
+  period: 2022
+  input:
+    people:
+      person1:
+        military_retirement_pay: 2_000
+      person2:
+        military_retirement_pay: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1,person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1,person2]
+        state_code: VT
+  output:
+    vt_military_retirement_pay_exclusion: 4_000
