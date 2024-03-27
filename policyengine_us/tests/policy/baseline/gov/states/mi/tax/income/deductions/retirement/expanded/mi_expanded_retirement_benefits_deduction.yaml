@@ -13,8 +13,8 @@
     household:
       members: [person1]
       state_code: MI
-  output: # min(60000, 15380)
-    mi_expanded_retirement_benefits_deduction: 15_380
+  output: # min(60000, 15379.5)
+    mi_expanded_retirement_benefits_deduction: 15_379.5
 
 - name: 2023 joint filer and their spouse with expanded retirement benefits deduction larger than taxable pension income and no military retirement pay, and with one more household member
   period: 2023

@@ -29,8 +29,6 @@ class mi_pension_benefit(Variable):
 
         if p.availability:
             expanded_retirement_benefits_deduction = [
-                "mi_retirement_benefits_deduction_tier_one",
-                "mi_retirement_benefits_deduction_tier_three",
                 "mi_expanded_retirement_benefits_deduction",
             ]
             return add(

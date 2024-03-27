@@ -24,18 +24,14 @@ class mi_expanded_retirement_benefits_deduction(Variable):
         person = tax_unit.members
         uncapped_pension_income = person("taxable_pension_income", period)
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-
         uncapped_head_or_spouse_pension = tax_unit.sum(
             uncapped_pension_income * is_head_or_spouse
-        )
-        cap = min_(
-            uncapped_head_or_spouse_pension, p.expanded.amount[filing_status]
         )
 
         # Modeled after Worksheet 3.3 Retirement and Pension Benefits Subtraction for Section D of Form 4884
 
         # If a filer is recieving military retirement pay, the calculation includes the smaller of
-        # a part of tier one or tier three deduction amount
+        # a part of tier one or expanded deduction amount
         tier_one_cap = p.tier_one.amount[filing_status]  # Line 1
         head_or_spouse_military_retirement_pay = (
             person("military_retirement_pay", period) * is_head_or_spouse
@@ -43,21 +39,26 @@ class mi_expanded_retirement_benefits_deduction(Variable):
         total_military_retirement_pay = tax_unit.sum(
             head_or_spouse_military_retirement_pay
         )  # Line 2
-        military_retirement_pay_eligible = total_military_retirement_pay > 0
+        received_military_retirement_pay = total_military_retirement_pay > 0
 
         # the cap is reduced by the amount of military retirement pay
         reduced_tier_one_cap = max_(
             tier_one_cap - total_military_retirement_pay, 0
         )  # Line 3
-        multiplited_tier_one_cap = (
+        tier_one_cap_percentage = (
             reduced_tier_one_cap * p.expanded.rate
         )  # Line 4
         smaller_of_cap_or_benefits = min_(
-            multiplited_tier_one_cap, uncapped_head_or_spouse_pension
+            tier_one_cap_percentage, uncapped_head_or_spouse_pension
         )  # Line 6
 
+        # Expanded deduction amount
+        capped_head_or_spouse_pension_income = min_(
+            uncapped_head_or_spouse_pension, tier_one_cap * p.expanded.rate
+        )
+
         return where(
-            military_retirement_pay_eligible,
+            received_military_retirement_pay,
             smaller_of_cap_or_benefits,
-            cap,
+            capped_head_or_spouse_pension_income,
         )  # Line 19

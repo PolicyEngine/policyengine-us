@@ -1,27 +1,27 @@
-description: Michigan allows for an non-retired tier three retirement and pension benefits deduction if this is true, based on their year of birth.
+description: Michigan allows for an non-retired tier three retirement and pension benefits deduction if this is true, based on birth-year. 
 brackets:
   - threshold:
       2021-01-01: 0
     amount:
-      2023-01-01: false
+      2021-01-01: false
   - threshold:
       2021-01-01: 1955
       2022-01-01: 1956
       2023-01-01: 1959
     amount:
-      2023-01-01: true
+      2021-01-01: true
   - threshold:
       2021-01-01: 1960
       2022-01-01: 1961
       2023-01-01: 1962
     amount:
-      2023-01-01: false
+      2021-01-01: false
 metadata:
   type: single_amount
   amount_unit: bool
   threshold_unit: year
   period: year  
-  label: Michigan non-retired tier three retirement and pension benefits birth year range
+  label: Michigan non-retired tier three retirement and pension benefits birth year  
   reference:
     - title: Michigan Legal Code Section 206.30 - (9)(d)
       href: http://legislature.mi.gov/doc.aspx?mcl-206-30
