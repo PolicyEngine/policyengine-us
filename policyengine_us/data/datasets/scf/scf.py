@@ -1,6 +1,6 @@
 from policyengine_core.data import Dataset
 from policyengine_us.data.storage import STORAGE_FOLDER
-from raw_scf import (
+from .raw_scf import (
     RawSCF_2022,
     RawSCF
 )
@@ -54,6 +54,10 @@ class SCF(Dataset):
         ,   'fin'           : {  'name' : 'assets_financial'
                                , 'map'  : (lambda x : x) }
         ,   'houses'        : {  'name' : 'assets_value_primary_residence'
+                               , 'map'  : (lambda x : x) }
+        ,   'cashli'        : {  'name' : 'assets_life_insurance'
+                               , 'map'  : (lambda x : x) }
+        ,   'othnfin'       : {  'name' : 'assets_nonfinancial_other'
                                , 'map'  : (lambda x : x) }
         ,   'homeeq'        : {  'name' : 'assets_equity_primary_residence'
                                , 'map'  : (lambda x : x) }
