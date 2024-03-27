@@ -223,7 +223,7 @@ def generate_model_variables(
         )
         name = f"total AGI from tax returns with AGI between ${lower_bound_str} and ${upper_bound:,.0f}"
         values_df[name] = household_agi
-        targets[name] = values[i] * population_growth_since_21 * 1e3
+        targets[name] = values[i] * population_growth_since_21
         equivalisation[name] = FINANCIAL_EQUIVALISATION
 
     # Tax return counts by filing status
@@ -242,7 +242,7 @@ def generate_model_variables(
         ]
         in_filing_status = filing_status == filing_status_value
         household_filers = simulation.map_result(
-            in_filing_status * is_filer, "tax_unit", "household"
+            in_filing_status * is_taxable, "tax_unit", "household"
         )
         labels = {
             "SINGLE": "single",
