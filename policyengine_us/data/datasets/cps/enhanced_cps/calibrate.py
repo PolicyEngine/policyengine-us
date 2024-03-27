@@ -1,20 +1,10 @@
 import torch
 import pandas as pd
 import numpy as np
-from policyengine_us import Microsimulation
-import plotly.express as px
 from tqdm import tqdm
-from policyengine_core.data import Dataset
-from policyengine_us.data import CPS_2023
 import numpy as np
-from policyengine_us import Microsimulation
 import pandas as pd
-from .process_puf import (
-    FINANCIAL_SUBSET as FINANCIAL_VARIABLES,
-    puf_imputed_cps_person_level,
-)
 from pathlib import Path
-from typing import Tuple
 from policyengine_us.data.datasets.cps.enhanced_cps.loss import (
     generate_model_variables,
 )
@@ -32,7 +22,7 @@ def aggregate(
 
 def calibrate(
     dataset: str,
-    time_period: str = "2023",
+    time_period: str = "2022",
     training_log_path: str = "training_log.csv.gz",
     learning_rate: float = 2e1,
     epochs: int = 10_000,
