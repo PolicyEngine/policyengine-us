@@ -47,3 +47,23 @@
   output:
     # 562.366 + round((25_000-24_301) * 0.049) = 596
     ar_income_tax_before_non_refundable_credits_indiv: 596
+
+- name: AR income tax rates - taxable income from $13,401 to $22,200 - 2014
+  period: 2014
+  absolute_error_margin: 1
+  input:
+    ar_taxable_income_indiv: 20_000
+    state_code: AR
+  output:
+  # 236 + round((20_000 - 13_401)* 0.045)
+    ar_income_tax_before_non_refundable_credits_indiv: 416
+
+- name: AR income tax rates - taxable income from $14,701 to $24,300 - 
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    ar_taxable_income_indiv: 20_000
+    state_code: AR
+  output:
+  # 236 + round((20_000 - 14_701)* 0.034)
+    ar_income_tax_before_non_refundable_credits_indiv: 416

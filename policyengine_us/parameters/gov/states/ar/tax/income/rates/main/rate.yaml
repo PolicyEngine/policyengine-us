@@ -7,57 +7,102 @@ metadata:
   reference:
   - title: Tax Legislation for 2022 Ark. Code § 26-51-201 (a)(1)(A)
     href: https://casetext.com/statute/arkansas-code-of-1987/title-26-taxation/subtitle-5-state-taxes/chapter-51-income-taxes/subchapter-2-imposition-of-tax/section-26-51-201-effective-90-days-after-sine-die-adjournment-individuals-trusts-and-estates
-  - title: 2023-2024 Indexed Tax Brackets
+  - title: 2023-2024 Indexed Tax Brackets # different from federal website
     href: https://casetext.com/statute/arkansas-code-of-1987/title-26-taxation/subtitle-5-state-taxes/chapter-51-income-taxes/subchapter-2-imposition-of-tax/section-26-51-201-individuals-trusts-and-estates
-  - title: 2022 Indexed Tax Brackets
-    href: https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/TaxBrackets_2022.pdf#page=1
-  - title: 2021 Indexed Tax Brackets
-    href: https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/TaxBrackets_2021.pdf#page=1
   - title: 2014-2020 Indexed Tax Brackets
     href: https://codes.findlaw.com/ar/title-26-taxation/ar-code-sect-26-51-201/
+  - title: 2014 Indexed Tax Brackets
+    href: https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/TaxBrackets_2014.pdf#page=1
+  - title: 2015 Indexed Tax Brackets
+    href: https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/TaxBrackets_2015.pdf#page=1
+  - title: 2016 Indexed Tax Brackets #missing because of no change?
+    href: https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/TaxBrackets_2016.pdf#page=1
+  - title: 2017 Indexed Tax Brackets #missing because of no change?
+    href: https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/TaxBrackets_2017.pdf#page=1
+  - title: 2018 Indexed Tax Brackets #missing because of no change?
+    href: https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/TaxBrackets_2018.pdf#page=1
+  - title: 2019 Indexed Tax Brackets
+    href: https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/TaxBrackets_2019.pdf#page=1
+  - title: 2020 Indexed Tax Brackets
+    href: https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/TaxBrackets_2020.pdf#page=1
+  - title: 2021 Indexed Tax Brackets
+    href: https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/TaxBrackets_2021.pdf#page=1
+  - title: 2022 Indexed Tax Brackets
+    href: https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/TaxBrackets_2022.pdf#page=1
+  - title: 2023 Indexed Tax Brackets
+    href: https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/TaxBrackets_2023.pdf#page=1
 
 brackets:
   - threshold:
       2014-01-01: 0
     amount:
-      2014-01-01: 0.0075
-      2021-01-01: 0
+      2014-01-01: 0.009 
+      2019-01-01: 0
   - threshold:
-      2014-01-01: 4_500
+      2014-01-01: 4_300
+      2019-01-01: 4_600
+      2020-01-01: 4_700
       2021-01-01: 4_800
       2022-01-01: 5_100
+      2023-01-01: 5_300
     amount:
       2014-01-01: 0.025
-      2021-01-01: 0.02
+      2015-01-01: 0.024
+      2019-01-01: 0.02
   - threshold:
-      2014-01-01: 8_900
+      2014-01-01: 8_400
+      2019-01-01: 9_100
+      2020-01-01: 9_200
       2021-01-01: 9_500
       2022-01-01: 10_300
+      2023-01-01: 10_600
     amount:
       2014-01-01: 0.035
-      2021-01-01: 0.03
+      2015-01-01: 0.034
+      2019-01-01: 0.03
   - threshold:
-      2014-01-01: 13_400
+      2014-01-01: 12_600
+      2015-01-01: 12_700
+      2019-01-01: 13_700
+      2020-01-01: 13_900
       2021-01-01: 14_300
       2022-01-01: 14_700
+      2023-01-01: 15_100
     amount:
       2014-01-01: 0.045
-      2021-01-01: 0.034
+      2015-01-01: 0.044
+      2019-01-01: 0.034
   - threshold:
-      2014-01-01: 22_200
+      2014-01-01: 21_000
+      2015-01-01: 21_100
+      2019-01-01: 22_600
+      2020-01-01: 22_900
       2021-01-01: 23_600
       2022-01-01: 24_300
+      2023-01-01: 25_000
     amount:
-      2014-01-01: 0.05
+      2014-01-01: 0.06
+      2019-01-01: 0.05
       2022-01-01: 0.049
       2023-01-01: 0.047
       2024-01-01: 0.044
   - threshold:
-      2014-01-01: 37_200
+      2014-01-01: 35_100
+      2015-01-01: 35_300
+      2019-01-01: 37_900
+      2020-01-01: 38_500
       2021-01-01: 39_700
       2022-01-01: .inf
     amount:
-      2014-01-01: 0.059
+      2014-01-01: 0.07
+      2019-01-01: 0.06
+      2019-01-01: 0.059
       2022-01-01: 0.049
       2023-01-01: 0.047
       2024-01-01: 0.044
+  - threshold:
+      2019-01-01: 80_801 # new extra threshold?
+      2019-01-01: 82_001
+    amount:
+      2019-01-01: 0.069
+      2020-01-01: 0.066
