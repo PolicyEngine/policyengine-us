@@ -122,6 +122,7 @@ PERSON_COLUMNS = [
     "PERIDNUM",
     "I_ERNVAL",
     "I_SEVAL",
+    "A_HSCOL",
 ]
 
 
