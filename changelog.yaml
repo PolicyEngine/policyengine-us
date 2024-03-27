@@ -6819,3 +6819,23 @@
     - Biden reform to tax LTCG and qualified dividends as ordinary income for high-income
       filers.
   date: 2024-03-25 18:10:17
+- bump: minor
+  changes:
+    added:
+    - Enable the Connecticut income tax model and include in the net income tree.
+  date: 2024-03-25 22:46:18
+- bump: patch
+  changes:
+    fixed:
+    - Adjust the Michigan household resources to exclude QBI.
+  date: 2024-03-26 14:30:48
+- bump: patch
+  changes:
+    fixed:
+    - Change LA EZ-SAVE to monthly and lag the poverty line.
+  date: 2024-03-26 21:46:35
+- bump: minor
+  changes:
+    added:
+    - Oregon 2023 parameter values.
+  date: 2024-03-27 17:03:02
