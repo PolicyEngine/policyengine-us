@@ -310,14 +310,14 @@ They would be eligible for $400 per month in housing assistance.</p>
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">ValueError</span><span class="g g-Whitespace">                                </span>Traceback (most recent call last)
-<span class="nn">File /opt/hostedtoolcache/Python/3.9.18/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation_builder.py:549,</span> in <span class="ni">SimulationBuilder.init_variable_values</span><span class="nt">(self, entity, instance_object, instance_id)</span>
+<span class="nn">File /opt/hostedtoolcache/Python/3.9.19/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation_builder.py:549,</span> in <span class="ni">SimulationBuilder.init_variable_values</span><span class="nt">(self, entity, instance_object, instance_id)</span>
 <span class="g g-Whitespace">    </span><span class="mi">548</span> <span class="k">try</span><span class="p">:</span>
 <span class="ne">--&gt; </span><span class="mi">549</span>     <span class="n">entity</span><span class="o">.</span><span class="n">check_variable_defined_for_entity</span><span class="p">(</span><span class="n">variable_name</span><span class="p">)</span>
 <span class="g g-Whitespace">    </span><span class="mi">550</span> <span class="k">except</span> <span class="p">(</span>
 <span class="g g-Whitespace">    </span><span class="mi">551</span>     <span class="ne">ValueError</span>
 <span class="g g-Whitespace">    </span><span class="mi">552</span> <span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>  <span class="c1"># The variable is defined for another entity</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.9.18/x64/lib/python3.9/site-packages/policyengine_core/entities/entity.py:52,</span> in <span class="ni">Entity.check_variable_defined_for_entity</span><span class="nt">(self, variable_name)</span>
+<span class="nn">File /opt/hostedtoolcache/Python/3.9.19/x64/lib/python3.9/site-packages/policyengine_core/entities/entity.py:52,</span> in <span class="ni">Entity.check_variable_defined_for_entity</span><span class="nt">(self, variable_name)</span>
 <span class="g g-Whitespace">     </span><span class="mi">40</span> <span class="n">message</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">linesep</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
 <span class="g g-Whitespace">     </span><span class="mi">41</span>     <span class="p">[</span>
 <span class="g g-Whitespace">     </span><span class="mi">42</span>         <span class="s2">&quot;You tried to compute the variable &#39;</span><span class="si">{0}</span><span class="s2">&#39; for the entity &#39;</span><span class="si">{1}</span><span class="s2">&#39;;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
@@ -347,7 +347,7 @@ They would be eligible for $400 per month in housing assistance.</p>
 <span class="ne">---&gt; </span><span class="mi">21</span>     <span class="nb">round</span><span class="p">(</span><span class="n">sim_emp</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">&quot;housing_assistance&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">12</span><span class="p">),</span>
 <span class="g g-Whitespace">     </span><span class="mi">22</span> <span class="p">)</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.9.18/x64/lib/python3.9/site-packages/policyengine_core/simulations/individual_sim.py:240,</span> in <span class="ni">IndividualSim.calc</span><span class="nt">(self, var, period, target, index, map_to, reform)</span>
+<span class="nn">File /opt/hostedtoolcache/Python/3.9.19/x64/lib/python3.9/site-packages/policyengine_core/simulations/individual_sim.py:240,</span> in <span class="ni">IndividualSim.calc</span><span class="nt">(self, var, period, target, index, map_to, reform)</span>
 <span class="g g-Whitespace">    </span><span class="mi">227</span><span class="w"> </span><span class="sd">&quot;&quot;&quot;Calculates the value of a variable, executing any required formulas.</span>
 <span class="g g-Whitespace">    </span><span class="mi">228</span><span class="sd"> </span>
 <span class="g g-Whitespace">    </span><span class="mi">229</span><span class="sd"> Args:</span>
@@ -364,7 +364,7 @@ They would be eligible for $400 per month in housing assistance.</p>
 <span class="g g-Whitespace">    </span><span class="mi">252</span>         <span class="k">for</span> <span class="n">reform</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parametric_reforms</span>
 <span class="g g-Whitespace">    </span><span class="mi">253</span>     <span class="p">]</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.9.18/x64/lib/python3.9/site-packages/policyengine_core/simulations/individual_sim.py:88,</span> in <span class="ni">IndividualSim.build</span><span class="nt">(self)</span>
+<span class="nn">File /opt/hostedtoolcache/Python/3.9.19/x64/lib/python3.9/site-packages/policyengine_core/simulations/individual_sim.py:88,</span> in <span class="ni">IndividualSim.build</span><span class="nt">(self)</span>
 <span class="g g-Whitespace">     </span><span class="mi">84</span>             <span class="bp">self</span><span class="o">.</span><span class="n">situation_data</span><span class="p">[</span><span class="n">entity_metadata</span><span class="o">.</span><span class="n">plural</span><span class="p">][</span><span class="n">entity</span><span class="p">][</span>
 <span class="g g-Whitespace">     </span><span class="mi">85</span>                 <span class="n">default_role</span><span class="o">.</span><span class="n">plural</span>
 <span class="g g-Whitespace">     </span><span class="mi">86</span>             <span class="p">]</span> <span class="o">=</span> <span class="n">members</span>
@@ -377,14 +377,14 @@ They would be eligible for $400 per month in housing assistance.</p>
 <span class="g g-Whitespace">     </span><span class="mi">93</span> <span class="bp">self</span><span class="o">.</span><span class="n">simulation</span><span class="o">.</span><span class="n">trace</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="g g-Whitespace">     </span><span class="mi">94</span> <span class="bp">self</span><span class="o">.</span><span class="n">sim</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">simulation</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.9.18/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:139,</span> in <span class="ni">Simulation.__init__</span><span class="nt">(self, tax_benefit_system, populations, situation, dataset, reform, trace)</span>
+<span class="nn">File /opt/hostedtoolcache/Python/3.9.19/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:139,</span> in <span class="ni">Simulation.__init__</span><span class="nt">(self, tax_benefit_system, populations, situation, dataset, reform, trace)</span>
 <span class="g g-Whitespace">    </span><span class="mi">137</span>     <span class="n">builder</span> <span class="o">=</span> <span class="n">SimulationBuilder</span><span class="p">()</span>
 <span class="g g-Whitespace">    </span><span class="mi">138</span>     <span class="n">builder</span><span class="o">.</span><span class="n">default_period</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_input_period</span>
 <span class="ne">--&gt; </span><span class="mi">139</span>     <span class="n">builder</span><span class="o">.</span><span class="n">build_from_dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tax_benefit_system</span><span class="p">,</span> <span class="n">situation</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
 <span class="g g-Whitespace">    </span><span class="mi">140</span>     <span class="bp">self</span><span class="o">.</span><span class="n">has_axes</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">has_axes</span>
 <span class="g g-Whitespace">    </span><span class="mi">142</span> <span class="k">if</span> <span class="n">populations</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.9.18/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation_builder.py:86,</span> in <span class="ni">SimulationBuilder.build_from_dict</span><span class="nt">(self, tax_benefit_system, input_dict, simulation)</span>
+<span class="nn">File /opt/hostedtoolcache/Python/3.9.19/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation_builder.py:86,</span> in <span class="ni">SimulationBuilder.build_from_dict</span><span class="nt">(self, tax_benefit_system, input_dict, simulation)</span>
 <span class="g g-Whitespace">     </span><span class="mi">79</span> <span class="n">input_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">explicit_singular_entities</span><span class="p">(</span>
 <span class="g g-Whitespace">     </span><span class="mi">80</span>     <span class="n">tax_benefit_system</span><span class="p">,</span> <span class="n">input_dict</span>
 <span class="g g-Whitespace">     </span><span class="mi">81</span> <span class="p">)</span>
@@ -400,7 +400,7 @@ They would be eligible for $400 per month in housing assistance.</p>
 <span class="g g-Whitespace">     </span><span class="mi">91</span>         <span class="n">tax_benefit_system</span><span class="p">,</span> <span class="n">input_dict</span><span class="p">,</span> <span class="n">simulation</span>
 <span class="g g-Whitespace">     </span><span class="mi">92</span>     <span class="p">)</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.9.18/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation_builder.py:176,</span> in <span class="ni">SimulationBuilder.build_from_entities</span><span class="nt">(self, tax_benefit_system, input_dict, simulation)</span>
+<span class="nn">File /opt/hostedtoolcache/Python/3.9.19/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation_builder.py:176,</span> in <span class="ni">SimulationBuilder.build_from_entities</span><span class="nt">(self, tax_benefit_system, input_dict, simulation)</span>
 <span class="g g-Whitespace">    </span><span class="mi">174</span> <span class="n">instances_json</span> <span class="o">=</span> <span class="n">input_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">entity_class</span><span class="o">.</span><span class="n">plural</span><span class="p">)</span>
 <span class="g g-Whitespace">    </span><span class="mi">175</span> <span class="k">if</span> <span class="n">instances_json</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
 <span class="ne">--&gt; </span><span class="mi">176</span>     <span class="bp">self</span><span class="o">.</span><span class="n">add_group_entity</span><span class="p">(</span>
@@ -412,7 +412,7 @@ They would be eligible for $400 per month in housing assistance.</p>
 <span class="g g-Whitespace">    </span><span class="mi">182</span> <span class="k">else</span><span class="p">:</span>
 <span class="g g-Whitespace">    </span><span class="mi">183</span>     <span class="bp">self</span><span class="o">.</span><span class="n">add_default_group_entity</span><span class="p">(</span><span class="n">persons_ids</span><span class="p">,</span> <span class="n">entity_class</span><span class="p">)</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.9.18/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation_builder.py:485,</span> in <span class="ni">SimulationBuilder.add_group_entity</span><span class="nt">(self, persons_plural, persons_ids, entity, instances_json)</span>
+<span class="nn">File /opt/hostedtoolcache/Python/3.9.19/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation_builder.py:485,</span> in <span class="ni">SimulationBuilder.add_group_entity</span><span class="nt">(self, persons_plural, persons_ids, entity, instances_json)</span>
 <span class="g g-Whitespace">    </span><span class="mi">478</span>             <span class="n">person_role</span> <span class="o">=</span> <span class="p">(</span>
 <span class="g g-Whitespace">    </span><span class="mi">479</span>                 <span class="n">role</span><span class="o">.</span><span class="n">subroles</span><span class="p">[</span><span class="n">index_within_role</span><span class="p">]</span>
 <span class="g g-Whitespace">    </span><span class="mi">480</span>                 <span class="k">if</span> <span class="n">role</span><span class="o">.</span><span class="n">subroles</span>
@@ -423,7 +423,7 @@ They would be eligible for $400 per month in housing assistance.</p>
 <span class="g g-Whitespace">    </span><span class="mi">487</span> <span class="k">if</span> <span class="n">persons_to_allocate</span><span class="p">:</span>
 <span class="g g-Whitespace">    </span><span class="mi">488</span>     <span class="n">entity_ids</span> <span class="o">=</span> <span class="n">entity_ids</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">persons_to_allocate</span><span class="p">)</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.9.18/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation_builder.py:553,</span> in <span class="ni">SimulationBuilder.init_variable_values</span><span class="nt">(self, entity, instance_object, instance_id)</span>
+<span class="nn">File /opt/hostedtoolcache/Python/3.9.19/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation_builder.py:553,</span> in <span class="ni">SimulationBuilder.init_variable_values</span><span class="nt">(self, entity, instance_object, instance_id)</span>
 <span class="g g-Whitespace">    </span><span class="mi">549</span>     <span class="n">entity</span><span class="o">.</span><span class="n">check_variable_defined_for_entity</span><span class="p">(</span><span class="n">variable_name</span><span class="p">)</span>
 <span class="g g-Whitespace">    </span><span class="mi">550</span> <span class="k">except</span> <span class="p">(</span>
 <span class="g g-Whitespace">    </span><span class="mi">551</span>     <span class="ne">ValueError</span>
