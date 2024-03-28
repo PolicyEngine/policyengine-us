@@ -22,14 +22,12 @@ class az_family_tax_credit_eligible(Variable):
                 filing_status == status.JOINT,
                 filing_status == status.HEAD_OF_HOUSEHOLD,
                 filing_status == status.SEPARATE,
-                filing_status == status.SURVIVING_SPOUSE,
             ],
             [
                 p.income_limit.single,
                 p.income_limit.joint.calc(dependents),
                 p.income_limit.head_of_household.calc(dependents),
                 p.income_limit.separate,
-                p.income_limit.surviving_spouse.calc(dependents),
             ],
         )
         return income <= income_limit
