@@ -28,5 +28,7 @@ class mi_pension_benefit(Variable):
         ]
 
         if p.availability:
-            retirement_benefits_deduction += ["mi_expanded_retirement_benefits_deduction"]
+            retirement_benefits_deduction += [
+                "mi_expanded_retirement_benefits_deduction"
+            ]
         return add(tax_unit, period, retirement_benefits_deduction)
