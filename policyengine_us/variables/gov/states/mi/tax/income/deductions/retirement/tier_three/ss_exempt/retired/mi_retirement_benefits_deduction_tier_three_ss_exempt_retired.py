@@ -33,6 +33,7 @@ class mi_retirement_benefits_deduction_tier_three_ss_exempt_retired(Variable):
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
 
         # Where one or two people in the household qualify determines the amount of deduction
+        # Line 11 & 12
         cap = select(
             [ss_retired_eligible_people == 1, ss_retired_eligible_people > 1],
             [
@@ -40,7 +41,7 @@ class mi_retirement_benefits_deduction_tier_three_ss_exempt_retired(Variable):
                 p.both_qualifying_amount[filing_status],
             ],
             default=0,
-        )  # Line 11 & 12
+        )
         uncapped_head_or_spouse_pension = tax_unit.sum(
             uncapped_pension_income * is_head_or_spouse
         )
@@ -54,20 +55,18 @@ class mi_retirement_benefits_deduction_tier_three_ss_exempt_retired(Variable):
         military_retirement_pay_eligible = (
             tax_unit.sum(person("military_retirement_pay", period)) > 0
         )
-
+        # Line 8
         tier_one_amount = tax_unit(
             "mi_retirement_benefits_deduction_tier_one_amount",
             period,
-        )  # Line 8
-        smaller_of_cap_or_tier_one_amount = min_(
-            cap, tier_one_amount
-        )  # Line 10
+        )
+        # Line 10
+        smaller_of_cap_or_tier_one_amount = min_(cap, tier_one_amount)
 
         eligible_deduction = where(
             military_retirement_pay_eligible,
             smaller_of_cap_or_tier_one_amount,
             cap,
         )
-        return min_(
-            uncapped_head_or_spouse_pension, eligible_deduction
-        )  # Line 17
+        # Line 17
+        return min_(uncapped_head_or_spouse_pension, eligible_deduction)

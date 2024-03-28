@@ -44,20 +44,18 @@ class mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired(
         military_retirement_pay_received = (
             tax_unit.sum(person("military_retirement_pay", period)) > 0
         )
-
+        # Line 8
         tier_one_amount = tax_unit(
             "mi_retirement_benefits_deduction_tier_one_amount",
             period,
-        )  # Line 8
-        smaller_of_cap_or_tier_one_amount = min_(
-            cap, tier_one_amount
-        )  # Line 10
+        )
+        # Line 10
+        smaller_of_cap_or_tier_one_amount = min_(cap, tier_one_amount)
 
         eligible_deduction = where(
             military_retirement_pay_received,
             smaller_of_cap_or_tier_one_amount,
             cap,
         )
-        return min_(
-            uncapped_head_or_spouse_pension, eligible_deduction
-        )  # Line 18
+        # Line 18
+        return min_(uncapped_head_or_spouse_pension, eligible_deduction)
