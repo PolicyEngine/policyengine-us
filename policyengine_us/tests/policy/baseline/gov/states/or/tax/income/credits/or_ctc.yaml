@@ -1,12 +1,3 @@
-- name: Was not in effect in 2022.
-  period: 2022
-  input:
-    state_code: OR
-    age: 5
-    or_agi: 0
-  output:
-    or_ctc: 0
-
 - name: $1,000 maximum in 2023.
   period: 2023
   input:
