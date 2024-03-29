@@ -10,7 +10,7 @@ class mi_expanded_retirement_benefits_deduction(Variable):
     reference = (
         "http://legislature.mi.gov/doc.aspx?mcl-206-30",  # (10)
         "https://www.michigan.gov/taxes/iit/retirement-and-pension-benefits/michigan-standard-deduction",
-        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2023/2023-IIT-Forms/BOOK_MI-1040.pdf#page=22",
+        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2023/2023-IIT-Forms/BOOK_MI-1040.pdf#page=25",
     )
     defined_for = "mi_expanded_retirement_benefits_deduction_eligible"
 
@@ -50,7 +50,7 @@ class mi_expanded_retirement_benefits_deduction(Variable):
         # Line 4
         tier_one_cap_percentage = reduced_tier_one_cap * p.expanded.rate
         # Line 6
-        smaller_of_cap_or_benefits = min_(
+        capped_benefit_amount = min_(
             tier_one_cap_percentage, uncapped_head_or_spouse_pension
         )
 
@@ -62,6 +62,6 @@ class mi_expanded_retirement_benefits_deduction(Variable):
         # Line 19
         return where(
             received_military_retirement_pay,
-            smaller_of_cap_or_benefits,
+            capped_benefit_amount,
             capped_head_or_spouse_pension_income,
         )
