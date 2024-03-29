@@ -18,43 +18,99 @@ class va_itemized_deductions(Variable):
             instant_str = f"2017-01-01"
         else:
             instant_str = period
-        p_irs = parameters(instant_str).gov.irs.deductions.itemized.limitation
         p_va = parameters(period).gov.states.va.tax.income.deductions.itemized
 
         # va itemized deductions
         itm_deds_less_salt = tax_unit("itemized_deductions_less_salt", period)
+        uncapped_state_and_local_tax = tax_unit(
+            "state_and_local_sales_or_income_tax", period
+        )
         uncapped_property_taxes = add(tax_unit, period, ["real_estate_taxes"])
-        va_itm_deds = itm_deds_less_salt + uncapped_property_taxes
+        va_itm_deds = (
+            itm_deds_less_salt
+            + uncapped_property_taxes
+            + uncapped_state_and_local_tax
+        )
 
         # Part A: If AGI from federal return is over a certain amount, then
         # limitations to the itemized deduction are applied
+        # Line 1 - sum of medical exepens ded., capped state and local tax,
+        # interest ded., charitable ded., and casualty loss ded.
+        applicable_ded = add(
+            tax_unit,
+            period,
+            [
+                "medical_expense_deduction",
+                "salt_deduction",
+                "interest_deduction",
+                "charitable_deduction",
+                "casualty_loss_deduction",
+            ],
+        )
+        # Line 2 medical expense ded., interest ded., casualty loss ded., and gambling losses
+        reductable_ded = add(
+            tax_unit,
+            period,
+            [
+                "medical_expense_deduction",
+                "investment_interest_expense",
+                "casualty_loss_deduction",
+                "gambling_losses",
+            ],
+        )
+        # Line 3 - subtract Line 2 from line 1
+        excess_ded = max_(applicable_ded - reductable_ded, 0)
+        # If 0 - no reduction
+        # Line 4 - IRS deduction rate of excess
+        p_irs = parameters(instant_str).gov.irs.deductions.itemized.limitation
+        excess_ded_fraction = excess_ded * p_irs.itemized_deduction_rate
+        # Line 5 Federal AGI
         federal_agi = tax_unit("adjusted_gross_income", period)
+        # Line 6 - applicable amount
         filing_status = tax_unit("filing_status", period)
         applicable_amount = p_va.applicable_amount[filing_status]
+        # Line 7 - excess
         excess = max_(federal_agi - applicable_amount, 0)
+        # Line 8 - excess times federal item. ded. AGI rate
         agi_adjustment = p_irs.agi_rate * excess
-
-        itm_deds_adjustment = p_irs.itemized_deduction_rate * va_itm_deds
-        va_itm_deds_adjustment = min_(agi_adjustment, itm_deds_adjustment)
+        # Line 9 - min of line 4 and line 8
+        va_itm_deds_adjustment = min_(agi_adjustment, excess_ded_fraction)
+        # Output from Part A (Line 1 - Line 9)
+        # Line 17 of the VA Schedule A
+        reduced_selected_ded = max_(applicable_ded - va_itm_deds_adjustment, 0)
 
         # Part B: state and local income tax modification
-        # the foreign income tax is considered but not modeled here
-        adjustment_fraction = np.zeros_like(va_itm_deds)
-        mask = va_itm_deds != 0
+        # Form Part A - line 11 - Line 9 divided by line 3
+        adjustment_fraction = np.zeros_like(excess_ded)
+        mask = excess_ded != 0
         adjustment_fraction[mask] = (
-            va_itm_deds_adjustment[mask] / va_itm_deds[mask]
+            va_itm_deds_adjustment[mask] / excess_ded[mask]
         )
-
-        # Virginia Schedule A fails to mention if state and local income taxes cannot be negative
-        salt = tax_unit("state_and_local_sales_or_income_tax", period)
-        state_and_local_income_tax_adjustment = salt * (
-            1 - adjustment_fraction
+        # Part B Line 13 - capped state and local income tax
+        p_salt = parameters(
+            period
+        ).gov.irs.deductions.itemized.salt_and_real_estate
+        capped_state_and_local_tax = min_(
+            uncapped_state_and_local_tax, p_salt.cap[filing_status]
         )
-
-        va_limited_itm_deds = max_(
-            va_itm_deds_adjustment - state_and_local_income_tax_adjustment, 0
+        # Line 14 - Multiply line 11 by line 13
+        state_and_local_tax_adj = (
+            capped_state_and_local_tax * adjustment_fraction
         )
-
+        # Line 15 - Subtract Line 14 from Line 13
+        reduced_state_and_local_tax = max_(
+            capped_state_and_local_tax - state_and_local_tax_adj, 0
+        )
+        # Output of not limited
+        itemized_ded_reduced_by_uncapped_state_and_local = max_(
+            va_itm_deds - uncapped_state_and_local_tax, 0
+        )
+        # Output if limited
+        selected_ded_reduced_by_reduced_state_and_local = max_(
+            reduced_selected_ded - reduced_state_and_local_tax, 0
+        )
         return where(
-            federal_agi > applicable_amount, va_limited_itm_deds, va_itm_deds
+            federal_agi > applicable_amount,
+            selected_ded_reduced_by_reduced_state_and_local,
+            itemized_ded_reduced_by_uncapped_state_and_local,
         )
