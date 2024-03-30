@@ -5,6 +5,36 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.718.0] - 2024-03-29 22:09:50
+
+### Added
+
+- Include the ky_cdcc to the net income tree.
+
+## [0.717.0] - 2024-03-27 17:03:02
+
+### Added
+
+- Oregon 2023 parameter values.
+
+## [0.716.2] - 2024-03-26 21:46:35
+
+### Fixed
+
+- Change LA EZ-SAVE to monthly and lag the poverty line.
+
+## [0.716.1] - 2024-03-26 14:30:48
+
+### Fixed
+
+- Adjust the Michigan household resources to exclude QBI.
+
+## [0.716.0] - 2024-03-25 22:46:18
+
+### Added
+
+- Enable the Connecticut income tax model and include in the net income tree.
+
 ## [0.715.0] - 2024-03-25 18:10:17
 
 ### Added
@@ -7992,6 +8022,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.718.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.717.0...0.718.0
+[0.717.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.716.2...0.717.0
+[0.716.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.716.1...0.716.2
+[0.716.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.716.0...0.716.1
+[0.716.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.715.0...0.716.0
 [0.715.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.714.0...0.715.0
 [0.714.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.713.3...0.714.0
 [0.713.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.713.2...0.713.3
