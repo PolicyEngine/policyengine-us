@@ -17,6 +17,7 @@ from .federal import create_reported_state_income_tax_reform
 from .biden.budget_2025 import (
     create_medicare_and_investment_tax_increase_reform,
 )
+from .biden.budget_2025 import create_capital_gains_tax_increase_reform
 from policyengine_core.reforms import Reform
 import warnings
 
@@ -50,6 +51,9 @@ def create_structural_reforms_from_parameters(parameters, period):
     reported_state_income_tax = create_reported_state_income_tax_reform(
         parameters, period
     )
+    capital_gains_tax_increase = create_capital_gains_tax_increase_reform(
+        parameters, period
+    )
 
     reforms = [
         afa_reform,
@@ -63,6 +67,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         abolish_payroll_tax,
         reported_state_income_tax,
         medicare_and_investment_tax_increase,
+        capital_gains_tax_increase,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
 
