@@ -8,7 +8,6 @@ from policyengine_us.data import CalibratedPUFExtendedCPS_2022
 
 
 def main():
-
     CalibratedPUFExtendedCPS_2022().generate()
 
     for file in STORAGE_FOLDER.glob("*.csv.gz"):
