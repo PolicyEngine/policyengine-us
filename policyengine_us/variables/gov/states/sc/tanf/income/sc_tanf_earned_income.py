@@ -8,4 +8,4 @@ class sc_tanf_earned_income(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.SC
-    adds = "gov.states.sc.tanf.income.earned"
+    adds = "gov.states.sc.tanf.income.earned.earned"

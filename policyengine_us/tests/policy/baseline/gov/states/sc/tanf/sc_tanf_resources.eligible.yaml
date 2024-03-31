@@ -1,0 +1,20 @@
+- name: Case 1, above the limit.
+  period: 2022
+  input:
+    state_code: SC
+    spm_unit_cash_assets: 2_000
+    retirement_distributions: 0
+    household_vehicles_value: 6_00
+  output:
+    sc_tanf_resources_eligible: false
+
+- name: Case 2, below the limit.
+  period: 2022
+  input:
+    state_code: SC
+    spm_unit_cash_assets: 1_000
+    retirement_distributions: 0
+    household_vehicles_value: 0
+  output:
+    sc_tanf_resources_eligible: true
+    

@@ -6,7 +6,7 @@ class sc_tanf(Variable):
     entity = SPMUnit
     label = "South Carolina TANF"
     unit = USD
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = "sc_tanf_eligible"
     reference = (
         "https://dss.sc.gov/media/3926/tanf_policy_manual_vol-60.pdf#page=131"
@@ -15,8 +15,8 @@ class sc_tanf(Variable):
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.sc.tanf
         # Compute need standard based on ferderal poverty guidlines
-        fpg = add(spm_unit, period, ["tax_unit_fpg"])
-        need_standard = fpg * p.income.need_standard.rate 
+        fpg = spm_unit("snap_fpg",period) 
+        need_standard = np.floor(fpg * p.income.need_standard.rate)
         # G
         total_net_income = spm_unit("sc_tanf_total_net_income", period)
         # I
