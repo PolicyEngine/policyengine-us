@@ -13,7 +13,7 @@ class sc_tanf_income_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.sc.tanf.income
-        fpg = spm_unit("snap_fpg",period)
+        fpg = spm_unit("snap_fpg", period)
         # get need standard
         need_standard = np.floor(fpg * p.need_standard.rate)
         # get gross income limit
