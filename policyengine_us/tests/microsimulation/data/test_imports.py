@@ -3,4 +3,4 @@ def test_RawCPS_import():
 
 
 def test_CPS_import():
-    from policyengine_us.data import CPS_2023
+    from policyengine_us.data import CPS_2022
