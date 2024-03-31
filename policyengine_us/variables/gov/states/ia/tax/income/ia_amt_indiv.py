@@ -30,30 +30,30 @@ class ia_amt_indiv(Variable):
         # compute AMT amount
         p = parameters(period).gov.states.ia.tax.income
         amt = p.alternative_minimum_tax
-        us_filing_status = person.tax_unit("filing_status", period)
-        fsvals = us_filing_status.possible_values
-        filing_status = select(
-            [
-                us_filing_status == fsvals.JOINT,
-                us_filing_status == fsvals.SINGLE,
-                us_filing_status == fsvals.SEPARATE,
-                us_filing_status == fsvals.HEAD_OF_HOUSEHOLD,
-                us_filing_status == fsvals.WIDOW,
-            ],
-            [
-                fsvals.SEPARATE,  # couples are filing separately on Iowa form
-                fsvals.SINGLE,
-                fsvals.SEPARATE,
-                fsvals.HEAD_OF_HOUSEHOLD,
-                fsvals.WIDOW,
-            ],
-        )
-        amt_threshold = amt.threshold[filing_status]  # Line 23
-        amt_exemption = amt.exemption[filing_status]  # Line 24
-        netinc = max_(0, amt_taxinc - amt_exemption)  # Line 25
-        amount = max_(0, amt_threshold - netinc * amt.fraction)  # Line 27
-        gross_amt = max_(0, amt_taxinc - amount) * amt.rate  # Line 29
-        base_tax = person("ia_base_tax_indiv", period)  # Line 30
-        if amt.amt_available:
+        if amt.availability:
+            us_filing_status = person.tax_unit("filing_status", period)
+            fsvals = us_filing_status.possible_values
+            filing_status = select(
+                [
+                    us_filing_status == fsvals.JOINT,
+                    us_filing_status == fsvals.SINGLE,
+                    us_filing_status == fsvals.SEPARATE,
+                    us_filing_status == fsvals.HEAD_OF_HOUSEHOLD,
+                    us_filing_status == fsvals.WIDOW,
+                ],
+                [
+                    fsvals.SEPARATE,  # couples are filing separately on Iowa form
+                    fsvals.SINGLE,
+                    fsvals.SEPARATE,
+                    fsvals.HEAD_OF_HOUSEHOLD,
+                    fsvals.WIDOW,
+                ],
+            )
+            amt_threshold = amt.threshold[filing_status]  # Line 23
+            amt_exemption = amt.exemption[filing_status]  # Line 24
+            netinc = max_(0, amt_taxinc - amt_exemption)  # Line 25
+            amount = max_(0, amt_threshold - netinc * amt.fraction)  # Line 27
+            gross_amt = max_(0, amt_taxinc - amount) * amt.rate  # Line 29
+            base_tax = person("ia_base_tax_indiv", period)  # Line 30
             return max_(0, gross_amt - base_tax)  # Line 31
         return 0

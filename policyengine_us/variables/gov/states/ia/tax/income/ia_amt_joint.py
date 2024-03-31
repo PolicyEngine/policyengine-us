@@ -30,13 +30,13 @@ class ia_amt_joint(Variable):
         # compute AMT amount
         p = parameters(period).gov.states.ia.tax.income
         amt = p.alternative_minimum_tax
-        filing_status = person.tax_unit("filing_status", period)
-        amt_threshold = amt.threshold[filing_status]  # Line 23
-        amt_exemption = amt.exemption[filing_status]  # Line 24
-        netinc = max_(0, amt_taxinc - amt_exemption)  # Line 25
-        amount = max_(0, amt_threshold - netinc * amt.fraction)  # Line 27
-        gross_amt = max_(0, amt_taxinc - amount) * amt.rate  # Line 29
-        base_tax = person("ia_base_tax_joint", period)  # Line 30
-        if amt.amt_available:
+        if amt.availability:
+            filing_status = person.tax_unit("filing_status", period)
+            amt_threshold = amt.threshold[filing_status]  # Line 23
+            amt_exemption = amt.exemption[filing_status]  # Line 24
+            netinc = max_(0, amt_taxinc - amt_exemption)  # Line 25
+            amount = max_(0, amt_threshold - netinc * amt.fraction)  # Line 27
+            gross_amt = max_(0, amt_taxinc - amount) * amt.rate  # Line 29
+            base_tax = person("ia_base_tax_joint", period)  # Line 30
             return max_(0, gross_amt - base_tax)  # Line 31
         return 0
