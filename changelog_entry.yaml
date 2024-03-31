@@ -1,4 +1,4 @@
-- bump: minor
+- bump: patch
   changes:
-    changed:
-    - Edited Maryland TANF to use employment_income instead of earned_income
+    fixed:
+    - Use employment_income instead of earned_income in the Maryland TANF computation.
