@@ -16,9 +16,7 @@ class va_low_income_tax_credit(Variable):
 
     def formula(tax_unit, period, parameters):
         # The credit is dependent on the number of personal and dependent exemptions
-        dependents = tax_unit("tax_unit_dependents", period)
-        head_spouse_count = tax_unit("head_spouse_count", period)
-        exemptions = dependents + head_spouse_count
+        exemptions = tax_unit("tax_unit_size", period)
         p = parameters(
             period
         ).gov.states.va.tax.income.credits.eitc.low_income_tax

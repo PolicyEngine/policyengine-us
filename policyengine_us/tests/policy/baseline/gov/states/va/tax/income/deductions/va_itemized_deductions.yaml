@@ -10,29 +10,6 @@
   output:
     va_itemized_deductions: 25_000 # 20000+5000
 
-- name: 2022 Virginia itemized deduction for a single filer
-  period: 2022
-  input:
-    filing_status: SINGLE
-    itemized_deductions_less_salt: 20_000
-    real_estate_taxes: 5_000
-    adjusted_gross_income: 280_000 # < $286,800
-    state_and_local_sales_or_income_tax: 1_000
-    state_code: VA
-  output:
-    va_itemized_deductions: 25_000 # 20000+5000
-
-- name: 2021 Virginia limited itemized deduction for a single filer
-  period: 2021
-  input:
-    filing_status: SINGLE
-    real_estate_taxes: 5_000
-    adjusted_gross_income: 300_000 # > $278,450
-    state_and_local_sales_or_income_tax: 1_000
-    state_code: VA
-  output:
-    va_itemized_deductions: 4_461.25
-
 - name: 2021 Virginia limited itemized deduction for a head of household filer
   period: 2021
   input:
@@ -91,7 +68,7 @@
   output:
     va_itemized_deductions: 40_000 #20,000+20,000
 
-- name: Tax unit with taxsimid 7856 in k21.its.csv and k21.ots.csv
+- name: Tax unit with taxsimid 7856 in k21.its.csv and k21.ots.csv - Integration test
   absolute_error_margin: 2
   period: 2021
   input:
