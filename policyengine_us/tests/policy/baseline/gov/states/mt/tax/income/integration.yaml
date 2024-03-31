@@ -100,3 +100,31 @@
         state_fips: 30  # MT
   output:  # expected results from patched TAXSIM35 2024-03-09 version
     mt_income_tax: 7_812.64
+
+- name: Tax unit with taxsimid 22630 in e21.its.csv and e21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 59
+        taxable_interest_income: 5_505
+      person2:
+        age: 59
+        employment_income: 27010
+        taxable_interest_income: 5_505
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        premium_tax_credit: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 30  # MT
+  output:  # expected results from patched TAXSIM35 2024-03-21 version
+    mt_income_tax: 1140.90
