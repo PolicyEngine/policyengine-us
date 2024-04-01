@@ -1,0 +1,70 @@
+- name: Household with income over threshold and $100,000 over excess dividend and cg income 
+  period: 2024
+  reforms: policyengine_us.reforms.biden.budget_2025.capital_gains_tax_increase.capital_gains_tax_increase
+  input:
+    gov.contrib.biden.budget_2025.capital_gains.active: true
+    # Household.
+    people:
+      head:
+        age: 36
+        qualified_dividend_income: 0
+        long_term_capital_gains: 80_000
+      spouse:
+        age: 36
+        qualified_dividend_income: 120_000
+        long_term_capital_gains: 0
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        taxable_income: 1_100_000
+        filing_status: JOINT
+  output:
+    # First 100,000 taxed at 20%
+    # Last 100,000 taxed at 37%
+    capital_gains_tax: 57_000 # 15,000 + 37,000
+
+- name: Reform not applied
+  period: 2024
+  input:
+    # Household.
+    people:
+      head:
+        age: 36
+        qualified_dividend_income: 0
+        long_term_capital_gains: 80_000
+      spouse:
+        age: 36
+        qualified_dividend_income: 120_000
+        long_term_capital_gains: 0
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        taxable_income: 1_100_000
+        filing_status: JOINT
+  output:
+    # 200,000 taxed at 20%
+    capital_gains_tax: 40_000
+
+- name: Household with income under threshold with reform
+  period: 2024
+  reforms: policyengine_us.reforms.biden.budget_2025.capital_gains_tax_increase.capital_gains_tax_increase
+  input:
+    gov.contrib.biden.budget_2025.capital_gains.active: true
+    # Household.
+    people:
+      head:
+        age: 36
+        qualified_dividend_income: 0
+        long_term_capital_gains: 80_000
+      spouse:
+        age: 36
+        qualified_dividend_income: 120_000
+        long_term_capital_gains: 0
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        taxable_income: 999_999
+        filing_status: JOINT
+  output:
+    # 200,000 taxed at 20%
+    capital_gains_tax: 40_000

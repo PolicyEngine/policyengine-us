@@ -5,6 +5,78 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.720.0] - 2024-04-01 00:10:04
+
+### Added
+
+- Delaware 2023 income tax parameters.
+
+## [0.719.1] - 2024-04-01 00:02:30
+
+### Fixed
+
+- Add taxable social security to the list of Delaware exclusions.
+
+## [0.719.0] - 2024-03-31 22:26:12
+
+### Added
+
+- 2023 New Mexico Tax Rules.
+
+## [0.718.0] - 2024-03-29 22:09:50
+
+### Added
+
+- Include the ky_cdcc to the net income tree.
+
+## [0.717.0] - 2024-03-27 17:03:02
+
+### Added
+
+- Oregon 2023 parameter values.
+
+## [0.716.2] - 2024-03-26 21:46:35
+
+### Fixed
+
+- Change LA EZ-SAVE to monthly and lag the poverty line.
+
+## [0.716.1] - 2024-03-26 14:30:48
+
+### Fixed
+
+- Adjust the Michigan household resources to exclude QBI.
+
+## [0.716.0] - 2024-03-25 22:46:18
+
+### Added
+
+- Enable the Connecticut income tax model and include in the net income tree.
+
+## [0.715.0] - 2024-03-25 18:10:17
+
+### Added
+
+- Biden reform to tax LTCG and qualified dividends as ordinary income for high-income filers.
+
+## [0.714.0] - 2024-03-25 15:54:18
+
+### Fixed
+
+- Maryland earned income tax credit.
+
+## [0.713.3] - 2024-03-25 15:14:47
+
+### Fixed
+
+- Bug in filing status logic causing tax unit spouses to appear in separate returns.
+
+## [0.713.2] - 2024-03-24 03:38:17
+
+### Added
+
+- Longer history and source for Social Security benefits target.
+
 ## [0.713.1] - 2024-03-22 18:58:11
 
 ## [0.713.0] - 2024-03-22 11:49:33
@@ -7968,6 +8040,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.720.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.719.1...0.720.0
+[0.719.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.719.0...0.719.1
+[0.719.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.718.0...0.719.0
+[0.718.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.717.0...0.718.0
+[0.717.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.716.2...0.717.0
+[0.716.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.716.1...0.716.2
+[0.716.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.716.0...0.716.1
+[0.716.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.715.0...0.716.0
+[0.715.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.714.0...0.715.0
+[0.714.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.713.3...0.714.0
+[0.713.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.713.2...0.713.3
+[0.713.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.713.1...0.713.2
 [0.713.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.713.0...0.713.1
 [0.713.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.712.0...0.713.0
 [0.712.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.711.6...0.712.0

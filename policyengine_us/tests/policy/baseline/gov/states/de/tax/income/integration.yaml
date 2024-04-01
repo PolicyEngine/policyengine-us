@@ -154,3 +154,28 @@
         state_fips: 10  # DE
   output:  # expected results from patched TAXSIM35 2024-03-07 version
     de_income_tax: 6585.82
+
+- name: Tax unit with taxsimid 91040 in f21.its.csv and f21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 62
+        employment_income: 129_010
+        taxable_interest_income: 11_010
+        taxable_private_pension_income: 6_000
+        social_security_retirement: 24_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        premium_tax_credit: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_fips: 10  # DE
+  output:  # expected results from patched TAXSIM35 2024-03-23 version
+    de_income_tax: 7361.32
