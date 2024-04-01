@@ -15,12 +15,6 @@ metadata:
     href: https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/TaxBrackets_2014.pdf#page=1
   - title: 2015 Indexed Tax Brackets
     href: https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/TaxBrackets_2015.pdf#page=1
-  - title: 2016 Indexed Tax Brackets #missing because of no change?
-    href: https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/TaxBrackets_2016.pdf#page=1
-  - title: 2017 Indexed Tax Brackets #missing because of no change?
-    href: https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/TaxBrackets_2017.pdf#page=1
-  - title: 2018 Indexed Tax Brackets #missing because of no change?
-    href: https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/TaxBrackets_2018.pdf#page=1
   - title: 2019 Indexed Tax Brackets
     href: https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/TaxBrackets_2019.pdf#page=1
   - title: 2020 Indexed Tax Brackets
@@ -85,7 +79,6 @@ brackets:
       2019-01-01: 0.05
       2022-01-01: 0.049
       2023-01-01: 0.047
-      2024-01-01: 0.044
   - threshold:
       2014-01-01: 35_100
       2015-01-01: 35_300
@@ -96,13 +89,16 @@ brackets:
     amount:
       2014-01-01: 0.07
       2019-01-01: 0.06
-      2019-01-01: 0.059
+      2020-01-01: 0.059
       2022-01-01: 0.049
       2023-01-01: 0.047
-      2024-01-01: 0.044
   - threshold:
-      2019-01-01: 80_801 # new extra threshold?
-      2019-01-01: 82_001
+      2014-01-01: .inf
+      2019-01-01: 80_801 
+      2020-01-01: 82_001
+      2021-01-01: .inf
     amount:
+      2014-01-01: .inf
       2019-01-01: 0.069
       2020-01-01: 0.066
+      2021-01-01: .inf

@@ -7,14 +7,6 @@ metadata:
   reference:
   - title: Tax Legislation for 2022 Ark. Code § 26-51-201 (a)(1)(A)
     href: https://casetext.com/statute/arkansas-code-of-1987/title-26-taxation/subtitle-5-state-taxes/chapter-51-income-taxes/subchapter-2-imposition-of-tax/section-26-51-201-effective-90-days-after-sine-die-adjournment-individuals-trusts-and-estates
-  - title: 2014 Indexed Tax Brackets
-    href: https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/TaxBrackets_2014.pdf#page=1
-  - title: 2015 Indexed Tax Brackets
-    href: https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/TaxBrackets_2015.pdf#page=1
-  - title: 2019 Indexed Tax Brackets
-    href: https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/TaxBrackets_2019.pdf#page=1
-  - title: 2020 Indexed Tax Brackets
-    href: https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/TaxBrackets_2020.pdf#page=1
   - title: 2021 Indexed Tax Brackets
     href: https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/TaxBrackets_2021.pdf#page=1
   - title: 2022 Indexed Tax Brackets
@@ -27,52 +19,42 @@ brackets:
     amount:
       2021-01-01: 0
   - threshold:
-      2014-01-01: 4_300
       2021-01-01: 4_800
       2022-01-01: 5_100
       2023-01-01: 5_300
     amount:
-      2014-01-01: 68.78
       2021-01-01: 95.98
       2022-01-01: 101.98
       2023-01-01: 105.98
   - threshold:
-      2014-01-01: 8_400
       2021-01-01: 9_500
       2022-01-01: 10_300
       2023-01-01: 10_600
     amount:
-      2014-01-01: 152.77
       2021-01-01: 190.97
       2022-01-01: 204.97
       2023-01-01: 211.97
   - threshold:
-      2014-01-01: 12_600
       2021-01-01: 14_300
       2022-01-01: 14_700
       2023-01-01: 15_100
     amount:
-      2014-01-01: 278.76
       2021-01-01: 248.17
       2022-01-01: 263.77
       2023-01-01: 272.37
   - threshold:
-      2014-01-01: 21_000
       2021-01-01: 23_600
       2022-01-01: 24_300
       2023-01-01: 25_000
     amount:
-      2014-01-01: 593.75
       2021-01-01: 439.96
       2022-01-01: 628.25
       2023-01-01: 597.35
   - threshold:
-      2014-01-01: 35_100
       2021-01-01: 39_700
       2022-01-01: 87_001
       2023-01-01: 89_601
     amount:
-      2014-01-01: 944.74
       2021-01-01: 797.25
       2022-01-01: 627.20
       2023-01-01: 583.70
@@ -443,14 +425,4 @@ brackets:
     amount:
       2021-01-01: 247.5
       2022-01-01: 167.20
-      2023-01-01: .inf
-  - threshold:
-      2021-01-01: .inf
-    amount:
-      2021-01-01: 247.5
-      2022-01-01: 167.20
-      2023-01-01: .inf
-  - threshold:
-      2021-01-01: .inf
-    amount:
-      2021-01-01: .inf
+      2023-01-01: 153.70
