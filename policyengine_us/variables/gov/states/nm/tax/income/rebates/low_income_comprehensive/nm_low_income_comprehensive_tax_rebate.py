@@ -27,21 +27,22 @@ class nm_low_income_comprehensive_tax_rebate(Variable):
 
         rebate = select(
             [
+                exemptions == 0,
                 exemptions == 1,
                 exemptions == 2,
                 exemptions == 3,
                 exemptions == 4,
                 exemptions == 5,
-                exemptions >= 6,
             ],
             [
-                p.amount.one_exemption.calc(agi),
-                p.amount.two_exemptions.calc(agi),
-                p.amount.three_exemptions.calc(agi),
-                p.amount.four_exemptions.calc(agi),
-                p.amount.five_exemptions.calc(agi),
-                p.amount.six_exemptions.calc(agi),
+                0,
+                p.amount.one_exemption.calc(agi, right=True),
+                p.amount.two_exemptions.calc(agi, right=True),
+                p.amount.three_exemptions.calc(agi, right=True),
+                p.amount.four_exemptions.calc(agi, right=True),
+                p.amount.five_exemptions.calc(agi, right=True),
             ],
+            default=p.amount.six_exemptions.calc(agi, right=True),
         )
 
         filing_status = tax_unit("filing_status", period)
