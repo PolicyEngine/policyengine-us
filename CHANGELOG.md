@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.719.1] - 2024-04-01 00:02:30
+
+### Fixed
+
+- Add taxable social security to the list of Delaware exclusions.
+
 ## [0.719.0] - 2024-03-31 22:26:12
 
 ### Added
@@ -8028,6 +8034,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.719.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.719.0...0.719.1
 [0.719.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.718.0...0.719.0
 [0.718.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.717.0...0.718.0
 [0.717.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.716.2...0.717.0
