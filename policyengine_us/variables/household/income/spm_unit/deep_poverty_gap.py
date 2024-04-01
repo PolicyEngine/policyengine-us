@@ -14,4 +14,4 @@ class deep_poverty_gap(Variable):
     def formula(spm_unit, period, parameters):
         resources = spm_unit("spm_resources", period)
         deep_poverty_threshold = spm_unit("deep_poverty_line", period)
-        return max_(deep_poverty_threshold - income, 0)
+        return max_(deep_poverty_threshold - resources, 0)
