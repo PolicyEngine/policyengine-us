@@ -6824,3 +6824,43 @@
     added:
     - Enable the Connecticut income tax model and include in the net income tree.
   date: 2024-03-25 22:46:18
+- bump: patch
+  changes:
+    fixed:
+    - Adjust the Michigan household resources to exclude QBI.
+  date: 2024-03-26 14:30:48
+- bump: patch
+  changes:
+    fixed:
+    - Change LA EZ-SAVE to monthly and lag the poverty line.
+  date: 2024-03-26 21:46:35
+- bump: minor
+  changes:
+    added:
+    - Oregon 2023 parameter values.
+  date: 2024-03-27 17:03:02
+- bump: minor
+  changes:
+    added:
+    - Include the ky_cdcc to the net income tree.
+  date: 2024-03-29 22:09:50
+- bump: minor
+  changes:
+    added:
+    - 2023 New Mexico Tax Rules.
+  date: 2024-03-31 22:26:12
+- bump: patch
+  changes:
+    fixed:
+    - Add taxable social security to the list of Delaware exclusions.
+  date: 2024-04-01 00:02:30
+- bump: minor
+  changes:
+    added:
+    - Delaware 2023 income tax parameters.
+  date: 2024-04-01 00:10:04
+- bump: minor
+  changes:
+    added:
+    - 2023 Kansas Tax Rules.
+  date: 2024-04-01 22:07:43
