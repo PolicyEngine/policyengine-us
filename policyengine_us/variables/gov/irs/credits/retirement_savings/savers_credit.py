@@ -56,19 +56,18 @@ class savers_credit(Variable):
             default=1,
         )
         # Credit rate
-        rate = p.rate.joint.rate
-        credit_rate = select(
+        joint_credit_rate = select(
             [
                 total_agi < agi_threshold_joint.lower * match,
                 total_agi < agi_threshold_joint.middle * match,
                 total_agi < agi_threshold_joint.higher * match,
             ],
             [
-                rate.lower,
-                rate.middle,
-                rate.higher,
+                p.rate.joint.rate.lower,
+                p.rate.joint.rate.middle,
+                p.rate.joint.rate.higher,
             ],
             default=0,
         )
 
-        return credit_rate * total_capped_qualified_contributions
+        return joint_credit_rate * total_capped_qualified_contributions
