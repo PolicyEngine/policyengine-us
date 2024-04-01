@@ -11,13 +11,6 @@ class va_reduced_itemized_deductions(Variable):
     defined_for = StateCode.VA
 
     def formula(tax_unit, period, parameters):
-        # The federal limitation on itemized deductions does not apply during the TCJA period
-        # Virginia still applies the limitation
-        year = period.start.year
-        if year >= 2018 and year <= 2026:
-            instant_str = f"2017-01-01"
-        else:
-            instant_str = period
         p_va = parameters(period).gov.states.va.tax.income.deductions.itemized
 
         uncapped_state_and_local_tax = tax_unit(
@@ -31,29 +24,25 @@ class va_reduced_itemized_deductions(Variable):
         applicable_ded = add(
             tax_unit,
             period,
-            [
-                "medical_expense_deduction",
-                "salt_deduction",
-                "interest_deduction",
-                "charitable_deduction",
-                "casualty_loss_deduction",
-            ],
+            p_va.reduction.applicable,
         )
         # Line 2 medical expense ded., interest ded., casualty loss ded., and gambling losses
         reducible_ded = add(
             tax_unit,
             period,
-            [
-                "medical_expense_deduction",
-                "investment_interest_expense",
-                "casualty_loss_deduction",
-                "gambling_losses",
-            ],
+            p_va.reduction.reducible,
         )
         # Line 3 - subtract Line 2 from line 1
         excess_ded = max_(applicable_ded - reducible_ded, 0)
         # If 0 - no reduction
         # Line 4 - IRS deduction rate of excess
+        # The federal limitation on itemized deductions does not apply during the TCJA period
+        # Virginia still applies the limitation
+        year = period.start.year
+        if year >= 2018 and year <= 2026:
+            instant_str = f"2017-01-01"
+        else:
+            instant_str = period
         p_irs = parameters(instant_str).gov.irs.deductions.itemized.limitation
         excess_ded_fraction = excess_ded * p_irs.itemized_deduction_rate
         # Line 5 Federal AGI
