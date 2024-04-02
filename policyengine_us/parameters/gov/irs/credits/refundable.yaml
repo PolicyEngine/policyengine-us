@@ -6,7 +6,7 @@ values:
     - refundable_ctc
     - recovery_rebate_credit
     - refundable_payroll_tax_credit
-    - premium_tax_credit
+    #- premium_tax_credit
   # Add CDCC in 2021.
   2021-01-01:
     - eitc
@@ -14,7 +14,7 @@ values:
     - refundable_ctc
     - recovery_rebate_credit
     - refundable_payroll_tax_credit
-    - premium_tax_credit
+    #- premium_tax_credit
     - cdcc
   # Remove CDCC in 2022.
   2022-01-01:
@@ -23,7 +23,7 @@ values:
     - refundable_ctc
     - recovery_rebate_credit
     - refundable_payroll_tax_credit
-    - premium_tax_credit
+    #- premium_tax_credit
     - ecpa_filer_credit
     - ecpa_adult_dependent_credit
 metadata:
