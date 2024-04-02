@@ -83,6 +83,9 @@ results_df["Percent close"] = results_df["Percent close"].apply(
 results_df.set_index("Region")
 ------------------
 
+----- stderr -----
+WARNING:root:Parameter gov.contrib.biden.budget_2025.capital_gains.income_threshold has a child WIDOW that is not in the possible values of filing_status, ignoring.
+------------------
 
 [0;31m---------------------------------------------------------------------------[0m
 [0;31mImportError[0m                               Traceback (most recent call last)
