@@ -6,7 +6,7 @@ class FilingStatus(Enum):
     JOINT = "Joint"
     SEPARATE = "Separate"
     HEAD_OF_HOUSEHOLD = "Head of household"
-    SURVIVING_SPOUSE = "Widow(er)"
+    SURVIVING_SPOUSE = "Surviving spouse"
 
 
 class filing_status(Variable):
