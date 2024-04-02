@@ -5,8 +5,6 @@ main:
     breakdown:
       - snap_region
       - range(1, 9)
-    unit: currency-USD
-    period: month
     label: SNAP max allotment
   CONTIGUOUS_US:
     1:
@@ -426,3 +424,4 @@ metadata:
       href: https://www.fns.usda.gov/snap/allotment/COLA
   period: month
   uprating: gov.usda.snap.uprating
+  propagate_metadata_to_children: true

@@ -122,6 +122,7 @@ PERSON_COLUMNS = [
     "PERIDNUM",
     "I_ERNVAL",
     "I_SEVAL",
+    "A_HSCOL",
 ]
 
 
@@ -155,7 +156,7 @@ class RawCPS(Dataset):
         url = CPS_URL_BY_YEAR[self.time_period]
 
         spm_unit_columns = SPM_UNIT_COLUMNS
-        if self.time_period < 2020:
+        if self.time_period <= 2020:
             spm_unit_columns = [
                 col for col in spm_unit_columns if col != "SPM_BBSUBVAL"
             ]
@@ -241,7 +242,7 @@ class RawCPS(Dataset):
         person: pd.DataFrame, time_period: int
     ) -> pd.DataFrame:
         spm_unit_columns = SPM_UNIT_COLUMNS
-        if time_period < 2020:
+        if time_period <= 2020:
             spm_unit_columns = [
                 col for col in spm_unit_columns if col != "SPM_BBSUBVAL"
             ]

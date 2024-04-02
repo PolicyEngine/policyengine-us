@@ -1,26 +1,27 @@
 from policyengine_core.data import Dataset
-from policyengine_us.data.datasets.cps.cps import CPS_2023
+from policyengine_us.data.datasets.cps.cps import CPS_2022
 from policyengine_us.data.storage import STORAGE_FOLDER
 import numpy as np
-import pandas as pd
 
 
-class PUFExtendedCPS_2023(Dataset):
-    name = "puf_extended_cps_2023"
-    label = "PUF-extended CPS (2023)"
-    file_path = STORAGE_FOLDER / "puf_extended_cps_2023.h5"
+class PUFExtendedCPS(Dataset):
     data_format = Dataset.ARRAYS
-    time_period = "2023"
+    cps = None
 
     def generate(self):
         from .process_puf import (
             FINANCIAL_SUBSET as FINANCIAL_VARIABLES,
             puf_imputed_cps_person_level,
         )
+        from policyengine_us.system import system
+        from policyengine_us import Microsimulation
 
-        person_df = puf_imputed_cps_person_level()
+        person_df, tax_unit_df = puf_imputed_cps_person_level(
+            time_period=self.time_period
+        )
         new_data = {}
-        cps = CPS_2023()
+        cps = self.cps()
+        input_data_sim = Microsimulation(dataset=self.cps)
         cps_data = cps.load()
         for variable in list(set(cps.variables) | set(FINANCIAL_VARIABLES)):
             if "_id" in variable:
@@ -40,20 +41,21 @@ class PUFExtendedCPS_2023(Dataset):
                 # Append on a copy
                 if variable in FINANCIAL_VARIABLES:
                     if variable not in cps.variables:
-                        if variable == "social_security":
-                            ## SS is an edge case
-                            original_values = (
-                                cps_data["social_security_retirement"][...]
-                                + cps_data["social_security_disability"][...]
-                            )
-                        else:
-                            original_values = np.zeros_like(
-                                cps_data["employment_income"][...]
-                            )
+                        entity = system.variables[variable].entity.key
+                        original_values = np.zeros_like(
+                            cps_data[f"{entity}_id"][...]
+                        )
                     else:
-                        original_values = cps_data[variable][...]
+                        original_values = input_data_sim.calculate(
+                            variable, self.time_period
+                        ).values
+                    imputed_data = (
+                        person_df[variable].values
+                        if variable in person_df
+                        else tax_unit_df[variable].values
+                    )
                     new_data[variable] = np.concatenate(
-                        [original_values, person_df[variable].values]
+                        [original_values, imputed_data]
                     )
                 else:
                     new_data[variable] = np.concatenate(
@@ -69,3 +71,11 @@ class PUFExtendedCPS_2023(Dataset):
         ).astype(bool)
 
         self.save_dataset(new_data)
+
+
+class PUFExtendedCPS_2022(PUFExtendedCPS):
+    time_period = 2022
+    name = "puf_extended_cps_2022"
+    label = "PUF-extended CPS (2022)"
+    cps = CPS_2022
+    file_path = STORAGE_FOLDER / "puf_extended_cps_2022.h5"
