@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class mo_business_income_deduction(Variable):
     value_type = float
     entity = TaxUnit
-    label = "MO business income deduction"
+    label = "Missouri business income deduction"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -14,10 +14,8 @@ class mo_business_income_deduction(Variable):
     defined_for = StateCode.MO
 
     def formula(tax_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.mo.tax.income.deductions.mo_max_business_income_deduction
+        p = parameters(period).gov.states.mo.tax.income.deductions
         qualified_business_income = tax_unit(
             "qualified_business_income", period
         )
-        return p * qualified_business_income
+        return p.mo_max_business_income_deduction * qualified_business_income
