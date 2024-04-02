@@ -3,7 +3,7 @@ from policyengine_us.model_api import *
 
 class ms_national_guard_or_reserve_pay_adjustment(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     label = "Mississippi national guard or reserve pay adjustment"
     unit = USD
     definition_period = YEAR
@@ -13,9 +13,10 @@ class ms_national_guard_or_reserve_pay_adjustment(Variable):
     ]
     defined_for = StateCode.MS
 
-    def formula(tax_unit, period, parameters):
-        military_income = add(tax_unit, period, ["military_service_income"])
+    def formula(person, period, parameters):
+        military_income = person("military_service_income", period)
         p = parameters(
             period
         ).gov.states.ms.tax.income.adjustments.national_guard_or_reserve_pay
+        # The tax form instructions confirm the exclusion is capped per taxpayer
         return min_(military_income, p.cap)

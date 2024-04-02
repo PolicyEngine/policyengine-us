@@ -3,7 +3,7 @@ from policyengine_us.model_api import *
 
 class mt_misc_deductions(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     label = "Montana miscellaneous deductions"
     unit = USD
     definition_period = YEAR

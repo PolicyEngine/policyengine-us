@@ -1,0 +1,71 @@
+- name: No gambling losses, no deduction.
+  absolute_error_margin: 0
+  period: 2022
+  input:
+    people:
+      person1:
+        gambling_winnings: 1
+        gambling_losses: 0
+      person2:
+        gambling_winnings: 0
+        gambling_losses: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+  output:
+    wagering_losses_deduction: 0
+
+- name: Gambling losses are deducted, capped at winnings.
+  absolute_error_margin: 0
+  period: 2022
+  input:
+    people:
+      person1:
+        gambling_winnings: 1
+        gambling_losses: 2
+      person2:
+        gambling_winnings: 0
+        gambling_losses: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+  output:
+    wagering_losses_deduction: 1
+
+- name: Combined gambling losses of household are deducted, capped at winnings.
+  absolute_error_margin: 0
+  period: 2022
+  input:
+    people:
+      person1:
+        gambling_winnings: 5
+        gambling_losses: 4
+      person2:
+        gambling_winnings: 0
+        gambling_losses: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+  output:
+    wagering_losses_deduction: 5

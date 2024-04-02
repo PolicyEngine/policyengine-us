@@ -1,0 +1,19 @@
+- name: Taxable income is capped at 0
+  period: 2022
+  input:
+    taxable_income: 800
+    state_code: SC
+    sc_additions: 100
+    sc_subtractions: 1_000
+  output:
+    sc_taxable_income: 0
+
+- name: Calculation
+  period: 2022
+  input:
+    taxable_income: 2_800
+    state_code: SC
+    sc_additions: 900
+    sc_subtractions: 1_000
+  output:
+    sc_taxable_income: 2_700

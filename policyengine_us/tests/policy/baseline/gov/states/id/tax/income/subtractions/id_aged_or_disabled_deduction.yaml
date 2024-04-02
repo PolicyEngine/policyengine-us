@@ -1,0 +1,79 @@
+- name: One eligible people
+  period: 2023
+  input:
+    people:
+      person1:
+        id_aged_or_disabled_deduction_eligible_person: true
+      person2:
+        id_aged_or_disabled_deduction_eligible_person: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        id_receives_aged_or_disabled_credit: false
+  output:  
+    id_aged_or_disabled_deduction: 1_000
+
+- name: No eligible people as eligible person is false
+  period: 2023
+  input:
+    people:
+      person1:
+        id_aged_or_disabled_deduction_eligible_person: false
+      person2:
+        id_aged_or_disabled_deduction_eligible_person: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        id_receives_aged_or_disabled_credit: false
+  output:  
+    id_aged_or_disabled_deduction: 0
+
+- name: No eligible deduction as receiving credit
+  period: 2023
+  input:
+    people:
+      person1:
+        id_aged_or_disabled_deduction_eligible_person: true
+      person2:
+        id_aged_or_disabled_deduction_eligible_person: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        id_receives_aged_or_disabled_credit: true
+  output:  
+    id_aged_or_disabled_deduction: 0
+
+- name: Four eligible people - capped at 3
+  period: 2023
+  input:
+    people:
+      person1:
+        id_aged_or_disabled_deduction_eligible_person: true
+      person2:
+        id_aged_or_disabled_deduction_eligible_person: true
+      person3:
+        id_aged_or_disabled_deduction_eligible_person: true
+      person4:
+        id_aged_or_disabled_deduction_eligible_person: true
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: ID
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        id_receives_aged_or_disabled_credit: false
+  output:  
+    id_aged_or_disabled_deduction: 3_000

@@ -1,0 +1,41 @@
+- name: The amount of the credit is allocated to the head and reduced combined
+  period: 2022
+  input:
+    people:
+      person1: 
+        is_tax_unit_head: true
+        mt_elderly_homeowner_or_renter_credit_gross_household_income: 20_000
+        mt_elderly_homeowner_or_renter_credit_eligible: true
+      person2: 
+        mt_elderly_homeowner_or_renter_credit_gross_household_income: 14_000
+        mt_elderly_homeowner_or_renter_credit_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_elderly_homeowner_or_renter_credit_net_household_income: [1_070, 0]
+
+- name: Maximum 
+  period: 2021
+  input:
+    people:
+      person1: 
+        is_tax_unit_head: true
+        mt_elderly_homeowner_or_renter_credit_gross_household_income: 38_000
+        mt_elderly_homeowner_or_renter_credit_eligible: true
+      person2: 
+        mt_elderly_homeowner_or_renter_credit_gross_household_income: 10_000
+        mt_elderly_homeowner_or_renter_credit_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_elderly_homeowner_or_renter_credit_net_household_income: [1_770, 0]

@@ -17,9 +17,9 @@
         is_tax_unit_head_or_spouse: true
     tax_units:
       tax_unit:
-        greater_age_head_spouse: 77
+        older_spouse_birth_year: 1945
         elderly_disabled_credit: 300
-        mi_exemptions: 2_000
+        mi_personal_exemptions: 2_000
         members: [person1]
         filing_status: SINGLE
     household:
@@ -85,15 +85,15 @@
         is_tax_unit_head_or_spouse: false
     tax_units:
       tax_unit:
-        greater_age_head_spouse: 67
+        older_spouse_birth_year: 1955
         elderly_disabled_credit: 300
-        mi_exemptions: 2_000
+        mi_personal_exemptions: 2_000
         members: [person1, person2, person3]
         filing_status: JOINT
     household:
       members: [person1, person2, person3]
       state_code: MI
-  output: # 40000 - 2000 - 1000 - 5000 - 2000 - 3000 - 2000 < 40000 + 30000
+  output: # 40000 - 2000 - 1000 - (5000 > 2000) - (3000 > 0) - 2000 > 0
     mi_interest_dividends_capital_gains_deduction_eligible: false
     mi_interest_dividends_capital_gains_deduction: 0
     mi_retirement_benefits_deduction_tier_one_eligible: false
@@ -106,8 +106,8 @@
     mi_retirement_benefits_deduction_tier_three: 0
     mi_pension_benefit: 0
     mi_standard_deduction_tier_three_eligible: true
-    mi_standard_deduction_tier_three: 25_000
+    mi_standard_deduction_tier_three: 27_000
     mi_standard_deduction_tier_two_eligible: false
     mi_standard_deduction_tier_two_increase_eligible_people: 0
     mi_standard_deduction_tier_two: 0
-    mi_standard_deduction: 25_000
+    mi_standard_deduction: 27_000

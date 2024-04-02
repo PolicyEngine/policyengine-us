@@ -3,14 +3,15 @@ values:
   2021-01-01:
     - taxable_pension_income
     - taxable_social_security
-    - ira_contributions
+    - taxable_ira_distributions
     - disability_benefits
-# In 2022 the taxable social security is calculated separately
+  # In 2022 the taxable social security is calculated separately.
   2022-01-01:
     - taxable_pension_income
-    - ira_contributions
+    - taxable_ira_distributions
     - disability_benefits
 metadata:
+  period: year
   unit: list
   label: Colorado pension subtraction income sources
   reference:
@@ -18,5 +19,7 @@ metadata:
       href: https://tax.colorado.gov/sites/tax/files/documents/DR0104AD_2022.pdf#page=1
     - title: 2021 DR 0104AD 
       href: https://tax.colorado.gov/sites/tax/files/documents/DR0104AD_2021.pdf#page=1
+    - title: 2023 DR 0104AD 
+      href: https://tax.colorado.gov/sites/tax/files/documents/DR0104AD_2023.pdf#page=1
     - title: Government of Colorado - Income Tax Topics, Social Security, Pensions, and Annuities
       href: https://tax.colorado.gov/sites/tax/files/documents/ITT_Social_Security_Pensions_and_Annuities_Feb_2023.pdf#page=2

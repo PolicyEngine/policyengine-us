@@ -1,0 +1,40 @@
+- name: Calculation for a joint person
+  period: 2021
+  input:
+  # The taxable income will always default to 0 for the non-head 
+    people: 
+      person1:
+        mt_taxable_income_joint: 1_000
+      person2:
+        mt_taxable_income_joint: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_income_tax_before_non_refundable_credits_joint: 10
+
+
+- name: Calculation of a head of household
+  period: 2021
+  input:
+  # The taxable income will always default to 0 for the non-head 
+    people: 
+      person1:
+        mt_taxable_income_joint: 10_000
+      person2:
+        mt_taxable_income_joint: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_income_tax_before_non_refundable_credits_joint: 230

@@ -1,0 +1,29 @@
+description: Arkansas accounts for these sources when calculating the gross income.
+values:
+  2021-01-01:
+    - irs_employment_income # Line 8
+    - self_employment_income # Line 8
+    - military_service_income # Line 9
+    - interest_income # Line 10
+    - dividend_income # Line 11
+    - alimony_income # Line 12
+    - capital_gains # Line 13
+    - taxable_ira_distributions # Line 16
+    # - ar_military_retirement_income_person # Line 17
+    - taxable_pension_income # Line 18
+    - disability_benefits # Line 18b
+    - rental_income # Line 19
+    - farm_rent_income # Line 20
+    - unemployment_compensation # Line 21
+
+metadata:
+  unit: list
+  period: year
+  label: Arkansas gross income sources
+  reference:
+    - title: Arkansas 2022 AR1000F Instructions
+      href: https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2022_AR1000F_and_AR1000NR_Instructions.pdf#page=13
+    - title: 2022 Arkansas AR1000F
+      href: https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2022_AR1000F_FullYearResidentIndividualIncomeTaxReturn.pdf#page=2
+    - title: Arkansas Code § 26-51-404 
+      href: https://casetext.com/statute/arkansas-code-of-1987/title-26-taxation/subtitle-5-state-taxes/chapter-51-income-taxes/subchapter-4-computation-of-tax-liability/section-26-51-404-gross-income-generally

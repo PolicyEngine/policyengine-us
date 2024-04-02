@@ -7,3 +7,5 @@ class non_mortgage_interest(Variable):
     label = "Non-mortgage interest"
     unit = USD
     definition_period = YEAR
+
+    adds = ["personal_interest_expense", "investment_interest_expense"]

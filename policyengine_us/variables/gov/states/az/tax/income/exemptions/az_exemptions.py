@@ -13,6 +13,5 @@ class az_exemptions(Variable):
         "az_aged_exemption",
         "az_blind_exemption",
         "az_parents_grandparents_exemption",
-        "az_senior_exemption",
         "az_stillborn_exemption",
     ]

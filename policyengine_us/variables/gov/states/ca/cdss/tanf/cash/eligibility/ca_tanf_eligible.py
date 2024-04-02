@@ -12,5 +12,13 @@ class ca_tanf_eligible(Variable):
         demographic_eligible = spm_unit("is_demographic_tanf_eligible", period)
         financial_eligibile = spm_unit("ca_tanf_financial_eligible", period)
         resources_eligible = spm_unit("ca_tanf_resources_eligible", period)
+        vehicle_value_eligible = spm_unit(
+            "ca_tanf_vehicle_value_eligible", period
+        )
 
-        return demographic_eligible & financial_eligibile & resources_eligible
+        return (
+            demographic_eligible
+            & financial_eligibile
+            & resources_eligible
+            & vehicle_value_eligible
+        )

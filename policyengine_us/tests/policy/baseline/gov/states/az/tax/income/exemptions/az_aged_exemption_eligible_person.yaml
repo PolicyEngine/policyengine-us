@@ -8,7 +8,7 @@
         is_tax_unit_spouse: true
     tax_units:
       tax_unit:
-        filing_status: JOINT
+        az_filing_status: JOINT
         head_is_dependent_elsewhere: false
         spouse_is_dependent_elsewhere: true
         members: [person1, person2]
@@ -28,7 +28,7 @@
         is_tax_unit_spouse: true
     tax_units:
       tax_unit:
-        filing_status: JOINT
+        az_filing_status: JOINT
         head_is_dependent_elsewhere: true
         spouse_is_dependent_elsewhere: true
         members: [person1, person2]
@@ -48,7 +48,7 @@
         is_tax_unit_spouse: true
     tax_units:
       tax_unit:
-        filing_status: SEPARATE
+        az_filing_status: SEPARATE
         head_is_dependent_elsewhere: false
         spouse_is_dependent_elsewhere: false
         members: [person1, person2]
@@ -71,7 +71,7 @@
         is_tax_unit_spouse: false
     tax_units:
       tax_unit:
-        filing_status: SEPARATE
+        az_filing_status: SEPARATE
         head_is_dependent_elsewhere: false
         spouse_is_dependent_elsewhere: false
         members: [person1, person2, person3]
