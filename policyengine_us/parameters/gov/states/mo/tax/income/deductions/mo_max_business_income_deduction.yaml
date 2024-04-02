@@ -1,0 +1,14 @@
+description: mo_max_business_income_deduction.yaml
+values:
+  2022-01-01: 0.15
+  2023-01-01: 0.20
+metadata:
+  unit: currency-USD
+  period: year
+  name: mo_max_business_income_deduction
+  label: Missouri Maximum Business Income Deduction
+  reference:
+    - title: 2023 Form MO-1040, Line 17
+      href: https://dor.mo.gov/forms/MO-1040%20Instructions_2023.pdf#page=16
+    - title: 2022 Form MO-1040, Line 17
+      href: https://dor.mo.gov/forms/MO-1040%20Instructions_2022.pdf#page=16
