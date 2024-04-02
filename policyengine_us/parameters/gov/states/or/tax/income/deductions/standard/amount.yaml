@@ -1,6 +1,6 @@
 description: Oregon provides a standard deduction of this amount.
 metadata:
-  label: OR standard deduction
+  label: Oregon standard deduction
   period: year
   unit: currency-USD
   breakdown:
@@ -14,6 +14,8 @@ metadata:
       href: https://www.oregon.gov/dor/forms/FormsPubs/publication-or-17_101-431_2021.pdf#page=142
     - title: 2022 Oregon Income Tax Form OR-40 Instructions
       href: https://www.oregon.gov/dor/forms/FormsPubs/form-or-40-inst_101-040-1_2022.pdf#page=15
+    - title: 2023 Oregon Income Tax Form OR-40 Instructions
+      href: https://www.oregon.gov/dor/forms/FormsPubs/form-or-40-inst_101-040-1_2023.pdf#page=15
 JOINT:
   2003-01-01: 3_280
   # Rose with inflation, not all dates documented.
@@ -22,6 +24,7 @@ JOINT:
   2020-01-01: 4_630
   2021-01-01: 4_700
   2022-01-01: 4_840
+  2023-01-01: 5_210
 HEAD_OF_HOUSEHOLD:
   2003-01-01: 2_640
   # Rose with inflation, not all dates documented.
@@ -30,6 +33,7 @@ HEAD_OF_HOUSEHOLD:
   2020-01-01: 3_725
   2021-01-01: 3_780
   2022-01-01: 3_895
+  2023-01-01: 4_195
 WIDOW:
   2003-01-01: 3_280
   # Rose with inflation, not all dates documented.
@@ -38,6 +42,7 @@ WIDOW:
   2020-01-01: 4_630
   2021-01-01: 4_700
   2022-01-01: 4_840
+  2023-01-01: 5_210
 SINGLE:
   2003-01-01: 1_640
   # Rose with inflation, not all dates documented.
@@ -46,6 +51,7 @@ SINGLE:
   2020-01-01: 2_315
   2021-01-01: 2_350
   2022-01-01: 2_420
+  2023-01-01: 2_605
 SEPARATE:
   2003-01-01: 1_640
   # Rose with inflation, not all dates documented.
@@ -54,3 +60,4 @@ SEPARATE:
   2020-01-01: 2_315
   2021-01-01: 2_350
   2022-01-01: 2_420
+  2023-01-01: 2_605
