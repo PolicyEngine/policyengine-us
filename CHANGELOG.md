@@ -369,7 +369,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- Limit widow filing status to widowed head with child dependents.
+- Limit WIDOW filing status to widowed head with child dependents.
 
 ## [0.691.0] - 2024-03-06 21:11:12
 
