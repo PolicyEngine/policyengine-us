@@ -17,20 +17,20 @@ class ia_amt_indiv(Variable):
 
     def formula(person, period, parameters):
         # compute Iowa AMT taxable income
-        reg_taxinc = person("ia_taxable_income_indiv", period)
-        std_ded = person("ia_standard_deduction_indiv", period)
-        itm_ded = person("ia_itemized_deductions_indiv", period)
-        prorate_frac = person("ia_prorate_fraction", period)
-        proptax = add(person.tax_unit, period, ["real_estate_taxes"])
-        amt_taxinc = where(
-            itm_ded > std_ded,
-            reg_taxinc + prorate_frac * proptax,
-            reg_taxinc,
-        )
-        # compute AMT amount
         p = parameters(period).gov.states.ia.tax.income
         amt = p.alternative_minimum_tax
         if amt.availability:
+            reg_taxinc = person("ia_taxable_income_indiv", period)
+            std_ded = person("ia_standard_deduction_indiv", period)
+            itm_ded = person("ia_itemized_deductions_indiv", period)
+            prorate_frac = person("ia_prorate_fraction", period)
+            proptax = add(person.tax_unit, period, ["real_estate_taxes"])
+            amt_taxinc = where(
+                itm_ded > std_ded,
+                reg_taxinc + prorate_frac * proptax,
+                reg_taxinc,
+            )
+            # compute AMT amount
             us_filing_status = person.tax_unit("filing_status", period)
             fsvals = us_filing_status.possible_values
             filing_status = select(

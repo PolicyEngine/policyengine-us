@@ -12,7 +12,7 @@
   output:  # from hand calculation following IA 6251 form
     ia_amt_indiv: 4_720
 
-- name: IA AMT indiv unit test 2
+- name: IA AMT indiv disabled in 2023  
   absolute_error_margin: 0.01
   period: 2023
   input:
