@@ -13,7 +13,7 @@
   absolute_error_margin: 0.01
   input:
     irs_employment_income: 15_000
-    filing_status: WIDOW
+    filing_status: SURVIVING_SPOUSE
     state_code: WI
   output:
     wi_withheld_income_tax: 113.634
@@ -23,7 +23,7 @@
   absolute_error_margin: 0.01
   input:
     irs_employment_income: 11_000
-    filing_status: WIDOW
+    filing_status: SURVIVING_SPOUSE
     state_code: WI
   output:
     wi_withheld_income_tax: 0

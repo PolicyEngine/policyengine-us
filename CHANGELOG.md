@@ -5,6 +5,43 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.722.0] - 2024-04-02 21:40:33
+
+### Added
+
+- Rename widow to surviving spouse.
+
+## [0.721.1] - 2024-04-02 15:56:44
+
+### Fixed
+
+- Fix Virginia low-income credit calculation.
+- Fix Virginia itemized deduction calculation.
+
+## [0.721.0] - 2024-04-01 22:07:43
+
+### Added
+
+- 2023 Kansas Tax Rules.
+
+## [0.720.0] - 2024-04-01 00:10:04
+
+### Added
+
+- Delaware 2023 income tax parameters.
+
+## [0.719.1] - 2024-04-01 00:02:30
+
+### Fixed
+
+- Add taxable social security to the list of Delaware exclusions.
+
+## [0.719.0] - 2024-03-31 22:26:12
+
+### Added
+
+- 2023 New Mexico Tax Rules.
+
 ## [0.718.0] - 2024-03-29 22:09:50
 
 ### Added
@@ -8022,6 +8059,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.722.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.721.1...0.722.0
+[0.721.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.721.0...0.721.1
+[0.721.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.720.0...0.721.0
+[0.720.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.719.1...0.720.0
+[0.719.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.719.0...0.719.1
+[0.719.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.718.0...0.719.0
 [0.718.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.717.0...0.718.0
 [0.717.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.716.2...0.717.0
 [0.716.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.716.1...0.716.2

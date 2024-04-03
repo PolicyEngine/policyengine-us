@@ -36,7 +36,7 @@ class ar_personal_credits_base(Variable):
         # Widowed and head of household filers receive an additional credit amount
         filing_status = tax_unit("filing_status", period)
         statuses = filing_status.possible_values
-        widow = filing_status == statuses.WIDOW
+        widow = filing_status == statuses.SURVIVING_SPOUSE
         hoh = filing_status == statuses.HEAD_OF_HOUSEHOLD
         filing_status_eligible = widow | hoh
 
