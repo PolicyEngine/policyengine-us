@@ -18,7 +18,7 @@ class sc_tanf(Variable):
         fpg = spm_unit("sc_tanf_fpg", period)
         need_standard = np.floor(fpg * p.income.need_standard.rate)
         # G
-        total_net_income = spm_unit("sc_tanf_total_net_income", period)
+        net_income = spm_unit("sc_tanf_net_income", period)
         # I
-        excess_income = need_standard - total_net_income
+        excess_income = need_standard - net_income
         return np.floor(excess_income * p.payment.rate)

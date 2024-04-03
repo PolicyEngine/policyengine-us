@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class sc_tanf_total_net_income(Variable):
+class sc_tanf_net_income(Variable):
     value_type = float
     entity = SPMUnit
-    label = "South Carolina TANF total net income"
+    label = "South Carolina TANF net income"
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.SC
@@ -21,12 +21,11 @@ class sc_tanf_total_net_income(Variable):
         first_four_months_income = (
             monthly_income * p.percentage.rate * p.percentage.months
         )
-        rest_of_the_months = max_(MONTHS_IN_YEAR - p.percentage.months, 0)
-        rest_months_income = max_(monthly_income - p.amount, 0)
-        remaining_income = rest_months_income * rest_of_the_months
-        earned_income_after_disregard = max_(
-            0,
-            (first_four_months_income + remaining_income),
+        remaining_months = max_(MONTHS_IN_YEAR - p.percentage.months, 0)
+        reduced_remaining_monthly_income = max_(monthly_income - p.amount, 0)
+        remaining_income = reduced_remaining_monthly_income * remaining_months
+        earned_income_after_disregard = (
+            first_four_months_income + remaining_income
         )
         # D
         child_support = add(spm_unit, period, ["child_support_received"])
@@ -35,5 +34,5 @@ class sc_tanf_total_net_income(Variable):
         )
         # G
         unearned_income = add(spm_unit, period, ["sc_tanf_unearned_income"])
-        total_net_income = unearned_income + net_earned_income
-        return np.round(total_net_income, 0)
+        net_income = unearned_income + net_earned_income
+        return np.round(net_income, 0)

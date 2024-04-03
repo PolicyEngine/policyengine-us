@@ -6,7 +6,7 @@
     retirement_distributions: 0
     household_vehicles_value: 6_00
   output:
-    sc_tanf_resources_eligible: false
+    sc_tanf_resource_eligible: false
 
 - name: Case 2, below the limit.
   period: 2022
@@ -16,5 +16,5 @@
     retirement_distributions: 0
     household_vehicles_value: 0
   output:
-    sc_tanf_resources_eligible: true
+    sc_tanf_resource_eligible: true
     

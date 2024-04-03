@@ -22,5 +22,6 @@ class sc_tanf_income_eligible(Variable):
         gross_earned_income = add(spm_unit, period, ["sc_tanf_earned_income"])
         eligible_for_disregard = gross_earned_income <= gross_income_limit
         # get total net income and compare it with need standard
-        total_net_income = spm_unit("sc_tanf_total_net_income", period)
-        return (total_net_income < need_standard) & eligible_for_disregard
+        net_income = spm_unit("sc_tanf_net_income", period)
+        income_eligible = net_income < need_standard
+        return income_eligible & eligible_for_disregard
