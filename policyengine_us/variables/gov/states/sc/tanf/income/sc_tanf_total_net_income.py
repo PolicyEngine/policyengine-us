@@ -19,14 +19,10 @@ class sc_tanf_total_net_income(Variable):
         monthly_income = gross_earned_income / MONTHS_IN_YEAR
         # C Compute earned income after disregard, first four months has 50% disregard, the rest has $100 deduction.
         first_four_months_income = (
-            monthly_income
-            * p.percentage.rate
-            * p.percentage.months
+            monthly_income * p.percentage.rate * p.percentage.months
         )
         rest_of_the_months = max_(MONTHS_IN_YEAR - p.percentage.months, 0)
-        rest_months_income = max_(
-            monthly_income - p.amount, 0
-        )
+        rest_months_income = max_(monthly_income - p.amount, 0)
         remaining_income = rest_months_income * rest_of_the_months
         earned_income_after_disregard = max_(
             0,

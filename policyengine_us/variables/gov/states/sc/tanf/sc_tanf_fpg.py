@@ -11,7 +11,9 @@ class sc_tanf_fpg(Variable):
 
     def formula(spm_unit, period, parameters):
         size = spm_unit("spm_unit_size", period.this_year)
-        qualifying_child =  add(spm_unit, period.this_year, ["is_child_dependent"])
+        qualifying_child = add(
+            spm_unit, period.this_year, ["is_child_dependent"]
+        )
         child_count = add(spm_unit, period.this_year, ["is_child"])
         n = size - child_count + qualifying_child
         state_group = spm_unit.household("state_group_str", period.this_year)

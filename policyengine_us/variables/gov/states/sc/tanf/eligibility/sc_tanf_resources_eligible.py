@@ -9,9 +9,7 @@ class sc_tanf_resources_eligible(Variable):
     defined_for = StateCode.SC
 
     def formula(spm_unit, period, parameters):
-        resource_limit = parameters(
-            period
-        ).gov.states.sc.tanf.resources.limit
+        resource_limit = parameters(period).gov.states.sc.tanf.resources.limit
         countable_resources = add(
             spm_unit, period, ["sc_tanf_countable_resources"]
         )
