@@ -15,16 +15,16 @@ class sc_tanf_total_net_income(Variable):
         p = parameters(period).gov.states.sc.tanf.income.earned.disregard
         # A
         gross_earned_income = add(spm_unit, period, ["sc_tanf_earned_income"])
+        monthly_income = gross_earned_income / MONTHS_IN_YEAR
         # C Compute earned income after disregard, first four months has 50% disregard, the rest has $100 deduction.
         first_four_months_income = (
-            gross_earned_income
-            * p.percent
-            * p.first_four_months
-            / MONTHS_IN_YEAR
+            monthly_income
+            * p.percentage.rate
+            * p.percentage.months
         )
-        rest_of_the_months = max_(MONTHS_IN_YEAR - p.first_four_months, 0)
+        rest_of_the_months = max_(MONTHS_IN_YEAR - p.percentage.months, 0)
         rest_months_income = max_(
-            gross_earned_income / MONTHS_IN_YEAR - p.amount, 0
+            monthly_income - p.amount, 0
         )
         remaining_income = rest_months_income * rest_of_the_months
         earned_income_after_disregard = max_(

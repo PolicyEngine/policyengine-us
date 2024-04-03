@@ -8,4 +8,4 @@ class sc_tanf_countable_resources(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.SC
-    adds = "gov.states.sc.tanf.eligibility.resource_list"
+    adds = "gov.states.sc.tanf.resources.list"

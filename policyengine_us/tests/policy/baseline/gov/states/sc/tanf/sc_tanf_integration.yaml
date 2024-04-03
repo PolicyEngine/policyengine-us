@@ -8,8 +8,10 @@
         child_support_received: 0 
       child1:
         age: 10
+        is_child_dependent: true
       child2: 
         age: 8
+        is_child_dependent: true
     spm_units:
       spm_unit:
         members: [parent, child1,child2]
