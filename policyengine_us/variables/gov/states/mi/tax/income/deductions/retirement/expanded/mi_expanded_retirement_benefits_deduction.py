@@ -48,10 +48,10 @@ class mi_expanded_retirement_benefits_deduction(Variable):
             tier_one_cap - total_military_retirement_pay, 0
         )
         # Line 4
-        tier_one_cap_percentage = reduced_tier_one_cap * p.expanded.rate
+        applicable_tier_one_cap = reduced_tier_one_cap * p.expanded.rate
         # Line 6
         capped_benefit_amount = min_(
-            tier_one_cap_percentage, uncapped_head_or_spouse_pension
+            applicable_tier_one_cap, uncapped_head_or_spouse_pension
         )
 
         # Expanded deduction amount

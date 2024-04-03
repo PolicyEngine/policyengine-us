@@ -19,7 +19,7 @@ class mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired(
     defined_for = "mi_retirement_benefits_deduction_tier_three_eligible"
 
     def formula(tax_unit, period, parameters):
-        # Modeled after 2022 MICHIGAN Pension Schedule (Form 4884) Section C
+        # Modeled after 2022 Michigan Pension Schedule (Form 4884) Section C
         p = parameters(
             period
         ).gov.states.mi.tax.income.deductions.retirement_benefits.tier_three.ss_exempt.not_retired
