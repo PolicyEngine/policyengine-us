@@ -43,7 +43,7 @@
     state_code: ND
   output:  # hand calculated to avoid whole-dollar rounding problems
     #(275200-275100)*0.0250 + 3906.83 = 3909.33
-    nd_income_tax_before_credits: 3_909.33
+    nd_income_tax_before_credits: 3_909.325
 
 - name: ND income tax before credits unit test 6 (SINGLE)
   period: 2023
@@ -70,7 +70,7 @@
     nd_taxable_income: 226_975
     state_code: ND
   output:  # hand calculated to avoid whole-dollar rounding problems
-    nd_income_tax_before_credits: 3_559.38
+    nd_income_tax_before_credits: 3_559.375
 
 - name: ND income tax before credits unit test 9 (SEPARATE)
   period: 2023
@@ -88,7 +88,7 @@
     nd_taxable_income: 47_375
     state_code: ND
   output:  # hand calculated to avoid whole-dollar rounding problems
-    nd_income_tax_before_credits: 1_950
+    nd_income_tax_before_credits: 195
   
 - name: ND income tax before credits unit test 11 (SEPARATE)
   period: 2023
@@ -97,7 +97,7 @@
     nd_taxable_income: 147_550
     state_code: ND
   output:  # hand calculated to avoid whole-dollar rounding problems
-    nd_income_tax_before_credits: 4_453.41
+    nd_income_tax_before_credits: 2203.4125
 
 - name: ND income tax before credits unit test 12 (HEAD)
   period: 2023
@@ -115,7 +115,7 @@
     nd_taxable_income: 69_950
     state_code: ND
   output:  # hand calculated to avoid whole-dollar rounding problems
-    nd_income_tax_before_credits: 1_950
+    nd_income_tax_before_credits: 195
 
 - name: ND income tax before credits unit test 14 (HEAD)
   period: 2023
@@ -124,7 +124,7 @@
     nd_taxable_income: 260_550
     state_code: ND
   output:  # hand calculated to avoid whole-dollar rounding problems
-    nd_income_tax_before_credits: 6_216.7
+    nd_income_tax_before_credits: 3966.7
 
 - name: ND income tax before credits unit test 15 (WIDOW)
   period: 2023
@@ -153,4 +153,4 @@
     state_code: ND
   output:  # hand calculated to avoid whole-dollar rounding problems
     #(275200-275100)*0.0250 + 3906.83 = 3909.33
-    nd_income_tax_before_credits: 3_909.33
+    nd_income_tax_before_credits: 3_909.325

@@ -10,11 +10,13 @@ values:
     - us_govt_interest
     - nd_ltcg_subtraction  # long-term capital gains
     - nd_qdiv_subtraction  # qualified dividends
+    - taxable_social_security
     - nd_military_pay_exclusion
 
 metadata:
-  unit: variable
-  label: ND subtractions from US taxable income
+  unit: list  
+  period: year  
+  label: North Dakota subtractions from US taxable income  
   reference:
   - title: 2021 ND income tax form
     href: https://www.tax.nd.gov/sites/www/files/documents/forms/form-nd-1-2021.pdf
