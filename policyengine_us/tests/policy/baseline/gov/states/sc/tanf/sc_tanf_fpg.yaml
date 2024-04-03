@@ -3,11 +3,14 @@
   period: 2022
   input:
     people:
-      parent: {}
+      parent: 
+        employment_income: 0
       child1:
         is_child_dependent: true
+        age: 10
       child2: 
         is_child_dependent: true
+        age: 10
     spm_units:
       spm_unit:
         members: [parent, child1, child2]
@@ -23,11 +26,14 @@
   period: 2022
   input:
     people:
-      parent: {}
+      parent:
+        employment_income: 0
       child1:
         is_child_dependent: true
+        age: 10
       child2: 
         is_child_dependent: false
+        age: 10
     spm_units:
       spm_unit:
         members: [parent, child1, child2]

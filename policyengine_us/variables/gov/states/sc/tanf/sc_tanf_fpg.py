@@ -6,15 +6,13 @@ class sc_tanf_fpg(Variable):
     entity = SPMUnit
     label = "South Carolina TANF federal poverty guideline"
     unit = USD
-    documentation = (
-        "The federal poverty guideline used to determine South Carolina TANF eligibility."
-    )
+    defined_for = StateCode.SC
     definition_period = MONTH
 
     def formula(spm_unit, period, parameters):
         size = spm_unit("spm_unit_size", period.this_year)
-        qualifying_child =  add(spm_unit, period, ["is_child_dependent"])
-        child_count = add(spm_unit, period, ["is_child"])
+        qualifying_child =  add(spm_unit, period.this_year, ["is_child_dependent"])
+        child_count = add(spm_unit, period.this_year, ["is_child"])
         n = size - child_count + qualifying_child
         state_group = spm_unit.household("state_group_str", period.this_year)
         year = period.start.year

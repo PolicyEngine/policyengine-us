@@ -5,6 +5,7 @@ class sc_tanf_total_net_income(Variable):
     value_type = float
     entity = SPMUnit
     label = "South Carolina TANF total net income"
+    unit = USD
     definition_period = YEAR
     defined_for = StateCode.SC
     reference = (

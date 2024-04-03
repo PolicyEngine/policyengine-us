@@ -26,3 +26,32 @@
     # (12880 + 4540*2)/(2*12) = 915
     # 915*0.3372 = 308
     # 323*3 + 308*9 = 3741
+
+- name: Single parent of 3 childre, one child is not eligible.
+  period: 2022
+  input:
+    people:
+      parent: 
+        employment_income: 0
+        retirement_distributions: 0
+        child_support_received: 0 
+      child1:
+        age: 10
+        is_child_dependent: true
+      child2: 
+        age: 8
+        is_child_dependent: true
+      child3:
+        age: 16
+        is_child_dependent: false 
+    spm_units:
+      spm_unit:
+        members: [parent, child1,child2,child3]
+        spm_unit_cash_assets: 1_000
+    households:
+      household:
+        members: [parent, child1,child2,child3]
+        household_vehicles_value: 0
+        state_code: SC
+  output:
+    sc_tanf: 3741
