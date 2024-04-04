@@ -1,4 +1,5 @@
 - name: Case 1, no earned income is eligible for standard amount.
+  absolute_error_margin: 1
   period: 2022
   input:
     state_code: SC
@@ -7,11 +8,11 @@
     spm_unit_size: 2
     state_group_str: CONTIGUOUS_US
   output:
-    sc_tanf: 2964
-    # tanf = 8811*0.3372 = 2971
-    # tanf = floor(floor(762*0.3372)*3) + floor(floor(725*0.3372)*9) = 768 + 2196 = 2964
+    sc_tanf: 2974.5
+    # tanf = (12880+4540)*9*0.3372*0.5/12 + (13590+4720)*3*0.50.3372/12 = 2974.5255
 
 - name: Case 2, did not pass the gross income test.
+  absolute_error_margin: 1
   period: 2022
   input:
     state_code: SC
@@ -23,6 +24,7 @@
     sc_tanf: 0
 
 - name: Case 3, some income.
+  absolute_error_margin: 1
   period: 2022
   input:
     state_code: SC
@@ -31,4 +33,6 @@
     spm_unit_size: 2
     state_group_str: CONTIGUOUS_US
   output:
-    sc_tanf: 216
+    sc_tanf: 223.6
+
+

@@ -1,4 +1,5 @@
 - name: Case 1, no earned income, then total net income is 0.
+  absolute_error_margin: 1
   period: 2022
   input:
     state_code: SC
@@ -9,6 +10,7 @@
     sc_tanf_net_income: 0
 
 - name: Case 2, have $24000 earned income.
+  absolute_error_margin: 1
   period: 2022
   input:
     state_code: SC
@@ -20,6 +22,7 @@
   # 4*0.5*24000/12 + 8*24000/12 - 800 = 19200
 
 - name: Case 3, have $12000 earned income.
+  absolute_error_margin: 1
   period: 2022
   input:
     state_code: SC
@@ -31,6 +34,7 @@
   # 4*0.5*12000/12 + 8*12000/12 - 800 = 9200
 
 - name: Case 4, have some earned income, unearned income and child support. 
+  absolute_error_margin: 1
   period: 2022
   input:
     state_code: SC

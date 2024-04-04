@@ -13,4 +13,16 @@ class sc_tanf_resource_eligible(Variable):
         countable_resources = add(
             spm_unit, period, ["sc_tanf_countable_resources"]
         )
-        return countable_resources <= resource_limit
+        # Each driver's license can exclude one vehicle.
+        adult_count = spm_unit("spm_unit_count_adults", period)
+        vehicle_count = spm_unit.household("household_vehicles_owned", period)
+        vehicle_value = spm_unit.household("household_vehicles_value", period)
+        avg_vehicle_value = np.zeros_like(vehicle_count)
+        mask = vehicle_count != 0
+        avg_vehicle_value[mask] = vehicle_value[mask] / vehicle_count[mask]
+        countable_vehicle_value = (
+            vehicle_count - adult_count
+        ) * avg_vehicle_value
+        return (
+            countable_resources + countable_vehicle_value
+        ) <= resource_limit

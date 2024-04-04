@@ -34,5 +34,4 @@ class sc_tanf_net_income(Variable):
         )
         # G
         unearned_income = add(spm_unit, period, ["sc_tanf_unearned_income"])
-        net_income = unearned_income + net_earned_income
-        return np.round(net_income, 0)
+        return unearned_income + net_earned_income
