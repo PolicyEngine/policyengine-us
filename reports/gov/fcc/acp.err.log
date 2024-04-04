@@ -23,9 +23,6 @@ from policyengine_us.tools.documentation import (
 variable_summary("snap_standard_deduction")
 ------------------
 
------ stderr -----
-WARNING:root:Parameter gov.contrib.biden.budget_2025.capital_gains.income_threshold has a child WIDOW that is not in the possible values of filing_status, ignoring.
-------------------
 
 [0;31m---------------------------------------------------------------------------[0m
 [0;31mImportError[0m                               Traceback (most recent call last)
