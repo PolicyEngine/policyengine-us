@@ -1,7 +1,8 @@
 description: DC provides a temporary local SNAP increase by this percentage of the maximum allotment.
 values:
-  2024-10-01: 0.1
-  2024-11-01: 0
+  2024-01-01: 0.1
+  # The temporary allotment expried in October 2024
+  2024-10-01: 0
 metadata:
   period: year
   unit: /1

@@ -17,16 +17,6 @@ class dc_snap_temporary_local_benefit(Variable):
         max_allotments = parameters(period).gov.usda.snap.max_allotment
 
         snap_region = spm_unit.household("snap_region_str", period)
-        household_size = spm_unit("spm_unit_size", period).astype(str)
+        household_size = spm_unit("spm_unit_size", period)
 
-        applicable_months = min_(MONTHS_IN_YEAR, p.max_months)
-
-        dc_local_allotment = (
-            max_allotments.main[snap_region][household_size]
-            * p.rate
-            * applicable_months
-        )
-
-        dc_monthly_local_allotment = dc_local_allotment / MONTHS_IN_YEAR
-
-        return dc_monthly_local_allotment
+        return max_allotments.main[snap_region][household_size] * p.rate
