@@ -11,7 +11,7 @@ class az_tanf_eligible_child(Variable):
     def formula(person, period, parameters):
         # Get the age of the person
         age = person("age", period)
-        # Determine whether they are a studnet
+        # Determine whether they are a student
         student = person("is_full_time_student", period)
         # Determine the age thresholds
         p = parameters(period).gov.states.az.hhs.tanf.eligibility.age_threshold
