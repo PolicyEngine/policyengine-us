@@ -12,5 +12,3 @@ class al_retirement_exemption(Variable):
     defined_for = StateCode.AL
 
     adds = ["al_retirement_exemption_eligible_person"]
-
-

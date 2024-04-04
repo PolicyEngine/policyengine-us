@@ -13,8 +13,10 @@ class al_retirement_exemption_eligible_person(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.al.tax.income.exemptions.retirement
-        age = person("age",period)
+        age = person("age", period)
         pension_income = person("taxable_pension_income", period)
-        eligible_age = age>=p.age_threshold
+        eligible_age = age >= p.age_threshold
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        return min_(pension_income*eligible_age*head_or_spouse, p.max_amount)
+        return min_(
+            pension_income * eligible_age * head_or_spouse, p.max_amount
+        )
