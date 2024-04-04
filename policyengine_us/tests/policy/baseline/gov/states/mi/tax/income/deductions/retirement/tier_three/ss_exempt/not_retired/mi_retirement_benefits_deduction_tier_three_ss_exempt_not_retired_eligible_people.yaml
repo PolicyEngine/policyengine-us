@@ -7,7 +7,6 @@
         is_tax_unit_head_or_spouse: true
     tax_units:
       tax_unit:
-        older_spouse_birth_year: 1957
         members: [person1]
     household:
       members: [person1]
@@ -30,7 +29,6 @@
         is_tax_unit_head_or_spouse: false
     tax_units:
       tax_unit:
-        older_spouse_birth_year: 1957
         members: [person1, person2, person3]
     household:
       members: [person1, person2, person3]

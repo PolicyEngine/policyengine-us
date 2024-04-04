@@ -39,7 +39,4 @@ class mi_retirement_benefits_deduction_tier_three_ss_exempt_retired_eligible_peo
             * is_head_or_spouse
         )
 
-        older_spouse_birth_year = tax_unit("older_spouse_birth_year", period)
-        birth_year_eligible = older_spouse_birth_year >= p.birth_year
-
-        return tax_unit.sum(eligible_people) * birth_year_eligible
+        return tax_unit.sum(eligible_people)

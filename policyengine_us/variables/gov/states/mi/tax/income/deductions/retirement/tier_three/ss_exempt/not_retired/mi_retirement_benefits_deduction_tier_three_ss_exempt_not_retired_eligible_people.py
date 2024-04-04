@@ -16,9 +16,6 @@ class mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired_eligible
     defined_for = StateCode.MI
 
     def formula(tax_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.mi.tax.income.deductions.retirement_benefits.tier_three.ss_exempt.not_retired
         person = tax_unit.members
         #  Recipients should receive retirement benefits from employment exempt from Social Security
         has_retirement_benefits_from_ss_exempt_employment = (
@@ -36,8 +33,4 @@ class mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired_eligible
             * is_head_or_spouse
         )
 
-        birth_year_eligible = p.birth_year.calc(
-            tax_unit("older_spouse_birth_year", period)
-        )
-
-        return tax_unit.sum(eligible_people) * birth_year_eligible
+        return tax_unit.sum(eligible_people)
