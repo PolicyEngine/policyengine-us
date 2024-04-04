@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class md_qualifies_for_single_childless_eitc(Variable):
+class md_qualifies_for_unmarried_childless_eitc(Variable):
     value_type = bool
     entity = TaxUnit
-    label = "Qualifies for the MD single childless EITC"
+    label = "Qualifies for the MD unmarried childless EITC"
     unit = USD
     definition_period = YEAR
     reference = "https://casetext.com/statute/code-of-maryland/article-tax-general/title-10-income-tax/subtitle-7-income-tax-credits/section-10-704-effective-until-6302023-for-earned-income"  # (c)(3)
@@ -19,6 +19,6 @@ class md_qualifies_for_single_childless_eitc(Variable):
         single_head_widow = (
             (filing_status == filing_statuses.SINGLE)
             | (filing_status == filing_statuses.HEAD_OF_HOUSEHOLD)
-            | (filing_status == filing_statuses.WIDOW)
+            | (filing_status == filing_statuses.SURVIVING_SPOUSE)
         )
         return childless & single_head_widow
