@@ -14,8 +14,12 @@ class mo_business_income_deduction(Variable):
     defined_for = StateCode.MO
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.mo.tax.income.deductions
-        qualified_business_income = tax_unit(
-            "qualified_business_income", period
+        person = tax_unit.members
+        p = parameters(
+            period
+        ).gov.states.mo.tax.income.deductions.business_income
+        qualified_business_income = person("qualified_business_income", period)
+        total_qualified_business_income = tax_unit.sum(
+            qualified_business_income
         )
-        return p.mo_max_business_income_deduction * qualified_business_income
+        return p.rate * qualified_business_income
