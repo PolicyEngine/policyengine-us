@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.722.1] - 2024-04-04 03:29:14
+
+### Fixed
+
+- Kentucky tax unit itemizes deductions logic.
+
+## [0.722.0] - 2024-04-02 21:40:33
+
+### Added
+
+- Rename widow to surviving spouse.
+
+## [0.721.1] - 2024-04-02 15:56:44
+
+### Fixed
+
+- Fix Virginia low-income credit calculation.
+- Fix Virginia itemized deduction calculation.
+
 ## [0.721.0] - 2024-04-01 22:07:43
 
 ### Added
@@ -8046,6 +8065,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.722.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.722.0...0.722.1
+[0.722.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.721.1...0.722.0
+[0.721.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.721.0...0.721.1
 [0.721.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.720.0...0.721.0
 [0.720.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.719.1...0.720.0
 [0.719.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.719.0...0.719.1
