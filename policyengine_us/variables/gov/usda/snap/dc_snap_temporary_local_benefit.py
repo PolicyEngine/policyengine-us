@@ -12,7 +12,7 @@ class dc_snap_temporary_local_benefit(Variable):
     defined_for = StateCode.DC
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.states.dc.snap
+        p = parameters(period).gov.usda.snap.temporary_local_benefit.dc
 
         max_allotments = parameters(period).gov.usda.snap.max_allotment
 
