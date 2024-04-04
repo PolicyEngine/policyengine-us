@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.723.0] - 2024-04-04 22:18:15
+
+### Added
+
+- Enable the Michigan income tax model and include in the net income tree.
+
 ## [0.722.2] - 2024-04-04 16:13:37
 
 ### Fixed
@@ -8071,6 +8077,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.723.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.722.2...0.723.0
 [0.722.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.722.1...0.722.2
 [0.722.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.722.0...0.722.1
 [0.722.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.721.1...0.722.0
