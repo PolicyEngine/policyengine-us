@@ -15,8 +15,12 @@ class ms_taxable_income_indiv(Variable):
 
     def formula(person, period, parameters):
         tax_unit = person.tax_unit
-        ms_taxable_income_indiv_head = add(tax_unit, period, ["ms_taxable_income_indiv_head"])
-        ms_taxable_income_indiv_spouse = add(tax_unit, period, ["ms_taxable_income_indiv_spouse"])
+        ms_taxable_income_indiv_head = add(
+            tax_unit, period, ["ms_taxable_income_indiv_head"]
+        )
+        ms_taxable_income_indiv_spouse = add(
+            tax_unit, period, ["ms_taxable_income_indiv_spouse"]
+        )
 
         total_taxable_income = (
             ms_taxable_income_indiv_head + ms_taxable_income_indiv_spouse
@@ -24,7 +28,7 @@ class ms_taxable_income_indiv(Variable):
         #  negative amount will be no income tax liability
         head = person("is_tax_unit_head", period)
         return head * max_(total_taxable_income, 0)
-        
+
         # taxable_income_spouse = person("ms_taxable_income_indiv_spouse", period)
         # taxable_income_head = person("ms_taxable_income_indiv_head", period)
         # if_combined_taxable_income = (taxable_income_spouse < 0) | (taxable_income_head < 0)
