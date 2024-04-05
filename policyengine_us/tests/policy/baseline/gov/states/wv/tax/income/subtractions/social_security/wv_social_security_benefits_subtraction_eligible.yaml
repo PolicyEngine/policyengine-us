@@ -29,7 +29,7 @@
   period: 2022
   input:
     state_code: WV
-    filing_status: WIDOW
+    filing_status: SURVIVING_SPOUSE
     adjusted_gross_income: 70_000
   output:
     wv_social_security_benefits_subtraction_eligible: false
@@ -74,7 +74,7 @@
   period: 2022
   input:
     state_code: WV
-    filing_status: WIDOW
+    filing_status: SURVIVING_SPOUSE
     adjusted_gross_income: 50_000
   output:
     wv_social_security_benefits_subtraction_eligible: true

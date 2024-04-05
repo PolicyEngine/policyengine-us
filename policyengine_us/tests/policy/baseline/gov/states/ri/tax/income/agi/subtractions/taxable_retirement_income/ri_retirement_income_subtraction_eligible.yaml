@@ -23,7 +23,7 @@
   input:
     state_code: RI
     adjusted_gross_income: 119_749
-    filing_status: WIDOW
+    filing_status: SURVIVING_SPOUSE
     older_spouse_birth_year: 1956
   output:
     ri_retirement_income_subtraction_eligible: true
@@ -33,7 +33,7 @@
   input:
     state_code: RI
     adjusted_gross_income: 119_750
-    filing_status: WIDOW
+    filing_status: SURVIVING_SPOUSE
     older_spouse_birth_year: 1956
   output:
     ri_retirement_income_subtraction_eligible: false
@@ -43,7 +43,7 @@
   input:
     state_code: RI
     adjusted_gross_income: 109_050
-    filing_status: WIDOW
+    filing_status: SURVIVING_SPOUSE
     older_spouse_birth_year: 1956
   output:
     ri_retirement_income_subtraction_eligible: false
