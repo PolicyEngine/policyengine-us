@@ -129,7 +129,7 @@
 - name: ND income tax before credits unit test 15 (WIDOW)
   period: 2023
   input:
-    filing_status: WIDOW
+    filing_status: SURVIVING_SPOUSE
     nd_taxable_income: 74_750
     state_code: ND
   output:  # hand calculated to avoid whole-dollar rounding problems
@@ -138,7 +138,7 @@
 - name: ND income tax before credits unit test 16 (WIDOW)
   period: 2023
   input:
-    filing_status: WIDOW
+    filing_status: SURVIVING_SPOUSE
     nd_taxable_income: 84_750
     state_code: ND
   output:  # hand calculated to avoid whole-dollar rounding problems
@@ -148,7 +148,7 @@
 - name: ND income tax before credits unit test 17 (WIDOW)
   period: 2023
   input:
-    filing_status: WIDOW
+    filing_status: SURVIVING_SPOUSE
     nd_taxable_income: 275_200
     state_code: ND
   output:  # hand calculated to avoid whole-dollar rounding problems
