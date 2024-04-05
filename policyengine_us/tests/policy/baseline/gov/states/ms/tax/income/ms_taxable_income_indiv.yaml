@@ -10,9 +10,9 @@
 - name: Total taxable income for one positive amount
   period: 2023
   input:
+    ms_taxable_income_indiv_head: 500
+    ms_taxable_income_indiv_spouse: -400
     state_code: MS
-    ms_taxable_income_indiv_head: [500, 0]
-    ms_taxable_income_indiv_spouse: [0, -400]
   output:
     ms_taxable_income_indiv: 100
 
