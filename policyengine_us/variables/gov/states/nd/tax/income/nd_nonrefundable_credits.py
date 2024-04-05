@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class nd_nonrefundable_credits(Variable):
     value_type = float
     entity = TaxUnit
-    label = "ND nonrefundable income tax credits"
+    label = "North Dakota nonrefundable income tax credits"
     unit = USD
     definition_period = YEAR
     reference = (

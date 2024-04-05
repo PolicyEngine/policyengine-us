@@ -1,4 +1,4 @@
-- name: ND income tax before credits unit test 1
+- name: North Dakota income tax before credits unit test 1
   period: 2021
   input:
     filing_status: SINGLE
@@ -7,7 +7,7 @@
   output:  # hand calculated to avoid whole-dollar rounding problems
     nd_income_tax_before_credits: 1_663.435
 
-- name: ND income tax before credits unit test 2
+- name: North Dakota income tax before credits unit test 2
   period: 2022
   input:
     filing_status: JOINT
@@ -16,7 +16,7 @@
   output:  # hand calculated to avoid whole-dollar rounding problems
     nd_income_tax_before_credits: 11_316.07
 
-- name: ND income tax before credits unit test 3 (JOINT)
+- name: North Dakota income tax before credits unit test 3 (JOINT)
   period: 2023
   input:
     filing_status: JOINT
@@ -25,7 +25,7 @@
   output:  # hand calculated to avoid whole-dollar rounding problems
     nd_income_tax_before_credits: 0
 
-- name: ND income tax before credits unit test 4 (JOINT)
+- name: North Dakota income tax before credits unit test 4 (JOINT)
   period: 2023
   input:
     filing_status: JOINT
@@ -35,7 +35,7 @@
     #(84750-74750)*0.0195 = 195
     nd_income_tax_before_credits: 195
 
-- name: ND income tax before credits unit test 5 (JOINT)
+- name: North Dakota income tax before credits unit test 5 (JOINT)
   period: 2023
   input:
     filing_status: JOINT
@@ -45,7 +45,7 @@
     #(275200-275100)*0.0250 + 3906.83 = 3909.33
     nd_income_tax_before_credits: 3_909.325
 
-- name: ND income tax before credits unit test 6 (SINGLE)
+- name: North Dakota income tax before credits unit test 6 (SINGLE)
   period: 2023
   input:
     filing_status: SINGLE
@@ -54,7 +54,7 @@
   output:  # hand calculated to avoid whole-dollar rounding problems
     nd_income_tax_before_credits: 0
 
-- name: ND income tax before credits unit test 7 (SINGLE)
+- name: North Dakota income tax before credits unit test 7 (SINGLE)
   period: 2023
   input:
     filing_status: SINGLE
@@ -63,7 +63,7 @@
   output:  # hand calculated to avoid whole-dollar rounding problems
     nd_income_tax_before_credits: 19.5
 
-- name: ND income tax before credits unit test 8 (SINGLE)
+- name: North Dakota income tax before credits unit test 8 (SINGLE)
   period: 2023
   input:
     filing_status: SINGLE
@@ -72,7 +72,7 @@
   output:  # hand calculated to avoid whole-dollar rounding problems
     nd_income_tax_before_credits: 3_559.375
 
-- name: ND income tax before credits unit test 9 (SEPARATE)
+- name: North Dakota income tax before credits unit test 9 (SEPARATE)
   period: 2023
   input:
     filing_status: SEPARATE
@@ -81,7 +81,7 @@
   output:  # hand calculated to avoid whole-dollar rounding problems
     nd_income_tax_before_credits: 0
 
-- name: ND income tax before credits unit test 10 (SEPARATE)
+- name: North Dakota income tax before credits unit test 10 (SEPARATE)
   period: 2023
   input:
     filing_status: SEPARATE
@@ -90,7 +90,7 @@
   output:  # hand calculated to avoid whole-dollar rounding problems
     nd_income_tax_before_credits: 195
   
-- name: ND income tax before credits unit test 11 (SEPARATE)
+- name: North Dakota income tax before credits unit test 11 (SEPARATE)
   period: 2023
   input:
     filing_status: SEPARATE
@@ -99,7 +99,7 @@
   output:  # hand calculated to avoid whole-dollar rounding problems
     nd_income_tax_before_credits: 2203.4125
 
-- name: ND income tax before credits unit test 12 (HEAD)
+- name: North Dakota income tax before credits unit test 12 (HEAD)
   period: 2023
   input:
     filing_status: HEAD_OF_HOUSEHOLD
@@ -108,7 +108,7 @@
   output:  # hand calculated to avoid whole-dollar rounding problems
     nd_income_tax_before_credits: 0
 
-- name: ND income tax before credits unit test 13 (HEAD)
+- name: North Dakota income tax before credits unit test 13 (HEAD)
   period: 2023
   input:
     filing_status: HEAD_OF_HOUSEHOLD
@@ -117,7 +117,7 @@
   output:  # hand calculated to avoid whole-dollar rounding problems
     nd_income_tax_before_credits: 195
 
-- name: ND income tax before credits unit test 14 (HEAD)
+- name: North Dakota income tax before credits unit test 14 (HEAD)
   period: 2023
   input:
     filing_status: HEAD_OF_HOUSEHOLD
@@ -126,7 +126,7 @@
   output:  # hand calculated to avoid whole-dollar rounding problems
     nd_income_tax_before_credits: 3966.7
 
-- name: ND income tax before credits unit test 15 (WIDOW)
+- name: North Dakota income tax before credits unit test 15 (WIDOW)
   period: 2023
   input:
     filing_status: SURVIVING_SPOUSE
@@ -135,7 +135,7 @@
   output:  # hand calculated to avoid whole-dollar rounding problems
     nd_income_tax_before_credits: 0
 
-- name: ND income tax before credits unit test 16 (WIDOW)
+- name: North Dakota income tax before credits unit test 16 (WIDOW)
   period: 2023
   input:
     filing_status: SURVIVING_SPOUSE
@@ -145,7 +145,7 @@
     #(84750-74750)*0.0195 = 195
     nd_income_tax_before_credits: 195
 
-- name: ND income tax before credits unit test 17 (WIDOW)
+- name: North Dakota income tax before credits unit test 17 (WIDOW)
   period: 2023
   input:
     filing_status: SURVIVING_SPOUSE

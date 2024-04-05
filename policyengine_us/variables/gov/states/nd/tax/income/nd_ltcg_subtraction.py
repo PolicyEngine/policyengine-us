@@ -5,7 +5,7 @@ class nd_ltcg_subtraction(Variable):
     value_type = float
     entity = TaxUnit
     label = (
-        "ND long-term capital gains subtraction from federal taxable income"
+        "North Dakota long-term capital gains subtraction from federal taxable income"
     )
     unit = USD
     definition_period = YEAR

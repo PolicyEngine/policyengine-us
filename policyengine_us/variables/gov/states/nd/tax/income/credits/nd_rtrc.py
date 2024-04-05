@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class nd_rtrc(Variable):
     value_type = float
     entity = TaxUnit
-    label = "ND resident-tax-relief nonrefundable credit amount"
+    label = "North Dakota resident-tax-relief nonrefundable credit amount"
     unit = USD
     definition_period = YEAR
     reference = (

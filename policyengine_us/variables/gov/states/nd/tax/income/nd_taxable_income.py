@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class nd_taxable_income(Variable):
     value_type = float
     entity = TaxUnit
-    label = "ND taxable income"
+    label = "North Dakota taxable income"
     unit = USD
     definition_period = YEAR
     reference = (

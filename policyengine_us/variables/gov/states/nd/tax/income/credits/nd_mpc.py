@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class nd_mpc(Variable):
     value_type = float
     entity = TaxUnit
-    label = "ND marriage-penalty nonrefundable credit amount"
+    label = "North Dakota marriage-penalty nonrefundable credit amount"
     unit = USD
     definition_period = YEAR
     reference = (

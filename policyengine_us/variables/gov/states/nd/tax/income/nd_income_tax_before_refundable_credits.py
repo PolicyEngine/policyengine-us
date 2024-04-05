@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class nd_income_tax_before_refundable_credits(Variable):
     value_type = float
     entity = TaxUnit
-    label = "ND income tax before refundable credits"
+    label = "North Dakota income tax before refundable credits"
     unit = USD
     definition_period = YEAR
     reference = (
