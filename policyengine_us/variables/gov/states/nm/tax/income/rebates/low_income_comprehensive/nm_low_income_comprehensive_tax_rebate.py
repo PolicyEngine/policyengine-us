@@ -49,6 +49,4 @@ class nm_low_income_comprehensive_tax_rebate(Variable):
             p.divisor,
             1,
         )
-        print(exemptions)
-        print(agi)
         return rebate / divisor
