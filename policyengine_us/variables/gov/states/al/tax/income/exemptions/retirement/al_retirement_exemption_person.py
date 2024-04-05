@@ -1,5 +1,6 @@
 from policyengine_us.model_api import *
 
+
 class al_retirement_exemption_person(Variable):
     value_type = float
     entity = Person
