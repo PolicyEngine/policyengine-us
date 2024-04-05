@@ -1,0 +1,27 @@
+- name: Joint filing status turns separate
+  period: 2022
+  input:
+    filing_status: JOINT
+  output:
+    state_filing_status_if_married_filing_separately_on_same_return: SEPARATE
+
+- name: Separate filing status
+  period: 2022
+  input:
+    filing_status: SEPARATE
+  output:
+    state_filing_status_if_married_filing_separately_on_same_return: SEPARATE
+
+- name: Single filing status
+  period: 2022
+  input:
+    filing_status: SINGLE
+  output:
+    state_filing_status_if_married_filing_separately_on_same_return: SINGLE
+
+- name: Widow filing status
+  period: 2022
+  input:
+    filing_status: SURVIVING_SPOUSE
+  output:
+    state_filing_status_if_married_filing_separately_on_same_return: SURVIVING_SPOUSE

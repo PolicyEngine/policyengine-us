@@ -1,6 +1,6 @@
-description:  Phase out increment of the Alabama standard deductions.
+description: Alabama phases its standard deduction out in these increments, based on filing status.
 metadata:
-  label: Alabama standard deduction
+  label: Alabama standard deduction phase-out increment
   period: year
   unit: currency-USD
   breakdown:
@@ -19,7 +19,7 @@ JOINT:
   2021-01-01: 500
 HEAD_OF_HOUSEHOLD:
   2021-01-01: 500
-WIDOW:
+SURVIVING_SPOUSE:
   2021-01-01: 500
 SINGLE:
   2021-01-01: 500

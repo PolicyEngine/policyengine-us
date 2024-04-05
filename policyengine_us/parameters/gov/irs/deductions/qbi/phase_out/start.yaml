@@ -2,7 +2,6 @@ description: Threshold of taxable income (excluding QBID) after which the QBI de
 metadata:
   unit: currency-USD
   period: year
-  name: qbid_phase_out_start
   label: Qualified business income deduction phase-out start
   breakdown:
     - filing_status
@@ -17,6 +16,7 @@ metadata:
       href: https://www.irs.gov/pub/irs-drop/rp-20-45.pdf#page=16
     - title: 2020 IRS data release
       href: https://www.irs.gov/pub/irs-drop/rp-19-44.pdf#page=16
+  uprating: gov.irs.uprating
 HEAD_OF_HOUSEHOLD:
   2013-01-01: 0
   2018-01-01: 157_500
@@ -57,7 +57,7 @@ SINGLE:
   2023-01-01: 182_100
   2024-01-01: 191_950
   2026-01-01: 0
-WIDOW:
+SURVIVING_SPOUSE:
   2013-01-01: 0
   2018-01-01: 315_000
   2019-01-01: 321_400

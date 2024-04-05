@@ -50,9 +50,10 @@ values:
   2021-01-01: 1_191
   2022-01-01: 1_261
   2023-01-01: 1_371
+  2024-01-01: 1_415
 metadata:
   label: Monthly maximum Federal SSI payment amounts for an eligible individual with an eligible spouse
-  name: ssi_amount_couple
+  uprating: gov.ssa.uprating
   period: month
   unit: currency-USD
   reference:

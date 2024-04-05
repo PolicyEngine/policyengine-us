@@ -60,5 +60,5 @@
     meets_wic_categorical_eligibility: true
     is_wic_at_nutritional_risk: true
   output:
-    # Multiply by ratio of 2022-01 to 2018-01 chained CPI-U.
-    wic: 37.76 * 12 * 157.223 / 140.239
+    # Multiply by ratio of 2022-01 to 2018-01 CPI-U.
+    wic: 37.76 * 12 * 281.148 / 247.867

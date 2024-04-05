@@ -1,0 +1,29 @@
+- name: Person with 10,000 of income
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    irs_employment_income: 15_000
+    filing_status: JOINT
+    state_code: AZ
+  output:
+    az_withheld_income_tax: 52.275
+
+- name: Changing the filing status should not change the output 
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    irs_employment_income: 15_000
+    filing_status: SURVIVING_SPOUSE
+    state_code: AZ
+  output:
+    az_withheld_income_tax: 52.275
+
+- name: Capped at 0
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    irs_employment_income: 12_900
+    filing_status: SURVIVING_SPOUSE
+    state_code: AZ
+  output:
+    az_withheld_income_tax: 0

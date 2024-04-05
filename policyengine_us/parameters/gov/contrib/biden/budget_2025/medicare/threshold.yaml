@@ -1,0 +1,12 @@
+description: President Biden proposed an additional Medicare tax rate for filers with adjusted gross income above this threshold.
+metadata:
+  unit: currency-USD
+  period: year
+  uprating: gov.irs.uprating
+  label: President Biden additional Medicare tax rate threshold
+  reference:
+    - title: General Explanations of the Administration's Fiscal Year 2025 Revenue Proposals
+      href: https://home.treasury.gov/system/files/131/General-Explanations-FY2025.pdf#page=85
+
+values:
+  2024-01-01: 400_000

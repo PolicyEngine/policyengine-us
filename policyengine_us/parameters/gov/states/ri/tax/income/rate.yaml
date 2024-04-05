@@ -1,22 +1,29 @@
-description: Rhode Island provides this personal income tax rate.
+description: Rhode Island taxes personal income at this flat rate.
 metadata:
   type: marginal_rate
   threshold_unit: currency-USD
   rate_unit: /1
+  period: year
   label: Rhode Island income tax rate
   reference:
     - title: Rhode Island Tax Rate Schedule - 2022
-      href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-10/2022%20RI%20Tax%20Tables_Complete.pdf
+      href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-10/2022%20RI%20Tax%20Tables_Complete.pdf#page=1
+    - title: Rhode Island Tax Rate Schedule - 2021
+      href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-01/2021-ri-tax-tables_web.pdf#page=1
+    - title: Rhode Island Income Tax Law - Section 44-30-2.6. - Rhode Island taxable income (c)(2)(A)
+      href: https://law.justia.com/codes/rhode-island/2022/title-44/chapter-44-30/part-i/section-44-30-2-6/
 brackets:
   - threshold:
-      2022-01-01: 0
+      2021-01-01: 0
     rate:
-      2022-01-01: 0.0375
+      2021-01-01: 0.0375
   - threshold:
+      2021-01-01: 66_200
       2022-01-01: 68_200
     rate:
-      2022-01-01: 0.0475
+      2021-01-01: 0.0475
   - threshold:
+      2021-01-01: 150_550
       2022-01-01: 155_050
     rate:
-      2022-01-01: 0.0599
+      2021-01-01: 0.0599

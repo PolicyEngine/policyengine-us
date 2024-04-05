@@ -13,7 +13,7 @@ class ar_misc_deduction(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.irs.deductions.itemized.misc
         misc_ded = tax_unit("misc_deduction", period)
-        agi = tax_unit("ar_agi", period)
+        agi = add(tax_unit, period, ["ar_agi"])
         return max_(
             0,
             misc_ded - p.floor * agi,

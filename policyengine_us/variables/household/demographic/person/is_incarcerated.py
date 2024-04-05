@@ -6,4 +6,4 @@ class is_incarcerated(Variable):
     entity = Person
     label = "Is incarcerated"
     documentation = "Whether this person is incarcerated."
-    definition_period = YEAR
+    definition_period = MONTH

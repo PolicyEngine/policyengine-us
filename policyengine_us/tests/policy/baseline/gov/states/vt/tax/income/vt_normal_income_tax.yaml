@@ -32,7 +32,7 @@
   period: 2021
   input:
     vt_taxable_income: 300_000
-    filing_status: WIDOW
+    filing_status: SURVIVING_SPOUSE
     state_code: VT
   output:
     # .0335*68400 + .066*(165350-68400) + .076*(251950-165350) + .0875*(300000-251950) = 19476.074
@@ -113,7 +113,7 @@
   period: 2022
   input:
     vt_taxable_income: 300_000
-    filing_status: WIDOW
+    filing_status: SURVIVING_SPOUSE
     state_code: VT
   output:
     # .0335*70450 + .066*(170300-70450) + .076*(259500-170300) + .0875*(300000-259500) = 19273.125

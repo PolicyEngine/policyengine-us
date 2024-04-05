@@ -7,7 +7,7 @@ class wv_low_income_family_tax_credit(Variable):
     label = "West Virginia low-income family tax credit"
     unit = USD
     definition_period = YEAR
-    defined_for = StateCode.WV
+    defined_for = "wv_low_income_family_tax_credit_eligible"
 
     def formula(tax_unit, period, parameters):
         filing_status = tax_unit("filing_status", period)
@@ -16,7 +16,7 @@ class wv_low_income_family_tax_credit(Variable):
             period
         ).gov.states.wv.tax.income.credits.liftc  # low_income_family_tax_credit
 
-        wv_agi = tax_unit("wv_agi", period)
+        wv_agi = tax_unit("wv_low_income_family_tax_credit_agi", period)
         fpg = tax_unit("wv_low_income_family_tax_credit_fpg", period)
         # modified agi limit
         fpg_amount = p.fpg_percent[filing_status] * fpg
@@ -29,7 +29,7 @@ class wv_low_income_family_tax_credit(Variable):
                 filing_status == filing_statuses.SEPARATE,
                 filing_status == filing_statuses.JOINT,
                 filing_status == filing_statuses.HEAD_OF_HOUSEHOLD,
-                filing_status == filing_statuses.WIDOW,
+                filing_status == filing_statuses.SURVIVING_SPOUSE,
             ],
             [
                 p.amount.single.calc(reduced_agi),
