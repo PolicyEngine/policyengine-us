@@ -14,37 +14,14 @@ class ms_taxable_income_indiv(Variable):
     defined_for = StateCode.MS
 
     def formula(person, period, parameters):
-        tax_unit = person.tax_unit
-        ms_taxable_income_indiv_head = add(
-            tax_unit, period, ["ms_taxable_income_indiv_head"]
+        ms_taxable_income_indiv_head = person(
+            "ms_taxable_income_indiv_head", period
         )
-        ms_taxable_income_indiv_spouse = add(
-            tax_unit, period, ["ms_taxable_income_indiv_spouse"]
+        ms_taxable_income_indiv_spouse = person(
+            "ms_taxable_income_indiv_spouse", period
         )
-
         total_taxable_income = (
             ms_taxable_income_indiv_head + ms_taxable_income_indiv_spouse
         )
         #  negative amount will be no income tax liability
-        head = person("is_tax_unit_head", period)
-        return head * max_(total_taxable_income, 0)
-
-        # taxable_income_spouse = person("ms_taxable_income_indiv_spouse", period)
-        # taxable_income_head = person("ms_taxable_income_indiv_head", period)
-        # if_combined_taxable_income = (taxable_income_spouse < 0) | (taxable_income_head < 0)
-
-        # # Both head and spouse have positive taxable income
-        # taxable_income_uncombined = [taxable_income_head[i] + taxable_income_spouse[i] for i in range(len(taxable_income_head))]
-
-        # # Only one of the head or spouse have postive taxable income
-        # tax_unit = person.tax_unit
-        # ms_taxable_income_indiv_head = add(tax_unit, period, ["ms_taxable_income_indiv_head"])
-        # ms_taxable_income_indiv_spouse = add(tax_unit, period, ["ms_taxable_income_indiv_spouse"])
-        # total_taxable_income = (
-        #     ms_taxable_income_indiv_head + ms_taxable_income_indiv_spouse
-        # )
-        # #  negative amount will be no income tax liability
-        # head = person("is_tax_unit_head", period)
-        # taxable_income_combined = head * max_(total_taxable_income, 0)
-
-        # return where(if_combined_taxable_income, taxable_income_combined, taxable_income_uncombined)
+        return max_(total_taxable_income, 0)
