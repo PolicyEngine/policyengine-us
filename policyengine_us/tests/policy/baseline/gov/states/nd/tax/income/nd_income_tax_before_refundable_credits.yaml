@@ -7,7 +7,7 @@
   output:
     nd_income_tax_before_refundable_credits: 900 - 850
 
-- name: North Dakota income tax before refundable credits unit test 2
+- name: North Dakota income tax before refundable credits cannot be negative, unit test 2
   period: 2022
   input:
     nd_income_tax_before_credits: 900
@@ -16,7 +16,7 @@
   output:
     nd_income_tax_before_refundable_credits: 0
 
-- name: North Dakota income tax before refundable credits unit test 3
+- name: North Dakota income tax before refundable credits cannot be negative, unit test 3
   period: 2023
   input:
     nd_income_tax_before_credits: 900
