@@ -19,6 +19,6 @@ class md_qualifies_for_unmarried_childless_eitc(Variable):
         single_head_widow = (
             (filing_status == filing_statuses.SINGLE)
             | (filing_status == filing_statuses.HEAD_OF_HOUSEHOLD)
-            | (filing_status == filing_statuses.WIDOW)
+            | (filing_status == filing_statuses.SURVIVING_SPOUSE)
         )
         return childless & single_head_widow

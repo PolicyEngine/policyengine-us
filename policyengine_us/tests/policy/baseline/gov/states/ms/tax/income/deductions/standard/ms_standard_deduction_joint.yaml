@@ -19,7 +19,7 @@
 - name: MS Standard deduction if widow filter
   period: 2020
   input:
-    filing_status: WIDOW
+    filing_status: SURVIVING_SPOUSE
     state_code: MS
     is_tax_unit_head: true
   output:  

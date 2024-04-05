@@ -6,7 +6,7 @@ class FilingStatus(Enum):
     JOINT = "Joint"
     SEPARATE = "Separate"
     HEAD_OF_HOUSEHOLD = "Head of household"
-    WIDOW = "Widow(er)"
+    SURVIVING_SPOUSE = "Surviving spouse"
 
 
 class filing_status(Variable):
@@ -30,7 +30,7 @@ class filing_status(Variable):
             [
                 FilingStatus.SEPARATE,
                 FilingStatus.JOINT,
-                FilingStatus.WIDOW,
+                FilingStatus.SURVIVING_SPOUSE,
                 FilingStatus.HEAD_OF_HOUSEHOLD,
             ],
             default=FilingStatus.SINGLE,
