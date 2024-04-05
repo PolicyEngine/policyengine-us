@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.725.0] - 2024-04-05 00:05:29
+
+### Added
+
+- Arizona Cash Assistance (TANF) child eligibility.
+
 ## [0.724.0] - 2024-04-04 23:53:10
 
 ### Added
@@ -8083,6 +8089,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.725.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.724.0...0.725.0
 [0.724.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.723.0...0.724.0
 [0.723.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.722.2...0.723.0
 [0.722.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.722.1...0.722.2
