@@ -1,39 +1,26 @@
-- name: head or spouse is eligible for retirement exemptions with taxable retirement income below 6000
+- name: head or spouse is eligible for retirement exemptions
   period: 2023
   input:
     is_tax_unit_head_or_spouse: true
     age: 65
-    taxable_pension_income: 5_999
     state_code: AL
   output:
-    al_retirement_exemption_eligible_person: 5_999
+    al_retirement_exemption_eligible_person: true
 
 - name: Not a head or spouse
   period: 2023
   input:
     is_tax_unit_head_or_spouse: false
-    taxable_pension_income: 8_000
     age: 68
     state_code: AL
   output:
-    al_retirement_exemption_eligible_person: 0
+    al_retirement_exemption_eligible_person: false
 
-- name: head or spouse is eligible for retirement exemptions with taxable retirement income above 6000
+- name: head or spouse is not age eligible for retirement exemptions
   period: 2023
   input:
     is_tax_unit_head_or_spouse: true
-    taxable_pension_income: 8_000
-    age: 68
-    state_code: AL
-  output:
-    al_retirement_exemption_eligible_person: 6_000
-
-- name: head is not age eligible for retirement exemptions
-  period: 2023
-  input:
-    is_tax_unit_head_or_spouse: true
-    taxable_pension_income: 8000
     age: 64
     state_code: AL
   output:
-    al_retirement_exemption_eligible_person: 0
+    al_retirement_exemption_eligible_person: false
