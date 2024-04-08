@@ -27,3 +27,13 @@
   output:
     # 973 * 0.1 = 97.3 * 9 = 875.7
     dc_snap_temporary_local_benefit: 875.7
+
+- name: Household size 10, State DC, yearly
+  period: 2024
+  input:
+    spm_unit_size: 10
+    state_code: DC
+    snap_region_str: CONTIGUOUS_US
+  output:
+    # (1751 + 219 * 2) * 0.1 * 9 = 1970.1
+    dc_snap_temporary_local_benefit: 1970.1
