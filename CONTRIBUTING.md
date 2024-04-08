@@ -143,11 +143,11 @@ One common breakdown is to break down by **`filing_status`**. If you decided to 
 
 * `SINGLE`
 * `SEPARATE`
-* `WIDOW`
+* `SURVIVING_SPOUSE`
 * `HEAD_OF_HOUSEHOLD`
 * `JOINT`
 
-Sometimes, the document that you refer to (e.g. tax instruction) does not specify all five statuses. In that case, you can let the `WIDOW` cases to be the same as the `JOINT` case.
+Sometimes, the document that you refer to (e.g. tax instruction) does not specify all five statuses. In that case, you can let the `SURVIVING_SPOUSE` cases to be the same as the `JOINT` case.
 
 PolicyEngine defines parameters as yaml files, which specify the values as of certain dates, as well as metadata on the units and reference(s).
 
