@@ -13,7 +13,10 @@ class de_elderly_or_disabled_income_exclusion_indiv(Variable):
     def formula(person, period, parameters):
         tax_unit = person.tax_unit
         # First get their filing status.
-        filing_status = tax_unit("state_filing_status_if_married_filing_separately_on_same_return", period)
+        filing_status = tax_unit(
+            "state_filing_status_if_married_filing_separately_on_same_return",
+            period,
+        )
         p = parameters(
             period
         ).gov.states.de.tax.income.subtractions.exclusions.elderly_or_disabled
