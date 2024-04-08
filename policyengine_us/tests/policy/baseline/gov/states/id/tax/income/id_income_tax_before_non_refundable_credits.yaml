@@ -30,7 +30,7 @@
   input:
     state_code: ID
     id_taxable_income: 10_000
-    filing_status: WIDOW
+    filing_status: SURVIVING_SPOUSE
   output:
     id_income_tax_before_non_refundable_credits: 233.91
 
@@ -67,7 +67,7 @@
   input:
     state_code: ID
     id_taxable_income: 16_000
-    filing_status: WIDOW
+    filing_status: SURVIVING_SPOUSE
   output:
     id_income_tax_before_non_refundable_credits: 554.14
 
@@ -121,7 +121,7 @@
   input:
     state_code: ID
     id_taxable_income: 10_000
-    filing_status: WIDOW
+    filing_status: SURVIVING_SPOUSE
   output:
     id_income_tax_before_non_refundable_credits: 59.218
 
@@ -130,7 +130,7 @@
   input:
     state_code: ID
     id_taxable_income: 1_000
-    filing_status: WIDOW
+    filing_status: SURVIVING_SPOUSE
   output:
     id_income_tax_before_non_refundable_credits: 0
 

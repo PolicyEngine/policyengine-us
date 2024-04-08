@@ -13,7 +13,7 @@
   absolute_error_margin: 0.01
   input:
     irs_employment_income: 5_000
-    filing_status: WIDOW
+    filing_status: SURVIVING_SPOUSE
     state_code: OR
   output:
     or_withheld_income_tax: 122.55
@@ -23,7 +23,7 @@
   absolute_error_margin: 0.01
   input:
     irs_employment_income: 2_000
-    filing_status: WIDOW
+    filing_status: SURVIVING_SPOUSE
     state_code: OR
   output:
     or_withheld_income_tax: 0
