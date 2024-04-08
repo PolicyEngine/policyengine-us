@@ -35,5 +35,14 @@
     state_code: DC
     snap_region_str: CONTIGUOUS_US
   output:
-    # (1751 + 219 * 2) * 0.1 * 9 = 1970.1
-    dc_snap_temporary_local_benefit: 1970.1
+    # (1751 + 219 * 2) * 0.1 * 9 = 1_970.1
+    dc_snap_temporary_local_benefit: 1_970.1
+
+- name: Test using snap_max_allotment
+  period: 2024
+  input:
+    snap_max_allotment: 1_000
+    state_code: DC
+  output:
+    # (1000 * 0.1) / 12 * 9 = 75
+    dc_snap_temporary_local_benefit: 75

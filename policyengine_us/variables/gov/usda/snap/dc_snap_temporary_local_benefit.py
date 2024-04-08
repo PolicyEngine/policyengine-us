@@ -14,11 +14,6 @@ class dc_snap_temporary_local_benefit(Variable):
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.usda.snap.temporary_local_benefit.dc
 
-        # max_allotments = parameters(period).gov.usda.snap.max_allotment
         max_allotments = spm_unit("snap_max_allotment", period)
 
-        snap_region = spm_unit.household("snap_region_str", period)
-        household_size = spm_unit("spm_unit_size", period)
-
         return max_allotments * p.rate
-        # return max_allotments.main[snap_region][household_size] * p.rate
