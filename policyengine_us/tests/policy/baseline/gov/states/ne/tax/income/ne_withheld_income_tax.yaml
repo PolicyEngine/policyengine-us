@@ -13,7 +13,7 @@
   absolute_error_margin: 0.01
   input:
     irs_employment_income: 9_000
-    filing_status: WIDOW
+    filing_status: SURVIVING_SPOUSE
     state_code: NE
   output:
     ne_withheld_income_tax: 40.59
@@ -23,7 +23,7 @@
   absolute_error_margin: 0.01
   input:
     irs_employment_income: 7_000
-    filing_status: WIDOW
+    filing_status: SURVIVING_SPOUSE
     state_code: NE
   output:
     ne_withheld_income_tax: 0
