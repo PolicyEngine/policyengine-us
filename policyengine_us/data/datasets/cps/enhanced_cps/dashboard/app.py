@@ -22,7 +22,7 @@ df.dataset = df.dataset.replace(
     {
         "cps_2022": "CPS (2022)",
         "enhanced_cps_2022": "Enhanced CPS",
-        "puf_2023": "PUF (2015)",
+        "puf_2022": "PUF (2015)",
     }
 )
 

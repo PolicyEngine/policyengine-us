@@ -9,6 +9,8 @@ metadata:
 adjusted_gross_income:
   metadata:
     label: Total AGI
+    interpolation:
+      interval: year
   values:
     2015-01-01:
       value: 9_033_840_000_000

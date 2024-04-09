@@ -1,11 +1,13 @@
-description: Total self-employment income.
+description: Total self-employment income in taxable returns.
 values:
-  2015-01-01: 391_975_736_000
-  2020-01-01: 436_378_623_000
+  2015-01-01: 265_621_522_000
+  2021-01-01: 332_857_554_000
 metadata:
   unit: currency-USD
   label: SOI self-employment income
   uprating: calibration.gov.cbo.income_by_source.self_employment_income
+  interpolation:
+      interval: year
   reference:
     - title: IRS SOI Tax Stats - Individual Statistical Tables by Size of Adjusted Gross Income
       href: https://www.irs.gov/statistics/soi-tax-stats-individual-statistical-tables-by-size-of-adjusted-gross-income
