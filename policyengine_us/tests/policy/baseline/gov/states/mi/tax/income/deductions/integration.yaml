@@ -97,7 +97,7 @@
     household:
       members: [person1, person2, person3]
       state_code: MI
-  output: # 40000 - 2000 - 1000 - (5000 > 2000) - (3000 > 0) - 2000 > 0
+  output: # 40000 - 2000 - 1000 - (5000 > 2000) - (3000 > 0) - 2000 < min(40000 + 30000, 0.25 * (123036 - 3000))
     mi_interest_dividends_capital_gains_deduction_eligible: false
     mi_interest_dividends_capital_gains_deduction: 0
     mi_expanded_retirement_benefits_deduction_eligible: false
@@ -154,11 +154,11 @@
     mi_retirement_benefits_deduction_tier_one_eligible: false
     mi_retirement_benefits_deduction_tier_one: 0
     mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired_eligible_people: 0
-    mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired: 0
+    mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired: 15_129.5
     mi_retirement_benefits_deduction_tier_three_ss_exempt_retired_eligible_people: 0
     mi_retirement_benefits_deduction_tier_three_ss_exempt_retired: 0
     mi_retirement_benefits_deduction_tier_three_eligible: true
-    mi_retirement_benefits_deduction_tier_three: 0
+    mi_retirement_benefits_deduction_tier_three: 15_129.5
     mi_pension_benefit: 15_129.5
     mi_standard_deduction_tier_three_eligible: false
     mi_standard_deduction_tier_three: 0

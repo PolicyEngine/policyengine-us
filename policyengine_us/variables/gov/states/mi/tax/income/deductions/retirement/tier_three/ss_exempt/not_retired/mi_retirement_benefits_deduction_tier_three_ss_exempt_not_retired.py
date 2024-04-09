@@ -22,7 +22,7 @@ class mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired(
         # Modeled after 2022 Michigan Pension Schedule (Form 4884) Section C
         p = parameters(
             period
-        ).gov.states.mi.tax.income.deductions.retirement_benefits.tier_three.ss_exempt.not_retired
+        ).gov.states.mi.tax.income.deductions.retirement_benefits
         #  Recipients should receive retirement benefits from employment exempt from Social Security
         eligible_people = tax_unit(
             "mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired_eligible_people",
@@ -34,7 +34,9 @@ class mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired(
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
 
         # Head and spouse both are eligible to receive an equal deduction amount
-        cap = p.amount * eligible_people  # Line 9
+        cap = (
+            p.tier_three.ss_exempt.not_retired.amount * eligible_people
+        )  # Line 9
         uncapped_head_or_spouse_pension = tax_unit.sum(
             uncapped_pension_income * is_head_or_spouse
         )
@@ -58,4 +60,18 @@ class mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired(
             cap,
         )
         # Line 18
-        return min_(uncapped_head_or_spouse_pension, eligible_deduction)
+        tier_three_ss_exempt_not_retired = min_(
+            uncapped_head_or_spouse_pension, eligible_deduction
+        )
+        # Worksheet 3.3: Retirement and Pension Benefits Subtraction for Section D of Form 4884
+        if p.expanded.availability:
+            expanded_retirement_benefits_deduction = tax_unit(
+                "mi_expanded_retirement_benefits_deduction",
+                period,
+            )
+            return max_(
+                tier_three_ss_exempt_not_retired,
+                expanded_retirement_benefits_deduction,
+            )
+        else:
+            return tier_three_ss_exempt_not_retired
