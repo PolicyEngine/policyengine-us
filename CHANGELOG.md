@@ -5,6 +5,60 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.727.1] - 2024-04-09 02:59:20
+
+### Fixed
+
+- Adjust the Delaware elderly or disabled exclusion to represent the case where married couples file jointly.
+
+## [0.727.0] - 2024-04-08 03:49:34
+
+### Added
+
+- Fix New Mexico low income comprehensive tax rebate calculations.
+
+## [0.726.0] - 2024-04-08 03:44:57
+
+### Added
+
+- Remove premium_tax_credit from household net income tree.
+
+## [0.725.0] - 2024-04-05 00:05:29
+
+### Added
+
+- Arizona Cash Assistance (TANF) child eligibility.
+
+## [0.724.0] - 2024-04-04 23:53:10
+
+### Added
+
+- Enable the Kentucky income tax model and include in the net income tree.
+
+## [0.723.0] - 2024-04-04 22:18:15
+
+### Added
+
+- Enable the Michigan income tax model and include in the net income tree.
+
+## [0.722.2] - 2024-04-04 16:13:37
+
+### Fixed
+
+- Adjust the widow filing status to surviving spouse in the gov.contrib.biden.budget_2025.capital_gains.income_threshold file.
+
+## [0.722.1] - 2024-04-04 03:29:14
+
+### Fixed
+
+- Kentucky tax unit itemizes deductions logic.
+
+## [0.722.0] - 2024-04-02 21:40:33
+
+### Added
+
+- Rename widow to surviving spouse.
+
 ## [0.721.1] - 2024-04-02 15:56:44
 
 ### Fixed
@@ -8053,6 +8107,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.727.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.727.0...0.727.1
+[0.727.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.726.0...0.727.0
+[0.726.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.725.0...0.726.0
+[0.725.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.724.0...0.725.0
+[0.724.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.723.0...0.724.0
+[0.723.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.722.2...0.723.0
+[0.722.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.722.1...0.722.2
+[0.722.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.722.0...0.722.1
+[0.722.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.721.1...0.722.0
 [0.721.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.721.0...0.721.1
 [0.721.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.720.0...0.721.0
 [0.720.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.719.1...0.720.0
