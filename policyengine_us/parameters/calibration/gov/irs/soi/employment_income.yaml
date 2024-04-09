@@ -1,11 +1,13 @@
 description: Total employment income in taxable returns.
 values:
-  2015-01-01: 6_411_736_996
+  2015-01-01: 6_411_736_996_000
   2021-01-01: 8_193_035_658_000
 metadata:
   unit: currency-USD
   label: SOI employment income
   uprating: calibration.gov.cbo.income_by_source.employment_income
+  interpolation:
+      interval: year
   reference:
     - title: IRS SOI Tax Stats - Individual Statistical Tables by Size of Adjusted Gross Income
       href: https://www.irs.gov/statistics/soi-tax-stats-individual-statistical-tables-by-size-of-adjusted-gross-income

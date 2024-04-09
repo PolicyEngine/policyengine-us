@@ -1,11 +1,13 @@
 description: Total farm income in taxable returns.
 values:
-  2015-01-01: -4_868_471 # Net income subtract net loss
+  2015-01-01: -4_868_471_000 # Net income subtract net loss
   2021-01-01: -14_603_812_000 # Net income subtract net loss
 metadata:
   unit: currency-USD
   label: SOI farm income
   uprating: calibration.gov.cbo.income_by_source.adjusted_gross_income
+  interpolation:
+      interval: year
   reference:
     - title: IRS SOI Tax Stats - Individual Statistical Tables by Size of Adjusted Gross Income
       href: https://www.irs.gov/statistics/soi-tax-stats-individual-statistical-tables-by-size-of-adjusted-gross-income
