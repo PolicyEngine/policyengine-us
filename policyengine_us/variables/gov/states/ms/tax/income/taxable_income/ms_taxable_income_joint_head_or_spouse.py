@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class ms_taxable_income_indiv_head(Variable):
+class ms_taxable_income_joint_head_or_spouse(Variable):
     value_type = float
     entity = Person
-    label = "Mississippi taxable income for head when married couple file separately"
+    label = "Mississippi taxable income for head or spouse when married couple file jointly"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -14,12 +14,13 @@ class ms_taxable_income_indiv_head(Variable):
     defined_for = StateCode.MS
 
     def formula(person, period, parameters):
-        is_head = person("is_tax_unit_head", period)
+        is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         agi = person("ms_agi", period)
+
         deductions_and_exemptions = add(
             person,
             period,
-            ["ms_deductions_indiv", "ms_total_exemptions_indiv"],
+            ["ms_deductions_joint", "ms_total_exemptions_joint"],
         )
-        # MS allowed negative taxable income
-        return is_head * (agi - deductions_and_exemptions)
+        # MS allowes negative taxable income
+        return is_head_or_spouse * (agi - deductions_and_exemptions)

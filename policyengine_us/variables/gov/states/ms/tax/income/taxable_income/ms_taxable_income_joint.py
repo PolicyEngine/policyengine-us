@@ -14,13 +14,22 @@ class ms_taxable_income_joint(Variable):
     defined_for = StateCode.MS
 
     def formula(person, period, parameters):
+        # MS allowes negative taxable income when married couple file jointly
+        ms_taxable_income_joint_head_or_spouse = person(
+            "ms_taxable_income_joint_head_or_spouse", period
+        )
+        if_combined_income = min(ms_taxable_income_joint_head_or_spouse) >= 0
+
+        # 1. both head and spouse have positive taxable income (includes 0)
+        income_not_combined = ms_taxable_income_joint_head_or_spouse
+
+        # 2. at least one head or spouse has negative taxable income
         # assign total net_income to tax unit head
         is_head = person("is_tax_unit_head", period)
-        agi = person("ms_agi", period)
-        head_agi = is_head * person.tax_unit.sum(agi)
-        deductions_and_exemptions = add(
-            person.tax_unit,
-            period,
-            ["ms_deductions_joint", "ms_total_exemptions_joint"],
-        )
-        return max_(head_agi - deductions_and_exemptions, 0)
+        total_taxable_income = sum(ms_taxable_income_joint_head_or_spouse)
+
+        income_combined = [
+            is_head[i] * total_taxable_income for i in range(len(is_head))
+        ]
+
+        return where(if_combined_income, income_not_combined, income_combined)

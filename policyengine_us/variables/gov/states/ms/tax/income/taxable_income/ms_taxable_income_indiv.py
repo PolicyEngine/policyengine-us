@@ -14,14 +14,10 @@ class ms_taxable_income_indiv(Variable):
     defined_for = StateCode.MS
 
     def formula(person, period, parameters):
-        ms_taxable_income_indiv_head = person(
-            "ms_taxable_income_indiv_head", period
+        agi = person("ms_agi", period)
+        deductions_and_exemptions = add(
+            person,
+            period,
+            ["ms_deductions_indiv", "ms_total_exemptions_indiv"],
         )
-        ms_taxable_income_indiv_spouse = person(
-            "ms_taxable_income_indiv_spouse", period
-        )
-        total_taxable_income = (
-            ms_taxable_income_indiv_head + ms_taxable_income_indiv_spouse
-        )
-        #  negative amount will be no income tax liability
-        return max_(total_taxable_income, 0)
+        return max_(agi - deductions_and_exemptions, 0)

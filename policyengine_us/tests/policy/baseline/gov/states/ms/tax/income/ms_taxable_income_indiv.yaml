@@ -1,26 +1,19 @@
-- name: Total taxable income for all positive amount
+- name: Calculation 
   period: 2023
   input:
     state_code: MS
-    ms_taxable_income_indiv_head: 500
-    ms_taxable_income_indiv_spouse: 400
+    ms_agi: 2_000
+    ms_deductions_indiv: 200
+    ms_total_exemptions_indiv: 300
   output:
-    ms_taxable_income_indiv: 900
-
-- name: Total taxable income for one positive amount
-  period: 2023
-  input:
-    ms_taxable_income_indiv_head: 500
-    ms_taxable_income_indiv_spouse: -400
-    state_code: MS
-  output:
-    ms_taxable_income_indiv: 100
+    ms_taxable_income_indiv: 1_500
 
 - name: Capped at 0 
   period: 2023
   input:
     state_code: MS
-    ms_taxable_income_indiv_head: -500
-    ms_taxable_income_indiv_spouse: 400
+    ms_agi: 100
+    ms_deductions_indiv: 200
+    ms_total_exemptions_indiv: 300
   output:
     ms_taxable_income_indiv: 0

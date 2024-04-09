@@ -1,0 +1,32 @@
+- name: Positive taxable income for head or spouse
+  period: 2023
+  input:
+    state_code: MS
+    is_tax_unit_head_or_spouse: true
+    ms_agi: 2_000
+    ms_deductions_joint: 200
+    ms_total_exemptions_joint: 300
+  output:
+    ms_taxable_income_joint_head_or_spouse: 1_500 #2000-(200+300)
+
+- name: Negative taxable income for head or spouse  
+  period: 2023
+  input:
+    state_code: MS
+    is_tax_unit_head_or_spouse: true
+    ms_agi: 100
+    ms_deductions_joint: 200
+    ms_total_exemptions_joint: 300
+  output:
+    ms_taxable_income_joint_head_or_spouse: -400 #100-(200+300)
+
+- name: Taxable income for non-head or non-spouse
+  period: 2023
+  input:
+    state_code: MS
+    is_tax_unit_head_or_spouse: false
+    ms_agi: 2_000
+    ms_deductions_joint: 200
+    ms_total_exemptions_joint: 300
+  output:
+    ms_taxable_income_joint_head_or_spouse: 0
