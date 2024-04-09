@@ -19,17 +19,17 @@ class ia_amt_joint(Variable):
         # compute Iowa AMT taxable income
         p = parameters(period).gov.states.ia.tax.income
         amt = p.alternative_minimum_tax
-        if amt.availability:
+        if amt.in_effect:
             reg_taxinc = person("ia_taxable_income_joint", period)
             std_ded = person("ia_standard_deduction_joint", period)
             itm_ded = person("ia_itemized_deductions_joint", period)
             is_head = person("is_tax_unit_head", period)
             proptax = add(person.tax_unit, period, ["real_estate_taxes"])
-            amt_taxinc = where(
-                itm_ded > std_ded,
-                reg_taxinc + is_head * proptax,
-                reg_taxinc,
+            additional_proptax_amt_taxinc_applies = itm_ded > std_ded
+            additional_proptax_amt_taxinc = (
+                additional_proptax_amt_taxinc_applies * is_head * proptax
             )
+            amt_taxinc = reg_taxinc + additional_proptax_amt_taxinc
             # compute AMT amount
             filing_status = person.tax_unit("filing_status", period)
             amt_threshold = amt.threshold[filing_status]  # Line 23
