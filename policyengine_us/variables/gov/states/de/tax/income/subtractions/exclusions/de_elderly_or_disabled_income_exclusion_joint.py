@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class de_elderly_or_disabled_income_exclusion(Variable):
+class de_elderly_or_disabled_income_exclusion_joint(Variable):
     value_type = float
     entity = Person
-    label = "Delaware individual aged or disabled exclusion"
+    label = "Delaware individual aged or disabled exclusion when married filing jointly"
     unit = USD
     definition_period = YEAR
     reference = "https://revenuefiles.delaware.gov/2022/PIT-RES_TY22_2022-01_PaperInteractive.pdf#page=1"
