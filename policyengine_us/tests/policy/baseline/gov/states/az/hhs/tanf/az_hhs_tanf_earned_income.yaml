@@ -1,86 +1,20 @@
-- name: Spend 190 on 1 year old kid
-  period: 2023
-  absolute_error_margin: 0.01
-  input:
-    earned_income: 15_000
-    childcare: 190
-    age: 1
-    disabled_adult_care: 0
-    state_code: AZ
-  output:
-    az_tanf_earned_income: 622
-
-- name: Spend 210 on 1 year old kid
-  period: 2023
-  absolute_error_margin: 0.01
-  input:
-    earned_income: 15_000
-    childcare: 210
-    child_age: 1
-    disabled_adult_care: 0
-    state_code: AZ
-  output:
-    az_tanf_earned_income: 612
-
-- name: Spend 170 on 2 year old kid
-  period: 2023
-  absolute_error_margin: 0.01
-  input:
-    earned_income: 15_000
-    childcare: 170
-    child_age: 2
-    disabled_adult_care: 0
-    state_code: AZ
-  output:
-    az_tanf_earned_income: 642
-
-- name: Spend 180 on 2 year old kid
-  period: 2023
-  absolute_error_margin: 0.01
-  input:
-    earned_income: 15_000
-    childcare: 180
-    child_age: 2
-    disabled_adult_care: 0
-    state_code: AZ
-  output:
-    az_tanf_earned_income: 637
-
-- name: Spend 170 on an adult with disability
-  period: 2023
-  absolute_error_margin: 0.01
-  input:
-    earned_income: 15_000
-    childcare: 0
-    child_age: 0
-    disabled_adult_care: 170
-    state_code: AZ
-  output:
-    az_tanf_earned_income: 642
-
-- name: Spend 180 on an adult with disability
-  period: 2023
-  absolute_error_margin: 0.01
-  input:
-    earned_income: 15_000
-    childcare: 0
-    child_age: 0
-    disabled_adult_care: 180
-    state_code: AZ
-  output:
-    az_tanf_earned_income: 637
-
-- name: Spend 180 on an adult with disability
+- name: Spend 190 on an 1 years old kid
   period: 2023
   absolute_error_margin: 0.01
   input:
     people:
       person1:
-        age: 30
-      person2: 
-        age: 12 
-      person3: 
         age: 1
+        care_expenses: 190
+        earned_income: 0
+      person2:
+        age: 30
+        care_expenses: 0
+        earned_income: 7,500
+      person3:
+        age: 32
+        care_expenses: 0
+        earned_income: 7,500
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
@@ -90,4 +24,144 @@
         members: [person1, person2, person3]
         state_code: AZ
   output:
-    az_tanf_earned_income:
+    az_tanf_earned_income:  7,464
+
+- name: Spend 210 on an 1 years old kid
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 1
+        care_expenses: 210
+        earned_income: 0
+      person2:
+        age: 30
+        care_expenses: 0
+        earned_income: 7,500
+      person3:
+        age: 32
+        care_expenses: 0
+        earned_income: 7,500
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AZ
+  output:
+    az_tanf_earned_income:  7,344
+
+- name: Spend 170 on an 3 years old kid
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 3
+        care_expenses: 170
+        earned_income: 0
+      person2:
+        age: 30
+        care_expenses: 0
+        earned_income: 7,500
+      person3:
+        age: 32
+        care_expenses: 0
+        earned_income: 7,500
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AZ
+  output:
+    az_tanf_earned_income:  7,704
+
+- name: Spend 180 on an 3 years old kid
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 3
+        care_expenses: 180
+        earned_income: 0
+      person2:
+        age: 30
+        care_expenses: 0
+        earned_income: 7,500
+      person3:
+        age: 32
+        care_expenses: 0
+        earned_income: 7,500
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AZ
+  output:
+    az_tanf_earned_income:  7,644
+
+- name: Spend 170 on an disabled adult
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 22
+        care_expenses: 170
+        earned_income: 0
+      person2:
+        age: 45
+        care_expenses: 0
+        earned_income: 7,500
+      person3:
+        age: 46
+        care_expenses: 0
+        earned_income: 7,500
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AZ
+  output:
+    az_tanf_earned_income:  7,704
+
+- name: Spend 180 on an adult with disability
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 22
+        care_expenses: 180
+        earned_income: 0
+      person2:
+        age: 45
+        care_expenses: 0
+        earned_income: 7,500
+      person3:
+        age: 46
+        care_expenses: 0
+        earned_income: 7,500
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AZ
+  output:
+    az_tanf_earned_income: 7,644
