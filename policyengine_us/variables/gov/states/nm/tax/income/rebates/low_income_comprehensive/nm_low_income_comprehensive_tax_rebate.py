@@ -27,7 +27,6 @@ class nm_low_income_comprehensive_tax_rebate(Variable):
 
         rebate = select(
             [
-                exemptions == 0,
                 exemptions == 1,
                 exemptions == 2,
                 exemptions == 3,
@@ -35,7 +34,6 @@ class nm_low_income_comprehensive_tax_rebate(Variable):
                 exemptions == 5,
             ],
             [
-                0,
                 p.amount.one_exemption.calc(agi, right=True),
                 p.amount.two_exemptions.calc(agi, right=True),
                 p.amount.three_exemptions.calc(agi, right=True),
