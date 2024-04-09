@@ -19,4 +19,6 @@ class de_agi_indiv(Variable):
         is_dependent = person("is_tax_unit_dependent", period)
         sum_dep_net_income = person.tax_unit.sum(is_dependent * net_income)
         is_head = person("is_tax_unit_head", period)
-        return ~is_dependent * net_income + is_head * sum_dep_net_income
+        head_spouse_net_income = ~is_dependent * net_income
+        head_allocated_dependent_net_income = is_head * sum_dep_net_income
+        return head_spouse_net_income + head_allocated_dependent_net_income
