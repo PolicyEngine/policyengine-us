@@ -3,7 +3,6 @@
   input:
     nyc_school_credit_income: 500_000
     filing_status: SINGLE
-    tax_unit_children: 0
   output:
     # NYC School Tax Instructions
     # See Page 25 for fixed amount
@@ -15,7 +14,6 @@
   input:
     nyc_school_credit_income: 500_001
     filing_status: SINGLE
-    tax_unit_children: 0
   output:
     # NYC School Tax Instructions
     # See Page 25 for fixed amount
@@ -27,7 +25,6 @@
   input:
     nyc_school_credit_income: 500_000
     filing_status: JOINT
-    tax_unit_children: 0
   output:
     # NYC School Tax Instructions
     # See Page 25 for fixed amount
@@ -39,7 +36,6 @@
   input:
     nyc_school_credit_income: 500_001
     filing_status: JOINT
-    tax_unit_children: 0
   output:
     # NYC School Tax Instructions
     # See Page 25 for fixed amount

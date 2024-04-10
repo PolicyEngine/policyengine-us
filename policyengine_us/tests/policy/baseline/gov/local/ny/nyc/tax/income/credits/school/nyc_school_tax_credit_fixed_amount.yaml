@@ -1,7 +1,6 @@
 - name: Single person gets $63 if eligible.
   period: 2022
   input:
-    state_code: NY
     nyc_school_tax_credit_fixed_amount_eligible: true
     filing_status: SINGLE
   output:
@@ -13,7 +12,6 @@
 - name: Married filing jointly gets $125 if eligible.
   period: 2022
   input:
-    state_code: NY
     nyc_school_tax_credit_fixed_amount_eligible: true
     filing_status: JOINT
   output:
@@ -25,7 +23,6 @@
 - name: Amount is zero if not eligible.
   period: 2022
   input:
-    state_code: NY
     nyc_school_tax_credit_fixed_amount_eligible: false
     filing_status: SINGLE
   output:

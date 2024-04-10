@@ -18,16 +18,4 @@ class nyc_school_tax_credit_fixed_amount_eligible(Variable):
         # Get income that counts towards the NYC School Tax Credit.
         nyc_stc_income = tax_unit("nyc_school_credit_income", period)
 
-        # Get the tax unit's filing status.
-        filing_status = tax_unit("filing_status", period)
-
-        # Get the number of children in the tax unit.
-        num_children = tax_unit("tax_unit_children", period)
-
-        # Calulate eligibility.
-        income_limit = p.income_limit[filing_status]
-        income_eligible = nyc_stc_income <= income_limit
-        min_needed_children = p.min_children
-        children_eligible = num_children >= min_needed_children
-
-        return income_eligible * children_eligible
+        return nyc_stc_income <= p.income_limit
