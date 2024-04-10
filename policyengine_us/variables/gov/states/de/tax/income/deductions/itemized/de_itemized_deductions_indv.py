@@ -15,7 +15,7 @@ class de_itemized_deductions_indv(Variable):
 
     def formula(person, period, parameters):
         unit_deds = person.tax_unit("de_itemized_deductions_unit", period)
-        person_agi = person("de_agi", period)
+        person_agi = person("de_agi_indiv", period)
         total_agi = person.tax_unit.sum(person_agi)
 
         prorate = np.zeros_like(total_agi)

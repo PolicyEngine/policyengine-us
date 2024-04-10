@@ -6875,3 +6875,45 @@
     added:
     - Rename widow to surviving spouse.
   date: 2024-04-02 21:40:33
+- bump: patch
+  changes:
+    fixed:
+    - Kentucky tax unit itemizes deductions logic.
+  date: 2024-04-04 03:29:14
+- bump: patch
+  changes:
+    fixed:
+    - Adjust the widow filing status to surviving spouse in the gov.contrib.biden.budget_2025.capital_gains.income_threshold
+      file.
+  date: 2024-04-04 16:13:37
+- bump: minor
+  changes:
+    added:
+    - Enable the Michigan income tax model and include in the net income tree.
+  date: 2024-04-04 22:18:15
+- bump: minor
+  changes:
+    added:
+    - Enable the Kentucky income tax model and include in the net income tree.
+  date: 2024-04-04 23:53:10
+- bump: minor
+  changes:
+    added:
+    - Arizona Cash Assistance (TANF) child eligibility.
+  date: 2024-04-05 00:05:29
+- bump: minor
+  changes:
+    added:
+    - Remove premium_tax_credit from household net income tree.
+  date: 2024-04-08 03:44:57
+- bump: minor
+  changes:
+    added:
+    - Fix New Mexico low income comprehensive tax rebate calculations.
+  date: 2024-04-08 03:49:34
+- bump: patch
+  changes:
+    fixed:
+    - Adjust the Delaware elderly or disabled exclusion to represent the case where
+      married couples file jointly.
+  date: 2024-04-09 02:59:20
