@@ -2,19 +2,16 @@ from policyengine_us.model_api import *
 
 
 def create_adjust_income_limit_and_min_children_by_filing_status() -> Reform:
-    class nyc_school_tax_credit_fixed_amount_eligible(Variable):
+    class nyc_school_tax_credit_eligible(Variable):
         value_type = bool
         entity = TaxUnit
-        label = "Eligible for NYC School Tax Credit Fixed Amount"
+        label = "Eligible for NYC School Tax Credit"
         definition_period = YEAR
         defined_for = "in_nyc"
 
         def formula(tax_unit, period, parameters):
-            # Eligibility is based on having a federal AGI below $30k
-            # and being an NYC full-time resident.
-
-            # Get the NYC School Tax Credit Fixed Amount reform part of the parameter tree.
-            p = parameters(period).gov.contrib.local.nyc.stc.fixed
+            # Get the NYC School Tax Credit reform part of the parameter tree.
+            p = parameters(period).gov.contrib.local.nyc.stc
 
             # Get income that counts towards the NYC School Tax Credit.
             nyc_stc_income = tax_unit("nyc_school_credit_income", period)
@@ -22,54 +19,31 @@ def create_adjust_income_limit_and_min_children_by_filing_status() -> Reform:
             # Get the tax unit's filing status.
             filing_status = tax_unit("filing_status", period)
 
-            # Get the number of children in the tax unit.
-            num_children = tax_unit("tax_unit_children", period)
+            # Calculate eligibility.
+            income_eligible = nyc_stc_income <= p.income_limit[filing_status]
+            children_eligible = (
+                tax_unit("tax_unit_children", period) >= p.min_children
+            )
 
-            # Calulate eligibility.
-            income_limit = p.income_limit[filing_status]
-            income_eligible = nyc_stc_income <= income_limit
-            min_needed_children = p.min_children
-            children_eligible = num_children >= min_needed_children
+            return income_eligible & children_eligible
 
-            return income_eligible * children_eligible
-
-    class nyc_school_tax_credit_rate_reduction_amount_eligible(Variable):
-        value_type = bool
+    class nyc_school_tax_credit(Variable):
+        value_type = float
         entity = TaxUnit
-        label = "Eligible for NYC School Tax Credit Rate Reduction Amount"
+        label = "NYC School Tax Credit"
+        unit = USD
         definition_period = YEAR
-        defined_for = "in_nyc"
+        defined_for = "nyc_school_tax_credit_eligible"
 
-        def formula(tax_unit, period, parameters):
-            # First get their NYC taxable income.
-            nyc_taxable_income = tax_unit("nyc_taxable_income", period)
-
-            # Then get their filing status.
-            filing_status = tax_unit("filing_status", period)
-
-            # Then get the School Tax Credit rate reduction reform part of the parameter tree.
-            p = parameters(period).gov.contrib.local.nyc.stc.rate_reduction
-
-            # Get the tax unit's filing status.
-            filing_status = tax_unit("filing_status", period)
-
-            # Get the number of children in the tax unit.
-            num_children = tax_unit("tax_unit_children", period)
-
-            # Calulate eligibility.
-            income_limit = p.income_limit[filing_status]
-            income_eligible = nyc_taxable_income <= income_limit
-            min_needed_children = p.min_children
-            children_eligible = num_children >= min_needed_children
-
-            return income_eligible * children_eligible
+        adds = [
+            "nyc_school_tax_credit_fixed_amount",
+            "nyc_school_tax_credit_rate_reduction_amount",
+        ]
 
     class reform(Reform):
         def apply(self):
-            self.update_variable(nyc_school_tax_credit_fixed_amount_eligible)
-            self.update_variable(
-                nyc_school_tax_credit_rate_reduction_amount_eligible
-            )
+            self.update_variable(nyc_school_tax_credit_eligible)
+            self.update_variable(nyc_school_tax_credit)
 
     return reform
 
