@@ -1,7 +1,7 @@
-description: NYC limits its School Tax Credit Fixed Amount to filers with NY AGI of this amount or less.
+description: NYC limits its School Tax Credit Fixed Amount to filers with at least this many children.
 metadata:
   unit: currency-USD
-  label: NYC School Tax Credit Fixed Amount Income Limit
+  label: NYC School Tax Credit Fixed Amount Minimum Number of Children
   reference:
     - title: Instructions for Form IT-201 (2023)
       href: https://www.tax.ny.gov/pdf/2023/printable-pdfs/inc/it201i-2023.pdf#page=27
@@ -9,13 +9,5 @@ metadata:
       href: https://www.tax.ny.gov/pdf/2022/printable-pdfs/inc/it201i-2022.pdf#page=25
   breakdown:
     - filing_status
-SINGLE:
-  2022-01-01: 250_000
-SEPARATE:
-  2022-01-01: 250_000
-HEAD_OF_HOUSEHOLD:
-  2022-01-01: 250_000
-JOINT:
-  2022-01-01: 250_000
-SURVIVING_SPOUSE:
-  2022-01-01: 250_000
+values:
+  - 2022-01-01: 0
