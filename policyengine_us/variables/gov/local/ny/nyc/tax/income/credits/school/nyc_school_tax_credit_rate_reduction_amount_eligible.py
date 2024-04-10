@@ -7,7 +7,6 @@ class nyc_school_tax_credit_rate_reduction_amount_eligible(Variable):
     label = "Eligible for NYC School Tax Credit Rate Reduction Amount"
     definition_period = YEAR
     defined_for = "in_nyc"
-    default_value = False
 
     def formula(tax_unit, period, parameters):
         # First get their NYC taxable income.

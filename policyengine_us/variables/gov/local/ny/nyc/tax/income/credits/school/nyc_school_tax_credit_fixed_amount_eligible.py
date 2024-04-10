@@ -7,7 +7,6 @@ class nyc_school_tax_credit_fixed_amount_eligible(Variable):
     label = "Eligible for NYC School Tax Credit Fixed Amount"
     definition_period = YEAR
     defined_for = "in_nyc"
-    default_value = False
 
     def formula(tax_unit, period, parameters):
         # Eligibility is based on having a federal AGI below $30k
