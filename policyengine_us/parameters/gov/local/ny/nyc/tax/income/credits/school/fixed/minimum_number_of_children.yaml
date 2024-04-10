@@ -1,6 +1,6 @@
 description: NYC limits its School Tax Credit Fixed Amount to filers with at least this many children.
 metadata:
-  unit: currency-USD
+  unit: single_amount
   label: NYC School Tax Credit Fixed Amount Minimum Number of Children
   reference:
     - title: Instructions for Form IT-201 (2023)
@@ -8,4 +8,4 @@ metadata:
     - title: Instructions for Form IT-201 (2022)
       href: https://www.tax.ny.gov/pdf/2022/printable-pdfs/inc/it201i-2022.pdf#page=25
 values:
-  - 2022-01-01: 0
+  2022-01-01: 0
