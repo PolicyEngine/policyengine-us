@@ -23,7 +23,7 @@ class ny_supplemental_tax(Variable):
             status.SINGLE,
             status.JOINT,
             status.HEAD_OF_HOUSEHOLD,
-            status.WIDOW,
+            status.SURVIVING_SPOUSE,
             status.SEPARATE,
         ]
         in_each_status = [filing_status == s for s in statuses]

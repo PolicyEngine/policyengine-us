@@ -4,10 +4,10 @@
     people:
       person1:
         is_tax_unit_head: true
-        de_agi: 60_000
+        de_agi_indiv: 60_000
       person2:
         is_tax_unit_head: false
-        de_agi: 40_000
+        de_agi_indiv: 40_000
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -25,10 +25,10 @@
     people:
       person1:
         is_tax_unit_head: true
-        de_agi: 0
+        de_agi_indiv: 0
       person2:
         is_tax_unit_head: false
-        de_agi: 40_000
+        de_agi_indiv: 40_000
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -45,9 +45,9 @@
   input:
     people:
       person1:
-        de_agi: 1_000
+        de_agi_indiv: 1_000
       person2:
-        de_agi: 0
+        de_agi_indiv: 0
     tax_units:
       tax_unit:
         members: [person1, person2]
