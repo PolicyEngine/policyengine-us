@@ -30,5 +30,5 @@ class nyc_school_tax_credit_fixed_amount_eligible(Variable):
         income_eligible = nyc_stc_income <= income_limit
         min_needed_children = p.min_children
         children_eligible = num_children >= min_needed_children
-        
+
         return income_eligible * children_eligible
