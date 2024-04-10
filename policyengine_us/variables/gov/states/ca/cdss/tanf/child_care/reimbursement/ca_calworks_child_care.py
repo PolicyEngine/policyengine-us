@@ -7,5 +7,6 @@ class ca_calworks_child_care(Variable):
     label = "California CalWORKs Child Care final payment"
     unit = USD
     definition_period = MONTH
+    defined_for = "ca_calworks_child_care_eligible"
 
     adds = ["ca_calworks_child_care_payment"]

@@ -2,7 +2,6 @@ def test_no_reform_has_no_change():
     from policyengine_us import Microsimulation
     from policyengine_core.reforms import Reform
     from policyengine_core.periods import instant
-    import pandas as pd
 
     def modify_parameters(parameters):
         parameters.gov.usda.snap.income.deductions.earned_income.update(

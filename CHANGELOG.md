@@ -5,6 +5,267 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.727.1] - 2024-04-09 02:59:20
+
+### Fixed
+
+- Adjust the Delaware elderly or disabled exclusion to represent the case where married couples file jointly.
+
+## [0.727.0] - 2024-04-08 03:49:34
+
+### Added
+
+- Fix New Mexico low income comprehensive tax rebate calculations.
+
+## [0.726.0] - 2024-04-08 03:44:57
+
+### Added
+
+- Remove premium_tax_credit from household net income tree.
+
+## [0.725.0] - 2024-04-05 00:05:29
+
+### Added
+
+- Arizona Cash Assistance (TANF) child eligibility.
+
+## [0.724.0] - 2024-04-04 23:53:10
+
+### Added
+
+- Enable the Kentucky income tax model and include in the net income tree.
+
+## [0.723.0] - 2024-04-04 22:18:15
+
+### Added
+
+- Enable the Michigan income tax model and include in the net income tree.
+
+## [0.722.2] - 2024-04-04 16:13:37
+
+### Fixed
+
+- Adjust the widow filing status to surviving spouse in the gov.contrib.biden.budget_2025.capital_gains.income_threshold file.
+
+## [0.722.1] - 2024-04-04 03:29:14
+
+### Fixed
+
+- Kentucky tax unit itemizes deductions logic.
+
+## [0.722.0] - 2024-04-02 21:40:33
+
+### Added
+
+- Rename widow to surviving spouse.
+
+## [0.721.1] - 2024-04-02 15:56:44
+
+### Fixed
+
+- Fix Virginia low-income credit calculation.
+- Fix Virginia itemized deduction calculation.
+
+## [0.721.0] - 2024-04-01 22:07:43
+
+### Added
+
+- 2023 Kansas Tax Rules.
+
+## [0.720.0] - 2024-04-01 00:10:04
+
+### Added
+
+- Delaware 2023 income tax parameters.
+
+## [0.719.1] - 2024-04-01 00:02:30
+
+### Fixed
+
+- Add taxable social security to the list of Delaware exclusions.
+
+## [0.719.0] - 2024-03-31 22:26:12
+
+### Added
+
+- 2023 New Mexico Tax Rules.
+
+## [0.718.0] - 2024-03-29 22:09:50
+
+### Added
+
+- Include the ky_cdcc to the net income tree.
+
+## [0.717.0] - 2024-03-27 17:03:02
+
+### Added
+
+- Oregon 2023 parameter values.
+
+## [0.716.2] - 2024-03-26 21:46:35
+
+### Fixed
+
+- Change LA EZ-SAVE to monthly and lag the poverty line.
+
+## [0.716.1] - 2024-03-26 14:30:48
+
+### Fixed
+
+- Adjust the Michigan household resources to exclude QBI.
+
+## [0.716.0] - 2024-03-25 22:46:18
+
+### Added
+
+- Enable the Connecticut income tax model and include in the net income tree.
+
+## [0.715.0] - 2024-03-25 18:10:17
+
+### Added
+
+- Biden reform to tax LTCG and qualified dividends as ordinary income for high-income filers.
+
+## [0.714.0] - 2024-03-25 15:54:18
+
+### Fixed
+
+- Maryland earned income tax credit.
+
+## [0.713.3] - 2024-03-25 15:14:47
+
+### Fixed
+
+- Bug in filing status logic causing tax unit spouses to appear in separate returns.
+
+## [0.713.2] - 2024-03-24 03:38:17
+
+### Added
+
+- Longer history and source for Social Security benefits target.
+
+## [0.713.1] - 2024-03-22 18:58:11
+
+## [0.713.0] - 2024-03-22 11:49:33
+
+## [0.712.0] - 2024-03-22 01:44:40
+
+### Added
+
+- Enable Ohio income tax model and include in the net income tree.
+
+## [0.711.6] - 2024-03-20 22:53:10
+
+### Fixed
+
+- Add the Connecticut EITC to the list of refundable credits.
+
+## [0.711.5] - 2024-03-20 21:17:09
+
+### Fixed
+
+- Reduce the itemized deductions in Idaho by the SALT amount.
+
+## [0.711.4] - 2024-03-20 19:56:27
+
+### Fixed
+
+- Make Arkansas childcare expense credit non-refundable.
+
+## [0.711.3] - 2024-03-20 19:07:38
+
+### Fixed
+
+- Adjust the Kentucky pension income exclusion to not count pension twice.
+
+## [0.711.2] - 2024-03-20 13:32:09
+
+### Fixed
+
+- Among joint filers, limit the Delaware elderly or disabled exclusion to filers with both head and spouse eligible.
+
+## [0.711.1] - 2024-03-20 04:55:01
+
+### Fixed
+
+- Include the self employment deduction to the list of Michigan additions.
+- Remove the self employment income from the list of household resources.
+- Subtract the above the line deductions from the household resources.
+
+## [0.711.0] - 2024-03-20 00:27:02
+
+### Added
+
+- 2023 North Carolina Tax Rules.
+
+## [0.710.1] - 2024-03-19 14:53:23
+
+### Added
+
+- 2023 Michigan Tax Rules.
+
+## [0.710.0] - 2024-03-19 14:27:50
+
+### Added
+
+- Calibration of returns by filing status.
+
+## [0.709.0] - 2024-03-19 03:00:29
+
+### Added
+
+- 2023 Connecticut tax rules.
+
+## [0.708.8] - 2024-03-19 02:52:32
+
+### Fixed
+
+- Allocate the Montana dependent exemptions optimally if the filing status is married filing separately.
+
+## [0.708.7] - 2024-03-18 18:52:52
+
+### Fixed
+
+- Adjust the Calworks reimbursement variables to represent monthly values.
+
+## [0.708.6] - 2024-03-17 18:48:55
+
+### Fixed
+
+- Remove the qualified business income deduction from the retirement credit eligibility calculation.
+
+## [0.708.5] - 2024-03-17 15:13:36
+
+### Added
+
+- A defined_for statement to ca_calworks_child_care for faster execution.
+- Intermediate variables for state child care subsidies.
+
+## [0.708.4] - 2024-03-16 03:02:17
+
+### Changed
+
+- Break filing_status out into multiple variables.
+- Simplify and test reform to repeal head of household filing status.
+
+## [0.708.3] - 2024-03-15 21:19:02
+
+### Fixed
+
+- Adjust the remove_head_of_household reform to reflect the new filing_status.py logic.
+
+## [0.708.2] - 2024-03-15 14:48:22
+
+### Fixed
+
+- Remove long-term capital gains from the list of Virginia subtractions.
+
+## [0.708.1] - 2024-03-15 14:43:16
+
+### Added
+
+- PSL_catalog.json.
+
 ## [0.708.0] - 2024-03-15 13:29:27
 
 ### Added
@@ -7846,6 +8107,50 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.727.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.727.0...0.727.1
+[0.727.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.726.0...0.727.0
+[0.726.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.725.0...0.726.0
+[0.725.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.724.0...0.725.0
+[0.724.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.723.0...0.724.0
+[0.723.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.722.2...0.723.0
+[0.722.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.722.1...0.722.2
+[0.722.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.722.0...0.722.1
+[0.722.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.721.1...0.722.0
+[0.721.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.721.0...0.721.1
+[0.721.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.720.0...0.721.0
+[0.720.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.719.1...0.720.0
+[0.719.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.719.0...0.719.1
+[0.719.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.718.0...0.719.0
+[0.718.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.717.0...0.718.0
+[0.717.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.716.2...0.717.0
+[0.716.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.716.1...0.716.2
+[0.716.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.716.0...0.716.1
+[0.716.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.715.0...0.716.0
+[0.715.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.714.0...0.715.0
+[0.714.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.713.3...0.714.0
+[0.713.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.713.2...0.713.3
+[0.713.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.713.1...0.713.2
+[0.713.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.713.0...0.713.1
+[0.713.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.712.0...0.713.0
+[0.712.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.711.6...0.712.0
+[0.711.6]: https://github.com/PolicyEngine/policyengine-us/compare/0.711.5...0.711.6
+[0.711.5]: https://github.com/PolicyEngine/policyengine-us/compare/0.711.4...0.711.5
+[0.711.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.711.3...0.711.4
+[0.711.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.711.2...0.711.3
+[0.711.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.711.1...0.711.2
+[0.711.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.711.0...0.711.1
+[0.711.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.710.1...0.711.0
+[0.710.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.710.0...0.710.1
+[0.710.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.709.0...0.710.0
+[0.709.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.708.8...0.709.0
+[0.708.8]: https://github.com/PolicyEngine/policyengine-us/compare/0.708.7...0.708.8
+[0.708.7]: https://github.com/PolicyEngine/policyengine-us/compare/0.708.6...0.708.7
+[0.708.6]: https://github.com/PolicyEngine/policyengine-us/compare/0.708.5...0.708.6
+[0.708.5]: https://github.com/PolicyEngine/policyengine-us/compare/0.708.4...0.708.5
+[0.708.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.708.3...0.708.4
+[0.708.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.708.2...0.708.3
+[0.708.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.708.1...0.708.2
+[0.708.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.708.0...0.708.1
 [0.708.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.707.0...0.708.0
 [0.707.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.706.0...0.707.0
 [0.706.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.705.0...0.706.0

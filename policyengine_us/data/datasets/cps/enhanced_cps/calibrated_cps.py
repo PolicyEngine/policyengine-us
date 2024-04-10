@@ -1,7 +1,6 @@
 from policyengine_us.data.storage import STORAGE_FOLDER
 from policyengine_core.data import Dataset
 from .puf_extended_cps import PUFExtendedCPS_2022
-import pandas as pd
 
 
 class CalibratedDataset(Dataset):
