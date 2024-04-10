@@ -1,0 +1,20 @@
+description: The Colorado General Assembly reduces the family affordability tax credit starting at this adjusted gross income threshold, for younger children, based on filing status.
+metadata:
+  period: year
+  unit: currency-USD
+  label: Colorado General Assembly family affordability tax credit younger reduction start
+  breakdown:
+    - filing_status
+  reference:
+    - title: Colorado General Assembly House Bill 24-1311 Family Affordability Tax Credit
+      href: https://leg.colorado.gov/bills/hb24-1311
+SINGLE:
+  2015-01-01: 15_000
+HEAD_OF_HOUSEHOLD:
+  2015-01-01: 15_000
+JOINT:
+  2015-01-01: 25_000
+SURVIVING_SPOUSE:
+  2015-01-01: 15_000
+SEPARATE:
+  2015-01-01: 15_000 
