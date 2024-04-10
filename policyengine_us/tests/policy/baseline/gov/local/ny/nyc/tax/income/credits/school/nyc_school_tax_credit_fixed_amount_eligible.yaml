@@ -1,0 +1,47 @@
+- name: Single person is eligible with income not over $250,000.
+  period: 2022
+  input:
+    nyc_school_credit_income: 250_000
+    filing_status: SINGLE
+    tax_unit_children: 0
+  output:
+    # NYC School Tax Instructions
+    # See Page 25 for fixed amount
+    # https://www.tax.ny.gov/pdf/2022/printable-pdfs/inc/it201i-2022.pdf
+    nyc_school_tax_credit_fixed_amount_eligible: true
+
+- name: Single person is not eligible with income over $250,000.
+  period: 2022
+  input:
+    nyc_school_credit_income: 250_001
+    filing_status: SINGLE
+    tax_unit_children: 0
+  output:
+    # NYC School Tax Instructions
+    # See Page 25 for fixed amount
+    # https://www.tax.ny.gov/pdf/2022/printable-pdfs/inc/it201i-2022.pdf
+    nyc_school_tax_credit_fixed_amount_eligible: false
+
+- name: Joint filers are eligible for income not over $250,000.
+  period: 2022
+  input:
+    nyc_school_credit_income: 250_000
+    filing_status: JOINT
+    tax_unit_children: 0
+  output:
+    # NYC School Tax Instructions
+    # See Page 25 for fixed amount
+    # https://www.tax.ny.gov/pdf/2022/printable-pdfs/inc/it201i-2022.pdf
+    nyc_school_tax_credit_fixed_amount_eligible: true
+
+- name: Joint filers are not eligible with income over $250,000.
+  period: 2022
+  input:
+    nyc_school_credit_income: 250_001
+    filing_status: JOINT
+    tax_unit_children: 0
+  output:
+    # NYC School Tax Instructions
+    # See Page 25 for fixed amount
+    # https://www.tax.ny.gov/pdf/2022/printable-pdfs/inc/it201i-2022.pdf
+    nyc_school_tax_credit_fixed_amount_eligible: false
