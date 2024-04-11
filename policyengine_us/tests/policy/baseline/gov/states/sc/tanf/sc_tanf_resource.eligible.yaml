@@ -36,3 +36,15 @@
   output:
     sc_tanf_resource_eligible: false
     
+- name: Case 4, household of 2 adults and no vehicle, below the limit.
+  period: 2022
+  input:
+    state_code: SC
+    spm_unit_cash_assets: 2_000
+    retirement_distributions: 0
+    household_vehicles_value: 0
+    household_vehicles_owned: 0
+    spm_unit_count_adults: 2 
+  output:
+    sc_tanf_resource_eligible: true
+    
