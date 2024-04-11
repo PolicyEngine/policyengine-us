@@ -20,7 +20,7 @@ class snap_utility_allowance_type(Variable):
     definition_period = MONTH
 
     def formula(spm_unit, period, parameters):
-        distinct_utility_bills = spm_unit.household(
+        distinct_utility_bills = spm_unit(
             "count_distinct_utility_expenses", period
         )
         lua = parameters(
@@ -30,7 +30,7 @@ class snap_utility_allowance_type(Variable):
         lua_is_defined = lua.active[region].astype(bool)
         return select(
             [
-                spm_unit.household("has_heating_cooling_expense", period),
+                spm_unit("has_heating_cooling_expense", period),
                 lua_is_defined & (distinct_utility_bills >= 2),
                 distinct_utility_bills > 0,
             ],

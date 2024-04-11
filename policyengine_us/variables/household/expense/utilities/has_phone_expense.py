@@ -3,7 +3,7 @@ from policyengine_us.model_api import *
 
 class has_phone_expense(Variable):
     value_type = bool
-    entity = Household
+    entity = SPMUnit
     label = "Has phone costs"
     definition_period = YEAR
 

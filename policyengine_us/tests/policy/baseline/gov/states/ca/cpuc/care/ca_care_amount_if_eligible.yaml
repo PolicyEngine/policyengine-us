@@ -15,12 +15,13 @@
     spm_units:
       spm_unit_1:
         members: [p1]
+        pre_subsidy_electricity_expense: 100
       spm_unit_2:
         members: [p2]
+        pre_subsidy_electricity_expense: 100
     households:
       household:
         members: [p1, p2]
-        pre_subsidy_electricity_expense: 200
         state_code: CA
   output:
     ca_care_amount_if_eligible: 65

@@ -3,7 +3,7 @@ from policyengine_us.model_api import *
 
 class utility_expense(Variable):
     value_type = float
-    entity = Household
+    entity = SPMUnit
     label = "Utility expenses"
     unit = USD
     definition_period = YEAR

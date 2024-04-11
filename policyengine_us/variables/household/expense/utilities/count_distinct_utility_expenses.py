@@ -3,12 +3,12 @@ from policyengine_us.model_api import *
 
 class count_distinct_utility_expenses(Variable):
     value_type = int
-    entity = Household
+    entity = SPMUnit
     label = "Number of distinct utility expenses"
     documentation = "The number of distinct utility expenses."
     definition_period = YEAR
 
-    def formula(household, period, parameters):
+    def formula(spm_unit, period, parameters):
         UTILITIES = [
             "heating_cooling",
             # Use pre-subsidy expenses to avoid circular references
@@ -22,7 +22,7 @@ class count_distinct_utility_expenses(Variable):
         ]
         return sum(
             [
-                household(variable + "_expense", period) > 0
+                spm_unit(variable + "_expense", period) > 0
                 for variable in UTILITIES
             ]
         )
