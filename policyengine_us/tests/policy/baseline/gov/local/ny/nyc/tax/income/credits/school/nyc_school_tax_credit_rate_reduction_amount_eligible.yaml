@@ -8,7 +8,7 @@
     # NYC School Tax Instructions
     # See Page 25 for fixed amount
     # https://www.tax.ny.gov/pdf/2022/printable-pdfs/inc/it201i-2022.pdf
-    nyc_school_tax_credit_fixed_amount_eligible: true
+    nyc_school_tax_credit_rate_reduction_amount_eligible: true
 
 - name: Single person is not eligible with income over $500,000.
   period: 2022
@@ -20,7 +20,7 @@
     # NYC School Tax Instructions
     # See Page 25 for fixed amount
     # https://www.tax.ny.gov/pdf/2022/printable-pdfs/inc/it201i-2022.pdf
-    nyc_school_tax_credit_fixed_amount_eligible: false
+    nyc_school_tax_credit_rate_reduction_amount_eligible: false
 
 - name: Joint filers are eligible for income not over $500,000.
   period: 2022
@@ -32,7 +32,7 @@
     # NYC School Tax Instructions
     # See Page 25 for fixed amount
     # https://www.tax.ny.gov/pdf/2022/printable-pdfs/inc/it201i-2022.pdf
-    nyc_school_tax_credit_fixed_amount_eligible: true
+    nyc_school_tax_credit_rate_reduction_amount_eligible: true
 
 - name: Joint filers are not eligible with income over $500,000.
   period: 2022
@@ -44,7 +44,7 @@
     # NYC School Tax Instructions
     # See Page 25 for fixed amount
     # https://www.tax.ny.gov/pdf/2022/printable-pdfs/inc/it201i-2022.pdf
-    nyc_school_tax_credit_fixed_amount_eligible: false
+    nyc_school_tax_credit_rate_reduction_amount_eligible: false
 
 - name: Filers outside of NYC are not eligible.
   period: 2022
@@ -56,4 +56,4 @@
     # NYC School Tax Instructions
     # See Page 25 for fixed amount
     # https://www.tax.ny.gov/pdf/2022/printable-pdfs/inc/it201i-2022.pdf
-    nyc_school_tax_credit_fixed_amount_eligible: false
+    nyc_school_tax_credit_rate_reduction_amount_eligible: false
