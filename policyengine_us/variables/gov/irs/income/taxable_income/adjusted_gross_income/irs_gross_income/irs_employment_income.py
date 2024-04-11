@@ -9,5 +9,7 @@ class irs_employment_income(Variable):
     documentation = "Employment income less payroll deductions."
     definition_period = YEAR
 
-    adds = ["employment_income"]
-    subtracts = ["pre_tax_contributions"]
+    def formula(person, period, parameters):
+        employment_income = person("employment_income", period)
+        pre_tax_contributions = person("pre_tax_contributions", period)
+        return max_(0, employment_income - pre_tax_contributions)
