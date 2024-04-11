@@ -15,5 +15,7 @@ class ar_taxable_capital_gains(Variable):
         p = parameters(
             period
         ).gov.states.ar.tax.income.gross_income.capital_gains
-        taxable_long_term_capital_gains = long_term_capital_gains * (1 - p.exempt_rate)
+        taxable_long_term_capital_gains = long_term_capital_gains * (
+            1 - p.exempt_rate
+        )
         return short_term_capital_gains + taxable_long_term_capital_gains
