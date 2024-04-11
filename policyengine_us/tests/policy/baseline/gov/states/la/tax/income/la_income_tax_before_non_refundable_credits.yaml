@@ -26,7 +26,7 @@
   input:
     la_taxable_income: 20_000
     state_code: LA
-    filing_status: WIDOW
+    filing_status: SURVIVING_SPOUSE
   output:
     # Output from the LA taxtables
     la_income_tax_before_non_refundable_credits: 220
@@ -39,7 +39,7 @@
     # In the tax table, 5 exemptions equal to an exemption amount of 12,000
     la_exemptions: 12_000
     state_code: LA
-    filing_status: WIDOW
+    filing_status: SURVIVING_SPOUSE
   output:
     # Output from the LA taxtables
     la_income_tax_before_non_refundable_credits: 160

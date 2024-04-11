@@ -31,6 +31,11 @@ filtered:
       - Colorado Old Age Pension
       - Colorado State Supplement
       - Colorado TANF
+    CT:
+      modelled:
+      - Connecticut state income tax
+      not_modelled:
+      - Connecticut TANF
     DC:
       modelled:
       - District of Columbia income tax
@@ -69,6 +74,11 @@ filtered:
       - Kansas state income tax
       not_modelled:
       - Kansas TANF
+    KY:
+      modelled:
+      - Kentucky state income tax
+      not_modelled:
+      - Kentucky TANF
     MA:
       modelled:
       - Massachusetts state income tax
@@ -79,6 +89,11 @@ filtered:
       - Maryland state income tax
       not_modelled:
       - Maryland TANF
+    MI:
+      modelled:
+      - Michigan state income tax
+      not_modelled:
+      - Michigan TANF
     MN:
       modelled:
       - Minnesota state income tax
