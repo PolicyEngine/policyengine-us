@@ -1,11 +1,4 @@
-- name: Calculation 
-  period: 2022
-  input:
-    state_code: AR
-    ar_agi: 2_000
-    ar_deduction_indiv: 500
-  output:
-    ar_taxable_income_indiv: 1_500
+v
 
 - name: AGI Capped at 0 
   period: 2022
