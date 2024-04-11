@@ -13,13 +13,15 @@ def create_co_family_affordability_credit() -> Reform:
 
         def formula(person, period, parameters):
             age = person("age", period)
-            depenent = person("is_child_dependent", period)
+            dependent = person("is_child_dependent", period)
             p = parameters(
                 period
             ).gov.contrib.co_general_assembly.family_affordability_credit
-            base_amount = p.amount.calc(age) * depenent
+            base_amount = p.amount.calc(age) * dependent
             agi = person.tax_unit("adjusted_gross_income", period)
             filing_status = person.tax_unit("filing_status", period)
+            # The phase-out amounts, start points, and increments are differently defined 
+            # for younger and older dependents.
             phase_out_start = where(
                 age < p.amount.thresholds[1],
                 p.reduction.younger.start[filing_status],
@@ -77,7 +79,7 @@ def create_co_family_affordability_credit_reform(
         period
     ).gov.contrib.co_general_assembly.family_affordability_credit
 
-    if p.amount.amounts[0] > 0 | p.amount.amounts[1] > 0:
+    if (p.amount.amounts[0] > 0) | (p.amount.amounts[1] > 0):
         return create_co_family_affordability_credit()
 
     else:
