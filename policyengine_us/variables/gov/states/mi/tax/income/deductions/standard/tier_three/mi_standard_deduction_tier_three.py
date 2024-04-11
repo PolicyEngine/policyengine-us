@@ -15,12 +15,10 @@ class mi_standard_deduction_tier_three(Variable):
     defined_for = "mi_standard_deduction_tier_three_eligible"
 
     def formula(tax_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.mi.tax.income.deductions.standard.tier_three
+        p = parameters(period).gov.states.mi.tax.income.deductions
         # Line 1: enter base amount, based on filing status
         filing_status = tax_unit("filing_status", period)
-        base_amount = p.amount[filing_status]
+        base_amount = p.standard.tier_three.amount[filing_status]
 
         # Exemption(s), taxable Social Security benefits,
         # military compensation (including retirement benefits),
@@ -45,4 +43,16 @@ class mi_standard_deduction_tier_three(Variable):
         )
         total_reductions = total_person_reductions + mi_personal_exemptions
         # Line 6: subtract line 5 from line 1
-        return max_(base_amount - total_reductions, 0)
+        standard_deduction_tier_three = max_(base_amount - total_reductions, 0)
+        # Worksheet 3.3: Retirement and Pension Benefits Subtraction for Section D of Form 4884
+        if p.retirement_benefits.expanded.availability:
+            expanded_retirement_benefits_deduction = tax_unit(
+                "mi_expanded_retirement_benefits_deduction",
+                period,
+            )
+            return max_(
+                standard_deduction_tier_three,
+                expanded_retirement_benefits_deduction,
+            )
+        else:
+            return standard_deduction_tier_three
