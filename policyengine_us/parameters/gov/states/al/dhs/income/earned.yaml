@@ -1,0 +1,13 @@
+description: AL TANF counts these income sources as earned income.
+values:
+  2022-01-01: 
+    - employment_income
+    - self_employment_income
+    - earned_income_tax_credit
+    deductions:
+      deduction_percentage: 0.20  # 20%
+metadata:
+  unit: list
+  reference:
+    title: Alabama Department of Human Resources | TANF Policy Manual | § 3210.C. Earned Income
+    href: https://dhr.alabama.gov/wp-content/uploads/2022/04/Appendix-N-Sec-2-Public-Assistance-Payment-Manual.pdf
