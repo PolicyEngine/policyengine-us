@@ -11,7 +11,7 @@ class al_tanf_financial_eligibility(Variable):
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.al.dhs.tanf
-        income = add(spm_unit, period, p.income_sources)
+        income = spm_unit("al_tanf_applicable_income", period)
         # A certain percentage of incocome is disregarded based on the care
         # and childcare expenses
         care_and_child_care_expenses = add(

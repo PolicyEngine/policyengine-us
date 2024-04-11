@@ -1,0 +1,31 @@
+- name: Three people ineligible
+  period: 2022
+  input:
+    al_tanf_eligible: false
+    spm_unit_size: 3
+  output:
+    al_tanf: 0
+
+- name: Two people household, eligible
+  period: 2022
+  input:
+    al_tanf_eligible: true
+    spm_unit_size: 2
+  output:
+    al_tanf: 3_648
+
+- name: One person, eligible
+  period: 2022
+  input:
+    al_tanf_eligible: true
+    spm_unit_size: 1
+  output:
+    al_tanf: 3_168
+
+- name: Twenty people, capped at 16
+  period: 2022
+  input:
+    al_tanf_eligible: true
+    spm_unit_size: 20
+  output:
+    al_tanf: 11_616

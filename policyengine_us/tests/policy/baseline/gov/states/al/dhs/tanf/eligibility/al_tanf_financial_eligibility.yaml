@@ -11,6 +11,18 @@
   output:
     al_tanf_financial_eligibility: true
 
+- name: One person with $1,000 of applicable income
+  period: 2022
+  input:
+    state_code: AL
+    childcare_expenses: 0
+    care_expenses: 0 
+  spm_unit_size: 1
+    al_tanf_applicable_income: 3_167
+  output:
+    al_tanf_financial_eligibility: true
+
+
 - name: One person ineligible
   period: 2022
   input:
