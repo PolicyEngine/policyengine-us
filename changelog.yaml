@@ -6917,3 +6917,14 @@
     - Adjust the Delaware elderly or disabled exclusion to represent the case where
       married couples file jointly.
   date: 2024-04-09 02:59:20
+- bump: patch
+  changes:
+    fixed:
+    - Floor irs_employment_income at zero.
+  date: 2024-04-11 02:29:17
+- bump: minor
+  changes:
+    added:
+    - Separate out eligibility variables for NYC STC to allow for more flexible policy
+      modeling.
+  date: 2024-04-11 12:31:09
