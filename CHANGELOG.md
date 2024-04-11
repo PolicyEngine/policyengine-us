@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.728.0] - 2024-04-11 12:31:09
+
+### Added
+
+- Separate out eligibility variables for NYC STC to allow for more flexible policy modeling.
+
 ## [0.727.2] - 2024-04-11 02:29:17
 
 ### Fixed
@@ -8113,6 +8119,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.728.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.727.2...0.728.0
 [0.727.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.727.1...0.727.2
 [0.727.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.727.0...0.727.1
 [0.727.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.726.0...0.727.0
