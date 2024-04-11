@@ -6928,3 +6928,8 @@
     - Separate out eligibility variables for NYC STC to allow for more flexible policy
       modeling.
   date: 2024-04-11 12:31:09
+- bump: minor
+  changes:
+    added:
+    - Allocate the Delaware itemized deductions based on federal AGI.
+  date: 2024-04-11 17:53:36
