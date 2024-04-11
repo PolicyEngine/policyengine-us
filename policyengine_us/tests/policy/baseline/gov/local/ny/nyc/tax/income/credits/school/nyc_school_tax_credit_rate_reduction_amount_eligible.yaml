@@ -2,7 +2,7 @@
   period: 2022
   input:
     in_nyc: true
-    nyc_school_credit_income: 500_000
+    nyc_taxable_income: 500_000
     filing_status: SINGLE
   output:
     # NYC School Tax Instructions
@@ -14,7 +14,7 @@
   period: 2022
   input:
     in_nyc: true
-    nyc_school_credit_income: 500_001
+    nyc_taxable_income: 500_001
     filing_status: SINGLE
   output:
     # NYC School Tax Instructions
@@ -26,7 +26,7 @@
   period: 2022
   input:
     in_nyc: true
-    nyc_school_credit_income: 500_000
+    nyc_taxable_income: 500_000
     filing_status: JOINT
   output:
     # NYC School Tax Instructions
@@ -38,7 +38,7 @@
   period: 2022
   input:
     in_nyc: true
-    nyc_school_credit_income: 500_001
+    nyc_taxable_income: 500_001
     filing_status: JOINT
   output:
     # NYC School Tax Instructions
@@ -50,7 +50,7 @@
   period: 2022
   input:
     in_nyc: false
-    nyc_school_credit_income: 0
+    nyc_taxable_income: 0
     filing_status: JOINT
   output:
     # NYC School Tax Instructions
