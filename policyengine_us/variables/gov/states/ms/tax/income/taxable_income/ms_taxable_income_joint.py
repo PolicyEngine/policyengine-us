@@ -18,10 +18,11 @@ class ms_taxable_income_joint(Variable):
         ms_taxable_income_joint_head_or_spouse = person(
             "ms_taxable_income_joint_head_or_spouse", period
         )
-        if_combined_income = min(ms_taxable_income_joint_head_or_spouse) >= 0
+        any_spouse_negative_income = person.tax_unit.any(
+            ms_taxable_income_joint_head_or_spouse < 0
+        )
 
         # 1. both head and spouse have positive taxable income (includes 0)
-        income_not_combined = ms_taxable_income_joint_head_or_spouse
 
         # 2. at least one head or spouse has negative taxable income
         # assign total net_income to tax unit head
@@ -32,4 +33,8 @@ class ms_taxable_income_joint(Variable):
             is_head[i] * total_taxable_income for i in range(len(is_head))
         ]
 
-        return where(if_combined_income, income_not_combined, income_combined)
+        return where(
+            any_spouse_negative_income,
+            income_combined,
+            ms_taxable_income_joint_head_or_spouse,
+        )
