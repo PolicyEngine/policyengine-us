@@ -1,0 +1,8 @@
+- name: 50% of long-term capital gains are taxed
+  period: 2022
+  input:
+    state_code: AR
+    long_term_capital_gains: 2_000
+    short_term_capital_gains: 500
+  output:
+    ar_taxable_capital_gains: 1_500
