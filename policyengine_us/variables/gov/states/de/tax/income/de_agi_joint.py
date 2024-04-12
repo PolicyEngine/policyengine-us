@@ -16,7 +16,5 @@ class de_agi_joint(Variable):
         )
         net_income = max_(pre_exclusions_agi - indv_exclusions, 0)
         # allocate any dependent gross income to tax unit head
-        is_dependent = person("is_tax_unit_dependent", period)
-        sum_dep_net_income = person.tax_unit.sum(is_dependent * net_income)
         is_head = person("is_tax_unit_head", period)
-        return ~is_dependent * net_income + is_head * sum_dep_net_income
+        return person.tax_unit.sum(net_income) * is_head
