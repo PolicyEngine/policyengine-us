@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.731.0] - 2024-04-12 14:55:04
+
+### Added
+
+- 2023 NYC tax rules.
+
 ## [0.730.1] - 2024-04-11 20:46:15
 
 ### Fixed
@@ -8143,6 +8149,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.731.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.730.1...0.731.0
 [0.730.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.730.0...0.730.1
 [0.730.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.729.1...0.730.0
 [0.729.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.729.0...0.729.1
