@@ -1,0 +1,10 @@
+description: Montana expires the 2% capital gains tax credit from 2024 and replace it with capital gains tax rate.
+metadata:
+  unit: bool
+  label: Montana capital gains tax rate active status
+  reference:
+    - title: 2023 Montana Form 2 Individual Income Tax Instructions
+      href: https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2023/12/Form_2_2023_Instructions.pdf#page=6
+values:
+  0000-01-01: false
+  2024-01-01: true

@@ -10,7 +10,10 @@ class mt_income_tax_before_non_refundable_credits_indiv(Variable):
     defined_for = StateCode.MT
 
     def formula(person, period, parameters):
-        income = person("mt_taxable_income_indiv", period)
+        income = person("mt_taxable_income_indiv", period) - person(
+            "long_term_capital_gains", period
+        )
+        capital_gains_tax = person("mt_capital_gains_tax_indiv", period)
         p = parameters(period).gov.states.mt.tax.income.main
         filing_status = person.tax_unit(
             "state_filing_status_if_married_filing_separately_on_same_return",
@@ -25,9 +28,9 @@ class mt_income_tax_before_non_refundable_credits_indiv(Variable):
                 filing_status == status.SURVIVING_SPOUSE,
             ],
             [
-                p.single.calc(income),
-                p.head_of_household.calc(income),
-                p.separate.calc(income),
-                p.widow.calc(income),
+                p.single.calc(income) + capital_gains_tax,
+                p.head_of_household.calc(income) + capital_gains_tax,
+                p.separate.calc(income) + capital_gains_tax,
+                p.widow.calc(income) + capital_gains_tax,
             ],
         )

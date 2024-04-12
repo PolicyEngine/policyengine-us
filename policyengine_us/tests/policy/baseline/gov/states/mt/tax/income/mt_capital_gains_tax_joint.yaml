@@ -1,0 +1,71 @@
+- name: Calculation for a joint person
+  period: 2024
+  input:
+    people: 
+      person1:
+        long_term_capital_gains: 5_000
+        mt_taxable_income_joint: 80_000
+        is_tax_unit_head: true
+      person2:
+        long_term_capital_gains: 3_000
+        mt_taxable_income_joint: 20_000
+        is_tax_unit_head: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_capital_gains_tax_joint: [295, 0]
+
+
+- name: Calculation of a head of household
+  period: 2024
+  input:
+  # The taxable income will always default to 0 for the non-head 
+    people: 
+      person1:
+        long_term_capital_gains: 5_000
+        mt_taxable_income_joint: 30_000
+        is_tax_unit_head: true
+      person2:
+        long_term_capital_gains: 8_000
+        mt_taxable_income_joint: 35_000
+        is_tax_unit_head: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_capital_gains_tax_joint: [436.75, 0]
+
+- name: Calculation of a head of household before 2024
+  period: 2021
+  input:
+  # The taxable income will always default to 0 for the non-head 
+    people: 
+      person1:
+        long_term_capital_gains: 5_000
+        mt_taxable_income_joint: 30_000
+        is_tax_unit_head: true
+      person2:
+        long_term_capital_gains: 8_000
+        mt_taxable_income_joint: 35_000
+        is_tax_unit_head: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_capital_gains_tax_joint: [0, 0]
