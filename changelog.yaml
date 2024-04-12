@@ -6966,3 +6966,8 @@
     - 2023 Iowa alternative minimum tax logic.
     - Disable married filing separately on the same return in Iowa past 2023.
   date: 2024-04-12 20:25:53
+- bump: patch
+  changes:
+    fixed:
+    - Delaware _joint AGI and deductions variable attribution.
+  date: 2024-04-12 20:36:40
