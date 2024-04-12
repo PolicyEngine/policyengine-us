@@ -51,15 +51,11 @@ def create_co_family_affordability_credit() -> Reform:
         defined_for = StateCode.CO
 
         def formula(tax_unit, period, parameters):
-            old_credits = add(
-                tax_unit,
-                period,
-                parameters(period).gov.states.co.tax.income.credits.refundable,
-            )
-            family_affordability_credit = add(
-                tax_unit, period, ["co_family_affordability_credit"]
-            )
-            return old_credits + family_affordability_credit
+            old_credits = parameters(
+                period
+            ).gov.states.co.tax.income.credits.refundable
+            all_credits = old_credits + ["co_family_affordability_credit"]
+            return add(tax_unit, period, all_credits)
 
     class reform(Reform):
         def apply(self):
