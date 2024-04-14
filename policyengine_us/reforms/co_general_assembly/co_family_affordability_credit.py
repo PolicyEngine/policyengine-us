@@ -22,19 +22,19 @@ def create_co_family_affordability_credit() -> Reform:
             filing_status = person.tax_unit("filing_status", period)
             # The phase-out amounts, start points, and increments are differently defined
             # for younger and older dependents.
-            young_child_age_limit = age < p.amount.thresholds[1]
+            young_child = age < p.amount.thresholds[1]
             phase_out_start = where(
-                young_child_age_limit,
+                young_child,
                 p.reduction.younger.start[filing_status],
                 p.reduction.older.start[filing_status],
             )
             phase_out_amount = where(
-                young_child_age_limit,
+                young_child,
                 p.reduction.younger.amount,
                 p.reduction.older.amount,
             )
             phase_out_increment = where(
-                young_child_age_limit,
+                young_child,
                 p.reduction.younger.increment,
                 p.reduction.older.increment,
             )
