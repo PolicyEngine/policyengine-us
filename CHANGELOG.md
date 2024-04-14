@@ -5,6 +5,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.736.0] - 2024-04-14 21:21:29
+
+### Added
+
+- 2023 New Hampshire tax rules.
+
+## [0.735.0] - 2024-04-14 20:10:18
+
+### Added
+
+- Colorado HB24-1311 Family Affordability Tax Credit.
+
+## [0.734.1] - 2024-04-14 17:20:33
+
+### Fixed
+
+- Delaware itemized deduction decision logic.
+
+## [0.734.0] - 2024-04-13 17:39:21
+
+### Added
+
+- Adjust the NY Empire State Child Credit to take into account the full ctc amounts.
+
 ## [0.733.1] - 2024-04-12 20:36:40
 
 ### Fixed
@@ -8170,6 +8194,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.736.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.735.0...0.736.0
+[0.735.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.734.1...0.735.0
+[0.734.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.734.0...0.734.1
+[0.734.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.733.1...0.734.0
 [0.733.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.733.0...0.733.1
 [0.733.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.732.0...0.733.0
 [0.732.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.731.0...0.732.0
