@@ -5,6 +5,8 @@ metadata:
   threshold_unit: currency-USD  # federal AGI
   amount_unit: /1
   reference:
+    - title: Code of the District of Columbia § 47–1806.06
+      href: https://code.dccouncil.gov/us/dc/council/code/sections/47-1806.06
     - title: 2021 Form D-40 Booklet
       href: https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/52926_D-40_12.21.21_Final_Rev011122.pdf#page=49
     - title: 2022 Form D-40 Booklet
@@ -25,8 +27,6 @@ brackets:
     amount:
       2021-01-01: 0.05
   - threshold:
-      2021-01-01: 56_200
-      2022-01-01: 57_600
       values:
         2021-01-01: 56_200
         2022-01-01: 57_600

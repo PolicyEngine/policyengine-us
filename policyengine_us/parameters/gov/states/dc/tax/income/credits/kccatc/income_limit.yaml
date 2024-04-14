@@ -5,7 +5,11 @@ metadata:
   breakdown:
     - filing_status
   period: year
-  uprating: gov.irs.uprating
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 100
   reference:
     - title: Code of the District of Columbia § 47–1806.15(d)(5)
       href: https://code.dccouncil.gov/us/dc/council/code/sections/47-1806.15#(d)(5)
