@@ -1,0 +1,68 @@
+- name: disability payments are over the cap,and the reduced income is positive
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        total_disability_payments: 6_000
+      person2:
+        is_tax_unit_spouse: true
+        total_disability_payments: 4_000
+        age: 65
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        adjusted_gross_income: 30_000
+        tax_unit_taxable_social_security: 6_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DC
+  output:
+    dc_disability_exclusion: 200
+
+- name: disability payments are over the cap, and the reduced income is negative
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        total_disability_payments: 7_000
+      person2:
+        is_tax_unit_spouse: true
+        total_disability_payments: 6_000
+        age: 65
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        adjusted_gross_income: 20_000
+        tax_unit_taxable_social_security: 6_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DC
+  output:
+    dc_disability_exclusion: 10_400
+
+- name: disability payments are under the cap, and the reduced income is negative
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        total_disability_payments: 4_000
+      person2:
+        is_tax_unit_spouse: true
+        total_disability_payments: 3_000
+        age: 65
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        adjusted_gross_income: 20_000
+        tax_unit_taxable_social_security: 6_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DC
+  output:
+    dc_disability_exclusion: 7_000
