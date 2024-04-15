@@ -7,7 +7,10 @@ class dc_snap_temporary_local_benefit(Variable):
     definition_period = MONTH
     documentation = "DC temporary SNAP benefit amount"
     label = "DC temporary local SNAP benefit amount"
-    reference = "https://dhs.dc.gov/page/give-snap-raise-heres-what-expect"
+    reference = (
+        "https://dhs.dc.gov/page/give-snap-raise-heres-what-expect",
+        "https://code.dccouncil.gov/us/dc/council/laws/24-301",
+    )
     unit = USD
     defined_for = StateCode.DC
 
