@@ -7,6 +7,8 @@ values:
     - health_insurance_premiums
     # HSA contributions can be either through pre-tax.
     - health_savings_account_payroll_contributions
+    - traditional_403b_contributions
+    - roth_403b_contributions
 metadata:
   label: Pre-tax contributions
   unit: list
