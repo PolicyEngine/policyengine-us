@@ -15,11 +15,11 @@ class ms_taxable_income_joint(Variable):
 
     def formula(person, period, parameters):
         # MS allowes negative taxable income when married couple file jointly
-        ms_taxable_income_joint_head_or_spouse = person(
-            "ms_taxable_income_joint_head_or_spouse", period
+        ms_unadjusted_taxable_income_joint = person(
+            "ms_unadjusted_taxable_income_joint", period
         )
         any_spouse_negative_income = person.tax_unit.any(
-            ms_taxable_income_joint_head_or_spouse < 0
+            ms_unadjusted_taxable_income_joint < 0
         )
 
         # 1. both head and spouse have positive taxable income (includes 0)
@@ -27,14 +27,17 @@ class ms_taxable_income_joint(Variable):
         # 2. at least one head or spouse has negative taxable income
         # assign total net_income to tax unit head
         is_head = person("is_tax_unit_head", period)
-        total_taxable_income = sum(ms_taxable_income_joint_head_or_spouse)
+        total_taxable_income_attributed_to_head = sum(
+            ms_unadjusted_taxable_income_joint
+        )
 
         income_combined = [
-            is_head[i] * total_taxable_income for i in range(len(is_head))
+            is_head[i] * total_taxable_income_attributed_to_head
+            for i in range(len(is_head))
         ]
 
         return where(
             any_spouse_negative_income,
             income_combined,
-            ms_taxable_income_joint_head_or_spouse,
+            ms_unadjusted_taxable_income_joint,
         )

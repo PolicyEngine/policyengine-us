@@ -3,10 +3,10 @@
   input:
     people:
       head:
-        ms_taxable_income_joint_head_or_spouse: 500
+        ms_unadjusted_taxable_income_joint: 500
         is_tax_unit_head: true
       spouse:
-        ms_taxable_income_joint_head_or_spouse: 300
+        ms_unadjusted_taxable_income_joint: 300
         is_tax_unit_head: false
     tax_units:
       tax_unit:
@@ -26,10 +26,10 @@
   input:
     people:
       head:
-        ms_taxable_income_joint_head_or_spouse: -100
+        ms_unadjusted_taxable_income_joint: -100
         is_tax_unit_head: true
       spouse:
-        ms_taxable_income_joint_head_or_spouse: 300
+        ms_unadjusted_taxable_income_joint: 300
         is_tax_unit_head: false
     tax_units:
       tax_unit:

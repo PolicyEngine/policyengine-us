@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ms_taxable_income_joint_head_or_spouse(Variable):
+class ms_unadjusted_taxable_income_joint(Variable):
     value_type = float
     entity = Person
     label = "Mississippi taxable income for head or spouse when married couple file jointly"
