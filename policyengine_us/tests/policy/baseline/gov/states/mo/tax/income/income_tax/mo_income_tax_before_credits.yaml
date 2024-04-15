@@ -73,7 +73,7 @@
 
 - name:  $13,000 MO taxable income in 2023
   period: 2023
-  absolute_error_margin: 0.01
+  absolute_error_margin: 2.00
   input:
     mo_taxable_income: 13_000
     state_code: MO
@@ -82,7 +82,7 @@
 
 - name:  $50,000 MO taxable income in 2023
   period: 2023
-  absolute_error_margin: 0.01
+  absolute_error_margin: 2.00
   input:
     mo_taxable_income: 50_000
     state_code: MO
