@@ -14,7 +14,6 @@ class ms_unadjusted_taxable_income_joint(Variable):
     defined_for = StateCode.MS
 
     def formula(person, period, parameters):
-        is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         agi = person("ms_agi", period)
 
         deductions_and_exemptions = add(
@@ -22,5 +21,5 @@ class ms_unadjusted_taxable_income_joint(Variable):
             period,
             ["ms_deductions_joint", "ms_total_exemptions_joint"],
         )
-        # MS allowes negative taxable income
-        return is_head_or_spouse * (agi - deductions_and_exemptions)
+        # MS allows for negative taxable income
+        return agi - deductions_and_exemptions

@@ -27,17 +27,12 @@ class ms_taxable_income_joint(Variable):
         # 2. at least one head or spouse has negative taxable income
         # assign total net_income to tax unit head
         is_head = person("is_tax_unit_head", period)
-        total_taxable_income_attributed_to_head = sum(
-            ms_unadjusted_taxable_income_joint
+
+        total_taxable_income_attributed_to_head = (
+            person.tax_unit.sum(ms_unadjusted_taxable_income_joint) * is_head
         )
-
-        income_combined = [
-            is_head[i] * total_taxable_income_attributed_to_head
-            for i in range(len(is_head))
-        ]
-
         return where(
             any_spouse_negative_income,
-            income_combined,
+            total_taxable_income_attributed_to_head,
             ms_unadjusted_taxable_income_joint,
         )
