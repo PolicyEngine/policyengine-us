@@ -4,7 +4,7 @@
     filing_status: SEPARATE
     de_elderly_or_disabled_income_exclusion_eligible_person: true
   output:
-    de_elderly_or_disabled_income_exclusion: 2_000
+    de_elderly_or_disabled_income_exclusion_joint: 2_000
 
 - name: Ineligible individual exclusion
   period: 2023
@@ -12,7 +12,7 @@
     filing_status: SEPARATE
     de_elderly_or_disabled_income_exclusion_eligible_person: false
   output:
-    de_elderly_or_disabled_income_exclusion: 0
+    de_elderly_or_disabled_income_exclusion_joint: 0
 
 - name: Joint filing status with two eligible people
   period: 2023
@@ -33,7 +33,7 @@
         members: [person1, person2]
         state_code: DE
   output:
-    de_elderly_or_disabled_income_exclusion: [2_000, 2_000]
+    de_elderly_or_disabled_income_exclusion_joint: [2_000, 2_000]
 
 - name: Joint filing status with one eligible person
   period: 2023
@@ -54,7 +54,7 @@
         members: [person1, person2]
         state_code: DE
   output:
-    de_elderly_or_disabled_income_exclusion: [0, 0]
+    de_elderly_or_disabled_income_exclusion_joint: [0, 0]
 
 - name: Joint filing status with two eligible people
   period: 2023
@@ -78,7 +78,7 @@
         members: [person1, person2, person3]
         state_code: DE
   output:
-    de_elderly_or_disabled_income_exclusion: [2_000, 2_000, 0]
+    de_elderly_or_disabled_income_exclusion_joint: [2_000, 2_000, 0]
 
 - name: Head of household filing status with one eligible person
   period: 2023
@@ -99,4 +99,4 @@
         members: [person1, person2]
         state_code: DE
   output:
-    de_elderly_or_disabled_income_exclusion: [2_000, 0]
+    de_elderly_or_disabled_income_exclusion_joint: [2_000, 0]
