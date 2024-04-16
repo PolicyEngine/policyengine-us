@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class vt_agi_additions(Variable):
+class vt_additions(Variable):
     value_type = float
     entity = TaxUnit
     label = "Vermont AGI additions"
