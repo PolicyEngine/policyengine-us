@@ -11,12 +11,15 @@ class az_tanf_earned_income(Variable):
     def formula(spm_unit, period, parameters):
         # Earned income of the spm unit
         income = add(spm_unit, period, ["earned_income"])
-        person = spm_unit.members
         # Determine the expense discount
         p = parameters(period).gov.states.az.hhs.tanf.eligibility.income.earned
+        # Yearly subtracted income disregard
+        yearly_flat_discount = p.flat * MONTHS_IN_YEAR
         # Income after subtracting constant value and certain percentage
-        after_subtracted_income = income - p.flat * MONTHS_IN_YEAR
+        after_subtracted_income = max_(income - yearly_flat_discount, 0)
         after_discounted_income = after_subtracted_income * (1 - p.percentage)
-        #Calculate countable earned income by further subtracting earned income disregard 
-        countable_earned_income = max_(after_discounted_income - 'az_hhs_tanf_earned_income_disregard',0)
-        return countable_earned_income
+        # Calculate countable earned income by further subtracting earned income disregard
+        earned_income_disregard = spm_unit(
+            "az_hhs_tanf_earned_income_disregard", period
+        )
+        return max_(after_discounted_income - earned_income_disregard, 0)

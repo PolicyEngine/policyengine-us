@@ -9,7 +9,9 @@ class az_hhs_tanf_earned_income_disregard(Variable):
     defined_for = StateCode.AZ
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.states.az.hhs.tanf.eligibility.income.earned.care_expenses
+        p = parameters(
+            period
+        ).gov.states.az.hhs.tanf.eligibility.income.earned.care_expenses
         # Get the age of the child(children) and the disabled adult(s)
         person = spm_unit.members
         age = person("age", period)

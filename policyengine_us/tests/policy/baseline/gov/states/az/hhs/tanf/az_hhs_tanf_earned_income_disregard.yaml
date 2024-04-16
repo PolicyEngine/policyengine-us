@@ -189,3 +189,27 @@
         state_code: AZ
   output:
     az_hhs_tanf_earned_income_disregard: 4_200
+
+- name: Both adults are not eligible for the cash assistance program
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 22
+        az_tanf_eligible_child: false
+        is_disabled: false
+      person2:
+        age: 25
+        az_tanf_eligible_child: false
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 1_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    az_hhs_tanf_earned_income_disregard: 0
