@@ -3,6 +3,7 @@
   input:
     de_itemized_deductions_indv: 5_100
     de_standard_deduction_indv: 5_000
+    de_tax_unit_itemizes: true
     state_code: DE
   output:
     de_deduction_indv: 5_100
@@ -12,6 +13,7 @@
   input:
     de_itemized_deductions_indv: 5_000
     de_standard_deduction_indv: 5_200
+    de_tax_unit_itemizes: false
     state_code: DE
   output:
     de_deduction_indv: 5_200
