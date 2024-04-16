@@ -1,0 +1,125 @@
+- name: Single abled mother household with 0 earned income does not qualify for UP-TANF program.
+  period: 2023
+  input:
+    people:
+      parent:
+        earned_income: 0
+        is_mother: true
+        is_disabled: false
+      child:
+        earned_income: 0
+        is_child: true
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: VA
+  output:
+    va_up_tanf_eligibility: false
+
+- name: Abled mother and disabled father household with 0 earned income does not qualify for UP-TANF program.
+  period: 2023
+  input:
+    people:
+      parent1:
+        earned_income: 0
+        is_mother: true
+        is_disabled: false
+      parent2:
+        earned_income: 0
+        is_father: true
+        is_disabled: true
+      child:
+        earned_income: 0
+        is_child: true
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: VA
+  output:
+    va_up_tanf_eligibility: false
+
+- name: Two Abled parents household with 100 earned income does not qualify for UP-TANF program.
+  period: 2023
+  input:
+    people:
+      parent1:
+        earned_income: 100
+        is_mother: true
+        is_disabled: false
+      parent2:
+        earned_income: 0
+        is_father: true
+        is_disabled: false
+      child:
+        earned_income: 0
+        is_child: true
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: VA
+  output:
+    va_up_tanf_eligibility: false
+
+- name: Two Abled parents household with 0 earned income qualifies for UP-TANF program.
+  period: 2023
+  input:
+    people:
+      parent1:
+        earned_income: 0
+        is_mother: true
+        is_disabled: false
+      parent2:
+        earned_income: 0
+        is_father: true
+        is_disabled: false
+      child:
+        earned_income: 0
+        is_child: true
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: VA
+  output:
+    va_up_tanf_eligibility: true
+
+- name: Only consider household in VA.
+  period: 2023
+  input:
+    people:
+      parent1:
+        earned_income: 0
+        is_mother: true
+        is_disabled: false
+      parent2:
+        earned_income: 0
+        is_father: true
+        is_disabled: false
+      child:
+        earned_income: 0
+        is_child: true
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: AZ
+  output:
+    va_up_tanf_eligibility: false

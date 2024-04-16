@@ -1,0 +1,32 @@
+description: VA provides up to this amount to families living in group II localities in TANF, by household size.
+
+metadata:
+  unit: currency-USD
+  period: month
+  breakdown:
+    - range(1, 11)
+  label: VA TANF assistance for group II localities
+  reference:
+    - title: VA TANF Guidance Manual - Need and Amount of Assistance 
+      href: https://www.dss.virginia.gov/files/division/bp/tanf/manual/300_11-20.pdf#page=25
+
+1: 
+  2020-07-01: 197
+2: 
+  2020-07-01: 289 
+3: 
+  2020-07-01: 363 
+4: 
+  2020-07-01: 434
+5: 
+  2020-07-01: 513 
+6: 
+  2020-07-01: 573 
+7: 
+  2020-07-01: 640 
+8: 
+  2020-07-01: 715
+9: 
+  2020-07-01: 779
+10: 
+  2020-07-01: 848
