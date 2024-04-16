@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.741.0] - 2024-04-16 18:05:04
+
+### Added
+
+- 2023 Oklahoma Tax Rules.
+
 ## [0.740.0] - 2024-04-16 17:55:38
 
 ### Added
@@ -8216,6 +8222,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.741.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.740.0...0.741.0
 [0.740.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.739.0...0.740.0
 [0.739.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.738.0...0.739.0
 [0.738.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.737.1...0.738.0
