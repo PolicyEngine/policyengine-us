@@ -1,0 +1,17 @@
+- name: Itemized deductions over ID salt
+  period: 2023
+  input:
+    id_salt_deduction: 1_000
+    itemized_taxable_income_deductions: 1_600
+    state_code: ID
+  output:
+    id_itemized_deductions: 600
+
+- name: Itemized deductions under ID salt
+  period: 2023
+  input:
+    id_salt_deduction: 2_000
+    itemized_taxable_income_deductions: 1_600
+    state_code: ID
+  output:
+    id_itemized_deductions: 0

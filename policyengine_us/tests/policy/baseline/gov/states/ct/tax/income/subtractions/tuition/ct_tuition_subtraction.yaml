@@ -39,7 +39,7 @@
   input:
     state_code: CT
     qualified_tuition_expenses: 1_000
-    filing_status: WIDOW
+    filing_status: SURVIVING_SPOUSE
   output:
     ct_tuition_subtraction: 1_000
 
@@ -48,7 +48,7 @@
   input:
     state_code: CT
     qualified_tuition_expenses: 7_000
-    filing_status: WIDOW
+    filing_status: SURVIVING_SPOUSE
   output:
     ct_tuition_subtraction: 5_000
 

@@ -1,0 +1,28 @@
+description: Connecticut reduces the property tax credit for filers with state adjusted gross income above this amount, based on filing status.
+metadata:
+  label: Connecticut Property Tax Credit reduction start
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  reference:
+  - title: Connecticut General Statutes, Chapter 229, Sec. 12-704c, (c) (1) (D)
+    href: https://www.cga.ct.gov/current/pub/chap_229.htm#sec_12-704c
+  - title: 2023 Form CT-1040 Connecticut Resident Income Tax Return Instructions
+    href: https://portal.ct.gov/-/media/DRS/Forms/2023/Income/2023-CT-1040-Instructions_1223.pdf#page=26
+  - title: 2022 Form CT-1040 Connecticut Resident Income Tax Return Instructions
+    href: https://portal.ct.gov/-/media/DRS/Forms/2022/Income/2022-CT-1040-Instructions_1222.pdf#page=26
+  - title: 2021 Form CT-1040 Connecticut Resident Income Tax Return Instructions
+    href: https://portal.ct.gov/-/media/DRS/Forms/2021/Income/CT-1040-Online-Booklet_1221.pdf#page=30 
+
+
+SINGLE:
+  2021-01-01: 49_500
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 54_500
+JOINT:
+  2021-01-01: 70_500
+SURVIVING_SPOUSE:
+  2021-01-01: 70_500
+SEPARATE:
+  2021-01-01: 35_250
