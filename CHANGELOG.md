@@ -5,6 +5,73 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.739.0] - 2024-04-16 00:34:07
+
+### Added
+
+- 2023 DC Tax Rules.
+
+## [0.738.0] - 2024-04-16 00:09:30
+
+## [0.737.1] - 2024-04-15 19:08:43
+
+## [0.737.0] - 2024-04-15 14:20:43
+
+### Added
+
+- Enable remaining state income tax models and include in the net income tree.
+
+## [0.736.0] - 2024-04-14 21:21:29
+
+### Added
+
+- 2023 New Hampshire tax rules.
+
+## [0.735.0] - 2024-04-14 20:10:18
+
+### Added
+
+- Colorado HB24-1311 Family Affordability Tax Credit.
+
+## [0.734.1] - 2024-04-14 17:20:33
+
+### Fixed
+
+- Delaware itemized deduction decision logic.
+
+## [0.734.0] - 2024-04-13 17:39:21
+
+### Added
+
+- Adjust the NY Empire State Child Credit to take into account the full ctc amounts.
+
+## [0.733.1] - 2024-04-12 20:36:40
+
+### Fixed
+
+- Delaware _joint AGI and deductions variable attribution.
+
+## [0.733.0] - 2024-04-12 20:25:53
+
+### Added
+
+- Iowa 2023-2026 tax rates.
+- 2023 Iowa pension income exclusion logic.
+- 2023 Iowa alternative minimum tax logic.
+- Disable married filing separately on the same return in Iowa past 2023.
+
+## [0.732.0] - 2024-04-12 20:20:03
+
+### Added
+
+- Include Maine to the list of modelled policies.
+
+## [0.731.0] - 2024-04-12 14:55:04
+
+### Added
+
+- 2023 NYC tax rules.
+
 ## [0.730.1] - 2024-04-11 20:46:15
 
 ### Fixed
@@ -8143,6 +8210,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.739.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.738.0...0.739.0
+[0.738.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.737.1...0.738.0
+[0.737.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.737.0...0.737.1
+[0.737.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.736.0...0.737.0
+[0.736.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.735.0...0.736.0
+[0.735.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.734.1...0.735.0
+[0.734.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.734.0...0.734.1
+[0.734.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.733.1...0.734.0
+[0.733.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.733.0...0.733.1
+[0.733.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.732.0...0.733.0
+[0.732.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.731.0...0.732.0
+[0.731.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.730.1...0.731.0
 [0.730.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.730.0...0.730.1
 [0.730.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.729.1...0.730.0
 [0.729.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.729.0...0.729.1

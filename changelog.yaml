@@ -6948,3 +6948,66 @@
     fixed:
     - Tax only half of long-term capital gains in Arkansas.
   date: 2024-04-11 20:46:15
+- bump: minor
+  changes:
+    added:
+    - 2023 NYC tax rules.
+  date: 2024-04-12 14:55:04
+- bump: minor
+  changes:
+    added:
+    - Include Maine to the list of modelled policies.
+  date: 2024-04-12 20:20:03
+- bump: minor
+  changes:
+    added:
+    - Iowa 2023-2026 tax rates.
+    - 2023 Iowa pension income exclusion logic.
+    - 2023 Iowa alternative minimum tax logic.
+    - Disable married filing separately on the same return in Iowa past 2023.
+  date: 2024-04-12 20:25:53
+- bump: patch
+  changes:
+    fixed:
+    - Delaware _joint AGI and deductions variable attribution.
+  date: 2024-04-12 20:36:40
+- bump: minor
+  changes:
+    added:
+    - Adjust the NY Empire State Child Credit to take into account the full ctc amounts.
+  date: 2024-04-13 17:39:21
+- bump: patch
+  changes:
+    fixed:
+    - Delaware itemized deduction decision logic.
+  date: 2024-04-14 17:20:33
+- bump: minor
+  changes:
+    added:
+    - Colorado HB24-1311 Family Affordability Tax Credit.
+  date: 2024-04-14 20:10:18
+- bump: minor
+  changes:
+    added:
+    - 2023 New Hampshire tax rules.
+  date: 2024-04-14 21:21:29
+- bump: minor
+  changes:
+    added:
+    - Enable remaining state income tax models and include in the net income tree.
+  date: 2024-04-15 14:20:43
+- bump: patch
+  changes:
+    add:
+    - Add Old Age Pension grant standard for 2024
+  date: 2024-04-15 19:08:43
+- bump: minor
+  changes:
+    fixes:
+    - Mississippi taxable income.
+  date: 2024-04-16 00:09:30
+- bump: minor
+  changes:
+    added:
+    - 2023 DC Tax Rules.
+  date: 2024-04-16 00:34:07
