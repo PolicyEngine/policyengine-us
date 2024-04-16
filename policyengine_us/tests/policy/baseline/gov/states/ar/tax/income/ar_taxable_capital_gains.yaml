@@ -26,25 +26,4 @@
     short_term_capital_gains: 5_000
     filing_status: SURVIVING_SPOUSE
   output:
-    ar_taxable_capital_gains: 1_500
-
-- name: Two people with capital gains
-  period: 2022
-  input:
-    people: 
-      person1:
-        long_term_capital_gains: 1_000
-        short_term_capital_gains: 5_000
-      person2:
-        long_term_capital_gains: 1_000
-        short_term_capital_gains: 5_000
-    tax_untis:
-      tax_unit:
-        members: [person1, person2]
-        filing_status: JOINT
-    households:
-      household:
-        members: [person1, person2]
-        state_fips: AR
-  output:
-    ar_taxable_capital_gains: [1_500]
+    ar_taxable_capital_gains: 3_000

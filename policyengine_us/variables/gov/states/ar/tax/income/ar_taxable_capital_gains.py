@@ -25,5 +25,7 @@ class ar_taxable_capital_gains(Variable):
         capital_loss = taxable_capital_gain < 0
         # Taxable capital loss is capped separately
         filing_status = person.tax_unit("filing_status", period)
-        capped_capital_loss = max_(taxable_capital_gain, p.loss_cap[filing_status])
+        capped_capital_loss = max_(
+            taxable_capital_gain, p.loss_cap[filing_status]
+        )
         return where(capital_loss, capped_capital_loss, taxable_capital_gain)
