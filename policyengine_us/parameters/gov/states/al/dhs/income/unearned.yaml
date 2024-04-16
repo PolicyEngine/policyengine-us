@@ -1,4 +1,4 @@
-description: AL TANF counts these income sources as unearned income.
+description: Alabama counts these income sources as unearned income under the TANF program.
 values:
   2020-01-01:
     - veterans_benefits
@@ -7,6 +7,8 @@ values:
     - unemployment_compensation
 metadata:
   unit: list
+  period: year
+  label: Types of Unearned Income for Alabama TANF
   reference:
     title: Alabama Department of Human Resources | TANF Policy Manual |  § 3210.D. Unearned Income
-    href: https://dhr.alabama.gov/wp-content/uploads/2022/04/Appendix-N-Sec-2-Public-Assistance-Payment-Manual.pdf
+    href: https://dhr.alabama.gov/wp-content/uploads/2022/04/Appendix-N-Sec-2-Public-Assistance-Payment-Manual.pdf#page=27
