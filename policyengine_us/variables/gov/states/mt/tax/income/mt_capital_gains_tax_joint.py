@@ -19,7 +19,6 @@ class mt_capital_gains_tax_joint(Variable):
         ).gov.states.mt.tax.income.main.capital_gains_tax_rate
         filing_status = person.tax_unit("filing_status", period)
         difference = p.threshold[filing_status] - nonqualified_income
-        eligible_capital_gains = p.active_status * capital_gains
         total_difference_tax = (
             difference
             * p.rate_below_threshold_income_difference[filing_status]
@@ -32,7 +31,7 @@ class mt_capital_gains_tax_joint(Variable):
         )
         tax_nonqualified_income_below_threshold = where(
             if_capital_gains_less_than_difference,
-            eligible_capital_gains
+            capital_gains
             * p.rate_below_threshold_income_difference[filing_status],
             (
                 total_difference_tax
@@ -40,9 +39,9 @@ class mt_capital_gains_tax_joint(Variable):
                 * p.rate_above_threshold_income_difference[filing_status]
             ),
         )
-        capital_gains_tax = where(
+        capital_gains_tax = p.active_status * where(
             difference < 0,
-            eligible_capital_gains
+            capital_gains
             * p.rate_above_threshold_income_difference[filing_status],
             tax_nonqualified_income_below_threshold,
         )

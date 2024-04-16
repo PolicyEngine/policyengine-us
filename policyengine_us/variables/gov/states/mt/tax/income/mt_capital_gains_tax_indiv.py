@@ -20,7 +20,6 @@ class mt_capital_gains_tax_indiv(Variable):
             "state_filing_status_if_married_filing_separately_on_same_return",
             period,
         )
-        eligible_capital_gains = p.active_status * capital_gains
         difference = p.threshold[filing_status] - nonqualified_income
         total_difference_tax = (
             difference
@@ -34,7 +33,7 @@ class mt_capital_gains_tax_indiv(Variable):
         )
         tax_nonqualified_income_below_threshold = where(
             if_capital_gains_less_than_difference,
-            eligible_capital_gains
+            capital_gains
             * p.rate_below_threshold_income_difference[filing_status],
             (
                 total_difference_tax
@@ -42,9 +41,9 @@ class mt_capital_gains_tax_indiv(Variable):
                 * p.rate_above_threshold_income_difference[filing_status]
             ),
         )
-        return where(
+        return p.active_status * where(
             difference < 0,
-            eligible_capital_gains
+            capital_gains
             * p.rate_above_threshold_income_difference[filing_status],
             tax_nonqualified_income_below_threshold,
         )
