@@ -20,17 +20,20 @@ class mt_income_tax_before_non_refundable_credits_indiv(Variable):
             period,
         )
         status = filing_status.possible_values
-        return select(
-            [
-                filing_status == status.SINGLE,
-                filing_status == status.HEAD_OF_HOUSEHOLD,
-                filing_status == status.SEPARATE,
-                filing_status == status.SURVIVING_SPOUSE,
-            ],
-            [
-                p.single.calc(income) + capital_gains_tax,
-                p.head_of_household.calc(income) + capital_gains_tax,
-                p.separate.calc(income) + capital_gains_tax,
-                p.widow.calc(income) + capital_gains_tax,
-            ],
+        return (
+            select(
+                [
+                    filing_status == status.SINGLE,
+                    filing_status == status.HEAD_OF_HOUSEHOLD,
+                    filing_status == status.SEPARATE,
+                    filing_status == status.SURVIVING_SPOUSE,
+                ],
+                [
+                    p.single.calc(income),
+                    p.head_of_household.calc(income),
+                    p.separate.calc(income),
+                    p.widow.calc(income),
+                ],
+            )
+            + capital_gains_tax
         )
