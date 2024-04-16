@@ -1,8 +1,50 @@
-- name: 50% of long-term capital gains are taxed
+- name: $2,000 of lt and $1,000 of st capital gains
   period: 2022
   input:
     state_code: AR
     long_term_capital_gains: 2_000
-    short_term_capital_gains: 500
+    short_term_capital_gains: 1_000
+    filing_status: SINGLE
   output:
     ar_taxable_capital_gains: 1_500
+
+- name: Only capital loss is capped
+  period: 2022
+  input:
+    state_code: AR
+    long_term_capital_gains: 1_000
+    short_term_capital_gains: 1_000
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    ar_taxable_capital_gains: 1_000
+
+- name: Capital loss is capped 
+  period: 2022
+  input:
+    state_code: AR
+    long_term_capital_gains: 1_000
+    short_term_capital_gains: 5_000
+    filing_status: SURVIVING_SPOUSE
+  output:
+    ar_taxable_capital_gains: 1_500
+
+- name: Two people with capital gains
+  period: 2022
+  input:
+    people: 
+      person1:
+        long_term_capital_gains: 1_000
+        short_term_capital_gains: 5_000
+      person2:
+        long_term_capital_gains: 1_000
+        short_term_capital_gains: 5_000
+    tax_untis:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: AR
+  output:
+    ar_taxable_capital_gains: [1_500]
