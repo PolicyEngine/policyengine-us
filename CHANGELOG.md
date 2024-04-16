@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.739.0] - 2024-04-16 00:34:07
+
+### Added
+
+- 2023 DC Tax Rules.
+
+## [0.738.0] - 2024-04-16 00:09:30
+
+## [0.737.1] - 2024-04-15 19:08:43
+
+## [0.737.0] - 2024-04-15 14:20:43
+
+### Added
+
+- Enable remaining state income tax models and include in the net income tree.
+
 ## [0.736.0] - 2024-04-14 21:21:29
 
 ### Added
@@ -8194,6 +8210,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.739.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.738.0...0.739.0
+[0.738.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.737.1...0.738.0
+[0.737.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.737.0...0.737.1
+[0.737.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.736.0...0.737.0
 [0.736.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.735.0...0.736.0
 [0.735.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.734.1...0.735.0
 [0.734.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.734.0...0.734.1
