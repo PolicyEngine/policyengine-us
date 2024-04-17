@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ut_additions_to_income(Variable):
+class ut_additions(Variable):
     value_type = float
     entity = TaxUnit
     label = "Utah additions to income"

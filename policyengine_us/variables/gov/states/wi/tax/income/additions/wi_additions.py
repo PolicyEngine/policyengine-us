@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class wi_income_additions(Variable):
+class wi_additions(Variable):
     value_type = float
     entity = TaxUnit
-    label = "WI additions to federal adjusted gross income"
+    label = "Wisconsin additions to federal adjusted gross income"
     unit = USD
     definition_period = YEAR
     reference = (
