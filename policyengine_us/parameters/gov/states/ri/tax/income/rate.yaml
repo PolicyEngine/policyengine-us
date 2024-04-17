@@ -6,6 +6,8 @@ metadata:
   period: year
   label: Rhode Island income tax rate
   reference:
+    - title: Rhode Island Tax Rate Schedule - 2023
+      href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2023-11/2023%20Tax%20Rate%20and%20Worksheets_d.pdf#page=1
     - title: Rhode Island Tax Rate Schedule - 2022
       href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-10/2022%20RI%20Tax%20Tables_Complete.pdf#page=1
     - title: Rhode Island Tax Rate Schedule - 2021
@@ -23,7 +25,7 @@ brackets:
         2022-01-01: 68_200
         2023-01-01: 73_450
       metadata:
-        uprating: gov.states.ri.cpi
+        uprating: gov.irs.uprating
     rate:
       2021-01-01: 0.0475
   - threshold:
@@ -32,6 +34,6 @@ brackets:
         2022-01-01: 155_050
         2023-01-01: 166_950
       metadata:
-        uprating: gov.states.ri.cpi
+        uprating: gov.irs.uprating
     rate:
       2021-01-01: 0.0599
