@@ -22,10 +22,12 @@ class ar_taxable_capital_gains(Variable):
         st_capital_gain = max_(0, net_st_capital_gains)
         taxable_capital_gain = st_capital_gain + taxable_capped_net_cap_gain
 
-        capital_loss = taxable_capital_gain < 0
+        taxable_capital_loss = -taxable_capital_gain
+        has_taxable_capital_loss = taxable_capital_loss > 0
         # Taxable capital loss is capped separately
         filing_status = person.tax_unit("filing_status", period)
-        capped_capital_loss = min_(
-            (taxable_capital_gain * (-1)), p.loss_cap[filing_status]
+        loss_cap = p.loss_cap[filing_status]
+        capped_capital_loss = min_(taxable_capital_loss, loss_cap)
+        return where(
+            has_taxable_capital_loss, capped_capital_loss, taxable_capital_gain
         )
-        return where(capital_loss, capped_capital_loss, taxable_capital_gain)
