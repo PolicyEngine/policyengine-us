@@ -1,0 +1,81 @@
+description: Arkansas provides additional tax credit for qualified invididuals
+metadata:
+  threshold_unit: currency-USD
+  amount_unit: currency-USD
+  label: Arkansas additional tax credit
+  period: year
+  reference:
+    - title: Arkansas 2022 Individual Income Tax Forms and Instructions 
+      href: https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2022_AR1000F_and_AR1000NR_Instructions.pdf#page=26
+    - title: Arkansas 2023 Individual Income Tax Forms and Instructions 
+      href: https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2023_AR1000F_and_AR1000NR_Instructions.pdf#page=26
+    - title: Act 1 of the Second Extraordinary Session
+      href: https://www.arkleg.state.ar.us/Home/FTPDocument?path=%2FACTS%2F2021S2%2FPublic%2FACT1.pdf
+    - title: Act 2 of the Second Extraordinary Session
+      href: https://www.arkleg.state.ar.us/Home/FTPDocument?path=%2FACTS%2F2021S2%2FPublic%2FACT2.pdf
+brackets:
+  - threshold:
+      2022-01-01: 0
+      2023-01-01: 0
+    amount:
+      2022-01-01: 60
+  - threshold:
+      2022-01-01: 24301
+      2023-01-01: 25001
+    amount:
+      2022-01-01: 55
+  - threshold:
+      2022-01-01: 24401
+      2023-01-01: 25101
+    amount:
+      2022-01-01: 50
+  - threshold:
+      2022-01-01: 24501
+      2023-01-01: 25201
+    amount:
+      2022-01-01: 45
+  - threshold:
+      2022-01-01: 24601
+      2023-01-01: 25301
+    amount:
+      2022-01-01: 40
+  - threshold:
+      2022-01-01: 24701
+      2023-01-01: 25401
+    amount:
+      2022-01-01: 35
+  - threshold:
+      2022-01-01: 24801
+      2023-01-01: 25501
+    amount:
+      2022-01-01: 30
+  - threshold:
+      2022-01-01: 24901
+      2023-01-01: 25601
+    amount:
+      2022-01-01: 25
+  - threshold:
+      2022-01-01: 25001
+      2023-01-01: 25701
+    amount:
+      2022-01-01: 20
+  - threshold:
+      2022-01-01: 25101
+      2023-01-01: 25801
+    amount:
+      2022-01-01: 15
+  - threshold:
+      2022-01-01: 25201
+      2023-01-01: 25901
+    amount:
+      2022-01-01: 10
+  - threshold:
+      2022-01-01: 25301
+      2023-01-01: 26001
+    amount:
+      2022-01-01: 5
+  - threshold:
+      2022-01-01: 25401
+      2023-01-01: 26101
+    amount:
+      2022-01-01: 0
