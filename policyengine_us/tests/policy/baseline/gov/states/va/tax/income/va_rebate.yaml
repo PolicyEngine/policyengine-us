@@ -1,0 +1,23 @@
+- name: 2023 single rebate
+  period: 2023
+  input:
+    filing_status: SINGLE
+    state_code: VA
+  output:
+    va_rebate: 200
+
+- name: 2023 joint rebate
+  period: 2023
+  input:
+    filing_status: JOINT
+    state_code: VA
+  output:
+    va_rebate: 400
+
+- name: 2022 single rebate
+  period: 2022
+  input:
+    filing_status: SINGLE
+    state_code: VA
+  output:
+    va_rebate: 0
