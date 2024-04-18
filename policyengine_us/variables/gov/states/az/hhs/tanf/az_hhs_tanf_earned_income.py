@@ -20,6 +20,6 @@ class az_tanf_earned_income(Variable):
         after_discounted_income = after_subtracted_income * (1 - p.percentage)
         # Calculate countable earned income by further subtracting earned income disregard
         earned_income_disregard = spm_unit(
-            "az_hhs_tanf_earned_income_disregard", period
+            "az_hhs_tanf_earned_income_care_expense_disregard", period
         )
         return max_(after_discounted_income - earned_income_disregard, 0)
