@@ -26,3 +26,43 @@
     state_fips: 5  # AR
   output:  # AR 1000D form says all short-term capital gains are taxable
     ar_taxable_capital_gains: 800
+
+- name: Long term capital gains are offset by short term gains
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    long_term_capital_gains: 1_000
+    short_term_capital_gains: -800
+    state_fips: 5  # AR
+  output:  
+    ar_taxable_capital_gains: 100
+
+- name: Short term losses are taxed at 50% rate
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    long_term_capital_gains: 0
+    short_term_capital_gains: -800
+    state_fips: 5  # AR
+  output:  
+    ar_taxable_capital_gains: 400
+
+- name: Taxable short term losses are capped at $1,500
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    long_term_capital_gains: 0
+    short_term_capital_gains: -4_000
+    state_fips: 5  # AR
+  output:  
+    ar_taxable_capital_gains: 1_500
+
+- name: Taxable net gains are capped at $1,500
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    long_term_capital_gains: 1_000
+    short_term_capital_gains: -4_000
+    state_fips: 5  # AR
+  output:  
+    ar_taxable_capital_gains: 1_500
