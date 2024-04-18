@@ -1,0 +1,22 @@
+description: DC provides a temporary local SNAP benefit of this percentage of the maximum allotment.
+values:
+  0000-01-01: 0
+  # The legal code set the effective date of 2023-10-01, with no end date,
+  # conditional on funding.
+  # DC DHS documentation indicates that it is funded only from 2024-01-01 to
+  # 2024-10-01.
+  2024-01-01: 0.1
+  2024-10-01: 0
+metadata:
+  period: year
+  unit: /1
+  label: DC temporary local SNAP benefit rate
+  reference:
+    - title: Supplemental Nutrition Assistance Program (SNAP) raise in District of Columbia in 2024.
+      href: https://dhs.dc.gov/page/give-snap-raise-heres-what-expect
+    - title: D.C. Law 24-301. Give SNAP a Raise Amendment Act of 2022. Sec 5084 amending (D.C. Official Code § 4-261.04 (b) ) 
+      href: https://code.dccouncil.gov/us/dc/council/laws/24-301
+    # D.C. Law 24-301 amends § 4–261.04 conditional on addition to an approved budget.
+    # As of 2024-04-16, this has now occurred (per DC DHS), but the legal code does not yet reflect it.
+    - title: Code of the District of Columbia § 4–261.04. Locally funded supplemental benefits.
+      href: https://code.dccouncil.gov/us/dc/council/code/sections/4-261.04

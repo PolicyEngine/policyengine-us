@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ks_agi_additions(Variable):
+class ks_additions(Variable):
     value_type = float
     entity = TaxUnit
     label = "Kansas AGI additions to federal AGI"
