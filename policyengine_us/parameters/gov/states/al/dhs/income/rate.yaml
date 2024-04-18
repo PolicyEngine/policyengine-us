@@ -1,11 +1,10 @@
-description: Rate used for deductions in Alabama's TANF income calculations.
+description:  Alabama multiplies the miscellaneous deduction amount by this rate, under the family assistance program. 
 values:
-  2022-01-01:
-    deduction_percentage: 0.20
+  2022-01-01: 0.20
 metadata:
-  unit: 
+  unit:  /1 
   period: year
-  label: Deduction Rates for Alabama TANF Earned Income
+  label: Alabama TANF deduction rate  
   reference:
     title: Alabama Department of Human Resources | TANF Policy Manual | § 3215.B. Earned Income Deductions
     href: https://dhr.alabama.gov/wp-content/uploads/2022/04/Appendix-N-Sec-2-Public-Assistance-Payment-Manual.pdf#page=30

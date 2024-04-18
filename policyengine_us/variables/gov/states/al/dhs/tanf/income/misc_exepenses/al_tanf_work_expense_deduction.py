@@ -9,10 +9,8 @@ class al_tanf_work_expense_deduction(Variable):
 
 def formula(tax_unit, period, parameters):
         # Using the deduction rates defined in rate.yaml
-        p = parameters(period).dhs.income.rate.values.deduction_percentage
+        p = parameters(period).dhs.income.rate.values
         # Add the misc_deduction variable
         misc_expense = add(tax_unit, period, ["misc_deduction"])
-        # Calculate work expense deductions
-        work_expense_deduction = misc_expense * p
-        
-        return work_expense_deduction
+        # Calculate and return work expense deductions
+        return misc_expense * p.deduction_percentage  

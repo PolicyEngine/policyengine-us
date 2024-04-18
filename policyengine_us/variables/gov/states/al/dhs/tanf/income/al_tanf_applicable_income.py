@@ -9,14 +9,12 @@ class al_tanf_applicable_income(Variable):
 
     def formula(person, period, parameters):
         # Get the total earned income.
-        total_earned_income = person('al_tanf_earned_income', period)
+        total_earned_income = person("al_tanf_earned_income", period)
         # Get work expense deductions
-        work_expense_deduction = person('al_tanf_work_expense_deduction', period)
+        work_expense_deduction = person("al_tanf_work_expense_deduction", period)
         # Calculate earned income after deductions
-        applicable_earned_income = total_earned_income - work_expense_deduction
+        applicable_earned_income = max(total_earned_income - work_expense_deduction, 0)
         # Get the total unearned income.
-        total_unearned_income = person('al_tanf_unearned_income', period)
+        total_unearned_income = person("al_tanf_unearned_income", period)
         # Total applicable income is earned income after deductions plus unearned income
-        total_applicable_income = applicable_earned_income + total_unearned_income
-        
-        return total_applicable_income
+        return applicable_earned_income + total_unearned_income  
