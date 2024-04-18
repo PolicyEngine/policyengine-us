@@ -19,5 +19,9 @@ class snap(Variable):
             return add(
                 spm_unit,
                 period,
-                ["snap_normal_allotment", "snap_emergency_allotment"],
+                [
+                    "snap_normal_allotment",
+                    "snap_emergency_allotment",
+                    "dc_snap_temporary_local_benefit",
+                ],
             )

@@ -2,7 +2,7 @@
   period: 2021
   input:
     adjusted_gross_income_person: [10_000]
-    nj_agi_additions: [1_000]
+    nj_additions: [1_000]
     nj_agi_subtractions: [2_000]
     state_code: NJ
   output:
@@ -12,7 +12,7 @@
   period: 2021
   input:
     adjusted_gross_income: 10_000
-    nj_agi_additions: 1_000
+    nj_additions: 1_000
     nj_agi_subtractions: 20_000
     state_code: NJ
   output:

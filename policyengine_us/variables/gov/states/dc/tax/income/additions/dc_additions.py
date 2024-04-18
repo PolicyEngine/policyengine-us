@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class dc_income_additions(Variable):
+class dc_additions(Variable):
     value_type = float
     entity = Person
     label = "DC additions to federal adjusted gross income"
