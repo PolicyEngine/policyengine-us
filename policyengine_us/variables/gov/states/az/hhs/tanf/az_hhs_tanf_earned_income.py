@@ -22,4 +22,4 @@ class az_tanf_earned_income(Variable):
         earned_income_care_expense_disregard = spm_unit(
             "az_hhs_tanf_earned_income_care_expense_disregard", period
         )
-        return max_(income_percentage_disregard - earned_income_disregard, 0)
+        return max_(income_percentage_disregard - earned_income_care_expense_disregard, 0)
