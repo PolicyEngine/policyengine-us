@@ -214,4 +214,27 @@
   output:
     az_hhs_tanf_earned_income_care_expense_disregard: 0
 
+- name: The household have no care expense even though they have eligible menbers
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 22
+        az_tanf_eligible_child: false
+        is_disabled: true
+      person2:
+        age: 1
+        az_tanf_eligible_child: true
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    az_hhs_tanf_earned_income_care_expense_disregard: 0
 
