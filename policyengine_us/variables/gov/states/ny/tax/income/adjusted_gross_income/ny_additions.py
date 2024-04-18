@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class ny_agi_additions(Variable):
+class ny_additions(Variable):
     value_type = float
     entity = TaxUnit
-    label = "NY AGI additions"
+    label = "New York AGI additions"
     unit = USD
     documentation = "Additions to NY AGI over federal AGI."
     definition_period = YEAR

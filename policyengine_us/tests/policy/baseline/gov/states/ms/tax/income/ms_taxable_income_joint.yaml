@@ -1,40 +1,45 @@
-- name: Calculation 
+- name: Both head and spouse have positive taxable income
   period: 2023
-  input:
-    state_code: MS
-    ms_agi: 2_000
-    ms_deductions_joint: 200
-    ms_total_exemptions: 300
-  output:
-    ms_taxable_income_joint: 1_500
-
-- name: Capped at 0 
-  period: 2023
-  input:
-    state_code: MS
-    ms_agi: 100
-    ms_deductions_joint: 200
-    ms_total_exemptions: 300
-  output:
-    ms_taxable_income_joint: 0
-
-- name: MS prorate fraction unit test 1
-  period: 2021
   input:
     people:
-      person1:
+      head:
+        ms_unadjusted_taxable_income_joint: 500
         is_tax_unit_head: true
-        ms_agi: 5_000
-        ms_deductions_joint: 1_000
-        ms_total_exemptions_joint: 1_500
-      person2:
+      spouse:
+        ms_unadjusted_taxable_income_joint: 300
         is_tax_unit_head: false
-        ms_agi: 3_000
-        ms_deductions_joint: 0
-        ms_total_exemptions_joint: 0
+    tax_units:
+      tax_unit:
+        members: [head,spouse]
+    spm_units:
+      spm_unit:
+        members: [head,spouse]
     households:
       household:
-        members: [person1, person2]
+        members: [head,spouse]
         state_code: MS
   output:
-    ms_taxable_income_joint: [5_500, 0]
+    ms_taxable_income_joint: [500,300]
+
+- name: Only one of head or spouse has positive taxable income
+  period: 2023
+  input:
+    people:
+      head:
+        ms_unadjusted_taxable_income_joint: -100
+        is_tax_unit_head: true
+      spouse:
+        ms_unadjusted_taxable_income_joint: 300
+        is_tax_unit_head: false
+    tax_units:
+      tax_unit:
+        members: [head,spouse]
+    spm_units:
+      spm_unit:
+        members: [head,spouse]
+    households:
+      household:
+        members: [head,spouse]
+        state_code: MS
+  output:
+    ms_taxable_income_joint: [200,0]

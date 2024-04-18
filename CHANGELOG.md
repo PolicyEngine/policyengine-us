@@ -5,6 +5,58 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.742.1] - 2024-04-17 20:43:19
+
+### Fixed
+
+- Consolidated state level additions variables across all state models
+
+## [0.742.0] - 2024-04-17 16:41:57
+
+### Added
+
+- Use CBO projection for personal exemption.
+
+## [0.741.1] - 2024-04-17 16:09:32
+
+### Fixed
+
+- Arkansas capital gains tax calculations.
+
+## [0.741.0] - 2024-04-16 18:05:04
+
+### Added
+
+- 2023 Oklahoma Tax Rules.
+
+## [0.740.0] - 2024-04-16 17:55:38
+
+### Added
+
+- DC "Give SNAP A Raise" program.
+
+## [0.739.0] - 2024-04-16 00:34:07
+
+### Added
+
+- 2023 DC Tax Rules.
+
+## [0.738.0] - 2024-04-16 00:09:30
+
+## [0.737.1] - 2024-04-15 19:08:43
+
+## [0.737.0] - 2024-04-15 14:20:43
+
+### Added
+
+- Enable remaining state income tax models and include in the net income tree.
+
+## [0.736.0] - 2024-04-14 21:21:29
+
+### Added
+
+- 2023 New Hampshire tax rules.
+
 ## [0.735.0] - 2024-04-14 20:10:18
 
 ### Added
@@ -8188,6 +8240,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.742.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.742.0...0.742.1
+[0.742.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.741.1...0.742.0
+[0.741.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.741.0...0.741.1
+[0.741.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.740.0...0.741.0
+[0.740.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.739.0...0.740.0
+[0.739.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.738.0...0.739.0
+[0.738.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.737.1...0.738.0
+[0.737.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.737.0...0.737.1
+[0.737.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.736.0...0.737.0
+[0.736.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.735.0...0.736.0
 [0.735.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.734.1...0.735.0
 [0.734.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.734.0...0.734.1
 [0.734.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.733.1...0.734.0

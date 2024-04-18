@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class ne_agi_additions(Variable):
+class ne_additions(Variable):
     value_type = float
     entity = TaxUnit
-    label = "NE AGI additions to federal AGI"
+    label = "Nebraska AGI additions to federal AGI"
     unit = USD
     definition_period = YEAR
     reference = (
