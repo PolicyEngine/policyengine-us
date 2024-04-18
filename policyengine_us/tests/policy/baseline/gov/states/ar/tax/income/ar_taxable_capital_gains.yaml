@@ -1,4 +1,4 @@
-- name: $2,000 of lt and $1,000 of st capital gains
+- name: $2,000 of lt and $1,000 of st capital gains, 50% of long term gains is taxable
   period: 2022
   input:
     state_code: AR
@@ -6,9 +6,9 @@
     short_term_capital_gains: 1_000
     filing_status: SINGLE
   output:
-    ar_taxable_capital_gains: 1_500
+    ar_taxable_capital_gains: 2_000
 
-- name: Only capital loss is capped
+- name: Only capital loss is capped, 50% of long term gains is taxable
   period: 2022
   input:
     state_code: AR
@@ -16,14 +16,13 @@
     short_term_capital_gains: 1_000
     filing_status: HEAD_OF_HOUSEHOLD
   output:
-    ar_taxable_capital_gains: 1_000
+    ar_taxable_capital_gains: 1_500
 
-- name: Capital loss is capped 
-  period: 2022
+- name: AR taxable capital gains unit test 1
+  absolute_error_margin: 0.01
+  period: 2021
   input:
-    state_code: AR
-    long_term_capital_gains: 1_000
-    short_term_capital_gains: 5_000
-    filing_status: SURVIVING_SPOUSE
-  output:
-    ar_taxable_capital_gains: 3_000
+    short_term_capital_gains: 800
+    state_fips: 5  # AR
+  output:  # AR 1000D form says all short-term capital gains are taxable
+    ar_taxable_capital_gains: 800
