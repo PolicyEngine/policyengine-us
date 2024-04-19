@@ -4,7 +4,6 @@ metadata:
   threshold_unit: currency-USD
   rate_unit: /1
   label: Vermont income tax rates head of household filers
-  uprating: gov.irs.uprating
   reference:
       # Law does not specify inflation adjusted thresholds for each year
     - title: Vermont §5822. Tax on income of individuals, estates, and trusts
@@ -21,20 +20,29 @@ brackets:
     rate:
       2021-01-01: 0.0335
   - threshold:
-      2021-01-01: 54_850
-      2022-01-01: 56_500
-      2023-01-01: 60_850
+      values:
+        2021-01-01: 54_850
+        2022-01-01: 56_500
+        2023-01-01: 60_850
+      metadata:
+        uprating: gov.irs.uprating
     rate:
       2021-01-01: 0.066
   - threshold:
-      2021-01-01: 141_700
-      2022-01-01: 145_950
-      2023-01-01: 157_150
+      values:
+        2021-01-01: 141_700
+        2022-01-01: 145_950
+        2023-01-01: 157_150
+      metadata:
+        uprating: gov.irs.uprating
     rate:
       2021-01-01: 0.076
   - threshold:
-      2021-01-01: 229_450
-      2022-01-01: 236_350
-      2023-01-01: 254_500
+      values:
+        2021-01-01: 229_450
+        2022-01-01: 236_350
+        2023-01-01: 254_500
+     metadata:
+        uprating: gov.irs.uprating
     rate:
       2021-01-01: 0.0875
