@@ -7,13 +7,13 @@
         mt_agi: 10_000
         mt_standard_deduction_joint: 3_000
         mt_itemized_deductions_joint: 1_000
-        mt_exemptions_joint: 500
+        mt_personal_exemptions_joint: 500
       person2:
         is_tax_unit_head: false
         mt_agi: 5_000
         mt_standard_deduction_joint: 100
         mt_itemized_deductions_joint: 1_000
-        mt_exemptions_joint: 3_000
+        mt_personal_exemptions_joint: 3_000
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -33,13 +33,13 @@
         mt_agi: 10_000
         mt_standard_deduction_joint: 0
         mt_itemized_deductions_joint: 1_000
-        mt_exemptions_joint: 500
+        mt_personal_exemptions_joint: 500
       person2:
         is_tax_unit_head: false
         mt_agi: 5_000
         mt_standard_deduction_joint: 100
         mt_itemized_deductions_joint: 1_000
-        mt_exemptions_joint: 3_000
+        mt_personal_exemptions_joint: 3_000
     tax_units:
       tax_unit:
         members: [person1, person2]

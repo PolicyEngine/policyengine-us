@@ -16,7 +16,7 @@ class taxsim_mstat(Variable):
                 filing_status == fstatus.HEAD_OF_HOUSEHOLD,
                 filing_status == fstatus.JOINT,
                 filing_status == fstatus.SEPARATE,
-                filing_status == fstatus.WIDOW,
+                filing_status == fstatus.SURVIVING_SPOUSE,
             ],
             [
                 1,

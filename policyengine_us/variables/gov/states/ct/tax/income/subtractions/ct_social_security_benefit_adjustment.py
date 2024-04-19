@@ -16,7 +16,6 @@ class ct_social_security_benefit_adjustment(Variable):
     defined_for = StateCode.CT
 
     def formula(tax_unit, period, parameters):
-
         filing_status = tax_unit("filing_status", period)
         # Part A
         social_security = tax_unit("tax_unit_social_security", period)

@@ -43,3 +43,31 @@
   output:
     ny_household_credit: 18
 
+- name: Simple ny_household_credit test
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 10
+      person3:
+        age: 11
+      person4:
+        age: 13
+      person5:
+        age: 15
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+        adjusted_gross_income: 20_020
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_fips: 36  # NY
+  output:  # from 2021 NY IT-213 instructions lookup table on page 20
+    ny_household_credit: 100
