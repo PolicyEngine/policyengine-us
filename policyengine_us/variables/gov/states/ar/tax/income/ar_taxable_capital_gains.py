@@ -14,12 +14,10 @@ class ar_taxable_capital_gains(Variable):
         lt_capital_gains = person("long_term_capital_gains", period)
         # Line 4-6 - short term capital loss
         st_capital_gains = person("short_term_capital_gains", period)
-        capital_loss = -st_capital_gains
-        has_capital_loss = capital_loss > 0
+        st_capital_loss = max_(-st_capital_gains, 0)
+        has_capital_loss = st_capital_gains < 0
         # Line 7a - Net capital gain or loss
-        reduced_lt_capital_gain = where(
-            has_capital_loss, lt_capital_gains - capital_loss, lt_capital_gains
-        )
+        reduced_lt_capital_gain = lt_capital_gains - st_capital_loss
         # Line 7b - capped net capital gain
         p = parameters(
             period
