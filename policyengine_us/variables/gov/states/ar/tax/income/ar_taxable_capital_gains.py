@@ -15,29 +15,31 @@ class ar_taxable_capital_gains(Variable):
         # Line 4-6 - short term capital loss
         st_capital_gains = person("short_term_capital_gains", period)
         st_capital_loss = max_(-st_capital_gains, 0)
-        has_capital_loss = st_capital_gains < 0
+        has_st_capital_loss = st_capital_gains < 0
         # Line 7a - Net capital gain or loss
-        reduced_lt_capital_gain = lt_capital_gains - st_capital_loss
+        net_capital_gain = lt_capital_gains - st_capital_loss
         # Line 7b - capped net capital gain
         p = parameters(
             period
         ).gov.states.ar.tax.income.gross_income.capital_gains
-        capped_net_cap_gain = min_(reduced_lt_capital_gain, p.exempt.cap)
+        capped_net_cap_gain = min_(net_capital_gain, p.exempt.cap)
         # Line 8 - Tax rate applied to capital gain
         taxable_capped_net_cap_gain = capped_net_cap_gain * (1 - p.exempt.rate)
 
-        taxable_capital_gain = where(
-            has_capital_loss,
+        taxable_lg_and_st_capital_gain = where(
+            has_st_capital_loss,
             taxable_capped_net_cap_gain,
             st_capital_gains + taxable_capped_net_cap_gain,
         )
 
-        taxable_capital_loss = -taxable_capital_gain
+        taxable_capital_loss = -taxable_lg_and_st_capital_gain
         has_taxable_capital_loss = taxable_capital_loss > 0
         # Taxable capital loss is capped separately
         filing_status = person.tax_unit("filing_status", period)
         loss_cap = p.loss_cap[filing_status]
         capped_capital_loss = min_(taxable_capital_loss, loss_cap)
         return where(
-            has_taxable_capital_loss, capped_capital_loss, taxable_capital_gain
+            has_taxable_capital_loss,
+            capped_capital_loss,
+            taxable_lg_and_st_capital_gain,
         )
