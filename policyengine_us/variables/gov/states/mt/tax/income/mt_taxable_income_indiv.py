@@ -18,7 +18,9 @@ class mt_taxable_income_indiv(Variable):
         exemptions = person("mt_personal_exemptions_indiv", period)
         deductions = person("mt_deductions_indiv", period)
         reduced_agi = max_(mt_agi - exemptions - deductions, 0)
-        dependent_exemptions = person("mt_dependent_exemptions_person", period)
+        dependent_exemptions = add(
+            person.tax_unit, period, ["mt_dependent_exemptions_person"]
+        )
         head = person("is_tax_unit_head", period)
         head_deductions = person.tax_unit(
             "mt_head_dependent_exemptions_indiv", period
