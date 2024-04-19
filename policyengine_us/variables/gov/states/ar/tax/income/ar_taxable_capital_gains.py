@@ -6,6 +6,10 @@ class ar_taxable_capital_gains(Variable):
     entity = Person
     label = "Arkansas taxable capital gains"
     unit = USD
+    reference = (
+        "https://codes.findlaw.com/ar/title-26-taxation/ar-code-sect-26-51-815.html",
+        "https://www.taxformfinder.org/forms/2023/2023-arkansas-form-ar1000d.pdf#page=1",
+    )
     definition_period = YEAR
     defined_for = StateCode.AR
 
@@ -15,7 +19,6 @@ class ar_taxable_capital_gains(Variable):
         # Line 4-6 - short term capital loss
         st_capital_gains = person("short_term_capital_gains", period)
         st_capital_loss = max_(-st_capital_gains, 0)
-        has_st_capital_loss = st_capital_gains < 0
         # Line 7a - Net capital gain or loss
         net_capital_gain = lt_capital_gains - st_capital_loss
         # Line 7b - capped net capital gain
@@ -25,14 +28,14 @@ class ar_taxable_capital_gains(Variable):
         capped_net_cap_gain = min_(net_capital_gain, p.exempt.cap)
         # Line 8 - Tax rate applied to capital gain
         taxable_capped_net_cap_gain = capped_net_cap_gain * (1 - p.exempt.rate)
-
-        taxable_lg_and_st_capital_gain = where(
+        has_st_capital_loss = st_capital_gains < 0
+        taxable_lt_and_st_capital_gain = where(
             has_st_capital_loss,
             taxable_capped_net_cap_gain,
             st_capital_gains + taxable_capped_net_cap_gain,
         )
 
-        taxable_capital_loss = -taxable_lg_and_st_capital_gain
+        taxable_capital_loss = -taxable_lt_and_st_capital_gain
         has_taxable_capital_loss = taxable_capital_loss > 0
         # Taxable capital loss is capped separately
         filing_status = person.tax_unit("filing_status", period)
@@ -41,5 +44,5 @@ class ar_taxable_capital_gains(Variable):
         return where(
             has_taxable_capital_loss,
             capped_capital_loss,
-            taxable_lg_and_st_capital_gain,
+            taxable_lt_and_st_capital_gain,
         )
