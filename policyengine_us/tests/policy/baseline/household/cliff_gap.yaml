@@ -41,6 +41,7 @@
     employment_income: 76_500
     rent: 24_000
     state_fips: 11  # DC
+    dc_snap_temporary_local_benefit: 0
   output:
     adjusted_gross_income: 76_500
     dc_ptc: 1_225
@@ -54,6 +55,7 @@
     employment_income: 76_500 + 1_000
     rent: 24_000
     state_fips: 11  # DC
+    dc_snap_temporary_local_benefit: 0
   output:
     adjusted_gross_income: 76_500 + 1_000
     dc_ptc: 0
@@ -88,6 +90,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
+        dc_snap_temporary_local_benefit: 0
     households:
       household:
         members: [person1, person2]
@@ -114,6 +117,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
+        dc_snap_temporary_local_benefit: 0
     households:
       household:
         members: [person1, person2]
