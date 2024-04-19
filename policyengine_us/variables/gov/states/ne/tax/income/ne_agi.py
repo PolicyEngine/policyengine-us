@@ -12,5 +12,5 @@ class ne_agi(Variable):
         "https://revenue.nebraska.gov/files/doc/2022_Ne_Individual_Income_Tax_Booklet_8-307-2022_final_5.pdf"
     )
     defined_for = StateCode.NE
-    adds = ["adjusted_gross_income", "ne_agi_additions"]
+    adds = ["adjusted_gross_income", "ne_additions"]
     subtracts = ["ne_agi_subtractions"]
