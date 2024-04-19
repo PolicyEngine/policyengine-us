@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class me_agi_additions(Variable):
+class me_additions(Variable):
     value_type = float
     entity = TaxUnit
-    label = "ME AGI additions"
+    label = "Maine AGI additions"
     unit = USD
     documentation = "Additions to ME AGI over federal AGI."
     definition_period = YEAR
