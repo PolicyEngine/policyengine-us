@@ -4,7 +4,6 @@ metadata:
   threshold_unit: currency-USD
   rate_unit: /1
   label: Vermont State income tax rates for joint filers
-  uprating: gov.irs.uprating
   reference:
       # Law does not specify inflation adjusted thresholds for each year
     - title: Vermont §5822. Tax on income of individuals, estates, and trusts
@@ -20,6 +19,8 @@ brackets:
       2021-01-01: 0
     rate:
       2021-01-01: 0.0335
+    metadata:
+
   - threshold:
       2021-01-01: 68_400
       2022-01-01: 70_450
