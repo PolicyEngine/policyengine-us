@@ -153,7 +153,7 @@ thresholds:
           rounding:
             type: nearest
             interval: 50
-    WIDOW:
+    SURVIVING_SPOUSE:
       values:
         2018-01-01: 19_050
         2019-01-01: 19_400
@@ -284,7 +284,7 @@ thresholds:
           rounding:
             type: nearest
             interval: 50
-    WIDOW:
+    SURVIVING_SPOUSE:
       values:
         2018-01-01: 77_400
         2019-01-01: 78_950
@@ -415,7 +415,7 @@ thresholds:
           rounding:
             type: nearest
             interval: 50
-    WIDOW:
+    SURVIVING_SPOUSE:
       values:
         2018-01-01: 165_000
         2019-01-01: 168_400
@@ -546,7 +546,7 @@ thresholds:
           rounding:
             type: nearest
             interval: 50
-    WIDOW:
+    SURVIVING_SPOUSE:
       values:
         2018-01-01: 315_000
         2019-01-01: 321_450
@@ -677,7 +677,7 @@ thresholds:
           rounding:
             type: nearest
             interval: 50
-    WIDOW:
+    SURVIVING_SPOUSE:
       values:
         2018-01-01: 400_000
         2019-01-01: 408_200
@@ -808,7 +808,7 @@ thresholds:
           rounding:
             type: nearest
             interval: 50
-    WIDOW:
+    SURVIVING_SPOUSE:
       values:
         2018-01-01: 600_000
         2019-01-01: 612_350
@@ -847,6 +847,6 @@ thresholds:
     HEAD_OF_HOUSEHOLD:
       values:
         2018-01-01: .inf
-    WIDOW:
+    SURVIVING_SPOUSE:
       values:
         2018-01-01: .inf

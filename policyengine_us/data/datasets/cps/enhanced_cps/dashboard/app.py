@@ -2,7 +2,6 @@ import pandas as pd
 import plotly.express as px
 from policyengine_core.charts import *
 import streamlit as st
-import numpy as np
 from policyengine_us.data.storage import STORAGE_FOLDER
 
 st.set_page_config(layout="wide")
@@ -21,8 +20,8 @@ with right:
 
 df.dataset = df.dataset.replace(
     {
-        "cps_2023": "CPS (2022)",
-        "enhanced_cps_2023": "Enhanced CPS",
+        "cps_2022": "CPS (2022)",
+        "enhanced_cps_2022": "Enhanced CPS",
         "puf_2023": "PUF (2015)",
     }
 )

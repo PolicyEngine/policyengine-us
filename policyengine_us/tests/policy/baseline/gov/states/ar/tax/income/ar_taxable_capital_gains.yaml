@@ -1,0 +1,29 @@
+- name: $2,000 of lt and $1,000 of st capital gains
+  period: 2022
+  input:
+    state_code: AR
+    long_term_capital_gains: 2_000
+    short_term_capital_gains: 1_000
+    filing_status: SINGLE
+  output:
+    ar_taxable_capital_gains: 1_500
+
+- name: Only capital loss is capped
+  period: 2022
+  input:
+    state_code: AR
+    long_term_capital_gains: 1_000
+    short_term_capital_gains: 1_000
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    ar_taxable_capital_gains: 1_000
+
+- name: Capital loss is capped 
+  period: 2022
+  input:
+    state_code: AR
+    long_term_capital_gains: 1_000
+    short_term_capital_gains: 5_000
+    filing_status: SURVIVING_SPOUSE
+  output:
+    ar_taxable_capital_gains: 3_000

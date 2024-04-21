@@ -27,7 +27,7 @@ class md_senior_tax_credit(Variable):
                 filing_status == status.SINGLE,
                 filing_status == status.JOINT,
                 filing_status == status.HEAD_OF_HOUSEHOLD,
-                filing_status == status.WIDOW,
+                filing_status == status.SURVIVING_SPOUSE,
                 filing_status == status.SEPARATE,
             ],
             [

@@ -2,7 +2,7 @@
   period: 2022
   input:
     state_code: DE
-    de_agi: 2_000
+    de_agi_indiv: 2_000
     de_deduction_indv: 500
   output:
     de_taxable_income_indv: 1_500
@@ -11,7 +11,7 @@
   period: 2022
   input:
     state_code: DE
-    de_agi: 300
+    de_agi_indiv: 300
     de_deduction_indv: 500
   output:
     de_taxable_income_indv: 0
