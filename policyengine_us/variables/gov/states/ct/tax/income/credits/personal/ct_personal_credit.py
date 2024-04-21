@@ -10,6 +10,6 @@ class ct_personal_credit(Variable):
     defined_for = StateCode.CT
 
     def formula(tax_unit, period, parameters):
-        tax = tax_unit("ct_income_tax_before_personal_credits", period)
+        tax = tax_unit("ct_income_tax_before_personal_credit", period)
         rate = tax_unit("ct_personal_credit_rate", period)
         return tax * rate
