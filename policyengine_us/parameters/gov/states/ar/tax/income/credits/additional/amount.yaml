@@ -1,8 +1,9 @@
-description: Arkansas provides additional tax credit for qualified invididuals
+description: Arkansas provides an additional tax credit of this amount, based on taxable income.
 metadata:
   threshold_unit: currency-USD
+  type: single_amount
   amount_unit: currency-USD
-  label: Arkansas additional tax credit
+  label: Arkansas additional tax credit amount
   period: year
   reference:
     - title: Arkansas 2022 Individual Income Tax Forms and Instructions 
@@ -13,6 +14,8 @@ metadata:
       href: https://www.arkleg.state.ar.us/Home/FTPDocument?path=%2FACTS%2F2021S2%2FPublic%2FACT1.pdf
     - title: Act 2 of the Second Extraordinary Session
       href: https://www.arkleg.state.ar.us/Home/FTPDocument?path=%2FACTS%2F2021S2%2FPublic%2FACT2.pdf
+    - title: Arkansas Codes 26-51-501. Personal tax credits
+      href: https://advance.lexis.com/documentpage/?pdmfid=1000516&crid=2719ecb8-71fd-4c50-bace-d63d7b801485&config=00JAA2ZjZiM2VhNS0wNTVlLTQ3NzUtYjQzYy0yYWZmODJiODRmMDYKAFBvZENhdGFsb2fXiYCnsel0plIgqpYkw9PK&pddocfullpath=%2Fshared%2Fdocument%2Fstatutes-legislation%2Furn%3AcontentItem%3A649P-H2K0-R03M-P4RB-00008-00&pdcontentcomponentid=234170&pdteaserkey=sr0&pditab=allpods&ecomp=6s65kkk&earg=sr0&prid=6b439d82-575d-4e67-a5b7-0f4dbcc1a0f0
 brackets:
   - threshold:
       2022-01-01: 0
@@ -20,62 +23,62 @@ brackets:
     amount:
       2022-01-01: 60
   - threshold:
-      2022-01-01: 24301
-      2023-01-01: 25001
+      2022-01-01: 24_301
+      2023-01-01: 25_001
     amount:
       2022-01-01: 55
   - threshold:
-      2022-01-01: 24401
-      2023-01-01: 25101
+      2022-01-01: 24_401
+      2023-01-01: 25_101
     amount:
       2022-01-01: 50
   - threshold:
-      2022-01-01: 24501
-      2023-01-01: 25201
+      2022-01-01: 24_501
+      2023-01-01: 25_201
     amount:
       2022-01-01: 45
   - threshold:
-      2022-01-01: 24601
-      2023-01-01: 25301
+      2022-01-01: 24_601
+      2023-01-01: 25_301
     amount:
       2022-01-01: 40
   - threshold:
-      2022-01-01: 24701
-      2023-01-01: 25401
+      2022-01-01: 24_701
+      2023-01-01: 25_401
     amount:
       2022-01-01: 35
   - threshold:
-      2022-01-01: 24801
-      2023-01-01: 25501
+      2022-01-01: 24_801
+      2023-01-01: 25_501
     amount:
       2022-01-01: 30
   - threshold:
-      2022-01-01: 24901
-      2023-01-01: 25601
+      2022-01-01: 24_901
+      2023-01-01: 25_601
     amount:
       2022-01-01: 25
   - threshold:
-      2022-01-01: 25001
-      2023-01-01: 25701
+      2022-01-01: 25_001
+      2023-01-01: 25_701
     amount:
       2022-01-01: 20
   - threshold:
-      2022-01-01: 25101
-      2023-01-01: 25801
+      2022-01-01: 25_101
+      2023-01-01: 25_801
     amount:
       2022-01-01: 15
   - threshold:
-      2022-01-01: 25201
-      2023-01-01: 25901
+      2022-01-01: 25_201
+      2023-01-01: 25_901
     amount:
       2022-01-01: 10
   - threshold:
-      2022-01-01: 25301
-      2023-01-01: 26001
+      2022-01-01: 25_301
+      2023-01-01: 26_001
     amount:
       2022-01-01: 5
   - threshold:
-      2022-01-01: 25401
-      2023-01-01: 26101
+      2022-01-01: 25_401
+      2023-01-01: 26_101
     amount:
       2022-01-01: 0
