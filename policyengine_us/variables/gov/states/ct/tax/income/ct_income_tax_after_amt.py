@@ -13,4 +13,5 @@ class ct_income_tax_after_amt(Variable):
         "https://portal.ct.gov/-/media/DRS/Forms/2022/Income/CT-1040_1222.pdf#page=1"  # line 10
     )
 
-    adds = ["ct_amt", "ct_income_tax_after_personal_credits"]
+    adds = ["ct_amt", "ct_income_tax_before_personal_credit"]
+    subtracts = ["ct_personal_credit"]

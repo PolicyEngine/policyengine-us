@@ -1,0 +1,8 @@
+- name: 40% credit rate with $100 taxes before the credit.
+  period: 2016
+  input:
+    state_code: CT
+    ct_personal_credit_rate: 0.4
+    ct_income_tax_before_personal_credit: 100
+  output:
+    ct_personal_credit: 40
