@@ -25,7 +25,8 @@ class ar_taxable_capital_gains(Variable):
         p = parameters(
             period
         ).gov.states.ar.tax.income.gross_income.capital_gains
-        capped_net_cap_gain = min_(net_capital_gain, p.exempt.cap)
+        exempt_fraction = where(capped_net_cap_gain > 0, p.exempt.rate, 0)
+        capped_net_cap_gain = min_(net_capital_gain, exempt_fraction)
         # Line 8 - Tax rate applied to capital gain
         # 50% exempt if a gain, otherwise entire loss.
         taxable_amount = capped_net_cap_gain * (1 - p.exempt.rate)
