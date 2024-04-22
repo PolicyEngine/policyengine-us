@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.744.1] - 2024-04-22 23:01:24
+
+### Fixed
+
+- Include the Mississippi real estate tax deduction.
+
 ## [0.744.0] - 2024-04-22 21:11:00
 
 ### Added
@@ -8260,6 +8266,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.744.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.744.0...0.744.1
 [0.744.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.743.1...0.744.0
 [0.743.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.743.0...0.743.1
 [0.743.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.742.2...0.743.0
