@@ -217,6 +217,7 @@ class PUF_2022(PUF):
     name = "puf_2022"
     time_period = 2022
     file_path = STORAGE_FOLDER / "puf_2022.h5"
+    url = "release://policyengine/non-public-microdata/puf-2022/puf_2022.h5"
 
 
 class PUF_2015(PUF):
