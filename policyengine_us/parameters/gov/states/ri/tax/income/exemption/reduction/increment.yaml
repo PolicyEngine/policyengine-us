@@ -9,6 +9,11 @@ metadata:
   label: Rhode Island exemption phase out increment
   period: year
   unit: currency-USD
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
   reference:
   # The tax form points to this worksheet: Exemption Worksheet for RI-1040NR, Page 1, line 6)
   - title: Rhode Island Tax Rate Schedule and Worksheet 2022 (Exemption Worksheet line 6)

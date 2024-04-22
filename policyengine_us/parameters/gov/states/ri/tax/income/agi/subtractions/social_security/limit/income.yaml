@@ -6,6 +6,11 @@ metadata:
   unit: currency-USD
   breakdown:
   - filing_status
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
   reference:
   # The tax form points to this worksheet: Social Security modification on Schedule M, line 1s.
   - title: Rhode Island 2021 Modification for Taxable social security income worksheet

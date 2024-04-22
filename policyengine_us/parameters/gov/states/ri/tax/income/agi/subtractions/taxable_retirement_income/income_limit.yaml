@@ -6,6 +6,11 @@ metadata:
   unit: currency-USD
   breakdown:
   - filing_status
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
   reference:
   - title: Rhode Island 2021 RI-1040 Instructions
     href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2021-12/2021-1040r-instructions.pdf#page=8

@@ -4,6 +4,8 @@ metadata:
   threshold_unit: currency-USD
   amount_unit: /1
   label: Rhode Island property tax credit income threshold for one-person households
+  uprating:
+    parameter: gov.irs.uprating
   reference:
     - title: Property Tax Relief R.I. Gen. Laws § 44-33-9 (1)
       href: http://webserver.rilin.state.ri.us/Statutes/TITLE44/44-33/44-33-9.htm
