@@ -8,5 +8,5 @@ class or_agi(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.OR
-    adds = ["adjusted_gross_income", "or_income_additions"]
+    adds = ["adjusted_gross_income", "or_additions"]
     subtracts = ["or_income_subtractions"]
