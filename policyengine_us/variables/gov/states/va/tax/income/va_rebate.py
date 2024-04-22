@@ -15,3 +15,4 @@ class va_rebate(Variable):
         if p.availability:
             filing_status = tax_unit("filing_status", period)
             return p.amount[filing_status]
+        return 0
