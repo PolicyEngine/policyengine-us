@@ -7036,3 +7036,23 @@
     fixed:
     - Consolidated state level additions variables across all state models
   date: 2024-04-17 20:43:19
+- bump: patch
+  changes:
+    fixed:
+    - Remove the Mississippi married filing combined logic.
+  date: 2024-04-19 05:22:04
+- bump: minor
+  changes:
+    fixes:
+    - New York household credit calculation.
+  date: 2024-04-19 05:38:25
+- bump: patch
+  changes:
+    fixed:
+    - Attribute the standard and itemized deductions in Montana to each spouse respectively.
+  date: 2024-04-19 14:52:52
+- bump: minor
+  changes:
+    added:
+    - IRS PUF variables under their original names.
+  date: 2024-04-22 21:11:00
