@@ -45,7 +45,7 @@
     short_term_capital_gains: -800
     state_fips: 5  # AR
   output:  
-    ar_taxable_capital_gains: 400
+    ar_taxable_capital_gains: -400
 
 - name: Taxable short term losses are capped at $1,500
   absolute_error_margin: 0.01
@@ -55,9 +55,9 @@
     short_term_capital_gains: -4_000
     state_fips: 5  # AR
   output:  
-    ar_taxable_capital_gains: 1_500
+    ar_taxable_capital_gains: -1_500
 
-- name: Taxable net gains are capped at $1,500
+- name: Taxable capital losses are capped at $1,500
   absolute_error_margin: 0.01
   period: 2021
   input:
@@ -65,4 +65,4 @@
     short_term_capital_gains: -4_000
     state_fips: 5  # AR
   output:  
-    ar_taxable_capital_gains: 1_500
+    ar_taxable_capital_gains: -1_500

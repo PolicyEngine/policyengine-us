@@ -27,22 +27,12 @@ class ar_taxable_capital_gains(Variable):
         ).gov.states.ar.tax.income.gross_income.capital_gains
         capped_net_cap_gain = min_(net_capital_gain, p.exempt.cap)
         # Line 8 - Tax rate applied to capital gain
-        taxable_capped_net_cap_gain = capped_net_cap_gain * (1 - p.exempt.rate)
-        has_st_capital_loss = st_capital_gains < 0
-        taxable_lt_and_st_capital_gain = where(
-            has_st_capital_loss,
-            taxable_capped_net_cap_gain,
-            st_capital_gains + taxable_capped_net_cap_gain,
-        )
-
-        taxable_capital_loss = -taxable_lt_and_st_capital_gain
-        has_taxable_capital_loss = taxable_capital_loss > 0
-        # Taxable capital loss is capped separately
+        # 50% exempt if a gain, otherwise entire loss.
+        taxable_amount = capped_net_cap_gain * (1 - p.exempt.rate)
+        # Lines 9-11: Arkansas short term capital gain if any.
+        stcg_if_any = max_(st_capital_gains, 0)
+        # Line 12: Total taxable gain or loss. Loss is capped.
+        total_taxable_cap_gain_or_loss = taxable_amount + stcg_if_any
         filing_status = person.tax_unit("filing_status", period)
         loss_cap = p.loss_cap[filing_status]
-        capped_capital_loss = min_(taxable_capital_loss, loss_cap)
-        return where(
-            has_taxable_capital_loss,
-            capped_capital_loss,
-            taxable_lt_and_st_capital_gain,
-        )
+        return max_(-loss_cap, total_taxable_cap_gain_or_loss)
