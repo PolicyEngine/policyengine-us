@@ -5,6 +5,38 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.743.1] - 2024-04-19 14:52:52
+
+### Fixed
+
+- Attribute the standard and itemized deductions in Montana to each spouse respectively.
+
+## [0.743.0] - 2024-04-19 05:38:25
+
+## [0.742.2] - 2024-04-19 05:22:04
+
+### Fixed
+
+- Remove the Mississippi married filing combined logic.
+
+## [0.742.1] - 2024-04-17 20:43:19
+
+### Fixed
+
+- Consolidated state level additions variables across all state models
+
+## [0.742.0] - 2024-04-17 16:41:57
+
+### Added
+
+- Use CBO projection for personal exemption.
+
+## [0.741.1] - 2024-04-17 16:09:32
+
+### Fixed
+
+- Arkansas capital gains tax calculations.
+
 ## [0.741.0] - 2024-04-16 18:05:04
 
 ### Added
@@ -8222,6 +8254,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.743.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.743.0...0.743.1
+[0.743.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.742.2...0.743.0
+[0.742.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.742.1...0.742.2
+[0.742.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.742.0...0.742.1
+[0.742.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.741.1...0.742.0
+[0.741.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.741.0...0.741.1
 [0.741.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.740.0...0.741.0
 [0.740.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.739.0...0.740.0
 [0.739.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.738.0...0.739.0

@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class nj_agi_additions(Variable):
+class nj_additions(Variable):
     value_type = float
     entity = Person
     label = "New Jersey additions to federal AGI by person"

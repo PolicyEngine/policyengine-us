@@ -7021,3 +7021,33 @@
     added:
     - 2023 Oklahoma Tax Rules.
   date: 2024-04-16 18:05:04
+- bump: patch
+  changes:
+    fixed:
+    - Arkansas capital gains tax calculations.
+  date: 2024-04-17 16:09:32
+- bump: minor
+  changes:
+    added:
+    - Use CBO projection for personal exemption.
+  date: 2024-04-17 16:41:57
+- bump: patch
+  changes:
+    fixed:
+    - Consolidated state level additions variables across all state models
+  date: 2024-04-17 20:43:19
+- bump: patch
+  changes:
+    fixed:
+    - Remove the Mississippi married filing combined logic.
+  date: 2024-04-19 05:22:04
+- bump: minor
+  changes:
+    fixes:
+    - New York household credit calculation.
+  date: 2024-04-19 05:38:25
+- bump: patch
+  changes:
+    fixed:
+    - Attribute the standard and itemized deductions in Montana to each spouse respectively.
+  date: 2024-04-19 14:52:52
