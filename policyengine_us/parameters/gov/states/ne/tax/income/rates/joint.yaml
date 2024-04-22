@@ -1,4 +1,4 @@
-description: NE income tax rates for joint filing units
+description: Nebraska income tax rates for joint filing units
 brackets:
   - threshold:
       2021-01-01: 0
@@ -7,25 +7,29 @@ brackets:
   - threshold:
       2021-01-01: 6_660
       2022-01-01: 6_860
+      2023-01-01: 7_390
     rate:
       2021-01-01: 0.0351
   - threshold:
       2021-01-01: 39_990
       2022-01-01: 41_190
+      2023-01-01: 44_350
     rate:
       2021-01-01: 0.0501
   - threshold:
       2021-01-01: 64_430
       2022-01-01: 66_360
+      2023-01-01: 71_460
     rate:
       2021-01-01: 0.0684
-        
+      2023-01-01: 0.0664
+              
 metadata:
   threshold_unit: currency-USD
   rate_unit: /1
   threshold_period: year
   type: marginal_rate
-  label: NE income tax rates for joint filing units
+  label: Nebraska income tax rates for joint filing units
   reference:
   - title: Nebraska Tax Rates, Brackets
     href: https://www.efile.com/nebraska-tax-brackets-rates-and-forms/

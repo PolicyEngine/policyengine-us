@@ -1,4 +1,4 @@
-description: NE income tax rates for head-of-household filing units
+description: Nebraska income tax rates for head-of-household filing units
 brackets:
   - threshold:
       2021-01-01: 0
@@ -7,25 +7,29 @@ brackets:
   - threshold:
       2021-01-01: 6_220
       2022-01-01: 6_410
+      2023-01-01: 6_900
     rate:
       2021-01-01: 0.0351
   - threshold:
       2021-01-01: 31_990
       2022-01-01: 32_950
+      2023-01-01: 35_480
     rate:
       2021-01-01: 0.0501
   - threshold:
       2021-01-01: 47_760
       2022-01-01: 49_200
+      2023-01-01: 52_980
     rate:
       2021-01-01: 0.0684
+      2023-01-01: 0.0664
         
 metadata:
   threshold_unit: currency-USD
   rate_unit: /1
   threshold_period: year
   type: marginal_rate
-  label: NE income tax rates for head-of-household filing units
+  label: Nebraska income tax rates for head-of-household filing units
   reference:
   - title: Nebraska Tax Rates, Brackets
     href: https://www.efile.com/nebraska-tax-brackets-rates-and-forms/

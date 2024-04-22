@@ -2,22 +2,27 @@ description: Federal AGI threshold above which fraction of taxable social securi
 
 JOINT:
   2021-01-01: 59_960
-  2022-01-01: 61_760 
+  2022-01-01: 61_760
+  2023-01-01: 66_510 
 HEAD_OF_HOUSEHOLD:
   2021-01-01: 44_460
   2022-01-01: 45_790
+  2023-01-01: 49_310  
 SURVIVING_SPOUSE:
   2021-01-01: 44_460
   2022-01-01: 45_790
+  2023-01-01: 49_310  
 SINGLE:
   2021-01-01: 44_460
   2022-01-01: 45_790
+  2023-01-01: 49_310  
 SEPARATE:
   2021-01-01: 44_460
   2022-01-01: 45_790
+  2023-01-01: 49_310  
 
 metadata:
-  label: NE social security AGI subtraction threshold
+  label: Nebraska social security AGI subtraction threshold
   unit: currency-USD
   breakdown:
   - filing_status
@@ -29,3 +34,5 @@ metadata:
     href: https://revenue.nebraska.gov/files/doc/2022_Ne_Individual_Income_Tax_Booklet_8-307-2022_final_5.pdf
   - title: Nebraska Revised Statute | chapter 77 | §2716
     href: https://www.nebraskalegislature.gov/laws/statutes.php?statute=77-2716
+  - title: 2023 NE Individual Income Tax Booklet
+    href: https://revenue.nebraska.gov/sites/revenue.nebraska.gov/files/doc/tax-forms/2023/incometax/f_1040n_booklet_2023_Final.pdf  
