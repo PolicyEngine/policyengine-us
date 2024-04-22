@@ -4,6 +4,8 @@ metadata:
   type: single_amount
   amount_unit: currency-USD
   label: Arkansas additional tax credit amount
+  # TODO: adjust with inflation 
+  # TODO: check the brakcets - inclusivity of the thresholds
   period: year
   reference:
     - title: Arkansas 2022 Individual Income Tax Forms and Instructions 
@@ -19,21 +21,20 @@ metadata:
 brackets:
   - threshold:
       2022-01-01: 0
-      2023-01-01: 0
     amount:
       2022-01-01: 60
   - threshold:
-      2022-01-01: 24_301
-      2023-01-01: 25_001
+      2022-01-01: 24_300
+      2023-01-01: 25_000
     amount:
       2022-01-01: 55
   - threshold:
-      2022-01-01: 24_401
-      2023-01-01: 25_101
+      2022-01-01: 24_400
+      2023-01-01: 25_100
     amount:
       2022-01-01: 50
   - threshold:
-      2022-01-01: 24_501
+      2022-01-01: 24_500
       2023-01-01: 25_201
     amount:
       2022-01-01: 45
