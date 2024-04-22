@@ -11,6 +11,7 @@ class de_deduction_indv(Variable):
     defined_for = StateCode.DE
 
     def formula(person, period, parameters):
+        itemizes = person.tax_unit("de_tax_unit_itemizes", period)
         itemized = person("de_itemized_deductions_indv", period)
         standard = person("de_standard_deduction_indv", period)
-        return max_(itemized, standard)
+        return where(itemizes, itemized, standard)
