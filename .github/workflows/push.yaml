@@ -3,6 +3,12 @@ on:
   push:
     branches: [master]
 jobs:
+  set-default-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set default branch
+        run: |
+          git config --global init.defaultBranch master
   Lint:
     runs-on: ubuntu-latest
     if: |
