@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ms_tax_unit_itemizes(Variable):
     value_type = bool
     entity = TaxUnit
-    label = "Whether the tax unit in Montana itemizes the deductions when married filing separately"
+    label = "Whether the tax unit in Mississippi itemizes the deductions when married filing separately"
     definition_period = YEAR
     defined_for = StateCode.MS
 
