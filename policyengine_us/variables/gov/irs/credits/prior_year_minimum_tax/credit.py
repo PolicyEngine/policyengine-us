@@ -3,7 +3,7 @@ from policyengine_us.model_api import *
 
 class e07600(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     definition_period = YEAR
     label = "Prior year minimum tax credit"
     documentation = "Prior year minimum tax credit from Form 8801"
