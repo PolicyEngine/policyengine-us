@@ -55,8 +55,8 @@ def create_structural_reforms_from_parameters(parameters, period):
     capital_gains_tax_increase = create_capital_gains_tax_increase_reform(
         parameters, period
     )
-    co_family_affordability_credit = create_co_family_affordability_credit_reform(
-        parameters, period
+    co_family_affordability_credit = (
+        create_co_family_affordability_credit_reform(parameters, period)
     )
 
     reforms = [
