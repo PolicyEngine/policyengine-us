@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.748.0] - 2024-04-23 02:11:03
+
+### Added
+
+- 2023 Kentucky tax rules.
+
 ## [0.747.0] - 2024-04-23 01:42:03
 
 ### Added
@@ -8284,6 +8290,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.748.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.747.0...0.748.0
 [0.747.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.746.0...0.747.0
 [0.746.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.745.0...0.746.0
 [0.745.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.744.1...0.745.0
