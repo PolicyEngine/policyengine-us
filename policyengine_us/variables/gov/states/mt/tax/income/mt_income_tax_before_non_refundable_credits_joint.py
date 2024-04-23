@@ -10,13 +10,17 @@ class mt_income_tax_before_non_refundable_credits_joint(Variable):
     defined_for = StateCode.MT
 
     def formula(tax_unit, period, parameters):
-        income = add(tax_unit, period, ["mt_taxable_income_joint"]) - add(
-            tax_unit, period, ["long_term_capital_gains"]
+        p = parameters(period).gov.states.mt.tax.income.main
+        capital_gains = add(tax_unit, period, ["long_term_capital_gains"])
+        regular_income = add(tax_unit, period, ["mt_taxable_income_joint"])
+        taxable_income = where(
+            p.capital_gains.availability,
+            max_(regular_income - capital_gains, 0),
+            regular_income,
         )
         capital_gains_tax = add(
             tax_unit, period, ["mt_capital_gains_tax_joint"]
         )
-        p = parameters(period).gov.states.mt.tax.income.main
         filing_status = tax_unit("filing_status", period)
         status = filing_status.possible_values
         regular_tax = select(
@@ -28,11 +32,15 @@ class mt_income_tax_before_non_refundable_credits_joint(Variable):
                 filing_status == status.SURVIVING_SPOUSE,
             ],
             [
-                p.single.calc(income),
-                p.joint.calc(income),
-                p.head_of_household.calc(income),
-                p.separate.calc(income),
-                p.widow.calc(income),
+                p.single.calc(taxable_income),
+                p.joint.calc(taxable_income),
+                p.head_of_household.calc(taxable_income),
+                p.separate.calc(taxable_income),
+                p.widow.calc(taxable_income),
             ],
         )
-        return regular_tax + capital_gains_tax
+        return where(
+            p.capital_gains.availability,
+            regular_tax + capital_gains_tax,
+            regular_tax,
+        )
