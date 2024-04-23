@@ -9,5 +9,5 @@ class ct_agi(Variable):
     definition_period = YEAR
     defined_for = StateCode.CT
 
-    adds = ["adjusted_gross_income", "ct_agi_additions"]
+    adds = ["adjusted_gross_income", "ct_additions"]
     subtracts = ["ct_agi_subtractions"]

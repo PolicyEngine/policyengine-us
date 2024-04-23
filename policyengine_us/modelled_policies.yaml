@@ -15,6 +15,11 @@ filtered:
       - Alabama state income tax
       not_modelled:
       - Alabama TANF
+    AR:
+      modelled:
+      - Arkansas state income tax
+      not_modelled:
+      - Arkansas TANF
     AZ: 
       modelled:
       - Arizona state income tax
@@ -31,10 +36,20 @@ filtered:
       - Colorado Old Age Pension
       - Colorado State Supplement
       - Colorado TANF
+    CT:
+      modelled:
+      - Connecticut state income tax
+      not_modelled:
+      - Connecticut TANF
     DC:
       modelled:
       - District of Columbia income tax
       - District of Columbia TANF
+    DE:
+      modelled:
+      - Delaware state income tax
+      not_modelled:
+      - Delaware TANF
     GA:
       modelled:
       - Georgia state income tax
@@ -69,6 +84,16 @@ filtered:
       - Kansas state income tax
       not_modelled:
       - Kansas TANF
+    KY:
+      modelled:
+      - Kentucky state income tax
+      not_modelled:
+      - Kentucky TANF
+    LA:
+      modelled:
+      - Louisiana state income tax
+      not_modelled:
+      - Louisiana TANF
     MA:
       modelled:
       - Massachusetts state income tax
@@ -79,6 +104,16 @@ filtered:
       - Maryland state income tax
       not_modelled:
       - Maryland TANF
+    ME:
+      modelled:
+      - Maine state income tax
+      not_modelled:
+      - Maine TANF
+    MI:
+      modelled:
+      - Michigan state income tax
+      not_modelled:
+      - Michigan TANF
     MN:
       modelled:
       - Minnesota state income tax
@@ -89,6 +124,16 @@ filtered:
       - Missouri state income tax
       not_modelled:
       - Missouri TANF
+    MS:
+      modelled:
+      - Mississippi state income tax
+      not_modelled:
+      - Mississippi TANF
+    MT:
+      modelled:
+      - Montana state income tax
+      not_modelled:
+      - Montana TANF
     NC:
       modelled:
       - North Carolina state income tax
@@ -123,6 +168,11 @@ filtered:
       modelled:
       - New York state and city income tax
       - New York TANF
+    OH:
+      modelled:
+      - Ohio state income tax
+      not_modelled:
+      - Ohio TANF
     OK:
       modelled:
       - Oklahoma state income tax
@@ -153,6 +203,11 @@ filtered:
       - Utah state income tax
       not_modelled:
       - Utah TANF
+    VA:
+      modelled:
+      - Virginia state income tax
+      not_modelled:
+      - Virginia TANF
     VT:
       modelled:
       - Vermont state income tax
