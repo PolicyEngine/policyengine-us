@@ -3,6 +3,11 @@ metadata:
   label: federal AGI threshold above which Minnesota exemptions are limited
   period: year
   unit: currency-USD
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: nearest
+      interval: 10
   breakdown:
   - filing_status
   reference:
@@ -16,15 +21,20 @@ metadata:
 JOINT:
   2021-01-01: 299_750
   2022-01-01: 309_050
+  2023-01-01: 330_950
 HEAD_OF_HOUSEHOLD:
   2021-01-01: 249_800
   2022-01-01: 257_550
+  2023-01-01: 275_800
 SURVIVING_SPOUSE:
   2021-01-01: 299_750
   2022-01-01: 309_050
+  2023-01-01: 330_950
 SINGLE:
   2021-01-01: 199_850
   2022-01-01: 206_050
+  2023-01-01: 220_650
 SEPARATE:
   2021-01-01: 149_875
   2022-01-01: 154_525
+  2023-01-01: 165_475

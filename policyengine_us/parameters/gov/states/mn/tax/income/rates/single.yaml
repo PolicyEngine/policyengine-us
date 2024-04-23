@@ -5,18 +5,42 @@ brackets:
     rate:
       2021-01-01: 0.0535
   - threshold:
-      2021-01-01: 27_230
-      2022-01-01: 28_080
+      values:
+        2021-01-01: 27_230
+        2022-01-01: 28_080
+        2023-01-01: 30_070
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 10
     rate:
       2021-01-01: 0.068
   - threshold:
-      2021-01-01: 89_440
-      2022-01-01: 92_230
+      values:
+        2021-01-01: 89_440
+        2022-01-01: 92_230
+        2023-01-01: 98_760
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 10
     rate:
       2021-01-01: 0.0785
   - threshold:
-      2021-01-01: 166_040
-      2022-01-01: 171_220
+      values:
+        2021-01-01: 166_040
+        2022-01-01: 171_220
+        2023-01-01: 183_340
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 10
     rate:
       2021-01-01: 0.0985
 

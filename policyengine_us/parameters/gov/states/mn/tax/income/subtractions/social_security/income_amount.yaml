@@ -3,6 +3,11 @@ metadata:
   label: Minnesota social security subtraction income amount
   period: year
   unit: currency-USD
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: nearest
+      interval: 10
   breakdown:
   - filing_status
   reference:
@@ -16,15 +21,20 @@ metadata:
 JOINT:
   2021-01-01: 80_270
   2022-01-01: 82_770
+  2023-01-01: 88_630
 HEAD_OF_HOUSEHOLD:
   2021-01-01: 62_710
   2022-01-01: 64_670
+  2023-01-01: 69_250
 SURVIVING_SPOUSE:
   2021-01-01: 80_270
   2022-01-01: 82_770
+  2023-01-01: 88_630
 SINGLE:
   2021-01-01: 62_710
   2022-01-01: 64_670
+  2023-01-01: 69_250
 SEPARATE:
   2021-01-01: 40_135
   2022-01-01: 41_385
+  2023-01-01: 44_315

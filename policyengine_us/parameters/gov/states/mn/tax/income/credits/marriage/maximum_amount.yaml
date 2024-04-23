@@ -8,6 +8,11 @@ metadata:
   period: year
   unit: currency-USD
   label: Minnesota marriage credit minimum amount
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: nearest
+      interval: 10
   reference:
   - title: 2021 Minnesota Schedule M1MA, Line 19
     href: https://www.revenue.state.mn.us/sites/default/files/2023-01/m1ma_21.pdf#page=1

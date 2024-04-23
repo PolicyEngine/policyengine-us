@@ -3,6 +3,11 @@ metadata:
   label: Minnesota base standard deduction amount
   period: year
   unit: currency-USD
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: nearest
+      interval: 10
   breakdown:
   - filing_status
   reference:
@@ -16,15 +21,20 @@ metadata:
 JOINT:
   2021-01-01: 25_050
   2022-01-01: 25_800
+  2023-01-01: 27_650
 HEAD_OF_HOUSEHOLD:
   2021-01-01: 18_800
   2022-01-01: 19_400
+  2023-01-01: 20_800
 SURVIVING_SPOUSE:
   2021-01-01: 25_050
   2022-01-01: 25_800
+  2023-01-01: 27_650
 SINGLE:
   2021-01-01: 12_525
   2022-01-01: 12_900
+  2023-01-01: 13_825
 SEPARATE:
   2021-01-01: 12_525
   2022-01-01: 12_900
+  2023-01-01: 13_825
