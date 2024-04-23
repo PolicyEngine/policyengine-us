@@ -16,15 +16,16 @@ class mt_taxable_income_indiv(Variable):
     def formula(person, period, parameters):
         mt_agi = person("mt_agi", period)
         exemptions = person("mt_personal_exemptions_indiv", period)
-        reduced_agi = max_(mt_agi - exemptions, 0)
-        deductions_and_exemptions = person.tax_unit(
-            "mt_tax_unit_deductions_exemptions_indiv", period
+        deductions = person("mt_deductions_indiv", period)
+        reduced_agi = max_(mt_agi - exemptions - deductions, 0)
+        dependent_exemptions = add(
+            person.tax_unit, period, ["mt_dependent_exemptions_person"]
         )
         head = person("is_tax_unit_head", period)
         head_deductions = person.tax_unit(
-            "mt_head_deductions_exemptions_indiv", period
+            "mt_head_dependent_exemptions_indiv", period
         )
-        spouse_deductions = deductions_and_exemptions - head_deductions
+        spouse_deductions = dependent_exemptions - head_deductions
         capped_head_agi = max_(reduced_agi - head_deductions, 0)
         capped_spouse_agi = max_(reduced_agi - spouse_deductions, 0)
         return where(head, capped_head_agi, capped_spouse_agi)

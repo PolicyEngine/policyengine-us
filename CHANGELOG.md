@@ -5,6 +5,36 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.746.0] - 2024-04-23 01:31:48
+
+### Added
+
+- 2023 Louisiana tax rules.
+
+## [0.745.0] - 2024-04-22 23:34:33
+
+### Added
+
+- 2023 Rhode Island Tax Rules.
+
+## [0.744.1] - 2024-04-22 23:01:24
+
+### Fixed
+
+- Include the Mississippi real estate tax deduction.
+
+## [0.744.0] - 2024-04-22 21:11:00
+
+### Added
+
+- IRS PUF variables under their original names.
+
+## [0.743.1] - 2024-04-19 14:52:52
+
+### Fixed
+
+- Attribute the standard and itemized deductions in Montana to each spouse respectively.
+
 ## [0.743.0] - 2024-04-19 05:38:25
 
 ## [0.742.2] - 2024-04-19 05:22:04
@@ -8248,6 +8278,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.746.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.745.0...0.746.0
+[0.745.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.744.1...0.745.0
+[0.744.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.744.0...0.744.1
+[0.744.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.743.1...0.744.0
+[0.743.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.743.0...0.743.1
 [0.743.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.742.2...0.743.0
 [0.742.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.742.1...0.742.2
 [0.742.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.742.0...0.742.1
