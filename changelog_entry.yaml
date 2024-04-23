@@ -1,4 +1,4 @@
-- bump: minor
+- bump: patch
   changes:
-    added:
-    - workflow to set default Branch as master
+    fixed:
+    - skip_existing in PyPI publish workflow
