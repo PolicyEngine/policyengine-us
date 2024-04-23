@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.749.0] - 2024-04-23 16:42:53
+
+### Added
+
+- Change the Colorado family affordability credit file name.
+
 ## [0.748.1] - 2024-04-23 06:46:02
 
 ### Fixed
@@ -8296,6 +8302,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.749.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.748.1...0.749.0
 [0.748.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.748.0...0.748.1
 [0.748.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.747.0...0.748.0
 [0.747.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.746.0...0.747.0
