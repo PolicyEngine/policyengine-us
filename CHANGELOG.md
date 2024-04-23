@@ -5,6 +5,60 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.750.0] - 2024-04-23 18:20:42
+
+### Added
+
+- Adjust the Missouri deductions metadata.
+
+## [0.749.1] - 2024-04-23 17:20:45
+
+### Fixed
+
+- Reduce the Arkansas taxable long term capital gains by the short term capital losses.
+
+## [0.749.0] - 2024-04-23 16:42:53
+
+### Added
+
+- Change the Colorado family affordability credit file name.
+
+## [0.748.1] - 2024-04-23 06:46:02
+
+### Fixed
+
+- skip_existing in PyPI publish workflow
+
+## [0.748.0] - 2024-04-23 02:11:03
+
+### Added
+
+- 2023 Kentucky tax rules.
+
+## [0.747.0] - 2024-04-23 01:42:03
+
+### Added
+
+- 2023 West Virginia tax rules.
+
+## [0.746.0] - 2024-04-23 01:31:48
+
+### Added
+
+- 2023 Louisiana tax rules.
+
+## [0.745.0] - 2024-04-22 23:34:33
+
+### Added
+
+- 2023 Rhode Island Tax Rules.
+
+## [0.744.1] - 2024-04-22 23:01:24
+
+### Fixed
+
+- Include the Mississippi real estate tax deduction.
+
 ## [0.744.0] - 2024-04-22 21:11:00
 
 ### Added
@@ -8260,6 +8314,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.750.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.749.1...0.750.0
+[0.749.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.749.0...0.749.1
+[0.749.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.748.1...0.749.0
+[0.748.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.748.0...0.748.1
+[0.748.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.747.0...0.748.0
+[0.747.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.746.0...0.747.0
+[0.746.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.745.0...0.746.0
+[0.745.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.744.1...0.745.0
+[0.744.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.744.0...0.744.1
 [0.744.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.743.1...0.744.0
 [0.743.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.743.0...0.743.1
 [0.743.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.742.2...0.743.0
