@@ -40,6 +40,7 @@ EXTRA_PUF_VARIABLES = [
     "e09700",
     "e03500",
     "e87521",
+    "e18400",
 ]
 
 
@@ -59,23 +60,27 @@ class PUF(Dataset):
         puf = uprate_puf(puf, self.time_period)
         puf = impute_missing_demographics(puf, demographics)
 
-        VARIABLES = [
-            "person_id",
-            "tax_unit_id",
-            "marital_unit_id",
-            "spm_unit_id",
-            "family_id",
-            "household_id",
-            "person_tax_unit_id",
-            "person_marital_unit_id",
-            "person_spm_unit_id",
-            "person_family_id",
-            "person_household_id",
-            "age",
-            "employment_income",
-            "household_weight",
-            "is_male",
-        ] + list(FINANCE_VARIABLE_RENAMES.values())
+        VARIABLES = (
+            [
+                "person_id",
+                "tax_unit_id",
+                "marital_unit_id",
+                "spm_unit_id",
+                "family_id",
+                "household_id",
+                "person_tax_unit_id",
+                "person_marital_unit_id",
+                "person_spm_unit_id",
+                "person_family_id",
+                "person_household_id",
+                "age",
+                "employment_income",
+                "household_weight",
+                "is_male",
+            ]
+            + list(FINANCE_VARIABLE_RENAMES.values())
+            + list(GROUP_LEVEL_FINANCE_VARIABLE_RENAMES.values())
+        )
 
         self.holder = {variable: [] for variable in VARIABLES}
 
@@ -117,6 +122,10 @@ class PUF(Dataset):
 
     def add_tax_unit(self, row, tax_unit_id):
         self.holder["tax_unit_id"].append(tax_unit_id)
+        for key in GROUP_LEVEL_FINANCE_VARIABLE_RENAMES:
+            self.holder[GROUP_LEVEL_FINANCE_VARIABLE_RENAMES[key]].append(
+                row[key]
+            )
 
     def add_filer(self, row, tax_unit_id):
         person_id = int(tax_unit_id * 1e2 + 1)
@@ -217,7 +226,7 @@ class PUF_2022(PUF):
     name = "puf_2022"
     time_period = 2022
     file_path = STORAGE_FOLDER / "puf_2022.h5"
-    url = "release://policyengine/non-public-microdata/puf-2022/puf_2022.h5"
+    # url = "release://policyengine/non-public-microdata/puf-2022/puf_2022.h5"
 
 
 class PUF_2015(PUF):
@@ -242,6 +251,18 @@ FINANCE_VARIABLE_RENAMES = dict(
     farm_income="farm_income",
     partnership_s_corp_income="partnership_s_corp_income",
     schedule_e_net_income_loss="schedule_e_net_income",
+    taxable_ira_distributions="taxable_ira_distributions",
+    traditional_ira_contributions="traditional_ira_contributions",
+    unemployment_compensation="unemployment_compensation",
+    student_loan_interest="student_loan_interest",
+    alimony_income="alimony_income",
+    total_interest_paid_deduction="interest_expense",
+    real_estate_taxes="real_estate_taxes",
+    medical_expense="medical_expense",
+)
+
+GROUP_LEVEL_FINANCE_VARIABLE_RENAMES = dict(
+    state_local_taxes="state_income_tax",
 )
 
 FINANCE_VARIABLE_RENAMES.update(

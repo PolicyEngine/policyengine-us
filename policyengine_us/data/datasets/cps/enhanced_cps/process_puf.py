@@ -28,7 +28,7 @@ codebook = {
     "E01700": "taxable_pension_income",
     "E02000": "schedule_e_net_income_loss",
     "E02100": "farm_income",
-    "E02300": "taxable_unemployment_compensation",
+    "E02300": "unemployment_compensation",
     "E02400": "social_security",
     "E02500": "taxable_social_security",
     "E03150": "traditional_ira_contributions",
@@ -99,7 +99,7 @@ codebook = {
     "E11900": "balance_due_overpayment",
     "E12000": "credit_elect",
     "E12200": "predetermined_estimated_tax_penalty",
-    "E17500": "medical_dental_expenses_reduction_agi_limit",
+    "E17500": "medical_expense",
     "E18400": "state_local_taxes",
     "E18500": "real_estate_taxes",
     "E19200": "total_interest_paid_deduction",
@@ -298,7 +298,7 @@ FINANCIAL_SUBSET = [
     "non_qualified_dividend_income",
     "taxable_pension_income",
     "social_security",
-    "taxable_unemployment_compensation",
+    "unemployment_compensation",
     "taxable_social_security",
     "taxable_ira_distributions",
     "casualty_loss",
@@ -324,6 +324,7 @@ FINANCIAL_SUBSET = [
     "real_estate_taxes",
     "qualified_tuition_expenses",
     "alimony_income",
+    "state_local_taxes",
 ]
 
 
