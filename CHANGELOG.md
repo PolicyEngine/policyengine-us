@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.747.0] - 2024-04-23 01:42:03
+
+### Added
+
+- 2023 West Virginia tax rules.
+
 ## [0.746.0] - 2024-04-23 01:31:48
 
 ### Added
@@ -8278,6 +8284,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.747.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.746.0...0.747.0
 [0.746.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.745.0...0.746.0
 [0.745.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.744.1...0.745.0
 [0.744.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.744.0...0.744.1
