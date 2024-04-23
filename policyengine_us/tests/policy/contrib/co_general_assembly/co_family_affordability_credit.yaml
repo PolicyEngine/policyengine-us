@@ -1,6 +1,6 @@
 - name: Family with one kid under the age of 6
   period: 2024
-  reforms: policyengine_us.reforms.co_general_assembly.co_family_affordability_credit.family_affordability_credit
+  reforms: policyengine_us.reforms.co_general_assembly.co_family_affordability_credit.co_family_affordability_credit
   input:
     gov.contrib.co_general_assembly.family_affordability_credit.amount[0].amount: 3_200
     gov.contrib.co_general_assembly.family_affordability_credit.amount[1].amount: 2_200
@@ -31,7 +31,7 @@
 
 - name: Family with one kid under the age of 6 and one under 16
   period: 2024
-  reforms: policyengine_us.reforms.co_general_assembly.co_family_affordability_credit.family_affordability_credit
+  reforms: policyengine_us.reforms.co_general_assembly.co_family_affordability_credit.co_family_affordability_credit
   input:
     gov.contrib.co_general_assembly.family_affordability_credit.amount[0].amount: 3_200
     gov.contrib.co_general_assembly.family_affordability_credit.amount[1].amount: 2_200
@@ -65,7 +65,7 @@
 
 - name: Family with one kid under the age of 6 and one under 16, with reduction
   period: 2024
-  reforms: policyengine_us.reforms.co_general_assembly.co_family_affordability_credit.family_affordability_credit
+  reforms: policyengine_us.reforms.co_general_assembly.co_family_affordability_credit.co_family_affordability_credit
   input:
     gov.contrib.co_general_assembly.family_affordability_credit.amount[0].amount: 3_200
     gov.contrib.co_general_assembly.family_affordability_credit.amount[1].amount: 2_200
@@ -99,7 +99,7 @@
 
 - name: Family with one kid under the age of 6 and one under 16, with reduction, fully phased-out
   period: 2024
-  reforms: policyengine_us.reforms.co_general_assembly.co_family_affordability_credit.family_affordability_credit
+  reforms: policyengine_us.reforms.co_general_assembly.co_family_affordability_credit.co_family_affordability_credit
   input:
     gov.contrib.co_general_assembly.family_affordability_credit.amount[0].amount: 3_200
     gov.contrib.co_general_assembly.family_affordability_credit.amount[1].amount: 2_200
