@@ -57,12 +57,17 @@ class ny_ctc(Variable):
                 "ctc_qualifying_child", period
             )
             gov = branch_parameters(period).gov
-        # Remaining logic is based on NY parameters.
+
+        # Remaining logic is based on NY parameters (Form IT-213 Step 4)
+        # Form IT-213 - Line 11 & Line 14
         qualifies = qualifies_for_federal_ctc & (age >= p.minimum_age)
         qualifying_children = tax_unit.sum(qualifies)
+        # Form IT-213 - Line 12 cannot find
+        # Form IT-213 - Line 13 should be line 12 * percent (33%)
         federal_match = federal_ctc * p.amount.percent
         # Filers with income below the CTC phase-out threshold receive a
         # minimum amount per child.
+        # Form IT-213 - Line 15
         minimum = p.amount.minimum * qualifying_children
         agi = tax_unit("adjusted_gross_income", period)
         federal_threshold = gov.irs.credits.ctc.phase_out.threshold[
@@ -71,4 +76,5 @@ class ny_ctc(Variable):
         eligible_for_minimum = agi < federal_threshold
         applicable_minimum = eligible_for_minimum * minimum
         eligible = qualifying_children > 0
+        # Form IT-213 - Line 16
         return eligible * max_(applicable_minimum, federal_match)
