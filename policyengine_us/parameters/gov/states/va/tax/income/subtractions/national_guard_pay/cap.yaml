@@ -1,4 +1,4 @@
-description: Virginia provides a national guard pay subtraction up to this amount.
+description: Virginia caps the national guard pay subtraction to this amount.  
 values:
   2021-01-01: 3_000
   2023-01-01: 5_500
@@ -6,7 +6,7 @@ values:
 metadata:
   period: year
   unit: currency-USD
-  label: Virginia national guard pay subtraction
+  label: Virginia national guard pay subtraction cap  
   reference:
   - title: Code of Virginia § 58.1-322.02.(8)
     href: https://law.lis.virginia.gov/vacodefull/title58.1/chapter3/article2/

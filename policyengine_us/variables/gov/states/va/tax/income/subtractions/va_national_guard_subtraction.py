@@ -13,10 +13,8 @@ class va_national_guard_subtraction(Variable):
     )
 
     def formula(tax_unit, period, parameters):
-        person = tax_unit.members
-        p = parameters(period).gov.states.va.tax.income.subtractions
-
-        return min_(
-            tax_unit.sum(person("military_service_income", period)),
-            p.national_guard_income,
-        )
+        p = parameters(
+            period
+        ).gov.states.va.tax.income.subtractions.national_guard_pay
+        national_guard_pay = add(tax_unit, period, ["military_service_income"])
+        return min_(national_guard_pay, p.cap)
