@@ -5,7 +5,7 @@ class mt_federal_income_tax_deduction_indiv(Variable):
     value_type = float
     entity = Person
     definition_period = YEAR
-    label = "Montana federal income tax deduction"
+    label = "Montana federal income tax deduction when married couples are filing separately"
     reference = (
         "https://law.justia.com/codes/montana/2021/title-15/chapter-30/part-21/section-15-30-2131/"
         # MT Code § 15-30-2131 (2021) (1)(b)
