@@ -14,14 +14,19 @@ class mt_federal_income_tax_deduction_indiv(Variable):
     defined_for = StateCode.MT
 
     def formula(person, period, parameters):
-        unit_deds = person.tax_unit("mt_federal_income_tax_deduction_unit", period)
+        unit_deds = person.tax_unit(
+            "mt_federal_income_tax_deduction_unit", period
+        )
         person_agi = person("mt_agi", period)
         total_agi = person.tax_unit.sum(person_agi)
 
         prorate = np.zeros_like(total_agi)
         mask = total_agi > 0
         prorate[mask] = person_agi[mask] / total_agi[mask]
-        filing_status = person.tax_unit("state_filing_status_if_married_filing_separately_on_same_return", period)
+        filing_status = person.tax_unit(
+            "state_filing_status_if_married_filing_separately_on_same_return",
+            period,
+        )
         p = parameters(
             period
         ).gov.states.mt.tax.income.deductions.itemized.federal_income_tax
