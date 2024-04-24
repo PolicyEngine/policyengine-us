@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class il_k12_education_expense_credit(Variable):
     value_type = float
     entity = TaxUnit
-    label = "IL K-12 Education Expense Credit"
+    label = "Illinois K-12 Education Expense Credit"
     unit = USD
     definition_period = YEAR
 

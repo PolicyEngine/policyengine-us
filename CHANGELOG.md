@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.750.3] - 2024-04-24 17:35:42
+
+### Added
+
+- Illinois metadata clean-up.
+- Read me files.
+- Removed per-vehicle payment files.
+
+## [0.750.2] - 2024-04-24 17:29:04
+
+### Fixed
+
+- Prorate the Montana federal income tax deduction based on Montana AGI.
+
 ## [0.750.1] - 2024-04-24 04:49:34
 
 ## [0.750.0] - 2024-04-23 18:20:42
@@ -8316,6 +8330,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.750.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.750.2...0.750.3
+[0.750.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.750.1...0.750.2
 [0.750.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.750.0...0.750.1
 [0.750.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.749.1...0.750.0
 [0.749.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.749.0...0.749.1
