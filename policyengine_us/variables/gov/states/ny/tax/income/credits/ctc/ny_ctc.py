@@ -59,22 +59,21 @@ class ny_ctc(Variable):
             gov = branch_parameters(period).gov
 
         # Remaining logic is based on NY parameters (Form IT-213 Step 4)
+        # Form IT-213 - Line 6
+        # worksheet A line 10 OR worksheet B line 13
+        # Form IT-213 - Line 7
+        # additional child tax amount 
+        # Form IT-213 - Line 8 = max_(0, Line 6 + Line 7)
+        # Form IT-213 - Line 9
+        qualifying_children = tax_unit.sum(qualifies_for_federal_ctc)
+        # Form IT-213 - Line 10
+        # fraction = line 8/qualifying_children
         # Form IT-213 - Line 11 & Line 14
         qualifies = qualifies_for_federal_ctc & (age >= p.minimum_age)
-        qualifying_children = tax_unit.sum(qualifies)
-        # Form IT-213 - Line 12 cannot find
-        # Form IT-213 - Line 13 should be line 12 * percent (33%)
-        federal_match = federal_ctc * p.amount.percent
-        # Filers with income below the CTC phase-out threshold receive a
-        # minimum amount per child.
+        qualifying_children_age_limit = tax_unit.sum(qualifies)
+        # Form IT-213 - Line 12 = fraction * qualifying_children_age_limit
+        # Form IT-213 - Line 13 = line 12 * p.amount.percent
         # Form IT-213 - Line 15
-        minimum = p.amount.minimum * qualifying_children
-        agi = tax_unit("adjusted_gross_income", period)
-        federal_threshold = gov.irs.credits.ctc.phase_out.threshold[
-            tax_unit("filing_status", period)
-        ]
-        eligible_for_minimum = agi < federal_threshold
-        applicable_minimum = eligible_for_minimum * minimum
-        eligible = qualifying_children > 0
-        # Form IT-213 - Line 16
-        return eligible * max_(applicable_minimum, federal_match)
+        minimum = p.amount.minimum * qualifying_children_age_limit
+        # Form IT-213 - Line 16 = max_(minimum, line 13)
+        # return line 16
