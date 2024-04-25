@@ -43,5 +43,4 @@ class ny_ctc_worksheet_a(Variable):
         # add come lines from form 1040
         # Line 9  = max_(line 7 - line 8, 0)
         # Line 10 = min_(line 6, line 9)
-        return line 10
-
+        # return line 10

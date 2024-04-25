@@ -62,7 +62,7 @@ class ny_ctc(Variable):
         # Form IT-213 - Line 6
         # worksheet A line 10 OR worksheet B line 13
         # Form IT-213 - Line 7
-        # additional child tax amount 
+        # additional child tax amount
         # Form IT-213 - Line 8 = max_(0, Line 6 + Line 7)
         # Form IT-213 - Line 9
         qualifying_children = tax_unit.sum(qualifies_for_federal_ctc)
