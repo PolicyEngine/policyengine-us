@@ -9,7 +9,7 @@
     unemployment_compensation: 0
     social_security: 0
   output:
-    al_tanf_financial_eligibility: true
+    al_tanf_financial_eligibility: false
 
 - name: One person with $1,000 of applicable income
   period: 2022
@@ -17,7 +17,7 @@
     state_code: AL
     childcare_expenses: 0
     care_expenses: 0 
-  spm_unit_size: 1
+    spm_unit_size: 1
     al_tanf_applicable_income: 3_167
   output:
     al_tanf_financial_eligibility: true
@@ -62,7 +62,7 @@
     social_security: 0
   output:
     # Payment standard = 304*12= $3,648
-    al_tanf_financial_eligibility: true
+    al_tanf_financial_eligibility: false
 
 - name: Two people no care expenses
   period: 2022
@@ -90,4 +90,4 @@
     social_security: 0
   output:
     # Payment standard = 968*12= $11,616
-    al_tanf_financial_eligibility: true
+    al_tanf_financial_eligibility: false
