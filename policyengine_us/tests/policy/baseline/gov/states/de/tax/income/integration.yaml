@@ -226,3 +226,50 @@
         state_fips: 10  # DE
   output:  # expected results from patched TAXSIM35 2024-04-04 version
     de_income_tax: 2429.20
+
+- name: Tax unit with taxsimid 22359 in k21.its.csv and k21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 74
+        employment_income: 24010
+        taxable_interest_income: 5505
+        short_term_capital_gains: 2505
+        long_term_capital_gains: 1505
+        taxable_private_pension_income: 4000
+        social_security_retirement: 12000
+        real_estate_taxes: 2000
+        mortgage_interest: 1000
+        self_employment_income: 121010
+        business_is_qualified: true
+        business_is_sstb: false
+        w2_wages_from_qualified_business: 100e6
+      person2:
+        age: 74
+        employment_income: 1010
+        taxable_interest_income: 5505.0
+        short_term_capital_gains: 2505.0
+        long_term_capital_gains: 1505.0
+        taxable_private_pension_income: 4000.0
+        social_security_retirement: 12000
+      person3:
+        age: 16
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_fips: 10  # DE
+  output:  # expected results from patched TAXSIM35 2024-04-11 version
+    de_standard_deduction_indv: [5_750, 5_750, 0]
+    de_standard_deduction_joint: [11_500, 0, 0]
+    de_itemized_deductions_joint: [3_000, 0, 0]
+    de_deduction_indv: [5_750, 5_750, 0]
+    de_deduction_joint: [11_500, 0, 0]
+    de_income_tax: 6882.22
