@@ -11,35 +11,43 @@ class mt_income_tax_before_non_refundable_credits_indiv(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.mt.tax.income.main
-        capital_gains = person("long_term_capital_gains", period)
         regular_income = person("mt_taxable_income_indiv", period)
-        taxable_income = where(
-            p.capital_gains.availability,
-            max_(regular_income - capital_gains, 0),
-            regular_income,
-        )
-        capital_gains_tax = person("mt_capital_gains_tax_indiv", period)
         filing_status = person.tax_unit(
             "state_filing_status_if_married_filing_separately_on_same_return",
             period,
         )
         status = filing_status.possible_values
-        regular_tax = select(
-            [
-                filing_status == status.SINGLE,
-                filing_status == status.HEAD_OF_HOUSEHOLD,
-                filing_status == status.SEPARATE,
-                filing_status == status.SURVIVING_SPOUSE,
-            ],
-            [
-                p.single.calc(taxable_income),
-                p.head_of_household.calc(taxable_income),
-                p.separate.calc(taxable_income),
-                p.widow.calc(taxable_income),
-            ],
-        )
-        return where(
-            p.capital_gains.availability,
-            regular_tax + capital_gains_tax,
-            regular_tax,
-        )
+        if p.capital_gains.availability:
+            capital_gains = person("long_term_capital_gains", period)
+            taxable_income = max_(regular_income - capital_gains, 0)
+            capital_gains_tax = person("mt_capital_gains_tax_indiv", period)
+            regular_tax = select(
+                [
+                    filing_status == status.SINGLE,
+                    filing_status == status.HEAD_OF_HOUSEHOLD,
+                    filing_status == status.SEPARATE,
+                    filing_status == status.SURVIVING_SPOUSE,
+                ],
+                [
+                    p.single.calc(taxable_income),
+                    p.head_of_household.calc(taxable_income),
+                    p.separate.calc(taxable_income),
+                    p.widow.calc(taxable_income),
+                ],
+            )
+            return regular_tax + capital_gains_tax
+        else:
+            return select(
+                [
+                    filing_status == status.SINGLE,
+                    filing_status == status.HEAD_OF_HOUSEHOLD,
+                    filing_status == status.SEPARATE,
+                    filing_status == status.SURVIVING_SPOUSE,
+                ],
+                [
+                    p.single.calc(regular_income),
+                    p.head_of_household.calc(regular_income),
+                    p.separate.calc(regular_income),
+                    p.widow.calc(regular_income),
+                ],
+            )

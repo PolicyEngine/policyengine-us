@@ -11,11 +11,15 @@ class mt_capital_gains_tax_joint(Variable):
     defined_for = StateCode.MT
 
     def formula(person, period, parameters):
+        p = parameters(period).gov.states.mt.tax.income.main.capital_gains
+        # the tax for capital gains comes into effect after 2024
+        if not p.availability:
+            return 0
         is_head = person("is_tax_unit_head", period)
         capital_gains = person("long_term_capital_gains", period)
         taxable_income = person("mt_taxable_income_joint", period)
         non_qualified_income = max_(taxable_income - capital_gains, 0)
-        p = parameters(period).gov.states.mt.tax.income.main.capital_gains
+
         filing_status = person.tax_unit("filing_status", period)
         non_qualified_income_gap = (
             p.threshold[filing_status] - non_qualified_income
@@ -44,7 +48,7 @@ class mt_capital_gains_tax_joint(Variable):
         capital_gains_over_threshold = (
             capital_gains * p.rates.reduced_capital_gains.higher[filing_status]
         )
-        capital_gains_tax = p.availability * where(
+        capital_gains_tax = where(
             nonqualified_income_over_threshold,
             capital_gains_over_threshold,
             reduced_capital_gains_tax,
