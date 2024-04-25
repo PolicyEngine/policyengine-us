@@ -13,7 +13,7 @@ class la_agi_exempt_income(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.la.tax.income.exempt_income
         total_exempt_income = add(tax_unit, period, p.sources)
-        if p.reduction.availability:
+        if p.reduction.in_effect:
             # Option 1
             exempt_income_reduction = p.reduction.rate.calc(
                 total_exempt_income
