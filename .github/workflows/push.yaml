@@ -3,18 +3,15 @@ on:
   push:
     branches: [master]
 jobs:
-  set-default-branch:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Set default branch
-        run: |
-          git config --global init.defaultBranch master
   Lint:
     runs-on: ubuntu-latest
     if: |
       (github.repository == 'PolicyEngine/policyengine-us')
       && (github.event.head_commit.message == 'Update PolicyEngine US')
     steps:
+      - name: Set default branch
+        run: |
+          git config --global init.defaultBranch master
       - uses: actions/checkout@v3
       - name: Check formatting
         uses: "lgeiger/black-action@master"
@@ -27,6 +24,9 @@ jobs:
       && !(github.event.head_commit.message == 'Update PolicyEngine US')
     runs-on: ubuntu-latest
     steps:
+      - name: Set default branch
+        run: |
+          git config --global init.defaultBranch master
       - name: Checkout repo
         uses: actions/checkout@v3
         with:
@@ -58,6 +58,9 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest]
     steps:
+      - name: Set default branch
+        run: |
+          git config --global init.defaultBranch master
       - name: Checkout repo
         uses: actions/checkout@v3
       - name: Set up Python
@@ -87,6 +90,9 @@ jobs:
       (github.repository == 'PolicyEngine/policyengine-us')
       && (github.event.head_commit.message == 'Update PolicyEngine US')
     steps:
+      - name: Set default branch
+        run: |
+          git config --global init.defaultBranch master
       - name: Checkout repo
         uses: actions/checkout@v3
       - name: Setup Python
@@ -106,13 +112,16 @@ jobs:
           password: ${{ secrets.PYPI }}
           skip-existing: true
   Deploy:
+    runs-on: ubuntu-latest
     if: |
       (github.repository == 'PolicyEngine/policyengine-us')
       && (github.event.head_commit.message == 'Update PolicyEngine US')
-    runs-on: ubuntu-latest
     env:
       GH_TOKEN: ${{ secrets.POLICYENGINE_GITHUB }}
     steps:
+      - name: Set default branch
+        run: |
+          git config --global init.defaultBranch master
       - name: Checkout repo
         uses: actions/checkout@v2
         with:
