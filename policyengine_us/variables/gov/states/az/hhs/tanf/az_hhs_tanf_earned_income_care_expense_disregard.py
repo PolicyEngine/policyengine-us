@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class az_hhs_tanf_earned_income_care_expense_disregard(Variable):
     value_type = float
     entity = SPMUnit
-    label = "Arizona Cash Assistance care expense earned income disregard" 
+    label = "Arizona Cash Assistance care expense earned income disregard"
     definition_period = YEAR
     defined_for = StateCode.AZ
 
