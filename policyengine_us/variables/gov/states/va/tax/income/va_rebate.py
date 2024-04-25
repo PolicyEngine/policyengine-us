@@ -12,7 +12,5 @@ class va_rebate(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.va.tax.income.rebate
-        if p.availability:
-            filing_status = tax_unit("filing_status", period)
-            return p.amount[filing_status]
-        return 0
+        filing_status = tax_unit("filing_status", period)
+        return p.amount[filing_status]

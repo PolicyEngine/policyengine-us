@@ -13,11 +13,3 @@
     state_code: VA
   output:
     va_rebate: 400
-
-- name: 2022 single rebate
-  period: 2022
-  input:
-    filing_status: SINGLE
-    state_code: VA
-  output:
-    va_rebate: 0
