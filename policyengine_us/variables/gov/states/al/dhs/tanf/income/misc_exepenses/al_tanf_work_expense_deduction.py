@@ -1,5 +1,6 @@
 from policyengine_us.model_api import *
 
+
 class al_tanf_work_expense_deduction(Variable):
     value_type = float
     entity = SPMUnit

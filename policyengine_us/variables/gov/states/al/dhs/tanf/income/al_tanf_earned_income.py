@@ -1,5 +1,6 @@
 from policyengine_us.model_api import *
 
+
 class al_tanf_earned_income(Variable):
     value_type = float
     entity = SPMUnit
@@ -8,5 +9,3 @@ class al_tanf_earned_income(Variable):
     definition_period = YEAR
 
     adds = "gov.states.al.dhs.tanf.income.earned"
-
-
