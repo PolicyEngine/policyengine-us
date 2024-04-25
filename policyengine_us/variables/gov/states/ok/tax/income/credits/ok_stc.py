@@ -23,18 +23,19 @@ class ok_stc(Variable):
         # ... first way
         income_eligible1 = income <= p.income_limit1
         # ... second way
-        count_dependents = tax_unit("tax_unit_dependents", period)
-        has_dependents = count_dependents > 0
-        elderly_head = tax_unit("age_head", period) >= p.age_minimum
-        elderly_spouse = tax_unit("age_spouse", period) >= p.age_minimum
-        has_elder = elderly_head | elderly_spouse
-        disabled_head = tax_unit("head_is_disabled", period)
-        disabled_spouse = tax_unit("spouse_is_disabled", period)
-        has_disabled = disabled_head | disabled_spouse
-        unit_eligible = has_dependents | has_elder | has_disabled
+        has_dependents = tax_unit("tax_unit_dependents", period) > 0
+        elderly_head_or_spouse = (
+            tax_unit("greater_age_head_spouse", period) >= p.age_minimum
+        )
+        disabled_head_or_spouse = tax_unit(
+            "disabled_tax_unit_head_or_spouse", period
+        )
+        unit_eligible = (
+            has_dependents | elderly_head_or_spouse | disabled_head_or_spouse
+        )
         income_eligible2 = unit_eligible & (income <= p.income_limit2)
         # determine overall eligibility
         eligible = ~tanf_ineligible & (income_eligible1 | income_eligible2)
         # calculate credit if eligible
-        qualified_exemptions = tax_unit("num", period) + count_dependents
+        qualified_exemptions = tax_unit("tax_unit_size", period)
         return eligible * qualified_exemptions * p.amount
