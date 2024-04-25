@@ -28,7 +28,7 @@ class mt_itemized_deductions_joint(Variable):
                 "mt_misc_deductions",
                 "mt_medical_expense_deduction_joint",
                 "mt_salt_deduction",
-                "mt_federal_income_tax_deduction",
+                "mt_federal_income_tax_deduction_unit",
             ],
         )
         is_head = person("is_tax_unit_head", period)
