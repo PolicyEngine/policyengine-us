@@ -1,13 +1,14 @@
-description: Virginia provides a military basic pay subtraction up to this amount for military personnel stationed inside or outside Virginia.
+description: Virginia caps the national guard pay subtraction to this amount.  
 values:
-  2021-01-01: 15_000
+  2021-01-01: 3_000
+  2023-01-01: 5_500
 
 metadata:
   period: year
   unit: currency-USD
-  label: Virginia military basic pay subtraction
+  label: Virginia national guard pay subtraction cap  
   reference:
-  - title: Code of Virginia § 58.1-322.02.(15)
+  - title: Code of Virginia § 58.1-322.02.(8)
     href: https://law.lis.virginia.gov/vacodefull/title58.1/chapter3/article2/
   - title: Virginia 2023 Form 760 Resident Individual Income Tax Instructions
     href: https://www.tax.virginia.gov/sites/default/files/vatax-pdf/2023-760-instructions.pdf#page=26
@@ -15,3 +16,5 @@ metadata:
     href: https://www.tax.virginia.gov/sites/default/files/vatax-pdf/2022-760-instructions.pdf#page=27
   - title: Virginia 2021 Form 760 Resident Individual Income Tax Booklet
     href: https://www.tax.virginia.gov/sites/default/files/vatax-pdf/2021-760-instructions.pdf#page=27
+  - title: Virginia 2023 legislative summary
+    href: https://www.tax.virginia.gov/sites/default/files/inline-files/2023-legislative-summary.pdf#page=16
