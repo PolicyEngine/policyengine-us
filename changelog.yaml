@@ -6834,3 +6834,303 @@
     fixed:
     - Change LA EZ-SAVE to monthly and lag the poverty line.
   date: 2024-03-26 21:46:35
+- bump: minor
+  changes:
+    added:
+    - Oregon 2023 parameter values.
+  date: 2024-03-27 17:03:02
+- bump: minor
+  changes:
+    added:
+    - Include the ky_cdcc to the net income tree.
+  date: 2024-03-29 22:09:50
+- bump: minor
+  changes:
+    added:
+    - 2023 New Mexico Tax Rules.
+  date: 2024-03-31 22:26:12
+- bump: patch
+  changes:
+    fixed:
+    - Add taxable social security to the list of Delaware exclusions.
+  date: 2024-04-01 00:02:30
+- bump: minor
+  changes:
+    added:
+    - Delaware 2023 income tax parameters.
+  date: 2024-04-01 00:10:04
+- bump: minor
+  changes:
+    added:
+    - 2023 Kansas Tax Rules.
+  date: 2024-04-01 22:07:43
+- bump: patch
+  changes:
+    fixed:
+    - Fix Virginia low-income credit calculation.
+    - Fix Virginia itemized deduction calculation.
+  date: 2024-04-02 15:56:44
+- bump: minor
+  changes:
+    added:
+    - Rename widow to surviving spouse.
+  date: 2024-04-02 21:40:33
+- bump: patch
+  changes:
+    fixed:
+    - Kentucky tax unit itemizes deductions logic.
+  date: 2024-04-04 03:29:14
+- bump: patch
+  changes:
+    fixed:
+    - Adjust the widow filing status to surviving spouse in the gov.contrib.biden.budget_2025.capital_gains.income_threshold
+      file.
+  date: 2024-04-04 16:13:37
+- bump: minor
+  changes:
+    added:
+    - Enable the Michigan income tax model and include in the net income tree.
+  date: 2024-04-04 22:18:15
+- bump: minor
+  changes:
+    added:
+    - Enable the Kentucky income tax model and include in the net income tree.
+  date: 2024-04-04 23:53:10
+- bump: minor
+  changes:
+    added:
+    - Arizona Cash Assistance (TANF) child eligibility.
+  date: 2024-04-05 00:05:29
+- bump: minor
+  changes:
+    added:
+    - Remove premium_tax_credit from household net income tree.
+  date: 2024-04-08 03:44:57
+- bump: minor
+  changes:
+    added:
+    - Fix New Mexico low income comprehensive tax rebate calculations.
+  date: 2024-04-08 03:49:34
+- bump: patch
+  changes:
+    fixed:
+    - Adjust the Delaware elderly or disabled exclusion to represent the case where
+      married couples file jointly.
+  date: 2024-04-09 02:59:20
+- bump: patch
+  changes:
+    fixed:
+    - Floor irs_employment_income at zero.
+  date: 2024-04-11 02:29:17
+- bump: minor
+  changes:
+    added:
+    - Separate out eligibility variables for NYC STC to allow for more flexible policy
+      modeling.
+  date: 2024-04-11 12:31:09
+- bump: minor
+  changes:
+    added:
+    - Allocate the Delaware itemized deductions based on federal AGI.
+  date: 2024-04-11 17:53:36
+- bump: patch
+  changes:
+    fixed:
+    - Delaware itemized deductions logic.
+  date: 2024-04-11 17:58:58
+- bump: minor
+  changes:
+    added:
+    - Michigan Expanded Deduction for Retirement and Pension Benefits.
+  date: 2024-04-11 18:12:49
+- bump: patch
+  changes:
+    fixed:
+    - Tax only half of long-term capital gains in Arkansas.
+  date: 2024-04-11 20:46:15
+- bump: minor
+  changes:
+    added:
+    - 2023 NYC tax rules.
+  date: 2024-04-12 14:55:04
+- bump: minor
+  changes:
+    added:
+    - Include Maine to the list of modelled policies.
+  date: 2024-04-12 20:20:03
+- bump: minor
+  changes:
+    added:
+    - Iowa 2023-2026 tax rates.
+    - 2023 Iowa pension income exclusion logic.
+    - 2023 Iowa alternative minimum tax logic.
+    - Disable married filing separately on the same return in Iowa past 2023.
+  date: 2024-04-12 20:25:53
+- bump: patch
+  changes:
+    fixed:
+    - Delaware _joint AGI and deductions variable attribution.
+  date: 2024-04-12 20:36:40
+- bump: minor
+  changes:
+    added:
+    - Adjust the NY Empire State Child Credit to take into account the full ctc amounts.
+  date: 2024-04-13 17:39:21
+- bump: patch
+  changes:
+    fixed:
+    - Delaware itemized deduction decision logic.
+  date: 2024-04-14 17:20:33
+- bump: minor
+  changes:
+    added:
+    - Colorado HB24-1311 Family Affordability Tax Credit.
+  date: 2024-04-14 20:10:18
+- bump: minor
+  changes:
+    added:
+    - 2023 New Hampshire tax rules.
+  date: 2024-04-14 21:21:29
+- bump: minor
+  changes:
+    added:
+    - Enable remaining state income tax models and include in the net income tree.
+  date: 2024-04-15 14:20:43
+- bump: patch
+  changes:
+    add:
+    - Add Old Age Pension grant standard for 2024
+  date: 2024-04-15 19:08:43
+- bump: minor
+  changes:
+    fixes:
+    - Mississippi taxable income.
+  date: 2024-04-16 00:09:30
+- bump: minor
+  changes:
+    added:
+    - 2023 DC Tax Rules.
+  date: 2024-04-16 00:34:07
+- bump: minor
+  changes:
+    added:
+    - DC "Give SNAP A Raise" program.
+  date: 2024-04-16 17:55:38
+- bump: minor
+  changes:
+    added:
+    - 2023 Oklahoma Tax Rules.
+  date: 2024-04-16 18:05:04
+- bump: patch
+  changes:
+    fixed:
+    - Arkansas capital gains tax calculations.
+  date: 2024-04-17 16:09:32
+- bump: minor
+  changes:
+    added:
+    - Use CBO projection for personal exemption.
+  date: 2024-04-17 16:41:57
+- bump: patch
+  changes:
+    fixed:
+    - Consolidated state level additions variables across all state models
+  date: 2024-04-17 20:43:19
+- bump: patch
+  changes:
+    fixed:
+    - Remove the Mississippi married filing combined logic.
+  date: 2024-04-19 05:22:04
+- bump: minor
+  changes:
+    fixes:
+    - New York household credit calculation.
+  date: 2024-04-19 05:38:25
+- bump: patch
+  changes:
+    fixed:
+    - Attribute the standard and itemized deductions in Montana to each spouse respectively.
+  date: 2024-04-19 14:52:52
+- bump: minor
+  changes:
+    added:
+    - IRS PUF variables under their original names.
+  date: 2024-04-22 21:11:00
+- bump: patch
+  changes:
+    fixed:
+    - Include the Mississippi real estate tax deduction.
+  date: 2024-04-22 23:01:24
+- bump: minor
+  changes:
+    added:
+    - 2023 Rhode Island Tax Rules.
+  date: 2024-04-22 23:34:33
+- bump: minor
+  changes:
+    added:
+    - 2023 Louisiana tax rules.
+  date: 2024-04-23 01:31:48
+- bump: minor
+  changes:
+    added:
+    - 2023 West Virginia tax rules.
+  date: 2024-04-23 01:42:03
+- bump: minor
+  changes:
+    added:
+    - 2023 Kentucky tax rules.
+  date: 2024-04-23 02:11:03
+- bump: patch
+  changes:
+    fixed:
+    - skip_existing in PyPI publish workflow
+  date: 2024-04-23 06:46:02
+- bump: minor
+  changes:
+    added:
+    - Change the Colorado family affordability credit file name.
+  date: 2024-04-23 16:42:53
+- bump: patch
+  changes:
+    fixed:
+    - Reduce the Arkansas taxable long term capital gains by the short term capital
+      losses.
+  date: 2024-04-23 17:20:45
+- bump: minor
+  changes:
+    added:
+    - Adjust the Missouri deductions metadata.
+  date: 2024-04-23 18:20:42
+- bump: patch
+  changes:
+    fixes:
+    - Add Mississippi tax unit itemizes variable.
+  date: 2024-04-24 04:49:34
+- bump: patch
+  changes:
+    fixed:
+    - Prorate the Montana federal income tax deduction based on Montana AGI.
+  date: 2024-04-24 17:29:04
+- bump: patch
+  changes:
+    added:
+    - Illinois metadata clean-up.
+    - Read me files.
+    - Removed per-vehicle payment files.
+  date: 2024-04-24 17:35:42
+- bump: patch
+  changes:
+    added:
+    - 2023 Virginia Tax Rules.
+  date: 2024-04-25 18:37:03
+- bump: minor
+  changes:
+    added:
+    - 2023 Utah Tax Rules.
+  date: 2024-04-25 19:41:13
+- bump: minor
+  changes:
+    added:
+    - 2023 Idaho Tax Rules.
+  date: 2024-04-25 19:55:16
