@@ -5,7 +5,7 @@ class az_hhs_tanf_earned_income_care_expense_disregard(Variable):
     value_type = float
     entity = SPMUnit
     label = "Arizona Cash Assistance care expense earned income disregard"
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = StateCode.AZ
 
     def formula(spm_unit, period, parameters):
@@ -17,7 +17,7 @@ class az_hhs_tanf_earned_income_care_expense_disregard(Variable):
         age = person("age", period)
         # Get the childcare and disabled adult care expenses
         care_expenses = spm_unit("childcare_expenses", period)
-
+        monthly_care_expenses = care_expenses / MONTHS_IN_YEAR
         # Determine the total eligible disregard
         # The eligibility reuquirements consider wither children or disabled adults
         young_eligible_child = age < p.child_age
@@ -36,7 +36,7 @@ class az_hhs_tanf_earned_income_care_expense_disregard(Variable):
             ],
             default=0,
         )
-        total_disregard = spm_unit.sum(disregard_amount) * MONTHS_IN_YEAR
+        total_disregard = spm_unit.sum(disregard_amount)
 
         # The disregard is capped at the expenses
-        return min_(care_expenses, total_disregard)
+        return min_(monthly_care_expenses, total_disregard)
