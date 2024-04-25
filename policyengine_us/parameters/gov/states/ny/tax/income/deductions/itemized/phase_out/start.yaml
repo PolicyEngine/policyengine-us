@@ -1,18 +1,25 @@
 description: Federal AGI over this threshold phases out itemized deductions for NY State income tax.
 SINGLE:
   2021-01-01: 282_400
+  2023-01-01: 313_200
 JOINT:
-  2021-01-01: 310_600
+  2021-01-01: 338_850
+  2023-01-01: 375_850
 SURVIVING_SPOUSE:
-  2021-01-01: 310_600
+  2021-01-01: 338_850
+  2023-01-01: 375_850
 SEPARATE:
   2021-01-01: 169_400
+  2023-01-01: 187_900
 HEAD_OF_HOUSEHOLD:
   2021-01-01: 310_600
+  2023-01-01: 344_500
 metadata:
   unit: currency-USD
   period: year
   label: NY itemized deduction phase out start
   reference:
-    - title: NY Form IT-196 Instructions, page 18
-      href: https://www.tax.ny.gov/pdf/current_forms/it/it196i.pdf#page=18
+    - title: 2021 NY Form IT-196 Instructions Line 40
+      href: https://www.tax.ny.gov/pdf/2021/inc/it196i_2021.pdf#page=18
+    - title: 2023 NY Form IT-196 Instructions Line 40
+      href: https://www.tax.ny.gov/pdf/2023/printable-pdfs/inc/it196i-2023.pdf#page=25
