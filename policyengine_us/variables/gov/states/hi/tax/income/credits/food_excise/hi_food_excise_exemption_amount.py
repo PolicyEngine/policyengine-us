@@ -19,14 +19,6 @@ class hi_food_excise_exemption_amount(Variable):
         #   which normally include additional exemptions for aged and
         #   disabled people, but excludes those additional exemptions
         #   for this program.
-        exemptions = tax_unit("exemptions_count", period)
-        # Reduce number of exemptions by the number of minor children
-        minor_children = tax_unit(
-            "hi_food_excise_credit_minor_child_count", period
-        )
-        claimable_exemptions = where(
-            minor_child_include, exemptions - minor_children, exemptions
-        )
         # Determine amount per exemption based on income and filing status
         filing_status = tax_unit("filing_status", period)
         status = filing_status.possible_values
@@ -46,5 +38,12 @@ class hi_food_excise_exemption_amount(Variable):
                 p.amount.surviving_spouse.calc(income),
             ],
         )
-
-        return claimable_exemptions * amount_per_exemption
+        exemptions = tax_unit("exemptions_count", period)
+        if p.minor_child.availability:
+            # Reduce number of exemptions by the number of minor children
+            minor_children = tax_unit(
+                "hi_food_excise_credit_minor_child_count", period
+            )
+            claimable_exemptions = exemptions - minor_children
+            return claimable_exemptions * amount_per_exemption
+        return exemptions * amount_per_exemption

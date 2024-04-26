@@ -1,9 +1,9 @@
-description: Hawaii allows a fixed amount under the Food/Excise Tax Credit for each minor child receiving support from public agencies if this is true.
+description: Hawaii multiplies the number of minor children by a fixed amount, if this is true, based on year under the Food/Excise Tax Credit. 
 values:
   2021-01-01: true
   2023-01-01: false 
 metadata:
-  unit: currency-USD
+  unit: bool
   label: Hawaii Food/Excise Tax Credit minor child fixed amount availability 
   reference:
     - title: Hawaii Income Tax Law, Chapter 235, Section 235-55.85, (c)
