@@ -13,5 +13,16 @@ class al_retirement_exemption_person(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.al.tax.income.exemptions.retirement
-        retirement_income = add(person, period, ["taxable_ira_distributions", "taxable_401k_distributions","taxable_sep_distributions","taxable_403b_distributions","keogh_distributions","taxable_pension_income"])
+        retirement_income = add(
+            person,
+            period,
+            [
+                "taxable_ira_distributions",
+                "taxable_401k_distributions",
+                "taxable_sep_distributions",
+                "taxable_403b_distributions",
+                "keogh_distributions",
+                "taxable_pension_income",
+            ],
+        )
         return min_(retirement_income, p.cap)
