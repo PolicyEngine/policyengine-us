@@ -17,7 +17,7 @@ class mt_income_tax_before_non_refundable_credits_indiv(Variable):
             period,
         )
         status = filing_status.possible_values
-        if p.capital_gains.availability:
+        if p.capital_gains.in_effect:
             capital_gains = person("long_term_capital_gains", period)
             taxable_income = max_(taxable_income - capital_gains, 0)
             capital_gains_tax = person("mt_capital_gains_tax_indiv", period)

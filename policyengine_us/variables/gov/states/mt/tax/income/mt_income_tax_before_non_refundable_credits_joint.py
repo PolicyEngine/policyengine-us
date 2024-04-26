@@ -15,7 +15,7 @@ class mt_income_tax_before_non_refundable_credits_joint(Variable):
         filing_status = tax_unit("filing_status", period)
         status = filing_status.possible_values
 
-        if p.capital_gains.availability:
+        if p.capital_gains.in_effect:
             capital_gains = add(tax_unit, period, ["long_term_capital_gains"])
             taxable_income = max_(taxable_income - capital_gains, 0)
             capital_gains_tax = add(
