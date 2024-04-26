@@ -5,6 +5,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.752.1] - 2024-04-26 00:39:06
+
+### Fixed
+
+- Reduce the Louisiana exempt income in 2021.
+
+## [0.752.0] - 2024-04-25 19:55:16
+
+### Added
+
+- 2023 Idaho Tax Rules.
+
+## [0.751.0] - 2024-04-25 19:41:13
+
+### Added
+
+- 2023 Utah Tax Rules.
+
+## [0.750.4] - 2024-04-25 18:37:03
+
+### Added
+
+- 2023 Virginia Tax Rules.
+
 ## [0.750.3] - 2024-04-24 17:35:42
 
 ### Added
@@ -8330,6 +8354,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.752.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.752.0...0.752.1
+[0.752.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.751.0...0.752.0
+[0.751.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.750.4...0.751.0
+[0.750.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.750.3...0.750.4
 [0.750.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.750.2...0.750.3
 [0.750.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.750.1...0.750.2
 [0.750.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.750.0...0.750.1
