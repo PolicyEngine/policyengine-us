@@ -2,7 +2,12 @@
   period: 2023
   input:
     al_retirement_exemption_eligible_person: true
-    taxable_pension_income: 5_999
+    taxable_pension_income: 999
+    taxable_ira_distributions: 1_000
+    taxable_401k_distributions: 1_000
+    taxable_sep_distributions: 1_000
+    taxable_403b_distributions: 1_000
+    keogh_distributions: 1_000
     state_code: AL
   output:
     al_retirement_exemption_person: 5_999
@@ -11,7 +16,12 @@
   period: 2023
   input:
     al_retirement_exemption_eligible_person: true
-    taxable_pension_income: 8_000
+    taxable_pension_income: 3_000
+    taxable_ira_distributions: 1_000
+    taxable_401k_distributions: 1_000
+    taxable_sep_distributions: 1_000
+    taxable_403b_distributions: 1_000
+    keogh_distributions: 1_000
     state_code: AL
   output:
     al_retirement_exemption_person: 6_000
@@ -20,7 +30,12 @@
   period: 2023
   input:
     al_retirement_exemption_eligible_person: false
-    taxable_pension_income: 8_000
+    taxable_pension_income: 999
+    taxable_ira_distributions: 1_000
+    taxable_401k_distributions: 1_000
+    taxable_sep_distributions: 1_000
+    taxable_403b_distributions: 1_000
+    keogh_distributions: 1_000
     state_code: AL
   output:
     al_retirement_exemption_person: 0
