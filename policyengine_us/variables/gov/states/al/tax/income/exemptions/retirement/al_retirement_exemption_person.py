@@ -17,7 +17,7 @@ class al_retirement_exemption_person(Variable):
             person,
             period,
             [
-                "taxable_ira_distributions",
+                "taxable_retirement_distributions", "taxable_pension_income"]
                 "taxable_401k_distributions",
                 "taxable_sep_distributions",
                 "taxable_403b_distributions",
