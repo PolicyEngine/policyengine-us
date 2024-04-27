@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.752.1] - 2024-04-26 00:39:06
+
+### Fixed
+
+- Reduce the Louisiana exempt income in 2021.
+
 ## [0.752.0] - 2024-04-25 19:55:16
 
 ### Added
@@ -8348,6 +8354,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.752.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.752.0...0.752.1
 [0.752.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.751.0...0.752.0
 [0.751.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.750.4...0.751.0
 [0.750.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.750.3...0.750.4
