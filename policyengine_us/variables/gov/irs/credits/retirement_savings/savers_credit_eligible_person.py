@@ -6,7 +6,7 @@ class savers_credit_eligible_person(Variable):
     definition_period = YEAR
     label = "Eligible person for the retirement saving contributions credit"
     value_type = bool
-    reference = "https://www.irs.gov/pub/irs-pdf/f8880.pdf"
+    reference = ("https://www.irs.gov/pub/irs-pdf/f8880.pdf" , "https://www.law.cornell.edu/uscode/text/26/25B#c")
 
     def formula(person, period, parameters):
         p = parameters(period).gov.irs.credits.retirement_saving

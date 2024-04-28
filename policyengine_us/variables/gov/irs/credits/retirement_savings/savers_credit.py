@@ -7,7 +7,7 @@ class savers_credit(Variable):
     definition_period = YEAR
     label = "Retirement Savings Credit"
     unit = USD
-    reference = "https://www.irs.gov/pub/irs-pdf/f8880.pdf"
+    reference = ("https://www.irs.gov/pub/irs-pdf/f8880.pdf" , "https://www.law.cornell.edu/uscode/text/26/25B#c")
     defined_for = "savers_credit_agi_eligible"
 
     def formula(tax_unit, period, parameters):
