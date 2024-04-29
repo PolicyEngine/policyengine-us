@@ -18,25 +18,24 @@ brackets:
       2023-01-01: 137_550
     rate:
       2021-01-01: 0.0227
-      2023-01-01: 0.0250
+      2023-01-01: 0.025
   - threshold:
       2021-01-01: 124_575
       2022-01-01: 128_325
       2023-01-01: .inf
     rate:
       2021-01-01: 0.0264
-      2023-01-01: 0.0250
+      2023-01-01: 0.025
   - threshold:
       2021-01-01: 222_500
       2022-01-01: 229_175
       2023-01-01: .inf
     rate:
       2021-01-01: 0.029
-      2023-01-01: 0.0250
+      2023-01-01: 0.025
         
 metadata:
   threshold_unit: USD
-  uprating: gov.irs.uprating
   rate_unit: /1
   threshold_period: year
   type: marginal_rate
