@@ -16,7 +16,6 @@ class al_retirement_exemption_person(Variable):
         retirement_income = add(
             person,
             period,
-            [
-                "taxable_retirement_distributions", "taxable_pension_income"]
+            ["taxable_retirement_distributions", "taxable_pension_income"],
         )
         return min_(retirement_income, p.cap)
