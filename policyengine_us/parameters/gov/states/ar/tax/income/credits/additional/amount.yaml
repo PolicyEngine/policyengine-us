@@ -20,66 +20,144 @@ metadata:
       href: https://advance.lexis.com/documentpage/?pdmfid=1000516&crid=2719ecb8-71fd-4c50-bace-d63d7b801485&config=00JAA2ZjZiM2VhNS0wNTVlLTQ3NzUtYjQzYy0yYWZmODJiODRmMDYKAFBvZENhdGFsb2fXiYCnsel0plIgqpYkw9PK&pddocfullpath=%2Fshared%2Fdocument%2Fstatutes-legislation%2Furn%3AcontentItem%3A649P-H2K0-R03M-P4RB-00008-00&pdcontentcomponentid=234170&pdteaserkey=sr0&pditab=allpods&ecomp=6s65kkk&earg=sr0&prid=6b439d82-575d-4e67-a5b7-0f4dbcc1a0f0
 brackets:
   - threshold:
-      2022-01-01: 0
+      2022-01-01: -1
     amount:
       2022-01-01: 60
+    metadata:
+      uprating:
+        parameter: gov.irs.uprating
+        rounding:
+          type: downwards
+          interval: 100
   - threshold:
       2022-01-01: 24_300
       2023-01-01: 25_000
     amount:
       2022-01-01: 55
+    metadata:
+      uprating:
+        parameter: gov.irs.uprating
+        rounding:
+          type: downwards
+          interval: 100
   - threshold:
       2022-01-01: 24_400
       2023-01-01: 25_100
     amount:
       2022-01-01: 50
+    metadata:
+      uprating:
+        parameter: gov.irs.uprating
+        rounding:
+          type: downwards
+          interval: 100
   - threshold:
       2022-01-01: 24_500
-      2023-01-01: 25_201
+      2023-01-01: 25_200
     amount:
       2022-01-01: 45
+    metadata:
+      uprating:
+        parameter: gov.irs.uprating
+        rounding:
+          type: downwards
+          interval: 100
   - threshold:
-      2022-01-01: 24_601
-      2023-01-01: 25_301
+      2022-01-01: 24_600
+      2023-01-01: 25_300
     amount:
       2022-01-01: 40
+    metadata:
+      uprating:
+        parameter: gov.irs.uprating
+        rounding:
+          type: downwards
+          interval: 100
   - threshold:
-      2022-01-01: 24_701
-      2023-01-01: 25_401
+      2022-01-01: 24_700
+      2023-01-01: 25_400
     amount:
       2022-01-01: 35
+    metadata:
+      uprating:
+        parameter: gov.irs.uprating
+        rounding:
+          type: downwards
+          interval: 100
   - threshold:
-      2022-01-01: 24_801
-      2023-01-01: 25_501
+      2022-01-01: 24_800
+      2023-01-01: 25_500
     amount:
       2022-01-01: 30
+    metadata:
+      uprating:
+        parameter: gov.irs.uprating
+        rounding:
+          type: downwards
+          interval: 100
   - threshold:
-      2022-01-01: 24_901
-      2023-01-01: 25_601
+      2022-01-01: 24_900
+      2023-01-01: 25_600
     amount:
       2022-01-01: 25
+    metadata:
+      uprating:
+        parameter: gov.irs.uprating
+        rounding:
+          type: downwards
+          interval: 100
   - threshold:
-      2022-01-01: 25_001
-      2023-01-01: 25_701
+      2022-01-01: 25_000
+      2023-01-01: 25_700
     amount:
       2022-01-01: 20
+    metadata:
+      uprating:
+        parameter: gov.irs.uprating
+        rounding:
+          type: downwards
+          interval: 100
   - threshold:
-      2022-01-01: 25_101
-      2023-01-01: 25_801
+      2022-01-01: 25_100
+      2023-01-01: 25_800
     amount:
       2022-01-01: 15
+    metadata:
+      uprating:
+        parameter: gov.irs.uprating
+        rounding:
+          type: downwards
+          interval: 100
   - threshold:
-      2022-01-01: 25_201
-      2023-01-01: 25_901
+      2022-01-01: 25_200
+      2023-01-01: 25_900
     amount:
       2022-01-01: 10
+    metadata:
+      uprating:
+        parameter: gov.irs.uprating
+        rounding:
+          type: downwards
+          interval: 100
   - threshold:
-      2022-01-01: 25_301
-      2023-01-01: 26_001
+      2022-01-01: 25_300
+      2023-01-01: 26_000
     amount:
       2022-01-01: 5
+    metadata:
+      uprating:
+        parameter: gov.irs.uprating
+        rounding:
+          type: downwards
+          interval: 100
   - threshold:
-      2022-01-01: 25_401
-      2023-01-01: 26_101
+      2022-01-01: 25_400
+      2023-01-01: 26_100
     amount:
       2022-01-01: 0
+    metadata:
+      uprating:
+        parameter: gov.irs.uprating
+        rounding:
+          type: downwards
+          interval: 100
