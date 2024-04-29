@@ -12,5 +12,5 @@ class ks_agi(Variable):
         "https://www.ksrevenue.gov/pdf/ip22.pdf"
     )
     defined_for = StateCode.KS
-    adds = ["adjusted_gross_income", "ks_agi_additions"]
+    adds = ["adjusted_gross_income", "ks_additions"]
     subtracts = ["ks_agi_subtractions"]
