@@ -2,7 +2,7 @@ description: IRS multiplies the qualified contributions by the following rate fo
 metadata:
   type: single_amount
   threshold_unit: currency-USD
-  rate_unit: /1
+  ramount_unit: /1
   period: year
   label: Saver’s Credit joint rate
   reference: 
@@ -17,7 +17,7 @@ brackets:
   - threshold:
       2019-01-01: 0
     amount:
-      2019-01-01: 1
+      2019-01-01: 0.5
   - threshold:
       2019-01-01: 38_500
       2020-01-01: 39_000
@@ -25,7 +25,7 @@ brackets:
       2022-01-01: 41_000
       2023-01-01: 43_500
     amount:
-      2019-01-01: 0.5
+      2019-01-01: 0.2
   - threshold:
       2019-01-01: 41_500
       2020-01-01: 42_500
@@ -33,7 +33,7 @@ brackets:
       2022-01-01: 44_000
       2023-01-01: 47_500
     amount:
-      2019-01-01: 0.2
+      2019-01-01: 0.1
   - threshold:
       2019-01-01: 64_000
       2020-01-01: 65_000
@@ -41,4 +41,4 @@ brackets:
       2022-01-01: 68_000
       2023-01-01: 73_000
     amount:
-      2019-01-01: 0.1
+      2019-01-01: 0
