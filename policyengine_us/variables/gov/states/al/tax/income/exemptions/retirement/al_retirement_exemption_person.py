@@ -18,11 +18,5 @@ class al_retirement_exemption_person(Variable):
             period,
             [
                 "taxable_retirement_distributions", "taxable_pension_income"]
-                "taxable_401k_distributions",
-                "taxable_sep_distributions",
-                "taxable_403b_distributions",
-                "keogh_distributions",
-                "taxable_pension_income",
-            ],
         )
         return min_(retirement_income, p.cap)
