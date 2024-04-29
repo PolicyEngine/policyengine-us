@@ -23,9 +23,7 @@ class nj_childless_eitc_age_eligible(Variable):
 
         # Check if the filer meets NJ EITC age requirements.
         age = person("age", period)
-        min_age = p.eligibility.age.min
-        max_age = p.eligibility.age.max
-        age_eligible = (age >= min_age) & (age <= max_age)
+        age_eligible = age >= p.eligibility.age.min
 
         return (
             ~separate

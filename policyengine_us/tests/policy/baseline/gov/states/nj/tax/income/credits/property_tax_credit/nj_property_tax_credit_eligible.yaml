@@ -3,6 +3,7 @@
   absolute_error_margin: 0
   input:
     nj_property_tax_deduction_eligible: false
+    real_estate_taxes: 0 
     rents: true
     age_head: 64
     age_spouse: 64
@@ -21,6 +22,7 @@
   absolute_error_margin: 0
   input:
     nj_property_tax_deduction_eligible: true
+    real_estate_taxes: 0 
     rents: true
     age_head: 64
     age_spouse: 64
@@ -39,6 +41,7 @@
   absolute_error_margin: 0
   input:
     nj_property_tax_deduction_eligible: false
+    real_estate_taxes: 0 
     rents: true
     age_head: 66
     age_spouse: 64
@@ -57,6 +60,7 @@
   absolute_error_margin: 0
   input:
     nj_property_tax_deduction_eligible: false
+    real_estate_taxes: 0 
     rents: true
     age_head: 64
     age_spouse: 64
@@ -75,6 +79,7 @@
   absolute_error_margin: 0
   input:
     nj_property_tax_deduction_eligible: false
+    real_estate_taxes: 0 
     rents: false
     age_head: 66
     age_spouse: 64
@@ -100,6 +105,7 @@
         taxable_interest_income: 11_010
         taxable_private_pension_income: 1_000
         social_security: 6_000
+        real_estate_taxes: 0 
         ssi: 0  # not in TAXSIM35
         state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
@@ -116,7 +122,7 @@
     tax_units:
       tax_unit:
         nj_property_tax_deduction_eligible: true
-        members: [person1, person2, person3]
+        members: [person1, person2, person3] 
         rents: 8_000
         tax_unit_childcare_expenses: 4_000
         premium_tax_credit: 0  # not in TAXSIM35
@@ -141,6 +147,7 @@
   absolute_error_margin: 0
   input:
     nj_property_tax_deduction_eligible: false
+    real_estate_taxes: 0 
     rents: true
     age_head: 64
     age_spouse: 64

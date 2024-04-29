@@ -1,4 +1,4 @@
-- name: Eligible for the New Jersey child tax credit.
+- name: NJ residents that are not filing as separate are eligible for the New Jersey child tax credit.
   period: 2022
   input:
     filing_status: SINGLE
@@ -6,7 +6,7 @@
   output:
     nj_ctc_eligible: true
 
-- name: Ineligible for the New Jersey child tax credit.
+- name: Separate filers are ineligible for the New Jersey child tax credit.
   period: 2022
   input:
     filing_status: SEPARATE
