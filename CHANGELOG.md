@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.754.0] - 2024-04-29 16:34:36
+
+### Added
+
+- 2023 Ohio Tax Rules.
+
 ## [0.753.0] - 2024-04-29 12:59:19
 
 ### Added
@@ -8360,6 +8366,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.754.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.753.0...0.754.0
 [0.753.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.752.1...0.753.0
 [0.752.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.752.0...0.752.1
 [0.752.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.751.0...0.752.0
