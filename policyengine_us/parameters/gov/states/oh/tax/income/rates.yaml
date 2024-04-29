@@ -13,6 +13,12 @@ brackets:
       values:
         2021-01-01: 25_000
         2022-01-01: 26_050
+        2023-01-01: 26_050
+      uprating:
+        parameter: gov.irs.uprating
+        rounding:
+          type: downwards
+          interval: 50
     rate:
       2021-01-01: 0.02765
       2023-01-01: 0.0275
@@ -21,6 +27,11 @@ brackets:
         2021-01-01: 44_250
         2022-01-01: 46_100
         2023-01-01: 100_000
+      uprating:
+        parameter: gov.irs.uprating
+        rounding:
+          type: downwards
+          interval: 50
     rate:
       2021-01-01: 0.03226
       2023-01-01: 0.03688
@@ -49,7 +60,7 @@ metadata:
   type: marginal_rate
   label: OH AGI Income Tax Rate
   reference:
-    - title: Ohio Tax Rate Schedule
+    - title: Section 5747.02 | Tax rates.
       href: https://codes.ohio.gov/ohio-revised-code/section-5747.02
     - title: Ohio Income Tax Form 2021 Instructions
       href: https://tax.ohio.gov/static/forms/ohio_individual/individual/2021/pit-it1040-booklet.pdf#page=31
