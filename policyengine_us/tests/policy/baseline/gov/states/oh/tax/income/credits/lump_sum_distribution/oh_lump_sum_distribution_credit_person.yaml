@@ -24,3 +24,21 @@
     age: 70
   output: 
     oh_lump_sum_distribution_credit_person: 800
+
+- name: Ohio lump sum distribution credit for filer aged 100
+  period: 2022
+  input:
+    state_code: OH
+    oh_lump_sum_distribution_credit_eligible_person: true
+    age: 108
+  output: 
+    oh_lump_sum_distribution_credit_person: 70
+
+- name: Ohio lump sum distribution credit for filer aged 100
+  period: 2023
+  input:
+    state_code: OH
+    oh_lump_sum_distribution_credit_eligible_person: true
+    age: 108
+  output: 
+    oh_lump_sum_distribution_credit_person: 70
