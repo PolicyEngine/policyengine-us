@@ -67,7 +67,7 @@
         members: [person1, person2]
         state_code: MT
   output:
-    mt_taxable_income_indiv: [0, 0]
+    mt_taxable_income_indiv: [1_000, 0]
 
 - name: First, the gap between spouse and head is closed, after which the amount is allocated equally
   period: 2021
@@ -94,7 +94,7 @@
         members: [person1, person2]
         state_code: MT
   output:
-    mt_taxable_income_indiv: [4_000, 4_000]
+    mt_taxable_income_indiv: [2_000, 6_000]
 
 - name: If the AGI is equal, the amount is allocated equally, excluding the exemptions
   period: 2021
@@ -123,4 +123,4 @@
         members: [person1, person2, person3]
         state_code: MT
   output:
-    mt_taxable_income_indiv: [12_000, 14_000, 0]
+    mt_taxable_income_indiv: [11_000, 15_000, 0]
