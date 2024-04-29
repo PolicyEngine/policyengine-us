@@ -1,10 +1,10 @@
 description: Ohio provides a joint filing credit equal to a fraction of tax liability less these non-refundable tax credits.
 values:
   2021-01-01:
-    - oh_cdcc
-    - oh_senior_citizen_credit 
-    - oh_retirement_credit 
-    - oh_exemption_credit 
+    - oh_cdcc # line 6
+    - oh_senior_citizen_credit # line 4
+    - oh_retirement_credit # line 2
+    - oh_exemption_credit # line 9
 metadata:
   unit: list
   period: year
