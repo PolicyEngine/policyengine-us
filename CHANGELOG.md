@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.755.0] - 2024-04-30 02:07:09
+
+### Added
+
+- 2023 SNAP utility allowances for Colorado
+
 ## [0.754.0] - 2024-04-29 16:34:36
 
 ### Added
@@ -8366,6 +8372,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.755.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.754.0...0.755.0
 [0.754.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.753.0...0.754.0
 [0.753.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.752.1...0.753.0
 [0.752.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.752.0...0.752.1
