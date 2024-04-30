@@ -13,9 +13,12 @@ class ma_dependent_or_dependent_care_credit(Variable):
     defined_for = StateCode.MA
 
     def formula(tax_unit, period, parameters):
+        p = parameters(period).gov.states.ma.tax.income.credits.dependent_care
         # MA taxpayers can only take either the dependent credit or the
         # dependent care credit.
-        return max_(
-            tax_unit("ma_dependent_credit", period),
-            tax_unit("ma_dependent_care_credit", period),
-        )
+        if p.in_effect:
+            return max_(
+                tax_unit("ma_dependent_credit", period),
+                tax_unit("ma_dependent_care_credit", period),
+            )
+        return tax_unit("ma_dependent_credit", period)

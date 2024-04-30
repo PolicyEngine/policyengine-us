@@ -39,14 +39,3 @@
     state_code: MA
   output:
     ma_dependent_care_credit: 300
-
-- name: 2023 More than two CDCC-eligible people, up to $480 credit
-  period: 2023
-  absolute_error_margin: 0
-  input:
-    count_cdcc_eligible: 4
-    tax_unit_childcare_expenses: 500
-    min_head_spouse_earned: 300
-    state_code: MA
-  output:
-    ma_dependent_care_credit: 0

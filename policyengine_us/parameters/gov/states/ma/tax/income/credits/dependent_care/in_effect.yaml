@@ -1,11 +1,11 @@
-description: Massachusetts replaces the Dependent Care Tax Credit on the following year.
+description: Massachusetts replaces the Dependent Care Tax Credit with the Child and Family Tax Credit if this is true.  
 values:
   2021-01-01: true  
   2023-01-01: false
 metadata:
   unit: bool
   period: year
-  label: Massachusetts Dependent Care Tax Credit availability
+  label: Massachusetts Dependent Care Tax Credit in effect
   reference:
     - title: Mass. General Laws c.62 § 6(x)
       href: https://www.mass.gov/info-details/mass-general-laws-c62-ss-6#(x)-
