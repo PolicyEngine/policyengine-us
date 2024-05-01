@@ -11,4 +11,3 @@ class ssi_marital_both_eligible(Variable):
         eligible = person("is_ssi_aged_blind_disabled", period)
 
         return person.marital_unit.sum(eligible) == 2
-

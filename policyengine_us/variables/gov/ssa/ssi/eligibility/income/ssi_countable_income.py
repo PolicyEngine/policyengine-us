@@ -21,8 +21,7 @@ class ssi_countable_income(Variable):
 
         personal_income = _apply_ssi_exclusions(
             earned_income,
-            unearned_income
-            + parental_income_deemed_as_unearned_income,
+            unearned_income + parental_income_deemed_as_unearned_income,
             parameters,
             period,
         )

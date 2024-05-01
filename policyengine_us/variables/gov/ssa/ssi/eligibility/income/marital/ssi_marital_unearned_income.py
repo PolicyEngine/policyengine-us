@@ -12,8 +12,7 @@ class ssi_marital_unearned_income(Variable):
         unearned_income = person("ssi_unearned_income", period)
 
         return where(
-                both_eligible,
-                person.marital_unit.sum(unearned_income),
-                unearned_income,
+            both_eligible,
+            person.marital_unit.sum(unearned_income),
+            unearned_income,
         )
-

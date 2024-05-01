@@ -12,8 +12,7 @@ class ssi_marital_earned_income(Variable):
         earned_income = person("ssi_earned_income", period)
 
         return where(
-                both_eligible,
-                person.marital_unit.sum(earned_income),
-                earned_income,
+            both_eligible,
+            person.marital_unit.sum(earned_income),
+            earned_income,
         )
-
