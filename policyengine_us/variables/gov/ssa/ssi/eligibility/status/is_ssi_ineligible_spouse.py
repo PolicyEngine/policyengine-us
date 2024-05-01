@@ -11,4 +11,5 @@ class is_ssi_ineligible_spouse(Variable):
 
     def formula(person, period, parameters):
         spouse = person("is_tax_unit_spouse", period)
-        return spouse & ~person("is_ssi_eligible_spouse", period)
+        eligible = person("is_ssi_aged_blind_disabled", period)
+        return spouse & ~person("is_ssi_eligible_spouse", period) & ~eligible
