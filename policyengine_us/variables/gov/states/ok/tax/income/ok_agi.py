@@ -12,5 +12,5 @@ class ok_agi(Variable):
         "https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/current/511-Pkt.pdf"
     )
     defined_for = StateCode.OK
-    adds = ["adjusted_gross_income", "ok_agi_additions"]
+    adds = ["adjusted_gross_income", "ok_additions"]
     subtracts = ["ok_agi_subtractions"]
