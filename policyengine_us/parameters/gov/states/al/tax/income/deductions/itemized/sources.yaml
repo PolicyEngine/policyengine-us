@@ -13,6 +13,17 @@ values:
     - al_misc_deduction # Section (a), (23)
     - al_interest_deduction # Section (a), (2)
   2023-01-01:
+    - real_estate_taxes # Section (a), (3), (d)
+    - employee_payroll_tax # Section (a), (3), (a)
+    - self_employment_tax # Section (a), (3), (a)
+    # Legal code specifies charitable contributions to the extent deductible in federal law.
+    # Tax form allows deducting all contributions, not capped by AGI as in federal law.
+    # We adopt the legal code definition.
+    - charitable_deduction # Section (a), (10)
+    - al_medical_expense_deduction # Section (a), (13)
+    - al_casualty_loss_deduction # Section (a), (6)
+    - al_misc_deduction # Section (a), (23)
+    - al_interest_deduction # Section (a), (2)
     - al_retirement_exemption # Section (a), (13)
 
 metadata:
