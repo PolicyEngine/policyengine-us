@@ -12,3 +12,6 @@ class md_eitc(Variable):
     defined_for = StateCode.MD
 
     adds = ["md_non_refundable_eitc", "md_refundable_eitc"]
+    # county = tax_unit.household("county", period) 
+    # montgomery = county == "MONTGOMERY_COUNTY_MD"
+    # 
