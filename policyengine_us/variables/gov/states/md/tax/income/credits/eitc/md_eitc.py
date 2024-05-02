@@ -12,6 +12,11 @@ class md_eitc(Variable):
     defined_for = StateCode.MD
 
     adds = ["md_non_refundable_eitc", "md_refundable_eitc"]
+
+    # p = parameters(period).gov.states.md.tax.income.credits.eitc.montgomery
     # county = tax_unit.household("county", period) 
     # montgomery = county == "MONTGOMERY_COUNTY_MD"
-    # 
+    # md_eitc = md_non_refundable_eitc + md_refundable_eitc
+    # return md_eitc + md_eitc * p.match * montgomery
+
+    # queation: refundable or non_refundable or SUM
