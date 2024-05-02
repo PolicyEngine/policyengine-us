@@ -16,7 +16,7 @@
         members: [person1]
         state_code: AZ
   output:
-    az_hhs_tanf_earned_income_care_expense_disregard: 2_280
+    az_hhs_tanf_earned_income_care_expense_disregard: 190
 
 - name: Spend 210 on an 1 year old kid, capped at max
   period: 2023
@@ -36,7 +36,7 @@
         members: [person1]
         state_code: AZ
   output:
-    az_hhs_tanf_earned_income_care_expense_disregard:  2_400
+    az_hhs_tanf_earned_income_care_expense_disregard:  200
 
 - name: Spend 170 on a 2 year old kid
   period: 2023
@@ -56,7 +56,7 @@
         members: [person1]
         state_code: AZ
   output:
-    az_hhs_tanf_earned_income_care_expense_disregard: 2_040
+    az_hhs_tanf_earned_income_care_expense_disregard: 170
 
 - name: Spend 180 on a 2 years old kid, capped at max
   period: 2023
@@ -76,7 +76,7 @@
         members: [person1]
         state_code: AZ
   output:
-    az_hhs_tanf_earned_income_care_expense_disregard: 2_100
+    az_hhs_tanf_earned_income_care_expense_disregard: 175
 
 - name: Spend 170 on an disabled adult
   period: 2023
@@ -96,7 +96,7 @@
         members: [person1]
         state_code: AZ
   output:
-    az_hhs_tanf_earned_income_care_expense_disregard:  2_040
+    az_hhs_tanf_earned_income_care_expense_disregard:  170
 
 - name: Spend 180 on an adult with disability, capped at max
   period: 2023
@@ -116,7 +116,7 @@
         members: [person1]
         state_code: AZ
   output:
-    az_hhs_tanf_earned_income_care_expense_disregard: 2_100
+    az_hhs_tanf_earned_income_care_expense_disregard: 175
 
 - name: Spend 180 on an adult with disability, one not eligible adult
   period: 2023
@@ -140,7 +140,7 @@
         members: [person1, person2]
         state_code: AZ
   output:
-    az_hhs_tanf_earned_income_care_expense_disregard: 2_100
+    az_hhs_tanf_earned_income_care_expense_disregard: 175
 
 - name: Spend 180 on an adult with disability, and spend 190 on an 1 year old kid
   period: 2023
@@ -164,7 +164,7 @@
         members: [person1, person2]
         state_code: AZ
   output:
-    az_hhs_tanf_earned_income_care_expense_disregard: 4_440
+    az_hhs_tanf_earned_income_care_expense_disregard: 370
 
 - name: Spend 180 on an adult with disability, and spend 190 on an 2 year old kid (Both capped at max)
   period: 2023
@@ -188,7 +188,7 @@
         members: [person1, person2]
         state_code: AZ
   output:
-    az_hhs_tanf_earned_income_care_expense_disregard: 4_200
+    az_hhs_tanf_earned_income_care_expense_disregard: 350
 
 - name: Both adults are not eligible for the cash assistance program
   period: 2023
