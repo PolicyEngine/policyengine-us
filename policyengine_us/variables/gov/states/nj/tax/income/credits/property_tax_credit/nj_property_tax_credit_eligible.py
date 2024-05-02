@@ -26,8 +26,6 @@ class nj_property_tax_credit_eligible(Variable):
         disabled_head = tax_unit("disabled_head", period)
         blind_spouse = tax_unit("blind_spouse", period)
         disabled_spouse = tax_unit("disabled_spouse", period)
-        # senior_head = tax_unit("age_head", period) >= p.age_threshold
-        # senior_spouse = tax_unit("age_spouse", period) >= p.age_threshold
         senior_head_or_spouse = (
             tax_unit("greater_age_head_spouse", period) >= p.age_threshold
         )
