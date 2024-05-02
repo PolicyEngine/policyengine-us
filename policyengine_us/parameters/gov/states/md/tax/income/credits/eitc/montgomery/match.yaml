@@ -1,9 +1,10 @@
-description: Montgomery county matches this percent of the federal Earned Income Tax Credit for qualifying families.
+description: Montgomery County matches this percentage of the State Earned Income Tax Credit for taxpayers who qualify for the Refundable EITC from the State of Maryland, called the Working Families Income Supplement.
 values:
-  2019-01-01: 0.56
+  2023-01-01: 0.56 # what date??
 metadata:
   unit: /1
-  label: Montgomery EITC match
-  reference:
-    - title: Montgomery County Working Families Income Supplement
-      href: https://www.montgomerycountymd.gov/Cashback/tax_credits.html#:~:text=Montgomery%20County%20is%20one%20of,file%20a%20Maryland%20Tax%20return
+  label: Montgomery Refundable State EITC match
+  reference: # law reference??
+    - title: Montgomery County Earned Income Credit EIC Refund
+      href: https://www3.montgomerycountymd.gov/311/Solutions.aspx?SolutionId=1-4DAM0I
+
