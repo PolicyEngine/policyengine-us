@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class az_hhs_tanf_cash_assistance(Variable):
+class az_cash_assistance(Variable):
     value_type = float
     entity = SPMUnit
     label = "Arizona Cash Assistance Payment"

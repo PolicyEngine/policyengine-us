@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class az_hhs_tanf_cash_assistance_eligibility(Variable):
+class az_hhs_tanf_eligibility(Variable):
     value_type = bool
     entity = SPMUnit
     label = "Arizona Cash Assistance eligibility"
