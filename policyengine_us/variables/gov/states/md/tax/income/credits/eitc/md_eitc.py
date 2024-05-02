@@ -17,11 +17,11 @@ class md_eitc(Variable):
         p = parameters(period).gov.states.md.tax.income.credits.eitc.montgomery
 
         # check montgomery county match qualification
-        county = tax_unit.household("county", period) 
+        county = tax_unit.household("county", period)
         montgomery = county == "MONTGOMERY_COUNTY_MD"
 
         # state EITC
         refundable_eitc = tax_unit("md_refundable_eitc", period)
         non_refundable_eitc = tax_unit("md_non_refundable_eitc", period)
 
-        return non_refundable_eitc + refundable_eitc (1 + p.match * montgomery)
+        return non_refundable_eitc + refundable_eitc(1 + p.match * montgomery)
