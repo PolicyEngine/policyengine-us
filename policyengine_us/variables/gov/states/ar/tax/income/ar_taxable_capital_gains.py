@@ -36,4 +36,10 @@ class ar_taxable_capital_gains(Variable):
         total_taxable_cap_gain_or_loss = taxable_amount + stcg_if_any
         filing_status = person.tax_unit("filing_status", period)
         loss_cap = p.loss_cap[filing_status]
-        return max_(-loss_cap, total_taxable_cap_gain_or_loss)
+        # In the joint filing case we allocate all of the capital gain or loss 
+        # to the head of the household to avoid double counting.
+        joint = filing_status == filing_status.possible_values.JOINT
+        head = person("is_tax_unit_head", period)
+        total_gain_or_loss_allocated_to_head = person.tax_unit.sum(total_taxable_cap_gain_or_loss) * head
+        redestributed_cap_gain_or_loss = where(joint, total_gain_or_loss_allocated_to_head, total_taxable_cap_gain_or_loss)
+        return max_(-loss_cap, redestributed_cap_gain_or_loss)
