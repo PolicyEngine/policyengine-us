@@ -55,8 +55,8 @@ def create_structural_reforms_from_parameters(parameters, period):
     capital_gains_tax_increase = create_capital_gains_tax_increase_reform(
         parameters, period
     )
-    family_affordability_credit = create_co_family_affordability_credit_reform(
-        parameters, period
+    co_family_affordability_credit = (
+        create_co_family_affordability_credit_reform(parameters, period)
     )
 
     reforms = [
@@ -72,7 +72,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         reported_state_income_tax,
         medicare_and_investment_tax_increase,
         capital_gains_tax_increase,
-        family_affordability_credit,
+        co_family_affordability_credit,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
 

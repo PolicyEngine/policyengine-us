@@ -5,6 +5,136 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.757.0] - 2024-05-02 17:30:29
+
+### Added
+
+- New Jersey 2023 income tax updates.
+
+## [0.756.0] - 2024-05-02 09:02:21
+
+### Added
+
+- Include 403b_contributions in pre_tax_contributions.
+
+## [0.755.0] - 2024-04-30 02:07:09
+
+### Added
+
+- 2023 SNAP utility allowances for Colorado
+
+## [0.754.0] - 2024-04-29 16:34:36
+
+### Added
+
+- 2023 Ohio Tax Rules.
+
+## [0.753.0] - 2024-04-29 12:59:19
+
+### Added
+
+- SNAP BBCE Limit Updates.
+
+## [0.752.1] - 2024-04-26 00:39:06
+
+### Fixed
+
+- Reduce the Louisiana exempt income in 2021.
+
+## [0.752.0] - 2024-04-25 19:55:16
+
+### Added
+
+- 2023 Idaho Tax Rules.
+
+## [0.751.0] - 2024-04-25 19:41:13
+
+### Added
+
+- 2023 Utah Tax Rules.
+
+## [0.750.4] - 2024-04-25 18:37:03
+
+### Added
+
+- 2023 Virginia Tax Rules.
+
+## [0.750.3] - 2024-04-24 17:35:42
+
+### Added
+
+- Illinois metadata clean-up.
+- Read me files.
+- Removed per-vehicle payment files.
+
+## [0.750.2] - 2024-04-24 17:29:04
+
+### Fixed
+
+- Prorate the Montana federal income tax deduction based on Montana AGI.
+
+## [0.750.1] - 2024-04-24 04:49:34
+
+## [0.750.0] - 2024-04-23 18:20:42
+
+### Added
+
+- Adjust the Missouri deductions metadata.
+
+## [0.749.1] - 2024-04-23 17:20:45
+
+### Fixed
+
+- Reduce the Arkansas taxable long term capital gains by the short term capital losses.
+
+## [0.749.0] - 2024-04-23 16:42:53
+
+### Added
+
+- Change the Colorado family affordability credit file name.
+
+## [0.748.1] - 2024-04-23 06:46:02
+
+### Fixed
+
+- skip_existing in PyPI publish workflow
+
+## [0.748.0] - 2024-04-23 02:11:03
+
+### Added
+
+- 2023 Kentucky tax rules.
+
+## [0.747.0] - 2024-04-23 01:42:03
+
+### Added
+
+- 2023 West Virginia tax rules.
+
+## [0.746.0] - 2024-04-23 01:31:48
+
+### Added
+
+- 2023 Louisiana tax rules.
+
+## [0.745.0] - 2024-04-22 23:34:33
+
+### Added
+
+- 2023 Rhode Island Tax Rules.
+
+## [0.744.1] - 2024-04-22 23:01:24
+
+### Fixed
+
+- Include the Mississippi real estate tax deduction.
+
+## [0.744.0] - 2024-04-22 21:11:00
+
+### Added
+
+- IRS PUF variables under their original names.
+
 ## [0.743.1] - 2024-04-19 14:52:52
 
 ### Fixed
@@ -8254,6 +8384,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.757.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.756.0...0.757.0
+[0.756.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.755.0...0.756.0
+[0.755.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.754.0...0.755.0
+[0.754.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.753.0...0.754.0
+[0.753.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.752.1...0.753.0
+[0.752.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.752.0...0.752.1
+[0.752.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.751.0...0.752.0
+[0.751.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.750.4...0.751.0
+[0.750.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.750.3...0.750.4
+[0.750.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.750.2...0.750.3
+[0.750.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.750.1...0.750.2
+[0.750.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.750.0...0.750.1
+[0.750.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.749.1...0.750.0
+[0.749.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.749.0...0.749.1
+[0.749.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.748.1...0.749.0
+[0.748.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.748.0...0.748.1
+[0.748.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.747.0...0.748.0
+[0.747.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.746.0...0.747.0
+[0.746.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.745.0...0.746.0
+[0.745.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.744.1...0.745.0
+[0.744.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.744.0...0.744.1
+[0.744.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.743.1...0.744.0
 [0.743.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.743.0...0.743.1
 [0.743.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.742.2...0.743.0
 [0.742.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.742.1...0.742.2
