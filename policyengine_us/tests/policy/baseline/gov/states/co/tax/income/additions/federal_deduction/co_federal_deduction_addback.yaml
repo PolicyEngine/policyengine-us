@@ -1,0 +1,310 @@
+- name: In 2021, no federal deduction addback.
+  period: 2021
+  input:
+    state_code: CO
+    co_federal_deduction_addback_required: false
+    filing_status: SINGLE
+    itemized_taxable_income_deductions: 40_000
+    taxable_income_deductions: 0
+  output:
+    co_federal_deduction_addback: 0
+
+- name: In 2021, no federal deduction addback.
+  period: 2021
+  input:
+    state_code: CO
+    co_federal_deduction_addback_required: false
+    filing_status: JOINT
+    itemized_taxable_income_deductions: 70_000
+    taxable_income_deductions: 0
+  output:
+    co_federal_deduction_addback: 0
+
+- name: In 2021, no federal deduction addback.
+  period: 2021
+  input:
+    state_code: CO
+    co_federal_deduction_addback_required: false
+    filing_status: SURVIVING_SPOUSE
+    itemized_taxable_income_deductions: 40_000
+    taxable_income_deductions: 0
+  output:
+    co_federal_deduction_addback: 0
+
+- name: In 2021, no federal deduction addback.
+  period: 2021
+  input:
+    state_code: CO
+    co_federal_deduction_addback_required: false
+    filing_status: SEPARATE
+    itemized_taxable_income_deductions: 40_000
+    taxable_income_deductions: 0
+  output:
+    co_federal_deduction_addback: 0
+
+- name: In 2021, no federal deduction addback.
+  period: 2021
+  input:
+    state_code: CO
+    co_federal_deduction_addback_required: false
+    filing_status: HEAD_OF_HOUSEHOLD
+    itemized_taxable_income_deductions: 40_000
+    taxable_income_deductions: 0
+  output:
+    co_federal_deduction_addback: 0
+
+- name: In 2021, no federal deduction addback.
+  period: 2021
+  input:
+    state_code: CO
+    co_federal_deduction_addback_required: false
+    filing_status: SINGLE
+    itemized_taxable_income_deductions: 0
+    taxable_income_deductions: 40_000
+  output:
+    co_federal_deduction_addback: 0
+
+- name: In 2021, no federal deduction addback.
+  period: 2021
+  input:
+    state_code: CO
+    co_federal_deduction_addback_required: false
+    filing_status: JOINT
+    itemized_taxable_income_deductions: 0
+    taxable_income_deductions: 70_000
+  output:
+    co_federal_deduction_addback: 0
+
+- name: In 2021, no federal deduction addback.
+  period: 2021
+  input:
+    state_code: CO
+    co_federal_deduction_addback_required: false
+    filing_status: SURVIVING_SPOUSE
+    itemized_taxable_income_deductions: 0
+    taxable_income_deductions: 40_000
+  output:
+    co_federal_deduction_addback: 0
+
+- name: In 2021, no federal deduction addback.
+  period: 2021
+  input:
+    state_code: CO
+    co_federal_deduction_addback_required: false
+    filing_status: SEPARATE
+    itemized_taxable_income_deductions: 0
+    taxable_income_deductions: 40_000
+  output:
+    co_federal_deduction_addback: 0
+
+- name: In 2021, no federal deduction addback.
+  period: 2021
+  input:
+    state_code: CO
+    co_federal_deduction_addback_required: false
+    filing_status: HEAD_OF_HOUSEHOLD
+    itemized_taxable_income_deductions: 0
+    taxable_income_deductions: 40_000
+  output:
+    co_federal_deduction_addback: 0
+
+- name: In 2022, agi <= 400_000, no federal deduction addback.
+  period: 2022
+  input:
+    state_code: CO
+    co_federal_deduction_addback_required: false
+    filing_status: SINGLE
+    itemized_taxable_income_deductions: 40_000
+  output:
+    co_federal_deduction_addback: 0
+
+- name: In 2022, agi <= 400_000, no federal deduction addback.
+  period: 2022
+  input:
+    state_code: CO
+    co_federal_deduction_addback_required: false
+    filing_status: JOINT
+    itemized_taxable_income_deductions: 70_000
+  output:
+    co_federal_deduction_addback: 0
+
+- name: In 2022, agi <= 400_000, no federal deduction addback.
+  period: 2022
+  input:
+    state_code: CO
+    co_federal_deduction_addback_required: false
+    filing_status: SURVIVING_SPOUSE
+    itemized_taxable_income_deductions: 40_000
+  output:
+    co_federal_deduction_addback: 0
+
+- name: In 2022, agi <= 400_000, no federal deduction addback.
+  period: 2022
+  input:
+    state_code: CO
+    co_federal_deduction_addback_required: false
+    filing_status: SEPARATE
+    itemized_taxable_income_deductions: 40_000
+  output:
+    co_federal_deduction_addback: 0
+
+- name: In 2022, agi <= 400_000, no federal deduction addback.
+  period: 2022
+  input:
+    state_code: CO
+    co_federal_deduction_addback_required: false
+    filing_status: HEAD_OF_HOUSEHOLD
+    itemized_taxable_income_deductions: 40_000
+  output:
+    co_federal_deduction_addback: 0
+
+- name: In 2022, single filers, agi > 400_000, itemized deduction = 40_000, deduction addback = 10_000.
+  period: 2022
+  input:
+    state_code: CO
+    co_federal_deduction_addback_required: true
+    filing_status: SINGLE
+    itemized_taxable_income_deductions: 40_000
+  output:
+    co_federal_deduction_addback: 10_000
+
+- name: In 2022, joint filers, agi > 400_000, itemized deduction = 70_000, deduction addback = 10_000.
+  period: 2022
+  input:
+    state_code: CO
+    co_federal_deduction_addback_required: true
+    filing_status: JOINT
+    itemized_taxable_income_deductions: 70_000
+  output:
+    co_federal_deduction_addback: 10_000
+
+- name: In 2022, separate filers, agi > 400_000, itemized deduction = 40_000, deduction addback = 10_000.
+  period: 2022
+  input:
+    state_code: CO
+    co_federal_deduction_addback_required: true
+    filing_status: SEPARATE
+    itemized_taxable_income_deductions: 40_000
+  output:
+    co_federal_deduction_addback: 10_000
+
+- name: In 2022, widow filers, agi > 400_000, itemized deduction = 40_000, deduction addback = 10_000.
+  period: 2022
+  input:
+    state_code: CO
+    co_federal_deduction_addback_required: true
+    filing_status: SURVIVING_SPOUSE
+    itemized_taxable_income_deductions: 40_000
+  output:
+    co_federal_deduction_addback: 10_000
+
+- name: In 2022, head of household filers, agi > 400_000, itemized deduction = 40_000, deduction addback = 10_000.
+  period: 2022
+  input:
+    state_code: CO
+    co_federal_deduction_addback_required: true
+    filing_status: HEAD_OF_HOUSE_HOLD
+    itemized_taxable_income_deductions: 40_000
+  output:
+    co_federal_deduction_addback: 10_000
+
+- name: In 2023, agi <= 300_000, no federal deduction addback.
+  period: 2023
+  input:
+    state_code: CO
+    co_federal_deduction_addback_required: false
+    filing_status: SINGLE
+    taxable_income_deductions: 40_000
+  output:
+    co_federal_deduction_addback: 0
+
+- name: In 2023, agi <= 300_000, no federal deduction addback.
+  period: 2023
+  input:
+    state_code: CO
+    co_federal_deduction_addback_required: false
+    filing_status: JOINT
+    taxable_income_deductions: 70_000
+  output:
+    co_federal_deduction_addback: 0
+
+- name: In 2023, agi <= 300_000, no federal deduction addback.
+  period: 2023
+  input:
+    state_code: CO
+    co_federal_deduction_addback_required: false
+    filing_status: SURVIVING_SPOUSE
+    taxable_income_deductions: 40_000
+  output:
+    co_federal_deduction_addback: 0
+
+- name: In 2023, agi <= 300_000, no federal deduction addback.
+  period: 2023
+  input:
+    state_code: CO
+    co_federal_deduction_addback_required: false
+    filing_status: SEPARATE
+    taxable_income_deductions: 40_000
+  output:
+    co_federal_deduction_addback: 0
+
+- name: In 2023, agi <= 300_000, no federal deduction addback.
+  period: 2023
+  input:
+    state_code: CO
+    co_federal_deduction_addback_required: false
+    filing_status: HEAD_OF_HOUSEHOLD
+    taxable_income_deductions: 40_000
+  output:
+    co_federal_deduction_addback: 0
+
+- name: In 2023, single filers, agi > 300_000, taxable_income_deductions = 22_000, deduction addback = 10_000.
+  period: 2023
+  input:
+    state_code: CO
+    co_federal_deduction_addback_required: true
+    filing_status: SINGLE
+    taxable_income_deductions: 22_000
+  output:
+    co_federal_deduction_addback: 10_000
+
+- name: In 2023, joint filers, agi > 300_000, taxable_income_deductions = 26_000, deduction addback = 10_000.
+  period: 2023
+  input:
+    state_code: CO
+    co_federal_deduction_addback_required: true
+    filing_status: JOINT
+    taxable_income_deductions: 26_000
+    standard_deduction: 0
+  output:
+    co_federal_deduction_addback: 10_000
+
+- name: In 2023, separate filers, agi > 300_000, taxable_income_deductions = 22_000, deduction addback = 10_000.
+  period: 2023
+  input:
+    state_code: CO
+    co_federal_deduction_addback_required: true
+    filing_status: SEPARATE
+    taxable_income_deductions: 22_000
+  output:
+    co_federal_deduction_addback: 10_000
+
+- name: In 2023, widow filers, agi > 300_000, taxable income deductions = 22_000, deduction addback = 10_000.
+  period: 2023
+  input:
+    state_code: CO
+    co_federal_deduction_addback_required: true
+    filing_status: SURVIVING_SPOUSE
+    taxable_income_deductions: 22_000
+  output:
+    co_federal_deduction_addback: 10_000
+
+- name: In 2023, head of household filers, agi > 300_000, taxable income deductions = 32_000, deduction addback = 20_000.
+  period: 2023
+  input:
+    state_code: CO
+    co_federal_deduction_addback_required: true
+    filing_status: HEAD_OF_HOUSE_HOLD
+    taxable_income_deductions: 32_000
+  output:
+    co_federal_deduction_addback: 20_000

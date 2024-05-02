@@ -17,10 +17,16 @@ class wi_earned_income_credit(Variable):
     defined_for = StateCode.WI
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.wi.tax.income.credits
+        p = parameters(period).gov.states.wi.tax.income.credits.earned_income
         inv_income = tax_unit("eitc_relevant_investment_income", period)
-        ineligible = inv_income > p.earned_income.investment_income_limit
-        us_eitc = tax_unit("earned_income_tax_credit", period)
+        # In 2023 Wisconsin adopted the federal EITC investment income limit
+        if p.apply_federal_investment_income_limit:
+            p_irs = parameters(period).gov.irs.credits.eitc.phase_out
+            threshold = p_irs.max_investment_income
+        else:
+            threshold = p.investment_income_limit
+        eligible = inv_income <= threshold
+        federal_eitc = tax_unit("eitc", period)
         child_count = tax_unit("eitc_child_count", period)
-        wi_frac = p.earned_income.fraction.calc(child_count)
-        return ~ineligible * us_eitc * wi_frac
+        wi_frac = p.fraction.calc(child_count)
+        return eligible * federal_eitc * wi_frac

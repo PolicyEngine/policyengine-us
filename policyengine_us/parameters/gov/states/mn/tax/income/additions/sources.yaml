@@ -1,7 +1,7 @@
 description: Minnesota adds these variables to US AGI when computing its taxable income.
 values:
   2021-01-01:
-    - c05700  # lump-sum distributions from federal Form 4972
+    - form_4972_lumpsum_distributions
 
 metadata:
   unit: variable

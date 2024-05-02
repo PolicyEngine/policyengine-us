@@ -3,43 +3,30 @@
   output:
     filing_status: SINGLE
 
-- name: Married people file as joint.
+- name: Separated file as SEPARATE.
   period: 2022
   input:
-    people:
-      head: {}
-      spouse:
-        is_tax_unit_spouse: true
-    tax_units:
-      tax_unit:
-        members: [head, spouse]
+    is_separated: true
+  output:
+    filing_status: SEPARATE
+
+- name: Married people file as JOINT.
+  period: 2022
+  input:
+    tax_unit_married: true
   output:
     filing_status: JOINT
 
-- name: Married people with dependents file as joint.
+- name: Surviving spouses file as WIDOW.
   period: 2022
   input:
-    people:
-      head: {}
-      spouse:
-        is_tax_unit_spouse: true
-      child:
-        is_tax_unit_dependent: true
-    tax_units:
-      tax_unit:
-        members: [head, spouse, child]
+    surviving_spouse_eligible: true
   output:
-    filing_status: JOINT
+    filing_status: SURVIVING_SPOUSE
 
-- name: Single person with dependents files as head of household.
+- name: Head of household files as such.
   period: 2022
   input:
-    people:
-      head: {}
-      child:
-        is_tax_unit_spouse: false
-    tax_units:
-      tax_unit:
-        members: [head, child]
+    head_of_household_eligible: true
   output:
     filing_status: HEAD_OF_HOUSEHOLD

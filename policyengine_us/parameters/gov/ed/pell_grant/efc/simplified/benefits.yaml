@@ -1,0 +1,15 @@
+description: The Department of Education will used a simplified formula if a household has any of these benefits.
+values:
+  2023-01-01:
+    - snap
+    - school_meal_net_subsidy
+    - tanf
+    - spm_unit_wic
+    - medicaid
+    - ssi
+metadata:
+  unit: list
+  label: Qualifying benefits for EFC simplified formula
+  reference:
+    - title: THE EFC FORMULA, 2022–2023
+      href: https://fsapartners.ed.gov/sites/default/files/2021-08/2223EFCFormulaGuide.pdf#page=4

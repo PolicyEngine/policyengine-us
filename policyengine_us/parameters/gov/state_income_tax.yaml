@@ -1,0 +1,59 @@
+description: All state income tax.
+values:
+  0000-01-01:
+    # state income tax variables listed in alphabetical order:
+    # ak_income_tax  --- no state income tax
+    - al_withheld_income_tax 
+    - ar_withheld_income_tax
+    - az_withheld_income_tax  
+    - ca_withheld_income_tax  
+    - co_withheld_income_tax 
+    - ct_withheld_income_tax  
+    - dc_withheld_income_tax  
+    - de_withheld_income_tax
+    # fl_income_tax  --- no state income tax
+    - ga_withheld_income_tax  
+    - hi_withheld_income_tax  
+    - ia_withheld_income_tax  
+    - id_withheld_income_tax
+    - il_withheld_income_tax
+    - in_withheld_income_tax
+    - ks_withheld_income_tax
+    - ky_withheld_income_tax
+    - la_withheld_income_tax  
+    - ma_withheld_income_tax  
+    - md_withheld_income_tax  
+    - me_withheld_income_tax  
+    - mi_withheld_income_tax
+    - mn_withheld_income_tax
+    - mo_withheld_income_tax
+    - ms_withheld_income_tax
+    - mt_withheld_income_tax  
+    - nc_withheld_income_tax
+    - nd_withheld_income_tax  
+    - ne_withheld_income_tax  
+    # nh_income_tax  --- no state income tax
+    - nj_withheld_income_tax
+    - nm_withheld_income_tax  
+    # nv_income_tax  --- no state income tax
+    - ny_withheld_income_tax  
+    - oh_withheld_income_tax  
+    - ok_withheld_income_tax  
+    - or_withheld_income_tax  
+    - pa_withheld_income_tax
+    - ri_withheld_income_tax  
+    - sc_withheld_income_tax  
+    # sd_income_tax  --- no state income tax
+    # tn_income_tax  --- no state income tax
+    # tx_income_tax  --- no state income tax
+    - ut_withheld_income_tax  
+    - va_withheld_income_tax  
+    - vt_withheld_income_tax  
+    # wa_income_tax  --- no state income tax
+    - wi_withheld_income_tax
+    - wv_withheld_income_tax  
+
+metadata:
+  unit: list
+  period: year
+  label: State income tax

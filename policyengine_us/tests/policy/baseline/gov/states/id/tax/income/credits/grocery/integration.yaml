@@ -1,0 +1,31 @@
+- name: Head with base and aged amount, and one dependent. Receive snap for 3 months.
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 69
+      person2:
+        age: 11
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 
+          2021-01: 0
+          2021-02: 0
+          2021-03: 0
+          2021-04: 10
+          2021-05: 0
+          2021-06: 10
+          2021-07: 0
+          2021-08: 10
+          2021-09: 0
+          2021-10: 0
+          2021-11: 0
+          2021-12: 0  
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 16  # ID
+  output:  
+    id_grocery_credit: 165 

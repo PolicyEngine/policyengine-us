@@ -1,0 +1,138 @@
+description: Adjusted gross number of returns by lower AGI value.
+metadata:
+  label: Tax return counts by AGI band
+  amount_unit: return
+  threshold_unit: currency-USD
+  reference:
+    - title: IRS SOI 2021 (20in11si.xls)
+      href: https://www.irs.gov/pub/irs-soi/21in11si.xls
+      # From https://www.irs.gov/statistics/soi-tax-stats-individual-statistical-tables-by-size-of-adjusted-gross-income
+brackets:
+  - threshold:
+      2015-01-01: 1
+    amount:
+      # Need separate metadata for each value to avoid
+      # uprating the thresholds.
+      metadata:
+        uprating: calibration.gov.census.populations.total
+      values:
+        2021-01-01: 8_487_025
+  - threshold:
+      2015-01-01: 5_000
+    amount:
+      metadata:
+        uprating: calibration.gov.census.populations.total
+      values:
+        2021-01-01: 8_944_908
+  - threshold:
+      2015-01-01: 10_000
+    amount:
+      metadata:
+        uprating: calibration.gov.census.populations.total
+      values:
+        2021-01-01: 10_056_377
+  - threshold:
+      2015-01-01: 15_000
+    amount:
+      metadata:
+        uprating: calibration.gov.census.populations.total
+      values:
+        2021-01-01: 9_786_580
+  - threshold:
+      2015-01-01: 20_000
+    amount:
+      metadata:
+        uprating: calibration.gov.census.populations.total
+      values:
+        2021-01-01: 8_863_570
+  - threshold:
+      2015-01-01: 25_000
+    amount:
+      metadata:
+        uprating: calibration.gov.census.populations.total
+      values:
+        2021-01-01: 8_787_576
+  - threshold:
+      2015-01-01: 30_000
+    amount:
+      metadata:
+        uprating: calibration.gov.census.populations.total
+      values:
+        2021-01-01: 16_123_068
+  - threshold:
+      2015-01-01: 40_000
+    amount:
+      metadata:
+        uprating: calibration.gov.census.populations.total
+      values:
+        2021-01-01: 12_782_334
+  - threshold:
+      2015-01-01: 50_000
+    amount:
+      metadata:
+        uprating: calibration.gov.census.populations.total
+      values:
+        2021-01-01: 22_653_934
+  - threshold:
+      2015-01-01: 75_000
+    amount:
+      metadata:
+        uprating: calibration.gov.census.populations.total
+      values:
+        2021-01-01: 14_657_726
+  - threshold:
+      2015-01-01: 100_000
+    amount:
+      metadata:
+        uprating: calibration.gov.census.populations.total
+      values:
+        2021-01-01: 24_044_481
+  - threshold:
+      2015-01-01: 200_000
+    amount:
+      metadata:
+        uprating: calibration.gov.census.populations.total
+      values:
+        2021-01-01: 9_045_567
+  - threshold:
+      2015-01-01: 500_000
+    amount:
+      metadata:
+        uprating: calibration.gov.census.populations.total
+      values:
+        2021-01-01: 1_617_144
+  - threshold:
+      2015-01-01: 1_000_000
+    amount:
+      metadata:
+        uprating: calibration.gov.census.populations.total
+      values:
+        2021-01-01: 376_859
+  - threshold:
+      2015-01-01: 1_500_000
+    amount:
+      metadata:
+        uprating: calibration.gov.census.populations.total
+      values:
+        2021-01-01: 156_020
+  - threshold:
+      2015-01-01: 2_000_000
+    amount:
+      metadata:
+        uprating: calibration.gov.census.populations.total
+      values:
+        2021-01-01: 233_838
+  - threshold:
+      2015-01-01: 5_000_000
+    amount:
+      metadata:
+        uprating: calibration.gov.census.populations.total
+      values:
+        2021-01-01: 63_406
+  - threshold:
+      2015-01-01: 10_000_000
+    amount:
+      metadata:
+        uprating: calibration.gov.census.populations.total
+      values:
+        2021-01-01: 45_404

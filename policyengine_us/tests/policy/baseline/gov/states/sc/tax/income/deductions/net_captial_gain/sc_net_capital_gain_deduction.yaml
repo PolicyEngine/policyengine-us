@@ -1,0 +1,35 @@
+- name: Base is positive, stcg are positive
+  period: 2021
+  input:
+    state_code: SC
+    long_term_capital_gains: 900
+    short_term_capital_gains: 100
+  output: 
+    sc_net_capital_gain_deduction: 396
+
+- name: Bse is positive, stcg are positive
+  period: 2021
+  input:
+    state_code: SC
+    long_term_capital_gains: 900
+    short_term_capital_gains: -100
+  output: 
+    sc_net_capital_gain_deduction: 352
+
+- name: Base is negative
+  period: 2021
+  input:
+    state_code: SC
+    long_term_capital_gains: 600
+    short_term_capital_gains: -700
+  output: 
+    sc_net_capital_gain_deduction: 0
+
+- name: Base is negative
+  period: 2021
+  input:
+    state_code: SC
+    long_term_capital_gains: 7_000
+    short_term_capital_gains: -5_000
+  output: 
+    sc_net_capital_gain_deduction: 880

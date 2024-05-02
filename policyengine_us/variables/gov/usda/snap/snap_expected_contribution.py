@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class snap_expected_contribution(Variable):
     value_type = float
     entity = SPMUnit
-    definition_period = YEAR
+    definition_period = MONTH
     documentation = "Expected food contribution from SNAP net income"
     label = "SNAP expected food contribution"
     unit = USD

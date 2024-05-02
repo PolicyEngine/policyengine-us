@@ -1,0 +1,53 @@
+- name: No increase for single filers
+  period: 2021
+  input:
+    state_code: CA
+    ca_pre_exemption_amti: 150_000
+    filing_status: SINGLE
+  output:
+    ca_amti: 150_000
+
+- name: Separate filer but AMTI is below the threshold for the increase
+  period: 2021
+  input:
+    state_code: CA
+    ca_pre_exemption_amti: 350_000
+    filing_status: SEPARATE
+  output:
+    ca_amti: 350_000
+
+- name: Separate filer with AMTI above the threshold for the increase
+  period: 2021
+  input:
+    state_code: CA
+    ca_pre_exemption_amti: 420_000
+    filing_status: SEPARATE
+  output:
+    ca_amti: 424_163
+
+- name: No increase for single filers in 2022
+  period: 2022
+  input:
+    state_code: CA
+    ca_pre_exemption_amti: 150_000
+    filing_status: SINGLE
+  output:
+    ca_amti: 150_000
+
+- name: Separate filer but AMTI is below the threshold for the increase in 2022
+  period: 2022
+  input:
+    state_code: CA
+    ca_pre_exemption_amti: 350_000
+    filing_status: SEPARATE
+  output:
+    ca_amti: 350_000
+
+- name: Separate filer with AMTI above the threshold for the increase in 2022
+  period: 2022
+  input:
+    state_code: CA
+    ca_pre_exemption_amti: 440_000
+    filing_status: SEPARATE
+  output:
+    ca_amti: 440_793.25

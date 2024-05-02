@@ -1,7 +1,7 @@
 - name: Supplemental EITC is 25% in 2021
   period: 2021
   input:
-    earned_income_tax_credit: 100
+    eitc: 100
     state_code: NY
   output:
     ny_supplemental_eitc: 25
@@ -9,7 +9,7 @@
 - name: Supplemental EITC is 0% in 2022
   period: 2022
   input:
-    earned_income_tax_credit: 100
+    eitc: 100
     state_code: NY
   output:
     ny_supplemental_eitc: 0

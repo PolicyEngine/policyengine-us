@@ -6,13 +6,12 @@ metadata:
   label: Income limit for used clean vehicle credit
   unit: currency-USD
   period: year
-  name: used_clean_vehicle_credit_income_limit
   breakdown:
   - filing_status
 JOINT:
   0000-01-01: .inf
   2023-01-01: 150_000
-WIDOW:
+SURVIVING_SPOUSE:
   0000-01-01: .inf
   2023-01-01: 150_000
 HEAD_OF_HOUSEHOLD:

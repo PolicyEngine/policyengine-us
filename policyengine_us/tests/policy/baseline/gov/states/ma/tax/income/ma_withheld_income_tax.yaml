@@ -1,0 +1,29 @@
+- name: Person with income over the personal exemption amount
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    irs_employment_income: 10_000
+    filing_status: JOINT
+    state_code: MA
+  output:
+    ma_withheld_income_tax: 280
+
+- name: Changing the filing status should not change the output 
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    irs_employment_income: 10_000
+    filing_status: SURVIVING_SPOUSE
+    state_code: MA
+  output:
+    ma_withheld_income_tax: 280
+
+- name: Capped at 0
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    irs_employment_income: 4_000
+    filing_status: SURVIVING_SPOUSE
+    state_code: MA
+  output:
+    ma_withheld_income_tax: 0

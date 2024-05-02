@@ -1,0 +1,7 @@
+- name: Case 1, one deceased spouse
+  period: 2022
+  input:
+    military_retirement_pay_survivors: 11_000
+    state_code: SC
+  output:
+    sc_military_deduction_survivors: 11_000

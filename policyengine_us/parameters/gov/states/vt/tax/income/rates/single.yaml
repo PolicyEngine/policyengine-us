@@ -1,0 +1,34 @@
+description: Vermont taxes income of single filers at this rate. 
+metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  label: Vermont income tax rates single filers
+  reference:
+      # Law does not specify inflation adjusted thresholds for each year
+    - title: Vermont §5822. Tax on income of individuals, estates, and trusts
+      href: https://legislature.vermont.gov/statutes/section/32/151/05822
+    - title: Vermont 2021 Income Tax Rate Schedules
+      href: https://tax.vermont.gov/sites/tax/files/documents/RateSched-2021.pdf#page=1
+    - title: Vermont 2022 Income Tax Return Booklet Forms and Instructions
+      href: https://tax.vermont.gov/sites/tax/files/documents/RateSched-2022.pdf#page=1
+brackets:
+  - threshold:
+      2021-01-01: 0
+    rate:
+      2021-01-01: 0.0335
+  - threshold:
+      2021-01-01: 40_950
+      2022-01-01: 42_150
+    rate:
+      2022-01-01: 0.066
+  - threshold:
+      2021-01-01: 99_200
+      2022-01-01: 102_200
+    rate:
+      2022-01-01: 0.076
+  - threshold:
+      2021-01-01: 206_950
+      2022-01-01: 213_150
+    rate:
+      2022-01-01: 0.0875

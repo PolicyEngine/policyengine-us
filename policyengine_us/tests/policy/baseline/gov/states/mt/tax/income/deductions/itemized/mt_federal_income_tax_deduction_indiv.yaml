@@ -1,0 +1,39 @@
+- name: Deductions split evenly 
+  period: 2021
+  input:
+    people:
+      person1:
+        mt_agi: 500
+      person2:
+        mt_agi: 500
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        mt_federal_income_tax_deduction_unit: 3_000
+        state_filing_status_if_married_filing_separately_on_same_return: SEPARATE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_federal_income_tax_deduction_indiv: [1_500, 1_500]
+
+- name: Deductions capped at max amount individually
+  period: 2021
+  input:
+    people:
+      person1:
+        mt_agi: 100
+      person2:
+        mt_agi: 900
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        mt_federal_income_tax_deduction_unit: 10_000
+        state_filing_status_if_married_filing_separately_on_same_return: SEPARATE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_federal_income_tax_deduction_indiv: [1_000, 5_000]

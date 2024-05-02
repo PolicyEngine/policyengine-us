@@ -1,0 +1,19 @@
+- name: SNAP FPG in 2023
+  period: 2023
+  absolute_error_margin: 1
+  input:
+    spm_unit_size: 3
+    state_group_str: CONTIGUOUS_US
+  output:
+    spm_unit_fpg: 14580 + 5140 * 2
+    snap_fpg: (13590 + 4720 * 2) / 12 * 9 + (14580 + 5140 * 2) / 12 * 3
+  
+- name: SNAP FPG in 2022
+  absolute_error_margin: 1
+  period: 2022
+  input:
+    spm_unit_size: 3
+    state_group_str: CONTIGUOUS_US
+  output:
+    spm_unit_fpg: 13590 + 4720 * 2
+    snap_fpg: (12880 + 4540 * 2) / 12 * 9 + (13590 + 4720 * 2) / 12 * 3

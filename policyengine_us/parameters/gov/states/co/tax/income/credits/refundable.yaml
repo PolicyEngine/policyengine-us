@@ -1,0 +1,35 @@
+description: Colorado refundable tax credits.
+metadata:
+  period: year
+  unit: list
+  label: Colorado refundable credits
+  reference:
+    - title: 2022 Colorado Individual Income Tax Filing Guide
+      href: https://tax.colorado.gov/sites/tax/files/documents/DR_0104_Book_2022.pdf#page=16 
+    - title: 2021 Colorado Individual Income Tax Filing Guide
+      href: https://tax.colorado.gov/sites/tax/files/documents/DR0104Book_2021_V3.pdf#page=15
+    - title: 2023 Colorado Individual Tax Filing Guide 104 Book
+      href: https://tax.colorado.gov/sites/tax/files/documents/Book0104_2023.pdf#page=18
+
+
+values:
+  2021-01-01:
+    - co_cdcc
+    - co_low_income_cdcc
+    - co_eitc
+    - co_sales_tax_refund
+
+  2022-01-01:
+    - co_ctc
+    - co_cdcc
+    - co_low_income_cdcc
+    - co_eitc
+    - co_income_qualified_senior_housing_credit
+    - co_sales_tax_refund
+
+  2023-01-01:
+    - co_ctc
+    - co_cdcc
+    - co_low_income_cdcc
+    - co_eitc
+    - co_sales_tax_refund

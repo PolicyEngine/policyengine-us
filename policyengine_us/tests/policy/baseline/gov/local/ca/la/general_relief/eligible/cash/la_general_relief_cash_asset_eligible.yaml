@@ -1,0 +1,17 @@
+- name: Ineligible
+  period: 2022
+  input:
+    in_la: true
+    spm_unit_cash_assets: 101
+    la_general_relief_cash_asset_limit: 100
+  output:
+    la_general_relief_cash_asset_eligible: false
+
+- name: Eligible
+  period: 2022
+  input:
+    in_la: true
+    spm_unit_cash_assets: 100
+    la_general_relief_cash_asset_limit: 100
+  output:
+    la_general_relief_cash_asset_eligible: true

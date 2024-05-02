@@ -1,0 +1,31 @@
+description: Historical total federal revenues from payroll taxes (2017-2022)
+metadata: 
+  unit: currency-USD
+  label: Payroll tax revenues
+  reference:
+    - title: Revenue Projections, by Category | Congressional Budget Office | Feb 2024
+      # Source: https://www.cbo.gov/data/budget-economic-data
+      # Sheet 4. Payroll Tax Revenues
+      href: https://www.cbo.gov/system/files/2024-02/51138-2024-02-Revenue.xlsx
+values:
+  # Actual historical.
+  2017-01-01: 1_161_900_000_000
+  2018-01-01: 1_170_700_000_000
+  2019-01-01: 1_243_100_000_000
+  2020-01-01: 1_310_000_000_000
+  2021-01-01: 1_314_100_000_000
+  2022-01-01: 1_483_500_000_000
+  # Actual from CBO.
+  2023-01-01: 1_614_000_000_000
+  # Projected.
+  2024-01-01: 1_663_000_000_000
+  2025-01-01: 1_734_000_000_000
+  2026-01-01: 1_812_000_000_000
+  2027-01-01: 1_884_000_000_000
+  2028-01-01: 1_960_000_000_000
+  2029-01-01: 2_039_000_000_000
+  2030-01-01: 2_121_000_000_000
+  2031-01-01: 2_205_000_000_000
+  2032-01-01: 2_291_000_000_000
+  2033-01-01: 2_379_000_000_000
+  2034-01-01: 2_466_000_000_000
