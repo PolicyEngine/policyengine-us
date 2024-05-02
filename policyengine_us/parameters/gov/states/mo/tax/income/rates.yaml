@@ -1,4 +1,4 @@
-description: The tax rates for individual residents in Missouri.
+description: Missouri taxes the individual residents with the following tax rates.
 # threshold value is bottom of the tax bracket; thresholds are <=
 brackets:
   - rate:
@@ -68,17 +68,17 @@ brackets:
 
 metadata:
   reference:
-    - title: MO 2019 Income Tax Chart
+    - title: 2019 Missouri Income Tax Chart Form MO-1040 Instructions
       href: https://dor.mo.gov/forms/MO-1040%20Instructions_2019.pdf#page=22
-    - title: MO 2020 Income Tax Chart
+    - title: 2020 Missouri Income Tax Chart Form MO-1040 Instructions
       href: https://dor.mo.gov/forms/MO-1040%20Instructions_2020.pdf#page=22
-    - title: MO 2021 Income Tax Chart
+    - title: 2021 Missouri Income Tax Chart Form MO-1040 Instructions
       href: https://dor.mo.gov/forms/MO-1040%20Instructions_2021.pdf#page=26
-    - title: MO 2022 Income Tax Chart
+    - title: 2022 Missouri Income Tax Chart Form MO-1040 Instructions
       href: https://dor.mo.gov/forms/MO-1040%20Instructions_2022.pdf#page=26
-    - title: MO Legal Code |  143.011.  Resident individuals — tax rates — rate reductions, when.
+    - title: Missouri Legal Code, Chapter 143.011.  Resident individuals — tax rates — rate reductions, when.
       href: https://revisor.mo.gov/main/OneSection.aspx?section=143.011&bid=51511&hl=
-  label: MO Resident Individual Tax Rates
+  label: Missouri resident individual tax rates
   type: marginal_rate
   threshold_unit: currency-USD
   rate_unit: /1

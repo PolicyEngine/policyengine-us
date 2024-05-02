@@ -7086,3 +7086,76 @@
     fixed:
     - skip_existing in PyPI publish workflow
   date: 2024-04-23 06:46:02
+- bump: minor
+  changes:
+    added:
+    - Change the Colorado family affordability credit file name.
+  date: 2024-04-23 16:42:53
+- bump: patch
+  changes:
+    fixed:
+    - Reduce the Arkansas taxable long term capital gains by the short term capital
+      losses.
+  date: 2024-04-23 17:20:45
+- bump: minor
+  changes:
+    added:
+    - Adjust the Missouri deductions metadata.
+  date: 2024-04-23 18:20:42
+- bump: patch
+  changes:
+    fixes:
+    - Add Mississippi tax unit itemizes variable.
+  date: 2024-04-24 04:49:34
+- bump: patch
+  changes:
+    fixed:
+    - Prorate the Montana federal income tax deduction based on Montana AGI.
+  date: 2024-04-24 17:29:04
+- bump: patch
+  changes:
+    added:
+    - Illinois metadata clean-up.
+    - Read me files.
+    - Removed per-vehicle payment files.
+  date: 2024-04-24 17:35:42
+- bump: patch
+  changes:
+    added:
+    - 2023 Virginia Tax Rules.
+  date: 2024-04-25 18:37:03
+- bump: minor
+  changes:
+    added:
+    - 2023 Utah Tax Rules.
+  date: 2024-04-25 19:41:13
+- bump: minor
+  changes:
+    added:
+    - 2023 Idaho Tax Rules.
+  date: 2024-04-25 19:55:16
+- bump: patch
+  changes:
+    fixed:
+    - Reduce the Louisiana exempt income in 2021.
+  date: 2024-04-26 00:39:06
+- bump: minor
+  changes:
+    added:
+    - SNAP BBCE Limit Updates.
+  date: 2024-04-29 12:59:19
+- bump: minor
+  changes:
+    added:
+    - 2023 Ohio Tax Rules.
+  date: 2024-04-29 16:34:36
+- bump: minor
+  changes:
+    added:
+    - 2023 SNAP utility allowances for Colorado
+  date: 2024-04-30 02:07:09
+- bump: minor
+  changes:
+    added:
+    - Include 403b_contributions in pre_tax_contributions.
+  date: 2024-05-02 09:02:21
