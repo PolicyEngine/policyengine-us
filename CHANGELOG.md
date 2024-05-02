@@ -5,6 +5,54 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.756.0] - 2024-05-02 09:02:21
+
+### Added
+
+- Include 403b_contributions in pre_tax_contributions.
+
+## [0.755.0] - 2024-04-30 02:07:09
+
+### Added
+
+- 2023 SNAP utility allowances for Colorado
+
+## [0.754.0] - 2024-04-29 16:34:36
+
+### Added
+
+- 2023 Ohio Tax Rules.
+
+## [0.753.0] - 2024-04-29 12:59:19
+
+### Added
+
+- SNAP BBCE Limit Updates.
+
+## [0.752.1] - 2024-04-26 00:39:06
+
+### Fixed
+
+- Reduce the Louisiana exempt income in 2021.
+
+## [0.752.0] - 2024-04-25 19:55:16
+
+### Added
+
+- 2023 Idaho Tax Rules.
+
+## [0.751.0] - 2024-04-25 19:41:13
+
+### Added
+
+- 2023 Utah Tax Rules.
+
+## [0.750.4] - 2024-04-25 18:37:03
+
+### Added
+
+- 2023 Virginia Tax Rules.
+
 ## [0.750.3] - 2024-04-24 17:35:42
 
 ### Added
@@ -8330,6 +8378,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.756.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.755.0...0.756.0
+[0.755.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.754.0...0.755.0
+[0.754.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.753.0...0.754.0
+[0.753.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.752.1...0.753.0
+[0.752.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.752.0...0.752.1
+[0.752.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.751.0...0.752.0
+[0.751.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.750.4...0.751.0
+[0.750.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.750.3...0.750.4
 [0.750.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.750.2...0.750.3
 [0.750.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.750.1...0.750.2
 [0.750.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.750.0...0.750.1
