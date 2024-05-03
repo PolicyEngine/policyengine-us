@@ -27,7 +27,11 @@ metadata:
   breakdown:
   - filing_status
   period: year
-  uprating: gov.irs.uprating
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: nearest
+      interval: 10
   reference:
   - title: 2021 NE income tax form and instruction booklet
     href: https://revenue.nebraska.gov/files/doc/tax-forms/2021/f_1040n_booklet.pdf
