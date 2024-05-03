@@ -13,7 +13,7 @@ class hi_food_excise_exemption_amount(Variable):
 
         income = tax_unit("adjusted_gross_income", period)
 
-        minor_child_include = p.minor_child.availability
+        minor_child_include = p.minor_child.in_effect
         # Count exemptions as number of people
         #   The legal code defines exemptions as Hawaii exemptions,
         #   which normally include additional exemptions for aged and
@@ -39,7 +39,7 @@ class hi_food_excise_exemption_amount(Variable):
             ],
         )
         exemptions = tax_unit("exemptions_count", period)
-        if p.minor_child.availability:
+        if p.minor_child.in_effect:
             # Reduce number of exemptions by the number of minor children
             minor_children = tax_unit(
                 "hi_food_excise_credit_minor_child_count", period
