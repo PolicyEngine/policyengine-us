@@ -3,7 +3,6 @@ metadata:
   label: Vermont standard deduction
   period: year
   unit: currency-USD
-  uprating: gov.irs.uprating
   breakdown:
     - filing_status
   reference:
@@ -18,22 +17,37 @@ metadata:
       href: https://legislature.vermont.gov/statutes/section/32/151/05811 
 
 JOINT:
-  2021-01-01: 12_700
-  2022-01-01: 13_050
-  2023-01-01: 14_050
+  values:
+    2021-01-01: 12_700
+    2022-01-01: 13_050
+    2023-01-01: 14_050
+  metadata:
+    uprating: gov.irs.uprating
 HEAD_OF_HOUSEHOLD:
-  2021-01-01: 9_500
-  2022-01-01: 9_800
-  2023-01-01: 10_550
+  values:
+    2021-01-01: 9_500
+    2022-01-01: 9_800
+    2023-01-01: 10_550
+  metadata:
+    uprating: gov.irs.uprating
 SURVIVING_SPOUSE:
-  2021-01-01: 12_700
-  2022-01-01: 13_050
-  2023-01-01: 14_050
+  values:
+    2021-01-01: 12_700
+    2022-01-01: 13_050
+    2023-01-01: 14_050
+  metadata:
+    uprating: gov.irs.uprating  
 SINGLE:
-  2021-01-01: 6_350
-  2022-01-01: 6_500
-  2023-01-01: 7_000
+  values:
+    2021-01-01: 6_350
+    2022-01-01: 6_500
+    2023-01-01: 7_000
+  metadata:
+    uprating: gov.irs.uprating
 SEPARATE:
-  2021-01-01: 6_350
-  2022-01-01: 6_500
-  2023-01-01: 7_000
+  values:
+    2021-01-01: 6_350
+    2022-01-01: 6_500
+    2023-01-01: 7_000
+  metadata:
+    uprating: gov.irs.uprating
