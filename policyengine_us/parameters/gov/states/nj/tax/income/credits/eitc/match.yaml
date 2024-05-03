@@ -1,8 +1,8 @@
-description: New Jersey limits the earned income tax credit for filers without children to this age or older.
-metadata: 
+description: New Jersey matches this fraction of the federal earned income tax credit.
+metadata:
   period: year
-  unit: year
-  label: New Jersey EITC minimum childless age
+  unit: /1
+  label: New Jersey EITC match
   reference:
     - title: 54A:4-7 New Jersey Earned Income Tax Credit program.
       href: https://law.justia.com/codes/new-jersey/2022/title-54a/section-54a-4-7/
@@ -13,4 +13,15 @@ metadata:
     - title: 2023 NJ-1040 Instructions (line 58)
       href: https://www.state.nj.us/treasury/taxation/pdf/current/1040i.pdf#page=45
 values:
-  2021-01-01: 18
+  2000-01-01: 0.1
+  2001-01-01: 0.15
+  2002-01-01: 0.175
+  2003-01-01: 0.2
+  2008-01-01: 0.225
+  2009-01-01: 0.25
+  2010-01-01: 0.2
+  2015-01-01: 0.3
+  2016-01-01: 0.35
+  2018-01-01: 0.37
+  2019-01-01: 0.39
+  2020-01-01: 0.4
