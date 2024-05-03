@@ -5,6 +5,7 @@ metadata:
   label: Arizona Cash Assistance care expense income subtraction threshold for children under or over age threshold
   period: month
   threshold_unit: year
+  amount: currency-USD
   reference:
     - title: Arizona Department of Economic Security - Cash Assistance (CA) Income Eligibility Guidelines
       href: https://az.db101.org/az/programs/income_support/tanf/program2.htm
@@ -13,8 +14,8 @@ brackets:
   - threshold:
       2022-01-01: 0
     amount:
-      2022-01-01: 175
+      2022-01-01: 200
   - threshold:
       2022-01-01: 2
     amount:
-      2022-01-01: 200
+      2022-01-01: 175
