@@ -15,9 +15,14 @@ HEAD_OF_HOUSEHOLD:
   2021-01-01: 310_600
   2023-01-01: 344_500
 metadata:
+  uprating: 
+    parameter: gov.irs.uprating
+    rounding:
+      type: nearest
+      interval: 25
   unit: currency-USD
   period: year
-  label: NY itemized deduction phase out start
+  label: New York itemized deduction phase out start
   reference:
     - title: 2021 NY Form IT-196 Instructions Line 40
       href: https://www.tax.ny.gov/pdf/2021/inc/it196i_2021.pdf#page=18
