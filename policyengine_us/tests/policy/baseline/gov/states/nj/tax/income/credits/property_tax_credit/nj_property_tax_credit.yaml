@@ -4,7 +4,8 @@
   input:
     nj_property_tax_credit_eligible: true
     nj_taking_property_tax_deduction: false
-    state_code: NJ
+    filing_status: JOINT
+    cohabitating_spouses: true
   output:
     nj_property_tax_credit: 50
 
@@ -14,7 +15,8 @@
   input:
     nj_property_tax_credit_eligible: true
     nj_taking_property_tax_deduction: true
-    state_code: NJ
+    filing_status: JOINT
+    cohabitating_spouses: true
   output:
     nj_property_tax_credit: 0
 
@@ -26,6 +28,5 @@
     nj_taking_property_tax_deduction: false
     filing_status: SEPARATE
     cohabitating_spouses: true
-    state_code: NJ
   output:
     nj_property_tax_credit: 25
