@@ -6,8 +6,7 @@ class la_agi_exempt_income(Variable):
     entity = TaxUnit
     label = "Louisiana income that is exempt from the adjusted gross income"
     defined_for = StateCode.LA
-    reference = "https://revenue.louisiana.gov/TaxForms/IT540i(2021)%20Instructions.pdfpage=9"
-    unit = USD
+    reference = "https://revenue.louisiana.gov/TaxForms/IT540i(2021)%20Instructions.pdf#page=9"
     definition_period = YEAR
 
     # Functions as subtractions.
@@ -27,17 +26,17 @@ class la_agi_exempt_income(Variable):
             federal_tax_deduction = tax_unit(
                 "la_federal_tax_deduction", period
             )
-            federal_tax_deduction_present = federal_tax_deduction > 0
+            federal_tax_deduction_eligible = federal_tax_deduction > 0
             # Multiply the federal tax deduction by the exempt income rate
             reduced_federal_tax_deduction = (
                 federal_tax_deduction * exempt_income_rate
             )
-            # The smaller of the two options is applied if taxable income is above 0
+            # The smaller of the two options is applied if taxable income exceeds zero  
             smaller_adjustment = min_(
                 reduced_federal_tax_deduction, reduced_exempt_income
             )
             final_exempt_income_reduction = where(
-                federal_tax_deduction_present,
+                federal_tax_deduction_eligible,
                 smaller_adjustment,
                 reduced_exempt_income,
             )
