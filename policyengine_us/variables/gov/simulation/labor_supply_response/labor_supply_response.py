@@ -111,7 +111,7 @@ class employment_income_behavioral_response(Variable):
         simulation = person.simulation
         if simulation.baseline is None:
             return 0  # No reform, no impact
-        if lsr.income_elasticity == 0 and lsr.substitution_elasticity == 0:
+        if lsr.elasticities.income == 0 and lsr.elasticities.substitution == 0:
             return 0
 
         measurement_branch = simulation.get_branch(
