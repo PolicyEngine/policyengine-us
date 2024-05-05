@@ -51,29 +51,6 @@ def variable_alias(name: str, variable_cls: type) -> type:
     )
 
 
-def taxcalc_read_only_variable(name: str, variable_cls: type) -> type:
-    """
-    Copy a variable class and return a new class for a tax-calc variable.
-    """
-    class_dict = dict(variable_cls.__dict__)
-    class_dict["formula"] = lambda entity, period: entity(
-        variable_cls.__name__, period
-    )
-    return type(
-        name,
-        (Variable,),
-        dict(
-            value_type=variable_cls.value_type,
-            entity=variable_cls.entity,
-            label=variable_cls.label + " (Tax-Calculator)",
-            definition_period=variable_cls.definition_period,
-            unit=variable_cls.unit,
-            documentation=variable_cls.documentation
-            + " This is a read-only copy variable, matching the corresponding variable in the open-source US federal tax model Tax-Calculator.",
-        ),
-    )
-
-
 def sum_among_non_dependents(variable: str) -> Callable:
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum(variable, tax_unit, period)

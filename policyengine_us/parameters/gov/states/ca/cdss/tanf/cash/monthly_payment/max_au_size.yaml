@@ -1,0 +1,13 @@
+description: California CalWORKs provide the maximum monthly payment for the AU which is over this size.
+
+metadata:
+  unit: int
+  period: month
+  label: California CalWORKs maximum assistance unit size for payment standards
+  reference:
+    - title: County of San Diego CalWORKS Program Guide | CalWORKs Payment Standards Chart
+      href: [https://hhsaprogramguides.sandiegocounty.gov/CalWORKS/44-300/CalWORKs_Payment_Standards/G_CalWORKs_Payment_Standards.pdf,
+      https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&sectionNum=11450.]
+
+values:
+  2023-01-01: 10 # Actual date: 2023-10-01

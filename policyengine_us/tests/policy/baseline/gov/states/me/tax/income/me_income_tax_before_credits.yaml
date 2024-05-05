@@ -102,7 +102,7 @@
   period: 2022
   input:
     me_taxable_income: 110_000
-    filing_status: WIDOW
+    filing_status: SURVIVING_SPOUSE
     state_code: ME
   output:
    # .058*46000 + .0675*(108900-46000) + .0715*(110000-108900) = 6992.4
@@ -152,8 +152,19 @@
   period: 2023
   input:
     me_taxable_income: 120_000
-    filing_status: WIDOW
+    filing_status: SURVIVING_SPOUSE
     state_code: ME
   output:
    # .058*49050 + .0675*(116100-49050) + .0715*(120000-116100) = 7649.625
     me_income_tax_before_credits: 7_649.625
+
+- name: Single filer, taxable income is $100K in 2021. The main income tax is $6723.775.
+  absolute_error_margin: 1
+  period: 2021
+  input:
+    me_taxable_income: 100_000
+    filing_status: SINGLE
+    state_code: ME
+  output:
+   # .0715*(100,000-53,150)+3374 = 6723.775
+    me_income_tax_before_credits: 6_723.775

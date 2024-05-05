@@ -1,0 +1,44 @@
+- name: case 1
+  period: 2022
+  input:
+    people:
+      person1:
+        az_aged_exemption_eligible_person: true
+        age: 66
+      person2:
+        az_aged_exemption_eligible_person: true
+        age: 66
+    household:
+      members: [person1, person2]
+  output:
+    az_aged_exemption: [2_100, 2_100]
+
+- name: case 2
+  period: 2022
+  input:
+    people:
+      person1:
+        az_aged_exemption_eligible_person: false
+        age: 66
+      person2:
+        az_aged_exemption_eligible_person: false
+        age: 66
+    household:
+      members: [person1, person2]
+  output:
+    az_aged_exemption: [0, 0]
+
+- name: case 3
+  period: 2022
+  input:
+    people:
+      person1:
+        az_aged_exemption_eligible_person: true
+        age: 60
+      person2:
+        az_aged_exemption_eligible_person: true
+        age: 66
+    household:
+      members: [person1, person2]
+  output:
+    az_aged_exemption: [0, 2_100]

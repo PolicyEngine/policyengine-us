@@ -3,7 +3,7 @@
   input:
     age_head: 66
     age_spouse: 66
-    exemptions: 1
+    exemptions_count: 1
     hi_tax_credit_for_low_income_household_renters_eligible: true
   output:
     hi_tax_credit_for_low_income_household_renters: 150
@@ -13,7 +13,7 @@
   input:
     age_head: 64
     age_spouse: 66
-    exemptions: 1
+    exemptions_count: 1
     hi_tax_credit_for_low_income_household_renters_eligible: true
   output:
     hi_tax_credit_for_low_income_household_renters: 100
@@ -23,7 +23,7 @@
   input:
     age_head: 63
     age_spouse: 63
-    exemptions: 1
+    exemptions_count: 1
     hi_tax_credit_for_low_income_household_renters_eligible: true
   output:
     hi_tax_credit_for_low_income_household_renters: 50
@@ -33,7 +33,7 @@
   input:
     age_head: 63
     age_spouse: 63
-    exemptions: 1
+    exemptions_count: 1
     hi_tax_credit_for_low_income_household_renters_eligible: false
   output:
     hi_tax_credit_for_low_income_household_renters: 0

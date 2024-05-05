@@ -1,0 +1,243 @@
+- name: Unit test 1 for 2021 New York supplemental tax married filing jointly and qualifying widow(er)
+  absolute_error_margin: 0.1
+  period: 2021
+  input:
+    state_code: NY
+    filing_status: JOINT
+    ny_agi: 110_000 # $107,650 < AGI < $25,000,000
+    ny_taxable_income: 27_900 # <$161,550
+    ny_main_income_tax: 1_202
+  output:
+    ny_supplemental_tax: 22.278
+    # 2021 NY Form IT-201 Instructions Tax computation worksheet 1 
+
+- name: Unit test 2 for 2021 New York supplemental tax married filing jointly and qualifying widow(er)
+  absolute_error_margin: 0.1
+  period: 2021
+  input:
+    state_code: NY
+    filing_status: JOINT
+    ny_agi: 256_000 # $161,550 < AGI < $25,000,000
+    ny_taxable_income: 238_950 # $161,550 < taxable income <= $323,200
+    ny_main_income_tax: 14_069.755
+  output:
+    ny_supplemental_tax: 1_056 #474+582
+    # 2021 NY Form IT-201 Instructions Tax computation worksheet 2
+
+- name: Unit test 3 for 2021 New York supplemental tax married filing jointly and qualifying widow(er)
+  absolute_error_margin: 0.1
+  period: 2021
+  input:
+    state_code: NY
+    filing_status: JOINT
+    ny_agi: 324_030 # $323,200 < AGI < $25,000,000
+    ny_taxable_income: 307_980 # $323,200 < taxable income <= $2,155,350
+    ny_main_income_tax: 18_439.35
+  output:
+    ny_supplemental_tax: 1_056 #474+582
+    # 2021 NY Form IT-201 Instructions Tax computation worksheet 3
+
+- name: Unit test 4 for 2021 New York supplemental tax married filing jointly and qualifying widow(er)
+  absolute_error_margin: 0.1
+  period: 2021
+  input:
+    state_code: NY
+    filing_status: JOINT
+    ny_agi: 4_000_000 # $2,155,350 < AGI < $25,000,000
+    ny_taxable_income: 3_000_000 # $2,155,350 < taxable income <= 5,000,000
+    ny_main_income_tax: 226_413.78
+  output:
+    ny_supplemental_tax: 63_086
+    # 2021 NY Form IT-201 Instructions Tax computation worksheet 4
+
+- name: Unit test 5 for 2021 New York supplemental tax married filing jointly and qualifying widow(er)
+  absolute_error_margin: 0.1
+  period: 2021
+  input:
+    state_code: NY
+    filing_status: JOINT
+    ny_agi: 8_000_000 # $5,000,000 < AGI < $25,000,000
+    ny_taxable_income: 6_000_000 # taxable income > 5,000,000
+    ny_main_income_tax: 522_413.78
+  output:
+    ny_supplemental_tax: 95_586
+    # 2021 NY Form IT-201 Instructions Tax computation worksheet 5
+
+- name: Unit test 6 for 2021 New York supplemental tax married filing jointly and qualifying widow(er)
+  absolute_error_margin: 0.1
+  period: 2021
+  input:
+    state_code: NY
+    filing_status: JOINT
+    ny_agi: 30_000_000 # > $25,000,000
+    ny_taxable_income: 26_000_000
+    ny_main_income_tax: 2_588_413.78
+  output:
+    ny_supplemental_tax: 245_586.22 #26,000,000*10.9%-2,588,413.78
+    # 2021 NY Form IT-201 Instructions Tax computation worksheet 6
+
+- name: Unit test 1 for 2021 New York supplemental tax single and married filling separately filer
+  absolute_error_margin: 0.1
+  period: 2021
+  input: 
+    state_code: NY
+    filing_status: SINGLE
+    ny_agi: 200_000 # $107,650 < AGI < $25,000,000
+    ny_taxable_income: 180_000 # taxable income <= $215,400
+    ny_main_income_tax: 10_868.08
+  output:
+    ny_supplemental_tax: 526
+    # 2021 NY Form IT-201 Instructions Tax computation worksheet 7
+
+- name: Unit test 2 for 2021 New York supplemental tax single and married filling separately filer
+  absolute_error_margin: 0.1
+  period: 2021
+  input: 
+    state_code: NY
+    filing_status: SINGLE
+    ny_agi: 800_000 # $215,400 < AGI < $25,000,000
+    ny_taxable_income: 700_000 # $215,400 < taxable income <= $1,077,550
+    ny_main_income_tax: 46_304
+  output:
+    ny_supplemental_tax: 1_646
+    # 2021 NY Form IT-201 Instructions Tax computation worksheet 8
+
+- name: Unit test 3 for 2021 New York supplemental tax single and married filling separately filer
+  absolute_error_margin: 0.1
+  period: 2021
+  input: 
+    state_code: NY
+    filing_status: SINGLE
+    ny_agi: 2_000_000 # $1,077,550 < AGI < $25,000,000
+    ny_taxable_income: 1_500_000 # $1,077,550 < taxable income <= $5,000,000
+    ny_main_income_tax: 112_932.6
+  output:
+    ny_supplemental_tax: 31_817
+    # 2021 NY Form IT-201 Instructions Tax computation worksheet 9
+
+- name: Unit test 4 for 2021 New York supplemental tax single and married filling separately filer
+  absolute_error_margin: 0.1
+  period: 2021
+  input: 
+    state_code: NY
+    filing_status: SINGLE
+    ny_agi: 12_000_000 # $5,000,000 < AGI < $25,000,000
+    ny_taxable_income: 8_000_000 # taxable income > $5,000,000
+    ny_main_income_tax: 759_682.6
+  output:
+    ny_supplemental_tax: 64_317
+    # 2021 NY Form IT-201 Instructions Tax computation worksheet 10
+
+- name: Unit test 5 for 2021 New York supplemental tax single and married filling separately filer
+  absolute_error_margin: 0.1
+  period: 2021
+  input:
+    state_code: NY
+    filing_status: SINGLE
+    ny_agi: 30_000_000 # AGI > $25,000,000
+    ny_taxable_income: 21_000_000 
+    ny_main_income_tax: 2_098_682.5
+  output:
+    ny_supplemental_tax: 190_317.5 # 21,000,000 * 10.9% - 2,098,682.5
+    # 2021 NY Form IT-201 Instructions Tax computation worksheet 11
+
+- name: Unit test 1 for 2021 New York supplemental tax head of household filer
+  absolute_error_margin: 0.1
+  period: 2021
+  input: 
+    state_code: NY
+    filing_status: HEAD_OF_HOUSEHOLD 
+    ny_agi: 200_000 # $107,650 < AGI < $25,000,000
+    ny_taxable_income: 180_000 # taxable income <= $269,300
+    ny_main_income_tax: 10_651.695
+  output:
+    ny_supplemental_tax: 742
+    # 2021 NY Form IT-201 Instructions Tax computation worksheet 12
+
+- name: Unit test 2 for 2021 New York supplemental tax head of household filer
+  absolute_error_margin: 0.1
+  period: 2021
+  input: 
+    state_code: NY
+    filing_status: HEAD_OF_HOUSEHOLD 
+    ny_agi: 1_000_000 # $269,300 < AGI < $25,000,000
+    ny_taxable_income: 800_000 # $269,300 < taxable income <= $1,616,450
+    ny_main_income_tax: 52_657.336
+  output:
+    ny_supplemental_tax: 2_143
+    # 2021 NY Form IT-201 Instructions Tax computation worksheet 13
+
+- name: Unit test 3 for 2021 New York supplemental tax head of household filer
+  absolute_error_margin: 0.1
+  period: 2021
+  input: 
+    state_code: NY
+    filing_status: HEAD_OF_HOUSEHOLD 
+    ny_agi: 5_000_000 # $1,616,450 < AGI < $25,000,000
+    ny_taxable_income: 4_000_000 # $1,616,450 < taxable income <= $5,000,000
+    ny_main_income_tax: 338_596.75
+  output:
+    ny_supplemental_tax: 47_403
+    # 2021 NY Form IT-201 Instructions Tax computation worksheet 14
+
+- name: Unit test 4 for 2021 New York supplemental tax head of household filer
+  absolute_error_margin: 0.1
+  period: 2021
+  input: 
+    state_code: NY
+    filing_status: HEAD_OF_HOUSEHOLD 
+    ny_agi: 10_000_000 # $5,000,000 < AGI < $25,000,000
+    ny_taxable_income: 8_000_000 # taxable income > $5,000,000
+    ny_main_income_tax: 744_096.75
+  output:
+    ny_supplemental_tax: 79_903
+    # 2021 NY Form IT-201 Instructions Tax computation worksheet 15
+
+- name: Unit test 5 for 2021 New York supplemental tax head of household filer
+  absolute_error_margin: 0.1
+  period: 2021
+  input: 
+    state_code: NY
+    filing_status: HEAD_OF_HOUSEHOLD 
+    ny_agi: 30_000_000 # AGI > $25,000,000
+    ny_taxable_income: 28_000_000 
+    ny_main_income_tax: 2_822_096.8
+  output:
+    ny_supplemental_tax: 229_903.2 # 28,000,000 * 10.9% - 2,822,096.8
+    # 2021 NY Form IT-201 Instructions Tax computation worksheet 16
+
+- name: Unit test for 2022 ny_supplemental_tax joint filer
+  absolute_error_margin: 0.1
+  period: 2022
+  input:
+    state_code: NY
+    filing_status: JOINT
+    ny_agi: 120_000
+    ny_taxable_income: 40_000
+    ny_main_income_tax: 1_909.85
+  output:
+    ny_supplemental_tax: 106.21 #0+420*0.247
+
+- name: Unit test for 2022 ny_supplemental_tax head of household filers
+  absolute_error_margin: 0.1
+  period: 2022
+  input:
+    state_code: NY
+    filing_status: HEAD_OF_HOUSEHOLD 
+    ny_agi: 130_000
+    ny_taxable_income: 120_000
+    ny_main_income_tax: 6698.225
+  output:
+    ny_supplemental_tax: 336.144 #0+752*0.447
+
+- name: Unit test for 2022 ny_supplemental_tax separate filers
+  absolute_error_margin: 0.1
+  period: 2022
+  input:
+    state_code: NY
+    filing_status: SEPARATE 
+    ny_agi: 220_000
+    ny_taxable_income: 200_000
+    ny_main_income_tax: 11_963.755
+  output:
+    ny_supplemental_tax: 536 #0+536*1

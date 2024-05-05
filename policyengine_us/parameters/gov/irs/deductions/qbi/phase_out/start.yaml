@@ -2,11 +2,12 @@ description: Threshold of taxable income (excluding QBID) after which the QBI de
 metadata:
   unit: currency-USD
   period: year
-  name: qbid_phase_out_start
   label: Qualified business income deduction phase-out start
   breakdown:
     - filing_status
   reference:
+    - title: 2024 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-23-34.pdf#page=17
     - title: 2023 IRS data release
       href: https://www.irs.gov/pub/irs-drop/rp-22-38.pdf#page=13
     - title: 2022 IRS data release
@@ -15,6 +16,7 @@ metadata:
       href: https://www.irs.gov/pub/irs-drop/rp-20-45.pdf#page=16
     - title: 2020 IRS data release
       href: https://www.irs.gov/pub/irs-drop/rp-19-44.pdf#page=16
+  uprating: gov.irs.uprating
 HEAD_OF_HOUSEHOLD:
   2013-01-01: 0
   2018-01-01: 157_500
@@ -23,6 +25,7 @@ HEAD_OF_HOUSEHOLD:
   2021-01-01: 164_900
   2022-01-01: 170_050
   2023-01-01: 182_100
+  2024-01-01: 191_950
   2026-01-01: 0
 JOINT:
   2013-01-01: 0
@@ -32,6 +35,7 @@ JOINT:
   2021-01-01: 329_800
   2022-01-01: 340_100
   2023-01-01: 364_200
+  2024-01-01: 383_900
   2026-01-01: 0
 SEPARATE:
   2013-01-01: 0
@@ -41,6 +45,7 @@ SEPARATE:
   2021-01-01: 164_925
   2022-01-01: 170_050
   2023-01-01: 182_100
+  2024-01-01: 191_950
   2026-01-01: 0
 SINGLE:
   2013-01-01: 0
@@ -50,8 +55,9 @@ SINGLE:
   2021-01-01: 164_900
   2022-01-01: 170_050
   2023-01-01: 182_100
+  2024-01-01: 191_950
   2026-01-01: 0
-WIDOW:
+SURVIVING_SPOUSE:
   2013-01-01: 0
   2018-01-01: 315_000
   2019-01-01: 321_400
@@ -59,4 +65,5 @@ WIDOW:
   2021-01-01: 329_800
   2022-01-01: 340_100
   2023-01-01: 364_200
+  2024-01-01: 383_900
   2026-01-01: 0

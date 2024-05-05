@@ -1,0 +1,123 @@
+- name: 2021 Virginia itemized deduction for a single filer
+  period: 2021
+  input:
+    filing_status: SINGLE
+    itemized_deductions_less_salt: 20_000
+    real_estate_taxes: 5_000
+    adjusted_gross_income: 80_000 # < $278,450
+    state_and_local_sales_or_income_tax: 1_000
+    state_code: VA
+  output:
+    va_itemized_deductions: 25_000 # 20000+5000
+
+- name: 2021 Virginia limited itemized deduction for a head of household filer
+  period: 2021
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    real_estate_taxes: 50_000
+    adjusted_gross_income: 800_000 # > $306,300
+    state_and_local_sales_or_income_tax: 10_000
+    state_code: VA
+  output:
+    va_itemized_deductions: 0
+
+- name: Virginia itemized deduction for a joint filer (before 2018)
+  period: 2017
+  input:
+    filing_status: JOINT
+    itemized_deductions_less_salt: 20_000
+    real_estate_taxes: 10_000
+    adjusted_gross_income: 250_000 # < $313_800
+    state_and_local_sales_or_income_tax: 10_000
+    state_code: VA
+  output:
+    va_itemized_deductions: 30_000 #20_000+10_000
+
+- name: Virginia limited itemized deduction for a joint filer 
+  period: 2018
+  input:
+    filing_status: JOINT
+    real_estate_taxes: 20_000
+    adjusted_gross_income: 800_000 # > $313_800
+    state_and_local_sales_or_income_tax: 10_000
+    state_code: VA
+  output:
+    va_itemized_deductions: 20_000
+
+- name: Virginia itemized deduction for a joint filer in 2018
+  period: 2018
+  input:
+    filing_status: JOINT
+    itemized_deductions_less_salt: 20_000
+    real_estate_taxes: 10_000
+    adjusted_gross_income: 250_000 # no limitation
+    state_and_local_sales_or_income_tax: 10_000
+    state_code: VA
+  output:
+    va_itemized_deductions: 30_000 #20_000+10_000
+
+- name: Virginia limited itemized deduction for a joint filer in 2018
+  period: 2018
+  input:
+    filing_status: JOINT
+    itemized_deductions_less_salt: 20_000
+    real_estate_taxes: 20_000
+    adjusted_gross_income: 800_000 # no limitation
+    state_and_local_sales_or_income_tax: 10_000
+    state_code: VA
+  output:
+    va_itemized_deductions: 40_000 #20,000+20,000
+
+- name: Tax unit with taxsimid 7856 in k21.its.csv and k21.ots.csv - Integration test
+  absolute_error_margin: 2
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 63
+        employment_income: 82010
+        qualified_dividend_income: 4005.0
+        taxable_interest_income: 5505.0
+        short_term_capital_gains: 2005.0
+        long_term_capital_gains: 2505.0
+        rental_income: 4505.0
+        taxable_private_pension_income: 1500.0
+        social_security_retirement: 5000.0
+        real_estate_taxes: 24000
+        mortgage_interest: 36000
+        self_employment_income: 158010
+        business_is_qualified: true
+        business_is_sstb: false
+        w2_wages_from_qualified_business: 100e6
+      person2:
+        age: 63
+        employment_income: 82010
+        qualified_dividend_income: 4005
+        taxable_interest_income: 5505
+        short_term_capital_gains: 2005
+        long_term_capital_gains: 2505
+        rental_income: 4505
+        taxable_private_pension_income: 1500
+        social_security_retirement: 5000
+      person3:
+        age: 16
+      person4:
+        age: 16
+      person5:
+        age: 16
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+        tax_unit_itemizes: True
+        state_income_tax: 19956.35
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+        snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_fips: 51  # VA
+  output:  # expected results from patched TAXSIM35 2024-03-21 version
+    va_itemized_deductions: 35_282

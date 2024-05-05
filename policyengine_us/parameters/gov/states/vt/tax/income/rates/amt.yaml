@@ -1,0 +1,23 @@
+description: Vermont levies an alternative minimum tax of this rate above the threshold.
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  rate_unit: /1
+  label: Vermont alternative minimum tax rate
+  reference:
+      - title: Vermont §5822. Tax on income of individuals, estates, and trusts (a)(6)
+        href: https://casetext.com/statute/vermont-statutes/title-32-taxation-and-finance/chapter-151-income-taxes/subchapter-002-taxation-of-individuals-trusts-and-estates/section-5822-tax-on-income-of-individuals-estates-and-trusts
+      - title: Vermont 2021 Income Tax Rate Schedules
+        href: https://tax.vermont.gov/sites/tax/files/documents/RateSched-2021.pdf#page=1
+      - title: Vermont 2022 Income Tax Return Booklet Forms and Instructions
+        href: https://tax.vermont.gov/sites/tax/files/documents/RateSched-2022.pdf#page=1
+brackets:
+  - threshold:
+      2021-01-01: 0
+    amount: 
+      2021-01-01: 0
+  - threshold:
+      2021-01-01: 150_000
+    amount: 
+      2021-01-01: 0.03
+    

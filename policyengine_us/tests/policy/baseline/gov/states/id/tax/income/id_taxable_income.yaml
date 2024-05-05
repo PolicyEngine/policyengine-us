@@ -1,0 +1,28 @@
+- name: Idaho Deductions less than AGI
+  period: 2021
+  input:
+    id_agi: 1_000
+    id_deductions: 500
+    state_code: ID
+  output:
+    id_taxable_income: 500
+
+- name: Idaho Deductions exceeding AGI
+  period: 2022
+  input:
+    id_agi: 500
+    id_deductions: 1_000
+    qualified_business_income_deduction: 200
+    state_code: ID
+  output:
+    id_taxable_income: 0
+
+- name: AGI after deductions is reduced by QBID
+  period: 2021
+  input:
+    id_agi: 1_000
+    id_deductions: 500
+    qualified_business_income_deduction: 300
+    state_code: ID
+  output:
+    id_taxable_income: 200

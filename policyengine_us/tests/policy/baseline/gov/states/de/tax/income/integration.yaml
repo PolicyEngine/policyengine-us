@@ -1,0 +1,275 @@
+- name: Tax unit files separately
+  period: 2022
+  # High error margin because of rounding in the tax tables
+  absolute_error_margin: 2
+  input:
+    people:
+      person1:
+        adjusted_gross_income_person: 20_000
+        de_additions: 1_000
+        de_subtractions: 2_000
+        is_tax_unit_head: true
+      person2:
+        adjusted_gross_income_person: 25_000
+        de_additions: 2_000
+        de_subtractions: 1_000
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SEPARATE
+        de_files_separately: true
+        de_non_refundable_credits: 100
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE 
+  output:
+    de_agi_indiv: [19_000, 26_000]
+    de_standard_deduction_indv: [3_250, 3_250]
+    de_itemized_deductions_indv: [0, 0]
+    de_taxable_income_indv: [15_750, 22_750]
+    de_income_tax_before_non_refundable_credits_unit: 1_421   
+    de_income_tax_before_refundable_credits: 1_321
+
+- name: Tax unit files jointly
+  period: 2022
+  # High error margin because of rounding in the tax tables
+  absolute_error_margin: 2
+  input:
+    people:
+      person1:
+        adjusted_gross_income_person: 20_000
+        de_additions: 1_000
+        de_subtractions: 2_000
+        is_tax_unit_head: true
+      person2:
+        adjusted_gross_income_person: 25_000
+        de_additions: 2_000
+        de_subtractions: 1_000
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        de_files_separately: false
+        de_non_refundable_credits: 100
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE 
+  output:
+    de_agi_indiv: [19_000, 26_000]
+    #If filing a joint return, only one standard deduction is allowed.
+    de_standard_deduction_joint: [6_500, 0]
+    de_itemized_deductions_joint: [0, 0] 
+    de_taxable_income_joint: [38_500, 0]
+    de_income_tax_before_non_refundable_credits_unit: 1_750.25
+    de_income_tax_before_refundable_credits: 1_650.25
+
+#new baseline integration test
+- name: baseline integration test separate
+  period: 2022
+  # High error margin because of rounding in the tax tables
+  absolute_error_margin: 2
+  input:
+    people:
+      person1:
+        adjusted_gross_income_person: 20_000
+        age: 30
+      person2:
+        adjusted_gross_income_person: 25_000
+        age: 31
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    de_agi_indiv: [20_000, 25_000]
+    de_standard_deduction_indv: [3_250, 3_250]
+    de_itemized_deductions_indv: [0, 0] 
+    de_taxable_income_indv: [16_750, 21_750] 
+    de_income_tax_before_non_refundable_credits_unit: 1_417 
+    de_income_tax_before_refundable_credits: 1_197
+
+- name: Tax unit with taxsimid 99988 in e21.its.csv and e21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 24
+        employment_income: 60_010
+        taxable_interest_income: 5_505
+      person2:
+        age: 24
+        employment_income: 96_010
+        taxable_interest_income: 5_505
+      person3:
+        age: 11
+      person4:
+        age: 16
+      person5:
+        age: 16
+      person6:
+        age: 16
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_fips: 10  # DE
+  output:  # expected results from patched TAXSIM35 2024-02-15 version
+    de_income_tax: 7_901.98
+
+- name: Tax unit with taxsimid 84350 in e21.its.csv and e21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 63
+        employment_income: 128010
+        taxable_interest_income: 5505
+      person2:
+        age: 63
+        employment_income: 2010
+        taxable_interest_income: 5505
+      person3:
+        age: 11
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        premium_tax_credit: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_fips: 10  # DE
+  output:  # expected results from patched TAXSIM35 2024-03-07 version
+    de_income_tax: 6585.82
+
+- name: Tax unit with taxsimid 91040 in f21.its.csv and f21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 62
+        employment_income: 129_010
+        taxable_interest_income: 11_010
+        taxable_private_pension_income: 6_000
+        social_security_retirement: 24_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        premium_tax_credit: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_fips: 10  # DE
+  output:  # expected results from patched TAXSIM35 2024-03-23 version
+    de_income_tax: 7361.32
+
+- name: Tax unit with taxsimid 2682 in h21.its.csv and h21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 64
+        employment_income: 1010
+        taxable_interest_income: 5505.0
+        short_term_capital_gains: 4505.0
+        rental_income: 3005.0
+        taxable_private_pension_income: 6000.0
+        social_security_retirement: 1500.0
+        rent: 15000
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+        ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
+      person2:
+        age: 64
+        employment_income: 61010
+        taxable_interest_income: 5505.0
+        short_term_capital_gains: 4505.0
+        rental_income: 3005.0
+        taxable_private_pension_income: 6000.0
+        social_security_retirement: 1500.0
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+        ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
+      person3:
+        age: 11
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        tax_unit_childcare_expenses: 2000
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        snap: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_fips: 10  # DE
+  output:  # expected results from patched TAXSIM35 2024-04-04 version
+    de_income_tax: 2429.20
+
+- name: Tax unit with taxsimid 22359 in k21.its.csv and k21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 74
+        employment_income: 24010
+        taxable_interest_income: 5505
+        short_term_capital_gains: 2505
+        long_term_capital_gains: 1505
+        taxable_private_pension_income: 4000
+        social_security_retirement: 12000
+        real_estate_taxes: 2000
+        mortgage_interest: 1000
+        self_employment_income: 121010
+        business_is_qualified: true
+        business_is_sstb: false
+        w2_wages_from_qualified_business: 100e6
+      person2:
+        age: 74
+        employment_income: 1010
+        taxable_interest_income: 5505.0
+        short_term_capital_gains: 2505.0
+        long_term_capital_gains: 1505.0
+        taxable_private_pension_income: 4000.0
+        social_security_retirement: 12000
+      person3:
+        age: 16
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_fips: 10  # DE
+  output:  # expected results from patched TAXSIM35 2024-04-11 version
+    de_standard_deduction_indv: [5_750, 5_750, 0]
+    de_standard_deduction_joint: [11_500, 0, 0]
+    de_itemized_deductions_joint: [3_000, 0, 0]
+    de_deduction_indv: [5_750, 5_750, 0]
+    de_deduction_joint: [11_500, 0, 0]
+    de_income_tax: 6882.22

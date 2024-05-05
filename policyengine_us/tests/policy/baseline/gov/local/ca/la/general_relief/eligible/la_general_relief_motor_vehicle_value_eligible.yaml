@@ -1,0 +1,49 @@
+- name: Homeless eligible
+  period: 2022
+  input:
+    in_la: true
+    lives_in_vehicle: true
+    household_vehicles_value: 11_500
+    household_vehicles_owned: 1
+  output:
+    la_general_relief_motor_vehicle_value_eligible: true
+
+- name: Lives in car but ineligible
+  period: 2022
+  input:
+    in_la: true
+    lives_in_vehicle: true
+    household_vehicles_value: 11_501
+    household_vehicles_owned: 1
+  output:
+    la_general_relief_motor_vehicle_value_eligible: false
+
+- name: Resident eligible
+  period: 2022
+  input:
+    in_la: true
+    lives_in_vehicle: false
+    household_vehicles_value: 4_500
+    household_vehicles_owned: 1
+  output:
+    la_general_relief_motor_vehicle_value_eligible: true
+
+- name: Resident ineligible
+  period: 2022
+  input:
+    in_la: true
+    lives_in_vehicle: false
+    household_vehicles_value: 4_501
+    household_vehicles_owned: 1
+  output:
+    la_general_relief_motor_vehicle_value_eligible: false
+
+- name: Vehicle number ineleigible
+  period: 2022
+  input:
+    in_la: true
+    lives_in_vehicle: true
+    household_vehicles_value: 4_500
+    household_vehicles_owned: 2
+  output:
+    la_general_relief_motor_vehicle_value_eligible: false

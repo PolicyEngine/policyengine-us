@@ -1,0 +1,16 @@
+description: Delaware allows for an exclusion of military retirement pay under the pension exclusion if this is true.
+values:
+  2021-01-01: false
+  2022-01-01: true
+metadata:
+  unit: bool
+  label: Delaware military retirement exclusion available
+  reference: 
+    - title: Delaware individual income tax instructions for 2021
+      href: https://revenuefiles.delaware.gov/2021/PIT-RES_TY21_2021-02_Instructions.pdf#page=6
+    - title: The Delaware Code - Title 30 - Chapter 11 - Subchapter II - § 1106 - (b) - (3) - a
+      href: https://delcode.delaware.gov/title30/c011/sc02/index.html
+    - title: Delaware individual income tax instructions for 2022
+      href: https://revenuefiles.delaware.gov/2022/PIT-RES_TY22_2022-02_Instructions.pdf#page=6
+    - title: The Delaware Code - Title 30 - Chapter 11 - Subchapter II - § 1106 - (b) - (3) - b
+      href: https://delcode.delaware.gov/title30/c011/sc02/index.html

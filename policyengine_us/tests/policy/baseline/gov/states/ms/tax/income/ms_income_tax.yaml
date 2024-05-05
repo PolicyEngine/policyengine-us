@@ -1,0 +1,50 @@
+- name: Calculation 
+  period: 2023
+  input:
+    state_code: MS
+    ms_non_refundable_credits: 200
+    ms_income_tax_before_credits_joint: 2_000
+    ms_income_tax_before_credits_indiv: 3_000
+    ms_files_separately: false
+  output:
+    ms_income_tax: 1_800
+
+- name: Capped at 0 
+  period: 2023
+  input:
+    state_code: MS
+    ms_non_refundable_credits: 300
+    ms_income_tax_before_credits_joint: 200
+    ms_income_tax_before_credits_indiv: 1_000
+    ms_files_separately: false
+  output:
+    ms_income_tax: 0
+
+- name: Separate filing calculation
+  period: 2023
+  input:
+    state_code: MS
+    ms_non_refundable_credits: 300
+    ms_income_tax_before_credits_joint: 2_000
+    ms_income_tax_before_credits_indiv: 1_000
+    ms_files_separately: true
+  output:
+    ms_income_tax: 700
+
+- name: Capped at 0, using unit
+  period: 2023
+  input:
+    state_code: MS
+    ms_non_refundable_credits: 300
+    ms_income_tax_before_credits_unit: 200
+  output:
+    ms_income_tax: 0
+
+- name: Calculation, using unit
+  period: 2023
+  input:
+    state_code: MS
+    ms_non_refundable_credits: 300
+    ms_income_tax_before_credits_unit: 500
+  output:
+    ms_income_tax: 200

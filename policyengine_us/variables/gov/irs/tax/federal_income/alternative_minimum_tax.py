@@ -68,14 +68,17 @@ class regular_tax_before_credits(Variable):
         dwks32 = capital_gains.rates["3"] * dwks31
         # Break in worksheet lines
         dwks33 = min_(
-            tax_unit("dwks9", period),
+            tax_unit("dwks09", period),
             add(tax_unit, period, ["unrecaptured_section_1250_gain"]),
         )
         dwks10 = tax_unit("dwks10", period)
         dwks34 = dwks10 + dwks19
         dwks36 = max_(0, dwks34 - dwks1)
         dwks37 = max_(0, dwks33 - dwks36)
-        dwks38 = 0.25 * dwks37
+
+        p = parameters(period).gov.irs.income
+
+        dwks38 = p.amt.capital_gains.capital_gain_excess_tax_rate * dwks37
         # Break in worksheet lines
         dwks39 = dwks19 + dwks20 + dwks28 + dwks31 + dwks37
         dwks40 = dwks1 - dwks39
@@ -83,7 +86,6 @@ class regular_tax_before_credits(Variable):
 
         # Compute regular tax using bracket rates and thresholds
         reg_taxinc = max_(0, dwks19)
-        p = parameters(period).gov.irs.income
         bracket_tops = p.bracket.thresholds
         bracket_rates = p.bracket.rates
         reg_tax = 0
@@ -110,8 +112,7 @@ class regular_tax_before_credits(Variable):
         )
         dwks44 = tax_unit("income_tax_main_rates", period)
         dwks45 = min_(dwks43, dwks44)
-        hasqdivltcg = tax_unit("hasqdivltcg", period)
-        return where(hasqdivltcg, dwks45, dwks44)
+        return where(tax_unit("has_qdiv_or_ltcg", period), dwks45, dwks44)
 
 
 class alternative_minimum_tax(Variable):
@@ -137,18 +138,29 @@ class alternative_minimum_tax(Variable):
             ),
         )
         age_head = tax_unit("age_head", period)
-        child = amt.exemption.child
-        young_head = (age_head != 0) & (age_head < child.max_age)
-        no_or_young_spouse = tax_unit("age_spouse", period) < child.max_age
-        line29 = where(
-            young_head & no_or_young_spouse,
-            min_(line29, tax_unit("filer_earned", period) + child.amount),
-            line29,
+        child = parameters(period).gov.irs.dependent.ineligible_age
+        young_head = (age_head != 0) & (age_head < child.non_student)
+        no_or_young_spouse = tax_unit("age_spouse", period) < child.non_student
+        adj_earnings = tax_unit("filer_adjusted_earnings", period)
+        if period.start.year >= 2019:
+            child_amount = 0
+        else:
+            child_amount = amt.exemption.child.amount
+
+        line29_cap_applies = young_head & no_or_young_spouse
+        line29_cap = where(
+            line29_cap_applies, adj_earnings + child_amount, np.inf
         )
-        line30 = max_(0, amt_income - line29)
+        line29_capped = min_(line29, line29_cap)
+        line30 = max_(0, amt_income - line29_capped)
         brackets = amt.brackets
-        amount_over_threshold = line30 - brackets.thresholds["1"] / tax_unit(
-            "sep", period
+        bracket_fraction = where(
+            filing_status == filing_status.possible_values.SEPARATE,
+            0.5,
+            1.0,
+        )
+        amount_over_threshold = (
+            line30 - brackets.thresholds["1"] * bracket_fraction
         )
         line3163 = brackets.rates["1"] * line30 + brackets.rates["2"] * max_(
             0, amount_over_threshold
@@ -184,7 +196,7 @@ class alternative_minimum_tax(Variable):
         line40 = min_(line30, line39)
         line41 = max_(0, line30 - line40)
         amount_over_threshold = max_(
-            0, line41 - amt.brackets.thresholds["1"] / tax_unit("sep", period)
+            0, line41 - amt.brackets.thresholds["1"] * bracket_fraction
         )
         line42 = (
             amt.brackets.rates["1"] * line41

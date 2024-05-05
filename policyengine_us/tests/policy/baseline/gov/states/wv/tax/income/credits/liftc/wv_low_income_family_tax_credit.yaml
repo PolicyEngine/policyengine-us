@@ -1,0 +1,60 @@
+- name: Single filers get 0 low-income family tax credit whose family size 4, the federal poverty guidelines based on 4 members $27,750, modified federal adjusted gross income $40,000.
+  period: 2022
+  input:
+    wv_low_income_family_tax_credit_agi: 40_000
+    wv_low_income_family_tax_credit_fpg: 27_750
+    wv_low_income_family_tax_credit_eligible: true
+    filing_status: SINGLE
+    wv_income_tax_before_non_refundable_credits: 1_000
+  output:
+   wv_low_income_family_tax_credit: 0
+
+- name: Head of household filers get 40% x the amount of tax owed low-income family tax credit whose family size 2, the federal poverty guidelines based on 2 members $18,310, modified federal adjusted gross income $20,000.
+  period: 2022
+  input:
+    wv_low_income_family_tax_credit_agi: 20_000
+    wv_low_income_family_tax_credit_fpg: 18_310
+    wv_low_income_family_tax_credit_eligible: true
+    filing_status: HEAD_OF_HOUSEHOLD
+    wv_income_tax_before_non_refundable_credits: 2_000
+  output:
+    # 1500 < wv_low_income_family_tax_credit_agi-fpg = 20_000-18_310 = 1690 < 1800 40% x the amount of tax owed
+    wv_low_income_family_tax_credit: 800
+
+- name: Husband and wife who file separate returns get 0 low-income family tax credit whose family size 3, the federal poverty guidelines based on 3 members $23,030, modified federal adjusted gross income $20,000.
+  period: 2022
+  input:
+    wv_low_income_family_tax_credit_agi: 20_000
+    wv_low_income_family_tax_credit_fpg: 23_030
+    wv_low_income_family_tax_credit_eligible: true
+    filing_status: SEPARATE
+    wv_income_tax_before_non_refundable_credits: 1_000
+  output:
+    # wv_low_income_family_tax_credit_agi-fpg = 20_000-11515 = 8485
+    wv_low_income_family_tax_credit: 0
+
+- name: Husband and wife who file separate returns get 100% x the amount of tax owed low-income family tax credit whose family size 3, the federal poverty guidelines based on 3 members $23,010, modified federal adjusted gross income $12,000.
+  period: 2022
+  input:
+    wv_low_income_family_tax_credit_agi: 12_000
+    wv_low_income_family_tax_credit_fpg: 23_030
+    wv_low_income_family_tax_credit_eligible: true
+    filing_status: SEPARATE
+    wv_income_tax_before_non_refundable_credits: 1_000
+  output:
+    # 450< wv_low_income_family_tax_credit_agi-fpg = = 12000-11515= 485 <600 60% x the amount of tax owed
+    # 1_000 * 0.6 
+    wv_low_income_family_tax_credit: 600
+
+- name: Ineligible household
+  period: 2022
+  input:
+    wv_low_income_family_tax_credit_agi: 12_000
+    wv_low_income_family_tax_credit_fpg: 23_030
+    wv_low_income_family_tax_credit_eligible: false
+    filing_status: SEPARATE
+    wv_income_tax_before_non_refundable_credits: 1_000
+  output:
+    # 450< wv_low_income_family_tax_credit_agi-fpg = = 12000-11515= 485 <600 60% x the amount of tax owed
+    # 1_000 * 0.6 
+    wv_low_income_family_tax_credit: 0

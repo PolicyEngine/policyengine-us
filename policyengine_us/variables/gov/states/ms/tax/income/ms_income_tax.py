@@ -9,5 +9,9 @@ class ms_income_tax(Variable):
     definition_period = YEAR
     defined_for = StateCode.MS
 
-    adds = ["ms_income_tax_before_refundable_credits"]
-    subtracts = ["ms_refundable_credits"]
+    def formula(tax_unit, period, parameters):
+        tax_before_credits = tax_unit(
+            "ms_income_tax_before_credits_unit", period
+        )
+        non_refundable_credits = tax_unit("ms_non_refundable_credits", period)
+        return max_(tax_before_credits - non_refundable_credits, 0)

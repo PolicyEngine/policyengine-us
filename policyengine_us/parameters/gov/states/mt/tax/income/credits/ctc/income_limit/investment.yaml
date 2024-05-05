@@ -1,0 +1,13 @@
+description: Montana limits its child tax credit to filers with investment income below this amount.
+values:
+  2023-01-01: 10_300
+metadata:
+  units: currency-USD
+  period: year
+  label: Montana child tax credit investment income limit
+  reference:
+  # The Montana Child Tax Credit established in the 2023 House Bill No. 268
+  # not existent before
+    - title: 2023 Montana Legislature, House Bill No. 268, Section 1, 4-(b)
+      href: https://leg.mt.gov/bills/2023/billhtml/HB0268.htm
+

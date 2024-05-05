@@ -1,0 +1,196 @@
+- name: The dependent income is allocated to the head
+  period: 2021
+  input:
+    people:
+      person1:
+        employment_income: 20_000
+        age: 66
+      person2:
+        employment_income: 18_000
+        age: 40
+      person3:
+        employment_income: 3_000
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MS
+  output:
+    ms_deductions_indiv: [2_300, 2_300, 0]
+    ms_deductions_joint: [4_600, 0, 0]
+    ms_total_exemptions_indiv: [7_500, 7_500, 0]
+    ms_total_exemptions_joint: [15_000, 0, 0]
+    ms_total_exemptions: 15_000
+    ms_taxable_income_indiv: [13_200, 8_200, 0]
+    ms_taxable_income_joint: [21_400, 0, 0]
+    ms_income_tax_before_credits_indiv: [390, 158, 0]
+    ms_income_tax_before_credits_joint: [800, 0, 0]
+    ms_files_separately: true
+    ms_agi: [23_000, 18_000, 0]
+    ms_income_tax: 548
+
+- name: Tax unit with taxsimid 99991 in g21.its.csv and g21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 64
+        employment_income: 41_010
+        taxable_interest_income: 11_010
+        taxable_private_pension_income: 12_000
+        social_security_retirement: 19_000
+        rent: 24_000
+      person2:
+        age: 11
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        premium_tax_credit: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 28  # MS
+  output:  # expected results from patched TAXSIM35 2024-02-19 version
+    ms_income_tax: 2_286
+
+- name: Tax unit with taxsimid 86116 in j21.its.csv and j21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 54
+        employment_income: 140010
+        qualified_dividend_income: 505.0
+        taxable_interest_income: 5505.0
+        short_term_capital_gains: 505.0
+        long_term_capital_gains: 505.0
+        rent: 23000
+        self_employment_income: 157010
+        business_is_qualified: true
+        business_is_sstb: false
+        w2_wages_from_qualified_business: 100e6
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+        ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
+      person2:
+        age: 54
+        employment_income: 1010
+        qualified_dividend_income: 505.0
+        taxable_interest_income: 5505.0
+        short_term_capital_gains: 505.0
+        long_term_capital_gains: 505.0
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+        ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
+      person3:
+        age: 16
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+        ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
+      person4:
+        age: 16
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+        ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
+      person5:
+        age: 16
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+        ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
+      person6:
+        age: 16
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+        ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+        premium_tax_credit: 0  # not in TAXSIM35
+        local_income_tax: 0  # not in TAXSIM35
+        state_sales_tax: 0  # not in TAXSIM35
+        ca_use_tax: 0  # not in TAXSIM35
+        il_use_tax: 0  # not in TAXSIM35
+        nm_2021_income_rebate: 0  # not in TAXSIM35
+        nm_additional_2021_income_rebate: 0  # not in TAXSIM35
+        nm_supplemental_2021_income_rebate: 0  # not in TAXSIM35
+        ny_supplemental_eitc: 0  # not in TAXSIM35
+        ok_use_tax: 0  # not in TAXSIM35
+        pa_use_tax: 0  # not in TAXSIM35
+        vt_renter_credit: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+        snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_fips: 28  # MS
+  output:  # expected results from patched TAXSIM35 2024-03-09 version
+    ms_agi: [301_764.53, 8_030, 0, 0, 0, 0] # TAXSIM 301764.54 + 8030 = 309794.54
+    ms_taxable_income_joint: [287_194.53, 0, 0, 0, 0, 0] #TAXSIM 279164 + 8030 = 287194.54
+    ms_deductions_joint: [4_600, 0, 0, 0, 0, 0]
+    ms_total_exemptions_joint: [18000,0,0,0,0,0]
+    # ms_income_tax_before_credits_joint: [14089.727, 0, 0, 0, 0, 0]
+    # ms_income_tax_before_credits_indiv: [14253.227, 0, 0, 0, 0, 0]
+    ms_income_tax: 14_089.727 # TAXSIM 13819.73
+
+- name: Tax unit with taxsimid 90168 in i21.its.csv and i21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 31
+        employment_income: 68010
+        qualified_dividend_income: 2505
+        taxable_interest_income: 5505
+        long_term_capital_gains: 1005
+        rental_income: 1005
+        rent: 2000
+      person2:
+        age: 31
+        employment_income: 1010
+        qualified_dividend_income: 2505
+        taxable_interest_income: 5505
+        long_term_capital_gains: 1005
+        rental_income: 1005
+      person3:
+        age: 11
+      person4:
+        age: 11
+      person5:
+        age: 16
+      person6:
+        age: 16
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+        tax_unit_childcare_expenses: 2000
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+        snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_fips: 28  # MS
+  output:  # expected results from patched TAXSIM35 2024-04-15 version
+    ms_income_tax: 3_053

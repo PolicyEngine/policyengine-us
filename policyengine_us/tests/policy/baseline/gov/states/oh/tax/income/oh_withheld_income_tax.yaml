@@ -1,0 +1,29 @@
+- name: Person with income over the personal exemption amount
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    irs_employment_income: 35_000
+    filing_status: JOINT
+    state_code: OH
+  output:
+    oh_withheld_income_tax: 556.39
+
+- name: Changing the filing status should not change the output 
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    irs_employment_income: 35_000
+    filing_status: SURVIVING_SPOUSE
+    state_code: OH
+  output:
+    oh_withheld_income_tax: 556.39
+
+- name: Tax exempt
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    irs_employment_income: 24_999
+    filing_status: SURVIVING_SPOUSE
+    state_code: OH
+  output:
+    oh_withheld_income_tax: 0

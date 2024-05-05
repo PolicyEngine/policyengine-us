@@ -1,0 +1,39 @@
+- name: Single filers who is ineligible can get 0 low-income earned income exclusion.
+  period: 2022
+  input:
+    adjusted_gross_income: 40_000
+    earned_income: 10_000
+    wv_low_income_earned_income_exclusion_eligible: false
+    filing_status: SINGLE
+  output:
+   wv_low_income_earned_income_exclusion: 0
+
+- name: Single filers who is eligible can get $10,000 low-income earned income exclusion.
+  period: 2022
+  input:
+    adjusted_gross_income: 10_000
+    earned_income: 40_000
+    wv_low_income_earned_income_exclusion_eligible: true
+    filing_status: SINGLE
+  output:
+   wv_low_income_earned_income_exclusion: 10_000
+
+- name: Widow filers who is eligible can get $7,000 low-income earned income exclusion.
+  period: 2022
+  input:
+    adjusted_gross_income: 10_000
+    earned_income: 7_000
+    wv_low_income_earned_income_exclusion_eligible: true
+    filing_status: SURVIVING_SPOUSE
+  output:
+   wv_low_income_earned_income_exclusion: 7_000
+
+- name: Husband and wife who file separate returns and is eligible can get $3,000 low-income earned income exclusion.
+  period: 2022
+  input:
+    adjusted_gross_income: 3_000
+    earned_income: 10_000
+    wv_low_income_earned_income_exclusion_eligible: true
+    filing_status: SEPARATE
+  output:
+   wv_low_income_earned_income_exclusion: 3_000

@@ -1,0 +1,16 @@
+- name: 2022 filer who is at the interest, dividends, and capital gains deduction age threshold
+  period: 2022
+  input:
+    older_spouse_birth_year: 1945
+    state_code: MI
+  output: 
+    mi_interest_dividends_capital_gains_deduction_eligible: true
+
+- name: 2022 filer who is below the interest, dividends, and capital gains deduction age threshold
+  period: 2022
+  input:
+    older_spouse_birth_year: 1946
+    state_code: MI
+  output: 
+    mi_interest_dividends_capital_gains_deduction_eligible: false
+    

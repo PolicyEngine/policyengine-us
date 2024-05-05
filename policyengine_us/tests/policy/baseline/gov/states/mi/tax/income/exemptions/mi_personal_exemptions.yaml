@@ -1,0 +1,25 @@
+- name: One person, no stillborn
+  period: 2022
+  input:
+    tax_unit_size: 1
+    tax_unit_stillborn_children: 0
+    state_code: MI
+  output:
+    mi_personal_exemptions: 5_000
+
+- name: 3 people, no stillborn
+  period: 2022
+  input:
+    tax_unit_size: 3
+    state_code: MI
+  output: # 5_000 * 3
+    mi_personal_exemptions: 15_000
+
+- name: One person, is stillborn parent
+  period: 2022
+  input:
+    tax_unit_size: 1
+    tax_unit_stillborn_children: 1
+    state_code: MI
+  output: # 5_000 + 5_000
+    mi_personal_exemptions: 10_000

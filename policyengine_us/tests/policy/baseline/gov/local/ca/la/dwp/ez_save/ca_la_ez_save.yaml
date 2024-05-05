@@ -1,0 +1,32 @@
+- name: Eligible person, large utility expenses
+  period: 2022
+  input:
+    pre_subsidy_electricity_expense: 1_000
+    ca_la_ez_save_eligible: true
+  output:
+    ca_la_ez_save: 98.04
+
+- name: Eligible person, program capped at utility expenses
+  period: 2022
+  input:
+    pre_subsidy_electricity_expense: 10
+    ca_la_ez_save_eligible: true
+  output:
+    ca_la_ez_save: 10
+
+- name: Monthly capped ez save amount
+  period: 2022-01
+  input:
+    pre_subsidy_electricity_expense: 
+      2022: 1_000
+    ca_la_ez_save_eligible: true
+  output:
+    ca_la_ez_save: 8.17
+
+- name: Monthly ez save amount with monthly expenses
+  period: 2022-01
+  input:
+    pre_subsidy_electricity_expense: 96
+    ca_la_ez_save_eligible: true
+  output:
+    ca_la_ez_save: 8

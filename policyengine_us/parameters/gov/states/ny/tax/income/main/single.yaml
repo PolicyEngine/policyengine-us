@@ -7,6 +7,8 @@ metadata:
   reference:
     - title: NY Form IT-201 Instructions, page 51
       href: https://www.tax.ny.gov/pdf/current_forms/it/it201i.pdf#page=51
+    - title: Section 601 Imposition of tax (c)(1)(B), (VI) for 2021 and (V) for 2022
+      href: https://www.nysenate.gov/legislation/laws/TAX/601
 brackets:
   - threshold:
       2021-01-01: 0
@@ -24,14 +26,17 @@ brackets:
       2021-01-01: 13_900
     rate:
       2021-01-01: 0.059
+      2022-01-01: 0.0585
   - threshold:
       2021-01-01: 21_400
     rate:
       2021-01-01: 0.0597
+      2022-01-01: 0.0585
   - threshold:
       2021-01-01: 80_650
     rate:
       2021-01-01: 0.0633
+      2022-01-01: 0.0625
   - threshold:
       2021-01-01: 215_400
     rate:
@@ -48,4 +53,3 @@ brackets:
       2021-01-01: 25_000_000
     rate:
       2021-01-01: 0.109
-

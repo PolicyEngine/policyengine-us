@@ -1,0 +1,18 @@
+description: The Colorado Child Care Assistance Program uses this discount rate based on the value of the maximum child care facility rating for an SPM unit compared to the outlined thresholds.
+metadata:
+  type: single_amount
+  threshold_unit: Child care facility quality rating
+  amount_unit: /1
+  label: Colorado Child Care Assistance Program offers discount to quality rating child care facilities
+  reference:
+    - title: Colorado Child Care Assistance Program Rules and Regulations - 3.111(H)
+      href: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=11042&fileName=8%20CCR%201403-1#page=41
+brackets:
+  - threshold:
+      2022-10-01: 0
+    amount:
+      2022-10-01: 1
+  - threshold:
+      2022-10-01: 3
+    amount:
+      2022-10-01: 0.8

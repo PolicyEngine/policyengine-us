@@ -1,0 +1,18 @@
+description: Rhode Island reduces the personal exemption amount by this rate, increased for each increment of state adjusted gross income exceeding the threshold.
+metadata:
+  unit: /1
+  label: Rhode Island exemption phase out rate 
+  reference:
+  # The tax form points to this worksheet: Exemption Worksheet for RI-1040NR, Page 1, line 6)
+  - title: Rhode Island Tax Rate Schedule and Worksheet 2022 (Exemption Worksheet line 7)
+    href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-12/2022%20Tax%20Rate%20and%20Worksheets.pdf#page=1
+  # The tax form points to this worksheet: Exemption Worksheet for RI-1040 or RI-1040NR, Page 1, line 6)
+  - title: Rhode Island Tax Rate Schedule and Worksheet 2021 (Exemption Worksheet line 7)
+    href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2021-11/2021-tax-rate-and-worksheets.pdf#page=1
+  # Legal code specifies a 2% phase-out rate.
+  # Unclear how this comports with the tax form. We use the tax form.
+  - title: Rhode Island Legal Code R.I. Gen. Laws § 44-30-2.6 (E)(4)(b)
+    href: http://webserver.rilin.state.ri.us/Statutes/TITLE44/44-30/44-30-2.6.HTM
+
+values:
+ 2021-01-01: 0.2

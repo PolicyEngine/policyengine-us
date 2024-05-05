@@ -1,0 +1,39 @@
+- name: 2023 gross income is less than the family poverty guideline.
+  period: 2023
+  input:
+    co_ccap_countable_income: 60_000
+    snap_fpg: 120_000
+    state_code: CO
+  output:
+    co_ccap_base_parent_fee: 
+      2023-01: 50
+
+- name: 2023 gross income is more than the family poverty guideline.
+  period: 2023
+  input:
+    co_ccap_countable_income: 80_000
+    snap_fpg: 40_000
+    state_code: CO
+  output:
+    co_ccap_base_parent_fee: 
+      2023-01: 500
+
+- name: 2022 gross income is less than the family poverty guideline.
+  period: 2022
+  input:
+    co_ccap_countable_income: 60_000
+    snap_fpg: 120_000
+    state_code: CO
+  output:
+    co_ccap_base_parent_fee: 
+      2022-12: 50
+
+- name: 2022 gross income is more than the family poverty guideline.
+  period: 2022
+  input:
+    co_ccap_countable_income: 80_000
+    snap_fpg: 40_000
+    state_code: CO
+  output:
+    co_ccap_base_parent_fee: 
+      2022-12: 500

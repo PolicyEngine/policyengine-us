@@ -1,0 +1,22 @@
+- name: aca_ptc_ca unit test 1
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    state_code: CA
+    is_aca_ptc_eligible_ca: true
+    aca_slspc_ca: 1_200
+    aca_magi: 25_000
+    aca_ptc_phase_out_rate: 0.04
+  output:
+    aca_ptc_ca: 200  # 1200 - 0.04 * 25000 = 200
+
+- name: aca_ptc_ca unit test 2
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    is_aca_ptc_eligible_ca: true
+    aca_slspc_ca: 1_200
+    aca_magi: 25_000
+    aca_ptc_phase_out_rate: 0.05
+  output:
+    aca_ptc_ca: 0  # 1200 - 0.05 * 25000 = -50

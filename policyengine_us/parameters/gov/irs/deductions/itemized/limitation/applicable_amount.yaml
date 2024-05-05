@@ -1,0 +1,109 @@
+description: The US limits the itemized deductions to filers with adjusted gross income over this amount, based on filing status.
+JOINT:
+  2013-01-01: 300_000
+  2014-01-01: 305_050
+  2015-01-01: 309_900
+  2016-01-01: 311_300
+  2017-01-01: 313_800
+  2018-01-01: .inf
+  # CBO forecast.
+  2026-01-01: 407_400
+  2027-01-01: 415_850
+  2028-01-01: 423_950
+  2029-01-01: 432_200
+  2030-01-01: 440_700
+  2031-01-01: 449_400
+  2032-01-01: 458_350
+  2033-01-01: 467_500
+  2034-01-01: 476_850
+SINGLE:
+  2013-01-01: 250_000
+  2014-01-01: 254_200
+  2015-01-01: 258_250
+  2016-01-01: 259_400
+  2017-01-01: 261_500
+  2018-01-01: .inf
+  # CBO forecast.
+  2026-01-01: 339_500
+  2027-01-01: 346_550
+  2028-01-01: 353_300
+  2029-01-01: 360_150
+  2030-01-01: 367_250
+  2031-01-01: 374_500
+  2032-01-01: 381_950
+  2033-01-01: 389_600
+  2034-01-01: 397_400
+SEPARATE:
+  2013-01-01: 150_000
+  2014-01-01: 152_525
+  2015-01-01: 154_950
+  2016-01-01: 155_650
+  2017-01-01: 156_900
+  2018-01-01: .inf
+  # CBO forecast.
+  2026-01-01: 203_700
+  2027-01-01: 207_900
+  2028-01-01: 211_950
+  2029-01-01: 216_100
+  2030-01-01: 220_350
+  2031-01-01: 224_700
+  2032-01-01: 229_150
+  2033-01-01: 233_750
+  2034-01-01: 238_400
+HEAD_OF_HOUSEHOLD:
+  2013-01-01: 275_000
+  2014-01-01: 279_650
+  2015-01-01: 284_050
+  2016-01-01: 285_350
+  2017-01-01: 287_650
+  2018-01-01: .inf
+  # CBO forecast.
+  2026-01-01: 373_450
+  2027-01-01: 381_200
+  2028-01-01: 388_600
+  2029-01-01: 396_150
+  2030-01-01: 403_950
+  2031-01-01: 411_950
+  2032-01-01: 420_150
+  2033-01-01: 428_550
+  2034-01-01: 437_150
+SURVIVING_SPOUSE:
+  2013-01-01: 300_000
+  2014-01-01: 305_050
+  2015-01-01: 309_900
+  2016-01-01: 311_300
+  2017-01-01: 313_800
+  2018-01-01: .inf
+  # CBO forecast.
+  2026-01-01: 407_400
+  2027-01-01: 415_850
+  2028-01-01: 423_950
+  2029-01-01: 432_200
+  2030-01-01: 440_700
+  2031-01-01: 449_400
+  2032-01-01: 458_350
+  2033-01-01: 467_500
+  2034-01-01: 476_850
+metadata:
+  label: Itemized deductions applicable amount
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  reference:
+    # This section of the legal code was repealed between 2018 and 2026.
+    - title: 26 U.S. Code § 68 - Overall limitation on itemized deductions (b)(1)
+      href: https://www.law.cornell.edu/uscode/text/26/68#b_1
+    - title: 2013 Instruction 1040 Schedule A
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2013.pdf#page=13
+    - title: 2014 Instruction 1040 Schedule A
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2014.pdf#page=12
+    - title: 2015 Instruction 1040 Schedule A
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2015.pdf#page=12
+    - title: 2016 Instructions for Schedule A (Form 1040)
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2016.pdf#page=12
+    - title: 2017 Instructions for Schedule A (Form 1040)
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2017.pdf#page=1
+    - title: CBO Tax Parameters and Effective Marginal Tax Rates | Feb 2024
+      # 1. Tax Parameters.
+      href: https://www.cbo.gov/system/files/2024-02/53724-2024-02-Tax-Parameters.xlsx

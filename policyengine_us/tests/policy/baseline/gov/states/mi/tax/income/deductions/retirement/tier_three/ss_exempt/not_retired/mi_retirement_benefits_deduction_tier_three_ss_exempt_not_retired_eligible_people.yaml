@@ -1,0 +1,37 @@
+- name: 2022 single filer who is eligible for the tier 3 retirement and pension benefits
+  period: 2022
+  input:
+    people:
+      person1:
+        retirement_benefits_from_ss_exempt_employment: 1_000
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    household:
+      members: [person1]
+      state_code: MI
+  output: 
+    mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired_eligible_people: 1
+
+- name: 2022 joint filer and their spouse are 1 eligible for the tier 3 retirement and pension benefits, and with one more household member
+  period: 2022
+  input:
+    people:
+      person1:
+        retirement_benefits_from_ss_exempt_employment: 100
+        is_tax_unit_head_or_spouse: true
+      person2:
+        retirement_benefits_from_ss_exempt_employment: 0
+        is_tax_unit_head_or_spouse: true
+      person3:
+        retirement_benefits_from_ss_exempt_employment: 300
+        is_tax_unit_head_or_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    household:
+      members: [person1, person2, person3]
+      state_code: MI
+  output: 
+    mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired_eligible_people: 1
