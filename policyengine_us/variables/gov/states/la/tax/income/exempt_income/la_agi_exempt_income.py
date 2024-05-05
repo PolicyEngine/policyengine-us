@@ -6,6 +6,7 @@ class la_agi_exempt_income(Variable):
     entity = TaxUnit
     label = "Louisiana income that is exempt from the adjusted gross income"
     defined_for = StateCode.LA
+    reference = "https://revenue.louisiana.gov/TaxForms/IT540i(2021)%20Instructions.pdfpage=9"
     unit = USD
     definition_period = YEAR
 
