@@ -14,11 +14,12 @@ class la_agi_exempt_income(Variable):
         p = parameters(period).gov.states.la.tax.income.exempt_income
         total_exempt_income = add(tax_unit, period, p.sources)
         if p.reduction.in_effect:
-            # Option 1
+            # Option 1 is to reduce the exempt income by a marginal rate
             reduced_exempt_income = p.reduction.rate.calc(
                 total_exempt_income
             )
-            # Option 2
+            # Option 2 is to reduce the federal tax deduction by the percentage of
+            # exempt income to AGI 
             agi = tax_unit("adjusted_gross_income", period)
             exempt_income_rate = np.zeros_like(agi)
             mask = agi != 0
