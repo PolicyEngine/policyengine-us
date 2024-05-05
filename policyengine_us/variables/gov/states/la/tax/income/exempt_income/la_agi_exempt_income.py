@@ -23,23 +23,23 @@ class la_agi_exempt_income(Variable):
             exempt_income_rate = np.zeros_like(agi)
             mask = agi != 0
             exempt_income_rate[mask] = total_exempt_income[mask] / agi[mask]
-            itemizes = tax_unit("tax_unit_itemizes", period)
-            itemized_deductions = tax_unit("la_itemized_deductions", period)
-            claimed_itemized_deductions = itemizes * itemized_deductions
-            fed_tax_deduction = tax_unit("la_federal_tax_deduction", period)
-            pre_exempt_income_tax = max_(
-                agi - claimed_itemized_deductions - fed_tax_deduction, 0
+            # The second option is only applies if the tax unit has a federal tax deduction
+            federal_tax_deduction = tax_unit(
+                "la_federal_tax_deduction", period
             )
-            income_tax_present = pre_exempt_income_tax > 0
-            exempt_income_tax_reduction = (
-                pre_exempt_income_tax * exempt_income_rate
+            federal_tax_deduction_present = federal_tax_deduction > 0
+            # Multiply the federal tax deduction by the exempt income rate
+            tfederal_tax_deduction_reduction = (
+                federal_tax_deduction * exempt_income_rate
             )
-            # The smaller of the two options is applied
+            # The smaller of the two options is applied if taxable income is above 0
             smaller_adjustment = min_(
-                exempt_income_tax_reduction, exempt_income_reduction
+                tfederal_tax_deduction_reduction, exempt_income_reduction
             )
             final_exempt_income_reduction = where(
-                income_tax_present, smaller_adjustment, exempt_income_reduction
+                federal_tax_deduction_present,
+                smaller_adjustment,
+                exempt_income_reduction,
             )
             return max_(total_exempt_income - final_exempt_income_reduction, 0)
         return total_exempt_income
