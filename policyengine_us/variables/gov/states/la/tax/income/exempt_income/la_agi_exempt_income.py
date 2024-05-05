@@ -31,7 +31,7 @@ class la_agi_exempt_income(Variable):
             reduced_federal_tax_deduction = (
                 federal_tax_deduction * exempt_income_rate
             )
-            # The smaller of the two options is applied if taxable income exceeds zero  
+            # The smaller of the two options is applied if taxable income exceeds zero
             smaller_adjustment = min_(
                 reduced_federal_tax_deduction, reduced_exempt_income
             )
