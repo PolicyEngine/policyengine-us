@@ -15,7 +15,7 @@ class la_agi_exempt_income(Variable):
         total_exempt_income = add(tax_unit, period, p.sources)
         if p.reduction.in_effect:
             # Option 1
-            exempt_income_reduction = p.reduction.rate.calc(
+            reduced_exempt_income = p.reduction.rate.calc(
                 total_exempt_income
             )
             # Option 2
@@ -29,17 +29,17 @@ class la_agi_exempt_income(Variable):
             )
             federal_tax_deduction_present = federal_tax_deduction > 0
             # Multiply the federal tax deduction by the exempt income rate
-            tfederal_tax_deduction_reduction = (
+            reduced_federal_tax_deduction = (
                 federal_tax_deduction * exempt_income_rate
             )
             # The smaller of the two options is applied if taxable income is above 0
             smaller_adjustment = min_(
-                tfederal_tax_deduction_reduction, exempt_income_reduction
+                reduced_federal_tax_deduction, reduced_exempt_income
             )
             final_exempt_income_reduction = where(
                 federal_tax_deduction_present,
                 smaller_adjustment,
-                exempt_income_reduction,
+                reduced_exempt_income,
             )
             return max_(total_exempt_income - final_exempt_income_reduction, 0)
         return total_exempt_income
