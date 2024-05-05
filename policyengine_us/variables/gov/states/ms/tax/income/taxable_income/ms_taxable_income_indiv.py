@@ -17,5 +17,5 @@ class ms_taxable_income_indiv(Variable):
         pre_deductions_agi = person(
             "ms_pre_deductions_taxable_income_indiv", period
         )
-        deductions_and_exemptions = person("ms_deductions_indiv", period)
-        return max_(pre_deductions_agi - deductions_and_exemptions, 0)
+        deductions = person("ms_deductions_indiv", period)
+        return max_(pre_deductions_agi - deductions, 0)
