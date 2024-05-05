@@ -6,7 +6,7 @@ class lives_in_vehicle(Variable):
     entity = Household
     definition_period = YEAR
     documentation = "Whether a household is using their vehicle as their primary residence "
-    label = "Lives in car"
+    label = "Lives in vehicle"
 
     def formula(household, period, parameters):
         # Assuming that the household has to be considered homeless 
