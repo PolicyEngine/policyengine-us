@@ -7169,3 +7169,9 @@
     fixed:
     - Changed parameters - `unit:years` , `unit:age` to `unit:year`
   date: 2024-05-05 12:40:28
+- bump: minor
+  changes:
+    added:
+    - Create a lives_in_vehicle variable to determine whether a homeless person is
+      using their vehicle as shelter.
+  date: 2024-05-05 17:39:50
