@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class ms_taxable_income_indiv(Variable):
+class ms_pre_deductions_taxable_income_indiv(Variable):
     value_type = float
     entity = Person
-    label = "Mississippi taxable income when married couple file separately"
+    label = "Mississippi pre deductions taxable income when married couple file separately"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -14,8 +14,6 @@ class ms_taxable_income_indiv(Variable):
     defined_for = StateCode.MS
 
     def formula(person, period, parameters):
-        pre_deductions_agi = person(
-            "ms_pre_deductions_taxable_income_indiv", period
-        )
-        deductions_and_exemptions = person("ms_deductions_indiv", period)
-        return max_(pre_deductions_agi - deductions_and_exemptions, 0)
+        agi = person("ms_agi", period)
+        exemptions = person("ms_total_exemptions_indiv", period)
+        return max_(agi - exemptions, 0)
