@@ -23,7 +23,7 @@ class la_agi_exempt_income(Variable):
             exempt_income_rate = np.zeros_like(agi)
             mask = agi != 0
             exempt_income_rate[mask] = total_exempt_income[mask] / agi[mask]
-            # The second option is only applies if the tax unit has a federal tax deduction
+            # The second option only applies if the tax unit has a federal tax deduction
             federal_tax_deduction = tax_unit(
                 "la_federal_tax_deduction", period
             )
