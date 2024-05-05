@@ -80,7 +80,7 @@ class income_elasticity_lsr(Variable):
         employment_income = person("employment_income_before_lsr", period)
         income_change = person("relative_income_change", period)
 
-        return employment_income * income_change * lsr.income_elasticity
+        return employment_income * income_change * lsr.elasticities.income
 
 
 class substitution_elasticity_lsr(Variable):
@@ -96,7 +96,7 @@ class substitution_elasticity_lsr(Variable):
         employment_income = person("employment_income_before_lsr", period)
         wage_change = person("relative_wage_change", period)
 
-        return employment_income * wage_change * lsr.substitution_elasticity
+        return employment_income * wage_change * lsr.elasticities.substitution
 
 
 class employment_income_behavioral_response(Variable):
@@ -111,7 +111,7 @@ class employment_income_behavioral_response(Variable):
         simulation = person.simulation
         if simulation.baseline is None:
             return 0  # No reform, no impact
-        if lsr.income_elasticity == 0 and lsr.substitution_elasticity == 0:
+        if lsr.elasticities.income == 0 and lsr.elasticities.substitution == 0:
             return 0
 
         measurement_branch = simulation.get_branch(
@@ -120,6 +120,9 @@ class employment_income_behavioral_response(Variable):
         baseline_branch = simulation.get_branch("baseline").get_branch(
             "baseline_lsr_measurement", clone_system=True
         )  # Already created by default
+        baseline_branch.tax_benefit_system.parameters.simulation = (
+            measurement_branch.tax_benefit_system.parameters.simulation
+        )
 
         # (system with LSRs) <- (system without LSRs used to calculate LSRs)
         #                      |
