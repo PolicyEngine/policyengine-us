@@ -9,7 +9,7 @@ class lives_in_vehicle(Variable):
     label = "Lives in vehicle"
 
     def formula(household, period, parameters):
-        # Assuming that the household has to be considered homeless 
+        # Assuming that the household has to be considered homeless
         # and own at least one vehicle
         is_homeless = household("is_homeless", period)
         total_vehicles_owned = household("household_vehicles_owned", period)
