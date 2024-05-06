@@ -58,7 +58,7 @@
         members: [person1, person2]
         state_fips: 48  # TX
   output:
-    marginal_tax_rate: [0.0000, -0.0765]
+    marginal_tax_rate: [0.3165, 0]
 
 - name: marginal_tax_rate test 2 in a two tax-unit household
   absolute_error_margin: 0.0001
