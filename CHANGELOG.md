@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.761.0] - 2024-05-06 17:53:18
+
+### Fixed
+
+- Countable income now includes the spouse's income when both the head and spouse are eligible.
+
 ## [0.760.0] - 2024-05-06 15:07:09
 
 ### Added
@@ -8426,6 +8432,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.761.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.760.0...0.761.0
 [0.760.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.759.1...0.760.0
 [0.759.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.759.0...0.759.1
 [0.759.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.758.2...0.759.0

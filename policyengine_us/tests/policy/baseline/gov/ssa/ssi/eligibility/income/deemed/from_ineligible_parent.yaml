@@ -37,6 +37,9 @@
     tax_units:
       tax_unit:
         members: [james, tony, mother]
+    marital_units:
+      marital_unit:
+        members: []
   output:
     ssi_countable_income: [360, 360, 0] # 30 * 12
 
