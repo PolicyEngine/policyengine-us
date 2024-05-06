@@ -3,12 +3,16 @@
   absolute_error_margin: 0
   input:
     nj_property_tax_deduction_eligible: false
+    real_estate_taxes: 0 
+    rents: true
     age_head: 64
     age_spouse: 64
     blind_head: false
     blind_spouse: false
     disabled_head: false
     disabled_spouse: false
+    filing_status: SINGLE
+    adjusted_gross_income: 5_000
     state_code: NJ
   output:
     nj_property_tax_credit_eligible: false
@@ -18,12 +22,16 @@
   absolute_error_margin: 0
   input:
     nj_property_tax_deduction_eligible: true
+    real_estate_taxes: 0 
+    rents: true
     age_head: 64
     age_spouse: 64
     blind_head: false
     blind_spouse: false
     disabled_head: false
     disabled_spouse: false
+    filing_status: SINGLE
+    adjusted_gross_income: 5_000
     state_code: NJ
   output:
     nj_property_tax_credit_eligible: true
@@ -33,13 +41,16 @@
   absolute_error_margin: 0
   input:
     nj_property_tax_deduction_eligible: false
-    rent: 900
+    real_estate_taxes: 0 
+    rents: true
     age_head: 66
     age_spouse: 64
     blind_head: false
     blind_spouse: false
     disabled_head: false
     disabled_spouse: false
+    filing_status: SINGLE
+    adjusted_gross_income: 5_000
     state_code: NJ
   output:
     nj_property_tax_credit_eligible: true
@@ -49,13 +60,16 @@
   absolute_error_margin: 0
   input:
     nj_property_tax_deduction_eligible: false
-    rent: 900
+    real_estate_taxes: 0 
+    rents: true
     age_head: 64
     age_spouse: 64
     blind_head: false
     blind_spouse: false
     disabled_head: false
     disabled_spouse: true
+    filing_status: JOINT
+    adjusted_gross_income: 10_000
     state_code: NJ
   output:
     nj_property_tax_credit_eligible: true
@@ -65,13 +79,16 @@
   absolute_error_margin: 0
   input:
     nj_property_tax_deduction_eligible: false
-    rent: 0
+    real_estate_taxes: 0 
+    rents: false
     age_head: 66
     age_spouse: 64
     blind_head: false
     blind_spouse: false
     disabled_head: false
     disabled_spouse: false
+    filing_status: JOINT
+    adjusted_gross_income: 10_000
     state_code: NJ
   output:
     nj_property_tax_credit_eligible: false
@@ -88,7 +105,7 @@
         taxable_interest_income: 11_010
         taxable_private_pension_income: 1_000
         social_security: 6_000
-        rent: 8_000
+        real_estate_taxes: 0 
         ssi: 0  # not in TAXSIM35
         state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
@@ -104,7 +121,9 @@
         wic: 0  # not in TAXSIM35
     tax_units:
       tax_unit:
-        members: [person1, person2, person3]
+        nj_property_tax_deduction_eligible: true
+        members: [person1, person2, person3] 
+        rents: 8_000
         tax_unit_childcare_expenses: 4_000
         premium_tax_credit: 0  # not in TAXSIM35
         local_income_tax: 0  # not in TAXSIM35
@@ -121,3 +140,23 @@
   output:  # expected results from patched TAXSIM35 2023-08-16 version
     nj_agi: 19_020
     nj_property_tax_credit_eligible: true
+    
+
+- name: 7 Ineligible for property tax deduction, therefore ineligible for credit.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    nj_property_tax_deduction_eligible: false
+    real_estate_taxes: 0 
+    rents: true
+    age_head: 64
+    age_spouse: 64
+    blind_head: false
+    blind_spouse: false
+    disabled_head: false
+    disabled_spouse: false
+    filing_status: SINGLE
+    adjusted_gross_income: 20_000
+    state_code: NJ
+  output:
+    nj_property_tax_credit_eligible: false

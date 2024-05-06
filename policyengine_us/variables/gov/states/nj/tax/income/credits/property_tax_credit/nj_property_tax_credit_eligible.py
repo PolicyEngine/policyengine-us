@@ -6,8 +6,11 @@ class nj_property_tax_credit_eligible(Variable):
     entity = TaxUnit
     label = "New Jersey property tax credit eligibility"
     definition_period = YEAR
-    reference = "https://www.state.nj.us/treasury/taxation/pdf/other_forms/tgi-ee/2021/1040i.pdf#page=25"
-
+    reference = (
+        "https://www.nj.gov/treasury/taxation/pdf/other_forms/tgi-ee/2021/1040i.pdf#page=26"
+        "https://www.nj.gov/treasury/taxation/pdf/other_forms/tgi-ee/2022/1040i.pdf#page=26"
+        "https://www.state.nj.us/treasury/taxation/pdf/current/1040i.pdf#page=27"
+    )
     defined_for = StateCode.NJ
 
     def formula(tax_unit, period, parameters):
@@ -23,21 +26,25 @@ class nj_property_tax_credit_eligible(Variable):
         disabled_head = tax_unit("disabled_head", period)
         blind_spouse = tax_unit("blind_spouse", period)
         disabled_spouse = tax_unit("disabled_spouse", period)
-        senior_head = tax_unit("age_head", period) >= p.senior_qualifying_age
-        senior_spouse = (
-            tax_unit("age_spouse", period) >= p.senior_qualifying_age
+        senior_head_or_spouse = (
+            tax_unit("greater_age_head_spouse", period) >= p.age_threshold
         )
         senior_blind_disabled = (
             blind_head
             | disabled_head
             | blind_spouse
             | disabled_spouse
-            | senior_head
-            | senior_spouse
+            | senior_head_or_spouse
         )
+
+        federal_agi = tax_unit("adjusted_gross_income", period)
+        filing_status = tax_unit("filing_status", period)
+        agi_eligible = federal_agi <= p.income_limit[filing_status]
 
         # return eligiblity for property tax credit
         deduction_eligibility = tax_unit(
             "nj_property_tax_deduction_eligible", period
         )
-        return deduction_eligibility | (pays_ptax & senior_blind_disabled)
+        return deduction_eligibility | (
+            pays_ptax & senior_blind_disabled & agi_eligible
+        )
