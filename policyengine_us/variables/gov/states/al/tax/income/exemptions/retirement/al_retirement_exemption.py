@@ -6,8 +6,8 @@ class al_retirement_exemption(Variable):
     entity = TaxUnit
     label = "Alabama retirement exemption"
     unit = USD
-    # The Code of Alabama Section 40-18-19 (a)(13).
-    documentation = "https://casetext.com/statute/code-of-alabama/title-40-revenue-and-taxation/chapter-18-income-taxes/article-1-general-provisions/section-40-18-19-exemptions-generally"
+    # Schedule RS Part II & III Line 10
+    documentation = "https://www.revenue.alabama.gov/wp-content/uploads/2024/01/23schrsinstr.pdf#page=1"
     definition_period = YEAR
     defined_for = StateCode.AL
 
