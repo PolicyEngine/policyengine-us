@@ -10,7 +10,8 @@ class housing_cost(Variable):
 
     adds = [
         "rent",
-        "property_tax_primary_residence",
+        "real_estate_taxes",
         "homeowners_association_fees",
         "mortgage_payments",
+        "homeowners_insurance",
     ]
