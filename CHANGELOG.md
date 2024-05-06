@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.759.0] - 2024-05-06 01:15:16
+
+### Added
+
+- Allocate the Montana dependent exemptions after the application of the deductions and exemptions.
+
 ## [0.758.2] - 2024-05-05 21:59:45
 
 ### Fixed
@@ -8408,6 +8414,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.759.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.758.2...0.759.0
 [0.758.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.758.1...0.758.2
 [0.758.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.758.0...0.758.1
 [0.758.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.757.1...0.758.0

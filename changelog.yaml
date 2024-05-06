@@ -7185,3 +7185,9 @@
     fixed:
     - Refactor the Louisianna exempt income variable to use the federal tax deduction.
   date: 2024-05-05 21:59:45
+- bump: minor
+  changes:
+    added:
+    - Allocate the Montana dependent exemptions after the application of the deductions
+      and exemptions.
+  date: 2024-05-06 01:15:16
