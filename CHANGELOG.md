@@ -5,6 +5,54 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.761.0] - 2024-05-06 17:53:18
+
+### Fixed
+
+- Countable income now includes the spouse's income when both the head and spouse are eligible.
+
+## [0.760.0] - 2024-05-06 15:07:09
+
+### Added
+
+- Macro impact caching for key variables.
+
+## [0.759.1] - 2024-05-06 01:19:28
+
+### Fixed
+
+- Allocate the Mississippi itemized deductions optimally between spouses.
+
+## [0.759.0] - 2024-05-06 01:15:16
+
+### Added
+
+- Allocate the Montana dependent exemptions after the application of the deductions and exemptions.
+
+## [0.758.2] - 2024-05-05 21:59:45
+
+### Fixed
+
+- Refactor the Louisianna exempt income variable to use the federal tax deduction.
+
+## [0.758.1] - 2024-05-05 20:28:59
+
+### Fixed
+
+- Performance improvements in labor supply responses.
+
+## [0.758.0] - 2024-05-05 17:39:50
+
+### Added
+
+- Create a lives_in_vehicle variable to determine whether a homeless person is using their vehicle as shelter.
+
+## [0.757.1] - 2024-05-05 12:40:28
+
+### Fixed
+
+- Changed parameters - `unit:years` , `unit:age` to `unit:year`
+
 ## [0.757.0] - 2024-05-02 17:30:29
 
 ### Added
@@ -8384,6 +8432,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.761.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.760.0...0.761.0
+[0.760.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.759.1...0.760.0
+[0.759.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.759.0...0.759.1
+[0.759.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.758.2...0.759.0
+[0.758.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.758.1...0.758.2
+[0.758.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.758.0...0.758.1
+[0.758.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.757.1...0.758.0
+[0.757.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.757.0...0.757.1
 [0.757.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.756.0...0.757.0
 [0.756.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.755.0...0.756.0
 [0.755.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.754.0...0.755.0
