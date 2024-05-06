@@ -22,5 +22,5 @@ class household_benefits(Variable):
         # Contributed.
         "basic_income",
         "spm_unit_capped_housing_subsidy",
-        "household_state_benefits"
+        "household_state_benefits",
     ]
