@@ -7201,3 +7201,9 @@
     added:
     - Macro impact caching for key variables.
   date: 2024-05-06 15:07:09
+- bump: minor
+  changes:
+    fixed:
+    - Countable income now includes the spouse's income when both the head and spouse
+      are eligible.
+  date: 2024-05-06 17:53:18
