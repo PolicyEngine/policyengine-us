@@ -62,27 +62,24 @@ budgetary_impacts("ny_cdcc")
 
 [0;31m---------------------------------------------------------------------------[0m
 [0;31mTypeError[0m                                 Traceback (most recent call last)
-Cell [0;32mIn[3], line 42[0m
-[1;32m     38[0m     budgetary_impact [38;5;241m=[39m neutralized_net_income [38;5;241m-[39m baseline_net_income
-[1;32m     39[0m     [38;5;28;01mreturn[39;00m [38;5;28mround[39m(program_value [38;5;241m/[39m [38;5;241m1e6[39m), [38;5;28mround[39m(budgetary_impact [38;5;241m/[39m [38;5;241m1e6[39m)
-[0;32m---> 42[0m [43mbudgetary_impacts[49m[43m([49m[38;5;124;43m"[39;49m[38;5;124;43mny_cdcc[39;49m[38;5;124;43m"[39;49m[43m)[49m
+[0;32m/tmp/ipykernel_3471/1673998826.py[0m in [0;36m<cell line: 42>[0;34m()[0m
+[1;32m     40[0m [0;34m[0m[0m
+[1;32m     41[0m [0;34m[0m[0m
+[0;32m---> 42[0;31m [0mbudgetary_impacts[0m[0;34m([0m[0;34m"ny_cdcc"[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m
+[0;32m/tmp/ipykernel_3471/1673998826.py[0m in [0;36mbudgetary_impacts[0;34m(variable, data_year, policy_year)[0m
+[1;32m     25[0m             [0mself[0m[0;34m.[0m[0mneutralize_variable[0m[0;34m([0m[0mvariable[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[1;32m     26[0m [0;34m[0m[0m
+[0;32m---> 27[0;31m     [0msim[0m [0;34m=[0m [0mMicrosimulation[0m[0;34m([0m[0mignore_reported[0m[0;34m,[0m [0myear[0m[0;34m=[0m[0mdata_year[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     28[0m     sim_neutralized = Microsimulation(
+[1;32m     29[0m         [0;34m([0m[0mignore_reported[0m[0;34m,[0m [0mneutralize[0m[0;34m)[0m[0;34m,[0m [0myear[0m[0;34m=[0m[0mdata_year[0m[0;34m[0m[0;34m[0m[0m
 
-Cell [0;32mIn[3], line 27[0m, in [0;36mbudgetary_impacts[0;34m(variable, data_year, policy_year)[0m
-[1;32m     24[0m     [38;5;28;01mdef[39;00m [38;5;21mapply[39m([38;5;28mself[39m):
-[1;32m     25[0m         [38;5;28mself[39m[38;5;241m.[39mneutralize_variable(variable)
-[0;32m---> 27[0m sim [38;5;241m=[39m [43mMicrosimulation[49m[43m([49m[43mignore_reported[49m[43m,[49m[43m [49m[43myear[49m[38;5;241;43m=[39;49m[43mdata_year[49m[43m)[49m
-[1;32m     28[0m sim_neutralized [38;5;241m=[39m Microsimulation(
-[1;32m     29[0m     (ignore_reported, neutralize), year[38;5;241m=[39mdata_year
-[1;32m     30[0m )
-[1;32m     31[0m program_value [38;5;241m=[39m sim[38;5;241m.[39mcalc(variable, period[38;5;241m=[39mpolicy_year)[38;5;241m.[39msum()
-
-File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/system.py:115[0m, in [0;36mMicrosimulation.__init__[0;34m(self, *args, **kwargs)[0m
-[1;32m    114[0m [38;5;28;01mdef[39;00m [38;5;21m__init__[39m([38;5;28mself[39m, [38;5;241m*[39margs, [38;5;241m*[39m[38;5;241m*[39mkwargs):
-[0;32m--> 115[0m     [38;5;28;43msuper[39;49m[43m([49m[43m)[49m[38;5;241;43m.[39;49m[38;5;21;43m__init__[39;49m[43m([49m[38;5;241;43m*[39;49m[43margs[49m[43m,[49m[43m [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mkwargs[49m[43m)[49m
-[1;32m    117[0m     reform [38;5;241m=[39m create_structural_reforms_from_parameters(
-[1;32m    118[0m         [38;5;28mself[39m[38;5;241m.[39mtax_benefit_system[38;5;241m.[39mparameters, year_start
-[1;32m    119[0m     )
-[1;32m    120[0m     [38;5;28;01mif[39;00m reform [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m:
+[0;32m~/work/policyengine-us/policyengine-us/policyengine_us/system.py[0m in [0;36m__init__[0;34m(self, *args, **kwargs)[0m
+[1;32m    113[0m [0;34m[0m[0m
+[1;32m    114[0m     [0;32mdef[0m [0m__init__[0m[0;34m([0m[0mself[0m[0;34m,[0m [0;34m*[0m[0margs[0m[0;34m,[0m [0;34m**[0m[0mkwargs[0m[0;34m)[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 115[0;31m         [0msuper[0m[0;34m([0m[0;34m)[0m[0;34m.[0m[0m__init__[0m[0;34m([0m[0;34m*[0m[0margs[0m[0;34m,[0m [0;34m**[0m[0mkwargs[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    116[0m [0;34m[0m[0m
+[1;32m    117[0m         reform = create_structural_reforms_from_parameters(
 
 [0;31mTypeError[0m: __init__() got an unexpected keyword argument 'year'
 
