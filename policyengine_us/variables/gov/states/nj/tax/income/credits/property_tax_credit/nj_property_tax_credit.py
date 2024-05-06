@@ -7,7 +7,11 @@ class nj_property_tax_credit(Variable):
     label = "New Jersey property tax credit"
     unit = USD
     definition_period = YEAR
-    reference = "https://law.justia.com/codes/new-jersey/2022/title-54a/section-54a-3a-20/"
+    reference = (
+        "https://www.nj.gov/treasury/taxation/pdf/other_forms/tgi-ee/2021/1040i.pdf#page=49"
+        "https://www.nj.gov/treasury/taxation/pdf/other_forms/tgi-ee/2022/1040i.pdf#page=50"
+        "https://www.state.nj.us/treasury/taxation/pdf/current/1040i.pdf#page=52"
+    )
     defined_for = "nj_property_tax_credit_eligible"
 
     def formula(tax_unit, period, parameters):
