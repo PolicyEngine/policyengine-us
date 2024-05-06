@@ -5,6 +5,11 @@ values:
     - traditional_ira_contributions # Line 1 
     - alimony_expense # Line 4
     - self_employed_health_insurance_ald # Line 7
+  2023-01-01:
+  # IRA distributions prior to 1982 are not deductible.
+    - traditional_ira_contributions # Line 1 
+    - alimony_expense # Line 4
+    - self_employed_health_insurance_ald # Line 7
     - al_retirement_exemption #Schedule RS Line 10
 
 metadata:
