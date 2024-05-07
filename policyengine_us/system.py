@@ -128,11 +128,17 @@ class Microsimulation(CoreMicrosimulation):
             self.set_input("employment_income_before_lsr", known_period, array)
             employment_income.delete_arrays(known_period)
 
+        self_employment_income = self.get_holder("self_employment_income")
+        for known_period in employment_income.get_known_periods():
+            array = self_employment_income.get_array(known_period)
+            self.set_input("self_employment_income_before_lsr", known_period, array)
+            self_employment_income.delete_arrays(known_period)
+
         self.input_variables = [
             variable
             for variable in self.input_variables
             if variable != "employment_income"
-        ] + ["employment_income_before_lsr"]
+        ] + ["employment_income_before_lsr", "self_employment_income_before_lsr"]
 
 
 class IndividualSim(CoreIndividualSim):  # Deprecated
