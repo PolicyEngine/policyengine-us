@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.764.0] - 2024-05-07 12:04:33
+
+### Added
+
+- 2023 Massachusetts Tax Rules.
+
 ## [0.763.0] - 2024-05-07 01:17:04
 
 ### Added
@@ -8444,6 +8450,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.764.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.763.0...0.764.0
 [0.763.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.762.0...0.763.0
 [0.762.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.761.0...0.762.0
 [0.761.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.760.0...0.761.0
