@@ -83,6 +83,6 @@ def create_co_family_affordability_credit_reform(
         return None
 
 
-family_affordability_credit = create_co_family_affordability_credit_reform(
+co_family_affordability_credit = create_co_family_affordability_credit_reform(
     None, None, bypass=True
 )
