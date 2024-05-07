@@ -1,0 +1,56 @@
+- name: Both members are eligible
+  period: 2023
+  input:
+    people:
+      head:
+        is_ssi_aged_blind_disabled: true
+      spouse:
+        is_ssi_aged_blind_disabled: true
+    marital_units: 
+      unit:
+        members: [head, spouse]
+  output:
+    ssi_marital_both_eligible: [true, true]
+
+- name: Head only eligible
+  period: 2023
+  input:
+    people:
+      head:
+        is_ssi_aged_blind_disabled: true
+      spouse:
+        is_ssi_aged_blind_disabled: false
+    marital_units: 
+      unit:
+        members: [head, spouse]
+  output:
+    ssi_marital_both_eligible: [false, false]
+
+- name: Spouse only eligible
+  period: 2023
+  input:
+    people:
+      head:
+        is_ssi_aged_blind_disabled: false
+      spouse:
+        is_ssi_aged_blind_disabled: true
+    marital_units: 
+      unit:
+        members: [head, spouse]
+  output:
+    ssi_marital_both_eligible: [false, false]
+
+- name: No one eligible
+  period: 2023
+  input:
+    people:
+      head:
+        is_ssi_aged_blind_disabled: false
+      spouse:
+        is_ssi_aged_blind_disabled: false
+    marital_units: 
+      unit:
+        members: [head, spouse]
+  output:
+    ssi_marital_both_eligible: [false, false]
+
