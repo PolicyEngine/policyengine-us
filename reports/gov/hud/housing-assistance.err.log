@@ -59,7 +59,7 @@ Learn more about entities in our documentation:
 During handling of the above exception, another exception occurred:
 
 [0;31mSituationParsingError[0m                     Traceback (most recent call last)
-[0;32m/tmp/ipykernel_2469/768002617.py[0m in [0;36m<cell line: 19>[0;34m()[0m
+[0;32m/tmp/ipykernel_2441/768002617.py[0m in [0;36m<cell line: 19>[0;34m()[0m
 [1;32m     19[0m print(
 [1;32m     20[0m     [0;34m"Housing assistance: "[0m[0;34m,[0m[0;34m[0m[0;34m[0m[0m
 [0;32m---> 21[0;31m     [0mround[0m[0;34m([0m[0msim_emp[0m[0;34m.[0m[0mcalc[0m[0;34m([0m[0;34m"housing_assistance"[0m[0;34m)[0m[0;34m[[0m[0;36m0[0m[0;34m][0m [0;34m/[0m [0;36m12[0m[0;34m)[0m[0;34m,[0m[0;34m[0m[0;34m[0m[0m
@@ -80,11 +80,11 @@ During handling of the above exception, another exception occurred:
 [1;32m     90[0m             [0msituation[0m[0;34m=[0m[0mself[0m[0;34m.[0m[0msituation_data[0m[0;34m,[0m[0;34m[0m[0;34m[0m[0m
 
 [0;32m/opt/hostedtoolcache/Python/3.9.19/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py[0m in [0;36m__init__[0;34m(self, tax_benefit_system, populations, situation, dataset, reform, trace)[0m
-[1;32m    140[0m             [0mbuilder[0m [0;34m=[0m [0mSimulationBuilder[0m[0;34m([0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[1;32m    141[0m             [0mbuilder[0m[0;34m.[0m[0mdefault_period[0m [0;34m=[0m [0mself[0m[0;34m.[0m[0mdefault_input_period[0m[0;34m[0m[0;34m[0m[0m
-[0;32m--> 142[0;31m             [0mbuilder[0m[0;34m.[0m[0mbuild_from_dict[0m[0;34m([0m[0mself[0m[0;34m.[0m[0mtax_benefit_system[0m[0;34m,[0m [0msituation[0m[0;34m,[0m [0mself[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[0m[1;32m    143[0m             [0mself[0m[0;34m.[0m[0mhas_axes[0m [0;34m=[0m [0mbuilder[0m[0;34m.[0m[0mhas_axes[0m[0;34m[0m[0;34m[0m[0m
-[1;32m    144[0m [0;34m[0m[0m
+[1;32m    146[0m             [0mbuilder[0m [0;34m=[0m [0mSimulationBuilder[0m[0;34m([0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    147[0m             [0mbuilder[0m[0;34m.[0m[0mdefault_period[0m [0;34m=[0m [0mself[0m[0;34m.[0m[0mdefault_input_period[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 148[0;31m             [0mbuilder[0m[0;34m.[0m[0mbuild_from_dict[0m[0;34m([0m[0mself[0m[0;34m.[0m[0mtax_benefit_system[0m[0;34m,[0m [0msituation[0m[0;34m,[0m [0mself[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    149[0m             [0mself[0m[0;34m.[0m[0mhas_axes[0m [0;34m=[0m [0mbuilder[0m[0;34m.[0m[0mhas_axes[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    150[0m [0;34m[0m[0m
 
 [0;32m/opt/hostedtoolcache/Python/3.9.19/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation_builder.py[0m in [0;36mbuild_from_dict[0;34m(self, tax_benefit_system, input_dict, simulation)[0m
 [1;32m     84[0m             [0;32mfor[0m [0mkey[0m [0;32min[0m [0minput_dict[0m[0;34m.[0m[0mkeys[0m[0;34m([0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m

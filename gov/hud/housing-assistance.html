@@ -327,7 +327,7 @@ They would be eligible for $400 per month in housing assistance.</p>
 <span class="n">During</span> <span class="n">handling</span> <span class="n">of</span> <span class="n">the</span> <span class="n">above</span> <span class="n">exception</span><span class="p">,</span> <span class="n">another</span> <span class="n">exception</span> <span class="n">occurred</span><span class="p">:</span>
 
 <span class="ne">SituationParsingError</span><span class="g g-Whitespace">                     </span>Traceback (most recent call last)
-<span class="nn">/tmp/ipykernel_2469/768002617.py</span> in <span class="ni">&lt;cell line: 19&gt;</span><span class="nt">()</span>
+<span class="nn">/tmp/ipykernel_2441/768002617.py</span> in <span class="ni">&lt;cell line: 19&gt;</span><span class="nt">()</span>
 <span class="g g-Whitespace">     </span><span class="mi">19</span> <span class="nb">print</span><span class="p">(</span>
 <span class="g g-Whitespace">     </span><span class="mi">20</span>     <span class="s2">&quot;Housing assistance: &quot;</span><span class="p">,</span>
 <span class="ne">---&gt; </span><span class="mi">21</span>     <span class="nb">round</span><span class="p">(</span><span class="n">sim_emp</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">&quot;housing_assistance&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">12</span><span class="p">),</span>
@@ -348,11 +348,11 @@ They would be eligible for $400 per month in housing assistance.</p>
 <span class="g g-Whitespace">     </span><span class="mi">90</span><span class="s2">             situation=self.situation_data,</span>
 
 <span class="nn">/opt/hostedtoolcache/Python/3.9.19/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py</span> in <span class="ni">__init__</span><span class="nt">(self, tax_benefit_system, populations, situation, dataset, reform, trace)</span>
-<span class="g g-Whitespace">    </span><span class="mi">140</span><span class="s2">             builder = SimulationBuilder()</span>
-<span class="g g-Whitespace">    </span><span class="mi">141</span><span class="s2">             builder.default_period = self.default_input_period</span>
-<span class="ne">--&gt; </span><span class="mi">142</span><span class="s2">             builder.build_from_dict(self.tax_benefit_system, situation, self)</span>
-<span class="g g-Whitespace">    </span><span class="mi">143</span><span class="s2">             self.has_axes = builder.has_axes</span>
-<span class="g g-Whitespace">    </span><span class="mi">144</span><span class="s2"> </span>
+<span class="g g-Whitespace">    </span><span class="mi">146</span><span class="s2">             builder = SimulationBuilder()</span>
+<span class="g g-Whitespace">    </span><span class="mi">147</span><span class="s2">             builder.default_period = self.default_input_period</span>
+<span class="ne">--&gt; </span><span class="mi">148</span><span class="s2">             builder.build_from_dict(self.tax_benefit_system, situation, self)</span>
+<span class="g g-Whitespace">    </span><span class="mi">149</span><span class="s2">             self.has_axes = builder.has_axes</span>
+<span class="g g-Whitespace">    </span><span class="mi">150</span><span class="s2"> </span>
 
 <span class="nn">/opt/hostedtoolcache/Python/3.9.19/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation_builder.py</span> in <span class="ni">build_from_dict</span><span class="nt">(self, tax_benefit_system, input_dict, simulation)</span>
 <span class="nn">     84             for key</span> in <span class="ni">input_dict.keys</span><span class="nt">()</span>
