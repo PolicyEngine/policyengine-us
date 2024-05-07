@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.766.0] - 2024-05-07 18:56:59
+
+### Added
+
+- Make the Louisiana EITC and CDCC refundable.
+
 ## [0.765.0] - 2024-05-07 15:23:31
 
 ### Added
@@ -8456,6 +8462,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.766.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.765.0...0.766.0
 [0.765.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.764.0...0.765.0
 [0.764.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.763.0...0.764.0
 [0.763.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.762.0...0.763.0
