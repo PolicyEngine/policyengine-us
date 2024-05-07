@@ -1,0 +1,95 @@
+- name: The eligible family without shelter cost receives cash assistance under low payment standard(2023-12-01 version)
+  period: 2023-12
+  absolute_error_margin: 0.01
+  input:
+    spm_units:
+      spm_unit:
+        spm_unit_size: 3
+        eligibility: true
+        az_tanf_hhs_earned_income: 147
+        housing_cost: 0
+    households:
+      household:
+        state_code: AZ
+  output:
+    az_cash_assisstance: 71
+
+- name: The eligible family without shelter cost receives cash assistance under low payment standard(2023-01-01 version)
+  period: 2023-01
+  absolute_error_margin: 0.01
+  input:
+    spm_units:
+      spm_unit:
+        spm_unit_size: 3
+        eligibility: true
+        az_tanf_hhs_earned_income: 147
+        housing_cost: 0
+    households:
+      household:
+        state_code: AZ
+  output:
+    az_cash_assisstance: 28
+
+- name: The not-eligible family without shelter cost receives no cash assistance
+  period: 2023-12
+  absolute_error_margin: 0.01
+  input:
+    spm_units:
+      spm_unit:
+        spm_unit_size: 3
+        eligibility: false
+        az_tanf_hhs_earned_income: 147
+        housing_cost: 0
+    households:
+      household:
+        state_code: AZ
+  output:
+    az_cash_assisstance: 0
+
+- name: The eligible family with shelter cost receives cash assistance under high payment standard
+  period: 2023-12
+  absolute_error_margin: 0.01
+  input:
+    spm_units:
+      spm_unit:
+        spm_unit_size: 3
+        eligibility: true
+        az_tanf_hhs_earned_income: 147
+        housing_cost: 100
+    households:
+      household:
+        state_code: AZ
+  output:
+    az_cash_assisstance: 200
+
+- name: The eligible family with shelter cost receives cash assistance under low payment standard(2023-01-01 version)
+  period: 2023-01
+  absolute_error_margin: 0.01
+  input:
+    spm_units:
+      spm_unit:
+        spm_unit_size: 3
+        eligibility: true
+        az_tanf_hhs_earned_income: 147
+        housing_cost: 100
+    households:
+      household:
+        state_code: AZ
+  output:
+    az_cash_assisstance: 131
+
+- name: The not-eligible family with shelter cost receives no cash assistance
+  period: 2023-12
+  absolute_error_margin: 0.01
+  input:
+    spm_units:
+      spm_unit:
+        spm_unit_size: 3
+        eligibility: false
+        az_tanf_hhs_earned_income: 147
+        housing_cost: 1000
+    households:
+      household:
+        state_code: AZ
+  output:
+    az_cash_assisstance: 0
