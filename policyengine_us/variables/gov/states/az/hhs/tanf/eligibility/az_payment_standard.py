@@ -1,6 +1,5 @@
 from policyengine_us.model_api import *
 
-
 class az_hhs_tanf_payment_standard(Variable):
     value_type = float
     entity = SPMUnit
