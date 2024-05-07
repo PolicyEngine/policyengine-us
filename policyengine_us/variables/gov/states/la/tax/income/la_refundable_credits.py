@@ -9,4 +9,4 @@ class la_refundable_credits(Variable):
     unit = USD
     definition_period = YEAR
 
-    adds = "gov.states.la.tax.credits.refundable"
+    adds = "gov.states.la.tax.income.credits.refundable"
