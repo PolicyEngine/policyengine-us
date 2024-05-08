@@ -80,9 +80,72 @@ class income_elasticity_lsr(Variable):
         employment_income = person("employment_income_before_lsr", period)
         self_employment_income = person("self_employment_income_before_lsr", period)
         earnings = employment_income + self_employment_income
+        print("Calculating relative income change")
         income_change = person("relative_income_change", period)
-        print(f"Computed income elasticity: {earnings * income_change * lsr.elasticities.income}")
-        return earnings * income_change * lsr.elasticities.income
+        return earnings * income_change * person("income_elasticity", period)
+    
+class income_elasticity(Variable):
+    value_type = float
+    entity = Person
+    label = "income elasticity of labor supply"
+    unit = USD
+    definition_period = YEAR
+
+    def formula(person, period, parameters):
+        gov = parameters(period).gov
+        follow_cbo = gov.contrib.cbo.labor_supply.elasticities
+        elasticities_p = gov.simulation.labor_supply_responses.elasticities.income
+
+        if follow_cbo:
+            return -0.05
+        else:
+            return elasticities_p
+    
+class substitution_elasticity(Variable):
+    value_type = float
+    entity = Person
+    label = "substitution elasticity of labor supply"
+    unit = USD
+    definition_period = YEAR
+
+    def formula(person, period, parameters):
+        gov = parameters(period).gov
+        follow_cbo = gov.contrib.cbo.labor_supply.elasticities
+        elasticities_p = gov.simulation.labor_supply_responses.elasticities.substitution
+
+        if elasticities.all != 0:
+            return elasticities.all
+        
+        earnings_decile_markers = [ # Parametrise
+            0, 14e3, 28e3, 39e3, 50e3, 61e3, 76e3, 97e3, 138e3, 1_726e3
+        ]
+
+        earnings = person("employment_income_before_lsr", period) + person("self_employment_income_before_lsr", period)
+        earnings_decile = np.searchsorted(earnings_decile_markers, earnings) + 1
+
+        tax_unit_earnings = person.tax_unit.sum(earnings)
+        # Primary earner == highest earner in tax unit
+        is_primary_earner = tax_unit_earnings == person.tax_unit.max(earnings)
+
+        elasticities = np.zeros_like(earnings)
+
+        # Assign non-primary earner elasticities
+        if follow_cbo:
+            elasticities[~is_primary_earner] = 0.27
+            decile_elasticities = [0.31, 0.28, 0.27, 0.27, 0.25, 0.25, 0.22, 0.22, 0.22, 0.22]
+            for i in range(10):
+                elasticities[earnings_decile == i + 1] = decile_elasticities[i]
+        else:
+            p = elasticities_p.by_position_and_decile
+            elasticities[~is_primary_earner] = p.secondary
+            decile_elasticities = [
+                p._children[str(i + 1)] for i in range(10)
+            ]
+            for i in range(10):
+                elasticities[earnings_decile == i + 1] = decile_elasticities[i]
+
+        return elasticities
+
 
 
 class substitution_elasticity_lsr(Variable):
@@ -98,9 +161,9 @@ class substitution_elasticity_lsr(Variable):
         employment_income = person("employment_income_before_lsr", period)
         self_employment_income = person("self_employment_income_before_lsr", period)
         earnings = employment_income + self_employment_income
+        print("Calculating relative wage change")
         wage_change = person("relative_wage_change", period)
-        print(f"Computed substitution elasticity: {earnings * wage_change * lsr.elasticities.substitution.all}")
-        return earnings * wage_change * lsr.elasticities.substitution.all
+        return earnings * wage_change * person("substitution_elasticity", period)
 
 
 class labor_supply_behavioral_response(Variable):
@@ -117,9 +180,6 @@ class labor_supply_behavioral_response(Variable):
             return 0  # No reform, no impact
         if lsr.elasticities.income == 0 and lsr.elasticities.substitution.all == 0:
             return 0
-        
-        simulation.macro_cache_read = False
-        simulation.macro_cache_write = False
 
         measurement_branch = simulation.get_branch(
             "lsr_measurement", clone_system=True
@@ -153,7 +213,9 @@ class labor_supply_behavioral_response(Variable):
                 person("self_employment_income_before_lsr", period),
             )
 
-        return add(
+        print("Completed setup")
+
+        response = add(
             person,
             period,
             [
@@ -161,6 +223,11 @@ class labor_supply_behavioral_response(Variable):
                 "substitution_elasticity_lsr",
             ],
         )
+        
+        simulation.macro_cache_read = False
+        simulation.macro_cache_write = False
+
+        return response
 
 
 class employment_income_behavioral_response(Variable):
@@ -178,9 +245,7 @@ class employment_income_behavioral_response(Variable):
         emp_self_emp_ratio = where(
             earnings > 0, employment_income / earnings, 1
         )
-        print(f"Computed employment income behavioral response: {lsr * emp_self_emp_ratio * employment_income}")
-        return 0
-        return lsr * emp_self_emp_ratio * employment_income
+        return lsr * emp_self_emp_ratio
     
 class self_employment_income_behavioral_response(Variable):
     value_type = float
@@ -191,10 +256,5 @@ class self_employment_income_behavioral_response(Variable):
 
     def formula(person, period, parameters):
         lsr = person("labor_supply_behavioral_response", period)
-        employment_income = person("employment_income_before_lsr", period)
-        self_employment_income = person("self_employment_income_before_lsr", period)
-        earnings = employment_income + self_employment_income
-        emp_self_emp_ratio = where(
-            earnings > 0, employment_income / earnings, 1
-        )
-        return lsr * (1 - emp_self_emp_ratio) * self_employment_income
+        emp_response = person("employment_income_behavioral_response", period)
+        return lsr - emp_response

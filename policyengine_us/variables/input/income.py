@@ -12,6 +12,7 @@ class employment_income_before_lsr(Variable):
     definition_period = YEAR
     uprating = "calibration.gov.irs.soi.employment_income"
 
+
 class self_employment_income_before_lsr(Variable):
     value_type = float
     entity = Person
@@ -19,7 +20,6 @@ class self_employment_income_before_lsr(Variable):
     unit = USD
     definition_period = YEAR
     uprating = "calibration.gov.irs.soi.self_employment_income"
-
 
 
 class employment_income(Variable):
@@ -31,7 +31,7 @@ class employment_income(Variable):
     definition_period = YEAR
     adds = [
         "employment_income_before_lsr",
-        # "employment_income_behavioral_response",
+        "employment_income_behavioral_response",
     ]
 
 
@@ -45,7 +45,7 @@ class self_employment_income(Variable):
     uprating = "calibration.gov.irs.soi.self_employment_income"
     adds = [
         "self_employment_income_before_lsr",
-        # "self_employment_income_behavioral_response",
+        "self_employment_income_behavioral_response",
     ]
 
 
@@ -60,9 +60,7 @@ class emp_self_emp_ratio(Variable):
         employment_income = person("employment_income", period)
         self_employment_income = person("self_employment_income", period)
         total_earnings = employment_income + self_employment_income
-        return where(
-            total_earnings > 0, employment_income / total_earnings, 1
-        )
+        return where(total_earnings > 0, employment_income / total_earnings, 1)
 
 
 class farm_income(Variable):

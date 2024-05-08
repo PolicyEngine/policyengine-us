@@ -39,7 +39,8 @@ class marginal_tax_rate(Variable):
             alt_sim.set_input(
                 "self_employment_income",
                 period,
-                self_employment_income + mask * delta * (1 - emp_self_emp_ratio),
+                self_employment_income
+                + mask * delta * (1 - emp_self_emp_ratio),
             )
             alt_person = alt_sim.person
             netinc_alt = alt_person.household("household_net_income", period)
