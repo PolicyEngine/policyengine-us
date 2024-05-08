@@ -9,3 +9,4 @@ class co_child_care_subsidies(Variable):
     definition_period = YEAR
     defined_for = StateCode.CO
     adds = ["co_ccap_subsidy"]
+    exhaustive_parameter_dependencies = "gov.states.co.ccap"
