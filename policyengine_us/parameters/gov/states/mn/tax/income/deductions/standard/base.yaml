@@ -6,11 +6,15 @@ metadata:
   uprating:
     parameter: gov.irs.uprating
     rounding:
-      type: nearest
-      interval: 10
+      type: down
+      interval: 50
   breakdown:
   - filing_status
   reference:
+  - title: Minnesota Statutes 290.0123 STANDARD DEDUCTION. Subdivision 1.Standard deduction amount
+    href: https://www.revisor.mn.gov/statutes/cite/290.0123#stat.290.0123.1
+  - title: Minnesota Statutes, 290.0123 Subd. 6.Inflation adjustment.
+    href: https://www.revisor.mn.gov/statutes/cite/290.0123#stat.290.0123.6
   - title: 2021 Minnesota M1 form instructions
     href: https://www.revenue.state.mn.us/sites/default/files/2023-01/m1_inst_21.pdf#page=3
   - title: 2022 Minnesota M1 form instructions
