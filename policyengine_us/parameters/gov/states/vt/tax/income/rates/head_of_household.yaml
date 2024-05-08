@@ -25,6 +25,9 @@ brackets:
       2023-01-01: 60_850
     metadata:
       uprating: gov.irs.uprating
+      rounding:
+        type: downwards
+        interval: 50
     rate:
       2021-01-01: 0.066
   - threshold:
@@ -33,6 +36,9 @@ brackets:
       2023-01-01: 157_150
     metadata:
       uprating: gov.irs.uprating
+      rounding:
+        type: downwards
+        interval: 50
     rate:
       2021-01-01: 0.076
   - threshold:
@@ -41,5 +47,8 @@ brackets:
       2023-01-01: 254_500
     metadata:
       uprating: gov.irs.uprating
+      rounding:
+        type: downwards
+        interval: 50
     rate:
       2021-01-01: 0.0875

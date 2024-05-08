@@ -7,7 +7,11 @@ metadata:
   unit: currency-USD
   period: year
   label: Vermont personal exemption amount
-  uprating: gov.irs.uprating
+  uprating: 
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
   reference:
     # Legal code specifies $4,150. Date unknown.
     - title: Legal Code Titl. 32 V.S.A. § 5811(21)(C)(i)
