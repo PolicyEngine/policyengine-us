@@ -12,4 +12,6 @@ class nc_use_tax(Variable):
     def formula(tax_unit, period, parameters):
         agi = tax_unit("adjusted_gross_income", period)
         p = parameters(period).gov.states.nc.tax.use_tax
-        return p.cap.calc(agi) + (p.rate.calc(agi) * agi)
+        use_tax_constant_rate = p.cap.calc(agi)
+        use_tax_fraction_rate = p.rate.calc(agi) * agi
+        return use_tax_constant_rate + use_tax_fraction_rate

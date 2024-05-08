@@ -1,4 +1,4 @@
-description:  North Carolina allows for the following use tax rate, based on adjusted gross income.
+description: North Carolina provides for the following use tax rate, based on adjusted gross income.
 metadata:
   type: single_amount
   threshold_unit: currency-USD
@@ -7,15 +7,19 @@ metadata:
   reference:
     - title: NCDOR Use Tax
       href: https://www.ncdor.gov/taxes-forms/sales-and-use-tax/use-tax
+    - title: 2023 North Carolina Form D-401, Line 18
+      href: https://www.ncdor.gov/2023-d-401-individual-income-tax-instructions/open#page=26
     - title: 2022 North Carolina Form D-401, Line 18
-      href: https://www.ncdor.gov/2022-d-401-individual-income-tax-instructions/open#page=23
+      href: https://www.ncdor.gov/2022-d-401-individual-income-tax-instructions/open#page=26
+    - title: 2021 North Carolina Form D-401, Line 18
+      href: https://www.ncdor.gov/2021-d-401-instruction-bookletpdf/open#page=26
 
 brackets:
   - threshold: 
-      2022-01-01: 0
+      2021-01-01: 0
     amount:
-      2022-01-01: 0
+      2021-01-01: 0
   - threshold:
-      2022-01-01: 45_200
+      2021-01-01: 45_200
     amount:
-      2022-01-01: 0.000675
+      2021-01-01: 0.000675
