@@ -51,7 +51,7 @@
   input:
     rent: 100_000
     real_estate_taxes: 0
-    filing_status: SINGLE
+    filing_status: JOINT
     me_property_tax_fairness_credit_eligible: true
     ctc_qualifying_children: 5
     utilities_included_in_rent: false
@@ -109,3 +109,39 @@
     age_spouse: 65
   output:
     me_property_tax_fairness_credit: 1_500
+
+- name: Joint filer with no income and rent without utilities, capped at lower amount, totally disabled veterans
+  period: 2023
+  input:
+    rent: 100_000
+    real_estate_taxes: 0
+    filing_status: JOINT
+    me_property_tax_fairness_credit_eligible: true
+    is_fully_disabled_service_connected_veteran: true
+    is_permanently_disabled_veteran: true
+    ctc_qualifying_children: 5
+    utilities_included_in_rent: false
+    utility_expense: 0
+    me_sales_and_property_tax_fairness_credit_income: 0
+    age_head: 64
+    age_spouse: 64
+  output:
+    me_property_tax_fairness_credit: 2_000
+
+- name: Joint filer not fully disabled service connected veteran
+  period: 2023
+  input:
+    rent: 100_000
+    real_estate_taxes: 0
+    filing_status: JOINT
+    me_property_tax_fairness_credit_eligible: true
+    is_fully_disabled_service_connected_veteran: false
+    is_permanently_disabled_veteran: true
+    ctc_qualifying_children: 5
+    utilities_included_in_rent: false
+    utility_expense: 0
+    me_sales_and_property_tax_fairness_credit_income: 0
+    age_head: 64
+    age_spouse: 64
+  output:
+    me_property_tax_fairness_credit: 1_000

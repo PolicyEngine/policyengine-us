@@ -7,6 +7,8 @@ values:
 metadata:
   unit: currency-USD
   period: year
+  uprating: gov.irs.uprating
+  #uprating: gov.states.me.cpi
   label: Maine pension exclusion cap
   reference:
     - title: §5122. Modifications. 2. Subtractions. M-2 (d)

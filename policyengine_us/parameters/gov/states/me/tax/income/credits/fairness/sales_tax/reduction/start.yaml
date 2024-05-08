@@ -1,6 +1,9 @@
 description: Maine reduces the sales tax fairness credit for filers with income above this amount, based on filing status.
 metadata:
   unit: currency-USD
+  period: year
+  uprating: gov.irs.uprating
+  #uprating: gov.states.me.cpi
   label: Maine sales tax fairness credit phase-out start
   reference:
     - title: §5213-A. Sales tax fairness credit (4)

@@ -1,8 +1,13 @@
 description: Maine starts phasing out its standard/itemized deduction for filers with Maine AGI above this threshold.
 metadata:
   unit: currency-USD
+  period: year
+  uprating: gov.irs.uprating
+  #uprating: gov.states.me.cpi
   label: Maine standard/itemized exemption phase-out start
   reference:
+    - title: Maine §5125. Itemized deductions 6 - Phase-out
+      href: https://www.mainelegislature.org/legis/statutes/36/title36sec5125.html
     - title: Maine form 1040 Schedule 2 (2023)
       href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/23_1040me_sched_2_ff_0.pdf#page=1
     - title: Maine form 1040 Schedule 2 (2022)

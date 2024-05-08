@@ -1,6 +1,9 @@
 description: Maine personal exemption amount
 metadata:
   unit: currency-USD
+  period: year
+  uprating: gov.irs.uprating
+  #uprating: gov.states.me.cpi
   label: Maine Personal Exemption Amount
   reference:
     - title: §5126-A. Personal exemptions on or after January 1, 2018

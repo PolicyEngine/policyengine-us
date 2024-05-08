@@ -14,6 +14,8 @@ values:
 metadata:
   unit: currency-USD
   period: year
+  uprating: gov.irs.uprating
+  #uprating: gov.states.me.cpi
   label: Maine itemized deduction pre medical and dental expenses cap
   reference:
     - title: Maine legislative code §5125. Itemized deductions

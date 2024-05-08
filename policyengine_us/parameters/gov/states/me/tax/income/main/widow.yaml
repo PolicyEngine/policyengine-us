@@ -3,6 +3,9 @@ metadata:
   type: marginal_rate
   threshold_unit: currency-USD
   rate_unit: /1
+  period: year
+  uprating: gov.irs.uprating
+  #uprating: gov.states.me.cpi
   label: Maine State income tax rates for widow filers
   reference:
     - title: Maine §5111. Imposition and rate of tax
