@@ -10,6 +10,7 @@ class savers_credit_person(Variable):
     reference = (
         "https://www.irs.gov/pub/irs-pdf/f8880.pdf",
         "https://www.law.cornell.edu/uscode/text/26/25B#c",
+        "https://www.law.cornell.edu/uscode/text/26/25B#d_2",
     )
     defined_for = "savers_credit_eligible_person"
 
@@ -26,6 +27,7 @@ class savers_credit_person(Variable):
                 "traditional_401k_contributions",
             ],
         )
+        qualified_contributions -= person("retirement_distributions", period)
         capped_qualified_contributions = min_(
             qualified_contributions, p.contributions_cap
         )
@@ -53,17 +55,6 @@ class savers_credit_person(Variable):
             default=1,
         )
         # Credit rate
-        credit_rate = select(
-            [
-                agi < p.rate.joint.thresholds[1] * threshold_adjustment,
-                agi < p.rate.joint.thresholds[2] * threshold_adjustment,
-                agi < p.rate.joint.thresholds[3] * threshold_adjustment,
-            ],
-            [
-                p.rate.joint.amounts[0],
-                p.rate.joint.amounts[1],
-                p.rate.joint.amounts[2],
-            ],
-            default=0,
-        )
+        adjusted_agi = agi / threshold_adjustment  
+        credit_rate = p.rate.joint.calc(adjusted_agi)
         return credit_rate * capped_qualified_contributions

@@ -6,6 +6,7 @@
         savers_credit_eligible_person: true
         traditional_ira_contributions: 3_000
         roth_ira_contributions: 2_000
+        retirement_distributions: 1_000
       person2:
         savers_credit_eligible_person: false
         traditional_ira_contributions: 0
@@ -68,6 +69,7 @@
         savers_credit_eligible_person: true
         traditional_ira_contributions: 3_000
         roth_ira_contributions: 2_000
+        retirement_distributions: 4_000
       person2:
         savers_credit_eligible_person: true
         traditional_ira_contributions: 3_000
@@ -78,7 +80,7 @@
         filing_status: HEAD_OF_HOUSEHOLD
         adjusted_gross_income: 33_000
   output:
-    savers_credit_person: [400, 400]
+    savers_credit_person: [200, 400]
 
 - name: Single uncapped contributions
   period: 2023
