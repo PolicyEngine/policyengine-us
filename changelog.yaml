@@ -7139,3 +7139,96 @@
     fixed:
     - Reduce the Louisiana exempt income in 2021.
   date: 2024-04-26 00:39:06
+- bump: minor
+  changes:
+    added:
+    - SNAP BBCE Limit Updates.
+  date: 2024-04-29 12:59:19
+- bump: minor
+  changes:
+    added:
+    - 2023 Ohio Tax Rules.
+  date: 2024-04-29 16:34:36
+- bump: minor
+  changes:
+    added:
+    - 2023 SNAP utility allowances for Colorado
+  date: 2024-04-30 02:07:09
+- bump: minor
+  changes:
+    added:
+    - Include 403b_contributions in pre_tax_contributions.
+  date: 2024-05-02 09:02:21
+- bump: minor
+  changes:
+    added:
+    - New Jersey 2023 income tax updates.
+  date: 2024-05-02 17:30:29
+- bump: patch
+  changes:
+    fixed:
+    - Changed parameters - `unit:years` , `unit:age` to `unit:year`
+  date: 2024-05-05 12:40:28
+- bump: minor
+  changes:
+    added:
+    - Create a lives_in_vehicle variable to determine whether a homeless person is
+      using their vehicle as shelter.
+  date: 2024-05-05 17:39:50
+- bump: patch
+  changes:
+    fixed:
+    - Performance improvements in labor supply responses.
+  date: 2024-05-05 20:28:59
+- bump: patch
+  changes:
+    fixed:
+    - Refactor the Louisianna exempt income variable to use the federal tax deduction.
+  date: 2024-05-05 21:59:45
+- bump: minor
+  changes:
+    added:
+    - Allocate the Montana dependent exemptions after the application of the deductions
+      and exemptions.
+  date: 2024-05-06 01:15:16
+- bump: patch
+  changes:
+    fixed:
+    - Allocate the Mississippi itemized deductions optimally between spouses.
+  date: 2024-05-06 01:19:28
+- bump: minor
+  changes:
+    added:
+    - Macro impact caching for key variables.
+  date: 2024-05-06 15:07:09
+- bump: minor
+  changes:
+    fixed:
+    - Countable income now includes the spouse's income when both the head and spouse
+      are eligible.
+  date: 2024-05-06 17:53:18
+- bump: minor
+  changes:
+    added:
+    - Bump core to 2.20.0.
+  date: 2024-05-06 23:33:21
+- bump: minor
+  changes:
+    added:
+    - Other housing costs beyond rent for SNAP.
+  date: 2024-05-07 01:17:04
+- bump: minor
+  changes:
+    added:
+    - 2023 Massachusetts Tax Rules.
+  date: 2024-05-07 12:04:33
+- bump: minor
+  changes:
+    added:
+    - Alabama 2023 tax rules.
+  date: 2024-05-07 15:23:31
+- bump: minor
+  changes:
+    added:
+    - Make the Louisiana EITC and CDCC refundable.
+  date: 2024-05-07 18:56:59
