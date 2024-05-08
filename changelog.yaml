@@ -7196,3 +7196,39 @@
     fixed:
     - Allocate the Mississippi itemized deductions optimally between spouses.
   date: 2024-05-06 01:19:28
+- bump: minor
+  changes:
+    added:
+    - Macro impact caching for key variables.
+  date: 2024-05-06 15:07:09
+- bump: minor
+  changes:
+    fixed:
+    - Countable income now includes the spouse's income when both the head and spouse
+      are eligible.
+  date: 2024-05-06 17:53:18
+- bump: minor
+  changes:
+    added:
+    - Bump core to 2.20.0.
+  date: 2024-05-06 23:33:21
+- bump: minor
+  changes:
+    added:
+    - Other housing costs beyond rent for SNAP.
+  date: 2024-05-07 01:17:04
+- bump: minor
+  changes:
+    added:
+    - 2023 Massachusetts Tax Rules.
+  date: 2024-05-07 12:04:33
+- bump: minor
+  changes:
+    added:
+    - Alabama 2023 tax rules.
+  date: 2024-05-07 15:23:31
+- bump: minor
+  changes:
+    added:
+    - Make the Louisiana EITC and CDCC refundable.
+  date: 2024-05-07 18:56:59
