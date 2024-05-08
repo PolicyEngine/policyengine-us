@@ -15,7 +15,7 @@ class marginal_tax_rate(Variable):
         adult_count = parameters(period).simulation.marginal_tax_rate_adults
         sim = person.simulation
         mtr_values = np.zeros(person.count, dtype=np.float32)
-        adult_indexes = person("adult_index", period)
+        adult_indexes = person("adult_earnings_index", period)
         for adult_index in range(1, 1 + adult_count):
             alt_sim = sim.get_branch(f"mtr_for_adult_{adult_index}")
             for variable in sim.tax_benefit_system.variables:
@@ -48,6 +48,23 @@ class adult_index(Variable):
             person.get_rank(
                 person.household,
                 -person("age", period),
+                condition=person("is_adult", period),
+            )
+            + 1
+        )
+
+
+class adult_earnings_index(Variable):
+    value_type = int
+    entity = Person
+    label = "index of adult in household by earnings"
+    definition_period = YEAR
+
+    def formula(person, period, parameters):
+        return (
+            person.get_rank(
+                person.household,
+                -person("market_income", period),
                 condition=person("is_adult", period),
             )
             + 1
