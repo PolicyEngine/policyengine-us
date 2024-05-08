@@ -82,7 +82,6 @@ class income_elasticity_lsr(Variable):
             "self_employment_income_before_lsr", period
         )
         earnings = employment_income + self_employment_income
-        print("Calculating relative income change")
         income_change = person("relative_income_change", period)
         return earnings * income_change * person("income_elasticity", period)
 
@@ -121,8 +120,8 @@ class substitution_elasticity(Variable):
             gov.simulation.labor_supply_responses.elasticities.substitution
         )
 
-        if elasticities.all != 0:
-            return elasticities.all
+        if elasticities_p.all != 0:
+            return elasticities_p.all
 
         earnings_decile_markers = [  # Parametrise
             0,
@@ -170,7 +169,9 @@ class substitution_elasticity(Variable):
         else:
             p = elasticities_p.by_position_and_decile
             elasticities[~is_primary_earner] = p.secondary
-            decile_elasticities = [p._children[str(i + 1)] for i in range(10)]
+            decile_elasticities = [
+                p.primary._children[str(i + 1)] for i in range(10)
+            ]
             for i in range(10):
                 elasticities[earnings_decile == i + 1] = decile_elasticities[i]
 
@@ -192,7 +193,6 @@ class substitution_elasticity_lsr(Variable):
             "self_employment_income_before_lsr", period
         )
         earnings = employment_income + self_employment_income
-        print("Calculating relative wage change")
         wage_change = person("relative_wage_change", period)
         return (
             earnings * wage_change * person("substitution_elasticity", period)
@@ -215,7 +215,7 @@ class labor_supply_behavioral_response(Variable):
         if (
             lsr.elasticities.income == 0
             and lsr.elasticities.substitution.all == 0
-            and gov.contrib.cbo.labor_supply.elasticities
+            and not gov.contrib.cbo.labor_supply.elasticities
         ):
             return 0
 
@@ -250,8 +250,6 @@ class labor_supply_behavioral_response(Variable):
                 period,
                 person("self_employment_income_before_lsr", period),
             )
-
-        print("Completed setup")
 
         response = add(
             person,
