@@ -17,7 +17,9 @@ class nj_retirement_exclusion_fraction(Variable):
         total_income = add(tax_unit, period, ["nj_total_income"])
         filing_status = tax_unit("filing_status", period)
         status = filing_status.possible_values
-        p = parameters(period).gov.states.nj.tax.income.exclusions.retirement
+        p = parameters(
+            period
+        ).gov.states.nj.tax.income.exclusions.retirement.pension
         return select(
             [
                 filing_status == status.SINGLE,

@@ -1,5 +1,5 @@
 - name: Person with income over the personal exemption amount
-  period: 2022
+  period: 2021
   absolute_error_margin: 0.01
   input:
     irs_employment_income: 35_000
@@ -9,7 +9,7 @@
     oh_withheld_income_tax: 556.39
 
 - name: Changing the filing status should not change the output 
-  period: 2022
+  period: 2021
   absolute_error_margin: 0.01
   input:
     irs_employment_income: 35_000
@@ -19,7 +19,7 @@
     oh_withheld_income_tax: 556.39
 
 - name: Tax exempt
-  period: 2022
+  period: 2021
   absolute_error_margin: 0.01
   input:
     irs_employment_income: 24_999
