@@ -1,0 +1,18 @@
+description: Montana, based on filing status.
+metadata:
+  period: year
+  unit: currency-USD
+  label: Montana social security benefits amount 2
+  breakdown:
+    - filing_status
+  reference:
+    - title: 2021 Montana Individual Income Tax Return 
+      href: https://mtrevenue.gov/wp-content/uploads/mdocs/form%202%202021.pdf#page=6
+SINGLE:
+  2021-01-01: 9_000
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 9_000
+JOINT:
+  2021-01-01: 12_000
+SEPARATE:
+  2021-01-01: 6_000 
