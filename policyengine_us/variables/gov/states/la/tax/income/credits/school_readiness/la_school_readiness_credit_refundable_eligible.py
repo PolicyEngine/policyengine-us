@@ -13,4 +13,5 @@ class la_school_readiness_credit_refundable_eligible(Variable):
         p = parameters(period).gov.states.la.tax.income.credits.cdcc.refundable
         # determine if it is nonrefundable or refundable
         us_agi = tax_unit("adjusted_gross_income", period)
-        return us_agi <= p.match.thresholds[-1]
+        top_threshold = p.match.thresholds[-1]
+        return us_agi <= top_threshold
