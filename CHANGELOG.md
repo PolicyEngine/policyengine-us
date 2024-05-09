@@ -306,7 +306,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Add Old Age Pension grant standard for 2024
+- Add Old Age Pension grant standard for 2024.
 
 ## [0.737.0] - 2024-04-15 14:20:43
 
@@ -3289,7 +3289,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Pell Grant automatic 0 EFC and marginal tax rate brackets from 2009 to 2023
+- Pell Grant automatic 0 EFC and marginal tax rate brackets from 2009 to 2023.
 
 ## [0.466.1] - 2023-09-14 19:23:32
 
