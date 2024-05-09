@@ -178,6 +178,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.750.1] - 2024-04-24 04:49:34
 
+### Fixed
+
+- Add Mississippi tax unit itemizes variable.
+
 ## [0.750.0] - 2024-04-23 18:20:42
 
 ### Added
