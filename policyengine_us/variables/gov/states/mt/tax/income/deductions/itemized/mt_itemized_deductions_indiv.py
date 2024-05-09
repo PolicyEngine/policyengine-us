@@ -33,7 +33,7 @@ class mt_itemized_deductions_indiv(Variable):
                 "mt_misc_deductions",
                 "mt_medical_expense_deduction_indiv",
                 "mt_salt_deduction",
-                "mt_federal_income_tax_deduction",
+                "mt_federal_income_tax_deduction_indiv",
             ],
         )
         return head_or_spouse * (
