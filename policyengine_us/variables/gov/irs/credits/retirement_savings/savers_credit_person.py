@@ -17,17 +17,7 @@ class savers_credit_person(Variable):
     def formula(person, period, parameters):
         p = parameters(period).gov.irs.credits.retirement_saving
 
-        qualified_contributions = add(
-            person,
-            period,
-            [
-                "traditional_ira_contributions",
-                "roth_ira_contributions",
-                "roth_401k_contributions",
-                "traditional_401k_contributions",
-            ],
-        )
-        qualified_contributions -= person("retirement_distributions", period)
+        qualified_contributions = person("savers_qualified_contributions", period)
         capped_qualified_contributions = min_(
             qualified_contributions, p.contributions_cap
         )

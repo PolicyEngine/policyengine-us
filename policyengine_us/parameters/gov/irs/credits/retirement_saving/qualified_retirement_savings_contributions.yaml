@@ -1,0 +1,15 @@
+description: The IRA sums the following elements as qualified retirement savings contributions when computing the retirement saving credit.
+values:
+  2019-01-01:
+    - traditional_ira_contributions
+    - roth_ira_contributions
+    - roth_401k_contributions
+    - traditional_401k_contributions
+
+metadata:
+  unit: list
+  period: year 
+  label: Qualified retirement savings contributions
+  reference:
+    - title: 26 U.S. Code § 25B - (d)
+      href: https://www.law.cornell.edu/uscode/text/26/25B#d_1
