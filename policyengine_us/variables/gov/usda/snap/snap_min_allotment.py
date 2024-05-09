@@ -28,4 +28,4 @@ class snap_min_allotment(Variable):
 
         dc_min = spm_unit("dc_min_allotment", period)
 
-        return where(snap_region == , dc_min, others_min)
+        return where(snap_region == 'DC', dc_min, others_min)
