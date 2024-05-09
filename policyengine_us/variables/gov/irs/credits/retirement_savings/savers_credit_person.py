@@ -55,6 +55,6 @@ class savers_credit_person(Variable):
             default=1,
         )
         # Credit rate
-        adjusted_agi = agi / threshold_adjustment  
+        adjusted_agi = agi / threshold_adjustment
         credit_rate = p.rate.joint.calc(adjusted_agi)
         return credit_rate * capped_qualified_contributions
