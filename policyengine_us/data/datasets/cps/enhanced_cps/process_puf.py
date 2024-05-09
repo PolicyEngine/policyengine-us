@@ -327,7 +327,9 @@ FINANCIAL_SUBSET = [
 ]
 
 
-def load_puf(puf_file_path: str = None, puf_demographics_path: str = None) -> Tuple[pd.DataFrame, pd.DataFrame]:
+def load_puf(
+    puf_file_path: str = None, puf_demographics_path: str = None
+) -> Tuple[pd.DataFrame, pd.DataFrame]:
     """Load the PUF and demographics data.
 
     Returns:
