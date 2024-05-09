@@ -3,15 +3,53 @@ import numpy as np
 from policyengine_us.data.storage import STORAGE_FOLDER
 from tqdm import tqdm
 
+EXTRA_PUF_VARIABLES = [
+    "e02000",
+    "e26270",
+    "e19200",
+    "e18500",
+    "e19800",
+    "e20400",
+    "e20100",
+    "e00700",
+    "e03270",
+    "e24515",
+    "e03300",
+    "e07300",
+    "e62900",
+    "e32800",
+    "e87530",
+    "e03240",
+    "e01100",
+    "e01200",
+    "e24518",
+    "e09900",
+    "e27200",
+    "e03290",
+    "e58990",
+    "e03230",
+    "e07400",
+    "e11200",
+    "e07260",
+    "e07240",
+    "e07600",
+    "e03220",
+    "p08000",
+    "e03400",
+    "e09800",
+    "e09700",
+    "e03500",
+    "e87521",
+]
 
-class PUF_2022(Dataset):
-    name = "puf_2022"
-    label = "PUF"
-    time_period = "2022"
+
+class PUF(Dataset):
+    time_period = None
     data_format = Dataset.ARRAYS
-    file_path = STORAGE_FOLDER / "puf_2022.h5"
 
-    def generate(self):
+    def generate(
+        self, puf_file_path: str = None, puf_demographics_path: str = None
+    ):
         # First pass: single person tax units.
         from policyengine_us.data.datasets.cps.enhanced_cps.process_puf import (
             load_puf,
@@ -19,7 +57,9 @@ class PUF_2022(Dataset):
             uprate_puf,
         )
 
-        puf, demographics = load_puf()
+        puf, demographics = load_puf(
+            puf_file_path=puf_file_path, puf_demographics_path=None
+        )
         puf = uprate_puf(puf, self.time_period)
         puf = impute_missing_demographics(puf, demographics)
 
@@ -176,6 +216,21 @@ class PUF_2022(Dataset):
         self.holder["is_male"].append(np.random.choice([0, 1]))
 
 
+class PUF_2022(PUF):
+    label = "PUF (2022)"
+    name = "puf_2022"
+    time_period = 2022
+    file_path = STORAGE_FOLDER / "puf_2022.h5"
+    url = "release://policyengine/non-public-microdata/puf-2022/puf_2022.h5"
+
+
+class PUF_2015(PUF):
+    label = "PUF (2015)"
+    name = "puf_2015"
+    time_period = 2015
+    file_path = STORAGE_FOLDER / "puf_2015.h5"
+
+
 FINANCE_VARIABLE_RENAMES = dict(
     self_employment_income="self_employment_income",
     taxable_interest_income="taxable_interest_income",
@@ -190,6 +245,11 @@ FINANCE_VARIABLE_RENAMES = dict(
     farm_rent_income="farm_rent_income",
     farm_income="farm_income",
     partnership_s_corp_income="partnership_s_corp_income",
+    schedule_e_net_income_loss="schedule_e_net_income",
+)
+
+FINANCE_VARIABLE_RENAMES.update(
+    {variable: variable for variable in EXTRA_PUF_VARIABLES}
 )
 
 
