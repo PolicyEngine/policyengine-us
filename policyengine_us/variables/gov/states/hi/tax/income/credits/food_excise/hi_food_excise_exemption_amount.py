@@ -45,6 +45,6 @@ class hi_food_excise_exemption_amount(Variable):
                 "hi_food_excise_credit_minor_child_count", period
             )
             claimable_exemptions = exemptions - minor_children
-        else:  
-            claimable_exemptions = exemptions  
-        return claimable_exemptions * amount_per_exemption  
+        else:
+            claimable_exemptions = exemptions
+        return claimable_exemptions * amount_per_exemption
