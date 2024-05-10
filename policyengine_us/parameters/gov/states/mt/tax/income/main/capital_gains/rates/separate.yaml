@@ -4,7 +4,7 @@ metadata:
   period: year
   type: single_amount
   label: Montana capital gains tax rates for separate filers
-  unit: /1
+  rate_unit: /1
   reference:
     - title: 2023 Montana Form 2 Individual Income Tax Instructions, Net Long-Term Capital Gains Tax Table
       href: https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2023/12/Form_2_2023_Instructions.pdf#page=6
@@ -13,9 +13,9 @@ metadata:
 brackets:
   - threshold:
       2024-01-01: 0
-    rate: # lower rate
+    amount: 
       2024-01-01: 0.03
-  - threshold: # threshold
+  - threshold: 
       2024-01-01: 20_500
-    rate: # higher rate
+    amount: 
       2024-01-01: 0.041
