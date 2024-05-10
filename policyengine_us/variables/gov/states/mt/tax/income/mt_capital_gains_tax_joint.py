@@ -23,7 +23,7 @@ class mt_capital_gains_tax_joint(Variable):
                 p.threshold[filing_status] - non_qualified_income
             )
             status = filing_status.possible_values
-            capital_gains_rate, base_rate = select(
+            capital_gains_rate = select(
                 [
                     filing_status == status.SINGLE,
                     filing_status == status.SEPARATE,
@@ -32,12 +32,22 @@ class mt_capital_gains_tax_joint(Variable):
                 ],
                 [
                     p.rates.single.calc(taxable_income),
-                    p.rates.single.calc(0),
                     p.rates.separate.calc(taxable_income),
-                    p.rates.separate.calc(0),
                     p.rates.widow.calc(taxable_income),
-                    p.rates.widow.calc(0),
                     p.rates.head_of_household.calc(taxable_income),
+                ],
+            )
+            base_rate = select(
+                [
+                    filing_status == status.SINGLE,
+                    filing_status == status.SEPARATE,
+                    filing_status == status.SURVIVING_SPOUSE,
+                    filing_status == status.HEAD_OF_HOUSEHOLD,
+                ],
+                [
+                    p.rates.single.calc(0),
+                    p.rates.separate.calc(0),
+                    p.rates.widow.calc(0),
                     p.rates.head_of_household.calc(0),
                 ],
             )
