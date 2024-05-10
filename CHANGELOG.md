@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.769.0] - 2024-05-09 13:03:58
+
+### Added
+
+- Create distinct Louisiana CDCC refundable and non-refundable variables.
+
+## [0.768.1] - 2024-05-09 11:37:29
+
+### Added
+
+- Ability for users to provide the PUF data input files.
+
 ## [0.768.0] - 2024-05-09 02:48:07
 
 ### Added
@@ -8475,6 +8487,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.769.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.768.1...0.769.0
+[0.768.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.768.0...0.768.1
 [0.768.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.767.0...0.768.0
 [0.767.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.766.0...0.767.0
 [0.766.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.765.0...0.766.0
