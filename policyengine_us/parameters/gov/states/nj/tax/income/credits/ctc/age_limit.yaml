@@ -1,0 +1,15 @@
+description: New Jersey provides a child tax credit to filers for each dependent below this age.
+metadata:
+  unit: year
+  period: year
+  label: New Jersey child tax credit age limit
+  reference:
+    - title: New Jersey Statutes Title 54A:4-17.1(1)(a) Child tax credit, income limit.
+      href: https://law.justia.com/codes/new-jersey/2022/title-54a/section-54a-4-17-1/
+    - title: 2022 Instructions for Form NJ-1040 (line 65)
+      href: https://www.nj.gov/treasury/taxation/pdf/other_forms/tgi-ee/2022/1040i.pdf#page=44
+    - title: 2023 NJ-1040 Instructions (line 65)
+      href: https://www.state.nj.us/treasury/taxation/pdf/current/1040i.pdf#page=46
+      # New Jersey child tax credit was introduced in 2022
+values: 
+  2022-01-01: 6
