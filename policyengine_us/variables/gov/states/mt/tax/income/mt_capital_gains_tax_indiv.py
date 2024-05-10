@@ -22,12 +22,11 @@ class mt_capital_gains_tax_indiv(Variable):
             )
             non_qualified_income = max_(taxable_income - capital_gains, 0)
             # In case when capital gains exceeds taxable income (irrational input)
-            capital_gains = select(
+            capital_gains = where(
                 taxable_income - capital_gains <= 0,
                 taxable_income,
                 capital_gains,
             )
-            print(capital_gains)
             non_qualified_income_gap = (
                 p.threshold[filing_status] - non_qualified_income
             )

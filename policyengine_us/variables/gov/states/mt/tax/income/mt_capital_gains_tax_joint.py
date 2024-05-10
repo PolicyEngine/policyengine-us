@@ -17,22 +17,33 @@ class mt_capital_gains_tax_joint(Variable):
             is_head = person("is_tax_unit_head", period)
             capital_gains = person("long_term_capital_gains", period)
             taxable_income = person("mt_taxable_income_joint", period)
-            non_qualified_income = max_(taxable_income - capital_gains, 0)
             filing_status = person.tax_unit("filing_status", period)
+            non_qualified_income = max_(taxable_income - capital_gains, 0)
+            # In case when capital gains exceeds taxable income (irrational input)
+            capital_gains = where(
+                taxable_income - capital_gains <= 0,
+                taxable_income,
+                capital_gains,
+            )
             non_qualified_income_gap = (
                 p.threshold[filing_status] - non_qualified_income
+            )
+            reduced_capital_gains = max_(
+                capital_gains - non_qualified_income_gap, 0
             )
             status = filing_status.possible_values
             capital_gains_rate = select(
                 [
                     filing_status == status.SINGLE,
                     filing_status == status.SEPARATE,
+                    filing_status == status.JOINT,
                     filing_status == status.SURVIVING_SPOUSE,
                     filing_status == status.HEAD_OF_HOUSEHOLD,
                 ],
                 [
                     p.rates.single.calc(taxable_income),
                     p.rates.separate.calc(taxable_income),
+                    p.rates.joint.calc(taxable_income),
                     p.rates.widow.calc(taxable_income),
                     p.rates.head_of_household.calc(taxable_income),
                 ],
@@ -53,9 +64,6 @@ class mt_capital_gains_tax_joint(Variable):
             )
             # If the capital gains is over the gap, the gap income will be calculated by the base rate.
             base_tax = non_qualified_income_gap * base_rate
-            reduced_capital_gains = max_(
-                capital_gains - non_qualified_income_gap, 0
-            )
             # Where non_qualified_income is over the threshold, the capital gains tax rate will be the higher rate
             capital_gains_over_threshold = capital_gains * capital_gains_rate
             # Equally judged by whether the taxable income is under the threshold
