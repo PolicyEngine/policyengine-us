@@ -22,32 +22,46 @@ class mt_capital_gains_tax_joint(Variable):
             non_qualified_income_gap = (
                 p.threshold[filing_status] - non_qualified_income
             )
-            lower_base_tax = (
-                non_qualified_income_gap
-                * p.rates.reduced_capital_gains.lower[filing_status]
+            status = filing_status.possible_values
+            capital_gains_rate, base_rate = select(
+                [
+                    filing_status == status.SINGLE,
+                    filing_status == status.SEPARATE,
+                    filing_status == status.SURVIVING_SPOUSE,
+                    filing_status == status.HEAD_OF_HOUSEHOLD,
+                ],
+                [
+                    p.rates.single.calc(taxable_income),
+                    p.rates.single.calc(0),
+                    p.rates.separate.calc(taxable_income),
+                    p.rates.separate.calc(0),
+                    p.rates.widow.calc(taxable_income),
+                    p.rates.widow.calc(0),
+                    p.rates.head_of_household.calc(taxable_income),
+                    p.rates.head_of_household.calc(0),
+                ],
             )
+            # If the capital gains is over the gap, the gap income will be calculated by the base rate.
+            base_tax = non_qualified_income_gap * base_rate
+            reduced_capital_gains = max_(
+                capital_gains - non_qualified_income_gap, 0
+            )
+            # Where non_qualified_income is over the threshold, the capital gains tax rate will be the higher rate
+            capital_gains_over_threshold = capital_gains * capital_gains_rate
+            # Equally judged by whether the taxable income is under the threshold
             capital_gains_under_threshold = (
                 capital_gains <= non_qualified_income_gap
             )
-            lower_capital_gains_tax = (
-                capital_gains
-                * p.rates.reduced_capital_gains.lower[filing_status]
-            )
-            higher_capital_gains_tax = (
-                lower_base_tax
-                + (capital_gains - non_qualified_income_gap)
-                * p.rates.reduced_capital_gains.higher[filing_status]
-            )
             reduced_capital_gains_tax = where(
                 capital_gains_under_threshold,
-                lower_capital_gains_tax,
-                higher_capital_gains_tax,
+                capital_gains
+                * capital_gains_rate,  # capital_gains within the gap
+                base_tax
+                + reduced_capital_gains
+                * capital_gains_rate,  # capital gains over the gap
             )
             nonqualified_income_over_threshold = non_qualified_income_gap < 0
-            capital_gains_over_threshold = (
-                capital_gains
-                * p.rates.reduced_capital_gains.higher[filing_status]
-            )
+
             capital_gains_tax = where(
                 nonqualified_income_over_threshold,
                 capital_gains_over_threshold,

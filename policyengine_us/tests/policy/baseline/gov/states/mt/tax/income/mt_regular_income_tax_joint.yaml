@@ -4,23 +4,19 @@
   # The taxable income will always default to 0 for the non-head 
     people: 
       person1:
-        mt_taxable_income_indiv: 1_000
-        long_term_capital_gains: 500
-        mt_capital_gains_tax_indiv: 0
+        mt_taxable_income_joint: 1_000
       person2:
-        mt_taxable_income_indiv: 3_000
-        long_term_capital_gains: 2_000
-        mt_capital_gains_tax_indiv: 0
+        mt_taxable_income_joint: 0
     tax_units:
       tax_unit:
         members: [person1, person2]
-        state_filing_status_if_married_filing_separately_on_same_return: SEPARATE
+        filing_status: JOINT
     households:
       household:
         members: [person1, person2]
         state_code: MT
   output:
-    mt_income_tax_before_non_refundable_credits_indiv: [10, 30]
+    mt_regular_income_tax_joint: 10
 
 
 - name: Calculation of a head of household
@@ -29,20 +25,19 @@
   # The taxable income will always default to 0 for the non-head 
     people: 
       person1:
-        mt_taxable_income_indiv: 10_000
+        mt_taxable_income_joint: 10_000
       person2:
-        mt_taxable_income_indiv: 0
+        mt_taxable_income_joint: 0
     tax_units:
       tax_unit:
         members: [person1, person2]
-        state_filing_status_if_married_filing_separately_on_same_return: HEAD_OF_HOUSEHOLD
+        filing_status: HEAD_OF_HOUSEHOLD
     households:
       household:
         members: [person1, person2]
         state_code: MT
   output:
-    mt_income_tax_before_non_refundable_credits_indiv: [230, 0]
-
+    mt_regular_income_tax_joint: 230
 
 - name: Calculation of a head of household after 2024
   period: 2024
@@ -50,20 +45,20 @@
   # The taxable income will always default to 0 for the non-head 
     people: 
       person1:
-        mt_taxable_income_indiv: 10_000
+        mt_taxable_income_joint: 10_000
         long_term_capital_gains: 5_000
-        mt_capital_gains_tax_indiv: 150
+        # mt_capital_gains_tax_joint: 210
       person2:
-        mt_taxable_income_indiv: 0
+        mt_taxable_income_joint: 0
         long_term_capital_gains: 2_000
-        mt_capital_gains_tax_indiv: 60
+        # mt_capital_gains_tax_joint: 0
     tax_units:
       tax_unit:
         members: [person1, person2]
-        state_filing_status_if_married_filing_separately_on_same_return: HEAD_OF_HOUSEHOLD
+        filing_status: HEAD_OF_HOUSEHOLD
     households:
       household:
         members: [person1, person2]
         state_code: MT
   output:
-    mt_income_tax_before_non_refundable_credits_indiv: [385, 60]
+    mt_regular_income_tax_joint: 351
