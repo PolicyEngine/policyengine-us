@@ -2,16 +2,28 @@
   period: 2023
   input:
     nc_income_tax_before_credits: 100
+    nc_use_tax: 50
     nc_non_refundable_credits: 300
     state_code: NC
   output:
     nc_income_tax: 0
 
-- name: Calculation
+- name: NC income tax before credits and use tax amount more than non refundable credits, Case 1
   period: 2023
   input:
     nc_income_tax_before_credits: 1_000
+    nc_use_tax: 500
     nc_non_refundable_credits: 300
     state_code: NC
   output:
-    nc_income_tax: 700
+    nc_income_tax: 1_200
+
+- name: NC income tax before credits and use tax amount more than non refundable credits, Case 1
+  period: 2023
+  input:
+    nc_income_tax_before_credits: 100
+    nc_use_tax: 500
+    nc_non_refundable_credits: 300
+    state_code: NC
+  output:
+    nc_income_tax: 300

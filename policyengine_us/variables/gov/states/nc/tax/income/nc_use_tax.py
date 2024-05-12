@@ -12,10 +12,8 @@ class nc_use_tax(Variable):
     def formula(tax_unit, period, parameters):
         agi = tax_unit("adjusted_gross_income", period)
         p = parameters(period).gov.states.nc.tax.use_tax
-        use_tax_constant_rate = p.cap.calc(
-            agi
-        )  # when agi less than certain threshold, use tax is a dollar value based on amount
-        use_tax_fraction_rate = (
-            p.rate.calc(agi) * agi
-        )  # when agi is more than the threshold, use tax is a fractional amount of agi
-        return use_tax_constant_rate + use_tax_fraction_rate
+        # Compute main amount, a dollar amount based on NC AGI.
+        main_amount = p.main.calc(agi)
+        # Switch to a percentage of income above the threshold.
+        additional_amount = p.additional.calc(agi) * agi
+        return main_amount + additional_amount

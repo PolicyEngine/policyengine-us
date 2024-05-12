@@ -1,10 +1,12 @@
-description: North Carolina limits the use tax to this amount, based on adjusted gross income.
+description: North Carolina levies its use tax as a dollar amount by AGI for income below a certain threshold.
 metadata:
   type: single_amount
   threshold_unit: currency-USD
   amount_unit: currency-USD
   label: North Carolina use tax cap
   reference:
+    - title: Code of North Carolina | § 105-164.6 Complementary use tax.
+      href: https://www.ncleg.gov/EnactedLegislation/Statutes/PDF/BySection/Chapter_105/GS_105-164.6.pdf
     - title: NCDOR Use Tax
       href: https://www.ncdor.gov/taxes-forms/sales-and-use-tax/use-tax
     - title: 2023 North Carolina Form D-401, Line 18
