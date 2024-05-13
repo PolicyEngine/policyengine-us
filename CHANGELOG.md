@@ -5,6 +5,67 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.770.0] - 2024-05-10 15:49:10
+
+### Added
+
+- Hawaii 2023 income tax parameters.
+
+## [0.769.0] - 2024-05-09 13:03:58
+
+### Added
+
+- Create distinct Louisiana CDCC refundable and non-refundable variables.
+
+## [0.768.1] - 2024-05-09 11:37:29
+
+### Added
+
+- Ability for users to provide the PUF data input files.
+
+## [0.768.0] - 2024-05-09 02:48:07
+
+### Added
+
+- 2023 Vermont Tax Rules.
+
+## [0.767.0] - 2024-05-08 15:28:13
+
+### Added
+
+- CBO elasticities for labor supply.
+- Self-employment income responses.
+
+## [0.766.0] - 2024-05-07 18:56:59
+
+### Added
+
+- Make the Louisiana EITC and CDCC refundable.
+
+## [0.765.0] - 2024-05-07 15:23:31
+
+### Added
+
+- Alabama 2023 tax rules.
+
+## [0.764.0] - 2024-05-07 12:04:33
+
+### Added
+
+- 2023 Massachusetts Tax Rules.
+
+## [0.763.0] - 2024-05-07 01:17:04
+
+### Added
+
+- Other housing costs beyond rent for SNAP.
+
+## [0.762.0] - 2024-05-06 23:33:21
+
+### Added
+
+- Bump core to 2.20.0.
+
 ## [0.761.0] - 2024-05-06 17:53:18
 
 ### Fixed
@@ -8432,6 +8493,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.770.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.769.0...0.770.0
+[0.769.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.768.1...0.769.0
+[0.768.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.768.0...0.768.1
+[0.768.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.767.0...0.768.0
+[0.767.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.766.0...0.767.0
+[0.766.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.765.0...0.766.0
+[0.765.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.764.0...0.765.0
+[0.764.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.763.0...0.764.0
+[0.763.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.762.0...0.763.0
+[0.762.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.761.0...0.762.0
 [0.761.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.760.0...0.761.0
 [0.760.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.759.1...0.760.0
 [0.759.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.759.0...0.759.1

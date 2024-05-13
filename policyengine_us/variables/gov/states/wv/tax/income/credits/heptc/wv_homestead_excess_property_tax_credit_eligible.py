@@ -18,7 +18,7 @@ class wv_homestead_excess_property_tax_credit_eligible(Variable):
     def formula(tax_unit, period, parameters):
         federal_agi = tax_unit("adjusted_gross_income", period)
         wv_sctc = tax_unit("wv_sctc", period)
-        property_tax = tax_unit("property_tax_primary_residence", period)
+        property_tax = add(tax_unit, period, ["real_estate_taxes"])
         wv_ghi = tax_unit("wv_gross_household_income", period)
         wv_tax_unit_fpg = tax_unit("tax_unit_fpg", period)
         p = parameters(period).gov.states.wv.tax.income.credits.heptc.rate
