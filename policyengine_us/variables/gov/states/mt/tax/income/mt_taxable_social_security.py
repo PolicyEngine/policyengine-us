@@ -30,7 +30,7 @@ class mt_taxable_social_security(Variable):
             - person("taxable_social_security", period)
             + tax_emempt_interest_income
         )
-        # line 7&8 
+        # line 7&8
         us_ald_exclue_stduent_loan = tax_unit(
             "above_the_line_deductions", period
         ) - person("student_loan_interest", period)
@@ -40,10 +40,10 @@ class mt_taxable_social_security(Variable):
         # line 9: line 6 -line 8, if line 8 >= line 6, return 0
         remaining_income = max(0, new_total_income - increased_subtractions)
         # line 10: get amount based on filing status
-        amount_higher = p.social_security.amount.higher[filing_status]
+        amount_higher = p.amount.higher[filing_status]
         # line 11: line 9 - line 10 (remaining_income - amount_higer)
         # line 12: get amount based on filing status
-        amount_lower = p.social_security.amount.lower[filing_status]
+        amount_lower = p.amount.lower[filing_status]
         # lien 13: line 11 - line 12
         minimum_tax_threshold = max_(
             0, remaining_income - amount_higher - amount_lower
