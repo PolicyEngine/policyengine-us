@@ -1,0 +1,15 @@
+- name: 5% income disregard
+  period: 2024
+  input:
+    state_code: CO
+    tax_unit_fpg: 1_560
+  output:
+    co_medicaid_income_disregard: 78
+
+- name: No disregard for California
+  period: 2024
+  input:
+    state_code: CA
+    tax_unit_fpg: 1_560
+  output:
+    co_medicaid_income_disregard: 0

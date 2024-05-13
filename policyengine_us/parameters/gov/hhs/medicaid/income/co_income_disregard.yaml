@@ -1,0 +1,10 @@
+description: Colorado deducts this percent of the FPL from the income when calculating eligibility for Medicaid and CHP+
+values:
+  2023-01-01: 0.05
+metadata:
+  label: Colorado Medicaid income disregard
+  unit: /1
+  period: year
+  reference:
+    - title: MEDICAL ASSISTANCE - SECTION 8.100 Eligibility, Provider Screening, NPI - 8.100.4.D.
+      href: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=10703&fileName=10%20CCR%202505-10%208.100#page=56
