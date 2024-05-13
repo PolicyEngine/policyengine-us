@@ -28,5 +28,5 @@ class nj_potential_property_tax_deduction(Variable):
         property_tax = property_tax / (1 + separate * cohabitating)
 
         # limit property_tax amount
-        limit = p.threshold / (1 + separate * cohabitating)
+        limit = p.limit / (1 + separate * cohabitating)
         return min_(property_tax, limit)
