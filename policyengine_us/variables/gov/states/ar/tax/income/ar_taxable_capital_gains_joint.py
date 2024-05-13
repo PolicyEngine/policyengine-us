@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class ar_taxable_capital_gains(Variable):
+class ar_taxable_capital_gains_joint(Variable):
     value_type = float
     entity = Person
-    label = "Arkansas taxable capital gains"
+    label = "Arkansas taxable capital gains when married filing jointly"
     unit = USD
     reference = (
         "https://codes.findlaw.com/ar/title-26-taxation/ar-code-sect-26-51-815.html",

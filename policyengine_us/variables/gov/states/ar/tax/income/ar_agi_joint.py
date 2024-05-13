@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ar_agi(Variable):
+class ar_agi_joint(Variable):
     value_type = float
     entity = Person
     label = "Arkansas adjusted gross income for each individual"
@@ -11,7 +11,7 @@ class ar_agi(Variable):
     defined_for = StateCode.AR
 
     def formula(person, period, parameters):
-        gross_income = person("ar_gross_income", period)
+        gross_income = person("ar_gross_income_joint", period)
         income_exemptions = person("ar_exemptions", period)
         net_income = max_(gross_income - income_exemptions, 0)
         # allocate any dependent gross income to tax unit head
