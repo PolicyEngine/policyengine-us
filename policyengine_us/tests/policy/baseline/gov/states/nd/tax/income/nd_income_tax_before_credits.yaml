@@ -124,7 +124,7 @@
     nd_taxable_income: 260_550
     state_code: ND
   output:  # hand calculated to avoid whole-dollar rounding problems
-    nd_income_tax_before_credits: 3966.7
+    nd_income_tax_before_credits: 3_966.7
 
 - name: North Dakota income tax before credits for taxable income below or equal 74750, unit test 15 (WIDOW)
   period: 2023
