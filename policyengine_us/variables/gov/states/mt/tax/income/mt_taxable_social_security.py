@@ -14,7 +14,7 @@ class mt_taxable_social_security(Variable):
         filing_status = tax_unit("filing_status", period)
         person = tax_unit.members
         # Compute the amount based on the schedule in tax form.
-        # line 1&2: 6a in tax form ?
+        # line 1&2: 6a in tax form 
         social_security = person("social_security", period)
         social_security_benefits_fraction = social_security * p.rate.lower
         # line 3 irs_gross_income - taxable_social_security
@@ -36,12 +36,12 @@ class mt_taxable_social_security(Variable):
             + tax_emempt_interest_income
         )
         # line 7 Above the line deductions less stundet loans &8
-        ald_less_stduent_loan = tax_unit(
+        ald_less_student_loan = tax_unit(
             "above_the_line_deductions", period
         ) - person("student_loan_interest", period)
         # Line 8 - Montana subtractions + ald
         subtractions = person("mt_subtractions", period)
-        increased_subtractions = subtractions + ald_less_stduent_loan
+        increased_subtractions = subtractions + ald_less_student_loan
         # line 9: line 6 -line 8, if line 8 >= line 6, return 0
         income_reduced_by_subtractions = max_(
             0, income_increased_by_ss_and_interest - increased_subtractions
@@ -59,17 +59,15 @@ class mt_taxable_social_security(Variable):
             0, income_reduced_by_subtractions_and_threshold - amount_lower
         )
         # line 14 & 15
-        minimum_tax_threshold_fraction = (
-            min_(income_reduced_by_subtractions_and_threshold, amount_lower)
-            * p.rate.lower
-        )
+        capped_reduced_income = min_(income_reduced_by_subtractions_and_threshold, amount_lower) 
+        minimum_tax_threshold_fraction = capped_reduced_income * p.rate.lower
         # line 16
-        minimum_fraction = min_(
+        smaller_fraction = min_(
             minimum_tax_threshold_fraction, social_security_benefits_fraction
         )
         # line 17 & 18 ## line_13*p.rate2 + line_16
         adjusted_tax_amount = (
-            minimum_tax_threshold * p.rate.higher + minimum_fraction
+            minimum_tax_threshold * p.rate.higher + smaller_fraction
         )
         # line 19 ## line_1*p.rate2
         adjusted_taxable_amount = social_security * p.rate.higher
