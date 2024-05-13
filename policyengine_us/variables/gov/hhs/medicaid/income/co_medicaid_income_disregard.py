@@ -10,6 +10,8 @@ class co_medicaid_income_disregard(Variable):
     defined_for = StateCode.CO
 
     def formula(tax_unit, period, parameters):
-        fpg_percent = parameters(period).gov.hhs.medicaid.income.co_income_disregard
+        fpg_percent = parameters(
+            period
+        ).gov.hhs.medicaid.income.co_income_disregard
         fpg = tax_unit("tax_unit_fpg", period)
         return fpg * fpg_percent
