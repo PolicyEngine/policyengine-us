@@ -17,40 +17,51 @@ class mt_taxable_social_security(Variable):
         # line 1&2: 6a in tax form ?
         social_security = person("social_security", period)
         social_security_benefits_fraction = social_security * p.rate.lower
-        # line 3 total_income - taxable_social_security
-        # line 4: Additions Schedule line 15 - line 3  (0?)
-        # line 5:
+        # line 3 irs_gross_income - taxable_social_security
+        taxable_ss = person("taxable_social_security", period)
+        gross_income = person("irs_gross_income", period)
+        reduced_gross_income = max_(gross_income - taxable_ss, 0)
+
+        # line 4: Additions Schedule line 15 - Additions Schedule line 3  (
+        # Iterest and mutual fund dividends from state, county, or municipal bonds
+        # from other states - not included
+        # line 5 tax exempt intrest income
         tax_emempt_interest_income = person(
             "tax_exempt_interest_income", period
         )
-        # line 6: line 2+3+4+5
-        new_total_income = (
+        # line 6: Sum of line 2, 3, 4, 5
+        income_increased_by_ss_and_interest = (
             social_security_benefits_fraction
-            + person("total_income", period)
-            - person("taxable_social_security", period)
+            + reduced_gross_income
             + tax_emempt_interest_income
         )
-        # line 7&8
-        us_ald_exclue_stduent_loan = tax_unit(
+        # line 7 Above the line deductions less stundet loans &8
+        ald_less_stduent_loan = tax_unit(
             "above_the_line_deductions", period
         ) - person("student_loan_interest", period)
-        increased_subtractions = (
-            person("mt_subtractions", period) + us_ald_exclue_stduent_loan
-        )
+        # Line 8 - Montana subtractions + ald
+        subtractions = person("mt_subtractions", period)
+        increased_subtractions = subtractions + ald_less_stduent_loan
         # line 9: line 6 -line 8, if line 8 >= line 6, return 0
-        remaining_income = max(0, new_total_income - increased_subtractions)
+        income_reduced_by_subtractions = max_(
+            0, income_increased_by_ss_and_interest - increased_subtractions
+        )
         # line 10: get amount based on filing status
         amount_higher = p.amount.higher[filing_status]
-        # line 11: line 9 - line 10 (remaining_income - amount_higer)
+        # line 11: line 9 - line 10 (income_reduced_by_subtractions - amount_higer)
+        income_reduced_by_subtractions_and_threshold = max_(
+            0, income_reduced_by_subtractions - amount_higher
+        )
         # line 12: get amount based on filing status
         amount_lower = p.amount.lower[filing_status]
         # lien 13: line 11 - line 12
         minimum_tax_threshold = max_(
-            0, remaining_income - amount_higher - amount_lower
+            0, income_reduced_by_subtractions_and_threshold - amount_lower
         )
         # line 14 & 15
         minimum_tax_threshold_fraction = (
-            min_(remaining_income - amount_higher, amount_lower) * p.rate.lower
+            min_(income_reduced_by_subtractions_and_threshold, amount_lower)
+            * p.rate.lower
         )
         # line 16
         minimum_fraction = min_(
@@ -63,12 +74,4 @@ class mt_taxable_social_security(Variable):
         # line 19 ## line_1*p.rate2
         adjusted_taxable_amount = social_security * p.rate.higher
         # line 20
-        lesser_of_taxable_amount = min_(
-            adjusted_taxable_amount, adjusted_tax_amount
-        )
-        # line 11: line 9 - line 10, if line 10 >= line 9, return 0. Else, proceed line 12 through 20
-        return select(
-            amount_higher < remaining_income,
-            lesser_of_taxable_amount,
-            default=0,
-        )
+        return min_(adjusted_taxable_amount, adjusted_tax_amount)
