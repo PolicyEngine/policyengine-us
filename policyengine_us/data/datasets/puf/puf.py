@@ -47,7 +47,9 @@ class PUF(Dataset):
     time_period = None
     data_format = Dataset.ARRAYS
 
-    def generate(self):
+    def generate(
+        self, puf_file_path: str = None, puf_demographics_path: str = None
+    ):
         # First pass: single person tax units.
         from policyengine_us.data.datasets.cps.enhanced_cps.process_puf import (
             load_puf,
@@ -55,7 +57,9 @@ class PUF(Dataset):
             uprate_puf,
         )
 
-        puf, demographics = load_puf()
+        puf, demographics = load_puf(
+            puf_file_path=puf_file_path, puf_demographics_path=None
+        )
         puf = uprate_puf(puf, self.time_period)
         puf = impute_missing_demographics(puf, demographics)
 

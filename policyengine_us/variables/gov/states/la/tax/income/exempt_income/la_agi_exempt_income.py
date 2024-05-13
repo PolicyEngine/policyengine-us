@@ -7,6 +7,10 @@ class la_agi_exempt_income(Variable):
     label = "Louisiana income that is exempt from the adjusted gross income"
     defined_for = StateCode.LA
     unit = USD
+    reference = (
+        "https://revenue.louisiana.gov/TaxForms/IT540i(2021)%20Instructions.pdf#page=9",
+        "https://revenue.louisiana.gov/TaxForms/IT540WEB(2021)%20F.pdf",
+    )
     definition_period = YEAR
 
     # Functions as subtractions.
@@ -14,32 +18,36 @@ class la_agi_exempt_income(Variable):
         p = parameters(period).gov.states.la.tax.income.exempt_income
         total_exempt_income = add(tax_unit, period, p.sources)
         if p.reduction.in_effect:
-            # Option 1
-            exempt_income_reduction = p.reduction.rate.calc(
-                total_exempt_income
-            )
-            # Option 2
+            # Option 1 is to reduce the exempt income by a marginal rate
+            reduced_exempt_income = p.reduction.rate.calc(total_exempt_income)
+            # Option 2 is to reduce the federal tax deduction by the percentage of
+            # exempt income to AGI
             agi = tax_unit("adjusted_gross_income", period)
             exempt_income_rate = np.zeros_like(agi)
             mask = agi != 0
             exempt_income_rate[mask] = total_exempt_income[mask] / agi[mask]
-            itemizes = tax_unit("tax_unit_itemizes", period)
-            itemized_deductions = tax_unit("la_itemized_deductions", period)
-            claimed_itemized_deductions = itemizes * itemized_deductions
-            fed_tax_deduction = tax_unit("la_federal_tax_deduction", period)
-            pre_exempt_income_tax = max_(
-                agi - claimed_itemized_deductions - fed_tax_deduction, 0
+            # The step by step calculation is as follows:
+            # Line 1, representing federal AGI is divided by Line 4H
+            # which is the total exempt income. This rate (exempt_income_rate) is multiplied by
+            # Line 9 of the Form IT-540, representing the federal tax deduction
+            federal_tax_deduction = tax_unit(
+                "la_federal_tax_deduction", period
             )
-            income_tax_present = pre_exempt_income_tax > 0
-            exempt_income_tax_reduction = (
-                pre_exempt_income_tax * exempt_income_rate
+            # Multiply the federal tax deduction by the exempt income rate
+            reduced_federal_tax_deduction = (
+                federal_tax_deduction * exempt_income_rate
             )
-            # The smaller of the two options is applied
+            # The smaller of the two options is applied if taxable income exceeds zero
+            # Mentioned from the IT-540 instructions, Page 9, Line 4I
             smaller_adjustment = min_(
-                exempt_income_tax_reduction, exempt_income_reduction
+                reduced_federal_tax_deduction, reduced_exempt_income
             )
+            # The smaller of the two options is applied if taxable income exceeds zero
+            federal_tax_deduction_eligible = federal_tax_deduction > 0
             final_exempt_income_reduction = where(
-                income_tax_present, smaller_adjustment, exempt_income_reduction
+                federal_tax_deduction_eligible,
+                smaller_adjustment,
+                reduced_exempt_income,
             )
             return max_(total_exempt_income - final_exempt_income_reduction, 0)
         return total_exempt_income

@@ -5,7 +5,7 @@
     # tax_unit_size: 1
     tax_unit_fpg: 13_590
     wv_sctc: 20_000
-    property_tax_primary_residence: 21_500
+    real_estate_taxes: 21_500
     wv_gross_household_income: 30_000
     # (property_tax - wv_sctc) > p.ghi_percentage * wv_ghi 21_500 - 20_000 = 1_500 > 30,000 X 0.04=1200
     state_code: WV
@@ -19,7 +19,7 @@
     # tax_unit_size: 2
     tax_unit_fpg: 18_310
     wv_sctc: 20_000
-    property_tax_primary_residence: 21_500
+    real_estate_taxes: 21_500
     wv_gross_household_income: 30_000
     state_code: WV
     # (property_tax - wv_sctc) > p.ghi_percentage * wv_ghi 21_500 - 20_000 = 1_500 > 30,000 X 0.04=1200
@@ -33,7 +33,7 @@
     # tax_unit_size: 3
     tax_unit_fpg: 23_030
     wv_sctc: 20_000
-    property_tax_primary_residence: 21_000
+    real_estate_taxes: 21_000
     wv_gross_household_income: 30_000
     # (property_tax - wv_sctc) < p.ghi_percentage * wv_ghi 21_000 - 20_000 = 1_000 < 30,000 X 0.04=1200
     state_code: WV
@@ -47,7 +47,7 @@
     # tax_unit_size: 4
     tax_unit_fpg: 27_750
     wv_sctc: 20_000
-    property_tax_primary_residence: 21_500
+    real_estate_taxes: 21_500
     wv_gross_household_income: 30_000
     # (property_tax - wv_sctc) > p.ghi_percentage * wv_ghi 21_500 - 20_000 = 1_500 > 30,000 X 0.04=1200
     state_code: WV
