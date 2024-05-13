@@ -8,6 +8,9 @@ metadata:
   label: North Dakota marriage-penalty credit taxable income base amount
   unit: USD
   uprating: gov.irs.uprating
+  rounding:
+    type: downward
+    interval: 50
   period: year
   reference:
   - title: 2021 North Dakota income tax form and instruction booklet, Marriage Penalty Credit Worksheet and line 22
