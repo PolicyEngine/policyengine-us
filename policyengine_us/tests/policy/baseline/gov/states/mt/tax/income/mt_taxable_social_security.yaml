@@ -1,0 +1,44 @@
+- name: Test case 1, filing jointly.  
+  period: 2021
+  input:
+    social_security: 1_000
+    total_income: 50_000
+    taxable_social_security: 200
+    tax_exempt_interest_income: 100
+    above_the_line_deductions: 5_000
+    student_loan_interest: 300
+    mt_subtractions: 2_000
+    filing_status: JOINT
+    state_code: MT
+  output:
+    mt_taxable_social_security: 500 
+
+- name: Test case 2, filing single. 
+  period: 2021
+  input:
+    social_security: 1_000
+    total_income: 20_000
+    taxable_social_security: 200
+    tax_exempt_interest_income: 100
+    above_the_line_deductions: 5_000
+    student_loan_interest: 300
+    mt_subtractions: 2_000
+    filing_status: SINGLE
+    state_code: MT
+  output:
+    mt_taxable_social_security: 0 
+
+- name: Test case 2, filing single with small income. 
+  period: 2021
+  input:
+    social_security: 1_000
+    total_income: 5_000
+    taxable_social_security: 200
+    tax_exempt_interest_income: 100
+    above_the_line_deductions: 5_000
+    student_loan_interest: 300
+    mt_subtractions: 2_000
+    filing_status: SINGLE
+    state_code: MT
+  output:
+    mt_taxable_social_security: 0 
