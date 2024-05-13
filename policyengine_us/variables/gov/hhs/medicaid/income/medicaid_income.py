@@ -15,5 +15,6 @@ class medicaid_income(Variable):
 
     def formula(tax_unit, period, parameters):
         agi = tax_unit("adjusted_gross_income", period)
+        disregard = tax_unit("co_medicaid_income_disregard", period)
         agi_additions = parameters(period).gov.hhs.medicaid.income.modification
-        return max_(0, agi + add(tax_unit, period, agi_additions))
+        return max_(0, agi + add(tax_unit, period, agi_additions) - disregard)
