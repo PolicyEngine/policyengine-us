@@ -18,7 +18,7 @@ class savers_credit_person(Variable):
         p = parameters(period).gov.irs.credits.retirement_saving
 
         qualified_contributions = person(
-            "savers_qualified_contributions", period
+            "savers_credit_qualified_contributions", period
         )
         capped_qualified_contributions = min_(
             qualified_contributions, p.contributions_cap

@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class savers_qualified_contributions(Variable):
+class savers_credit_qualified_contributions(Variable):
     value_type = float
     entity = Person
     label = "Retirement Savings Credit qualified contributions"
