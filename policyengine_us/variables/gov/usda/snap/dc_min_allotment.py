@@ -10,4 +10,4 @@ class dc_min_allotment(Variable):
     unit = USD
     defined_for = StateCode.DC
 
-    adds = " parameters(period).gov.usda.snap.min_allotment.dc_amount"
+    adds = "gov.usda.snap.min_allotment.dc.amount"

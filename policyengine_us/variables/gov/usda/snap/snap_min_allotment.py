@@ -14,21 +14,25 @@ class snap_min_allotment(Variable):
     def formula(spm_unit, period, parameters):
         # Parameters for the minimum benefit.
         snap = parameters(period).gov.usda.snap
-        min_allotment = snap.min_allotment
+        p_min = snap.min_allotment
         # Calculate the relevant maximum benefit, defined as the maximum
         # benefit for a household of a certain size in their state.
         snap_region = spm_unit.household("snap_region_str", period)
         relevant_max_allotment = snap.max_allotment.main[snap_region][
-            str(min_allotment.relevant_max_allotment_household_size)
+            str(p_min.relevant_max_allotment_household_size)
         ]
         # Minimum benefits only apply to households up to a certain size.
         size = spm_unit("spm_unit_size", period)
-        eligible = size <= min_allotment.maximum_household_size
-        min_allotment_outside_of_DC = eligible * min_allotment.rate * relevant_max_allotment
+        eligible = size <= p_min.maximum_household_size
+        min_allotment = (
+            eligible * p_min.rate * relevant_max_allotment
+        )
+        if p_min.dc.in_effect:
+            dc_min_allotment = add(spm_unit, period, ["dc_min_allotment"])
 
-        dc_min_alotment = spm_unit("dc_min_allotment", period)
-
-        state_code = spm_unit.household("state_code", period)
-        in_dc = state_code == "DC"
-        
-        return where(in_dc, dc_min, others_min)
+            state_code = spm_unit.household("state_code", period)
+            in_dc = state_code == "DC"
+            print(in_dc)
+            min_allotment = where(in_dc, dc_min_allotment, min_allotment) * eligible
+       
+        return min_allotment
