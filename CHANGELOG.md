@@ -202,6 +202,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.750.1] - 2024-04-24 04:49:34
 
+### Fixed
+
+- Add Mississippi tax unit itemizes variable.
+
 ## [0.750.0] - 2024-04-23 18:20:42
 
 ### Added
@@ -270,6 +274,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.743.0] - 2024-04-19 05:38:25
 
+### Fixed
+
+- New York household credit calculation.
+
 ## [0.742.2] - 2024-04-19 05:22:04
 
 ### Fixed
@@ -314,7 +322,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.738.0] - 2024-04-16 00:09:30
 
+### Fixed
+
+- Mississippi taxable income.
+
 ## [0.737.1] - 2024-04-15 19:08:43
+
+### Added
+
+- Add Old Age Pension grant standard for 2024.
 
 ## [0.737.0] - 2024-04-15 14:20:43
 
@@ -818,6 +834,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.693.1] - 2024-03-07 19:52:18
 
+### Fixed
+
+- Replace state income tax with estimated withholding for all states in income tax used for SALT deduction.
+
 ## [0.693.0] - 2024-03-07 16:44:16
 
 ### Changed
@@ -874,7 +894,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.688.3] - 2024-03-05 00:49:48
 
+### Fixed
+
+- Remove not used haircut parameters.
+
 ## [0.688.2] - 2024-03-04 19:38:02
+
+### Fixed 
+
+- Remove qualified_business_income_deduction_person from the list of Ohio deductions.
 
 ## [0.688.1] - 2024-03-02 18:37:00
 
@@ -892,7 +920,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.687.0] - 2024-03-01 17:12:59
 
+### Fixed
+
+- Add 2024 Georgia income tax values.
+
 ## [0.686.2] - 2024-03-01 13:39:44
+
+### Fixed
+
+- Refactor the Utah tax rate yaml file.
 
 ## [0.686.1] - 2024-03-01 01:53:48
 
@@ -984,7 +1020,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.678.2] - 2024-02-22 16:58:33
 
+### Fixed
+
+- Adjust the ct_social_security_benefit_adjustment variable to reflect the worksheet in the tax forms.
+
 ## [0.678.1] - 2024-02-22 15:35:37
+
+### Fixed
+
+- Remove formula from household_tax_before_refundable_credits and household_refundable_tax_credits.
 
 ## [0.678.0] - 2024-02-22 15:29:21
 
@@ -1079,6 +1123,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Virginia child and dependent care expenses deduction.
 
 ## [0.668.0] - 2024-02-19 23:30:53
+
+### Fixed
+
+- Update 2024 Maximum Taxable Earnings Each Year.
 
 ## [0.667.2] - 2024-02-19 22:58:16
 
@@ -1254,6 +1302,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Michigan homestead property tax credit.
 
 ## [0.651.4] - 2024-02-12 03:02:41
+
+### Fixed
+
+- Adjust the Arkansas files separately formula to rely on ar_income_tax_before_non_refundable_credits comparisons.
 
 ## [0.651.3] - 2024-02-12 02:59:35
 
@@ -1716,6 +1768,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.618.3] - 2024-01-13 22:01:49
 
+### Fixed
+
+- Immigration rules for CalWORKS Child Care program.
+
 ## [0.618.2] - 2024-01-13 21:11:58
 
 ### Fixed
@@ -1790,6 +1846,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.610.1] - 2024-01-10 11:27:40
 
+### Fixed
+
+- California CalWORKS TANF monthly income variables.
+
 ## [0.610.0] - 2024-01-10 01:10:28
 
 ### Added
@@ -1858,6 +1918,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.603.3] - 2024-01-04 01:12:31
 
+### Fixed
+
+- South Carolina taxable income calculation.
+
 ## [0.603.2] - 2024-01-04 01:03:25
 
 ### Fixed
@@ -1878,6 +1942,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Georgia military retirement income exclusion.
 
 ## [0.602.1] - 2024-01-03 17:35:14
+
+### Fixed
+- Fix Virginia military benefits subtraction formula.
 
 ## [0.602.0] - 2024-01-03 15:31:42
 
@@ -2174,6 +2241,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Alabama income tax variable formula.
 
 ## [0.579.1] - 2023-12-14 19:03:15
+
+### Fixed
+
+- Maine child care credit format.
 
 ## [0.579.0] - 2023-12-14 18:51:52
 
@@ -2558,6 +2629,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - South Carolina additions.
 
 ## [0.537.1] - 2023-11-22 01:31:58
+
+### Fixed
+
+- Ohio senior citizen credit formula.
 
 ## [0.537.0] - 2023-11-22 00:37:55
 
@@ -3022,6 +3097,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.493.1] - 2023-10-05 01:05:40
 
+### Fixed
+
+- Georgia investment in 529 plan deduction variable name adjustment.
+
 ## [0.493.0] - 2023-10-04 21:03:41
 
 ### Added
@@ -3107,6 +3186,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - North Carolina income tree patch.
 
 ## [0.482.1] - 2023-09-28 17:28:07
+
+### Fixed
+
+- Add Louisiana index file.
+- Remove Missouri index file.
 
 ## [0.482.0] - 2023-09-27 21:57:34
 
@@ -3227,6 +3311,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.467.0] - 2023-09-15 04:21:57
 
+### Added
+
+- Pell Grant automatic 0 EFC and marginal tax rate brackets from 2009 to 2023.
+
 ## [0.466.1] - 2023-09-14 19:23:32
 
 ### Fixed
@@ -3337,6 +3425,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Delaware itemized deductions.
 
 ## [0.458.2] - 2023-09-04 20:59:54
+
+### Fixed
+
+- Georgia standard deduction file directory.
 
 ## [0.458.1] - 2023-09-04 20:23:16
 
