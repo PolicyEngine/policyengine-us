@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class montgomery_refundable_eitc(Variable):
+class md_montgomery_eitc(Variable):
     value_type = float
     entity = TaxUnit
     label = "Montgomery EITC"
