@@ -1,6 +1,5 @@
 from policyengine_core.data import Dataset
 from typing import Type
-from pathlib import Path
 from policyengine_us.data.storage import STORAGE_FOLDER
 
 

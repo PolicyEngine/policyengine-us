@@ -10,7 +10,7 @@ class de_taxable_income_joint(Variable):
     defined_for = StateCode.DE
 
     def formula(person, period, parameters):
-        agi = person("de_agi", period)
+        agi = person("de_agi_joint", period)
         is_head = person("is_tax_unit_head", period)
         total_agi = is_head * person.tax_unit.sum(agi)
         deductions = person("de_deduction_joint", period)

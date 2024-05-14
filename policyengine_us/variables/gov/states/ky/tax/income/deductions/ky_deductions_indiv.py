@@ -11,7 +11,7 @@ class ky_deductions_indiv(Variable):
     defined_for = StateCode.KY
 
     def formula(person, period, parameters):
-        return max_(
-            person("ky_itemized_deductions_indiv", period),
-            person("ky_standard_deduction_indiv", period),
-        )
+        itemizes = person.tax_unit("ky_tax_unit_itemizes", period)
+        itemized = person("ky_itemized_deductions_indiv", period)
+        standard = person("ky_standard_deduction_indiv", period)
+        return where(itemizes, itemized, standard)

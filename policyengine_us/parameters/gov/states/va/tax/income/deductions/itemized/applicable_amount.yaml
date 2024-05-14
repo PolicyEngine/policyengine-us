@@ -9,6 +9,7 @@ JOINT:
   2019-01-01: 326_050 # 2020 no changes
   2021-01-01: 334_150
   2022-01-01: 343_950
+  2023-01-01: 368_900
 SINGLE:
   2013-01-01: 250_000
   2014-01-01: 254_200
@@ -19,6 +20,7 @@ SINGLE:
   2019-01-01: 271_700
   2021-01-01: 278_450
   2022-01-01: 286_600
+  2023-01-01: 307_400
 SEPARATE:
   2013-01-01: 150_000
   2014-01-01: 152_525
@@ -29,6 +31,7 @@ SEPARATE:
   2019-01-01: 163_025
   2021-01-01: 167_075
   2022-01-01: 171_975
+  2023-01-01: 184_450
 HEAD_OF_HOUSEHOLD:
   2013-01-01: 275_000
   2014-01-01: 279_650
@@ -39,7 +42,8 @@ HEAD_OF_HOUSEHOLD:
   2019-01-01: 298_850
   2021-01-01: 306_300
   2022-01-01: 315_300
-WIDOW:
+  2023-01-01: 338_150
+SURVIVING_SPOUSE:
   2013-01-01: 300_000
   2014-01-01: 305_050
   2015-01-01: 309_900
@@ -49,22 +53,30 @@ WIDOW:
   2019-01-01: 326_050
   2021-01-01: 334_150
   2022-01-01: 343_950
+  2023-01-01: 368_900
 metadata:
   label: Virginia itemized deduction applicable amount
   period: year
   unit: currency-USD
   breakdown:
   - filing_status
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
   reference:
     # Virginia continued to increase the federal applicable amount with inflation 
     - title: 26 U.S. Code § 68 - Overall limitation on itemized deductions (b)(1)
       href: https://www.law.cornell.edu/uscode/text/26/68#b_1
-    - title: 2020 Virginia Schedule A Itemized Deductions
-      href: https://www.tax.virginia.gov/sites/default/files/taxforms/individual-income-tax/2020/schedule-and-instructions-2020.pdf#page=1
-    - title: 2021 Virginia Schedule A Itemized Deductions
-      href: https://www.tax.virginia.gov/sites/default/files/taxforms/individual-income-tax/2021/schedule-2021.pdf#page=1
+    - title: 2023 Virginia Schedule A Itemized Deductions
+      href: https://www.tax.virginia.gov/sites/default/files/taxforms/individual-income-tax/2023/schedule-2023.pdf#page=1
     - title: 2022 Virginia Schedule A Itemized Deductions
       href: https://www.tax.virginia.gov/sites/default/files/taxforms/individual-income-tax/2022/schedule-2022.pdf#page=1
+    - title: 2021 Virginia Schedule A Itemized Deductions
+      href: https://www.tax.virginia.gov/sites/default/files/taxforms/individual-income-tax/2021/schedule-2021.pdf#page=1
+    - title: 2020 Virginia Schedule A Itemized Deductions
+      href: https://www.tax.virginia.gov/sites/default/files/taxforms/individual-income-tax/2020/schedule-and-instructions-2020.pdf#page=1
     - title: 2019 Instructions for Virginia Schedule A Itemized Deductions
       href: https://www.tax.virginia.gov/sites/default/files/vatax-pdf/2019-schedule-a-instructions.pdf#page=2
     - title: 2013 Instruction 1040 Schedule A
