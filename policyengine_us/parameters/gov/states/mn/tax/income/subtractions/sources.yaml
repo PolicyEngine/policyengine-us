@@ -1,4 +1,4 @@
-description: Minnesota subtracts these variables from US AGI when computing its taxable income.
+description: Minnesota subtracts these variables from federal adjusted gross income when computing its taxable income.
 values:
   2021-01-01:
     - mn_charity_subtraction
@@ -7,8 +7,9 @@ values:
     - mn_elderly_disabled_subtraction
 
 metadata:
-  unit: variable
-  label: Minnesota subractions from US AGI
+  unit: list
+  period: year
+  label: Minnesota subractions from federal AGI
   reference:
   - title: Minnesota Statutes 290.0132 INDIVIDUALS, ESTATES, AND TRUSTS; SUBTRACTIONS FROM FEDERAL TAXABLE INCOME OR FEDERAL ADJUSTED GROSS INCOME.
     href: https://www.revisor.mn.gov/statutes/cite/290.0132
