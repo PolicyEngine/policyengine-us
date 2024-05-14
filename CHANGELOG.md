@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.773.0] - 2024-05-14 14:58:17
+
+### Added
+
+- Backfill empty changelog entries.
+
 ## [0.772.0] - 2024-05-14 14:53:14
 
 ### Added
@@ -900,7 +906,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.688.2] - 2024-03-04 19:38:02
 
-### Fixed 
+### Fixed
 
 - Remove qualified_business_income_deduction_person from the list of Ohio deductions.
 
@@ -1944,6 +1950,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.602.1] - 2024-01-03 17:35:14
 
 ### Fixed
+
 - Fix Virginia military benefits subtraction formula.
 
 ## [0.602.0] - 2024-01-03 15:31:42
@@ -2161,6 +2168,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Alabama capital gains inclusion in AGI.
 
 ## [0.584.2] - 2023-12-18 16:33:00
+
+### Fixed
+
+- Parameterized 25% of the Alternative Minimum Tax calculation.
 
 ## [0.584.1] - 2023-12-18 04:09:27
 
@@ -8603,6 +8614,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.773.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.772.0...0.773.0
 [0.772.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.771.0...0.772.0
 [0.771.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.770.1...0.771.0
 [0.770.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.770.0...0.770.1
