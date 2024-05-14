@@ -119,7 +119,7 @@
         members: [person1, person2, person3, person4, person5]
         state_fips: 5  # AR
   output:  # expected results from patched TAXSIM35 2024-02-09 version
-    ar_agi: [19_515, 12_515, 0, 0, 0] # 32,030 joint AGI
+    ar_agi_indiv: [19_515, 12_515, 0, 0, 0] # 32,030 joint AGI
     ar_low_income_tax_joint: [933, 0, 0, 0, 0] # 0 joint low income tax
     ar_standard_deduction_joint: [4_400, 0, 0, 0, 0]
     ar_standard_deduction_indiv: [2_200, 2_200, 0, 0, 0]
