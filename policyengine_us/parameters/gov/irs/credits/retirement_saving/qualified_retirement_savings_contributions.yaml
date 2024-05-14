@@ -10,6 +10,15 @@ values:
     - self_employed_pension_contributions
     - able_contributions_person
 
+  2026-01-01:
+    - traditional_ira_contributions
+    - traditional_401k_contributions
+    - traditional_403b_contributions
+    - roth_ira_contributions
+    - roth_401k_contributions
+    - roth_403b_contributions
+    - self_employed_pension_contributions
+
 metadata:
   unit: list
   period: year 
