@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.771.0] - 2024-05-14 14:16:18
+
+### Added
+
+- 2023 Missouri tax rules.
+
 ## [0.770.1] - 2024-05-14 13:17:04
 
 ### Fixed
@@ -8499,6 +8505,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.771.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.770.1...0.771.0
 [0.770.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.770.0...0.770.1
 [0.770.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.769.0...0.770.0
 [0.769.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.768.1...0.769.0
