@@ -8,5 +8,11 @@ class savers_qualified_contributions(Variable):
     unit = USD
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/25B#d_2"
-    adds = "gov.irs.credits.retirement_saving.qualified_retirement_savings_contributions"
-    subtracts = ["retirement_distributions"]
+
+    def formula(person, period, parameters):
+        p = parameters(period).gov.irs.credits.retirement_saving
+        contributions = add(
+            person, period, p.qualified_retirement_savings_contributions
+        )
+        distributions = add(person, period, ["retirement_distributions"])
+        return max_(contributions - distributions, 0)
