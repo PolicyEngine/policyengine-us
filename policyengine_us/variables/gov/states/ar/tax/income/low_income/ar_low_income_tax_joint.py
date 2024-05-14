@@ -13,7 +13,7 @@ class ar_low_income_tax_joint(Variable):
     defined_for = StateCode.AR
 
     def formula(person, period, parameters):
-        agi = add(person.tax_unit, period, ["ar_agi"])
+        agi = add(person.tax_unit, period, ["ar_agi_joint"])
         head = person("is_tax_unit_head", period)
         agi_attributed_to_head = agi * head
         p = parameters(
