@@ -24,4 +24,4 @@ class md_montgomery_eitc(Variable):
         state_refundable_eitc = tax_unit("md_refundable_eitc", period)
 
         # apply county match
-        return md_refundable_eitc * p.match * in_montgomery
+        return state_refundable_eitc * p.match * in_montgomery
