@@ -1,0 +1,32 @@
+
+- name: 2023 non-zero qualified business income
+  period: 2023
+  input:
+    qualified_business_income: 10_000
+    state_code: MO
+  output:
+    mo_business_income_deduction: 2_000
+
+- name: 2023 zero qualified business income
+  period: 2023
+  input:
+    qualified_business_income: 0
+    state_code: MO
+  output:
+    mo_business_income_deduction: 0
+
+- name: 2022 non-zero qualified business income
+  period: 2022
+  input:
+    qualified_business_income: 10_000
+    state_code: MO
+  output:
+    mo_business_income_deduction: 1_500
+
+- name: 2022 zero qualified business income
+  period: 2022
+  input:
+    qualified_business_income: 0
+    state_code: MO
+  output:
+    mo_business_income_deduction: 0
