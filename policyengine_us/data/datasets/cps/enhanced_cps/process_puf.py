@@ -327,15 +327,21 @@ FINANCIAL_SUBSET = [
 ]
 
 
-def load_puf() -> Tuple[pd.DataFrame, pd.DataFrame]:
+def load_puf(
+    puf_file_path: str = None, puf_demographics_path: str = None
+) -> Tuple[pd.DataFrame, pd.DataFrame]:
     """Load the PUF and demographics data.
 
     Returns:
         puf (pd.DataFrame): The PUF data.
         puf_with_demographics (pd.DataFrame): The subset of the PUF data that has demographic information.
     """
-    puf = pd.read_csv("~/Downloads/puf_2015.csv").fillna(0)
-    demographics = pd.read_csv("~/Downloads/demographics_2015.csv")
+    if puf_file_path is None:
+        puf_file_path = "~/Downloads/puf_2015.csv"
+    if puf_demographics_path is None:
+        puf_demographics_path = "~/Downloads/demographics_2015.csv"
+    puf = pd.read_csv(puf_file_path).fillna(0)
+    demographics = pd.read_csv(puf_demographics_path).fillna(0)
 
     demographics = demographics.dropna()
 
@@ -345,7 +351,10 @@ def load_puf() -> Tuple[pd.DataFrame, pd.DataFrame]:
     # dividends included in AGI - qualified dividend income
     puf["non_qualified_dividend_income"] = puf.E00600 - puf.E00650
 
-    puf = puf.rename(columns=codebook)
+    puf = pd.concat([puf, puf.rename(columns=codebook)], axis=1)
+    # drop duplicate columns
+    puf = puf.loc[:, ~puf.columns.duplicated()]
+    puf.columns = puf.columns.str.lower()
     demographics = demographics.rename(columns=codebook)
 
     # Adjustments and derivations from the PUF

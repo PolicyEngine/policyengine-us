@@ -1,0 +1,26 @@
+- name: head or spouse is eligible for retirement exemptions
+  period: 2023
+  input:
+    is_tax_unit_head_or_spouse: true
+    age: 65
+    state_code: AL
+  output:
+    al_retirement_exemption_eligible_person: true
+
+- name: Not a head or spouse
+  period: 2023
+  input:
+    is_tax_unit_head_or_spouse: false
+    age: 68
+    state_code: AL
+  output:
+    al_retirement_exemption_eligible_person: false
+
+- name: head or spouse is not age eligible for retirement exemptions
+  period: 2023
+  input:
+    is_tax_unit_head_or_spouse: true
+    age: 64
+    state_code: AL
+  output:
+    al_retirement_exemption_eligible_person: false
