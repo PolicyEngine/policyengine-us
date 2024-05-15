@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class ar_taxable_capital_gains(Variable):
+class ar_taxable_capital_gains_indiv(Variable):
     value_type = float
     entity = Person
-    label = "Arkansas taxable capital gains"
+    label = "Arkansas taxable capital gains when married filing separately"
     unit = USD
     reference = (
         "https://codes.findlaw.com/ar/title-26-taxation/ar-code-sect-26-51-815.html",
@@ -34,6 +34,9 @@ class ar_taxable_capital_gains(Variable):
         stcg_if_any = max_(st_capital_gains, 0)
         # Line 12: Total taxable gain or loss. Loss is capped.
         total_taxable_cap_gain_or_loss = taxable_amount + stcg_if_any
-        filing_status = person.tax_unit("filing_status", period)
+        filing_status = person.tax_unit(
+            "state_filing_status_if_married_filing_separately_on_same_return",
+            period,
+        )
         loss_cap = p.loss_cap[filing_status]
         return max_(-loss_cap, total_taxable_cap_gain_or_loss)
