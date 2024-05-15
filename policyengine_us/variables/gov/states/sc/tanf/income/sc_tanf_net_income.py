@@ -14,10 +14,9 @@ class sc_tanf_net_income(Variable):
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.sc.tanf.income.earned.disregard
-        # A
         gross_earned_income = add(spm_unit, period, ["sc_tanf_earned_income"])
         monthly_income = gross_earned_income / MONTHS_IN_YEAR
-        # C Compute earned income after disregard, first four months has 50% disregard, the rest has $100 deduction.
+        # Compute earned income after disregard, first four months has 50% disregard, the rest has $100 deduction.
         first_four_months_income = (
             monthly_income * p.percentage.rate * p.percentage.months
         )
@@ -27,11 +26,10 @@ class sc_tanf_net_income(Variable):
         earned_income_after_disregard = (
             first_four_months_income + remaining_income
         )
-        # D
+        # exclude child support
         child_support = add(spm_unit, period, ["child_support_received"])
         net_earned_income = max_(
             earned_income_after_disregard - child_support, 0
         )
-        # G
         unearned_income = add(spm_unit, period, ["sc_tanf_unearned_income"])
         return unearned_income + net_earned_income

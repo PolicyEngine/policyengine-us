@@ -24,6 +24,6 @@ class sc_tanf_fpg(Variable):
         else:
             instant_str = f"{year - 1}-10-01"
         p_fpg = parameters(instant_str).gov.hhs.fpg
-        p1 = p_fpg.first_person[state_group] / MONTHS_IN_YEAR
-        pn = p_fpg.additional_person[state_group] / MONTHS_IN_YEAR
-        return p1 + pn * (n - 1)
+        p1 = p_fpg.first_person[state_group]
+        pn = p_fpg.additional_person[state_group]
+        return (p1 + pn * (n - 1)) / MONTHS_IN_YEAR

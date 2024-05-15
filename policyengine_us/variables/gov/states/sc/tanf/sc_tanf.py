@@ -17,8 +17,6 @@ class sc_tanf(Variable):
         # Compute need standard based on ferderal poverty guidlines
         fpg = spm_unit("sc_tanf_fpg", period)
         need_standard = fpg * p.income.need_standard.rate
-        # G
         net_income = spm_unit("sc_tanf_net_income", period)
-        # I
         excess_income = need_standard - net_income
         return excess_income * p.payment.rate
