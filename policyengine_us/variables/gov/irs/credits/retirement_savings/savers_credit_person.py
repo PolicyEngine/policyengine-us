@@ -28,24 +28,8 @@ class savers_credit_person(Variable):
 
         # AGI threshold for the rate
         filing_status = person.tax_unit("filing_status", period)
-        statuses = filing_status.possible_values
         # Joint as the base
-
-        threshold_adjustment = select(
-            [
-                filing_status == statuses.SINGLE,
-                filing_status == statuses.SEPARATE,
-                filing_status == statuses.SURVIVING_SPOUSE,
-                filing_status == statuses.HEAD_OF_HOUSEHOLD,
-            ],
-            [
-                p.rate.threshold_adjustment.single,
-                p.rate.threshold_adjustment.separate,
-                p.rate.threshold_adjustment.widow,
-                p.rate.threshold_adjustment.head_of_household,
-            ],
-            default=1,
-        )
+        threshold_adjustment = p.rate.threshold_adjustment[filing_status]
         # Credit rate
         adjusted_agi = agi / threshold_adjustment
         credit_rate = p.rate.joint.calc(adjusted_agi)
