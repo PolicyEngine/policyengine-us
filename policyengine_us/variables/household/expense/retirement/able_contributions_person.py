@@ -6,7 +6,7 @@ class able_contributions_person(Variable):
     entity = Person
     label = "Person-level ABLE contributions"
     documentation = (
-        "Contributions made to an ABLE account by each individiual."
+        "Contributions made to an ABLE account by each individual."
     )
     unit = USD
     definition_period = YEAR
