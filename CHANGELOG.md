@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.775.2] - 2024-05-16 22:53:29
+
+### Fixed
+
+- Uncap real estate taxes in the Virginia itemized deduction logic.
+
 ## [0.775.1] - 2024-05-15 02:01:54
 
 ### Fixed
@@ -8632,6 +8638,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.775.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.775.1...0.775.2
 [0.775.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.775.0...0.775.1
 [0.775.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.774.0...0.775.0
 [0.774.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.773.0...0.774.0
