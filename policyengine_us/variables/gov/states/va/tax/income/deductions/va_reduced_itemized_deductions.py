@@ -13,32 +13,14 @@ class va_reduced_itemized_deductions(Variable):
     def formula(tax_unit, period, parameters):
         p_va = parameters(period).gov.states.va.tax.income.deductions.itemized
 
-        uncapped_state_and_local_tax = tax_unit(
-            "state_and_local_sales_or_income_tax", period
-        )
-        p_salt = parameters(
-            period
-        ).gov.irs.deductions.itemized.salt_and_real_estate
-        filing_status = tax_unit("filing_status", period)
-        real_estate_tax = add(tax_unit, period, ["real_estate_taxes"])
-        state_and_local_tax_cap = p_salt.cap[filing_status]
-        cap_reduced_by_real_estate_tax = max_(
-            state_and_local_tax_cap - real_estate_tax, 0
-        )
-        capped_state_and_local_tax = min_(
-            uncapped_state_and_local_tax, cap_reduced_by_real_estate_tax
-        )
         # Part A: If AGI from federal return is over a certain amount, then
         # limitations to the itemized deduction are applied
         # Line 1 - sum of medical exepens ded., capped state and local tax,
         # interest ded., charitable ded., and casualty loss ded.
-        applicable_ded = (
-            add(
-                tax_unit,
-                period,
-                p_va.reduction.applicable,
-            )
-            + capped_state_and_local_tax
+        applicable_ded = add(
+            tax_unit,
+            period,
+            p_va.reduction.applicable,
         )
         # Line 2 medical expense ded., interest ded., casualty loss ded., and gambling losses
         reducible_ded = add(
@@ -62,6 +44,7 @@ class va_reduced_itemized_deductions(Variable):
         # Line 5 Federal AGI
         federal_agi = tax_unit("adjusted_gross_income", period)
         # Line 6 - applicable amount
+        filing_status = tax_unit("filing_status", period)
         applicable_amount = p_va.applicable_amount[filing_status]
         # Line 7 - excess
         excess = max_(federal_agi - applicable_amount, 0)
@@ -83,6 +66,10 @@ class va_reduced_itemized_deductions(Variable):
         # Part B Line 13 - capped state and local income tax
 
         # Line 14 - Multiply line 11 by line 13
+        capped_state_and_local_tax = tax_unit(
+            "va_capped_state_and_local_sales_or_income_tax", period
+        )
+
         state_and_local_tax_adj = (
             capped_state_and_local_tax * adjustment_fraction
         )
