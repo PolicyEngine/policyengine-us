@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.776.0] - 2024-05-16 23:47:24
+
+### Added
+
+- Retirement Savings Contributions Credit (Saver’s Credit).
+
 ## [0.775.2] - 2024-05-16 22:53:29
 
 ### Fixed
@@ -8638,6 +8644,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.776.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.775.2...0.776.0
 [0.775.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.775.1...0.775.2
 [0.775.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.775.0...0.775.1
 [0.775.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.774.0...0.775.0
