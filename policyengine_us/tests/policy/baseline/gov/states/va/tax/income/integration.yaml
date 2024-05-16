@@ -134,7 +134,6 @@
         members: [person1, person2, person3, person4]
         state_fips: 51  # VA
   output:  # expected results from patched TAXSIM35 2024-05-07 version
-    # va_reduced_itemized_deductions: 37_049.81
-    # va_itemized_deductions: 37_049.81
-    tax_unit_itemizes: true
+    va_reduced_itemized_deductions: 37_049.81
+    va_itemized_deductions: 37_049.81
     va_income_tax: 18433.05
