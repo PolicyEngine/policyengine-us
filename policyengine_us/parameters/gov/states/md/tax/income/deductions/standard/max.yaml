@@ -3,6 +3,7 @@ metadata:
   label: Maryland maximum standard deduction
   period: year
   unit: currency-USD
+  uprating: gov.irs.uprating
   breakdown:
     - filing_status
   reference:
@@ -20,20 +21,25 @@ metadata:
 JOINT:
   2018-01-01: 4_500
   2021-01-01: 4_700
+  2022-01-01: 4_850
   2023-01-01: 5_150
 HEAD_OF_HOUSEHOLD:
   2018-01-01: 4_500
   2021-01-01: 4_700
+  2022-01-01: 4_850
   2023-01-01: 5_150
 SURVIVING_SPOUSE:
   2018-01-01: 4_500
   2021-01-01: 4_700
+  2022-01-01: 4_850
   2023-01-01: 5_150
 SINGLE:
   2018-01-01: 2_250
   2021-01-01: 2_350
+  2022-01-01: 2_400
   2023-01-01: 2_550
 SEPARATE:
   2018-01-01: 2_250
   2021-01-01: 2_350
+  2022-01-01: 2_400
   2023-01-01: 2_550
