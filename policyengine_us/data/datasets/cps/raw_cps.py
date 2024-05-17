@@ -123,7 +123,8 @@ PERSON_COLUMNS = [
     "I_ERNVAL",
     "I_SEVAL",
     "A_HSCOL",
-    "A_USLHRS",
+    "HRSWK",
+    "WKSWORK",
 ]
 
 

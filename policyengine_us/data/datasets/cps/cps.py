@@ -231,12 +231,7 @@ def add_personal_income_variables(
     # Assign CPS variables.
     cps["employment_income"] = person.WSAL_VAL
 
-    cps["weekly_hours_worked"] = person.A_USLHRS.replace(
-        {
-            -4: 40,  # Hours vary => assume full-time
-            -1: 0,  # Not in universe
-        }
-    )
+    cps["weekly_hours_worked"] = person.HRSWK * person.WKSWORK / 52
 
     cps["taxable_interest_income"] = person.INT_VAL * (
         p["taxable_interest_fraction"]
