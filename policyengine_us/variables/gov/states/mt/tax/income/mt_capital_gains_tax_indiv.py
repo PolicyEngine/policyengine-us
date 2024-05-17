@@ -63,9 +63,9 @@ class mt_capital_gains_tax_indiv(Variable):
             base_capital_gains_tax = base_rate * lower_threshold
             lower_capital_gains_tax = where(
                 capital_gains <= lower_threshold,
-                capital_gains * base_rate,
+                capital_gains * base_rate,   # First capital gians below the lower threshold
                 base_capital_gains_tax
-                + (capital_gains - lower_threshold) * lower_rate,
+                + (capital_gains - lower_threshold) * lower_rate, # capitals gains over the lower threshold
             )
 
             capital_gains_tax = where(
