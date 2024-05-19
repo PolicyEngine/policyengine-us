@@ -104,6 +104,22 @@ class Simulation(CoreSimulation):
             self.set_input("employment_income_before_lsr", known_period, array)
             employment_income.delete_arrays(known_period)
 
+        self_employment_income = self.get_holder("self_employment_income")
+        for known_period in employment_income.get_known_periods():
+            array = self_employment_income.get_array(known_period)
+            self.set_input(
+                "self_employment_income_before_lsr", known_period, array
+            )
+            self_employment_income.delete_arrays(known_period)
+
+        weekly_hours = self.get_holder("weekly_hours_worked")
+        for known_period in weekly_hours.get_known_periods():
+            array = weekly_hours.get_array(known_period)
+            self.set_input(
+                "weekly_hours_worked_before_lsr", known_period, array
+            )
+            weekly_hours.delete_arrays(known_period)
+
 
 class Microsimulation(CoreMicrosimulation):
     default_tax_benefit_system = CountryTaxBenefitSystem
@@ -140,6 +156,14 @@ class Microsimulation(CoreMicrosimulation):
             )
             self_employment_income.delete_arrays(known_period)
 
+        weekly_hours = self.get_holder("weekly_hours_worked")
+        for known_period in weekly_hours.get_known_periods():
+            array = weekly_hours.get_array(known_period)
+            self.set_input(
+                "weekly_hours_worked_before_lsr", known_period, array
+            )
+            weekly_hours.delete_arrays(known_period)
+
         self.input_variables = [
             variable
             for variable in self.input_variables
@@ -147,10 +171,12 @@ class Microsimulation(CoreMicrosimulation):
             not in [
                 "employment_income",
                 "self_employment_income",
+                "weekly_hours_worked",
             ]
         ] + [
             "employment_income_before_lsr",
             "self_employment_income_before_lsr",
+            "weekly_hours_worked_before_lsr",
         ]
 
 
