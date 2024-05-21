@@ -7293,3 +7293,23 @@
     fixed:
     - Adjust the Alabama legal code references.
   date: 2024-05-15 02:01:54
+- bump: patch
+  changes:
+    fixed:
+    - Uncap real estate taxes in the Virginia itemized deduction logic.
+  date: 2024-05-16 22:53:29
+- bump: minor
+  changes:
+    added:
+    - "Retirement Savings Contributions Credit (Saver\u2019s Credit)."
+  date: 2024-05-16 23:47:24
+- bump: minor
+  changes:
+    added:
+    - Weekly hours worked.
+  date: 2024-05-18 09:25:41
+- bump: patch
+  changes:
+    added:
+    - Automatic version updating for household API
+  date: 2024-05-21 16:34:59
