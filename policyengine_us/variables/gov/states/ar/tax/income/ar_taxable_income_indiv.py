@@ -16,6 +16,6 @@ class ar_taxable_income_indiv(Variable):
     defined_for = StateCode.AR
 
     def formula(person, period, parameters):
-        agi = person("ar_agi", period)
+        agi = person("ar_agi_indiv", period)
         deductions = person("ar_deduction_indiv", period)
         return max_(0, agi - deductions)
