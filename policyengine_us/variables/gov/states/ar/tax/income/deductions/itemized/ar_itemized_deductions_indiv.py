@@ -12,8 +12,11 @@ class ar_itemized_deductions_indiv(Variable):
 
     def formula(person, period, parameters):
         # Arkansas does not tie itemization choice to federal choice.
-        unit_deds = person.tax_unit("ar_itemized_deductions_unit", period)
-        person_agi = person("ar_agi", period)
+        p = parameters(
+            period
+        ).gov.states.ar.tax.income.deductions.itemized.sources
+        unit_deds = add(person.tax_unit, period, p.individual)
+        person_agi = person("ar_agi_indiv", period)
         total_agi = person.tax_unit.sum(person_agi)
 
         prorate = np.zeros_like(total_agi)
