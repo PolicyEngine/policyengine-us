@@ -20,27 +20,42 @@ JOINT:
     2023-01-01: 45_000
   metadata:
     uprating: gov.irs.uprating  
+    rounding:
+        type: downwards
+        interval: 100
 HEAD_OF_HOUSEHOLD:
   values:
     2018-01-01: 15_000
     2023-01-01: 22_500
   metadata:
     uprating: gov.irs.uprating
+    rounding:
+        type: downwards
+        interval: 100
 SURVIVING_SPOUSE:
   values:
     2018-01-01: 15_000
     2023-01-01: 22_500
   metadata:
     uprating: gov.irs.uprating
+    rounding:
+        type: downwards
+        interval: 100
 SINGLE:
   values:
     2018-01-01: 15_000
     2023-01-01: 22_500
   metadata:
     uprating: gov.irs.uprating
+    rounding:
+        type: downwards
+        interval: 100
 SEPARATE:
   values:
     2018-01-01: 15_000
     2023-01-01: 22_500
   metadata:
     uprating: gov.irs.uprating
+    rounding:
+        type: downwards
+        interval: 100
