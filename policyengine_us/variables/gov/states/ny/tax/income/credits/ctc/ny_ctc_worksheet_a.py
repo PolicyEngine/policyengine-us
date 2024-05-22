@@ -19,16 +19,15 @@ class ny_ctc_worksheet_a(Variable):
         qualifies_for_federal_ctc = person("ctc_qualifying_child", period)
         qualifying_children = tax_unit.sum(qualifies_for_federal_ctc)
         base_amount = qualifying_children * p.amount.base
-        # Line 2 NY recomputed FAGI - DO WE HAVE THIS?
-        # some years use this while some are not
-        ny_recomputed_agi
+        # Line 2 NY recomputed FAGI - use normal FAGI
+        fagi = tax_unit("adjusted_gross_income", period)
         # Line 3
         federal_threshold = gov.irs.credits.ctc.phase_out.threshold[
             tax_unit("filing_status", period)
         ]
         # Line 4
         federal_round_amount = max_(
-            math.ceil(ny_recomputed_agi - federal_threshold / p.amount.base)
+            math.ceil(fagi - federal_threshold / p.amount.base)
             * p.amount.base,
             0,
         )
@@ -38,8 +37,7 @@ class ny_ctc_worksheet_a(Variable):
         federal_adjusted_amount = max_(base_amount - subtract_amount, 0)
         # Line 7
         tax = tax_unit("income_tax", period)
-        # Line 8 compare NY agi and NY recomputed FAGI
-        ny_agi = tax_unit("ny_agi", period)
+        # Line 8 compare agi and recomputed FAGI - skip here, assume they are same
         # add come lines from form 1040
         # Line 9  = max_(line 7 - line 8, 0)
         # Line 10 = min_(line 6, line 9)

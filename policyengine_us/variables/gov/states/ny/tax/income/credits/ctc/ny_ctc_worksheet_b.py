@@ -21,7 +21,7 @@ class ny_ctc_worksheet_a(Variable):
         base_amount = qualifying_children * p.amount.base
         # Line 2 NY recomputed FAGI - DO WE HAVE THIS?
         # some years use this while some are not
-        ny_recomputed_agi
+        fagi
         # Line 3
         foreign_earned_income_exclusion = tax_unit(
             "foreign_earned_income_exclusion", period
@@ -29,7 +29,7 @@ class ny_ctc_worksheet_a(Variable):
         puerto_rico_income = tax_unit("puerto_rico_income", period)
         total_exclusive = foreign_earned_income_exclusion + puerto_rico_income
         # Line 4
-        total = total_exclusive + ny_recomputed_agi
+        total = total_exclusive + fagi
         # Line 5
         federal_threshold = gov.irs.credits.ctc.phase_out.threshold[
             tax_unit("filing_status", period)
