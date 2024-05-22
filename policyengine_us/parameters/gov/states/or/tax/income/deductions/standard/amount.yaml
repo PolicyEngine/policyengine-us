@@ -28,6 +28,9 @@ JOINT:
     2023-01-01: 5_210
   metadata:
     uprating: gov.irs.uprating
+    rounding:
+        type: downwards
+        interval: 5
 HEAD_OF_HOUSEHOLD:
   values:
     2003-01-01: 2_640
@@ -39,6 +42,9 @@ HEAD_OF_HOUSEHOLD:
     2022-01-01: 3_895
   metadata:
     uprating: gov.irs.uprating
+    rounding:
+        type: downwards
+        interval: 5
 SURVIVING_SPOUSE:
   values:
     2003-01-01: 3_280
@@ -51,6 +57,9 @@ SURVIVING_SPOUSE:
     2023-01-01: 5_210
   metadata:
     uprating: gov.irs.uprating
+    rounding:
+        type: downwards
+        interval: 5
 SINGLE:
   values:
     2003-01-01: 1_640
@@ -63,6 +72,9 @@ SINGLE:
     2023-01-01: 2_605
   metadata:
     uprating: gov.irs.uprating
+    rounding:
+        type: downwards
+        interval: 5
 SEPARATE:
   values:
     2003-01-01: 1_640
@@ -75,3 +87,6 @@ SEPARATE:
     2023-01-01: 2_605
   metadata:
     uprating: gov.irs.uprating
+    rounding:
+        type: downwards
+        interval: 5
