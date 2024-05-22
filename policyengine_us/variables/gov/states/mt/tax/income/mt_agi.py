@@ -13,7 +13,13 @@ class mt_agi(Variable):
         agi = person("adjusted_gross_income_person", period)
         additions = person("mt_additions", period)
         subtractions = person("mt_subtractions", period)
-        mt_agi = max_(agi + additions - subtractions, 0)
+        # Montana taxable social security benefits can be either addition or subtraction
+        # if mt_taxable_social security - taxable_social_security > 0, then addition, else subtraction
+        taxable_ss = person("taxable_social_security", period)
+        mt_taxable_ss = person("mt_taxable_social_security", period)
+        mt_agi = max_(
+            agi + additions - subtractions + mt_taxable_ss - taxable_ss, 0
+        )
         # allocate any dependent net_income to tax unit head
         is_dependent = person("is_tax_unit_dependent", period)
         sum_dep_net_income = person.tax_unit.sum(is_dependent * mt_agi)
