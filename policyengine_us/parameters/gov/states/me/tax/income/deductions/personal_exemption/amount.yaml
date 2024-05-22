@@ -2,12 +2,17 @@ description: Maine personal exemption amount
 metadata:
   unit: currency-USD
   period: year
-  uprating: gov.irs.uprating
-  #uprating: gov.states.me.cpi
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
   label: Maine Personal Exemption Amount
   reference:
     - title: §5126-A. Personal exemptions on or after January 1, 2018
       href: https://www.mainelegislature.org/legis/statutes/36/title36sec5126-A.html
+    - title: §5403. Annual adjustments for inflation 7
+      href: https://legislature.maine.gov/statutes/36/title36sec5403.html
     - title: Instructions for Form 1040ME (2021)
       href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/21_1040me_book_gen_instr_revMay2022.pdf#page=4
     - title: Maine Tax Alert 2022

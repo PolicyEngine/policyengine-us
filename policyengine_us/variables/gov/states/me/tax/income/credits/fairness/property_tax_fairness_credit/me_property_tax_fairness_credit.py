@@ -61,4 +61,4 @@ class me_property_tax_fairness_credit(Variable):
         )
         qualified_veterans_credit = credit * 2
 
-        return where(qualified_veterans, qualified_veterans_credit, credit)
+        return qualified_veterans_credit if qualified_veterans else credit

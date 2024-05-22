@@ -4,12 +4,12 @@ metadata:
   threshold_unit: currency-USD
   period: year
   rate_unit: /1
-  uprating: gov.irs.uprating
-  #uprating: gov.states.me.cpi
   label: Maine State income tax rates for head-of-household filers
   reference:
     - title: Maine §5111. Imposition and rate of tax
       href: https://www.mainelegislature.org/legis/statutes/36/title36sec5111.html
+    - title: §5403. Annual adjustments for inflation 1(A)
+      href: https://legislature.maine.gov/statutes/36/title36sec5403.html
     - title: Maine 2022 Individual Income Tax Form 1040ME
       href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/22_1040me_dwnld_ff.pdf
     - title: Maine 2022 Individual Income Tax Tables
@@ -24,16 +24,30 @@ brackets:
     rate:
       2017-01-01: 0.058
   - threshold:
-      2017-01-01: 31_550
-      2021-01-01: 33_650
-      2022-01-01: 34_500
-      2023-01-01: 36_750
+      values:
+        2017-01-01: 31_550
+        2021-01-01: 33_650
+        2022-01-01: 34_500
+        2023-01-01: 36_750
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: downwards
+            interval: 50
     rate:
       2017-01-01: 0.0675
   - threshold:
-      2017-01-01: 75_000
-      2021-01-01: 79_750
-      2022-01-01: 81_700
-      2023-01-01: 87_100
+      values:
+        2017-01-01: 75_000
+        2021-01-01: 79_750
+        2022-01-01: 81_700
+        2023-01-01: 87_100
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: downwards
+            interval: 50
     rate:
       2017-01-01: 0.0715
