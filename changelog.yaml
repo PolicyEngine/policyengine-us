@@ -4361,7 +4361,7 @@
   date: 2023-09-04 20:23:16
 - bump: patch
   changes:
-    fixes:
+    fixed:
     - Georgia standard deduction file directory.
   date: 2023-09-04 20:59:54
 - bump: minor
@@ -4458,8 +4458,8 @@
   date: 2023-09-14 19:23:32
 - bump: minor
   changes:
-    add:
-    - Pell Grant automatic 0 EFC and marginal tax rate brackets from 2009 to 2023
+    added:
+    - Pell Grant automatic 0 EFC and marginal tax rate brackets from 2009 to 2023.
   date: 2023-09-15 04:21:57
 - bump: minor
   changes:
@@ -4563,7 +4563,7 @@
   date: 2023-09-27 21:57:34
 - bump: patch
   changes:
-    fixes:
+    fixed:
     - Add Louisiana index file.
     - Remove Missouri index file.
   date: 2023-09-28 17:28:07
@@ -4639,7 +4639,7 @@
   date: 2023-10-04 21:03:41
 - bump: patch
   changes:
-    fixes:
+    fixed:
     - Georgia investment in 529 plan deduction variable name adjustment.
   date: 2023-10-05 01:05:40
 - bump: minor
@@ -5042,7 +5042,7 @@
   date: 2023-11-22 00:37:55
 - bump: patch
   changes:
-    fixes:
+    fixed:
     - Ohio senior citizen credit formula.
   date: 2023-11-22 01:31:58
 - bump: minor
@@ -5366,7 +5366,7 @@
   date: 2023-12-14 18:51:52
 - bump: patch
   changes:
-    fixes:
+    fixed:
     - Maine child care credit format.
   date: 2023-12-14 19:03:15
 - bump: minor
@@ -5437,7 +5437,7 @@
   date: 2023-12-18 04:09:27
 - bump: patch
   changes:
-    fixes:
+    fixed:
     - Parameterized 25% of the Alternative Minimum Tax calculation.
   date: 2023-12-18 16:33:00
 - bump: patch
@@ -5622,7 +5622,7 @@
   date: 2024-01-03 15:31:42
 - bump: patch
   changes:
-    fixes:
+    fixed:
     - Fix Virginia military benefits subtraction formula.
   date: 2024-01-03 17:35:14
 - bump: minor
@@ -5643,7 +5643,7 @@
   date: 2024-01-04 01:03:25
 - bump: patch
   changes:
-    fixes:
+    fixed:
     - South Carolina taxable income calculation.
   date: 2024-01-04 01:12:31
 - bump: minor
@@ -5703,7 +5703,7 @@
   date: 2024-01-10 01:10:28
 - bump: patch
   changes:
-    fixes:
+    fixed:
     - California CalWORKS TANF monthly income variables.
   date: 2024-01-10 11:27:40
 - bump: minor
@@ -5768,7 +5768,7 @@
   date: 2024-01-13 21:11:58
 - bump: patch
   changes:
-    fixes:
+    fixed:
     - Immigration rules for CalWORKS Child Care program.
   date: 2024-01-13 22:01:49
 - bump: minor
@@ -6160,7 +6160,7 @@
   date: 2024-02-12 02:59:35
 - bump: patch
   changes:
-    fixes:
+    fixed:
     - Adjust the Arkansas files separately formula to rely on ar_income_tax_before_non_refundable_credits
       comparisons.
   date: 2024-02-12 03:02:41
@@ -6313,7 +6313,7 @@
   date: 2024-02-19 22:58:16
 - bump: minor
   changes:
-    fixes:
+    fixed:
     - Update 2024 Maximum Taxable Earnings Each Year.
   date: 2024-02-19 23:30:53
 - bump: patch
@@ -6396,12 +6396,12 @@
   date: 2024-02-22 15:29:21
 - bump: patch
   changes:
-    fixes:
+    fixed:
     - Remove formula from household_tax_before_refundable_credits and household_refundable_tax_credits.
   date: 2024-02-22 15:35:37
 - bump: patch
   changes:
-    fixes:
+    fixed:
     - Adjust the ct_social_security_benefit_adjustment variable to reflect the worksheet
       in the tax forms.
   date: 2024-02-22 16:58:33
@@ -6480,12 +6480,12 @@
   date: 2024-03-01 01:53:48
 - bump: patch
   changes:
-    fixes:
+    fixed:
     - Refactor the Utah tax rate yaml file.
   date: 2024-03-01 13:39:44
 - bump: minor
   changes:
-    fixes:
+    fixed:
     - Add 2024 Georgia income tax values.
   date: 2024-03-01 17:12:59
 - bump: minor
@@ -6502,12 +6502,12 @@
   date: 2024-03-02 18:37:00
 - bump: patch
   changes:
-    fixes:
+    fixed:
     - Remove qualified_business_income_deduction_person from the list of Ohio deductions.
   date: 2024-03-04 19:38:02
 - bump: patch
   changes:
-    fixes:
+    fixed:
     - Remove not used haircut parameters.
   date: 2024-03-05 00:49:48
 - bump: patch
@@ -6557,7 +6557,7 @@
   date: 2024-03-07 16:44:16
 - bump: patch
   changes:
-    fixes:
+    fixed:
     - Replace state income tax with estimated withholding for all states in income
       tax used for SALT deduction.
   date: 2024-03-07 19:52:18
@@ -6998,12 +6998,12 @@
   date: 2024-04-15 14:20:43
 - bump: patch
   changes:
-    add:
-    - Add Old Age Pension grant standard for 2024
+    added:
+    - Add Old Age Pension grant standard for 2024.
   date: 2024-04-15 19:08:43
 - bump: minor
   changes:
-    fixes:
+    fixed:
     - Mississippi taxable income.
   date: 2024-04-16 00:09:30
 - bump: minor
@@ -7043,7 +7043,7 @@
   date: 2024-04-19 05:22:04
 - bump: minor
   changes:
-    fixes:
+    fixed:
     - New York household credit calculation.
   date: 2024-04-19 05:38:25
 - bump: patch
@@ -7104,7 +7104,7 @@
   date: 2024-04-23 18:20:42
 - bump: patch
   changes:
-    fixes:
+    fixed:
     - Add Mississippi tax unit itemizes variable.
   date: 2024-04-24 04:49:34
 - bump: patch
@@ -7258,3 +7258,63 @@
     added:
     - Hawaii 2023 income tax parameters.
   date: 2024-05-10 15:49:10
+- bump: patch
+  changes:
+    fixed:
+    - Increase the Arkansas capital gains loss cap parameter value.
+  date: 2024-05-14 13:17:04
+- bump: minor
+  changes:
+    added:
+    - 2023 Missouri tax rules.
+  date: 2024-05-14 14:16:18
+- bump: minor
+  changes:
+    added:
+    - Add venv and .venv to .gitignore.
+  date: 2024-05-14 14:53:14
+- bump: minor
+  changes:
+    added:
+    - Backfill empty changelog entries.
+  date: 2024-05-14 14:58:17
+- bump: minor
+  changes:
+    added:
+    - Update core to 2.21.5.
+  date: 2024-05-14 16:51:18
+- bump: minor
+  changes:
+    added:
+    - Income disregard for CHP+
+  date: 2024-05-14 21:12:56
+- bump: patch
+  changes:
+    fixed:
+    - Adjust the Alabama legal code references.
+  date: 2024-05-15 02:01:54
+- bump: patch
+  changes:
+    fixed:
+    - Uncap real estate taxes in the Virginia itemized deduction logic.
+  date: 2024-05-16 22:53:29
+- bump: minor
+  changes:
+    added:
+    - "Retirement Savings Contributions Credit (Saver\u2019s Credit)."
+  date: 2024-05-16 23:47:24
+- bump: minor
+  changes:
+    added:
+    - Weekly hours worked.
+  date: 2024-05-18 09:25:41
+- bump: patch
+  changes:
+    added:
+    - Automatic version updating for household API
+  date: 2024-05-21 16:34:59
+- bump: patch
+  changes:
+    fixed:
+    - Adjust the Los Angeles income types to exclude basic income.
+  date: 2024-05-22 17:28:57

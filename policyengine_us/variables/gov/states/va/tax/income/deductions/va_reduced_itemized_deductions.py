@@ -13,10 +13,6 @@ class va_reduced_itemized_deductions(Variable):
     def formula(tax_unit, period, parameters):
         p_va = parameters(period).gov.states.va.tax.income.deductions.itemized
 
-        uncapped_state_and_local_tax = tax_unit(
-            "state_and_local_sales_or_income_tax", period
-        )
-
         # Part A: If AGI from federal return is over a certain amount, then
         # limitations to the itemized deduction are applied
         # Line 1 - sum of medical exepens ded., capped state and local tax,
@@ -68,13 +64,12 @@ class va_reduced_itemized_deductions(Variable):
             va_itm_deds_adjustment[mask] / excess_ded[mask]
         )
         # Part B Line 13 - capped state and local income tax
-        p_salt = parameters(
-            period
-        ).gov.irs.deductions.itemized.salt_and_real_estate
-        capped_state_and_local_tax = min_(
-            uncapped_state_and_local_tax, p_salt.cap[filing_status]
-        )
+
         # Line 14 - Multiply line 11 by line 13
+        capped_state_and_local_tax = tax_unit(
+            "va_capped_state_and_local_sales_or_income_tax", period
+        )
+
         state_and_local_tax_adj = (
             capped_state_and_local_tax * adjustment_fraction
         )

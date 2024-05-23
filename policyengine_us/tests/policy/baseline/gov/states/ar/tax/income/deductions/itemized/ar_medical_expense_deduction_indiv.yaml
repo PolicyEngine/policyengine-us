@@ -4,10 +4,10 @@
     people:
       person1:
         medical_expense: 5_000
-        ar_agi: 120_000
+        ar_agi_indiv: 120_000
       person2:
         medical_expense: 18_000
-        ar_agi: 120_000
+        ar_agi_indiv: 120_000
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -16,7 +16,7 @@
         members: [person1, person2]
         state_code: AR 
   output:
-    ar_medical_expense_deduction: 5_000
+    ar_medical_expense_deduction_indiv: 5_000
   
 - name: Arkansas medical and dental expense deduction (before 2017)
   period: 2014
@@ -24,10 +24,10 @@
     people:
       person1:
         medical_expense: 5_000
-        ar_agi: 240_000
+        ar_agi_indiv: 240_000
       person2:
         medical_expense: 18_000
-        ar_agi: 0
+        ar_agi_indiv: 0
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -36,4 +36,4 @@
         members: [person1, person2]
         state_code: AR 
   output:
-    ar_medical_expense_deduction: 0
+    ar_medical_expense_deduction_indiv: 0
