@@ -108,7 +108,7 @@ class Simulation(CoreSimulation):
             employment_income.delete_arrays(known_period)
 
         self_employment_income = self.get_holder("self_employment_income")
-        for known_period in employment_income.get_known_periods():
+        for known_period in self_employment_income.get_known_periods():
             array = self_employment_income.get_array(known_period)
             self.set_input(
                 "self_employment_income_before_lsr", known_period, array
