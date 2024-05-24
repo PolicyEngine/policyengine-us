@@ -123,18 +123,18 @@
   output: 
     ar_additional_credit: [40,0]
 
-- name: Two people filing jointly with no income
+- name: Two people filing jointly with max credits
   period: 2022
   input:
     people:
       person1:
         is_tax_unit_head_or_spouse: true
         ar_taxable_income_indiv: 0
-        ar_taxable_income_joint: 0
+        ar_taxable_income_joint: 10_000
       person2:
-        is_tax_unit_head_or_spouse: false
+        is_tax_unit_head_or_spouse: true
         ar_taxable_income_indiv: 0
-        ar_taxable_income_joint: 0
+        ar_taxable_income_joint: 10_000
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -145,4 +145,3 @@
         state_code: AR
   output: 
     ar_additional_credit: [120,0]
-

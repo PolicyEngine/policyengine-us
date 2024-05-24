@@ -23,5 +23,6 @@ class ar_additional_credit(Variable):
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         # The credit amount is doubled for married couples filing jointly
         amount = p.amount.calc(taxable_income, right=True)
-        total_amount = where(filing_separately, amount, amount * 2)
+        joint_parameter = 2
+        total_amount = where(filing_separately, amount, amount * joint_parameter)
         return total_amount * head_or_spouse

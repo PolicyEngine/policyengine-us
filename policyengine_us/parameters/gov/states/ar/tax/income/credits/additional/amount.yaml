@@ -20,12 +20,6 @@ brackets:
   - threshold:
       values:
         2022-01-01: -.inf
-      metadata:
-        uprating:
-          parameter: gov.irs.uprating
-          rounding:
-            type: downwards
-            interval: 100
     amount:
       2022-01-01: 60
   - threshold:
