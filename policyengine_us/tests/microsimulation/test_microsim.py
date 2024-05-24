@@ -13,8 +13,10 @@ def test_microsim_runs_cps():
     ]
     for decile_var in DECILES:
         decile = sim.calc(decile_var)
-        assert np.all(decile >= -1) and np.all(decile <= 10)
+        assert np.all(decile >= -1) and np.all(
+            decile <= 10
+        ), f"{decile_var} out of bounds."
 
     # Check that the microsim calculates important variables as nonzero in current year.
     for var in ["employment_income", "self_employment_income"]:
-        assert sim.calc(var, period=2024).sum() > 0
+        assert sim.calc(var, period=2024).sum() > 0, f"{var} is zero in 2024."
