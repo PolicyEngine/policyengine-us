@@ -7313,3 +7313,13 @@
     added:
     - Automatic version updating for household API
   date: 2024-05-21 16:34:59
+- bump: patch
+  changes:
+    fixed:
+    - Adjust the Los Angeles income types to exclude basic income.
+  date: 2024-05-22 17:28:57
+- bump: patch
+  changes:
+    fixed:
+    - Bug causing State taxes to not have effects in microsimulations.
+  date: 2024-05-24 12:51:32

@@ -59,9 +59,12 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
         self.parameters = propagate_parameter_metadata(self.parameters)
         self.add_abolition_parameters()
 
-        reform = create_structural_reforms_from_parameters(
+        structural_reform = create_structural_reforms_from_parameters(
             self.parameters, year_start
         )
+        if reform is None:
+            reform = ()
+        reform = (reform, structural_reform)
 
         self.parameters = backdate_parameters(
             self.parameters, first_instant="2020-01-01"
@@ -71,7 +74,7 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
             parameter.modified = False
 
         if reform is not None:
-            reform.apply(self)
+            self.apply_reform_set(reform)
 
         self.add_variables(*create_50_state_variables())
 
