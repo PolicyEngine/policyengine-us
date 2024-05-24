@@ -1,11 +1,12 @@
-description: Minnesota adds these variables to US AGI when computing its taxable income.
+description: Minnesota adds these variables to federal adjusted gross income when computing its taxable income.
 values:
   2021-01-01:
     - form_4972_lumpsum_distributions
 
 metadata:
-  unit: variable
-  label: Minnesota additions to US AGI
+  unit: list
+  period: year
+  label: Minnesota additions to federal AGI
   reference:
   - title: 2021 Minnesota Schedule M1M, Income Additions and Subtractions
     href: https://www.taxformfinder.org/forms/2021/2021-minnesota-form-m1m.pdf
