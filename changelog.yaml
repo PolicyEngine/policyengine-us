@@ -7323,3 +7323,8 @@
     fixed:
     - Bug causing State taxes to not have effects in microsimulations.
   date: 2024-05-24 12:51:32
+- bump: patch
+  changes:
+    fixed:
+    - Randomness in baseline tax results across model runs.
+  date: 2024-05-24 13:34:27
