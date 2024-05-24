@@ -11,7 +11,7 @@ class ny_ctc_federal_credits(Variable):
     reference = "https://www.tax.ny.gov/pdf/2021/inc/it213i_2021.pdf#page=2"
     defined_for = StateCode.NY
 
-    # Line 8
+    # Line 8 of Worksheet A, Line 10 of worksheet B
     adds = [
         # a: Form 1040, Schedule 3, line 1, Foreign tax credit
         "foreign_tax_credit",
@@ -25,4 +25,5 @@ class ny_ctc_federal_credits(Variable):
         # f Form 8910, Alternative Motor Vehicle Credit
         # g Form 8936, Qualified Plug-in Electric Drive Motor Vehicle Credit, line 23
         # h Schedule R, Credit for the Elderly or the Disabled, line 22
+        "elderly_disabled_credit",
     ]

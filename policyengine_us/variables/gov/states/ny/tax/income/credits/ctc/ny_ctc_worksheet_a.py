@@ -32,13 +32,14 @@ class ny_ctc_worksheet_a(Variable):
             0,
         )
         # Line 5
-        subtract_amount = federal_round_amount * p.amount.match
+        subtraction_amount = federal_round_amount * p.amount.match
         # Line 6
-        federal_adjusted_amount = max_(base_amount - subtract_amount, 0)
+        federal_adjusted_amount = max_(base_amount - subtraction_amount, 0)
         # Line 7
         tax = tax_unit("income_tax", period)
         # Line 8 compare agi and recomputed FAGI - skip here, assume they are same
-        # add come lines from form 1040
-        # Line 9  = max_(line 7 - line 8, 0)
+        selected_credit_amount = tax_unit("ny_ctc_federal_credits", period)
+        # Line 9 check if line 7 and line 8 have the same amount
+        tax_over_credit = max_(0, tax - selected_credit_amount)
         # Line 10 = min_(line 6, line 9)
-        # return line 10
+        return min_(federal_adjusted_amount, tax_over_credit)
