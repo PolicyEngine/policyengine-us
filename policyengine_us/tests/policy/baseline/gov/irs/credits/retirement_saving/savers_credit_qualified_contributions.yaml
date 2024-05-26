@@ -1,0 +1,29 @@
+- name: Contributions larger than distributions
+  period: 2023
+  input:
+    traditional_ira_contributions: 1_000
+    traditional_401k_contributions: 3_000
+    traditional_403b_contributions: 2_000
+    roth_ira_contributions: 1_000
+    roth_401k_contributions: 1_000
+    roth_403b_contributions: 1_000
+    self_employed_pension_contributions: 1_000
+    able_contributions_person: 100
+    retirement_distributions: 1_000
+  output:
+    savers_credit_qualified_contributions: 9_100
+
+- name: Contributions smaller than distributions
+  period: 2023
+  input:
+    traditional_ira_contributions: 1_000
+    traditional_401k_contributions: 0
+    traditional_403b_contributions: 0
+    roth_ira_contributions: 0
+    roth_401k_contributions: 0
+    roth_403b_contributions: 0
+    self_employed_pension_contributions: 0
+    able_contributions_person: 500
+    retirement_distributions: 2_000
+  output:
+    savers_credit_qualified_contributions: 0
