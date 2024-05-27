@@ -4,7 +4,9 @@ class is_group3_county(Variable):
     label = "In a South Carolina use tax region 3 county"
     definition_period = YEAR
     defined_for = StateCode.SC
-    reference = 
+    reference = (
+        "https://dor.sc.gov/resources-site/lawandpolicy/Documents/SC%20Sales%20Tax%20Manual.pdf"
+    )
 
     def formula(household, period, parameters):
         county = household("county_str", period)

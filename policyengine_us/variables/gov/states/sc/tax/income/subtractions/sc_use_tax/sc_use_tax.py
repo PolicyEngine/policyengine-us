@@ -7,7 +7,9 @@ class sc_use_tax(Variable):
     label = "SC Use Tax"
     unit = USD
     definition_period = YEAR
-    reference = 
+    reference = (
+        "https://dor.sc.gov/resources-site/lawandpolicy/Documents/SC%20Sales%20Tax%20Manual.pdf"
+    )
     defined_for = StateCode.SC
 
     def formula(tax_unit, period, parameters):
@@ -16,11 +18,27 @@ class sc_use_tax(Variable):
         is_group1_county = tax_unit.household("is_group_1_county", period)
         is_group2_county = tax_unit.household("is_group_2_county", period)
         is_group3_county = tax_unit.household("is_group_3_county", period)
-        is_group4_county = tax_unit.household("is_group_4_county", period)
 
         p = parameters(period).gov.states.sc.tax.income.use_tax.rate
+
         # Compute main amount, a dollar amount based on SC AGI.
-        main_amount = p.rate * income
-        # Compute additional local use tax by county
-        additional_amount = 
+        additional_rate =
+         select(
+            [
+                is_group1_county,
+                is_group2_county,
+                is_group3_county,
+            ],
+            [
+                p.group_1_rate,
+                p.group_2_rate,
+                p.group_3_rate,
+            ],
+            default = 0
+        )
+
+        # Compute use tax rate by main rate plus local county additional rate
+        total_rate = p.main_rate + additional_rate
+
+        return income * total rate
         
