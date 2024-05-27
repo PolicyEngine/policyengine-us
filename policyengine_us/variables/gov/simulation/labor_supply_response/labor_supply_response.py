@@ -280,10 +280,10 @@ class employment_income_behavioral_response(Variable):
             "self_employment_income_before_lsr", period
         )
         earnings = employment_income + self_employment_income
-        emp_self_emp_ratio = where(
-            earnings > 0, employment_income / earnings, 1
-        )
-        return lsr * emp_self_emp_ratio
+        emp_share = np.ones_like(earnings)
+        mask = earnings > 0
+        emp_share[mask] = employment_income[mask] / earnings[mask]
+        return lsr * emp_share
 
 
 class self_employment_income_behavioral_response(Variable):
