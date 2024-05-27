@@ -12,8 +12,9 @@ metadata:
       href: https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2023/05/Montana-Idividiual-Income-Tax-Return-Form-2-2022v6.2.pdf#page=6
     - title: 2023 Montana Individual Income Tax Return (Taxable Social Security Benefits Schedule)
       href: https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2023/12/Form_2_2023.pdf#page=6
-      # Montana adjusts the federal social security parameters which is not documented in the legal code.
-      # All values are different from the federal parameters. 
+      # Montana uses the difference between the higher and lower federal social security parameters in the 
+      # computation while adjusting the separate values as half of the joint amount. This is not docuemnted
+      # in the Montana legal code. 
 SINGLE:
   2021-01-01: 9_000
 HEAD_OF_HOUSEHOLD:
