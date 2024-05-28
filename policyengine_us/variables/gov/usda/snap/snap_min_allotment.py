@@ -24,15 +24,12 @@ class snap_min_allotment(Variable):
         # Minimum benefits only apply to households up to a certain size.
         size = spm_unit("spm_unit_size", period)
         eligible = size <= p_min.maximum_household_size
-        min_allotment = (
-            eligible * p_min.rate * relevant_max_allotment
-        )
+        min_allotment = eligible * p_min.rate * relevant_max_allotment
         if p_min.dc.in_effect:
-            dc_min_allotment = add(spm_unit, period, ["dc_min_allotment"])
+            dc_min_allotment = p_min.dc.amount
 
-            state_code = spm_unit.household("state_code", period)
+            state_code = spm_unit.household("state_code_str", period)
             in_dc = state_code == "DC"
-            print(in_dc)
-            min_allotment = where(in_dc, dc_min_allotment, min_allotment) * eligible
-       
+            min_allotment = where(in_dc, dc_min_allotment, min_allotment)
+
         return min_allotment

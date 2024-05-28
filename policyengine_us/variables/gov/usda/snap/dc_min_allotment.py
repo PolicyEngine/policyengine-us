@@ -1,6 +1,6 @@
 from policyengine_us.model_api import *
 
- 
+
 class dc_min_allotment(Variable):
     value_type = float
     entity = SPMUnit
