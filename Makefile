@@ -25,3 +25,7 @@ dashboard:
 	python policyengine_us/data/datasets/cps/enhanced_cps/update_dashboard.py
 calibration:
 	python policyengine_us/data/datasets/cps/enhanced_cps/run_calibration.py
+clear-storage:
+	rm -f policyengine_us/data/storage/*.h5
+	rm -f policyengine_us/data/storage/*.csv.gz
+	rm -rf policyengine_us/data/storage/*cache
