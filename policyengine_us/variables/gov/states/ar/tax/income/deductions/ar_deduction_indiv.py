@@ -13,4 +13,5 @@ class ar_deduction_indiv(Variable):
     def formula(person, period, parameters):
         itemized = person("ar_itemized_deductions_indiv", period)
         standard = person("ar_standard_deduction_indiv", period)
-        return max_(itemized, standard)
+        itemizes = person.tax_unit("ar_tax_unit_itemizes", period)
+        return where(itemizes, itemized, standard)
