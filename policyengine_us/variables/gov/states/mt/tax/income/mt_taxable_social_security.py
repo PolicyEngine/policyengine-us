@@ -48,7 +48,7 @@ class mt_taxable_social_security(Variable):
         # line 10: get amount based on filing status
         filing_status = person.tax_unit("filing_status", period)
         threshold_amount = p.lower[filing_status]
-        # line 11: line 9 - line 10 (income_reduced_by_subtractions - amount_higer)
+        # line 11: line 9 - line 10 (income_reduced_by_subtractions - amount_higher)
         income_reduced_by_subtractions_and_threshold = max_(
             0, income_reduced_by_subtractions - threshold_amount
         )
