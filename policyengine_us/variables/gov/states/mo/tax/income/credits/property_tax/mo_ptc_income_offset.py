@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class mo_ptc_income_offset(Variable):
     value_type = float
     entity = TaxUnit
-    label = "MO property tax credit gross income offset amount"
+    label = "Missouri property tax credit gross income offset amount"
     unit = USD
     definition_period = YEAR
     reference = (

@@ -7,9 +7,9 @@ values:
     - interest_income # Line 10
     - dividend_income # Line 11
     - alimony_income # Line 12
-    - ar_taxable_capital_gains # Line 13
+    - ar_taxable_capital_gains_joint # Line 13
     - taxable_ira_distributions # Line 16
-    # - ar_military_retirement_income_person # Line 17
+    - military_retirement_pay # Line 17
     - taxable_pension_income # Line 18
     - disability_benefits # Line 18b
     - rental_income # Line 19
@@ -19,7 +19,7 @@ values:
 metadata:
   unit: list
   period: year
-  label: Arkansas gross income sources
+  label: Arkansas gross income sources when married filing jointly
   reference:
     - title: Arkansas 2022 AR1000F Instructions
       href: https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2022_AR1000F_and_AR1000NR_Instructions.pdf#page=13

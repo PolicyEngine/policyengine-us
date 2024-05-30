@@ -12,6 +12,9 @@ class ar_itemized_deductions_joint(Variable):
 
     def formula(person, period, parameters):
         # Arkansas does not tie itemization choice to federal choice.
-        deductions = person.tax_unit("ar_itemized_deductions_unit", period)
+        deductions = parameters(
+            period
+        ).gov.states.ar.tax.income.deductions.itemized.sources.joint
+        unit_deds = add(person.tax_unit, period, deductions)
         is_head = person("is_tax_unit_head", period)
-        return deductions * is_head
+        return unit_deds * is_head
