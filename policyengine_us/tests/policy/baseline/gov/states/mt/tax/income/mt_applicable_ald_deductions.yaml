@@ -28,7 +28,7 @@
         is_tax_unit_dependent: false
       person2:
         is_tax_unit_spouse: false
-        is_tax_unit_dependent: false
+        is_tax_unit_dependent: true
     households:
       household:
         members: [person1, person2]
@@ -38,4 +38,4 @@
         members: [person1, person2]
         above_the_line_deductions: 100 
   output:
-    mt_applicable_ald_deductions: [100, 0]
+    mt_applicable_ald_deductions: [100, 100]

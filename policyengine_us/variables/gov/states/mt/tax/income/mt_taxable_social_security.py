@@ -12,7 +12,7 @@ class mt_taxable_social_security(Variable):
     def formula(person, period, parameters):
         p = parameters(period).gov.states.mt.tax.income.social_security.amount
         p_irs = parameters(period).gov.irs.social_security.taxability.rate
-        # Compute the amount based on the schedule in tax form.
+        # Compute the amount based on the schedule in Montana tax form.
         # line 1 total net SS amount
         social_security = person("social_security", period)
         # Line 2 SS multiplied by lower rate
@@ -25,14 +25,14 @@ class mt_taxable_social_security(Variable):
         # Iterest and mutual fund dividends from state, county, or municipal bonds
         # from other states - not included
         # line 5: tax exempt intrest income
-        tax_emempt_interest_income = person(
+        tax_exempt_interest_income = person(
             "tax_exempt_interest_income", period
         )
         # line 6: Sum of line 2, 3, 4, 5
         income_increased_by_ss_and_interest = (
             social_security_benefits_fraction
             + reduced_gross_income
-            + tax_emempt_interest_income
+            + tax_exempt_interest_income
         )
         # line 7: Remove the student loans from the above the line deductions
         ald_less_student_loan = person(

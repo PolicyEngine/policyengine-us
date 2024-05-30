@@ -18,10 +18,12 @@ class mt_agi(Variable):
         # if mt_taxable_social security - taxable_social_security > 0, then addition, else subtraction
         taxable_ss = person("taxable_social_security", period)
         mt_taxable_ss = person("mt_taxable_social_security", period)
-        mt_ss_add_or_subtr = mt_taxable_ss - taxable_ss
-        mt_agi = max_(reduced_agi + mt_ss_add_or_subtr, 0)
+        adjusted_ss_difference = mt_taxable_ss - taxable_ss
+        tax_unit_mt_agi = max_(reduced_agi + adjusted_ss_difference, 0)
         # allocate any dependent net_income to tax unit head
         is_dependent = person("is_tax_unit_dependent", period)
-        sum_dep_net_income = person.tax_unit.sum(is_dependent * mt_agi)
+        sum_dep_net_income = person.tax_unit.sum(
+            is_dependent * tax_unit_mt_agi
+        )
         is_head = person("is_tax_unit_head", period)
-        return ~is_dependent * mt_agi + is_head * sum_dep_net_income
+        return ~is_dependent * tax_unit_mt_agi + is_head * sum_dep_net_income
