@@ -59,9 +59,12 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
         self.parameters = propagate_parameter_metadata(self.parameters)
         self.add_abolition_parameters()
 
-        reform = create_structural_reforms_from_parameters(
+        structural_reform = create_structural_reforms_from_parameters(
             self.parameters, year_start
         )
+        if reform is None:
+            reform = ()
+        reform = (reform, structural_reform)
 
         self.parameters = backdate_parameters(
             self.parameters, first_instant="2020-01-01"
@@ -71,7 +74,7 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
             parameter.modified = False
 
         if reform is not None:
-            reform.apply(self)
+            self.apply_reform_set(reform)
 
         self.add_variables(*create_50_state_variables())
 
@@ -104,6 +107,22 @@ class Simulation(CoreSimulation):
             self.set_input("employment_income_before_lsr", known_period, array)
             employment_income.delete_arrays(known_period)
 
+        self_employment_income = self.get_holder("self_employment_income")
+        for known_period in employment_income.get_known_periods():
+            array = self_employment_income.get_array(known_period)
+            self.set_input(
+                "self_employment_income_before_lsr", known_period, array
+            )
+            self_employment_income.delete_arrays(known_period)
+
+        weekly_hours = self.get_holder("weekly_hours_worked")
+        for known_period in weekly_hours.get_known_periods():
+            array = weekly_hours.get_array(known_period)
+            self.set_input(
+                "weekly_hours_worked_before_lsr", known_period, array
+            )
+            weekly_hours.delete_arrays(known_period)
+
 
 class Microsimulation(CoreMicrosimulation):
     default_tax_benefit_system = CountryTaxBenefitSystem
@@ -133,12 +152,20 @@ class Microsimulation(CoreMicrosimulation):
             employment_income.delete_arrays(known_period)
 
         self_employment_income = self.get_holder("self_employment_income")
-        for known_period in employment_income.get_known_periods():
+        for known_period in self_employment_income.get_known_periods():
             array = self_employment_income.get_array(known_period)
             self.set_input(
                 "self_employment_income_before_lsr", known_period, array
             )
             self_employment_income.delete_arrays(known_period)
+
+        weekly_hours = self.get_holder("weekly_hours_worked")
+        for known_period in weekly_hours.get_known_periods():
+            array = weekly_hours.get_array(known_period)
+            self.set_input(
+                "weekly_hours_worked_before_lsr", known_period, array
+            )
+            weekly_hours.delete_arrays(known_period)
 
         self.input_variables = [
             variable
@@ -147,10 +174,12 @@ class Microsimulation(CoreMicrosimulation):
             not in [
                 "employment_income",
                 "self_employment_income",
+                "weekly_hours_worked",
             ]
         ] + [
             "employment_income_before_lsr",
             "self_employment_income_before_lsr",
+            "weekly_hours_worked_before_lsr",
         ]
 
 

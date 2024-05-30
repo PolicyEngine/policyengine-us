@@ -5,6 +5,85 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.777.7] - 2024-05-30 13:22:45
+
+### Fixed
+
+- Arkansas tax unit itemizes decision based on the federal itemization.
+- Create a separate Virginia deductions variable.
+
+## [0.777.6] - 2024-05-26 01:22:36
+
+### Fixed
+
+- Add health insurance premiums to SNAP excess medical expense deduction.
+
+## [0.777.5] - 2024-05-24 19:15:18
+
+### Fixed
+
+- Self-employment income not available after initial microdata year.
+
+## [0.777.4] - 2024-05-24 13:34:27
+
+### Fixed
+
+- Randomness in baseline tax results across model runs.
+
+## [0.777.3] - 2024-05-24 12:51:32
+
+### Fixed
+
+- Bug causing State taxes to not have effects in microsimulations.
+
+## [0.777.2] - 2024-05-22 17:28:57
+
+### Fixed
+
+- Adjust the Los Angeles income types to exclude basic income.
+
+## [0.777.1] - 2024-05-21 16:34:59
+
+### Added
+
+- Automatic version updating for household API
+
+## [0.777.0] - 2024-05-18 09:25:41
+
+### Added
+
+- Weekly hours worked.
+
+## [0.776.0] - 2024-05-16 23:47:24
+
+### Added
+
+- Retirement Savings Contributions Credit (Saver’s Credit).
+
+## [0.775.2] - 2024-05-16 22:53:29
+
+### Fixed
+
+- Uncap real estate taxes in the Virginia itemized deduction logic.
+
+## [0.775.1] - 2024-05-15 02:01:54
+
+### Fixed
+
+- Adjust the Alabama legal code references.
+
+## [0.775.0] - 2024-05-14 21:12:56
+
+### Added
+
+- Income disregard for CHP+
+
+## [0.774.0] - 2024-05-14 16:51:18
+
+### Added
+
+- Update core to 2.21.5.
+
 ## [0.773.0] - 2024-05-14 14:58:17
 
 ### Added
@@ -8614,6 +8693,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.777.7]: https://github.com/PolicyEngine/policyengine-us/compare/0.777.6...0.777.7
+[0.777.6]: https://github.com/PolicyEngine/policyengine-us/compare/0.777.5...0.777.6
+[0.777.5]: https://github.com/PolicyEngine/policyengine-us/compare/0.777.4...0.777.5
+[0.777.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.777.3...0.777.4
+[0.777.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.777.2...0.777.3
+[0.777.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.777.1...0.777.2
+[0.777.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.777.0...0.777.1
+[0.777.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.776.0...0.777.0
+[0.776.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.775.2...0.776.0
+[0.775.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.775.1...0.775.2
+[0.775.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.775.0...0.775.1
+[0.775.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.774.0...0.775.0
+[0.774.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.773.0...0.774.0
 [0.773.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.772.0...0.773.0
 [0.772.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.771.0...0.772.0
 [0.771.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.770.1...0.771.0
