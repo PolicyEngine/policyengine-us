@@ -1,9 +1,10 @@
 description: Arkansas taxes personal income at these amounts.
 metadata:
-  type: single_amount
+  type: single_amount 
   threshold_unit: currency-USD
   amount_unit: /1
   label: Arkansas income tax amount
+  period: year
   reference:
   - title: 2014 Indexed Tax Brackets
     href: https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/TaxBrackets_2014.pdf#page=1
@@ -29,7 +30,7 @@ brackets:
         rounding:
           type: downwards
           interval: 100
-    rate:
+    amount:
       2014-01-01: 0.009 
       2019-01-01: 0
   - threshold:
@@ -45,7 +46,7 @@ brackets:
         rounding:
           type: downwards
           interval: 100
-    rate:
+    amount:
       2014-01-01: 0.025
       2015-01-01: 0.024
       2019-01-01: 0.02
@@ -62,7 +63,7 @@ brackets:
         rounding:
           type: downwards
           interval: 100
-    rate:
+    amount:
       2014-01-01: 0.035
       2015-01-01: 0.034
       2019-01-01: 0.03
@@ -80,7 +81,7 @@ brackets:
         rounding:
           type: downwards
           interval: 100
-    rate:
+    amount:
       2014-01-01: 0.045
       2015-01-01: 0.044
       2019-01-01: 0.034
@@ -98,7 +99,7 @@ brackets:
         rounding:
           type: downwards
           interval: 100
-    rate:
+    amount:
       2014-01-01: 0.06
       2019-01-01: 0.05
       2022-01-01: 0.049
@@ -116,7 +117,7 @@ brackets:
         rounding:
           type: downwards
           interval: 100
-    rate:
+    amount:
       2014-01-01: 0.07
       2019-01-01: 0.06
       2020-01-01: 0.059
@@ -132,7 +133,7 @@ brackets:
         rounding:
           type: downwards
           interval: 100
-    rate:
+    amount:
       2014-01-01: .inf
       2019-01-01: 0.069
       2020-01-01: 0.066
