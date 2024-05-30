@@ -22,7 +22,7 @@ class mt_taxable_social_security(Variable):
         gross_income = person("irs_gross_income", period)
         reduced_gross_income = max_(gross_income - taxable_ss, 0)
         # line 4: Additions Schedule line 15 - Additions Schedule line 3
-        # Iterest and mutual fund dividends from state, county, or municipal bonds
+        # Interest and mutual fund dividends from state, county, or municipal bonds
         # from other states - not included
         # line 5: tax exempt intrest income
         tax_exempt_interest_income = person(
