@@ -24,7 +24,7 @@ class mt_taxable_social_security(Variable):
         # line 4: Additions Schedule line 15 - Additions Schedule line 3
         # Interest and mutual fund dividends from state, county, or municipal bonds
         # from other states - not included
-        # line 5: tax exempt intrest income
+        # line 5: tax exempt interest income
         tax_exempt_interest_income = person(
             "tax_exempt_interest_income", period
         )
