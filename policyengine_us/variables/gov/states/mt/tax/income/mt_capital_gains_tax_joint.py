@@ -70,10 +70,10 @@ class mt_capital_gains_tax_joint(Variable):
             lower_capital_gains_tax = where(
                 capital_gains <= lower_threshold,
                 capital_gains
-                * base_rate,  # First net long-term capital gians that is within the difference between the threshold and nonqualified income
+                * base_rate,  # For the first net long-term capital gians that is within the difference between the threshold and nonqualified income
                 base_capital_gains_tax
                 + (capital_gains - lower_threshold)
-                * lower_rate,  # Next net long-term capital gains that exceed the threshold minus nonqualified income
+                * lower_rate,  # For the next net long-term capital gains that exceed the threshold minus nonqualified income
             )
             capital_gains_tax = where(
                 non_qualified_income_exceeds_threshold,
