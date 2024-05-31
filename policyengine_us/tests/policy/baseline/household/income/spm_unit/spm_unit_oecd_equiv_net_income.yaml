@@ -1,0 +1,35 @@
+- name: Net income for family of 4.
+  period: 2021
+  input:
+    people:
+      person1: {}
+      person2: {}
+      person3: {}
+      person4: {}
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        spm_resources: 2_000
+  output:
+    spm_unit_oecd_equiv_net_income: 1_000
+
+- name: Net income for family of 9.
+  period: 2021
+  input:
+    people:
+      person1: {}
+      person2: {}
+      person3: {}
+      person4: {}
+      person5: {}
+      person6: {}
+      person7: {}
+      person8: {}
+      person9: {}
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9]
+        spm_resources: 3_000
+  output:
+    spm_unit_oecd_equiv_net_income: 1_000
+

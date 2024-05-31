@@ -109,7 +109,7 @@ def add_person_variables(acs: h5py.File, person: DataFrame) -> None:
 
 
 def add_spm_variables(acs: h5py.File, spm_unit: DataFrame) -> None:
-    acs["spm_unit_net_income_reported"] = spm_unit.SPM_RESOURCES
+    acs["spm_resources_reported"] = spm_unit.SPM_RESOURCES
     acs["spm_unit_spm_threshold"] = spm_unit.SPM_POVTHRESHOLD
 
 
