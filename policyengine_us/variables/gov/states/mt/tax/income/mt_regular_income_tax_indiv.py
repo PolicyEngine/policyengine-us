@@ -16,10 +16,10 @@ class mt_regular_income_tax_indiv(Variable):
             "state_filing_status_if_married_filing_separately_on_same_return",
             period,
         )
-        status = filing_status.possible_values
         if p.capital_gains.in_effect:
             capital_gains = person("long_term_capital_gains", period)
             taxable_income = max_(taxable_income - capital_gains, 0)
+        status = filing_status.possible_values
         return select(
             [
                 filing_status == status.SINGLE,

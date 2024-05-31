@@ -21,10 +21,10 @@ class mt_capital_gains_tax_joint(Variable):
                 "filing_status",
                 period,
             )
-            status = filing_status.possible_values
             non_qualified_income = max_(taxable_income - capital_gains, 0)
+            threshold = p.threshold[filing_status]
             non_qualified_income_exceeds_threshold = (
-                non_qualified_income > p.threshold[filing_status]
+                non_qualified_income > threshold
             )
             # When the nonqualified income exceeds the threshold, apply the main rate
             capital_gains_main_tax = (
@@ -33,19 +33,18 @@ class mt_capital_gains_tax_joint(Variable):
             lower_threshold = max_(
                 p.threshold[filing_status] - non_qualified_income, 0
             )
+            status = filing_status.possible_values
             base_rate = select(
                 [
                     filing_status == status.SINGLE,
                     filing_status == status.SEPARATE,
-                    filing_status == status.JOINT,
                     filing_status == status.SURVIVING_SPOUSE,
                     filing_status == status.HEAD_OF_HOUSEHOLD,
                 ],
                 [
                     p.rates.single.calc(0),
                     p.rates.separate.calc(0),
-                    p.rates.joint.calc(0),
-                    p.rates.widow.calc(0),
+                    p.rates.surviving_spouse.calc(0),
                     p.rates.head_of_household.calc(0),
                 ],
             )
@@ -53,26 +52,25 @@ class mt_capital_gains_tax_joint(Variable):
                 [
                     filing_status == status.SINGLE,
                     filing_status == status.SEPARATE,
-                    filing_status == status.JOINT,
                     filing_status == status.SURVIVING_SPOUSE,
                     filing_status == status.HEAD_OF_HOUSEHOLD,
                 ],
                 [
                     p.rates.lower.single,
                     p.rates.lower.separate,
-                    p.rates.lower.joint,
-                    p.rates.lower.widow,
+                    p.rates.lower.surviving_spouse,
                     p.rates.lower.head_of_household,
                 ],
             )
             base_capital_gains_tax = base_rate * lower_threshold
             lower_capital_gains_tax = where(
                 capital_gains <= lower_threshold,
-                capital_gains * base_rate,
+                capital_gains
+                * base_rate,  # First net long-term capital gians that is within the difference between the threshold and nonqualified income
                 base_capital_gains_tax
-                + (capital_gains - lower_threshold) * lower_rate,
+                + (capital_gains - lower_threshold)
+                * lower_rate,  # Next net long-term capital gains that exceed the threshold minus nonqualified income
             )
-
             capital_gains_tax = where(
                 non_qualified_income_exceeds_threshold,
                 capital_gains_main_tax,
