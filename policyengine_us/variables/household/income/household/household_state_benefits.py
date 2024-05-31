@@ -17,6 +17,7 @@ class household_state_benefits(Variable):
         "ca_cvrp",  # California Clean Vehicle Rebate Project.
         "ca_care",
         "ca_fera",
+        "ca_la_ez_save",
         "co_oap",
     ]
     exhaustive_parameter_dependencies = "gov.states"
