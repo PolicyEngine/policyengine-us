@@ -1,0 +1,99 @@
+- name: 3 people
+  period: 2022
+  input:
+    is_child: false
+    household_size: 3
+    household_net_income: 53_000
+    is_snap_eligible: false
+    social_security: 0
+    social_security_disability: 0
+    is_tanf_eligible: false
+    in_la: true
+  output:
+    ca_la_life_eligibility: true
+
+- name: single child
+  period: 2022
+  input:
+    is_child: true
+    is_child_of_tax_head: true
+    household_size: 1
+    household_net_income: 40_000
+    is_snap_eligible: false
+    social_security: 0
+    social_security_disability: 0
+    is_tanf_eligible: false
+    in_la: true
+  output:
+    ca_la_life_eligibility: false
+
+- name: child with adult head of household
+  period: 2022
+  input:
+    is_child: true
+    is_child_of_tax_head: true
+    household_size: 2
+    household_net_income: 47_000
+    is_snap_eligible: false
+    social_security: 0
+    social_security_disability: 0
+    is_tanf_eligible: false
+    in_la: true
+  output:
+    ca_la_life_eligibility: true
+
+- name: snap
+  period: 2022
+  input:
+    is_child: false
+    household_size: 3
+    household_net_income: 54_000
+    is_snap_eligible: true
+    social_security: 0
+    social_security_disability: 0
+    is_tanf_eligible: false
+    in_la: true
+  output:
+    ca_la_life_eligibility: true
+
+- name: social security
+  period: 2022
+  input:
+    is_child: false
+    household_size: 4
+    household_net_income: 60_000
+    is_snap_eligible: false
+    social_security: 1_000
+    social_security_disability: 0
+    is_tanf_eligible: false
+    in_la: true
+  output:
+    ca_la_life_eligibility: true
+
+- name: social security disability
+  period: 2022
+  input:
+    is_child: false
+    household_size: 5
+    household_net_income: 64_000
+    is_snap_eligible: false
+    social_security: 0
+    social_security_disability: 1_000
+    is_tanf_eligible: false
+    in_la: true
+  output:
+    ca_la_life_eligibility: true
+
+- name: tanf
+  period: 2022
+  input:
+    is_child: false
+    household_size: 6
+    household_net_income: 70_000
+    is_snap_eligible: false
+    social_security: 0
+    social_security_disability: 0
+    is_tanf_eligible: true
+    in_la: true
+  output:
+    ca_la_life_eligibility: true
