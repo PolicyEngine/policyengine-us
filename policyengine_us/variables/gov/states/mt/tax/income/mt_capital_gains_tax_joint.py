@@ -38,12 +38,14 @@ class mt_capital_gains_tax_joint(Variable):
                 [
                     filing_status == status.SINGLE,
                     filing_status == status.SEPARATE,
+                    filing_status == status.JOINT,
                     filing_status == status.SURVIVING_SPOUSE,
                     filing_status == status.HEAD_OF_HOUSEHOLD,
                 ],
                 [
                     p.rates.single.calc(0),
                     p.rates.separate.calc(0),
+                    p.rates.joint.calc(0),
                     p.rates.surviving_spouse.calc(0),
                     p.rates.head_of_household.calc(0),
                 ],
@@ -52,12 +54,14 @@ class mt_capital_gains_tax_joint(Variable):
                 [
                     filing_status == status.SINGLE,
                     filing_status == status.SEPARATE,
+                    filing_status == status.JOINT,
                     filing_status == status.SURVIVING_SPOUSE,
                     filing_status == status.HEAD_OF_HOUSEHOLD,
                 ],
                 [
                     p.rates.lower.single,
                     p.rates.lower.separate,
+                    p.rates.lower.joint,
                     p.rates.lower.surviving_spouse,
                     p.rates.lower.head_of_household,
                 ],
