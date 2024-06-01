@@ -15,7 +15,7 @@ class ny_ctc_worksheet_c(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.ny.tax.income.credits.ctc
         person = tax_unit.members
-        # Line 1 - worksheet a line 6 or worksheet b line 8
+        # ??? Line 1 - worksheet a line 6 or worksheet b line 8: how to grab middle result?
         # federal_adjusted_amount
         # Line 2 -  Worksheet A, line 10 or Worksheet B, line 13
         # ny_ctc_worksheet_a OR ny_ctc_worksheet_b
@@ -25,7 +25,7 @@ class ny_ctc_worksheet_c(Variable):
         )
         # Line 4a
         earned_income = tax_unit("tax_unit_earned_income", period)
-        # Line 4b - Nontaxable combat pay DO WE HAVE THIS???
+        # ??? Line 4b - Nontaxable combat pay DO WE HAVE THIS???
         # Line 5
         adjusted_earned_income = max_(
             earned_income - p.amount.earned_income_adjust_amount, 0
@@ -48,8 +48,14 @@ class ny_ctc_worksheet_c(Variable):
             multi_children_amount, adjusted_earned_income_match
         )
         # Line 9
+        min_multi_children_amount = min_(
+            adjusted_amount, adjusted_multi_children_amount
+        )
+        min_adjusted_earned_income_match = min_(
+            adjusted_amount, adjusted_earned_income_match
+        )
         return where(
             multi_children_family,
-            min_(adjusted_amount, adjusted_multi_children_amount),
-            min_(adjusted_amount, adjusted_earned_income_match),
+            min_multi_children_amount,
+            min_adjusted_earned_income_match,
         )

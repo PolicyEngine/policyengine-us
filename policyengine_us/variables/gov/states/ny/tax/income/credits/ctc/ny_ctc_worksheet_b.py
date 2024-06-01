@@ -36,11 +36,11 @@ class ny_ctc_worksheet_a(Variable):
             tax_unit("filing_status", period)
         ]
         # Line 6
+        agi_round = math.ceil(
+            AGI_with_exclusion_amount - federal_threshold / p.amount.base
+        )
         federal_round_amount = max_(
-            math.ceil(
-                AGI_with_exclusion_amount - federal_threshold / p.amount.base
-            )
-            * p.amount.base,
+            agi_round * p.amount.base,
             0,
         )
         # Line 7
@@ -51,12 +51,36 @@ class ny_ctc_worksheet_a(Variable):
         tax = tax_unit("income_tax", period)
         # Line 10 ccompare agi and recomputed FAGI - skip here, assume they are same
         selected_credit_amount = tax_unit("ny_ctc_federal_credits", period)
+
         # Line 11 - assume claimed any of the mentioned federal credits
         # check if filed federal Form 2555
         foreign_tax_credit_eligible = (
             tax_unit("foreign_tax_credit", period) > 0
         )
-        # line11_amount = where(foreign_tax_credit_eligible, selected_credit_amount, )
+        # Line 11 worksheet
+        # Line 11 - 1: line 8 of worksheet B
+        # ??? Line 11 - 2: only considering earned income here "https://www.irs.gov/pub/irs-prior/i1040s8--2021.pdf#page=10"
+        earned_income_person = person("earned_income", period)
+        earned_income = tax_unit.sum(earned_income_person)
+        # Line 11 - 3: earned income adjustment
+        earned_income_adjustment = max_(
+            earned_income - p.amount.earned_income_adjust_amount, 0
+        )
+        # Line 11 - 4: earned income match
+        earned_income_match = (
+            earned_income_adjustment * p.amount.earned_income_match
+        )
+        # Line 11 - 5: federal adjustment amount
+        # federal_adjusted_amount  > p.amount.earned_income_adjust_amount, earned_income_match >= federal_adjusted_amount: 0
+        # federal_adjusted_amount  > p.amount.earned_income_adjust_amount, earned_income_match < federal_adjusted_amount: line 6
+        # federal_adjusted_amount  > p.amount.earned_income_adjust_amount, earned_income_match > 0
+        # ??? Line 11 - 6: credit limit line 11 "https://www.irs.gov/pub/irs-prior/i1040s8--2021.pdf#page=7"
+        # Line 11 - 7: max_(earned_income_match, credit limit)
+        # Line 11 - 8: federal_adjusted_amount - line 7
+        # ??? Line 11 - 9: credit limit line 15 "https://www.irs.gov/pub/irs-prior/i1040s8--2021.pdf#page=7"
+        # Line 11 - 10: federal_round_amount
+        # Line 11 - 11: line11_amount = where(foreign_tax_credit_eligible, selected_credit_amount, federal_round_amount + credit limit line 15)
+
         # Line 12 = Line 9 - Line 11
         # Line 13 = min_(federal_adjusted_amount, Line 12)
         # return Line 13

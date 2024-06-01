@@ -26,9 +26,9 @@ class ny_ctc_worksheet_a(Variable):
             tax_unit("filing_status", period)
         ]
         # Line 4
+        agi_round = math.ceil(fagi - federal_threshold / p.amount.base)
         federal_round_amount = max_(
-            math.ceil(fagi - federal_threshold / p.amount.base)
-            * p.amount.base,
+            agi_round * p.amount.base,
             0,
         )
         # Line 5
