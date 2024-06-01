@@ -22,6 +22,10 @@ class ar_itemized_deductions_indiv(Variable):
         prorate = np.zeros_like(total_agi)
         mask = total_agi > 0
         prorate[mask] = person_agi[mask] / total_agi[mask]
+        
+        # Round prorate to the nearest percent and then divide by 100
+        prorate = np.round(prorate * 100) / 100
+        
         # Dependents should always return 0 as their AGI is always
         # attributed to the head of the tax unit in ar_agi
         return unit_deds * prorate
