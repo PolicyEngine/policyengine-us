@@ -24,15 +24,19 @@ class tax_unit_taxable_social_security(Variable):
             "tax_unit_combined_income_for_social_security_taxability", period
         )
         filing_status = tax_unit("filing_status", period)
-
+        status = filing_status.possible_values
         separate = filing_status == status.SEPARATE
         cohabitating = tax_unit("cohabitating_spouses", period)
         # Married filing separate who cohabitated has base amount and adj base amount of 0.
-        base_amount = p.threshold.lower[filing_status] * (
-            1 - separate * cohabitating
+        base_amount = where(
+            separate & cohabitating,
+            p.threshold.separate_and_cohabitated,
+            p.threshold.lower[filing_status],
         )
-        adjusted_base_amount = p.threshold.upper[filing_status] * (
-            1 - separate * cohabitating
+        adjusted_base_amount = where(
+            separate & cohabitating,
+            p.threshold.separate_and_cohabitated,
+            p.threshold.upper[filing_status],
         )
 
         under_first_threshold = combined_income < base_amount

@@ -23,5 +23,14 @@ class tax_unit_ss_combined_income_excess(Variable):
         )
         filing_status = tax_unit("filing_status", period)
 
-        base_amount = p.threshold.lower[filing_status]
+        status = filing_status.possible_values
+        separate = filing_status == status.SEPARATE
+        cohabitating = tax_unit("cohabitating_spouses", period)
+        # Married filing separate who cohabitated has base amount and adj base amount of 0.
+        base_amount = where(
+            separate & cohabitating,
+            p.threshold.separate_and_cohabitated,
+            p.threshold.lower[filing_status],
+        )
+
         return max_(0, combined_income - base_amount)
