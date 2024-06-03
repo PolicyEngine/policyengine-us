@@ -2,11 +2,6 @@ description: Maine starts phasing out its personal exemption for filers with Mai
 metadata:
   unit: currency-USD
   period: year
-  uprating:
-    parameter: gov.irs.uprating
-    rounding:
-      type: downwards
-      interval: 50
   label: Maine personal exemption phase-out start
   reference:
     - title: 2023 Instructions for Form 1040ME Line 2
@@ -22,22 +17,57 @@ metadata:
   breakdown:
     - filing_status
 SINGLE:
-  2021-01-01: 279_500
-  2022-01-01: 286_200
-  2023-01-01: 305_150
+  values:
+    2021-01-01: 279_500
+    2022-01-01: 286_200
+    2023-01-01: 305_150
+  metadata:
+    uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
 SEPARATE:
-  2021-01-01: 167_700
-  2022-01-01: 171_700
-  2023-01-01: 183_050
+  values:
+    2021-01-01: 167_700
+    2022-01-01: 171_700
+    2023-01-01: 183_050
+  metadata:
+    uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
 HEAD_OF_HOUSEHOLD:
-  2021-01-01: 307_450
-  2022-01-01: 314_800
-  2023-01-01: 335_650
+  values:
+    2021-01-01: 307_450
+    2022-01-01: 314_800
+    2023-01-01: 335_650
+  metadata:
+    uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
 JOINT:
-  2021-01-01: 335_400
-  2022-01-01: 343_400
-  2023-01-01: 366_100
+  values:
+    2021-01-01: 335_400
+    2022-01-01: 343_400
+    2023-01-01: 366_100
+  metadata:
+    uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
 SURVIVING_SPOUSE:
-  2021-01-01: 335_400
-  2022-01-01: 343_400
-  2023-01-01: 366_100
+  values:
+    2021-01-01: 335_400
+    2022-01-01: 343_400
+    2023-01-01: 366_100
+  metadata:
+    uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50

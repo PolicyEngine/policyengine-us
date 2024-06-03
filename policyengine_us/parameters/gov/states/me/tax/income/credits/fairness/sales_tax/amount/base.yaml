@@ -1,21 +1,56 @@
 description: Maine provides this sales tax fairness credit base amount to filers, based on the filing status.
 SINGLE:
-  2021-01-01: 130
-  2023-01-01: 140
+  values:
+    2021-01-01: 130
+    2023-01-01: 140
+  metadata:
+    uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 5
 JOINT:
-  2021-01-01: 180
-  2022-01-01: 185
-  2023-01-01: 200
+  values:
+    2021-01-01: 180
+    2022-01-01: 185
+    2023-01-01: 200
+  metadata:
+    uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 5
 SEPARATE:
-  2021-01-01: 0
+  values:
+    2021-01-01: 0
+  metadata:
+    uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 5
 HEAD_OF_HOUSEHOLD:
-  2021-01-01: 180
-  2022-01-01: 185
-  2023-01-01: 200
+  values:
+    2021-01-01: 180
+    2022-01-01: 185
+    2023-01-01: 200
+  metadata:
+    uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 5
 SURVIVING_SPOUSE:
-  2021-01-01: 180
-  2022-01-01: 185
-  2023-01-01: 200
+  values:
+    2021-01-01: 180
+    2022-01-01: 185
+    2023-01-01: 200
+  metadata:
+    uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 5
 
 metadata:
   unit: currency-USD
@@ -32,11 +67,6 @@ metadata:
     - title: 2023 Form 1040ME Property Tax Fairness Credit / Sales Tax Fairness Credit
       href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/23_1040me_sched_pstfc_ff.pdf#page=4
   period: year
-  uprating:
-    parameter: gov.irs.uprating
-    rounding:
-      type: downwards
-      interval: 5
   label: Maine sales tax fairness credit base amount
   breakdown:
   - filing_status

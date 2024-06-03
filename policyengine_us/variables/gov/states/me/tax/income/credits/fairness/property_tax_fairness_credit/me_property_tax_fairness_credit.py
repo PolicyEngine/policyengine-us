@@ -47,18 +47,30 @@ class me_property_tax_fairness_credit(Variable):
 
         cap = max_(head_cap, spouse_cap)
 
-        credit = min_(uncapped_credit, cap)
+        base_credit = min_(uncapped_credit, cap)
 
-        # compute permanently and totally disabled veterans's credit
-        disabled_veterans = add(
-            tax_unit, period, ["is_fully_disabled_service_connected_veteran"]
-        )
-        permanently_disabled_veterans = add(
-            tax_unit, period, ["is_permanently_disabled_veteran"]
-        )
-        qualified_veterans = (
-            disabled_veterans and permanently_disabled_veterans
-        )
-        qualified_veterans_credit = credit * 2
+        if not p.veterants_in_effect:
+            return min_(rent_and_property_tax, base_credit)
+        else:
+            # compute permanently and totally disabled veterans's credit
+            person = tax_unit.members
+            disabled_service_connected_veteran = person(
+                "is_fully_disabled_service_connected_veteran", period
+            )
+            permanently_disabled_veteran = person(
+                "is_permanently_disabled_veteran", period
+            )
+            qualified_disabled_veteran_present = tax_unit.any(
+                disabled_service_connected_veteran
+                | permanently_disabled_veteran
+            )
 
-        return qualified_veterans_credit if qualified_veterans else credit
+            qualified_veterans_credit = (
+                base_credit * p.veterants_credit_multiply_factor
+            )
+            qualified_veterans_credit_final = where(
+                qualified_disabled_veteran_present,
+                qualified_veterans_credit,
+                base_credit,
+            )
+            return min_(rent_and_property_tax, qualified_veterans_credit_final)
