@@ -7338,3 +7338,15 @@
     fixed:
     - Add health insurance premiums to SNAP excess medical expense deduction.
   date: 2024-05-26 01:22:36
+- bump: patch
+  changes:
+    fixed:
+    - Arkansas tax unit itemizes decision based on the federal itemization.
+    - Create a separate Virginia deductions variable.
+  date: 2024-05-30 13:22:45
+- bump: minor
+  changes:
+    added:
+    - Add Montana taxable social security benefits.
+    - Fix Montana agi formula.
+  date: 2024-05-31 11:59:03
