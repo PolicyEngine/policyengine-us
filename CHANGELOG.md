@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.778.0] - 2024-05-31 11:59:03
+
+### Added
+
+- Add Montana taxable social security benefits.
+- Fix Montana agi formula.
+
 ## [0.777.7] - 2024-05-30 13:22:45
 
 ### Fixed
@@ -8693,6 +8700,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.778.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.777.7...0.778.0
 [0.777.7]: https://github.com/PolicyEngine/policyengine-us/compare/0.777.6...0.777.7
 [0.777.6]: https://github.com/PolicyEngine/policyengine-us/compare/0.777.5...0.777.6
 [0.777.5]: https://github.com/PolicyEngine/policyengine-us/compare/0.777.4...0.777.5
