@@ -79,6 +79,15 @@
   output:
     tax_unit_ss_combined_income_excess: 80_000
 
+- name: Separate filing and cohabitated with combined income slightly greater than base amount
+  period: 2022
+  input:
+    tax_unit_combined_income_for_social_security_taxability: 100
+    filing_status: SEPARATE
+    cohabitating_spouses: true
+  output:
+    tax_unit_ss_combined_income_excess: 100
+
 - name: Widow filing with combined income greater than base amount
   period: 2022
   input:
