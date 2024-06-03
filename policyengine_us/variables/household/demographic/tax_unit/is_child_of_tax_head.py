@@ -9,4 +9,5 @@ class is_child_of_tax_head(Variable):
 
     def formula(person, period, parameters):
         is_child_of_tax_head = person("is_child", period)
-        return is_child_of_tax_head
+        is_dependent = person("is_tax_unit_dependent", period)
+        return is_child_of_tax_head & is_dependent

@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ca_la_life_eligibility(Variable):
     value_type = bool
     entity = Person
-    label = "LA metro LIFE program eligibility"
+    label = "LA metro LIFE eligibility"
     definition_period = YEAR
     defined_for = "in_la"
 
@@ -13,7 +13,7 @@ class ca_la_life_eligibility(Variable):
 
         household_size = person.household("household_size", period)
         household_income = person.household("household_net_income", period)
-        income_eligible = household_income <= p.eligibility.calc(
+        income_eligible = household_income <= p.income_threshold.calc(
             household_size
         )
 
@@ -25,17 +25,8 @@ class ca_la_life_eligibility(Variable):
         else:
             age_eligible = True
 
-        snap_eligible = person.spm_unit("is_snap_eligible", period)
-        social_security_eligible = person("social_security", period) > 0
-        social_security_disability_eligible = (
-            person("social_security_disability", period) > 0
+        ca_la_life_program_eligible = (
+            person("ca_la_life_program_eligible", period) > 0
         )
-        tanf_eligible = person.spm_unit("is_tanf_eligible", period)
 
-        return age_eligible & (
-            income_eligible
-            | snap_eligible
-            | social_security_eligible
-            | social_security_disability_eligible
-            | tanf_eligible
-        )
+        return age_eligible & (income_eligible | ca_la_life_program_eligible)
