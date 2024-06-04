@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ca_la_life_eligibility(Variable):
     value_type = bool
     entity = Person
-    label = "LA metro LIFE eligibility"
+    label = "Los Angeles metro LIFE eligibility"
     definition_period = YEAR
     defined_for = "in_la"
 
@@ -18,14 +18,13 @@ class ca_la_life_eligibility(Variable):
         )
 
         is_child = person("is_child", period)
+        child_of_head = person("is_child_of_tax_head", period)
         age_eligible = where(
             is_child,
-            person("is_child_of_tax_head", period),
+            child_of_head,
             True,
         )
 
-        ca_la_life_program_eligible = (
-            person("ca_la_life_program_eligible", period) > 0
-        )
+        program_eligible = person("ca_la_life_program_eligible", period)
 
-        return age_eligible & (income_eligible | ca_la_life_program_eligible)
+        return age_eligible & (income_eligible | program_eligible)
