@@ -18,12 +18,11 @@ class ca_la_life_eligibility(Variable):
         )
 
         is_child = person("is_child", period)
-        if is_child:
-            age_eligible = person("is_child_of_tax_head", period) & (
-                household_size >= 2
-            )
-        else:
-            age_eligible = True
+        age_eligible = where(
+            is_child,
+            person("is_child_of_tax_head", period),
+            True,
+        )
 
         ca_la_life_program_eligible = (
             person("ca_la_life_program_eligible", period) > 0
