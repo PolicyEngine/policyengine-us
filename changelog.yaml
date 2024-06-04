@@ -7356,3 +7356,8 @@
     - Remove Social Security from the Montana additions parameter.
     - Pin core to <2.22.
   date: 2024-06-03 17:08:14
+- bump: patch
+  changes:
+    fixed:
+    - Round Arkansas deduction allocation fraction to nearest whole percent.
+  date: 2024-06-04 00:24:56
