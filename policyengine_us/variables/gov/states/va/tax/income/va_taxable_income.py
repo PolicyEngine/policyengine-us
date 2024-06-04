@@ -15,10 +15,7 @@ class va_taxable_income(Variable):
 
     def formula(tax_unit, period, parameters):
         agi = tax_unit("va_agi", period)
-        std_ded = tax_unit("va_standard_deduction", period)
-        itm_ded = tax_unit("va_itemized_deductions", period)
-        itemizes = tax_unit("tax_unit_itemizes", period)
-        ded = where(itemizes, itm_ded, std_ded)
+        ded = tax_unit("va_deductions", period)
         exemptions = tax_unit("va_total_exemptions", period)
         total_deductions = ded + exemptions
         # Virginia allows a deduction (atop itemized deductions) for the

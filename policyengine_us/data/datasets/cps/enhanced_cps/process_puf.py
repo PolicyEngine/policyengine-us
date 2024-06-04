@@ -58,7 +58,7 @@ codebook = {
     "E07200": "elderly_disabled_credit",
     "E07220": "child_tax_credit",
     "E07230": "education_credits",
-    "E07240": "retirement_savings_credit",
+    "E07240": "savers_credit",
     "E07260": "residential_energy_credit",
     "E07300": "foreign_tax_credit",
     "E07400": "general_business_credit",
@@ -302,7 +302,7 @@ FINANCIAL_SUBSET = [
     "taxable_social_security",
     "taxable_ira_distributions",
     "casualty_loss",
-    "retirement_savings_credit",
+    "savers_credit",
     "misc_deduction",
     "interest_expense",
     "unrecaptured_section_1250_gain",
@@ -327,15 +327,21 @@ FINANCIAL_SUBSET = [
 ]
 
 
-def load_puf() -> Tuple[pd.DataFrame, pd.DataFrame]:
+def load_puf(
+    puf_file_path: str = None, puf_demographics_path: str = None
+) -> Tuple[pd.DataFrame, pd.DataFrame]:
     """Load the PUF and demographics data.
 
     Returns:
         puf (pd.DataFrame): The PUF data.
         puf_with_demographics (pd.DataFrame): The subset of the PUF data that has demographic information.
     """
-    puf = pd.read_csv("~/Downloads/puf_2015.csv").fillna(0)
-    demographics = pd.read_csv("~/Downloads/demographics_2015.csv")
+    if puf_file_path is None:
+        puf_file_path = "~/Downloads/puf_2015.csv"
+    if puf_demographics_path is None:
+        puf_demographics_path = "~/Downloads/demographics_2015.csv"
+    puf = pd.read_csv(puf_file_path).fillna(0)
+    demographics = pd.read_csv(puf_demographics_path).fillna(0)
 
     demographics = demographics.dropna()
 
