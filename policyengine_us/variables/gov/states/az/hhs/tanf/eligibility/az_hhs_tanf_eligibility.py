@@ -14,7 +14,6 @@ class az_hhs_tanf_eligibility(Variable):
         household_size = spm_unit("spm_unit_size", period)
         fpg = spm_unit("spm_unit_fpg", period)
         monthly_fpg = fpg / MONTHS_IN_YEAR
-        print(monthly_fpg)
         monthly_countable_earned_income = spm_unit(
             "az_tanf_hhs_earned_income", period
         )
@@ -34,4 +33,4 @@ class az_hhs_tanf_eligibility(Variable):
             monthly_countable_earned_income <= payment_standard_threshold
         )
         # The family is eligible for cash assistance only when the two criteria are fitted at the same time
-        return fpg_eligibility and payment_standard_eligibility
+        return fpg_eligibility & payment_standard_eligibility

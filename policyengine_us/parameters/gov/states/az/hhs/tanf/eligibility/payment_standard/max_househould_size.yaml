@@ -1,0 +1,11 @@
+description: Arizona limits the cash assistance to filers with participants(household size) below this number.
+metadata:
+  unit: int
+  label: Arizona cash assistance max household size
+  period: month
+  reference:
+    - title: Arizona Department of Economic Security - Cash Assistance (CA) Income Eligibility Guidelines
+      href: https://des.az.gov/services/child-and-family/cash-assistance/cash-assistance-ca-income-eligibility-guidelines
+
+values:
+  2023-01-01: 12
