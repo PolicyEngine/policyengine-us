@@ -9,7 +9,7 @@ class az_cash_assistance(Variable):
     reference = (
         "https://az.db101.org/az/programs/income_support/tanf/program2.htm"
     )
-    defined_for = StateCode.AZ
+    defined_for = "az_hhs_tanf_eligibility"
 
     def formula(spm_unit, period, parameters):
         household_size = spm_unit("spm_unit_size", period)
