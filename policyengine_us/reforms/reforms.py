@@ -19,6 +19,7 @@ from .biden.budget_2025 import (
 )
 from .biden.budget_2025 import create_capital_gains_tax_increase_reform
 from .co_general_assembly import create_co_family_affordability_credit_reform
+from .states.il import create_il_child_tax_credit_reform
 from policyengine_core.reforms import Reform
 import warnings
 
@@ -58,6 +59,7 @@ def create_structural_reforms_from_parameters(parameters, period):
     co_family_affordability_credit = (
         create_co_family_affordability_credit_reform(parameters, period)
     )
+    il_child_tax_credit = create_il_child_tax_credit_reform(parameters, period)
 
     reforms = [
         afa_reform,
@@ -73,6 +75,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         medicare_and_investment_tax_increase,
         capital_gains_tax_increase,
         co_family_affordability_credit,
+        il_child_tax_credit,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
 

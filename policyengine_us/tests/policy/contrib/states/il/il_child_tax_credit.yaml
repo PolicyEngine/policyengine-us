@@ -1,0 +1,111 @@
+- name: Single parent with one eligible child and no income
+  period: 2024
+  reforms: policyengine_us.reforms.states.il.il_child_tax_credit.il_child_tax_credit
+  input:
+    gov.contrib.states.il.child_tax_credit.amount: 300
+    people:
+      head:
+        age: 30
+      dependent:
+        age: 1
+    households:
+      household:
+        members: [head, dependent]
+        state_code: IL
+    tax_units:
+      tax_unit: 
+        members: [head, dependent]
+        adjusted_gross_income: 0
+        ctc_qualifying_children: 1
+    families:
+      family:
+        members: [head, dependent]
+        is_married: false
+  output:
+    il_child_tax_credit: 300
+
+- name: Single parent with one eligible child and 60,000 of income
+  period: 2024
+  reforms: policyengine_us.reforms.states.il.il_child_tax_credit.il_child_tax_credit
+  input:
+    gov.contrib.states.il.child_tax_credit.amount: 300
+    people:
+      head:
+        age: 30
+      dependent:
+        age: 1
+    households:
+      household:
+        members: [head, dependent]
+        state_code: IL
+    tax_units:
+      tax_unit: 
+        members: [head, dependent]
+        adjusted_gross_income: 60_000
+        ctc_qualifying_children: 1
+    families:
+      family:
+        members: [head, dependent]
+        is_married: false
+  output:
+    il_child_tax_credit: 100
+
+- name: Married couple with two eligible children and 60,000 of income
+  period: 2024
+  reforms: policyengine_us.reforms.states.il.il_child_tax_credit.il_child_tax_credit
+  input:
+    gov.contrib.states.il.child_tax_credit.amount: 300
+    people:
+      head:
+        age: 30
+      spouse:
+        age: 30
+      dependent:
+        age: 1
+      dependent2:
+        age: 1
+    households:
+      household:
+        members: [head, spouse, dependent, dependent2]
+        state_code: IL
+    tax_units:
+      tax_unit: 
+        members: [head, spouse, dependent, dependent2]
+        adjusted_gross_income: 60_000
+        ctc_qualifying_children: 2
+    families:
+      family:
+        members: [head, dependent]
+        is_married: true
+  output:
+    il_child_tax_credit: 600
+
+- name: Married couple with two eligible children and 200,000 of income
+  period: 2024
+  reforms: policyengine_us.reforms.states.il.il_child_tax_credit.il_child_tax_credit
+  input:
+    gov.contrib.states.il.child_tax_credit.amount: 300
+    people:
+      head:
+        age: 30
+      spouse:
+        age: 30
+      dependent:
+        age: 1
+      dependent2:
+        age: 1
+    households:
+      household:
+        members: [head, spouse, dependent, dependent2]
+        state_code: IL
+    tax_units:
+      tax_unit: 
+        members: [head, spouse, dependent, dependent2]
+        adjusted_gross_income: 200_000
+        ctc_qualifying_children: 2
+    families:
+      family:
+        members: [head, dependent]
+        is_married: true
+  output:
+    il_child_tax_credit: 0
