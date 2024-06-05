@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class il_child_tax_credit(Variable):
+class il_ctc(Variable):
     value_type = float
     entity = TaxUnit
     label = "Illinois Child Tax Credit"
@@ -15,9 +15,8 @@ class il_child_tax_credit(Variable):
         agi = tax_unit("adjusted_gross_income", period)
         larger_income = max_(earned_income, agi)
         p = parameters(period).gov.states.il.tax.income.credits.ctc
-        amount = p.amount
         children = tax_unit("ctc_qualifying_children", period)
-        base_amount = amount * children
+        base_amount = p.amount * children
         filing_status = tax_unit("filing_status", period)
         joint = filing_status == filing_status.possible_values.JOINT
         phase_out = where(

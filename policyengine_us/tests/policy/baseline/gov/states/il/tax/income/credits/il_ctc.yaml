@@ -18,7 +18,7 @@
         filing_status: HEAD_OF_HOUSEHOLD
         tax_unit_earned_income: 0
   output:
-    il_child_tax_credit: 300
+    il_ctc: 300
 
 - name: Single parent with one eligible child and 60,000 of income
   period: 2024
@@ -40,7 +40,7 @@
         filing_status: SINGLE
         tax_unit_earned_income: 40_000
   output:
-    il_child_tax_credit: 100
+    il_ctc: 100
 
 - name: Married couple with two eligible children and 60,000 of income
   period: 2024
@@ -66,7 +66,7 @@
         ctc_qualifying_children: 2
         filing_status: JOINT
   output:
-    il_child_tax_credit: 600
+    il_ctc: 600
 
 - name: Married couple with two eligible children and 200,000 of income
   period: 2024
@@ -92,4 +92,4 @@
         filing_status: JOINT
         ctc_qualifying_children: 2
   output:
-    il_child_tax_credit: 0
+    il_ctc: 0
