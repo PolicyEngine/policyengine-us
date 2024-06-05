@@ -17,10 +17,8 @@
         members: [head, dependent]
         adjusted_gross_income: 0
         ctc_qualifying_children: 1
-    families:
-      family:
-        members: [head, dependent]
-        is_married: false
+        filing_status: HEAD_OF_HOUSEHOLD
+        tax_unit_earned_income: 0
   output:
     il_child_tax_credit: 300
 
@@ -43,10 +41,8 @@
         members: [head, dependent]
         adjusted_gross_income: 60_000
         ctc_qualifying_children: 1
-    families:
-      family:
-        members: [head, dependent]
-        is_married: false
+        filing_status: SINGLE
+        tax_unit_earned_income: 40_000
   output:
     il_child_tax_credit: 100
 
@@ -72,11 +68,9 @@
       tax_unit: 
         members: [head, spouse, dependent, dependent2]
         adjusted_gross_income: 60_000
+        tax_unit_earned_income: 50_000
         ctc_qualifying_children: 2
-    families:
-      family:
-        members: [head, dependent]
-        is_married: true
+        filing_status: JOINT
   output:
     il_child_tax_credit: 600
 
@@ -101,11 +95,9 @@
     tax_units:
       tax_unit: 
         members: [head, spouse, dependent, dependent2]
-        adjusted_gross_income: 200_000
+        adjusted_gross_income: 40_000
+        tax_unit_earned_income: 200_000
+        filing_status: JOINT
         ctc_qualifying_children: 2
-    families:
-      family:
-        members: [head, dependent]
-        is_married: true
   output:
     il_child_tax_credit: 0

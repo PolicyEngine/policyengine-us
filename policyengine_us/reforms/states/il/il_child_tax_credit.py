@@ -12,16 +12,19 @@ def create_il_child_tax_credit() -> Reform:
         defined_for = StateCode.IL
 
         def formula(tax_unit, period, parameters):
-            income = tax_unit("adjusted_gross_income", period)
+            earned_income = tax_unit("tax_unit_earned_income", period)
+            agi = tax_unit("adjusted_gross_income", period)
+            larger_income = max_(earned_income, agi)
             p = parameters(period).gov.contrib.states.il.child_tax_credit
             amount = p.amount
             children = tax_unit("ctc_qualifying_children", period)
             base_amount = amount * children
-            married = tax_unit.family("is_married", period)
+            filing_status = tax_unit("filing_status", period)
+            joint = filing_status == filing_status.possible_values.JOINT
             phase_out = where(
-                married,
-                p.reduction.married.calc(income),
-                p.reduction.single.calc(income),
+                joint,
+                p.reduction.joint.calc(larger_income),
+                p.reduction.other.calc(larger_income),
             )
             return max_(base_amount - phase_out, 0)
 
