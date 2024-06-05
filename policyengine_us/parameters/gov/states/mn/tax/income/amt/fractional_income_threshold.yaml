@@ -18,52 +18,52 @@ metadata:
     href: https://www.revenue.state.mn.us/sites/default/files/2023-12/m1mt-23.pdf#page=1
 
 JOINT:
-  2021-01-01: 79_660
-  2022-01-01: 82_150
-  2023-01-01: 87_960
+  values:
+    2021-01-01: 79_660
+    2022-01-01: 82_150
+    2023-01-01: 87_960
   metadata:
-    uprating:
-    parameter: gov.irs.uprating
+    uprating: gov.irs.uprating
     rounding:
       type: nearest
       interval: 10
 HEAD_OF_HOUSEHOLD:
-  2021-01-01: 59_750
-  2022-01-01: 61_610
-  2023-01-01: 65_970
+  values:
+    2021-01-01: 59_750
+    2022-01-01: 61_610
+    2023-01-01: 65_970
   metadata:
-    uprating:
-    parameter: gov.irs.uprating
+    uprating: gov.irs.uprating
     rounding:
       type: nearest
       interval: 10
 SURVIVING_SPOUSE:
-  2021-01-01: 79_660
-  2022-01-01: 82_150
-  2023-01-01: 87_960
+  values:
+    2021-01-01: 79_660
+    2022-01-01: 82_150
+    2023-01-01: 87_960
   metadata:
-    uprating:
-    parameter: gov.irs.uprating
+    uprating: gov.irs.uprating
     rounding:
       type: nearest
       interval: 10
 SINGLE:
-  2021-01-01: 59_750
-  2022-01-01: 61_610
-  2023-01-01: 65_970
+  values:
+    2021-01-01: 59_750
+    2022-01-01: 61_610
+    2023-01-01: 65_970
   metadata:
-    uprating:
-    parameter: gov.irs.uprating
+    uprating: gov.irs.uprating
     rounding:
       type: nearest
       interval: 10
 SEPARATE:
-  2021-01-01: 39_840
-  2022-01-01: 41_080
-  2023-01-01: 43_990
+  values:
+    2021-01-01: 39_840
+    2022-01-01: 41_080
+    2023-01-01: 43_990
   metadata:
-    uprating:
-    parameter: gov.irs.uprating
+    uprating: gov.irs.uprating
     rounding:
       type: nearest
       interval: 10
