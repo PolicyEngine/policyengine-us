@@ -40,6 +40,9 @@ brackets:
       2023-01-01: 4_050
     metadata:
       uprating: gov.irs.uprating
+      rounding:
+        type: downwards
+        interval: 50
     rate:
       2017-01-01: 0.07
       2020-01-01: 0.0675
@@ -54,6 +57,9 @@ brackets:
       2023-01-01: 10_200
     metadata:
       uprating: gov.irs.uprating
+      rounding:
+        type: downwards
+        interval: 50
     rate:
       2017-01-01: 0.09
       2020-01-01: 0.0875
