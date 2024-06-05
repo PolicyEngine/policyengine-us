@@ -3,7 +3,6 @@ metadata:
   unit: currency-USD
   period: year
   label: Illinois Child Tax Credit amount
-  uprating: gov.irs.uprating
   reference:
     - title: Niskanen Center Proposed Illinois Child Tax Credit is a step in the right direction
       href: https://www.niskanencenter.org/proposed-illinois-child-tax-credit-is-a-step-in-the-right-direction/
@@ -11,4 +10,6 @@ metadata:
       href: https://www.ilga.gov/legislation/fulltext.asp?DocName=&SessionId=112&GA=103&DocTypeId=HB&DocNum=4917&GAID=17&LegID=152789&SpecSess=&Session=
 
 values:
-  2024-01-01: 0 # 300
+  2024-01-01: 300
+  # Value uprated starting in 2026
+  2025-01-01: 300

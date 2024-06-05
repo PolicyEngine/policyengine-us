@@ -1,8 +1,6 @@
 - name: Single parent with one eligible child and no income
   period: 2024
-  reforms: policyengine_us.reforms.states.il.il_child_tax_credit.il_child_tax_credit
   input:
-    gov.contrib.states.il.child_tax_credit.amount: 300
     people:
       head:
         age: 30
@@ -24,9 +22,7 @@
 
 - name: Single parent with one eligible child and 60,000 of income
   period: 2024
-  reforms: policyengine_us.reforms.states.il.il_child_tax_credit.il_child_tax_credit
   input:
-    gov.contrib.states.il.child_tax_credit.amount: 300
     people:
       head:
         age: 30
@@ -48,9 +44,7 @@
 
 - name: Married couple with two eligible children and 60,000 of income
   period: 2024
-  reforms: policyengine_us.reforms.states.il.il_child_tax_credit.il_child_tax_credit
   input:
-    gov.contrib.states.il.child_tax_credit.amount: 300
     people:
       head:
         age: 30
@@ -76,9 +70,7 @@
 
 - name: Married couple with two eligible children and 200,000 of income
   period: 2024
-  reforms: policyengine_us.reforms.states.il.il_child_tax_credit.il_child_tax_credit
   input:
-    gov.contrib.states.il.child_tax_credit.amount: 300
     people:
       head:
         age: 30
