@@ -7308,3 +7308,66 @@
     added:
     - Weekly hours worked.
   date: 2024-05-18 09:25:41
+- bump: patch
+  changes:
+    added:
+    - Automatic version updating for household API
+  date: 2024-05-21 16:34:59
+- bump: patch
+  changes:
+    fixed:
+    - Adjust the Los Angeles income types to exclude basic income.
+  date: 2024-05-22 17:28:57
+- bump: patch
+  changes:
+    fixed:
+    - Bug causing State taxes to not have effects in microsimulations.
+  date: 2024-05-24 12:51:32
+- bump: patch
+  changes:
+    fixed:
+    - Randomness in baseline tax results across model runs.
+  date: 2024-05-24 13:34:27
+- bump: patch
+  changes:
+    fixed:
+    - Self-employment income not available after initial microdata year.
+  date: 2024-05-24 19:15:18
+- bump: patch
+  changes:
+    fixed:
+    - Add health insurance premiums to SNAP excess medical expense deduction.
+  date: 2024-05-26 01:22:36
+- bump: patch
+  changes:
+    fixed:
+    - Arkansas tax unit itemizes decision based on the federal itemization.
+    - Create a separate Virginia deductions variable.
+  date: 2024-05-30 13:22:45
+- bump: minor
+  changes:
+    added:
+    - Add Montana taxable social security benefits.
+    - Fix Montana agi formula.
+  date: 2024-05-31 11:59:03
+- bump: minor
+  changes:
+    added:
+    - Remove Social Security from the Montana additions parameter.
+    - Pin core to <2.22.
+  date: 2024-06-03 17:08:14
+- bump: patch
+  changes:
+    fixed:
+    - Round Arkansas deduction allocation fraction to nearest whole percent.
+  date: 2024-06-04 00:24:56
+- bump: patch
+  changes:
+    fixed:
+    - Add New Mexico and New Jersey credits to the net income tree.
+  date: 2024-06-04 21:01:00
+- bump: minor
+  changes:
+    added:
+    - Illinois Child Tax Credit Reform.
+  date: 2024-06-05 17:25:11

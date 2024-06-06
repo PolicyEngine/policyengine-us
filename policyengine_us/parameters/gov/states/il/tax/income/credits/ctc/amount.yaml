@@ -1,0 +1,16 @@
+description: Illinois provides the following child tax credit amount for each individual child.
+metadata:
+  unit: currency-USD
+  period: year
+  label: Illinois Child Tax Credit amount
+  uprating: gov.irs.uprating
+  reference:
+    - title: Niskanen Center Proposed Illinois Child Tax Credit is a step in the right direction
+      href: https://www.niskanencenter.org/proposed-illinois-child-tax-credit-is-a-step-in-the-right-direction/
+    - title: 103RD GENERAL ASSEMBLY State of Illinois 2023 and 2024 HB4917 (d) (1)
+      href: https://www.ilga.gov/legislation/fulltext.asp?DocName=&SessionId=112&GA=103&DocTypeId=HB&DocNum=4917&GAID=17&LegID=152789&SpecSess=&Session=
+
+values:
+  2024-01-01: 300
+  # Value uprating starting in 2026
+  2025-01-01: 300
