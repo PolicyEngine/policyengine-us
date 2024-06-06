@@ -23,7 +23,7 @@ class co_family_affordability_credit(Variable):
         agi = person.tax_unit("adjusted_gross_income", period)
         filing_status = person.tax_unit("filing_status", period)
         phase_out_start = p.income_reduction.start[filing_status]
-        phase_out_amount = p.income_reduction.amount
+        phase_out_amount = p.income_reduction.rate
         phase_out_increment = p.income_reduction.increment
         excess = max_(agi - phase_out_start, 0)
         increments = np.ceil(excess / phase_out_increment)
