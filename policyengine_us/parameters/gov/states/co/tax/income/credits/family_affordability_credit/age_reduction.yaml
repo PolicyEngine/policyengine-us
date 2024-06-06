@@ -1,9 +1,9 @@
-description: The Colorado General Assembly proposed a family affordability tax credit of this amount, based on the child age.
+description: The Colorado family affordability tax credit is reduced based on the age of the child.
 metadata:
-  label: Colorado General Assembly family affordability tax credit amount
+  label: Colorado family affordability tax credit age-based reductions
   type: single_amount
   threshold_unit: year
-  amount_unit: currency-USD
+  amount_unit: /1
   period: year
   reference:
     - title: Colorado General Assembly House Bill 24-1311 Family Affordability Tax Credit
@@ -12,11 +12,11 @@ brackets:
   - threshold:
       2024-01-01: 0
     amount:
-      2024-01-01: 0 # 3_200
+      2024-01-01: 100
   - threshold:
       2024-01-01: 6
     amount:
-      2024-01-01: 0 # 2_400
+      2024-01-01: 75
   - threshold:
       2024-01-01: 17
     amount:
