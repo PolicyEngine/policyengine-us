@@ -1,6 +1,7 @@
 from policyengine_us.model_api import *
 
-#FIXME: This is boilerplate taken directly from the reform code.
+# FIXME: This is boilerplate taken directly from the reform code.
+
 
 class co_family_affordability_credit(Variable):
     value_type = float
@@ -10,6 +11,7 @@ class co_family_affordability_credit(Variable):
     definition_period = YEAR
     reference = "https://leg.colorado.gov/bills/hb24-1311"
     defined_for = StateCode.CO
+
     def formula(person, period, parameters):
         age = person("age", period)
         dependent = person("is_child_dependent", period)
