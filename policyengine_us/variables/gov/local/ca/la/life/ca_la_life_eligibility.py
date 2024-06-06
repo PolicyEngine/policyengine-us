@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ca_la_life_eligibility(Variable):
     value_type = bool
     entity = Person
-    label = "Los Angeles metro LIFE eligibility"
+    label = "Eligiblility for the Los Angeles metro LIFE"
     definition_period = YEAR
     defined_for = "in_la"
 

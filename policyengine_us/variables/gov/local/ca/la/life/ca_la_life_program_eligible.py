@@ -4,13 +4,13 @@ from policyengine_us.model_api import *
 class ca_la_life_program_eligible(Variable):
     value_type = bool
     entity = Person
-    label = "Los Angeles metro LIFE program eligibility"
+    label = "Eligible for the Los Angeles metro LIFE program"
     definition_period = YEAR
     defined_for = "in_la"
 
     def formula(person, period, parameters):
-        program_eligible = add(
-            person,
+        applicable_programs = add(
+            person.spm_unit,
             period,
             [
                 "snap",
@@ -19,4 +19,5 @@ class ca_la_life_program_eligible(Variable):
                 "tanf",
             ],
         )
-        return program_eligible > 0
+
+        return applicable_programs > 0
