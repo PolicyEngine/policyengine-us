@@ -29,7 +29,7 @@ class tax_unit_ss_combined_income_excess(Variable):
         # Cohabitating married couples filing separately receive a base amount of 0
         base_amount = where(
             separate & cohabitating,
-            p.threshold.separate_and_cohabitated,
+            p.threshold.separate_and_cohabitated_base,
             p.threshold.lower[filing_status],
         )
 

@@ -31,12 +31,12 @@ class tax_unit_taxable_social_security(Variable):
         # and adjusted base amount of 0
         base_amount = where(
             separate & cohabitating,
-            p.threshold.separate_and_cohabitated,
+            p.threshold.separate_and_cohabitated_base,
             p.threshold.lower[filing_status],
         )
         adjusted_base_amount = where(
             separate & cohabitating,
-            p.threshold.separate_and_cohabitated,
+            p.threshold.separate_and_cohabitated_additional,
             p.threshold.upper[filing_status],
         )
 
