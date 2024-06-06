@@ -20,9 +20,12 @@ class ar_additional_credit(Variable):
         )
         p = parameter(period).gov.states.ar.tax.income.credits.additional
         # Only head or spouse can claim this credit
-        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         # The credit amount is doubled for married couples filing jointly
-        amount = p.amount.calc(taxable_income, right=True)
-        joint_parameter = 2
-        total_amount = where(filing_separately, amount, amount * joint_parameter)
+        single_amount = p.amount.calc(taxable_income, right=True)
+        total_amount = where(
+            filing_separately,
+            single_amount,
+            single_amount * p.joint_multiplier,
+        )
+        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         return total_amount * head_or_spouse
