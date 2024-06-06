@@ -13,7 +13,7 @@
   absolute_error_margin: 0.01
   input:
     irs_employment_income: 15_000
-    filing_status: WIDOW
+    filing_status: SURVIVING_SPOUSE
     state_code: MS
   output:
     ms_withheld_income_tax: 335
@@ -23,7 +23,7 @@
   absolute_error_margin: 0.01
   input:
     irs_employment_income: 7_000
-    filing_status: WIDOW
+    filing_status: SURVIVING_SPOUSE
     state_code: MS
   output:
     ms_withheld_income_tax: 0

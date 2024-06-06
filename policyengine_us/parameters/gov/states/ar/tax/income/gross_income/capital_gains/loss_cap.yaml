@@ -1,0 +1,32 @@
+description: Arkansas taxes the capital gain loss up to this amount, based on filing status.
+metadata:
+  unit: currency-USD
+  period: year
+  breakdown:
+    - filing_status
+  label: Arkansas long-term capital gains tax loss cap
+  reference:
+  # The loss threshold is not defined in the legal code
+    - title: Arkansas Code Title 26. Taxation § 26-51-815. Capital gains and losses 
+      href: https://codes.findlaw.com/ar/title-26-taxation/ar-code-sect-26-51-815.html
+    - title: Arkansas 2021 AR1000D 
+      href: https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2021_AR1000D_CapitalGains.pdf#page=1
+    - title: Arkansas 2022 AR1000D 
+      href: https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2022_AR1000D_CapitalGains.pdf#page=1
+    - title: Arkansas 2023 AR1000D 
+      href: https://www.taxformfinder.org/forms/2023/2023-arkansas-form-ar1000d.pdf#page=1
+# Filing status 2
+JOINT:
+  2021-01-01: 3_000
+# Filing status 3
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 3_000
+# Filing status 6
+SURVIVING_SPOUSE:
+  2021-01-01: 3_000
+# Filing status 1
+SINGLE:
+  2021-01-01: 3_000
+# Filing status 4
+SEPARATE:
+  2021-01-01: 1_500

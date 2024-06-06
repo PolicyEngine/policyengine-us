@@ -22,7 +22,7 @@ class me_sales_tax_fairness_credit(Variable):
             [
                 filing_status == status.JOINT,
                 filing_status == status.HEAD_OF_HOUSEHOLD,
-                filing_status == status.WIDOW,
+                filing_status == status.SURVIVING_SPOUSE,
             ],
             [
                 p.amount.additional.joint.calc(children),

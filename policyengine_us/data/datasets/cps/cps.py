@@ -205,6 +205,8 @@ def add_personal_variables(cps: h5py.File, person: DataFrame) -> None:
 
     cps["is_widowed"] = person.A_MARITL == 4
     cps["is_separated"] = person.A_MARITL == 6
+    # High school or college/university enrollment status.
+    cps["is_full_time_college_student"] = person.A_HSCOL == 2
 
 
 def add_personal_income_variables(
@@ -228,6 +230,9 @@ def add_personal_income_variables(
 
     # Assign CPS variables.
     cps["employment_income"] = person.WSAL_VAL
+
+    cps["weekly_hours_worked"] = person.HRSWK * person.WKSWORK / 52
+
     cps["taxable_interest_income"] = person.INT_VAL * (
         p["taxable_interest_fraction"]
     )
@@ -556,13 +561,4 @@ class CPS_2022(CPS):
     previous_year_raw_cps = RawCPS_2021
     file_path = STORAGE_FOLDER / "cps_2022.h5"
     time_period = 2022
-
-
-CPS_2023 = UpratedCPS.from_dataset(
-    CPS_2022,
-    2023,
-    "cps_2023",
-    "CPS 2023",
-    STORAGE_FOLDER / "cps_2023.h5",
-    new_url="release://policyengine/policyengine-us/cps-2023/cps_2023.h5",
-)
+    url = "release://policyengine/policyengine-us/cps-2022/cps_2022.h5"

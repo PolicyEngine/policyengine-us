@@ -15,7 +15,7 @@ HEAD_OF_HOUSEHOLD:
   2021-01-01: 78_000
   2022-01-01: 80_000
   2023-01-01: 86_000
-WIDOW:
+SURVIVING_SPOUSE:
   2001-01-01: 40_000
   2021-01-01: 62_000
   2022-01-01: 64_000
@@ -30,7 +30,7 @@ metadata:
   period: year
   breakdown:
     - filing_status
-  label: MA Senior Circuit Breaker maximum income
+  label: Massachusetts Senior Circuit Breaker maximum income
   reference:
     - title: Mass. General Laws c.62 § 6(k)(3)(i)
       href: https://www.mass.gov/info-details/mass-general-laws-c62-ss-6
