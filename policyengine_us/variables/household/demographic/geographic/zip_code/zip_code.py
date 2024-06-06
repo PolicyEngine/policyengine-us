@@ -36,6 +36,7 @@ class zip_code(Variable):
                     .sample(
                         count_households_in_state,
                         weights="population",
+                        random_state=192837465,
                         replace=True,
                     )
                     .zip_code

@@ -1,0 +1,41 @@
+- name: Case 1, head and spouse.
+  period: 2021
+  input:
+    people: 
+      person1:
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+      person2:
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        above_the_line_deductions: 100 
+  output:
+    mt_applicable_ald_deductions: [50, 50]
+
+- name: Case 2, only head.
+  period: 2021
+  input:
+    people: 
+      person1:
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+      person2:
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        above_the_line_deductions: 100 
+  output:
+    mt_applicable_ald_deductions: [100, 0]
