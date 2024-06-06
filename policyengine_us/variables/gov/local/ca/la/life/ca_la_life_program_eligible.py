@@ -9,16 +9,14 @@ class ca_la_life_program_eligible(Variable):
     defined_for = "in_la"
 
     def formula(person, period, parameters):
-        return (
-            add(
-                person,
-                period,
-                [
-                    "snap",
-                    "social_security",
-                    "social_security_disability",
-                    "tanf",
-                ],
-            )
-            > 0
+        program_eligible = add(
+            person,
+            period,
+            [
+                "snap",
+                "social_security",
+                "social_security_disability",
+                "tanf",
+            ],
         )
+        return program_eligible > 0
