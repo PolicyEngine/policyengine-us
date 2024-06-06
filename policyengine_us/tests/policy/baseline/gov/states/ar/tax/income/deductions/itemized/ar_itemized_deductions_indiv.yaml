@@ -59,3 +59,24 @@
         state_code: AR 
   output:
     ar_itemized_deductions_indiv: [1_000, 0]
+
+- name: Split the itemized deductions 60% and 40%, rounded to the nearest %
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        ar_agi_indiv: 61_334
+      person2:
+        is_tax_unit_head: false
+        ar_agi_indiv: 42_129
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ar_medical_expense_deduction_indiv: 1_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR 
+  output:
+    ar_itemized_deductions_indiv: [590, 410]
