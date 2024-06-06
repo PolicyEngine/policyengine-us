@@ -22,7 +22,7 @@ class az_cash_assistance(Variable):
         )
         shelter_cost = spm_unit("housing_cost", period)
         payment_standard = where(shelter_cost > 0, p.high, p.low)
-        payment_threshold = payment_standard[household_size][period]
+        payment_threshold = payment_standard[valid_household_size][period]
         return max_(
             payment_threshold - monthly_countable_earned_income, 0
         )

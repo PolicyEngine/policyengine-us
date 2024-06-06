@@ -7,7 +7,7 @@ class az_hhs_tanf_eligibility(Variable):
     label = "Arizona Cash Assistance eligibility"
     definition_period = MONTH
     reference = "https://des.az.gov/services/child-and-family/cash-assistance/cash-assistance-ca-income-eligibility-guidelines"
-    defined_for = StateCode.AZ
+    defined_for = "az_hhs_tanf_eligibility"
 
     def formula(spm_unit, period, parameters):
         # Judge whether the countable income exceed the 100% of Ferderal Poverty Guideline
