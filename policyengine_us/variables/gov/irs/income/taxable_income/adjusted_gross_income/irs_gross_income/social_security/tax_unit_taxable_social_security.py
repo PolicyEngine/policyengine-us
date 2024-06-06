@@ -27,7 +27,7 @@ class tax_unit_taxable_social_security(Variable):
         status = filing_status.possible_values
         separate = filing_status == status.SEPARATE
         cohabitating = tax_unit("cohabitating_spouses", period)
-        # Cohabitating married couples filing separately receive a base 
+        # Cohabitating married couples filing separately receive a base
         # and adjusted base amount of 0
         base_amount = where(
             separate & cohabitating,
