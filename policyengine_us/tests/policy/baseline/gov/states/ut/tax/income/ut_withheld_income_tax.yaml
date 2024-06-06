@@ -13,7 +13,7 @@
   absolute_error_margin: 0.01
   input:
     irs_employment_income: 17_000
-    filing_status: WIDOW
+    filing_status: SURVIVING_SPOUSE
     state_code: UT
   output:
     ut_withheld_income_tax: 196.425
@@ -23,7 +23,7 @@
   absolute_error_margin: 0.01
   input:
     irs_employment_income: 12_000
-    filing_status: WIDOW
+    filing_status: SURVIVING_SPOUSE
     state_code: UT
   output:
     ut_withheld_income_tax: 0
