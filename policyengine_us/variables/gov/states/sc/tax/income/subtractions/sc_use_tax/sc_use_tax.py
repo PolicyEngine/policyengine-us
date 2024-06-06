@@ -15,30 +15,30 @@ class sc_use_tax(Variable):
     def formula(tax_unit, period, parameters):
         income = tax_unit("sc_agi", period)
         county = spm_unit.household("county_str", period)
-        is_group1_county = tax_unit.household("is_group_1_county", period)
-        is_group2_county = tax_unit.household("is_group_2_county", period)
-        is_group3_county = tax_unit.household("is_group_3_county", period)
+        sc_use_tax_in_group_one_county = tax_unit.household("sc_use_tax_in_group_one_county", period)
+        sc_use_tax_in_group_two_county = tax_unit.household("sc_use_tax_in_group_two_county", period)
+        sc_use_tax_in_group_three_county = tax_unit.household("sc_use_tax_in_group_three_county", period)
 
-        p = parameters(period).gov.states.sc.tax.income.use_tax.rate
+        p = parameters(period).gov.states.sc.tax.income.use_tax
 
         # Compute main amount, a dollar amount based on SC AGI.
         additional_rate =
          select(
             [
-                is_group1_county,
-                is_group2_county,
-                is_group3_county,
+                sc_use_tax_in_group_one_county,
+                sc_use_tax_in_group_two_county,
+                sc_use_tax_in_group_three_county,
             ],
             [
-                p.group_1_rate,
-                p.group_2_rate,
-                p.group_3_rate,
+                p.rate.group_one,
+                p.rate.group_two,
+                p.rate.group_three,
             ],
             default = 0
         )
 
         # Compute use tax rate by main rate plus local county additional rate
-        total_rate = p.main_rate + additional_rate
+        total_rate = p.rate.main + additional_rate
 
         return income * total rate
         
