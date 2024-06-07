@@ -9,5 +9,5 @@ class nc_taxable_income(Variable):
     definition_period = YEAR
     defined_for = StateCode.NC
 
-    adds = ["adjusted_gross_income", "nc_additions", "nc_use_tax"]
+    adds = ["adjusted_gross_income", "nc_additions"]
     subtracts = ["nc_deductions"]
