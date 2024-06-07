@@ -16,8 +16,7 @@ class ny_ctc_pre_reduction_base_credit(Variable):
         p = parameters(period).gov.states.ny.tax.income.credits.ctc
         person = tax_unit.members
         # Qualifying children
-        ctc_qualifying_child = person("ctc_qualifying_child", period)
-        qualifying_children = tax_unit.sum(ctc_qualifying_child)
+        qualifying_children = person("ctc_qualifying_children", period)
         base_credit = qualifying_children * p.amount.base
         # New York recomputed FAGI - use normal FAGI
         fagi = tax_unit("adjusted_gross_income", period)
