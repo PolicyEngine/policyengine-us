@@ -10,6 +10,8 @@ class ny_ctc_additional_credit_eligible(Variable):
     defined_for = StateCode.NY
 
     def formula(tax_unit, period, parameters):
-        pre_reduction_base_credit = tax_unit("ny_ctc_pre_reduction_base_credit", period)
+        pre_reduction_base_credit = tax_unit(
+            "ny_ctc_pre_reduction_base_credit", period
+        )
         base_credit = tax_unit("ny_ctc_base_credit", period)
         return pre_reduction_base_credit > base_credit
