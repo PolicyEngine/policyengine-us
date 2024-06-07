@@ -1,20 +1,17 @@
 description: The IRS taxes Social Security benefits at the base rate, for filers with modified adjusted gross income between this threshold and the respective additional threshold, by filing status.
 SINGLE:
-  values:
-    2013-01-01: 25_000
+  2013-01-01: 25_000
 JOINT:
-  values:
-    2013-01-01: 32_000
+  2013-01-01: 32_000
 SEPARATE:
-  values:
-    2013-01-01: 25_000
+  2013-01-01: 25_000
 HEAD_OF_HOUSEHOLD:
-  values:
-    2013-01-01: 25_000
+  2013-01-01: 25_000
 SURVIVING_SPOUSE:
-  values:
-    2013-01-01: 25_000
+  2013-01-01: 25_000
+
 metadata:
+  breakdown: filing_status
   unit: currency-USD
   label: Social Security taxability base threshold
   reference: 

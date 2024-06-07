@@ -1,20 +1,17 @@
 description: The IRS taxes Social Security benefits at the additional rate, for filers with modified adjusted gross income between above the additional threshold, by filing status.
 SINGLE:
-  values:
-    2013-01-01: 34_000
+  2013-01-01: 34_000
 JOINT:
-  values:
-    2013-01-01: 44_000
+  2013-01-01: 44_000
 SEPARATE:
-  values:
-    2013-01-01: 34_000
+  2013-01-01: 34_000
 HEAD_OF_HOUSEHOLD:
-  values:
-    2013-01-01: 34_000
+  2013-01-01: 34_000
 SURVIVING_SPOUSE:
-  values:
-    2013-01-01: 34_000
+  2013-01-01: 34_000
+
 metadata:
+  breakdown: filing_status
   unit: currency-USD
   label: Social Security taxability additional threshold
   reference: 
