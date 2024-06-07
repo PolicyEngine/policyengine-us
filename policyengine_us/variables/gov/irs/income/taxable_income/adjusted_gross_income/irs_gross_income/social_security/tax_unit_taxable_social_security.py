@@ -24,9 +24,21 @@ class tax_unit_taxable_social_security(Variable):
             "tax_unit_combined_income_for_social_security_taxability", period
         )
         filing_status = tax_unit("filing_status", period)
-
-        base_amount = p.threshold.lower[filing_status]
-        adjusted_base_amount = p.threshold.upper[filing_status]
+        status = filing_status.possible_values
+        separate = filing_status == status.SEPARATE
+        cohabitating = tax_unit("cohabitating_spouses", period)
+        # Cohabitating married couples filing separately receive a base
+        # and adjusted base amount of 0
+        base_amount = where(
+            separate & cohabitating,
+            p.threshold.base.separate_cohabitating,
+            p.threshold.base.main[filing_status],
+        )
+        adjusted_base_amount = where(
+            separate & cohabitating,
+            p.threshold.adjusted_base.separate_cohabitating,
+            p.threshold.adjusted_base.main[filing_status],
+        )
 
         under_first_threshold = combined_income < base_amount
         under_second_threshold = combined_income < adjusted_base_amount
@@ -38,16 +50,16 @@ class tax_unit_taxable_social_security(Variable):
             0, combined_income - adjusted_base_amount
         )
 
-        amount_if_under_second_threshold = p.rate.lower * min_(
+        amount_if_under_second_threshold = p.rate.base * min_(
             combined_income_excess, gross_ss
         )
         amount_if_over_second_threshold = min_(
-            p.rate.upper * excess_over_adjusted_base
+            p.rate.additional * excess_over_adjusted_base
             + min_(
                 amount_if_under_second_threshold,
-                p.rate.lower * (adjusted_base_amount - base_amount),
+                p.rate.base * (adjusted_base_amount - base_amount),
             ),
-            p.rate.upper * gross_ss,
+            p.rate.additional * gross_ss,
         )
         return select(
             [
