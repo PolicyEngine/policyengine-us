@@ -6,7 +6,7 @@ metadata:
     parameter: gov.irs.uprating
     rounding:
       type: nearest
-      interval: 100
+      interval: 1_000
   label: Colorado family affordability tax credit income-based reduction start
   breakdown:
     - filing_status
