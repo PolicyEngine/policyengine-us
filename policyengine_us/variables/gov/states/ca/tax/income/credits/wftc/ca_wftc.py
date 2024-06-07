@@ -11,9 +11,7 @@ class ca_wftc(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.ca.tax.income.credits.wftc
-        eitc_eligible = tax_unit("ca_eitc_eligible", period)
-        caeitc_eligible = tax_unit(
-            "ca_is_qualifying_child_for_caleitc", period
-        )
+        eitc_eligible = tax_unit("eitc_eligible", period)
+        caeitc_eligible = tax_unit("ca_eitc_eligible", period)
         eligibility = eitc_eligible | caeitc_eligible
         return p.amount * eligibility
