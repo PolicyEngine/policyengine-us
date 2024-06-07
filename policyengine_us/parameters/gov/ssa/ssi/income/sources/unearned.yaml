@@ -1,17 +1,29 @@
-description: Income sources that count as unearned income for Supplemental Security Income
-
+description: The US counts these income sources as unearned income for Supplemental Security Income.
 values:
   1975-01-01:
+    # (a) Annuities, pensions, and other periodic payments.
+    - pension_income
+    - social_security
+    - disability_benefits
+    - veterans_benefits
+    - workers_compensation
+    - unemployment_compensation
+    - retirement_distributions
+    - gi_cash_assistance
+    # (b) Alimony and support payments.
+    - alimony_income
+    - child_support_received
+    # (c) Dividends, interest, and certain royalties.
     - dividend_income
     - interest_income
-    - gi_cash_assistance
-    - social_security
-    - alimony_income
-    - pension_income
-    - unemployment_compensation
-    # Also TANF, pensions, annuities, workers/unemployment benefits, etc.
-
+    # (d) Rents.
+    - rental_income
+    # (e) Death benefits.
+    # (f) Prizes and awards.
+    # (g) Gifts and inheritances.
+    # (h) Support and maintenance in kind.
 metadata:
+  label: SSI unearned income sources
   reference:
-    - title: United States Code, Title 7, Subsection 273.9(b)(2)
-      href: https://www.law.cornell.edu/cfr/text/7/273.9#b_2
+    - title: United States Code of Federal Regulations, Title 20, Subsection 416.1121
+      href: https://www.law.cornell.edu/cfr/text/20/416.1121

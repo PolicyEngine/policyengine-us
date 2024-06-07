@@ -1,0 +1,20 @@
+description: Louisiana subtracts from adjusted gross income the excess of these relevant federal deductions over the standard deduction, based on year.
+values:
+  2021-01-01: 
+    - taxable_income_deductions_if_itemizing
+  2022-01-01: 
+    - medical_expense_deduction
+
+metadata:
+  unit: list
+  period: year
+  label: Louisiana itemized deductions relevant federal deductions
+  reference:
+    - title: Louisiana legal code | RS 47:293 (3)
+      href: https://www.legis.la.gov/Legis/Law.aspx?d=101760
+    - title: General Information for Filing Your 2023 Louisiana Resident Individual Income Tax Return
+      href: https://revenue.louisiana.gov/TaxForms/IT540i%20WEB(2023)%20INSTRUCTIONS.pdf#page=3
+    - title: General Information for Filing Your 2022 Louisiana Resident Individual Income Tax Return
+      href: https://revenue.louisiana.gov/TaxForms/IT540iWEB(2022)D1.pdf#page=2
+    - title: General Information for Filing Your 2021 Louisiana Resident Individual Income Tax Return
+      href: https://revenue.louisiana.gov/TaxForms/IT540i(2021)%20Instructions.pdf#page=3

@@ -4,7 +4,7 @@
     state_code: CA
     household_size: 4
     household_market_income: 69_000
-    electricity_expense: 100
+    pre_subsidy_electricity_expense: 100
     ca_care_categorically_eligible: false
   output:
     ca_care_income_eligible: false
@@ -15,14 +15,13 @@
     ca_fera: 18
 
 # Failed integration test above shows that even when a person is not income eligible for CARE, a discount is still being awarded.
-
 - name: A four person household with an income of $40k is qualified for CARE but not for FERA
   period: 2022
   input:
     state_code: CA
     household_size: 4
     household_market_income: 40_000
-    electricity_expense: 100
+    pre_subsidy_electricity_expense: 100
     ca_care_categorically_eligible: false
   output:
     ca_care_income_eligible: true
@@ -60,7 +59,7 @@
     spm_units:
       spm_unit:
         members: [parent, child1, child2]
-        electricity_expense: 100
+        pre_subsidy_electricity_expense: 100
     households:
       household:
         members: [parent, child1, child2]
@@ -87,7 +86,7 @@
     spm_units:
       spm_unit:
         members: [adult1, adult2, adult3]
-        electricity_expense: 100
+        pre_subsidy_electricity_expense: 100
     households:
       household:
         members: [adult1, adult2, adult3]

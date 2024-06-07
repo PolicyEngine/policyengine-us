@@ -3,8 +3,8 @@ from policyengine_us.model_api import *
 
 class de_pension_exclusion(Variable):
     value_type = float
-    entity = TaxUnit
-    label = "Delaware pension exclusion"
+    entity = Person
+    label = "Delaware individual pension exclusion"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -13,12 +13,10 @@ class de_pension_exclusion(Variable):
     )
     defined_for = StateCode.DE
 
-    def formula(tax_unit, period, parameters):
+    def formula(person, period, parameters):
         p = parameters(
             period
         ).gov.states.de.tax.income.subtractions.exclusions.pension
-
-        person = tax_unit.members
 
         # determine age eligibility
         age = person("age", period)
@@ -64,11 +62,10 @@ class de_pension_exclusion(Variable):
             )
             # Filers under the age threshold, post 2022, can subtract their military retirement
             # income which is capped at a larger amount
-            exclusion_amount = where(
+            return where(
                 eligible_for_pension_exclusion_income,
                 capped_eligible_pension_income,
                 younger_amount,
             )
         else:
-            exclusion_amount = capped_eligible_pension_income
-        return tax_unit.sum(exclusion_amount)
+            return capped_eligible_pension_income

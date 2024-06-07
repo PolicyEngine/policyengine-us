@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class mo_ptc_gross_income(Variable):
     value_type = float
     entity = TaxUnit
-    label = "MO property tax credit gross income"
+    label = "Missouri property tax credit gross income"
     unit = USD
     definition_period = YEAR
     reference = (

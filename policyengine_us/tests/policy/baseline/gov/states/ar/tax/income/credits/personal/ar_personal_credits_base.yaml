@@ -5,13 +5,13 @@
       person1:
         age: 66
         is_tax_unit_head_or_spouse: true
-        ar_retirement_or_disability_benefits_exemptions_indv: 0
+        ar_retirement_or_disability_benefits_exemption_person: 0
         is_blind: true
         is_deaf: true
       person2:
         age: 67
         is_tax_unit_head_or_spouse: true
-        ar_retirement_or_disability_benefits_exemptions_indv: 0
+        ar_retirement_or_disability_benefits_exemption_person: 0
         is_blind: true
         is_deaf: true
     households:
@@ -21,7 +21,7 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
-        filing_status: WIDOW
+        filing_status: SURVIVING_SPOUSE
   output:
     ar_personal_credits_base: 319
 
@@ -32,13 +32,13 @@
       person1:
         age: 66
         is_tax_unit_head_or_spouse: true
-        ar_retirement_or_disability_benefits_exemptions_indv: 0
+        ar_retirement_or_disability_benefits_exemption_person: 0
         is_blind: true
         is_deaf: true
       person2:
         age: 67
         is_tax_unit_head_or_spouse: true
-        ar_retirement_or_disability_benefits_exemptions_indv: 0
+        ar_retirement_or_disability_benefits_exemption_person: 0
         is_blind: true
         is_deaf: true
     households:
@@ -48,7 +48,7 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
-        filing_status: WIDOW
+        filing_status: SURVIVING_SPOUSE
   output:
     ar_personal_credits_base: 319
 
@@ -59,13 +59,13 @@
       person1:
         age: 23
         is_tax_unit_head_or_spouse: true
-        ar_retirement_or_disability_benefits_exemptions_indv: 0
+        ar_retirement_or_disability_benefits_exemption_person: 0
         is_blind: true
         is_deaf: true
       person2:
         age: 24
         is_tax_unit_head_or_spouse: true
-        ar_retirement_or_disability_benefits_exemptions_indv: 0
+        ar_retirement_or_disability_benefits_exemption_person: 0
         is_blind: true
         is_deaf: true
     households:
@@ -75,7 +75,7 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
-        filing_status: WIDOW
+        filing_status: SURVIVING_SPOUSE
   output:
     ar_personal_credits_base: 203
 
@@ -86,13 +86,13 @@
       person1:
         age: 66
         is_tax_unit_head_or_spouse: true
-        ar_retirement_or_disability_benefits_exemptions_indv: 1
+        ar_retirement_or_disability_benefits_exemption_person: 1
         is_blind: true
         is_deaf: true
       person2:
         age: 67
         is_tax_unit_head_or_spouse: true
-        ar_retirement_or_disability_benefits_exemptions_indv: 1
+        ar_retirement_or_disability_benefits_exemption_person: 1
         is_blind: true
         is_deaf: true
     households:
@@ -102,7 +102,7 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
-        filing_status: WIDOW
+        filing_status: SURVIVING_SPOUSE
   output:
     ar_personal_credits_base: 261
 
@@ -113,19 +113,19 @@
       person1:
         age: 66
         is_tax_unit_head_or_spouse: true
-        ar_retirement_or_disability_benefits_exemptions_indv: 0
+        ar_retirement_or_disability_benefits_exemption_person: 0
         is_blind: true
         is_deaf: true
       person2:
         age: 67
         is_tax_unit_head_or_spouse: true
-        ar_retirement_or_disability_benefits_exemptions_indv: 0
+        ar_retirement_or_disability_benefits_exemption_person: 0
         is_blind: true
         is_deaf: true
       person3:
         age: 67
         is_tax_unit_head_or_spouse: false
-        ar_retirement_or_disability_benefits_exemptions_indv: 0
+        ar_retirement_or_disability_benefits_exemption_person: 0
         is_blind: true
         is_deaf: true
     households:
@@ -135,7 +135,7 @@
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
-        filing_status: WIDOW
+        filing_status: SURVIVING_SPOUSE
   output:
     ar_personal_credits_base: 319
 
@@ -146,13 +146,13 @@
       person1:
         age: 66
         is_tax_unit_head_or_spouse: true
-        ar_retirement_or_disability_benefits_exemptions_indv: 0
+        ar_retirement_or_disability_benefits_exemption_person: 0
         is_blind: true
         is_deaf: true
       person2:
         age: 67
         is_tax_unit_head_or_spouse: true
-        ar_retirement_or_disability_benefits_exemptions_indv: 0
+        ar_retirement_or_disability_benefits_exemption_person: 0
         is_blind: true
         is_deaf: true
     households:
@@ -173,13 +173,13 @@
       person1:
         age: 66
         is_tax_unit_head_or_spouse: true
-        ar_retirement_or_disability_benefits_exemptions_indv: 0
+        ar_retirement_or_disability_benefits_exemption_person: 0
         is_blind: false
         is_deaf: false
       person2:
         age: 67
         is_tax_unit_head_or_spouse: true
-        ar_retirement_or_disability_benefits_exemptions_indv: 0
+        ar_retirement_or_disability_benefits_exemption_person: 0
         is_blind: false
         is_deaf: false
     households:
@@ -189,6 +189,6 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
-        filing_status: WIDOW
+        filing_status: SURVIVING_SPOUSE
   output:
     ar_personal_credits_base: 203

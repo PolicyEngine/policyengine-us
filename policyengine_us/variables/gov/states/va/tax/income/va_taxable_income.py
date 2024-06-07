@@ -15,11 +15,12 @@ class va_taxable_income(Variable):
 
     def formula(tax_unit, period, parameters):
         agi = tax_unit("va_agi", period)
-        age_ded = tax_unit("va_age_deduction", period)
-        std_ded = tax_unit("va_standard_deduction", period)
-        itm_ded = tax_unit("va_itemized_deductions", period)
-        itemizes = tax_unit("tax_unit_itemizes", period)
-        ded = where(itemizes, itm_ded, std_ded)
+        ded = tax_unit("va_deductions", period)
         exemptions = tax_unit("va_total_exemptions", period)
-        total_deductions = age_ded + ded + exemptions
-        return max_(agi - total_deductions, 0)
+        total_deductions = ded + exemptions
+        # Virginia allows a deduction (atop itemized deductions) for the
+        # relevant expenses for the federal Child and Dependent Care Credit.
+        cdcc_expense_deduction = tax_unit(
+            "va_child_dependent_care_expense_deduction", period
+        )
+        return max_(agi - total_deductions - cdcc_expense_deduction, 0)

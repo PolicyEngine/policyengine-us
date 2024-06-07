@@ -1,0 +1,39 @@
+- name: Eligible household renters
+  period: 2021
+  input:
+    state_code: HI
+    head_is_dependent_elsewhere: false
+    hi_agi: 29_000
+    rent: 1_100
+  output:
+    hi_tax_credit_for_low_income_household_renters_eligible: true
+
+- name: Uneligible household renters (over adjusted gross income threshold)
+  period: 2021
+  input:
+    state_code: HI
+    head_is_dependent_elsewhere: false
+    hi_agi: 31_000
+    rent: 1_100
+  output:
+    hi_tax_credit_for_low_income_household_renters_eligible: false
+
+- name: Uneligible household renters (below rent payment threshold)
+  period: 2021
+  input:
+    state_code: HI
+    head_is_dependent_elsewhere: false
+    hi_agi: 29_000
+    rent: 900
+  output:
+    hi_tax_credit_for_low_income_household_renters_eligible: false
+
+- name: Uneligible household renters (neither condition unsatisfied)
+  period: 2021
+  input:
+    state_code: HI
+    head_is_dependent_elsewhere: false
+    hi_agi: 32_000
+    rent: 900
+  output:
+    hi_tax_credit_for_low_income_household_renters_eligible: false

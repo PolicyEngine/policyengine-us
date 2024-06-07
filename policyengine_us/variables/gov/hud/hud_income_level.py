@@ -24,7 +24,7 @@ class hud_income_level(Variable):
         # Get household size.
         size = spm_unit("spm_unit_size", period)
         # Get area median income.
-        ami = spm_unit("ami", period)
+        ami = spm_unit.household("ami", period)
         # avoid array divide-by-zero warning by not using where() function
         # see following GitHub issue for more details:
         # https://github.com/PolicyEngine/policyengine-us/issues/2496
@@ -60,13 +60,12 @@ class hud_income_level(Variable):
                 income_ami_ratio <= very_low_threshold,
                 income_ami_ratio <= low_threshold,
                 income_ami_ratio <= moderate_threshold,
-                True,
             ],
             [
                 HUDIncomeLevel.ESPECIALLY_LOW,
                 HUDIncomeLevel.VERY_LOW,
                 HUDIncomeLevel.LOW,
                 HUDIncomeLevel.MODERATE,
-                HUDIncomeLevel.ABOVE_MODERATE,
             ],
+            default=HUDIncomeLevel.ABOVE_MODERATE,
         )

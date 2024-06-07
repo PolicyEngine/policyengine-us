@@ -24,7 +24,7 @@ class wi_income_tax_before_credits(Variable):
             [
                 fstatus == fstatus.possible_values.SINGLE,
                 fstatus == fstatus.possible_values.JOINT,
-                fstatus == fstatus.possible_values.WIDOW,
+                fstatus == fstatus.possible_values.SURVIVING_SPOUSE,
                 fstatus == fstatus.possible_values.SEPARATE,
                 fstatus == fstatus.possible_values.HEAD_OF_HOUSEHOLD,
             ],

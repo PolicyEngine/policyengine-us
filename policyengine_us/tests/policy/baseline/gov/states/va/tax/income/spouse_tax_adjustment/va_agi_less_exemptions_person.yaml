@@ -1,0 +1,19 @@
+- name: Reduced AGI
+  period: 2022
+  input:
+    va_agi_person: 2_000
+    state_code: VA
+    va_personal_exemption_person: 1_000
+    va_aged_blind_exemption_person: 400
+  output:
+    va_agi_less_exemptions_person: 600
+
+- name: Capped at 0
+  period: 2022
+  input:
+    va_agi_person: 2_000
+    state_code: VA
+    va_personal_exemption_person: 1_000
+    va_aged_blind_exemption_person: 1_400
+  output:
+    va_agi_less_exemptions_person: 0

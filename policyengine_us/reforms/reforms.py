@@ -4,9 +4,21 @@ from .winship import create_eitc_winship_reform
 from .dc_tax_threshold_joint_ratio import (
     create_dc_tax_threshold_joint_ratio_reform,
 )
+from .congress.romney.family_security_act import (
+    create_remove_head_of_household_reform,
+)
 from .cbo.payroll import (
     create_increase_taxable_earnings_for_social_security_reform,
 )
+from .congress.wyden_smith import create_ctc_expansion_reform
+from .federal import create_abolish_federal_income_tax_reform
+from .federal import create_abolish_payroll_tax_reform
+from .federal import create_reported_state_income_tax_reform
+from .biden.budget_2025 import (
+    create_medicare_and_investment_tax_increase_reform,
+)
+from .biden.budget_2025 import create_capital_gains_tax_increase_reform
+from .co_general_assembly import create_co_family_affordability_credit_reform
 from policyengine_core.reforms import Reform
 import warnings
 
@@ -20,10 +32,31 @@ def create_structural_reforms_from_parameters(parameters, period):
     dc_tax_threshold_joint_ratio_reform = (
         create_dc_tax_threshold_joint_ratio_reform(parameters, period)
     )
+    remove_head_of_household = create_remove_head_of_household_reform(
+        parameters, period
+    )
     increase_taxable_earnings_for_social_security_reform = (
         create_increase_taxable_earnings_for_social_security_reform(
             parameters, period
         )
+    )
+    medicare_and_investment_tax_increase = (
+        create_medicare_and_investment_tax_increase_reform(parameters, period)
+    )
+    ctc_expansion = create_ctc_expansion_reform(parameters, period)
+
+    abolish_federal_income_tax = create_abolish_federal_income_tax_reform(
+        parameters, period
+    )
+    abolish_payroll_tax = create_abolish_payroll_tax_reform(parameters, period)
+    reported_state_income_tax = create_reported_state_income_tax_reform(
+        parameters, period
+    )
+    capital_gains_tax_increase = create_capital_gains_tax_increase_reform(
+        parameters, period
+    )
+    co_family_affordability_credit = (
+        create_co_family_affordability_credit_reform(parameters, period)
     )
 
     reforms = [
@@ -31,7 +64,15 @@ def create_structural_reforms_from_parameters(parameters, period):
         winship_reform,
         dc_kccatc_reform,
         dc_tax_threshold_joint_ratio_reform,
+        remove_head_of_household,
         increase_taxable_earnings_for_social_security_reform,
+        ctc_expansion,
+        abolish_federal_income_tax,
+        abolish_payroll_tax,
+        reported_state_income_tax,
+        medicare_and_investment_tax_increase,
+        capital_gains_tax_increase,
+        co_family_affordability_credit,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
 

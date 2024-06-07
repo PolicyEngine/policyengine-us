@@ -7,13 +7,10 @@ class az_aged_exemption(Variable):
     label = "Arizona aged exemption"
     unit = USD
     definition_period = YEAR
-    defined_for = StateCode.AZ
+    defined_for = "az_aged_exemption_eligible_person"
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.az.tax.income.exemptions
 
         age = person("age", period)
-        amount = p.aged.calc(age)
-        eligibility = person("az_aged_exemption_eligible_person", period)
-
-        return amount * eligibility
+        return p.aged.calc(age)

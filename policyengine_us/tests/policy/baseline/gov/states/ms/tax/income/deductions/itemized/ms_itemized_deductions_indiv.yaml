@@ -1,0 +1,64 @@
+- name: The itemized deductions are allocated to the spouse with the larger income first
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        ms_pre_deductions_taxable_income_indiv: 4_000
+      person2:
+        is_tax_unit_spouse: true
+        ms_pre_deductions_taxable_income_indiv: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ms_itemized_deductions_unit: 4_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+  output:
+    ms_itemized_deductions_indiv: [0, 4_000]
+
+- name: The itemized deductions are allocated to the spouse with the larger income first, the remaining amount is halved
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        ms_pre_deductions_taxable_income_indiv: 4_000
+      person2:
+        is_tax_unit_spouse: true
+        ms_pre_deductions_taxable_income_indiv: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ms_itemized_deductions_unit: 4_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+  output:
+    ms_itemized_deductions_indiv: [1_500, 2_500]
+
+- name: Nothing is allocated to another person
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        ms_pre_deductions_taxable_income_indiv: 2_000
+      person2:
+        is_tax_unit_spouse: true
+        ms_pre_deductions_taxable_income_indiv: 1_000
+      person3:
+        ms_pre_deductions_taxable_income_indiv: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ms_itemized_deductions_unit: 4_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+  output:
+    ms_itemized_deductions_indiv: [2_500, 1_500, 0]

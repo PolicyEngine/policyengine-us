@@ -1,0 +1,70 @@
+- name: Eligible, as no dependents elsewhere
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    people:
+      person1:
+        is_full_time_student: false
+        claimed_as_dependent_on_another_return: false
+      person2:
+        is_full_time_student: true
+        claimed_as_dependent_on_another_return: false
+      person3:
+        is_full_time_student: true
+        claimed_as_dependent_on_another_return: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MI
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        tax_unit_size: 3
+  output: 
+    mi_home_heating_credit_eligible_rate: 1
+
+- name: Two eligible people
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    people:
+      person1:
+        is_full_time_student: false
+        claimed_as_dependent_on_another_return: false
+      person2:
+        is_full_time_student: true
+        claimed_as_dependent_on_another_return: true
+      person3:
+        is_full_time_student: true
+        claimed_as_dependent_on_another_return: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MI
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        tax_unit_size: 3
+  output: # 2/3
+    mi_home_heating_credit_eligible_rate: 0.666
+
+- name: No eligible people
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    people:
+      person1:
+        is_full_time_student: true
+        claimed_as_dependent_on_another_return: true
+      person2:
+        is_full_time_student: true
+        claimed_as_dependent_on_another_return: true
+      person3:
+        is_full_time_student: true
+        claimed_as_dependent_on_another_return: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MI
+  output:  
+    mi_home_heating_credit_eligible_rate: 0

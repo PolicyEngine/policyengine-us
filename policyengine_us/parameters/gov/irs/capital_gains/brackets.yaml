@@ -15,6 +15,8 @@ thresholds:
     unit: currency-USD
     period: year
     reference:
+      - title: 2024 IRS data release
+        href: https://www.irs.gov/pub/irs-drop/rp-23-34.pdf#page=8
       - title: 2023 IRS data release
         href: https://www.irs.gov/pub/irs-drop/rp-22-38.pdf#page=8
       - title: 2022 IRS data release
@@ -23,6 +25,12 @@ thresholds:
         href: https://www.irs.gov/pub/irs-drop/rp-20-45.pdf#page=8
       - title: 2020 IRS data release
         href: https://www.irs.gov/pub/irs-drop/rp-19-44.pdf#page=8
+      - title: 2019 IRS data release
+        href: https://www.irs.gov/pub/irs-drop/rp-18-57.pdf#page=8
+      - title: Internal Revenue Code §1(j)(5)(B)
+        # IRC defines amounts as of 2018.
+        # Defines COLA with rounded up to the nearest multiple of $50.
+        href: https://www.law.cornell.edu/uscode/text/26/1#j_5_B
   1:
     HEAD_OF_HOUSEHOLD:
       values:
@@ -37,6 +45,7 @@ thresholds:
         2021-01-01: 54_100
         2022-01-01: 55_800
         2023-01-01: 59_750
+        2024-01-01: 63_000
     JOINT:
       values:
         2013-01-01: 72_500
@@ -50,6 +59,7 @@ thresholds:
         2021-01-01: 80_800
         2022-01-01: 83_350
         2023-01-01: 89_250
+        2024-01-01: 94_050
     SEPARATE:
       values:
         2013-01-01: 36_250
@@ -63,6 +73,7 @@ thresholds:
         2021-01-01: 40_400
         2022-01-01: 41_675
         2023-01-01: 44_625
+        2024-01-01: 47_025
     SINGLE:
       values:
         2013-01-01: 36_250
@@ -76,7 +87,8 @@ thresholds:
         2021-01-01: 40_400
         2022-01-01: 41_675
         2023-01-01: 44_625
-    WIDOW:
+        2024-01-01: 47_025
+    SURVIVING_SPOUSE:
       values:
         2013-01-01: 72_500
         2014-01-01: 73_800
@@ -89,6 +101,7 @@ thresholds:
         2021-01-01: 80_800
         2022-01-01: 83_350
         2023-01-01: 89_250
+        2024-01-01: 94_050
   2:
     HEAD_OF_HOUSEHOLD:
       values:
@@ -103,6 +116,7 @@ thresholds:
         2021-01-01: 473_750
         2022-01-01: 488_500
         2023-01-01: 523_050
+        2024-01-01: 551_350
     JOINT:
       values:
         2013-01-01: 450_000
@@ -116,6 +130,7 @@ thresholds:
         2021-01-01: 501_600
         2022-01-01: 517_200
         2023-01-01: 553_850
+        2024-01-01: 583_750
     SEPARATE:
       values:
         2013-01-01: 225_000
@@ -129,6 +144,7 @@ thresholds:
         2021-01-01: 250_800
         2022-01-01: 258_600
         2023-01-01: 276_900
+        2024-01-01: 291_850
     SINGLE:
       values:
         2013-01-01: 400_000
@@ -142,7 +158,8 @@ thresholds:
         2021-01-01: 445_850
         2022-01-01: 459_750
         2023-01-01: 492_300
-    WIDOW:
+        2024-01-01: 518_900
+    SURVIVING_SPOUSE:
       values:
         2013-01-01: 450_000
         2014-01-01: 457_600
@@ -155,3 +172,4 @@ thresholds:
         2021-01-01: 501_600
         2022-01-01: 517_200
         2023-01-01: 553_850
+        2024-01-01: 583_750
