@@ -1,0 +1,23 @@
+- name: Neither eligible for federal or state eitc
+  period: 2023
+  input:
+    ca_eitc_eligible: false
+    ca_is_qualifying_child_for_caleitc: false
+  output:
+    ca_wftc: 0
+
+- name: Eligible for federal eitc
+  period: 2023
+  input:
+    ca_eitc_eligible: true
+    ca_is_qualifying_child_for_caleitc: false
+  output:
+    ca_wftc: 250
+
+- name: Eligible for state eitc
+  period: 2023
+  input:
+    ca_eitc_eligible: false
+    ca_is_qualifying_child_for_caleitc: true
+  output:
+    ca_wftc: 250
