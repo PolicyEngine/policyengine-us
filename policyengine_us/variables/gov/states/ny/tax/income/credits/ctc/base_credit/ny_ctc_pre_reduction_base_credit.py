@@ -29,12 +29,11 @@ class ny_ctc_pre_reduction_base_credit(Variable):
         federal_threshold = gov.irs.credits.ctc.phase_out.threshold[
             tax_unit("filing_status", period)
         ]
-        # Line 6
         agi_over_threshold = agi_with_exclusion_amount > federal_threshold
         # The reduced AGI is rounded up to the nearest NY CTC base amount
         rounded_reduced_agi_multiple = np.ceil(agi_with_exclusion_amount - federal_threshold / p.amount.base)
         rounded_reduced_agi_amount =rounded_reduced_agi_multiple * p.amount.base
         rounded_reduced_agi = where(agi_over_threshold, rounded_reduced_agi_amount, 0)
-        # The base credit is reduced by the fraction of the reduced AGI
+        # The base credit is reduced by a fraction of the reduced AGI
         subtraction_amount = rounded_reduced_agi * p.amount.match
         return max_(base_credit - subtraction_amount, 0)
