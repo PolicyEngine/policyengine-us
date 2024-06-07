@@ -21,10 +21,9 @@ class co_family_affordability_credit(Variable):
         base_amount = p.amount * dependent
         agi = person.tax_unit("adjusted_gross_income", period)
         filing_status = person.tax_unit("filing_status", period)
-        reduction_threshold = p.reduction.start[filing_status]
+        reduction_threshold = p.reduction.threshold[filing_status]
         excess = max_(agi - reduction_threshold, 0)
         increments = np.ceil(excess / p.reduction.increment)
         percent_reduction = min_(increments * p.reduction.rate, 1)
-        return (
-            base_amount * p.age_multiplier.calc(age) * (1 - percent_reduction)
-        )
+        age_multiplier = p.age_multiplier.calc(age)
+        return base_amount * age_multiplier * (1 - percent_reduction)
