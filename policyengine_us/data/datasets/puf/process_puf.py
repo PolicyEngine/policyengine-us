@@ -7,6 +7,15 @@ import numpy as np
 PUF_FILE_PATH = "~/Downloads/puf_2015.csv"
 PUF_DEMOGRAPHICS_FILE_PATH = "~/Downloads/demographics_2015.csv"
 
+
+FILING_STATUS_MAP = {
+    "SINGLE": 1,
+    "JOINT": 2,
+    "SEPARATE": 3,
+    "HEAD_OF_HOUSEHOLD": 4,
+    "SURVIVING_SPOUSE": 5,
+}
+
 # This update statement describes the demographic supplement.
 DEMOGRAPHICS_CODEBOOK = {
     "AGEDP1": "age_dependent_1",
@@ -194,6 +203,11 @@ def impute_missing_demographics(
         puf_with_imputed_demographics (pd.DataFrame): The PUF data with imputed demographic information.
     """
 
+
+    puf.filing_status = puf.filing_status.map(
+        FILING_STATUS_MAP
+    )
+
     demographics_from_puf = Imputation()
     puf_with_demographics = (
         puf[puf.return_id.isin(demographics.return_id)]
@@ -228,6 +242,10 @@ def impute_missing_demographics(
             weighted_puf_with_demographics,
             weighted_puf_with_imputed_demographics,
         ]
+    )
+
+    puf_combined.filing_status = puf_combined.filing_status.map(
+        {value: key for key, value in FILING_STATUS_MAP.items()}
     )
 
     return puf_combined
@@ -308,7 +326,7 @@ def generate_puf_style_cps(time_period: str) -> pd.DataFrame:
 
     filer_earned = sim.calculate("head_earned")
     spouse_earned = sim.calculate("spouse_earned")
-    filing_status = sim.calculate("filing_status")
+    filing_status = sim.calculate("filing_status").replace("SURVIVING_SPOUSE", "JOINT")
 
     def determine_earning_split_value(
         filer: float, spouse: float, filing_status: str
@@ -331,6 +349,7 @@ def generate_puf_style_cps(time_period: str) -> pd.DataFrame:
     cps_demographics["tax_unit_weight"] = sim.calculate(
         "tax_unit_weight"
     ).values
+    cps_demographics["filing_status"] = filing_status
     return pd.DataFrame(cps_demographics)
 
 
@@ -347,16 +366,23 @@ def impute_puf_financials_to_cps(
     Returns:
         cps_imputed (pd.DataFrame): The CPS data with imputed financial information.
     """
+    puf.filing_status = puf.filing_status.map(FILING_STATUS_MAP)
     income_from_demographics = Imputation()
 
+    puf_X = puf[DEMOGRAPHIC_VARIABLES + ["filing_status"]]
+    puf_y = puf[FINANCIAL_SUBSET]
+
     income_from_demographics.train(
-        puf[DEMOGRAPHIC_VARIABLES],
-        puf.drop(columns=NON_FINANCIAL_COLUMNS),
+        puf_X,
+        puf_y,
         sample_weight=puf["tax_unit_weight"],
     )
+    cps_demographics.filing_status = cps_demographics.filing_status.map(FILING_STATUS_MAP)
+
+    cps_X = cps_demographics[DEMOGRAPHIC_VARIABLES + ["filing_status"]]
 
     cps_financial_predictions = income_from_demographics.predict(
-        cps_demographics[DEMOGRAPHIC_VARIABLES],
+        cps_X
     )
     cps_imputed = pd.concat(
         [cps_demographics, cps_financial_predictions], axis=1
@@ -364,6 +390,10 @@ def impute_puf_financials_to_cps(
     cps_imputed = MicroDataFrame(
         cps_imputed, weights=cps_demographics.tax_unit_weight
     )
+
+    cps_imputed.filing_status = cps_imputed.filing_status.map({
+        value: key for key, value in FILING_STATUS_MAP.items()
+    })
 
     return cps_imputed
 

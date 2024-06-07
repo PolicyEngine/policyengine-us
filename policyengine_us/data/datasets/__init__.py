@@ -8,6 +8,7 @@ from .cps import (
     RawCPS_2022,
     EnhancedCPS_2022,
     CalibratedPUFExtendedCPS_2022,
+    PUFExtendedCPS_2022,
 )
 
 from .puf import PUF_2022, PUF_2015
