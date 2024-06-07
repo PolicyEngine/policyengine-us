@@ -17,16 +17,11 @@ class co_family_affordability_credit(Variable):
         dependent = person("is_child_dependent", period)
         p = parameters(
             period
-        ).gov.states.co.tax.income.credits.family_affordability_credit
+        ).gov.states.co.tax.income.credits.family_affordability
         base_amount = p.amount * dependent
-        age_reduction = p.age_reduction.calc(age)
         agi = person.tax_unit("adjusted_gross_income", period)
         filing_status = person.tax_unit("filing_status", period)
-        phase_out_start = p.income_reduction.start[filing_status]
-        phase_out_amount = p.income_reduction.rate
-        phase_out_increment = p.income_reduction.increment
-        excess = max_(agi - phase_out_start, 0)
-        increments = np.ceil(excess / phase_out_increment)
-        amount = increments * phase_out_amount
-        income_reduction = max_(1 - amount, 0)
-        return base_amount * age_reduction * income_reduction
+        excess = max_(agi - p.reduction.start[filing_status], 0)
+        increments = np.ceil(excess / p.reduction.increment)
+        percent_reduction = min_(increments * p.reduction.rate, 1)
+        return base_amount * p.age_multiplier.calc(age) * (1 - percent_reduction)
