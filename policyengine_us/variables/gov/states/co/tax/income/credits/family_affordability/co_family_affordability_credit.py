@@ -24,4 +24,6 @@ class co_family_affordability_credit(Variable):
         excess = max_(agi - p.reduction.start[filing_status], 0)
         increments = np.ceil(excess / p.reduction.increment)
         percent_reduction = min_(increments * p.reduction.rate, 1)
-        return base_amount * p.age_multiplier.calc(age) * (1 - percent_reduction)
+        return (
+            base_amount * p.age_multiplier.calc(age) * (1 - percent_reduction)
+        )
