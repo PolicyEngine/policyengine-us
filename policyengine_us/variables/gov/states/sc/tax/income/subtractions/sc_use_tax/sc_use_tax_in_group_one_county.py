@@ -1,3 +1,5 @@
+from policyengine_us.model_api import *
+
 class sc_use_tax_in_group_one_county(Variable):
     value_type = bool
     entity = Household
