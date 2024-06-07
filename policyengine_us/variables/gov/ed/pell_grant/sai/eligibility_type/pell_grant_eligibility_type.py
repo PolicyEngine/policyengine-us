@@ -10,6 +10,7 @@ class PellGrantEligibilityType(Enum):
 class pell_grant_eligibility_type(Variable):
     value_type = Enum
     possible_values = PellGrantEligibilityType
+    default_value = PellGrantEligibilityType.INELIGIBLE
     entity = Person
     definition_period = YEAR
     label = "Maximum, minimum, or ineligible for Pell Grant"
