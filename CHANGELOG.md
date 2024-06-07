@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.781.0] - 2024-06-07 16:21:49
+
+### Added
+
+- Add Oregon state uprating.
+
 ## [0.780.2] - 2024-06-07 13:52:30
 
 ### Fixed
@@ -8737,6 +8743,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.781.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.780.2...0.781.0
 [0.780.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.780.1...0.780.2
 [0.780.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.780.0...0.780.1
 [0.780.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.779.2...0.780.0
