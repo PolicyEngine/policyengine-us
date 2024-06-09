@@ -7,6 +7,10 @@ metadata:
   unit: currency-USD
   period: year
   label: Oregon minimum deduction if claimable as dependent
+  uprating: gov.irs.uprating
+  rounding:
+        type: downwards
+        interval: 50  
   reference:
     - title: 2021 Oregon Income Tax Form OR-40 Instructions
       href: https://www.oregon.gov/dor/forms/FormsPubs/form-or-40-inst_101-040-1_2021.pdf#page=15  
