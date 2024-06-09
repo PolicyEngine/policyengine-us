@@ -8,8 +8,9 @@ class mn_child_and_working_families_credits(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://www.revisor.mn.gov/statutes/2021/cite/290.0671"
+        "https://www.revisor.mn.gov/statutes/cite/290.0661#stat.290.0661.4"
         "https://www.revisor.mn.gov/statutes/cite/290.0671"
+        "https://www.revenue.state.mn.us/sites/default/files/2024-01/m1cwfc-23_1.pdf"
     )
     defined_for = StateCode.MN
 
