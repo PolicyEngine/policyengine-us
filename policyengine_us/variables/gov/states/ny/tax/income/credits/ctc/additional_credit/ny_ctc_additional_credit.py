@@ -20,8 +20,8 @@ class ny_ctc_additional_credit(Variable):
         reduced_base_credit = pre_reduction_base_credit - base_credit
         # Line 4
         earned_income = tax_unit("tax_unit_earned_income", period)
-        if period.start.year >= 2021:
-            instant_str = f"2020-01-01"
+        if period.start.year >= 2018:
+            instant_str = f"2017-01-01"
         else:
             instant_str = period
         p_gov = parameters(instant_str).gov.irs.credits.ctc.refundable.phase_in
@@ -34,7 +34,6 @@ class ny_ctc_additional_credit(Variable):
         earned_income_fraction = reduced_earned_income * p.match
         # Line 7
         qualifying_children = tax_unit("ctc_qualifying_children", period)
-        p_gov = parameters(period).gov.irs.credits.ctc.refundable.phase_in
         children_over_threshold = (
             qualifying_children > p_gov.min_children_for_ss_taxes_minus_eitc
         )

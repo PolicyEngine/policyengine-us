@@ -15,9 +15,8 @@ class ny_ctc_pre_reduction_base_credit(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.ny.tax.income.credits.ctc
-        person = tax_unit.members
         # Qualifying children
-        qualifying_children = person("ctc_qualifying_children", period)
+        qualifying_children = tax_unit("ctc_qualifying_children", period)
         base_credit = qualifying_children * p.amount.base
         # New York recomputed FAGI - use normal FAGI
         fagi = tax_unit("adjusted_gross_income", period)
@@ -34,13 +33,15 @@ class ny_ctc_pre_reduction_base_credit(Variable):
             claimed_additional_credits, total_exclusions + fagi, fagi
         )
         # Federal CTC phase out threshold
-        federal_threshold = gov.irs.credits.ctc.phase_out.threshold[
+        federal_threshold = parameters(
+            period
+        ).gov.irs.credits.ctc.phase_out.threshold[
             tax_unit("filing_status", period)
         ]
         agi_over_threshold = agi_with_exclusion_amount > federal_threshold
         # The reduced AGI is rounded up to the nearest NY CTC base amount
         rounded_reduced_agi_multiple = np.ceil(
-            agi_with_exclusion_amount - federal_threshold / p.amount.base
+            (agi_with_exclusion_amount - federal_threshold) / p.amount.base
         )
         rounded_reduced_agi_amount = (
             rounded_reduced_agi_multiple * p.amount.base

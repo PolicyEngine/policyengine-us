@@ -1,0 +1,11 @@
+- name: NY Worksheet A/B for Form IT-213 federal credit computation
+  period: 2021
+  input:
+    foreign_tax_credit: 300
+    cdcc: 0
+    education_tax_credits: 400
+    savers_credit: 200
+    elderly_disabled_credit: 100
+    state_code: NY
+  output:
+    ny_ctc_federal_credits: 1_000
