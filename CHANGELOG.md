@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.785.1] - 2024-06-10 21:18:51
+
+### Fixed
+
+- Adjust the state income tax to include tax before refundable credits and refundable credits.
+- Create a state withheld income tax variable.
+
 ## [0.785.0] - 2024-06-10 16:50:58
 
 ### Added
@@ -8771,6 +8778,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.785.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.785.0...0.785.1
 [0.785.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.784.0...0.785.0
 [0.784.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.783.0...0.784.0
 [0.783.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.782.0...0.783.0
