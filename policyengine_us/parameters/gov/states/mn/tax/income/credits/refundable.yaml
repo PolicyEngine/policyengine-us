@@ -4,8 +4,13 @@ values:
     - mn_cdcc  # Minnesota child/dependent care credit
     - mn_wfc  # Minnesota working family credit
 
+  2023-01-01:
+    - mn_cdcc  
+    - mn_child_and_working_families_credits # Minnesota child and working families tax credit
+
 metadata:
-  unit: variable
+  unit: list
+  period: year
   label: Minnesota refundable tax credits
   reference:
   - title: 2021 Schedule M1REF, Refundable Credits
