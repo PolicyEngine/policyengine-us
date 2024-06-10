@@ -1,0 +1,11 @@
+description: The IRS includes this additional portion of Social Security benefits in taxable income for filers whose modified adjusted gross income exceeds the additional threshold.
+values:
+  2013-01-01: 0.85
+
+metadata:
+  breakdown: filing_status
+  unit: /1
+  label: Social Security benefit additional taxable rate
+  reference: 
+    - title: 26 U.S. Code § 86(a)(2)
+      href: https://www.law.cornell.edu/uscode/text/26/86#a_2 

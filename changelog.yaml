@@ -7371,3 +7371,31 @@
     added:
     - Illinois Child Tax Credit Reform.
   date: 2024-06-05 17:25:11
+- bump: patch
+  changes:
+    fixed:
+    - Arkansas income tax rates.
+  date: 2024-06-07 01:04:14
+- bump: patch
+  changes:
+    fixed:
+    - Zero out the taxable social security base income thresholds for separate filers
+      who cohabitated.
+  date: 2024-06-07 13:52:30
+- bump: minor
+  changes:
+    added:
+    - Add Oregon state uprating.
+  date: 2024-06-07 16:21:49
+- bump: minor
+  changes:
+    added:
+    - Rename medicaid_income to medicaid_magi.
+  date: 2024-06-07 20:27:00
+- bump: minor
+  changes:
+    added:
+    - Colorado family affordability tax credit.
+    removed:
+    - Draft version of Colorado family affordability tax credit.
+  date: 2024-06-08 01:49:40
