@@ -12,6 +12,7 @@ class ar_additional_credit(Variable):
 
     def formula(person, period, parameters):
         # Use individual or joint income based on filing status
+        filing_separately = person.tax_unit("ar_files_separately", period)
         taxable_income = person("ar_taxable_income", period)
         p = parameters(period).gov.states.ar.tax.income.credits.additional
         # Only head or spouse can claim this credit
