@@ -1,5 +1,6 @@
 from policyengine_us.model_api import *
 
+
 class ar_taxable_income(Variable):
     value_type = float
     entity = Person
@@ -16,4 +17,3 @@ class ar_taxable_income(Variable):
             filing_separately, taxable_income_indiv, taxable_income_joint
         )
         return taxable_income
-        
