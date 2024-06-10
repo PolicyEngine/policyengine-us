@@ -42,7 +42,6 @@ class self_employment_income(Variable):
     unit = USD
     documentation = "Self-employment non-farm income."
     definition_period = YEAR
-    uprating = "calibration.gov.irs.soi.self_employment_income"
     adds = [
         "self_employment_income_before_lsr",
         "self_employment_income_behavioral_response",
@@ -59,8 +58,11 @@ class emp_self_emp_ratio(Variable):
     def formula(person, period, parameters):
         employment_income = person("employment_income", period)
         self_employment_income = person("self_employment_income", period)
-        total_earnings = employment_income + self_employment_income
-        return where(total_earnings > 0, employment_income / total_earnings, 1)
+        earnings = employment_income + self_employment_income
+        res = np.ones_like(earnings)
+        mask = earnings > 0
+        res[mask] = employment_income[mask] / earnings[mask]
+        return res
 
 
 class farm_income(Variable):
