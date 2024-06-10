@@ -7411,3 +7411,10 @@
     added:
     - Adjust the New Mexico refundable credits parameter files.
   date: 2024-06-10 16:50:58
+- bump: patch
+  changes:
+    fixed:
+    - Adjust the state income tax to include tax before refundable credits and refundable
+      credits.
+    - Create a state withheld income tax variable.
+  date: 2024-06-10 21:18:51
