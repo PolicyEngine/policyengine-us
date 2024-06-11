@@ -1,4 +1,4 @@
-description: Minnesota allows subtraction from US AGI of the lesser of US-taxable social security and an alternative amount with the complex calculation of the alternative subtraction amount including this alternative subtraction amount.
+description: Minnesota allows subtraction from federal adjusted gross income of the lesser of US-taxable social security and an alternative amount with the complex calculation of the alternative subtraction amount including this alternative subtraction amount.
 metadata:
   label: Minnesota social security subtraction alternative subtraction amount
   period: year
@@ -22,8 +22,7 @@ JOINT:
   2022-01-01: 5_450
   2023-01-01: 5_840
   metadata:
-    uprating:
-    parameter: gov.irs.uprating
+    uprating: gov.irs.uprating
     rounding:
       type: nearest
       interval: 10
@@ -32,8 +31,7 @@ HEAD_OF_HOUSEHOLD:
   2022-01-01: 4_260
   2023-01-01: 4_560
   metadata:
-    uprating:
-    parameter: gov.irs.uprating
+    uprating: gov.irs.uprating
     rounding:
       type: nearest
       interval: 10
@@ -42,8 +40,7 @@ SURVIVING_SPOUSE:
   2022-01-01: 5_450
   2023-01-01: 5_840
   metadata:
-    uprating:
-    parameter: gov.irs.uprating
+    uprating: gov.irs.uprating
     rounding:
       type: nearest
       interval: 10
@@ -52,8 +49,7 @@ SINGLE:
   2022-01-01: 4_260
   2023-01-01: 4_560
   metadata:
-    uprating:
-    parameter: gov.irs.uprating
+    uprating: gov.irs.uprating
     rounding:
       type: nearest
       interval: 10
@@ -62,8 +58,7 @@ SEPARATE:
   2022-01-01: 2_725
   2023-01-01: 2_920
   metadata:
-    uprating:
-    parameter: gov.irs.uprating
+    uprating: gov.irs.uprating
     rounding:
       type: nearest
       interval: 10

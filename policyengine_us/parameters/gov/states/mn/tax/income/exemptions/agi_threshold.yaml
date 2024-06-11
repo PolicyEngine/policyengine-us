@@ -1,13 +1,8 @@
-description: Minnesota limits exemptions when federal AGI is above this threshold.
+description: Minnesota limits exemptions when federal adjusted gross income is above this threshold.
 metadata:
-  label: federal AGI threshold above which Minnesota exemptions are limited
+  label: federal adjusted gross income threshold above which Minnesota exemptions are limited
   period: year
   unit: currency-USD
-  uprating:
-    parameter: gov.irs.uprating
-    rounding:
-      type: downwards
-      interval: 50
   breakdown:
   - filing_status
   reference:
