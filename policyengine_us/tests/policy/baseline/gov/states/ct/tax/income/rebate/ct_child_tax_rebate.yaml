@@ -1,7 +1,7 @@
 - name: Ineligible single household with 2 dependents
   period: 2022
   input:
-    ct_child_tax_rebate_eligibility: false
+    ct_child_tax_rebate_eligible: false
     tax_unit_count_dependents: 2
   output:
     ct_child_tax_rebate: 0
@@ -9,7 +9,7 @@
 - name: Eligible seperate household with 1 dependent
   period: 2022
   input:
-    ct_child_tax_rebate_eligibility: true
+    ct_child_tax_rebate_eligible: true
     tax_unit_count_dependents: 1
   output:
     ct_child_tax_rebate: 250
@@ -17,7 +17,7 @@
 - name: Eligible Head of household with 5 dependents
   period: 2022
   input:
-    ct_child_tax_rebate_eligibility: true
+    ct_child_tax_rebate_eligible: true
     tax_unit_count_dependents: 5
   output:
     ct_child_tax_rebate: 750

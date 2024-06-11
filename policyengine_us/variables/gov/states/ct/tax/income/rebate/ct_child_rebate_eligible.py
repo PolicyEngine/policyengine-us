@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class ct_child_tax_rebate_eligibility(Variable):
+class ct_child_tax_rebate_eligible(Variable):
     value_type = bool
     entity = TaxUnit
-    label = "Connecticut child tax rebate eligibility"
+    label = "Eligible for the Connecticut child tax rebate"
     definition_period = YEAR
     defined_for = StateCode.CT
 
