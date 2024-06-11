@@ -18,7 +18,6 @@ class ut_ctc(Variable):
         eligible_child = ctc_eligible_child & ut_child_age_eligible
         eligible_children = tax_unit.sum(eligible_child)
         base_amount = p.amount * eligible_children
-
         # Utah reduces the CTC based on the state income in addition to
         # tax exempt interest income
         relevant_income = add(
