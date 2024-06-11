@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ut_ctc(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Utah Chil Tax Credit"
+    label = "Utah Child Tax Credit"
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.UT
