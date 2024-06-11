@@ -37,14 +37,8 @@ class nj_property_tax_credit_eligible(Variable):
             | senior_head_or_spouse
         )
 
-        federal_agi = tax_unit("adjusted_gross_income", period)
-        filing_status = tax_unit("filing_status", period)
-        agi_eligible = federal_agi <= p.income_limit[filing_status]
-
         # return eligiblity for property tax credit
         deduction_eligibility = tax_unit(
             "nj_property_tax_deduction_eligible", period
         )
-        return deduction_eligibility | (
-            pays_ptax & senior_blind_disabled & agi_eligible
-        )
+        return deduction_eligibility | (pays_ptax & senior_blind_disabled)
