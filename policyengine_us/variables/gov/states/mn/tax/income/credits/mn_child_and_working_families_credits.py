@@ -57,6 +57,15 @@ class mn_child_and_working_families_credits(Variable):
             p.phase_out.threshold.other,
         )
         excess_income = max_(0, income - phase_out_threshold)
-        phase_out_rate = p.phase_out.rate.calc(qualifying_older_children)
+        # Minnesota applies a different phase out rate for filers ineligible for the Child Tax Credit
+        # with qualifying older children for the WFC
+        lower_phase_out_rate_eligible = (qualifying_older_children > 0) & (
+            base_ctc_amount == 0
+        )
+        phase_out_rate = where(
+            lower_phase_out_rate_eligible,
+            p.phase_out.rate.ctc_ineligible_with_qualifying_older_children,
+            p.phase_out.rate.main,
+        )
         reduction = excess_income * phase_out_rate
         return max_(0, combined_credit - reduction)
