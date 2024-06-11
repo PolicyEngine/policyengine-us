@@ -14,7 +14,12 @@ class pell_grant_max_fpg_percent_limit(Variable):
         p = parameters(period).gov.ed.pell_grant.sai.max_pell_limits
 
         return select(
-            [dependent & ~joint, dependent & joint, ~dependent & ~joint, ~dependent & joint],
+            [
+                dependent & ~joint,
+                dependent & joint,
+                ~dependent & ~joint,
+                ~dependent & joint,
+            ],
             [
                 p.DEPENDENT_SINGLE,
                 p.DEPENDENT_NOT_SINGLE,

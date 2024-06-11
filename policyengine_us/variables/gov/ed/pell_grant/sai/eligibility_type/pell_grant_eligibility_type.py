@@ -26,6 +26,9 @@ class pell_grant_eligibility_type(Variable):
 
         return select(
             [fpg_percent <= max_limit, fpg_percent <= min_limit],
-            [PellGrantEligibilityType.MAXIMUM, PellGrantEligibilityType.MINIMUM],
+            [
+                PellGrantEligibilityType.MAXIMUM,
+                PellGrantEligibilityType.MINIMUM,
+            ],
             default=PellGrantEligibilityType.INELIGIBLE,
         )
