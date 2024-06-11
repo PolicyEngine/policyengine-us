@@ -10,7 +10,9 @@ class tax_unit_ss_combined_income_excess(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/26/86#b_1"
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.irs.social_security.taxability
+        p = parameters(
+            period
+        ).gov.irs.social_security.taxability.threshold.base
 
         # The legislation directs the usage an income definition that is
         # a particularly modified AGI, plus half of gross Social Security
@@ -23,5 +25,14 @@ class tax_unit_ss_combined_income_excess(Variable):
         )
         filing_status = tax_unit("filing_status", period)
 
-        base_amount = p.threshold.lower[filing_status]
+        status = filing_status.possible_values
+        separate = filing_status == status.SEPARATE
+        cohabitating = tax_unit("cohabitating_spouses", period)
+        # Cohabitating married couples filing separately receive a base amount of 0
+        base_amount = where(
+            separate & cohabitating,
+            p.separate_cohabitating,
+            p.main[filing_status],
+        )
+
         return max_(0, combined_income - base_amount)
