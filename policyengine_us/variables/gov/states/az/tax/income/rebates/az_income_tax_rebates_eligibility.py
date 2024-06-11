@@ -1,0 +1,16 @@
+from policyengine_us.model_api import *
+
+
+class az_income_tax_rebates_eligibility(Variable):
+    value_type = bool
+    entity = TaxUnit
+    label = "Arizona one-time families tax rebates eligibility"
+    documentation = "https://211arizona.org/wp-content/uploads/2023/11/Arizona-Families-Tax-Rebate.pdf"
+    unit = USD
+    definition_period = YEAR
+    defined_for = StateCode.AZ
+
+    def formula(tax_unit, period, parameters):
+        is_dependent_tax_credit = tax_unit("az_dependent_tax_credit", 2021) > 0
+        is_income_tax = tax_unit("az_income_tax", 2021) > 0
+        return is_dependent_tax_credit & is_income_tax

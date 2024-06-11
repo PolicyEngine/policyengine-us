@@ -1,0 +1,15 @@
+- name: Arizona one-time families tax rebate ineligible (no income tax)
+  period: 2021
+  input:
+    az_dependent_tax_credit: 3
+    az_income_tax: 0
+  output:
+    az_income_tax_rebates_eligibility: false
+
+- name: Arizona one-time families tax rebate ineligible (claimed 0 dependent tax credit)
+  period: 2021
+  input:
+    az_dependent_tax_credit: 0
+    az_income_tax: 4
+  output:
+    az_income_tax_rebates_eligibility: false 
