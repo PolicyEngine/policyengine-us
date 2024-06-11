@@ -1,0 +1,25 @@
+description: Utah limits the child tax credit to filers with children between these age thresholds.
+
+metadata:
+  type: single_amount
+  amount_unit: bool
+  threshold_unit: year
+  period: year
+  label: Utah child tax credit child age threshold
+  reference:
+    - title: Utah Code §59-10-1047 (1) (e)
+      href: https://le.utah.gov/xcode/Title59/Chapter10/59-10-S1047.html?v=C59-10-S1047_2023050320240101
+
+brackets:
+  - threshold:
+      2024-10-01: 0
+    amount:
+      2024-10-01: false
+  - threshold:
+      2024-10-01: 1
+    amount:
+      2024-10-01: true
+  - threshold:
+      2024-10-01: 4
+    amount:
+      2024-10-01: false
