@@ -11,5 +11,5 @@ class pell_grant_contribution_from_assets(Variable):
         assets = person.tax_unit("pell_grant_head_assets", period)
         simplified = person("pell_grant_simplified_formula_applies", period)
         formula = person("pell_grant_formula", period)
-        p = parameters(period).gov.ed.pell_grant.efc.head
+        p = parameters(period).gov.ed.pell_grant.head
         return assets * p.asset_assessment_rate[formula] * ~simplified

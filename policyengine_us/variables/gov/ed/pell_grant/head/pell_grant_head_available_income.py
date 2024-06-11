@@ -11,5 +11,5 @@ class pell_grant_head_available_income(Variable):
         allowances = person("pell_grant_head_allowances", period)
         income = person.tax_unit("pell_grant_primary_income", period)
         formula = person("pell_grant_formula", period)
-        p = parameters(period).gov.ed.pell_grant.efc.head
+        p = parameters(period).gov.ed.pell_grant.head
         return (income - allowances) * p.income_assessment_rate[formula]

@@ -7,7 +7,7 @@ def _total_contribution(person, period, parameters):
     assets = person("pell_grant_contribution_from_assets", period)
     adjusted_available_income = available_income + assets
     formula = person("pell_grant_formula", period)
-    p = parameters(period).gov.ed.pell_grant.efc.head
+    p = parameters(period).gov.ed.pell_grant.head
     positive_head_contribution = p.marginal_rate.calc(adjusted_available_income)
     negative_head_contribution = max_(adjusted_available_income * p.negative_rate, p.min_contribution)
     total_head_contribution = where(
