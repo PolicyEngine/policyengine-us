@@ -1,5 +1,5 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.ed.pell_grant.efc.pell_grant_formula import PellGrantFormula
+from policyengine_us.variables.gov.ed.pell_grant.pell_grant_formula import PellGrantFormula
 
 
 def _total_contribution(person, period, parameters):
