@@ -57,8 +57,8 @@ class mn_child_and_working_families_credits(Variable):
             p.phase_out.threshold.other,
         )
         excess_income = max_(0, income - phase_out_threshold)
-        # The phase out threshold is decreased for filers with qualifying older children
-        # who are inleigible for the Child Tax Credit
+        # The phase out rate is decreased for filers who are inleigible for the Child Tax Credit 
+        # with qualifying older children for the WFC
         lower_phase_out_threshold_eligible = (
             qualifying_older_children > 0
         ) & (base_ctc_amount == 0)
