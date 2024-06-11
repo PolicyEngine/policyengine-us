@@ -1,8 +1,8 @@
-description: All state income tax.
+description: All state withheld income tax.
 values:
   0000-01-01:
     # state income tax variables listed in alphabetical order:
-    # ak_income_tax  --- no state income tax
+    # ak_withheld_income_tax  --- no state income tax
     - al_withheld_income_tax 
     - ar_withheld_income_tax
     - az_withheld_income_tax  
@@ -11,7 +11,7 @@ values:
     - ct_withheld_income_tax  
     - dc_withheld_income_tax  
     - de_withheld_income_tax
-    # fl_income_tax  --- no state income tax
+    # fl_withheld_income_tax  --- no state income tax
     - ga_withheld_income_tax  
     - hi_withheld_income_tax  
     - ia_withheld_income_tax  
@@ -32,10 +32,10 @@ values:
     - nc_withheld_income_tax
     - nd_withheld_income_tax  
     - ne_withheld_income_tax  
-    # nh_income_tax  --- no state income tax
+    # nh_withheld_income_tax  --- no state income tax
     - nj_withheld_income_tax
     - nm_withheld_income_tax  
-    # nv_income_tax  --- no state income tax
+    # nv_withheld_income_tax  --- no state income tax
     - ny_withheld_income_tax  
     - oh_withheld_income_tax  
     - ok_withheld_income_tax  
@@ -43,17 +43,17 @@ values:
     - pa_withheld_income_tax
     - ri_withheld_income_tax  
     - sc_withheld_income_tax  
-    # sd_income_tax  --- no state income tax
-    # tn_income_tax  --- no state income tax
-    # tx_income_tax  --- no state income tax
+    # sd_withheld_income_tax  --- no state income tax
+    # tn_withheld_income_tax  --- no state income tax
+    # tx_withheld_income_tax  --- no state income tax
     - ut_withheld_income_tax  
     - va_withheld_income_tax  
     - vt_withheld_income_tax  
-    # wa_income_tax  --- no state income tax
+    # wa_withheld_income_tax  --- no state income tax
     - wi_withheld_income_tax
     - wv_withheld_income_tax  
 
 metadata:
   unit: list
   period: year
-  label: State income tax
+  label: State withheld income tax
