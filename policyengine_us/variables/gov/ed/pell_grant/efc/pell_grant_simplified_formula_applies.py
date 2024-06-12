@@ -14,7 +14,5 @@ class pell_grant_simplified_formula_applies(Variable):
         income_eligible = head_income < p.income_limit
         total_benefits = add(tax_unit, period, p.benefits)
         has_benefits = np.any(total_benefits > 0)
-        return income_eligible & has_benefits
+        return income_eligible & has_benefits & p.applies
 
-    def formula_2024(person, period, parameters):
-        return False
