@@ -4,6 +4,7 @@ from policyengine_us.model_api import *
 class pell_grant_contribution_from_assets(Variable):
     value_type = float
     entity = Person
+    unit = USD
     label = "Pell Grant head contribution from assets"
     definition_period = YEAR
 

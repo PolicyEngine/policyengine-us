@@ -6,6 +6,7 @@ from policyengine_us.variables.gov.ed.pell_grant.sai.eligibility_type.pell_grant
 
 class pell_grant_min_fpg_percent_limit(Variable):
     value_type = float
+    unit = PERCENT
     entity = Person
     definition_period = YEAR
     label = "The maximum FPG percent to qualify for the minimum Pell Grant"

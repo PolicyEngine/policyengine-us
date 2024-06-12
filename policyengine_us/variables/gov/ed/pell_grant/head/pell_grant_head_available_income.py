@@ -4,6 +4,7 @@ from policyengine_us.model_api import *
 class pell_grant_head_available_income(Variable):
     value_type = float
     entity = Person
+    unit = USD
     label = "Pell Grant head available income"
     definition_period = YEAR
 

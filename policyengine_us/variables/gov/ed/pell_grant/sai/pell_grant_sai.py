@@ -10,6 +10,7 @@ from policyengine_us.variables.gov.ed.pell_grant.sai.eligibility_type.pell_grant
 class pell_grant_sai(Variable):
     value_type = float
     entity = Person
+    unit = USD
     definition_period = YEAR
     label = "Pell Grant student aid index"
 

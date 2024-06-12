@@ -31,6 +31,7 @@ def _total_contribution(person, period, parameters):
 class pell_grant_head_contribution(Variable):
     value_type = float
     entity = Person
+    unit = USD
     label = "Pell Grant head contribution"
     definition_period = YEAR
 
