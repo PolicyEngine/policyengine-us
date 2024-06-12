@@ -8,22 +8,7 @@ class pell_grant_max_fpg_percent_limit(Variable):
     label = "The maximum FPG percent to qualify for the maximum Pell Grant"
 
     def formula(person, period, parameters):
-        dependent = person("is_tax_unit_dependent", period)
-        joint = person.tax_unit("tax_unit_is_joint", period)
+        household_type = person("pell_grant_household_type", period)
+        limits = parameters(period).gov.ed.pell_grant.sai.max_pell_limits
 
-        p = parameters(period).gov.ed.pell_grant.sai.max_pell_limits
-
-        return select(
-            [
-                dependent & ~joint,
-                dependent & joint,
-                ~dependent & ~joint,
-                ~dependent & joint,
-            ],
-            [
-                p.DEPENDENT_SINGLE,
-                p.DEPENDENT_NOT_SINGLE,
-                p.INDEPENDENT_SINGLE,
-                p.INDEPENDENT_NOT_SINGLE,
-            ],
-        )
+        return limits[household_type]
