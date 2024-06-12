@@ -15,4 +15,3 @@ class pell_grant_simplified_formula_applies(Variable):
         total_benefits = add(tax_unit, period, p.benefits)
         has_benefits = np.any(total_benefits > 0)
         return income_eligible & has_benefits & p.applies
-

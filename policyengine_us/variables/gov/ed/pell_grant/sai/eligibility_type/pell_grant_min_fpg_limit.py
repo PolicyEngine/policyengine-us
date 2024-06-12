@@ -16,10 +16,14 @@ class pell_grant_min_fpg_percent_limit(Variable):
         limits = parameters(period).gov.ed.pell_grant.sai.min_pell_limits
         not_parent = person.tax_unit("tax_unit_child_dependents", period) == 0
 
-        independent = (household_type == PellGrantHouseholdType.INDEPENDENT_SINGLE) | (
-            household_type == PellGrantHouseholdType.INDEPENDENT_NOT_SINGLE
-        )
+        independent = (
+            household_type == PellGrantHouseholdType.INDEPENDENT_SINGLE
+        ) | (household_type == PellGrantHouseholdType.INDEPENDENT_NOT_SINGLE)
 
         independent_parent = independent & not_parent
 
-        return where(independent_parent, limits.INDEPENDENT_NOT_PARENT, limits[household_type])
+        return where(
+            independent_parent,
+            limits.INDEPENDENT_NOT_PARENT,
+            limits[household_type],
+        )
