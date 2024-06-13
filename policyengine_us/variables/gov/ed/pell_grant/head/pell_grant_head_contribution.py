@@ -12,7 +12,9 @@ class pell_grant_head_contribution(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        dependents = person.tax_unit("pell_grant_dependents_in_college", period)
+        dependents = person.tax_unit(
+            "pell_grant_dependents_in_college", period
+        )
         available_income = person("pell_grant_head_available_income", period)
         assets = person("pell_grant_contribution_from_assets", period)
         adjusted_available_income = available_income + assets
@@ -20,8 +22,12 @@ class pell_grant_head_contribution(Variable):
         uses_efc = person("pell_grant_uses_efc", period)
         uses_sai = person("pell_grant_uses_sai", period)
         p = parameters(period).gov.ed.pell_grant.head
-        positive_head_contribution = p.marginal_rate.calc(adjusted_available_income)
-        negative_head_contribution = max_(adjusted_available_income * p.negative_rate, p.min_contribution)
+        positive_head_contribution = p.marginal_rate.calc(
+            adjusted_available_income
+        )
+        negative_head_contribution = max_(
+            adjusted_available_income * p.negative_rate, p.min_contribution
+        )
         total_head_contribution = where(
             adjusted_available_income >= 0,
             positive_head_contribution,

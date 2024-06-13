@@ -1,5 +1,7 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.ed.pell_grant.pell_grant_calculation_method import PellGrantCalculationMethod
+from policyengine_us.variables.gov.ed.pell_grant.pell_grant_calculation_method import (
+    PellGrantCalculationMethod,
+)
 
 
 class pell_grant_uses_efc(Variable):

@@ -16,8 +16,16 @@ class pell_grant_calculation_method(Variable):
 
     def formula(tax_unit, period, parameters):
         tax_units = tax_unit("tax_unit_id", period)
-        return np.full_like(tax_units, PellGrantCalculationMethod.EFC, dtype=PellGrantCalculationMethod)
+        return np.full_like(
+            tax_units,
+            PellGrantCalculationMethod.EFC,
+            dtype=PellGrantCalculationMethod,
+        )
 
     def formula_2024(tax_unit, period, parameters):
         tax_units = tax_unit("tax_unit_id", period)
-        return np.full_like(tax_units, PellGrantCalculationMethod.SAI, dtype=PellGrantCalculationMethod)
+        return np.full_like(
+            tax_units,
+            PellGrantCalculationMethod.SAI,
+            dtype=PellGrantCalculationMethod,
+        )
