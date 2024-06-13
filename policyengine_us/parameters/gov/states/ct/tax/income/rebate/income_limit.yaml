@@ -1,4 +1,4 @@
-description: Connecticut sets the child tax rebate income limits based on the filing status.
+description: Connecticut limits the child tax rebate to filers with income below this thresholds, based on filing status.
 metadata:
   period: year
   unit: currency-USD
@@ -9,12 +9,12 @@ metadata:
     - title: TSSB 2022-5 - Frequently Asked Questions Concerning the Child Tax Rebate (11)
       href: https://portal.ct.gov/-/media/drs/publications/tssb/2022/tssb-2022-5.pdf#page=2
 SINGLE:
-  2022-01-01: 100_000
+  2021-01-01: 100_000
 HEAD_OF_HOUSEHOLD:
-  2022-01-01: 160_000
+  2021-01-01: 160_000
 JOINT:
-  2022-01-01: 200_000
+  2021-01-01: 200_000
 WIDOW:
-  2022-01-01: 200_000
+  2021-01-01: 200_000
 SEPARATE:
-  2022-01-01: 100_000
+  2021-01-01: 100_000
