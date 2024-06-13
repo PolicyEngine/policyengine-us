@@ -13,5 +13,5 @@ class sc_use_tax_in_group_two_county(Variable):
         county = household("county_str", period)
         group_two_counties = parameters(
             period
-        ).gov.states.sc.tax.income.use_tax.rate.county_group.two
+        ).gov.states.sc.tax.income.use_tax.county_group.two
         return np.isin(county, group_two_counties)

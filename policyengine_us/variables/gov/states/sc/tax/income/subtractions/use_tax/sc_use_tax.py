@@ -11,7 +11,7 @@ class sc_use_tax(Variable):
     defined_for = StateCode.SC
 
     def formula(tax_unit, period, parameters):
-        income = tax_unit("sc_agi", period)
+        income = tax_unit("adjusted_gross_income", period)
         county = tax_unit.household("county_str", period)
         sc_use_tax_in_group_one_county = tax_unit.household(
             "sc_use_tax_in_group_one_county", period
@@ -33,14 +33,14 @@ class sc_use_tax(Variable):
                 sc_use_tax_in_group_three_county,
             ],
             [
-                p.rate.group_one,
-                p.rate.group_two,
-                p.rate.group_three,
+                p.group_one,
+                p.group_two,
+                p.group_three,
             ],
             default=0,
         )
 
         # Compute use tax rate by main rate plus local county additional rate
-        total_rate = p.rate.main + additional_rate
+        total_rate = p.main + additional_rate
 
         return income * total_rate
