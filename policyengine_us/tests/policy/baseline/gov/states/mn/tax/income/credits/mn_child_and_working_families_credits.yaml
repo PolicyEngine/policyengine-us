@@ -219,3 +219,57 @@
         state_code: MN
   output:  
     mn_child_and_working_families_credits: 0
+
+- name: Integration test, partially phased-out
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 48 
+        employment_income: 60_000
+      person2:
+        age: 10
+        is_child_dependent: true
+        is_full_time_student: false
+      person3: 
+        age: 5
+        is_child_dependent: true
+        is_full_time_student: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        mn_wfc_eligible: true
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:  
+        members: [person1, person2, person3]
+        state_code: MN
+  output:  
+    mn_child_and_working_families_credits: 190
+
+- name: Integration test, not phased-out
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 48 
+        employment_income: 20_000
+      person2:
+        age: 10
+        is_child_dependent: true
+        is_full_time_student: false
+      person3: 
+        age: 5
+        is_child_dependent: true
+        is_full_time_student: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        mn_wfc_eligible: true
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:  
+        members: [person1, person2, person3]
+        state_code: MN
+  output:  
+    mn_child_and_working_families_credits: 3_850
