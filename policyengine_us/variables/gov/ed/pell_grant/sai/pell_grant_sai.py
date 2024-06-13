@@ -24,7 +24,7 @@ class pell_grant_sai(Variable):
         max_eligible = eligibility_type == PellGrantEligibilityType.MAXIMUM
         p = parameters(period).gov.ed.pell_grant.sai
         min_sai = p.limits.min_sai
-        max_sai = 0 if max_eligible else p.limits.max_sai
+        max_sai = where(max_eligible, 0, p.limits.max_sai)
 
         unbound = select(
             [
