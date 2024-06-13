@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.788.0] - 2024-06-12 15:18:35
+
+### Added
+
+- Colorado EITC match increase beginning in 2024, recently legislated.
+
 ## [0.787.0] - 2024-06-11 20:39:03
 
 ### Fixed
@@ -8797,6 +8803,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.788.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.787.0...0.788.0
 [0.787.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.786.0...0.787.0
 [0.786.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.785.2...0.786.0
 [0.785.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.785.1...0.785.2
