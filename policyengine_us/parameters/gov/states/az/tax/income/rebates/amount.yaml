@@ -1,0 +1,23 @@
+description: Arizona provides the following amounts of Tax Rebate, depending on child age.  
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Arizona one-time families tax rebate per dependent 
+  type: single_amount
+  threshold_unit: year
+  amount_unit: currency-USD
+  reference:
+  - title: Arizona Families Tax Rebate
+    href: https://211arizona.org/wp-content/uploads/2023/11/Arizona-Families-Tax-Rebate.pdf#page=1
+
+# Use a scale parameter with two brackets: $250 for under 17, $150 for 17 and older.
+brackets:
+  - threshold:
+      2023-01-01: 0
+    amount:
+      2023-01-01: 250 
+  - threshold:
+      2023-01-01: 17
+    amount:
+      2023-01-01: 100
