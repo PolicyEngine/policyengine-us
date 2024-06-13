@@ -14,6 +14,6 @@ class tax_unit_medicaid_income_level(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        income = tax_unit("medicaid_income", period)
+        income = tax_unit("medicaid_magi", period)
         fpg = tax_unit("tax_unit_fpg", period)
         return income / fpg

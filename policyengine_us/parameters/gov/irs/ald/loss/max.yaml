@@ -2,7 +2,6 @@ description: Maximum amount of business losses deductible
 metadata:
   unit: currency-USD
   period: year
-  name: irs_max_business_loss
   label: Business loss limitation
   reference:
     - title: 26 U.S. Code § 461 - General rule for taxable year of deduction (l)(3)(A)(ii)(II)
@@ -62,7 +61,7 @@ SINGLE:
     2023-01-01: 289_000
     2024-01-01: 305_000
     2027-01-01: .inf
-WIDOW:
+SURVIVING_SPOUSE:
   values:
     2013-01-01: .inf
     2018-01-01: 500_000

@@ -8,12 +8,12 @@
   output:
     vt_withheld_income_tax: 117.25
 
-- name: Changing the filing sttaus should not change the output 
+- name: Changing the filing status should not change the output 
   period: 2022
   absolute_error_margin: 0.01
   input:
     irs_employment_income: 10_000
-    filing_status: WIDOW
+    filing_status: SURVIVING_SPOUSE
     state_code: VT
   output:
     vt_withheld_income_tax: 117.25
@@ -23,7 +23,7 @@
   absolute_error_margin: 0.01
   input:
     irs_employment_income: 6_400
-    filing_status: WIDOW
+    filing_status: SURVIVING_SPOUSE
     state_code: VT
   output:
     vt_withheld_income_tax: 0

@@ -1,0 +1,126 @@
+description: Connecticut provides head of household filers a credit for this fraction of taxes, depending on their adjusted gross income.
+metadata:
+  type: single_amount 
+  threshold_unit: currency-USD
+  amount_unit: /1
+  label: Connecticut AGI credit for head of household filers
+  reference:
+    - title: Connecticut General Statutes, Chapter 229, Sec. 12-703, (1), (I)
+      href: https://www.cga.ct.gov/current/pub/chap_229.htm#sec_12-703
+    - title: 2022 Form CT-1040 Connecticut Resident Income Tax Return Instructions
+      href: https://portal.ct.gov/-/media/DRS/Forms/2022/Income/2022-CT-1040-Instructions_1222.pdf#page=23
+    - title: 2023 Form CT-1040 Connecticut Resident Income Tax Return Instructions
+      href: https://portal.ct.gov/-/media/DRS/Forms/2023/Income/2023-CT-1040-Instructions_1223.pdf#page=23
+brackets:
+  - threshold: 
+      2016-01-01: 19_000
+    amount:
+      2016-01-01: 0.75
+  - threshold: 
+      2016-01-01: 24_000
+    amount:
+      2016-01-01: 0.70
+  - threshold:
+      2016-01-01: 24_500
+    amount:
+      2016-01-01: 0.65
+  - threshold:
+      2016-01-01: 25_000
+    amount:
+      2016-01-01: 0.60
+  - threshold:
+      2016-01-01: 25_500
+    amount:
+      2016-01-01: 0.55
+  - threshold:
+      2016-01-01: 26_000
+    amount:
+      2016-01-01: 0.50
+  - threshold:
+      2016-01-01: 26_500
+    amount:
+      2016-01-01: 0.45
+  - threshold:
+      2016-01-01: 27_000
+    amount:
+      2016-01-01: 0.40
+  - threshold:
+      2016-01-01: 27_500
+    amount:
+      2016-01-01: 0.35
+  - threshold:
+      2016-01-01: 34_000
+    amount:
+      2016-01-01: 0.30
+  - threshold:
+      2016-01-01: 34_500
+    amount:
+      2016-01-01: 0.25
+  - threshold:
+      2016-01-01: 35_000
+    amount:
+      2016-01-01: 0.20
+  - threshold:
+      2016-01-01: 35_500
+    amount:
+      2016-01-01: 0.15
+  - threshold:
+      2016-01-01: 44_000
+    amount:
+      2016-01-01: 0.14
+  - threshold:
+      2016-01-01: 44_500
+    amount:
+      2016-01-01: 0.13
+  - threshold:
+      2016-01-01: 45_000
+    amount:
+      2016-01-01: 0.12
+  - threshold:
+      2016-01-01: 45_500
+    amount:
+      2016-01-01: 0.11
+  - threshold:
+      2016-01-01: 46_000
+    amount:
+      2016-01-01: 0.10
+  - threshold:
+      2016-01-01: 74_000
+    amount:
+      2016-01-01: 0.09
+  - threshold:
+      2016-01-01: 74_500
+    amount:
+      2016-01-01: 0.08
+  - threshold:
+      2016-01-01: 75_000
+    amount:
+      2016-01-01: 0.07
+  - threshold:
+      2016-01-01: 75_500
+    amount:
+      2016-01-01: 0.06
+  - threshold:
+      2016-01-01: 76_000
+    amount:
+      2016-01-01: 0.05
+  - threshold:
+      2016-01-01: 76_500
+    amount:
+      2016-01-01: 0.04
+  - threshold:
+      2016-01-01: 77_000
+    amount:
+      2016-01-01: 0.03
+  - threshold:
+      2016-01-01: 77_500
+    amount:
+      2016-01-01: 0.02
+  - threshold:
+      2016-01-01: 78_000
+    amount:
+      2016-01-01: 0.01
+  - threshold:
+      2016-01-01: 78_500
+    amount:
+      2016-01-01: 0

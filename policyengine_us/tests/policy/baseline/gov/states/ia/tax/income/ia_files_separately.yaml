@@ -15,3 +15,12 @@
     state_code: IA
   output:
     ia_files_separately: false
+
+- name: IA married filing separately disabled in 2023
+  period: 2023
+  input:
+    ia_income_tax_indiv: 200
+    ia_income_tax_joint: 300
+    state_code: IA
+  output:
+    ia_files_separately: false

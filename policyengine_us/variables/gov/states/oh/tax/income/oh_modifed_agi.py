@@ -8,9 +8,11 @@ class oh_modified_agi(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://codes.ohio.gov/ohio-revised-code/section-5747.71",
         "https://tax.ohio.gov/static/forms/ohio_individual/individual/2022/it1040-sd100-instruction-booklet.pdf#page=31",
     )
     defined_for = StateCode.OH
 
-    adds = ["oh_agi", "qualified_business_income_deduction"]
+    adds = ["oh_agi"]
+
+
+# Additionally adds the Ohio Business income deduction
