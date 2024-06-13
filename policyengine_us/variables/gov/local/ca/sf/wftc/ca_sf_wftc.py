@@ -12,6 +12,6 @@ class ca_sf_wftc(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.local.ca.sf.wftc
         eitc_eligible = tax_unit("eitc_eligible", period)
-        caeitc_eligible = tax_unit("ca_eitc_eligible", period)
-        eligibility = eitc_eligible | caeitc_eligible
+        ca_eitc_eligible = tax_unit("ca_eitc_eligible", period)
+        eligibility = eitc_eligible | ca_eitc_eligible
         return p.amount * eligibility
