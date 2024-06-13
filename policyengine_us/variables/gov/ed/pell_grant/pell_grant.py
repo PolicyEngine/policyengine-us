@@ -15,25 +15,22 @@ class pell_grant(Variable):
         coa = person("cost_of_attending_college", period)
         months_in_school = person("pell_grant_months_in_school", period)
         efc = person("pell_grant_efc", period)
-        p = parameters(period).gov.ed.pell_grant
-        unbounded = coa - efc
-        capped = min_(unbounded, p.amount.max)
-        amount = where(capped < p.amount.min, 0, capped)
-        return amount * (months_in_school / p.months_in_school_year)
-
-    def formula_2024(person, period, parameters):
-        coa = person("cost_of_attending_college", period)
         sai = person("pell_grant_sai", period)
         eligibility = person("pell_grant_eligibility_type", period)
-        p = parameters(period).gov.ed.pell_grant.amount
-        unbound = coa - sai
-        capped = min_(unbound, p.max)
-        amount = where(capped < p.min, 0, capped)
-        return select(
+        uses_efc = person("pell_grant_uses_efc", period)
+        uses_sai = person("pell_grant_uses_sai", period)
+        p = parameters(period).gov.ed.pell_grant
+        contribution = select([uses_efc, uses_sai], [efc, sai])
+        unbounded = coa - contribution
+        capped = min_(unbounded, p.amount.max)
+        amount = where(capped < p.amount.min, 0, capped)
+        efc_pell = amount * (months_in_school / p.months_in_school_year)
+        sai_pell = select(
             [
                 eligibility == PellGrantEligibilityType.INELIGIBLE,
                 eligibility == PellGrantEligibilityType.MAXIMUM,
                 eligibility == PellGrantEligibilityType.MINIMUM,
             ],
-            [0, p.max, amount],
+            [0, p.amount.max, amount],
         )
+        return select([uses_efc, uses_sai], [efc_pell, sai_pell])
