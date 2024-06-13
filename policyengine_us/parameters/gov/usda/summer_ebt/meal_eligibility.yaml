@@ -1,0 +1,16 @@
+description: Meal plans that qualifies children for Summer EBT.
+
+values:
+  2024-01-01:
+    - reduced_price_school_meals
+    - free_school_meals
+
+metadata:
+  period: year
+  unit: program
+  reference:
+    # Programs not mentioned in legal code
+    - title: 42 U.S. Code § 1762(h)(2)
+      href: https://www.law.cornell.edu/uscode/text/42/1762#h_2
+    - title: 2024 USDA SUN Bucks (Summer EBT)
+      href: https://www.fns.usda.gov/summer/sunbucks
