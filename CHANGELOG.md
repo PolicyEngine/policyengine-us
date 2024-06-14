@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.789.0] - 2024-06-14 09:40:28
+
+### Added
+
+- San Francisco working families tax credit.
+
 ## [0.788.0] - 2024-06-12 15:18:35
 
 ### Added
@@ -8803,6 +8809,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.789.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.788.0...0.789.0
 [0.788.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.787.0...0.788.0
 [0.787.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.786.0...0.787.0
 [0.786.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.785.2...0.786.0
