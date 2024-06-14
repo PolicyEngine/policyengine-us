@@ -10,4 +10,4 @@ class az_income_tax_rebates_eligibility(Variable):
     defined_for = StateCode.AZ
 
     def formula(tax_unit, period, parameters):
-        return tax_unit("az_dependent_tax_credit", 2021) > 0
+        return tax_unit("az_dependent_tax_credit", period) > 0
