@@ -1,0 +1,21 @@
+- name: One person filing separately
+  period: 2022
+  input:
+    state_code: AR
+    is_tax_unit_head_or_spouse: true
+    ar_files_separately: true
+    ar_taxable_income_indiv: 20_000
+    ar_taxable_income_joint: 0
+  output: 
+    ar_taxable_income_person: 10_000
+
+- name: One person filing jointly 
+  period: 2022
+  input:
+    state_code: AR
+    is_tax_unit_head_or_spouse: true
+    af_files_separately: false
+    ar_taxable_income_indiv: 0
+    ar_taxable_income_joint: 10_000
+  output: 
+    ar_taxable_income_person: 10_000
