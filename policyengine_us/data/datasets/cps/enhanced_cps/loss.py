@@ -4,7 +4,7 @@ from policyengine_us import Microsimulation
 import numpy as np
 from policyengine_us import Microsimulation
 import pandas as pd
-from .process_puf import FINANCIAL_SUBSET as FINANCIAL_VARIABLES
+from policyengine_us.data.datasets.puf.process_puf import FINANCIAL_SUBSET as FINANCIAL_VARIABLES
 from typing import Tuple
 
 
@@ -129,17 +129,17 @@ def generate_model_variables(
     cps_household_weights = demographics_sim.calculate(
         "household_weight"
     ).values
-    for lower_age_group in range(0, 90, 10):
+    for lower_age_group in range(0, 90, 1):
         for possible_is_male in (True, False):
             in_age_range = (age >= lower_age_group) & (
-                age < lower_age_group + 5
+                age < lower_age_group + 1
             )
             in_sex_category = is_male == possible_is_male
             count_people_in_range = simulation.map_result(
                 in_age_range * in_sex_category, "person", "household"
             )
             in_age_range_cps = (age_cps >= lower_age_group) & (
-                age_cps < lower_age_group + 5
+                age_cps < lower_age_group + 1
             )
             in_sex_category_cps = is_male_cps == possible_is_male
             count_people_in_range_cps = demographics_sim.map_result(
@@ -149,7 +149,7 @@ def generate_model_variables(
                 in_age_range * in_sex_category, "person", "household"
             )
             sex_category = "male" if possible_is_male else "female"
-            name = f"{lower_age_group} to {lower_age_group + 5} and {sex_category} population"
+            name = f"{lower_age_group} and {sex_category} population"
             values_df[name] = count_people_in_range
             targets[name] = (
                 cps_household_weights * count_people_in_range_cps

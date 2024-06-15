@@ -9,7 +9,7 @@ class PUFExtendedCPS(Dataset):
     cps = None
 
     def generate(self):
-        from .process_puf import (
+        from policyengine_us.data.datasets.puf.process_puf import (
             FINANCIAL_SUBSET as FINANCIAL_VARIABLES,
             puf_imputed_cps_person_level,
         )

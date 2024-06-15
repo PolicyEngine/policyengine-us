@@ -7,3 +7,4 @@ class mortgage_interest(Variable):
     label = "Mortgage interest"
     unit = USD
     definition_period = YEAR
+    adds = ["home_mortgage_interest"]

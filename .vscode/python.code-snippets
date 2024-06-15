@@ -16,12 +16,11 @@
 		 	"prefix": "var",
 		 	"body": [
 		 		"class ${1:name}(Variable):",
-				"	value_type = ${2:float}",
-				"	entity = ${3:TaxUnit}",
+				"	value_type = float",
+				"	entity = TaxUnit",
 				"	label = \"${4:Label}\"",
-				"	unit = ${5:USD}",
-				"	documentation = \"${6:Description}\"",
-				"	definition_period = ${7:YEAR}",
+				"	unit = USD",
+				"	definition_period = YEAR",
 				"",
 				""
 		 	],

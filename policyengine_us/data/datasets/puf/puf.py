@@ -1,46 +1,13 @@
 from policyengine_core.data import Dataset
 import numpy as np
 from policyengine_us.data.storage import STORAGE_FOLDER
+from .process_puf import (
+    load_puf,
+    impute_missing_demographics,
+    uprate_puf,
+    FINANCIAL_SUBSET,
+)
 from tqdm import tqdm
-
-EXTRA_PUF_VARIABLES = [
-    "e02000",
-    "e26270",
-    "e19200",
-    "e18500",
-    "e19800",
-    "e20400",
-    "e20100",
-    "e00700",
-    "e03270",
-    "e24515",
-    "e03300",
-    "e07300",
-    "e62900",
-    "e32800",
-    "e87530",
-    "e03240",
-    "e01100",
-    "e01200",
-    "e24518",
-    "e09900",
-    "e27200",
-    "e03290",
-    "e58990",
-    "e03230",
-    "e07400",
-    "e11200",
-    "e07260",
-    "e07240",
-    "e07600",
-    "e03220",
-    "p08000",
-    "e03400",
-    "e09800",
-    "e09700",
-    "e03500",
-    "e87521",
-]
 
 
 class PUF(Dataset):
@@ -50,18 +17,17 @@ class PUF(Dataset):
     def generate(
         self, puf_file_path: str = None, puf_demographics_path: str = None
     ):
-        # First pass: single person tax units.
-        from policyengine_us.data.datasets.cps.enhanced_cps.process_puf import (
-            load_puf,
-            impute_missing_demographics,
-            uprate_puf,
-        )
+        from policyengine_us.system import system
 
         puf, demographics = load_puf(
             puf_file_path=puf_file_path, puf_demographics_path=None
         )
         puf = uprate_puf(puf, self.time_period)
         puf = impute_missing_demographics(puf, demographics)
+        self.variable_to_entity = {
+            variable: system.variables[variable].entity.key
+            for variable in system.variables
+        }
 
         VARIABLES = [
             "person_id",
@@ -76,10 +42,10 @@ class PUF(Dataset):
             "person_family_id",
             "person_household_id",
             "age",
-            "employment_income",
             "household_weight",
             "is_male",
-        ] + list(FINANCE_VARIABLE_RENAMES.values())
+            "filing_status",
+        ] + FINANCIAL_SUBSET
 
         self.holder = {variable: [] for variable in VARIABLES}
 
@@ -89,15 +55,10 @@ class PUF(Dataset):
             tax_unit_id = i
             self.add_tax_unit(row, tax_unit_id)
             self.add_filer(row, tax_unit_id)
-            if row["marital_filing_status"] == 2:
+            if row["filing_status"] == "JOINT":
                 self.add_spouse(row, tax_unit_id)
 
-            DEPENDENT_COLUMNS = [
-                "exemptions_children_living_at_home",
-                "exemptions_children_living_away_from_home",
-                "exemptions_other_dependents",
-            ]
-            count_dependents = int(sum(row[dep] for dep in DEPENDENT_COLUMNS))
+            count_dependents = np.minimum(row["count_exemptions"], 3)
 
             for j in range(count_dependents):
                 self.add_dependent(row, tax_unit_id, j)
@@ -115,12 +76,18 @@ class PUF(Dataset):
             ]
 
         for key in self.holder:
+            if key == "filing_status":
+                continue
             self.holder[key] = np.array(self.holder[key]).astype(float)
 
         self.save_dataset(self.holder)
 
     def add_tax_unit(self, row, tax_unit_id):
         self.holder["tax_unit_id"].append(tax_unit_id)
+
+        for key in FINANCIAL_SUBSET:
+            if self.variable_to_entity[key] == "tax_unit":
+                self.holder[key].append(row[key])
 
     def add_filer(self, row, tax_unit_id):
         person_id = int(tax_unit_id * 1e2 + 1)
@@ -151,12 +118,15 @@ class PUF(Dataset):
             row["employment_income"] * earnings_percentage
         )
 
-        self.holder["household_weight"].append(row["decimal_weight"])
-
+        self.holder["household_weight"].append(row["tax_unit_weight"])
         self.holder["is_male"].append(row["gender_primary_filer"] == 1)
+        self.holder["filing_status"].append(row["filing_status"])
 
-        for key in FINANCE_VARIABLE_RENAMES:
-            self.holder[FINANCE_VARIABLE_RENAMES[key]].append(row[key])
+        for key in FINANCIAL_SUBSET:
+            if key == "employment_income":
+                continue
+            if self.variable_to_entity[key] == "person":
+                self.holder[key].append(row[key])
 
     def add_spouse(self, row, tax_unit_id):
         person_id = int(tax_unit_id * 1e2 + 2)
@@ -195,8 +165,11 @@ class PUF(Dataset):
             opposite_gender_code if is_opposite_gender else same_gender_code
         )
 
-        for key in FINANCE_VARIABLE_RENAMES:
-            self.holder[FINANCE_VARIABLE_RENAMES[key]].append(0)
+        for key in FINANCIAL_SUBSET:
+            if key == "employment_income":
+                continue
+            if self.variable_to_entity[key] == "person":
+                self.holder[key].append(0)
 
     def add_dependent(self, row, tax_unit_id, dependent_id):
         person_id = int(tax_unit_id * 1e2 + 3 + dependent_id)
@@ -210,8 +183,11 @@ class PUF(Dataset):
         )
         self.holder["employment_income"].append(0)
 
-        for key in FINANCE_VARIABLE_RENAMES:
-            self.holder[FINANCE_VARIABLE_RENAMES[key]].append(0)
+        for key in FINANCIAL_SUBSET:
+            if key == "employment_income":
+                continue
+            if self.variable_to_entity[key] == "person":
+                self.holder[key].append(0)
 
         self.holder["is_male"].append(np.random.choice([0, 1]))
 
@@ -229,28 +205,6 @@ class PUF_2015(PUF):
     name = "puf_2015"
     time_period = 2015
     file_path = STORAGE_FOLDER / "puf_2015.h5"
-
-
-FINANCE_VARIABLE_RENAMES = dict(
-    self_employment_income="self_employment_income",
-    taxable_interest_income="taxable_interest_income",
-    tax_exempt_interest_income="tax_exempt_interest_income",
-    qualified_dividend_income="qualified_dividend_income",
-    non_qualified_dividend_income="non_qualified_dividend_income",
-    taxable_pension_income="taxable_pension_income",
-    social_security="social_security",
-    long_term_capital_gains="long_term_capital_gains",
-    short_term_capital_gains="short_term_capital_gains",
-    rental_income="rental_income",
-    farm_rent_income="farm_rent_income",
-    farm_income="farm_income",
-    partnership_s_corp_income="partnership_s_corp_income",
-    schedule_e_net_income_loss="schedule_e_net_income",
-)
-
-FINANCE_VARIABLE_RENAMES.update(
-    {variable: variable for variable in EXTRA_PUF_VARIABLES}
-)
 
 
 def decode_age_filer(age_range):

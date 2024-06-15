@@ -9,6 +9,8 @@ from policyengine_us.data.datasets.cps.enhanced_cps.loss import (
     generate_model_variables,
 )
 
+torch.set_default_device("cpu")
+
 
 def aggregate(
     adjusted_weights: torch.Tensor, values: pd.DataFrame
@@ -27,6 +29,7 @@ def calibrate(
     learning_rate: float = 2e1,
     epochs: int = 10_000,
 ) -> np.ndarray:
+    print("Beginning model setup")
     (
         household_weights,
         weight_adjustment,
@@ -35,11 +38,16 @@ def calibrate(
         targets_array,
         equivalisation_factors_array,
     ) = generate_model_variables(dataset, time_period)
+
+    print("Completed setup.")
     household_weights = torch.tensor(household_weights, dtype=torch.float32)
+    print("1", flush=True)
     weight_adjustment = torch.tensor(
         weight_adjustment, dtype=torch.float32, requires_grad=True
     )
+    print("1", flush=True)
     targets_array = torch.tensor(targets_array, dtype=torch.float32)
+    print("Initialised", flush=True)
     equivalisation_factors_array = torch.tensor(
         equivalisation_factors_array, dtype=torch.float32
     )
@@ -51,8 +59,10 @@ def calibrate(
 
     progress_bar = tqdm(range(epochs), desc="Calibrating weights")
     optimizer = torch.optim.Adam([weight_adjustment], lr=learning_rate)
+    print("Beginning training", flush=True)
     for i in progress_bar:
         adjusted_weights = torch.relu(household_weights + weight_adjustment)
+        print("Aggregating")
         result = (
             aggregate(adjusted_weights, values_df)
             / equivalisation_factors_array
@@ -61,6 +71,7 @@ def calibrate(
         loss = torch.mean(
             ((result / target - 1) ** 2) * np.log2(np.abs(target))
         )
+        print("Computed loss")
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
