@@ -8,4 +8,4 @@ class qualified_solar_energy_systems_equipment_expenditures(Variable):
     documentation = ""
     unit = USD
     definition_period = YEAR
-    reference = "https://www.nysenate.gov/legislation/laws/TAX/606" # (g), (2), (C), (9), (g-1), (2)
+    reference = "https://www.nysenate.gov/legislation/laws/TAX/606"  # (g), (2), (C), (9), (g-1), (2)
