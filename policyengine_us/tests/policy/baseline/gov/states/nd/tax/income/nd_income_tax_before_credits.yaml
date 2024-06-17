@@ -1,4 +1,4 @@
-- name: North Dakota income tax before credits unit test 1
+- name: Test 1, North Dakota income tax before credits 
   period: 2021
   input:
     filing_status: SINGLE
@@ -7,7 +7,7 @@
   output:  # hand calculated to avoid whole-dollar rounding problems
     nd_income_tax_before_credits: 1_663.435
 
-- name: North Dakota income tax before credits unit test 2
+- name: Test 2, North Dakota income tax before credits
   period: 2022
   input:
     filing_status: JOINT
@@ -16,7 +16,7 @@
   output:  # hand calculated to avoid whole-dollar rounding problems
     nd_income_tax_before_credits: 11_316.07
 
-- name: North Dakota income tax before credits for taxable income below or equal 74750, unit test 3 (JOINT)
+- name: Test 3 (JOINT), North Dakota income tax before credits for taxable income below or equal 74750
   period: 2023
   input:
     filing_status: JOINT
@@ -25,7 +25,7 @@
   output:  # hand calculated to avoid whole-dollar rounding problems
     nd_income_tax_before_credits: 0
 
-- name: North Dakota income tax before credits for taxable income above 74750 and below 275100, unit test 4 (JOINT)
+- name: Test 4 (JOINT), North Dakota income tax before credits for taxable income above 74750 and below 275100
   period: 2023
   input:
     filing_status: JOINT
@@ -35,7 +35,7 @@
     #(84750-74750)*0.0195 = 195
     nd_income_tax_before_credits: 195
 
-- name: North Dakota income tax before credits for taxable income above 275100, unit test 5 (JOINT)
+- name: Test 5 (JOINT), North Dakota income tax before credits for taxable income above 275100
   period: 2023
   input:
     filing_status: JOINT
@@ -45,7 +45,7 @@
     #(275200-275100)*0.0250 + 3906.83 = 3909.33
     nd_income_tax_before_credits: 3_909.325
 
-- name: North Dakota income tax before credits for taxable income below 44725 unit test 6 (SINGLE)
+- name: Test 6 (SINGLE), North Dakota income tax before credits for taxable income below 44725
   period: 2023
   input:
     filing_status: SINGLE
@@ -54,7 +54,7 @@
   output:  # hand calculated to avoid whole-dollar rounding problems
     nd_income_tax_before_credits: 0
 
-- name: North Dakota income tax before credits for taxable income above 44725 and below 225975, unit test 7 (SINGLE)
+- name: Test 7 (SINGLE), North Dakota income tax before credits for taxable income above 44725 and below 225975
   period: 2023
   input:
     filing_status: SINGLE
@@ -63,7 +63,7 @@
   output:  # hand calculated to avoid whole-dollar rounding problems
     nd_income_tax_before_credits: 19.5
 
-- name: North Dakota income tax before credits for taxable income above 255975, unit test 8 (SINGLE)
+- name: Test 8 (SINGLE), North Dakota income tax before credits for taxable income above 255975
   period: 2023
   input:
     filing_status: SINGLE
@@ -72,7 +72,7 @@
   output:  # hand calculated to avoid whole-dollar rounding problems
     nd_income_tax_before_credits: 3_559.375
 
-- name: North Dakota income tax before credits for taxable income below 37375, unit test 9 (SEPARATE)
+- name: Test 9 (SEPARATE), North Dakota income tax before credits for taxable income below 37375
   period: 2023
   input:
     filing_status: SEPARATE
@@ -81,7 +81,7 @@
   output:  # hand calculated to avoid whole-dollar rounding problems
     nd_income_tax_before_credits: 0
 
-- name: North Dakota income tax before credits for taxable income above 37375 and below 137550, unit test 10 (SEPARATE)
+- name: Test 10 (SEPARATE), North Dakota income tax before credits for taxable income above 37375 and below 137550
   period: 2023
   input:
     filing_status: SEPARATE
@@ -90,7 +90,7 @@
   output:  # hand calculated to avoid whole-dollar rounding problems
     nd_income_tax_before_credits: 195
   
-- name: North Dakota income tax before credits for taxable income above 137550, unit test 11 (SEPARATE)
+- name: Test 11 (SEPARATE), North Dakota income tax before credits for taxable income above 137550
   period: 2023
   input:
     filing_status: SEPARATE
@@ -99,7 +99,7 @@
   output:  # hand calculated to avoid whole-dollar rounding problems
     nd_income_tax_before_credits: 2_203.4125
 
-- name: North Dakota income tax before credits for taxable income below 59950,  unit test 12 (HEAD)
+- name: Test 12 (HEAD), North Dakota income tax before credits for taxable income below 59950
   period: 2023
   input:
     filing_status: HEAD_OF_HOUSEHOLD
@@ -108,7 +108,7 @@
   output:  # hand calculated to avoid whole-dollar rounding problems
     nd_income_tax_before_credits: 0
 
-- name: North Dakota income tax before credits for taxable income above 59950 and below 250550, unit test 13 (HEAD)
+- name: Test 13 (HEAD), North Dakota income tax before credits for taxable income above 59950 and below 250550
   period: 2023
   input:
     filing_status: HEAD_OF_HOUSEHOLD
@@ -117,7 +117,7 @@
   output:  # hand calculated to avoid whole-dollar rounding problems
     nd_income_tax_before_credits: 195
 
-- name: North Dakota income tax before credits for taxable income above 250550, unit test 14 (HEAD)
+- name: Test 14 (HEAD), North Dakota income tax before credits for taxable income above 250550
   period: 2023
   input:
     filing_status: HEAD_OF_HOUSEHOLD
@@ -126,7 +126,7 @@
   output:  # hand calculated to avoid whole-dollar rounding problems
     nd_income_tax_before_credits: 3_966.7
 
-- name: North Dakota income tax before credits for taxable income below or equal 74750, unit test 15 (WIDOW)
+- name: Test 15 (WIDOW), North Dakota income tax before credits for taxable income below or equal 74750
   period: 2023
   input:
     filing_status: SURVIVING_SPOUSE
@@ -135,7 +135,7 @@
   output:  # hand calculated to avoid whole-dollar rounding problems
     nd_income_tax_before_credits: 0
 
-- name: North Dakota income tax before credits for taxable income above 74750 and below 275100, unit test 16 (WIDOW)
+- name: Test 16 (WIDOW), North Dakota income tax before credits for taxable income above 74750 and below 275100
   period: 2023
   input:
     filing_status: SURVIVING_SPOUSE
@@ -145,7 +145,7 @@
     #(84750-74750)*0.0195 = 195
     nd_income_tax_before_credits: 195
 
-- name: North Dakota income tax before credits for taxable income above 275200, unit test 17 (WIDOW)
+- name: Test 17 (WIDOW), North Dakota income tax before credits for taxable income above 275200
   period: 2023
   input:
     filing_status: SURVIVING_SPOUSE

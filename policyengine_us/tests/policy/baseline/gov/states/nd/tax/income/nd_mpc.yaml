@@ -1,4 +1,4 @@
-- name: ND marriage-penalty credit when taxable income is too low to be eligible unit test 1
+- name: Test 1, taxable income is too low to be eligible 
   absolute_error_margin: 0.01
   period: 2021
   input:
@@ -24,7 +24,7 @@
   output:
     nd_mpc: 0  # taxable income is too low to be eligible
 
-- name: ND marriage-penalty credit when the difference in the income tax between single filing status and joint filing status is more than 208, unit test 2
+- name: Test 2, difference in the income tax between single filing status and joint filing status is more than capped amount
   absolute_error_margin: 0.01
   period: 2022
   input:
@@ -53,7 +53,7 @@
     nd_mpc: 208  # capped at maximum credit amount
 
 
-- name: ND marriage-penalty credit when the difference in the income tax between single filing status and joint filing status is more than 287 , unit test 3
+- name: Test 3, difference in the income tax between single filing status and joint filing status is more than capped amount
   absolute_error_margin: 0.01
   period: 2023
   input:
@@ -79,7 +79,7 @@
   output:
     nd_mpc: 287 # capped at maximum credit amount
 
-- name: ND marriage-penalty credit unit when the difference in the income tax between single filing status and joint filing status is smaller than 287, unit test 4
+- name: Test 4, difference in the income tax between single filing status and joint filing status is less than capped amount  
   absolute_error_margin: 0.01
   period: 2023
   input:
