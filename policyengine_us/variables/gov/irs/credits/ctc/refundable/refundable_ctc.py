@@ -43,23 +43,7 @@ class refundable_ctc(Variable):
         relevant_earnings = (
             earnings_over_threshold * ctc.refundable.phase_in.rate
         )
-
-        # Compute "Social Security taxes" as defined in the US Code for the ACTC.
-        # This includes OASDI and Medicare payroll taxes, as well as half
-        # of self-employment taxes.
-        SS_ADD_VARIABLES = [
-            # Person:
-            "employee_social_security_tax",
-            "employee_medicare_tax",
-            "unreported_payroll_tax",
-            # Tax unit:
-            "self_employment_tax_ald",
-            "additional_medicare_tax",
-        ]
-        SS_SUBTRACT_VARIABLES = ["excess_payroll_tax_withheld"]
-        social_security_tax = add(tax_unit, period, SS_ADD_VARIABLES) - add(
-            tax_unit, period, SS_SUBTRACT_VARIABLES
-        )
+        social_security_tax = tax_unit("social_security_excess", period)
         eitc = tax_unit("eitc", period)
         social_security_excess = max_(0, social_security_tax - eitc)
         qualifying_children = tax_unit("ctc_qualifying_children", period)
