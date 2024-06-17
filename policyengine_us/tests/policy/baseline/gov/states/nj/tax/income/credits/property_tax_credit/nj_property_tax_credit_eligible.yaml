@@ -160,3 +160,22 @@
     state_code: NJ
   output:
     nj_property_tax_credit_eligible: false
+
+- name: 8 Ineligible for property tax deduction but above 65 and did pay property taxes, therefore eligible for credit.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    nj_property_tax_deduction_eligible: false
+    real_estate_taxes: 0 
+    rents: true
+    age_head: 70
+    age_spouse: 64
+    blind_head: false
+    blind_spouse: false
+    disabled_head: false
+    disabled_spouse: false
+    filing_status: SINGLE
+    adjusted_gross_income: 9_000
+    state_code: NJ
+  output:
+    nj_property_tax_credit_eligible: true

@@ -5,7 +5,7 @@
     age: 21
     state_code: MA
     zip_code: "01101"
-    medicaid_income: 1.6 * 13_590
+    medicaid_magi: 1.6 * 13_590
     second_lowest_silver_plan_cost: 4_133  # per 2022 KFF ACA calculator
   output:
     medicaid_income_level: 1.6
