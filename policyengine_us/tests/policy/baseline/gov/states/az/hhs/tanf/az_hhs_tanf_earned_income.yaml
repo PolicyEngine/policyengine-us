@@ -1,0 +1,120 @@
+- name: Arizona has an earned income disregard of 4_440 under its cash assistance program
+  period: 2023-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        earned_income: 7_500
+      person2:
+        earned_income: 7_500
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        az_hhs_tanf_earned_income_care_expense_disregard: 370
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    az_tanf_earned_income:  442
+
+- name: Arizona has an earned income disregard of 2_100 under its cash assistance program
+  period: 2023-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        earned_income: 7_500
+      person2:
+        earned_income: 7_500
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        az_hhs_tanf_earned_income_care_expense_disregard: 175
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    az_tanf_earned_income: 637
+
+- name: Arizona has an earned income disregard of 2_100 under its cash assistance program (with little earned income)
+  period: 2023-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        earned_income: 500
+      person2:
+        earned_income: 500
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        az_hhs_tanf_earned_income_care_expense_disregard: 175
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    az_tanf_earned_income: 0
+
+- name: Arizona has an earned income disregard of 4_440 under its cash assistance program (yearly aggregated)
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        earned_income: 7_500
+      person2:
+        earned_income: 7_500
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        az_hhs_tanf_earned_income_care_expense_disregard: 4_440
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    az_tanf_earned_income:  5_304
+
+- name: Arizona has an earned income disregard of 2_100 under its cash assistance program (yearly aggregated)
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        earned_income: 7_500
+      person2:
+        earned_income: 7_500
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        az_hhs_tanf_earned_income_care_expense_disregard: 2_100
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    az_tanf_earned_income: 7_644
+
+- name: Arizona has an earned income disregard of 2_100 under its cash assistance program (with little earned income) (yearly aggregated)
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        earned_income: 500
+      person2:
+        earned_income: 500
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        az_hhs_tanf_earned_income_care_expense_disregard: 2_100
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    az_tanf_earned_income: 0
+
