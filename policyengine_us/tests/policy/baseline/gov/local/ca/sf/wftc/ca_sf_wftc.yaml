@@ -1,0 +1,26 @@
+- name: Living in SF, Neither eligible for federal or state eitc
+  period: 2023
+  input:
+    county_str: SAN_FRANCISCO_COUNTY_CA
+    ca_eitc_eligible: false
+    eitc_eligible: false
+  output:
+    ca_sf_wftc: 0
+
+- name: Living in SF, Eligible for state eitc
+  period: 2023
+  input:
+    county_str: SAN_FRANCISCO_COUNTY_CA
+    ca_eitc_eligible: true
+    eitc_eligible: false
+  output:
+    ca_sf_wftc: 250
+
+- name: Don't live in SF, Eligible for federal eitc
+  period: 2023
+  input:
+    county_str: ALPINE_COUNTY_CA
+    ca_eitc_eligible: false
+    eitc_eligible: true
+  output:
+    ca_sf_wftc: 0
