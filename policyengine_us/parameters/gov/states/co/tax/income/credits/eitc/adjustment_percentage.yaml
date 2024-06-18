@@ -2,7 +2,7 @@ description: Colorado matches this percentage of the child care credit, dependin
 metadata:
   period: year
   type: single_amount
-  threshold_unit: currency-USD
+  threshold_unit: /1
   amount_unit: /1
   label: Colorado child care credit match
   reference:
@@ -17,24 +17,28 @@ metadata:
 
 brackets:
   - threshold:
-      1996-01-01: 0
-    amount:
-      1996-01-01: 0.5
-      2026-01-01: 0.7
+      2025-01-01: 0
+    amount: 
+      2025-01-01: 0.35
+      2026-01-01: 0.3
   - threshold:
-      1996-01-01: 25_000
+      2025-01-01: 0.02
     amount:
-      1996-01-01: 0.3
-      2019-01-01: 0.5
-      2026-01-01: 0.7
+      2025-01-01: 0.5
+      2026-01-01: 0.3
   - threshold:
-      1996-01-01: 35_000
+      2026-01-01: 0.03
     amount:
-      1996-01-01: 0.1
-      2019-01-01: 0.5
-      2026-01-01: 0.7
+      2026-01-01: 0.35
   - threshold:
-      1996-01-01: 60_000
+      2026-01-01: 0.0325
     amount:
-      1996-01-01: 0
-      2026-01-01: 0.7
+      2026-01-01: 0.4
+  - threshold:
+      2026-01-01: 0.035
+    amount:
+      2026-01-01: 0.45
+  - threshold:
+      2026-01-01: 0.0375
+    amount:
+      2026-01-01: 0.5
