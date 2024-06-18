@@ -1,0 +1,23 @@
+- name: spouse_is_deceased unit test with decease
+  period: 2020
+  input:
+    is_tax_unit_spouse: true
+    is_deceased: true
+  output:
+    spouse_is_deceased: true
+
+- name: spouse_is_deceased unit test without decease
+  period: 2020
+  input:
+    is_tax_unit_spouse: true
+    is_deceased: false
+  output:
+    spouse_is_deceased: false
+
+- name: spouse_is_deceased unit test with decease for non-spouse
+  period: 2020
+  input:
+    is_tax_unit_spouse: false
+    is_deceased: true
+  output:
+    spouse_is_deceased: false

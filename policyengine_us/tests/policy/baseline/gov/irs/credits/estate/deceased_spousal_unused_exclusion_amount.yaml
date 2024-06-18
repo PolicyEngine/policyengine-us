@@ -1,0 +1,15 @@
+- name: Deceased spouse
+  period: 2022
+  input:
+    basic_exclusion_amount: 1_000_000
+    spouse_is_deceased: true
+  output:
+    deceased_spousal_unused_exclusion_amount: 1_000_000
+
+- name: Undeceased spouse
+  period: 2022
+  input:
+    basic_exclusion_amount: 4_000_000
+    spouse_is_deceased: false
+  output:
+    deceased_spousal_unused_exclusion_amount: 0

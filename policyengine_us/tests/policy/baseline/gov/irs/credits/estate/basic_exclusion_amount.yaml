@@ -1,0 +1,31 @@
+- name: Estate larger than basic exclusion amount
+  period: 2022
+  input:
+    real_estate_taxes: 6_000_000
+    year_of_deceased: 2017
+  output:
+    basic_exclusion_amount: 5_000_000
+
+- name: Estate smaller than basic exclusion amount
+  period: 2022
+  input:
+    real_estate_taxes: 4_000_000
+    year_of_deceased: 2026
+  output:
+    basic_exclusion_amount: 4_000_000
+
+- name: Estate larger than increased basic exclusion amount
+  period: 2022
+  input:
+    real_estate_taxes: 11_000_000
+    year_of_deceased: 2018
+  output:
+    basic_exclusion_amount: 10_000_000
+
+- name: Estate smaller than increased basic exclusion amount
+  period: 2022
+  input:
+    real_estate_taxes: 9_000_000
+    year_of_deceased: 2025
+  output:
+    basic_exclusion_amount: 9_000_000
