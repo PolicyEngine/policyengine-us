@@ -5,6 +5,31 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.789.0] - 2024-06-14 09:40:28
+
+### Added
+
+- San Francisco working families tax credit.
+
+## [0.788.0] - 2024-06-12 15:18:35
+
+### Added
+
+- Colorado EITC match increase beginning in 2024, recently legislated.
+
+## [0.787.0] - 2024-06-11 20:39:03
+
+### Fixed
+
+- Fix New Jersey property tax credit income eligibility logic
+
+## [0.786.0] - 2024-06-11 15:00:02
+
+### Added
+
+- Utah child tax credit.
+- 2023 Utah earned income tax credit match increase.
+
 ## [0.785.2] - 2024-06-11 12:11:14
 
 ### Fixed
@@ -8784,6 +8809,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.789.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.788.0...0.789.0
+[0.788.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.787.0...0.788.0
+[0.787.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.786.0...0.787.0
+[0.786.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.785.2...0.786.0
 [0.785.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.785.1...0.785.2
 [0.785.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.785.0...0.785.1
 [0.785.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.784.0...0.785.0
