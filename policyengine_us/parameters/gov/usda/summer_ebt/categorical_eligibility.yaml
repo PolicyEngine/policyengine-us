@@ -5,10 +5,12 @@ values:
     - snap # Supplemental Nutrition Assistance Program.
     - tanf # Temporary Assistance to Needy Families.
     - fdpir # Food Distribution Program on Indian Reservations.
+    - medicaid
 
 metadata:
   period: year
   unit: program
+  label: Summer EBT qualifying programs
   reference:
     # Programs not mentioned in legal code
     - title: 42 U.S. Code § 1762(h)(2)
