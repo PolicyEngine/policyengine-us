@@ -13,10 +13,4 @@ class ct_child_tax_rebate_eligible(Variable):
         filing_status = tax_unit("filing_status", period)
         p = parameters(period).gov.states.ct.tax.income.rebate
 
-        income_eligibility = p.income_limit[filing_status] >= taxable_income
-
-        dependent_eligibility = (
-            tax_unit("tax_unit_count_dependents", period) > 0
-        )
-
-        return income_eligibility & dependent_eligibility
+        return p.income_limit[filing_status] >= taxable_income
