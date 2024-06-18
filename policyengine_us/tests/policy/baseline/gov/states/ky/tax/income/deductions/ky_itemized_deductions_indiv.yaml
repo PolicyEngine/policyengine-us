@@ -1,0 +1,89 @@
+- name: two people, married, separate
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        ky_agi: 1_000
+      person2:
+        is_tax_unit_spouse: true
+        ky_agi: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SEPARATE
+        ky_itemized_deductions_unit: 30
+    households:
+      household:
+        members: [person1,person2]
+        state_code: KY
+  output:
+    ky_itemized_deductions_indiv: [10, 20]
+    
+- name: two people, married, separate
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        ky_agi: 1_000
+      person2:
+        is_tax_unit_spouse: true
+        ky_agi: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SEPARATE
+        ky_itemized_deductions_unit: 30
+    households:
+      household:
+        members: [person1,person2]
+        state_code: KY
+  output:
+    ky_itemized_deductions_indiv: [30, 0]
+
+- name: two people, not married
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        ky_agi: 1_000
+      person2:
+        is_tax_unit_spouse: false
+        ky_agi: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SEPARATE
+        itemized_deductions_less_salt: 3
+        medical_expense_deduction: 2
+    households:
+      household:
+        members: [person1,person2]
+        state_code: KY
+  output:
+    ky_itemized_deductions_indiv: [1, 0]
+
+- name: 0 agi
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        ky_agi: 0
+      person2:
+        is_tax_unit_spouse: false
+        ky_agi: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SEPARATE
+        itemized_deductions_less_salt: 3
+        medical_expense_deduction: 2
+    households:
+      household:
+        members: [person1,person2]
+        state_code: KY
+  output:
+    ky_itemized_deductions_indiv: [0, 0]

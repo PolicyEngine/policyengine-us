@@ -1,0 +1,33 @@
+description: New York recaptures this base amount for single filers under the supplemental tax.
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: currency-USD
+  label: New York supplemental tax recapture base single amount
+  reference:
+    - title: Section 601 Imposition of tax, (d-2) for 2021 and (d-3) for 2022
+      href: https://www.nysenate.gov/legislation/laws/TAX/601
+    - title: 2021 NY Form IT-201 Instructions - Single and married filing separately
+      href: https://www.tax.ny.gov/pdf/2021/inc/it201i_2021.pdf#page=54
+    - title: 2022 NY Form IT-201 Instructions - Single and married filing separately
+      href: https://www.tax.ny.gov/pdf/2022/printable-pdfs/inc/it201i-2022.pdf#page=47
+brackets:
+  - threshold:
+      2021-01-01: 0 
+    amount:
+      2021-01-01: 0
+  - threshold:
+      2021-01-01: 215_400
+    amount:
+      2021-01-01: 526
+      2022-01-01: 536
+  - threshold:
+      2021-01-01: 1_077_550
+    amount:
+      2021-01-01: 1_646
+      2022-01-01: 1_829
+  - threshold:
+      2021-01-01: 5_000_000
+    amount:
+      2021-01-01: 31_817
+      2022-01-01: 32_000

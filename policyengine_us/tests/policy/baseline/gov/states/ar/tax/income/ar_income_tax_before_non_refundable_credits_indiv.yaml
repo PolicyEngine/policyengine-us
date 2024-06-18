@@ -1,0 +1,79 @@
+- name: AR income tax rates - taxable income not exceeding $5100
+  period: 2022
+  absolute_error_margin: 1
+  input:
+    ar_taxable_income_indiv: 5_100
+    state_code: AR
+  output:
+    #round(5_100 * 0.00)
+    ar_income_tax_before_non_refundable_credits_indiv: 0
+
+- name: AR income tax rates - taxable income from $5,101 to $10,300
+  period: 2022
+  absolute_error_margin: 1
+  input:
+    ar_taxable_income_indiv: 10_000
+    state_code: AR
+  output:
+    # (10_000-5_101) * 0.02
+    ar_income_tax_before_non_refundable_credits_indiv: 98
+
+- name: AR income tax rates - taxable income from $10,301 to $14,700
+  period: 2022
+  absolute_error_margin: 1
+  input:
+    ar_taxable_income_indiv: 11_000
+    state_code: AR
+  output:
+    # 104 + round((11_000 - 10_301)* 0.03)
+    ar_income_tax_before_non_refundable_credits_indiv: 125
+
+- name: AR income tax rates - taxable income from $14,701 to $24,300
+  period: 2022
+  absolute_error_margin: 1
+  input:
+    ar_taxable_income_indiv: 20_000
+    state_code: AR
+  output:
+  # 236 + round((20_000 - 14_701)* 0.034)
+    ar_income_tax_before_non_refundable_credits_indiv: 416
+
+- name: AR income tax rates - taxable income for income over $24,301
+  period: 2022
+  absolute_error_margin: 1
+  input:
+    ar_taxable_income_indiv: 25_000
+    state_code: AR
+  output:
+    # 562.366 + round((25_000-24_301) * 0.049) = 596
+    ar_income_tax_before_non_refundable_credits_indiv: 596
+
+- name: AR income tax rates - taxable income from $15,100 to $25,000 
+  period: 2023
+  absolute_error_margin: 1
+  input:
+    ar_taxable_income_indiv: 20_000
+    state_code: AR
+  output:
+    # 20_000 * 0.034 - 272.37 = 407.63
+    ar_income_tax_before_non_refundable_credits_indiv: 407.63
+
+- name: AR income tax rates - taxable income from $25,000 to $89,600 
+  period: 2023
+  absolute_error_margin: 1
+  input:
+    ar_taxable_income_indiv: 30_000
+    state_code: AR
+  output:
+    # 30_000 * 0.047 - 597.35 = 812.65
+    ar_income_tax_before_non_refundable_credits_indiv: 812.65
+
+- name: AR income tax rates - taxable income over $100,000
+  period: 2023
+  absolute_error_margin: 1
+  input:
+    ar_taxable_income_indiv: 100_000
+    state_code: AR
+  output:
+    # 100_000 * 0.047 - 153.7 = 4546.3
+    ar_income_tax_before_non_refundable_credits_indiv: 4546.3

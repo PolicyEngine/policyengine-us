@@ -1,0 +1,18 @@
+description: Rhode Island adds these items on federal adjusted gross income when computing Rhode Island adjusted gross income.
+
+metadata:
+  unit: list
+  reference:
+  - title: 2021 RI Schedule M - page 1 RI Modifications to Federal AGI 2e & 2i
+    href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-01/2021-ri-schedule-m_w.pdf#page=2
+  - title: 2022 RI Schedule M - page 1 RI Modifications to Federal AGI 2e & 2i
+    href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-12/2022%20RI%20Schedule%20M_w.pdf#page=2
+  - title: § 44-30-12.  Rhode Island income of a resident individual. (b)(4)(i)(A) & (b)(6)
+    href: http://webserver.rilin.state.ri.us/Statutes/title44/44-30/44-30-12.HTM
+  period: year
+  label: Rhode Island AGI additions
+
+values:
+  2021-01-01:
+    - investment_in_529_plan # RIGL §44-30-12(4)
+    - tax_exempt_unemployment_compensation # RIGL §44-30-12(b)(6)

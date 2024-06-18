@@ -75,7 +75,10 @@ class regular_tax_before_credits(Variable):
         dwks34 = dwks10 + dwks19
         dwks36 = max_(0, dwks34 - dwks1)
         dwks37 = max_(0, dwks33 - dwks36)
-        dwks38 = 0.25 * dwks37
+
+        p = parameters(period).gov.irs.income
+
+        dwks38 = p.amt.capital_gains.capital_gain_excess_tax_rate * dwks37
         # Break in worksheet lines
         dwks39 = dwks19 + dwks20 + dwks28 + dwks31 + dwks37
         dwks40 = dwks1 - dwks39
@@ -83,7 +86,6 @@ class regular_tax_before_credits(Variable):
 
         # Compute regular tax using bracket rates and thresholds
         reg_taxinc = max_(0, dwks19)
-        p = parameters(period).gov.irs.income
         bracket_tops = p.bracket.thresholds
         bracket_rates = p.bracket.rates
         reg_tax = 0
@@ -136,16 +138,21 @@ class alternative_minimum_tax(Variable):
             ),
         )
         age_head = tax_unit("age_head", period)
-        child = amt.exemption.child
-        young_head = (age_head != 0) & (age_head < child.max_age)
-        no_or_young_spouse = tax_unit("age_spouse", period) < child.max_age
+        child = parameters(period).gov.irs.dependent.ineligible_age
+        young_head = (age_head != 0) & (age_head < child.non_student)
+        no_or_young_spouse = tax_unit("age_spouse", period) < child.non_student
         adj_earnings = tax_unit("filer_adjusted_earnings", period)
-        line29 = where(
-            young_head & no_or_young_spouse,
-            min_(line29, adj_earnings + child.amount),
-            line29,
+        if period.start.year >= 2019:
+            child_amount = 0
+        else:
+            child_amount = amt.exemption.child.amount
+
+        line29_cap_applies = young_head & no_or_young_spouse
+        line29_cap = where(
+            line29_cap_applies, adj_earnings + child_amount, np.inf
         )
-        line30 = max_(0, amt_income - line29)
+        line29_capped = min_(line29, line29_cap)
+        line30 = max_(0, amt_income - line29_capped)
         brackets = amt.brackets
         bracket_fraction = where(
             filing_status == filing_status.possible_values.SEPARATE,

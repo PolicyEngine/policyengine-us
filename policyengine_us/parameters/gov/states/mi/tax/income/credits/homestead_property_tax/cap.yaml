@@ -1,0 +1,20 @@
+description: Michigan caps the homestead property tax credit at this amount. 
+metadata:
+  unit: currency-USD
+  period: year
+  label: Michigan homestead property tax credit cap
+  reference:
+  - title: 2022 MI-1040 Instructions
+    href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2022/2022-IIT-Forms/BOOK_MI-1040.pdf#page=29
+  - title: 2023 MI-1040 Instructions
+    href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2023/2023-IIT-Forms/BOOK_MI-1040.pdf#page=29
+  - title: Michigan Income Tax Act 206.520 - (15)
+    href: http://legislature.mi.gov/doc.aspx?mcl-206-520
+  - title: 2022 MI-1040CR Tax Form
+    href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2022/2022-IIT-Forms/MI-1040CR.pdf#page=2
+  - title: 2023 MI-1040CR Tax Form
+    href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2023/2023-IIT-Forms/MI-1040CR.pdf#page=2
+values:
+  2018-01-01: 1_500
+  2022-01-01: 1_600
+  2023-01-01: 1_700

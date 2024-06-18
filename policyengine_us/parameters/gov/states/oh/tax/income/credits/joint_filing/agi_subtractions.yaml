@@ -1,0 +1,22 @@
+description: Ohio subtracts these items from the Ohio adjusted gross income, under the joint filing credit.
+
+metadata:
+  unit: list
+  period: year
+  label: Ohio joint filing credit adjusted gross income subtractions
+  reference:
+  - title: 2021 Ohio IT 1040 Individual Income Tax Return Form Instructions Line 12
+    href: https://tax.ohio.gov/static/forms/ohio_individual/individual/2021/pit-it1040-booklet.pdf#page=20
+  - title: 2022 Ohio IT 1040 Individual Income Tax Return Form Instructions Line 12
+    href: https://tax.ohio.gov/static/forms/ohio_individual/individual/2022/it1040-sd100-instruction-booklet.pdf#page=20
+  - title: Ohio Income Tax Form 2023 Instructions (line 12)
+    href: https://dam.assets.ohio.gov/image/upload/tax.ohio.gov/forms/ohio_individual/individual/2023/it1040-sd100-instructionbooklet.pdf#page=29
+  - title: Ohio Revised Code - Section 5747.05 Tax credits. (E) (1)
+    href: https://law.justia.com/codes/ohio/2022/title-57/chapter-5747/section-5747-05/
+
+values:
+  2021-01-01:
+    - interest_income
+    - dividend_income
+    - capital_gains
+    - rental_income

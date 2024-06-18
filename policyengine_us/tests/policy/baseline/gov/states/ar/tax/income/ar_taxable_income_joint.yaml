@@ -1,0 +1,38 @@
+- name: Calculation 
+  period: 2022
+  input:
+    state_code: AR
+    ar_agi_joint: 2_000
+    ar_deduction_joint: 500
+    is_tax_unit_head: true
+  output:
+    ar_taxable_income_joint: 1_500
+
+- name: AGI Capped at 0 
+  period: 2022
+  input:
+    state_code: AR
+    ar_agi_joint: 300
+    ar_deduction_joint: 500
+    is_tax_unit_head: true
+  output:
+    ar_taxable_income_joint: 0
+
+- name: Taxable income is attributed to the head 
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        ar_deduction_joint: 100
+        ar_agi_joint: 1_000
+      person2:
+        is_tax_unit_head: false
+        ar_deduction_joint: 300
+        ar_agi_joint: 200
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    ar_taxable_income_joint: [800, 0]

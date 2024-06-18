@@ -1,0 +1,39 @@
+- name: LA EZ Save FPG in 2023
+  period: 2023
+  absolute_error_margin: 1
+  input:
+    household_size: 3
+    state_group_str: CONTIGUOUS_US
+    in_la: true
+  output:
+    ca_la_ez_save_fpg: 23_945 # (13590 + 4720 * 2) / 12 * 6 + (14580 + 5140 * 2) / 12 * 6
+  
+- name: LA EZ Save FPG in 2022
+  absolute_error_margin: 1
+  period: 2022
+  input:
+    household_size: 3
+    state_group_str: CONTIGUOUS_US
+    in_la: true
+  output:
+    ca_la_ez_save_fpg: 22_495 # (12880 + 4540 * 2) / 12 * 6 + (13590 + 4720 * 2) / 12 * 6
+
+- name: LA EZ Save FPG in 2023, two people
+  period: 2023
+  absolute_error_margin: 1
+  input:
+    household_size: 2
+    state_group_str: CONTIGUOUS_US
+    in_la: true
+  output:
+    ca_la_ez_save_fpg: 19_015 # (13590 + 4720) / 12 * 6 + (14580 + 5140) / 12 * 6
+
+- name: LA EZ Save FPG in 2023, one person household treated as two
+  period: 2023
+  absolute_error_margin: 1
+  input:
+    household_size: 1
+    state_group_str: CONTIGUOUS_US
+    in_la: true
+  output:
+    ca_la_ez_save_fpg: 19_015 # (13590 + 4720) / 12 * 6 + (14580 + 5140) / 12 * 6

@@ -11,6 +11,9 @@ metadata:
       href: https://casetext.com/regulation/idaho-administrative-code/title-idapa-35-tax-commission-state/rule-350101-income-tax-administrative-rules/section-350101075-tax-on-individuals-estates-and-trusts
     - title: IDAHO STATUTES, TITLE 63, CHAPTER 30, SECTION 63-3024 (2)(a)
       href: https://legislature.idaho.gov/statutesrules/idstat/title63/t63ch30/sect63-3024/ 
+    # The Widow filing status is treated as married
+    - title: IDAHO STATUTES, TITLE 63, CHAPTER 30, SECTION 63-3024(2)(b)
+      href: https://legislature.idaho.gov/statutesrules/idstat/title63/t63ch30/sect63-3024/#:~:text=(b)%20For%20taxpayers%20filing%20a,five%20thousand%20dollars%20(%245%2C000)
 brackets:
   - threshold:
       2021-01-01: 0
@@ -20,7 +23,7 @@ brackets:
   - threshold:
       2021-01-01: 3_176
       2022-01-01: 3_324
-      2023-01-01: 5_000
+      2023-01-01: 8_979
     rate:
       2021-01-01: 0.031
       2022-01-01: 0.03
@@ -37,9 +40,10 @@ brackets:
       2023-01-01: .inf
     rate:
       2021-01-01: 0.055
-      2022-01-01: 0.065
-  - threshold:  
+      2022-01-01: 0.06
+  - threshold:
       2021-01-01: 15_878
       2022-01-01: .inf
-    rate:  
+      2023-01-01: .inf
+    rate:
       2021-01-01: 0.065

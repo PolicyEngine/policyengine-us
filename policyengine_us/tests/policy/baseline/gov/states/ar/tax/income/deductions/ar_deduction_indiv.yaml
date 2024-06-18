@@ -1,0 +1,19 @@
+- name: Tax unit itemizes
+  period: 2022
+  input:
+    ar_itemized_deductions_indiv: 5_100
+    ar_standard_deduction_indiv: 5_000
+    ar_tax_unit_itemizes: true
+    state_code: AR
+  output:
+    ar_deduction_indiv: 5_100
+
+- name: Tax unit does not itemize
+  period: 2022
+  input:
+    ar_itemized_deductions_indiv: 5_100
+    ar_standard_deduction_indiv: 5_000
+    ar_tax_unit_itemizes: false
+    state_code: AR
+  output:
+    ar_deduction_indiv: 5_000

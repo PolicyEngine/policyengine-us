@@ -18,8 +18,7 @@ class ky_modified_agi(Variable):
             "form_4972_lumpsum_distributions", period
         )
         total_fed_agi = fed_agi + tax_exempt_lump_sum
-
-        ky_agi = tax_unit("ky_agi", period)
+        ky_agi = add(tax_unit, period, ["ky_agi"])
         # Lump sum distributions which are not included in federal AGI are added to the state AGI
         total_ky_agi = ky_agi + tax_exempt_lump_sum
         return max_(total_fed_agi, total_ky_agi)
