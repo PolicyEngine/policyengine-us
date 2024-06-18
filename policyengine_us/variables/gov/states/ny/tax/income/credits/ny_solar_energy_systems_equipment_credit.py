@@ -17,7 +17,5 @@ class ny_solar_energy_systems_equipment_credit(Variable):
         p = parameters(
             period
         ).gov.states.ny.tax.income.credit.solar_energy_systems_equipment
-        solar_equipment_expenditures_fraction = (
-            qualified_expenditures * p.rate
-        )
+        solar_equipment_expenditures_fraction = qualified_expenditures * p.rate
         return min_(solar_equipment_expenditures_fraction, p.cap)
