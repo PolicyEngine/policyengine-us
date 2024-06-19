@@ -12,7 +12,7 @@
   output:
     ctc_social_security_excess: 0
 
-- name: No excess
+- name: Social security excess included variables more than excluded variables
   period: 2018
   input:
     # SS_ADD_VARIABLES
@@ -26,7 +26,7 @@
   output:
     ctc_social_security_excess: 75
 
-- name: Some excess
+- name: Social security excess included variables less than excluded variables
   period: 2018
   input:
     # SS_ADD_VARIABLES
