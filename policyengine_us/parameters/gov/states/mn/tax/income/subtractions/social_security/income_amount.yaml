@@ -23,47 +23,52 @@ JOINT:
     2022-01-01: 82_770
     2023-01-01: 88_630
   metadata:
-    uprating: gov.irs.uprating
-    rounding:
-      type: nearest
-      interval: 10
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: nearest
+        interval: 10
 HEAD_OF_HOUSEHOLD:
   values:
     2021-01-01: 62_710
     2022-01-01: 64_670
     2023-01-01: 69_250
   metadata:
-    uprating: gov.irs.uprating
-    rounding:
-      type: nearest
-      interval: 10
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: nearest
+        interval: 10
 SURVIVING_SPOUSE:
   values:
     2021-01-01: 80_270
     2022-01-01: 82_770
     2023-01-01: 88_630
   metadata:
-    uprating: gov.irs.uprating
-    rounding:
-      type: nearest
-      interval: 10
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: nearest
+        interval: 10
 SINGLE:
   values:
     2021-01-01: 62_710
     2022-01-01: 64_670
     2023-01-01: 69_250
   metadata:
-    uprating: gov.irs.uprating
-    rounding:
-      type: nearest
-      interval: 10
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: nearest
+        interval: 10
 SEPARATE:
   values:
     2021-01-01: 40_135
     2022-01-01: 41_385
     2023-01-01: 44_315
   metadata:
-    uprating: gov.irs.uprating
-    rounding:
-      type: nearest
-      interval: 10
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: nearest
+        interval: 10
