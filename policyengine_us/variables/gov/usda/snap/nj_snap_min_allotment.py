@@ -6,7 +6,7 @@ class nj_snap_min_allotment(Variable):
     entity = SPMUnit
     definition_period = MONTH
     documentation = "NJ minimum snap payment"
-    label = "NJ minimum snap payment"
+    label = "New Jersey minimum snap payment"
     reference = (
         "https://www.nj.gov/humanservices/njsnap/apply/eligibility/"
     )
@@ -16,7 +16,4 @@ class nj_snap_min_allotment(Variable):
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.usda.snap.temporary_local_benefit.nj
         base_benefit = spm_unit('snap_reported', period)
-        if base_benefit < p.amount:
-            return p.amount
-        else:
-            return 0
+        return where(base_benefit < p.amount, p.amount, 0)

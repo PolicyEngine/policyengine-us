@@ -27,6 +27,5 @@ class snap(Variable):
                     "snap_normal_allotment",
                     "snap_emergency_allotment",
                     "dc_snap_temporary_local_benefit",
-                    "nj_snap_min_allotment",
                 ],
             )
