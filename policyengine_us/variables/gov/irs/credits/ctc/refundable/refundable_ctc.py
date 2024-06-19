@@ -43,7 +43,7 @@ class refundable_ctc(Variable):
         relevant_earnings = (
             earnings_over_threshold * ctc.refundable.phase_in.rate
         )
-        social_security_tax = tax_unit("social_security_excess", period)
+        social_security_tax = tax_unit("ctc_social_security_excess", period)
         eitc = tax_unit("eitc", period)
         social_security_excess = max_(0, social_security_tax - eitc)
         qualifying_children = tax_unit("ctc_qualifying_children", period)
