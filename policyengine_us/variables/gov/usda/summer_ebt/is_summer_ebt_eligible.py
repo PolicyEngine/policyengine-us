@@ -14,20 +14,17 @@ class is_summer_ebt_eligible(Variable):
 
     def formula(person, period, parameters):
         tax_unit = person.tax_unit
-        p = parameters(period).gov.usda.summer_ebt
-        programs = add(tax_unit, period, p.categorical_eligibility)
-        meal_plans = add(tax_unit, period, p.meal_eligibility)
-        living_conditions = add(
-            tax_unit, period, p.living_condition_eligibility
-        )
-
+        p = parameters(period).gov.usda.summer_ebt.eligibility
+        programs = add(tax_unit, period, p.categorical)
+        meal_plans = add(tax_unit, period, p.meal)
+        living_conditions = add(tax_unit, period, p.living_condition)
         is_program_eligible = np.any(programs) & (
             person("is_in_k12_school", period)
         )
         is_meal_eligible = np.any(meal_plans)
         is_living_condition_eligible = np.any(living_conditions)
         state = tax_unit.household("state_code_str", period)
-        state_eligible = p.state_eligibility[state].astype(bool)
+        state_eligible = p.state[state].astype(bool)
 
         return state_eligible & (
             is_program_eligible
