@@ -28,9 +28,9 @@ class snap_min_allotment(Variable):
         eligible = size <= min_allotment.maximum_household_size
         base_benefit = eligible * min_allotment.rate * relevant_max_allotment
 
-        # Check if the state is in New Jersey then apply specific minimum payment 
+        # Check if the state is in New Jersey then apply specific minimum payment
         state_code = spm_unit.household("state_code", period)
         is_nj = state_code == StateCode.NJ
-        nj_supplement = spm_unit('nj_snap_min_allotment', period)
+        nj_supplement = spm_unit("nj_snap_min_allotment", period)
 
         return where(is_nj, nj_supplement, base_benefit)
