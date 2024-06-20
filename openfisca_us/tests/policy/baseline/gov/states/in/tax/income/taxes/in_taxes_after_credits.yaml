@@ -1,0 +1,22 @@
+- name: local taxes entirely offset, state taxes not entirely offset
+  period: 2021
+  input:
+    state_code: IN
+    in_agi_tax: 1_000
+    in_county_tax: 1_000
+    in_state_non_refundable_credits: 5_00
+    in_local_non_refundable_credits: 1_500
+  output:
+    in_taxes_after_credits: 5_00
+
+- name: local taxes entirely offset, state taxes not entirely offset, refund
+  period: 2021
+  input:
+    state_code: IN
+    in_agi_tax: 1_000
+    in_county_tax: 1_000
+    in_state_non_refundable_credits: 5_00
+    in_local_non_refundable_credits: 1_500
+    in_refundable_credits: 750
+  output:
+    in_taxes_after_credits: -250
