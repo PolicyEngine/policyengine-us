@@ -13,6 +13,6 @@ class ny_geothermal_energy_system_credit(Variable):
 
     def formula(tax_unit, parameters, period):
         qualified_geothermal_energy_system_expenditures = tax_unit("qualified_geothermal_energy_system_expenditures", period)
-        p = parameters(period).gov.states.ny.tax.income.credit.geothermal_energy_system_equipment
+        p = parameters(period).gov.states.ny.tax.income.credits.geothermal_energy_system
         geothermal_equipment_expenditures_fraction = qualified_geothermal_energy_system_expenditures * p.rate
         return min_(geothermal_equipment_expenditures_fraction, p.cap)
