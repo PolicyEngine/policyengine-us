@@ -5,6 +5,128 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.794.0] - 2024-06-20 15:16:19
+
+### Added
+
+- New York Solar Energy Systems Equipment Credit.
+
+## [0.793.0] - 2024-06-20 14:58:39
+
+### Added
+
+- Add 2023 Minnesota Tax Rules.
+
+## [0.792.0] - 2024-06-20 01:35:16
+
+### Added
+
+- North Dakota 2023 tax rules.
+- North Dakota taxes legal code references.
+- North Dakota tax parameters uprating.
+
+## [0.791.0] - 2024-06-19 16:51:13
+
+### Added
+
+- Projections from June 2024 CBO baseline.
+
+## [0.790.0] - 2024-06-18 12:58:34
+
+### Added
+
+- Variables used by Tax-Calculator but not PolicyEngine in the IRS PUF.
+
+## [0.789.0] - 2024-06-14 09:40:28
+
+### Added
+
+- San Francisco working families tax credit.
+
+## [0.788.0] - 2024-06-12 15:18:35
+
+### Added
+
+- Colorado EITC match increase beginning in 2024, recently legislated.
+
+## [0.787.0] - 2024-06-11 20:39:03
+
+### Fixed
+
+- Fix New Jersey property tax credit income eligibility logic
+
+## [0.786.0] - 2024-06-11 15:00:02
+
+### Added
+
+- Utah child tax credit.
+- 2023 Utah earned income tax credit match increase.
+
+## [0.785.2] - 2024-06-11 12:11:14
+
+### Fixed
+
+- Adjust the Minnesota phase-out rate to reflect the legal code.
+
+## [0.785.1] - 2024-06-10 21:18:51
+
+### Fixed
+
+- Adjust the state income tax to include tax before refundable credits and refundable credits.
+- Create a state withheld income tax variable.
+
+## [0.785.0] - 2024-06-10 16:50:58
+
+### Added
+
+- Adjust the New Mexico refundable credits parameter files.
+
+## [0.784.0] - 2024-06-10 16:45:35
+
+### Added
+
+- Minnesota child and working families tax credits.
+
+### Fixed
+
+- Minnesota working families tax credit parameter structure.
+
+## [0.783.0] - 2024-06-08 01:49:40
+
+### Added
+
+- Colorado family affordability tax credit.
+
+## [0.782.0] - 2024-06-07 20:27:00
+
+### Added
+
+- Rename medicaid_income to medicaid_magi.
+
+## [0.781.0] - 2024-06-07 16:21:49
+
+### Added
+
+- Add Oregon state uprating.
+
+## [0.780.2] - 2024-06-07 13:52:30
+
+### Fixed
+
+- Zero out the taxable social security base income thresholds for separate filers who cohabitated.
+
+## [0.780.1] - 2024-06-07 01:04:14
+
+### Fixed
+
+- Arkansas income tax rates.
+
+## [0.780.0] - 2024-06-05 17:25:11
+
+### Added
+
+- Illinois Child Tax Credit Reform.
+
 ## [0.779.2] - 2024-06-04 21:01:00
 
 ### Fixed
@@ -8719,6 +8841,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.794.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.793.0...0.794.0
+[0.793.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.792.0...0.793.0
+[0.792.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.791.0...0.792.0
+[0.791.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.790.0...0.791.0
+[0.790.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.789.0...0.790.0
+[0.789.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.788.0...0.789.0
+[0.788.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.787.0...0.788.0
+[0.787.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.786.0...0.787.0
+[0.786.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.785.2...0.786.0
+[0.785.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.785.1...0.785.2
+[0.785.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.785.0...0.785.1
+[0.785.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.784.0...0.785.0
+[0.784.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.783.0...0.784.0
+[0.783.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.782.0...0.783.0
+[0.782.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.781.0...0.782.0
+[0.781.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.780.2...0.781.0
+[0.780.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.780.1...0.780.2
+[0.780.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.780.0...0.780.1
+[0.780.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.779.2...0.780.0
 [0.779.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.779.1...0.779.2
 [0.779.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.779.0...0.779.1
 [0.779.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.778.0...0.779.0
