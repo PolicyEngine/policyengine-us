@@ -29,12 +29,11 @@ brackets:
         2021-01-01: 22_450
         2022-01-01: 23_000
         2023-01-01: 24_500
-      metadata:
-        uprating:
-          parameter: gov.irs.uprating
-          rounding:
-            type: downwards
-            interval: 50
+      uprating:
+        parameter: gov.irs.uprating
+        rounding:
+          type: downwards
+          interval: 50
     rate:
       2017-01-01: 0.0675
   - threshold:
@@ -43,11 +42,10 @@ brackets:
         2021-01-01: 53_150
         2022-01-01: 54_450
         2023-01-01: 58_050
-      metadata:
-        uprating:
-          parameter: gov.irs.uprating
-          rounding:
-            type: downwards
-            interval: 50
+      uprating:
+        parameter: gov.irs.uprating
+        rounding:
+          type: downwards
+          interval: 50
     rate:
       2017-01-01: 0.0715

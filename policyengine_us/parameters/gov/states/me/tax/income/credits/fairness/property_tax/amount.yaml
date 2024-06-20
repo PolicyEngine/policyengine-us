@@ -4,53 +4,65 @@ SINGLE:
     2021-01-01: 2_100
     2022-01-01: 2_200
     2023-01-01: 2_300
+
   1:
     2021-01-01: 2_100
     2022-01-01: 2_200
     2023-01-01: 2_300
+
   2:
     2021-01-01: 2_100
     2022-01-01: 2_200
-    2023-01-01: 2_300
+    2023-01-01: 23_00  
+
 HEAD_OF_HOUSEHOLD:
   0:
     2021-01-01: 2_750
     2022-01-01: 2_800
     2023-01-01: 3_000
+
   1:
     2021-01-01: 2_750
     2022-01-01: 2_800
     2023-01-01: 3_000
+
   2:
     2021-01-01: 3_400
     2022-01-01: 3_450
-    2023-01-01: 3_700
+    2023-01-01: 3_700 
+
 JOINT:
   0:
     2021-01-01: 2_750
     2022-01-01: 2_800
     2023-01-01: 3_000
+
   1:
     2021-01-01: 3_400
     2022-01-01: 3_450
     2023-01-01: 3_700
+
   2:
     2021-01-01: 3_400
     2022-01-01: 3_450
-    2023-01-01: 3_700
+    2023-01-01: 3_700 
+
 SURVIVING_SPOUSE:
   0:
     2021-01-01: 2_750
     2022-01-01: 2_800
     2023-01-01: 3_000
+
   1:
     2021-01-01: 3_400
     2022-01-01: 3_450
     2023-01-01: 3_700
+
   2:
     2021-01-01: 3_400
     2022-01-01: 3_450
     2023-01-01: 3_700
+
 SEPARATE:
   0:
     2021-01-01: 0
@@ -58,6 +70,7 @@ SEPARATE:
     2021-01-01: 0
   2:
     2021-01-01: 0
+
 metadata:
   unit: currency-USD
   reference:
@@ -73,11 +86,6 @@ metadata:
     - title: 2023 Form 1040ME Property Tax Fairness Credit / Sales Tax Fairness Credit Line 7
       href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/23_1040me_sched_pstfc_ff.pdf#page=2 
   period: year
-  uprating:
-    parameter: gov.irs.uprating
-    rounding:
-      type: downwards
-      interval: 50
   label: Maine property tax fairness credit amount
   breakdown:
     - filing_status

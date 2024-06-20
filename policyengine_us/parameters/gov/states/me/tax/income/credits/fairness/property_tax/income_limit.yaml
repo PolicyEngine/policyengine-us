@@ -4,53 +4,65 @@ SINGLE:
     2021-01-01: 42_000
     2022-01-01: 55_000
     2023-01-01: 57_500
+
   1:
     2021-01-01: 42_000
     2022-01-01: 55_000
     2023-01-01: 57_500
+
   2:
     2021-01-01: 42_000
     2022-01-01: 55_000
     2023-01-01: 57_500
+
 HEAD_OF_HOUSEHOLD:
   0:
     2021-01-01: 55_000
     2022-01-01: 70_000
     2023-01-01: 75_000
+
   1:
     2021-01-01: 55_000
     2022-01-01: 70_000
     2023-01-01: 75_000
+
   2:
     2021-01-01: 68_000
     2022-01-01: 70_000
     2023-01-01: 92_500
+
 JOINT:
   0:
     2021-01-01: 55_000
     2022-01-01: 70_000
     2023-01-01: 75_000
+
   1:
     2021-01-01: 68_000
     2022-01-01: 86_250
     2023-01-01: 92_500
+
   2:
     2021-01-01: 68_000
     2022-01-01: 86_250
     2023-01-01: 92_500
+
 SURVIVING_SPOUSE:
   0:
     2021-01-01: 55_000
     2022-01-01: 70_000
     2023-01-01: 75_000
+
   1:
     2021-01-01: 68_000
     2022-01-01: 86_250
     2023-01-01: 92_500
+
   2:
     2021-01-01: 68_000
     2022-01-01: 86_250
     2023-01-01: 92_500
+
 SEPARATE:
   0:
     2021-01-01: 0
@@ -73,11 +85,6 @@ metadata:
     - title: 2023 Form 1040ME Property Tax Fairness Credit / Sales Tax Fairness Credit
       href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/23_1040me_sched_pstfc_ff.pdf#page=3
   period: year
-  uprating:
-    parameter: gov.irs.uprating
-    rounding:
-      type: downwards
-      interval: 50
   label: Maine property tax fairness credit income threshold
   breakdown:
     - filing_status
