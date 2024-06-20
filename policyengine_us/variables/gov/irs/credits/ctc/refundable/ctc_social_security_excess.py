@@ -12,11 +12,5 @@ class ctc_social_security_excess(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/24#d_2"
 
-    adds = [
-        "employee_social_security_tax",
-        "employee_medicare_tax",
-        "unreported_payroll_tax",
-        "self_employment_tax_ald",
-        "additional_medicare_tax",
-    ]
-    subtracts = ["excess_payroll_tax_withheld"]
+    adds = "gov.irs.credits.ctc.refundable.ss_add"
+    subtracts = "gov.irs.credits.ctc.refundable.ss_subtract"
