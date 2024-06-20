@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.793.0] - 2024-06-20 14:58:39
+
+### Added
+
+- Add 2023 Minnesota Tax Rules.
+
 ## [0.792.0] - 2024-06-20 01:35:16
 
 ### Added
@@ -8829,6 +8835,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.793.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.792.0...0.793.0
 [0.792.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.791.0...0.792.0
 [0.791.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.790.0...0.791.0
 [0.790.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.789.0...0.790.0
