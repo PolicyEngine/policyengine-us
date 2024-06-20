@@ -1,4 +1,4 @@
-- name: Person with income over the standard deduction amount
+- name: Test 1, Person with income over the standard deduction amount
   period: 2022
   absolute_error_margin: 0.01
   input:
@@ -8,7 +8,7 @@
   output:
     nd_withheld_income_tax: 22.55
 
-- name: Changing the filing status should not change the output 
+- name: Test 2, Changing the filing status should not change the output 
   period: 2022
   absolute_error_margin: 0.01
   input:
@@ -18,7 +18,7 @@
   output:
     nd_withheld_income_tax: 22.55
 
-- name: Capped at 0
+- name: Test 3, employment income less than standard deduction, capped at 0
   period: 2022
   absolute_error_margin: 0.01
   input:
