@@ -1,0 +1,107 @@
+- name: One person with capped student loan interest, pre-reduction
+  period: 2021
+  input:
+    people:
+      person1:
+        student_loan_interest: 3_000
+        irs_gross_income: 80_000
+      person2:
+        student_loan_interest: 0
+        irs_gross_income: 60_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+  output:
+    student_loan_interest_ald: [2_500, 0]
+
+- name: Two people with student loan interest, with reduction
+  period: 2021
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        student_loan_interest: 3_000
+        irs_gross_income: 80_000
+      person2:
+        student_loan_interest: 1_000
+        irs_gross_income: 80_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+  output:
+    student_loan_interest_ald: [833.33, 333.33]
+
+- name: Two people with student loan interest, fully reduced
+  period: 2021
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        student_loan_interest: 3_000
+        irs_gross_income: 230_000
+      person2:
+        student_loan_interest: 1_000
+        irs_gross_income: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+  output:
+    student_loan_interest_ald: [0, 0]
+
+- name: No stundent loans
+  period: 2021
+  input:
+    people:
+      person1:
+        student_loan_interest: 0
+        irs_gross_income: 80_000
+      person2:
+        student_loan_interest: 0
+        irs_gross_income: 60_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+  output:
+    student_loan_interest_ald: [0, 0]
+
+- name: No deduction for separate filers
+  period: 2021
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        student_loan_interest: 3_000
+        irs_gross_income: 80_000
+      person2:
+        student_loan_interest: 1_000
+        irs_gross_income: 80_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SEPARATE
+  output:
+    student_loan_interest_ald: [0, 0]
+
+- name: Head of household with student loan interest, only applies to head or spouse
+  period: 2021
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        student_loan_interest: 3_000
+        is_tax_unit_head_or_spouse: true
+        irs_gross_income: 78_000
+      person2:
+        student_loan_interest: 1_000
+        is_tax_unit_head_or_spouse: false
+        irs_gross_income: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    student_loan_interest_ald: [1_166.66, 0]

@@ -1,0 +1,66 @@
+description: IRS allows for a student loan interest deduction of this amount, based on filing status.
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Student loan interest deduction amount
+  breakdown:
+    - filing_status
+  reference:
+    - title: 26 U.S. Code § 221 - Interest on education loans (b)(1)
+      href: https://www.law.cornell.edu/uscode/text/26/221
+    - title: 2021 IRS Publication 970 Tax Benefits for Education
+      href: https://www.irs.gov/pub/irs-prior/p970--2021.pdf#page=37
+    - title: 2022 IRS Publication 970 Tax Benefits for Education
+      href: https://www.irs.gov/pub/irs-prior/p970--2022.pdf#page=36
+    - title: 2023 IRS Publication 970 Tax Benefits for Education
+      href: https://www.irs.gov/pub/irs-pdf/p970.pdf#page=36
+
+JOINT:
+  values:
+    2002-01-01: 100_000
+    2021-01-01: 140_000
+    2022-01-01: 145_000
+    2023-01-01: 155_000
+  metadata:
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: downwards
+        interval: 5_000
+SINGLE:
+  values:
+    2002-01-01: 50_000
+    2021-01-01: 70_000
+    2023-01-01: 75_000
+  metadata:
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: downwards
+        interval: 5_000
+# Married couples must file jointly under (e)(2)
+SEPARATE:
+  2002-01-01: 0
+HEAD_OF_HOUSEHOLD:
+  values:
+    2002-01-01: 50_000
+    2021-01-01: 70_000
+    2023-01-01: 75_000
+  metadata:
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: downwards
+        interval: 5_000
+SURVIVING_SPOUSE: 
+  values:
+    2002-01-01: 50_000
+    2021-01-01: 70_000
+    2023-01-01: 75_000
+  metadata:
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: downwards
+        interval: 5_000
