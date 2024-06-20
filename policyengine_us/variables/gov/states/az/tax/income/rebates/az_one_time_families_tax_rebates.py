@@ -21,13 +21,14 @@ class az_one_time_families_tax_rebates(Variable):
         rebate = p.amount.calc(age) * dependent
         total_amount = tax_unit.sum(rebate)
         capped_amount = min_(total_amount, p.cap)
-        extra_amount = young_dependent_count * p.amount.calc(
+        young_amount = young_dependent_count * p.amount.calc(
             p.amount.thresholds[-1] - 1
-        ) + (capped_dependent_count - young_dependent_count) * p.amount.calc(
-            p.amount.thresholds[-1] + 1
         )
+        old_amount = (
+            capped_dependent_count - young_dependent_count
+        ) * p.amount.calc(p.amount.thresholds[-1] + 1)
         return where(
             young_dependent_count >= p.dependent_cap,
             capped_amount,
-            extra_amount,
+            young_amount + old_amount,
         )
