@@ -3,8 +3,7 @@ SINGLE:
   values:
     2021-01-01: 130
     2023-01-01: 140
-  metadata:
-    uprating:
+  uprating:
     parameter: gov.irs.uprating
     rounding:
       type: downwards
@@ -14,8 +13,7 @@ JOINT:
     2021-01-01: 180
     2022-01-01: 185
     2023-01-01: 200
-  metadata:
-    uprating:
+  uprating:
     parameter: gov.irs.uprating
     rounding:
       type: downwards
@@ -23,8 +21,7 @@ JOINT:
 SEPARATE:
   values:
     2021-01-01: 0
-  metadata:
-    uprating:
+  uprating:
     parameter: gov.irs.uprating
     rounding:
       type: downwards
@@ -34,8 +31,7 @@ HEAD_OF_HOUSEHOLD:
     2021-01-01: 180
     2022-01-01: 185
     2023-01-01: 200
-  metadata:
-    uprating:
+  uprating:
     parameter: gov.irs.uprating
     rounding:
       type: downwards
@@ -45,8 +41,7 @@ SURVIVING_SPOUSE:
     2021-01-01: 180
     2022-01-01: 185
     2023-01-01: 200
-  metadata:
-    uprating:
+  uprating:
     parameter: gov.irs.uprating
     rounding:
       type: downwards
