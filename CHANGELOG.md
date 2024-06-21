@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.794.2] - 2024-06-21 18:32:22
+
+### Fixed
+
+- Limit DC SNAP minimum allotment to eligible applicants.
+
 ## [0.794.1] - 2024-06-21 16:07:00
 
 ### Fixed
@@ -8847,6 +8853,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.794.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.794.1...0.794.2
 [0.794.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.794.0...0.794.1
 [0.794.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.793.0...0.794.0
 [0.793.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.792.0...0.793.0
