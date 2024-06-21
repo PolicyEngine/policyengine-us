@@ -5,3 +5,11 @@
     state_code: SC
   output:
     sc_use_tax_in_group_three_county: 1
+
+- name: Case 2, county in group one
+  period: 2021
+  input:
+    county_str: ABBEVILLE_COUNTY_SC
+    state_code: SC
+  output:
+    sc_use_tax_in_group_one_county: 0
