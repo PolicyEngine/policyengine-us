@@ -1,0 +1,13 @@
+description: The maximum cost for vehicles that qualify for a minimum rebate 
+brackets:
+  - cost: 
+      2017-03-21: 42_000
+metadata:
+  type: currency-USD 
+  threshold_unit:  currency-USD # do we need this and the type?
+  threshold_period: year
+  rate_unit: #do we need this?
+  label: Max cost for minimun rebate - hybrid/electric vehicles 
+  reference:
+    - title: Drive Clean Rebate for Electric Cars Program (Section - How it works)
+      href: https://www.nyserda.ny.gov/All-Programs/Drive-Clean-Rebate-For-Electric-Cars-Program/How-it-Works

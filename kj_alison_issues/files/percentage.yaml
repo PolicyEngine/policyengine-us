@@ -1,0 +1,12 @@
+description: Percent limit for solar equipment expenditure for New York 
+brackets:
+  - threshold_percent: 
+      1998-01-01: 0.25 #unsure about the date! January 1, 1998
+  
+metadata:
+  threshold_unit: percent 
+  threshold_period: year
+  label: Solar equipment expenditure percentage (NY)
+  reference:
+    - title: Solar Energy System Equipment Credit 
+      href: https://www.tax.ny.gov/pit/credits/solar_energy_system_equipment_credit.html

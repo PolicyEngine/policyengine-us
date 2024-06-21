@@ -1,0 +1,16 @@
+description:  NY maximum size PV system size multiplier (does not exceed 110%)
+# this file basically determines the max system size. it must be sized not to exceed 110% of the calculated 
+#yearly projected kWh of electric usage
+
+metadata:
+  unit: /1
+  period: year
+  label: New York incentive on residential solar projects
+  reference:
+    - title: NY-Sun Residential & Nonresidential Incentive Program #add detail after 
+      href: https://portal.nyserda.ny.gov/servlet/servlet.FileDownload?file=00P8z000001BIuBEAW
+    
+
+values:
+  2010-06-07: 1.1 # range for both, has to equal or be under 110% of projected kwh of yearly electricity usage to qualify
+  2030-12-31: 1.1 

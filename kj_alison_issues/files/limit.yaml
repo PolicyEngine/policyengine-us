@@ -1,0 +1,12 @@
+description: Credit limit on solar equipment in New York 
+brackets:
+  - threshold_credit_limit: 
+      1998-01-01: 5_000 #unsure about the date! January 1, 1998
+  
+metadata:
+  threshold_unit: currency-USD 
+  threshold_period: year
+  label: NY solar equipment credit limit 
+  reference:
+    - title: Solar Energy System Equipment Credit 
+      href: https://www.tax.ny.gov/pit/credits/solar_energy_system_equipment_credit.html
