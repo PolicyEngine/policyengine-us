@@ -56,7 +56,7 @@ class student_loan_interest_ald(Variable):
             # split basic income evenly between head and spouse
             basic_income_shared = not_dependent * basic_income * frac
             modified_adjusted_gross_income += basic_income_shared
-        # Combine the income for units filing jointly 
+        # Combine the income for units filing jointly
         combined_magi = where(
             joint,
             person.tax_unit.sum(modified_adjusted_gross_income),
