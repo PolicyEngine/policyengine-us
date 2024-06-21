@@ -20,6 +20,7 @@ class student_loan_interest_ald(Variable):
         p_irs = parameters(period).gov.irs
         not_dependent = ~person("is_tax_unit_dependent", period)
         gross_income_sources = p_irs.gross_income.sources
+        # Unemployment compensation is not considered in MAGI
         gross_income = [
             income_source
             for income_source in gross_income_sources
@@ -30,7 +31,7 @@ class student_loan_interest_ald(Variable):
             total_gross_income += not_dependent * max_(
                 0, add(person, period, [source])
             )
-        # Modified gross income is calcualting with certain deductions excluded
+        # Modified gross income is calculated with certain deductions excluded
         PERSON_ALDS = [
             "self_employment_tax_ald",
             "self_employed_health_insurance_ald",
