@@ -1,67 +1,144 @@
 description: Maine allows for this property tax fairness credit amount, based on filing status and number of dependents.
 SINGLE:
   0:
-    2021-01-01: 2_100
-    2022-01-01: 2_200
-    2023-01-01: 2_300
-    
+    values:
+      2021-01-01: 2_100
+      2022-01-01: 2_200
+      2023-01-01: 2_300
+    metadata:
+      uprating:
+        parameter: gov.irs.uprating
+        rounding:
+          type: downwards
+          interval: 50 
   1:
-    2021-01-01: 2_100
-    2022-01-01: 2_200
-    2023-01-01: 2_300
-
+    values:
+      2021-01-01: 2_100
+      2022-01-01: 2_200
+      2023-01-01: 2_300
+    metadata:
+      uprating:
+        parameter: gov.irs.uprating
+        rounding:
+          type: downwards
+          interval: 50
   2:
-    2021-01-01: 2_100
-    2022-01-01: 2_200
-    2023-01-01: 23_00  
+    values:
+      2021-01-01: 2_100
+      2022-01-01: 2_200
+      2023-01-01: 23_00  
+    metadata:
+      uprating:
+        parameter: gov.irs.uprating
+        rounding:
+          type: downwards
+          interval: 50
 
 HEAD_OF_HOUSEHOLD:
   0:
-    2021-01-01: 2_750
-    2022-01-01: 2_800
-    2023-01-01: 3_000
+    values:
+      2021-01-01: 2_750
+      2022-01-01: 2_800
+      2023-01-01: 3_000
+    metadata:
+      uprating:
+        parameter: gov.irs.uprating
+        rounding:
+          type: downwards
+          interval: 50
 
   1:
-    2021-01-01: 2_750
-    2022-01-01: 2_800
-    2023-01-01: 3_000
-
+    values:
+      2021-01-01: 2_750
+      2022-01-01: 2_800
+      2023-01-01: 3_000
+    metadata:
+      uprating:
+        parameter: gov.irs.uprating
+        rounding:
+          type: downwards
+          interval: 50
   2:
-    2021-01-01: 3_400
-    2022-01-01: 3_450
-    2023-01-01: 3_700 
+    values:
+      2021-01-01: 3_400
+      2022-01-01: 3_450
+      2023-01-01: 3_700 
+    metadata:
+      uprating:
+        parameter: gov.irs.uprating
+        rounding:
+          type: downwards
+          interval: 50
 
 JOINT:
   0:
-    2021-01-01: 2_750
-    2022-01-01: 2_800
-    2023-01-01: 3_000
-
+    values:
+      2021-01-01: 2_750
+      2022-01-01: 2_800
+      2023-01-01: 3_000
+    metadata:
+      uprating:
+        parameter: gov.irs.uprating
+        rounding:
+          type: downwards
+          interval: 50
   1:
-    2021-01-01: 3_400
-    2022-01-01: 3_450
-    2023-01-01: 3_700
-
+    values:
+      2021-01-01: 3_400
+      2022-01-01: 3_450
+      2023-01-01: 3_700
+    metadata:
+      uprating:
+        parameter: gov.irs.uprating
+        rounding:
+          type: downwards
+          interval: 50
   2:
-    2021-01-01: 3_400
-    2022-01-01: 3_450
-    2023-01-01: 3_700 
+    values:
+      2021-01-01: 3_400
+      2022-01-01: 3_450
+      2023-01-01: 3_700
+    metadata:
+      uprating:
+        parameter: gov.irs.uprating
+        rounding:
+          type: downwards
+          interval: 50 
 
 SURVIVING_SPOUSE:
   0:
-    2021-01-01: 2_750
-    2022-01-01: 2_800
-    2023-01-01: 3_000
-
+    values:
+      2021-01-01: 2_750
+      2022-01-01: 2_800
+      2023-01-01: 3_000
+    metadata:
+      uprating:
+        parameter: gov.irs.uprating
+        rounding:
+          type: downwards
+          interval: 50
   1:
-    2021-01-01: 3_400
-    2022-01-01: 3_450
-    2023-01-01: 3_700
-
+    values:
+      2021-01-01: 3_400
+      2022-01-01: 3_450
+      2023-01-01: 3_700
+    metadata:
+      uprating:
+        parameter: gov.irs.uprating
+        rounding:
+          type: downwards
+          interval: 50
   2:
-    2021-01-01: 3_400
-    2022-01-01: 3_450
-    2023-01-01: 3_700
+    values:
+      2021-01-01: 3_400
+      2022-01-01: 3_450
+      2023-01-01: 3_700
+    metadata:
+      uprating:
+        parameter: gov.irs.uprating
+        rounding:
+          type: downwards
+          interval: 50
 
 SEPARATE:
   0:
