@@ -16,18 +16,21 @@ class is_summer_ebt_eligible(Variable):
         tax_unit = person.tax_unit
         p = parameters(period).gov.usda.summer_ebt.eligibility
         programs = add(tax_unit, period, p.categorical)
-        meal_plans = add(tax_unit, period, p.school_meals)
+        school_meals = add(tax_unit, period, p.school_meals)
         living_conditions = add(tax_unit, period, p.living_condition)
-        # School-aged limitation only mentioned for the program eligibility criterion
+        # Filers still attending K12 school and receiving school meal related benefits
+        # are eligible for the program
         is_program_eligible = np.any(programs) & (
             person("is_in_k12_school", period)
         )
-        receives_school_meals = meal_plans > 0
+        receives_school_meals = school_meals > 0
         is_living_condition_eligible = np.any(living_conditions)
         state = tax_unit.household("state_code_str", period)
-        state_eligible = p.participating_states[state].astype(bool)
+        lives_in_participating_state = p.participating_states[state].astype(
+            bool
+        )
 
-        return state_eligible & (
+        return lives_in_participating_state & (
             is_program_eligible
             | receives_school_meals
             | is_living_condition_eligible
