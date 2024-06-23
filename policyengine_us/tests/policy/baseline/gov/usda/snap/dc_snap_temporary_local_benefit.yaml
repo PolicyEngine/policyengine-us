@@ -46,3 +46,13 @@
   output:
     # (1000 * 0.1) / 12 * 9 = 75
     dc_snap_temporary_local_benefit: 75
+
+- name: Integration test with high employment income, ineligible
+  period: 2024
+  input:
+    snap_max_allotment: 1_000
+    state_code: DC
+    employment_income: 100_000
+  output:
+    is_snap_eligible: false
+    dc_snap_temporary_local_benefit: 0
