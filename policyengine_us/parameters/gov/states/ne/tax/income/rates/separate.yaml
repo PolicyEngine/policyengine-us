@@ -1,4 +1,4 @@
-description: Nebraska income tax rates for separate filing units
+description: Nebraska taxes head of household filers at these rates.
 brackets:
   - threshold:
       2021-01-01: 0
@@ -28,6 +28,8 @@ brackets:
           interval: 10
     rate:
       2021-01-01: 0.0501
+      2026-01-01: 0.0455
+      2027-01-01: 0.0399
   - threshold:
       values:
         2021-01-01: 32_210
@@ -41,6 +43,10 @@ brackets:
     rate:
       2021-01-01: 0.0684
       2023-01-01: 0.0664
+      2024-01-01: 0.0584
+      2025-01-01: 0.0520
+      2026-01-01: 0.0455
+      2027-01-01: 0.0399
         
 metadata:
   threshold_unit: currency-USD
