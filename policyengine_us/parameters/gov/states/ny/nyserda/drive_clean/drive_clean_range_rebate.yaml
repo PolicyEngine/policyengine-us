@@ -1,0 +1,34 @@
+description: The Drive Clean program offers a different rebate based on the all-electric range of the vehicle and the date of its purchase.
+brackets:
+  # 0 - 19 miles 
+  - threshold:
+      2017-03-21: -.inf
+    amount:
+      2017-03-21: 500
+      2021-06-30: 500
+  # 20 - 39 miles
+  - threshold:
+      2017-03-21: 20
+    amount:
+      2017-03-21: 1_100
+      2021-06-30: 500
+  # 40 - 199 miles
+  - threshold:
+      2017-03-21: 40
+    amount:
+      2017-03-21: 1_700
+      2021-06-30: 1_000
+  # 200 or more miles
+  - threshold:
+      2017-03-21: 200
+    amount:
+      2017-03-21: 2_000
+      2021-06-30: 2_000
+      
+metadata:
+  unit: currency-USD
+  period: year
+  label: Rebate Based on All-Electric Range
+  reference:
+    - title: NYSERDA Drive Clean Implementation Manual
+      href: https://www.nyserda.ny.gov/All-Programs/Drive-Clean-Rebate-For-Electric-Cars-Program/Dealers/Dealer-Resources
