@@ -1,7 +1,4 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.ed.pell_grant.pell_grant_formula import (
-    PellGrantFormula,
-)
 
 
 class pell_grant_head_contribution(Variable):
@@ -34,7 +31,7 @@ class pell_grant_head_contribution(Variable):
             negative_head_contribution,
         )
         total = where(
-            formula == PellGrantFormula.B,
+            formula == formula.possible_values.B,
             adjusted_available_income,
             total_head_contribution,
         )

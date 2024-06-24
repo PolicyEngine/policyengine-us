@@ -1,10 +1,4 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.ed.pell_grant.pell_grant_formula import (
-    PellGrantFormula,
-)
-from policyengine_us.variables.gov.ed.pell_grant.sai.eligibility_type.pell_grant_eligibility_type import (
-    PellGrantEligibilityType,
-)
 
 
 class pell_grant_sai(Variable):
@@ -21,12 +15,12 @@ class pell_grant_sai(Variable):
         )
         formula = person("pell_grant_formula", period)
         eligibility_type = person("pell_grant_eligibility_type", period)
-        max_eligible = eligibility_type == PellGrantEligibilityType.MAXIMUM
+        max_eligible = eligibility_type == eligibility_type.possible_values.MAXIMUM
         p = parameters(period).gov.ed.pell_grant.sai
         min_sai = p.limits.min_sai
         max_sai = where(max_eligible, 0, p.limits.max_sai)
 
-        dependent_contribution_applies = formula == PellGrantFormula.A
+        dependent_contribution_applies = formula == formula.possible_values.A
         applicable_dependent_contribution = dependent_contribution_applies * dependent_contribution
         unbound = head_contribution + applicable_dependent_contribution
 
