@@ -14,11 +14,3 @@ class residential_solar_energy_systems_equipment_incentives(Variable):
     unit = USD
     definition_period = YEAR 
     reference = "https://portal.nyserda.ny.gov/servlet/servlet.FileDownload?file=00P8z000001BIuBEAW"
-
-class current_solar_energy_use(Variable):
-    value_type = float
-    entity = Household
-    label = "Current home energy use in annual kilowatt hours"
-    unit = "kWh/year"
-    definition_period = YEAR
-    reference = ""

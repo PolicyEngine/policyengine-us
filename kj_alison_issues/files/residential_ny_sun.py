@@ -16,7 +16,8 @@ class residential_solar_ny_sun(Variable):
 
     def formula(tax_unit, home_solar_size, prev_size, period, parameters):
         region = tax_unit.household("region_incentive", period)
-        max_multiplier = parameters.get('max_pv_system_size_multiplier', 1.1)  
+        p = parameters(period).
+        #max_multiplier = parameters.get('max_pv_system_size_multiplier', 1.1)  
         max_kwh = tax_unit.household(prev_size) * max_multiplier
         max_kw = max_kwh / 1200  # Placeholder value
         max_watt = max_kw * 1000

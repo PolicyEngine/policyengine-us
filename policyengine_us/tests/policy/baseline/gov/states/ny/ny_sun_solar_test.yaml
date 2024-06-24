@@ -1,0 +1,19 @@
+- name: Unit test 1 for NY sun solar
+  period: 2010
+  input: #put in file names 
+    new_pw_system_size: 8 #lets say you start with 8 kwh system 
+    current_solar_energy_use: 9_000
+    region: Upstate
+    state_code: NY # is there a way to further split this by region 
+  output:
+    residential_solar_ny_sun: 3_200
+
+
+
+    #first determine the max system size allowed based on the prev year/projected year. so lets say you have 9000 kwh/year 
+    #predicted/used previously
+    # so you do 9000*1.1 = 9900
+    # then convert Maximum Allowable kWh to kW - this is where we get stuck. how to do this??? lets say its 1000 for simplicity though
+    # so do 8800/1000= 8.8
+    #then compare 8.8 to 8 and 8.8 > 8 so you do 
+    #so do 8 * 1000 to convert to watts and then multiply by 0.4 for long island = 3200
