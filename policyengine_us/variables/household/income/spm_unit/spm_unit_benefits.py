@@ -12,6 +12,7 @@ class spm_unit_benefits(Variable):
         BENEFITS = [
             "social_security",
             "ssi",
+            "summer_ebt",
             "state_supplement",
             # California programs.
             "ca_cvrp",  # California Clean Vehicle Rebate Project.
