@@ -11,7 +11,7 @@ class ny_geothermal_energy_system_credit(Variable):
     reference = "https://www.nysenate.gov/legislation/laws/TAX/606" # (g)(2)(C)(9)(g-4)
     defined_for = StateCode.NY
 
-    def formula(tax_unit, parameters, period):
+    def formula(tax_unit, period, parameters):
         qualified_expenditures = tax_unit("ny_qualified_geothermal_energy_system_expenditures", period)
         p = parameters(period).gov.states.ny.tax.income.credits.geothermal_energy_system
         uncapped_credit = qualified_expenditures * p.rate
