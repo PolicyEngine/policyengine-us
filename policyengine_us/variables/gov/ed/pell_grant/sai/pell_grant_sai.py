@@ -15,13 +15,17 @@ class pell_grant_sai(Variable):
         )
         formula = person("pell_grant_formula", period)
         eligibility_type = person("pell_grant_eligibility_type", period)
-        max_eligible = eligibility_type == eligibility_type.possible_values.MAXIMUM
+        max_eligible = (
+            eligibility_type == eligibility_type.possible_values.MAXIMUM
+        )
         p = parameters(period).gov.ed.pell_grant.sai
         min_sai = p.limits.min_sai
         max_sai = where(max_eligible, 0, p.limits.max_sai)
 
         dependent_contribution_applies = formula == formula.possible_values.A
-        applicable_dependent_contribution = dependent_contribution_applies * dependent_contribution
+        applicable_dependent_contribution = (
+            dependent_contribution_applies * dependent_contribution
+        )
         unbound = head_contribution + applicable_dependent_contribution
 
         return max_(min_(unbound, max_sai), min_sai)
