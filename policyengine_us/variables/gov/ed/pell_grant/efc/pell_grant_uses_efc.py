@@ -1,7 +1,4 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.ed.pell_grant.pell_grant_calculation_method import (
-    PellGrantCalculationMethod,
-)
 
 
 class pell_grant_uses_efc(Variable):
@@ -12,4 +9,4 @@ class pell_grant_uses_efc(Variable):
 
     def formula(person, period, parameters):
         method = person.tax_unit("pell_grant_calculation_method", period)
-        return method == PellGrantCalculationMethod.EFC
+        return method == method.possible_values.EFC
