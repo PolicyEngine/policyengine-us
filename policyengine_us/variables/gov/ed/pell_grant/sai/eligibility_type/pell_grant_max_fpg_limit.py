@@ -10,6 +10,6 @@ class pell_grant_max_fpg_percent_limit(Variable):
 
     def formula(person, period, parameters):
         household_type = person("pell_grant_household_type", period)
-        limits = parameters(period).gov.ed.pell_grant.sai.max_pell_limits
+        limits = parameters(period).gov.ed.pell_grant.sai.fpg_fraction.max_pell_limits
 
         return limits[household_type]
