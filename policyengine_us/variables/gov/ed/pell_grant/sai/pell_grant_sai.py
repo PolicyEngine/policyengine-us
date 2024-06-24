@@ -26,17 +26,8 @@ class pell_grant_sai(Variable):
         min_sai = p.limits.min_sai
         max_sai = where(max_eligible, 0, p.limits.max_sai)
 
-        unbound = select(
-            [
-                formula == PellGrantFormula.A,
-                formula == PellGrantFormula.B,
-                formula == PellGrantFormula.C,
-            ],
-            [
-                head_contribution + dependent_contribution,
-                head_contribution,
-                head_contribution,
-            ],
-        )
+        dependent_contribution_applies = formula == PellGrantFormula.A
+        applicable_dependent_contribution = dependent_contribution_applies * dependent_contribution
+        unbound = head_contribution + applicable_dependent_contribution
 
         return max_(min_(unbound, max_sai), min_sai)
