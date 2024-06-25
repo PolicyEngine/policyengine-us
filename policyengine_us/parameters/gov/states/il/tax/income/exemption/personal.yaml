@@ -4,7 +4,11 @@ values:
   2022-01-01: 2_425
   2025-01-01: 2_050
 metadata:
-  uprating: gov.irs.uprating
+  uprating: 
+    parameter: gov.irs.uprating
+    rounding:
+      type: nearest
+      interval: 25
   unit: currency-USD
   period: year
   label: Illinois personal exemption amount
