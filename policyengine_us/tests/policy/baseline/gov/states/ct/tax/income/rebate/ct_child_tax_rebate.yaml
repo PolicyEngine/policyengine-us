@@ -1,23 +1,29 @@
-- name: Ineligible single household with 2 dependents
+- name: Single with $101,000 agi and 2 dependents
   period: 2022
   input:
-    ct_child_tax_rebate_eligible: false
+    state_code: CT
+    ct_agi: 101_000
+    filing_status: SINGLE
     tax_unit_count_dependents: 2
   output:
-    ct_child_tax_rebate: 0
+    ct_child_tax_rebate: 400
 
-- name: Eligible seperate household with 1 dependent
+- name: Joint with $180,000 agi and 1 dependent
   period: 2022
   input:
-    ct_child_tax_rebate_eligible: true
+    state_code: CT
+    ct_agi: 180_000
+    filing_status: JOINT
     tax_unit_count_dependents: 1
   output:
     ct_child_tax_rebate: 250
 
-- name: Eligible Head of household with 5 dependents
+- name: Head of household with $170,000 agi and 5 dependents
   period: 2022
   input:
-    ct_child_tax_rebate_eligible: true
+    state_code: CT
+    ct_agi: 165_000
+    filing_status: HEAD_OF_HOUSEHOLD
     tax_unit_count_dependents: 5
   output:
-    ct_child_tax_rebate: 750
+    ct_child_tax_rebate: 250

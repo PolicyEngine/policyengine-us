@@ -7,12 +7,23 @@ class ct_child_tax_rebate(Variable):
     label = "Connecticut child tax rebate"
     unit = USD
     definition_period = YEAR
-    defined_for = "ct_child_tax_rebate_eligible"
+    defined_for = StateCode.CT
 
     def formula(tax_unit, period, parameters):
+        income = tax_unit("ct_agi", period)
+        filing_status = tax_unit("filing_status", period)
         p = parameters(period).gov.states.ct.tax.income.rebate
 
-        count_dependents = tax_unit("tax_unit_count_dependents", period)
-        rebate = count_dependents * p.amount
+        reduction_start = p.reduction.start[filing_status]
+        increment = p.reduction.increment
+        reduction_per_increment = p.reduction.rate * increment
 
-        return min_(p.cap, rebate)
+        excess = max_(income - reduction_start, 0)
+        increments = np.ceil(excess / increment)
+        total_reduction_amount = increments * reduction_per_increment
+
+        count_dependents = tax_unit("tax_unit_count_dependents", period)
+        child_max = p.child_cap
+        total_rebate = min_(count_dependents, child_max) * p.amount
+
+        return max_(total_rebate - total_reduction_amount, 0)
