@@ -1,0 +1,138 @@
+# Test for Residential
+- name: Heat pump type test (Residential)
+  period: 2024
+  input:
+    nys_clean_heat_conE_family_type: 'Residential'
+    nys_clean_heat_conE_heat_pump: 'ASHP'
+    nys_clean_heat_conE_dac: 'Non-DAC'
+    nys_clean_heat_conE_home: 'Single Family Home'
+    nys_clean_heat_conE_heat_pump_type: 'ccASHP with integrated controls'
+    nys_clean_heat_conE_project_cost: 1000000
+    state_code: NY
+  output:
+    nys_clean_heat_conE_incentive: 2_500
+
+- name: Home test (Residential)
+  period: 2024
+  input:
+    nys_clean_heat_conE_family_type: 'Residential'
+    nys_clean_heat_conE_heat_pump: 'ASHP'
+    nys_clean_heat_conE_dac: 'Non-DAC'
+    nys_clean_heat_conE_home: 'Apartment'
+    nys_clean_heat_conE_heat_pump_type: 'ccASHP with decommissioning'
+    nys_clean_heat_conE_project_cost: 1000000
+    state_code: NY
+  output:
+    nys_clean_heat_conE_incentive: 1_000
+
+- name: DAC test (Residential)
+  period: 2024
+  input:
+    nys_clean_heat_conE_family_type: 'Residential'
+    nys_clean_heat_conE_heat_pump: 'ASHP'
+    nys_clean_heat_conE_dac: 'DAC'
+    nys_clean_heat_conE_home: 'Apartment'
+    nys_clean_heat_conE_heat_pump_type: 'ccASHP with decommissioning'
+    nys_clean_heat_conE_project_cost: 1000000
+    state_code: NY
+  output:
+    nys_clean_heat_conE_incentive: 2_000
+
+- name: Heat pump test (Residential)
+  period: 2024
+  input:
+    nys_clean_heat_conE_family_type: 'Residential'
+    nys_clean_heat_conE_heat_pump: 'GSHP'
+    nys_clean_heat_conE_dac: 'non-DAC'
+    nys_clean_heat_conE_project_cost: 1000000
+    state_code: NY
+  output:
+    nys_clean_heat_conE_incentive: 25_000
+
+- name: Cap test (non-DAC) (Residential)
+  period: 2024
+  input:
+    nys_clean_heat_conE_family_type: 'Residential'
+    nys_clean_heat_conE_heat_pump: 'ASHP'
+    nys_clean_heat_conE_dac: 'Non-DAC'
+    nys_clean_heat_conE_home: 'Single Family Home'
+    nys_clean_heat_conE_heat_pump_type: 'ccASHP with integrated controls'
+    nys_clean_heat_conE_project_cost: 1_000
+    state_code: NY
+  output:
+    nys_clean_heat_conE_incentive: 500
+
+- name: Cap test (DAC) (Residential)
+  period: 2024
+    input:
+    nys_clean_heat_conE_family_type: 'Residential'
+    nys_clean_heat_conE_heat_pump: 'ASHP'
+    nys_clean_heat_conE_dac: 'DAC'
+    nys_clean_heat_conE_home: 'Apartment'
+    nys_clean_heat_conE_heat_pump_type: 'ccASHP with decommissioning'
+    nys_clean_heat_conE_project_cost: 1_000
+    state_code: NY
+  output:
+    nys_clean_heat_conE_incentive: 700
+
+
+# Test for Multifamily
+- name: Description test (Multifamily)
+  period: 2024
+  input:
+    nys_clean_heat_conE_family_type: 'Multifamily'
+    nys_clean_heat_conE_heat_pump: 'GSHP'
+    nys_clean_heat_conE_building: 'New Construction'
+    nys_clean_heat_conE_description: 'Custom Space Heating Applications + Envelope -- Tier 1'
+    nys_clean_heat_conE_project_cost: 10_000
+    state_code: NY
+  output:
+    nys_clean_heat_conE_incentive: ('125/MMBtu', 5000)
+
+- name: Building test (Multifamily)
+  period: 2024
+  input:
+    nys_clean_heat_conE_family_type: 'Multifamily'
+    nys_clean_heat_conE_heat_pump: 'GSHP'
+    nys_clean_heat_conE_building: 'Existing Building'
+    nys_clean_heat_conE_description: 'Custom Space Heating Applications + Envelope -- Tier 1'
+    nys_clean_heat_conE_project_cost: 10_000
+    state_code: NY
+  output:
+    nys_clean_heat_conE_incentive: ('200/MMBtu', 5000)
+
+- name: Heat pump type test (Multifamily)
+  period: 2024
+  input:
+    nys_clean_heat_conE_family_type: 'Multifamily'
+    nys_clean_heat_conE_heat_pump: 'ASHP'
+    nys_clean_heat_conE_building: 'Existing Building'
+    nys_clean_heat_conE_description: 'Prescriptive Domestic Hot Water'
+    nys_clean_heat_conE_project_cost: 10_000
+    state_code: NY
+  output:
+    nys_clean_heat_conE_incentive: ('1000/dwelling', 5000)
+
+- name: cap unit test (Multifamily)
+  period: 2024
+  input:
+    nys_clean_heat_conE_family_type: 'Multifamily'
+    nys_clean_heat_conE_heat_pump: 'GSHP'
+    nys_clean_heat_conE_building: 'Existing Building'
+    nys_clean_heat_conE_description: 'Multifamily Full Load ASHP Heating with Decommissioning'
+    nys_clean_heat_conE_project_cost: 10_000
+    state_code: NY
+  output:
+    nys_clean_heat_conE_incentive: ('5000/dwelling', 5000, 100)
+
+- name: cap amount test (Multifamily)
+  period: 2024
+  input:
+    nys_clean_heat_conE_family_type: 'Multifamily'
+    nys_clean_heat_conE_heat_pump: 'GSHP'
+    nys_clean_heat_conE_building: 'New Construction'
+    nys_clean_heat_conE_description: 'Custom Space Heating Applications + Envelope -- Tier 1'
+    nys_clean_heat_conE_project_cost: 10_000_000
+    state_code: NY
+  output:
+    nys_clean_heat_conE_incentive: ('125/MMBtu', 1000000)
