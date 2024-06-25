@@ -5,7 +5,8 @@ values:
     - taxable_pension_income
     - il_schedule_m_subtractions
 metadata:
-  unit: variable
+  unit: list
+  period: year
   label: Illinois Base Income Subtractions
   reference:
     - title: Illinois Income Tax Act, 35 ILCS 5/502 (from Ch. 120, par. 5-502) Sec. 502. Returns and notices.
