@@ -18,6 +18,8 @@ setup(
         "Operating System :: POSIX",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
         "Topic :: Scientific/Engineering :: Information Analysis",
     ],
     description="PolicyEngine tax and benefit system for the US",
@@ -68,7 +70,7 @@ setup(
             "survey-enhance",
         ],
     },
-    # Windows CI requires Python 3.9.
+    # Windows CI requires Python 3.9 or above.
     python_requires=">=3.7",
     entry_points={
         "console_scripts": [

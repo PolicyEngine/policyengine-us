@@ -30,7 +30,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
-          python-version: 3.9
+          python-version: 3.10
       - name: Build changelog
         run: pip install yaml-changelog && make changelog
       - name: Preview changelog update
@@ -57,7 +57,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: 3.9
+          python-version: 3.10
       - name: Install package
         run: make install
       - name: Run tests
@@ -86,7 +86,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
-          python-version: 3.9
+          python-version: 3.10
       - name: Publish a git tag
         run: ".github/publish-git-tag.sh || true"
       - name: Install package
@@ -116,7 +116,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.9
+          python-version: 3.10
       - name: Install Wheel and Pytest
         run: pip3 install wheel setuptools pytest==5.4.3
       - name: Install package
