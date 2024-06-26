@@ -4,10 +4,12 @@ class BUILDCategory(Enum):
   NEW = "New Construction"
   EXISTING = "Existing Building"
 
-class Building_category(Variable):
+class ny_clean_heat_building_category(Variable):
   value_type = Enum
   entity = TaxUnit
   label = "Building category"
+  documentation = "The building category for classifying clean heat program incentives"
   definition_period = YEAR
+  reference = "https://cleanheat.ny.gov/assets/pdf/CECONY%20Clean%20Heat%20Program%20Manual%206%203%2024.pdf#page=13"
   possible_values = BUILDCategory
   default_value = BUILDCategory.NEW

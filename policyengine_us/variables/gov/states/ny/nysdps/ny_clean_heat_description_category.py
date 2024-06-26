@@ -10,10 +10,12 @@ class DESCRIPTIONCategory(Enum):
     C10 = 'Custom Partial Load Space Heating Applications'
 
 
-class Description_category(Variable):
+class ny_clean_heat_description_category(Variable):
   value_type = Enum
   entity = TaxUnit
   label = "Description category"
+  documentation = "The description category for classifying clean heat program incentives"
   definition_period = YEAR
+  reference = "https://cleanheat.ny.gov/assets/pdf/CECONY%20Clean%20Heat%20Program%20Manual%206%203%2024.pdf#page=13"
   possible_values = DESCRIPTIONCategory
   default_value = DESCRIPTIONCategory.C2
