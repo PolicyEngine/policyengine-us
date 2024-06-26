@@ -10,7 +10,7 @@
   period: 2022
   input:
     drive_clean_vehicle_cost: 30_000
-    drive_clean_vehicle_electric_range: 50
+    drive_clean_vehicle_electric_range: 40
   output:
     rebate: 1_000
 
@@ -26,7 +26,7 @@
   period: 2022
   input:
     drive_clean_vehicle_cost: 50_000
-    drive_clean_vehicle_electric_range: 50
+    drive_clean_vehicle_electric_range: 40
   output:
     rebate: 500
 
@@ -38,7 +38,7 @@
   output:
     rebate: 500
 
-- name: Purchased before 2021-06-30, Range < 20 miles
+- name: Purchased before 2021-06-30, Normal Cost, Range < 20 miles
   period: 2019
   input:
     drive_clean_vehicle_cost: 42_000
@@ -46,27 +46,50 @@
   output:
     rebate: 500
 
-- name: Purchased before 2021-06-30, Range 20 - 39 miles
+- name: Purchased before 2021-06-30, Normal Cost, Range 20 - 39 miles
   period: 2019
   input:
     drive_clean_vehicle_cost: 42_000
-    drive_clean_vehicle_electric_range: 25
+    drive_clean_vehicle_electric_range: 20
   output:
     rebate: 1_100
   
-- name: Purchased before 2021-06-30, Range 40 - 119 miles
+- name: Purchased before 2021-06-30, Normal Cost, Range 40 - 119 miles
   period: 2019
   input:
     drive_clean_vehicle_cost: 42_000
-    drive_clean_vehicle_electric_range: 45
+    drive_clean_vehicle_electric_range: 40
   output:
     rebate: 1_700
 
-  - name: Purchased before 2021-06-30, High Cost
+- name: Purchased before 2021-06-30, Normal Cost, Range >= 120 miles
+  period: 2019
+  input:
+    drive_clean_vehicle_cost: 42_000
+    drive_clean_vehicle_electric_range: 120
+  output:
+    rebate: 2_000
+
+- name: Purchased before 2021-06-30, High Cost, Range 20 - 39 miles
+  period: 2019
+  input:
+    drive_clean_vehicle_cost: 70_000
+    drive_clean_vehicle_electric_range: 20
+  output:
+    rebate: 500
+
+- name: Purchased before 2021-06-30, High Cost, Range 40 - 119 miles
+  period: 2019
+  input:
+    drive_clean_vehicle_cost: 70_000
+    drive_clean_vehicle_electric_range: 40
+  output:
+    rebate: 500
+
+- name: Purchased before 2021-06-30, High Cost, Range >= 120 miles
   period: 2019
   input:
     drive_clean_vehicle_cost: 70_000
     drive_clean_vehicle_electric_range: 200
   output:
     rebate: 500
-  
