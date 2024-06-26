@@ -7,3 +7,4 @@ class taxable_estate_value(Variable):
     label = "Taxable estate taxes"
     unit = USD
     definition_period = YEAR
+    reference = "https://www.law.cornell.edu/uscode/text/26/2001#b_1"

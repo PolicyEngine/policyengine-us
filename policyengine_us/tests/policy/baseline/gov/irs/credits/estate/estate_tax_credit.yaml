@@ -1,0 +1,27 @@
+- name: Not deceased
+  period: 2022
+  input:
+    is_deceased: false
+  output:
+    estate_tax_credit: 0
+
+- name: before 2018
+  period: 2017
+  input:
+    is_deceased: true
+  output:
+    estate_tax_credit: 5_000_000
+
+- name: 2018 to 2025
+  period: 2025
+  input:
+    is_deceased: true
+  output:
+    estate_tax_credit: 10_000_000
+
+- name: after 2025
+  period: 2026
+  input:
+    is_deceased: true
+  output:
+    estate_tax_credit: 5_000_000
