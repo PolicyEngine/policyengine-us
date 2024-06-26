@@ -1,0 +1,26 @@
+description: South Carolina tuition credit thresholds and rates.
+
+brackets:
+  - threshold:
+      2021-01-01: 0
+    rate:
+      2021-01-01: 0.5
+  - threshold:
+      2006-01-01: 12_268
+    rate:
+      2006-01-01: 0
+
+metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  period: year
+  label: South Carolina tuition credit rate match
+  reference:
+    - title: South Carolina Legal Code | Section 12-6-3385 (A)(1)(a)
+      href: https://www.scstatehouse.gov/code/t12c006.php
+    - title: SC I-319 2021
+      href: https://dor.sc.gov/forms-site/Forms/I319_2021.pdf#page=3
+    - title: SC I-319 2022
+      href: https://dor.sc.gov/forms-site/Forms/I319_2022.pdf#page=3
+      # The value 12,268 is not in Legal code but in tax forms.
