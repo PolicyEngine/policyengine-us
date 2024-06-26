@@ -1,9 +1,6 @@
 description: The sum of total tax before refundable credits 
 values:
   0000-01-01:
-    - employee_payroll_tax
-    - self_employment_tax
-    - income_tax_before_refundable_credits  # Federal.
     - al_income_tax_before_refundable_credits
     - ar_income_tax_before_refundable_credits
     - az_income_tax_before_refundable_credits
@@ -43,7 +40,6 @@ values:
     - ri_income_tax_before_refundable_credits
     - sc_income_tax_before_refundable_credits
     - wa_income_tax_before_refundable_credits
-    - flat_tax
     - nyc_income_tax_before_refundable_credits
     - ut_income_tax_before_refundable_credits
     - va_income_tax_before_refundable_credits

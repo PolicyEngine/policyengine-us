@@ -8,3 +8,5 @@ class la_refundable_credits(Variable):
     defined_for = StateCode.LA
     unit = USD
     definition_period = YEAR
+
+    adds = "gov.states.la.tax.income.credits.refundable"
