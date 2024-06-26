@@ -39,6 +39,7 @@ metadata:
   period: year
   label: Illinois Use Tax Amount
   reference:
+    # Use tax amount is only specified in tax forms and not in legal code
     - title: Illinois 2021 Form IL-1040 Instructions
       href: https://tax.illinois.gov/content/dam/soi/en/web/tax/forms/incometax/documents/2021/individual/il-1040-instr.pdf#page=10
     - title: Illinois 2022 Form IL-1040 Instructions

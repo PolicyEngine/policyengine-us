@@ -2,7 +2,8 @@ description: Illinois provides the following personal exemption allowance amount
 values:
   2021-01-01: 2_375
   2022-01-01: 2_425
-  2025-01-01: 2_050
+  2023-01-01: 2_425 # Redundancy per legal code.  
+  2024-01-01: 2_050 # $2,050 plus COLA since 2011.
 metadata:
   uprating: 
     parameter: gov.irs.uprating

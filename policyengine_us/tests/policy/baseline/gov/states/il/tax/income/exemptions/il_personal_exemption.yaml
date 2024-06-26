@@ -1,13 +1,13 @@
-- name: 2025 test, both partners eligible
-  period: 2025
+- name: 2024 test, both partners eligible
+  period: 2024
   input:
     il_personal_exemption_eligibility_status: BOTH_ELIGIBLE
     state_code: IL
   output:
     il_personal_exemption: 4_100
 
-- name: 2025 test, one partner eligible
-  period: 2025
+- name: 2024 test, one partner eligible
+  period: 2024
   input:
     il_personal_exemption_eligibility_status: PARTIALLY_ELIGIBLE
     state_code: IL

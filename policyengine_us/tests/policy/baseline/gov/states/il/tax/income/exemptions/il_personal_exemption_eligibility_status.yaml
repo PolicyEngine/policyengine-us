@@ -1,5 +1,5 @@
-- name: 2025 "Joint household, neither claimable elsewhere, base income less than $4,100"
-  period: 2025
+- name: 2024 "Joint household, neither claimable elsewhere, base income less than $4,100"
+  period: 2024
   input:
     filing_status: JOINT
     head_is_dependent_elsewhere: false
@@ -9,8 +9,8 @@
   output:
     il_personal_exemption_eligibility_status: BOTH_ELIGIBLE
 
-- name: 2025 "Joint household, neither claimable elsewhere, base income greater than $4,100"
-  period: 2025
+- name: 2024 "Joint household, neither claimable elsewhere, base income greater than $4,100"
+  period: 2024
   input:
     filing_status: JOINT
     head_is_dependent_elsewhere: false
@@ -20,8 +20,8 @@
   output:
     il_personal_exemption_eligibility_status: BOTH_ELIGIBLE
 
-- name: 2025 "Single household, claimable elsewhere, base income less than $2,050"
-  period: 2025
+- name: 2024 "Single household, claimable elsewhere, base income less than $2,050"
+  period: 2024
   input:
     filing_status: SINGLE
     head_is_dependent_elsewhere: true
@@ -30,8 +30,8 @@
   output:
     il_personal_exemption_eligibility_status: PARTIALLY_ELIGIBLE
 
-- name: 2025 "Single household, claimable elsewhere, base income greater than $2,050"
-  period: 2025
+- name: 2024 "Single household, claimable elsewhere, base income greater than $2,050"
+  period: 2024
   input:
     filing_status: SINGLE
     head_is_dependent_elsewhere: true
@@ -40,8 +40,8 @@
   output:
     il_personal_exemption_eligibility_status: NOT_ELIGIBLE
 
-- name: 2025 "Single household, not claimable elsewhere, base income less than $2,050"
-  period: 2025
+- name: 2024 "Single household, not claimable elsewhere, base income less than $2,050"
+  period: 2024
   input:
     filing_status: SINGLE
     head_is_dependent_elsewhere: false
@@ -50,8 +50,8 @@
   output:
     il_personal_exemption_eligibility_status: PARTIALLY_ELIGIBLE
 
-- name: 2025 "Single household, not claimable elsewhere, base income greater than $2,050"
-  period: 2025
+- name: 2024 "Single household, not claimable elsewhere, base income greater than $2,050"
+  period: 2024
   input:
     filing_status: SINGLE
     head_is_dependent_elsewhere: false
@@ -60,8 +60,8 @@
   output:
     il_personal_exemption_eligibility_status: PARTIALLY_ELIGIBLE
 
-- name: 2025 "Joint household, both claimable elsewhere, base income less than $4,100"
-  period: 2025
+- name: 2024 "Joint household, both claimable elsewhere, base income less than $4,100"
+  period: 2024
   input:
     filing_status: JOINT
     head_is_dependent_elsewhere: true
@@ -71,8 +71,8 @@
   output:
     il_personal_exemption_eligibility_status: BOTH_ELIGIBLE
 
-- name: 2025 "Joint household, both claimable elsewhere, base income greater than $4,100"
-  period: 2025
+- name: 2024 "Joint household, both claimable elsewhere, base income greater than $4,100"
+  period: 2024
   input:
     filing_status: JOINT
     head_is_dependent_elsewhere: true
@@ -82,8 +82,8 @@
   output:
     il_personal_exemption_eligibility_status: PARTIALLY_ELIGIBLE
 
-- name: 2025 "Joint household, one claimable elsewhere, base income less than $2,050"
-  period: 2025
+- name: 2024 "Joint household, one claimable elsewhere, base income less than $2,050"
+  period: 2024
   input:
     filing_status: JOINT
     head_is_dependent_elsewhere: true
@@ -93,8 +93,8 @@
   output:
     il_personal_exemption_eligibility_status: BOTH_ELIGIBLE
 
-- name: 2025 "Joint household, one claimable elsewhere, base income greater than $2,050"
-  period: 2025
+- name: 2024 "Joint household, one claimable elsewhere, base income greater than $2,050"
+  period: 2024
   input:
     filing_status: JOINT
     head_is_dependent_elsewhere: true
@@ -104,8 +104,8 @@
   output:
     il_personal_exemption_eligibility_status: PARTIALLY_ELIGIBLE
 
-- name: 2025 "Joint household, neither claimable elsewhere, base income less than $4,100"
-  period: 2025
+- name: 2024 "Joint household, neither claimable elsewhere, base income less than $4,100"
+  period: 2024
   input:
     filing_status: JOINT
     head_is_dependent_elsewhere: false
@@ -115,8 +115,8 @@
   output:
     il_personal_exemption_eligibility_status: BOTH_ELIGIBLE
 
-- name: 2025 "Joint household, neither claimable elsewhere, base income greater than $4,100"
-  period: 2025
+- name: 2024 "Joint household, neither claimable elsewhere, base income greater than $4,100"
+  period: 2024
   input:
     filing_status: JOINT
     head_is_dependent_elsewhere: false
@@ -126,8 +126,8 @@
   output:
     il_personal_exemption_eligibility_status: BOTH_ELIGIBLE
 
-- name: 2025 "Single household, claimable elsewhere, base income less than $2,050"
-  period: 2025
+- name: 2024 "Single household, claimable elsewhere, base income less than $2,050"
+  period: 2024
   input:
     filing_status: SINGLE
     head_is_dependent_elsewhere: true
@@ -136,8 +136,8 @@
   output:
     il_personal_exemption_eligibility_status: PARTIALLY_ELIGIBLE
 
-- name: 2025 "Single household, claimable elsewhere, base income greater than $2,050"
-  period: 2025
+- name: 2024 "Single household, claimable elsewhere, base income greater than $2,050"
+  period: 2024
   input:
     filing_status: SINGLE
     head_is_dependent_elsewhere: true
@@ -146,8 +146,8 @@
   output:
     il_personal_exemption_eligibility_status: NOT_ELIGIBLE
 
-- name: 2025 "Single household, not claimable elsewhere, base income less than $2,050"
-  period: 2025
+- name: 2024 "Single household, not claimable elsewhere, base income less than $2,050"
+  period: 2024
   input:
     filing_status: SINGLE
     head_is_dependent_elsewhere: false
@@ -156,8 +156,8 @@
   output:
     il_personal_exemption_eligibility_status: PARTIALLY_ELIGIBLE
 
-- name: 2025 "Single household, not claimable elsewhere, base income greater than $2,050"
-  period: 2025
+- name: 2024 "Single household, not claimable elsewhere, base income greater than $2,050"
+  period: 2024
   input:
     filing_status: SINGLE
     head_is_dependent_elsewhere: false
