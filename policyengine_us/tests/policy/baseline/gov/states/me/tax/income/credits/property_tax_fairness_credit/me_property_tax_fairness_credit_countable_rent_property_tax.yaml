@@ -1,0 +1,23 @@
+- name: Case 1, utilities did not include in rent
+  period: 2022
+  input:
+    state_code: ME
+    rent: 1_000
+    real_estate_taxes: 0
+    utilities_included_in_rent: false
+    utility_expense: 50
+  output:
+    me_property_tax_fairness_credit_countable_rent_property_tax: 150
+    # 1000*0.15 = 150
+  
+- name: Case 2, utilities included in rent
+  period: 2022
+  input:
+    state_code: ME
+    rent: 1_000
+    real_estate_taxes: 0
+    utilities_included_in_rent: true
+    utility_expense: 50
+  output:
+    me_property_tax_fairness_credit_countable_rent_property_tax: 142.5
+    # 950*0.15 = 142.5
