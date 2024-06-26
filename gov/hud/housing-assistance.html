@@ -310,12 +310,12 @@ They would be eligible for $400 per month in housing assistance.</p>
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">ValueError</span><span class="g g-Whitespace">                                </span>Traceback (most recent call last)
-<span class="nn">/opt/hostedtoolcache/Python/3.9.19/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation_builder.py</span> in <span class="ni">init_variable_values</span><span class="nt">(self, entity, instance_object, instance_id)</span>
+<span class="nn">/opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/policyengine_core/simulations/simulation_builder.py</span> in <span class="ni">init_variable_values</span><span class="nt">(self, entity, instance_object, instance_id)</span>
 <span class="g g-Whitespace">    </span><span class="mi">548</span>             <span class="k">try</span><span class="p">:</span>
 <span class="ne">--&gt; </span><span class="mi">549</span>                 <span class="n">entity</span><span class="o">.</span><span class="n">check_variable_defined_for_entity</span><span class="p">(</span><span class="n">variable_name</span><span class="p">)</span>
 <span class="g g-Whitespace">    </span><span class="mi">550</span>             <span class="k">except</span> <span class="p">(</span>
 
-<span class="nn">/opt/hostedtoolcache/Python/3.9.19/x64/lib/python3.9/site-packages/policyengine_core/entities/entity.py</span> in <span class="ni">check_variable_defined_for_entity</span><span class="nt">(self, variable_name)</span>
+<span class="nn">/opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/policyengine_core/entities/entity.py</span> in <span class="ni">check_variable_defined_for_entity</span><span class="nt">(self, variable_name)</span>
 <span class="g g-Whitespace">     </span><span class="mi">51</span>             <span class="p">)</span>
 <span class="ne">---&gt; </span><span class="mi">52</span>             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
 
@@ -327,55 +327,55 @@ They would be eligible for $400 per month in housing assistance.</p>
 <span class="n">During</span> <span class="n">handling</span> <span class="n">of</span> <span class="n">the</span> <span class="n">above</span> <span class="n">exception</span><span class="p">,</span> <span class="n">another</span> <span class="n">exception</span> <span class="n">occurred</span><span class="p">:</span>
 
 <span class="ne">SituationParsingError</span><span class="g g-Whitespace">                     </span>Traceback (most recent call last)
-<span class="nn">/tmp/ipykernel_2500/768002617.py</span> in <span class="ni">&lt;cell line: 19&gt;</span><span class="nt">()</span>
+<span class="nn">/tmp/ipykernel_2424/768002617.py</span> in <span class="ni">&lt;cell line: 0&gt;</span><span class="nt">()</span>
 <span class="g g-Whitespace">     </span><span class="mi">19</span> <span class="nb">print</span><span class="p">(</span>
 <span class="g g-Whitespace">     </span><span class="mi">20</span>     <span class="s2">&quot;Housing assistance: &quot;</span><span class="p">,</span>
 <span class="ne">---&gt; </span><span class="mi">21</span>     <span class="nb">round</span><span class="p">(</span><span class="n">sim_emp</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">&quot;housing_assistance&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">12</span><span class="p">),</span>
 <span class="g g-Whitespace">     </span><span class="mi">22</span> <span class="p">)</span>
 
-<span class="nn">/opt/hostedtoolcache/Python/3.9.19/x64/lib/python3.9/site-packages/policyengine_core/simulations/individual_sim.py</span> in <span class="ni">calc</span><span class="nt">(self, var, period, target, index, map_to, reform)</span>
+<span class="nn">/opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/policyengine_core/simulations/individual_sim.py</span> in <span class="ni">calc</span><span class="nt">(self, var, period, target, index, map_to, reform)</span>
 <span class="g g-Whitespace">    </span><span class="mi">238</span>         <span class="s2">&quot;&quot;&quot;</span>
 <span class="g g-Whitespace">    </span><span class="mi">239</span><span class="s2">         if not hasattr(self, &quot;simulation&quot;):</span>
 <span class="ne">--&gt; </span><span class="mi">240</span><span class="s2">             self.build()</span>
 <span class="g g-Whitespace">    </span><span class="mi">241</span><span class="s2"> </span>
 <span class="g g-Whitespace">    </span><span class="mi">242</span><span class="s2">         if self.parametric_vary and reform is None:</span>
 
-<span class="nn">/opt/hostedtoolcache/Python/3.9.19/x64/lib/python3.9/site-packages/policyengine_core/simulations/individual_sim.py</span> in <span class="ni">build</span><span class="nt">(self)</span>
+<span class="nn">/opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/policyengine_core/simulations/individual_sim.py</span> in <span class="ni">build</span><span class="nt">(self)</span>
 <span class="g g-Whitespace">     </span><span class="mi">86</span><span class="s2">                     ] = members</span>
 <span class="g g-Whitespace">     </span><span class="mi">87</span><span class="s2">             # Add missing entities with specified default roles</span>
 <span class="ne">---&gt; </span><span class="mi">88</span><span class="s2">         self.simulation = Simulation(</span>
 <span class="g g-Whitespace">     </span><span class="mi">89</span><span class="s2">             tax_benefit_system=self.system,</span>
 <span class="g g-Whitespace">     </span><span class="mi">90</span><span class="s2">             situation=self.situation_data,</span>
 
-<span class="nn">/opt/hostedtoolcache/Python/3.9.19/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py</span> in <span class="ni">__init__</span><span class="nt">(self, tax_benefit_system, populations, situation, dataset, reform, trace)</span>
+<span class="nn">/opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/policyengine_core/simulations/simulation.py</span> in <span class="ni">__init__</span><span class="nt">(self, tax_benefit_system, populations, situation, dataset, reform, trace)</span>
 <span class="g g-Whitespace">    </span><span class="mi">146</span><span class="s2">             builder = SimulationBuilder()</span>
 <span class="g g-Whitespace">    </span><span class="mi">147</span><span class="s2">             builder.default_period = self.default_input_period</span>
 <span class="ne">--&gt; </span><span class="mi">148</span><span class="s2">             builder.build_from_dict(self.tax_benefit_system, situation, self)</span>
 <span class="g g-Whitespace">    </span><span class="mi">149</span><span class="s2">             self.has_axes = builder.has_axes</span>
 <span class="g g-Whitespace">    </span><span class="mi">150</span><span class="s2"> </span>
 
-<span class="nn">/opt/hostedtoolcache/Python/3.9.19/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation_builder.py</span> in <span class="ni">build_from_dict</span><span class="nt">(self, tax_benefit_system, input_dict, simulation)</span>
+<span class="nn">/opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/policyengine_core/simulations/simulation_builder.py</span> in <span class="ni">build_from_dict</span><span class="nt">(self, tax_benefit_system, input_dict, simulation)</span>
 <span class="nn">     84             for key</span> in <span class="ni">input_dict.keys</span><span class="nt">()</span>
 <span class="g g-Whitespace">     </span><span class="mi">85</span><span class="s2">         ):</span>
 <span class="ne">---&gt; </span><span class="mi">86</span><span class="s2">             simulation = self.build_from_entities(</span>
 <span class="g g-Whitespace">     </span><span class="mi">87</span><span class="s2">                 tax_benefit_system, input_dict, simulation</span>
 <span class="g g-Whitespace">     </span><span class="mi">88</span><span class="s2">             )</span>
 
-<span class="nn">/opt/hostedtoolcache/Python/3.9.19/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation_builder.py</span> in <span class="ni">build_from_entities</span><span class="nt">(self, tax_benefit_system, input_dict, simulation)</span>
+<span class="nn">/opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/policyengine_core/simulations/simulation_builder.py</span> in <span class="ni">build_from_entities</span><span class="nt">(self, tax_benefit_system, input_dict, simulation)</span>
 <span class="g g-Whitespace">    </span><span class="mi">174</span><span class="s2">             instances_json = input_dict.get(entity_class.plural)</span>
 <span class="g g-Whitespace">    </span><span class="mi">175</span><span class="s2">             if instances_json is not None:</span>
 <span class="ne">--&gt; </span><span class="mi">176</span><span class="s2">                 self.add_group_entity(</span>
 <span class="g g-Whitespace">    </span><span class="mi">177</span><span class="s2">                     self.persons_plural,</span>
 <span class="g g-Whitespace">    </span><span class="mi">178</span><span class="s2">                     persons_ids,</span>
 
-<span class="nn">/opt/hostedtoolcache/Python/3.9.19/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation_builder.py</span> in <span class="ni">add_group_entity</span><span class="nt">(self, persons_plural, persons_ids, entity, instances_json)</span>
+<span class="nn">/opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/policyengine_core/simulations/simulation_builder.py</span> in <span class="ni">add_group_entity</span><span class="nt">(self, persons_plural, persons_ids, entity, instances_json)</span>
 <span class="g g-Whitespace">    </span><span class="mi">483</span><span class="s2">                     self.roles[entity.plural][person_index] = person_role</span>
 <span class="g g-Whitespace">    </span><span class="mi">484</span><span class="s2"> </span>
 <span class="ne">--&gt; </span><span class="mi">485</span><span class="s2">             self.init_variable_values(entity, variables_json, instance_id)</span>
 <span class="g g-Whitespace">    </span><span class="mi">486</span><span class="s2"> </span>
 <span class="g g-Whitespace">    </span><span class="mi">487</span><span class="s2">         if persons_to_allocate:</span>
 
-<span class="nn">/opt/hostedtoolcache/Python/3.9.19/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation_builder.py</span> in <span class="ni">init_variable_values</span><span class="nt">(self, entity, instance_object, instance_id)</span>
+<span class="nn">/opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/policyengine_core/simulations/simulation_builder.py</span> in <span class="ni">init_variable_values</span><span class="nt">(self, entity, instance_object, instance_id)</span>
 <span class="g g-Whitespace">    </span><span class="mi">551</span><span class="s2">                 ValueError</span>
 <span class="g g-Whitespace">    </span><span class="mi">552</span><span class="s2">             ) as e:  # The variable is defined for another entity</span>
 <span class="ne">--&gt; </span><span class="mi">553</span><span class="s2">                 raise SituationParsingError(path_in_json, e.args[0])</span>

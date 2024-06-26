@@ -1,17 +1,20 @@
 Traceback (most recent call last):
-  File "/opt/hostedtoolcache/Python/3.9.19/x64/lib/python3.9/site-packages/jupyter_cache/executors/utils.py", line 58, in single_nb_execution
+  File "/opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/jupyter_cache/executors/utils.py", line 58, in single_nb_execution
     executenb(
-  File "/opt/hostedtoolcache/Python/3.9.19/x64/lib/python3.9/site-packages/nbclient/client.py", line 1305, in execute
+  File "/opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/nbclient/client.py", line 1305, in execute
     return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
-  File "/opt/hostedtoolcache/Python/3.9.19/x64/lib/python3.9/site-packages/jupyter_core/utils/__init__.py", line 165, in wrapped
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/jupyter_core/utils/__init__.py", line 165, in wrapped
     return loop.run_until_complete(inner)
-  File "/opt/hostedtoolcache/Python/3.9.19/x64/lib/python3.9/asyncio/base_events.py", line 647, in run_until_complete
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/asyncio/base_events.py", line 654, in run_until_complete
     return future.result()
-  File "/opt/hostedtoolcache/Python/3.9.19/x64/lib/python3.9/site-packages/nbclient/client.py", line 705, in async_execute
+           ^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/nbclient/client.py", line 705, in async_execute
     await self.async_execute_cell(
-  File "/opt/hostedtoolcache/Python/3.9.19/x64/lib/python3.9/site-packages/nbclient/client.py", line 1058, in async_execute_cell
+  File "/opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/nbclient/client.py", line 1058, in async_execute_cell
     await self._check_raise_for_error(cell, cell_index, exec_reply)
-  File "/opt/hostedtoolcache/Python/3.9.19/x64/lib/python3.9/site-packages/nbclient/client.py", line 914, in _check_raise_for_error
+  File "/opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/nbclient/client.py", line 914, in _check_raise_for_error
     raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
 nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
 ------------------
@@ -25,7 +28,7 @@ sim.calc("md_ctc", period=2022).sum() / 1e6
 
 [0;31m---------------------------------------------------------------------------[0m
 [0;31mTypeError[0m                                 Traceback (most recent call last)
-[0;32m/tmp/ipykernel_3208/2916062418.py[0m in [0;36m<cell line: 3>[0;34m()[0m
+[0;32m/tmp/ipykernel_3119/2916062418.py[0m in [0;36m<cell line: 0>[0;34m()[0m
 [1;32m      1[0m [0;32mfrom[0m [0mpolicyengine_us[0m [0;32mimport[0m [0mMicrosimulation[0m[0;34m[0m[0;34m[0m[0m
 [1;32m      2[0m [0;34m[0m[0m
 [0;32m----> 3[0;31m [0msim[0m [0;34m=[0m [0mMicrosimulation[0m[0;34m([0m[0mdataset_year[0m[0;34m=[0m[0;36m2020[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
@@ -39,5 +42,5 @@ sim.calc("md_ctc", period=2022).sum() / 1e6
 [0m[1;32m    139[0m [0;34m[0m[0m
 [1;32m    140[0m         reform = create_structural_reforms_from_parameters(
 
-[0;31mTypeError[0m: __init__() got an unexpected keyword argument 'dataset_year'
+[0;31mTypeError[0m: Simulation.__init__() got an unexpected keyword argument 'dataset_year'
 
