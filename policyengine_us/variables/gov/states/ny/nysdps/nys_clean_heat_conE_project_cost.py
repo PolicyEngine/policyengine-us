@@ -9,3 +9,4 @@ class nys_clean_heat_project_cost(Variable):
     unit = USD
     definition_period = YEAR
     reference = "url"
+    defined_for = StateCode.NY
