@@ -15,7 +15,7 @@ class me_property_tax_fairness_credit_base_cap(Variable):
         ).gov.states.me.tax.income.credits.fairness.property_tax
         filing_status = tax_unit("filing_status", period)
         dependents = tax_unit("ctc_qualifying_children", period)
-        capped_dependents = min_(dependents, 2)
+        capped_dependents = min_(dependents, p.dependent_count_threshold)
         benefit_base = p.amount[filing_status][capped_dependents]
         countable_rent_property_tax = tax_unit(
             "me_property_tax_fairness_credit_countable_rent_property_tax",
