@@ -1,19 +1,162 @@
-- name: Unit test 1 for NY sun solar
+- name: test_1.1_NY SUN
   period: 2010
-  input: #put in file names 
-    new_pw_system_size: 8 #lets say you start with 8 kwh system 
-    current_solar_energy_use: 9_000
-    region: Upstate
-    state_code: NY # is there a way to further split this by region 
+  input:
+    region: LONG_ISLAND
+    home_solar_size: 3
+    prev_size: 9000
+    state_code: NY
   output:
-    residential_solar_ny_sun: 3_200
-
-
-
-    #first determine the max system size allowed based on the prev year/projected year. so lets say you have 9000 kwh/year 
-    #predicted/used previously
-    # so you do 9000*1.1 = 9900
-    # then convert Maximum Allowable kWh to kW - this is where we get stuck. how to do this??? lets say its 1000 for simplicity though
-    # so do 8800/1000= 8.8
-    #then compare 8.8 to 8 and 8.8 > 8 so you do 
-    #so do 8 * 1000 to convert to watts and then multiply by 0.4 for long island = 3200
+    ny_solar_residential_systems_credit: 1100
+- name: test_1.2_NY SUN
+  period: 2010
+  input:
+    region: UPSTATE
+    home_solar_size: 3
+    prev_size: 9000
+    state_code: NY
+  output:
+    ny_solar_residential_systems_credit: 2200
+- name:  test_1.3_NY SUN
+  period: 2010
+  input:
+    region: CON_ED
+    home_solar_size: 3
+    prev_size: 9000
+    state_code: NY
+  output:
+    ny_solar_residential_systems_credit: 2200
+- name: test_2.1_NY SUN
+  period: 2020
+  input:
+    region: LONG_ISLAND
+    home_solar_size: 7 #lets say you start with 8 kwh system
+    prev_size: 6000 #lets say this is predicted/projected
+    state_code: NY
+  output:
+    ny_solar_residential_systems_credit: 733.33 #the 3 repeats!
+- name:  test_2.2_NY SUN
+  period: 2020
+  input:
+    region: CON_ED
+    home_solar_size: 7 #lets say you start with 8 kwh system
+    prev_size: 5100 #lets say this is predicted/projected
+    state_code: NY
+  output:
+    ny_solar_residential_systems_credit: 1466.67 #repeating numbers
+- name:  test_2.3_NY SUN
+  period: 2020
+  input:
+    region: UPSTATE
+    home_solar_size: 7 #lets say you start with 8 kwh system
+    prev_size: 5100 #lets say this is predicted/projected
+    state_code: NY
+  output:
+    ny_solar_residential_systems_credit: 1466.67 #repeating numbers
+- name:  test_3.1_NY SUN
+  period: 2009 #this is before
+  input:
+    region: LONG_ISLAND
+    home_solar_size: 6
+    prev_size: 9000
+    state_code: NY
+  output:
+    ny_solar_residential_systems_credit: false #should throw error
+- name: test_3.2_NY SUN
+  period: 2009
+  input:
+    region: UPSTATE
+    home_solar_size: 6
+    prev_size: 9000
+    state_code: NY
+  output:
+    ny_solar_residential_systems_credit: false #should throw error
+- name: test_3.3_NY SUN
+  period: 2009
+  input:
+    region: CON_ED
+    home_solar_size: 6
+    prev_size: 9000
+    state_code: NY
+  output:
+    ny_solar_residential_systems_credit: false #should throw error
+- name: test_4.1_NY SUN
+  period: 2015
+  input:
+    region: LONG_ISLAND
+    home_solar_size: 5 #lets say you start with 8 kwh system
+    prev_size: 18000 #lets say this is predicted/projected
+    state_code: NY
+  output:
+    ny_solar_residential_systems_credit: 2000
+- name:  test_4.2_NY SUN
+  period: 2010
+  input:
+    region: UPSTATE
+    home_solar_size: 5 #lets say you start with 8 kwh system
+    prev_size: 18000 #lets say this is predicted/projected
+    state_code: NY
+  output:
+    ny_solar_residential_systems_credit: 4000
+- name:  test_4.3_NY SUN
+  period: 2030
+  input:
+    region: CON_ED
+    home_solar_size: 5 #lets say you start with 8 kwh system
+    prev_size: 18000 #lets say this is predicted/projected
+    state_code: NY
+  output:
+    ny_solar_residential_systems_credit: 4000
+- name:  test_5.1_NY SUN
+  period: 2030
+  input:
+    region: LONG_ISLAND
+    home_solar_size: 7 #lets say you start with 8 kwh system
+    prev_size: 1100 #lets say this is predicted/projected
+    state_code: NY
+  output:
+    ny_solar_residential_systems_credit: 134.44 #repeating
+- name:  test_5.2_NY SUN
+  period: 2030
+  input:
+    region: UPSTATE
+    home_solar_size: 7 #lets say you start with 8 kwh system
+    prev_size: 1100 #lets say this is predicted/projected
+    state_code: NY
+  output:
+    ny_solar_residential_systems_credit: 268.89
+- name:  test_5.3_NY SUN
+  period: 2030 #SHOULD THROW ERROR OR 0 DUE TO 2031
+  input:
+    region: CON_ED
+    home_solar_size: 7 #lets say you start with 8 kwh system
+    prev_size: 1100 #lets say this is predicted/projected
+    state_code: NY
+  output:
+    ny_solar_residential_systems_credit: 268.89
+- name:  test_6.1_NY SUN
+  period: 2031 #SHOULD THROW ERROR OR 0 DUE TO 2031
+  input:
+    region: UPSTATE
+    home_solar_size: 10 #lets say you start with 8 kwh system
+    prev_size: 11110 #lets say this is predicted/projected
+    state_code: NY
+  output:
+    ny_solar_residential_systems_credit: false
+- name:  test_6.2_NY SUN
+  period: 2031 #SHOULD THROW ERROR OR 0 DUE TO 2031
+  input:
+    region: CON_ED
+    home_solar_size: 10 #lets say you start with 8 kwh system
+    prev_size: 11110 #lets say this is predicted/projected
+    state_code: NY
+  output:
+    ny_solar_residential_systems_credit: false
+- name:  test_6.3_NY SUN
+  period: 2031 #SHOULD THROW ERROR OR 0 DUE TO 2031
+  input:
+    region: UPSTATE
+    home_solar_size: 10 #lets say you start with 8 kwh system
+    prev_size: 11110 #lets say this is predicted/projected
+    state_code: NY
+  output:
+    ny_solar_residential_systems_credit: false
