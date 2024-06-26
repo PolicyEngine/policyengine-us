@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.796.1] - 2024-06-26 00:53:07
+
+### Added
+
+- Move rounding metadata to individual breakdown parameters.
+
 ## [0.796.0] - 2024-06-25 02:39:47
 
 ### Changed
@@ -8866,6 +8872,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.796.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.796.0...0.796.1
 [0.796.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.795.0...0.796.0
 [0.795.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.794.2...0.795.0
 [0.794.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.794.1...0.794.2
