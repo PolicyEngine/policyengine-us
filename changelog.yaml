@@ -7481,3 +7481,19 @@
     fixed:
     - Limit DC SNAP minimum allotment to eligible applicants.
   date: 2024-06-21 18:32:22
+- bump: minor
+  changes:
+    added:
+    - Hawaii standard deduction increases.
+    - Hawaii tax bracket increases.
+  date: 2024-06-25 01:14:35
+- bump: minor
+  changes:
+    changed:
+    - Update CPI-U and CPI-W parameters based on the CBO June 2024 Projections.
+  date: 2024-06-25 02:39:47
+- bump: patch
+  changes:
+    added:
+    - Move rounding metadata to individual breakdown parameters.
+  date: 2024-06-26 00:53:07
