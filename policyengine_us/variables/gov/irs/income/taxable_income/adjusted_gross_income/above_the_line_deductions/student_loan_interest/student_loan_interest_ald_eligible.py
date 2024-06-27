@@ -15,4 +15,4 @@ class student_loan_interest_ald_eligible(Variable):
         is_aoc_eligible = person(
             "is_eligible_for_american_opportunity_credit", period
         )
-        return head_or_spouse * ~separate * is_aoc_eligible
+        return head_or_spouse & ~separate & is_aoc_eligible

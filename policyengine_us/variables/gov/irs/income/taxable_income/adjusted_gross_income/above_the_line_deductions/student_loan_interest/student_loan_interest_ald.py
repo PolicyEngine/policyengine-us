@@ -15,7 +15,8 @@ class student_loan_interest_ald(Variable):
         interest = person("student_loan_interest", period)
         p = parameters(period).gov.irs.ald.student_loan_interest
         filing_status = person.tax_unit("filing_status", period)
-        capped_interest = min_(interest, p.cap[filing_status])
+        cap = p.cap[filing_status]
+        capped_interest = min_(interest, cap)
         joint = filing_status == filing_status.possible_values.JOINT
         # Combine the income for units filing jointly
         modified_agi = person("student_loan_interest_ald_magi", period)
@@ -24,10 +25,8 @@ class student_loan_interest_ald(Variable):
             person.tax_unit.sum(modified_agi),
             modified_agi,
         )
-
-        income_excess = max_(
-            0, combined_magi - p.reduction.start[filing_status]
-        )
+        reduction_start = p.reduction.start[filing_status]
+        income_excess = max_(0, combined_magi - reduction_start)
         divisor = p.reduction.divisor[filing_status]
         reduction_rate = np.zeros_like(divisor)
         mask = divisor != 0

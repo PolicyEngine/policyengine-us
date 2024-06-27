@@ -4,11 +4,11 @@ from policyengine_us.model_api import *
 class student_loan_interest_ald_magi(Variable):
     value_type = float
     entity = Person
-    label = "Madofied adjusted gross income for the student loan interest ALD"
+    label = "Modified adjusted gross income for the student loan interest ALD"
     unit = USD
     definition_period = YEAR
     documentation = "Above-the-line deduction for student loan interest"
-    reference = "https://www.law.cornell.edu/uscode/text/26/221"  # (b)(2)(C)
+    reference = "https://www.law.cornell.edu/uscode/text/26/221#b_2_C"
     defined_for = "student_loan_interest_ald_eligible"
 
     def formula(person, period, parameters):
