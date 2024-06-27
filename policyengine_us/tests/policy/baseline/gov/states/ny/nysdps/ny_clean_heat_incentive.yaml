@@ -64,7 +64,7 @@
 
 - name: Cap test (DAC) (Residential)
   period: 2024
-    input:
+  input:
     ny_clean_heat_family_type_category: RESIDENTIAL
     ny_clean_heat_heat_pump_category: ASHP
     ny_clean_heat_dac_category: DAC

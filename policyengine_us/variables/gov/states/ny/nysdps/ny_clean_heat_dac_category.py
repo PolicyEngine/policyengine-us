@@ -4,7 +4,7 @@ class DACCategory(Enum):
   DAC = 'DAC'
   NDAC = 'Non-DAC'
 
-class ny_clean_heat_DAC_category(Variable):
+class ny_clean_heat_dac_category(Variable):
   value_type = Enum
   entity = TaxUnit
   label = "DAC category"

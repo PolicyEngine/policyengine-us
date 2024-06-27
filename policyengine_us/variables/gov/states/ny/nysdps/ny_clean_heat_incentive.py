@@ -37,12 +37,12 @@ class ny_clean_heat_incentive(Variable):
                 home = tax_unit("ny_clean_heat_home_category", period) #var3
                 heat_pump_type = tax_unit("ny_clean_heat_heat_pump_type_category", period) #var4
                 uncapped_incentive = \
-                    p.amount[family_type][heat_pump][dac][home][heat_pump_type]
+                    p.residential_amount[heat_pump][dac][home][heat_pump_type]
             else:
-                uncapped_incentive = p.amount[family_type][heat_pump][dac]
+                uncapped_incentive = p.residential_amount[family_type][heat_pump][dac]
 
             # Calculate cap
-            rate = p.rate[dac]
+            rate = p.rate[family_type][dac]
             cap = project_cost * rate
 
             incentive = min(uncapped_incentive, cap)
@@ -52,7 +52,7 @@ class ny_clean_heat_incentive(Variable):
         else:
             building = tax_unit("ny_clean_heat_building_category", period) #var5
             description = tax_unit("ny_clean_heat_description_category", period) #var6
-            uncapped_incentive = p.conE_incentive[family_type][heat_pump][building][description]
+            uncapped_incentive = p.multifamily_amount[family_type][heat_pump][building][description]
 
             # Calculate cap
             rate = p.rate[family_type]
