@@ -18,11 +18,10 @@ class az_cash_assistance(Variable):
         ).gov.states.az.hhs.tanf.eligibility.payment_standard
         valid_household_size= min_(household_size, p.max_household_size)
         monthly_countable_earned_income = spm_unit(
-            "az_tanf_hhs_earned_income", period
+            "az_tanf_earned_income", period
         )
         shelter_cost = spm_unit("housing_cost", period)
-        payment_standard = where(shelter_cost > 0, p.high, p.low)
-        payment_threshold = payment_standard[valid_household_size][period]
+        payment_threshold = where(shelter_cost > 0, p.high[valid_household_size], p.low[valid_household_size])
         return max_(
             payment_threshold - monthly_countable_earned_income, 0
         )

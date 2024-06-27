@@ -16,7 +16,7 @@ class az_hhs_tanf_eligibility(Variable):
         
         monthly_fpg = fpg / MONTHS_IN_YEAR
         monthly_countable_earned_income = spm_unit(
-            "az_tanf_earned_income", period
+            "az_taearned_income", period
         )
         fpg_eligibility = monthly_countable_earned_income <= monthly_fpg
         # Judge whether the countable income exceed the Cash Assistance Payment Standard
