@@ -7466,3 +7466,44 @@
     added:
     - Add 2023 Minnesota Tax Rules.
   date: 2024-06-20 14:58:39
+- bump: minor
+  changes:
+    added:
+    - New York Solar Energy Systems Equipment Credit.
+  date: 2024-06-20 15:16:19
+- bump: patch
+  changes:
+    fixed:
+    - Remove unneeded personal_interest_expense variable.
+  date: 2024-06-21 16:07:00
+- bump: patch
+  changes:
+    fixed:
+    - Limit DC SNAP minimum allotment to eligible applicants.
+  date: 2024-06-21 18:32:22
+- bump: minor
+  changes:
+    added:
+    - Hawaii standard deduction increases.
+    - Hawaii tax bracket increases.
+  date: 2024-06-25 01:14:35
+- bump: minor
+  changes:
+    changed:
+    - Update CPI-U and CPI-W parameters based on the CBO June 2024 Projections.
+  date: 2024-06-25 02:39:47
+- bump: patch
+  changes:
+    added:
+    - Move rounding metadata to individual breakdown parameters.
+  date: 2024-06-26 00:53:07
+- bump: major
+  changes:
+    added:
+    - Support for Python 3.11.
+  date: 2024-06-26 17:11:51
+- bump: minor
+  changes:
+    added:
+    - Add the New York Residential Solar Tax to the net income tree.
+  date: 2024-06-26 17:53:48
