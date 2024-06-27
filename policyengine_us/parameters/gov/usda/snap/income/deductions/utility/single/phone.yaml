@@ -10,8 +10,8 @@ metadata:
   uprating: gov.usda.snap.uprating
   propagate_metadata_to_children: true
   reference:
-  - name: USDA utility allowances by state spreadsheet. Extracted by build_utility_allowances()
-    href: https://www.fns.usda.gov/sites/default/files/resource-files/snap-sua-table-fy24-032624.xlsx
+    - name: USDA utility allowances by state spreadsheet. Extracted by build_utility_allowances()
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/snap-sua-table-fy24-032624.xlsx
 AK:
   2010-01-01: 0
   2021-10-01: 15
@@ -39,9 +39,9 @@ CO:
     value: 86
     metadata:
       reference:
-      - title: Code of Colorado Regulations | Rule Manual Volume 4, SNAP | 4.407.31(D)(2)
-          (page 110)
-        href: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=10492&fileName=10%20CCR%202506-1
+        - title: Code of Colorado Regulations | Rule Manual Volume 4, SNAP | 4.407.31(D)(2)
+            (page 110)
+          href: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=10492&fileName=10%20CCR%202506-1
   2023-10-01: 91
 CT:
   2010-01-01: 0

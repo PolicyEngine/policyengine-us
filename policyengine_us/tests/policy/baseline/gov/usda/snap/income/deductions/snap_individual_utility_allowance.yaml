@@ -1,5 +1,5 @@
-- name: Individual Utility Allowance 1
-  period: 2023
+- name: Test in 2022 with phone expenses
+  period: 2022
   absolute_error_margin: 1
   input:
     snap_utility_allowance_type: IUA
@@ -8,11 +8,30 @@
   output:
     snap_individual_utility_allowance: 250.50
 
-- name: Individual Utility Allowance 2
+- name: Test in 2023 with phone expenses
+  period: 2023
+  absolute_error_margin: 1
+  input:
+    snap_utility_allowance_type: IUA
+    snap_utility_region_str: CA
+    phone_expense: 20
+  output:
+    snap_individual_utility_allowance: 228
+
+- name: Test in 2022 with trash expenses
+  period: 2022
+  input:
+    snap_utility_allowance_type: IUA
+    snap_utility_region_str: AK
+    trash_expense: 20
+  output:
+    snap_individual_utility_allowance: 3_942.11
+
+- name: Test in 2023 with trash expenses
   period: 2023
   input:
     snap_utility_allowance_type: IUA
     snap_utility_region_str: AK
     trash_expense: 20
   output:
-    snap_individual_utility_allowance: 3942.11
+    snap_individual_utility_allowance: 4_599
