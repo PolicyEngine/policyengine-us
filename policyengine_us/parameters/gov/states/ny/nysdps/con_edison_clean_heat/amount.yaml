@@ -3,12 +3,12 @@ metadata:
     unit: currency-USD #TODO: Includes both integer and strings. Need to be fixed.
     breakdown:
         - ny_clean_heat_family_type_category
-            - ny_clean_heat_heat_pump_category
-                - ny_clean_heat_dac_category
-                    - ny_clean_heat_home_category
-                        - ny_clean_heat_heat_pump_type_category
-                - ny_clean_heat_building_category
-                    - ny_clean_heat_description_category
+        - ny_clean_heat_heat_pump_category
+        - ny_clean_heat_dac_category
+        - ny_clean_heat_home_category
+        - ny_clean_heat_heat_pump_type_category
+        - ny_clean_heat_building_category
+        - ny_clean_heat_description_category
     period: year
     label: New York State Clean Heat rebate (conEdison)
     reference:
