@@ -1,4 +1,4 @@
-- name: Single with $101,000 agi and 2 dependents
+- name: Single with $101,000 AGI and 2 dependents
   period: 2022
   input:
     state_code: CT
@@ -8,7 +8,7 @@
   output:
     ct_child_tax_rebate: 400
 
-- name: Joint with $180,000 agi and 1 dependent
+- name: Joint with $180,000 AGI and 1 dependent
   period: 2022
   input:
     state_code: CT
@@ -18,7 +18,7 @@
   output:
     ct_child_tax_rebate: 250
 
-- name: Head of household with $170,000 agi and 5 dependents
+- name: Head of household with $170,000 AGI and 5 dependents
   period: 2022
   input:
     state_code: CT

@@ -23,7 +23,7 @@ class ct_child_tax_rebate(Variable):
         total_reduction_amount = increments * reduction_per_increment
 
         count_dependents = tax_unit("tax_unit_count_dependents", period)
-        child_max = p.child_cap
-        total_rebate = min_(count_dependents, child_max) * p.amount
+        capped_children = min_(count_dependents, p.child_cap)
+        total_rebate = capped_children * p.amount
 
         return max_(total_rebate - total_reduction_amount, 0)
