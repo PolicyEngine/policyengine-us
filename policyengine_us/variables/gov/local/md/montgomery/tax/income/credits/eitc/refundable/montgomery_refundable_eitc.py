@@ -16,7 +16,7 @@ class md_montgomery_eitc(Variable):
             period
         ).gov.local.md.montgomery.tax.income.credits.eitc.refundable  
 
-        # check montgomery county match qualification
+        # Check whether unit is in montgomery county 
         county = tax_unit.household("county_str", period)
         in_montgomery = county == "MONTGOMERY_COUNTY_MD"
 
