@@ -1,0 +1,82 @@
+- name: Has income
+  period: 2023
+  input:
+    pell_grant_head_available_income: 40_000
+    pell_grant_dependents_in_college: 1
+    pell_grant_formula: A
+  output:
+    pell_grant_head_contribution: 11_725
+
+- name: Has no income
+  period: 2023
+  input:
+    pell_grant_head_available_income: 0
+    pell_grant_dependents_in_college: 1
+    pell_grant_formula: A
+  output:
+    pell_grant_head_contribution: 0
+
+- name: Multiple dependents in college
+  period: 2023
+  input:
+    pell_grant_head_available_income: 26_000
+    pell_grant_dependents_in_college: 2
+    pell_grant_formula: A
+  output:
+    pell_grant_head_contribution: 3067.5
+
+- name: Negative head contribution
+  period: 2023
+  input:
+    pell_grant_head_available_income: -100_000
+    pell_grant_dependents_in_college: 1
+    pell_grant_formula: A
+  output:
+    pell_grant_head_contribution: -750
+
+- name: Has income formula B
+  period: 2023
+  input:
+    pell_grant_head_available_income: 30_000
+    pell_grant_dependents_in_college: 1
+    pell_grant_formula: B
+  output:
+    pell_grant_head_contribution: 30_000
+
+- name: Multiple dependents in college does not apply
+  period: 2025
+  input:
+    pell_grant_head_available_income: 26_000
+    pell_grant_dependents_in_college: 2
+    pell_grant_formula: A
+  output:
+    pell_grant_head_contribution: 5890
+
+- name: Income, some allowances, and assets integration test 2023
+  period: 2023
+  input:
+    pell_grant_head_allowances: 10_000
+    pell_grant_formula: B
+    pell_grant_simplified_formula_applies: false
+    pell_grant_dependents_in_college: 2
+    pell_grant_primary_income: 30_000
+    pell_grant_head_assets: 50_000
+  output:
+    pell_grant_head_available_income: 10_000
+    pell_grant_contribution_from_assets: 10_000
+    pell_grant_head_contribution: 10_000
+
+- name: Income, some allowances, and assets integration test 2024
+  period: 2024
+  input:
+    pell_grant_head_allowances: 10_000
+    pell_grant_formula: B
+    pell_grant_simplified_formula_applies: false
+    pell_grant_dependents_in_college: 2
+    pell_grant_primary_income: 30_000
+    pell_grant_head_assets: 50_000
+  output:
+    pell_grant_head_available_income: 10_000
+    pell_grant_contribution_from_assets: 10_000
+    pell_grant_head_contribution: 20_000
+
