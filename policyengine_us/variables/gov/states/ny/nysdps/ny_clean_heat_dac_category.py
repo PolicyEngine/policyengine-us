@@ -13,3 +13,4 @@ class ny_clean_heat_dac_category(Variable):
   reference = "https://cleanheat.ny.gov/assets/pdf/CECONY%20Clean%20Heat%20Program%20Manual%206%203%2024.pdf#page=12"
   possible_values = DACCategory
   default_value = DACCategory.NDAC
+  defined_for = StateCode.NY

@@ -13,3 +13,4 @@ class ny_clean_heat_building_category(Variable):
   reference = "https://cleanheat.ny.gov/assets/pdf/CECONY%20Clean%20Heat%20Program%20Manual%206%203%2024.pdf#page=13"
   possible_values = BUILDCategory
   default_value = BUILDCategory.NEW
+  defined_for = StateCode.NY

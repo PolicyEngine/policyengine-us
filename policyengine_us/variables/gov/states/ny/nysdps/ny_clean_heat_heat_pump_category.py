@@ -13,3 +13,4 @@ class ny_clean_heat_heat_pump_category(Variable):
   reference = "https://cleanheat.ny.gov/assets/pdf/CECONY%20Clean%20Heat%20Program%20Manual%206%203%2024.pdf#page=12"
   possible_values = HPCategory
   default_value = HPCategory.ASHP
+  defined_for = StateCode.NY
