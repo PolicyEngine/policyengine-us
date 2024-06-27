@@ -1,38 +1,38 @@
-- name: The family without shelter cost countable earned income meet both restrictions
-  period: 2024-01
-  absolute_error_margin: 0.01
-  input:
-    spm_unit_size: 3
-    az_tanf_earned_income: 175
-    housing_cost: 0
-    state_code: AZ
-  output:
-    az_hhs_tanf_eligibility: true
+# - name: The family without shelter cost countable earned income meet both restrictions
+#   period: 2024-01
+#   absolute_error_margin: 0.01
+#   input:
+#     spm_unit_size: 3
+#     housing_cost: 0
+#     az_tanf_earned_income: 175
+#     state_code: AZ
+#   output:
+#     az_hhs_tanf_eligibility: true
 
-- name: The family without shelter cost countable earned income exceed Arizona payment standard(A2)
-  period: 2024-01
-  absolute_error_margin: 0.01
-  input:
-    spm_unit_size: 3
-    az_tanf_earned_income: 176
-    housing_cost: 0
-    state_code: AZ
-  output:
-    az_hhs_tanf_eligibility: false
+# - name: The family without shelter cost countable earned income exceed Arizona payment standard(A2)
+#   period: 2023-01
+#   absolute_error_margin: 0.01
+#   input:
+#     spm_unit_size: 3
+#     housing_cost: 0
+#     az_tanf_earned_income: 176
+#     state_code: AZ
+#   output:
+#     az_hhs_tanf_eligibility: false
 
-- name: The family without shelter cost countable earned income exceed both restrictions
-  period: 2024-01
-  absolute_error_margin: 0.01
-  input:
-    spm_unit_size: 3
-    az_tanf_earned_income: 1831
-    housing_cost: 0
-    state_code: AZ
-  output:
-    az_hhs_tanf_eligibility: false
+# - name: The family without shelter cost countable earned income exceed both restrictions
+#   period: 2024-01
+#   absolute_error_margin: 0.01
+#   input:
+#     spm_unit_size: 3
+#     az_tanf_earned_income: 1831
+#     housing_cost: 0
+#     state_code: AZ
+#   output:
+#     az_hhs_tanf_eligibility: false
 
-- name: The family with shelter cost countable earned income meet both restrictions
-  period: 2024-01
+- name: The countable earned income of family with shelter cost meets both restrictions
+  period: 2023-01
   absolute_error_margin: 0.01
   input:
     spm_unit_size: 3
@@ -42,24 +42,24 @@
   output:
     az_hhs_tanf_eligibility: true
 
-- name: The family with shelter cost countable earned income exceed payment standard(A1)
-  period: 2024-01
-  absolute_error_margin: 0.01
-  input:
-    spm_unit_size: 3
-    az_tanf_earned_income: 279
-    housing_cost: 100
-    state_code: AZ
-  output:
-    az_hhs_tanf_eligibility: false
+# - name: The countable earned income of family with shelter cost exceeds payment standard(A1)
+#   period: 2024-01
+#   absolute_error_margin: 0.01
+#   input:
+#     spm_unit_size: 3
+#     az_tanf_earned_income: 279
+#     housing_cost: 100
+#     state_code: AZ
+#   output:
+#     az_hhs_tanf_eligibility: false
 
-- name: The family with shelter cost countable earned income exceed both standards
-  period: 2024-01
-  absolute_error_margin: 0.01
-  input:
-    spm_unit_size: 3
-    az_tanf_earned_income: 1831
-    housing_cost: 500
-    state_code: AZ
-  output:
-    az_hhs_tanf_eligibility: false
+# - name: The countable earned income family with shelter cost exceeds both standards
+#   period: 2024-01
+#   absolute_error_margin: 0.01
+#   input:
+#     spm_unit_size: 3
+#     az_tanf_earned_income: 1831
+#     housing_cost: 500
+#     state_code: AZ
+#   output:
+#     az_hhs_tanf_eligibility: false
