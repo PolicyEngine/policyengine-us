@@ -14,7 +14,7 @@ class md_montgomery_eitc(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(
             period
-        ).gov.local.md.montgomery.tax.income.credits.eitc.refundable  # policyengine_us/parameters/gov/local/md/montgomery/tax/income/credits/eitc/refundable
+        ).gov.local.md.montgomery.tax.income.credits.eitc.refundable  
 
         # check montgomery county match qualification
         county = tax_unit.household("county_str", period)
