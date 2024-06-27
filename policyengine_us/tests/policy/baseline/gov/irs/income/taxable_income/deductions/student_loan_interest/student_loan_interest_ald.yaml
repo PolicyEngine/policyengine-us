@@ -5,9 +5,11 @@
       person1:
         student_loan_interest: 3_000
         partnership_s_corp_income: 80_000
+        student_loan_interest_ald_eligible: true
       person2:
         student_loan_interest: 0
         self_employment_income: 60_000
+        student_loan_interest_ald_eligible: true
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -22,6 +24,7 @@
     people:
       person1:
         student_loan_interest: 3_000
+        student_loan_interest_ald_eligible: true
         irs_employment_income: 80_000
         is_tax_unit_dependent: false
       person2:
@@ -29,6 +32,7 @@
         self_employment_income: 80_000
         self_employment_tax_ald_person: 1_000
         is_tax_unit_dependent: false
+        student_loan_interest_ald_eligible: true
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -43,10 +47,12 @@
     people:
       person1:
         student_loan_interest: 3_000
+        student_loan_interest_ald_eligible: true
         farm_rent_income: 230_000
       person2:
         student_loan_interest: 1_000
         self_employment_income: 0
+        student_loan_interest_ald_eligible: true
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -61,9 +67,11 @@
       person1:
         student_loan_interest: 0
         taxable_social_security: 80_000
+        student_loan_interest_ald_eligible: true
       person2:
         student_loan_interest: 0
         self_employment_income: 60_000
+        student_loan_interest_ald_eligible: true
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -80,9 +88,11 @@
         student_loan_interest: 3_000
         miscellaneous_income: 80_000
         taxable_unemployment_compensation: 10_000
+        student_loan_interest_ald_eligible: false
       person2:
         student_loan_interest: 1_000
         self_employment_income: 80_000
+        student_loan_interest_ald_eligible: false
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -99,10 +109,12 @@
         student_loan_interest: 3_000
         is_tax_unit_head_or_spouse: true
         illicit_income: 78_000
+        student_loan_interest_ald_eligible: true
       person2:
         student_loan_interest: 1_000
         is_tax_unit_head_or_spouse: false
         self_employment_income: 0
+        student_loan_interest_ald_eligible: true
     tax_units:
       tax_unit:
         members: [person1, person2]
