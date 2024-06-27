@@ -308,6 +308,12 @@ They would be eligible for $400 per month in housing assistance.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:root:Parameter gov.states.ct.tax.income.rebate.reduction.start has a child WIDOW that is not in the possible values of filing_status, ignoring.
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING:root:Parameter gov.states.ct.tax.income.rebate.reduction.start has a child WIDOW that is not in the possible values of filing_status, ignoring.
+</pre></div>
+</div>
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">ValueError</span><span class="g g-Whitespace">                                </span>Traceback (most recent call last)
 <span class="nn">/opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/policyengine_core/simulations/simulation_builder.py</span> in <span class="ni">init_variable_values</span><span class="nt">(self, entity, instance_object, instance_id)</span>
@@ -327,7 +333,7 @@ They would be eligible for $400 per month in housing assistance.</p>
 <span class="n">During</span> <span class="n">handling</span> <span class="n">of</span> <span class="n">the</span> <span class="n">above</span> <span class="n">exception</span><span class="p">,</span> <span class="n">another</span> <span class="n">exception</span> <span class="n">occurred</span><span class="p">:</span>
 
 <span class="ne">SituationParsingError</span><span class="g g-Whitespace">                     </span>Traceback (most recent call last)
-<span class="nn">/tmp/ipykernel_2472/768002617.py</span> in <span class="ni">&lt;cell line: 0&gt;</span><span class="nt">()</span>
+<span class="nn">/tmp/ipykernel_2429/768002617.py</span> in <span class="ni">&lt;cell line: 0&gt;</span><span class="nt">()</span>
 <span class="g g-Whitespace">     </span><span class="mi">19</span> <span class="nb">print</span><span class="p">(</span>
 <span class="g g-Whitespace">     </span><span class="mi">20</span>     <span class="s2">&quot;Housing assistance: &quot;</span><span class="p">,</span>
 <span class="ne">---&gt; </span><span class="mi">21</span>     <span class="nb">round</span><span class="p">(</span><span class="n">sim_emp</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">&quot;housing_assistance&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">12</span><span class="p">),</span>
