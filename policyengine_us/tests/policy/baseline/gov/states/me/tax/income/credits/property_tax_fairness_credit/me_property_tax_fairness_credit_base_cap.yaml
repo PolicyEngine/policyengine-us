@@ -37,3 +37,15 @@
   output:
     me_property_tax_fairness_credit_base_cap: 1_500
   
+- name: Case 4, in 2024, filing single with no dependent and no income
+  period: 2024
+  input:
+    state_code: ME
+    filing_status: SINGLE
+    ctc_qualifying_children: 0
+    me_sales_and_property_tax_fairness_credit_income: 51_000
+    me_property_tax_fairness_credit_countable_rent_property_tax: 7_000
+    age_head: 66
+    age_spouse: 65
+  output:
+    me_property_tax_fairness_credit_base_cap: 1_960
