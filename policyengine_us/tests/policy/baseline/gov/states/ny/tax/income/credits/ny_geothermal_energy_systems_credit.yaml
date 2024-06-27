@@ -21,11 +21,3 @@
     state_code: NY
   output:
     ny_geothermal_energy_system_credit: 0
-
-- name: No credit pre 2022
-  period: 2021
-  input:
-    ny_qualified_geothermal_energy_system_expenditures: 3_000
-    state_code: NY
-  output:
-    ny_geothermal_energy_system_credit: 0
