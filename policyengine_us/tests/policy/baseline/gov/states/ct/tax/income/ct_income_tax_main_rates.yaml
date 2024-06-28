@@ -1,0 +1,35 @@
+- name: 2022 Single household with $1,000 income and no add back or credits
+  period: 2022
+  input:
+    state_code: CT
+    ct_taxable_income: 1_000
+    filing_status: SINGLE
+  output:
+    ct_income_tax_main_rates: 30
+
+- name: 2022 Separate household with $20,000 income with some add back, no credits
+  period: 2022
+  input:
+    state_code: CT
+    ct_taxable_income: 20_000
+    filing_status: SEPARATE
+  output:
+    ct_income_tax_main_rates: 1_100
+
+- name: 2024 Single household with $1,000 income and no add back or credits
+  period: 2024
+  input:
+    state_code: CT
+    ct_taxable_income: 1_000
+    filing_status: SINGLE
+  output:
+    ct_income_tax_main_rates: 20
+
+- name: 2024 Separate household with $20,000 income with some add back, no credits
+  period: 2024
+  input:
+    state_code: CT
+    ct_taxable_income: 20_000
+    filing_status: SEPARATE
+  output:
+    ct_income_tax_main_rates: 950
