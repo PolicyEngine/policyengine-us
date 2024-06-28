@@ -8,11 +8,10 @@ class clean_heat_others_incentives(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.NY
-    hidden_input = True # what is this for?
 
     def formula(tax_unit, period, parameters):
         uncapped_incentive = 0
-        p = parameters(period).gov.states.ny.nysdps.clean_heat # do we need to run simulation or select(), if so, why?
+        p = parameters(period).gov.states.ny.nysdps.clean_heat
 
         utility_provider = tax_unit.household("utility_provider", period)
         heatpump_category = tax_unit.household("heat_pump_category", period)
@@ -25,7 +24,8 @@ class clean_heat_others_incentives(Variable):
         incentive_by_utility = p.incentives_by_utility_others
         contractor_reward = p.contractor_reward
 
-        incentive_base = index_(
+        incentive_base = incentive_by_utility[]
+        index_(
             into=incentive_by_utility,
             indices=[utility_provider, heatpump_category, tier]) # tier only exists for c4a, to check if indexing like this would work
         
