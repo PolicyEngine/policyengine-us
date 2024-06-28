@@ -5,7 +5,7 @@ metadata:
   label: NYS Clean Heat maximum reward per project for CH&E, NGRID, NYSEG, O&R, RG&E Participating Contractors/Distributors
   breakdown:
     - utility_provider
-    - heatpump_category
+    - heat_pump_category
 
 CH:
   C2:
@@ -46,8 +46,6 @@ NG:
   C2E:
     2024-03-01: 300
   C3:
-    2024-03-01: 500
-  C4:
     2024-03-01: 500
   C4:
     2024-03-01: 500

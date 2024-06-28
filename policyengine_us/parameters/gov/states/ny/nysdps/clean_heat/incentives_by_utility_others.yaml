@@ -5,8 +5,7 @@ metadata:
   label: NYS Clean Heat program incentive by utility or technology category type
   breakdown:
     - utility_provider
-    - heatpump_category
-    - list(range(1, 3))
+    - heat_pump_category
 
 CH:
   C2:
@@ -48,8 +47,6 @@ NG:
     2024-03-01: 800
   C3:
     2024-03-01: 1_500
-  C4:
-    2024-03-01: 70
   C4:
     2024-03-01: 70
   C4A1:
