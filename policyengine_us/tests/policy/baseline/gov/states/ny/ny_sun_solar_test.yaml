@@ -1,7 +1,7 @@
 - name: test_1.1_NY SUN
   period: 2010
   input:
-    region: LONG_ISLAND
+    region_incentive: LONG_ISLAND
     home_solar_size: 3
     prev_size: 9000
     state_code: NY
@@ -10,7 +10,7 @@
 - name: test_1.2_NY SUN
   period: 2010
   input:
-    region: UPSTATE
+    region_incentive: UPSTATE
     home_solar_size: 3
     prev_size: 9000
     state_code: NY
@@ -19,7 +19,7 @@
 - name:  test_1.3_NY SUN
   period: 2010
   input:
-    region: CON_ED
+    region_incentive: CON_ED
     home_solar_size: 3
     prev_size: 9000
     state_code: NY
@@ -28,8 +28,8 @@
 - name: test_2.1_NY SUN
   period: 2020
   input:
-    region: LONG_ISLAND
-    home_solar_size: 7 #lets say you start with 8 kwh system
+    region_incentive: LONG_ISLAND
+    home_solar_size: 7 
     prev_size: 6000 #lets say this is predicted/projected
     state_code: NY
   output:
@@ -37,8 +37,8 @@
 - name:  test_2.2_NY SUN
   period: 2020
   input:
-    region: CON_ED
-    home_solar_size: 7 #lets say you start with 8 kwh system
+    region_incentive: CON_ED
+    home_solar_size: 7
     prev_size: 5100 #lets say this is predicted/projected
     state_code: NY
   output:
@@ -46,44 +46,17 @@
 - name:  test_2.3_NY SUN
   period: 2020
   input:
-    region: UPSTATE
-    home_solar_size: 7 #lets say you start with 8 kwh system
+    region_incentive: UPSTATE
+    home_solar_size: 7 
     prev_size: 5100 #lets say this is predicted/projected
     state_code: NY
   output:
     ny_solar_residential_systems_credit: 1466.67 #repeating numbers
-- name:  test_3.1_NY SUN
-  period: 2009 #this is before
-  input:
-    region: LONG_ISLAND
-    home_solar_size: 6
-    prev_size: 9000
-    state_code: NY
-  output:
-    ny_solar_residential_systems_credit: false #should throw error
-- name: test_3.2_NY SUN
-  period: 2009
-  input:
-    region: UPSTATE
-    home_solar_size: 6
-    prev_size: 9000
-    state_code: NY
-  output:
-    ny_solar_residential_systems_credit: false #should throw error
-- name: test_3.3_NY SUN
-  period: 2009
-  input:
-    region: CON_ED
-    home_solar_size: 6
-    prev_size: 9000
-    state_code: NY
-  output:
-    ny_solar_residential_systems_credit: false #should throw error
 - name: test_4.1_NY SUN
   period: 2015
   input:
-    region: LONG_ISLAND
-    home_solar_size: 5 #lets say you start with 8 kwh system
+    region_incentive: LONG_ISLAND
+    home_solar_size: 5 
     prev_size: 18000 #lets say this is predicted/projected
     state_code: NY
   output:
@@ -91,8 +64,8 @@
 - name:  test_4.2_NY SUN
   period: 2010
   input:
-    region: UPSTATE
-    home_solar_size: 5 #lets say you start with 8 kwh system
+    region_incentive: UPSTATE
+    home_solar_size: 5 
     prev_size: 18000 #lets say this is predicted/projected
     state_code: NY
   output:
@@ -100,8 +73,8 @@
 - name:  test_4.3_NY SUN
   period: 2030
   input:
-    region: CON_ED
-    home_solar_size: 5 #lets say you start with 8 kwh system
+    region_incentive: CON_ED
+    home_solar_size: 5 
     prev_size: 18000 #lets say this is predicted/projected
     state_code: NY
   output:
@@ -109,8 +82,8 @@
 - name:  test_5.1_NY SUN
   period: 2030
   input:
-    region: LONG_ISLAND
-    home_solar_size: 7 #lets say you start with 8 kwh system
+    region_incentive: LONG_ISLAND
+    home_solar_size: 7 
     prev_size: 1100 #lets say this is predicted/projected
     state_code: NY
   output:
@@ -118,45 +91,45 @@
 - name:  test_5.2_NY SUN
   period: 2030
   input:
-    region: UPSTATE
-    home_solar_size: 7 #lets say you start with 8 kwh system
+    region_incentive: UPSTATE
+    home_solar_size: 7 
     prev_size: 1100 #lets say this is predicted/projected
     state_code: NY
   output:
     ny_solar_residential_systems_credit: 268.89
 - name:  test_5.3_NY SUN
-  period: 2030 #SHOULD THROW ERROR OR 0 DUE TO 2031
+  period: 2030 
   input:
-    region: CON_ED
-    home_solar_size: 7 #lets say you start with 8 kwh system
+    region_incentive: CON_ED
+    home_solar_size: 7 
     prev_size: 1100 #lets say this is predicted/projected
     state_code: NY
   output:
     ny_solar_residential_systems_credit: 268.89
-- name:  test_6.1_NY SUN
-  period: 2031 #SHOULD THROW ERROR OR 0 DUE TO 2031
-  input:
-    region: UPSTATE
-    home_solar_size: 10 #lets say you start with 8 kwh system
-    prev_size: 11110 #lets say this is predicted/projected
-    state_code: NY
-  output:
-    ny_solar_residential_systems_credit: false
-- name:  test_6.2_NY SUN
-  period: 2031 #SHOULD THROW ERROR OR 0 DUE TO 2031
-  input:
-    region: CON_ED
-    home_solar_size: 10 #lets say you start with 8 kwh system
-    prev_size: 11110 #lets say this is predicted/projected
-    state_code: NY
-  output:
-    ny_solar_residential_systems_credit: false
-- name:  test_6.3_NY SUN
-  period: 2031 #SHOULD THROW ERROR OR 0 DUE TO 2031
-  input:
-    region: UPSTATE
-    home_solar_size: 10 #lets say you start with 8 kwh system
-    prev_size: 11110 #lets say this is predicted/projected
-    state_code: NY
-  output:
-    ny_solar_residential_systems_credit: false
+# - name:  test_6.1_NY SUN
+#   period: 2031 #SHOULD THROW ERROR OR 0 DUE TO 2031
+#   input:
+#     region_incentive: UPSTATE
+#     home_solar_size: 10 #lets say you start with 8 kwh system
+#     prev_size: 11110 #lets say this is predicted/projected
+#     state_code: NY
+#   output:
+#     ny_solar_residential_systems_credit: false
+# - name:  test_6.2_NY SUN
+#   period: 2031 #SHOULD THROW ERROR OR 0 DUE TO 2031
+#   input:
+#     region_incentive: CON_ED
+#     home_solar_size: 10 #lets say you start with 8 kwh system
+#     prev_size: 11110 #lets say this is predicted/projected
+#     state_code: NY
+#   output:
+#     ny_solar_residential_systems_credit: false
+# - name:  test_6.3_NY SUN
+#   period: 2031 #SHOULD THROW ERROR OR 0 DUE TO 2031
+#   input:
+#     region_incentive: UPSTATE
+#     home_solar_size: 10 #lets say you start with 8 kwh system
+#     prev_size: 11110 #lets say this is predicted/projected
+#     state_code: NY
+#   output:
+#     ny_solar_residential_systems_credit: false

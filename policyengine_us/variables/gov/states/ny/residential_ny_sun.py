@@ -1,11 +1,9 @@
-from ... policyengine_us.model_api import *
-from ... policyengine_us.entities import *
-from ... policyengine_us.tools.general import *
-from ... policyengine_us.tools.documentation import Enum 
+from policyengine_us.model_api import *
+
 
 class residential_solar_ny_sun(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Household
     definition_period = YEAR
     label = "Incentive given"
     documentation = "Eligible for nonrefundable credit for the purchase of a new clean vehicle" #to change 
@@ -15,10 +13,12 @@ class residential_solar_ny_sun(Variable):
 
 
     def formula(household, period, parameters):
-        # region = household("region_incentive", period)
+        #region = household("region_incentive", period)
         p = parameters(period).parameters.gov.states.ny
-        home_solar_size = household("home_solar_size",period)
-        prev_size = household("prev_size",period)
+        home_solar_size = taxunit.household("home_solar_size",period)
+        region = taxunit.household("region_status",period)
+
+        prev_size = taxunit.household("prev_size",period)
         max_multiplier = p.max_pv_system_size.calc(period)  
         max_kwh = prev_size * max_multiplier
         #Conversion factor of 1 kW=1 kWh / 3600 (for number of seconds in an hr)
