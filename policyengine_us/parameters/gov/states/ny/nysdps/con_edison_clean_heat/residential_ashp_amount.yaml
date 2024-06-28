@@ -1,0 +1,36 @@
+description: New York State Clean Heat rebate (conEdison) (Residential - ASHP)
+metadata:
+    unit: currency-USD
+    breakdown:
+        - ny_clean_heat_dac_category
+        - ny_clean_heat_home_category
+        - ny_clean_heat_heat_pump_type_category
+    period: year
+    label: New York State Clean Heat rebate (conEdison) (Residential - ASHP)
+    reference:
+        - title: New York State Clean Heat Con Edison Heat Pump Program Manual
+          href: https://cleanheat.ny.gov/assets/pdf/CECONY%20Clean%20Heat%20Program%20Manual%206%203%2024.pdf#page=12
+
+
+NDAC:
+    SINGLE:
+        ASHPWIC:
+            2024-03-01: 2_500
+        AWHPWDE:
+            2024-03-01: 8_000
+    APARTMENT:
+        ASHPWDE:
+            2024-03-01: 1_000
+        AWHPWDE:
+            2024-03-01: 4_000
+DAC:
+    SINGLE:
+        ASHPWIC:
+            2024-03-01: 4_500
+        AWHPWDE:
+            2024-03-01: 10_000
+    APARTMENT:
+        ASHPWDE:
+            2024-03-01: 2_000
+        AWHPWDE:
+            2024-03-01: 5_000

@@ -22,53 +22,82 @@ class ny_clean_heat_incentive(Variable):
         Returns:
         - float: a capped incentive (float). 
         '''
-        
+    
         p = parameters(period).gov.states.ny.nysdps.con_edison_clean_heat
-        project_cost = tax_unit("ny_clean_heat_project_cost", period)
 
         family_type = tax_unit("ny_clean_heat_family_type_category", period) #var0
         heat_pump = tax_unit("ny_clean_heat_heat_pump_category", period) #var1
+        dac = tax_unit("ny_clean_heat_dac_category", period) #var2
+        home = tax_unit("ny_clean_heat_home_category", period) #var3
+        heat_pump_type = tax_unit("ny_clean_heat_heat_pump_type_category", period) #var4
+        building = tax_unit("ny_clean_heat_building_category", period) #var5
+        description = tax_unit("ny_clean_heat_description_category", period) #var6
 
-        # Residential
-        if family_type == 'RESIDENTIAL':
-            dac = tax_unit("ny_clean_heat_dac_category", period) #var2
-            if heat_pump == 'ASHP':
-                home = tax_unit("ny_clean_heat_home_category", period) #var3
-                heat_pump_type = tax_unit("ny_clean_heat_heat_pump_type_category", period) #var4
-                uncapped_incentive = \
-                    p.residential_amount[heat_pump][dac][home][heat_pump_type]
-            else:
-                uncapped_incentive = p.residential_amount[heat_pump][dac]
+        # calc uncapped incentive
+        uncapped_incentive =  select(
+            [
+                # residential -> ashp
+                family_type == family_type.possible_values.RESIDENTIAL and heat_pump == heat_pump.possible_values.ASHP,
+                # residential -> gshp
+                family_type == family_type.possible_values.RESIDENTIAL and heat_pump == heat_pump.possible_values.GSHP,
+                # multifamily
+                family_type == family_type.possible_values.MULTIFAMILY,
+            ],
+            [
+                p.residential_ashp_amount[dac][home][heat_pump_type],
+                p.residential_gshp_amount[dac],
+                p.multifamily_amount[heat_pump][building][description],
+            ],
+        )
 
-            # Calculate cap
-            rate = p.rate[family_type][dac]
-            cap = project_cost * rate
+        # multipy uncapped incentive by MMBtu/dwelling_unit (if necessary)
+        mmbtu = tax_unit('ny_clean_heat_mmbtu', period)
 
-            incentive = min(uncapped_incentive, cap)
+        max_unit = p.dwelling_unit_cap
+        uncapped_dwelling_unit = tax_unit("ny_clean_heat_dwelling_unit", period)
+        dwelling_unit = min(max_unit, uncapped_dwelling_unit)
 
-        # Multifamily
-        else:
-            building = tax_unit("ny_clean_heat_building_category", period) #var5
-            description = tax_unit("ny_clean_heat_description_category", period) #var6
+        uncapped_incentive = select(
+            [
+                # residential
+                family_type == family_type.possible_values.RESIDENTIAL,
+                # multifamily -> C2 or C6A
+                description == description.possible_values.C2 or description == description.possible_values.C6A,
+                # multifamily -> C4, C4A, C6, C10
+                family_type == family_type.possible_values.MULTIFAMILY and (
+                    description == description.possible_values.C4 or \
+                    description == description.possible_values.C4A1 or \
+                    description == description.possible_values.C4A2 or \
+                    description == description.possible_values.C6 or \
+                    description == description.possible_values.C10),
+            ],
+            [
+                # N/A
+                uncapped_incentive,
+                # multipy by dwelling_unit
+                uncapped_incentive * dwelling_unit,
+                # multipy by mmbtu
+                uncapped_incentive * mmbtu,
+            ],
+        )
 
-            uncapped_incentive_unit = p.multifamily_amount[heat_pump][building][description]
+        # calc cap amount
+        rate = select(
+            [
+                family_type == family_type.possible_values.RESIDENTIAL,
+                family_type == family_type.possible_values.MULTIFAMILY,
+            ],
+            [
+                p.residential_rate[dac],
+                p.multifamily_rate,
 
-            # per dwelling unit
-            if description == "C2" or description == "C6A":
-                max_unit = p.dwelling_unit_cap
-                dwelling_unit = tax_unit("ny_clean_heat_dwelling_unit", period)
-                unit = min(max_unit, dwelling_unit)
-                uncapped_incentive = uncapped_incentive_unit * unit
-            
-            # per MMBtu
-            else:
-                mmbtu = tax_unit('ny_clean_heat_mmbtu', period)
-                uncapped_incentive = uncapped_incentive_unit * mmbtu
-            
-            # Calculate cap
-            rate = p.rate[family_type]
-            cap = project_cost * rate
+            ],
+        )
+        project_cost = tax_unit("ny_clean_heat_project_cost", period)
+        cap = project_cost * rate
 
-            incentive = min(cap, p.cap, uncapped_incentive)
+        # calc capped incentive
+        family_type_bool = family_type == family_type.possible_values.RESIDENTIAL
+        incentive = where(family_type_bool, min(uncapped_incentive, cap), min(uncapped_incentive, cap, p.cap))
 
         return incentive

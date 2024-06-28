@@ -2,7 +2,6 @@ description: New York State Clean Heat cap rate  (conEdison)
 metadata:
   unit: /1
   breakdown:
-    - ny_clean_heat_family_type_category
     - ny_clean_heat_dac_category
   period: year
   label: New York State Clean Heat cap rate  (conEdison)
@@ -10,10 +9,7 @@ metadata:
       - title: New York State Clean Heat Con Edison Heat Pump Program Manual
         href: https://cleanheat.ny.gov/assets/pdf/CECONY%20Clean%20Heat%20Program%20Manual%206%203%2024.pdf
 
-RESIDENTIAL:
-  NDAC:
-    2024-03-01: 0.5
-  DAC:
-    2024-03-01: 0.7
-MULTIFAMILY:
+NDAC:
   2024-03-01: 0.5
+DAC:
+  2024-03-01: 0.7
