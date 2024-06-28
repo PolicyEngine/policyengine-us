@@ -31,18 +31,9 @@ class snap_min_allotment(Variable):
         )
 
         # New Jersey provides a separate minimum allotment amount after 2023
-        state_code = spm_unit.household("state_code_str", period)
-        nj_min_allotment_in_effect = parameters(
-            period
-        ).gov.usda.snap.temporary_local_benefit.nj.in_effect
-        nj_min_allotment_amount = parameters(
-            period
-        ).gov.usda.snap.temporary_local_benefit.nj.amount
-        in_nj = state_code == "NJ"
-        nj_min_allotment_eligible = in_nj & nj_min_allotment_in_effect
-
-        return where(
-            nj_min_allotment_eligible,
-            nj_min_allotment_amount,
-            base_benefit_amount,
-        )
+        if snap.temporary_local_benefit.nj.in_effect:
+             state_code = spm_unit.household("state_code_str", period)
+             in_nj = state_code == "NJ"
+             nj_min_allotment = snap.temporary_local_benefit.nj.amount
+             base_benefit_amount = where(in_nj, nj_min_allotment, base_benefit_amount)
+        return base_benefit_amount
