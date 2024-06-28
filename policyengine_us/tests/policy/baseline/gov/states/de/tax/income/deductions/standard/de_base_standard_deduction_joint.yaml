@@ -19,7 +19,7 @@
 - name: DE Standard deduction if surviving spouse
   period: 2022
   input:
-    filing_status: WIDOW
+    filing_status: SURVIVING_SPOUSE
     is_tax_unit_head: true
     state_code: DE
   output:
