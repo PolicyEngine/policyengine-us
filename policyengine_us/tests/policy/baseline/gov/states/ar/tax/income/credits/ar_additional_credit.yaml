@@ -1,0 +1,147 @@
+- name: One person with no income
+  period: 2022
+  input:
+    state_code: AR
+    is_tax_unit_head_or_spouse: true
+    ar_files_separately: true
+    ar_taxable_income_indiv: 0
+    ar_taxable_income_joint: 0
+  output: 
+    ar_additional_credit: 60
+
+- name: One person with a little income
+  period: 2022
+  input:
+    state_code: AR
+    is_tax_unit_head_or_spouse: true
+    ar_files_separately: true
+    ar_taxable_income_indiv: 10_000
+    ar_taxable_income_joint: 0
+  output: 
+    ar_additional_credit: 60
+
+
+- name: One person with middle income
+  period: 2022
+  input:
+    state_code: AR
+    is_tax_unit_head_or_spouse: true
+    ar_files_separately: true
+    ar_taxable_income_indiv: 25_100
+    ar_taxable_income_joint: 25_100
+  output: 
+    ar_additional_credit: 20
+
+- name: One person with middle income, testing the threshold
+  period: 2022
+  input:
+    state_code: AR
+    is_tax_unit_head_or_spouse: true
+    ar_files_separately: true
+    ar_taxable_income_indiv: 25_101
+    ar_taxable_income_joint: 25_101
+  output: 
+    ar_additional_credit: 15
+
+- name: One person with higher income
+  period: 2022
+  input:
+    state_code: AR
+    is_tax_unit_head_or_spouse: true
+    ar_files_separately: true
+    ar_taxable_income_indiv: 50_000
+    ar_taxable_income_joint: 50_000
+  output: 
+    ar_additional_credit: 0
+
+- name: Two people filing separately with no income
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        ar_taxable_income_indiv: 0
+        ar_taxable_income_joint: 0
+      person2:
+        is_tax_unit_head_or_spouse: true
+        ar_taxable_income_indiv: 0
+        ar_taxable_income_joint: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ar_files_separately: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output: 
+    ar_additional_credit: [60, 60]
+
+- name: Two people filing separately with one high income and one low income
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        ar_taxable_income_indiv: 25_100
+        ar_taxable_income_joint: 25_100
+      person2:
+        is_tax_unit_head_or_spouse: true
+        ar_taxable_income_indiv: 50_000
+        ar_taxable_income_joint: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ar_files_separately: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output: 
+    ar_additional_credit: [20, 0]
+
+- name: Two people filing jointly with middle income
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        ar_taxable_income_indiv: 0
+        ar_taxable_income_joint: 25_100
+      person2:
+        is_tax_unit_head_or_spouse: false
+        ar_taxable_income_indiv: 0
+        ar_taxable_income_joint: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ar_files_separately: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output: 
+    ar_additional_credit: [40,0]
+
+- name: Two people filing jointly with max credits
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        ar_taxable_income_indiv: 0
+        ar_taxable_income_joint: 10_000
+      person2:
+        is_tax_unit_head_or_spouse: true
+        ar_taxable_income_indiv: 0
+        ar_taxable_income_joint: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ar_files_separately: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output: 
+    ar_additional_credit: [120,120]
