@@ -6,7 +6,7 @@ class RegionStatus(Enum):
     UPSTATE="Upstate"
     CON_ED="Con Ed"
 
-class region_status(Variable):
+class ny_sun_region_status(Variable):
     value_type = Enum
     entity = TaxUnit
     possible_values = RegionStatus
