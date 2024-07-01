@@ -1,0 +1,17 @@
+description: Colorado reduces the family affordability tax credit in these increments of adjusted gross income exceeding the threshold.
+metadata:
+  period: year
+  unit: currency-USD
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 1_000
+  label: Colorado family affordability tax credit reduction increment
+  reference:
+    - title: Colorado General Assembly House Bill 24-1311 Family Affordability Tax Credit
+      href: https://leg.colorado.gov/bills/hb24-1311
+
+
+values:
+  2024-01-01: 5_000

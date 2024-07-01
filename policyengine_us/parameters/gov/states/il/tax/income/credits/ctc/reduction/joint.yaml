@@ -1,0 +1,21 @@
+description: Illinois phases the child tax credit amount out by this rate, based on adjusted gross income, for joint filers.
+metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  label: Illinois child tax credit joint filer phase-out rate 
+  reference:
+    - title: Niskanen Center Proposed Illinois Child Tax Credit is a step in the right direction
+      href: https://www.niskanencenter.org/proposed-illinois-child-tax-credit-is-a-step-in-the-right-direction/
+    - title: 103RD GENERAL ASSEMBLY State of Illinois 2023 and 2024 HB4917 (d)
+      href: https://www.ilga.gov/legislation/fulltext.asp?DocName=&SessionId=112&GA=103&DocTypeId=HB&DocNum=4917&GAID=17&LegID=152789&SpecSess=&Session=
+
+brackets:
+  - threshold:
+      2024-01-01: 0
+    rate:
+      2024-01-01: 0
+  - threshold:
+      2024-01-01: 75_000
+    rate:
+      2024-01-01: 0.02
