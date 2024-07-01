@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.1] - 2024-07-01 20:57:08
+
+### Fixed
+
+- Oklahoma EITC refundability.
+
 ## [1.5.0] - 2024-07-01 13:54:35
 
 ### Added
@@ -8908,6 +8914,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.5.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.5.0...1.5.1
 [1.5.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.4.0...1.5.0
 [1.4.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.3.0...1.4.0
 [1.3.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.2.0...1.3.0
