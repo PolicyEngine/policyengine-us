@@ -25,7 +25,8 @@ class ny_clean_heat_incentive(Variable):
     
         p = parameters(period).gov.states.ny.nysdps.con_edison_clean_heat
 
-        family_type = tax_unit("ny_clean_heat_family_type_category", period) #var0
+        #var0
+        family_type = tax_unit("ny_clean_heat_family_type_category", period) 
         heat_pump = tax_unit("ny_clean_heat_heat_pump_category", period) #var1
         dac = tax_unit("ny_clean_heat_dac_category", period) #var2
         home = tax_unit("ny_clean_heat_home_category", period) #var3
@@ -37,9 +38,9 @@ class ny_clean_heat_incentive(Variable):
         uncapped_incentive =  select(
             [
                 # residential -> ashp
-                family_type == family_type.possible_values.RESIDENTIAL and heat_pump == heat_pump.possible_values.ASHP,
+                family_type == family_type.possible_values.RESIDENTIAL & heat_pump == heat_pump.possible_values.ASHP,
                 # residential -> gshp
-                family_type == family_type.possible_values.RESIDENTIAL and heat_pump == heat_pump.possible_values.GSHP,
+                family_type == family_type.possible_values.RESIDENTIAL & heat_pump == heat_pump.possible_values.GSHP,
                 # multifamily
                 family_type == family_type.possible_values.MULTIFAMILY,
             ],
@@ -55,7 +56,7 @@ class ny_clean_heat_incentive(Variable):
 
         max_unit = p.dwelling_unit_cap
         uncapped_dwelling_unit = tax_unit("ny_clean_heat_dwelling_unit", period)
-        dwelling_unit = min(max_unit, uncapped_dwelling_unit)
+        dwelling_unit = min_(max_unit, uncapped_dwelling_unit)
 
         uncapped_incentive = select(
             [
@@ -98,6 +99,6 @@ class ny_clean_heat_incentive(Variable):
 
         # calc capped incentive
         family_type_bool = family_type == family_type.possible_values.RESIDENTIAL
-        incentive = where(family_type_bool, min(uncapped_incentive, cap), min(uncapped_incentive, cap, p.cap))
+        return where(family_type_bool, min(uncapped_incentive, cap), min(uncapped_incentive, cap, p.cap))
 
         return incentive
