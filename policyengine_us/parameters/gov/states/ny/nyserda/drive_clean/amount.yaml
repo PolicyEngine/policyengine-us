@@ -27,9 +27,12 @@ brackets:
       
 metadata:
   unit: currency-USD
+  type: single_amount  
+  rate_unit: miles  
+  threshold_unit: currency-USD  
   period: year
   label: New York Drive Clean point-of-sale rebate amount
 
   reference:
     - title: NYSERDA Drive Clean Implementation Manual
-      href: "https://www.nyserda.ny.gov/-/media/Project/Nyserda/Files/Programs/Drive-Clean-NY/implementation-manual.pdf#page=8"
+      href: https://www.nyserda.ny.gov/-/media/Project/Nyserda/Files/Programs/Drive-Clean-NY/implementation-manual.pdf#page=8
