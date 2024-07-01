@@ -6,7 +6,7 @@ class BUILDCategory(Enum):
 
 class ny_clean_heat_building_category(Variable):
   value_type = Enum
-  entity = TaxUnit
+  entity = Household
   label = "New York Clean Heat building category"
   documentation = "The building category for classifying clean heat program incentives"
   definition_period = YEAR

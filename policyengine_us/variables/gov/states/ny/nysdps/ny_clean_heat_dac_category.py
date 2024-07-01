@@ -6,7 +6,7 @@ class DACCategory(Enum):
 
 class ny_clean_heat_dac_category(Variable):
   value_type = Enum
-  entity = TaxUnit
+  entity = Household
   label = "New York Clean Heat DAC category"
   documentation = "The DAC category for classifying clean heat program incentives"
   definition_period = YEAR

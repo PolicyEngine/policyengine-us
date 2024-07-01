@@ -3,7 +3,7 @@ from policyengine_us.model_api import *
 
 class ny_clean_heat_mmbtu(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Household
     label = "New York Clean Heat MMBtu"
     documentation = "Million British Thermal Units"
     definition_period = YEAR

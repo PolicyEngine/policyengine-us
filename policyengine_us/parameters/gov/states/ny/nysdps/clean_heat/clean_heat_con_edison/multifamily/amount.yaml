@@ -1,10 +1,10 @@
-description: New York State provides the following Clean Heat rebate amount for multifamily building residents, based of the hump pump, building and description category. 
+description: New York State provides the following Clean Heat rebate amount for multifamily building residents, based on the source, building and heat pump category. 
 metadata:
     unit: currency-USD
     breakdown:
-        - ny_clean_heat_heat_pump_category
+        - ny_clean_heat_source_category
         - ny_clean_heat_building_category
-        - ny_clean_heat_description_category
+        - ny_clean_heat_heat_pump_category
     period: year
     label: New York State Clean Heat multifamily building resident rebate amount 
     reference:
@@ -13,7 +13,7 @@ metadata:
 
 GSHP:
     NEW:
-        C2:
+        C2C:
             2024-03-01: 0
         C4:
             2024-03-01: 125
@@ -28,7 +28,7 @@ GSHP:
         C10: 
             2024-03-01: 0
     EXISTING:
-        C2: 
+        C2C: 
             2024-03-01: 5_000
         C4:
             2024-03-01: 200
@@ -44,7 +44,7 @@ GSHP:
             2024-03-01: 100
 ASHP:
     EXISTING:
-        C2: 
+        C2C: 
             2024-03-01: 5_000
         C4:
             2024-03-01: 200

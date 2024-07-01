@@ -2,10 +2,10 @@
   period: 2024
   input:
     ny_clean_heat_family_type_category: RESIDENTIAL
-    ny_clean_heat_heat_pump_category: ASHP
+    ny_clean_heat_source_category: ASHP
     ny_clean_heat_dac_category: NDAC
     ny_clean_heat_home_category: SINGLE
-    ny_clean_heat_heat_pump_type_category: ASHPWIC
+    ny_clean_heat_heat_pump_category: C2A
     ny_clean_heat_project_cost: 1_000_000_000
     state_code: NY
   output:
@@ -16,10 +16,10 @@
   period: 2024
   input:
     ny_clean_heat_family_type_category: RESIDENTIAL
-    ny_clean_heat_heat_pump_category: ASHP
+    ny_clean_heat_source_category: ASHP
     ny_clean_heat_dac_category: NDAC
     ny_clean_heat_home_category: APARTMENT
-    ny_clean_heat_heat_pump_type_category: ASHPWDE
+    ny_clean_heat_heat_pump_category: C2B
     ny_clean_heat_project_cost: 1_000_000
     state_code: NY
   output:
@@ -29,10 +29,10 @@
   period: 2024
   input:
     ny_clean_heat_family_type_category: RESIDENTIAL
-    ny_clean_heat_heat_pump_category: ASHP
+    ny_clean_heat_source_category: ASHP
     ny_clean_heat_dac_category: DAC
     ny_clean_heat_home_category: APARTMENT
-    ny_clean_heat_heat_pump_type_category: ASHPWDE
+    ny_clean_heat_heat_pump_category: C2B
     ny_clean_heat_project_cost: 1_000_000
     state_code: NY
   output:
@@ -42,7 +42,7 @@
   period: 2024
   input:
     ny_clean_heat_family_type_category: RESIDENTIAL
-    ny_clean_heat_heat_pump_category: GSHP
+    ny_clean_heat_source_category: GSHP
     ny_clean_heat_dac_category: NDAC
     ny_clean_heat_project_cost: 1_000_000
     state_code: NY
@@ -53,10 +53,10 @@
   period: 2024
   input:
     ny_clean_heat_family_type_category: RESIDENTIAL
-    ny_clean_heat_heat_pump_category: ASHP
+    ny_clean_heat_source_category: ASHP
     ny_clean_heat_dac_category: NDAC
     ny_clean_heat_home_category: SINGLE
-    ny_clean_heat_heat_pump_type_category: ASHPWIC
+    ny_clean_heat_heat_pump_category: C2E
     ny_clean_heat_project_cost: 1_000
     state_code: NY
   output:
@@ -66,10 +66,10 @@
   period: 2024
   input:
     ny_clean_heat_family_type_category: RESIDENTIAL
-    ny_clean_heat_heat_pump_category: ASHP
+    ny_clean_heat_source_category: ASHP
     ny_clean_heat_dac_category: DAC
     ny_clean_heat_home_category: APARTMENT
-    ny_clean_heat_heat_pump_type_category: ASHPWDE
+    ny_clean_heat_heat_pump_category: C2B
     ny_clean_heat_project_cost: 1_000
     state_code: NY
   output:
@@ -81,9 +81,9 @@
   period: 2024
   input:
     ny_clean_heat_family_type_category: MULTIFAMILY
-    ny_clean_heat_heat_pump_category: GSHP
+    ny_clean_heat_source_category: GSHP
     ny_clean_heat_building_category: NEW
-    ny_clean_heat_description_category: C4A1
+    ny_clean_heat_heat_pump_category: C4A1
     ny_clean_heat_project_cost: 10_000_000
     ny_clean_heat_mmbtu: 100
     state_code: NY
@@ -94,9 +94,9 @@
   period: 2024
   input:
     ny_clean_heat_family_type_category: MULTIFAMILY
-    ny_clean_heat_heat_pump_category: GSHP
+    ny_clean_heat_source_category: GSHP
     ny_clean_heat_building_category: NEW
-    ny_clean_heat_description_category: C4A1
+    ny_clean_heat_heat_pump_category: C4A1
     ny_clean_heat_project_cost: 10_000
     ny_clean_heat_mmbtu: 100
     state_code: NY
@@ -107,9 +107,9 @@
   period: 2024
   input:
     ny_clean_heat_family_type_category: MULTIFAMILY
-    ny_clean_heat_heat_pump_category: GSHP
+    ny_clean_heat_source_category: GSHP
     ny_clean_heat_building_category: EXISTING
-    ny_clean_heat_description_category: C4A1
+    ny_clean_heat_heat_pump_category: C4A1
     ny_clean_heat_project_cost: 10_000_000
     ny_clean_heat_mmbtu: 100
     state_code: NY
@@ -120,9 +120,9 @@
   period: 2024
   input:
     ny_clean_heat_family_type_category: MULTIFAMILY
-    ny_clean_heat_heat_pump_category: ASHP
+    ny_clean_heat_source_category: ASHP
     ny_clean_heat_building_category: EXISTING
-    ny_clean_heat_description_category: C6A
+    ny_clean_heat_heat_pump_category: C6A
     ny_clean_heat_project_cost: 10_000_000_000
     ny_clean_heat_dwelling_units: 3
     state_code: NY
@@ -133,9 +133,9 @@
   period: 2024
   input:
     ny_clean_heat_family_type_category: MULTIFAMILY
-    ny_clean_heat_heat_pump_category: GSHP
+    ny_clean_heat_source_category: GSHP
     ny_clean_heat_building_category: EXISTING
-    ny_clean_heat_description_category: C2
+    ny_clean_heat_heat_pump_category: C2C
     ny_clean_heat_project_cost: 10_000_000_000
     ny_clean_heat_dwelling_units: 300    
     state_code: NY

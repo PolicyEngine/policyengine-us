@@ -6,7 +6,7 @@ class FAMCategory(Enum):
 
 class ny_clean_heat_family_type_category(Variable):
   value_type = Enum
-  entity = TaxUnit
+  entity = Household
   label = "New York Clean Heat family type category"
   documentation = "The family type category for classifying clean heat program incentives"
   definition_period = YEAR
