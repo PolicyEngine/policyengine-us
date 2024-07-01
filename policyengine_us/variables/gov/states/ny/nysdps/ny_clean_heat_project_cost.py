@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ny_clean_heat_project_cost(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Clean Heat Project Cost"
+    label = "New York Clean Heat project cost"
     documentation = "The project cost for purchasing and installing a heat pump"
     unit = USD
     definition_period = YEAR

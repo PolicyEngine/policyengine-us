@@ -7,7 +7,7 @@ class HPCategory(Enum):
 class ny_clean_heat_heat_pump_category(Variable):
   value_type = Enum
   entity = TaxUnit
-  label = "Heat Pump category"
+  label = "New York Clean Heat heat pump category"
   documentation = "The heat pump category for classifying clean heat program incentives"
   definition_period = YEAR
   reference = "https://cleanheat.ny.gov/assets/pdf/CECONY%20Clean%20Heat%20Program%20Manual%206%203%2024.pdf#page=12"

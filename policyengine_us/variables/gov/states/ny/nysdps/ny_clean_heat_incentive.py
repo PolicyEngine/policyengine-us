@@ -3,7 +3,7 @@ from policyengine_us.model_api import *
 class ny_clean_heat_incentive(Variable):
     value_type = float
     entity = TaxUnit
-    label = "New York State Clean Heat incentive (con Edison)"
+    label = "New York Clean Heat incentive (con Edison)"
     documentation = "The incentive for purchasing and installing a heat pump"
     unit = USD
     definition_period = YEAR
@@ -25,37 +25,36 @@ class ny_clean_heat_incentive(Variable):
     
         p = parameters(period).gov.states.ny.nysdps.con_edison_clean_heat
 
-        #var0
         family_type = tax_unit("ny_clean_heat_family_type_category", period) 
-        heat_pump = tax_unit("ny_clean_heat_heat_pump_category", period) #var1
-        dac = tax_unit("ny_clean_heat_dac_category", period) #var2
-        home = tax_unit("ny_clean_heat_home_category", period) #var3
-        heat_pump_type = tax_unit("ny_clean_heat_heat_pump_type_category", period) #var4
-        building = tax_unit("ny_clean_heat_building_category", period) #var5
-        description = tax_unit("ny_clean_heat_description_category", period) #var6
+        heat_pump = tax_unit("ny_clean_heat_heat_pump_category", period)
+        dac = tax_unit("ny_clean_heat_dac_category", period)
+        home = tax_unit("ny_clean_heat_home_category", period)
+        heat_pump_type = tax_unit("ny_clean_heat_heat_pump_type_category", period)
+        building = tax_unit("ny_clean_heat_building_category", period)
+        description = tax_unit("ny_clean_heat_description_category", period)
 
         # calc uncapped incentive
         uncapped_incentive =  select(
             [
                 # residential -> ashp
-                family_type == family_type.possible_values.RESIDENTIAL & heat_pump == heat_pump.possible_values.ASHP,
+                family_type == family_type.possible_values.RESIDENTIAL and heat_pump == heat_pump.possible_values.ASHP,
                 # residential -> gshp
-                family_type == family_type.possible_values.RESIDENTIAL & heat_pump == heat_pump.possible_values.GSHP,
+                family_type == family_type.possible_values.RESIDENTIAL and heat_pump == heat_pump.possible_values.GSHP,
                 # multifamily
                 family_type == family_type.possible_values.MULTIFAMILY,
             ],
             [
-                p.residential_ashp_amount[dac][home][heat_pump_type],
-                p.residential_gshp_amount[dac],
-                p.multifamily_amount[heat_pump][building][description],
+                p.amount.ashp[dac][home][heat_pump_type],
+                p.amount.gshp[dac],
+                p.multifamily.amount[heat_pump][building][description],
             ],
         )
 
         # multipy uncapped incentive by MMBtu/dwelling_unit (if necessary)
         mmbtu = tax_unit('ny_clean_heat_mmbtu', period)
 
-        max_unit = p.dwelling_unit_cap
-        uncapped_dwelling_unit = tax_unit("ny_clean_heat_dwelling_unit", period)
+        max_unit = p.multifamily.dwelling_unit_cap
+        uncapped_dwelling_unit = tax_unit("ny_clean_heat_dwelling_units", period)
         dwelling_unit = min_(max_unit, uncapped_dwelling_unit)
 
         uncapped_incentive = select(
@@ -89,8 +88,8 @@ class ny_clean_heat_incentive(Variable):
                 family_type == family_type.possible_values.MULTIFAMILY,
             ],
             [
-                p.residential_rate[dac],
-                p.multifamily_rate,
+                p.residential.rate[dac],
+                p.multifamily.rate,
 
             ],
         )
@@ -99,6 +98,7 @@ class ny_clean_heat_incentive(Variable):
 
         # calc capped incentive
         family_type_bool = family_type == family_type.possible_values.RESIDENTIAL
-        return where(family_type_bool, min(uncapped_incentive, cap), min(uncapped_incentive, cap, p.cap))
+        min_incentive_residential = min_(uncapped_incentive, cap)
+        min_incentive_multifamily = min(uncapped_incentive, cap, p.multifamily.cap)
 
-        return incentive
+        return where(family_type_bool, min_incentive_residential, min_incentive_multifamily)
