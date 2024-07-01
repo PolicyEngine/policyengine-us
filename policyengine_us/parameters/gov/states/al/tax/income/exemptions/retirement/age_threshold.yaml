@@ -1,0 +1,13 @@
+description: Alabama provides the retirement exemption to filers at or above this age threshold.
+values:
+  2023-01-01: 65
+metadata:
+  unit: year
+  period: year
+  label: Alabama retirement exemption age threshold
+  reference:
+    - title: Alabama Schedule RS | line 10 #This is from Schedule RS and thus the retirement exemption should not be included in the itemized deductions sources
+      href: https://www.revenue.alabama.gov/wp-content/uploads/2024/01/23schrsinstr.pdf#page=1
+    - title: Alabama Legal Code Section 40-18-19 (a)(13)
+      href: https://casetext.com/statute/code-of-alabama/title-40-revenue-and-taxation/chapter-18-income-taxes/article-1-general-provisions/section-40-18-19-exemptions-generally
+
