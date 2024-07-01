@@ -8,4 +8,5 @@ class ny_current_solar_energy_use(Variable):
     label = "Past year or projected year home energy use in annual kilowatt hours"
     unit = "kWh/year"
     definition_period = YEAR
+    defined_for = StateCode.NY
     reference = ""
