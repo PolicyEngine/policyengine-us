@@ -1,11 +1,14 @@
-description: NYS Clean Heat program incentive amount by utility or technology category type for CHG&E, NGRID, NYSEG, O&R, RG&E.
+description: New York State provides incentive of the following amount by project's category type as part of its Clean Heat program.
 metadata:
-  unit: USD
+  unit: currency-USD
   period: year
-  label: NYS Clean Heat program incentive by utility or technology category type
+  label: New York State Clean Heat program's incentives by the heat pump project's category type
+  reference:
+    - title: New York State Clean Heat Program Manual, CH&E, NGRID, NYSEG, O&R, RG&E (March 1, 2024) # (2.1.2)
+      href: https://cleanheat.ny.gov/assets/pdf/CHG&E%20NGrid%20NYSEG%20O&R%20and%20RG&E%20Program%20Manual_3.1.2024.pdf
   breakdown:
     - utility_provider
-    - heat_pump_category
+    - ny_clean_heat_heat_pump_category
 
 CH:
   C2:

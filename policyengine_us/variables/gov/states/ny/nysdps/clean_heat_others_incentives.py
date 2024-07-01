@@ -14,7 +14,7 @@ class clean_heat_others_incentives(Variable):
         p = parameters(period).gov.states.ny.nysdps.clean_heat
 
         utility_provider = household("utility_provider", period)
-        category = household("heat_pump_category", period)
+        category = household("ny_clean_heat_heat_pump_category", period)
         qualified_project_cost = household("clean_heat_project_cost", period)
         annual_energy_savings = household("clean_heat_annual_energy_savings", period)
         equipment_unit = household("clean_heat_equipment_unit", period)
@@ -23,23 +23,16 @@ class clean_heat_others_incentives(Variable):
         incentive_base = p.incentives_by_utility_others[utility_provider][category]
         contractor_reward = p.contractor_reward[utility_provider][category]
 
+        c = category.possible_values
+        incentives_structure_energy_savings = [c.C4, c.C4A1, c.C4A2, c.C6]
+        incentives_structure_equipment = [c.C5A, c.C5B, c.C7, c.C8]
+        incentives_structure_heating_capacity = [c.C2, c.C2A, c.C2B, c.C2E]
+
         uncapped_incentive = select(
             [
-                category == category.possible_values.C4 or \
-                category == category.possible_values.C4A1 or \
-                category == category.possible_values.C4A2 or \
-                category == category.possible_values.C6,
-
-                category == category.possible_values.C5A or \
-                category == category.possible_values.C5B or \
-                category == category.possible_values.C7 or \
-                category == category.possible_values.C8,
-
-                category == category.possible_values.C2 or \
-                category == category.possible_values.C2A or \
-                category == category.possible_values.C2B or \
-                category == category.possible_values.C2E,
-
+                category in incentives_structure_energy_savings,
+                category in incentives_structure_equipment,
+                category in incentives_structure_heating_capacity,
                 category == category.possible_values.C3
             ],
             [
@@ -50,4 +43,4 @@ class clean_heat_others_incentives(Variable):
             ],
         )
 
-        return min_(uncapped_incentive, p.regular_project_cap * qualified_project_cost)
+        return min_(uncapped_incentive, p.cap * qualified_project_cost)
