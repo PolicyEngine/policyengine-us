@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class md_montgomery_eitc(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Maryland montgomery county earned income tax credit"
+    label = "Montgomery County, Maryland EITC"
     unit = USD
     documentation = "Refundable Montgomery county EITC"
     definition_period = YEAR
