@@ -22,10 +22,9 @@ class me_property_tax_fairness_credit_base_cap(Variable):
         senior_benefit_base = p.benefit_base.senior.calc(
             greater_age_head_spouse
         )
-        consider_senior = max_(senior_benefit_base, benefit_base)
         senior_benefit_apply = senior_benefit_base != 0
         adjusted_benefit_base = where(
-            senior_benefit_apply, consider_senior, benefit_base
+            senior_benefit_apply, senior_benefit_base, benefit_base
         )
 
         countable_rent_property_tax = tax_unit(
