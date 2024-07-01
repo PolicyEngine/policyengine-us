@@ -8,7 +8,7 @@ class RegionStatus(Enum):
 
 class ny_sun_region_status(Variable):
     value_type = Enum
-    entity = TaxUnit
+    entity = Household
     possible_values = RegionStatus
     definition_period = YEAR
     label = "residential status for solar incentive"
