@@ -10,6 +10,7 @@ class ny_sun_region_status(Variable):
     value_type = Enum
     entity = Household
     possible_values = RegionStatus
+    defined_for = StateCode.NY
     definition_period = YEAR
     label = "residential status for solar incentive"
     default_value = RegionStatus.UPSTATE
