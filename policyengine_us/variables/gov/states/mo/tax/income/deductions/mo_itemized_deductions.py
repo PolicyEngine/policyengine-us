@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class mo_itemized_deductions(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Sum of itemized deductions applicable to MO taxable income calculation"
+    label = "Sum of itemized deductions applicable to Missouri taxable income calculation"
     unit = USD
     definition_period = YEAR
     reference = (

@@ -1,0 +1,275 @@
+- name: Joint filers with one younger ctc eligible child, eligible for the WFC, no phase-out, fully phased-in
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 48 
+        is_child_dependent: false
+      person2:
+        age: 40
+        is_child_dependent: false
+      person3: 
+        age: 5
+        is_child_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        ctc_qualifying_children: 1
+        mn_wfc_eligible: true
+        filer_adjusted_earnings: 10_000
+        adjusted_gross_income: 10_000
+        filing_status: JOINT
+    households:
+      household:  
+        members: [person1, person2, person3]
+        state_code: MN
+  output:  
+    mn_child_and_working_families_credits: 2_100
+
+- name: Joint filers with one younger ctc eligible child and one older child, eligible for the WFC, no phase-out, partially phased-in
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 48 
+        is_child_dependent: false
+        is_full_time_student: false
+      person2:
+        age: 40
+        is_child_dependent: false
+        is_full_time_student: false
+      person3: 
+        age: 5
+        is_child_dependent: true
+        is_full_time_student: false
+      person4:
+        age: 19
+        is_child_dependent: true
+        is_full_time_student: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        ctc_qualifying_children: 1
+        mn_wfc_eligible: true
+        filer_adjusted_earnings: 6_000
+        adjusted_gross_income: 10_000
+        filing_status: JOINT
+    households:
+      household:  
+        members: [person1, person2, person3, person4]
+        state_code: MN
+  output:  
+    mn_child_and_working_families_credits: 2_915
+
+- name: Fully phase out credits
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 48 
+        is_child_dependent: false
+        is_full_time_student: false
+      person2:
+        age: 40
+        is_child_dependent: false
+        is_full_time_student: false
+      person3: 
+        age: 5
+        is_child_dependent: true
+        is_full_time_student: false
+      person4:
+        age: 19
+        is_child_dependent: true
+        is_full_time_student: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        ctc_qualifying_children: 1
+        mn_wfc_eligible: true
+        filer_adjusted_earnings: 100_000
+        adjusted_gross_income: 10_000
+        filing_status: JOINT
+    households:
+      household:  
+        members: [person1, person2, person3, person4]
+        state_code: MN
+  output:  
+    mn_child_and_working_families_credits: 0
+
+- name: Joint filers with one younger ctc eligible child and one older child, eligible for the WFC, partially phase-out
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 48 
+        is_child_dependent: false
+        is_full_time_student: false
+      person2:
+        age: 40
+        is_child_dependent: false
+        is_full_time_student: false
+      person3: 
+        age: 5
+        is_child_dependent: true
+        is_full_time_student: false
+      person4:
+        age: 19
+        is_child_dependent: true
+        is_full_time_student: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        ctc_qualifying_children: 1
+        mn_wfc_eligible: true
+        filer_adjusted_earnings: 10_000
+        adjusted_gross_income: 45_000
+        filing_status: JOINT
+    households:
+      household:  
+        members: [person1, person2, person3, person4]
+        state_code: MN
+  output:  
+    mn_child_and_working_families_credits: 1_825
+
+- name: Separate filers with one younger ctc eligible child and one older child, eligible for the WFC, partially phase-out
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 48 
+        is_child_dependent: false
+        is_full_time_student: false
+      person2:
+        age: 40
+        is_child_dependent: false
+        is_full_time_student: false
+      person3: 
+        age: 5
+        is_child_dependent: true
+        is_full_time_student: false
+      person4:
+        age: 19
+        is_child_dependent: true
+        is_full_time_student: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        ctc_qualifying_children: 1
+        mn_wfc_eligible: true
+        filer_adjusted_earnings: 10_000
+        adjusted_gross_income: 45_000
+        filing_status: SEPARATE
+    households:
+      household:  
+        members: [person1, person2, person3, person4]
+        state_code: MN
+  output:  
+    mn_child_and_working_families_credits: 1_165
+
+- name: Joint filers with no qualifying children, eligible for the WFC, no phase-out
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 48 
+        is_child_dependent: false
+        is_full_time_student: false
+      person2:
+        age: 40
+        is_child_dependent: false
+        is_full_time_student: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ctc_qualifying_children: 0
+        mn_wfc_eligible: true
+        filer_adjusted_earnings: 10_000
+        adjusted_gross_income: 12_000
+        filing_status: JOINT
+    households:
+      household:  
+        members: [person1, person2]
+        state_code: MN
+  output:  
+    mn_child_and_working_families_credits: 350
+
+- name: Joint filers with no qualifying children, not eligible for the WFC, no phase-out
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 48 
+        is_child_dependent: false
+        is_full_time_student: false
+      person2:
+        age: 40
+        is_child_dependent: false
+        is_full_time_student: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ctc_qualifying_children: 0
+        mn_wfc_eligible: false
+        filer_adjusted_earnings: 10_000
+        adjusted_gross_income: 12_000
+        filing_status: JOINT
+    households:
+      household:  
+        members: [person1, person2]
+        state_code: MN
+  output:  
+    mn_child_and_working_families_credits: 0
+
+- name: Integration test, partially phased-out
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 48 
+        employment_income: 60_000
+      person2:
+        age: 10
+        is_child_dependent: true
+        is_full_time_student: false
+      person3: 
+        age: 5
+        is_child_dependent: true
+        is_full_time_student: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        mn_wfc_eligible: true
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:  
+        members: [person1, person2, person3]
+        state_code: MN
+  output:  
+    mn_child_and_working_families_credits: 190
+
+- name: Integration test, not phased-out
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 48 
+        employment_income: 20_000
+      person2:
+        age: 10
+        is_child_dependent: true
+        is_full_time_student: false
+      person3: 
+        age: 5
+        is_child_dependent: true
+        is_full_time_student: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        mn_wfc_eligible: true
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:  
+        members: [person1, person2, person3]
+        state_code: MN
+  output:  
+    mn_child_and_working_families_credits: 3_850
