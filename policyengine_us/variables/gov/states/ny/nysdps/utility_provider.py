@@ -1,5 +1,6 @@
 from policyengine_us.model_api import *
 
+
 class UtilityProvider(Enum):
     CH = "Central Hudson"
     NG = "National Grid"

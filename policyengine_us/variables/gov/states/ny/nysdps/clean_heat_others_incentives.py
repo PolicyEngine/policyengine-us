@@ -16,11 +16,15 @@ class clean_heat_others_incentives(Variable):
         utility_provider = household("utility_provider", period)
         category = household("ny_clean_heat_heat_pump_category", period)
         qualified_project_cost = household("clean_heat_project_cost", period)
-        annual_energy_savings = household("clean_heat_annual_energy_savings", period)
+        annual_energy_savings = household(
+            "clean_heat_annual_energy_savings", period
+        )
         equipment_unit = household("clean_heat_equipment_unit", period)
         heating_capacity = household("clean_heat_heating_capacity", period)
 
-        incentive_base = p.incentives_by_utility_others[utility_provider][category]
+        incentive_base = p.incentives_by_utility_others[utility_provider][
+            category
+        ]
         contractor_reward = p.contractor_reward[utility_provider][category]
 
         c = category.possible_values
@@ -33,13 +37,20 @@ class clean_heat_others_incentives(Variable):
                 category in incentives_structure_energy_savings,
                 category in incentives_structure_equipment,
                 category in incentives_structure_heating_capacity,
-                category == category.possible_values.C3
+                category == category.possible_values.C3,
             ],
             [
                 incentive_base * annual_energy_savings - contractor_reward,
                 incentive_base * equipment_unit - contractor_reward,
-                incentive_base * (heating_capacity/10000) - contractor_reward,
-                min_((incentive_base * (heating_capacity/10000) - contractor_reward), p.gshp_c3_cap)
+                incentive_base * (heating_capacity / 10000)
+                - contractor_reward,
+                min_(
+                    (
+                        incentive_base * (heating_capacity / 10000)
+                        - contractor_reward
+                    ),
+                    p.gshp_c3_cap,
+                ),
             ],
         )
 

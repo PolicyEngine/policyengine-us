@@ -9,4 +9,4 @@ class clean_heat_project_cost(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.NY
-    reference = "https://cleanheat.ny.gov/assets/pdf/CHG&E%20NGrid%20NYSEG%20O&R%20and%20RG&E%20Program%20Manual_3.1.2024.pdf" # (4.2)(4.3)(4.4)
+    reference = "https://cleanheat.ny.gov/assets/pdf/CHG&E%20NGrid%20NYSEG%20O&R%20and%20RG&E%20Program%20Manual_3.1.2024.pdf"  # (4.2)(4.3)(4.4)
