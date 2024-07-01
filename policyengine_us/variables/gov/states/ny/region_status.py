@@ -12,11 +12,6 @@ class ny_sun_region_status(Variable):
     possible_values = RegionStatus
     defined_for = StateCode.NY
     definition_period = YEAR
-    label = "residential status for solar incentive"
+    label = "residential status for NY SUN solar incentive"
     default_value = RegionStatus.UPSTATE
-
-#trying to fill out formula like in filing_status py file
-#unsure how to replace tax unit with household
-#Current error:     You tried to calculate or to set a value for variable 'region_incentive', 
-#but it was not found in the loaded tax and benefit system (CountryTaxBenefitSystem).
 
