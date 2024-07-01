@@ -16,3 +16,11 @@
   output:
     # Ineligible as a family of 3.
     snap_min_allotment: 0
+
+- name: Family in NJ, benefit below NJ minimum
+  period: 2024
+  input:
+    spm_unit_size: 2
+    state_code: NJ
+  output:
+    snap_min_allotment: 95 * 12  # Ensures NJ minimum
