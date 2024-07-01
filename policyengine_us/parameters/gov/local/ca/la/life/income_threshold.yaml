@@ -1,0 +1,49 @@
+description: Los Angeles provides the Low Income Fare Is Easy (LIFE) program to filers with income below this threshold, based on household size.
+brackets:
+  - threshold:
+      2021-07-01: 0
+    amount:
+      2021-07-01: 41_400
+      2023-07-01: 44_150
+  - threshold:
+      2021-07-01: 1
+    amount:
+      2021-07-01: 41_400
+      2023-07-01: 44_150
+  - threshold:
+      2021-07-01: 2
+    amount:
+      2021-07-01: 47_300
+      2023-07-01: 50_450
+  - threshold:
+      2021-07-01: 3
+    amount:
+      2021-07-01: 53_200
+      2023-07-01: 56_750
+  - threshold:
+      2021-07-01: 4
+    amount:
+      2021-07-01: 59_100
+      2023-07-01: 63_050
+  - threshold:
+      2021-07-01: 5
+    amount:
+      2021-07-01: 63_850
+      2023-07-01: 68_100
+  - threshold:
+      2021-07-01: 6
+    amount:
+      2021-07-01: 68_600
+      2023-07-01: 73_150
+metadata:
+  type: single_amount
+  threshold_unit: people
+  amount_unit: currency-USD
+  label: Los Angeles metro LIFE program income threshold
+  reference:
+    - title: Low Income Fare is Easy (LIFE) - LA Metro
+      href: https://www.metro.net/riding/fares/life/
+    - title: 2021 LA Metro LIFE (Low-Income Fare is Easy) Program
+      href: https://www.iilosangeles.org/wp-content/uploads/2017/03/Final-LIFE-Brochure-English.pdf#page=1
+    - title: 2023 LA Metro LIFE (Low-Income Fare is Easy) Program
+      href: https://cdnsm5-hosted.civiclive.com/UserFiles/Servers/Server_16676053/File/Government/Departments/Community%20Services/Lawndale%20Beat%20Bus/Metro%20LIFE.pdf#page=1
