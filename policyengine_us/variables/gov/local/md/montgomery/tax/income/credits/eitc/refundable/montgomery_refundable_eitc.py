@@ -6,7 +6,6 @@ class md_montgomery_eitc(Variable):
     entity = TaxUnit
     label = "Montgomery County, Maryland EITC"
     unit = USD
-    documentation = "Refundable Montgomery county EITC"
     definition_period = YEAR
     reference = "https://www3.montgomerycountymd.gov/311/Solutions.aspx?SolutionId=1-4DAM0I"
     defined_for = StateCode.MD
