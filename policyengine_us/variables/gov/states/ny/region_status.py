@@ -19,16 +19,4 @@ class ny_sun_region_status(Variable):
 #unsure how to replace tax unit with household
 #Current error:     You tried to calculate or to set a value for variable 'region_incentive', 
 #but it was not found in the loaded tax and benefit system (CountryTaxBenefitSystem).
-def formula(tax_unit, period, parameters):
-    person = tax_unit.members
-    is_separated = tax_unit.any(person("is_separated", period))
-    return select(
- 
-        [
-            RegionStatus.LONG_ISLAND,
-            RegionStatus.UPSTATE,
-            RegionStatus.CON_ED,
-        ],
-        default=RegionStatus.UPSTATE,
-    )
 
