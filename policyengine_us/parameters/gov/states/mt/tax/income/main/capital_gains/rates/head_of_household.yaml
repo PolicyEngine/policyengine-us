@@ -1,0 +1,21 @@
+description: Montana taxes the net long-term capital gains by the following marginal rates for head of household filers, according to the taxable income.
+metadata:
+  threshold_unit: currency-USD
+  period: year
+  type: single_amount
+  label: Montana capital gains tax rates for head of household filers
+  rate_unit: /1
+  reference:
+    - title: 2023 Montana Form 2 Individual Income Tax Instructions, Net Long-Term Capital Gains Tax Table
+      href: https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2023/12/Form_2_2023_Instructions.pdf#page=6
+    - title: Montana Code Annotated 2023, TITLE 15. TAXATION, CHAPTER 30. INDIVIDUAL INCOME TAX, Part 21. Rate and General Provisions-(2)
+      href: https://leg.mt.gov/bills/mca/title_0150/chapter_0300/part_0210/section_0030/0150-0300-0210-0030.html
+brackets:
+  - threshold:
+      2024-01-01: 0
+    amount: 
+      2024-01-01: 0.03
+  - threshold: 
+      2024-01-01: 30_750
+    amount: 
+      2024-01-01: 0.041
