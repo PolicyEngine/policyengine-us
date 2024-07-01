@@ -7,6 +7,7 @@
     state_code: NY
   output:
     ny_sun_residential_solar: 1100
+    
 - name: test_1.2_NY SUN
   period: 2010
   input:
@@ -16,6 +17,7 @@
     state_code: NY
   output:
     ny_sun_residential_solar: 2200
+    
 - name:  test_1.3_NY SUN
   period: 2010
   input:
@@ -25,75 +27,83 @@
     state_code: NY
   output:
     ny_sun_residential_solar: 2200
+    
 - name: test_2.1_NY SUN
   period: 2020
   input:
     amount: LONG_ISLAND
     home_solar_size: 7 
-    prev_size: 6000 #lets say this is predicted/projected
+    prev_size: 6000
     state_code: NY
   output:
-    ny_sun_residential_solar: 733.33 #the 3 repeats!
+    ny_sun_residential_solar: 733.33
+    
 - name:  test_2.2_NY SUN
   period: 2020
   input:
     amount: CON_ED
     home_solar_size: 7
-    prev_size: 5100 #lets say this is predicted/projected
+    prev_size: 5100
     state_code: NY
   output:
-    ny_sun_residential_solar: 1466.67 #repeating numbers
+    ny_sun_residential_solar: 1466.67
+    
 - name:  test_2.3_NY SUN
   period: 2020
   input:
     amount: UPSTATE
     home_solar_size: 7 
-    prev_size: 5100 #lets say this is predicted/projected
+    prev_size: 5100
     state_code: NY
   output:
-    ny_sun_residential_solar: 1466.67 #repeating numbers
+    ny_sun_residential_solar: 1466.67
+    
 - name: test_4.1_NY SUN
   period: 2015
   input:
     amount: LONG_ISLAND
     home_solar_size: 5 
-    prev_size: 18000 #lets say this is predicted/projected
+    prev_size: 18000
     state_code: NY
   output:
     ny_sun_residential_solar: 2000
+    
 - name:  test_4.2_NY SUN
   period: 2010
   input:
     amount: UPSTATE
     home_solar_size: 5 
-    prev_size: 18000 #lets say this is predicted/projected
+    prev_size: 18000
     state_code: NY
   output:
     ny_sun_residential_solar: 4000
+    
 - name:  test_4.3_NY SUN
   period: 2030
   input:
     amount: CON_ED
     home_solar_size: 5 
-    prev_size: 18000 #lets say this is predicted/projected
+    prev_size: 18000
     state_code: NY
   output:
     ny_sun_residential_solar: 4000
+    
 - name:  test_5.1_NY SUN
   period: 2030
   input:
     amount: LONG_ISLAND
     home_solar_size: 7 
-    prev_size: 1100 #lets say this is predicted/projected
+    prev_size: 1100
     state_code: NY
   output:
-    ny_sun_residential_solar: 134.44 #repeating
+    ny_sun_residential_solar: 134.44
+    
 - name:  test_5.2_NY SUN
   period: 2030
   input:
     amount: UPSTATE
     home_solar_size: 7 
-    prev_size: 1100 #lets say this is predicted/projected
+    prev_size: 1100
     state_code: NY
   output:
     ny_sun_residential_solar: 268.89
@@ -102,7 +112,7 @@
   input:
     amount: CON_ED
     home_solar_size: 7 
-    prev_size: 1100 #lets say this is predicted/projected
+    prev_size: 1100
     state_code: NY
   output:
     ny_sun_residential_solar: 268.89
