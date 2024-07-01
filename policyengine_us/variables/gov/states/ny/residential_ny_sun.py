@@ -19,7 +19,7 @@ class residential_solar_ny_sun(Variable):
         region = taxunit.household("region_status",period)
 
         prev_size = taxunit.household("prev_size",period)
-        max_multiplier = p.max_pv_system_size.calc(period)  
+        multiplier = p.max_pv_system_size
         max_kwh = prev_size * max_multiplier
         #Conversion factor of 1 kW=1 kWh / 3600 (for number of seconds in an hr)
         max_kw = max_kwh / 3600  
