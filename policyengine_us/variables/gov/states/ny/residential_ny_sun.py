@@ -27,9 +27,3 @@ class residential_solar_ny_sun(Variable):
         incentive_rate = p.region_incentive.calc(period)
         return approved_kw * 1000 * incentive_rate
 
-
-#home_solar_size, prev_size
-
-
-
-
