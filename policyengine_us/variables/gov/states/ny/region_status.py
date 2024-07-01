@@ -1,6 +1,4 @@
 from policyengine_us.model_api import *
-from policyengine_us.entities import *
-from policyengine_us.tools.general import *
 
 
 class RegionStatus(Enum):
