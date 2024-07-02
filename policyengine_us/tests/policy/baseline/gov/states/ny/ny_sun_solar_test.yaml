@@ -1,4 +1,4 @@
-- name: test_1.1_NY SUN
+- name: Starting year test for Long Island
   period: 2010
   input:
     amount: LONG_ISLAND
@@ -8,7 +8,7 @@
   output:
     ny_sun_residential_solar: 1_100
     
-- name: test_1.2_NY SUN
+- name: Starting year test for Upstate
   period: 2010
   input:
     amount: UPSTATE
@@ -18,7 +18,7 @@
   output:
     ny_sun_residential_solar: 2_200
     
-- name:  test_1.3_NY SUN
+- name:  Starting year test for Con Ed
   period: 2010
   input:
     amount: CON_ED
@@ -28,7 +28,7 @@
   output:
     ny_sun_residential_solar: 2_200
     
-- name: test_2.1_NY SUN
+- name: Regular test for Long Island
   period: 2020
   input:
     amount: LONG_ISLAND
@@ -38,7 +38,7 @@
   output:
     ny_sun_residential_solar: 733.33
     
-- name:  test_2.2_NY SUN
+- name:  Regular test for Con Ed
   period: 2020
   input:
     amount: CON_ED
@@ -48,7 +48,7 @@
   output:
     ny_sun_residential_solar: 1_466.67
     
-- name:  test_2.3_NY SUN
+- name:  Regular test for Upstate
   period: 2020
   input:
     amount: UPSTATE
@@ -58,7 +58,7 @@
   output:
     ny_sun_residential_solar: 1_466.67
     
-- name: test_4.1_NY SUN
+- name: Test for large previous size for Long Island
   period: 2015
   input:
     amount: LONG_ISLAND
@@ -68,8 +68,8 @@
   output:
     ny_sun_residential_solar: 2_000
     
-- name:  test_4.2_NY SUN
-  period: 2010
+- name:  Test for large previous size for Upstate
+  period: 2015
   input:
     amount: UPSTATE
     home_solar_size: 5 
@@ -78,8 +78,8 @@
   output:
     ny_sun_residential_solar: 4_000
     
-- name:  test_4.3_NY SUN
-  period: 2030
+- name:  Test for large previous size for Con Ed
+  period: 2015
   input:
     amount: CON_ED
     home_solar_size: 5 
@@ -88,7 +88,7 @@
   output:
     ny_sun_residential_solar: 4_000
     
-- name:  test_5.1_NY SUN
+- name:  Test near end of period for Long Island
   period: 2030
   input:
     amount: LONG_ISLAND
@@ -98,7 +98,7 @@
   output:
     ny_sun_residential_solar: 134.44
     
-- name:  test_5.2_NY SUN
+- name:  Test near end of period for Upstate
   period: 2030
   input:
     amount: UPSTATE
@@ -107,7 +107,8 @@
     state_code: NY
   output:
     ny_sun_residential_solar: 268.89
-- name:  test_5.3_NY SUN
+    
+- name:  Test near end of period
   period: 2030 
   input:
     amount: CON_ED
