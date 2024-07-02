@@ -16,7 +16,7 @@ class ny_sun_residential_solar(Variable):
         #region = household("region_incentive", period)
         p = parameters(period).parameters.gov.states.ny
         #what should home_solar_size be? this is a user input
-        home_solar_size = taxunit.household("home_solar_size",period)
+        home_solar_size = household("home_solar_size",period)
         region = household("ny_sun_region_status", period)
         incentive_percentage = p.amount[region]
 
