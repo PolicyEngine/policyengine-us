@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ny_sun_residential_solar(Variable):
+class ny_sun_residential_solar_incentive(Variable):
     value_type = float
     entity = Household
     definition_period = YEAR
