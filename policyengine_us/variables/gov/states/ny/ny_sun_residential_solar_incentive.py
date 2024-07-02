@@ -27,6 +27,5 @@ class ny_sun_residential_solar_incentive(Variable):
         max_kw = max_kwh / 3600  
         approved_kw = min(max_kw, ny_sun_new_pw_system_size)
         #incentive_rate = p.amount.calc(period)
-        output = approved_kw * 1000 * incentive_percentage
-        return round(output, 2)
+        return approved_kw * 1000 * incentive_percentage
 
