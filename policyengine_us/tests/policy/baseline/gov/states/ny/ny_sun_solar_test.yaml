@@ -36,7 +36,7 @@
     ny_sun_current_solar_energy_use: 6_000
     state_code: NY
   output:
-    ny_sun_residential_solar_incentive: 733.33
+    ny_sun_residential_solar_incentive: 733.3300170898438
     
 - name:  Regular test for Con Ed
   period: 2020
@@ -96,7 +96,7 @@
     ny_sun_current_solar_energy_use: 1_100
     state_code: NY
   output:
-    ny_sun_residential_solar_incentive: 134.44
+    ny_sun_residential_solar_incentive: 134.44000244140625
     
 - name:  Test near end of period for Upstate
   period: 2030
@@ -106,7 +106,7 @@
     ny_sun_current_solar_energy_use: 1_100
     state_code: NY
   output:
-    ny_sun_residential_solar_incentive: 268.89
+    ny_sun_residential_solar_incentive: 268.8900146484375
     
 - name:  Test near end of period for Con Ed
   period: 2030 
@@ -116,5 +116,5 @@
     ny_sun_current_solar_energy_use: 1_100
     state_code: NY
   output:
-    ny_sun_residential_solar_incentive: 268.89
+    ny_sun_residential_solar_incentive: 268.8900146484375
     
