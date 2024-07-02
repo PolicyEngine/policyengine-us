@@ -10,30 +10,40 @@ values:
   2020-01-01: 30_050
   2021-01-01: 30_400
   2022-01-01: 31_150
+  2023-01-01: 33_200
 metadata:
   unit: currency-USD
   period: year
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
   label: Maine itemized deduction pre medical and dental expenses cap
   reference:
-    - title: Maine legislative code §5125. Itemized deductions
+    - title: Maine legislative code §5125. Itemized deductions 4
       href: https://www.mainelegislature.org/legis/statutes/36/title36sec5125.html
-    - title: Maine form 1040 Schedule 2 (2022)
-      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/22_1040me_sched_2_ff.pdf
-    - title: Maine form 1040 Schedule 2 (2021)
-      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/21_1040me_2_dwnldff.pdf
-    - title: Maine form 1040 Schedule 2 (2020)
-      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/20_1040me_2_dwnldff.pdf
-    - title: Maine form 1040 Schedule 2 (2019)
-      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/19_1040me_2_dwnldff.pdf
-    - title: Maine form 1040 Schedule 2 (2018)
-      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/18_1040_2_d.pdf
-    - title: Maine form 1040 Schedule 2 (2017)
-      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/17_1040me_sch2_d_sept18.pdf
-    - title: Maine form 1040 Schedule 2 (2016)
-      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/16_1040%20sched%202_download.pdf
-    - title: Maine form 1040 Schedule 2 (2015)
-      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/15_1040%20sched%202_download.pdf
-    - title: Maine form 1040 Schedule 2 (2014)
-      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/14_1040%20sched%202_download.pdf
-    - title: Maine form 1040 Schedule 2 (2013)
-      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/13_1040_sched2_downloadable.pdf
+    - title: §5403. Annual adjustments for inflation 3
+      href: https://legislature.maine.gov/statutes/36/title36sec5403.html
+    - title: Maine form 1040 Schedule 2 (2023) Line 5
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/23_1040me_sched_2_ff_0.pdf#page=1
+    - title: Maine form 1040 Schedule 2 (2022) Line 5
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/22_1040me_sched_2_ff.pdf#page=1
+    - title: Maine form 1040 Schedule 2 (2021) Line 5
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/21_1040me_2_dwnldff.pdf#page=1
+    - title: Maine form 1040 Schedule 2 (2020) Line 5
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/20_1040me_2_dwnldff.pdf#page=1
+    - title: Maine form 1040 Schedule 2 (2019) Line 5
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/19_1040me_2_dwnldff.pdf#page=1
+    - title: Maine form 1040 Schedule 2 (2018) Line 5
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/18_1040_2_d.pdf#page=1
+    - title: Maine form 1040 Schedule 2 (2017) Line 5
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/17_1040me_sch2_d_sept18.pdf#page=1
+    - title: Maine form 1040 Schedule 2 (2016) Line 5
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/16_1040%20sched%202_download.pdf#page=1
+    - title: Maine form 1040 Schedule 2 (2015) Line 5
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/15_1040%20sched%202_download.pdf#page=1
+    - title: Maine form 1040 Schedule 2 (2014) Line 5
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/14_1040%20sched%202_download.pdf#page=1
+    - title: Maine form 1040 Schedule 2 (2013) Line 5
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/13_1040_sched2_downloadable.pdf#page=1

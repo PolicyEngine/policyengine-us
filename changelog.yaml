@@ -7532,3 +7532,20 @@
     fixed:
     - Oklahoma EITC refundability.
   date: 2024-07-01 20:57:08
+- bump: patch
+  changes:
+    fixed:
+    - Change the parameter input in the CT rebate reduction start from WIDOW to SURVIVING_SPOUSE.
+  date: 2024-07-02 00:30:47
+- bump: minor
+  changes:
+    added:
+    - Moving DC SNAP temporary local benefit code.
+  date: 2024-07-02 00:35:30
+- bump: minor
+  changes:
+    added:
+    - Maine 2023 tax rules.
+    - Maine tax parameters uprating.
+    - Refactor Maine property tax fairness credit.
+  date: 2024-07-02 00:42:34
