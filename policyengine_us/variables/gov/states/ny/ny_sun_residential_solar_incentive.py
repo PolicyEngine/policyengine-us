@@ -14,7 +14,7 @@ class ny_sun_residential_solar_incentive(Variable):
 
     def formula(household, period, parameters):
         #region = household("region_incentive", period)
-        p = parameters(period).parameters.gov.states.ny
+        p = parameters(period).gov.states.ny
         ny_sun_new_pw_system_size = household("ny_sun_new_pw_system_size",period)
         region = household("ny_sun_region_status", period)
         incentive_percentage = p.amount[region]
