@@ -1,0 +1,39 @@
+- name: NC use tax with agi 3500
+  period: 2021
+  input:
+    adjusted_gross_income: 3_500
+    state_code: NC
+  output:
+    nc_use_tax: 2
+
+- name: NC use tax with agi 15000
+  period: 2021
+  input:
+    adjusted_gross_income: 15_000
+    state_code: NC
+  output:
+    nc_use_tax: 10
+
+- name: NC use tax with agi 1500
+  period: 2021
+  input:
+    adjusted_gross_income: 15_00
+    state_code: NC
+  output:
+    nc_use_tax: 1
+
+- name: NC use tax with agi 60000
+  period: 2021
+  input:
+    adjusted_gross_income: 60_000
+    state_code: NC
+  output:
+    nc_use_tax: 40.5
+
+- name: NC use tax with agi 82000
+  period: 2021
+  input:
+    adjusted_gross_income: 82_000
+    state_code: NC
+  output:
+    nc_use_tax: 55.35
