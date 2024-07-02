@@ -1,0 +1,116 @@
+description: The United States Department of Agriculture considers the following states as participating in the Summer EBT program.
+metadata:
+  unit: bool
+  period: year
+  label: Summer EBT participating states
+  breakdown:
+  - state_code
+  reference:
+    # Participating states are not mentioned in the legal code
+    - title: 42 U.S. Code § 1762(h)(2)
+      href: https://www.law.cornell.edu/uscode/text/42/1762#h_2
+    - title: 2024 USDA SUN Bucks (Summer EBT)
+      href: https://www.fns.usda.gov/summer/sunbucks
+
+AL:
+  2024-01-01: false
+AK:
+  2024-01-01: false
+AZ:
+  2024-01-01: true
+AR:
+  2024-01-01: true
+CA:
+  2024-01-01: true
+CO:
+  2024-01-01: true
+CT:
+  2024-01-01: true
+DC:
+  2024-01-01: true
+DE:
+  2024-01-01: true
+FL:
+  2024-01-01: false
+GA:
+  2024-01-01: false
+HI:
+  2024-01-01: true
+ID:
+  2024-01-01: false
+IL:
+  2024-01-01: true
+IN:
+  2024-01-01: true
+IA:
+  2024-01-01: false
+KS:
+  2024-01-01: true
+KY:
+  2024-01-01: true
+LA:
+  2024-01-01: true
+ME:
+  2024-01-01: true
+MD:
+  2024-01-01: true
+MA:
+  2024-01-01: true
+MI:
+  2024-01-01: true
+MN:
+  2024-01-01: true
+MS:
+  2024-01-01: false
+MO:
+  2024-01-01: false
+MT:
+  2024-01-01: true
+NE:
+  2024-01-01: true
+NV:
+  2024-01-01: false
+NH:
+  2024-01-01: false
+NJ:
+  2024-01-01: true
+NM:
+  2024-01-01: true
+NY:
+  2024-01-01: true
+NC:
+  2024-01-01: true
+ND:
+  2024-01-01: true
+OH:
+  2024-01-01: true
+OK:
+  2024-01-01: false
+OR:
+  2024-01-01: true
+PA:
+  2024-01-01: true
+RI:
+  2024-01-01: true
+SC:
+  2024-01-01: false
+SD:
+  2024-01-01: false
+TN:
+  2024-01-01: true
+TX:
+  2024-01-01: false
+UT:
+  2024-01-01: false
+VT:
+  2024-01-01: true
+VA:
+  2024-01-01: true
+WA:
+  2024-01-01: true
+WV:
+  2024-01-01: true
+WI:
+  2024-01-01: true
+WY:
+  2024-01-01: false
