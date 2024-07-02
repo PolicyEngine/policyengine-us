@@ -19,7 +19,8 @@ class student_loan_interest_ald_magi(Variable):
         gross_income = [
             income_source
             for income_source in gross_income_sources
-            if income_source != "taxable_unemployment_compensation"
+            if income_source
+            not in p_irs.ald.student_loan_interest.magi.excluded_gross_income_sources
         ]
         total_gross_income = 0
         for source in gross_income:
@@ -27,17 +28,14 @@ class student_loan_interest_ald_magi(Variable):
                 0, add(person, period, [source])
             )
         # Modified gross income is calculated with certain deductions excluded
-        PERSON_ALDS = [
-            "self_employment_tax_ald",
-            "self_employed_health_insurance_ald",
-            "self_employed_pension_contribution_ald",
-        ]
-        EXCLUDED_ALDS = ["student_loan_interest_ald", "puerto_rico_income"]
-        person_ald_vars = [f"{ald}_person" for ald in PERSON_ALDS]
+        person_alds = p_irs.ald.student_loan_interest.magi.person_alds
+        person_ald_vars = [f"{ald}_person" for ald in person_alds]
         ald_sum_person = add(person, period, person_ald_vars)
         all_alds = p_irs.ald.deductions
         other_alds = list(
-            set(all_alds) - set(PERSON_ALDS) - set(EXCLUDED_ALDS)
+            set(all_alds)
+            - set(person_alds)
+            - set(p_irs.ald.student_loan_interest.magi.excluded_alds)
         )
         ald_sum_taxunit = add(person.tax_unit, period, other_alds)
         filing_status = person.tax_unit("filing_status", period)
