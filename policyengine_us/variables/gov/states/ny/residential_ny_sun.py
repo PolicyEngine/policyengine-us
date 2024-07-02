@@ -5,7 +5,7 @@ class ny_sun_residential_solar_incentive(Variable):
     value_type = float
     entity = Household
     definition_period = YEAR
-    label = "Incentive given"
+    label = "New York SUN Incentive program"
     documentation = "Incentives for residential solar panels in NY"
     unit = USD
     reference = "https://portal.nyserda.ny.gov/servlet/servlet.FileDownload?file=00P8z000001BIuBEAW" 
