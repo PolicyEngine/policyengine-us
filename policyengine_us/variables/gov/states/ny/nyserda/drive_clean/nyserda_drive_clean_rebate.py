@@ -23,4 +23,4 @@ class ny_drive_clean_rebate(Variable):
         flat_amount = p.flat_rebate.amount
         # If the vehicle is more expensive than the MSRP treshold, the filer
         # receives the flat rebate, otherwise they receive the range-based rebate
-        return where(vehicle_over_msrp_threshold, flat_amount, rebate_amount_based_on_range)
+        return where(vehicle_over_msrp_threshold, p.flat_rebate.amount, rebate_amount_based_on_range)
