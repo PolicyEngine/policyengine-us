@@ -3,7 +3,7 @@
   input:
     amount: LONG_ISLAND
     ny_sun_new_pw_system_size: 3
-    prev_size: 9_000
+    ny_sun_current_solar_energy_use: 9_000
     state_code: NY
   output:
     ny_sun_residential_solar: 1_100
@@ -13,7 +13,7 @@
   input:
     amount: UPSTATE
     ny_sun_new_pw_system_size: 3
-    prev_size: 9_000
+    ny_sun_current_solar_energy_use: 9_000
     state_code: NY
   output:
     ny_sun_residential_solar: 2_200
@@ -23,7 +23,7 @@
   input:
     amount: CON_ED
     ny_sun_new_pw_system_size: 3
-    prev_size: 9_000
+    ny_sun_current_solar_energy_use: 9_000
     state_code: NY
   output:
     ny_sun_residential_solar: 2_200
@@ -33,7 +33,7 @@
   input:
     amount: LONG_ISLAND
     ny_sun_new_pw_system_size: 7 
-    prev_size: 6_000
+    ny_sun_current_solar_energy_use: 6_000
     state_code: NY
   output:
     ny_sun_residential_solar: 733.33
@@ -43,7 +43,7 @@
   input:
     amount: CON_ED
     ny_sun_new_pw_system_size: 7
-    prev_size: 5_100
+    ny_sun_current_solar_energy_use: 5_100
     state_code: NY
   output:
     ny_sun_residential_solar: 1_466.67
@@ -53,7 +53,7 @@
   input:
     amount: UPSTATE
     ny_sun_new_pw_system_size: 7 
-    prev_size: 5_100
+    ny_sun_current_solar_energy_use: 5_100
     state_code: NY
   output:
     ny_sun_residential_solar: 1_466.67
@@ -63,7 +63,7 @@
   input:
     amount: LONG_ISLAND
     ny_sun_new_pw_system_size: 5 
-    prev_size: 18_000
+    ny_sun_current_solar_energy_use: 18_000
     state_code: NY
   output:
     ny_sun_residential_solar: 2_000
@@ -73,7 +73,7 @@
   input:
     amount: UPSTATE
     ny_sun_new_pw_system_size: 5 
-    prev_size: 18_000
+    ny_sun_current_solar_energy_use: 18_000
     state_code: NY
   output:
     ny_sun_residential_solar: 4_000
@@ -83,7 +83,7 @@
   input:
     amount: CON_ED
     ny_sun_new_pw_system_size: 5 
-    prev_size: 18_000
+    ny_sun_current_solar_energy_use: 18_000
     state_code: NY
   output:
     ny_sun_residential_solar: 4_000
@@ -93,7 +93,7 @@
   input:
     amount: LONG_ISLAND
     ny_sun_new_pw_system_size: 7 
-    prev_size: 1_100
+    ny_sun_current_solar_energy_use: 1_100
     state_code: NY
   output:
     ny_sun_residential_solar: 134.44
@@ -103,7 +103,7 @@
   input:
     amount: UPSTATE
     ny_sun_new_pw_system_size: 7 
-    prev_size: 1_100
+    ny_sun_current_solar_energy_use: 1_100
     state_code: NY
   output:
     ny_sun_residential_solar: 268.89
@@ -113,7 +113,7 @@
   input:
     amount: CON_ED
     ny_sun_new_pw_system_size: 7 
-    prev_size: 1_100
+    ny_sun_current_solar_energy_use: 1_100
     state_code: NY
   output:
     ny_sun_residential_solar: 268.89
