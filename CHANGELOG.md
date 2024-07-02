@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.2] - 2024-07-02 00:30:47
+
+### Fixed
+
+- Change the parameter input in the CT rebate reduction start from WIDOW to SURVIVING_SPOUSE.
+
 ## [1.5.1] - 2024-07-01 20:57:08
 
 ### Fixed
@@ -8914,6 +8920,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.5.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.5.1...1.5.2
 [1.5.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.5.0...1.5.1
 [1.5.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.4.0...1.5.0
 [1.4.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.3.0...1.4.0
