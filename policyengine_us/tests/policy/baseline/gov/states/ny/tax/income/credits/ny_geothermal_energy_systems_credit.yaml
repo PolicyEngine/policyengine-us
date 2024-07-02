@@ -1,0 +1,23 @@
+- name: 25% of expenditures, pre cap
+  period: 2023
+  input:
+    ny_qualified_geothermal_energy_system_expenditures: 1_000
+    state_code: NY
+  output:
+    ny_geothermal_energy_system_credit: 250
+
+- name: 25% of expenditures, post cap
+  period: 2023
+  input:
+    ny_qualified_geothermal_energy_system_expenditures: 100_000
+    state_code: NY
+  output:
+    ny_geothermal_energy_system_credit: 5_000
+
+- name: No expenditures
+  period: 2023
+  input:
+    ny_qualified_geothermal_energy_system_expenditures: 0
+    state_code: NY
+  output:
+    ny_geothermal_energy_system_credit: 0
