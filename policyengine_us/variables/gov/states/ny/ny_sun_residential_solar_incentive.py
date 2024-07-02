@@ -26,6 +26,6 @@ class ny_sun_residential_solar_incentive(Variable):
         #Conversion factor of 1 kW=1 kWh / 3600 (for number of seconds in an hr)
         max_kw = max_kwh / 3600  
         approved_kw = min(max_kw, ny_sun_new_pw_system_size)
-        incentive_rate = p.amount.calc(period)
-        return approved_kw * 1000 * incentive_rate
+        #incentive_rate = p.amount.calc(period)
+        return approved_kw * 1000 * incentive_percentage
 
