@@ -6,7 +6,7 @@ class NySunRegion(Enum):
     UPSTATE="Upstate"
     CON_ED="Con Ed"
 
-class ny_sun_region_status(Variable):
+class ny_sun_regionVariable):
     value_type = Enum
     entity = Household
     possible_values = RegionStatus
