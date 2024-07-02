@@ -1,0 +1,15 @@
+- name: Filer is eligible for NY CTC additional credit
+  period: 2021
+  input:
+    residential_clean_energy_credit: 500
+    state_code: NY
+  output:
+    ny_ctc_claimed_additional_credits: True
+
+- name: Filer is not eligible for NY CTC additional credit
+  period: 2021
+  input:
+    residential_clean_energy_credit: 0
+    state_code: NY
+  output:
+    ny_ctc_claimed_additional_credits: False

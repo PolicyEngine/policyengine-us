@@ -1,0 +1,29 @@
+- name: NY base credit is over reduced tax
+  period: 2021
+  input:
+    income_tax: 1_000
+    ny_ctc_federal_credits: 800
+    ny_ctc_pre_reduction_base_credit: 500
+    state_code: NY
+  output:
+    ny_ctc_base_credit: 200 #min(1_000 - 800,500)
+
+- name: NY base credit is below reduced tax
+  period: 2021
+  input:
+    income_tax: 1_000
+    ny_ctc_federal_credits: 500
+    ny_ctc_pre_reduction_base_credit: 300
+    state_code: NY
+  output:
+    ny_ctc_base_credit: 300 #min(1_000 - 500,300)
+
+- name: reduced tax capped at 0
+  period: 2021
+  input:
+    income_tax: 1_000
+    ny_ctc_federal_credits: 1_200
+    ny_ctc_pre_reduction_base_credit: 300
+    state_code: NY
+  output:
+    ny_ctc_base_credit: 0 #min(max(0,1_000 - 1200),300)
