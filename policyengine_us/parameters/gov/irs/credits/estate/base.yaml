@@ -6,7 +6,27 @@ metadata:
   reference:
     - title: 26 U.S. Code § 2010 - Unified credit against estate tax - (c)(3)(A)
       href: https://www.law.cornell.edu/uscode/text/26/2010
+    - title: What's New - Estate and Gift Tax - Basic Exclusion Amount for Year of Death
+      href: https://www.irs.gov/businesses/small-businesses-self-employed/whats-new-estate-and-gift-tax
+    - title: Instructions for Form 706 (Rev. September 2023)
+      href: https://www.irs.gov/pub/irs-pdf/i706.pdf#page=9
+  uprating:
+        parameter: gov.irs.uprating
+        rounding:
+          type: nearest
+          interval: 10_000
 values:
-  2017-01-01: 5_000_000  
-  2018-01-01: 10_000_000  
-  2026-01-01: 5_000_000  
+  2011-01-01: 5_000_000  
+  2012-01-01: 5_120_000  
+  2013-01-01: 5_250_000  
+  2014-01-01: 5_340_000  
+  2015-01-01: 5_430_000  
+  2016-01-01: 5_450_000  
+  2017-01-01: 5_490_000  
+  2018-01-01: 11_180_000  
+  2019-01-01: 11_400_000  
+  2020-01-01: 11_580_000  
+  2021-01-01: 11_700_000  
+  2022-01-01: 12_060_000  
+  2023-01-01: 12_920_000  
+  2024-01-01: 13_610_000  

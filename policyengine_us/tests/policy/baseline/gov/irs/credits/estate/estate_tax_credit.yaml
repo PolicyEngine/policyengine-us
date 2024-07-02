@@ -5,23 +5,30 @@
   output:
     estate_tax_credit: 0
 
-- name: before 2018
+- name: Died 2011
+  period: 2011
+  input:
+    is_deceased: true
+  output:
+    estate_tax_credit: 5_000_000
+
+- name: Died 2017
   period: 2017
   input:
     is_deceased: true
   output:
-    estate_tax_credit: 5_000_000
+    estate_tax_credit: 5_490_000
 
-- name: 2018 to 2025
-  period: 2025
+- name: Died 2018
+  period: 2018
   input:
     is_deceased: true
   output:
-    estate_tax_credit: 10_000_000
+    estate_tax_credit: 11_180_000
 
-- name: after 2025
-  period: 2026
+- name: Died 2024
+  period: 2024
   input:
     is_deceased: true
   output:
-    estate_tax_credit: 5_000_000
+    estate_tax_credit: 13_610_000
