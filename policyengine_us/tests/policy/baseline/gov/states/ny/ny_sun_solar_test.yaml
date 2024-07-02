@@ -1,7 +1,7 @@
 - name: Starting year test for Long Island
   period: 2010
   input:
-    amount: LONG_ISLAND
+    ny_sun_region_status: LONG_ISLAND
     ny_sun_new_pw_system_size: 3
     ny_sun_current_solar_energy_use: 9_000
     state_code: NY
@@ -11,7 +11,7 @@
 - name: Starting year test for Upstate
   period: 2010
   input:
-    amount: UPSTATE
+    ny_sun_region_status: UPSTATE
     ny_sun_new_pw_system_size: 3
     ny_sun_current_solar_energy_use: 9_000
     state_code: NY
@@ -21,7 +21,7 @@
 - name:  Starting year test for Con Ed
   period: 2010
   input:
-    amount: CON_ED
+    ny_sun_region_status: CON_ED
     ny_sun_new_pw_system_size: 3
     ny_sun_current_solar_energy_use: 9_000
     state_code: NY
@@ -31,7 +31,7 @@
 - name: Regular test for Long Island
   period: 2020
   input:
-    amount: LONG_ISLAND
+    ny_sun_region_status: LONG_ISLAND
     ny_sun_new_pw_system_size: 7 
     ny_sun_current_solar_energy_use: 6_000
     state_code: NY
@@ -41,7 +41,7 @@
 - name:  Regular test for Con Ed
   period: 2020
   input:
-    amount: CON_ED
+    ny_sun_region_status: CON_ED
     ny_sun_new_pw_system_size: 7
     ny_sun_current_solar_energy_use: 5_100
     state_code: NY
@@ -51,7 +51,7 @@
 - name:  Regular test for Upstate
   period: 2020
   input:
-    amount: UPSTATE
+    ny_sun_region_status: UPSTATE
     ny_sun_new_pw_system_size: 7 
     ny_sun_current_solar_energy_use: 5_100
     state_code: NY
@@ -61,7 +61,7 @@
 - name: Test for large previous size for Long Island
   period: 2015
   input:
-    amount: LONG_ISLAND
+    ny_sun_region_status: LONG_ISLAND
     ny_sun_new_pw_system_size: 5 
     ny_sun_current_solar_energy_use: 18_000
     state_code: NY
@@ -71,7 +71,7 @@
 - name:  Test for large previous size for Upstate
   period: 2015
   input:
-    amount: UPSTATE
+    ny_sun_region_status: UPSTATE
     ny_sun_new_pw_system_size: 5 
     ny_sun_current_solar_energy_use: 18_000
     state_code: NY
@@ -81,7 +81,7 @@
 - name:  Test for large previous size for Con Ed
   period: 2015
   input:
-    amount: CON_ED
+    ny_sun_region_status: CON_ED
     ny_sun_new_pw_system_size: 5 
     ny_sun_current_solar_energy_use: 18_000
     state_code: NY
@@ -91,7 +91,7 @@
 - name:  Test near end of period for Long Island
   period: 2030
   input:
-    amount: LONG_ISLAND
+    ny_sun_region_status: LONG_ISLAND
     ny_sun_new_pw_system_size: 7 
     ny_sun_current_solar_energy_use: 1_100
     state_code: NY
@@ -101,7 +101,7 @@
 - name:  Test near end of period for Upstate
   period: 2030
   input:
-    amount: UPSTATE
+    ny_sun_region_status: UPSTATE
     ny_sun_new_pw_system_size: 7 
     ny_sun_current_solar_energy_use: 1_100
     state_code: NY
@@ -111,7 +111,7 @@
 - name:  Test near end of period for Con Ed
   period: 2030 
   input:
-    amount: CON_ED
+    ny_sun_region_status: CON_ED
     ny_sun_new_pw_system_size: 7 
     ny_sun_current_solar_energy_use: 1_100
     state_code: NY
