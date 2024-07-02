@@ -13,27 +13,27 @@
   input:
     amount: UPSTATE
     home_solar_size: 3
-    prev_size: 9000
+    prev_size: 9_000
     state_code: NY
   output:
-    ny_sun_residential_solar: 2200
+    ny_sun_residential_solar: 2_200
     
 - name:  test_1.3_NY SUN
   period: 2010
   input:
     amount: CON_ED
     home_solar_size: 3
-    prev_size: 9000
+    prev_size: 9_000
     state_code: NY
   output:
-    ny_sun_residential_solar: 2200
+    ny_sun_residential_solar: 2_200
     
 - name: test_2.1_NY SUN
   period: 2020
   input:
     amount: LONG_ISLAND
     home_solar_size: 7 
-    prev_size: 6000
+    prev_size: 6_000
     state_code: NY
   output:
     ny_sun_residential_solar: 733.33
@@ -43,57 +43,57 @@
   input:
     amount: CON_ED
     home_solar_size: 7
-    prev_size: 5100
+    prev_size: 5_100
     state_code: NY
   output:
-    ny_sun_residential_solar: 1466.67
+    ny_sun_residential_solar: 1_466.67
     
 - name:  test_2.3_NY SUN
   period: 2020
   input:
     amount: UPSTATE
     home_solar_size: 7 
-    prev_size: 5100
+    prev_size: 5_100
     state_code: NY
   output:
-    ny_sun_residential_solar: 1466.67
+    ny_sun_residential_solar: 1_466.67
     
 - name: test_4.1_NY SUN
   period: 2015
   input:
     amount: LONG_ISLAND
     home_solar_size: 5 
-    prev_size: 18000
+    prev_size: 18_000
     state_code: NY
   output:
-    ny_sun_residential_solar: 2000
+    ny_sun_residential_solar: 2_000
     
 - name:  test_4.2_NY SUN
   period: 2010
   input:
     amount: UPSTATE
     home_solar_size: 5 
-    prev_size: 18000
+    prev_size: 18_000
     state_code: NY
   output:
-    ny_sun_residential_solar: 4000
+    ny_sun_residential_solar: 4_000
     
 - name:  test_4.3_NY SUN
   period: 2030
   input:
     amount: CON_ED
     home_solar_size: 5 
-    prev_size: 18000
+    prev_size: 18_000
     state_code: NY
   output:
-    ny_sun_residential_solar: 4000
+    ny_sun_residential_solar: 4_000
     
 - name:  test_5.1_NY SUN
   period: 2030
   input:
     amount: LONG_ISLAND
     home_solar_size: 7 
-    prev_size: 1100
+    prev_size: 1_100
     state_code: NY
   output:
     ny_sun_residential_solar: 134.44
@@ -103,7 +103,7 @@
   input:
     amount: UPSTATE
     home_solar_size: 7 
-    prev_size: 1100
+    prev_size: 1_100
     state_code: NY
   output:
     ny_sun_residential_solar: 268.89
@@ -112,7 +112,7 @@
   input:
     amount: CON_ED
     home_solar_size: 7 
-    prev_size: 1100
+    prev_size: 1_100
     state_code: NY
   output:
     ny_sun_residential_solar: 268.89
