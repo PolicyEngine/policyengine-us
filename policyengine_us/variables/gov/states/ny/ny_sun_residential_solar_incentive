@@ -19,10 +19,10 @@ class ny_sun_residential_solar_incentive(Variable):
         region = household("ny_sun_region_status", period)
         incentive_percentage = p.amount[region]
 
-        #same issue as with household size - prev size is a user input
-        prev_size = household("household_size",period)
+        #same issue as with household size - ny_sun_current_solar_energy_use is a user input
+        ny_sun_current_solar_energy_use = household("ny_sun_current_solar_energy_use",period)
         multiplier = p.max_pv_system_size
-        max_kwh = prev_size * multiplier
+        max_kwh = ny_sun_current_solar_energy_use * multiplier
         #Conversion factor of 1 kW=1 kWh / 3600 (for number of seconds in an hr)
         max_kw = max_kwh / 3600  
         approved_kw = min(max_kw, ny_sun_new_pw_system_size)
