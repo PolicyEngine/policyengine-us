@@ -1,0 +1,16 @@
+description: San Francisco provides this working families tax credit amount.
+values:
+  2022-01-01: 250
+metadata:
+  unit: currency-USD
+  period: year
+  label: San Francisco Working Families Tax Credit amount
+  reference:
+    - title: San Francisco Working Families Credits Application, Tax Year 2022
+      href: https://www.sfhsa.org/sites/default/files/media/document/2023-01/form_wfc_ty22_eng_code41.pdf#page=4
+    - title: San Francisco Working Families Credits Application, Tax Year 2023
+      href: https://www.sfhsa.org/sites/default/files/media/document/2024-01/form_wfc_english_1.26.24.pdf#page=4
+    # The legal code states the San Francisco Human Services Agency shall publish the 
+    # credit amount independently
+    - title: American Legal Publishing CHAPTER 12S-SEC. 12S.1. WORKING FAMILIES CREDIT PROGRAM
+      href: https://codelibrary.amlegal.com/codes/san_francisco/latest/sf_admin/0-0-0-8675
