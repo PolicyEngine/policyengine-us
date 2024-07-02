@@ -26,13 +26,10 @@ from policyengine_us.tools.documentation import (
 variable_summary("snap_standard_deduction")
 ------------------
 
------ stderr -----
-WARNING:root:Parameter gov.states.ct.tax.income.rebate.reduction.start has a child WIDOW that is not in the possible values of filing_status, ignoring.
-------------------
 
 [0;31m---------------------------------------------------------------------------[0m
 [0;31mImportError[0m                               Traceback (most recent call last)
-[0;32m/tmp/ipykernel_2332/703537161.py[0m in [0;36m<cell line: 0>[0;34m()[0m
+[0;32m/tmp/ipykernel_2308/703537161.py[0m in [0;36m<cell line: 0>[0;34m()[0m
 [0;32m----> 1[0;31m from policyengine_us.tools.documentation import (
 [0m[1;32m      2[0m     [0mvariable_summary[0m[0;34m,[0m[0;34m[0m[0;34m[0m[0m
 [1;32m      3[0m     [0mvariation_chart[0m[0;34m,[0m[0;34m[0m[0;34m[0m[0m
