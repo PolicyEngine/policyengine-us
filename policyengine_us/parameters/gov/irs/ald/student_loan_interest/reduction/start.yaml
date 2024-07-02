@@ -1,0 +1,76 @@
+description: IRS allows for a student loan interest deduction of this amount, based on filing status.
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Student loan interest deduction amount
+  breakdown:
+    - filing_status
+  reference:
+    - title: 26 U.S. Code § 221 - Interest on education loans (b)(1)
+      href: https://www.law.cornell.edu/uscode/text/26/221
+    - title: 2023 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-22-38.pdf#page=18
+    - title: 2022 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-21-45.pdf#page=18
+    - title: 2021 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-20-45.pdf#page=18
+    - title: 2020 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-19-44.pdf#page=17
+    - title: 2019 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-18-57.pdf#page=20
+    - title: 2024 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-23-34.pdf#page=16
+
+JOINT:
+  values:
+    2002-01-01: 100_000
+    2019-01-01: 140_000
+    2022-01-01: 145_000
+    2023-01-01: 155_000
+    2024-01-01: 165_000
+  metadata:
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: downwards
+        interval: 5_000
+SINGLE:
+  values:
+    2002-01-01: 50_000
+    2019-01-01: 70_000
+    2023-01-01: 75_000
+    2024-01-01: 80_000
+  metadata:
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: downwards
+        interval: 5_000
+# Married couples must file jointly under (e)(2) to receive the deduction
+SEPARATE:
+  2002-01-01: 0
+HEAD_OF_HOUSEHOLD:
+  values:
+    2002-01-01: 50_000
+    2019-01-01: 70_000
+    2023-01-01: 75_000
+    2024-01-01: 80_000
+  metadata:
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: downwards
+        interval: 5_000
+SURVIVING_SPOUSE: 
+  values:
+    2002-01-01: 50_000
+    2019-01-01: 70_000
+    2023-01-01: 75_000
+    2024-01-01: 80_000
+  metadata:
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: downwards
+        interval: 5_000

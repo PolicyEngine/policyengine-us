@@ -1,0 +1,35 @@
+- name: Eligible person
+  period: 2021
+  input:
+    is_tax_unit_head_or_spouse: true
+    filing_status: JOINT
+    is_eligible_for_american_opportunity_credit: true
+  output:
+    student_loan_interest_ald_eligible: true
+
+- name: AOC ineligible
+  period: 2021
+  input:
+    is_tax_unit_head_or_spouse: true
+    filing_status: JOINT
+    is_eligible_for_american_opportunity_credit: false
+  output:
+    student_loan_interest_ald_eligible: false
+
+- name: Not head or spouse
+  period: 2021
+  input:
+    is_tax_unit_head_or_spouse: false
+    filing_status: JOINT
+    is_eligible_for_american_opportunity_credit: true
+  output:
+    student_loan_interest_ald_eligible: false
+
+- name: Separate filers ineligible
+  period: 2021
+  input:
+    is_tax_unit_head_or_spouse: true
+    filing_status: SEPARATE
+    is_eligible_for_american_opportunity_credit: true
+  output:
+    student_loan_interest_ald_eligible: false

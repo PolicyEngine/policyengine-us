@@ -37,7 +37,7 @@ class mt_taxable_social_security(Variable):
         # line 7: Remove the student loans from the above the line deductions
         ald_less_student_loan = person(
             "mt_applicable_ald_deductions", period
-        ) - person("student_loan_interest", period)
+        ) - person("student_loan_interest_ald", period)
         # Line 8 - Montana subtractions + ald
         subtractions = person("mt_subtractions", period)
         increased_subtractions = subtractions + ald_less_student_loan
