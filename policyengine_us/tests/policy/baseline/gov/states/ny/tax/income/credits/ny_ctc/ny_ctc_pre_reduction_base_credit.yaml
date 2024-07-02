@@ -1,0 +1,96 @@
+- name: NY CTC pre reduction base credit if claimed additional credit and no deduction
+  period: 2021
+  input:
+    ctc_qualifying_children: 3
+    adjusted_gross_income: 100_000
+    ny_ctc_claimed_additional_credits: 1_000 
+    # >0 then agi_with_exclusion_amount = 100_700 < threshold = 200_000
+    foreign_earned_income_exclusion: 500
+    puerto_rico_income: 200
+    filing_status: SINGLE
+    state_code: NY
+  output:
+    ny_ctc_pre_reduction_base_credit: 3_000
+    # base = 3 * 1_000 = 3_000
+
+- name: NY CTC pre reduction base credit if claimed additional credit with deduction, cappted at 0
+  period: 2021
+  input:
+    ctc_qualifying_children: 3
+    adjusted_gross_income: 300_000
+    ny_ctc_claimed_additional_credits: 1_000 
+    # >0 then agi_with_exclusion_amount = 300_700 > threshold = 200_000
+    foreign_earned_income_exclusion: 500
+    puerto_rico_income: 200
+    filing_status: SINGLE
+    state_code: NY
+  output:
+    ny_ctc_pre_reduction_base_credit: 0
+    # base = 3 * 1_000 = 3_000
+    # rounded_reduced_agi_multiple = (300700-200000)/1000 = 100
+    # rounded_reduced_agi_amount = 100*1000 = 100,000
+    # subtraction_amount = 100,000 * 0.05 = 5000
+
+- name: NY CTC pre reduction base credit if claimed additional credit with deduction
+  period: 2021
+  input:
+    ctc_qualifying_children: 3
+    adjusted_gross_income: 210_000
+    ny_ctc_claimed_additional_credits: 1_000 
+    # >0 then agi_with_exclusion_amount = 210_700 > threshold = 200_000
+    foreign_earned_income_exclusion: 500
+    puerto_rico_income: 200
+    filing_status: SINGLE
+    state_code: NY
+  output:
+    ny_ctc_pre_reduction_base_credit: 2_450
+    # base = 3 * 1_000 = 3_000
+    # rounded_reduced_agi_multiple = 210700-200000/1000 = 11
+    # rounded_reduced_agi_amount = 11*1000 = 11,000
+    # subtraction_amount = 11,000 * 0.05 = 550
+
+- name: NY CTC pre reduction base credit if not claimed additional credit and no reduction
+  period: 2021
+  input:
+    ctc_qualifying_children: 3
+    adjusted_gross_income: 100_000
+    ny_ctc_claimed_additional_credits: 0 
+    foreign_earned_income_exclusion: 500
+    puerto_rico_income: 200
+    filing_status: SINGLE
+    state_code: NY
+  output:
+    ny_ctc_pre_reduction_base_credit: 3_000
+    # base = 3 * 1_000 = 3_000
+    # agi_with_exclusion_amount = fagi = 100000
+
+- name: NY CTC pre reduction base credit if not claimed additional credit with reduction
+  period: 2021
+  input:
+    ctc_qualifying_children: 3
+    adjusted_gross_income: 250_000
+    ny_ctc_claimed_additional_credits: 0 
+    foreign_earned_income_exclusion: 500
+    puerto_rico_income: 200
+    filing_status: SINGLE
+    state_code: NY
+  output:
+    ny_ctc_pre_reduction_base_credit: 500
+    # base = 3 * 1_000 = 3_000
+    # agi_with_exclusion_amount = fagi = 250000
+    # rounded_reduced_agi_multiple = 50
+
+- name: NY CTC pre reduction base credit if claimed additional credit for other filing status
+  period: 2021
+  input:
+    ctc_qualifying_children: 3
+    adjusted_gross_income: 300_000
+    ny_ctc_claimed_additional_credits: 1_000 
+    # >0 then agi_with_exclusion_amount = 300_700 < threshold = 400_000
+    foreign_earned_income_exclusion: 500
+    puerto_rico_income: 200
+    filing_status: JOINT
+    state_code: NY
+  output:
+    ny_ctc_pre_reduction_base_credit: 3000
+    # base = 3 * 1_000 = 3_000
