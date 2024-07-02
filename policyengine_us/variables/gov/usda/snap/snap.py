@@ -9,6 +9,10 @@ class snap(Variable):
     label = "SNAP allotment"
     reference = "https://www.law.cornell.edu/uscode/text/7/2017#a"
     unit = USD
+    exhaustive_parameter_dependencies = [
+        "gov.usda.snap",
+        "gov.ssa",
+    ]
 
     def formula(spm_unit, period, parameters):
         if parameters(period).gov.usda.snap.abolish_snap:
@@ -19,5 +23,9 @@ class snap(Variable):
             return add(
                 spm_unit,
                 period,
-                ["snap_normal_allotment", "snap_emergency_allotment"],
+                [
+                    "snap_normal_allotment",
+                    "snap_emergency_allotment",
+                    "dc_snap_temporary_local_benefit",
+                ],
             )

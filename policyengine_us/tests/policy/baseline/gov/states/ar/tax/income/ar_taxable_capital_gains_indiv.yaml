@@ -1,0 +1,124 @@
+- name: $2,000 of lt and $1,000 of st capital gains, 50% of long term gains is taxable
+  period: 2022
+  input:
+    state_code: AR
+    long_term_capital_gains: 2_000
+    short_term_capital_gains: 1_000
+    state_filing_status_if_married_filing_separately_on_same_return: SINGLE
+  output:
+    ar_taxable_capital_gains_indiv: 2_000
+
+- name: Only capital loss is capped, 50% of long term gains is taxable
+  period: 2022
+  input:
+    state_code: AR
+    long_term_capital_gains: 1_000
+    short_term_capital_gains: 1_000
+    state_filing_status_if_married_filing_separately_on_same_return: HEAD_OF_HOUSEHOLD
+  output:
+    ar_taxable_capital_gains_indiv: 1_500
+
+- name: AR taxable capital gains unit test 1
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    short_term_capital_gains: 800
+    state_fips: 5  # AR
+  output:  # AR 1000D form says all short-term capital gains are taxable
+    ar_taxable_capital_gains_indiv: 800
+
+- name: Long term capital gains are offset by short term gains
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    long_term_capital_gains: 1_000
+    short_term_capital_gains: -800
+    state_fips: 5  # AR
+  output:  
+    ar_taxable_capital_gains_indiv: 100
+
+- name: Short term losses are taxed at 50% rate
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    long_term_capital_gains: 0
+    short_term_capital_gains: -800
+    state_fips: 5  # AR
+  output:  
+    ar_taxable_capital_gains_indiv: -800
+
+- name: Taxable short term losses are capped at $1,500 for separate filers
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    long_term_capital_gains: 0
+    short_term_capital_gains: -4_000
+    state_filing_status_if_married_filing_separately_on_same_return: SEPARATE
+    state_fips: 5  # AR
+  output:  
+    ar_taxable_capital_gains_indiv: -1_500
+
+- name: Taxable capital losses are capped at $1,500 each for joint filers
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    long_term_capital_gains: 1_000
+    short_term_capital_gains: -4_000
+    state_fips: 5  # AR
+    state_filing_status_if_married_filing_separately_on_same_return: SEPARATE
+  output:  
+    ar_taxable_capital_gains_indiv: -1_500
+
+- name: AR taxable capital gains unit test 2, $3,000 for single people
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    state_filing_status_if_married_filing_separately_on_same_return: SINGLE
+    long_term_capital_gains: -4_000
+    state_fips: 5  # AR
+  output:  # expected results from filing out 2021 AR1000D form
+    ar_taxable_capital_gains_indiv: -3_000
+
+- name: Couples filing separately receive their own capped amount
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1: 
+        long_term_capital_gains: -4_000
+        is_tax_unit_head: true
+      person2:
+        long_term_capital_gains: -4_000
+        is_tax_unit_head: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        state_filing_status_if_married_filing_separately_on_same_return: SEPARATE
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 5  # AR
+  output:  # expected results from filing out 2021 AR1000D form
+    ar_taxable_capital_gains_indiv: [-1_500, -1_500]
+
+- name: Couples filing separately receive their own capped amount, the amount is not summed up
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1: 
+        long_term_capital_gains: -4_000
+        is_tax_unit_head: true
+      person2:
+        long_term_capital_gains: -1_000
+        is_tax_unit_head: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        state_filing_status_if_married_filing_separately_on_same_return: SEPARATE
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 5  # AR
+  output:  # expected results from filing out 2021 AR1000D form
+    ar_taxable_capital_gains_indiv: [-1_500, -1_000]

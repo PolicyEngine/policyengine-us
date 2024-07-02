@@ -110,5 +110,25 @@
         members: [person1, person2, person3, person4]
         state_fips: 22  # LA
   output:  # expected results from patched TAXSIM35 2024-03-04 version
-    la_agi: 61020
-    la_income_tax: 1686.86
+    la_agi_exempt_income: 19_050
+    la_agi: 62_370
+    la_taxable_income: 54_297.6
+
+- name: Tax unit with taxsimid 48858 in f21.its.csv and f21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 67
+        employment_income: 29_010
+        taxable_interest_income: 11_010
+        taxable_private_pension_income: 12_000
+        social_security_retirement: 24_000
+    households:
+      household:
+        members: [person1]
+        state_fips: 22  # LA
+  output:  # expected results from patched TAXSIM35 2024-03-16 version
+    la_agi: 48_870
+    la_income_tax: 1_252.96

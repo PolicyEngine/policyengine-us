@@ -22,7 +22,7 @@
   input:
     surviving_spouse_eligible: true
   output:
-    filing_status: WIDOW
+    filing_status: SURVIVING_SPOUSE
 
 - name: Head of household files as such.
   period: 2022

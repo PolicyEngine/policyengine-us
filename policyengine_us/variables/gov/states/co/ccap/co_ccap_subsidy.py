@@ -8,6 +8,7 @@ class co_ccap_subsidy(Variable):
     unit = USD
     definition_period = MONTH
     defined_for = "co_ccap_eligible"
+    exhaustive_parameter_dependencies = "gov.states.co.ccap"
 
     def formula(spm_unit, period, parameters):
         expenses = add(

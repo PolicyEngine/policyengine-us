@@ -13,3 +13,11 @@
     state_code: HI
   output:
     hi_eitc: 200
+
+- name: 40% match of fed EITC
+  period: 2023
+  input:
+    eitc: 1_000
+    state_code: HI
+  output:
+    hi_eitc: 400
