@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class RegionStatus(Enum):
+class NySunRegion(Enum):
     LONG_ISLAND="Long Island"
     UPSTATE="Upstate"
     CON_ED="Con Ed"
