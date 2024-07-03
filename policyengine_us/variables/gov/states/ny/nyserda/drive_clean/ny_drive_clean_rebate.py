@@ -9,7 +9,7 @@ class ny_drive_clean_rebate(Variable):
     reference = "https://www.nyserda.ny.gov/-/media/Project/Nyserda/Files/Programs/Drive-Clean-NY/implementation-manual.pdf#page=8"
     defined_for = StateCode.NY
 
-    def formula(tax_unit, parameters, period):
+    def formula(tax_unit, period, parameters):
         p = parameters(period).parameters.gov.states.ny.nyserda.drive_clean
         # Calculate vehicle all-electric range
         vehicle_range = tax_unit("ny_drive_clean_vehicle_electric_range", period)
