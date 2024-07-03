@@ -1,5 +1,6 @@
 from policyengine_us.model_api import *
 
+
 class ny_drive_clean_vehicle_cost(Variable):
     value_type = float
     entity = Household
