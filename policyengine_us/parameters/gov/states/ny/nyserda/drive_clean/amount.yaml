@@ -4,24 +4,28 @@ brackets:
   - threshold:
       2017-03-21: -.inf
     amount:
-      2021-06-30: 500
+      2017-03-21: 500
   # 20 - 39 miles
   - threshold:
       2017-03-21: 20
     amount:
       2017-03-21: 1_100
       2021-06-30: 500
-  # 40 - 199 miles
+  # 40 - 119 miles
   - threshold:
       2017-03-21: 40
     amount:
       2017-03-21: 1_700
-      2021-06-30: 1_000
-  # 200 or more miles
+      2021-06-31: 1_000
+  - threshold:
+      2017-03-21: 119
+    amount:
+      2017-03-21: 2_000
+      2021-06-31: 1_000
   - threshold:
       2017-03-21: 200
     amount:
-      2017-03-21: 2_000  
+      2017-03-21: 2_000
      
 metadata:
   unit: currency-USD
