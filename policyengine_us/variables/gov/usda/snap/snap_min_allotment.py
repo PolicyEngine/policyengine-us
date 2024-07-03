@@ -25,9 +25,7 @@ class snap_min_allotment(Variable):
         # Minimum benefits only apply to households up to a certain size.
         size = spm_unit("spm_unit_size", period)
         eligible = size <= snap.min_allotment.maximum_household_size
-        min_allotment = (
-            eligible * min_allotment.rate * relevant_max_allotment
-        )
+        min_allotment = eligible * min_allotment.rate * relevant_max_allotment
 
         # New Jersey and DC provides separate minimum allotment amount after 2023
         snap_nj = parameters(period).gov.states.nj.snap
@@ -37,10 +35,9 @@ class snap_min_allotment(Variable):
             dc_min_allotment = p_dc.amount
             in_dc = state_code == "DC"
             min_allotment = where(in_dc, dc_min_allotment, min_allotment)
- 
-        if snap_nj.in_effect:
-             nj_min_allotment = snap_nj.amount
-             in_nj = state_code == "NJ"
-             min_allotment = where(in_nj, nj_min_allotment, min_allotment)
-        return min_allotment
 
+        if snap_nj.in_effect:
+            nj_min_allotment = snap_nj.amount
+            in_nj = state_code == "NJ"
+            min_allotment = where(in_nj, nj_min_allotment, min_allotment)
+        return min_allotment
