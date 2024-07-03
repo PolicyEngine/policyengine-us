@@ -1,5 +1,6 @@
 from policyengine_us.model_api import *
 
+
 class ny_clean_heat_incentive(Variable):
     value_type = float
     entity = Household
@@ -11,7 +12,7 @@ class ny_clean_heat_incentive(Variable):
     defined_for = StateCode.NY
 
     def formula(household, period):
-        '''
+        """
         Calculates the incentive for the NYS Clean Heat program.
 
         Parameters:
@@ -20,12 +21,13 @@ class ny_clean_heat_incentive(Variable):
 
         Returns:
         - float: a capped incentive (float). 
-        '''
-    
-        family_type = household("ny_clean_heat_family_type_category", period) 
+        """
+        family_type = household("ny_clean_heat_family_type_category", period)
 
         family_type_bool = family_type == family_type.possible_values.RESIDENTIAL
 
-        return where(family_type_bool, 
-                     household("ny_clean_heat_residential_incentive", period), 
-                     household("ny_clean_heat_multifamily_incentive", period))
+        return where(
+            family_type_bool,
+            household("ny_clean_heat_residential_incentive", period),
+            household("ny_clean_heat_multifamily_incentive", period),
+        )

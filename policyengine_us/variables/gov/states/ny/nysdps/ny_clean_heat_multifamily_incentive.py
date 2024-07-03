@@ -1,5 +1,6 @@
 from policyengine_us.model_api import *
 
+
 class ny_clean_heat_multifamily_incentive(Variable):
     value_type = float
     entity = Household
@@ -11,7 +12,7 @@ class ny_clean_heat_multifamily_incentive(Variable):
     defined_for = StateCode.NY
 
     def formula(household, period, parameters):
-        '''
+        """
         Calculates the incentive and the cap for the NYS Clean Heat program.
 
         Parameters:
@@ -21,8 +22,7 @@ class ny_clean_heat_multifamily_incentive(Variable):
 
         Returns:
         - float: a capped incentive (float). 
-        '''
-    
+        """
         p = parameters(period).gov.states.ny.nysdps.clean_heat.clean_heat_con_edison
 
         source = household("ny_clean_heat_source_category", period)
@@ -32,8 +32,8 @@ class ny_clean_heat_multifamily_incentive(Variable):
         # calc uncapped incentive
         uncapped_incentive = p.multifamily.amount[source][building][heat_pump]
 
-        # multipy uncapped incentive by MMBtu/dwelling_unit
-        mmbtu = household('ny_clean_heat_mmbtu', period)
+        # multiply uncapped incentive by MMBtu/dwelling_unit
+        mmbtu = household("ny_clean_heat_mmbtu", period)
 
         max_unit = p.multifamily.dwelling_unit_cap
         uncapped_dwelling_unit = household("ny_clean_heat_dwelling_units", period)
@@ -42,29 +42,28 @@ class ny_clean_heat_multifamily_incentive(Variable):
         uncapped_incentive = select(
             [
                 # C2C, C6A
-                heat_pump == heat_pump.possible_values.C2C or \
-                heat_pump == heat_pump.possible_values.C6A,
+                heat_pump == heat_pump.possible_values.C2C
+                or heat_pump == heat_pump.possible_values.C6A,
                 # C4, C4A, C6, C10
-                heat_pump == heat_pump.possible_values.C4 or \
-                heat_pump == heat_pump.possible_values.C4A1 or \
-                heat_pump == heat_pump.possible_values.C4A2 or \
-                heat_pump == heat_pump.possible_values.C6 or \
-                heat_pump == heat_pump.possible_values.C10,
+                heat_pump == heat_pump.possible_values.C4
+                or heat_pump == heat_pump.possible_values.C4A1
+                or heat_pump == heat_pump.possible_values.C4A2
+                or heat_pump == heat_pump.possible_values.C6
+                or heat_pump == heat_pump.possible_values.C10,
             ],
             [
-                # multipy by dwelling_unit
+                # multiply by dwelling_unit
                 uncapped_incentive * dwelling_unit,
-                # multipy by mmbtu
+                # multiply by mmbtu
                 uncapped_incentive * mmbtu,
             ],
         )
 
         # calc cap amount
-        rate = p.multifamily.rate,
+        rate = p.multifamily.rate
 
         project_cost = household("ny_clean_heat_project_cost", period)
         cap = project_cost * rate
 
         # calc capped incentive
         return min(uncapped_incentive, cap, p.multifamily.cap)
-

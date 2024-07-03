@@ -1,17 +1,20 @@
 from policyengine_us.model_api import *
 
+
 class ny_clean_heat_residential_incentive(Variable):
     value_type = float
     entity = Household
     label = "New York Clean Heat incentive for residential (con Edison)"
-    documentation = "The incentive for purchasing and installing a heat pump for residential"
+    documentation = (
+        "The incentive for purchasing and installing a heat pump for residential"
+    )
     unit = USD
     definition_period = YEAR
     reference = "https://cleanheat.ny.gov/assets/pdf/CECONY%20Clean%20Heat%20Program%20Manual%206%203%2024.pdf#page=12"
     defined_for = StateCode.NY
 
     def formula(household, period, parameters):
-        '''
+        """
         Calculates the incentive for the NYS Clean Heat program.
 
         Parameters:
@@ -21,8 +24,7 @@ class ny_clean_heat_residential_incentive(Variable):
 
         Returns:
         - float: a capped incentive (float). 
-        '''
-    
+        """
         p = parameters(period).gov.states.ny.nysdps.clean_heat.clean_heat_con_edison
 
         source = household("ny_clean_heat_source_category", period)
@@ -31,7 +33,7 @@ class ny_clean_heat_residential_incentive(Variable):
         heat_pump = household("ny_clean_heat_heat_pump_category", period)
 
         # calc uncapped incentive
-        uncapped_incentive =  select(
+        uncapped_incentive = select(
             [
                 # ashp
                 source == source.possible_values.ASHP,
