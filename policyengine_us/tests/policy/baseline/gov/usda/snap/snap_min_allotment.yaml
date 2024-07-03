@@ -17,14 +17,14 @@
     # Ineligible as a family of 3.
     snap_min_allotment: 0
 
-- name: Family in NJ, benefit below NJ minimum
+- name: NJ provides a different minimum allotment amount
   period: 2024
   input:
     spm_unit_size: 2
     state_code: NJ
     state_group: CONTIGUOUS_US
   output:
-    snap_min_allotment: 95 * 12  # Ensures NJ minimum
+    snap_min_allotment: 95 * 12  
 
 - name: DC provides a different minimum allotment amount
   period: 2024
