@@ -1,0 +1,18 @@
+description: Yearly cap of earned income excluded from SSI countable income for blind or disabled working student.
+
+values:
+  2011-01-01: 6_600
+metadata:
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: nearest
+      interval: 10
+  label: SSI blind or disabled working student earned income exclusion yearly cap
+  unit: currency-USD
+  period: year
+  reference:
+    - title: 20 CFR § 416.1112 - Earned income we do not count.
+      href: https://www.law.cornell.edu/cfr/text/20/416.1112#c_3
+    - title: 2011 Annual Report of the SSI Program - B. INCOME AND RESOURCE EXCLUSIONS
+      href: https://www.ssa.gov/oact/ssir/SSI11/Exclusions.html#30
