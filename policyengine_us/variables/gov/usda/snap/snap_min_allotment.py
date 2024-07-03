@@ -15,12 +15,11 @@ class snap_min_allotment(Variable):
         # Parameters for the minimum benefit.
         snap = parameters(period).gov.usda.snap
         min_allotment = snap.min_allotment
-
         # Calculate the relevant maximum benefit, defined as the maximum
         # benefit for a household of a certain size in their state.
         snap_region = spm_unit.household("snap_region_str", period)
-        relevant_max_allotment = snap.max_allotment.main[snap_region][
-            str(min_allotment.relevant_max_allotment_household_size)
+        relevant_max_allotment = p.max_allotment.main[snap_region][
+            str(p.min_allotment.relevant_max_allotment_household_size)
         ]
 
         # Minimum benefits only apply to households up to a certain size.
