@@ -12,15 +12,14 @@ class ny_drive_clean_rebate(Variable):
     def formula(tax_unit, parameters, period):
         p = parameters(period).parameters.gov.states.ny.nyserda.drive_clean
         # Calculate vehicle all-electric range
-        vehicle_range = tax_unit("nyserda_drive_clean_vehicle_electric_range", period)
+        vehicle_range = tax_unit("ny_drive_clean_vehicle_electric_range", period)
         # Calculate vehicle price
-        vehicle_cost = tax_unit("nyserda_drive_clean_vehicle_cost", period)
+        vehicle_cost = tax_unit("ny_drive_clean_vehicle_cost", period)
         # Calculate rebate size based on range 
         rebate_amount_based_on_range = p.amount.calc(vehicle_range)
         # Determine whether or not vehicle is over the MSRP threhold, 
         # qualifying for the flat rebate
         vehicle_over_msrp_threshold = vehicle_cost >= p.flat_rebate.msrp_threshold
-        flat_amount = p.flat_rebate.amount
         # If the vehicle is more expensive than the MSRP treshold, the filer
         # receives the flat rebate, otherwise they receive the range-based rebate
         return where(vehicle_over_msrp_threshold, p.flat_rebate.amount, rebate_amount_based_on_range)
