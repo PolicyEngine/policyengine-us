@@ -60,7 +60,7 @@ def create_ny_working_families_tax_credit() -> Reform:
             household_credit = tax_unit("ny_household_credit", period)
             return max_(0, tentative_nys_eitc - household_credit)
 
-    # We currently do not include the limitation describing 
+    # We currently do not include the limitation describing
     # that the NY EITC rate remains unadjusted for income attributed
     # to student dependents aged between 18 and 24
 
