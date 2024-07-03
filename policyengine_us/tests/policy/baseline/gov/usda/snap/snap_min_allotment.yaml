@@ -22,17 +22,18 @@
   input:
     spm_unit_size: 2
     state_code: NJ
+    state_group: CONTIGUOUS_US
   output:
     snap_min_allotment: 95 * 12  # Ensures NJ minimum
 
 - name: DC provides a different minimum allotment amount
-  period: 2024-01
+  period: 2024
   input:
     spm_unit_size: 2
-    state_code_str: DC
+    state_code: DC
     state_group: CONTIGUOUS_US
   output:
-    snap_min_allotment: 30
+    snap_min_allotment: 30 * 12
 
 - name: In other states, we keep the standard minium allotment amount
   period: 2022
