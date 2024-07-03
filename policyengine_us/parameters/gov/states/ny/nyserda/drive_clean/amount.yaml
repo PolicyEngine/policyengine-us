@@ -17,11 +17,13 @@ brackets:
     amount:
       2017-03-21: 1_700
       2021-06-31: 1_000
+  # 120 - 199 miles
   - threshold:
       2017-03-21: 119
     amount:
       2017-03-21: 2_000
       2021-06-31: 1_000
+  # 200 miles and above
   - threshold:
       2017-03-21: 200
     amount:
