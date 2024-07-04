@@ -7338,3 +7338,245 @@
     fixed:
     - Add health insurance premiums to SNAP excess medical expense deduction.
   date: 2024-05-26 01:22:36
+- bump: patch
+  changes:
+    fixed:
+    - Arkansas tax unit itemizes decision based on the federal itemization.
+    - Create a separate Virginia deductions variable.
+  date: 2024-05-30 13:22:45
+- bump: minor
+  changes:
+    added:
+    - Add Montana taxable social security benefits.
+    - Fix Montana agi formula.
+  date: 2024-05-31 11:59:03
+- bump: minor
+  changes:
+    added:
+    - Remove Social Security from the Montana additions parameter.
+    - Pin core to <2.22.
+  date: 2024-06-03 17:08:14
+- bump: patch
+  changes:
+    fixed:
+    - Round Arkansas deduction allocation fraction to nearest whole percent.
+  date: 2024-06-04 00:24:56
+- bump: patch
+  changes:
+    fixed:
+    - Add New Mexico and New Jersey credits to the net income tree.
+  date: 2024-06-04 21:01:00
+- bump: minor
+  changes:
+    added:
+    - Illinois Child Tax Credit Reform.
+  date: 2024-06-05 17:25:11
+- bump: patch
+  changes:
+    fixed:
+    - Arkansas income tax rates.
+  date: 2024-06-07 01:04:14
+- bump: patch
+  changes:
+    fixed:
+    - Zero out the taxable social security base income thresholds for separate filers
+      who cohabitated.
+  date: 2024-06-07 13:52:30
+- bump: minor
+  changes:
+    added:
+    - Add Oregon state uprating.
+  date: 2024-06-07 16:21:49
+- bump: minor
+  changes:
+    added:
+    - Rename medicaid_income to medicaid_magi.
+  date: 2024-06-07 20:27:00
+- bump: minor
+  changes:
+    added:
+    - Colorado family affordability tax credit.
+    removed:
+    - Draft version of Colorado family affordability tax credit.
+  date: 2024-06-08 01:49:40
+- bump: minor
+  changes:
+    added:
+    - Minnesota child and working families tax credits.
+    fixed:
+    - Minnesota working families tax credit parameter structure.
+  date: 2024-06-10 16:45:35
+- bump: minor
+  changes:
+    added:
+    - Adjust the New Mexico refundable credits parameter files.
+  date: 2024-06-10 16:50:58
+- bump: patch
+  changes:
+    fixed:
+    - Adjust the state income tax to include tax before refundable credits and refundable
+      credits.
+    - Create a state withheld income tax variable.
+  date: 2024-06-10 21:18:51
+- bump: patch
+  changes:
+    fixed:
+    - Adjust the Minnesota phase-out rate to reflect the legal code.
+  date: 2024-06-11 12:11:14
+- bump: minor
+  changes:
+    added:
+    - Utah child tax credit.
+    - 2023 Utah earned income tax credit match increase.
+  date: 2024-06-11 15:00:02
+- bump: minor
+  changes:
+    fixed:
+    - Fix New Jersey property tax credit income eligibility logic
+  date: 2024-06-11 20:39:03
+- bump: minor
+  changes:
+    added:
+    - Colorado EITC match increase beginning in 2024, recently legislated.
+  date: 2024-06-12 15:18:35
+- bump: minor
+  changes:
+    added:
+    - San Francisco working families tax credit.
+  date: 2024-06-14 09:40:28
+- bump: minor
+  changes:
+    added:
+    - Variables used by Tax-Calculator but not PolicyEngine in the IRS PUF.
+  date: 2024-06-18 12:58:34
+- bump: minor
+  changes:
+    added:
+    - Projections from June 2024 CBO baseline.
+  date: 2024-06-19 16:51:13
+- bump: minor
+  changes:
+    added:
+    - North Dakota 2023 tax rules.
+    - North Dakota taxes legal code references.
+    - North Dakota tax parameters uprating.
+  date: 2024-06-20 01:35:16
+- bump: minor
+  changes:
+    added:
+    - Add 2023 Minnesota Tax Rules.
+  date: 2024-06-20 14:58:39
+- bump: minor
+  changes:
+    added:
+    - New York Solar Energy Systems Equipment Credit.
+  date: 2024-06-20 15:16:19
+- bump: patch
+  changes:
+    fixed:
+    - Remove unneeded personal_interest_expense variable.
+  date: 2024-06-21 16:07:00
+- bump: patch
+  changes:
+    fixed:
+    - Limit DC SNAP minimum allotment to eligible applicants.
+  date: 2024-06-21 18:32:22
+- bump: minor
+  changes:
+    added:
+    - Hawaii standard deduction increases.
+    - Hawaii tax bracket increases.
+  date: 2024-06-25 01:14:35
+- bump: minor
+  changes:
+    changed:
+    - Update CPI-U and CPI-W parameters based on the CBO June 2024 Projections.
+  date: 2024-06-25 02:39:47
+- bump: patch
+  changes:
+    added:
+    - Move rounding metadata to individual breakdown parameters.
+  date: 2024-06-26 00:53:07
+- bump: major
+  changes:
+    added:
+    - Support for Python 3.11.
+  date: 2024-06-26 17:11:51
+- bump: minor
+  changes:
+    added:
+    - Add the New York Residential Solar Tax to the net income tree.
+  date: 2024-06-26 17:53:48
+- bump: minor
+  changes:
+    added:
+    - Update the SNAP uprating based on the June 2024 CBO forecast.
+  date: 2024-06-27 03:27:43
+- bump: minor
+  changes:
+    added:
+    - Connecticut 2022 temporary child tax rebate.
+  date: 2024-06-27 11:42:31
+- bump: minor
+  changes:
+    added:
+    - 2023 Illinois policy parameter updates.
+  date: 2024-06-28 03:25:40
+- bump: minor
+  changes:
+    added:
+    - Montgomery County Local EITC.
+  date: 2024-07-01 13:54:35
+- bump: patch
+  changes:
+    fixed:
+    - Oklahoma EITC refundability.
+  date: 2024-07-01 20:57:08
+- bump: patch
+  changes:
+    fixed:
+    - Change the parameter input in the CT rebate reduction start from WIDOW to SURVIVING_SPOUSE.
+  date: 2024-07-02 00:30:47
+- bump: minor
+  changes:
+    added:
+    - Moving DC SNAP temporary local benefit code.
+  date: 2024-07-02 00:35:30
+- bump: minor
+  changes:
+    added:
+    - Maine 2023 tax rules.
+    - Maine tax parameters uprating.
+    - Refactor Maine property tax fairness credit.
+  date: 2024-07-02 00:42:34
+- bump: minor
+  changes:
+    added:
+    - Maryland 2023 income tax updates.
+  date: 2024-07-02 02:10:58
+- bump: minor
+  changes:
+    added:
+    - DC Additional SNAP minimum allotment.
+  date: 2024-07-02 12:50:48
+- bump: minor
+  changes:
+    added:
+    - Mississippi 2023, 2024, and 2025 tax rates.
+    - Mississippi charitable contributions credit.
+  date: 2024-07-02 17:35:57
+- bump: minor
+  changes:
+    added:
+    - Student loan above the line deduction.
+  date: 2024-07-02 18:45:27
+- bump: minor
+  changes:
+    added:
+    - New York State Geothermal Energy System Credit.
+  date: 2024-07-02 21:36:44
+- bump: minor
+  changes:
+    added:
+    - Change MS charitable contributions credit from WIDOW to SURVIVING_SPOUSE.
+  date: 2024-07-03 19:51:24
