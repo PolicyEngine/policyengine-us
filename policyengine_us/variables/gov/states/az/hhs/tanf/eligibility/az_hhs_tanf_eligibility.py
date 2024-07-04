@@ -11,7 +11,7 @@ class az_hhs_tanf_eligibility(Variable):
 
     def formula(spm_unit, period, parameters):
         # Judge whether the countable income exceed the 100% of Ferderal Poverty Guideline
-        household_size = spm_unit("spm_unit_size", period)
+        # We need the specific 1992 unit_fpg data
         monthly_fpg = spm_unit("spm_unit_fpg", period)
         monthly_countable_earned_income = spm_unit(
             "az_tanf_earned_income", period
@@ -23,7 +23,7 @@ class az_hhs_tanf_eligibility(Variable):
         ).gov.states.az.hhs.tanf.eligibility.payment_standard
         shelter_cost = spm_unit("housing_cost", period)
         payment_standard_threshold = where(
-            shelter_cost > 0, p.high[household_size], p.low[household_size]
+            shelter_cost > 0, np.floor(p.high*monthly_fpg), np.floor(p.low*monthly_fpg)
         )
         payment_standard_eligibility = (
            monthly_countable_earned_income <= payment_standard_threshold
