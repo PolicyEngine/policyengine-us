@@ -23,7 +23,7 @@ class ny_clean_heat_residential_incentive(Variable):
         - household (instance)
 
         Returns:
-        - float: a capped incentive (float). 
+        - float: a capped incentive (float).
         """
         p = parameters(period).gov.states.ny.nysdps.clean_heat.clean_heat_con_edison
 

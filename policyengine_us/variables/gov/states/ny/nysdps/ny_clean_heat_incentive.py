@@ -20,7 +20,7 @@ class ny_clean_heat_incentive(Variable):
         - household (instance)
 
         Returns:
-        - float: a capped incentive (float). 
+        - float: a capped incentive (float).
         """
         family_type = household("ny_clean_heat_family_type_category", period)
 
