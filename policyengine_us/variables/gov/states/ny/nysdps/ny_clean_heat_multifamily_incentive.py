@@ -5,9 +5,7 @@ class ny_clean_heat_multifamily_incentive(Variable):
     value_type = float
     entity = Household
     label = "New York Clean Heat incentive for multifamily (con Edison)"
-    documentation = (
-        "The incentive for purchasing and installing a heat pump for multifamily"
-    )
+    documentation = "The incentive for purchasing and installing a heat pump for multifamily"
     unit = USD
     definition_period = YEAR
     reference = "https://cleanheat.ny.gov/assets/pdf/CECONY%20Clean%20Heat%20Program%20Manual%206%203%2024.pdf#page=12"
@@ -25,7 +23,9 @@ class ny_clean_heat_multifamily_incentive(Variable):
         Returns:
         - float: a capped incentive (float).
         """
-        p = parameters(period).gov.states.ny.nysdps.clean_heat.clean_heat_con_edison
+        p = parameters(
+            period
+        ).gov.states.ny.nysdps.clean_heat.clean_heat_con_edison
 
         source = household("ny_clean_heat_source_category", period)
         heat_pump = household("ny_clean_heat_heat_pump_category", period)
@@ -38,7 +38,9 @@ class ny_clean_heat_multifamily_incentive(Variable):
         mmbtu = household("ny_clean_heat_mmbtu", period)
 
         max_unit = p.multifamily.dwelling_unit_cap
-        uncapped_dwelling_unit = household("ny_clean_heat_dwelling_units", period)
+        uncapped_dwelling_unit = household(
+            "ny_clean_heat_dwelling_units", period
+        )
         dwelling_unit = min_(max_unit, uncapped_dwelling_unit)
 
         uncapped_incentive = select(

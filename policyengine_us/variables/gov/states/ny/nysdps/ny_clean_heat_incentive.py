@@ -24,7 +24,9 @@ class ny_clean_heat_incentive(Variable):
         """
         family_type = household("ny_clean_heat_family_type_category", period)
 
-        family_type_bool = family_type == family_type.possible_values.RESIDENTIAL
+        family_type_bool = (
+            family_type == family_type.possible_values.RESIDENTIAL
+        )
 
         return where(
             family_type_bool,

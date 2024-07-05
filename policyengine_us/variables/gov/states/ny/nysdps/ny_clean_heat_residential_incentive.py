@@ -5,9 +5,7 @@ class ny_clean_heat_residential_incentive(Variable):
     value_type = float
     entity = Household
     label = "New York Clean Heat incentive for residential (con Edison)"
-    documentation = (
-        "The incentive for purchasing and installing a heat pump for residential"
-    )
+    documentation = "The incentive for purchasing and installing a heat pump for residential"
     unit = USD
     definition_period = YEAR
     reference = "https://cleanheat.ny.gov/assets/pdf/CECONY%20Clean%20Heat%20Program%20Manual%206%203%2024.pdf#page=12"
@@ -25,7 +23,9 @@ class ny_clean_heat_residential_incentive(Variable):
         Returns:
         - float: a capped incentive (float).
         """
-        p = parameters(period).gov.states.ny.nysdps.clean_heat.clean_heat_con_edison
+        p = parameters(
+            period
+        ).gov.states.ny.nysdps.clean_heat.clean_heat_con_edison
 
         source = household("ny_clean_heat_source_category", period)
         dac = household("ny_clean_heat_dac_category", period)
