@@ -55,7 +55,9 @@ def create_structural_reforms_from_parameters(parameters, period):
     capital_gains_tax_increase = create_capital_gains_tax_increase_reform(
         parameters, period
     )
-    halve_joint_eitc_phase_out_rate = create_halve_joint_eitc_phase_out_rate_reform(parameters, period)
+    halve_joint_eitc_phase_out_rate = (
+        create_halve_joint_eitc_phase_out_rate_reform(parameters, period)
+    )
 
     reforms = [
         afa_reform,

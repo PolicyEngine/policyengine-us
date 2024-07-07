@@ -18,7 +18,6 @@ def create_halve_joint_eitc_phase_out_rate() -> Reform:
             base_rate = eitc.phase_out.rate.calc(num_children)
             return where(joint, base_rate / 2, base_rate)
 
-
     class reform(Reform):
         def apply(self):
             self.update_variable(eitc_phase_out_rate)
@@ -41,7 +40,5 @@ def create_halve_joint_eitc_phase_out_rate_reform(
 
 
 halve_joint_eitc_phase_out_rate = (
-    create_halve_joint_eitc_phase_out_rate_reform(
-        None, None, bypass=True
-    )
+    create_halve_joint_eitc_phase_out_rate_reform(None, None, bypass=True)
 )
