@@ -1,4 +1,4 @@
-description: Monthly amount of earned income excluded from SSI countable income for blind or disabled working student.
+description: IRS excludes the following earned income amount under the blind or disabled SSI.
 
 values:
   2011-01-01: 1_640
@@ -19,7 +19,7 @@ metadata:
     rounding:
       type: nearest
       interval: 10
-  label: SSI blind or disabled working student monthly earned income exclusion amount
+  label: SSI blind or disabled working student earned income exclusion amount
   unit: currency-USD
   period: month
   reference:
