@@ -1,4 +1,4 @@
-description: Federal AGI over this threshold phases out itemized deductions for NY State income tax.
+description: New York phases out itemized deductions for filers with federal adjusted gross income exceeding this threshold.
 SINGLE:
   values:
     2021-01-01: 282_400
@@ -57,7 +57,7 @@ metadata:
       interval: 50
   unit: currency-USD
   period: year
-  label: New York itemized deduction phase out start
+  label: New York itemized deduction AGI phase out threshold
   reference:
     # New York continued to increase the federal applicable amount with inflation 
     - title: 26 U.S. Code § 68 - Overall limitation on itemized deductions (b)(1)
