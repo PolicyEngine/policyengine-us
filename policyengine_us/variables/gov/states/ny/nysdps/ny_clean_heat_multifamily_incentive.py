@@ -46,8 +46,8 @@ class ny_clean_heat_multifamily_incentive(Variable):
         uncapped_incentive = select(
             [
                 # C2C, C6A
-                heat_pump == heat_pump.possible_values.C2C
-                or heat_pump == heat_pump.possible_values.C6A,
+                (heat_pump == heat_pump.possible_values.C2C)
+                | (heat_pump == heat_pump.possible_values.C6A),
                 # C4, C4A, C6, C10
                 heat_pump == heat_pump.possible_values.C4
                 or heat_pump == heat_pump.possible_values.C4A1
