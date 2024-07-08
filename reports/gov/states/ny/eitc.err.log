@@ -65,12 +65,12 @@ budgetary_impacts("ny_eitc")
 
 [0;31m---------------------------------------------------------------------------[0m
 [0;31mTypeError[0m                                 Traceback (most recent call last)
-[0;32m/tmp/ipykernel_3651/1540646120.py[0m in [0;36m<cell line: 0>[0;34m()[0m
+[0;32m/tmp/ipykernel_3582/1540646120.py[0m in [0;36m<cell line: 0>[0;34m()[0m
 [1;32m     40[0m [0;34m[0m[0m
 [1;32m     41[0m [0;34m[0m[0m
 [0;32m---> 42[0;31m [0mbudgetary_impacts[0m[0;34m([0m[0;34m"ny_eitc"[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
 [0m
-[0;32m/tmp/ipykernel_3651/1540646120.py[0m in [0;36mbudgetary_impacts[0;34m(variable, data_year, policy_year)[0m
+[0;32m/tmp/ipykernel_3582/1540646120.py[0m in [0;36mbudgetary_impacts[0;34m(variable, data_year, policy_year)[0m
 [1;32m     25[0m             [0mself[0m[0;34m.[0m[0mneutralize_variable[0m[0;34m([0m[0mvariable[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
 [1;32m     26[0m [0;34m[0m[0m
 [0;32m---> 27[0;31m     [0msim[0m [0;34m=[0m [0mMicrosimulation[0m[0;34m([0m[0mignore_reported[0m[0;34m,[0m [0myear[0m[0;34m=[0m[0mdata_year[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
