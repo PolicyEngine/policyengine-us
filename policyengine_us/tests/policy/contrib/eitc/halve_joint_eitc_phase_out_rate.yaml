@@ -1,0 +1,50 @@
+- name: Head of household, no reform
+  period: 2023
+  # reforms: policyengine_us.reforms.eitc.halve_joint_eitc_phase_out_rate.halve_joint_eitc_phase_out_rate
+  input:
+#    gov.contrib.joint_eitc.in_effect : true
+    eitc_child_count: 2
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    eitc_phase_out_rate: 0.2106
+
+
+- name: Under reform, no changes for head of household filers
+  period: 2023
+  reforms: policyengine_us.reforms.eitc.halve_joint_eitc_phase_out_rate.halve_joint_eitc_phase_out_rate
+  input:
+    gov.contrib.joint_eitc.in_effect : true
+    eitc_child_count: 2
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    eitc_phase_out_rate: 0.2106
+
+- name: Joint, no reform
+  period: 2023
+  # reforms: policyengine_us.reforms.eitc.halve_joint_eitc_phase_out_rate.halve_joint_eitc_phase_out_rate
+  input:
+#    gov.contrib.joint_eitc.in_effect : true
+    eitc_child_count: 2
+    filing_status: JOINT
+  output:
+    eitc_phase_out_rate: 0.2106
+
+- name: Under reform, halved rate for joint filers
+  period: 2023
+  reforms: policyengine_us.reforms.eitc.halve_joint_eitc_phase_out_rate.halve_joint_eitc_phase_out_rate
+  input:
+    gov.contrib.joint_eitc.in_effect : true
+    eitc_child_count: 2
+    filing_status: JOINT
+  output:
+    eitc_phase_out_rate: 0.1053
+
+- name: Under reform, halved rate for joint filers, child count determines rate
+  period: 2023
+  reforms: policyengine_us.reforms.eitc.halve_joint_eitc_phase_out_rate.halve_joint_eitc_phase_out_rate
+  input:
+    gov.contrib.joint_eitc.in_effect : true
+    eitc_child_count: 1
+    filing_status: JOINT
+  output:
+    eitc_phase_out_rate: 0.0799

@@ -5,6 +5,142 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.16.0] - 2024-07-08 13:14:25
+
+### Added
+
+- New York State Working Families Tax Credit reform.
+
+## [1.15.0] - 2024-07-08 11:55:38
+
+### Added
+
+- 2023 New York tax rules.
+
+## [1.14.0] - 2024-07-07 23:49:09
+
+### Added
+
+- Halve joint EITC phase out rate reform.
+
+## [1.13.0] - 2024-07-03 19:51:24
+
+### Added
+
+- Change MS charitable contributions credit from WIDOW to SURVIVING_SPOUSE.
+
+## [1.12.0] - 2024-07-02 21:36:44
+
+### Added
+
+- New York State Geothermal Energy System Credit.
+
+## [1.11.0] - 2024-07-02 18:45:27
+
+### Added
+
+- Student loan above the line deduction.
+
+## [1.10.0] - 2024-07-02 17:35:57
+
+### Added
+
+- Mississippi 2023, 2024, and 2025 tax rates.
+- Mississippi charitable contributions credit.
+
+## [1.9.0] - 2024-07-02 12:50:48
+
+### Added
+
+- DC Additional SNAP minimum allotment.
+
+## [1.8.0] - 2024-07-02 02:10:58
+
+### Added
+
+- Maryland 2023 income tax updates.
+
+## [1.7.0] - 2024-07-02 00:42:34
+
+### Added
+
+- Maine 2023 tax rules.
+- Maine tax parameters uprating.
+- Refactor Maine property tax fairness credit.
+
+## [1.6.0] - 2024-07-02 00:35:30
+
+### Added
+
+- Moving DC SNAP temporary local benefit code.
+
+## [1.5.2] - 2024-07-02 00:30:47
+
+### Fixed
+
+- Change the parameter input in the CT rebate reduction start from WIDOW to SURVIVING_SPOUSE.
+
+## [1.5.1] - 2024-07-01 20:57:08
+
+### Fixed
+
+- Oklahoma EITC refundability.
+
+## [1.5.0] - 2024-07-01 13:54:35
+
+### Added
+
+- Montgomery County Local EITC.
+
+## [1.4.0] - 2024-06-28 03:25:40
+
+### Added
+
+- 2023 Illinois policy parameter updates.
+
+## [1.3.0] - 2024-06-27 11:42:31
+
+### Added
+
+- Connecticut 2022 temporary child tax rebate.
+
+## [1.2.0] - 2024-06-27 03:27:43
+
+### Added
+
+- Update the SNAP uprating based on the June 2024 CBO forecast.
+
+## [1.1.0] - 2024-06-26 17:53:48
+
+### Added
+
+- Add the New York Residential Solar Tax to the net income tree.
+
+## [1.0.0] - 2024-06-26 17:11:51
+
+### Added
+
+- Support for Python 3.11.
+
+## [0.796.1] - 2024-06-26 00:53:07
+
+### Added
+
+- Move rounding metadata to individual breakdown parameters.
+
+## [0.796.0] - 2024-06-25 02:39:47
+
+### Changed
+
+- Update CPI-U and CPI-W parameters based on the CBO June 2024 Projections.
+
+## [0.795.0] - 2024-06-25 01:14:35
+
+### Added
+
+- Hawaii standard deduction increases.
+- Hawaii tax bracket increases.
+
 ## [0.794.2] - 2024-06-21 18:32:22
 
 ### Fixed
@@ -8853,6 +8989,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.16.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.15.0...1.16.0
+[1.15.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.14.0...1.15.0
+[1.14.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.13.0...1.14.0
+[1.13.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.12.0...1.13.0
+[1.12.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.11.0...1.12.0
+[1.11.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.10.0...1.11.0
+[1.10.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.9.0...1.10.0
+[1.9.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.8.0...1.9.0
+[1.8.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.7.0...1.8.0
+[1.7.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.6.0...1.7.0
+[1.6.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.5.2...1.6.0
+[1.5.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.5.1...1.5.2
+[1.5.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.5.0...1.5.1
+[1.5.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.4.0...1.5.0
+[1.4.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.3.0...1.4.0
+[1.3.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.2.0...1.3.0
+[1.2.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.1.0...1.2.0
+[1.1.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.0.0...1.1.0
+[1.0.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.796.1...1.0.0
+[0.796.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.796.0...0.796.1
+[0.796.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.795.0...0.796.0
+[0.795.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.794.2...0.795.0
 [0.794.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.794.1...0.794.2
 [0.794.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.794.0...0.794.1
 [0.794.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.793.0...0.794.0
