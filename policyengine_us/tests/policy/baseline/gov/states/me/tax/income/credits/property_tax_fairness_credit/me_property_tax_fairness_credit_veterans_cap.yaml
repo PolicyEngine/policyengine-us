@@ -1,0 +1,21 @@
+- name: Case 1, veterans does not effect in 2022 
+  period: 2022
+  input:
+    state_code: ME
+    filing_status: SINGLE
+    me_property_tax_fairness_credit_base_cap: 100
+    age_head: 66
+    age_spouse: 65
+  output:
+    me_property_tax_fairness_credit_veterans_cap: 0
+  
+- name: Case 2, veterans does effect in 2023
+  period: 2023
+  input:
+    state_code: ME
+    filing_status: SINGLE
+    me_property_tax_fairness_credit_base_cap: 100
+    age_head: 66
+    age_spouse: 65
+  output:
+    me_property_tax_fairness_credit_veterans_cap: 100
