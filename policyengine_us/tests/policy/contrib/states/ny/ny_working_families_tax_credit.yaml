@@ -1,6 +1,5 @@
 - name: Reform does not apply
   period: 2024
-  # reforms: policyengine_us.reforms.states.ny.wftc.ny_working_families_tax_credit.ny_working_families_tax_credit
   input:
     gov.contrib.states.ny.wftc.in_effect: false
     people: 
@@ -85,7 +84,6 @@
 
 - name: Reform does not apply, household received EITC
   period: 2024
-  # reforms: policyengine_us.reforms.states.ny.wftc.ny_working_families_tax_credit.ny_working_families_tax_credit
   input:
     gov.contrib.states.ny.wftc.in_effect: false
     people: 
