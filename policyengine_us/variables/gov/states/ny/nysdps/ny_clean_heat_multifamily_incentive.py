@@ -64,10 +64,8 @@ class ny_clean_heat_multifamily_incentive(Variable):
         )
 
         # calc cap amount
-        rate = p.multifamily.rate
-
         project_cost = household("ny_clean_heat_project_cost", period)
-        cap = project_cost * rate
+        cap = project_cost * p.multifamily.rate
 
         # calc capped incentive
         return min(uncapped_incentive, cap, p.multifamily.cap)
