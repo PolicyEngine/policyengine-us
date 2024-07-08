@@ -1,0 +1,29 @@
+description: Louisiana reduces the exempt adjusted gross income by this rate, based on the exempt income amount.
+
+brackets:
+  - threshold: 
+      2021-01-01: 0
+    rate: 
+      2021-01-01: 0
+  - threshold:
+      2021-01-01: 15_000
+    rate:
+      2021-01-01: 0.25
+  - threshold:
+      2021-01-01: 50_000
+    rate:
+      2021-01-01: 0.45
+
+metadata:
+  reference:
+    - title: 2021 Louisiana Individual Income Tax Return IT-540 Instructions
+      href: https://revenue.louisiana.gov/TaxForms/IT540i(2021)%20Instructions.pdf#page=9
+    - title: 2022 Louisiana Individual Income Tax Return IT-540 Instructions
+      href: https://revenue.louisiana.gov/TaxForms/IT540iWEB(2022)D1.pdf#page=9
+    - title: 2023 Louisiana Individual Income Tax Return IT-540 Instructions
+      href: https://revenue.louisiana.gov/TaxForms/IT540i%20WEB(2023)%20INSTRUCTIONS.pdf#page=10
+  threshold_unit: currency-USD
+  rate_unit: /1
+  type: marginal_rate
+  period: year
+  label: Louisiana exempt adjusted gross income reduction rate

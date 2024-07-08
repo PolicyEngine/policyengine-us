@@ -17,6 +17,9 @@ from .federal import create_reported_state_income_tax_reform
 from .biden.budget_2025 import (
     create_medicare_and_investment_tax_increase_reform,
 )
+from .biden.budget_2025 import create_capital_gains_tax_increase_reform
+from .eitc import create_halve_joint_eitc_phase_out_rate_reform
+from .states.ny.wftc import create_ny_working_families_tax_credit_reform
 from policyengine_core.reforms import Reform
 import warnings
 
@@ -50,6 +53,13 @@ def create_structural_reforms_from_parameters(parameters, period):
     reported_state_income_tax = create_reported_state_income_tax_reform(
         parameters, period
     )
+    capital_gains_tax_increase = create_capital_gains_tax_increase_reform(
+        parameters, period
+    )
+    halve_joint_eitc_phase_out_rate = (
+        create_halve_joint_eitc_phase_out_rate_reform(parameters, period)
+    )
+    ny_wftc = create_ny_working_families_tax_credit_reform(parameters, period)
 
     reforms = [
         afa_reform,
@@ -63,6 +73,9 @@ def create_structural_reforms_from_parameters(parameters, period):
         abolish_payroll_tax,
         reported_state_income_tax,
         medicare_and_investment_tax_increase,
+        capital_gains_tax_increase,
+        halve_joint_eitc_phase_out_rate,
+        ny_wftc,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
 

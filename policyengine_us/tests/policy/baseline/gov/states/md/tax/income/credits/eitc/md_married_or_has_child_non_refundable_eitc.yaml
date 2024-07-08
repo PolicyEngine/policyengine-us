@@ -1,0 +1,17 @@
+- name: 50% of EITC match with the federal credit
+  period: 2021
+  input:
+    md_qualifies_for_unmarried_childless_eitc: false
+    eitc: 300
+    state_code: MD
+  output:
+    md_married_or_has_child_non_refundable_eitc: 150
+
+- name: Single childless filers have a different program.
+  period: 2021
+  input:
+    md_qualifies_for_unmarried_childless_eitc: true
+    eitc: 300
+    state_code: MD
+  output:
+    md_married_or_has_child_non_refundable_eitc: 0

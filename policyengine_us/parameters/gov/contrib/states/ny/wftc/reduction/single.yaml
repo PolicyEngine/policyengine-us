@@ -1,0 +1,29 @@
+description: New York reduces the Working Families Tax Credit for single filers at this rate, based on state adjusted gross income.
+metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  period: year
+  label: New York working families tax credit single reduction
+  reference:
+  - title: New York Senate Bill S277B (2)(B)
+    href: https://www.nysenate.gov/legislation/bills/2023/S277/amendment/B
+
+brackets:
+  - threshold:
+      2024-01-01: 0
+    rate:
+      2024-01-01: 0
+  - threshold:
+      values:
+        2024-01-01: 65_000
+        2025-01-01: 55_000
+        2026-01-01: 45_000
+        2027-01-01: 25_000
+      uprating:
+        parameter: gov.irs.uprating
+        rounding:
+          type: downwards
+          interval: 50
+    rate:
+      2024-01-01: 0.02

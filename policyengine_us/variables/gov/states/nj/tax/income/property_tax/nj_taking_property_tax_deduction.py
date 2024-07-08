@@ -27,7 +27,7 @@ class nj_taking_property_tax_deduction(Variable):
                 filing_status == status.SINGLE,
                 filing_status == status.JOINT,
                 filing_status == status.HEAD_OF_HOUSEHOLD,
-                filing_status == status.WIDOW,
+                filing_status == status.SURVIVING_SPOUSE,
                 filing_status == status.SEPARATE,
             ],
             [
@@ -48,7 +48,7 @@ class nj_taking_property_tax_deduction(Variable):
                 filing_status == status.SINGLE,
                 filing_status == status.JOINT,
                 filing_status == status.HEAD_OF_HOUSEHOLD,
-                filing_status == status.WIDOW,
+                filing_status == status.SURVIVING_SPOUSE,
                 filing_status == status.SEPARATE,
             ],
             [

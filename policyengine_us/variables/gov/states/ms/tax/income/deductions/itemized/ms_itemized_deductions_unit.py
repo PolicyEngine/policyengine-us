@@ -15,7 +15,11 @@ class ms_itemized_deductions_unit(Variable):
     )
     defined_for = StateCode.MS
 
-    adds = ["itemized_deductions_less_salt", "misc_deduction"]
+    adds = [
+        "itemized_deductions_less_salt",
+        "misc_deduction",
+        "ms_real_estate_tax_deduction",
+    ]
 
     # Mississippi allows itemized deductions for gaming establishments and gender transition procedures
     # which are currently not modeled

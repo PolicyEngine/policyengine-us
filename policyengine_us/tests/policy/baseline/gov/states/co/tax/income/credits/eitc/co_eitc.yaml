@@ -14,8 +14,16 @@
   output:
     co_eitc: 20
 
-- name: Colorado matched 50% of EITC in 2021.
+- name: Colorado matched 50% of EITC in 2023.
   period: 2023
+  input:
+    eitc: 100
+    state_code: CO
+  output:
+    co_eitc: 50
+
+- name: Colorado matched 50% of EITC in 2024.
+  period: 2024
   input:
     eitc: 100
     state_code: CO

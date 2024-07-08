@@ -4,20 +4,18 @@ from policyengine_us import Microsimulation
 import numpy as np
 from policyengine_us import Microsimulation
 import pandas as pd
-from .process_puf import (
-    FINANCIAL_SUBSET as FINANCIAL_VARIABLES,
-)
+from .process_puf import FINANCIAL_SUBSET as FINANCIAL_VARIABLES
 from typing import Tuple
 
 
 def generate_model_variables(
-    dataset: str, time_period: str = "2023", no_weight_adjustment: bool = False
+    dataset: str, time_period: str = "2022", no_weight_adjustment: bool = False
 ) -> Tuple:
     """Generates variables needed for the calibration process.
 
     Args:
         dataset (str): The name of the dataset to use.
-        time_period (str, optional): The time period to use. Defaults to "2023".
+        time_period (str, optional): The time period to use. Defaults to "2022".
         no_weight_adjustment (bool, optional): Whether to skip the weight adjustment. Defaults to False.
 
     Returns:
@@ -308,7 +306,9 @@ def generate_model_variables(
     # Tax return counts by filing status
 
     filing_status = (
-        simulation.calculate("filing_status").replace("WIDOW", "JOINT").values
+        simulation.calculate("filing_status")
+        .replace("SURVIVING_SPOUSE", "JOINT")
+        .values
     )
     for filing_status_value in [
         "SINGLE",
@@ -357,13 +357,13 @@ def aggregate_np(
 
 def get_snapshot(
     dataset: str,
-    time_period: str = "2023",
+    time_period: str = "2022",
 ) -> pd.DataFrame:
     """Returns a snapshot of the training metrics without training the model.
 
     Args:
         dataset (str): The name of the dataset to use.
-        time_period (str, optional): The time period to use. Defaults to "2023".
+        time_period (str, optional): The time period to use. Defaults to "2022".
 
     Returns:
         pd.DataFrame: A DataFrame containing the training metrics.
