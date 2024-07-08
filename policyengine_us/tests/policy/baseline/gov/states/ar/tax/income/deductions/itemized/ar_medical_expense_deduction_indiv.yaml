@@ -1,0 +1,39 @@
+- name: Arkansas medical and dental expense deduction (after 2017)
+  period: 2022
+  input:
+    people:
+      person1:
+        medical_expense: 5_000
+        ar_agi_indiv: 120_000
+      person2:
+        medical_expense: 18_000
+        ar_agi_indiv: 120_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR 
+  output:
+    ar_medical_expense_deduction_indiv: 5_000
+  
+- name: Arkansas medical and dental expense deduction (before 2017)
+  period: 2014
+  input:
+    people:
+      person1:
+        medical_expense: 5_000
+        ar_agi_indiv: 240_000
+      person2:
+        medical_expense: 18_000
+        ar_agi_indiv: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR 
+  output:
+    ar_medical_expense_deduction_indiv: 0

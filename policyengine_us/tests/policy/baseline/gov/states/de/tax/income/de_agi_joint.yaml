@@ -1,0 +1,46 @@
+- name: All income is allocated to the head
+  period: 2022
+  input:
+    people:
+      person1:
+        de_pre_exclusions_agi: 1_000
+        de_elderly_or_disabled_income_exclusion_joint: 100
+        is_tax_unit_dependent: false
+        is_tax_unit_head: true
+      person2:
+        de_pre_exclusions_agi: 2_000
+        de_elderly_or_disabled_income_exclusion_joint: 200
+        is_tax_unit_dependent: false
+        is_tax_unit_head: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    de_agi_joint: [2_700, 0]
+
+- name: Dependent AGI gets attributed to the head, AGI capped at 0
+  period: 2022
+  input:
+    people:
+      person1:
+        de_pre_exclusions_agi: 1_000
+        de_elderly_or_disabled_income_exclusion_joint: 100
+        is_tax_unit_dependent: false
+        is_tax_unit_head: true
+      person2:
+        de_pre_exclusions_agi: 100
+        de_elderly_or_disabled_income_exclusion_joint: 200
+        is_tax_unit_dependent: false
+        is_tax_unit_head: false
+      person3:
+        de_pre_exclusions_agi: 500
+        de_elderly_or_disabled_income_exclusion_joint: 200
+        is_tax_unit_dependent: true
+        is_tax_unit_head: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DE
+  output:
+    de_agi_joint: [1_200, 0, 0]

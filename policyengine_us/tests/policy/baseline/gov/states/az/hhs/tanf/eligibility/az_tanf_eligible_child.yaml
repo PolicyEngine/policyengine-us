@@ -1,0 +1,35 @@
+- name: Eligible non-student
+  period: 2023
+  input:
+    state_code: AZ
+    age: 17
+    is_full_time_student: false
+  output:
+    az_tanf_eligible_child: true
+
+- name: Not eligible non-student
+  period: 2023
+  input:
+    state_code: AZ
+    age: 18
+    is_full_time_student: false
+  output:
+    az_tanf_eligible_child: false
+
+- name: Eligible student
+  period: 2023
+  input:
+    state_code: AZ
+    age: 18
+    is_full_time_student: true
+  output:
+    az_tanf_eligible_child: true
+
+- name: Not eligible student
+  period: 2023
+  input:
+    state_code: AZ
+    age: 19
+    is_full_time_student: true
+  output:
+    az_tanf_eligible_child: false
