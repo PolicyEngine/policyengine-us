@@ -34,3 +34,33 @@
     state_group: CONTIGUOUS_US
   output:
     snap_min_allotment: 250 * 0.08 * 9 + 281 * 0.08 * 3
+
+- name: New Mexico provides a different minimum allotment amount
+  period: 2024-01
+  input:
+    spm_unit_size: 2
+    state_code_str: NM
+    state_group: CONTIGUOUS_US
+  output:
+    snap_min_allotment: 32
+
+- name: Below age threshold, Maryland follows the federal minimum allotement amount 
+  period: 2024-01
+  absolute_error_margin: 0.5
+  input:
+    spm_unit_size: 1
+    has_md_elderly: false
+    state_code_str: MD
+    state_group: CONTIGUOUS_US
+  output:
+    snap_min_allotment: 23
+
+- name: Above age threshold, Maryland provides a different minimum allotment amount 
+  period: 2024-01
+  input:
+    spm_unit_size: 1
+    has_md_elderly: true
+    state_code_str: MD
+    state_group: CONTIGUOUS_US
+  output:
+    snap_min_allotment: 40

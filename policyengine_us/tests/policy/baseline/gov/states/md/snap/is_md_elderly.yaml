@@ -1,0 +1,13 @@
+- name: Individual, is MD elderly
+  period: 2024
+  input:
+    age: 63
+  output:
+    is_md_elderly: true
+
+- name: Individual, is not MD elderly
+  period: 2024
+  input:
+    age: 61
+  output:
+    is_md_elderly: false

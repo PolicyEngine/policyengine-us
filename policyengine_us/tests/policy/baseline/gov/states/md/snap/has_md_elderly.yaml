@@ -1,0 +1,41 @@
+- name: Family with nobody elderly
+  period: 2024
+  input:
+    people:
+      p1:
+        is_md_elderly: false
+      p2:
+        is_md_elderly: false
+    spm_units:
+      spm_unit:
+        members: [p1, p2]
+  output:
+    has_md_elderly: false
+
+- name: Family with one person elderly
+  period: 2024
+  input:
+    people:
+      p1:
+        is_md_elderly: true
+      p2:
+        is_md_elderly: false
+    spm_units:
+      spm_unit:
+        members: [p1, p2]
+  output:
+    has_md_elderly: true
+
+- name: Family with all elderly
+  period: 2024
+  input:
+    people:
+      p1:
+        is_md_elderly: true
+      p2:
+        is_md_elderly: true
+    spm_units:
+      spm_unit:
+        members: [p1, p2]
+  output:
+    has_md_elderly: true

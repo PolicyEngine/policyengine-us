@@ -1,0 +1,11 @@
+description: New Mexico provides a separate SNAP minimum allotment amount if this is true.
+values:
+  0000-01-01: false
+  2024-01-01: true
+metadata:
+  period: year
+  unit: bool
+  label: NM SNAP minimum allotment in effect
+  reference:
+    - title: Income Eligibility Guidelines for SNAP & Financial Assistance
+      href: https://www.hca.nm.gov/wp-content/uploads/FPG-Cards-FY-2024-10.01.23-to-09.30.2024-English-1.pdf

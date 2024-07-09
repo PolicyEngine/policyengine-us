@@ -34,4 +34,21 @@ class snap_min_allotment(Variable):
             in_dc = state_code == "DC"
             min_allotment = where(in_dc, dc_min_allotment, min_allotment)
 
+        p_nm = parameters(period).gov.states.nm.snap.min_allotment
+        if p_nm.in_effect:
+            nm_min_allotment = p_nm.amount
+
+            state_code = spm_unit.household("state_code_str", period)
+            in_nm = state_code == "NM"
+            min_allotment = where(in_nm, nm_min_allotment, min_allotment)
+        
+        p_md = parameters(period).gov.states.md.snap.min_allotment
+        if p_md.in_effect:
+            md_min_allotment = p_md.amount
+
+            state_code = spm_unit.household("state_code_str", period)
+            in_md = state_code == "MD"
+            has_elderly = spm_unit("has_md_elderly", period)
+            min_allotment = where(in_md & has_elderly, md_min_allotment, min_allotment)
+        
         return min_allotment
