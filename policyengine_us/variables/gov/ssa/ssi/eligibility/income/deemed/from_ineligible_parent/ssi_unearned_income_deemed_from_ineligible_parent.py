@@ -50,7 +50,6 @@ class ssi_unearned_income_deemed_from_ineligible_parent(Variable):
         net_parental_deemed_income = _apply_ssi_exclusions(
             parental_earned_income,
             parental_unearned_income,
-            blind_disabled_working_student_income,
             parameters,
             period,
         )
