@@ -14,6 +14,13 @@ class ssi_countable_income(Variable):
 
     def formula(person, period, parameters):
         earned_income = person("ssi_marital_earned_income", period)
+        blind_disabled_working_student_income = person(
+            "ssi_blind_or_disabled_working_student", period
+        )
+        capped_earned_income = max_(
+            earned_income - blind_disabled_working_student_income, 0
+        )
+
         unearned_income = person("ssi_marital_unearned_income", period)
         parental_income_deemed_as_unearned_income = person(
             "ssi_unearned_income_deemed_from_ineligible_parent", period
@@ -23,7 +30,7 @@ class ssi_countable_income(Variable):
         )
 
         personal_income = _apply_ssi_exclusions(
-            earned_income - blind_disabled_working_student_income,
+            capped_earned_income,
             unearned_income + parental_income_deemed_as_unearned_income,
             parameters,
             period,
