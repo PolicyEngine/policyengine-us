@@ -12,23 +12,46 @@ metadata:
       href: https://tax.vermont.gov/sites/tax/files/documents/RateSched-2021.pdf#page=1
     - title: Vermont 2022 Income Tax Return Booklet Forms and Instructions
       href: https://tax.vermont.gov/sites/tax/files/documents/RateSched-2022.pdf#page=1
+    - title: Vermont 2023 Income Tax Return Booklet Forms and Instructions
+      href: https://tax.vermont.gov/sites/tax/files/documents/RateSched-2023.pdf#page=1
 brackets:
   - threshold:
       2021-01-01: 0
     rate:
       2021-01-01: 0.0335
   - threshold:
-      2021-01-01: 40_950
-      2022-01-01: 42_150
+      values:
+        2021-01-01: 40_950
+        2022-01-01: 42_150
+        2023-01-01: 45_400
+      metadata:
+        uprating: gov.irs.uprating
+        rounding:
+          type: downwards
+          interval: 50
     rate:
       2022-01-01: 0.066
   - threshold:
-      2021-01-01: 99_200
-      2022-01-01: 102_200
+      values:
+        2021-01-01: 99_200
+        2022-01-01: 102_200
+        2023-01-01: 110_050
+      metadata:
+        uprating: gov.irs.uprating
+        rounding:
+          type: downwards
+          interval: 50
     rate:
       2022-01-01: 0.076
   - threshold:
-      2021-01-01: 206_950
-      2022-01-01: 213_150
+      values:
+        2021-01-01: 206_950
+        2022-01-01: 213_150
+        2023-01-01: 229_550
+      metadata:
+        uprating: gov.irs.uprating
+        rounding:
+          type: downwards
+          interval: 50
     rate:
       2022-01-01: 0.0875

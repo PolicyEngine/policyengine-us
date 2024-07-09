@@ -1,0 +1,44 @@
+- name: Unreduced exempt income
+  period: 2021
+  input:
+    state_code: LA
+    adjusted_gross_income: 30_000
+    la_retirement_exemption_person: 3_000
+    taxable_social_security: 1_000
+    la_federal_tax_deduction: 0
+  output:
+    la_agi_exempt_income: 4_000 
+
+- name: Reduced exempt income
+  period: 2021
+  input:
+    state_code: LA
+    adjusted_gross_income: 80_000
+    la_retirement_exemption_person: 20_000
+    taxable_social_security: 1_000
+    la_federal_tax_deduction: 0
+  output:
+    la_agi_exempt_income: 19_500 
+
+- name: After 2021, the exempt income will not be reduced
+  period: 2022
+  input:
+    state_code: LA
+    adjusted_gross_income: 80_000
+    la_retirement_exemption_person: 20_000
+    taxable_social_security: 1_000
+    la_federal_tax_deduction: 0
+  output:
+    la_agi_exempt_income: 21_000 
+
+- name: The second option is to reduce the exempt income by the federal tax deduction
+  period: 2021
+  input:
+    state_code: LA
+    adjusted_gross_income: 80_000
+    la_retirement_exemption_person: 20_000
+    taxable_social_security: 1_000
+    la_federal_tax_deduction: 59_000
+  output:
+    la_agi_exempt_income: 19_500
+ 

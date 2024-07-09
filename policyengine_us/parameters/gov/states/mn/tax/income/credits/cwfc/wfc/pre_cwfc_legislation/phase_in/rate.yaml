@@ -1,0 +1,30 @@
+description: Minnesota has a working family credit (WFC) in which these phasein rates are applied to earnings up to a maximum.
+metadata:
+  type: single_amount
+  period: year
+  threshold_unit: child
+  amount_unit: /1
+  label: Minnesota WFC phasein rate by number of children
+  reference:
+  - title: 2021 Minnesota Statutes, section 290.0671
+    href: https://www.revisor.mn.gov/statutes/2021/cite/290.0671#stat.290.0671.1
+  - title: 2022 Minnesota Statutes, section 290.0671
+    href: https://www.revisor.mn.gov/statutes/2022/cite/290.0671#stat.290.0671.1
+
+brackets:
+  - threshold:
+      2021-01-01: 0
+    amount:
+      2021-01-01: 0.039
+  - threshold:
+      2021-01-01: 1
+    amount:
+      2021-01-01: 0.0935
+  - threshold:
+      2021-01-01: 2
+    amount:
+      2021-01-01: 0.11
+  - threshold:
+      2021-01-01: 3
+    amount:
+      2021-01-01: 0.125
