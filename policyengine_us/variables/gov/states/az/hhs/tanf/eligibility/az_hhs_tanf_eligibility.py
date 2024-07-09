@@ -16,18 +16,11 @@ class az_hhs_tanf_eligibility(Variable):
         monthly_countable_earned_income = spm_unit(
             "az_tanf_earned_income", period
         )
+        payment_standard_threshold= spm_unit("az_payment_standard",period)
         fpg_eligibility = monthly_countable_earned_income <= monthly_fpg
         # Judge whether the countable income exceed the Cash Assistance Payment Standard
-        p = parameters(
-           period
-        ).gov.states.az.hhs.tanf.eligibility.payment_standard
-        shelter_cost = spm_unit("housing_cost", period)
-        payment_standard_threshold = where(
-            shelter_cost > 0, np.floor(p.high*monthly_fpg), np.floor(p.low*monthly_fpg)
-        )
         payment_standard_eligibility = (
            monthly_countable_earned_income <= payment_standard_threshold
         )
-        
         #The family is eligible for cash assistance only when the two criteria are fitted at the same time
         return fpg_eligibility & payment_standard_eligibility

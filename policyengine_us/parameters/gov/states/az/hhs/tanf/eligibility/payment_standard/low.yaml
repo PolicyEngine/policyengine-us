@@ -2,11 +2,12 @@ description: Arizona provides the following low percentage of FPG as cash assist
 
 metadata:
   unit: /1
-  period: month
+  period: year
   label: Arizona cash assistance lower payment standard
   reference:
     - title: Arizona Department of Economic Security - Cash Assistance (CA) Income Eligibility Guidelines
       href: https://des.az.gov/services/child-and-family/cash-assistance/cash-assistance-ca-income-eligibility-guidelines
+    # Source https://dbmefaapolicy.azdes.gov/index.html#page/FAA6/A2_Payment_Standards.html#wwpID0E0DM0HA rounds the results to a percentage of 22.65 instead of 23%, which is defined in the manual.
 
 value: 
   2023-01-01: 0.184

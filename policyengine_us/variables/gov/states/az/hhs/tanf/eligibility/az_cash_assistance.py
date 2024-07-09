@@ -12,15 +12,10 @@ class az_cash_assistance(Variable):
     defined_for = "az_hhs_tanf_eligibility"
 
     def formula(spm_unit, period, parameters):
-        monthly_fpg = spm_unit("spm_unit_fpg", period)
-        p = parameters(
-            period
-        ).gov.states.az.hhs.tanf.eligibility.payment_standard
+        payment_standard_threshold= spm_unit("az_payment_standard",period)
+        eligibility=spm_unit("az_hhs_tanf_eliigbility",period)
         monthly_countable_earned_income = spm_unit(
             "az_tanf_earned_income", period
         )
-        shelter_cost = spm_unit("housing_cost", period)
-        payment_threshold = where(shelter_cost > 0, np.floor(p.high*monthly_fpg), np.floor(p.low*monthly_fpg))
-        return max_(
-            payment_threshold - monthly_countable_earned_income, 0
-        )
+        return max_(payment_standard_threshold - monthly_countable_earned_income, 0
+        )*eligibility
