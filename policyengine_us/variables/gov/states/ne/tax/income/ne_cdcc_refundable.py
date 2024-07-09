@@ -27,6 +27,8 @@ class ne_cdcc_refundable(Variable):
         match = max_(max_match_percentage - total_match_reduction_amount, 0)
         # determine NE refundable cdcc amount
         us_cdcc = tax_unit("cdcc", period)
-        # The refudnable credit is limited to filers with income below a certain threshold
+        # The refundable credit is limited to filers 
+        # with income below a certain threshold which is not mathematically 
+        # derived from the reduction structure
         income_eligible = us_agi < p.income_threshold
         return us_cdcc * match * income_eligible
