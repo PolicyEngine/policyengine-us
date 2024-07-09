@@ -2,6 +2,7 @@
   period: 2024
   input:
     age: 63
+    state_code: MD
   output:
     is_md_elderly: true
 
@@ -9,5 +10,6 @@
   period: 2024
   input:
     age: 61
+    state_code: MD
   output:
     is_md_elderly: false

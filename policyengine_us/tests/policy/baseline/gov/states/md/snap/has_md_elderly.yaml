@@ -9,6 +9,10 @@
     spm_units:
       spm_unit:
         members: [p1, p2]
+    households:
+      household:
+        members: [p1, p2]
+        state_code: MD
   output:
     has_md_elderly: false
 
@@ -23,6 +27,10 @@
     spm_units:
       spm_unit:
         members: [p1, p2]
+    households:
+      household:
+        members: [p1, p2]
+        state_code: MD
   output:
     has_md_elderly: true
 
@@ -37,5 +45,9 @@
     spm_units:
       spm_unit:
         members: [p1, p2]
+    households:
+      household:
+        members: [p1, p2]
+        state_code: MD
   output:
     has_md_elderly: true
