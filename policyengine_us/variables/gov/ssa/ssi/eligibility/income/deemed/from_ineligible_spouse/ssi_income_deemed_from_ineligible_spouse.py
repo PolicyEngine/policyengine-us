@@ -21,12 +21,16 @@ class ssi_income_deemed_from_ineligible_spouse(Variable):
         spousal_unearned_income = person(
             "ssi_unearned_income_deemed_from_ineligible_spouse", period
         )
+        blind_disabled_working_student_income = person(
+            "ssi_blind_or_disabled_working_student", period
+        )
 
-        amount = parameters(period).gov.ssa.ssi.amount
+        # amount = parameters(period).gov.ssa.ssi.amount
 
         income_if_combined = _apply_ssi_exclusions(
             personal_earned_income + spousal_earned_income,
             personal_unearned_income + spousal_unearned_income,
+            blind_disabled_working_student_income,
             parameters,
             period,
         )
@@ -34,6 +38,7 @@ class ssi_income_deemed_from_ineligible_spouse(Variable):
         income_if_not_combined = _apply_ssi_exclusions(
             personal_earned_income,
             personal_unearned_income,
+            blind_disabled_working_student_income,
             parameters,
             period,
         )

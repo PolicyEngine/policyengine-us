@@ -18,10 +18,14 @@ class ssi_countable_income(Variable):
         parental_income_deemed_as_unearned_income = person(
             "ssi_unearned_income_deemed_from_ineligible_parent", period
         )
+        blind_disabled_working_student_income = person(
+            "ssi_blind_or_disabled_working_student", period
+        )
 
         personal_income = _apply_ssi_exclusions(
             earned_income,
             unearned_income + parental_income_deemed_as_unearned_income,
+            blind_disabled_working_student_income,
             parameters,
             period,
         )

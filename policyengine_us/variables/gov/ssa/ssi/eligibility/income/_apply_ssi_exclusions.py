@@ -4,6 +4,7 @@ from policyengine_us.model_api import *
 def _apply_ssi_exclusions(
     earned_income: ArrayLike,
     unearned_income: ArrayLike,
+    blind_disabled_working_student_income: ArrayLike,
     parameters: ParameterNode,
     period: Period,
 ) -> ArrayLike:
@@ -31,4 +32,6 @@ def _apply_ssi_exclusions(
     earned_after_flat_exclusion = max_(earned - earned_exclusion, 0)
     countable_earned_share = 1 - exclusions.earned_share
     countable_earned = earned_after_flat_exclusion * countable_earned_share
-    return (countable_unearned + countable_earned) * MONTHS_IN_YEAR
+    return (
+        countable_unearned + countable_earned
+    ) * MONTHS_IN_YEAR - blind_disabled_working_student_income
