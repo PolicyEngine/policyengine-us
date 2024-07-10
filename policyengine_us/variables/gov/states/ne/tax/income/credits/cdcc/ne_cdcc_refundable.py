@@ -11,7 +11,7 @@ class ne_cdcc_refundable(Variable):
         "https://revenue.nebraska.gov/files/doc/tax-forms/2021/f_2441n.pdf"
         "https://revenue.nebraska.gov/sites/revenue.nebraska.gov/files/doc/Form_2441N_Ne_Child_and_Dependent_Care_Expenses_8-618-2022_final_2.pdf"
     )
-    defined_for = StateCode.NE
+    defined_for = "ne_cdcc_refundable_eligible"
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.ne.tax.income.credits.cdcc.refundable
@@ -30,5 +30,4 @@ class ne_cdcc_refundable(Variable):
         # The refundable credit is limited to filers
         # with income below a certain threshold which is not mathematically
         # derived from the reduction structure
-        income_eligible = us_agi < p.income_threshold
-        return us_cdcc * match * income_eligible
+        return us_cdcc * match
