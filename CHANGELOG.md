@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.16.2] - 2024-07-09 12:45:04
+
+### Fixed
+
+- 2018 federal EITC parameter values.
+
+## [1.16.1] - 2024-07-09 02:52:07
+
+### Fixed
+
+- 2023 EITC joint bonus parameter value.
+
 ## [1.16.0] - 2024-07-08 13:14:25
 
 ### Added
@@ -8989,6 +9001,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.16.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.16.1...1.16.2
+[1.16.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.16.0...1.16.1
 [1.16.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.15.0...1.16.0
 [1.15.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.14.0...1.15.0
 [1.14.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.13.0...1.14.0
