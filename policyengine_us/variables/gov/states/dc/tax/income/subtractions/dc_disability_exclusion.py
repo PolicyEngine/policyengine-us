@@ -11,7 +11,7 @@ class dc_disability_exclusion(Variable):
     reference = "https://code.dccouncil.gov/us/dc/council/code/sections/47-1803.02#(a)(2)(M)"
 
     def formula(person, period, parameters):
-        p = parameters(period).gov.irs.payroll.disability_income_exclusion
+        p = parameters(period).gov.irs.income.disability_income_exclusion
         tax_unit = person.tax_unit
 
         disability_payments = person("total_disability_payments", period)
