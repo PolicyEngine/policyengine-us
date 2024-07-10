@@ -1,10 +1,11 @@
-description: Minnesota children age minimum for the child and working families tax credit.
+description: Minnesota limits the child and working families tax credit to filers with children below this age.
 values:
   2023-01-01: 18
 
 metadata:
   period: year
-  label: Minnesota children age minimum
+  label: Minnesota child and working families tax credit child age threshold
+  unit: year
   reference:
   - title: 2021 Schedule M1CD, Child and Dependent Care Credit
     href: https://www.revenue.state.mn.us/sites/default/files/2023-02/m1cd_21.pdf#page=3
