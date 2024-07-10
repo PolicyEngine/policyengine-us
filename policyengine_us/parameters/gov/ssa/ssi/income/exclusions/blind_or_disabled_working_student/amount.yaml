@@ -1,7 +1,16 @@
 description: IRS excludes the following earned income amount under the blind or disabled SSI.
 
 values:
-  2011-01-01: 1_640
+  1974-01-01: 400
+  2001-01-01: 1_290
+  2002-01-01: 1_320
+  2003-01-01: 1_340
+  2004-01-01: 1_370
+  2005-01-01: 1_410
+  2006-01-01: 1_460
+  2007-01-01: 1_510
+  2008-01-01: 1_550
+  2009-01-01: 1_640
   2012-01-01: 1_700
   2013-01-01: 1_730
   2014-01-01: 1_750
@@ -13,6 +22,7 @@ values:
   2021-01-01: 1_930
   2022-01-01: 2_040
   2023-01-01: 2_220
+  2024-01-01: 2_290
 metadata:
   uprating:
     parameter: gov.irs.uprating
@@ -51,3 +61,5 @@ metadata:
       href: https://www.ssa.gov/oact/ssir/SSI22/V_B_Exclusions.html#39619
     - title: 2023 Annual Report of the SSI Program - B. INCOME AND RESOURCE EXCLUSIONS
       href: https://www.ssa.gov/oact/ssir/SSI23/V_B_Exclusions.html#39619
+    - title: 2024 Annual Report of the SSI Program - B. INCOME AND RESOURCE EXCLUSIONS
+      href: https://www.ssa.gov/OACT/ssir/SSI24/V_E_WorkIncentives.html

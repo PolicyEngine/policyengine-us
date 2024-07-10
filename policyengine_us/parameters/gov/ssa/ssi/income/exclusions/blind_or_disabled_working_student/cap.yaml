@@ -1,7 +1,16 @@
 description: IRS caps the annual blind or disabled earned income exclusion at the following amount.
 
 values:
-  2011-01-01: 6_600
+  1974-01-01: 1_620
+  2001-01-01: 5_200
+  2002-01-01: 5_340
+  2003-01-01: 5_410
+  2004-01-01: 5_520
+  2005-01-01: 5_670
+  2006-01-01: 5_910
+  2007-01-01: 6_100
+  2008-01-01: 6_240
+  2009-01-01: 6_600
   2012-01-01: 6_840
   2013-01-01: 6_960
   2014-01-01: 7_060
@@ -13,6 +22,7 @@ values:
   2021-01-01: 7_770
   2022-01-01: 8_230
   2023-01-01: 8_950
+  2024-01-01: 9_230
 metadata:
   uprating:
     parameter: gov.irs.uprating
@@ -51,3 +61,6 @@ metadata:
       href: https://www.ssa.gov/oact/ssir/SSI22/V_B_Exclusions.html#39619
     - title: 2023 Annual Report of the SSI Program - B. INCOME AND RESOURCE EXCLUSIONS
       href: https://www.ssa.gov/oact/ssir/SSI23/V_B_Exclusions.html#39619
+    - title: 2024 Annual Report of the SSI Program - B. INCOME AND RESOURCE EXCLUSIONS
+      href: https://www.ssa.gov/OACT/ssir/SSI24/V_E_WorkIncentives.html
+
