@@ -1,0 +1,27 @@
+- name: 2021 montgomery eitc, is Montgomery county resident
+  period: 2021
+  input:
+    state_code: MD
+    county: MONTGOMERY_COUNTY_MD
+    md_refundable_eitc: 100
+  output:
+    md_montgomery_eitc: 100
+
+
+- name: 2021 montgomery eitc, NOT Montgomery county resident
+  period: 2021
+  input:
+    state_code: MD
+    md_refundable_eitc: 100
+  output:
+    md_montgomery_eitc: 0
+
+
+- name: 2024 montgomery eitc, is Montgomery county resident
+  period: 2024
+  input:
+    state_code: MD
+    county: MONTGOMERY_COUNTY_MD
+    md_refundable_eitc: 100
+  output:
+    md_montgomery_eitc: 56

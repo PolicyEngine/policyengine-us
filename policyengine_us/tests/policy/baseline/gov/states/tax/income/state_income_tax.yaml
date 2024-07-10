@@ -2,11 +2,19 @@
   period: 2021
   input:
     simulation.reported_state_income_tax: false
-    de_withheld_income_tax: 1_000
-    in_withheld_income_tax: 300
-    pa_withheld_income_tax: 600
+    state_income_tax_before_refundable_credits: 1_000
+    state_refundable_credits: 300
   output:
-    state_income_tax: 1_900
+    state_income_tax: 700
+
+- name: Reported state income tax sim false, negative amount
+  period: 2021
+  input:
+    simulation.reported_state_income_tax: false
+    state_income_tax_before_refundable_credits: 0
+    state_refundable_credits: 300
+  output:
+    state_income_tax: -300
 
 - name: Reported state income tax sim, one head
   period: 2021
