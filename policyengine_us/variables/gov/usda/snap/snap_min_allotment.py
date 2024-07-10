@@ -26,11 +26,11 @@ class snap_min_allotment(Variable):
         min_allotment = (
             eligible * p.min_allotment.rate * relevant_max_allotment
         )
+        state_code = spm_unit.household("state_code_str", period)
         p_dc = parameters(period).gov.states.dc.dhs.snap.min_allotment
         if p_dc.in_effect:
             dc_min_allotment = p_dc.amount
 
-            state_code = spm_unit.household("state_code_str", period)
             in_dc = state_code == "DC"
             min_allotment = where(in_dc, dc_min_allotment, min_allotment)
 
@@ -38,7 +38,6 @@ class snap_min_allotment(Variable):
         if p_nm.in_effect:
             nm_min_allotment = p_nm.amount
 
-            state_code = spm_unit.household("state_code_str", period)
             in_nm = state_code == "NM"
             min_allotment = where(in_nm, nm_min_allotment, min_allotment)
 
@@ -46,7 +45,6 @@ class snap_min_allotment(Variable):
         if p_md.in_effect:
             md_min_allotment = p_md.amount
 
-            state_code = spm_unit.household("state_code_str", period)
             in_md = state_code == "MD"
             has_elderly = spm_unit("has_md_elderly", period)
             min_allotment = where(
