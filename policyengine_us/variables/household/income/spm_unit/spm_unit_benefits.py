@@ -31,7 +31,7 @@ class spm_unit_benefits(Variable):
             "unemployment_compensation",
             # Contributed.
             "basic_income",
-            "ny_drive_clean_rebate"
+            "ny_drive_clean_rebate",
         ]
         if parameters(period).gov.contrib.ubi_center.flat_tax.deduct_ptc:
             BENEFITS.append("premium_tax_credit")

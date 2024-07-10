@@ -8,4 +8,4 @@ class ny_drive_clean_vehicle_cost(Variable):
     unit = USD
     definition_period = YEAR
     reference = "https://www.nyserda.ny.gov/-/media/Project/Nyserda/Files/Programs/Drive-Clean-NY/implementation-manual.pdf#page=8"
-    defined_for = StateCode.NY
+    defined_for = "ny_drive_clean_purchased_qualifying_vehicle"
