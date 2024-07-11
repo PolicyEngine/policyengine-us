@@ -1,0 +1,29 @@
+- name: Retirement income below 6000
+  period: 2023
+  input:
+    al_retirement_exemption_eligible_person: true
+    taxable_pension_income: 999
+    taxable_retirement_distributions: 5_000
+    state_code: AL
+  output:
+    al_retirement_exemption_person: 5_999
+
+- name: Retirement income above 6000
+  period: 2023
+  input:
+    al_retirement_exemption_eligible_person: true
+    taxable_pension_income: 3_000
+    taxable_retirement_distributions: 3_000
+    state_code: AL
+  output:
+    al_retirement_exemption_person: 6_000
+
+- name: Ineligible person
+  period: 2023
+  input:
+    al_retirement_exemption_eligible_person: false
+    taxable_pension_income: 999
+    taxable_retirement_distributions: 5_000
+    state_code: AL
+  output:
+    al_retirement_exemption_person: 0
