@@ -1,4 +1,4 @@
-description: Arizona provides the following low percentage of FPG as cash assistance payment standard if the filer does not pay shelter costs, based on the family size.(might have rounding error below 3)
+description: Arizona multiplies 23%(18.4% before December 2023) of 1992 federal poverty guidelines as the cash assistance payment standard if the filer does not pay shelter costs.(might have rounding error below 3)
 
 metadata:
   unit: /1
@@ -6,8 +6,9 @@ metadata:
   label: Arizona cash assistance lower payment standard
   reference:
     - title: Arizona Department of Economic Security - Cash Assistance (CA) Income Eligibility Guidelines
-      href: https://des.az.gov/services/child-and-family/cash-assistance/cash-assistance-ca-income-eligibility-guidelines
-    # Source https://dbmefaapolicy.azdes.gov/index.html#page/FAA6/A2_Payment_Standards.html#wwpID0E0DM0HA rounds the results to a percentage of 22.65 instead of 23%, which is defined in the manual.
+      href: https://dbmefaapolicy.azdes.gov/index.html#page/FAA5/CA_Payment_Standard_(A1_2fA2).html#wwpID0E0WHB0FA
+      href: https://dbmefaapolicy.azdes.gov/index.html#page/FAA6/A2_Payment_Standards.html#wwpID0E0DM0HA
+    # The second source rounds the results to a percentage of 22.65 instead of 23%, which is defined in the manual.
 
 value: 
   2023-01-01: 0.184
