@@ -1,0 +1,30 @@
+- name: Case 1, base cap higher than countable rent property tax
+  period: 2022
+  input:
+    state_code: ME
+    me_property_tax_fairness_credit_eligible: true
+    me_property_tax_fairness_credit_cap: 100
+    me_property_tax_fairness_credit_countable_rent_property_tax: 50
+  output:
+    me_property_tax_fairness_credit: 50
+
+- name: Case 2, base cap lower than countable rent property tax
+  period: 2022
+  input:
+    state_code: ME
+    me_property_tax_fairness_credit_eligible: true
+    me_property_tax_fairness_credit_cap: 100
+    me_property_tax_fairness_credit_countable_rent_property_tax: 150
+  output:
+    me_property_tax_fairness_credit: 100
+
+- name: Case 3, not eligible if not passing the eligible test
+  period: 2022
+  input:
+    state_code: ME
+    me_property_tax_fairness_credit_eligible: false
+    me_property_tax_fairness_credit_cap: 100
+    me_property_tax_fairness_credit_countable_rent_property_tax: 50
+  output:
+    me_property_tax_fairness_credit: 0
+

@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class mo_ptc_gross_income(Variable):
     value_type = float
     entity = TaxUnit
-    label = "MO property tax credit gross income"
+    label = "Missouri property tax credit gross income"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -39,8 +39,7 @@ class mo_ptc_gross_income(Variable):
             add(person, period, pa_sources)  # line 6
         )
         # compute nonbusiness capital losses in PTC gross income (line 7)
-        losses = ["short_term_capital_losses", "long_term_capital_losses"]
-        nonbusiness_losses = add(tax_unit, period, losses)
+        nonbusiness_losses = tax_unit("limited_capital_loss", period)
         return (  # line 8
             core_income
             + exempt_socsec_benefits

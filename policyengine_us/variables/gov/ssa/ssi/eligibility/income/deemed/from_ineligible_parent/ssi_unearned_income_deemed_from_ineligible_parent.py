@@ -3,12 +3,6 @@ from policyengine_us.variables.gov.ssa.ssi.eligibility.income._apply_ssi_exclusi
     _apply_ssi_exclusions,
 )
 
-# Disable divide-by-zero warning for this file
-import warnings
-
-warnings.filterwarnings("ignore", category=RuntimeWarning)
-warnings.simplefilter("ignore")
-
 
 class ssi_unearned_income_deemed_from_ineligible_parent(Variable):
     value_type = float
@@ -61,8 +55,12 @@ class ssi_unearned_income_deemed_from_ineligible_parent(Variable):
         )
 
         count_eligible_children = tax_unit.sum(eligible_child)
-        return where(
-            count_eligible_children > 0,
-            net_parental_deemed_income / count_eligible_children,
-            0,
+        # avoid array divide-by-zero warnings by not using where() function
+        # see the following GitHub issue for more details:
+        # https://github.com/PolicyEngine/policyengine-us/issues/2494
+        income = np.zeros_like(count_eligible_children)
+        mask = count_eligible_children > 0
+        income[mask] = (
+            net_parental_deemed_income[mask] / count_eligible_children[mask]
         )
+        return income

@@ -1,0 +1,10 @@
+description: Indiana has a state EITC that is decoupled from the federal EITC if this parameter is true.
+metadata:
+  unit: bool
+  label: Whether IN EITC is decoupled from federal EITC
+  reference:
+    - title: Indiana General Assembly Laws
+      href: https://iga.in.gov/laws/2021/ic/titles/6#6-3.1-21
+values:
+  2010-01-01: false
+  2011-01-01: true

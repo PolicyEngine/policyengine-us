@@ -1,0 +1,28 @@
+description: Arizona limits its Increased Excise Tax Credit to filers with federal adjusted gross income below the following amount, based on filing status.
+metadata:
+  label: Arizona Increased Excise Tax Credit income threshold
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  reference:
+    - title: Taxation of Income § 43-1072.01 - Credit for increased excise taxes paid (A), (1 & 2)
+      href: https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/43/01072-01.htm
+    - title: AZ tax-140 From Year 2021 Line 56 
+      href: https://azdor.gov/sites/default/files/2023-03/FORMS_INDIVIDUAL_2021_140BOOKLET.pdf#page=45
+    - title: AZ tax-140 From Year 2022 Line 56 
+      href: https://azdor.gov/sites/default/files/2023-03/FORMS_INDIVIDUAL_2022_140BOOKLET.pdf#page=43
+    - title: 2023 Arizona Form 140A - Arizona Resident Personal Income Tax Booklet Page 22, Line 26
+      href: https://azdor.gov/forms/individual/form-140a-arizona-resident-personal-income-tax-booklet
+
+SINGLE:
+  2001-01-01: 12_500
+HEAD_OF_HOUSEHOLD:
+  2001-01-01: 25_000
+JOINT:
+  2001-01-01: 25_000
+SURVIVING_SPOUSE:
+  2001-01-01: 25_000
+SEPARATE:
+  2001-01-01: 12_500
+

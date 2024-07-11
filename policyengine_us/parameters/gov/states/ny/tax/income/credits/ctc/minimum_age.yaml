@@ -1,10 +1,14 @@
-description: Minimum age to qualify for New York's Empire State Child Credit
+description: New York's Empire State Child Credit minimum age qualification.
 values:
   2018-01-01: 4
 metadata:
-  unit: years
-  name: ny_escc_minimum_age
+  unit: year
+  period: year
   label: NY CTC minimum age
   reference:
     - title: Section 606 Credits against tax (c-1)
       href: https://www.nysenate.gov/legislation/laws/TAX/606
+    - title: New York Instructions for Form IT-201 Line 63
+      href: https://www.tax.ny.gov/pdf/2023/printable-pdfs/inc/it201i-2023.pdf#page=25
+    - title: New York Instructions for Form IT-213
+      href: https://www.tax.ny.gov/pdf/2023/printable-pdfs/inc/it213i-2023.pdf#page=1

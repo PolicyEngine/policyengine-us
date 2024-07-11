@@ -1,0 +1,15 @@
+- name: Capped at 15_000
+  period: 2021
+  input:
+    state_code: MS
+    military_service_income: 20_000
+  output:
+    ms_national_guard_or_reserve_pay_adjustment: 15_000
+
+- name: Uncapped
+  period: 2021
+  input:
+    state_code: MS
+    military_service_income: 10_000
+  output:
+    ms_national_guard_or_reserve_pay_adjustment: 10_000

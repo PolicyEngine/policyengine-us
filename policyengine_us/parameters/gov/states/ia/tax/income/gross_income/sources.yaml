@@ -1,0 +1,28 @@
+description: Iowa gross income sources.
+values:
+  2021-01-01:
+    - irs_employment_income
+    - taxable_interest_income
+    - dividend_income
+    - alimony_income
+    - self_employment_income
+    - capital_gains
+    - taxable_pension_income
+    - partnership_s_corp_income
+    - rental_income
+    - farm_income
+    - taxable_unemployment_compensation
+    - miscellaneous_income
+
+metadata:
+  unit: variable
+  label: Iowa gross income sources
+  reference:
+  - title: 2021 IA1040 Iowa Income Tax Return, Lines 1-14
+    href: https://tax.iowa.gov/sites/default/files/2022-01/IA1040%2841-001%29.pdf#page=1
+  - title: 2021 IA1040 Income Tax Return instructions
+    href: https://tax.iowa.gov/sites/default/files/2023-01/2021%20Expanded%20Instructions_010323.pdf#page=12
+  - title: 2022 IA1040 Iowa Income Tax Return, Lines 1-14
+    href: https://tax.iowa.gov/sites/default/files/2023-01/2022IA1040%2841001%29.pdf#page=1
+  - title: 2022 IA1040 Income Tax Return instructions
+    href: https://tax.iowa.gov/sites/default/files/2023-03/2022%20Expanded%20Instructions_022023.pdf#page=11

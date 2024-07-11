@@ -1,0 +1,26 @@
+- name: test for 2021
+  period: 2021
+  input:
+    state_code: AZ
+    charitable_deduction: 2_000
+    az_charitable_contributions_credit: 1_000
+  output:
+    az_increased_standard_deduction_for_charitable_contributions: 250
+
+- name: test for 2022
+  period: 2022
+  input:
+    state_code: AZ
+    charitable_deduction: 1_000
+    az_charitable_contributions_credit: 500
+  output:
+    az_increased_standard_deduction_for_charitable_contributions: 135
+
+- name: test for 2023
+  period: 2023
+  input:
+    state_code: AZ
+    charitable_deduction: 1_000
+    az_charitable_contributions_credit: 500
+  output:
+    az_increased_standard_deduction_for_charitable_contributions: 155

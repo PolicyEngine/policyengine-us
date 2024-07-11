@@ -1,0 +1,19 @@
+- name: MS deductions return the max of itemized or standard  deduction
+  period: 2020
+  input:
+    state_code: MS
+    ms_itemized_deductions_indiv: 2_000
+    ms_standard_deduction_indiv: 3_000
+    ms_tax_unit_itemizes: false
+  output:
+    ms_deductions_indiv: 3_000
+
+- name: MS deductions return the max of itemized or standard  deduction
+  period: 2020
+  input:
+    state_code: MS
+    ms_itemized_deductions_indiv: 1_000
+    ms_standard_deduction_indiv: 500
+    ms_tax_unit_itemizes: true
+  output:
+    ms_deductions_indiv: 1_000

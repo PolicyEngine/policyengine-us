@@ -1,0 +1,23 @@
+- name: Case 1, above age threshold.
+  period: 2022
+  input:
+    age: 70
+    state_code: SC
+  output:
+    sc_retirement_cap: 10_000
+
+- name: Case 2, below age threshold.
+  period: 2022
+  input:
+    age: 64
+    state_code: SC
+  output:
+    sc_retirement_cap: 3_000
+
+- name: Case 3, at age threshold.
+  period: 2022
+  input:
+    age: 65
+    state_code: SC
+  output:
+    sc_retirement_cap: 10_000

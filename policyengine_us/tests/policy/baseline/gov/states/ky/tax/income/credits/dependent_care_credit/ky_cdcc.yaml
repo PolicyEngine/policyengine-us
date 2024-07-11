@@ -1,0 +1,15 @@
+- name: Single filer with 10k of income
+  period: 2023
+  input: 
+    state_code: KY
+    cdcc: 10_000
+  output:
+    ky_cdcc: 2_000
+
+- name: No income
+  period: 2021
+  input: 
+    state_code: KY
+    cdcc: 0
+  output:
+    ky_cdcc: 0

@@ -1,0 +1,72 @@
+- name: Winship reform gives a bonus
+  period: 2023
+  absolute_error_margin: 10
+  reforms: policyengine_us.reforms.winship.winship_reform
+  input:
+    gov.contrib.individual_eitc.agi_eitc_limit: 100_000
+    people:
+      head:
+        employment_income: 20_000
+      spouse:
+        employment_income: 30_000
+      child_1:
+        age: 5
+      child_2:
+        age: 6
+  output:
+    eitc: 6210 + 6604 # The sum of the EITCs for the two tests below.
+    original_eitc: 2_000
+
+- name: EITC for 30k/0k income, to inform the first test.
+  period: 2023
+  absolute_error_margin: 10
+  reforms: policyengine_us.reforms.winship.winship_reform
+  input:
+    gov.contrib.individual_eitc.agi_eitc_limit: 100_000
+    people:
+      head:
+        employment_income: 30_000
+      spouse:
+        employment_income: 0
+      child_1:
+        age: 5
+      child_2:
+        age: 6
+  output:
+    eitc: 6_210
+
+- name: EITC for 20k/0k income, to inform the first test.
+  period: 2023
+  absolute_error_margin: 10
+  reforms: policyengine_us.reforms.winship.winship_reform
+  input:
+    gov.contrib.individual_eitc.agi_eitc_limit: 100_000
+    people:
+      head:
+        employment_income: 20_000
+      spouse:
+        employment_income: 0
+      child_1:
+        age: 5
+      child_2:
+        age: 6
+  output:
+    eitc: 6_604
+
+- name: EITC for 20k/0k income, to inform the first test.
+  period: 2023
+  absolute_error_margin: 10
+  reforms: policyengine_us.reforms.winship.winship_reform
+  input:
+    gov.contrib.individual_eitc.agi_eitc_limit:  19_000
+    people:
+      head:
+        employment_income: 20_000
+      spouse:
+        employment_income: 0
+      child_1:
+        age: 5
+      child_2:
+        age: 6
+  output:
+    eitc: 0

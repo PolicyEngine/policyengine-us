@@ -1,0 +1,17 @@
+- name: Military reserve or national guard duty pay is lower than the max amount
+  period: 2021
+  input:
+    military_service_income: 5_000
+    is_tax_unit_head_or_spouse: true
+    state_code: HI
+  output:
+    hi_military_pay_exclusion: 5_000
+
+- name: Military reserve or national guard duty pay exceeds the max amount
+  period: 2021
+  input:
+    military_service_income: 8_000
+    is_tax_unit_head_or_spouse: true
+    state_code: HI
+  output:
+    hi_military_pay_exclusion: 7_345

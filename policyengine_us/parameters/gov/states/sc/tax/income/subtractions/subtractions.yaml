@@ -1,0 +1,40 @@
+description: South Carolina subtracts these sources from federal taxable income to determine state taxable income.
+values:
+  2021-01-01:
+    - salt_refund_income
+    - disability_benefits #include tax disability benefits
+    - sc_net_capital_gain_deduction
+    - investment_in_529_plan  
+    - us_govt_interest
+    - taxable_social_security
+    - sc_military_deduction
+    - sc_retirement_deduction
+    - sc_senior_exemption
+    - sc_young_child_deduction
+    - sc_dependent_exemption 
+    # - Out of state income/gain
+    # - Volunteer deductions 
+    # - Active Trade or Business Income deduction
+    # - Certain nontaxable National Guard or Reserve pay
+    # - Negative amount of federal taxable income
+    # - Subsistence allowance 
+    # - Consumer Protection Services
+    # - Other subtractions 
+
+metadata:
+  unit: list
+  period: year
+  label: South Carolina federal taxable income subtractions 
+  reference:
+    - title: SC 1040 tax form (2021)
+      href: https://dor.sc.gov/forms-site/Forms/SC1040_2021.pdf#page=2
+    - title: SC 1040 tax form instructions (2021)
+      href: https://dor.sc.gov/forms-site/Forms/IITPacket_2021.pdf#page=14
+    - title: SC Legal Code | SECTION 12-6-1130
+      href: https://www.scstatehouse.gov/code/t12c006.php
+    - title: SC Legal Code | SECTION 12-6-1140
+      href: https://www.scstatehouse.gov/code/t12c006.php  
+    - title: SC 1040 tax form (2022)
+      href: https://dor.sc.gov/forms-site/Forms/SC1040_2022.pdf#page=2
+    - title: SC 1040 tax form instructions (2023)
+      href: https://dor.sc.gov/forms-site/Forms/IITPacket_2023.pdf#page=43

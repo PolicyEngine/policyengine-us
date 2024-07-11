@@ -1,0 +1,8 @@
+- name: The credit was introduced in 2022
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    cdcc: 800
+    state_code: WI
+  output:
+    wi_childcare_expense_credit: 400

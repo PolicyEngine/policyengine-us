@@ -1,0 +1,19 @@
+- name: Standard deduction greater than Modified AGI
+  period: 2022
+  input:
+    state_code: RI
+    ri_agi: 200_000
+    ri_exemptions: 4_350
+    ri_standard_deduction: 210_000
+  output:
+    ri_taxable_income: 0
+
+- name: Positive taxable income
+  period: 2022
+  input:
+    state_code: RI
+    ri_agi: 200_000
+    ri_exemptions: 4_350
+    ri_standard_deduction: 100_000
+  output:
+    ri_taxable_income: 95_650

@@ -1,0 +1,33 @@
+- name: Tax unit with taxsimid 98679 in f21.its.csv and f21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 66
+        employment_income: 29_010
+        taxable_interest_income: 5_505
+        taxable_private_pension_income: 3_500
+        social_security: 12_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 66
+        employment_income: 26_010
+        taxable_interest_income: 5_505
+        taxable_private_pension_income: 3_500
+        social_security: 12_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        premium_tax_credit: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CO
+  output:  # expected results from patched TAXSIM35 2023-08-31 version
+    co_taxable_income: 38230.00
+    co_income_tax: 1608.35

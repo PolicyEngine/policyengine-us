@@ -1,0 +1,35 @@
+- name: The tax filer is both aged and blind.
+  period: 2021
+  input:
+    state_code: VA
+    is_irs_aged: true
+    is_blind: true
+  output:
+    va_aged_blind_exemption_person: 1_600
+
+- name: The tax filer is aged.
+  period: 2021
+  input:
+    state_code: VA
+    is_irs_aged: true
+    is_blind: false
+  output:
+    va_aged_blind_exemption_person: 800
+  
+- name: The tax filer is blind.
+  period: 2021
+  input:
+    state_code: VA
+    is_irs_aged: false
+    is_blind: true
+  output:
+    va_aged_blind_exemption_person: 800
+
+- name: The tax filer is neither aged nor blind.
+  period: 2021
+  input:
+    state_code: VA
+    is_irs_aged: false
+    is_blind: false
+  output:
+    va_aged_blind_exemption_person: 0

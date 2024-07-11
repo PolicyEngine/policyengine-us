@@ -1,0 +1,71 @@
+- name: Joint filing, both spouses not eligible for social security so they get the special exclusion.
+  absolute_error_margin: 0
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        never_eligible_for_social_security_benefits: true
+      person2:
+        is_tax_unit_spouse: true
+        never_eligible_for_social_security_benefits: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    nj_other_retirement_special_exclusion: 6_000
+
+- name: Single filer 70+ not eligible for social security so they get the special exclusion.
+  absolute_error_margin: 0
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        never_eligible_for_social_security_benefits: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_other_retirement_special_exclusion: 3_000
+
+- name: One spouse is eligible for social security benefits, so household not eligible for special exclusion.
+  absolute_error_margin: 0
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        never_eligible_for_social_security_benefits: true
+      person2:
+        is_tax_unit_spouse: true
+        never_eligible_for_social_security_benefits: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    nj_other_retirement_special_exclusion: 0

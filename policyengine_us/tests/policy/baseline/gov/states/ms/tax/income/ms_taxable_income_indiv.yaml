@@ -1,0 +1,17 @@
+- name: Calculation 
+  period: 2023
+  input:
+    state_code: MS
+    ms_pre_deductions_taxable_income_indiv: 4_000
+    ms_deductions_indiv: 2_500
+  output:
+    ms_taxable_income_indiv: 1_500
+
+- name: Capped at 0
+  period: 2023
+  input:
+    state_code: MS
+    ms_pre_deductions_taxable_income_indiv: 4_000
+    ms_deductions_indiv: 5_000
+  output:
+    ms_taxable_income_indiv: 0

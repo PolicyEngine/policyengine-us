@@ -1,0 +1,11 @@
+description: Total qualified dividend income.
+values:
+  2015-01-01: 203_187_788_000
+  2020-01-01: 260_244_440_000
+metadata:
+  unit: currency-USD
+  label: SOI qualified dividend income
+  uprating: calibration.gov.cbo.income_by_source.qualified_dividend_income
+  reference:
+    - title: IRS SOI Tax Stats - Individual Statistical Tables by Size of Adjusted Gross Income
+      href: https://www.irs.gov/statistics/soi-tax-stats-individual-statistical-tables-by-size-of-adjusted-gross-income

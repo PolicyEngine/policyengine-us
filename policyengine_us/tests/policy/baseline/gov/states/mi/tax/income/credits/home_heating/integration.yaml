@@ -1,0 +1,118 @@
+- name: integration test 1
+  period: 2022
+  input:
+    people:
+      person1:
+        employment_income: 1_000
+        is_full_time_student: false
+        claimed_as_dependent_on_another_return: false
+      person2:
+        is_full_time_student: true
+        claimed_as_dependent_on_another_return: false
+      person3:
+        is_full_time_student: true
+        claimed_as_dependent_on_another_return: false
+    tax_units:
+      tax_unit:
+        heating_expenses: 1_000
+        utilities_included_in_rent: false
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MI
+  output: 
+    mi_alternate_home_heating_credit_eligible: true
+    # (1_000 - 1_000 * 0.11) * 0.7
+    mi_alternate_home_heating_credit: 623
+    mi_standard_home_heating_credit_eligible: true
+    # 888 - 1000 * 0.035
+    mi_standard_home_heating_credit: 853
+    mi_home_heating_credit_eligible_rate: 1
+    # 853 * 0.9
+    mi_home_heating_credit: 767.7
+
+- name: integration test 2, a couple with $12,020 income and two dependents
+  period: 2022
+  input:
+    people:
+      person1:
+        employment_income: 6_000
+        is_full_time_student: false
+        claimed_as_dependent_on_another_return: false
+        mi_disabled_exemption_eligible_person: true
+        is_fully_disabled_service_connected_veteran: true
+      person2:
+        employment_income: 6_020
+        is_full_time_student: true
+        claimed_as_dependent_on_another_return: false
+      person3:
+        is_full_time_student: true
+        claimed_as_dependent_on_another_return: false
+      person4:
+        is_full_time_student: false
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        heating_expenses: 1_000
+        utilities_included_in_rent: false
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: MI
+  output: 
+    mi_alternate_home_heating_credit_eligible: true
+    # (1_000 - 12_020 * 0.11) * 0.7 < 0
+    mi_alternate_home_heating_credit: 0
+    mi_standard_home_heating_credit_eligible: true
+    # 1433 - 12_020 * 0.035
+    mi_standard_home_heating_credit: 1012.3
+    mi_home_heating_credit_eligible_rate: 1
+    # 1012.3 * 0.9
+    mi_home_heating_credit: 911.07
+
+- name: integration test 3, an elderly couple with $12,020 income and four dependents
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 65
+        employment_income: 6_000
+        ssi: 0
+      person2:
+        age: 65
+        employment_income: 6_020
+        ssi: 0
+      person3:
+        age: 10
+        employment_income: 0
+      person4:
+        age: 8
+        employment_income: 0
+      person5:
+        age: 6
+        employment_income: 0
+      person6:
+        age: 4
+        employment_income: 0
+    tax_units:
+      tax_unit:
+        # heating_expenses: 1_000
+        # utilities_included_in_rent: false
+        members: [person1, person2, person3, person4, person5, person6]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code: MI
+  output: 
+    mi_alternate_home_heating_credit_eligible: true
+    # (1_000 - 12_020 * 0.11) * 0.7 < 0
+    mi_alternate_home_heating_credit: 0
+    mi_standard_home_heating_credit_eligible: true
+    # 1433 - 12_020 * 0.035
+    mi_standard_home_heating_credit: 1012.3
+    mi_home_heating_credit_eligible_rate: 1
+    # 1_012.3 * 0.9
+    mi_home_heating_credit: 911.07

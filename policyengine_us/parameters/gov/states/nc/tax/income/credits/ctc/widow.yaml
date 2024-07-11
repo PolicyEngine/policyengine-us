@@ -1,0 +1,30 @@
+description: North Carolina provides the following child tax credit amount for widow filers.
+brackets:
+  - threshold:
+      2015-01-01: 0
+    amount:
+      2015-01-01: 125
+      2018-01-01: 0
+  - threshold:
+      2015-01-01: 40_000
+    amount: 
+      2015-01-01: 100
+      2018-01-01: 0
+  - threshold:
+      2015-01-01: 100_000
+    amount: 
+      2015-01-01: 0
+
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: currency-USD
+  period: year
+  label: North Carolina CTC widow filer amount
+  reference:
+  - title: North Carolina Department of Revenue - Credit for Children
+    href: https://www.ncdor.gov/taxes-forms/individual-income-tax/credit-children
+  - title: Code of North Carolina | § 105-153.10 Repealed by Session Laws.
+    href: https://www.ncleg.gov/EnactedLegislation/Statutes/HTML/BySection/Chapter_105/GS_105-153.10.html
+  - title: North Carolina Department of Revenue - 2017 Individual Income Tax Instructions
+    href: https://www.ncdor.gov/documents/files/2017-d-401-individual-income-tax-instructions/open

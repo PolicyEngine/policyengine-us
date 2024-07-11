@@ -1,0 +1,43 @@
+- name: Disabled eligible
+  period: 2022
+  input:
+    is_blind: false
+    is_deaf: false
+    is_permanently_and_totally_disabled: true
+    age: 65
+    state_code: MI
+  output:
+    mi_disabled_exemption_eligible_person: true
+
+- name: Ineligible due to age restriction
+  period: 2022
+  input:
+    is_blind: false
+    is_deaf: false
+    is_permanently_and_totally_disabled: true
+    age: 66
+    state_code: MI
+  output:
+    mi_disabled_exemption_eligible_person: false
+
+- name: Blind eligible
+  period: 2022
+  input:
+    is_blind: true
+    is_deaf: false
+    is_permanently_and_totally_disabled: false
+    age: 65
+    state_code: MI
+  output:
+    mi_disabled_exemption_eligible_person: true
+
+- name: Deaf eligible
+  period: 2022
+  input:
+    is_blind: false
+    is_deaf: true
+    is_permanently_and_totally_disabled: false
+    age: 66
+    state_code: MI
+  output:
+    mi_disabled_exemption_eligible_person: true

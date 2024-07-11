@@ -1,0 +1,17 @@
+- name: dc_income_tax_before_refundable_credits unit test 1
+  period: 2021
+  input:
+    dc_income_tax_before_credits: 800
+    dc_non_refundable_credits: 900
+    state_code: DC
+  output:
+    dc_income_tax_before_refundable_credits: 0
+
+- name: dc_income_tax_before_refundable_credits unit test 2
+  period: 2022
+  input:
+    dc_income_tax_before_credits: 800
+    dc_non_refundable_credits: 600
+    state_code: DC
+  output:
+    dc_income_tax_before_refundable_credits: 200

@@ -3,44 +3,49 @@ from policyengine_us.model_api import *
 
 class marginal_tax_rate(Variable):
     label = "marginal tax rate"
-    documentation = "Percent of marginal income gains that do not increase household net income."
+    documentation = "Fraction of marginal income gains that do not increase household net income."
     entity = Person
     definition_period = YEAR
     value_type = float
     unit = "/1"
 
     def formula(person, period, parameters):
+        netinc_base = person.household("household_net_income", period)
+        delta = parameters(period).simulation.marginal_tax_rate_delta
+        adult_count = parameters(period).simulation.marginal_tax_rate_adults
+        sim = person.simulation
         mtr_values = np.zeros(person.count, dtype=np.float32)
-        simulation = person.simulation
-        adult_index_values = person("adult_index", period)
-        DELTA = 1_000
-        mtr_adult_count = parameters(
-            period
-        ).simulation.marginal_tax_rate_adults
-        for adult_index in range(1, 1 + mtr_adult_count):
-            alt_simulation = simulation.get_branch(
-                f"adult_{adult_index}_pay_rise"
-            )
-            mask = adult_index_values == adult_index
-            for variable in simulation.tax_benefit_system.variables:
-                if variable not in simulation.input_variables:
-                    alt_simulation.delete_arrays(variable)
-            alt_simulation.set_input(
+        adult_indexes = person("adult_earnings_index", period)
+        employment_income = person("employment_income", period)
+        self_employment_income = person("self_employment_income", period)
+        total_earnings = employment_income + self_employment_income
+        emp_self_emp_ratio = where(
+            total_earnings > 0, employment_income / total_earnings, 1
+        )
+        for adult_index in range(1, 1 + adult_count):
+            alt_sim = sim.get_branch(f"mtr_for_adult_{adult_index}")
+            for variable in sim.tax_benefit_system.variables:
+                if (
+                    variable not in sim.input_variables
+                    or variable == "employment_income"
+                ):
+                    alt_sim.delete_arrays(variable)
+            mask = adult_index == adult_indexes
+            alt_sim.set_input(
                 "employment_income",
                 period,
-                person("employment_income", period) + mask * DELTA,
+                employment_income + mask * delta * emp_self_emp_ratio,
             )
-            alt_person = alt_simulation.person
-            household_net_income = person.household(
-                "household_net_income", period
+            alt_sim.set_input(
+                "self_employment_income",
+                period,
+                self_employment_income
+                + mask * delta * (1 - emp_self_emp_ratio),
             )
-            household_net_income_higher_earnings = alt_person.household(
-                "household_net_income", period
-            )
-            increase = (
-                household_net_income_higher_earnings - household_net_income
-            )
-            mtr_values += where(mask, 1 - increase / DELTA, 0)
+            alt_person = alt_sim.person
+            netinc_alt = alt_person.household("household_net_income", period)
+            increase = netinc_alt - netinc_base
+            mtr_values += where(mask, 1 - increase / delta, 0)
         return mtr_values
 
 
@@ -55,6 +60,23 @@ class adult_index(Variable):
             person.get_rank(
                 person.household,
                 -person("age", period),
+                condition=person("is_adult", period),
+            )
+            + 1
+        )
+
+
+class adult_earnings_index(Variable):
+    value_type = int
+    entity = Person
+    label = "index of adult in household by earnings"
+    definition_period = YEAR
+
+    def formula(person, period, parameters):
+        return (
+            person.get_rank(
+                person.household,
+                -person("market_income", period),
                 condition=person("is_adult", period),
             )
             + 1

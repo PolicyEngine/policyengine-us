@@ -15,7 +15,7 @@ class or_eitc(Variable):
 
     def formula(tax_unit, period, parameters):
         # Grab federal EITC.
-        eitc = tax_unit("earned_income_tax_credit", period)
+        federal_eitc = tax_unit("eitc", period)
         # Check if the tax unit has a young child to qualify for a higher rate.
         person = tax_unit.members
         p = parameters(period).gov.states["or"].tax.income.credits.eitc
@@ -27,4 +27,4 @@ class or_eitc(Variable):
         rate = where(
             has_young_child, p.match.has_young_child, p.match.no_young_child
         )
-        return eitc * rate
+        return federal_eitc * rate

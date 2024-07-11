@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class snap_earned_income_deduction(Variable):
     value_type = float
     entity = SPMUnit
-    definition_period = YEAR
+    definition_period = MONTH
     documentation = (
         "Earned income deduction for calculating SNAP benefit amount"
     )

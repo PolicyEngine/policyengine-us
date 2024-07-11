@@ -5,8 +5,10 @@ values:
   2022-01-01: 0
 metadata:
   unit: /1
-  name: ny_supplemental_eitc_match
-  label: NY Supplemental EITC Match
+  period: year
+  label: New York Supplemental EITC Match
   reference:
     - title: Section 606 Credits against tax (d)(8)
       href: https://www.nysenate.gov/legislation/laws/TAX/606 # (d)(8)
+    - title: New York Instructions for Form IT-201 Line 65
+      href: https://www.tax.ny.gov/pdf/2023/printable-pdfs/inc/it201i-2023.pdf#page=26

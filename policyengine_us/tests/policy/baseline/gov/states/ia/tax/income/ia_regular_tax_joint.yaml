@@ -1,0 +1,125 @@
+- name: IA regular tax joint unit test 1
+  absolute_error_margin: 0.5
+  period: 2021
+  input:
+    ia_taxable_income_joint: 95_675
+    state_code: IA
+  output:  # https://tax.iowa.gov/sites/default/files/2021-12/2021TaxTables%2841026%29.pdf#page=5
+    ia_regular_tax_joint: 6_150
+
+- name: IA regular tax joint unit test 2
+  absolute_error_margin: 0.5
+  period: 2021
+  input:
+    ia_taxable_income_joint: 110_000
+    state_code: IA
+  output:  # https://tax.iowa.gov/sites/default/files/2021-12/2021TaxTables%2841026%29.pdf#page=5
+    ia_regular_tax_joint: 7_371.92
+
+- name: IA regular tax joint unit test 3
+  absolute_error_margin: 0.5
+  period: 2022
+  input:
+    ia_taxable_income_joint: 95_775
+    state_code: IA
+  output:  # https://tax.iowa.gov/sites/default/files/2022-12/TY2022IA1040TaxTables%2841026%29.pdf#page=5
+    ia_regular_tax_joint: 6_079
+
+- name: IA regular tax joint unit test 4
+  absolute_error_margin: 0.5
+  period: 2022
+  input:
+    ia_taxable_income_joint: 110_000
+    state_code: IA
+  output:  # https://tax.iowa.gov/sites/default/files/2022-12/TY2022IA1040TaxTables%2841026%29.pdf#page=5
+    ia_regular_tax_joint: 7_292.39
+
+- name: IA regular tax joint unit test 5, 2023 edge case
+  absolute_error_margin: 0.5
+  period: 2023
+  input:
+    ia_taxable_income_joint: 6_000
+    state_code: IA
+  output:  
+    ia_regular_tax_joint: 264
+
+- name: IA regular tax joint unit test 6, using two rates 2023
+  absolute_error_margin: 0.5
+  period: 2023
+  input:
+    ia_taxable_income_joint: 7_000
+    state_code: IA
+  output:  
+    ia_regular_tax_joint: 312.2
+
+- name: IA regular tax joint unit test 7, using two rates 2023
+  absolute_error_margin: 0.5
+  period: 2023
+  input:
+    ia_taxable_income_joint: 30_000
+    state_code: IA
+  output:  
+    ia_regular_tax_joint: 1_420.8   #6_000*0.044+24_000*0.0482=1420.8
+
+- name: IA regular tax joint unit test 8, using all rates 2023
+  absolute_error_margin: 0.5
+  period: 2023
+  input:
+    ia_taxable_income_joint: 80_000
+    state_code: IA
+  output:  
+    ia_regular_tax_joint: 4_285.8 
+
+- name: IA regular tax joint unit test 9, using two rates 2024
+  absolute_error_margin: 0.5
+  period: 2024
+  input:
+    ia_taxable_income_joint: 30_000
+    state_code: IA
+  output:  
+    ia_regular_tax_joint: 1_420.8
+
+- name: IA regular tax joint unit test 10, using all rates 2024
+  absolute_error_margin: 0.5
+  period: 2024
+  input:
+    ia_taxable_income_joint: 80_000
+    state_code: IA
+  output:  
+    ia_regular_tax_joint: 4_270.8
+
+- name: IA regular tax joint unit test 11, using two rates 2025
+  absolute_error_margin: 0.5
+  period: 2025
+  input:
+    ia_taxable_income_joint: 30_000
+    state_code: IA
+  output:  
+    ia_regular_tax_joint: 1_420.8
+
+- name: IA regular tax joint unit test 12, using all rates 2025
+  absolute_error_margin: 0.5
+  period: 2025
+  input:
+    ia_taxable_income_joint: 80_000
+    state_code: IA
+  output:  
+    ia_regular_tax_joint: 3_830.8 
+
+- name: IA regular tax joint unit test 13, using two rates 2026
+  absolute_error_margin: 0.5
+  period: 2026 
+  input:
+    ia_taxable_income_joint: 30_000
+    state_code: IA
+  output:  
+    ia_regular_tax_joint: 1_170
+
+- name: IA regular tax joint unit test 14, using all rates 2026
+  absolute_error_margin: 0.5
+  period: 2026 
+  input:
+    ia_taxable_income_joint: 80_000
+    state_code: IA
+  output:  
+    ia_regular_tax_joint: 3_120

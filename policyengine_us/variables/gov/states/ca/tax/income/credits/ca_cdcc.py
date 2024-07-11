@@ -17,6 +17,6 @@ class ca_cdcc(Variable):
             period
         ).gov.states.ca.tax.income.credits.child_dependent_care
         agi = tax_unit("adjusted_gross_income", period)
-        federal_cdcc = tax_unit("cdcc", period)
+        federal_cdcc = add(tax_unit, period, p.input)
         rate = p.rate.calc(agi)
         return federal_cdcc * rate

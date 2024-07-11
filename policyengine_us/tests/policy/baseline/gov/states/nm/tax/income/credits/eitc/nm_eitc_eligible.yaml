@@ -1,0 +1,29 @@
+- name: Investment income ineligible.
+  period: 2021
+  input:
+    eitc_investment_income_eligible: false
+    state_code: NM
+    nm_eitc_demographic_eligible: true
+    filing_status: JOINT
+  output:
+    nm_eitc_eligible: false
+
+- name: Demographic ineligible.
+  period: 2021
+  input:
+    eitc_investment_income_eligible: true
+    state_code: NM
+    nm_eitc_demographic_eligible: false
+    filing_status: JOINT
+  output:
+    nm_eitc_eligible: false
+
+- name: Eligible.
+  period: 2021
+  input:
+    eitc_investment_income_eligible: true
+    state_code: NM
+    nm_eitc_demographic_eligible: true
+    filing_status: JOINT
+  output:
+    nm_eitc_eligible: true

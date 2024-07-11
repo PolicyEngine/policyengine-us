@@ -1,0 +1,43 @@
+- name: dc_self_employment_loss_addition unit test 1
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    employment_income: 80_000
+    self_employment_income: -20_000
+    state_code: DC
+  output:
+    adjusted_gross_income_person: 60_000
+    dc_self_employment_loss_addition: 8_000
+    dc_agi: 68_000
+
+- name: dc_self_employment_loss_addition unit test 2
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        employment_income: 60_000
+        self_employment_income: -20_000
+      person2:
+        is_tax_unit_spouse: true
+        employment_income: 50_000
+        self_employment_income: -10_000
+      person3:
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DC
+  output:
+    adjusted_gross_income: 80_000
+    # total IRS self-employment losses are shared evenly by head and spouse
+    adjusted_gross_income_person: [45_000, 35_000, 0]
+    dc_self_employment_loss_addition: [12_000, 6_000, 0]
+    dc_agi: [57_000, 41_000, 0]

@@ -7,24 +7,6 @@ class state_income_tax(Variable):
     label = "state income tax"
     unit = USD
     definition_period = YEAR
-    adds = [
-        # state income tax variables listed in alphabetical order:
-        "ca_income_tax",
-        "il_income_tax",
-        "ks_income_tax",
-        "ma_income_tax",
-        "md_income_tax",
-        "mn_income_tax",
-        # "mo_income_tax",  --- activating will cause circular logic errors
-        # "ne_income_tax",  --- activating will cause circular logic errors
-        # "nd_income_tax",  --- activating will cause circular logic errors
-        "ny_income_tax",
-        "ok_income_tax",
-        "or_income_tax",
-        "pa_income_tax",
-        "wa_income_tax",
-        "ut_income_tax",
-    ]
 
     def formula(tax_unit, period, parameters):
         if parameters(period).simulation.reported_state_income_tax:
@@ -41,4 +23,12 @@ class state_income_tax(Variable):
                 0,
             )
         else:
-            return add(tax_unit, period, state_income_tax.adds)
+            income_tax_before_refundable_credits = add(
+                tax_unit,
+                period,
+                ["state_income_tax_before_refundable_credits"],
+            )
+            refundable_credits = add(
+                tax_unit, period, ["state_refundable_credits"]
+            )
+            return income_tax_before_refundable_credits - refundable_credits

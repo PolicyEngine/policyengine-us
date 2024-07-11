@@ -4,10 +4,10 @@
     people:
       head:
         is_tax_unit_head: true
-        earned: 1
+        adjusted_earnings: 1
       spouse:
         is_tax_unit_spouse: true
-        earned: 2
+        adjusted_earnings: 2
     tax_units:
       tax_unit:
         members: [head, spouse]

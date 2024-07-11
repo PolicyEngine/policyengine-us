@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class mo_pension_and_ss_or_ssd_deduction(Variable):
     value_type = float
     entity = TaxUnit
-    label = "MO Pension and Social Security or SS Disability Deduction"
+    label = "Missouri Pension and Social Security or SS Disability Deduction"
     unit = USD
     definition_period = YEAR
     reference = (

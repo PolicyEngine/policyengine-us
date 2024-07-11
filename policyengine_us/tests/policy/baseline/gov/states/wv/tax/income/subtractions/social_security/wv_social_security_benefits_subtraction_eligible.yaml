@@ -1,0 +1,89 @@
+- name: In 2020, single filers, agi > 50_000, ineligible.
+  period: 2020
+  input:
+    state_code: WV
+    filing_status: SINGLE
+    adjusted_gross_income: 70_000
+  output:
+    wv_social_security_benefits_subtraction_eligible: false
+
+- name: In 2021, separate filers, agi > 50_000, ineligible.
+  period: 2021
+  input:
+    state_code: WV
+    filing_status: SEPARATE
+    adjusted_gross_income: 70_000
+  output:
+    wv_social_security_benefits_subtraction_eligible: false
+
+- name: In 2021, head of household filers, agi > 50_000, ineligible.
+  period: 2021
+  input:
+    state_code: WV
+    filing_status: HEAD_OF_HOUSEHOLD
+    adjusted_gross_income: 70_000
+  output:
+    wv_social_security_benefits_subtraction_eligible: false
+
+- name: In 2022, widow(er) filers, agi > 50_000, ineligible.
+  period: 2022
+  input:
+    state_code: WV
+    filing_status: SURVIVING_SPOUSE
+    adjusted_gross_income: 70_000
+  output:
+    wv_social_security_benefits_subtraction_eligible: false
+
+- name: In 2022, joint filers, agi > 100_000, ineligible.
+  period: 2022
+  input:
+    state_code: WV
+    filing_status: JOINT
+    adjusted_gross_income: 150_000
+  output:
+    wv_social_security_benefits_subtraction_eligible: false
+
+- name: In 2020, single filers, agi <= 50_000, eligible.
+  period: 2020
+  input:
+    state_code: WV
+    filing_status: SINGLE
+    adjusted_gross_income: 30_000
+  output:
+    wv_social_security_benefits_subtraction_eligible: true
+
+- name: In 2021, separate filers, agi <= 50_000, eligible.
+  period: 2021
+  input:
+    state_code: WV
+    filing_status: SEPARATE
+    adjusted_gross_income: 20_000
+  output:
+    wv_social_security_benefits_subtraction_eligible: true
+
+- name: In 2021, head of household filers, agi <= 50_000, eligible.
+  period: 2021
+  input:
+    state_code: WV
+    filing_status: HEAD_OF_HOUSEHOLD
+    adjusted_gross_income: 50_000
+  output:
+    wv_social_security_benefits_subtraction_eligible: true
+
+- name: In 2022, widow(er) filers, agi <= 50_000, eligible.
+  period: 2022
+  input:
+    state_code: WV
+    filing_status: SURVIVING_SPOUSE
+    adjusted_gross_income: 50_000
+  output:
+    wv_social_security_benefits_subtraction_eligible: true
+
+- name: In 2022, joint filers, agi <= 100_000, eligible.
+  period: 2022
+  input:
+    state_code: WV
+    filing_status: JOINT
+    adjusted_gross_income: 100_000
+  output:
+    wv_social_security_benefits_subtraction_eligible: true
