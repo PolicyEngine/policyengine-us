@@ -13,7 +13,6 @@ class az_cash_assistance(Variable):
 
     def formula(spm_unit, period, parameters):
         payment_standard_threshold= spm_unit("az_payment_standard",period)
-        eligibility=spm_unit("az_hhs_tanf_eliigbility",period)
         monthly_countable_earned_income = spm_unit(
             "az_tanf_earned_income", period
         )
