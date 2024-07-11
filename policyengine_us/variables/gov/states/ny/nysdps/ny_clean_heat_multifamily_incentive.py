@@ -49,11 +49,11 @@ class ny_clean_heat_multifamily_incentive(Variable):
                 (heat_pump == heat_pump.possible_values.C2C)
                 | (heat_pump == heat_pump.possible_values.C6A),
                 # C4, C4A, C6, C10
-                heat_pump == heat_pump.possible_values.C4
-                or heat_pump == heat_pump.possible_values.C4A1
-                or heat_pump == heat_pump.possible_values.C4A2
-                or heat_pump == heat_pump.possible_values.C6
-                or heat_pump == heat_pump.possible_values.C10,
+                (heat_pump == heat_pump.possible_values.C4)
+                | (heat_pump == heat_pump.possible_values.C4A1)
+                | (heat_pump == heat_pump.possible_values.C4A2)
+                | (heat_pump == heat_pump.possible_values.C6)
+                | (heat_pump == heat_pump.possible_values.C10),
             ],
             [
                 # multiply by dwelling_unit
