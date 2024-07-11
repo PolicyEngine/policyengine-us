@@ -46,7 +46,7 @@ setup(
         "requests",
         "scipy==1.10.1",
         "synthimpute",
-        "tables==3.8.0",
+        "tables==3.9.2",
         "tabulate",
         "tqdm",
     ],
