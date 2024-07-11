@@ -4,7 +4,7 @@
     age: 63
     state_code: MD
   output:
-    is_md_elderly: true
+    md_snap_is_elderly: true
 
 - name: Individual, is not MD elderly
   period: 2024
@@ -12,4 +12,4 @@
     age: 61
     state_code: MD
   output:
-    is_md_elderly: false
+    md_snap_is_elderly: false

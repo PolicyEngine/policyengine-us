@@ -49,7 +49,7 @@
   absolute_error_margin: 0.5
   input:
     spm_unit_size: 1
-    has_md_elderly: false
+    md_snap_elderly_present: false
     state_code_str: MD
     state_group: CONTIGUOUS_US
   output:
@@ -59,7 +59,7 @@
   period: 2024-01
   input:
     spm_unit_size: 1
-    has_md_elderly: true
+    md_snap_elderly_present: true
     state_code_str: MD
     state_group: CONTIGUOUS_US
   output:

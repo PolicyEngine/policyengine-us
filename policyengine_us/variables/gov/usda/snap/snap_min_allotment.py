@@ -46,7 +46,7 @@ class snap_min_allotment(Variable):
             md_min_allotment = p_md.amount
 
             in_md = state_code == "MD"
-            has_elderly = spm_unit("has_md_elderly", period)
+            has_elderly = spm_unit("md_snap_elderly_present", period)
             min_allotment = where(
                 in_md & has_elderly, md_min_allotment, min_allotment
             )

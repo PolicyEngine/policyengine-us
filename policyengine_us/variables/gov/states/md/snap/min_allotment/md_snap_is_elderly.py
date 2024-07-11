@@ -1,11 +1,11 @@
 from policyengine_us.model_api import *
 
 
-class is_md_elderly(Variable):
+class md_snap_is_elderly(Variable):
     value_type = bool
     entity = Person
     definition_period = YEAR
-    label = "Maryland elderly"
+    label = "Is an elderly person for Maryland SNAP minimum allotment"
     defined_for = StateCode.MD
 
     def formula(person, period, parameters):

@@ -3,9 +3,9 @@
   input:
     people:
       p1:
-        is_md_elderly: false
+        md_snap_is_elderly: false
       p2:
-        is_md_elderly: false
+        md_snap_is_elderly: false
     spm_units:
       spm_unit:
         members: [p1, p2]
@@ -14,16 +14,16 @@
         members: [p1, p2]
         state_code: MD
   output:
-    has_md_elderly: false
+    md_snap_elderly_present: false
 
 - name: Family with one person elderly
   period: 2024
   input:
     people:
       p1:
-        is_md_elderly: true
+        md_snap_is_elderly: true
       p2:
-        is_md_elderly: false
+        md_snap_is_elderly: false
     spm_units:
       spm_unit:
         members: [p1, p2]
@@ -32,16 +32,16 @@
         members: [p1, p2]
         state_code: MD
   output:
-    has_md_elderly: true
+    md_snap_elderly_present: true
 
 - name: Family with all elderly
   period: 2024
   input:
     people:
       p1:
-        is_md_elderly: true
+        md_snap_is_elderly: true
       p2:
-        is_md_elderly: true
+        md_snap_is_elderly: true
     spm_units:
       spm_unit:
         members: [p1, p2]
@@ -50,4 +50,4 @@
         members: [p1, p2]
         state_code: MD
   output:
-    has_md_elderly: true
+    md_snap_elderly_present: true
