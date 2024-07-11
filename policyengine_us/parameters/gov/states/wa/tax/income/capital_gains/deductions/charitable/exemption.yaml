@@ -1,12 +1,14 @@
 description: Washington capital gains charitable contribution exemption.
 metadata:
   label: Washington capital gains charitable contribution exemption
-  name: wa_ltcg_charitable_contributions_exemption
   unit: currency-USD
   period: year
   reference:
-    - title: "RCW 82.87.080(1) Charitable donation deduction"
+    - title: RCW 82.87.080(1) Charitable donation deduction
       href: https://app.leg.wa.gov/RCW/default.aspx?cite=82.87.080
+    - title: Capital gains tax | Washington Department of Revenue
+      href: https://dor.wa.gov/taxes-rates/other-taxes/capital-gains-tax
 values:
   0000-01-01: 0
   2022-01-01: 250_000
+  2023-01-01: 262_000
