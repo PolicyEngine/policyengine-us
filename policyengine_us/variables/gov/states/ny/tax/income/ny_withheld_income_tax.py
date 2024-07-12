@@ -17,5 +17,4 @@ class ny_withheld_income_tax(Variable):
         reduced_employment_income = max_(
             employment_income - standard_deduction, 0
         )
-        p = parameters(period).gov.states.nm.tax.income
         return p.main.single.calc(reduced_employment_income)
