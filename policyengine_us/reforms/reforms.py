@@ -20,6 +20,9 @@ from .biden.budget_2025 import (
 from .biden.budget_2025 import create_capital_gains_tax_increase_reform
 from .eitc import create_halve_joint_eitc_phase_out_rate_reform
 from .states.ny.wftc import create_ny_working_families_tax_credit_reform
+from .states.dc.dc_ctc_uncapped_children import (
+    create_dc_ctc_uncapped_children_reform,
+)
 from policyengine_core.reforms import Reform
 import warnings
 
@@ -61,6 +64,10 @@ def create_structural_reforms_from_parameters(parameters, period):
     )
     ny_wftc = create_ny_working_families_tax_credit_reform(parameters, period)
 
+    dc_ctc_uncapped_children = create_dc_ctc_uncapped_children_reform(
+        parameters, period
+    )
+
     reforms = [
         afa_reform,
         winship_reform,
@@ -76,6 +83,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         capital_gains_tax_increase,
         halve_joint_eitc_phase_out_rate,
         ny_wftc,
+        dc_ctc_uncapped_children,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
 

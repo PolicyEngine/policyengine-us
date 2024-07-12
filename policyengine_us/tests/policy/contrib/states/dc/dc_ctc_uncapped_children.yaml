@@ -1,0 +1,35 @@
+- name: 5 children and each is accounted for
+  period: 2024
+  reforms: policyengine_us.reforms.states.dc.dc_ctc_uncapped_children.dc_ctc_uncapped_children
+  input:
+    gov.contrib.states.dc.ctc_uncapped_children.in_effect: true
+    ctc_qualifying_children: 5
+    adjusted_gross_income: 145_000
+    filing_status: JOINT
+    state_code: DC
+  output:
+    dc_ctc: 2_500
+
+- name: One child, reform does not change output
+  period: 2024
+  reforms: policyengine_us.reforms.states.dc.dc_ctc_uncapped_children.dc_ctc_uncapped_children
+  input:
+    gov.contrib.states.dc.ctc_uncapped_children.in_effect: true
+    ctc_qualifying_children: 1
+    adjusted_gross_income: 100_000
+    filing_status: SINGLE
+    state_code: DC
+  output:
+    dc_ctc: 500
+
+- name: Four children with reduction applied, joint
+  period: 2024
+  reforms: policyengine_us.reforms.states.dc.dc_ctc_uncapped_children.dc_ctc_uncapped_children
+  input:
+    gov.contrib.states.dc.ctc_uncapped_children.in_effect: true
+    ctc_qualifying_children: 4
+    adjusted_gross_income: 160_000
+    filing_status: JOINT
+    state_code: DC
+  output:
+    dc_ctc: 1_700
