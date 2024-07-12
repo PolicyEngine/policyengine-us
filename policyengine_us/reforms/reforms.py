@@ -64,9 +64,7 @@ def create_structural_reforms_from_parameters(parameters, period):
     )
     ny_wftc = create_ny_working_families_tax_credit_reform(parameters, period)
 
-    dc_ctc = create_dc_ctc_reform(
-        parameters, period
-    )
+    dc_ctc = create_dc_ctc_reform(parameters, period)
 
     reforms = [
         afa_reform,

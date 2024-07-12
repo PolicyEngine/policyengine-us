@@ -15,7 +15,9 @@ def create_dc_ctc() -> Reform:
             p = parameters(period).gov.contrib.states.dc.ctc
             ctc_eligible_children = tax_unit("ctc_qualifying_children", period)
             capped_children = min_(ctc_eligible_children, p.child_cap.amount)
-            eligible_children = where(p.child_cap.in_effect, capped_children, ctc_eligible_children)
+            eligible_children = where(
+                p.child_cap.in_effect, capped_children, ctc_eligible_children
+            )
             income = tax_unit("adjusted_gross_income", period)
             max_amount = p.amount * eligible_children
             increment = p.reduction.increment
@@ -29,7 +31,6 @@ def create_dc_ctc() -> Reform:
             increments = np.ceil(excess / increment)
             reduction_amount = increments * reduction_per_increment
             return max_(0, max_amount - reduction_amount)
-
 
     class dc_refundable_credits(Variable):
         value_type = float
@@ -49,7 +50,6 @@ def create_dc_ctc() -> Reform:
             ctc = tax_unit("dc_ctc", period)
             return ctc + previous_credits
 
-
     class reform(Reform):
         def apply(self):
             self.update_variable(dc_ctc)
@@ -58,9 +58,7 @@ def create_dc_ctc() -> Reform:
     return reform
 
 
-def create_dc_ctc_reform(
-    parameters, period, bypass: bool = False
-):
+def create_dc_ctc_reform(parameters, period, bypass: bool = False):
     if bypass:
         return create_dc_ctc()
 
@@ -72,6 +70,4 @@ def create_dc_ctc_reform(
         return None
 
 
-dc_ctc = create_dc_ctc_reform(
-    None, None, bypass=True
-)
+dc_ctc = create_dc_ctc_reform(None, None, bypass=True)

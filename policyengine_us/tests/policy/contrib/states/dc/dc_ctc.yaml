@@ -1,0 +1,99 @@
+- name: 5 children and each is accounted for
+  period: 2024
+  reforms: policyengine_us.reforms.states.dc.dc_ctc.dc_ctc
+  input:
+    gov.contrib.states.dc.ctc.in_effect: true
+    gov.contrib.states.dc.ctc.child_cap.in_effect: false
+    ctc_qualifying_children: 5
+    adjusted_gross_income: 145_000
+    filing_status: JOINT
+    state_code: DC
+  output:
+    dc_ctc: 2_500
+
+- name: One child, reform does not change output
+  period: 2024
+  reforms: policyengine_us.reforms.states.dc.dc_ctc.dc_ctc
+  input:
+    gov.contrib.states.dc.ctc.in_effect: true
+    gov.contrib.states.dc.ctc.child_cap.in_effect: false
+    ctc_qualifying_children: 1
+    adjusted_gross_income: 100_000
+    filing_status: SINGLE
+    state_code: DC
+  output:
+    dc_ctc: 500
+
+- name: Four children with reduction applied, joint, uncapped children
+  period: 2024
+  reforms: policyengine_us.reforms.states.dc.dc_ctc.dc_ctc
+  input:
+    gov.contrib.states.dc.ctc.in_effect: true
+    gov.contrib.states.dc.ctc.child_cap.in_effect: false
+    ctc_qualifying_children: 4
+    adjusted_gross_income: 160_000
+    filing_status: JOINT
+    state_code: DC
+  output:
+    dc_ctc: 1_700
+
+- name: Single person with one child, below reduction, cap applies
+  period: 2024
+  reforms: policyengine_us.reforms.states.dc.dc_ctc.dc_ctc
+  input:
+    gov.contrib.states.dc.ctc.in_effect: true
+    ctc_qualifying_children: 1
+    adjusted_gross_income: 100_000
+    filing_status: SINGLE
+    state_code: DC
+  output:
+    dc_ctc: 500
+
+- name: Children capped at 3, cap applies
+  period: 2024
+  reforms: policyengine_us.reforms.states.dc.dc_ctc.dc_ctc
+  input:
+    gov.contrib.states.dc.ctc.in_effect: true
+    ctc_qualifying_children: 5
+    adjusted_gross_income: 145_000
+    filing_status: JOINT
+    state_code: DC
+  output:
+    dc_ctc: 1_500
+
+- name: Joint filing, with reduction, cap applies
+  period: 2024
+  reforms: policyengine_us.reforms.states.dc.dc_ctc.dc_ctc
+  input:
+    gov.contrib.states.dc.ctc.in_effect: true
+    ctc_qualifying_children: 5
+    adjusted_gross_income: 160_000
+    filing_status: JOINT
+    state_code: DC
+    dc_eitc: 200
+  output:
+    dc_ctc: 1_200
+    dc_refundable_credits: 1_400
+
+- name: Joint filing, fully reduced, cap applies
+  period: 2024
+  reforms: policyengine_us.reforms.states.dc.dc_ctc.dc_ctc
+  input:
+    gov.contrib.states.dc.ctc.in_effect: true
+    ctc_qualifying_children: 1
+    adjusted_gross_income: 220_000
+    filing_status: JOINT
+    state_code: DC
+  output:
+    dc_ctc: 0
+
+- name: Reform not in effect
+  period: 2024
+  input:
+    gov.contrib.states.dc.ctc.in_effect: false
+    ctc_qualifying_children: 5
+    adjusted_gross_income: 160_000
+    filing_status: JOINT
+    state_code: DC
+  output:
+    dc_refundable_credits: 0
