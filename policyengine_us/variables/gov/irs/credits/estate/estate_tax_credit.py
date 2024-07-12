@@ -8,9 +8,9 @@ class estate_tax_credit(Variable):
     unit = USD
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/2010"
+    defined_for = "is_deceased"
 
     def formula(person, period, parameters):
         p = parameters(period).gov.irs.credits.estate
-        deceased_eligible = person("is_deceased", period)
         # A deceased spouse unused exclusion amount can be computed.
-        return p.base * deceased_eligible
+        return p.base
