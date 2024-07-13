@@ -15,7 +15,11 @@ def create_dc_ctc() -> Reform:
             p = parameters(period).gov.contrib.states.dc.ctc
             person = tax_unit.members
             age = person("age", period)
-            age_threshold = where(p.age_threshold.older.in_effect, p.age_threshold.older.age, p.age_threshold.younger)
+            age_threshold = where(
+                p.age_threshold.older.in_effect,
+                p.age_threshold.older.age,
+                p.age_threshold.younger,
+            )
             age_eligible = age < age_threshold
             eligible_children = tax_unit.sum(age_eligible)
             capped_children = min_(eligible_children, p.child_cap.amount)
