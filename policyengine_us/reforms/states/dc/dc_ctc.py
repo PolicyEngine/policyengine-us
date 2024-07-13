@@ -13,20 +13,21 @@ def create_dc_ctc() -> Reform:
 
         def formula(tax_unit, period, parameters):
             p = parameters(period).gov.contrib.states.dc.ctc
-            ctc_eligible_children = tax_unit("ctc_qualifying_children", period)
-            capped_children = min_(ctc_eligible_children, p.child_cap.amount)
-            eligible_children = where(
-                p.child_cap.in_effect, capped_children, ctc_eligible_children
+            person = tax_unit.members
+            age = person("age", period)
+            age_threshold = where(p.age_threshold.older.in_effect, p.age_threshold.older.age, p.age_threshold.younger)
+            age_eligible = age < age_threshold
+            eligible_children = tax_unit.sum(age_eligible)
+            capped_children = min_(eligible_children, p.child_cap.amount)
+            total_eligible_children = where(
+                p.child_cap.in_effect, capped_children, eligible_children
             )
             income = tax_unit("adjusted_gross_income", period)
-            max_amount = p.amount * eligible_children
+            max_amount = p.amount * total_eligible_children
             increment = p.reduction.increment
             reduction_per_increment = p.reduction.amount
             filing_status = tax_unit("filing_status", period)
-            joint = filing_status == filing_status.possible_values.JOINT
-            reduction_start = where(
-                joint, p.reduction.start.joint, p.reduction.start.single
-            )
+            reduction_start = p.reduction.start[filing_status]
             excess = max_(income - reduction_start, 0)
             increments = np.ceil(excess / increment)
             reduction_amount = increments * reduction_per_increment
