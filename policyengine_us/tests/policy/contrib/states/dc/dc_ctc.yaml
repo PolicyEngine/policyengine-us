@@ -3,7 +3,6 @@
   reforms: policyengine_us.reforms.states.dc.dc_ctc.dc_ctc
   input:
     gov.contrib.states.dc.ctc.in_effect: true
-    gov.contrib.states.dc.ctc.age_threshold.older.in_effect: false
     gov.contrib.states.dc.ctc.child_cap.in_effect: false
     people: 
       person1:
@@ -31,12 +30,11 @@
     dc_ctc: 1_680
 
 
-- name: 5 children and each is accounted for, older included
+- name: 5 children with one above the age threshold
   period: 2025
   reforms: policyengine_us.reforms.states.dc.dc_ctc.dc_ctc
   input:
     gov.contrib.states.dc.ctc.in_effect: true
-    gov.contrib.states.dc.ctc.age_threshold.older.in_effect: true
     gov.contrib.states.dc.ctc.child_cap.in_effect: false
     people: 
       person1:
@@ -50,7 +48,7 @@
       person5:
         age: 5
       person6:
-        age: 18
+        age: 6
     tax_units:
       tax_unit:
         members: [person1, person2, person3, person4, person5, person6]
@@ -61,7 +59,7 @@
         members: [person1, person2, person3, person4, person5, person6]
         state_code: DC
   output:
-    dc_ctc: 2_100
+    dc_ctc: 1_680
 
 - name: One child, reform does not change output
   period: 2025
@@ -69,7 +67,6 @@
   input:
     gov.contrib.states.dc.ctc.in_effect: true
     gov.contrib.states.dc.ctc.child_cap.in_effect: false
-    gov.contrib.states.dc.ctc.age_threshold.older.in_effect: false
     people: 
       person1:
         age: 40
@@ -93,7 +90,6 @@
   input:
     gov.contrib.states.dc.ctc.in_effect: true
     gov.contrib.states.dc.ctc.child_cap.in_effect: false
-    gov.contrib.states.dc.ctc.age_threshold.older.in_effect: false
     people: 
       person1:
         age: 40
@@ -122,7 +118,6 @@
   reforms: policyengine_us.reforms.states.dc.dc_ctc.dc_ctc
   input:
     gov.contrib.states.dc.ctc.in_effect: true
-    gov.contrib.states.dc.ctc.age_threshold.older.in_effect: false
     people: 
       person1:
         age: 40
@@ -145,7 +140,6 @@
   reforms: policyengine_us.reforms.states.dc.dc_ctc.dc_ctc
   input:
     gov.contrib.states.dc.ctc.in_effect: true
-    gov.contrib.states.dc.ctc.age_threshold.older.in_effect: false
     people: 
       person1:
         age: 40
@@ -176,7 +170,6 @@
   reforms: policyengine_us.reforms.states.dc.dc_ctc.dc_ctc
   input:
     gov.contrib.states.dc.ctc.in_effect: true
-    gov.contrib.states.dc.ctc.age_threshold.older.in_effect: false
     people: 
       person1:
         age: 40
@@ -207,7 +200,6 @@
   reforms: policyengine_us.reforms.states.dc.dc_ctc.dc_ctc
   input:
     gov.contrib.states.dc.ctc.in_effect: true
-    gov.contrib.states.dc.ctc.age_threshold.older.in_effect: false
     people: 
       person1:
         age: 40
@@ -229,7 +221,6 @@
   period: 2025
   input:
     gov.contrib.states.dc.ctc.in_effect: false
-    gov.contrib.states.dc.ctc.age_threshold.older.in_effect: false
     people: 
       person1:
         age: 40
