@@ -1,9 +1,10 @@
-description: Washington Working Families Tax Credit applies if this is true.
+description: Washington applies the Working Families Tax Credit if this is true.  
 values:
   0000-01-01: false
   2022-01-01: true
 metadata:
   unit: bool
+  period: year  
   label: Washington Working Families Tax Credit in effect
   reference:
     - title: RCW 82.08.0206 Exemptions—Working families—Eligible low-income persons—Penalties. (3)
