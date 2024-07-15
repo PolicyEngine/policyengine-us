@@ -56,5 +56,5 @@ class snap_min_allotment(Variable):
             nj_min_allotment = p_nj.amount
             in_nj = state_code == "NJ"
             min_allotment = where(in_nj, nj_min_allotment, min_allotment)
-        
+
         return min_allotment
