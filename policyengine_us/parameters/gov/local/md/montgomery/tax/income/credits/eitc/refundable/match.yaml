@@ -1,0 +1,26 @@
+description: Montgomery County matches this percentage of the refundable Maryland Earned Income Tax Credit. 
+values:
+  2015-01-01: 0.9
+  2016-01-01: 0.95
+  2020-01-01: 1
+  2023-07-01: 0.56 
+metadata:
+  unit: /1
+  period: year  
+  label: Montgomery County EITC match
+  # Note: Maryland tax forms and instructions do not include information on tax benefits at the county level.
+  reference: 
+    # 2023 match change was decided with the adoption of Resolution 20-184 for the fiscal year 2024 operating budget 
+    # and reported on the official government website.
+    # Please note: The latest 2023 rates can be found on the Montgomery County official website, but not yet in the legal code.
+    - title: 2023 Montgomery County Earned Income Credit EIC Refund 
+      href: https://www3.montgomerycountymd.gov/311/Solutions.aspx?SolutionId=1-4DAM0I
+    - title: COUNTY COUNCIL FOR MONTGOMERY COUNTY, MARYLAND - Resolution 20-184
+      href: https://apps.montgomerycountymd.gov/ccllims/DownloadFilePage?FileName=11869_1_25039_Resolution_20-184_Adopted_20230525.pdf#page=28
+    # 2020-2022 match was validated in Bill 14-21, which explains how and why Montgomery County provides this amount of county match for the refundable Maryland EITC.
+    - title: 2020 - 2022 Expedited Finance Working Families Income Bill 14-21 Supplement Amendments 
+      href: https://www.montgomerycountymd.gov/OLO/Resources/Files/eis/2021/EIS-EBill14-21.pdf
+    # 2015-2016 match is mentioned in Montgomery County Code (MCC), Section 20-79, "Amount of Supplement," and it is currently the most recent year referenced in the MCC.
+    - title: 2015 - 2016 Montgomery County Sec. 20-81. Administration; Regulations Sec. 20-79. Amount of Supplement (a), (b)
+      href: https://codelibrary.amlegal.com/codes/montgomerycounty/latest/montgomeryco_md/0-0-0-129735
+
