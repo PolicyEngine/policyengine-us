@@ -9,5 +9,5 @@ class md_snap_is_elderly(Variable):
     defined_for = StateCode.MD
 
     def formula(person, period, parameters):
-        p = parameters(period).gov.states.md.snap.min_allotment
+        p = parameters(period).gov.states.md.usda.snap.min_allotment
         return person("age", period) >= p.age_threshold
