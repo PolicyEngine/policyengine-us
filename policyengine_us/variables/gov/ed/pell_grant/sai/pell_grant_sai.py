@@ -28,4 +28,5 @@ class pell_grant_sai(Variable):
         )
         unbound = head_contribution + applicable_dependent_contribution
 
-        return max_(min_(unbound, max_sai), min_sai)
+        bound_ssi = min_(unbound, max_sai)
+        return max_(bound_ssi, min_sai)
