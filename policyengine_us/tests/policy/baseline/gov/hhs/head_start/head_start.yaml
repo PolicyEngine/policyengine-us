@@ -1,0 +1,19 @@
+- name: Head Start value amount 1
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    is_head_start_eligible: true
+    pre_subsidy_childcare_expenses: 1_000
+    childcare_hours_per_week: 40
+  output:
+    head_start: 490.38 # 1000 * (1020/(40*52))
+
+- name: Head Start value amount 2
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    is_head_start_eligible: false
+    pre_subsidy_childcare_expenses: 1_000
+    childcare_hours_per_week: 40
+  output:
+    head_start: 0

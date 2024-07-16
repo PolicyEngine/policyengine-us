@@ -15,6 +15,8 @@ class early_head_start(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.hhs.head_start.early_head_start
-        minimum_hours = p.minimum_hours
         childcare_expenses = person("pre_subsidy_childcare_expenses", period)
-        return childcare_expenses * (minimum_hours / 2600)  # will be fixed
+        childcare_hours = (
+            person("childcare_hours_per_week", period) * WEEKS_IN_YEAR
+        )
+        return childcare_expenses * (p.minimum_hours / childcare_hours)
