@@ -1,0 +1,15 @@
+- name: The family has 10 people which is under the threshold
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    spm_unit_size: 10
+  output:
+    az_countable_household_size: 10
+  
+- name: The family has 13 people which is over the threshold so it only counts 12 people
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    spm_unit_size: 13
+  output:
+    az_countable_household_size: 12

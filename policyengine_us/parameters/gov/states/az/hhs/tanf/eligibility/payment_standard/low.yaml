@@ -7,8 +7,10 @@ metadata:
   reference:
     - title: Arizona Department of Economic Security - Cash Assistance (CA) Income Eligibility Guidelines
       href: https://dbmefaapolicy.azdes.gov/index.html#page/FAA5/CA_Payment_Standard_(A1_2fA2).html#wwpID0E0WHB0FA
+    # The source rounds the results to a percentage of 22.65 instead of 23%, which is defined in the manual.
+    - title: Arizona Department of Economic Security - Cash Assistance (CA) A2 chart
       href: https://dbmefaapolicy.azdes.gov/index.html#page/FAA6/A2_Payment_Standards.html#wwpID0E0DM0HA
-    # The second source rounds the results to a percentage of 22.65 instead of 23%, which is defined in the manual.
+
 
 value: 
   2023-01-01: 0.184
