@@ -1,0 +1,15 @@
+description: DC provides a Child Tax Credit of this amount per eligible child.
+values:
+  2025-01-01: 420
+metadata:
+  period: year
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 5
+  unit: currency-USD
+  label: DC Child Tax Credit amount
+  reference:
+    - title: District Child Tax Credit Amendment Act of 2023 “§ 47-1806.17. Child Tax Credit. (a)(1) 
+      href: https://lims.dccouncil.gov/downloads/LIMS/55181/Other/B25-0784-FIS_Fiscal_Year_2025_Budget_Support_Act_of_2024_Second_Reading.pdf#page=98
