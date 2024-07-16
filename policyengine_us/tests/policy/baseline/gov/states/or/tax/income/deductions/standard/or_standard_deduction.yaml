@@ -68,7 +68,7 @@
     state_code: OR
     filing_status: JOINT
     age_head: 35
-    tax_unit_dependent_elsewhere: true
+    head_is_dependent_elsewhere: true
     tax_unit_earned_income: 600
   output: 
     # $1100 base 
@@ -80,7 +80,7 @@
     state_code: OR
     filing_status: SINGLE
     age_head: 35
-    tax_unit_dependent_elsewhere: true
+    head_is_dependent_elsewhere: true
     tax_unit_earned_income: 1_000
   output:
     # $1000 income + $350 addition, below the $2,350 normal standard deduction cap.
@@ -92,7 +92,7 @@
     state_code: OR
     filing_status: SINGLE
     age: 35
-    tax_unit_dependent_elsewhere: true
+    head_is_dependent_elsewhere: true
     tax_unit_earned_income: 1_000
     blind_head: true
   output:

@@ -4,6 +4,7 @@ from policyengine_us.model_api import *
 class residential_clean_energy_credit(Variable):
     value_type = float
     entity = TaxUnit
+    label = "Residential clean energy credit"
     definition_period = YEAR
     documentation = "Residential clean energy tax credit"
     unit = USD

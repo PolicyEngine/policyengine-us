@@ -1,0 +1,59 @@
+description: Kentucky provides a credit for a fraction of tax liability, based on modified gross income as a percent of a modified poverty line.
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: /1
+  label: Kentucky family size tax credit rate
+  reference:
+    - title: Kentucky 141.066, (3)
+      href: https://apps.legislature.ky.gov/law/statutes/statute.aspx?id=49188 
+    - title: 2022 Kentucky individual tax credit schedule, ITC
+      href: https://revenue.ky.gov/Forms/Schedule%20ITC%202022.pdf#page=2
+    - title: 2023 Kentucky individual tax credit schedule, ITC
+      href: https://revenue.ky.gov/Forms/Schedule%20ITC%202023.pdf#page=2
+
+brackets:
+  - threshold:
+      2005-01-01: -.inf
+    amount:
+      2005-01-01: 1
+  - threshold:
+      2005-01-01: 1
+    amount:
+      2005-01-01: 0.9
+  - threshold:
+      2005-01-01: 1.04
+    amount:
+      2005-01-01: 0.8
+  - threshold:
+      2005-01-01: 1.08
+    amount:
+      2005-01-01: 0.7
+  - threshold:
+      2005-01-01: 1.12
+    amount:
+      2005-01-01: 0.6
+  - threshold:
+      2005-01-01: 1.16
+    amount:
+      2005-01-01: 0.5
+  - threshold:
+      2005-01-01: 1.2
+    amount:
+      2005-01-01: 0.4
+  - threshold:
+      2005-01-01: 1.24
+    amount:
+      2005-01-01: 0.3
+  - threshold:
+      2005-01-01: 1.27
+    amount:
+      2005-01-01: 0.2
+  - threshold:
+      2005-01-01: 1.3
+    amount:
+      2005-01-01: 0.1
+  - threshold:
+      2005-01-01: 1.33
+    amount:
+      2005-01-01: 0

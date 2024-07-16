@@ -1,0 +1,35 @@
+description: Utah non refundable tax credits.
+metadata:
+  unit: list
+  period: year
+  label: Utah non-refundable credits
+  reference:
+    - title: Utah legal code| UC §59-10-1044
+      href: https://le.utah.gov/xcode/Title59/Chapter10/59-10-S1044.html 
+    - title: 2021 Utah TC-40  Utah Individual Income Tax Form Instruction
+      href: https://www.taxformfinder.org/forms/2021/2021-utah-tc-40-full-packet.pdf
+    - title: 2022 Utah TC-40  Utah Individual Income Tax Form Instruction
+      href: https://tax.utah.gov/forms/current/tc-40inst.pdf 
+    - title: 2022 Utah legal code| 59-10-1044
+      href: https://law.justia.com/codes/utah/2022/title-59/chapter-10/part-10/section-1044/
+values:
+  2021-01-01:
+  - ut_taxpayer_credit
+  - ut_retirement_credit
+  - ut_ss_benefits_credit
+  - ut_at_home_parent_credit
+
+  2022-01-01:
+  - ut_taxpayer_credit
+  - ut_eitc
+  - ut_retirement_credit
+  - ut_ss_benefits_credit
+  - ut_at_home_parent_credit
+
+  2024-01-01:
+  - ut_taxpayer_credit
+  - ut_eitc
+  - ut_retirement_credit
+  - ut_ss_benefits_credit
+  - ut_at_home_parent_credit
+  - ut_ctc

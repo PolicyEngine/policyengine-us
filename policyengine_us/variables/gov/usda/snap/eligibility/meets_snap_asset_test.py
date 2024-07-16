@@ -5,7 +5,6 @@ class meets_snap_asset_test(Variable):
     value_type = bool
     entity = SPMUnit
     label = "Meets SNAP asset test"
-    unit = USD
     documentation = "Whether the SPM unit's financial resources are within SNAP's allowable limit"
     definition_period = YEAR
 

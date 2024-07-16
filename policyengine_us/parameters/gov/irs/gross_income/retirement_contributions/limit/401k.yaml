@@ -1,0 +1,19 @@
+description: The US limits annual 401(k) contributions to this amount.
+values:
+  2018-01-01: 18_500
+  2019-01-01: 19_000
+  2020-01-01: 19_500
+  2022-01-01: 20_500
+  2023-01-01: 22_500
+  2024-01-01: 23_000
+metadata:
+  unit: currency-USD
+  period: year
+  label: 401(k) contribution limit
+  references:
+  - title: 26 CFR § 1.402(g)-1 - Limitation on exclusion for elective deferrals. (d))(i)
+    href: https://law.cornell.edu/cfr/text/26/1.402(g)-1
+  # Inflation adjusted amounts
+  - title: Cost-of-Living Adjustments for Retirement Items
+    href: https://www.irs.gov/pub/irs-tege/cola-table.pdf#page=1
+

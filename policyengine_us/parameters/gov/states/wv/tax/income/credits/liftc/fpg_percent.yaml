@@ -1,0 +1,28 @@
+description: West Virginia reduces its low-income family tax credit for filers with modified adjusted gross income exceeding this fraction of the federal poverty guideline.
+metadata:
+  period: year
+  unit: /1
+  label: West Virginia low-income family tax credit MAGI limit
+  reference:
+  - title: Code of West Virginia §11-21-22B (b)(1) and (c)(1)
+    href: https://code.wvlegislature.gov/11-21-22B/
+  - title: 2021 West Virginia Personal Income Tax Forms And Instructions-2021 FAMILY TAX CREDIT TABLES
+    href: https://tax.wv.gov/Documents/TaxForms/2021/it140.pdf#page=28 
+  - title: 2022 West Virginia Personal Income Tax Forms And Instructions-2022 FAMILY TAX CREDIT TABLES
+    href: https://tax.wv.gov/Documents/PIT/2022/PersonalIncomeTaxFormsAndInstructions.2022.pdf#page=42 
+  - title: 2023 West Virginia Personal Income Tax Forms And Instructions-2022 FAMILY TAX CREDIT TABLES
+    href: https://tax.wv.gov/Documents/PIT/2023/it140.PersonalIncomeTaxFormsAndInstructions.2023.pdf#page=14
+
+  breakdown:
+    - filing_status
+
+SINGLE:
+  2007-01-01: 1
+HEAD_OF_HOUSEHOLD: 
+  2007-01-01: 1
+JOINT:
+  2007-01-01: 1
+SURVIVING_SPOUSE:
+  2007-01-01: 1
+SEPARATE:
+  2007-01-01: 0.5

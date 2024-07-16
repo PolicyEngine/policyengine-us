@@ -15,7 +15,10 @@ thresholds:
   metadata:
     unit: currency-USD
     period: year
+    uprating: gov.irs.uprating
     reference:
+      - title: 2024 IRS data release
+        href: https://www.irs.gov/pub/irs-drop/rp-23-34.pdf#page=12
       - title: 2023 IRS data release
         href: https://www.irs.gov/pub/irs-drop/rp-22-38.pdf#page=12
       - title: 2022 IRS data release
@@ -24,6 +27,9 @@ thresholds:
         href: https://www.irs.gov/pub/irs-drop/rp-20-45.pdf#page=12
       - title: 2020 IRS data release
         href: https://www.irs.gov/pub/irs-drop/rp-19-44.pdf#page=12
+      - title: CBO Tax Parameters and Effective Marginal Tax Rates | Feb 2024
+        # 1. Tax Parameters.
+        href: https://www.cbo.gov/system/files/2024-02/53724-2024-02-Tax-Parameters.xlsx
   1:
     values:
       2013-01-01: 179_500
@@ -37,3 +43,15 @@ thresholds:
       2021-01-01: 199_900
       2022-01-01: 206_100
       2023-01-01: 220_700
+      2024-01-01: 232_600
+      # CBO forecast.
+      2025-01-01: 238_500
+      2026-01-01: 243_800
+      2027-01-01: 248_800
+      2028-01-01: 253_700
+      2029-01-01: 258_600
+      2030-01-01: 263_700
+      2031-01-01: 268_900
+      2032-01-01: 274_300
+      2033-01-01: 279_700
+      2034-01-01: 285_300

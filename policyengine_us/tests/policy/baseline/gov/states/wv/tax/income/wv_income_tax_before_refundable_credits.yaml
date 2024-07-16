@@ -1,0 +1,17 @@
+- name: Capped at 0
+  period: 2022
+  input:
+    wv_income_tax_before_non_refundable_credits: 100
+    wv_non_refundable_credits: 200
+    state_code: WV
+  output:
+    wv_income_tax_before_refundable_credits: 0
+
+- name: Calculation
+  period: 2022
+  input:
+    wv_income_tax_before_non_refundable_credits: 500
+    wv_non_refundable_credits: 200
+    state_code: WV
+  output:
+    wv_income_tax_before_refundable_credits: 300

@@ -1,0 +1,27 @@
+description: Maximum number of children who pay an age-based ACA plan premium.
+metadata:
+  period: year
+  label: ACA maximum child count
+  reference:
+    - title: FAQs on CMS ACA Public Use Files (PUF)
+      href: https://www.cms.gov/files/document/2023-public-use-files-faqs.pdf#page=7
+      # The above reference includes the following text:
+      #   When a policy includes more than 3 children such that some children
+      #   are not rated, the PUF logic distributes the total child rate for 3
+      #   children among all children younger than 21 years-old (e.g., if the
+      #   policy includes 4 children, each with a rate of $100, the
+      #   policy-level premium is $300 and each child’s calculated premium
+      #   for the PUF is $75).
+    - title: KFF Health Insurance Marketplace Calculator
+      href: https://www.kff.org/interactive/subsidy-calculator/
+      # https://www.kff.org/interactive/subsidy-calculator-202?/ for prior years
+      # The above references have (since 2014) contained a pull-down menu that
+      # has this title:
+      #   6. Number of children (20 and younger) enrolling in Marketplace coverage
+      # and that offers these choices:
+      #   No Children
+      #   One Child
+      #   Two Children
+      #   3 or more
+values:
+  2014-01-01: 3

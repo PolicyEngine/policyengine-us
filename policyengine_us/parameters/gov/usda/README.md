@@ -1,1 +1,1 @@
-# US Department of Agriculture
+# US Department of Agriculture (USDA)

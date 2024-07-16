@@ -11,7 +11,7 @@ class ny_standard_deduction(Variable):
     defined_for = StateCode.NY
 
     def formula(tax_unit, period, parameters):
-        dependent_elsewhere = tax_unit("tax_unit_dependent_elsewhere", period)
+        dependent_elsewhere = tax_unit("head_is_dependent_elsewhere", period)
         standard_deduction = parameters(
             period
         ).gov.states.ny.tax.income.deductions.standard

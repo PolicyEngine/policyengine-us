@@ -1,0 +1,33 @@
+- name: Arizona widow filing status is treated as head of household
+  period: 2023
+  input:
+    state_code: AZ
+    filing_status: SURVIVING_SPOUSE
+  output:
+    az_filing_status: HEAD_OF_HOUSEHOLD
+
+- name: Jointly filer
+  period: 2023
+  input:
+    state_code: AZ
+    filing_status: JOINT
+  output:
+    az_filing_status: JOINT
+
+- name: Separately filer
+  period: 2023
+  input:
+    state_code: AZ
+    filing_status: SEPARATE
+  output:
+    az_filing_status: SEPARATE
+
+- name: Single filer
+  period: 2023
+  input:
+    state_code: AZ
+    filing_status: SINGLE
+  output:
+    az_filing_status: SINGLE
+    
+

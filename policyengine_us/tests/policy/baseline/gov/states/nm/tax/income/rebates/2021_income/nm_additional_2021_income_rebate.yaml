@@ -3,7 +3,7 @@
   input:
     state_code: NM
     filing_status: JOINT
-    dsi: false
+    head_is_dependent_elsewhere: false
   output:
     nm_additional_2021_income_rebate: 1_000
 
@@ -12,7 +12,7 @@
   input:
     state_code: NM
     filing_status: SINGLE
-    dsi: false
+    head_is_dependent_elsewhere: false
   output:
     nm_additional_2021_income_rebate: 500
 
@@ -21,7 +21,7 @@
   input:
     state_code: NM
     filing_status: SEPARATE
-    dsi: false
+    head_is_dependent_elsewhere: false
   output:
     nm_additional_2021_income_rebate: 500
 
@@ -29,8 +29,8 @@
   period: 2021
   input:
     state_code: NM
-    filing_status: WIDOW
-    dsi: false
+    filing_status: SURVIVING_SPOUSE
+    head_is_dependent_elsewhere: false
   output:
     nm_additional_2021_income_rebate: 1_000
 
@@ -39,24 +39,15 @@
   input:
     state_code: NM
     filing_status: HEAD_OF_HOUSEHOLD
-    dsi: false
+    head_is_dependent_elsewhere: false
   output:
     nm_additional_2021_income_rebate: 1_000
-
-- name: Only available in 2021
-  period: 2022
-  input:
-    state_code: NM
-    filing_status: SEPARATE
-    dsi: false
-  output:
-    nm_additional_2021_income_rebate: 0
 
 - name: Ineligible if depedent on another return
   period: 2021
   input:
     state_code: NM
     filing_status: SEPARATE
-    dsi: true
+    head_is_dependent_elsewhere: true
   output:
     nm_additional_2021_income_rebate: 0

@@ -1,0 +1,30 @@
+- name: 20% rate with no personal tax credit
+  period: 2023
+  input: 
+    state_code: KY
+    ky_family_size_tax_credit_rate: 0.2
+    ky_income_tax_before_non_refundable_credits_unit: 1_000
+    ky_personal_tax_credits: 0
+  output:
+    ky_family_size_tax_credit: 200
+
+- name: 20% rate with personal tax credit
+  period: 2023
+  input: 
+    state_code: KY
+    ky_family_size_tax_credit_rate: 0.2
+    ky_income_tax_before_non_refundable_credits_unit: 1_100
+    ky_personal_tax_credits: 100
+  output:
+    ky_family_size_tax_credit: 200 # 0.2*（1100-100）
+
+
+- name: 0% rate
+  period: 2023
+  input: 
+    state_code: KY
+    ky_family_size_tax_credit_rate: 0
+    ky_income_tax_before_non_refundable_credits_unit: 1_000
+    ky_personal_tax_credits: 0
+  output:
+    ky_family_size_tax_credit: 0

@@ -48,9 +48,9 @@
     # federal income tax results used by Iowa income tax:
     filing_status: JOINT
     # federal CTC was fully refundable in 2021, but composition is flawed
-    non_refundable_ctc: -4_000.00  # a negative credit is nonsensical
-    refundable_ctc: 1_2000.00  # the correct amount in this case is $8000
-    income_tax_before_refundable_credits: 46_502.80  # $4000 too large
+    non_refundable_ctc: 0  # a negative credit is nonsensical
+    refundable_ctc: 8_000  # the correct amount in this case is $8000
+    income_tax_before_refundable_credits: 42_502.80  #
     # formula for ia_fedtax_deduction works around the above federal CTC flaw
     additional_medicare_tax: 18.18  # neither this nor SECA tax part of fedtax
     # Iowa income tax results:

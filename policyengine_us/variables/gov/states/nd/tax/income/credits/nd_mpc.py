@@ -4,14 +4,14 @@ from policyengine_us.model_api import *
 class nd_mpc(Variable):
     value_type = float
     entity = TaxUnit
-    label = "ND marriage-penalty nonrefundable credit amount"
+    label = "North Dakota marriage-penalty nonrefundable credit amount"
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://www.tax.nd.gov/sites/www/files/documents/forms/form-nd-1-2021.pdf"
-        "https://www.tax.nd.gov/sites/www/files/documents/forms/2021-individual-income-tax-booklet.pdf"
-        "https://www.tax.nd.gov/sites/www/files/documents/forms/form-nd-1-2022.pdf"
-        "https://www.tax.nd.gov/sites/www/files/documents/forms/2022-individual-income-tax-booklet.pdf"
+        "https://www.tax.nd.gov/sites/www/files/documents/forms/individual/2021-iit/form-nd-1-2021.pdf#page=2"  # line 22
+        "https://www.tax.nd.gov/sites/www/files/documents/forms/individual/2021-iit/2021-individual-income-tax-booklet.pdf#page=16"
+        "https://www.tax.nd.gov/sites/www/files/documents/forms/individual/2022-iit/form-nd-1-2022.pdf#page=2"  # line 22
+        "https://www.tax.nd.gov/sites/www/files/documents/forms/individual/2022-iit/2022-individual-income-tax-booklet.pdf#page=16"
     )
     defined_for = StateCode.ND
 
@@ -27,7 +27,7 @@ class nd_mpc(Variable):
         eligible = joint & hi_taxinc
         # determine minimum qualified income between head and spouse
         qinc_sources = [
-            "employment_income",
+            "irs_employment_income",
             "self_employment_income",
             "taxable_pension_income",
         ]

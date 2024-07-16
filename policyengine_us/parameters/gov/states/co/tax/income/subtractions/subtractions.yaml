@@ -1,0 +1,54 @@
+description: Colorado counts these sources as subtractions.
+values:
+  2021-01-01:
+    # salt_refund_income
+    - us_govt_interest
+    - co_pension_subtraction
+    - co_military_retirement_subtraction
+    - co_collegeinvest_subtraction
+    - co_charitable_contribution_subtraction
+    # Colorado Agricultural Land Capital Gain Subtraction
+    # Qualified Reservation Income
+    # PERA/DPSRS Subtraction, for PERA contributions made in 1984–1986 or DPSRS contributions made in 1986
+    # Railroad Benefit Subtraction
+    # Wildfire Mitigation Measures Subtraction
+    # Colorado Marijuana Business Deduction
+    # Non-Resident Disaster Relief Worker Subtraction
+    # Reacquisition of Colorado Residency During Active Duty Military Service Subtraction
+    # First Time Home Buyer Savings Account Interest Deduction
+    # Other Subtractions
+    # Carryforward Subtractions Allowed Under HB21-1002
+    
+  2023-01-01:
+    # salt_refund_income
+    - us_govt_interest
+    - co_pension_subtraction
+    - co_military_retirement_subtraction
+    - co_collegeinvest_subtraction
+    - co_charitable_contribution_subtraction
+    - co_able_contribution_subtraction
+    # Colorado Agricultural Land Capital Gain Subtraction
+    # Qualified Reservation Income
+    # PERA/DPSRS Subtraction, for PERA contributions made in 1984–1986 or DPSRS contributions made in 1986
+    # Railroad Benefit Subtraction
+    # Wildfire Mitigation Measures Subtraction
+    # Colorado Marijuana Business Deduction
+    # Non-Resident Disaster Relief Worker Subtraction
+    # Reacquisition of Colorado Residency During Active Duty Military Service Subtraction
+    # First Time Home Buyer Savings Account Interest Deduction
+    # Other Subtractions
+    # Carryforward Subtractions Allowed Under HB21-1002
+metadata:
+  period: year
+  unit: list
+  reference:
+    - title: 2022 DR 0104AD 
+      href: https://tax.colorado.gov/sites/tax/files/documents/DR0104AD_2022.pdf#page=1
+    - title: 2022 Colorado Individual Tax Filing Guide 104 Book 
+      href: https://tax.colorado.gov/sites/tax/files/documents/DR_104_Book_2022.pdf#page=11
+    - title: 2021 DR 0104AD 
+      href: https://tax.colorado.gov/sites/tax/files/documents/DR0104AD_2021.pdf#page=1
+    - title: C.R.S. 39-22-104(4)
+      href: https://advance.lexis.com/documentpage/?pdmfid=1000516&crid=20b2023b-0bab-47de-9fb8-549524cac008&action=pawlinkdoc&pdcomponentid=&pddocfullpath=%2fshared%2fdocument%2fstatutes-legislation%2furn%3acontentItem%3a683G-JJ73-CGX8-04HR-00008-00&pdtocnodeidentifier=ABPAACAACAABAACAAF&config=014FJAAyNGJkY2Y4Zi1mNjgyLTRkN2YtYmE4OS03NTYzNzYzOTg0OGEKAFBvZENhdGFsb2d592qv2Kywlf8caKqYROP5&ecomp=k2vckkk&prid=49fe2864-b8f7-4db8-8819-3b6d1cabfe53
+    - title: 2023 Colorado Individual Tax Filing Guide 104 Book 
+      href: https://tax.colorado.gov/sites/tax/files/documents/Book0104_2023.pdf#page=14

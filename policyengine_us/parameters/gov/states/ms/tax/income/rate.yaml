@@ -1,0 +1,52 @@
+description: Mississippi taxes personal income using these income tax brackets.
+
+brackets:
+  - threshold:
+      2017-01-01: 0
+    rate:
+      2017-01-01: 0.03
+      2018-01-01: 0
+  - threshold:
+      2017-01-01: 5_000
+      2018-01-01: 1_000
+      2019-01-01: 2_000
+      2020-01-01: 3_000
+      2021-01-01: 4_000
+      2022-01-01: 5_000
+      2023-01-01: 10_000
+    rate:
+      2017-01-01: 0.04
+      2018-01-01: 0.03
+      2022-01-01: 0.04
+      2024-01-01: 0.047
+      2025-01-01: 0.044
+      2026-01-01: 0.04
+  - threshold:
+      2017-01-01: 10_000
+      2018-01-01: 5_000
+      2022-01-01: 10_000
+      2024-01-01: .inf
+    rate:
+      2017-01-01: 0.05
+      2018-01-01: 0.04
+      2022-01-01: 0.05
+  - threshold:
+      2017-01-01: .inf
+      2018-01-01: 10_000
+      2022-01-01: .inf
+    rate:
+      2018-01-01: 0.05
+
+metadata:
+  type: marginal_rate
+  rate_unit: /1
+  threshold_unit: currency-USD
+  label: Mississippi income tax rate
+  period: year
+  reference: 
+    - title: MS Code § 27-7-5 (2020) (1)
+      href: https://law.justia.com/codes/mississippi/2020/title-27/chapter-7/article-1/section-27-7-5/ 
+    - title: Mississippi Income Tax Instructions 2022
+      href: https://www.dor.ms.gov/sites/default/files/Forms/Individual/80100221.pdf#page=20
+    - title: Mississippi Income Tax Instructions 2023 - House Bill 531
+      href: https://www.dor.ms.gov/sites/default/files/Forms/Individual/80100231.pdf#page=3  

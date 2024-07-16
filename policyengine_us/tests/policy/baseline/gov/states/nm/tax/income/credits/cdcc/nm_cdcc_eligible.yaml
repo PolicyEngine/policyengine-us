@@ -1,7 +1,7 @@
 - name: Is dependent on another return
   period: 2022
   input:
-    dsi: true
+    head_is_dependent_elsewhere: true
     state_code: NM
     earned_income: 1
     is_disabled: false
@@ -15,7 +15,7 @@
 - name: No earned income
   period: 2022
   input:
-    dsi: false
+    head_is_dependent_elsewhere: false
     state_code: NM
     earned_income: 0
     is_disabled: false
@@ -29,7 +29,7 @@
 - name: No earned income but disabled - eligible 
   period: 2022
   input:
-    dsi: false
+    head_is_dependent_elsewhere: false
     state_code: NM
     earned_income: 0
     is_disabled: true
@@ -43,7 +43,7 @@
 - name: Over income threshold
   period: 2022
   input:
-    dsi: false
+    head_is_dependent_elsewhere: false
     state_code: NM
     earned_income: 0
     is_disabled: false
@@ -57,7 +57,7 @@
 - name: Receives tanf
   period: 2022
   input:
-    dsi: false
+    head_is_dependent_elsewhere: false
     state_code: NM
     earned_income: 0
     is_disabled: false
@@ -71,7 +71,7 @@
 - name: Eligible
   period: 2022
   input:
-    dsi: false
+    head_is_dependent_elsewhere: false
     state_code: NM
     earned_income: 1
     is_disabled: false
@@ -101,7 +101,7 @@
     tax_units:
       tax_unit:
         members: [head, spouse]
-        dsi: false
+        head_is_dependent_elsewhere: false
         filing_status: JOINT
         nm_modified_gross_income: 30_159
     households:
@@ -130,7 +130,7 @@
     tax_units:
       tax_unit:
         members: [head, spouse]
-        dsi: false
+        head_is_dependent_elsewhere: false
         filing_status: JOINT
         nm_modified_gross_income: 30_159
     households:
@@ -159,7 +159,7 @@
     tax_units:
       tax_unit:
         members: [head, spouse]
-        dsi: false
+        head_is_dependent_elsewhere: false
         filing_status: JOINT
         nm_modified_gross_income: 30_159
     households:
@@ -188,7 +188,7 @@
     tax_units:
       tax_unit:
         members: [head, spouse]
-        dsi: false
+        head_is_dependent_elsewhere: false
         filing_status: JOINT
         nm_modified_gross_income: 30_159
     households:
@@ -217,7 +217,7 @@
     tax_units:
       tax_unit:
         members: [head, spouse]
-        dsi: false
+        head_is_dependent_elsewhere: false
         filing_status: JOINT
         nm_modified_gross_income: 30_159
     households:

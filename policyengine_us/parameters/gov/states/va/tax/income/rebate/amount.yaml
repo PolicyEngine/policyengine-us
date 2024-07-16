@@ -1,0 +1,23 @@
+description: Virginia provides an individual income tax rebate of this amount, based on filling status.
+metadata:
+  label: Virginia rebate amount
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  reference:
+  - title: Virginia 2023 legislative summary
+    href: https://www.tax.virginia.gov/sites/default/files/inline-files/2023-legislative-summary.pdf#page=9
+  - title: Virginia 2023 Special Session I Budget Bill (Introduced) - HB6001 Item 3-5.28 - B
+    href: https://budget.lis.virginia.gov/item/2023/2/HB6001/Introduced/3/3-5.28/
+
+JOINT:
+  2023-01-01: 400
+SINGLE:
+  2023-01-01: 200
+SEPARATE:
+  2023-01-01: 200
+HEAD_OF_HOUSEHOLD:
+  2023-01-01: 200
+SURVIVING_SPOUSE:
+  2023-01-01: 200

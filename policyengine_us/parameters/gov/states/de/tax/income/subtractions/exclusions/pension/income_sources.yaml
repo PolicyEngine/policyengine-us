@@ -1,0 +1,18 @@
+description: Delaware counts these income sources for the pension exclusion.
+values:
+  2021-01-01:
+    - dividend_income
+    - capital_gains
+    - taxable_interest_income
+    - rental_income
+    - taxable_pension_income
+metadata:
+  unit: list
+  label: Delaware pension exclusion income sources
+  reference:
+    - title: Delaware individual income tax instructions for 2021
+      href: https://revenuefiles.delaware.gov/2021/PIT-RES_TY21_2021-02_Instructions.pdf#page=6
+    - title: The Delaware Code - Title 30 - Chapter 11 - Subchapter II - § 1106 - (b) - (3) - c
+      href: https://delcode.delaware.gov/title30/c011/sc02/index.html
+    - title: Delaware individual income tax instructions for 2022
+      href: https://revenuefiles.delaware.gov/2022/PIT-RES_TY22_2022-02_Instructions.pdf#page=6
