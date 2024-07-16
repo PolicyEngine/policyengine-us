@@ -13,7 +13,8 @@ class az_one_time_families_tax_rebates(Variable):
         p = parameters(period).gov.states.az.tax.income.rebates
         person = tax_unit.members
         dependent = person("is_tax_unit_dependent", period)
-        age = person("age", period)
+        age = person("age", period) - 2  # the age at the end of 2021
+        dependent = person("is_tax_unit_dependent", period) & (age > 0)
         young_dependent = dependent & (age < p.amount.thresholds[-1])
         young_dependent_count = tax_unit.sum(young_dependent)
         dependent_count = tax_unit.sum(dependent)
