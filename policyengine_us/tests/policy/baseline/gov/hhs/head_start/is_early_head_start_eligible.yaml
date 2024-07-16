@@ -1,0 +1,104 @@
+- name: Not Early Head Start eligible because not age eligible
+  period: 2021
+  input:
+    tanf: 0
+    ssi: 0
+    snap: 0
+    is_homeless: false
+    was_in_foster_care: false
+    adjusted_gross_income: 0
+    tax_unit_fpg: 0
+    age: 20
+    is_pregnant: false
+  output:
+    is_early_head_start_eligible: false
+
+- name: Not Early Head Start eligible because only age eligible
+  period: 2021
+  input:
+    tanf: 0
+    ssi: 0
+    snap: 0
+    is_homeless: false
+    was_in_foster_care: false
+    adjusted_gross_income: 100
+    tax_unit_fpg: 0
+    age: 2
+    is_pregnant: false
+  output:
+    is_early_head_start_eligible: false
+
+- name: Not Early Head Start eligible because only age eligible via pregnancy
+  period: 2021
+  input:
+    tanf: 0
+    ssi: 0
+    snap: 0
+    is_homeless: false
+    was_in_foster_care: false
+    adjusted_gross_income: 100
+    tax_unit_fpg: 0
+    age: 30
+    is_pregnant: true
+  output:
+    is_early_head_start_eligible: false
+
+- name: Early Head Start eligible via age and income
+  period: 2021
+  input:
+    tanf: 0
+    ssi: 0
+    snap: 0
+    is_homeless: false
+    was_in_foster_care: false
+    adjusted_gross_income: 100
+    tax_unit_fpg: 1_000
+    age: 33
+    is_pregnant: true
+  output:
+    is_early_head_start_eligible: true
+
+- name: Early Head Start eligible via age and one program
+  period: 2021
+  input:
+    tanf: 100
+    ssi: 0
+    snap: 0
+    is_homeless: false
+    was_in_foster_care: false
+    adjusted_gross_income: 100
+    tax_unit_fpg: 0
+    age: 2
+    is_pregnant: false
+  output:
+    is_early_head_start_eligible: true
+
+- name: Early Head Start eligible via age and more than one program
+  period: 2021
+  input:
+    tanf: 0
+    ssi: 0
+    snap: 0
+    is_homeless: true
+    was_in_foster_care: true
+    adjusted_gross_income: 100
+    tax_unit_fpg: 0
+    age: 1
+    is_pregnant: false
+  output:
+    is_early_head_start_eligible: true
+
+- name: Early Head Start eligible via all criteria
+  period: 2021
+  input:
+    tanf: 0
+    ssi: 20
+    snap: 100
+    is_homeless: false
+    was_in_foster_care: true
+    adjusted_gross_income: 100
+    tax_unit_fpg: 1_000
+    age: 29
+    is_pregnant: true
+  output:
+    is_early_head_start_eligible: true

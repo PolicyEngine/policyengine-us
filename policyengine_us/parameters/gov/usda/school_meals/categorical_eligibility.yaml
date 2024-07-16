@@ -9,7 +9,7 @@ values:
     - is_homeless
     - is_runaway_child
     - is_migratory_child
-    # Also Head Start child
+    - is_head_start_eligible
 
 metadata:
   unit: list
