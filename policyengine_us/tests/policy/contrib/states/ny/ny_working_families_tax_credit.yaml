@@ -1,0 +1,209 @@
+- name: Reform does not apply
+  period: 2024
+  input:
+    gov.contrib.states.ny.wftc.in_effect: false
+    people: 
+      person1:
+        age: 30
+        is_tax_unit_dependent: false
+      person2:
+        age: 17
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ny_agi: 0
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    # ny_wftc_eligible_children: 0
+    # ny_working_families_tax_credit: 0
+    ny_eitc: 0
+    ny_ctc: 0
+    ny_exemptions: 1_000
+
+
+- name: Reform applied to a head of household with no income in 2024
+  period: 2024
+  reforms: policyengine_us.reforms.states.ny.wftc.ny_working_families_tax_credit.ny_working_families_tax_credit
+  input:
+    gov.contrib.states.ny.wftc.in_effect: true
+    people: 
+      person1:
+        age: 30
+        is_tax_unit_dependent: false
+      person2:
+        age: 17
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ny_agi: 0
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    ny_wftc_eligible_children: 1
+    ny_working_families_tax_credit: 800
+    ny_eitc: 0
+    ny_ctc: 0
+    ny_exemptions: 0
+
+- name: Head of household with income over phase-out threshold in 2024
+  period: 2024
+  reforms: policyengine_us.reforms.states.ny.wftc.ny_working_families_tax_credit.ny_working_families_tax_credit
+  input:
+    gov.contrib.states.ny.wftc.in_effect: true
+    people: 
+      person1:
+        age: 30
+        is_tax_unit_dependent: false
+      person2:
+        age: 17
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ny_agi: 140_000
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    ny_wftc_eligible_children: 1
+    ny_working_families_tax_credit: 150
+    ny_eitc: 0
+    ny_ctc: 0
+    ny_exemptions: 0
+
+- name: Reform does not apply, household received EITC
+  period: 2024
+  input:
+    gov.contrib.states.ny.wftc.in_effect: false
+    people: 
+      person1:
+        age: 30
+        is_tax_unit_dependent: false
+      person2:
+        age: 16
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ny_agi: 30_000
+        eitc: 1_000
+        filing_status: HEAD_OF_HOUSEHOLD
+        ny_household_credit: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    # ny_wftc_eligible_children: 0
+    # ny_working_families_tax_credit: 0
+    ny_eitc: 300
+    ny_ctc: 330
+    ny_exemptions: 1_000
+
+- name: Reform does apply, household received EITC
+  period: 2024
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ny.wftc.ny_working_families_tax_credit.ny_working_families_tax_credit
+  input:
+    gov.contrib.states.ny.wftc.in_effect: false
+    people: 
+      person1:
+        age: 30
+        is_tax_unit_dependent: false
+      person2:
+        age: 16
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ny_agi: 30_000
+        filer_adjusted_earnings: 1_000
+        filing_status: HEAD_OF_HOUSEHOLD
+        ny_household_credit: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    ny_wftc_eligible_children: 1
+    ny_working_families_tax_credit: 800
+    younger_eitc_eligible: true
+    younger_eitc: 340
+    ny_eitc: 173
+    ny_ctc: 0
+    ny_exemptions: 0
+
+- name: Reform applied to a head of household with no income in 2024, dependent over 17
+  period: 2024
+  reforms: policyengine_us.reforms.states.ny.wftc.ny_working_families_tax_credit.ny_working_families_tax_credit
+  input:
+    gov.contrib.states.ny.wftc.in_effect: true
+    people: 
+      person1:
+        age: 30
+        is_tax_unit_dependent: false
+      person2:
+        age: 18
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ny_agi: 0
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    ny_wftc_eligible_children: 0
+    ny_working_families_tax_credit: 0
+    ny_eitc: 0
+    ny_ctc: 0
+    ny_exemptions: 1_000
+
+- name: Younger EITC fully phased out but older EITC still applicable
+  period: 2028
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ny.wftc.ny_working_families_tax_credit.ny_working_families_tax_credit
+  input:
+    gov.contrib.states.ny.wftc.in_effect: false
+    people: 
+      person1:
+        age: 30
+        is_tax_unit_dependent: false
+      person2:
+        age: 20
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ny_agi: 10_000
+        filer_adjusted_earnings: 1_000
+        filing_status: HEAD_OF_HOUSEHOLD
+        ny_household_credit: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    ny_wftc_eligible_children: 1
+    ny_working_families_tax_credit: 0
+    eitc_younger_children_count: 0
+    # Amount for self attributed to younger child EITC
+    younger_eitc: 76.5
+    older_eitc: 340
+    ny_eitc: 102
+    ny_ctc: 0
+    ny_exemptions: 1_000
