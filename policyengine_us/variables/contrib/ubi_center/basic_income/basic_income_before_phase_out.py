@@ -17,6 +17,11 @@ class basic_income_before_phase_out(Variable):
         age = person("age", period)
         amount_by_age = p.person.by_age.calc(age)
         total_amount_by_age = tax_unit.sum(amount_by_age)
+        # If available, apply a marriage bonus
+        married = tax_unit.family("is_married", period)
+        marriage_bonus_rate = p.person.marriage_bonus * total_amount_by_age
+        post_marriage_bonus_amount = total_amount_by_age + marriage_bonus_rate
+        applicable_amount_by_age = where(married, post_marriage_bonus_amount, total_amount_by_age)
         # Now compute FPG amount.
         fpg = tax_unit("tax_unit_fpg", period)
         fpg_amount = p.tax_unit.fpg_percent * fpg
@@ -26,7 +31,7 @@ class basic_income_before_phase_out(Variable):
         disabled_amount = tax_unit.sum(disabled * p.person.disability)
         return (
             total_flat_amount
-            + total_amount_by_age
+            + applicable_amount_by_age
             + fpg_amount
             + disabled_amount
         )
