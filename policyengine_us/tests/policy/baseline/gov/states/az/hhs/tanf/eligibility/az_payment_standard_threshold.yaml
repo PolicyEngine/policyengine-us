@@ -1,5 +1,5 @@
 - name: The family of 3 do not spend shelter cost (under the latest standard)
-  period: 2024-01
+  period: 2024
   absolute_error_margin: 5
   #have rounding errors with the 23% when calculating payment standard
   input:
@@ -10,7 +10,7 @@
     az_payment_standard_threshold: 218
 
 - name: The family of 3 do not spend shelter cost (under the previous standard)
-  period: 2023-01
+  period: 2023
   absolute_error_margin: 5  
   #have rounding errors with the 23% when calculating payment standard
   input:
@@ -21,7 +21,7 @@
     az_payment_standard_threshold: 175
 
 - name: The family of 3 spend shelter cost (under the latest standard)
-  period: 2024-01
+  period: 2024
   absolute_error_margin: 1
   input:
     az_countable_household_size: 3
@@ -31,7 +31,7 @@
     az_payment_standard_threshold: 347
 
 - name: The family of 3 spend shelter cost (under the previous standard)
-  period: 2024-01
+  period: 2024
   absolute_error_margin: 1
   input:
     az_countable_household_size: 3
