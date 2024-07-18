@@ -89,3 +89,21 @@
         state_code: NY
   output:
     ny_ctc: 330
+
+- name: 2023 newly born child (zero-years old) gets credit
+  period: 2023
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc: 330
