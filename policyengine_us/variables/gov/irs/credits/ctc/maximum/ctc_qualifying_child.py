@@ -15,5 +15,5 @@ class ctc_qualifying_child(Variable):
         age_limit = parameters(
             period
         ).gov.irs.credits.ctc.amount.base.thresholds[-1]
-        age_eligible = age <= age_limit
+        age_eligible = age < age_limit
         return age_eligible & is_dependent
