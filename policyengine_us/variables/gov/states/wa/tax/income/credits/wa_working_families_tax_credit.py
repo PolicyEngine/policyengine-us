@@ -11,14 +11,15 @@ class wa_working_families_tax_credit(Variable):
     defined_for = StateCode.WA
 
     def formula_2022(tax_unit, period, parameters):
-        # Filers must claim EITC and be in Washington to be eligible.
-        # TODO: Include ITIN children.
-        eligible = tax_unit("eitc", period) > 0
-        # Parameters are based on EITC-eligible children.
-        p = parameters(
-            period
-        ).gov.states.wa.tax.income.credits.working_families_tax_credit
-        if p.in_effect:
+        in_effect = parameters(period).gov.states.wa.tax.income.in_effect
+        if in_effect:
+            # Filers must claim EITC and be in Washington to be eligible.
+            # TODO: Include ITIN children.
+            eligible = tax_unit("eitc", period) > 0
+            # Parameters are based on EITC-eligible children.
+            p = parameters(
+                period
+            ).gov.states.wa.tax.income.credits.working_families_tax_credit
             eitc_child_count = tax_unit("eitc_child_count", period)
             max_amount = p.amount.calc(eitc_child_count)
             # WFTC phases out at a certain amount below the EITC maximum AGI.

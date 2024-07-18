@@ -10,6 +10,11 @@ metadata:
       href: https://app.leg.wa.gov/RCW/default.aspx?cite=82.08.0206
     - title: Tax year 2023 applications now being accepted for the Working Families Tax Credit
       href: https://dor.wa.gov/about/news-releases/2024/tax-year-2023-applications-now-being-accepted-working-families-tax-credit
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: nearest
+      interval: 5
 brackets:
   - threshold:
       2022-01-01: 0
