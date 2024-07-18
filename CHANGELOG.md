@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.22.1] - 2024-07-18 19:53:37
+
+### Fixed
+
+- Adjust the ctc_qualifying_child to reflect the age requirement.
+
 ## [1.22.0] - 2024-07-17 18:24:10
 
 ### Added
@@ -9050,6 +9056,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.22.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.22.0...1.22.1
 [1.22.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.21.0...1.22.0
 [1.21.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.20.0...1.21.0
 [1.20.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.19.0...1.20.0
