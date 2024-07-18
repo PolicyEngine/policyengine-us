@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class vita_eligibility(Variable):
     value_type = bool
     entity = Person
-    label = "IRS Vita program eligibility"
+    label = "Eligible for the VITA program"
     definition_period = YEAR
 
     def formula(person, period, parameters):
@@ -12,7 +12,5 @@ class vita_eligibility(Variable):
         income = person("irs_gross_income", period)
         is_eligible_income = income <= p.income_limit
         is_disabled = person("is_disabled", period)
-        is_eligible_language = person("is_english_proficient", period)
-        eligible = is_eligible_income | is_disabled | ~is_eligible_language
-
-        return eligible
+        proficient_in_english = person("is_english_proficient", period)
+        return is_eligible_income | is_disabled | ~proficient_in_english
