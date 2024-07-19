@@ -29,3 +29,45 @@
     tax_unit_fpg: 10_000
   output:
     basic_income_before_phase_out: 10_000
+
+- name: $10,000 older adult BI and $5,000 young child BI, marriage bonus of 20%
+  period: 2022
+  input:
+    gov.contrib.ubi_center.basic_income.amount.person.by_age[3].amount: 10_000
+    gov.contrib.ubi_center.basic_income.amount.person.by_age[0].amount: 5_000
+    gov.contrib.ubi_center.basic_income.amount.person.marriage_bonus: 0.2
+    people:
+      adult:
+        age: 26
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [adult, child]
+    families:
+      family:
+        members: [adult, child]
+        is_married: true
+  output:
+    basic_income_before_phase_out: 18_000
+
+- name: $10,000 older adult BI and $5,000 young child BI, not married
+  period: 2022
+  input:
+    gov.contrib.ubi_center.basic_income.amount.person.by_age[3].amount: 10_000
+    gov.contrib.ubi_center.basic_income.amount.person.by_age[0].amount: 5_000
+    gov.contrib.ubi_center.basic_income.amount.person.marriage_bonus: 0.2
+    people:
+      adult:
+        age: 26
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [adult, child]
+    families:
+      family:
+        members: [adult, child]
+        is_married: false
+  output:
+    basic_income_before_phase_out: 15_000
