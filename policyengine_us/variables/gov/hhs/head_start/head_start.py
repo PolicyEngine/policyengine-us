@@ -19,4 +19,9 @@ class head_start(Variable):
         childcare_hours = (
             person("childcare_hours_per_week", period) * WEEKS_IN_YEAR
         )
-        return childcare_expenses * (p.minimum_hours / childcare_hours)
+        mask = childcare_hours > 0
+        weekly_expenses = np.zeros_like(childcare_hours)
+        weekly_expenses[mask] = (
+            childcare_expenses[mask] / childcare_hours[mask]
+        )
+        return p.minimum_hours * weekly_expenses
