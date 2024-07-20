@@ -30,7 +30,7 @@
   output:
     wic: 0 
 
-- name: Households that are in breastfeeding category are elgible, check uprating.
+- name: Eligible breastfeeding individuals. Verifies uprating.
   period: 2022
   input:
     wic_category_str: BREASTFEEDING
