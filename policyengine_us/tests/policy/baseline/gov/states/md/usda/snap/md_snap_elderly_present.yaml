@@ -1,0 +1,53 @@
+- name: Family with nobody elderly
+  period: 2024
+  input:
+    people:
+      p1:
+        md_snap_is_elderly: false
+      p2:
+        md_snap_is_elderly: false
+    spm_units:
+      spm_unit:
+        members: [p1, p2]
+    households:
+      household:
+        members: [p1, p2]
+        state_code: MD
+  output:
+    md_snap_elderly_present: false
+
+- name: Family with one person elderly
+  period: 2024
+  input:
+    people:
+      p1:
+        md_snap_is_elderly: true
+      p2:
+        md_snap_is_elderly: false
+    spm_units:
+      spm_unit:
+        members: [p1, p2]
+    households:
+      household:
+        members: [p1, p2]
+        state_code: MD
+  output:
+    md_snap_elderly_present: true
+
+- name: Family with all elderly
+  period: 2024
+  input:
+    people:
+      p1:
+        md_snap_is_elderly: true
+      p2:
+        md_snap_is_elderly: true
+    spm_units:
+      spm_unit:
+        members: [p1, p2]
+    households:
+      household:
+        members: [p1, p2]
+        state_code: MD
+  output:
+    md_snap_elderly_present: true
