@@ -2,6 +2,10 @@ description: The Administration for Children and Families limits Head Start part
 
 brackets:
   - threshold:
+      2021-09-01: 0
+    amount:
+      2021-09-01: false
+  - threshold:
       2021-09-01: 3
     amount:
       2021-09-01: true
@@ -14,6 +18,7 @@ metadata:
   type: single_amount
   rate_unit: bool
   threshold_unit: year
+  period: year
   label: Head Start children age range
   reference:
     - title: 1302.12 Determining, verifying, and documenting eligibility. (b)

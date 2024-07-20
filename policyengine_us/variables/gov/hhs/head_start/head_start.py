@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class head_start(Variable):
     value_type = float
     entity = Person
-    label = "Head Start value"
+    label = "Head Start program"
     unit = USD
     definition_period = YEAR
     reference = (
