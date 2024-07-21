@@ -22,7 +22,7 @@ def create_middle_class_tax_credit() -> Reform:
             cap = where(joint, p.cap * p.joint_multiplier, p.cap)
             capped_earned_income = min_(earned_income, cap)
             agi = tax_unit("adjusted_gross_income", period)
-            
+
             excess = max_(0, agi - p.phase_out.start[filing_status])
             phase_out_rate = min_(
                 1, excess / p.phase_out.divisor[filing_status]
