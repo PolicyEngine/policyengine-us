@@ -1,6 +1,6 @@
 description: Indiana provides this base exemption amount.
 values:
-  2021-01-01: 1_000 #married filing jointly should be $2_000
+  2021-01-01: 1_000
 metadata:
   period: year
   unit: currency-USD
@@ -10,3 +10,17 @@ metadata:
       href: http://iga.in.gov/legislative/laws/2021/ic/titles/006#6-3-1-3.5
     - title: 2023 IT-40 Income Tax Form Instruction Booklet, pg. 30
       href: https://www.in.gov/dor/tax-forms/2023-individual-income-tax-forms/
+    - title: 2024 IC 6-3-1-3.5 "Adjusted gross income" (a)(3)
+      href: https://iga.in.gov/laws/2024/ic/titles/6#6-3-1-3.5
+  breakdown: 
+    - filing_status
+JOINT:
+2021-01-01: 2_000
+SURVIVING_SPOUSE:
+2021-01-01: 1_000
+HEAD_OF_HOUSEHOLD:
+2021-01-01: 1_000
+SINGLE:
+2021-01-01: 1_000
+SEPARATE:
+2021-01-01: 1_000
