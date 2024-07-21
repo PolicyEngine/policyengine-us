@@ -25,11 +25,12 @@ def create_middle_class_tax_credit() -> Reform:
             
             excess = max_(0, agi - p.phase_out.start[filing_status])
             phase_out_rate = min_(
-                1, excess * p.phase_out.divisor[filing_status]
+                1, excess / p.phase_out.divisor[filing_status]
             )
             reduction = capped_earned_income * phase_out_rate
             age = tax_unit.members("age", period)
-            eligible = tax_unit.any(age >= p.age_threshold)
+            age_eligible = age >= p.age_threshold
+            eligible = tax_unit.any(age_eligible)
             return max_(0, capped_earned_income - reduction) * eligible
 
     class income_tax_refundable_credits(Variable):
