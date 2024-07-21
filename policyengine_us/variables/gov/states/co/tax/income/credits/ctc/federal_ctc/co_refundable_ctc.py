@@ -41,7 +41,7 @@ class co_refundable_ctc(Variable):
             earnings_over_threshold * p.refundable.phase_in.rate
         )  # Line 13
         social_security_tax = tax_unit(
-            "ctc_social_security_excess", period
+            "ctc_social_security_tax", period
         )  # Line 14 - 16
         federal_eitc = tax_unit("eitc", period)  # Line 17a
         social_security_excess = max_(

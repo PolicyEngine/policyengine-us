@@ -10,9 +10,9 @@
     # SS_SUBTRACT_VARIABLES
     excess_payroll_tax_withheld: 0
   output:
-    ctc_social_security_excess: 0
+    ctc_social_security_tax: 0
 
-- name: Social security excess included variables more than excluded variables
+- name: Social security taxes included variables more than excluded variables
   period: 2018
   input:
     # SS_ADD_VARIABLES
@@ -24,9 +24,9 @@
     # SS_SUBTRACT_VARIABLES
     excess_payroll_tax_withheld: 200
   output:
-    ctc_social_security_excess: 75
+    ctc_social_security_tax: 75
 
-- name: Social security excess included variables less than excluded variables
+- name: Social security taxes included variables less than excluded variables
   period: 2018
   input:
     # SS_ADD_VARIABLES
@@ -38,4 +38,4 @@
     # SS_SUBTRACT_VARIABLES
     excess_payroll_tax_withheld: 450
   output:
-    ctc_social_security_excess: -175
+    ctc_social_security_tax: -175
