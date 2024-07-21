@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class is_early_head_start_eligible(Variable):
     value_type = bool
     entity = Person
-    label = "Eligible for the Early Head Start program"
+    label = "Eligible person for the Early Head Start program"
     definition_period = YEAR
     reference = (
         "https://eclkc.ohs.acf.hhs.gov/policy/45-cfr-chap-xiii/1302-12-determining-verifying-documenting-eligibility"
