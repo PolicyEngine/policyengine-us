@@ -7471,3 +7471,219 @@
     added:
     - New York Solar Energy Systems Equipment Credit.
   date: 2024-06-20 15:16:19
+- bump: patch
+  changes:
+    fixed:
+    - Remove unneeded personal_interest_expense variable.
+  date: 2024-06-21 16:07:00
+- bump: patch
+  changes:
+    fixed:
+    - Limit DC SNAP minimum allotment to eligible applicants.
+  date: 2024-06-21 18:32:22
+- bump: minor
+  changes:
+    added:
+    - Hawaii standard deduction increases.
+    - Hawaii tax bracket increases.
+  date: 2024-06-25 01:14:35
+- bump: minor
+  changes:
+    changed:
+    - Update CPI-U and CPI-W parameters based on the CBO June 2024 Projections.
+  date: 2024-06-25 02:39:47
+- bump: patch
+  changes:
+    added:
+    - Move rounding metadata to individual breakdown parameters.
+  date: 2024-06-26 00:53:07
+- bump: major
+  changes:
+    added:
+    - Support for Python 3.11.
+  date: 2024-06-26 17:11:51
+- bump: minor
+  changes:
+    added:
+    - Add the New York Residential Solar Tax to the net income tree.
+  date: 2024-06-26 17:53:48
+- bump: minor
+  changes:
+    added:
+    - Update the SNAP uprating based on the June 2024 CBO forecast.
+  date: 2024-06-27 03:27:43
+- bump: minor
+  changes:
+    added:
+    - Connecticut 2022 temporary child tax rebate.
+  date: 2024-06-27 11:42:31
+- bump: minor
+  changes:
+    added:
+    - 2023 Illinois policy parameter updates.
+  date: 2024-06-28 03:25:40
+- bump: minor
+  changes:
+    added:
+    - Montgomery County Local EITC.
+  date: 2024-07-01 13:54:35
+- bump: patch
+  changes:
+    fixed:
+    - Oklahoma EITC refundability.
+  date: 2024-07-01 20:57:08
+- bump: patch
+  changes:
+    fixed:
+    - Change the parameter input in the CT rebate reduction start from WIDOW to SURVIVING_SPOUSE.
+  date: 2024-07-02 00:30:47
+- bump: minor
+  changes:
+    added:
+    - Moving DC SNAP temporary local benefit code.
+  date: 2024-07-02 00:35:30
+- bump: minor
+  changes:
+    added:
+    - Maine 2023 tax rules.
+    - Maine tax parameters uprating.
+    - Refactor Maine property tax fairness credit.
+  date: 2024-07-02 00:42:34
+- bump: minor
+  changes:
+    added:
+    - Maryland 2023 income tax updates.
+  date: 2024-07-02 02:10:58
+- bump: minor
+  changes:
+    added:
+    - DC Additional SNAP minimum allotment.
+  date: 2024-07-02 12:50:48
+- bump: minor
+  changes:
+    added:
+    - Mississippi 2023, 2024, and 2025 tax rates.
+    - Mississippi charitable contributions credit.
+  date: 2024-07-02 17:35:57
+- bump: minor
+  changes:
+    added:
+    - Student loan above the line deduction.
+  date: 2024-07-02 18:45:27
+- bump: minor
+  changes:
+    added:
+    - New York State Geothermal Energy System Credit.
+  date: 2024-07-02 21:36:44
+- bump: minor
+  changes:
+    added:
+    - Change MS charitable contributions credit from WIDOW to SURVIVING_SPOUSE.
+  date: 2024-07-03 19:51:24
+- bump: minor
+  changes:
+    added:
+    - Halve joint EITC phase out rate reform.
+  date: 2024-07-07 23:49:09
+- bump: minor
+  changes:
+    added:
+    - 2023 New York tax rules.
+  date: 2024-07-08 11:55:38
+- bump: minor
+  changes:
+    added:
+    - New York State Working Families Tax Credit reform.
+  date: 2024-07-08 13:14:25
+- bump: patch
+  changes:
+    fixed:
+    - 2023 EITC joint bonus parameter value.
+  date: 2024-07-09 02:52:07
+- bump: patch
+  changes:
+    fixed:
+    - 2018 federal EITC parameter values.
+  date: 2024-07-09 12:45:04
+- bump: patch
+  changes:
+    added:
+    - Expand free school categorical eligibility to foster, homeless, migrant, and
+      runaway children.
+  date: 2024-07-10 16:44:14
+- bump: minor
+  changes:
+    added:
+    - DC disability income exclusion.
+  date: 2024-07-10 19:28:55
+- bump: patch
+  changes:
+    changed:
+    - Updated version of tables.
+  date: 2024-07-11 16:05:44
+- bump: minor
+  changes:
+    added:
+    - Update SNAP income utility expense deduction amounts.
+  date: 2024-07-12 03:51:02
+- bump: minor
+  changes:
+    added:
+    - Estate tax.
+  date: 2024-07-12 10:11:42
+- bump: minor
+  changes:
+    added:
+    - New Jersey SNAP minimum allotment.
+  date: 2024-07-12 16:05:37
+- bump: minor
+  changes:
+    added:
+    - DC Child Tax Credit.
+    - DC Child Tax Credit reform.
+  date: 2024-07-14 16:03:45
+- bump: minor
+  changes:
+    added:
+    - UBI marriage bonus structure.
+  date: 2024-07-17 18:24:10
+- bump: patch
+  changes:
+    fixed:
+    - Adjust the ctc_qualifying_child to reflect the age requirement.
+  date: 2024-07-18 19:53:37
+- bump: minor
+  changes:
+    added:
+    - Remove NY Child Tax Credit age minimum for 2023.
+  date: 2024-07-18 23:21:40
+- bump: patch
+  changes:
+    fixed:
+    - 2020 Single income tax bracket.
+  date: 2024-07-19 00:40:56
+- bump: minor
+  changes:
+    added:
+    - Maryland state SNAP minimum benefits.
+  date: 2024-07-19 20:13:51
+- bump: patch
+  changes:
+    fixed:
+    - Change add_variable to update_variable function.
+  date: 2024-07-20 17:07:53
+- bump: minor
+  changes:
+    added:
+    - NYSERDA Drive Clean program.
+  date: 2024-07-21 02:11:13
+- bump: patch
+  changes:
+    added:
+    - 2019 Kamala Harris LIFT proposal.
+  date: 2024-07-21 16:01:23
+- bump: patch
+  changes:
+    added:
+    - Fix 2018 surviving spouse AMT exemption value.
+  date: 2024-07-21 16:10:11
