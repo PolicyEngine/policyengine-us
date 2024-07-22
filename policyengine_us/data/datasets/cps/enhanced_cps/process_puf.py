@@ -209,10 +209,14 @@ def project_tax_unit_cps_to_person_level(
             cps_share_of_tax_unit_original_total = (
                 cps_original_value / cps_tax_unit_original_total
             )
-            cps_share_of_tax_unit_original_total = np.where(
-                np.isnan(cps_share_of_tax_unit_original_total),
-                person_is_tax_filer_head,
-                cps_share_of_tax_unit_original_total,
+            cps_share_of_tax_unit_original_total = np.clip(
+                np.where(
+                    np.isnan(cps_share_of_tax_unit_original_total),
+                    person_is_tax_filer_head,
+                    cps_share_of_tax_unit_original_total,
+                ),
+                0,
+                1,
             )
             mapped_down_imputed_values = sim.map_result(
                 puf_style_cps[variable].values, "tax_unit", "person"

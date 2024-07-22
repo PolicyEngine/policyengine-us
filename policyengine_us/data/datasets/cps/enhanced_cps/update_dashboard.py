@@ -6,8 +6,8 @@ import pandas as pd
 
 
 def main():
-    YEARS = ["2022", "2023", "2024", "2025"]
-    DATASETS = ["puf_2022", "cps_2022", "calibrated_puf_extended_cps_2022"]
+    YEARS = [2021]
+    DATASETS = ["calibrated_puf_extended_cps_2021"]
 
     dfs = []
 

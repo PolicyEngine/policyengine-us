@@ -24,7 +24,7 @@ def calibrate(
     dataset: str,
     time_period: str = 2021,
     training_log_path: str = "training_log.csv.gz",
-    learning_rate: float = 1e-1,
+    learning_rate: float = 1,
     epochs: int = 10_000,
 ) -> np.ndarray:
     (
@@ -34,6 +34,7 @@ def calibrate(
         targets,
         targets_array,
     ) = generate_model_variables(dataset, time_period)
+    values_df.to_csv("out.csv")
     household_weights = torch.tensor(household_weights, dtype=torch.float32)
     weight_adjustment = torch.tensor(
         weight_adjustment, dtype=torch.float32, requires_grad=True

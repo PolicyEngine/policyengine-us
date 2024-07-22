@@ -8,6 +8,7 @@ from .cps import (
     RawCPS_2022,
     EnhancedCPS_2022,
     CalibratedPUFExtendedCPS_2022,
+    CalibratedPUFExtendedCPS_2021,
 )
 
 from .puf import PUF_2022, PUF_2015, PUF_2021
@@ -21,6 +22,7 @@ DATASETS = [
     CPS_2022,
     EnhancedCPS_2022,
     CalibratedPUFExtendedCPS_2022,
+    CalibratedPUFExtendedCPS_2021,
     PovertyTracker,
     PUF_2022,
     PUF_2021,

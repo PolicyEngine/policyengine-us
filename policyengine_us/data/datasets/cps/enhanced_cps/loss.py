@@ -26,6 +26,7 @@ def generate_model_variables(
         targets_array (dict): A 1D array of target values for the statistical predictions.
         equivalisation_factors_array (dict): A 1D array of equivalisation factors for the statistical predictions to normalise the targets.
     """
+    time_period = str(time_period)
     simulation = Microsimulation(dataset=dataset)
     simulation.default_calculation_period = time_period
     parameters = simulation.tax_benefit_system.parameters.calibration(
@@ -41,15 +42,12 @@ def generate_model_variables(
     values_df = pd.DataFrame()
     targets = {}
 
-    is_filer = simulation.calculate("tax_unit_is_filer").values
-
     soi_subset = pd.read_csv(STORAGE_FOLDER / "soi.csv")
 
-    loss_matrix = pd.DataFrame()
     df = pe_to_soi(dataset, time_period)
     agi = df["adjusted_gross_income"].values
     filer = df["is_tax_filer"].values
-    soi_subset = soi_subset[soi_subset.Year == time_period]
+    soi_subset = soi_subset[soi_subset.Year == int(time_period)]
     agi_level_targeted_variables = [
         "adjusted_gross_income",
         "count",
@@ -145,32 +143,17 @@ def generate_model_variables(
                 f"{agi_range_label}/{taxable_label}/{filing_status_label}"
             )
 
-        if label not in loss_matrix.columns:
-            values_df[label] = mask * values
+        if label not in values_df.columns:
+            values_df[label] = simulation.map_result(
+                mask * values, "tax_unit", "household"
+            )
             targets[label] = row["Value"]
-
-    is_filer = simulation.calculate("tax_unit_is_filer").values
-
-    for variable_name in FINANCIAL_VARIABLES:
-        if variable_name not in parameters.gov.irs.soi:
-            continue
-        label = (
-            simulation.tax_benefit_system.variables[variable_name].label
-            + " (IRS SOI)"
-        )
-        values_df[label] = simulation.map_result(
-            simulation.calculate(variable_name, map_to="tax_unit").values
-            * is_filer,
-            "tax_unit",
-            "household",
-        )
-        targets[label] = parameters.gov.irs.soi[variable_name]
 
     # Program spending from CBO baseline projections
 
     PROGRAMS = [
-        "income_tax",
-        "snap",
+        # "income_tax",
+        # "snap",
         "social_security",
         "ssi",
         "unemployment_compensation",
@@ -307,7 +290,7 @@ def aggregate_np(
 
 def get_snapshot(
     dataset: str,
-    time_period: str = "2022",
+    time_period: str = 2021,
 ) -> pd.DataFrame:
     """Returns a snapshot of the training metrics without training the model.
 
@@ -318,6 +301,7 @@ def get_snapshot(
     Returns:
         pd.DataFrame: A DataFrame containing the training metrics.
     """
+    print(dataset, time_period)
     (
         household_weights,
         weight_adjustment,
