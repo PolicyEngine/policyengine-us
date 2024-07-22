@@ -1,15 +1,15 @@
 import pandas as pd
 import numpy as np
 from policyengine_us import Microsimulation
-import numpy as np
-from policyengine_us import Microsimulation
+from policyengine_us.data.storage import STORAGE_FOLDER
+from policyengine_us.data.datasets.cps.enhanced_cps.pe_to_soi import pe_to_soi
 import pandas as pd
 from .process_puf import FINANCIAL_SUBSET as FINANCIAL_VARIABLES
 from typing import Tuple
 
 
 def generate_model_variables(
-    dataset: str, time_period: str = "2022", no_weight_adjustment: bool = False
+    dataset: str, time_period: str = 2021, no_weight_adjustment: bool = False
 ) -> Tuple:
     """Generates variables needed for the calibration process.
 
@@ -40,17 +40,116 @@ def generate_model_variables(
 
     values_df = pd.DataFrame()
     targets = {}
-    equivalisation = {}
-
-    # We need to normalise the targets. Common regression targets are often 1e1 to 1e3 (this informs the scale of the learning rate).
-    COUNT_HOUSEHOLDS = household_weights.sum().item()
-    FINANCIAL_EQUIVALISATION = COUNT_HOUSEHOLDS
-    POPULATION_EQUIVALISATION = COUNT_HOUSEHOLDS / 1e5
 
     is_filer = simulation.calculate("tax_unit_is_filer").values
-    household_has_filers = (
-        simulation.map_result(is_filer, "tax_unit", "household") > 0
-    )
+
+    soi_subset = pd.read_csv(STORAGE_FOLDER / "soi.csv")
+
+    loss_matrix = pd.DataFrame()
+    df = pe_to_soi(dataset, time_period)
+    agi = df["adjusted_gross_income"].values
+    filer = df["is_tax_filer"].values
+    soi_subset = soi_subset[soi_subset.Year == time_period]
+    agi_level_targeted_variables = [
+        "adjusted_gross_income",
+        "count",
+        "employment_income",
+    ]
+    aggregate_level_targeted_variables = [
+        "business_net_losses",
+        "business_net_profits",
+        "capital_gains_distributions",
+        "capital_gains_gross",
+        "capital_gains_losses",
+        "estate_income",
+        "estate_losses",
+        "exempt_interest",
+        "ira_distributions",
+        "ordinary_dividends",
+        "partnership_and_s_corp_income",
+        "partnership_and_s_corp_losses",
+        "qualified_dividends",
+        "rent_and_royalty_net_income",
+        "rent_and_royalty_net_losses",
+        "taxable_interest_income",
+        "taxable_pension_income",
+        "taxable_social_security",
+        "total_pension_income",
+        "total_social_security",
+        "unemployment_compensation",
+    ]
+    aggregate_level_targeted_variables = [
+        variable
+        for variable in aggregate_level_targeted_variables
+        if variable in df.columns
+    ]
+    soi_subset = soi_subset[
+        soi_subset.Variable.isin(agi_level_targeted_variables)
+        & (
+            (soi_subset["AGI lower bound"] != -np.inf)
+            | (soi_subset["AGI upper bound"] != np.inf)
+        )
+        | (
+            soi_subset.Variable.isin(aggregate_level_targeted_variables)
+            & (soi_subset["AGI lower bound"] == -np.inf)
+            & (soi_subset["AGI upper bound"] == np.inf)
+        )
+    ]
+    for _, row in soi_subset.iterrows():
+        if row["Taxable only"]:
+            continue  # exclude "taxable returns" statistics
+
+        mask = (
+            (agi >= row["AGI lower bound"])
+            * (agi < row["AGI upper bound"])
+            * filer
+        ) > 0
+
+        if row["Filing status"] == "Single":
+            mask *= df["filing_status"].values == "SINGLE"
+        elif row["Filing status"] == "Married Filing Jointly/Surviving Spouse":
+            mask *= df["filing_status"].values == "JOINT"
+        elif row["Filing status"] == "Head of Household":
+            mask *= df["filing_status"].values == "HEAD_OF_HOUSEHOLD"
+        elif row["Filing status"] == "Married Filing Separately":
+            mask *= df["filing_status"].values == "SEPARATE"
+
+        values = df[row["Variable"]].values
+
+        if row["Count"]:
+            values = (values > 0).astype(float)
+
+        agi_range_label = (
+            f"{fmt(row['AGI lower bound'])}-{fmt(row['AGI upper bound'])}"
+        )
+        taxable_label = (
+            "taxable" if row["Taxable only"] else "all" + " returns"
+        )
+        filing_status_label = row["Filing status"]
+
+        variable_label = row["Variable"].replace("_", " ")
+
+        if row["Count"] and not row["Variable"] == "count":
+            label = (
+                f"{variable_label}/count/AGI in "
+                f"{agi_range_label}/{taxable_label}/{filing_status_label}"
+            )
+        elif row["Variable"] == "count":
+            label = (
+                f"{variable_label}/count/AGI in "
+                f"{agi_range_label}/{taxable_label}/{filing_status_label}"
+            )
+        else:
+            label = (
+                f"{variable_label}/total/AGI in "
+                f"{agi_range_label}/{taxable_label}/{filing_status_label}"
+            )
+
+        if label not in loss_matrix.columns:
+            values_df[label] = mask * values
+            targets[label] = row["Value"]
+
+    is_filer = simulation.calculate("tax_unit_is_filer").values
 
     for variable_name in FINANCIAL_VARIABLES:
         if variable_name not in parameters.gov.irs.soi:
@@ -59,12 +158,13 @@ def generate_model_variables(
             simulation.tax_benefit_system.variables[variable_name].label
             + " (IRS SOI)"
         )
-        values_df[label] = (
-            simulation.calculate(variable_name, map_to="household").values
-            * household_has_filers
+        values_df[label] = simulation.map_result(
+            simulation.calculate(variable_name, map_to="tax_unit").values
+            * is_filer,
+            "tax_unit",
+            "household",
         )
         targets[label] = parameters.gov.irs.soi[variable_name]
-        equivalisation[label] = FINANCIAL_EQUIVALISATION
 
     # Program spending from CBO baseline projections
 
@@ -85,7 +185,6 @@ def generate_model_variables(
             variable_name, map_to="household"
         ).values
         targets[label] = parameters.gov.cbo[variable_name]
-        equivalisation[label] = FINANCIAL_EQUIVALISATION
 
     snap_participation = parameters.gov.usda.snap.participation
     ssi_participation = parameters.gov.ssa.ssi.participation
@@ -104,7 +203,6 @@ def generate_model_variables(
             entity_level_value > 0, entity_level, "household"
         )
         targets[f"{label} participants"] = participation
-        equivalisation[f"{label} participants"] = POPULATION_EQUIVALISATION
 
     demographics_sim = Microsimulation(dataset="cps_2022")
 
@@ -113,7 +211,6 @@ def generate_model_variables(
         "people", map_to="household"
     ).values
     targets["U.S. population"] = parameters.gov.census.populations.total
-    equivalisation["U.S. population"] = POPULATION_EQUIVALISATION
 
     # Population by 10-year age group and sex
     age_cps = demographics_sim.calculate("age").values
@@ -154,7 +251,6 @@ def generate_model_variables(
             targets[name] = (
                 cps_household_weights * count_people_in_range_cps
             ).sum() * population_growth_since_21
-            equivalisation[name] = POPULATION_EQUIVALISATION
 
     # Household population by number of adults and children
 
@@ -189,153 +285,8 @@ def generate_model_variables(
             targets[name] = (
                 cps_household_weights * in_criteria_cps
             ).sum() * population_growth_since_21
-            equivalisation[name] = POPULATION_EQUIVALISATION
-
-    # Number of tax returns by AGI category
-
-    # is_filer
-
-    agi = simulation.calculate("adjusted_gross_income").values
-
-    BOUNDS = [
-        -np.inf,
-        1,
-        5e3,
-        10e3,
-        15e3,
-        20e3,
-        25e3,
-        30e3,
-        40e3,
-        50e3,
-        75e3,
-        100e3,
-        200e3,
-        500e3,
-        1e6,
-        1.5e6,
-        2e6,
-        5e6,
-        10e6,
-        np.inf,
-    ]
-    COUNTS = [
-        4_098_522,
-        8_487_025,
-        8_944_908,
-        10_056_377,
-        9_786_580,
-        8_863_570,
-        8_787_576,
-        16_123_068,
-        12_782_334,
-        22_653_934,
-        14_657_726,
-        24_044_481,
-        9_045_567,
-        1_617_144,
-        376_859,
-        156_020,
-        233_838,
-        63_406,
-        45_404,
-    ]
-    VALUES = [
-        -171_836_364,
-        19_987_243,
-        67_651_359,
-        125_912_056,
-        170_836_129,
-        199_508_960,
-        241_347_179,
-        561_386_434,
-        573_155_378,
-        1_392_395_599,
-        1_271_699_391,
-        3_297_058_075,
-        2_619_188_471,
-        1_092_599_034,
-        454_552_875,
-        268_278_123,
-        698_923_219,
-        435_242_550,
-        1_477_728_359,
-        13_879_929_368,
-        -12_835_378,
-        451_204,
-        1_358_544,
-        14_362_205,
-        57_643_020,
-        101_727_915,
-        141_934_070,
-        382_385_416,
-        457_336_377,
-        1_238_178_360,
-        1_206_614_503,
-        3_252_746_502,
-        2_613_795_014,
-        1_091_571_914,
-        3_332_659_702,
-    ]
-
-    for i in range(len(BOUNDS) - 1):
-        lower_bound = BOUNDS[i]
-        upper_bound = BOUNDS[i + 1]
-        in_range = (agi >= lower_bound) * (agi < upper_bound) * is_filer
-        household_filers = simulation.map_result(
-            in_range, "tax_unit", "household"
-        )
-        if lower_bound == -np.inf:
-            lower_bound_str = "negative infinity"
-        else:
-            lower_bound_str = f"{lower_bound:,.0f}"
-        name = f"tax returns with AGI between ${lower_bound_str} and ${upper_bound:,.0f}"
-        values_df[name] = household_filers
-        targets[name] = COUNTS[i] * population_growth_since_21
-        equivalisation[name] = POPULATION_EQUIVALISATION
-
-        agi_in_range = agi * in_range
-        household_agi = simulation.map_result(
-            agi_in_range, "tax_unit", "household"
-        )
-        name = f"total AGI from tax returns with AGI between ${lower_bound_str} and ${upper_bound:,.0f}"
-        values_df[name] = household_agi
-        targets[name] = VALUES[i] * population_growth_since_21 * 1e3
-        equivalisation[name] = FINANCIAL_EQUIVALISATION
-
-    # Tax return counts by filing status
-
-    filing_status = (
-        simulation.calculate("filing_status")
-        .replace("SURVIVING_SPOUSE", "JOINT")
-        .values
-    )
-    for filing_status_value in [
-        "SINGLE",
-        "JOINT",
-        "HEAD_OF_HOUSEHOLD",
-        "SEPARATE",
-    ]:
-        parameter = parameters.gov.irs.soi.returns_by_filing_status[
-            filing_status_value
-        ]
-        in_filing_status = filing_status == filing_status_value
-        household_filers = simulation.map_result(
-            in_filing_status * is_filer, "tax_unit", "household"
-        )
-        labels = {
-            "SINGLE": "single",
-            "JOINT": "joint and widow(er)",
-            "HEAD_OF_HOUSEHOLD": "head of household",
-            "SEPARATE": "separate",
-        }
-        label = labels.get(filing_status_value) + " returns (IRS SOI)"
-        values_df[label] = household_filers
-        targets[label] = parameter
-        equivalisation[label] = POPULATION_EQUIVALISATION
 
     targets_array = np.array(list(targets.values()))
-    equivalisation_factors_array = np.array(list(equivalisation.values()))
 
     return (
         household_weights,
@@ -343,7 +294,6 @@ def generate_model_variables(
         values_df,
         targets,
         targets_array,
-        equivalisation_factors_array,
     )
 
 
@@ -374,18 +324,14 @@ def get_snapshot(
         values_df,
         targets,
         targets_array,
-        equivalisation_factors_array,
     ) = generate_model_variables(
         dataset, time_period, no_weight_adjustment=True
     )
     adjusted_weights = np.maximum(household_weights + weight_adjustment, 0)
-    result = (
-        aggregate_np(adjusted_weights, values_df)
-        / equivalisation_factors_array
-    )
-    target = targets_array / equivalisation_factors_array
-    current_aggregates = (result * equivalisation_factors_array)[0]
-    loss = np.mean(((result / target - 1) ** 2) * np.log2(np.abs(target)))
+    result = aggregate_np(adjusted_weights, values_df)
+    target = targets_array
+    current_aggregates = result[0]
+    loss = np.mean(((result / target - 1) ** 2))
     current_loss = loss.item()
     return pd.DataFrame(
         {
@@ -395,3 +341,17 @@ def get_snapshot(
             "time_period": time_period,
         }
     )
+
+
+def fmt(x):
+    if x == -np.inf:
+        return "-inf"
+    if x == np.inf:
+        return "inf"
+    if x < 1e3:
+        return f"{x:.0f}"
+    if x < 1e6:
+        return f"{x/1e3:.0f}k"
+    if x < 1e9:
+        return f"{x/1e6:.0f}m"
+    return f"{x/1e9:.1f}bn"

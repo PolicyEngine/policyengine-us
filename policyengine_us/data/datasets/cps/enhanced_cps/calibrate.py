@@ -22,7 +22,7 @@ def aggregate(
 
 def calibrate(
     dataset: str,
-    time_period: str = "2022",
+    time_period: str = 2021,
     training_log_path: str = "training_log.csv.gz",
     learning_rate: float = 2e1,
     epochs: int = 10_000,
@@ -33,16 +33,12 @@ def calibrate(
         values_df,
         targets,
         targets_array,
-        equivalisation_factors_array,
     ) = generate_model_variables(dataset, time_period)
     household_weights = torch.tensor(household_weights, dtype=torch.float32)
     weight_adjustment = torch.tensor(
         weight_adjustment, dtype=torch.float32, requires_grad=True
     )
     targets_array = torch.tensor(targets_array, dtype=torch.float32)
-    equivalisation_factors_array = torch.tensor(
-        equivalisation_factors_array, dtype=torch.float32
-    )
     training_log_path = Path(training_log_path)
     if training_log_path.exists():
         training_log_df = pd.read_csv(training_log_path, compression="gzip")
@@ -53,11 +49,8 @@ def calibrate(
     optimizer = torch.optim.Adam([weight_adjustment], lr=learning_rate)
     for i in progress_bar:
         adjusted_weights = torch.relu(household_weights + weight_adjustment)
-        result = (
-            aggregate(adjusted_weights, values_df)
-            / equivalisation_factors_array
-        )
-        target = targets_array / equivalisation_factors_array
+        result = aggregate(adjusted_weights, values_df)
+        target = targets_array
         loss = torch.mean(
             ((result / target - 1) ** 2) * np.log2(np.abs(target))
         )
@@ -70,9 +63,7 @@ def calibrate(
                 f"Calibrating weights | Loss = {current_loss:,.3f}"
             )
         if i % 2_000 == 0:
-            current_aggregates = (
-                (result * equivalisation_factors_array).detach().numpy()[0]
-            )
+            current_aggregates = result.detach().numpy()[0]
             training_log_df = pd.concat(
                 [
                     training_log_df,

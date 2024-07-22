@@ -141,7 +141,7 @@ def impute_puf_financials_to_cps(
 
     puf_demographics = generate_puf_style_dataset(puf_dataset)
     puf_values = Microsimulation(dataset=puf_dataset).calculate_dataframe(
-        FINANCIAL_SUBSET,
+        FINANCIAL_SUBSET + ["household_weight"],
         map_to="tax_unit",
     )
     puf = pd.concat([puf_demographics, puf_values], axis=1)
@@ -157,6 +157,7 @@ def impute_puf_financials_to_cps(
     cps_financial_predictions = income_from_demographics.predict(
         cps_demographics[DEMOGRAPHIC_VARIABLES],
         mean_quantile=0.5,
+        verbose=True,
     )
     cps_imputed = pd.concat(
         [cps_demographics, cps_financial_predictions], axis=1

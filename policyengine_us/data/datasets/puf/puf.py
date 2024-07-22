@@ -21,12 +21,13 @@ PUF_FILE_PATH = "~/Downloads/puf_2015.csv"
 PUF_DEMOGRAPHICS_FILE_PATH = "~/Downloads/demographics_2015.csv"
 
 import numpy as np
-from policyengine_us import Microsimulation
 from policyengine_us.data.datasets.cps.cps import CPS_2021
 from survey_enhance import Imputation
 
 
 def impute_pension_contributions_to_puf(puf_df):
+    from policyengine_us import Microsimulation
+
     cps = Microsimulation(dataset=CPS_2021)
     cps_df = cps.calculate_dataframe(
         ["employment_income", "household_weight", "pre_tax_contributions"]
@@ -301,7 +302,9 @@ class PUF(Dataset):
     time_period = None
     data_format = Dataset.ARRAYS
 
-    def generate(self, puf: pd.DataFrame, demographics: pd.DataFrame):
+    def generate(self):
+        puf = pd.read_csv(PUF_FILE_PATH)
+        demographics = pd.read_csv(PUF_DEMOGRAPHICS_FILE_PATH)
         print("Importing PolicyEngine US variable metadata...")
 
         itmded_dump = False
@@ -502,6 +505,13 @@ class PUF_2015(PUF):
 
 
 class PUF_2021(PUF):
+    label = "PUF 2021"
+    name = "puf_2021"
+    time_period = 2021
+    file_path = STORAGE_FOLDER / "puf_2021.h5"
+
+
+class PUF_2022(PUF):
     label = "PUF 2021"
     name = "puf_2021"
     time_period = 2021
