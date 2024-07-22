@@ -17,7 +17,6 @@
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
-        #ctc_qualifying_children: 1
         mn_wfc_eligible: true
         filer_adjusted_earnings: 10_000
         adjusted_gross_income: 10_000
@@ -56,7 +55,6 @@
     tax_units:
       tax_unit:
         members: [person1, person2, person3, person4]
-        #ctc_qualifying_children: 1
         mn_wfc_eligible: true
         filer_adjusted_earnings: 6_000
         adjusted_gross_income: 10_000
@@ -95,7 +93,6 @@
     tax_units:
       tax_unit:
         members: [person1, person2, person3, person4]
-        #ctc_qualifying_children: 1
         mn_wfc_eligible: true
         filer_adjusted_earnings: 100_000
         adjusted_gross_income: 10_000
@@ -134,7 +131,6 @@
     tax_units:
       tax_unit:
         members: [person1, person2, person3, person4]
-        #ctc_qualifying_children: 1
         mn_wfc_eligible: true
         filer_adjusted_earnings: 10_000
         adjusted_gross_income: 45_000
@@ -173,7 +169,6 @@
     tax_units:
       tax_unit:
         members: [person1, person2, person3, person4]
-        #ctc_qualifying_children: 1
         mn_wfc_eligible: true
         filer_adjusted_earnings: 10_000
         adjusted_gross_income: 45_000
@@ -200,7 +195,6 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
-        #ctc_qualifying_children: 0
         mn_wfc_eligible: true
         filer_adjusted_earnings: 10_000
         adjusted_gross_income: 12_000
@@ -227,7 +221,6 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
-        #ctc_qualifying_children: 0
         mn_wfc_eligible: false
         filer_adjusted_earnings: 10_000
         adjusted_gross_income: 12_000
