@@ -12,5 +12,5 @@ class ctc_social_security_tax(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/24#d_2"
 
-    adds = "gov.irs.credits.ctc.refundable.ss_add"
-    subtracts = "gov.irs.credits.ctc.refundable.ss_subtract"
+    adds = "gov.irs.credits.ctc.refundable.ss.add"
+    subtracts = "gov.irs.credits.ctc.refundable.ss.subtract"
