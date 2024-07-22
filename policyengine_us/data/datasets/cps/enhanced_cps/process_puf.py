@@ -573,7 +573,7 @@ def impute_puf_financials_to_cps(
 
     cps_financial_predictions = income_from_demographics.predict(
         cps_demographics[DEMOGRAPHIC_VARIABLES],
-        mean_quantile=[0.8] + [0.5] * (len(FINANCIAL_SUBSET) - 1),
+        mean_quantile=0.5,
     )
     cps_imputed = pd.concat(
         [cps_demographics, cps_financial_predictions], axis=1
@@ -645,7 +645,7 @@ def project_tax_unit_cps_to_person_level(
 
 def puf_imputed_cps_person_level(
     verbose: bool = True,
-    time_period: str = "2022",
+    time_period: str = 2021,
 ) -> pd.DataFrame:
     """Generate a PUF-imputed CPS at the person level.
 

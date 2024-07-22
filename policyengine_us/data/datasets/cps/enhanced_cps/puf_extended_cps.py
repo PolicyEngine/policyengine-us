@@ -1,5 +1,5 @@
 from policyengine_core.data import Dataset
-from policyengine_us.data.datasets.cps.cps import CPS_2022
+from policyengine_us.data.datasets.cps.cps import CPS_2022, CPS_2021
 from policyengine_us.data.storage import STORAGE_FOLDER
 import numpy as np
 
@@ -72,6 +72,13 @@ class PUFExtendedCPS(Dataset):
 
         self.save_dataset(new_data)
 
+
+class PUFExtendedCPS_2021(PUFExtendedCPS):
+    time_period = 2021
+    name = "puf_extended_cps_2021"
+    label = "PUF-extended CPS (2021)"
+    cps = CPS_2021
+    file_path = STORAGE_FOLDER / "puf_extended_cps_2021.h5"
 
 class PUFExtendedCPS_2022(PUFExtendedCPS):
     time_period = 2022
