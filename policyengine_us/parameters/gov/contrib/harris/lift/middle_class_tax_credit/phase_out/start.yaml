@@ -1,0 +1,56 @@
+description: The Middle Class Tax Credit is phased-out for filers with adjusted gross income above this threshold, based on filing status.
+metadata:
+  unit: currency-USD
+  period: year
+  breakdown:
+  - filing_status
+  label: Middle Class Tax Credit phase-out start
+  reference: 
+    - title: S.4 - LIFT (Livable Incomes for Families Today) the Middle Class Act SEC. 36A. (a)(2)(A)
+      href: https://www.congress.gov/bill/116th-congress/senate-bill/4/text
+
+SINGLE:
+  values:
+    2019-01-01: 30_000
+  metadata:
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: nearest
+        interval: 50
+HEAD_OF_HOUSEHOLD:
+  values:
+    2019-01-01: 60_000
+  metadata:
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: nearest
+        interval: 50
+JOINT:
+  values:
+    2019-01-01: 60_000
+  metadata:
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: nearest
+        interval: 50
+SURVIVING_SPOUSE:
+  values:
+    2019-01-01: 30_000
+  metadata:
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: nearest
+        interval: 50
+SEPARATE:
+  values:
+    2019-01-01: 30_000
+  metadata:
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: nearest
+        interval: 50
