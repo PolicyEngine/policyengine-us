@@ -24,7 +24,7 @@ def calibrate(
     dataset: str,
     time_period: str = 2021,
     training_log_path: str = "training_log.csv.gz",
-    learning_rate: float = 2e1,
+    learning_rate: float = 1e-1,
     epochs: int = 10_000,
 ) -> np.ndarray:
     (
@@ -52,7 +52,7 @@ def calibrate(
         result = aggregate(adjusted_weights, values_df)
         target = targets_array
         loss = torch.mean(
-            ((result / target - 1) ** 2) * np.log2(np.abs(target))
+            (((result + 1) / (target + 1) - 1) ** 2) * np.log2(np.abs(target))
         )
         optimizer.zero_grad()
         loss.backward()

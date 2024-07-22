@@ -331,7 +331,7 @@ def get_snapshot(
     result = aggregate_np(adjusted_weights, values_df)
     target = targets_array
     current_aggregates = result[0]
-    loss = np.mean(((result / target - 1) ** 2))
+    loss = np.mean((((result + 1) / (target + 1) - 1) ** 2))
     current_loss = loss.item()
     return pd.DataFrame(
         {
