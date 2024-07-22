@@ -17,16 +17,16 @@ def create_middle_class_tax_credit() -> Reform:
                 period
             ).gov.contrib.harris.lift.middle_class_tax_credit
             earned_income = add(tax_unit, period, ["earned_income"])
+            pell_grant = add(tax_unit, period, ["pell_grant"])
+            total_earned_income = earned_income + pell_grant
             filing_status = tax_unit("filing_status", period)
             joint = filing_status == filing_status.possible_values.JOINT
             cap = where(joint, p.cap * p.joint_multiplier, p.cap)
-            capped_earned_income = min_(earned_income, cap)
+            capped_earned_income = min_(total_earned_income, cap)
             agi = tax_unit("adjusted_gross_income", period)
 
             excess = max_(0, agi - p.phase_out.start[filing_status])
-            phase_out_rate = min_(
-                1, excess / p.phase_out.divisor[filing_status]
-            )
+            phase_out_rate = min_(1, excess / p.phase_out.width[filing_status])
             reduction = capped_earned_income * phase_out_rate
             age = tax_unit.members("age", period)
             age_eligible = age >= p.age_threshold
