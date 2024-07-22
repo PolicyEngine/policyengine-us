@@ -5,6 +5,79 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.26.2] - 2024-07-22 20:45:34
+
+### Added
+
+- Pell Grant Student Aid Index.
+
+## [1.26.1] - 2024-07-22 18:07:41
+
+### Added
+
+- Refactor social security taxes for refundable CTC calculation.
+
+## [1.26.0] - 2024-07-22 07:26:38
+
+### Fixed
+
+- Formatting adjustments to the Middle Class Tax Credit.
+- Added pell grants to the earned income definitions for the Middle Class Tax Credit.
+
+## [1.25.2] - 2024-07-21 16:10:11
+
+### Added
+
+- Fix 2018 surviving spouse AMT exemption value.
+
+## [1.25.1] - 2024-07-21 16:01:23
+
+### Added
+
+- 2019 Kamala Harris LIFT proposal.
+
+## [1.25.0] - 2024-07-21 02:11:13
+
+### Added
+
+- NYSERDA Drive Clean program.
+
+## [1.24.1] - 2024-07-20 17:07:53
+
+### Fixed
+
+- Change add_variable to update_variable function.
+
+## [1.24.0] - 2024-07-19 20:13:51
+
+### Added
+
+- Maryland state SNAP minimum benefits.
+
+## [1.23.1] - 2024-07-19 00:40:56
+
+### Fixed
+
+- 2020 Single income tax bracket.
+
+## [1.23.0] - 2024-07-18 23:21:40
+
+### Added
+
+- Remove NY Child Tax Credit age minimum for 2023.
+
+## [1.22.1] - 2024-07-18 19:53:37
+
+### Fixed
+
+- Adjust the ctc_qualifying_child to reflect the age requirement.
+
+## [1.22.0] - 2024-07-17 18:24:10
+
+### Added
+
+- UBI marriage bonus structure.
+
 ## [1.21.0] - 2024-07-14 16:03:45
 
 ### Added
@@ -9044,6 +9117,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.26.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.26.1...1.26.2
+[1.26.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.26.0...1.26.1
+[1.26.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.25.2...1.26.0
+[1.25.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.25.1...1.25.2
+[1.25.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.25.0...1.25.1
+[1.25.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.24.1...1.25.0
+[1.24.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.24.0...1.24.1
+[1.24.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.23.1...1.24.0
+[1.23.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.23.0...1.23.1
+[1.23.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.22.1...1.23.0
+[1.22.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.22.0...1.22.1
+[1.22.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.21.0...1.22.0
 [1.21.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.20.0...1.21.0
 [1.20.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.19.0...1.20.0
 [1.19.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.18.0...1.19.0

@@ -1,0 +1,10 @@
+description: The IRS defines social security taxes under the Child Tax Credit to exclude the following variables.
+values:
+  2018-01-01:
+    - excess_payroll_tax_withheld
+metadata:
+  unit: program
+  label: Variables subtracted for Social Security taxes in Child Tax Credit calculation
+  reference:
+    - title: 26 U.S. Code § 24(d)(2)(B)
+      href: https://www.law.cornell.edu/uscode/text/26/24#d_2_B
