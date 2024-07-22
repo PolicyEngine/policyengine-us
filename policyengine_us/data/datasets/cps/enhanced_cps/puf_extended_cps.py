@@ -80,6 +80,7 @@ class PUFExtendedCPS_2021(PUFExtendedCPS):
     cps = CPS_2021
     file_path = STORAGE_FOLDER / "puf_extended_cps_2021.h5"
 
+
 class PUFExtendedCPS_2022(PUFExtendedCPS):
     time_period = 2022
     name = "puf_extended_cps_2022"
