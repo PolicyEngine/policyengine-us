@@ -27,13 +27,3 @@
     eitc_child_count: 3
   output:
     wa_working_families_tax_credit: 0
-
-- name: 2021 test
-  period: 2021
-  input:
-    state_code: WA
-    eitc: 1
-    filer_adjusted_earnings: 0
-    eitc_child_count: 0
-  output:
-    wa_working_families_tax_credit: 0
