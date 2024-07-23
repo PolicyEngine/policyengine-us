@@ -8,6 +8,7 @@ class interest_deduction(Variable):
     unit = USD
     documentation = "Interest expenses deducted from taxable income."
     definition_period = YEAR
+    uprating = "calibration.gov.cbo.income_by_source.adjusted_gross_income"
     reference = "https://www.law.cornell.edu/uscode/text/26/163"
 
     adds = ["interest_expense"]

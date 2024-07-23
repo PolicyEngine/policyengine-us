@@ -5,6 +5,7 @@ class general_business_credit(Variable):
     value_type = float
     entity = Person
     definition_period = YEAR
+    uprating = "calibration.gov.cbo.income_by_source.adjusted_gross_income"
     label = "General business credit"
     documentation = "General business credit from Form 3800"
     reference = "https://www.law.cornell.edu/uscode/text/26/38"

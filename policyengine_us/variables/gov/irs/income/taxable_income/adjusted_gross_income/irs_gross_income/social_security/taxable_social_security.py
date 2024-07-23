@@ -7,6 +7,7 @@ class taxable_social_security(Variable):
     label = "Taxable Social Security"
     unit = USD
     definition_period = YEAR
+    uprating = "calibration.gov.cbo.income_by_source.taxable_social_security"
 
     def formula(person, period, parameters):
         unit_tss = person.tax_unit("tax_unit_taxable_social_security", period)

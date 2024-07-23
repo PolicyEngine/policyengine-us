@@ -5,6 +5,7 @@ class state_and_local_sales_or_income_tax(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
+    uprating = "calibration.gov.cbo.income_by_source.adjusted_gross_income"
     label = "State and local sales or income tax"
     unit = USD
 

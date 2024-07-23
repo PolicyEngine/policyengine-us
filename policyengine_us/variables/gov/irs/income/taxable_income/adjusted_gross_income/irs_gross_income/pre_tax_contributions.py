@@ -8,5 +8,5 @@ class pre_tax_contributions(Variable):
     unit = USD
     documentation = "Payroll deductions."
     definition_period = YEAR
-
+    uprating = "calibration.gov.cbo.income_by_source.adjusted_gross_income"
     adds = "gov.irs.gross_income.pre_tax_contributions"

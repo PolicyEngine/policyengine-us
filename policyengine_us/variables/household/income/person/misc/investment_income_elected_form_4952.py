@@ -7,3 +7,4 @@ class investment_income_elected_form_4952(Variable):
     label = "investment income elected on Form 4952"
     unit = USD
     definition_period = YEAR
+    uprating = "calibration.gov.cbo.income_by_source.adjusted_gross_income"

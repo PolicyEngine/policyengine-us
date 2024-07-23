@@ -5,6 +5,7 @@ class savers_credit(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
+    uprating = "calibration.gov.cbo.income_by_source.adjusted_gross_income"
     label = "Retirement Savings Credit"
     unit = USD
     reference = (

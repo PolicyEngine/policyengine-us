@@ -6,5 +6,6 @@ class foreign_tax_credit(Variable):
     entity = TaxUnit
     label = "Foreign tax credit"
     definition_period = YEAR
+    uprating = "calibration.gov.cbo.income_by_source.adjusted_gross_income"
     documentation = "Foreign tax credit from Form 1116"
     unit = USD

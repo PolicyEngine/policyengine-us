@@ -8,6 +8,7 @@ class long_term_capital_gains(Variable):
     unit = USD
     documentation = "Net gains made from sales of assets held for more than one year (losses are expressed as negative gains)."
     definition_period = YEAR
+    uprating = "calibration.gov.cbo.income_by_source.adjusted_gross_income"
     reference = dict(
         title="26 U.S. Code § 1222(3)",
         href="https://www.law.cornell.edu/uscode/text/26/1222#3",

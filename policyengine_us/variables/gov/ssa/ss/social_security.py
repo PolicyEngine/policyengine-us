@@ -5,6 +5,7 @@ class social_security(Variable):
     value_type = float
     entity = Person
     definition_period = YEAR
+    uprating = "calibration.gov.cbo.income_by_source.adjusted_gross_income"
     documentation = "Social Security benefits, not including SSI"
     label = "Social Security"
     unit = USD

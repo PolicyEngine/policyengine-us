@@ -8,4 +8,5 @@ class health_savings_account_ald(Variable):
     unit = USD
     documentation = "Above-the-line deduction from gross income for health savings account expenses."
     definition_period = YEAR
+    uprating = "calibration.gov.cbo.income_by_source.adjusted_gross_income"
     reference = "https://www.law.cornell.edu/uscode/text/26/223"

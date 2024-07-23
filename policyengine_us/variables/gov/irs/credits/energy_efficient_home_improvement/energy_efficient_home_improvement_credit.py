@@ -5,6 +5,7 @@ class energy_efficient_home_improvement_credit(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
+    uprating = "calibration.gov.cbo.income_by_source.adjusted_gross_income"
     label = "Energy efficient home improvement credit"
     documentation = "Residential clean energy credit"
     unit = USD

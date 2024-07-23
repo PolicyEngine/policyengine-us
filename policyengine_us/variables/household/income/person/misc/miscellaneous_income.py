@@ -7,4 +7,5 @@ class miscellaneous_income(Variable):
     label = "Miscellaneous income"
     unit = USD
     definition_period = YEAR
+    uprating = "calibration.gov.cbo.income_by_source.adjusted_gross_income"
     reference = "https://www.law.cornell.edu/cfr/text/26/1.61-14"
