@@ -37,3 +37,11 @@
     state_code: CO
   output:
     co_eitc: 0
+
+- name: Colorado matched 25% of EITC in 2026 with an 1.11% estimated adjusted factor.
+  period: 2026
+  input:
+    eitc: 100
+    state_code: CO
+  output:
+    co_eitc: 25
