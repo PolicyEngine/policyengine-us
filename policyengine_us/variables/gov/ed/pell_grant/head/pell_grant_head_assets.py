@@ -4,6 +4,7 @@ from policyengine_us.model_api import *
 class pell_grant_head_assets(Variable):
     value_type = float
     entity = TaxUnit
+    unit = USD
     label = "Pell Grant head assets"
     definition_period = YEAR
 
