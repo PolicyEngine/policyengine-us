@@ -13,7 +13,10 @@ class az_one_time_families_tax_rebates(Variable):
         p = parameters(period).gov.states.az.tax.income.rebates
         person = tax_unit.members
         dependent = person("is_tax_unit_dependent", period)
-        age = person("age", period) - 2  # the age at the end of 2021
+        age = (
+            person("age", period) - 2
+        )  # Only children born after 2021 are considered for the program while the one-time
+        # rebate is issued at 2023, so we need to subtract each dependent's age by 2.
         dependent = person("is_tax_unit_dependent", period) & (age > 0)
         young_dependent = dependent & (age < p.amount.thresholds[-1])
         young_dependent_count = tax_unit.sum(young_dependent)
@@ -22,6 +25,8 @@ class az_one_time_families_tax_rebates(Variable):
         rebate = p.amount.calc(age) * dependent
         total_amount = tax_unit.sum(rebate)
         capped_amount = min_(total_amount, p.cap)
+        # Since the maximum amount for this rebate equals exactly (maximum count of dependent * rebate per young dependent),
+        # we calculates total amounts for each age group of dependents.
         young_amount = young_dependent_count * p.amount.calc(
             p.amount.thresholds[-1] - 1
         )
