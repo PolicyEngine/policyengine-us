@@ -4,6 +4,7 @@ from policyengine_us.model_api import *
 class pell_grant_efc(Variable):
     value_type = float
     entity = Person
+    unit = USD
     label = "Pell Grant expected family contribution"
     definition_period = YEAR
 
