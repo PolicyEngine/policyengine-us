@@ -17,5 +17,5 @@ class az_fpg_baseline(Variable):
         p_fpg = parameters(fpg_year).gov.hhs.fpg
         p1 = p_fpg.first_person[state_group]
         pn = p_fpg.additional_person[state_group]
-        fpg_baseline = p1 + pn * (cap_household_size - 1)
+        return p1 + pn * (cap_household_size - 1)
         return fpg_baseline

@@ -12,5 +12,5 @@ class az_countable_household_size(Variable):
         p = parameters(
             period
         ).gov.states.az.hhs.tanf.eligibility.payment_standard
-        size = spm_unit("spm_unit_size", period)
+        unit_size = spm_unit("spm_unit_size",period)
         return min_(size, p.max_household_size)
