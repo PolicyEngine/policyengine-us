@@ -13,5 +13,5 @@ class co_eitc(Variable):
     def formula(tax_unit, period, parameters):
         federal_eitc = tax_unit("eitc", period)
         p = parameters(period).gov.states.co.tax.income.credits
-        eaf = p.eitc.estimated_adjusted_factor
-        return federal_eitc * p.eitc.match.calc(eaf)
+        estimated_adjusted_factor = p.eitc.estimated_adjusted_factor
+        return federal_eitc * p.eitc.match.calc(estimated_adjusted_factor)
