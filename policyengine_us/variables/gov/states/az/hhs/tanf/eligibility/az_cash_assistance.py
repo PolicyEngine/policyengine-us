@@ -1,5 +1,6 @@
 from policyengine_us.model_api import *
 
+
 class az_cash_assistance(Variable):
     value_type = float
     entity = SPMUnit
@@ -11,10 +12,12 @@ class az_cash_assistance(Variable):
     defined_for = "az_hhs_tanf_eligibility"
 
     def formula(spm_unit, period, parameters):
-        payment_standard_threshold= spm_unit("az_payment_standard_threshold",period)
+        payment_standard_threshold = spm_unit(
+            "az_payment_standard_threshold", period
+        )
         monthly_countable_earned_income = spm_unit(
             "az_tanf_earned_income", period
         )
-        return  max_(
-                payment_standard_threshold - monthly_countable_earned_income, 0
+        return max_(
+            payment_standard_threshold - monthly_countable_earned_income, 0
         )

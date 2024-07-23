@@ -1,5 +1,6 @@
 from policyengine_us.model_api import *
 
+
 class az_payment_standard_threshold(Variable):
     value_type = float
     entity = SPMUnit
@@ -9,7 +10,7 @@ class az_payment_standard_threshold(Variable):
     defined_for = StateCode.AZ
 
     def formula(spm_unit, period, parameters):
-        monthly_fpg_baseline=spm_unit("az_fpg_baseline",period)
+        monthly_fpg_baseline = spm_unit("az_fpg_baseline", period)
         p = parameters(
             period
         ).gov.states.az.hhs.tanf.eligibility.payment_standard
