@@ -2,7 +2,7 @@ from policyengine_us.model_api import *
 
 
 class ne_cdcc_refundable_eligible(Variable):
-    value_type = float
+    value_type = bool
     entity = TaxUnit
     label = "Eligible for the Nebraska refundable CDCC"
     unit = USD
