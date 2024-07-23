@@ -17,7 +17,7 @@ class ssi_countable_income(Variable):
             "ssi_marital_earned_income", period
         )
         blind_disabled_working_student_income = person(
-            "ssi_blind_or_disabled_working_student", period
+            "ssi_blind_or_disabled_working_student_exclusion", period
         )
         earned_income = max_(
             pre_reduction_earned_income

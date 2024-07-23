@@ -17,7 +17,7 @@ class ssi_income_deemed_from_ineligible_spouse(Variable):
             "ssi_earned_income", period
         )
         blind_disabled_working_student_income = person(
-            "ssi_blind_or_disabled_working_student", period
+            "ssi_blind_or_disabled_working_student_exclusion", period
         )
         personal_earned_income = max_(
             prereduction_personal_earned_income

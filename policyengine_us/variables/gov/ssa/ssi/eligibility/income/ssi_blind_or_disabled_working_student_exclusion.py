@@ -1,14 +1,14 @@
 from policyengine_us.model_api import *
 
 
-class ssi_blind_or_disabled_working_student(Variable):
+class ssi_blind_or_disabled_working_student_exclusion(Variable):
     value_type = float
     entity = Person
     label = "SSI blind or disabled working student earned income exclusion"
     unit = USD
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/cfr/text/20/416.1112#c_3"
-    defined_for = "is_ssi_blind_or_disabled_working_student_eligible"
+    defined_for = "is_ssi_blind_or_disabled_working_student_exclusion_eligible"
 
     def formula(person, period, parameters):
         p = parameters(

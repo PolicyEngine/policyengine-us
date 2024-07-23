@@ -23,7 +23,7 @@ class ssi_unearned_income_deemed_from_ineligible_parent(Variable):
             person("ssi_earned_income", period) * ineligible_parent
         )
         blind_disabled_working_student_income = person(
-            "ssi_blind_or_disabled_working_student", period
+            "ssi_blind_or_disabled_working_student_exclusion", period
         )
         parental_earned_income = max_(
             prereduction_parental_earned_income

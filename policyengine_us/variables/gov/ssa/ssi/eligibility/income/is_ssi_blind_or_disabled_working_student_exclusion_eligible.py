@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class is_ssi_blind_or_disabled_working_student_eligible(Variable):
+class is_ssi_blind_or_disabled_working_student_exclusion_eligible(Variable):
     value_type = float
     entity = Person
     label = "Eligible for SSI blind or disabled working student earned income exclusion"
@@ -16,7 +16,7 @@ class is_ssi_blind_or_disabled_working_student_eligible(Variable):
         is_blind = person("is_blind", period)
         is_disabled = person("is_disabled", period)
         demographic_eligible = is_blind | is_disabled
-        under_age_limit = person("age", period) <= p.age_limit
+        under_age_limit = person("age", period) < p.age_limit
         eligible_student = under_age_limit & person(
             "is_full_time_student", period
         )
