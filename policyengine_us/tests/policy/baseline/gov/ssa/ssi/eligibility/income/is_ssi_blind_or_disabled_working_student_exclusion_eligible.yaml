@@ -1,4 +1,4 @@
-- name: Demographic eligible but not student eligible 1
+- name: Not demographic eligible nor student eligible
   period: 1974
   input:
     is_blind: true
@@ -8,12 +8,12 @@
   output:
     is_ssi_blind_or_disabled_working_student_exclusion_eligible: false
 
-- name: Demographic eligible but not student eligible 2
+- name: Demographic eligible but not student eligible
   period: 1974
   input:
     is_blind: true
     is_disabled: false
-    age: 25
+    age: 20
     is_full_time_student: false
   output:
     is_ssi_blind_or_disabled_working_student_exclusion_eligible: false
