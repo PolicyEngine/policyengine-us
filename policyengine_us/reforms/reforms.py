@@ -23,6 +23,9 @@ from .states.ny.wftc import create_ny_working_families_tax_credit_reform
 from .states.dc.dc_ctc import (
     create_dc_ctc_reform,
 )
+from .harris.lift.middle_class_tax_credit import (
+    create_middle_class_tax_credit_reform,
+)
 from policyengine_core.reforms import Reform
 import warnings
 
@@ -66,6 +69,10 @@ def create_structural_reforms_from_parameters(parameters, period):
 
     dc_ctc = create_dc_ctc_reform(parameters, period)
 
+    middle_class_tax_credit = create_middle_class_tax_credit_reform(
+        parameters, period
+    )
+
     reforms = [
         afa_reform,
         winship_reform,
@@ -82,6 +89,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         halve_joint_eitc_phase_out_rate,
         ny_wftc,
         dc_ctc,
+        middle_class_tax_credit,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
 
