@@ -27,17 +27,28 @@ class snap_min_allotment(Variable):
         eligible = size <= snap.min_allotment.maximum_household_size
         min_allotment = eligible * min_allotment.rate * relevant_max_allotment
 
-        # NJ and DC provide separate minimum allotment amounts
-        p_dc = parameters(period).gov.states.dc.dhs.snap.min_allotment
-        snap_nj = parameters(period).gov.states.nj.snap
+        # DC, NM, MD and NJ provide separate minimum allotment amounts
         state_code = spm_unit.household("state_code_str", period)
+
+        p_dc = parameters(period).gov.states.dc.dhs.snap.min_allotment
         if p_dc.in_effect:
             dc_min_allotment = p_dc.amount
             in_dc = state_code == "DC"
             min_allotment = where(in_dc, dc_min_allotment, min_allotment)
 
-        if snap_nj.in_effect:
-            nj_min_allotment = snap_nj.amount
+        p_md = parameters(period).gov.states.md.usda.snap.min_allotment
+        if p_md.in_effect:
+            md_min_allotment = p_md.amount
+            in_md = state_code == "MD"
+            has_elderly = spm_unit("md_snap_elderly_present", period)
+            min_allotment = where(
+                in_md & has_elderly, md_min_allotment, min_allotment
+            )
+
+        p_nj = parameters(period).gov.states.nj.snap
+        if p_nj.in_effect:
+            nj_min_allotment = p_nj.amount
             in_nj = state_code == "NJ"
             min_allotment = where(in_nj, nj_min_allotment, min_allotment)
+
         return min_allotment
