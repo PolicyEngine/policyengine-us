@@ -10,7 +10,7 @@ class wa_working_families_tax_credit(Variable):
     reference = "https://app.leg.wa.gov/RCW/default.aspx?cite=82.08.0206"
     defined_for = StateCode.WA
 
-    def formula_2022(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):
         in_effect = parameters(period).gov.states.wa.tax.income.in_effect
         if in_effect:
             # Filers must claim EITC and be in Washington to be eligible.
@@ -28,7 +28,7 @@ class wa_working_families_tax_credit(Variable):
             # The legislative analysis clarifies that this refers to "federal maximum AGI"
             # https://lawfilesext.leg.wa.gov/biennium/2021-22/Pdf/Bill%20Reports/House/1297-S.E%20HBR%20FBR%2021.pdf?q=20220706071752
             eitc_agi_limit = tax_unit("eitc_agi_limit", period)
-            phase_out_start_reduction = p.phase_out.start_below_eitc.calc(
+            phase_out_start_reduction = p.phase_out.start.calc(
                 eitc_child_count
             )
             phase_out_start = eitc_agi_limit - phase_out_start_reduction
