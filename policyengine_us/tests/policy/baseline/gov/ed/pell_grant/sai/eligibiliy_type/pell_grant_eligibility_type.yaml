@@ -1,0 +1,47 @@
+- name: Maximum Pell Grant eligible
+  period: 2024
+  input:
+    people:
+      head:
+        pell_grant_max_fpg_percent_limit: 1
+        pell_grant_min_fpg_percent_limit: 2
+    tax_units:
+      tax_unit:
+        tax_unit_fpg:
+          2022: 100
+        adjusted_gross_income: 100
+        members: [head]
+  output:
+    pell_grant_eligibility_type: MAXIMUM
+
+- name: Minimum Pell Grant eligible
+  period: 2024
+  input:
+    people:
+      head:
+        pell_grant_max_fpg_percent_limit: 1
+        pell_grant_min_fpg_percent_limit: 2
+    tax_units:
+      tax_unit:
+        tax_unit_fpg:
+          2022: 100
+        adjusted_gross_income: 200
+        members: [head]
+  output:
+    pell_grant_eligibility_type: MINIMUM
+
+- name: Ineligible for Pell Grant
+  period: 2024
+  input:
+    people:
+      head:
+        pell_grant_max_fpg_percent_limit: 1
+        pell_grant_min_fpg_percent_limit: 2
+    tax_units:
+      tax_unit:
+        tax_unit_fpg:
+          2022: 100
+        adjusted_gross_income: 201
+        members: [head]
+  output:
+    pell_grant_eligibility_type: INELIGIBLE
