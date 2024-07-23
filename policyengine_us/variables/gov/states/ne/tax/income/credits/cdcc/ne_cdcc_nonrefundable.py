@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ne_cdcc_nonrefundable(Variable):
     value_type = float
     entity = TaxUnit
-    label = "NE nonrefundable cdcc"
+    label = "Nebraska nonrefundable cdcc"
     unit = USD
     definition_period = YEAR
     reference = (
