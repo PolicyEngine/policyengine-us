@@ -19,14 +19,15 @@
   output:
     az_cash_assistance: 28
 
-- name: The not-eligible family receives no cash assistance
-  period: 2024-01
+- name: The family earns above payment standard threshold, therefore gets no cash assistance
+  period: 2023-01
   absolute_error_margin: 3
   input:
     az_payment_standard_threshold: 175
-    az_tanf_earned_income: 300
+    az_tanf_earned_income: 1000
     state_code: AZ
   output:
     az_cash_assistance: 0
+
 
 
