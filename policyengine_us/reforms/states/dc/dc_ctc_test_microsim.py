@@ -26,7 +26,6 @@ def test_dc_ctc():
         "household_net_income", period=2025
     )
 
-    # Check they're the right order of magnitude.
     total_loss = (baseline_net_income - dc_ctc_reform_net_income).sum()
 
     assert total_loss > 20e6
