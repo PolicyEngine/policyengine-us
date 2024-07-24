@@ -1,4 +1,4 @@
-def test_repeal_head_of_household():
+def test_dc_ctc():
     from policyengine_us import Microsimulation
     from policyengine_core.reforms import Reform
     from policyengine_core.periods import instant
