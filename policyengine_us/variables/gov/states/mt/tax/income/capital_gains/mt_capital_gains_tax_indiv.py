@@ -19,62 +19,52 @@ class mt_capital_gains_tax_indiv(Variable):
                 "state_filing_status_if_married_filing_separately_on_same_return",
                 period,
             )
-            rate_threshold = select(
-                [
-                    filing_status == filing_status.SINGLE,
-                    filing_status == filing_status.SEPARATE,
-                    filing_status == filing_status.HEAD_OF_HOUSEHOLD,
-                    filing_status == filing_status.SURVIVING_SPOUSE,
-                ],
-                [
-                    p.rates.single.thresholds[0],
-                    p.rates.separate.thresholds[0],
-                    p.rates.head_of_household.thresholds[0],
-                    p.rates.surviving_spouse.thresholds[0],
-                ],
-            )
+            status = filing_status.possible_values
             applicable_threshold = person(
                 "mt_capital_gains_tax_applicable_threshold_indiv", period
             )
-            higher_rate_applies = applicable_threshold < 0
+            higher_rate_applies = applicable_threshold = 0
             lower_rate = select(
                 [
-                    filing_status == filing_status.SINGLE,
-                    filing_status == filing_status.SEPARATE,
-                    filing_status == filing_status.SURVIVING_SPOUSE,
-                    filing_status == filing_status.HEAD_OF_HOUSEHOLD,
+                    filing_status == status.SINGLE,
+                    filing_status == status.SEPARATE,
+                    filing_status == status.SURVIVING_SPOUSE,
+                    filing_status == status.HEAD_OF_HOUSEHOLD,
                 ],
                 [
-                    p.rates.lower.single.rates[-1],
-                    p.rates.lower.separate.rates[-1],
-                    p.rates.lower.surviving_spouse.rates[-1],
-                    p.rates.lower.head_of_household.rates[-1],
+                    p.rates.single.amounts[0],
+                    p.rates.separate.amounts[0],
+                    p.rates.surviving_spouse.amounts[0],
+                    p.rates.head_of_household.amounts[0],
                 ],
             )
             higher_rate = select(
                 [
-                    filing_status == filing_status.SINGLE,
-                    filing_status == filing_status.SEPARATE,
-                    filing_status == filing_status.SURVIVING_SPOUSE,
-                    filing_status == filing_status.HEAD_OF_HOUSEHOLD,
+                    filing_status == status.SINGLE,
+                    filing_status == status.SEPARATE,
+                    filing_status == status.SURVIVING_SPOUSE,
+                    filing_status == status.HEAD_OF_HOUSEHOLD,
                 ],
                 [
-                    p.rates.higher.single.rates[-1],
-                    p.rates.higher.separate.rates[-1],
-                    p.rates.higher.surviving_spouse.rates[-1],
-                    p.rates.higher.head_of_household.rates[-1],
+                    p.rates.single.amounts[-1],
+                    p.rates.separate.amounts[-1],
+                    p.rates.surviving_spouse.amounts[-1],
+                    p.rates.head_of_household.amounts[-1],
                 ],
             )
             # Calculate taxes
-            base_capital_gains_tax = lower_rate * rate_threshold
             capital_gains_main_tax = higher_rate * capital_gains
 
             # Calculate lower capital gains tax
-            lower_capital_gains_tax = where(
-                capital_gains <= rate_threshold,
-                capital_gains * lower_rate,
-                base_capital_gains_tax
-                + (capital_gains - rate_threshold) * higher_rate,
+            capital_gains_below_threshold = min_(
+                capital_gains, applicable_threshold
+            )
+            capital_gains_above_threshold = max_(
+                capital_gains - capital_gains_below_threshold, 0
+            )
+            lower_capital_gains_tax = (
+                capital_gains_below_threshold * lower_rate
+                + capital_gains_above_threshold * higher_rate
             )
             return where(
                 higher_rate_applies,
