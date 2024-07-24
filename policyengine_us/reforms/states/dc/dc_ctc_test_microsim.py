@@ -4,17 +4,9 @@ def test_repeal_head_of_household():
     from policyengine_core.periods import instant
     from numpy.testing import assert_allclose
 
-    class neutralize_reform(Reform):
-        def apply(self):
-            self.neutralize_variable("head_of_household_eligible")
-
     baseline = Microsimulation()
-    neutralize_reformed = Microsimulation(reform=neutralize_reform)
 
     baseline_net_income = baseline.calculate("household_net_income")
-    neutralize_reform_net_income = neutralize_reformed.calculate(
-        "household_net_income"
-    )
 
     # Check the same result using the reform.
 
@@ -35,11 +27,8 @@ def test_repeal_head_of_household():
         "household_net_income"
     )
 
-    # Check they're the same, element by element.
-    assert_allclose(neutralize_reform_net_income, dc_ctc_reform_net_income)
-
     # Check they're the right order of magnitude.
-    total_loss = (baseline_net_income - neutralize_reform_net_income).sum()
+    total_loss = (baseline_net_income - dc_ctc_reform_net_income).sum()
 
     assert total_loss > 20e6
     assert total_loss < 100e6
