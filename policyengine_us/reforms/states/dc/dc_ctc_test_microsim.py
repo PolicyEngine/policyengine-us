@@ -2,17 +2,16 @@ def test_dc_ctc():
     from policyengine_us import Microsimulation
     from policyengine_core.reforms import Reform
     from policyengine_core.periods import instant
-    from numpy.testing import assert_allclose
 
     baseline = Microsimulation()
 
-    baseline_net_income = baseline.calculate("household_net_income")
-
-    # Check the same result using the reform.
+    baseline_net_income = baseline.calculate(
+        "household_net_income", period=2025
+    )
 
     def modify_parameters(parameters):
         parameters.gov.contrib.states.dc.ctc.in_effect.update(
-            start=instant("2023-01-01"),
+            start=instant("2025-01-01"),
             stop=instant("2028-12-31"),
             value=True,
         )
@@ -24,7 +23,7 @@ def test_dc_ctc():
 
     dc_ctc_reformed = Microsimulation(reform=parameter_reform)
     dc_ctc_reform_net_income = dc_ctc_reformed.calculate(
-        "household_net_income"
+        "household_net_income", period=2025
     )
 
     # Check they're the right order of magnitude.
