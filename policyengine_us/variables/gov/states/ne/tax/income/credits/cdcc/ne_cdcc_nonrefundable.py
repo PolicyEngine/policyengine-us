@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ne_cdcc_nonrefundable(Variable):
     value_type = float
     entity = TaxUnit
-    label = "NE nonrefundable cdcc"
+    label = "Nebraska nonrefundable cdcc"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -16,9 +16,8 @@ class ne_cdcc_nonrefundable(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.ne.tax.income.credits
         # determine AGI eligibility
-        us_agi = tax_unit("adjusted_gross_income", period)
-        agi_eligible = us_agi > p.cdcc.agi_threshold
+        eligible = ~tax_unit("ne_cdcc_refundable_eligible", period)
         # determine NE nonrefundable cdcc amount
         us_cdcc = tax_unit("cdcc", period)
         ne_cdcc = us_cdcc * p.cdcc.nonrefundable.fraction
-        return agi_eligible * ne_cdcc
+        return eligible * ne_cdcc

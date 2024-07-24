@@ -39,7 +39,7 @@
   input:
     pell_grant_eligibility_type: MAXIMUM
     pell_grant_sai: 0
-    cost_of_attending_college: 5_000
+    cost_of_attending_college: 10_000
   output:
     pell_grant: 7_395
 
@@ -67,5 +67,14 @@
     pell_grant_eligibility_type: MINIMUM
     pell_grant_sai: 10_000
     cost_of_attending_college: 10_739
+  output:
+    pell_grant: 0
+
+- name: Pell Grant max eligible with no cost of attending
+  period: 2024
+  input:
+    pell_grant_eligibility_type: MAXIMUM
+    pell_grant_sai: 0
+    cost_of_attending_college: 0
   output:
     pell_grant: 0
