@@ -66,9 +66,9 @@ def create_dc_ctc_reform(parameters, period, bypass: bool = False):
 
     for i in range(5):
         if p(current_period).in_effect:
-            return create_dc_ctc()  
-        current_period = current_period.offset(1, "year")  
-    return None 
+            return create_dc_ctc()
+        current_period = current_period.offset(1, "year")
+    return None
 
 
 dc_ctc = create_dc_ctc_reform(None, None, bypass=True)
