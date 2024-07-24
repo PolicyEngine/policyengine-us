@@ -20,7 +20,9 @@ class pell_grant(Variable):
         contribution = select([uses_efc, uses_sai], [efc, sai])
         unbounded = coa - contribution
         amount = where(unbounded < p.amount.min, 0, unbounded)
-        uncapped_efc_pell = amount * (months_in_school / p.months_in_school_year)
+        uncapped_efc_pell = amount * (
+            months_in_school / p.months_in_school_year
+        )
         uncapped_sai_pell = select(
             [
                 eligibility == eligibility.possible_values.INELIGIBLE,
@@ -29,6 +31,8 @@ class pell_grant(Variable):
             ],
             [0, p.amount.max, amount],
         )
-        uncapped = select([uses_efc, uses_sai], [uncapped_efc_pell, uncapped_sai_pell])
+        uncapped = select(
+            [uses_efc, uses_sai], [uncapped_efc_pell, uncapped_sai_pell]
+        )
         max = min_(coa, p.amount.max)
         return min_(max, uncapped)
