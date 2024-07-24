@@ -22,7 +22,7 @@ class mt_capital_gains_tax_joint(Variable):
             applicable_threshold = person(
                 "mt_capital_gains_tax_applicable_threshold_joint", period
             )
-            higher_rate_applies = applicable_threshold < 0
+            higher_rate_applies = applicable_threshold = 0
             status = filing_status.possible_values
             lower_rate = select(
                 [
@@ -70,7 +70,6 @@ class mt_capital_gains_tax_joint(Variable):
                 capital_gains_below_threshold * lower_rate
                 + capital_gains_above_threshold * higher_rate
             )
-            print(lower_rate)
             return where(
                 higher_rate_applies,
                 capital_gains_main_tax,

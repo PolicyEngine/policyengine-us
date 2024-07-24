@@ -19,11 +19,11 @@ class mt_capital_gains_tax_indiv(Variable):
                 "state_filing_status_if_married_filing_separately_on_same_return",
                 period,
             )
-            status = filing_status.possible_values
             applicable_threshold = person(
                 "mt_capital_gains_tax_applicable_threshold_indiv", period
             )
             higher_rate_applies = applicable_threshold = 0
+            status = filing_status.possible_values
             lower_rate = select(
                 [
                     filing_status == status.SINGLE,
@@ -57,7 +57,7 @@ class mt_capital_gains_tax_indiv(Variable):
 
             # Calculate lower capital gains tax
             capital_gains_below_threshold = min_(
-                capital_gains, applicable_threshold
+                applicable_threshold, capital_gains
             )
             capital_gains_above_threshold = max_(
                 capital_gains - capital_gains_below_threshold, 0
@@ -66,6 +66,7 @@ class mt_capital_gains_tax_indiv(Variable):
                 capital_gains_below_threshold * lower_rate
                 + capital_gains_above_threshold * higher_rate
             )
+            print(applicable_threshold)
             return where(
                 higher_rate_applies,
                 capital_gains_main_tax,
