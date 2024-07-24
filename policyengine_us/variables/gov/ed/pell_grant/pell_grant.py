@@ -28,6 +28,6 @@ class pell_grant(Variable):
                 eligibility == eligibility.possible_values.MAXIMUM,
                 eligibility == eligibility.possible_values.MINIMUM,
             ],
-            [0, p.amount.max, amount],
+            [0, min_(coa, p.amount.max), amount],
         )
         return select([uses_efc, uses_sai], [efc_pell, sai_pell])
