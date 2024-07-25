@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_core.periods import period as period_
 
 
 def create_dc_ctc() -> Reform:
@@ -59,12 +60,15 @@ def create_dc_ctc_reform(parameters, period, bypass: bool = False):
     if bypass:
         return create_dc_ctc()
 
-    p = parameters(period).gov.contrib.states.dc.ctc
+    p = parameters.gov.contrib.states.dc.ctc
 
-    if p.in_effect:
-        return create_dc_ctc()
-    else:
-        return None
+    current_period = period_(period)
+
+    for i in range(5):
+        if p(current_period).in_effect:
+            return create_dc_ctc()
+        current_period = current_period.offset(1, "year")
+    return None
 
 
 dc_ctc = create_dc_ctc_reform(None, None, bypass=True)
