@@ -6,11 +6,9 @@
       person1:
         mt_taxable_income_indiv: 1_000
         long_term_capital_gains: 500
-        # mt_capital_gains_tax_indiv: 0
       person2:
         mt_taxable_income_indiv: 3_000
         long_term_capital_gains: 2_000
-        # mt_capital_gains_tax_indiv: 0
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -20,6 +18,7 @@
         members: [person1, person2]
         state_code: MT
   output:
+    mt_capital_gains_tax_indiv: [0, 0]
     mt_regular_income_tax_indiv: [10, 30]
 
 
@@ -52,11 +51,9 @@
       person1:
         mt_taxable_income_indiv: 10_000
         long_term_capital_gains: 5_000
-        # mt_capital_gains_tax_indiv: 150
       person2:
         mt_taxable_income_indiv: 0
         long_term_capital_gains: 2_000
-        # mt_capital_gains_tax_indiv: 60
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -66,4 +63,5 @@
         members: [person1, person2]
         state_code: MT
   output:
+    mt_capital_gains_tax_indiv: [150, 60]
     mt_regular_income_tax_indiv: [235, 0]
