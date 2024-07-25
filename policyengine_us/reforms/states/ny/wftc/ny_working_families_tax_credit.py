@@ -264,7 +264,9 @@ def create_ny_working_families_tax_credit() -> Reform:
         unit = USD
 
         def formula(tax_unit, period, parameters):
-            younger_child_count = tax_unit("eitc_younger_children_count", period)
+            younger_child_count = tax_unit(
+                "eitc_younger_children_count", period
+            )
             odler_child_count = tax_unit("eitc_older_children_count", period)
             child_count = odler_child_count + younger_child_count
             eitc = parameters(period).gov.irs.credits.eitc
