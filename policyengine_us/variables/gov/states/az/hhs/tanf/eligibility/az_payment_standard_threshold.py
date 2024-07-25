@@ -14,8 +14,8 @@ class az_payment_standard_threshold(Variable):
         p = parameters(
             period
         ).gov.states.az.hhs.tanf.eligibility.payment_standard
-        high_threshold = p.high * monthly_fpg_baseline
-        low_threshold = p.low * monthly_fpg_baseline
+        high_threshold = p.high.value * monthly_fpg_baseline
+        low_threshold = p.low.value * monthly_fpg_baseline
         shelter_cost = spm_unit("housing_cost", period)
 
         return where(
