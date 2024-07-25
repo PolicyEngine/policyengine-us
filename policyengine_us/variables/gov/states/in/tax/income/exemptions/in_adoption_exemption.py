@@ -17,7 +17,7 @@ class in_adoption_exemption(Variable):
             "in_is_qualifying_dependent_child", period
         )
         is_qualifying_adopted_dependent_child = (
-            is_qualifying_dependent_child & person("is_adopted", period)
+            is_qualifying_dependent_child & person("adopted_this_year", period)
         )
         adopted_exemption_amount = p.amount
         return tax_unit.sum(

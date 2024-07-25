@@ -5,10 +5,10 @@
     people:
       person1:
         in_is_qualifying_dependent_child: false
-        is_adopted: false
+        adopted_this_year: false
       person2:
         in_is_qualifying_dependent_child: true
-        is_adopted: true
+        adopted_this_year: true
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -26,10 +26,10 @@
     people:
       person1:
         in_is_qualifying_dependent_child: true
-        is_adopted: true
+        adopted_this_year: true
       person2:
         in_is_qualifying_dependent_child: true
-        is_adopted: true
+        adopted_this_year: true
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -47,10 +47,10 @@
     people:
       person1:
         in_is_qualifying_dependent_child: true
-        is_adopted: true
+        adopted_this_year: true
       person2:
         in_is_qualifying_dependent_child: true
-        is_adopted: false
+        adopted_this_year: false
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -68,13 +68,13 @@
     people:
       person1:
         in_is_qualifying_dependent_child: true
-        is_adopted: false
+        adopted_this_year: false
       person2:
         in_is_qualifying_dependent_child: false
-        is_adopted: false
+        adopted_this_year: false
       person3:
         in_is_qualifying_dependent_child: false
-        is_adopted: true
+        adopted_this_year: true
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
