@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.31.4] - 2024-07-25 02:41:53
+
+### Fixed
+
+- Disabeld the exhaustive_parameter_dependencies metadata in household_refundable_state_tax_credits as it was not working with state reforms.
+
 ## [1.31.3] - 2024-07-24 20:47:17
 
 ### Added
@@ -9171,6 +9177,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.31.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.31.3...1.31.4
 [1.31.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.31.2...1.31.3
 [1.31.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.31.1...1.31.2
 [1.31.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.31.0...1.31.1

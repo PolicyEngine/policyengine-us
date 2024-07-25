@@ -7749,3 +7749,9 @@
     added:
     - Restructure Nebraska variables and tests.
   date: 2024-07-24 20:47:17
+- bump: patch
+  changes:
+    fixed:
+    - Disabeld the exhaustive_parameter_dependencies metadata in household_refundable_state_tax_credits
+      as it was not working with state reforms.
+  date: 2024-07-25 02:41:53
