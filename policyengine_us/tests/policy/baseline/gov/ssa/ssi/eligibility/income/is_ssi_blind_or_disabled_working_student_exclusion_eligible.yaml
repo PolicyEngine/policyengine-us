@@ -1,0 +1,39 @@
+- name: Not demographic eligible nor student eligible
+  period: 1974
+  input:
+    is_blind: true
+    is_disabled: false
+    age: 22
+    is_full_time_student: false
+  output:
+    is_ssi_blind_or_disabled_working_student_exclusion_eligible: false
+
+- name: Demographic eligible but not student eligible
+  period: 1974
+  input:
+    is_blind: true
+    is_disabled: false
+    age: 20
+    is_full_time_student: false
+  output:
+    is_ssi_blind_or_disabled_working_student_exclusion_eligible: false
+
+- name: Student eligible but not demographic eligible
+  period: 1974
+  input:
+    is_blind: false
+    is_disabled: false
+    age: 18
+    is_full_time_student: true
+  output:
+    is_ssi_blind_or_disabled_working_student_exclusion_eligible: false
+
+- name: Eligible
+  period: 1974
+  input:
+    is_blind: false
+    is_disabled: true
+    age: 18
+    is_full_time_student: true
+  output:
+    is_ssi_blind_or_disabled_working_student_exclusion_eligible: true
