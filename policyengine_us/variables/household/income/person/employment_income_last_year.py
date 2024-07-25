@@ -13,7 +13,7 @@ class employment_income_last_year(Variable):
 
     def formula_2024(person, period, parameters):
         employment_income_target = (
-            parameters.calibration.gov.irs.soi.employment_income
+            parameters.calibration.gov.irs.cbo.income_by_source.employment_income
         )
         value_last_year = employment_income_target(period.last_year)
         value_year_before_last = employment_income_target(
