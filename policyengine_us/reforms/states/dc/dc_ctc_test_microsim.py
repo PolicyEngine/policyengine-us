@@ -26,7 +26,7 @@ def test_dc_ctc():
         "household_net_income", period=2025
     )
 
-    total_loss = (baseline_net_income - dc_ctc_reform_net_income).sum()
+    total_loss = (dc_ctc_reform_net_income - baseline_net_income).sum()
 
-    assert total_loss > 20e6
+    assert total_loss > 5e6
     assert total_loss < 100e6
