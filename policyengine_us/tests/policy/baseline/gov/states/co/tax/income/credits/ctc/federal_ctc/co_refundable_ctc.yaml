@@ -6,14 +6,7 @@
     co_federal_ctc_maximum: 0
     co_ctc_eligible_children_count: 0
     tax_unit_earned_income: 0
-    # SS_ADD_VARIABLES
-    employee_social_security_tax: 0
-    employee_medicare_tax: 0
-    unreported_payroll_tax: 0
-    self_employment_tax_ald: 0
-    additional_medicare_tax: 0
-    # SS_SUBTRACT_VARIABLES
-    excess_payroll_tax_withheld: 0
+    ctc_social_security_tax: 0
     eitc: 0
   output:
     co_refundable_ctc: 0
@@ -26,14 +19,7 @@
     co_federal_ctc_maximum: 2_000
     co_ctc_eligible_children_count: 3
     tax_unit_earned_income: 0
-    # SS_ADD_VARIABLES
-    employee_social_security_tax: 0
-    employee_medicare_tax: 0
-    unreported_payroll_tax: 0
-    self_employment_tax_ald: 0
-    additional_medicare_tax: 0
-    # SS_SUBTRACT_VARIABLES
-    excess_payroll_tax_withheld: 0
+    ctc_social_security_tax: 0
     eitc: 0
   output:
     co_refundable_ctc: 0
@@ -46,14 +32,7 @@
     co_federal_ctc_maximum: 2_000
     co_ctc_eligible_children_count: 1
     tax_unit_earned_income: 100_000
-    # SS_ADD_VARIABLES
-    employee_social_security_tax: 0
-    employee_medicare_tax: 0
-    unreported_payroll_tax: 0
-    self_employment_tax_ald: 0
-    additional_medicare_tax: 0
-    # SS_SUBTRACT_VARIABLES
-    excess_payroll_tax_withheld: 0
+    ctc_social_security_tax: 0
     eitc: 0
   output:
     co_refundable_ctc: 1_500
@@ -66,14 +45,7 @@
     co_federal_ctc_maximum: 2_000
     co_ctc_eligible_children_count: 2
     tax_unit_earned_income: 100_000
-    # SS_ADD_VARIABLES
-    employee_social_security_tax: 0
-    employee_medicare_tax: 0
-    unreported_payroll_tax: 0
-    self_employment_tax_ald: 0
-    additional_medicare_tax: 0
-    # SS_SUBTRACT_VARIABLES
-    excess_payroll_tax_withheld: 0
+    ctc_social_security_tax: 0
     eitc: 0
   output:
     co_refundable_ctc: 3_000
@@ -86,14 +58,7 @@
     co_federal_ctc_maximum: 2_000
     co_ctc_eligible_children_count: 2
     tax_unit_earned_income: 100_000
-    # SS_ADD_VARIABLES
-    employee_social_security_tax: 0
-    employee_medicare_tax: 0
-    unreported_payroll_tax: 0
-    self_employment_tax_ald: 0
-    additional_medicare_tax: 0
-    # SS_SUBTRACT_VARIABLES
-    excess_payroll_tax_withheld: 0
+    ctc_social_security_tax: 0
     eitc: 0
   output:
     co_refundable_ctc: 2_000
@@ -106,14 +71,7 @@
     co_federal_ctc_maximum: 2_000
     co_ctc_eligible_children_count: 1
     tax_unit_earned_income: 10_000
-    # SS_ADD_VARIABLES
-    employee_social_security_tax: 0
-    employee_medicare_tax: 0
-    unreported_payroll_tax: 0
-    self_employment_tax_ald: 0
-    additional_medicare_tax: 0
-    # SS_SUBTRACT_VARIABLES
-    excess_payroll_tax_withheld: 0
+    ctc_social_security_tax: 0
     eitc: 0
   output:
     co_refundable_ctc: 1_125
@@ -126,14 +84,7 @@
     co_federal_ctc_maximum: 2_000
     co_ctc_eligible_children_count: 3
     tax_unit_earned_income: 100_000
-    # SS_ADD_VARIABLES
-    employee_social_security_tax: 1_000
-    employee_medicare_tax: 2_000
-    unreported_payroll_tax: 0
-    self_employment_tax_ald: 0
-    additional_medicare_tax: 0
-    # SS_SUBTRACT_VARIABLES
-    excess_payroll_tax_withheld: 500
+    ctc_social_security_tax: 2_500
     eitc: 0
   output:
     co_refundable_ctc: 4_500
@@ -146,14 +97,7 @@
     co_federal_ctc_maximum: 2_000
     co_ctc_eligible_children_count: 3
     tax_unit_earned_income: 100_000
-    # SS_ADD_VARIABLES
-    employee_social_security_tax: 1_000
-    employee_medicare_tax: 2_000
-    unreported_payroll_tax: 0
-    self_employment_tax_ald: 0
-    additional_medicare_tax: 0
-    # SS_SUBTRACT_VARIABLES
-    excess_payroll_tax_withheld: 500
+    ctc_social_security_tax: 2_500
     eitc: 0
   output:
     co_refundable_ctc: 2_000
@@ -166,14 +110,7 @@
     co_federal_ctc_maximum: 2_000
     co_ctc_eligible_children_count: 3
     tax_unit_earned_income: 10_000
-    # SS_ADD_VARIABLES
-    employee_social_security_tax: 0
-    employee_medicare_tax: 0
-    unreported_payroll_tax: 1_000
-    self_employment_tax_ald: 0
-    additional_medicare_tax: 3_000
-    # SS_SUBTRACT_VARIABLES
-    excess_payroll_tax_withheld: 500
+    ctc_social_security_tax: 3_500
     eitc: 0
   output:
     co_refundable_ctc: 3_500
@@ -186,14 +123,7 @@
     co_federal_ctc_maximum: 2_000
     co_ctc_eligible_children_count: 7
     tax_unit_earned_income: 8_000
-    # SS_ADD_VARIABLES
-    employee_social_security_tax: 1_000
-    employee_medicare_tax: 10_000
-    unreported_payroll_tax: 0
-    self_employment_tax_ald: 0
-    additional_medicare_tax: 0
-    # SS_SUBTRACT_VARIABLES
-    excess_payroll_tax_withheld: 500
+    ctc_social_security_tax: 10_500
     eitc: 1_000
   output:
     co_refundable_ctc: 9_500
