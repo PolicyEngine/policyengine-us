@@ -7714,3 +7714,59 @@
     added:
     - Update 2023 SNAP medical deductions.
   date: 2024-07-23 04:22:45
+- bump: minor
+  changes:
+    added:
+    - SSI blind or disabled working student earned income exemption.
+  date: 2024-07-23 21:52:58
+- bump: minor
+  changes:
+    added:
+    - Tax Counseling for the Elderly eligibility.
+  date: 2024-07-24 00:03:46
+- bump: patch
+  changes:
+    fixed:
+    - Adjust the DC CTC formatting.
+  date: 2024-07-24 01:33:28
+- bump: minor
+  changes:
+    added:
+    - 2023 Nebraska income tax values.
+  date: 2024-07-24 01:38:48
+- bump: patch
+  changes:
+    fixed:
+    - DC CTC parameter period function.
+  date: 2024-07-24 20:06:00
+- bump: patch
+  changes:
+    fixed:
+    - Cap the Pell Grant amount at the cost of attendance.
+  date: 2024-07-24 20:10:44
+- bump: patch
+  changes:
+    added:
+    - Restructure Nebraska variables and tests.
+  date: 2024-07-24 20:47:17
+- bump: patch
+  changes:
+    fixed:
+    - Disabeld the exhaustive_parameter_dependencies metadata in household_refundable_state_tax_credits
+      as it was not working with state reforms.
+  date: 2024-07-25 02:41:53
+- bump: minor
+  changes:
+    added:
+    - 2023 Indiana income tax updates.
+  date: 2024-07-25 04:22:15
+- bump: minor
+  changes:
+    added:
+    - 2023 Washington Tax Rules.
+  date: 2024-07-25 12:45:43
+- bump: patch
+  changes:
+    fixed:
+    - Remove the adds function from the reported_state_income_tax reform file.
+  date: 2024-07-25 13:01:20
