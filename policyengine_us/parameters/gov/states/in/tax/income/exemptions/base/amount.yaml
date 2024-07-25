@@ -1,6 +1,5 @@
 description: Indiana provides this base exemption amount.
-values:
-  2021-01-01: 1_000
+
 metadata:
   period: year
   unit: currency-USD
@@ -15,12 +14,12 @@ metadata:
   breakdown: 
     - filing_status
 JOINT:
-2021-01-01: 2_000
+  2021-01-01: 2_000
 SURVIVING_SPOUSE:
-2021-01-01: 1_000
+  2021-01-01: 1_000
 HEAD_OF_HOUSEHOLD:
-2021-01-01: 1_000
+  2021-01-01: 1_000
 SINGLE:
-2021-01-01: 1_000
+  2021-01-01: 1_000
 SEPARATE:
-2021-01-01: 1_000
+  2021-01-01: 1_000
