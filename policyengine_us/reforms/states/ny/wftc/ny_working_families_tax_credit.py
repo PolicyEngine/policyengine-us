@@ -240,7 +240,9 @@ def create_ny_working_families_tax_credit() -> Reform:
             age = person("age", period)
             p = parameters(period).gov.irs.dependent.ineligible_age
             student = person("is_full_time_student", period)
-            age_eligible = age < p.student
+            student_age_eligible = age < p.student
+            older_student_age_eligible = p.non_student <= age
+            age_eligible = student_age_eligible & older_student_age_eligible
             return is_dependent & student & age_eligible
 
     class eitc_older_children_count(Variable):
@@ -262,13 +264,18 @@ def create_ny_working_families_tax_credit() -> Reform:
         unit = USD
 
         def formula(tax_unit, period, parameters):
-            child_count = tax_unit("eitc_older_children_count", period)
+            younger_child_count = tax_unit(
+                "eitc_younger_children_count", period
+            )
+            odler_child_count = tax_unit("eitc_older_children_count", period)
+            child_count = odler_child_count + younger_child_count
             eitc = parameters(period).gov.irs.credits.eitc
             # We will reduce the maximum credit amount by the amount for self
             # as it is attributed to the younger children EITC
+            # We also need to reduce it by the amount attributed to the younger children
             base_credit = eitc.max.calc(child_count)
-            amount_for_self = eitc.max.amounts[0]
-            return base_credit - amount_for_self
+            amount_for_younger = eitc.max.calc(younger_child_count)
+            return base_credit - amount_for_younger
 
     class eitc_older_phase_in_rate(Variable):
         value_type = float
