@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.34.1] - 2024-07-26 02:54:51
+
+### Fixed
+
+- Limit the older children under the Working Families Tax Credit above 18 years.
+
 ## [1.34.0] - 2024-07-25 22:43:01
 
 ### Added
@@ -9201,6 +9207,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.34.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.34.0...1.34.1
 [1.34.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.33.1...1.34.0
 [1.33.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.33.0...1.33.1
 [1.33.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.32.0...1.33.0
