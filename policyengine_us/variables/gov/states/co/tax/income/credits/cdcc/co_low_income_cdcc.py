@@ -15,7 +15,7 @@ class co_low_income_cdcc(Variable):
 
     def formula(tax_unit, period, parameters):
         # follow 2022 DR 0347 form and its instructions (in Book cited above):
-        p = parameters(period).gov.states.co.tax.income.credits
+        p = parameters(period).gov.states.co.tax.income.credits.cdcc.low_income
         if not p.cdcc.low_income.unified:
             # estimate care expenses for just children
             care_expenses = tax_unit("tax_unit_childcare_expenses", period)

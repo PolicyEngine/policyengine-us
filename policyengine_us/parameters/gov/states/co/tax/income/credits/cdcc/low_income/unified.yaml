@@ -5,6 +5,8 @@ values:
   # After 2026-01-01, the low-income family child care expenses credit will be combined
   # into the child and dependent care credit.
 metadata:
+  period: year
+  unit: bool
   label: Colorado low-income family child care expenses credit unified
   reference:
     - title: 26 U.S.C. § 25C(g)
