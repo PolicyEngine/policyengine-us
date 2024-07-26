@@ -22,7 +22,5 @@ class immigration_status(Variable):
 
     def formula(person, period, parameters):
         status_str = person("immigration_status_str", period).decode_to_str()
-        print(f"Raw immigration_status_str values in formula: {np.unique(status_str)}")
-        
         # Use PolicyEngine's Enum encode method
         return ImmigrationStatus.encode(status_str)
