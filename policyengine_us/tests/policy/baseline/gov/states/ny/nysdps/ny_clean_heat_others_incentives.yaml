@@ -1,0 +1,100 @@
+- name: C2 heat pump, CH, giving only necessary input variables, below cap, post-2024
+  period: 2024
+  input:
+    ny_clean_heat_utility_provider: CH
+    ny_clean_heat_heat_pump_category: C2
+    ny_clean_heat_project_cost: 10_000
+    ny_clean_heat_heating_capacity: 50_000
+    state_code: NY
+  output:
+    ny_clean_heat_others_incentives: 2_200
+
+- name: C2 heat pump, CH, giving only necessary input variables, above cap, post-2024
+  period: 2024
+  input:
+    ny_clean_heat_utility_provider: CH
+    ny_clean_heat_heat_pump_category: C2
+    ny_clean_heat_project_cost: 10_000
+    ny_clean_heat_heating_capacity: 250_000
+    state_code: NY
+  output:
+    ny_clean_heat_others_incentives: 5_000
+
+- name: C3 heat pump, SEGRGE, giving only necessary input variables, below cap, post-2024
+  period: 2024
+  input:
+    ny_clean_heat_utility_provider: SEGRGE
+    ny_clean_heat_heat_pump_category: C3
+    ny_clean_heat_project_cost: 30_000
+    ny_clean_heat_heating_capacity: 90_000
+    state_code: NY
+  output:
+    ny_clean_heat_others_incentives: 13_000
+
+- name: C3 heat pump, SEGRGE, giving only necessary input variables, above cap 50% cost cap, post-2024 # to check logic for this
+  period: 2024
+  input:
+    ny_clean_heat_utility_provider: SEGRGE
+    ny_clean_heat_heat_pump_category: C3
+    ny_clean_heat_project_cost: 80_000
+    ny_clean_heat_heating_capacity: 900_000
+    state_code: NY
+  output:
+    ny_clean_heat_others_incentives: 40_000
+
+- name: C3 heat pump, SEGRGE, giving only necessary input variables, above GSHP cap, post-2024
+  period: 2024
+  input:
+    ny_clean_heat_utility_provider: SEGRGE
+    ny_clean_heat_heat_pump_category: C3
+    ny_clean_heat_project_cost: 120_000
+    ny_clean_heat_heating_capacity: 900_000
+    state_code: NY
+  output:
+    ny_clean_heat_others_incentives: 50_000
+
+- name: C2 heat pump, giving all input variables, below cap, post-2024 # is there an option for users to just input whats relevant per category? this test would not be neccessary if that can be done
+  period: 2024
+  input:
+    ny_clean_heat_utility_provider: CH
+    ny_clean_heat_heat_pump_category: C2
+    ny_clean_heat_project_cost: 10_000
+    ny_clean_heat_heating_capacity: 50_000
+    ny_clean_heat_annual_energy_savings: 30
+    ny_clean_heat_equipment_unit: 7
+    state_code: NY
+  output:
+    ny_clean_heat_others_incentives: 2_200
+
+- name: C7 heat pump, NG, below cap, no contractor reward, post-2024
+  period: 2024
+  input:
+    ny_clean_heat_utility_provider: NG
+    ny_clean_heat_heat_pump_category: C7
+    ny_clean_heat_project_cost: 10_000
+    ny_clean_heat_equipment_unit: 10
+    state_code: NY
+  output:
+    ny_clean_heat_others_incentives: 1_000
+
+- name: C4A1 heat pump, OR, specifying tier, below cap, post-2024
+  period: 2024
+  input:
+    ny_clean_heat_utility_provider: OR
+    ny_clean_heat_heat_pump_category: C4A1
+    ny_clean_heat_project_cost: 10_000
+    ny_clean_heat_annual_energy_savings: 30
+    state_code: NY
+  output:
+    ny_clean_heat_others_incentives: 1_600
+
+- name: C9, no incentives post-2023
+  period: 2024
+  input:
+    ny_clean_heat_utility_provider: OR
+    ny_clean_heat_heat_pump_category: C9
+    ny_clean_heat_project_cost: 20_000
+    ny_clean_heat_annual_energy_savings: 30
+    state_code: NY
+  output:
+    ny_clean_heat_others_incentives: 0

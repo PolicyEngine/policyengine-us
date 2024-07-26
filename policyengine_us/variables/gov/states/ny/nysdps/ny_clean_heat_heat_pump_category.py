@@ -29,8 +29,8 @@ class ny_clean_heat_heat_pump_category(Variable):
     label = "Heat pump technology category"
     documentation = "Heat pump technologies that qualify for Clean Heat program incentives."
     reference = [
-        "https://cleanheat.ny.gov/assets/pdf/CHG&E%20NGrid%20NYSEG%20O&R%20and%20RG&E%20Program%20Manual_3.1.2024.pdf",
-        "https://cleanheat.ny.gov/assets/pdf/CECONY%20Clean%20Heat%20Program%20Manual%206%203%2024.pdf",
+        "https://cleanheat.ny.gov/assets/pdf/CHG&E%20NGrid%20NYSEG%20O&R%20and%20RG&E%20Program%20Manual_3.1.2024.pdf#page=10",
+        "https://cleanheat.ny.gov/assets/pdf/CECONY%20Clean%20Heat%20Program%20Manual%206%203%2024.pdf#page=11",
     ]  # (2.1)(3.3)
     definition_period = YEAR
     defined_for = StateCode.NY

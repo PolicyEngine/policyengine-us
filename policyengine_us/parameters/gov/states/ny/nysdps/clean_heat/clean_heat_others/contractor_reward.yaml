@@ -1,13 +1,13 @@
-description: New York State provides the following maximum Clean Heat program contractor reward amount per eligible project.
+description: New York State provides the following maximum Clean Heat program contractor reward amount per eligible project for CH&E, NGRID, NYSEG, O&R, RG&E Participating Contractors/Distributors.
 metadata:
   unit: currency-USD
   period: year
-  label: New York State Clean Heat maximum reward per project for CH&E, NGRID, NYSEG, O&R, RG&E Participating Contractors/Distributors
+  label: New York State Clean Heat contractor reward amount
   reference:
     - title: New York State Clean Heat Program Manual, CH&E, NGRID, NYSEG, O&R, RG&E (March 1, 2024) # (2.1.2)
-      href: https://cleanheat.ny.gov/assets/pdf/CHG&E%20NGrid%20NYSEG%20O&R%20and%20RG&E%20Program%20Manual_3.1.2024.pdf
+      href: https://cleanheat.ny.gov/assets/pdf/CHG&E%20NGrid%20NYSEG%20O&R%20and%20RG&E%20Program%20Manual_3.1.2024.pdf#page=21
   breakdown:
-    - utility_provider
+    - ny_clean_heat_utility_provider
     - ny_clean_heat_heat_pump_category
 
 CH:
