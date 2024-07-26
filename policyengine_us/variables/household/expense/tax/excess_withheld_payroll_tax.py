@@ -7,3 +7,4 @@ class excess_withheld_payroll_tax(Variable):
     label = "excess withheld payroll tax"
     unit = USD
     definition_period = YEAR
+    uprating = "calibration.gov.cbo.income_by_source.adjusted_gross_income"

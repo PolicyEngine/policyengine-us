@@ -8,6 +8,7 @@ class american_opportunity_credit(Variable):
     unit = USD
     documentation = "Total value of the American Opportunity Credit"
     definition_period = YEAR
+    uprating = "calibration.gov.cbo.income_by_source.adjusted_gross_income"
     reference = "https://www.law.cornell.edu/uscode/text/26/25A#b"
 
     def formula(tax_unit, period, parameters):

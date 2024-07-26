@@ -7,3 +7,4 @@ class other_credits(Variable):
     label = "other credits"
     unit = USD
     definition_period = YEAR
+    uprating = "calibration.gov.cbo.income_by_source.adjusted_gross_income"

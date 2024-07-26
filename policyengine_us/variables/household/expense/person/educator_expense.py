@@ -10,3 +10,4 @@ class educator_expense(Variable):
         "Expenses necessary for carrying out educator-related duties."
     )
     definition_period = YEAR
+    uprating = "calibration.gov.cbo.income_by_source.adjusted_gross_income"

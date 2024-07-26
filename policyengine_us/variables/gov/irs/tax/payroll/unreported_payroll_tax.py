@@ -7,3 +7,4 @@ class unreported_payroll_tax(Variable):
     label = "Unreported payroll taxes from Form 4137 or 8919"
     unit = USD
     definition_period = YEAR
+    uprating = "calibration.gov.cbo.income_by_source.adjusted_gross_income"

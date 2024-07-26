@@ -7,6 +7,7 @@ class cdcc_relevant_expenses(Variable):
     label = "CDCC-relevant care expenses"
     unit = USD
     definition_period = YEAR
+    uprating = "calibration.gov.cbo.income_by_source.adjusted_gross_income"
     reference = (
         "https://www.law.cornell.edu/uscode/text/26/21#c",
         "https://www.law.cornell.edu/uscode/text/26/21#d_1",

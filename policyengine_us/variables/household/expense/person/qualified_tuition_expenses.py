@@ -7,3 +7,4 @@ class qualified_tuition_expenses(Variable):
     label = "Qualified tuition expenses"
     unit = USD
     definition_period = YEAR
+    uprating = "calibration.gov.cbo.income_by_source.adjusted_gross_income"

@@ -7,3 +7,4 @@ class charitable_non_cash_donations(Variable):
     label = "Charitable donations (non-cash)"
     unit = USD
     definition_period = YEAR
+    uprating = "calibration.gov.cbo.income_by_source.adjusted_gross_income"

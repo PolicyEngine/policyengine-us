@@ -7,3 +7,4 @@ class student_loan_interest(Variable):
     label = "Student loan interest expense"
     unit = USD
     definition_period = YEAR
+    uprating = "calibration.gov.cbo.income_by_source.adjusted_gross_income"

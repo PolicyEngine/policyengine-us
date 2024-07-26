@@ -10,3 +10,4 @@ class traditional_ira_contributions(Variable):
         "Contributions to traditional Individual Retirement Accounts."
     )
     definition_period = YEAR
+    uprating = "calibration.gov.cbo.income_by_source.adjusted_gross_income"

@@ -2,6 +2,7 @@ from policyengine_us.data.storage import STORAGE_FOLDER
 from policyengine_core.data import Dataset
 from policyengine_us.data.datasets.cps.enhanced_cps.calibrated_cps import (
     CalibratedPUFExtendedCPS_2022,
+    CalibratedPUFExtendedCPS_2021,
 )
 
 
@@ -110,6 +111,15 @@ class EnhancedCPS(Dataset):
             ].values
 
         self.save_dataset(new_data)
+
+
+class EnhancedCPS_2021(EnhancedCPS):
+    name = "enhanced_cps_2021"
+    label = "Enhanced CPS (2021-30)"
+    input_dataset = CalibratedPUFExtendedCPS_2021
+    time_period = 2021
+    num_years = 10
+    file_path = STORAGE_FOLDER / "enhanced_cps_2021.h5"
 
 
 class EnhancedCPS_2022(EnhancedCPS):

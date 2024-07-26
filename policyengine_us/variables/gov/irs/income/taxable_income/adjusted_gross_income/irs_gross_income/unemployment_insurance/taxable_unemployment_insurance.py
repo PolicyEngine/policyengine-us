@@ -7,6 +7,7 @@ class taxable_unemployment_compensation(Variable):
     label = "Taxable unemployment compensation"
     unit = USD
     definition_period = YEAR
+    uprating = "calibration.gov.cbo.income_by_source.adjusted_gross_income"
 
     def formula(person, period, parameters):
         # The taxable amount of unemployment compensation is decided at the tax unit level, but
