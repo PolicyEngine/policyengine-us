@@ -11,11 +11,15 @@ class ny_clean_heat_others_incentives(Variable):
 
     def formula(household, period, parameters):
         uncapped_incentive = 0
-        p = parameters(period).gov.states.ny.nysdps.clean_heat.clean_heat_others
+        p = parameters(
+            period
+        ).gov.states.ny.nysdps.clean_heat.clean_heat_others
 
         utility_provider = household("ny_clean_heat_utility_provider", period)
         category = household("ny_clean_heat_heat_pump_category", period)
-        qualified_project_cost = household("ny_clean_heat_project_cost", period)
+        qualified_project_cost = household(
+            "ny_clean_heat_project_cost", period
+        )
         annual_energy_savings = household(
             "ny_clean_heat_annual_energy_savings", period
         )
@@ -31,14 +35,12 @@ class ny_clean_heat_others_incentives(Variable):
         incentives_structure_energy_savings = [c.C4, c.C4A1, c.C4A2, c.C6]
         incentives_structure_equipment = [c.C5A, c.C5B, c.C7, c.C8]
         incentives_structure_heating_capacity = [c.C2, c.C2A, c.C2B, c.C2E]
-        
+
         # Gas Soure Heat Pump category utilizes a special cap
         gshp_g3_incentive = min_(
-                    (
-                        incentive_base * (heating_capacity / 10000) - contractor_reward
-                    ),
-                    p.gshp_c3_cap,
-                )
+            (incentive_base * (heating_capacity / 10000) - contractor_reward),
+            p.gshp_c3_cap,
+        )
         # Compute uncapped incentives based on category types
         uncapped_incentive = select(
             [
@@ -51,15 +53,17 @@ class ny_clean_heat_others_incentives(Variable):
                 incentive_base * annual_energy_savings,
                 incentive_base * equipment_unit,
                 incentive_base * (heating_capacity / 10000),
-                gshp_g3_incentive
-            ], default=0,
+                gshp_g3_incentive,
+            ],
+            default=0,
         )
 
         qualified_incentive = select(
-            [category != category.possible_values.C3,
-             category == category.possible_values.C3],
-            [uncapped_incentive - contractor_reward,
-             gshp_g3_incentive]
+            [
+                category != category.possible_values.C3,
+                category == category.possible_values.C3,
+            ],
+            [uncapped_incentive - contractor_reward, gshp_g3_incentive],
         )
 
         return min_(qualified_incentive, p.percentage * qualified_project_cost)
