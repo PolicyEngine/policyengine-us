@@ -33,6 +33,10 @@ class hi_deductions(Variable):
         dependent_eligible = is_dependent_on_another_return & (
             total_itemized_deduction > dependent_floor
         )
-        itemized_deductions_eligible = filing_status_eligible | dependent_eligible
-        itemized_deduction = where(itemized_deductions_eligible,total_itemized_deduction, 0) 
+        itemized_deductions_eligible = (
+            filing_status_eligible | dependent_eligible
+        )
+        itemized_deduction = where(
+            itemized_deductions_eligible, total_itemized_deduction, 0
+        )
         return max_(itemized_deduction, standard_deduction)
