@@ -179,7 +179,6 @@ def create_ny_working_families_tax_credit() -> Reform:
         def formula(tax_unit, period, parameters):
             return tax_unit("eitc_younger_children_count", period) > 0
 
-
     class younger_eitc_eligible(Variable):
         value_type = bool
         entity = TaxUnit
