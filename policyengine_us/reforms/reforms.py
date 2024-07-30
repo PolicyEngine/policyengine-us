@@ -26,7 +26,7 @@ from .states.dc.dc_ctc import (
 from .harris.lift.middle_class_tax_credit import (
     create_middle_class_tax_credit_reform,
 )
-from .congress.tlaib.end_child_poverty_act import (
+from .congress.tlaib import (
     create_end_child_poverty_act_reform,
 )
 from policyengine_core.reforms import Reform
