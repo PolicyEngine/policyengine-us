@@ -1,0 +1,60 @@
+- name: California household with one parent with $40,000 income, two children, and one grandparent.
+  period: 2023
+  reforms: policyengine_us.reforms.congress.tlaib.end_child_poverty_act.end_child_poverty_act
+  input:
+    # ECPA parameters.
+    gov.contrib.congress.tlaib.end_child_poverty_act.in_effect: true
+    # Household.
+    people:
+      head:
+        age: 36
+        is_tax_unit_head: True
+        is_tax_unit_dependent: False
+        employment_income: 21_000
+      child_1:
+        age: 10
+        is_tax_unit_dependent: False
+      child_2:
+        age: 5
+        is_tax_unit_dependent: False
+      dependent_adult:
+        age: 65
+        is_tax_unit_dependent: True
+        is_tax_unit_spouse: False
+    tax_units:
+      tax_unit:
+        members: [head, child_1, child_2, dependent_adult]
+  output:
+    ecpa_adult_dependent_credit: 600
+    ecpa_filer_credit: 550  # 600 - 0.05 * (21_000 - 20_000).
+    non_refundable_ctc: 0
+
+- name: Reform does not apply
+  period: 2023
+  input:
+    # ECPA parameters.
+    gov.contrib.congress.tlaib.end_child_poverty_act.in_effect: false
+    # Household.
+    people:
+      head:
+        age: 36
+        is_tax_unit_head: True
+        is_tax_unit_dependent: False
+        employment_income: 21_000
+      child_1:
+        age: 10
+        is_tax_unit_dependent: False
+      child_2:
+        age: 5
+        is_tax_unit_dependent: False
+      dependent_adult:
+        age: 65
+        is_tax_unit_dependent: True
+        is_tax_unit_spouse: False
+    tax_units:
+      tax_unit:
+        members: [head, child_1, child_2, dependent_adult]
+  output:
+    eitc: 0
+    refundable_ctc: 0
+    non_refundable_ctc: 500
