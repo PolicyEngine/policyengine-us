@@ -66,7 +66,7 @@ def create_end_child_poverty_act() -> Reform:
 
         def formula(tax_unit, period, parameters):
             person = tax_unit.members
-            depedent = person("is_tax_unit_dependent", period)
+            dependent = person("is_tax_unit_dependent", period)
             age = person("age", period)
             p_ecpa = parameters(
                 period
