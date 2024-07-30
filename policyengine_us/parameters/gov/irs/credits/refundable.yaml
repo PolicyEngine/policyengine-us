@@ -24,10 +24,9 @@ values:
     - recovery_rebate_credit
     - refundable_payroll_tax_credit
     # Currently, the premium tax credit is not included in the refundable tax credits.
-    - ecpa_filer_credit
-    - ecpa_adult_dependent_credit
 metadata:
-  unit: program
+  unit: list
+  period: year
   label: Refundable tax credits
   reference:
     - title: 26 U.S. Code Subpart C - Refundable Credits
