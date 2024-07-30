@@ -7790,3 +7790,9 @@
     fixed:
     - Exclude childless filers from the NY WFTC EITC reduction.
   date: 2024-07-30 00:23:32
+- bump: patch
+  changes:
+    fixed:
+    - Add the flat tax variable in the relevant net income tree computations.
+    - Index general household and state level parameters.
+  date: 2024-07-30 05:34:09
