@@ -57,6 +57,93 @@ def create_end_child_poverty_act() -> Reform:
                 max_filer_credit - reduction, 0
             )
 
+    class ecpa_child_benefit(Variable):
+        value_type = float
+        entity = TaxUnit
+        definition_period = YEAR
+        label = "End Child Poverty Act Child Benefit"
+        unit = USD
+
+        def formula(tax_unit, period, parameters):
+            person = tax_unit.members
+            dependent = person("is_tax_unit_dependent", period)
+            age = person("age", period)
+            p_ecpa = parameters(
+                period
+            ).gov.contrib.congress.tlaib.end_child_poverty_act.child_benefit
+            age_eligible = age < p_ecpa.age_limit
+            eligible_dependent = dependent & age_eligible
+            total_dependents = tax_unit.sum(eligible_dependent)
+            state_group = tax_unit.household("state_group_str", period)
+            p_fpg = parameters(period).gov.hhs.fpg
+            amount = p_fpg.additional_person[state_group]
+
+            return total_dependents * amount
+
+    class household_benefits(Variable):
+        value_type = float
+        entity = Household
+        label = "benefits"
+        unit = USD
+        definition_period = YEAR
+        adds = [
+            "social_security",
+            "ssi",
+            "snap",
+            "wic",
+            "free_school_meals",
+            "reduced_price_school_meals",
+            "spm_unit_broadband_subsidy",
+            "tanf",
+            "high_efficiency_electric_home_rebate",
+            "residential_efficiency_electrification_rebate",
+            "unemployment_compensation",
+            # Contributed.
+            "basic_income",
+            "spm_unit_capped_housing_subsidy",
+            "household_state_benefits",
+            "ecpa_child_benefit",
+        ]
+
+    class spm_unit_benefits(Variable):
+        value_type = float
+        entity = SPMUnit
+        label = "Benefits"
+        definition_period = YEAR
+        unit = USD
+
+        def formula(spm_unit, period, parameters):
+            BENEFITS = [
+                "social_security",
+                "ssi",
+                "state_supplement",
+                # California programs.
+                "ca_cvrp",  # California Clean Vehicle Rebate Project.
+                # Colorado programs.
+                "co_ccap_subsidy",
+                "co_state_supplement",
+                "co_oap",
+                "snap",
+                "wic",
+                "free_school_meals",
+                "reduced_price_school_meals",
+                "spm_unit_broadband_subsidy",
+                "spm_unit_energy_subsidy",
+                "tanf",
+                "high_efficiency_electric_home_rebate",
+                "residential_efficiency_electrification_rebate",
+                "unemployment_compensation",
+                # Contributed.
+                "basic_income",
+                "ny_drive_clean_rebate",
+                "ecpa_child_benefit",
+            ]
+            if parameters(period).gov.contrib.ubi_center.flat_tax.deduct_ptc:
+                BENEFITS.append("premium_tax_credit")
+            if not parameters(period).gov.hud.abolition:
+                BENEFITS.append("spm_unit_capped_housing_subsidy")
+            return add(spm_unit, period, BENEFITS)
+
     class income_tax_refundable_credits(Variable):
         value_type = float
         entity = TaxUnit
@@ -78,6 +165,9 @@ def create_end_child_poverty_act() -> Reform:
             self.update_variable(ecpa_adult_dependent_credit)
             self.update_variable(ecpa_filer_credit)
             self.update_variable(income_tax_refundable_credits)
+            self.update_variable(ecpa_child_benefit)
+            self.update_variable(household_benefits)
+            self.update_variable(spm_unit_benefits)
             self.neutralize_variable("eitc")
             self.neutralize_variable("ctc")
 
