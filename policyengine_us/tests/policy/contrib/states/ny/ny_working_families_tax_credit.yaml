@@ -107,7 +107,8 @@
   output:
     # ny_wftc_eligible_children: 0
     # ny_working_families_tax_credit: 0
-    ny_eitc: 102 # $340 eitc amount
+    eitc: 340
+    ny_eitc: 102 
     ny_ctc: 330
     ny_exemptions: 1_000
 
@@ -139,8 +140,11 @@
     ny_wftc_eligible_children: 1
     ny_working_families_tax_credit: 800
     younger_eitc_eligible: true
-    younger_eitc: 340 #federal eitc amount
-    ny_eitc: 71.4
+    eitc_younger_maximum: 3_581
+    younger_eitc: 340 
+    eitc_older_maximum: 632
+    older_eitc: 76.5
+    ny_eitc: 94.35
     ny_ctc: 0
     ny_exemptions: 0
 
@@ -182,6 +186,7 @@
       person1:
         age: 30
         is_tax_unit_dependent: false
+        employment_income: 10_000
       person2:
         age: 20
         is_tax_unit_dependent: true
@@ -190,7 +195,6 @@
       tax_unit:
         members: [person1, person2]
         ny_agi: 10_000
-        filer_adjusted_earnings: 1_000
         filing_status: HEAD_OF_HOUSEHOLD
         ny_household_credit: 0
     households:
@@ -201,12 +205,39 @@
     ny_wftc_eligible_children: 1
     ny_working_families_tax_credit: 0
     eitc_younger_children_count: 0
-    # Amount for self attributed to younger child EITC
-    younger_eitc: 76.5
-    older_eitc: 340
-    ny_eitc: 102
+    # Amount for self attributed to older child EITC
+    younger_eitc: 0
+    eitc: 3_400
+    older_eitc: 3_400
+    ny_eitc: 1_020
     ny_ctc: 0
     ny_exemptions: 1_000
+
+
+- name: Baseline test - single parent with one child in college
+  period: 2028
+  absolute_error_margin: 1
+  input:
+    people: 
+      person1:
+        age: 30
+        is_tax_unit_dependent: false
+        employment_income: 10_000
+      person2:
+        age: 20
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ny_household_credit: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    eitc: 3_400
+    ny_eitc: 1_020
 
 - name: Baseline test - single parent of two - ages 5 and 10 - 30k income
   period: 2024
@@ -261,10 +292,10 @@
         state_code: NY
   output:
     younger_eitc_eligible: 1
-    younger_eitc: 5_426.83 # Federal EITC amount 
+    younger_eitc: 4_794.83
     older_eitc: 0
     ny_wftc_eligible_children: 2
-    ny_eitc: 1_109.63 # 21% of federal credit
+    ny_eitc: 976.91
     ny_working_families_tax_credit: 1_600
 
 
@@ -295,11 +326,11 @@
         state_code: NY
   output:
     younger_eitc_eligible: 1
-    younger_eitc: 4_155.47
+    younger_eitc: 2_689.47
     eitc_older_demographic_eligible: 1
-    older_eitc: 2_689.47
+    older_eitc: 4_155.47
     ny_wftc_eligible_children: 1
-    ny_eitc: 1_679.49 
+    ny_eitc: 1_811.43
     ny_working_families_tax_credit: 800
 
 - name: Base test - single parent of two - ages 5 and 20 (student) - 30k income
