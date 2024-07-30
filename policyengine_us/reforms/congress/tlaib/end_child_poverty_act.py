@@ -72,7 +72,7 @@ def create_end_child_poverty_act() -> Reform:
                 period
             ).gov.contrib.congress.tlaib.end_child_poverty_act.child_benefit
             age_eligible = age < p_ecpa.age_limit
-            eligible_dependent = depedent & age_eligible
+            eligible_dependent = dependent & age_eligible
             total_dependents = tax_unit.sum(eligible_dependent)
             state_group = tax_unit.household("state_group_str", period)
             p_fpg = parameters(period).gov.hhs.fpg
