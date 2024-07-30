@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.34.7] - 2024-07-30 20:20:10
+
+### Fixed
+
+- Add the Child benefit component to the ECPA reform.
+
 ## [1.34.6] - 2024-07-30 20:06:02
 
 ### Fixed
@@ -9238,6 +9244,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.34.7]: https://github.com/PolicyEngine/policyengine-us/compare/1.34.6...1.34.7
 [1.34.6]: https://github.com/PolicyEngine/policyengine-us/compare/1.34.5...1.34.6
 [1.34.5]: https://github.com/PolicyEngine/policyengine-us/compare/1.34.4...1.34.5
 [1.34.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.34.3...1.34.4
