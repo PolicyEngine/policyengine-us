@@ -73,14 +73,16 @@ def create_end_child_poverty_act() -> Reform:
             )
             return filer_credit + adult_dependent_credit + previous_credits
 
-        class reform(Reform):
-            def apply(self):
-                self.update_variable(ecpa_adult_dependent_credit)
-                self.update_variable(ecpa_filer_credit)
-                self.update_variable(income_tax_refundable_credits)
-                self.neutralize_variable("eitc")
-                self.neutralize_variable("non_refundable_ctc")
-                self.neutralize_variable("refundable_ctc")
+    class reform(Reform):
+        def apply(self):
+            self.update_variable(ecpa_adult_dependent_credit)
+            self.update_variable(ecpa_filer_credit)
+            self.update_variable(income_tax_refundable_credits)
+            self.neutralize_variable("eitc")
+            self.neutralize_variable("non_refundable_ctc")
+            self.neutralize_variable("refundable_ctc")
+
+    return reform
 
 
 def create_end_child_poverty_act_reform(
