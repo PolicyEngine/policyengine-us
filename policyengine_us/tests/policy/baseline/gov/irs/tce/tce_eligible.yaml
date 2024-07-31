@@ -1,0 +1,13 @@
+- name: IRS TCE Program Eligible.
+  period: 2023
+  input:
+    age: 65
+  output:
+    tce_eligible: true
+
+- name: IRS TCE Program Not Eligible.
+  period: 2023
+  input:
+    age: 55
+  output:
+    tce_eligible: false
