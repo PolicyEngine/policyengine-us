@@ -1,0 +1,57 @@
+- name: Case 1:Separate filing status, claimed standard deductions, total SALT < cap
+  period: 2021
+  input:
+    filing_status: SEPARATE
+    state_code: UT
+    tax_unit_itemizes: false
+    standard_deduction: 2_000
+    charitable_deduction: 1_000
+    medical_expense_deduction: 500
+    casualty_loss_deduction: 500
+    real_estate_taxes: 1_000  
+  output:
+    ut_federal_deductions_for_taxpayer_credit: 2_000
+
+  
+- name: Case 2:Separate filing status, claimed itemized deductions, total SALT > cap
+  period: 2021
+  input:
+    filing_status: SEPARATE
+    state_code: UT
+    tax_unit_itemizes: true
+    standard_deduction: 2_000
+    charitable_deduction: 1_000
+    medical_expense_deduction: 500
+    casualty_loss_deduction: 500
+    real_estate_taxes: 6_000
+  output:
+    ut_federal_deductions_for_taxpayer_credit: 7_000
+  
+- name: Case 3:Joint filling status, total SALT > cap
+  period: 2021
+  input:
+    filing_status: JOINT
+    state_code: UT
+    tax_unit_itemizes: true
+    standard_deduction: 6_000
+    charitable_deduction: 1_000
+    medical_expense_deduction: 500
+    casualty_loss_deduction: 500
+    real_estate_taxes: 12_000
+  output:
+    ut_federal_deductions_for_taxpayer_credit: 12_000
+    
+- name: Case 4:Joint filling status, total SALT < cap
+  period: 2021
+  input:
+    filing_status: JOINT
+    state_code: UT
+    tax_unit_itemizes: false
+    standard_deduction: 5_000
+    charitable_deduction: 1_000
+    medical_expense_deduction: 500
+    casualty_loss_deduction: 500
+    real_estate_taxes: 5_000 
+  output:
+    ut_federal_deductions_for_taxpayer_credit: 5_000
+

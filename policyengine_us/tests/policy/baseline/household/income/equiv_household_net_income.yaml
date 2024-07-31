@@ -1,0 +1,7 @@
+- name: Equivalised household net income
+  period: 2023
+  input:
+    household_net_income: 100
+    household_size: 3
+  output:
+    equiv_household_net_income: 100 / sqrt(3)

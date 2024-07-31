@@ -8,3 +8,4 @@ class child_support_expense(Variable):
     unit = USD
     documentation = "Legally mandated child support expenses."
     definition_period = YEAR
+    uprating = "gov.bls.cpi.cpi_u"

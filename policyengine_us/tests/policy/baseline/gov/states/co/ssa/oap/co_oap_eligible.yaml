@@ -1,0 +1,49 @@
+- name: Ineligible age
+  period: 2023
+  input:
+    age: 59
+    ssi_countable_resources: 1_000
+    ssi_claim_is_joint: false
+    state_code: CO
+  output:
+    co_oap_eligible: false
+
+- name: Ineligible resources single
+  period: 2023
+  input:
+    age: 70
+    ssi_countable_resources: 2_001
+    ssi_claim_is_joint: false
+    state_code: CO
+  output:
+    co_oap_eligible: false
+
+- name: Ineligible resources couple
+  period: 2023
+  input:
+    age: 70
+    ssi_countable_resources: 3_001
+    ssi_claim_is_joint: true
+    state_code: CO
+  output:
+    co_oap_eligible: false
+
+- name: Eligible single
+  period: 2023
+  input:
+    age: 60
+    ssi_countable_resources: 2_000
+    ssi_claim_is_joint: false
+    state_code: CO
+  output:
+    co_oap_eligible: true
+
+- name: Eligible couple
+  period: 2023
+  input:
+    age: 60
+    ssi_countable_resources: 3_000
+    ssi_claim_is_joint: true
+    state_code: CO
+  output:
+    co_oap_eligible: true

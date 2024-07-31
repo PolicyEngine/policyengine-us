@@ -1,0 +1,151 @@
+- name: Single filer with 1 dependent
+  period: 2022
+  input:
+    people:
+      person1:
+        ar_agi_joint: 13_445
+      person2:
+        ar_agi_joint: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SINGLE
+        tax_unit_dependents: 2
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_low_income_tax_joint: [0, 0]
+
+
+- name: Head of household with no dependents
+  period: 2022
+  input:
+    people:
+      person1:
+        ar_agi_joint: 23_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: HEAD_OF_HOUSEHOLD
+        tax_unit_dependents: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_low_income_tax_joint: 419
+
+- name: Head of household with two dependents
+  period: 2022
+  input:
+    people:
+      person1:
+        ar_agi_joint: 23_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: HEAD_OF_HOUSEHOLD
+        tax_unit_dependents: 2
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_low_income_tax_joint: 110
+
+
+- name: Joint filers with four dependents
+  period: 2022
+  input:
+    people:
+      person1:
+        ar_agi_joint: 31_200
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: JOINT
+        tax_unit_dependents: 4
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_low_income_tax_joint: 543
+
+- name: Single filer with 1 dependent
+  period: 2023
+  input:
+    people:
+      person1:
+        ar_agi_joint: 13_445
+      person2:
+        ar_agi_joint: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SINGLE
+        tax_unit_dependents: 2
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_low_income_tax_joint: [0, 0]
+
+
+- name: Head of household with no dependents
+  period: 2023
+  input:
+    people:
+      person1:
+        ar_agi_joint: 23_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: HEAD_OF_HOUSEHOLD
+        tax_unit_dependents: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_low_income_tax_joint: 374
+
+- name: Head of household with two dependents
+  period: 2023
+  input:
+    people:
+      person1:
+        ar_agi_joint: 23_500
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: HEAD_OF_HOUSEHOLD
+        tax_unit_dependents: 2
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_low_income_tax_joint: 89
+
+
+- name: Joint filers with four dependents
+  period: 2023
+  input:
+    people:
+      person1:
+        ar_agi_joint: 31_200
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: JOINT
+        tax_unit_dependents: 4
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_low_income_tax_joint: 436

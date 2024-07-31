@@ -1,0 +1,21 @@
+- name: In 2023, the total expenses is 2_400, and parent fee is 800, the subsidy would be 1_400.
+  period: 2023
+  input:
+    pre_subsidy_childcare_expenses: 1_000
+    after_school_expenses: 1_200
+    co_ccap_parent_fee: 800
+    co_ccap_eligible: true
+  output:
+    co_ccap_subsidy: 1_400
+
+- name: In 2022, the total annual expenses is 28_800, and parent fee for December is 800, the subsidy for December would be 1_400.
+  period: 2022
+  input:
+    pre_subsidy_childcare_expenses: 12 * 1_000
+    after_school_expenses: 12 * 1_200 
+    co_ccap_parent_fee:
+      2022-12: 800
+    co_ccap_eligible: true
+  output:
+    co_ccap_subsidy:
+      2022-12: 1_400

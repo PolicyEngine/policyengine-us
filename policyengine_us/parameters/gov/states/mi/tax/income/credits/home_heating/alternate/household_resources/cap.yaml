@@ -1,0 +1,42 @@
+description: Michigan caps the total household resources at this amount under the alternate home heating credit, based on the number of exemptions.
+metadata:
+  type: single_amount
+  threshold_unit: people
+  amount_unit: currency-USD
+  label: Michigan alternate home heating credit household resource cap
+  reference:
+    # Legal Code diverges from the tax form - here we model the tax form structure
+    - title: Michigan Section 206.527a, Income Tax Act of 1967(Exerpt)Act 281 of 1967, (1)(c)(ii)
+      href: http://legislature.mi.gov/doc.aspx?mcl-206-527a
+    - title: Michigan 2021 Book MI-1040CR7 Home Heating Instructions, Table B
+      href: https://www.michigan.gov/-/media/Project/Websites/taxes/2022RM/IIT/BOOK_MI-1040CR-7.pdf#page=11
+    - title: Michigan 2022 MI-1040CR7 Home Heating Credit Claim Instructions, Table B
+      href: https://www.efile.com/pdf/5988.pdf#page=13
+    - title: Michigan 2023 Book MI-1040CR7 Home Heating Instructions, Table B
+      href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2023/2023-IIT-Forms/BOOK_MI-1040CR-7.pdf#page=11
+
+brackets:
+  - threshold:
+      2021-01-01: 0
+    amount:
+      2021-01-01: 15_237
+      2022-01-01: 16_387
+      2023-01-01: 17_534
+  - threshold:
+      2021-01-01: 2
+    amount:
+      2021-01-01: 20_504
+      2022-01-01: 22_051
+      2023-01-01: 23_595
+  - threshold:
+      2021-01-01: 3
+    amount:
+      2021-01-01: 25_775
+      2022-01-01: 27_720
+      2023-01-01: 29_661
+  - threshold:
+      2021-01-01: 4
+    amount:
+      2021-01-01: 27_700
+      2022-01-01: 30_364
+      2023-01-01: 31_818

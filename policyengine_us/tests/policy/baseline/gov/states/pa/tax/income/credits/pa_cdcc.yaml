@@ -1,0 +1,23 @@
+- name: No federal cdcc
+  period: 2022
+  input:
+    state_code: PA
+    cdcc: 0
+  output:
+    pa_cdcc: 0
+
+- name: 30% match in 2022
+  period: 2022
+  input:
+    state_code: PA
+    cdcc: 1_000
+  output:
+    pa_cdcc: 300
+
+- name: 100% match in 2023
+  period: 2023
+  input:
+    state_code: PA
+    cdcc: 1_000
+  output:
+    pa_cdcc: 1_000

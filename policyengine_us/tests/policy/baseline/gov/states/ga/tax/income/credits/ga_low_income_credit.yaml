@@ -1,0 +1,87 @@
+- name: Georgia low income credits higher income bracket
+  period: 2022
+  input:
+    state_code: GA
+    adjusted_gross_income: 14_000
+    age_head: 67
+    age_spouse: 70
+    exemptions_count: 2
+  output:
+    ga_low_income_credit: 32
+
+- name: Georgia low income credits one aged
+  period: 2022
+  input:
+    state_code: GA
+    adjusted_gross_income: 4_000
+    age_head: 67
+    age_spouse: 56
+    exemptions_count: 2
+  output:
+    ga_low_income_credit: 78
+
+- name: Georgia low income credits both aged - higher income bracket
+  period: 2022
+  input:
+    state_code: GA
+    adjusted_gross_income: 15_500
+    age_head: 80
+    age_spouse: 75
+    exemptions_count: 3
+  output:
+    ga_low_income_credit: 25
+
+- name: Georgia low income credits - one aged and no exemptions
+  period: 2022
+  input:
+    state_code: GA
+    adjusted_gross_income: 4_000
+    age_head: 67
+    age_spouse: 56
+    exemptions_count: 0
+  output:
+    ga_low_income_credit: 26
+
+- name: Georgia low income credits - lower income bracket
+  period: 2022
+  input:
+    state_code: GA
+    adjusted_gross_income: 10_500
+    age_head: 67
+    age_spouse: 56
+    exemptions_count: 0
+  output:
+    ga_low_income_credit: 8
+
+- name: Georgia low income credits - no exemptions
+  period: 2022
+  input:
+    state_code: GA
+    adjusted_gross_income: 10_500
+    age_head: 56
+    age_spouse: 56
+    exemptions_count: 0
+  output:
+    ga_low_income_credit: 0
+
+- name: Georgia low income credits - one aged and one exemption
+  period: 2022
+  input:
+    state_code: GA
+    adjusted_gross_income: 10_500
+    age_head: 65
+    age_spouse: 64
+    exemptions_count: 1
+  output:
+    ga_low_income_credit: 16
+
+- name: Georgia low income credits - two exemptions
+  period: 2022
+  input:
+    state_code: GA
+    adjusted_gross_income: 10_000
+    age_head: 64
+    age_spouse: 64
+    exemptions_count: 2
+  output:
+    ga_low_income_credit: 16

@@ -1,0 +1,60 @@
+- name: Both are eligible
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 65
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 65
+        is_tax_unit_head_or_spouse: true
+    households:
+      household:
+        state_code: MT
+  output:
+    mt_interest_exemption_eligible_person: [true, true]
+
+- name: Both are eligible, even if the spouse is not
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 62
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 65
+        is_tax_unit_head_or_spouse: true
+    households:
+      household:
+        state_code: MT
+  output:
+    mt_interest_exemption_eligible_person: [true, true]
+
+- name: single not eligible
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 62
+        is_tax_unit_head_or_spouse: true
+    households:
+      household:
+        state_code: MT
+  output:
+    mt_interest_exemption_eligible_person: false
+
+- name: Both are eligible, even spouse is under the age
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 62
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 65
+        is_tax_unit_head_or_spouse: true
+    households:
+      household:
+        state_code: MT
+  output:
+    mt_interest_exemption_eligible_person: [true, true]

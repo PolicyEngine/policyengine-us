@@ -1,0 +1,15 @@
+- name: Income below limit of 85% of SMI.
+  period: 2023-01
+  input:
+    co_ccap_countable_income: 0.8
+    co_ccap_smi: 1
+  output:
+    co_ccap_re_determination_income_eligible: true
+
+- name: Income exceeds limit of 85% of SMI.
+  period: 2023-01
+  input:
+    co_ccap_countable_income: 0.9
+    co_ccap_smi: 1
+  output:
+    co_ccap_re_determination_income_eligible: false

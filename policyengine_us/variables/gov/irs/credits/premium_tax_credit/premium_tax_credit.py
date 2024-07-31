@@ -13,5 +13,5 @@ class premium_tax_credit(Variable):
         applicable_percentage = tax_unit("ptc_phase_out_rate", period)
         eligible = tax_unit("is_ptc_eligible", period)
         plan_cost = tax_unit("second_lowest_silver_plan_cost", period)
-        income = tax_unit("medicaid_income", period)
+        income = tax_unit("medicaid_magi", period)
         return eligible * max_(0, plan_cost - income * applicable_percentage)

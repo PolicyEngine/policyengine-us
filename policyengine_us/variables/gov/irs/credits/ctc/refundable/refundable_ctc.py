@@ -21,11 +21,13 @@ class refundable_ctc(Variable):
 
         maximum_amount = tax_unit("ctc_refundable_maximum", period)
 
+        total_ctc = tax_unit("ctc", period)
+
         if ctc.refundable.fully_refundable:
             reduction = tax_unit("ctc_phase_out", period)
-            return max_(0, maximum_amount - reduction)
+            reduced_max_amount = max_(0, maximum_amount - reduction)
+            return min_(reduced_max_amount, total_ctc)
 
-        total_ctc = tax_unit("ctc", period)
         maximum_refundable_ctc = min_(maximum_amount, total_ctc)
 
         # The other part of the "lesser of" statement is: "the amount by which [the non-refundable CTC]
@@ -41,23 +43,7 @@ class refundable_ctc(Variable):
         relevant_earnings = (
             earnings_over_threshold * ctc.refundable.phase_in.rate
         )
-
-        # Compute "Social Security taxes" as defined in the US Code for the ACTC.
-        # This includes OASDI and Medicare payroll taxes, as well as half
-        # of self-employment taxes.
-        SS_ADD_VARIABLES = [
-            # Person:
-            "employee_social_security_tax",
-            "employee_medicare_tax",
-            "unreported_payroll_tax",
-            # Tax unit:
-            "self_employment_tax_ald",
-            "additional_medicare_tax",
-        ]
-        SS_SUBTRACT_VARIABLES = ["excess_payroll_tax_withheld"]
-        social_security_tax = add(tax_unit, period, SS_ADD_VARIABLES) - add(
-            tax_unit, period, SS_SUBTRACT_VARIABLES
-        )
+        social_security_tax = tax_unit("ctc_social_security_tax", period)
         eitc = tax_unit("eitc", period)
         social_security_excess = max_(0, social_security_tax - eitc)
         qualifying_children = tax_unit("ctc_qualifying_children", period)
@@ -75,8 +61,4 @@ class refundable_ctc(Variable):
         amount_ctc_would_increase = (
             ctc_capped_by_increased_tax - ctc_capped_by_tax
         )
-
         return min_(maximum_refundable_ctc, amount_ctc_would_increase)
-
-
-c11070 = variable_alias("c11070", refundable_ctc)

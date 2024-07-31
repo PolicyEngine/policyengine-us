@@ -1,0 +1,42 @@
+- name: Reported state income tax sim false
+  period: 2021
+  input:
+    simulation.reported_state_income_tax: false
+    co_income_tax_before_refundable_credits: 3_000
+    ne_income_tax_before_refundable_credits: 2_000
+    pa_income_tax: 100
+    hi_refundable_credits: 300
+    ok_refundable_credits: 500
+    ut_refundable_credits: 400
+  output:
+    household_state_income_tax: 3_900
+
+- name: Reported state income tax sim, one head
+  period: 2021
+  input:
+    simulation.reported_state_income_tax: true
+    people:
+      person1:
+        is_tax_unit_head: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_state_tax_reported: 1_000
+  output:
+    household_state_income_tax: 1_000
+
+- name: Reported state income tax sim, one head
+  period: 2021
+  input:
+    simulation.reported_state_income_tax: true
+    people:
+      person1:
+        is_tax_unit_head: true
+      person2:
+        is_tax_unit_head: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_state_tax_reported: 1_000
+  output:
+    household_state_income_tax: 500

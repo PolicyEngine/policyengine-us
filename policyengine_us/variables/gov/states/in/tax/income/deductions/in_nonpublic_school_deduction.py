@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class in_nonpublic_school_deduction(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Nonpublic school expenditures deduction for IN"
+    label = "Indiana nonpublic school expenditures deduction"
     definition_period = YEAR
     unit = USD
     reference = "http://iga.in.gov/legislative/laws/2021/ic/titles/006#6-3-2-22"  # (d)(1)

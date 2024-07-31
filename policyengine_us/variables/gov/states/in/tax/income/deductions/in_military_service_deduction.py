@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class in_military_service_deduction(Variable):
     value_type = float
     entity = TaxUnit
-    label = "IN military service deduction"
+    label = "Indiana military service deduction"
     definition_period = YEAR
     unit = USD
     reference = "http://iga.in.gov/legislative/laws/2021/ic/titles/006#6-3-2-4"  # (a)(1)

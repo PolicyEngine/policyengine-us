@@ -1,0 +1,15 @@
+- name: Eligible
+  period: 2022
+  input:
+    in_la: true
+    personal_property: 1_999
+  output:
+    la_general_relief_personal_property_eligible: true
+
+- name: Ineligible
+  period: 2022
+  input:
+    in_la: true
+    personal_property: 2_000
+  output:
+    la_general_relief_personal_property_eligible: false

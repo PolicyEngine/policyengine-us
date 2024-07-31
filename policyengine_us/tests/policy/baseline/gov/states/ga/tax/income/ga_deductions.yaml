@@ -1,0 +1,31 @@
+- name: test1
+  period: 2022
+  input:
+    tax_unit_itemizes: true
+    ga_standard_deduction: 8_000
+    medical_expense_deduction: 9_000
+    state_code: GA
+  output:
+    ga_deductions: 9_000
+
+- name: test2
+  period: 2022
+  input:
+    tax_unit_itemizes: false
+    ga_standard_deduction: 10_000
+    salt_deduction: 9_000
+    state_code: GA
+  output:
+    ga_deductions: 10_000
+
+- name: Tax unit itemizes with high deduction amounts
+  period: 2022
+  input:
+    tax_unit_itemizes: true
+    ga_standard_deduction: 10_000
+    charitable_deduction: 2_000
+    interest_deduction: 3_000
+    casualty_loss_deduction: 8_000
+    state_code: GA
+  output:
+    ga_deductions: 13_000

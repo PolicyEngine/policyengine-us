@@ -1,0 +1,228 @@
+- name: Is dependent on another return
+  period: 2022
+  input:
+    head_is_dependent_elsewhere: true
+    state_code: NM
+    earned_income: 1
+    is_disabled: false
+    is_tax_unit_head: true
+    is_tax_unit_spouse: true
+    tanf: 0
+    nm_modified_gross_income: 30_159
+  output:
+    nm_cdcc_eligible: false
+
+- name: No earned income
+  period: 2022
+  input:
+    head_is_dependent_elsewhere: false
+    state_code: NM
+    earned_income: 0
+    is_disabled: false
+    is_tax_unit_head: true
+    is_tax_unit_spouse: true
+    tanf: 0
+    nm_modified_gross_income: 30_159
+  output:
+    nm_cdcc_eligible: false
+
+- name: No earned income but disabled - eligible 
+  period: 2022
+  input:
+    head_is_dependent_elsewhere: false
+    state_code: NM
+    earned_income: 0
+    is_disabled: true
+    is_tax_unit_head: true
+    is_tax_unit_spouse: true
+    tanf: 0
+    nm_modified_gross_income: 30_159
+  output:
+    nm_cdcc_eligible: true
+
+- name: Over income threshold
+  period: 2022
+  input:
+    head_is_dependent_elsewhere: false
+    state_code: NM
+    earned_income: 0
+    is_disabled: false
+    is_tax_unit_head: true
+    is_tax_unit_spouse: true
+    tanf: 0
+    nm_modified_gross_income: 30_160
+  output:
+    nm_cdcc_eligible: false
+
+- name: Receives tanf
+  period: 2022
+  input:
+    head_is_dependent_elsewhere: false
+    state_code: NM
+    earned_income: 0
+    is_disabled: false
+    is_tax_unit_head: true
+    is_tax_unit_spouse: true
+    tanf: 1
+    nm_modified_gross_income: 30_159
+  output:
+    nm_cdcc_eligible: false
+
+- name: Eligible
+  period: 2022
+  input:
+    head_is_dependent_elsewhere: false
+    state_code: NM
+    earned_income: 1
+    is_disabled: false
+    is_tax_unit_head: true
+    is_tax_unit_spouse: true
+    tanf: 0
+    nm_modified_gross_income: 30_159
+  output:
+    nm_cdcc_eligible: true
+
+- name: Joint filing, spouse no income - ineligible
+  period: 2022
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        is_disabled: false
+        earned_income: 1
+      spouse:
+        is_tax_unit_spouse: true
+        is_disabled: false
+        earned_income: 0
+    spm_units:
+      spm_unit:
+        members: [head, spouse]
+        tanf: 0  
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        head_is_dependent_elsewhere: false
+        filing_status: JOINT
+        nm_modified_gross_income: 30_159
+    households:
+      household:
+        members: [head, spouse]
+        state_code: NM
+  output:  
+    nm_cdcc_eligible: false
+
+- name: Joint filing, head no income - ineligible
+  period: 2022
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        is_disabled: false
+        earned_income: 0
+      spouse:
+        is_tax_unit_spouse: true
+        is_disabled: false
+        earned_income: 1
+    spm_units:
+      spm_unit:
+        members: [head, spouse]
+        tanf: 0  
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        head_is_dependent_elsewhere: false
+        filing_status: JOINT
+        nm_modified_gross_income: 30_159
+    households:
+      household:
+        members: [head, spouse]
+        state_code: NM
+  output:  
+    nm_cdcc_eligible: false
+
+- name: Joint filing, spouse disabled - eligible
+  period: 2022
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        is_disabled: false
+        earned_income: 1
+      spouse:
+        is_tax_unit_spouse: true
+        is_disabled: true
+        earned_income: 0
+    spm_units:
+      spm_unit:
+        members: [head, spouse]
+        tanf: 0  
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        head_is_dependent_elsewhere: false
+        filing_status: JOINT
+        nm_modified_gross_income: 30_159
+    households:
+      household:
+        members: [head, spouse]
+        state_code: NM
+  output:  
+    nm_cdcc_eligible: true
+
+- name: Joint filing, head disabled- eligible
+  period: 2022
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        is_disabled: true
+        earned_income: 1
+      spouse:
+        is_tax_unit_spouse: true
+        is_disabled: false
+        earned_income: 0
+    spm_units:
+      spm_unit:
+        members: [head, spouse]
+        tanf: 0  
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        head_is_dependent_elsewhere: false
+        filing_status: JOINT
+        nm_modified_gross_income: 30_159
+    households:
+      household:
+        members: [head, spouse]
+        state_code: NM
+  output:  
+    nm_cdcc_eligible: true
+
+- name: Joint filing both earn income
+  period: 2022
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        is_disabled: false
+        earned_income: 1
+      spouse:
+        is_tax_unit_spouse: true
+        is_disabled: false
+        earned_income: 1
+    spm_units:
+      spm_unit:
+        members: [head, spouse]
+        tanf: 0  
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        head_is_dependent_elsewhere: false
+        filing_status: JOINT
+        nm_modified_gross_income: 30_159
+    households:
+      household:
+        members: [head, spouse]
+        state_code: NM
+  output:  
+    nm_cdcc_eligible: true

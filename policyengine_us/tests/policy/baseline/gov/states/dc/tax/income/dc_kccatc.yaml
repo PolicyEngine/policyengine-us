@@ -1,0 +1,185 @@
+- name: dc_kccatc unit test 1
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 30
+        employment_income: 80_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 28
+        employment_income: 80_000
+      person3:
+        is_tax_unit_dependent: true
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        tax_unit_childcare_expenses: 2_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DC
+  output:
+    dc_kccatc: 1_020
+
+- name: dc_kccatc unit test 2
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 30
+        employment_income: 180_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 28
+        employment_income: 80_000
+      person3:
+        is_tax_unit_dependent: true
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        tax_unit_childcare_expenses: 2_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DC
+  output:
+    dc_kccatc: 0
+
+- name: dc_kccatc unit test 3
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 30
+        employment_income: 80_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 28
+        employment_income: 80_000
+      person3:
+        is_tax_unit_dependent: true
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        tax_unit_childcare_expenses: 2_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DC
+  output:
+    dc_kccatc: 0
+
+- name: dc_kccatc unit test 4
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 30
+        employment_income: 80_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 28
+        employment_income: 80_000
+      person3:
+        is_tax_unit_dependent: true
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        tax_unit_childcare_expenses: 800
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DC
+  output:
+    dc_kccatc: 800
+
+- name: dc_kccatc unit test 5
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 30
+        employment_income: 80_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 28
+        employment_income: 80_000
+      person3:
+        is_tax_unit_dependent: true
+        age: 3
+      person4:
+        is_tax_unit_dependent: true
+        age: 1        
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        tax_unit_childcare_expenses: 1_600
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: DC
+  output:
+    dc_kccatc: 1_600
+
+- name: dc_kccatc unit test 6
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 30
+        employment_income: 80_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 28
+        employment_income: 80_000
+      person3:
+        is_tax_unit_dependent: true
+        age: 3
+      person4:
+        is_tax_unit_dependent: true
+        age: 7
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        tax_unit_childcare_expenses: 1_600
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: DC
+  output:
+    dc_kccatc: 800

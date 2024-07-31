@@ -1,0 +1,19 @@
+- name: WI income tax before refundable credits unit test 1
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    wi_income_tax_before_credits: 800
+    wi_nonrefundable_credits: 600
+    state_code: WI
+  output:
+    wi_income_tax_before_refundable_credits: 200
+
+- name: WI income tax before refundable credits unit test 2
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    wi_income_tax_before_credits: 800
+    wi_nonrefundable_credits: 900
+    state_code: WI
+  output:
+    wi_income_tax_before_refundable_credits: 0

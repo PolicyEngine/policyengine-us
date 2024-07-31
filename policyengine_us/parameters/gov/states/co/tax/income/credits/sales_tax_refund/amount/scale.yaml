@@ -1,0 +1,62 @@
+description: Colorado provides this base sales tax refund amount, based on modified adjusted gross income.
+metadata:
+  period: year
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: currency-USD
+  label: Colorado sales tax refund base amount
+  reference:
+    - title: Colo. Code Regs. 39-22-2003 State Sales Tax Refund (1), (b)
+      href: https://casetext.com/regulation/colorado-administrative-code/department-200-department-of-revenue/division-201-taxation-division/rule-1-ccr-201-2-income-tax/rule-39-22-2003-effective-until-8302023-state-sales-tax-refund
+    # In 2023 Colorado switched to a flat amount as opposed to a scale based on income.
+    - title: 2023 Colorado Individual Income Tax Filing Guide
+      href: https://leg.colorado.gov/sites/default/files/documents/2023A/bills/fn/2023a_hb1311_00.pdf#page=3
+    - title: Colorado General Assembly HB23-1311 Identical Temporary TABOR Refund
+      href: https://leg.colorado.gov/bills/hb23-1311#:~:text=The%20act%20creates%20a%20new,2022%2D23%20state%20fiscal%20year
+    - title: 2022 Colorado Individual Income Tax Filing Guide
+      href: https://tax.colorado.gov/sites/tax/files/documents/DR_0104_Book_2022.pdf#page=23
+    - title: 2021 Colorado Individual Income Tax Filing Guide
+      href: https://tax.colorado.gov/sites/tax/files/documents/DR_104_Book_2021.pdf#page=21
+brackets:
+  - threshold:
+      2021-01-01: 0
+    amount:
+      2021-01-01: 37
+      2022-01-01: 153
+      2023-01-01: 0
+  - threshold:
+      2021-01-01: 44_001
+      2022-01-01: 48_001
+    amount:
+      2021-01-01: 49
+      2022-01-01: 208
+      2023-01-01: 0
+  - threshold:
+      2021-01-01: 88_001
+      2022-01-01: 95_001
+    amount:
+      2021-01-01: 56
+      2022-01-01: 234
+      2023-01-01: 0
+  - threshold:
+      2021-01-01: 139_001
+      2022-01-01: 151_001
+    amount:
+      2021-01-01: 68
+      2022-01-01: 285
+      2023-01-01: 0
+  - threshold:
+      2021-01-01: 193_001
+      2022-01-01: 209_001
+    amount:
+      2021-01-01: 74
+      2022-01-01: 300
+      2023-01-01: 0
+  - threshold:
+      2021-01-01: 246_001
+      2022-01-01: 268_001
+    amount:
+      2021-01-01: 117
+      2022-01-01: 486
+      2023-01-01: 0
+

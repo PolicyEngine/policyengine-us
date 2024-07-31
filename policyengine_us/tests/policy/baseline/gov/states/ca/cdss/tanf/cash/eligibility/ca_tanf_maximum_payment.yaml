@@ -1,0 +1,119 @@
+- name: If the household has one person, is located in region 1 and exempt eligible, income limit is $862 * 12/yr.
+  period: 2023
+  input:
+    state_code: CA
+    spm_unit_size: 1
+    ca_tanf_region1: true
+    ca_tanf_exempt: true
+  output:
+    ca_tanf_maximum_payment: 807 * 12 
+
+- name: If the household has ten persons, is located in region 1 and exempt eligible, income limit is $3,205 * 12/yr.
+  period: 2023
+  input:
+    state_code: CA
+    spm_unit_size: 10
+    ca_tanf_region1: true
+    ca_tanf_exempt: true
+  output:
+    ca_tanf_maximum_payment: 3_205 * 12
+
+- name: If the household has twelve persons, is located in region 1 and exempt eligible, income limit is $3,205 * 12/yr.
+  period: 2023
+  input:
+    state_code: CA
+    spm_unit_size: 12
+    ca_tanf_region1: true
+    ca_tanf_exempt: true
+  output:
+    ca_tanf_maximum_payment: 3_205 * 12
+
+- name: If the household has one person, is located in region 1 and exempt ineligible, income limit is $732 * 12/yr.
+  period: 2023
+  input:
+    state_code: CA
+    spm_unit_size: 1
+    ca_tanf_region1: true
+    ca_tanf_exempt: false
+  output:
+    ca_tanf_maximum_payment: 732 * 12
+
+- name: If the household has ten persons, is located in region 1 and exempt ineligible, income limit is $2,867 * 12/yr.
+  period: 2023
+  input:
+    state_code: CA
+    spm_unit_size: 10
+    ca_tanf_region1: true
+    ca_tanf_exempt: false
+  output:
+    ca_tanf_maximum_payment: 2_867 * 12
+
+- name: If the household has twelve persons, is located in region 1 and exempt ineligible, income limit is $2,867 * 12/yr.
+  period: 2023
+  input:
+    state_code: CA
+    spm_unit_size: 12
+    ca_tanf_region1: true
+    ca_tanf_exempt: false
+  output:
+    ca_tanf_maximum_payment: 2_867 * 12
+
+- name: If the household has one person, is located in region 2 and exempt eligible, income limit is $768 * 12/yr.
+  period: 2023
+  input:
+    state_code: CA
+    spm_unit_size: 1
+    ca_tanf_region1: false
+    ca_tanf_exempt: true
+  output:
+    ca_tanf_maximum_payment: 768 * 12
+
+- name: If the household has ten persons, is located in region 2 and exempt eligible, income limit is $3,045 * 12/yr.
+  period: 2023
+  input:
+    state_code: CA
+    spm_unit_size: 10
+    ca_tanf_region1: false
+    ca_tanf_exempt: true
+  output:
+    ca_tanf_maximum_payment: 3_045 * 12
+
+- name: If the household has twelve persons, is located in region 2 and exempt eligible, income limit is $3,045 * 12/yr.
+  period: 2023
+  input:
+    state_code: CA
+    spm_unit_size: 12
+    ca_tanf_region1: false
+    ca_tanf_exempt: true
+  output:
+    ca_tanf_maximum_payment: 3_045 * 12
+
+- name: If the household has one person, is located in region 2 and exempt ineligible, income limit is $693 * 12/yr.
+  period: 2023
+  input:
+    state_code: CA
+    spm_unit_size: 1
+    ca_tanf_region1: false
+    ca_tanf_exempt: false
+  output:
+    ca_tanf_maximum_payment: 693 * 12
+
+- name: If the household has ten persons, is located in region 2 and exempt ineligible, income limit is $2,723 * 12/yr.
+  period: 2023
+  input:
+    state_code: CA
+    spm_unit_size: 10
+    ca_tanf_region1: false
+    ca_tanf_exempt: false
+  output:
+    ca_tanf_maximum_payment: 2_723 * 12
+
+- name: If the household has twelve persons, is located in region 2 and exempt ineligible, income limit is $2,723 * 12/yr.
+  period: 2023
+  input:
+    state_code: CA
+    spm_unit_size: 12
+    ca_tanf_region1: false
+    ca_tanf_exempt: false
+  output:
+    ca_tanf_maximum_payment: 2_723 * 12

@@ -1,0 +1,27 @@
+- name: IA AMT indiv unit test 1
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    filing_status: JOINT
+    ia_standard_deduction_indiv: 5_240
+    ia_itemized_deductions_indiv: 40_000
+    real_estate_taxes: 20_000
+    ia_taxable_income_indiv: 210_000
+    ia_base_tax_indiv: 10_000
+    state_code: IA
+  output:  # from hand calculation following IA 6251 form
+    ia_amt_indiv: 4_720
+
+- name: IA AMT indiv disabled in 2023  
+  absolute_error_margin: 0.01
+  period: 2023
+  input:
+    filing_status: JOINT
+    ia_standard_deduction_indiv: 5_240
+    ia_itemized_deductions_indiv: 40_000
+    real_estate_taxes: 20_000
+    ia_taxable_income_indiv: 210_000
+    ia_base_tax_indiv: 10_000
+    state_code: IA
+  output:  # from hand calculation following IA 6251 form
+    ia_amt_indiv: 0

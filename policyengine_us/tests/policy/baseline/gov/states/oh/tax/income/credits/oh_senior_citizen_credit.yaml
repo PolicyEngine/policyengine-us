@@ -1,0 +1,134 @@
+- name: senior citizen test eligible
+  period: 2021
+  input:
+    state_code: OH
+    age: 65
+    oh_has_taken_oh_lump_sum_credits: False
+    oh_modified_agi: 99_999
+    oh_personal_exemptions: 0
+  output:
+    oh_senior_citizen_credit: 50
+
+- name: senior citizen test ineligible, too young
+  period: 2021
+  input:
+    state_code: OH
+    age: 64
+    oh_has_taken_oh_lump_sum_credits: False
+    oh_modified_agi: 90_000
+    oh_personal_exemptions: 0
+  output:
+    oh_senior_citizen_credit: 0
+
+- name: senior citizen test, ineligible OH lump sum status
+  period: 2021
+  input:
+    state_code: OH
+    age: 66
+    oh_has_taken_oh_lump_sum_credits: True
+    oh_modified_agi: 90_000
+    oh_personal_exemptions: 0
+  output:
+    oh_senior_citizen_credit: 0
+
+- name: senior citizen test, ineligible AGI 
+  period: 2021
+  input:
+    state_code: OH
+    age: 66
+    oh_has_taken_oh_lump_sum_credits: False
+    oh_modified_agi: 100_000
+    oh_personal_exemptions: 0
+  output:
+    oh_senior_citizen_credit: 0
+
+- name: AGI is reduced by the personal exemptions
+  period: 2021
+  input:
+    state_code: OH
+    age: 66
+    oh_has_taken_oh_lump_sum_credits: False
+    oh_modified_agi: 119_999
+    oh_personal_exemptions: 20_000
+  output:
+    oh_senior_citizen_credit: 50
+
+- name: AGI is reduced by the personal exemptions, ineligible
+  period: 2021
+  input:
+    state_code: OH
+    age: 66
+    oh_has_taken_oh_lump_sum_credits: False
+    oh_modified_agi: 120_000
+    oh_personal_exemptions: 20_000
+  output:
+    oh_senior_citizen_credit: 0
+
+- name: Credit for eligible head
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        oh_has_taken_oh_lump_sum_credits: false
+      person2:
+        is_tax_unit_head: false
+        oh_has_taken_oh_lump_sum_credits: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        age_head: 65
+        oh_modified_agi: 100_000
+        oh_personal_exemptions: 1
+  output:
+    oh_senior_citizen_credit: 50
+
+- name: Head received lump sum distributions
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        oh_has_taken_oh_lump_sum_credits: true
+      person2:
+        is_tax_unit_head: false
+        oh_has_taken_oh_lump_sum_credits: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        age_head: 65
+        oh_modified_agi: 100_000
+        oh_personal_exemptions: 1
+  output:
+    oh_senior_citizen_credit: 0
+
+- name: Spouse received lump sum distributions
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        oh_has_taken_oh_lump_sum_credits: false
+      person2:
+        is_tax_unit_head: false
+        oh_has_taken_oh_lump_sum_credits: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        age_head: 65
+        oh_modified_agi: 100_000
+        oh_personal_exemptions: 1
+  output:
+    oh_senior_citizen_credit: 50

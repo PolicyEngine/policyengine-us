@@ -1,0 +1,31 @@
+- name: 2023 filer who is at the expanded retirement benefits deduction age threshold
+  period: 2023
+  input:
+    older_spouse_birth_year: 1958
+    state_code: MI
+  output: 
+    mi_expanded_retirement_benefits_deduction_eligible: true
+
+- name: 2023 filer who is below the expanded retirement benefits deduction age threshold
+  period: 2023
+  input:
+    older_spouse_birth_year: 1945
+    state_code: MI
+  output: 
+    mi_expanded_retirement_benefits_deduction_eligible: false
+    
+- name: 2023 filer who is above the expanded retirement benefits deduction age threshold
+  period: 2023
+  input:
+    older_spouse_birth_year: 1959
+    state_code: MI
+  output: 
+    mi_expanded_retirement_benefits_deduction_eligible: false
+
+- name: 2022 filer who is at the expanded retirement benefits deduction age threshold
+  period: 2022
+  input:
+    older_spouse_birth_year: 1946
+    state_code: MI
+  output: 
+    mi_expanded_retirement_benefits_deduction_eligible: false

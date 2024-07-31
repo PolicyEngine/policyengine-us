@@ -51,7 +51,7 @@ class ca_yctc(Variable):
         eligible = has_eligible_child & (gets_caleitc | is_loss_eligible)
 
         # phase out credit amount
-        eitc_earnings = tax_unit("filer_earned", period)
+        eitc_earnings = tax_unit("filer_adjusted_earnings", period)
         excess_earnings = max_(0, eitc_earnings - p.phase_out.start)
         increments = excess_earnings / p.phase_out.increment
         reduction = increments * p.phase_out.amount

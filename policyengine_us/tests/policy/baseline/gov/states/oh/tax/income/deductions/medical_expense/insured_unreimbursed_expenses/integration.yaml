@@ -1,0 +1,110 @@
+- name: moop < agi * rate
+  period: 2022
+  input:
+    state_code: OH
+    is_medicare_eligible: true
+    adjusted_gross_income: 1_000
+    health_insurance_premiums: 500
+    medical_out_of_pocket_expenses: 600
+    employer_contribution_to_health_insurance_premiums_category: "NONE"
+  output:
+    oh_insured_unreimbursed_medical_care_expenses: 1_025
+
+- name: moop < agi * rate
+  period: 2022
+  input:
+    state_code: OH
+    is_medicare_eligible: true
+    adjusted_gross_income: 10_000
+    health_insurance_premiums: 500
+    medical_out_of_pocket_expenses: 600
+    employer_contribution_to_health_insurance_premiums_category: "SOME"
+  output:
+    oh_insured_unreimbursed_medical_care_expenses: 0
+
+- name: moop > agi * rate
+  period: 2022
+  input:
+    state_code: OH
+    is_medicare_eligible: true
+    adjusted_gross_income: 10_000
+    health_insurance_premiums: 500
+    medical_out_of_pocket_expenses: 800
+    employer_contribution_to_health_insurance_premiums_category: "NONE"
+  output:
+    oh_insured_unreimbursed_medical_care_expenses: 550
+
+- name: No agi
+  period: 2022
+  input:
+    state_code: OH
+    is_medicare_eligible: true
+    adjusted_gross_income: 0
+    health_insurance_premiums: 500
+    medical_out_of_pocket_expenses: 800
+    employer_contribution_to_health_insurance_premiums_category: "NONE"
+  output:
+    oh_insured_unreimbursed_medical_care_expenses: 1_300
+
+- name: Calculation
+  period: 2022
+  input:
+    state_code: OH
+    adjusted_gross_income: 2_000
+    is_medicare_eligible: true
+    health_insurance_premiums: 500
+    medical_out_of_pocket_expenses: 800
+    employer_contribution_to_health_insurance_premiums_category: "NONE"
+  output:
+    oh_insured_unreimbursed_medical_care_expenses: 1_150 #800 - (2,000 * 7,5%) + 500
+
+- name: Calculation broken up by people
+  period: 2022
+  input:
+    people:
+      head:
+        health_insurance_premiums: 300
+        is_medicare_eligible: true
+        medical_out_of_pocket_expenses: 500
+        employer_contribution_to_health_insurance_premiums_category: "NONE"
+      spouse:
+        health_insurance_premiums: 200
+        is_medicare_eligible: true
+        medical_out_of_pocket_expenses: 300
+        employer_contribution_to_health_insurance_premiums_category: "NONE"
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        adjusted_gross_income: 2_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: OH
+  output:
+    oh_insured_unreimbursed_medical_care_expenses: 1_150 #800 - (2,000 * 7,5%) + 500
+
+- name: One peson has the premiums paid by employer
+  period: 2022
+  input:
+    people:
+      head:
+        health_insurance_premiums: 300
+        is_medicare_eligible: true
+        medical_out_of_pocket_expenses: 500
+        employer_contribution_to_health_insurance_premiums_category: "NONE"
+      spouse:
+        health_insurance_premiums: 200
+        is_medicare_eligible: true
+        medical_out_of_pocket_expenses: 300
+        employer_contribution_to_health_insurance_premiums_category: "NA"
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        adjusted_gross_income: 2_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: OH
+  output:
+    oh_insured_unreimbursed_medical_care_expenses: 950 
+

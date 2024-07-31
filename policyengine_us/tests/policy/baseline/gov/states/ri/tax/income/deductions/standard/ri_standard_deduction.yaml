@@ -1,0 +1,103 @@
+- name: Single filer
+  period: 2022
+  input:
+    state_code: RI
+    filing_status: SINGLE
+  output:
+    ri_standard_deduction: 9_300
+
+- name: Married filing jointly
+  period: 2022
+  input:
+    state_code: RI
+    filing_status: JOINT
+  output:
+    ri_standard_deduction: 18_600
+
+- name: Head of household filer
+  period: 2023
+  input:
+    state_code: RI
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    ri_standard_deduction: 15_050
+
+- name: Married filing separately 
+  period: 2023
+  input:
+    state_code: RI
+    filing_status: SEPARATE
+  output:
+    ri_standard_deduction: 10_025
+
+- name: Single filer
+  period: 2022
+  input:
+    state_code: RI
+    filing_status: SINGLE
+    ri_standard_deduction_applicable_percentage: 0.2
+  output:
+    ri_standard_deduction: 1_860
+
+- name: Married filing separately 
+  period: 2023
+  input:
+    state_code: RI
+    filing_status: SEPARATE
+    ri_standard_deduction_applicable_percentage: 0.4
+  output:
+    ri_standard_deduction: 4_010
+
+- name: Married filing jointly
+  period: 2022
+  input:
+    state_code: RI
+    filing_status: JOINT
+    ri_standard_deduction_applicable_percentage: 0.6
+  output:
+    ri_standard_deduction: 11_160
+
+- name: Head of household filer
+  period: 2023
+  input:
+    state_code: RI
+    filing_status: HEAD_OF_HOUSEHOLD
+    ri_standard_deduction_applicable_percentage: 0.8
+  output:
+    ri_standard_deduction: 12_040
+
+- name: Single filer
+  period: 2021
+  input:
+    state_code: RI
+    filing_status: SINGLE
+    ri_standard_deduction_applicable_percentage: 0.2
+  output:
+    ri_standard_deduction: 1_810
+
+- name: Married filing separately
+  period: 2021
+  input:
+    state_code: RI
+    filing_status: SEPARATE
+    ri_standard_deduction_applicable_percentage: 0.4
+  output:
+    ri_standard_deduction: 3_620
+
+- name: Single filer with full phase_out in 2021
+  period: 2021
+  input:
+    state_code: RI
+    filing_status: SINGLE
+    ri_standard_deduction_applicable_percentage: 0
+  output:
+    ri_standard_deduction: 0
+
+- name: Single filer with no phase_out in 2021
+  period: 2021
+  input:
+    state_code: RI
+    filing_status: SINGLE
+    ri_standard_deduction_applicable_percentage: 1
+  output:
+    ri_standard_deduction: 9_050

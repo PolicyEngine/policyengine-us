@@ -1,0 +1,11 @@
+description: Total taxable interest income.
+values:
+  2015-01-01: 95_881_223_000
+  2020-01-01: 127_375_994_000
+metadata:
+  unit: currency-USD
+  label: SOI taxable interest income
+  uprating: calibration.gov.cbo.income_by_source.taxable_interest_and_ordinary_dividends
+  reference:
+    - title: IRS SOI Tax Stats - Individual Statistical Tables by Size of Adjusted Gross Income
+      href: https://www.irs.gov/statistics/soi-tax-stats-individual-statistical-tables-by-size-of-adjusted-gross-income

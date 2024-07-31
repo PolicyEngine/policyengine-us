@@ -1,0 +1,53 @@
+- name: AR Standard deduction if single filer
+  period: 2022
+  input:
+    filing_status: SINGLE
+    is_tax_unit_head: true
+    state_code: AR
+  output:
+    ar_standard_deduction_joint: 2_270
+
+- name: AR Standard deduction if married filing jointly
+  period: 2022
+  input:
+    filing_status: JOINT
+    is_tax_unit_head: true
+    state_code: AR
+  output:  
+    ar_standard_deduction_joint: 4_540 
+
+- name: AR Standard deduction if surviving spouse
+  period: 2022
+  input:
+    filing_status: SURVIVING_SPOUSE
+    is_tax_unit_head: true
+    state_code: AR
+  output:  
+    ar_standard_deduction_joint: 2_270 
+
+- name: AR Standard deduction if married filing separately
+  period: 2022
+  input:
+    filing_status: SEPARATE
+    is_tax_unit_head: true
+    state_code: AR
+  output:  
+    ar_standard_deduction_joint: 2_270
+
+- name: AR Standard deduction if head of household
+  period: 2022
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    is_tax_unit_head: true
+    state_code: AR
+  output:  
+    ar_standard_deduction_joint: 2_270  
+
+- name: Not head of household filers do not get the standard deduction
+  period: 2022
+  input:
+    filing_status: JOINT
+    is_tax_unit_head: false
+    state_code: AR
+  output:  
+    ar_standard_deduction_joint: 0  

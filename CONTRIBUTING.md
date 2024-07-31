@@ -1,4 +1,6 @@
-Thank you for wanting to contribute to OpenFisca! :smiley:
+Thank you for wanting to contribute to PolicyEngine! :smiley:
+
+In addition to this guide, [this document](https://docs.google.com/document/d/1BiajMUJZFzG24Ju5lTybCAW8tp59B3E_DNhS8eJkuR0/edit) contains suggestions on developing tax-benefit programs in PolicyEngine.
 
 TL;DR: [GitHub Flow](https://guides.github.com/introduction/flow/), [SemVer](http://semver.org/).
 
@@ -141,11 +143,11 @@ One common breakdown is to break down by **`filing_status`**. If you decided to 
 
 * `SINGLE`
 * `SEPARATE`
-* `WIDOW`
+* `SURVIVING_SPOUSE`
 * `HEAD_OF_HOUSEHOLD`
 * `JOINT`
 
-Sometimes, the document that you refer to (e.g. tax instruction) does not specify all five statuses. In that case, you can let the `WIDOW` cases to be the same as the `JOINT` case.
+Sometimes, the document that you refer to (e.g. tax instruction) does not specify all five statuses. In that case, you can let the `SURVIVING_SPOUSE` cases to be the same as the `JOINT` case.
 
 PolicyEngine defines parameters as yaml files, which specify the values as of certain dates, as well as metadata on the units and reference(s).
 

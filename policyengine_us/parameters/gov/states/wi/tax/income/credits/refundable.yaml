@@ -1,0 +1,21 @@
+description: Wisconsin income tax has these refundable credits.
+metadata:
+  unit: list
+  period: year
+  label: Wisconsin refundable credits
+  reference:
+  - title: 2021 Wisconsin Form 1
+    href: https://www.revenue.wi.gov/TaxForms2021/2021-Form1f.pdf#page=2
+  - title: 2021 Wisconsin Form 1 instructions
+    href: https://www.revenue.wi.gov/TaxForms2021/2021-Form1-Inst.pdf#page=26
+  - title: 2022 Wisconsin Form 1
+    href: https://www.revenue.wi.gov/TaxForms2022/2022-Form1f.pdf#page=2
+  - title: 2022 Wisconsin Form 1 instructions
+    href: https://www.revenue.wi.gov/TaxForms2022/2022-Form1-Inst.pdf#page=26
+  - title: 2023 Wisconsin Form 1 instructions
+    href: https://www.revenue.wi.gov/TaxForms2023/2023-Form1-Inst.pdf#page=18
+
+values:
+  2021-01-01:
+    - wi_earned_income_credit
+    - wi_homestead_credit

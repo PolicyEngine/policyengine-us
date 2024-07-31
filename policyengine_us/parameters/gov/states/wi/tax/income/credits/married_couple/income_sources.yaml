@@ -1,0 +1,19 @@
+description: Wisconsin married couple credit has these income sources
+metadata:
+  unit: list
+  period: year
+  label: Wisconsin married couple credit income sources
+  reference:
+    - title: 2021 Wisconsin Form 1, Schedule 2
+      href: https://www.revenue.wi.gov/TaxForms2021/2021-Form1f.pdf#page=4
+    - title: 2021 Wisconsin Form 1, Schedule 2
+      href: https://www.revenue.wi.gov/TaxForms2022/2022-Form1f.pdf#page=4
+    - title: 2023 Wisconsin Form 1, Schedule 1
+      href: https://www.revenue.wi.gov/TaxForms2023/2023-Form1.pdf#page=4
+
+values:
+  2021-01-01:
+    - irs_employment_income
+    - self_employment_income
+    - partnership_s_corp_income
+    - farm_income

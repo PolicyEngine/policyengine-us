@@ -1,0 +1,11 @@
+description: Wisconsin recognizes this maximum number of dependents as eligible for care expense AGI subtraction.
+metadata:
+  unit: person
+  period: year
+  label: Wisconsin maximum dependents for care expense AGI subtraction
+  reference:
+    # Wisconsin AGI subtraction replaced by nonrefundable credit
+    - title: 2021 Wisconsin Form 1 Schedule SB instructions
+      href: https://www.revenue.wi.gov/TaxForms2021/2021-ScheduleSB-Inst.pdf#page=7
+values:
+  2021-01-01: 2

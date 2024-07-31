@@ -1,0 +1,21 @@
+- name: IA reduced tax unit test 1
+  period: 2021
+  input:
+    filing_status: SINGLE
+    is_tax_unit_head: true
+    age: 64
+    ia_modified_income: 9_500
+    state_code: IA
+  output:
+    ia_reduced_tax: 500
+
+- name: IA reduced tax unit test 2
+  period: 2021
+  input:
+    filing_status: SINGLE
+    is_tax_unit_head: true
+    age: 66
+    ia_modified_income: 24_800
+    state_code: IA
+  output:
+    ia_reduced_tax: 800

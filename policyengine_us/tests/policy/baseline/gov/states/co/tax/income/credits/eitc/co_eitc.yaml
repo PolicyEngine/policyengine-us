@@ -1,26 +1,39 @@
-- name: If ineligible, they get zero.
-  period: 2023
+- name: Colorado matched 10% of EITC in 2021.
+  period: 2021
   input:
-    eitc_eligible: false
-    earned_income_tax_credit: 100
+    eitc: 100
     state_code: CO
   output:
-    co_eitc: 0
+    co_eitc: 10
 
-- name: If eligible, they get earned 25% federal EITC.
-  period: 2023
+- name: Colorado matched 20% of EITC in 2022.
+  period: 2022
   input:
-    eitc_eligible: true
-    earned_income_tax_credit: 100
+    eitc: 100
     state_code: CO
   output:
-    co_eitc: 25
+    co_eitc: 20
 
-- name: If no federal EITC no Colorado EITC.
+- name: Colorado matched 50% of EITC in 2023.
   period: 2023
   input:
-    eitc_eligible: true
-    earned_income_tax_credit: 0
+    eitc: 100
+    state_code: CO
+  output:
+    co_eitc: 50
+
+- name: Colorado matched 50% of EITC in 2024.
+  period: 2024
+  input:
+    eitc: 100
+    state_code: CO
+  output:
+    co_eitc: 50
+
+- name: Zero EITC -> Zero Colorado EITC.
+  period: 2023
+  input:
+    eitc: 0
     state_code: CO
   output:
     co_eitc: 0

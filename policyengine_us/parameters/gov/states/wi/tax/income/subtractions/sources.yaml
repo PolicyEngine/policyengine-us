@@ -1,0 +1,26 @@
+description: Wisconsin subtracts these variables from US adjusted gross income when computing its gross income.
+values:
+  2021-01-01:
+    - wi_unemployment_compensation_subtraction
+    - tax_unit_taxable_social_security
+    - wi_capital_gain_loss_subtraction
+    - wi_childcare_expense_subtraction
+    - wi_retirement_income_subtraction
+  2022-01-01:
+    - wi_unemployment_compensation_subtraction
+    - tax_unit_taxable_social_security
+    - wi_capital_gain_loss_subtraction
+    - wi_retirement_income_subtraction
+
+metadata:
+  unit: variable
+  label: WI subtractions from US adjusted gross income
+  reference:
+  - title: 2021 WI schedule SB
+    href: https://www.revenue.wi.gov/TaxForms2021/2021-ScheduleSBf.pdf
+  - title: 2021 WI schedule SB instructions
+    href: https://www.revenue.wi.gov/TaxForms2021/2021-ScheduleSB-Inst.pdf
+  - title: 2021 WI schedule SB
+    href: https://www.revenue.wi.gov/TaxForms2022/2022-ScheduleSBf.pdf
+  - title: 2021 WI schedule SB instructions
+    href: https://www.revenue.wi.gov/TaxForms2022/2022-ScheduleSB-Inst.pdf

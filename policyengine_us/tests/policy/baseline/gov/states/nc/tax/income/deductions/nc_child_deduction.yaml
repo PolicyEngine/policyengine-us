@@ -1,0 +1,59 @@
+- name: nc_child_deduction unit test 1
+  period: 2021
+  input:
+    state_code: NC
+    filing_status: SINGLE
+    adjusted_gross_income: 55_000
+    ctc_qualifying_children: 4
+  output:
+    nc_child_deduction: 500 * 4
+
+- name: nc_child_deduction unit test 2
+  period: 2021
+  input:
+    state_code: NC
+    filing_status: JOINT
+    adjusted_gross_income: 55_000
+    ctc_qualifying_children: 2
+  output:
+    nc_child_deduction: 2_000 * 2
+
+- name: nc_child_deduction unit test 3
+  period: 2021
+  input:
+    state_code: NC
+    filing_status: HEAD_OF_HOUSEHOLD
+    adjusted_gross_income: 55_000
+    ctc_qualifying_children: 1
+  output:
+    nc_child_deduction: 1_500 * 1
+
+- name: nc_child_deduction unit test 4
+  period: 2022
+  input:
+    state_code: NC
+    filing_status: SINGLE
+    adjusted_gross_income: 55_000
+    ctc_qualifying_children: 4
+  output:
+    nc_child_deduction: 1_000 * 4
+
+- name: nc_child_deduction unit test 5
+  period: 2022
+  input:
+    state_code: NC
+    filing_status: JOINT
+    adjusted_gross_income: 55_000
+    ctc_qualifying_children: 2
+  output:
+    nc_child_deduction: 2_500 * 2
+
+- name: nc_child_deduction unit test 6
+  period: 2022
+  input:
+    state_code: NC
+    filing_status: HEAD_OF_HOUSEHOLD
+    adjusted_gross_income: 55_000
+    ctc_qualifying_children: 1
+  output:
+    nc_child_deduction: 2_000 * 1

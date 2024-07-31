@@ -1,0 +1,18 @@
+description: Age range defining someone eligible for Colorado SSI State Supplement
+brackets:
+  - threshold:
+      2023-01-01: 0
+    amount:
+      2023-01-01: true
+  - threshold:
+      2023-01-01: 60
+    amount:
+      2023-01-01: false
+metadata:
+  type: single_amount
+  rate_unit: bool
+  threshold_unit: year
+  label: "Colorado State Supplement age range"
+  reference:
+    - title: ADULT FINANCIAL PROGRAMS | Income Maintenance (Volume 3)
+      href: https://www.coloradosos.gov/CCR/GenerateRulePdf.do?ruleVersionId=10694#page=25

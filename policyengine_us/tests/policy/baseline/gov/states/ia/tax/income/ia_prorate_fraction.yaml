@@ -1,0 +1,40 @@
+- name: IA prorate fraction unit test 1
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 40
+        ia_net_income: 200
+      person2:
+        is_tax_unit_spouse: true
+        age: 40
+        ia_net_income: 800
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    ia_prorate_fraction: [0.2, 0.8]
+
+- name: If no net income and single, assign entirely to them as head.
+  period: 2021
+  input:
+    state_code: IA
+  output:
+    ia_prorate_fraction: 1
+
+- name: If no net income, assign to head.
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+      person2:
+        is_tax_unit_spouse: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    ia_prorate_fraction: [1, 0]

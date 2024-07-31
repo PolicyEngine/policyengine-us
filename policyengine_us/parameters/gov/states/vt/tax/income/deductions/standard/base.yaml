@@ -1,0 +1,68 @@
+description: Vermont provides this standard deduction based on filing status.
+metadata:
+  label: Vermont standard deduction
+  period: year
+  unit: currency-USD
+  breakdown:
+    - filing_status
+  reference:
+    - title: 2021 VERMONT Income Tax Return Form Instructions-Taxable Income Line 4
+      href: https://tax.vermont.gov/sites/tax/files/documents/Income-Booklet-2021.pdf#page=10
+    - title: 2022 VERMONT Income Tax Return Form Instructions-Taxable Income Line 4
+      href: https://tax.vermont.gov/sites/tax/files/documents/Income%20Booklet-2022.pdf#page=10
+    - title: 2023 VERMONT Income Tax Return Form Instructions-Taxable Income Line 4
+      href: https://tax.vermont.gov/sites/tax/files/documents/Income-Booklet-2023.pdf#page=10
+      # Legal code specifies amount with inflation adjustments..
+    - title: Legal Code Titl. 32 V.S.A. § 5811(21)(C)(ii) 
+      href: https://legislature.vermont.gov/statutes/section/32/151/05811 
+
+JOINT:
+  values:
+    2021-01-01: 12_700
+    2022-01-01: 13_050
+    2023-01-01: 14_050
+  metadata:
+    uprating: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
+HEAD_OF_HOUSEHOLD:
+  values:
+    2021-01-01: 9_500
+    2022-01-01: 9_800
+    2023-01-01: 10_550
+  metadata:
+    uprating: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
+SURVIVING_SPOUSE:
+  values:
+    2021-01-01: 12_700
+    2022-01-01: 13_050
+    2023-01-01: 14_050
+  metadata:
+    uprating: gov.irs.uprating  
+    rounding:
+      type: downwards
+      interval: 50
+SINGLE:
+  values:
+    2021-01-01: 6_350
+    2022-01-01: 6_500
+    2023-01-01: 7_000
+  metadata:
+    uprating: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
+SEPARATE:
+  values:
+    2021-01-01: 6_350
+    2022-01-01: 6_500
+    2023-01-01: 7_000
+  metadata:
+    uprating: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50

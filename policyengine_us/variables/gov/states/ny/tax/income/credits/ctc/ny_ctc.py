@@ -1,9 +1,5 @@
 from policyengine_us.model_api import *
 from policyengine_core.periods import instant
-import warnings
-
-warnings.filterwarnings("ignore")
-warnings.simplefilter("ignore")
 
 
 class ny_ctc(Variable):
@@ -56,7 +52,7 @@ class ny_ctc(Variable):
                 period,
                 maximum_ctc * meets_ny_minimum_age,
             )
-            federal_ctc = pre_tcja_ctc.tax_unit("ctc_value", period)
+            federal_ctc = pre_tcja_ctc.tax_unit("ctc", period)
             qualifies_for_federal_ctc = pre_tcja_ctc.person(
                 "ctc_qualifying_child", period
             )

@@ -1,0 +1,26 @@
+- name: Single family with no income
+  period: 2023
+  input:
+    state_code: NM
+    nm_taxable_income: 0
+    filing_status: SINGLE
+  output:
+    nm_income_tax_before_non_refundable_credits: 0
+
+- name: Joint family with 10,000 of income #((10,000 - 8,000) * 0.032 + 8,000 * 0.017)
+  period: 2023
+  input:
+    state_code: NM
+    nm_taxable_income: 10_000
+    filing_status: JOINT
+  output:
+    nm_income_tax_before_non_refundable_credits: 200
+
+- name: Widow filer with 10,000 of income 
+  period: 2023
+  input:
+    state_code: NM
+    nm_taxable_income: 6_000
+    filing_status: SURVIVING_SPOUSE
+  output:
+    nm_income_tax_before_non_refundable_credits: 102

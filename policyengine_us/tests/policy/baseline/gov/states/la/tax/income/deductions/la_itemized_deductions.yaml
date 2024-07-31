@@ -1,0 +1,72 @@
+- name: Outside Louisiana, no Louisiana deductions
+  period: 2022
+  input:
+    state_code: NY
+    standard_deduction: 12_950
+    tax_unit_itemizes: false
+  output:
+    la_itemized_deductions: 0
+
+- name: 2022 Louisiana deduction given Single status, with medical expense deduction 20_000
+  period: 2022
+  input:
+    state_code: LA
+    standard_deduction: 12_950
+    medical_expense_deduction: 20_000
+    tax_unit_itemizes: true
+  output:
+    la_itemized_deductions: 7_050
+
+- name: 2022 Louisiana deduction given Single status, with medical expense deduction 20_000
+  period: 2022
+  input:
+    state_code: LA
+    standard_deduction: 12_950
+    medical_expense_deduction: 20_000
+    tax_unit_itemizes: true
+  output:
+    la_itemized_deductions: 7_050
+
+- name: 2021 Louisiana deduction given Single status, with federal itemized deductions 30_000
+  period: 2021
+  input:
+    state_code: LA
+    standard_deduction: 12_550
+    medical_expense_deduction: 20_000
+    taxable_income_deductions_if_itemizing: 30_000
+    tax_unit_itemizes: true
+  output:
+    la_itemized_deductions: 17_450
+    #30_000-12_550
+
+- name: 2021 Louisiana deduction given Single status, with federal itemized deductions 10_000
+  period: 2021
+  input:
+    state_code: LA
+    standard_deduction: 12_550
+    medical_expense_deduction: 20_000
+    taxable_income_deductions_if_itemizing: 10_000
+    tax_unit_itemizes: true
+  output:
+    la_itemized_deductions: 0
+    #10_000-12_550<0
+
+- name: 2022 Louisiana deduction given Head of Household status, with medical expense deduction 20_000
+  period: 2022
+  input:
+    state_code: LA
+    standard_deduction: 19_400
+    medical_expense_deduction: 20_000
+    tax_unit_itemizes: true
+  output:
+    la_itemized_deductions: 600
+
+- name: 2022 Louisiana deduction given Head of Widow status, with medical expense deduction 20_000
+  period: 2022
+  input:
+    state_code: LA
+    standard_deduction: 25_900
+    medical_expense_deduction: 20_000
+    tax_unit_itemizes: true
+  output:
+    la_itemized_deductions: 0

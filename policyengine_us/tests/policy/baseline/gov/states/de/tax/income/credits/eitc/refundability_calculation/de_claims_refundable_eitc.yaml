@@ -1,0 +1,17 @@
+- name: Refundable over non-refundable
+  period: 2022
+  input:
+    state_code: DE
+    de_income_tax_if_claiming_refundable_eitc: 1_000
+    de_income_tax_if_claiming_non_refundable_eitc: 500
+  output:
+    de_claims_refundable_eitc: false
+  
+- name: Refundable under non-refundable
+  period: 2022
+  input:
+    state_code: DE
+    de_income_tax_if_claiming_refundable_eitc: 500
+    de_income_tax_if_claiming_non_refundable_eitc: 501
+  output:
+    de_claims_refundable_eitc: true
