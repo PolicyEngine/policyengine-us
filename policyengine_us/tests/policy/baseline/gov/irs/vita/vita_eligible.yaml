@@ -5,7 +5,7 @@
     is_disabled: true
     is_english_proficient: false
   output:
-    vita_eligibility: true
+    vita_eligible: true
 
 - name: IRS VITA Program Eligible - disabled and unproficient English.
   period: 2023
@@ -14,7 +14,7 @@
     is_disabled: true
     is_english_proficient: false
   output:
-    vita_eligibility: true
+    vita_eligible: true
 
 - name: IRS VITA Program Eligible - low income.
   period: 2023
@@ -23,7 +23,7 @@
     is_disabled: false
     is_english_proficient: true
   output:
-    vita_eligibility: true
+    vita_eligible: true
 
 - name: IRS VITA Program Not Eligible.
   period: 2023
@@ -32,4 +32,4 @@
     is_disabled: false
     is_english_proficient: true
   output:
-    vita_eligibility: false
+    vita_eligible: false

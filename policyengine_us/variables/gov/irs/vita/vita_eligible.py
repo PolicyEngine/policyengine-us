@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class vita_eligibility(Variable):
+class vita_eligible(Variable):
     value_type = bool
     entity = Person
     label = "Eligible for the VITA program"
