@@ -18,7 +18,17 @@ from .biden.budget_2025 import (
     create_medicare_and_investment_tax_increase_reform,
 )
 from .biden.budget_2025 import create_capital_gains_tax_increase_reform
-from .co_general_assembly import create_co_family_affordability_credit_reform
+from .eitc import create_halve_joint_eitc_phase_out_rate_reform
+from .states.ny.wftc import create_ny_working_families_tax_credit_reform
+from .states.dc.dc_ctc import (
+    create_dc_ctc_reform,
+)
+from .harris.lift.middle_class_tax_credit import (
+    create_middle_class_tax_credit_reform,
+)
+from .congress.tlaib import (
+    create_end_child_poverty_act_reform,
+)
 from policyengine_core.reforms import Reform
 import warnings
 
@@ -55,7 +65,17 @@ def create_structural_reforms_from_parameters(parameters, period):
     capital_gains_tax_increase = create_capital_gains_tax_increase_reform(
         parameters, period
     )
-    family_affordability_credit = create_co_family_affordability_credit_reform(
+    halve_joint_eitc_phase_out_rate = (
+        create_halve_joint_eitc_phase_out_rate_reform(parameters, period)
+    )
+    ny_wftc = create_ny_working_families_tax_credit_reform(parameters, period)
+
+    dc_ctc = create_dc_ctc_reform(parameters, period)
+
+    middle_class_tax_credit = create_middle_class_tax_credit_reform(
+        parameters, period
+    )
+    end_child_poverty_act = create_end_child_poverty_act_reform(
         parameters, period
     )
 
@@ -72,7 +92,11 @@ def create_structural_reforms_from_parameters(parameters, period):
         reported_state_income_tax,
         medicare_and_investment_tax_increase,
         capital_gains_tax_increase,
-        family_affordability_credit,
+        halve_joint_eitc_phase_out_rate,
+        ny_wftc,
+        dc_ctc,
+        middle_class_tax_credit,
+        end_child_poverty_act,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
 
