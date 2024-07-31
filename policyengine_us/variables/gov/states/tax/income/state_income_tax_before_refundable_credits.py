@@ -7,4 +7,4 @@ class state_income_tax_before_refundable_credits(Variable):
     label = "state income tax before refundable credits"
     unit = USD
     definition_period = YEAR
-    adds = "gov.states.state_income_tax_before_refundable_credits"
+    adds = "gov.states.household.state_income_tax_before_refundable_credits"
