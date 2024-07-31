@@ -2,8 +2,7 @@
   period: 2023
   input:
     state_code: CA
-    household_vehicles_value:
-      2023-01: 32_045
+    household_vehicles_value: 32_045
   output:
     ca_tanf_vehicle_value_eligible: true
 
@@ -11,8 +10,7 @@
   period: 2023
   input:
     state_code: CA
-    household_vehicles_value:
-      2023-01: 32_046
+    household_vehicles_value: 32_046
   output:
     ca_tanf_vehicle_value_eligible: false
 
