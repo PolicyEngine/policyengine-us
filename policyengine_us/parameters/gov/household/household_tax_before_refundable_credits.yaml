@@ -9,10 +9,13 @@ values:
     - ct_income_tax_before_refundable_credits
     - dc_income_tax_before_refundable_credits
     - de_income_tax_before_refundable_credits
+    - employee_payroll_tax
+    - flat_tax
     - ga_income_tax_before_refundable_credits
     - hi_income_tax_before_refundable_credits
     - ia_income_tax_before_refundable_credits
     - id_income_tax_before_refundable_credits
+    - income_tax_before_refundable_credits
     - il_total_tax
     - in_income_tax_before_refundable_credits
     - ks_income_tax_before_refundable_credits
@@ -38,6 +41,7 @@ values:
     - ok_income_tax_before_refundable_credits
     - pa_income_tax  # PA has no refundable credits.
     - ri_income_tax_before_refundable_credits
+    - self_employment_tax
     - sc_income_tax_before_refundable_credits
     - wa_income_tax_before_refundable_credits
     - nyc_income_tax_before_refundable_credits
