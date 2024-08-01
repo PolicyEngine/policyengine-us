@@ -80,3 +80,14 @@
     state_code_str: OR
   output:
     lifeline: (9.25 + 25) * 12
+
+- name: 2024 MA household on rural Tribal land gets a larger amount.
+  period: 2024
+  input:
+    is_lifeline_eligible: true
+    broadband_cost: 40 * 12
+    is_rural: true
+    is_on_tribal_land: true
+    state_code_str: MA
+  output:
+    lifeline: (9.25 + 25) * 12
