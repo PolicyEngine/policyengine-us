@@ -23,5 +23,7 @@ class ne_agi_subtractions(Variable):
             p.social_security.fraction,
         )
         taxable_oasdi = add(tax_unit, period, ["taxable_social_security"])
-        taxable_retirement_pension = add(tax_unit, period, ["taxable_public_pension_income"])
+        taxable_retirement_pension = add(
+            tax_unit, period, ["taxable_public_pension_income"]
+        )
         return taxable_oasdi * oasdi_fraction + taxable_retirement_pension
