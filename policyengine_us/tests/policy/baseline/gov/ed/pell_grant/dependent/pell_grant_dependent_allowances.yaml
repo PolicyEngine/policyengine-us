@@ -1,0 +1,23 @@
+- name: Positive head available income
+  period: 2023
+  input:
+    pell_grant_dependent_other_allowances: 0
+    pell_grant_head_available_income: 10_000
+  output:
+    pell_grant_dependent_allowances: 7_040
+
+- name: Negative head available income
+  period: 2023
+  input:
+    pell_grant_dependent_other_allowances: 0
+    pell_grant_head_available_income: -10_000
+  output:
+    pell_grant_dependent_allowances: 17_040
+
+- name: Other allowances
+  period: 2023
+  input:
+    pell_grant_dependent_other_allowances: 5_000
+    pell_grant_head_available_income: 0
+  output:
+    pell_grant_dependent_allowances: 12_040

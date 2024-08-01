@@ -1,0 +1,65 @@
+- name: Only one person in tax_unit
+  period: 2023
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        pell_grant_countable_assets: 1_000
+      spouse:
+        is_tax_unit_spouse: true
+        pell_grant_countable_assets: 0
+      child:
+        pell_grant_countable_assets: 0
+  output:
+    pell_grant_head_assets: 1_000
+
+- name: Head and Spouse
+  period: 2023
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        pell_grant_countable_assets: 500
+      spouse:
+        is_tax_unit_spouse: true
+        pell_grant_countable_assets: 2_500
+  output:
+    pell_grant_head_assets: 3_000
+
+- name: Head, Spouse, and multiple children
+  period: 2023
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        pell_grant_countable_assets: 5_000
+      spouse:
+        is_tax_unit_spouse: true
+        pell_grant_countable_assets: 100
+      child_1:
+        pell_grant_countable_assets: 1_000
+      child_2:
+        pell_grant_countable_assets: 10_000
+      child_3:
+        pell_grant_countable_assets: 100
+      child_4:
+        pell_grant_countable_assets: 3_000
+      child_5:
+        pell_grant_countable_assets: 1_000
+  output:
+    pell_grant_head_assets: 5_100
+
+- name: No assets
+  period: 2023
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        pell_grant_countable_assets: 0
+      spouse:
+        is_tax_unit_spouse: true
+        pell_grant_countable_assets: 0
+      child_1:
+        pell_grant_countable_assets: 0
+  output:
+    pell_grant_head_assets: 0

@@ -1,0 +1,23 @@
+description: Connecticut reduces the child tax rebate for filers with state adjusted gross income above this amount, based on filing status.
+metadata:
+  period: year
+  unit: currency-USD
+  label: Connecticut child tax rebate reduction start
+  breakdown:
+    - filing_status
+  reference:
+    - title: TSSB 2022-5 - Frequently Asked Questions Concerning the Child Tax Rebate (11)
+      href: https://portal.ct.gov/-/media/drs/publications/tssb/2022/tssb-2022-5.pdf#page=2
+    - title: House Bill No. 5506 Public Act No. 22-118 Sec. 410 (xxvi)
+      href: https://cga.ct.gov/2022/ACT/PA/PDF/2022PA-00118-R00HB-05506-PA.PDF#page=549
+    # The legal code section has been repealed
+SINGLE:
+  2022-01-01: 100_000
+HEAD_OF_HOUSEHOLD:
+  2022-01-01: 160_000
+JOINT:
+  2022-01-01: 200_000
+SURVIVING_SPOUSE:
+  2022-01-01: 200_000
+SEPARATE:
+  2022-01-01: 100_000
