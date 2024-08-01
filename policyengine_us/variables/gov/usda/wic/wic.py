@@ -12,6 +12,7 @@ class wic(Variable):
         "https://www.law.cornell.edu/cfr/text/7/246.7",
     )
     unit = USD
+    exhaustive_parameter_dependencies = "gov.usda.wic"
     defined_for = "is_wic_eligible"
 
     def formula(person, period, parameters):
