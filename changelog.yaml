@@ -7770,3 +7770,64 @@
     fixed:
     - Remove the adds function from the reported_state_income_tax reform file.
   date: 2024-07-25 13:01:20
+- bump: minor
+  changes:
+    added:
+    - 2023 Montana Tax Rules.
+  date: 2024-07-25 22:43:01
+- bump: patch
+  changes:
+    fixed:
+    - Limit the older children under the Working Families Tax Credit above 18 years.
+  date: 2024-07-26 02:54:51
+- bump: patch
+  changes:
+    fixed:
+    - Optimize for the Hawaii deduction.
+  date: 2024-07-29 20:47:46
+- bump: patch
+  changes:
+    fixed:
+    - Exclude childless filers from the NY WFTC EITC reduction.
+  date: 2024-07-30 00:23:32
+- bump: patch
+  changes:
+    fixed:
+    - Add the flat tax variable in the relevant net income tree computations.
+    - Index general household and state level parameters.
+  date: 2024-07-30 05:34:09
+- bump: patch
+  changes:
+    fixed:
+    - Structure End Child Poverty Act as a reform.
+  date: 2024-07-30 16:30:17
+- bump: patch
+  changes:
+    fixed:
+    - Minor CTC social security parameter formatting.
+  date: 2024-07-30 20:06:02
+- bump: patch
+  changes:
+    fixed:
+    - Add the Child benefit component to the ECPA reform.
+  date: 2024-07-30 20:20:10
+- bump: minor
+  changes:
+    added:
+    - Decouple the WFTC child age eligibility from the NY exemptions child age threshold.
+  date: 2024-07-31 07:15:11
+- bump: minor
+  changes:
+    added:
+    - California & Oregon higher Lifeline benefit amount.
+  date: 2024-08-01 13:25:55
+- bump: minor
+  changes:
+    added:
+    - Remove the parameter caching from the state variables.
+  date: 2024-08-01 13:55:37
+- bump: minor
+  changes:
+    added:
+    - July 2024 CalWorks vehicle value increase.
+  date: 2024-08-01 15:51:55
