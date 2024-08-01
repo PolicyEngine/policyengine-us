@@ -90,6 +90,7 @@
       person1:
         age: 30
         is_tax_unit_dependent: false
+        employment_income: 1_000
       person2:
         age: 16
         is_tax_unit_dependent: true
@@ -97,7 +98,6 @@
       tax_unit:
         members: [person1, person2]
         ny_agi: 30_000
-        eitc: 1_000
         filing_status: HEAD_OF_HOUSEHOLD
         ny_household_credit: 0
     households:
@@ -107,7 +107,8 @@
   output:
     # ny_wftc_eligible_children: 0
     # ny_working_families_tax_credit: 0
-    ny_eitc: 300
+    eitc: 340
+    ny_eitc: 102 
     ny_ctc: 330
     ny_exemptions: 1_000
 
@@ -121,6 +122,7 @@
       person1:
         age: 30
         is_tax_unit_dependent: false
+        employment_income: 1_000
       person2:
         age: 16
         is_tax_unit_dependent: true
@@ -128,7 +130,6 @@
       tax_unit:
         members: [person1, person2]
         ny_agi: 30_000
-        filer_adjusted_earnings: 1_000
         filing_status: HEAD_OF_HOUSEHOLD
         ny_household_credit: 0
     households:
@@ -139,8 +140,11 @@
     ny_wftc_eligible_children: 1
     ny_working_families_tax_credit: 800
     younger_eitc_eligible: true
-    younger_eitc: 340
-    ny_eitc: 173
+    eitc_younger_maximum: 3_581
+    younger_eitc: 340 
+    eitc_older_maximum: 632
+    older_eitc: 76.5
+    ny_eitc: 94.35
     ny_ctc: 0
     ny_exemptions: 0
 
@@ -182,6 +186,7 @@
       person1:
         age: 30
         is_tax_unit_dependent: false
+        employment_income: 10_000
       person2:
         age: 20
         is_tax_unit_dependent: true
@@ -190,7 +195,6 @@
       tax_unit:
         members: [person1, person2]
         ny_agi: 10_000
-        filer_adjusted_earnings: 1_000
         filing_status: HEAD_OF_HOUSEHOLD
         ny_household_credit: 0
     households:
@@ -201,9 +205,157 @@
     ny_wftc_eligible_children: 1
     ny_working_families_tax_credit: 0
     eitc_younger_children_count: 0
-    # Amount for self attributed to younger child EITC
-    younger_eitc: 76.5
-    older_eitc: 340
-    ny_eitc: 102
+    # Amount for self attributed to older child EITC
+    younger_eitc: 0
+    eitc: 3_400
+    older_eitc: 3_400
+    ny_eitc: 1_020
     ny_ctc: 0
     ny_exemptions: 1_000
+
+
+- name: Baseline test - single parent with one child in college
+  period: 2028
+  absolute_error_margin: 1
+  input:
+    people: 
+      person1:
+        age: 30
+        is_tax_unit_dependent: false
+        employment_income: 10_000
+      person2:
+        age: 20
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ny_household_credit: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    eitc: 3_400
+    ny_eitc: 1_020
+
+- name: Baseline test - single parent of two - ages 5 and 10 - 30k income
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    gov.contrib.states.ny.wftc.in_effect: false
+    people: 
+      person1:
+        age: 30
+        is_tax_unit_dependent: false
+        employment_income: 30_000
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+      person3:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NY
+  output:
+    eitc: 5_426.83
+    ny_eitc: 1_598.05 # 30% of federal credit
+
+
+- name: Integration test - single parent of two - ages 5 and 10 - 30k income
+  period: 2024
+  absolute_error_margin: 0.1
+  reforms: policyengine_us.reforms.states.ny.wftc.ny_working_families_tax_credit.ny_working_families_tax_credit
+  input:
+    gov.contrib.states.ny.wftc.in_effect: true
+    people: 
+      person1:
+        age: 30
+        employment_income: 30_000
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+      person3:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NY
+  output:
+    younger_eitc_eligible: 1
+    younger_eitc: 4_794.83
+    older_eitc: 0
+    ny_wftc_eligible_children: 2
+    ny_eitc: 976.91
+    ny_working_families_tax_credit: 1_600
+
+
+- name: Integration test - single parent of two - ages 5 and 20 (student) - 30k income
+  period: 2024
+  absolute_error_margin: 0.1
+  reforms: policyengine_us.reforms.states.ny.wftc.ny_working_families_tax_credit.ny_working_families_tax_credit
+  input:
+    gov.contrib.states.ny.wftc.in_effect: true
+    people: 
+      person1:
+        age: 30
+        employment_income: 30_000
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+      person3:
+        age: 20
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        ny_household_credit: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NY
+  output:
+    younger_eitc_eligible: 1
+    younger_eitc: 2_689.47
+    eitc_older_demographic_eligible: 1
+    older_eitc: 4_155.47
+    ny_wftc_eligible_children: 1
+    ny_eitc: 1_811.43
+    ny_working_families_tax_credit: 800
+
+- name: Base test - single parent of two - ages 5 and 20 (student) - 30k income
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    gov.contrib.states.ny.wftc.in_effect: false
+    people: 
+      person1:
+        age: 30
+        employment_income: 30_000
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+      person3:
+        age: 20
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        ny_household_credit: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NY
+  output:
+    ny_eitc: 2_065.25 # 21% of federal credit

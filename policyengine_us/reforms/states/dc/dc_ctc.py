@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_core.periods import period as period_
 
 
 def create_dc_ctc() -> Reform:
@@ -17,12 +18,9 @@ def create_dc_ctc() -> Reform:
             age = person("age", period)
             age_eligible = age < p.age_threshold
             eligible_children = tax_unit.sum(age_eligible)
-            capped_children = min_(eligible_children, p.child_cap.amount)
-            total_eligible_children = where(
-                p.child_cap.in_effect, capped_children, eligible_children
-            )
+            capped_children = min_(eligible_children, p.child_cap)
             income = tax_unit("adjusted_gross_income", period)
-            max_amount = p.amount * total_eligible_children
+            max_amount = p.amount * capped_children
             increment = p.reduction.increment
             reduction_per_increment = p.reduction.amount
             filing_status = tax_unit("filing_status", period)
@@ -62,12 +60,15 @@ def create_dc_ctc_reform(parameters, period, bypass: bool = False):
     if bypass:
         return create_dc_ctc()
 
-    p = parameters(period).gov.contrib.states.dc.ctc
+    p = parameters.gov.contrib.states.dc.ctc
 
-    if p.in_effect:
-        return create_dc_ctc()
-    else:
-        return None
+    current_period = period_(period)
+
+    for i in range(5):
+        if p(current_period).in_effect:
+            return create_dc_ctc()
+        current_period = current_period.offset(1, "year")
+    return None
 
 
 dc_ctc = create_dc_ctc_reform(None, None, bypass=True)

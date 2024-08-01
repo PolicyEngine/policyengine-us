@@ -3,7 +3,7 @@
   reforms: policyengine_us.reforms.states.dc.dc_ctc.dc_ctc
   input:
     gov.contrib.states.dc.ctc.in_effect: true
-    gov.contrib.states.dc.ctc.child_cap.in_effect: false
+    gov.contrib.states.dc.ctc.child_cap: 999
     people: 
       person1:
         age: 40
@@ -35,7 +35,7 @@
   reforms: policyengine_us.reforms.states.dc.dc_ctc.dc_ctc
   input:
     gov.contrib.states.dc.ctc.in_effect: true
-    gov.contrib.states.dc.ctc.child_cap.in_effect: false
+    gov.contrib.states.dc.ctc.child_cap: 999
     people: 
       person1:
         age: 40
@@ -66,7 +66,6 @@
   reforms: policyengine_us.reforms.states.dc.dc_ctc.dc_ctc
   input:
     gov.contrib.states.dc.ctc.in_effect: true
-    gov.contrib.states.dc.ctc.child_cap.in_effect: false
     people: 
       person1:
         age: 40
@@ -89,7 +88,7 @@
   reforms: policyengine_us.reforms.states.dc.dc_ctc.dc_ctc
   input:
     gov.contrib.states.dc.ctc.in_effect: true
-    gov.contrib.states.dc.ctc.child_cap.in_effect: false
+    gov.contrib.states.dc.ctc.child_cap: 999
     people: 
       person1:
         age: 40
@@ -245,3 +244,25 @@
         state_code: DC
   output:
     dc_refundable_credits: 0
+
+- name: Integration test with reform in effect
+  period: 2025
+  reforms: policyengine_us.reforms.states.dc.dc_ctc.dc_ctc
+  input:
+    gov.contrib.states.dc.ctc.in_effect: true
+    dc_ctc: 1_000
+    dc_eitc: 2_000
+    dc_income_tax_before_refundable_credits: 5_000
+    state_code: DC
+  output:
+    dc_income_tax: 2_000
+
+- name: Integration test with reform not in effect
+  period: 2025
+  input:
+    gov.contrib.states.dc.ctc.in_effect: false
+    dc_eitc: 2_000
+    dc_income_tax_before_refundable_credits: 5_000
+    state_code: DC
+  output:
+    dc_income_tax: 3_000
