@@ -17,7 +17,7 @@
         members: [person1, person2]
         state_code: IN
   output:
-    in_adoption_exemption: 3_000
+    in_adoption_exemption: 1_500
 
 - name: Two children and both are eligible.
   absolute_error_margin: 0
@@ -38,7 +38,7 @@
         members: [person1, person2]
         state_code: IN
   output:
-    in_adoption_exemption: 6_000
+    in_adoption_exemption: 3_000
 
 - name: Two children and one is eligible.
   absolute_error_margin: 0
@@ -59,7 +59,7 @@
         members: [person1, person2]
         state_code: IN
   output:
-    in_adoption_exemption: 3_000
+    in_adoption_exemption: 1_500
 
 - name: Three children but none are eligible.
   absolute_error_margin: 0

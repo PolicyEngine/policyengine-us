@@ -11,15 +11,18 @@ class in_adoption_exemption(Variable):
     defined_for = StateCode.IN
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states["in"].tax.income.exemptions.adoption
+        p = parameters(period).gov.states["in"].tax.income.exemptions
         person = tax_unit.members
         is_qualifying_dependent_child = person(
             "in_is_qualifying_dependent_child", period
         )
+        adopted_this_year = person("adopted_this_year", period)
         is_qualifying_adopted_dependent_child = (
-            is_qualifying_dependent_child & person("adopted_this_year", period)
+            is_qualifying_dependent_child & adopted_this_year
         )
-        adopted_exemption_amount = p.amount
+        capped_exemption_amount = max_(
+            p.adoption.amount - p.additional.amount, 0
+        )
         return tax_unit.sum(
-            is_qualifying_adopted_dependent_child * adopted_exemption_amount
+            is_qualifying_adopted_dependent_child * capped_exemption_amount
         )
