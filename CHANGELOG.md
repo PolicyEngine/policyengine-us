@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.39.0] - 2024-08-02 03:31:58
+
+### Added
+
+- BOOST act middle class tax credit.
+
 ## [1.38.0] - 2024-08-01 15:51:55
 
 ### Added
@@ -9268,6 +9274,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.39.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.38.0...1.39.0
 [1.38.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.37.0...1.38.0
 [1.37.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.36.0...1.37.0
 [1.36.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.35.0...1.36.0
