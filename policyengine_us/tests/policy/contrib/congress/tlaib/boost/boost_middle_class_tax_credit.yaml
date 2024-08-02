@@ -1,0 +1,22 @@
+- name: Head of household - not phased out
+  period: 2024
+  reforms: policyengine_us.reforms.congress.tlaib.boost.boost_middle_class_tax_credit.boost_middle_class_tax_credit
+  input:
+    gov.contrib.harris.lift.middle_class_tax_credit.in_effect: true
+    gov.contrib.congress.tlaib.boost_middle_class_tax_credit.administered_through_ssa: false
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 12
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        adjusted_gross_income: 0
+        filing_status: HEAD_OF_HOUSEHOLD
+        eitc: 0
+  output:
+    boost_middle_class_tax_credit: 0
+    income_tax_refundable_credits: 0
+    household_benefits: 0
+    spm_unit_benefits: 0
