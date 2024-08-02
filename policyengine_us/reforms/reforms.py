@@ -29,7 +29,7 @@ from .harris.lift.middle_class_tax_credit import (
 from .congress.tlaib import (
     create_end_child_poverty_act_reform,
 )
-from .congress.tlaib import (
+from .congress.tlaib.boost import (
     create_boost_middle_class_tax_credit_reform,
 )
 

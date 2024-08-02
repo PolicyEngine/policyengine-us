@@ -42,7 +42,7 @@ def create_boost_middle_class_tax_credit() -> Reform:
             )
             p_boost = parameters(
                 period
-            ).gov.contrib.congress.tlaib.boost_middle_class_tax_credit
+            ).gov.contrib.congress.tlaib.boost.middle_class_tax_credit
             if p_boost.administered_through_ssa:
                 return previous_credits
             return middle_class_credit + previous_credits
@@ -74,12 +74,12 @@ def create_boost_middle_class_tax_credit() -> Reform:
                 "household_state_benefits",
             ]
             previous_benefits = add(household, period, BENEFITS)
-            middle_class_credit = household.tax_unit(
-                "boost_middle_class_tax_credit", period
+            middle_class_credit = add(
+                household, period, ["boost_middle_class_tax_credit"]
             )
             p = parameters(
                 period
-            ).gov.contrib.congress.tlaib.boost_middle_class_tax_credit
+            ).gov.contrib.congress.tlaib.boost.middle_class_tax_credit
             if p.administered_through_ssa is False:
                 return previous_benefits
             return middle_class_credit + previous_benefits
@@ -122,9 +122,9 @@ def create_boost_middle_class_tax_credit() -> Reform:
                 BENEFITS.append("spm_unit_capped_housing_subsidy")
             p = parameters(
                 period
-            ).gov.contrib.congress.tlaib.boost_middle_class_tax_credit
-            middle_class_tax_credit = spm_unit.tax_unit(
-                "boost_middle_class_tax_credit", period
+            ).gov.contrib.congress.tlaib.boost.middle_class_tax_credit
+            middle_class_tax_credit = add(
+                spm_unit, period, ["boost_middle_class_tax_credit"]
             )
             previous_benefits = add(spm_unit, period, BENEFITS)
             if p.administered_through_ssa is False:
