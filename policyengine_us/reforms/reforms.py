@@ -26,6 +26,13 @@ from .states.dc.dc_ctc import (
 from .harris.lift.middle_class_tax_credit import (
     create_middle_class_tax_credit_reform,
 )
+from .congress.tlaib import (
+    create_end_child_poverty_act_reform,
+)
+from .congress.tlaib.boost import (
+    create_boost_middle_class_tax_credit_reform,
+)
+
 from policyengine_core.reforms import Reform
 import warnings
 
@@ -72,6 +79,12 @@ def create_structural_reforms_from_parameters(parameters, period):
     middle_class_tax_credit = create_middle_class_tax_credit_reform(
         parameters, period
     )
+    end_child_poverty_act = create_end_child_poverty_act_reform(
+        parameters, period
+    )
+    boost_middle_class_tax_credit = (
+        create_boost_middle_class_tax_credit_reform(parameters, period)
+    )
 
     reforms = [
         afa_reform,
@@ -90,6 +103,8 @@ def create_structural_reforms_from_parameters(parameters, period):
         ny_wftc,
         dc_ctc,
         middle_class_tax_credit,
+        end_child_poverty_act,
+        boost_middle_class_tax_credit,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
 
