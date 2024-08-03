@@ -3,12 +3,15 @@
   output:
     is_lifeline_eligible: true
 
-- name: Family with no SNAP and income >135% of FPG is ineligible
+- name: Family with no categorical eligibility and income >135% of FPG is ineligible
   period: 2022
   input:
     fcc_fpg_ratio: 1.5
     snap: 0
     medicaid: 0
+    is_head_start_income_eligible: false
+    fdpir: 0
+    tanf: 0
   output:
     is_lifeline_eligible: false
 
@@ -18,5 +21,8 @@
     fcc_fpg_ratio: 1.5
     snap: 100
     medicaid: 0
+    is_head_start_income_eligible: false
+    fdpir: 0
+    tanf: 0
   output:
     is_lifeline_eligible: true

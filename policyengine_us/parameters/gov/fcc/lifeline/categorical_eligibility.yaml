@@ -4,14 +4,13 @@ values:
     - medicaid
     - snap
     - ssi
+    - is_head_start_income_eligible
+    - fdpir
+    - tanf
     # Also not implemented:
-    # - Federal Public Housing Assistance
     # - Veterans and Survivors Pension Benefit
     # - Tribal programs:
     #   - Bureau of Indian Affairs general assistance
-    #   - Tribally administered Temporary Assistance for Needy Families
-    #   - Head Start (only those households meeting its income qualifying standard)
-    #   - Food Distribution Program on Indian Reservations
 metadata:
   period: month
   reference:

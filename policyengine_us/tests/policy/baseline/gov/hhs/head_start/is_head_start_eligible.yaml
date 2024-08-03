@@ -1,83 +1,53 @@
-- name: Not Head Start eligible because not age eligible
+- name: Not Head Start eligible 1
   period: 2021
   input:
-    tanf: 0
-    ssi: 0
-    snap: 0
-    is_homeless: false
-    was_in_foster_care: false
-    adjusted_gross_income: 0
-    tax_unit_fpg: 0
-    age: 20
+    age: 3
+    is_head_start_program_eligible: false
+    is_head_start_income_eligible: false
   output:
     is_head_start_eligible: false
 
-- name: Not Head Start eligible because only age eligible
+- name: Not Head Start eligible 2
   period: 2021
   input:
-    tanf: 0
-    ssi: 0
-    snap: 0
-    is_homeless: false
-    was_in_foster_care: false
-    adjusted_gross_income: 100
-    tax_unit_fpg: 0
     age: 4
+    is_head_start_program_eligible: false
+    is_head_start_income_eligible: false
   output:
     is_head_start_eligible: false
 
-- name: Head Start eligible via age and income
+- name: Not Head Start eligible 3
   period: 2021
   input:
-    tanf: 0
-    ssi: 0
-    snap: 0
-    is_homeless: false
-    was_in_foster_care: false
-    adjusted_gross_income: 100
-    tax_unit_fpg: 1_000
-    age: 4
+    age: 5
+    is_head_start_program_eligible: false
+    is_head_start_income_eligible: true
+  output:
+    is_head_start_eligible: false
+
+- name: Head Start eligible 1
+  period: 2021
+  input:
+    age: 3
+    is_head_start_program_eligible: true
+    is_head_start_income_eligible: false
   output:
     is_head_start_eligible: true
 
-- name: Head Start eligible via age and one program
+- name: Head Start eligible 2
   period: 2021
   input:
-    tanf: 100
-    ssi: 0
-    snap: 0
-    is_homeless: false
-    was_in_foster_care: false
-    adjusted_gross_income: 100
-    tax_unit_fpg: 0
-    age: 4
+    age: 3
+    is_head_start_program_eligible: false
+    is_head_start_income_eligible: true
   output:
     is_head_start_eligible: true
 
-- name: Head Start eligible via age and more than one program
+- name: Head Start eligible 3
   period: 2021
   input:
-    tanf: 0
-    ssi: 0
-    snap: 0
-    is_homeless: true
-    was_in_foster_care: true
-    adjusted_gross_income: 100
-    tax_unit_fpg: 0
     age: 4
-  output:
-    is_head_start_eligible: true
-
-- name: Head Start eligible via all criteria
-  period: 2021
-  input:
-    tanf: 0
-    ssi: 20
-    snap: 100
-    is_homeless: false
-    was_in_foster_care: true
-    adjusted_gross_income: 100
-    tax_unit_fpg: 1_000
-    age: 4
+    is_head_start_program_eligible: true
+    is_head_start_income_eligible: true
   output:
     is_head_start_eligible: true

@@ -12,18 +12,13 @@ class is_early_head_start_eligible(Variable):
     )
 
     def formula(person, period, parameters):
-        tax_unit = person.tax_unit
         p = parameters(period).gov.hhs.head_start
-
-        programs = add(tax_unit, period, p.categorical_eligibility)
-        is_program_eligible = np.any(programs)
-
-        federal_agi = tax_unit("adjusted_gross_income", period)
-        is_income_eligible = federal_agi <= tax_unit("tax_unit_fpg", period)
 
         age = person("age", period)
         is_age_eligible = (age < p.early_head_start.age_limit) | person(
             "is_pregnant", period
         )
+        is_program_eligible = person("is_head_start_program_eligible", period)
+        is_income_eligible = person("is_head_start_income_eligible", period)
 
         return is_age_eligible & (is_income_eligible | is_program_eligible)

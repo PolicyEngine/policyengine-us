@@ -1,104 +1,59 @@
-- name: Not Early Head Start eligible because not age eligible
+- name: Not Early Head Start eligible 1
   period: 2021
   input:
-    tanf: 0
-    ssi: 0
-    snap: 0
-    is_homeless: false
-    was_in_foster_care: false
-    adjusted_gross_income: 0
-    tax_unit_fpg: 0
-    age: 20
+    age: 3
     is_pregnant: false
+    is_head_start_program_eligible: false
+    is_head_start_income_eligible: false
   output:
     is_early_head_start_eligible: false
 
-- name: Not Early Head Start eligible because only age eligible
+- name: Not Early Head Start eligible 2
   period: 2021
   input:
-    tanf: 0
-    ssi: 0
-    snap: 0
-    is_homeless: false
-    was_in_foster_care: false
-    adjusted_gross_income: 100
-    tax_unit_fpg: 0
-    age: 2
+    age: 3
     is_pregnant: false
+    is_head_start_program_eligible: false
+    is_head_start_income_eligible: true
   output:
     is_early_head_start_eligible: false
 
-- name: Not Early Head Start eligible because only age eligible via pregnancy
+- name: Not Early Head Start eligible 3
   period: 2021
   input:
-    tanf: 0
-    ssi: 0
-    snap: 0
-    is_homeless: false
-    was_in_foster_care: false
-    adjusted_gross_income: 100
-    tax_unit_fpg: 0
-    age: 30
+    age: 28
     is_pregnant: true
+    is_head_start_program_eligible: false
+    is_head_start_income_eligible: false
   output:
     is_early_head_start_eligible: false
 
-- name: Early Head Start eligible via age and income
+- name: Early Head Start eligible 1
   period: 2021
   input:
-    tanf: 0
-    ssi: 0
-    snap: 0
-    is_homeless: false
-    was_in_foster_care: false
-    adjusted_gross_income: 100
-    tax_unit_fpg: 1_000
-    age: 33
-    is_pregnant: true
-  output:
-    is_early_head_start_eligible: true
-
-- name: Early Head Start eligible via age and one program
-  period: 2021
-  input:
-    tanf: 100
-    ssi: 0
-    snap: 0
-    is_homeless: false
-    was_in_foster_care: false
-    adjusted_gross_income: 100
-    tax_unit_fpg: 0
-    age: 2
-    is_pregnant: false
-  output:
-    is_early_head_start_eligible: true
-
-- name: Early Head Start eligible via age and more than one program
-  period: 2021
-  input:
-    tanf: 0
-    ssi: 0
-    snap: 0
-    is_homeless: true
-    was_in_foster_care: true
-    adjusted_gross_income: 100
-    tax_unit_fpg: 0
     age: 1
     is_pregnant: false
+    is_head_start_program_eligible: true
+    is_head_start_income_eligible: false
   output:
     is_early_head_start_eligible: true
 
-- name: Early Head Start eligible via all criteria
+- name: Early Head Start eligible 2
   period: 2021
   input:
-    tanf: 0
-    ssi: 20
-    snap: 100
-    is_homeless: false
-    was_in_foster_care: true
-    adjusted_gross_income: 100
-    tax_unit_fpg: 1_000
-    age: 29
+    age: 26
     is_pregnant: true
+    is_head_start_program_eligible: false
+    is_head_start_income_eligible: true
+  output:
+    is_early_head_start_eligible: true
+
+- name: Early Head Start eligible 3
+  period: 2021
+  input:
+    age: 2
+    is_pregnant: false
+    is_head_start_program_eligible: true
+    is_head_start_income_eligible: true
   output:
     is_early_head_start_eligible: true
