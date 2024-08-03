@@ -1,0 +1,37 @@
+description: Denver average median income for different houeshold size.
+
+metadata:
+  type: single_amount
+  threshold_unit: person
+  amount_unit: currency-USD
+  period: year
+  label: Denver AMI
+  reference:
+    - title: Denver average median income 2023
+      href: https://denvergov.org/files/assets/public/v/1/housing-stability/documents/2023-incomerent-limits/host-income-rent-limit-2023-home.pdf#page=1
+
+brackets:
+  - threshold:
+      2023-01-01: 1
+    amount:
+      2023-01-01: 86_870
+  - threshold:
+      2023-01-01: 2
+    amount:
+      2023-01-01: 99_280
+  - threshold:
+      2023-01-01: 3
+    amount:
+      2023-01-01: 111_690
+  - threshold:
+      2023-01-01: 4
+    amount:
+      2023-01-01: 124_100
+  - threshold:
+      2023-01-01: 5
+    amount:
+      2023-01-01: 134_028
+  - threshold:
+      2023-01-01: 6
+    amount:
+      2023-01-01: 143_956
