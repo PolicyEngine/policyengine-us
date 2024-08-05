@@ -1,14 +1,9 @@
-description: California provides CARE eligibility to households that are enrolled in these programs.
+description: California provides CARE eligibility to tribal households that are enrolled in these programs.
 values:
   2022-06-01:
-    - medicaid
-    - wic
-    - snap
-    - ssi
+    - tanf
+    - head_start
     # Also these, not in our model:
-    # NSL
-    # Healthy Families A & B
-    # LIHEAP
     # Bureau of Indian Affairs General Assistance
 metadata:
   reference:
@@ -19,4 +14,4 @@ metadata:
     - title: CARE/FERA Program
       href: https://www.cpuc.ca.gov/lowincomerates/
   unit: list
-  label: CARE non-tribal categorical eligibility programs
+  label: CARE tribal categorical eligibility programs
