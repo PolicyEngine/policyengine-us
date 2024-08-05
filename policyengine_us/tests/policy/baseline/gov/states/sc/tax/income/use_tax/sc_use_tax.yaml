@@ -3,7 +3,7 @@
   input:
     county_str: ABBEVILLE_COUNTY_SC
     state_code: SC
-    adjusted_gross_income: 10_000
+    out_of_state_purchase: 10_000
   output:
     sc_use_tax: 700
 
@@ -12,7 +12,7 @@
   input:
     county_str: AIKEN_COUNTY_SC
     state_code: SC
-    adjusted_gross_income: 10_000
+    out_of_state_purchase: 10_000
   output:
     sc_use_tax: 800
 
@@ -22,7 +22,7 @@
   input:
     county_str: CHARLESTON_COUNTY_SC
     state_code: SC
-    adjusted_gross_income: 10_000
+    out_of_state_purchase: 10_000
   output:
     sc_use_tax: 900
 
@@ -31,7 +31,7 @@
   input:
     county_str: GEORGETOWN_COUNTY_SC
     state_code: SC
-    adjusted_gross_income: 10_000
+    out_of_state_purchase: 10_000
   output:
     sc_use_tax: 600
     

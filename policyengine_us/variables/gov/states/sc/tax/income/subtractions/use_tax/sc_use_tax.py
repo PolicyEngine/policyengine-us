@@ -11,7 +11,7 @@ class sc_use_tax(Variable):
     defined_for = StateCode.SC
 
     def formula(tax_unit, period, parameters):
-        income = tax_unit("adjusted_gross_income", period)
+        income = tax_unit("out_of_state_purchase", period)
         county = tax_unit.household("county_str", period)
         sc_use_tax_in_group_one_county = tax_unit.household(
             "sc_use_tax_in_group_one_county", period
@@ -25,7 +25,7 @@ class sc_use_tax(Variable):
 
         p = parameters(period).gov.states.sc.tax.income.use_tax
 
-        # Compute main amount, a dollar amount based on SC AGI.
+        # Compute main amount, a dollar amount based on out of state purchase.
         additional_rate = select(
             [
                 sc_use_tax_in_group_one_county,
