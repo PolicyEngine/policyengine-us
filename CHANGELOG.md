@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.40.1] - 2024-08-05 00:52:28
+
+### Added
+
+- Consistent unit usage in list parameters.
+
 ## [1.40.0] - 2024-08-02 17:55:58
 
 ### Added
@@ -9280,6 +9286,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.40.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.40.0...1.40.1
 [1.40.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.39.0...1.40.0
 [1.39.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.38.0...1.39.0
 [1.38.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.37.0...1.38.0
