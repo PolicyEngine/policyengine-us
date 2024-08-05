@@ -6,3 +6,4 @@ class head_start(Variable):
     entity = Person
     label = "Amount of Head Start benefit"
     definition_period = YEAR
+    defined_for = "is_head_start_eligible"
