@@ -46,7 +46,9 @@ jobs:
       - name: Install package
         run: make install
       - name: Run tests
-        run: make test
+        run: |
+          export PATH=$PATH:/opt/conda/envs/policyengine/bin/
+          make test
         env:
           POVERTYTRACKER_RAW_URL: ${{ secrets.POVERTYTRACKER_RAW_URL }}
       - uses: codecov/codecov-action@v3
