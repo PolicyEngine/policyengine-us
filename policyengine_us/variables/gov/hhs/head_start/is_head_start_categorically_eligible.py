@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class is_head_start_program_eligible(Variable):
+class is_head_start_categorically_eligible(Variable):
     value_type = bool
     entity = Person
     label = "Early Head Start or Head Start program eligible"

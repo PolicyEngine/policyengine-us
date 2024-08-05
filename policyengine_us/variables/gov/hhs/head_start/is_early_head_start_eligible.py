@@ -18,7 +18,9 @@ class is_early_head_start_eligible(Variable):
         is_age_eligible = (age < p.early_head_start.age_limit) | person(
             "is_pregnant", period
         )
-        is_program_eligible = person("is_head_start_program_eligible", period)
+        is_program_eligible = person(
+            "is_head_start_categorically_eligible", period
+        )
         is_income_eligible = person("is_head_start_income_eligible", period)
 
         return is_age_eligible & (is_income_eligible | is_program_eligible)
