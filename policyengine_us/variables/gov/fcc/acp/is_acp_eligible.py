@@ -34,14 +34,6 @@ class is_acp_eligible(Variable):
             np.any(non_tribal_lifeline_programs),
         )
 
-        # non_tribal_lifeline_categorically_eligible = np.any(
-        #     [
-        #         add(spm_unit, period, [program])
-        #         for program in fcc.lifeline.categorical_eligibility
-        #     ],
-        #     axis=0,
-        # )
-
         fpg_eligible = spm_unit("fcc_fpg_ratio", period) <= fcc.acp.fpg_limit
         # Cannot be simultaneously enrolled in Emergency Broadband Benefit.
         ebb_enrolled = spm_unit("ebb", period) > 0
