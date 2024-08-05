@@ -6,6 +6,3 @@ class head_start(Variable):
     entity = Person
     label = "Amount of Head Start benefit"
     definition_period = YEAR
-
-    def formula(person, period, parameters):
-        pass
