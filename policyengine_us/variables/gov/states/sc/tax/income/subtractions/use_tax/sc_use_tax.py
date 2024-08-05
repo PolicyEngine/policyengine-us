@@ -37,7 +37,7 @@ class sc_use_tax(Variable):
                 p.group_two,
                 p.group_three,
             ],
-            # Some counties are excluded from the additional use tax 
+            # Some counties are excluded from the additional use tax
             default=0,
         )
 

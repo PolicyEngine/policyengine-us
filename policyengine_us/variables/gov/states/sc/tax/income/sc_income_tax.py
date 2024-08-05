@@ -8,5 +8,5 @@ class sc_income_tax(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.SC
-    adds = ["sc_income_tax_before_refundable_credits","sc_use_tax"]
+    adds = ["sc_income_tax_before_refundable_credits", "sc_use_tax"]
     subtracts = ["sc_refundable_credits"]
