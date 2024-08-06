@@ -1,6 +1,9 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.household.demographic.person.immigration_status import ImmigrationStatus
+from policyengine_us.variables.household.demographic.person.immigration_status import (
+    ImmigrationStatus,
+)
 import numpy as np
+
 
 class is_ssi_qualified_noncitizen(Variable):
     value_type = bool
@@ -10,19 +13,20 @@ class is_ssi_qualified_noncitizen(Variable):
 
     def formula(person, period, parameters):
         status = person("immigration_status", period)
-        has_40qq_earnings = person("ssi_40qq_earnings", period)
-        
-        # Get the list of qualified noncitizen statuses to look for from parameters
+        qualifying_quarters_earnings = person("ssi_qualifying_quarters_earnings", period)
+        qualifying_quarters_threshold = parameters(period).gov.ssa.ssi.income.sources.ssi_qualifying_quarters_threshold
         qualified_statuses = parameters(period).gov.ssa.ssi.eligibility.status.qualified_noncitizen
 
-        # Create list of tests against immigration status
         qualified_status_checks = []
         for qualified_status in qualified_statuses:
+            # LPR's need 40 Qualifying Quarters of Earnings
             if qualified_status == "LEGAL_PERMANENT_RESIDENT":
-                # LPR's need 40 Qualifying Quarters of Earnings
-                qualified_status_checks.append(np.logical_and(status == ImmigrationStatus.LEGAL_PERMANENT_RESIDENT, has_40qq_earnings))
+                check = np.logical_and(
+                    status == ImmigrationStatus.LEGAL_PERMANENT_RESIDENT,
+                    qualifying_quarters_earnings >= qualifying_quarters_threshold
+                )
             else:
-                qualified_status_checks.append(status == getattr(ImmigrationStatus, qualified_status))
+                check = status == getattr(ImmigrationStatus, qualified_status)
+            qualified_status_checks.append(check)
 
-        # If any of the tests pass, return True
-        return np.any(qualified_status_checks)
+        return np.any(qualified_status_checks, axis=0)
