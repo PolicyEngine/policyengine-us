@@ -30,10 +30,10 @@ class denver_property_tax_relief(Variable):
         # income means earnings/wages, social security income, other income
         income = spm_unit("spm_unit_net_income", period)
         size = spm_unit("spm_unit_size", period)
-        homeowner_income_limit = p.ami.amount.calc(size) * p.ami.rate.homeowner
+        homeowner_income_limit = p.ami.ami.calc(size) * p.ami.rate.homeowner
         homeowner_income_eligible = income <= homeowner_income_limit
 
-        renter_income_limit = p.ami.amount.calc(size) * p.ami.rate.renter.calc(
+        renter_income_limit = p.ami.ami.calc(size) * p.ami.rate.renter.calc(
             size
         )
         renter_income_eligible = income <= renter_income_limit

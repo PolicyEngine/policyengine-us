@@ -1,6 +1,10 @@
 description: The Denver Property Tax Relief Program sets the renter income limit by multiplying the Denver Average Median Income by this rate. 
 brackets:
   - threshold:
+      2023-01-01: 0
+    amount:
+      2023-01-01: 0
+  - threshold:
       2023-01-01: 1
     amount:
       2023-01-01: 0.25
@@ -14,7 +18,7 @@ metadata:
   amount_unit: /1
   type: single_amount
   threshold_period: year
-  label: Denver AMI rate for renter
+  label: Denver renter average median income
   reference:
     - title: Denver property tax relief program instructions 2023
       href: https://denvergov.org/files/assets/public/v/2/denver-human-services/documents/property-tax-relief/dptr-instructions-2023.pdf#page=1

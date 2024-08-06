@@ -5,12 +5,16 @@ metadata:
   threshold_unit: person
   amount_unit: currency-USD
   period: year
-  label: Denver AMI
+  label: Denver average median income 
   reference:
     - title: Denver average median income 2023
       href: https://denvergov.org/files/assets/public/v/1/housing-stability/documents/2023-incomerent-limits/host-income-rent-limit-2023-home.pdf#page=1
 
 brackets:
+  - threshold:
+      2023-01-01: 0
+    amount:
+      2023-01-01: 0
   - threshold:
       2023-01-01: 1
     amount:
