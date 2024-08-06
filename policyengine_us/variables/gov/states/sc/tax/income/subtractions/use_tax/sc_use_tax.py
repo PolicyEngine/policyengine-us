@@ -11,7 +11,7 @@ class sc_use_tax(Variable):
     defined_for = StateCode.SC
 
     def formula(tax_unit, period, parameters):
-        out_of_state_purchases = tax_unit("out_of_state_purchase", period)
+        out_of_state_purchases = tax_unit("out_of_state_purchase_value", period)
         county = tax_unit.household("county_str", period)
         sc_use_tax_in_group_one_county = tax_unit.household(
             "sc_use_tax_in_group_one_county", period
