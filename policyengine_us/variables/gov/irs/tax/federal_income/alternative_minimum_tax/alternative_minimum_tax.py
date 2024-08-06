@@ -119,10 +119,8 @@ class alternative_minimum_tax(Variable):
         lump_sum_distributions = tax_unit(
             "form_4972_lumpsum_distributions", period
         )
-        tax_unit("capital_gains_tax", period)
-        tax_before_credits = (
-            regular_tax_before_credits + regular_tax_before_credits
-        )
+        capital_gains = tax_unit("capital_gains_tax", period)
+        tax_before_credits = regular_tax_before_credits + capital_gains
         return max_(
             0,
             line33
