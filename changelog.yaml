@@ -7856,3 +7856,9 @@
     added:
     - North Carolina use tax.
   date: 2024-08-06 16:57:19
+- bump: patch
+  changes:
+    fixed:
+    - Adjust the income_tax_before_refundable_credits variable to be neutralized when
+      abolishing federal income tax.
+  date: 2024-08-06 17:30:53
