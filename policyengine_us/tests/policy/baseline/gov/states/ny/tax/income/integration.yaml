@@ -45,4 +45,5 @@
         members: [person1, person2, person3, person4, person5, person6]
         state_fips: 36  # NY
   output:  # expected results from patched TAXSIM35 2024-02-15 version
+    ny_ctc: 1_320
     ny_income_tax: -680.80

@@ -1,0 +1,30 @@
+description: New York State matches this fraction of the Empire State Credit as an additional credit, based on the federal adjusted gross income.
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: /1
+  period: year
+  label: New York additional Empire State Child Credit match
+  reference:
+    - title: New York Instructions for Form IT-201 Line 40
+      href: https://www.tax.ny.gov/pit/empire-child-credit-payments.htm
+    - title:  Section 606 Credits against tax (c-1) (4) (A)
+      href: https://www.nysenate.gov/legislation/laws/TAX/606
+
+brackets:
+  - threshold:
+      2021-01-01: 0
+    amount:
+      2021-01-01: 1
+  - threshold:
+      2021-01-01: 10_000
+    amount:
+      2021-01-01: 0.75
+  - threshold:
+      2021-01-01: 25_000
+    amount:
+      2021-01-01: 0.5
+  - threshold:
+      2021-01-01: 50_000
+    amount:
+      2021-01-01: 0.25
