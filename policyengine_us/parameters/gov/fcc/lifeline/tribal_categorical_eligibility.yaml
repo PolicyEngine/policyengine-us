@@ -1,15 +1,16 @@
-description: Program participation that entitles a non-tribal household to the Lifeline program
+description: Program participation that entitles a tribal household to the Lifeline program
 values:
   2016-12-01:
-    - medicaid
-    - snap
-    - ssi
+    - head_start
+    - fdpir
+    - tanf
     # Also not implemented:
-    # - Veterans and Survivors Pension Benefit
+    # - Tribal programs:
+    #   - Bureau of Indian Affairs general assistance
 metadata:
   period: month
   unit: list
-  label: Lifeline non-tribal qualifying programs
+  label: Lifeline tribal qualifying programs
   reference:
     - title: 47 CFR § 54.409 - Consumer qualification for Lifeline.
       href: https://www.law.cornell.edu/cfr/text/47/54.409
