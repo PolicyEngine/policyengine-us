@@ -1,0 +1,49 @@
+- name: NE refundable CTC ineligible child because of age
+  period: 2024
+  input:
+    is_tax_unit_dependent: true
+    age: 6
+    childcare_expenses: 10
+    state_code: NE
+  output:
+    ne_refundable_ctc_eligible_child: false
+
+- name: NE refundable CTC ineligible child because not dependent
+  period: 2024
+  input:
+    is_tax_unit_dependent: false
+    age: 4
+    childcare_expenses: 10
+    state_code: NE
+  output:
+    ne_refundable_ctc_eligible_child: false
+
+- name: NE refundable CTC ineligible child because not in child care
+  period: 2024
+  input:
+    is_tax_unit_dependent: true
+    age: 5
+    childcare_expenses: 0
+    state_code: NE
+  output:
+    ne_refundable_ctc_eligible_child: false
+
+- name: NE refundable CTC eligible child 1
+  period: 2024
+  input:
+    is_tax_unit_dependent: true
+    age: 5
+    childcare_expenses: 10
+    state_code: NE
+  output:
+    ne_refundable_ctc_eligible_child: true
+
+- name: NE refundable CTC eligible child 2
+  period: 2024
+  input:
+    is_tax_unit_dependent: true
+    age: 4
+    childcare_expenses: 10
+    state_code: NE
+  output:
+    ne_refundable_ctc_eligible_child: true

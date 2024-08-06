@@ -1,0 +1,23 @@
+description: Nebraska provides this refundable child credit amount for each qualifying dependent, depending on adjusted gross income.
+metadata:
+  period: year
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: currency-USD
+  label: Nebraska child tax credit amount
+  reference:
+    - title: 2023 Nebraska Legislative Changes, Income Tax, Child Care Tax Credit Act
+      href: https://revenue.nebraska.gov/about/2023-nebraska-legislative-changes
+brackets:
+  - threshold:
+      2024-01-01: 0
+    amount:
+      2024-01-01: 2_000
+  - threshold:
+      2024-01-01: 75_000
+    amount:
+      2024-01-01: 1_000
+  - threshold:
+      2024-01-01: 150_000
+    amount:
+      2024-01-01: 0
