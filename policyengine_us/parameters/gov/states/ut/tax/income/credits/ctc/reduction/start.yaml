@@ -1,0 +1,24 @@
+description: Utah phases the child tax credit out for filers with state adjusted gross income and tax exempt interest above this threshold, based on filing status.
+
+metadata:
+  unit: currency-USD
+  breakdown:
+    - filing_status
+  period: year
+  label: Utah child tax credit reduction start
+  reference:
+    - title: Utah Code §59-10-1047 (4)
+      href: https://le.utah.gov/xcode/Title59/Chapter10/59-10-S1047.html?v=C59-10-S1047_2023050320240101
+    - title: Utah Code §59-10-1047 (4) # Law effective 2025
+      href: https://le.utah.gov/xcode/Title59/Chapter10/59-10-S1047.html?v=C59-10-S1047_2025010120240501
+
+SINGLE:
+  2024-01-01: 43_000
+HEAD_OF_HOUSEHOLD:
+  2024-01-01: 43_000
+JOINT:
+  2024-01-01: 54_000
+SURVIVING_SPOUSE:
+  2024-01-01: 54_000
+SEPARATE:
+  2024-01-01: 27_000 
