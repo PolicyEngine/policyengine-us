@@ -6,7 +6,7 @@ class az_countable_household_size(Variable):
     entity = SPMUnit
     label = "Arizona Cash Assistance Countable Household Size"
     definition_period = YEAR
-    defined_for: StateCode.AZ
+    defined_for: "az_hhs_tanf_eligible"
 
     def formula(spm_unit, period, parameters):
         p = parameters(

@@ -9,7 +9,7 @@ class az_cash_assistance(Variable):
     reference = (
         "https://az.db101.org/az/programs/income_support/tanf/program2.htm"
     )
-    defined_for = "az_hhs_tanf_eligibility"
+    defined_for = "az_hhs_tanf_eligible"
 
     def formula(spm_unit, period, parameters):
         payment_standard_threshold = spm_unit(

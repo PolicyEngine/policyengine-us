@@ -7,7 +7,7 @@ class az_fpg_baseline(Variable):
     label = "Arizona Cash Assistance Payment Standard fpg Baseline"
     definition_period = YEAR
     reference = "https://des.az.gov/services/child-and-family/cash-assistance/cash-assistance-ca-income-eligibility-guidelines"
-    defined_for = StateCode.AZ
+    defined_for = "az_hhs_tanf_eligible"
 
     def formula(spm_unit, period, parameters):
         fpg_year = f"1992-01-01"
@@ -17,5 +17,4 @@ class az_fpg_baseline(Variable):
         p_fpg = parameters(fpg_year).gov.hhs.fpg
         p1 = p_fpg.first_person[state_group]
         pn = p_fpg.additional_person[state_group]
-        fpg_baseline = p1 + pn * (cap_household_size - 1)
-        return fpg_baseline
+        return p1 + pn * (cap_household_size - 1)

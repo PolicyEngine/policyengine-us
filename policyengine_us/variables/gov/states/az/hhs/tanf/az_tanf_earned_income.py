@@ -6,7 +6,7 @@ class az_tanf_earned_income(Variable):
     entity = SPMUnit
     label = "Earned income for the Arizona Cash Assistance"
     definition_period = MONTH
-    defined_for = StateCode.AZ
+    defined_for = "az_hhs_tanf_eligible"
 
     def formula(spm_unit, period, parameters):
         # Earned income of the spm unit

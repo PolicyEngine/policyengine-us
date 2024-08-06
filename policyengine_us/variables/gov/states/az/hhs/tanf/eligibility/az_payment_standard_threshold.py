@@ -7,7 +7,7 @@ class az_payment_standard_threshold(Variable):
     label = "Arizona Cash Assistance Payment Standard"
     definition_period = MONTH
     reference = "https://des.az.gov/services/child-and-family/cash-assistance/cash-assistance-ca-income-eligibility-guidelines"
-    defined_for = StateCode.AZ
+    defined_for = "az_hhs_tanf_eligible"
 
     def formula(spm_unit, period, parameters):
         monthly_fpg_baseline = spm_unit("az_fpg_baseline", period)
