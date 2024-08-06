@@ -5,7 +5,6 @@ class ne_refundable_ctc_eligible_child(Variable):
     value_type = bool
     entity = Person
     label = "Nebraska refundable Child Tax Credit eligible child"
-    unit = USD
     definition_period = YEAR
     reference = (
         "https://revenue.nebraska.gov/about/2023-nebraska-legislative-changes"
@@ -18,6 +17,7 @@ class ne_refundable_ctc_eligible_child(Variable):
         age = person("age", period)
         age_eligible = age <= p.age_threshold
         has_childcare_expenses = (
-            person.spm_unit("childcare_expenses", period) > 0
+            person.spm_unit("spm_unit_pre_subsidy_childcare_expenses", period)
+            > 0
         )
         return is_dependent & age_eligible & has_childcare_expenses

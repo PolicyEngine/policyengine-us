@@ -3,7 +3,7 @@
   input:
     is_tax_unit_dependent: true
     age: 6
-    childcare_expenses: 10
+    spm_unit_pre_subsidy_childcare_expenses: 10
     state_code: NE
   output:
     ne_refundable_ctc_eligible_child: false
@@ -13,7 +13,7 @@
   input:
     is_tax_unit_dependent: false
     age: 4
-    childcare_expenses: 10
+    spm_unit_pre_subsidy_childcare_expenses: 10
     state_code: NE
   output:
     ne_refundable_ctc_eligible_child: false
@@ -23,7 +23,7 @@
   input:
     is_tax_unit_dependent: true
     age: 5
-    childcare_expenses: 0
+    spm_unit_pre_subsidy_childcare_expenses: 0
     state_code: NE
   output:
     ne_refundable_ctc_eligible_child: false
@@ -33,7 +33,7 @@
   input:
     is_tax_unit_dependent: true
     age: 5
-    childcare_expenses: 10
+    spm_unit_pre_subsidy_childcare_expenses: 10
     state_code: NE
   output:
     ne_refundable_ctc_eligible_child: true
@@ -43,7 +43,7 @@
   input:
     is_tax_unit_dependent: true
     age: 4
-    childcare_expenses: 10
+    spm_unit_pre_subsidy_childcare_expenses: 10
     state_code: NE
   output:
     ne_refundable_ctc_eligible_child: true
