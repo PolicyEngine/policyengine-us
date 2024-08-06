@@ -1,5 +1,6 @@
 from policyengine_us.model_api import *
 
+
 class ImmigrationStatus(Enum):
     CITIZEN = "Citizen"
     LEGAL_PERMANENT_RESIDENT = "Legal Permanent Resident"
@@ -9,8 +10,11 @@ class ImmigrationStatus(Enum):
     CUBAN_HAITIAN_ENTRANT = "Cuban/Haitian Entrant"
     CONDITIONAL_ENTRANT = "Conditional Entrant"
     PAROLED_ONE_YEAR = "Paroled for at Least One Year"
-    DACA_TPS = "Deferred Action for Childhood Arrivals or Temporary Protected Status"
+    DACA_TPS = (
+        "Deferred Action for Childhood Arrivals or Temporary Protected Status"
+    )
     UNDOCUMENTED = "Undocumented"
+
 
 class immigration_status(Variable):
     value_type = Enum
