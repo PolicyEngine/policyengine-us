@@ -3,7 +3,7 @@
   output:
     is_lifeline_eligible: true
 
-- name: Family with no SNAP and income >135% of FPG is ineligible
+- name: Family with no categorical eligibility and income >135% of FPG is ineligible
   period: 2022
   input:
     fcc_fpg_ratio: 1.5
@@ -18,5 +18,27 @@
     fcc_fpg_ratio: 1.5
     snap: 100
     medicaid: 0
+  output:
+    is_lifeline_eligible: true
+
+- name: Tribal family with no categorical eligibility and income >135% of FPG is ineligible
+  period: 2022
+  input:
+    fcc_fpg_ratio: 1.5
+    is_on_tribal_land: true
+    head_start: false
+    fdpir: 0
+    tanf: 0
+  output:
+    is_lifeline_eligible: false
+
+- name: Tribal family with income >135% of FPG that participates in TANF is eligible
+  period: 2022
+  input:
+    fcc_fpg_ratio: 1.5
+    is_on_tribal_land: true
+    head_start: false
+    fdpir: 0
+    tanf: 1
   output:
     is_lifeline_eligible: true
