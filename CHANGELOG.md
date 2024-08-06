@@ -5,6 +5,78 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.43.1] - 2024-08-06 21:26:16
+
+### Added
+
+- California TANF resources variable inputs.
+
+## [1.43.0] - 2024-08-06 18:44:12
+
+### Added
+
+- Revised State Median Income (SMI) Ceilings 2024
+
+## [1.42.1] - 2024-08-06 17:30:53
+
+### Fixed
+
+- Adjust the income_tax_before_refundable_credits variable to be neutralized when abolishing federal income tax.
+
+## [1.42.0] - 2024-08-06 16:57:19
+
+### Added
+
+- North Carolina use tax.
+
+## [1.41.0] - 2024-08-05 21:40:16
+
+### Added
+
+- Head Start and Early Head Start programs eligibility.
+
+## [1.40.1] - 2024-08-05 00:52:28
+
+### Added
+
+- Consistent unit usage in list parameters.
+
+## [1.40.0] - 2024-08-02 17:55:58
+
+### Added
+
+- Indiana additional exemption amount for adopted children.
+
+## [1.39.0] - 2024-08-02 03:31:58
+
+### Added
+
+- BOOST act middle class tax credit.
+
+## [1.38.0] - 2024-08-01 15:51:55
+
+### Added
+
+- July 2024 CalWorks vehicle value increase.
+
+## [1.37.0] - 2024-08-01 13:55:37
+
+### Added
+
+- Remove the parameter caching from the state variables.
+
+## [1.36.0] - 2024-08-01 13:25:55
+
+### Added
+
+- California & Oregon higher Lifeline benefit amount.
+
+## [1.35.0] - 2024-07-31 07:15:11
+
+### Added
+
+- Decouple the WFTC child age eligibility from the NY exemptions child age threshold.
+
 ## [1.34.7] - 2024-07-30 20:20:10
 
 ### Fixed
@@ -9244,6 +9316,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.43.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.43.0...1.43.1
+[1.43.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.42.1...1.43.0
+[1.42.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.42.0...1.42.1
+[1.42.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.41.0...1.42.0
+[1.41.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.40.1...1.41.0
+[1.40.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.40.0...1.40.1
+[1.40.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.39.0...1.40.0
+[1.39.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.38.0...1.39.0
+[1.38.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.37.0...1.38.0
+[1.37.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.36.0...1.37.0
+[1.36.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.35.0...1.36.0
+[1.35.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.34.7...1.35.0
 [1.34.7]: https://github.com/PolicyEngine/policyengine-us/compare/1.34.6...1.34.7
 [1.34.6]: https://github.com/PolicyEngine/policyengine-us/compare/1.34.5...1.34.6
 [1.34.5]: https://github.com/PolicyEngine/policyengine-us/compare/1.34.4...1.34.5
