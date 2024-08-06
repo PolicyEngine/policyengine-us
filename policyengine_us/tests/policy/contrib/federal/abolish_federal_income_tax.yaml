@@ -9,6 +9,7 @@
     hi_refundable_credits: 600
   output:
     household_refundable_tax_credits: 600
+    household_state_tax_before_refundable_credits: 1_000
     household_tax_before_refundable_credits: 1_000
 
 - name: Multiple state refundable credits
@@ -23,6 +24,7 @@
     co_refundable_credits: 900
   output:
     household_refundable_tax_credits: 1_500
+    household_state_tax_before_refundable_credits: 1_000
     household_tax_before_refundable_credits: 1_000
 
 - name: No reform
@@ -35,4 +37,5 @@
     hi_refundable_credits: 600
   output:
     household_refundable_tax_credits: 1_400
+    household_state_tax_before_refundable_credits: 1_000
     household_tax_before_refundable_credits: 2_200

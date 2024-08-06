@@ -1,0 +1,65 @@
+- name: Not Head Start program eligible
+  period: 2021
+  input:
+    tanf: 0
+    ssi: 0
+    snap: 0
+    is_homeless: false
+    was_in_foster_care: false
+  output:
+    is_head_start_categorically_eligible: false
+
+- name: Head Start program eligible via one program 1
+  period: 2021
+  input:
+    tanf: 0
+    ssi: 0
+    snap: 0
+    is_homeless: false
+    was_in_foster_care: true
+  output:
+    is_head_start_categorically_eligible: true
+
+- name: Head Start program eligible via one program 2
+  period: 2021
+  input:
+    tanf: 1
+    ssi: 0
+    snap: 0
+    is_homeless: false
+    was_in_foster_care: false
+  output:
+    is_head_start_categorically_eligible: true
+
+- name: Head Start program eligible via multiple programs 1
+  period: 2021
+  input:
+    tanf: 0
+    ssi: 100
+    snap: 10
+    is_homeless: false
+    was_in_foster_care: true
+  output:
+    is_head_start_categorically_eligible: true
+
+- name: Head Start program eligible via multiple programs 2
+  period: 2021
+  input:
+    tanf: 0
+    ssi: 0
+    snap: 10
+    is_homeless: true
+    was_in_foster_care: false
+  output:
+    is_head_start_categorically_eligible: true
+
+- name: Head Start program eligible via multiple programs 3
+  period: 2021
+  input:
+    tanf: 0
+    ssi: 50
+    snap: 10
+    is_homeless: true
+    was_in_foster_care: true
+  output:
+    is_head_start_categorically_eligible: true

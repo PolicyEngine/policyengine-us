@@ -20,4 +20,3 @@ class household_state_benefits(Variable):
         "ca_la_ez_save",
         "co_oap",
     ]
-    exhaustive_parameter_dependencies = "gov.states"
