@@ -3,9 +3,13 @@
   input:
     lifeline: 0
     snap: 0
+    head_start: false
+    fdpir: 0
+    tanf: 0
     ebb: 0
     medicaid: 0
     pell_grant: 0
+    is_on_tribal_land: false
     fcc_fpg_ratio: 2.01
   output:
     is_acp_eligible: false
@@ -15,8 +19,12 @@
   input:
     lifeline: 0
     snap: 0
+    head_start: false
+    fdpir: 0
+    tanf: 0
     ebb: 0
     pell_grant: 0
+    is_on_tribal_land: false
     fcc_fpg_ratio: 2
   output:
     is_acp_eligible: true
@@ -62,6 +70,42 @@
     snap: 0
     ebb: 0
     pell_grant: 1
+    fcc_fpg_ratio: 2.1
+  output:
+    is_acp_eligible: true
+
+- name: Tribal family with FDPIR is eligible if income is above 200% of FPG, due to Lifeline categorical eligibility
+  period: 2022
+  input:
+    head_start: 0
+    fdpir: 1
+    tanf: 0
+    pell_grant: 0
+    is_on_tribal_land: true
+    fcc_fpg_ratio: 2.1
+  output:
+    is_acp_eligible: true
+
+- name: Tribal family who participates in Head Start is eligible if income is above 200% of FPG
+  period: 2022
+  input:
+    head_start: 1
+    fdpir: 0
+    tanf: 0
+    pell_grant: 0
+    is_on_tribal_land: true
+    fcc_fpg_ratio: 2.1
+  output:
+    is_acp_eligible: true
+
+- name: Tribal family with Pell Grant is eligible if income is above 200% of FPG
+  period: 2022
+  input:
+    head_start: 0
+    fdpir: 0
+    tanf: 0
+    pell_grant: 1
+    is_on_tribal_land: true
     fcc_fpg_ratio: 2.1
   output:
     is_acp_eligible: true
