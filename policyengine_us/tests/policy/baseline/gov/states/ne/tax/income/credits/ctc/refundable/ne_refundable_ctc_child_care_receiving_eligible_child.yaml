@@ -1,0 +1,15 @@
+- name: NE refundable CTC child care receiving eligible child
+  period: 2024
+  input:
+    pre_subsidy_childcare_expenses: 1
+    state_code: NE
+  output:
+    ne_refundable_ctc_child_care_receiving_eligible_child: true
+
+- name: NE refundable CTC child care non-receiving ineligible child
+  period: 2024
+  input:
+    pre_subsidy_childcare_expenses: 0
+    state_code: NE
+  output:
+    ne_refundable_ctc_child_care_receiving_eligible_child: false

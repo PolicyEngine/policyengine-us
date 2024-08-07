@@ -5,7 +5,7 @@
     adjusted_gross_income: 100
     state_code: NE
   output:
-    ne_refundable_ctc_eligible: true
+    ne_refundable_ctc_income_eligible: true
 
 - name: NE refundable CTC eligible 2
   period: 2024
@@ -14,7 +14,7 @@
     adjusted_gross_income: 90
     state_code: NE
   output:
-    ne_refundable_ctc_eligible: true
+    ne_refundable_ctc_income_eligible: true
 
 - name: NE refundable CTC ineligible
   period: 2024
@@ -23,4 +23,4 @@
     adjusted_gross_income: 101
     state_code: NE
   output:
-    ne_refundable_ctc_eligible: false
+    ne_refundable_ctc_income_eligible: false

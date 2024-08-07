@@ -7,18 +7,26 @@ class ne_refundable_ctc_eligible_child(Variable):
     label = "Nebraska refundable Child Tax Credit eligible child"
     definition_period = YEAR
     reference = (
-        "https://revenue.nebraska.gov/about/2023-nebraska-legislative-changes"
+        "https://nebraskalegislature.gov/laws/statutes.php?statute=77-7202"
     )
     defined_for = StateCode.NE
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.ne.tax.income.credits.ctc.refundable
+        age_eligible = person("age", period) <= p.age_threshold
         is_dependent = person("is_tax_unit_dependent", period)
-        age = person("age", period)
-        age_eligible = age <= p.age_threshold
-        # We assume that the child is enrolled in a child care program
-        # licensed pursuant to the Child Care Licensing Act
-        has_childcare_expenses = (
-            person("pre_subsidy_childcare_expenses", period) > 0
+        qualifying_child = age_eligible & is_dependent
+        child_care_enrolled_child = person(
+            "ne_refundable_ctc_child_care_enrolled_eligible_child", period
         )
-        return is_dependent & age_eligible & has_childcare_expenses
+        child_care_receiving_child = person(
+            "ne_refundable_ctc_child_care_receiving_eligible_child", period
+        )
+        income_eligible = person.tax_unit(
+            "ne_refundable_ctc_income_eligible", period
+        )
+        return qualifying_child & (
+            child_care_enrolled_child
+            | child_care_receiving_child
+            | income_eligible
+        )
