@@ -1,11 +1,11 @@
 from policyengine_us.model_api import *
 
 
-class denver_property_tax_relief_homeowner(Variable):
+class co_de_property_tax_relief_homeowner_eligible(Variable):
     value_type = float
     entity = SPMUnit
     unit = USD
-    label = "Denver Property Tax Relief for homeowner"
+    label = "Eligible for the homeowner Denver Property Tax Relief"
     definition_period = YEAR
     reference = "https://denvergov.org/files/content/public/v/37/government/agencies-departments-offices/agencies-departments-offices-directory/denver-human-services/be-supported/additional-assistance/property-tax-relief/denver-property-tax-relief-program-year-2021-rules.pdf"
 
@@ -24,8 +24,4 @@ class denver_property_tax_relief_homeowner(Variable):
         homeowner_income_limit = p.ami.ami.calc(size) * p.ami.rate.homeowner
         homeowner_income_eligible = income <= homeowner_income_limit
 
-        return where(
-            homeowner_requirments & homeowner_income_eligible,
-            p.maximum_amount.homeowner,
-            0,
-        )
+        return homeowner_requirments & homeowner_income_eligible

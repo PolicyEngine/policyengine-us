@@ -1,11 +1,11 @@
 from policyengine_us.model_api import *
 
 
-class denver_property_tax_relief_renter(Variable):
+class co_de_property_tax_relief_renter_eligible(Variable):
     value_type = float
     entity = SPMUnit
     unit = USD
-    label = "Denver Property Tax Relief for renter"
+    label = "Eligible for the renter Denver Property Tax Relief"
     definition_period = YEAR
     reference = "https://denvergov.org/files/content/public/v/37/government/agencies-departments-offices/agencies-departments-offices-directory/denver-human-services/be-supported/additional-assistance/property-tax-relief/denver-property-tax-relief-program-year-2021-rules.pdf"
 
@@ -22,8 +22,4 @@ class denver_property_tax_relief_renter(Variable):
         )
         renter_income_eligible = income <= renter_income_limit
 
-        return where(
-            renter_requirements & renter_income_eligible,
-            p.maximum_amount.renter,
-            0,
-        )
+        return renter_requirements & renter_income_eligible

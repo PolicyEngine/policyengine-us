@@ -6,7 +6,7 @@
     rent: 5_000
     has_usda_elderly_disabled: true
   output:
-    denver_property_tax_relief_renter: 0  
+    co_de_property_tax_relief_renter_eligible: false  
 
 - name: Case 2, Renter with income less than ami, eligible. 
   period: 2023
@@ -16,7 +16,7 @@
     rent: 1_000
     has_usda_elderly_disabled: true
   output:
-    denver_property_tax_relief_renter:  1_000
+    co_de_property_tax_relief_renter_eligible: true
 
 - name: Case 3, renter household size of 3 with income less than ami, eligible. 
   period: 2023
@@ -26,7 +26,7 @@
     rent: 1_000
     has_usda_elderly_disabled: true 
   output:
-    denver_property_tax_relief_renter: 1_000 
+    co_de_property_tax_relief_renter_eligible: true
 
 - name: Case 4, Renter with income less than ami, but is not elderly nor disabled, ineligible. 
   period: 2023
@@ -36,4 +36,4 @@
     rent: 1_000
     has_usda_elderly_disabled: false
   output:
-    denver_property_tax_relief_renter:  0
+    co_de_property_tax_relief_renter_eligible: false
