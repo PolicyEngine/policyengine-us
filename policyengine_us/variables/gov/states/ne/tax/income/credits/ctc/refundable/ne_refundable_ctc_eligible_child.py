@@ -16,8 +16,9 @@ class ne_refundable_ctc_eligible_child(Variable):
         is_dependent = person("is_tax_unit_dependent", period)
         age = person("age", period)
         age_eligible = age <= p.age_threshold
+        # We assume that the child is enrolled in a child care program
+        # licensed pursuant to the Child Care Licensing Act
         has_childcare_expenses = (
-            person.spm_unit("spm_unit_pre_subsidy_childcare_expenses", period)
-            > 0
+            person("pre_subsidy_childcare_expenses", period) > 0
         )
         return is_dependent & age_eligible & has_childcare_expenses
