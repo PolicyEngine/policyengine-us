@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.43.1] - 2024-08-06 21:26:16
+
+### Added
+
+- California TANF resources variable inputs.
+
+## [1.43.0] - 2024-08-06 18:44:12
+
+### Added
+
+- Revised State Median Income (SMI) Ceilings 2024
+
+## [1.42.1] - 2024-08-06 17:30:53
+
+### Fixed
+
+- Adjust the income_tax_before_refundable_credits variable to be neutralized when abolishing federal income tax.
+
 ## [1.42.0] - 2024-08-06 16:57:19
 
 ### Added
@@ -9298,6 +9316,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.43.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.43.0...1.43.1
+[1.43.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.42.1...1.43.0
+[1.42.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.42.0...1.42.1
 [1.42.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.41.0...1.42.0
 [1.41.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.40.1...1.41.0
 [1.40.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.40.0...1.40.1
