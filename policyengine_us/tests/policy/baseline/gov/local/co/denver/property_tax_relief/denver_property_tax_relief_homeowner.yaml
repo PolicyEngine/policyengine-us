@@ -1,0 +1,32 @@
+- name: Case 1, Homeowner with income higher than ami, ineligible. 
+  period: 2023
+  input:
+    spm_unit_size: 1 
+    spm_unit_net_income: 53_000
+    real_estate_taxes: 1_000
+    has_usda_elderly_disabled: true
+    tax_unit_dependents: 0 
+  output:
+    denver_property_tax_relief_homeowner: 0 
+
+- name: Case 2, Homeowner with income less than ami, eligible. 
+  period: 2023
+  input:
+    spm_unit_size: 1 
+    spm_unit_net_income: 52_000
+    real_estate_taxes: 1_000
+    has_usda_elderly_disabled: true
+    tax_unit_dependents: 0 
+  output:
+    denver_property_tax_relief_homeowner: 1_800
+ 
+- name: Case 3, Homeowner with income less than ami, but is not elderly, not disabled, no dependent, hense ineligible.  
+  period: 2023
+  input:
+    spm_unit_size: 1 
+    spm_unit_net_income: 20_000
+    real_estate_taxes: 1_000
+    has_usda_elderly_disabled: false
+    tax_unit_dependents: 0 
+  output:
+    denver_property_tax_relief_homeowner: 0 
