@@ -1,0 +1,167 @@
+description: Arkansas provides an additional tax credit of this amount, based on taxable income.
+metadata:
+  threshold_unit: currency-USD
+  type: single_amount
+  amount_unit: currency-USD
+  label: Arkansas additional tax credit amount
+  period: year
+  reference:
+    - title: Arkansas 2022 Individual Income Tax Forms and Instructions 
+      href: https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2022_AR1000F_and_AR1000NR_Instructions.pdf#page=26
+    - title: Arkansas 2023 Individual Income Tax Forms and Instructions 
+      href: https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2023_AR1000F_and_AR1000NR_Instructions.pdf#page=26
+    - title: Act 1 of the Second Extraordinary Session
+      href: https://www.arkleg.state.ar.us/Home/FTPDocument?path=%2FACTS%2F2021S2%2FPublic%2FACT1.pdf#page=24
+    - title: Act 2 of the Second Extraordinary Session
+      href: https://www.arkleg.state.ar.us/Home/FTPDocument?path=%2FACTS%2F2021S2%2FPublic%2FACT2.pdf#page=24
+    - title: Arkansas Codes 26-51-501(a)(6)(A)
+      href: https://advance.lexis.com/r/documentprovider/h2vckkk/attachment/data?attachmentid=V1,215,29656,346800166149,1&attachmenttype=PDF&attachmentname=Click%20here%20to%20view%20table.&origination=&sequencenumber=&ishotdoc=false&docTitle=A.C.A.%20%C2%A7%2026-51-501&pdmfid=1000516&#page=
+brackets:
+  - threshold:
+      2022-01-01: -.inf
+    amount:
+      2022-01-01: 60
+  - threshold:
+      values: 
+        2022-01-01: 24_300
+        2023-01-01: 25_000
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: downwards
+            interval: 100
+    amount:
+      2022-01-01: 55
+  - threshold:
+      values: 
+        2022-01-01: 24_400
+        2023-01-01: 25_100
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: downwards
+            interval: 100
+    amount:
+      2022-01-01: 50
+  - threshold:
+      values:
+        2022-01-01: 24_500
+        2023-01-01: 25_200
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: downwards
+            interval: 100
+    amount:
+      2022-01-01: 45
+  - threshold:
+      values:
+        2022-01-01: 24_600
+        2023-01-01: 25_300
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: downwards
+            interval: 100
+    amount:
+      2022-01-01: 40
+  - threshold:
+      values: 
+        2022-01-01: 24_700
+        2023-01-01: 25_400
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: downwards
+            interval: 100
+    amount:
+      2022-01-01: 35
+  - threshold:
+      values:
+        2022-01-01: 24_800
+        2023-01-01: 25_500
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: downwards
+            interval: 100
+    amount:
+      2022-01-01: 30
+  - threshold:
+      values:
+        2022-01-01: 24_900
+        2023-01-01: 25_600
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: downwards
+            interval: 100
+    amount:
+      2022-01-01: 25
+  - threshold:
+      values:
+        2022-01-01: 25_000
+        2023-01-01: 25_700
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: downwards
+            interval: 100
+    amount:
+      2022-01-01: 20
+  - threshold:
+      values:
+        2022-01-01: 25_100
+        2023-01-01: 25_800
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: downwards
+            interval: 100
+    amount:
+      2022-01-01: 15
+  - threshold:
+      values:
+        2022-01-01: 25_200
+        2023-01-01: 25_900
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: downwards
+            interval: 100
+    amount:
+      2022-01-01: 10
+  - threshold:
+      values:
+        2022-01-01: 25_300
+        2023-01-01: 26_000
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: downwards
+            interval: 100
+    amount:
+      2022-01-01: 5
+  - threshold:
+      values:
+        2022-01-01: 25_400
+        2023-01-01: 26_100
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: downwards
+            interval: 100
+    amount:
+      2022-01-01: 0
