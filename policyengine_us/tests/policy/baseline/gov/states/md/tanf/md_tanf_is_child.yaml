@@ -1,0 +1,43 @@
+- name: "Person who is age 20 and is full time student"
+  period: 2023
+  input:
+    age: 20
+    is_full_time_college_student: true
+    is_in_k12_school: false
+    state_code: MD
+  output:
+    md_tanf_is_child: false
+
+
+- name: "Person who is age 18 and is full time k12 student"
+  period: 2023
+  input:
+    age: 18
+    is_full_time_college_student: false
+    is_in_k12_school: true
+    state_code: MD
+  output:
+    md_tanf_is_child: true
+
+
+- name: "Person who is age 19 and is full time college student"
+  period: 2023
+  input:
+    age: 19
+    is_full_time_college_student: true
+    is_in_k12_school: false
+    state_code: MD
+  output:
+    md_tanf_is_child: true
+
+
+- name: "Person who is age 19 and is full time k12 student"
+  period: 2023
+  input:
+    age: 19
+    is_full_time_college_student: false
+    is_in_k12_school: true
+    state_code: MD
+  output:
+    md_tanf_is_child: false
+
