@@ -1,0 +1,15 @@
+description: Colorado unifies the low-income family child care expenses credit and the child and dependent care credit if this is true.
+values:
+  2018-01-01: false
+  2026-01-01: true
+  # After 2026-01-01, the low-income family child care expenses credit will be combined
+  # into the child and dependent care credit.
+metadata:
+  period: year
+  unit: bool
+  label: Colorado low-income family child care expenses credit unified
+  reference:
+    - title: 26 U.S.C. § 25C(g)
+      href: https://www.law.cornell.edu/uscode/text/26/25C#g
+    - title: Colorado Revised Statutes, 39-22-123.5. Earned income tax credit - legislative declaration - repeal.(2.7).(c)
+      href: https://leg.colorado.gov/sites/default/files/2024a_1134_signed.pdf#page=8

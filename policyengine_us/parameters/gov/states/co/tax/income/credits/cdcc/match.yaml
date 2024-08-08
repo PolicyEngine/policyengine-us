@@ -12,22 +12,29 @@ metadata:
       href: https://tax.colorado.gov/sites/tax/files/documents/DR_0104_Book_2022.pdf#page=48
     - title: 2023 Colorado Individual Tax Filing Guide 104 Book, Part III line 7
       href: https://tax.colorado.gov/sites/tax/files/documents/Book0104_2023.pdf#page=50
+    - title: HB24-1134 Section 1 & 2
+      href: https://leg.colorado.gov/bills/hb24-1134
+    - title: Colorado Revised Statutes, 39-22-123.5. Earned income tax credit - legislative declaration - repeal.(2.7).(c)
+      href: https://leg.colorado.gov/sites/default/files/2024a_1134_signed.pdf#page=8
 
 brackets:
   - threshold:
       1996-01-01: 0
     amount:
       1996-01-01: 0.5
+      2026-01-01: 0.7
   - threshold:
       1996-01-01: 25_000
     amount:
       1996-01-01: 0.3
       2019-01-01: 0.5
+      2026-01-01: 0.7
   - threshold:
       1996-01-01: 35_000
     amount:
       1996-01-01: 0.1
       2019-01-01: 0.5
+      2026-01-01: 0.7
   - threshold:
       1996-01-01: 60_000
     amount:
