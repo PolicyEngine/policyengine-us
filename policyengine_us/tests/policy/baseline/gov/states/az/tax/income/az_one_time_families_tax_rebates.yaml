@@ -1,0 +1,125 @@
+- name: Arizona one-time families tax rebate with no dependents 
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_dependent: false
+        age: 6 
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_one_time_families_tax_rebates: 0
+
+- name: Arizona one-time families tax rebate with one younger dependent 
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_dependent: true 
+        age: 6 
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_one_time_families_tax_rebates: 250
+
+- name: Arizona one-time families tax rebate with one dependent age equals 0 
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_dependent: true 
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_one_time_families_tax_rebates: 0
+
+- name: Arizona one-time families tax rebate with one younger dependent and one older dependent 
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_dependent: true 
+        age: 6 
+      person2:
+        is_tax_unit_dependent: true 
+        age: 19
+    tax_units:
+      tax_unit:
+        members: [person1,person2]
+    households:
+      household:
+        members: [person1,person2]
+        state_code: AZ
+  output:
+    az_one_time_families_tax_rebates: 350
+
+- name: Arizona one-time families tax rebate amount capped by the maximum amount 
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_dependent: true 
+        age: 6 
+      person2:
+        is_tax_unit_dependent: true 
+        age: 10 
+      person3:
+        is_tax_unit_dependent: true 
+        age: 12
+      person4:
+        is_tax_unit_dependent: true 
+        age: 19
+    tax_units:
+      tax_unit:
+        members: [person1,person2,person3,person4]
+    households:
+      household:
+        members: [person1,person2,person3,person4]
+        state_code: AZ
+  output:
+    az_one_time_families_tax_rebates: 750
+
+- name: Arizona one-time families tax rebate amount capped by the maximum dependent count 
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_dependent: true 
+        age: 6 
+      person2:
+        is_tax_unit_dependent: true 
+        age: 21
+      person3:
+        is_tax_unit_dependent: true 
+        age: 19
+      person4:
+        is_tax_unit_dependent: true 
+        age: 20
+      person5:
+        is_tax_unit_dependent: true 
+        age: 19 
+    tax_units:
+      tax_unit:
+        members: [person1,person2,person3,person4,person5]
+    households:
+      household:
+        members: [person1,person2,person3,person4,person5]
+        state_code: AZ
+  output:
+    az_one_time_families_tax_rebates: 450 #250+100+100
