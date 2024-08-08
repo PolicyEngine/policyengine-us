@@ -7851,3 +7851,24 @@
     added:
     - Head Start and Early Head Start programs eligibility.
   date: 2024-08-05 21:40:16
+- bump: minor
+  changes:
+    added:
+    - North Carolina use tax.
+  date: 2024-08-06 16:57:19
+- bump: patch
+  changes:
+    fixed:
+    - Adjust the income_tax_before_refundable_credits variable to be neutralized when
+      abolishing federal income tax.
+  date: 2024-08-06 17:30:53
+- bump: minor
+  changes:
+    added:
+    - Revised State Median Income (SMI) Ceilings 2024
+  date: 2024-08-06 18:44:12
+- bump: patch
+  changes:
+    added:
+    - California TANF resources variable inputs.
+  date: 2024-08-06 21:26:16
