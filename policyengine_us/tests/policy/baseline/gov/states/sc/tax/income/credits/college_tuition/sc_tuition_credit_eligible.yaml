@@ -1,0 +1,44 @@
+- name: Case 1, 1 semester, 15 credits.
+  period: 2022
+  input:
+    state_code: SC
+    sc_total_college_hours: 15
+    college_semesters_attended: 1
+  output:
+    sc_tuition_credit_eligible: true
+
+- name: Case 2, 2 semesters, 30 credits.
+  period: 2022
+  input:
+    state_code: SC
+    sc_total_college_hours: 30
+    college_semesters_attended: 2
+  output:
+    sc_tuition_credit_eligible: true
+
+- name: Case 3, 1 semester, 14 credits.
+  period: 2022
+  input:
+    state_code: SC
+    sc_total_college_hours: 14
+    college_semesters_attended: 1
+  output:
+    sc_tuition_credit_eligible: false
+
+- name: Case 4, 2 semesters, 29 credits.
+  period: 2022
+  input:
+    state_code: SC
+    sc_total_college_hours: 29
+    college_semesters_attended: 2
+  output:
+    sc_tuition_credit_eligible: 0
+
+- name: Case 5, 0 semester, 0 credits.
+  period: 2022
+  input:
+    state_code: SC
+    sc_total_college_hours: 0
+    college_semesters_attended: 0
+  output:
+    sc_tuition_credit_eligible: false

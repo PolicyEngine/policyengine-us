@@ -1,0 +1,25 @@
+description: South Carolina requires these semester credit hours to qualify for the tuition tax credit.
+
+brackets:
+  - threshold:
+      2021-01-01: 1
+    amount:
+      2021-01-01: 15
+  - threshold:
+      2021-01-01: 2
+    amount: 
+      2021-01-01: 30
+
+metadata:
+  threshold_unit: year
+  type: single_amount
+  label: South Carolina tuition tax credit semester credit hour requirement
+  reference: 
+  - title: SC I-319 2021
+    href: https://dor.sc.gov/forms-site/Forms/I319_2021.pdf#page=3
+  - title: South Carolina Legal Code | SECTION 12-6-3385 (B)(3)(b)
+    href: https://www.scstatehouse.gov/code/t12c006.php
+    # Legal code requires 30 annual credit hours, tax form indicates that if a student only attends one semester and completes 15 credit hours, 
+    # then the student is also eligible.
+  - title: SC I-319 2022
+    href: https://dor.sc.gov/forms-site/Forms/I319_2022.pdf#page=2
