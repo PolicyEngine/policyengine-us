@@ -39,7 +39,7 @@ setup(
         "microdf_python",
         "pandas",
         "pathlib",
-        "policyengine-core>=2.21.5,<2.22",
+        "policyengine-core",
         "pytest",
         "pytest-dependency",
         "pyyaml",
