@@ -3,8 +3,8 @@
   input:
     age: 5
     is_tax_unit_dependent: true
-    ne_refundable_ctc_child_care_enrolled_eligible_child: true
-    ne_refundable_ctc_child_care_receiving_eligible_child: true
+    ne_ctc_child_enrolled_in_eligible_care_program: true
+    ne_ctc_child_receives_child_care: true
     ne_refundable_ctc_income_eligible: true
     state_code: NE
   output:
@@ -15,8 +15,8 @@
   input:
     age: 5
     is_tax_unit_dependent: true
-    ne_refundable_ctc_child_care_enrolled_eligible_child: true
-    ne_refundable_ctc_child_care_receiving_eligible_child: false
+    ne_ctc_child_enrolled_in_eligible_care_program: true
+    ne_ctc_child_receives_child_care: false
     ne_refundable_ctc_income_eligible: true
     state_code: NE
   output:
@@ -27,8 +27,8 @@
   input:
     age: 5
     is_tax_unit_dependent: true
-    ne_refundable_ctc_child_care_enrolled_eligible_child: false
-    ne_refundable_ctc_child_care_receiving_eligible_child: false
+    ne_ctc_child_enrolled_in_eligible_care_program: false
+    ne_ctc_child_receives_child_care: false
     ne_refundable_ctc_income_eligible: true
     state_code: NE
   output:
@@ -39,8 +39,8 @@
   input:
     age: 7
     is_tax_unit_dependent: true
-    ne_refundable_ctc_child_care_enrolled_eligible_child: true
-    ne_refundable_ctc_child_care_receiving_eligible_child: false
+    ne_ctc_child_enrolled_in_eligible_care_program: true
+    ne_ctc_child_receives_child_care: false
     ne_refundable_ctc_income_eligible: true
     state_code: NE
   output:
@@ -51,8 +51,8 @@
   input:
     age: 3
     is_tax_unit_dependent: false
-    ne_refundable_ctc_child_care_enrolled_eligible_child: true
-    ne_refundable_ctc_child_care_receiving_eligible_child: false
+    ne_ctc_child_enrolled_in_eligible_care_program: true
+    ne_ctc_child_receives_child_care: false
     ne_refundable_ctc_income_eligible: true
     state_code: NE
   output:
@@ -63,8 +63,8 @@
   input:
     age: 3
     is_tax_unit_dependent: true
-    ne_refundable_ctc_child_care_enrolled_eligible_child: false
-    ne_refundable_ctc_child_care_receiving_eligible_child: false
+    ne_ctc_child_enrolled_in_eligible_care_program: false
+    ne_ctc_child_receives_child_care: false
     ne_refundable_ctc_income_eligible: false
     state_code: NE
   output:
