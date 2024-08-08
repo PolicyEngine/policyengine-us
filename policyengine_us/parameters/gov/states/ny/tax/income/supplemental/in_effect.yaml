@@ -1,0 +1,11 @@
+description: New York establishes a supplemental tax for certain New York taxpayers for taxable years starting from 2011 and ending before 2028
+values:
+  2011-01-01: true  
+  2028-01-01: false
+metadata:
+  unit: bool
+  period: year
+  label: New York supplemental tax availability 
+  reference:
+  - title: The Laws of New York § 601. Imposition of tax. (d-1) - (d-4)
+    href: https://www.nysenate.gov/legislation/laws/TAX/601
