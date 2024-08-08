@@ -1,0 +1,6 @@
+- name: If eligible, they get 12 * 164.90.
+  period: 2023
+  input:
+    va_map_abd_eligibility: true
+  output:
+    va_map_abd: 1_978.8

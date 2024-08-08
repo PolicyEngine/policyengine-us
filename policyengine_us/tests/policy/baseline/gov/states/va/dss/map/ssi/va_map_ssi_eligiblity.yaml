@@ -1,0 +1,29 @@
+- name: Any SSI recipient is eligible.
+  period: 2023
+  input:
+    people:
+      person1:
+        ssi: 0
+      person2:
+        ssi: 500
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    va_map_ssi_eligiblity: true
+
+- name: No SSI recipient is not eligible.
+  period: 2023
+  input:
+    people:
+      person1:
+        ssi: 0
+      person2:
+        ssi: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    va_map_ssi_eligiblity: false
