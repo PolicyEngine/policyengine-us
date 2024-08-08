@@ -1,0 +1,15 @@
+- name: Income less than poverty divided by 2 means in deep poverty.
+  period: 2021
+  input:
+    spm_resources: 10_000
+    spm_unit_spm_threshold: 20_001
+  output:
+    spm_unit_is_in_deep_spm_poverty: true
+
+- name: Income equal to poverty threshold divded by 2 means not in deep poverty.
+  period: 2021
+  input:
+    spm_resources: 10_000
+    spm_unit_spm_threshold: 20_000
+  output:
+    spm_unit_is_in_deep_spm_poverty: false

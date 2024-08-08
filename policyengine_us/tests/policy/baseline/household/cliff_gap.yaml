@@ -7,7 +7,7 @@
     taxable_interest_income: 100_000
     state_fips: 48  # TX
   output:
-    spm_unit_net_income: 151_539.00
+    spm_resources: 151_539.00
     household_net_income: 151_539.00
 
 - name: household_net_income test TX-netinc-alt
@@ -19,7 +19,7 @@
     taxable_interest_income: 100_000
     state_fips: 48  # TX
   output:
-    spm_unit_net_income: 152_670.00
+    spm_resources: 152_670.00
     household_net_income: 152_670.00
 
 - name: cliff_gap test TX-cliff_gap
