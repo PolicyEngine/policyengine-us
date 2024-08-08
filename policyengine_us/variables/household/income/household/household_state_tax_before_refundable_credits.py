@@ -8,4 +8,3 @@ class household_state_tax_before_refundable_credits(Variable):
     unit = USD
     definition_period = YEAR
     adds = "gov.states.household.state_income_tax_before_refundable_credits"
-    exhaustive_parameter_dependencies = "gov.states"
