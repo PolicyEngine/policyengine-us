@@ -19,12 +19,12 @@ def generate_model_variables(
         no_weight_adjustment (bool, optional): Whether to skip the weight adjustment. Defaults to False.
 
     Returns:
-        household_weights (torch.Tensor): The household weights.
-        weight_adjustment (torch.Tensor): The weight adjustment.
+        household_weights (np.ndarray): The household weights.
+        weight_adjustment (np.ndarray): The weight adjustment.
         values_df (pd.DataFrame): A 2D array of values to transform household weights into statistical predictions.
         targets (dict): A dictionary of names and target values for the statistical predictions.
-        targets_array (dict): A 1D array of target values for the statistical predictions.
-        equivalisation_factors_array (dict): A 1D array of equivalisation factors for the statistical predictions to normalise the targets.
+        targets_array (np.ndarray): A 1D array of target values for the statistical predictions.
+        equivalisation_factors_array (np.ndarray): A 1D array of equivalisation factors for the statistical predictions to normalise the targets.
     """
     simulation = Microsimulation(dataset=dataset)
     simulation.default_calculation_period = time_period
