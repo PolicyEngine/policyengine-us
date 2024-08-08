@@ -7,7 +7,8 @@ class ne_refundable_ctc_income_eligible(Variable):
     label = "Nebraska refundable Child Tax Credit total household income eligible child"
     definition_period = YEAR
     reference = (
-        "https://nebraskalegislature.gov/laws/statutes.php?statute=77-7203"
+        "https://nebraskalegislature.gov/laws/statutes.php?statute=77-7203",
+        "https://revenue.nebraska.gov/businesses/child-care-tax-credit-act",
     )
     defined_for = StateCode.NE
 
@@ -15,7 +16,7 @@ class ne_refundable_ctc_income_eligible(Variable):
         p = parameters(period).gov.states.ne.tax.income.credits.ctc.refundable
         fpg = tax_unit("tax_unit_fpg", period)
         income_limit = fpg * p.fpg_fraction
-        # Total household income is defined as federal adjusted gross income
-        # as per Nebraska Department of Revenue
-        adjusted_gross_income = tax_unit("adjusted_gross_income", period)
-        return adjusted_gross_income <= income_limit
+        total_household_income = tax_unit(
+            "ne_refundable_ctc_total_household_income", period
+        )
+        return total_household_income <= income_limit

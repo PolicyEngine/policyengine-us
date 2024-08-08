@@ -8,16 +8,17 @@ class ne_refundable_ctc(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://nebraskalegislature.gov/laws/statutes.php?statute=77-7203"
+        "https://nebraskalegislature.gov/laws/statutes.php?statute=77-7203",
+        "https://revenue.nebraska.gov/businesses/child-care-tax-credit-act",
     )
     defined_for = StateCode.NE
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.ne.tax.income.credits.ctc.refundable
-        # Total household income is defined as federal adjusted gross income
-        # as per Nebraska Department of Revenue
-        adjusted_gross_income = tax_unit("adjusted_gross_income", period)
-        credit_amount = p.amount.calc(adjusted_gross_income)
+        total_household_income = tax_unit(
+            "ne_refundable_ctc_total_household_income", period
+        )
+        credit_amount = p.amount.calc(total_household_income)
         qualifying_children = add(
             tax_unit, period, ["ne_refundable_ctc_eligible_child"]
         )

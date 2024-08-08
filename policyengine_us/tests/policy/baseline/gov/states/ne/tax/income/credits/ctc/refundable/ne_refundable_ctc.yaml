@@ -10,7 +10,7 @@
         ne_refundable_ctc_eligible_child: true
     tax_units:
       tax_unit:
-        adjusted_gross_income: 30_000
+        ne_refundable_ctc_total_household_income: 30_000
         members: [person1, person2, person3]
     households:
       household:
@@ -31,7 +31,7 @@
         ne_refundable_ctc_eligible_child: true
     tax_units:
       tax_unit:
-        adjusted_gross_income: 80_000
+        ne_refundable_ctc_total_household_income: 80_000
         members: [person1, person2, person3]
     households:
       household:
@@ -52,7 +52,7 @@
         ne_refundable_ctc_eligible_child: false
     tax_units:
       tax_unit:
-        adjusted_gross_income: 80_000
+        ne_refundable_ctc_total_household_income: 80_000
         members: [person1, person2, person3]
     households:
       household:
@@ -73,7 +73,7 @@
         ne_refundable_ctc_eligible_child: false
     tax_units:
       tax_unit:
-        adjusted_gross_income: 151_000
+        ne_refundable_ctc_total_household_income: 151_000
         members: [person1, person2, person3]
     households:
       household:
@@ -94,7 +94,7 @@
         ne_refundable_ctc_eligible_child: false
     tax_units:
       tax_unit:
-        adjusted_gross_income: 51_000
+        ne_refundable_ctc_total_household_income: 51_000
         members: [person1, person2, person3]
     households:
       household:

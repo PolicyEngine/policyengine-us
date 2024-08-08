@@ -2,7 +2,7 @@
   period: 2024
   input:
     tax_unit_fpg: 100
-    adjusted_gross_income: 100
+    ne_refundable_ctc_total_household_income: 100
     state_code: NE
   output:
     ne_refundable_ctc_income_eligible: true
@@ -11,7 +11,7 @@
   period: 2024
   input:
     tax_unit_fpg: 100
-    adjusted_gross_income: 90
+    ne_refundable_ctc_total_household_income: 90
     state_code: NE
   output:
     ne_refundable_ctc_income_eligible: true
@@ -20,7 +20,7 @@
   period: 2024
   input:
     tax_unit_fpg: 100
-    adjusted_gross_income: 101
+    ne_refundable_ctc_total_household_income: 101
     state_code: NE
   output:
     ne_refundable_ctc_income_eligible: false

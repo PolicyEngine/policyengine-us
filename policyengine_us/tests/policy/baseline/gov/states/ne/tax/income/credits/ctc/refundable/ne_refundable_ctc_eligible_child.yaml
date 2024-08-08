@@ -3,33 +3,30 @@
   input:
     age: 5
     is_tax_unit_dependent: true
-    ne_ctc_child_enrolled_in_eligible_care_program: true
-    ne_ctc_child_receives_child_care: true
+    pre_subsidy_childcare_expenses: 100
     ne_refundable_ctc_income_eligible: true
     state_code: NE
   output:
     ne_refundable_ctc_eligible_child: true
 
-- name: NE refundable CTC eligible child 1
+- name: NE refundable CTC eligible child 2
   period: 2024
   input:
     age: 5
     is_tax_unit_dependent: true
-    ne_ctc_child_enrolled_in_eligible_care_program: true
-    ne_ctc_child_receives_child_care: false
+    pre_subsidy_childcare_expenses: 0
     ne_refundable_ctc_income_eligible: true
     state_code: NE
   output:
     ne_refundable_ctc_eligible_child: true
 
-- name: NE refundable CTC eligible child 1
+- name: NE refundable CTC eligible child 3
   period: 2024
   input:
     age: 5
     is_tax_unit_dependent: true
-    ne_ctc_child_enrolled_in_eligible_care_program: false
-    ne_ctc_child_receives_child_care: false
-    ne_refundable_ctc_income_eligible: true
+    pre_subsidy_childcare_expenses: 100
+    ne_refundable_ctc_income_eligible: false
     state_code: NE
   output:
     ne_refundable_ctc_eligible_child: true
@@ -39,8 +36,7 @@
   input:
     age: 7
     is_tax_unit_dependent: true
-    ne_ctc_child_enrolled_in_eligible_care_program: true
-    ne_ctc_child_receives_child_care: false
+    pre_subsidy_childcare_expenses: 0
     ne_refundable_ctc_income_eligible: true
     state_code: NE
   output:
@@ -51,8 +47,7 @@
   input:
     age: 3
     is_tax_unit_dependent: false
-    ne_ctc_child_enrolled_in_eligible_care_program: true
-    ne_ctc_child_receives_child_care: false
+    pre_subsidy_childcare_expenses: 100
     ne_refundable_ctc_income_eligible: true
     state_code: NE
   output:
@@ -63,8 +58,7 @@
   input:
     age: 3
     is_tax_unit_dependent: true
-    ne_ctc_child_enrolled_in_eligible_care_program: false
-    ne_ctc_child_receives_child_care: false
+    pre_subsidy_childcare_expenses: 0
     ne_refundable_ctc_income_eligible: false
     state_code: NE
   output:

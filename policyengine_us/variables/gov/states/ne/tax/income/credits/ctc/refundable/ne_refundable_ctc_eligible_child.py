@@ -8,6 +8,7 @@ class ne_refundable_ctc_eligible_child(Variable):
     definition_period = YEAR
     reference = (
         "https://nebraskalegislature.gov/laws/statutes.php?statute=77-7202"
+        "https://revenue.nebraska.gov/businesses/child-care-tax-credit-act",
     )
     defined_for = StateCode.NE
 
@@ -16,17 +17,21 @@ class ne_refundable_ctc_eligible_child(Variable):
         age_eligible = person("age", period) <= p.age_threshold
         is_dependent = person("is_tax_unit_dependent", period)
         age_eligible_dependent = age_eligible & is_dependent
-        child_care_enrolled_child = person(
-            "ne_ctc_child_enrolled_in_eligible_care_program", period
-        )
-        child_care_receiving_child = person(
-            "ne_ctc_child_receives_child_care", period
+        # Nebraska limits the CTC to children who are either:
+        # 1) enrolled in a child care program licensed pursuant to the Child Care
+        #    Licensing Act
+        # 2) receiving care from an approved license-exempt provider enrolled in
+        #    the child care subsidy program pursuant to Neb. Rev. Stat. §§ 68-1202
+        #    and 68-1206
+        # As we do not yet model either the Child Care Licensing Act or the
+        # Nebraska child care subsidy program, we approximate it as having incurred
+        # pre-subsidy childcare expenses.
+        received_qualifying_child_care = (
+            person("pre_subsidy_childcare_expenses", period) > 0
         )
         income_eligible = person.tax_unit(
             "ne_refundable_ctc_income_eligible", period
         )
         return age_eligible_dependent & (
-            child_care_enrolled_child
-            | child_care_receiving_child
-            | income_eligible
+            received_qualifying_child_care | income_eligible
         )
