@@ -44,4 +44,4 @@ class sc_use_tax(Variable):
         # Compute use tax rate by main rate plus local county additional rate
         total_rate = p.main + additional_rate
 
-        return income * total_rate
+        return out_of_state_purchases * total_rate
