@@ -52,7 +52,7 @@ class ny_supplemental_tax(Variable):
             1,
             applicable_amount / p.phase_in_length,
         )
-        
+
         if p.in_effect:
             recapture_base = select(
                 in_each_status,
@@ -78,8 +78,8 @@ class ny_supplemental_tax(Variable):
                 ],
             )
         else:
-          recapture_base = 0
-          incremental_benefit = 0 
+            recapture_base = 0
+            incremental_benefit = 0
 
         supplemental_tax_general = (
             recapture_base + phase_in_fraction * incremental_benefit
