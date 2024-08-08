@@ -1,31 +1,23 @@
 from policyengine_us.model_api import *
 
 
-class amt_income(Variable):
+class amt_separate_addition(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
-    label = "AMT taxable income"
+    label = "AMT taxable income separate addition"
     unit = USD
     reference = "https://www.law.cornell.edu/uscode/text/26/55#b_2"
 
     def formula(tax_unit, period, parameters):
         taxable_income = tax_unit("taxable_income", period)
-        # Add back excluded deductions
-        itemizing = tax_unit("tax_unit_itemizes", period)
-        standard_deduction = tax_unit("standard_deduction", period)
-        salt_deduction = tax_unit("salt_deduction", period)
-        excluded_deductions = where(
-            itemizing,
-            salt_deduction,
-            standard_deduction,
-        )
+        excluded_deductions = tax_unit("amt_excluded_deductions", period)
         amt_inc = taxable_income + excluded_deductions
         amt = parameters(period).gov.irs.income.amt
         filing_status = tax_unit("filing_status", period)
         separate = filing_status == filing_status.possible_values.SEPARATE
         reduced_amt_inc = max_(0, amt_inc - amt.exemption.separate_limit)
-        separate_addition = (
+        return (
             max_(
                 0,
                 min_(
@@ -35,4 +27,3 @@ class amt_income(Variable):
             )
             * separate
         )
-        return amt_inc + separate_addition

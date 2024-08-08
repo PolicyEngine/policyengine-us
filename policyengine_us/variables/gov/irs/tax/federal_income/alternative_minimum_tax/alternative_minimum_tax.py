@@ -12,10 +12,10 @@ class alternative_minimum_tax(Variable):
     def formula(tax_unit, period, parameters):
         amt_income = tax_unit("amt_income", period)
         # Form 6251, Part II top
-        amt = parameters(period).gov.irs.income.amt
-        phase_out = amt.exemption.phase_out
+        p = parameters(period).gov.irs.income.amt
+        phase_out = p.exemption.phase_out
         filing_status = tax_unit("filing_status", period)
-        base_exemption_amount = amt.exemption.amount[filing_status]
+        base_exemption_amount = p.exemption.amount[filing_status]
         income_excess = max_(0, amt_income - phase_out.start[filing_status])
         uncapped_exemption_amount = max_(
             0,
@@ -29,7 +29,7 @@ class alternative_minimum_tax(Variable):
         if period.start.year >= 2019:
             child_amount = 0
         else:
-            child_amount = amt.exemption.child.amount
+            child_amount = p.exemption.child.amount
 
         exemption_cap_applies = young_head & no_or_young_spouse
         exemption_cap = where(
@@ -45,9 +45,9 @@ class alternative_minimum_tax(Variable):
             0.5,
             1.0,
         )
-        tax_rate_threshold = amt.brackets.thresholds[-1] * bracket_fraction
-        lower_rate = amt.brackets.rates[0]
-        higher_rate = amt.brackets.rates[1]
+        tax_rate_threshold = p.brackets.thresholds[-1] * bracket_fraction
+        lower_rate = p.brackets.rates[0]
+        higher_rate = p.brackets.rates[1]
         lower_tax = min_(reduced_income, tax_rate_threshold) * lower_rate
         higher_tax = max_(0, reduced_income - tax_rate_threshold) * higher_rate
 
@@ -83,9 +83,9 @@ class alternative_minimum_tax(Variable):
         line39 = min_(line37 + line38, dwks10)
         line40 = min_(reduced_income, line39)
         line41 = max_(0, reduced_income - line40)
-        line42 = amt.brackets.calc(line41)
+        line42 = p.brackets.calc(line41)
         line44 = dwks14
-        cg = amt.capital_gains.brackets
+        cg = p.capital_gains.brackets
         line45 = max_(0, cg.thresholds["1"][filing_status] - line44)
         line46 = min_(reduced_income, line37)
         line47 = min_(line45, line46)
@@ -103,7 +103,7 @@ class alternative_minimum_tax(Variable):
         line61 = where(
             line38 == 0,
             0,
-            0.25
+            p.capital_gains.capital_gain_excess_tax_rate
             * max_(0, (reduced_income - line41 - line56 - line57 - linex2)),
         )
         line62 = line42 + cgtax1 + cgtax2 + cgtax3 + line61

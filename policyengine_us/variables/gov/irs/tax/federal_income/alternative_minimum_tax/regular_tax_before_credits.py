@@ -49,7 +49,7 @@ class regular_tax_before_credits(Variable):
         # Break in worksheet lines
         dwks39 = dwks19 + dwks20 + dwks28 + dwks31 + dwks37
         dwks40 = dwks1 - dwks39
-        dwks41 = 0.28 * dwks40
+        dwks41 = p.amt.brackets.rates[-1] * dwks40
 
         # Compute regular tax using bracket rates and thresholds
         reg_taxinc = max_(0, dwks19)
@@ -67,16 +67,7 @@ class regular_tax_before_credits(Variable):
 
         # Return to worksheet lines
         dwks42 = reg_tax
-        dwks43 = sum(
-            [
-                dwks29,
-                dwks32,
-                dwks38,
-                dwks41,
-                dwks42,
-                lowest_rate_tax,
-            ]
-        )
+        dwks43 = dwks29 + dwks32 + dwks38 + dwks41 + dwks42 + lowest_rate_tax
         dwks44 = tax_unit("income_tax_main_rates", period)
         dwks45 = min_(dwks43, dwks44)
         return where(tax_unit("has_qdiv_or_ltcg", period), dwks45, dwks44)
