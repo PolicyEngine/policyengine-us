@@ -13,8 +13,4 @@ class amt_excluded_deductions(Variable):
         itemizing = tax_unit("tax_unit_itemizes", period)
         standard_deduction = tax_unit("standard_deduction", period)
         salt_deduction = tax_unit("salt_deduction", period)
-        return where(
-            itemizing,
-            salt_deduction,
-            standard_deduction,
-        )
+        return where(itemizing, salt_deduction, standard_deduction)

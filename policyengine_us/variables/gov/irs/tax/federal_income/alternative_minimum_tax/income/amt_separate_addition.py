@@ -13,16 +13,16 @@ class amt_separate_addition(Variable):
         taxable_income = tax_unit("taxable_income", period)
         excluded_deductions = tax_unit("amt_excluded_deductions", period)
         amt_inc = taxable_income + excluded_deductions
-        amt = parameters(period).gov.irs.income.amt
+        p = parameters(period).gov.irs.income.amt.exemption
         filing_status = tax_unit("filing_status", period)
         separate = filing_status == filing_status.possible_values.SEPARATE
-        reduced_amt_inc = max_(0, amt_inc - amt.exemption.separate_limit)
+        reduced_amt_inc = max_(0, amt_inc - p.separate_limit)
         return (
             max_(
                 0,
                 min_(
-                    amt.exemption.amount[filing_status],
-                    amt.exemption.phase_out.rate * reduced_amt_inc,
+                    p.amount[filing_status],
+                    p.phase_out.rate * reduced_amt_inc,
                 ),
             )
             * separate
