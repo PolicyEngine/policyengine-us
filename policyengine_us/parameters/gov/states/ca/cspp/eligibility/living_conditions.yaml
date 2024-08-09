@@ -1,0 +1,14 @@
+description: The California Child Care Resource Center considers the following living conditions as eligibility criteria to participate in the California State Preschool Program.
+
+values:
+  2022-01-01:
+    - was_in_foster_care
+    - is_homeless
+
+metadata:
+  period: year
+  unit: list
+  label: California State Preschool Program qualifying living conditions
+  reference:
+    - title: CCRC, Head Start, Eligibility Requirements
+      href: https://www.ccrcca.org/headstart/programs/eligibility-requirements/

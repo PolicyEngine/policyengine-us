@@ -12,7 +12,7 @@ class ca_cspp_income_eligible(Variable):
     defined_for = StateCode.CA
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.ca.cspp
+        p = parameters(period).gov.states.ca.cspp.eligibility
         fpg = tax_unit("tax_unit_fpg", period)
         income_limit = fpg * p.fpg_fraction
         # CCRC website doesn't specify which income source to use
