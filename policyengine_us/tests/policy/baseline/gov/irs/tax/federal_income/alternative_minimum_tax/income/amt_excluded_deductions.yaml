@@ -1,0 +1,17 @@
+- name: Itemizes
+  period: 2022
+  input:
+    tax_unit_itemizes: true
+    standard_deduction: 7_000
+    salt_deduction: 4_000
+  output:
+    amt_excluded_deductions: 4_000
+
+- name: Does not itemize 
+  period: 2022
+  input:
+    tax_unit_itemizes: false
+    standard_deduction: 7_000
+    salt_deduction: 4_000
+  output:
+    amt_excluded_deductions: 7_000
