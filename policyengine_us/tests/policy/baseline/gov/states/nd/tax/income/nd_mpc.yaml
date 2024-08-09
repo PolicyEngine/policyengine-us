@@ -77,7 +77,7 @@
         members: [person1, person2]
         state_code: ND
   output:
-    nd_mpc: 287 # capped at maximum credit amount
+    nd_mpc: 300 # capped at maximum credit amount
 
 - name: Test 4, difference in the income tax between single filing status and joint filing status is less than capped amount  
   absolute_error_margin: 0.01
