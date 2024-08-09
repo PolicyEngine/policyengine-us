@@ -1,0 +1,22 @@
+description: The Administration for Children and Families requires participation in one of the following programs to qualify for the Early Head Start or Head Start programs.
+values:
+  2021-09-01:
+    - tanf
+    - ssi
+    - snap
+    - is_homeless
+    - was_in_foster_care
+
+metadata:
+  unit: list
+  period: year
+  label: Head Start qualifying programs
+  reference:
+    - title: U.S. Department of Health & Human Services Head Start Policy and Regulations, 1302.12 Determining, verifying, and documenting eligibility. (b)
+      href: https://eclkc.ohs.acf.hhs.gov/policy/45-cfr-chap-xiii/1302-12-determining-verifying-documenting-eligibility
+    - title: 2023-2024 Head Start Program Information Report, Primary type of documentation used for determining eligibility
+      href: https://eclkc.ohs.acf.hhs.gov/sites/default/files/pdf/2023-2024-hs-pir-form.pdf#page=9
+    - title: Federal Reserve Bank of Atlanta, Policy Rules Database (PRD), 2.1.8 Head Start and Early Head Start
+      href: https://www.atlantafed.org/-/media/documents/economic-mobility-and-resilience/advancing-careers-for-low-income-families/policy-rules-database/policy-rules-database-technical-manual.pdf#page=61
+    - title: U.S. Department of Health & Human Services, Programs for Families and Children, How can I get my child into Head Start?
+      href: https://www.hhs.gov/answers/programs-for-families-and-children/how-can-i-get-my-child-into-head-start/index.html
