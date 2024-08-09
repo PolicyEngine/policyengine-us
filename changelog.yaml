@@ -7647,3 +7647,239 @@
     added:
     - UBI marriage bonus structure.
   date: 2024-07-17 18:24:10
+- bump: patch
+  changes:
+    fixed:
+    - Adjust the ctc_qualifying_child to reflect the age requirement.
+  date: 2024-07-18 19:53:37
+- bump: minor
+  changes:
+    added:
+    - Remove NY Child Tax Credit age minimum for 2023.
+  date: 2024-07-18 23:21:40
+- bump: patch
+  changes:
+    fixed:
+    - 2020 Single income tax bracket.
+  date: 2024-07-19 00:40:56
+- bump: minor
+  changes:
+    added:
+    - Maryland state SNAP minimum benefits.
+  date: 2024-07-19 20:13:51
+- bump: patch
+  changes:
+    fixed:
+    - Change add_variable to update_variable function.
+  date: 2024-07-20 17:07:53
+- bump: minor
+  changes:
+    added:
+    - NYSERDA Drive Clean program.
+  date: 2024-07-21 02:11:13
+- bump: patch
+  changes:
+    added:
+    - 2019 Kamala Harris LIFT proposal.
+  date: 2024-07-21 16:01:23
+- bump: patch
+  changes:
+    added:
+    - Fix 2018 surviving spouse AMT exemption value.
+  date: 2024-07-21 16:10:11
+- bump: minor
+  changes:
+    fixed:
+    - Formatting adjustments to the Middle Class Tax Credit.
+    - Added pell grants to the earned income definitions for the Middle Class Tax
+      Credit.
+  date: 2024-07-22 07:26:38
+- bump: patch
+  changes:
+    added:
+    - Refactor social security taxes for refundable CTC calculation.
+  date: 2024-07-22 18:07:41
+- bump: patch
+  changes:
+    added:
+    - Pell Grant Student Aid Index.
+  date: 2024-07-22 20:45:34
+- bump: minor
+  changes:
+    added:
+    - Separate WIC eligibility variable.
+  date: 2024-07-23 03:17:03
+- bump: minor
+  changes:
+    added:
+    - Update 2023 SNAP medical deductions.
+  date: 2024-07-23 04:22:45
+- bump: minor
+  changes:
+    added:
+    - SSI blind or disabled working student earned income exemption.
+  date: 2024-07-23 21:52:58
+- bump: minor
+  changes:
+    added:
+    - Tax Counseling for the Elderly eligibility.
+  date: 2024-07-24 00:03:46
+- bump: patch
+  changes:
+    fixed:
+    - Adjust the DC CTC formatting.
+  date: 2024-07-24 01:33:28
+- bump: minor
+  changes:
+    added:
+    - 2023 Nebraska income tax values.
+  date: 2024-07-24 01:38:48
+- bump: patch
+  changes:
+    fixed:
+    - DC CTC parameter period function.
+  date: 2024-07-24 20:06:00
+- bump: patch
+  changes:
+    fixed:
+    - Cap the Pell Grant amount at the cost of attendance.
+  date: 2024-07-24 20:10:44
+- bump: patch
+  changes:
+    added:
+    - Restructure Nebraska variables and tests.
+  date: 2024-07-24 20:47:17
+- bump: patch
+  changes:
+    fixed:
+    - Disabeld the exhaustive_parameter_dependencies metadata in household_refundable_state_tax_credits
+      as it was not working with state reforms.
+  date: 2024-07-25 02:41:53
+- bump: minor
+  changes:
+    added:
+    - 2023 Indiana income tax updates.
+  date: 2024-07-25 04:22:15
+- bump: minor
+  changes:
+    added:
+    - 2023 Washington Tax Rules.
+  date: 2024-07-25 12:45:43
+- bump: patch
+  changes:
+    fixed:
+    - Remove the adds function from the reported_state_income_tax reform file.
+  date: 2024-07-25 13:01:20
+- bump: minor
+  changes:
+    added:
+    - 2023 Montana Tax Rules.
+  date: 2024-07-25 22:43:01
+- bump: patch
+  changes:
+    fixed:
+    - Limit the older children under the Working Families Tax Credit above 18 years.
+  date: 2024-07-26 02:54:51
+- bump: patch
+  changes:
+    fixed:
+    - Optimize for the Hawaii deduction.
+  date: 2024-07-29 20:47:46
+- bump: patch
+  changes:
+    fixed:
+    - Exclude childless filers from the NY WFTC EITC reduction.
+  date: 2024-07-30 00:23:32
+- bump: patch
+  changes:
+    fixed:
+    - Add the flat tax variable in the relevant net income tree computations.
+    - Index general household and state level parameters.
+  date: 2024-07-30 05:34:09
+- bump: patch
+  changes:
+    fixed:
+    - Structure End Child Poverty Act as a reform.
+  date: 2024-07-30 16:30:17
+- bump: patch
+  changes:
+    fixed:
+    - Minor CTC social security parameter formatting.
+  date: 2024-07-30 20:06:02
+- bump: patch
+  changes:
+    fixed:
+    - Add the Child benefit component to the ECPA reform.
+  date: 2024-07-30 20:20:10
+- bump: minor
+  changes:
+    added:
+    - Decouple the WFTC child age eligibility from the NY exemptions child age threshold.
+  date: 2024-07-31 07:15:11
+- bump: minor
+  changes:
+    added:
+    - California & Oregon higher Lifeline benefit amount.
+  date: 2024-08-01 13:25:55
+- bump: minor
+  changes:
+    added:
+    - Remove the parameter caching from the state variables.
+  date: 2024-08-01 13:55:37
+- bump: minor
+  changes:
+    added:
+    - July 2024 CalWorks vehicle value increase.
+  date: 2024-08-01 15:51:55
+- bump: minor
+  changes:
+    added:
+    - BOOST act middle class tax credit.
+  date: 2024-08-02 03:31:58
+- bump: minor
+  changes:
+    added:
+    - Indiana additional exemption amount for adopted children.
+  date: 2024-08-02 17:55:58
+- bump: patch
+  changes:
+    added:
+    - Consistent unit usage in list parameters.
+  date: 2024-08-05 00:52:28
+- bump: minor
+  changes:
+    added:
+    - Head Start and Early Head Start programs eligibility.
+  date: 2024-08-05 21:40:16
+- bump: minor
+  changes:
+    added:
+    - North Carolina use tax.
+  date: 2024-08-06 16:57:19
+- bump: patch
+  changes:
+    fixed:
+    - Adjust the income_tax_before_refundable_credits variable to be neutralized when
+      abolishing federal income tax.
+  date: 2024-08-06 17:30:53
+- bump: minor
+  changes:
+    added:
+    - Revised State Median Income (SMI) Ceilings 2024
+  date: 2024-08-06 18:44:12
+- bump: patch
+  changes:
+    added:
+    - California TANF resources variable inputs.
+  date: 2024-08-06 21:26:16
+- bump: minor
+  changes:
+    added:
+    - Nebraska refundable child tax credit.
+    - Remove duplicate childcare expenses variable.
+  date: 2024-08-08 15:22:20
+- bump: patch
+  changes:
+    fixed:
+    - Restriction on out-dated version of policyengine-core.
+  date: 2024-08-08 18:06:51
