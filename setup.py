@@ -45,7 +45,7 @@ setup(
         "pytest-dependency",
         "pyyaml",
         "requests",
-        "scipy==1.10.1",
+        "scipy==1.14.0",
         "synthimpute",
         "tables==3.9.2",
         "tabulate",
