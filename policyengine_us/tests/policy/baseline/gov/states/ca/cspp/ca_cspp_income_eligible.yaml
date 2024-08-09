@@ -1,0 +1,26 @@
+- name: CA CSPP income eligible 1
+  period: 2022
+  input:
+    tax_unit_fpg: 100
+    ca_agi: 100
+    state_code: CA
+  output:
+    ca_cspp_income_eligible: true
+
+- name: CA CSPP income eligible 2
+  period: 2022
+  input:
+    tax_unit_fpg: 100
+    ca_agi: 90
+    state_code: CA
+  output:
+    ca_cspp_income_eligible: true
+
+- name: CA CSPP income ineligible
+  period: 2022
+  input:
+    tax_unit_fpg: 100
+    ca_agi: 101
+    state_code: CA
+  output:
+    ca_cspp_income_eligible: false

@@ -1,0 +1,43 @@
+- name: Eligible because Head Start participating and income eligible
+  period: 2022
+  input:
+    head_start: 100
+    ca_cspp_income_eligible: 100
+    state_code: CA
+  output:
+    ca_cspp_eligible: true
+
+- name: Eligible because Head Start participating and SNAP
+  period: 2022
+  input:
+    head_start: 100
+    snap: 100
+    state_code: CA
+  output:
+    ca_cspp_eligible: true
+
+- name: Eligible because Head Start participating and child is homeless
+  period: 2022
+  input:
+    head_start: 100
+    is_homeless: true
+    state_code: CA
+  output:
+    ca_cspp_eligible: true
+
+- name: Ineligible because not Head Start participating
+  period: 2022
+  input:
+    head_start: 0
+    is_homeless: true
+    state_code: CA
+  output:
+    ca_cspp_eligible: false
+
+- name: Ineligible because not program nor condition eligible
+  period: 2022
+  input:
+    head_start: 0
+    state_code: CA
+  output:
+    ca_cspp_eligible: false
