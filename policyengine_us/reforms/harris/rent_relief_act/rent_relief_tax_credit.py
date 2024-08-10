@@ -17,8 +17,16 @@ def create_rent_relief_tax_credit() -> Reform:
             p = parameters(
                 period
             ).gov.contrib.harris.rent_relief_act.rent_relief_credit
+            safmr = tax_unit.household("small_area_fair_market_rent", period)
+            safmr_used_for_hcv = tax_unit.household(
+                "safmr_used_for_hcv", period
+            )
+            applicable_safmr = where(
+                safmr_used_for_hcv, safmr + p.safmr_increase, safmr
+            )
+            capped_rent = min_(rent, applicable_safmr)
             gross_income_fraction = p.gross_income_rate * gross_income
-            rent_excess = max_(rent - gross_income_fraction, 0)
+            rent_excess = max_(capped_rent - gross_income_fraction, 0)
             applicable_percentage = p.applicable_percentage.calc(gross_income)
             return applicable_percentage * rent_excess
 
