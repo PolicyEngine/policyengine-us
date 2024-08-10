@@ -34,21 +34,15 @@ setup(
         ),
     ],
     install_requires=[
-        "click==8.1.3",
-        "h5py",
-        "microdf_python",
-        "pandas",
-        "pathlib",
         "policyengine-core",
-        "pytest",
-        "pytest-dependency",
+        "h5py",
+        "pandas",
         "pyyaml",
         "requests",
-        "scipy==1.10.1",
-        "synthimpute",
-        "tables==3.9.2",
-        "tabulate",
         "tqdm",
+        "pytest",
+        "pytest-dependency",
+
     ],
     extras_require={
         "dev": [
@@ -71,7 +65,7 @@ setup(
         ],
     },
     # Windows CI requires Python 3.9.
-    python_requires=">=3.7",
+    python_requires=">=3.9",
     entry_points={
         "console_scripts": [
             "policyengine-us = policyengine_us.tools.cli:main",
