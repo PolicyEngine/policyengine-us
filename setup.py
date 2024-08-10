@@ -7,7 +7,7 @@ with open("README.md", "r") as readme_file:
 
 setup(
     name="policyengine-us",
-    version="1.44.1",
+    version="1.45.1",
     author="PolicyEngine",
     author_email="hello@policyengine.org",
     long_description=readme,
@@ -20,6 +20,7 @@ setup(
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
         "Topic :: Scientific/Engineering :: Information Analysis",
     ],
     description="PolicyEngine tax and benefit system for the US",
