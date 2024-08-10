@@ -17,6 +17,6 @@ def test_microsim_runs_cps():
             decile <= 10
         ), f"{decile_var} out of bounds."
 
-    # Check that the microsim calculates important variables as nonzero in current year.
+    # Check that microsim calculates important variables as nonzero.
     for var in ["employment_income", "self_employment_income"]:
         assert sim.calc(var, period=2024).sum() > 0, f"{var} is zero in 2024."

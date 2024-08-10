@@ -35,13 +35,8 @@ setup(
     ],
     install_requires=[
         "policyengine-core",
-        "h5py",
-        "pandas",
         "pyyaml",
-        "requests",
         "tqdm",
-        "pytest",
-        "pytest-dependency",
     ],
     extras_require={
         "dev": [
@@ -63,8 +58,7 @@ setup(
             "survey-enhance",
         ],
     },
-    # Windows CI requires Python 3.9.
-    python_requires=">=3.9",
+    python_requires=">=3.10",
     entry_points={
         "console_scripts": [
             "policyengine-us = policyengine_us.tools.cli:main",
