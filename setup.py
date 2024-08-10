@@ -42,7 +42,6 @@ setup(
         "tqdm",
         "pytest",
         "pytest-dependency",
-
     ],
     extras_require={
         "dev": [
