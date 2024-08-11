@@ -22,18 +22,30 @@ def create_rent_relief_tax_credit() -> Reform:
                 "safmr_used_for_hcv", period
             )
             gross_income = add(tax_unit, period, ["irs_gross_income"])
+            reduced_gross_income = max_(gross_income - p.safmr_increase, 0)
             applicable_gross_income = where(
                 safmr_used_for_hcv,
-                gross_income + p.safmr_increase,
+                reduced_gross_income,
                 gross_income,
             )
             capped_rent = min_(rent, safmr)
             gross_income_fraction = (
-                p.gross_income_rate * applicable_gross_income
+                p.rate.gross_income * applicable_gross_income
             )
             rent_excess = max_(capped_rent - gross_income_fraction, 0)
             applicable_percentage = p.applicable_percentage.calc(gross_income)
-            return applicable_percentage * rent_excess
+            amount_if_rent_not_subsidized = applicable_percentage * rent_excess
+            housing_assistance = tax_unit.spm_unit(
+                "housing_assistance", period
+            )
+            rent_is_subsidized = housing_assistance > 0
+            reduced_rent = max_(0, rent - housing_assistance)
+            amount_if_rent_subsidized = reduced_rent * p.rate.subsidized_rent
+            return where(
+                rent_is_subsidized,
+                amount_if_rent_subsidized,
+                amount_if_rent_not_subsidized,
+            )
 
     class income_tax_refundable_credits(Variable):
         value_type = float
