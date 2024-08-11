@@ -17,4 +17,7 @@ class ny_additional_ctc(Variable):
         p = parameters(period).gov.states.ny.tax.income.credits.ctc.additional
         match = p.amount.calc(agi)
         base_ctc = tax_unit("ny_ctc", period)
-        return base_ctc * match
+        credit_amount = base_ctc * match
+        credit_above_min_amount = base_ctc >= p.min_ctc
+        return where(credit_above_min_amount, credit_amount, 0)
+
