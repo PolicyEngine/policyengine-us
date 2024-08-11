@@ -11,7 +11,7 @@ def create_rent_relief_tax_credit() -> Reform:
         reference = "https://www.congress.gov/bill/116th-congress/senate-bill/1106/text"
 
         def formula(tax_unit, period, parameters):
-            
+
             # The applicable rent amount is capped at fair market rent
             rent = add(tax_unit, period, ["rent"])
             p = parameters(
@@ -23,10 +23,14 @@ def create_rent_relief_tax_credit() -> Reform:
             )
             gross_income = add(tax_unit, period, ["irs_gross_income"])
             applicable_gross_income = where(
-                safmr_used_for_hcv, gross_income + p.safmr_increase, gross_income
+                safmr_used_for_hcv,
+                gross_income + p.safmr_increase,
+                gross_income,
             )
             capped_rent = min_(rent, safmr)
-            gross_income_fraction = p.gross_income_rate * applicable_gross_income
+            gross_income_fraction = (
+                p.gross_income_rate * applicable_gross_income
+            )
             rent_excess = max_(capped_rent - gross_income_fraction, 0)
             applicable_percentage = p.applicable_percentage.calc(gross_income)
             return applicable_percentage * rent_excess
