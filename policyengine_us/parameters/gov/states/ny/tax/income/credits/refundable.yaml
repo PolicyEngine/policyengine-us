@@ -6,24 +6,7 @@ values:
     - ny_ctc
     - ny_cdcc
     - ny_real_property_tax_credit
-    - ny_college_tuition_credit
-
-  2021-01-01:
-    - ny_eitc
-    - ny_supplemental_eitc
-    - ny_ctc
-    - ny_cdcc
-    - ny_real_property_tax_credit
-    - ny_college_tuition_credit
-    - ny_additional_ctc
-
-  2022-01-01:
-    - ny_eitc
-    - ny_supplemental_eitc
-    - ny_ctc
-    - ny_cdcc
-    - ny_real_property_tax_credit
-    - ny_college_tuition_credit
+    - ny_college_tuition_credit=
 
   2023-01-01:
     - ny_eitc
@@ -33,7 +16,6 @@ values:
     - ny_real_property_tax_credit
     - ny_college_tuition_credit
     - ny_additional_ctc
-
 
   2024-01-01:
     - ny_eitc
