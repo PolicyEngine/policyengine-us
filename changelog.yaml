@@ -7888,3 +7888,14 @@
     added:
     - Support for Python 3.12.
   date: 2024-08-10 03:56:39
+- bump: patch
+  changes:
+    fixed:
+    - Refactor the alternative minimum tax files.
+    - Include capital gains tax in the final alternative minimum tax calculation.
+  date: 2024-08-10 11:09:59
+- bump: patch
+  changes:
+    fixed:
+    - Inclusion of unneeded packages in setup.py install_requires list.
+  date: 2024-08-10 19:54:58
