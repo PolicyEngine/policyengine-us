@@ -19,4 +19,5 @@ class household_state_benefits(Variable):
         "ca_fera",
         "ca_la_ez_save",
         "co_oap",
+        "ne_child_care_subsidy"
     ]
