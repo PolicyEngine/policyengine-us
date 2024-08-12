@@ -22,13 +22,14 @@ def create_rent_relief_tax_credit() -> Reform:
                 "safmr_used_for_hcv", period
             )
             gross_income = add(tax_unit, period, ["irs_gross_income"])
-            reduced_gross_income = max_(gross_income - p.safmr_increase, 0)
-            applicable_gross_income = where(
-                safmr_used_for_hcv,
-                reduced_gross_income,
-                gross_income,
+            # Reduce the income (equivalent to raising thresholds) for households
+            # in high income areas, as defined by using SAFMR for HCV.
+            high_income_reduction = safmr_used_for_hcv * p.safmr_increase
+            applicable_gross_income = max_(
+                gross_income - high_income_reduction, 0
             )
-            capped_rent = min_(rent, safmr)
+            capped_safmr = safmr * p.sfmr_share_rent_cap
+            capped_rent = min_(rent, capped_safmr)
             gross_income_fraction = p.income_share * applicable_gross_income
             rent_excess = max_(capped_rent - gross_income_fraction, 0)
             applicable_percentage = p.applicable_percentage.calc(gross_income)
