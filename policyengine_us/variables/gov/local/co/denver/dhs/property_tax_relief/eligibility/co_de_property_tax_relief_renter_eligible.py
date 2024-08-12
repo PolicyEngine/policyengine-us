@@ -10,10 +10,10 @@ class co_de_property_tax_relief_renter_eligible(Variable):
     reference = "https://denvergov.org/files/content/public/v/37/government/agencies-departments-offices/agencies-departments-offices-directory/denver-human-services/be-supported/additional-assistance/property-tax-relief/denver-property-tax-relief-program-year-2021-rules.pdf"
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.local.co.denver.property_tax_relief
-        has_rent = add(spm_unit, period, ["rent"]) > 0
+        p = parameters(period).gov.local.co.denver.dhs.property_tax_relief
+        pays_rent = add(spm_unit, period, ["rent"]) > 0
         has_elderly_or_disabled = spm_unit("has_usda_elderly_disabled", period)
-        renter_requirements = has_elderly_or_disabled & has_rent
+        elderly_or_disabled_renters = has_elderly_or_disabled & pays_rent
 
         income = spm_unit("spm_unit_net_income", period)
         size = spm_unit("spm_unit_size", period)
@@ -22,4 +22,4 @@ class co_de_property_tax_relief_renter_eligible(Variable):
         )
         renter_income_eligible = income <= renter_income_limit
 
-        return renter_requirements & renter_income_eligible
+        return elderly_or_disabled_renters & renter_income_eligible

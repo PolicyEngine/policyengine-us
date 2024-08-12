@@ -10,12 +10,12 @@ class co_de_property_tax_relief_homeowner_eligible(Variable):
     reference = "https://denvergov.org/files/content/public/v/37/government/agencies-departments-offices/agencies-departments-offices-directory/denver-human-services/be-supported/additional-assistance/property-tax-relief/denver-property-tax-relief-program-year-2021-rules.pdf"
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.local.co.denver.property_tax_relief
+        p = parameters(period).gov.local.co.denver.dhs.property_tax_relief
         has_property_taxes = add(spm_unit, period, ["real_estate_taxes"]) > 0
         has_elderly_or_disabled = spm_unit("has_usda_elderly_disabled", period)
         count_dependents = add(spm_unit, period, ["tax_unit_dependents"])
         has_dependent = count_dependents > 0
-        homeowner_requirments = (
+        elderly_or_disabled_homeowners = (
             has_elderly_or_disabled | has_dependent
         ) & has_property_taxes
 
@@ -24,4 +24,4 @@ class co_de_property_tax_relief_homeowner_eligible(Variable):
         homeowner_income_limit = p.ami.ami.calc(size) * p.ami.rate.homeowner
         homeowner_income_eligible = income <= homeowner_income_limit
 
-        return homeowner_requirments & homeowner_income_eligible
+        return elderly_or_disabled_homeowners & homeowner_income_eligible
