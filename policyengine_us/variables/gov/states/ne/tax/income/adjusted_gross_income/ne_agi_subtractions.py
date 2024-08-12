@@ -26,4 +26,6 @@ class ne_agi_subtractions(Variable):
         taxable_retirement_pension = add(
             tax_unit, period, ["taxable_public_pension_income"]
         )
-        return taxable_oasdi * oasdi_fraction + taxable_retirement_pension
+        if period == 2024:
+            return taxable_oasdi * oasdi_fraction + taxable_retirement_pension
+        else: return taxable_oasdi * oasdi_fraction
