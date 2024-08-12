@@ -29,9 +29,7 @@ def create_rent_relief_tax_credit() -> Reform:
                 gross_income,
             )
             capped_rent = min_(rent, safmr)
-            gross_income_fraction = (
-                p.rate.gross_income * applicable_gross_income
-            )
+            gross_income_fraction = p.income_share * applicable_gross_income
             rent_excess = max_(capped_rent - gross_income_fraction, 0)
             applicable_percentage = p.applicable_percentage.calc(gross_income)
             amount_if_rent_not_subsidized = applicable_percentage * rent_excess
@@ -40,7 +38,7 @@ def create_rent_relief_tax_credit() -> Reform:
             )
             rent_is_subsidized = housing_assistance > 0
             reduced_rent = max_(0, rent - housing_assistance)
-            amount_if_rent_subsidized = reduced_rent * p.rate.subsidized_rent
+            amount_if_rent_subsidized = reduced_rent * p.subsidized_rent_rate
             return where(
                 rent_is_subsidized,
                 amount_if_rent_subsidized,
