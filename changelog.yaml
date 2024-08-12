@@ -7872,3 +7872,40 @@
     added:
     - California TANF resources variable inputs.
   date: 2024-08-06 21:26:16
+- bump: minor
+  changes:
+    added:
+    - Nebraska refundable child tax credit.
+    - Remove duplicate childcare expenses variable.
+  date: 2024-08-08 15:22:20
+- bump: patch
+  changes:
+    fixed:
+    - Restriction on out-dated version of policyengine-core.
+  date: 2024-08-08 18:06:51
+- bump: minor
+  changes:
+    added:
+    - Support for Python 3.12.
+  date: 2024-08-10 03:56:39
+- bump: patch
+  changes:
+    fixed:
+    - Refactor the alternative minimum tax files.
+    - Include capital gains tax in the final alternative minimum tax calculation.
+  date: 2024-08-10 11:09:59
+- bump: patch
+  changes:
+    fixed:
+    - Inclusion of unneeded packages in setup.py install_requires list.
+  date: 2024-08-10 19:54:58
+- bump: minor
+  changes:
+    added:
+    - New York additional Empire State Tax Credit.
+  date: 2024-08-12 15:37:43
+- bump: minor
+  changes:
+    added:
+    - Rent relief tax credit.
+  date: 2024-08-12 16:32:53

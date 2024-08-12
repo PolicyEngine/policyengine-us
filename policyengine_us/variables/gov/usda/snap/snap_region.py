@@ -22,12 +22,11 @@ class snap_region(Variable):
 
     def formula(household, period):
         state_group = household("state_group", period)
-        state_groups = state_group.possible_values
         mapped_values = (
             pd.Series(state_group.decode_to_str())
             .map(
                 {
-                    state_groups.AK: SNAPRegion.AK_URBAN,
+                    "AK": SNAPRegion.AK_URBAN,
                     **{
                         key: value
                         for key, value in SNAPRegion._member_map_.items()

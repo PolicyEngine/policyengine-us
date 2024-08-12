@@ -3,6 +3,11 @@ values:
   2021-01-01:
     - ne_cdcc_refundable
     - ne_eitc
+  
+  2024-01-01:
+    - ne_cdcc_refundable
+    - ne_eitc
+    - ne_refundable_ctc
 
 metadata:
   unit: list
@@ -19,3 +24,6 @@ metadata:
     href: https://revenue.nebraska.gov/about/legal-information/regulations/chapter-22-individual-income-tax
   - title: 2023 NE Individual Income Tax Booklet
     href: https://revenue.nebraska.gov/sites/revenue.nebraska.gov/files/doc/tax-forms/2023/incometax/f_1040n_booklet_2023_Final.pdf#page=12
+  - title: Nebraska Revised Statute | Chapter 77 | §7203
+    href: https://nebraskalegislature.gov/laws/statutes.php?statute=77-7203
+
