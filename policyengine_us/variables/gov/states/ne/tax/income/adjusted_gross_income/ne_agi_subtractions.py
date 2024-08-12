@@ -28,4 +28,5 @@ class ne_agi_subtractions(Variable):
         )
         if period == 2024:
             return taxable_oasdi * oasdi_fraction + taxable_retirement_pension
-        else: return taxable_oasdi * oasdi_fraction
+        else:
+            return taxable_oasdi * oasdi_fraction
