@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class ca_cspp_income_eligible(Variable):
+class ca_ccrc_head_start_income_eligible(Variable):
     value_type = bool
     entity = TaxUnit
-    label = "California State Preschool Program income eligible"
+    label = "California Child Care Resource Center Head Start income eligible"
     definition_period = YEAR
     reference = (
         "https://www.ccrcca.org/headstart/programs/eligibility-requirements/"
@@ -12,7 +12,7 @@ class ca_cspp_income_eligible(Variable):
     defined_for = StateCode.CA
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.ca.cspp.eligibility
+        p = parameters(period).gov.states.ca.ccrc.head_start.eligibility
         fpg = tax_unit("tax_unit_fpg", period)
         income_limit = fpg * p.fpg_fraction
         # CCRC website doesn't specify which income source to use

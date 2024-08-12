@@ -1,0 +1,31 @@
+- name: CCRC Head Start Eligible because income eligible
+  period: 2022
+  input:
+    ca_ccrc_head_start_income_eligible: true
+    state_code: CA
+  output:
+    ca_ccrc_head_start_eligible: true
+
+- name: CCRC Head Start Eligible because SNAP
+  period: 2022
+  input:
+    snap: 100
+    state_code: CA
+  output:
+    ca_ccrc_head_start_eligible: true
+
+- name: CCRC Head Start Eligible because child is homeless
+  period: 2022
+  input:
+    is_homeless: true
+    state_code: CA
+  output:
+    ca_ccrc_head_start_eligible: true
+
+
+- name: CCRC Head Start Ineligible because not program, condition, nor income eligible
+  period: 2022
+  input:
+    state_code: CA
+  output:
+    ca_ccrc_head_start_eligible: false

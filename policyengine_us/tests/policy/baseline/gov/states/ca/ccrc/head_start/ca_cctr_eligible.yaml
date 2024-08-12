@@ -1,0 +1,26 @@
+- name: CA CCTR eligible
+  period: 2022
+  input:
+    ca_ccrc_head_start_eligible: true
+    early_head_start: 100
+    state_code: CA
+  output:
+    ca_cctr_eligible: true
+
+- name: CA CCTR ineligible
+  period: 2022
+  input:
+    ca_ccrc_head_start_eligible: false
+    early_head_start: 100
+    state_code: CA
+  output:
+    ca_cctr_eligible: false
+
+- name: CA CCTR ineligible
+  period: 2022
+  input:
+    ca_ccrc_head_start_eligible: true
+    early_head_start: 0
+    state_code: CA
+  output:
+    ca_cctr_eligible: false

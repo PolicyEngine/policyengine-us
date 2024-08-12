@@ -1,0 +1,26 @@
+- name: CA CSPP eligible
+  period: 2022
+  input:
+    ca_ccrc_head_start_eligible: true
+    head_start: 100
+    state_code: CA
+  output:
+    ca_cspp_eligible: true
+
+- name: CA CSPP ineligible
+  period: 2022
+  input:
+    ca_ccrc_head_start_eligible: false
+    head_start: 100
+    state_code: CA
+  output:
+    ca_cspp_eligible: false
+
+- name: CA CSPP ineligible
+  period: 2022
+  input:
+    ca_ccrc_head_start_eligible: true
+    head_start: 0
+    state_code: CA
+  output:
+    ca_cspp_eligible: false

@@ -1,0 +1,14 @@
+description: The California Child Care Resource Center limits the Head Start program to filers experiencing the following living conditions, if ineligible based on income and program participation.  
+
+values:
+  2022-01-01:
+    - was_in_foster_care
+    - is_homeless
+
+metadata:
+  period: year
+  unit: list
+  label: California Child Care Resource Center Head Start qualifying living conditions
+  reference:
+    - title: CCRC, Head Start, Eligibility Requirements
+      href: https://www.ccrcca.org/headstart/programs/eligibility-requirements/
