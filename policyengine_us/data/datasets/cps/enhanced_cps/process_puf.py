@@ -6,7 +6,7 @@ from policyengine_us.system import system
 from policyengine_us import Microsimulation
 from policyengine_us.data.datasets.cps.cps import CPS_2021
 from policyengine_us.data.datasets.puf.puf import (
-    PUF_2021,
+    PUF_2022,
     FINANCIAL_SUBSET,
     PUF_FILE_PATH,
     PUF_DEMOGRAPHICS_FILE_PATH,
@@ -233,7 +233,6 @@ def project_tax_unit_cps_to_person_level(
 
 def puf_imputed_cps_person_level(
     verbose: bool = True,
-    time_period: str = 2021,
 ) -> pd.DataFrame:
     """Generate a PUF-imputed CPS at the person level.
 
@@ -251,7 +250,7 @@ def puf_imputed_cps_person_level(
 
     if verbose:
         print("Imputing PUF financials to CPS")
-    puf_imputed_cps = impute_puf_financials_to_cps(puf_style_cps, PUF_2021)
+    puf_imputed_cps = impute_puf_financials_to_cps(puf_style_cps, PUF_2022)
 
     if verbose:
         print("Projecting tax unit CPS to person level")
@@ -260,7 +259,6 @@ def puf_imputed_cps_person_level(
         tax_unit_level_puf_imputed_cps,
     ) = project_tax_unit_cps_to_person_level(
         puf_imputed_cps,
-        time_period,
     )
 
     if verbose:

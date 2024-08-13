@@ -333,7 +333,9 @@ class PUF(Dataset):
         puf["pre_tax_contributions"] = impute_pension_contributions_to_puf(
             puf[["employment_income"]]
         )
-        puf["employment_income"] = puf["employment_income"] + puf["pre_tax_contributions"]
+        puf["employment_income"] = (
+            puf["employment_income"] + puf["pre_tax_contributions"]
+        )
 
         # Sort in original PUF order
         puf = puf.set_index("RECID").loc[original_recid].reset_index()
