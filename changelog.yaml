@@ -7914,3 +7914,8 @@
     added:
     - Update to codecov/codecov-action@v4, actions/setup-python@v5, and actions/checkout@v4.
   date: 2024-08-13 03:08:12
+- bump: minor
+  changes:
+    fixed:
+    - Inaccurate docstring in loss.py
+  date: 2024-08-13 14:42:06
