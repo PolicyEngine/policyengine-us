@@ -13,5 +13,7 @@ class flat_tax(Variable):
         income = tax_unit("positive_agi", period)
         p = parameters(period).gov.contrib.ubi_center.flat_tax
         if p.flat_tax_on_gross_income:
-            income = add(tax_unit, period, ["irs_gross_income"])
-        return p.rate * income
+            income = add(tax_unit, period, ["positive_gross_income"])
+            p = parameters(period).gov.contrib.ubi_center.flat_tax.rate
+            return p.gross_income * income
+        return p.rate.agi * income
