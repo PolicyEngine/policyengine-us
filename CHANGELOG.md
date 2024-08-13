@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.48.0] - 2024-08-13 03:08:12
+
+### Added
+
+- Update to codecov/codecov-action@v4, actions/setup-python@v5, and actions/checkout@v4.
+
+## [1.47.0] - 2024-08-12 16:32:53
+
+### Added
+
+- Rent relief tax credit.
+
+## [1.46.0] - 2024-08-12 15:37:43
+
+### Added
+
+- New York additional Empire State Tax Credit.
+
 ## [1.45.2] - 2024-08-10 19:54:58
 
 ### Fixed
@@ -9348,6 +9366,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.48.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.47.0...1.48.0
+[1.47.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.46.0...1.47.0
+[1.46.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.45.2...1.46.0
 [1.45.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.45.1...1.45.2
 [1.45.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.45.0...1.45.1
 [1.45.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.44.1...1.45.0
