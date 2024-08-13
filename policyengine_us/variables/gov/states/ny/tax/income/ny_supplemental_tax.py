@@ -53,6 +53,26 @@ class ny_supplemental_tax(Variable):
             applicable_amount / p.phase_in_length,
         )
 
+        # edge case for high agi
+        agi_limit = select(
+            in_each_status,
+            [
+                single.thresholds[-1],
+                joint.thresholds[-1],
+                hoh.thresholds[-1],
+                widow.thresholds[-1],
+                separate.thresholds[-1],
+            ],
+        )
+        high_agi_rate = select(
+            in_each_status,
+            [scale.marginal_rates(agi_limit + 1) for scale in scales],
+        )
+
+        supplemental_tax_high_agi = (
+            ny_taxable_income * high_agi_rate - ny_main_income_tax
+        )
+
         if p.in_effect:
             recapture_base = select(
                 in_each_status,
@@ -77,36 +97,19 @@ class ny_supplemental_tax(Variable):
                     p.incremental_benefit.separate.calc(ny_taxable_income),
                 ],
             )
-        else:
-            recapture_base = 0
-            incremental_benefit = 0
 
-        supplemental_tax_general = (
-            recapture_base + phase_in_fraction * incremental_benefit
-        )
+            supplemental_tax_general = (
+                recapture_base + phase_in_fraction * incremental_benefit
+            )
 
-        # edge case for high agi
-        agi_limit = select(
-            in_each_status,
-            [
-                single.thresholds[-1],
-                joint.thresholds[-1],
-                hoh.thresholds[-1],
-                widow.thresholds[-1],
-                separate.thresholds[-1],
-            ],
-        )
-        high_agi_rate = select(
-            in_each_status,
-            [scale.marginal_rates(agi_limit + 1) for scale in scales],
-        )
-
-        supplemental_tax_high_agi = (
-            ny_taxable_income * high_agi_rate - ny_main_income_tax
-        )
+            return where(
+                ny_agi > agi_limit,
+                supplemental_tax_high_agi,
+                supplemental_tax_general,
+            )
 
         return where(
             ny_agi > agi_limit,
             supplemental_tax_high_agi,
-            supplemental_tax_general,
+            0,
         )
