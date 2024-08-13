@@ -10,17 +10,11 @@ def create_reported_state_income_tax() -> Reform:
         unit = USD
         definition_period = YEAR
 
-        adds = [
-            "employee_payroll_tax",
-            "self_employment_tax",
-            "income_tax_before_refundable_credits",
-            "spm_unit_state_tax_reported",
-            "flat_tax",
-        ]
-
         def formula(household, period, parameters):
             p = parameters(period)
-            added_components = p.gov.household_tax_before_refundable_credits
+            added_components = (
+                p.gov.household.household_tax_before_refundable_credits
+            )
             flat_tax = p.gov.contrib.ubi_center.flat_tax
             if p.simulation.reported_state_income_tax:
                 added_components = [
