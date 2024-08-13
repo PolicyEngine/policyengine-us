@@ -1,0 +1,30 @@
+- name: Joint filers
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    taxable_income: 1_000_000
+    amt_excluded_deductions: 1_000
+    filing_status: JOINT
+  output:
+    amt_separate_addition: 0
+
+- name: Separate filer eligible for addition
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    taxable_income: 800_000
+    amt_excluded_deductions: 1_000
+    filing_status: SEPARATE
+  output:
+    amt_separate_addition: 6_225
+
+- name: Separate, income below limit
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    taxable_income: 700_000
+    amt_excluded_deductions: 1_000
+    filing_status: SEPARATE
+  output:
+    amt_separate_addition: 0
+  

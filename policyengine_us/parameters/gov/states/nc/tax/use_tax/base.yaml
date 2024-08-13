@@ -1,0 +1,145 @@
+description: North Carolina levies its use tax as a dollar amount by AGI for income below a certain threshold.
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: currency-USD
+  label: North Carolina use tax base
+  reference:
+    # The legal code instructs the Department of Revenue to provide average use tax amount tables by income in the annual tax forms.
+    - title: Code of North Carolina | § 105-269.14. Payment of use tax with individual income tax.
+      href: https://www.ncleg.gov/EnactedLegislation/Statutes/PDF/BySection/Chapter_105/GS_105-269.14.pdf
+    - title: NCDOR Use Tax
+      href: https://www.ncdor.gov/taxes-forms/sales-and-use-tax/use-tax
+    - title: 2023 North Carolina Form D-400, Line 14
+      href: https://www.ncdor.gov/2023-d-400-web-fill-version/open#page=2
+    - title: 2023 North Carolina Form D-401, Line 18
+      href: https://www.ncdor.gov/2023-d-401-individual-income-tax-instructions/open#page=26
+    - title: 2022 North Carolina Form D-401, Line 18
+      href: https://www.ncdor.gov/2022-d-401-individual-income-tax-instructions/open#page=26
+    - title: 2021 North Carolina Form D-401, Line 18
+      href: https://www.ncdor.gov/2021-d-401-instruction-bookletpdf/open#page=26
+brackets:
+  - threshold:
+      2021-01-01: 0
+    amount:
+      2021-01-01: 1
+  - threshold:
+      2021-01-01: 2_200
+    amount:
+      2021-01-01: 2
+  - threshold:
+      2021-01-01: 3_700
+    amount:
+      2021-01-01: 3
+  - threshold:
+      2021-01-01: 5_200
+    amount:
+      2021-01-01: 4
+  - threshold:
+      2021-01-01: 6_700
+    amount:
+      2021-01-01: 5
+  - threshold:
+      2021-01-01: 8_100
+    amount:
+      2021-01-01: 6
+  - threshold:
+      2021-01-01: 9_600
+    amount:
+      2021-01-01: 7
+  - threshold:
+      2021-01-01: 11_100
+    amount:
+      2021-01-01: 8
+  - threshold:
+      2021-01-01: 12_600
+    amount:
+      2021-01-01: 9
+  - threshold:
+      2021-01-01: 14_100
+    amount:
+      2021-01-01: 10
+  - threshold:
+      2021-01-01: 15_600  
+    amount:
+      2021-01-01: 11
+  - threshold:
+      2021-01-01: 17_000
+    amount:
+      2021-01-01: 12
+  - threshold:
+      2021-01-01: 18_500
+    amount:
+      2021-01-01: 13
+  - threshold:
+      2021-01-01: 20_000
+    amount:
+      2021-01-01: 14
+  - threshold:
+      2021-01-01: 21_500
+    amount:
+      2021-01-01: 15
+  - threshold:
+      2021-01-01: 23_000
+    amount:
+      2021-01-01: 16
+  - threshold:
+      2021-01-01: 24_400
+    amount:
+      2021-01-01: 17
+  - threshold:
+      2021-01-01: 25_900
+    amount:
+      2021-01-01: 18
+  - threshold:
+      2021-01-01: 27_400
+    amount:
+      2021-01-01: 19
+  - threshold:
+      2021-01-01: 28_900
+    amount:
+      2021-01-01: 20
+  - threshold:
+      2021-01-01: 30_400
+    amount:
+      2021-01-01: 21
+  - threshold:
+      2021-01-01: 31_900
+    amount:
+      2021-01-01: 22
+  - threshold:
+      2021-01-01: 33_300
+    amount:
+      2021-01-01: 23
+  - threshold:
+      2021-01-01: 34_800
+    amount:
+      2021-01-01: 24
+  - threshold:
+      2021-01-01: 36_300
+    amount:
+      2021-01-01: 25
+  - threshold:
+      2021-01-01: 37_800
+    amount:
+      2021-01-01: 26
+  - threshold:
+      2021-01-01: 39_300
+    amount:
+      2021-01-01: 27
+  - threshold:
+      2021-01-01: 40_700
+    amount:
+      2021-01-01: 28
+  - threshold:
+      2021-01-01: 42_200
+    amount:
+      2021-01-01: 29
+  - threshold: 
+      2021-01-01: 43_700
+    amount: 
+      2021-01-01: 30
+  - threshold: 
+      2021-01-01: 45_200
+    amount: 
+      2021-01-01: 0

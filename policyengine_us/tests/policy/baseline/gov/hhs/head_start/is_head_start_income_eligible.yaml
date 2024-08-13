@@ -1,0 +1,23 @@
+- name: Head Start program income eligible 1
+  period: 2021
+  input:
+    adjusted_gross_income: 10
+    tax_unit_fpg: 10
+  output:
+    is_head_start_income_eligible: true
+
+- name: Head Start program income eligible 2
+  period: 2021
+  input:
+    adjusted_gross_income: 0
+    tax_unit_fpg: 10
+  output:
+    is_head_start_income_eligible: true
+
+- name: Head Start program income ineligible
+  period: 2021
+  input:
+    adjusted_gross_income: 10
+    tax_unit_fpg: 0
+  output:
+    is_head_start_income_eligible: false
