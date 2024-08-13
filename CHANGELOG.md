@@ -5,6 +5,68 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.50.0] - 2024-08-13 16:02:31
+
+### Added
+
+- Flat tax on gross income.
+
+## [1.49.0] - 2024-08-13 14:42:06
+
+### Fixed
+
+- Inaccurate docstring in loss.py
+
+## [1.48.0] - 2024-08-13 03:08:12
+
+### Added
+
+- Update to codecov/codecov-action@v4, actions/setup-python@v5, and actions/checkout@v4.
+
+## [1.47.0] - 2024-08-12 16:32:53
+
+### Added
+
+- Rent relief tax credit.
+
+## [1.46.0] - 2024-08-12 15:37:43
+
+### Added
+
+- New York additional Empire State Tax Credit.
+
+## [1.45.2] - 2024-08-10 19:54:58
+
+### Fixed
+
+- Inclusion of unneeded packages in setup.py install_requires list.
+
+## [1.45.1] - 2024-08-10 11:09:59
+
+### Fixed
+
+- Refactor the alternative minimum tax files.
+- Include capital gains tax in the final alternative minimum tax calculation.
+
+## [1.45.0] - 2024-08-10 03:56:39
+
+### Added
+
+- Support for Python 3.12.
+
+## [1.44.1] - 2024-08-08 18:06:51
+
+### Fixed
+
+- Restriction on out-dated version of policyengine-core.
+
+## [1.44.0] - 2024-08-08 15:22:20
+
+### Added
+
+- Nebraska refundable child tax credit.
+- Remove duplicate childcare expenses variable.
+
 ## [1.43.1] - 2024-08-06 21:26:16
 
 ### Added
@@ -9316,6 +9378,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.50.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.49.0...1.50.0
+[1.49.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.48.0...1.49.0
+[1.48.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.47.0...1.48.0
+[1.47.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.46.0...1.47.0
+[1.46.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.45.2...1.46.0
+[1.45.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.45.1...1.45.2
+[1.45.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.45.0...1.45.1
+[1.45.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.44.1...1.45.0
+[1.44.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.44.0...1.44.1
+[1.44.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.43.1...1.44.0
 [1.43.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.43.0...1.43.1
 [1.43.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.42.1...1.43.0
 [1.42.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.42.0...1.42.1
