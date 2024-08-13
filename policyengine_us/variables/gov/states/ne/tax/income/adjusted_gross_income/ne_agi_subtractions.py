@@ -10,6 +10,8 @@ class ne_agi_subtractions(Variable):
     reference = (
         "https://revenue.nebraska.gov/files/doc/tax-forms/2021/f_1040n_booklet.pdf"
         "https://revenue.nebraska.gov/files/doc/2022_Ne_Individual_Income_Tax_Booklet_8-307-2022_final_5.pdf"
+        "https://revenue.nebraska.gov/about/2023-nebraska-legislative-changes"
+        "https://www.nebraskalegislature.gov/FloorDocs/108/PDF/Slip/LB754.pdf#page=10"
     )
     defined_for = StateCode.NE
 
@@ -23,10 +25,9 @@ class ne_agi_subtractions(Variable):
             p.social_security.fraction,
         )
         taxable_oasdi = add(tax_unit, period, ["taxable_social_security"])
-        taxable_retirement_pension = add(
-            tax_unit, period, ["taxable_public_pension_income"]
-        )
-        if period == 2024:
-            return taxable_oasdi * oasdi_fraction + taxable_retirement_pension
+        oasdi_amount = taxable_oasdi * oasdi_fraction
+        if p.in_effect:
+            taxable_retirement_pension = add(tax_unit, period, ["taxable_public_pension_income"])
+            return taxable_retirement_pension + oasdi_amount
         else:
-            return taxable_oasdi * oasdi_fraction
+            return oasdi_amount
