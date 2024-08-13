@@ -10,10 +10,11 @@ class flat_tax(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        income = tax_unit("positive_agi", period)
-        p = parameters(period).gov.contrib.ubi_center.flat_tax
-        if p.flat_tax_on_gross_income:
-            income = add(tax_unit, period, ["positive_gross_income"])
-            p = parameters(period).gov.contrib.ubi_center.flat_tax.rate
-            return p.gross_income * income
-        return p.rate.agi * income
+        p = parameters(period).gov.contrib.ubi_center.flat_tax.rate
+        # Gross income flat tax.
+        gross_income = add(tax_unit, period, ["positive_gross_income"])
+        gross_income_flat_tax = gross_income * p.gross_income
+        # AGI flat tax.
+        agi = tax_unit("positive_agi", period)
+        agi_flat_tax = agi * p.agi
+        return gross_income_flat_tax + agi_flat_tax
