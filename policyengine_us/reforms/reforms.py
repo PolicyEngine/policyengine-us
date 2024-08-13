@@ -26,6 +26,9 @@ from .states.dc.dc_ctc import (
 from .harris.lift.middle_class_tax_credit import (
     create_middle_class_tax_credit_reform,
 )
+from .harris.rent_relief_act.rent_relief_tax_credit import (
+    create_rent_relief_tax_credit_reform,
+)
 from .congress.tlaib import (
     create_end_child_poverty_act_reform,
 )
@@ -79,6 +82,9 @@ def create_structural_reforms_from_parameters(parameters, period):
     middle_class_tax_credit = create_middle_class_tax_credit_reform(
         parameters, period
     )
+    rent_relief_tax_credit = create_rent_relief_tax_credit_reform(
+        parameters, period
+    )
     end_child_poverty_act = create_end_child_poverty_act_reform(
         parameters, period
     )
@@ -103,6 +109,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         ny_wftc,
         dc_ctc,
         middle_class_tax_credit,
+        rent_relief_tax_credit,
         end_child_poverty_act,
         boost_middle_class_tax_credit,
     ]
