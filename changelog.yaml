@@ -7883,3 +7883,44 @@
     fixed:
     - Restriction on out-dated version of policyengine-core.
   date: 2024-08-08 18:06:51
+- bump: minor
+  changes:
+    added:
+    - Support for Python 3.12.
+  date: 2024-08-10 03:56:39
+- bump: patch
+  changes:
+    fixed:
+    - Refactor the alternative minimum tax files.
+    - Include capital gains tax in the final alternative minimum tax calculation.
+  date: 2024-08-10 11:09:59
+- bump: patch
+  changes:
+    fixed:
+    - Inclusion of unneeded packages in setup.py install_requires list.
+  date: 2024-08-10 19:54:58
+- bump: minor
+  changes:
+    added:
+    - New York additional Empire State Tax Credit.
+  date: 2024-08-12 15:37:43
+- bump: minor
+  changes:
+    added:
+    - Rent relief tax credit.
+  date: 2024-08-12 16:32:53
+- bump: minor
+  changes:
+    added:
+    - Update to codecov/codecov-action@v4, actions/setup-python@v5, and actions/checkout@v4.
+  date: 2024-08-13 03:08:12
+- bump: minor
+  changes:
+    fixed:
+    - Inaccurate docstring in loss.py
+  date: 2024-08-13 14:42:06
+- bump: minor
+  changes:
+    added:
+    - Flat tax on gross income.
+  date: 2024-08-13 16:02:31
