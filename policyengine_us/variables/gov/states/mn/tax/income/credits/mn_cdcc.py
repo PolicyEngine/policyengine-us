@@ -46,4 +46,5 @@ class mn_cdcc(Variable):
         po_amount = excess_agi * p.phaseout_rate
         amount = max_(0, pre_po_amount - po_amount)
         # credit amount only for eligibles
+        print(eligible)
         return eligible * amount

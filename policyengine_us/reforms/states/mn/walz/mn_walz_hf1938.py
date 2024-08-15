@@ -1,8 +1,7 @@
 from policyengine_us.model_api import *
 
 
-def create_mn_walz_hf1938() -> Reform:
-
+def create_mn_walz_hf1938_repeal() -> Reform:
     class mn_refundable_credits(Variable):
         value_type = float
         entity = TaxUnit
@@ -17,7 +16,7 @@ def create_mn_walz_hf1938() -> Reform:
 
         # Revert to the original working family credit pre 2023 changes
         def formula(tax_unit, period, parameters):
-            if period.start >= 2023:
+            if period.start.year >= 2023:
                 instant_str = f"2022-01-01"
             else:
                 instant_str = period
@@ -39,11 +38,13 @@ def create_mn_walz_hf1938() -> Reform:
         def formula(tax_unit, period, parameters):
             # specify parameters
             filing_status = tax_unit("filing_status", period)
-            p = parameters(period).gov.states.mn.tax.income.subtractions
-            total_benefit_fraction = p.social_security.total_benefit_fraction
-            income_amount = p.social_security.income_amount[filing_status]
-            net_income_fraction = p.social_security.net_income_fraction
-            alt_amount = p.social_security.alternative_amount[filing_status]
+            p = parameters(
+                period
+            ).gov.states.mn.tax.income.subtractions.social_security
+            total_benefit_fraction = p.total_benefit_fraction
+            income_amount = p.income_amount[filing_status]
+            net_income_fraction = p.net_income_fraction
+            alt_amount = p.alternative_amount[filing_status]
             # calculate subtraction amount (following "Worksheet for line 12")
             # ... US-taxable social security benefits
             us_taxable_oasdi = add(
@@ -159,7 +160,7 @@ def create_mn_walz_hf1938() -> Reform:
         defined_for = StateCode.MN
 
         def formula(tax_unit, period, parameters):
-            p = parameters(period).gov.states.mn.tax.income.credits
+            p = parameters(period).gov.states.mn.tax.income.credits.cdcc
             person = tax_unit.members
             # determine eligibility for Minnesota CDCC
             filing_status = tax_unit("filing_status", period)
@@ -167,7 +168,7 @@ def create_mn_walz_hf1938() -> Reform:
             # calculate number of qualifying dependents
             # ... children
             age = person("age", period)
-            qualifies_by_age = age < p.cdcc.child_age
+            qualifies_by_age = age < p.child_age
             # ... disability
             non_head = ~person("is_tax_unit_head", period)
             disabled = person("is_incapable_of_self_care", period)
@@ -178,16 +179,16 @@ def create_mn_walz_hf1938() -> Reform:
             # calculate qualifying care expenses
             expense = tax_unit("tax_unit_childcare_expenses", period)
             # ... cap expense by number of qualifying dependents
-            eligible_count = min_(dep_count, p.cdcc.maximum_dependents)
-            expense = min_(expense, p.cdcc.maximum_expense * eligible_count)
+            eligible_count = min_(dep_count, p.maximum_dependents)
+            expense = min_(expense, p.maximum_expense * eligible_count)
             # ... cap expense by lower earnings of head and spouse if present
             expense = min_(expense, tax_unit("min_head_spouse_earned", period))
             # calculate pre-phaseout credit amount
             agi = tax_unit("adjusted_gross_income", period)
-            pre_po_amount = expense * p.cdcc.expense_fraction.calc(agi)
+            pre_po_amount = expense * p.expense_fraction.calc(agi)
             # calculate post-phaseout credit amount
-            excess_agi = max_(0, agi - p.cdcc.phaseout_threshold)
-            po_amount = excess_agi * p.cdcc.phaseout_rate
+            excess_agi = max_(0, agi - p.phaseout_threshold)
+            po_amount = excess_agi * p.phaseout_rate
             amount = max_(0, pre_po_amount - po_amount)
             # credit amount only for eligibles
             return eligible * amount
@@ -204,16 +205,18 @@ def create_mn_walz_hf1938() -> Reform:
     return reform
 
 
-def create_mn_walz_hf1938_reform(parameters, period, bypass: bool = False):
+def create_mn_walz_hf1938_repeal_reform(
+    parameters, period, bypass: bool = False
+):
     if bypass:
-        return create_mn_walz_hf1938()
+        return create_mn_walz_hf1938_repeal()
 
     p = parameters(period).gov.contrib.states.mn.walz.hf1938
 
-    if p.in_effect:
-        return create_mn_walz_hf1938()
+    if p.repeal:
+        return create_mn_walz_hf1938_repeal()
     else:
         return None
 
 
-mn_walz_hf1938 = create_mn_walz_hf1938_reform(None, None, bypass=True)
+mn_walz_hf1938 = create_mn_walz_hf1938_repeal_reform(None, None, bypass=True)
