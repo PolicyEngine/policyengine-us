@@ -17,7 +17,7 @@ class co_denver_property_tax_relief_renter_eligible(Variable):
         )
         elderly_or_disabled_renters = has_elderly_or_disabled & pays_rent
 
-        income = spm_unit("spm_unit_net_income", period)
+        income = spm_unit("co_denver_property_tax_relief_income", period)
         size = spm_unit("spm_unit_size", period)
         renter_income_limit = p.ami.calc(
             size

@@ -11,6 +11,7 @@ def create_rent_relief_tax_credit() -> Reform:
         reference = "https://www.congress.gov/bill/116th-congress/senate-bill/1106/text"
 
         def formula(tax_unit, period, parameters):
+            
             # The applicable rent amount is capped at fair market rent
             rent = add(tax_unit, period, ["rent"])
             p = parameters(

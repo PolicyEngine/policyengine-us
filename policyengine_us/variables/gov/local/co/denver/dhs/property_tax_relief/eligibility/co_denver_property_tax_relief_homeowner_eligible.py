@@ -21,7 +21,7 @@ class co_denver_property_tax_relief_homeowner_eligible(Variable):
             has_elderly_or_disabled | has_dependent
         ) & has_property_taxes
 
-        income = spm_unit("spm_unit_net_income", period)
+        income = spm_unit("co_denver_property_tax_relief_income", period)
         size = spm_unit("spm_unit_size", period)
         homeowner_income_limit = (
             p.ami.calc(size) * p.property_tax_relief.ami_rate.homeowner
