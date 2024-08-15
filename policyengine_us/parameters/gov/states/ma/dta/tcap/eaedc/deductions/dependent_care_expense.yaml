@@ -1,13 +1,19 @@
 description: Massachusetts provides this deduction amount in dependent care expense for Emergency Aid to the Elderly, Disabled and Children program.
-values:
-  # maximum deduction 
-  # above age 2, $200
-  # below age 2, $175
-  2022-01-01: 200
-  # If satisfied income eligibility test, then no dependent care expense deduction. 
+brackets:
+  - threshold:
+      2022-01-01: 0
+    amount:
+      2022-01-01: 175
+  - threshold:
+      2022-01-01: 2
+    amount:
+      2022-01-01: 200
+  # the legal code said this amount per child 
 metadata:
-  unit: currency-USD
-  period: year
+  threshold_unit: year 
+  amount_unit: currency-USD
+  type: single_amount
+  threshold_period: year 
   label: Massachusetts EAEDC dependent care expense deduction amount
   reference:
     - title: 106 CMR 704.275 - Dependent Care Deduction
