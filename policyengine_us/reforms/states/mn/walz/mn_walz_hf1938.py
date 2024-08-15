@@ -14,7 +14,8 @@ def create_mn_walz_hf1938() -> Reform:
             "https://www.revenue.state.mn.us/sites/default/files/2023-01/m1ref_22.pdf"
         )
         defined_for = StateCode.MN
-        # Revert to the original working family credit pre 2023 changes 
+
+        # Revert to the original working family credit pre 2023 changes
         def formula(tax_unit, period, parameters):
             if period.start >= 2023:
                 instant_str = f"2022-01-01"
@@ -90,8 +91,12 @@ def create_mn_walz_hf1938() -> Reform:
             # ... calculate standard deduction offset
             std_ded_offset = p.reduction.alternate.rate * std_ded
             agi = tax_unit("adjusted_gross_income", period)
-            excess_agi = max_(0, agi - p.reduction.agi_threshold.low[filing_status])
-            excess_agi_offset = p.reduction.excess_agi_fraction.low * excess_agi
+            excess_agi = max_(
+                0, agi - p.reduction.agi_threshold.low[filing_status]
+            )
+            excess_agi_offset = (
+                p.reduction.excess_agi_fraction.low * excess_agi
+            )
             offset = min_(std_ded_offset, excess_agi_offset)
             return max_(0, std_ded - offset)
 

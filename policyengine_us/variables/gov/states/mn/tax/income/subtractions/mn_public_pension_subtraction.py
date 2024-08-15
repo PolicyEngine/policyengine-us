@@ -21,17 +21,12 @@ class mn_public_pension_subtraction(Variable):
             period
         ).gov.states.mn.tax.income.subtractions.pension_income
         filing_status = tax_unit("filing_status", period)
-        pension_income_cap = p.cap[filing_status]
-        capped_pension_income = min_(
-            taxable_public_pension_income, pension_income_cap
-        )
+        cap = p.cap[filing_status]
+        capped_pension_income = min_(taxable_public_pension_income, cap)
         agi = tax_unit("adjusted_gross_income", period)
         agi_threshold = p.reduction.start[filing_status]
         excess = max_(0, agi - agi_threshold)
         reduced_agi_fraction = np.ceil(excess / p.reduction.increment)
         percentage = min_(p.reduction.rate * reduced_agi_fraction, 1)
         reduction = capped_pension_income * percentage
-        reduced_capped_pension_income = max_(
-            capped_pension_income - reduction, 0
-        )
-        return reduced_capped_pension_income
+        return max_(capped_pension_income - reduction, 0)
