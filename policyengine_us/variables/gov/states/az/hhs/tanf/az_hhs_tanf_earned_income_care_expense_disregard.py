@@ -6,7 +6,7 @@ class az_hhs_tanf_earned_income_care_expense_disregard(Variable):
     entity = SPMUnit
     label = "Arizona Cash Assistance care expense earned income disregard"
     definition_period = MONTH
-    defined_for = "az_hhs_tanf_eligible"
+    defined_for = StateCode.AZ
 
     def formula(spm_unit, period, parameters):
         p = parameters(
