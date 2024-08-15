@@ -67,11 +67,135 @@ def create_mn_walz_hb1938() -> Reform:
             )
             return min_(us_taxable_oasdi, alt_sub_amt)
 
+    class mn_standard_deduction(Variable):
+        value_type = float
+        entity = TaxUnit
+        label = "Minnesota standard deduction"
+        unit = USD
+        definition_period = YEAR
+        reference = (
+            "https://www.revenue.state.mn.us/sites/default/files/2023-01/m1_inst_21.pdf"
+            "https://www.revenue.state.mn.us/sites/default/files/2023-03/m1_inst_22.pdf"
+        )
+        defined_for = StateCode.MN
+
+        def formula(tax_unit, period, parameters):
+            p = parameters(period).gov.states.mn.tax.income.deductions
+            # ... calculate pre-limitation amount
+            filing_status = tax_unit("filing_status", period)
+            base_amt = p.standard.base[filing_status]
+            aged_blind_count = tax_unit("aged_blind_count", period)
+            extra_amt = aged_blind_count * p.standard.extra[filing_status]
+            std_ded = base_amt + extra_amt
+            # ... calculate standard deduction offset
+            std_ded_offset = p.deduction_fraction * std_ded
+            agi = tax_unit("adjusted_gross_income", period)
+            excess_agi = max_(0, agi - p.agi_threshold[filing_status])
+            excess_agi_offset = p.excess_agi_fraction * excess_agi
+            offset = min_(std_ded_offset, excess_agi_offset)
+            return max_(0, std_ded - offset)
+
+    class mn_itemized_deductions(Variable):
+        value_type = float
+        entity = TaxUnit
+        label = "Minnesota itemized deductions"
+        unit = USD
+        definition_period = YEAR
+        reference = (
+            "https://www.revenue.state.mn.us/sites/default/files/2021-12/m1_21_0.pdf"
+            "https://www.revenue.state.mn.us/sites/default/files/2023-01/m1_inst_21.pdf"
+            "https://www.revenue.state.mn.us/sites/default/files/2022-12/m1_22.pdf"
+            "https://www.revenue.state.mn.us/sites/default/files/2023-03/m1_inst_22.pdf"
+        )
+        defined_for = StateCode.MN
+
+        def formula(tax_unit, period, parameters):
+            # 2021 Form M1 instructions say:
+            #   You may claim the Minnesota standard deduction or itemize
+            #   your deductions on your Minnesota return. You will generally
+            #   pay less Minnesota income tax if you take the larger of your
+            #   itemized or standard deduction.
+            # ... calculate pre-limitation itemized deductions
+            itm_deds_less_salt = tax_unit(
+                "itemized_deductions_less_salt", period
+            )
+            capped_property_taxes = tax_unit("capped_property_taxes", period)
+            mn_itm_deds = itm_deds_less_salt + capped_property_taxes
+            # ... calculate itemized deductions offset
+            p = parameters(period).gov.states.mn.tax.income.deductions.itemized
+            exempt_deds = add(
+                tax_unit,
+                period,
+                ["medical_expense_deduction", "casualty_loss_deduction"],
+            )
+            net_deds = max_(0, mn_itm_deds - exempt_deds)
+            net_deds_offset = p.reduction.alternate.rate * net_deds
+            agi = tax_unit("adjusted_gross_income", period)
+            filing_status = tax_unit("filing_status", period)
+            excess_agi = max_(
+                0, agi - p.reduction.income_threshold.low[filing_status]
+            )
+            excess_agi_offset = (
+                p.reduction.excess_agi_fraction.low * excess_agi
+            )
+            offset = min_(net_deds_offset, excess_agi_offset)
+            return max_(0, mn_itm_deds - offset)
+
+
+    class mn_cdcc(Variable):
+        value_type = float
+        entity = TaxUnit
+        label = "Minnesota child and dependent care expense credit"
+        unit = USD
+        definition_period = YEAR
+        reference = (
+            "https://www.revenue.state.mn.us/sites/default/files/2023-02/m1cd_21.pdf"
+            "https://www.revenue.state.mn.us/sites/default/files/2023-01/m1cd_22_0.pdf"
+        )
+        defined_for = StateCode.MN
+
+        def formula(tax_unit, period, parameters):
+            p = parameters(period).gov.states.mn.tax.income.credits
+            person = tax_unit.members
+            # determine eligibility for Minnesota CDCC
+            filing_status = tax_unit("filing_status", period)
+            eligible = filing_status != filing_status.possible_values.SEPARATE
+            # calculate number of qualifying dependents
+            # ... children
+            age = person("age", period)
+            qualifies_by_age = age < p.cdcc.child_age
+            # ... disability
+            non_head = ~person("is_tax_unit_head", period)
+            disabled = person("is_incapable_of_self_care", period)
+            qualifies_by_disability = non_head & disabled
+            dep_count = tax_unit.sum(qualifies_by_age | qualifies_by_disability)
+            # calculate qualifying care expenses
+            expense = tax_unit("tax_unit_childcare_expenses", period)
+            # ... cap expense by number of qualifying dependents
+            eligible_count = min_(dep_count, p.cdcc.maximum_dependents)
+            expense = min_(expense, p.cdcc.maximum_expense * eligible_count)
+            # ... cap expense by lower earnings of head and spouse if present
+            expense = min_(expense, tax_unit("min_head_spouse_earned", period))
+            # calculate pre-phaseout credit amount
+            agi = tax_unit("adjusted_gross_income", period)
+            pre_po_amount = expense * p.cdcc.expense_fraction.calc(agi)
+            # calculate post-phaseout credit amount
+            excess_agi = max_(0, agi - p.cdcc.phaseout_threshold)
+            po_amount = excess_agi * p.cdcc.phaseout_rate
+            amount = max_(0, pre_po_amount - po_amount)
+            # credit amount only for eligibles
+            return eligible * amount
+
+
+
     class reform(Reform):
         def apply(self):
             self.neutralize_variable("mn_public_pension_subtraction")
             self.update_variable(mn_social_security_subtraction)
             self.update_variable(mn_refundable_credits)
+            self.update_variable(mn_standard_deduction)
+            self.update_variable(mn_itemized_deductions)
+            self.update_variable(mn_cdcc)
 
     return reform
 
@@ -80,7 +204,7 @@ def create_mn_walz_hb1938_reform(parameters, period, bypass: bool = False):
     if bypass:
         return create_mn_walz_hb1938()
 
-    p = parameters(period).gov.contrib.states.ny.wftc
+    p = parameters(period).gov.contrib.states.mn.walz.h1938
 
     if p.in_effect:
         return create_mn_walz_hb1938()
