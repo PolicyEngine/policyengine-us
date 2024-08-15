@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-# Repealing Minnesota Bill HF1938 to pre 2023 rules 
+# Repealing Minnesota Bill HF1938 to pre 2023 rules
 def create_mn_walz_hf1938_repeal() -> Reform:
     class mn_refundable_credits(Variable):
         value_type = float

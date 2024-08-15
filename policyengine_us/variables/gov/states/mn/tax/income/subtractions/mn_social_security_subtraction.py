@@ -52,6 +52,8 @@ class mn_social_security_subtraction(Variable):
         mn_ald = max_(0, us_ald - student_loan_int)
         income = max_(0, sum_income - mn_ald)
         net_income = max_(0, income - income_amount)
-        alt_sub_amt = max_(0, alt_amount - (net_income * p.net_income_fraction))
+        alt_sub_amt = max_(
+            0, alt_amount - (net_income * p.net_income_fraction)
+        )
         main_reduction = min_(us_taxable_oasdi, alt_sub_amt)
         return max_(main_reduction, simplified_reduction)
