@@ -1,11 +1,11 @@
-description: Minnesota reduces the standard deductions by a flat rate for filers with adjusted gross income above this threshold.
+description: Minnesota reduces the itemized deductions by a flat rate for filers with adjusted gross income above this threshold.
 values:
   2021-01-01: 1_000_000
 
 metadata:
   period: year
   unit: currency-USD
-  label: Minnesota standard deduction alternate reduction income threshold
+  label: Minnesota itemized deduction alternate reduction income threshold
   reference:
   - title: Minnesota Statutes 290.0123 STANDARD DEDUCTION. Subd. 5.Deduction limited. (b)
     href: https://www.revisor.mn.gov/statutes/cite/290.0123#stat.290.0123.5
