@@ -29,15 +29,14 @@ class mn_social_security_subtraction(Variable):
             reduction_fraction = np.ceil(agi_excess / reduction_increment)
             reduction_rate = min_(reduction_rate * reduction_fraction, 1)
             reduction = reduction_rate * us_taxable_oasdi
-            simpliefied_reduction = max_(us_taxable_oasdi - reduction, 0)
+            simplified_reduction = max_(us_taxable_oasdi - reduction, 0)
         else:
-            simpliefied_reduction = 0
+            simplified_reduction = 0
         # specify parameters
         filing_status = tax_unit("filing_status", period)
 
         total_benefit_fraction = p.total_benefit_fraction
         income_amount = p.income_amount[filing_status]
-        net_income_fraction = p.net_income_fraction
         alt_amount = p.alternative_amount[filing_status]
         # calculate subtraction amount (following "Worksheet for line 12")
         # ... US-taxable social security benefits
@@ -53,6 +52,6 @@ class mn_social_security_subtraction(Variable):
         mn_ald = max_(0, us_ald - student_loan_int)
         income = max_(0, sum_income - mn_ald)
         net_income = max_(0, income - income_amount)
-        alt_sub_amt = max_(0, alt_amount - (net_income * net_income_fraction))
+        alt_sub_amt = max_(0, alt_amount - (net_income * p.net_income_fraction))
         main_reduction = min_(us_taxable_oasdi, alt_sub_amt)
-        return max_(main_reduction, simpliefied_reduction)
+        return max_(main_reduction, simplified_reduction)

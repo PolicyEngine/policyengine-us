@@ -1,6 +1,7 @@
 from policyengine_us.model_api import *
 
 
+# Repealing Minnesota Bill HF1938 to pre 2023 rules 
 def create_mn_walz_hf1938_repeal() -> Reform:
     class mn_refundable_credits(Variable):
         value_type = float
@@ -14,7 +15,6 @@ def create_mn_walz_hf1938_repeal() -> Reform:
         )
         defined_for = StateCode.MN
 
-        # Revert to the original working family credit pre 2023 changes
         def formula(tax_unit, period, parameters):
             if period.start.year >= 2023:
                 instant_str = f"2022-01-01"
