@@ -1,4 +1,4 @@
-- name: NE child care subsidy program eligible 1
+- name: NE child care subsidy income eligible 1
   period: 2024
   input:
     tax_unit_fpg: 100
@@ -7,7 +7,7 @@
   output:
     ne_child_care_subsidy_income_eligible: true
 
-- name: NE child care subsidy program eligible 2
+- name: NE child care subsidy income eligible 2
   period: 2024
   input:
     tax_unit_fpg: 100
@@ -16,7 +16,7 @@
   output:
     ne_child_care_subsidy_income_eligible: true
 
-- name: NE child care subsidy program ineligible
+- name: NE child care subsidy income ineligible
   period: 2024
   input:
     tax_unit_fpg: 100

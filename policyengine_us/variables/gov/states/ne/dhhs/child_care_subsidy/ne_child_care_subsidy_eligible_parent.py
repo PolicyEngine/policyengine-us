@@ -6,15 +6,8 @@ class ne_child_care_subsidy_eligible_parent(Variable):
     entity = Person
     label = "Nebraska Child Care Subsidy program eligible parent"
     definition_period = YEAR
+    documentation = "Nebraska Child Care Subsidy program parent must either be working, involved with Employment First as part of the ADC program, going to school or trainings, going to medical or therapy visits for self or child(ren), or ill or hurt (must be confirmed by a doctor)"
     reference = (
-        "https://nebraskalegislature.gov/laws/statutes.php?statute=68-1206",
         "https://dhhs.ne.gov/Pages/Child-Care-Subsidy-Information-for-Parents.aspx",
     )
     defined_for = StateCode.NE
-
-    def formula(person, period, parameters):
-        p = parameters(period).gov.states.ne.dhhs.child_care_subsidy
-        is_parent = person("is_mother", period) | person("is_father", period)
-        qualifying_criteria = add(person, period, p.categorical)
-        is_criteria_eligible = np.any(qualifying_criteria)
-        return is_parent & is_criteria_eligible

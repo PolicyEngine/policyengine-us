@@ -16,5 +16,5 @@ class ne_child_care_subsidy_income_eligible(Variable):
         p = parameters(period).gov.states.ne.dhhs.child_care_subsidy
         income = add(spm_unit, period, ["adjusted_gross_income"])
         fpg = add(spm_unit, period, ["tax_unit_fpg"])
-        income_limit = fpg * p.fpg_fraction
+        income_limit = fpg * p.fpg_fraction_maximum
         return income <= income_limit
