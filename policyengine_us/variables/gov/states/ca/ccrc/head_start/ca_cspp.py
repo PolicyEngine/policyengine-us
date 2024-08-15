@@ -6,4 +6,7 @@ class ca_cspp(Variable):
     entity = Person
     label = "Amount of California State Preschool Program benefit"
     definition_period = YEAR
-    defined_for = "ca_cspp_eligible"
+    defined_for = StateCode.CA
+
+    def formula(person, period, parameters):
+        return person("head_start", period)
