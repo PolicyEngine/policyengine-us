@@ -45,12 +45,12 @@ class mn_standard_deduction(Variable):
             alternate_reduction_applies = (
                 agi > p.reduction.alternate.income_threshold
             )
-            samller_reduction_amount = min_(
+            smaller_reduction_amount = min_(
                 alternate_reduction_amount, main_reduction_amount
             )
             reduction = where(
                 alternate_reduction_applies,
-                samller_reduction_amount,
+                smaller_reduction_amount,
                 main_reduction_amount,
             )
         else:
