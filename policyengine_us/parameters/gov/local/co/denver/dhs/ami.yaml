@@ -1,14 +1,16 @@
-description: Denver average median income based on houeshold size.
+description: Denver area median income by houeshold size.
 
 metadata:
   type: single_amount
   threshold_unit: person
   amount_unit: currency-USD
   period: year
-  label: Denver average median income 
+  label: Denver AMI
   reference:
-    - title: Denver average median income 2023
-      href: https://denvergov.org/files/assets/public/v/1/housing-stability/documents/2023-incomerent-limits/host-income-rent-limit-2023-home.pdf#page=1
+    - title: Denver, Colorado Code of Ordinances Chapter 53 Article XI Sec. 53-492 (e)
+      href: https://library.municode.com/co/denver/codes/code_of_ordinances?nodeId=TITIIREMUCO_CH53TAMIRE_ARTXIREPRTAASELLCOPROWTE_S53-491LEIN
+    - title: U.S. DEPARTMENT OF HUD State Colorado 2023 ADJUSTED HOME INCOME LIMITS
+      href: https://www.huduser.gov/portal/datasets/home-datasets/files/HOME_IncomeLmts_State_CO_2023.pdf#page=1 
 
 brackets:
   - threshold:
