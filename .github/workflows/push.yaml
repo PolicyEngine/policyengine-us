@@ -9,7 +9,7 @@ jobs:
       (github.repository == 'PolicyEngine/policyengine-us')
       && (github.event.head_commit.message == 'Update PolicyEngine US')
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Check formatting
         uses: "lgeiger/black-action@master"
         with:
@@ -22,13 +22,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: ${{ github.event.pull_request.head.repo.full_name }}
           ref: ${{ github.event.pull_request.head.ref }}
           token: ${{ secrets.POLICYENGINE_GITHUB }}
       - name: Setup Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: 3.12
       - name: Build changelog
@@ -53,9 +53,9 @@ jobs:
         os: [ubuntu-latest, windows-latest]
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: 3.12
       - name: Install package
@@ -64,7 +64,7 @@ jobs:
         run: make test
         env:
           POVERTYTRACKER_RAW_URL: ${{ secrets.POVERTYTRACKER_RAW_URL }}
-      - uses: codecov/codecov-action@v3
+      - uses: codecov/codecov-action@v4
       - name: Test documentation builds
         if: matrix.os == 'ubuntu-latest'
         run: make documentation
@@ -82,9 +82,9 @@ jobs:
       && (github.event.head_commit.message == 'Update PolicyEngine US')
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Setup Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: 3.12
       - name: Publish a git tag
