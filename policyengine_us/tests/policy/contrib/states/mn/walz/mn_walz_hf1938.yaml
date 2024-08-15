@@ -1,0 +1,28 @@
+- name: CDCC does not apply for separate filers in 2023 pre reform
+  period: 2024
+  reforms: policyengine_us.reforms.states.mn.walz.mn_walz_hf1938.mn_walz_hf1938
+  input:
+    gov.contrib.states.mn.walz.hf1938: false
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 70_000
+      person2:
+        age: 9
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        tax_unit_childcare_expenses: 9_000
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MN
+  output:
+    mn_cdcc: 0

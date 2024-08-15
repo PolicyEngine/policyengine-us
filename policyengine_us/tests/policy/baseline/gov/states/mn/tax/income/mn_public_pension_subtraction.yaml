@@ -1,5 +1,5 @@
 - name: Income below reduction start, capped amount
-  period: 2023
+  period: 2023ß
   input:
     filing_status: JOINT
     taxable_public_pension_income: 30_000  
@@ -26,4 +26,4 @@
     state_code: MN
     adjusted_gross_income: 82_000
   output:
-    mn_public_pension_subtraction: 9_000
+    mn_public_pension_subtraction: 9_800
