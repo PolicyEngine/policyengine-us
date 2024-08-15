@@ -141,7 +141,6 @@ def create_mn_walz_hb1938() -> Reform:
             offset = min_(net_deds_offset, excess_agi_offset)
             return max_(0, mn_itm_deds - offset)
 
-
     class mn_cdcc(Variable):
         value_type = float
         entity = TaxUnit
@@ -168,7 +167,9 @@ def create_mn_walz_hb1938() -> Reform:
             non_head = ~person("is_tax_unit_head", period)
             disabled = person("is_incapable_of_self_care", period)
             qualifies_by_disability = non_head & disabled
-            dep_count = tax_unit.sum(qualifies_by_age | qualifies_by_disability)
+            dep_count = tax_unit.sum(
+                qualifies_by_age | qualifies_by_disability
+            )
             # calculate qualifying care expenses
             expense = tax_unit("tax_unit_childcare_expenses", period)
             # ... cap expense by number of qualifying dependents
@@ -185,8 +186,6 @@ def create_mn_walz_hb1938() -> Reform:
             amount = max_(0, pre_po_amount - po_amount)
             # credit amount only for eligibles
             return eligible * amount
-
-
 
     class reform(Reform):
         def apply(self):
