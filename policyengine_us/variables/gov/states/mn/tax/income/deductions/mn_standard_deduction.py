@@ -14,6 +14,7 @@ class mn_standard_deduction(Variable):
     defined_for = StateCode.MN
 
     def formula(tax_unit, period, parameters):
+        # Calculate standard deduction base amount and any additional amount for aged/blind
         p = parameters(period).gov.states.mn.tax.income.deductions.standard
         filing_status = tax_unit("filing_status", period)
         lower_reduction_rate = p.reduction.excess_agi_fraction.low
