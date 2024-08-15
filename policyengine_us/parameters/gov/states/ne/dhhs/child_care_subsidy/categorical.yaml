@@ -1,0 +1,20 @@
+description: Nebraska limits the child care subsidy to families in which each parent meets at least one of the following criteria.  
+
+values:
+  2021-08-28:
+    - is_student
+    - is_ill_or_hurt
+    - goes_to_medical_or_therapy_visits
+    - earned_income
+    - ne_involved_in_adc_employment_first
+
+metadata:
+  unit: list
+  period: year
+  label: Nebraska child care subsidy qualifying criteria for parents 
+  reference:
+    # Parent eligibility criteria not mentioned in legal code
+    - title: Nebraska Revised Statute | Chapter 68 | §1206 (2)(a)
+      href: https://nebraskalegislature.gov/laws/statutes.php?statute=68-1206
+    - title: Nebraska DHHS, Child Care Subsidy Information For Parents
+      href: https://dhhs.ne.gov/Pages/Child-Care-Subsidy-Information-for-Parents.aspx

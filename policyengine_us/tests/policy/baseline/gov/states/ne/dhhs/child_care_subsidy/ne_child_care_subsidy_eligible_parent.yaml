@@ -1,0 +1,49 @@
+- name: Eligible parent 1
+  period: 2024
+  input:
+    is_mother: true
+    is_student: true
+    state_code: NE
+  output:
+    ne_child_care_subsidy_eligible_parent: true
+
+- name: Eligible parent 2
+  period: 2024
+  input:
+    is_mother: true
+    earned_income: 100
+    state_code: NE
+  output:
+    ne_child_care_subsidy_eligible_parent: true
+
+- name: Eligible parent 2
+  period: 2024
+  input:
+    is_father: true
+    is_ill_or_hurt: true
+    state_code: NE
+  output:
+    ne_child_care_subsidy_eligible_parent: true
+
+- name: Ineligible parent 1
+  period: 2024
+  input:
+    ne_involved_in_adc_employment_first: true
+    state_code: NE
+  output:
+    ne_child_care_subsidy_eligible_parent: false
+
+- name: Ineligible parent 2
+  period: 2024
+  input:
+    is_father: true
+    state_code: NE
+  output:
+    ne_child_care_subsidy_eligible_parent: false
+
+- name: Ineligible parent 2
+  period: 2024
+  input:
+    state_code: NE
+  output:
+    ne_child_care_subsidy_eligible_parent: false

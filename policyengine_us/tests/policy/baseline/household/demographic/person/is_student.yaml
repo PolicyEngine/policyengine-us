@@ -1,0 +1,23 @@
+- name: Is a student 1
+  period: 2024
+  input:
+    is_full_time_student: true
+    is_part_time_student: false
+  output:
+    is_student: true
+
+- name: Is a student 2
+  period: 2024
+  input:
+    is_full_time_student: false
+    is_part_time_student: true
+  output:
+    is_student: true
+
+- name: Is not a student
+  period: 2024
+  input:
+    is_full_time_student: false
+    is_part_time_student: false
+  output:
+    is_student: false
