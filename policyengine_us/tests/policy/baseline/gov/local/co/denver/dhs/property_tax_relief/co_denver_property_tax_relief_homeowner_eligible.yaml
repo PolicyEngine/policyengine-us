@@ -30,3 +30,14 @@
     tax_unit_dependents: 0 
   output:
     co_denver_property_tax_relief_homeowner_eligible: false
+
+- name: Case 2, Homeowner size of 3, with income less than ami, eligible. 
+  period: 2023
+  input:
+    spm_unit_size: 3 
+    co_denver_property_tax_relief_income: 60_000
+    real_estate_taxes: 1_000
+    has_co_denver_dhs_elderly_disabled: true
+    tax_unit_dependents: 0 
+  output:
+    co_denver_property_tax_relief_homeowner_eligible: true
