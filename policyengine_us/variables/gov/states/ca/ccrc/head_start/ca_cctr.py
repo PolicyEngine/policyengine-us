@@ -6,6 +6,9 @@ class ca_cctr(Variable):
     entity = Person
     label = "Amount of California General Child Care and Development"
     definition_period = YEAR
+    reference = (
+        "https://www.ccrcca.org/headstart/programs/eligibility-requirements/"
+    )
     defined_for = StateCode.CA
 
     def formula(person, period, parameters):
