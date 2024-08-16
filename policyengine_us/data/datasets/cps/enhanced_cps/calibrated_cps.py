@@ -40,5 +40,5 @@ class CalibratedPUFExtendedCPS_2022(CalibratedDataset):
     label = "Calibrated PUF-extended CPS (2022-34)"
     input_dataset = PUFExtendedCPS_2022
     time_period = 2022
-    num_years = 4
+    num_years = 13
     file_path = STORAGE_FOLDER / "calibrated_puf_extended_cps_2022.h5"
