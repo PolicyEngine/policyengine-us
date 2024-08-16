@@ -129,7 +129,11 @@ def generate_model_variables(
     cps_household_weights = demographics_sim.calculate(
         "household_weight"
     ).values
-    for lower_age_group in range(0, 90, 10):
+    lower_age_groups = list(range(0, 90, 10))
+    upper_age_groups = list(range(5, 95, 10))
+    lower_age_groups += [0]
+    upper_age_groups += [1]
+    for lower_age_group in range(0, 90, 5):
         for possible_is_male in (True, False):
             in_age_range = (age >= lower_age_group) & (
                 age < lower_age_group + 5
@@ -155,6 +159,8 @@ def generate_model_variables(
                 cps_household_weights * count_people_in_range_cps
             ).sum() * population_growth_since_21
             equivalisation[name] = POPULATION_EQUIVALISATION
+
+
 
     # Household population by number of adults and children
 
