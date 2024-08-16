@@ -15,7 +15,7 @@ class ne_child_care_subsidy(Variable):
         )
         income = add(spm_unit, period, ["adjusted_gross_income"])
         fpg = add(spm_unit, period, ["tax_unit_fpg"])
-        fee_obligated = income > fpg * p.fpg_fraction_threshold
+        fee_obligated = income > fpg * p.fpg_fraction.threshold
         capped_childcare_expenses_with_fee = max_(
             childcare_expenses - p.rate * income, 0
         )
