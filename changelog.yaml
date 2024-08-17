@@ -7956,3 +7956,8 @@
     - Age limit for ARPA CTC amount scale parameter (delegating instead to base CTC
       age limit).
   date: 2024-08-17 16:48:52
+- bump: patch
+  changes:
+    fixed:
+    - Mixed scalar and vectorized operations in mn_social_security_subtraction.
+  date: 2024-08-17 18:47:58
