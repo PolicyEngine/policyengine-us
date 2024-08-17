@@ -389,3 +389,23 @@
   output:
     ctc: 6_600  # 3600 for 5-year-old + 3000 for 17-year-old under ARPA
     ctc_adult_individual_maximum: [0, 0, 0]  # No ODC under ARPA
+
+- name: ARPA CTC rules with 18-year-old in 2021
+  period: 2021
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 60_000
+      child1:
+        age: 10
+        is_tax_unit_dependent: true
+      child2:
+        age: 18
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+  output:
+    ctc: 3_500  # 3000 for 10-year-old + 500 for 18-year-old (ODC)
+    ctc_adult_individual_maximum: [0, 0, 500]  # ODC for 18-year-old under ARPA
