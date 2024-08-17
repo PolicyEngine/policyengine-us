@@ -14,7 +14,9 @@ def create_personal_credit() -> Reform:
             unit_size = tax_unit("tax_unit_size", period)
             p = parameters(period).gov.contrib.personal_credit
             phase_in_rate = p.phase_in_rate * unit_size
-            earnings_fraction = earned_income * phase_in_rate
+            earnings_fraction = min_(
+                earned_income * phase_in_rate, earned_income
+            )
             base_amount = p.amount * 4  # Quarterly amount converted to yearly
             return min_(base_amount, earnings_fraction)
 
@@ -37,7 +39,7 @@ def create_personal_credit() -> Reform:
             self.neutralize_variable("eitc")
             self.neutralize_variable("ctc")
             self.update_variable(income_tax_non_refundable_credits)
-            self.add_variable(personal_credit)
+            self.update_variable(personal_credit)
 
     return reform
 
