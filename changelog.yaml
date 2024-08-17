@@ -7950,3 +7950,9 @@
     added:
     - Reform repeal Minnesota Bill HF1938.
   date: 2024-08-17 15:50:59
+- bump: patch
+  changes:
+    removed:
+    - Age limit for ARPA CTC amount scale parameter (delegating instead to base CTC
+      age limit).
+  date: 2024-08-17 16:48:52
