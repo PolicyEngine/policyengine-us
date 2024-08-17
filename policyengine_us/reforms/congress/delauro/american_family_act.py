@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_core.periods import period as period_
 
 
 def create_american_family_act_with_baby_bonus() -> Reform:
@@ -37,9 +38,18 @@ def create_american_family_act_with_baby_bonus_reform(
     if bypass:
         return create_american_family_act_with_baby_bonus()
 
-    p = parameters(period).gov.contrib.congress.delauro.american_family_act
+    p = parameters.gov.contrib.congress.delauro.american_family_act
 
-    if p.baby_bonus > 0:
+    reform_active = False
+    current_period = period_(period)
+
+    for i in range(5):
+        if p(current_period).baby_bonus > 0:
+            reform_active = True
+            break
+        current_period = current_period.offset(1, "year")
+
+    if reform_active:
         return create_american_family_act_with_baby_bonus()
     else:
         return None
