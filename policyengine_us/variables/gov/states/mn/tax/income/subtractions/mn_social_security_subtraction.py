@@ -22,14 +22,19 @@ class mn_social_security_subtraction(Variable):
         reduction_start = p.reduction.start[filing_status]
         simplified_reduction_applies = agi > reduction_start
         us_taxable_oasdi = add(tax_unit, period, ["taxable_social_security"])
-        if p.reduction.applies and simplified_reduction_applies:
+        if p.reduction.applies:
             reduction_increment = p.reduction.increment[filing_status]
             reduction_rate = p.reduction.rate
             agi_excess = max_(0, agi - reduction_start)
             reduction_fraction = np.ceil(agi_excess / reduction_increment)
             reduction_rate = min_(reduction_rate * reduction_fraction, 1)
             reduction = reduction_rate * us_taxable_oasdi
-            simplified_reduction = max_(us_taxable_oasdi - reduction, 0)
+            simplified_reduction_if_applies = max_(
+                us_taxable_oasdi - reduction, 0
+            )
+            simplified_reduction = (
+                simplified_reduction_applies * simplified_reduction_if_applies
+            )
         else:
             simplified_reduction = 0
         # specify parameters
