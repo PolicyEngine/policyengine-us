@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.53.0] - 2024-08-17 13:51:13
+
+### Added
+
+- Refactor the `household_benefits` and `household_state_benefits` variables to include a list parameter.
+
+## [1.52.0] - 2024-08-16 15:31:16
+
+### Added
+
+- Infant calibration.
+
 ## [1.51.1] - 2024-08-16 11:45:37
 
 ## [1.51.0] - 2024-08-16 11:39:35
@@ -9386,6 +9398,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.53.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.52.0...1.53.0
+[1.52.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.51.1...1.52.0
 [1.51.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.51.0...1.51.1
 [1.51.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.50.0...1.51.0
 [1.50.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.49.0...1.50.0
