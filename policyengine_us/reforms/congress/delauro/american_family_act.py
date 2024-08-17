@@ -9,10 +9,10 @@ def create_american_family_act_with_baby_bonus() -> Reform:
         unit = USD
         documentation = "The CTC entitlement in respect of this person as a child, under the American Rescue Plan Act."
         definition_period = YEAR
+        defined_for = "ctc_qualifying_child"
 
         def formula(person, period, parameters):
             age = person("age", period)
-            is_dependent = person("is_tax_unit_dependent", period)
             amount_pre_baby_bonus = parameters(
                 period
             ).gov.irs.credits.ctc.amount.arpa.calc(age)
@@ -20,10 +20,9 @@ def create_american_family_act_with_baby_bonus() -> Reform:
             baby_bonus_amount = parameters(
                 period
             ).gov.contrib.congress.delauro.american_family_act.baby_bonus
-            is_baby = age == 0
+            is_baby = age < 1
             baby_bonus = baby_bonus_amount * is_baby
-            amount = amount_pre_baby_bonus + baby_bonus
-            return is_dependent * amount
+            return amount_pre_baby_bonus + baby_bonus
 
     class reform(Reform):
         def apply(self):
