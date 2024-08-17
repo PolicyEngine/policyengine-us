@@ -29,11 +29,8 @@ class ma_eaedc_net_income(Variable):
             first_four_months_income + remaining_income
         )
         # dependent care deduction
-        dependent_care_deduction_eligible = add(spm_unit, period, ["ma_eaedc_dependent_care_deduction_eligible"])
-        # age = age of dependent 
-        dependent_care_expense = add(spm_unit, period,["child_support_expense"])
-        capped_dependent_care_expense = min_(dependent_care_expense, p.deductions.dependent_care_expense.calc(age))
-        dependent_care_deduction = dependent_care_deduction_eligible * capped_dependent_care_expense
+        dependent_care_deduction = add(spm_unit, period, ["ma_eaedc_dependent_care_deduction"])
+        
         net_earned_income = max_(
             earned_income_after_disregard - dependent_care_deduction, 0
         )

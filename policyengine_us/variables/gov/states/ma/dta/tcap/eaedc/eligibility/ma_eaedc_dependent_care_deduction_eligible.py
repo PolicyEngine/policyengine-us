@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ma_eaedc_dependent_care_deduction_eligible(Variable):
     value_type = float
     entity = SPMUnit
-    label = "Eligible for Massachusetts EAEDC dependent care dudction"
+    label = "Eligible for Massachusetts EAEDC dependent care deduction"
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.MA
@@ -14,4 +14,3 @@ class ma_eaedc_dependent_care_deduction_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
     # If earned income higher than income limit, then no dependent care expense deduction.
-    

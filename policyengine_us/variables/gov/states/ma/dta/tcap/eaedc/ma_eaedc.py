@@ -15,4 +15,3 @@ class ma_eaedc(Variable):
     adds=["ma_eaedc_income_limit"]
     subtracts=["ma_eaedc_net_income"]
     
-         
