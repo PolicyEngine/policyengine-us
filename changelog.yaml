@@ -7934,3 +7934,14 @@
     fiex:
     - Typo in New York working families tax credit match.
   date: 2024-08-16 11:45:37
+- bump: minor
+  changes:
+    added:
+    - Infant calibration.
+  date: 2024-08-16 15:31:16
+- bump: minor
+  changes:
+    added:
+    - Refactor the `household_benefits` and `household_state_benefits` variables to
+      include a list parameter.
+  date: 2024-08-17 13:51:13
