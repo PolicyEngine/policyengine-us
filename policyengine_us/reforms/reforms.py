@@ -38,6 +38,9 @@ from .congress.tlaib.boost import (
 from .states.mn.walz import (
     create_mn_walz_hf1938_repeal_reform,
 )
+from .personal_credit import (
+    create_personal_credit_reform,
+)
 
 from policyengine_core.reforms import Reform
 import warnings
@@ -96,6 +99,8 @@ def create_structural_reforms_from_parameters(parameters, period):
     )
     mn_walz_hf1938 = create_mn_walz_hf1938_repeal_reform(parameters, period)
 
+    personal_credit = create_personal_credit_reform(parameters, period)
+
     reforms = [
         afa_reform,
         winship_reform,
@@ -117,6 +122,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         end_child_poverty_act,
         boost_middle_class_tax_credit,
         mn_walz_hf1938,
+        personal_credit,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
 

@@ -1,0 +1,19 @@
+- name: Reform not in effect
+  period: 2024
+  input:
+    gov.contrib.personal_credit.in_effect: false
+    tax_unit_earned_income: 2_000
+    tax_unit_size: 1
+  output:
+    standard_deduction: 14_600
+    taxable_income_deductions: 14_600
+
+- name: Standard deduction repealed
+  period: 2024
+  reforms: policyengine_us.reforms.personal_credit.personal_credit.personal_credit
+  input:
+    gov.contrib.personal_credit.in_effect: true
+    tax_unit_earned_income: 2_000
+    tax_unit_size: 1
+  output:
+    taxable_income_deductions: 0
