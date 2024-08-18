@@ -4,9 +4,11 @@
     gov.contrib.ubi_center.basic_income.phase_in.rate: 0.5
     gov.contrib.ubi_center.basic_income.phase_in.per_person: false
     gov.contrib.ubi_center.basic_income.phase_in.with_earnings: false
+    gov.contrib.ubi_center.basic_income.phase_in.include_ss_benefits_as_earnings: false
     irs_gross_income: 1_000
     tax_unit_earned_income: 2_000
     tax_unit_size: 1
+    tax_unit_social_security: 0
   output:
     basic_income_phase_in: 500
 
@@ -16,9 +18,11 @@
     gov.contrib.ubi_center.basic_income.phase_in.rate: 0.7
     gov.contrib.ubi_center.basic_income.phase_in.per_person: false
     gov.contrib.ubi_center.basic_income.phase_in.with_earnings: true
+    gov.contrib.ubi_center.basic_income.phase_in.include_ss_benefits_as_earnings: false
     irs_gross_income: 1_000
     tax_unit_earned_income: 2_000
     tax_unit_size: 3
+    tax_unit_social_security: 0
   output:
     basic_income_phase_in: 1_400
 
@@ -28,9 +32,11 @@
     gov.contrib.ubi_center.basic_income.phase_in.rate: 0.2
     gov.contrib.ubi_center.basic_income.phase_in.per_person: true
     gov.contrib.ubi_center.basic_income.phase_in.with_earnings: false
+    gov.contrib.ubi_center.basic_income.phase_in.include_ss_benefits_as_earnings: false
     irs_gross_income: 1_000
     tax_unit_earned_income: 2_000
     tax_unit_size: 3
+    tax_unit_social_security: 0
   output:
     basic_income_phase_in: 600
 
@@ -40,8 +46,38 @@
     gov.contrib.ubi_center.basic_income.phase_in.rate: 0.3
     gov.contrib.ubi_center.basic_income.phase_in.per_person: true
     gov.contrib.ubi_center.basic_income.phase_in.with_earnings: true
+    gov.contrib.ubi_center.basic_income.phase_in.include_ss_benefits_as_earnings: true
     irs_gross_income: 1_000
     tax_unit_earned_income: 2_000
     tax_unit_size: 5
+    tax_unit_social_security: 0
   output:
     basic_income_phase_in: 3_000
+
+- name: Base test with AGI and SS which is not applied
+  period: 2022
+  input:
+    gov.contrib.ubi_center.basic_income.phase_in.rate: 0.3
+    gov.contrib.ubi_center.basic_income.phase_in.per_person: false
+    gov.contrib.ubi_center.basic_income.phase_in.with_earnings: false
+    gov.contrib.ubi_center.basic_income.phase_in.include_ss_benefits_as_earnings: true
+    irs_gross_income: 1_000
+    tax_unit_earned_income: 2_000
+    tax_unit_size: 5
+    tax_unit_social_security: 3_000
+  output:
+    basic_income_phase_in: 300
+
+- name: SS included in earnings
+  period: 2022
+  input:
+    gov.contrib.ubi_center.basic_income.phase_in.rate: 0.3
+    gov.contrib.ubi_center.basic_income.phase_in.per_person: false
+    gov.contrib.ubi_center.basic_income.phase_in.with_earnings: true
+    gov.contrib.ubi_center.basic_income.phase_in.include_ss_benefits_as_earnings: true
+    irs_gross_income: 1_000
+    tax_unit_earned_income: 2_000
+    tax_unit_size: 5
+    tax_unit_social_security: 3_000
+  output:
+    basic_income_phase_in: 1_500

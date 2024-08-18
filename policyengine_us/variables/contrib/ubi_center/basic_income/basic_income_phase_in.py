@@ -12,6 +12,9 @@ class basic_income_phase_in(Variable):
         p = parameters(period).gov.contrib.ubi_center.basic_income.phase_in
         if p.with_earnings:
             income = tax_unit("tax_unit_earned_income", period)
+            if p.include_ss_benefits_as_earnings:
+                ss_benefits = tax_unit("tax_unit_social_security", period)
+                income += ss_benefits
         else:
             income = add(tax_unit, period, ["irs_gross_income"])
         if p.per_person:
