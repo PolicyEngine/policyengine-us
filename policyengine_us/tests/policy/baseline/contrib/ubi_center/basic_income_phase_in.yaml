@@ -1,0 +1,47 @@
+- name: One person phased in at 50% with AGI
+  period: 2022
+  input:
+    gov.contrib.ubi_center.basic_income.phase_in.rate: 0.5
+    gov.contrib.ubi_center.basic_income.phase_in.per_person: false
+    gov.contrib.ubi_center.basic_income.phase_in.with_earnings: false
+    adjusted_gross_income: 1_000
+    tax_unit_earned_income: 2_000
+    tax_unit_size: 1
+  output:
+    basic_income_phase_in: 500
+
+- name: Three people phased in at 70% with earned income
+  period: 2022
+  input:
+    gov.contrib.ubi_center.basic_income.phase_in.rate: 0.7
+    gov.contrib.ubi_center.basic_income.phase_in.per_person: false
+    gov.contrib.ubi_center.basic_income.phase_in.with_earnings: true
+    adjusted_gross_income: 1_000
+    tax_unit_earned_income: 2_000
+    tax_unit_size: 3
+  output:
+    basic_income_phase_in: 1_400
+
+- name: Three people phased in at 20% with AGI, phased in per person
+  period: 2022
+  input:
+    gov.contrib.ubi_center.basic_income.phase_in.rate: 0.2
+    gov.contrib.ubi_center.basic_income.phase_in.per_person: true
+    gov.contrib.ubi_center.basic_income.phase_in.with_earnings: false
+    adjusted_gross_income: 1_000
+    tax_unit_earned_income: 2_000
+    tax_unit_size: 3
+  output:
+    basic_income_phase_in: 600
+
+- name: Five people phased in at 30% with earned income, phased in per person
+  period: 2022
+  input:
+    gov.contrib.ubi_center.basic_income.phase_in.rate: 0.3
+    gov.contrib.ubi_center.basic_income.phase_in.per_person: true
+    gov.contrib.ubi_center.basic_income.phase_in.with_earnings: true
+    adjusted_gross_income: 1_000
+    tax_unit_earned_income: 2_000
+    tax_unit_size: 5
+  output:
+    basic_income_phase_in: 3_000
