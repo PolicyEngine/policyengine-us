@@ -10,16 +10,13 @@ class basic_income_phase_in(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.contrib.ubi_center.basic_income.phase_in
-        if p.with_earnings:
-            income = tax_unit("tax_unit_earned_income", period)
-            if p.include_ss_benefits_as_earnings:
-                ss_benefits = tax_unit("tax_unit_social_security", period)
-                income += ss_benefits
-        else:
-            income = add(tax_unit, period, ["irs_gross_income"])
+        earnings = tax_unit("tax_unit_earned_income", period)
+        if p.include_ss_benefits_as_earnings:
+            ss_benefits = tax_unit("tax_unit_social_security", period)
+            earnings += ss_benefits
         if p.per_person:
             tax_unit_size = tax_unit("tax_unit_size", period)
             rate = p.rate * tax_unit_size
         else:
             rate = p.rate
-        return rate * income
+        return rate * earnings
