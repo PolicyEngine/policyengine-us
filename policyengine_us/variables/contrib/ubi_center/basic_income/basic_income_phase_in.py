@@ -13,7 +13,7 @@ class basic_income_phase_in(Variable):
         if p.with_earnings:
             income = tax_unit("tax_unit_earned_income", period)
         else:
-            income = tax_unit("adjusted_gross_income", period)
+            income = add(tax_unit, period, ["irs_gross_income"])
         if p.per_person:
             tax_unit_size = tax_unit("tax_unit_size", period)
             rate = p.rate * tax_unit_size
