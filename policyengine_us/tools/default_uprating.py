@@ -108,5 +108,6 @@ INPUT_VARIABLES = [
 
 def add_default_uprating(system):
     for variable in system.variables.values():
-        if variable in INPUT_VARIABLES and variable.uprating is None:
+        if (variable.name in INPUT_VARIABLES) and (variable.uprating is None):
             variable.uprating = "calibration.gov.cbo.income_by_source.adjusted_gross_income"
+        system.variables[variable.name] = variable
