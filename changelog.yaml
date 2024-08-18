@@ -7945,3 +7945,25 @@
     - Refactor the `household_benefits` and `household_state_benefits` variables to
       include a list parameter.
   date: 2024-08-17 13:51:13
+- bump: minor
+  changes:
+    added:
+    - Reform repeal Minnesota Bill HF1938.
+  date: 2024-08-17 15:50:59
+- bump: patch
+  changes:
+    removed:
+    - Age limit for ARPA CTC amount scale parameter (delegating instead to base CTC
+      age limit).
+  date: 2024-08-17 16:48:52
+- bump: patch
+  changes:
+    fixed:
+    - Mixed scalar and vectorized operations in mn_social_security_subtraction.
+  date: 2024-08-17 18:47:58
+- bump: patch
+  changes:
+    fixed:
+    - Limit American Family Act baby bonus reform to CTC-eligible children.
+    - Make AFA baby bonus and head of household repeal work after 2024.
+  date: 2024-08-17 22:15:46
