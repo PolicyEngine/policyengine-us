@@ -5,6 +5,71 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.55.0] - 2024-08-18 16:54:38
+
+### Added
+
+- Personal Credit reform.
+
+## [1.54.4] - 2024-08-18 16:32:45
+
+### Fixed
+
+- Minnesota Bill HF1938 impact fix.
+
+## [1.54.3] - 2024-08-17 22:15:46
+
+### Fixed
+
+- Limit American Family Act baby bonus reform to CTC-eligible children.
+- Make AFA baby bonus and head of household repeal work after 2024.
+
+## [1.54.2] - 2024-08-17 18:47:58
+
+### Fixed
+
+- Mixed scalar and vectorized operations in mn_social_security_subtraction.
+
+## [1.54.1] - 2024-08-17 16:48:52
+
+## [1.54.0] - 2024-08-17 15:50:59
+
+### Added
+
+- Reform repeal Minnesota Bill HF1938.
+
+## [1.53.0] - 2024-08-17 13:51:13
+
+### Added
+
+- Refactor the `household_benefits` and `household_state_benefits` variables to include a list parameter.
+
+## [1.52.0] - 2024-08-16 15:31:16
+
+### Added
+
+- Infant calibration.
+
+## [1.51.1] - 2024-08-16 11:45:37
+
+## [1.51.0] - 2024-08-16 11:39:35
+
+### Added
+
+- Use un-reduced income for calculating the excess of the rent relief credit.
+
+## [1.50.0] - 2024-08-13 16:02:31
+
+### Added
+
+- Flat tax on gross income.
+
+## [1.49.0] - 2024-08-13 14:42:06
+
+### Fixed
+
+- Inaccurate docstring in loss.py
+
 ## [1.48.0] - 2024-08-13 03:08:12
 
 ### Added
@@ -9366,6 +9431,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.55.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.54.4...1.55.0
+[1.54.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.54.3...1.54.4
+[1.54.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.54.2...1.54.3
+[1.54.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.54.1...1.54.2
+[1.54.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.54.0...1.54.1
+[1.54.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.53.0...1.54.0
+[1.53.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.52.0...1.53.0
+[1.52.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.51.1...1.52.0
+[1.51.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.51.0...1.51.1
+[1.51.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.50.0...1.51.0
+[1.50.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.49.0...1.50.0
+[1.49.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.48.0...1.49.0
 [1.48.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.47.0...1.48.0
 [1.47.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.46.0...1.47.0
 [1.46.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.45.2...1.46.0

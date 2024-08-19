@@ -7914,3 +7914,66 @@
     added:
     - Update to codecov/codecov-action@v4, actions/setup-python@v5, and actions/checkout@v4.
   date: 2024-08-13 03:08:12
+- bump: minor
+  changes:
+    fixed:
+    - Inaccurate docstring in loss.py
+  date: 2024-08-13 14:42:06
+- bump: minor
+  changes:
+    added:
+    - Flat tax on gross income.
+  date: 2024-08-13 16:02:31
+- bump: minor
+  changes:
+    added:
+    - Use un-reduced income for calculating the excess of the rent relief credit.
+  date: 2024-08-16 11:39:35
+- bump: patch
+  changes:
+    fiex:
+    - Typo in New York working families tax credit match.
+  date: 2024-08-16 11:45:37
+- bump: minor
+  changes:
+    added:
+    - Infant calibration.
+  date: 2024-08-16 15:31:16
+- bump: minor
+  changes:
+    added:
+    - Refactor the `household_benefits` and `household_state_benefits` variables to
+      include a list parameter.
+  date: 2024-08-17 13:51:13
+- bump: minor
+  changes:
+    added:
+    - Reform repeal Minnesota Bill HF1938.
+  date: 2024-08-17 15:50:59
+- bump: patch
+  changes:
+    removed:
+    - Age limit for ARPA CTC amount scale parameter (delegating instead to base CTC
+      age limit).
+  date: 2024-08-17 16:48:52
+- bump: patch
+  changes:
+    fixed:
+    - Mixed scalar and vectorized operations in mn_social_security_subtraction.
+  date: 2024-08-17 18:47:58
+- bump: patch
+  changes:
+    fixed:
+    - Limit American Family Act baby bonus reform to CTC-eligible children.
+    - Make AFA baby bonus and head of household repeal work after 2024.
+  date: 2024-08-17 22:15:46
+- bump: patch
+  changes:
+    fixed:
+    - Minnesota Bill HF1938 impact fix.
+  date: 2024-08-18 16:32:45
+- bump: minor
+  changes:
+    added:
+    - Personal Credit reform.
+  date: 2024-08-18 16:54:38
