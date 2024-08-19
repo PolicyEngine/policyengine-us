@@ -6,12 +6,6 @@ JOINT:
     2022-01-01: 61_760
     2023-01-01: 66_510
     2024-01-01: .inf
-  metadata:
-    uprating:
-      parameter: gov.irs.uprating
-      rounding:
-        type: nearest
-        interval: 10
      
 HEAD_OF_HOUSEHOLD:
   values: 
@@ -19,12 +13,6 @@ HEAD_OF_HOUSEHOLD:
     2022-01-01: 45_790
     2023-01-01: 49_310
     2024-01-01: .inf
-  metadata:
-    uprating:
-      parameter: gov.irs.uprating
-      rounding:
-        type: nearest
-        interval: 10
 
 SURVIVING_SPOUSE:
   values: 
@@ -32,12 +20,6 @@ SURVIVING_SPOUSE:
     2022-01-01: 45_790
     2023-01-01: 49_310
     2024-01-01: .inf
-  metadata:
-    uprating:
-      parameter: gov.irs.uprating
-      rounding:
-        type: nearest
-        interval: 10
 
 SINGLE:
   values: 
@@ -45,12 +27,6 @@ SINGLE:
     2022-01-01: 45_790
     2023-01-01: 49_310
     2024-01-01: .inf
-  metadata:
-    uprating:
-      parameter: gov.irs.uprating
-      rounding:
-        type: nearest
-        interval: 10
 
 SEPARATE:
   values: 
@@ -58,12 +34,6 @@ SEPARATE:
     2022-01-01: 45_790
     2023-01-01: 49_310
     2024-01-01: .inf
-  metadata:
-    uprating:
-      parameter: gov.irs.uprating
-      rounding:
-        type: nearest
-        interval: 10  
 
 metadata:
   label: Nebraska social security AGI subtraction threshold
