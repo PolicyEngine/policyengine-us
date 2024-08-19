@@ -19,5 +19,4 @@ class household_state_benefits(Variable):
         "ca_fera",
         "ca_la_ez_save",
         "co_oap",
-        "co_denver_property_tax_relief",
     ]

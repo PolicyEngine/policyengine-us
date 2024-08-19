@@ -4,7 +4,6 @@ from policyengine_us.model_api import *
 class co_denver_property_tax_relief_renter_eligible(Variable):
     value_type = float
     entity = SPMUnit
-    unit = USD
     label = "Eligible for the renter Denver Property Tax Relief"
     definition_period = YEAR
     reference = "https://denvergov.org/files/content/public/v/37/government/agencies-departments-offices/agencies-departments-offices-directory/denver-human-services/be-supported/additional-assistance/property-tax-relief/denver-property-tax-relief-program-year-2021-rules.pdf"
@@ -19,9 +18,9 @@ class co_denver_property_tax_relief_renter_eligible(Variable):
 
         income = spm_unit("co_denver_property_tax_relief_income", period)
         size = spm_unit("spm_unit_size", period)
-        renter_income_limit = p.ami.calc(
-            size
-        ) * p.property_tax_relief.ami_rate.renter.calc(size)
+        ami = p.ami.calc(size)
+        ami_rate = p.property_tax_relief.ami_rate.renter.calc(size)
+        renter_income_limit = ami * ami_rate
         renter_income_eligible = income <= renter_income_limit
 
         return elderly_or_disabled_renters & renter_income_eligible
