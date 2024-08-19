@@ -21,14 +21,13 @@
     ca_calworks_child_care_eligible: false
     is_snap_eligible: true
         # how to test exact value output for CalFresh
-    # is_wic_eligible: false (how to get is_wic_eligible?)
+    is_wic_eligible: true
     la_general_relief_eligible: true
     la_general_relief: 2652
     is_medicaid_eligible: true
         # how to test exact value output for MediCal 
     is_aca_ptc_eligible: false
     # No Section 8 eligibility
-    ca_la_ez_save_eligible: true
     eitc_eligible: true
     eitc: 0
     ca_eitc_eligible: true
@@ -40,683 +39,659 @@
     ca_renter_credit: 0
     ca_foster_youth_tax_credit_eligible_person: false
 
-# - name: Sol (DACA)
-#   period: 2024
-#   absolute_error_margin: 0.01 # Floating point issue.
-#   input:
-#     people:
-#       person_1:
-#         age: 18
-#         employment_income: 
-#           2024: 16640
-#         immigration_status: DACA_TPS
-#     spm_units:
-#       spm_unit:
-#         members: [person_1]
-#     households:
-#       household:
-#         in_la: true
-#         state_code_str: CA
-#         lives_in_vehicle: false
-#   output:
-#     ca_tanf_eligible: false
-#     ca_calworks_child_care_eligible: false
-#     # is_snap_eligible: false (need to test for California specifically)
-#     # is_wic_eligible: false (how to get is_wic_eligible?)
-#     la_general_relief_eligible: false
-#     # is_medicaid_eligible: true (need to test for California specifically)
-#     is_aca_ptc_eligible: false
-#     # No Section 8 eligibility 
-#     ca_la_ez_save_eligible: false
-#     eitc_eligible: false
-#     ca_eitc_eligibile: false
-#     ctc: 0
-#     # No Additional CTC eligibility
-#     cdcc: 0
-#     ca_cdcc: 0
-#     ca_yctc: 0
-#     ca_renter_credit: 0
-#     ca_foster_youth_tax_credit_eligible_person: false
+- name: Sol (DACA)
+  period: 2024
+  absolute_error_margin: 0.01 # Floating point issue.
+  input:
+    people:
+      person_1:
+        age: 18
+        employment_income: 
+          2024: 16640
+        immigration_status: DACA_TPS
+    spm_units:
+      spm_unit:
+        members: [person_1]
+    households:
+      household:
+        in_la: true
+        state_code_str: CA
+        lives_in_vehicle: false
+  output:
+    ca_tanf_eligible: false
+    ca_calworks_child_care_eligible: false
+    # is_snap_eligible: false 
+    # (need to test for California specifically)
+    is_wic_eligible: true
+    la_general_relief_eligible: false
+    # is_medicaid_eligible: true (need to test for California specifically)
+    is_aca_ptc_eligible: false
+    # No Section 8 eligibility 
+    eitc_eligible: false
+    ca_eitc_eligible: true
+    ctc: 0
+    # No Additional CTC eligibility
+    cdcc: 0
+    ca_cdcc: 0
+    ca_yctc: 0
+    ca_renter_credit: 0
+    ca_foster_youth_tax_credit_eligible_person: false
 
 
-# - name: Sol (US Citizen)
-#   period: 2024
-#   absolute_error_margin: 0.01 # Floating point issue.
-#   input:
-#     people:
-#       person_1:
-#         age: 18
-#         employment_income: 
-#           2024: 16640
-#         immigration_status: CITIZEN
-#     spm_units:
-#       spm_unit:
-#         members: [person_1]
-#     households:
-#       household:
-#         in_la: true
-#         state_code_str: CA
-#         lives_in_vehicle: false
-#   output:
-#     ca_tanf_eligible: false (need to test for California specifically)
-#     ca_calworks_child_care_eligible: false
-#     is_snap_eligible: true (need to test for California specifically)
-#     is_wic_eligible: false (how to get is_wic_eligible?)
-#     la_general_relief_eligible: false
-#     is_medicaid_eligible: true
-#     is_aca_ptc_eligible: false
-#     # No Section 8 eligibility 
-#     ca_la_ez_save_eligible: false
-#     eitc_eligible: false
-#     ca_eitc_eligibile: true
-#     ca_eitc: 139
-#     ctc: 0
-#     # No Additional CTC eligibility
-#     cdcc: 0
-#     ca_cdcc: 0
-#     ca_yctc: 0
-#     ca_renter_credit: 0
-#     ca_foster_youth_tax_credit_eligible_person: false
+- name: Sol (US Citizen)
+  period: 2024
+  absolute_error_margin: 0.01 # Floating point issue.
+  input:
+    people:
+      person_1:
+        age: 18
+        employment_income: 
+          2024: 16640
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person_1]
+    households:
+      household:
+        in_la: true
+        state_code_str: CA
+        lives_in_vehicle: false
+  output:
+    ca_tanf_eligible: false
+    ca_calworks_child_care_eligible: false
+    # is_snap_eligible: true (need to test for California specifically)
+    is_wic_eligible: true
+    la_general_relief_eligible: false
+    # is_medicaid_eligible: true (need to test for California specifically)
+    is_aca_ptc_eligible: false
+    # No Section 8 eligibility 
+    eitc_eligible: false
+    # ca_eitc: 139
+    ctc: 0
+    # No Additional CTC eligibility
+    cdcc: 0
+    ca_cdcc: 0
+    ca_yctc: 0
+    ca_renter_credit: 0
+    ca_foster_youth_tax_credit_eligible_person: false
 
-# - name: Sidney
-#   period: 2024
-#   absolute_error_margin: 0.01 # Floating point issue.
-#   input:
-#     people:
-#       person_1:
-#         age: 55
-#         employment_income: 55000
-#         immigration_status: CITIZEN
-#         rent: 1800
-#         is_medicaid_eligible: true
-#     spm_units:
-#       spm_unit:
-#         members: [person_1]
-#     households:
-#       household:
-#         in_la: true
-#         state_code_str: CA
-#         household_vehicles_value: 15000
-#         lives_in_vehicle: false
-#   output:
-#     ca_tanf_eligible: false
-#     ca_calworks_child_care_eligible: false
-#     is_snap_eligible: false
-#     is_wic_eligible: false (how to get is_wic_eligible?)
-#     la_general_relief_eligible: false
-#     is_medicaid_eligible: false
-#     is_aca_ptc_eligible: false
-#     # No Section 8 eligibility 
-#     ca_la_ez_save_eligible: false
-#     eitc_eligible: false
-#     ca_eitc_eligibile: false
-#     ctc: 0
-#     # No Additional CTC eligibility
-#     cdcc: 0
-#     ca_cdcc: 0
-#     ca_yctc: 0
-#     ca_renter_credit: 0
-#     ca_foster_youth_tax_credit_eligible_person: false
+- name: Sidney
+  period: 2024
+  absolute_error_margin: 0.01 # Floating point issue.
+  input:
+    people:
+      person_1:
+        age: 55
+        employment_income: 55000
+        immigration_status: CITIZEN
+        rent: 1800
+        is_medicaid_eligible: true
+    spm_units:
+      spm_unit:
+        members: [person_1]
+    households:
+      household:
+        in_la: true
+        state_code_str: CA
+        household_vehicles_value: 15000
+        lives_in_vehicle: false
+  output:
+    ca_tanf_eligible: false
+    ca_calworks_child_care_eligible: false
+    is_snap_eligible: false
+    is_wic_eligible: true
+    la_general_relief_eligible: false
+    # is_medicaid_eligible: true
+    is_aca_ptc_eligible: false
+    # No Section 8 eligibility 
+    eitc_eligible: true
+    ca_eitc_eligible: true
+    ctc: 0
+    # No Additional CTC eligibility
+    cdcc: 0
+    ca_cdcc: 0
+    ca_yctc: 0
+    ca_renter_credit: 0
+    ca_foster_youth_tax_credit_eligible_person: false
 
-# - name: Sandy
-#   period: 2024
-#   absolute_error_margin: 0.01 # Floating point issue.
-#   input:
-#     people:
-#       person_1:
-#         age: 19
-#         employment_income: 
-#           2024: 12000
-#         immigration_status: CITIZEN
-#     spm_units:
-#       spm_unit:
-#         members: [person_1]
-#     households:
-#       household:
-#         in_la: true
-#         state_code_str: CA 
-#   output:
-#     ca_tanf_eligible: false
-#     ca_calworks_child_care_eligible: false
-#     is_snap_eligible: true (need to test for California specifically)
-#     is_wic_eligible: false (how to get is_wic_eligible?)
-#     la_general_relief_eligible: false
-#     is_medicaid_eligible: true (need to test for California specifically)
-#     is_aca_ptc_eligible: false
-#     # No Section 8 eligibility 
-#     ca_la_ez_save_eligible: false
-#     eitc_eligible: false
-#     ca_eitc_eligibile: true
-#     ca_eitc: 184
-#     ctc: 0
-#     # No Additional CTC eligibility
-#     cdcc: 0
-#     ca_cdcc: 0
-#     ca_yctc: 0
-#     ca_renter_credit: 0
-#     ca_foster_youth_tax_credit: 1180
+- name: Sandy
+  period: 2024
+  absolute_error_margin: 0.01 # Floating point issue.
+  input:
+    people:
+      person_1:
+        age: 19
+        employment_income: 
+          2024: 12000
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person_1]
+    households:
+      household:
+        in_la: true
+        state_code_str: CA 
+  output:
+    ca_tanf_eligible: false
+    ca_calworks_child_care_eligible: false
+    # is_snap_eligible: true (need to test for California specifically)
+    is_wic_eligible: true
+    la_general_relief_eligible: false
+    # is_medicaid_eligible: true (need to test for California specifically)
+    is_aca_ptc_eligible: false
+    # No Section 8 eligibility 
+    eitc_eligible: false
+    ca_eitc_eligible: true
+    # ca_eitc: 184
+    ctc: 0
+    # No Additional CTC eligibility
+    cdcc: 0
+    ca_cdcc: 0
+    ca_yctc: 0
+    ca_renter_credit: 0
+    # ca_foster_youth_tax_credit: 1180
 
-# - name: Sandy (pregnant)
-#   period: 2024
-#   absolute_error_margin: 0.01 # Floating point issue.
-#   input:
-#     people:
-#       person_1:
-#         age: 19
-#         employment_income: 
-#           2024: 12000
-#         immigration_status: CITIZEN
-#         is_pregnant: true
-#     spm_units:
-#       spm_unit:
-#         members: [person_1]
-#     households:
-#       household:
-#         state_code_str: CA 
-#         in_la: true
-#   output:
-#     ca_tanf_eligible: true
-#     ca_tanf: 6384
-#     ca_calworks_child_care_eligible: false
-#     is_snap_eligible: true (need to test for California specifically)
-#     wic: 557
-#     la_general_relief_eligible: false
-#     is_medicaid_eligible: true (need to test for California specifically)
-#     is_aca_ptc_eligible: false
-#     # No Section 8 eligibility 
-#     ca_la_ez_save_eligible: false
-#     eitc_eligible: false
-#     ca_eitc_eligibile: true
-#     ca_eitc: 184
-#     ctc: 0
-#     # No Additional CTC eligibility
-#     cdcc: 0
-#     ca_cdcc: 0
-#     ca_yctc: 0
-#     ca_renter_credit: 0
-#     ca_foster_youth_tax_credit: 1180
+- name: Sandy (pregnant)
+  period: 2024
+  absolute_error_margin: 0.01 # Floating point issue.
+  input:
+    people:
+      person_1:
+        age: 19
+        employment_income: 
+          2024: 12000
+        immigration_status: CITIZEN
+        is_pregnant: true
+    spm_units:
+      spm_unit:
+        members: [person_1]
+    households:
+      household:
+        state_code_str: CA 
+        in_la: true
+  output:
+    ca_tanf_eligible: true
+    ca_tanf: 6384
+    ca_calworks_child_care_eligible: false
+    # is_snap_eligible: true (need to test for California specifically)
+    # wic: 557
+    la_general_relief_eligible: false
+    # is_medicaid_eligible: true (need to test for California specifically)
+    is_aca_ptc_eligible: false
+    # No Section 8 eligibility 
+    eitc_eligible: false
+    # ca_eitc: 184
+    ctc: 0
+    # No Additional CTC eligibility
+    cdcc: 0
+    ca_cdcc: 0
+    ca_yctc: 0
+    ca_renter_credit: 0
+    # ca_foster_youth_tax_credit: 1180
 
-# - name: Sawyer & Sage
-#   period: 2024
-#   absolute_error_margin: 0.01 # Floating point issue.
-#   input:
-#     people:
-#       person_1:
-#         age: 44
-#         employment_income: 0
-#         immigration_status: CITIZEN
-#       person_2:
-#         age: 55
-#         employment_income: 1800    # (200+100)/2 * 12
-#         immigration_status: LEGAL_PERMANENT_RESIDENT
-#     spm_units:
-#       spm_unit:
-#         members: [person_1, person_2]
-#     households:
-#       household:
-#         in_la: true
-#         state_code_str: CA
-#         household_vehicles_value: 5000
-#         is_homeless: true
-#         lives_in_vehicle: false
-#   output:
-#     ca_tanf_eligible: false
-#     ca_calworks_child_care_eligible: false
-#     is_snap_eligible: true (need to test for California specifically)
-#     is_wic_eligible: false (how to get is_wic_eligible?)
-#     la_general_relief_eligible: false
-#     is_medicaid_eligible: true (need to test for California specifically)
-#     is_aca_ptc_eligible: false
-#     # No Section 8 eligibility 
-#     ca_la_ez_save_eligible: false
-#     eitc_eligible: false
-#     ca_eitc_eligibile: false
-#     ctc: 0
-#     # No Additional CTC eligibility
-#     cdcc: 0
-#     ca_cdcc: 0
-#     ca_yctc: 0
-#     ca_renter_credit: 0
-#     ca_foster_youth_tax_credit_eligible_person: false
+- name: Sawyer & Sage
+  period: 2024
+  absolute_error_margin: 0.01 # Floating point issue.
+  input:
+    people:
+      person_1:
+        age: 44
+        employment_income: 0
+        immigration_status: CITIZEN
+      person_2:
+        age: 55
+        employment_income: 1800    # (200+100)/2 * 12
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+    spm_units:
+      spm_unit:
+        members: [person_1, person_2]
+    households:
+      household:
+        in_la: true
+        state_code_str: CA
+        household_vehicles_value: 5000
+        is_homeless: true
+        lives_in_vehicle: false
+  output:
+    ca_tanf_eligible: false
+    ca_calworks_child_care_eligible: false
+    # is_snap_eligible: true (need to test for California specifically)
+    is_wic_eligible: true
+    la_general_relief_eligible: false
+    # is_medicaid_eligible: true (need to test for California specifically)
+    is_aca_ptc_eligible: false
+    # No Section 8 eligibility 
+    eitc_eligible: true
+    ca_eitc_eligible: true
+    ctc: 0
+    # No Additional CTC eligibility
+    cdcc: 0
+    ca_cdcc: 0
+    ca_yctc: 0
+    ca_renter_credit: 0
+    ca_foster_youth_tax_credit_eligible_person: false
 
-# - name: Sawyer & Sage (Sage undocumented, living in car)
-#   period: 2024
-#   absolute_error_margin: 0.01 # Floating point issue.
-#   input:
-#     people:
-#       person_1:
-#         age: 44
-#         employment_income: 1800  #(200+100)/2 * 12
-#         immigration_status: CITIZEN
-#       person_2:
-#         age: 55
-#         employment_income: 0
-#         immigration_status: UNDOCUMENTED
-#     spm_units:
-#       spm_unit:
-#         members: [person_1, person_2]
-#     households:
-#       household:
-#         in_la: true
-#         state_code_str: CA
-#         is_homeless: true
-#         household_vehicles_value: 5000
-#         lives_in_vehicle: true
-#   output:
-#     ca_tanf_eligible: false
-#     ca_calworks_child_care_eligible: false
-#     is_snap_eligible: true (need to test for California specifically)
-#     is_wic_eligible: false (how to get is_wic_eligible?)
-#     la_general_relief_eligible: true
-#     la_general_relief: 2652
-#     is_medicaid_eligible: true (need to test for California specifically)
-#     is_aca_ptc_eligible: false
-#     # No Section 8 eligibility 
-#     ca_la_ez_save_eligible: false
-#     eitc_eligible: false
-#     ca_eitc_eligibile: false
-#     ctc: 0
-#     # No Additional CTC eligibility
-#     cdcc: 0
-#     ca_cdcc: 0
-#     ca_yctc: 0
-#     ca_renter_credit: 0
-#     ca_foster_youth_tax_credit_eligible_person: false
+- name: Sawyer & Sage (Sage undocumented, living in car)
+  period: 2024
+  absolute_error_margin: 0.01 # Floating point issue.
+  input:
+    people:
+      person_1:
+        age: 44
+        employment_income: 1800  #(200+100)/2 * 12
+        immigration_status: CITIZEN
+      person_2:
+        age: 55
+        employment_income: 0
+        immigration_status: UNDOCUMENTED
+    spm_units:
+      spm_unit:
+        members: [person_1, person_2]
+    households:
+      household:
+        in_la: true
+        state_code_str: CA
+        is_homeless: true
+        household_vehicles_value: 5000
+        lives_in_vehicle: true
+  output:
+    ca_tanf_eligible: false
+    ca_calworks_child_care_eligible: false
+    # is_snap_eligible: true (need to test for California specifically)
+    is_wic_eligible: true
+    # la_general_relief: 2652
+    # is_medicaid_eligible: true (need to test for California specifically)
+    is_aca_ptc_eligible: false
+    # No Section 8 eligibility 
+    eitc_eligible: true
+    ca_eitc_eligible: true
+    ctc: 0
+    # No Additional CTC eligibility
+    cdcc: 0
+    ca_cdcc: 0
+    ca_yctc: 0
+    ca_renter_credit: 0
+    ca_foster_youth_tax_credit_eligible_person: false
 
-# - name: Monica
-#   period: 2024
-#   absolute_error_margin: 0.01 # Floating point issue.
-#   input:
-#     people:
-#       person_1:
-#         age: 28
-#         employment_income: 
-#           2024: 23400
-#         immigration_status: CITIZEN
-#         rent: 760
-#       person_2:
-#         age: 3
-#         immigration_status: CITIZEN
-#       person_3:
-#         age: 6
-#         immigration_status: CITIZEN
-#     spm_units:
-#       spm_unit:
-#         members: [person_1, person_2, person_3]
-#     households:
-#       household:
-#         in_la: true
-#         state_code_str: CA
-#   output:
-#     ca_tanf_eligible: true
-#     ca_tanf: 5952
-#     ca_calworks_child_care_eligible: true
-#     ca_calworks_child_care: 7200
-#     is_snap_eligible: true (need to test for California specifically)
-#     wic: 474
-#     la_general_relief_eligible: false
-#     is_medicaid_eligible: true (need to test for California specifically)
-#     is_aca_ptc_eligible: false
-#     # No Section 8 eligibility 
-#     ca_la_ez_save_eligible: false
-#     eitc: 6816
-#     ca_eitc: 358
-#     ctc: 4000
-#     # Additional CTC eligibility --> true (output for 3135)
-#     cdcc: 0
-#     ca_cdcc: 1117
-#     ca_yctc: 0
-#     ca_renter_credit: 120
-#     ca_foster_youth_tax_credit_eligible_person: false
+- name: Monica
+  period: 2024
+  absolute_error_margin: 0.01 # Floating point issue.
+  input:
+    people:
+      person_1:
+        age: 28
+        employment_income: 
+          2024: 23400
+        immigration_status: CITIZEN
+        rent: 760
+      person_2:
+        age: 3
+        immigration_status: CITIZEN
+      person_3:
+        age: 6
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person_1, person_2, person_3]
+    households:
+      household:
+        in_la: true
+        state_code_str: CA
+  output:
+    ca_tanf_eligible: true
+    ca_tanf: 5952
+    ca_calworks_child_care_eligible: true
+    # ca_calworks_child_care: 7200
+    # is_snap_eligible: true (need to test for California specifically)
+    # wic: 474
+    la_general_relief_eligible: false
+    # is_medicaid_eligible: true (need to test for California specifically)
+    is_aca_ptc_eligible: false
+    # No Section 8 eligibility 
+    # eitc: 6816
+    # ca_eitc: 358
+    ctc: 4000
+    # Additional CTC eligibility --> true (output for 3135)
+    cdcc: 0
+    # # ca_cdcc: 1117
+    # ca_yctc: 0
+    ca_renter_credit: 120
+    ca_foster_youth_tax_credit_eligible_person: false
 
-# - name: Mark/Marta
-#   period: 2024
-#   absolute_error_margin: 0.01 # Floating point issue.
-#   input:
-#     people:
-#       person_1:
-#         age: 35
-#         employment_income: 
-#           2024: 36000
-#         immigration_status: UNDOCUMENTED
-#         rent: 2200
-#       person_2:
-#         age: 34
-#         employment_income: 
-#           2024: 13000
-#         immigration_status: UNDOCUMENTED
-#         is_pregnant: true
-#       person_3:
-#         age: 10
-#         immigration_status: UNDOCUMENTED
-#       person_4:
-#         age: 7
-#         immigration_status: CITIZEN
-#     spm_units:
-#       spm_unit:
-#         members: [person_1, person_2, person_3, person_4]
-#     households:
-#       household:
-#         in_la: true
-#         state_code_str: CA
-#         household_vehicles_value: 11000
-#   output:
-#     ca_tanf_eligible: false
-#     ca_calworks_child_care_eligible: false
-#     is_snap_eligible: true (need to test for California specifically)
-#     wic: 557
-#     la_general_relief_eligible: false
-#     is_medicaid_eligible: true (need to test for California specifically)
-#     is_aca_ptc_eligible: false
-#     # No Section 8 eligibility 
-#     ca_la_ez_save_eligible: false
-#     eitc_eligible: false
-#     ca_eitc_eligibile: false
-#     ctc: 4000
-#     # No ACTC eligibility
-#     cdcc_eligible: true
-#     cdcc: 240
-#     ca_cdcc: 103
-#     ca_yctc: 0
-#     ca_renter_credit: 120
-#     ca_foster_youth_tax_credit_eligible_person: false
+- name: Mark/Marta
+  period: 2024
+  absolute_error_margin: 0.01 # Floating point issue.
+  input:
+    people:
+      person_1:
+        age: 35
+        employment_income: 
+          2024: 36000
+        immigration_status: UNDOCUMENTED
+        rent: 2200
+      person_2:
+        age: 34
+        employment_income: 
+          2024: 13000
+        immigration_status: UNDOCUMENTED
+        is_pregnant: true
+      person_3:
+        age: 10
+        immigration_status: UNDOCUMENTED
+      person_4:
+        age: 7
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person_1, person_2, person_3, person_4]
+    households:
+      household:
+        in_la: true
+        state_code_str: CA
+        household_vehicles_value: 11000
+  output:
+    ca_tanf_eligible: false
+    ca_calworks_child_care_eligible: false
+    # is_snap_eligible: true (need to test for California specifically)
+    # wic: 557
+    la_general_relief_eligible: false
+    # is_medicaid_eligible: true (need to test for California specifically)
+    is_aca_ptc_eligible: false
+    # No Section 8 eligibility 
+    eitc_eligible: true
+    ca_eitc_eligible: true
+    ctc: 4000
+    # No ACTC eligibility
+    # cdcc: 240
+    # ca_cdcc: 103
+    ca_yctc: 0
+    ca_renter_credit: 120
+    ca_foster_youth_tax_credit_eligible_person: false
 
-# - name: Morgan
-#   period: 2024
-#   absolute_error_margin: 0.01 # Floating point issue.
-#   input:
-#     people:
-#       person_1:
-#         age: 32
-#         employment_income: 
-#           2024: 20000
-#         immigration_status: UNDOCUMENTED
-#       person_2:
-#         age: 16
-#         immigration_status: CITIZEN
-#       person_3:
-#         age: 14
-#         immigration_status: CITIZEN
-#         is_disabled: true
-#         disability_benefits: 12000
-#     spm_units:
-#       spm_unit:
-#         members: [person_1, person_2, person_3]
-#     households:
-#       household:
-#         state_code_str: CA
-#         in_la: true
-#         household_vehicles_value: 3000
-#         is_homeless: true
-#   output:
-#     ca_tanf_eligible: true
-#     ca_tanf: 6213
-#     ca_calworks_child_care_eligible: false
-#     is_snap_eligible: true (need to test for California specifically)
-#     is_wic_eligible: false (how to get is_wic_eligible?)
-#     la_general_relief_eligible: false
-#     is_medicaid_eligible: true (need to test for California specifically)
-#     is_aca_ptc_eligible: false
-#     # No Section 8 eligibility 
-#     ca_la_ez_save_eligible: false
-#     eitc_eligible: false
-#     ca_eitc: 520
-#     ctc: 4000
-#     # No Additional CTC eligibility
-#     cdcc: 0
-#     ca_cdcc: 0
-#     ca_yctc: 0
-#     ca_renter_credit: 0
-#     ca_foster_youth_tax_credit_eligible_person: false
+- name: Morgan
+  period: 2024
+  absolute_error_margin: 0.01 # Floating point issue.
+  input:
+    people:
+      person_1:
+        age: 32
+        employment_income: 
+          2024: 20000
+        immigration_status: UNDOCUMENTED
+      person_2:
+        age: 16
+        immigration_status: CITIZEN
+      person_3:
+        age: 14
+        immigration_status: CITIZEN
+        is_disabled: true
+        disability_benefits: 12000
+    spm_units:
+      spm_unit:
+        members: [person_1, person_2, person_3]
+    households:
+      household:
+        state_code_str: CA
+        in_la: true
+        household_vehicles_value: 3000
+        is_homeless: true
+  output:
+    # ca_tanf: 6213
+    ca_calworks_child_care_eligible: false
+    # is_snap_eligible: true (need to test for California specifically)
+    is_wic_eligible: true
+    la_general_relief_eligible: false
+    # is_medicaid_eligible: true (need to test for California specifically)
+    is_aca_ptc_eligible: false
+    # No Section 8 eligibility 
+    eitc_eligible: true
+    # ca_eitc: 520
+    ctc: 4000
+    # No Additional CTC eligibility
+    cdcc: 0
+    ca_cdcc: 0
+    ca_yctc: 0
+    ca_renter_credit: 0
+    ca_foster_youth_tax_credit_eligible_person: false
 
-# - name: Miles / Mia
-#   period: 2024
-#   absolute_error_margin: 0.01 # Floating point issue.
-#   input: 
-#     people:
-#       person_1:
-#         age: 40
-#         employment_income: 
-#           2024: 36000
-#         immigration_status: LEGAL_PERMANENT_RESIDENT
-#         rent: 1000
-#       person_2:
-#         age: 40
-#         immigration_status: CITIZEN
-#       person_3:
-#         age: 18
-#         immigration_status: CITIZEN
-#         employment_income: 31200
-#       person_4:
-#         age: 17
-#         immigration_status: CITIZEN
-#       person_5:
-#         age: 15
-#         immigration_status: CITIZEN
-#       person_6:
-#         age: 10
-#         immigration_status: CITIZEN
-#       person_7:
-#         age: 4
-#         immigration_status: CITIZEN
-#     spm_units:
-#       spm_unit:
-#         members: [person_1, person_2, person_3, person_4, person_5, person_6, person_7]
-#         receives_housing_assistance: true
-#     households:
-#       household:
-#         state_code_str: CA
-#         household_vehicles_value: 22000
-#         in_la: true
-#   output:
-#     ca_tanf_eligible: false
-#     ca_calworks_child_care_eligible: false
-#     is_snap_eligible: true (need to test for California specifically)
-#     wic: 474
-#     la_general_relief_eligible: false
-#     is_medicaid_eligible: true (need to test for California specifically)
-#     is_aca_ptc_eligible: false
-#     # Section 8 output would be 1034
-#     ca_la_ez_save_eligible: true (could be other utility?) 
-#     ca_la_ez_save: 98
-#     eitc: 6490
-#     ca_eitc_eligibile: false
-#     ctc: 7000
-#     # Additional CTC eligibility (would be 5025)
-#     cdcc: 0
-#     ca_cdcc: 0
-#     ca_yctc: 0
-#     ca_renter_credit: 120
-#     ca_foster_youth_tax_credit_eligible_person: false
+- name: Miles / Mia
+  period: 2024
+  absolute_error_margin: 0.01 # Floating point issue.
+  input: 
+    people:
+      person_1:
+        age: 40
+        employment_income: 
+          2024: 36000
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        rent: 1000
+      person_2:
+        age: 40
+        immigration_status: CITIZEN
+      person_3:
+        age: 18
+        immigration_status: CITIZEN
+        employment_income: 31200
+      person_4:
+        age: 17
+        immigration_status: CITIZEN
+      person_5:
+        age: 15
+        immigration_status: CITIZEN
+      person_6:
+        age: 10
+        immigration_status: CITIZEN
+      person_7:
+        age: 4
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person_1, person_2, person_3, person_4, person_5, person_6, person_7]
+        receives_housing_assistance: true
+    households:
+      household:
+        state_code_str: CA
+        household_vehicles_value: 22000
+        in_la: true
+  output:
+    ca_tanf_eligible: false
+    ca_calworks_child_care_eligible: false
+    # is_snap_eligible: true (need to test for California specifically)
+    # wic: 474
+    la_general_relief_eligible: false
+    # is_medicaid_eligible: true (need to test for California specifically)
+    is_aca_ptc_eligible: false
+    # Section 8 output would be 1034
+    # eitc: 6490
+    ca_eitc_eligible: true
+    ctc: 7000
+    # Additional CTC eligibility (would be 5025)
+    cdcc: 0
+    ca_cdcc: 0
+    ca_yctc: 0
+    ca_renter_credit: 120
+    ca_foster_youth_tax_credit_eligible_person: false
 
 
-# - name: Gerry / Gwen / Gaby
-#   period: 2024
-#   absolute_error_margin: 0.01 # Floating point issue.
-#   input: 
-#     people:
-#       person_1:
-#         age: 55
-#         immigration_status: UNDOCUMENTED
-#       person_2:
-#         age: 35
-#         employment_income: 
-#           2024: 9000  # 1500 * 6 = 9000
-#         immigration_status: CITIZEN
-#         rent: 1080
-#       person_3:
-#         age: 12
-#         immigration_status: CITIZEN
-#       person_4:
-#         age: 10
-#         immigration_status: CITIZEN
-#       person_5:
-#         age: 33
-#         immigration_status: CITIZEN
-#         employment_income:
-#           2024: 24000
-#         rent: 720
-#       person_6:
-#         age: 3
-#         immigration_status: CITIZEN
-#     spm_units:
-#       spm_unit:
-#         members: [person_1, person_2, person_3, person_4, person_5, person_6]
-#     households:
-#       household:
-#         in_la: true
-#         state_code_str: CA
-#         household_vehicles_value: 25000
-#   output:
-#     ca_tanf_eligible: false
-#     ca_calworks_child_care_eligible: false
-#     is_snap_eligible: true (need to test for California specifically)
-#     wic: 474
-#     la_general_relief_eligible: false
-#     is_medicaid_eligible: true (need to test for California specifically)
-#     is_aca_ptc_eligible: false
-#     # No Section 8 eligibility 
-#     ca_la_ez_save_eligible: true (could be something else?)
-#     ca_la_ez_save: 292
-#     eitc: 5033
-#     ca_eitc_eligibile: false
-#     ctc: 6500
-#     # Additional CTC eligibility --> true (would be 5025)
-#     cdcc: 0
-#     ca_cdcc: 0
-#     ca_yctc: 0
-#     ca_renter_credit: 120
-#     ca_foster_youth_tax_credit_eligible_person: false
+- name: Gerry / Gwen / Gaby
+  period: 2024
+  absolute_error_margin: 0.01 # Floating point issue.
+  input: 
+    people:
+      person_1:
+        age: 55
+        immigration_status: UNDOCUMENTED
+      person_2:
+        age: 35
+        employment_income: 
+          2024: 9000  # 1500 * 6 = 9000
+        immigration_status: CITIZEN
+        rent: 1080
+      person_3:
+        age: 12
+        immigration_status: CITIZEN
+      person_4:
+        age: 10
+        immigration_status: CITIZEN
+      person_5:
+        age: 33
+        immigration_status: CITIZEN
+        employment_income:
+          2024: 24000
+        rent: 720
+      person_6:
+        age: 3
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person_1, person_2, person_3, person_4, person_5, person_6]
+    households:
+      household:
+        in_la: true
+        state_code_str: CA
+        household_vehicles_value: 25000
+  output:
+    ca_tanf_eligible: false
+    ca_calworks_child_care_eligible: false
+    # is_snap_eligible: true (need to test for California specifically)
+    # wic: 474
+    la_general_relief_eligible: false
+    # is_medicaid_eligible: true (need to test for California specifically)
+    is_aca_ptc_eligible: false
+    # No Section 8 eligibility 
+    # eitc: 5033
+    ca_eitc_eligible: true
+    ctc: 6500
+    # Additional CTC eligibility --> true (would be 5025)
+    cdcc: 0
+    ca_cdcc: 0
+    # ca_yctc: 0
+    ca_renter_credit: 120
+    ca_foster_youth_tax_credit_eligible_person: false
 
-# - name: Gwen
-#   period: 2024
-#   absolute_error_margin: 0.01 # Floating point issue.
-#   input: 
-#     people:
-#       person_1:
-#         age: 35
-#         employment_income: 
-#           2024: 9000
-#         immigration_status: CITIZEN
-#         rent: 1080
-#       person_2:
-#         age: 12
-#         immigration_status: CITIZEN
-#       person_3:
-#         age: 10
-#         immigration_status: CITIZEN
-#     spm_units:
-#       spm_unit:
-#         members: [person_1, person_2, person_3]
-#     households:
-#       household:
-#         in_la: true
-#         state_code_str: CA
-#         household_vehicles_value: 16000
-#   output:
-#     ca_tanf_eligible: false
-#     ca_calworks_child_care_eligible: false
-#     is_snap_eligible: true (need to test for California specifically)
-#     is_wic_eligible: false (how to get is_wic_eligible?)
-#     la_general_relief_eligible: false
-#     is_medicaid_eligible: true (need to test for California specifically)
-#     is_aca_ptc_eligible: true
-#     aca_ptc: 7197
-#     # No Section 8 eligibility 
-#     ca_la_ez_save_eligible: true (could be something else?)
-#     ca_la_ez_save: 292
-#     eitc: 4163
-#     ca_eitc_eligibile: false
-#     ctc: 4000
-#     # Additional CTC eligibility --> true (would be 2590)
-#     cdcc: 0
-#     ca_cdcc: 0
-#     ca_yctc: 0
-#     ca_renter_credit: 120
-#     ca_foster_youth_tax_credit_eligible_person: false
+- name: Gwen
+  period: 2024
+  absolute_error_margin: 0.01 # Floating point issue.
+  input: 
+    people:
+      person_1:
+        age: 35
+        employment_income: 
+          2024: 9000
+        immigration_status: CITIZEN
+        rent: 1080
+      person_2:
+        age: 12
+        immigration_status: CITIZEN
+      person_3:
+        age: 10
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person_1, person_2, person_3]
+    households:
+      household:
+        in_la: true
+        state_code_str: CA
+        household_vehicles_value: 16000
+  output:
+    ca_tanf_eligible: false
+    ca_calworks_child_care_eligible: false
+    # is_snap_eligible: true (need to test for California specifically)
+    is_wic_eligible: true
+    la_general_relief_eligible: false
+    # is_medicaid_eligible: true (need to test for California specifically)
+    # aca_ptc_ca: 7197
+    # No Section 8 eligibility 
+    # eitc: 4163
+    ca_eitc_eligible: true
+    ctc: 4000
+    # Additional CTC eligibility --> true (would be 2590)
+    cdcc: 0
+    ca_cdcc: 0
+    ca_yctc: 0
+    ca_renter_credit: 120
+    ca_foster_youth_tax_credit_eligible_person: false
 
-# - name: Gaby
-#   period: 2024
-#   absolute_error_margin: 0.01 # Floating point issue.
-#   input: 
-#     people:
-#       person_1:
-#         age: 33
-#         immigration_status: CITIZEN
-#         employment_income:
-#           2024: 24000
-#         rent: 720
-#       person_2:
-#         age: 3
-#         immigration_status: CITIZEN
-#     spm_units:
-#       spm_unit:
-#         members: [person_1, person_2]
-#     households:
-#       household:
-#         in_la: true
-#         state_code_str: CA
-#         household_vehicles_value: 9000
-#   output:
-#     ca_tanf_eligible: false
-#     ca_calworks_child_care_eligible: false
-#     is_snap_eligible: true (need to test for California specifically)
-#     wic: 474
-#     la_general_relief_eligible: false
-#     is_medicaid_eligible: true (need to test for California specifically)
-#     is_aca_ptc_eligible: false
-#     # Ignoring Section 8 eligibility 
-#     ca_la_ez_save_eligible: true (could be something else?)
-#     ca_la_ez_save: 292
-#     eitc: 4008
-#     ca_eitc: 228
-#     ctc: 2000
-#     # Additional CTC eligibility --> true (would be 1700)
-#     cdcc: 0
-#     ca_cdcc: 0
-#     ca_yctc: 1117
-#     ca_renter_credit: 120
-#     ca_foster_youth_tax_credit_eligible_person: false
+- name: Gaby
+  period: 2024
+  absolute_error_margin: 0.01 # Floating point issue.
+  input: 
+    people:
+      person_1:
+        age: 33
+        immigration_status: CITIZEN
+        employment_income:
+          2024: 24000
+        rent: 720
+      person_2:
+        age: 3
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person_1, person_2]
+    households:
+      household:
+        in_la: true
+        state_code_str: CA
+        household_vehicles_value: 9000
+  output:
+    ca_tanf_eligible: false
+    ca_calworks_child_care_eligible: false
+    # is_snap_eligible: true (need to test for California specifically)
+    # wic: 474
+    la_general_relief_eligible: false
+    # is_medicaid_eligible: true (need to test for California specifically)
+    is_aca_ptc_eligible: false
+    # Ignoring Section 8 eligibility 
+    # eitc: 4008
+    # ca_eitc: 228
+    ctc: 2000
+    # Additional CTC eligibility --> true (would be 1700)
+    cdcc: 0
+    ca_cdcc: 0
+    # ca_yctc: 1117
+    ca_renter_credit: 120
+    ca_foster_youth_tax_credit_eligible_person: false
 
-# - name: Glenn
-#   period: 2024
-#   absolute_error_margin: 0.01 # Floating point issue.
-#   input:
-#     people:
-#       person_1:
-#         age: 67
-#         employment_income:
-#           2024: 12000
-#         social_security: 24000
-#         immigration_status: CITIZEN
-#         rent: 2000
-#       person_2:
-#         age: 16
-#         immigration_status: CITIZEN
-#     spm_units:
-#       spm_unit:
-#         members: [person_1, person_2]
-#     households:
-#       household:
-#         in_la: true
-#         state_code_str: CA
-#         household_vehicles_value: 26000
-#   output:
-#     ca_tanf_eligible: false
-#     ca_calworks_child_care_eligible: false
-#     is_snap_eligible: true (need to test for California specifically)
-#     is_wic_eligible: false (how to get is_wic_eligible?)
-#     la_general_relief_eligible: false
-#     is_medicaid_eligible: true (need to test for California specifically)
-#     is_aca_ptc_eligible: false
-#     # Ignoring Section 8 eligibility 
-#     ca_la_ez_save_eligible: false
-#     eitc: 3791
-#     ca_eitc: 795
-#     ctc: 2000
-#     # Additional CTC eligibility --> true (would be 1425)
-#     cdcc: 0
-#     ca_cdcc: 0
-#     ca_yctc: 0
-#     ca_renter_credit: 120
-#     ca_foster_youth_tax_credit_eligible_person: false
+- name: Glenn
+  period: 2024
+  absolute_error_margin: 0.01 # Floating point issue.
+  input:
+    people:
+      person_1:
+        age: 67
+        employment_income:
+          2024: 12000
+        social_security: 24000
+        immigration_status: CITIZEN
+        rent: 2000
+      person_2:
+        age: 16
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person_1, person_2]
+    households:
+      household:
+        in_la: true
+        state_code_str: CA
+        household_vehicles_value: 26000
+  output:
+    ca_tanf_eligible: false
+    ca_calworks_child_care_eligible: false
+    # is_snap_eligible: true (need to test for California specifically)
+    is_wic_eligible: true
+    la_general_relief_eligible: false
+    # is_medicaid_eligible: true (need to test for California specifically)
+    is_aca_ptc_eligible: false
+    # Ignoring Section 8 eligibility 
+    # eitc: 3791
+    # ca_eitc: 795
+    ctc: 2000
+    # Additional CTC eligibility --> true (would be 1425)
+    cdcc: 0
+    ca_cdcc: 0
+    ca_yctc: 0
+    ca_renter_credit: 120
+    ca_foster_youth_tax_credit_eligible_person: false
