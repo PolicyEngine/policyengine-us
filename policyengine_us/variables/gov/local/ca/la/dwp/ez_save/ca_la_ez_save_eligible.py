@@ -13,4 +13,8 @@ class ca_la_ez_save_eligible(Variable):
         fpg = household("ca_la_ez_save_fpg", period)
         p = parameters(period).gov.local.ca.la.dwp.ez_save.eligibility
         income_limit = fpg * p.fpg_limit_increase
+
+        print(income)
+        print(income_limit)
+
         return income <= income_limit

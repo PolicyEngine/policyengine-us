@@ -21,4 +21,5 @@ class is_snap_eligible(Variable):
         categorical_eligibility = spm_unit(
             "meets_snap_categorical_eligibility", period
         )
+
         return normal_eligibility | categorical_eligibility

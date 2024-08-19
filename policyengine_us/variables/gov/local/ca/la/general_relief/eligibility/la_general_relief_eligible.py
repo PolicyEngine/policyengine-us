@@ -33,6 +33,7 @@ class la_general_relief_eligible(Variable):
         immigration_status_eligible = spm_unit(
             "la_general_relief_immigration_status_eligible", period
         )
+
         return (
             age_eligible
             & cash_eligible
