@@ -16,7 +16,7 @@ class co_denver_property_tax_relief_homeowner_eligible(Variable):
         )
         count_dependents = add(spm_unit, period, ["tax_unit_dependents"])
         has_dependents = count_dependents > 0
-        elderly_or_disabled_homeowners = (
+        homeowners_with_elderly_or_disabled_or_dependents = (
             has_elderly_or_disabled | has_dependents
         ) & pays_property_taxes
 
@@ -27,4 +27,4 @@ class co_denver_property_tax_relief_homeowner_eligible(Variable):
         )
         homeowner_income_eligible = income <= homeowner_income_limit
 
-        return elderly_or_disabled_homeowners & homeowner_income_eligible
+        return homeowners_with_elderly_or_disabled_or_dependents & homeowner_income_eligible

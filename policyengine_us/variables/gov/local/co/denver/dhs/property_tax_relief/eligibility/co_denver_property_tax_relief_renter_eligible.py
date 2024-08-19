@@ -14,7 +14,7 @@ class co_denver_property_tax_relief_renter_eligible(Variable):
         has_elderly_or_disabled = spm_unit(
             "has_co_denver_dhs_elderly_disabled", period
         )
-        elderly_or_disabled_renters = has_elderly_or_disabled & pays_rent
+        renters_with_elderly_or_disabled = has_elderly_or_disabled & pays_rent
 
         income = spm_unit("co_denver_property_tax_relief_income", period)
         size = spm_unit("spm_unit_size", period)
@@ -23,4 +23,4 @@ class co_denver_property_tax_relief_renter_eligible(Variable):
         renter_income_limit = ami * ami_rate
         renter_income_eligible = income <= renter_income_limit
 
-        return elderly_or_disabled_renters & renter_income_eligible
+        return renters_with_elderly_or_disabled & renter_income_eligible
