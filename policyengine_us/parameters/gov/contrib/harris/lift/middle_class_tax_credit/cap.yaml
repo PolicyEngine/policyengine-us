@@ -1,0 +1,16 @@
+description: The Middle Class Tax Credit is capped at the following amount.
+metadata:
+  unit: currency-USD
+  period: year
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: nearest
+      interval: 50
+  label: Middle Class Tax Credit cap
+  reference: 
+    - title: S.4 - LIFT (Livable Incomes for Families Today) the Middle Class Act SEC. 36A. (a)(1)
+      href: https://www.congress.gov/bill/116th-congress/senate-bill/4/text
+
+values:
+  2019-01-01: 3_000

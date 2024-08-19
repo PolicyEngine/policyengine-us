@@ -19,12 +19,12 @@ def generate_model_variables(
         no_weight_adjustment (bool, optional): Whether to skip the weight adjustment. Defaults to False.
 
     Returns:
-        household_weights (torch.Tensor): The household weights.
-        weight_adjustment (torch.Tensor): The weight adjustment.
+        household_weights (np.ndarray): The household weights.
+        weight_adjustment (np.ndarray): The weight adjustment.
         values_df (pd.DataFrame): A 2D array of values to transform household weights into statistical predictions.
         targets (dict): A dictionary of names and target values for the statistical predictions.
-        targets_array (dict): A 1D array of target values for the statistical predictions.
-        equivalisation_factors_array (dict): A 1D array of equivalisation factors for the statistical predictions to normalise the targets.
+        targets_array (np.ndarray): A 1D array of target values for the statistical predictions.
+        equivalisation_factors_array (np.ndarray): A 1D array of equivalisation factors for the statistical predictions to normalise the targets.
     """
     simulation = Microsimulation(dataset=dataset)
     simulation.default_calculation_period = time_period
@@ -129,7 +129,7 @@ def generate_model_variables(
     cps_household_weights = demographics_sim.calculate(
         "household_weight"
     ).values
-    for lower_age_group in range(0, 90, 10):
+    for lower_age_group in range(0, 90, 5):
         for possible_is_male in (True, False):
             in_age_range = (age >= lower_age_group) & (
                 age < lower_age_group + 5
@@ -155,6 +155,14 @@ def generate_model_variables(
                 cps_household_weights * count_people_in_range_cps
             ).sum() * population_growth_since_21
             equivalisation[name] = POPULATION_EQUIVALISATION
+
+    values_df["Infants"] = simulation.map_result(
+        age < 1, "person", "household"
+    )
+
+    targets["Infants"] = 3_667_758
+
+    equivalisation["Infants"] = POPULATION_EQUIVALISATION
 
     # Household population by number of adults and children
 
