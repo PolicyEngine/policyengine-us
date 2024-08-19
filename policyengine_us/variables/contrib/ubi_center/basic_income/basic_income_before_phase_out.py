@@ -31,9 +31,11 @@ class basic_income_before_phase_out(Variable):
         # Disability amount
         disabled = person("is_ssi_disabled", period)
         disabled_amount = tax_unit.sum(disabled * p.person.disability)
-        return (
+        base_amount = (
             total_flat_amount
             + applicable_amount_by_age
             + fpg_amount
             + disabled_amount
         )
+        phase_in_amount = tax_unit("basic_income_phase_in", period)
+        return min_(base_amount, phase_in_amount)
