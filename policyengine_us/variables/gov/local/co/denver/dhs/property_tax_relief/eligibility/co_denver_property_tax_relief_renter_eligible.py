@@ -6,7 +6,7 @@ class co_denver_property_tax_relief_renter_eligible(Variable):
     entity = SPMUnit
     label = "Eligible for the renter Denver Property Tax Relief"
     definition_period = YEAR
-    reference = "https://denvergov.org/files/content/public/v/37/government/agencies-departments-offices/agencies-departments-offices-directory/denver-human-services/be-supported/additional-assistance/property-tax-relief/denver-property-tax-relief-program-year-2021-rules.pdf"
+    reference = "https://library.municode.com/co/denver/codes/code_of_ordinances?nodeId=TITIIREMUCO_CH53TAMIRE_ARTXIREPRTAASELLCOPROWTE_S53-492DE"  # 53-495 (e)
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.local.co.denver.dhs
