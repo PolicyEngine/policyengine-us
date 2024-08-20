@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.57.0] - 2024-08-20 01:56:19
+
+### Added
+
+- 2024 Nebraska tax rules update.
+
+## [1.56.1] - 2024-08-19 18:40:57
+
+### Fixed
+
+- Bug in Harris Rent Relief Act for low earners.
+
 ## [1.56.0] - 2024-08-19 15:50:20
 
 ### Added
@@ -9437,6 +9449,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.57.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.56.1...1.57.0
+[1.56.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.56.0...1.56.1
 [1.56.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.55.0...1.56.0
 [1.55.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.54.4...1.55.0
 [1.54.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.54.3...1.54.4
