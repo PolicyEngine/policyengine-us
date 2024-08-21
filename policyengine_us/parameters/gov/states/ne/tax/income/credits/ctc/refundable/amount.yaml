@@ -1,0 +1,23 @@
+description: Nebraska provides this refundable child credit amount for each qualifying dependent, based on adjusted gross income.
+metadata:
+  period: year
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: currency-USD
+  label: Nebraska refundable child tax credit amount
+  reference:
+    - title: Nebraska Revised Statute | Chapter 77 | §7203 (2)
+      href: https://nebraskalegislature.gov/laws/statutes.php?statute=77-7203
+brackets:
+  - threshold:
+      2024-01-01: 0
+    amount:
+      2024-01-01: 2_000
+  - threshold:
+      2024-01-01: 75_000
+    amount:
+      2024-01-01: 1_000
+  - threshold:
+      2024-01-01: 150_000
+    amount:
+      2024-01-01: 0

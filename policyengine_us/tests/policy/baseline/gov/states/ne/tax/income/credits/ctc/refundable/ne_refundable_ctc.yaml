@@ -1,0 +1,104 @@
+- name: 2 qualifying children and AGI under $75,000 gets $4,000 credit
+  period: 2024
+  input:
+    people:
+      person1:
+        ne_refundable_ctc_eligible_child: false
+      person2:
+        ne_refundable_ctc_eligible_child: true
+      person3:
+        ne_refundable_ctc_eligible_child: true
+    tax_units:
+      tax_unit:
+        ne_refundable_ctc_total_household_income: 30_000
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NE
+  output:
+    ne_refundable_ctc: 4_000
+
+- name: 2 qualifying children and AGI between $75,000 and $150,000 gets $2,000 credit
+  period: 2024
+  input:
+    people:
+      person1:
+        ne_refundable_ctc_eligible_child: false
+      person2:
+        ne_refundable_ctc_eligible_child: true
+      person3:
+        ne_refundable_ctc_eligible_child: true
+    tax_units:
+      tax_unit:
+        ne_refundable_ctc_total_household_income: 80_000
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NE
+  output:
+    ne_refundable_ctc: 2_000
+
+- name: 1 qualifying child and AGI between $75,000 and $150,000 gets $2,000 credit
+  period: 2024
+  input:
+    people:
+      person1:
+        ne_refundable_ctc_eligible_child: false
+      person2:
+        ne_refundable_ctc_eligible_child: true
+      person3:
+        ne_refundable_ctc_eligible_child: false
+    tax_units:
+      tax_unit:
+        ne_refundable_ctc_total_household_income: 80_000
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NE
+  output:
+    ne_refundable_ctc: 1_000
+
+- name: 2 qualifying children and AGI above $150,000 gets $0 credit
+  period: 2024
+  input:
+    people:
+      person1:
+        ne_refundable_ctc_eligible_child: false
+      person2:
+        ne_refundable_ctc_eligible_child: true
+      person3:
+        ne_refundable_ctc_eligible_child: false
+    tax_units:
+      tax_unit:
+        ne_refundable_ctc_total_household_income: 151_000
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NE
+  output:
+    ne_refundable_ctc: 0
+
+- name: 0 qualifying children gets $0 credit
+  period: 2024
+  input:
+    people:
+      person1:
+        ne_refundable_ctc_eligible_child: false
+      person2:
+        ne_refundable_ctc_eligible_child: false
+      person3:
+        ne_refundable_ctc_eligible_child: false
+    tax_units:
+      tax_unit:
+        ne_refundable_ctc_total_household_income: 51_000
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NE
+  output:
+    ne_refundable_ctc: 0
