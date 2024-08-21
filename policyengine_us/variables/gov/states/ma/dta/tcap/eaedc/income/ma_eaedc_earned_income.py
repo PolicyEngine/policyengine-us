@@ -8,5 +8,6 @@ class ma_eaedc_earned_income(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.MA
+    
     adds = "gov.states.ma.dta.tcap.eaedc.income.earned"
     
