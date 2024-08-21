@@ -9,7 +9,5 @@ class is_co_denver_dhs_elderly(Variable):
     label = "Denver DHS elderly"
 
     def formula(person, period, parameters):
-        elderly_age_threshold = parameters(
-            period
-        ).gov.local.co.denver.dhs.elderly_age_threshold
-        return person("age", period) >= elderly_age_threshold
+        p = parameters(period).gov.local.co.denver.dhs
+        return person("age", period) >= p.elderly_age_threshold

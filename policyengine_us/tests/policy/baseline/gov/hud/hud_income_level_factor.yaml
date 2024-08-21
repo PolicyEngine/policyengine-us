@@ -1,0 +1,40 @@
+- name: Case 1, household size of 1 with moderate income.
+  period: 2022
+  input:
+    spm_unit_size: 1 
+    hud_income_level: MODERATE
+  output:
+    hud_income_level_factor: 0.7
+
+- name: Case 2, household size of 4 with moderate income.
+  period: 2022
+  input:
+    spm_unit_size: 4 
+    hud_income_level: MODERATE
+  output:
+    hud_income_level_factor: 1
+
+- name: Case 3, household size of 6 with moderate income.
+  period: 2022
+  input:
+    spm_unit_size: 6 
+    hud_income_level: MODERATE
+  output:
+    hud_income_level_factor: 1.16
+
+- name: Case 4, household size of 3 with low income.
+  period: 2022
+  input:
+    spm_unit_size: 3 
+    hud_income_level: LOW
+  output:
+    hud_income_level_factor: 0.72
+
+- name: Case 5, household size of 6 with ESPECIALLY_LOW income.
+  period: 2022
+  input:
+    spm_unit_size: 6 
+    hud_income_level: ESPECIALLY_LOW
+  output:
+    hud_income_level_factor: 0.58
+    # 0.5 + 0.04 + 0.04 

@@ -6,6 +6,7 @@
     rent: 5_000
     has_co_denver_dhs_elderly_disabled: true
     in_denver: true
+    hud_income_level: MODERATE
   output:
     co_denver_property_tax_relief_renter_eligible: false  
 
@@ -17,6 +18,7 @@
     rent: 1_000
     has_co_denver_dhs_elderly_disabled: true
     in_denver: true
+    hud_income_level: MODERATE
   output:
     co_denver_property_tax_relief_renter_eligible: true
 
@@ -28,6 +30,7 @@
     rent: 1_000
     has_co_denver_dhs_elderly_disabled: true 
     in_denver: true
+    hud_income_level: MODERATE
   output:
     co_denver_property_tax_relief_renter_eligible: true
 
@@ -39,6 +42,7 @@
     rent: 1_000
     has_co_denver_dhs_elderly_disabled: false
     in_denver: true
+    hud_income_level: MODERATE
   output:
     co_denver_property_tax_relief_renter_eligible: false
 
@@ -50,5 +54,6 @@
     rent: 1_000
     has_co_denver_dhs_elderly_disabled: true 
     in_denver: true
+    hud_income_level: MODERATE
   output:
     co_denver_property_tax_relief_renter_eligible: true

@@ -11,8 +11,3 @@ class co_denver_homeowner_property_tax_relief(Variable):
     reference = "https://denvergov.org/files/content/public/v/37/government/agencies-departments-offices/agencies-departments-offices-directory/denver-human-services/be-supported/additional-assistance/property-tax-relief/denver-property-tax-relief-program-year-2021-rules.pdf"
 
     adds = ["gov.local.co.denver.dhs.property_tax_relief.amount.homeowner"]
-    # def formula(spm_unit, period, parameters):
-    #    p = parameters(
-    #        period
-    #    ).gov.local.co.denver.dhs.property_tax_relief.amount
-    #    return p.homeowner

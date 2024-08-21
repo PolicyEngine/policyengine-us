@@ -22,19 +22,13 @@ class co_denver_property_tax_relief_homeowner_eligible(Variable):
         ) & pays_property_taxes
 
         income = spm_unit("co_denver_property_tax_relief_income", period)
-        size = spm_unit("spm_unit_size", period)
         ami = spm_unit.household("ami", period)
-        p_hud = parameters(period).gov.hud.ami_limit
-        size_limit = p_hud.family_size
-        size_limit_excess = p_hud.per_person_exceeding_4
-        size_exceeding_4 = max_(size - 4, 0)
-        size_capped_at_4 = min_(size, 4)
-        moderate = (
-            size_limit.MODERATE[size_capped_at_4]
-            + size_limit_excess.MODERATE * size_exceeding_4
-        )
+        # use MODERATE income level factor
+        income_level_factor = spm_unit("hud_income_level_factor", period)
         homeowner_income_limit = (
-            ami * moderate * p.property_tax_relief.ami_rate.homeowner
+            ami
+            * income_level_factor
+            * p.property_tax_relief.ami_rate.homeowner
         )
 
         homeowner_income_eligible = income <= homeowner_income_limit
