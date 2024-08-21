@@ -11,11 +11,11 @@ class MassachusettsEAEDCLivingArrangement(Enum):
     H = "H"  # Living Arrangement H
     NONE = "None"
     
-class ma_eadc_living_arrange(Variable):
+class ma_eadc_living_arrangement(Variable):
     value_type = Enum
     entity = SPMUnit
     possible_values = MassachusettsEAEDCLivingArrangement
     default_value = MassachusettsEAEDCLivingArrangement.NONE
     definition_period = YEAR
-    label = 
+    label = "Massachusetts EAEDC living arrangement"
     defined_for = StateCode.MA
