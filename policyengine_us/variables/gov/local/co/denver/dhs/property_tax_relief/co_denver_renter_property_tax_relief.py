@@ -10,8 +10,4 @@ class co_denver_renter_property_tax_relief(Variable):
     definition_period = YEAR
     reference = "https://denvergov.org/files/content/public/v/37/government/agencies-departments-offices/agencies-departments-offices-directory/denver-human-services/be-supported/additional-assistance/property-tax-relief/denver-property-tax-relief-program-year-2021-rules.pdf"
 
-    def formula(spm_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.local.co.denver.dhs.property_tax_relief.amount
-        return p.renter
+    adds = ["gov.local.co.denver.dhs.property_tax_relief.amount.renter"]
