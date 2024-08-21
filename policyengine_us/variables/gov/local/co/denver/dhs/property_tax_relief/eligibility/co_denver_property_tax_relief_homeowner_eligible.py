@@ -5,6 +5,7 @@ class co_denver_property_tax_relief_homeowner_eligible(Variable):
     value_type = float
     entity = SPMUnit
     label = "Eligible for the homeowner Denver Property Tax Relief"
+    defined_for = "in_denver"
     definition_period = YEAR
     reference = "https://library.municode.com/co/denver/codes/code_of_ordinances?nodeId=TITIIREMUCO_CH53TAMIRE_ARTXIREPRTAASELLCOPROWTE_S53-492DE"  # 53-495 (d)
 
@@ -22,9 +23,20 @@ class co_denver_property_tax_relief_homeowner_eligible(Variable):
 
         income = spm_unit("co_denver_property_tax_relief_income", period)
         size = spm_unit("spm_unit_size", period)
-        homeowner_income_limit = (
-            p.ami.calc(size) * p.property_tax_relief.ami_rate.homeowner
+        ami = spm_unit.household("ami", period)
+        p_hud = parameters(period).gov.hud.ami_limit
+        size_limit = p_hud.family_size
+        size_limit_excess = p_hud.per_person_exceeding_4
+        size_exceeding_4 = max_(size - 4, 0)
+        size_capped_at_4 = min_(size, 4)
+        moderate = (
+            size_limit.MODERATE[size_capped_at_4]
+            + size_limit_excess.MODERATE * size_exceeding_4
         )
+        homeowner_income_limit = (
+            ami * moderate * p.property_tax_relief.ami_rate.homeowner
+        )
+
         homeowner_income_eligible = income <= homeowner_income_limit
 
         return (
