@@ -23,12 +23,9 @@ class co_denver_property_tax_relief_homeowner_eligible(Variable):
 
         income = spm_unit("co_denver_property_tax_relief_income", period)
         ami = spm_unit.household("ami", period)
-        # use MODERATE income level factor
-        income_level_factor = spm_unit("hud_income_level_factor", period)
+        moderate_factor = spm_unit("hud_moderate_income_factor", period)
         homeowner_income_limit = (
-            ami
-            * income_level_factor
-            * p.property_tax_relief.ami_rate.homeowner
+            ami * moderate_factor * p.property_tax_relief.ami_rate.homeowner
         )
 
         homeowner_income_eligible = income <= homeowner_income_limit

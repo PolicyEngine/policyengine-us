@@ -19,11 +19,10 @@ class co_denver_property_tax_relief_renter_eligible(Variable):
 
         income = spm_unit("co_denver_property_tax_relief_income", period)
         ami = spm_unit.household("ami", period)
-        # use MODERATE income level factor
-        income_level_factor = spm_unit("hud_income_level_factor", period)
+        moderate_factor = spm_unit("hud_moderate_income_factor", period)
         size = spm_unit("spm_unit_size", period)
         ami_rate = p.property_tax_relief.ami_rate.renter.calc(size)
-        renter_income_limit = ami * income_level_factor * ami_rate
+        renter_income_limit = ami * moderate_factor * ami_rate
 
         renter_income_eligible = income <= renter_income_limit
 
