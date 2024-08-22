@@ -1,0 +1,30 @@
+description: Non-itemizers can get charitable deductions up to the following amounts.
+metadata:
+  unit: currency-USD
+  label: Charitable deduction amount for non-itemizers
+  period: year
+  breakdown:
+    - filing_status
+  reference:
+    - title: Expanded tax benefits help individuals and businesses give to charity during 2021; deductions up to $600 available for cash donations by non-itemizers
+      href: https://www.irs.gov/newsroom/expanded-tax-benefits-help-individuals-and-businesses-give-to-charity-during-2021-deductions-up-to-600-available-for-cash-donations-by-non-itemizers
+JOINT:
+  2018-01-01: 0
+  2021-01-01: 600
+  2022-01-01: 0
+SINGLE:
+  2018-01-01: 0
+  2021-01-01: 300
+  2022-01-01: 0
+SEPARATE:
+  2018-01-01: 0
+  2021-01-01: 300
+  2022-01-01: 0
+HEAD_OF_HOUSEHOLD:
+  2018-01-01: 0
+  2021-01-01: 300
+  2022-01-01: 0
+WIDOW:
+  2018-01-01: 0
+  2021-01-01: 300
+  2022-01-01: 0
