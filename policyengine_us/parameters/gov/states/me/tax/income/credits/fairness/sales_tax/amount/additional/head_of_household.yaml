@@ -1,0 +1,32 @@
+description: Maine provides this additional sales tax fairness credit amount to head of household filers, based on the number of dependents.
+brackets:
+  - threshold:
+      2021-01-01: 0
+    amount:
+      2021-01-01: 0
+  - threshold:
+      2021-01-01: 2
+    amount:
+      2021-01-01: 25
+  - threshold:
+      2021-01-01: 3
+    amount:
+      2021-01-01: 55
+
+metadata:
+  unit: currency-USD
+  reference:
+    # Legal specifies inflation unadjusted amounts
+    - title: §5213-A. Sales tax fairness credit (A-1) (2) (b)
+      href: https://legislature.maine.gov/statutes/36/title36sec5213-A.html
+    - title: 2021 Form 1040ME Property Tax Fairness Credit / Sales Tax Fairness Credit 
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/21_1040me_sched_pstfc_dwnldff.pdf#page=4
+    - title: 2022 Form 1040ME Property Tax Fairness Credit / Sales Tax Fairness Credit 
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/22_1040me_sched_pstfc_ff.pdf#page=4
+    - title: 2023 Form 1040ME Property Tax Fairness Credit / Sales Tax Fairness Credit
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/23_1040me_sched_pstfc_ff.pdf#page=4
+  period: year
+  label: Maine sales tax fairness credit head of household additional amount
+  type: single_amount
+  threshold_unit: child
+  amount_unit: currency-USD

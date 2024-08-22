@@ -1,0 +1,27 @@
+description: Colorado provides this child tax credit per child for widow(er) filers, depending on federal adjusted gross income.
+metadata:
+  period: year
+  type: single_amount
+  threshold_unit: currency-USD
+  rate_unit: currency-USD
+  label: Colorado child tax credit widow(er) amount
+  reference:
+    - title: House Bill 23-1112, Section 2, (4.5), (a), (I)
+      href: https://leg.colorado.gov/sites/default/files/2023a_1112_signed.pdf#page=5
+brackets:
+  - threshold:
+      2024-01-01: -.inf
+    amount:
+      2024-01-01: 1_200
+  - threshold:
+      2024-01-01: 25_000
+    amount:
+      2024-01-01: 600
+  - threshold:
+      2024-01-01: 50_000
+    amount:
+      2024-01-01: 200
+  - threshold:
+      2024-01-01: 75_000
+    amount:
+      2024-01-01: 0

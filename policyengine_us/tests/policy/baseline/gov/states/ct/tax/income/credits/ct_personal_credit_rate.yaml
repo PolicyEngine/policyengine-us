@@ -1,0 +1,45 @@
+- name: Single household with $70,900 agi
+  period: 2016
+  input:
+    state_code: CT
+    ct_agi: 70_900
+    filing_status: SINGLE
+  output:
+    ct_personal_credit_rate: 0 
+
+- name: Separate household with $25,510 income
+  period: 2016
+  input:
+    state_code: CT
+    ct_agi: 25_510
+    filing_status: SEPARATE
+  output:
+    ct_personal_credit_rate: 0.13
+
+- name: Head of household with $25,600 income
+  period: 2016
+  input:
+    state_code: CT
+    ct_agi: 25_600
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    ct_personal_credit_rate: 0.55
+
+
+- name: Joint household with $24,100 income
+  period: 2016
+  input:
+    state_code: CT
+    ct_agi: 24_100
+    filing_status: JOINT
+  output:
+    ct_personal_credit_rate: 0.75
+
+- name: Widow household with $31,999 income
+  period: 2016
+  input:
+    state_code: CT
+    ct_agi: 31_999
+    filing_status: SURVIVING_SPOUSE
+  output:
+    ct_personal_credit_rate: 0.55

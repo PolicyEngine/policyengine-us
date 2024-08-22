@@ -31,7 +31,7 @@ class is_eligible_md_poverty_line_credit(Variable):
         earnings_below_fpg = earnings <= fpg
         # (iii)    who is not claimed as an exemption on another individual’s
         #  tax return under § 10–211 of this title;
-        # SKIP - assumed throughout openfisca-us.
+        # SKIP - assumed throughout PolicyEngine-us.
         # (iv)    for whom the credit allowed under § 10–704(a)(1) of this
         # subtitle is less than the State income tax.
         # This appears to refer to the MD total EITC per
@@ -39,7 +39,7 @@ class is_eligible_md_poverty_line_credit(Variable):
         # However, the tax form indicates it's only the non-refundable portion,
         # because it gets pooled with other non-refundable credits.
         md_eitc = tax_unit(
-            "md_non_single_childless_non_refundable_eitc", period
+            "md_married_or_has_child_non_refundable_eitc", period
         )
         md_income_tax_before_credits = tax_unit(
             "md_income_tax_before_credits", period

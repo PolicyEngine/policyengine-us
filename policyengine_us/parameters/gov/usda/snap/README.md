@@ -1,1 +1,1 @@
-# SNAP
+# Supplemental Nutrition Assistance Program (SNAP)

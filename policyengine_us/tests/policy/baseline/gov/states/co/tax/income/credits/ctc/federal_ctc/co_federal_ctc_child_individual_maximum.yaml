@@ -1,0 +1,26 @@
+- name: Above age eligbility 
+  period: 2022
+  input:
+    state_code: CO
+    age: 6
+    is_tax_unit_dependent: true
+  output:
+    co_federal_ctc_child_individual_maximum: 0
+
+- name: Not a dependent
+  period: 2022
+  input:
+    state_code: CO
+    age: 5
+    is_tax_unit_dependent: false
+  output:
+    co_federal_ctc_child_individual_maximum: 0
+
+- name: Eligible
+  period: 2022
+  input:
+    state_code: CO
+    age: 5
+    is_tax_unit_dependent: true
+  output:
+    co_federal_ctc_child_individual_maximum: 2_000

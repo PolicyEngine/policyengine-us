@@ -12,11 +12,9 @@ class dc_tanf_countable_gross_unearned_income(Variable):
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.dc.dhs.tanf.income
         # Sum unearned sources, plus child support disregard $150 received per month.
-        gross_unearned = add(spm_unit, period, p.unearned)
+        gross_unearned = add(spm_unit, period, p.sources.unearned)
         child_support = add(spm_unit, period, ["child_support_received"])
-        monthly_child_support_deduction = (
-            p.unearned_deduction.monthly_child_support
-        )
+        monthly_child_support_deduction = p.deductions.child_support
         child_support_after_deduction = max_(
             child_support - monthly_child_support_deduction * MONTHS_IN_YEAR, 0
         )

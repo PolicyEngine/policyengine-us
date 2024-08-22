@@ -1,0 +1,210 @@
+- name: separate filing, agi in 1st tax bracket, 1 exemption
+  period: 2022
+  absolute_error_margin: 0.001
+  input:
+    state_code: NM
+    nm_modified_gross_income: 1_000
+    nm_low_income_comprehensive_tax_rebate_exemptions: 1
+    filing_status: SEPARATE
+  output:
+    nm_low_income_comprehensive_tax_rebate: 97.5
+
+- name: single filing, agi in 1st tax bracket, 1 exemption
+  period: 2022
+  input:
+    state_code: NM
+    nm_modified_gross_income: 1_000
+    nm_low_income_comprehensive_tax_rebate_exemptions: 1
+    filing_status: SINGLE
+  output:
+    nm_low_income_comprehensive_tax_rebate: 195
+
+- name: separate filing, agi in 2nd tax bracket, 1 exemption
+  period: 2022
+  absolute_error_margin: 0.001
+  input:
+    state_code: NM
+    nm_modified_gross_income: 2_501
+    nm_low_income_comprehensive_tax_rebate_exemptions: 1
+    filing_status: SEPARATE
+  output:
+    nm_low_income_comprehensive_tax_rebate: 110
+
+- name: single filing, agi in 2nd tax bracket, 1 exemption
+  period: 2022
+  input:
+    state_code: NM
+    nm_modified_gross_income: 2_501
+    nm_low_income_comprehensive_tax_rebate_exemptions: 1
+    filing_status: SINGLE
+  output:
+    nm_low_income_comprehensive_tax_rebate: 220
+
+- name: separate filing, agi above 36_000, 1 exemption
+  period: 2022
+  absolute_error_margin: 0.001
+  input:
+    state_code: NM
+    nm_modified_gross_income: 36_001
+    nm_low_income_comprehensive_tax_rebate_exemptions: 1
+    filing_status: SEPARATE
+  output:
+    nm_low_income_comprehensive_tax_rebate: 0
+
+- name: single filing, agi above 36_000, 1 exemption
+  period: 2022
+  input:
+    state_code: NM
+    nm_modified_gross_income: 36_001
+    nm_low_income_comprehensive_tax_rebate_exemptions: 1
+    filing_status: SINGLE
+  output:
+    nm_low_income_comprehensive_tax_rebate: 0
+
+- name: separate filing, agi in 1st tax bracket, 2 exemptions
+  period: 2022
+  absolute_error_margin: 0.001
+  input:
+    state_code: NM
+    nm_modified_gross_income: 1_000
+    nm_low_income_comprehensive_tax_rebate_exemptions: 2
+    filing_status: SEPARATE
+  output:
+    nm_low_income_comprehensive_tax_rebate: 130
+
+- name: single filing, agi in 1st tax bracket, 2 exemptions
+  period: 2022
+  input:
+    state_code: NM
+    nm_modified_gross_income: 1_000
+    nm_low_income_comprehensive_tax_rebate_exemptions: 2
+    filing_status: SINGLE
+  output:
+    nm_low_income_comprehensive_tax_rebate: 260
+
+- name: separate filing, agi equals 36_000, 2 exemptions
+  period: 2022
+  absolute_error_margin: 0.001
+  input:
+    state_code: NM
+    nm_modified_gross_income: 36_000
+    nm_low_income_comprehensive_tax_rebate_exemptions: 2
+    filing_status: SEPARATE
+  output:
+    nm_low_income_comprehensive_tax_rebate: 17.5
+
+- name: single filing, agi equals 36_000, 2 exemptions
+  period: 2022
+  input:
+    state_code: NM
+    nm_modified_gross_income: 36_000
+    nm_low_income_comprehensive_tax_rebate_exemptions: 2
+    filing_status: SINGLE
+  output:
+    nm_low_income_comprehensive_tax_rebate: 35
+
+- name: separate filing, agi in 1st tax bracket, 3 exemptions
+  period: 2022
+  absolute_error_margin: 0.001
+  input:
+    state_code: NM
+    nm_modified_gross_income: 1_000
+    nm_low_income_comprehensive_tax_rebate_exemptions: 3
+    filing_status: SEPARATE
+  output:
+    nm_low_income_comprehensive_tax_rebate: 162.5
+
+- name: single filing, agi in 1st tax bracket, 3 exemptions
+  period: 2022
+  input:
+    state_code: NM
+    nm_modified_gross_income: 1_000
+    nm_low_income_comprehensive_tax_rebate_exemptions: 3
+    filing_status: SINGLE
+  output:
+    nm_low_income_comprehensive_tax_rebate: 325
+
+- name: separate filing, agi in 1st tax bracket, 4 exemptions
+  period: 2022
+  absolute_error_margin: 0.001
+  input:
+    state_code: NM
+    nm_modified_gross_income: 1_000
+    nm_low_income_comprehensive_tax_rebate_exemptions: 4
+    filing_status: SEPARATE
+  output:
+    nm_low_income_comprehensive_tax_rebate: 195
+
+- name: single filing, agi in 1st tax bracket, 4 exemptions
+  period: 2022
+  input:
+    state_code: NM
+    nm_modified_gross_income: 1_000
+    nm_low_income_comprehensive_tax_rebate_exemptions: 4
+    filing_status: SINGLE
+  output:
+    nm_low_income_comprehensive_tax_rebate: 390
+
+- name: separate filing, agi in 1st tax bracket, 5 exemptions
+  period: 2022
+  absolute_error_margin: 0.001
+  input:
+    state_code: NM
+    nm_modified_gross_income: 1_000
+    nm_low_income_comprehensive_tax_rebate_exemptions: 5
+    filing_status: SEPARATE
+  output:
+    nm_low_income_comprehensive_tax_rebate: 227.5
+
+- name: single filing, agi in 1st tax bracket, 5 exemptions
+  period: 2022
+  input:
+    state_code: NM
+    nm_modified_gross_income: 1_000
+    nm_low_income_comprehensive_tax_rebate_exemptions: 5
+    filing_status: SINGLE
+  output:
+    nm_low_income_comprehensive_tax_rebate: 455
+
+- name: separate filing, agi in 1st tax bracket, 6 exemptions
+  period: 2022
+  absolute_error_margin: 0.001
+  input:
+    state_code: NM
+    nm_modified_gross_income: 1_000
+    nm_low_income_comprehensive_tax_rebate_exemptions: 6
+    filing_status: SEPARATE
+  output:
+    nm_low_income_comprehensive_tax_rebate: 260
+
+- name: single filing, agi in 1st tax bracket, 6 exemptions
+  period: 2022
+  input:
+    state_code: NM
+    nm_modified_gross_income: 1_000
+    nm_low_income_comprehensive_tax_rebate_exemptions: 6
+    filing_status: SINGLE
+  output:
+    nm_low_income_comprehensive_tax_rebate: 520
+
+- name: separate filing, agi in 1st tax bracket, 7 exemptions
+  period: 2022
+  absolute_error_margin: 0.001
+  input:
+    state_code: NM
+    nm_modified_gross_income: 1_000
+    nm_low_income_comprehensive_tax_rebate_exemptions: 7
+    filing_status: SEPARATE
+  output:
+    nm_low_income_comprehensive_tax_rebate: 260
+
+- name: single filing, agi in 1st tax bracket, 7 exemptions
+  period: 2022
+  input:
+    state_code: NM
+    nm_modified_gross_income: 1_000
+    nm_low_income_comprehensive_tax_rebate_exemptions: 7
+    filing_status: SINGLE
+  output:
+    nm_low_income_comprehensive_tax_rebate: 520
+

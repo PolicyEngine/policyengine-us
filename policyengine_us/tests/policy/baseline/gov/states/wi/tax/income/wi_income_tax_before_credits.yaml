@@ -1,0 +1,29 @@
+- name: WI income tax before credits unit test 1
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    filing_status: JOINT
+    wi_taxable_income: 455_910
+    state_code: WI
+  output:
+    wi_income_tax_before_credits: 26_123.71  # = 18_473.71 + 0.0765 * 100_000
+
+- name: WI income tax before credits unit test 2
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    filing_status: SINGLE
+    wi_taxable_income: 380_950
+    state_code: WI
+  output:
+    wi_income_tax_before_credits: 22_232.83  # = 14_582.83 + 0.0765 * 100_000
+
+- name: WI income tax before credits unit test 3
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    wi_taxable_income: 380_950
+    state_code: WI
+  output:
+    wi_income_tax_before_credits: 22_232.83  # same as for SINGLE filing unit

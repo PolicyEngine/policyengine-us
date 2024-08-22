@@ -1,0 +1,73 @@
+- name: get total deduction
+  period: 2022
+  input:
+    state_code: HI
+    filing_status: JOINT
+    tax_unit_earned_income: 1_000
+    hi_agi: 1_000
+    hi_total_itemized_deductions: 5_000
+    hi_reduced_itemized_deductions: 1_000
+    head_is_dependent_elsewhere: false
+  output:
+    hi_deductions: 5_000
+    
+- name: large AGI, no eligible, have standard deduction
+  period: 2022
+  input:
+    state_code: HI
+    filing_status: JOINT
+    tax_unit_earned_income: 1_000_000
+    hi_agi: 1_000_000
+    hi_total_itemized_deductions: 5_000
+    hi_reduced_itemized_deductions: 1_000
+    head_is_dependent_elsewhere: false
+  output:
+    hi_deductions: 4_400
+
+- name: small AGI, no eligible, have standard deduction
+  period: 2022
+  input:
+    state_code: HI
+    filing_status: JOINT
+    tax_unit_earned_income: 1_000
+    hi_agi: 1_000
+    hi_total_itemized_deductions: 1_000
+    hi_reduced_itemized_deductions: 1_000
+    head_is_dependent_elsewhere: false
+  output:
+    hi_deductions: 4_400
+
+- name: separate, large AGI, no eligible, have standard deduction
+  period: 2022
+  input:
+    state_code: HI
+    filing_status: SEPARATE
+    tax_unit_earned_income: 1_000_000
+    hi_agi: 1_000_000
+    hi_total_itemized_deductions: 5_000
+    hi_reduced_itemized_deductions: 1_000
+    head_is_dependent_elsewhere: false
+  output:
+    hi_deductions: 2_200
+
+- name: large AGI, eligible, have reduced deduction
+  period: 2022
+  input:
+    state_code: HI
+    filing_status: JOINT
+    tax_unit_earned_income: 1_000_000
+    hi_agi: 1_000_000
+    hi_total_itemized_deductions: 5_000
+    hi_reduced_itemized_deductions: 4_500
+    head_is_dependent_elsewhere: false
+  output:
+    hi_deductions: 4_500
+
+- name: Integration test
+  period: 2024
+  input:
+    state_code: HI
+    filing_status: JOINT
+    employment_income: 62_000
+  output:
+    hi_deductions: 8_800

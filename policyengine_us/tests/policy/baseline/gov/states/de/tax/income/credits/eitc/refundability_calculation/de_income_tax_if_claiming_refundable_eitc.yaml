@@ -1,0 +1,14 @@
+- name: One person with zero earnings pays no tax.
+  period: 2022
+  input:
+    state_code: DE
+  output:
+    de_income_tax_if_claiming_refundable_eitc: 0
+  
+- name: One person with zero earnings pays no tax.
+  period: 2022
+  input:
+    state_code: DE
+    de_refundable_eitc: 100
+  output:
+    de_income_tax_if_claiming_refundable_eitc: -100

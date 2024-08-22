@@ -23,7 +23,7 @@
   output:
     ny_ctc: 0
 
-- name: Parent of four-year old child with no income gets minimum credit
+- name: Parent of four-year old child with no income gets minimum credit, 33% of $1,000
   period: 2022
   input:
     people:
@@ -40,9 +40,9 @@
         members: [parent, child]
         state_code: NY
   output:
-    ny_ctc: 100
+    ny_ctc: 330
 
-- name: Parent of four-year old child with no income gets minimum credit
+- name: Parent of four-year old child with no income gets minimum credit, 33% of $1,000
   period: 2022
   input:
     people:
@@ -59,7 +59,7 @@
         members: [parent, child]
         state_code: NY
   output:
-    ny_ctc: 100
+    ny_ctc: 330
 
 - name: Simpler calculation if not set to pre-TCJA.
   period: 2022
@@ -69,5 +69,41 @@
     ctc_qualifying_child: true
     state_code: NY
     age: 5 # Must be 4+ to be eligible.
+  output:
+    ny_ctc: 330
+
+- name: 2023 Three-year old child gets credit
+  period: 2023
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc: 330
+
+- name: 2023 Newly born child (zero-year old) gets credit
+  period: 2023
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
   output:
     ny_ctc: 330

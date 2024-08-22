@@ -1,0 +1,52 @@
+description: New Mexico provides this blind & aged exemption amount for head of household filers, depending on their adjusted gross income.
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: currency-USD
+  label: New Mexico blind and aged exemption amount for head of household filers
+  reference:
+    - title: 7-2-5.2. EXEMPTION--INCOME OF PERSONS SIXTY-FIVE AND OLDER OR BLIND 
+      href: https://klvg4oyd4j.execute-api.us-west-2.amazonaws.com/prod/PublicFiles/34821a9573ca43e7b06dfad20f5183fd/856ebf4b-3814-49dd-8631-ebe579d6a42b/Personal%20Income%20Tax.pdf#page=34
+    - title: 2022 Tax Form Instructions Page ADJ-5 TABLE 1. Exemptions for Persons 65 or Older or Blind
+      href: https://klvg4oyd4j.execute-api.us-west-2.amazonaws.com/prod/PublicFiles/34821a9573ca43e7b06dfad20f5183fd/1afc56af-ea90-4d48-82e5-1f9aeb43255a/PITbook2022.pdf#page=50
+    - title: 2023 Tax Form Instructions Page ADJ-5 TABLE 1. Exemptions for Persons 65 or Older or Blind
+      href: https://klvg4oyd4j.execute-api.us-west-2.amazonaws.com/prod/PublicFiles/34821a9573ca43e7b06dfad20f5183fd/1afc56af-ea90-4d48-82e5-1f9aeb43255a/PITbook2022.pdf#page=52
+    - title: 7-2-5.2. Exemption; income of persons sixty-five and older or blind
+      href: https://nmonesource.com/nmos/nmsa/en/item/4340/index.do#!fragment/zoupio-_Toc140503666/BQCwhgziBcwMYgK4DsDWszIQewE4BUBTADwBdoAvbRABwEtsBaAfX2zgEYAWABgFYeAZgBsogJQAaZNlKEIARUSFcAT2gBydRIiEwuBIuVrN23fpABlPKQBCagEoBRADKOAagEEAcgGFHE0jAAI2hSdjExIA
+brackets:
+  - threshold:
+      1987-01-01: 0
+    amount:
+      1987-01-01: 8_000
+  - threshold:
+      1987-01-01: 30_000
+    amount:
+      1987-01-01: 7_000
+  - threshold:
+      1987-01-01: 33_000
+    amount:
+      1987-01-01: 6_000
+  - threshold:
+      1987-01-01: 36_000
+    amount:
+      1987-01-01: 5_000
+  - threshold:
+      1987-01-01: 39_000
+    amount:
+      1987-01-01: 4_000
+  - threshold:
+      1987-01-01: 42_000
+    amount:
+      1987-01-01: 3_000
+  - threshold:
+      1987-01-01: 45_000
+    amount:
+      1987-01-01: 2_000
+  - threshold:
+      1987-01-01: 48_000
+    amount:
+      1987-01-01: 1_000
+  - threshold:
+      1987-01-01: 51_000
+    amount:
+      1987-01-01: 0

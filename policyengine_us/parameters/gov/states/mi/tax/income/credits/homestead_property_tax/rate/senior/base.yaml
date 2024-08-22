@@ -1,0 +1,65 @@
+description: Michigan provides senior filers a maximum homestead property tax credit as this fraction of the excess of property taxes over the household resource exemption, based on household resources. 
+brackets:
+  - threshold:
+      2021-01-01: 0
+    amount:
+      2021-01-01: 1
+  - threshold:
+      2021-01-01: 21_000
+    amount:
+      2021-01-01: 0.96
+  - threshold:
+      2021-01-01: 22_000
+    amount:
+      2021-01-01: 0.92
+  - threshold:
+      2021-01-01: 23_000
+    amount:
+      2021-01-01: 0.88
+  - threshold:
+      2021-01-01: 24_000
+    amount:
+      2021-01-01: 0.84
+  - threshold:
+      2021-01-01: 25_000
+    amount:
+      2021-01-01: 0.8
+  - threshold:
+      2021-01-01: 26_000
+    amount:
+      2021-01-01: 0.76
+  - threshold:
+      2021-01-01: 27_000
+    amount:
+      2021-01-01: 0.72
+  - threshold:
+      2021-01-01: 28_000
+    amount:
+      2021-01-01: 0.68
+  - threshold:
+      2021-01-01: 29_000
+    amount:
+      2021-01-01: 0.64
+  - threshold:
+      2021-01-01: 30_000
+    amount:
+      2021-01-01: 0.6
+      
+metadata:
+  type: single_amount
+  amount_unit: /1
+  threshold_unit: currency-USD
+  period: year
+
+  label: Michigan homestead property tax credit senior credit base rate
+  reference:
+    - title: 2022 MI-1040 Instructions
+      href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2022/2022-IIT-Forms/BOOK_MI-1040.pdf#page=33
+    - title: 2023 MI-1040 Instructions
+      href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2023/2023-IIT-Forms/BOOK_MI-1040.pdf#page=32
+    - title: Michigan Income Tax Act 206.522 - (1)(b)
+      href: http://legislature.mi.gov/doc.aspx?mcl-206-522
+    - title: 2021 Michigan Taxpayer Assistance Manual
+      href: https://www.michigan.gov/-/media/Project/Websites/taxes/2022RM/UNCAT/2019_Taxpayer_Assistance_Manual.pdf#page=57
+    - title: 2023 Michigan Taxpayer Assistance Manual
+      href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/MISC/Tax-Professionals/Taxpayer_Assistance_Manual.pdf#page=57

@@ -1,0 +1,15 @@
+- name: DC CDCC unit test 1
+  period: 2021
+  input:
+    cdcc: 800
+    state_code: DC
+  output:
+    dc_cdcc: 256  # = 800 * 0.32
+
+- name: DC CDCC unit test 2
+  period: 2022
+  input:
+    cdcc: 100
+    state_code: DC
+  output:
+    dc_cdcc: 32  # = 100 * 0.32

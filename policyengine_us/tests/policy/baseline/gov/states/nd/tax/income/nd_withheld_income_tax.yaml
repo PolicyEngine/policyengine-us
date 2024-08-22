@@ -1,0 +1,29 @@
+- name: Test 1, Person with income over the standard deduction amount
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    irs_employment_income: 15_000
+    filing_status: JOINT
+    state_code: ND
+  output:
+    nd_withheld_income_tax: 22.55
+
+- name: Test 2, Changing the filing status should not change the output 
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    irs_employment_income: 15_000
+    filing_status: SURVIVING_SPOUSE
+    state_code: ND
+  output:
+    nd_withheld_income_tax: 22.55
+
+- name: Test 3, employment income less than standard deduction, capped at 0
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    irs_employment_income: 12_000
+    filing_status: SURVIVING_SPOUSE
+    state_code: ND
+  output:
+    nd_withheld_income_tax: 0

@@ -1,0 +1,15 @@
+- name: No Federal CDCC
+  period: 2021
+  input:
+    state_code: RI
+    cdcc: 0
+  output:
+    ri_cdcc: 0
+
+- name: Calculation # Federal CDCC * 25%
+  period: 2021
+  input:
+    state_code: RI
+    cdcc: 1_000
+  output:
+    ri_cdcc: 250

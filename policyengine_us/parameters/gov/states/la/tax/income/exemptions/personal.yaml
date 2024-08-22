@@ -1,0 +1,26 @@
+description: Louisiana reduces taxable income by this personal exemption amount, based on filing status.
+SINGLE:
+  1983-01-01: 4_500
+SEPARATE:
+  1983-01-01: 4_500
+HEAD_OF_HOUSEHOLD:
+  1983-01-01: 9_000
+JOINT:
+  1983-01-01: 9_000
+SURVIVING_SPOUSE:
+  1983-01-01: 9_000
+
+metadata:
+  unit: currency-USD
+  period: year
+  breakdown:
+  - filing_status
+  label: Louisiana personal exemption amount
+
+  reference:
+    - title: Louisiana Laws Revised Statutes, Title 47 — Revenue and taxation, RS 47:294 —  Personal exemptions and credit for dependents, A
+      href: https://www.legis.la.gov/legis/Law.aspx?d=101761
+    - title: 2023 LOUISIANA TAX TABLE
+      href: https://revenue.louisiana.gov/TaxForms/IT540(2023)%20TT.pdf#page=1
+    - title: 2022 LOUISIANA TAX TABLE
+      href: https://revenue.louisiana.gov/TaxForms/IT540(2022)%20Tax%20Table.pdf#page=1

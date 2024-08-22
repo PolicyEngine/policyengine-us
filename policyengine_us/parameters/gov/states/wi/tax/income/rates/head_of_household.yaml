@@ -1,0 +1,38 @@
+description: Wisconsin taxes personal income at these rates for head of household filers.
+metadata:
+  type: marginal_rate
+  threshold_period: year
+  threshold_unit: currency-USD  # Wisconsin taxable income
+  rate_unit: /1
+  label: Wisconsin head of household income tax rate
+  reference:
+    - title: Wisconsin Tax Brackets, Rates, Forms, and Standard Deductions
+      href: https://www.efile.com/wisconsin-tax-brackets-rates-and-forms/
+    - title: State of Wisconsin Department of Revenue
+      href: https://www.revenue.wi.gov/Pages/FAQS/pcs-taxrates.aspx
+
+brackets:
+  - threshold:
+      2021-01-01: 0
+    rate:
+      2021-01-01: 0.0354
+      2023-01-01: 0.035
+  - threshold:
+      2021-01-01: 12_120
+      2022-01-01: 12_760
+      2023-01-01: 13_810
+    rate:
+      2021-01-01: 0.0465
+      2023-01-01: 0.04
+  - threshold:
+      2021-01-01: 24_250
+      2022-01-01: 25_520
+      2023-01-01: 27_630
+    rate:
+      2021-01-01: 0.053
+  - threshold:
+      2021-01-01: 266_930
+      2022-01-01: 280_950
+      2023-01-01: 304_170
+    rate:
+      2021-01-01: 0.0765

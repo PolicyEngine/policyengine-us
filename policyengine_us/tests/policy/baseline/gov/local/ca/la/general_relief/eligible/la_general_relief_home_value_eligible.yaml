@@ -1,0 +1,15 @@
+- name: Eligible
+  period: 2022
+  input:
+    in_la: true
+    assessed_property_value: 34_000
+  output:
+    la_general_relief_home_value_eligible: true
+
+- name: Ineligible
+  period: 2022
+  input:
+    in_la: true
+    assessed_property_value: 34_001
+  output:
+    la_general_relief_home_value_eligible: false

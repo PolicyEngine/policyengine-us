@@ -1,0 +1,92 @@
+- name: AGI Not eligible
+  period: 2021
+  input:
+    adjusted_gross_income: 100_000
+    non_public_school_tuition: 1_000
+    state_code: OH
+  output:
+    oh_non_public_school_credits: 0
+
+- name: Non public tuition less than cap
+  period: 2021
+  input:
+    adjusted_gross_income: 49_999
+    non_public_school_tuition: 400
+    state_code: OH
+  output:
+    oh_non_public_school_credits: 400
+
+- name: AGI less than $50,000
+  period: 2021
+  input:
+    adjusted_gross_income: 49_999
+    non_public_school_tuition: 1_000
+    state_code: OH
+  output:
+    oh_non_public_school_credits: 500
+
+- name: AGI greater that $50,000 capped
+  period: 2021
+  input:
+    adjusted_gross_income: 50_000
+    non_public_school_tuition: 1_500
+    state_code: OH
+  output:
+    oh_non_public_school_credits: 1_000
+
+- name: AGI greater that $50,000 not capped
+  period: 2021
+  input:
+    adjusted_gross_income: 80_000
+    non_public_school_tuition: 1_000
+    state_code: OH
+  output:
+    oh_non_public_school_credits: 1_000
+
+- name: AGI greater that $50,000 case 3
+  period: 2021
+  input:
+    adjusted_gross_income: 99_999
+    non_public_school_tuition: 250
+    state_code: OH
+  output:
+    oh_non_public_school_credits: 250
+
+
+- name: Not capped at tuition expenses
+  period: 2021
+  input:
+    people:
+      person1:
+        non_public_school_tuition: 200
+      person2:
+        non_public_school_tuition: 400
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        adjusted_gross_income: 49_999
+  output:
+    oh_non_public_school_credits: 500
+
+- name: Credit is capped at tuition expenses
+  period: 2021
+  input:
+    people:
+      person1:
+        non_public_school_tuition: 200
+      person2:
+        non_public_school_tuition: 200
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        adjusted_gross_income: 49_999
+  output:
+    oh_non_public_school_credits: 400

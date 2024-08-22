@@ -1,1 +1,1 @@
-# Emergency Broadband Benefit
+# Emergency Broadband Benefit (EBB)

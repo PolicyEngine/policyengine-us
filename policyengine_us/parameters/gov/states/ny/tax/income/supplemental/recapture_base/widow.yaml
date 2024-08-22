@@ -1,0 +1,45 @@
+description: New York recaptures this base amount for widow(er) filers under the supplemental tax.
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: currency-USD
+  period: year
+  label: New York supplemental tax recapture base widow(er) amount
+  reference:
+    - title: Section 601 Imposition of tax, (d-2) for 2021, (d-3) for 2022, and (d-4) for 2023
+      href: https://www.nysenate.gov/legislation/laws/TAX/601
+    - title: 2021 NY Form IT-201 Instructions - Married filing jointly and qualifying widow(er)
+      href: https://www.tax.ny.gov/pdf/2021/inc/it201i_2021.pdf#page=52
+    - title: 2022 NY Form IT-201 Instructions - Married filing jointly and qualifying surviving spouse
+      href: https://www.tax.ny.gov/pdf/2022/printable-pdfs/inc/it201i-2022.pdf#page=45
+    - title: 2023 NY Form IT-201 Instructions - Married filing jointly and qualifying surviving spouse
+      href: https://www.tax.ny.gov/pdf/2023/printable-pdfs/inc/it201i-2023.pdf#page=46
+brackets:
+  - threshold:
+      2021-01-01: 0 
+    amount:
+      2021-01-01: 0
+  - threshold:
+      2021-01-01: 161_550
+    amount:
+      2021-01-01: 474
+      2022-01-01: 430
+      2023-01-01: 333
+  - threshold:
+      2021-01-01: 323_300
+    amount:
+      2021-01-01: 1_056
+      2022-01-01: 1_076
+      2023-01-01: 1_140
+  - threshold:
+      2021-01-01: 2_155_350
+    amount:
+      2021-01-01: 2_736
+      2022-01-01: 3_016
+      2023-01-01: 3_887
+  - threshold:
+      2021-01-01: 5_000_000
+    amount:
+      2021-01-01: 63_086
+      2022-01-01: 63_365
+      2023-01-01: 64_237

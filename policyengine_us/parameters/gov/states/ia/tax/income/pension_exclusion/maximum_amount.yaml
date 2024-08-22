@@ -1,0 +1,30 @@
+description: Iowa allows an exclusion of taxable pension income to get its net income that is capped at this amount.
+metadata:
+  label: Iowa maximum pension exclusion amount
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  reference:
+  - title: 2021 IA1040 Income Tax Return instructions
+    href: https://tax.iowa.gov/sites/default/files/2023-01/2021%20Expanded%20Instructions_010323.pdf#page=26
+  - title: 2022 IA1040 Income Tax Return instructions
+    href: https://tax.iowa.gov/sites/default/files/2023-03/2022%20Expanded%20Instructions_022023.pdf#page=26
+  - title: Iowa Retirement Income Tax Guidance
+    href: https://tax.iowa.gov/retirement-income-tax-guidance
+
+JOINT:
+  2021-01-01: 12_000
+  2023-01-01: .inf
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 6_000 
+  2023-01-01: .inf
+SURVIVING_SPOUSE:
+  2021-01-01: 6_000
+  2023-01-01: .inf
+SINGLE:
+  2021-01-01: 6_000
+  2023-01-01: .inf
+SEPARATE:
+  2021-01-01: 6_000
+  2023-01-01: .inf

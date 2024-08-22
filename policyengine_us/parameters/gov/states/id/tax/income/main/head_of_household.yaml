@@ -1,0 +1,54 @@
+description: Idaho taxes income of head of household filers at this rate.
+metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  label: Idaho head of household income tax schedule
+  reference:
+    # As of 2023-08-04, the legal code specifies a flat 5.8% tax rate on taxable income exceeding
+    # $2,500/5,000, reflecting 2022 House Bill 1 and taking effect in 2023.
+    # The tax commission only shows tax schedules through 2023,  which have more rates.
+    - title: Idaho State Tax Comission - Individual Income Tax Rate Schedule
+      href: https://tax.idaho.gov/taxes/income-tax/individual-income/individual-income-tax-rate-schedule/
+    - title: IDAHO STATUTES || Section 35.01.01.075 - TAX ON INDIVIDUALS, ESTATES, AND TRUSTS   
+      href: https://casetext.com/regulation/idaho-administrative-code/title-idapa-35-tax-commission-state/rule-350101-income-tax-administrative-rules/section-350101075-tax-on-individuals-estates-and-trusts
+    - title: LEGISLATIVE SESSIONS || 2022 EXTRAORDINARY LEGISLATIVE SESSION || 2022 EXTRAORDINARY SESSION LEGISLATIONHOUSE BILL 1
+      href: https://legislature.idaho.gov/sessioninfo/2022spcl/legislation/H0001/
+    - title: IDAHO STATUTES, TITLE 63, CHAPTER 30, SECTION 63-3024 (2)(a)
+      href: https://legislature.idaho.gov/statutesrules/idstat/title63/t63ch30/sect63-3024/ 
+    # The Head of household filing status is treated as married
+    - title: IDAHO STATUTES, TITLE 63, CHAPTER 30, SECTION 63-3024(2)(b)
+      href: https://legislature.idaho.gov/statutesrules/idstat/title63/t63ch30/sect63-3024/#:~:text=(b)%20For%20taxpayers%20filing%20a,five%20thousand%20dollars%20(%245%2C000)
+brackets:
+  - threshold:
+      2021-01-01: 0
+    rate:
+      2021-01-01: 0.01
+      2023-01-01: 0
+  - threshold:
+      2021-01-01: 3_176
+      2022-01-01: 3_324
+      2023-01-01: 8_979
+    rate:
+      2021-01-01: 0.031
+      2022-01-01: 0.03
+      2023-01-01: 0.058
+  - threshold:
+      2021-01-01: 9_526
+      2022-01-01: 9_974
+      2023-01-01: .inf
+    rate:
+      2021-01-01: 0.045
+  - threshold:
+      2021-01-01: 12_702
+      2022-01-01: 16_622
+      2023-01-01: .inf
+    rate:
+      2021-01-01: 0.055
+      2022-01-01: 0.06
+  - threshold:
+      2021-01-01: 15_878
+      2022-01-01: .inf
+      2023-01-01: .inf
+    rate:
+      2021-01-01: 0.065

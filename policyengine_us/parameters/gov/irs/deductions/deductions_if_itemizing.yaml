@@ -21,6 +21,6 @@ values:
     - casualty_loss_deduction
     - qualified_business_income_deduction
 metadata:
-  unit: variable
-  name: taxable_income_deductions_if_itemizing
+  unit: list
+  period: year
   label: Taxable income deductions if itemizing

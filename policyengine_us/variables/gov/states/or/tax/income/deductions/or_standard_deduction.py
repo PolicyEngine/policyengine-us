@@ -25,9 +25,7 @@ class or_standard_deduction(Variable):
         claimable_dep_earned_amount = (
             earned_income + p.claimable_as_dependent.earned_income_addition
         )
-        tax_unit_dependent_elsewhere = tax_unit(
-            "tax_unit_dependent_elsewhere", period
-        )
+        dependent_elsewhere = tax_unit("head_is_dependent_elsewhere", period)
         # Set floor and ceiling around earned income plus additional amount.
         floored_claimable_dep_amount = max_(
             claimable_dep_earned_amount, claimable_dep_floor
@@ -36,7 +34,7 @@ class or_standard_deduction(Variable):
             floored_claimable_dep_amount, initial_core_deduction
         )
         core_deduction = where(
-            tax_unit_dependent_elsewhere,
+            dependent_elsewhere,
             capped_claimable_dep_amount,
             initial_core_deduction,
         )

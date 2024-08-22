@@ -1,19 +1,27 @@
-description: Maximum rental deduction for MA income taxes.
+description: Massachusetts caps the rental deduction at this amount, based on the filing status.
 SINGLE:
   2011-01-01: 3_000
-WIDOW:
+  2023-01-01: 4_000
+SURVIVING_SPOUSE:
   2011-01-01: 3_000
+  2023-01-01: 4_000
 JOINT:
   2011-01-01: 3_000
+  2023-01-01: 4_000
 HEAD_OF_HOUSEHOLD:
   2011-01-01: 3_000
+  2023-01-01: 4_000
 SEPARATE:
   2011-01-01: 1_500
+  2023-01-01: 2_000
 metadata:
   reference:
-    # Legislation only mentions the $3,000.
-    - title: "Taxable income: adjusted gross income less deductions and exemptions (a)(9)"
-      href: https://malegislature.gov/Laws/GeneralLaws/PartI/TitleIX/Chapter62/Section9
+    # Legal code only mentions the $3,000.  
+    - title: Massachusetts General Laws (I)(IX)(62)(3)(B)(a)(9)"  
+      href: https://malegislature.gov/Laws/GeneralLaws/PartI/TitleIX/Chapter62/Section3
+    # Guide specifies the $2,000 for married filing separate.
+    - title: Form 1 2023 Massachusetts Resident Income Tax (line 14)
+      href: https://www.mass.gov/doc/2023-form-1-instructions/download#page=11
     # Guide specifies the $1,500 for married filing separate.
     - title: Form 1 2022 Massachusetts Resident Income Tax (line 14)
       href: https://www.mass.gov/doc/2022-form-1-instructions/download#page=11
@@ -43,4 +51,4 @@ metadata:
   period: year
   breakdown:
   - filing_status
-  label: Maximum rental deduction for MA income taxes.
+  label: Massachusetts rental deduction cap.

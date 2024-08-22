@@ -1,0 +1,47 @@
+- name: IA is-tax-exempt unit test 1
+  period: 2021
+  input:
+    filing_status: SINGLE
+    age_head: 60
+    ia_net_income: 0
+    ia_pension_exclusion: 0
+    ia_reportable_social_security: 10_000
+    state_code: IA
+  output:
+    ia_is_tax_exempt: false
+
+- name: IA is-tax-exempt unit test 2
+  period: 2022
+  input:
+    filing_status: SINGLE
+    age_head: 70
+    ia_net_income: 0
+    ia_pension_exclusion: 0
+    ia_reportable_social_security: 10_000
+    state_code: IA
+  output:
+    ia_is_tax_exempt: true
+
+- name: IA is-tax-exempt unit test 3
+  period: 2021
+  input:
+    filing_status: JOINT
+    age_head: 60
+    ia_net_income: 0
+    ia_pension_exclusion: 0
+    ia_reportable_social_security: 10_000
+    state_code: IA
+  output:
+    ia_is_tax_exempt: true
+
+- name: IA is-tax-exempt unit test 4
+  period: 2022
+  input:
+    filing_status: JOINT
+    age_head: 70
+    ia_net_income: 10_000
+    ia_pension_exclusion: 10_000
+    ia_reportable_social_security: 10_000
+    state_code: IA
+  output:
+    ia_is_tax_exempt: true

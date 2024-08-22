@@ -1,0 +1,59 @@
+- name: woman not pregnant, with age 19 and no children receiving tanf
+  period: 2023
+  input:
+    state_code: PA
+    age: 19
+    is_pregnant: false
+    pa_tanf_age_eligible: false
+  output:
+    pa_tanf_age_eligible_on_pregnant_women_limitation: false
+
+- name: woman not pregnant, with age 17 and no children receiving tanf
+  period: 2023
+  input:
+    state_code: PA
+    age: 17
+    is_pregnant: false
+    pa_tanf_age_eligible: false
+  output:
+    pa_tanf_age_eligible_on_pregnant_women_limitation: false
+
+- name: pregnant woman, with age under 18 and no children receiving tanf
+  period: 2023
+  input:
+    state_code: PA
+    age: 17
+    is_pregnant: true
+    pa_tanf_age_eligible: false
+  output:
+    pa_tanf_age_eligible_on_pregnant_women_limitation: true
+
+- name: pregnant woman, with age under 18, has at least 1 child receiving tanf
+  period: 2023
+  input:
+    state_code: PA
+    age: 17
+    is_pregnant: true
+    pa_tanf_age_eligible: true
+  output:
+    pa_tanf_age_eligible_on_pregnant_women_limitation: true
+
+- name: pregnant woman, age above or equals to 18, no children receiving tanf
+  period: 2023
+  input:
+    state_code: PA
+    age: 19
+    is_pregnant: true
+    pa_tanf_age_eligible: false
+  output:
+    pa_tanf_age_eligible_on_pregnant_women_limitation: true
+
+- name: pregnant woman, age above or equals to 18, has at least 1 child receiving tanf
+  period: 2023
+  input:
+    state_code: PA
+    age: 20
+    is_pregnant: true
+    pa_tanf_age_eligible: true
+  output:
+    pa_tanf_age_eligible_on_pregnant_women_limitation: false

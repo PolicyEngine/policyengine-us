@@ -1,0 +1,29 @@
+- name: wi_capital_gain_loss_subtraction unit test 1
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    short_term_capital_gains: 0
+    long_term_capital_gains: 900
+    state_code: WI
+  output:
+    wi_capital_gain_loss_subtraction: 270  # = 900 * 0.30
+
+- name: wi_capital_gain_loss_subtraction unit test 2
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    short_term_capital_gains: -100
+    long_term_capital_gains: 900
+    state_code: WI
+  output:
+    wi_capital_gain_loss_subtraction: 240  # = (900 - 100) * 0.30
+
+- name: wi_capital_gain_loss_subtraction unit test 3
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    short_term_capital_gains: -100
+    long_term_capital_gains: 0
+    state_code: WI
+  output:
+    wi_capital_gain_loss_subtraction: 0

@@ -1,0 +1,15 @@
+- name: Case 1, 1 dependent, get 1 dependent exemptions.
+  period: 2022
+  input:
+    state_code: SC
+    tax_unit_dependents: 1 
+  output:
+    sc_dependent_exemption: 4_430
+
+- name: Case 2, family with 3 dependents, get 3 dependent exemptions. 
+  period: 2022
+  input:
+    state_code: SC
+    tax_unit_dependents: 3 
+  output:
+    sc_dependent_exemption: 13_290

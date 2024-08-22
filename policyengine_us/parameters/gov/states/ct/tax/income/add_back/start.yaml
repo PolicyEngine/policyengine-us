@@ -1,0 +1,24 @@
+description: Connecticut phases its bottom income tax rate out for filers with adjusted gross income above this threshold, based on filing status.
+metadata:
+  period: year
+  unit: currency-USD
+  label: Connecticut income tax phase out start
+  breakdown:
+    - filing_status
+  reference:
+    - title: Connecticut General Statutes, Chapter 229, Sec. 12-700, (9), (B)
+      href: https://www.cga.ct.gov/current/pub/chap_229.htm#sec_12-700
+    - title: 2022 Form CT-1040 Connecticut Resident Income Tax Return Instructions
+      href: https://portal.ct.gov/-/media/DRS/Forms/2022/Income/2022-CT-1040-Instructions_1222.pdf#page21
+    - title: 2023 Form CT-1040 Connecticut Resident Income Tax Return Instructions
+      href: https://portal.ct.gov/-/media/DRS/Forms/2023/Income/2023-CT-1040-Instructions_1223.pdf#page=21
+SINGLE:
+  2015-01-01: 56_500
+HEAD_OF_HOUSEHOLD:
+  2015-01-01: 78_500
+JOINT:
+  2015-01-01: 100_500
+SURVIVING_SPOUSE:
+  2015-01-01: 100_500
+SEPARATE:
+  2015-01-01: 50_250 

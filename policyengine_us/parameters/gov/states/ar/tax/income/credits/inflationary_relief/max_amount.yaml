@@ -1,0 +1,28 @@
+description: Arkansas allows for this maximum inflationary relief tax credit amount, based on filing status.
+metadata:
+  period: year
+  unit: currency-USD
+  label: Arkansas income-tax credit maximum amount 
+  reference:
+    # The inflation relief credit is not mentioned in the Arkansas statutes 
+    - title: Arkansas 2022 Individual Income Tax Forms and Instructions 
+      href: https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2022_AR1000F_and_AR1000NR_Instructions.pdf#page=26
+    - title: Inflationary relief income-tax credit worksheet
+      href: https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2022_Final_InflationaryReliefIncomeTaxCredit_FI.pdf#page=1
+    - title: Department of finance and administration, Bill HB1002 
+      href: https://www.arkleg.state.ar.us/Home/FTPDocument?path=%2FAssembly%2F2021%2F2022S3%2FFiscal+Impacts%2FHB1002-DFA1.pdf#page=2  
+    - title: Inflationary relief income-tax credit worksheet
+      href: https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2023_Final_InflationaryReliefIncomeTaxCredit_FI.pdf#page=1
+  breakdown:
+    - filing_status
+JOINT:
+  2022-01-01: 300
+SURVIVING_SPOUSE:
+  2022-01-01: 150
+HEAD_OF_HOUSEHOLD:
+  2022-01-01: 150
+SINGLE:
+  2022-01-01: 150
+SEPARATE:
+  2022-01-01: 150
+

@@ -1,0 +1,20 @@
+description: Colorado limits eligibility for its Child Health Plan Plus to children in this age range.
+
+brackets:
+  - threshold:
+      2023-01-01: 0
+    amount:
+      2023-01-01: true
+  - threshold:
+      2023-01-01: 19
+    amount:
+      2023-01-01: false
+
+metadata:
+  type: single_amount
+  amount_unit: bool
+  threshold_unit: year
+  label: Colorado CHP+ child age range
+  reference:
+    - title: Medical Services Board | DEPARTMENT OF HEALTH CARE POLICY AND FINANCING
+      href: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=10779#page=2

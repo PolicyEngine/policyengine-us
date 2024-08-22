@@ -1,0 +1,15 @@
+- name: No cdcc
+  period: 2022
+  input:
+    cdcc: 0
+    state_code: AR
+  output: 
+    ar_cdcc: 0
+
+- name: Some cdcc, 20%
+  period: 2022
+  input:
+    cdcc: 1_000
+    state_code: AR
+  output: 
+    ar_cdcc: 200
