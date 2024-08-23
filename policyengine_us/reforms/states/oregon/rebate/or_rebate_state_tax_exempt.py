@@ -10,7 +10,11 @@ def create_or_rebate_state_tax_exempt() -> Reform:
         definition_period = YEAR
         defined_for = StateCode.OR
 
-        adds = ["basic_income"]
+        def formula(tax_unit, period, parameters):
+            p = parameters(period).gov.contrib.ubi_center.basic_income
+            if p.taxable:
+                return tax_unit("basic_income", period)
+            return 0
 
     class or_income_subtractions(Variable):
         value_type = float

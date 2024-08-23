@@ -3,6 +3,7 @@
   reforms: policyengine_us.reforms.states.oregon.rebate.or_rebate_state_tax_exempt.or_rebate_state_tax_exempt
   input:
     gov.contrib.states.or.rebate.state_tax_exempt: true
+    gov.contrib.ubi_center.basic_income.taxable: true
     state_code: OR
     basic_income: 1_000
   output:
@@ -14,8 +15,22 @@
   period: 2023
   input:
     gov.contrib.states.or.rebate.state_tax_exempt: false
+    gov.contrib.ubi_center.basic_income.taxable: true
     state_code: OR
     basic_income: 1_000
   output:
+    or_federal_tax_liability_subtraction: 0
+    or_income_subtractions: 0
+
+- name: Basic income not taxable federally
+  period: 2023
+  reforms: policyengine_us.reforms.states.oregon.rebate.or_rebate_state_tax_exempt.or_rebate_state_tax_exempt
+  input:
+    gov.contrib.states.or.rebate.state_tax_exempt: true
+    gov.contrib.ubi_center.basic_income.taxable: false
+    state_code: OR
+    basic_income: 1_000
+  output:
+    or_rebate_subtraction: 0
     or_federal_tax_liability_subtraction: 0
     or_income_subtractions: 0
