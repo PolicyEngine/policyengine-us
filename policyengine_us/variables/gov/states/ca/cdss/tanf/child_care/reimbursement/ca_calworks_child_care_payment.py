@@ -22,7 +22,6 @@ class ca_calworks_child_care_payment(Variable):
             "ca_calworks_child_care_payment_factor", period
         )
         childcare_expenses = person("pre_subsidy_childcare_expenses", period)
-
         return min_(
             payment_standard * time_coefficient * payment_factor,
             childcare_expenses,
