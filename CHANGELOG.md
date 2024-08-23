@@ -5,6 +5,36 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.60.0] - 2024-08-22 23:31:20
+
+### Added
+
+- Separate out SSI eligibility from the general uncapped_ssi file.
+
+## [1.59.0] - 2024-08-22 15:03:28
+
+### Added
+
+- Denver property tax relief.
+
+## [1.58.0] - 2024-08-22 00:24:36
+
+### Added
+
+- IRS VITA Program Eligibility.
+
+## [1.57.1] - 2024-08-21 15:12:46
+
+### Fixed
+
+- Minnesota standard and itemized deduction reduction structure.
+
+## [1.57.0] - 2024-08-20 01:56:19
+
+### Added
+
+- 2024 Nebraska tax rules update.
+
 ## [1.56.1] - 2024-08-19 18:40:57
 
 ### Fixed
@@ -9443,6 +9473,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.60.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.59.0...1.60.0
+[1.59.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.58.0...1.59.0
+[1.58.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.57.1...1.58.0
+[1.57.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.57.0...1.57.1
+[1.57.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.56.1...1.57.0
 [1.56.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.56.0...1.56.1
 [1.56.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.55.0...1.56.0
 [1.55.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.54.4...1.55.0
