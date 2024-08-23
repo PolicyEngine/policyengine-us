@@ -1,0 +1,21 @@
+- name: $1,000 in basic income, non taxable in Oregon
+  period: 2023
+  reforms: policyengine_us.reforms.states.oregon.rebate.or_rebate_state_tax_exempt.or_rebate_state_tax_exempt
+  input:
+    gov.contrib.states.or.rebate.state_tax_exempt: true
+    state_code: OR
+    basic_income: 1_000
+  output:
+    or_rebate_subtraction: 1_000
+    or_federal_tax_liability_subtraction: 0
+    or_income_subtractions: 1_000
+
+- name: $1,000 in basic income, taxable in Oregon
+  period: 2023
+  input:
+    gov.contrib.states.or.rebate.state_tax_exempt: false
+    state_code: OR
+    basic_income: 1_000
+  output:
+    or_federal_tax_liability_subtraction: 0
+    or_income_subtractions: 0
