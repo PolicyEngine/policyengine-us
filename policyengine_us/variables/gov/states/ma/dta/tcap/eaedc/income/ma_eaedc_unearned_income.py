@@ -9,4 +9,3 @@ class ma_eaedc_unearned_income(Variable):
     definition_period = YEAR
     defined_for = StateCode.MA
     adds = "gov.states.ma.dta.tcap.eaedc.income.unearned"
-    

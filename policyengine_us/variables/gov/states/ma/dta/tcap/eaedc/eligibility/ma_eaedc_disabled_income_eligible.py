@@ -14,7 +14,7 @@ class ma_eaedc_disabled_income_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ma.dta.tcap.eaedc.income
-        # Gete income for disabled person 
-        earned_income = add(spm_unit, period, ["ma_eaedc_disabled_earned_income"])
-        return earned_income < p.disabled_cap
-    
+        person = spm_unit.members
+        disabled_income = person("ma_eaedc_disabled_earned_income", period)
+
+        return disabled_income < p.disabled_cap

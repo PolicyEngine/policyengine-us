@@ -8,5 +8,5 @@ class ma_eaedc_assets(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.MA
+
     adds = "gov.states.ma.dta.tcap.eaedc.assets.list"
-    

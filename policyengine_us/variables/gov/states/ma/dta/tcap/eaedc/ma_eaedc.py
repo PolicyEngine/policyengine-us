@@ -8,10 +8,8 @@ class ma_eaedc(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.MA
-    reference = (
-        "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-704-500#(B)" 
-    )
+    defined_for = "ma_eaedc_eligible"
+    reference = "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-704-500#(B)"
 
-    adds=["ma_eaedc_income_limit"]
-    subtracts=["ma_eaedc_net_income"]
-    
+    adds = ["ma_eaedc_standard_assistance"]
+    subtracts = ["ma_eaedc_net_income"]

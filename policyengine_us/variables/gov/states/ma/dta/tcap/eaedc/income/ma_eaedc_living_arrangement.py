@@ -10,7 +10,8 @@ class MassachusettsEAEDCLivingArrangement(Enum):
     F = "F"  # Living Arrangement F
     H = "H"  # Living Arrangement H
     NONE = "None"
-    
+
+
 class ma_eadc_living_arrangement(Variable):
     value_type = Enum
     entity = SPMUnit

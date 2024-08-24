@@ -1,7 +1,7 @@
-description: Massachusetts assign these values as the income limit for households size of 1. 
+description: For additional household members, each will increase standard_assistance by this amount.
 metadata:
-  unit: /1
-  label: Massachusetts EAEDC base income limit base
+  unit: currency-USD
+  label: Massachusetts EAEDC standard_assistance increment 
   breakdown:
   - living_arrangement 
   reference:
@@ -11,16 +11,16 @@ metadata:
       href: https://www.mass.gov/lists/emergency-aid-to-the-elderly-disabled-and-children-eaedc-grant-calculation
 
 A:
-  2022-01-01: 401
+  2022-01-01: 121
 B:
   2022-01-01: 121
 C:
-  2022-01-01: 72.8
+  2022-01-01: # 0 or 72.8
 D:
-  2022-01-01: 401
+  2022-01-01: 121
 E:
-  2022-01-01: 72.8
+  2022-01-01: #0 or 72.8
 F:
-  2022-01-01: 258
+  2022-01-01: #0 or 258.80
 H:
-  2022-01-01: 267.3
+  2022-01-01: 80.8
