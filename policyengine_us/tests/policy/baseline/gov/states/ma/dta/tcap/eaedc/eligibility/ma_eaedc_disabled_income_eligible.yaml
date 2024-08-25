@@ -1,0 +1,15 @@
+- name: Case 1, below cap
+  period: 2022
+  input:
+    ma_eaedc_disabled_earned_income: 1_300
+    state_code: MA
+  output:
+    ma_eaedc_disabled_income_eligible: true
+
+- name: Case 2, above cap
+  period: 2022
+  input:
+    ma_eaedc_disabled_earned_income: 2_000
+    state_code: MA
+  output:
+    ma_eaedc_disabled_income_eligible: false

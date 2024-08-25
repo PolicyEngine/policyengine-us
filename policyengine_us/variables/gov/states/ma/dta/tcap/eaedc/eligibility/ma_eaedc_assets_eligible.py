@@ -18,5 +18,4 @@ class ma_eaedc_assets_eligible(Variable):
         vehicle_value = spm_unit.household("household_vehicles_value", period)
         countable_vehicle_value = max(vehicle_value - p.vehicle_exemption, 0)
         total_assets = countable_assets + countable_vehicle_value
-        size = spm_unit("spm_unit_size", period)
-        return total_assets <= p.limit.calc(size)
+        return total_assets <= p.limit

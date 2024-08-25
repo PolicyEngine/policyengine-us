@@ -19,10 +19,10 @@ class ma_eaedc_eligible(Variable):
         disabled_income_eligible = spm_unit(
             "ma_eaedc_disabled_income_eligible", period
         )
-        person = spm_unit.members
-        is_disabled = person("is_disabled", period)
-        has_disabled_member = spm_unit.any(is_disabled)
 
         return (
-            assets_eligible & financially_eligible & age_eligible
-        ) | disabled_income_eligible
+            assets_eligible
+            & financially_eligible
+            & age_eligible
+            & disabled_income_eligible
+        )

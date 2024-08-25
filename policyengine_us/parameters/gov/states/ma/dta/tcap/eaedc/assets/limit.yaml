@@ -1,13 +1,6 @@
 description: Massachusetts limits the assets to this amount under the Emergency Aid to the Elderly, Disabled and Children program.
-brackets:
-  - threshold:
-      2019-01-01: 1
-    amount:
-      2019-01-01: 250
-  - threshold:
-      2019-01-01: 2
-    amount:
-      2019-01-01: 500
+values:
+  2022-01-01: 2_000
 
 metadata:
   threshold_unit: person 

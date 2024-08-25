@@ -3,7 +3,7 @@ metadata:
   unit: currency-USD
   label: Massachusetts EAEDC standard_assistance increment 
   breakdown:
-  - living_arrangement 
+  - ma_eaedc_living_arrangement 
   reference:
     - title: Emergency Aid to the Elderly Disabled and Children (EAEDC) Living Arrangement
       href: https://www.mass.gov/lists/emergency-aid-to-the-elderly-disabled-and-children-eaedc-living-arrangement
@@ -15,12 +15,12 @@ A:
 B:
   2022-01-01: 121
 C:
-  2022-01-01: # 0 or 72.8
+  2022-01-01: 0 #or 72.8
 D:
   2022-01-01: 121
 E:
-  2022-01-01: #0 or 72.8
+  2022-01-01: 0 #or 72.8
 F:
-  2022-01-01: #0 or 258.80
+  2022-01-01: 0 #or 258.80
 H:
   2022-01-01: 80.8

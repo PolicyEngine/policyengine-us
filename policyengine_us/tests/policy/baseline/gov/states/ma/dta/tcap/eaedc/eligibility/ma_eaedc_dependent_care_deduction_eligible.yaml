@@ -1,0 +1,17 @@
+- name: Case 1, total earned income above standard assistance, eligible.
+  period: 2022
+  input:
+    ma_eaedc_total_earned_income: 420
+    ma_eaedc_standard_assistance: 410
+    state_code: MA
+  output:
+    ma_eaedc_dependent_care_deduction_eligible: true
+
+- name: Case 2, total earned income below standard assistance, ineligible.
+  period: 2022
+  input:
+    ma_eaedc_total_earned_income: 400
+    ma_eaedc_standard_assistance: 410
+    state_code: MA
+  output:
+    ma_eaedc_dependent_care_deduction_eligible: false

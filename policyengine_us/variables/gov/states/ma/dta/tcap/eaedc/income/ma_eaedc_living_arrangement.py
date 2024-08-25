@@ -12,7 +12,7 @@ class MassachusettsEAEDCLivingArrangement(Enum):
     NONE = "None"
 
 
-class ma_eadc_living_arrangement(Variable):
+class ma_eaedc_living_arrangement(Variable):
     value_type = Enum
     entity = SPMUnit
     possible_values = MassachusettsEAEDCLivingArrangement

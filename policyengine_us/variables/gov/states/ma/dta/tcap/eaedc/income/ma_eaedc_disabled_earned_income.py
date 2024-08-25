@@ -9,7 +9,6 @@ class ma_eaedc_disabled_earned_income(Variable):
     definition_period = YEAR
     defined_for = StateCode.MA
 
-    def formula(spm_unit, period, parameters):
-        person = spm_unit.members
+    def formula(person, period, parameters):
         disabled = person("is_disabled", period)
         return disabled * person("ma_eaedc_earned_income", period)
