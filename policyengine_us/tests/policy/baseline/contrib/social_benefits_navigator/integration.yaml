@@ -1,6 +1,6 @@
 # - name: Sam
 #   period: 2024
-#   absolute_error_margin: 1 # Floating point issue.
+#   absolute_error_margin: 13 # Large SNAP rounding variation
 #   input:
 #     people:
 #       person_1:
@@ -19,7 +19,7 @@
 #   output:
 #     ca_tanf_eligible: false
 #     ca_calworks_child_care_eligible: false
-#     # snap: 3504
+#     snap: 3504
 #     is_wic_eligible: true
 #     la_general_relief_eligible: true
 #     la_general_relief: 2652
@@ -39,7 +39,7 @@
 
 # - name: Sol (DACA)
 #   period: 2024
-#   absolute_error_margin: 1 # Floating point issue.
+#   absolute_error_margin: 1 # Floating point issue
 #   input:
 #     people:
 #       person_1:
@@ -76,7 +76,7 @@
 
 # - name: Sol (US Citizen)
 #   period: 2024
-#   absolute_error_margin: 2 # Floating point issue.
+#   absolute_error_margin: 17 # Large SNAP rounding variation
 #   input:
 #     people:
 #       person_1:
@@ -95,7 +95,7 @@
 #   output:
 #     ca_tanf_eligible: false
 #     ca_calworks_child_care_eligible: false
-#     # snap: 276
+#     snap: 276
 #     is_wic_eligible: true
 #     la_general_relief_eligible: false
 #     medicaid: 8420
@@ -153,7 +153,7 @@
 
 # - name: Sandy
 #   period: 2024
-#   absolute_error_margin: 2 # Floating point issue.
+#   absolute_error_margin: 9 # Large SNAP rounding variation
 #   input:
 #     people:
 #       person_1:
@@ -172,7 +172,7 @@
 #   output:
 #     ca_tanf_eligible: false
 #     ca_calworks_child_care_eligible: false
-#     # snap: 1347
+#     snap: 1347
 #     is_wic_eligible: true
 #     la_general_relief_eligible: false
 #     medicaid: 8420
@@ -191,7 +191,7 @@
 
 # - name: Sandy (pregnant)
 #   period: 2024
-#   absolute_error_margin: 2 # Floating point issue.
+#   absolute_error_margin: 9 # Large SNAP rounding variation
 #   input:
 #     people:
 #       person_1:
@@ -212,7 +212,7 @@
 #     ca_tanf_eligible: true
 #     ca_tanf: 6384
 #     ca_calworks_child_care_eligible: false
-#     # snap: 1347
+#     snap: 1347
 #     wic: 557
 #     la_general_relief_eligible: false
 #     medicaid: 8420
@@ -231,7 +231,7 @@
 
 # - name: Sawyer & Sage
 #   period: 2024
-#   absolute_error_margin: 1 # Floating point issue.
+#   absolute_error_margin: 12 # Large SNAP rounding variation
 #   input:
 #     people:
 #       person_1:
@@ -256,7 +256,7 @@
 #   output:
 #     ca_tanf_eligible: false
 #     ca_calworks_child_care_eligible: false
-#     # snap: 6454
+#     snap: 6454
 #     is_wic_eligible: true
 #     la_general_relief_eligible: false
 #     medicaid: [8420, 8420] 
@@ -274,7 +274,7 @@
 
 # - name: Sawyer & Sage (Sage undocumented, living in car)
 #   period: 2024
-#   absolute_error_margin: 1 # Floating point issue.
+#   absolute_error_margin: 12 # Large SNAP rounding variation
 #   input:
 #     people:
 #       person_1:
@@ -298,7 +298,7 @@
 #   output:
 #     ca_tanf_eligible: false
 #     ca_calworks_child_care_eligible: false
-#     # snap: 6454
+#     snap: 6454
 #     is_wic_eligible: true
 #     # la_general_relief: 2652
 #     # From SBN: Primary applicant (US citizen) should be eligible for GR but 
@@ -318,46 +318,56 @@
 #     ca_renter_credit: 0
 #     ca_foster_youth_tax_credit_eligible_person: false
 
-# # - name: Monica (monthly)
-# #   period: 2024-01
-# #   absolute_error_margin: 1 # Floating point issue.
-# #   input:
-# #     people:
-# #       person_1:
-# #         age: 28
-# #         employment_income: 23_400
-# #         immigration_status: CITIZEN
-# #         rent: 9_120
-# #       person_2:
-# #         age: 3
-# #         immigration_status: CITIZEN
-# #         pre_subsidy_childcare_expenses: 833
-# #       person_3:
-# #         age: 6
-# #         immigration_status: CITIZEN
-# #         pre_subsidy_childcare_expenses: 833
-# #     spm_units:
-# #       spm_unit:
-# #         members: [person_1, person_2, person_3]
-# #     tax_units:
-# #       tax_unit:
-# #         members: [person_1, person_2, person_3]
-# #         utilities_included_in_rent: false
-# #     households:
-# #       household:
-# #         in_la: true
-# #         state_code_str: CA
-# #   output:
-# #     ca_calworks_child_care_eligible: true
-# #     # ca_calworks_child_care_payment_factor: 1
-# #     # ca_calworks_child_care_time_coefficient: 1
-# #     ca_calworks_child_care_payment: 7_200
-# #     ca_calworks_child_care: 7_200
+# - name: Monica (monthly) - Childcare 
+#   period: 2024-01
+#   absolute_error_margin: 20 #Large rounding variation
+#   input:
+#     people:
+#       person_1:
+#         age: 28
+#         employment_income: 1_950
+#         immigration_status: CITIZEN
+#         rent: 760
+#       person_2:
+#         age: 3
+#         immigration_status: CITIZEN
+#         pre_subsidy_childcare_expenses: 
+#           2024: 10_000
+#         ca_calworks_child_care_full_time: true
+#         ca_calworks_child_care_time_coefficient: 1
+#         ca_calworks_child_care_payment_factor: 1
+#       person_3:
+#         age: 6
+#         immigration_status: CITIZEN
+#         pre_subsidy_childcare_expenses: 
+#           2024: 10_000
+#         ca_calworks_child_care_full_time: true
+#         ca_calworks_child_care_time_coefficient: 1
+#         ca_calworks_child_care_payment_factor: 1
+#     spm_units:
+#       spm_unit:
+#         members: [person_1, person_2, person_3]
+#     tax_units:
+#       tax_unit:
+#         members: [person_1, person_2, person_3]
+#         utilities_included_in_rent: false
+#     households:
+#       household:
+#         in_la: true
+#         state_code_str: CA
+#   output:
+#     ca_calworks_child_care_eligible: true
+#     # ca_calworks_child_care_payment_factor: 1
+#     # ca_calworks_child_care_time_coefficient: 1\
+#     ca_calworks_child_care_time_category: [WEEKLY, WEEKLY, WEEKLY]
+#     ca_calworks_child_care_payment_standard: [0, 309.93, 277.15]
+#     ca_calworks_child_care_payment: [0, 309.93, 277.15]
+#     ca_calworks_child_care: 600
 
 
 # - name: Monica (yearly)
 #   period: 2024
-#   absolute_error_margin: 1 # Floating point issue.
+#   absolute_error_margin: 19 # Large SNAP rounding variation
 #   input:
 #     people:
 #       person_1:
@@ -370,11 +380,11 @@
 #       person_2:
 #         age: 3
 #         immigration_status: CITIZEN
-#         # pre_subsidy_childcare_expenses: 833
+#         # pre_subsidy_childcare_expenses: 10000
 #       person_3:
 #         age: 6
 #         immigration_status: CITIZEN
-#         # pre_subsidy_childcare_expenses: 833
+#         # pre_subsidy_childcare_expenses: 10000
 #     spm_units:
 #       spm_unit:
 #         members: [person_1, person_2, person_3]
@@ -389,7 +399,7 @@
 #   output:
 #     ca_tanf_eligible: true
 #     ca_tanf: 5_952
-#     # snap: 4628
+#     snap: 4628
 #     wic: [0.0, 474.0, 0.0]
 #     la_general_relief_eligible: false
 #     medicaid: [8420, 8420, 8420] 
@@ -399,9 +409,9 @@
 #     ca_eitc: 358
 #     ctc: 4000
 #     # Additional CTC eligibility --> true (output for 3135)
-#     # cdcc: 0
-#     # ca_cdcc: 1_117
-#     # ca_yctc: 0
+#     # Exact amount of child and dependent care credits
+#     # not found due to missing childcare expenses
+#     ca_yctc: 0
 #     ca_renter_credit: 120
 #     ca_foster_youth_tax_credit_eligible_person: false
 
@@ -486,7 +496,7 @@
 #   output:
 #     # ca_tanf: 6213
 #     ca_calworks_child_care_eligible: false
-#     # snap: 1170
+#     snap: 1170
 #     is_wic_eligible: true
 #     la_general_relief_eligible: false
 #     medicaid: [8420, 8420, 8420] 
@@ -502,64 +512,64 @@
 #     ca_renter_credit: 0
 #     ca_foster_youth_tax_credit_eligible_person: false
 
-# - name: Miles / Mia
-#   period: 2024
-#   absolute_error_margin: 1 # Floating point issue.
-#   input: 
-#     people:
-#       person_1:
-#         age: 40
-#         employment_income: 
-#           2024: 36000
-#         immigration_status: LEGAL_PERMANENT_RESIDENT
-#         rent:
-#           2024: 12000
-#       person_2:
-#         age: 40
-#         immigration_status: CITIZEN
-#       person_3:
-#         age: 18
-#         immigration_status: CITIZEN
-#         employment_income: 31200
-#       person_4:
-#         age: 17
-#         immigration_status: CITIZEN
-#       person_5:
-#         age: 15
-#         immigration_status: CITIZEN
-#       person_6:
-#         age: 10
-#         immigration_status: CITIZEN
-#       person_7:
-#         age: 4
-#         immigration_status: CITIZEN
-#     spm_units:
-#       spm_unit:
-#         members: [person_1, person_2, person_3, person_4, person_5, person_6, person_7]
-#         receives_housing_assistance: true
-#     households:
-#       household:
-#         state_code_str: CA
-#         household_vehicles_value: 22000
-#         in_la: true
-#   output:
-#     ca_tanf_eligible: false
-#     ca_calworks_child_care_eligible: false
-#     # snap: 5079
-#     wic: [0, 0, 0, 0, 0, 0, 474]
-#     la_general_relief_eligible: false
-#     medicaid: [8420, 8420, 8420, 8420, 8420, 8420, 8420] 
-#     is_aca_ptc_eligible: false
-#     # Section 8 output would be 1034
-#     eitc: 6490
-#     ca_eitc_eligible: true
-#     ctc: 7000
-#     # Additional CTC eligibility (would be 5025)
-#     cdcc: 0
-#     ca_cdcc: 0
-#     ca_yctc: 0
-#     ca_renter_credit: 120
-#     ca_foster_youth_tax_credit_eligible_person: false
+- name: Miles / Mia
+  period: 2024
+  absolute_error_margin: 1 # Floating point issue
+  input: 
+    people:
+      person_1:
+        age: 40
+        employment_income: 
+          2024: 36000
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        rent:
+          2024: 12000
+      person_2:
+        age: 40
+        immigration_status: CITIZEN
+      person_3:
+        age: 18
+        immigration_status: CITIZEN
+        employment_income: 31200
+      person_4:
+        age: 17
+        immigration_status: CITIZEN
+      person_5:
+        age: 15
+        immigration_status: CITIZEN
+      person_6:
+        age: 10
+        immigration_status: CITIZEN
+      person_7:
+        age: 4
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person_1, person_2, person_3, person_4, person_5, person_6, person_7]
+        receives_housing_assistance: true
+    households:
+      household:
+        state_code_str: CA
+        household_vehicles_value: 22000
+        in_la: true
+  output:
+    ca_tanf_eligible: false
+    ca_calworks_child_care_eligible: false
+    snap: 5079
+    wic: [0, 0, 0, 0, 0, 0, 474]
+    la_general_relief_eligible: false
+    medicaid: [8420, 8420, 8420, 8420, 8420, 8420, 8420] 
+    is_aca_ptc_eligible: false
+    # Section 8 output would be 1034
+    eitc: 6490
+    ca_eitc_eligible: true
+    ctc: 7000
+    # Additional CTC eligibility (would be 5025)
+    cdcc: 0
+    ca_cdcc: 0
+    ca_yctc: 0
+    ca_renter_credit: 120
+    ca_foster_youth_tax_credit_eligible_person: false
 
 
 # - name: Gerry / Gwen / Gaby
