@@ -35,6 +35,12 @@ from .congress.tlaib import (
 from .congress.tlaib.boost import (
     create_boost_middle_class_tax_credit_reform,
 )
+from .states.mn.walz import (
+    create_mn_walz_hf1938_repeal_reform,
+)
+from .states.oregon.rebate import (
+    create_or_rebate_state_tax_exempt_reform,
+)
 
 from policyengine_core.reforms import Reform
 import warnings
@@ -91,6 +97,11 @@ def create_structural_reforms_from_parameters(parameters, period):
     boost_middle_class_tax_credit = (
         create_boost_middle_class_tax_credit_reform(parameters, period)
     )
+    mn_walz_hf1938 = create_mn_walz_hf1938_repeal_reform(parameters, period)
+
+    or_rebate_state_tax_exempt = create_or_rebate_state_tax_exempt_reform(
+        parameters, period
+    )
 
     reforms = [
         afa_reform,
@@ -112,6 +123,8 @@ def create_structural_reforms_from_parameters(parameters, period):
         rent_relief_tax_credit,
         end_child_poverty_act,
         boost_middle_class_tax_credit,
+        mn_walz_hf1938,
+        or_rebate_state_tax_exempt,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
 
