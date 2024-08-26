@@ -18,5 +18,5 @@ class ma_eaedc_age_eligible(Variable):
         age = person("age", period)
         is_ssi_eligible = person("is_ssi_eligible", period)
         elderly = age >= p.age_threshold
-    
-        return spm_unit.any(elderly & ~ is_ssi_eligible)
+
+        return spm_unit.any(elderly & ~is_ssi_eligible)
