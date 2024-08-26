@@ -1,4 +1,5 @@
-description: A household is eligible for the Standard Utility Allowance if it has
+description:
+  A household is eligible for the Standard Utility Allowance if it has
   separate heating and cooling costs.
 AK:
   2010-01-01: 0
@@ -27,9 +28,10 @@ CO:
     value: 531
     metadata:
       reference:
-      - title: Code of Colorado Regulations | Rule Manual Volume 4, SNAP | 4.407.31(A)(4)
-          (page 109)
-        href: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=10492&fileName=10%20CCR%202506-1
+        - title:
+            Code of Colorado Regulations | Rule Manual Volume 4, SNAP | 4.407.31(A)(4)
+            (page 109)
+          href: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=10492&fileName=10%20CCR%202506-1
   2023-10-01: 560
 CT:
   2010-01-01: 0
@@ -224,14 +226,14 @@ metadata:
   unit: currency-USD
   period: month
   reference:
-  - name: USDA | Food and Nutrition Service | SNAP | Standard Utility Allowances
-    href: https://www.fns.usda.gov/snap/eligibility/deduction/standard-utility-allowances
-  - name: SNAP Screener | SNAP Eligibility Parameters
-    href: https://www.snapscreener.com/?p=table
-  - name: USDA utility allowances by state spreadsheet. Extracted by build_utility_allowances()
-    href: https://www.fns.usda.gov/sites/default/files/resource-files/snap-sua-table-fy24-032624.xlsx
+    - name: USDA | Food and Nutrition Service | SNAP | Standard Utility Allowances
+      href: https://www.fns.usda.gov/snap/eligibility/deduction/standard-utility-allowances
+    - name: SNAP Screener | SNAP Eligibility Parameters
+      href: https://www.snapscreener.com/?p=table
+    - name: USDA utility allowances by state spreadsheet. Extracted by build_utility_allowances()
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/snap-sua-table-fy24-032624.xlsx
   breakdown:
-  - state_code
+    - state_code
   label: SNAP standard utility allowance
   uprating: gov.usda.snap.uprating
   propagate_metadata_to_children: true
