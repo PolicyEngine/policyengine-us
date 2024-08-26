@@ -16,5 +16,7 @@ class ma_eaedc_age_eligible(Variable):
         p = parameters(period).gov.states.ma.dta.tcap.eaedc
         person = spm_unit.members
         age = person("age", period)
-
-        return spm_unit.any(age >= p.age_threshold)  # & ~ ssi_eligible
+        is_ssi_eligible = person("is_ssi_eligible", period)
+        elderly = age >= p.age_threshold
+    
+        return spm_unit.any(elderly & ~ is_ssi_eligible)

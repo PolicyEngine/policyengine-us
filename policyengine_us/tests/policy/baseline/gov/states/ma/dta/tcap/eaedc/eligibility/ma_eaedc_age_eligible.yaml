@@ -2,7 +2,7 @@
   period: 2022
   input:
     age: 65
-    # ssi_eligible 
+    is_ssi_eligible: false
     state_code: MA
   output:
     ma_eaedc_age_eligible: true
@@ -11,7 +11,17 @@
   period: 2022
   input:
     age: 64
-    # ssi_eligible 
+    is_ssi_eligible: false
     state_code: MA
   output:
     ma_eaedc_age_eligible: false
+
+- name: Case 2, above age threshold, but ssi eligible, then not eligible.
+  period: 2022
+  input:
+    age: 66
+    is_ssi_eligible: true
+    state_code: MA
+  output:
+    ma_eaedc_age_eligible: false
+    
