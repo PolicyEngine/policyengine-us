@@ -24,6 +24,19 @@ class ia_itemized_deductions_unit(Variable):
         federal dollar limitation.
         """
         # compute tax unit's itemized deductions
-        itm_deds_less_salt = tax_unit("itemized_deductions_less_salt", period)
-        uncapped_property_taxes = add(tax_unit, period, ["real_estate_taxes"])
-        return itm_deds_less_salt + uncapped_property_taxes
+        p = parameters(period).gov.states.ia.tax.income.deductions.itemized
+        if p.fed_ded_applies:
+            p_fed = parameters(period).gov.irs.deductions
+            itemized_deductions = add(
+                tax_unit, period, p_fed.itemized_deductions
+            )
+            salt_deduction = tax_unit("salt_deduction", period)
+        else:
+            itm_deds_less_salt = tax_unit(
+                "itemized_deductions_less_salt", period
+            )
+            uncapped_property_taxes = add(
+                tax_unit, period, ["real_estate_taxes"]
+            )
+            itemized_deductions = itm_deds_less_salt + uncapped_property_taxes
+        return itemized_deductions

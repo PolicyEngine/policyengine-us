@@ -27,3 +27,13 @@
     state_code: IA
   output:
     ia_withheld_income_tax: 0
+
+- name: Federal feduction post 2023
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    irs_employment_income: 10_000
+    filing_status: JOINT
+    state_code: IA
+  output:
+    ia_withheld_income_tax: 0

@@ -21,3 +21,21 @@
         state_code: IA
   output:
     ia_itemized_deductions_unit: 30_000
+
+- name: Capped SALT deduction post 2023
+  period: 2023
+  input:
+    real_estate_taxes: 11_000
+    state_code: IA
+    filing_status: JOINT
+  output:
+    ia_itemized_deductions_unit: 10_000
+
+- name: Uncapped SALT deduction pre 2023
+  period: 2022
+  input:
+    real_estate_taxes: 11_000
+    state_code: IA
+    filing_status: JOINT
+  output:
+    ia_itemized_deductions_unit: 11_000
