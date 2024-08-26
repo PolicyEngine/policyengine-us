@@ -12,4 +12,4 @@ class ms_cdcc_eligible(Variable):
     def formula(tax_unit, period, parameters):
         agi = tax_unit("adjusted_gross_income", period)
         p = parameters(period).gov.states.ms.tax.income.credits.cdcc
-        return p.income_limit >= agi
+        return agi <= p.income_limit
