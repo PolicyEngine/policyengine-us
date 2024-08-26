@@ -5,7 +5,6 @@ class ms_cdcc_eligible(Variable):
     value_type = bool
     entity = TaxUnit
     label = "Eligible for the Mississippi child and dependent care credit"
-    unit = USD
     definition_period = YEAR
     defined_for = StateCode.MS
     reference = "https://legiscan.com/MS/text/HB1671/id/2767768"
