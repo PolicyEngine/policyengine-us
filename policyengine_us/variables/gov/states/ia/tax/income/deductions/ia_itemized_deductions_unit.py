@@ -25,17 +25,12 @@ class ia_itemized_deductions_unit(Variable):
         """
         # compute tax unit's itemized deductions
         p = parameters(period).gov.states.ia.tax.income.deductions.itemized
-        if p.fed_ded_applies:
+        if p.applies_federal:
             p_fed = parameters(period).gov.irs.deductions
-            itemized_deductions = add(
-                tax_unit, period, p_fed.itemized_deductions
-            )
+            return add(tax_unit, period, p_fed.itemized_deductions)
         else:
-            itm_deds_less_salt = tax_unit(
-                "itemized_deductions_less_salt", period
+            return add(
+                tax_unit,
+                period,
+                ["itemized_deductions_less_salt", "real_estate_taxes"],
             )
-            uncapped_property_taxes = add(
-                tax_unit, period, ["real_estate_taxes"]
-            )
-            itemized_deductions = itm_deds_less_salt + uncapped_property_taxes
-        return itemized_deductions
