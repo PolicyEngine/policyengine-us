@@ -30,7 +30,6 @@ class ia_itemized_deductions_unit(Variable):
             itemized_deductions = add(
                 tax_unit, period, p_fed.itemized_deductions
             )
-            salt_deduction = tax_unit("salt_deduction", period)
         else:
             itm_deds_less_salt = tax_unit(
                 "itemized_deductions_less_salt", period
