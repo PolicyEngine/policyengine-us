@@ -1,0 +1,15 @@
+- name: Eligible household
+  period: 2023
+  input:
+    state_code: MS
+    adjusted_gross_income: 50_000
+  output:
+    ms_cdcc_eligible: true
+
+- name: Income ineligible household
+  period: 2023
+  input:
+    state_code: MS
+    adjusted_gross_income: 50_001
+  output:
+    ms_cdcc_eligible: false

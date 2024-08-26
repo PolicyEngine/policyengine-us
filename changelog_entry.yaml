@@ -1,8 +1,4 @@
-- bump: patch
+- bump: minor
   changes:
-    fixes:
-    - Utah 2024 Tax Rate and EITC Description Change.
-    - Rhode Island 2023 retirement income subtraction cap increase.
-    - Mississippi 2023 income tax rate.
-    - Remove True print statement in Minnesota CDCC.
-    - Colorado family affordability credit age multiplier label.
+    added:
+    - Mississippi child and dependent care credit.
