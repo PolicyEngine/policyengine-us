@@ -1,0 +1,17 @@
+- name: State AGI over federal AGI
+  period: 2022
+  input:
+    state_code: OR
+    adjusted_gross_income: 2_500
+    or_agi: 5_500
+  output:
+    or_wfhdc_household_income: 5_500
+
+- name: State AGI under federal AGI
+  period: 2022
+  input:
+    state_code: OR
+    adjusted_gross_income: 8_000
+    or_agi: 5_500
+  output:
+    or_wfhdc_household_income: 8_000
