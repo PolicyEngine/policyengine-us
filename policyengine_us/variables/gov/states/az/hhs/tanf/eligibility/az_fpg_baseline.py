@@ -11,7 +11,7 @@ class az_fpg_baseline(Variable):
 
     def formula(spm_unit, period, parameters):
         FPG_YEAR = f"1992-01-01"
-        household_size = spm_unit("az_countable_household_size", period)
+        household_size = spm_unit("spm_unit_size", period)
         cap_household_size = max_(household_size, 0)
         state_group = spm_unit.household("state_group_str", period)
         p_fpg = parameters(FPG_YEAR).gov.hhs.fpg

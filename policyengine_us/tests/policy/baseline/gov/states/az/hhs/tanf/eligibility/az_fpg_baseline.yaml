@@ -2,16 +2,16 @@
   period: 2024
   absolute_error_margin: 1
   input:
-    az_countable_household_size: 1
+    spm_unit_size: 1
     state_code: AZ
   output:
-    az_fpg_baseline: 6810
+    az_fpg_baseline: 6_810
 
 - name: The 1992 fpg baseline for a family of 4
   period: 2021
   absolute_error_margin: 1
   input:
-    az_countable_household_size: 4
+    spm_unit_size: 4
     state_code: AZ
   output:
-    az_fpg_baseline: 13950
+    az_fpg_baseline: 13_950

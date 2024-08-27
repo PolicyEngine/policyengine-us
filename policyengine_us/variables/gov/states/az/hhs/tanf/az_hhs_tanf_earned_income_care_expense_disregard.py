@@ -16,11 +16,12 @@ class az_hhs_tanf_earned_income_care_expense_disregard(Variable):
         person = spm_unit.members
         age = person("age", period) * MONTHS_IN_YEAR
         # Get the childcare and disabled adult care expenses
-        care_expenses = spm_unit("childcare_expenses", period)
+        care_expenses = add(spm_unit, period, ["childcare_expenses", "care_expenses"])
         # Determine the total eligible disregard
         # The eligibility reuquirements consider whether children or disabled adults
         is_child = person("az_tanf_eligible_child", period)
-        disabled_adult = person("is_disabled", period)
+        child = person("is_child", period)
+        disabled_adult = person("is_disabled", period) & ~child
         # Calculate eligible child disregard
         child_amount = p.child_amounts.calc(age) * is_child
         # Calculate eligible disabled adult disregard
