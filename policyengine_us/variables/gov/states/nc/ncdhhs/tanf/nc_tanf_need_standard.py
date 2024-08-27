@@ -24,4 +24,4 @@ class nc_tanf_need_standard(Variable):
         additional_maximum_benefit = p.additional_person * additional_people
         monthly_amount = base + additional_maximum_benefit
         # Return annual value.
-        return monthly * MONTHS_IN_YEAR
+        return monthly_amount * MONTHS_IN_YEAR

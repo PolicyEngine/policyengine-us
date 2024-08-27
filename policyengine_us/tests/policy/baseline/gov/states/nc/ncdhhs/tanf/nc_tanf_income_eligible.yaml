@@ -2,14 +2,14 @@
   period: 2024
   input:
     state_code: NC
-    nc_tanf_need_standard: 1
+    nc_tanf_need_standard: 362 * 12
     nc_tanf_countable_earned_income_need: 0
     nc_tanf_countable_gross_unearned_income: 0
-    spm_unit_size: 2
+    spm_unit_size: 1
   output:
     nc_tanf_income_eligible: true
 
-- name: Household with income and less than the allowed difference is eligible.
+- name: Household with income and less than the allowed difference is ineligible.
   period: 2024
   input:
     state_code: NC
@@ -18,9 +18,9 @@
     nc_tanf_countable_gross_unearned_income: 200 * 12
     spm_unit_size: 2
   output:
-    nc_tanf_income_eligible: true
+    nc_tanf_income_eligible: false
 
-- name: Household with income and greater than the allowed difference is ineligible.
+- name: Household with income and greater than the allowed difference is eligible.
   period: 2024
   input:
     state_code: NC
@@ -29,4 +29,4 @@
     nc_tanf_countable_gross_unearned_income: 200 * 12
     spm_unit_size: 2
   output:
-    nc_tanf_income_eligible: false
+    nc_tanf_income_eligible: true

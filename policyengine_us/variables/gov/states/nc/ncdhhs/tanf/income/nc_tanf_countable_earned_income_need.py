@@ -20,7 +20,7 @@ class nc_tanf_countable_earned_income_need(Variable):
         annual_flat_exclusion = p.flat * MONTHS_IN_YEAR
         # needs modify
         return where(
-            enrolled,
+            tanf_enrolled,
             # For enrolled participants, Colorado applies only a percent exclusion.
             gross_earnings * (1 - p.percent),
             # For new enrollees, Colorado applies only a flat exclusion.

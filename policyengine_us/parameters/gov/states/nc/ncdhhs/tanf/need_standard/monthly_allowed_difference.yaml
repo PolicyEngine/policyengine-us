@@ -1,4 +1,4 @@
-description: North Carolina TANF need standard monthly allowed income and need difference.
+description: North Carolina uses this threshold amount to determine if a filer is qualified for the TANF program.
 
 values:
   2024-01-01: 25
@@ -6,6 +6,7 @@ values:
 metadata:
   unit: currency-USD
   period: month
+  label: North Carolina TANF monthly eligible threshold
   reference:
     - title: WORK FIRST | Income and Budgeting (Change No. 04-2023, January 1, 2024)
       href: https://policies.ncdhhs.gov/wp-content/uploads/wf-114_1-2-2024.pdf#page=5

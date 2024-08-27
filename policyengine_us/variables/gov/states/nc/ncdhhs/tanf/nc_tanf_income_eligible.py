@@ -21,9 +21,10 @@ class nc_tanf_income_eligible(Variable):
             ],
         )
         need_standard = spm_unit("nc_tanf_need_standard", period)
-
         household_size = spm_unit("spm_unit_size", period)
+        reduced_need_standard = max_(need_standard - income, 0)
 
         return (
-            need_standard - income
-        ) / MONTHS_IN_YEAR / household_size < monthly_allowed_difference
+            reduced_need_standard / MONTHS_IN_YEAR / household_size
+            >= monthly_allowed_difference
+        )
