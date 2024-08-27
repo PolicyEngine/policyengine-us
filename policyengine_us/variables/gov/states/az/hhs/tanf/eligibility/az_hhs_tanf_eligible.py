@@ -10,6 +10,7 @@ class az_hhs_tanf_eligible(Variable):
     defined_for = StateCode.AZ
 
     def formula(spm_unit, period, parameters):
+        person = spm_unit.members
         monthly_fpg = spm_unit("spm_unit_fpg", period)
         monthly_countable_earned_income = spm_unit(
             "az_tanf_earned_income", period
@@ -18,10 +19,9 @@ class az_hhs_tanf_eligible(Variable):
             "az_payment_standard_threshold", period
         )
         # Judge whether is a needy family (countable income is below 100% of Federal Poverty Guideline)
-        p = parameters(period).gov.states.az.hhs.tanf.eligibility.needy_family
+        fpg_rate = person("az_fpg_rate", period)
         fpg_eligibility = (
-            monthly_countable_earned_income
-            <= p.normal_percentage * monthly_fpg
+            monthly_countable_earned_income <= fpg_rate * monthly_fpg
         )
         # Judge whether the countable income exceed the Cash Assistance Payment Standard
         payment_standard_eligibility = (
