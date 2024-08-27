@@ -18,4 +18,4 @@ class az_payment_standard_threshold(Variable):
         low_threshold = p.low * monthly_fpg_baseline
         shelter_cost = spm_unit("housing_cost", period)
 
-        return where(shelter_cost > 0, high_threshold,low_threshold)
+        return where(shelter_cost > 0, high_threshold, low_threshold)
