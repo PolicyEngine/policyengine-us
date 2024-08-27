@@ -1,5 +1,6 @@
 from policyengine_us.model_api import *
 
+
 class nc_tanf(Variable):
     value_type = float
     entity = SPMUnit

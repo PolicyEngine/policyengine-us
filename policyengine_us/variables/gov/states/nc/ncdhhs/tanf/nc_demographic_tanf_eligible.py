@@ -1,5 +1,6 @@
 from policyengine_us.model_api import *
 
+
 class nc_demographic_tanf_eligible(Variable):
     value_type = bool
     entity = SPMUnit

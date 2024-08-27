@@ -1,5 +1,6 @@
 from policyengine_us.model_api import *
 
+
 class nc_tanf_income_eligible(Variable):
     value_type = bool
     entity = SPMUnit
@@ -8,7 +9,9 @@ class nc_tanf_income_eligible(Variable):
     defined_for = StateCode.NC
 
     def formula(spm_unit, period, parameters):
-        monthly_allowed_difference = parameters(period).gov.states.nc.ncdhhs.tanf.need_standard.monthly_allowed_difference
+        monthly_allowed_difference = parameters(
+            period
+        ).gov.states.nc.ncdhhs.tanf.need_standard.monthly_allowed_difference
         income = add(
             spm_unit,
             period,
@@ -21,4 +24,6 @@ class nc_tanf_income_eligible(Variable):
 
         household_size = spm_unit("spm_unit_size", period)
 
-        return (need_standard - income) / MONTHS_IN_YEAR / household_size < monthly_allowed_difference
+        return (
+            need_standard - income
+        ) / MONTHS_IN_YEAR / household_size < monthly_allowed_difference

@@ -13,7 +13,9 @@ class nc_tanf_countable_earned_income_need(Variable):
         gross_earnings = spm_unit(
             "nc_tanf_countable_gross_earned_income", period
         )
-        p = parameters(period).gov.states.nc.ncdhhs.tanf.income.earned_exclusion
+        p = parameters(
+            period
+        ).gov.states.nc.ncdhhs.tanf.income.earned_exclusion
         enrolled = spm_unit("is_tanf_enrolled", period)
         annual_flat_exclusion = p.flat * MONTHS_IN_YEAR
         # needs modify
