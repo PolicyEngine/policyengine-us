@@ -25,6 +25,6 @@ class nc_tanf_income_eligible(Variable):
         reduced_need_standard = max_(need_standard - income, 0)
 
         return (
-            reduced_need_standard / MONTHS_IN_YEAR / household_size
-            >= monthly_allowed_difference
+            reduced_need_standard / household_size
+            >= monthly_allowed_difference * MONTHS_IN_YEAR
         )

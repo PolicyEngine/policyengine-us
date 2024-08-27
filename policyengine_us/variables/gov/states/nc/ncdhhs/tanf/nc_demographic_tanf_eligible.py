@@ -7,8 +7,8 @@ class nc_demographic_tanf_eligible(Variable):
     definition_period = YEAR
     label = "NC Demographic eligibility for TANF"
     documentation = "Whether any person in a family applying for the Temporary Assistance for Needy Families program meets demographic requirements."
-    adds = ["nc_tanf_child_eligible"]
 
     def formula(spm_unit, period, parameters):
-        # Check if any person in the SPMUnit is eligible as a child for TANF
-        return spm_unit.any("nc_tanf_child_eligible", period)
+        person = spm_unit.members
+        eligible = person("nc_tanf_child_eligible", period)
+        return spm_unit.any(eligible)

@@ -1,0 +1,29 @@
+- name: child under 17, return true
+  period: 2024
+  input:
+    state_code: NC
+    is_child: true
+    age: 17
+    is_full_time_student: false
+  output:
+    nc_tanf_child_eligible: true
+
+- name: child over 17 and not a full time student, return false
+  period: 2024
+  input:
+    state_code: NC
+    is_child: false
+    age: 18
+    is_full_time_student: false
+  output:
+    nc_tanf_child_eligible: false
+
+- name: child is 18, but is full time student, return true
+  period: 2024
+  input:
+    state_code: NC
+    is_child: false
+    age: 18
+    is_full_time_student: true
+  output:
+    nc_tanf_child_eligible: true
