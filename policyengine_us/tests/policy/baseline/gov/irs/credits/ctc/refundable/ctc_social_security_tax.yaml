@@ -1,0 +1,41 @@
+- name: No inputs
+  period: 2018
+  input:
+    # SS_ADD_VARIABLES
+    employee_social_security_tax: 0
+    employee_medicare_tax: 0
+    unreported_payroll_tax: 0
+    self_employment_tax_ald: 0
+    additional_medicare_tax: 0
+    # SS_SUBTRACT_VARIABLES
+    excess_payroll_tax_withheld: 0
+  output:
+    ctc_social_security_tax: 0
+
+- name: Social security taxes included variables more than excluded variables
+  period: 2018
+  input:
+    # SS_ADD_VARIABLES
+    employee_social_security_tax: 100
+    employee_medicare_tax: 100
+    unreported_payroll_tax: 0
+    self_employment_tax_ald: 50
+    additional_medicare_tax: 25
+    # SS_SUBTRACT_VARIABLES
+    excess_payroll_tax_withheld: 200
+  output:
+    ctc_social_security_tax: 75
+
+- name: Social security taxes included variables less than excluded variables
+  period: 2018
+  input:
+    # SS_ADD_VARIABLES
+    employee_social_security_tax: 100
+    employee_medicare_tax: 100
+    unreported_payroll_tax: 0
+    self_employment_tax_ald: 50
+    additional_medicare_tax: 25
+    # SS_SUBTRACT_VARIABLES
+    excess_payroll_tax_withheld: 450
+  output:
+    ctc_social_security_tax: -175

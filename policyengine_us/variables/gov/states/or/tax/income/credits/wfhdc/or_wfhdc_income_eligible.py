@@ -21,9 +21,7 @@ class or_wfhdc_income_eligible(Variable):
         income_threshold = fpg * p.fpg_limit
 
         # Get household income, the larger of federal and Oregon AGI.
-        federal_agi = tax_unit("adjusted_gross_income", period)
-        or_agi = tax_unit("or_agi", period)
-        household_income = max_(federal_agi, or_agi)
+        household_income = tax_unit("or_wfhdc_household_income", period)
 
         # Check if household income is below the threshold.
         return household_income <= income_threshold
