@@ -1,0 +1,8 @@
+- name: No earned income, $0 per year
+  period: 2024
+  input:
+    state_code: NC
+    nc_tanf_countable_gross_earned_income: 0
+    is_tanf_enrolled: false
+  output:
+    nc_tanf_countable_earned_income_need: 0
