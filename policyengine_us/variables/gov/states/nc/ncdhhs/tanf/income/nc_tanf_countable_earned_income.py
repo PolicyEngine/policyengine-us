@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class nc_tanf_countable_gross_earned_income(Variable):
+class nc_tanf_countable_earned_income(Variable):
     value_type = float
     entity = SPMUnit
-    label = "North Carolina TANF countable gross earned income"
+    label = "North Carolina TANF countable earned income"
     unit = USD
     definition_period = YEAR
 

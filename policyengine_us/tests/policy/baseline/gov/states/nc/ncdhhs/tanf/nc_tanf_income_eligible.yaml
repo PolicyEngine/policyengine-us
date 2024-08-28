@@ -3,7 +3,7 @@
   input:
     state_code: NC
     nc_tanf_need_standard: 362 * 12
-    nc_tanf_countable_earned_income_need: 0
+    nc_tanf_countable_earned_income: 0
     nc_tanf_countable_gross_unearned_income: 0
     spm_unit_size: 1
   output:
@@ -14,7 +14,7 @@
   input:
     state_code: NC
     nc_tanf_need_standard: 472 * 12
-    nc_tanf_countable_earned_income_need: 230 * 12 
+    nc_tanf_countable_earned_income: 230 * 12 
     nc_tanf_countable_gross_unearned_income: 200 * 12
     spm_unit_size: 2
   output:
@@ -25,7 +25,7 @@
   input:
     state_code: NC
     nc_tanf_need_standard: 472 * 12
-    nc_tanf_countable_earned_income_need: 200 * 12
+    nc_tanf_countable_earned_income: 200 * 12
     nc_tanf_countable_gross_unearned_income: 200 * 12
     spm_unit_size: 2
   output:

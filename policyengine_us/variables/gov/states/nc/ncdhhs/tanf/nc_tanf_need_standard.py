@@ -10,14 +10,18 @@ class nc_tanf_need_standard(Variable):
     defined_for = StateCode.NC
 
     def formula(spm_unit, period, parameters):
-        # Get number of people in SPM unit.
-        people = spm_unit("spm_unit_size", period)
-        # Cap them at the maximum specified in the tables.
-        capped_people = min_(people, 14).astype(int)
-        # Calculate additional people beyond the maximum in tables.
-        additional_people = people - capped_people
         # Get the relevant part of the parameter tree.
         p = parameters(period).gov.states.nc.ncdhhs.tanf.need_standard
+        # Get number of people in SPM unit.
+        people = spm_unit("spm_unit_size", period)
+        # Get household size list
+        household_size_list = list(map(int, (p.main)))
+        # Get the maximun number of people defined in the tables.
+        max_people_on_file = max(household_size_list)
+        # Cap them at the maximum specified in the tables.
+        capped_people = min_(people, max_people_on_file).astype(int)
+        # Calculate additional people beyond the maximum in tables.
+        additional_people = people - capped_people
         # Look up the main maximum benefit for the number of (capped) people.
         base = p.main[capped_people]
         # Add the additional maximum benefit for the additional people.

@@ -12,13 +12,13 @@ class nc_tanf(Variable):
     def formula(spm_unit, period, parameters):
         payment_percentage = parameters(
             period
-        ).gov.states.nc.ncdhhs.tanf.need_standard.monthly_percentage
+        ).gov.states.nc.ncdhhs.tanf.need_standard.payment_percentage
         need_standard = spm_unit("nc_tanf_need_standard", period)
         income = add(
             spm_unit,
             period,
             [
-                "nc_tanf_countable_earned_income_grant_standard",
+                "nc_tanf_countable_earned_income",
                 "nc_tanf_countable_gross_unearned_income",
             ],
         )

@@ -10,5 +10,5 @@ class nc_demographic_tanf_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         person = spm_unit.members
-        eligible = person("nc_tanf_child_eligible", period)
+        eligible = person("is_child", period)
         return spm_unit.any(eligible)
