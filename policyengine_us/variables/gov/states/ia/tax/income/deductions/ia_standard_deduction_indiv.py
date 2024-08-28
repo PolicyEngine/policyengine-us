@@ -44,4 +44,4 @@ class ia_standard_deduction_indiv(Variable):
         else:
             deduction = p.amount[filing_status]
 
-        return (is_head | is_spouse) * deduction
+        return tax_unit("is_tax_unit_head_or_spouse", period) * deduction 

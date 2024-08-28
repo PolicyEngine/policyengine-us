@@ -20,7 +20,7 @@ class ia_standard_deduction_joint(Variable):
         is_head = person("is_tax_unit_head", period)
         p = parameters(period).gov.states.ia.tax.income
 
-        if p.deductions.standard.fed_ded_applies:
+        if p.deductions.standard.applies_federal:
             fed_p = parameters(period).gov.irs.deductions
             deduction = fed_p.standard.amount[filing_status]
         else:

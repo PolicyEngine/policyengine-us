@@ -13,7 +13,7 @@ class ia_withheld_income_tax(Variable):
         employment_income = person("irs_employment_income", period)
         p = parameters(period).gov.states.ia.tax.income
         # We apply the base standard deduction amount
-        if p.deductions.standard.fed_ded_applies:
+        if p.deductions.standard.applies_federal:
             p_fed = parameters(period).gov.irs.deductions
             standard_deduction = p_fed.standard.amount["SINGLE"]
         else:
