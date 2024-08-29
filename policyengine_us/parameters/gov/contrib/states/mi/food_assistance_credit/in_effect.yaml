@@ -1,0 +1,11 @@
+description: The Michigan food assistance tax credit is in effect if this is true.
+metadata:
+  unit: bool
+  period: year
+  label: Michigan food assistance credit in effect
+  reference:
+    - title: Michigan House Bill 5628, Sec. 282., (2)
+      href: https://www.legislature.mi.gov/documents/2023-2024/billintroduced/House/pdf/2024-HIB-5628.pdf#page=2
+
+values:
+  0000-01-01: false

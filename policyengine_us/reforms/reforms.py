@@ -41,6 +41,7 @@ from .states.mn.walz import (
 from .states.oregon.rebate import (
     create_or_rebate_state_tax_exempt_reform,
 )
+from .states.mi import (create_mi_food_assitance_credit_reform,)
 
 from policyengine_core.reforms import Reform
 import warnings
@@ -102,6 +103,7 @@ def create_structural_reforms_from_parameters(parameters, period):
     or_rebate_state_tax_exempt = create_or_rebate_state_tax_exempt_reform(
         parameters, period
     )
+    mi_food_assistance_credit = create_mi_food_assitance_credit_reform(parameters, period)
 
     reforms = [
         afa_reform,
@@ -125,6 +127,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         boost_middle_class_tax_credit,
         mn_walz_hf1938,
         or_rebate_state_tax_exempt,
+        mi_food_assistance_credit,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
 
