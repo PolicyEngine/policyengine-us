@@ -5,6 +5,32 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.64.0] - 2024-08-29 15:00:53
+
+### Added
+
+- CARES act charity deduction provision for non-itemizers.
+
+## [1.63.0] - 2024-08-26 22:09:35
+
+### Added
+
+- Mississippi child and dependent care credit.
+
+## [1.62.0] - 2024-08-26 21:37:42
+
+### Added
+
+- Oregon WFHDC household income variable.
+
+## [1.61.2] - 2024-08-26 14:19:06
+
+## [1.61.1] - 2024-08-25 22:50:32
+
+### Fixed
+
+- Oregon rebate reform typo.
+
 ## [1.61.0] - 2024-08-23 15:56:12
 
 ### Added
@@ -9479,6 +9505,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.64.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.63.0...1.64.0
+[1.63.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.62.0...1.63.0
+[1.62.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.61.2...1.62.0
+[1.61.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.61.1...1.61.2
+[1.61.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.61.0...1.61.1
 [1.61.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.60.0...1.61.0
 [1.60.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.59.0...1.60.0
 [1.59.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.58.0...1.59.0
