@@ -1,0 +1,63 @@
+- name: 2018 single filer
+  period: 2018
+  input:
+    charitable_cash_donations: 400
+    filing_status: SINGLE
+  output:
+    charitable_deduction_for_non_itemizers: 0
+
+- name: 2020 single filer more than limit
+  period: 2020
+  input:
+    charitable_cash_donations: 400
+    filing_status: SINGLE
+  output:
+    charitable_deduction_for_non_itemizers: 150
+
+- name: 2020 married filers more than limit
+  period: 2020
+  input:
+    charitable_cash_donations: 700
+    filing_status: JOINT
+  output:
+    charitable_deduction_for_non_itemizers: 300
+
+- name: 2021 single filer less than limit
+  period: 2021
+  input:
+    charitable_cash_donations: 200
+    filing_status: SINGLE
+  output:
+    charitable_deduction_for_non_itemizers: 200
+
+- name: 2021 single filer more than limit
+  period: 2021
+  input:
+    charitable_cash_donations: 400
+    filing_status: SINGLE
+  output:
+    charitable_deduction_for_non_itemizers: 300
+
+- name: 2021 married filers less than limit
+  period: 2021
+  input:
+    charitable_cash_donations: 400
+    filing_status: JOINT
+  output:
+    charitable_deduction_for_non_itemizers: 400
+
+- name: 2021 married filers more than limit
+  period: 2021
+  input:
+    charitable_cash_donations: 700
+    filing_status: JOINT
+  output:
+    charitable_deduction_for_non_itemizers: 600
+
+- name: 2022 single filer
+  period: 2022
+  input:
+    charitable_cash_donations: 400
+    filing_status: SINGLE
+  output:
+    charitable_deduction_for_non_itemizers: 0
