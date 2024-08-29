@@ -22,5 +22,6 @@ class nc_tanf(Variable):
                 "nc_tanf_countable_gross_unearned_income",
             ],
         )
+        reduced_need_standard = max_(need_standard - income, 0)
 
-        return max_((need_standard - income) * payment_percentage, 0)
+        return reduced_need_standard * payment_percentage

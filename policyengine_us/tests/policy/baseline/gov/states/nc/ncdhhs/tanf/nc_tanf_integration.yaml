@@ -1,3 +1,19 @@
+- name: One person and no income, $2178 per year
+  period: 2024
+  input:
+    people:
+      person1:
+        is_child: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NC
+  output:
+    nc_tanf: (362 - 0) * 0.5 * 12
+
 - name: One adult and one child and no income, $2832 per year
   period: 2024
   input:
@@ -70,6 +86,210 @@
     households:
       household:
         members: [adult1, child1]
+        state_code: NC
+  output:
+    nc_tanf: 0
+
+- name: 14 people including a child and no income, $6252 per year
+  period: 2024
+  input:
+    people:
+      adult1:
+        is_adult: true
+        employment_income: 0
+        self_employment_income: 0
+      adult2:
+        is_adult: true
+        employment_income: 0
+        self_employment_income: 0
+      adult3:
+        is_adult: true
+        employment_income: 0
+        self_employment_income: 0
+      adult4:
+        is_adult: true
+        employment_income: 0
+        self_employment_income: 0
+      adult5:
+        is_adult: true
+        employment_income: 0
+        self_employment_income: 0
+      adult6:
+        is_adult: true
+        employment_income: 0
+        self_employment_income: 0
+      adult7:
+        is_adult: true
+        employment_income: 0
+        self_employment_income: 0
+      adult8:
+        is_adult: true
+        employment_income: 0
+        self_employment_income: 0
+      adult9:
+        is_adult: true
+        employment_income: 0
+        self_employment_income: 0
+      adult10:
+        is_adult: true
+        employment_income: 0
+        self_employment_income: 0
+      adult11:
+        is_adult: true
+        employment_income: 0
+        self_employment_income: 0
+      adult12:
+        is_adult: true
+        employment_income: 0
+        self_employment_income: 0
+      adult13:
+        is_adult: true
+        employment_income: 0
+        self_employment_income: 0
+      child1:
+        is_child: true   
+    spm_units:
+      spm_unit:
+        members: [adult1, adult2, adult3, adult4, adult5, adult6, adult7, adult8, adult9, adult10, adult11, adult12, adult13, child1]
+    households:
+      household:
+        members: [adult1, adult2, adult3, adult4, adult5, adult6, adult7, adult8, adult9, adult10, adult11, adult12, adult13, child1]
+        state_code: NC
+  output:
+    nc_tanf: (1042 - 0) * 0.5 * 12   
+
+- name: 14 people including a child and $692 * 12 income, $300 per year
+  period: 2024
+  input:
+    people:
+      adult1:
+        is_adult: true
+        employment_income: 400 * 12 
+        self_employment_income: 200 * 12
+      adult2:
+        is_adult: true
+        employment_income: 92 * 12
+        self_employment_income: 0
+      adult3:
+        is_adult: true
+        employment_income: 0
+        self_employment_income: 0
+      adult4:
+        is_adult: true
+        employment_income: 0
+        self_employment_income: 0
+      adult5:
+        is_adult: true
+        employment_income: 0
+        self_employment_income: 0
+      adult6:
+        is_adult: true
+        employment_income: 0
+        self_employment_income: 0
+      adult7:
+        is_adult: true
+        employment_income: 0
+        self_employment_income: 0
+      adult8:
+        is_adult: true
+        employment_income: 0
+        self_employment_income: 0
+      adult9:
+        is_adult: true
+        employment_income: 0
+        self_employment_income: 0
+      adult10:
+        is_adult: true
+        employment_income: 0
+        self_employment_income: 0
+      adult11:
+        is_adult: true
+        employment_income: 0
+        self_employment_income: 0
+      adult12:
+        is_adult: true
+        employment_income: 0
+        self_employment_income: 0
+      adult13:
+        is_adult: true
+        employment_income: 0
+        self_employment_income: 0
+      child1:
+        is_child: true   
+    spm_units:
+      spm_unit:
+        members: [adult1, adult2, adult3, adult4, adult5, adult6, adult7, adult8, adult9, adult10, adult11, adult12, adult13, child1]
+    households:
+      household:
+        members: [adult1, adult2, adult3, adult4, adult5, adult6, adult7, adult8, adult9, adult10, adult11, adult12, adult13, child1]
+        state_code: NC
+  output:
+    nc_tanf: (1042 - 692) * 0.5 * 12 
+
+- name: 14 people including a child and $1000 * 12 income, $0 per year
+  period: 2024
+  input:
+    people:
+      adult1:
+        is_adult: true
+        employment_income: 400 * 12
+        self_employment_income: 500 * 12
+      adult2:
+        is_adult: true
+        employment_income: 100 * 12
+        self_employment_income: 0
+      adult3:
+        is_adult: true
+        employment_income: 0
+        self_employment_income: 0
+      adult4:
+        is_adult: true
+        employment_income: 0
+        self_employment_income: 0
+      adult5:
+        is_adult: true
+        employment_income: 0
+        self_employment_income: 0
+      adult6:
+        is_adult: true
+        employment_income: 0
+        self_employment_income: 0
+      adult7:
+        is_adult: true
+        employment_income: 0
+        self_employment_income: 0
+      adult8:
+        is_adult: true
+        employment_income: 0
+        self_employment_income: 0
+      adult9:
+        is_adult: true
+        employment_income: 0
+        self_employment_income: 0
+      adult10:
+        is_adult: true
+        employment_income: 0
+        self_employment_income: 0
+      adult11:
+        is_adult: true
+        employment_income: 0
+        self_employment_income: 0
+      adult12:
+        is_adult: true
+        employment_income: 0
+        self_employment_income: 0
+      adult13:
+        is_adult: true
+        employment_income: 0
+        self_employment_income: 0
+      child1:
+        is_child: true   
+    spm_units:
+      spm_unit:
+        members: [adult1, adult2, adult3, adult4, adult5, adult6, adult7, adult8, adult9, adult10, adult11, adult12, adult13, child1]
+    households:
+      household:
+        members: [adult1, adult2, adult3, adult4, adult5, adult6, adult7, adult8, adult9, adult10, adult11, adult12, adult13, child1]
         state_code: NC
   output:
     nc_tanf: 0

@@ -9,6 +9,10 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NC
   output:
     nc_demographic_tanf_eligible: true
 
@@ -23,6 +27,10 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NC
   output:
     nc_demographic_tanf_eligible: false
 
@@ -39,5 +47,9 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NC
   output:
     nc_demographic_tanf_eligible: true

@@ -11,7 +11,7 @@ class nc_tanf_income_eligible(Variable):
     def formula(spm_unit, period, parameters):
         monthly_allowed_difference = parameters(
             period
-        ).gov.states.nc.ncdhhs.tanf.need_standard.monthly_allowed_difference
+        ).gov.states.nc.ncdhhs.tanf.need_standard.average_reduced_need_standard_thresold
         income = add(
             spm_unit,
             period,
