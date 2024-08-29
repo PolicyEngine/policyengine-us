@@ -22,8 +22,8 @@ class charitable_deduction(Variable):
         capped_non_cash_donations = min_(
             non_cash_donations, ceiling.non_cash * positive_agi
         )
-        charitable_deduction_for_non_itemizers = add(
-            tax_unit, period, ["charitable_deduction_for_non_itemizers"]
+        charitable_deduction_for_non_itemizers = tax_unit(
+            "charitable_deduction_for_non_itemizers", period
         )
         reduced_cash_donations = max_(
             cash_donations - charitable_deduction_for_non_itemizers, 0

@@ -23,6 +23,7 @@
     charitable_cash_donations: 500
     charitable_non_cash_donations: 200
     positive_agi: 1_000
+    charitable_deduction_for_non_itemizers: 0
   output: # min(min(200, 1000 * 0.3) + 500, 1000 * 1)
     charitable_deduction: 700
 
