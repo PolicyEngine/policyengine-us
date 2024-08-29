@@ -1,0 +1,43 @@
+- name: Abolished federal, employee, and self-employment income tax
+  period: 2019
+  input:
+    gov.contrib.ubi_center.flat_tax.abolish_payroll_tax: true
+    gov.contrib.ubi_center.flat_tax.abolish_federal_income_tax: true
+    gov.contrib.ubi_center.flat_tax.abolish_self_emp_tax: true
+    income_tax_before_credits: 7_000
+    income_tax_capped_non_refundable_credits: 2_000
+    net_investment_income_tax: 1_000
+    recapture_of_investment_credit: 1_000
+    unreported_payroll_tax: 1_000
+    qualified_retirement_penalty: 1_000
+    flat_tax: 1_000
+    employee_medicare_tax: 500
+    self_employment_social_security_tax: 200
+    household_state_tax_before_refundable_credits: 0
+  output:
+    employee_payroll_tax: 0
+    income_tax_before_refundable_credits: 0
+    self_employment_tax: 0
+    household_tax_before_refundable_credits: 1_000
+
+- name: Not abolished any tax
+  period: 2019
+  input:
+    gov.contrib.ubi_center.flat_tax.abolish_payroll_tax: false
+    gov.contrib.ubi_center.flat_tax.abolish_federal_income_tax: false
+    gov.contrib.ubi_center.flat_tax.abolish_self_emp_tax: false
+    income_tax_before_credits: 7_000
+    income_tax_capped_non_refundable_credits: 2_000
+    net_investment_income_tax: 1_000
+    recapture_of_investment_credit: 1_000
+    unreported_payroll_tax: 1_000
+    qualified_retirement_penalty: 1_000
+    flat_tax: 0
+    employee_medicare_tax: 500
+    self_employment_social_security_tax: 200
+    household_state_tax_before_refundable_credits: 0
+  output:
+    employee_payroll_tax: 500
+    income_tax_before_refundable_credits: 9_000
+    self_employment_tax: 200
+    household_tax_before_refundable_credits: 9_700

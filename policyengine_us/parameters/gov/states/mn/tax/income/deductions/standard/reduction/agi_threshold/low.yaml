@@ -1,0 +1,74 @@
+description: Minnesota reduces the standard deduction by a lower rate for filers with adjusted gross income above this threshold.
+metadata:
+  label: Minnesota standard deduction lower reduction AGI threshold
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  reference:
+  - title: Minnesota Statutes 290.0123 STANDARD DEDUCTION. Subd. 5.Deduction limited. (a)(1)
+    href: https://www.revisor.mn.gov/statutes/cite/290.0123#stat.290.0123.5
+  - title: Minnesota Statutes, 290.0123 Subd. 6.Inflation adjustment.
+    href: https://www.revisor.mn.gov/statutes/cite/290.0123#stat.290.0123.6
+  - title: 2021 Minnesota Schedule M1SA form, Worksheet for Line 26
+    href: https://taxsim.nber.org/historical_state_tax_forms/MN/2021/m1sa_21.pdf#page=7
+  - title: 2022 Minnesota Schedule M1SA form, Worksheet for Line 26
+    href: https://www.revenue.state.mn.us/sites/default/files/2023-01/m1sa_22.pdf#page=7
+  - title: 2023 Minnesota Schedule M1SA form, Worksheet for Line 26
+    href: https://www.revenue.state.mn.us/sites/default/files/2023-12/m1sa-23.pdf#page=8
+
+JOINT:
+  values:
+    2021-01-01: 199_850
+    2022-01-01: 206_050
+    2023-01-01: 220_650
+  metadata:
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: downwards
+        interval: 50
+HEAD_OF_HOUSEHOLD:
+  values:
+    2021-01-01: 199_850
+    2022-01-01: 206_050
+    2023-01-01: 220_650
+  metadata:
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: downwards
+        interval: 50
+SURVIVING_SPOUSE:
+  values:
+    2021-01-01: 199_850
+    2022-01-01: 206_050
+    2023-01-01: 220_650
+  metadata:
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: downwards
+        interval: 50
+SINGLE:
+  values:
+    2021-01-01: 199_850
+    2022-01-01: 206_050
+    2023-01-01: 220_650
+  metadata:
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: downwards
+        interval: 50
+SEPARATE:
+  values:
+    2021-01-01: 99_925
+    2022-01-01: 103_025
+    2023-01-01: 110_325
+  metadata:
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: downwards
+        interval: 50
