@@ -8,7 +8,7 @@ def create_family_security_act_two_point_o() -> Reform:
         entity = TaxUnit
         definition_period = YEAR
         unit = USD
-        label = "Child Tax Credit phase-in amount"
+        label = "Child Tax Credit phase-in rate"
 
         def formula(tax_unit, period, parameters):
             income = tax_unit("adjusted_gross_income", period)
