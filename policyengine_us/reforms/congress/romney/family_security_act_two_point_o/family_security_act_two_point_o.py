@@ -33,6 +33,20 @@ def create_family_security_act_two_point_o() -> Reform:
             reduction = tax_unit("ctc_phase_out", period)
             return max_(0, phased_in_max_amont - reduction)
 
+    class ctc_qualifying_children(Variable):
+        value_type = int
+        entity = TaxUnit
+        label = "CTC-qualifying children"
+        documentation = "Count of children that qualify for the Child Tax Credit"
+        definition_period = YEAR
+        reference = "https://www.law.cornell.edu/uscode/text/26/24#c"
+
+        def formula(tax_unit, period, parameters):
+            total_children = tax_unit.sum(tax_unit.members("ctc_qualifying_child", period))
+            p = parameters(period).gov.contrib.congress.romney.family_security_act_two_point_o.ctc
+            return min_(total_children, p.child_cap)
+       
+
     class eitc_maximum(Variable):
         value_type = float
         entity = TaxUnit
@@ -56,6 +70,7 @@ def create_family_security_act_two_point_o() -> Reform:
         def apply(self):
             self.update_variable(ctc_phase_in_rate)
             self.update_variable(ctc)
+            self.update_variable(ctc_qualifying_children)
             self.update_variable(eitc_maximum)
 
     return reform
