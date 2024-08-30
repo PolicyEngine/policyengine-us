@@ -37,15 +37,20 @@ def create_family_security_act_two_point_o() -> Reform:
         value_type = int
         entity = TaxUnit
         label = "CTC-qualifying children"
-        documentation = "Count of children that qualify for the Child Tax Credit"
+        documentation = (
+            "Count of children that qualify for the Child Tax Credit"
+        )
         definition_period = YEAR
         reference = "https://www.law.cornell.edu/uscode/text/26/24#c"
 
         def formula(tax_unit, period, parameters):
-            total_children = tax_unit.sum(tax_unit.members("ctc_qualifying_child", period))
-            p = parameters(period).gov.contrib.congress.romney.family_security_act_two_point_o.ctc
+            total_children = tax_unit.sum(
+                tax_unit.members("ctc_qualifying_child", period)
+            )
+            p = parameters(
+                period
+            ).gov.contrib.congress.romney.family_security_act_two_point_o.ctc
             return min_(total_children, p.child_cap)
-       
 
     class eitc_maximum(Variable):
         value_type = float
