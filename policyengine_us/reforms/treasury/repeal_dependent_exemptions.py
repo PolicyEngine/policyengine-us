@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-def create_repeal_dependent_exemption() -> Reform:
+def create_repeal_dependent_exemptions() -> Reform:
     class exemptions_count(Variable):
         value_type = int
         entity = TaxUnit
@@ -21,20 +21,20 @@ def create_repeal_dependent_exemption() -> Reform:
     return reform
 
 
-def create_repeal_dependent_exemption_reform(
+def create_repeal_dependent_exemptions_reform(
     parameters, period, bypass: bool = False
 ):
     if bypass:
-        return create_repeal_dependent_exemption()
+        return create_repeal_dependent_exemptions()
 
     p = parameters(period).gov.contrib.treasury
 
-    if p.repeal_dependent_exemption:
-        return create_repeal_dependent_exemption()
+    if p.repeal_dependent_exemptions:
+        return create_repeal_dependent_exemptions()
     else:
         return None
 
 
-repeal_dependent_exemption = create_repeal_dependent_exemption_reform(
+repeal_dependent_exemptions = create_repeal_dependent_exemptions_reform(
     None, None, bypass=True
 )
