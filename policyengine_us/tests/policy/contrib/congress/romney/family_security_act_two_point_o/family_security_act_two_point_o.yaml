@@ -1,4 +1,4 @@
-- name: AGI over phase_in amount and joint eitc filers 
+- name: AGI over phase_in amount and joint EITC filers
   period: 2026
   reforms: policyengine_us.reforms.congress.romney.family_security_act_two_point_o.family_security_act_two_point_o.family_security_act_two_point_o
   input:
@@ -13,7 +13,7 @@
     ctc: 900
     eitc_maximum: 2_090
 
-- name: AGI over phase_in amount and single eitc filers 
+- name: AGI over phase_in amount and single EITC filers 
   period: 2026
   reforms: policyengine_us.reforms.congress.romney.family_security_act_two_point_o.family_security_act_two_point_o.family_security_act_two_point_o
   input:
@@ -28,7 +28,7 @@
     ctc: 900
     eitc_maximum: 1_050
 
-- name: AGI below phase_in amount and single eitc filers 
+- name: AGI below phase_in amount and single EITC filers 
   period: 2026
   reforms: policyengine_us.reforms.congress.romney.family_security_act_two_point_o.family_security_act_two_point_o.family_security_act_two_point_o
   input:
