@@ -1,0 +1,82 @@
+- name: AGI over phase_in amount and joint EITC filers
+  period: 2026
+  reforms: policyengine_us.reforms.congress.romney.family_security_act_two_point_o.family_security_act_two_point_o.family_security_act_two_point_o
+  input:
+    gov.contrib.congress.romney.family_security_act_two_point_o.in_effect: true
+    adjusted_gross_income: 11_000
+    ctc_maximum_with_arpa_addition: 1_000
+    ctc_phase_out: 100
+    eitc_child_count: 0
+    filing_status: JOINT
+  output:
+    ctc_phase_in_rate: 1
+    ctc: 900
+    eitc_maximum: 2_090
+
+- name: AGI over phase_in amount and single EITC filers 
+  period: 2026
+  reforms: policyengine_us.reforms.congress.romney.family_security_act_two_point_o.family_security_act_two_point_o.family_security_act_two_point_o
+  input:
+    gov.contrib.congress.romney.family_security_act_two_point_o.in_effect: true
+    adjusted_gross_income: 11_000
+    ctc_maximum_with_arpa_addition: 1_000
+    ctc_phase_out: 100
+    eitc_child_count: 0
+    filing_status: SINGLE
+  output:
+    ctc_phase_in_rate: 1
+    ctc: 900
+    eitc_maximum: 1_050
+
+- name: AGI below phase_in amount and single EITC filers 
+  period: 2026
+  reforms: policyengine_us.reforms.congress.romney.family_security_act_two_point_o.family_security_act_two_point_o.family_security_act_two_point_o
+  input:
+    gov.contrib.congress.romney.family_security_act_two_point_o.in_effect: true
+    adjusted_gross_income: 5_000
+    ctc_maximum_with_arpa_addition: 1_000
+    ctc_phase_out: 0
+    eitc_child_count: 0
+    filing_status: SEPARATE
+  output:
+    ctc_phase_in_rate: 0.5
+    ctc: 500
+    eitc_maximum: 1_050
+
+- name: No AGI
+  period: 2026
+  reforms: policyengine_us.reforms.congress.romney.family_security_act_two_point_o.family_security_act_two_point_o.family_security_act_two_point_o
+  input:
+    gov.contrib.congress.romney.family_security_act_two_point_o.in_effect: true
+    adjusted_gross_income: 0
+    ctc_maximum_with_arpa_addition: 1_000
+    ctc_phase_out: 0
+    eitc_child_count: 0
+    filing_status: SURVIVING_SPOUSE
+  output:
+    ctc_phase_in_rate: 0
+    ctc: 0
+    eitc_maximum: 1_050
+
+- name: Capped qualifying children for the CTC
+  period: 2026
+  reforms: policyengine_us.reforms.congress.romney.family_security_act_two_point_o.family_security_act_two_point_o.family_security_act_two_point_o
+  input:
+    gov.contrib.congress.romney.family_security_act_two_point_o.in_effect: true
+    people:
+      person1:
+        ctc_qualifying_child: true
+      person2:
+        ctc_qualifying_child: true
+      person3:
+        ctc_qualifying_child: true
+      person4:
+        ctc_qualifying_child: true
+      person5:
+        ctc_qualifying_child: true
+      person6:
+        ctc_qualifying_child: true
+      person7: 
+        ctc_qualifying_child: true
+  output:
+    ctc_qualifying_children: 6

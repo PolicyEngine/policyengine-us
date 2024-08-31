@@ -41,6 +41,9 @@ from .states.mn.walz import (
 from .states.oregon.rebate import (
     create_or_rebate_state_tax_exempt_reform,
 )
+from .congress.romney.family_security_act_two_point_o import (
+    create_family_security_act_two_point_o_reform,
+)
 from .treasury.repeal_dependent_exemptions import (
     create_repeal_dependent_exemptions_reform,
 )
@@ -105,6 +108,9 @@ def create_structural_reforms_from_parameters(parameters, period):
     or_rebate_state_tax_exempt = create_or_rebate_state_tax_exempt_reform(
         parameters, period
     )
+    family_security_act_two_point_o = (
+        create_family_security_act_two_point_o_reform(parameters, period)
+    )
     repeal_dependent_exemptions = create_repeal_dependent_exemptions_reform(
         parameters, period
     )
@@ -131,6 +137,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         boost_middle_class_tax_credit,
         mn_walz_hf1938,
         or_rebate_state_tax_exempt,
+        family_security_act_two_point_o,
         repeal_dependent_exemptions,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
