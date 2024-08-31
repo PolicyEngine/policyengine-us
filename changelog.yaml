@@ -7934,3 +7934,126 @@
     fiex:
     - Typo in New York working families tax credit match.
   date: 2024-08-16 11:45:37
+- bump: minor
+  changes:
+    added:
+    - Infant calibration.
+  date: 2024-08-16 15:31:16
+- bump: minor
+  changes:
+    added:
+    - Refactor the `household_benefits` and `household_state_benefits` variables to
+      include a list parameter.
+  date: 2024-08-17 13:51:13
+- bump: minor
+  changes:
+    added:
+    - Reform repeal Minnesota Bill HF1938.
+  date: 2024-08-17 15:50:59
+- bump: patch
+  changes:
+    removed:
+    - Age limit for ARPA CTC amount scale parameter (delegating instead to base CTC
+      age limit).
+  date: 2024-08-17 16:48:52
+- bump: patch
+  changes:
+    fixed:
+    - Mixed scalar and vectorized operations in mn_social_security_subtraction.
+  date: 2024-08-17 18:47:58
+- bump: patch
+  changes:
+    fixed:
+    - Limit American Family Act baby bonus reform to CTC-eligible children.
+    - Make AFA baby bonus and head of household repeal work after 2024.
+  date: 2024-08-17 22:15:46
+- bump: patch
+  changes:
+    fixed:
+    - Minnesota Bill HF1938 impact fix.
+  date: 2024-08-18 16:32:45
+- bump: minor
+  changes:
+    added:
+    - Personal Credit reform.
+  date: 2024-08-18 16:54:38
+- bump: minor
+  changes:
+    added:
+    - Add head_start and early_head_start variables to household_benefits parameter.
+  date: 2024-08-19 15:50:20
+- bump: patch
+  changes:
+    fixed:
+    - Bug in Harris Rent Relief Act for low earners.
+  date: 2024-08-19 18:40:57
+- bump: minor
+  changes:
+    added:
+    - 2024 Nebraska tax rules update.
+  date: 2024-08-20 01:56:19
+- bump: patch
+  changes:
+    fixed:
+    - Minnesota standard and itemized deduction reduction structure.
+  date: 2024-08-21 15:12:46
+- bump: minor
+  changes:
+    added:
+    - IRS VITA Program Eligibility.
+  date: 2024-08-22 00:24:36
+- bump: minor
+  changes:
+    added:
+    - Denver property tax relief.
+  date: 2024-08-22 15:03:28
+- bump: minor
+  changes:
+    added:
+    - Separate out SSI eligibility from the general uncapped_ssi file.
+  date: 2024-08-22 23:31:20
+- bump: minor
+  changes:
+    added:
+    - Oregon Rebate state tax exempt reform.
+  date: 2024-08-23 15:56:12
+- bump: patch
+  changes:
+    fixed:
+    - Oregon rebate reform typo.
+  date: 2024-08-25 22:50:32
+- bump: patch
+  changes:
+    fixes:
+    - Utah 2024 Tax Rate and EITC Description Change.
+    - Rhode Island 2023 retirement income subtraction cap increase.
+    - Mississippi 2023 income tax rate.
+    - Remove True print statement in Minnesota CDCC.
+    - Colorado family affordability credit age multiplier label.
+  date: 2024-08-26 14:19:06
+- bump: minor
+  changes:
+    added:
+    - Oregon WFHDC household income variable.
+  date: 2024-08-26 21:37:42
+- bump: minor
+  changes:
+    added:
+    - Mississippi child and dependent care credit.
+  date: 2024-08-26 22:09:35
+- bump: minor
+  changes:
+    added:
+    - CARES act charity deduction provision for non-itemizers.
+  date: 2024-08-29 15:00:53
+- bump: minor
+  changes:
+    added:
+    - New York supplemental tax incremental benefit repeal for 2028
+  date: 2024-08-29 22:06:21
+- bump: patch
+  changes:
+    fixed:
+    - Increase Hawaii Military Reserve or Hawaii National Guard Duty Pay Cap.
+    - Rhode Island 2023 military retirement pay subtraction.
+  date: 2024-08-29 23:49:17

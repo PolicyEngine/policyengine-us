@@ -23,7 +23,7 @@
         members: [person1, person2]
         state_code: NE
   output:
-    ne_agi_subtractions: 10_000 + 10_000
+    ne_social_security_subtraction: 10_000 + 10_000
 
 - name: NE AGI subtractions unit test 2
   absolute_error_margin: 0.01
@@ -34,7 +34,7 @@
      taxable_social_security: 10_000
      state_code: NE
   output:
-    ne_agi_subtractions: 500
+    ne_social_security_subtraction: 500
 
 - name: NE AGI subtractions unit test 3
   absolute_error_margin: 0.01
@@ -45,4 +45,26 @@
      taxable_social_security: 10_000
      state_code: NE
   output:
-    ne_agi_subtractions: 10_000
+    ne_social_security_subtraction: 10_000
+
+- name: Reduction applies before 2024
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+     filing_status: SINGLE
+     adjusted_gross_income: 200_000
+     taxable_social_security: 30_000
+     state_code: NE
+  output:
+    ne_social_security_subtraction: 12_000
+
+- name: Reduction threshold removed after 2024
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+     filing_status: SINGLE
+     adjusted_gross_income: 200_000
+     taxable_social_security: 30_000
+     state_code: NE
+  output:
+    ne_social_security_subtraction: 30_000
