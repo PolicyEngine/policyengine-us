@@ -1,0 +1,19 @@
+- name: One dependent in tax unit
+  period: 2022
+  reforms: policyengine_us.reforms.treasury.repeal_dependent_exemption.repeal_dependent_exemption
+  input:
+    gov.contrib.treasury.repeal_dependent_exemption: true
+    tax_unit_size: 4
+    tax_unit_dependents: 1
+  output:
+    exemptions_count: 3
+
+- name: No dependents in tax unit
+  period: 2022
+  reforms: policyengine_us.reforms.treasury.repeal_dependent_exemption.repeal_dependent_exemption
+  input:
+    gov.contrib.treasury.repeal_dependent_exemption: true
+    tax_unit_size: 4
+    tax_unit_dependents: 0
+  output:
+    exemptions_count: 4

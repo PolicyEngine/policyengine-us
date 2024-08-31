@@ -41,6 +41,9 @@ from .states.mn.walz import (
 from .states.oregon.rebate import (
     create_or_rebate_state_tax_exempt_reform,
 )
+from .treasury.repeal_dependent_exemption import (
+    create_repeal_dependent_exemption_reform,
+)
 
 from policyengine_core.reforms import Reform
 import warnings
@@ -102,6 +105,9 @@ def create_structural_reforms_from_parameters(parameters, period):
     or_rebate_state_tax_exempt = create_or_rebate_state_tax_exempt_reform(
         parameters, period
     )
+    repeal_dependent_exemption = create_repeal_dependent_exemption_reform(
+        parameters, period
+    )
 
     reforms = [
         afa_reform,
@@ -125,6 +131,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         boost_middle_class_tax_credit,
         mn_walz_hf1938,
         or_rebate_state_tax_exempt,
+        repeal_dependent_exemption,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
 
