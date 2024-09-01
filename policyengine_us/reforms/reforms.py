@@ -42,7 +42,7 @@ from .states.oregon.rebate import (
     create_or_rebate_state_tax_exempt_reform,
 )
 from .congress.romney.family_security_act_2_0 import (
-    create_family_security_act_two_point_o_reform,
+    create_family_security_act_2_0_reform,
 )
 from .treasury.repeal_dependent_exemptions import (
     create_repeal_dependent_exemptions_reform,
@@ -108,7 +108,7 @@ def create_structural_reforms_from_parameters(parameters, period):
     or_rebate_state_tax_exempt = create_or_rebate_state_tax_exempt_reform(
         parameters, period
     )
-    family_security_act_2_0 = create_family_security_act_two_point_o_reform(
+    family_security_act_2_0 = create_family_security_act_2_0_reform(
         parameters, period
     )
     repeal_dependent_exemptions = create_repeal_dependent_exemptions_reform(

@@ -2,7 +2,7 @@ from policyengine_us.model_api import *
 from policyengine_core.periods import period as period_
 
 
-def create_family_security_act_two_point_o() -> Reform:
+def create_family_security_act_2_0() -> Reform:
     class ctc_phase_in_rate(Variable):
         value_type = float
         entity = TaxUnit
@@ -125,11 +125,11 @@ def create_family_security_act_two_point_o() -> Reform:
     return reform
 
 
-def create_family_security_act_two_point_o_reform(
+def create_family_security_act_2_0_reform(
     parameters, period, bypass: bool = False
 ):
     if bypass:
-        return create_family_security_act_two_point_o()
+        return create_family_security_act_2_0()
 
     # Look ahead for the next five years
     p = parameters.gov.contrib.congress.romney.family_security_act_2_0
@@ -143,11 +143,11 @@ def create_family_security_act_two_point_o_reform(
         current_period = current_period.offset(1, "year")
 
     if reform_active:
-        return create_family_security_act_two_point_o()
+        return create_family_security_act_2_0()
     else:
         return None
 
 
-family_security_act_2_0 = create_family_security_act_two_point_o_reform(
+family_security_act_2_0 = create_family_security_act_2_0_reform(
     None, None, bypass=True
 )
