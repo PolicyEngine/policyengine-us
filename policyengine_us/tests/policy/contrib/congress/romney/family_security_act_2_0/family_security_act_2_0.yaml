@@ -1,0 +1,172 @@
+- name: AGI over phase_in amount and joint EITC filers
+  period: 2022
+  reforms: policyengine_us.reforms.congress.romney.family_security_act_2_0.family_security_act_2_0.family_security_act_2_0
+  input:
+    gov.contrib.congress.romney.family_security_act_2_0.in_effect: true
+    adjusted_gross_income: 11_000
+    ctc_maximum_with_arpa_addition: 1_000
+    ctc_phase_out: 100
+    eitc_child_count: 0
+    filing_status: JOINT
+  output:
+    ctc_phase_in_rate: 1
+    ctc: 900
+    eitc_maximum: 2_000
+
+- name: AGI over phase_in amount and single EITC filers 
+  period: 2022
+  reforms: policyengine_us.reforms.congress.romney.family_security_act_2_0.family_security_act_2_0.family_security_act_2_0
+  input:
+    gov.contrib.congress.romney.family_security_act_2_0.in_effect: true
+    adjusted_gross_income: 11_000
+    ctc_maximum_with_arpa_addition: 1_000
+    ctc_phase_out: 100
+    eitc_child_count: 0
+    filing_status: SINGLE
+  output:
+    ctc_phase_in_rate: 1
+    ctc: 900
+    eitc_maximum: 1_000
+
+- name: AGI below phase_in amount and single EITC filers 
+  period: 2022
+  reforms: policyengine_us.reforms.congress.romney.family_security_act_2_0.family_security_act_2_0.family_security_act_2_0
+  input:
+    gov.contrib.congress.romney.family_security_act_2_0.in_effect: true
+    adjusted_gross_income: 5_000
+    ctc_maximum_with_arpa_addition: 1_000
+    ctc_phase_out: 0
+    eitc_child_count: 0
+    filing_status: SEPARATE
+  output:
+    ctc_phase_in_rate: 0.5
+    ctc: 500
+    eitc_maximum: 1_000
+
+- name: No AGI
+  period: 2022
+  reforms: policyengine_us.reforms.congress.romney.family_security_act_2_0.family_security_act_2_0.family_security_act_2_0
+  input:
+    gov.contrib.congress.romney.family_security_act_2_0.in_effect: true
+    adjusted_gross_income: 0
+    ctc_maximum_with_arpa_addition: 1_000
+    ctc_phase_out: 0
+    eitc_child_count: 0
+    filing_status: SURVIVING_SPOUSE
+  output:
+    ctc_phase_in_rate: 0
+    ctc: 0
+    eitc_maximum: 1_000
+
+- name: Capped qualifying children for the CTC
+  period: 2022
+  reforms: policyengine_us.reforms.congress.romney.family_security_act_2_0.family_security_act_2_0.family_security_act_2_0
+  input:
+    gov.contrib.congress.romney.family_security_act_2_0.in_effect: true
+    people:
+      person1:
+        ctc_qualifying_child: true
+      person2:
+        ctc_qualifying_child: true
+      person3:
+        ctc_qualifying_child: true
+      person4:
+        ctc_qualifying_child: true
+      person5:
+        ctc_qualifying_child: true
+      person6:
+        ctc_qualifying_child: true
+      person7: 
+        ctc_qualifying_child: true
+  output:
+    ctc_qualifying_children: 6
+
+- name: Higher new child amount, based on age
+  period: 2022
+  reforms: policyengine_us.reforms.congress.romney.family_security_act_2_0.family_security_act_2_0.family_security_act_2_0
+  input:
+    gov.contrib.congress.romney.family_security_act_2_0.in_effect: true
+    people:
+      person1:
+        age: 5
+      person2:
+        age: 6
+      person3:
+        age: 18
+  output:
+    ctc_child_individual_maximum: [4_200, 3_000, 0]
+
+- name: Pregnancy Credit, fully phased-in
+  period: 2022
+  reforms: policyengine_us.reforms.congress.romney.family_security_act_2_0.family_security_act_2_0.family_security_act_2_0
+  input:
+    gov.contrib.congress.romney.family_security_act_2_0.in_effect: true
+    gov.contrib.congress.romney.family_security_act_2_0.pregnancy_credit.in_effect: true
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 38
+      person3:
+        age: 0
+    tax_units:
+      tax_unit1:
+        members: [person1, person2, person3]
+        adjusted_gross_income: 11_000
+  output:
+    pregnancy_credit: 2_800
+
+- name: No children under 1
+  period: 2022
+  reforms: policyengine_us.reforms.congress.romney.family_security_act_2_0.family_security_act_2_0.family_security_act_2_0
+  input:
+    gov.contrib.congress.romney.family_security_act_2_0.in_effect: true
+    gov.contrib.congress.romney.family_security_act_2_0.pregnancy_credit.in_effect: true
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 38
+      person3:
+        age: 1
+    tax_units:
+      tax_unit1:
+        members: [person1, person2, person3]
+        adjusted_gross_income: 11_000
+  output:
+    pregnancy_credit: 0
+
+- name: Pregnancy Credit, partially phased-in
+  period: 2022
+  reforms: policyengine_us.reforms.congress.romney.family_security_act_2_0.family_security_act_2_0.family_security_act_2_0
+  input:
+    gov.contrib.congress.romney.family_security_act_2_0.in_effect: true
+    gov.contrib.congress.romney.family_security_act_2_0.pregnancy_credit.in_effect: true
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 38
+      person3:
+        age: 0
+    tax_units:
+      tax_unit1:
+        members: [person1, person2, person3]
+        adjusted_gross_income: 3_000
+  output:
+    pregnancy_credit: 840
+
+- name: Higher new child amount, based on age, with baby bonus
+  period: 2022
+  reforms: policyengine_us.reforms.congress.romney.family_security_act_2_0.family_security_act_2_0.family_security_act_2_0
+  input:
+    gov.contrib.congress.romney.family_security_act_2_0.in_effect: true
+    people:
+      person1:
+        age: 0
+      person2:
+        age: 6
+      person3:
+        age: 18
+  output:
+    ctc_child_individual_maximum: [7_000, 3_000, 0]

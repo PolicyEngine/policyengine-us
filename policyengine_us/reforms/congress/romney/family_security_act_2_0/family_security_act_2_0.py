@@ -2,7 +2,7 @@ from policyengine_us.model_api import *
 from policyengine_core.periods import period as period_
 
 
-def create_family_security_act_two_point_o() -> Reform:
+def create_family_security_act_2_0() -> Reform:
     class ctc_phase_in_rate(Variable):
         value_type = float
         entity = TaxUnit
@@ -14,8 +14,8 @@ def create_family_security_act_two_point_o() -> Reform:
             income = tax_unit("adjusted_gross_income", period)
             p = parameters(
                 period
-            ).gov.contrib.congress.romney.family_security_act_two_point_o.ctc.phase_in
-            return min_(income / p.earnings_limit, 1)
+            ).gov.contrib.congress.romney.family_security_act_2_0.ctc.phase_in
+            return min_(income / p.income_phase_in_end, 1)
 
     class ctc(Variable):
         value_type = float
@@ -33,6 +33,29 @@ def create_family_security_act_two_point_o() -> Reform:
             reduction = tax_unit("ctc_phase_out", period)
             return max_(0, phased_in_max_amont - reduction)
 
+    class ctc_child_individual_maximum(Variable):
+        value_type = float
+        entity = Person
+        label = "CTC maximum amount (child)"
+        unit = USD
+        documentation = (
+            "The CTC entitlement in respect of this person as a child."
+        )
+        definition_period = YEAR
+        reference = (
+            "https://www.law.cornell.edu/uscode/text/26/24#a",
+            "https://www.law.cornell.edu/uscode/text/26/24#h",
+            "https://www.law.cornell.edu/uscode/text/26/24#i",
+        )
+        defined_for = "is_tax_unit_dependent"
+
+        def formula(person, period, parameters):
+            age = person("age", period)
+            p = parameters(
+                period
+            ).gov.contrib.congress.romney.family_security_act_2_0.ctc
+            return p.base.calc(age)
+
     class ctc_qualifying_children(Variable):
         value_type = int
         entity = TaxUnit
@@ -49,7 +72,7 @@ def create_family_security_act_two_point_o() -> Reform:
             )
             p = parameters(
                 period
-            ).gov.contrib.congress.romney.family_security_act_two_point_o.ctc
+            ).gov.contrib.congress.romney.family_security_act_2_0.ctc
             return min_(total_children, p.child_cap)
 
     class eitc_maximum(Variable):
@@ -64,31 +87,52 @@ def create_family_security_act_two_point_o() -> Reform:
             child_count = tax_unit("eitc_child_count", period)
             p = parameters(
                 period
-            ).gov.contrib.congress.romney.family_security_act_two_point_o.eitc.amount
+            ).gov.contrib.congress.romney.family_security_act_2_0.eitc.amount
             filing_status = tax_unit("filing_status", period)
             joint = filing_status == filing_status.possible_values.JOINT
             return where(
                 joint, p.joint.calc(child_count), p.single.calc(child_count)
             )
 
+    class pregnancy_credit(Variable):
+        value_type = float
+        entity = TaxUnit
+        label = "Pregnancy Credit"
+        definition_period = YEAR
+        unit = USD
+
+        def formula(tax_unit, period, parameters):
+            person = tax_unit.members
+            age = person("age", period)
+            p = parameters(
+                period
+            ).gov.contrib.congress.romney.family_security_act_2_0.pregnancy_credit
+            amount_per_unborn_child = p.amount.calc(age)
+            total_credit_amount = tax_unit.sum(amount_per_unborn_child)
+            income = tax_unit("adjusted_gross_income", period)
+            phase_in_rate = min_(income / p.income_phase_in_end, 1)
+            return total_credit_amount * phase_in_rate * p.in_effect
+
     class reform(Reform):
         def apply(self):
             self.update_variable(ctc_phase_in_rate)
             self.update_variable(ctc)
             self.update_variable(ctc_qualifying_children)
+            self.update_variable(ctc_child_individual_maximum)
             self.update_variable(eitc_maximum)
+            self.update_variable(pregnancy_credit)
 
     return reform
 
 
-def create_family_security_act_two_point_o_reform(
+def create_family_security_act_2_0_reform(
     parameters, period, bypass: bool = False
 ):
     if bypass:
-        return create_family_security_act_two_point_o()
+        return create_family_security_act_2_0()
 
     # Look ahead for the next five years
-    p = parameters.gov.contrib.congress.romney.family_security_act_two_point_o
+    p = parameters.gov.contrib.congress.romney.family_security_act_2_0
     reform_active = False
     current_period = period_(period)
 
@@ -99,11 +143,11 @@ def create_family_security_act_two_point_o_reform(
         current_period = current_period.offset(1, "year")
 
     if reform_active:
-        return create_family_security_act_two_point_o()
+        return create_family_security_act_2_0()
     else:
         return None
 
 
-family_security_act_two_point_o = (
-    create_family_security_act_two_point_o_reform(None, None, bypass=True)
+family_security_act_2_0 = create_family_security_act_2_0_reform(
+    None, None, bypass=True
 )
