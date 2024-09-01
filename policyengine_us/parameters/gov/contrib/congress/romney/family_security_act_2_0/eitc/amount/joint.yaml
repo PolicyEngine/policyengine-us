@@ -11,10 +11,10 @@ metadata:
 
 brackets:
   - threshold:
-      2024-01-01: 0
+      2022-01-01: 0
     amount:
       values:
-        2024-01-01: 2_000
+        2022-01-01: 2_000
       metadata:
         uprating:
           parameter: gov.irs.uprating
@@ -22,10 +22,10 @@ brackets:
             type: nearest
             interval: 10
   - threshold:
-      2024-01-01: 1
+      2022-01-01: 1
     amount:
       values:
-        2024-01-01: 3_000
+        2022-01-01: 3_000
       metadata:
         uprating:
           parameter: gov.irs.uprating
