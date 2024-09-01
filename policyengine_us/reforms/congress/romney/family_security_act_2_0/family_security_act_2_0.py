@@ -47,14 +47,14 @@ def create_family_security_act_2_0() -> Reform:
             "https://www.law.cornell.edu/uscode/text/26/24#h",
             "https://www.law.cornell.edu/uscode/text/26/24#i",
         )
+        defined_for = "is_tax_unit_dependent"
 
         def formula(person, period, parameters):
             age = person("age", period)
             p = parameters(
                 period
             ).gov.contrib.congress.romney.family_security_act_2_0.ctc
-            is_dependent = person("is_tax_unit_dependent", period)
-            return p.base.calc(age) * is_dependent
+            return p.base.calc(age)
 
     class ctc_qualifying_children(Variable):
         value_type = int
