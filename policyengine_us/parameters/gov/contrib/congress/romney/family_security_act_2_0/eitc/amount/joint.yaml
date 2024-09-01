@@ -1,12 +1,19 @@
 description: Under the Family Security Act 2.0, this maximum EITC amount is provided for joint filers, based on number of children.
 
+metadata:
+  type: single_amount
+  threshold_unit: child
+  amount_unit: currency-USD
+  label: Family Security Act 2.0 EITC joint max amount
+  reference:
+    - title: Family Security Act 2.0
+      href: https://www.romney.senate.gov/wp-content/uploads/2022/06/family-security-act-2.0_one-pager_appendix.pdf
+
 brackets:
   - threshold:
       2024-01-01: 0
     amount:
       values:
-        # Reform would come into effect in 2026 
-        # but uprating begins in 2024
         2024-01-01: 2_000
       metadata:
         uprating:
@@ -18,8 +25,6 @@ brackets:
       2024-01-01: 1
     amount:
       values:
-        # Reform would come into effect in 2026 
-        # but uprating begins in 2024
         2024-01-01: 3_000
       metadata:
         uprating:
@@ -27,12 +32,3 @@ brackets:
           rounding:
             type: nearest
             interval: 10
-
-metadata:
-  type: single_amount
-  threshold_unit: child
-  amount_unit: currency-USD
-  label: Family Security Act 2.0 EITC joint max amount
-  reference:
-    - title: Family Security Act 2.0
-      href: https://www.romney.senate.gov/wp-content/uploads/2022/06/family-security-act-2.0_one-pager_appendix.pdf
