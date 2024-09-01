@@ -11,7 +11,7 @@
   output:
     ctc_phase_in_rate: 1
     ctc: 900
-    eitc_maximum: 2_090
+    eitc_maximum: 2_000
 
 - name: AGI over phase_in amount and single EITC filers 
   period: 2022
@@ -26,7 +26,7 @@
   output:
     ctc_phase_in_rate: 1
     ctc: 900
-    eitc_maximum: 1_050
+    eitc_maximum: 1_000
 
 - name: AGI below phase_in amount and single EITC filers 
   period: 2022
@@ -41,7 +41,7 @@
   output:
     ctc_phase_in_rate: 0.5
     ctc: 500
-    eitc_maximum: 1_050
+    eitc_maximum: 1_000
 
 - name: No AGI
   period: 2022
@@ -56,7 +56,7 @@
   output:
     ctc_phase_in_rate: 0
     ctc: 0
-    eitc_maximum: 1_050
+    eitc_maximum: 1_000
 
 - name: Capped qualifying children for the CTC
   period: 2022
