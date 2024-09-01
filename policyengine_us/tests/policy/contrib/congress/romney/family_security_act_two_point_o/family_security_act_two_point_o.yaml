@@ -80,3 +80,18 @@
         ctc_qualifying_child: true
   output:
     ctc_qualifying_children: 6
+
+- name: Higher new child amount, based on age
+  period: 2026
+  reforms: policyengine_us.reforms.congress.romney.family_security_act_two_point_o.family_security_act_two_point_o.family_security_act_two_point_o
+  input:
+    gov.contrib.congress.romney.family_security_act_two_point_o.in_effect: true
+    people:
+      person1:
+        age: 5
+      person2:
+        age: 6
+      person3:
+        age: 18
+  output:
+    ctc_child_individual_maximum: [4_200, 3_000, 0]

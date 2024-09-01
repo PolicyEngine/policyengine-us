@@ -33,6 +33,29 @@ def create_family_security_act_two_point_o() -> Reform:
             reduction = tax_unit("ctc_phase_out", period)
             return max_(0, phased_in_max_amont - reduction)
 
+    class ctc_child_individual_maximum(Variable):
+        value_type = float
+        entity = Person
+        label = "CTC maximum amount (child)"
+        unit = USD
+        documentation = (
+            "The CTC entitlement in respect of this person as a child."
+        )
+        definition_period = YEAR
+        reference = (
+            "https://www.law.cornell.edu/uscode/text/26/24#a",
+            "https://www.law.cornell.edu/uscode/text/26/24#h",
+            "https://www.law.cornell.edu/uscode/text/26/24#i",
+        )
+
+        def formula(person, period, parameters):
+            age = person("age", period)
+            p = parameters(
+                period
+            ).gov.contrib.congress.romney.family_security_act_two_point_o.ctc
+            is_dependent = person("is_tax_unit_dependent", period)
+            return p.base.calc(age) * is_dependent
+
     class ctc_qualifying_children(Variable):
         value_type = int
         entity = TaxUnit
@@ -76,6 +99,7 @@ def create_family_security_act_two_point_o() -> Reform:
             self.update_variable(ctc_phase_in_rate)
             self.update_variable(ctc)
             self.update_variable(ctc_qualifying_children)
+            self.update_variable(ctc_child_individual_maximum)
             self.update_variable(eitc_maximum)
 
     return reform
