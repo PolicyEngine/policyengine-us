@@ -155,3 +155,18 @@
         adjusted_gross_income: 3_000
   output:
     pregnancy_credit: 840
+
+- name: Higher new child amount, based on age, with baby bonus
+  period: 2026
+  reforms: policyengine_us.reforms.congress.romney.family_security_act_2_0.family_security_act_2_0.family_security_act_2_0
+  input:
+    gov.contrib.congress.romney.family_security_act_2_0.in_effect: true
+    people:
+      person1:
+        age: 0
+      person2:
+        age: 6
+      person3:
+        age: 18
+  output:
+    ctc_child_individual_maximum: [7_000, 3_000, 0]
