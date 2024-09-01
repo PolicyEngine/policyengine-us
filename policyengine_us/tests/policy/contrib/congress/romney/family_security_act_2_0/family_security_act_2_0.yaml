@@ -1,5 +1,5 @@
 - name: AGI over phase_in amount and joint EITC filers
-  period: 2026
+  period: 2022
   reforms: policyengine_us.reforms.congress.romney.family_security_act_2_0.family_security_act_2_0.family_security_act_2_0
   input:
     gov.contrib.congress.romney.family_security_act_2_0.in_effect: true
@@ -14,7 +14,7 @@
     eitc_maximum: 2_090
 
 - name: AGI over phase_in amount and single EITC filers 
-  period: 2026
+  period: 2022
   reforms: policyengine_us.reforms.congress.romney.family_security_act_2_0.family_security_act_2_0.family_security_act_2_0
   input:
     gov.contrib.congress.romney.family_security_act_2_0.in_effect: true
@@ -29,7 +29,7 @@
     eitc_maximum: 1_050
 
 - name: AGI below phase_in amount and single EITC filers 
-  period: 2026
+  period: 2022
   reforms: policyengine_us.reforms.congress.romney.family_security_act_2_0.family_security_act_2_0.family_security_act_2_0
   input:
     gov.contrib.congress.romney.family_security_act_2_0.in_effect: true
@@ -44,7 +44,7 @@
     eitc_maximum: 1_050
 
 - name: No AGI
-  period: 2026
+  period: 2022
   reforms: policyengine_us.reforms.congress.romney.family_security_act_2_0.family_security_act_2_0.family_security_act_2_0
   input:
     gov.contrib.congress.romney.family_security_act_2_0.in_effect: true
@@ -59,7 +59,7 @@
     eitc_maximum: 1_050
 
 - name: Capped qualifying children for the CTC
-  period: 2026
+  period: 2022
   reforms: policyengine_us.reforms.congress.romney.family_security_act_2_0.family_security_act_2_0.family_security_act_2_0
   input:
     gov.contrib.congress.romney.family_security_act_2_0.in_effect: true
@@ -82,7 +82,7 @@
     ctc_qualifying_children: 6
 
 - name: Higher new child amount, based on age
-  period: 2026
+  period: 2022
   reforms: policyengine_us.reforms.congress.romney.family_security_act_2_0.family_security_act_2_0.family_security_act_2_0
   input:
     gov.contrib.congress.romney.family_security_act_2_0.in_effect: true
@@ -97,7 +97,7 @@
     ctc_child_individual_maximum: [4_200, 3_000, 0]
 
 - name: Pregnancy Credit, fully phased-in
-  period: 2026
+  period: 2022
   reforms: policyengine_us.reforms.congress.romney.family_security_act_2_0.family_security_act_2_0.family_security_act_2_0
   input:
     gov.contrib.congress.romney.family_security_act_2_0.in_effect: true
@@ -117,7 +117,7 @@
     pregnancy_credit: 2_800
 
 - name: No children under 1
-  period: 2026
+  period: 2022
   reforms: policyengine_us.reforms.congress.romney.family_security_act_2_0.family_security_act_2_0.family_security_act_2_0
   input:
     gov.contrib.congress.romney.family_security_act_2_0.in_effect: true
@@ -137,7 +137,7 @@
     pregnancy_credit: 0
 
 - name: Pregnancy Credit, partially phased-in
-  period: 2026
+  period: 2022
   reforms: policyengine_us.reforms.congress.romney.family_security_act_2_0.family_security_act_2_0.family_security_act_2_0
   input:
     gov.contrib.congress.romney.family_security_act_2_0.in_effect: true
@@ -157,7 +157,7 @@
     pregnancy_credit: 840
 
 - name: Higher new child amount, based on age, with baby bonus
-  period: 2026
+  period: 2022
   reforms: policyengine_us.reforms.congress.romney.family_security_act_2_0.family_security_act_2_0.family_security_act_2_0
   input:
     gov.contrib.congress.romney.family_security_act_2_0.in_effect: true
