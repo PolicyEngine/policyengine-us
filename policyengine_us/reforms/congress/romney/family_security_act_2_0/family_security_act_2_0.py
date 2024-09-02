@@ -117,7 +117,7 @@ def create_family_security_act_2_0_reform(
     current_period = period_(period)
 
     for i in range(5):
-        if p(current_period).in_effect:
+        if p(current_period).apply_eitc_ctc_structure:
             reform_active = True
             break
         current_period = current_period.offset(1, "year")
