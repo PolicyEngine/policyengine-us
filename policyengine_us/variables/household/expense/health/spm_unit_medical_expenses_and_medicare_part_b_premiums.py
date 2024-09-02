@@ -7,4 +7,3 @@ class spm_unit_medical_expenses_and_medicare_part_b_premiums(Variable):
     label = "SPM unit medical expenses including Medicare Part B premiums"
     definition_period = YEAR
     unit = USD
-    uprating = "gov.bls.cpi.cpi_u"

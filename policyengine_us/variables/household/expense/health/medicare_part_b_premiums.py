@@ -7,3 +7,4 @@ class medicare_part_b_premiums(Variable):
     label = "Medicare Part B premiums"
     definition_period = YEAR
     unit = USD
+    uprating = "gov.bls.cpi.cpi_u"
