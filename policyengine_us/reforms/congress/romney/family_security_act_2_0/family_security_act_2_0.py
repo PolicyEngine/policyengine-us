@@ -94,24 +94,6 @@ def create_family_security_act_2_0() -> Reform:
                 joint, p.joint.calc(child_count), p.single.calc(child_count)
             )
 
-    class pregnancy_credit(Variable):
-        value_type = float
-        entity = TaxUnit
-        label = "Pregnancy Credit"
-        definition_period = YEAR
-        unit = USD
-
-        def formula(tax_unit, period, parameters):
-            person = tax_unit.members
-            age = person("age", period)
-            p = parameters(
-                period
-            ).gov.contrib.congress.romney.family_security_act_2_0.pregnancy_credit
-            amount_per_unborn_child = p.amount.calc(age)
-            total_credit_amount = tax_unit.sum(amount_per_unborn_child)
-            income = tax_unit("adjusted_gross_income", period)
-            phase_in_rate = min_(income / p.income_phase_in_end, 1)
-            return total_credit_amount * phase_in_rate * p.in_effect
 
     class reform(Reform):
         def apply(self):
@@ -120,7 +102,6 @@ def create_family_security_act_2_0() -> Reform:
             self.update_variable(ctc_qualifying_children)
             self.update_variable(ctc_child_individual_maximum)
             self.update_variable(eitc_maximum)
-            self.update_variable(pregnancy_credit)
 
     return reform
 
