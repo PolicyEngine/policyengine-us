@@ -2,7 +2,7 @@
   period: 2021
   absolute_error_margin: 0
   input:
-    health_insurance_premiums: 12_000
+    health_insurance_premiums_without_medicare_part_b: 12_000
     medical_out_of_pocket_expenses: 0
     medical_expense_deduction: 0
     tax_unit_itemizes: False
@@ -15,7 +15,7 @@
   period: 2021
   absolute_error_margin: 0.01
   input:
-    health_insurance_premiums: 5_000
+    health_insurance_premiums_without_medicare_part_b: 5_000
     medical_out_of_pocket_expenses: 0
     medical_expense_deduction: 4_625 #medical expenses over 7.5% of taxable_income, equals to 92.5% of income and insurance_premiums
     tax_unit_itemizes: True
@@ -28,7 +28,7 @@
   period: 2021
   absolute_error_margin: 0.01
   input:
-    health_insurance_premiums: 12_000
+    health_insurance_premiums_without_medicare_part_b: 12_000
     medical_out_of_pocket_expenses: 0
     medical_expense_deduction: 11_475
     tax_unit_itemizes: True
@@ -41,7 +41,7 @@
   period: 2021
   absolute_error_margin: 0.01
   input:
-    health_insurance_premiums: 6_000
+    health_insurance_premiums_without_medicare_part_b: 6_000
     medical_out_of_pocket_expenses: 6_000
     medical_expense_deduction: 11_475
     tax_unit_itemizes: True
@@ -55,9 +55,9 @@
   input:
     people:
       head:
-        health_insurance_premiums: 100
+        health_insurance_premiums_without_medicare_part_b: 100
       spouse:
-        health_insurance_premiums: 300
+        health_insurance_premiums_without_medicare_part_b: 300
     tax_units:
       tax_unit:
         tax_unit_itemizes: False
@@ -76,9 +76,9 @@
   input:
     people:
       head:
-        health_insurance_premiums: 100
+        health_insurance_premiums_without_medicare_part_b: 100
       spouse:
-        health_insurance_premiums: 300
+        health_insurance_premiums_without_medicare_part_b: 300
     tax_units:
       tax_unit:
         medical_expense_deduction: 200
