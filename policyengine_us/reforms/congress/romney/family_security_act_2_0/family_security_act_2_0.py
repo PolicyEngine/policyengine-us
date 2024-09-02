@@ -94,7 +94,6 @@ def create_family_security_act_2_0() -> Reform:
                 joint, p.joint.calc(child_count), p.single.calc(child_count)
             )
 
-
     class reform(Reform):
         def apply(self):
             self.update_variable(ctc_phase_in_rate)
