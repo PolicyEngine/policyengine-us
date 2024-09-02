@@ -1,0 +1,17 @@
+description: Senator Mitt Romney proposed providing the following Pregnancy Credit amount per child under the Family Security Act 2.0, based on age.
+
+brackets:
+  - threshold:
+      2022-01-01: 0
+    amount:
+      2022-01-01: 2_800
+  - threshold:
+      2022-01-01: 1
+    amount:
+      2022-01-01: 0
+metadata:
+  type: single_amount
+  threshold_unit: year
+  amount_unit: currency-USD
+  amount_period: year
+  label: Family Security Act 2.0 Child Tax Credit amount
