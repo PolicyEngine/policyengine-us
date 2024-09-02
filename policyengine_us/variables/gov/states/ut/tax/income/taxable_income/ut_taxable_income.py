@@ -8,6 +8,7 @@ class ut_taxable_income(Variable):
     unit = USD
     documentation = "Form TC-40, line 9"
     definition_period = YEAR
-    adds = ["ut_total_income"]
     defined_for = StateCode.UT
-    subtracts = ["ut_subtractions_from_income", "ut_state_tax_refund"]
+
+    adds = ["ut_total_income"]
+    subtracts = ["ut_subtractions", "ut_state_tax_refund"]

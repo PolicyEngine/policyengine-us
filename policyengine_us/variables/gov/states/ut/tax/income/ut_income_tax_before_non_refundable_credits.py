@@ -7,18 +7,18 @@ class ut_income_tax_before_non_refundable_credits(Variable):
     label = "Utah income tax before non-refundable credits"
     unit = USD
     definition_period = YEAR
-    documentation = "Form TC-40, line 22"
     defined_for = StateCode.UT
-    reference = "https://tax.utah.gov/forms/current/tc-40.pdf#page=1"
+    reference = (
+        "https://tax.utah.gov/forms/current/tc-40.pdf#page=1"  # line 22
+    )
 
     def formula(tax_unit, period, parameters):
         taxpayer_credit = tax_unit("ut_taxpayer_credit", period)
         ut_income_tax_before_credits = tax_unit(
             "ut_income_tax_before_credits", period
         )
-        is_tax_exempt = tax_unit("ut_income_tax_exempt", period) > 0
+        is_tax_liable = ~tax_unit("ut_income_tax_exempt", period)
         net_taxpayer_credit = max_(
             taxpayer_credit - ut_income_tax_before_credits, 0
         )
-        return where(is_tax_exempt, 0, net_taxpayer_credit)
-        
+        return is_tax_liable * net_taxpayer_credit
