@@ -12,7 +12,5 @@ class ut_income_tax(Variable):
         "https://tax.utah.gov/forms/current/tc-40.pdf#page=2"  # line 38
     )
 
-    def formula(tax_unit, period, parameters):
-        income = tax_unit("ut_income_tax_before_refundable_credits", period)
-        credits = tax_unit("ut_refundable_credits", period)
-        return max_(income - credits, 0)
+    adds = ["ut_income_tax_before_refundable_credits"]
+    subtracts = ["ut_refundable_credits"]
