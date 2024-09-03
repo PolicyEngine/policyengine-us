@@ -411,8 +411,10 @@ def add_personal_income_variables(
     # Expenses.
     # "What is the annual amount of child support paid?"
     cps["child_support_expense"] = person.CHSP_VAL
-    cps["health_insurance_premiums"] = person.PHIP_VAL
-    cps["medical_out_of_pocket_expenses"] = person.MOOP
+    cps["health_insurance_premiums_without_medicare_part_b"] = person.PHIP_VAL
+    cps["over_the_counter_health_expenses"] = person.POTC_VAL
+    cps["other_medical_expenses"] = person.PMED_VAL
+    cps["medicare_part_b_premiums"] = person.PEMCPREM
 
 
 def add_spm_variables(cps: h5py.File, spm_unit: DataFrame) -> None:
@@ -429,7 +431,6 @@ def add_spm_variables(cps: h5py.File, spm_unit: DataFrame) -> None:
         # State tax includes refundable credits.
         spm_unit_state_tax_reported="SPM_STTAX",
         spm_unit_capped_work_childcare_expenses="SPM_CAPWKCCXPNS",
-        spm_unit_medical_expenses="SPM_MEDXPNS",
         spm_unit_spm_threshold="SPM_POVTHRESHOLD",
         spm_unit_net_income_reported="SPM_RESOURCES",
         spm_unit_pre_subsidy_childcare_expenses="SPM_CHILDCAREXPNS",
