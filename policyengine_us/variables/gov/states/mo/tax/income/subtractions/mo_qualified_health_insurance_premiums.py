@@ -36,7 +36,7 @@ class mo_qualified_health_insurance_premiums(Variable):
             tax_unit,
             period,
             # Out of pocket expenses include health insurance premiums
-            ["medical_out_of_pocket_expenses"]
+            ["medical_out_of_pocket_expenses"],
         )
         med_expense_ratio = np.zeros_like(tax_unit_health_expenses)
         mask = tax_unit_health_expenses > 0
@@ -51,7 +51,9 @@ class mo_qualified_health_insurance_premiums(Variable):
         # medical expenses already deducted via federal tax itemization
         deducted_portion = tax_unit_premiums * med_expense_ratio
         # subtracts the portion of premiums already deducted from federal tax
-        itemized_premiums_amount = max_(tax_unit_premiums - deducted_portion, 0)
+        itemized_premiums_amount = max_(
+            tax_unit_premiums - deducted_portion, 0
+        )
         itemizes = tax_unit("tax_unit_itemizes", period)
         # Cap at federal taxable income.
         taxable_income = tax_unit("taxable_income", period)
