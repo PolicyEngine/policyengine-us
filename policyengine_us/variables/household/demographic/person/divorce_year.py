@@ -6,5 +6,4 @@ class divorce_year(Variable):
     entity = Person
     label = "The year that the person was divorced."
     definition_period = YEAR
-    defined_for = "is_divorced"
     default_value = 2010
