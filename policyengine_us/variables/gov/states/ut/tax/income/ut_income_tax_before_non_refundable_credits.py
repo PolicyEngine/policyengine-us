@@ -18,7 +18,7 @@ class ut_income_tax_before_non_refundable_credits(Variable):
             "ut_income_tax_before_credits", period
         )
         is_tax_liable = ~tax_unit("ut_income_tax_exempt", period)
-        net_taxpayer_credit = max_(
-            taxpayer_credit - ut_income_tax_before_credits, 0
+        net_income_tax_before_credits = max_(
+            ut_income_tax_before_credits - taxpayer_credit, 0
         )
-        return is_tax_liable * net_taxpayer_credit
+        return is_tax_liable * net_income_tax_before_credits
