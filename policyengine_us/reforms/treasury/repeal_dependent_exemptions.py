@@ -2,21 +2,33 @@ from policyengine_us.model_api import *
 
 
 def create_repeal_dependent_exemptions() -> Reform:
-    class exemptions_count(Variable):
-        value_type = int
+    class exemptions(Variable):
+        value_type = float
         entity = TaxUnit
-        label = "Number of tax exemptions"
-        unit = USD
+        label = "Exemptions"
         definition_period = YEAR
+        documentation = "Personal exemptions amount after phase-out"
+        unit = USD
 
         def formula(tax_unit, period, parameters):
-            total_unit_size = tax_unit("tax_unit_size", period)
-            dependents = tax_unit("tax_unit_dependents", period)
-            return total_unit_size - dependents
+            # calculate exemptions amount before phase-out
+            exemptions = tax_unit("head_spouse_count", period)
+            p = parameters(period).gov.irs.income.exemption
+            amount = exemptions * p.amount
+            # calculate exemptions amount after phase-out
+            filing_status = tax_unit("filing_status", period)
+            phase_out_start_agi = p.phase_out.start[filing_status]
+            agi = tax_unit("adjusted_gross_income", period)
+            excess_agi = max_(0, agi - phase_out_start_agi)
+            phase_out_step_size = p.phase_out.step_size[filing_status]
+            steps = excess_agi / phase_out_step_size
+            phase_out_fraction = steps * p.phase_out.rate
+            return max_(0, amount * (1 - phase_out_fraction))
+
 
     class reform(Reform):
         def apply(self):
-            self.update_variable(exemptions_count)
+            self.update_variable(exemptions)
 
     return reform
 
