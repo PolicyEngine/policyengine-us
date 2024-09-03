@@ -1,0 +1,48 @@
+- name: Reform applies, excess equals to 0
+  period: 2024
+  reforms: policyengine_us.reforms.states.mi.mi_food_assistance_credit.mi_food_assistance_credit
+  input:
+    gov.contrib.states.mi.food_assistance_credit.in_effect: true
+    mi_exemptions: 1_000
+    tax_unit_fpg: 1_000
+    state_code: MI
+    mi_home_heating_credit: 0
+  output:
+    mi_food_assistance_fpg_excess: 0
+    mi_food_assistance_refundable_credit: 0
+    mi_food_assistance_non_refundable_credit: 0
+    mi_non_refundable_credits: 0
+    mi_refundable_credits: 0
+
+- name: Reform applies, excess exemptions 
+  period: 2024
+  reforms: policyengine_us.reforms.states.mi.mi_food_assistance_credit.mi_food_assistance_credit
+  input:
+    gov.contrib.states.mi.food_assistance_credit.in_effect: true
+    mi_exemptions: 1_000
+    tax_unit_fpg: 2_000
+    state_code: MI
+    mi_home_heating_credit: 0
+  output:
+    mi_food_assistance_fpg_excess: 1_000
+    mi_food_assistance_refundable_credit: 400
+    mi_food_assistance_non_refundable_credit: 600
+    mi_non_refundable_credits: 600
+    mi_refundable_credits: 400
+
+
+- name: Reform applies, negative excess  
+  period: 2024
+  reforms: policyengine_us.reforms.states.mi.mi_food_assistance_credit.mi_food_assistance_credit
+  input:
+    gov.contrib.states.mi.food_assistance_credit.in_effect: true
+    mi_exemptions: 2_000
+    tax_unit_fpg: 1_000
+    state_code: MI
+    mi_home_heating_credit: 0
+  output:
+    mi_food_assistance_fpg_excess: 0
+    mi_food_assistance_refundable_credit: 0
+    mi_food_assistance_non_refundable_credit: 0
+    mi_non_refundable_credits: 0
+    mi_refundable_credits: 0
