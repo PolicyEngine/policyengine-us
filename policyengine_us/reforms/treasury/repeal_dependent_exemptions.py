@@ -25,7 +25,6 @@ def create_repeal_dependent_exemptions() -> Reform:
             phase_out_fraction = steps * p.phase_out.rate
             return max_(0, amount * (1 - phase_out_fraction))
 
-
     class reform(Reform):
         def apply(self):
             self.update_variable(exemptions)
