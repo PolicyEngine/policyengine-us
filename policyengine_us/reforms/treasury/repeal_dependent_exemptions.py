@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_core.periods import period as period_
 
 
 def create_repeal_dependent_exemptions() -> Reform:
@@ -27,9 +28,18 @@ def create_repeal_dependent_exemptions_reform(
     if bypass:
         return create_repeal_dependent_exemptions()
 
-    p = parameters(period).gov.contrib.treasury
+    p = parameters.gov.contrib.treasury
 
-    if p.repeal_dependent_exemptions:
+    reform_active = False
+    current_period = period_(period)
+
+    for i in range(5):
+        if p(current_period).repeal_dependent_exemptions:
+            reform_active = True
+            break
+        current_period = current_period.offset(1, "year")
+
+    if reform_active:
         return create_repeal_dependent_exemptions()
     else:
         return None
