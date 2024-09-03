@@ -5,7 +5,7 @@
   input:
     az_payment_standard_threshold: 218
     az_tanf_earned_income: 147
-    state_code: AZ
+    az_hhs_tanf_eligible: true
   output:
     az_cash_assistance: 71
 
@@ -15,7 +15,7 @@
   input:
     az_payment_standard_threshold: 175
     az_tanf_earned_income: 147
-    state_code: AZ
+    az_hhs_tanf_eligible: true
   output:
     az_cash_assistance: 28
 
@@ -25,9 +25,7 @@
   input:
     az_payment_standard_threshold: 175
     az_tanf_earned_income: 1_000
-    state_code: AZ
+    az_hhs_tanf_eligible: true
   output:
     az_cash_assistance: 0
-
-
 

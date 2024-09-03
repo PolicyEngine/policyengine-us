@@ -10,11 +10,11 @@ class az_fpg_baseline(Variable):
     defined_for = StateCode.AZ
 
     def formula(spm_unit, period, parameters):
-        FPG_YEAR = f"1992-01-01"
+        intant_str = f"1992-01-01"
         household_size = spm_unit("spm_unit_size", period)
         cap_household_size = max_(household_size, 0)
         state_group = spm_unit.household("state_group_str", period)
-        p_fpg = parameters(FPG_YEAR).gov.hhs.fpg
+        p_fpg = parameters(intant_str).gov.hhs.fpg
         p1 = p_fpg.first_person[state_group]
         pn = p_fpg.additional_person[state_group]
         return p1 + pn * (cap_household_size - 1)

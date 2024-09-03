@@ -1,35 +1,31 @@
-- name: Head of 
+- name: Head of tax unit is a parent
   period: 2023
   input:
-    state_code: AZ
-    age: 17
-    is_full_time_student: false
+    people:
+      person1:
+        is_tax_unit_head: true
+        is_parent_of_filer_or_spouse: true
+      person2:
+        is_tax_unit_head: false
+        is_parent_of_filer_or_spouse: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
   output:
-    az_tanf_eligible_child: true
+    az_fpg_rate: 1
 
-- name: Not eligible non-student
+- name: Head of tax unit is not a parent
   period: 2023
   input:
-    state_code: AZ
-    age: 18
-    is_full_time_student: false
+    people:
+      person1:
+        is_tax_unit_head: true
+        is_parent_of_filer_or_spouse: false
+      person2:
+        is_tax_unit_head: false
+        is_parent_of_filer_or_spouse: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
   output:
-    az_tanf_eligible_child: false
-
-- name: Eligible student
-  period: 2023
-  input:
-    state_code: AZ
-    age: 18
-    is_full_time_student: true
-  output:
-    az_tanf_eligible_child: true
-
-- name: Not eligible student
-  period: 2023
-  input:
-    state_code: AZ
-    age: 19
-    is_full_time_student: true
-  output:
-    az_tanf_eligible_child: false
+    az_fpg_rate: 1.3
