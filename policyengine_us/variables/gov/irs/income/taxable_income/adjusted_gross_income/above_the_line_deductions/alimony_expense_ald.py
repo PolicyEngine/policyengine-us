@@ -6,7 +6,9 @@ class alimony_expense_ald(Variable):
     entity = TaxUnit
     label = "Alimony expense ALD"
     unit = USD
-    documentation = "Above-the-line deduction from gross income for alimony expenses."
+    documentation = (
+        "Above-the-line deduction from gross income for alimony expenses."
+    )
     definition_period = YEAR
     reference = "https://www.irs.gov/taxtopics/tc452"
 
