@@ -204,7 +204,6 @@ def add_personal_variables(cps: h5py.File, person: DataFrame) -> None:
     cps["is_hispanic"] = person.PRDTHSP != 0
 
     cps["is_widowed"] = person.A_MARITL == 4
-    cps["is_divorced"] = person.A_MARITL == 5
     cps["is_separated"] = person.A_MARITL == 6
     # High school or college/university enrollment status.
     cps["is_full_time_college_student"] = person.A_HSCOL == 2
