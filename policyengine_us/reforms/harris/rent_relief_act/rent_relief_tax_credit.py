@@ -11,32 +11,35 @@ def create_rent_relief_tax_credit() -> Reform:
         reference = "https://www.congress.gov/bill/116th-congress/senate-bill/1106/text"
 
         def formula(tax_unit, period, parameters):
-
             # The applicable rent amount is capped at fair market rent
             rent = add(tax_unit, period, ["rent"])
             p = parameters(
                 period
             ).gov.contrib.harris.rent_relief_act.rent_relief_credit
             safmr = tax_unit.household("small_area_fair_market_rent", period)
-            safmr_used_for_hcv = tax_unit.household(
-                "safmr_used_for_hcv", period
-            )
+
             gross_income = add(tax_unit, period, ["irs_gross_income"])
             # Reduce the income (equivalent to raising thresholds) for households
             # in high income areas, as defined by using SAFMR for HCV.
+
+            rent_cap = safmr * p.safmr_share_rent_cap
+            capped_rent = min_(rent, rent_cap)
+            gross_income_fraction = (
+                p.rent_income_share_threshold * gross_income
+            )
+            rent_excess = max_(capped_rent - gross_income_fraction, 0)
+            safmr_used_for_hcv = tax_unit.household(
+                "safmr_used_for_hcv", period
+            )
             high_income_reduction = (
                 safmr_used_for_hcv * p.high_income_area_threshold_increase
             )
             applicable_gross_income = max_(
                 gross_income - high_income_reduction, 0
             )
-            rent_cap = safmr * p.safmr_share_rent_cap
-            capped_rent = min_(rent, rent_cap)
-            gross_income_fraction = (
-                p.rent_income_share_threshold * applicable_gross_income
+            applicable_percentage = p.applicable_percentage.calc(
+                applicable_gross_income, right=True
             )
-            rent_excess = max_(capped_rent - gross_income_fraction, 0)
-            applicable_percentage = p.applicable_percentage.calc(gross_income)
             amount_if_rent_not_subsidized = applicable_percentage * rent_excess
             housing_assistance = tax_unit.spm_unit(
                 "housing_assistance", period

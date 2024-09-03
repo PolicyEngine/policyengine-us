@@ -7,3 +7,4 @@ class taxable_interest_income(Variable):
     label = "taxable interest income"
     unit = USD
     definition_period = YEAR
+    uprating = "calibration.gov.irs.soi.taxable_interest_income"

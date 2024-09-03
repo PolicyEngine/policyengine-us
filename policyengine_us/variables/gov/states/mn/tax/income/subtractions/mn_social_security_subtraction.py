@@ -14,16 +14,37 @@ class mn_social_security_subtraction(Variable):
     defined_for = StateCode.MN
 
     def formula(tax_unit, period, parameters):
+        p = parameters(
+            period
+        ).gov.states.mn.tax.income.subtractions.social_security
+        filing_status = tax_unit("filing_status", period)
+        agi = tax_unit("adjusted_gross_income", period)
+        reduction_start = p.reduction.start[filing_status]
+        simplified_reduction_applies = agi > reduction_start
+        us_taxable_oasdi = add(tax_unit, period, ["taxable_social_security"])
+        if p.reduction.applies:
+            reduction_increment = p.reduction.increment[filing_status]
+            reduction_rate = p.reduction.rate
+            agi_excess = max_(0, agi - reduction_start)
+            reduction_fraction = np.ceil(agi_excess / reduction_increment)
+            reduction_rate = min_(reduction_rate * reduction_fraction, 1)
+            reduction = reduction_rate * us_taxable_oasdi
+            simplified_reduction_if_applies = max_(
+                us_taxable_oasdi - reduction, 0
+            )
+            simplified_reduction = (
+                simplified_reduction_applies * simplified_reduction_if_applies
+            )
+        else:
+            simplified_reduction = 0
         # specify parameters
         filing_status = tax_unit("filing_status", period)
-        p = parameters(period).gov.states.mn.tax.income.subtractions
-        total_benefit_fraction = p.social_security.total_benefit_fraction
-        income_amount = p.social_security.income_amount[filing_status]
-        net_income_fraction = p.social_security.net_income_fraction
-        alt_amount = p.social_security.alternative_amount[filing_status]
+
+        total_benefit_fraction = p.total_benefit_fraction
+        income_amount = p.income_amount[filing_status]
+        alt_amount = p.alternative_amount[filing_status]
         # calculate subtraction amount (following "Worksheet for line 12")
         # ... US-taxable social security benefits
-        us_taxable_oasdi = add(tax_unit, period, ["taxable_social_security"])
         # ... alternative benefit subtraction amount
         us_gross_income = add(tax_unit, period, ["irs_gross_income"])
         adj_income = us_gross_income - us_taxable_oasdi
@@ -36,5 +57,8 @@ class mn_social_security_subtraction(Variable):
         mn_ald = max_(0, us_ald - student_loan_int)
         income = max_(0, sum_income - mn_ald)
         net_income = max_(0, income - income_amount)
-        alt_sub_amt = max_(0, alt_amount - (net_income * net_income_fraction))
-        return min_(us_taxable_oasdi, alt_sub_amt)
+        alt_sub_amt = max_(
+            0, alt_amount - (net_income * p.net_income_fraction)
+        )
+        main_reduction = min_(us_taxable_oasdi, alt_sub_amt)
+        return max_(main_reduction, simplified_reduction)
