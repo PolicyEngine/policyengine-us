@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.71.1] - 2024-09-03 23:46:01
+
+### Fixed
+
+- Minor bugs and deconstruct MOOP variables in CPS.
+
 ## [1.71.0] - 2024-09-03 22:33:44
 
 ### Added
@@ -9561,6 +9567,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.71.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.71.0...1.71.1
 [1.71.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.70.0...1.71.0
 [1.70.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.69.1...1.70.0
 [1.69.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.69.0...1.69.1

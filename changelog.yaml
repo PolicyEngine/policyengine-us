@@ -8093,3 +8093,8 @@
     - Apply ALD to alimony expense, not income in the above the line deductions.
     - Divorce status to cps.py.
   date: 2024-09-03 22:33:44
+- bump: patch
+  changes:
+    fixed:
+    - Minor bugs and deconstruct MOOP variables in CPS.
+  date: 2024-09-03 23:46:01
