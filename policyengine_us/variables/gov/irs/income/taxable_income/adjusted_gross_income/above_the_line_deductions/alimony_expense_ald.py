@@ -17,5 +17,5 @@ class alimony_expense_ald(Variable):
         divorce_year = person("divorce_year", period)
         alimony_expense = person("alimony_expense", period)
         p = parameters(period).gov.irs.ald.alimony_expense
-        eligible_person = divorce_year < p.start_year
-        return alimony_expense * eligible_person
+        eligible_person = p.divorce_year_threshold.calc(divorce_year)
+        return tax_unit.sum(alimony_expense * eligible_person)
