@@ -27,6 +27,7 @@ from policyengine_core.parameters.operations.propagate_parameter_metadata import
 from policyengine_core.parameters.operations.uprate_parameters import (
     uprate_parameters,
 )
+from .tools.default_uprating import add_default_uprating
 
 COUNTRY_DIR = Path(__file__).parent
 
@@ -58,6 +59,7 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
         self.parameters = uprate_parameters(self.parameters)
         self.parameters = propagate_parameter_metadata(self.parameters)
         self.add_abolition_parameters()
+        add_default_uprating(self)
 
         structural_reform = create_structural_reforms_from_parameters(
             self.parameters, year_start

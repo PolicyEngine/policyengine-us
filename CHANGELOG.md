@@ -5,6 +5,43 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.69.0] - 2024-09-02 11:22:31
+
+### Added
+
+- Infant calibration and uprating.
+
+## [1.68.0] - 2024-09-01 18:17:57
+
+### Added
+
+- Family Security Act 2.0 CTC amount per child and pregnancy credit structure.
+
+## [1.67.0] - 2024-08-31 18:22:12
+
+### Added
+
+- Family Security Act 2.0 provisions.
+
+## [1.66.0] - 2024-08-31 16:36:48
+
+### Added
+
+- Repeal dependent exemption reform.
+
+## [1.65.1] - 2024-08-29 23:49:17
+
+### Fixed
+
+- Increase Hawaii Military Reserve or Hawaii National Guard Duty Pay Cap.
+- Rhode Island 2023 military retirement pay subtraction.
+
+## [1.65.0] - 2024-08-29 22:06:21
+
+### Added
+
+- New York supplemental tax incremental benefit repeal for 2028
+
 ## [1.64.0] - 2024-08-29 15:00:53
 
 ### Added
@@ -9505,6 +9542,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.69.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.68.0...1.69.0
+[1.68.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.67.0...1.68.0
+[1.67.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.66.0...1.67.0
+[1.66.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.65.1...1.66.0
+[1.65.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.65.0...1.65.1
+[1.65.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.64.0...1.65.0
 [1.64.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.63.0...1.64.0
 [1.63.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.62.0...1.63.0
 [1.62.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.61.2...1.62.0
