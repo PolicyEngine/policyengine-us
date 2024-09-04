@@ -1,0 +1,32 @@
+description: State standard utility allowance broken down by household size
+NC:
+  1:
+    2024-01-01: 585
+  2:
+    2024-01-01: 643
+  3:
+    2024-01-01: 707
+  4:
+    2024-01-01: 770
+  5:
+    2024-01-01: 839
+  6:
+    2024-01-01: 839
+  7:
+    2024-01-01: 839
+  8:
+    2024-01-01: 839
+  9:
+    2024-01-01: 839
+
+metadata:
+  period: month
+  unit: currency-USD
+  label: State household size standard utility allowance
+  breakdown:
+    - [NC]
+    - range(1, 9)
+  reference:
+    - title: SNAP Screener Compiled State SNAP Data
+      href: https://www.snapscreener.com/data
+  propagate_metadata_to_children: true
