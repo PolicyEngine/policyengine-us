@@ -1,4 +1,4 @@
-- name: One person and no income, $2178 per year
+- name: Single person household with no income receives $2178 per year
   period: 2024
   input:
     people:
@@ -14,7 +14,7 @@
   output:
     nc_tanf: (362 - 0) * 0.5 * 12
 
-- name: One adult and one child and no income, $2832 per year
+- name: One adult and one child household with no income receives $2832 per year
   period: 2024
   input:
     people:
@@ -32,7 +32,7 @@
   output:
     nc_tanf: (472 - 0) * 0.5 * 12
 
-- name: 2 adults and no income, $0 per month
+- name: 2 adults household with no income receives $0 per month
   period: 2024
   input:
     people:
@@ -50,7 +50,7 @@
   output:
     nc_tanf: 0
 
-- name: One adult and one child and with income $422, $300 per year
+- name: One adult and one child household with $422 monthly income receives $300 per year
   period: 2024
   input:
     people:
@@ -70,7 +70,7 @@
   output:
     nc_tanf: 300
 
-- name: One adult and one child and with income $430, $0 per year
+- name: One adult and one child household with income $430 monthly income receives $0 per year
   period: 2024
   input:
     people:
@@ -90,7 +90,7 @@
   output:
     nc_tanf: 0
 
-- name: 14 people including a child and no income, $6252 per year
+- name: 14 people household including a child with no income receives $6252 per year
   period: 2024
   input:
     people:
@@ -158,7 +158,7 @@
   output:
     nc_tanf: (1042 - 0) * 0.5 * 12   
 
-- name: 14 people including a child and $692 * 12 income, $300 per year
+- name: 14 people household including a child with $692 monthly income receives $300 per year
   period: 2024
   input:
     people:
@@ -226,7 +226,7 @@
   output:
     nc_tanf: (1042 - 692) * 0.5 * 12 
 
-- name: 14 people including a child and $1000 * 12 income, $0 per year
+- name: 14 people household including a child with $1000 monthly income receives $0 per year
   period: 2024
   input:
     people:

@@ -13,15 +13,8 @@ class nc_tanf(Variable):
         payment_percentage = parameters(
             period
         ).gov.states.nc.ncdhhs.tanf.need_standard.payment_percentage
-        need_standard = spm_unit("nc_tanf_need_standard", period)
-        income = add(
-            spm_unit,
-            period,
-            [
-                "nc_tanf_countable_earned_income",
-                "nc_tanf_countable_gross_unearned_income",
-            ],
+        reduced_need_standard = spm_unit(
+            "nc_tanf_reduced_need_standard", period
         )
-        reduced_need_standard = max_(need_standard - income, 0)
 
         return reduced_need_standard * payment_percentage

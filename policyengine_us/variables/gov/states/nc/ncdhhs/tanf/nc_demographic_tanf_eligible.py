@@ -10,7 +10,10 @@ class nc_demographic_tanf_eligible(Variable):
     defined_for = StateCode.NC
 
     def formula(spm_unit, period, parameters):
+        age_limit = parameters(
+            period
+        ).gov.states.nc.ncdhhs.tanf.need_standard.age_limit
         person = spm_unit.members
-        is_child = person("is_child", period)
+        is_child = person("age", period) < age_limit
 
         return spm_unit.any(is_child)

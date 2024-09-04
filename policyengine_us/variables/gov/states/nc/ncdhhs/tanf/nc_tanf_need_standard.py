@@ -16,7 +16,7 @@ class nc_tanf_need_standard(Variable):
         household_size = spm_unit("spm_unit_size", period)
         # Get household size list
         household_size_list = list(map(int, (p.main)))
-        # Get the maximun number of people defined in the tables.
+        # Get the maximum number of people defined in the tables.
         max_standard_household_size = max(household_size_list)
         # Cap them at the maximum specified in the tables.
         capped_household_size = min_(

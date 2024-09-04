@@ -12,17 +12,10 @@ class nc_tanf_income_eligible(Variable):
         monthly_allowed_difference = parameters(
             period
         ).gov.states.nc.ncdhhs.tanf.need_standard.average_reduced_need_standard_thresold
-        income = add(
-            spm_unit,
-            period,
-            [
-                "nc_tanf_countable_earned_income",
-                "nc_tanf_countable_gross_unearned_income",
-            ],
-        )
-        need_standard = spm_unit("nc_tanf_need_standard", period)
         household_size = spm_unit("spm_unit_size", period)
-        reduced_need_standard = max_(need_standard - income, 0)
+        reduced_need_standard = spm_unit(
+            "nc_tanf_reduced_need_standard", period
+        )
         need_standard_fraction = reduced_need_standard / household_size
         difference_threshold = monthly_allowed_difference * MONTHS_IN_YEAR
 
