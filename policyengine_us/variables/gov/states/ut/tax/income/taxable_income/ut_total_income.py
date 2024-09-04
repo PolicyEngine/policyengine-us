@@ -10,5 +10,5 @@ class ut_total_income(Variable):
     definition_period = YEAR
     defined_for = StateCode.UT
     reference = "https://tax.utah.gov/forms/2021/tc-40.pdf#page=1"
-    
+
     adds = ["adjusted_gross_income", "ut_additions"]
