@@ -135,6 +135,8 @@ class Microsimulation(CoreMicrosimulation):
     default_calculation_period = CURRENT_YEAR
     default_input_period = CURRENT_YEAR
     datasets = DATASETS
+    macro_cache_read = False
+    macro_cache_write = False
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
