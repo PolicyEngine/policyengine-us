@@ -1,0 +1,21 @@
+description: North Carolina phases the proposed Child and Dependent Care Credit out for single filers at this rate.
+metadata:
+  type: marginal_rate
+  threshold_period: year
+  threshold_unit: currency-USD  
+  rate_unit: /1
+  label: North Carolina CDCC phase out single
+  reference:
+    - title: North Carolina Governor's Recommended Budget Adjustments FY 2024-25 p.55
+      href: https://www.osbm.nc.gov/governors-budget-rec-fy2024-25/download?attachment 
+
+
+brackets:
+  - threshold:
+      2024-01-01: 0
+    rate:
+      2024-01-01: 0
+  - threshold:
+      2024-01-01: 150_000
+    rate:
+      2024-01-01: 0 # phase-out start
