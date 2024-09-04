@@ -8082,3 +8082,19 @@
     fixed:
     - Five year forward check in the Repeal dependent exemptions reform.
   date: 2024-09-03 21:50:50
+- bump: minor
+  changes:
+    added:
+    - Change reform parameters to default to 0.
+  date: 2024-09-03 22:29:43
+- bump: minor
+  changes:
+    added:
+    - Apply ALD to alimony expense, not income in the above the line deductions.
+    - Divorce status to cps.py.
+  date: 2024-09-03 22:33:44
+- bump: patch
+  changes:
+    fixed:
+    - Minor bugs and deconstruct MOOP variables in CPS.
+  date: 2024-09-03 23:46:01

@@ -18,7 +18,9 @@ class hi_medical_expense_deduction(Variable):
 
         # 1. medical_expense_deduction: worksheet A-1
         # use hi_agi instead of AGI
-        medical_expense = add(tax_unit, period, ["medical_expense"])
+        medical_expense = add(
+            tax_unit, period, ["medical_out_of_pocket_expenses"]
+        )
         hi_agi = tax_unit("hi_agi", period)
         medical_capped_amount = max_(
             0, p_deductions.itemized.medical.floor * hi_agi
