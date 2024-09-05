@@ -15,7 +15,9 @@ class nm_medical_expense_exemption(Variable):
             period
         ).gov.states.nm.tax.income.exemptions.unreimbursed_medical_care_expense
         age = person("age", period)
-        medical_expense = add(tax_unit, period, ["medical_expense"])
+        medical_expense = add(
+            tax_unit, period, ["medical_out_of_pocket_expenses"]
+        )
         age_eligible = tax_unit.any(age >= p.age_eligibility)
         expense_eligible = medical_expense >= p.min_expenses
         eligible = age_eligible & expense_eligible
