@@ -3,7 +3,7 @@
   input:
     people:
       person1:
-        is_child: true
+        age: 17
     spm_units:
       spm_unit:
         members: [person1]
@@ -19,9 +19,9 @@
   input:
     people:
       person1:
-        is_adult: true
+        age: 30
       person2:
-        is_child: true
+        age: 17
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -37,9 +37,9 @@
   input:
     people:
       person1:
-        is_adult: true
+        age: 30
       person2:
-        is_adult: true 
+        age: 30 
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -55,11 +55,11 @@
   input:
     people:
       adult1:
-        is_adult: true
+        age: 30
         employment_income: 222 * 12 
         self_employment_income: 200 * 12
       child1:
-        is_child: true   
+        age: 17   
     spm_units:
       spm_unit:
         members: [adult1, child1]
@@ -75,11 +75,11 @@
   input:
     people:
       adult1:
-        is_adult: true
+        age: 30
         employment_income: 230 * 12
         self_employment_income: 200 * 12
       child1:
-        is_child: true   
+        age: 17   
     spm_units:
       spm_unit:
         members: [adult1, child1]
@@ -95,59 +95,59 @@
   input:
     people:
       adult1:
-        is_adult: true
+        age: 30
         employment_income: 0
         self_employment_income: 0
       adult2:
-        is_adult: true
+        age: 30
         employment_income: 0
         self_employment_income: 0
       adult3:
-        is_adult: true
+        age: 30
         employment_income: 0
         self_employment_income: 0
       adult4:
-        is_adult: true
+        age: 30
         employment_income: 0
         self_employment_income: 0
       adult5:
-        is_adult: true
+        age: 30
         employment_income: 0
         self_employment_income: 0
       adult6:
-        is_adult: true
+        age: 30
         employment_income: 0
         self_employment_income: 0
       adult7:
-        is_adult: true
+        age: 30
         employment_income: 0
         self_employment_income: 0
       adult8:
-        is_adult: true
+        age: 30
         employment_income: 0
         self_employment_income: 0
       adult9:
-        is_adult: true
+        age: 30
         employment_income: 0
         self_employment_income: 0
       adult10:
-        is_adult: true
+        age: 30
         employment_income: 0
         self_employment_income: 0
       adult11:
-        is_adult: true
+        age: 30
         employment_income: 0
         self_employment_income: 0
       adult12:
-        is_adult: true
+        age: 30
         employment_income: 0
         self_employment_income: 0
       adult13:
-        is_adult: true
+        age: 30
         employment_income: 0
         self_employment_income: 0
       child1:
-        is_child: true   
+        age: 17   
     spm_units:
       spm_unit:
         members: [adult1, adult2, adult3, adult4, adult5, adult6, adult7, adult8, adult9, adult10, adult11, adult12, adult13, child1]
@@ -163,59 +163,59 @@
   input:
     people:
       adult1:
-        is_adult: true
+        age: 30
         employment_income: 400 * 12 
         self_employment_income: 200 * 12
       adult2:
-        is_adult: true
+        age: 30
         employment_income: 92 * 12
         self_employment_income: 0
       adult3:
-        is_adult: true
+        age: 30
         employment_income: 0
         self_employment_income: 0
       adult4:
-        is_adult: true
+        age: 30
         employment_income: 0
         self_employment_income: 0
       adult5:
-        is_adult: true
+        age: 30
         employment_income: 0
         self_employment_income: 0
       adult6:
-        is_adult: true
+        age: 30
         employment_income: 0
         self_employment_income: 0
       adult7:
-        is_adult: true
+        age: 30
         employment_income: 0
         self_employment_income: 0
       adult8:
-        is_adult: true
+        age: 30
         employment_income: 0
         self_employment_income: 0
       adult9:
-        is_adult: true
+        age: 30
         employment_income: 0
         self_employment_income: 0
       adult10:
-        is_adult: true
+        age: 30
         employment_income: 0
         self_employment_income: 0
       adult11:
-        is_adult: true
+        age: 30
         employment_income: 0
         self_employment_income: 0
       adult12:
-        is_adult: true
+        age: 30
         employment_income: 0
         self_employment_income: 0
       adult13:
-        is_adult: true
+        age: 30
         employment_income: 0
         self_employment_income: 0
       child1:
-        is_child: true   
+        age: 17   
     spm_units:
       spm_unit:
         members: [adult1, adult2, adult3, adult4, adult5, adult6, adult7, adult8, adult9, adult10, adult11, adult12, adult13, child1]
@@ -231,59 +231,59 @@
   input:
     people:
       adult1:
-        is_adult: true
+        age: 30
         employment_income: 400 * 12
         self_employment_income: 500 * 12
       adult2:
-        is_adult: true
+        age: 30
         employment_income: 100 * 12
         self_employment_income: 0
       adult3:
-        is_adult: true
+        age: 30
         employment_income: 0
         self_employment_income: 0
       adult4:
-        is_adult: true
+        age: 30
         employment_income: 0
         self_employment_income: 0
       adult5:
-        is_adult: true
+        age: 30
         employment_income: 0
         self_employment_income: 0
       adult6:
-        is_adult: true
+        age: 30
         employment_income: 0
         self_employment_income: 0
       adult7:
-        is_adult: true
+        age: 30
         employment_income: 0
         self_employment_income: 0
       adult8:
-        is_adult: true
+        age: 30
         employment_income: 0
         self_employment_income: 0
       adult9:
-        is_adult: true
+        age: 30
         employment_income: 0
         self_employment_income: 0
       adult10:
-        is_adult: true
+        age: 30
         employment_income: 0
         self_employment_income: 0
       adult11:
-        is_adult: true
+        age: 30
         employment_income: 0
         self_employment_income: 0
       adult12:
-        is_adult: true
+        age: 30
         employment_income: 0
         self_employment_income: 0
       adult13:
-        is_adult: true
+        age: 30
         employment_income: 0
         self_employment_income: 0
       child1:
-        is_child: true   
+        age: 17   
     spm_units:
       spm_unit:
         members: [adult1, adult2, adult3, adult4, adult5, adult6, adult7, adult8, adult9, adult10, adult11, adult12, adult13, child1]

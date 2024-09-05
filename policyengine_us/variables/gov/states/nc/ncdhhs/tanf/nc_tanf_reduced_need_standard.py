@@ -5,6 +5,7 @@ class nc_tanf_reduced_need_standard(Variable):
     value_type = float
     entity = SPMUnit
     label = "North Carolina TANF reduced need standard"
+    unit = USD
     definition_period = YEAR
     defined_for = StateCode.NC
 
