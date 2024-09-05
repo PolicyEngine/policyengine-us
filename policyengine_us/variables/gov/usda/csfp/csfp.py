@@ -9,7 +9,7 @@ class csfp(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.usda.csfp
-        income = person.spm_unit("wic_fpg", period)
+        fpg = person.spm_unit("wic_fpg", period)
         age = person("age", period)
 
         age_eligible = age >= p.min_age
