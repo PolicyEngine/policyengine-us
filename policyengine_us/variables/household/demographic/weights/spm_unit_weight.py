@@ -6,6 +6,7 @@ class spm_unit_weight(Variable):
     entity = SPMUnit
     label = "SPM unit weight"
     definition_period = YEAR
+    uprating = "calibration.gov.census.populations.total"
 
     def formula(spm_unit, period, parameters):
         # Use household weights if not provided

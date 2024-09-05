@@ -139,7 +139,7 @@ def create_mn_walz_hf1938_repeal() -> Reform:
             agi = tax_unit("adjusted_gross_income", period)
             filing_status = tax_unit("filing_status", period)
             excess_agi = max_(
-                0, agi - p.reduction.income_threshold.low[filing_status]
+                0, agi - p.reduction.agi_threshold.low[filing_status]
             )
             excess_agi_offset = (
                 p.reduction.excess_agi_fraction.low * excess_agi

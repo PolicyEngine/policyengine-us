@@ -8,6 +8,7 @@ class self_employment_income_last_year(Variable):
     documentation = "Self-employment income in prior year."
     unit = USD
     definition_period = YEAR
+    uprating = "calibration.gov.irs.soi.self_employment_income"
 
 
 class previous_year_income_available(Variable):
