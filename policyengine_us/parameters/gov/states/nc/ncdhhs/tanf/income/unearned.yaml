@@ -1,0 +1,23 @@
+description: North Carolina counts these income sources as unearned income for its Temporary Assistance for Needy Families program..
+
+# need to confirm
+values:
+  2024-01-01:
+    - veterans_benefits
+    - rental_income
+    - alimony_income
+    - dividend_income
+    - interest_income
+    - miscellaneous_income
+    - pension_income
+    - unemployment_compensation
+    - gi_cash_assistance
+    - social_security
+    - ssi
+metadata:
+  unit: list
+  period: year
+  label: North Carolina TANF unearned income
+  reference:
+    - title: WORK FIRST | Income and Budgeting (Change No. 04-2023, January 1, 2024)
+      href: https://policies.ncdhhs.gov/wp-content/uploads/wf-114_1-2-2024.pdf
