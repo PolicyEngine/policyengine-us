@@ -15,15 +15,15 @@ class ne_child_care_subsidy_eligible(Variable):
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ne.dhhs.child_care_subsidy
         person = spm_unit.members
-        eligible_parents = spm_unit.sum(
-            spm_unit.members("ne_child_care_subsidy_eligible_parent", period)
+        eligible_parent = person(
+            "ne_child_care_subsidy_eligible_parent", period
         )
-        has_eligible_parents = eligible_parents > 0
-        eligible_children = spm_unit.sum(
-            spm_unit.members("ne_child_care_subsidy_eligible_child", period)
-        )
-        has_eligible_children = eligible_children > 0
+        eligible_parent_present = spm_unit.any(eligible_parent)
+        eligible_child = person("ne_child_care_subsidy_eligible_child", period)
+        eligible_child_present = spm_unit.any(eligible_child)
         income_eligible = spm_unit(
             "ne_child_care_subsidy_income_eligible", period
         )
-        return has_eligible_parents & has_eligible_children & income_eligible
+        return (
+            eligible_parent_present & eligible_child_present & income_eligible
+        )

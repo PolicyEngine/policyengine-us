@@ -3,6 +3,7 @@ from policyengine_us.model_api import *
 
 class ne_child_care_subsidy(Variable):
     value_type = float
+    unit = USD
     entity = SPMUnit
     label = "Nebraska Child Care Subsidy"
     definition_period = YEAR
@@ -13,14 +14,15 @@ class ne_child_care_subsidy(Variable):
         childcare_expenses = spm_unit(
             "spm_unit_pre_subsidy_childcare_expenses", period
         )
-        income = add(spm_unit, period, ["adjusted_gross_income"])
-        fpg = add(spm_unit, period, ["tax_unit_fpg"])
-        fee_obligated = income > fpg * p.fpg_fraction.threshold
+        income = spm_unit("spm_unit_net_income", period)
+        fpg = spm_unit("spm_unit_fpg", period)
+        fpg_fraction = fpg * p.fpg_fraction.threshold
+        income_above_fpg_fraction = income > fpg_fraction
         capped_childcare_expenses_with_fee = max_(
             childcare_expenses - p.rate * income, 0
         )
         return where(
-            fee_obligated,
+            income_above_fpg_fraction,
             capped_childcare_expenses_with_fee,
             childcare_expenses,
         )

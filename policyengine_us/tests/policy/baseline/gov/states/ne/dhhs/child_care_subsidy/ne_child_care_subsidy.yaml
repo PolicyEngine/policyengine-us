@@ -3,8 +3,8 @@
   input:
     ne_child_care_subsidy_eligible: true
     spm_unit_pre_subsidy_childcare_expenses: 50
-    tax_unit_fpg: 100
-    adjusted_gross_income: 100
+    spm_unit_fpg: 100
+    spm_unit_net_income: 100
     state_code: NE
   output:
     ne_child_care_subsidy: 50
@@ -14,8 +14,8 @@
   input:
     ne_child_care_subsidy_eligible: true
     spm_unit_pre_subsidy_childcare_expenses: 50
-    tax_unit_fpg: 100
-    adjusted_gross_income: 200
+    spm_unit_fpg: 100
+    spm_unit_net_income: 200
     state_code: NE
   output:
     ne_child_care_subsidy: 36 # 50 - 0.07 * 200
@@ -25,8 +25,8 @@
   input:
     ne_child_care_subsidy_eligible: true
     spm_unit_pre_subsidy_childcare_expenses: 50
-    tax_unit_fpg: 100
-    adjusted_gross_income: 2_000
+    spm_unit_fpg: 100
+    spm_unit_net_income: 2_000
     state_code: NE
   output:
     ne_child_care_subsidy: 0 # 50 - 0.07 * 2000 < 0
@@ -36,8 +36,8 @@
   input:
     ne_child_care_subsidy_eligible: false
     spm_unit_pre_subsidy_childcare_expenses: 50
-    tax_unit_fpg: 100
-    adjusted_gross_income: 100
+    spm_unit_fpg: 100
+    spm_unit_net_income: 100
     state_code: NE
   output:
     ne_child_care_subsidy: 0
