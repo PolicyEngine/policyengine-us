@@ -30,7 +30,6 @@ INPUT_VARIABLES = [
     "cdcc_relevant_expenses",
     "social_security",
     "workers_compensation",
-    "spm_unit_medical_expenses",
     "self_employed_health_insurance_ald",
     "state_and_local_sales_or_income_tax",
     "child_support_received",
@@ -89,7 +88,6 @@ INPUT_VARIABLES = [
     "snap_reported",
     "long_term_capital_gains_on_collectibles",
     "self_employment_income_last_year",
-    "medical_expense",
     "tax_exempt_pension_income",
     "employment_income",
     "foreign_tax_credit",
@@ -103,6 +101,10 @@ INPUT_VARIABLES = [
     "long_term_capital_gains",
     "traditional_401k_contributions",
     "strike_benefits",
+    "other_medical_expenses",
+    "over_the_counter_health_expenses",
+    "medicare_part_b_premiums",
+    "health_insurance_premiums_without_medicare_part_b",
 ]
 
 
