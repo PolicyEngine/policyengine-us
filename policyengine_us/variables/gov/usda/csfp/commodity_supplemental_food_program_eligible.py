@@ -2,7 +2,7 @@ from policyengine_us.model_api import *
 
 
 class commodity_supplemental_food_program_eligible(Variable):
-    value_type = float
+    value_type = bool
     entity = Person
     definition_period = YEAR
     label = "Commodity Supplemental Food Program eligible"
