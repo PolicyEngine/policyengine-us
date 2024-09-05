@@ -1,7 +1,6 @@
 from policyengine_us.model_api import *
 
 
-
 def create_mi_food_assitance_credit() -> Reform:
     class mi_food_assistance_fpg_excess(Variable):
         value_type = float
@@ -64,7 +63,9 @@ def create_mi_food_assitance_credit() -> Reform:
         def formula(tax_unit, period, parameters):
             p = parameters(period).gov.states.mi.tax.income.credits
             previous_credits = add(tax_unit, period, p.refundable)
-            food_assistance_credit = tax_unit("mi_food_assistance_refundable_credit", period)
+            food_assistance_credit = tax_unit(
+                "mi_food_assistance_refundable_credit", period
+            )
             return previous_credits + food_assistance_credit
 
     class reform(Reform):
@@ -76,6 +77,7 @@ def create_mi_food_assitance_credit() -> Reform:
             self.update_variable(mi_refundable_credits)
 
     return reform
+
 
 def create_mi_food_assitance_credit_reform(
     parameters, period, bypass: bool = False
@@ -91,4 +93,6 @@ def create_mi_food_assitance_credit_reform(
         return None
 
 
-mi_food_assistance_credit = create_mi_food_assitance_credit_reform(None, None, bypass=True)
+mi_food_assistance_credit = create_mi_food_assitance_credit_reform(
+    None, None, bypass=True
+)
