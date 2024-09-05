@@ -1,11 +1,11 @@
 from policyengine_us.model_api import *
 
 
-class csfp(Variable):
+class commodity_supplemental_food_program_eligible(Variable):
     value_type = float
     entity = Person
     definition_period = YEAR
-    label = "Commodity Supplemental Food Program"
+    label = "Commodity Supplemental Food Program eligible"
 
     def formula(person, period, parameters):
         p = parameters(period).gov.usda.csfp
@@ -13,8 +13,6 @@ class csfp(Variable):
         age = person("age", period)
 
         age_eligible = age >= p.min_age
-        income_eligible = income <= p.income_limit
+        income_eligible = fpg <= p.fpg_limit
 
-        eligible = age_eligible & income_eligible
-
-        return eligible * p.amount
+        return age_eligible & income_eligible
