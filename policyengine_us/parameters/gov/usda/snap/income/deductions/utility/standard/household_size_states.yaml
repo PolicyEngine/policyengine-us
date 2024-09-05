@@ -4,7 +4,8 @@ values:
     - NC
 metadata:
   label: States where the utility deduction is based off of household size
-  period: month
+  period: year
+  unit: list
   reference:
     - title: SNAP Screener Compiled State SNAP Data
       href: https://www.snapscreener.com/data
