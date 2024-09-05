@@ -1,0 +1,65 @@
+- name: One dependent in tax unit
+  period: 2022
+  reforms: policyengine_us.reforms.treasury.repeal_dependent_exemptions.repeal_dependent_exemptions
+  input:
+    gov.contrib.treasury.repeal_dependent_exemptions: true
+    tax_unit_size: 4
+    tax_unit_dependents: 1
+  output:
+    exemptions_count: 3
+
+- name: No dependents in tax unit
+  period: 2022
+  reforms: policyengine_us.reforms.treasury.repeal_dependent_exemptions.repeal_dependent_exemptions
+  input:
+    gov.contrib.treasury.repeal_dependent_exemptions: true
+    tax_unit_size: 4
+    tax_unit_dependents: 0
+  output:
+    exemptions_count: 4
+
+- name: Reform not in effect
+  period: 2026
+  input:
+    people: 
+      person1:
+        age: 40
+        is_tax_unit_head: true
+      person2: 
+        age: 40
+        is_tax_unit_spouse: true
+      person3:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        adjusted_gross_income: 1_000
+        filing_status: SINGLE
+  output:
+    exemptions_count: 3
+    exemptions: 15_900
+
+- name: Three people, reform applies
+  period: 2026
+  reforms: policyengine_us.reforms.treasury.repeal_dependent_exemptions.repeal_dependent_exemptions
+  input:
+    gov.contrib.treasury.repeal_dependent_exemptions: true
+    people: 
+      person1:
+        age: 40
+        is_tax_unit_head: true
+      person2: 
+        age: 40
+        is_tax_unit_spouse: true
+      person3:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        adjusted_gross_income: 1_000
+        filing_status: SINGLE
+  output:
+    exemptions_count: 2
+    exemptions: 10_600

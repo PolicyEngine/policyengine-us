@@ -1,0 +1,25 @@
+description: The IRS allows for an above the line deduction for alimony expenses for divorces that occurred in these years. 
+
+brackets:
+  - threshold:
+      0000-01-01: 0
+    amount:
+      0000-01-01: true
+  - threshold:
+      0000-01-01: 2019
+    amount:
+      0000-01-01: false
+  - threshold:
+      0000-01-01: 2026 
+    amount:
+      0000-01-01: true
+
+metadata:
+  type: single_amount
+  threshold_unit: year
+  amount_unit: bool
+  period: year
+  label: Alimony expense deduction divorce year threshold
+  reference:
+    - title: IRS Topic no. 452, Alimony and separate maintenance
+      href: https://www.irs.gov/taxtopics/tc452
