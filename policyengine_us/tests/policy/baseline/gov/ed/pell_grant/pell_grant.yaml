@@ -1,0 +1,80 @@
+- name: Max Pell Grant
+  period: 2023
+  input:
+    pell_grant_efc: 0
+    cost_of_attending_college: 100_000
+    pell_grant_months_in_school: 9
+  output:
+    pell_grant: 7_395
+
+- name: No Pell Grant
+  period: 2023
+  input:
+    pell_grant_efc: 3_000
+    cost_of_attending_college: 3_700
+    pell_grant_months_in_school: 9
+  output:
+    pell_grant: 0
+
+- name: 5 months in school
+  period: 2023
+  input:
+    pell_grant_efc: 2_000
+    cost_of_attending_college: 5_000
+    pell_grant_months_in_school: 6
+  output:
+    pell_grant: 2000
+
+- name: Pell Grant ineligible
+  period: 2024
+  input:
+    pell_grant_eligibility_type: INELIGIBLE
+    pell_grant_sai: 10_000
+    cost_of_attending_college: 30_000
+  output:
+    pell_grant: 0
+
+- name: Pell Grant max eligible
+  period: 2024
+  input:
+    pell_grant_eligibility_type: MAXIMUM
+    pell_grant_sai: 0
+    cost_of_attending_college: 10_000
+  output:
+    pell_grant: 7_395
+
+- name: Pell Grant min eligible
+  period: 2024
+  input:
+    pell_grant_eligibility_type: MINIMUM
+    pell_grant_sai: 10_000
+    cost_of_attending_college: 15_000
+  output:
+    pell_grant: 5_000
+
+- name: Pell Grant min eligible with cap
+  period: 2024
+  input:
+    pell_grant_eligibility_type: MINIMUM
+    pell_grant_sai: 10_000
+    cost_of_attending_college: 30_000
+  output:
+    pell_grant: 7_395
+
+- name: Pell Grant min eligible with floor
+  period: 2024
+  input:
+    pell_grant_eligibility_type: MINIMUM
+    pell_grant_sai: 10_000
+    cost_of_attending_college: 10_739
+  output:
+    pell_grant: 0
+
+- name: Pell Grant max eligible with no cost of attending
+  period: 2024
+  input:
+    pell_grant_eligibility_type: MAXIMUM
+    pell_grant_sai: 0
+    cost_of_attending_college: 0
+  output:
+    pell_grant: 0

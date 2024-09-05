@@ -1,0 +1,23 @@
+- name: 2021, Two dependents in the household
+  period: 2021
+  input:
+    tax_unit_dependents: 2
+    state_code: IL
+  output:
+    il_dependent_exemption: 4_750
+
+- name: 2021, three dependents in the household
+  period: 2021
+  input:
+    tax_unit_dependents: 3
+    state_code: IL
+  output:
+    il_dependent_exemption: 7_125
+
+- name: Two dependents in 2022
+  period: 2022
+  input:
+    tax_unit_dependents: 2
+    state_code: IL
+  output:
+    il_dependent_exemption: 4_850

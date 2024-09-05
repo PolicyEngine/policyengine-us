@@ -12,8 +12,7 @@ values:
     - is_optional_senior_or_disabled_for_medicaid
     - is_medically_needy_for_medicaid
 metadata:
-  unit: variable
-  name: medicaid_categories
+  unit: list
   label: "Medicaid categories"
   reference:
     - title: 42 U.S. Code § 1396(a)(10)(A)

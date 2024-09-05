@@ -1,0 +1,98 @@
+description: California CalWORKs Child Care provides up to this child care reimbursement for younger children.
+
+metadata:
+  label: California CalWORKs Child Care Standard Regional Market Rate Ceilings
+  amount_unit: currency-USD
+  breakdowns:
+    - ca_child_care_provider_category
+    - ca_child_care_time_category
+    - ca_child_care_service_category
+  reference:
+    - title: Los Angeles Department of Public Social Services E-Policy | RMR Ceilings Exhibit I
+      href: http://epolicy.dpss.lacounty.gov/epolicy/epolicy/server/general/projects_responsive/ePolicyMaster/index.htm?&area=general&type=responsivehelp&ctxid=&project=ePolicyMaster#t=mergedProjects%2FChild%20Care%2FChild_Care%2F1210_8_Regional_Market_Rate_Ceilings%2F1210_8_Regional_Market_Rate_Ceilings.htm%23Contactbc-13&rhtocid=_3_3_8_12
+    - title: California Department of Social Services | Child Care Regional Market Rate Ceilings
+      href: https://rcscc.adm.dss.ca.gov/index.aspx
+
+CHILD_CARE_CENTER:
+  HOURLY:
+    True:
+      2018-01-01: 0
+    False:
+      2018-01-01: 16.28
+      2022-01-01: 19.46
+  DAILY:
+    True:
+      2018-01-01: 96.53
+      2022-01-01: 100.01
+    False:
+      2018-01-01: 0
+  WEEKLY:
+    True:
+      2018-01-01: 398.15
+      2022-01-01: 406.72
+    False:
+      2018-01-01: 274.31
+      2022-01-01: 277.58
+  MONTHLY:
+    True:
+      2018-01-01: 1_594.48
+      2022-01-01: 1_688.28
+    False:
+      2018-01-01: 1_048.63
+      2022-01-01: 1_114.98
+
+FAMILY_CHILD_CARE_HOME:
+  HOURLY:
+    True:
+      2018-01-01: 0
+    False:
+      2018-01-01: 11.34
+      2022-01-01: 13.14
+  DAILY:
+    True:
+      2018-01-01: 56.40
+      2022-01-01: 61.31
+    False:
+      2018-01-01: 0
+  WEEKLY:
+    True:
+      2018-01-01: 232.26
+      2022-01-01: 275.79
+    False:
+      2018-01-01: 178.58
+      2022-01-01: 188.51
+  MONTHLY:
+    True:
+      2018-01-01: 927.25
+      2022-01-01: 1_122.20
+    False:
+      2018-01-01: 690.93
+      2022-01-01: 752.59
+
+LICENSE_EXEMPT:
+  HOURLY:
+    True:
+      2018-01-01: 0
+    False:
+      2018-01-01: 3.61
+      2022-01-01: 9.20
+  DAILY:
+    True:
+      2018-01-01: 39.48
+      2022-01-01: 42.91
+    False:
+      2018-01-01: 0
+  WEEKLY:
+    True:
+      2018-01-01: 162.58
+      2022-01-01: 193.06
+    False:
+      2018-01-01: 0
+      2022-01-01: 131.96
+  MONTHLY:
+    True:
+      2018-01-01: 649.08
+      2022-01-01: 758.54
+    False:
+      2018-01-01: 0
+      2022-01-01: 536.81

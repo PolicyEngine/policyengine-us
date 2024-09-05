@@ -1,0 +1,57 @@
+- name: 2013 filer
+  period: 2013
+  input:
+    charitable_cash_donations: 300
+    charitable_non_cash_donations: 500
+    positive_agi: 1_000
+    charitable_deduction_for_non_itemizers: 0
+  output: # min(min(500, 1000 * 0.3) + 300, 1000 * 0.5)
+    charitable_deduction: 500
+
+- name: 2018 filer
+  period: 2018
+  input:
+    charitable_cash_donations: 500
+    charitable_non_cash_donations: 200
+    positive_agi: 1_000
+  output: # min(min(200, 1000 * 0.3) + 500, 1000 * 0.6)
+    charitable_deduction: 600
+
+- name: 2020 filer
+  period: 2020
+  input:
+    charitable_cash_donations: 500
+    charitable_non_cash_donations: 200
+    positive_agi: 1_000
+    charitable_deduction_for_non_itemizers: 0
+  output: # min(min(200, 1000 * 0.3) + 500, 1000 * 1)
+    charitable_deduction: 700
+
+- name: 2021 filer
+  period: 2021
+  input:
+    charitable_cash_donations: 500
+    charitable_non_cash_donations: 200
+    positive_agi: 1_000
+    charitable_deduction_for_non_itemizers: 300
+  output: # min(min(200, 1000 * 0.3) + (500 - 300), 1000 * 0.6)
+    charitable_deduction: 400
+
+- name: 2021 filer 2
+  period: 2021
+  input:
+    charitable_cash_donations: 500
+    charitable_non_cash_donations: 200
+    positive_agi: 1_000
+    charitable_deduction_for_non_itemizers: 600
+  output: # min(min(200, 1000 * 0.3) + min(500 - 600, 0), 1000 * 0.6)
+    charitable_deduction: 200
+
+- name: 2026 filer
+  period: 2026
+  input:
+    charitable_cash_donations: 100
+    charitable_non_cash_donations: 400
+    positive_agi: 1_000
+  output: # min(min(400, 1000 * 0.3) + 100, 1000 * 0.5)
+    charitable_deduction: 400

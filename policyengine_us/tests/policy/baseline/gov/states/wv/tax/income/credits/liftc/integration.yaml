@@ -1,0 +1,39 @@
+- name: Tax unit with taxsimid 82215 in e21.its.csv and e21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 62
+        employment_income: 160_010
+        taxable_interest_income: 5_505
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person2:
+        age: 62
+        employment_income: 158_010
+        taxable_interest_income: 5_505
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        premium_tax_credit: 0  # not in TAXSIM35
+        local_income_tax: 0  # not in TAXSIM35
+        state_sales_tax: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        # snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 54  # WV
+  output:  # expected results from patched TAXSIM35 2023-10-05 version
+    alternative_minimum_tax: 0
+    wv_income_tax_before_non_refundable_credits: 20_001.95
+    wv_low_income_family_tax_credit: 0  # PEUS 0.507.1 produces 2_000.20
+    wv_income_tax: 20_001.95  # PEUS 0.507.1 produces 18_001.75

@@ -1,0 +1,21 @@
+description: South Carolina provides a young child deduction of this amount.
+values:
+  2019-01-01: 4_100 # Value in the legal code, last updated in 2019.
+  2021-01-01: 4_300
+  2022-01-01: 4_430
+  2023-01-01: 4_610
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: South Carolina young child deduction amount
+  reference:
+    - title: SC 1040 tax form instructions (2021)
+      href: https://dor.sc.gov/forms-site/Forms/IITPacket_2021.pdf#page=19
+    # 12-6-1160 defines the program and points to the amount in 1140.
+    - title: SC Legal Code | SECTION 12-6-1160
+      href: https://www.scstatehouse.gov/code/t12c006.php
+    - title: SC 1040 tax form (2022)
+      href: https://dor.sc.gov/forms-site/Forms/SC1040_2022.pdf#page=2
+    - title: SC 1040 tax form instructions (2023)
+      href: https://dor.sc.gov/forms-site/Forms/IITPacket_2023.pdf#page=29

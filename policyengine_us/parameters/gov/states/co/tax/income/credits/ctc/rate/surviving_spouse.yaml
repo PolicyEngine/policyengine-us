@@ -1,0 +1,38 @@
+description: Colorado matches this fraction of the federal child tax credit for widow(er) filers, depending on federal adjusted gross income.
+metadata:
+  period: year
+  type: single_amount
+  threshold_unit: currency-USD
+  rate_unit: /1
+  label: Colorado child tax credit widow(er) rate
+  reference:
+    - title: C.R.S. 39-22-129. Child tax credit - legislative declaration - definitions.
+      href: https://advance.lexis.com/documentpage/?pdmfid=1000516&crid=4f86a852-765a-489a-b554-66f6e7d5b065&nodeid=ABPAACAACAABAACABN&nodepath=%2fROOT%2fABP%2fABPAAC%2fABPAACAAC%2fABPAACAACAAB%2fABPAACAACAABAAC%2fABPAACAACAABAACABN&level=6&haschildren=&populated=false&title=39-22-129.+Child+tax+credit+-+legislative+declaration+-+definitions.&config=014FJAAyNGJkY2Y4Zi1mNjgyLTRkN2YtYmE4OS03NTYzNzYzOTg0OGEKAFBvZENhdGFsb2d592qv2Kywlf8caKqYROP5&pddocfullpath=%2fshared%2fdocument%2fstatutes-legislation%2furn%3acontentItem%3a633G-B1C3-GXJ9-30GW-00008-00&ecomp=7gf59kk&prid=2fe6fa8e-8df8-4d74-a340-c4fa9bc603d5
+    - title: 2022 Colorado Child Tax Credit, Applicable Percentage Table
+      href: https://tax.colorado.gov/sites/tax/files/documents/DR_0104CN_2022.pdf#page=6
+    - title: Colorado Individual Income Tax Filing Guide - Instructions for Select Credits from the DR 0104CR - Line 1 Child Tax Credit
+      href: https://tax.colorado.gov/sites/tax/files/documents/DR_104_Book_2022.pdf#page=16
+    - title: 2023 Colorado Individual Tax Filing Guide 104 Book, Line 1
+      href: https://tax.colorado.gov/sites/tax/files/documents/Book0104_2023.pdf#page=18
+    - title: 2023 Colorado Child Tax Credit, Applicable Percentage Table
+      href: https://tax.colorado.gov/sites/tax/files/documents/DR0104CN_2023.pdf#page=6
+    - title: 2021 Colorado Individual Income Tax Filing Guide
+      href: https://tax.colorado.gov/sites/tax/files/documents/DR0104Book_2021_V3.pdf#page=15
+      # Colorado introduced the child tax credit in 2022.
+brackets:
+  - threshold:
+      2022-01-01: 0
+    amount:
+      2022-01-01: 0.6
+  - threshold:
+      2022-01-01: 25_000
+    amount:
+      2022-01-01: 0.3
+  - threshold:
+      2022-01-01: 50_000
+    amount:
+      2022-01-01: 0.1
+  - threshold:
+      2022-01-01: 75_000
+    amount:
+      2022-01-01: 0

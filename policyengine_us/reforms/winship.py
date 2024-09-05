@@ -8,8 +8,8 @@ def create_eitc_winship_reform(parameters, period, bypass=False):
     ):
         return None
 
-    # Compute EITC under filer_earned = tax_unit_head_earned
-    # Then compute EITC under filer_earned = tax_unit_spouse_earned
+    # Compute EITC under filer_adj_earnings = filer head adj earnings
+    # Then compute EITC under filer_adj_earnings = filer spouse adj earnings
     # Then set EITC = sum of the two
 
     class original_eitc(Variable):
@@ -28,7 +28,7 @@ def create_eitc_winship_reform(parameters, period, bypass=False):
             limitation = max_(0, maximum - reduction)
             return min_(phased_in, limitation)
 
-    class earned_income_tax_credit(Variable):
+    class eitc(Variable):
         value_type = float
         entity = TaxUnit
         definition_period = YEAR
@@ -40,18 +40,18 @@ def create_eitc_winship_reform(parameters, period, bypass=False):
             person = tax_unit.members
             simulation = tax_unit.simulation
             agi = tax_unit("adjusted_gross_income", period)
-            earned_income = person("earned", period)
+            adj_earnings = person("adjusted_earnings", period)
             is_head = person("is_tax_unit_head", period)
             is_spouse = person("is_tax_unit_spouse", period)
 
-            filer_earned_head_only = tax_unit.sum(earned_income * is_head)
-            filer_earned_spouse_only = tax_unit.sum(earned_income * is_spouse)
+            filer_earned_head_only = tax_unit.sum(adj_earnings * is_head)
+            filer_earned_spouse_only = tax_unit.sum(adj_earnings * is_spouse)
 
             head_only_branch = simulation.get_branch("head_only")
             head_only_branch.set_input(
-                "filer_earned", period, filer_earned_head_only
+                "filer_adjusted_earnings", period, filer_earned_head_only
             )
-            # Phase out with respect to individual earned income, instead of AGI.
+            # Phase out with respect to individual earnings instead of AGI
             head_only_branch.set_input(
                 "adjusted_gross_income", period, filer_earned_head_only
             )
@@ -59,7 +59,7 @@ def create_eitc_winship_reform(parameters, period, bypass=False):
 
             spouse_only_branch = simulation.get_branch("spouse_only")
             spouse_only_branch.set_input(
-                "filer_earned", period, filer_earned_spouse_only
+                "filer_adjusted_earnings", period, filer_earned_spouse_only
             )
             spouse_only_branch.set_input(
                 "adjusted_gross_income", period, filer_earned_spouse_only
@@ -74,8 +74,8 @@ def create_eitc_winship_reform(parameters, period, bypass=False):
 
     class winship_eitc_reform(Reform):
         def apply(self):
-            self.add_variable(original_eitc)
-            self.update_variable(earned_income_tax_credit)
+            self.update_variable(original_eitc)
+            self.update_variable(eitc)
 
     return winship_eitc_reform
 

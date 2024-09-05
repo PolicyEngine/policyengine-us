@@ -1,0 +1,31 @@
+- name: 2022 CT EITC, no matched credit and regular filing
+  period: 2022
+  input:
+    state_code: CT
+    eitc: 0
+  output:
+    ct_eitc: 0
+
+- name: 2022 CT EITC, some matched credit and regular filing
+  period: 2022
+  input:
+    state_code: CT
+    eitc: 2_000
+  output:
+    ct_eitc: 610
+
+- name: 2023 CT EITC, no matched credit and regular filing
+  period: 2023
+  input:
+    state_code: CT
+    eitc: 0
+  output:
+    ct_eitc: 0
+
+- name: 2023 CT EITC, some matched credit and regular filing
+  period: 2023
+  input:
+    state_code: CT
+    eitc: 2_000
+  output:
+    ct_eitc: 800

@@ -1,0 +1,30 @@
+- name: is_medicare_eligible unit test 1
+  period: 2022
+  input:
+    age: 65
+  output:
+    is_medicare_eligible: true
+
+- name: is_medicare_eligible unit test 2
+  period: 2023
+  input:
+    age: 64
+  output:
+    is_medicare_eligible: false
+
+- name: is_medicare_eligible unit test 3
+  period: 2023
+  input:
+    age: 64
+    social_security_disability: 900
+  output:
+    is_medicare_eligible: false
+
+- name: is_medicare_eligible unit test 4
+  period: 2023
+  input:
+    age: 64
+    social_security_disability: 900
+    months_receiving_social_security_disability: 24
+  output:
+    is_medicare_eligible: true

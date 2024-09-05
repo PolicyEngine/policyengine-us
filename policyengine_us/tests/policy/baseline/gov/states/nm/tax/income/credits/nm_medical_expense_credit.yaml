@@ -3,8 +3,8 @@
   input:
     state_code: NM
     age: 64
-    medical_expense: 30_000
-    dsi: false
+    medical_out_of_pocket_expenses: 30_000
+    head_is_dependent_elsewhere: false
   output:
     nm_medical_expense_credit: 0
 
@@ -13,9 +13,9 @@
   input:
     state_code: NM
     age: 65
-    medical_expense: 27_999
+    medical_out_of_pocket_expenses: 27_999
     filing_status: JOINT
-    dsi: false
+    head_is_dependent_elsewhere: false
   output:
     nm_medical_expense_credit: 0
 
@@ -24,9 +24,9 @@
   input:
     state_code: NM
     age: 65
-    medical_expense: 28_000
+    medical_out_of_pocket_expenses: 28_000
     filing_status: JOINT
-    dsi: false
+    head_is_dependent_elsewhere: false
   output:
     nm_medical_expense_credit: 2_800
 
@@ -35,9 +35,9 @@
   input:
     state_code: NM
     age: 65
-    medical_expense: 28_000
+    medical_out_of_pocket_expenses: 28_000
     filing_status: SEPARATE
-    dsi: false
+    head_is_dependent_elsewhere: false
   output:
     nm_medical_expense_credit: 1_400
 
@@ -46,9 +46,9 @@
   input:
     state_code: NM
     age: 65
-    medical_expense: 40_000
+    medical_out_of_pocket_expenses: 40_000
     filing_status: SINGLE
-    dsi: false
+    head_is_dependent_elsewhere: false
   output:
     nm_medical_expense_credit: 2_800
 
@@ -57,8 +57,8 @@
   input:
     state_code: NM
     age: 65
-    medical_expense: 40_000
+    medical_out_of_pocket_expenses: 40_000
     filing_status: SINGLE
-    dsi: true
+    head_is_dependent_elsewhere: true
   output:
     nm_medical_expense_credit: 0

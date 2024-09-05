@@ -1,0 +1,53 @@
+- name: AGI below start threshold
+  period: 2023
+  input:
+    state_code: CT
+    ct_agi: 199_999
+    filing_status: SINGLE
+  output:
+    ct_income_tax_lower_tax_recapture: 0
+
+- name: Amount capped at 5,400 for joint
+  period: 2023
+  input:
+    state_code: CT
+    ct_agi: 1_000_000
+    filing_status: JOINT
+  output:
+    ct_income_tax_lower_tax_recapture: 5_400
+
+- name: Calculation
+  period: 2023
+  input:
+    state_code: CT
+    ct_agi: 409_000
+    filing_status: JOINT
+  output:
+    ct_income_tax_lower_tax_recapture: 180
+
+- name: No negative amounts
+  period: 2023
+  input:
+    state_code: CT
+    ct_agi: 120_000
+    filing_status: SINGLE
+  output:
+    ct_income_tax_lower_tax_recapture: 0
+
+- name: No income
+  period: 2023
+  input:
+    state_code: CT
+    ct_agi: 0
+    filing_status: SINGLE
+  output:
+    ct_income_tax_lower_tax_recapture: 0
+
+- name: No income
+  period: 2023
+  input:
+    state_code: CT
+    ct_agi: 404_000
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    ct_income_tax_lower_tax_recapture: 1_540

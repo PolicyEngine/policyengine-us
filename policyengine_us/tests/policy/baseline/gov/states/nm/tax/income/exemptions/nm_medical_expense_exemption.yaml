@@ -3,7 +3,7 @@
   input:
     state_code: NM
     age: 64
-    medical_expense: 30_000
+    medical_out_of_pocket_expenses: 30_000
     filing_status: JOINT
   output:
     nm_medical_expense_exemption: 0
@@ -13,7 +13,7 @@
   input:
     state_code: NM
     age: 65
-    medical_expense: 27_999
+    medical_out_of_pocket_expenses: 27_999
     filing_status: JOINT
   output:
     nm_medical_expense_exemption: 0
@@ -23,7 +23,7 @@
   input:
     state_code: NM
     age: 65
-    medical_expense: 28_000
+    medical_out_of_pocket_expenses: 28_000
     filing_status: JOINT
   output:
     nm_medical_expense_exemption: 3_000
@@ -33,7 +33,7 @@
   input:
     state_code: NM
     age: 65
-    medical_expense: 28_000
+    medical_out_of_pocket_expenses: 28_000
     filing_status: SEPARATE
   output:
     nm_medical_expense_exemption: 1_500
@@ -43,7 +43,7 @@
   input:
     state_code: NM
     age: 65
-    medical_expense: 40_000
-    filing_status: WIDOW
+    medical_out_of_pocket_expenses: 40_000
+    filing_status: SURVIVING_SPOUSE
   output:
     nm_medical_expense_exemption: 3_000

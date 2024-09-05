@@ -10,7 +10,7 @@ class ut_retirement_credit_max(Variable):
     reference = "https://incometax.utah.gov/credits/retirement-credit"
     defined_for = StateCode.UT
 
-    def formula_2022(tax_unit, period: Period, parameters):
+    def formula(tax_unit, period: Period, parameters):
         """
         This credit is an alternative to the social security benefits credit,
         but instead is based on a flat rate.
@@ -19,7 +19,7 @@ class ut_retirement_credit_max(Variable):
         p_credit = p.credits.retirement
         age = tax_unit.members("age", period)
         birth_year = -(age - period.start.year)
-        meets_age_conditions = birth_year < p_credit.birth_year
+        meets_age_conditions = birth_year <= p_credit.birth_year
         max_value = p_credit.max * tax_unit.sum(meets_age_conditions)
         total_income = tax_unit("ut_total_income", period)
         tax_exempt_interest = add(

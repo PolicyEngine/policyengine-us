@@ -8,7 +8,7 @@ values:
     # Home mortgage credit
     - non_refundable_american_opportunity_credit
     - lifetime_learning_credit
-    - retirement_savings_credit
+    - savers_credit
     - residential_clean_energy_credit
     - energy_efficient_home_improvement_credit
   # CDCC became refundable for 2021 only.
@@ -21,7 +21,7 @@ values:
     # Home mortgage credit
     - non_refundable_american_opportunity_credit
     - lifetime_learning_credit
-    - retirement_savings_credit
+    - savers_credit
     - residential_clean_energy_credit
     - energy_efficient_home_improvement_credit
     - new_clean_vehicle_credit
@@ -34,15 +34,14 @@ values:
     # Home mortgage credit
     - non_refundable_american_opportunity_credit
     - lifetime_learning_credit
-    - retirement_savings_credit
+    - savers_credit
     - residential_clean_energy_credit
     - energy_efficient_home_improvement_credit
     - new_clean_vehicle_credit
     # Inflation Reduction Act introduces a used EV credit.
     - used_clean_vehicle_credit
 metadata:
-  unit: program
-  name: non_refundable_tax_credits
+  unit: list
   label: Non-refundable tax credits
   reference:
     - title: 26 U.S. Code Subpart A - Nonrefundable Personal Credits

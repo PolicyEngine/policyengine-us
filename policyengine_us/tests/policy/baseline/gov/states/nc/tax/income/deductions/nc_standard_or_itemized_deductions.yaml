@@ -1,0 +1,8 @@
+- name: nc_standard_or_itemized_deductions unit test 1
+  period: 2021
+  input:
+    state_code: NC
+    nc_standard_deduction: 200
+    nc_itemized_deductions: 220
+  output:
+    nc_standard_or_itemized_deductions: 220

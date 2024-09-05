@@ -1,0 +1,29 @@
+- name: Ineligible without EITC.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    eitc: 0
+  output:
+    wa_working_families_tax_credit: 0
+
+- name: Single eligible person with no income will get the maximum credit.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: WA
+    eitc: 1
+    filer_adjusted_earnings: 0
+    eitc_child_count: 0
+  output:
+    wa_working_families_tax_credit: 300
+
+- name: Family with income over the limit doesn't receive it.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: WA
+    eitc: 1
+    filer_adjusted_earnings: 100_000
+    eitc_child_count: 3
+  output:
+    wa_working_families_tax_credit: 0

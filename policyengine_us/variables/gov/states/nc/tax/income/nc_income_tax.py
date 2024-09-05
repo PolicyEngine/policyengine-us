@@ -10,7 +10,9 @@ class nc_income_tax(Variable):
     defined_for = StateCode.NC
 
     def formula(tax_unit, period, parameters):
-        tax_before_credits = tax_unit("nc_income_tax_before_credits", period)
-        # North Carolina does not allow for any refundable credits
+        tax_before_credits = add(
+            tax_unit, period, ["nc_income_tax_before_credits", "nc_use_tax"]
+        )
+        # North Carolina provides no refundable income tax credits
         credits = tax_unit("nc_non_refundable_credits", period)
-        return max_((tax_before_credits - credits), 0)
+        return max_(0, tax_before_credits - credits)

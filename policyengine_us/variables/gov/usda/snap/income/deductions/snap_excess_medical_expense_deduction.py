@@ -9,7 +9,7 @@ class snap_excess_medical_expense_deduction(Variable):
     documentation = (
         "Deduction from SNAP gross income for excess medical expenses"
     )
-    definition_period = YEAR
+    definition_period = MONTH
     reference = "https://www.law.cornell.edu/uscode/text/7/2014#e_5"
 
     def formula(spm_unit, period, parameters):
@@ -23,11 +23,10 @@ class snap_excess_medical_expense_deduction(Variable):
         p = parameters(
             period
         ).gov.usda.snap.income.deductions.excess_medical_expense
-        disregard = p.disregard * MONTHS_IN_YEAR
-        excess = max_(elderly_disabled_moop - disregard, 0)
+        excess = max_(elderly_disabled_moop - p.disregard, 0)
         # Calculate standard medical deduction (SMD).
         state = spm_unit.household("state_code_str", period)
-        standard = p.standard[state] * MONTHS_IN_YEAR
+        standard = p.standard[state]
         standard_claimable = where(excess > 0, standard, 0)
         # Return the greater of SMD and normal deduction.
         return max_(excess, standard_claimable)

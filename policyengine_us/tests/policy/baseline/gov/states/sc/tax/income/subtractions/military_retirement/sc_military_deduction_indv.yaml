@@ -1,0 +1,17 @@
+- name: Case 1, indiviaul is head or spouse with military retirement pay of $4,000.
+  period: 2022
+  input:
+    military_retirement_pay: 4_000
+    is_tax_unit_head_or_spouse: true
+    state_code: SC
+  output:
+    sc_military_deduction_indv: 4_000
+
+- name: Case 2, indiviaul is neither head nor spouse with military retirement pay of $5,000.
+  period: 2022
+  input:
+    military_retirement_pay: 5_000
+    is_tax_unit_head_or_spouse: false
+    state_code: SC
+  output:
+    sc_military_deduction_indv: 0

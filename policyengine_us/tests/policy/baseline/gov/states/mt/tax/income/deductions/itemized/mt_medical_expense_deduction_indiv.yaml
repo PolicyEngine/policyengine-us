@@ -1,0 +1,29 @@
+- name: Test case 1, medical_expense higher than 0.075 of agi.
+  period: 2021
+  input:
+     medical_out_of_pocket_expenses: 1_000
+     mt_agi: 10_000
+     state_code: MT
+     is_tax_unit_head_or_spouse: true
+  output:
+     mt_medical_expense_deduction_indiv: 250
+
+- name: Test case 21, medical_expense less than 0.075 of agi.
+  period: 2021
+  input:
+     medical_out_of_pocket_expenses: 1_000
+     mt_agi: 20_000
+     state_code: MT
+     is_tax_unit_head_or_spouse: true
+  output:
+     mt_medical_expense_deduction_indiv: 0
+
+- name: Not head or spouse ineligible
+  period: 2021
+  input:
+     medical_out_of_pocket_expenses: 1_000
+     mt_agi: 20_000
+     state_code: MT
+     is_tax_unit_head_or_spouse: true
+  output:
+     mt_medical_expense_deduction_indiv: 0

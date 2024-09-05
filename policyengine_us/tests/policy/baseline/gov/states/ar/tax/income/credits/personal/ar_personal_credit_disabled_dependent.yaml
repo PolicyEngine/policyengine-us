@@ -1,0 +1,26 @@
+- name: Person is a dependent but not disabled
+  period: 2022
+  input:
+    is_tax_unit_dependent: true
+    is_disabled: false
+    state_code: AR
+  output: 
+    ar_personal_credit_disabled_dependent: 0
+
+- name: Person is disabled but not a dependent
+  period: 2022
+  input:
+    is_tax_unit_dependent: false
+    is_disabled: true
+    state_code: AR
+  output: 
+    ar_personal_credit_disabled_dependent: 0
+
+- name: Disabled dependent
+  period: 2022
+  input:
+    is_tax_unit_dependent: true
+    is_disabled: true
+    state_code: AR
+  output: 
+    ar_personal_credit_disabled_dependent: 500

@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class mo_qualified_health_insurance_premiums(Variable):
     value_type = float
     entity = Person
-    label = "MO qualified healh insurance premiums"
+    label = "Missouri qualified healh insurance premiums"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -35,7 +35,8 @@ class mo_qualified_health_insurance_premiums(Variable):
         tax_unit_health_expenses = add(
             tax_unit,
             period,
-            ["medical_out_of_pocket_expenses", "health_insurance_premiums"],
+            # Out of pocket expenses include health insurance premiums
+            ["medical_out_of_pocket_expenses"],
         )
         med_expense_ratio = np.zeros_like(tax_unit_health_expenses)
         mask = tax_unit_health_expenses > 0
@@ -50,7 +51,9 @@ class mo_qualified_health_insurance_premiums(Variable):
         # medical expenses already deducted via federal tax itemization
         deducted_portion = tax_unit_premiums * med_expense_ratio
         # subtracts the portion of premiums already deducted from federal tax
-        itemized_premiums_amount = tax_unit_premiums - deducted_portion
+        itemized_premiums_amount = max_(
+            tax_unit_premiums - deducted_portion, 0
+        )
         itemizes = tax_unit("tax_unit_itemizes", period)
         # Cap at federal taxable income.
         taxable_income = tax_unit("taxable_income", period)
@@ -60,7 +63,6 @@ class mo_qualified_health_insurance_premiums(Variable):
         person_share = np.zeros_like(tax_unit_premiums)
         mask = tax_unit_premiums > 0
         person_share[mask] = person_premiums[mask] / tax_unit_premiums[mask]
-
         return person_share * where(
             itemizes,
             min_(itemized_premiums_amount, taxable_income),

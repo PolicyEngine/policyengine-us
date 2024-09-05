@@ -1,0 +1,42 @@
+description: Idaho caps the retirement benefits deduction to this amount, based on filing status.
+
+metadata:
+  label: Idaho retirement benefit deduction cap
+  period: year
+  uprating: gov.irs.uprating
+  unit: currency-USD
+  breakdown:
+    - filing_status
+  reference:
+    - title: Individual Income Tax General Information 2022
+      href: https://tax.idaho.gov/wp-content/uploads/forms/EIN00046/EIN00046_03-01-2023.pdf#page=32
+    - title: Form 39R Resident Supplemental Schedule 2022
+      href: https://tax.idaho.gov/wp-content/uploads/forms/EFO00088/EFO00088_12-30-2022.pdf#page=1
+    # The cap is specified in legal code as the maximum retirement benefits under the social security act adjusted for inflation.
+    - title: TITLE 63 REVENUE AND TAXATION CHAPTER 30 INCOME TAX 63-3022A 
+      href: https://legislature.idaho.gov/statutesrules/idstat/title63/t63ch30/sect63-3022a/
+    - title: Individual Income Tax Forms and Instructions 2021
+      href: https://tax.idaho.gov/wp-content/uploads/forms/EIN00046/EIN00046_11-15-2021.pdf#page=33
+    - title: IDAP 35 – AIDAHO STATE TAX COMMISSION Tax Policy – Taxpayer Resources Unit 35.01.01 – Income Tax Administrative Rules
+      href: https://adminrules.idaho.gov/rules/current/35/350101.pdf#page=22
+    - title: Individual Income Tax Forms and Instructions 2023
+      href: https://tax.idaho.gov/wp-content/uploads/forms/EIN00046/EIN00046_11-06-2023.pdf#page=32
+
+SINGLE:
+  2021-01-01: 37_776
+  2022-01-01: 40_140
+  2023-01-01: 43_524
+JOINT:
+  2021-01-01: 56_664
+  2022-01-01: 60_210
+  2023-01-01: 65_286
+SEPARATE:
+  2021-01-01: 0
+SURVIVING_SPOUSE:
+  2021-01-01: 37_776
+  2022-01-01: 40_140
+  2023-01-01: 43_524
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 37_776
+  2022-01-01: 40_140
+  2023-01-01: 43_524

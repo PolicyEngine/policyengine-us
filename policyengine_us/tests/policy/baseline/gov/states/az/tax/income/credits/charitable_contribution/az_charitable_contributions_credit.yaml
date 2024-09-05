@@ -1,0 +1,80 @@
+- name: az_charitable_contributions_credit for qualifying forster (Not SEPARATE, above cap)
+  period: 2023
+  input:
+    state_code: AZ
+    filing_status: HEAD_OF_HOUSEHOLD
+    az_charitable_contributions_to_qualifying_charitable_organizations: 2_000 #800
+    az_charitable_contributions_to_qualifying_foster_care_organizations: 1_100 #1000
+  output:
+    az_charitable_contributions_credit: 1_800
+
+- name: az_charitable_contributions_credit for qualifying forster (Not SEPARATE, below cap)
+  period: 2023
+  input:
+    state_code: AZ
+    filing_status: JOINT
+    az_charitable_contributions_to_qualifying_charitable_organizations: 200
+    az_charitable_contributions_to_qualifying_foster_care_organizations: 300
+  output:
+    az_charitable_contributions_credit: 500
+
+- name: az_charitable_contributions_credit for qualifying forster (Not SEPARATE, one below cap, one under cap)
+  period: 2023
+  input:
+    state_code: AZ
+    filing_status: JOINT
+    az_charitable_contributions_to_qualifying_charitable_organizations: 1_000
+    az_charitable_contributions_to_qualifying_foster_care_organizations: 500
+  output:
+    az_charitable_contributions_credit: 1_300
+
+- name: az_charitable_contributions_credit for qualifying forster (Not SEPARATE, one below cap, one under cap)
+  period: 2023
+  input:
+    state_code: AZ
+    filing_status: SINGLE
+    az_charitable_contributions_to_qualifying_charitable_organizations: 700
+    az_charitable_contributions_to_qualifying_foster_care_organizations: 1_100
+  output:
+    az_charitable_contributions_credit: 1_700
+
+- name: az_charitable_contributions_credit for qualifying forster (SEPARATE, below cap)
+  period: 2023
+  input:
+    state_code: AZ
+    filing_status: SEPARATE
+    az_charitable_contributions_to_qualifying_charitable_organizations: 200
+    az_charitable_contributions_to_qualifying_foster_care_organizations: 300
+  output:
+    az_charitable_contributions_credit: 500
+
+- name: az_charitable_contributions_credit for qualifying forster (SEPARATE, above cap)
+  period: 2023
+  input:
+    state_code: AZ
+    filing_status: SEPARATE
+    az_charitable_contributions_to_qualifying_charitable_organizations: 600
+    az_charitable_contributions_to_qualifying_foster_care_organizations: 600
+  output:
+    az_charitable_contributions_credit: 900
+
+
+- name: az_charitable_contributions_credit for qualifying organization (SEPARATE, one above cap, one below cap)
+  period: 2023
+  input:
+    state_code: AZ
+    filing_status: SEPARATE
+    az_charitable_contributions_to_qualifying_charitable_organizations: 300
+    az_charitable_contributions_to_qualifying_foster_care_organizations: 600
+  output:
+    az_charitable_contributions_credit: 800
+  
+- name: az_charitable_contributions_credit for qualifying organization (SEPARATE, one above cap, one below cap)
+  period: 2023
+  input:
+    state_code: AZ
+    filing_status: SEPARATE
+    az_charitable_contributions_to_qualifying_charitable_organizations: 500
+    az_charitable_contributions_to_qualifying_foster_care_organizations: 400
+  output:
+    az_charitable_contributions_credit: 800

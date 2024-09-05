@@ -4,7 +4,7 @@
     state_code: NM
     adjusted_gross_income: 74_999
     filing_status: SINGLE
-    dsi: false
+    head_is_dependent_elsewhere: false
   output:
     nm_2021_income_rebate: 250
 
@@ -14,7 +14,7 @@
     state_code: NM
     adjusted_gross_income: 75_000
     filing_status: SEPARATE
-    dsi: false
+    head_is_dependent_elsewhere: false
   output:
     nm_2021_income_rebate: 0
 
@@ -24,7 +24,7 @@
     state_code: NM
     adjusted_gross_income: 149_999
     filing_status: JOINT
-    dsi: false
+    head_is_dependent_elsewhere: false
   output:
     nm_2021_income_rebate: 500
 
@@ -33,8 +33,8 @@
   input:
     state_code: NM
     adjusted_gross_income: 150_000
-    filing_status: WIDOW
-    dsi: false
+    filing_status: SURVIVING_SPOUSE
+    head_is_dependent_elsewhere: false
   output:
     nm_2021_income_rebate: 0
 
@@ -44,6 +44,6 @@
     state_code: NM
     adjusted_gross_income: 149_999
     filing_status: JOINT
-    dsi: true
+    head_is_dependent_elsewhere: true
   output:
     nm_2021_income_rebate: 0

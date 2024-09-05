@@ -22,7 +22,7 @@
     tax_units:
       tax_unit:
         members: [person_1]
-        mars: SINGLE
+        filing_status: SINGLE
         tax_unit_childcare_expenses: 0
         tax_unit_id: 8_017_001
         taxsim_taxsimid: 8_017_001
@@ -112,7 +112,7 @@
     tax_units:
       tax_unit:
         members: [person_1,person_2,person_3]
-        mars: JOINT
+        filing_status: JOINT
         tax_unit_childcare_expenses: 0
         tax_unit_id: 3_712_201
         taxsim_taxsimid: 3_712_201
@@ -202,7 +202,7 @@
     tax_units:
       tax_unit:
         members: [person_1,person_2,person_3]
-        mars: JOINT
+        filing_status: JOINT
         tax_unit_childcare_expenses: 0
         tax_unit_id: 8_825_201
         taxsim_taxsimid: 8_825_201
@@ -324,7 +324,7 @@
     tax_units:
       tax_unit:
         members: [person_1,person_2,person_3,person_4,person_5]
-        mars: JOINT
+        filing_status: JOINT
         tax_unit_childcare_expenses: 0
         tax_unit_id: 5_849_901
         taxsim_taxsimid: 5_849_901
@@ -398,7 +398,7 @@
     tax_units:
       tax_unit:
         members: [person_1,person_2]
-        mars: JOINT
+        filing_status: JOINT
         tax_unit_childcare_expenses: 0
         tax_unit_id: 6_183_801
         taxsim_taxsimid: 6_183_801
@@ -504,7 +504,7 @@
     tax_units:
       tax_unit:
         members: [person_1,person_2,person_3,person_4]
-        mars: JOINT
+        filing_status: JOINT
         tax_unit_childcare_expenses: 0
         tax_unit_id: 1_723_301
         taxsim_taxsimid: 1_723_301
@@ -578,7 +578,7 @@
     tax_units:
       tax_unit:
         members: [person_1,person_2]
-        mars: JOINT
+        filing_status: JOINT
         tax_unit_childcare_expenses: 0
         tax_unit_id: 948_001
         taxsim_taxsimid: 948_001
@@ -668,7 +668,7 @@
     tax_units:
       tax_unit:
         members: [person_1,person_2,person_3]
-        mars: JOINT
+        filing_status: JOINT
         tax_unit_childcare_expenses: 0
         tax_unit_id: 681_801
         taxsim_taxsimid: 681_801
@@ -742,7 +742,7 @@
     tax_units:
       tax_unit:
         members: [person_1,person_2]
-        mars: JOINT
+        filing_status: JOINT
         tax_unit_childcare_expenses: 0
         tax_unit_id: 6_320_401
         taxsim_taxsimid: 6_320_401
@@ -816,7 +816,7 @@
     tax_units:
       tax_unit:
         members: [person_1,person_2]
-        mars: JOINT
+        filing_status: JOINT
         tax_unit_childcare_expenses: 0
         tax_unit_id: 3_171_401
         taxsim_taxsimid: 3_171_401
@@ -874,7 +874,7 @@
     tax_units:
       tax_unit:
         members: [person_1]
-        mars: SINGLE
+        filing_status: SINGLE
         tax_unit_childcare_expenses: 0
         tax_unit_id: 4_298_502
         taxsim_taxsimid: 4_298_502
@@ -932,7 +932,7 @@
     tax_units:
       tax_unit:
         members: [person_1]
-        mars: SINGLE
+        filing_status: SINGLE
         tax_unit_childcare_expenses: 0
         tax_unit_id: 8_563_006
         taxsim_taxsimid: 8_563_006
@@ -1006,7 +1006,7 @@
     tax_units:
       tax_unit:
         members: [person_1,person_2]
-        mars: JOINT
+        filing_status: JOINT
         tax_unit_childcare_expenses: 0
         tax_unit_id: 8_320_901
         taxsim_taxsimid: 8_320_901
@@ -1080,7 +1080,7 @@
     tax_units:
       tax_unit:
         members: [person_1,person_2]
-        mars: JOINT
+        filing_status: JOINT
         tax_unit_childcare_expenses: 0
         tax_unit_id: 4_255_301
         taxsim_taxsimid: 4_255_301
@@ -1154,7 +1154,7 @@
     tax_units:
       tax_unit:
         members: [person_1,person_2]
-        mars: JOINT
+        filing_status: JOINT
         tax_unit_childcare_expenses: 0
         tax_unit_id: 4_408_101
         taxsim_taxsimid: 4_408_101
@@ -1276,7 +1276,7 @@
     tax_units:
       tax_unit:
         members: [person_1,person_2,person_3,person_4,person_5]
-        mars: JOINT
+        filing_status: JOINT
         tax_unit_childcare_expenses: 0
         tax_unit_id: 4_598_701
         taxsim_taxsimid: 4_598_701
@@ -1350,7 +1350,7 @@
     tax_units:
       tax_unit:
         members: [person_1,person_2]
-        mars: JOINT
+        filing_status: JOINT
         tax_unit_childcare_expenses: 0
         tax_unit_id: 1_325_801
         taxsim_taxsimid: 1_325_801
@@ -1440,7 +1440,7 @@
     tax_units:
       tax_unit:
         members: [person_1,person_2,person_3]
-        mars: JOINT
+        filing_status: JOINT
         tax_unit_childcare_expenses: 0
         tax_unit_id: 597_401
         taxsim_taxsimid: 597_401
@@ -1498,7 +1498,7 @@
     tax_units:
       tax_unit:
         members: [person_1]
-        mars: SINGLE
+        filing_status: SINGLE
         tax_unit_childcare_expenses: 0
         tax_unit_id: 1_567_101
         taxsim_taxsimid: 1_567_101
@@ -1604,7 +1604,7 @@
     tax_units:
       tax_unit:
         members: [person_1,person_2,person_3,person_4]
-        mars: JOINT
+        filing_status: JOINT
         tax_unit_childcare_expenses: 0
         tax_unit_id: 9_008_901
         taxsim_taxsimid: 9_008_901
@@ -1726,7 +1726,7 @@
     tax_units:
       tax_unit:
         members: [person_1,person_2,person_3,person_4,person_5]
-        mars: JOINT
+        filing_status: JOINT
         tax_unit_childcare_expenses: 0
         tax_unit_id: 2_383_301
         taxsim_taxsimid: 2_383_301
@@ -1816,7 +1816,7 @@
     tax_units:
       tax_unit:
         members: [person_1,person_2,person_3]
-        mars: JOINT
+        filing_status: JOINT
         tax_unit_childcare_expenses: 0
         tax_unit_id: 6_819_601
         taxsim_taxsimid: 6_819_601
@@ -1874,7 +1874,7 @@
     tax_units:
       tax_unit:
         members: [person_1]
-        mars: SINGLE
+        filing_status: SINGLE
         tax_unit_childcare_expenses: 0
         tax_unit_id: 7_456_801
         taxsim_taxsimid: 7_456_801
@@ -1932,7 +1932,7 @@
     tax_units:
       tax_unit:
         members: [person_1]
-        mars: SINGLE
+        filing_status: SINGLE
         tax_unit_childcare_expenses: 0
         tax_unit_id: 3_746_901
         taxsim_taxsimid: 3_746_901
@@ -2006,7 +2006,7 @@
     tax_units:
       tax_unit:
         members: [person_1,person_2]
-        mars: JOINT
+        filing_status: JOINT
         tax_unit_childcare_expenses: 0
         tax_unit_id: 1_684_001
         taxsim_taxsimid: 1_684_001
@@ -2080,7 +2080,7 @@
     tax_units:
       tax_unit:
         members: [person_1,person_2]
-        mars: JOINT
+        filing_status: JOINT
         tax_unit_childcare_expenses: 0
         tax_unit_id: 8_922_101
         taxsim_taxsimid: 8_922_101
@@ -2138,7 +2138,7 @@
     tax_units:
       tax_unit:
         members: [person_1]
-        mars: SINGLE
+        filing_status: SINGLE
         tax_unit_childcare_expenses: 0
         tax_unit_id: 3_472_205
         taxsim_taxsimid: 3_472_205
@@ -2228,7 +2228,7 @@
     tax_units:
       tax_unit:
         members: [person_1,person_2,person_3]
-        mars: JOINT
+        filing_status: JOINT
         tax_unit_childcare_expenses: 0
         tax_unit_id: 1_782_501
         taxsim_taxsimid: 1_782_501
@@ -2302,7 +2302,7 @@
     tax_units:
       tax_unit:
         members: [person_1,person_2]
-        mars: JOINT
+        filing_status: JOINT
         tax_unit_childcare_expenses: 0
         tax_unit_id: 6_348_101
         taxsim_taxsimid: 6_348_101
@@ -2360,7 +2360,7 @@
     tax_units:
       tax_unit:
         members: [person_1]
-        mars: SINGLE
+        filing_status: SINGLE
         tax_unit_childcare_expenses: 0
         tax_unit_id: 1_761_601
         taxsim_taxsimid: 1_761_601
@@ -2434,7 +2434,7 @@
     tax_units:
       tax_unit:
         members: [person_1,person_2]
-        mars: JOINT
+        filing_status: JOINT
         tax_unit_childcare_expenses: 0
         tax_unit_id: 1_743_604
         taxsim_taxsimid: 1_743_604
@@ -2508,7 +2508,7 @@
     tax_units:
       tax_unit:
         members: [person_1,person_2]
-        mars: JOINT
+        filing_status: JOINT
         tax_unit_childcare_expenses: 0
         tax_unit_id: 3_839_102
         taxsim_taxsimid: 3_839_102

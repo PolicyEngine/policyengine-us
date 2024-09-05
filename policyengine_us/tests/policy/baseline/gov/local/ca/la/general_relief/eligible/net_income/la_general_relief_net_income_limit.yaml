@@ -1,0 +1,35 @@
+- name: Married applicant
+  period: 2022-01
+  input:
+    in_la: true
+    is_married: true 
+    la_general_relief_recipient: false
+  output:
+    la_general_relief_net_income_limit: 375
+
+- name: Single applicant
+  period: 2022-01
+  input:
+    in_la: true
+    is_married: false 
+    la_general_relief_recipient: false
+  output:
+    la_general_relief_net_income_limit: 221
+
+- name: Single recipient
+  period: 2022-01
+  input:
+    in_la: true
+    is_married: false 
+    la_general_relief_recipient: true
+  output:
+    la_general_relief_net_income_limit: 621
+
+- name: Married recipient
+  period: 2022-01
+  input:
+    in_la: true
+    is_married: true 
+    la_general_relief_recipient: true
+  output:
+    la_general_relief_net_income_limit: 621

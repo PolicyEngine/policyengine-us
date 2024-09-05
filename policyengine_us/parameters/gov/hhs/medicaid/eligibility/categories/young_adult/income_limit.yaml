@@ -1,7 +1,6 @@
 description: Maximum family income for young adults to qualify for Medicaid (specifically as young adults).
 metadata:
   unit: /1
-  name: medicaid_pregnant_income_limit
   label: Medicaid pregnant income limit
   breakdown:
   - state_code
@@ -10,6 +9,8 @@ metadata:
       href: https://files.kff.org/attachment/REPORT-Medicaid-and-CHIP-Eligibility-and-Enrollment-Policies-as-of-January-2022.pdf#page=36
     - title: medicaidscreener.com
       href: https://www.medicaidscreener.com/?p=table
+    - title: Medicaid, Children's Health Insurance Program, & Basic Health Program Eligibility Levels
+      href: https://www.medicaid.gov/medicaid/national-medicaid-chip-program-information/medicaid-childrens-health-insurance-program-basic-health-program-eligibility-levels/index.html
 AK:
   2021-01-01: -.inf
 AL:
@@ -66,6 +67,7 @@ MT:
   2021-01-01: -.inf
 NC:
   2021-01-01: 0.45
+  2023-12-01: 2.16
 ND:
   2021-01-01: -.inf
 NE:

@@ -1,0 +1,17 @@
+- name: Arkansas miscellaneous deduction (below the floor)
+  period: 2021
+  input:
+    misc_deduction: 800
+    ar_agi_indiv: 100_000
+    state_code: AR
+  output:
+    ar_misc_deduction_indiv: 0
+  
+- name: Arkansas miscellaneous deduction (above the floor)
+  period: 2021
+  input:
+    misc_deduction: 3_000
+    ar_agi_indiv: 100_000
+    state_code: AR
+  output:
+    ar_misc_deduction_indiv: 1_000
