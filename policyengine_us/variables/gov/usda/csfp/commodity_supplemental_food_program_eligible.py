@@ -9,6 +9,8 @@ class commodity_supplemental_food_program_eligible(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.usda.csfp
+        # CFR defines CSFP income similarly to WIC income.
+        # Assume resources are counted at the SPM unit level.
         fpg = person.spm_unit("wic_fpg", period)
         age = person("age", period)
 
