@@ -11,7 +11,7 @@ class dc_tanf_countable_earned_income(Variable):
 
     def formula(spm_unit, period, parameters):
         gross_earnings = spm_unit("dc_tanf_gross_earned_income", period)
-        p = parameters(period).gov.states.dc.dhs.tanf.income.earned_deduction
+        p = parameters(period).gov.states.dc.dhs.tanf.income.deductions.earned
         enrolled = spm_unit("is_tanf_enrolled", period)
         annual_flat_exclusion = p.flat * MONTHS_IN_YEAR
         earnings_after_flat_exclusion = max_(

@@ -1,0 +1,23 @@
+- name: Unit test 1
+  period: 2021
+  input:
+    filing_status: JOINT
+    charitable_deduction: 2_000
+    interest_expense: 24_000
+    salt_deduction: 10_000
+    real_estate_taxes: 9_000
+    state_code: NE
+  output:
+    ne_itemized_deductions: 2_000 + 24_000 + 9_000
+
+- name: Unit test 2
+  period: 2022
+  input:
+    filing_status: JOINT
+    charitable_deduction: 3_000
+    interest_expense: 7_000
+    salt_deduction: 10_000
+    real_estate_taxes: 6_000
+    state_code: NE
+  output:
+    ne_itemized_deductions: 3_000 + 7_000 + 6_000

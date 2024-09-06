@@ -1,0 +1,38 @@
+- name: WI retirement_income_subtraction unit test 1
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    age: 66
+    taxable_pension_income: 4_000
+    is_tax_unit_dependent: false
+    filing_status: SINGLE
+    adjusted_gross_income: 12_000
+    state_code: WI
+  output:
+    wi_retirement_income_subtraction: 4_000
+
+- name: WI retirement_income_subtraction unit test 2
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    age: 66
+    taxable_pension_income: 4_000
+    is_tax_unit_dependent: false
+    filing_status: SINGLE
+    adjusted_gross_income: 18_000
+    state_code: WI
+  output:
+    wi_retirement_income_subtraction: 0
+
+- name: WI retirement_income_subtraction unit test 3
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    age: 64
+    taxable_pension_income: 4_000
+    is_tax_unit_dependent: false
+    filing_status: SINGLE
+    adjusted_gross_income: 12_000
+    state_code: WI
+  output:
+    wi_retirement_income_subtraction: 0

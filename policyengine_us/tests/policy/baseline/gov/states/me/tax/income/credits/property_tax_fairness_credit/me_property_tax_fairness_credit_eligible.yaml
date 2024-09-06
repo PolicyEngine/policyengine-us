@@ -1,0 +1,27 @@
+- name: SEPARATE ineligible
+  period: 2022
+  input:
+    state_code: ME
+    me_sales_and_property_tax_fairness_credit_income: 0
+    filing_status: SEPARATE
+    ctc_qualifying_children: 2
+  output:
+    me_property_tax_fairness_credit_eligible: false
+
+- name: Single eligible
+  period: 2022
+  input:
+    state_code: ME
+    filing_status: SINGLE
+    ctc_qualifying_children: 4
+  output:
+    me_property_tax_fairness_credit_eligible: true
+
+- name: HOH eligible
+  period: 2022
+  input:
+    state_code: ME
+    filing_status: HEAD_OF_HOUSEHOLD
+    ctc_qualifying_children: 0
+  output:
+    me_property_tax_fairness_credit_eligible: true

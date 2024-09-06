@@ -1,0 +1,7 @@
+- name: Vermont elderly or disabled credit amount
+  period: 2021
+  input:
+    elderly_disabled_credit: 1_000
+    state_code: VT
+  output:
+    vt_elderly_or_disabled_credit: 240 # 1000*0.24

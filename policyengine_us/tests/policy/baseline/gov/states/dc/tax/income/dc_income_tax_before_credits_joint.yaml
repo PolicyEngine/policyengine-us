@@ -1,0 +1,39 @@
+- name: dc_income_tax_before_credits_joint unit test 1
+  period: 2021
+  input:
+    dc_taxable_income_joint: -900
+    state_code: DC
+  output:
+    dc_income_tax_before_credits_joint: 0
+
+- name: dc_income_tax_before_credits_joint unit test 2
+  period: 2021
+  input:
+    dc_taxable_income_joint: 200_000
+    state_code: DC
+  output:
+    dc_income_tax_before_credits_joint: 15_400
+
+- name: dc_income_tax_before_credits_joint unit test 3
+  period: 2021
+  input:
+    dc_taxable_income_joint: 2_000_000
+    state_code: DC
+  output:
+    dc_income_tax_before_credits_joint: 174_525
+
+- name: dc_income_tax_before_credits_joint unit test 4
+  period: 2022
+  input:
+    dc_taxable_income_joint: 200_000
+    state_code: DC
+  output:
+    dc_income_tax_before_credits_joint: 15_400
+
+- name: dc_income_tax_before_credits_joint unit test 5
+  period: 2022
+  input:
+    dc_taxable_income_joint: 2_000_000
+    state_code: DC
+  output:
+    dc_income_tax_before_credits_joint: 199_025

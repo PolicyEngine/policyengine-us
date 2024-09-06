@@ -1,0 +1,40 @@
+- name: Family with newborn and adult dependent with ARPA plus a 200 dollar baby bonus gets $3,600 from ARPA plus $200 baby bonus plus $500 ODC.
+  period: 2021
+  reforms: policyengine_us.reforms.congress.delauro.american_family_act.american_family_act
+  input:
+    gov.contrib.congress.delauro.american_family_act.baby_bonus: 200
+    people:
+      head:
+        age: 30
+        is_tax_unit_dependent: false
+      spouse:
+        age: 18
+        is_tax_unit_dependent: true
+      dependent:
+        age: 0
+        is_tax_unit_dependent: true
+  output:
+    ctc: 4_300
+
+- name: Same household with Kamala Harris's CTC expansion in 2025, to check future-looking parameter changes.
+  period: 2025
+  reforms: policyengine_us.reforms.congress.delauro.american_family_act.american_family_act
+  input:
+    gov.contrib.congress.delauro.american_family_act.baby_bonus: 2_400
+    gov.irs.credits.ctc.amount.arpa[0].amount: 3_600
+    gov.irs.credits.ctc.amount.arpa[1].amount: 3_000
+    gov.irs.credits.ctc.amount.base[1].threshold: 18
+    gov.irs.credits.ctc.phase_out.arpa.in_effect: True
+    gov.irs.credits.ctc.refundable.fully_refundable: True
+    people:
+      head:
+        age: 30
+        is_tax_unit_dependent: false
+      spouse:
+        age: 18
+        is_tax_unit_dependent: true
+      dependent:
+        age: 0
+        is_tax_unit_dependent: true
+  output:
+    ctc: 6_500

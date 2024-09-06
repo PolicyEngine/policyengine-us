@@ -1,0 +1,23 @@
+- name: No income
+  period: 2024
+  input:
+    ssi_earned_income: 0
+    is_blind: false
+  output:
+    ssi_engaged_in_sga: false
+
+- name: Too much income
+  period: 2024
+  input:
+    ssi_earned_income: 18_612
+    is_blind: false
+  output:
+    ssi_engaged_in_sga: true
+
+- name: Blind
+  period: 2024
+  input:
+    ssi_earned_income: 18_612
+    is_blind: true
+  output:
+    ssi_engaged_in_sga: false

@@ -1,0 +1,140 @@
+- name: Tax unit with taxsimid 95112 in g21.its.csv and g21.ots.csv
+  absolute_error_margin: 1
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 67
+        employment_income: 10_010
+        taxable_interest_income: 11_010
+        taxable_private_pension_income: 7_000
+        social_security_retirement: 3_000
+        rent: 14_000
+      person2:
+        age: 11
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_childcare_expenses: 5_000
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 26  # MI
+  output:  # expected results from patched TAXSIM35 2024-02-15 version
+    mi_homestead_property_tax_credit_countable_property_tax: 3_220
+    mi_household_resources: 31_020
+    mi_homestead_property_tax_credit_household_resource_exemption: 2_227
+    mi_allowable_homestead_property_tax_credit: 1_336.2
+    mi_homestead_property_tax_credit: 1_500
+    mi_income_tax: -1_095.40
+
+- name: Tax unit with taxsimid 97725 in h21.its.csv and h21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 37
+        employment_income: 31010
+        taxable_interest_income: 5505.0
+        short_term_capital_gains: 5005.0
+        rental_income: 2505.0
+        rent: 23000
+      person2:
+        age: 37
+        employment_income: 4010
+        taxable_interest_income: 5505.0
+        short_term_capital_gains: 5005.0
+        rental_income: 2505.0
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 26  # MI
+  output:  # expected results from patched TAXSIM35 2024-03-06 version
+    mi_income_tax: 2178.13
+
+- name: Tax unit with taxsimid 50656 in j21.its.csv and j21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 59
+        employment_income: 2010
+        qualified_dividend_income: 1005.0
+        taxable_interest_income: 5505.0
+        short_term_capital_gains: 3005.0
+        long_term_capital_gains: 505.0
+        rental_income: 2005.0
+        taxable_private_pension_income: 3500.0
+        rent: 24000
+        self_employment_income: 10010
+        business_is_qualified: true
+        business_is_sstb: true
+        w2_wages_from_qualified_business: 100e6
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+        ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
+      person2:
+        age: 59
+        employment_income: 9010
+        qualified_dividend_income: 1005
+        taxable_interest_income: 5505
+        short_term_capital_gains: 3005
+        long_term_capital_gains: 505
+        rental_income: 2005.0
+        taxable_private_pension_income: 3500
+      person3:
+        age: 16
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        premium_tax_credit: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        snap: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_fips: 26  # MI
+  output:  # expected results from patched TAXSIM35 2024-03-09 version
+    mi_taxable_income: 37_380
+    mi_income_tax: 88.65
+
+- name: Tax unit with taxsimid 36850 in j21.its.csv and j21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 28
+        employment_income: 4010
+        qualified_dividend_income: 3010
+        taxable_interest_income: 11010
+        short_term_capital_gains: 7010
+        long_term_capital_gains: 3010
+        rental_income: 2010
+        rent: 24000
+        self_employment_income: 33010
+        business_is_qualified: true
+        business_is_sstb: true
+        w2_wages_from_qualified_business: 100e6
+      person2:
+        age: 11
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        premium_tax_credit: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 26  # MI
+  output:  # expected results from patched TAXSIM35 2024-03-21 version
+    mi_income_tax: 2263.98

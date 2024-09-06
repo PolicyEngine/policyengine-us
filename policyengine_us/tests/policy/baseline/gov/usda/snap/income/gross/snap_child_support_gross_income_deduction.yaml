@@ -1,0 +1,14 @@
+- name: California doesn't deduct child support.
+  period: 2022
+  input:
+    child_support_expense: 100
+  output:
+    snap_child_support_gross_income_deduction: 0
+
+- name: Alaska does deduct child support.
+  period: 2022
+  input:
+    state_code: AK
+    child_support_expense: 100
+  output:
+    snap_child_support_gross_income_deduction: 100

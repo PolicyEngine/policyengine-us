@@ -1,0 +1,51 @@
+description: Hawaii multiplies the child care credit under the child and dependent care credit by these rates, based on adjusted gross income.
+metadata:
+  type: single_amount
+  threshold_period: year
+  threshold_unit: currency-USD
+  amount_unit: /1
+  label: Hawaii CDCC rate
+  reference:
+    - title: Hawaii Income Tax Law, Chapter 235, Section 235-55.6, (a)(2)
+      href: https://files.hawaii.gov/tax/legal/hrs/hrs_235.pdf#page=40
+    - title: Hawaii SCHEDULE X 2023
+      href: https://files.hawaii.gov/tax/forms/2023/schx_i.pdf#page=2
+    - title: Hawaii SCHEDULE X 2022 
+      href: https://files.hawaii.gov/tax/forms/2022/schx_i.pdf#page=2
+    - title: Hawaii SCHEDULE X 2021 
+      href: https://files.hawaii.gov/tax/forms/2021/schx_i.pdf#page=2
+    - title: Hawaii SCHEDULE X 2020 
+      href: https://files.hawaii.gov/tax/forms/2020/schx_i.pdf#page=2
+    - title: Hawaii SCHEDULE X 2019 
+      href: https://files.hawaii.gov/tax/forms/2019/schx_i.pdf#page=2
+    - title: Hawaii SCHEDULE X 2018 
+      href: https://files.hawaii.gov/tax/forms/2018/schx_i.pdf#page=2
+brackets:
+  - threshold:
+      2018-01-01: 0
+    amount:
+      2018-01-01: 0.25
+  - threshold:
+      2018-01-01: 25_000
+    amount:
+      2018-01-01: 0.24
+  - threshold:
+      2018-01-01: 30_000
+    amount:
+      2018-01-01: 0.23
+  - threshold:
+      2018-01-01: 35_000
+    amount:
+      2018-01-01: 0.22
+  - threshold:
+      2018-01-01: 40_000
+    amount:
+      2018-01-01: 0.21
+  - threshold:
+      2018-01-01: 45_000
+    amount:
+      2018-01-01: 0.20
+  - threshold:
+      2018-01-01: 50_000
+    amount:
+      2018-01-01: 0.15

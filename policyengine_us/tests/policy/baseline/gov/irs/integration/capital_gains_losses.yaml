@@ -1,0 +1,55 @@
+- name: integration test 1
+  absolute_error_margin: 0.01
+  period: 2018
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 100_000
+        short_term_capital_gains: -5_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX  # no state income tax
+  output:  # from online TAXSIM35 06/29/23 version
+    capital_gains: -5_000
+    capital_losses: 5_000
+    limited_capital_loss: 3_000
+    adjusted_gross_income: 97_000
+    income_tax: 14_689.50
+
+- name: integration test 2
+  absolute_error_margin: 0.01
+  period: 2018
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 100_000
+        qualified_dividend_income: 10_000
+        short_term_capital_gains: -5_000
+        long_term_capital_gains: 1_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX  # no state income tax
+  output:  # from online TAXSIM35 06/29/23 version
+    capital_gains: -4_000
+    capital_losses: 4_000
+    limited_capital_loss: 3_000
+    adjusted_gross_income: 107_000
+    income_tax: 16_189.50

@@ -1,0 +1,23 @@
+- name: One child
+  period: 2022
+  input:
+    ctc_qualifying_children: 1
+    state_code: ID
+  output:
+    id_ctc: 205
+
+- name: Family with 2 children 
+  period: 2018
+  input:
+    ctc_qualifying_children: 2
+    state_code: ID
+  output:
+    id_ctc: 410
+
+- name: No children
+  period: 2022
+  input:
+    ctc_qualifying_children: 0
+    state_code: ID
+  output:
+    id_ctc: 0

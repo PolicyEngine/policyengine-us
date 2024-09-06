@@ -1,0 +1,35 @@
+- name: "Property Tax Credit Test #1: Income tax before credits less than claimable difference between property tax and QBID"
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 30
+        real_estate_taxes: 5_000_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        il_income_tax_before_nonrefundable_credits: 10_000
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    il_property_tax_credit: 10_000
+
+- name: "Property Tax Credit Test #1: Income tax before credits greater than claimable difference between property tax and QBID"
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 30
+        real_estate_taxes: 150_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        il_income_tax_before_nonrefundable_credits: 10_000
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    il_property_tax_credit: 7_500

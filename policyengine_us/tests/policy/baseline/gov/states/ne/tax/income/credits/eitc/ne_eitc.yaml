@@ -1,0 +1,7 @@
+- name: NE eitc unit test 1
+  period: 2021
+  input:
+    eitc: 2_000
+    state_code: NE
+  output:
+    ne_eitc: 2_000 * 0.1

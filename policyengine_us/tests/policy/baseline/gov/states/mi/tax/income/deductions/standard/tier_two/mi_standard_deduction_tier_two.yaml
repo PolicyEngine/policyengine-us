@@ -1,0 +1,70 @@
+- name: 2022 widow filer with tier 2 standard deduction smaller than reductions, and not eligible for the increase
+  period: 2022
+  input:
+    people:
+      person1:
+        military_retirement_pay: 11_000
+        military_service_income: 10_000
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        mi_standard_deduction_tier_two_eligible: true
+        mi_standard_deduction_tier_two_increase_eligible_people: 0
+        mi_expanded_retirement_benefits_deduction: 20_000
+        members: [person1]
+        filing_status: SURVIVING_SPOUSE
+    household:
+      members: [person1]
+      state_code: MI
+  output: # 20000 - 11000 - 10000 < 0
+    mi_standard_deduction_tier_two: 0
+
+- name: 2022 joint filer and their spouse with tier 2 standard deduction larger than reductions, and one eligible for the increase, and with one more household member
+  period: 2022
+  input:
+    people:
+      person1:
+        military_retirement_pay: 1_000
+        military_service_income: 5_000
+        is_tax_unit_head_or_spouse: true
+      person2:
+        military_retirement_pay: 2_000
+        military_service_income: 3_000
+        is_tax_unit_head_or_spouse: true
+      person3:
+        military_retirement_pay: 2_000
+        military_service_income: 3_000
+        is_tax_unit_head_or_spouse: false
+    tax_units:
+      tax_unit:
+        mi_standard_deduction_tier_two_eligible: true
+        mi_standard_deduction_tier_two_increase_eligible_people: 1
+        mi_expanded_retirement_benefits_deduction: 20_000
+        members: [person1, person2, person3]
+        filing_status: JOINT
+    household:
+      members: [person1, person2, person3]
+      state_code: MI
+  output: # 40000 + 15000 - 1000 - 5000 - 2000 - 3000 > 0
+    mi_standard_deduction_tier_two: 44_000
+    
+- name: 2023 single filer with tier 2 standard deduction smaller than expanded retirement and pension benefits
+  period: 2023
+  input:
+    people:
+      person1:
+        military_retirement_pay: 9_000
+        military_service_income: 10_000
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        mi_standard_deduction_tier_two_eligible: true
+        mi_standard_deduction_tier_two_increase_eligible_people: 0
+        mi_expanded_retirement_benefits_deduction: 20_000
+        members: [person1]
+        filing_status: SURVIVING_SPOUSE
+    household:
+      members: [person1]
+      state_code: MI
+  output: # 20000 - 9000 - 10000 < 20000
+    mi_standard_deduction_tier_two: 20_000

@@ -1,0 +1,18 @@
+description: Decoupled year offset for maximum CDCC expense cap
+values:
+  2020-01-01: 0   # use current year federal CDCC maximum expense cap
+  2021-01-01: -1  # use 2020 federal CDCC maximum expense cap
+  2022-01-01: 0   # use current year federal CDCC maximum expense cap
+metadata:
+  reference:
+    - title: SC-1040 2021
+      href: https://dor.sc.gov/forms-site/Forms/SC1040_2021.pdf
+    - title: Instructions for Form SC-1040 (line 11)
+      href: https://dor.sc.gov/forms-site/Forms/IITPacket_2021.pdf#page=22
+    - title: South Carolina Legal Code | SECTION 12-6-3380
+      href: https://www.scstatehouse.gov/code/t12c006.php
+    - title: SC 1040 tax form instructions (2023)
+      href: https://dor.sc.gov/forms-site/Forms/IITPacket_2023.pdf#page=32
+  unit: int
+  period: year
+  label: Decoupled year offset for maximum CDCC expense cap

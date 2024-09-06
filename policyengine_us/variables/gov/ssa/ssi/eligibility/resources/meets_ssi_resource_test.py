@@ -10,12 +10,11 @@ class meets_ssi_resource_test(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        simulation: Simulation = person.simulation
-        if hasattr(simulation, "dataset"):
-            pass_rate = parameters(
-                period
-            ).gov.ssa.ssi.eligibility.resources.pass_rate
-            return random(person) < pass_rate
+        # Assign individuals SSI pass rate probabilistically in microsimulation.
+        # Apply policy logic in individual simulation.
+        p = parameters(period).gov.ssa.ssi
+        if person.simulation.dataset is not None:
+            return random(person) < p.eligibility.resources.pass_rate
         joint_claim = person("ssi_claim_is_joint", period)
         personal_resources = person("ssi_countable_resources", period)
         countable_resources = where(
@@ -23,9 +22,9 @@ class meets_ssi_resource_test(Variable):
             person.marital_unit.sum(personal_resources),
             personal_resources,
         )
-        ssi = parameters(period).gov.ssa.ssi
-        resource_limits = ssi.eligibility.resources.limit
         resource_limit = where(
-            joint_claim, resource_limits.couple, resource_limits.individual
+            joint_claim,
+            p.eligibility.resources.limit.couple,
+            p.eligibility.resources.limit.individual,
         )
         return countable_resources <= resource_limit

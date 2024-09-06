@@ -1,0 +1,24 @@
+description: Georgia accounts for the following income sources under the retirement exclusion.  
+metadata:
+  label: Georgia retirement income exclusion income sources
+  period: year
+  unit: list
+  reference: 
+  - title: 2021 IT-511 Individual Income Tax Booklet, Page 34
+    href: https://dor.georgia.gov/document/booklet/2021-it-511-individual-income-tax-booklet/download
+  - title: 2022 IT-511 Individual Income Tax Booklet, Page 35
+    href: https://dor.georgia.gov/document/document/2022-it-511-individual-income-tax-booklet/download
+  - title: 2023 IT-511 Individual Income Tax Booklet, Page 39
+    href: https://dor.georgia.gov/document/document/2023-it-511-individual-income-tax-booklet/download
+  - title: Official Code of Georgia Annotated | CH17 Income Taxes | O.C.G.A. § 48-7-27 | (a)-(5)-(E)-(i)
+    href: https://advance.lexis.com/documentpage/?pdmfid=1000516&crid=fb5db531-a80f-4790-bddb-eefc8327ef60&config=00JAA1MDBlYzczZi1lYjFlLTQxMTgtYWE3OS02YTgyOGM2NWJlMDYKAFBvZENhdGFsb2feed0oM9qoQOMCSJFX5qkd&pddocfullpath=%2Fshared%2Fdocument%2Fstatutes-legislation%2Furn%3AcontentItem%3A65D2-CDH3-CGX8-044N-00008-00&pdcontentcomponentid=234186&pdteaserkey=sr1&pditab=allpods&ecomp=8s65kkk&earg=sr1&prid=66f02b0a-c5ae-4162-9535-127751546807
+values:
+  2021-01-01:
+  - interest_income
+  - dividend_income
+  - rental_income # royalties included in the rental income
+  - capital_gains
+  - alimony_income  
+  - taxable_pension_income
+  - taxable_ira_distributions
+  - ga_retirement_exclusion_countable_earned_income # earned income: capped

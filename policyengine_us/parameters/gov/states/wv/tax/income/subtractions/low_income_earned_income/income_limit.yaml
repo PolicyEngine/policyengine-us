@@ -1,0 +1,27 @@
+description: West Virginia limits the low-income earned income exclusion to filers with federal adjusted gross income below this amount.  
+metadata:
+  period: year
+  unit: currency-USD  
+  label: West Virginia low-income earned income exclusion income limit
+  reference:
+    - title: Code of West Virginia §11-21-10 (b)(1)&(2)
+      href: https://code.wvlegislature.gov/11-21-10/
+    - title: 2021 West Virginia Personal Income Tax Forms And Instructions-2021 FAMILY TAX CREDIT TABLES
+      href: https://tax.wv.gov/Documents/TaxForms/2021/it140.pdf#page=20
+    - title: 2022 West Virginia Personal Income Tax Forms And Instructions-2022 FAMILY TAX CREDIT TABLES
+      href: https://tax.wv.gov/Documents/PIT/2022/PersonalIncomeTaxFormsAndInstructions.2022.pdf#page=27
+    - title: 2023 West Virginia Personal Income Tax Forms And Instructions-2023 FAMILY TAX CREDIT TABLES
+      href: https://tax.wv.gov/Documents/PIT/2023/it140.PersonalIncomeTaxFormsAndInstructions.2023.pdf#page=31
+  breakdown:
+    - filing_status
+
+SINGLE:
+  2021-01-01: 10_000
+HEAD_OF_HOUSEHOLD: 
+  2021-01-01: 10_000
+JOINT:
+  2021-01-01: 10_000
+SURVIVING_SPOUSE:
+  2021-01-01: 10_000
+SEPARATE:
+  2021-01-01: 5_000

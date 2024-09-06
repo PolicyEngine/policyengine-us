@@ -1,0 +1,79 @@
+- name: Automatic 0 EFC
+  period: 2023
+  input:
+    pell_grant_primary_income: 10_000
+    pell_grant_head_contribution: 2_000
+    pell_grant_dependent_contribution: 10_000
+    pell_grant_formula: A
+  output:
+    pell_grant_efc: 0
+
+- name: No head contribution
+  period: 2023
+  input:
+    pell_grant_primary_income: 30_000
+    pell_grant_head_contribution: 0
+    pell_grant_dependent_contribution: 10_000
+    pell_grant_formula: A
+  output:
+    pell_grant_efc: 10_000
+
+- name: No dependent contribution
+  period: 2023
+  input:
+    pell_grant_primary_income: 50_000
+    pell_grant_head_contribution: 12_000
+    pell_grant_dependent_contribution: 0
+    pell_grant_formula: A
+  output:
+    pell_grant_efc: 12_000
+
+- name: Both head and dependent contributions
+  period: 2023
+  input:
+    pell_grant_primary_income: 70_000
+    pell_grant_head_contribution: 20_000
+    pell_grant_dependent_contribution: 10_000
+    pell_grant_formula: A
+  output:
+    pell_grant_efc: 30_000
+
+- name: No automatic 0 for formula B
+  period: 2023
+  input:
+    pell_grant_primary_income: 10_000
+    pell_grant_head_contribution: 2_000
+    pell_grant_dependent_contribution: 0
+    pell_grant_formula: B
+  output:
+    pell_grant_efc: 2_000
+
+- name: No contribution for formula B
+  period: 2023
+  input:
+    pell_grant_primary_income: 30_000
+    pell_grant_head_contribution: 0
+    pell_grant_dependent_contribution: 0
+    pell_grant_formula: B
+  output:
+    pell_grant_efc: 0
+
+- name: Automatic 0 for formula C
+  period: 2023
+  input:
+    pell_grant_primary_income: 10_000
+    pell_grant_head_contribution: 2_000
+    pell_grant_dependent_contribution: 0
+    pell_grant_formula: C
+  output:
+    pell_grant_efc: 0
+
+- name: Some contribution for formula C
+  period: 2023
+  input:
+    pell_grant_primary_income: 30_000
+    pell_grant_head_contribution: 1_000
+    pell_grant_dependent_contribution: 0
+    pell_grant_formula: C
+  output:
+    pell_grant_efc: 1_000

@@ -13,7 +13,17 @@ class ssi_income_deemed_from_ineligible_spouse(Variable):
     reference = "https://www.law.cornell.edu/cfr/text/20/416.1163"
 
     def formula(person, period, parameters):
-        personal_earned_income = person("ssi_earned_income", period)
+        prereduction_personal_earned_income = person(
+            "ssi_earned_income", period
+        )
+        blind_disabled_working_student_income = person(
+            "ssi_blind_or_disabled_working_student_exclusion", period
+        )
+        personal_earned_income = max_(
+            prereduction_personal_earned_income
+            - blind_disabled_working_student_income,
+            0,
+        )
         personal_unearned_income = person("ssi_unearned_income", period)
         spousal_earned_income = person(
             "ssi_earned_income_deemed_from_ineligible_spouse", period
@@ -21,8 +31,6 @@ class ssi_income_deemed_from_ineligible_spouse(Variable):
         spousal_unearned_income = person(
             "ssi_unearned_income_deemed_from_ineligible_spouse", period
         )
-
-        amount = parameters(period).gov.ssa.ssi.amount
 
         income_if_combined = _apply_ssi_exclusions(
             personal_earned_income + spousal_earned_income,

@@ -1,0 +1,30 @@
+description: Mississippi provides the following standard deduction amount, based on filing status.
+metadata:
+  unit: currency-USD
+  period: year
+  label: Mississippi standard deduction
+  reference: 
+    - title: Mississippi State FORMS 80-105 AND 80-205
+      href: https://www.dor.ms.gov/sites/default/files/Forms/Individual/80100221.pdf#page=5
+    - title: § 27-7-17. Individual nonbusiness deductions. 3(i)(i - iv)
+      href: https://advance.lexis.com/documentpage/?pdmfid=1000516&crid=7a1c7bb2-7110-478b-aa87-7a0f540809eb&config=00JABhZDIzMTViZS04NjcxLTQ1MDItOTllOS03MDg0ZTQxYzU4ZTQKAFBvZENhdGFsb2f8inKxYiqNVSihJeNKRlUp&pddocfullpath=%2Fshared%2Fdocument%2Fstatutes-legislation%2Furn%3AcontentItem%3A67NM-4K73-CGX8-048B-00008-00&pdcontentcomponentid=234190&pdteaserkey=sr0&pditab=allpods&ecomp=8s65kkk&earg=sr0&prid=e8257a64-6769-47fa-91b1-982d7b418151
+    - title: Mississippi Income Tax Instructions 2023 - FILING STATUS AND EXEMPTIONS 
+      href: https://www.dor.ms.gov/sites/default/files/Forms/Individual/80100231.pdf#page=6
+  breakdown:
+    - filing_status
+SINGLE:
+  1997-01-01: 2_300
+SEPARATE:
+  1997-01-01: 1_700
+  1998-01-01: 2_100
+  1999-01-01: 2_300
+HEAD_OF_HOUSEHOLD:
+  1997-01-01: 3_400
+JOINT:
+  1997-01-01: 3_400
+  1998-01-01: 4_200
+  1999-01-01: 4_600
+SURVIVING_SPOUSE:
+  1997-01-01: 3_400
+  1998-01-01: 4_200
+  1999-01-01: 4_600

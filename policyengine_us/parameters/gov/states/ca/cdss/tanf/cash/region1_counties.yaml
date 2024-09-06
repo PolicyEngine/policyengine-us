@@ -1,0 +1,29 @@
+description: California CalWORKs lists these counties in the State as Region 1 and all other counties as Region 2.
+
+metadata:
+  unit: list
+  period: year
+  label: California CalWORKs region 1 counties
+  reference:
+    - title: Los Angeles Department of Public Social Services E-Policy | CalWORKs Region Definiton
+      href: [http://epolicy.dpss.lacounty.gov/epolicy/epolicy/server/general/projects_responsive/ePolicyMaster/index.htm?&area=general&type=responsivehelp&ctxid=&project=ePolicyMaster#t=mergedProjects%2FCalWORKs%2FCalWORKs%2F44-212_Minimum_Basic_Standard_of_Adequate_Care%2F44-212_Minimum_Basic_Standard_of_Adequate_Care.htm%23Definitionsbc-4&rhtocid=_3_1_7_20_3,
+            https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&sectionNum=11452.018.]
+values:
+  2023-01-01: # Actual date: 2023-07-01
+    - ALAMEDA_COUNTY_CA
+    - CONTRA_COSTA_COUNTY_CA
+    - LOS_ANGELES_COUNTY_CA
+    - MARIN_COUNTY_CA
+    - MONTEREY_COUNTY_CA
+    - NAPA_COUNTY_CA
+    - ORANGE_COUNTY_CA
+    - SAN_DIEGO_COUNTY_CA
+    - SAN_FRANCISCO_COUNTY_CA
+    - SAN_LUIS_OBISPO_COUNTY_CA
+    - SAN_MATEO_COUNTY_CA
+    - SANTA_BARBARA_COUNTY_CA
+    - SANTA_CLARA_COUNTY_CA
+    - SANTA_CRUZ_COUNTY_CA
+    - SOLANO_COUNTY_CA
+    - SONOMA_COUNTY_CA
+    - VENTURA_COUNTY_CA

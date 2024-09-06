@@ -1,0 +1,25 @@
+- name: Single filing, income excess of $3000
+  period: 2022
+  input:
+    al_taxable_income: 5_000
+    filing_status: SINGLE
+    state_code: AL
+  output:
+   # 2% of first $500 = $10
+   # 4% of the next $2,500 = $100
+   # 5% of the next $2,000 = $100
+    al_income_tax_before_non_refundable_credits: 210
+
+
+- name: Joint, income excess of $1000 but not excess of 6000
+  period: 2022
+  input:
+    al_taxable_income: 5_000
+    filing_status: JOINT
+    state_code: AL
+  output:
+   #2% of first $1000 = 20
+   #4% of the next $4000=160 
+    al_income_tax_before_non_refundable_credits: 180
+
+

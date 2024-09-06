@@ -1,1 +1,1 @@
-# DOE
+# Department of Energy (DOE)

@@ -1,0 +1,26 @@
+- name: IA cdcc unit test 1
+  period: 2021
+  input:
+    cdcc: 1_000
+    ia_net_income: 9_999.99
+    state_code: IA
+  output:
+    ia_cdcc: 750
+
+- name: IA cdcc unit test 2
+  period: 2022
+  input:
+    cdcc: 1_000
+    ia_net_income: 40_000
+    state_code: IA
+  output:
+    ia_cdcc: 300
+
+- name: IA cdcc unit test 3
+  period: 2022
+  input:
+    cdcc: 1_000
+    ia_net_income: 90_000
+    state_code: IA
+  output:
+    ia_cdcc: 0

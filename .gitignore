@@ -5,6 +5,11 @@
 build
 dist
 
+# Virtual environments
+
+venv/
+.venv/
+
 # Editors
 
 .project
@@ -48,3 +53,6 @@ docs/book/_build
 # GitHub Codespaces.
 venv/**
 oryx-build-commands.txt
+
+**/*.csv.gz
+**/*.pkl

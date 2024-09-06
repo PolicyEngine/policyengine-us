@@ -13,19 +13,25 @@ class spm_unit_benefits(Variable):
             "social_security",
             "ssi",
             "state_supplement",
+            # California programs.
             "ca_cvrp",  # California Clean Vehicle Rebate Project.
+            # Colorado programs.
+            "co_ccap_subsidy",
+            "co_state_supplement",
+            "co_oap",
             "snap",
             "wic",
             "free_school_meals",
             "reduced_price_school_meals",
-            "lifeline",
-            "acp",
-            "ebb",
+            "spm_unit_broadband_subsidy",
+            "spm_unit_energy_subsidy",
             "tanf",
             "high_efficiency_electric_home_rebate",
             "residential_efficiency_electrification_rebate",
+            "unemployment_compensation",
             # Contributed.
             "basic_income",
+            "ny_drive_clean_rebate",
         ]
         if parameters(period).gov.contrib.ubi_center.flat_tax.deduct_ptc:
             BENEFITS.append("premium_tax_credit")

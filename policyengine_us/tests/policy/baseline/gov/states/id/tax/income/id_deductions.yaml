@@ -1,0 +1,17 @@
+- name: Itemizes
+  period: 2023
+  input:
+    id_itemized_deductions: 1_000
+    standard_deduction: 500
+    state_code: ID
+  output:
+    id_deductions: 1_000
+
+- name: Does not itemize
+  period: 2023
+  input:
+    id_itemized_deductions: 500
+    standard_deduction: 1_000
+    state_code: ID
+  output:
+    id_deductions: 1_000

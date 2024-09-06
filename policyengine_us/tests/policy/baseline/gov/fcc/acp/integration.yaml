@@ -1,7 +1,7 @@
 - name: Previously-enrolled family with a Pell Grant and $100/mo broadband costs gets $50/mo
   period: 2022
   input:
-    pell_grant: 100
+    spm_unit_pell_grant: 100
     broadband_cost_after_lifeline: 100 * 12
   output:
     acp: 30 * 12

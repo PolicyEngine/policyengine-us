@@ -1,0 +1,13 @@
+description: DC excludes this share of earnings from TANF countable income, except for determining need for new applicants.
+
+values:
+  # Actually 2/3, but yaml does not accept "2/3".
+  2020-10-01: 0.67
+
+metadata:
+  unit: /1
+  period: month
+  label: DC TANF earnings exclusion percent
+  reference:
+    - title: DC TANF State Plan | Section 4 (4)(a)
+      href: https://dhs.dc.gov/sites/default/files/dc/sites/dhs/service_content/attachments/TANF_Announcement_StatePlan_ForComment_01072020.pdf#page=23

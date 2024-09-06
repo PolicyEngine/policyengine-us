@@ -1,0 +1,17 @@
+- name: Filer with both AOC and LLC.
+  period: 2022
+  input:
+    american_opportunity_credit: 1_500
+    lifetime_learning_credit: 2_000
+    ky_tuition_tax_credit_eligible: true
+  output:
+    ky_tuition_tax_credit: 875
+
+- name: Ineligible
+  period: 2022
+  input:
+    american_opportunity_credit: 1_500
+    lifetime_learning_credit: 2_000
+    ky_tuition_tax_credit_eligible: false
+  output:
+    ky_tuition_tax_credit: 0

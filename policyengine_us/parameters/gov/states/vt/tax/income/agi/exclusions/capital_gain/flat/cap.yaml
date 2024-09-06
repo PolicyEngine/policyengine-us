@@ -1,0 +1,17 @@
+description: Vermont caps the flat capital gains exclusion at this amount.
+metadata:
+  label: Vermont flat capital gains exclusion cap
+  period: year
+  unit: currency-USD
+  reference:
+    - title: 2022 Schedule IN-153Vermont Capital Gains Exclusion Calculation # Line 9
+      href: https://tax.vermont.gov/sites/tax/files/documents/IN-153-2022.pdf#page=1
+    - title: 2021 Schedule IN-153Vermont Capital Gains Exclusion Calculation # Line 9
+      href: https://tax.vermont.gov/sites/tax/files/documents/IN-153-2021.pdf#page=1
+     # Legal code specify maximum flat exclusion as $5,000. Date unknown.
+    - title: 2023 Schedule IN-153Vermont Capital Gains Exclusion Calculation # Line 9
+      href: https://tax.vermont.gov/sites/tax/files/documents/IN-153-2023.pdf#page=1
+    - title: Legal code Titl. 32 V.S.A. § 5811(21)(B)(ii)
+      href: https://legislature.vermont.gov/statutes/section/32/151/05811 
+values:
+  2021-01-01: 5_000
