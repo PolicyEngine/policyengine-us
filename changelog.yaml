@@ -8123,3 +8123,9 @@
     added:
     - Arkansas 2024 tax rate.
   date: 2024-09-06 03:17:09
+- bump: minor
+  changes:
+    fixed:
+    - Refactor the Utah income tax tree.
+    - Remove ut_taxpayer_credit from the non-refundable credits list.
+  date: 2024-09-06 16:56:54
