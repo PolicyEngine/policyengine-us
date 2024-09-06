@@ -8,23 +8,33 @@ class regular_tax_before_credits(Variable):
     label = "Regular tax before credits"
     documentation = "Regular tax on regular taxable income before credits"
     unit = USD
+    reference = (
+        "https://www.irs.gov/pub/irs-pdf/f6251.pdf",
+        "https://www.irs.gov/pub/irs-pdf/i6251.pdf",
+    )
 
     def formula(tax_unit, period, parameters):
         filing_status = tax_unit("filing_status", period)
-        dwks1 = tax_unit("taxable_income", period)
+        taxable_income = tax_unit("taxable_income", period)  # dwks1
 
         capital_gains = parameters(period).gov.irs.capital_gains.brackets
 
-        dwks16 = min_(capital_gains.thresholds["1"][filing_status], dwks1)
-        dwks17 = min_(tax_unit("dwks14", period), dwks16)
-        dwks20 = dwks16 - dwks17
+        capital_gain_taxable_threshold = min_(
+            capital_gains.thresholds["1"][filing_status], taxable_income
+        )  # dwks16
+        dwks17 = min_(
+            tax_unit("dwks14", period), capital_gain_taxable_threshold
+        )
+        dwks20 = capital_gain_taxable_threshold - dwks17
         lowest_rate_tax = capital_gains.rates["1"] * dwks20
         # Break in worksheet lines
         dwks13 = tax_unit("dwks13", period)
         dwks21 = min_(dwks1, dwks13)
         dwks22 = dwks20
         dwks23 = max_(0, dwks21 - dwks22)
-        dwks25 = min_(capital_gains.thresholds["2"][filing_status], dwks1)
+        dwks25 = min_(
+            capital_gains.thresholds["2"][filing_status], taxable_income
+        )
         dwks19 = tax_unit("dwks19", period)
         dwks26 = min_(dwks19, dwks20)
         dwks27 = max_(0, dwks25 - dwks26)
@@ -40,12 +50,12 @@ class regular_tax_before_credits(Variable):
         )
         dwks10 = tax_unit("dwks10", period)
         dwks34 = dwks10 + dwks19
-        dwks36 = max_(0, dwks34 - dwks1)
+        dwks36 = max_(0, dwks34 - taxable_income)
         dwks37 = max_(0, dwks33 - dwks36)
         dwks38 = 0.25 * dwks37
         # Break in worksheet lines
         dwks39 = dwks19 + dwks20 + dwks28 + dwks31 + dwks37
-        dwks40 = dwks1 - dwks39
+        dwks40 = taxable_income - dwks39
         dwks41 = 0.28 * dwks40
 
         # Compute regular tax using bracket rates and thresholds
