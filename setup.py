@@ -35,7 +35,7 @@ setup(
     ],
     install_requires=[
         "policyengine-core>=3.6.5",
-        "policyengine-us-data>=1.0.0",
+        "policyeninge-us-data @ git+ssh://git@github.com/PolicyEngine/policyengine-us-data.git",
         "microdf-python",
         "tqdm",
     ],
