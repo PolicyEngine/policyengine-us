@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.75.1] - 2024-09-06 20:25:29
+
+### Added
+
+- Commodity Supplemental Food Program
+
 ## [1.75.0] - 2024-09-06 16:56:54
 
 ### Fixed
@@ -9604,6 +9610,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.75.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.75.0...1.75.1
 [1.75.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.74.0...1.75.0
 [1.74.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.73.0...1.74.0
 [1.73.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.72.2...1.73.0
