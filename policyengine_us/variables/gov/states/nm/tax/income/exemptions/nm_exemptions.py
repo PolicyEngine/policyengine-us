@@ -15,4 +15,5 @@ class nm_exemptions(Variable):
         "nm_low_and_middle_income_exemption",
         "nm_medical_expense_exemption",
         "nm_social_security_income_exemption",
+        "nm_armed_forces_retirement_pay_exemption",
     ]

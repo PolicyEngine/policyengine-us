@@ -1,0 +1,23 @@
+- name: Case 1, 2022, armed forces retirement pay higher than exemption amount.
+  period: 2022
+  input:
+    veterans_benefits: 11_000
+    state_code: NM
+  output:
+    nm_armed_forces_retirement_pay_exemption: 10_000
+
+- name: Case 2, 2022, armed forces retirement pay less than exemption amount.
+  period: 2022
+  input:
+    veterans_benefits: 5_000
+    state_code: NM
+  output:
+    nm_armed_forces_retirement_pay_exemption: 5_000
+
+- name: Case 2, 2023, armed forces retirement pay less than exemption amount.
+  period: 2023
+  input:
+    veterans_benefits: 15_000
+    state_code: NM
+  output:
+    nm_armed_forces_retirement_pay_exemption: 15_000
