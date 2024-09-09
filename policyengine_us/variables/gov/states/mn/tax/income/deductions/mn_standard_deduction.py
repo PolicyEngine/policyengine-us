@@ -51,8 +51,8 @@ class mn_standard_deduction(Variable):
             )
             reduction = where(
                 alternate_reduction_applies,
+                alternate_reduction_amount,
                 smaller_reduction_amount,
-                main_reduction_amount,
             )
         else:
             # ... calculate pre-limitation amount

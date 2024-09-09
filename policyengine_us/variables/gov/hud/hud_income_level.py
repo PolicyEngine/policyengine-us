@@ -32,26 +32,11 @@ class hud_income_level(Variable):
         mask = ami != 0
         income_ami_ratio[mask] = annual_income[mask] / ami[mask]
         # Look up thresholds for each income level.
-        p = parameters(period).gov.hud.ami_limit
-        size_limit = p.family_size
-        size_limit_excess = p.per_person_exceeding_4
-        size_exceeding_4 = max_(size - 4, 0)
-        size_capped_at_4 = min_(size, 4)
-        moderate_threshold = (
-            size_limit.MODERATE[size_capped_at_4]
-            + size_limit_excess.MODERATE * size_exceeding_4
-        )
-        low_threshold = (
-            size_limit.LOW[size_capped_at_4]
-            + size_limit_excess.LOW * size_exceeding_4
-        )
-        very_low_threshold = (
-            size_limit.VERY_LOW[size_capped_at_4]
-            + size_limit_excess.VERY_LOW * size_exceeding_4
-        )
-        especially_low_threshold = (
-            size_limit.ESPECIALLY_LOW[size_capped_at_4]
-            + size_limit_excess.ESPECIALLY_LOW * size_exceeding_4
+        moderate_threshold = spm_unit("hud_moderate_income_factor", period)
+        low_threshold = spm_unit("hud_low_income_factor", period)
+        very_low_threshold = spm_unit("hud_very_low_income_factor", period)
+        especially_low_threshold = spm_unit(
+            "hud_especially_low_income_factor", period
         )
         # Return the lowest matching one.
         return select(
