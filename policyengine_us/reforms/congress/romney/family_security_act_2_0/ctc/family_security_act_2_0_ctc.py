@@ -75,7 +75,6 @@ def create_family_security_act_2_0_ctc() -> Reform:
             ).gov.contrib.congress.romney.family_security_act_2_0.ctc
             return min_(total_children, p.child_cap)
 
-
     class reform(Reform):
         def apply(self):
             self.update_variable(ctc_phase_in_rate)
