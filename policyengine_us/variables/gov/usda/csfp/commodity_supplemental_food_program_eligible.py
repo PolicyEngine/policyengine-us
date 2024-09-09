@@ -11,10 +11,10 @@ class commodity_supplemental_food_program_eligible(Variable):
         p = parameters(period).gov.usda.csfp
         # CFR defines CSFP income similarly to WIC income.
         # Assume resources are counted at the SPM unit level.
-        fpg = person.spm_unit("wic_fpg", period)
+        income = person.spm_unit("school_meal_fpg_ratio", period)
         age = person("age", period)
 
         age_eligible = age >= p.min_age
-        income_eligible = fpg <= p.fpg_limit
+        income_eligible = income <= p.fpg_limit
 
         return age_eligible & income_eligible

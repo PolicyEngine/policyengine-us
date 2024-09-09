@@ -1,7 +1,7 @@
 - name: Age ineligible
   period: 2024
   input:
-    wic_fpg: 1.3
+    school_meal_fpg_ratio: 1.3
     age: 59
   output:
     commodity_supplemental_food_program: 0
@@ -9,7 +9,7 @@
 - name: Income ineligible
   period: 2024
   input:
-    wic_fpg: 1.31
+    school_meal_fpg_ratio: 1.31
     age: 60
   output:
     commodity_supplemental_food_program: 0
@@ -17,7 +17,32 @@
 - name: Eligible
   period: 2024
   input:
-    wic_fpg: 1.30
+    school_meal_fpg_ratio: 1.30
     age: 60
   output:
     commodity_supplemental_food_program: 330
+
+- name: Income integration test ineligible
+  period: 2024
+  input:
+    employment_income: 3916
+    self_employment_income: 3916
+    rental_income: 3916
+    pension_income: 3916
+    social_security: 3916
+    age: 100
+  output:
+    commodity_supplemental_food_program: 0
+
+- name: Income integration test eligible
+  period: 2024
+  input:
+    employment_income: 3915
+    self_employment_income: 3915
+    rental_income: 3915
+    pension_income: 3915
+    social_security: 3915
+    age: 100
+  output:
+    commodity_supplemental_food_program: 330
+
