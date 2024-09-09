@@ -32,5 +32,11 @@
         state_code: UT
   output:  # expected results from patched TAXSIM35 2023-04-24 version
     ut_retirement_credit: 624.50
-    ut_income_tax: 3.78
     ut_retirement_credit_max: 624.50
+    ut_taxable_income: 43_020
+    ut_income_tax_before_credits: 2129.49
+    ut_taxpayer_credit: 1501.21
+    ut_income_tax_exempt: false 
+    ut_income_tax_before_non_refundable_credits: 628.28
+    ut_non_refundable_credits: 624.50
+    ut_income_tax: 3.78 
