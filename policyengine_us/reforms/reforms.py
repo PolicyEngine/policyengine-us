@@ -26,6 +26,28 @@ from .states.dc.dc_ctc import (
 from .harris.lift.middle_class_tax_credit import (
     create_middle_class_tax_credit_reform,
 )
+from .harris.rent_relief_act.rent_relief_tax_credit import (
+    create_rent_relief_tax_credit_reform,
+)
+from .congress.tlaib import (
+    create_end_child_poverty_act_reform,
+)
+from .congress.tlaib.boost import (
+    create_boost_middle_class_tax_credit_reform,
+)
+from .states.mn.walz import (
+    create_mn_walz_hf1938_repeal_reform,
+)
+from .states.oregon.rebate import (
+    create_or_rebate_state_tax_exempt_reform,
+)
+from .congress.romney.family_security_act_2_0 import (
+    create_family_security_act_2_0_reform,
+)
+from .treasury.repeal_dependent_exemptions import (
+    create_repeal_dependent_exemptions_reform,
+)
+
 from policyengine_core.reforms import Reform
 import warnings
 
@@ -72,6 +94,26 @@ def create_structural_reforms_from_parameters(parameters, period):
     middle_class_tax_credit = create_middle_class_tax_credit_reform(
         parameters, period
     )
+    rent_relief_tax_credit = create_rent_relief_tax_credit_reform(
+        parameters, period
+    )
+    end_child_poverty_act = create_end_child_poverty_act_reform(
+        parameters, period
+    )
+    boost_middle_class_tax_credit = (
+        create_boost_middle_class_tax_credit_reform(parameters, period)
+    )
+    mn_walz_hf1938 = create_mn_walz_hf1938_repeal_reform(parameters, period)
+
+    or_rebate_state_tax_exempt = create_or_rebate_state_tax_exempt_reform(
+        parameters, period
+    )
+    family_security_act_2_0 = create_family_security_act_2_0_reform(
+        parameters, period
+    )
+    repeal_dependent_exemptions = create_repeal_dependent_exemptions_reform(
+        parameters, period
+    )
 
     reforms = [
         afa_reform,
@@ -90,6 +132,13 @@ def create_structural_reforms_from_parameters(parameters, period):
         ny_wftc,
         dc_ctc,
         middle_class_tax_credit,
+        rent_relief_tax_credit,
+        end_child_poverty_act,
+        boost_middle_class_tax_credit,
+        mn_walz_hf1938,
+        or_rebate_state_tax_exempt,
+        family_security_act_2_0,
+        repeal_dependent_exemptions,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
 

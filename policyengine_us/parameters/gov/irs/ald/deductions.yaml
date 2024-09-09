@@ -22,7 +22,7 @@ values:
     - self_employment_tax_ald
     - student_loan_interest_ald
     - early_withdrawal_penalty
-    - alimony_income
+    - alimony_expense
     - educator_expense
     - qualified_tuition_expenses
     - health_savings_account_ald
@@ -38,7 +38,7 @@ values:
     - self_employment_tax_ald
     - student_loan_interest_ald
     - early_withdrawal_penalty
-    - alimony_income
+    - alimony_expense
     - educator_expense
     - health_savings_account_ald
     - self_employed_health_insurance_ald
@@ -64,7 +64,7 @@ values:
     - specified_possession_income
     - puerto_rico_income
 metadata:
-  unit: variable
+  unit: list
   label: Above-the-line deductions
   reference:
     - title: 26 U.S. Code § 62 - Adjusted gross income defined

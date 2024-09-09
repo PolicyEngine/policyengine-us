@@ -1,0 +1,31 @@
+- name: If one people, need standard is $362 per month.
+  period: 2024
+  input:
+    state_code: NC
+    spm_unit_size: 1
+  output:
+    nc_tanf_need_standard: 362 * 12
+
+- name: If two people, need standard is $472 per month.
+  period: 2024
+  input:
+    state_code: NC
+    spm_unit_size: 2
+  output:
+    nc_tanf_need_standard: 472 * 12
+
+- name: If 14 people, need standard is $1042 per month.
+  period: 2024
+  input:
+    state_code: NC
+    spm_unit_size: 14
+  output:
+    nc_tanf_need_standard: 1042 * 12
+
+- name: If 16 people with kids, need standard is $1,042 + 2 * $50 = $1,142 per month.
+  period: 2024
+  input:
+    state_code: NC
+    spm_unit_size: 16
+  output:
+    nc_tanf_need_standard: 1_142 * 12
