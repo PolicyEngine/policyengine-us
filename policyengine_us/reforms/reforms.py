@@ -41,7 +41,7 @@ from .states.mn.walz import (
 from .states.oregon.rebate import (
     create_or_rebate_state_tax_exempt_reform,
 )
-from .congress.romney.family_security_act_2_0 import (
+from .congress.romney.family_security_act_2_0.ctc import (
     create_family_security_act_2_0_reform,
 )
 from .treasury.repeal_dependent_exemptions import (
