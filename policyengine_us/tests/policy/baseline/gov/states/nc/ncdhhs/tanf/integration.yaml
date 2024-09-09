@@ -1,0 +1,295 @@
+- name: Single person household with no income receives $2178 per year
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 17
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NC
+  output:
+    nc_tanf: (362 - 0) * 0.5 * 12
+
+- name: One adult and one child household with no income receives $2832 per year
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 17
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NC
+  output:
+    nc_tanf: (472 - 0) * 0.5 * 12
+
+- name: 2 adults household with no income receives $0 per month
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 30 
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NC
+  output:
+    nc_tanf: 0
+
+- name: One adult and one child household with $422 monthly income receives $300 per year
+  period: 2024
+  input:
+    people:
+      adult1:
+        age: 30
+        employment_income: 222 * 12 
+        self_employment_income: 200 * 12
+      child1:
+        age: 17   
+    spm_units:
+      spm_unit:
+        members: [adult1, child1]
+    households:
+      household:
+        members: [adult1, child1]
+        state_code: NC
+  output:
+    nc_tanf: 300
+
+- name: One adult and one child household with income $430 monthly income receives $0 per year
+  period: 2024
+  input:
+    people:
+      adult1:
+        age: 30
+        employment_income: 230 * 12
+        self_employment_income: 200 * 12
+      child1:
+        age: 17   
+    spm_units:
+      spm_unit:
+        members: [adult1, child1]
+    households:
+      household:
+        members: [adult1, child1]
+        state_code: NC
+  output:
+    nc_tanf: 0
+
+- name: 14 people household including a child with no income receives $6252 per year
+  period: 2024
+  input:
+    people:
+      adult1:
+        age: 30
+        employment_income: 0
+        self_employment_income: 0
+      adult2:
+        age: 30
+        employment_income: 0
+        self_employment_income: 0
+      adult3:
+        age: 30
+        employment_income: 0
+        self_employment_income: 0
+      adult4:
+        age: 30
+        employment_income: 0
+        self_employment_income: 0
+      adult5:
+        age: 30
+        employment_income: 0
+        self_employment_income: 0
+      adult6:
+        age: 30
+        employment_income: 0
+        self_employment_income: 0
+      adult7:
+        age: 30
+        employment_income: 0
+        self_employment_income: 0
+      adult8:
+        age: 30
+        employment_income: 0
+        self_employment_income: 0
+      adult9:
+        age: 30
+        employment_income: 0
+        self_employment_income: 0
+      adult10:
+        age: 30
+        employment_income: 0
+        self_employment_income: 0
+      adult11:
+        age: 30
+        employment_income: 0
+        self_employment_income: 0
+      adult12:
+        age: 30
+        employment_income: 0
+        self_employment_income: 0
+      adult13:
+        age: 30
+        employment_income: 0
+        self_employment_income: 0
+      child1:
+        age: 17   
+    spm_units:
+      spm_unit:
+        members: [adult1, adult2, adult3, adult4, adult5, adult6, adult7, adult8, adult9, adult10, adult11, adult12, adult13, child1]
+    households:
+      household:
+        members: [adult1, adult2, adult3, adult4, adult5, adult6, adult7, adult8, adult9, adult10, adult11, adult12, adult13, child1]
+        state_code: NC
+  output:
+    nc_tanf: (1042 - 0) * 0.5 * 12   
+
+- name: 14 people household including a child with $692 monthly income receives $300 per year
+  period: 2024
+  input:
+    people:
+      adult1:
+        age: 30
+        employment_income: 400 * 12 
+        self_employment_income: 200 * 12
+      adult2:
+        age: 30
+        employment_income: 92 * 12
+        self_employment_income: 0
+      adult3:
+        age: 30
+        employment_income: 0
+        self_employment_income: 0
+      adult4:
+        age: 30
+        employment_income: 0
+        self_employment_income: 0
+      adult5:
+        age: 30
+        employment_income: 0
+        self_employment_income: 0
+      adult6:
+        age: 30
+        employment_income: 0
+        self_employment_income: 0
+      adult7:
+        age: 30
+        employment_income: 0
+        self_employment_income: 0
+      adult8:
+        age: 30
+        employment_income: 0
+        self_employment_income: 0
+      adult9:
+        age: 30
+        employment_income: 0
+        self_employment_income: 0
+      adult10:
+        age: 30
+        employment_income: 0
+        self_employment_income: 0
+      adult11:
+        age: 30
+        employment_income: 0
+        self_employment_income: 0
+      adult12:
+        age: 30
+        employment_income: 0
+        self_employment_income: 0
+      adult13:
+        age: 30
+        employment_income: 0
+        self_employment_income: 0
+      child1:
+        age: 17   
+    spm_units:
+      spm_unit:
+        members: [adult1, adult2, adult3, adult4, adult5, adult6, adult7, adult8, adult9, adult10, adult11, adult12, adult13, child1]
+    households:
+      household:
+        members: [adult1, adult2, adult3, adult4, adult5, adult6, adult7, adult8, adult9, adult10, adult11, adult12, adult13, child1]
+        state_code: NC
+  output:
+    nc_tanf: (1042 - 692) * 0.5 * 12 
+
+- name: 14 people household including a child with $1000 monthly income receives $0 per year
+  period: 2024
+  input:
+    people:
+      adult1:
+        age: 30
+        employment_income: 400 * 12
+        self_employment_income: 500 * 12
+      adult2:
+        age: 30
+        employment_income: 100 * 12
+        self_employment_income: 0
+      adult3:
+        age: 30
+        employment_income: 0
+        self_employment_income: 0
+      adult4:
+        age: 30
+        employment_income: 0
+        self_employment_income: 0
+      adult5:
+        age: 30
+        employment_income: 0
+        self_employment_income: 0
+      adult6:
+        age: 30
+        employment_income: 0
+        self_employment_income: 0
+      adult7:
+        age: 30
+        employment_income: 0
+        self_employment_income: 0
+      adult8:
+        age: 30
+        employment_income: 0
+        self_employment_income: 0
+      adult9:
+        age: 30
+        employment_income: 0
+        self_employment_income: 0
+      adult10:
+        age: 30
+        employment_income: 0
+        self_employment_income: 0
+      adult11:
+        age: 30
+        employment_income: 0
+        self_employment_income: 0
+      adult12:
+        age: 30
+        employment_income: 0
+        self_employment_income: 0
+      adult13:
+        age: 30
+        employment_income: 0
+        self_employment_income: 0
+      child1:
+        age: 17   
+    spm_units:
+      spm_unit:
+        members: [adult1, adult2, adult3, adult4, adult5, adult6, adult7, adult8, adult9, adult10, adult11, adult12, adult13, child1]
+    households:
+      household:
+        members: [adult1, adult2, adult3, adult4, adult5, adult6, adult7, adult8, adult9, adult10, adult11, adult12, adult13, child1]
+        state_code: NC
+  output:
+    nc_tanf: 0
