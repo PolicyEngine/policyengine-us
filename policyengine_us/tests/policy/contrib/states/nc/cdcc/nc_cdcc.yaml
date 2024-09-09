@@ -1,0 +1,19 @@
+- name: Joint unit with no income and cdcc
+  period: 2025
+  input:
+    cdcc: 100
+    tax_unit_is_joint: true
+    adjusted_gross_income: 0
+  output:
+    nc_cdcc: 50
+
+- name: Joint unit with a lot income and cdcc
+  period: 2025
+  input:
+    cdcc: 100
+    tax_unit_is_joint: true
+    adjusted_gross_income: 1_000_000
+  output:
+    nc_cdcc: 0
+
+ #TODO: Add more tests
