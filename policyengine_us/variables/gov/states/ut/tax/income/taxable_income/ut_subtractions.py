@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class ut_subtractions_from_income(Variable):
+class ut_subtractions(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Utah subtractions from income"
+    label = "Utah subtractions"
     unit = USD
     documentation = "Form TC-40, line 8"
     definition_period = YEAR
