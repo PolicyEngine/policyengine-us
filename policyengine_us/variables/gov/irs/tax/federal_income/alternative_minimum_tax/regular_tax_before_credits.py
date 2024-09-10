@@ -8,6 +8,10 @@ class regular_tax_before_credits(Variable):
     label = "Regular tax before credits"
     documentation = "Regular tax on regular taxable income before credits"
     unit = USD
+    reference = (
+        "https://www.irs.gov/pub/irs-pdf/f6251.pdf",
+        "https://www.irs.gov/pub/irs-pdf/i6251.pdf",
+    )
 
     def formula(tax_unit, period, parameters):
         filing_status = tax_unit("filing_status", period)
