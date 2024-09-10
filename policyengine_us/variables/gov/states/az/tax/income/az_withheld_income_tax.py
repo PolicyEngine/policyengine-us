@@ -10,7 +10,9 @@ class az_withheld_income_tax(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        employment_income = person("irs_employment_income", period)
+        employment_income = add(
+            person, period, ["irs_employment_income", "self_employment_income"]
+        )
         p = parameters(period).gov.states.az.tax.income
         standard__deduction = p.deductions.standard.amount["SINGLE"]
         reduced_employment_income = max_(

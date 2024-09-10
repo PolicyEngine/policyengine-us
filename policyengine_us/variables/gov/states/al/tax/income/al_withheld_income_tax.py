@@ -10,7 +10,9 @@ class al_withheld_income_tax(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        employment_income = person("irs_employment_income", period)
+        employment_income = add(
+            person, period, ["irs_employment_income", "self_employment_income"]
+        )
         # Assigning the maximum standard deduction amount
         p = parameters(period).gov.states.al.tax.income
         standard__deduction = p.deductions.standard.amount.max["SINGLE"]

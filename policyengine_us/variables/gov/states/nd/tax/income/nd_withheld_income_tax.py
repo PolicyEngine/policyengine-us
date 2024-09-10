@@ -10,7 +10,9 @@ class nd_withheld_income_tax(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        employment_income = person("irs_employment_income", period)
+        employment_income = add(
+            person, period, ["irs_employment_income", "self_employment_income"]
+        )
         p_irs = parameters(period).gov.irs.deductions.standard
         # We apply the base IRS standard deduction amount
         standard_deduction = p_irs.amount["SINGLE"]
