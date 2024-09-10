@@ -10,4 +10,3 @@ class nm_exemptions(Variable):
     defined_for = StateCode.NM
 
     adds = "parameters(period).gov.states.nm.tax.income.exemptions.exemptions"
-    
