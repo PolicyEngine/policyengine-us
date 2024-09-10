@@ -21,7 +21,7 @@ class is_ssi_qualified_noncitizen(Variable):
         ).gov.ssa.ssi.income.sources.ssi_qualifying_quarters_threshold
         qualified_statuses = parameters(
             period
-        ).gov.ssa.ssi.eligibility.status.qualified_noncitizen
+        ).gov.ssa.ssi.eligibility.status.qualified_noncitizen_status
 
         qualified_status_checks = []
         for qualified_status in qualified_statuses:
