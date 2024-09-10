@@ -1,0 +1,43 @@
+- name: non_sch_d_capital_gains > 0, investment_income_form_4952 > 0
+  period: 2019
+  input:
+    long_term_capital_gains: 2_000
+    qualified_dividend_income: 2_000
+    net_capital_gains: 1_000
+    non_sch_d_capital_gains: 3_000
+    investment_income_form_4952: 2_000
+  output: # 3000 - min(0, 2000)
+    adjusted_capital_gains_reduced_by_investment_income: 3_000
+
+- name: non_sch_d_capital_gains > 0, investment_income_form_4952 < 0
+  period: 2019
+  input:
+    long_term_capital_gains: 2_000
+    qualified_dividend_income: 2_000
+    net_capital_gains: 1_000
+    non_sch_d_capital_gains: 3_000
+    investment_income_form_4952: -2_000
+  output: # 3000 - min(0, -2000)
+    adjusted_capital_gains_reduced_by_investment_income: 5_000
+
+- name: non_sch_d_capital_gains < 0, investment_income_form_4952 < 0
+  period: 2019
+  input:
+    long_term_capital_gains: 2_000
+    qualified_dividend_income: 2_000
+    net_capital_gains: 1_000
+    non_sch_d_capital_gains: -1_000
+    investment_income_form_4952: -2_000
+  output: # min(2000 + 2000, 1000) - 1000 - min(0, -2000)
+    adjusted_capital_gains_reduced_by_investment_income: 2_000
+
+- name: non_sch_d_capital_gains < 0, investment_income_form_4952 > 0
+  period: 2019
+  input:
+    long_term_capital_gains: 2_000
+    qualified_dividend_income: 2_000
+    net_capital_gains: 1_000
+    non_sch_d_capital_gains: -3_000
+    investment_income_form_4952: 2_000
+  output: # min(2000 + 2000, 1000) - 3000 - min(0, 2000)
+    adjusted_capital_gains_reduced_by_investment_income: 0

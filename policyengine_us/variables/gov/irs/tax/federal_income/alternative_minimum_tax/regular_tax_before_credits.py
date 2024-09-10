@@ -39,7 +39,9 @@ class regular_tax_before_credits(Variable):
         dwks32 = capital_gains.rates["3"] * dwks31
         # Break in worksheet lines
         dwks33 = min_(
-            tax_unit("dwks9", period),
+            tax_unit(
+                "adjusted_capital_gains_reduced_by_investment_income", period
+            ),
             add(tax_unit, period, ["unrecaptured_section_1250_gain"]),
         )
         dwks10 = tax_unit("dwks10", period)

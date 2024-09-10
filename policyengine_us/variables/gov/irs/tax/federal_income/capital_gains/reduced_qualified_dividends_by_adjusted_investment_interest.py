@@ -1,10 +1,12 @@
 from policyengine_us.model_api import *
 
 
-class dwks6(Variable):
+class reduced_qualified_dividends_by_adjusted_investment_interest(Variable):
     value_type = float
     entity = TaxUnit
-    label = "DWKS6"
+    label = (
+        "Reduced qualified dividends by adjusted investment interest"  # DWKS6
+    )
     unit = USD
     definition_period = YEAR
     reference = (
