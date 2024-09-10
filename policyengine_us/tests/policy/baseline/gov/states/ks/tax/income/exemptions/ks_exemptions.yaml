@@ -13,3 +13,12 @@
     state_code: KS
   output:
     ks_exemptions: 2_250 * 2
+
+- name: Two exemptions in 2022
+  period: 2023
+  input:
+    ks_disabled_veteran
+    ks_count_exemptions: 2
+    state_code: KS
+  output:
+    ks_exemptions: 2_250 * 2

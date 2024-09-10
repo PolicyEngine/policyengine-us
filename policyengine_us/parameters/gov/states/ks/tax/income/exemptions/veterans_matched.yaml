@@ -1,0 +1,14 @@
+description: Kansas provides additional exemptions for disabled veterans if this is true.  
+metadata:
+  unit: bool
+  period: year
+  label: Kansas additional exemptions for disabled veterans in effect
+  reference: 
+    - title: KS Stat § 79-32,121 (2023) (b)
+      href: https://law.justia.com/codes/kansas/chapter-79/article-32/section-79-32-121/
+    - title: 2023 Form K-40 
+      href: https://www.ksrevenue.gov/pdf/k-4023.pdf#page=1
+
+values:
+  2021-01-01: false
+  2023-01-01: true
