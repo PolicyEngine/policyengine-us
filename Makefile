@@ -6,8 +6,7 @@ install:
 	pip install -e .[dev]
 test:
 	pytest policyengine_us/tests/ --maxfail=0
-	coverage run -a --branch -m policyengine_core.scripts.policyengine_command test policyengine_us/tests/policy/ -c policyengine_us
-	coverage xml -i
+	python -a --branch -m policyengine_core.scripts.policyengine_command test policyengine_us/tests/policy/ -c policyengine_us
 documentation:
 	jb clean docs
 	jb build docs
