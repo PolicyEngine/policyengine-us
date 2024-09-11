@@ -1,0 +1,16 @@
+- name: Case 1, in 2023, the disabled veteran exemptions in effect. 
+  period: 2023
+  input:
+    ks_disabled_veteran_exemptions_person: 4_500
+    state_code: KS
+  output:
+    ks_disabled_veteran_exemptions: 4_500
+
+- name: Case 1, in 2022, the disabled veteran exemptions is not effect. 
+  period: 2022
+  input:
+    ks_disabled_veteran_exemptions_person: 4_500
+    state_code: KS
+  output:
+    ks_disabled_veteran_exemptions: 0
+

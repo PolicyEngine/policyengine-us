@@ -14,11 +14,20 @@
   output:
     ks_exemptions: 2_250 * 2
 
-- name: Two exemptions in 2022
+- name: Case 3,two exemptions in 2023, and one disabled veteran exemption.
   period: 2023
   input:
-    ks_disabled_veteran
+    ks_disabled_veteran_exemptions: 2_250
     ks_count_exemptions: 2
     state_code: KS
   output:
-    ks_exemptions: 2_250 * 2
+    ks_exemptions: 6_750
+
+- name: Case 4,two exemptions in 2023, and four disabled veteran exemption.
+  period: 2023
+  input:
+    ks_disabled_veteran_exemptions: 4_500
+    ks_count_exemptions: 2
+    state_code: KS
+  output:
+    ks_exemptions: 9_000

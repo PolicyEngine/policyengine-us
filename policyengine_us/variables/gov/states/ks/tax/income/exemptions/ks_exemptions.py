@@ -14,4 +14,5 @@ class ks_exemptions(Variable):
         exemptions_count = tax_unit("ks_count_exemptions", period)
         p = parameters(period).gov.states.ks.tax.income.exemptions
         disabled_veteran_exemption = tax_unit("ks_disabled_veteran_exemptions", period)
-        return exemptions_count * p.amount + disabled_veteran_exemption
+        base_exemptions = exemptions_count * p.amount
+        return base_exemptions + disabled_veteran_exemption
