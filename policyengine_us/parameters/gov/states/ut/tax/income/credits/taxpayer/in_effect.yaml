@@ -1,0 +1,13 @@
+description: Utah provides an additional qualifying dependent personal exemption if this is true.
+values:
+  0000-01-01: false
+  2023-01-01: true
+metadata:
+  period: year
+  unit: bool
+  label: Utah additional qualifying dependent for personal exemption in effect
+  reference:
+      - title: Utah State Legislature, 59-10-1018.  Definitions -- Nonrefundable taxpayer tax credits., (1)(g)
+        href: https://le.utah.gov/xcode/Title59/Chapter10/59-10-S1018.html
+      - title: 2023 TC-40 Utah Individual Income Tax Form, What's New, Additional dependent for taxpayer tax credit
+        href: https://tax.utah.gov/forms/current/tc-40inst.pdf#page=4
