@@ -7,7 +7,7 @@ with open("README.md", "r") as readme_file:
 
 setup(
     name="policyengine-us",
-    version="1.74.0",
+    version="1.78.0",
     author="PolicyEngine",
     author_email="hello@policyengine.org",
     long_description=readme,
@@ -35,6 +35,7 @@ setup(
     ],
     install_requires=[
         "policyengine-core>=3.6.5",
+        "policyengine-us-data @ git+https://git@github.com/PolicyEngine/policyengine-us-data.git",
         "microdf-python",
         "tqdm",
     ],

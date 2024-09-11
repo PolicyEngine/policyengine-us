@@ -9,6 +9,7 @@ class ut_eitc(Variable):
     documentation = "This credit is a fraction of the federal EITC."
     definition_period = YEAR
     defined_for = StateCode.UT
+    reference = "https://le.utah.gov/xcode/Title59/Chapter10/59-10-S1044.html?v=C59-10-S1044_2022050420220504"
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.ut.tax.income.credits.earned_income
