@@ -161,6 +161,7 @@
         members: [person1, person2]
         state_code: NY
   output:
+    is_younger_child_dependent: [false, true]
     ny_wftc_eligible_children: 0
     ny_working_families_tax_credit: 0
     ny_eitc: 0
