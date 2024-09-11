@@ -12,5 +12,4 @@ class ks_disabled_veteran_exemptions_person(Variable):
     def formula(person, period, parameters):
         p = parameters(period).gov.states.ks.tax.income.exemptions
         disabled = person("is_permanently_and_totally_disabled", period)
-        return p.amount * disabled 
-    
+        return p.amount * disabled

@@ -12,6 +12,7 @@ class ks_disabled_veteran_exemptions(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.ks.tax.income.exemptions
-        total_disabled_veteran_exemptions = add(tax_unit, period, ["ks_disabled_veteran_exemptions_person"])
+        total_disabled_veteran_exemptions = add(
+            tax_unit, period, ["ks_disabled_veteran_exemptions_person"]
+        )
         return p.in_effect * total_disabled_veteran_exemptions
-        
