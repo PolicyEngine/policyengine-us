@@ -18,6 +18,8 @@ NC:
     2024-01-01: 839
   9:
     2024-01-01: 839
+  10:
+    2024-01-01: 839
 
 metadata:
   period: month
@@ -25,7 +27,7 @@ metadata:
   label: SNAP standard utility allowance by household size amount
   breakdown:
     - [NC]
-    - range(1, 9)
+    - range(1, 10)
   reference:
     - title: SNAP Screener Compiled State SNAP Data
       href: https://www.snapscreener.com/data

@@ -1,5 +1,4 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.usda.snap.snap_utility_region import SnapUtilityRegion
 
 
 class snap_standard_utility_allowance(Variable):
@@ -16,9 +15,9 @@ class snap_standard_utility_allowance(Variable):
         allowance_types = allowance_type.possible_values
         region = spm_unit.household("snap_utility_region_str", period)
         spm_size = spm_unit("spm_unit_size", period)
-        MAX_SPM_SIZE = 9
+        MAX_SPM_SIZE = 10
         capped_size = min_(MAX_SPM_SIZE, spm_size)
-        sua_household_size_dependent = is_in(region, p.household_size_states)
+        sua_household_size_dependent = spm_unit("snap_standard_utility_allowance_by_household_size", period)
 
         sua = where(sua_household_size_dependent, 0, p.main[region])
 
@@ -26,8 +25,6 @@ class snap_standard_utility_allowance(Variable):
         region = where(sua_household_size_dependent, region, 'NC')
 
         sua = where(sua_household_size_dependent,
-                    p.by_household_size[region][capped_size], sua)
+                    p.by_household_size.amount[region][capped_size], sua)
 
-        return where(
-            allowance_type == allowance_types.SUA, sua, 0
-        )
+        return where(allowance_type == allowance_types.SUA, sua, 0)
