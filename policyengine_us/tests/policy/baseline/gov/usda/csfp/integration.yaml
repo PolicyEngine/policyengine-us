@@ -1,0 +1,24 @@
+- name: Income integration test ineligible
+  period: 2024
+  input:
+    employment_income: 3916
+    self_employment_income: 3916
+    rental_income: 3916
+    pension_income: 3916
+    social_security: 3916
+    age: 100
+  output:
+    commodity_supplemental_food_program: 0
+
+- name: Income integration test eligible
+  period: 2024
+  input:
+    employment_income: 3915
+    self_employment_income: 3915
+    rental_income: 3915
+    pension_income: 3915
+    social_security: 3915
+    age: 100
+  output:
+    commodity_supplemental_food_program: 330
+

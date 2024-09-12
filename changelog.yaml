@@ -8139,3 +8139,28 @@
     changed:
     - Separated data from main repo.
   date: 2024-09-07 00:01:09
+- bump: patch
+  changes:
+    minor:
+    - Neutralize the New York Working Families Tax credit parameter values.
+  date: 2024-09-09 16:40:19
+- bump: patch
+  changes:
+    fixed:
+    - Fix CSFP income limit
+  date: 2024-09-09 19:58:03
+- bump: patch
+  changes:
+    fixed:
+    - Separate the CTC and EITC under the FSA 2.0.
+  date: 2024-09-09 20:03:22
+- bump: minor
+  changes:
+    added:
+    - Utah additional dependent exemption starting in 2023.
+  date: 2024-09-10 17:15:06
+- bump: minor
+  changes:
+    added:
+    - Update SNAP values for 2025.
+  date: 2024-09-10 22:10:39
