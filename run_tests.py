@@ -4,6 +4,7 @@ import time
 import sys
 import io
 from datetime import datetime
+import re
 
 def get_timestamp():
     return datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")[:-3]
@@ -42,7 +43,8 @@ def run_tests():
         "test",
         "policyengine_us/tests/policy/",
         "-c",
-        "policyengine_us"
+        "policyengine_us",
+        "-v"  # Add verbose flag to get more detailed output
     ]
     
     log_message(f"Running command: {' '.join(command)}", sys.stdout)
@@ -54,6 +56,7 @@ def run_tests():
                                    universal_newlines=True)
 
         start_time = time.time()
+        current_test = ""
         while process.poll() is None:
             log_info(psutil.Process(process.pid), output_file)
             
@@ -63,14 +66,25 @@ def run_tests():
                 if output == '' and process.poll() is not None:
                     break
                 if output:
+                    # Try to identify individual test starts
+                    test_start_match = re.match(r'(\S+)\s+', output.strip())
+                    if test_start_match:
+                        current_test = test_start_match.group(1)
+                        log_message(f"Starting test: {current_test}", output_file)
+                    
+                    # Log the output
                     log_message(output.strip(), output_file)
+                    
+                    # Try to identify test results
+                    if "PASSED" in output or "FAILED" in output or "SKIPPED" in output:
+                        log_message(f"Test result for {current_test}: {output.strip()}", output_file)
             
             if time.time() - start_time > 3600:  # 1 hour timeout
                 log_message("Timeout reached", output_file)
                 process.terminate()
                 break
             
-            time.sleep(30)  # Log every 30 seconds
+            time.sleep(5)  # Log every 5 seconds
 
         log_message("Test execution finished", output_file)
         log_message(f"Return code: {process.returncode}", output_file)
