@@ -4,16 +4,15 @@
     aged_blind_count: 1
     filing_status: SINGLE
   output:
-    additional_standard_deduction: 1600
+    additional_standard_deduction: 1_600
 
 - name: Aged or blind count 2, Joint tax unit
   period: 2023
-
   input:
     aged_blind_count: 2
     filing_status: JOINT
   output:
-    additional_standard_deduction: 3000
+    additional_standard_deduction: 3_000
     
 - name: Aged blind count 0, single tax unit
   period: 2021
