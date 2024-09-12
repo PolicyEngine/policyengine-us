@@ -2,18 +2,9 @@
   absolute_error_margin: 0.01
   period: 2022
   input:
-     adjusted_gross_income: 200_000
      military_retirement_pay: 30_000
      state_code: NE
   output:
     ne_military_retirement_subtraction: 30_000
 
-- name: Test 2, more than agi, for 2022
-  absolute_error_margin: 0.01
-  period: 2022
-  input:
-     adjusted_gross_income: 20_000
-     military_retirement_pay: 30_000
-     state_code: NE
-  output:
-    ne_military_retirement_subtraction: 20_000
+

@@ -10,11 +10,10 @@ class ne_military_retirement_subtraction(Variable):
     defined_for = StateCode.NE
 
     def formula(tax_unit, period, parameters):
-        fagi = tax_unit("adjusted_gross_income", period)
         p = parameters(
             period
         ).gov.states.ne.tax.income.agi.subtractions.military_retirement
         military_retirement_benefits = add(
             tax_unit, period, ["military_retirement_pay"]
         )
-        return min_(military_retirement_benefits * p.fraction, fagi)
+        return military_retirement_benefits * p.fraction
