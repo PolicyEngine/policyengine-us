@@ -47,6 +47,7 @@ from .congress.romney.family_security_act_2_0 import (
 from .treasury.repeal_dependent_exemptions import (
     create_repeal_dependent_exemptions_reform,
 )
+from .states.nc.cdcc import (create_nc_cdcc_reform, )
 
 from policyengine_core.reforms import Reform
 import warnings
@@ -114,6 +115,7 @@ def create_structural_reforms_from_parameters(parameters, period):
     repeal_dependent_exemptions = create_repeal_dependent_exemptions_reform(
         parameters, period
     )
+    nc_cdcc = create_nc_cdcc_reform(parameters, period)
 
     reforms = [
         afa_reform,
@@ -139,6 +141,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         or_rebate_state_tax_exempt,
         family_security_act_2_0,
         repeal_dependent_exemptions,
+        nc_cdcc,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
 

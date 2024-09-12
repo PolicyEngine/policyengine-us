@@ -1,19 +1,71 @@
-- name: Joint unit with no income and cdcc
+- name: Joint unit with no income and cdcc - reform active
   period: 2025
+  reforms: policyengine_us.reforms.states.nc.cdcc.nc_cdcc.nc_cdcc
   input:
+    gov.contrib.states.nc.cdcc.in_effect: true
+    gov.contrib.states.nc.cdcc.phase_out.joint[1].rate: 0.1
+    gov.contrib.states.nc.cdcc.phase_out.single[1].rate: 0.1
     cdcc: 100
     tax_unit_is_joint: true
     adjusted_gross_income: 0
+    nc_income_tax_before_credits: 0
+    nc_use_tax: 0
+    nc_non_refundable_credits: 0
+    state_code: NC
   output:
     nc_cdcc: 50
+    nc_income_tax: -50
 
-- name: Joint unit with a lot income and cdcc
+- name: Joint unit with a lot income and cdcc - reform active
   period: 2025
+  reforms: policyengine_us.reforms.states.nc.cdcc.nc_cdcc.nc_cdcc
   input:
+    gov.contrib.states.nc.cdcc.in_effect: true
+    gov.contrib.states.nc.cdcc.phase_out.joint[1].rate: 0.1
+    gov.contrib.states.nc.cdcc.phase_out.single[1].rate: 0.1
     cdcc: 100
     tax_unit_is_joint: true
     adjusted_gross_income: 1_000_000
+    nc_income_tax_before_credits: 0
+    nc_use_tax: 0
+    nc_non_refundable_credits: 0
+    state_code: NC
   output:
     nc_cdcc: 0
+    nc_income_tax: 0
 
- #TODO: Add more tests
+- name: Joint unit with partially reduced credit - reform active
+  period: 2025
+  reforms: policyengine_us.reforms.states.nc.cdcc.nc_cdcc.nc_cdcc
+  input:
+    gov.contrib.states.nc.cdcc.in_effect: true
+    gov.contrib.states.nc.cdcc.phase_out.joint[1].rate: 0.1
+    gov.contrib.states.nc.cdcc.phase_out.single[1].rate: 0.1
+    cdcc: 1_200 
+    tax_unit_is_joint: true
+    adjusted_gross_income: 205_000
+    nc_income_tax_before_credits: 0
+    nc_use_tax: 0
+    nc_non_refundable_credits: 0
+    state_code: NC
+  output:
+    nc_cdcc: 100
+    nc_income_tax: -100
+
+- name: Single houseold, same income - reform active
+  period: 2025
+  reforms: policyengine_us.reforms.states.nc.cdcc.nc_cdcc.nc_cdcc
+  input:
+    gov.contrib.states.nc.cdcc.in_effect: true
+    gov.contrib.states.nc.cdcc.phase_out.joint[1].rate: 0.1
+    gov.contrib.states.nc.cdcc.phase_out.single[1].rate: 0.1
+    cdcc: 1_200 
+    tax_unit_is_joint: false
+    adjusted_gross_income: 205_000
+    nc_income_tax_before_credits: 0
+    nc_use_tax: 0
+    nc_non_refundable_credits: 0
+    state_code: NC
+  output:
+    nc_cdcc: 0
+    nc_income_tax: 0
