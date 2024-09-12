@@ -38,7 +38,7 @@ def create_ny_working_families_tax_credit() -> Reform:
             age = person("age", period)
             is_dependent = person("is_tax_unit_dependent", period)
             p = parameters(period).gov.contrib.states.ny.wftc
-            age_eligible = age < p.child_age_threshold
+            age_eligible = age <= p.child_age_threshold
             eligible_child = is_dependent & age_eligible
             return tax_unit.sum(eligible_child)
 
@@ -449,7 +449,7 @@ def create_ny_working_families_tax_credit() -> Reform:
             p = parameters(period).gov.contrib.states.ny.wftc
             age = person("age", period)
             eligible_dependent = dependent & (
-                age >= p.exemptions.child_age_threshold
+                age > p.exemptions.child_age_threshold
             )
             count_dependents = tax_unit.sum(eligible_dependent)
             dependent_exemption = parameters(
