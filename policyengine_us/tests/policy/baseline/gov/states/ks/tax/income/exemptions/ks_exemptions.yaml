@@ -17,17 +17,37 @@
 - name: Case 3,two exemptions in 2023, and one disabled veteran exemption.
   period: 2023
   input:
-    ks_disabled_veteran_exemptions: 2_250
-    ks_count_exemptions: 2
-    state_code: KS
+    people:
+      person1:
+        ks_disabled_veteran_exemptions_eligible_person: true
+      person2:
+        ks_disabled_veteran_exemptions_eligible_person: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ks_count_exemptions: 2
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
   output:
     ks_exemptions: 6_750
 
-- name: Case 4,two exemptions in 2023, and four disabled veteran exemption.
+- name: Case 4,two exemptions in 2023, and two disabled veteran exemption.
   period: 2023
   input:
-    ks_disabled_veteran_exemptions: 4_500
-    ks_count_exemptions: 2
-    state_code: KS
+    people:
+      person1:
+        ks_disabled_veteran_exemptions_eligible_person: true
+      person2:
+        ks_disabled_veteran_exemptions_eligible_person: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ks_count_exemptions: 2
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
   output:
     ks_exemptions: 9_000
