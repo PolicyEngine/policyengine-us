@@ -38,6 +38,8 @@ setup(
         "policyengine-us-data>=1.0.1",
         "microdf-python",
         "tqdm",
+        "psutil",
+        "pytest-timeout"
     ],
     extras_require={
         "dev": [

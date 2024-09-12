@@ -46,57 +46,15 @@ jobs:
       - name: Install package
         run: make install
       - name: Run tests with detailed logging
-        run: |
-          python - <<EOF
-          import psutil
-          import subprocess
-          import time
-          import os
-
-          def get_process_info(pid):
-              try:
-                  process = psutil.Process(pid)
-                  return f"PID: {pid}, Name: {process.name()}, Status: {process.status()}"
-              except psutil.NoSuchProcess:
-                  return f"PID: {pid} - Process not found"
-
-          def log_info(process):
-              memory_info = process.memory_info()
-              cpu_percent = process.cpu_percent(interval=1)
-              print(f"Time: {time.ctime()}")
-              print(f"Main process: {get_process_info(process.pid)}")
-              print(f"Memory usage: {memory_info.rss / 1024 / 1024:.2f} MB")
-              print(f"CPU usage: {cpu_percent:.2f}%")
-              print("Child processes:")
-              for child in process.children(recursive=True):
-                  print(f"  {get_process_info(child.pid)}")
-              print("Open files:")
-              for file in process.open_files():
-                  print(f"  {file.path}")
-              print("---")
-
-          process = subprocess.Popen(['python', '-m', 'policyengine_core.scripts.policyengine_command', 'test', 'policyengine_us/tests/policy/', '-c', 'policyengine_us'], 
-                                     stdout=subprocess.PIPE, stderr=subprocess.STDOUT, 
-                                     universal_newlines=True)
-
-          while process.poll() is None:
-              log_info(psutil.Process(process.pid))
-
-              # Print pytest output
-              while True:
-                  output = process.stdout.readline()
-                  if output == '' and process.poll() is not None:
-                      break
-                  if output:
-                      print(output.strip())
-
-              time.sleep(10)
-
-          # Print final status
-          print(f"Process ended with return code: {process.returncode}")
-          EOF
+        run: python run_tests.py
         env:
           POVERTYTRACKER_RAW_URL: ${{ secrets.POVERTYTRACKER_RAW_URL }}
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-results
+          path: test-output.log
       - uses: codecov/codecov-action@v4
       - name: Build package
         run: make
