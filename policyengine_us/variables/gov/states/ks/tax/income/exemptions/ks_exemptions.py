@@ -13,12 +13,12 @@ class ks_exemptions(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.ks.tax.income.exemptions
         exemptions_count = tax_unit("ks_count_exemptions", period)
-        base_exemptions = exemptions_count * p.amount
+        base_exemptions = exemptions_count * p.amount.base
         veteran_exemptions_count = add(
             tax_unit,
             period,
             ["ks_disabled_veteran_exemptions_eligible_person"],
         )
-        additional_exemptions = veteran_exemptions_count * p.amount
+        additional_exemptions = veteran_exemptions_count * p.amount.disabled_veteran
 
         return base_exemptions + additional_exemptions
