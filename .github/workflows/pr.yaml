@@ -45,18 +45,10 @@ jobs:
           python-version: 3.12
       - name: Install package
         run: make install
-      - name: Run tests with detailed logging
-        run: python run_tests.py
+      - name: Run tests
+        run: make test
         env:
           POVERTYTRACKER_RAW_URL: ${{ secrets.POVERTYTRACKER_RAW_URL }}
-      - name: Upload test results
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-results
-          path: test_output.log
-          retention-days: 30  # Adjust as needed
-          if-no-files-found: warn  # Options: warn, error, ignore
       - uses: codecov/codecov-action@v4
       - name: Build package
         run: make
