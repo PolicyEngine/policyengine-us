@@ -5,7 +5,7 @@ import pandas as pd
 import subprocess
 import stat
 from io import StringIO
-from policyengine_us.data.datasets.cps.cps import CPS
+from policyengine_us_data import CPS
 from policyengine_core.data import Dataset
 from policyengine_core.taxbenefitsystems import TaxBenefitSystem
 from policyengine_us import Microsimulation
