@@ -1,6 +1,5 @@
 - name: Aged blind count 1, single tax unit 
   period: 2018
-
   input:
     aged_blind_count: 1
     filing_status: SINGLE
@@ -16,8 +15,6 @@
   output:
     additional_standard_deduction: 3000
     
-
-
 - name: Aged blind count 0, single tax unit
   period: 2021
   input:
