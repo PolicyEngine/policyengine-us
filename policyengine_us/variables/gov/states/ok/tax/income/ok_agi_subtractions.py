@@ -18,4 +18,5 @@ class ok_agi_subtractions(Variable):
         pensions = tax_unit.members("taxable_pension_income", period)
         p = parameters(period).gov.states.ok.tax.income.agi.subtractions
         capped_pension = tax_unit.sum(min_(p.pension_limit, pensions))
-        return oasdi + capped_pension
+        military_retirement_exclusion = tax_unit("ok_military_retirement_exclusion", period)
+        return oasdi + capped_pension + military_retirement_exclusion
