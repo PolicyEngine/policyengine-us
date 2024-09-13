@@ -2,7 +2,7 @@
   period: 2024
   input:
     age: 18
-    ne_child_care_subsidy_has_special_needs: true
+    ne_dhhs_has_special_needs: true
     state_code: NE
   output:
     ne_child_care_subsidy_eligible_child: true
@@ -11,7 +11,7 @@
   period: 2024
   input:
     age: 19
-    ne_child_care_subsidy_has_special_needs: true
+    ne_dhhs_has_special_needs: true
     state_code: NE
   output:
     ne_child_care_subsidy_eligible_child: false
@@ -20,7 +20,7 @@
   period: 2024
   input:
     age: 12
-    ne_child_care_subsidy_has_special_needs: false
+    ne_dhhs_has_special_needs: false
     state_code: NE
   output:
     ne_child_care_subsidy_eligible_child: true
@@ -29,7 +29,7 @@
   period: 2024
   input:
     age: 13
-    ne_child_care_subsidy_has_special_needs: false
+    ne_dhhs_has_special_needs: false
     state_code: NE
   output:
     ne_child_care_subsidy_eligible_child: false
