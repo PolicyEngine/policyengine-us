@@ -8108,3 +8108,69 @@
     changed:
     - Update policyengine-core to 3.6.5
   date: 2024-09-05 12:33:59
+- bump: patch
+  changes:
+    fixed:
+    - Minnesota pension income subtraction parameter value.
+  date: 2024-09-05 23:49:18
+- bump: minor
+  changes:
+    added:
+    - Implemented North Carolina TANF need standard and eligibility calculations.
+  date: 2024-09-05 23:56:03
+- bump: minor
+  changes:
+    added:
+    - Arkansas 2024 tax rate.
+  date: 2024-09-06 03:17:09
+- bump: minor
+  changes:
+    fixed:
+    - Refactor the Utah income tax tree.
+    - Remove ut_taxpayer_credit from the non-refundable credits list.
+  date: 2024-09-06 16:56:54
+- bump: patch
+  changes:
+    added:
+    - Commodity Supplemental Food Program
+  date: 2024-09-06 20:25:29
+- bump: minor
+  changes:
+    changed:
+    - Separated data from main repo.
+  date: 2024-09-07 00:01:09
+- bump: patch
+  changes:
+    minor:
+    - Neutralize the New York Working Families Tax credit parameter values.
+  date: 2024-09-09 16:40:19
+- bump: patch
+  changes:
+    fixed:
+    - Fix CSFP income limit
+  date: 2024-09-09 19:58:03
+- bump: patch
+  changes:
+    fixed:
+    - Separate the CTC and EITC under the FSA 2.0.
+  date: 2024-09-09 20:03:22
+- bump: minor
+  changes:
+    added:
+    - Utah additional dependent exemption starting in 2023.
+  date: 2024-09-10 17:15:06
+- bump: minor
+  changes:
+    added:
+    - Update SNAP values for 2025.
+  date: 2024-09-10 22:10:39
+- bump: patch
+  changes:
+    added:
+    - Updated CO TANF grant standard
+  date: 2024-09-12 04:48:22
+- bump: minor
+  changes:
+    added:
+    - Test for additional standard deduction variable.
+  date: 2024-09-12 17:10:41

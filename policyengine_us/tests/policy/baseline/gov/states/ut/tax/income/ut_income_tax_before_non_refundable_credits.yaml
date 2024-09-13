@@ -1,0 +1,30 @@
+- name: Case 1, exempt from Utah income tax, 0. 
+  period: 2022
+  input:
+    ut_taxpayer_credit: 100
+    ut_income_tax_before_credits: 200 
+    ut_income_tax_exempt: true
+    state_code: UT
+  output:
+    ut_income_tax_before_non_refundable_credits: 0
+
+- name: Case 2, not exempt from Utah income tax, income_tax_before_credits higher than taxpyer credit.
+  period: 2022
+  input:
+    ut_taxpayer_credit: 100
+    ut_income_tax_before_credits: 200 
+    ut_income_tax_exempt: false
+    state_code: UT
+  output:
+    ut_income_tax_before_non_refundable_credits: 100
+
+- name: Case 3, not exempt from Utah income tax, income_tax_before_credits lower than taxpyer credit.
+  period: 2022
+  input:
+    ut_taxpayer_credit: 200
+    ut_income_tax_before_credits: 100 
+    ut_income_tax_exempt: false
+    state_code: UT
+  output:
+    ut_income_tax_before_non_refundable_credits: 0
+    
