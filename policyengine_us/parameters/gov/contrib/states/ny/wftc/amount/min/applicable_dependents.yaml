@@ -1,0 +1,15 @@
+description: Under the New York Working Families Tax Credit proposal, the new credit maount shall not be below a minimum amount per this child definition.
+metadata:
+  unit: list
+  period: year
+  label: New York Working Families tax credit mininum amount applicable dependants
+  reference:
+    - title: New York Senate Bill S277B (c-2)(2)(C)
+      href: https://legislation.nysenate.gov/pdf/bills/2023/S277C
+
+values:
+  2025-01-01:
+  - tax_unit_child_dependents
+
+  2028-01-01:
+  - ny_wftc_eligible_children

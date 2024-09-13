@@ -20,9 +20,9 @@ def create_ny_working_families_tax_credit() -> Reform:
                 p.reduction.married.calc(income),
                 p.reduction.single.calc(income),
             )
-            children = tax_unit("ny_wftc_eligible_children", period)
+            children = add(tax_unit, period, p.amount.min.applicable_dependents)
             max_amount = p.amount.max * children
-            min_amount = p.amount.min * children
+            min_amount = p.amount.min.amount * children
             return max_(min_amount, max_amount - reduction)
 
     class ny_wftc_eligible_children(Variable):
@@ -38,7 +38,7 @@ def create_ny_working_families_tax_credit() -> Reform:
             age = person("age", period)
             is_dependent = person("is_tax_unit_dependent", period)
             p = parameters(period).gov.contrib.states.ny.wftc
-            age_eligible = age <= p.child_age_threshold
+            age_eligible = age < p.child_age_threshold
             eligible_child = is_dependent & age_eligible
             return tax_unit.sum(eligible_child)
 
@@ -58,7 +58,7 @@ def create_ny_working_families_tax_credit() -> Reform:
             is_dependent = person("is_tax_unit_dependent", period)
             age = person("age", period)
             p = parameters(period).gov.contrib.states.ny.wftc
-            age_eligible = age <= p.child_age_threshold
+            age_eligible = age < p.child_age_threshold
             return is_dependent & age_eligible
 
     class eitc_younger_children_count(Variable):
@@ -233,11 +233,13 @@ def create_ny_working_families_tax_credit() -> Reform:
         def formula(person, period, parameters):
             is_dependent = person("is_tax_unit_dependent", period)
             age = person("age", period)
-            p = parameters(period).gov.irs.dependent.ineligible_age
+            p_irs = parameters(period).gov.irs.dependent.ineligible_age
             student = person("is_full_time_student", period)
-            student_age_eligible = age < p.student
-            older_student_age_eligible = p.non_student <= age
+            student_age_eligible = age < p_irs.student
+            p_ref = parameters(period).gov.contrib.states.ny.wftc
+            older_student_age_eligible = p_ref.child_age_threshold >= age
             age_eligible = student_age_eligible & older_student_age_eligible
+            print(is_dependent & student & age_eligible)
             return is_dependent & student & age_eligible
 
     class eitc_older_children_count(Variable):
