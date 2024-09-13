@@ -11,7 +11,8 @@ test:
 test-yaml-structural:
 	coverage run -a --branch -m policyengine_core.scripts.policyengine_command test policyengine_us/tests/policy/contrib -c policyengine_us 
 test-yaml-no-structural:
-	coverage run -a --branch -m policyengine_core.scripts.policyengine_command test policyengine_us/tests/policy --ignore policyengine_us/tests/policy/contrib -c policyengine_us
+	coverage run -a --branch -m policyengine_core.scripts.policyengine_command test policyengine_us/tests/policy/baseline -c policyengine_us
+	coverage run -a --branch -m policyengine_core.scripts.policyengine_command test policyengine_us/tests/policy/reform -c policyengine_us
 test-other:
 	pytest policyengine_us/tests/ --maxfail=0
 coverage:
