@@ -9,7 +9,7 @@ from policyengine_core.simulations import (
     Microsimulation as CoreMicrosimulation,
     IndividualSim as CoreIndividualSim,
 )
-from policyengine_us.data import DATASETS, CPS_2022
+from policyengine_us_data import DATASETS, CPS_2024
 from policyengine_us.variables.household.demographic.geographic.state.in_state import (
     create_50_state_variables,
 )
@@ -129,7 +129,7 @@ class Simulation(CoreSimulation):
 class Microsimulation(CoreMicrosimulation):
     default_tax_benefit_system = CountryTaxBenefitSystem
     default_tax_benefit_system_instance = system
-    default_dataset = CPS_2022
+    default_dataset = CPS_2024
     default_dataset_year = CURRENT_YEAR
     default_role = "member"
     default_calculation_period = CURRENT_YEAR
@@ -188,7 +188,7 @@ class Microsimulation(CoreMicrosimulation):
 class IndividualSim(CoreIndividualSim):  # Deprecated
     tax_benefit_system = CountryTaxBenefitSystem
     entities = {entity.key: entity for entity in entities}
-    default_dataset = CPS_2022
+    default_dataset = CPS_2024
 
     default_roles = dict(
         tax_unit="member",
