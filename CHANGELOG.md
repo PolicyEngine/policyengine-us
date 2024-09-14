@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.79.1] - 2024-09-14 00:18:02
+
+### Added
+
+- Loading of policyengine-us-data from PyPI
+
+### Fixed
+
+- Divided tests within GitHub Actions to avoid resource issues
+
+## [1.79.0] - 2024-09-12 17:10:41
+
+### Added
+
+- Test for additional standard deduction variable.
+
 ## [1.78.1] - 2024-09-12 04:48:22
 
 ### Added
@@ -9647,7 +9663,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - First prototype version with a standard deduction variable.
 
 
-
+[1.79.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.79.0...1.79.1
+[1.79.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.78.1...1.79.0
+[1.78.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.78.0...1.78.1
+[1.78.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.77.0...1.78.0
+[1.77.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.76.3...1.77.0
+[1.76.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.76.2...1.76.3
+[1.76.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.76.1...1.76.2
+[1.76.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.76.0...1.76.1
+[1.76.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.75.1...1.76.0
+[1.75.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.75.0...1.75.1
+[1.75.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.74.0...1.75.0
+[1.74.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.73.0...1.74.0
+[1.73.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.72.2...1.73.0
+[1.72.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.72.1...1.72.2
+[1.72.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.72.0...1.72.1
+[1.72.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.71.1...1.72.0
+[1.71.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.71.0...1.71.1
+[1.71.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.70.0...1.71.0
+[1.70.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.69.1...1.70.0
+[1.69.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.69.0...1.69.1
 [1.69.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.68.0...1.69.0
 [1.68.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.67.0...1.68.0
 [1.67.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.66.0...1.67.0

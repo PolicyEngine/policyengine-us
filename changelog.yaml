@@ -8169,34 +8169,15 @@
     added:
     - Updated CO TANF grant standard
   date: 2024-09-12 04:48:22
+- bump: minor
+  changes:
+    added:
+    - Test for additional standard deduction variable.
+  date: 2024-09-12 17:10:41
 - bump: patch
   changes:
+    added:
+    - Loading of policyengine-us-data from PyPI
     fixed:
-    - Five year forward check in the Repeal dependent exemptions reform.
-  date: 2024-09-03 21:50:50
-- bump: minor
-  changes:
-    added:
-    - Change reform parameters to default to 0.
-  date: 2024-09-03 22:29:43
-- bump: minor
-  changes:
-    added:
-    - Apply ALD to alimony expense, not income in the above the line deductions.
-    - Divorce status to cps.py.
-  date: 2024-09-03 22:33:44
-- bump: patch
-  changes:
-    fixed:
-    - Minor bugs and deconstruct MOOP variables in CPS.
-  date: 2024-09-03 23:46:01
-- bump: minor
-  changes:
-    added:
-    - 2024 Medicaid income limit updates for North Carolina.
-  date: 2024-09-04 10:39:53
-- bump: patch
-  changes:
-    changed:
-    - Update policyengine-core to 3.6.5
-  date: 2024-09-05 12:33:59
+    - Divided tests within GitHub Actions to avoid resource issues
+  date: 2024-09-14 00:18:02
