@@ -35,7 +35,6 @@ class employment_income(Variable):
     ]
     uprating = "calibration.gov.irs.soi.employment_income"
 
-
 class self_employment_income(Variable):
     value_type = float
     entity = Person
