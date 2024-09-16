@@ -14,7 +14,8 @@ class nm_armed_forces_retirement_pay_exemption(Variable):
         p = parameters(
             period
         ).gov.states.nm.tax.income.exemptions.armed_forces_retirement_pay
-        armed_forces_retirement_pay = add(
-            tax_unit, period, ["veterans_benefits"]
+        armed_forces_retirement_pay = tax_unit.members(
+            "military_retirement_pay", period
         )
-        return min_(armed_forces_retirement_pay, p.cap)
+
+        return tax_unit.sum(min_(armed_forces_retirement_pay, p.cap))

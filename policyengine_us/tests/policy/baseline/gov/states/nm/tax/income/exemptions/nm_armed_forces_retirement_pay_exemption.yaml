@@ -1,23 +1,35 @@
-- name: Case 1, 2022, armed forces retirement pay higher than exemption amount.
+- name: Case 1, in 2021, household of two people. 
   period: 2022
   input:
-    veterans_benefits: 11_000
-    state_code: NM
+    people:
+      person1:
+        military_retirement_pay: 8_000
+      person2:
+        military_retirement_pay: 11_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
   output:
-    nm_armed_forces_retirement_pay_exemption: 10_000
+    nm_armed_forces_retirement_pay_exemption: 8_000 + 10_000
 
-- name: Case 2, 2022, armed forces retirement pay less than exemption amount.
-  period: 2022
-  input:
-    veterans_benefits: 5_000
-    state_code: NM
-  output:
-    nm_armed_forces_retirement_pay_exemption: 5_000
-
-- name: Case 2, 2023, armed forces retirement pay less than exemption amount.
+- name: Case 2, in 2022, household of two people. 
   period: 2023
   input:
-    veterans_benefits: 15_000
-    state_code: NM
+    people:
+      person1:
+        military_retirement_pay: 8_000
+      person2:
+        military_retirement_pay: 11_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
   output:
-    nm_armed_forces_retirement_pay_exemption: 15_000
+    nm_armed_forces_retirement_pay_exemption: 8_000 + 11_000
