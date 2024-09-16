@@ -20,7 +20,9 @@ def create_ny_working_families_tax_credit() -> Reform:
                 p.reduction.married.calc(income),
                 p.reduction.single.calc(income),
             )
-            children = add(tax_unit, period, p.amount.min.applicable_dependents)
+            children = add(
+                tax_unit, period, p.amount.min.applicable_dependents
+            )
             max_amount = p.amount.max * children
             min_amount = p.amount.min.amount * children
             return max_(min_amount, max_amount - reduction)
