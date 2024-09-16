@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.79.2] - 2024-09-16 14:57:51
+
+### Fixed
+
+- Add switch to basic income phase-in.
+
 ## [1.79.1] - 2024-09-14 00:18:02
 
 ### Added
@@ -9664,6 +9670,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.79.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.79.1...1.79.2
 [1.79.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.79.0...1.79.1
 [1.79.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.78.1...1.79.0
 [1.78.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.78.0...1.78.1
