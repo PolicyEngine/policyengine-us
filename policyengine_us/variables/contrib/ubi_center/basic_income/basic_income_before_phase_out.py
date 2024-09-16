@@ -41,6 +41,7 @@ class basic_income_before_phase_out(Variable):
             + fpg_amount
             + disabled_amount
         )
-        phase_in_amount = tax_unit("basic_income_phase_in", period)
-        amount_with_phase_in = min_(base_amount, phase_in_amount)
-        return where(p.phase_in.in_effect, amount_with_phase_in, base_amount)
+        if p.phase_in.in_effect:
+            phase_in_amount = tax_unit("basic_income_phase_in", period)
+            return min_(base_amount, phase_in_amount)
+        return base_amount
