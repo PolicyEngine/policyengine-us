@@ -1,11 +1,12 @@
-description: List of standard deductions applicable to Indiana taxpayers.
+description: Indiana provides the following deductions.
 values:
   2021-01-01:
     - in_renters_deduction
     - in_homeowners_property_tax_deduction
     - salt_refund_last_year
     - us_govt_interest
-    - tax_unit_taxable_social_security  # includes railroad retirement benefits
+    - tax_unit_taxable_social_security  
+    # includes railroad retirement benefits
     - in_military_service_deduction
     - in_nonpublic_school_deduction
     - in_nol
@@ -17,7 +18,8 @@ values:
     - in_homeowners_property_tax_deduction
     - salt_refund_last_year
     - us_govt_interest
-    - tax_unit_taxable_social_security  # includes railroad retirement benefits
+    - tax_unit_taxable_social_security  
+    # includes railroad retirement benefits
     - in_military_service_deduction
     - in_nonpublic_school_deduction
     - in_nol
@@ -28,7 +30,7 @@ metadata:
   unit: list
   Period: year
   label: Indiana Deductions
-  reference:
-    -title: Indiana General Assembly Legal Code Taxation Title 6 
+    - title: Indiana General Assembly Legal Code Taxation Title 6 
      href: http://iga.in.gov/legislative/laws/2021/ic/titles/006#6-3
+ 
  
