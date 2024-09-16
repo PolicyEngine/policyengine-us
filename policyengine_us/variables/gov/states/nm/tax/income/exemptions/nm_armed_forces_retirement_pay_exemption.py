@@ -17,5 +17,5 @@ class nm_armed_forces_retirement_pay_exemption(Variable):
         armed_forces_retirement_pay = tax_unit.members(
             "military_retirement_pay", period
         )
-        capped = min_(armed_forces_retirement_pay, p.cap)  
+        capped = min_(armed_forces_retirement_pay, p.cap)
         return tax_unit.sum(capped)
