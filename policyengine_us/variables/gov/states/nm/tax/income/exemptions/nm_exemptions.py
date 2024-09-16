@@ -9,4 +9,4 @@ class nm_exemptions(Variable):
     definition_period = YEAR
     defined_for = StateCode.NM
 
-    adds = "parameters(period).gov.states.nm.tax.income.exemptions.exemptions"
+    adds = "gov.states.nm.tax.income.exemptions.exemptions"
