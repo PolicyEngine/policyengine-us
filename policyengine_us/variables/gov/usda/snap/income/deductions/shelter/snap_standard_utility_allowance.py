@@ -17,14 +17,19 @@ class snap_standard_utility_allowance(Variable):
         spm_size = spm_unit("spm_unit_size", period)
         MAX_SPM_SIZE = 10
         capped_size = min_(MAX_SPM_SIZE, spm_size)
-        sua_household_size_dependent = spm_unit("snap_standard_utility_allowance_by_household_size", period)
+        sua_household_size_dependent = spm_unit(
+            "snap_standard_utility_allowance_by_household_size", period
+        )
 
         sua = where(sua_household_size_dependent, 0, p.main[region])
 
         # change the state code to NC for the states that do not depend on household size to prevent key error
-        region = where(sua_household_size_dependent, region, 'NC')
+        region = where(sua_household_size_dependent, region, "NC")
 
-        sua = where(sua_household_size_dependent,
-                    p.by_household_size.amount[region][capped_size], sua)
+        sua = where(
+            sua_household_size_dependent,
+            p.by_household_size.amount[region][capped_size],
+            sua,
+        )
 
         return where(allowance_type == allowance_types.SUA, sua, 0)
