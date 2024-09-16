@@ -8174,3 +8174,20 @@
     added:
     - Test for additional standard deduction variable.
   date: 2024-09-12 17:10:41
+- bump: patch
+  changes:
+    added:
+    - Loading of policyengine-us-data from PyPI
+    fixed:
+    - Divided tests within GitHub Actions to avoid resource issues
+  date: 2024-09-14 00:18:02
+- bump: patch
+  changes:
+    fixed:
+    - Add switch to basic income phase-in.
+  date: 2024-09-16 14:57:51
+- bump: patch
+  changes:
+    fixed:
+    - Wisconsin 2nd tax bracket for single and hoh in 2023.
+  date: 2024-09-16 16:11:42
