@@ -16,9 +16,12 @@ def create_nc_cdcc() -> Reform:
             base_credit = p.match * cdcc
             joint = tax_unit("tax_unit_is_joint", period)
             income = tax_unit("adjusted_gross_income", period)
-            reduction = where(joint, p.phase_out.joint.calc(income), p.phase_out.single.calc(income))
+            reduction = where(
+                joint,
+                p.phase_out.joint.calc(income),
+                p.phase_out.single.calc(income),
+            )
             return max_(base_credit - reduction, 0)
-
 
     class nc_income_tax(Variable):
         value_type = float
@@ -30,14 +33,19 @@ def create_nc_cdcc() -> Reform:
 
         def formula(tax_unit, period, parameters):
             tax_before_credits = add(
-                tax_unit, period, ["nc_income_tax_before_credits", "nc_use_tax"]
+                tax_unit,
+                period,
+                ["nc_income_tax_before_credits", "nc_use_tax"],
             )
             # North Carolina provides no refundable income tax credits
-            non_refundable_credits = tax_unit("nc_non_refundable_credits", period)
-            tax_before_refundable_credits = max_(0, tax_before_credits - non_refundable_credits)
+            non_refundable_credits = tax_unit(
+                "nc_non_refundable_credits", period
+            )
+            tax_before_refundable_credits = max_(
+                0, tax_before_credits - non_refundable_credits
+            )
             cdcc = tax_unit("nc_cdcc", period)
             return tax_before_refundable_credits - cdcc
-
 
     class reform(Reform):
         def apply(self):
@@ -47,9 +55,7 @@ def create_nc_cdcc() -> Reform:
     return reform
 
 
-def create_nc_cdcc_reform(
-    parameters, period, bypass: bool = False
-):
+def create_nc_cdcc_reform(parameters, period, bypass: bool = False):
     if bypass:
         return create_nc_cdcc()
 
@@ -61,6 +67,4 @@ def create_nc_cdcc_reform(
         return None
 
 
-nc_cdcc = create_nc_cdcc_reform(
-    None, None, bypass=True
-)
+nc_cdcc = create_nc_cdcc_reform(None, None, bypass=True)
