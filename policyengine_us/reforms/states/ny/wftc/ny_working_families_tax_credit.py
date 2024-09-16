@@ -20,12 +20,25 @@ def create_ny_working_families_tax_credit() -> Reform:
                 p.reduction.married.calc(income),
                 p.reduction.single.calc(income),
             )
-            children = add(
-                tax_unit, period, p.amount.min.applicable_dependents
-            )
+            children = add(tax_unit, period, p.amount.applicable_dependents)
             max_amount = p.amount.max * children
-            min_amount = p.amount.min.amount * children
+            min_amount = p.amount.min * children
             return max_(min_amount, max_amount - reduction)
+
+    class ny_wftc_eligible_child(Variable):
+        value_type = float
+        entity = Person
+        label = "New York Working Families Tax Credit"
+        unit = USD
+        definition_period = YEAR
+        defined_for = StateCode.NY
+
+        def formula(person, period, parameters):
+            age = person("age", period)
+            is_dependent = person("is_tax_unit_dependent", period)
+            p = parameters(period).gov.contrib.states.ny.wftc
+            age_eligible = age < p.child_age_threshold
+            return is_dependent & age_eligible
 
     class ny_wftc_eligible_children(Variable):
         value_type = float
@@ -35,14 +48,7 @@ def create_ny_working_families_tax_credit() -> Reform:
         definition_period = YEAR
         defined_for = StateCode.NY
 
-        def formula(tax_unit, period, parameters):
-            person = tax_unit.members
-            age = person("age", period)
-            is_dependent = person("is_tax_unit_dependent", period)
-            p = parameters(period).gov.contrib.states.ny.wftc
-            age_eligible = age < p.child_age_threshold
-            eligible_child = is_dependent & age_eligible
-            return tax_unit.sum(eligible_child)
+        adds = ["ny_wftc_eligible_child"]
 
     # Replicating the relevant parts of the EITC for for younger
     # and older dependents separately
@@ -437,6 +443,23 @@ def create_ny_working_families_tax_credit() -> Reform:
             household_credit = tax_unit("ny_household_credit", period)
             return max_(0, total_credit - household_credit)
 
+    class ny_exemptions_dependent(Variable):
+        value_type = bool
+        entity = Person
+        label = "Dependent under the New York exemptions definition"
+        unit = USD
+        definition_period = YEAR
+        reference = "https://www.nysenate.gov/legislation/laws/TAX/616"
+        defined_for = StateCode.NY
+
+        def formula(person, period, parameters):
+            dependent = person("is_tax_unit_dependent", period)
+            p = parameters(period).gov.contrib.states.ny.wftc.exemptions
+            ineligible_depdent = add(person, period, p.ineligible_dependent)
+            return where(
+                p.in_effect, dependent & ~ineligible_depdent, dependent
+            )
+
     class ny_exemptions(Variable):
         value_type = float
         entity = TaxUnit
@@ -447,14 +470,10 @@ def create_ny_working_families_tax_credit() -> Reform:
         defined_for = StateCode.NY
 
         def formula(tax_unit, period, parameters):
-            person = tax_unit.members
-            dependent = person("is_tax_unit_dependent", period)
-            p = parameters(period).gov.contrib.states.ny.wftc
-            age = person("age", period)
-            eligible_dependent = dependent & (
-                age > p.exemptions.child_age_threshold
+
+            count_dependents = add(
+                tax_unit, period, ["ny_exemptions_dependent"]
             )
-            count_dependents = tax_unit.sum(eligible_dependent)
             dependent_exemption = parameters(
                 period
             ).gov.states.ny.tax.income.exemptions.dependent
@@ -477,6 +496,7 @@ def create_ny_working_families_tax_credit() -> Reform:
     class reform(Reform):
         def apply(self):
             self.update_variable(ny_working_families_tax_credit)
+            self.update_variable(ny_wftc_eligible_child)
             self.update_variable(ny_wftc_eligible_children)
             self.update_variable(is_younger_child_dependent)
             self.update_variable(eitc_younger_children_count)
@@ -502,6 +522,7 @@ def create_ny_working_families_tax_credit() -> Reform:
             self.update_variable(older_eitc)
             self.update_variable(ny_eitc)
             self.neutralize_variable("ny_ctc")
+            self.update_variable(ny_exemptions_dependent)
             self.update_variable(ny_exemptions)
             self.update_variable(ny_refundable_credits)
 
