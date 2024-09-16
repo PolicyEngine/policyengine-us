@@ -50,7 +50,7 @@ def create_ny_working_families_tax_credit() -> Reform:
         entity = Person
         label = "Is a younger child dependents"
         reference = (
-            "https://www.nysenate.gov/legislation/bills/2023/S277/amendment/B"
+            "https://www.nysenate.gov/legislation/bills/2023/S277/amendment/C"
         )
         definition_period = YEAR
 
@@ -225,7 +225,7 @@ def create_ny_working_families_tax_credit() -> Reform:
         entity = Person
         label = "Is a older child dependents"
         reference = (
-            "https://www.nysenate.gov/legislation/bills/2023/S277/amendment/B"
+            "https://www.nysenate.gov/legislation/bills/2023/S277/amendment/C"
         )
         definition_period = YEAR
         defined_for = StateCode.NY
@@ -418,7 +418,7 @@ def create_ny_working_families_tax_credit() -> Reform:
         unit = USD
         definition_period = YEAR
         reference = (
-            "https://www.nysenate.gov/legislation/bills/2023/S277/amendment/B"
+            "https://www.nysenate.gov/legislation/bills/2023/S277/amendment/C"
         )
         defined_for = StateCode.NY
 
