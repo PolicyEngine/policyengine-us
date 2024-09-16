@@ -239,9 +239,8 @@ def create_ny_working_families_tax_credit() -> Reform:
             student = person("is_full_time_student", period)
             student_age_eligible = age < p_irs.student
             p_ref = parameters(period).gov.contrib.states.ny.wftc
-            older_student_age_eligible = p_ref.child_age_threshold >= age
+            older_student_age_eligible = p_ref.child_age_threshold <= age
             age_eligible = student_age_eligible & older_student_age_eligible
-            print(is_dependent & student & age_eligible)
             return is_dependent & student & age_eligible
 
     class eitc_older_children_count(Variable):
