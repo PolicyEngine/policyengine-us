@@ -1,0 +1,11 @@
+description: New York state provides a incremental benefit under the supplemental tax if this is true.
+values:
+  2011-01-01: true  
+  2028-01-01: false
+metadata:
+  unit: bool
+  period: year
+  label: New York supplemental tax availability 
+  reference:
+  - title: The Laws of New York § 601. Imposition of tax. (d-1) - (d-4)
+    href: https://www.nysenate.gov/legislation/laws/TAX/601

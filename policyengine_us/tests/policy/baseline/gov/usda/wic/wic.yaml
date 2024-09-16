@@ -1,10 +1,10 @@
-- name: Households that are in pregnant category are elgible.
+- name: Households that are in pregnant category are eligible.
   period: 2018
   input:
     wic_category_str: PREGNANT
     is_wic_eligible: true
   output:
-    wic: 37.33 * 12 
+    wic: 37.33 * 12
 
 - name: Amount is 0 if not passing the wic_eligible test.
   period: 2022
@@ -14,7 +14,7 @@
   output:
     wic: 0 
 
-- name: Households that are in postpartum category are elgible.
+- name: Households that are in postpartum category are eligible.
   period: 2018
   input:
     wic_category_str: POSTPARTUM
