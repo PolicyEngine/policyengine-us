@@ -10,12 +10,4 @@ class nm_armed_forces_retirement_pay_exemption(Variable):
     reference = "https://casetext.com/statute/new-mexico-statutes-1978/chapter-7-taxation/article-2-income-tax-general-provisions/section-7-2-513-effective-until-112025-exemption-armed-forces-retirement-pay"
     defined_for = StateCode.NM
 
-    def formula(tax_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.nm.tax.income.exemptions.armed_forces_retirement_pay
-        armed_forces_retirement_pay = tax_unit.members(
-            "military_retirement_pay", period
-        )
-        capped = min_(armed_forces_retirement_pay, p.cap)
-        return tax_unit.sum(capped)
+    adds = ["nm_armed_forces_retirement_pay_exemption_person"]
