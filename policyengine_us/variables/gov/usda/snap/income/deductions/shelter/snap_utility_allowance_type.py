@@ -14,12 +14,18 @@ class snap_utility_allowance_type(Variable):
     entity = SPMUnit
     label = "SNAP utility allowance eligibility"
     default_value = SNAPUttilityAllowanceType.NONE
-    documentation = "The type of utility allowance that is eligible for the SPM unit"
+    documentation = (
+        "The type of utility allowance that is eligible for the SPM unit"
+    )
     definition_period = MONTH
 
     def formula(spm_unit, period, parameters):
-        distinct_utility_bills = spm_unit("count_distinct_utility_expenses", period)
-        lua = parameters(period).gov.usda.snap.income.deductions.utility.limited
+        distinct_utility_bills = spm_unit(
+            "count_distinct_utility_expenses", period
+        )
+        lua = parameters(
+            period
+        ).gov.usda.snap.income.deductions.utility.limited
         region = spm_unit.household("snap_utility_region_str", period)
         always_sua = spm_unit("snap_always_standard_utility_allowance", period)
         has_heating_cooling = spm_unit("has_heating_cooling_expense", period)
