@@ -5,6 +5,40 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.80.1] - 2024-09-17 12:08:35
+
+### Fixed
+
+- Adjust the kiddie tax logic in the AMT calculation.
+
+## [1.80.0] - 2024-09-17 03:02:20
+
+### Added
+
+- Apply the federal standard and itemized deductions in Iowa from 2023 on.
+
+## [1.79.3] - 2024-09-16 16:11:42
+
+### Fixed
+
+- Wisconsin 2nd tax bracket for single and hoh in 2023.
+
+## [1.79.2] - 2024-09-16 14:57:51
+
+### Fixed
+
+- Add switch to basic income phase-in.
+
+## [1.79.1] - 2024-09-14 00:18:02
+
+### Added
+
+- Loading of policyengine-us-data from PyPI
+
+### Fixed
+
+- Divided tests within GitHub Actions to avoid resource issues
+
 ## [1.79.0] - 2024-09-12 17:10:41
 
 ### Added
@@ -9654,6 +9688,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.80.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.80.0...1.80.1
+[1.80.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.79.3...1.80.0
+[1.79.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.79.2...1.79.3
+[1.79.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.79.1...1.79.2
+[1.79.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.79.0...1.79.1
 [1.79.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.78.1...1.79.0
 [1.78.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.78.0...1.78.1
 [1.78.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.77.0...1.78.0
