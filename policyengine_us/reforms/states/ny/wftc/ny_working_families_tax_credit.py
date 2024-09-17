@@ -20,7 +20,7 @@ def create_ny_working_families_tax_credit() -> Reform:
                 p.reduction.married.calc(income),
                 p.reduction.single.calc(income),
             )
-            children = add(tax_unit, period, p.amount.applicable_dependents)
+            children = tax_unit("ny_wftc_eligible_children", period)
             max_amount = p.amount.max * children
             min_amount = p.amount.min * children
             return max_(min_amount, max_amount - reduction)
@@ -454,13 +454,11 @@ def create_ny_working_families_tax_credit() -> Reform:
 
         def formula(person, period, parameters):
             dependent = person("is_tax_unit_dependent", period)
+            child_dependent = person("is_child_dependent", period)
             p = parameters(period).gov.contrib.states.ny.wftc.exemptions
-            child_eligible = person("is_child_dependent", period)
             wftc_eligible_child = person("ny_wftc_eligible_child", period)
-            ineligible_dependent = where(p.older_eligible, child_eligible, wftc_eligible_child)
-            print(ineligible_dependent)
             return where(
-                p.in_effect, dependent & ~ineligible_dependent, dependent
+                p.in_effect, child_dependent & ~wftc_eligible_child, dependent
             )
 
     class ny_exemptions(Variable):
