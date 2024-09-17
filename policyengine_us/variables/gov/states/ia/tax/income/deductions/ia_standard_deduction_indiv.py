@@ -36,5 +36,12 @@ class ia_standard_deduction_indiv(Variable):
         )
         is_head = person("is_tax_unit_head", period)
         is_spouse = person("is_tax_unit_spouse", period)
-        p = parameters(period).gov.states.ia.tax.income
-        return (is_head | is_spouse) * p.deductions.standard[filing_status]
+        p = parameters(period).gov.states.ia.tax.income.deductions.standard
+
+        if p.applies_federal:
+            fed_p = parameters(period).gov.irs.deductions
+            deduction = fed_p.standard.amount[filing_status]
+        else:
+            deduction = p.amount[filing_status]
+
+        return person("is_tax_unit_head_or_spouse", period) * deduction
