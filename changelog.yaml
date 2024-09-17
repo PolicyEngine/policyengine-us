@@ -8154,3 +8154,45 @@
     fixed:
     - Separate the CTC and EITC under the FSA 2.0.
   date: 2024-09-09 20:03:22
+- bump: minor
+  changes:
+    added:
+    - Utah additional dependent exemption starting in 2023.
+  date: 2024-09-10 17:15:06
+- bump: minor
+  changes:
+    added:
+    - Update SNAP values for 2025.
+  date: 2024-09-10 22:10:39
+- bump: patch
+  changes:
+    added:
+    - Updated CO TANF grant standard
+  date: 2024-09-12 04:48:22
+- bump: minor
+  changes:
+    added:
+    - Test for additional standard deduction variable.
+  date: 2024-09-12 17:10:41
+- bump: patch
+  changes:
+    added:
+    - Loading of policyengine-us-data from PyPI
+    fixed:
+    - Divided tests within GitHub Actions to avoid resource issues
+  date: 2024-09-14 00:18:02
+- bump: patch
+  changes:
+    fixed:
+    - Add switch to basic income phase-in.
+  date: 2024-09-16 14:57:51
+- bump: patch
+  changes:
+    fixed:
+    - Wisconsin 2nd tax bracket for single and hoh in 2023.
+  date: 2024-09-16 16:11:42
+- bump: minor
+  changes:
+    added:
+    - Apply the federal standard and itemized deductions in Iowa from 2023 on.
+  date: 2024-09-17 03:02:20
