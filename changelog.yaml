@@ -8181,3 +8181,23 @@
     fixed:
     - Divided tests within GitHub Actions to avoid resource issues
   date: 2024-09-14 00:18:02
+- bump: patch
+  changes:
+    fixed:
+    - Add switch to basic income phase-in.
+  date: 2024-09-16 14:57:51
+- bump: patch
+  changes:
+    fixed:
+    - Wisconsin 2nd tax bracket for single and hoh in 2023.
+  date: 2024-09-16 16:11:42
+- bump: minor
+  changes:
+    added:
+    - Apply the federal standard and itemized deductions in Iowa from 2023 on.
+  date: 2024-09-17 03:02:20
+- bump: patch
+  changes:
+    fixed:
+    - Adjust the kiddie tax logic in the AMT calculation.
+  date: 2024-09-17 12:08:35
