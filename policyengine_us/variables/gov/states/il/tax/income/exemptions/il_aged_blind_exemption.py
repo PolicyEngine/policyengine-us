@@ -7,6 +7,7 @@ class il_aged_blind_exemption(Variable):
     label = "IL aged and blind exemption"
     unit = USD
     definition_period = YEAR
+    defined_for = StateCode.IL
 
     def formula(tax_unit, period, parameters):
         aged_blind_count = tax_unit("aged_blind_count", period)

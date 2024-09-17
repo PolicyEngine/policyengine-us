@@ -7,5 +7,6 @@ class or_non_refundable_credits(Variable):
     label = "OR uncapped non-refundable tax credits"
     unit = USD
     definition_period = YEAR
+    defined_for = StateCode.OR
 
     adds = "gov.states.or.tax.income.credits.nonrefundable"

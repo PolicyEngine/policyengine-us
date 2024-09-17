@@ -9,5 +9,6 @@ class nj_agi_subtractions(Variable):
     documentation = "Subtractions from federal AGI to get NJ total income."
     definition_period = YEAR
     reference = "https://law.justia.com/codes/new-jersey/2022/title-54/section-54-8a-36/"
+    defined_for = StateCode.NJ
 
     adds = "gov.states.nj.tax.income.subtractions"
