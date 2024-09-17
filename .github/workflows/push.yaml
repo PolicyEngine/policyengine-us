@@ -60,10 +60,20 @@ jobs:
           python-version: 3.12
       - name: Install package
         run: make install
-      - name: Run tests
-        run: make test
+      - name: Run non-structural YAML tests
+        run: make test-yaml-no-structural
         env:
           POVERTYTRACKER_RAW_URL: ${{ secrets.POVERTYTRACKER_RAW_URL }}
+      - name: Run structural YAML tests
+        run: make test-yaml-structural
+        env:
+          POVERTYTRACKER_RAW_URL: ${{ secrets.POVERTYTRACKER_RAW_URL }}
+      - name: Run Python-based tests
+        run: make test-other
+        env:
+          POVERTYTRACKER_RAW_URL: ${{ secrets.POVERTYTRACKER_RAW_URL }}
+      - name: Produce combined coverage repository
+        run: make coverage
       - uses: codecov/codecov-action@v4
       - name: Test documentation builds
         if: matrix.os == 'ubuntu-latest'
