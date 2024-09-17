@@ -17,7 +17,7 @@ class az_hhs_tanf_eligible(Variable):
         payment_standard_threshold = spm_unit(
             "az_payment_standard_threshold", period
         )
-        # Judge whether the unit is considered a needy family 
+        # Judge whether the unit is considered a needy family
         # (countable income is below 100% of Federal Poverty Guideline)
         fpg_rate = spm_unit("az_fpg_rate", period)
         income_eligibility = (
