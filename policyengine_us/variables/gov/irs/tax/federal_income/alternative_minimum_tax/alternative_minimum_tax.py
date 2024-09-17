@@ -30,7 +30,9 @@ class alternative_minimum_tax(Variable):
 
         kiddie_tax_exemption_cap_applies = young_head & no_or_young_spouse
         exemption_cap = where(
-            kiddie_tax_exemption_cap_applies, adj_earnings + child_amount, np.inf
+            kiddie_tax_exemption_cap_applies,
+            adj_earnings + child_amount,
+            np.inf,
         )
         capped_exemption_amount = min_(
             uncapped_exemption_amount, exemption_cap
@@ -38,7 +40,9 @@ class alternative_minimum_tax(Variable):
         # Line 6
         taxable_income = tax_unit("taxable_income", period)
         # Do not add back deduction for filers subject to the kiddie tax
-        applied_income = where(kiddie_tax_exemption_cap_applies, taxable_income, amt_income)
+        applied_income = where(
+            kiddie_tax_exemption_cap_applies, taxable_income, amt_income
+        )
         reduced_income = max_(0, applied_income - capped_exemption_amount)
         bracket_fraction = where(
             filing_status == filing_status.possible_values.SEPARATE,
