@@ -9,7 +9,7 @@ from policyengine_core.simulations import (
     Microsimulation as CoreMicrosimulation,
     IndividualSim as CoreIndividualSim,
 )
-from policyengine_us.data import DATASETS, CPS_2022
+from policyengine_us_data import DATASETS, CPS_2024
 from policyengine_us.variables.household.demographic.geographic.state.in_state import (
     create_50_state_variables,
 )
@@ -27,6 +27,7 @@ from policyengine_core.parameters.operations.propagate_parameter_metadata import
 from policyengine_core.parameters.operations.uprate_parameters import (
     uprate_parameters,
 )
+from .tools.default_uprating import add_default_uprating
 
 COUNTRY_DIR = Path(__file__).parent
 
@@ -58,6 +59,7 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
         self.parameters = uprate_parameters(self.parameters)
         self.parameters = propagate_parameter_metadata(self.parameters)
         self.add_abolition_parameters()
+        add_default_uprating(self)
 
         structural_reform = create_structural_reforms_from_parameters(
             self.parameters, year_start
@@ -127,7 +129,7 @@ class Simulation(CoreSimulation):
 class Microsimulation(CoreMicrosimulation):
     default_tax_benefit_system = CountryTaxBenefitSystem
     default_tax_benefit_system_instance = system
-    default_dataset = CPS_2022
+    default_dataset = CPS_2024
     default_dataset_year = CURRENT_YEAR
     default_role = "member"
     default_calculation_period = CURRENT_YEAR
@@ -186,7 +188,7 @@ class Microsimulation(CoreMicrosimulation):
 class IndividualSim(CoreIndividualSim):  # Deprecated
     tax_benefit_system = CountryTaxBenefitSystem
     entities = {entity.key: entity for entity in entities}
-    default_dataset = CPS_2022
+    default_dataset = CPS_2024
 
     default_roles = dict(
         tax_unit="member",

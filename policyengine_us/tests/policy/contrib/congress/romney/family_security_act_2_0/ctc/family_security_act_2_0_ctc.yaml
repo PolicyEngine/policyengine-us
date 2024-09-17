@@ -1,0 +1,164 @@
+- name: AGI over phase_in amount and joint EITC filers
+  period: 2022
+  reforms: policyengine_us.reforms.congress.romney.family_security_act_2_0.ctc.family_security_act_2_0_ctc.family_security_act_2_0_ctc
+  input:
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.apply_ctc_structure: true
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.phase_in.income_phase_in_end: 10_000
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.base[0].amount: 7_000
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.base[1].amount: 4_200
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.base[2].amount: 3_000
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.child_cap: 6
+    adjusted_gross_income: 11_000
+    ctc_maximum_with_arpa_addition: 1_000
+    ctc_phase_out: 100
+    filing_status: JOINT
+  output:
+    ctc_phase_in_rate: 1
+    ctc: 900
+
+- name: AGI over phase_in amount and single EITC filers 
+  period: 2022
+  reforms: policyengine_us.reforms.congress.romney.family_security_act_2_0.ctc.family_security_act_2_0_ctc.family_security_act_2_0_ctc
+  input:
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.apply_ctc_structure: true
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.phase_in.income_phase_in_end: 10_000
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.base[0].amount: 7_000
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.base[1].amount: 4_200
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.base[2].amount: 3_000
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.child_cap: 6
+    adjusted_gross_income: 11_000
+    ctc_maximum_with_arpa_addition: 1_000
+    ctc_phase_out: 100
+    filing_status: SINGLE
+  output:
+    ctc_phase_in_rate: 1
+    ctc: 900
+
+- name: AGI below phase_in amount and single EITC filers 
+  period: 2022
+  reforms: policyengine_us.reforms.congress.romney.family_security_act_2_0.ctc.family_security_act_2_0_ctc.family_security_act_2_0_ctc
+  input:
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.apply_ctc_structure: true
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.phase_in.income_phase_in_end: 10_000
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.base[0].amount: 7_000
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.base[1].amount: 4_200
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.base[2].amount: 3_000
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.child_cap: 6
+    adjusted_gross_income: 5_000
+    ctc_maximum_with_arpa_addition: 1_000
+    ctc_phase_out: 0
+    filing_status: SEPARATE
+  output:
+    ctc_phase_in_rate: 0.5
+    ctc: 500
+
+- name: No AGI
+  period: 2022
+  reforms: policyengine_us.reforms.congress.romney.family_security_act_2_0.ctc.family_security_act_2_0_ctc.family_security_act_2_0_ctc
+  input:
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.apply_ctc_structure: true
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.phase_in.income_phase_in_end: 10_000
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.base[0].amount: 7_000
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.base[1].amount: 4_200
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.base[2].amount: 3_000
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.child_cap: 6
+    adjusted_gross_income: 0
+    ctc_maximum_with_arpa_addition: 1_000
+    ctc_phase_out: 0
+    filing_status: SURVIVING_SPOUSE
+  output:
+    ctc_phase_in_rate: 0
+    ctc: 0
+
+
+- name: Capped qualifying children for the CTC
+  period: 2022
+  reforms: policyengine_us.reforms.congress.romney.family_security_act_2_0.ctc.family_security_act_2_0_ctc.family_security_act_2_0_ctc
+  input:
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.apply_ctc_structure: true
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.phase_in.income_phase_in_end: 10_000
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.base[0].amount: 7_000
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.base[1].amount: 4_200
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.base[2].amount: 3_000
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.child_cap: 6
+    people:
+      person1:
+        ctc_qualifying_child: true
+      person2:
+        ctc_qualifying_child: true
+      person3:
+        ctc_qualifying_child: true
+      person4:
+        ctc_qualifying_child: true
+      person5:
+        ctc_qualifying_child: true
+      person6:
+        ctc_qualifying_child: true
+      person7: 
+        ctc_qualifying_child: true
+  output:
+    ctc_qualifying_children: 6
+
+- name: Higher new child amount, based on age
+  period: 2022
+  reforms: policyengine_us.reforms.congress.romney.family_security_act_2_0.ctc.family_security_act_2_0_ctc.family_security_act_2_0_ctc
+  input:
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.apply_ctc_structure: true
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.phase_in.income_phase_in_end: 10_000
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.base[0].amount: 7_000
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.base[1].amount: 4_200
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.base[2].amount: 3_000
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.child_cap: 6
+    people:
+      person1:
+        age: 5
+      person2:
+        age: 6
+      person3:
+        age: 18
+  output:
+    ctc_child_individual_maximum: [4_200, 3_000, 0]
+
+- name: Higher new child amount, based on age, with baby bonus
+  period: 2022
+  reforms: policyengine_us.reforms.congress.romney.family_security_act_2_0.ctc.family_security_act_2_0_ctc.family_security_act_2_0_ctc
+  input:
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.apply_ctc_structure: true
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.phase_in.income_phase_in_end: 10_000
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.base[0].amount: 7_000
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.base[1].amount: 4_200
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.base[2].amount: 3_000
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.child_cap: 6
+    people:
+      person1:
+        age: 0
+      person2:
+        age: 6
+      person3:
+        age: 18
+  output:
+    ctc_child_individual_maximum: [7_000, 3_000, 0]
+
+- name: Higher new child amount, based on age, with baby bonus, phases out with income
+  period: 2022
+  reforms: policyengine_us.reforms.congress.romney.family_security_act_2_0.ctc.family_security_act_2_0_ctc.family_security_act_2_0_ctc
+  input:
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.apply_ctc_structure: true
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.phase_in.income_phase_in_end: 10_000
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.base[0].amount: 7_000
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.base[1].amount: 4_200
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.base[2].amount: 3_000
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.child_cap: 6
+    people:
+      person1:
+        age: 0
+      person2:
+        age: 6
+      person3:
+        age: 18
+    tax_units:
+      tax_unit:
+        adjusted_gross_income: 11_000
+        members: [person1, person2, person3]
+  output:
+    ctc_child_individual_maximum: [7_000, 3_000, 0]
