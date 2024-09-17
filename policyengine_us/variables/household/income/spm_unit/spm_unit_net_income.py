@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class spm_unit_net_income(Variable):
+class spm_resources(Variable):
     value_type = float
     entity = SPMUnit
     label = "Net income"

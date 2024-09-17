@@ -13,6 +13,6 @@ class spm_unit_oecd_equiv_net_income(Variable):
     )
 
     def formula(spm_unit, period, parameters):
-        number_of_people = spm_unit.nb_persons()
-        net_income = spm_unit("spm_unit_net_income", period)
+        number_of_people = spm_unit("spm_unit_size", period)
+        resources = spm_unit("spm_resources", period)
         return net_income / (number_of_people**0.5)
