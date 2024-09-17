@@ -17,14 +17,15 @@ class az_hhs_tanf_eligible(Variable):
         payment_standard_threshold = spm_unit(
             "az_payment_standard_threshold", period
         )
-        # Judge whether is a needy family (countable income is below 100% of Federal Poverty Guideline)
+        # Judge whether the unit is considered a needy family 
+        # (countable income is below 100% of Federal Poverty Guideline)
         fpg_rate = spm_unit("az_fpg_rate", period)
-        fpg_eligibility = (
+        income_eligibility = (
             monthly_countable_earned_income <= fpg_rate * monthly_fpg
         )
         # Judge whether the countable income exceed the Cash Assistance Payment Standard
         payment_standard_eligibility = (
             monthly_countable_earned_income <= payment_standard_threshold
         )
-        # The family is eligible for cash assistance only when the two criteria are fitted at the same time
-        return fpg_eligibility & payment_standard_eligibility
+        # The family is eligible for the cash assistance only when the two criteria are met at the same time
+        return income_eligibility & payment_standard_eligibility
