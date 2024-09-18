@@ -1,1 +1,1 @@
-from policyengine_us_data.datasets import DATASETS
+from policyengine_us_data import DATASETS, ZIP_CODE_DATASET
