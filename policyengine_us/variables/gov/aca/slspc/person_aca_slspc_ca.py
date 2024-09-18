@@ -18,8 +18,7 @@ class person_aca_slspc_ca(Variable):
         if not hasattr(ptree.gov.aca, "ca_"):
             aca_params = ParameterNode(
                 directory_path=REPO
-                / "data"
-                / "parameters"
+                / "params_on_demand"
                 / "gov"
                 / "aca"
                 / "ca"
