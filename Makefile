@@ -5,9 +5,19 @@ format:
 install:
 	pip install -e .[dev]
 test:
+	pytest policyengine_us/tests/ --maxfail=0
 	coverage run -a --branch -m policyengine_core.scripts.policyengine_command test policyengine_us/tests/policy/ -c policyengine_us
 	coverage xml -i
+test-yaml-structural:
+	coverage run -a --branch --data-file=.coverage.contrib -m policyengine_core.scripts.policyengine_command test policyengine_us/tests/policy/contrib -c policyengine_us 
+test-yaml-no-structural:
+	coverage run -a --branch --data-file=.coverage.baseline -m policyengine_core.scripts.policyengine_command test policyengine_us/tests/policy/baseline -c policyengine_us
+	coverage run -a --branch --data-file=.coverage.reform -m policyengine_core.scripts.policyengine_command test policyengine_us/tests/policy/reform -c policyengine_us
+test-other:
 	pytest policyengine_us/tests/ --maxfail=0
+coverage:
+	coverage combine
+	coverage xml -i
 documentation:
 	jb clean docs
 	jb build docs
