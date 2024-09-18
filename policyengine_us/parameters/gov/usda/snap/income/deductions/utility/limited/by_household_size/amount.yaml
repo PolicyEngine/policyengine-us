@@ -26,6 +26,7 @@ metadata:
   unit: currency-USD
   label: SNAP limited utility allowance by household size amount
   breakdown:
+    # Add a more comprehensive breakdown criterion once more states are added  
     - [NC]
     - range(1, 10)
   reference:
