@@ -8191,3 +8191,13 @@
     fixed:
     - Wisconsin 2nd tax bracket for single and hoh in 2023.
   date: 2024-09-16 16:11:42
+- bump: minor
+  changes:
+    added:
+    - Apply the federal standard and itemized deductions in Iowa from 2023 on.
+  date: 2024-09-17 03:02:20
+- bump: patch
+  changes:
+    fixed:
+    - Adjust the kiddie tax logic in the AMT calculation.
+  date: 2024-09-17 12:08:35
