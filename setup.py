@@ -35,13 +35,15 @@ setup(
     ],
     install_requires=[
         "policyengine-core>=3.6.5",
-        "policyengine-us-data>=1.1.0",
+        "policyengine-us-data>=1.4.1",
         "microdf-python",
         "tqdm",
     ],
     extras_require={
         "dev": [
             "setuptools",
+            "jupyter-book",
+            "furo",
         ],
     },
     python_requires=">=3.10,<3.13",
