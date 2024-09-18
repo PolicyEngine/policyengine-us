@@ -1,4 +1,4 @@
-description: State standard utility allowance broken down by household size
+description: The US department of agriculture provides the following standard utility allowance, baed on state and household size.
 NC:
   1:
     2024-01-01: 585
@@ -26,6 +26,7 @@ metadata:
   unit: currency-USD
   label: SNAP standard utility allowance by household size amount
   breakdown:
+    # Add a more comprehensive breakdown criterion once more states are added 
     - [NC]
     - range(1, 10)
   reference:
