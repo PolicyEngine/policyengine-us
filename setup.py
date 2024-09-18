@@ -42,6 +42,8 @@ setup(
     extras_require={
         "dev": [
             "setuptools",
+            "jupyter-book",
+            "furo",
         ],
     },
     python_requires=">=3.10,<3.13",
