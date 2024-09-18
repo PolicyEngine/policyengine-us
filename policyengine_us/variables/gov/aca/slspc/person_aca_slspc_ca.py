@@ -17,11 +17,7 @@ class person_aca_slspc_ca(Variable):
         ptree = person.simulation.tax_benefit_system.parameters
         if not hasattr(ptree.gov.aca, "ca_"):
             aca_params = ParameterNode(
-                directory_path=REPO
-                / "params_on_demand"
-                / "gov"
-                / "aca"
-                / "ca"
+                directory_path=REPO / "params_on_demand" / "gov" / "aca" / "ca"
             )
             aca_params = homogenize_parameter_structures(
                 aca_params,
