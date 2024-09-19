@@ -17,7 +17,7 @@ LIMITS = [
     [(dataset, year, limit) for dataset, year, limit in LIMITS],
 )
 def test_calibration(dataset, year, limit):
-    from policyengine_us.data.datasets.cps.enhanced_cps.calibrate import (
+    from policyengine_us_data.datasets.cps.enhanced_cps.calibrate import (
         get_snapshot,
     )
 
