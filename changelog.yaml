@@ -8244,3 +8244,8 @@
     removed:
     - Unnecessary parameters in VT's parameter tree.
   date: 2024-09-19 16:01:11
+- bump: patch
+  changes:
+    fixed:
+    - Add defined_for metadata for all state level variables.
+  date: 2024-09-19 17:53:36
