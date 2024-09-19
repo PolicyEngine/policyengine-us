@@ -27,8 +27,7 @@ class second_lowest_silver_plan_cost(Variable):
         if not hasattr(parameter_tree.gov.hhs.medicaid, "geography"):
             medicaid_parameters = ParameterNode(
                 directory_path=REPO
-                / "data"
-                / "parameters"
+                / "params_on_demand"
                 / "gov"
                 / "hhs"
                 / "medicaid"
