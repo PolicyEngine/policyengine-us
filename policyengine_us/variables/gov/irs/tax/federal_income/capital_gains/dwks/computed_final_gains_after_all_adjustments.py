@@ -8,7 +8,7 @@ class computed_final_gains_after_all_adjustments(Variable):
     label = "IRS Form 1040 Schedule D worksheet (part 6 of 6)"  # DWKS19
     unit = USD
     reference = (
-        "https://www.irs.gov/pub/irs-prior/i1040sd--2023.pdf#page=16",
+        "https://www.irs.gov/pub/irs-prior/i1040sd--2017.pdf#page=16",
     )
 
     def formula(tax_unit, period, parameters):
@@ -40,7 +40,7 @@ class computed_final_gains_after_all_adjustments(Variable):
         taxable_income_minus_computed_dividends_gains_whether_has_gains = max_(
             0, taxable_income - computed_dividends_gains_whether_has_gains
         )  # dwks18
-        # Schedule D Tax Worksheet line 21?
+        # Schedule D Tax Worksheet line 19
         return max_(
             min_capital_gains_and_taxable_income_and_taxable_income_minus_gains,
             taxable_income_minus_computed_dividends_gains_whether_has_gains,
