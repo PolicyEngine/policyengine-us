@@ -1,6 +1,6 @@
 import os
 from policyengine_us import Microsimulation
-from policyengine_us.data import CPS_2022
+from policyengine_us_data import CPS_2022
 from policyengine_us.tools.taxsim.generate_taxsim_tests import TaxSim35
 import numpy as np
 import pytest

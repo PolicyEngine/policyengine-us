@@ -8,3 +8,4 @@ class oh_uniformed_services_retirement_income_deduction(Variable):
     definition_period = YEAR
     unit = USD
     reference = "https://tax.ohio.gov/static/forms/ohio_individual/individual/2022/it1040-bundle.pdf#page=4"
+    defined_for = StateCode.OH
