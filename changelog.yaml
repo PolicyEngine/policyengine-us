@@ -8239,3 +8239,8 @@
     changed:
     - Medicaid national parameters run off a CSV, cutting runtime by ~8%.
   date: 2024-09-19 15:49:59
+- bump: patch
+  changes:
+    removed:
+    - Unnecessary parameters in VT's parameter tree.
+  date: 2024-09-19 16:01:11
