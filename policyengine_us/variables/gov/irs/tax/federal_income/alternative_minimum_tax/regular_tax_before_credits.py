@@ -9,22 +9,26 @@ class regular_tax_before_credits(Variable):
     documentation = "Regular tax on regular taxable income before credits"
     unit = USD
     reference = (
-        "https://www.irs.gov/pub/irs-pdf/f6251.pdf",
-        "https://www.irs.gov/pub/irs-pdf/i6251.pdf",
+        "https://www.irs.gov/pub/irs-pdf/f1040sd.pdf",
+        "https://www.irs.gov/pub/irs-prior/i1040sd--2023.pdf#page=16",
     )
 
     def formula(tax_unit, period, parameters):
-        filing_status = tax_unit("filing_status", period)
+        # Schedule D Tax Worksheet line 1
         taxable_income = tax_unit("taxable_income", period)  # dwks1
-
+        # Schedule D Tax Worksheet line 15
+        filing_status = tax_unit("filing_status", period)
         capital_gains = parameters(period).gov.irs.capital_gains.brackets
-
+        # Schedule D Tax Worksheet line 16
         capital_gain_taxable_threshold = min_(
             capital_gains.thresholds["1"][filing_status], taxable_income
         )  # dwks16
+        # Schedule D Tax Worksheet line 17
         dwks17 = min_(
-            tax_unit("dwks14", period), capital_gain_taxable_threshold
+            tax_unit("taxable_income_minus_gains", period),
+            capital_gain_taxable_threshold,
         )
+        # Schedule D Tax Worksheet line 20
         dwks20 = capital_gain_taxable_threshold - dwks17
         lowest_rate_tax = capital_gains.rates["1"] * dwks20
         # Break in worksheet lines

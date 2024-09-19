@@ -8,12 +8,11 @@ class computed_dividends_gains_whether_has_gains(Variable):
     label = "IRS Form 1040 Schedule D worksheet (part 3 of 6)"  # DWKS10
     unit = USD
     reference = (
-        "https://www.irs.gov/pub/irs-pdf/f1040.pdf",
-        "https://www.irs.gov/pub/irs-pdf/i1040gi.pdf",
-        "https://www.irs.gov/pub/irs-pdf/f1040sd.pdf",
+        "https://www.irs.gov/pub/irs-prior/i1040sd--2023.pdf#page=16",
     )
 
     def formula(tax_unit, period, parameters):
+        # Schedule D Tax Worksheet line 10
         if_gains = add(
             tax_unit,
             period,

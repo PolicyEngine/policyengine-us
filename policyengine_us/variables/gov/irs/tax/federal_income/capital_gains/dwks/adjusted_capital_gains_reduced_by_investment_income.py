@@ -8,9 +8,8 @@ class adjusted_capital_gains_reduced_by_investment_income(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://www.irs.gov/pub/irs-pdf/f1040.pdf",
-        "https://www.irs.gov/pub/irs-pdf/i1040gi.pdf",
         "https://www.irs.gov/pub/irs-pdf/f1040sd.pdf",
+        "https://www.irs.gov/pub/irs-prior/i1040sd--2023.pdf#page=16",
     )
 
     def formula(tax_unit, period, parameters):
@@ -20,10 +19,13 @@ class adjusted_capital_gains_reduced_by_investment_income(Variable):
             period,
             ["long_term_capital_gains", "qualified_dividend_income"],
         )  # p23250
+        # Schedule D Tax Worksheet line 7
         capped_net_capital_gains = min_(
             qdiv_plus_ltcg, tax_unit("net_capital_gains", period)
         )  # dwks7
+        # Schedule D Tax Worksheet line 8
         # dwks8 = min(dwks3, dwks4)
+        # Schedule D Tax Worksheet line 9
         # adjusted_capital_gains_reduced_by_investment_income = max(0., capped_net_capital_gains - dwks8)
         # BELOW TWO STATEMENTS ARE UNCLEAR IN LIGHT OF adjusted_capital_gains_reduced_by_investment_income=... COMMENT
         other_cg = add(tax_unit, period, ["non_sch_d_capital_gains"])  # e01100
