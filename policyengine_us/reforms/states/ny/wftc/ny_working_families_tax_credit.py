@@ -57,9 +57,7 @@ def create_ny_working_families_tax_credit() -> Reform:
         value_type = bool
         entity = Person
         label = "Is a younger child dependents"
-        reference = (
-            "https://legislation.nysenate.gov/pdf/bills/2023/S277C"
-        )
+        reference = "https://legislation.nysenate.gov/pdf/bills/2023/S277C"
         definition_period = YEAR
 
         def formula(person, period, parameters):
@@ -232,9 +230,7 @@ def create_ny_working_families_tax_credit() -> Reform:
         value_type = bool
         entity = Person
         label = "Is a older child dependents"
-        reference = (
-            "https://legislation.nysenate.gov/pdf/bills/2023/S277C"
-        )
+        reference = "https://legislation.nysenate.gov/pdf/bills/2023/S277C"
         definition_period = YEAR
         defined_for = StateCode.NY
 
@@ -424,9 +420,7 @@ def create_ny_working_families_tax_credit() -> Reform:
         label = "New York EITC"
         unit = USD
         definition_period = YEAR
-        reference = (
-            "https://legislation.nysenate.gov/pdf/bills/2023/S277C"
-        )
+        reference = "https://legislation.nysenate.gov/pdf/bills/2023/S277C"
         defined_for = StateCode.NY
 
         def formula(tax_unit, period, parameters):
