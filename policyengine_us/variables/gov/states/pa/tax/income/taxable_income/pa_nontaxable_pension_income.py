@@ -9,6 +9,7 @@ class pa_nontaxable_pension_income(Variable):
     documentation = "US taxable pension income excluded from PA AGI."
     definition_period = YEAR
     reference = "https://www.revenue.pa.gov/FormsandPublications/FormsforIndividuals/PIT/Documents/2021/2021_pa-40in.pdf#page=8"
+    defined_for = StateCode.PA
 
     def formula(person, period, parameters):
         retired = person("is_retired", period)

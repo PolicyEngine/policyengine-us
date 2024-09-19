@@ -6,5 +6,6 @@ class oh_bonus_depreciation_add_back(Variable):
     entity = Person
     label = "Ohio bonus depreciation add back"
     definition_period = YEAR
+    defined_for = StateCode.OH
     documentation = ""
     reference = ""
