@@ -8201,3 +8201,16 @@
     fixed:
     - Adjust the kiddie tax logic in the AMT calculation.
   date: 2024-09-17 12:08:35
+- bump: minor
+  changes:
+    changed:
+    - Corrected connection with us-data repository
+    removed:
+    - Deprecated data folder
+  date: 2024-09-18 18:16:20
+- bump: minor
+  changes:
+    added:
+    - Calculation logic for North Carolina SNAP standard and limited utility allowance
+      by household size amount.
+  date: 2024-09-19 01:11:12
