@@ -66,6 +66,8 @@ review/merge
 - Some useful commands:
  - condainit
  - gitconfig–globalpull.rebasefalse
-  - If you have a merge issue and it asks which you want to do ○ gitpull
-- gitcommit-am'resolve' ○ gitreset–hardHEAD
+  - If you have a merge issue and it asks which you want to do 
+  - gitpull
+- gitcommit-am'resolve'
+- gitreset–hardHEAD
 - rm-ft
