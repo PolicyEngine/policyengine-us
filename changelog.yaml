@@ -8214,3 +8214,33 @@
     - Calculation logic for North Carolina SNAP standard and limited utility allowance
       by household size amount.
   date: 2024-09-19 01:11:12
+- bump: minor
+  changes:
+    added:
+    - 2025 CalWORKs maximum resource limit update.
+  date: 2024-09-19 02:03:16
+- bump: patch
+  changes:
+    removed:
+    - CI documentation actions, which currently fail.
+  date: 2024-09-19 02:12:02
+- bump: minor
+  changes:
+    added:
+    - 2025 CalWORKs payment standards increase.
+  date: 2024-09-19 02:19:49
+- bump: minor
+  changes:
+    added:
+    - Nebraska child care subsidy.
+  date: 2024-09-19 02:32:58
+- bump: patch
+  changes:
+    changed:
+    - Medicaid national parameters run off a CSV, cutting runtime by ~8%.
+  date: 2024-09-19 15:49:59
+- bump: patch
+  changes:
+    removed:
+    - Unnecessary parameters in VT's parameter tree.
+  date: 2024-09-19 16:01:11
