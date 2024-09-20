@@ -12,6 +12,7 @@ class ny_agi_subtractions(Variable):
         title="N.Y. Comp. Codes R. & Regs. tit. 20 § 112.3",
         href="https://casetext.com/regulation/new-york-codes-rules-and-regulations/title-20-department-of-taxation-and-finance/chapter-ii-income-taxes-and-estate-taxes/subchapter-a-new-york-state-personal-income-tax-under-article-22-of-the-tax-law/article-2-residents/part-112-new-york-adjusted-gross-income-of-a-resident-individual/section-1123-modifications-reducing-federal-adjusted-gross-income",
     )
+    defined_for = StateCode.NY
 
     def formula(tax_unit, period, parameters):
         taxable_ss = add(tax_unit, period, ["taxable_social_security"])
