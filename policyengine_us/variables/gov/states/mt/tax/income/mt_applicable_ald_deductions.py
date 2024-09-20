@@ -7,6 +7,7 @@ class mt_applicable_ald_deductions(Variable):
     label = "Montana applicable above-the-line deductions "
     unit = USD
     definition_period = YEAR
+    defined_for = StateCode.MT
 
     def formula(person, period, parameters):
         ald_deductions = person.tax_unit("above_the_line_deductions", period)

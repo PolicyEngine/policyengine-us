@@ -39,3 +39,12 @@ clear-storage:
 	rm -f policyengine_us/data/storage/*.h5
 	rm -f policyengine_us/data/storage/*.csv.gz
 	rm -rf policyengine_us/data/storage/*cache
+compare-speed:
+	pip uninstall policyengine-us -y
+	pip install policyengine-us
+	cd policyengine_us/tools && python speedtest.py
+	mv policyengine_us/tools/speedtest.yaml speedtest_old.yaml
+	pip install -e .
+	cd policyengine_us/tools && python speedtest.py
+	mv policyengine_us/tools/speedtest.yaml speedtest_new.yaml
+	python .github/compare_speed.py
