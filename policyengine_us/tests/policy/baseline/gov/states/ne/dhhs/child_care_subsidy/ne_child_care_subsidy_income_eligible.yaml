@@ -1,0 +1,26 @@
+- name: NE child care subsidy income eligible 1
+  period: 2024
+  input:
+    spm_unit_fpg: 100
+    adjusted_gross_income: 185
+    state_code: NE
+  output:
+    ne_child_care_subsidy_income_eligible: true
+
+- name: NE child care subsidy income eligible 2
+  period: 2024
+  input:
+    spm_unit_fpg: 100
+    adjusted_gross_income: 183
+    state_code: NE
+  output:
+    ne_child_care_subsidy_income_eligible: true
+
+- name: NE child care subsidy income ineligible
+  period: 2024
+  input:
+    spm_unit_fpg: 100
+    adjusted_gross_income: 186
+    state_code: NE
+  output:
+    ne_child_care_subsidy_income_eligible: false
