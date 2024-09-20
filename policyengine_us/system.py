@@ -68,6 +68,10 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
             reform = ()
         reform = (reform, structural_reform)
 
+        self.parameters = backdate_parameters(
+            self.parameters, first_instant="2015-01-01"
+        )
+
         for parameter in self.parameters.get_descendants():
             parameter.modified = False
 
@@ -75,9 +79,6 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
             self.apply_reform_set(reform)
 
         self.add_variables(*create_50_state_variables())
-        self.parameters = homogenize_parameter_structures(
-            self.parameters, self.variables
-        )
 
 
 system = CountryTaxBenefitSystem()
