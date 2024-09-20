@@ -26,9 +26,9 @@ rel_change = df.percent_change.values[-1]
 
 if rel_change < 0:
     print("Nice! The new version is faster.")
-elif rel_change < 0.05:
+elif rel_change < 5:
     print("The new version is slightly slower.")
-elif rel_change < 1:
+elif rel_change < 100:
     print(
         "WARNING: The new version is significantly slower. PLEASE make sure to check nothing's super unnecessarily slow."
     )
