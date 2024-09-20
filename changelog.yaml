@@ -8201,3 +8201,56 @@
     fixed:
     - Adjust the kiddie tax logic in the AMT calculation.
   date: 2024-09-17 12:08:35
+- bump: minor
+  changes:
+    changed:
+    - Corrected connection with us-data repository
+    removed:
+    - Deprecated data folder
+  date: 2024-09-18 18:16:20
+- bump: minor
+  changes:
+    added:
+    - Calculation logic for North Carolina SNAP standard and limited utility allowance
+      by household size amount.
+  date: 2024-09-19 01:11:12
+- bump: minor
+  changes:
+    added:
+    - 2025 CalWORKs maximum resource limit update.
+  date: 2024-09-19 02:03:16
+- bump: patch
+  changes:
+    removed:
+    - CI documentation actions, which currently fail.
+  date: 2024-09-19 02:12:02
+- bump: minor
+  changes:
+    added:
+    - 2025 CalWORKs payment standards increase.
+  date: 2024-09-19 02:19:49
+- bump: minor
+  changes:
+    added:
+    - Nebraska child care subsidy.
+  date: 2024-09-19 02:32:58
+- bump: patch
+  changes:
+    changed:
+    - Medicaid national parameters run off a CSV, cutting runtime by ~8%.
+  date: 2024-09-19 15:49:59
+- bump: patch
+  changes:
+    removed:
+    - Unnecessary parameters in VT's parameter tree.
+  date: 2024-09-19 16:01:11
+- bump: patch
+  changes:
+    fixed:
+    - Add defined_for metadata for all state level variables.
+  date: 2024-09-19 17:53:36
+- bump: patch
+  changes:
+    added:
+    - Speedtests to PRs.
+  date: 2024-09-20 15:00:03
