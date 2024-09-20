@@ -9,7 +9,6 @@ from policyengine_core.simulations import (
     Microsimulation as CoreMicrosimulation,
     IndividualSim as CoreIndividualSim,
 )
-from policyengine_us_data import DATASETS, CPS_2024
 from policyengine_us.variables.household.demographic.geographic.state.in_state import (
     create_50_state_variables,
 )
@@ -28,6 +27,7 @@ from policyengine_core.parameters.operations.uprate_parameters import (
     uprate_parameters,
 )
 from .tools.default_uprating import add_default_uprating
+from policyengine_us_data import DATASETS, CPS_2024
 
 COUNTRY_DIR = Path(__file__).parent
 
@@ -189,7 +189,6 @@ class IndividualSim(CoreIndividualSim):  # Deprecated
     tax_benefit_system = CountryTaxBenefitSystem
     entities = {entity.key: entity for entity in entities}
     default_dataset = CPS_2024
-
     default_roles = dict(
         tax_unit="member",
         spm_unit="member",

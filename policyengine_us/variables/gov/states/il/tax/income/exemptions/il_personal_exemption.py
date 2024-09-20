@@ -7,6 +7,7 @@ class il_personal_exemption(Variable):
     label = "Illinois personal exemption amount"
     unit = USD
     definition_period = YEAR
+    defined_for = StateCode.IL
 
     def formula(tax_unit, period, parameters):
         il_is_personal_exemption_eligible = tax_unit(
