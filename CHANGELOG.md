@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.86.0] - 2024-09-21 01:08:08
+
+### Added
+
+- Wisconsin 2024 CDCC match value.
+
 ## [1.85.4] - 2024-09-20 15:00:03
 
 ### Added
@@ -9740,6 +9746,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.86.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.85.4...1.86.0
 [1.85.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.85.3...1.85.4
 [1.85.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.85.2...1.85.3
 [1.85.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.85.1...1.85.2
