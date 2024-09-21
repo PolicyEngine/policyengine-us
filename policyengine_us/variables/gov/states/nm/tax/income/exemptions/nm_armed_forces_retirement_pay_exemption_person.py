@@ -15,4 +15,6 @@ class nm_armed_forces_retirement_pay_exemption_person(Variable):
             period
         ).gov.states.nm.tax.income.exemptions.armed_forces_retirement_pay
         armed_forces_retirement_pay = person("military_retirement_pay", period)
-        return min_(armed_forces_retirement_pay, p.cap)
+        capped_amount = min_(armed_forces_retirement_pay, p.cap)
+        qualifies = person("is_tax_unit_head_or_spouse", period)
+        return qualifies * capped_amount
