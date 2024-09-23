@@ -14,6 +14,8 @@ class la_widow_exemption(Variable):
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
-        is_surviving_spouse = tax_unit.any(person("is_surviving_spouse", period))
+        is_surviving_spouse = tax_unit.any(
+            person("is_surviving_spouse", period)
+        )
         p = parameters(period).gov.states.la.tax.income.exemptions
         return is_surviving_spouse * p.widow
