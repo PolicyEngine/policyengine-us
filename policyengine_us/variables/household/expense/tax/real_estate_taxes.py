@@ -7,4 +7,4 @@ class real_estate_taxes(Variable):
     label = "Real estate taxes"
     unit = USD
     definition_period = YEAR
-    uprating = "gov.bls.cpi.c_cpi_u"
+    uprating = "gov.bls.cpi.cpi_u"
