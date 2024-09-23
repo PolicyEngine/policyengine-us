@@ -275,7 +275,7 @@
     gov.contrib.states.ny.wftc.reduction.married[1].rate: 0.02
     gov.contrib.states.ny.wftc.reduction.single[1].threshold: 65000
     gov.contrib.states.ny.wftc.reduction.single[1].rate: 0.02
-    gov.contrib.states.ny.wftc.child_age_threshold: 18
+    gov.contrib.states.ny.wftc.child_age_threshold: 17
     people: 
       person1:
         age: 30
@@ -576,7 +576,7 @@
         is_tax_unit_dependent: true
         is_full_time_student: true
       person4:
-        age: 17
+        age: 18
         is_tax_unit_dependent: true
     tax_units:
       tax_unit:
