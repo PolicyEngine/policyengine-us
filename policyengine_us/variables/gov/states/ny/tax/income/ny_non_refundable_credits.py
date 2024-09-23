@@ -7,6 +7,7 @@ class ny_non_refundable_credits(Variable):
     label = "NY capped non-refundable tax credits"
     unit = USD
     definition_period = YEAR
+    defined_for = StateCode.NY
 
     def formula(tax_unit, period, parameters):
         credits = parameters(
