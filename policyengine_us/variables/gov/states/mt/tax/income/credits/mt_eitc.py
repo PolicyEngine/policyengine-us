@@ -8,6 +8,7 @@ class mt_eitc(Variable):
     unit = USD
     definition_period = YEAR
     reference = "https://leg.mt.gov/bills/mca/title_0150/chapter_0300/part_0230/section_0180/0150-0300-0230-0180.html"
+    defined_for = StateCode.MT
 
     def formula(person, period, parameters):
         federal_eitc = person.tax_unit("eitc", period)
