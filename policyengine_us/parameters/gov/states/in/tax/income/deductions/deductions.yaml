@@ -14,20 +14,26 @@ values:
     - in_other_deductions
 
   2023-01-01:
-    #IC 6-3-2-6
+    # IC 6-3-2-6
     - in_renters_deduction
-    #IC 6-1.1
+    # IC 6-1.1
     - in_homeowners_property_tax_deduction
     - salt_refund_last_year
     - us_govt_interest
-    - tax_unit_taxable_social_security  
-    # includes railroad retirement benefits
+    # US Code 26-A-1-B-II-§86
+    - tax_unit_taxable_social_security  # includes railroad retirement benefits
+    # IC 6-3-2-4-(a)(1)
     - in_military_service_deduction
+    # IC 6-3-2-22-(d)(1)
     - in_nonpublic_school_deduction
+    # IC 6-3-2-2.5
     - in_nol
+    # IC 6-3-2-10
     - in_unemployment_compensation_deduction
+    # IC 6-3-2
     - in_other_deductions
     - military_basic_pay
+
 metadata: 
   unit: list
   Period: year
