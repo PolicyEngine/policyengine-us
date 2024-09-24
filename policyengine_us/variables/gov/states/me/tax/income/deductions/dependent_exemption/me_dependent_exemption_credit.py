@@ -2,10 +2,10 @@ from policyengine_us.model_api import *
 from numpy import ceil
 
 
-class me_dependent_exemption(Variable):
+class me_dependent_exemption_credit(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Maine dependents exemption deduction"
+    label = "Maine dependent exemption credit"
     reference = "https://www.mainelegislature.org/legis/statutes/36/title36sec5219-SS.html"
     unit = USD
     definition_period = YEAR
