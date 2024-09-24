@@ -11,6 +11,7 @@ class sc_retirement_deduction_indv(Variable):
         "https://dor.sc.gov/forms-site/Forms/IITPacket_2021.pdf#page=17",
     )
     definition_period = YEAR
+    defined_for = StateCode.SC
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.sc.tax.income.subtractions.retirement

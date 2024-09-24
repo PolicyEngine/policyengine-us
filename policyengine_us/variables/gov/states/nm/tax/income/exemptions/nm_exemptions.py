@@ -9,10 +9,4 @@ class nm_exemptions(Variable):
     definition_period = YEAR
     defined_for = StateCode.NM
 
-    adds = [
-        "nm_aged_blind_exemption",
-        "nm_hundred_year_exemption",
-        "nm_low_and_middle_income_exemption",
-        "nm_medical_expense_exemption",
-        "nm_social_security_income_exemption",
-    ]
+    adds = "gov.states.nm.tax.income.exemptions.exemptions"
