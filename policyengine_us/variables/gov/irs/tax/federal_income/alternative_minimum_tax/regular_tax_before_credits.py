@@ -10,7 +10,7 @@ class regular_tax_before_credits(Variable):
     unit = USD
     reference = (
         "https://www.irs.gov/pub/irs-pdf/f1040sd.pdf",
-        "https://www.irs.gov/pub/irs-prior/i1040sd--2017.pdf#page=16",
+        "https://www.irs.gov/pub/irs-prior/i1040sd--2017.pdf#page=15",
     )
 
     def formula(tax_unit, period, parameters):

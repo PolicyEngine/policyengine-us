@@ -1,43 +1,54 @@
 - name: has_qdiv_or_ltcg, taxable_income_minus_gains < taxable_income < capital_gains
-  period: 2019
+  period: 2017
   input:
     filing_status: SINGLE
     taxable_income: 4_000
     taxable_income_minus_gains: 3_000
     computed_dividends_gains_whether_has_gains: 2_000
     has_qdiv_or_ltcg: true
-  output: # max(min(39375, 4000, 3000), 4000 - 2000) * 1
+  output: # max(min(37950, 4000, 3000), 4000 - 2000) * 1
     computed_final_gains_after_all_adjustments: 3_000
 
 - name: has_qdiv_or_ltcg, capital_gains < taxable_income_minus_gains < taxable_income
-  period: 2021
+  period: 2017
   input:
     filing_status: SINGLE
     taxable_income: 50_000
     taxable_income_minus_gains: 45_000
     computed_dividends_gains_whether_has_gains: 20_000
     has_qdiv_or_ltcg: true
-  output: # max(min(40400, 50000, 45000), 50000 - 20000) * 1
-    computed_final_gains_after_all_adjustments: 40_400
+  output: # max(min(37950, 50000, 45000), 50000 - 20000) * 1
+    computed_final_gains_after_all_adjustments: 37_950
 
 - name: has_qdiv_or_ltcg, capital_gains < taxable_income_minus_gains < taxable_income, taxable_income < computed_dividends_gains_whether_has_gains
-  period: 2021
+  period: 2017
   input:
     filing_status: SINGLE
     taxable_income: 10_000
     taxable_income_minus_gains: 5_000
     computed_dividends_gains_whether_has_gains: 20_000
     has_qdiv_or_ltcg: true
-  output: # max(min(40000, 10000, 5000), 10000 - 20000) * 1
+  output: # max(min(37950, 10000, 5000), 10000 - 20000) * 1
     computed_final_gains_after_all_adjustments: 5_000
 
 - name: no has_qdiv_or_ltcg
-  period: 2021
+  period: 2017
   input:
     filing_status: SINGLE
     taxable_income: 10_000
     taxable_income_minus_gains: 5_000
     computed_dividends_gains_whether_has_gains: 20_000
     has_qdiv_or_ltcg: false
-  output: # max(min(40000, 10000, 5000), 10000 - 20000) * 0
+  output: # max(min(37950, 10000, 5000), 10000 - 20000) * 0
     computed_final_gains_after_all_adjustments: 0
+
+- name: with additional steps
+  period: 2018
+  input:
+    filing_status: SINGLE
+    taxable_income: 200_000
+    taxable_income_minus_gains: 190_000
+    computed_dividends_gains_whether_has_gains: 50_000
+    has_qdiv_or_ltcg: true
+  output: # max(min(157500, 200000, 190000), 200000 - 50000) * 1
+    computed_final_gains_after_all_adjustments: 157_500
