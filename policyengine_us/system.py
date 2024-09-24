@@ -47,6 +47,9 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
 
     def __init__(self, reform=None):
         super().__init__(entities, reform=reform)
+
+        self.structural_reform_variables = {}
+
         self.load_parameters(COUNTRY_DIR / "parameters")
         if reform:
             self.apply_reform_set(reform)
