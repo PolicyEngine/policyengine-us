@@ -5,12 +5,6 @@ from pathlib import Path
 import pandas as pd
 from policyengine_us.typing import Formula
 
-ZIP_CODE_DATASET_PATH = (
-    Path(__file__).parent.parent / "data" / "geography" / "zip_codes.csv.gz"
-)
-
-ZIP_CODE_DATASET = pd.read_csv(ZIP_CODE_DATASET_PATH, compression="gzip")
-
 USD = "currency-USD"
 
 
