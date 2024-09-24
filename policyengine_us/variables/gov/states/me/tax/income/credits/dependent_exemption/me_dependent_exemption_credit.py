@@ -13,7 +13,7 @@ class me_dependent_exemption_credit(Variable):
 
     def formula(tax_unit, period, parameters):
         # First get total the number of dependents (line 1).
-        num_dependents = tax_unit("tax_unit_dependents", period)
+        dependents = tax_unit("tax_unit_dependents", period)
 
         # Get their Maine AGI (line 3).
         me_agi = tax_unit("me_agi", period)
@@ -21,23 +21,23 @@ class me_dependent_exemption_credit(Variable):
         # Then get the Maine Dependents Exemptions part of the parameter tree.
         p = parameters(
             period
-        ).gov.states.me.tax.income.deductions.dependent_exemption
+        ).gov.states.me.tax.income.credits.dependent_exemption
 
         # Calculate the maximum dependents exemption amount (line 2).
-        max_amount = num_dependents * p.amount
+        max_amount = dependents * p.amount
 
         # Get filing status.
         filing_status = tax_unit("filing_status", period)
 
         # Get the phaseout start amount based on filing status (line 4).
-        phaseout_start = p.phaseout.start[filing_status]
+        phaseout_start = p.phase_out.start[filing_status]
 
         # Get the excess amount, if any, in thousands of dollars (rounded up) [lines 5 and 6].
         excess = max_(me_agi - phaseout_start, 0)
-        increments = ceil(excess / p.phaseout.increment)
+        increments = ceil(excess / p.phase_out.increment)
 
         # Calculate the excess part phase out amount (line 7).
-        phase_out_amount = increments * p.phaseout.step
+        phase_out_amount = increments * p.phase_out.step
 
         # Return the max exemption amount minus the phaseout amount (line 8).
         return max_(max_amount - phase_out_amount, 0)
