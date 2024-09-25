@@ -29,6 +29,8 @@ from policyengine_core.parameters.operations.uprate_parameters import (
 from .tools.default_uprating import add_default_uprating
 from policyengine_us_data import DATASETS, CPS_2024
 import ast
+import glob
+import os
 
 COUNTRY_DIR = Path(__file__).parent
 
@@ -65,6 +67,9 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
         self.add_abolition_parameters()
         add_default_uprating(self)
 
+        new_vars = self.parse_structural_reforms_from_dir(COUNTRY_DIR / "reforms")
+        print(new_vars)
+
         structural_reform = create_structural_reforms_from_parameters(
             self.parameters, year_start
         )
@@ -84,7 +89,24 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
 
         self.add_variables(*create_50_state_variables())
 
-    def parse_variables_from_file(file_path):
+    def parse_structural_reforms_from_dir(self, dir_path):
+        py_files = glob.glob(os.path.join(dir_path, "*.py"))
+
+        parsed_vars = []
+
+        for py_file in py_files:
+            new_vars = self.parse_variables_from_file(py_file)
+            parsed_vars.extend(new_vars)
+        subdirectories = glob.glob(os.path.join(dir_path, "*/"))
+
+        for subdirectory in subdirectories:
+            new_vars = self.parse_structural_reforms_from_dir(subdirectory)
+            parsed_vars.extend(new_vars)
+        
+        return parsed_vars
+
+    def parse_variables_from_file(self, file_path):
+
         # Read the content of the file
         with open(file_path, 'r') as file:
             source = file.read()
