@@ -5,8 +5,7 @@ values:
     - in_homeowners_property_tax_deduction
     - salt_refund_last_year
     - us_govt_interest
-    - tax_unit_taxable_social_security  
-    # includes railroad retirement benefits
+    - tax_unit_taxable_social_security # includes railroad retirement benefits
     - in_military_service_deduction
     - in_nonpublic_school_deduction
     - in_nol
@@ -18,7 +17,9 @@ values:
     - in_renters_deduction
     # IC 6-1.1
     - in_homeowners_property_tax_deduction
+    # IT-40 Booklet 2023, pg.17
     - salt_refund_last_year
+    # IT-40 Booklet 2023, pg.17
     - us_govt_interest
     # US Code 26-A-1-B-II-§86
     - tax_unit_taxable_social_security  # includes railroad retirement benefits
@@ -32,6 +33,7 @@ values:
     - in_unemployment_compensation_deduction
     # IC 6-3-2
     - in_other_deductions
+    # IT-40 Booklet-(621), pg. 22
     - military_basic_pay
 
 metadata: 
@@ -41,3 +43,7 @@ metadata:
   reference:
     - title: Indiana General Assembly Legal Code Title 6 Taxation
       href: http://iga.in.gov/legislative/laws/2021/ic/titles/006#6-3
+    - title: U.S. Code
+      href: https://www.law.cornell.edu/uscode/text 
+    - title: 2023 IT-40 Income Tax Instruction Booklet
+      href: https://www.in.gov/dor/tax-forms/2023-individual-income-tax-forms/ 
