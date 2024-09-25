@@ -32,8 +32,11 @@ import ast
 import glob
 import os
 
+# Define these in advance to allow for structural variable parsing
 from policyengine_core.data_structures.unit import Unit
 from policyengine_core.periods import DAY, ETERNITY, MONTH, YEAR, period
+
+from typing import Dict, Any
 
 USD = Unit.USD
 
@@ -72,7 +75,10 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
         self.add_abolition_parameters()
         add_default_uprating(self)
 
-        structural_variables = self.parse_structural_variables_from_dir(COUNTRY_DIR / "reforms")
+        # Store all structural variables in a dictionary. These variables
+        # could be created if a structural reform is enacted, otherwise will not
+        # exist in the model
+        self.structural_variables: Dict[str, Any] = self.parse_structural_variables_from_dir(COUNTRY_DIR / "reforms")
 
         structural_reform = create_structural_reforms_from_parameters(
             self.parameters, year_start
@@ -111,25 +117,25 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
 
     def parse_structural_variables_from_file(self, file_path):
 
-
-        """
-        Helper function to extract attributes from a class definition
-
-        We want to be able to extract the following variable attributes, with
-        the following possible value types
-
-        value_type: str, int, float, bool, str, None
-        entity: Population (policyengine_core)
-        label: str
-        unit: Unit (policyengine_core) | str
-        definition_period: Period (policyengine_core)
-        defined_for: str | StateCode (policyengine_us)
-
-        This requires various different extraction methods out of the AST, which will
-        be noted individually below
-
-        """
         def extract_attributes(class_def):
+            """
+            Helper function to extract attributes from a class definition
+
+            We want to be able to extract the following variable attributes, with
+            the following possible value types
+
+            value_type: str, int, float, bool, str, None
+            entity: Population (policyengine_core)
+            label: str
+            unit: Unit (policyengine_core) | str
+            definition_period: Period (policyengine_core)
+            defined_for: str | StateCode (policyengine_us)
+
+            This requires various different extraction methods out of the AST, which will
+            be noted individually below
+
+            """
+
             attributes = {}
 
             # Iterate over every syntax tree node in the class definition
@@ -195,6 +201,11 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
             if isinstance(node, ast.ClassDef):
                 # Check if the class inherits from Variable
                 if any(base.id == 'Variable' for base in node.bases if isinstance(base, ast.Name)):
+
+                    # Do not include the variable if it already exists in the system
+                    if node.name in self.variables:
+                        continue
+
                     variable_info = {
                         'name': node.name,
                         **extract_attributes(node)
