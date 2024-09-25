@@ -1,5 +1,5 @@
 from policyengine_us.model_api import *
-
+from policyengine_core.periods import period as period_
 
 def create_increase_taxable_earnings_for_social_security() -> Reform:
     class taxable_earnings_for_social_security(Variable):
@@ -33,8 +33,16 @@ def create_increase_taxable_earnings_for_social_security_reform(
         return create_increase_taxable_earnings_for_social_security()
 
     p = parameters(period).gov.contrib.cbo.payroll
+    current_period = period_(period)
+    reform_active = False
 
-    if p.secondary_earnings_threshold < np.inf:
+    for i in range(5):
+        if p(current_period).secondary_earnings_threshold < np.inf:
+            reform_active = True
+            break
+        current_period = current_period.offset(1, "year")
+
+    if reform_active:
         return create_increase_taxable_earnings_for_social_security()
     else:
         return None
