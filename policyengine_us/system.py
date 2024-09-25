@@ -32,6 +32,11 @@ import ast
 import glob
 import os
 
+from policyengine_core.data_structures.unit import Unit
+from policyengine_core.periods import DAY, ETERNITY, MONTH, YEAR, period
+
+USD = Unit.USD
+
 COUNTRY_DIR = Path(__file__).parent
 
 CURRENT_YEAR = 2024
@@ -67,7 +72,7 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
         self.add_abolition_parameters()
         add_default_uprating(self)
 
-        new_vars = self.parse_structural_reforms_from_dir(COUNTRY_DIR / "reforms")
+        structural_vars = self.parse_structural_variables_from_dir(COUNTRY_DIR / "reforms")
 
         structural_reform = create_structural_reforms_from_parameters(
             self.parameters, year_start
@@ -88,24 +93,94 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
 
         self.add_variables(*create_50_state_variables())
 
-    def parse_structural_reforms_from_dir(self, dir_path):
+    def parse_structural_variables_from_dir(self, dir_path):
         py_files = glob.glob(os.path.join(dir_path, "*.py"))
 
         parsed_vars = []
 
         for py_file in py_files:
-            new_vars = self.parse_variables_from_file(py_file)
+            new_vars = self.parse_structural_variables_from_file(py_file)
             parsed_vars.extend(new_vars)
         subdirectories = glob.glob(os.path.join(dir_path, "*/"))
 
         for subdirectory in subdirectories:
-            new_vars = self.parse_structural_reforms_from_dir(subdirectory)
+            new_vars = self.parse_structural_variables_from_dir(subdirectory)
             parsed_vars.extend(new_vars)
         
         return parsed_vars
 
-    def parse_variables_from_file(self, file_path):
+    def parse_structural_variables_from_file(self, file_path):
 
+
+        """
+        Helper function to extract attributes from a class definition
+
+        We want to be able to extract the following variable attributes, with
+        the following possible value types
+
+        value_type: str, int, float, bool, str, None
+        entity: Population (policyengine_core)
+        label: str
+        unit: Unit (policyengine_core) | str
+        definition_period: Period (policyengine_core)
+        defined_for: str | StateCode (policyengine_us)
+
+        This requires various different extraction methods out of the AST, which will
+        be noted individually below
+
+        """
+        def extract_attributes(class_def):
+            attributes = {}
+
+            # Iterate over every syntax tree node in the class definition
+            for node in class_def.body:
+                
+                # If assigning a value...
+                if isinstance(node, ast.Assign):
+                    for target in node.targets:
+                        
+                        # and we reach a name node...
+                        if isinstance(target, ast.Name):
+                            
+                            # Begin assigning attributes based on the target
+                            
+                            # If the variable represents any form of constant value
+                            # (label, str unit, str defined_for, value_type)
+                            if isinstance(node.value, ast.Constant):
+                                attributes[target.id] = node.value.value
+
+                            # Otherwise, if we're still assinging something...
+                            elif isinstance(node.value, ast.Name):
+                              try:
+                                  # Try to evaluate the variable
+                                  obj = eval(node.value.id)
+
+                                  # Check if the object is itself technically a string
+                                  # definition_period, non-str unit
+                                  if type(obj) == str:
+                                      attributes[target.id] = obj
+
+                                  # Otherwise, if it's a class instance with a __name__
+                                  # value_type
+                                  elif hasattr(obj, '__name__'):
+                                      attributes[target.id] = obj.__name__
+
+                                  # Otherwise, if it's a class instance with a key attribute
+                                  # entity
+                                  elif hasattr(obj, 'key'):
+                                      attributes[target.id] = obj.key
+
+                                  # Otherwise, just return the class's name
+                                  # Last resort
+                                  else:
+                                      attributes[target.id] = obj.__class__.__name__
+                              except NameError as e:
+                                  # If the name isn't in the current namespace, set None
+                                  print(f"NameError while parsing structural variable {target.id}'s {node.value.id} attribute:")
+                                  print(e)
+                                  attributes[target.id] = None
+            return attributes
+        
         # Read the content of the file
         with open(file_path, 'r') as file:
             source = file.read()
@@ -114,32 +189,6 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
         tree = ast.parse(source)
 
         variables = []
-
-        # Helper function to extract attributes from a class definition
-        def extract_attributes(class_def):
-            attributes = {}
-            for node in class_def.body:
-                if isinstance(node, ast.Assign):
-                    for target in node.targets:
-                        if isinstance(target, ast.Name):
-                            if isinstance(node.value, ast.Str):
-                                attributes[target.id] = node.value.s
-                            elif isinstance(node.value, (ast.Num, ast.NameConstant)):
-                                attributes[target.id] = node.value.value
-                            elif isinstance(node.value, ast.Name):
-                            # Try to get the object that the name refers to
-                              try:
-                                  obj = eval(node.value.id)
-                                  # Check if the object has a __name__ attribute
-                                  if hasattr(obj, '__name__'):
-                                      attributes[target.id] = obj.__name__
-                                  # If it doesn't have __name__, try to get its class name
-                                  else:
-                                      attributes[target.id] = obj.__class__.__name__
-                              except NameError:
-                                  # If the name isn't in the current namespace, use it as a string
-                                  attributes[target.id] = node.value.id
-            return attributes
 
         # Walk through the entire AST and find class definitions
         for node in ast.walk(tree):
