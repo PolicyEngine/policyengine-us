@@ -72,7 +72,7 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
         self.add_abolition_parameters()
         add_default_uprating(self)
 
-        structural_vars = self.parse_structural_variables_from_dir(COUNTRY_DIR / "reforms")
+        structural_variables = self.parse_structural_variables_from_dir(COUNTRY_DIR / "reforms")
 
         structural_reform = create_structural_reforms_from_parameters(
             self.parameters, year_start
