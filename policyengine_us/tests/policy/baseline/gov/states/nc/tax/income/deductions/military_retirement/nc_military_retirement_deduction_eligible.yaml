@@ -1,7 +1,7 @@
 - name: Is medically retired, is not years eligible
   period: 2022
   input:
-    is_medically_retired: true
+    is_permanently_disabled_veteran: true
     years_in_military: 19
     state_code: NC
   output:
@@ -10,7 +10,7 @@
 - name: Is not medically retired, is years eligible
   period: 2022
   input:
-    is_medically_retired: false
+    is_permanently_disabled_veteran: false
     years_in_military: 20
     state_code: NC
   output:
@@ -19,7 +19,7 @@
 - name: Not medically retired, not years eligible
   period: 2022
   input:
-    is_medically_retired: false
+    is_permanently_disabled_veteran: false
     years_in_military: 19
     state_code: NC
   output:
