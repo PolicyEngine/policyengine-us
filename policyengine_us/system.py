@@ -84,6 +84,41 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
 
         self.add_variables(*create_50_state_variables())
 
+    def parse_variables_from_file(file_path):
+        # Read the content of the file
+        with open(file_path, 'r') as file:
+            source = file.read()
+
+        # Parse the source code into an AST
+        tree = ast.parse(source)
+
+        variables = []
+
+        # Helper function to extract attributes from a class definition
+        def extract_attributes(class_def):
+            attributes = {}
+            for node in class_def.body:
+                if isinstance(node, ast.Assign):
+                    for target in node.targets:
+                        if isinstance(target, ast.Name):
+                            if isinstance(node.value, ast.Str):
+                                attributes[target.id] = node.value.s
+                            elif isinstance(node.value, (ast.Num, ast.NameConstant)):
+                                attributes[target.id] = node.value.value
+            return attributes
+
+        # Walk through the entire AST and find class definitions
+        for node in ast.walk(tree):
+            if isinstance(node, ast.ClassDef):
+                # Check if the class inherits from Variable
+                if any(base.id == 'Variable' for base in node.bases if isinstance(base, ast.Name)):
+                    variable_info = {
+                        'name': node.name,
+                        'attributes': extract_attributes(node)
+                    }
+                    variables.append(variable_info)
+
+        return variables
 
 system = CountryTaxBenefitSystem()
 
@@ -128,42 +163,6 @@ class Simulation(CoreSimulation):
                 "weekly_hours_worked_before_lsr", known_period, array
             )
             weekly_hours.delete_arrays(known_period)
-
-    def parse_variables_from_file(file_path):
-        # Read the content of the file
-        with open(file_path, 'r') as file:
-            source = file.read()
-
-        # Parse the source code into an AST
-        tree = ast.parse(source)
-
-        variables = []
-
-        # Helper function to extract attributes from a class definition
-        def extract_attributes(class_def):
-            attributes = {}
-            for node in class_def.body:
-                if isinstance(node, ast.Assign):
-                    for target in node.targets:
-                        if isinstance(target, ast.Name):
-                            if isinstance(node.value, ast.Str):
-                                attributes[target.id] = node.value.s
-                            elif isinstance(node.value, (ast.Num, ast.NameConstant)):
-                                attributes[target.id] = node.value.value
-            return attributes
-
-        # Walk through the entire AST and find class definitions
-        for node in ast.walk(tree):
-            if isinstance(node, ast.ClassDef):
-                # Check if the class inherits from Variable
-                if any(base.id == 'Variable' for base in node.bases if isinstance(base, ast.Name)):
-                    variable_info = {
-                        'name': node.name,
-                        'attributes': extract_attributes(node)
-                    }
-                    variables.append(variable_info)
-
-        return variables
 
 class Microsimulation(CoreMicrosimulation):
     default_tax_benefit_system = CountryTaxBenefitSystem
