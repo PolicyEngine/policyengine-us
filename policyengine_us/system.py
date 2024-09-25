@@ -68,7 +68,6 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
         add_default_uprating(self)
 
         new_vars = self.parse_structural_reforms_from_dir(COUNTRY_DIR / "reforms")
-        print(new_vars)
 
         structural_reform = create_structural_reforms_from_parameters(
             self.parameters, year_start
@@ -127,6 +126,19 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
                                 attributes[target.id] = node.value.s
                             elif isinstance(node.value, (ast.Num, ast.NameConstant)):
                                 attributes[target.id] = node.value.value
+                            elif isinstance(node.value, ast.Name):
+                            # Try to get the object that the name refers to
+                              try:
+                                  obj = eval(node.value.id)
+                                  # Check if the object has a __name__ attribute
+                                  if hasattr(obj, '__name__'):
+                                      attributes[target.id] = obj.__name__
+                                  # If it doesn't have __name__, try to get its class name
+                                  else:
+                                      attributes[target.id] = obj.__class__.__name__
+                              except NameError:
+                                  # If the name isn't in the current namespace, use it as a string
+                                  attributes[target.id] = node.value.id
             return attributes
 
         # Walk through the entire AST and find class definitions
@@ -136,7 +148,7 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
                 if any(base.id == 'Variable' for base in node.bases if isinstance(base, ast.Name)):
                     variable_info = {
                         'name': node.name,
-                        'attributes': extract_attributes(node)
+                        **extract_attributes(node)
                     }
                     variables.append(variable_info)
 
