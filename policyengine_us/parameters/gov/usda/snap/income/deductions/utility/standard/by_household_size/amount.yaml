@@ -1,0 +1,34 @@
+description: States that define Supplemental Nutrition Assistance Program standard utility allowances by household size set these allowance values.
+NC:
+  1:
+    2024-01-01: 585
+  2:
+    2024-01-01: 643
+  3:
+    2024-01-01: 707
+  4:
+    2024-01-01: 770
+  5:
+    2024-01-01: 839
+  6:
+    2024-01-01: 839
+  7:
+    2024-01-01: 839
+  8:
+    2024-01-01: 839
+  9:
+    2024-01-01: 839
+  10:
+    2024-01-01: 839
+
+metadata:
+  period: month
+  unit: currency-USD
+  label: SNAP SUAs by household size
+  breakdown:
+    # Add a more comprehensive breakdown criterion once more states are added 
+    - [NC]
+    - range(1, 10)
+  reference:
+    - title: SNAP Screener Compiled State SNAP Data
+      href: https://www.snapscreener.com/data

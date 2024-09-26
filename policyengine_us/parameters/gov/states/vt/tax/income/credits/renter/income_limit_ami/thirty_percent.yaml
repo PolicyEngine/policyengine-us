@@ -3,8 +3,7 @@ metadata:
   unit: currency-USD 
   period: year
   breakdown: 
-    - list(range(1,8))
-    - county
+    - list(range(1,8))    
   label: Vermont full renter credit income limit
   reference:
      # The table is derived from the official Vermont government website. The legal code refers to area median income.
