@@ -1,3 +1,3 @@
-from ..eitc.family_security_act_2_0_eitc import (
-    create_family_security_act_2_0_eitc_reform,
+from .family_security_act_2024_eitc import (
+    create_family_security_act_2024_eitc_reform,
 )
