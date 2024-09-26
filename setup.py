@@ -44,6 +44,7 @@ setup(
             "setuptools",
             "jupyter-book",
             "furo",
+            "coverage"
         ],
     },
     python_requires=">=3.10,<3.13",
