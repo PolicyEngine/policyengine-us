@@ -1,7 +1,10 @@
 description: Maine non-refundable tax credits.
 values:
   2021-01-01:
-    - me_dependent_exemption
+    - me_dependent_exemption_credit
+    - me_non_refundable_child_care_credit
+  # Dependent exemption credit made refundable in 2024.
+  2024-01-01:
     - me_non_refundable_child_care_credit
 metadata:
   unit: list
