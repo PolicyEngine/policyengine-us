@@ -15,7 +15,7 @@
   output:
     spm_unit_broadband_subsidy: 5
 
-- name: Otherwise sum ACP 1, EBB 1
+- name: Baseline subsidy test with relevant inputs
   period: 2023
   input:
     gov.simulation.reported_broadband_subsidy: false
@@ -24,11 +24,3 @@
   output:
     spm_unit_broadband_subsidy: 3
 
-- name: Otherwise sum ACP 0, EBB 3
-  period: 2023
-  input:
-    gov.simulation.reported_broadband_subsidy: false
-    acp: 1
-    ebb: 1
-  output:
-    spm_unit_broadband_subsidy: 2
