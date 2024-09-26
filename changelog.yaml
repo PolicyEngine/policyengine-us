@@ -8108,3 +8108,196 @@
     changed:
     - Update policyengine-core to 3.6.5
   date: 2024-09-05 12:33:59
+- bump: patch
+  changes:
+    fixed:
+    - Minnesota pension income subtraction parameter value.
+  date: 2024-09-05 23:49:18
+- bump: minor
+  changes:
+    added:
+    - Implemented North Carolina TANF need standard and eligibility calculations.
+  date: 2024-09-05 23:56:03
+- bump: minor
+  changes:
+    added:
+    - Arkansas 2024 tax rate.
+  date: 2024-09-06 03:17:09
+- bump: minor
+  changes:
+    fixed:
+    - Refactor the Utah income tax tree.
+    - Remove ut_taxpayer_credit from the non-refundable credits list.
+  date: 2024-09-06 16:56:54
+- bump: patch
+  changes:
+    added:
+    - Commodity Supplemental Food Program
+  date: 2024-09-06 20:25:29
+- bump: minor
+  changes:
+    changed:
+    - Separated data from main repo.
+  date: 2024-09-07 00:01:09
+- bump: patch
+  changes:
+    minor:
+    - Neutralize the New York Working Families Tax credit parameter values.
+  date: 2024-09-09 16:40:19
+- bump: patch
+  changes:
+    fixed:
+    - Fix CSFP income limit
+  date: 2024-09-09 19:58:03
+- bump: patch
+  changes:
+    fixed:
+    - Separate the CTC and EITC under the FSA 2.0.
+  date: 2024-09-09 20:03:22
+- bump: minor
+  changes:
+    added:
+    - Utah additional dependent exemption starting in 2023.
+  date: 2024-09-10 17:15:06
+- bump: minor
+  changes:
+    added:
+    - Update SNAP values for 2025.
+  date: 2024-09-10 22:10:39
+- bump: patch
+  changes:
+    added:
+    - Updated CO TANF grant standard
+  date: 2024-09-12 04:48:22
+- bump: minor
+  changes:
+    added:
+    - Test for additional standard deduction variable.
+  date: 2024-09-12 17:10:41
+- bump: patch
+  changes:
+    added:
+    - Loading of policyengine-us-data from PyPI
+    fixed:
+    - Divided tests within GitHub Actions to avoid resource issues
+  date: 2024-09-14 00:18:02
+- bump: patch
+  changes:
+    fixed:
+    - Add switch to basic income phase-in.
+  date: 2024-09-16 14:57:51
+- bump: patch
+  changes:
+    fixed:
+    - Wisconsin 2nd tax bracket for single and hoh in 2023.
+  date: 2024-09-16 16:11:42
+- bump: minor
+  changes:
+    added:
+    - Apply the federal standard and itemized deductions in Iowa from 2023 on.
+  date: 2024-09-17 03:02:20
+- bump: patch
+  changes:
+    fixed:
+    - Adjust the kiddie tax logic in the AMT calculation.
+  date: 2024-09-17 12:08:35
+- bump: minor
+  changes:
+    changed:
+    - Corrected connection with us-data repository
+    removed:
+    - Deprecated data folder
+  date: 2024-09-18 18:16:20
+- bump: minor
+  changes:
+    added:
+    - Calculation logic for North Carolina SNAP standard and limited utility allowance
+      by household size amount.
+  date: 2024-09-19 01:11:12
+- bump: minor
+  changes:
+    added:
+    - 2025 CalWORKs maximum resource limit update.
+  date: 2024-09-19 02:03:16
+- bump: patch
+  changes:
+    removed:
+    - CI documentation actions, which currently fail.
+  date: 2024-09-19 02:12:02
+- bump: minor
+  changes:
+    added:
+    - 2025 CalWORKs payment standards increase.
+  date: 2024-09-19 02:19:49
+- bump: minor
+  changes:
+    added:
+    - Nebraska child care subsidy.
+  date: 2024-09-19 02:32:58
+- bump: patch
+  changes:
+    changed:
+    - Medicaid national parameters run off a CSV, cutting runtime by ~8%.
+  date: 2024-09-19 15:49:59
+- bump: patch
+  changes:
+    removed:
+    - Unnecessary parameters in VT's parameter tree.
+  date: 2024-09-19 16:01:11
+- bump: patch
+  changes:
+    fixed:
+    - Add defined_for metadata for all state level variables.
+  date: 2024-09-19 17:53:36
+- bump: patch
+  changes:
+    added:
+    - Speedtests to PRs.
+  date: 2024-09-20 15:00:03
+- bump: minor
+  changes:
+    added:
+    - Wisconsin 2024 CDCC match value.
+  date: 2024-09-21 01:08:08
+- bump: minor
+  changes:
+    added:
+    - New Mexico armed forces retirement pay exemption.
+  date: 2024-09-21 01:56:21
+- bump: minor
+  changes:
+    added:
+    - Tenure type.
+    - Uprating for rent and property taxes.
+    - Household reference person flag.
+  date: 2024-09-23 09:43:51
+- bump: minor
+  changes:
+    changed:
+    - PE-US-Data bumped to 1.5.1.
+  date: 2024-09-23 13:43:10
+- bump: minor
+  changes:
+    added:
+    - Remove total_income and net_income.
+  date: 2024-09-23 19:44:39
+- bump: minor
+  changes:
+    added:
+    - Include 17 year olds in the NYWFTC as younger children.
+  date: 2024-09-23 22:24:38
+- bump: minor
+  changes:
+    changed:
+    - Made Maine dependent exemption credit refundable in 2024.
+  date: 2024-09-25 00:47:29
+- bump: patch
+  changes:
+    changed:
+    - US data version to 1.6.0.
+  date: 2024-09-25 11:53:57
+- bump: minor
+  changes:
+    added:
+    - Add post TCJA income tax rates.
+  date: 2024-09-25 17:55:53

@@ -14,5 +14,3 @@ from policyengine_us.system import (
     Microsimulation,
     IndividualSim,
 )
-
-from policyengine_us.data import *
