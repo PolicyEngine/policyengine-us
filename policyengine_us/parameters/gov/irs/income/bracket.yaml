@@ -7,16 +7,25 @@ rates:
     breakdown:
       - range(1, 8)
     label: Individual income tax rates
+    reference:
+      # TCJA adjustments applied in (j)
+      # Rate reductions applied in (i)
+      - title: 26 U.S. Code § 1 - Tax imposed (a-d) 
+        href: https://www.law.cornell.edu/uscode/text/26/1#i
   1:
     2018-01-01: 0.1
   2:
     2018-01-01: 0.12
+    2026-01-01: 0.15
   3:
     2018-01-01: 0.22
+    2026-01-01: 0.25
   4:
     2018-01-01: 0.24
+    2026-01-01: 0.28
   5:
     2018-01-01: 0.32
+    2026-01-01: 0.33
   6:
     2018-01-01: 0.35
   7:
