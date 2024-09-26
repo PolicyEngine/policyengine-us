@@ -1,6 +1,6 @@
 - name: AGI over phase_in amount for pregnancy credit but not CTC
   period: 2026
-  reforms: policyengine_us.reforms.congress.romney.family_security_act_2_0.ctc.family_security_act_2024_ctc.family_security_act_2024_ctc
+  reforms: policyengine_us.reforms.congress.romney.family_security_act_2024.ctc.family_security_act_2024_ctc.family_security_act_2024_ctc
   input:
     gov.contrib.congress.romney.family_security_act_2_0.ctc.apply_ctc_structure: true
     gov.contrib.congress.romney.family_security_act_2_0.ctc.phase_in.income_phase_in_end: 20_000
@@ -29,7 +29,7 @@
 
 - name: AGI over phase_in amount for pregnancy credit but not CTC, with reduction
   period: 2026
-  reforms: policyengine_us.reforms.congress.romney.family_security_act_2_0.ctc.family_security_act_2024_ctc.family_security_act_2024_ctc
+  reforms: policyengine_us.reforms.congress.romney.family_security_act_2024.ctc.family_security_act_2024_ctc.family_security_act_2024_ctc
   input:
     gov.contrib.congress.romney.family_security_act_2_0.ctc.apply_ctc_structure: true
     gov.contrib.congress.romney.family_security_act_2_0.ctc.phase_in.income_phase_in_end: 20_000
@@ -58,7 +58,7 @@
 
 - name: AGI over phase_in amount and single EITC filers 
   period: 2022
-  reforms: policyengine_us.reforms.congress.romney.family_security_act_2_0.ctc.family_security_act_2024_ctc.family_security_act_2024_ctc
+  reforms: policyengine_us.reforms.congress.romney.family_security_act_2024.ctc.family_security_act_2024_ctc.family_security_act_2024_ctc
   input:
     gov.contrib.congress.romney.family_security_act_2_0.ctc.apply_ctc_structure: true
     gov.contrib.congress.romney.family_security_act_2_0.ctc.phase_in.income_phase_in_end: 20_000
@@ -77,7 +77,7 @@
 
 - name: AGI below phase_in amount and single EITC filers 
   period: 2022
-  reforms: policyengine_us.reforms.congress.romney.family_security_act_2_0.ctc.family_security_act_2024_ctc.family_security_act_2024_ctc
+  reforms: policyengine_us.reforms.congress.romney.family_security_act_2024.ctc.family_security_act_2024_ctc.family_security_act_2024_ctc
   input:
     gov.contrib.congress.romney.family_security_act_2_0.ctc.apply_ctc_structure: true
     gov.contrib.congress.romney.family_security_act_2_0.ctc.phase_in.income_phase_in_end: 20_000
@@ -96,7 +96,7 @@
 
 - name: No AGI
   period: 2022
-  reforms: policyengine_us.reforms.congress.romney.family_security_act_2_0.ctc.family_security_act_2024_ctc.family_security_act_2024_ctc
+  reforms: policyengine_us.reforms.congress.romney.family_security_act_2024.ctc.family_security_act_2024_ctc.family_security_act_2024_ctc
   input:
     gov.contrib.congress.romney.family_security_act_2_0.ctc.apply_ctc_structure: true
     gov.contrib.congress.romney.family_security_act_2_0.ctc.phase_in.income_phase_in_end: 20_000
@@ -116,7 +116,7 @@
 
 - name: Capped qualifying children for the CTC
   period: 2022
-  reforms: policyengine_us.reforms.congress.romney.family_security_act_2_0.ctc.family_security_act_2024_ctc.family_security_act_2024_ctc
+  reforms: policyengine_us.reforms.congress.romney.family_security_act_2024.ctc.family_security_act_2024_ctc.family_security_act_2024_ctc
   input:
     gov.contrib.congress.romney.family_security_act_2_0.ctc.apply_ctc_structure: true
     gov.contrib.congress.romney.family_security_act_2_0.ctc.phase_in.income_phase_in_end: 20_000
@@ -145,7 +145,7 @@
 
 - name: Higher new child amount, based on age
   period: 2022
-  reforms: policyengine_us.reforms.congress.romney.family_security_act_2_0.ctc.family_security_act_2024_ctc.family_security_act_2024_ctc
+  reforms: policyengine_us.reforms.congress.romney.family_security_act_2024.ctc.family_security_act_2024_ctc.family_security_act_2024_ctc
   input:
     gov.contrib.congress.romney.family_security_act_2_0.ctc.apply_ctc_structure: true
     gov.contrib.congress.romney.family_security_act_2_0.ctc.phase_in.income_phase_in_end: 20_000
@@ -166,7 +166,7 @@
 
 - name: Higher new child amount, based on age, with baby bonus - but no AGI
   period: 2022
-  reforms: policyengine_us.reforms.congress.romney.family_security_act_2_0.ctc.family_security_act_2024_ctc.family_security_act_2024_ctc
+  reforms: policyengine_us.reforms.congress.romney.family_security_act_2024.ctc.family_security_act_2024_ctc.family_security_act_2024_ctc
   input:
     gov.contrib.congress.romney.family_security_act_2_0.ctc.apply_ctc_structure: true
     gov.contrib.congress.romney.family_security_act_2_0.ctc.phase_in.income_phase_in_end: 20_000
@@ -193,7 +193,7 @@
 
 - name: Higher new child amount, based on age, with baby bonus, phases out with income
   period: 2022
-  reforms: policyengine_us.reforms.congress.romney.family_security_act_2_0.ctc.family_security_act_2024_ctc.family_security_act_2024_ctc
+  reforms: policyengine_us.reforms.congress.romney.family_security_act_2024.ctc.family_security_act_2024_ctc.family_security_act_2024_ctc
   input:
     gov.contrib.congress.romney.family_security_act_2_0.ctc.apply_ctc_structure: true
     gov.contrib.congress.romney.family_security_act_2_0.ctc.phase_in.income_phase_in_end: 20_000
@@ -219,7 +219,7 @@
 
 - name: Check net income tree inclusion
   period: 2022
-  reforms: policyengine_us.reforms.congress.romney.family_security_act_2_0.ctc.family_security_act_2024_ctc.family_security_act_2024_ctc
+  reforms: policyengine_us.reforms.congress.romney.family_security_act_2024.ctc.family_security_act_2024_ctc.family_security_act_2024_ctc
   input:
     gov.contrib.congress.romney.family_security_act_2_0.ctc.apply_ctc_structure: true
     gov.contrib.congress.romney.family_security_act_2_0.ctc.phase_in.income_phase_in_end: 20_000

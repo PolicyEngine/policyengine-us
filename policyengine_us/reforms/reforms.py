@@ -41,10 +41,10 @@ from .states.mn.walz import (
 from .states.oregon.rebate import (
     create_or_rebate_state_tax_exempt_reform,
 )
-from .congress.romney.family_security_act_2_0.ctc import (
+from .congress.romney.family_security_act_2024.ctc import (
     create_family_security_act_2024_ctc_reform,
 )
-from .congress.romney.family_security_act_2_0.eitc import (
+from .congress.romney.family_security_act_2024.eitc import (
     create_family_security_act_2024_eitc_reform,
 )
 from .treasury.repeal_dependent_exemptions import (
