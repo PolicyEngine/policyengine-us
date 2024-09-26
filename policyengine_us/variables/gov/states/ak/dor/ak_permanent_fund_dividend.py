@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ak_pfd(Variable):
+class ak_permanent_fund_dividend(Variable):
     value_type = float
     entity = Person
     label = "Alaska Permanent Fund Dividend"
