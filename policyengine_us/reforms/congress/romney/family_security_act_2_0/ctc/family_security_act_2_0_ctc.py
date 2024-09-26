@@ -42,14 +42,17 @@ def create_family_security_act_2_0_ctc() -> Reform:
         reference = "https://www.romney.senate.gov/wp-content/uploads/2024/09/FSA-Scanned-and-Final.pdf"
 
         def formula(tax_unit, period, parameters):
-            p = parameters(period).gov.contrib.congress.romney.family_security_act_3_0.pregnant_mothers_credit
+            p = parameters(
+                period
+            ).gov.contrib.congress.romney.family_security_act_3_0.pregnant_mothers_credit
             age = tax_unit.members("age", period)
-            phase_in_rate = tax_unit("pregnant_mothers_credit_phase_in_rate", period)
+            phase_in_rate = tax_unit(
+                "pregnant_mothers_credit_phase_in_rate", period
+            )
             reduction = tax_unit("ctc_phase_out", period)
             maximum_amount = tax_unit.sum(p.amount.calc(age))
             phased_in_max_amount = maximum_amount * phase_in_rate
             return max_(phased_in_max_amount - reduction, 0)
-            
 
     class pregnant_mothers_credit_phase_in_rate(Variable):
         value_type = float
@@ -108,7 +111,6 @@ def create_family_security_act_2_0_ctc() -> Reform:
             ).gov.contrib.congress.romney.family_security_act_2_0.ctc
             return min_(total_children, p.child_cap)
 
-
     class income_tax_refundable_credits(Variable):
         value_type = float
         entity = TaxUnit
@@ -119,9 +121,10 @@ def create_family_security_act_2_0_ctc() -> Reform:
         def formula(tax_unit, period, parameters):
             p = parameters(period).gov.irs.credits
             previous_credits = add(tax_unit, period, p.refundable)
-            pregnant_mothers_credit = tax_unit("pregnant_mothers_credit", period)
+            pregnant_mothers_credit = tax_unit(
+                "pregnant_mothers_credit", period
+            )
             return pregnant_mothers_credit + previous_credits
-
 
     class reform(Reform):
         def apply(self):
