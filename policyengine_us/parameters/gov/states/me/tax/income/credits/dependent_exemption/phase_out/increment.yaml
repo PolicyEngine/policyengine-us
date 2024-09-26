@@ -1,12 +1,11 @@
-description: Maine reduces the dependent exemption by this amount for every phaseout increment in AGI above phaseout start.
+description: Maine reduces the dependent exemption credit by an amount for each of these increments of Maine adjusted gross income exceeding the threshold.
 metadata:
-  type: single_amount
-  unit: currency-USD
+  label: Maine dependent exemption phaseout increment
   period: year
-  label: Maine dependent exemption phaseout amount per phaseout increment
+  unit: currency-USD
   reference:
-    - title: Form 1040ME Schedule A (2023) Line 7
-      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/23_1040me_sched_a_ff.pdf#page=2  
+    - title: Form 1040ME Schedule A (2023)
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/23_1040me_sched_a_ff.pdf#page=2
     - title: Instructions for Form 1040ME (2022)
       href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/22_1040me_sched_a_ff.pdf#page=2
     - title: §5219-SS. Dependent exemption tax credit (4)
@@ -20,4 +19,4 @@ metadata:
     - title: Form 1040ME Schedule A (2018)
       href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/18_1040me_a_d.pdf#page=2
 values:
-  2018-01-01: 7.50
+  2018-01-01: 1_000
