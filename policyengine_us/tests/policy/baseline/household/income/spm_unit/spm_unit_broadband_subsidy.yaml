@@ -14,3 +14,13 @@
     ebb: 3
   output:
     spm_unit_broadband_subsidy: 6
+
+- name: Households with reported broadband subsidies have zero starting in 2025.
+  period: 2025
+  input:
+    gov.simulation.reported_broadband_subsidy: false
+    lifeline: 1
+    acp: 2
+    ebb: 4
+  output:
+    spm_unit_broadband_subsidy: 7
