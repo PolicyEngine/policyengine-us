@@ -114,8 +114,8 @@ def create_structural_reforms_from_parameters(parameters, period):
     family_security_act_2024_ctc = create_family_security_act_2024_ctc_reform(
         parameters, period
     )
-    family_security_act_2024_eitc = create_family_security_act_2024_eitc_reform(
-        parameters, period
+    family_security_act_2024_eitc = (
+        create_family_security_act_2024_eitc_reform(parameters, period)
     )
     repeal_dependent_exemptions = create_repeal_dependent_exemptions_reform(
         parameters, period
