@@ -10,9 +10,7 @@ class mt_withheld_income_tax(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        employment_income = add(
-            person, period, ["irs_employment_income", "self_employment_income"]
-        )
+        agi = person("adjusted_gross_income_person", period)
         p = parameters(period).gov.states.mt.tax.income
         # We apply the maximum standard deduction amount
         standard_deduction = p.deductions.standard.cap["SINGLE"]

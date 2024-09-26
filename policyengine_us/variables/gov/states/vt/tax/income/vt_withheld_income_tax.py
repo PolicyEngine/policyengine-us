@@ -10,9 +10,7 @@ class vt_withheld_income_tax(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        employment_income = add(
-            person, period, ["irs_employment_income", "self_employment_income"]
-        )
+        agi = person("adjusted_gross_income_person", period)
         p = parameters(period).gov.states.vt.tax.income
         # We apply the base standard deduction amount
         personal_exmptions = p.deductions.standard.base["SINGLE"]

@@ -10,9 +10,7 @@ class hi_withheld_income_tax(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        employment_income = add(
-            person, period, ["irs_employment_income", "self_employment_income"]
-        )
+        agi = person("adjusted_gross_income_person", period)
         p = parameters(period).gov.states.hi.tax.income
         # We apply the base standard deduction amount
         standard_deduction = p.deductions.standard.amount["SINGLE"]

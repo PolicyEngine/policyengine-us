@@ -10,9 +10,7 @@ class wv_withheld_income_tax(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        employment_income = add(
-            person, period, ["irs_employment_income", "self_employment_income"]
-        )
+        agi = person("adjusted_gross_income_person", period)
         p = parameters(period).gov.states.wv.tax.income
         # Since West Virginia does not have a standard deduction, we apply the maximum
         # personal exemption amount
