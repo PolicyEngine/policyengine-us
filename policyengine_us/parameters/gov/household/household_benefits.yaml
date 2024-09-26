@@ -14,6 +14,10 @@ values:
     - unemployment_compensation
     - head_start
     - early_head_start
+    # One-time energy relief payments.
+    # Paid at the same time as the Alaska Permanent Fund Dividend,
+    # which is part of IRS gross income.
+    - ak_energy_relief
     # Contributed.
     - basic_income
     - spm_unit_capped_housing_subsidy

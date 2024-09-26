@@ -21,6 +21,8 @@ values:
     - illicit_income
     - taxable_retirement_distributions
     - miscellaneous_income
+    # Listed separately on 1040 line 8g.
+    - ak_permanent_fund_dividend
 metadata:
   unit: currency-USD
   label: Gross income sources
