@@ -7,7 +7,7 @@ class nc_military_retirement_deduction_eligible(Variable):
     label = "North Carolina military retirement deduction eligible"
     definition_period = YEAR
     defined_for = StateCode.NC
-    references = (
+    reference = (
         "https://www.ncdor.gov/2022-d-401-individual-income-tax-instructions/open#page=18",
         "https://law.justia.com/codes/north-carolina/chapter-105/article-4/section-105-153-5/",
     )
@@ -16,7 +16,9 @@ class nc_military_retirement_deduction_eligible(Variable):
         p = parameters(
             period
         ).gov.states.nc.tax.income.deductions.military_retirement
-        is_medically_retired = person("is_permanently_disabled_veteran", period)
+        is_medically_retired = person(
+            "is_permanently_disabled_veteran", period
+        )
         served_minimum_years = (
             person("years_in_military", period) >= p.minimum_years
         )

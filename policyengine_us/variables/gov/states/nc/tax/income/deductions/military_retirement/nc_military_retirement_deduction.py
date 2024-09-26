@@ -8,7 +8,7 @@ class nc_military_retirement_deduction(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = "nc_military_retirement_deduction_eligible"
-    references = (
+    reference = (
         "https://www.ncdor.gov/2022-d-401-individual-income-tax-instructions/open#page=18",
         "https://law.justia.com/codes/north-carolina/chapter-105/article-4/section-105-153-5/",
     )
