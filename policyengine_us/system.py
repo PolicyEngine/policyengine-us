@@ -99,7 +99,7 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
 
         self.add_variables(*create_50_state_variables())
 
-    def parse_structural_variables_from_dir(self, dir_path):
+    def parse_structural_variables_from_dir(self, dir_path: str | Path) -> list[Dict[str, Any]]:
         py_files = glob.glob(os.path.join(dir_path, "*.py"))
 
         parsed_vars = []
@@ -115,7 +115,7 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
         
         return parsed_vars
 
-    def parse_structural_variables_from_file(self, file_path):
+    def parse_structural_variables_from_file(self, file_path: str | Path) -> list[Dict[str, Any]]:
 
         def extract_attributes(class_def):
             """
@@ -161,25 +161,14 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
                                   # Try to evaluate the variable
                                   obj = eval(node.value.id)
 
-                                  # Check if the object is itself technically a string
-                                  # definition_period, non-str unit
-                                  if type(obj) == str:
-                                      attributes[target.id] = obj
-
-                                  # Otherwise, if it's a class instance with a __name__
-                                  # value_type
-                                  elif hasattr(obj, '__name__'):
-                                      attributes[target.id] = obj.__name__
-
-                                  # Otherwise, if it's a class instance with a key attribute
-                                  # entity
-                                  elif hasattr(obj, 'key'):
+                                  # Check if we have a class instance with a key attribute (entity)
+                                  if hasattr(obj, 'key'):
                                       attributes[target.id] = obj.key
 
-                                  # Otherwise, just return the class's name
-                                  # Last resort
+                                  # Otherwise, just return either the class (value_type) or the string
+                                  # (label, defined_for, definition_period, unit)
                                   else:
-                                      attributes[target.id] = obj.__class__.__name__
+                                      attributes[target.id] = obj
                               except NameError as e:
                                   # If the name isn't in the current namespace, set None
                                   print(f"NameError while parsing structural variable {target.id}'s {node.value.id} attribute:")
