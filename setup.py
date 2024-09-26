@@ -34,7 +34,7 @@ setup(
         ),
     ],
     install_requires=[
-        "policyengine-core>=3.6.5",
+        "policyengine-core>=3.8.0",
         "policyengine-us-data==1.6.0",
         "microdf-python",
         "tqdm",
