@@ -44,7 +44,7 @@ def create_family_security_act_2_0_ctc() -> Reform:
         def formula(tax_unit, period, parameters):
             p = parameters(
                 period
-            ).gov.contrib.congress.romney.family_security_act_3_0.pregnant_mothers_credit
+            ).gov.contrib.congress.romney.family_security_act_2024.pregnant_mothers_credit
             age = tax_unit.members("age", period)
             phase_in_rate = tax_unit(
                 "pregnant_mothers_credit_phase_in_rate", period
@@ -66,7 +66,7 @@ def create_family_security_act_2_0_ctc() -> Reform:
             income = tax_unit("adjusted_gross_income", period)
             p = parameters(
                 period
-            ).gov.contrib.congress.romney.family_security_act_3_0.pregnant_mothers_credit
+            ).gov.contrib.congress.romney.family_security_act_2024.pregnant_mothers_credit
             return min_(income / p.income_phase_in_end, 1)
 
     class ctc_child_individual_maximum(Variable):
