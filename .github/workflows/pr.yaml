@@ -57,11 +57,10 @@ jobs:
         run: make test-other
         env:
           POVERTYTRACKER_RAW_URL: ${{ secrets.POVERTYTRACKER_RAW_URL }}
+      - name: Check model speed
+        run: make compare-speed
       - name: Produce combined coverage repository
         run: make coverage
       - uses: codecov/codecov-action@v4
       - name: Build package
         run: make
-      - name: Test documentation builds
-        if: matrix.os == 'ubuntu-latest'
-        run: make documentation

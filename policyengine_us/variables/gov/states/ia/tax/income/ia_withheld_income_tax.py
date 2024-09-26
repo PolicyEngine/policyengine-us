@@ -15,7 +15,11 @@ class ia_withheld_income_tax(Variable):
         )
         p = parameters(period).gov.states.ia.tax.income
         # We apply the base standard deduction amount
-        standard_deduction = p.deductions.standard["SINGLE"]
+        if p.deductions.standard.applies_federal:
+            p_fed = parameters(period).gov.irs.deductions
+            standard_deduction = p_fed.standard.amount["SINGLE"]
+        else:
+            standard_deduction = p.deductions.standard.amount["SINGLE"]
         reduced_employment_income = max_(
             employment_income - standard_deduction, 0
         )
