@@ -14,7 +14,5 @@ class vt_withheld_income_tax(Variable):
         p = parameters(period).gov.states.vt.tax.income
         # We apply the base standard deduction amount
         personal_exmptions = p.deductions.standard.base["SINGLE"]
-        reduced_employment_income = max_(
-            employment_income - personal_exmptions, 0
-        )
-        return p.rates.single.calc(reduced_employment_income)
+        reduced_agi = max_(agi - personal_exmptions, 0)
+        return p.rates.single.calc(reduced_agi)

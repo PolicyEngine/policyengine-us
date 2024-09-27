@@ -13,9 +13,7 @@ class co_withheld_income_tax(Variable):
         agi = person("adjusted_gross_income_person", period)
         # Colorado adopts federal taxable income, so use federal standard deduction.
         p_irs = parameters(period).gov.irs.deductions.standard
-        standard__deduction = p_irs.amount["SINGLE"]
-        reduced_employment_income = max_(
-            employment_income - standard__deduction, 0
-        )
+        standard_deduction = p_irs.amount["SINGLE"]
+        reduced_agi = max_(agi - standard_deduction, 0)
         p = parameters(period).gov.states.co.tax.income
-        return p.rate * reduced_employment_income
+        return p.rate * reduced_agi

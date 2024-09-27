@@ -15,7 +15,5 @@ class ma_withheld_income_tax(Variable):
         # Since Massachusetts does not have a standard deduction, we apply the
         # base personal exemption amount
         personal_exemption = p.exemptions.personal["SINGLE"]
-        reduced_employment_income = max_(
-            employment_income - personal_exemption, 0
-        )
-        return p.rates.part_b * reduced_employment_income
+        reduced_agi = max_(agi - personal_exemption, 0)
+        return p.rates.part_b * reduced_agi

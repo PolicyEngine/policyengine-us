@@ -14,4 +14,4 @@ class mi_withheld_income_tax(Variable):
         p = parameters(period).gov.states.mi.tax.income
         # The MI standard deduction only applys for elderly
         # Wo do not apply deductions here
-        return p.rate * employment_income
+        return p.rate * agi

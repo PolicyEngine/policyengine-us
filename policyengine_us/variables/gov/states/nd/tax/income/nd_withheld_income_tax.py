@@ -14,8 +14,6 @@ class nd_withheld_income_tax(Variable):
         p_irs = parameters(period).gov.irs.deductions.standard
         # We apply the base IRS standard deduction amount
         standard_deduction = p_irs.amount["SINGLE"]
-        reduced_employment_income = max_(
-            employment_income - standard_deduction, 0
-        )
+        reduced_agi = max_(agi - standard_deduction, 0)
         p = parameters(period).gov.states.nd.tax.income
-        return p.rates.single.calc(reduced_employment_income)
+        return p.rates.single.calc(reduced_agi)

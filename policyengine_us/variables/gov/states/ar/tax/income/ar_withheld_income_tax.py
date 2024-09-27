@@ -14,8 +14,6 @@ class ar_withheld_income_tax(Variable):
         p = parameters(period).gov.states.ar.tax.income
         # We apply the base standard deduction amount
         standard_deduction = p.deductions.standard["SINGLE"]
-        reduced_employment_income = max_(
-            employment_income - standard_deduction, 0
-        )
-        rate = p.rates.main.rate.calc(reduced_employment_income)
-        return rate * reduced_employment_income
+        reduced_agi = max_(agi - standard_deduction, 0)
+        rate = p.rates.main.rate.calc(reduced_agi)
+        return rate * reduced_agi

@@ -14,8 +14,6 @@ class ut_withheld_income_tax(Variable):
         p_irs = parameters(period).gov.irs.deductions.standard
         # We apply the maximum standard deduction amount
         standard_deduction = p_irs.amount["SINGLE"]
-        reduced_employment_income = max_(
-            employment_income - standard_deduction, 0
-        )
+        reduced_agi = max_(agi - standard_deduction, 0)
         p = parameters(period).gov.states.ut.tax.income
-        return p.rate * reduced_employment_income
+        return p.rate * reduced_agi

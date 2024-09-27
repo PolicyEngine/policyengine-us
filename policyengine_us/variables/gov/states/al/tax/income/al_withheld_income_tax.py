@@ -13,8 +13,6 @@ class al_withheld_income_tax(Variable):
         agi = person("adjusted_gross_income_person", period)
         # Assigning the maximum standard deduction amount
         p = parameters(period).gov.states.al.tax.income
-        standard__deduction = p.deductions.standard.amount.max["SINGLE"]
-        reduced_employment_income = max_(
-            employment_income - standard__deduction, 0
-        )
-        return p.rates.single.calc(reduced_employment_income)
+        standard_deduction = p.deductions.standard.amount.max["SINGLE"]
+        reduced_agi = max_(agi - standard_deduction, 0)
+        return p.rates.single.calc(reduced_agi)

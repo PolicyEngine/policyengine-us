@@ -14,4 +14,4 @@ class pa_withheld_income_tax(Variable):
         # Pennsylvania does not have standard deductions, personal exemptions, or itemized deductions.
         # Also, They do not use the federal standard deduction amounts.
         p = parameters(period).gov.states.pa.tax.income
-        return employment_income * p.rate
+        return agi * p.rate

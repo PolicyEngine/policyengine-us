@@ -15,7 +15,5 @@ class il_withheld_income_tax(Variable):
         # Since Illinois does not have a standard deduction
         # we apply the personal exemption amount
         personal_exemptions = p.exemption.personal
-        reduced_employment_income = max_(
-            employment_income - personal_exemptions, 0
-        )
-        return p.rate * reduced_employment_income
+        reduced_agi = max_(agi - personal_exemptions, 0)
+        return p.rate * reduced_agi
