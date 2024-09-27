@@ -1,0 +1,245 @@
+- name: AGI over phase_in amount for pregnancy credit but not CTC
+  period: 2026
+  reforms: policyengine_us.reforms.congress.romney.family_security_act_2024.ctc.family_security_act_2024_ctc.family_security_act_2024_ctc
+  input:
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.apply_ctc_structure: true
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.phase_in.income_phase_in_end: 20_000
+    gov.contrib.congress.romney.family_security_act_2024.pregnant_mothers_credit.income_phase_in_end: 10_000
+    gov.contrib.congress.romney.family_security_act_2024.pregnant_mothers_credit.amount[0].amount: 2_800
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.base[0].amount: 4_200
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.base[1].amount: 3_000
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.child_cap: 6
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        adjusted_gross_income: 11_000
+        ctc_maximum_with_arpa_addition: 1_000
+        ctc_phase_out: 0
+        filing_status: JOINT
+  output:
+    ctc_phase_in_rate: 0.55
+    ctc: 550
+    pregnant_mothers_credit: 2_800
+    pregnant_mothers_credit_phase_in_rate: 1
+
+- name: AGI over phase_in amount for pregnancy credit but not CTC, with reduction
+  period: 2026
+  reforms: policyengine_us.reforms.congress.romney.family_security_act_2024.ctc.family_security_act_2024_ctc.family_security_act_2024_ctc
+  input:
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.apply_ctc_structure: true
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.phase_in.income_phase_in_end: 20_000
+    gov.contrib.congress.romney.family_security_act_2024.pregnant_mothers_credit.income_phase_in_end: 10_000
+    gov.contrib.congress.romney.family_security_act_2024.pregnant_mothers_credit.amount[0].amount: 2_800
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.base[0].amount: 4_200
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.base[1].amount: 3_000
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.child_cap: 6
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        adjusted_gross_income: 18_000
+        ctc_maximum_with_arpa_addition: 1_000
+        ctc_phase_out: 200
+        filing_status: JOINT
+  output:
+    ctc_phase_in_rate: 0.9
+    ctc: 700
+    pregnant_mothers_credit: 2_600
+    pregnant_mothers_credit_phase_in_rate: 1
+
+- name: AGI over phase_in amount and single EITC filers 
+  period: 2022
+  reforms: policyengine_us.reforms.congress.romney.family_security_act_2024.ctc.family_security_act_2024_ctc.family_security_act_2024_ctc
+  input:
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.apply_ctc_structure: true
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.phase_in.income_phase_in_end: 20_000
+    gov.contrib.congress.romney.family_security_act_2024.pregnant_mothers_credit.income_phase_in_end: 10_000
+    gov.contrib.congress.romney.family_security_act_2024.pregnant_mothers_credit.amount[0].amount: 2_800
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.base[0].amount: 4_200
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.base[1].amount: 3_000
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.child_cap: 6
+    adjusted_gross_income: 22_000
+    ctc_maximum_with_arpa_addition: 1_000
+    ctc_phase_out: 100
+    filing_status: SINGLE
+  output:
+    ctc_phase_in_rate: 1
+    ctc: 900
+
+- name: AGI below phase_in amount and single EITC filers 
+  period: 2022
+  reforms: policyengine_us.reforms.congress.romney.family_security_act_2024.ctc.family_security_act_2024_ctc.family_security_act_2024_ctc
+  input:
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.apply_ctc_structure: true
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.phase_in.income_phase_in_end: 20_000
+    gov.contrib.congress.romney.family_security_act_2024.pregnant_mothers_credit.income_phase_in_end: 10_000
+    gov.contrib.congress.romney.family_security_act_2024.pregnant_mothers_credit.amount[0].amount: 2_800
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.base[0].amount: 4_200
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.base[1].amount: 3_000
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.child_cap: 6
+    adjusted_gross_income: 10_000
+    ctc_maximum_with_arpa_addition: 1_000
+    ctc_phase_out: 0
+    filing_status: SEPARATE
+  output:
+    ctc_phase_in_rate: 0.5
+    ctc: 500
+
+- name: No AGI
+  period: 2022
+  reforms: policyengine_us.reforms.congress.romney.family_security_act_2024.ctc.family_security_act_2024_ctc.family_security_act_2024_ctc
+  input:
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.apply_ctc_structure: true
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.phase_in.income_phase_in_end: 20_000
+    gov.contrib.congress.romney.family_security_act_2024.pregnant_mothers_credit.income_phase_in_end: 10_000
+    gov.contrib.congress.romney.family_security_act_2024.pregnant_mothers_credit.amount[0].amount: 2_800
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.base[0].amount: 4_200
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.base[1].amount: 3_000
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.child_cap: 6
+    adjusted_gross_income: 0
+    ctc_maximum_with_arpa_addition: 1_000
+    ctc_phase_out: 0
+    filing_status: SURVIVING_SPOUSE
+  output:
+    ctc_phase_in_rate: 0
+    ctc: 0
+
+
+- name: Capped qualifying children for the CTC
+  period: 2022
+  reforms: policyengine_us.reforms.congress.romney.family_security_act_2024.ctc.family_security_act_2024_ctc.family_security_act_2024_ctc
+  input:
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.apply_ctc_structure: true
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.phase_in.income_phase_in_end: 20_000
+    gov.contrib.congress.romney.family_security_act_2024.pregnant_mothers_credit.income_phase_in_end: 10_000
+    gov.contrib.congress.romney.family_security_act_2024.pregnant_mothers_credit.amount[0].amount: 2_800
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.base[0].amount: 4_200
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.base[1].amount: 3_000
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.child_cap: 6
+    people:
+      person1:
+        ctc_qualifying_child: true
+      person2:
+        ctc_qualifying_child: true
+      person3:
+        ctc_qualifying_child: true
+      person4:
+        ctc_qualifying_child: true
+      person5:
+        ctc_qualifying_child: true
+      person6:
+        ctc_qualifying_child: true
+      person7: 
+        ctc_qualifying_child: true
+  output:
+    ctc_qualifying_children: 6
+
+- name: Higher new child amount, based on age
+  period: 2022
+  reforms: policyengine_us.reforms.congress.romney.family_security_act_2024.ctc.family_security_act_2024_ctc.family_security_act_2024_ctc
+  input:
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.apply_ctc_structure: true
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.phase_in.income_phase_in_end: 20_000
+    gov.contrib.congress.romney.family_security_act_2024.pregnant_mothers_credit.income_phase_in_end: 10_000
+    gov.contrib.congress.romney.family_security_act_2024.pregnant_mothers_credit.amount[0].amount: 2_800
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.base[0].amount: 4_200
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.base[1].amount: 3_000
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.child_cap: 6
+    people:
+      person1:
+        age: 5
+      person2:
+        age: 6
+      person3:
+        age: 18
+  output:
+    ctc_child_individual_maximum: [4_200, 3_000, 0]
+
+- name: Higher new child amount, based on age, with baby bonus - but no AGI
+  period: 2022
+  reforms: policyengine_us.reforms.congress.romney.family_security_act_2024.ctc.family_security_act_2024_ctc.family_security_act_2024_ctc
+  input:
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.apply_ctc_structure: true
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.phase_in.income_phase_in_end: 20_000
+    gov.contrib.congress.romney.family_security_act_2024.pregnant_mothers_credit.income_phase_in_end: 10_000
+    gov.contrib.congress.romney.family_security_act_2024.pregnant_mothers_credit.amount[0].amount: 2_800
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.base[0].amount: 4_200
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.base[1].amount: 3_000
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.child_cap: 6
+    people:
+      person1:
+        age: 0
+      person2:
+        age: 6
+      person3:
+        age: 18
+    tax_units:
+      tax_unit: 
+        members: [person1, person2, person3]
+        adjusted_gross_income: 0
+
+  output:
+    ctc_child_individual_maximum: [4_200, 3_000, 0]
+    pregnant_mothers_credit: 0
+
+- name: Higher new child amount, based on age, with baby bonus, phases out with income
+  period: 2022
+  reforms: policyengine_us.reforms.congress.romney.family_security_act_2024.ctc.family_security_act_2024_ctc.family_security_act_2024_ctc
+  input:
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.apply_ctc_structure: true
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.phase_in.income_phase_in_end: 20_000
+    gov.contrib.congress.romney.family_security_act_2024.pregnant_mothers_credit.income_phase_in_end: 10_000
+    gov.contrib.congress.romney.family_security_act_2024.pregnant_mothers_credit.amount[0].amount: 2_800
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.base[0].amount: 4_200
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.base[1].amount: 3_000
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.child_cap: 6
+    people:
+      person1:
+        age: 0
+      person2:
+        age: 6
+      person3:
+        age: 18
+    tax_units:
+      tax_unit:
+        adjusted_gross_income: 21_000
+        members: [person1, person2, person3]
+  output:
+    ctc_child_individual_maximum: [4_200, 3_000, 0]
+    pregnant_mothers_credit: 2_800
+
+- name: Check net income tree inclusion
+  period: 2022
+  reforms: policyengine_us.reforms.congress.romney.family_security_act_2024.ctc.family_security_act_2024_ctc.family_security_act_2024_ctc
+  input:
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.apply_ctc_structure: true
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.phase_in.income_phase_in_end: 20_000
+    gov.contrib.congress.romney.family_security_act_2024.pregnant_mothers_credit.income_phase_in_end: 10_000
+    gov.contrib.congress.romney.family_security_act_2024.pregnant_mothers_credit.amount[0].amount: 2_800
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.base[0].amount: 4_200
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.base[1].amount: 3_000
+    gov.contrib.congress.romney.family_security_act_2_0.ctc.child_cap: 6
+    people:
+      person1:
+        age: 0
+      person2:
+        age: 6
+      person3:
+        age: 18
+    tax_units:
+      tax_unit:
+        adjusted_gross_income: 21_000
+        members: [person1, person2, person3]
+        ctc: 0
+  output:
+    pregnant_mothers_credit: 2_800
+    income_tax_refundable_credits: 2_800
