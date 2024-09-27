@@ -3,7 +3,7 @@
   input:
     count_distinct_utility_expenses: 10
     snap_utility_region_str: CO
-    snap_always_standard_utility_allowance: false
+    snap_state_using_standard_utility_allowance: false
     has_heating_cooling_expense: true
   output:
     snap_utility_allowance_type: SUA
@@ -13,7 +13,7 @@
   input:
     count_distinct_utility_expenses: 2
     snap_utility_region_str: CO
-    snap_always_standard_utility_allowance: false
+    snap_state_using_standard_utility_allowance: false
     has_heating_cooling_expense: false
   output:
     snap_utility_allowance_type: LUA
@@ -23,7 +23,7 @@
   input:
     count_distinct_utility_expenses: 1
     snap_utility_region_str: CO
-    snap_always_standard_utility_allowance: false
+    snap_state_using_standard_utility_allowance: false
     has_heating_cooling_expense: false
   output:
     snap_utility_allowance_type: IUA
@@ -33,7 +33,7 @@
   input:
     count_distinct_utility_expenses: 0
     snap_utility_region_str: CO
-    snap_always_standard_utility_allowance: false
+    snap_state_using_standard_utility_allowance: false
     has_heating_cooling_expense: false
   output:
     snap_utility_allowance_type: NONE
@@ -43,7 +43,7 @@
   input:
     count_distinct_utility_expenses: 0
     snap_utility_region_str: CO
-    snap_always_standard_utility_allowance: true
+    snap_state_using_standard_utility_allowance: true
     has_heating_cooling_expense: false
   output:
     snap_utility_allowance_type: SUA

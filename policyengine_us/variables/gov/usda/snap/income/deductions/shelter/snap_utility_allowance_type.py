@@ -27,7 +27,9 @@ class snap_utility_allowance_type(Variable):
             period
         ).gov.usda.snap.income.deductions.utility.limited
         region = spm_unit.household("snap_utility_region_str", period)
-        always_sua = spm_unit("snap_always_standard_utility_allowance", period)
+        always_sua = spm_unit(
+            "snap_state_using_standard_utility_allowance", period
+        )
         has_heating_cooling = spm_unit("has_heating_cooling_expense", period)
         lua_is_defined = lua.active[region].astype(bool)
         return select(
