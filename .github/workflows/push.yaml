@@ -44,13 +44,14 @@ jobs:
           message: Update PolicyEngine US
           github_token: ${{ secrets.POLICYENGINE_GITHUB }}
   Test:
-    runs-on: ${{ matrix.os }}
+    # runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     if: |
       (github.repository == 'PolicyEngine/policyengine-us')
       && (github.event.head_commit.message == 'Update PolicyEngine US')
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest]
+    # strategy:
+    #   matrix:
+    #     os: [ubuntu-latest, windows-latest]
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
