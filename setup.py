@@ -7,7 +7,7 @@ with open("README.md", "r") as readme_file:
 
 setup(
     name="policyengine-us",
-    version="1.93.0",
+    version="1.95.0",
     author="PolicyEngine",
     author_email="hello@policyengine.org",
     long_description=readme,
@@ -44,6 +44,7 @@ setup(
             "setuptools",
             "jupyter-book",
             "furo",
+            "coverage",
         ],
     },
     python_requires=">=3.10,<3.13",
