@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.96.0] - 2024-09-27 19:42:19
+
+### Added
+
+- Alaska Permanent Fund Dividend and One-time Energy Relief Payments.
+
 ## [1.95.0] - 2024-09-27 19:10:57
 
 ### Added
@@ -9809,6 +9815,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.96.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.95.0...1.96.0
 [1.95.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.94.0...1.95.0
 [1.94.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.93.0...1.94.0
 [1.93.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.92.1...1.93.0
