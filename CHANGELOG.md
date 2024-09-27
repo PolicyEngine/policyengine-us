@@ -5,6 +5,75 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.95.0] - 2024-09-27 19:10:57
+
+### Added
+
+- 2024 CalFresh (SNAP) standard medical deduction amount increase.
+
+## [1.94.0] - 2024-09-27 19:02:03
+
+### Added
+
+- Use adjusted gross income in withheld state income tax.
+- Separate takes_up_snap_if_eligible variable from snap variable.
+
+## [1.93.0] - 2024-09-25 17:55:53
+
+### Added
+
+- Add post TCJA income tax rates.
+
+## [1.92.1] - 2024-09-25 11:53:57
+
+### Changed
+
+- US data version to 1.6.0.
+
+## [1.92.0] - 2024-09-25 00:47:29
+
+### Changed
+
+- Made Maine dependent exemption credit refundable in 2024.
+
+## [1.91.0] - 2024-09-23 22:24:38
+
+### Added
+
+- Include 17 year olds in the NYWFTC as younger children.
+
+## [1.90.0] - 2024-09-23 19:44:39
+
+### Added
+
+- Remove total_income and net_income.
+
+## [1.89.0] - 2024-09-23 13:43:10
+
+### Changed
+
+- PE-US-Data bumped to 1.5.1.
+
+## [1.88.0] - 2024-09-23 09:43:51
+
+### Added
+
+- Tenure type.
+- Uprating for rent and property taxes.
+- Household reference person flag.
+
+## [1.87.0] - 2024-09-21 01:56:21
+
+### Added
+
+- New Mexico armed forces retirement pay exemption.
+
+## [1.86.0] - 2024-09-21 01:08:08
+
+### Added
+
+- Wisconsin 2024 CDCC match value.
+
 ## [1.85.4] - 2024-09-20 15:00:03
 
 ### Added
@@ -9740,6 +9809,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.95.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.94.0...1.95.0
+[1.94.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.93.0...1.94.0
+[1.93.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.92.1...1.93.0
+[1.92.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.92.0...1.92.1
+[1.92.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.91.0...1.92.0
+[1.91.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.90.0...1.91.0
+[1.90.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.89.0...1.90.0
+[1.89.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.88.0...1.89.0
+[1.88.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.87.0...1.88.0
+[1.87.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.86.0...1.87.0
+[1.86.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.85.4...1.86.0
 [1.85.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.85.3...1.85.4
 [1.85.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.85.2...1.85.3
 [1.85.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.85.1...1.85.2
