@@ -15,9 +15,7 @@ class snap(Variable):
     ]
 
     def formula(spm_unit, period, parameters):
-        takes_up = (
-            random(spm_unit) < parameters(period).gov.usda.snap.takeup_rate
-        )
+        takes_up = spm_unit("takes_up_snap_if_eligible", period)
         is_in_microsim = hasattr(spm_unit.simulation, "dataset")
         if parameters(period).gov.usda.snap.abolish_snap:
             return 0
