@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ok_pension_subtraction(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Oklahoma AGI subtractions from federal AGI"
+    label = "Oklahoma pension subtraction"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -16,5 +16,4 @@ class ok_pension_subtraction(Variable):
     def formula(tax_unit, period, parameters):
         pensions = tax_unit.members("taxable_pension_income", period)
         p = parameters(period).gov.states.ok.tax.income.agi.subtractions
-        capped_pension = tax_unit.sum(min_(p.pension_limit, pensions))
-        return capped_pension
+        return tax_unit.sum(min_(p.pension_limit, pensions))
