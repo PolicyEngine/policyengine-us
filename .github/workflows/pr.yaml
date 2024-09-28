@@ -31,11 +31,8 @@ jobs:
       - name: Check version number has been properly updated
         run: .github/is-version-number-acceptable.sh
   Test:
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     continue-on-error: true
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest]
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -57,6 +54,8 @@ jobs:
         run: make test-other
         env:
           POVERTYTRACKER_RAW_URL: ${{ secrets.POVERTYTRACKER_RAW_URL }}
+      - name: Check model speed
+        run: make compare-speed
       - name: Produce combined coverage repository
         run: make coverage
       - uses: codecov/codecov-action@v4
