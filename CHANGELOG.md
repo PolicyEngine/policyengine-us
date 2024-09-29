@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.103.0] - 2024-09-29 23:26:45
+
+### Added
+
+- Oklahoma military retirement benefit exclusion.
+- Oklahoma AGI subtractions list.
+
 ## [1.102.0] - 2024-09-29 22:51:45
 
 ### Changed
@@ -9868,6 +9875,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.103.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.102.0...1.103.0
 [1.102.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.101.0...1.102.0
 [1.101.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.100.0...1.101.0
 [1.100.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.99.1...1.100.0
