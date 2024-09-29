@@ -8348,3 +8348,22 @@
     fixed:
     - NYC tax credit parameter formatting.
   date: 2024-09-28 02:35:09
+- bump: minor
+  changes:
+    added:
+    - Child Tax Credit phase-in variable.
+    fixed:
+    - Child Tax Credit value variable.
+    - Pinned policyengine-core version.
+  date: 2024-09-29 04:49:39
+- bump: minor
+  changes:
+    changed:
+    - PolicyEngine-US-Data bumped to 1.8
+  date: 2024-09-29 22:51:45
+- bump: minor
+  changes:
+    added:
+    - Oklahoma military retirement benefit exclusion.
+    - Oklahoma AGI subtractions list.
+  date: 2024-09-29 23:26:45
