@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.101.0] - 2024-09-29 04:49:39
+
+### Added
+
+- Child Tax Credit phase-in variable.
+
+### Fixed
+
+- Child Tax Credit value variable.
+- Pinned policyengine-core version.
+
 ## [1.100.0] - 2024-09-28 02:35:09
 
 ### Added
@@ -9851,6 +9862,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.101.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.100.0...1.101.0
 [1.100.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.99.1...1.100.0
 [1.99.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.99.0...1.99.1
 [1.99.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.98.0...1.99.0
