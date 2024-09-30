@@ -5,6 +5,85 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.103.0] - 2024-09-29 23:26:45
+
+### Added
+
+- Oklahoma military retirement benefit exclusion.
+- Oklahoma AGI subtractions list.
+
+## [1.102.0] - 2024-09-29 22:51:45
+
+### Changed
+
+- PolicyEngine-US-Data bumped to 1.8
+
+## [1.101.0] - 2024-09-29 04:49:39
+
+### Added
+
+- Child Tax Credit phase-in variable.
+
+### Fixed
+
+- Child Tax Credit value variable.
+- Pinned policyengine-core version.
+
+## [1.100.0] - 2024-09-28 02:35:09
+
+### Added
+
+- North Carolina rate changes for 2024 on.
+- 2024 Rhode Island EITC match.
+
+### Fixed
+
+- NYC tax credit parameter formatting.
+
+## [1.99.1] - 2024-09-27 20:22:56
+
+### Fixed
+
+- Update the Hawaii SNAP net income test application.
+
+## [1.99.0] - 2024-09-27 20:12:23
+
+### Fixed
+
+- Remove lifeline variable from spm_unit_broadband_subsidy.
+- Modified tests for spm_unit_broadband_subsidy.
+
+## [1.98.0] - 2024-09-27 20:05:18
+
+### Added
+
+- 2024 Kentucky income tax rate reduction.
+
+## [1.97.0] - 2024-09-27 19:50:33
+
+### Added
+
+- New Family Security Act version.
+
+## [1.96.0] - 2024-09-27 19:42:19
+
+### Added
+
+- Alaska Permanent Fund Dividend and One-time Energy Relief Payments.
+
+## [1.95.0] - 2024-09-27 19:10:57
+
+### Added
+
+- 2024 CalFresh (SNAP) standard medical deduction amount increase.
+
+## [1.94.0] - 2024-09-27 19:02:03
+
+### Added
+
+- Use adjusted gross income in withheld state income tax.
+- Separate takes_up_snap_if_eligible variable from snap variable.
+
 ## [1.93.0] - 2024-09-25 17:55:53
 
 ### Added
@@ -9796,6 +9875,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.103.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.102.0...1.103.0
+[1.102.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.101.0...1.102.0
+[1.101.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.100.0...1.101.0
+[1.100.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.99.1...1.100.0
+[1.99.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.99.0...1.99.1
+[1.99.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.98.0...1.99.0
+[1.98.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.97.0...1.98.0
+[1.97.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.96.0...1.97.0
+[1.96.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.95.0...1.96.0
+[1.95.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.94.0...1.95.0
+[1.94.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.93.0...1.94.0
 [1.93.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.92.1...1.93.0
 [1.92.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.92.0...1.92.1
 [1.92.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.91.0...1.92.0
