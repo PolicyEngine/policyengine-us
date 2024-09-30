@@ -2,7 +2,7 @@ from policyengine_us.model_api import *
 from policyengine_core.periods import period as period_
 
 
-def create_family_security_act_2_0_eitc() -> Reform:
+def create_family_security_act_2024_eitc() -> Reform:
 
     class eitc_maximum(Variable):
         value_type = float
@@ -30,11 +30,11 @@ def create_family_security_act_2_0_eitc() -> Reform:
     return reform
 
 
-def create_family_security_act_2_0_eitc_reform(
+def create_family_security_act_2024_eitc_reform(
     parameters, period, bypass: bool = False
 ):
     if bypass:
-        return create_family_security_act_2_0_eitc()
+        return create_family_security_act_2024_eitc()
 
     # Look ahead for the next five years
     p = parameters.gov.contrib.congress.romney.family_security_act_2_0.eitc
@@ -48,11 +48,11 @@ def create_family_security_act_2_0_eitc_reform(
         current_period = current_period.offset(1, "year")
 
     if reform_active:
-        return create_family_security_act_2_0_eitc()
+        return create_family_security_act_2024_eitc()
     else:
         return None
 
 
-family_security_act_2_0_eitc = create_family_security_act_2_0_eitc_reform(
+family_security_act_2024_eitc = create_family_security_act_2024_eitc_reform(
     None, None, bypass=True
 )

@@ -2,7 +2,7 @@
   period: 2022
   absolute_error_margin: 0.01
   input:
-    irs_employment_income: 15_000
+    adjusted_gross_income_person: 15_000
     filing_status: JOINT
     state_code: DE
   output:
@@ -12,7 +12,7 @@
   period: 2022
   absolute_error_margin: 0.01
   input:
-    irs_employment_income: 15_000
+    adjusted_gross_income_person: 15_000
     filing_status: SURVIVING_SPOUSE
     state_code: DE
   output:
@@ -22,7 +22,7 @@
   period: 2022
   absolute_error_margin: 0.01
   input:
-    irs_employment_income: 5_000
+    adjusted_gross_income_person: 5_000
     filing_status: SURVIVING_SPOUSE
     state_code: DE
   output:

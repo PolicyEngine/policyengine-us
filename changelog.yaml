@@ -8301,3 +8301,69 @@
     added:
     - Add post TCJA income tax rates.
   date: 2024-09-25 17:55:53
+- bump: minor
+  changes:
+    added:
+    - Use adjusted gross income in withheld state income tax.
+    - Separate takes_up_snap_if_eligible variable from snap variable.
+    removed:
+    - Windows test runner.
+  date: 2024-09-27 19:02:03
+- bump: minor
+  changes:
+    added:
+    - 2024 CalFresh (SNAP) standard medical deduction amount increase.
+  date: 2024-09-27 19:10:57
+- bump: minor
+  changes:
+    added:
+    - Alaska Permanent Fund Dividend and One-time Energy Relief Payments.
+  date: 2024-09-27 19:42:19
+- bump: minor
+  changes:
+    added:
+    - New Family Security Act version.
+  date: 2024-09-27 19:50:33
+- bump: minor
+  changes:
+    added:
+    - 2024 Kentucky income tax rate reduction.
+  date: 2024-09-27 20:05:18
+- bump: minor
+  changes:
+    fixed:
+    - Remove lifeline variable from spm_unit_broadband_subsidy.
+    - Modified tests for spm_unit_broadband_subsidy.
+  date: 2024-09-27 20:12:23
+- bump: patch
+  changes:
+    fixed:
+    - Update the Hawaii SNAP net income test application.
+  date: 2024-09-27 20:22:56
+- bump: minor
+  changes:
+    added:
+    - North Carolina rate changes for 2024 on.
+    - 2024 Rhode Island EITC match.
+    fixed:
+    - NYC tax credit parameter formatting.
+  date: 2024-09-28 02:35:09
+- bump: minor
+  changes:
+    added:
+    - Child Tax Credit phase-in variable.
+    fixed:
+    - Child Tax Credit value variable.
+    - Pinned policyengine-core version.
+  date: 2024-09-29 04:49:39
+- bump: minor
+  changes:
+    changed:
+    - PolicyEngine-US-Data bumped to 1.8
+  date: 2024-09-29 22:51:45
+- bump: minor
+  changes:
+    added:
+    - Oklahoma military retirement benefit exclusion.
+    - Oklahoma AGI subtractions list.
+  date: 2024-09-29 23:26:45
