@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.105.0] - 2024-09-30 17:03:10
+
+### Added
+
+- North Carolina military retirement deduction.
+
 ## [1.104.0] - 2024-09-30 16:54:45
 
 ### Added
@@ -9881,6 +9887,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.105.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.104.0...1.105.0
 [1.104.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.103.0...1.104.0
 [1.103.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.102.0...1.103.0
 [1.102.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.101.0...1.102.0
