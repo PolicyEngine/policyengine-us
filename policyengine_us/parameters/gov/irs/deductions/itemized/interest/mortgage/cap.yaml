@@ -1,4 +1,4 @@
-description: IRS limits the total home mortgage interest deduction to this amount, based on filing status.
+description: IRS limits the total home mortgage value to this amount, based on filing status under the mortgage interest deduction.
 SINGLE:
   2017-01-01: 1_000_000
   2018-01-01: 750_000
@@ -23,7 +23,7 @@ metadata:
   breakdown: filing_status
   unit: currency-USD
   period: year
-  label: IRS home mortgage interest deduction amount cap
+  label: IRS home mortgage value cap
   reference:
     # Hawaii applies this AGI threshold in the state itemized deductions computation
     - title: Hawaii Income Tax Law, Chapter 235, Section 235-2.4, (j)(3)
