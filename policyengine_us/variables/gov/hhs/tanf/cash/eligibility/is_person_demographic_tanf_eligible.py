@@ -9,7 +9,10 @@ class is_person_demographic_tanf_eligible(Variable):
 
     def formula(person, period, parameters):
         child_0_17 = person("is_child", period)
-        is_18 = person("age", period) == 18
+        is_18 = (
+            person("age", period)
+            == parameters(period).gov.hhs.tanf.cash.eligibility.age
+        )
         full_time_student = person("is_full_time_student", period)
         school_enrolled_18_year_old = full_time_student & is_18
         pregnant = person("is_pregnant", period)
