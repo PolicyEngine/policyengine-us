@@ -1,6 +1,7 @@
 from policyengine_us.model_api import *
 from policyengine_core.periods import period as period_
 
+
 def create_end_child_poverty_act() -> Reform:
     class ecpa_adult_dependent_credit(Variable):
         value_type = float

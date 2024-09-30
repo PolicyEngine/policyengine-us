@@ -1,6 +1,7 @@
 from policyengine_us.model_api import *
 from policyengine_core.periods import period as period_
 
+
 def create_or_rebate_state_tax_exempt() -> Reform:
     class or_rebate_subtraction(Variable):
         value_type = float

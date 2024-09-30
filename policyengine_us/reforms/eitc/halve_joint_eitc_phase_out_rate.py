@@ -1,6 +1,7 @@
 from policyengine_us.model_api import *
 from policyengine_core.periods import period as period_
 
+
 def create_halve_joint_eitc_phase_out_rate() -> Reform:
     class eitc_phase_out_rate(Variable):
         value_type = float

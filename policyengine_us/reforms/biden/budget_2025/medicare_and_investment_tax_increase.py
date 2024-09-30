@@ -1,6 +1,7 @@
 from policyengine_us.model_api import *
 from policyengine_core.periods import period as period_
 
+
 def create_medicare_and_investment_tax_increase() -> Reform:
     class additional_medicare_tax(Variable):
         value_type = float
@@ -79,7 +80,10 @@ def create_medicare_and_investment_tax_increase_reform(
     reform_active = False
 
     for i in range(5):
-        if p(current_period).medicare.rate > 0 or p(current_period).net_investment_income.rate > 0:
+        if (
+            p(current_period).medicare.rate > 0
+            or p(current_period).net_investment_income.rate > 0
+        ):
             reform_active = True
             break
         current_period = current_period.offset(1, "year")

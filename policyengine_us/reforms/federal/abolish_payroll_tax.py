@@ -1,6 +1,7 @@
 from policyengine_us.model_api import *
 from policyengine_core.periods import period as period_
 
+
 def create_abolish_payroll_tax() -> Reform:
     class household_tax_before_refundable_credits(Variable):
         value_type = float

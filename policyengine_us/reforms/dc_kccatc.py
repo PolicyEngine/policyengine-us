@@ -1,6 +1,7 @@
 from policyengine_us.model_api import *
 from policyengine_core.periods import period as period_
 
+
 def create_dc_kccatc():
     class dc_kccatc(Variable):
         value_type = float
@@ -93,7 +94,7 @@ def create_dc_kccatc():
 def create_dc_kccatc_reform(parameters, period, bypass=False):
     if bypass:
         return create_dc_kccatc()
-    
+
     p = parameters(period).gov.contrib.dc_kccatc
     current_period = period_(period)
 

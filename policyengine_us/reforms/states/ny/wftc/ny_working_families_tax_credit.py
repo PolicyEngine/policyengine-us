@@ -1,6 +1,7 @@
 from policyengine_us.model_api import *
 from policyengine_core.periods import period as period_
 
+
 def create_ny_working_families_tax_credit() -> Reform:
     class ny_working_families_tax_credit(Variable):
         value_type = float
