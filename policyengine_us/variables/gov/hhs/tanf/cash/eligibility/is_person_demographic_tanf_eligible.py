@@ -6,14 +6,18 @@ class is_person_demographic_tanf_eligible(Variable):
     entity = Person
     definition_period = YEAR
     label = "Person-level eligiblity for TANF based on age, pregnancy, etc."
+    reference = "https://www.law.cornell.edu/cfr/text/45/260.30"
 
     def formula(person, period, parameters):
-        child_0_17 = person("is_child", period)
-        is_18 = (
-            person("age", period)
-            == parameters(period).gov.hhs.tanf.cash.eligibility.age
+        age_limit = parameters(period).gov.hhs.tanf.cash.eligibility.age_limit
+        age = person("age", period)
+        below_age_limit = age < age_limit
+        at_age_limit = age == age_limit
+        secondary_school_student = person("is_in_secondary_school", period)
+        secondary_school_at_age_limit_student = (
+            secondary_school_student & at_age_limit
         )
-        full_time_student = person("is_full_time_student", period)
-        school_enrolled_18_year_old = full_time_student & is_18
         pregnant = person("is_pregnant", period)
-        return child_0_17 | school_enrolled_18_year_old | pregnant
+        return (
+            below_age_limit | secondary_school_at_age_limit_student | pregnant
+        )
