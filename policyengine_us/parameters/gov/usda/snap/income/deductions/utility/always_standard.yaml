@@ -1,4 +1,4 @@
-description: These states always use the standard utility allowance
+description: The following states always use the standard utility allowance under the SNAP program.
 AK:
   2020-10-01: false
 AL:
@@ -109,7 +109,7 @@ WY:
 metadata:
   unit: bool
   period: month
-  label: States that always use the SUA
+  label: SNAP States using SUA
   breakdown:
     - state_code
   reference:
