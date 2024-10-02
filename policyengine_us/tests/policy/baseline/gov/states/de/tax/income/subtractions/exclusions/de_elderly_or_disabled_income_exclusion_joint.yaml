@@ -1,0 +1,102 @@
+- name: Eligible individual exclusion
+  period: 2023
+  input:
+    filing_status: SEPARATE
+    de_elderly_or_disabled_income_exclusion_eligible_person: true
+  output:
+    de_elderly_or_disabled_income_exclusion_joint: 2_000
+
+- name: Ineligible individual exclusion
+  period: 2023
+  input:
+    filing_status: SEPARATE
+    de_elderly_or_disabled_income_exclusion_eligible_person: false
+  output:
+    de_elderly_or_disabled_income_exclusion_joint: 0
+
+- name: Joint filing status with two eligible people
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        de_elderly_or_disabled_income_exclusion_eligible_person: true
+      person2:
+        is_tax_unit_spouse: true
+        de_elderly_or_disabled_income_exclusion_eligible_person: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    de_elderly_or_disabled_income_exclusion_joint: [2_000, 2_000]
+
+- name: Joint filing status with one eligible person
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        de_elderly_or_disabled_income_exclusion_eligible_person: true
+      person2:
+        is_tax_unit_spouse: true
+        de_elderly_or_disabled_income_exclusion_eligible_person: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    de_elderly_or_disabled_income_exclusion_joint: [0, 0]
+
+- name: Joint filing status with two eligible people
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        de_elderly_or_disabled_income_exclusion_eligible_person: true
+      person2:
+        is_tax_unit_spouse: true
+        de_elderly_or_disabled_income_exclusion_eligible_person: true
+      person3:
+        is_tax_unit_spouse: true
+        de_elderly_or_disabled_income_exclusion_eligible_person: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DE
+  output:
+    de_elderly_or_disabled_income_exclusion_joint: [2_000, 2_000, 0]
+
+- name: Head of household filing status with one eligible person
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        de_elderly_or_disabled_income_exclusion_eligible_person: true
+      person2:
+        is_tax_unit_spouse: true
+        de_elderly_or_disabled_income_exclusion_eligible_person: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    de_elderly_or_disabled_income_exclusion_joint: [2_000, 0]

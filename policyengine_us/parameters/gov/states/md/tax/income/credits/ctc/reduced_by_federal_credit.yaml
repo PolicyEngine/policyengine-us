@@ -1,0 +1,16 @@
+description: Maryland reduces its child tax credit by the federal child tax credit amount when this is true.
+values:
+  2021-01-01: true
+  2023-01-01: false
+metadata:
+  unit: bool
+  period: year
+  label: Maryland CTC reduced by federal credit
+  reference:
+    - title: Maryland 2022 Resident Tax Forms and Instructions
+      href: https://www.marylandtaxes.gov/forms/22_forms/Resident_Booklet.pdf#page=24
+    - title: 2023 State & Local Tax Forms & Instructions Maryland 
+      href: https://www.marylandtaxes.gov/forms/23_forms/Resident-Booklet.pdf#page=25
+    # Income tax law was amended and does not reflect pre-2023 rules
+    - title: Md. Code, Tax-Gen. § 10-751 
+      href: https://casetext.com/statute/code-of-maryland/article-tax-general/title-10-income-tax/subtitle-7-income-tax-credits/section-10-751-effective-until-712026-tax-credit-for-qualified-child

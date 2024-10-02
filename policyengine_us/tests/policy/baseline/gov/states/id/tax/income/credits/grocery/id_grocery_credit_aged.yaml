@@ -1,0 +1,75 @@
+- name: Not aged head and spouse
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 20
+        is_tax_unit_head_or_spouse: true
+        id_grocery_credit_qualifying_month: true
+      person2:
+        age: 22
+        is_tax_unit_head_or_spouse: true
+        id_grocery_credit_qualifying_month: true
+    households: 
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    id_grocery_credit_aged: [0,0]
+
+- name: Aged head and not aged spouse
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 65
+        is_tax_unit_head_or_spouse: true
+        id_grocery_credit_qualifying_month: true
+      person2:
+        age: 64
+        is_tax_unit_head_or_spouse: true
+        id_grocery_credit_qualifying_month: true
+    households: 
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    id_grocery_credit_aged: [20,0]
+
+- name: Not aged head and aged spouse
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 64
+        is_tax_unit_head_or_spouse: true
+        id_grocery_credit_qualifying_month: true
+      person2:
+        age: 65
+        is_tax_unit_head_or_spouse: true
+        id_grocery_credit_qualifying_month: true
+    households: 
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    id_grocery_credit_aged: [0,20]
+
+- name: Aged head and aged spouse
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 65
+        is_tax_unit_head_or_spouse: true
+        id_grocery_credit_qualifying_month: true
+      person2:
+        age: 65
+        is_tax_unit_head_or_spouse: true
+        id_grocery_credit_qualifying_month: true
+    households: 
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    id_grocery_credit_aged: [20,20]

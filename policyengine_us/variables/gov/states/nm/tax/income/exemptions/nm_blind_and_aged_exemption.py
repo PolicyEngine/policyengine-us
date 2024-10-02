@@ -52,7 +52,7 @@ class nm_aged_blind_exemption(Variable):
                 filing_status == statuses.JOINT,
                 filing_status == statuses.HEAD_OF_HOUSEHOLD,
                 filing_status == statuses.SEPARATE,
-                filing_status == statuses.WIDOW,
+                filing_status == statuses.SURVIVING_SPOUSE,
             ],
             [
                 p.single.calc(agi, right=True),

@@ -1,6 +1,5 @@
 import pytest
-from policyengine_us import CountryTaxBenefitSystem
-from policyengine_core.simulations import SimulationBuilder
+from policyengine_us import CountryTaxBenefitSystem, Simulation
 
 DEFAULT_SITUATION = {
     "people": {"person": {}},
@@ -28,10 +27,18 @@ EXEMPTIONS = (
 
 system = CountryTaxBenefitSystem()
 
-simulation = SimulationBuilder().build_from_dict(system, DEFAULT_SITUATION)
+simulation = Simulation(
+    tax_benefit_system=system,
+    situation=DEFAULT_SITUATION,
+)
 
 
 @pytest.mark.parametrize("variable", system.variables)
 def test_variable(variable: str) -> None:
-    if variable not in EXEMPTIONS:
+    requires_computation_after = system.variables[
+        variable
+    ].requires_computation_after
+    if requires_computation_after:
+        simulation.calculate(requires_computation_after, 2022)
+    elif variable not in EXEMPTIONS:
         simulation.calculate(variable, 2022)

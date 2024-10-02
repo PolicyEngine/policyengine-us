@@ -1,0 +1,22 @@
+description: Los Angeles accounts for the following income sources under the EZ Save program.
+metadata:
+  unit: list
+  period: year
+  label: Los Angeles County EZ Save income sources
+  reference:
+    - title: Los Angeles Department of Water and Power, Residential Services, Assistance Programs, EZ Save Program
+      href: https://www.ladwp.com/residential-services/assistance-programs/ez-save-program#what-is-ez-save
+
+values:
+  2022-01-01:
+    - irs_employment_income
+    - self_employment_income
+    - child_support_received
+    - alimony_income
+    - social_security
+    - ssi
+    - tanf
+    - snap
+    - veterans_benefits
+    - unemployment_compensation
+    - pension_income

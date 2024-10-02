@@ -1,0 +1,52 @@
+description: North Carolina provides a child deduction of this amount per eligible child for single filers.
+
+metadata:
+  label: North Carolina child deduction per eligible child for single filers
+  type: single_amount
+  threshold_unit: currency-USD  # federal adjusted gross income
+  amount_unit: currency-USD  # NC child deduction amount per eligible child
+  reference:
+    - title: 2021 North Carolina Form D-401, Line 10
+      href: https://www.ncdor.gov/2021-d-401-individual-income-tax-instructions/open#page=13
+    - title: 2022 North Carolina Form D-401, Line 10
+      href: https://www.ncdor.gov/2022-d-401-individual-income-tax-instructions/open#page=13
+    - title: 2023 North Carolina Form D-401, Line 10
+      href: https://www.ncdor.gov/2023-d-401-individual-income-tax-instructions/open#page=13
+    - title: Code of North Carolina | § 105-153.10 (a1) 
+      href: https://law.justia.com/codes/north-carolina/2022/chapter-105/article-4/section-105-153-5/
+
+brackets:  # ranges are > lower threshold and <= upper threshold 
+  - threshold:
+      2021-01-01: -.inf
+    amount:
+      2021-01-01: 2_500
+      2022-01-01: 3_000
+  - threshold:
+      2021-01-01: 20_000
+    amount:
+      2021-01-01: 2_000
+      2022-01-01: 2_500
+  - threshold:
+      2021-01-01: 30_000
+    amount:
+      2021-01-01: 1_500
+      2022-01-01: 2_000
+  - threshold:
+      2021-01-01: 40_000
+    amount:
+      2021-01-01: 1_000
+      2022-01-01: 1_500
+  - threshold:
+      2021-01-01: 50_000
+    amount:
+      2021-01-01: 500
+      2022-01-01: 1_000
+  - threshold:
+      2021-01-01: 60_000
+    amount:
+      2021-01-01: 0
+      2022-01-01: 500
+  - threshold:
+      2021-01-01: 70_000
+    amount:
+      2021-01-01: 0

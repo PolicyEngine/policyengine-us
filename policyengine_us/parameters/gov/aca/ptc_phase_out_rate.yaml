@@ -1,0 +1,60 @@
+description: Rate of ACA PTC phase out by ACA MAGI percent of FPL.
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  rate_unit: /1
+  label: Rate of ACA PTC phase out
+  reference:
+    - title: 26 U.S. Code § 36B(b)(3)(A) - Refundable credit for coverage under a qualified health plan
+      href: https://www.law.cornell.edu/uscode/text/26/36B#b_3_A
+    - title: CRS, Health Insurance Premium Tax Credit ... updated 2023-01-17
+      href: https://crsreports.congress.gov/product/pdf/R/R44425#page=2
+      # Quote from page 2 of the above CRS document:
+      # "The budget reconciliation measure, enacted on August 16, 2022, extends
+      # the ARPA provision that expanded eligibility for and the amount of the
+      # PTC for three years to sunset at the end of tax year 2025."
+brackets:
+  - threshold:
+      2015-01-01: 0
+    amount:
+      2015-01-01: 0.02
+      2021-01-01: 0
+      2026-01-01: 0.02
+  - threshold:
+      2015-01-01: 1.33
+      2021-01-01: null
+      2026-01-01: 1.33
+    amount:
+      2015-01-01: 0.03
+      2021-01-01: null
+      2026-01-01: 0.03
+  - threshold:
+      2015-01-01: 1.50
+    amount:
+      2015-01-01: 0.04
+      2021-01-01: 0.0
+      2026-01-01: 0.04
+  - threshold:
+      2015-01-01: 2.00
+    amount:
+      2015-01-01: 0.063
+      2021-01-01: 0.02
+      2026-01-01: 0.063
+  - threshold:
+      2015-01-01: 2.50
+    amount:
+      2015-01-01: 0.0805
+      2021-01-01: 0.04
+      2026-01-01: 0.0805
+  - threshold:
+      2015-01-01: 3.00
+    amount:
+      2015-01-01: 0.095
+      2021-01-01: 0.06
+      2026-01-01: 0.095
+  - threshold:
+      2015-01-01: 4.00
+    amount:
+      2015-01-01: 0
+      2021-01-01: 0.085
+      2026-01-01: 0

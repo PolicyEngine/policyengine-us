@@ -1,0 +1,187 @@
+- name: Kentucky single ineligible
+  period: 2022
+  input:
+    people:
+      person1:
+        ky_aged_personal_tax_credits: 0
+        ky_blind_personal_tax_credits: 0
+        ky_military_personal_tax_credits: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    ky_personal_tax_credits_joint: 0
+
+- name: Kentucky single eligible - aged
+  period: 2022
+  input:
+    people:
+      person1:
+        ky_aged_personal_tax_credits: 40
+        ky_blind_personal_tax_credits: 0
+        ky_military_personal_tax_credits: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    ky_personal_tax_credits_joint: 40
+
+- name: Kentucky single eligible - aged and military
+  period: 2022
+  input:
+    people:
+      person1:
+        ky_aged_personal_tax_credits: 40
+        ky_blind_personal_tax_credits: 0
+        ky_military_personal_tax_credits: 20
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    ky_personal_tax_credits_joint: 60
+
+- name: Kentucky single eligible - aged, blind and military
+  period: 2022
+  input:
+    people:
+      person1:
+        ky_aged_personal_tax_credits: 40
+        ky_blind_personal_tax_credits: 40
+        ky_military_personal_tax_credits: 20
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    ky_personal_tax_credits_joint: 100
+
+- name: Kentucky ineligible
+  period: 2022
+  input:
+    people:
+      person1:
+        ky_aged_personal_tax_credits: 0
+        ky_blind_personal_tax_credits: 0
+        ky_military_personal_tax_credits: 0
+      person2:
+        ky_aged_personal_tax_credits: 0
+        ky_blind_personal_tax_credits: 0
+        ky_military_personal_tax_credits: 0
+    tax_units:
+      tax_unit:
+        members: [person1,person2]
+    households:
+      household:
+        members: [person1,person2]
+        state_code: KY
+  output:
+    ky_personal_tax_credits_joint: 0
+
+- name: Kentucky eligible
+  period: 2022
+  input:
+    people:
+      person1:
+        ky_aged_personal_tax_credits: 40
+        ky_blind_personal_tax_credits: 0
+        ky_military_personal_tax_credits: 0
+      person2:
+        ky_aged_personal_tax_credits: 0
+        ky_blind_personal_tax_credits: 0
+        ky_military_personal_tax_credits: 20
+    tax_units:
+      tax_unit:
+        members: [person1,person2]
+    households:
+      household:
+        members: [person1,person2]
+        state_code: KY
+  output:
+    ky_personal_tax_credits_joint: [60, 0]
+
+- name: Kentucky eligible 2
+  period: 2022
+  input:
+    people:
+      person1:
+        ky_aged_personal_tax_credits: 40
+        ky_blind_personal_tax_credits: 40
+        ky_military_personal_tax_credits: 20
+      person2:
+        ky_aged_personal_tax_credits: 0
+        ky_blind_personal_tax_credits: 0
+        ky_military_personal_tax_credits: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1,person2]
+        state_code: KY
+  output:
+    ky_personal_tax_credits_joint: [100, 0]
+
+- name: Kentucky separate ineligible
+  period: 2022
+  input:
+    people:
+      person1:
+        ky_aged_personal_tax_credits: 0
+        ky_blind_personal_tax_credits: 0
+        ky_military_personal_tax_credits: 0
+      person2:
+        ky_aged_personal_tax_credits: 0
+        ky_blind_personal_tax_credits: 0
+        ky_military_personal_tax_credits: 0
+    tax_units:
+      tax_unit:
+        members: [person1,person2]
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [person1,person2]
+        state_code: KY
+  output:
+    ky_personal_tax_credits_joint: [0, 0]
+
+- name: Kentucky separate eligible
+  period: 2022
+  input:
+    people:
+      person1:
+        ky_aged_personal_tax_credits: 40
+        ky_blind_personal_tax_credits: 0
+        ky_military_personal_tax_credits: 20
+      person2:
+        ky_aged_personal_tax_credits: 0
+        ky_blind_personal_tax_credits: 0
+        ky_military_personal_tax_credits: 0
+    tax_units:
+      tax_unit:
+        members: [person1,person2]
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [person1,person2]
+        state_code: KY
+  output:
+    ky_personal_tax_credits_joint: [60, 0]

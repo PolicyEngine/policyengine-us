@@ -1,0 +1,11 @@
+description: Iowa allows married couples to file separately on the same tax return if this is true.
+values:
+  2021-01-01: true  
+  2023-01-01: false
+metadata:
+  unit: bool
+  period: year
+  label: Iowa married filing separately on the same return availability 
+  reference:
+    - title: Iowa Retirement Income Tax Guidance
+      href: https://tax.iowa.gov/retirement-income-tax-guidance

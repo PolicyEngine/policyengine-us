@@ -1,0 +1,49 @@
+- name: Case 1, single in 2021
+  period: 2021
+  input:
+    state_code: ME
+    filing_status: SINGLE
+    ctc_qualifying_children: 0
+   
+  output:
+    me_property_tax_fairness_credit_benefit_base: 2_100
+
+- name: Case 2, single in 2022
+  period: 2022
+  input:
+    state_code: ME
+    filing_status: SINGLE
+    ctc_qualifying_children: 3
+   
+  output:
+    me_property_tax_fairness_credit_benefit_base: 2_200
+
+- name: Case 3, joint in 2021, no child
+  period: 2021
+  input:
+    state_code: ME
+    filing_status: JOINT
+    ctc_qualifying_children: 0
+   
+  output:
+    me_property_tax_fairness_credit_benefit_base: 2_750
+
+- name: Case 4, joint in 2022, one child
+  period: 2022
+  input:
+    state_code: ME
+    filing_status: JOINT
+    ctc_qualifying_children: 1
+   
+  output:
+    me_property_tax_fairness_credit_benefit_base: 3_450
+
+- name: Case 5, head of household in 2023, no child
+  period: 2023
+  input:
+    state_code: ME
+    filing_status: HEAD_OF_HOUSEHOLD
+    ctc_qualifying_children: 0
+   
+  output:
+    me_property_tax_fairness_credit_benefit_base: 3_000

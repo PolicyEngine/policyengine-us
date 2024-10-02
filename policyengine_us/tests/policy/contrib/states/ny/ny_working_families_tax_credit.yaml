@@ -1,0 +1,631 @@
+- name: Single person of 30 with 30k of employemnt income - no reform
+  period: 2025
+  input:
+    gov.contrib.states.ny.wftc.in_effect: false
+    people: 
+      person1:
+        age: 30
+        is_tax_unit_dependent: false
+        employment_income: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    # ny_wftc_eligible_children: 0
+    # ny_working_families_tax_credit: 0
+    ny_eitc: 0
+    ny_ctc: 0
+    ny_exemptions: 0
+
+- name: Single person of 30 with 30k of employemnt income - reform
+  period: 2025
+  reforms: policyengine_us.reforms.states.ny.wftc.ny_working_families_tax_credit.ny_working_families_tax_credit
+  input:
+    gov.contrib.states.ny.wftc.in_effect: true
+    gov.contrib.states.ny.wftc.eitc.match: 0.21
+    gov.contrib.states.ny.wftc.amount.max: 800
+    gov.contrib.states.ny.wftc.amount.min: 150
+    gov.contrib.states.ny.wftc.exemptions.child_age_threshold: 18
+    gov.contrib.states.ny.wftc.reduction.married[1].threshold: 130000
+    gov.contrib.states.ny.wftc.reduction.married[1].rate: 0.02
+    gov.contrib.states.ny.wftc.reduction.single[1].threshold: 65000
+    gov.contrib.states.ny.wftc.reduction.single[1].rate: 0.02
+    gov.contrib.states.ny.wftc.child_age_threshold: 17
+    people: 
+      person1:
+        age: 30
+        is_tax_unit_dependent: false
+        employment_income: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ny_wftc_eligible_children: 0
+    ny_working_families_tax_credit: 0
+    ny_eitc: 0
+    ny_ctc: 0
+    ny_exemptions: 0
+
+- name: Single parent of one child with 30k income - no reform
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    gov.contrib.states.ny.wftc.in_effect: false
+    people: 
+      person1:
+        age: 30
+        is_tax_unit_dependent: false
+        employment_income: 30_000
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    # ny_wftc_eligible_children: 0
+    # ny_working_families_tax_credit: 0
+    ny_eitc: 950
+    ny_ctc: 330
+    ny_exemptions: 1_000
+
+
+- name: Single parent of one child with 30k income - w/ reform
+  period: 2025
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ny.wftc.ny_working_families_tax_credit.ny_working_families_tax_credit
+  input:
+    gov.contrib.states.ny.wftc.in_effect: true
+    gov.contrib.states.ny.wftc.eitc.match: 0.25
+    gov.contrib.states.ny.wftc.amount.max: 550
+    gov.contrib.states.ny.wftc.amount.min: 150
+    gov.contrib.states.ny.wftc.exemptions.child_age_threshold: 18
+    gov.contrib.states.ny.wftc.reduction.married[1].threshold: 110_000
+    gov.contrib.states.ny.wftc.reduction.married[1].rate: 0.02
+    gov.contrib.states.ny.wftc.reduction.single[1].threshold: 75_000
+    gov.contrib.states.ny.wftc.reduction.single[1].rate: 0.02
+    gov.contrib.states.ny.wftc.child_age_threshold: 17
+    people: 
+      person1:
+        age: 30
+        is_tax_unit_dependent: false
+        employment_income: 30_000
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    ny_wftc_eligible_children: 1
+    ny_working_families_tax_credit: 550
+    ny_eitc: 625
+    ny_ctc: 0
+    ny_exemptions: 1_000
+
+- name: Reform applied to a head of household with no income in 2025
+  period: 2025
+  reforms: policyengine_us.reforms.states.ny.wftc.ny_working_families_tax_credit.ny_working_families_tax_credit
+  input:
+    gov.contrib.states.ny.wftc.in_effect: true
+    gov.contrib.states.ny.wftc.eitc.match: 0.21
+    gov.contrib.states.ny.wftc.amount.max: 800
+    gov.contrib.states.ny.wftc.amount.min: 150
+    gov.contrib.states.ny.wftc.exemptions.child_age_threshold: 18
+    gov.contrib.states.ny.wftc.reduction.married[1].threshold: 130000
+    gov.contrib.states.ny.wftc.reduction.married[1].rate: 0.02
+    gov.contrib.states.ny.wftc.reduction.single[1].threshold: 65000
+    gov.contrib.states.ny.wftc.reduction.single[1].rate: 0.02
+    gov.contrib.states.ny.wftc.child_age_threshold: 17
+    people: 
+      person1:
+        age: 30
+        is_tax_unit_dependent: false
+      person2:
+        age: 16
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ny_agi: 0
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    ny_wftc_eligible_children: 1
+    ny_working_families_tax_credit: 800
+    ny_eitc: 0
+    ny_ctc: 0
+    ny_exemptions: 1_000
+
+- name: Head of household with income over phase-out threshold in 2025
+  period: 2025
+  reforms: policyengine_us.reforms.states.ny.wftc.ny_working_families_tax_credit.ny_working_families_tax_credit
+  input:
+    gov.contrib.states.ny.wftc.in_effect: true
+    gov.contrib.states.ny.wftc.eitc.match: 0.21
+    gov.contrib.states.ny.wftc.amount.max: 800
+    gov.contrib.states.ny.wftc.amount.min: 150
+    gov.contrib.states.ny.wftc.exemptions.child_age_threshold: 18
+    gov.contrib.states.ny.wftc.reduction.married[1].threshold: 130000
+    gov.contrib.states.ny.wftc.reduction.married[1].rate: 0.02
+    gov.contrib.states.ny.wftc.reduction.single[1].threshold: 65000
+    gov.contrib.states.ny.wftc.reduction.single[1].rate: 0.02
+    gov.contrib.states.ny.wftc.child_age_threshold: 17
+    people: 
+      person1:
+        age: 30
+        is_tax_unit_dependent: false
+      person2:
+        age: 16
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ny_agi: 140_000
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    ny_wftc_eligible_children: 1
+    ny_working_families_tax_credit: 150
+    ny_eitc: 0
+    ny_ctc: 0
+    ny_exemptions: 1_000
+
+- name: Reform does not apply, household received EITC
+  period: 2025
+  input:
+    gov.contrib.states.ny.wftc.in_effect: false
+    people: 
+      person1:
+        age: 30
+        is_tax_unit_dependent: false
+        employment_income: 1_000
+      person2:
+        age: 16
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ny_agi: 30_000
+        filing_status: HEAD_OF_HOUSEHOLD
+        ny_household_credit: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    # ny_wftc_eligible_children: 0
+    # ny_working_families_tax_credit: 0
+    eitc: 340
+    ny_eitc: 102 
+    ny_ctc: 330
+    ny_exemptions: 1_000
+
+- name: Reform applied to a head of household with no income in 2025, dependent over 18
+  period: 2025
+  reforms: policyengine_us.reforms.states.ny.wftc.ny_working_families_tax_credit.ny_working_families_tax_credit
+  input:
+    gov.contrib.states.ny.wftc.in_effect: true
+    gov.contrib.states.ny.wftc.eitc.match: 0.21
+    gov.contrib.states.ny.wftc.amount.max: 800
+    gov.contrib.states.ny.wftc.amount.min: 150
+    gov.contrib.states.ny.wftc.exemptions.child_age_threshold: 18
+    gov.contrib.states.ny.wftc.reduction.married[1].threshold: 130000
+    gov.contrib.states.ny.wftc.reduction.married[1].rate: 0.02
+    gov.contrib.states.ny.wftc.reduction.single[1].threshold: 65000
+    gov.contrib.states.ny.wftc.reduction.single[1].rate: 0.02
+    gov.contrib.states.ny.wftc.child_age_threshold: 17
+    people: 
+      person1:
+        age: 30
+        is_tax_unit_dependent: false
+      person2:
+        age: 18
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ny_agi: 0
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    is_younger_child_dependent: [false, false]
+    ny_wftc_eligible_children: 0
+    ny_working_families_tax_credit: 0
+    ny_eitc: 0
+    ny_ctc: 0
+    ny_exemptions: 1_000
+
+- name: Younger EITC fully phased out but older EITC still applicable
+  period: 2028
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ny.wftc.ny_working_families_tax_credit.ny_working_families_tax_credit
+  input:
+    gov.contrib.states.ny.wftc.in_effect: true     
+    gov.contrib.states.ny.wftc.eitc.match: 0.21
+    gov.contrib.states.ny.wftc.amount.max: 800
+    gov.contrib.states.ny.wftc.amount.min: 150
+    gov.contrib.states.ny.wftc.exemptions.child_age_threshold: 18
+    gov.contrib.states.ny.wftc.reduction.married[1].threshold: 130000
+    gov.contrib.states.ny.wftc.reduction.married[1].rate: 0.02
+    gov.contrib.states.ny.wftc.reduction.single[1].threshold: 65000
+    gov.contrib.states.ny.wftc.reduction.single[1].rate: 0.02
+    gov.contrib.states.ny.wftc.child_age_threshold: 17
+    people: 
+      person1:
+        age: 30
+        is_tax_unit_dependent: false
+        employment_income: 10_000
+      person2:
+        age: 20
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ny_agi: 10_000
+        filing_status: HEAD_OF_HOUSEHOLD
+        ny_household_credit: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    ny_wftc_eligible_children: 1
+    ny_working_families_tax_credit: 0
+    eitc_younger_children_count: 0
+    # Amount for self attributed to older child EITC
+    younger_eitc: 0
+    eitc: 3_400
+    older_eitc: 3_400
+    ny_eitc: 1_020
+    ny_ctc: 0
+    ny_exemptions: 1_000
+
+
+- name: Baseline test - single parent with one child in college
+  period: 2028
+  absolute_error_margin: 1
+  input:
+    people: 
+      person1:
+        age: 30
+        is_tax_unit_dependent: false
+        employment_income: 10_000
+      person2:
+        age: 20
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ny_household_credit: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    eitc: 3_400
+    ny_eitc: 1_020
+
+- name: Baseline test - single parent of two - ages 5 and 10 - 30k income
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    gov.contrib.states.ny.wftc.in_effect: false
+    people: 
+      person1:
+        age: 30
+        is_tax_unit_dependent: false
+        employment_income: 30_000
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+      person3:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NY
+  output:
+    eitc: 5_724
+    ny_eitc: 1_687 # 30% of federal credit
+
+
+- name: Integration test - single parent of two - ages 5 and 10 - 30k income
+  period: 2025
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ny.wftc.ny_working_families_tax_credit.ny_working_families_tax_credit
+  input:
+    gov.contrib.states.ny.wftc.in_effect: true
+    gov.contrib.states.ny.wftc.eitc.match: 0.21
+    gov.contrib.states.ny.wftc.amount.max: 800
+    gov.contrib.states.ny.wftc.amount.min: 150
+    gov.contrib.states.ny.wftc.exemptions.child_age_threshold: 18
+    gov.contrib.states.ny.wftc.reduction.married[1].threshold: 130000
+    gov.contrib.states.ny.wftc.reduction.married[1].rate: 0.02
+    gov.contrib.states.ny.wftc.reduction.single[1].threshold: 65000
+    gov.contrib.states.ny.wftc.reduction.single[1].rate: 0.02
+    gov.contrib.states.ny.wftc.child_age_threshold: 17
+    people: 
+      person1:
+        age: 30
+        employment_income: 30_000
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+      person3:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NY
+  output:
+    younger_eitc_eligible: 1
+    younger_eitc: 5_076
+    older_eitc: 0
+    ny_wftc_eligible_children: 2
+    ny_eitc: 1_036
+    ny_working_families_tax_credit: 1_600
+
+
+- name: Integration test - single parent of two - ages 5 and 20 (student) - 30k income
+  period: 2025
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ny.wftc.ny_working_families_tax_credit.ny_working_families_tax_credit
+  input:
+    gov.contrib.states.ny.wftc.in_effect: true
+    gov.contrib.states.ny.wftc.eitc.match: 0.21
+    gov.contrib.states.ny.wftc.amount.max: 800
+    gov.contrib.states.ny.wftc.amount.min: 150
+    gov.contrib.states.ny.wftc.exemptions.child_age_threshold: 18
+    gov.contrib.states.ny.wftc.reduction.married[1].threshold: 130000
+    gov.contrib.states.ny.wftc.reduction.married[1].rate: 0.02
+    gov.contrib.states.ny.wftc.reduction.single[1].threshold: 65000
+    gov.contrib.states.ny.wftc.reduction.single[1].rate: 0.02
+    gov.contrib.states.ny.wftc.child_age_threshold: 17
+    people: 
+      person1:
+        age: 30
+        employment_income: 30_000
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+      person3:
+        age: 20
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        ny_household_credit: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NY
+  output:
+    younger_eitc_eligible: 1
+    younger_eitc: 2_818
+    eitc_older_demographic_eligible: 1
+    older_eitc: 4_318
+    ny_wftc_eligible_children: 1
+    ny_eitc: 1_887
+    ny_working_families_tax_credit: 800
+
+- name: Base test - single parent of two - ages 5 and 20 (student) - 30k income
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    gov.contrib.states.ny.wftc.in_effect: false
+    people: 
+      person1:
+        age: 30
+        employment_income: 30_000
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+      person3:
+        age: 20
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        ny_household_credit: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NY
+  output:
+    ny_eitc: 2_140
+
+- name: After 2028, only children under 18 are eligible for the NY WFTC
+  period: 2029
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ny.wftc.ny_working_families_tax_credit.ny_working_families_tax_credit
+  input:
+    gov.contrib.states.ny.wftc.in_effect: true
+    gov.contrib.states.ny.wftc.eitc.match: 0.21
+    gov.contrib.states.ny.wftc.amount.max: 800
+    gov.contrib.states.ny.wftc.amount.min: 150
+    gov.contrib.states.ny.wftc.exemptions.child_age_threshold: 18
+    gov.contrib.states.ny.wftc.reduction.married[1].threshold: 130000
+    gov.contrib.states.ny.wftc.reduction.married[1].rate: 0.02
+    gov.contrib.states.ny.wftc.reduction.single[1].threshold: 65000
+    gov.contrib.states.ny.wftc.reduction.single[1].rate: 0.02
+    gov.contrib.states.ny.wftc.child_age_threshold: 18
+    people: 
+      person1:
+        age: 30
+        employment_income: 30_000
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+      person3:
+        age: 20
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        ny_household_credit: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NY
+  output:
+    ny_working_families_tax_credit: 800
+
+- name: Dependent exemptions apply to all exemptions in 2025
+  period: 2025
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ny.wftc.ny_working_families_tax_credit.ny_working_families_tax_credit
+  input:
+    gov.contrib.states.ny.wftc.in_effect: true
+    gov.contrib.states.ny.wftc.eitc.match: 0.21
+    gov.contrib.states.ny.wftc.amount.max: 800
+    gov.contrib.states.ny.wftc.amount.min: 150
+    gov.contrib.states.ny.wftc.exemptions.child_age_threshold: 18
+    gov.contrib.states.ny.wftc.reduction.married[1].threshold: 130000
+    gov.contrib.states.ny.wftc.reduction.married[1].rate: 0.02
+    gov.contrib.states.ny.wftc.reduction.single[1].threshold: 65000
+    gov.contrib.states.ny.wftc.reduction.single[1].rate: 0.02
+    gov.contrib.states.ny.wftc.child_age_threshold: 17
+    people: 
+      person1:
+        age: 30
+        employment_income: 30_000
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+      person3:
+        age: 25
+        is_tax_unit_dependent: true
+      person4:
+        age: 23
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        ny_household_credit: 0
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: NY
+  output:
+    ny_exemptions: 3_000
+
+- name: Dependent exemptions apply to only non child dependents in 2026
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ny.wftc.ny_working_families_tax_credit.ny_working_families_tax_credit
+  input:
+    gov.contrib.states.ny.wftc.in_effect: true
+    gov.contrib.states.ny.wftc.eitc.match: 0.21
+    gov.contrib.states.ny.wftc.amount.max: 800
+    gov.contrib.states.ny.wftc.amount.min: 150
+    gov.contrib.states.ny.wftc.exemptions.child_age_threshold: 18
+    gov.contrib.states.ny.wftc.reduction.married[1].threshold: 130000
+    gov.contrib.states.ny.wftc.reduction.married[1].rate: 0.02
+    gov.contrib.states.ny.wftc.reduction.single[1].threshold: 65000
+    gov.contrib.states.ny.wftc.reduction.single[1].rate: 0.02
+    gov.contrib.states.ny.wftc.child_age_threshold: 17
+    people: 
+      person1:
+        age: 30
+        employment_income: 30_000
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+      person3:
+        age: 23
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+      person4:
+        age: 18
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        ny_household_credit: 0
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: NY
+  output:
+    ny_exemptions_dependent: [false, false, true, true]
+    ny_exemptions: 2_000
+
+- name: Dependent exemptions apply to older child depedents in 2028
+  period: 2028
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ny.wftc.ny_working_families_tax_credit.ny_working_families_tax_credit
+  input:
+    gov.contrib.states.ny.wftc.in_effect: true
+    gov.contrib.states.ny.wftc.eitc.match: 0.21
+    gov.contrib.states.ny.wftc.amount.max: 800
+    gov.contrib.states.ny.wftc.amount.min: 150
+    gov.contrib.states.ny.wftc.exemptions.child_age_threshold: 18
+    gov.contrib.states.ny.wftc.reduction.married[1].threshold: 130000
+    gov.contrib.states.ny.wftc.reduction.married[1].rate: 0.02
+    gov.contrib.states.ny.wftc.reduction.single[1].threshold: 65000
+    gov.contrib.states.ny.wftc.reduction.single[1].rate: 0.02
+    gov.contrib.states.ny.wftc.child_age_threshold: 18
+    people: 
+      person1:
+        age: 30
+        employment_income: 30_000
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+      person3:
+        age: 17
+        is_tax_unit_dependent: true
+      person4:
+        age: 23
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        ny_household_credit: 0
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: NY
+  output:
+    ny_exemptions: 1_000

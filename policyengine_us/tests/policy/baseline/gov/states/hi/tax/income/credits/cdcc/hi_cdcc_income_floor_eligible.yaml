@@ -1,0 +1,62 @@
+- name: 3 dependents, one eligible
+  period: 2022
+  input:
+    people:
+      head:
+        is_disabled: true
+        is_full_time_student: false
+      spouse:
+        is_disabled: false
+        is_full_time_student: false
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        count_cdcc_eligible: 3
+    households:
+      household:
+        members: [head, spouse]
+        state_code: HI
+  output:
+    hi_cdcc_income_floor_eligible: [true, false]
+
+- name: 1 dependents, both eligible
+  period: 2022
+  input:
+    people:
+      head:
+        is_disabled: true
+        is_full_time_student: true
+      spouse:
+        is_disabled: false
+        is_full_time_student: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        count_cdcc_eligible: 1
+    households:
+      household:
+        members: [head, spouse]
+        state_code: HI
+  output:
+    hi_cdcc_income_floor_eligible: [true, true]
+
+- name: 1 dependents, no eligible
+  period: 2022
+  input:
+    people:
+      head:
+        is_disabled: false
+        is_full_time_student: false
+      spouse:
+        is_disabled: false
+        is_full_time_student: false
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        count_cdcc_eligible: 1
+    households:
+      household:
+        members: [head, spouse]
+        state_code: HI
+  output:
+    hi_cdcc_income_floor_eligible: [false, false]

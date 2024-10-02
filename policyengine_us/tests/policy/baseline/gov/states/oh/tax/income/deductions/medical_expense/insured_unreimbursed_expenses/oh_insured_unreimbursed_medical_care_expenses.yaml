@@ -1,0 +1,37 @@
+- name: The expense amount is reduced by the AGI floor
+  period: 2022
+  input:
+    state_code: OH
+    oh_insured_unreimbursed_medical_care_expense_amount: 100
+    adjusted_gross_income: 1_000
+  output:
+    oh_insured_unreimbursed_medical_care_expenses: 25
+
+
+- name: Two people with combined expenses reduced by the AGI floor
+  period: 2022
+  input:
+    people:
+      head:
+        oh_insured_unreimbursed_medical_care_expense_amount: 500
+      spouse:
+        oh_insured_unreimbursed_medical_care_expense_amount: 200
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        adjusted_gross_income: 2_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: OH
+  output:
+    oh_insured_unreimbursed_medical_care_expenses: 550
+
+- name: Capped at 0
+  period: 2022
+  input:
+    state_code: OH
+    oh_insured_unreimbursed_medical_care_expense_amount: 70
+    adjusted_gross_income: 1_000
+  output:
+    oh_insured_unreimbursed_medical_care_expenses: 0

@@ -1,0 +1,17 @@
+description: New York limits the Working Families Tax Credit to children below this age.
+metadata:
+  unit: year
+  period: year
+  label: New York Working Families Tax Credit child age threshold
+  reference: 
+    - title: New York Senate Bill S277C §4(c)
+      href: https://legislation.nysenate.gov/pdf/bills/2023/S277C
+
+values:
+  2024-01-01: 0 # 17
+
+# The age threshold is applied to is applied to different provisions of the Working Families Tax Credit
+# at different time periods 
+# The Working Families defines child dependents as defined in 26 USC §24(c)(1) with the exception 
+# of the age threshold and student dependents
+

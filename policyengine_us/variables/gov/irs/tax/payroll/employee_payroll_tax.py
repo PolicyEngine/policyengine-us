@@ -7,11 +7,6 @@ class employee_payroll_tax(Variable):
     label = "employee-side payroll tax"
     definition_period = YEAR
     unit = USD
-    adds = [
-        "employee_social_security_tax",
-        "employee_medicare_tax",
-        "additional_medicare_tax",
-    ]
 
     def formula(person, period, parameters):
         if parameters(
@@ -19,5 +14,12 @@ class employee_payroll_tax(Variable):
         ).gov.contrib.ubi_center.flat_tax.abolish_payroll_tax:
             return 0
         else:
-            added_components = add(person, period, employee_payroll_tax.adds)
-            return added_components
+            return add(
+                person,
+                period,
+                [
+                    "employee_social_security_tax",
+                    "employee_medicare_tax",
+                    "additional_medicare_tax",
+                ],
+            )

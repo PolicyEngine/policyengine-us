@@ -8,4 +8,4 @@ class taxsim_dep18(Variable):
     unit = USD
     definition_period = YEAR
 
-    adds = ["is_eitc_qualifying_child"]
+    adds = ["is_child_dependent"]

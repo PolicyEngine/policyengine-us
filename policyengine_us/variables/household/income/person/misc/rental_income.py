@@ -8,3 +8,4 @@ class rental_income(Variable):
     documentation = "Income from rental of property"
     unit = USD
     definition_period = YEAR
+    uprating = "calibration.gov.irs.soi.rental_income"

@@ -11,6 +11,6 @@ class dc_eitc_with_qualifying_child(Variable):
     defined_for = StateCode.DC
 
     def formula(tax_unit, period, parameters):
-        us_eitc = tax_unit("earned_income_tax_credit", period)
+        federal_eitc = tax_unit("eitc", period)
         p = parameters(period).gov.states.dc.tax.income.credits
-        return us_eitc * p.eitc.with_children.match
+        return federal_eitc * p.eitc.with_children.match

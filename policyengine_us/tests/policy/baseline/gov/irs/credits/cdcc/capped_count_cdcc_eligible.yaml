@@ -1,0 +1,13 @@
+- name: Uncapped CDCC eligible people
+  period: 2021
+  input:
+    count_cdcc_eligible: 1
+  output:
+    capped_count_cdcc_eligible: 1
+
+- name: Capped CDCC eligible people
+  period: 2021
+  input:
+    count_cdcc_eligible: 3
+  output:
+    capped_count_cdcc_eligible: 2

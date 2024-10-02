@@ -1,0 +1,44 @@
+- name: cliff_evaluated unit test 1
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 39
+      person3:
+        age: 16
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+  output:
+    cliff_evaluated: [true, true, false]
+
+- name: cliff_evaluated unit test 2
+  period: 2021
+  input:
+    simulation.cliff_adults: 3
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 39
+      person3:
+        age: 16
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+  output:
+    cliff_evaluated: [true, true, false]

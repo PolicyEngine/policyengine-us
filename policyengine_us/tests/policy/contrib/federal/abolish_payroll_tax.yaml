@@ -1,0 +1,21 @@
+- name: Abolish federal income tax reform
+  period: 2022
+  reforms: policyengine_us.reforms.federal.abolish_payroll_tax.abolish_payroll_tax
+  input:
+    gov.contrib.ubi_center.flat_tax.abolish_payroll_tax: true
+    ca_income_tax_before_refundable_credits: 1_000
+    employee_payroll_tax: 600
+  output:
+    household_state_tax_before_refundable_credits: 1_000
+    household_tax_before_refundable_credits: 1_000
+
+
+- name: No reform
+  period: 2022
+  input:
+    gov.contrib.ubi_center.flat_tax.abolish_payroll_tax: false
+    ca_income_tax_before_refundable_credits: 1_000
+    employee_payroll_tax: 600
+  output:
+    household_state_tax_before_refundable_credits: 1_000
+    household_tax_before_refundable_credits: 1_600

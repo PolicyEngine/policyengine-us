@@ -1,0 +1,30 @@
+description: Number of returns by filing status and AGI band.
+metadata:
+  label: Returns by filing status
+  unit: return
+  uprating: calibration.gov.census.populations.total
+  propagate_metadata_to_children: true
+
+SINGLE:
+  metadata:
+    label: Single
+  values:
+    2021-01-01: 81_422_759
+
+JOINT:
+  metadata:
+    label: Joint (includes widow(er)s)
+  values:
+    2021-01-01: 54_248_325
+
+HEAD_OF_HOUSEHOLD:
+  metadata:
+    label: Head of household
+  values:
+    2021-01-01: 21_240_317
+
+SEPARATE:
+  metadata:
+    label: Married filing separately
+  values:
+    2021-01-01: 3_912_940

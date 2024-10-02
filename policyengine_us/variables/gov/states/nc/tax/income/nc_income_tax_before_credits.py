@@ -11,5 +11,5 @@ class nc_income_tax_before_credits(Variable):
 
     def formula(tax_unit, period, parameters):
         income = tax_unit("nc_taxable_income", period)
-        rate = parameters(period).gov.states.nc.tax.income.rate
-        return income * rate
+        p = parameters(period).gov.states.nc.tax.income
+        return max_(0, income) * p.rate

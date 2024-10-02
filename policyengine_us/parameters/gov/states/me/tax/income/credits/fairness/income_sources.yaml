@@ -1,0 +1,14 @@
+description: Maine accounts for the following income sources for the sales and property tax credits.
+values:
+  2021-01-01:
+    - irs_gross_income
+    - tax_exempt_social_security
+    - tax_exempt_interest_income
+metadata:
+  unit: list
+  label: Maine sales and property tax credit income sources
+  reference:
+    - title: §5213-A. Sales tax fairness credit (1) (B) 
+      href: https://legislature.maine.gov/statutes/36/title36sec5213-A.html
+    - title: §5219-KK. Property tax fairness credit for tax (1) (D)
+      href: https://legislature.maine.gov/statutes/36/title36sec5219-KK.html

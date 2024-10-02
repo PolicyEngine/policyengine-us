@@ -1,0 +1,35 @@
+- name: LA County SRO should be $1,380
+  period: 2023
+  input:
+    bedrooms: 0
+    is_sro: true
+    in_la: true
+  output:
+    pha_payment_standard: 1_380 * 12
+
+- name: LA County studio should be $1,840
+  period: 2023
+  input:
+    bedrooms: 0
+    is_sro: false
+    in_la: true
+  output:
+    pha_payment_standard: 1_840 * 12
+
+- name: LA County home with 5 bedrooms should be $4,374
+  period: 2023
+  input:
+    bedrooms: 5
+    is_sro: false
+    in_la: true
+  output:
+    pha_payment_standard: 4_374 * 12
+
+- name: LA County home with over 7 bedrooms should be $6,086
+  period: 2023
+  input:
+    bedrooms: 10
+    is_sro: false
+    in_la: true
+  output:
+    pha_payment_standard: 6_086 * 12

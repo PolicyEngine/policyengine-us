@@ -1,0 +1,17 @@
+description: Michigan multiplies the reduced tier one deduction amount by this rate under the expanded retirement and pension benefits deduction.  
+values:
+  2023-01-01: 0.25
+  2024-01-01: 0.5
+  2025-01-01: 0.75
+  2026-01-01: 1
+metadata:
+  period: year
+  unit: /1
+  label: Michigan expanded retirement and pension benefits rate
+  reference:
+    - title: Michigan Legal Code Section 206.30 - (10)
+      href: http://legislature.mi.gov/doc.aspx?mcl-206-30
+    - title: Michigan Retirement and Pension Benefits
+      href: https://www.michigan.gov/taxes/iit/retirement-and-pension-benefits
+    - title: Michigan 2023 MI-1040 Individual Income Tax FORMS AND INSTRUCTIONS
+      href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2023/2023-IIT-Forms/BOOK_MI-1040.pdf#page=25

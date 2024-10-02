@@ -14,7 +14,7 @@ class or_regular_exemptions(Variable):
 
     def formula(tax_unit, period, parameters):
         filing_status = tax_unit("filing_status", period)
-        federal_exemptions = tax_unit("exemptions", period)
+        federal_exemptions = tax_unit("exemptions_count", period)
         federal_agi = tax_unit("adjusted_gross_income", period)
         p = parameters(period).gov.states["or"].tax.income.credits.exemption
         qualifies = federal_agi <= p.income_limit.regular[filing_status]

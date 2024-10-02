@@ -1,0 +1,39 @@
+- name: smaller dcb
+  period: 2022
+  input:
+    hi_agi: 1_000
+    hi_cdcc_min_head_spouse_earned: 1_000
+    hi_dependent_care_benefits: 100
+    state_code: HI
+  output:
+    hi_cdcc: 25
+
+- name: smaller min_head_spouse_earned
+  period: 2022
+  input:
+    hi_agi: 1_000
+    hi_cdcc_min_head_spouse_earned: 1_000
+    hi_dependent_care_benefits: 2_000
+    state_code: HI
+  output:
+    hi_cdcc: 250
+
+- name: different agi
+  period: 2022
+  input:
+    hi_agi: 50_000
+    hi_cdcc_min_head_spouse_earned: 1_000
+    hi_dependent_care_benefits: 100
+    state_code: HI
+  output:
+    hi_cdcc: 20
+
+- name: different agi 2
+  period: 2022
+  input:
+    hi_agi: 50_001
+    hi_cdcc_min_head_spouse_earned: 1_000
+    hi_dependent_care_benefits: 100
+    state_code: HI
+  output:
+    hi_cdcc: 15

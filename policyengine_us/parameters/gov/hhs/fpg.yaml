@@ -8,6 +8,7 @@ first_person:
     2021-01-01: 12_880
     2022-01-01: 13_590 # 2022 values took effect on 2022-01-12, but we assign it to the start of the calendar year.
     2023-01-01: 14_580
+    2024-01-01: 15_060
   AK:
     2017-01-01: 15_060
     2018-01-01: 15_180
@@ -16,6 +17,7 @@ first_person:
     2021-01-01: 16_090
     2022-01-01: 16_990
     2023-01-01: 18_210
+    2024-01-01: 18_810
   HI:
     2017-01-01: 13_860
     2018-01-01: 13_960
@@ -24,6 +26,17 @@ first_person:
     2021-01-01: 14_820
     2022-01-01: 15_630
     2023-01-01: 16_770
+    2024-01-01: 17_310
+  # Add placeholders for Guam, Puerto Rico, and the Virgin Islands.
+  # Poverty guidelines do not apply to these areas, but we include them for
+  # completeness and to avoid errors arising from uprating and breakdown
+  # metadata fields.
+  GU:
+    2024-01-01: 0
+  PR:
+    2024-01-01: 0
+  VI:
+    2024-01-01: 0
 additional_person:
   # Calculated by subtracting a two-person household's line from a one-person's.
   # This difference is always the same for larger households.
@@ -35,6 +48,7 @@ additional_person:
     2021-01-01: 4_540
     2022-01-01: 4_720
     2023-01-01: 5_140
+    2024-01-01: 5_380
   AK:
     2017-01-01: 5_230
     2018-01-01: 5_400
@@ -43,6 +57,7 @@ additional_person:
     2021-01-01: 5_680
     2022-01-01: 5_900
     2023-01-01: 6_430
+    2024-01-01: 6_730
   HI:
     2017-01-01: 4_810
     2018-01-01: 4_810
@@ -51,6 +66,15 @@ additional_person:
     2021-01-01: 5_220
     2022-01-01: 5_430
     2023-01-01: 5_910
+    2024-01-01: 6_190
+  # Add placeholders for Guam, Puerto Rico, and the Virgin Islands.
+  GU:
+    2024-01-01: 0
+  PR:
+    2024-01-01: 0
+  VI:
+    2024-01-01: 0
+
 metadata:
   unit: currency-USD
   reference:
@@ -63,3 +87,4 @@ metadata:
   breakdown:
     - [first_person, additional_person]
     - state_group
+  uprating: gov.hhs.uprating

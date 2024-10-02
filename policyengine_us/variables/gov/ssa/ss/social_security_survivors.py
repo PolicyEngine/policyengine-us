@@ -7,3 +7,4 @@ class social_security_survivors(Variable):
     definition_period = YEAR
     label = "Social Security survivors benefits"
     unit = USD
+    # uprating = "gov.ssa.uprating"

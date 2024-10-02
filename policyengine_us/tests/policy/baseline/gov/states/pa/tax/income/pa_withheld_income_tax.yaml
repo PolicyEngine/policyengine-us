@@ -1,0 +1,29 @@
+- name: Person with employment income
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    adjusted_gross_income_person: 30_000
+    filing_status: JOINT
+    state_code: PA
+  output:
+    pa_withheld_income_tax: 921 #0.0307*30000
+
+- name: Changing the filing status should not change the output 
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    adjusted_gross_income_person: 30_000
+    filing_status: SURVIVING_SPOUSE
+    state_code: PA
+  output:
+    pa_withheld_income_tax: 921
+
+- name: Capped at 0
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    adjusted_gross_income_person: 0
+    filing_status: SURVIVING_SPOUSE
+    state_code: PA
+  output:
+    pa_withheld_income_tax: 0

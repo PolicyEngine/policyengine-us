@@ -5,6 +5,7 @@ class capped_energy_efficient_central_air_conditioner_credit(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
+    label = "Capped energy efficient central air conditioner credit"
     documentation = (
         "Capped energy-efficient central air conditioner expenditures"
     )

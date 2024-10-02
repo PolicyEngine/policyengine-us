@@ -1,0 +1,23 @@
+- name: Income eligible, child age eligible, then entry eligible.
+  period: 2023-01
+  input:
+    co_ccap_re_determination_income_eligible: true
+    co_ccap_eligible_children: 1
+  output:
+    co_ccap_re_determination_eligible: true
+
+- name: Income eligible, no children eligible.
+  period: 2023-01
+  input:
+    co_ccap_re_determination_income_eligible: true
+    co_ccap_eligible_children: 0
+  output:
+    co_ccap_re_determination_eligible: false
+
+- name: Income ineligible, children eligible.
+  period: 2023-01
+  input:
+    co_ccap_re_determination_income_eligible: false
+    co_ccap_eligible_children: 1
+  output:
+    co_ccap_re_determination_eligible: false

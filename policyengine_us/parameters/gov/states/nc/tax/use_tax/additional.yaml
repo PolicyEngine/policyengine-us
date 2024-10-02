@@ -1,0 +1,30 @@
+description: North Carolina levies its use tax as a proportional income tax for income above a certain threshold.
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: /1
+  label: North Carolina additional use tax rate
+  reference:
+    # The legal code instructs the Department of Revenue to provide average use tax amount tables by income in the annual tax forms.
+    - title: Code of North Carolina | § 105-269.14. Payment of use tax with individual income tax.
+      href: https://www.ncleg.gov/EnactedLegislation/Statutes/PDF/BySection/Chapter_105/GS_105-269.14.pdf
+    - title: NCDOR Use Tax
+      href: https://www.ncdor.gov/taxes-forms/sales-and-use-tax/use-tax
+    - title: 2023 North Carolina Form D-400, Line 14
+      href: https://www.ncdor.gov/2023-d-400-web-fill-version/open#page=2
+    - title: 2023 North Carolina Form D-401, Line 18
+      href: https://www.ncdor.gov/2023-d-401-individual-income-tax-instructions/open#page=26
+    - title: 2022 North Carolina Form D-401, Line 18
+      href: https://www.ncdor.gov/2022-d-401-individual-income-tax-instructions/open#page=26
+    - title: 2021 North Carolina Form D-401, Line 18
+      href: https://www.ncdor.gov/2021-d-401-instruction-bookletpdf/open#page=26
+
+brackets:
+  - threshold: 
+      2021-01-01: 0
+    amount:
+      2021-01-01: 0
+  - threshold:
+      2021-01-01: 45_200
+    amount:
+      2021-01-01: 0.000675

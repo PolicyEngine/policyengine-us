@@ -1,0 +1,39 @@
+- name: Separate filing
+  period: 2021
+  input:
+    people: 
+      person1:
+        mt_income_tax_indiv: 1_000
+      person2:
+        mt_income_tax_indiv: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        mt_income_tax_joint: 4_000
+        mt_files_separately: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_income_tax: 3_000
+
+- name: Joint filing
+  period: 2021
+  input:
+    people: 
+      person1:
+        mt_income_tax_indiv: 1_000
+      person2:
+        mt_income_tax_indiv: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        mt_income_tax_joint: 4_000
+        mt_files_separately: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_income_tax: 4_000

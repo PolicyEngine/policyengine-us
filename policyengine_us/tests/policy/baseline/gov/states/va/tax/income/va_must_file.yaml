@@ -1,0 +1,26 @@
+- name: Single tax unit must file
+  period: 2023
+  input:
+    state_code: VA
+    va_agi: 11_950
+    filing_status: SINGLE
+  output:
+    va_must_file: true
+
+- name: Single tax unit must not file
+  period: 2023
+  input:
+    state_code: VA
+    va_agi: 11_949
+    filing_status: SINGLE
+  output:
+    va_must_file: false
+
+- name: Joint tax unit must not file
+  period: 2023
+  input:
+    state_code: VA
+    va_agi: 23_899
+    filing_status: JOINT
+  output:
+    va_must_file: false

@@ -3,7 +3,7 @@
   absolute_error_margin: 1
   input:
     state_code: NY
-    earned_income_tax_credit: 0
+    eitc: 0
   output:
     ny_eitc: 0
 
@@ -12,7 +12,7 @@
   absolute_error_margin: 1
   input:
     state_code: NY
-    earned_income_tax_credit: 100
+    eitc: 100
     ny_household_credit: 10
   output:
     ny_eitc: 20

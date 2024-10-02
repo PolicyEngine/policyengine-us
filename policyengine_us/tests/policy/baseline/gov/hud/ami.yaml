@@ -1,0 +1,22 @@
+- name: LA County has a $98,200 AMI.
+  period: 2023
+  input:
+    in_la: true
+  output:
+    ami: 98_200
+
+- name: We do not have AMI outside LA County and Denver County
+  period: 2022
+  input:
+    in_la: false
+    in_denver: false
+  output:
+    ami: 0
+
+- name: Denver County has a $12,400 AMI.
+  period: 2023
+  input:
+    in_la: false
+    in_denver: true
+  output:
+    ami: 124_100

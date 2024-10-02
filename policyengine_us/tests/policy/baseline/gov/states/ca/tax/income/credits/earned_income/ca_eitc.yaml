@@ -46,7 +46,7 @@
         state_code: CA
   output:  # expected results from patched TAXSIM35 2023-02-22 version
     # expected US results:
-    earned_income_tax_credit: 0  # too much investment income to be eligible
+    eitc: 0  # too much investment income to be eligible
     income_tax: -9648
     # expected CA results:
     ca_income_tax_before_credits: 164.14  # this is a PolicyEngineUS output

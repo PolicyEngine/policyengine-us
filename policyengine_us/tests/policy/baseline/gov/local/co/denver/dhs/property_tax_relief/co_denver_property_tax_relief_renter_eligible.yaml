@@ -1,0 +1,54 @@
+- name: Case 1, renter with income higher than ami, ineligible. 
+  period: 2023
+  input:
+    spm_unit_size: 1 
+    co_denver_property_tax_relief_income: 22_000
+    rent: 5_000
+    has_co_denver_dhs_elderly_disabled: true
+    in_denver: true
+  output:
+    co_denver_property_tax_relief_renter_eligible: false  
+
+- name: Case 2, Renter with income less than ami, eligible. 
+  period: 2023
+  input:
+    spm_unit_size: 1 
+    co_denver_property_tax_relief_income: 20_000
+    rent: 1_000
+    has_co_denver_dhs_elderly_disabled: true
+    in_denver: true
+  output:
+    co_denver_property_tax_relief_renter_eligible: true
+
+- name: Case 3, renter household size of 3 with income less than ami, eligible. 
+  period: 2023
+  input:
+    spm_unit_size: 3 
+    co_denver_property_tax_relief_income: 33_000
+    rent: 1_000
+    has_co_denver_dhs_elderly_disabled: true 
+    in_denver: true
+  output:
+    co_denver_property_tax_relief_renter_eligible: true
+
+- name: Case 4, Renter with income less than ami, but is not elderly nor disabled, ineligible. 
+  period: 2023
+  input:
+    spm_unit_size: 1 
+    co_denver_property_tax_relief_income: 20_0000
+    rent: 1_000
+    has_co_denver_dhs_elderly_disabled: false
+    in_denver: true
+  output:
+    co_denver_property_tax_relief_renter_eligible: false
+
+- name: Case 5, renter household size of 6 with income less than ami, eligible. 
+  period: 2023
+  input:
+    spm_unit_size: 6 
+    co_denver_property_tax_relief_income: 43_000
+    rent: 1_000
+    has_co_denver_dhs_elderly_disabled: true 
+    in_denver: true
+  output:
+    co_denver_property_tax_relief_renter_eligible: true

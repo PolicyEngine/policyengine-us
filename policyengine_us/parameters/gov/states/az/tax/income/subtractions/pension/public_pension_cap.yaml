@@ -1,0 +1,18 @@
+description: Arizona caps the pension exclusion at this amount.
+metadata:
+  label: Arizona pension exclusion cap
+  period: year
+  unit: currency-USD
+  reference:
+  - title: 2022 Arizona Form 140 Resident Personal Income Tax Booklet
+    href: https://azdor.gov/sites/default/files/2023-03/FORMS_INDIVIDUAL_2022_140BOOKLET.pdf#page=18
+  - title: 2021 Arizona Form 140 Resident Personal Income Tax Booklet
+    href: https://azdor.gov/sites/default/files/2023-03/FORMS_INDIVIDUAL_2021_140BOOKLET.pdf#page=23
+  - title: 2023 Arizona From 140 Resident Personal Income Tax Return, Line 29a
+    href: https://azdor.gov/sites/default/files/2023-10/FORMS_INDIVIDUAL_140-SVi.pdf#page=14
+  - title: 43-1022. Subtractions from Arizona gross income (2)
+    href: https://www.azleg.gov/ars/43/01022.htm
+
+values:
+  2021-01-01: 2_500
+  

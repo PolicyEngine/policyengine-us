@@ -1,0 +1,7 @@
+- name: Empty 2023 list
+  period: 2023
+  input:
+    hi_eitc: 1_000
+    state_code: HI
+  output:
+    hi_non_refundable_credits: 0

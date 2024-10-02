@@ -1,0 +1,29 @@
+- name: Person with income over the standard deduction amount
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    adjusted_gross_income_person: 5_000
+    filing_status: JOINT
+    state_code: MD
+  output:
+    md_withheld_income_tax: 76
+
+- name: Changing the filing status should not change the output 
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    adjusted_gross_income_person: 5_000
+    filing_status: SURVIVING_SPOUSE
+    state_code: MD
+  output:
+    md_withheld_income_tax: 76
+
+- name: Capped at 0
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    adjusted_gross_income_person: 2_300
+    filing_status: SURVIVING_SPOUSE
+    state_code: MD
+  output:
+    md_withheld_income_tax: 0

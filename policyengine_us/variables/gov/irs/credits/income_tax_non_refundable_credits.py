@@ -8,6 +8,3 @@ class income_tax_non_refundable_credits(Variable):
     label = "federal non-refundable income tax credits"
     unit = USD
     adds = "gov.irs.credits.non_refundable"
-
-
-c07100 = variable_alias("c07100", income_tax_non_refundable_credits)

@@ -1,0 +1,19 @@
+- name: Form 4952 amount more than the difference between investment interest and investment expense
+  period: 2021
+  input:
+    investment_interest_expense: 25_000
+    investment_expenses: 10_000
+    investment_income_form_4952: 20_000
+    state_code: CA
+  output:
+    ca_investment_interest_deduction: 5_000
+
+- name: Form 4952 amount less than the difference between investment interest and investment expense
+  period: 2021
+  input:
+    investment_interest_expense: 25_000
+    investment_expenses: 10_000
+    investment_income_form_4952: 10_000
+    state_code: CA
+  output:
+    ca_investment_interest_deduction: 5_000

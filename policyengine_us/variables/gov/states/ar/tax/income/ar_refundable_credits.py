@@ -8,3 +8,5 @@ class ar_refundable_credits(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.AR
+
+    adds = "gov.states.ar.tax.income.credits.refundable"

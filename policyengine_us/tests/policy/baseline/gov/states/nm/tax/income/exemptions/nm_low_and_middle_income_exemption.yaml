@@ -4,7 +4,7 @@
     state_code: NM
     filing_status: SINGLE
     adjusted_gross_income: 36_668
-    exemptions: 1
+    exemptions_count: 1
   output:
     nm_low_and_middle_income_exemption: 0
 
@@ -14,7 +14,7 @@
     state_code: NM
     filing_status: JOINT
     adjusted_gross_income: 30_000
-    exemptions: 2
+    exemptions_count: 2
   output:
     nm_low_and_middle_income_exemption: 5_000
 
@@ -22,8 +22,8 @@
   period: 2023
   input:
     state_code: NM
-    filing_status: WIDOW
+    filing_status: SURVIVING_SPOUSE
     adjusted_gross_income: 40_000
-    exemptions: 3
+    exemptions_count: 3
   output:
     nm_low_and_middle_income_exemption: 4_500

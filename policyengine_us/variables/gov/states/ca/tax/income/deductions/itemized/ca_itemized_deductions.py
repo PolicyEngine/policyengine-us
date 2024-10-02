@@ -14,10 +14,9 @@ class ca_itemized_deductions(Variable):
     defined_for = StateCode.CA
 
     def formula(tax_unit, period, parameters):
-        # compute itemized deduction maximum
-        itm_deds_less_salt = tax_unit("itemized_deductions_less_salt", period)
-        uncapped_property_taxes = add(tax_unit, period, ["real_estate_taxes"])
-        itm_deds_max = itm_deds_less_salt + uncapped_property_taxes
+        itm_deds_max = tax_unit(
+            "ca_itemized_deductions_pre_limitation", period
+        )
         # compute high-AGI limit on itemized deductions
         p = parameters(period).gov.states.ca.tax.income.deductions.itemized
         # ... determine part of itemized deductions subject to limit

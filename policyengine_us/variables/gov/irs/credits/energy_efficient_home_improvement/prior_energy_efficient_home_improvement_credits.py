@@ -5,6 +5,7 @@ class prior_energy_efficient_home_improvement_credits(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
+    label = "Prior year energy efficient home improvement credit"
     documentation = (
         "Energy efficient home improvement credits claimed in prior years"
     )

@@ -14,7 +14,7 @@ class ca_eitc(Variable):
 
         eligible = tax_unit("ca_eitc_eligible", period)
 
-        earned_income = tax_unit("filer_earned", period)
+        earned_income = tax_unit("filer_adjusted_earnings", period)
         child_count = tax_unit("eitc_child_count", period)
 
         phase_in_rate = p.phase_in.rate.calc(child_count) * p.adjustment.factor

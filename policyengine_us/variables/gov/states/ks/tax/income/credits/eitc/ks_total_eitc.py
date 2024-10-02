@@ -14,5 +14,6 @@ class ks_total_eitc(Variable):
     defined_for = StateCode.KS
 
     def formula(tax_unit, period, parameters):
+        federal_eitc = tax_unit("eitc", period)
         p = parameters(period).gov.states.ks.tax.income.credits
-        return p.eitc_fraction * tax_unit("earned_income_tax_credit", period)
+        return p.eitc_fraction * federal_eitc

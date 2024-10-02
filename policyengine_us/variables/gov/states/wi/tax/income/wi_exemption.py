@@ -19,7 +19,7 @@ class wi_exemption(Variable):
     def formula(tax_unit, period, parameters):
         # compute base exemption amount
         p = parameters(period).gov.states.wi.tax.income
-        base_amount = tax_unit("xtot", period) * p.exemption.base
+        base_amount = tax_unit("exemptions_count", period) * p.exemption.base
         # compute extra exemption amount
         elderly_head = (
             tax_unit("age_head", period) >= p.exemption.old_age

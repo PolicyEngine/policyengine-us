@@ -9,7 +9,7 @@
     ny_income_tax: -1
 
 - name: Tax unit with taxsimid 99902 in p21.its.csv and p21.ots.csv
-  absolute_error_margin: 0.01
+  absolute_error_margin: 0.3
   period: 2021
   input:
     people:

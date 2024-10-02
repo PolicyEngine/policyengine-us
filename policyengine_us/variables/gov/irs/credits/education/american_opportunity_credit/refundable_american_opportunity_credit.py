@@ -19,6 +19,3 @@ class refundable_american_opportunity_credit(Variable):
         return aoc.refundability * tax_unit(
             "american_opportunity_credit", period
         )
-
-
-c10960 = variable_alias("c10960", refundable_american_opportunity_credit)

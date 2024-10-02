@@ -12,6 +12,6 @@ class ca_care_amount_if_eligible(Variable):
     defined_for = StateCode.CA
 
     def formula(household, period, parameters):
-        expense = add(household, period, ["electricity_expense"])
+        expense = add(household, period, ["pre_subsidy_electricity_expense"])
         p = parameters(period).gov.states.ca.cpuc.care
         return p.discount * expense

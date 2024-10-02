@@ -1,0 +1,56 @@
+- name: Tax unit with taxsimid 60363 in f21.its.csv and f21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 21_010
+        taxable_interest_income: 11_010
+        taxable_private_pension_income: 6_000
+        social_security_retirement: 3_000
+      person2:
+        age: 11
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        premium_tax_credit: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 9  # CT
+  output:  # expected results from patched TAXSIM35 2024-03-07 version
+    ct_income_tax: 404
+
+- name: Tax unit with taxsimid 99900 in p21.its.csv and p21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 68
+        employment_income: 16_010
+      person2:
+        age: 11
+      person3:
+        age: 11
+      person4:
+        age: 16
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        premium_tax_credit: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        snap: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_fips: 9  # CT
+  output:  # expected results from patched TAXSIM35 2024-03-17 version
+    ct_income_tax: -2_052.04

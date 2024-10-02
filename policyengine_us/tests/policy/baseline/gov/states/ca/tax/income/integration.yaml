@@ -1,0 +1,23 @@
+- name: two people
+  period: 2023
+  input:
+    people:  
+        person1:  
+           age: 40  
+           employment_income: 50_000  
+        person2:  
+           age: 40  
+           employment_income: 40_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        ca_itemized_deductions: 10_000
+    households:
+      household:
+        state_code: CA
+  output:
+    ca_agi: 90_000
+    ca_standard_deduction: 10_726
+    ca_deductions: 10_726
+    ca_taxable_income: 79_274

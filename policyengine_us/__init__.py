@@ -7,11 +7,10 @@ Basically a tax and benefit system contains simulation variables (source code) a
 
 See https://openfisca.org/doc/key-concepts/tax_and_benefit_system.html
 """
+
 from policyengine_us.system import (
     CountryTaxBenefitSystem,
     Simulation,
     Microsimulation,
     IndividualSim,
 )
-
-from policyengine_us.data import *

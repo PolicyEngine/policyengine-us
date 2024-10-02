@@ -8,7 +8,7 @@ SEPARATE:
   # Rises with inflation starting in 2004.
   # Values from 2015 to 2022 are from Tax Foundation.
   2015-01-01: 4_400
-WIDOW:
+SURVIVING_SPOUSE:
   2002-01-01: 3_300
   # Rises with inflation starting in 2004.
   # Values from 2015 to 2022 are from Tax Foundation.
@@ -28,7 +28,7 @@ metadata:
   period: year
   breakdown:
   - filing_status
-  label: MA income tax personal exemption
+  label: Massachusetts income tax personal exemption
   reference:
     - title: "Taxable income: adjusted gross income less deductions and exemptions (b)(2)(A)"
       href: https://malegislature.gov/Laws/GeneralLaws/PartI/TitleIX/Chapter62/Section3
@@ -36,3 +36,5 @@ metadata:
       href: https://taxfoundation.org/publications/state-individual-income-tax-rates-and-brackets/
     - title: Form 1 2022 | Massachusetts | Resident Income Tax (line 2)
       href: https://www.mass.gov/doc/2022-form-1-instructions/download
+    - title: Form 1 2023 Massachusetts Resident Income Tax (Line 2a)
+      href: https://www.mass.gov/doc/2023-form-1-instructions/download#page=9

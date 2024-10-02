@@ -1,0 +1,39 @@
+- name: Tax unit with taxsimid 75376 in e21.its.csv and e21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 26
+        taxable_interest_income: 5_505
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person2:
+        age: 26
+        employment_income: 160_010
+        taxable_interest_income: 5_505
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        premium_tax_credit: 0  # not in TAXSIM35
+        local_income_tax: 0  # not in TAXSIM35
+        state_sales_tax: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 39  # OH
+  output:  # expected results from patched TAXSIM35 2024-01-11 version
+    oh_joint_filing_credit_agi_subtractions: [5_505, 5_505]
+    oh_joint_filing_credit_qualifying_income: [0, 160_010]
+    oh_joint_filing_credit_eligible: false
+    oh_joint_filing_credit: 0
+    oh_income_tax: 5_380.28

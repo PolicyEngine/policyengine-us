@@ -57,4 +57,4 @@
       household:
         state_group: CONTIGUOUS_US
   output:
-    snap_expected_contribution: (428.5 * 0.3) * 12
+    snap_expected_contribution: (428 * 0.3) * 12 # Net income is rounded down each month

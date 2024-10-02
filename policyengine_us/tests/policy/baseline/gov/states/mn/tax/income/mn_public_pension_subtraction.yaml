@@ -1,0 +1,39 @@
+- name: Income below reduction start, capped amount
+  period: 2023
+  input:
+    filing_status: JOINT
+    taxable_public_pension_income: 30_000  
+    state_code: MN
+    adjusted_gross_income: 99_999
+  output:
+    mn_public_pension_subtraction: 25_000
+
+- name: Income above reduction start, joint
+  period: 2023
+  input:
+    filing_status: JOINT
+    taxable_public_pension_income: 30_000  
+    state_code: MN
+    adjusted_gross_income: 105_000
+  output:
+    mn_public_pension_subtraction: 17_500
+
+- name: Income above reduction start, single
+  period: 2023
+  input:
+    filing_status: SINGLE
+    taxable_public_pension_income: 30_000  
+    state_code: MN
+    adjusted_gross_income: 82_000
+  output:
+    mn_public_pension_subtraction: 10_000
+
+- name: Fully reduced
+  period: 2023
+  input:
+    filing_status: JOINT
+    taxable_public_pension_income: 30_000  
+    state_code: MN
+    adjusted_gross_income: 300_000
+  output:
+    mn_public_pension_subtraction: 0

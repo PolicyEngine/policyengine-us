@@ -25,7 +25,7 @@
 - name: Unit test of minimum taxable income of $1,000 in 2023.
   period: 2023
   input:
-    mo_taxable_income: 1_001
+    mo_taxable_income: 1_208
     state_code: MO
   output:
     mo_income_tax_exempt: false

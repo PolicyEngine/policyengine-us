@@ -1,0 +1,17 @@
+description: Delaware accounts for the following itemized deductions.  
+values:
+  2021-01-01:
+    - de_capped_real_estate_tax
+    - charitable_deduction
+    - interest_deduction
+    - casualty_loss_deduction
+metadata:
+  unit: list
+  period: year
+  label: Delaware itemized deduction sources
+  reference:
+    - title: Delaware 2022 Resident Schedule A Itemized Deduction
+      href: https://revenuefiles.delaware.gov/2022/TY22_PIT-RSA_2022-02_PaperInteractive.pdf"
+    - title: Code of Delaware. Title30. CHAPTER 11. Personal Income Tax, § 1109
+      href: https://delcode.delaware.gov/title30/c011/sc02/index.html
+    

@@ -9,6 +9,7 @@ class SchoolMealTier(Enum):
 
 class school_meal_tier(Variable):
     value_type = Enum
+    label = "School meal tier"
     possible_values = SchoolMealTier
     default_value = SchoolMealTier.PAID
     entity = SPMUnit

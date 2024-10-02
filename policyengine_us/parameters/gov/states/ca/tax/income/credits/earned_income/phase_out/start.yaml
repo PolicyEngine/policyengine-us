@@ -12,19 +12,33 @@ metadata:
       href: https://www.ftb.ca.gov/forms/2021/2021-3514-instructions.html
     - title: California Form 3514 instructions (2022)
       href: https://www.ftb.ca.gov/forms/2022/2022-3514-instructions.html
+    - title: California Form 3514 instructions (2023)
+      href: https://www.ftb.ca.gov/forms/2023/2023-3514-instructions.html
 brackets:
   - threshold:
       2021-01-01: 0
     amount:
-      2021-01-01: 3_922
-      2022-01-01: 4_248
+      values:
+        2021-01-01: 3_922
+        2022-01-01: 4_248
+        2023-01-01: 4_380
+      metadata:
+        uprating: gov.states.ca.cpi
   - threshold:
       2021-01-01: 1
     amount:
-      2021-01-01: 5_890
-      2022-01-01: 6_379
+      values:
+        2021-01-01: 5_890
+        2022-01-01: 6_379
+        2023-01-01: 6_577
+      metadata:
+        uprating: gov.states.ca.cpi
   - threshold:
       2021-01-01: 2
     amount:
-      2021-01-01: 8_268
-      2022-01-01: 8_954
+      values:
+        2021-01-01: 8_268
+        2022-01-01: 8_954
+        2023-01-01: 9_232
+      metadata:
+        uprating: gov.states.ca.cpi

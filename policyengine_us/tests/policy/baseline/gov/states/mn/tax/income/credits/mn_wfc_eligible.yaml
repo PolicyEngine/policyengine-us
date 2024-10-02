@@ -1,0 +1,65 @@
+- name: MN WFC eligible unit test 1
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 18
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    mn_wfc_eligible: false  # taxpayer is too young
+
+- name: MN WFC eligible unit test 2
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 65
+      person2:
+        is_tax_unit_dependent: true
+        age: 60
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    mn_wfc_eligible: false  # taxpayer is too old
+
+- name: MN WFC eligible unit test 3
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 65
+      person2:
+        is_tax_unit_dependent: true
+        age: 10
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    mn_wfc_eligible: true  # taxpayer has a child
+
+- name: MN WFC eligible unit test 4
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        tax_exempt_interest_income: 11_000
+        age: 65
+      person2:
+        is_tax_unit_dependent: true
+        age: 10
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    mn_wfc_eligible: false  # US EITC property income eligibility rules apply

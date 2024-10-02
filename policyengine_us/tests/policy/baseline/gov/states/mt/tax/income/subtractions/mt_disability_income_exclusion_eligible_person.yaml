@@ -1,0 +1,19 @@
+- name: Age ineligible
+  period: 2022
+  input:
+    is_tax_unit_head: true
+    retired_on_total_disability: true
+    age: 65
+    state_code: MT
+  output:
+    mt_disability_income_exclusion_eligible_person: 0
+
+- name: Eligible
+  period: 2022
+  input:
+    is_tax_unit_head: true
+    retired_on_total_disability: true
+    age: 64
+    state_code: MT
+  output:
+    mt_disability_income_exclusion_eligible_person: 1

@@ -1,0 +1,25 @@
+description: Ohio deducts these sources from the federal adjusted gross income.
+values:
+  2021-01-01:
+    - oh_section_179_expense_add_back
+    - taxable_social_security
+    - oh_uniformed_services_retirement_income_deduction
+    - oh_529_plan_deduction_person
+    - pell_grant
+    - educator_expense
+    - disability_benefits
+    - oh_unreimbursed_medical_care_expense_deduction_person
+    
+metadata:
+  unit: list
+  period: year
+  label: Ohio adjusted gross income deductions
+  reference:
+    - title: Ohio 2021 Instructions for Filing Original and Amended
+      href: https://tax.ohio.gov/static/forms/ohio_individual/individual/2021/pit-it1040-booklet.pdf#page=16
+    - title: Ohio 2022 Tax Form 
+      href: https://tax.ohio.gov/static/forms/ohio_individual/individual/2022/it1040-sd100-instruction-booklet.pdf#page=16
+    - title: Ohio 2023 Schedule of Adjustments
+      href: https://dam.assets.ohio.gov/image/upload/tax.ohio.gov/forms/ohio_individual/individual/2023/1040-bundle-original.pdf#page=3
+    - title: Ohio Revised Code, Title 57 Taxation, Chapter 5747 Income Tax, Section 5747.01
+      href: https://law.justia.com/codes/ohio/2022/title-57/chapter-5747/section-5747-01/

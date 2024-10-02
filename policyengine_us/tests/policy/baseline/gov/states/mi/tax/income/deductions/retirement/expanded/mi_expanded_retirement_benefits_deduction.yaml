@@ -1,0 +1,61 @@
+- name: 2023 single filer with expanded retirement benefits deduction smaller than taxable pension income and no military retirement pay
+  period: 2023
+  input:
+    people:
+      person1:
+        taxable_pension_income: 60_000
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        mi_expanded_retirement_benefits_deduction_eligible: true
+        members: [person1]
+        filing_status: SINGLE
+    household:
+      members: [person1]
+      state_code: MI
+  output: # min(60000, 15379.5)
+    mi_expanded_retirement_benefits_deduction: 15_379.5
+
+- name: 2023 joint filer and their spouse with expanded retirement benefits deduction larger than taxable pension income and no military retirement pay, and with one more household member
+  period: 2023
+  input:
+    people:
+      person1:
+        taxable_pension_income: 15_000
+        is_tax_unit_head_or_spouse: true
+      person2:
+        taxable_pension_income: 15_000
+        is_tax_unit_head_or_spouse: true
+      person3:
+        taxable_pension_income: 30_000
+        military_retirement_pay: 2_000
+        is_tax_unit_head_or_spouse: false
+    tax_units:
+      tax_unit:
+        mi_expanded_retirement_benefits_deduction_eligible: true
+        members: [person1, person2, person3]
+        filing_status: JOINT
+    household:
+      members: [person1, person2, person3]
+      state_code: MI
+  output: # min(30759, 15000 + 15000)
+    mi_expanded_retirement_benefits_deduction: 30_000
+    
+- name: 2023 single filer with expanded retirement benefits deduction and military retirement pay smaller than taxable pension income
+  period: 2023
+  input:
+    people:
+      person1:
+        taxable_pension_income: 20_000
+        military_retirement_pay: 1_000
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        mi_expanded_retirement_benefits_deduction_eligible: true
+        members: [person1]
+        filing_status: SINGLE
+    household:
+      members: [person1]
+      state_code: MI
+  output: # min(0.25 * (61518 - 1000), 20000)
+    mi_expanded_retirement_benefits_deduction: 15_129.5

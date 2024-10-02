@@ -1,0 +1,29 @@
+- name: Person with income over the personal exemption amount
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    adjusted_gross_income_person: 15_000
+    filing_status: JOINT
+    state_code: IN
+  output:
+    in_withheld_income_tax: 452.2 #(15000-1000)*0.0323
+
+- name: Changing the filing status should not change the output 
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    adjusted_gross_income_person: 15_000
+    filing_status: SURVIVING_SPOUSE
+    state_code: IN
+  output:
+    in_withheld_income_tax: 452.2
+
+- name: Tax exempt
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    adjusted_gross_income_person: 800
+    filing_status: SURVIVING_SPOUSE
+    state_code: IN
+  output:
+    in_withheld_income_tax: 0

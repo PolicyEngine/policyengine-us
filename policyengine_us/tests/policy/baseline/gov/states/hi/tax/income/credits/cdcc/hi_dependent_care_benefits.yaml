@@ -1,0 +1,199 @@
+- name: 2022 one dependent
+  period: 2022
+  input:
+    people:
+      head:
+        dependent_care_employer_benefits: 1
+    tax_units:
+      tax_unit:
+        members: [head]
+        hi_cdcc_min_head_spouse_earned: 2_400
+        filing_status: SEPARATE
+        count_cdcc_eligible: 1
+        tax_unit_childcare_expenses: 4_000
+    households:
+      household:
+        members: [head]
+        state_code: HI
+  output:
+    hi_dependent_care_benefits: 2_399
+
+- name: 2023 one dependent
+  period: 2023
+  input:
+    people:
+      head:
+        dependent_care_employer_benefits: 1
+    tax_units:
+      tax_unit:
+        members: [head]
+        hi_cdcc_min_head_spouse_earned: 2_400
+        filing_status: SEPARATE
+        count_cdcc_eligible: 1
+        tax_unit_childcare_expenses: 4_000
+    households:
+      household:
+        members: [head]
+        state_code: HI
+  output:
+    hi_dependent_care_benefits: 4_000
+
+- name: 2022 more than one dependent
+  period: 2022
+  input:
+    people:
+      head:
+        dependent_care_employer_benefits: 1
+    tax_units:
+      tax_unit:
+        members: [head]
+        hi_cdcc_min_head_spouse_earned: 2_400
+        filing_status: SEPARATE
+        count_cdcc_eligible: 3
+        tax_unit_childcare_expenses: 4_000
+    households:
+      household:
+        members: [head]
+        state_code: HI
+  output:
+    hi_dependent_care_benefits: 4_000 
+
+- name: 2023 more than one dependent
+  period: 2023
+  input:
+    people:
+      head:
+        dependent_care_employer_benefits: 1
+    tax_units:
+      tax_unit:
+        members: [head]
+        hi_cdcc_min_head_spouse_earned: 2_400
+        filing_status: SEPARATE
+        count_cdcc_eligible: 3
+        tax_unit_childcare_expenses: 4_000
+    households:
+      household:
+        members: [head]
+        state_code: HI
+  output:
+    hi_dependent_care_benefits: 4_000 
+
+- name: smaller tax_unit_childcare_expenses
+  period: 2022
+  input:
+    people:
+      head:
+        dependent_care_employer_benefits: 1
+    tax_units:
+      tax_unit:
+        members: [head]
+        hi_cdcc_min_head_spouse_earned: 2_400
+        filing_status: SEPARATE
+        count_cdcc_eligible: 1
+        tax_unit_childcare_expenses: 1_000
+    households:
+      household:
+        members: [head]
+        state_code: HI
+  output:
+    hi_dependent_care_benefits: 1_000
+  
+- name: different min benefit 
+  period: 2022
+  input:
+    people:
+      head:
+        dependent_care_employer_benefits: 4
+    tax_units:
+      tax_unit:
+        members: [head]
+        hi_cdcc_min_head_spouse_earned: 2_400
+        filing_status: SEPARATE
+        count_cdcc_eligible: 1
+        tax_unit_childcare_expenses: 5_000
+    households:
+      household:
+        members: [head]
+        state_code: HI
+  output:
+    hi_dependent_care_benefits: 2_396
+
+- name: different min benefit 2
+  period: 2022
+  input:
+    people:
+      head:
+        dependent_care_employer_benefits: 10
+    tax_units:
+      tax_unit:
+        members: [head]
+        hi_cdcc_min_head_spouse_earned: 2_400
+        filing_status: SEPARATE
+        count_cdcc_eligible: 1
+        tax_unit_childcare_expenses: 5
+    households:
+      household:
+        members: [head]
+        state_code: HI
+  output:
+    hi_dependent_care_benefits: 5
+
+- name: not separate
+  period: 2022
+  input:
+    people:
+      head:
+        dependent_care_employer_benefits: 10
+    tax_units:
+      tax_unit:
+        members: [head]
+        hi_cdcc_min_head_spouse_earned: 2_400
+        filing_status: SEPARATE
+        count_cdcc_eligible: 3
+        tax_unit_childcare_expenses: 5
+    households:
+      household:
+        members: [head]
+        state_code: HI
+  output:
+    hi_dependent_care_benefits: 5
+
+- name: 2022 benefit beyond threshold
+  period: 2022
+  input:
+    people:
+      head:
+        dependent_care_employer_benefits: 5_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        hi_cdcc_min_head_spouse_earned: 9_000
+        filing_status: SEPARATE
+        count_cdcc_eligible: 3
+        tax_unit_childcare_expenses: 6_000
+    households:
+      household:
+        members: [head]
+        state_code: HI
+  output:
+    hi_dependent_care_benefits: 2_300
+
+- name: 2023 benefit beyond threshold 
+  period: 2023
+  input:
+    people:
+      head:
+        dependent_care_employer_benefits: 5_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        hi_cdcc_min_head_spouse_earned: 9_000
+        filing_status: SEPARATE
+        count_cdcc_eligible: 3
+        tax_unit_childcare_expenses: 6_000
+    households:
+      household:
+        members: [head]
+        state_code: HI
+  output:
+    hi_dependent_care_benefits: 6_000

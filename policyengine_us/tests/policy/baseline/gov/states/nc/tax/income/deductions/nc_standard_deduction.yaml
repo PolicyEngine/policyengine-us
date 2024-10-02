@@ -1,0 +1,23 @@
+- name: nc_standard_deduction unit test 1
+  period: 2021
+  input:
+    state_code: NC
+    filing_status: SINGLE
+  output:
+    nc_standard_deduction: 10_750
+
+- name: nc_standard_deduction unit test 2
+  period: 2022
+  input:
+    state_code: NC
+    filing_status: JOINT
+  output:
+    nc_standard_deduction: 25_500
+
+- name: nc_standard_deduction unit test 3
+  period: 2021
+  input:
+    state_code: NC
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    nc_standard_deduction: 16_125

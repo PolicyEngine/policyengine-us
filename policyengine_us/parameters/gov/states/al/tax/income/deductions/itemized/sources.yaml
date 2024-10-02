@@ -1,0 +1,28 @@
+description: Alabama allows for the following itemized deductions.
+values:
+  2021-01-01:
+    - real_estate_taxes # Section (a), (3), (d)
+    - employee_payroll_tax # Section (a), (3), (a)
+    - self_employment_tax # Section (a), (3), (a)
+    # Legal code specifies charitable contributions to the extent deductible in federal law.
+    # Tax form allows deducting all contributions, not capped by AGI as in federal law.
+    # We adopt the legal code definition.
+    - charitable_deduction # Section (a), (10)
+    - al_medical_expense_deduction # Section (a), (13)
+    - al_casualty_loss_deduction # Section (a), (6)
+    - al_misc_deduction # Section (a), (23)
+    - al_interest_deduction # Section (a), (2)
+
+metadata:
+  unit: list
+  period: year
+  label: Alabama itemized deductions sources
+  reference:
+    - title: Code of Alabama Section 40-18-15
+      href: https://law.justia.com/codes/alabama/2022/title-40/chapter-18/article-1/section-40-18-15/
+    - title: 2023 Schedule A (Form 1040)
+      href: https://www.revenue.alabama.gov/ultraviewer/viewer/basic_viewer/index.html?form=2024/01/23f40schabdc_blk.pdf#page=1
+    - title: 2022 Schedule A (Form 1040)
+      href: https://www.revenue.alabama.gov/ultraviewer/viewer/basic_viewer/index.html?form=2023/01/22f40schabdc_blk.pdf#page=1
+    - title: 2021 Schedule A (Form 1040)
+      href: https://www.revenue.alabama.gov/ultraviewer/viewer/basic_viewer/index.html?form=2022/06/21f40schabdc_blk.pdf#page=1

@@ -1,0 +1,11 @@
+description: Total non-qualified dividend income.
+values:
+  2015-01-01: 57_064_932_000
+  2020-01-01: 67_632_347_000
+metadata:
+  unit: currency-USD
+  label: SOI non-qualified dividend income
+  uprating: calibration.gov.cbo.income_by_source.qualified_dividend_income
+  reference:
+    - title: IRS SOI Tax Stats - Individual Statistical Tables by Size of Adjusted Gross Income
+      href: https://www.irs.gov/statistics/soi-tax-stats-individual-statistical-tables-by-size-of-adjusted-gross-income

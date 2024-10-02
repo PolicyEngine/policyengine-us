@@ -1,0 +1,91 @@
+- name: Post-secondary education tuition deduction for two-year college institutes (2022)
+  period: 2022
+  input:
+    people:
+      person1:
+        qualified_tuition_expenses: 4_800
+        technical_institution_student: false
+        four_year_college_student: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AR 
+  output:
+    ar_post_secondary_education_tuition_deduction_person: 2_272
+
+- name: Post-secondary education tuition deduction for four-year college institutes (2022)
+  period: 2022
+  input:
+    people:
+      person1:
+        qualified_tuition_expenses: 10_000
+        technical_institution_student: false
+        four_year_college_student: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AR 
+  output:
+    ar_post_secondary_education_tuition_deduction_person: 4_712
+
+
+- name: Post-secondary education tuition deduction for technical institutes (2022 & 2021)
+  period: 2021
+  input:
+    people:
+      person1:
+        qualified_tuition_expenses: 2_000
+        technical_institution_student: true
+        four_year_college_student: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AR 
+  output:
+    ar_post_secondary_education_tuition_deduction_person: 780
+
+- name: Post-secondary education tuition deduction for two-year college institutes (2021)
+  period: 2021
+  input:
+    people:
+      person1:
+        qualified_tuition_expenses: 4_000
+        technical_institution_student: false
+        four_year_college_student: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AR 
+  output:
+    ar_post_secondary_education_tuition_deduction_person: 2_000
+
+- name: Post-secondary education tuition deduction for four-year college institutes (2021)
+  period: 2021
+  input:
+    people:
+      person1:
+        qualified_tuition_expenses: 10_000
+        technical_institution_student: false
+        four_year_college_student: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AR 
+  output:
+    ar_post_secondary_education_tuition_deduction_person: 4_602
+

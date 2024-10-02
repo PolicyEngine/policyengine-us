@@ -13,16 +13,26 @@ class ssi_countable_income(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/42/1382a#b"
 
     def formula(person, period, parameters):
-        personal_earned_income = person("ssi_earned_income", period)
-        personal_unearned_income = person("ssi_unearned_income", period)
+        pre_reduction_earned_income = person(
+            "ssi_marital_earned_income", period
+        )
+        blind_disabled_working_student_income = person(
+            "ssi_blind_or_disabled_working_student_exclusion", period
+        )
+        earned_income = max_(
+            pre_reduction_earned_income
+            - blind_disabled_working_student_income,
+            0,
+        )
+
+        unearned_income = person("ssi_marital_unearned_income", period)
         parental_income_deemed_as_unearned_income = person(
             "ssi_unearned_income_deemed_from_ineligible_parent", period
         )
 
         personal_income = _apply_ssi_exclusions(
-            personal_earned_income,
-            personal_unearned_income
-            + parental_income_deemed_as_unearned_income,
+            earned_income,
+            unearned_income + parental_income_deemed_as_unearned_income,
             parameters,
             period,
         )

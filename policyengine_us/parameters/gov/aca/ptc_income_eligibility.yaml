@@ -1,0 +1,29 @@
+description: Eligibility for ACA Premium Tax Credit by percent of modified AGI to federal poverty line.
+metadata:
+  type: single_amount
+  period: year
+  threshold_unit: /1
+  amount_unit: bool
+  label: ACA PTC income eligibility conditions
+  reference:
+    - title: 26 U.S. Code § 36B(c)(1) - Refundable credit for coverage under a qualified health plan
+      href: https://www.law.cornell.edu/uscode/text/26/36B#c_1
+    - title: CMS ; APTC and CSR Basics ; June 2023
+      href: https://www.cms.gov/marketplace/technical-assistance-resources/aptc-csr-basics.pdf#page=6
+brackets:
+  - threshold:
+      0000-01-01: 0
+    amount:
+      0000-01-01: false
+  - threshold:
+      0000-01-01: 1.00
+    amount:
+      0000-01-01: false
+      2014-01-01: true
+  - threshold:
+      0000-01-01: 4.00
+    amount:
+      0000-01-01: false
+      2021-01-01: true  # American Rescue Plan Act for 2021-2022
+      2023-01-01: true  # Inflation Reduction Act for 2023-2025
+      2026-01-01: false

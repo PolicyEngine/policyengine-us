@@ -6,7 +6,7 @@ class meets_snap_net_income_test(Variable):
     entity = SPMUnit
     label = "Meets SNAP net income test"
     documentation = "Whether this SPM unit meets the SNAP net income test"
-    definition_period = YEAR
+    definition_period = MONTH
     reference = (
         "https://www.law.cornell.edu/uscode/text/7/2017#a",
         "https://www.law.cornell.edu/uscode/text/7/2014#c",

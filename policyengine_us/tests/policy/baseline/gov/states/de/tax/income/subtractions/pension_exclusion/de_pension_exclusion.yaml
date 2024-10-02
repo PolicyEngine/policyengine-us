@@ -1,0 +1,59 @@
+- name: Capped pension income
+  period: 2023
+  input:
+    age: 59
+    military_retirement_pay: 1_000
+    taxable_pension_income: 10_000
+    is_tax_unit_head_or_spouse: true
+    de_pension_exclusion_income: 10_000
+    state_code: DE
+  output:
+    de_pension_exclusion: 2_000
+
+- name: Uncapped military retirement pay
+  period: 2023
+  input:
+    age: 59
+    military_retirement_pay: 3_000
+    taxable_pension_income: 10_000
+    is_tax_unit_head_or_spouse: true
+    de_pension_exclusion_income: 0
+    state_code: DE
+  output:
+    de_pension_exclusion: 3_000
+
+- name: Capped military retirement pay
+  period: 2023
+  input:
+    age: 59
+    military_retirement_pay: 15_000
+    taxable_pension_income: 10_000
+    is_tax_unit_head_or_spouse: true
+    de_pension_exclusion_income: 20_000
+    state_code: DE
+  output:
+    de_pension_exclusion: 12_500
+
+- name: Military retirement pay not valid, only retirement income
+  period: 2021
+  input:
+    age: 60
+    military_retirement_pay: 3_000
+    taxable_pension_income: 1_000
+    is_tax_unit_head_or_spouse: true
+    de_pension_exclusion_income: 10_000
+    state_code: DE
+  output:
+    de_pension_exclusion: 10_000
+
+- name: Capped retirement income
+  period: 2022
+  input:
+    age: 60
+    military_retirement_pay: 1_000
+    taxable_pension_income: 0
+    is_tax_unit_head_or_spouse: true
+    de_pension_exclusion_income: 20_000
+    state_code: DE
+  output:
+    de_pension_exclusion: 12_500

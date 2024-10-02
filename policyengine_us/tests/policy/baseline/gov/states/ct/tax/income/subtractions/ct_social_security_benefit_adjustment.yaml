@@ -1,0 +1,53 @@
+- name: Adjusted gross income under reduction threshold, single
+  period: 2022
+  input:
+    state_code: CT
+    tax_unit_taxable_social_security: 12_000
+    adjusted_gross_income: 74_999
+    tax_unit_ss_combined_income_excess: 5_000
+    tax_unit_social_security: 20_000
+    filing_status: SINGLE
+  output:
+    ct_social_security_benefit_adjustment: 12_000
+
+- name: Adjusted gross income under reduction threshold, joint
+  period: 2022
+  input:
+    state_code: CT
+    tax_unit_taxable_social_security: 12_000
+    adjusted_gross_income: 99_999
+    tax_unit_ss_combined_income_excess: 5_000
+    tax_unit_social_security: 20_000
+    filing_status: JOINT
+  output:
+    ct_social_security_benefit_adjustment: 12_000
+
+- name: Adjusted gross income under reduction threshold, joint
+  period: 2022
+  input:
+    state_code: CT
+    tax_unit_taxable_social_security: 12_000
+    adjusted_gross_income: 100_000
+    tax_unit_ss_combined_income_excess: 5_000
+    tax_unit_social_security: 15_000
+    filing_status: JOINT
+  output:
+    ct_social_security_benefit_adjustment: 11_500
+
+- name: Integration test
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 64
+        employment_income: 43_010
+        taxable_interest_income: 11_010
+        taxable_private_pension_income: 11_000
+        social_security_retirement: 15_000
+    households:
+      household:
+        members: [person1]
+        state_fips: 9  # CT
+  output:  # expected results from patched TAXSIM35 2024-02-15 version
+    ct_social_security_benefit_adjustment: 9_000

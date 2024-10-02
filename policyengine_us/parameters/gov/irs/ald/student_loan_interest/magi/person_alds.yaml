@@ -1,0 +1,17 @@
+description: IRS consideres the following person level above the line deductions for the modified adjusted gross income computation under the student loan interest deduction.
+
+metadata:
+  unit: list
+  period: year
+  label: Student loan interest deduction person level above the line deductions
+  reference:
+    # Not explicitly mentioned in the legal code but it is relevant for the gross income
+    # computation in the python structure
+    - title: 26 U.S. Code § 221 - Interest on education loans (b)(2)(C)
+      href: https://www.law.cornell.edu/uscode/text/26/221
+
+values:
+  2002-01-01:
+    - self_employment_tax_ald
+    - self_employed_health_insurance_ald
+    - self_employed_pension_contribution_ald

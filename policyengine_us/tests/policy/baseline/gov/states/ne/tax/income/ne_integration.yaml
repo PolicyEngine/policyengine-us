@@ -34,6 +34,6 @@
         members: [person1, person2, person3]
         state_code: NE
   output:  # expected results from patched TAXSIM35 2023-03-28 version
-    earned_income_tax_credit: 4_613.21
+    eitc: 4_613.21
     ne_eitc: 461.32
     ne_income_tax: -461.32

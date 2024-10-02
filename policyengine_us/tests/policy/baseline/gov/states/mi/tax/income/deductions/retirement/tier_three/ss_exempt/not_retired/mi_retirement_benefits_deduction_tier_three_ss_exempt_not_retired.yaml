@@ -1,0 +1,93 @@
+- name: 2022 single filer with full tier 3 retirement and pension benefits
+  period: 2022
+  input:
+    people:
+      person1:
+        taxable_pension_income: 40_000
+        military_retirement_pay: 1_000
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        mi_retirement_benefits_deduction_tier_three_eligible: true
+        mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired_eligible_people: 1
+        mi_retirement_benefits_deduction_tier_one_amount: 30_000
+        mi_expanded_retirement_benefits_deduction: 20_000
+        members: [person1]
+        filing_status: SINGLE
+    household:
+      members: [person1]
+      state_code: MI
+  output: # min(15000 < 30000, 40000)
+    mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired: 15_000
+
+- name: 2022 joint filer and their spouse with full tier 3 retirement and pension benefits larger than taxable pension income and tier 1 retirement and pension benefits, and with one more household member
+  period: 2022
+  input:
+    people:
+      person1:
+        taxable_pension_income: 10_000
+        military_retirement_pay: 1_000
+        is_tax_unit_head_or_spouse: true
+      person2:
+        taxable_pension_income: 10_000
+        is_tax_unit_head_or_spouse: true
+      person3:
+        taxable_pension_income: 30_000
+        is_tax_unit_head_or_spouse: false
+    tax_units:
+      tax_unit:
+        mi_retirement_benefits_deduction_tier_three_eligible: true
+        mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired_eligible_people: 2
+        mi_retirement_benefits_deduction_tier_one_amount: 25_000
+        mi_expanded_retirement_benefits_deduction: 20_000
+        members: [person1, person2, person3]
+        filing_status: JOINT
+    household:
+      members: [person1, person2, person3]
+      state_code: MI
+  output: # min(15000 + 15000 > 25000, 10000 + 10000)
+    mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired: 20_000
+
+- name: 2022 single filer with full tier 3 retirement and pension benefits larger than tier 1 retirement and pension benefits
+  period: 2022
+  input:
+    people:
+      person1:
+        taxable_pension_income: 40_000
+        military_retirement_pay: 1_000
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        mi_retirement_benefits_deduction_tier_three_eligible: true
+        mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired_eligible_people: 1
+        mi_retirement_benefits_deduction_tier_one_amount: 10_000
+        mi_expanded_retirement_benefits_deduction: 20_000
+        members: [person1]
+        filing_status: SINGLE
+    household:
+      members: [person1]
+      state_code: MI
+  output: # min(15000 > 10000, 40000)
+    mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired: 10_000
+
+- name: 2023 single filer with full tier 3 retirement and pension benefits smaller than expanded retirement and pension benefits
+  period: 2023
+  input:
+    people:
+      person1:
+        taxable_pension_income: 40_000
+        military_retirement_pay: 1_000
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        mi_retirement_benefits_deduction_tier_three_eligible: true
+        mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired_eligible_people: 1
+        mi_retirement_benefits_deduction_tier_one_amount: 10_000
+        mi_expanded_retirement_benefits_deduction: 20_000
+        members: [person1]
+        filing_status: SINGLE
+    household:
+      members: [person1]
+      state_code: MI
+  output: # max(min(15000 > 10000, 40000), 20000)
+    mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired: 20_000

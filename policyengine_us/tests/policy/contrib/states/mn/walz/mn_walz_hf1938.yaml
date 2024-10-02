@@ -1,0 +1,111 @@
+- name: CDCC does not apply for separate filers in 2023 pre reform
+  period: 2023
+  reforms: policyengine_us.reforms.states.mn.walz.mn_walz_hf1938.mn_walz_hf1938
+  input:
+    gov.contrib.states.mn.walz.hf1938.repeal: true
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 70_000
+      person2:
+        age: 9
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        tax_unit_childcare_expenses: 9_000
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MN
+  output:
+    mn_cdcc: 0
+
+- name: WFC check in 2023 with reform
+  absolute_error_margin: 0.5
+  period: 2023
+  reforms: policyengine_us.reforms.states.mn.walz.mn_walz_hf1938.mn_walz_hf1938
+  input:
+    gov.contrib.states.mn.walz.hf1938.repeal: true
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 70_000
+      person2:
+        age: 9
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        tax_unit_childcare_expenses: 9_000
+        filing_status: SEPARATE
+        mn_wfc_eligible: true
+        eitc_child_count: 2
+        filer_adjusted_earnings: 20_050
+        adjusted_gross_income: 20_050
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MN
+  output:
+    mn_cdcc: 0
+    mn_wfc: 2_206
+    mn_refundable_credits: 2_206
+
+- name: Baseline check for 2023 without reform - separate filers recieve cdcc and 
+  absolute_error_margin: 0.5
+  period: 2023
+  input:
+    gov.contrib.states.mn.walz.hf1938.repeal: false
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 70_000
+      person2:
+        age: 9
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        tax_unit_childcare_expenses: 9_000
+        filing_status: SEPARATE
+        mn_wfc_eligible: true
+        eitc_child_count: 2
+        filer_adjusted_earnings: 20_050
+        adjusted_gross_income: 20_050
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MN
+  output:
+    mn_cdcc: 1_920
+    mn_wfc: 2_206
+    mn_child_and_working_families_credits: 3_850
+    mn_refundable_credits: 5_770
+
+- name: Itemized deduction check for 2023 with reform
+  absolute_error_margin: 0.5
+  period: 2023
+  reforms: policyengine_us.reforms.states.mn.walz.mn_walz_hf1938.mn_walz_hf1938
+  input:
+    gov.contrib.states.mn.walz.hf1938.repeal: true
+    interest_deduction: 10_000
+    state_code: MN
+  output:
+    mn_itemized_deductions: 10_000

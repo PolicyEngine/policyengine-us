@@ -1,0 +1,94 @@
+- name: $12,950 for single. #0.2*12950=2590 (in the middle)
+  period: 2021
+  input:
+    state_code: MT
+    mt_agi: 12_950
+    filing_status: SINGLE
+  output:
+    mt_standard_deduction_joint: 2_590
+
+- name: $8,000 for widow. #0.2*8000=1600 (lower than min)
+  period: 2021
+  input:
+    state_code: MT
+    mt_agi: 8_000
+    filing_status: SURVIVING_SPOUSE
+  output:
+    mt_standard_deduction_joint: 2_140
+
+- name: $30,000 for separate. #0.2*30000=6000 (higher than max)
+  period: 2021
+  input:
+    state_code: MT
+    mt_agi: 30_000
+    filing_status: SEPARATE
+  output:
+    mt_standard_deduction_joint: 4_830
+
+- name: $25,180 for head of household. #0.2*25180=5036 (in the middle)
+  period: 2022
+  input:
+    state_code: MT
+    mt_agi: 25_180
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    mt_standard_deduction_joint: 5_036
+
+- name: Joint cap amount
+  period: 2022
+  input:
+    state_code: MT
+    mt_agi: 15_000
+    filing_status: JOINT
+  output:
+    mt_standard_deduction_joint: 4_520
+
+- name: Deduction attributed to head
+  period: 2022
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        mt_agi: 5_000
+      person2:
+        is_tax_unit_head: false
+        mt_agi: 100_000
+      person3:
+        is_tax_unit_head: false
+        mt_agi: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    mt_standard_deduction_joint: [10_180, 0, 0]
+
+- name: Head deduction between max and min
+  period: 2022
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        mt_agi: 20_000
+      person2:
+        is_tax_unit_head: false
+        mt_agi: 10_000
+      person3:
+        is_tax_unit_head: false
+        mt_agi: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    mt_standard_deduction_joint: [6_000, 0, 0]

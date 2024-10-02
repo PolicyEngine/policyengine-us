@@ -1,0 +1,27 @@
+description: North Carolina allows for these deductions from taxable income.
+values:
+  2021-01-01:
+    - us_govt_interest
+    - nc_standard_or_itemized_deductions
+    - nc_child_deduction
+    - taxable_social_security
+
+  2022-01-01:
+    - us_govt_interest
+    - nc_standard_or_itemized_deductions
+    - nc_child_deduction
+    - taxable_social_security
+    - nc_military_retirement_deduction
+
+metadata:
+  unit: list
+  period: year
+  reference:
+    - title: N.C. Gen. Stat. § 105-153.5 
+      href: https://casetext.com/statute/general-statutes-of-north-carolina/chapter-105-taxation/subchapter-i-levy-of-taxes/article-4-income-tax/part-2-individual-income-tax/section-105-1535-modifications-to-adjusted-gross-income
+    - title: 2023 D-400 Schedule S
+      href: https://www.ncdor.gov/2023-d-400-schedule-s-web-fill-version/open#page=17
+    - title: 2022 D-400 Schedule S
+      href: https://www.ncdor.gov/2022-d-400-schedule-s-web-fill-version/open#page=17
+    - title: 2021 D-400 Schedule S
+      href: https://www.ncdor.gov/2021-d-400-schedule-s-north-carolina-supplemental-schedule-web/open

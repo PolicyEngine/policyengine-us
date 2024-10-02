@@ -7,7 +7,7 @@ class snap_deductions(Variable):
     label = "SNAP income deductions"
     unit = USD
     documentation = "Deductions made from gross income for SNAP benefits"
-    definition_period = YEAR
+    definition_period = MONTH
     reference = "https://www.law.cornell.edu/uscode/text/7/2014#e"
 
     adds = "gov.usda.snap.income.deductions.allowed"

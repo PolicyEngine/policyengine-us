@@ -1,0 +1,118 @@
+description: The following states provide Medicaid coverage to undocumented immigrants.
+metadata:
+  unit: bool
+  period: year
+  label: Medicaid undocumented immigrant eligibility 
+  breakdown:
+  - state_code
+  reference:
+    # Currenly, states that only cover a certain age group of undocumented immigrants are not included in this list.
+    - title: "Medicaid and CHIP Eligibility and Enrollment Policies as of January 2022: Findings from a 50-State Survey"
+      href: https://files.kff.org/attachment/Table-3-Medicaid-and-CHIP-Eligibility-and-Enrollment-Policies-as-of-January-2022.pdf
+    - title: "Medicaid and CHIP Eligibility and Enrollment Policies as of January 2021: Findings from a 50-State Survey"
+      href: https://files.kff.org/attachment/Table-3-State-Adoption-of-Options-to-Cover-Immigrant-Populations-January-2021.pdf
+
+AL:
+  2021-01-01: false
+AK:
+  2021-01-01: false
+AZ:
+  2021-01-01: false
+AR:
+  2021-01-01: false
+CA:
+  2021-01-01: false
+  2022-01-01: true
+CO:
+  2021-01-01: false
+CT:
+  2021-01-01: false
+DC:
+  2021-01-01: true
+DE:
+  2021-01-01: false
+FL:
+  2021-01-01: false
+GA:
+  2021-01-01: false
+HI:
+  2021-01-01: false
+ID:
+  2021-01-01: false
+IL:
+  2021-01-01: false
+  2022-01-01: true
+IN:
+  2021-01-01: false
+IA:
+  2021-01-01: false
+KS:
+  2021-01-01: false
+KY:
+  2021-01-01: false
+LA:
+  2021-01-01: false
+ME:
+  2021-01-01: false
+MD:
+  2021-01-01: false
+MA:
+  2021-01-01: true
+MI:
+  2021-01-01: false
+MN:
+  2021-01-01: false
+MS:
+  2021-01-01: false
+MO:
+  2021-01-01: false
+MT:
+  2021-01-01: false
+NE:
+  2021-01-01: false
+NV:
+  2021-01-01: false
+NH:
+  2021-01-01: false
+NJ:
+  2021-01-01: false
+NM:
+  2021-01-01: false
+NY:
+  2021-01-01: true
+NC:
+  2021-01-01: false
+ND:
+  2021-01-01: false
+OH:
+  2021-01-01: false
+OK:
+  2021-01-01: false
+OR:
+  2021-01-01: false
+PA:
+  2021-01-01: false
+RI:
+  2021-01-01: false
+SC:
+  2021-01-01: false
+SD:
+  2021-01-01: false
+TN:
+  2021-01-01: false
+TX:
+  2021-01-01: false
+UT:
+  2021-01-01: false
+VT:
+  2021-01-01: false
+VA:
+  2021-01-01: false
+WA:
+  2021-01-01: false
+WV:
+  2021-01-01: false
+WI:
+  2021-01-01: false
+WY:
+  2021-01-01: false

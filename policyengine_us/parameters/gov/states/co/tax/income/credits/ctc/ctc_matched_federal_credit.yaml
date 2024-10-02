@@ -1,0 +1,13 @@
+description: Colorado matches a fraction of the federal child tax credit when this is true; otherwise, Colorado provides an amount based on income.
+metadata:
+  period: year
+  unit: bool
+  label: Colorado child tax credit federal CTC match
+  reference: 
+  # Change in CTC payout was introduced in the House Bill 23-1112 and has not been reflected in the Individual Income Tax Guide
+  # in the 2022 tax forms
+    - title: House Bill 23-1112, Section 2, (3.5) / (4)
+      href: https://leg.colorado.gov/sites/default/files/2023a_1112_signed.pdf#page=5
+values:
+  2022-01-01: true
+  2024-01-01: false

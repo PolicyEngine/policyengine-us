@@ -5,12 +5,6 @@ from pathlib import Path
 import pandas as pd
 from policyengine_us.typing import Formula
 
-ZIP_CODE_DATASET_PATH = (
-    Path(__file__).parent.parent / "data" / "geography" / "zip_codes.csv.gz"
-)
-
-ZIP_CODE_DATASET = pd.read_csv(ZIP_CODE_DATASET_PATH, compression="gzip")
-
 USD = "currency-USD"
 
 
@@ -48,29 +42,6 @@ def variable_alias(name: str, variable_cls: type) -> type:
         name,
         variable_cls.__bases__,
         class_dict,
-    )
-
-
-def taxcalc_read_only_variable(name: str, variable_cls: type) -> type:
-    """
-    Copy a variable class and return a new class for a tax-calc variable.
-    """
-    class_dict = dict(variable_cls.__dict__)
-    class_dict["formula"] = lambda entity, period: entity(
-        variable_cls.__name__, period
-    )
-    return type(
-        name,
-        (Variable,),
-        dict(
-            value_type=variable_cls.value_type,
-            entity=variable_cls.entity,
-            label=variable_cls.label + " (Tax-Calculator)",
-            definition_period=variable_cls.definition_period,
-            unit=variable_cls.unit,
-            documentation=variable_cls.documentation
-            + " This is a read-only copy variable, matching the corresponding variable in the open-source US federal tax model Tax-Calculator.",
-        ),
     )
 
 

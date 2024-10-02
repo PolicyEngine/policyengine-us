@@ -1,0 +1,23 @@
+- name: 2022 filer who is at the tier 3 retirement and pension benefits age threshold
+  period: 2022
+  input:
+    greater_age_head_spouse: 66
+    state_code: MI
+  output: 
+    mi_retirement_benefits_deduction_tier_three_eligible: true
+
+- name: 2022 filer who is below the tier 3 retirement and pension benefits age threshold
+  period: 2022
+  input:
+    greater_age_head_spouse: 61
+    state_code: MI
+  output: 
+    mi_retirement_benefits_deduction_tier_three_eligible: false
+
+- name: 2022 filer who is above the tier 3 retirement and pension benefits age threshold
+  period: 2022
+  input:
+    greater_age_head_spouse: 67
+    state_code: MI
+  output: 
+    mi_retirement_benefits_deduction_tier_three_eligible: false

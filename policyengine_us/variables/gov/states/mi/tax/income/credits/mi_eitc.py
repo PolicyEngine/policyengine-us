@@ -10,6 +10,6 @@ class mi_eitc(Variable):
     defined_for = StateCode.MI
 
     def formula(tax_unit, period, parameters):
-        eitc = tax_unit("earned_income_tax_credit", period)
+        federal_eitc = tax_unit("eitc", period)
         p = parameters(period).gov.states.mi.tax.income.credits.eitc
-        return eitc * p.match
+        return federal_eitc * p.match

@@ -1,0 +1,89 @@
+- name: Not eligible for WFHDC should have default value NONE.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: OR
+    or_wfhdc_eligible: false
+  output:
+    or_wfhdc_eligibility_category: ["NONE"]
+
+- name: Youngest child is 5 and not disabled.
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 40
+        is_disabled: false
+      person2:
+        age: 5
+        is_disabled: false
+    tax_units:
+      tax_unit:
+        or_wfhdc_eligible: true
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OR
+  output:
+    or_wfhdc_eligibility_category: ["YOUNG"]
+
+- name: Youngest child is under 18 and disabled.
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 40
+        is_disabled: false
+      person2:
+        age: 17
+        is_disabled: true
+    tax_units:
+      tax_unit:
+        or_wfhdc_eligible: true
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OR
+  output:
+    or_wfhdc_eligibility_category: ["DISABLED_TEENS"]
+
+- name: Youngest child is above 18 and disabled.
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 40
+        is_disabled: false
+      person2:
+        age: 19
+        is_disabled: true
+    tax_units:
+      tax_unit:
+        or_wfhdc_eligible: true
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OR
+  output:
+    or_wfhdc_eligibility_category: ["DISABLED_ADULTS"]
+
+- name: None output
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 40
+        is_disabled: false
+    tax_units:
+      tax_unit:
+        or_wfhdc_eligible: false
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: OR
+  output:
+    or_wfhdc_eligibility_category: ["NONE"]

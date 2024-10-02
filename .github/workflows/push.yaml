@@ -9,7 +9,7 @@ jobs:
       (github.repository == 'PolicyEngine/policyengine-us')
       && (github.event.head_commit.message == 'Update PolicyEngine US')
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Check formatting
         uses: "lgeiger/black-action@master"
         with:
@@ -22,15 +22,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: ${{ github.event.pull_request.head.repo.full_name }}
           ref: ${{ github.event.pull_request.head.ref }}
           token: ${{ secrets.POLICYENGINE_GITHUB }}
       - name: Setup Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
-          python-version: 3.9
+          python-version: 3.12
       - name: Build changelog
         run: pip install yaml-changelog && make changelog
       - name: Preview changelog update
@@ -44,35 +44,34 @@ jobs:
           message: Update PolicyEngine US
           github_token: ${{ secrets.POLICYENGINE_GITHUB }}
   Test:
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     if: |
       (github.repository == 'PolicyEngine/policyengine-us')
       && (github.event.head_commit.message == 'Update PolicyEngine US')
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest]
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
-          python-version: 3.9
+          python-version: 3.12
       - name: Install package
         run: make install
-      - name: Run tests
-        run: make test
-      - uses: codecov/codecov-action@v3
-      - name: Test documentation builds
-        if: matrix.os == 'ubuntu-latest'
-        run: make documentation
-      - name: Deploy documentation
-        if: matrix.os == 'ubuntu-latest'
-        uses: JamesIves/github-pages-deploy-action@releases/v4
-        with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BRANCH: gh-pages
-          FOLDER: docs/_build/html
+      - name: Run non-structural YAML tests
+        run: make test-yaml-no-structural
+        env:
+          POVERTYTRACKER_RAW_URL: ${{ secrets.POVERTYTRACKER_RAW_URL }}
+      - name: Run structural YAML tests
+        run: make test-yaml-structural
+        env:
+          POVERTYTRACKER_RAW_URL: ${{ secrets.POVERTYTRACKER_RAW_URL }}
+      - name: Run Python-based tests
+        run: make test-other
+        env:
+          POVERTYTRACKER_RAW_URL: ${{ secrets.POVERTYTRACKER_RAW_URL }}
+      - name: Produce combined coverage repository
+        run: make coverage
+      - uses: codecov/codecov-action@v4
   Publish:
     runs-on: ubuntu-latest
     if: |
@@ -80,11 +79,11 @@ jobs:
       && (github.event.head_commit.message == 'Update PolicyEngine US')
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Setup Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
-          python-version: 3.9
+          python-version: 3.12
       - name: Publish a git tag
         run: ".github/publish-git-tag.sh || true"
       - name: Install package
@@ -96,7 +95,7 @@ jobs:
         with:
           user: __token__
           password: ${{ secrets.PYPI }}
-          skip_existing: true
+          skip-existing: true
   Deploy:
     if: |
       (github.repository == 'PolicyEngine/policyengine-us')
@@ -114,7 +113,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.9
+          python-version: 3.12
       - name: Install Wheel and Pytest
         run: pip3 install wheel setuptools pytest==5.4.3
       - name: Install package

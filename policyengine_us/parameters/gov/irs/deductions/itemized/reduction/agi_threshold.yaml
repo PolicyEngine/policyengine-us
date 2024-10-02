@@ -1,0 +1,56 @@
+description: IRS deducts the total itemized deductions amount for filers with adjusted gross income below this amount, based on filing status.
+SINGLE:
+  2009-01-01: 166_800
+  2013-01-01: 150_000
+  2014-01-01: 152_525
+  2015-01-01: 154_950
+  2016-01-01: 155_650
+  2017-01-01: 156_900
+JOINT:
+  2009-01-01: 166_800
+  2013-01-01: 150_000
+  2014-01-01: 152_525
+  2015-01-01: 154_950
+  2016-01-01: 155_650
+  2017-01-01: 156_900
+SEPARATE:
+  2009-01-01: 83_400
+  2013-01-01: 75_000
+  2014-01-01: 76_262.5
+  2015-01-01: 77_475
+  2016-01-01: 77_825
+  2017-01-01: 78_450
+HEAD_OF_HOUSEHOLD:
+  2009-01-01: 166_800
+  2013-01-01: 150_000
+  2014-01-01: 152_525
+  2015-01-01: 154_950
+  2016-01-01: 155_650
+  2017-01-01: 156_900
+SURVIVING_SPOUSE:
+  2009-01-01: 166_800
+  2013-01-01: 150_000
+  2014-01-01: 152_525
+  2015-01-01: 154_950
+  2016-01-01: 155_650
+  2017-01-01: 156_900
+metadata:
+  breakdown: filing_status
+  unit: currency-USD
+  period: year
+  label: IRS itemized deductions adjusted gross income threshold
+  reference:
+    - title: 2009 Publication 526
+      href: https://www.irs.gov/pub/irs-prior/p526--2009.pdf#page=13
+    - title: 26 U.S. Code § 68 - Overall limitation on itemized deductions, (b)
+      href: https://www.law.cornell.edu/uscode/text/26/68
+    - title: 2013 Schedule A
+      href: https://www.irs.gov/pub/irs-prior/f1040sa--2013.pdf#page=2
+    - title: 2014 Schedule A
+      href: https://www.irs.gov/pub/irs-prior/f1040sa--2014.pdf#page=1
+    - title: 2015 Schedule A
+      href: https://www.irs.gov/pub/irs-prior/f1040sa--2015.pdf
+    - title: 2016 Schedule A
+      href: https://www.irs.gov/pub/irs-prior/f1040sa--2016.pdf
+    - title: 2017 Schedule A
+      href: https://www.irs.gov/pub/irs-prior/f1040sa--2010.pdf#page=1

@@ -1,0 +1,25 @@
+description: The US indexes Social Security benefits (OASDI and SSI) according to this schedule, annually updating based on CPI-W in the third quarter of the prior year.
+values:
+  # Actuals.
+  2022-01-01: 268.421 # 2021Q3: (267.789 + 268.387 + 269.086) / 3
+  2023-01-01: 291.901 # 2022Q3: (292.219 + 291.629 + 291.854) / 3
+  2024-01-01: 301.236 # 2023Q3: (299.899 + 301.551 + 302.257) / 3
+  # Forecasts from marrying CPI-W actuals with CBO's CPI-U forecast.
+  2025-01-01: 310.866 # 2024Q3: 315.6 * 306.199 / 310.989
+  2026-01-01: 318.155 # 2025Q3: 323.0 * 306.199 / 310.989
+  2027-01-01: 326.149 # 2026Q3: 330.1 * 306.199 / 310.989
+  2028-01-01: 332.241 # 2027Q3: 337.3 * 306.199 / 310.989
+  2029-01-01: 339.431 # 2028Q3: 344.6 * 306.199 / 310.989
+  2030-01-01: 346.917 # 2029Q3: 352.2 * 306.199 / 310.989
+  2031-01-01: 354.6 # 2030Q3: 360.0 * 306.199 / 310.989
+  2032-01-01: 362.579 # 2031Q3: 368.1 * 306.199 / 310.989
+  2033-01-01: 370.656 # 2032Q3: 376.3 * 306.199 / 310.989
+  2034-01-01: 379.028 # 2033Q3: 384.8 * 306.199 / 310.989
+  2035-01-01: 387.598 # 2034Q3: 393.5 * 306.199 / 310.989
+metadata:
+  unit: currency-USD
+  label: SSA uprating
+  economy: false
+  reference:
+    - title: Social Security Latest Cost-of-Living Adjustments
+      href: https://www.ssa.gov/oact/cola/latestCOLA.html

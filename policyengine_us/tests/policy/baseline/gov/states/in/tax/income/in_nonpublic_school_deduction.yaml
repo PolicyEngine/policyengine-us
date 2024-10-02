@@ -1,0 +1,31 @@
+- name: 2 qualifying kids
+  period: 2021
+  input:
+    people:
+      child1: 
+        is_in_k12_nonpublic_school: true
+      child2: 
+        is_in_k12_nonpublic_school: true
+    tax_unit: 
+      members: [child1, child2]
+    households:
+      household:
+        members: [child1, child2]
+        state_code: IN
+  output:
+    in_nonpublic_school_deduction: 2_000
+
+- name: 1 qualifying kid
+  period: 2021
+  input:
+    people:
+      child1: 
+        is_in_k12_nonpublic_school: true
+    tax_unit: 
+      members: [child1]
+    households:
+      household:
+        members: [child1]
+        state_code: IN
+  output:
+    in_nonpublic_school_deduction: 1_000

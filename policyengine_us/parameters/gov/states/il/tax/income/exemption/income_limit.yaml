@@ -7,15 +7,18 @@ SEPARATE:
   2021-01-01: 250_000
 HEAD_OF_HOUSEHOLD:
   2021-01-01: 250_000
-WIDOW:
+SURVIVING_SPOUSE:
   2021-01-01: 250_000
 metadata:
   unit: currency-USD
   period: year
-  name: il_exemption_income_limit
-  label: IL Exemption Income Limit
+  label: Illinois Exemption Income Limit
   reference:
+    - title: Illinois Department of Revenue 2023 Form IL-1040 Instructions; Step 4 - Exemptions
+      href: https://tax.illinois.gov/content/dam/soi/en/web/tax/forms/incometax/documents/currentyear/individual/il-1040-instr.pdf#page=8
+    - title: Illinois Department of Revenue 2022 Form IL-1040 Instructions; Step 4 - Exemptions
+      href: https://tax.illinois.gov/content/dam/soi/en/web/tax/forms/incometax/documents/2022/individual/il-1040-instr.pdf#page=8
     - title: Illinois Department of Revenue 2021 Form IL-1040 Instructions; Step 4 - Exemptions
-      href: https://www2.illinois.gov/rev/forms/incometax/Documents/currentyear/individual/il-1040-instr.pdf#page=8
+      href: https://tax.illinois.gov/content/dam/soi/en/web/tax/forms/incometax/documents/2021/individual/il-1040-instr.pdf#page=8
     - title: Illinois Income Tax Act, 35 ILCS 5/204 (g)
       href: https://www.ilga.gov/legislation/ilcs/ilcs5.asp?ActID=577&ChapterID=8

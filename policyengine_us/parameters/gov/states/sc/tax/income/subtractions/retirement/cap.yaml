@@ -1,0 +1,33 @@
+description: South Carolina caps the retirement deduction at this amount, based on age. 
+
+metadata:
+  threshold_unit: year
+  amount_unit: currency_USD
+  type: single_amount
+  reference:
+    - title: South Carolina State SECTION 12-6-1170(B)
+      href: https://www.scstatehouse.gov/code/t12c006.php
+    - title: South Carolina State SECTION 12-6-1170(A)(1)
+      href: https://www.scstatehouse.gov/code/t12c006.php
+    - title: South Carolina State SECTION 12-6-1170(A)(1) 
+      href: https://www.scstatehouse.gov/code/t12c006.php
+    - title: Instructions for Form SC-1040 (line 3p)
+      href: https://dor.sc.gov/forms-site/Forms/IITPacket_2021.pdf#page=16
+    - title: SC-1040 2021
+      href: https://dor.sc.gov/forms-site/Forms/SC1040_2021.pdf#page=2
+    - title: SC-1040 2022
+      href: https://dor.sc.gov/forms-site/Forms/SC1040_2022.pdf#page=2
+    - title: SC 1040 tax form instructions (2023)
+      href: https://dor.sc.gov/forms-site/Forms/IITPacket_2023.pdf#page=25
+  period: year
+  label: South Carolina retirement deduction cap
+
+brackets:
+  - threshold:
+      2021-01-01: 0
+    amount:
+      2021-01-01: 3_000
+  - threshold:
+      2021-01-01: 65
+    amount: 
+      2021-01-01: 10_000

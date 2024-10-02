@@ -12,6 +12,6 @@ class nj_total_income(Variable):
 
     def formula(person, period, parameters):
         agi = person("adjusted_gross_income_person", period)
-        nj_additions = person("nj_agi_additions", period)
+        nj_additions = person("nj_additions", period)
         nj_subtractions = person("nj_agi_subtractions", period)
         return max_(0, agi + nj_additions - nj_subtractions)

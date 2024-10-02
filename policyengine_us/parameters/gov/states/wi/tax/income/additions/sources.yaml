@@ -3,10 +3,10 @@ values:
   2021-01-01:
     - tax_exempt_interest_income
     - wi_capital_gain_loss_addition
-    - c05700  # lump-sum distributions from federal Form 4972
+    - form_4972_lumpsum_distributions
 
 metadata:
-  unit: variable
+  unit: list
   label: WI additions to US adjusted gross income
   reference:
   - title: 2021 WI schedule AD
@@ -17,3 +17,5 @@ metadata:
     href: https://www.revenue.wi.gov/TaxForms2022/2022-ScheduleADf.pdf
   - title: 2022 WI schedule AD instructions
     href: https://www.revenue.wi.gov/TaxForms2022/2022-ScheduleAD-Inst.pdf
+  - title: 2023 WI schedule AD instructions
+    href: https://www.revenue.wi.gov/TaxForms2023/2023-ScheduleAD-Inst.pdf

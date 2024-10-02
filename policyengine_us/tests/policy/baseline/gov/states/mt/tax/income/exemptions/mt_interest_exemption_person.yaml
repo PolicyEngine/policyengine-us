@@ -1,0 +1,39 @@
+- name: The deduction is allocated to each person based on their taxable interest income
+  period: 2023
+  input:
+    people:
+      person1:
+        taxable_interest_income: 200
+        mt_interest_exemption_eligible_person: true
+      person2:
+        taxable_interest_income: 600
+        mt_interest_exemption_eligible_person: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        mt_interest_exemption: 1_000
+    households:
+      household:
+        state_code: MT
+  output:
+    mt_interest_exemption_person: [250, 750]
+
+- name: Joint filing, eligible
+  period: 2023
+  input:
+    people:
+      person1:
+        taxable_interest_income: 200
+        mt_interest_exemption_eligible_person: true
+      person2:
+        taxable_interest_income: 0
+        mt_interest_exemption_eligible_person: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        mt_interest_exemption: 1_000
+    households:
+      household:
+        state_code: MT
+  output:
+    mt_interest_exemption_person: [1_000, 0]

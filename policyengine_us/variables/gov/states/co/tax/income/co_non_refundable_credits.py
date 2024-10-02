@@ -8,3 +8,6 @@ class co_non_refundable_credits(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.CO
+
+
+# Colorado non refundable credits currently not modeled in PolicyEngine

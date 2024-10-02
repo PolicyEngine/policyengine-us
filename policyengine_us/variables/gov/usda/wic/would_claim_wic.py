@@ -8,9 +8,11 @@ class would_claim_wic(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        if person.count < 1_000:
-            # Don't run takeup imputations if not in a microsimulation.
+        # Assign households WIC takeup probabilistically in microsimulation.
+        # Assume all take up in individual simulation.
+        if person.simulation.dataset is not None:
+            category = person("wic_category", period)
+            takeup = parameters(period).gov.usda.wic.takeup
+            return random(person) < takeup[category]
+        else:
             return True
-        category = person("wic_category", period)
-        takeup = parameters(period).gov.usda.wic.takeup
-        return random(person) < takeup[category]

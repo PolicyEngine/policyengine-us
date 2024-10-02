@@ -12,6 +12,7 @@ class ia_regular_tax_joint(Variable):
         "https://tax.iowa.gov/sites/default/files/2023-01/2021%20Expanded%20Instructions_010323.pdf#page=53"
         "https://tax.iowa.gov/sites/default/files/2023-01/2022IA1040%2841001%29.pdf"
         "https://tax.iowa.gov/sites/default/files/2023-03/2022%20Expanded%20Instructions_022023.pdf#page=53"
+        "https://tax.iowa.gov/sites/default/files/2023-11/IA1041Inst%2863002%29.pdf#page=4"
     )
     defined_for = StateCode.IA
 

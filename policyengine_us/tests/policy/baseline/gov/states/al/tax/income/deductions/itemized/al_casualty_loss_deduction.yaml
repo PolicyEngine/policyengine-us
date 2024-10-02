@@ -1,0 +1,17 @@
+- name: Reduction of casualty loss
+  period: 2021
+  input:
+    state_code: AL
+    casualty_loss: 2_000
+    al_agi: 1_000
+  output:
+    al_casualty_loss_deduction: 1_900
+
+- name: Capped at 0
+  period: 2021
+  input:
+    state_code: AL
+    casualty_loss: 1_000
+    al_agi: 11_000
+  output:
+    al_casualty_loss_deduction: 0

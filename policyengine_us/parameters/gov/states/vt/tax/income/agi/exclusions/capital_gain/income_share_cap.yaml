@@ -1,0 +1,18 @@
+description: Vermont caps the net capital gains exclusion at this fraction of federal taxable income.
+
+metadata:
+  label: Vermont capital gains exclusion cap as fraction of taxable income
+  period: year
+  unit: /1
+  reference:
+    - title: 2022 Schedule IN-153Vermont Capital Gains Exclusion Calculation # Line 20
+      href: https://tax.vermont.gov/sites/tax/files/documents/IN-153-2022.pdf#page=1
+    - title: 2021 Schedule IN-153Vermont Capital Gains Exclusion Calculation # Line 20
+      href: https://tax.vermont.gov/sites/tax/files/documents/IN-153-2021.pdf#page=1
+    - title: 2023 Schedule IN-153Vermont Capital Gains Exclusion Calculation # Line 20
+      href: https://tax.vermont.gov/sites/tax/files/documents/IN-153-2023.pdf#page=1
+     # Legal code specify 40 percent of federal taxable income as the maximum capital gains exclusion. Date unknown.
+    - title: Legal code Titl. 32 V.S.A. § 5811(21)(B)(ii)(II)
+      href: https://legislature.vermont.gov/statutes/section/32/151/05811 
+values:
+  2021-01-01: 0.4

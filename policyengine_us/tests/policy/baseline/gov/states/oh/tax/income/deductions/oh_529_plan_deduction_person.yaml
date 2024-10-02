@@ -1,0 +1,56 @@
+- name: Two people with investment amounts will be allocated based on the investment percentage 
+  period: 2021
+  input:
+    people: 
+      person1:
+        investment_in_529_plan_indv: 600
+      person2:
+        investment_in_529_plan_indv: 200
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        oh_529_plan_deduction: 1_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    oh_529_plan_deduction_person: [750, 250]
+
+- name: One people with investment amounts will be allocated to that person
+  period: 2021
+  input:
+    people: 
+      person1:
+        investment_in_529_plan_indv: 300
+      person2:
+        investment_in_529_plan_indv: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        oh_529_plan_deduction: 1_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    oh_529_plan_deduction_person: [1_000, 0]
+
+- name: No people with investment amounts
+  period: 2021
+  input:
+    people: 
+      person1:
+        investment_in_529_plan_indv: 0
+      person2:
+        investment_in_529_plan_indv: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        oh_529_plan_deduction: 1_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    oh_529_plan_deduction_person: [0, 0]

@@ -1,0 +1,79 @@
+- name: MS Standard deduction if single filer
+  period: 2020
+  input:
+    filing_status: SINGLE
+    state_code: MS
+    is_tax_unit_head: true
+  output:
+    ms_standard_deduction_joint: 2_300
+
+- name: MS Standard deduction if head of household filer
+  period: 2020
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    state_code: MS
+    is_tax_unit_head: true
+  output:
+    ms_standard_deduction_joint: 3_400
+
+- name: MS Standard deduction if widow filter
+  period: 2020
+  input:
+    filing_status: SURVIVING_SPOUSE
+    state_code: MS
+    is_tax_unit_head: true
+  output:  
+    ms_standard_deduction_joint: 4_600
+
+- name: MS Standard deduction if married filing separately
+  period: 2020
+  input:
+    filing_status: SEPARATE
+    state_code: MS
+    is_tax_unit_head: true
+  output:  
+    ms_standard_deduction_joint: 2_300
+
+- name: Only the head is entitled to a standard deduction
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+      person2:
+        is_tax_unit_spouse: true
+      person3:
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+  output:
+    ms_standard_deduction_joint: [2_300, 0, 0]
+
+- name: Joint amount for head
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+      person2:
+        is_tax_unit_spouse: true
+      person3:
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+  output:
+    ms_standard_deduction_joint: [4_600, 0, 0]

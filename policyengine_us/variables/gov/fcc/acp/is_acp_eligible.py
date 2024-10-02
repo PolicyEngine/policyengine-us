@@ -20,13 +20,20 @@ class is_acp_eligible(Variable):
             axis=0,
         )
         # ACP categorical eligibility points includes Lifeline categorical eligibility.
-        lifeline_categorically_eligible = np.any(
-            [
-                add(spm_unit, period, [program])
-                for program in fcc.lifeline.categorical_eligibility
-            ],
-            axis=0,
+        household = spm_unit.household
+        is_on_tribal_land = household("is_on_tribal_land", period)
+        non_tribal_lifeline_programs = add(
+            spm_unit, period, fcc.lifeline.categorical_eligibility
         )
+        tribal_lifeline_programs = add(
+            spm_unit, period, fcc.lifeline.tribal_categorical_eligibility
+        )
+        lifeline_categorically_eligible = np.where(
+            is_on_tribal_land,
+            np.any(tribal_lifeline_programs),
+            np.any(non_tribal_lifeline_programs),
+        )
+
         fpg_eligible = spm_unit("fcc_fpg_ratio", period) <= fcc.acp.fpg_limit
         # Cannot be simultaneously enrolled in Emergency Broadband Benefit.
         ebb_enrolled = spm_unit("ebb", period) > 0

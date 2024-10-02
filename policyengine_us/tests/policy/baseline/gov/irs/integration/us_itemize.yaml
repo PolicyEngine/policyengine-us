@@ -49,7 +49,7 @@
         members: [person1]
         state_code: IL  # state income tax that does not depend on US tax
   output:
-    state_income_tax: 4_576.44
+    state_income_tax: 4_576.4375 # = il_income_tax = (100000-2375)*0.0495
     adjusted_gross_income: 100_000
     taxable_income_deductions_if_not_itemizing: 12_550
     taxable_income_deductions_if_itemizing: 8_000 + 10_000

@@ -1,0 +1,20 @@
+- name: Over three people, capped at $6,000 - integration
+  period: 2018
+  input:
+    count_cdcc_eligible: 3
+  output:
+    cdcc_limit: 6_000
+
+- name: One person eligible
+  period: 2018
+  input:
+    capped_count_cdcc_eligible: 1
+  output:
+    cdcc_limit: 3_000
+
+- name: No people eligible
+  period: 2018
+  input:
+    capped_count_cdcc_eligible: 0
+  output:
+    cdcc_limit: 0

@@ -10,3 +10,4 @@ class tanf_reported(Variable):
         "Amount of Temporary Assistance for Needy Families benefit reported."
     )
     unit = USD
+    uprating = "gov.bls.cpi.cpi_u"

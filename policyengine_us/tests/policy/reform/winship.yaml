@@ -14,7 +14,7 @@
       child_2:
         age: 6
   output:
-    earned_income_tax_credit: 6210 + 6604 # The sum of the EITCs for the two tests below.
+    eitc: 6210 + 6604 # The sum of the EITCs for the two tests below.
     original_eitc: 2_000
 
 - name: EITC for 30k/0k income, to inform the first test.
@@ -33,7 +33,7 @@
       child_2:
         age: 6
   output:
-    earned_income_tax_credit: 6_210
+    eitc: 6_210
 
 - name: EITC for 20k/0k income, to inform the first test.
   period: 2023
@@ -51,7 +51,7 @@
       child_2:
         age: 6
   output:
-    earned_income_tax_credit: 6_604
+    eitc: 6_604
 
 - name: EITC for 20k/0k income, to inform the first test.
   period: 2023
@@ -69,4 +69,4 @@
       child_2:
         age: 6
   output:
-    earned_income_tax_credit: 0
+    eitc: 0

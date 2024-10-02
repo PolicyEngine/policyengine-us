@@ -1,0 +1,52 @@
+- name: $1,000 earned, $500 disability-based unearned, and $1,000 other unearned.
+  period: 2023
+  input:
+    state_code: CA
+    ca_tanf_earned_income: 3_000
+    ca_tanf_db_unearned_income: 500
+    ca_tanf_other_unearned_income: 1_000
+  output:
+# (3,000 / 12) - 600 = 0 cap
+# 600 - (500 / 12) = ~558.3
+# 250 - 558.3 = 0 cap
+    ca_tanf_countable_income_recipient: 1_000
+
+- name: $1,000 earned, $500 disability-based unearned, and $100 other unearned.
+  period: 2023
+  input:
+    state_code: CA
+    ca_tanf_earned_income: 100
+    ca_tanf_db_unearned_income: 500
+    ca_tanf_other_unearned_income: 1_000
+  output:
+    ca_tanf_countable_income_recipient: 1_000
+
+- name: $1,000 earned, $700 disability-based unearned, and $1,000 other unearned.
+  period: 2023
+  input:
+    state_code: CA
+    ca_tanf_earned_income: 3_000
+    ca_tanf_db_unearned_income: 700
+    ca_tanf_other_unearned_income: 1_000
+  output:
+    ca_tanf_countable_income_recipient: 1_000
+
+- name: $12,000 earned, $700 disability-based unearned, and $1,000 other unearned.
+  period: 2023
+  input:
+    state_code: CA
+    ca_tanf_earned_income: 12_000 # 1_000 - (600 - 100) * 0.5 = 250 | * 12 = 3,000
+    ca_tanf_db_unearned_income: 1_200
+    ca_tanf_other_unearned_income: 1_000
+  output:
+    ca_tanf_countable_income_recipient: 4_000
+
+- name: $12,000 earned, $700 disability-based unearned, and $1,000 other unearned.
+  period: 2023
+  input:
+    state_code: CA
+    ca_tanf_earned_income: 12_000 # 1_000 - 0) * 0.5 = 500 | * 12 = 6,000
+    ca_tanf_db_unearned_income: 7_800 # 650 - 600 = 50 | * 12 = 600
+    ca_tanf_other_unearned_income: 1_000
+  output:
+    ca_tanf_countable_income_recipient: 7_600

@@ -10,7 +10,7 @@ class ut_ss_benefits_credit_max(Variable):
     defined_for = StateCode.UT
     reference = "https://incometax.utah.gov/credits/ss-benefits"
 
-    def formula_2022(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):
         """
         This credit essentially makes social security tax-exempt for people earning
         under a threshold, and taxes it back after that.
@@ -37,10 +37,4 @@ class ut_ss_benefits_credit_max(Variable):
         phase_out_reduction = (
             phase_out_income * p.credits.ss_benefits.phase_out.rate
         )  # Line 9
-        max_credit = max_(0, taxed_ss - phase_out_reduction)  # Line 10
-        limiting_liability = tax_unit(
-            "ut_income_tax_before_credits", period
-        ) - tax_unit("ut_eitc", period)
-        if not p.credits.ss_benefits.refundable:
-            return min_(max_credit, limiting_liability)
-        return max_credit
+        return max_(0, taxed_ss - phase_out_reduction)  # Line 10

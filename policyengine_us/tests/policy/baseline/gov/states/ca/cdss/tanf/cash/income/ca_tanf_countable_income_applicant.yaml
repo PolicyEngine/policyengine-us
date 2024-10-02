@@ -1,0 +1,29 @@
+- name: $1,000 earned, $1,000 disabli disability-based unearned, and $1,000 other unearned.
+  period: 2023
+  input:
+    state_code: CA
+    ca_tanf_earned_income: 5_412 # 451 monthly
+    ca_tanf_db_unearned_income: 1_000
+    ca_tanf_other_unearned_income: 2_000
+  output:
+    ca_tanf_countable_income_applicant: 3_012
+
+- name: Test that the flat $450 disregard is only subtracted (with floor $0) from earned income as opposed to from the total sum.
+  period: 2023
+  input:
+    state_code: CA
+    ca_tanf_earned_income: 5_388 # 449 monthly
+    ca_tanf_db_unearned_income: 1_000
+    ca_tanf_other_unearned_income: 2_000
+  output:
+    ca_tanf_countable_income_applicant: 3_000
+
+- name: Test that the flat $450 disregard is only subtracted (with floor $0) from earned income.
+  period: 2023
+  input:
+    state_code: CA
+    ca_tanf_earned_income: 5_388 # 449 monthly
+    ca_tanf_db_unearned_income: 0
+    ca_tanf_other_unearned_income: 0
+  output:
+    ca_tanf_countable_income_applicant: 0

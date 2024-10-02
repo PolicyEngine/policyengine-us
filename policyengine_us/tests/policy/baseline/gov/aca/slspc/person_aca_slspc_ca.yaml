@@ -1,0 +1,9 @@
+- name: person_aca_slspc_ca unit test 1
+  period: 2022
+  input:
+    aca_slspc_trimmed_age: 25
+    is_aca_ptc_eligible_ca: true
+    state_fips: 6  # CA
+    county_fips: 0  # UNKNOWN
+  output:
+    person_aca_slspc_ca: 5_232

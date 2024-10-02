@@ -1,0 +1,135 @@
+- name: Tax unit with taxsimid 99466 in e21.its.csv and e21.ots.csv
+  # High error margin because of rounding in the tax tables
+  absolute_error_margin: 5
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 56
+        employment_income: 160_010
+        taxable_interest_income: 11_010
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+        ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
+      person2:
+        age: 11
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+        ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        premium_tax_credit: 0  # not in TAXSIM35
+        local_income_tax: 0  # not in TAXSIM35
+        state_sales_tax: 0  # not in TAXSIM35
+        ca_use_tax: 0  # not in TAXSIM35
+        il_use_tax: 0  # not in TAXSIM35
+        nm_2021_income_rebate: 0  # not in TAXSIM35
+        nm_additional_2021_income_rebate: 0  # not in TAXSIM35
+        nm_supplemental_2021_income_rebate: 0  # not in TAXSIM35
+        ny_supplemental_eitc: 0  # not in TAXSIM35
+        ok_use_tax: 0  # not in TAXSIM35
+        pa_use_tax: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 5  # AR
+  output:  # expected results from patched TAXSIM35 2024-02-05 version
+    ar_taxable_income_indiv: [168_820, 0]
+    ar_income_tax_before_non_refundable_credits_indiv: [9_710.38, 0]
+    ar_income_tax: 9_625.88
+
+- name: Tax unit with taxsimid 98028 in e21.its.csv and e21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 77010
+        taxable_interest_income: 5505.0
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+        ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
+      person2:
+        age: 40
+        employment_income: 20010
+        taxable_interest_income: 5505.0
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+        ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        premium_tax_credit: 0  # not in TAXSIM35
+        local_income_tax: 0  # not in TAXSIM35
+        state_sales_tax: 0  # not in TAXSIM35
+        ca_use_tax: 0  # not in TAXSIM35
+        il_use_tax: 0  # not in TAXSIM35
+        nm_2021_income_rebate: 0  # not in TAXSIM35
+        nm_additional_2021_income_rebate: 0  # not in TAXSIM35
+        nm_supplemental_2021_income_rebate: 0  # not in TAXSIM35
+        ny_supplemental_eitc: 0  # not in TAXSIM35
+        ok_use_tax: 0  # not in TAXSIM35
+        pa_use_tax: 0  # not in TAXSIM35
+        vt_renter_credit: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 5  # AR
+  output:  # expected results from patched TAXSIM35 2024-02-09 version
+    ar_income_tax: 4427.88
+
+- name: Tax unit with taxsimid 77552 in e21.its.csv and e21.ots.csv
+  # High error margin because of rounding in the tax tables
+  absolute_error_margin: 5
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 66
+        employment_income: 14_010
+        taxable_interest_income: 5_505.0
+      person2:
+        age: 66
+        employment_income: 7_010
+        taxable_interest_income: 5_505.0
+      person3:
+        age: 11
+      person4:
+        age: 11
+      person5:
+        age: 11
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_fips: 5  # AR
+  output:  # expected results from patched TAXSIM35 2024-02-09 version
+    ar_agi_indiv: [19_515, 12_515, 0, 0, 0] # 32,030 joint AGI
+    ar_low_income_tax_joint: [933, 0, 0, 0, 0] # 0 joint low income tax
+    ar_standard_deduction_joint: [4_400, 0, 0, 0, 0]
+    ar_standard_deduction_indiv: [2_200, 2_200, 0, 0, 0]
+    ar_taxable_income_joint: [27_630, 0, 0, 0, 0]
+    ar_taxable_income_indiv: [17_315, 10_315, 0, 0, 0]
+    ar_income_tax_before_non_refundable_credits_indiv: [342, 120, 0, 0, 0]
+    ar_income_tax_before_non_refundable_credits_joint: [933, 0, 0, 0, 0]
+    ar_income_tax_before_non_refundable_credits_unit: 462
+    ar_files_separately: true
+    ar_personal_credits: [261]
+    ar_non_refundable_credits: 261
+    ar_refundable_credits: 0
+    # ar_income_tax: 687.03 expected value from TAXSIM35

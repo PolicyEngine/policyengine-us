@@ -1,0 +1,27 @@
+description: Alabama provides these deductions for the state adjusted gross income.
+values:
+  2021-01-01:
+  # IRA distributions prior to 1982 are not deductible.
+    - traditional_ira_contributions # Line 1 
+    - alimony_expense # Line 4
+    - self_employed_health_insurance_ald # Line 7
+  2023-01-01:
+  # IRA distributions prior to 1982 are not deductible.
+    - traditional_ira_contributions # Line 1 
+    - alimony_expense # Line 4
+    - self_employed_health_insurance_ald # Line 7
+    - al_retirement_exemption #Schedule RS Line 10
+
+metadata:
+  unit: list
+  period: year
+  label: Alabama adjusted gross income deductions
+  reference:
+    - title: 2022 Alabama Department of Revenue 
+      href: https://www.revenue.alabama.gov/ultraviewer/viewer/basic_viewer/index.html?form=2023/01/22f40bk.pdf#page=15
+    - title: 2021 Alabama Department of Revenue 
+      href: https://www.revenue.alabama.gov/wp-content/uploads/2022/06/21f40abk.pdf#page=14
+    - title: 2023 Alabama Department of Revenue
+      href: https://www.revenue.alabama.gov/ultraviewer/viewer/basic_viewer/index.html?form=2024/01/23f40bk.pdf#page=8
+    - title: The Code of Alabama 1975 Section 40-18-14.2 (a)
+      href: https://casetext.com/statute/code-of-alabama/title-40-revenue-and-taxation/chapter-18-income-taxes/article-1-general-provisions/section-40-18-142-adjusted-gross-income

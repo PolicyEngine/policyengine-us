@@ -11,7 +11,7 @@ class az_income_tax_before_non_refundable_credits(Variable):
 
     def formula(tax_unit, period, parameters):
         income = tax_unit("az_taxable_income", period)
-        filing_status = tax_unit("filing_status", period)
+        filing_status = tax_unit("az_filing_status", period)
         p = parameters(period).gov.states.az.tax.income.main
         status = filing_status.possible_values
         return select(
@@ -20,13 +20,11 @@ class az_income_tax_before_non_refundable_credits(Variable):
                 filing_status == status.HEAD_OF_HOUSEHOLD,
                 filing_status == status.JOINT,
                 filing_status == status.SEPARATE,
-                filing_status == status.WIDOW,
             ],
             [
                 p.single.calc(income),
                 p.head_of_household.calc(income),
                 p.joint.calc(income),
                 p.separate.calc(income),
-                p.widow.calc(income),
             ],
         )

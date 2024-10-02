@@ -1,0 +1,40 @@
+- name: Higher rate applied to all gains
+  period: 2024
+  input:
+    long_term_capital_gains: 1_000
+    mt_capital_gains_tax_applicable_threshold_joint: 0
+    filing_status: SINGLE
+    state_code: MT
+  output:
+    mt_capital_gains_tax_joint: 41 
+
+- name: Lower rate applies only
+  period: 2024
+  input:
+    long_term_capital_gains: 1_000
+    mt_capital_gains_tax_applicable_threshold_joint: 2_000
+    filing_status: SEPARATE
+    state_code: MT
+  output:
+    mt_capital_gains_tax_joint: 30 
+
+
+- name: Lower and higher rate applies
+  period: 2024
+  input:
+    long_term_capital_gains: 3_000
+    mt_capital_gains_tax_applicable_threshold_joint: 2_000
+    filing_status: SEPARATE
+    state_code: MT
+  output:
+    mt_capital_gains_tax_joint: 101 
+
+- name: No tax in 2023
+  period: 2023
+  input:
+    long_term_capital_gains: 3_000
+    mt_capital_gains_tax_applicable_threshold_joint: 2_000
+    filing_status: JOINT
+    state_code: MT
+  output:
+    mt_capital_gains_tax_joint: 0 

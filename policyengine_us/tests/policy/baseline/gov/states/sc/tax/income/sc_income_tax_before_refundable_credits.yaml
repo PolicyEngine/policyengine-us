@@ -1,0 +1,17 @@
+- name: Reduction
+  period: 2022
+  input:
+    sc_non_refundable_credits: 2_800
+    state_code: SC
+    sc_income_tax_before_non_refundable_credits: 3_000
+  output:
+    sc_income_tax_before_refundable_credits: 200
+
+- name: Capped at 0
+  period: 2022
+  input:
+    sc_non_refundable_credits: 2_800
+    state_code: SC
+    sc_income_tax_before_non_refundable_credits: 2_700
+  output:
+    sc_income_tax_before_refundable_credits: 0

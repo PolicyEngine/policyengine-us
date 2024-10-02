@@ -1,7 +1,10 @@
 description: AMT exemption phase-out ending AMT taxable income for Married filing Separately. The AMT exemption is entirely disallowed beyond this AMT taxable income level for individuals who are married but filing separately.
 metadata:
   unit: currency-USD
+  uprating: gov.irs.uprating
   reference:
+    - title: 2024 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-23-34.pdf#page=13
     - title: 2023 IRS data release
       href: https://www.irs.gov/pub/irs-drop/rp-22-38.pdf#page=12
     - title: 2022 IRS data release
@@ -22,4 +25,5 @@ values:
   2021-01-01: 752_800
   2022-01-01: 776_100
   2023-01-01: 831_150
+  2024-01-01: 875_950
   2026-01-01: 288_949

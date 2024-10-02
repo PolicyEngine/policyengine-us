@@ -1,0 +1,120 @@
+- name: Family with one kid under the age of 6
+  period: 2024
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_dependent: false
+      dependent:
+        age: 1
+        is_child_dependent: true
+    tax_units:
+      tax_unit: 
+        members: [head, dependent]
+        adjusted_gross_income: 0
+        filing_status: HEAD_OF_HOUSEHOLD
+        co_ctc: 0 
+        co_cdcc: 0
+        co_low_income_cdcc: 0
+        co_eitc: 0
+        co_sales_tax_refund: 0
+    households:
+      household:
+        members: [head, dependent]
+        state_code: CO
+  output:
+    co_family_affordability_credit: [0, 3_200]
+    co_refundable_credits: 3_200
+
+- name: Family with one kid under the age of 6 and one under 16
+  period: 2024
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_dependent: false
+      dependent:
+        age: 1
+        is_child_dependent: true
+      dependent2:
+        age: 15
+        is_child_dependent: true
+    tax_units:
+      tax_unit: 
+        members: [head, dependent, dependent2]
+        adjusted_gross_income: 0
+        filing_status: HEAD_OF_HOUSEHOLD
+        co_ctc: 0 
+        co_cdcc: 0
+        co_low_income_cdcc: 0
+        co_eitc: 0
+        co_sales_tax_refund: 0
+    households:
+      household:
+        members: [head, dependent, dependent2]
+        state_code: CO
+  output:
+    co_family_affordability_credit: [0, 3_200, 2_400]
+    co_refundable_credits: 5_600
+
+- name: Family with one kid under the age of 6 and one under 16, with reduction
+  period: 2024
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_dependent: false
+      dependent:
+        age: 1
+        is_child_dependent: true
+      dependent2:
+        age: 15
+        is_child_dependent: true
+    tax_units:
+      tax_unit: 
+        members: [head, dependent, dependent2]
+        adjusted_gross_income: 22_000
+        filing_status: HEAD_OF_HOUSEHOLD
+        co_ctc: 0 
+        co_cdcc: 0
+        co_low_income_cdcc: 0
+        co_eitc: 0
+        co_sales_tax_refund: 0
+    households:
+      household:
+        members: [head, dependent, dependent2]
+        state_code: CO
+  output:
+    co_family_affordability_credit: [0, 2_760, 2_070]
+    co_refundable_credits: 4_830
+
+- name: Family with one kid under the age of 6 and one under 16, with reduction, fully phased-out
+  period: 2024
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_dependent: false
+      dependent:
+        age: 1
+        is_child_dependent: true
+      dependent2:
+        age: 15
+        is_child_dependent: true
+    tax_units:
+      tax_unit: 
+        members: [head, dependent, dependent2]
+        adjusted_gross_income: 86_000
+        filing_status: HEAD_OF_HOUSEHOLD
+        co_ctc: 0 
+        co_cdcc: 0
+        co_low_income_cdcc: 0
+        co_eitc: 0
+        co_sales_tax_refund: 0
+    households:
+      household:
+        members: [head, dependent, dependent2]
+        state_code: CO
+  output:
+    co_family_affordability_credit: [0, 0, 0]
+    co_refundable_credits: 0

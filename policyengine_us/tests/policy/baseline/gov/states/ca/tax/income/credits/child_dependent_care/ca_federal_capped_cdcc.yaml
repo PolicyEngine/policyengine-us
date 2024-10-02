@@ -1,0 +1,39 @@
+- name: test 1
+  period: 2019
+  input:
+    state_code: CA
+    ca_federal_cdcc: 1_500
+    income_tax_before_credits: 5_000
+    foreign_tax_credit: 0
+  output:
+    ca_federal_capped_cdcc: 1_500
+
+- name: test 2
+  period: 2021
+  input:
+    state_code: CA
+    ca_federal_cdcc: 1_500
+    income_tax_before_credits: 5_000
+    foreign_tax_credit: 0
+  output:
+    ca_federal_capped_cdcc: 1_500
+
+- name: test 3
+  period: 2022
+  input:
+    state_code: CA
+    ca_federal_cdcc: 800
+    income_tax_before_credits: 5_000
+    foreign_tax_credit: 500
+  output:
+    ca_federal_capped_cdcc: 800
+
+- name: test 4
+  period: 2022
+  input:
+    state_code: CA
+    ca_federal_cdcc: 1_500
+    income_tax_before_credits: 2_000
+    foreign_tax_credit: 800
+  output:
+    ca_federal_capped_cdcc: 1_200

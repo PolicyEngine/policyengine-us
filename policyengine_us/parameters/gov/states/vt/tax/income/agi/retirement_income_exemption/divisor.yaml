@@ -1,0 +1,16 @@
+description: Vermont divides the retirement income by this amount under the retirement income exemption.
+metadata:
+  label: Vermont retirement income exemption divisor
+  period: year
+  unit: currency-USD
+  reference:
+    - title: Instruction for 2022 SCHEDULE IN-112 - RETIREMENT INCOME EXEMPTION WORKSHEET
+      href: https://tax.vermont.gov/sites/tax/files/documents/IN-112%20Instr-2022.pdf#page=3
+    - title: Instruction for 2021 SCHEDULE IN-112 - SOCIAL SECURITY EXEMPTION WORKSHEET
+      href: https://tax.vermont.gov/sites/tax/files/documents/IN-112%20Instr-2021.pdf#page=2
+    - title: Instruction for 2023 SCHEDULE IN-112 - SOCIAL SECURITY EXEMPTION WORKSHEET
+      href: https://tax.vermont.gov/sites/tax/files/documents/IN-112-Instr-2023.pdf#page=2
+    - title: Legal Code Titl. 32 V.S.A. § 5830e(a)(1)(B)(ii), (a)(2)(B)(ii)
+      href: https://legislature.vermont.gov/statutes/section/32/151/05830e
+values:
+  2021-01-01: 10_000

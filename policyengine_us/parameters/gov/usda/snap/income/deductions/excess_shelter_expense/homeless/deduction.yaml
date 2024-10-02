@@ -24,9 +24,23 @@ values:
       reference:
         - title: Supplemental Nutrition Assistance Program (SNAP) Fiscal Year (FY) 2023 Income Eligibility Standards
           href: https://fns-prod.azureedge.us/sites/default/files/resource-files/FY23-Maximum-Allotments-Deductions.pdf
-    
+  2023-10-01:
+    value: 179.66
+    metadata:
+      reference:
+        - title: Supplemental Nutrition Assistance Program (SNAP) Fiscal Year (FY) 2024 Income Eligibility Standards
+          href: https://www.fns.usda.gov/snap/fy-2024-cola#:~:text=The%20shelter%20cap%20value%20will,and%20the%20U.S.%20Virgins%20Islands.
+  2024-10-01:
+    value: 190.30
+    metadata:
+      reference:
+        - title: SNAP - Fiscal Year 2025 Cost-of-Living Adjustments, Supplemental Nutrition Assistance Program Deductions, Maximum Excess Shelter Deductions
+          href: https://fns-prod.azureedge.us/sites/default/files/resource-files/snap-cola-fy25.pdf#page=5
+
 
 metadata:
   unit: currency-USD
   period: month
   label: SNAP homeless shelter deduction
+  uprating: gov.usda.snap.uprating
+  propagate_metadata_to_children: true

@@ -5,6 +5,7 @@ class capped_qualified_furnace_or_hot_water_boiler_credit(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
+    label = "Capped qualified furnace or hot water boiler credit"
     documentation = "Capped qualified furnace or hot water boiler credit"
     unit = USD
     reference = "https://www.law.cornell.edu/uscode/text/26/25C#b_3_B"

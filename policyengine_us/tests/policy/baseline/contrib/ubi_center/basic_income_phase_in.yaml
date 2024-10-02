@@ -1,0 +1,35 @@
+- name: Three people phased in at 70% with earned income
+  period: 2022
+  input:
+    gov.contrib.ubi_center.basic_income.phase_in.rate: 0.7
+    gov.contrib.ubi_center.basic_income.phase_in.per_person: false
+    gov.contrib.ubi_center.basic_income.phase_in.include_ss_benefits_as_earnings: false
+    tax_unit_earned_income: 2_000
+    tax_unit_size: 3
+    tax_unit_social_security: 0
+  output:
+    basic_income_phase_in: 1_400
+
+- name: Five people phased in at 30% with earned income, phased in per person
+  period: 2022
+  input:
+    gov.contrib.ubi_center.basic_income.phase_in.rate: 0.3
+    gov.contrib.ubi_center.basic_income.phase_in.per_person: true
+    gov.contrib.ubi_center.basic_income.phase_in.include_ss_benefits_as_earnings: true
+    tax_unit_earned_income: 2_000
+    tax_unit_size: 5
+    tax_unit_social_security: 0
+  output:
+    basic_income_phase_in: 3_000
+
+- name: SS included in earnings
+  period: 2022
+  input:
+    gov.contrib.ubi_center.basic_income.phase_in.rate: 0.3
+    gov.contrib.ubi_center.basic_income.phase_in.per_person: false
+    gov.contrib.ubi_center.basic_income.phase_in.include_ss_benefits_as_earnings: true
+    tax_unit_earned_income: 2_000
+    tax_unit_size: 5
+    tax_unit_social_security: 3_000
+  output:
+    basic_income_phase_in: 1_500

@@ -2,7 +2,7 @@
   period: 2023
   input:
     state_code: DC
-    earned_income_tax_credit: 0
+    eitc: 0
   output:
     dc_eitc_with_qualifying_child: 0
 
@@ -10,6 +10,6 @@
   period: 2023
   input:
     state_code: DC
-    earned_income_tax_credit: 100
+    eitc: 100
   output:
     dc_eitc_with_qualifying_child: 70

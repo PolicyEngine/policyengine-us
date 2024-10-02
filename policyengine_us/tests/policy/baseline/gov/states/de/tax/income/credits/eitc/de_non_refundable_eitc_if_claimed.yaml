@@ -2,7 +2,7 @@
   period: 2022
   input:
     state_code: DE
-    earned_income_tax_credit: 0
+    eitc: 0
   output:
     de_non_refundable_eitc_if_claimed: 0
 
@@ -10,6 +10,6 @@
   period: 2022
   input:
     state_code: DE
-    earned_income_tax_credit: 1_000
+    eitc: 1_000
   output:
     de_non_refundable_eitc_if_claimed: 200

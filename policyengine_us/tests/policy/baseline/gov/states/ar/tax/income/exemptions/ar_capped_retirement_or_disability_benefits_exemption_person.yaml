@@ -1,0 +1,33 @@
+- name: Arkansas capped exemption for retirement or disability benefits (below the cap)
+  period: 2021
+  input:
+    people:
+      person1:
+        ar_retirement_or_disability_benefits_exemption_person: 5_000
+        ar_military_retirement_income_person: 4_000
+    tax_units:
+      tax_unit:
+        members: [person1]  
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_capped_retirement_or_disability_benefits_exemption_person: 5_000
+
+- name: Arkansas capped exemption for retirement or disability benefits (over the cap)
+  period: 2021
+  input:
+    people:
+      person1:
+        ar_retirement_or_disability_benefits_exemption_person: 7_000
+        ar_military_retirement_income_person: 4_000
+    tax_units:
+      tax_unit:
+        members: [person1]  
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_capped_retirement_or_disability_benefits_exemption_person: 6_000

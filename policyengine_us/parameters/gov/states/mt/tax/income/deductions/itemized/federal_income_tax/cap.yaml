@@ -1,0 +1,26 @@
+description: Montana caps the federal income tax deduction to this amount, based on filing status.
+JOINT:
+  2021-01-01: 10_000
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 5_000
+SURVIVING_SPOUSE:
+  2021-01-01: 5_000
+SINGLE:
+  2021-01-01: 5_000
+SEPARATE:
+  2021-01-01: 5_000
+metadata:
+  label: Montana federal income tax deduction cap
+  period: year
+  unit: currency-USD
+  breakdown:
+    - filing_status
+  reference:
+    - title: MT Code § 15-30-2131 (2021) (1)(b)
+      href: https://law.justia.com/codes/montana/2021/title-15/chapter-30/part-21/section-15-30-2131/
+    - title: 2021 Montana Individual Income Tax Return - Form 2
+      href: https://mtrevenue.gov/wp-content/uploads/mdocs/form%202%202021.pdf#page=7
+    - title: 2022 Montana Individual Income Tax Return - Form 2
+      href: https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2023/05/Montana-Idividiual-Income-Tax-Return-Form-2-2022v6.2.pdf#page=7
+
+

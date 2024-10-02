@@ -1,0 +1,62 @@
+- name: Income not eligible for joint filing credit
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        oh_joint_filing_credit_qualifying_income: 400
+      person2:
+        is_tax_unit_spouse: true
+        oh_joint_filing_credit_qualifying_income: 700
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        state_code: OH
+  output:
+    oh_joint_filing_credit_eligible: false
+
+- name: Status not eligible for joint filing credit
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        oh_joint_filing_credit_qualifying_income: 600
+      person2:
+        is_tax_unit_spouse: true
+        oh_joint_filing_credit_qualifying_income: 700
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        state_code: OH
+  output:
+    oh_joint_filing_credit_eligible: false
+
+- name: Eligible for joint filing credit
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        oh_joint_filing_credit_qualifying_income: 600
+      person2:
+        is_tax_unit_spouse: true
+        oh_joint_filing_credit_qualifying_income: 700
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        state_code: OH
+  output:
+    oh_joint_filing_credit_eligible: true

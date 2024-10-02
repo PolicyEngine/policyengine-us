@@ -1,0 +1,19 @@
+- name: Alabama taxable income unit test 2
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    al_deductions: 2
+    al_agi: 4
+    state_code: AL
+  output:
+    al_taxable_income: 2
+
+- name: Alabama taxable income unit test 2
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    al_deductions: 3
+    al_agi: 4
+    state_code: AL
+  output:
+    al_taxable_income: 1

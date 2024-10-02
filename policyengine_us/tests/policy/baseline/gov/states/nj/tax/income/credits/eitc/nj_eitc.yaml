@@ -2,7 +2,7 @@
   period: 2022
   absolute_error_margin: 0
   input:
-    earned_income_tax_credit: 100
+    eitc: 100
     eitc_eligible: true
     nj_childless_eitc_age_eligible: true
     state_code: NJ
@@ -13,7 +13,7 @@
   period: 2022
   absolute_error_margin: 0
   input:
-    earned_income_tax_credit: 0
+    eitc: 0
     eitc_eligible: false
     nj_childless_eitc_age_eligible: true
     state_code: NJ
@@ -25,7 +25,7 @@
   absolute_error_margin: 0
   input:
     filing_status: JOINT
-    earned_income_tax_credit: 0
+    eitc: 0
     eitc_eligible: false
     nj_childless_eitc_age_eligible: true
     state_code: NJ
@@ -36,7 +36,7 @@
   period: 2022
   absolute_error_margin: 0
   input:
-    earned_income_tax_credit: 100
+    eitc: 100
     nj_childless_eitc_age_eligible: true
     state_code: NY
   output:

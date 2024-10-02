@@ -1,15 +1,14 @@
 description: Maximum family income for pregnant people to qualify for Medicaid.
 metadata:
   unit: /1
-  name: medicaid_pregnant_income_limit
   label: Medicaid pregnant income limit
   breakdown:
   - state_code
   reference:
     - title: Medicaid and CHIP Eligibility and Enrollment Policies as of January 2022 | KFF
       href: https://files.kff.org/attachment/REPORT-Medicaid-and-CHIP-Eligibility-and-Enrollment-Policies-as-of-January-2022.pdf#page=36
-    - title: medicaidscreener.com
-      href: https://www.medicaidscreener.com/?p=table
+    - title: 2023 Medicaid and CHIP Income Eligibility Limits for Pregnant Women as a Percent of the Federal Poverty Level
+      href: https://www.kff.org/affordable-care-act/state-indicator/medicaid-and-chip-income-eligibility-limits-for-pregnant-women-as-a-percent-of-the-federal-poverty-level/?currentTimeframe=0&sortModel=%7B%22colId%22:%22Location%22,%22sort%22:%22asc%22%7D
 AK:
   2021-01-01: 2.05
 AL:
@@ -84,12 +83,14 @@ OH:
   2021-01-01: 2.05
 OK:
   2021-01-01: 1.38
+  2023-01-01: 2.10
 OR:
   2021-01-01: 1.90
 PA:
   2021-01-01: 2.20
 RI:
   2021-01-01: 1.95
+  2023-01-01: 2.58
 SC:
   2021-01-01: 1.99
 SD:

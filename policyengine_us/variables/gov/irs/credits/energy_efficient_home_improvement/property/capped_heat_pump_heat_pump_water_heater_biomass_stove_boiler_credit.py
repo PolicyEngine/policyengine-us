@@ -7,6 +7,7 @@ class capped_heat_pump_heat_pump_water_heater_biomass_stove_boiler_credit(
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
+    label = "Capped credit on heat pumps, heat pump water heaters, and biomass stoves and boilers"
     documentation = "Capped credit on heat pumps, heat pump water heaters, and biomass stoves and boilers"
     unit = USD
     reference = "https://www.democrats.senate.gov/imo/media/doc/inflation_reduction_act_of_2022.pdf#page=340"

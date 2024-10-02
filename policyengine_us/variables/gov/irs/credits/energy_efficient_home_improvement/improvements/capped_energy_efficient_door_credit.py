@@ -5,6 +5,7 @@ class capped_energy_efficient_door_credit(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
+    label = "Capped energy-efficient exterior door credit"
     documentation = "Capped energy-efficient exterior door credit"
     unit = USD
     reference = "https://www.democrats.senate.gov/imo/media/doc/inflation_reduction_act_of_2022.pdf#page=339"

@@ -19,7 +19,7 @@ class nyc_income_tax_before_credits(Variable):
                 filing_status == filing_statuses.SINGLE,
                 filing_status == filing_statuses.JOINT,
                 filing_status == filing_statuses.HEAD_OF_HOUSEHOLD,
-                filing_status == filing_statuses.WIDOW,
+                filing_status == filing_statuses.SURVIVING_SPOUSE,
                 filing_status == filing_statuses.SEPARATE,
             ],
             [

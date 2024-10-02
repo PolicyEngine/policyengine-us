@@ -6,7 +6,7 @@ class is_snap_eligible(Variable):
     entity = SPMUnit
     label = "SNAP eligible"
     documentation = "Whether this SPM unit is eligible for SNAP benefits"
-    definition_period = YEAR
+    definition_period = MONTH
     reference = (
         "https://www.law.cornell.edu/uscode/text/7/2017#a",
         "https://www.law.cornell.edu/uscode/text/7/2014#c",

@@ -5,6 +5,7 @@ class capped_advanced_main_air_circulating_fan_credit(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
+    label = "Capped advanced main air circulating fan credit"
     documentation = "Capped advanced main air circulating fan credit"
     unit = USD
     reference = "https://www.law.cornell.edu/uscode/text/26/25C#b_3_A"

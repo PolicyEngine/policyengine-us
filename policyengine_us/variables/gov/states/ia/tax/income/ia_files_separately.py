@@ -16,6 +16,11 @@ class ia_files_separately(Variable):
     defined_for = StateCode.IA
 
     def formula(tax_unit, period, parameters):
-        itax_indiv = tax_unit("ia_income_tax_indiv", period)
-        itax_joint = tax_unit("ia_income_tax_joint", period)
-        return itax_indiv < itax_joint
+        p = parameters(
+            period
+        ).gov.states.ia.tax.income.married_filing_separately_on_same_return
+        if p.availability:
+            itax_indiv = tax_unit("ia_income_tax_indiv", period)
+            itax_joint = tax_unit("ia_income_tax_joint", period)
+            return itax_indiv < itax_joint
+        return False

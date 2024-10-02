@@ -1,0 +1,21 @@
+description: Los Angeles county accounts for these income sources after state and federal deductions under the general relief program.
+values:
+  2021-07-01:
+    # Veterans benefits.
+    - veterans_benefits
+    # Unemployment Insurance Benefits (UIB) : 
+    - unemployment_compensation # match?
+    - ca_state_disability_insurance
+    # Income from a job of any type.
+    - irs_employment_income
+    - self_employment_income
+    - ssi
+    - social_security
+    - tanf
+metadata:
+  unit: list
+  period: year
+  label: Los Angeles County general relief income sources
+  reference:
+    - title: ABP 392 General Relief Information Sheet Form rev 07-2021
+      href: https://drive.google.com/file/d/1Oc7UuRFxJj-eDwTeox92PtmRVGnG9RjW/view?usp=sharing 

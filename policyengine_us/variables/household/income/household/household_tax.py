@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class household_tax(Variable):
     value_type = float
     entity = Household
-    label = "tax"
+    label = "total tax after refundable credits"
     documentation = "Total tax liability after refundable credits."
     unit = USD
     definition_period = YEAR

@@ -14,10 +14,6 @@ class ca_taxable_income(Variable):
     defined_for = StateCode.CA
 
     def formula(tax_unit, period, parameters):
-        filing_status = tax_unit("filing_status", period)
-        p = parameters(period).gov.states.ca.tax.income
-        std_ded = p.deductions.standard.amount[filing_status]
-        itm_ded = tax_unit("ca_itemized_deductions", period)
-        ded = where(itm_ded > std_ded, itm_ded, std_ded)
+        ded = tax_unit("ca_deductions", period)
         agi = tax_unit("ca_agi", period)
         return max_(0, agi - ded)

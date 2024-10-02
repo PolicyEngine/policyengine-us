@@ -1,0 +1,51 @@
+- name: An eligible person having total income below 25000 dollars
+  period: 2022
+  input:
+    age: 20
+    ca_foster_youth_tax_credit_eligible_person: true
+    ca_eitc_eligible: true
+    tax_unit_earned_income: 20_000
+  output:
+    ca_foster_youth_tax_credit_person: 1_083
+
+- name: An ineligible person having total income below 25000 dollars
+  period: 2022
+  input:
+    age: 26
+    ca_foster_youth_tax_credit_eligible_person: true
+    ca_eitc_eligible: true
+    tax_unit_earned_income: 20_000
+  output:
+    ca_foster_youth_tax_credit_person: 0
+
+- name: An eligible person having total income above 25000 dollars and foster youth tax credit reduced to 0
+  period: 2022
+  input:
+    age: 25
+    ca_foster_youth_tax_credit_eligible_person: true
+    ca_eitc_eligible: true
+    tax_unit_earned_income: 30_000
+  output:
+   #1083-5000*0.2166 = 0
+    ca_foster_youth_tax_credit_person: 0 
+
+- name: An eligible person having total income above 25000 dollars
+  period: 2022
+  input:
+    age: 25
+    ca_foster_youth_tax_credit_eligible_person: true
+    ca_eitc_eligible: true
+    tax_unit_earned_income: 29_000
+  output:
+    #1083-4000*0.2166 = 216.6
+    ca_foster_youth_tax_credit_person: 216.6
+
+- name: An ineligible person having total income below 25000 dollars
+  period: 2022
+  input:
+    age: 23
+    ca_foster_youth_tax_credit_eligible_person: false
+    ca_eitc_eligible: true
+    tax_unit_earned_income: 20_000
+  output:
+    ca_foster_youth_tax_credit_person: 0

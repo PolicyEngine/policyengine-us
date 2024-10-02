@@ -1,0 +1,17 @@
+- name: Recipients that have countable income less than maximum payment pass the financial test.
+  period: 2023
+  input:
+    state_code: CA
+    ca_tanf_maximum_payment: 100
+    ca_tanf_countable_income_recipient: 99
+  output:
+    ca_tanf_recipient_financial_test: true
+
+- name: Recipients that have countable income greater than or equal to maximum payment do not pass the financial test.
+  period: 2023
+  input:
+    state_code: CA
+    ca_tanf_maximum_payment: 100
+    ca_tanf_countable_income_recipient: 100
+  output:
+    ca_tanf_recipient_financial_test: false

@@ -1,0 +1,82 @@
+- name: Household not eligible for WFHDC should have default value 0
+  period: 2022
+  input:
+    state_code: OR
+    or_wfhdc_eligible: false
+  output:
+    or_wfhdc_income_category: 0
+
+- name: Household of size 2 with income less than or equal to $1,831 should have value 1. 
+  period: 2022
+  input:
+    or_wfhdc_eligible: true
+    tax_unit_fpg: 18_333
+    or_wfhdc_household_income: 1_831
+  output:
+    or_wfhdc_income_category: 1
+
+- name: Household of size 2 with income above $1,831 and less than or equal to $3,662 should have value 2.
+  period: 2022
+  input:
+    state_code: OR
+    or_wfhdc_eligible: true
+    tax_unit_size: 2
+    adjusted_gross_income: 3_662
+    or_agi: 3_662
+  output:
+    or_wfhdc_income_category: 2
+
+- name: Household of size 3 with income less than or equal to $2,303 should have value 1.
+  period: 2022
+  input:
+    state_code: OR
+    or_wfhdc_eligible: true
+    tax_unit_size: 3
+    adjusted_gross_income: 2_303
+    or_agi: 2_303
+  output:
+    or_wfhdc_income_category: 1
+
+- name: Over 300% of fpg - ineligible (integration test)
+  period: 2022
+  input:
+    state_code: OR
+    tax_unit_fpg: 1_000
+    adjusted_gross_income: 100_000
+    or_agi: 100_000
+  output:
+    or_wfhdc_income_category: 0
+
+- name: Income equals 130 - 140% of fpg
+  period: 2022
+  input:
+    state_code: OR
+    or_wfhdc_eligible: true
+    tax_unit_fpg: 1_000
+    adjusted_gross_income: 1_379
+    or_agi: 1_000
+  output:
+    or_wfhdc_income_category: 14
+
+- name: Income equals 220 - 230% of fpg
+  period: 2022
+  input:
+    state_code: OR
+    or_wfhdc_eligible: true
+    tax_unit_fpg: 1_000
+    adjusted_gross_income: 1_379
+    or_agi: 2_300
+  output:
+    or_wfhdc_income_category: 23
+
+- name: Income equals 230 - 240% of fpg
+  period: 2022
+  input:
+    state_code: OR
+    or_wfhdc_eligible: true
+    tax_unit_fpg: 1_000
+    adjusted_gross_income: 1_379
+    or_agi: 2_301
+  output:
+    or_wfhdc_income_category: 24
+

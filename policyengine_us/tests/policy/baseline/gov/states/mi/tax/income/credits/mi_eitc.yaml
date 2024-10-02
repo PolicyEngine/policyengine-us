@@ -2,15 +2,15 @@
   period: 2022
   input:
     state_code: MI
-    earned_income_tax_credit: 1_000
+    eitc: 1_000
   output:  
-    mi_eitc: 300
+    mi_eitc: 60
 
 - name: $1_000 EITC in 2023
   period: 2023
   input:
     state_code: MI
-    earned_income_tax_credit: 1_000
+    eitc: 1_000
   output:  
     mi_eitc: 300
 
@@ -18,6 +18,6 @@
   period: 2023
   input:
     state_code: MI
-    earned_income_tax_credit: 0
+    eitc: 0
   output:  
     mi_eitc: 0

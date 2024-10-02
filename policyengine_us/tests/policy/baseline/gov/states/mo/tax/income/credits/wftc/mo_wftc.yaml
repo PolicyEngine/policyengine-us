@@ -2,7 +2,7 @@
   period: 2023
   input:
     state_code: MO
-    earned_income_tax_credit: 0
+    eitc: 0
   output:
     mo_wftc: 0
 
@@ -10,7 +10,7 @@
   period: 2023
   input:
     state_code: MO
-    earned_income_tax_credit: 100
+    eitc: 100
   output:
     mo_wftc: 10
 
@@ -18,7 +18,7 @@
   period: 2023
   input:
     state_code: MA
-    earned_income_tax_credit: 100
+    eitc: 100
   output:
     mo_wftc: 0
 
@@ -26,6 +26,6 @@
   period: 2022
   input:
     state_code: MO
-    earned_income_tax_credit: 100
+    eitc: 100
   output:
-    mo_wftc: 0
+    mo_wftc: 10

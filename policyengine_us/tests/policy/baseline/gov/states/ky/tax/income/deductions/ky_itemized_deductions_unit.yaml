@@ -1,0 +1,19 @@
+- name: KY itemized deductions are federal itemized deductions minus SALT and medical expenses.
+  absolute_error_margin: 0
+  period: 2022
+  input:
+    state_code: KY
+    itemized_deductions_less_salt: 3
+    medical_expense_deduction: 2
+  output:
+    ky_itemized_deductions_unit: 1
+
+- name: KY itemized deductions are federal itemized deductions minus SALT and medical expenses.
+  absolute_error_margin: 0
+  period: 2022
+  input:
+    state_code: KY
+    itemized_deductions_less_salt: 10
+    medical_expense_deduction: 2
+  output:
+    ky_itemized_deductions_unit: 8

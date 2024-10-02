@@ -1,0 +1,40 @@
+- name: Income categroy one with the youngest child being under three
+  period: 2022
+  input:
+    or_wfhdc_eligible: true
+    or_wfhdc_income_category: 1
+    or_wfhdc_eligibility_category: YOUNGEST
+    or_cdcc_relevant_expenses: 100
+  output:
+    or_working_family_household_and_dependent_care_credit: 10
+
+- name: Not category eligible
+  period: 2022
+  input:
+    or_wfhdc_eligible: true
+    or_wfhdc_income_category: 24
+    or_wfhdc_eligibility_category: NONE
+    or_cdcc_relevant_expenses: 100
+  output:
+    or_working_family_household_and_dependent_care_credit: 0
+
+- name: Not category eligible
+  period: 2022
+  input:
+    or_wfhdc_eligible: true
+    or_wfhdc_income_category: 24
+    or_wfhdc_eligibility_category: NONE
+    or_cdcc_relevant_expenses: 100
+  output:
+    or_working_family_household_and_dependent_care_credit: 0
+
+- name: 230 - 240% of fpg and disabled child 13 to 18
+  period: 2022
+  input:
+    or_wfhdc_eligible: true
+    or_wfhdc_income_category: 24
+    or_wfhdc_eligibility_category: DISABLED_TEENS
+    or_cdcc_relevant_expenses: 100
+  output:
+    or_working_family_household_and_dependent_care_credit: 25
+    

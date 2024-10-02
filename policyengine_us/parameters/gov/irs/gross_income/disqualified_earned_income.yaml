@@ -1,0 +1,18 @@
+description: Income sources counted as disqualified earned income. 
+values:
+  2021-01-01:
+    - dividend_income
+    - tax_exempt_interest_income
+    - interest_income
+    - rental_income
+    - capital_gains
+    # excess_passive_activity_income
+
+metadata:
+  unit: list
+  period: year
+  label: Disqualified earned income sources  
+  reference:
+    - title: 26 U.S. Code § 32 - Earned income-(i).(2)
+      href: https://www.law.cornell.edu/uscode/text/26/32#:~:text=In%20the%20case%20of%20an,exceed%20the%20earned%20income%20amount
+

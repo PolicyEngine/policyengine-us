@@ -1,0 +1,70 @@
+- name: Integration test - single filer with 150k employment income and 50k qualified dividend income as well as 50k long term capital gains
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 50
+        employment_income: 150_000
+        qualified_dividend_income: 50_000
+        long_term_capital_gains: 50_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # expected output from online TAXSIM-35
+    # which is at: https://taxsim.nber.org/taxsim35/
+    alternative_minimum_tax: 0
+    adjusted_gross_income: 250_000
+    taxable_income: 237_050
+    net_investment_income_tax: 1_900
+    income_tax: 43_627.50
+
+- name: Integration test - single filer with 5k of income
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 18
+        employment_income: 5_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    alternative_minimum_tax: 0
+
+- name: Integration test - single filer with 5k of income
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 19
+        employment_income: 5_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    alternative_minimum_tax: 0

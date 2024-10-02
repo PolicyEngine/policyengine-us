@@ -10,7 +10,7 @@ class az_standard_deduction(Variable):
     definition_period = YEAR
     defined_for = StateCode.AZ
 
-    def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.az.tax.income.deductions.standard
-        filing_status = tax_unit("filing_status", period)
-        return p.amount[filing_status]
+    adds = [
+        "az_base_standard_deduction",
+        "az_increased_standard_deduction_for_charitable_contributions",
+    ]

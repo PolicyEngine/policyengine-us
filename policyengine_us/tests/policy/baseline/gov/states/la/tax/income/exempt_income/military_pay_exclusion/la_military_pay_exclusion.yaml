@@ -1,0 +1,32 @@
+- name: Compensation less than 30,000 dollars before 2022
+  period: 2021
+  input:
+    military_service_income: 10_000
+    state_code: LA
+  output:
+    la_military_pay_exclusion: 10_000
+
+- name: Compensation more than 30,000 dollars before 2022
+  period: 2021
+  input:
+    military_service_income: 31_000
+    state_code: LA
+  output:
+    la_military_pay_exclusion: 30_000
+
+- name: Compensation less than 50,000 dollars after 2022
+  period: 2022
+  input:
+    military_service_income: 10_000
+    state_code: LA
+  output:
+    la_military_pay_exclusion: 10_000
+
+- name: Compensation more than 50,000 dollars after 2022
+  period: 2022
+  input:
+    military_service_income: 51_000
+    state_code: LA
+  output:
+    la_military_pay_exclusion: 50_000
+

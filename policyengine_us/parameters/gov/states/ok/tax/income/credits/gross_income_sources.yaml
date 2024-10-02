@@ -1,7 +1,7 @@
 description: Oklahoma counts these sources when determining gross income for its sales tax credit.
 values:
   2021-01-01:
-    - employment_income
+    - irs_employment_income
     - self_employment_income
     - partnership_s_corp_income
     - farm_income
@@ -23,7 +23,7 @@ values:
     - ssi
     - state_supplement  # state SSI supplement
     - general_assistance
-    - earned_income_tax_credit
+    - eitc
 
 metadata:
   label: Oklahoma sales tax credit gross income sources

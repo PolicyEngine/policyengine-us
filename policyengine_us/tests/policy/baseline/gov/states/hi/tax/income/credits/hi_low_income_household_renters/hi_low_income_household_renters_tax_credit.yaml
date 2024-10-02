@@ -1,0 +1,39 @@
+- name: Both Aged Exemptions
+  period: 2021
+  input:
+    age_head: 66
+    age_spouse: 66
+    exemptions_count: 1
+    hi_tax_credit_for_low_income_household_renters_eligible: true
+  output:
+    hi_tax_credit_for_low_income_household_renters: 150
+
+- name: Either Aged Exemptions
+  period: 2021
+  input:
+    age_head: 64
+    age_spouse: 66
+    exemptions_count: 1
+    hi_tax_credit_for_low_income_household_renters_eligible: true
+  output:
+    hi_tax_credit_for_low_income_household_renters: 100
+
+- name: Neither Aged Exemptions
+  period: 2021
+  input:
+    age_head: 63
+    age_spouse: 63
+    exemptions_count: 1
+    hi_tax_credit_for_low_income_household_renters_eligible: true
+  output:
+    hi_tax_credit_for_low_income_household_renters: 50
+
+- name: Ineligible
+  period: 2021
+  input:
+    age_head: 63
+    age_spouse: 63
+    exemptions_count: 1
+    hi_tax_credit_for_low_income_household_renters_eligible: false
+  output:
+    hi_tax_credit_for_low_income_household_renters: 0

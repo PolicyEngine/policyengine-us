@@ -1,0 +1,88 @@
+- name: West Virgina public pension subtraction if two people in the household, one is not dependent with $3000 public pension and the other is dependent with $3000 public pension.
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        taxable_federal_pension_income: 3_000
+      person2:
+        is_tax_unit_head_or_spouse: false
+        taxable_federal_pension_income: 3_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    wv_public_pension_subtraction_person: [2_000, 0]
+
+- name: West Virgina public pension subtraction if two people in the household, one is not dependent with $1000 public pension and the other is not dependent with $500 public pension.
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        taxable_federal_pension_income: 1_000
+      person2:
+        is_tax_unit_head_or_spouse: true
+        taxable_federal_pension_income: 500
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    wv_public_pension_subtraction_person: [1_000, 500]
+
+
+- name: West Virgina public pension subtraction if two people in the household, one is dependent with $1000 public pension and the other is dependent with $500 public pension.
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: false
+        taxable_federal_pension_income: 1_000
+      person2:
+        is_tax_unit_head_or_spouse: false
+        taxable_federal_pension_income: 500
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    wv_public_pension_subtraction_person: 0
+
+- name: West Virgina public pension subtraction if three people in the household, one is not dependent with $1000 public pension, one is dependent with $800 public pension and another is not dependent with $500 public pension.
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        taxable_federal_pension_income: 1_000
+      person2:
+        is_tax_unit_head_or_spouse: false
+        taxable_federal_pension_income: 800
+      person3:
+        is_tax_unit_head_or_spouse: true
+        taxable_federal_pension_income: 500
+    households:
+      household:
+        members: [person1, person2,person3]
+        state_code: WV
+  output:
+    wv_public_pension_subtraction_person: [1_000, 0, 500]
+
+- name: Capped at 2,000 for each person
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        taxable_federal_pension_income: 2_500
+      person2:
+        is_tax_unit_head_or_spouse: true
+        taxable_federal_pension_income: 3_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    wv_public_pension_subtraction_person: [2_000, 2_000]

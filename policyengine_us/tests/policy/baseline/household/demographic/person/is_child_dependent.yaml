@@ -1,0 +1,44 @@
+- name: Non student dependent.
+  period: 2021
+  input: 
+    is_tax_unit_dependent: true
+    age: 18
+    is_full_time_student: false
+  output:
+    is_child_dependent: true
+
+- name: Student dependent.
+  period: 2021
+  input: 
+    is_tax_unit_dependent: true
+    age: 23
+    is_full_time_student: true
+  output:
+    is_child_dependent: true
+
+- name: Non-student dependent age ineligible.
+  period: 2021
+  input: 
+    is_tax_unit_dependent: true
+    age: 19
+    is_full_time_student: false
+  output:
+    is_child_dependent: false
+
+- name: Student dependent age ineligible.
+  period: 2021
+  input: 
+    is_tax_unit_dependent: true
+    age: 24
+    is_full_time_student: true
+  output:
+    is_child_dependent: false
+
+- name: Age eligible non-dependent.
+  period: 2021
+  input: 
+    is_tax_unit_dependent: false
+    age: 18
+    is_full_time_student: false
+  output:
+    is_child_dependent: false

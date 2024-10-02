@@ -1,0 +1,29 @@
+description: Rhode Island subtracts these items from federal adjusted gross income when computing Rhode Island adjusted gross income.
+
+metadata:
+  unit: list
+  reference:
+  - title: 2021 RI Schedule M - page 1 RI Modifications to Federal AGI 
+    href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-01/2021-ri-schedule-m_w.pdf#page=1
+  - title: 2022 RI Schedule M - page 1 RI Modifications to Federal AGI 
+    href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-12/2022%20RI%20Schedule%20M_w.pdf#page=1
+  - title: § 44-30-12.  Rhode Island income of a resident individual. 
+    href: http://webserver.rilin.state.ri.us/Statutes/title44/44-30/44-30-12.HTM
+  - title: 2023 RI Summary of Legislative Changes
+    href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-12/2022%20RI%20Schedule%20M_w.pdf#page=3
+  period: year
+  label: Rhode Island adjusted gross income subtractions
+
+values:
+  2021-01-01:
+    - ri_social_security_modification 
+    - ri_tuition_saving_program_contribution_subtraction 
+    - ri_retirement_income_subtraction 
+    - us_govt_interest
+
+  2023-01-01:
+    - ri_social_security_modification 
+    - ri_tuition_saving_program_contribution_subtraction 
+    - ri_retirement_income_subtraction 
+    - us_govt_interest
+    - military_retirement_pay

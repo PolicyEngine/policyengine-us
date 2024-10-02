@@ -1,0 +1,17 @@
+- name: Ineligible
+  period: 2022-01
+  input:
+    in_la: true
+    la_general_relief_net_income: 34_000 # 2_833.33 monthly
+    la_general_relief_net_income_limit: 2_833.32
+  output:
+    la_general_relief_net_income_eligible: false
+
+- name: Eligible
+  period: 2022-01
+  input:
+    in_la: true
+    la_general_relief_net_income: 34_000 
+    la_general_relief_net_income_limit: 2_833.5
+  output:
+    la_general_relief_net_income_eligible: true

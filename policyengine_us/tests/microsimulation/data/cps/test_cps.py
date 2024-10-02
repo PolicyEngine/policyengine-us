@@ -1,4 +1,4 @@
-from policyengine_us.data import CPS_2021, CPS_2022, CPS_2023
+from policyengine_us_data import CPS_2021, CPS_2022
 import pytest
 from policyengine_us import Microsimulation
 import warnings

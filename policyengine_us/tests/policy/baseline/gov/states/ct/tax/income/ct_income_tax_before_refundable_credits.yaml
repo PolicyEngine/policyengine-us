@@ -1,0 +1,17 @@
+- name: Calculation
+  period: 2022
+  input:
+    state_code: CT
+    ct_income_tax_after_amt: 1_000
+    ct_non_refundable_credits: 500
+  output:
+    ct_income_tax_before_refundable_credits: 500
+
+- name: Capped at 0
+  period: 2022
+  input:
+    state_code: CT
+    ct_income_tax_after_amt: 500
+    ct_non_refundable_credits: 600
+  output:
+    ct_income_tax_before_refundable_credits: 0

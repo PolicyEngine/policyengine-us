@@ -1,0 +1,29 @@
+description: The IRS limits the tuition and fees deduction to non-joint filers to this amount, based on adjusted gross income.
+brackets:
+  - threshold:
+      2002-01-01: 0
+    amount:
+      2002-01-01: 3_000
+      2004-01-01: 4_000
+  - threshold:
+      2002-01-01: 65_000
+    amount:
+      2002-01-01: 0
+      2004-01-01: 2_000
+  - threshold:
+      2002-01-01: .inf
+      2004-01-01: 80_000
+    amount:
+      2002-01-01: 0
+metadata:
+  threshold_unit: currency_USD
+  amount_unit: currency_USD
+  period: year
+  type: single_amount
+  label: IRS tuition and fees deduction non-joint filers cap
+  reference:
+    - title: 2020 Form 8917
+      href: https://www.irs.gov/pub/irs-pdf/f8917.pdf#page=2
+    # Law was repealed in 2021
+    - title: I.R.C. § 222(b)(2)(B)(ii)
+      href: https://irc.bloombergtax.com/public/uscode/doc/irc/section_222

@@ -1,0 +1,49 @@
+- name: Joint filer not eligible for taxable retirement income modification
+  period: 2022
+  input:
+    state_code: RI
+    adjusted_gross_income: 22_000
+    filing_status: JOINT
+    older_spouse_birth_year: 1957
+  output:
+    ri_retirement_income_subtraction_eligible: false
+
+- name: Single filer eligible for taxable retirement income modification
+  period: 2022
+  input:
+    state_code: RI
+    adjusted_gross_income: 95_799
+    filing_status: SINGLE
+    older_spouse_birth_year: 1956
+  output:
+    ri_retirement_income_subtraction_eligible: true
+
+- name: Widow filer eligible 
+  period: 2022
+  input:
+    state_code: RI
+    adjusted_gross_income: 119_749
+    filing_status: SURVIVING_SPOUSE
+    older_spouse_birth_year: 1956
+  output:
+    ri_retirement_income_subtraction_eligible: true
+
+- name: Widow filer ineligible 
+  period: 2022
+  input:
+    state_code: RI
+    adjusted_gross_income: 119_750
+    filing_status: SURVIVING_SPOUSE
+    older_spouse_birth_year: 1956
+  output:
+    ri_retirement_income_subtraction_eligible: false
+
+- name: Widow filer ineligible in 2021
+  period: 2021
+  input:
+    state_code: RI
+    adjusted_gross_income: 109_050
+    filing_status: SURVIVING_SPOUSE
+    older_spouse_birth_year: 1956
+  output:
+    ri_retirement_income_subtraction_eligible: false

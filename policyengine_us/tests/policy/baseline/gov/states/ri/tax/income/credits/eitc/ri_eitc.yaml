@@ -2,7 +2,7 @@
   period: 2022
   input:
     state_code: RI
-    earned_income_tax_credit: 0
+    eitc: 0
   output:
     ri_eitc: 0
 
@@ -10,7 +10,7 @@
   period: 2022
   input:
     state_code: RI
-    earned_income_tax_credit: 10_000
+    eitc: 10_000
   output:
     ri_eitc: 1_500
 
@@ -18,6 +18,6 @@
   period: 2021
   input:
     state_code: RI
-    earned_income_tax_credit: 20_000
+    eitc: 20_000
   output:
     ri_eitc: 3_000

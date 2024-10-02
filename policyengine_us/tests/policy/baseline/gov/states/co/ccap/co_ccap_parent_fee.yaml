@@ -1,0 +1,273 @@
+- name: One parent with two children, agi > hhs_fpg, both children eligible for cccap but not eligible for quality rating facility discount.
+  absolute_error_margin: 0.1
+  period: 2023
+  input:
+    people:
+      parent:
+        is_disabled: false
+        is_tax_unit_dependent: false
+        age: 45
+      child1:
+        is_disabled: false
+        is_tax_unit_dependent: true
+        age: 6
+        childcare_hours_per_day: 20
+        co_quality_rating_of_child_care_facility: 1
+      child2:
+        is_disabled: true
+        is_tax_unit_dependent: true
+        age: 17
+        childcare_hours_per_day: 4
+        co_quality_rating_of_child_care_facility: 1
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+        co_ccap_eligible: 
+          2023-01: true
+        co_ccap_countable_income: 46_000
+        co_ccap_base_parent_fee: 
+          2023-01: 287.18
+        co_ccap_add_on_parent_fee: 
+          2023-01: 15
+    households:
+      household: 
+        members: [parent, child1, child2]
+        county_str: BACA_COUNTY_CO
+        state_code: CO
+  output:
+    co_ccap_parent_fee: 
+      2023-01: 770.56
+    # base + add_on: 287.18 + 15 = 302.18; 
+    # child1: 302.18 * 2 + child2: 302.18 * .55 = 770.56;
+    # not qualified for quality rating discount;
+    # final parent fee: 770.56
+
+- name: Two parents with two children, agi > hhs_fpg, both children eligible for cccap and one eligible for quality rating facility discount.
+  absolute_error_margin: 0.1  
+  period: 2023
+  input:
+    people:
+      parent1:
+        is_disabled: true
+        is_tax_unit_dependent: false
+        age: 45
+      parent2:
+        is_disabled: false
+        is_tax_unit_dependent: false
+        age: 45
+      child1:
+        is_disabled: false
+        is_tax_unit_dependent: true
+        age: 6
+        childcare_hours_per_day: 20
+        co_quality_rating_of_child_care_facility: 3
+      child2:
+        is_disabled: true
+        is_tax_unit_dependent: true
+        age: 17
+        childcare_hours_per_day: 4
+        co_quality_rating_of_child_care_facility: 1
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2]
+        co_ccap_eligible: 
+          2023-01: true
+        co_ccap_countable_income: 90_000
+        co_ccap_base_parent_fee: 
+          2023-01: 749.38
+        co_ccap_add_on_parent_fee: 
+          2023-01: 15
+    households:
+      household: 
+        members: [parent1, parent2, child1, child2]
+        county_str: BACA_COUNTY_CO
+        state_code: CO
+  output:
+    co_ccap_parent_fee: 
+      2023-01: 1_559.34
+    # base + add_on: 749.38 + 15 = 764.38; 
+    # child1: 764.38 * 2 + child2: 764.38 * .55 = 1_949.17;
+    # quality rating discount: 1_949.17 * .8 = 1_559.34
+    # final parent fee: 1_559.34
+
+- name: Two parents with two children, agi <= hhs_fpg, both children eligible for cccap and one eligible for quality rating facility discount.
+  absolute_error_margin: 0.1  
+  period: 2023
+  input:
+    people:
+      parent1:
+        is_disabled: true
+        is_tax_unit_dependent: false
+        age: 45
+      parent2:
+        is_disabled: false
+        is_tax_unit_dependent: false
+        age: 45
+      child1:
+        is_disabled: false
+        is_tax_unit_dependent: true
+        age: 6
+        childcare_hours_per_day: 20
+        co_quality_rating_of_child_care_facility: 3
+      child2:
+        is_disabled: true
+        is_tax_unit_dependent: true
+        age: 17
+        childcare_hours_per_day: 4
+        co_quality_rating_of_child_care_facility: 4
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2]
+        co_ccap_eligible: 
+          2023-01: true
+        co_ccap_countable_income: 20_000
+        co_ccap_base_parent_fee: 
+          2023-01: 16.67
+        co_ccap_add_on_parent_fee: 
+          2023-01: 0
+    households:
+      household: 
+        members: [parent1, parent2, child1, child2]
+        county_str: CROWLEY_COUNTY_CO
+        state_code: CO
+  output:
+    co_ccap_parent_fee: 
+      2023-01: 34.01
+    # base + add_on: 16.67 + 0 = 16.67; 
+    # child1: 16.67 * 2 + child2: 16.67 * .55 = 42.51;
+    # quality rating discount: 42.51 * .8 = 34.01
+    # final parent fee: 34.01
+
+- name: Two parents with one child, agi <= hhs_fpg, child eligible for cccap and quality rating facility discount.
+  absolute_error_margin: 0.1  
+  period: 2023
+  input:
+    people:
+      parent1:
+        is_disabled: false
+        is_tax_unit_dependent: false
+        age: 45
+      parent2:
+        is_disabled: false
+        is_tax_unit_dependent: false
+        age: 45
+      child1:
+        is_disabled: false
+        is_tax_unit_dependent: true
+        age: 6
+        childcare_hours_per_day: 15
+        co_quality_rating_of_child_care_facility: 5
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1]
+        co_ccap_eligible: 
+          2023-01: true
+        co_ccap_countable_income: 20_000
+        co_ccap_base_parent_fee: 
+          2023-01: 16.67
+        co_ccap_add_on_parent_fee: 
+          2023-01: 0
+    households:
+      household: 
+        members: [parent1, parent2, child1]
+        county_str: CROWLEY_COUNTY_CO
+        state_code: CO
+  output:
+    co_ccap_parent_fee: 
+      2023-01: 20.67
+    # base + add_on: 16.67 + 0 = 16.67; 
+    # child1: 16.67 * 1.55 = 25.84;
+    # quality rating discount: 25.84 * .8 = 20.67
+    # final parent fee: 20.67
+
+- name: Two parents with two children, agi <= hhs_fpg, one eligible for cccap and quality rating facility discount, the other not.
+  absolute_error_margin: 0.1  
+  period: 2022
+  input:
+    people:
+      parent1:
+        is_disabled: true
+        is_tax_unit_dependent: false
+        age: 45
+      parent2:
+        is_disabled: false
+        is_tax_unit_dependent: false
+        age: 45
+      child1:
+        is_disabled: false
+        is_tax_unit_dependent: true
+        age: 6
+        childcare_hours_per_day: 20
+        co_quality_rating_of_child_care_facility: 3
+      child2:
+        is_disabled: false
+        is_tax_unit_dependent: true
+        age: 17
+        childcare_hours_per_day: 4
+        co_quality_rating_of_child_care_facility: 4
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2]
+        co_ccap_eligible: 
+          2022-12: true
+        co_ccap_countable_income: 20_000
+        co_ccap_base_parent_fee: 
+          2022-12: 16.67
+        co_ccap_add_on_parent_fee: 
+          2022-12: 0
+    households:
+      household: 
+        members: [parent1, parent2, child1, child2]
+        county_str: CROWLEY_COUNTY_CO
+        state_code: CO
+  output:
+    co_ccap_parent_fee: 
+      2022-12: 26.67
+    # base + add_on: 16.67 + 0 = 16.67; 
+    # child1: 16.67 * 2  = 33.34;
+    # quality rating discount: 33.34 * .8 = 26.67
+    # final parent fee: 26.67
+
+- name: One parent with two children, agi > hhs_fpg, one eligible for cccap but not eligible for quality rating facility discount, the other not eligible for cccap.
+  absolute_error_margin: 0.1    
+  period: 2022
+  input:
+    people:
+      parent:
+        is_disabled: false
+        is_tax_unit_dependent: false
+        age: 45
+      child1:
+        is_disabled: false
+        is_tax_unit_dependent: true
+        age: 6
+        childcare_hours_per_day: 20
+        co_quality_rating_of_child_care_facility: 1
+      child2:
+        is_disabled: false
+        is_tax_unit_dependent: true
+        age: 17
+        childcare_hours_per_day: 4
+        co_quality_rating_of_child_care_facility: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+        co_ccap_eligible: 
+          2022-12: true
+        co_ccap_countable_income: 46_000
+        co_ccap_base_parent_fee: 
+          2022-12: 287.18
+        co_ccap_add_on_parent_fee: 
+          2022-12: 0
+    households:
+      household: 
+        members: [parent, child1, child2]
+        county_str: BACA_COUNTY_CO
+        state_code: CO
+  output:
+    co_ccap_parent_fee: 
+      2022-12: 574.36
+    # base + add_on: 287.18 + 0 = 287.18; 
+    # child1: 287.18 * 2 = 574.36;
+    # not qualified for quality rating discount
+    # final parent fee: 574.36

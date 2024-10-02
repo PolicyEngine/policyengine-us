@@ -1,0 +1,35 @@
+- name: case 1, File single, ABLE contributions below capped amount 
+  period: 2023
+  input:
+    able_contributions: 20_000
+    filing_status: SINGLE
+    state_code: CO
+  output:
+    co_able_contribution_subtraction: 20_000
+
+- name: Case 2, File single, ABLE contributions above capped amount 
+  period: 2023
+  input:
+    able_contributions: 30_000
+    filing_status: SINGLE
+    state_code: CO
+  output:
+    co_able_contribution_subtraction: 20_700
+  
+- name: Case 3, File joint, ABLE contributions above capped amount
+  period: 2023
+  input:
+    able_contributions: 35_000
+    filing_status: JOINT
+    state_code: CO
+  output:
+    co_able_contribution_subtraction: 31_000
+
+- name: Case 4, File joint, ABLE contributions below capped amount
+  period: 2023
+  input:
+    able_contributions: 25_000
+    filing_status: JOINT
+    state_code: CO
+  output:
+    co_able_contribution_subtraction: 25_000

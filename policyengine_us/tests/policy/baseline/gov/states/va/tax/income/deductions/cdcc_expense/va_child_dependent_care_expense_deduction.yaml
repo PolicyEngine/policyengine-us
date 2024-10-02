@@ -1,0 +1,9 @@
+- name: The deduction is capped at the lesser of earned income, expenses, or the maximum limit  
+  period: 2022
+  input:
+    tax_unit_childcare_expenses: 5_000
+    va_child_dependent_care_deduction_cdcc_limit: 3_000
+    min_head_spouse_earned: 4_000
+    state_code: VA
+  output:
+    va_child_dependent_care_expense_deduction: 3_000

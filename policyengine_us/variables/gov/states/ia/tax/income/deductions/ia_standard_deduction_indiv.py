@@ -24,17 +24,24 @@ class ia_standard_deduction_indiv(Variable):
                 us_filing_status == fsvals.SINGLE,
                 us_filing_status == fsvals.SEPARATE,
                 us_filing_status == fsvals.HEAD_OF_HOUSEHOLD,
-                us_filing_status == fsvals.WIDOW,
+                us_filing_status == fsvals.SURVIVING_SPOUSE,
             ],
             [
                 fsvals.SEPARATE,  # couples are filing separately on Iowa form
                 fsvals.SINGLE,
                 fsvals.SEPARATE,
                 fsvals.HEAD_OF_HOUSEHOLD,
-                fsvals.WIDOW,
+                fsvals.SURVIVING_SPOUSE,
             ],
         )
         is_head = person("is_tax_unit_head", period)
         is_spouse = person("is_tax_unit_spouse", period)
-        p = parameters(period).gov.states.ia.tax.income
-        return (is_head | is_spouse) * p.deductions.standard[filing_status]
+        p = parameters(period).gov.states.ia.tax.income.deductions.standard
+
+        if p.applies_federal:
+            fed_p = parameters(period).gov.irs.deductions
+            deduction = fed_p.standard.amount[filing_status]
+        else:
+            deduction = p.amount[filing_status]
+
+        return person("is_tax_unit_head_or_spouse", period) * deduction

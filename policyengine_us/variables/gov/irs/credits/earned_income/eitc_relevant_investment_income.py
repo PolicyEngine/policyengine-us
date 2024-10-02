@@ -9,17 +9,14 @@ class eitc_relevant_investment_income(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        no_loss_capital_gains = max_(
-            0,
-            add(tax_unit, period, ["capital_gains"]),
-        )
+        no_loss_capital_gains = max_(0, tax_unit("net_capital_gains", period))
         return (
             add(
                 tax_unit,
                 period,
                 ["net_investment_income", "tax_exempt_interest_income"],
             )
-            # Replace limited-loss capital gains with no-loss capital gains.
-            - tax_unit("c01000", period)  # Limited-loss capital gains.
+            # replace limited-loss capital gains with no-loss capital gains
+            - tax_unit("loss_limited_net_capital_gains", period)
             + no_loss_capital_gains
         )

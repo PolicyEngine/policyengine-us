@@ -1,0 +1,27 @@
+description: Montana phases its child and dependent care expense deduction out by this rate of state adjusted gross income. 
+
+metadata:
+  rate_unit: currency-USD
+  threshold_unit: child
+  type: marginal_rate
+  label: Montana Child and Dependent Care Expense Deduction income limit
+  reference:
+    # Tax forms only show mathematically derived income limit 
+    - title: 2022 Montana Form 2 Individual income tax instruction line 14
+      href: https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2022/12/Form-2-2022-Instructions.pdf#page=35
+    - title: 2021 Montana Form 2 Individual income tax instruction line 14
+      href: https://mtrevenue.gov/wp-content/uploads/mdocs/form%202%202021%20instructions.pdf#page=34
+    - title: Montana Code Annotated 2021 15-30-2131.(v)
+      href: https://casetext.com/statute/montana-code/title-15-taxation/chapter-30-individual-income-tax/part-21-rate-and-general-provisions/section-15-30-2131-repealed-effective-112024-temporary-deductions-allowed-in-computing-net-income
+    - title: 2022 Montana Child and Dependent Care Expense Deduction
+      href: https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2022/12/2441-M_2022.pdf#page=1
+
+brackets:
+  - threshold:
+      2021-01-01: 0
+    rate:
+      2021-01-01: 0
+  - threshold:
+      2021-01-01: 18_000
+    rate:
+      2021-01-01: 0.5

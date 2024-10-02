@@ -1,0 +1,16 @@
+description: Montana provides these refundable tax credits.  
+metadata:
+  unit: list
+  period: year
+  label: Montana refundable tax credits
+  reference: 
+    - title: Montana 2022 Form2 Individual Income Tax Instructions
+      href: https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2022/12/Form-2-2022-Instructions.pdf#page=17
+    - title: 2023 Montana Legislature, House Bill No. 268, Section 1
+      href: https://leg.mt.gov/bills/2023/billhtml/HB0268.htm
+values:
+  2021-01-01:
+    - mt_eitc
+  2023-01-01:
+    - mt_ctc
+    - mt_eitc

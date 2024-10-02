@@ -5,6 +5,11 @@
 build
 dist
 
+# Virtual environments
+
+venv/
+.venv/
+
 # Editors
 
 .project
@@ -24,10 +29,10 @@ dist
 
 # Data
 
-**/*.csv
 **/_build
 **/.ipynb_checkpoints
 .coverage
+.coverage.*
 **/*.xml
 taxcalc_output
 .vscode/settings.json
@@ -48,3 +53,6 @@ docs/book/_build
 # GitHub Codespaces.
 venv/**
 oryx-build-commands.txt
+
+**/*.csv.gz
+**/*.pkl

@@ -1,0 +1,137 @@
+- name: co_low_income_cdcc unit test 1
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    people:
+      head:
+        age: 35
+      spouse:
+        age: 43
+      child_1:
+        age: 12
+      child_2:
+        age: 13  
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child_1, child_2]
+        min_head_spouse_earned: 1_100
+        tax_unit_childcare_expenses: 2_000
+        co_low_income_cdcc_eligible: true
+    households:
+      household:
+        state_code: CO
+        members: [head, spouse, child_1, child_2]
+  output:
+    co_low_income_cdcc: 275  # = min(500,0.25*min(1100,2000))
+  
+- name: co_low_income_cdcc unit test 2
+  # 2 children, one eligible, head and spouse ineligible
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    people:
+      head:
+        age: 35
+      spouse:
+        age: 43
+      child_1:
+        age: 12
+      child_2:
+        age: 13  
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child_1, child_2]
+        min_head_spouse_earned: 1_100
+        tax_unit_childcare_expenses: 2_000
+        co_low_income_cdcc_eligible: false
+    households:
+      household:
+        state_code: CO
+        members: [head, spouse, child_1, child_2]
+  output:
+    co_low_income_cdcc: 0
+
+- name: co_low_income_cdcc unit test 2
+  # 2 children, two eligible, head and spouse eligible, ccdc exceed max amount
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    people:
+      head:
+        age: 35
+      spouse:
+        age: 43
+      child_1:
+        age: 12
+      child_2:
+        age: 10  
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child_1, child_2]
+        min_head_spouse_earned: 5_100
+        tax_unit_childcare_expenses: 5_000
+        co_low_income_cdcc_eligible: true
+    households:
+      household:
+        state_code: CO
+        members: [head, spouse, child_1, child_2]
+  output:
+    co_low_income_cdcc: 1000
+
+- name: co_low_income_cdcc unit test 3
+  # 3 children, two eligible, head and spouse eligible, ccdc larger than min_head_spouse_earned
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    people:
+      head:
+        age: 35
+      spouse:
+        age: 43
+      child_1:
+        age: 12
+      child_2:
+        age: 10  
+      child_3:
+        age: 15
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child_1, child_2, child_3]
+        min_head_spouse_earned: 1_000
+        tax_unit_childcare_expenses: 9_000
+        co_low_income_cdcc_eligible: true
+    households:
+      household:
+        state_code: CO
+        members: [head, spouse, child_1, child_2, child_3]
+  output:
+    co_low_income_cdcc: 250
+
+- name: co_low_income_cdcc unit test 4
+  # 3 children, one eligible, head and spouse eligible
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    people:
+      head:
+        age: 35
+      spouse:
+        age: 43
+      child_1:
+        age: 12
+      child_2:
+        age: 17  
+      child_3:
+        age: 15
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child_1, child_2, child_3]
+        min_head_spouse_earned: 5_100
+        tax_unit_childcare_expenses: 9_000
+        co_low_income_cdcc_eligible: true  
+    households:
+      household:
+        state_code: CO
+        members: [head, spouse, child_1, child_2, child_3]
+  output:
+    co_low_income_cdcc: 500

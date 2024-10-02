@@ -25,3 +25,38 @@
     # 9.90% * ($300,000 - $250,000) = $4,950
     # Total = $346.75 + $749.25 + $20,265 + $4,950 = $26,311
     or_income_tax_before_credits: 26_311
+
+- name: 2023 single filer with $4000 taxable income
+  period: 2023
+  input:
+    state_code: OR
+    or_taxable_income: 4_000
+    filing_status: SINGLE
+  output:
+    # 4.75% * $4,000 = $190
+    or_income_tax_before_credits: 190
+
+- name: 2023 joint filer with $10,000 taxable income
+  period: 2023
+  input:
+    state_code: OR
+    or_taxable_income: 10_000
+    filing_status: JOINT
+  output:
+    # 4.75% * $4,100 = $384.75
+    # 6.75% * ($10,000-$$8,100) = $128.25
+    # Total = $384.75 + $128.25 = $513
+    or_income_tax_before_credits: 513
+
+- name: 2023 separate filer with $14,000 taxable income
+  period: 2023
+  input:
+    state_code: OR
+    or_taxable_income: 14_000
+    filing_status: SEPARATE
+  output:
+    # 4.75% * $4,050 = $192.375
+    # 6.75% * ($10,200 - $4,050) = $415.125
+    # 8.75% * ($14,100 - $10,200) = $332.5
+    # Total = $192.375 + $415.125 + $332.5 = $28,005.5
+    or_income_tax_before_credits: 940

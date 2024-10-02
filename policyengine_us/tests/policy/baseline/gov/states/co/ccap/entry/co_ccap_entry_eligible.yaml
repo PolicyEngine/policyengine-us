@@ -1,0 +1,43 @@
+- name: Income eligible, child age eligible, then entry eligible.
+  period: 2023
+  input:
+    co_ccap_entry_income_eligible: 
+      2023-01: true
+    co_ccap_eligible_children: 
+      2023-01: 1
+  output:
+    co_ccap_entry_eligible: 
+      2023-01: true
+
+- name: Income ineligible, child age eligible, then entry ineligible.
+  period: 2023
+  input:
+    co_ccap_entry_income_eligible: 
+      2023-01: false
+    co_ccap_eligible_children: 
+      2023-01: 2
+  output:
+    co_ccap_entry_eligible: 
+      2023-01: false
+
+- name: Income eligible, child age ineligible, then entry ineligible.
+  period: 2023
+  input:
+    co_ccap_entry_income_eligible: 
+      2023-01: true
+    co_ccap_eligible_children: 
+      2023-01: 0
+  output:
+    co_ccap_entry_eligible: 
+      2023-01: false
+
+- name: Income ineligible, child age ineligible, then entry ineligible.
+  period: 2023
+  input:
+    co_ccap_entry_income_eligible: 
+      2023-01: false
+    co_ccap_eligible_children: 
+      2023-01: 0
+  output:
+    co_ccap_entry_eligible: 
+      2023-01: false

@@ -25,6 +25,6 @@
         members: [person1]
         state_code: OK
   output:  # expected results from patched TAXSIM35 2023-03-26 version
-    earned_income_tax_credit: 1_440.80
+    eitc: 1_440.80
     ok_eitc: 72.04
     ok_income_tax: -39.74

@@ -8,8 +8,9 @@ class sc_eitc(Variable):
     unit = USD
     definition_period = YEAR
     reference = "https://dor.sc.gov/forms-site/Forms/TC60_2021.pdf"
+    defined_for = StateCode.SC
 
     def formula(tax_unit, period, parameters):
-        eitc = tax_unit("earned_income_tax_credit", period)
+        federal_eitc = tax_unit("eitc", period)
         rate = parameters(period).gov.states.sc.tax.income.credits.eitc.rate
-        return np.round(eitc * rate, 1)
+        return np.round(federal_eitc * rate, 1)

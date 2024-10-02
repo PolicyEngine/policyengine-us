@@ -7,4 +7,4 @@ class payroll_tax_gross_wages(Variable):
     label = "Gross wages and salaries for payroll taxes"
     definition_period = YEAR
     unit = USD
-    adds = ["employment_income"]
+    adds = ["irs_employment_income"]

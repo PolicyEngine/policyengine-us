@@ -1,0 +1,13 @@
+description: The US limits itemized deductions to this fraction of the excess of adjusted gross income over the applicable amount.
+values:
+  2017-01-01: 0.03
+  2018-01-01: .inf
+  2026-01-01: 0.03
+metadata:
+  unit: /1
+  period: year
+  label: The US itemized deductions limitation fraction
+  reference:
+    - title: 26 U.S. Code § 68 - Overall limitation on itemized deductions (a)(1)
+      href: https://www.law.cornell.edu/uscode/text/26/68#a_1
+  # This section of the legal code was repealed between 2018 and 2026. 

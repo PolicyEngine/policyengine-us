@@ -11,7 +11,7 @@ class tax_unit_taxable_social_security(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/26/86"
 
     def formula(tax_unit, period, parameters):
-        ss = parameters(period).gov.irs.social_security.taxability
+        p = parameters(period).gov.irs.social_security.taxability
         gross_ss = tax_unit("tax_unit_social_security", period)
 
         # The legislation directs the usage an income definition that is
@@ -20,35 +20,46 @@ class tax_unit_taxable_social_security(Variable):
         # parameter as the lower taxability marginal rate (also 50% in the
         # baseline), and that they would be mechanically the same parameter.
 
-        ss_fraction = ss.rate.lower * gross_ss
-        modified_agi_plus_half_ss = (
-            tax_unit("taxable_ss_magi", period) + ss_fraction
+        combined_income = tax_unit(
+            "tax_unit_combined_income_for_social_security_taxability", period
         )
         filing_status = tax_unit("filing_status", period)
-
-        base_amount = ss.threshold.lower[filing_status]
-        adjusted_base_amount = ss.threshold.upper[filing_status]
-
-        under_first_threshold = modified_agi_plus_half_ss < base_amount
-        under_second_threshold = (
-            modified_agi_plus_half_ss < adjusted_base_amount
+        status = filing_status.possible_values
+        separate = filing_status == status.SEPARATE
+        cohabitating = tax_unit("cohabitating_spouses", period)
+        # Cohabitating married couples filing separately receive a base
+        # and adjusted base amount of 0
+        base_amount = where(
+            separate & cohabitating,
+            p.threshold.base.separate_cohabitating,
+            p.threshold.base.main[filing_status],
+        )
+        adjusted_base_amount = where(
+            separate & cohabitating,
+            p.threshold.adjusted_base.separate_cohabitating,
+            p.threshold.adjusted_base.main[filing_status],
         )
 
-        excess_over_base = max_(0, modified_agi_plus_half_ss - base_amount)
+        under_first_threshold = combined_income < base_amount
+        under_second_threshold = combined_income < adjusted_base_amount
+
+        combined_income_excess = tax_unit(
+            "tax_unit_ss_combined_income_excess", period
+        )
         excess_over_adjusted_base = max_(
-            0, modified_agi_plus_half_ss - adjusted_base_amount
+            0, combined_income - adjusted_base_amount
         )
 
-        amount_if_under_second_threshold = ss.rate.lower * min_(
-            excess_over_base, gross_ss
+        amount_if_under_second_threshold = p.rate.base * min_(
+            combined_income_excess, gross_ss
         )
         amount_if_over_second_threshold = min_(
-            ss.rate.upper * excess_over_adjusted_base
+            p.rate.additional * excess_over_adjusted_base
             + min_(
                 amount_if_under_second_threshold,
-                ss.rate.lower * (adjusted_base_amount - base_amount),
+                p.rate.base * (adjusted_base_amount - base_amount),
             ),
-            ss.rate.upper * gross_ss,
+            p.rate.additional * gross_ss,
         )
         return select(
             [

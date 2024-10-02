@@ -1,0 +1,52 @@
+- name: VA income tax rates - taxable income not exceeding $3000
+  period: 2022
+  input:
+    va_taxable_income: 2_000
+    va_must_file: true
+  output:
+    #round(2_000 * 0.02)
+    va_income_tax_before_non_refundable_credits: 40
+
+- name: VA income tax rates - taxable income from $3,001 to $5,000
+  period: 2022
+  input:
+    va_taxable_income: 4_000
+    va_must_file: true
+  output:
+    # 60 + (4000-3000) * 0.03
+    va_income_tax_before_non_refundable_credits: 90
+
+- name: VA income tax rates - taxable income from $5,001 to $17,000
+  period: 2022
+  input:
+    va_taxable_income: 10_000
+    va_must_file: true
+  output:
+    # 120 + round(5_000 * 0.05)
+    va_income_tax_before_non_refundable_credits: 370
+
+- name: VA income tax rates - taxable income for income over $17,000
+  period: 2022
+  input:
+    va_taxable_income: 20_000
+    va_must_file: true
+  output:
+    # 720 + 3_000 * 0.0575 = 892.5
+    # 720 + round(3_000 * 0.0575) = 893
+    va_income_tax_before_non_refundable_credits: 892.5
+
+- name: VA income tax rates - taxable income of 30,000
+  period: 2022
+  input:
+    va_taxable_income: 30_000
+    va_must_file: true
+  output:
+    va_income_tax_before_non_refundable_credits: 1_467.5
+
+- name: VA does not need to file
+  period: 2022
+  input:
+    va_taxable_income: 30_000
+    va_must_file: false
+  output:
+    va_income_tax_before_non_refundable_credits: 0

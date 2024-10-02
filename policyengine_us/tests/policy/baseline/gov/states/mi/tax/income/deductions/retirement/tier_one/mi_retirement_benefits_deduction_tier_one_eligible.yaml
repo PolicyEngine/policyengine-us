@@ -1,0 +1,16 @@
+- name: 2022 filer who is at the tier 1 retirement and pension benefits deduction age threshold
+  period: 2022
+  input:
+    older_spouse_birth_year: 1945
+    state_code: MI
+  output: 
+    mi_retirement_benefits_deduction_tier_one_eligible: true
+
+- name: 2022 filer who is below the tier 1 retirement and pension benefits deduction age threshold
+  period: 2022
+  input:
+    older_spouse_birth_year: 1946
+    state_code: MI
+  output: 
+    mi_retirement_benefits_deduction_tier_one_eligible: false
+    

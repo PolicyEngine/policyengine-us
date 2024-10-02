@@ -1,0 +1,15 @@
+description: IRS limits the 401(k) contributions catch-up to this amount.
+values:
+  2018-01-01: 6_000
+  2020-01-01: 6_500
+  2023-01-01: 7_500
+metadata:
+  unit: currency-USD
+  period: year
+  label: 401(k) catch-up amount
+  references:
+  - title: 26 CFR § 1.414 - Catch-up contributions. (v)(2)(B)(i) 
+    href: https://www.law.cornell.edu/cfr/text/26/1.414(v)-1
+  # Inflation adjusted amount
+  - title: Cost-of-Living Adjustments for Retirement Items
+    href: https://www.irs.gov/pub/irs-tege/cola-table.pdf#page=1

@@ -1,0 +1,65 @@
+- name: Disability benefits less than disability income exemption.
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        disability_benefits: 3_000
+        la_receives_blind_exemption: false
+      person2:
+        is_tax_unit_head_or_spouse: true
+        disability_benefits: 0
+        la_receives_blind_exemption: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    la_disability_income_exemption_person: [3_000, 0]
+
+- name: Disability benefits greater than disability income exemption.
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        disability_benefits: 0
+        la_receives_blind_exemption: false
+      person2:
+        is_tax_unit_head_or_spouse: true
+        disability_benefits: 7_000
+        la_receives_blind_exemption: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    la_disability_income_exemption_person: [0, 6_000]
+
+- name: Person receiving teh blind exemption
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        disability_benefits: 0
+        la_receives_blind_exemption: false
+      person2:
+        is_tax_unit_head_or_spouse: true
+        disability_benefits: 7_000
+        la_receives_blind_exemption: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    la_disability_income_exemption_person: [0, 0]

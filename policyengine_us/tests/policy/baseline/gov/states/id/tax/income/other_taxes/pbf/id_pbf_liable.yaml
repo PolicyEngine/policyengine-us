@@ -1,0 +1,87 @@
+- name: Not required due to lower income
+  period: 2021
+  input:
+    people:
+      p1: {}
+    tax_units:
+      tax_unit:
+        members: [p1]
+        id_income_tax_liable: false
+        blind_head: false
+        blind_spouse: false
+    spm_units:
+      spm_unit: 
+        tanf: 0
+        members: [p1]
+    households:
+      household:
+        members: [p1]
+        state_code: ID
+  output:
+    id_pbf_liable: false
+
+- name: All required
+  period: 2021
+  input:
+    people:
+      p1: {}
+    tax_units:
+      tax_unit:
+        members: [p1]
+        id_income_tax_liable: true
+        blind_head: false
+        blind_spouse: false
+    spm_units:
+      spm_unit: 
+        tanf: 0
+        members: [p1]
+    households:
+      household:
+        members: [p1]
+        state_code: ID
+  output:
+    id_pbf_liable: true
+
+- name: Blind not required 
+  period: 2021
+  input:
+    people:
+      p1: {}
+    tax_units:
+      tax_unit:
+        members: [p1]
+        id_income_tax_liable: true
+        blind_head: true
+        blind_spouse: false
+    spm_units:
+      spm_unit: 
+        tanf: 0
+        members: [p1]
+    households:
+      household:
+        members: [p1]
+        state_code: ID
+  output:
+    id_pbf_liable: false
+
+- name: Not required if receiving tanf 
+  period: 2021
+  input:
+    people:
+      p1: {}
+    tax_units:
+      tax_unit:
+        members: [p1]
+        id_income_tax_liable: true
+        blind_head: false
+        blind_spouse: false
+    spm_units:
+      spm_unit: 
+        tanf: 1
+        members: [p1]
+    households:
+      household:
+        members: [p1]
+        state_code: ID
+  output:
+    id_pbf_liable: false

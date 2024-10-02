@@ -2,7 +2,7 @@
   period: 2021
   input:
     state_code: OH
-    earned_income_tax_credit: 0
+    eitc: 0
   output:
     oh_eitc: 0
 
@@ -11,7 +11,7 @@
   absolute_error_margin: 0.001
   input:
     state_code: OH
-    earned_income_tax_credit: 100
+    eitc: 100
   output:
     oh_eitc: 30
 
@@ -19,6 +19,6 @@
   period: 2021
   input:
     state_code: MA
-    earned_income_tax_credit: 100
+    eitc: 100
   output:
     oh_eitc: 0

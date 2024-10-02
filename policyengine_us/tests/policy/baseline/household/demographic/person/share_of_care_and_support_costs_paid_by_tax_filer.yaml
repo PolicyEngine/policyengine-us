@@ -1,0 +1,31 @@
+- name: Calculate filers support share on family members
+  period: 2022
+  input:
+    care_and_support_payments_from_tax_filer: 600
+    care_and_support_costs: 1_000
+  output: 
+    share_of_care_and_support_costs_paid_by_tax_filer: 0.6
+
+- name: Calculate filers support share on family members
+  period: 2022
+  input:
+    care_and_support_payments_from_tax_filer: 0
+    care_and_support_costs: 1_000
+  output: 
+    share_of_care_and_support_costs_paid_by_tax_filer: 0
+
+- name: Calculate filers support share on family members
+  period: 2022
+  input:
+    care_and_support_payments_from_tax_filer: 600
+    care_and_support_costs: 0
+  output: 
+    share_of_care_and_support_costs_paid_by_tax_filer: 0
+
+- name: Calculate filers support share on family members
+  period: 2022
+  input:
+    care_and_support_payments_from_tax_filer: 0
+    care_and_support_costs: 0
+  output: 
+    share_of_care_and_support_costs_paid_by_tax_filer: 0

@@ -1,0 +1,18 @@
+description: South Carolina subtracts the following elements from gross earned income when computing the two wage earner credit.
+values:
+  2021-01-01:
+    - self_employment_tax_ald_person
+    - self_employed_health_insurance_ald_person
+    - self_employed_pension_contribution_ald_person
+
+metadata:
+  unit: list
+  period: year 
+  label: South Carolina two wage earner credit earned income subtractions
+  reference:
+    - title: SC 1040 tax form instructions (2021)
+      href: https://dor.sc.gov/forms-site/Forms/IITPacket_2021.pdf#page=22
+    - title: SC 1040 tax form instructions (2023)
+      href: https://dor.sc.gov/forms-site/Forms/IITPacket_2023.pdf#page=23
+    - title: SC Legal Code |  Section 12-6-3330 (C)(b)
+      href: https://www.scstatehouse.gov/code/t12c006.php

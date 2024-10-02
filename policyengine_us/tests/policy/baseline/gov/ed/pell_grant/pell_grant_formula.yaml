@@ -1,0 +1,35 @@
+- name: Is head no dependents
+  period: 2023
+  input:
+    people:
+      person:
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+    tax_unit:
+      tax_unit_dependents: 0
+  output:
+    pell_grant_formula: B
+
+- name: Is spouse 1 dependent
+  period: 2023
+  input:
+    people:
+      person:
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_unit:
+      tax_unit_dependents: 1
+  output:
+    pell_grant_formula: C
+
+- name: Is dependent
+  period: 2023
+  input:
+    people:
+      person:
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_unit:
+      tax_unit_dependents: 1
+  output:
+    pell_grant_formula: A

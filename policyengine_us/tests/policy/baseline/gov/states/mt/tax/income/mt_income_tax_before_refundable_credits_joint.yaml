@@ -1,0 +1,37 @@
+- name: Calculation
+  period: 2021
+  input:
+    people: 
+      person1:
+        mt_non_refundable_credits: 300
+      person2:
+        mt_non_refundable_credits: 500
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        mt_income_tax_before_non_refundable_credits_joint: 3_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_income_tax_before_refundable_credits_joint: 2_200
+
+- name: Capped at 0
+  period: 2021
+  input:
+    people: 
+      person1:
+        mt_non_refundable_credits: 300
+      person2:
+        mt_non_refundable_credits: 4_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        mt_income_tax_before_non_refundable_credits_joint: 3_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_income_tax_before_refundable_credits_joint: 0

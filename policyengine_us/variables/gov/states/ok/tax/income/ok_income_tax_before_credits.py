@@ -23,7 +23,7 @@ class ok_income_tax_before_credits(Variable):
                 filing_status == statuses.SINGLE,
                 filing_status == statuses.SEPARATE,
                 filing_status == statuses.JOINT,
-                filing_status == statuses.WIDOW,
+                filing_status == statuses.SURVIVING_SPOUSE,
                 filing_status == statuses.HEAD_OF_HOUSEHOLD,
             ],
             [

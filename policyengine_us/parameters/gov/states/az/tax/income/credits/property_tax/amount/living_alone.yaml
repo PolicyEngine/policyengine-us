@@ -1,0 +1,105 @@
+description: Arizona provides this property tax credit amount for filers living alone, based on income.
+metadata:
+  reference:
+    - title: 2023 Property Tax Refund (Credit) Claim Form 140PTC
+      href: https://azdor.gov/forms/tax-credits-forms/property-tax-refund-credit-claim-form-fillable#page=2
+    - title: 2022 Property Tax Refund (Credit) Claim Form 140PTC
+      href: https://azdor.gov/sites/default/files/2023-03/FORMS_INDIVIDUAL_2021_140PTC.pdf#page=2
+    - title: 2021 Property Tax Refund (Credit) Claim Form 140PTC
+      href: https://azdor.gov/sites/default/files/2023-03/FORMS_INDIVIDUAL_2021_140PTC.pdf#page=2
+    - title: 43-1072. Earned credit for property taxes; residents sixty-five years of age or older - (B) (1)
+      href: https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/43/01072.htm
+  threshold_unit: currency-USD
+  rate_unit: currency-USD
+  type: single_amount
+  period: year
+  label: Arizona property tax credit living alone amount 
+brackets:
+  - threshold:
+      2021-01-01: 0
+    amount:
+      2021-01-01: 502
+  - threshold:
+      2021-01-01: 1_751
+    amount:
+      2021-01-01: 479
+  - threshold:
+      2021-01-01: 1_851
+    amount:
+      2021-01-01: 457
+  - threshold:
+      2021-01-01: 1_951
+    amount:
+      2021-01-01: 435
+  - threshold:
+      2021-01-01: 2_051
+    amount:
+      2021-01-01: 412
+  - threshold:
+      2021-01-01: 2_151
+    amount:
+      2021-01-01: 390
+  - threshold:
+      2021-01-01: 2_251
+    amount:
+      2021-01-01: 368
+  - threshold:
+      2021-01-01: 2_351
+    amount:
+      2021-01-01: 345
+  - threshold:
+      2021-01-01: 2_451
+    amount:
+      2021-01-01: 323
+  - threshold:
+      2021-01-01: 2_551
+    amount:
+      2021-01-01: 301
+  - threshold:
+      2021-01-01: 2_651
+    amount:
+      2021-01-01: 279
+  - threshold:
+      2021-01-01: 2_751
+    amount:
+      2021-01-01: 256
+  - threshold:
+      2021-01-01: 2_851
+    amount:
+      2021-01-01: 234
+  - threshold:
+      2021-01-01: 2_951
+    amount:
+      2021-01-01: 212
+  - threshold:
+      2021-01-01: 3_051
+    amount:
+      2021-01-01: 189
+  - threshold:
+      2021-01-01: 3_151
+    amount:
+      2021-01-01: 167
+  - threshold:
+      2021-01-01: 3_251
+    amount:
+      2021-01-01: 145
+  - threshold:
+      2021-01-01: 3_351
+    amount:
+      2021-01-01: 123
+  - threshold:
+      2021-01-01: 3_451
+    amount:
+      2021-01-01: 100
+  - threshold:
+      2021-01-01: 3_551
+    amount:
+      2021-01-01: 78
+  - threshold:
+      2021-01-01: 3_651
+    amount:
+      2021-01-01: 56
+  - threshold:
+      2021-01-01: 3_751
+    amount:
+      2021-01-01: 0

@@ -1,0 +1,105 @@
+description: Arizona provides this property tax credit amount for filers cohabitating with other people, based on income.
+metadata:
+  reference:
+    - title: 2023 Property Tax Refund (Credit) Claim Form 140PTC
+      href: https://azdor.gov/forms/tax-credits-forms/property-tax-refund-credit-claim-form-fillable#page=2
+    - title: 2022 Property Tax Refund (Credit) Claim Form 140PTC
+      href: https://azdor.gov/sites/default/files/2023-03/FORMS_INDIVIDUAL_2022_140PTC.pdf#page=2
+    - title: 2021 Property Tax Refund (Credit) Claim Form 140PTC
+      href: https://azdor.gov/sites/default/files/2023-03/FORMS_INDIVIDUAL_2021_140PTC.pdf#page=2
+    - title: 43-1072. Earned credit for property taxes; residents sixty-five years of age or older - (B) (2)
+      href: https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/43/01072.htm
+  threshold_unit: currency-USD
+  rate_unit: currency-USD
+  type: single_amount
+  period: year
+  label: Arizona property tax credit cohabitating amount 
+brackets:
+  - threshold:
+      2021-01-01: 0
+    amount:
+      2021-01-01: 502
+  - threshold:
+      2021-01-01: 2_500
+    amount:
+      2021-01-01: 479
+  - threshold:
+      2021-01-01: 2_650
+    amount:
+      2021-01-01: 457
+  - threshold:
+      2021-01-01: 2_800
+    amount:
+      2021-01-01: 435
+  - threshold:
+      2021-01-01: 2_950
+    amount:
+      2021-01-01: 412
+  - threshold:
+      2021-01-01: 3_100
+    amount:
+      2021-01-01: 390
+  - threshold:
+      2021-01-01: 3_250
+    amount:
+      2021-01-01: 368
+  - threshold:
+      2021-01-01: 3_400
+    amount:
+      2021-01-01: 345
+  - threshold:
+      2021-01-01: 3_550
+    amount:
+      2021-01-01: 323
+  - threshold:
+      2021-01-01: 3_700
+    amount:
+      2021-01-01: 301
+  - threshold:
+      2021-01-01: 3_850
+    amount:
+      2021-01-01: 279
+  - threshold:
+      2021-01-01: 4_000
+    amount:
+      2021-01-01: 256
+  - threshold:
+      2021-01-01: 4_150
+    amount:
+      2021-01-01: 234
+  - threshold:
+      2021-01-01: 4_300
+    amount:
+      2021-01-01: 212
+  - threshold:
+      2021-01-01: 4_450
+    amount:
+      2021-01-01: 189
+  - threshold:
+      2021-01-01: 4_600
+    amount:
+      2021-01-01: 167
+  - threshold:
+      2021-01-01: 4_750
+    amount:
+      2021-01-01: 145
+  - threshold:
+      2021-01-01: 4_900
+    amount:
+      2021-01-01: 123
+  - threshold:
+      2021-01-01: 5_050
+    amount:
+      2021-01-01: 100
+  - threshold:
+      2021-01-01: 5_200
+    amount:
+      2021-01-01: 78
+  - threshold:
+      2021-01-01: 5_350
+    amount:
+      2021-01-01: 56
+  - threshold:
+      2021-01-01: 5_500
+    amount:
+      2021-01-01: 0

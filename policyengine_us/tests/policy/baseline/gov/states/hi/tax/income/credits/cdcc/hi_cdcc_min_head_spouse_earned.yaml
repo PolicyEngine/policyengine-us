@@ -1,0 +1,158 @@
+- name: married, no eligible
+  period: 2022
+  input:
+    people:
+      head:
+        is_tax_unit_head_or_spouse: true
+        earned_income: 20_000
+        hi_cdcc_income_floor_eligible: 0
+      spouse:
+        is_tax_unit_head_or_spouse: true
+        earned_income: 30_000
+        hi_cdcc_income_floor_eligible: 0
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        count_cdcc_eligible: 3
+    households:
+      household:
+        members: [head, spouse]
+        state_code: HI
+  output:
+    hi_cdcc_min_head_spouse_earned: 20_000
+
+- name: married, two eligible, greater income
+  period: 2022
+  input:
+    people:
+      head:
+        is_tax_unit_head_or_spouse: true
+        earned_income: 20_000
+        hi_cdcc_income_floor_eligible: 2_400
+      spouse:
+        is_tax_unit_head_or_spouse: true
+        earned_income: 30_000
+        hi_cdcc_income_floor_eligible: 2_400
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: HI
+  output:
+    hi_cdcc_min_head_spouse_earned: 20_000
+
+- name: married, two eligible, both income below floor
+  period: 2022
+  input:
+    people:
+      head:
+        is_tax_unit_head_or_spouse: true
+        earned_income: 200
+        hi_cdcc_income_floor_eligible: 2_400
+      spouse:
+        is_tax_unit_head_or_spouse: true
+        earned_income: 100
+        hi_cdcc_income_floor_eligible: 2_400
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: HI
+  output:
+    hi_cdcc_min_head_spouse_earned: 200
+
+- name: married, one eligible, not eligible one has income below floor
+  period: 2022
+  input:
+    people:
+      head:
+        is_tax_unit_head_or_spouse: true
+        earned_income: 100
+        hi_cdcc_income_floor_eligible: 0
+      spouse:
+        is_tax_unit_head_or_spouse: true
+        earned_income: 30_000
+        hi_cdcc_income_floor_eligible: 2_400
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: HI
+  output:
+    hi_cdcc_min_head_spouse_earned: 100
+
+- name: married, two eligible, one disabled child, both income greater than floor
+  period: 2022
+  input:
+    people:
+      head:
+        is_tax_unit_head_or_spouse: true
+        earned_income: 20_000
+        hi_cdcc_income_floor_eligible: 2_400
+      spouse:
+        is_tax_unit_head_or_spouse: true
+        earned_income: 10_000
+        hi_cdcc_income_floor_eligible: 2_400
+      child:
+        is_tax_unit_head_or_spouse: false
+        earned_income: 100
+        hi_cdcc_income_floor_eligible: 2_400
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: HI
+  output:
+    hi_cdcc_min_head_spouse_earned: 10_000
+
+- name: single, one eligible, one child, income below floor
+  period: 2022
+  input:
+    people:
+      head:
+        is_tax_unit_head_or_spouse: true
+        earned_income: 200
+        hi_cdcc_income_floor_eligible: 2_400
+      child:
+        is_tax_unit_head_or_spouse: false
+        earned_income: 100
+        hi_cdcc_income_floor_eligible: 2_400
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: HI
+  output:
+    hi_cdcc_min_head_spouse_earned: 2_400
+
+- name: married, one eligible, both income below floor
+  period: 2022
+  input:
+    people:
+      head:
+        is_tax_unit_head_or_spouse: true
+        earned_income: 200
+        hi_cdcc_income_floor_eligible: 0
+      spouse:
+        is_tax_unit_head_or_spouse: true
+        earned_income: 100
+        hi_cdcc_income_floor_eligible: 2_400
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: HI
+  output:
+    hi_cdcc_min_head_spouse_earned: 200

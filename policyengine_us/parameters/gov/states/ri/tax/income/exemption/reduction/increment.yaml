@@ -1,0 +1,28 @@
+description: Rhode Island reduces the exemption amount for each of these increments of state adjusted gross income exceeding the threshold.
+values:
+  2021-01-01: 6_000
+  2022-01-01: 6_200
+  2023-01-01: 6_700
+
+
+metadata:
+  label: Rhode Island exemption phase out increment
+  period: year
+  unit: currency-USD
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
+  reference:
+  # The tax form points to this worksheet: Exemption Worksheet for RI-1040NR, Page 1, line 6)
+  - title: Rhode Island Tax Rate Schedule and Worksheet 2022 (Exemption Worksheet line 6)
+    href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-12/2022%20Tax%20Rate%20and%20Worksheets.pdf#page=1
+  # The tax form points to this worksheet: Exemption Worksheet for RI-1040 or RI-1040NR, Page 1, line 6)
+  - title: Rhode Island Tax Rate Schedule and Worksheet 2021 (Exemption Worksheet line 6)
+    href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2021-11/2021-tax-rate-and-worksheets.pdf#page1
+  - title: Rhode Island Tax Rate Schedule and Worksheet 2023 (Exemption Worksheet line 6)
+    href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2023-12/2023%20Tax%20Rate%20and%20Worksheets.pdf#page=1
+  # Legal code specifies $2,500, inflation-adjusted starting in 1991.
+  - title: Rhode Island Legal Code R.I. Gen. Laws § 44-30-2.6 (E), (4), (b)
+    href: http://webserver.rilin.state.ri.us/Statutes/TITLE44/44-30/44-30-2.6.HTM

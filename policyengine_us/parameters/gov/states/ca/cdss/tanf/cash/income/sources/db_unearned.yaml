@@ -1,0 +1,16 @@
+description: California CalWORKs counts these income sources as disability-based unearned income.
+
+metadata:
+  unit: list
+  period: month
+  label: California CalWORKs disability-based unearned income breakdown
+  reference:
+    - title: Los Angeles Department of Public Social Services E-Policy | Income Definitions
+      href: http://epolicy.dpss.lacounty.gov/epolicy/epolicy/server/general/projects_responsive/ePolicyMaster/index.htm?&area=general&type=responsivehelp&ctxid=&project=ePolicyMaster#t=mergedProjects%2FCalWORKs%2FCalWORKs%2F44-101_Income_Definitions%2F44-101_Income_Definitions.htm%23Policybc-2&rhtocid=_3_1_6_0_1
+
+values:
+  2017-12-20:
+    - ca_state_disability_insurance
+    # Also private disability insurance and VDC benefits.
+    - workers_compensation
+    - social_security_disability

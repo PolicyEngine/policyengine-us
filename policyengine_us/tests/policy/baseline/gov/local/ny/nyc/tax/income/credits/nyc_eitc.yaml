@@ -4,7 +4,7 @@
   input:
     state_code: NY
     in_nyc: true
-    earned_income_tax_credit: 100
+    eitc: 100
     ny_agi: 18_000
   output:
     # NYC EIC rate worksheet
@@ -39,7 +39,7 @@
   input:
     state_code: NY
     in_nyc: true
-    earned_income_tax_credit: 100
+    eitc: 100
     ny_agi: 21_000
   output:
     # NYC EIC rate worksheet

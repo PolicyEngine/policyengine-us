@@ -1,0 +1,17 @@
+description: Arkansas exempts these sources from state gross income. 
+values:
+  2021-01-01:
+    - ar_capped_retirement_or_disability_benefits_exemption_person # Item 12
+
+metadata:
+  unit: list
+  period: year
+  label: Arkansas gross income exemptions
+  reference:
+    - title: Arkansas 2022 Individual Income Tax Forms and Instructions
+      href: https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2022_AR1000F_and_AR1000NR_Instructions.pdf#page=10
+    - title: Arkansas 2021 Individual Income Tax Forms and Instructions
+      href: https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2021_AR1000F_and_AR1000NR_Instructions.pdf#page=9
+    - title: 2020 Arkansas Code § 26-51-301 ~ 316
+      href: https://law.justia.com/codes/arkansas/2020/title-26/subtitle-5/chapter-51/subchapter-3/
+    # The legal code does not give detailed description on each exemption.

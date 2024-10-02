@@ -1,0 +1,23 @@
+- name: Before 2023 and net capitals gains present
+  period: 2021
+  input:
+    state_code: HI
+    net_capital_gain: 1_000
+  output:
+    hi_alternative_tax_on_capital_gains_eligible: true
+
+- name: Before 2023 and no net capitals gains present
+  period: 2021
+  input:
+    state_code: HI
+    net_capital_gain: 0
+  output:
+    hi_alternative_tax_on_capital_gains_eligible: false
+
+- name: After 2023 and net capitals gains present
+  period: 2023
+  input:
+    state_code: HI
+    net_capital_gain: 1_000
+  output:
+    hi_alternative_tax_on_capital_gains_eligible: false

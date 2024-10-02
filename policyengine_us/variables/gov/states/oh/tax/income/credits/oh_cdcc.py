@@ -15,7 +15,7 @@ class oh_cdcc(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.oh.tax.income.credits.cdcc
 
-        agi = tax_unit("oh_agi", period)
+        agi = tax_unit("oh_modified_agi", period)
         us_cdcc = tax_unit("cdcc", period)
 
         rate = p.match.calc(agi)

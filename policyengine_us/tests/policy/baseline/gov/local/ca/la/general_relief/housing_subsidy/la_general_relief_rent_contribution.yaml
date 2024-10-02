@@ -1,0 +1,35 @@
+- name: Single amount
+  period: 2022-01
+  input:
+    la_general_relief_housing_subsidy: 1
+    la_general_relief_eligible: true
+    is_married: false
+  output:
+    la_general_relief_rent_contribution: 100
+
+- name: Single amount
+  period: 2022-01
+  input:
+    la_general_relief_housing_subsidy: 1
+    la_general_relief_eligible: true
+    is_married: false
+  output:
+    la_general_relief_rent_contribution: 100
+
+- name: Ineligible without housing subsidy
+  period: 2022-01
+  input:
+    la_general_relief_housing_subsidy: 0
+    la_general_relief_eligible: true
+    is_married: false
+  output:
+    la_general_relief_rent_contribution: 0
+
+- name: Ineligible 
+  period: 2022-01
+  input:
+    la_general_relief_housing_subsidy: 1
+    la_general_relief_eligible: false
+    is_married: false
+  output:
+    la_general_relief_rent_contribution: 0

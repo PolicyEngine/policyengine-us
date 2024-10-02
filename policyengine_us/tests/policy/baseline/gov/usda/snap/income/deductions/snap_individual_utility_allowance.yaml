@@ -1,0 +1,37 @@
+- name: Test in 2022 with phone expenses
+  period: 2022-01
+  absolute_error_margin: 1
+  input:
+    snap_utility_allowance_type: IUA
+    snap_utility_region_str: CA
+    phone_expense: 20
+  output:
+    snap_individual_utility_allowance: 19
+
+- name: Test in 2024 with phone expenses
+  period: 2024-01
+  absolute_error_margin: 1
+  input:
+    snap_utility_allowance_type: IUA
+    snap_utility_region_str: CA
+    phone_expense: 20
+  output:
+    snap_individual_utility_allowance: 19
+
+- name: Test in 2022 with trash expenses
+  period: 2022-01
+  input:
+    snap_utility_allowance_type: IUA
+    snap_utility_region_str: AK
+    trash_expense: 20
+  output:
+    snap_individual_utility_allowance: 299
+
+- name: Test in 2024 with trash expenses
+  period: 2024-01
+  input:
+    snap_utility_allowance_type: IUA
+    snap_utility_region_str: AK
+    trash_expense: 20
+  output:
+    snap_individual_utility_allowance: 636

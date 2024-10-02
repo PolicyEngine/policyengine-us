@@ -6,6 +6,7 @@ class state_supplement(Variable):
     entity = Person
     label = "State Supplement"
     definition_period = YEAR
+    exhaustive_parameter_dependencies = "gov.ssa.state_supplement"
 
     def formula(person, period, parameters):
         uncapped_ssi = person("uncapped_ssi", period)

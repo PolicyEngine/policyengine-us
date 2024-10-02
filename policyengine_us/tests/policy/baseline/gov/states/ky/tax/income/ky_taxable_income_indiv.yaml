@@ -1,0 +1,29 @@
+- name: larger itemized_deduction
+  period: 2022
+  input:
+    ky_agi: 1_000
+    ky_standard_deduction_indiv: 100
+    ky_itemized_deductions_indiv: 200
+    state_code: KY
+  output:
+    ky_taxable_income_indiv: 800
+
+- name: larger standard_deduction
+  period: 2022
+  input:
+    ky_agi: 1_000
+    ky_standard_deduction_indiv: 100
+    ky_itemized_deductions_indiv: 10
+    state_code: KY
+  output:
+    ky_taxable_income_indiv: 900
+
+- name: smaller than 0
+  period: 2022
+  input:
+    ky_agi: 1_000
+    ky_standard_deduction_indiv: 2_000
+    ky_itemized_deductions_indiv: 3_000
+    state_code: KY
+  output:
+    ky_taxable_income_indiv: 0
