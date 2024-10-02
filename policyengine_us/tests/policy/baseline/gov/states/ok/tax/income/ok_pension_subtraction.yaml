@@ -1,0 +1,28 @@
+- name: OK pension subtractions unit test 1
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 68
+        taxable_pension_income: 20_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 66
+        taxable_pension_income: 9_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        premium_tax_credit: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OK
+  output:
+    ok_pension_subtraction: 10_000 + 9_000

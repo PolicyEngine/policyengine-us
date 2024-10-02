@@ -1,0 +1,17 @@
+- name: Military retirement pay, not eligible
+  period: 2022
+  input:
+     military_retirement_pay: 30_000
+     nc_military_retirement_deduction_eligible: true
+     state_code: NC
+  output:
+    nc_military_retirement_deduction: 30_000
+
+- name: Military retirement pay, is eligible
+  period: 2022
+  input:
+     military_retirement_pay: 30_000
+     nc_military_retirement_deduction_eligible: false
+     state_code: NC
+  output:
+    nc_military_retirement_deduction: 0

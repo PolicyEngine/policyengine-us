@@ -30,34 +30,10 @@ class refundable_ctc(Variable):
 
         maximum_refundable_ctc = min_(maximum_amount, total_ctc)
 
-        # The other part of the "lesser of" statement is: "the amount by which [the non-refundable CTC]
-        # would increase if [tax liability] increased by tax_increase", where tax_increase is the greater of:
-        # - the phase-in amount
-        # - Social Security tax minus the EITC
-        # First, we find tax_increase:
-
-        earnings = tax_unit("tax_unit_earned_income", period)
-        earnings_over_threshold = max_(
-            0, earnings - ctc.refundable.phase_in.threshold
-        )
-        relevant_earnings = (
-            earnings_over_threshold * ctc.refundable.phase_in.rate
-        )
-        social_security_tax = tax_unit("ctc_social_security_tax", period)
-        eitc = tax_unit("eitc", period)
-        social_security_excess = max_(0, social_security_tax - eitc)
-        qualifying_children = tax_unit("ctc_qualifying_children", period)
-        tax_increase = where(
-            qualifying_children
-            < ctc.refundable.phase_in.min_children_for_ss_taxes_minus_eitc,
-            relevant_earnings,
-            max_(relevant_earnings, social_security_excess),
-        )
+        phase_in = tax_unit("ctc_phase_in", period)
         limiting_tax = tax_unit("ctc_limiting_tax_liability", period)
         ctc_capped_by_tax = min_(total_ctc, limiting_tax)
-        ctc_capped_by_increased_tax = min_(
-            total_ctc, limiting_tax + tax_increase
-        )
+        ctc_capped_by_increased_tax = min_(total_ctc, limiting_tax + phase_in)
         amount_ctc_would_increase = (
             ctc_capped_by_increased_tax - ctc_capped_by_tax
         )

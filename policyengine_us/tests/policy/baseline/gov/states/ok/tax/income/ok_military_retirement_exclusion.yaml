@@ -1,0 +1,38 @@
+- name: Case 1, in 2021, household of two people. 
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        military_retirement_pay: 8_000
+      person2:
+        military_retirement_pay: 11_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OK
+  output:
+    ok_military_retirement_exclusion: 8_000 + 10_000
+
+- name: Case 2, in 2022, household of two people. 
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    people:
+      person1:
+        military_retirement_pay: 8_000
+      person2:
+        military_retirement_pay: 11_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OK
+  output:
+    ok_military_retirement_exclusion: 8_000 + 11_000
+    

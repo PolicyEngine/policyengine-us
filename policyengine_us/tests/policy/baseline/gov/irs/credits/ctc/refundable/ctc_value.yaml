@@ -1,0 +1,61 @@
+- name: Unit receiving just the refundable CTC
+  period: 2023
+  input:
+    people:
+      person1:
+        age:
+        employment_income: 10_000
+      person2:
+        age: 10
+      person3:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+  output:
+    ctc_limiting_tax_liability: 0
+    refundable_ctc: 1_125
+    ctc: 4_000
+    ctc_value: 1_125
+
+- name: Unit receiving just the refundable CTC
+  period: 2023
+  input:
+    people:
+      person1:
+        age:
+        employment_income: 80_000
+      person2:
+        age: 10
+      person3:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+  output:
+    ctc: 4_000
+    ctc_limiting_tax_liability: 6_790
+    refundable_ctc: 0
+    non_refundable_ctc: 4_000
+    ctc_value: 4_000
+
+- name: Unit receiving just the refundable CTC
+  period: 2023
+  input:
+    people:
+      person1:
+        age:
+        employment_income: 45_000
+      person2:
+        age: 10
+      person3:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+  output:
+    ctc: 4_000
+    ctc_limiting_tax_liability: 2_590
+    refundable_ctc: 1_410
+    non_refundable_ctc: 2_590
+    ctc_value: 4_000

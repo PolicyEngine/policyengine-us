@@ -8340,3 +8340,50 @@
     fixed:
     - Update the Hawaii SNAP net income test application.
   date: 2024-09-27 20:22:56
+- bump: minor
+  changes:
+    added:
+    - North Carolina rate changes for 2024 on.
+    - 2024 Rhode Island EITC match.
+    fixed:
+    - NYC tax credit parameter formatting.
+  date: 2024-09-28 02:35:09
+- bump: minor
+  changes:
+    added:
+    - Child Tax Credit phase-in variable.
+    fixed:
+    - Child Tax Credit value variable.
+    - Pinned policyengine-core version.
+  date: 2024-09-29 04:49:39
+- bump: minor
+  changes:
+    changed:
+    - PolicyEngine-US-Data bumped to 1.8
+  date: 2024-09-29 22:51:45
+- bump: minor
+  changes:
+    added:
+    - Oklahoma military retirement benefit exclusion.
+    - Oklahoma AGI subtractions list.
+  date: 2024-09-29 23:26:45
+- bump: minor
+  changes:
+    added:
+    - 2023 Medicaid income limit updates.
+  date: 2024-09-30 16:54:45
+- bump: minor
+  changes:
+    added:
+    - North Carolina military retirement deduction.
+  date: 2024-09-30 17:03:10
+- bump: patch
+  changes:
+    changed:
+    - Moved loading of abolitions parameters earlier in initialization process
+  date: 2024-09-30 22:09:41
+- bump: patch
+  changes:
+    added:
+    - Always use the SUA for CO.
+  date: 2024-10-02 17:49:23
