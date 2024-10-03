@@ -1,0 +1,20 @@
+description: Under the Family Security Act 3.0, senator Mitt Romney proposed the following pregnant mothers credit amount for newborn children.
+
+metadata:
+  type: single_amount
+  threshold_unit: year
+  amount_unit: currency-USD
+  label: Family Security Act 3.0 pregnant mothers credit amount
+  reference:
+    - title: Family Security Act 3.0
+      href: https://www.romney.senate.gov/wp-content/uploads/2024/09/FSA-Scanned-and-Final.pdf#page=15
+
+brackets:
+  - threshold:
+      2026-01-01: 0
+    amount:
+      2026-01-01: 0 # 2,800
+  - threshold:
+      2026-01-01: 1
+    amount:
+      2026-01-01: 0 

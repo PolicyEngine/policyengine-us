@@ -12,5 +12,5 @@ class ctc_value(Variable):
     def formula(tax_unit, period, parameters):
         return min_(
             tax_unit("ctc", period),
-            tax_unit("ctc_limiting_tax_liability", period),
+            tax_unit("ctc_phase_in", period),
         )
