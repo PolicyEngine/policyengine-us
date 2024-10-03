@@ -9,17 +9,17 @@ class is_person_demographic_tanf_eligible(Variable):
     reference = "https://www.law.cornell.edu/cfr/text/45/260.30"
 
     def formula(person, period, parameters):
-        p = parameters(period).gov.hhs.tanf.cash.eligibility
+        p = parameters(period).gov.hhs.tanf.cash.eligibility.age_limit
         age = person("age", period)
-        below_age_threshold = age < p.age_threshold
-        below_age_limit = age < p.age_limit
+        age_eligible_student = age < p.student
+        age_eligible_non_student = age < p.non_student
         secondary_school_student = person("is_in_secondary_school", period)
-        secondary_school_below_age_limit_student = (
-            secondary_school_student & below_age_limit
+        age_eligible_secondary_school_student = (
+            secondary_school_student & age_eligible_student
         )
         pregnant = person("is_pregnant", period)
         return (
-            below_age_threshold
-            | secondary_school_below_age_limit_student
+            age_eligible_non_student
+            | age_eligible_secondary_school_student
             | pregnant
         )
