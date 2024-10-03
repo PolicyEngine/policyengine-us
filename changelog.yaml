@@ -8382,3 +8382,8 @@
     changed:
     - Moved loading of abolitions parameters earlier in initialization process
   date: 2024-09-30 22:09:41
+- bump: patch
+  changes:
+    added:
+    - Always use the SUA for CO.
+  date: 2024-10-02 17:49:23
