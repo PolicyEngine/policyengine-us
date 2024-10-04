@@ -11,11 +11,11 @@ class is_person_demographic_tanf_eligible(Variable):
     def formula(person, period, parameters):
         p = parameters(period).gov.hhs.tanf.cash.eligibility.age_limit
         age = person("age", period)
-        age_eligible_student = age < p.student
+        age_eligible_if_student = age < p.student
         age_eligible_non_student = age < p.non_student
         secondary_school_student = person("is_in_secondary_school", period)
         age_eligible_secondary_school_student = (
-            secondary_school_student & age_eligible_student
+            secondary_school_student & age_eligible_if_student
         )
         pregnant = person("is_pregnant", period)
         return (
