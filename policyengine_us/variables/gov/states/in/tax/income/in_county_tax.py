@@ -11,8 +11,15 @@ class in_county_tax(Variable):
     defined_for = StateCode.IN
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states["in"].tax.income.taxes.county
-        in_agi = tax_unit("in_agi", period)
-        # county calculations are at the person level for each taxpayer in the law
+        # County calculations are at the person level for each taxpayer in the law
+        in_in = tax_unit.household("state_code_str", period) == "IN"
         county = tax_unit.household("county_str", period)
-        return in_agi * p.rates[county]
+        rate = np.zeros_like(county, dtype=float)
+        rates = (
+            parameters(period)
+            .gov.states["in"]
+            .tax.income.taxes.county.county_rates
+        )
+        if in_in.sum() > 0:
+            rate[in_in] = rates[county[in_in]]
+        return rate * tax_unit("in_agi", period)

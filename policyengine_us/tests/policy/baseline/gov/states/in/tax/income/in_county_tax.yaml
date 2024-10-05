@@ -1,20 +1,17 @@
-- name: IN county tax
+- name: In Indiana 
   period: 2021
   input:
-    people:
-      person1:
-        is_tax_unit_head: 1
-        is_tax_unit_spouse: 0
-        is_tax_unit_dependent: 0
-        age: 50
-    households:
-      household1:
-        members: [person1]
-        county: MONROE_COUNTY_IN
-        state_code: IN
-    tax_units:
-      tax_unit:
-        members: [person1]
-        in_agi: 1_000
+    in_agi: 1_000
+    county_str: BOONE_COUNTY_IN
+    state_code_str: IN
   output: 
-    in_county_tax: 1_000 * 0.01345
+    in_county_tax: 15
+
+- name: Not in Indiana
+  period: 2021
+  input:
+    in_agi: 1_000
+    county_str: BALTIMORE_CITY_MD
+    state_code_str: MD
+  output: 
+    in_county_tax: 0
