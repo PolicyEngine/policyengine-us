@@ -1,6 +1,6 @@
 - name: AGI over phase_in amount and joint EITC filers
   period: 2022
-  reforms: policyengine_us.reforms.congress.romney.family_security_act_2_0.eitc.family_security_act_2_0_eitc.family_security_act_2_0_eitc
+  reforms: policyengine_us.reforms.congress.romney.family_security_act_2024.eitc.family_security_act_2024_eitc.family_security_act_2024_eitc
   input:
     gov.contrib.congress.romney.family_security_act_2_0.eitc.apply_eitc_structure: true
     gov.contrib.congress.romney.family_security_act_2_0.eitc.amount.joint[0].amount: 2_000
@@ -15,7 +15,7 @@
 
 - name: AGI over phase_in amount and single EITC filers 
   period: 2022
-  reforms: policyengine_us.reforms.congress.romney.family_security_act_2_0.eitc.family_security_act_2_0_eitc.family_security_act_2_0_eitc
+  reforms: policyengine_us.reforms.congress.romney.family_security_act_2024.eitc.family_security_act_2024_eitc.family_security_act_2024_eitc
   input:
     gov.contrib.congress.romney.family_security_act_2_0.eitc.apply_eitc_structure: true
     gov.contrib.congress.romney.family_security_act_2_0.eitc.amount.joint[0].amount: 2_000
@@ -32,7 +32,7 @@
 
 - name: AGI below phase_in amount and single EITC filers 
   period: 2022
-  reforms: policyengine_us.reforms.congress.romney.family_security_act_2_0.eitc.family_security_act_2_0_eitc.family_security_act_2_0_eitc
+  reforms: policyengine_us.reforms.congress.romney.family_security_act_2024.eitc.family_security_act_2024_eitc.family_security_act_2024_eitc
   input:
     gov.contrib.congress.romney.family_security_act_2_0.eitc.apply_eitc_structure: true
     gov.contrib.congress.romney.family_security_act_2_0.eitc.amount.joint[0].amount: 2_000
@@ -47,7 +47,7 @@
 
 - name: No AGI
   period: 2022
-  reforms: policyengine_us.reforms.congress.romney.family_security_act_2_0.eitc.family_security_act_2_0_eitc.family_security_act_2_0_eitc
+  reforms: policyengine_us.reforms.congress.romney.family_security_act_2024.eitc.family_security_act_2024_eitc.family_security_act_2024_eitc
   input:
     gov.contrib.congress.romney.family_security_act_2_0.eitc.apply_eitc_structure: true
     gov.contrib.congress.romney.family_security_act_2_0.eitc.amount.joint[0].amount: 2_000

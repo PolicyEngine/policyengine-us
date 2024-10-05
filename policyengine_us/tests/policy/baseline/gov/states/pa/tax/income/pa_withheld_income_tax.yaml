@@ -2,7 +2,7 @@
   period: 2022
   absolute_error_margin: 0.01
   input:
-    irs_employment_income: 30_000
+    adjusted_gross_income_person: 30_000
     filing_status: JOINT
     state_code: PA
   output:
@@ -12,7 +12,7 @@
   period: 2022
   absolute_error_margin: 0.01
   input:
-    irs_employment_income: 30_000
+    adjusted_gross_income_person: 30_000
     filing_status: SURVIVING_SPOUSE
     state_code: PA
   output:
@@ -22,7 +22,7 @@
   period: 2022
   absolute_error_margin: 0.01
   input:
-    irs_employment_income: 0
+    adjusted_gross_income_person: 0
     filing_status: SURVIVING_SPOUSE
     state_code: PA
   output:
