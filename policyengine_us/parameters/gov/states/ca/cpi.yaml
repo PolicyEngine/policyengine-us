@@ -1,0 +1,16 @@
+description: California CPI (from the current year's June)
+values:
+  2019-01-01: 280.956
+  2020-01-01: 284.835
+  2021-01-01: 297.447
+  2022-01-01: 322.043
+  2023-01-01: 332.035
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: California income tax CPI uprating
+  uprating: gov.irs.uprating
+  reference:  
+    - title: California Consumer Price Index  
+      href: https://www.dir.ca.gov/oprl/CPI/EntireCCPI.PDF

@@ -1,0 +1,35 @@
+- name: Not eligible for the low income tax credit program because the tax filer is claimed as a dependent on another taxpayer's return.
+  period: 2021
+  input:
+    state_code: VA
+    head_is_dependent_elsewhere: true
+    va_aged_blind_exemption: 0
+    va_age_deduction: 0
+    va_military_benefit_subtraction: 0
+    va_federal_state_employees_subtraction: 0
+  output:
+    va_low_income_tax_credit_eligible: false
+
+- name: Not eligible for the low income tax credit program because filled for items that disqualify him/her.
+  period: 2021
+  input:
+    state_code: VA
+    head_is_dependent_elsewhere: false
+    va_aged_blind_exemption: 1_600
+    va_age_deduction: 12_000
+    va_military_benefit_subtraction: 0
+    va_federal_state_employees_subtraction: 0
+  output:
+    va_low_income_tax_credit_eligible: false
+
+- name: Eligible for the low income tax credit program.
+  period: 2021
+  input:
+    state_code: VA
+    head_is_dependent_elsewhere: false
+    va_aged_blind_exemption: 0
+    va_age_deduction: 0
+    va_military_benefit_subtraction: 0
+    va_federal_state_employees_subtraction: 0
+  output:
+    va_low_income_tax_credit_eligible: true

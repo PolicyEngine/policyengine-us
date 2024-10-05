@@ -1,0 +1,35 @@
+- name: In NYC and income not over $30k -> eligible for NYC CDCC.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    in_nyc: true
+    adjusted_gross_income: 30_000
+  output:
+    nyc_cdcc_eligible: true
+
+- name: Not in NYC and income not over $30k -> not eligible for NYC CDCC.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    in_nyc: false
+    adjusted_gross_income: 30_000
+  output:
+    nyc_cdcc_eligible: false
+
+- name: In NYC but income over $30k -> not eligible for NYC CDCC.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    in_nyc: true
+    adjusted_gross_income: 30_001
+  output:
+    nyc_cdcc_eligible: false
+
+- name: Not in NYC and income over $30k -> not eligible for NYC CDCC.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    in_nyc: false
+    adjusted_gross_income: 30_001
+  output:
+    nyc_cdcc_eligible: false

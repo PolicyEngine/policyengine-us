@@ -1,0 +1,14 @@
+description: Wisconsin homestead credit assumes property taxes are this ratio to rent.
+metadata:
+  period: year
+  unit: /1
+  reference:
+    - title: 2021 Wisconsin Form 1 Schedule H, Line 14
+      href: https://www.revenue.wi.gov/TaxForms2021/2021-ScheduleH.pdf#page=2
+    - title: 2022 Wisconsin Form 1 Schedule H, Line 14
+      href: https://www.revenue.wi.gov/TaxForms2022/2022-ScheduleH.pdf#page=2
+    - title: 2023 Wisconsin Form 1 Schedule H, Line 14
+      href: https://www.revenue.wi.gov/TaxForms2023/2023-ScheduleH-Inst.pdf#page=18
+
+values:
+  2021-01-01: 0.20  # assumes heat included in rent

@@ -1,0 +1,24 @@
+description: North Dakota adds these variables to US taxable income when computing its taxable income.
+values:
+  2021-01-01:
+    - form_4972_lumpsum_distributions
+
+metadata:
+  unit: list
+  period: year
+  label: North Dakota additions to US taxable income
+  reference:
+  - title: 2021 North Dakota income tax form
+    href: https://www.tax.nd.gov/sites/www/files/documents/forms/individual/2021-iit/form-nd-1-2021.pdf#page=1
+  - title: 2021 North Dakota income tax instructions, line 2
+    href: https://www.tax.nd.gov/sites/www/files/documents/forms/individual/2021-iit/individual-income-tax-booklet-2021.pdf#page=14
+  - title: 2022 North Dakota income tax form
+    href: https://www.tax.nd.gov/sites/www/files/documents/forms/individual/2022-iit/form-nd-1-2022.pdf#page=1
+  - title: 2022 North Dakota income tax instructions, line 2
+    href: https://tax.nd.gov/sites/www/files/documents/forms/individual/2022-iit/2022-individual-income-tax-booklet.pdf#page=14
+  - title: 2023 North Dakota income tax form, line 3
+    href: https://www.tax.nd.gov/sites/www/files/documents/forms/individual/2023-iit/form-nd-1-2023.pdf#page=1
+  - title: 2022 North Dakota income tax instructions, line 16
+    href: https://www.tax.nd.gov/sites/www/files/documents/forms/individual/2022-iit/2022-individual-income-tax-booklet.pdf#page=16
+  - title: North Dakota legal code Section 57-38-30.3 2(e)
+    href: https://casetext.com/statute/north-dakota-century-code/title-57-taxation/chapter-57-38-income-tax/section-57-38-303-individual-estate-and-trust-income-tax

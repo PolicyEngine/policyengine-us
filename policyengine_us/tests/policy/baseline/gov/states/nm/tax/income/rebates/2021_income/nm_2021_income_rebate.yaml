@@ -1,0 +1,49 @@
+- name: Income eligible - single
+  period: 2021
+  input:
+    state_code: NM
+    adjusted_gross_income: 74_999
+    filing_status: SINGLE
+    head_is_dependent_elsewhere: false
+  output:
+    nm_2021_income_rebate: 250
+
+- name: Income ineligible - separate
+  period: 2021
+  input:
+    state_code: NM
+    adjusted_gross_income: 75_000
+    filing_status: SEPARATE
+    head_is_dependent_elsewhere: false
+  output:
+    nm_2021_income_rebate: 0
+
+- name: Income eligible - joint
+  period: 2021
+  input:
+    state_code: NM
+    adjusted_gross_income: 149_999
+    filing_status: JOINT
+    head_is_dependent_elsewhere: false
+  output:
+    nm_2021_income_rebate: 500
+
+- name: Income ineligible - widow
+  period: 2021
+  input:
+    state_code: NM
+    adjusted_gross_income: 150_000
+    filing_status: SURVIVING_SPOUSE
+    head_is_dependent_elsewhere: false
+  output:
+    nm_2021_income_rebate: 0
+
+- name: Ineligible if depedent on another return
+  period: 2021
+  input:
+    state_code: NM
+    adjusted_gross_income: 149_999
+    filing_status: JOINT
+    head_is_dependent_elsewhere: true
+  output:
+    nm_2021_income_rebate: 0

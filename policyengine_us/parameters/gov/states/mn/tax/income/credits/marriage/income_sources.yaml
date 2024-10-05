@@ -1,0 +1,21 @@
+description: Minnesota counts these income sources when determining its marriage credit.
+values:
+  2021-01-01:
+    - irs_employment_income
+    - self_employment_income
+    - taxable_social_security
+    - taxable_pension_income
+
+metadata:
+  label: Minnesota marriage credit income sources
+  period: year
+  unit: list
+  reference:
+  - title: Minnesota Statutes 290.0675 MARRIAGE PENALTY CREDIT. Subd. 1.Definitions
+    href: https://www.revisor.mn.gov/statutes/cite/290.0675#stat.290.0675.1
+  - title: 2021 Minnesota Schedule M1MA, Line 19
+    href: https://www.revenue.state.mn.us/sites/default/files/2023-01/m1ma_21.pdf#page=1
+  - title: 2022 Minnesota Schedule M1MA, Line 19
+    href: https://www.revenue.state.mn.us/sites/default/files/2023-01/m1ma_22.pdf#page=1
+  - title: 2023 Minnesota Schedule M1MA, Line 19
+    href: https://www.revenue.state.mn.us/sites/default/files/2023-12/m1ma-23.pdf#page=1

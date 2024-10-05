@@ -1,0 +1,52 @@
+description: Non-refundable tax credits.
+values:
+  2013-01-01:
+    - cdcc
+    - elderly_disabled_credit
+    # Adoption expense credit
+    - non_refundable_ctc
+    # Home mortgage credit
+    - non_refundable_american_opportunity_credit
+    - lifetime_learning_credit
+    - savers_credit
+    - residential_clean_energy_credit
+    - energy_efficient_home_improvement_credit
+  # CDCC became refundable for 2021 only.
+  # And we only define the EV credit for 2021 onward because the law changed
+  # then.
+  2021-01-01:
+    - elderly_disabled_credit
+    # Adoption expense credit
+    - non_refundable_ctc
+    # Home mortgage credit
+    - non_refundable_american_opportunity_credit
+    - lifetime_learning_credit
+    - savers_credit
+    - residential_clean_energy_credit
+    - energy_efficient_home_improvement_credit
+    - new_clean_vehicle_credit
+  # CDCC became non-refundable again in 2022.
+  2022-01-01:
+    - cdcc
+    - elderly_disabled_credit
+    # Adoption expense credit
+    - non_refundable_ctc
+    # Home mortgage credit
+    - non_refundable_american_opportunity_credit
+    - lifetime_learning_credit
+    - savers_credit
+    - residential_clean_energy_credit
+    - energy_efficient_home_improvement_credit
+    - new_clean_vehicle_credit
+    # Inflation Reduction Act introduces a used EV credit.
+    - used_clean_vehicle_credit
+metadata:
+  unit: list
+  label: Non-refundable tax credits
+  reference:
+    - title: 26 U.S. Code Subpart A - Nonrefundable Personal Credits
+      href: https://www.law.cornell.edu/uscode/text/26/subtitle-A/chapter-1/subchapter-A/part-IV/subpart-A
+    - title: 26 U.S. Code § 21 - Expenses for household and dependent care services necessary for gainful employment (g)(1)
+      href: https://www.law.cornell.edu/uscode/text/26/21#g_1
+    - title: 26 U.S. Code § 30D - New qualified plug-in electric drive motor vehicles (c)(2)
+      href: https://www.law.cornell.edu/uscode/text/26/30D#c_2

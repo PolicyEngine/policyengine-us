@@ -1,0 +1,14 @@
+description: Maximum child and dependent care expenses per dependent.
+metadata:
+  unit: currency-USD
+  label: Maximum care expenses per dependent for CDCC.
+  period: year
+  reference:
+    - title: 26 U.S. Code § 21(c)
+      href: https://www.law.cornell.edu/uscode/text/26/21#c
+    - title: 26 U.S. Code § 21(g)(2) # 2021 rules.
+      href: https://www.law.cornell.edu/uscode/text/26/21#g_2
+values:
+  2013-01-01: 3_000
+  2021-01-01: 8_000
+  2022-01-01: 3_000

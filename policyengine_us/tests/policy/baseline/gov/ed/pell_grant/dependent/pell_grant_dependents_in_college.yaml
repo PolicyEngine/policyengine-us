@@ -1,0 +1,33 @@
+- name: No dependents
+  period: 2023
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        is_full_time_college_student: true
+      spouse:
+        is_tax_unit_spouse: true
+        is_full_time_college_student: true
+  output:
+    pell_grant_dependents_in_college: 0
+
+- name: 3 dependents in college, 1 not in college
+  period: 2023
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        is_full_time_college_student: false
+      spouse:
+        is_tax_unit_spouse: true
+        is_full_time_college_student: false
+      child_1:
+        is_full_time_college_student: true
+      child_2:
+        is_full_time_college_student: true
+      child_3:
+        is_full_time_college_student: true
+      child_4:
+        is_full_time_college_student: false
+  output:
+    pell_grant_dependents_in_college: 3

@@ -1,0 +1,17 @@
+- name: Calculation
+  period: 2022
+  input:
+    ga_income_tax_before_non_refundable_credits: 1_200
+    ga_non_refundable_credits: 500
+    state_code: GA
+  output:
+    ga_income_tax_before_refundable_credits: 700
+
+- name: Capped at 0
+  period: 2022
+  input:
+    ga_income_tax_before_non_refundable_credits: 400
+    ga_non_refundable_credits: 500
+    state_code: GA
+  output:
+    ga_income_tax_before_refundable_credits: 0

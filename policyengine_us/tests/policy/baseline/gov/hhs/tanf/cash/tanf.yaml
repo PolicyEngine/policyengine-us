@@ -1,0 +1,40 @@
+- name: TANF eligible and has benefit
+  period: 2022
+  input:
+    is_tanf_eligible: true
+    tanf_amount_if_eligible: 200
+  output:
+    tanf: 200
+
+- name: TANF ineligible and does not receive benefit
+  period: 2022
+  input:
+    is_tanf_eligible: false
+    tanf_amount_if_eligible: -100
+  output:
+    tanf: 0
+
+- name: Has TANF reported
+  period: 2022
+  input:
+    tanf_reported: 1
+  output:
+    tanf: 1
+
+- name: Has CO TANF
+  period: 2023
+  input:
+    is_tanf_eligible: false
+    tanf_amount_if_eligible: -100
+    co_tanf: 100
+  output:
+    tanf: 100
+
+- name: Has NY TANF
+  period: 2023
+  input:
+    is_tanf_eligible: false
+    tanf_amount_if_eligible: -100
+    ny_tanf: 100
+  output:
+    tanf: 100

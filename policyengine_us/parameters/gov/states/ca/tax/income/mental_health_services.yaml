@@ -1,0 +1,24 @@
+description: California levies this additional mental health services tax.
+brackets:
+  - threshold:
+      0000-01-01: 0
+    rate:
+      2005-01-01: 0
+  - threshold:
+      2005-01-01: 1_000_000
+    rate:
+      2005-01-01: 0.01
+
+metadata:
+  threshold_unit: currency_USD
+  rate_unit: /1
+  threshold_period: year
+  type: marginal_rate
+  label: California mental health services tax
+  reference: 
+    - title: 2021 Form 540 California Resident Income Tax Return
+      href: https://www.ftb.ca.gov/forms/2021/2021-540.pdf
+    - title: 2022 Form 540 California Resident Income Tax Return
+      href: https://www.ftb.ca.gov/forms/2022/2022-540.pdf
+    - title: California Revenue and Taxation Code | Division 2 | Part 10 | Chapter 2 | §17043
+      href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=RTC&sectionNum=17043.

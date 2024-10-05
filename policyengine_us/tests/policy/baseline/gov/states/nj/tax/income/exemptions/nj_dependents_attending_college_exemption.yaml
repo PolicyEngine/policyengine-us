@@ -1,0 +1,100 @@
+- name: Two qualified dependents attending college get $2k exemption
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        age: 21
+        is_tax_unit_dependent: true
+        is_full_time_college_student: true
+      person2:
+        age: 23
+        is_tax_unit_dependent: true
+        is_full_time_college_student: false
+      person3:
+        age: 18
+        is_tax_unit_dependent: true
+        is_full_time_college_student: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NJ
+  output:
+    nj_dependents_attending_college_exemption: 2_000
+
+- name: None qualified dependent attending college get $0
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        age: 21
+        is_tax_unit_dependent: false
+        is_full_time_college_student: true
+      person2:
+        age: 23
+        is_tax_unit_dependent: true
+        is_full_time_college_student: true
+      person3:
+        age: 18
+        is_tax_unit_dependent: false
+        is_full_time_college_student: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NJ
+  output:
+    nj_dependents_attending_college_exemption: 0
+
+- name: Three qualified dependents attending college get $3k exemption
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        age: 21
+        is_tax_unit_dependent: true
+        is_full_time_college_student: true
+      person2:
+        age: 19
+        is_tax_unit_dependent: true
+        is_full_time_college_student: true
+      person3:
+        age: 18
+        is_tax_unit_dependent: true
+        is_full_time_college_student: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NJ
+  output:
+    nj_dependents_attending_college_exemption: 3_000
+
+- name: One qualified dependent attending college get $1_000
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        age: 21
+        is_tax_unit_dependent: true
+        is_full_time_college_student: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_dependents_attending_college_exemption: 1_000
+    

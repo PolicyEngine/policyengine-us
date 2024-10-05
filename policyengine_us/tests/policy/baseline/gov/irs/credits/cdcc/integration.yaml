@@ -1,0 +1,97 @@
+- name: Two parents, three children with $8k childcare expenses
+  absolute_error_margin: 0.01
+  period: 2018
+  input:
+    people:
+      person1:
+        age: 38
+        employment_income: 172_000
+        social_security: 47000
+      person2:
+        age: 32
+        employment_income: 114_000
+      person3:
+        age: 12
+      person4:
+        age: 12
+      person5:
+        age: 17
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+        tax_unit_childcare_expenses: 8_000
+  output:
+    cdcc: 1_200
+
+- name: One parent, two children with $10k childcare expenses
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 36
+        employment_income: 20_000
+      person2:
+        age: 11
+      person3:
+        age: 11
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        tax_unit_childcare_expenses: 10_000
+    households:
+      household:
+        members: [person1, person2, person3]
+  output:
+    cdcc: 5_000.00  # because CDCC is refundable in 2021
+
+- name: Tax unit with taxsimid 16112 in a21.its.csv and a21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 32
+        employment_income: 157_010
+        qualified_dividend_income: 9_010
+        taxable_interest_income: 9_010
+        long_term_capital_gains: 1_010
+        non_qualified_dividend_income: 1_010
+        taxable_pension_income: 4_000
+        real_estate_taxes: 24_000
+        interest_expense: 2_000
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person2:
+        age: 11
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person3:
+        age: 11
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        tax_unit_childcare_expenses: 10_000
+        premium_tax_credit: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX  # no state income tax
+  output:  # expected results from patched TAXSIM35 2023-01-13 version
+    taxsim_tfica: 11_130.24
+    income_tax: 24_507.2

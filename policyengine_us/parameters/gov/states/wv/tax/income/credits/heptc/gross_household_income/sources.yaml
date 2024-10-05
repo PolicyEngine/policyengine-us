@@ -1,0 +1,22 @@
+description: West Virginia counts these sources as gross household income for the homestead excess property tax credit.  
+metadata:
+  period: year
+  unit: list
+  label: West Virginia homestead property excess tax credit gross household income sources
+  reference:
+  - title: West Virginia Personal Income Tax Forms And Instructions 2023
+    href: https://tax.wv.gov/Documents/PIT/2023/it140.PersonalIncomeTaxFormsAndInstructions.2023.pdf#page=11
+  - title: West Virginia Personal Income Tax Forms And Instructions 2022
+    href: https://tax.wv.gov/Documents/PIT/2022/PersonalIncomeTaxFormsAndInstructions.2022.pdf#page=14
+  - title: 2021 West Virginia Personal Income Tax Forms And Instructions-2021 FAMILY TAX CREDIT TABLES
+    href: https://tax.wv.gov/Documents/TaxForms/2021/it140.pdf#page=13 
+  - title: Code of West Virginia §11-21-23 (d)(1)
+    href: https://code.wvlegislature.gov/11-21-23/
+  
+values:
+  2012-01-01:
+    - adjusted_gross_income
+    - wv_additions
+    - tax_exempt_interest_income
+    - workers_compensation
+    - tax_exempt_social_security

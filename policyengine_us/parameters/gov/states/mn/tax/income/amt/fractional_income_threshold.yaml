@@ -1,0 +1,74 @@
+description: Minnesota has an alternative income tax (AMT) the calculation of which involves this fractional excess income threshold.
+metadata:
+  label: Minnesota fractional excess income threshold
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  reference:
+  - title: Minnesota Statutes Section 290.091 — Alternative Minimum Tax On Preference Items Subd.3.a
+    href: https://www.revisor.mn.gov/statutes/cite/290.091#stat.290.091.3
+  - title: 2023 Minnesota Statutes Section 270C.22 — Cost Of Living Adjustment Subdivision 1.e
+    href: https://www.revisor.mn.gov/statutes/cite/270c.22#stat.270C.22.1
+  - title: 2021 Minnesota Schedule M1MT form, Line 21
+    href: https://www.revenue.state.mn.us/sites/default/files/2023-02/m1mt_21.pdf#page=1
+  - title: 2022 Minnesota Schedule M1MT form, Line 21
+    href: https://www.revenue.state.mn.us/sites/default/files/2023-01/m1mt_22.pdf#page=1
+  - title: 2023 Minnesota Schedule M1MT form, Line 21
+    href: https://www.revenue.state.mn.us/sites/default/files/2023-12/m1mt-23.pdf#page=1
+
+JOINT:
+  values:
+    2021-01-01: 79_660
+    2022-01-01: 82_150
+    2023-01-01: 87_960
+  metadata:
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: nearest
+        interval: 10
+HEAD_OF_HOUSEHOLD:
+  values:
+    2021-01-01: 59_750
+    2022-01-01: 61_610
+    2023-01-01: 65_970
+  metadata:
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: nearest
+        interval: 10
+SURVIVING_SPOUSE:
+  values:
+    2021-01-01: 79_660
+    2022-01-01: 82_150
+    2023-01-01: 87_960
+  metadata:
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: nearest
+        interval: 10
+SINGLE:
+  values:
+    2021-01-01: 59_750
+    2022-01-01: 61_610
+    2023-01-01: 65_970
+  metadata:
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: nearest
+        interval: 10
+SEPARATE:
+  values:
+    2021-01-01: 39_840
+    2022-01-01: 41_080
+    2023-01-01: 43_990
+  metadata:
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: nearest
+        interval: 10

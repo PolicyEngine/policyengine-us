@@ -1,0 +1,17 @@
+- name: Arkansas exemption for military retirement (eligible)
+  period: 2021
+  input:
+    is_tax_unit_head_or_spouse: true
+    military_retirement_pay: 3_000
+    state_code: AR
+  output:
+    ar_military_retirement_income_person: 3_000
+
+- name: Arkansas exemption for military retirement (ineligible)
+  period: 2021
+  input:
+    is_tax_unit_head_or_spouse: false
+    military_retirement_pay: 3_000
+    state_code: AR
+  output:
+    ar_military_retirement_income_person: 0

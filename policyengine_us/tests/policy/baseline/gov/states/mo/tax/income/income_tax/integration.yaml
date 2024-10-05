@@ -1,0 +1,69 @@
+- name: no income
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    mo_income_tax_before_refundable_credits: 0
+    mo_property_tax_credit: 0
+    state_code: MO
+  output:
+    mo_income_tax: 0.0
+
+- name:  $9000 in income_tax, $3000 in mo_property_tax_credit
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    mo_income_tax_before_refundable_credits: 9_000
+    mo_property_tax_credit: 1_100
+    state_code: MO
+  output:
+    mo_income_tax: 7_900
+
+- name:  $2000 in income_tax, $3000 in mo_property_tax_credit
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    mo_income_tax_before_refundable_credits: 1_000
+    mo_property_tax_credit: 1_100
+    state_code: MO
+  output:
+    mo_income_tax: -100
+
+- name: Tax unit with taxsimid 63290 in a21.its.csv and a21.ots.csv
+  # This test failed before the changes in GitHub pull request #1526
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: 1
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        age: 33
+        employment_income: 21010
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person2:
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 1
+        is_tax_unit_dependent: 0
+        age: 33
+        employment_income: 28010
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        premium_tax_credit: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:  # expected results from TAXSIM35
+    mo_income_tax: 884.03

@@ -1,0 +1,29 @@
+- name: Single person gets $63 if eligible.
+  period: 2022
+  input:
+    nyc_school_tax_credit_fixed_amount_eligible: true
+    filing_status: SINGLE
+  output:
+    # NYC School Tax Instructions
+    # See Page 25 for fixed amount
+    # https://www.tax.ny.gov/pdf/2022/printable-pdfs/inc/it201i-2022.pdf
+    nyc_school_tax_credit_fixed_amount: 63
+
+- name: Married filing jointly gets $125 if eligible.
+  period: 2022
+  input:
+    nyc_school_tax_credit_fixed_amount_eligible: true
+    filing_status: JOINT
+  output:
+    # NYC School Tax Instructions
+    # See Page 25 for fixed amount
+    # https://www.tax.ny.gov/pdf/2022/printable-pdfs/inc/it201i-2022.pdf
+    nyc_school_tax_credit_fixed_amount: 125
+
+- name: Amount is zero if not eligible.
+  period: 2022
+  input:
+    nyc_school_tax_credit_fixed_amount_eligible: false
+    filing_status: SINGLE
+  output:
+    nyc_school_tax_credit_fixed_amount: 0

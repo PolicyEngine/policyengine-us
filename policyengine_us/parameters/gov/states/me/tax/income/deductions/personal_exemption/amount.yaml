@@ -1,0 +1,26 @@
+description: Maine personal exemption amount
+metadata:
+  unit: currency-USD
+  period: year
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
+  label: Maine Personal Exemption Amount
+  reference:
+    - title: §5126-A. Personal exemptions on or after January 1, 2018 (1)
+      href: https://www.mainelegislature.org/legis/statutes/36/title36sec5126-A.html
+    - title: §5403. Annual adjustments for inflation 7
+      href: https://legislature.maine.gov/statutes/36/title36sec5403.html
+    - title: Instructions for Form 1040ME (2021)
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/21_1040me_book_gen_instr_revMay2022.pdf#page=4
+    - title: Instructions for Form 1040ME (2022)
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/22_1040me_book_gen_instruc_revisedFeb23.pdf#page=4
+    - title: Instructions for Form 1040ME (2023)
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/23_1040me_book_gen_instr.pdf#page=4
+values:
+  2018-01-01: 4_150
+  2021-01-01: 4_300
+  2022-01-01: 4_450
+  2023-01-01: 4_700

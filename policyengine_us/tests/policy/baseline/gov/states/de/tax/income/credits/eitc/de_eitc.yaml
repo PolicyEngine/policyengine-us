@@ -1,0 +1,19 @@
+- name: Claims refundable
+  period: 2022
+  input:
+    state_code: DE
+    de_refundable_eitc: 100
+    de_non_refundable_eitc: 90
+    de_claims_refundable_eitc: true
+  output:
+    de_eitc: 100
+
+- name: Claims non-refundable
+  period: 2022
+  input:
+    state_code: DE
+    de_refundable_eitc: 90
+    de_non_refundable_eitc: 100
+    de_claims_refundable_eitc: false
+  output:
+    de_eitc: 100

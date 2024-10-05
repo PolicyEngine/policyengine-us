@@ -1,0 +1,12 @@
+- name: 2021 Oregon filer with itemized deductions
+  period: 2021
+  input:
+    state_code: OR
+    charitable_deduction: 1
+    interest_deduction: 1
+    salt_deduction: 1
+    medical_expense_deduction: 1
+    casualty_loss_deduction: 1
+    qualified_business_income_deduction: 1
+  output:
+    or_itemized_deductions: 4

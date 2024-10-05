@@ -1,0 +1,21 @@
+- name: Previously-enrolled family with a Pell Grant and $100/mo broadband costs gets $50/mo
+  period: 2022
+  input:
+    spm_unit_pell_grant: 100
+    broadband_cost_after_lifeline: 100 * 12
+    enrolled_in_ebb: true
+  output:
+    ebb: 50 * 12
+
+- name: Not-previously-enrolled family with a Pell Grant and $100/mo broadband costs gets $0
+  period: 2022
+  input:
+    spm_unit_pell_grant: 100
+    broadband_cost_after_lifeline: 100 * 12
+  output:
+    ebb: 0
+
+- name: Family with no eligibility flags gets $0
+  period: 2022
+  output:
+    ebb: 0 * 12

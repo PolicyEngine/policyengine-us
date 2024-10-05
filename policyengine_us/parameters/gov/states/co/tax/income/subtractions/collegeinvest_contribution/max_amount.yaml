@@ -1,0 +1,27 @@
+description: Colorado limits the CollegeInvest contribution subtraction to this maximum amount.
+metadata:
+  unit: currency-USD
+  period: year
+  label: Colorado CollegeInvest contribution subtraction max amount
+  breakdown:
+    - filing_status
+  reference:
+    # Subtraction amount is only specified in the Legal Code but not in the Tax Forms
+    - title: C.R.S. 39-22-104(4)(j)(II)(B)
+      href: https://law.justia.com/codes/colorado/2022/title-39/article-22/part-1/section-39-22-104/
+
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: .inf
+  2022-01-01: 20_000
+JOINT:
+  2021-01-01: .inf
+  2022-01-01: 30_000
+SEPARATE:
+  2021-01-01: .inf
+  2022-01-01: 20_000
+SINGLE:
+  2021-01-01: .inf
+  2022-01-01: 20_000
+SURVIVING_SPOUSE:
+  2021-01-01: .inf
+  2022-01-01: 20_000

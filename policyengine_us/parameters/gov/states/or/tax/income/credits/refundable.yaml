@@ -1,0 +1,23 @@
+description: Oregon provides these refundable tax credits. 
+values:
+  2019-01-01:
+  - or_eitc
+  - or_kicker
+  - or_working_family_household_and_dependent_care_credit
+  2023-01-01:
+  - or_eitc
+  - or_kicker
+  - or_ctc
+  - or_working_family_household_and_dependent_care_credit
+  # Child Tax Credit legislation ends in 2029.
+  2029-01-01:
+  - or_eitc
+  - or_kicker
+  - or_working_family_household_and_dependent_care_credit
+metadata:
+  unit: list
+  period: year
+  label: Oregon refundable tax credits
+  reference:
+    - title: 2023 Oregon Income Tax Form OR-40 Instructions
+      href: https://www.oregon.gov/dor/forms/FormsPubs/form-or-40-inst_101-040-1_2023.pdf#page=17

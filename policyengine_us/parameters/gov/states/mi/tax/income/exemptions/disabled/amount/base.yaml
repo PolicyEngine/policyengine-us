@@ -1,0 +1,23 @@
+description: Michigan provides this exemption amount for each disabled person or dependent in the household.
+values:
+  2017-01-01: 2_600
+  2018-01-01: 2_700
+  2020-01-01: 2_800
+  2022-01-01: 2_900
+  2023-01-01: 3_100
+
+metadata:
+  period: year
+  unit: currency-USD
+  label: Michigan disabled exemption base amount
+  reference:
+  # Legal code specified $1,800.
+  - title: Michigan Legal Code Section 206.30 - (3)(a)
+    href: http://legislature.mi.gov/doc.aspx?mcl-206-30
+  - title: Michigan Taxpayer's Guide 2022 - page 12
+    href: https://www.legislature.mi.gov/Publications/TaxpayerGuide.pdf#page=12
+  # 2021 manual contains values dating to 2017.
+  - title: 2021 Michigan Taxpayer Assistance Manual - page 10
+    href: https://www.michigan.gov/-/media/Project/Websites/taxes/2022RM/UNCAT/2019_Taxpayer_Assistance_Manual.pdf#page=10
+  - title: 2023 MI-1040 Instructions
+    href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2023/2023-IIT-Forms/BOOK_MI-1040.pdf#page=3

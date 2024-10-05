@@ -1,0 +1,19 @@
+description: Michigan caps the total heating costs at this amount under the alternate home heating credit computation.
+values:
+  2021-01-01: 3_047
+  2022-01-01: 3_340
+  2023-01-01: 3_500
+metadata:
+  period: year
+  unit: currency_USD
+  label: Michigan alternate home heating credit heating costs cap
+  reference:
+    # The exact cap amount is not specified in the law, only the yearly inflation adjustment
+    - title: Michigan Section 206.527a, Income Tax Act of 1967(Exerpt)Act 281 of 1967, (1)(d)
+      href: http://legislature.mi.gov/doc.aspx?mcl-206-527a
+    - title: 2021 MICHIGAN Home Heating Credit Claim MI-1040CR-7, Line 42
+      href: https://www.michigan.gov/-/media/Project/Websites/taxes/2022RM/IIT/MI-1040CR7.pdf#page=2
+    - title: 2022 MICHIGAN Home Heating Credit Claim MI-1040CR-7, Line 42
+      href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2022/2022-IIT-Forms/MI-1040CR7.pdf#page=2
+    - title: 2023 MICHIGAN Home Heating Credit Claim MI-1040CR-7, Line 42
+      href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2023/2023-IIT-Forms/MI-1040CR7.pdf#page=2

@@ -1,0 +1,66 @@
+description: South Carolina taxes the income of individuals at this rate.
+brackets:
+ - threshold:
+     1994-01-01: 0
+   rate:
+     1994-01-01: 0.025
+     2021-01-01: 0
+ - threshold:
+     1994-01-01: 2_220
+     2021-01-01: 3_110
+     2022-01-01: 3_200
+     2023-01-01: 3_330
+   rate:
+     1994-01-01: 0.03
+ - threshold:
+     1994-01-01: 4_440
+     2021-01-01: 6_220
+     2022-01-01: 16_040
+     2023-01-01: 16_680
+   rate:
+     1994-01-01: 0.04
+     2022-01-01: 0.065
+     2023-01-01: 0.064
+ - threshold:
+     1994-01-01: 6_660
+     2021-01-01: 9_330
+     2022-01-01: .inf
+   rate:
+     1994-01-01: 0.05
+ - threshold:
+     1994-01-01: 8_880
+     2021-01-01: 12_440
+     2022-01-01: .inf
+   rate:
+     1994-01-01: 0.06
+ - threshold:
+     1994-01-01: 11_100
+     2021-01-01: 15_560
+     2022-01-01: .inf
+   rate:
+     1994-01-01: 0.07
+     2022-01-01: 0.065
+ - threshold:
+     1994-01-01: .inf
+
+ 
+
+metadata:
+  reference:
+    - title: SC 1040ES Instructions 2023
+      href: https://dor.sc.gov/forms-site/Forms/SC1040ES_2023.pdf#page=4
+    - title: SC 2022 Income Tax Chart
+      href: https://dor.sc.gov/forms-site/Forms/SC1040TT_2022.pdf
+    - title: SC 2021 Income Tax Chart
+      href: https://dor.sc.gov/forms-site/Forms/SC1040TT_2021.pdf
+    - title: SC Legal Code |  Section 12-6-510
+      href: https://www.scstatehouse.gov/code/t12c006.php
+    # Using a third party source as South Carolina does not provide inflation 
+    # adjustments for the tax brackets
+    - title: South Carolina Tax Rates, Brackets, Forms
+      href: https://www.efile.com/south-carolina-tax-rates-brackets-and-forms/
+  label: South Carolina income tax rate
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  period: year

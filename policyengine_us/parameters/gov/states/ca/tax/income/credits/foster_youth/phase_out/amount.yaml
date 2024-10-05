@@ -1,0 +1,18 @@
+description: California reduces the foster youth tax credit by this amount for each increment of earned income in excess of the phase-out threshold.
+values:
+  2022-01-01: 21.66
+metadata:
+  unit: currency-USD
+  period: year
+  label: California foster youth tax credit phase out amount
+  reference:
+  # The foster youth tax credit was implemented  in 2022
+    - title: California Foster Youth Tax Credit
+      href: https://www.ftb.ca.gov/file/personal/credits/foster-youth-tax-credit.html
+    - title: 2022 California Earned Income Tax Credit Form
+      href: https://www.ftb.ca.gov/forms/2022/2022-3514.pdf#page=4
+    - title: 2023 California Earned Income Tax Credit Form
+      href: https://www.ftb.ca.gov/forms/2022/2022-3514.pdf#page=4
+  # The legal code provides the pre-adjustment value  
+    - title: California Revenue and Taxation Code (R&TC) Section 17052.2(a)(2)(C)(i)
+      href: https://casetext.com/statute/california-codes/california-revenue-and-taxation-code/division-2-other-taxes/part-10-personal-income-tax/chapter-2-imposition-of-tax/section-170522-foster-youth-tax-credit-for-qualified-taxpayers#:~:text=Section%2017052.2%20%2D%20Foster%20youth%20tax%20credit%20for%20qualified%20taxpayers%20(a,determined%20under%20paragraph%20(2)

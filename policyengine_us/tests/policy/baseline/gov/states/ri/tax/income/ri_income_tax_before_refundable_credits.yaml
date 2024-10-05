@@ -1,0 +1,17 @@
+- name: Capped at 0
+  period: 2022
+  input:
+    state_code: RI
+    ri_income_tax_before_non_refundable_credits: 500
+    ri_non_refundable_credits: 1_000
+  output:
+    ri_income_tax_before_refundable_credits: 0
+
+- name: Reduction
+  period: 2022
+  input:
+    state_code: RI
+    ri_income_tax_before_non_refundable_credits: 70_000
+    ri_non_refundable_credits: 1_000
+  output:
+    ri_income_tax_before_refundable_credits: 69_000

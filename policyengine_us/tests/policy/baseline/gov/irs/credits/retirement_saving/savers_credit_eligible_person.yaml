@@ -1,0 +1,19 @@
+- name: eligible person
+  period: 2021
+  input:
+    age: 20
+    is_tax_unit_head: true
+    claimed_as_dependent_on_another_return: false
+    is_full_time_student: false
+  output:
+    savers_credit_eligible_person: true
+
+- name: Not an eligible person, under age threshold  
+  period: 2021
+  input:
+    age: 17
+    is_tax_unit_spouse: true
+    spouse_is_dependent_elsewhere: false
+    is_full_time_student: false
+  output:
+    savers_credit_eligible_person: false

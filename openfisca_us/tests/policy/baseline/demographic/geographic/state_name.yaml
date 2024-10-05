@@ -1,7 +1,0 @@
-- name: California is decoded correctly from FIPS code.
-  period: 2020
-  absolute_error_margin: 0
-  input:
-    fips: 6
-  output:
-    state_name: CA

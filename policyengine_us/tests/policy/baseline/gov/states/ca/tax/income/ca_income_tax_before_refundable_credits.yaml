@@ -1,0 +1,22 @@
+- name: Unlimited nonrefundable credits
+  period: 2021
+  input:
+    state_code: CA
+    ca_income_tax_before_credits: 9_000
+    ca_exemptions: 6_000
+    ca_cdcc: 900
+    ca_renter_credit: 200
+  output:
+    ca_income_tax_before_refundable_credits: 1_900
+
+
+- name: Limited nonrefundable credits
+  period: 2021
+  input:
+    state_code: CA
+    ca_income_tax_before_credits: 7_000
+    ca_exemptions: 6_000
+    ca_cdcc: 900
+    ca_renter_credit: 200
+  output:
+    ca_income_tax_before_refundable_credits: 0

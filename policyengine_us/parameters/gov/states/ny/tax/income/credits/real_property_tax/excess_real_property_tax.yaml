@@ -1,0 +1,43 @@
+description: New York deems real property taxes (or rent equivalent) over this percentage of household gross income as 'excess' for the real property tax credit.
+
+brackets:
+  - threshold:
+      2000-01-01: 0
+    amount:
+      2000-01-01: 0.035
+  - threshold:
+      2000-01-01: 3_000
+    amount:
+      2000-01-01: 0.04
+  - threshold:
+      2000-01-01: 5_000
+    amount:
+      2000-01-01: 0.045
+  - threshold:
+      2000-01-01: 7_000
+    amount:
+      2000-01-01: 0.05
+  - threshold:
+      2000-01-01: 9_000
+    amount:
+      2000-01-01: 0.055
+  - threshold:
+      2000-01-01: 11_000
+    amount:
+      2000-01-01: 0.06
+  - threshold:
+      2000-01-01: 14_000
+    amount:
+      2000-01-01: 0.065
+metadata:
+  threshold_unit: currency-USD
+  threshold_period: year
+  amount_unit: /1
+  label: New York real property tax credit excess level
+  reference:
+    - title: Section 606 Credits against tax (e)
+      href: https://www.nysenate.gov/legislation/laws/TAX/606
+    - title: New York Instructions for Form IT-201 Line 67
+      href: https://www.tax.ny.gov/pdf/2023/printable-pdfs/inc/it201i-2023.pdf#page=26
+    - title: New York Instructions for Form IT-214 Line 17
+      href: https://www.tax.ny.gov/pdf/current_forms/it/it214i.pdf#page=2

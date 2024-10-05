@@ -1,0 +1,55 @@
+- name: aca_ptc_phase_out_rate unit test 1
+  period: 2022
+  absolute_error_margin: 0.00001
+  input:
+    aca_magi_fraction: 1.40
+  output:
+    aca_ptc_phase_out_rate: 0
+
+- name: aca_ptc_phase_out_rate unit test 2
+  period: 2022
+  absolute_error_margin: 0.00001
+  input:
+    aca_magi_fraction: 1.90
+  output:
+    aca_ptc_phase_out_rate: 0.0160
+
+- name: aca_ptc_phase_out_rate unit test 3
+  period: 2022
+  absolute_error_margin: 0.00001
+  input:
+    aca_magi_fraction: 2.40
+  output:
+    aca_ptc_phase_out_rate: 0.0360
+
+- name: aca_ptc_phase_out_rate unit test 4
+  period: 2022
+  absolute_error_margin: 0.00001
+  input:
+    aca_magi_fraction: 2.90
+  output:
+    aca_ptc_phase_out_rate: 0.0560
+
+- name: aca_ptc_phase_out_rate unit test 5
+  period: 2022
+  absolute_error_margin: 0.00001
+  input:
+    aca_magi_fraction: 3.40
+  output:
+    aca_ptc_phase_out_rate: 0.0700
+
+- name: aca_ptc_phase_out_rate unit test 6
+  period: 2022
+  absolute_error_margin: 0.00001
+  input:
+    aca_magi_fraction: 3.90
+  output:
+    aca_ptc_phase_out_rate: 0.0825
+
+- name: aca_ptc_phase_out_rate unit test 7
+  period: 2022
+  absolute_error_margin: 0.00001
+  input:
+    aca_magi_fraction: 4.40
+  output:
+    aca_ptc_phase_out_rate: 0.0850

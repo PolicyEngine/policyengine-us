@@ -1,0 +1,24 @@
+# PolicyEngine-US test file derived from p21.its.csv and p21.ots.csv files
+# Expected test output from NBER TAXSIM Model v35 (06/18/22) With TCJA
+
+- name: Tax unit with taxsimid 998 from p21.its.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: 1
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        age: 70
+        employment_income: 10000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        premium_tax_credit: 0
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    eitc: 1502.00

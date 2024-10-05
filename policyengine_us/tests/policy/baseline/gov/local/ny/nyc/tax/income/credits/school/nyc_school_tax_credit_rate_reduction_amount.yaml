@@ -1,0 +1,90 @@
+- name: Joint filing gets .171% of taxable income for income not over $21,600.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    nyc_school_tax_credit_rate_reduction_amount_eligible: true
+    nyc_taxable_income: 21_600
+    filing_status: JOINT
+  output:
+    # NYC School Tax Instructions
+    # See Page 27 for rate reduction amount
+    # https://www.tax.ny.gov/pdf/2022/printable-pdfs/inc/it201i-2022.pdf#page=27
+    nyc_school_tax_credit_rate_reduction_amount: 36.94
+
+- name: Joint filing gets $37 plus .228% of taxable income above $21,600 for total income not over $500,000.
+  period: 2022
+  absolute_error_margin: 1 # The $37 amount is rounded in the instructions.
+  input:
+    nyc_school_tax_credit_rate_reduction_amount_eligible: true
+    nyc_taxable_income: 500_000
+    filing_status: JOINT
+  output:
+    # NYC School Tax Instructions
+    # See Page 27 for rate reduction amount
+    # https://www.tax.ny.gov/pdf/2022/printable-pdfs/inc/it201i-2022.pdf#page=27
+    nyc_school_tax_credit_rate_reduction_amount: 1_127.75
+
+- name: Joint filing gets no reduction amount if not eligible.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    nyc_school_tax_credit_rate_reduction_amount_eligible: false
+    nyc_taxable_income: 500_000
+    filing_status: JOINT
+  output:
+    # NYC School Tax Instructions
+    # See Page 27 for rate reduction amount
+    # https://www.tax.ny.gov/pdf/2022/printable-pdfs/inc/it201i-2022.pdf#page=27
+    nyc_school_tax_credit_rate_reduction_amount: 0
+
+- name: Single person gets .171% of taxable income for income not over $12,000.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    nyc_school_tax_credit_rate_reduction_amount_eligible: true
+    nyc_taxable_income: 12_000
+    filing_status: SINGLE
+  output:
+    # NYC School Tax Instructions
+    # See Page 27 for rate reduction amount
+    # https://www.tax.ny.gov/pdf/2022/printable-pdfs/inc/it201i-2022.pdf#page=27
+    nyc_school_tax_credit_rate_reduction_amount: 20.52
+
+- name: Single person gets $21 plus .228% of taxable income above $12,000 for total income not over $500,000.
+  period: 2022
+  absolute_error_margin: 1 # The $21 amount is rounded in the instructions.
+  input:
+    nyc_school_tax_credit_rate_reduction_amount_eligible: true
+    nyc_taxable_income: 500_000
+    filing_status: SINGLE
+  output:
+    # NYC School Tax Instructions
+    # See Page 27 for rate reduction amount
+    # https://www.tax.ny.gov/pdf/2022/printable-pdfs/inc/it201i-2022.pdf#page=27
+    nyc_school_tax_credit_rate_reduction_amount: 1_133.64
+
+- name: Household head gets .171% of taxable income for income not over $14,400.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    nyc_school_tax_credit_rate_reduction_amount_eligible: true
+    nyc_taxable_income: 14_400
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    # NYC School Tax Instructions
+    # See Page 27 for rate reduction amount
+    # https://www.tax.ny.gov/pdf/2022/printable-pdfs/inc/it201i-2022.pdf#page=27
+    nyc_school_tax_credit_rate_reduction_amount: 24.62
+
+- name: Household head gets $25 plus .228% of taxable income above $14,400 for total income not over $500,000.
+  period: 2022
+  absolute_error_margin: 1 # The $25 amount is rounded in the instructions.
+  input:
+    nyc_school_tax_credit_rate_reduction_amount_eligible: true
+    nyc_taxable_income: 500_000
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    # NYC School Tax Instructions
+    # See Page 27 for rate reduction amount
+    # https://www.tax.ny.gov/pdf/2022/printable-pdfs/inc/it201i-2022.pdf#page=27
+    nyc_school_tax_credit_rate_reduction_amount: 1_132.17

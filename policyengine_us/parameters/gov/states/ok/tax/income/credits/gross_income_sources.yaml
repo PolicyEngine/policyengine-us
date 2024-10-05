@@ -1,0 +1,34 @@
+description: Oklahoma counts these sources when determining gross income for its sales tax credit.
+values:
+  2021-01-01:
+    - irs_employment_income
+    - self_employment_income
+    - partnership_s_corp_income
+    - farm_income
+    - farm_rent_income
+    - short_term_capital_gains
+    - long_term_capital_gains
+    - interest_income
+    - rental_income
+    - dividend_income
+    - pension_income 
+    - debt_relief
+    - unemployment_compensation
+    - workers_compensation
+    - social_security
+    - alimony_income
+    - child_support_received
+    - illicit_income
+    - miscellaneous_income
+    - ssi
+    - state_supplement  # state SSI supplement
+    - general_assistance
+    - eitc
+
+metadata:
+  label: Oklahoma sales tax credit gross income sources
+  reference:
+  - title: 2021 Form 511 instructions
+    href: https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/past-year/2021/511-Pkt-2021.pdf
+  - title: 2022 Form 511 instructions
+    href: https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/current/511-Pkt.pdf

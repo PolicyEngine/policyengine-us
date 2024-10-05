@@ -1,0 +1,43 @@
+description: West Virginia income tax rate for joint filers.
+metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  label: West Virginia income tax rate for joint filers
+  reference:
+    - title: West Virginia Personal Income Tax Forms And Instructions 2023
+      href: https://tax.wv.gov/Documents/PIT/2023/it140.PersonalIncomeTaxFormsAndInstructions.2023.pdf#page=37
+    - title: West Virginia Personal Income Tax Forms And Instructions 2022
+      href:  https://tax.wv.gov/Documents/PIT/2022/PersonalIncomeTaxFormsAndInstructions.2022.pdf#Page=36
+    - title: Code of West Virginia §11-21-4e
+      href: https://code.wvlegislature.gov/11-21-4E/
+    - title: Code of West Virginia §11-21-4g
+      href: https://code.wvlegislature.gov/11-21-4G/
+
+brackets:
+  - threshold:
+      2022-01-01: 0
+    rate:
+      2022-01-01: 0.03
+      2023-01-01: 0.0236
+  - threshold:
+      2022-01-01: 10_000
+    rate:
+      2022-01-01: 0.04
+      2023-01-01: 0.0315
+  - threshold:
+      2022-01-01: 25_000
+    rate:
+      2022-01-01: 0.045
+      2023-01-01: 0.0354
+  - threshold:
+      2022-01-01: 40_000
+    rate:
+      2022-01-01: 0.06
+      2023-01-01: 0.0472
+  - threshold:
+      2022-01-01: 60_000
+    rate:
+      2022-01-01: 0.065
+      2023-01-01: 0.0512
+

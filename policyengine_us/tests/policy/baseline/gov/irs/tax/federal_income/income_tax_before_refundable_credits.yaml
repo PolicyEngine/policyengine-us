@@ -1,0 +1,25 @@
+- name: No tax for no income
+  period: 2019
+  input:
+    gov.contrib.ubi_center.flat_tax.abolish_federal_income_tax: false
+    income_tax_before_credits: 7
+    income_tax_capped_non_refundable_credits: 2
+    net_investment_income_tax: 1
+    recapture_of_investment_credit: 1
+    unreported_payroll_tax: 1
+    qualified_retirement_penalty: 1
+  output:
+    income_tax_before_refundable_credits: 7 - 2 + 1 + 1 + 1 + 1
+
+- name: Abolished federal income tax
+  period: 2019
+  input:
+    gov.contrib.ubi_center.flat_tax.abolish_federal_income_tax: true
+    income_tax_before_credits: 7
+    income_tax_capped_non_refundable_credits: 2
+    net_investment_income_tax: 1
+    recapture_of_investment_credit: 1
+    unreported_payroll_tax: 1
+    qualified_retirement_penalty: 1
+  output:
+    income_tax_before_refundable_credits: 0

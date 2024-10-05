@@ -1,0 +1,17 @@
+description: The basic income phases out for adjusted gross income between the threshold and this value.
+SINGLE:
+  0000-01-01: 0
+JOINT:
+  0000-01-01: 0
+HEAD_OF_HOUSEHOLD:
+  0000-01-01: 0
+SEPARATE:
+  0000-01-01: 0
+SURVIVING_SPOUSE:
+  0000-01-01: 0
+metadata:
+  unit: currency-USD
+  period: year
+  label: Basic income phase-out end
+  breakdown:
+    - filing_status

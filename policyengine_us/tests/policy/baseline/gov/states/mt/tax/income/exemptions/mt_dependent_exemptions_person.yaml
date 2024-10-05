@@ -1,0 +1,87 @@
+- name: Two dependents in 2021 - one eligible
+  period: 2021
+  input:
+    people:
+      person1:
+        is_child_dependent: false
+        is_disabled: false
+      person3:
+        is_child_dependent: false
+        is_disabled: false
+      person4:
+        is_child_dependent: true
+        is_disabled: false
+    tax_units:
+      tax_unit:
+        members: [person1, person3, person4]
+    households:
+      household:
+        members: [person1, person3, person4]
+        state_code: MT
+  output:
+    mt_dependent_exemptions_person: [0, 0, 2_580]
+
+- name: Two dependents in 2022 - two eligible
+  period: 2022
+  input:
+    people:
+      person1: {}
+      person3:
+        is_child_dependent: true
+        is_disabled: false
+      person4:
+        is_child_dependent: true
+        is_disabled: false
+    tax_units:
+      tax_unit:
+        members: [person1, person3, person4]
+    households:
+      household:
+        members: [person1, person3, person4]
+        state_code: MT
+  output:
+    mt_dependent_exemptions_person: [0, 2_710, 2_710]
+
+- name: Two dependents in 2022 - two eligible, one disabled
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+      person3:
+        is_child_dependent: true
+        is_disabled: false
+      person4:
+        is_child_dependent: true
+        is_disabled: true
+    tax_units:
+      tax_unit:
+        members: [person1, person3, person4]
+    households:
+      household:
+        members: [person1, person3, person4]
+        state_code: MT
+  output:
+    mt_dependent_exemptions_person: [0, 2_710, 5_420]
+
+- name: Two dependents in 2022 - no eligible
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+      person3:
+        is_child_dependent: false
+        is_disabled: false
+      person4:
+        is_child_dependent: false
+        is_disabled: true
+    tax_units:
+      tax_unit:
+        members: [person1, person3, person4]
+    households:
+      household:
+        members: [person1, person3, person4]
+        state_code: MT
+  output:
+    mt_dependent_exemptions_person: [0, 0, 0]

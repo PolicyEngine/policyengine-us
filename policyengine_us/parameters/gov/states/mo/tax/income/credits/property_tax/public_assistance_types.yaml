@@ -1,0 +1,14 @@
+description: Types of public assistance included in MO PTC gross income
+values:
+  2008-08-28:
+    - ssi
+    - state_supplement
+    - child_support_received
+    - tanf_person
+metadata:
+  unit: currency-USD
+  label: Missouri property tax credit gross income public assistance sources
+  period: year
+  reference:
+    - href: https://revisor.mo.gov/main/OneSection.aspx?section=135.010&bid=6435&hl=property+tax+credit%u2044
+

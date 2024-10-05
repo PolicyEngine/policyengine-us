@@ -1,0 +1,49 @@
+- name: Single filer with zero income and some rent receives the renter credit.
+  period: 2021
+  input:
+    state_code: CA
+    filing_status: SINGLE
+    ca_agi: 0
+    rent: 1
+  output:
+    ca_renter_credit: 60
+
+- name: Joint filer with income $1 above the cap gets zero.
+  period: 2021
+  input:
+    state_code: CA
+    filing_status: JOINT
+    ca_agi: 90_896 + 1
+    rent: 1
+  output:
+    ca_renter_credit: 0
+
+- name: Joint filer with income equal to the cap gets $120.
+  period: 2021
+  input:
+    state_code: CA
+    filing_status: JOINT
+    ca_agi: 90_896
+    rent: 1
+  output:
+    ca_renter_credit: 120
+
+- name: Joint filer with income $1 less than but pays no rents gets $0.
+  period: 2021
+  input:
+    state_code: CA
+    filing_status: JOINT
+    ca_agi: 87_065
+    rent: 0
+  output:
+    ca_renter_credit: 0
+
+- name: Single filer with income $1 less than but pays no rents gets $0.
+  period: 2021
+  input:
+    state_code: CA
+    filing_status: SINGLE
+    ca_agi: 87_065
+    rent: 0
+  output:
+    ca_renter_credit: 0

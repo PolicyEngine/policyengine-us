@@ -1,0 +1,68 @@
+description: Montana reduces net household income by this fraction under the elderly homeowner or renter credit, depending on gross household income reduced by the standard exclusion.
+metadata:
+  label: Montana elderly or homeowner credit household income reduction rate
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: /1
+  period: year
+  reference:
+  - title: MT Code, Taxation - Individual Income Tax, § 15-30-2340 (4)
+    href: https://leg.mt.gov/bills/mca/title_0150/chapter_0300/part_0230/section_0400/0150-0300-0230-0400.html
+  - title: 2021 Montana Code Annotated, Title 15, Chapter 30,Part 23, 15-30-2340 (4)
+    href: https://law.justia.com/codes/montana/2021/title-15/chapter-30/part-23/section-15-30-2340/
+  - title: 2022 Form of Montana Individual Income Tax Return, Page10, Line13
+    href: https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2023/05/Montana-Idividiual-Income-Tax-Return-Form-2-2022v6.2.pdf#page=10
+  - title: 2021 Form of Montana Individual Income Tax Return, Page10, Line13
+    href: https://mtrevenue.gov/wp-content/uploads/mdocs/form%202%202021.#page=10
+  - title: 2023 Form of Montana Individual Income Tax Return, Page10, Line13
+    href: https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2023/12/Form_2_2023.pdf#page=10
+
+brackets:
+  - threshold:
+      2009-01-01: 0
+    amount:
+      2009-01-01: 0
+  - threshold:
+      2009-01-01: 2_000
+    amount:
+      2009-01-01: 0.006
+  - threshold:
+      2009-01-01: 3_000
+    amount:
+      2009-01-01: 0.016
+  - threshold:
+      2009-01-01: 4_000
+    amount:
+      2009-01-01: 0.024
+  - threshold:
+      2009-01-01: 5_000
+    amount:
+      2009-01-01: 0.028
+  - threshold:
+      2009-01-01: 6_000
+    amount:
+      2009-01-01: 0.032
+  - threshold:
+      2009-01-01: 7_000
+    amount:
+      2009-01-01: 0.035
+  - threshold:
+      2009-01-01: 8_000
+    amount:
+      2009-01-01: 0.039
+  - threshold:
+      2009-01-01: 9_000
+    amount:
+      2009-01-01: 0.042
+  - threshold:
+      2009-01-01: 10_000
+    amount:
+      2009-01-01: 0.045
+  - threshold:
+      2009-01-01: 11_000
+    amount:
+      2009-01-01: 0.048
+  - threshold:
+      2009-01-01: 12_000
+    amount:
+      2009-01-01: 0.05

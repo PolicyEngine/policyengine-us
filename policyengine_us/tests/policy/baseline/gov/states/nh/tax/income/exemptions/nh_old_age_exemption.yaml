@@ -1,0 +1,104 @@
+- name: In 2022, if filing single and age < 65, exemption is $0.
+  period: 2022
+  input:
+    state_code: NH
+    age_head: 64
+  output:
+    nh_old_age_exemption: 0
+
+- name: In 2027, if filing single and age < 65, exemption is $0.
+  period: 2027
+  input:
+    state_code: NH
+    age_head: 64
+  output:
+    nh_old_age_exemption: 0
+
+- name: In 2022, if filing single and age >= 65, exemption is $1_200.
+  period: 2022
+  input:
+    state_code: NH
+    age_head: 65
+  output:
+    nh_old_age_exemption: 1_200
+
+- name: In 2027, if filing single and age >= 65, exemption is $0.
+  period: 2027
+  input:
+    state_code: NH
+    age_head: 65
+  output:
+    nh_old_age_exemption: 0
+
+- name: In 2022, if filing jointly, both head and spouse are under 65, exemption is $0.
+  period: 2022
+  input:
+    state_code: NH
+    age_head: 64
+    age_spouse: 64
+  output:
+    nh_old_age_exemption: 0
+
+- name: In 2027, if filing jointly, both head and spouse are under 65, exemption is $0.
+  period: 2027
+  input:
+    state_code: NH
+    age_head: 64
+    age_spouse: 64
+  output:
+    nh_old_age_exemption: 0
+
+- name: In 2022, if filing jointly, head age >= 65 but spouse is not, exemption is $1_200.
+  period: 2022
+  input:
+    state_code: NH
+    age_head: 65
+    age_spouse: 64
+  output:
+    nh_old_age_exemption: 1_200
+
+
+- name: In 2027, if filing jointly, head age >= 65 but spouse is not, exemption is $0.
+  period: 2027
+  input:
+    state_code: NH
+    age_head: 65
+    age_spouse: 64
+  output:
+    nh_old_age_exemption: 0
+
+- name: In 2022, if filing jointly, head age < 65 but spouse age >= 65, exemption is $1_200.
+  period: 2022
+  input:
+    state_code: NH
+    age_head: 64
+    age_spouse: 65
+  output:
+    nh_old_age_exemption: 1_200
+
+- name: In 2027, if filing jointly, head age < 65 but spouse age >= 65, exemption is $0.
+  period: 2027
+  input:
+    state_code: NH
+    age_head: 64
+    age_spouse: 65
+  output:
+    nh_old_age_exemption: 0
+
+- name: In 2022, if filing jointly, head and spouse both >= 65, exemption is $2_400.
+  period: 2022
+  input:
+    state_code: NH
+    age_head: 65
+    age_spouse: 65
+  output:
+    nh_old_age_exemption: 2_400
+
+- name: In 2027, if filing jointly, head and spouse both >= 65, exemption is $0.
+  period: 2027
+  input:
+    state_code: NH
+    age_head: 65
+    age_spouse: 65
+  output:
+    nh_old_age_exemption: 0

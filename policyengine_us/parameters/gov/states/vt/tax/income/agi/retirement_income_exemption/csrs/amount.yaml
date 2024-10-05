@@ -1,0 +1,19 @@
+description: Vermont caps the retirement income exemption from Civil Service Retirement System (CSRS) retirement system at this amount.
+metadata:
+  label: Vermont CSRS retirement income exemption cap
+  period: year
+  unit: currency-USD
+  reference:
+    - title: Instruction for 2022 SCHEDULE IN-112 - RETIREMENT INCOME EXEMPTION WORKSHEET LINE 11
+      href: https://tax.vermont.gov/sites/tax/files/documents/IN-112%20Instr-2022.pdf#page=3
+    - title: Instruction for 2021 SCHEDULE IN-112 - SOCIAL SECURITY EXEMPTION WORKSHEET LINE 11
+      href: https://tax.vermont.gov/sites/tax/files/documents/IN-112%20Instr-2021.pdf#page=2
+    - title: Instruction for 2023 SCHEDULE IN-112 - SOCIAL SECURITY EXEMPTION WORKSHEET LINE 11
+      href: https://tax.vermont.gov/sites/tax/files/documents/IN-112-Instr-2023.pdf#page=2
+     # Legal code specifies maximum amount at $10,000. Effective date unknown
+    - title: Legal Code Titl. 32 V.S.A. § 5830e(b)(1)(B), (b)(2)(B),(c),(d)
+      href: https://legislature.vermont.gov/statutes/section/32/151/05830e
+values:
+  # The other retirement systems are included in the retirement income exemption in 2022
+  2021-01-01: 0 
+  2022-01-01: 10_000 

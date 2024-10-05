@@ -1,0 +1,53 @@
+description: Hawaii provides filers a standard deduction of this amount, depending on their filing status.
+metadata:
+  label: Hawaii standard deduction amount
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  reference:
+  - title: 2022 Hawaii Tax Form Instruction Booklet line 23
+    href: https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=20
+  - title: 2023 Hawaii Tax Form Instruction Booklet line 23
+    href: https://files.hawaii.gov/tax/forms/2023/n11ins.pdf#page=20
+  - title: Tax Bill H.B. 2404 H.D. 1, S.D.1, C.D.1 Section 235—2.4 (a)(2)
+    href: https://data.capitol.hawaii.gov/sessions/session2024/bills/HB2404_CD1_.HTM
+  # The legal code does not reflect the most recent changes from Bill H.B. 2404 H.D. 1, S.D.1, C.D.1
+  - title: Hawaii Revised Statutes §235-2.4 (a)(2)
+    href: https://law.justia.com/codes/hawaii/title-14/chapter-235/section-235-2-4/
+
+JOINT:
+  2022-01-01: 4_400
+  2024-01-01: 8_800
+  2026-01-01: 16_000
+  2028-01-01: 18_000
+  2030-01-01: 20_000
+  2031-01-01: 24_000
+HEAD_OF_HOUSEHOLD:
+  2022-01-01: 3_212
+  2024-01-01: 6_424
+  2026-01-01: 12_000
+  2028-01-01: 13_500
+  2030-01-01: 15_000
+  2031-01-01: 18_000
+SURVIVING_SPOUSE:
+  2022-01-01: 4_400
+  2024-01-01: 8_800
+  2026-01-01: 16_000
+  2028-01-01: 18_000
+  2030-01-01: 20_000
+  2031-01-01: 24_000
+SINGLE:
+  2022-01-01: 2_200
+  2024-01-01: 4_400
+  2026-01-01: 8_000
+  2028-01-01: 9_000
+  2030-01-01: 10_000
+  2031-01-01: 12_000
+SEPARATE:
+  2022-01-01: 2_200
+  2024-01-01: 4_400
+  2026-01-01: 8_000
+  2028-01-01: 9_000
+  2030-01-01: 10_000
+  2031-01-01: 12_000

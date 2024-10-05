@@ -1,0 +1,71 @@
+- name: 2022 single filer with tier 1 retirement and pension benefits deduction equal to taxable public pension income
+  period: 2022
+  input:
+    people:
+      person1:
+        taxable_public_pension_income: 60_000
+        taxable_private_pension_income: 10_000
+        military_retirement_pay: 1_000
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    household:
+      members: [person1]
+      state_code: MI
+  output: # min(56961 - 1000 - 60000 < 0, 10000) + 60000
+    mi_retirement_benefits_deduction_tier_one_amount: 60_000
+
+- name: 2022 joint filer and their spouse with tier 1 retirement and pension benefits deduction equal to sum of taxable public pension income and taxable private pension income, and with one more household member
+  period: 2022
+  input:
+    people:
+      person1:
+        taxable_public_pension_income: 20_000
+        taxable_private_pension_income: 20_000
+        military_retirement_pay: 1_000
+        is_tax_unit_head_or_spouse: true
+      person2:
+        taxable_public_pension_income: 30_000
+        taxable_private_pension_income: 40_000
+        military_retirement_pay: 2_000
+        is_tax_unit_head_or_spouse: true
+      person3:
+        taxable_public_pension_income: 30_000
+        taxable_private_pension_income: 20_000
+        military_retirement_pay: 2_000
+        is_tax_unit_head_or_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        filing_status: JOINT
+    household:
+      members: [person1, person2, person3]
+      state_code: MI
+  output: # min(113922 - 1000 - 2000 - 20000 - 30000 = 60922, 20000 + 40000) + 20000 + 30000
+    mi_retirement_benefits_deduction_tier_one_amount: 110_000
+    
+- name: 2022 joint filer and their spouse with tier 1 retirement and pension benefits deduction larger than sum of taxable public pension income and taxable private pension income
+  period: 2022
+  input:
+    people:
+      person1:
+        taxable_public_pension_income: 20_000
+        taxable_private_pension_income: 30_000
+        military_retirement_pay: 1_000
+        is_tax_unit_head_or_spouse: true
+      person2:
+        taxable_public_pension_income: 30_000
+        taxable_private_pension_income: 40_000
+        military_retirement_pay: 2_000
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    household:
+      members: [person1, person2]
+      state_code: MI
+  output: # min(113922 - 1000 - 2000 - 20000 - 30000 = 60922, 30000 + 40000) + 20000 + 30000
+    mi_retirement_benefits_deduction_tier_one_amount: 110_922

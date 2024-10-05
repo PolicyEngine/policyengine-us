@@ -1,0 +1,24 @@
+description: Mississippi provides an exemption of this value depending on filing status.
+metadata:
+  unit: currency-USD
+  period: year
+  label: Mississippi exemption
+  reference: 
+    - title: Mississippi State FORMS 80-105 AND 80-205
+      href: https://www.dor.ms.gov/sites/default/files/Forms/Individual/80100221.pdf#page=5
+    - title: § 27-7-21. Exemptions allowed. (a-d)
+      href: https://advance.lexis.com/documentpage/?pdmfid=1000516&crid=e1d2bafd-2018-44e8-a4fc-e9e2b08a4daa&nodeid=AAPAAFAABAAP&nodepath=%2FROOT%2FAAP%2FAAPAAF%2FAAPAAFAAB%2FAAPAAFAABAAP&level=4&haschildren=&populated=false&title=%C2%A7+27-7-21.+Exemptions+allowed.&config=00JABhZDIzMTViZS04NjcxLTQ1MDItOTllOS03MDg0ZTQxYzU4ZTQKAFBvZENhdGFsb2f8inKxYiqNVSihJeNKRlUp&pddocfullpath=%2Fshared%2Fdocument%2Fstatutes-legislation%2Furn%3AcontentItem%3A8V3T-78H2-D6RV-H4WK-00008-00&ecomp=8gf5kkk&prid=1ae106b3-6378-4ac5-8291-6c5f714f357c
+    - title: Mississippi Income Tax Instructions 2023
+      href: https://www.dor.ms.gov/sites/default/files/Forms/Individual/80100231.pdf#page=6 # Line 1-5
+  breakdown:
+    - filing_status
+SINGLE:
+  2020-01-01: 6_000
+SEPARATE:
+  2020-01-01: 6_000
+HEAD_OF_HOUSEHOLD:
+  2020-01-01: 8_000
+JOINT:
+  2020-01-01: 12_000
+SURVIVING_SPOUSE:
+  2020-01-01: 12_000

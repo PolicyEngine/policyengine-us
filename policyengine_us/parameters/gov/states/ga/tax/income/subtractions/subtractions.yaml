@@ -1,0 +1,25 @@
+description: Georgia subtracts these sources from adjusted gross income.  
+values:
+  2021-01-01:
+    - us_govt_interest  
+    - ga_retirement_exclusion  
+    - taxable_social_security  
+    - ga_investment_in_529_plan_deduction
+  2022-01-01:
+    - us_govt_interest  
+    - ga_retirement_exclusion  
+    - ga_military_retirement_exclusion  
+    - taxable_social_security  
+    - ga_investment_in_529_plan_deduction
+    
+metadata:
+  unit: list
+  label: Georgia adjusted gross income subtractions  
+  period: year  
+  reference:
+    - title: 2022 Form 500 Instructions
+      href: https://apps.dor.ga.gov/FillableForms/PDFViewer/Index?form=2022GA500
+    - title: 2021 Form 500 Instructions
+      href: https://www.zillionforms.com/2021/I2122607361.PDF
+    - title: 2022 Official Code of Georgia Annotated | CH7 Income Taxes | § 48-7-27
+      href: https://law.justia.com/codes/georgia/2022/title-48/chapter-7/article-2/section-48-7-27/

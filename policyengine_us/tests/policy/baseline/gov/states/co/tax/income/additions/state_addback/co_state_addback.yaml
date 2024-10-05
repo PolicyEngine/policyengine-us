@@ -1,0 +1,50 @@
+- name: co_state_addback unit test 1
+  period: 2021
+  input:
+    state_code: CO
+    tax_unit_itemizes: true
+    state_income_tax: 6_000
+    real_estate_taxes: 2_000
+    salt_deduction: 8_000
+    standard_deduction: 10_000
+  output:
+    co_state_addback: 0
+
+- name: co_state_addback unit test 2
+  period: 2021
+  input:
+    state_code: CO
+    tax_unit_itemizes: true
+    state_withheld_income_tax: 6_000
+    real_estate_taxes: 2_000
+    salt_deduction: 8_000
+    interest_deduction: 12_000
+    standard_deduction: 10_000
+  output:
+    co_state_addback: 6_000
+
+- name: co_state_addback unit test 3
+  period: 2021
+  input:
+    state_code: CO
+    tax_unit_itemizes: true
+    state_withheld_income_tax: 6_000
+    real_estate_taxes: 12_000
+    salt_deduction: 10_000
+    interest_deduction: 12_000
+    standard_deduction: 10_000
+  output:
+    co_state_addback: 0
+
+- name: co_state_addback unit test 4
+  period: 2021
+  input:
+    state_code: CO
+    tax_unit_itemizes: false
+    state_withheld_income_tax: 6_000
+    real_estate_taxes: 2_000
+    salt_deduction: 8_000
+    interest_deduction: 12_000
+    standard_deduction: 10_000
+  output:
+    co_state_addback: 0

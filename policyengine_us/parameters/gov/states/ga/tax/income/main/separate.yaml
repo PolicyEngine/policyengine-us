@@ -1,0 +1,73 @@
+description: Georgia taxes the personal income of married couples filing separate at this rate.
+metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  label: Georgia income tax rate separate filers
+  reference:
+    - title: Department of Revenue - Tax Tables & Georgia Tax Rate Schedule
+      href: https://dor.georgia.gov/tax-tables-georgia-tax-rate-schedule
+    # Georgia transitioned to a flat tax rate, starting in 2024
+    - title: Official Code of Georgia Annotated | CH17 Income Taxes | O.C.G.A. § 48-7-20 (2)(C)
+      href: https://law.justia.com/codes/georgia/2022/title-48/chapter-7/article-2/section-48-7-20-d-1/
+brackets:
+  - threshold:
+      2022-01-01: 0
+    rate:
+      2022-01-01: 0.01
+      2024-01-01: 0.0549
+      2025-01-01: 0.0539
+      2026-01-01: 0.0529
+      2027-01-01: 0.0519
+      2028-01-01: 0.0509
+      2029-01-01: 0.0499
+  - threshold:
+      2022-01-01: 500
+    rate:
+      2022-01-01: 0.02
+      2024-01-01: 0.0549
+      2025-01-01: 0.0539
+      2026-01-01: 0.0529
+      2027-01-01: 0.0519
+      2028-01-01: 0.0509
+      2029-01-01: 0.0499
+  - threshold:
+      2022-01-01: 1_500
+    rate:
+      2022-01-01: 0.03
+      2024-01-01: 0.0549
+      2025-01-01: 0.0539
+      2026-01-01: 0.0529
+      2027-01-01: 0.0519
+      2028-01-01: 0.0509
+      2029-01-01: 0.0499
+  - threshold:
+      2022-01-01: 2_500
+    rate:
+      2022-01-01: 0.04
+      2024-01-01: 0.0549
+      2025-01-01: 0.0539
+      2026-01-01: 0.0529
+      2027-01-01: 0.0519
+      2028-01-01: 0.0509
+      2029-01-01: 0.0499
+  - threshold:
+      2022-01-01: 3_500
+    rate:
+      2022-01-01: 0.05
+      2024-01-01: 0.0549
+      2025-01-01: 0.0539
+      2026-01-01: 0.0529
+      2027-01-01: 0.0519
+      2028-01-01: 0.0509
+      2029-01-01: 0.0499
+  - threshold:
+      2022-01-01: 5_000
+    rate:
+      2022-01-01: 0.0575
+      2024-01-01: 0.0549
+      2025-01-01: 0.0539
+      2026-01-01: 0.0529
+      2027-01-01: 0.0519
+      2028-01-01: 0.0509
+      2029-01-01: 0.0499

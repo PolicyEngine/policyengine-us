@@ -1,0 +1,30 @@
+- name: Below New Jersey EITC completed phaseout ($22,610) for joint filers in 2022
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    adjusted_gross_income: 22_600
+    filing_status: JOINT
+    state_code: NJ
+  output:
+    nj_eitc_income_eligible: true
+
+- name: Below New Jersey EITC completed phaseout but above investment income limit.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    adjusted_gross_income: 22_600
+    short_term_capital_gains: 11_000
+    filing_status: JOINT
+    state_code: NJ
+  output:
+    nj_eitc_income_eligible: false
+
+- name: Above New Jersey EITC completed phaseout ($22,610) for joint filers in 2022
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    adjusted_gross_income: 22_620
+    filing_status: JOINT
+    state_code: NJ
+  output:
+    nj_eitc_income_eligible: false

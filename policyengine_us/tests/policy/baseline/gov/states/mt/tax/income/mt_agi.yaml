@@ -1,0 +1,69 @@
+- name: The dependent incoome is allocated to the head
+  period: 2021
+  input:
+    people: 
+      person1:
+        is_tax_unit_head: true
+        adjusted_gross_income_person: 10_000
+        mt_additions: 500
+        mt_subtractions: 3_000
+        mt_taxable_social_security: 0
+        taxable_social_security: 0
+        is_tax_unit_dependent: false
+      person2:
+        is_tax_unit_head: false
+        adjusted_gross_income_person: 2_000
+        mt_additions: 300
+        mt_subtractions: 700
+        mt_taxable_social_security: 0
+        taxable_social_security: 0
+        is_tax_unit_dependent: false
+      person3:
+        is_tax_unit_head: false
+        adjusted_gross_income_person: 2_000
+        mt_additions: 300
+        mt_subtractions: 700
+        mt_taxable_social_security: 0
+        taxable_social_security: 0
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    mt_agi: [9_100, 1_600, 0]
+
+- name: Test if mt_taxable_social_security works in formula 
+  period: 2021
+  input:
+    people: 
+      person1:
+        is_tax_unit_head: true
+        adjusted_gross_income_person: 10_000
+        mt_additions: 500
+        mt_subtractions: 3_000
+        mt_taxable_social_security: 200
+        taxable_social_security: 100
+        is_tax_unit_dependent: false
+      person2:
+        is_tax_unit_head: false
+        adjusted_gross_income_person: 2_000
+        mt_additions: 300
+        mt_subtractions: 700
+        mt_taxable_social_security: 0
+        taxable_social_security: 0
+        is_tax_unit_dependent: false
+      person3:
+        is_tax_unit_head: false
+        adjusted_gross_income_person: 2_000
+        mt_additions: 300
+        mt_subtractions: 700
+        mt_taxable_social_security: 0
+        taxable_social_security: 0
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    mt_agi: [9_200, 1_600, 0]

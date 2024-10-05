@@ -1,0 +1,20 @@
+- name: 10% uncapped before the Inflation Reduction Act.
+  period: 2022
+  input:
+    energy_efficient_door_expenditures: 1_000_000
+  output:
+    capped_energy_efficient_door_credit: 100_000
+
+- name: 30% capped at $500 after the Inflation Reduction Act.
+  period: 2023
+  input:
+    energy_efficient_door_expenditures: 1_000
+  output:
+    capped_energy_efficient_door_credit: 300
+
+- name: 30% capped at $500 after the Inflation Reduction Act.
+  period: 2023
+  input:
+    energy_efficient_door_expenditures: 2_000
+  output:
+    capped_energy_efficient_door_credit: 500

@@ -1,0 +1,116 @@
+description: Virginia limits its itemized deductions to filers with federal adjusted gross income over this amount, based on filing status.
+JOINT:
+  values:
+    2013-01-01: 300_000
+    2014-01-01: 305_050
+    2015-01-01: 309_900
+    2016-01-01: 311_300
+    2017-01-01: 313_800
+    2018-01-01: .inf
+    2019-01-01: 326_050 # 2020 no changes
+    2021-01-01: 334_150
+    2022-01-01: 343_950
+    2023-01-01: 368_900
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
+SINGLE:
+  values:
+    2013-01-01: 250_000
+    2014-01-01: 254_200
+    2015-01-01: 258_250
+    2016-01-01: 259_400
+    2017-01-01: 261_500
+    2018-01-01: .inf
+    2019-01-01: 271_700
+    2021-01-01: 278_450
+    2022-01-01: 286_600
+    2023-01-01: 307_400
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
+SEPARATE:
+  values:
+    2013-01-01: 150_000
+    2014-01-01: 152_525
+    2015-01-01: 154_950
+    2016-01-01: 155_650
+    2017-01-01: 156_900
+    2018-01-01: .inf
+    2019-01-01: 163_025
+    2021-01-01: 167_075
+    2022-01-01: 171_975
+    2023-01-01: 184_450
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
+HEAD_OF_HOUSEHOLD:
+  values:
+    2013-01-01: 275_000
+    2014-01-01: 279_650
+    2015-01-01: 284_050
+    2016-01-01: 285_350
+    2017-01-01: 287_650
+    2018-01-01: .inf
+    2019-01-01: 298_850
+    2021-01-01: 306_300
+    2022-01-01: 315_300
+    2023-01-01: 338_150
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
+SURVIVING_SPOUSE:
+  values:
+    2013-01-01: 300_000
+    2014-01-01: 305_050
+    2015-01-01: 309_900
+    2016-01-01: 311_300
+    2017-01-01: 313_800
+    2018-01-01: .inf
+    2019-01-01: 326_050
+    2021-01-01: 334_150
+    2022-01-01: 343_950
+    2023-01-01: 368_900
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
+metadata:
+  label: Virginia itemized deduction applicable amount
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  reference:
+    # Virginia continued to increase the federal applicable amount with inflation 
+    - title: 26 U.S. Code § 68 - Overall limitation on itemized deductions (b)(1)
+      href: https://www.law.cornell.edu/uscode/text/26/68#b_1
+    - title: 2023 Virginia Schedule A Itemized Deductions
+      href: https://www.tax.virginia.gov/sites/default/files/taxforms/individual-income-tax/2023/schedule-2023.pdf#page=1
+    - title: 2022 Virginia Schedule A Itemized Deductions
+      href: https://www.tax.virginia.gov/sites/default/files/taxforms/individual-income-tax/2022/schedule-2022.pdf#page=1
+    - title: 2021 Virginia Schedule A Itemized Deductions
+      href: https://www.tax.virginia.gov/sites/default/files/taxforms/individual-income-tax/2021/schedule-2021.pdf#page=1
+    - title: 2020 Virginia Schedule A Itemized Deductions
+      href: https://www.tax.virginia.gov/sites/default/files/taxforms/individual-income-tax/2020/schedule-and-instructions-2020.pdf#page=1
+    - title: 2019 Instructions for Virginia Schedule A Itemized Deductions
+      href: https://www.tax.virginia.gov/sites/default/files/vatax-pdf/2019-schedule-a-instructions.pdf#page=2
+    - title: 2013 Instruction 1040 Schedule A
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2013.pdf#page=13
+    - title: 2014 Instruction 1040 Schedule A
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2014.pdf#page=12
+    - title: 2015 Instruction 1040 Schedule A
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2015.pdf#page=12
+    - title: 2016 Instructions for Schedule A (Form 1040)
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2016.pdf#page=12
+    - title: 2017 Instructions for Schedule A (Form 1040)
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2017.pdf#page=1

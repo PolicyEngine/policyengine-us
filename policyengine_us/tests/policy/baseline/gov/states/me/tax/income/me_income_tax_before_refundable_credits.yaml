@@ -1,0 +1,29 @@
+- name: Outside Maine, Maine income tax should be zero
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: NY
+    me_income_tax_before_credits: 1_000
+    me_non_refundable_credits: 500
+  output:
+    me_income_tax_before_refundable_credits: 0
+
+- name: Tax before credits minus credits.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: ME
+    me_income_tax_before_credits: 1_000
+    me_non_refundable_credits: 500
+  output:
+    me_income_tax_before_refundable_credits: 500
+
+- name: Tax is nonnegative.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: ME
+    me_income_tax_before_credits: 500
+    me_non_refundable_credits: 1_000
+  output:
+    me_income_tax_before_refundable_credits: 0

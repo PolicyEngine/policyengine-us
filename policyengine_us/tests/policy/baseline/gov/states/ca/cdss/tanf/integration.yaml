@@ -1,0 +1,65 @@
+- name: Testing broken program
+  period: 2023
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 9_600
+      child1:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child1]
+    households:
+      household:
+        members: [parent, child1]
+        state_code: CA
+        zip_code: 90008
+  output:
+    ca_tanf_maximum_payment: 927 * 12
+    ca_tanf_earned_income: 9_600
+    ca_tanf_countable_income_recipient: 1_200 # (((9,600 / 12) - 600) * 0.5 ) * 12
+    ca_tanf_applicant_financial_test: true
+    ca_tanf_recipient_financial_test: true
+    ca_tanf_financial_eligible: true
+    ca_tanf_resources_eligible: true
+    is_demographic_tanf_eligible: true
+    ca_tanf_eligible: true
+    ca_tanf : 9_924
+    ca_calworks_child_care_eligible: true
+    ca_calworks_child_care: 0
+    ca_calworks_child_care_meets_work_requirement: true
+
+- name: Two children in CA should be eligible for TANF
+  period: 2023
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 12_000
+      child1:
+        age: 2
+      child2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: CA
+        zip_code: 90008
+  output:
+    ca_tanf_maximum_payment: 1_171 * 12
+    ca_tanf_earned_income: 12_000
+    ca_tanf_countable_income_recipient: 2_400
+    ca_tanf_applicant_financial_test: true
+    ca_tanf_recipient_financial_test: true
+    ca_tanf_financial_eligible: true
+    ca_tanf_resources_eligible: true
+    is_demographic_tanf_eligible: true
+    ca_tanf_eligible: true
+    ca_tanf : 11_652
+    ca_calworks_child_care_eligible: true
+    ca_calworks_child_care: 0
+    ca_calworks_child_care_meets_work_requirement: true

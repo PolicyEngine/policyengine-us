@@ -1,0 +1,9 @@
+description: The IRS reduces the American Rescue Plan Act Child Tax Credit expansion by this amount for each increment by which one's income exceeds the phase-out thresholds.
+values:
+  0000-01-01: 50
+metadata:
+  unit: currency-USD
+  label: CTC phase-out amount (ARPA)
+  reference:
+    - title: U.S.C 26 U.S. Code § 24(i)(4)(A)
+      href: https://www.law.cornell.edu/uscode/text/26/24#i_4_A

@@ -1,0 +1,176 @@
+description: The Department of Education calculates the contribution from available income with the following percents.
+brackets:
+  - threshold:
+      2009-08-01: 0
+    rate:
+      2023-01-01: 0.22
+  - threshold:
+      2009-08-01:
+        value: 14_200
+        metadata:
+          reference:
+            - title: THE EFC FORMULA, 2009–2010
+              href: https://fsapartners.ed.gov/sites/default/files/attachments/efcformulaguide/111408EFCFormulaGuide0910.pdf#page=35
+      2010-08-01:
+        value: 14_500
+        metadata:
+          reference:
+            - title: THE EFC FORMULA, 2010–2011
+              href: https://fsapartners.ed.gov/sites/default/files/attachments/efcformulaguide/062810EFCFormulaGuideUpdate1011.pdf#page=35
+      2012-08-01:
+        value: 14_600
+        metadata:
+          reference:
+            - title: THE EFC FORMULA, 2012–2013
+              href: https://fsapartners.ed.gov/sites/default/files/attachments/efcformulaguide/082511EFCFormulaGuide1213.pdf#page=35
+      2013-08-01:
+        value: 15_300
+        metadata:
+          reference:
+            - title: THE EFC FORMULA, 2013–2014
+              href: https://fsapartners.ed.gov/sites/default/files/attachments/efcformulaguide/091312EFCFormulaGuide1314.pdf#page=35
+      2014-08-01:
+        value: 15_600
+        metadata:
+          reference:
+            - title: THE EFC FORMULA, 2014–2015
+              href: https://fsapartners.ed.gov/sites/default/files/attachments/efcformulaguide/091913EFCFormulaGuide1415.pdf#page=35
+      2015-08-01:
+        value: 15_700
+        metadata:
+          reference:
+            - title: THE EFC FORMULA, 2015–2016
+              href: https://fsapartners.ed.gov/sites/default/files/attachments/efcformulaguide/090214EFCFormulaGuide1516.pdf#page=35
+      2016-08-01:
+        value: 15_900
+        metadata:
+          reference:
+            - title: THE EFC FORMULA, 2016–2017
+              href: https://fsapartners.ed.gov/sites/default/files/attachments/efcformulaguide/100615EFCFormulaGuide1617Attach.pdf#page=35
+      2017-08-01:
+        value: 16_000
+        metadata:
+          reference:
+            - title: THE EFC FORMULA, 2017–2018
+              href: https://www.luminafoundation.org/wp-content/uploads/2019/06/2017-18-efc-formula.pdf#page=35
+      2018-08-01:
+        value: 16_400
+        metadata:
+          reference:
+            - title: THE EFC FORMULA, 2018–2019
+              href: https://fsapartners.ed.gov/sites/default/files/attachments/efcformulaguide/071017EFCFormulaGuide1819.pdf#page=35
+      2019-08-01:
+        value: 16_600
+        metadata:
+          reference:
+            - title: THE EFC FORMULA, 2019–2020
+              href: https://fsapartners.ed.gov/sites/default/files/attachments/efcformulaguide/1920EFCFormulaGuide.pdf#page=35
+      2020-08-01:
+        value: 17_000
+        metadata:
+          reference:
+            - title: THE EFC FORMULA, 2020–2021
+              href: https://fsapartners.ed.gov/sites/default/files/attachments/2019-10/2021EFCFormulaGuideOct2019UpdateAttach.pdf#page=35
+      2021-08-01:
+        value: 17_400
+        metadata:
+          reference:
+            - title: THE EFC FORMULA, 2021–2022
+              href: https://fsapartners.ed.gov/sites/default/files/attachments/2020-08/2122EFCFormulaGuide.pdf#page=29
+      2022-08-01:
+        value: 17_500
+        metadata:
+          reference:
+            - title: THE EFC FORMULA, 2022–2023
+              href: https://fsapartners.ed.gov/sites/default/files/2021-08/2223EFCFormulaGuide.pdf#page=29
+      2023-08-01:
+        value: 18_900
+        metadata:
+          reference:
+            - title: THE EFC FORMULA, 2023–2024
+              href: https://fsapartners.ed.gov/sites/default/files/2022-08/2324EFCFormulaGuide.pdf#page=29
+      2024-08-01:
+          value: 20_600
+          refrence:
+            - title: FAFSA® Pell Eligibility and SAI Guide | Step 2 | Table A5
+              href: https://fsapartners.ed.gov/sites/default/files/2024-01/20242025FAFSAPellEligibilityandSAIGuide.pdf#page=18
+    rate:
+      2023-01-01: 0.25
+  - threshold:
+      2009-08-01: 17_800
+      2010-08-01: 18_200
+      2012-08-01: 18_400
+      2013-08-01: 19_200
+      2014-08-01: 19_600
+      2015-08-01: 19_700
+      2016-08-01: 20_000
+      2017-08-01: 20_100
+      2018-08-01: 20_500
+      2019-08-01: 20_800
+      2020-08-01: 21_400
+      2021-08-01: 21_800
+      2022-08-01: 22_000
+      2023-08-01: 23_800
+      2024-08-01: 25_800
+    rate:
+      2023-01-01: 0.29
+  - threshold:
+      2009-08-01: 21_400
+      2010-08-01: 21_900
+      2012-08-01: 22_100
+      2013-08-01: 23_100
+      2014-08-01: 23_500
+      2015-08-01: 23_700
+      2016-08-01: 24_100
+      2017-08-01: 24_200
+      2018-08-01: 24_700
+      2019-08-01: 25_100
+      2020-08-01: 25_700
+      2021-08-01: 26_200
+      2022-08-01: 26_500
+      2023-08-01: 28_600
+      2024-08-01: 31_000
+    rate:
+      2023-01-01: 0.34
+  - threshold:
+      2009-08-01: 25_000
+      2010-08-01: 25_600
+      2012-08-01: 25_900
+      2013-08-01: 27_000
+      2014-08-01: 27_500
+      2015-08-01: 27_700
+      2016-08-01: 28_200
+      2017-08-01: 28_300
+      2018-08-01: 28_900
+      2019-08-01: 29_300
+      2020-08-01: 30_100
+      2021-08-01: 30_700
+      2022-08-01: 31_000
+      2023-08-01: 33_500
+      2024-08-01: 36_300
+    rate:
+      2023-01-01: 0.4
+  - threshold:
+      2009-08-01: 28_600
+      2010-08-01: 29_300
+      2012-08-01: 29_600
+      2013-08-01: 30_900
+      2014-08-01: 31_500
+      2015-08-01: 31_700
+      2016-08-01: 32_200
+      2017-08-01: 32_300
+      2018-08-01: 33_100
+      2019-08-01: 33_600
+      2020-08-01: 34_500
+      2021-08-01: 35_100
+      2022-08-01: 35_500
+      2023-08-01: 38_300
+      2024-08-01: 41_500
+    rate:
+      2023-01-01: 0.47
+metadata:
+  label: EFC rate
+  type: marginal_rate
+  threshold_period: year
+  threshold_unit: currency-USD
+  rate_unit: /1

@@ -1,0 +1,15 @@
+description: Maximum value of the CTC for adult dependents.
+# We model this outside the base.yaml scale parameter because it's treated differently
+# for the ARPA increase.
+values:
+  0000-01-01: 0
+  2018-01-01: 500
+  2026-01-01: 0
+metadata:
+  unit: currency-USD
+  period: year
+  label: Child tax credit for adult dependents
+  reference:
+    # TCJA only.
+    - title: 26 U.S. Code § 24(h)(4)(a)
+      href: https://www.law.cornell.edu/uscode/text/26/24#h_4_A

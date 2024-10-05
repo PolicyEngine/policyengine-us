@@ -1,0 +1,39 @@
+- name: Single filing
+  period: 2022
+  input:
+    state_code: NH
+    filing_status: SINGLE
+  output:
+    nh_base_exemption: 2_400
+
+- name: Joint filing
+  period: 2022
+  input:
+    state_code: NH
+    filing_status: JOINT
+  output:
+    nh_base_exemption: 4_800
+
+- name: Separate filing
+  period: 2022
+  input:
+    state_code: NH
+    filing_status: SEPARATE
+  output:
+    nh_base_exemption: 2_400
+
+- name: Head of household filing
+  period: 2022
+  input:
+    state_code: NH
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    nh_base_exemption: 2_400
+
+- name: Widow filing
+  period: 2022
+  input:
+    state_code: NH
+    filing_status: SURVIVING_SPOUSE
+  output:
+    nh_base_exemption: 2_400

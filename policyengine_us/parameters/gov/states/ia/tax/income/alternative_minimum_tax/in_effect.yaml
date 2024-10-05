@@ -1,0 +1,15 @@
+description: Iowa imposes an alternative minimum tax if this is true.
+values:
+  2021-01-01: true  
+  2023-01-01: false
+metadata:
+  unit: bool
+  period: year
+  label: Iowa alternative minimum tax availability
+  reference:
+  - title: 2021 IA 6251 Form, Line 26
+    href: https://tax.iowa.gov/sites/default/files/2021-12/IA6251%2841131%29.pdf#page=2
+  - title: 2022 IA 6251 Form, Line 26
+    href: https://tax.iowa.gov/sites/default/files/2023-01/IA6251%2841131%29.pdf#page=2
+  - title: Iowa Retirement Income Tax Guidance
+    href: https://tax.iowa.gov/retirement-income-tax-guidance

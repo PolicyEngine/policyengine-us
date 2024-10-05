@@ -1,0 +1,2353 @@
+- name: Tax unit 1 (CPS ID 7542101) matches TAXSIM35 outputs
+  absolute_error_margin: 1
+  period: 2022
+  input:
+    people:
+      person_1:
+        employment_income: 48_000
+        age: 59
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 1
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_compensation: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest_income: 0
+        partnership_s_corp_income: 0
+        person_tax_unit_id: 7_542_101
+      person_2:
+        employment_income: 0
+        age: 73
+        is_tax_unit_head: 1
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 18_000
+        unemployment_compensation: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest_income: 0
+        partnership_s_corp_income: 0
+        person_tax_unit_id: 7_542_101
+    tax_units:
+      tax_unit:
+        members: [person_1,person_2]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 0
+        tax_unit_id: 7_542_101
+        taxsim_taxsimid: 7_542_101
+        taxsim_year: 2_022
+        taxsim_state: 0
+        taxsim_mstat: 2
+        taxsim_page: 73
+        taxsim_sage: 59
+        taxsim_depx: 0
+        taxsim_age1: 0
+        taxsim_age2: 0
+        taxsim_age3: 0
+        taxsim_dep13: 0
+        taxsim_dep17: 0
+        taxsim_dep18: 0
+        taxsim_pwages: 0
+        taxsim_swages: 48_000
+        taxsim_psemp: 0
+        taxsim_ssemp: 0
+        taxsim_dividends: 0
+        taxsim_intrec: 0
+        taxsim_stcg: 0
+        taxsim_ltcg: 0
+        taxsim_pensions: 0
+        taxsim_gssi: 18_000
+        taxsim_pui: 0
+        taxsim_ui: 0
+        taxsim_childcare: 0
+        taxsim_scorp: 0
+  output:
+    taxsim_v12: 15_300
+
+
+- name: Tax unit 2 (CPS ID 6118501) matches TAXSIM35 outputs
+  absolute_error_margin: 1
+  period: 2022
+  input:
+    people:
+      person_1:
+        employment_income: 0
+        age: 66
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 1
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_compensation: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest_income: 0
+        partnership_s_corp_income: 0
+        person_tax_unit_id: 6_118_501
+      person_2:
+        employment_income: 32_000
+        age: 73
+        is_tax_unit_head: 1
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 14_400
+        unemployment_compensation: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest_income: 0
+        partnership_s_corp_income: 0
+        person_tax_unit_id: 6_118_501
+    tax_units:
+      tax_unit:
+        members: [person_1,person_2]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 0
+        tax_unit_id: 6_118_501
+        taxsim_taxsimid: 6_118_501
+        taxsim_year: 2_022
+        taxsim_state: 0
+        taxsim_mstat: 2
+        taxsim_page: 73
+        taxsim_sage: 66
+        taxsim_depx: 0
+        taxsim_age1: 0
+        taxsim_age2: 0
+        taxsim_age3: 0
+        taxsim_dep13: 0
+        taxsim_dep17: 0
+        taxsim_dep18: 0
+        taxsim_pwages: 32_000
+        taxsim_swages: 0
+        taxsim_psemp: 0
+        taxsim_ssemp: 0
+        taxsim_dividends: 0
+        taxsim_intrec: 0
+        taxsim_stcg: 0
+        taxsim_ltcg: 0
+        taxsim_pensions: 0
+        taxsim_gssi: 14_400
+        taxsim_pui: 0
+        taxsim_ui: 0
+        taxsim_childcare: 0
+        taxsim_scorp: 0
+  output:
+    taxsim_v12: 3_600
+
+
+- name: Tax unit 3 (CPS ID 1564801) matches TAXSIM35 outputs
+  absolute_error_margin: 1
+  period: 2022
+  input:
+    people:
+      person_1:
+        employment_income: 0
+        age: 63
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 1
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 6_788
+        unemployment_compensation: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest_income: 0
+        partnership_s_corp_income: 0
+        person_tax_unit_id: 1_564_801
+      person_2:
+        employment_income: 100_000
+        age: 65
+        is_tax_unit_head: 1
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 13_735
+        unemployment_compensation: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest_income: 0
+        partnership_s_corp_income: 0
+        person_tax_unit_id: 1_564_801
+      person_3:
+        employment_income: 0
+        age: 38
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 1
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_compensation: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest_income: 0
+        partnership_s_corp_income: 0
+        person_tax_unit_id: 1_564_801
+    tax_units:
+      tax_unit:
+        members: [person_1,person_2,person_3]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 0
+        tax_unit_id: 1_564_801
+        taxsim_taxsimid: 1_564_801
+        taxsim_year: 2_022
+        taxsim_state: 0
+        taxsim_mstat: 2
+        taxsim_page: 65
+        taxsim_sage: 63
+        taxsim_depx: 1
+        taxsim_age1: 38
+        taxsim_age2: 0
+        taxsim_age3: 0
+        taxsim_dep13: 0
+        taxsim_dep17: 0
+        taxsim_dep18: 0
+        taxsim_pwages: 100_000
+        taxsim_swages: 0
+        taxsim_psemp: 0
+        taxsim_ssemp: 0
+        taxsim_dividends: 0
+        taxsim_intrec: 0
+        taxsim_stcg: 0
+        taxsim_ltcg: 0
+        taxsim_pensions: 0
+        taxsim_gssi: 20_523
+        taxsim_pui: 0
+        taxsim_ui: 0
+        taxsim_childcare: 0
+        taxsim_scorp: 0
+  output:
+    taxsim_v12: 17_445
+
+
+- name: Tax unit 4 (CPS ID 2583901) matches TAXSIM35 outputs
+  absolute_error_margin: 1
+  period: 2022
+  input:
+    people:
+      person_1:
+        employment_income: 35_000
+        age: 66
+        is_tax_unit_head: 1
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 15_528
+        unemployment_compensation: 13_600
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest_income: 0
+        partnership_s_corp_income: 0
+        person_tax_unit_id: 2_583_901
+      person_2:
+        employment_income: 120_000
+        age: 65
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 1
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_compensation: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest_income: 0
+        partnership_s_corp_income: 0
+        person_tax_unit_id: 2_583_901
+    tax_units:
+      tax_unit:
+        members: [person_1,person_2]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 0
+        tax_unit_id: 2_583_901
+        taxsim_taxsimid: 2_583_901
+        taxsim_year: 2_022
+        taxsim_state: 0
+        taxsim_mstat: 2
+        taxsim_page: 66
+        taxsim_sage: 65
+        taxsim_depx: 0
+        taxsim_age1: 0
+        taxsim_age2: 0
+        taxsim_age3: 0
+        taxsim_dep13: 0
+        taxsim_dep17: 0
+        taxsim_dep18: 0
+        taxsim_pwages: 35_000
+        taxsim_swages: 120_000
+        taxsim_psemp: 0
+        taxsim_ssemp: 0
+        taxsim_dividends: 0
+        taxsim_intrec: 0
+        taxsim_stcg: 0
+        taxsim_ltcg: 0
+        taxsim_pensions: 0
+        taxsim_gssi: 15_528
+        taxsim_pui: 13_600
+        taxsim_ui: 0
+        taxsim_childcare: 0
+        taxsim_scorp: 0
+  output:
+    taxsim_v12: 13_199
+
+
+- name: Tax unit 5 (CPS ID 5006801) matches TAXSIM35 outputs
+  absolute_error_margin: 1
+  period: 2022
+  input:
+    people:
+      person_1:
+        employment_income: 26_000
+        age: 71
+        is_tax_unit_head: 1
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 22_135
+        unemployment_compensation: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest_income: 0
+        partnership_s_corp_income: 0
+        person_tax_unit_id: 5_006_801
+      person_2:
+        employment_income: 7_467
+        age: 58
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 1
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_compensation: 2_280
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest_income: 0
+        partnership_s_corp_income: 0
+        person_tax_unit_id: 5_006_801
+      person_3:
+        employment_income: 0
+        age: 16
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 1
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_compensation: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest_income: 0
+        partnership_s_corp_income: 0
+        person_tax_unit_id: 5_006_801
+    tax_units:
+      tax_unit:
+        members: [person_1,person_2,person_3]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 0
+        tax_unit_id: 5_006_801
+        taxsim_taxsimid: 5_006_801
+        taxsim_year: 2_022
+        taxsim_state: 0
+        taxsim_mstat: 2
+        taxsim_page: 71
+        taxsim_sage: 58
+        taxsim_depx: 1
+        taxsim_age1: 16
+        taxsim_age2: 0
+        taxsim_age3: 0
+        taxsim_dep13: 0
+        taxsim_dep17: 1
+        taxsim_dep18: 1
+        taxsim_pwages: 26_000
+        taxsim_swages: 7_467
+        taxsim_psemp: 0
+        taxsim_ssemp: 0
+        taxsim_dividends: 0
+        taxsim_intrec: 0
+        taxsim_stcg: 0
+        taxsim_ltcg: 0
+        taxsim_pensions: 0
+        taxsim_gssi: 22_135
+        taxsim_pui: 0
+        taxsim_ui: 2_280
+        taxsim_childcare: 0
+        taxsim_scorp: 0
+  output:
+    taxsim_v12: 8_392
+
+
+- name: Tax unit 6 (CPS ID 8065901) matches TAXSIM35 outputs
+  absolute_error_margin: 1
+  period: 2022
+  input:
+    people:
+      person_1:
+        employment_income: 45_000
+        age: 84
+        is_tax_unit_head: 1
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 23_376
+        unemployment_compensation: 15_000
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest_income: 0
+        partnership_s_corp_income: 0
+        person_tax_unit_id: 8_065_901
+    tax_units:
+      tax_unit:
+        members: [person_1]
+        filing_status: SINGLE
+        tax_unit_childcare_expenses: 0
+        tax_unit_id: 8_065_901
+        taxsim_taxsimid: 8_065_901
+        taxsim_year: 2_022
+        taxsim_state: 0
+        taxsim_mstat: 1
+        taxsim_page: 83
+        taxsim_sage: 0
+        taxsim_depx: 0
+        taxsim_age1: 0
+        taxsim_age2: 0
+        taxsim_age3: 0
+        taxsim_dep13: 0
+        taxsim_dep17: 0
+        taxsim_dep18: 0
+        taxsim_pwages: 45_000
+        taxsim_swages: 0
+        taxsim_psemp: 0
+        taxsim_ssemp: 0
+        taxsim_dividends: 0
+        taxsim_intrec: 0
+        taxsim_stcg: 0
+        taxsim_ltcg: 0
+        taxsim_pensions: 0
+        taxsim_gssi: 23_376
+        taxsim_pui: 15_000
+        taxsim_ui: 0
+        taxsim_childcare: 0
+        taxsim_scorp: 0
+  output:
+    taxsim_v12: 19_870
+
+
+- name: Tax unit 7 (CPS ID 730702) matches TAXSIM35 outputs
+  absolute_error_margin: 1
+  period: 2022
+  input:
+    people:
+      person_1:
+        employment_income: 11_000
+        age: 70
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 1
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 37_680
+        unemployment_compensation: 1_000
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest_income: 0
+        partnership_s_corp_income: 0
+        person_tax_unit_id: 730_702
+      person_2:
+        employment_income: 0
+        age: 71
+        is_tax_unit_head: 1
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 26_880
+        unemployment_compensation: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest_income: 0
+        partnership_s_corp_income: 0
+        person_tax_unit_id: 730_702
+    tax_units:
+      tax_unit:
+        members: [person_1,person_2]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 0
+        tax_unit_id: 730_702
+        taxsim_taxsimid: 730_702
+        taxsim_year: 2_022
+        taxsim_state: 0
+        taxsim_mstat: 2
+        taxsim_page: 71
+        taxsim_sage: 70
+        taxsim_depx: 0
+        taxsim_age1: 0
+        taxsim_age2: 0
+        taxsim_age3: 0
+        taxsim_dep13: 0
+        taxsim_dep17: 0
+        taxsim_dep18: 0
+        taxsim_pwages: 0
+        taxsim_swages: 11_000
+        taxsim_psemp: 0
+        taxsim_ssemp: 0
+        taxsim_dividends: 0
+        taxsim_intrec: 0
+        taxsim_stcg: 0
+        taxsim_ltcg: 0
+        taxsim_pensions: 0
+        taxsim_gssi: 64_560
+        taxsim_pui: 0
+        taxsim_ui: 1_000
+        taxsim_childcare: 0
+        taxsim_scorp: 0
+  output:
+    taxsim_v12: 6_238
+
+
+- name: Tax unit 8 (CPS ID 4199401) matches TAXSIM35 outputs
+  absolute_error_margin: 1
+  period: 2022
+  input:
+    people:
+      person_1:
+        employment_income: 77_000
+        age: 67
+        is_tax_unit_head: 1
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 14_935
+        unemployment_compensation: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest_income: 0
+        partnership_s_corp_income: 0
+        person_tax_unit_id: 4_199_401
+    tax_units:
+      tax_unit:
+        members: [person_1]
+        filing_status: SINGLE
+        tax_unit_childcare_expenses: 0
+        tax_unit_id: 4_199_401
+        taxsim_taxsimid: 4_199_401
+        taxsim_year: 2_022
+        taxsim_state: 0
+        taxsim_mstat: 1
+        taxsim_page: 67
+        taxsim_sage: 0
+        taxsim_depx: 0
+        taxsim_age1: 0
+        taxsim_age2: 0
+        taxsim_age3: 0
+        taxsim_dep13: 0
+        taxsim_dep17: 0
+        taxsim_dep18: 0
+        taxsim_pwages: 77_000
+        taxsim_swages: 0
+        taxsim_psemp: 0
+        taxsim_ssemp: 0
+        taxsim_dividends: 0
+        taxsim_intrec: 0
+        taxsim_stcg: 0
+        taxsim_ltcg: 0
+        taxsim_pensions: 0
+        taxsim_gssi: 14_935
+        taxsim_pui: 0
+        taxsim_ui: 0
+        taxsim_childcare: 0
+        taxsim_scorp: 0
+  output:
+    taxsim_v12: 12_695
+
+
+- name: Tax unit 9 (CPS ID 8223001) matches TAXSIM35 outputs
+  absolute_error_margin: 1
+  period: 2022
+  input:
+    people:
+      person_1:
+        employment_income: 80_000
+        age: 66
+        is_tax_unit_head: 1
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 24_000
+        unemployment_compensation: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest_income: 0
+        partnership_s_corp_income: 0
+        person_tax_unit_id: 8_223_001
+      person_2:
+        employment_income: 22_000
+        age: 51
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 1
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 10_320
+        unemployment_compensation: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest_income: 0
+        partnership_s_corp_income: 0
+        person_tax_unit_id: 8_223_001
+      person_3:
+        employment_income: 0
+        age: 23
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 1
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_compensation: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest_income: 0
+        partnership_s_corp_income: 0
+        person_tax_unit_id: 8_223_001
+    tax_units:
+      tax_unit:
+        members: [person_1,person_2,person_3]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 0
+        tax_unit_id: 8_223_001
+        taxsim_taxsimid: 8_223_001
+        taxsim_year: 2_022
+        taxsim_state: 0
+        taxsim_mstat: 2
+        taxsim_page: 66
+        taxsim_sage: 51
+        taxsim_depx: 1
+        taxsim_age1: 23
+        taxsim_age2: 0
+        taxsim_age3: 0
+        taxsim_dep13: 0
+        taxsim_dep17: 0
+        taxsim_dep18: 0
+        taxsim_pwages: 80_000
+        taxsim_swages: 22_000
+        taxsim_psemp: 0
+        taxsim_ssemp: 0
+        taxsim_dividends: 0
+        taxsim_intrec: 0
+        taxsim_stcg: 0
+        taxsim_ltcg: 0
+        taxsim_pensions: 0
+        taxsim_gssi: 34_320
+        taxsim_pui: 0
+        taxsim_ui: 0
+        taxsim_childcare: 0
+        taxsim_scorp: 0
+  output:
+    taxsim_v12: 29_172
+
+
+- name: Tax unit 10 (CPS ID 417101) matches TAXSIM35 outputs
+  absolute_error_margin: 1
+  period: 2022
+  input:
+    people:
+      person_1:
+        employment_income: 15_000
+        age: 65
+        is_tax_unit_head: 1
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 19_168
+        unemployment_compensation: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest_income: 0
+        partnership_s_corp_income: 0
+        person_tax_unit_id: 417_101
+      person_2:
+        employment_income: 0
+        age: 65
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 1
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 28_800
+        unemployment_compensation: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest_income: 0
+        partnership_s_corp_income: 0
+        person_tax_unit_id: 417_101
+    tax_units:
+      tax_unit:
+        members: [person_1,person_2]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 0
+        tax_unit_id: 417_101
+        taxsim_taxsimid: 417_101
+        taxsim_year: 2_022
+        taxsim_state: 0
+        taxsim_mstat: 2
+        taxsim_page: 65
+        taxsim_sage: 65
+        taxsim_depx: 0
+        taxsim_age1: 0
+        taxsim_age2: 0
+        taxsim_age3: 0
+        taxsim_dep13: 0
+        taxsim_dep17: 0
+        taxsim_dep18: 0
+        taxsim_pwages: 15_000
+        taxsim_swages: 0
+        taxsim_psemp: 0
+        taxsim_ssemp: 0
+        taxsim_dividends: 0
+        taxsim_intrec: 0
+        taxsim_stcg: 0
+        taxsim_ltcg: 0
+        taxsim_pensions: 0
+        taxsim_gssi: 47_968
+        taxsim_pui: 0
+        taxsim_ui: 0
+        taxsim_childcare: 0
+        taxsim_scorp: 0
+  output:
+    taxsim_v12: 3_492
+
+
+- name: Tax unit 11 (CPS ID 5204401) matches TAXSIM35 outputs
+  absolute_error_margin: 1
+  period: 2022
+  input:
+    people:
+      person_1:
+        employment_income: 48_000
+        age: 68
+        is_tax_unit_head: 1
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 17_335
+        unemployment_compensation: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest_income: 0
+        partnership_s_corp_income: 0
+        person_tax_unit_id: 5_204_401
+    tax_units:
+      tax_unit:
+        members: [person_1]
+        filing_status: SINGLE
+        tax_unit_childcare_expenses: 0
+        tax_unit_id: 5_204_401
+        taxsim_taxsimid: 5_204_401
+        taxsim_year: 2_022
+        taxsim_state: 0
+        taxsim_mstat: 1
+        taxsim_page: 68
+        taxsim_sage: 0
+        taxsim_depx: 0
+        taxsim_age1: 0
+        taxsim_age2: 0
+        taxsim_age3: 0
+        taxsim_dep13: 0
+        taxsim_dep17: 0
+        taxsim_dep18: 0
+        taxsim_pwages: 48_000
+        taxsim_swages: 0
+        taxsim_psemp: 0
+        taxsim_ssemp: 0
+        taxsim_dividends: 0
+        taxsim_intrec: 0
+        taxsim_stcg: 0
+        taxsim_ltcg: 0
+        taxsim_pensions: 0
+        taxsim_gssi: 17_335
+        taxsim_pui: 0
+        taxsim_ui: 0
+        taxsim_childcare: 0
+        taxsim_scorp: 0
+  output:
+    taxsim_v12: 14_735
+
+
+- name: Tax unit 12 (CPS ID 4047801) matches TAXSIM35 outputs
+  absolute_error_margin: 1
+  period: 2022
+  input:
+    people:
+      person_1:
+        employment_income: 60_000
+        age: 65
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 1
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_compensation: 12_800
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest_income: 0
+        partnership_s_corp_income: 0
+        person_tax_unit_id: 4_047_801
+      person_2:
+        employment_income: 0
+        age: 69
+        is_tax_unit_head: 1
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 18_480
+        unemployment_compensation: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest_income: 0
+        partnership_s_corp_income: 0
+        person_tax_unit_id: 4_047_801
+    tax_units:
+      tax_unit:
+        members: [person_1,person_2]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 0
+        tax_unit_id: 4_047_801
+        taxsim_taxsimid: 4_047_801
+        taxsim_year: 2_022
+        taxsim_state: 0
+        taxsim_mstat: 2
+        taxsim_page: 69
+        taxsim_sage: 65
+        taxsim_depx: 0
+        taxsim_age1: 0
+        taxsim_age2: 0
+        taxsim_age3: 0
+        taxsim_dep13: 0
+        taxsim_dep17: 0
+        taxsim_dep18: 0
+        taxsim_pwages: 0
+        taxsim_swages: 60_000
+        taxsim_psemp: 0
+        taxsim_ssemp: 0
+        taxsim_dividends: 0
+        taxsim_intrec: 0
+        taxsim_stcg: 0
+        taxsim_ltcg: 0
+        taxsim_pensions: 0
+        taxsim_gssi: 18_480
+        taxsim_pui: 0
+        taxsim_ui: 12_800
+        taxsim_childcare: 0
+        taxsim_scorp: 0
+  output:
+    taxsim_v12: 15_708
+
+
+- name: Tax unit 13 (CPS ID 3370301) matches TAXSIM35 outputs
+  absolute_error_margin: 1
+  period: 2022
+  input:
+    people:
+      person_1:
+        employment_income: 0
+        age: 77
+        is_tax_unit_head: 1
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 19_200
+        unemployment_compensation: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest_income: 0
+        partnership_s_corp_income: 0
+        person_tax_unit_id: 3_370_301
+      person_2:
+        employment_income: 16_000
+        age: 67
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 1
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 24_600
+        unemployment_compensation: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest_income: 0
+        partnership_s_corp_income: 0
+        person_tax_unit_id: 3_370_301
+    tax_units:
+      tax_unit:
+        members: [person_1,person_2]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 0
+        tax_unit_id: 3_370_301
+        taxsim_taxsimid: 3_370_301
+        taxsim_year: 2_022
+        taxsim_state: 0
+        taxsim_mstat: 2
+        taxsim_page: 77
+        taxsim_sage: 67
+        taxsim_depx: 0
+        taxsim_age1: 0
+        taxsim_age2: 0
+        taxsim_age3: 0
+        taxsim_dep13: 0
+        taxsim_dep17: 0
+        taxsim_dep18: 0
+        taxsim_pwages: 0
+        taxsim_swages: 16_000
+        taxsim_psemp: 0
+        taxsim_ssemp: 0
+        taxsim_dividends: 0
+        taxsim_intrec: 0
+        taxsim_stcg: 0
+        taxsim_ltcg: 0
+        taxsim_pensions: 0
+        taxsim_gssi: 43_800
+        taxsim_pui: 0
+        taxsim_ui: 0
+        taxsim_childcare: 0
+        taxsim_scorp: 0
+  output:
+    taxsim_v12: 2_950
+
+
+- name: Tax unit 14 (CPS ID 3863201) matches TAXSIM35 outputs
+  absolute_error_margin: 1
+  period: 2022
+  input:
+    people:
+      person_1:
+        employment_income: 15_000
+        age: 84
+        is_tax_unit_head: 1
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 22_627
+        unemployment_compensation: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest_income: 0
+        partnership_s_corp_income: 0
+        person_tax_unit_id: 3_863_201
+    tax_units:
+      tax_unit:
+        members: [person_1]
+        filing_status: SINGLE
+        tax_unit_childcare_expenses: 0
+        tax_unit_id: 3_863_201
+        taxsim_taxsimid: 3_863_201
+        taxsim_year: 2_022
+        taxsim_state: 0
+        taxsim_mstat: 1
+        taxsim_page: 84
+        taxsim_sage: 0
+        taxsim_depx: 0
+        taxsim_age1: 0
+        taxsim_age2: 0
+        taxsim_age3: 0
+        taxsim_dep13: 0
+        taxsim_dep17: 0
+        taxsim_dep18: 0
+        taxsim_pwages: 15_000
+        taxsim_swages: 0
+        taxsim_psemp: 0
+        taxsim_ssemp: 0
+        taxsim_dividends: 0
+        taxsim_intrec: 0
+        taxsim_stcg: 0
+        taxsim_ltcg: 0
+        taxsim_pensions: 0
+        taxsim_gssi: 22_627
+        taxsim_pui: 0
+        taxsim_ui: 0
+        taxsim_childcare: 0
+        taxsim_scorp: 0
+  output:
+    taxsim_v12: 657
+
+
+- name: Tax unit 15 (CPS ID 6120402) matches TAXSIM35 outputs
+  absolute_error_margin: 1
+  period: 2022
+  input:
+    people:
+      person_1:
+        employment_income: 26_000
+        age: 71
+        is_tax_unit_head: 1
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 24_000
+        unemployment_compensation: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest_income: 0
+        partnership_s_corp_income: 0
+        person_tax_unit_id: 6_120_402
+    tax_units:
+      tax_unit:
+        members: [person_1]
+        filing_status: SINGLE
+        tax_unit_childcare_expenses: 0
+        tax_unit_id: 6_120_402
+        taxsim_taxsimid: 6_120_402
+        taxsim_year: 2_022
+        taxsim_state: 0
+        taxsim_mstat: 1
+        taxsim_page: 71
+        taxsim_sage: 0
+        taxsim_depx: 0
+        taxsim_age1: 0
+        taxsim_age2: 0
+        taxsim_age3: 0
+        taxsim_dep13: 0
+        taxsim_dep17: 0
+        taxsim_dep18: 0
+        taxsim_pwages: 26_000
+        taxsim_swages: 0
+        taxsim_psemp: 0
+        taxsim_ssemp: 0
+        taxsim_dividends: 0
+        taxsim_intrec: 0
+        taxsim_stcg: 0
+        taxsim_ltcg: 0
+        taxsim_pensions: 0
+        taxsim_gssi: 24_000
+        taxsim_pui: 0
+        taxsim_ui: 0
+        taxsim_childcare: 0
+        taxsim_scorp: 0
+  output:
+    taxsim_v12: 7_900
+
+
+- name: Tax unit 16 (CPS ID 3815001) matches TAXSIM35 outputs
+  absolute_error_margin: 1
+  period: 2022
+  input:
+    people:
+      person_1:
+        employment_income: 280_000
+        age: 70
+        is_tax_unit_head: 1
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        self_employment_income: 150_000
+        dividend_income: 0
+        pension_income: 0
+        social_security: 33_840
+        unemployment_compensation: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest_income: 0
+        partnership_s_corp_income: 0
+        person_tax_unit_id: 3_815_001
+      person_2:
+        employment_income: 54_000
+        age: 68
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 1
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 18_000
+        unemployment_compensation: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest_income: 0
+        partnership_s_corp_income: 0
+        person_tax_unit_id: 3_815_001
+    tax_units:
+      tax_unit:
+        members: [person_1,person_2]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 0
+        tax_unit_id: 3_815_001
+        taxsim_taxsimid: 3_815_001
+        taxsim_year: 2_022
+        taxsim_state: 0
+        taxsim_mstat: 2
+        taxsim_page: 70
+        taxsim_sage: 68
+        taxsim_depx: 0
+        taxsim_age1: 0
+        taxsim_age2: 0
+        taxsim_age3: 0
+        taxsim_dep13: 0
+        taxsim_dep17: 0
+        taxsim_dep18: 0
+        taxsim_pwages: 280_000
+        taxsim_swages: 54_000
+        taxsim_psemp: 150_000
+        taxsim_ssemp: 0
+        taxsim_dividends: 0
+        taxsim_intrec: 0
+        taxsim_stcg: 0
+        taxsim_ltcg: 0
+        taxsim_pensions: 0
+        taxsim_gssi: 51_840
+        taxsim_pui: 0
+        taxsim_ui: 0
+        taxsim_childcare: 0
+        taxsim_scorp: 0
+  output:
+    taxsim_v12: 44_064
+
+
+- name: Tax unit 17 (CPS ID 7110702) matches TAXSIM35 outputs
+  absolute_error_margin: 1
+  period: 2022
+  input:
+    people:
+      person_1:
+        employment_income: 57_600
+        age: 71
+        is_tax_unit_head: 1
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 22_200
+        unemployment_compensation: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest_income: 0
+        partnership_s_corp_income: 0
+        person_tax_unit_id: 7_110_702
+      person_2:
+        employment_income: 200_000
+        age: 65
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 1
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_compensation: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest_income: 0
+        partnership_s_corp_income: 0
+        person_tax_unit_id: 7_110_702
+    tax_units:
+      tax_unit:
+        members: [person_1,person_2]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 0
+        tax_unit_id: 7_110_702
+        taxsim_taxsimid: 7_110_702
+        taxsim_year: 2_022
+        taxsim_state: 0
+        taxsim_mstat: 2
+        taxsim_page: 71
+        taxsim_sage: 65
+        taxsim_depx: 0
+        taxsim_age1: 0
+        taxsim_age2: 0
+        taxsim_age3: 0
+        taxsim_dep13: 0
+        taxsim_dep17: 0
+        taxsim_dep18: 0
+        taxsim_pwages: 57_600
+        taxsim_swages: 200_000
+        taxsim_psemp: 0
+        taxsim_ssemp: 0
+        taxsim_dividends: 0
+        taxsim_intrec: 0
+        taxsim_stcg: 0
+        taxsim_ltcg: 0
+        taxsim_pensions: 0
+        taxsim_gssi: 22_200
+        taxsim_pui: 0
+        taxsim_ui: 0
+        taxsim_childcare: 0
+        taxsim_scorp: 0
+  output:
+    taxsim_v12: 18_870
+
+
+- name: Tax unit 18 (CPS ID 6614801) matches TAXSIM35 outputs
+  absolute_error_margin: 1
+  period: 2022
+  input:
+    people:
+      person_1:
+        employment_income: 0
+        age: 50
+        is_tax_unit_head: 1
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 18_859
+        unemployment_compensation: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest_income: 0
+        partnership_s_corp_income: 0
+        person_tax_unit_id: 6_614_801
+      person_2:
+        employment_income: 146_000
+        age: 50
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 1
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_compensation: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest_income: 0
+        partnership_s_corp_income: 0
+        person_tax_unit_id: 6_614_801
+    tax_units:
+      tax_unit:
+        members: [person_1,person_2]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 0
+        tax_unit_id: 6_614_801
+        taxsim_taxsimid: 6_614_801
+        taxsim_year: 2_022
+        taxsim_state: 0
+        taxsim_mstat: 2
+        taxsim_page: 50
+        taxsim_sage: 50
+        taxsim_depx: 0
+        taxsim_age1: 0
+        taxsim_age2: 0
+        taxsim_age3: 0
+        taxsim_dep13: 0
+        taxsim_dep17: 0
+        taxsim_dep18: 0
+        taxsim_pwages: 0
+        taxsim_swages: 146_000
+        taxsim_psemp: 0
+        taxsim_ssemp: 0
+        taxsim_dividends: 0
+        taxsim_intrec: 0
+        taxsim_stcg: 0
+        taxsim_ltcg: 0
+        taxsim_pensions: 0
+        taxsim_gssi: 18_859
+        taxsim_pui: 0
+        taxsim_ui: 0
+        taxsim_childcare: 0
+        taxsim_scorp: 0
+  output:
+    taxsim_v12: 16_030
+
+
+- name: Tax unit 19 (CPS ID 8220101) matches TAXSIM35 outputs
+  absolute_error_margin: 1
+  period: 2022
+  input:
+    people:
+      person_1:
+        employment_income: 15_000
+        age: 66
+        is_tax_unit_head: 1
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 23_000
+        unemployment_compensation: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest_income: 0
+        partnership_s_corp_income: 0
+        person_tax_unit_id: 8_220_101
+    tax_units:
+      tax_unit:
+        members: [person_1]
+        filing_status: SINGLE
+        tax_unit_childcare_expenses: 0
+        tax_unit_id: 8_220_101
+        taxsim_taxsimid: 8_220_101
+        taxsim_year: 2_022
+        taxsim_state: 0
+        taxsim_mstat: 1
+        taxsim_page: 66
+        taxsim_sage: 0
+        taxsim_depx: 0
+        taxsim_age1: 0
+        taxsim_age2: 0
+        taxsim_age3: 0
+        taxsim_dep13: 0
+        taxsim_dep17: 0
+        taxsim_dep18: 0
+        taxsim_pwages: 15_000
+        taxsim_swages: 0
+        taxsim_psemp: 0
+        taxsim_ssemp: 0
+        taxsim_dividends: 0
+        taxsim_intrec: 0
+        taxsim_stcg: 0
+        taxsim_ltcg: 0
+        taxsim_pensions: 0
+        taxsim_gssi: 23_000
+        taxsim_pui: 0
+        taxsim_ui: 0
+        taxsim_childcare: 0
+        taxsim_scorp: 0
+  output:
+    taxsim_v12: 750
+
+
+- name: Tax unit 20 (CPS ID 5589001) matches TAXSIM35 outputs
+  absolute_error_margin: 1
+  period: 2022
+  input:
+    people:
+      person_1:
+        employment_income: 26_000
+        age: 71
+        is_tax_unit_head: 1
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 14_120
+        unemployment_compensation: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest_income: 0
+        partnership_s_corp_income: 0
+        person_tax_unit_id: 5_589_001
+      person_2:
+        employment_income: 0
+        age: 67
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 1
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 11_400
+        unemployment_compensation: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest_income: 0
+        partnership_s_corp_income: 0
+        person_tax_unit_id: 5_589_001
+    tax_units:
+      tax_unit:
+        members: [person_1,person_2]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 0
+        tax_unit_id: 5_589_001
+        taxsim_taxsimid: 5_589_001
+        taxsim_year: 2_022
+        taxsim_state: 0
+        taxsim_mstat: 2
+        taxsim_page: 71
+        taxsim_sage: 67
+        taxsim_depx: 0
+        taxsim_age1: 0
+        taxsim_age2: 0
+        taxsim_age3: 0
+        taxsim_dep13: 0
+        taxsim_dep17: 0
+        taxsim_dep18: 0
+        taxsim_pwages: 26_000
+        taxsim_swages: 0
+        taxsim_psemp: 0
+        taxsim_ssemp: 0
+        taxsim_dividends: 0
+        taxsim_intrec: 0
+        taxsim_stcg: 0
+        taxsim_ltcg: 0
+        taxsim_pensions: 0
+        taxsim_gssi: 25_520
+        taxsim_pui: 0
+        taxsim_ui: 0
+        taxsim_childcare: 0
+        taxsim_scorp: 0
+  output:
+    taxsim_v12: 3_380
+
+
+- name: Tax unit 21 (CPS ID 8762701) matches TAXSIM35 outputs
+  absolute_error_margin: 1
+  period: 2022
+  input:
+    people:
+      person_1:
+        employment_income: 72_000
+        age: 62
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 1
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_compensation: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest_income: 0
+        partnership_s_corp_income: 0
+        person_tax_unit_id: 8_762_701
+      person_2:
+        employment_income: 0
+        age: 63
+        is_tax_unit_head: 1
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 24_000
+        unemployment_compensation: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest_income: 0
+        partnership_s_corp_income: 0
+        person_tax_unit_id: 8_762_701
+    tax_units:
+      tax_unit:
+        members: [person_1,person_2]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 0
+        tax_unit_id: 8_762_701
+        taxsim_taxsimid: 8_762_701
+        taxsim_year: 2_022
+        taxsim_state: 0
+        taxsim_mstat: 2
+        taxsim_page: 63
+        taxsim_sage: 62
+        taxsim_depx: 0
+        taxsim_age1: 0
+        taxsim_age2: 0
+        taxsim_age3: 0
+        taxsim_dep13: 0
+        taxsim_dep17: 0
+        taxsim_dep18: 0
+        taxsim_pwages: 0
+        taxsim_swages: 72_000
+        taxsim_psemp: 0
+        taxsim_ssemp: 0
+        taxsim_dividends: 0
+        taxsim_intrec: 0
+        taxsim_stcg: 0
+        taxsim_ltcg: 0
+        taxsim_pensions: 0
+        taxsim_gssi: 24_000
+        taxsim_pui: 0
+        taxsim_ui: 0
+        taxsim_childcare: 0
+        taxsim_scorp: 0
+  output:
+    taxsim_v12: 20_400
+
+
+- name: Tax unit 22 (CPS ID 1160801) matches TAXSIM35 outputs
+  absolute_error_margin: 1
+  period: 2022
+  input:
+    people:
+      person_1:
+        employment_income: 25_000
+        age: 72
+        is_tax_unit_head: 1
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 12_000
+        unemployment_compensation: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest_income: 0
+        partnership_s_corp_income: 0
+        person_tax_unit_id: 1_160_801
+      person_2:
+        employment_income: 17_000
+        age: 59
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 1
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_compensation: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest_income: 0
+        partnership_s_corp_income: 0
+        person_tax_unit_id: 1_160_801
+    tax_units:
+      tax_unit:
+        members: [person_1,person_2]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 0
+        tax_unit_id: 1_160_801
+        taxsim_taxsimid: 1_160_801
+        taxsim_year: 2_022
+        taxsim_state: 0
+        taxsim_mstat: 2
+        taxsim_page: 72
+        taxsim_sage: 59
+        taxsim_depx: 0
+        taxsim_age1: 0
+        taxsim_age2: 0
+        taxsim_age3: 0
+        taxsim_dep13: 0
+        taxsim_dep17: 0
+        taxsim_dep18: 0
+        taxsim_pwages: 25_000
+        taxsim_swages: 17_000
+        taxsim_psemp: 0
+        taxsim_ssemp: 0
+        taxsim_dividends: 0
+        taxsim_intrec: 0
+        taxsim_stcg: 0
+        taxsim_ltcg: 0
+        taxsim_pensions: 0
+        taxsim_gssi: 12_000
+        taxsim_pui: 0
+        taxsim_ui: 0
+        taxsim_childcare: 0
+        taxsim_scorp: 0
+  output:
+    taxsim_v12: 9_400
+
+
+- name: Tax unit 23 (CPS ID 5664101) matches TAXSIM35 outputs
+  absolute_error_margin: 1
+  period: 2022
+  input:
+    people:
+      person_1:
+        employment_income: 83_000
+        age: 59
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 1
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_compensation: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest_income: 0
+        partnership_s_corp_income: 0
+        person_tax_unit_id: 5_664_101
+      person_2:
+        employment_income: 0
+        age: 61
+        is_tax_unit_head: 1
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 17_508
+        unemployment_compensation: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest_income: 0
+        partnership_s_corp_income: 0
+        person_tax_unit_id: 5_664_101
+    tax_units:
+      tax_unit:
+        members: [person_1,person_2]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 0
+        tax_unit_id: 5_664_101
+        taxsim_taxsimid: 5_664_101
+        taxsim_year: 2_022
+        taxsim_state: 0
+        taxsim_mstat: 2
+        taxsim_page: 61
+        taxsim_sage: 59
+        taxsim_depx: 0
+        taxsim_age1: 0
+        taxsim_age2: 0
+        taxsim_age3: 0
+        taxsim_dep13: 0
+        taxsim_dep17: 0
+        taxsim_dep18: 0
+        taxsim_pwages: 0
+        taxsim_swages: 83_000
+        taxsim_psemp: 0
+        taxsim_ssemp: 0
+        taxsim_dividends: 0
+        taxsim_intrec: 0
+        taxsim_stcg: 0
+        taxsim_ltcg: 0
+        taxsim_pensions: 0
+        taxsim_gssi: 17_508
+        taxsim_pui: 0
+        taxsim_ui: 0
+        taxsim_childcare: 0
+        taxsim_scorp: 0
+  output:
+    taxsim_v12: 14_882
+
+
+- name: Tax unit 24 (CPS ID 382001) matches TAXSIM35 outputs
+  absolute_error_margin: 1
+  period: 2022
+  input:
+    people:
+      person_1:
+        employment_income: 68_500
+        age: 67
+        is_tax_unit_head: 1
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 26_000
+        unemployment_compensation: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest_income: 0
+        partnership_s_corp_income: 0
+        person_tax_unit_id: 382_001
+    tax_units:
+      tax_unit:
+        members: [person_1]
+        filing_status: SINGLE
+        tax_unit_childcare_expenses: 0
+        tax_unit_id: 382_001
+        taxsim_taxsimid: 382_001
+        taxsim_year: 2_022
+        taxsim_state: 0
+        taxsim_mstat: 1
+        taxsim_page: 67
+        taxsim_sage: 0
+        taxsim_depx: 0
+        taxsim_age1: 0
+        taxsim_age2: 0
+        taxsim_age3: 0
+        taxsim_dep13: 0
+        taxsim_dep17: 0
+        taxsim_dep18: 0
+        taxsim_pwages: 68_500
+        taxsim_swages: 0
+        taxsim_psemp: 0
+        taxsim_ssemp: 0
+        taxsim_dividends: 0
+        taxsim_intrec: 0
+        taxsim_stcg: 0
+        taxsim_ltcg: 0
+        taxsim_pensions: 0
+        taxsim_gssi: 26_000
+        taxsim_pui: 0
+        taxsim_ui: 0
+        taxsim_childcare: 0
+        taxsim_scorp: 0
+  output:
+    taxsim_v12: 22_100
+
+
+- name: Tax unit 25 (CPS ID 2843801) matches TAXSIM35 outputs
+  absolute_error_margin: 1
+  period: 2022
+  input:
+    people:
+      person_1:
+        employment_income: 0
+        age: 65
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 1
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 18_000
+        unemployment_compensation: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest_income: 0
+        partnership_s_corp_income: 0
+        person_tax_unit_id: 2_843_801
+      person_2:
+        employment_income: 80_000
+        age: 66
+        is_tax_unit_head: 1
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_compensation: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest_income: 0
+        partnership_s_corp_income: 0
+        person_tax_unit_id: 2_843_801
+    tax_units:
+      tax_unit:
+        members: [person_1,person_2]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 0
+        tax_unit_id: 2_843_801
+        taxsim_taxsimid: 2_843_801
+        taxsim_year: 2_022
+        taxsim_state: 0
+        taxsim_mstat: 2
+        taxsim_page: 66
+        taxsim_sage: 65
+        taxsim_depx: 0
+        taxsim_age1: 0
+        taxsim_age2: 0
+        taxsim_age3: 0
+        taxsim_dep13: 0
+        taxsim_dep17: 0
+        taxsim_dep18: 0
+        taxsim_pwages: 80_000
+        taxsim_swages: 0
+        taxsim_psemp: 0
+        taxsim_ssemp: 0
+        taxsim_dividends: 0
+        taxsim_intrec: 0
+        taxsim_stcg: 0
+        taxsim_ltcg: 0
+        taxsim_pensions: 0
+        taxsim_gssi: 18_000
+        taxsim_pui: 0
+        taxsim_ui: 0
+        taxsim_childcare: 0
+        taxsim_scorp: 0
+  output:
+    taxsim_v12: 15_300
+
+
+- name: Tax unit 26 (CPS ID 4157801) matches TAXSIM35 outputs
+  absolute_error_margin: 1
+  period: 2022
+  input:
+    people:
+      person_1:
+        employment_income: 0
+        age: 82
+        is_tax_unit_head: 1
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 29_760
+        unemployment_compensation: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest_income: 0
+        partnership_s_corp_income: 0
+        person_tax_unit_id: 4_157_801
+      person_2:
+        employment_income: 31_000
+        age: 55
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 1
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_compensation: 2_300
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest_income: 0
+        partnership_s_corp_income: 0
+        person_tax_unit_id: 4_157_801
+    tax_units:
+      tax_unit:
+        members: [person_1,person_2]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 0
+        tax_unit_id: 4_157_801
+        taxsim_taxsimid: 4_157_801
+        taxsim_year: 2_022
+        taxsim_state: 0
+        taxsim_mstat: 2
+        taxsim_page: 82
+        taxsim_sage: 55
+        taxsim_depx: 0
+        taxsim_age1: 0
+        taxsim_age2: 0
+        taxsim_age3: 0
+        taxsim_dep13: 0
+        taxsim_dep17: 0
+        taxsim_dep18: 0
+        taxsim_pwages: 0
+        taxsim_swages: 31_000
+        taxsim_psemp: 0
+        taxsim_ssemp: 0
+        taxsim_dividends: 0
+        taxsim_intrec: 0
+        taxsim_stcg: 0
+        taxsim_ltcg: 0
+        taxsim_pensions: 0
+        taxsim_gssi: 29_760
+        taxsim_pui: 0
+        taxsim_ui: 2_300
+        taxsim_childcare: 0
+        taxsim_scorp: 0
+  output:
+    taxsim_v12: 9_553
+
+
+- name: Tax unit 27 (CPS ID 8631501) matches TAXSIM35 outputs
+  absolute_error_margin: 1
+  period: 2022
+  input:
+    people:
+      person_1:
+        employment_income: 0
+        age: 57
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 1
+        is_tax_unit_dependent: 0
+        self_employment_income: 18_000
+        dividend_income: 0
+        pension_income: 0
+        social_security: 5_880
+        unemployment_compensation: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest_income: 0
+        partnership_s_corp_income: 0
+        person_tax_unit_id: 8_631_501
+      person_2:
+        employment_income: 115_000
+        age: 70
+        is_tax_unit_head: 1
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 27_860
+        unemployment_compensation: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest_income: 0
+        partnership_s_corp_income: 0
+        person_tax_unit_id: 8_631_501
+      person_3:
+        employment_income: 0
+        age: 14
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 1
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_compensation: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest_income: 0
+        partnership_s_corp_income: 0
+        person_tax_unit_id: 8_631_501
+    tax_units:
+      tax_unit:
+        members: [person_1,person_2,person_3]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 0
+        tax_unit_id: 8_631_501
+        taxsim_taxsimid: 8_631_501
+        taxsim_year: 2_022
+        taxsim_state: 0
+        taxsim_mstat: 2
+        taxsim_page: 70
+        taxsim_sage: 57
+        taxsim_depx: 1
+        taxsim_age1: 14
+        taxsim_age2: 0
+        taxsim_age3: 0
+        taxsim_dep13: 0
+        taxsim_dep17: 1
+        taxsim_dep18: 1
+        taxsim_pwages: 115_000
+        taxsim_swages: 0
+        taxsim_psemp: 0
+        taxsim_ssemp: 18_000
+        taxsim_dividends: 0
+        taxsim_intrec: 0
+        taxsim_stcg: 0
+        taxsim_ltcg: 0
+        taxsim_pensions: 0
+        taxsim_gssi: 33_740
+        taxsim_pui: 0
+        taxsim_ui: 0
+        taxsim_childcare: 0
+        taxsim_scorp: 0
+  output:
+    taxsim_v12: 28_679
+
+
+- name: Tax unit 28 (CPS ID 1472501) matches TAXSIM35 outputs
+  absolute_error_margin: 1
+  period: 2022
+  input:
+    people:
+      person_1:
+        employment_income: 0
+        age: 58
+        is_tax_unit_head: 1
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 7_260
+        unemployment_compensation: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest_income: 0
+        partnership_s_corp_income: 0
+        person_tax_unit_id: 1_472_501
+      person_2:
+        employment_income: 43_137
+        age: 57
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 1
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_compensation: 7_324
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest_income: 0
+        partnership_s_corp_income: 0
+        person_tax_unit_id: 1_472_501
+    tax_units:
+      tax_unit:
+        members: [person_1,person_2]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 0
+        tax_unit_id: 1_472_501
+        taxsim_taxsimid: 1_472_501
+        taxsim_year: 2_022
+        taxsim_state: 0
+        taxsim_mstat: 2
+        taxsim_page: 58
+        taxsim_sage: 57
+        taxsim_depx: 0
+        taxsim_age1: 0
+        taxsim_age2: 0
+        taxsim_age3: 0
+        taxsim_dep13: 0
+        taxsim_dep17: 0
+        taxsim_dep18: 0
+        taxsim_pwages: 0
+        taxsim_swages: 43_137
+        taxsim_psemp: 0
+        taxsim_ssemp: 0
+        taxsim_dividends: 0
+        taxsim_intrec: 0
+        taxsim_stcg: 0
+        taxsim_ltcg: 0
+        taxsim_pensions: 0
+        taxsim_gssi: 7_260
+        taxsim_pui: 0
+        taxsim_ui: 7_324
+        taxsim_childcare: 0
+        taxsim_scorp: 0
+  output:
+    taxsim_v12: 6_171
+
+
+- name: Tax unit 29 (CPS ID 5863701) matches TAXSIM35 outputs
+  absolute_error_margin: 1
+  period: 2022
+  input:
+    people:
+      person_1:
+        employment_income: 0
+        age: 66
+        is_tax_unit_head: 1
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 13_728
+        unemployment_compensation: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest_income: 0
+        partnership_s_corp_income: 0
+        person_tax_unit_id: 5_863_701
+      person_2:
+        employment_income: 34_766
+        age: 66
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 1
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 3_600
+        unemployment_compensation: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest_income: 0
+        partnership_s_corp_income: 0
+        person_tax_unit_id: 5_863_701
+    tax_units:
+      tax_unit:
+        members: [person_1,person_2]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 0
+        tax_unit_id: 5_863_701
+        taxsim_taxsimid: 5_863_701
+        taxsim_year: 2_022
+        taxsim_state: 0
+        taxsim_mstat: 2
+        taxsim_page: 66
+        taxsim_sage: 66
+        taxsim_depx: 0
+        taxsim_age1: 0
+        taxsim_age2: 0
+        taxsim_age3: 0
+        taxsim_dep13: 0
+        taxsim_dep17: 0
+        taxsim_dep18: 0
+        taxsim_pwages: 0
+        taxsim_swages: 34_766
+        taxsim_psemp: 0
+        taxsim_ssemp: 0
+        taxsim_dividends: 0
+        taxsim_intrec: 0
+        taxsim_stcg: 0
+        taxsim_ltcg: 0
+        taxsim_pensions: 0
+        taxsim_gssi: 17_328
+        taxsim_pui: 0
+        taxsim_ui: 0
+        taxsim_childcare: 0
+        taxsim_scorp: 0
+  output:
+    taxsim_v12: 5_715
+
+
+- name: Tax unit 30 (CPS ID 6523801) matches TAXSIM35 outputs
+  absolute_error_margin: 1
+  period: 2022
+  input:
+    people:
+      person_1:
+        employment_income: 0
+        age: 63
+        is_tax_unit_head: 1
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 18_948
+        unemployment_compensation: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest_income: 0
+        partnership_s_corp_income: 0
+        person_tax_unit_id: 6_523_801
+      person_2:
+        employment_income: 32_500
+        age: 59
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 1
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_compensation: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest_income: 0
+        partnership_s_corp_income: 0
+        person_tax_unit_id: 6_523_801
+    tax_units:
+      tax_unit:
+        members: [person_1,person_2]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 0
+        tax_unit_id: 6_523_801
+        taxsim_taxsimid: 6_523_801
+        taxsim_year: 2_022
+        taxsim_state: 0
+        taxsim_mstat: 2
+        taxsim_page: 63
+        taxsim_sage: 59
+        taxsim_depx: 0
+        taxsim_age1: 0
+        taxsim_age2: 0
+        taxsim_age3: 0
+        taxsim_dep13: 0
+        taxsim_dep17: 0
+        taxsim_dep18: 0
+        taxsim_pwages: 0
+        taxsim_swages: 32_500
+        taxsim_psemp: 0
+        taxsim_ssemp: 0
+        taxsim_dividends: 0
+        taxsim_intrec: 0
+        taxsim_stcg: 0
+        taxsim_ltcg: 0
+        taxsim_pensions: 0
+        taxsim_gssi: 18_948
+        taxsim_pui: 0
+        taxsim_ui: 0
+        taxsim_childcare: 0
+        taxsim_scorp: 0
+  output:
+    taxsim_v12: 4_987
+
+
+- name: Tax unit 31 (CPS ID 5737301) matches TAXSIM35 outputs
+  absolute_error_margin: 1
+  period: 2022
+  input:
+    people:
+      person_1:
+        employment_income: 4_000
+        age: 73
+        is_tax_unit_head: 1
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 7_524
+        unemployment_compensation: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest_income: 0
+        partnership_s_corp_income: 0
+        person_tax_unit_id: 5_737_301
+      person_2:
+        employment_income: 70_000
+        age: 52
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 1
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_compensation: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest_income: 0
+        partnership_s_corp_income: 0
+        person_tax_unit_id: 5_737_301
+    tax_units:
+      tax_unit:
+        members: [person_1,person_2]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 0
+        tax_unit_id: 5_737_301
+        taxsim_taxsimid: 5_737_301
+        taxsim_year: 2_022
+        taxsim_state: 0
+        taxsim_mstat: 2
+        taxsim_page: 73
+        taxsim_sage: 52
+        taxsim_depx: 0
+        taxsim_age1: 0
+        taxsim_age2: 0
+        taxsim_age3: 0
+        taxsim_dep13: 0
+        taxsim_dep17: 0
+        taxsim_dep18: 0
+        taxsim_pwages: 4_000
+        taxsim_swages: 70_000
+        taxsim_psemp: 0
+        taxsim_ssemp: 0
+        taxsim_dividends: 0
+        taxsim_intrec: 0
+        taxsim_stcg: 0
+        taxsim_ltcg: 0
+        taxsim_pensions: 0
+        taxsim_gssi: 7_524
+        taxsim_pui: 0
+        taxsim_ui: 0
+        taxsim_childcare: 0
+        taxsim_scorp: 0
+  output:
+    taxsim_v12: 6_395
+
+
+- name: Tax unit 32 (CPS ID 1627101) matches TAXSIM35 outputs
+  absolute_error_margin: 1
+  period: 2022
+  input:
+    people:
+      person_1:
+        employment_income: 245_000
+        age: 48
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 1
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_compensation: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest_income: 0
+        partnership_s_corp_income: 0
+        person_tax_unit_id: 1_627_101
+      person_2:
+        employment_income: 0
+        age: 50
+        is_tax_unit_head: 1
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_compensation: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest_income: 0
+        partnership_s_corp_income: 0
+        person_tax_unit_id: 1_627_101
+      person_3:
+        employment_income: 0
+        age: 16
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 1
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 13_735
+        unemployment_compensation: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest_income: 0
+        partnership_s_corp_income: 0
+        person_tax_unit_id: 1_627_101
+      person_4:
+        employment_income: 0
+        age: 13
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 1
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_compensation: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest_income: 0
+        partnership_s_corp_income: 0
+        person_tax_unit_id: 1_627_101
+    tax_units:
+      tax_unit:
+        members: [person_1,person_2,person_3,person_4]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 0
+        tax_unit_id: 1_627_101
+        taxsim_taxsimid: 1_627_101
+        taxsim_year: 2_022
+        taxsim_state: 0
+        taxsim_mstat: 2
+        taxsim_page: 50
+        taxsim_sage: 48
+        taxsim_depx: 2
+        taxsim_age1: 13
+        taxsim_age2: 16
+        taxsim_age3: 0
+        taxsim_dep13: 0
+        taxsim_dep17: 2
+        taxsim_dep18: 2
+        taxsim_pwages: 0
+        taxsim_swages: 245_000
+        taxsim_psemp: 0
+        taxsim_ssemp: 0
+        taxsim_dividends: 0
+        taxsim_intrec: 0
+        taxsim_stcg: 0
+        taxsim_ltcg: 0
+        taxsim_pensions: 0
+        taxsim_gssi: 13_735
+        taxsim_pui: 0
+        taxsim_ui: 0
+        taxsim_childcare: 0
+        taxsim_scorp: 0
+  output:
+    taxsim_v12: 11_675
+
+
+

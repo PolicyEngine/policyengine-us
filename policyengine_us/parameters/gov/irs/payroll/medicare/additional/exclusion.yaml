@@ -1,0 +1,22 @@
+description: Earnings exclusion above which the Additional Medicare Tax is levied (same for wages and self-employment earnings)
+SINGLE:
+  2013-01-01: 200_000
+JOINT:
+  2013-01-01: 250_000
+SEPARATE:
+  2013-01-01: 125_000
+HEAD_OF_HOUSEHOLD:
+  2013-01-01: 200_000
+SURVIVING_SPOUSE:
+  2013-01-01: 200_000
+metadata:
+  unit: currency-USD
+  name: additional_medicare_rate_exclusion
+  label: Additional Medicare Tax rate exclusion
+  reference:
+    # Employee:
+    - title: 26 U.S. Code § 3101 - Rate of tax
+      href: https://www.law.cornell.edu/uscode/text/26/3101#b_2
+    # Self-employment:
+    - title: 26 U.S. Code § 1401 - Rate of tax
+      href: https://www.law.cornell.edu/uscode/text/26/1401#b_2

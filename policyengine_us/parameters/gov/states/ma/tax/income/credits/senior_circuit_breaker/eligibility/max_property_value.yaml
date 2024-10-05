@@ -1,0 +1,20 @@
+description: Maximum assessed property value for the Massachusetts Senior Circuit Breaker credit.
+values:
+  2001-01-01: 600_000
+  # COLA-adjusted, rounded to next lowest multiple of $1,000.
+  2021-01-01: 884_000
+  2022-01-01: 912_000
+  2023-01-01: 1_025_000
+metadata:
+  unit: currency-USD
+  period: year
+  label: Massachusetts Senior Circuit Breaker maximum property value
+  reference:
+    - title: Mass. General Laws c.62 § 6(k)(3)(ii)
+      href: https://www.mass.gov/info-details/mass-general-laws-c62-ss-6
+    - title: Massachusetts Senior Circuit Breaker Tax Credit | Mass.gov
+      href: https://www.mass.gov/info-details/massachusetts-senior-circuit-breaker-tax-credit
+    - title: 2022 Schedule CB
+      href: https://www.mass.gov/doc/2022-schedule-cb-circuit-breaker-credit/download
+    - title: 2023 Schedule CB
+      href: https://www.mass.gov/doc/2023-schedule-cb-circuit-breaker-credit/download

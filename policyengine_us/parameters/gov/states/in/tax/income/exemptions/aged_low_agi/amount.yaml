@@ -1,0 +1,13 @@
+description: Indiana provides this additional exemption amount for low-income aged filers.
+values:
+  2021-01-01: 500
+metadata:
+  unit: /1
+  period: year
+  label: Indiana exemptions additional amount for low AGI aged
+  reference:
+    - title: IC 6-3-1-3.5 "Adjusted gross income" (a)(5)(C)
+      href: http://iga.in.gov/legislative/laws/2021/ic/titles/006#6-3-1-3.5
+      # Points to IRS Code 63(f), which is aged and blind: https://www.law.cornell.edu/uscode/text/26/63#f
+    - title: 2023 IT-40 Income Tax Form Instruction Booklet, pg. 25
+      href: https://forms.in.gov/Download.aspx?id=15792

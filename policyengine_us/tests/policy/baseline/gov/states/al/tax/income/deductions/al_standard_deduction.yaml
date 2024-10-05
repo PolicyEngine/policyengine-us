@@ -1,0 +1,63 @@
+- name: Single filer, with $6,000 of AGI
+  period: 2022
+  input:
+    state_code: AL
+    al_agi: 6_000
+    filing_status: SINGLE
+  output:
+    al_standard_deduction: 3_000
+
+- name: Joint filer,with $50,000 of AGI
+  period: 2022
+  input:
+    state_code: AL
+    al_agi: 50_000
+    filing_status: JOINT
+  output:
+    # 50_000-25_500=24_500/500-49*175=8_575
+    # 8500-8575=-25. standard deduction shall not be less than 5_000 for joint filler
+    al_standard_deduction: 5_000
+
+- name: Joint filer,with $30,001 of AGI
+  period: 2022
+  input:
+    state_code: AL
+    al_agi: 30_001
+    filing_status: JOINT
+  output:
+    # 30_000-25_500=4_501/500-9*175=1_575
+    # 8_500-1_575=6_925
+    al_standard_deduction: 6_925
+  
+- name: Single filer, with $6,000 of AGI
+  period: 2021
+  input:
+    state_code: AL
+    al_agi: 6_000
+    filing_status: SINGLE
+  output:
+    al_standard_deduction: 2_500
+
+- name: Joint filer,with $50,000 of AGI
+  period: 2021
+  input:
+    state_code: AL
+    al_agi: 50_000
+    filing_status: JOINT
+  output:
+    # (50000-23000)/500=54
+    # 54*175=9450
+    # 7500-9450=-1950. standard deduction shall not be less than 4_000 for joint filler
+    al_standard_deduction: 4_000
+
+- name: Joint filer,with $30,001 of AGI
+  period: 2021
+  input:
+    state_code: AL
+    al_agi: 30_001
+    filing_status: JOINT
+  output:
+    # (30_000-23_000)/500=7_000/500=14
+    # 14*175=2_450
+    # 7_500-2_450=5_050
+    al_standard_deduction: 5_050

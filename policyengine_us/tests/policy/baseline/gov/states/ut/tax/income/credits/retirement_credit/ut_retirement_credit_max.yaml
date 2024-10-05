@@ -1,0 +1,140 @@
+- name: UT retirement credit max unit test 1
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 30
+        tax_exempt_interest_income: 500
+      person2:
+        age: 10
+        tax_exempt_interest_income: 500
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ut_total_income: 10_000
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output: 
+    ut_retirement_credit_max: 0
+
+- name: UT retirement credit max unit test 2
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 80
+        tax_exempt_interest_income: 500
+      person2: 
+        age: 64
+        tax_exempt_interest_income: 500
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ut_total_income: 10_000
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:  
+    ut_retirement_credit_max: 450
+
+- name: UT retirement credit max unit test 3
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 80
+        tax_exempt_interest_income: 500
+      person2: 
+        age: 64
+        tax_exempt_interest_income: 500
+      person3:
+        age: 80
+        tax_exempt_interest_income: 500
+    tax_units:
+      tax_unit:
+        members: [person1, person2,person3]
+        ut_total_income: 30_000
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:  
+    ut_retirement_credit_max: 737.5 # phase-out reduction partially eliminates credit: 900-(30000+3*500-25000)/0.025 = 737.5
+
+- name: UT retirement credit max unit test 4
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 80
+        tax_exempt_interest_income: 500
+      person2: 
+        age: 64
+        tax_exempt_interest_income: 500
+      person3:
+        age: 80
+        tax_exempt_interest_income: 500
+    tax_units:
+      tax_unit:
+        members: [person1, person2,person3]
+        ut_total_income: 30_000
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:  
+    ut_retirement_credit_max: 900 
+
+- name: UT retirement credit max unit test 5
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 80
+        tax_exempt_interest_income: 500
+      person2: 
+        age: 64
+        tax_exempt_interest_income: 500
+      person3:
+        age: 80
+        tax_exempt_interest_income: 500
+    tax_units:
+      tax_unit:
+        members: [person1, person2,person3]
+        ut_total_income: 40_000
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:  
+    ut_retirement_credit_max: 662.5
+
+- name: Edge case test, birth year
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 70
+        tax_exempt_interest_income: 500
+      person2:
+        age: 69
+        tax_exempt_interest_income: 500
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ut_total_income: 30_000
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output: 
+    ut_retirement_credit_max: 300

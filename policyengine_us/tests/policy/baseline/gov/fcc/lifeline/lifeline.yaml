@@ -1,0 +1,93 @@
+- name: Default family qualifies because of low income, but gets $0 because of $0 default broadband and phone costs.
+  period: 2022
+  output:
+    lifeline: 0
+
+- name: Default family qualifies and receives full amount if broadband cost exceeds the maximum
+  period: 2022
+  input:
+    broadband_cost: 10 * 12
+  output:
+    lifeline: 9.25 * 12
+
+- name: Ineligible family with broadband cost gets $0
+  period: 2022
+  input:
+    is_lifeline_eligible: false
+    broadband_cost: 10 * 12
+  output:
+    lifeline: 0
+
+- name: Eligible family with phone + broadband cost below the cap get their costs back
+  period: 2022
+  input:
+    is_lifeline_eligible: true
+    broadband_cost: 3 * 12
+    phone_cost: 5 * 12
+  output:
+    lifeline: 8 * 12
+
+- name: Household on rural Tribal land gets a larger amount.
+  period: 2022
+  input:
+    is_lifeline_eligible: true
+    broadband_cost: 40 * 12
+    is_rural: true
+    is_on_tribal_land: true
+  output:
+    lifeline: (9.25 + 25) * 12
+
+- name: 2024 CA household on rural Tribal land gets a larger amount.
+  period: 2024
+  input:
+    is_lifeline_eligible: true
+    broadband_cost: 45 * 12
+    is_rural: true
+    is_on_tribal_land: true
+    state_code_str: CA
+  output:
+    lifeline: (19 + 25) * 12
+
+- name: CA Household on rural Tribal land gets a larger amount.
+  period: 2022
+  input:
+    is_lifeline_eligible: true
+    broadband_cost: 40 * 12
+    is_rural: true
+    is_on_tribal_land: true
+    state_code_str: CA
+  output:
+    lifeline: (9.25 + 25) * 12
+
+- name: 2024 OR household on rural Tribal land gets a larger amount.
+  period: 2024
+  input:
+    is_lifeline_eligible: true
+    broadband_cost: 41 * 12
+    is_rural: true
+    is_on_tribal_land: true
+    state_code_str: OR
+  output:
+    lifeline: (15.25 + 25) * 12
+
+- name: OR Household on rural Tribal land gets a larger amount.
+  period: 2022
+  input:
+    is_lifeline_eligible: true
+    broadband_cost: 40 * 12
+    is_rural: true
+    is_on_tribal_land: true
+    state_code_str: OR
+  output:
+    lifeline: (9.25 + 25) * 12
+
+- name: 2024 MA household on rural Tribal land gets a larger amount.
+  period: 2024
+  input:
+    is_lifeline_eligible: true
+    broadband_cost: 40 * 12
+    is_rural: true
+    is_on_tribal_land: true
+    state_code_str: MA
+  output:
+    lifeline: (9.25 + 25) * 12

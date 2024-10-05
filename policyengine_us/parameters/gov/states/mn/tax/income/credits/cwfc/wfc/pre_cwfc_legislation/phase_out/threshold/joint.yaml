@@ -1,0 +1,38 @@
+description: Minnesota has a working family credit (WFC) in which the credit is phased out at a rate when income exceeds this threshold for joint filers.
+metadata:
+  type: single_amount
+  period: year
+  threshold_unit: child
+  amount_unit: currency-USD
+  label: Minnesota WFC phaseout threshold for joint filers
+  reference:
+  - title: 2021 Minnesota Statutes, section 290.0671
+    href: https://www.revisor.mn.gov/statutes/2021/cite/290.0671
+  - title: 2021 Inflation-Adjusted Amounts in Minnesota Statutes
+    href: https://www.revenue.state.mn.us/sites/default/files/2020-12/Inflation%20Adjustments%20TY%202021.pdf#page=2
+  - title: 2022 Minnesota Statutes, section 290.0671
+    href: https://www.revisor.mn.gov/statutes/cite/290.0671
+  - title: 2022 Inflation-Adjusted Amounts in Minnesota Statutes
+    href: https://www.revenue.state.mn.us/sites/default/files/2021-12/Inflation_Adjustments_TY_2022.pdf#page=2
+
+brackets:
+  - threshold:
+      2021-01-01: 0
+    amount:
+      2021-01-01: 14_960
+      2022-01-01: 15_430
+  - threshold:
+      2021-01-01: 1
+    amount:
+      2021-01-01: 29_380
+      2022-01-01: 30_290
+  - threshold:
+      2021-01-01: 2
+    amount:
+      2021-01-01: 33_720
+      2022-01-01: 34_770
+  - threshold:
+      2021-01-01: 3
+    amount:
+      2021-01-01: 34_030
+      2022-01-01: 35_090

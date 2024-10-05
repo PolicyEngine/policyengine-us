@@ -1,0 +1,32 @@
+description: Deductions from taxable income if itemizing.
+values:
+  2018-01-01:
+    - charitable_deduction
+    - interest_deduction
+    - salt_deduction
+    - medical_expense_deduction
+    - casualty_loss_deduction
+    - qualified_business_income_deduction
+    - wagering_losses_deduction
+    - tuition_and_fees_deduction
+  2020-01-01:
+    - charitable_deduction  
+    - charitable_deduction_for_non_itemizers
+    - interest_deduction
+    - salt_deduction
+    - medical_expense_deduction
+    - casualty_loss_deduction
+    - qualified_business_income_deduction
+    - wagering_losses_deduction
+  2022-01-01:
+    - charitable_deduction
+    - interest_deduction
+    - salt_deduction
+    - medical_expense_deduction
+    - casualty_loss_deduction
+    - qualified_business_income_deduction
+    - wagering_losses_deduction
+metadata:
+  unit: list
+  period: year
+  label: Taxable income deductions if itemizing

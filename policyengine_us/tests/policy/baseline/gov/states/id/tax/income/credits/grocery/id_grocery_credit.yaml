@@ -1,0 +1,75 @@
+- name: Two people fully eligible
+  period: 2022
+  input:
+    people:
+      person1:
+        id_grocery_credit_qualified_months: 12
+        id_grocery_credit_base: 100
+        id_grocery_credit_aged: 20
+      person2:
+        id_grocery_credit_qualified_months: 12
+        id_grocery_credit_base: 100
+        id_grocery_credit_aged: 20
+    households: 
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    id_grocery_credit: 240
+
+- name: One person partially eligible, one person uneligible
+  period: 2022
+  input:
+    people:
+      person1:
+        id_grocery_credit_qualified_months: 10
+        id_grocery_credit_base: 100
+        id_grocery_credit_aged: 20
+      person2:
+        id_grocery_credit_qualified_months: 0
+        id_grocery_credit_base: 100
+        id_grocery_credit_aged: 20
+    households: 
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    id_grocery_credit: 100
+
+- name: Two people partially eligible
+  period: 2022
+  input:
+    people:
+      person1:
+        id_grocery_credit_qualified_months: 10
+        id_grocery_credit_base: 100
+        id_grocery_credit_aged: 20
+      person2:
+        id_grocery_credit_qualified_months: 2
+        id_grocery_credit_base: 100
+        id_grocery_credit_aged: 20
+    households: 
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    id_grocery_credit: 120
+
+- name: Two people partially eligible, no credit
+  period: 2022
+  input:
+    people:
+      person1:
+        id_grocery_credit_qualified_months: 10
+        id_grocery_credit_base: 0
+        id_grocery_credit_aged: 0
+      person2:
+        id_grocery_credit_qualified_months: 2
+        id_grocery_credit_base: 0
+        id_grocery_credit_aged: 0
+    households: 
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    id_grocery_credit: 0

@@ -1,0 +1,17 @@
+description: Minnesota limits exemptions when federal adjusted gross income is above a threshold by this fraction of AGI per step above the threshold.
+values:
+  2021-01-01: 0.02
+
+metadata:
+  period: year
+  unit: /1
+  label: Minnesota fraction of federal adjusted gross income steps above threshold that is used to limit exemptions
+  reference:
+  - title: Minnesota Statutes 290.0121 DEPENDENT EXEMPTION. Subd. 2.Disallowed exemption amount.
+    href: https://www.revisor.mn.gov/statutes/cite/290.0121#stat.290.0121.2
+  - title: 2021 Minnesota Form M1 instructions, Worksheet for Line 5
+    href: https://www.revenue.state.mn.us/sites/default/files/2023-12/m1_inst_21.pdf#page=13
+  - title: 2022 Minnesota Form M1 instructions, Worksheet for Line 5
+    href: https://www.revenue.state.mn.us/sites/default/files/2024-02/m1-inst-22.pdf#page=13
+  - title: 2023 Minnesota Form M1 instructions, Worksheet for Line 5
+    href: https://www.revenue.state.mn.us/sites/default/files/2024-02/m1-inst-23.pdf#page=14

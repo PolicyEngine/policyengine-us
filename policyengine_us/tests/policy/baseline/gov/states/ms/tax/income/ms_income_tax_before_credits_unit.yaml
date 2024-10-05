@@ -1,0 +1,19 @@
+- name: Files jointly
+  period: 2023
+  input:
+    state_code: MS
+    ms_income_tax_before_credits_joint: 2_000
+    ms_income_tax_before_credits_indiv: 3_000
+    ms_files_separately: false
+  output:
+    ms_income_tax_before_credits_unit: 2_000
+
+- name: Files separately
+  period: 2023
+  input:
+    state_code: MS
+    ms_income_tax_before_credits_joint: 5_000
+    ms_income_tax_before_credits_indiv: 3_000
+    ms_files_separately: true
+  output:
+    ms_income_tax_before_credits_unit: 3_000

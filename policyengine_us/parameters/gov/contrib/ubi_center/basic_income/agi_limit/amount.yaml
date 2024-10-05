@@ -1,0 +1,17 @@
+description: Tax units are eligible for basic income payments unless their adjusted gross income exceeds this threshold.
+SINGLE:
+  0000-01-01: 0
+JOINT:
+  0000-01-01: 0
+HEAD_OF_HOUSEHOLD:
+  0000-01-01: 0
+SEPARATE:
+  0000-01-01: 0
+SURVIVING_SPOUSE:
+  0000-01-01: 0
+metadata:
+  unit: currency-USD
+  period: year
+  label: Basic income AGI limit
+  breakdown:
+    - filing_status

@@ -1,0 +1,29 @@
+description: Ohio provides this Child and Dependent Care credit rate for each AGI level.
+brackets:
+  - threshold:
+      2021-01-01: 0
+    amount:
+      2021-01-01: 1
+  - threshold:
+      2021-01-01: 20_000
+    amount:
+      2021-01-01: 0.25
+  - threshold:
+      2021-01-01: 40_000
+    amount:
+      2021-01-01: 0
+metadata:
+  threshold_unit: currency-USD
+  amount_unit: /1
+  period: year
+  type: single_amount
+  label: Ohio Child Care and Dependent Care Credit amount
+  reference:
+    - title: Ohio 2021 Instructions for Filing Original and Amended - Line 6 – Child Care and Dependent Care Credit
+      href: https://tax.ohio.gov/static/forms/ohio_individual/individual/2021/pit-it1040-booklet.pdf#page=30
+    - title: Ohio Income Tax Form 2022 Instructions (line 6)
+      href: https://dam.assets.ohio.gov/image/upload/tax.ohio.gov/forms/ohio_individual/individual/2022/it1040-sd100-instruction-booklet.pdf#page=20
+    - title: Ohio Income Tax Form 2023 Instructions (line 6)
+      href: https://dam.assets.ohio.gov/image/upload/tax.ohio.gov/forms/ohio_individual/individual/2023/it1040-sd100-instructionbooklet.pdf#page=28
+    - title: Ohio Section 5747.054, Tax credit based on federal dependent care credit
+      href: https://codes.ohio.gov/ohio-revised-code/section-5747.054

@@ -1,0 +1,15 @@
+- name: Military disabled spouse
+  period: 2021
+  input:
+    is_tax_unit_spouse: true
+    is_fully_disabled_service_connected_veteran: true
+  output:
+    military_disabled_spouse: true
+
+- name: Non-military disabled
+  period: 2021
+  input:
+    is_tax_unit_spouse: true
+    is_fully_disabled_service_connected_veteran: false
+  output:
+    military_disabled_spouse: false

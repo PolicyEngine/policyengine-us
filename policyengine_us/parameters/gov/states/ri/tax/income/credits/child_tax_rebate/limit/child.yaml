@@ -1,0 +1,16 @@
+description: Rhode Island caps the child tax rebate to this number of children.
+
+metadata:
+  unit: person
+  label: Rhode Island child tax rebate child cap
+  period: year
+  reference:
+  # The child tax rebate was introduced in 2022
+  # The tax form points to the legal code with more details including "up to a maximum of three children"
+  - title: 2022 RI Schedule M - page 1 RI Modifications to Federal AGI line 1v
+    href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-12/2022%20RI%20Schedule%20M_w.pdf#page=1
+  - title: R.I. Gen. Laws § 44-30-103  44-30-103. Child tax rebates. (b), (1)
+    href: http://webserver.rilin.state.ri.us/Statutes/TITLE44/44-30/44-VI/44-30-103.htm
+
+values:
+  2022-01-01: 3

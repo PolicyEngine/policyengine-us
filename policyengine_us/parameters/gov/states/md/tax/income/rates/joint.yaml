@@ -1,0 +1,51 @@
+description: Maryland taxes income at these rates for joint filers.
+metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  label: Maryland income tax rate for joint filers
+  reference:
+    - title: Maryland 2023 State & Local Tax Forms & Instructions
+      href: https://www.marylandtaxes.gov/forms/23_forms/Resident-Booklet.pdf#page=20
+    - title: Tax Foundation State Individual Income Tax Rates and Brackets
+      href: https://taxfoundation.org/publications/state-individual-income-tax-rates-and-brackets/#Structures
+    - title: MD Tax_Computation
+      href: https://www.marylandtaxes.gov/forms/current_forms/Md_Tax_Computation.pdf
+    - title: Maryland 2021 State & Local Tax Forms & Instructions
+      href: https://www.marylandtaxes.gov/forms/21_forms/Resident_Booklet.pdf
+    - title: § 10-105 (a)(2). State income tax rates
+      href: https://govt.westlaw.com/mdc/Document/N5C14CC91D9D311E2A5EFA1428CB399FF?viewType=FullText&originationContext=documenttoc&transitionType=CategoryPageItem&contextData=(sc.Default)
+
+brackets:
+  - threshold:
+      2013-01-01: 0
+    rate:
+      2013-01-01: 0.02
+  - threshold:
+      2013-01-01: 1_000
+    rate:
+      2013-01-01: 0.03
+  - threshold:
+      2013-01-01: 2_000
+    rate:
+      2013-01-01: 0.04
+  - threshold:
+      2013-01-01: 3_000
+    rate:
+      2013-01-01: 0.0475
+  - threshold:
+      2013-01-01: 150_000
+    rate:
+      2013-01-01: 0.05
+  - threshold:
+      2013-01-01: 175_000
+    rate:
+      2013-01-01: 0.0525
+  - threshold:
+      2013-01-01: 225_000
+    rate:
+      2013-01-01: 0.055
+  - threshold:
+      2013-01-01: 300_000
+    rate:
+      2013-01-01: 0.0575

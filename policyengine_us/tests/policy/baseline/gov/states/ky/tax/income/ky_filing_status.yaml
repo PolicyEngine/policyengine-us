@@ -1,0 +1,26 @@
+- name: Single person
+  period: 2023
+  input:
+    is_tax_unit_spouse: false
+    is_separated: false
+    state_code: KY
+  output:
+    ky_filing_status: SINGLE
+
+- name: Joint 
+  period: 2023
+  input:
+    is_tax_unit_spouse: true
+    is_separated: false
+    state_code: KY
+  output:
+    ky_filing_status: JOINT
+
+- name: Joint 
+  period: 2023
+  input:
+    is_tax_unit_spouse: false
+    is_separated: true
+    state_code: KY
+  output:
+    ky_filing_status: SEPARATE

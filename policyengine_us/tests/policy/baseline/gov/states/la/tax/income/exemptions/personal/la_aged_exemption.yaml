@@ -1,0 +1,35 @@
+- name: No eligible people
+  period: 2020
+  input:
+    state_code: LA
+    age_head: 64
+    age_spouse: 64
+  output:
+    la_aged_exemption: 0
+
+- name: Aged head
+  period: 2020
+  input:
+    state_code: LA
+    age_head: 65
+    age_spouse: 64
+  output:
+    la_aged_exemption: 1_000
+
+- name: Aged spouse
+  period: 2020
+  input:
+    state_code: LA
+    age_head: 64
+    age_spouse: 65
+  output:
+    la_aged_exemption: 1_000
+
+- name: Both aged
+  period: 2020
+  input:
+    state_code: LA
+    age_head: 65
+    age_spouse: 65
+  output:
+    la_aged_exemption: 2_000

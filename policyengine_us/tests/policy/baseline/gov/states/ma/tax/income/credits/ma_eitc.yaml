@@ -1,0 +1,26 @@
+- name: No EITC, no matched credit
+  period: 2022
+  absolute_error_margin: 1
+  input:
+    state_code: MA
+    eitc: 0
+  output:
+    ma_eitc: 0
+
+- name: 30% match
+  period: 2022
+  absolute_error_margin: 1
+  input:
+    state_code: MA
+    eitc: 100
+  output:
+    ma_eitc: 30
+
+- name: 2023 40% match
+  period: 2023
+  absolute_error_margin: 1
+  input:
+    state_code: MA
+    eitc: 100
+  output:
+    ma_eitc: 40

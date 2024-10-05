@@ -1,0 +1,42 @@
+- name: Tax unit with taxsimid 95281 in p21.its.csv and p21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 73
+        employment_income: 21_010
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person2:
+        is_tax_unit_spouse: true
+        age: 73
+        employment_income: 22_010
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        # snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        premium_tax_credit: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:  # expected results from patched TAXSIM35 2023-04-24 version
+    ut_retirement_credit: 624.50
+    ut_retirement_credit_max: 624.50
+    ut_taxable_income: 43_020
+    ut_income_tax_before_credits: 2129.49
+    ut_taxpayer_credit: 1501.21
+    ut_income_tax_exempt: false 
+    ut_income_tax_before_non_refundable_credits: 628.28
+    ut_non_refundable_credits: 624.50
+    ut_income_tax: 3.78 

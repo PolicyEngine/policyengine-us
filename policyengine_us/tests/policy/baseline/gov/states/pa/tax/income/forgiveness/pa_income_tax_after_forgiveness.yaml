@@ -1,0 +1,27 @@
+- name: PA income tax rate after forgiveness
+  period: 2021
+  input:
+    state_code: PA
+    pa_income_tax_before_forgiveness: 17_700
+    pa_tax_forgiveness_rate: 0.3
+  output:
+    pa_income_tax_after_forgiveness: 12_390
+
+- name: PA income tax rate after forgiveness
+  period: 2021
+  input:
+    state_code: PA
+    pa_income_tax_before_forgiveness: 80_000
+    pa_tax_forgiveness_rate: 0
+  output:
+    pa_income_tax_after_forgiveness: 80_000
+
+
+- name: PA income tax rate after forgiveness
+  period: 2021
+  input:
+    state_code: PA
+    pa_income_tax_before_forgiveness: 6_500
+    pa_tax_forgiveness_rate: 1
+  output:
+    pa_income_tax_after_forgiveness: 0

@@ -1,0 +1,23 @@
+description: The IRS limits the new clean vehicle credit to vehicles with MSRP below this value.
+metadata:
+  reference:
+    - title: Inflation Reduction Act
+      href: https://www.democrats.senate.gov/imo/media/doc/inflation_reduction_act_of_2022.pdf#page=384
+  label: MSRP limit for new clean vehicle credit
+  unit: currency-USD
+  breakdown:
+  - new_clean_vehicle_classification
+# In effect as of 2022-08-16, but backdating so it shows up as current policy
+# in PolicyEngine.
+VAN:
+  0000-01-01: .inf
+  2022-01-01: 80_000
+SUV:
+  0000-01-01: .inf
+  2022-01-01: 80_000
+PICKUP:
+  0000-01-01: .inf
+  2022-01-01: 80_000
+OTHER:
+  0000-01-01: .inf
+  2022-01-01: 55_000

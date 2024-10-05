@@ -1,0 +1,27 @@
+description: New Mexico provides the following maximum property tax rebate amount depending on filing status.
+metadata:
+  unit: currency-USD
+  period: year
+  breakdown:
+    - filing_status
+  label: New Mexico property tax rebate max amount
+  reference: 
+    - title: NM 2023 PIT-RC-5 SECTION 3 Property Tax Rebate for Persons 65 or Older
+      href: https://klvg4oyd4j.execute-api.us-west-2.amazonaws.com/prod/PublicFiles/34821a9573ca43e7b06dfad20f5183fd/90560f4e-0ef0-4e52-a003-878b84f858bb/PITbook2023.pdf#page=82
+    - title: NM 2022 PIT-RC instructions
+      href: https://klvg4oyd4j.execute-api.us-west-2.amazonaws.com/prod/PublicFiles/34821a9573ca43e7b06dfad20f5183fd/1afc56af-ea90-4d48-82e5-1f9aeb43255a/PITbook2022.pdf#page=58
+    - title: 2021 PIT-RC NEW MEXICO REBATE AND CREDIT SCHEDULE
+      href: https://taxsim.nber.org/historical_state_tax_forms/NM/2021/2021pit-rc.pdf#page=2
+    - title: N.M. Code R. Chapter 7 - Taxation, 7-2-18, H, Tax rebate of property tax due that exceeds the elderly taxpayer's maximum property tax liability; refund.
+      href: https://nmonesource.com/nmos/nmsa/en/item/4340/index.do#!fragment/zoupio-_Toc140503750/BQCwhgziBcwMYgK4DsDWszIQewE4BUBTADwBdoAvbRABwEtsBaAfX2zgEYAWABgFYeAZgDsAgJQAaZNlKEIARUSFcAT2gBydRIiEwuBIuVrN23fpABlPKQBCagEoBRADKOAagEEAcgGFHE0jAAI2hSdjExIA
+
+JOINT:
+  2021-01-01: 250
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 250
+SURVIVING_SPOUSE:
+  2021-01-01: 250
+SINGLE:
+  2021-01-01: 250
+SEPARATE:
+  2021-01-01: 125

@@ -1,0 +1,17 @@
+- name: IA basic deduction indiv unit test 1
+  period: 2021
+  input:
+    ia_standard_deduction_indiv: 10_000
+    ia_itemized_deductions_indiv: 9_000
+    state_code: IA
+  output:
+    ia_basic_deduction_indiv: 10_000
+
+- name: IA basic deduction indiv unit test 2
+  period: 2022
+  input:
+    ia_standard_deduction_indiv: 10_000
+    ia_itemized_deductions_indiv: 11_000
+    state_code: IA
+  output:
+    ia_basic_deduction_indiv: 11_000

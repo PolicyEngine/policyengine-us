@@ -1,0 +1,15 @@
+- name: filer has 2,000 net capital gain 
+  period: 2022
+  input:
+    capital_gains: 2_000
+    state_code: MT
+  output:
+    mt_capital_gain_credit: 40
+
+- name: filer has 3,000 net capital gain
+  period: 2021 
+  input:
+    capital_gains: 3_000
+    state_code: MT
+  output:
+    mt_capital_gain_credit: 60

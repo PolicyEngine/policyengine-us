@@ -1,0 +1,31 @@
+description: Modified AGI threshold after which the Utah Social Security Benefits Credit is phased out.
+SINGLE:
+  2021-01-01: 30_000
+  2022-01-01: 37_000
+  2023-01-01: 45_000
+JOINT:
+  2021-01-01: 50_000
+  2022-01-01: 62_000
+  2023-01-01: 75_000
+SEPARATE:
+  2021-01-01: 25_000
+  2022-01-01: 31_000
+  2023-01-01: 37_500
+SURVIVING_SPOUSE:
+  2021-01-01: 50_000
+  2022-01-01: 62_000
+  2023-01-01: 75_000
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 50_000
+  2022-01-01: 62_000
+  2023-01-01: 75_000
+metadata:
+  unit: currency-USD
+  period: year
+  reference:
+    - title: Utah Code §59-10-1042 (4)
+      href: https://le.utah.gov/xcode/Title59/Chapter10/59-10-S1042.html
+    - title: 2021 Utah Individual Income Tax Form
+      href: https://www.taxformfinder.org/forms/2021/2021-utah-tc-40-full-packet.pdf#page=20
+    - title: 2023 TC-40  Utah Individual Income Tax Form
+      href: https://tax.utah.gov/forms/current/tc-40inst.pdf#page=23

@@ -1,0 +1,21 @@
+description: Amount of Rep Tlaib's End Child Poverty Act (2022) filer credit
+metadata:
+  reference:
+    - title: End Child Poverty Act
+      href: https://www.congress.gov/bill/118th-congress/house-bill/2540/text?s=1&r=14
+  label: End Child Poverty Act filer credit amount
+  unit: currency-USD
+  period: year
+  uprating: gov.irs.uprating
+  breakdown:
+    - filing_status
+JOINT:
+  2023-01-01: 1_200
+SINGLE:
+  2023-01-01: 600
+SEPARATE:
+  2023-01-01: 600
+HEAD_OF_HOUSEHOLD:
+  2023-01-01: 600
+SURVIVING_SPOUSE:
+  2023-01-01: 600

@@ -1,0 +1,40 @@
+description: Federal AGI above which CA itemized deductions are limited.
+metadata:
+  label: California itemized deduction limitation threshold
+  period: year
+  unit: currency-USD
+  uprating: gov.states.ca.cpi
+  breakdown:
+  - filing_status
+  reference:
+  - title: 2021 Form 540 Schedule CA instructions
+    href: https://www.ftb.ca.gov/forms/2021/2021-540-ca-instructions.html
+  - title: 2022 Form 540 Schedule CA instructions
+    href: https://www.ftb.ca.gov/forms/2022/2022-540-ca-instructions.html
+  - title: 2023 Form 540 Schedule CA instructions
+    href: https://www.ftb.ca.gov/forms/2023/2023-540-ca-instructions.html
+    # The legal code provides the inflation unadjusted amount  
+  - title: Cal. Rev. & Tax. Code § 17077
+    href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=RTC&sectionNum=17077
+
+JOINT:
+  2021-01-01: 424_581
+  2022-01-01: 459_821
+  2023-01-01: 474_075
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 318_437
+  2022-01-01: 344_867
+  2023-01-01: 355_558
+SURVIVING_SPOUSE:
+  2021-01-01: 424_581
+  2022-01-01: 459_821
+  2023-01-01: 474_075
+SINGLE:
+  2021-01-01: 212_288
+  2022-01-01: 229_908
+  2023-01-01: 237_035
+SEPARATE:
+  2021-01-01: 212_288
+  2022-01-01: 229_908
+  2023-01-01: 237_035
+

@@ -1,0 +1,23 @@
+- name: If one person, grant standard is $437 * 12/yr.
+  period: 2023
+  input:
+    state_code: DC
+    spm_unit_size: 1
+  output:
+    dc_tanf_grant_standard: 437 * 12
+
+- name: If ten people, grant standard is $1750 * 12/yr.
+  period: 2023
+  input:
+    state_code: DC
+    spm_unit_size: 10
+  output:
+    dc_tanf_grant_standard: 1_750 * 12
+
+- name: Only calculate for DC.
+  period: 2023
+  input:
+    state_code: VA
+    spm_unit_size: 10
+  output:
+    dc_tanf_grant_standard: 0

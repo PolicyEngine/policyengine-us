@@ -1,0 +1,17 @@
+description: Area median income limit increase for people exceeding 4.
+MODERATE:
+  2000-10-31: 0.08
+LOW:
+  2000-10-31: 0.064
+VERY_LOW:
+  2000-10-31: 0.048
+ESPECIALLY_LOW:
+  2000-10-31: 0.04
+metadata:
+  unit: /1
+  label: HUD area median income limit per person exceeding 4
+  reference:
+    - title: 24 CFR § 81.17 - Affordability - Income level definitions - family size and income known (owner-occupied units, actual tenants, and prospective tenants).
+      href: https://www.law.cornell.edu/cfr/text/24/81.17
+  breakdown:
+    - hud_income_level

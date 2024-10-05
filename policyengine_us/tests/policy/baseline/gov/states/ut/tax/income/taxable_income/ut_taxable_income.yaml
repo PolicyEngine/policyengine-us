@@ -1,0 +1,10 @@
+- name: UT taxable income
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    salt_refund_last_year: 1_000
+    ut_subtractions: 500
+    ut_total_income: 40_000
+    state_code: UT
+  output:
+    ut_taxable_income: 40_000 - 1_000 - 500

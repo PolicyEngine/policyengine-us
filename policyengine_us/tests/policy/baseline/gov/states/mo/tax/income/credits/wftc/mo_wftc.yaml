@@ -1,0 +1,31 @@
+- name: No EITC, no matched credit
+  period: 2023
+  input:
+    state_code: MO
+    eitc: 0
+  output:
+    mo_wftc: 0
+
+- name: 10% match
+  period: 2023
+  input:
+    state_code: MO
+    eitc: 100
+  output:
+    mo_wftc: 10
+
+- name: Outside MO is ineligible
+  period: 2023
+  input:
+    state_code: MA
+    eitc: 100
+  output:
+    mo_wftc: 0
+
+- name: Introduced in 2023
+  period: 2022
+  input:
+    state_code: MO
+    eitc: 100
+  output:
+    mo_wftc: 10

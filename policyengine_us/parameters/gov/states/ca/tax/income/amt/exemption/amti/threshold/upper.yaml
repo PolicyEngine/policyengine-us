@@ -1,0 +1,39 @@
+description: California limits the alternative minimum tax exemption amount to filers with alternative minimum taxable income above this threshold, based on filing status. 
+metadata:
+  label: California alternative minimum tax exemption upper AMTI threshold 
+  period: year
+  unit: currency-USD
+  uprating: gov.states.ca.cpi
+  breakdown:
+  - filing_status
+  reference:
+  - title: 2022 Instructions for Schedule P (540) Line 22
+    href: https://www.ftb.ca.gov/forms/2022/2022-540-p-instructions.html
+  - title: 2021 Instructions for Schedule P (540) Line 22
+    href: https://www.ftb.ca.gov/forms/2021/2021-540-p-instructions.html
+  - title: 2023 Instructions for Schedule P (540) Line 22
+    href: hhttps://www.ftb.ca.gov/forms/2023/2023-540-p-instructions.html
+  # The legal code does not specify the amounts without pointing to the IRS code
+  - title: Cal. Rev. & Tax. Code § 17062 
+    href: https://casetext.com/statute/california-codes/california-revenue-and-taxation-code/division-2-other-taxes/part-10-personal-income-tax/chapter-21-alternative-minimum-tax/section-17062-alternative-minimum-tax 
+
+JOINT:
+  2021-01-01: 806_727 
+  2022-01-01: 873_686
+  2023-01-01: 900_771
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 605_043
+  2022-01-01: 655_262
+  2023-01-01: 675_575
+SURVIVING_SPOUSE:
+  2021-01-01: 806_727 
+  2022-01-01: 873_686
+  2023-01-01: 900_771
+SINGLE:
+  2021-01-01: 605_043
+  2022-01-01: 655_262
+  2023-01-01: 675_575
+SEPARATE:
+  2021-01-01: 403_348
+  2022-01-01: 436_827
+  2023-01-01: 450_368

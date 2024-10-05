@@ -1,0 +1,67 @@
+- name: Household size 4, State NY
+  period: 2022
+  input:
+    spm_unit_size: 4
+    state_code_str: NY
+  output:
+    hhs_smi: 104_972
+
+- name: Household size 1, State NY
+  period: 2022
+  input:
+    spm_unit_size: 1
+    state_code_str: NY
+  output:
+    hhs_smi: 0.52 * 104_972
+
+- name: Household size 6, State NY
+  period: 2022
+  input:
+    spm_unit_size: 6
+    state_code_str: NY
+  output:
+    hhs_smi: 1.32 * 104_972
+
+- name: Household size 7, State NY
+  period: 2022
+  input:
+    spm_unit_size: 7
+    state_code_str: NY
+  output:
+    hhs_smi: 1.35 * 104_972
+
+- name: 2024 Household size 4, State NY
+  period: 2024
+  absolute_error_margin: 5
+  input:
+    spm_unit_size: 4
+    state_code_str: NY
+  output:
+    hhs_smi: 116_765 * 1.0654 # includes CBO uprating from 2023-10-01 to 2024
+
+- name: 2024 Household size 1, State NY
+  period: 2024
+  absolute_error_margin: 5
+  input:
+    spm_unit_size: 1
+    state_code_str: NY
+  output:
+    hhs_smi: 0.52 * 116_765 * 1.0654 # includes CBO uprating from 2023-10-01 to 2024
+
+- name: 2024 Household size 6, State NY
+  period: 2024
+  absolute_error_margin: 5
+  input:
+    spm_unit_size: 6
+    state_code_str: NY
+  output:
+    hhs_smi: 1.32 * 116_765 * 1.0654 # includes CBO uprating from 2023-10-01 to 2024
+
+- name: 2024 Household size 7, State NY
+  period: 2024
+  absolute_error_margin: 5
+  input:
+    spm_unit_size: 7
+    state_code_str: NY
+  output:
+    hhs_smi: 1.35 * 116_765 * 1.0654 # includes CBO uprating from 2023-10-01 to 2024

@@ -1,0 +1,106 @@
+- name: Test 1, taxable income is too low to be eligible 
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 40
+        irs_employment_income: 20_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 40
+        irs_employment_income: 15_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    nd_mpc: 0  # taxable income is too low to be eligible
+
+- name: Test 2, difference in the income tax between single filing status and joint filing status is more than capped amount
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 41
+        irs_employment_income: 200_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 41
+        irs_employment_income: 180_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    nd_taxable_income: 354_100
+    nd_income_tax_before_credits: 7_356.02
+    nd_mpc: 208  # capped at maximum credit amount
+
+
+- name: Test 3, difference in the income tax between single filing status and joint filing status is more than capped amount
+  absolute_error_margin: 0.01
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 41
+        irs_employment_income: 200_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 41
+        irs_employment_income: 180_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    nd_mpc: 287 # capped at maximum credit amount
+
+- name: Test 4, difference in the income tax between single filing status and joint filing status is less than capped amount  
+  absolute_error_margin: 0.01
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 41
+        irs_employment_income: 90_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 41
+        irs_employment_income: 80_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    nd_mpc: 286.64 

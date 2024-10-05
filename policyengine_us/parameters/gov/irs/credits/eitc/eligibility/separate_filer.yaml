@@ -1,0 +1,13 @@
+description: The US makes married filing separate filers eligible for the EITC when this is true.
+metadata:
+  unit: bool
+  label: EITC separate filers eligible
+  reference:
+    - title: 26 U.S. Code § 32(d) - Earned income credit
+      href: https://www.law.cornell.edu/uscode/text/26/32#d
+    # ARPA changed it for 2021 forward.
+    - title: American Rescue Plan Act Sec. 9623
+      href: https://www.congress.gov/bill/117th-congress/house-bill/1319/text
+values:
+  2013-01-01: false
+  2021-01-01: true

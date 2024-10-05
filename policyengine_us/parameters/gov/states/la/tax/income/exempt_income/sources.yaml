@@ -1,0 +1,43 @@
+description: Louisiana exempts these sources from adjusted gross income.
+values:
+  2021-01-01:
+    - us_govt_interest # 01E
+    # Louisiana State Employees’ Retirement Benefits 02E
+    # Louisiana State Teachers’ Retirement Benefits 03E
+    - military_retirement_pay # 04E
+    # Other Retirement Benefits 05E
+    - la_retirement_exemption_person # 06E
+    - taxable_social_security # 07E
+    # Native American Income 08E
+    # START Savings Program Contributions 09E
+    - la_military_pay_exclusion # 10E
+    # Road Home 11E
+    # Recreation Volunteer 13E
+    # Volunteer Firefighter 14E
+    # Voluntary Retrofit Residential Structure 16E
+    # Elementary and Secondary School Tuition 17E
+    # Educational Expenses for Home-Schooled Children 18E
+    # Educational Expenses for a Quality Public Education 19E
+    # Capital Gain from Sale of Louisiana Business 20E
+    # Employment of Certain Qualified Disabled Individuals 21E
+    # S Bank Shareholder Income Exclusion 22E
+    # Entity Level Taxes Paid to Other States 23E
+    # Pass–Through Entity Exclusion 24E
+    # COVID-19 Relief Benefits 27E
+    - la_disability_income_exemption_person # 49E
+
+metadata:
+  unit: list  
+  label: Louisiana adjusted gross income exempt income
+  period: year  
+  reference:
+    - title: General Information for Filing Your 2023 Louisiana Resident Individual Income Tax Return | Exemption Code 49E
+      href: https://revenue.louisiana.gov/TaxForms/IT540i%20WEB(2023)%20INSTRUCTIONS.pdf#page=9
+    - title: General Information for Filing Your 2022 Louisiana Resident Individual Income Tax Return | Exemption Code 49E
+      href: https://revenue.louisiana.gov/TaxForms/IT540iWEB(2022)D1.pdf#page=8
+    - title: Louisiana statutes, RS 47:44 - Annual retirement or disability income; exemption from taxation (B)
+      href: https://www.legis.la.gov/legis/Law.aspx?d=102133
+    - title: Louisiana statutes, RS 47:44 - Annual retirement or disability income; exemption from taxation (A)
+      href: https://www.legis.la.gov/legis/Law.aspx?d=102133
+    - title: R.S. 47:293(9)(e) 
+      href: http://www.legis.la.gov/legis/Law.aspx?d=101760

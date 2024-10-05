@@ -1,0 +1,20 @@
+description: Montana counts these sources as miscellaneous deductions. 
+values:
+  2021-01-01:
+    - mt_child_dependent_care_expense_deduction  
+    - casualty_loss_deduction  
+
+    
+metadata:
+  unit: list
+  label: Montana miscellaneous deductions 
+  period: year
+  reference:
+    - title: Montana Individual Income Tax Return (Form 2) 2022
+      href: https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2023/05/Montana-Idividiual-Income-Tax-Return-Form-2-2022v6.2.pdf#page=7
+    - title: Montana Individual Income Tax Return (Form 2) 2021
+      href: https://mtrevenue.gov/wp-content/uploads/mdocs/form%202%202021.pdf#page=7
+    - title: Montana Tax From Instructions 2021
+      href: https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2022/12/Form-2-2022-Instructions.pdf#page=32
+    - title: MT Code § 15-30-2131 (2022) (1)(a)&(c)
+      href: https://law.justia.com/codes/montana/2022/title-15/chapter-30/part-21/section-15-30-2131/

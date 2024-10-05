@@ -1,0 +1,35 @@
+description: IRS caps the student loan interest deduction at this amount, based on filing status.
+
+metadata:
+  unit: currency-USD
+  period: year
+  breakdown:
+    - filing_status
+  label: Student loan interest deduction cap
+  reference:
+    - title: 26 U.S. Code § 221 - Interest on education loans (b)(1)
+      href: https://www.law.cornell.edu/uscode/text/26/221
+    - title: 2023 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-22-38.pdf#page=18
+    - title: 2022 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-21-45.pdf#page=18
+    - title: 2021 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-20-45.pdf#page=18
+    - title: 2020 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-19-44.pdf#page=17
+    - title: 2019 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-18-57.pdf#page=20
+    - title: 2024 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-23-34.pdf#page=16
+
+JOINT:
+  2002-01-01: 2_500
+SINGLE:
+  2002-01-01: 2_500
+# Married couples must file jointly under (e)(2) to receive the deduction
+SEPARATE:
+  2002-01-01: 0
+HEAD_OF_HOUSEHOLD:
+  2002-01-01: 2_500
+SURVIVING_SPOUSE: 
+  2002-01-01: 2_500

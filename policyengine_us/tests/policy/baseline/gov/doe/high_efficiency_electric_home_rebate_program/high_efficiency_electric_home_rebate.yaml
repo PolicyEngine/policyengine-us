@@ -1,0 +1,41 @@
+- name: Sum capped components.
+  period: 2023
+  input:
+    # Consider all maximum elements.
+    capped_electric_heat_pump_clothes_dryer_rebate: 1
+    capped_electric_load_service_center_upgrade_rebate: 1
+    capped_electric_stove_cooktop_range_or_oven_rebate: 1
+    capped_electric_wiring_rebate: 1
+    capped_heat_pump_rebate: 1
+    capped_heat_pump_water_heater_rebate: 1
+    capped_insulation_air_sealing_ventilation_rebate: 1
+  output:
+    high_efficiency_electric_home_rebate: 7
+
+- name: Sum capped components and cap at $14,000.
+  period: 2023
+  input:
+    # Consider all maximum elements.
+    capped_electric_heat_pump_clothes_dryer_rebate: 840
+    capped_electric_load_service_center_upgrade_rebate: 4_000
+    capped_electric_stove_cooktop_range_or_oven_rebate: 840
+    capped_electric_wiring_rebate: 8_000
+    capped_heat_pump_rebate: 8_000
+    capped_heat_pump_water_heater_rebate: 1_750
+    capped_insulation_air_sealing_ventilation_rebate: 1_600
+  output:
+    high_efficiency_electric_home_rebate: 14_000
+
+- name: Not available pre-2023.
+  period: 2022
+  input:
+    capped_heat_pump_rebate: 1
+  output:
+    high_efficiency_electric_home_rebate: 0
+
+- name: Not available after September 30, 2031.
+  period: 2032
+  input:
+    capped_electric_wiring_rebate: 1
+  output:
+    high_efficiency_electric_home_rebate: 0

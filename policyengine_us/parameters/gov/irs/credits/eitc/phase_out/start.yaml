@@ -1,0 +1,146 @@
+description: The EITC phase-out start.
+metadata:
+  type: single_amount
+  threshold_unit: child
+  amount_unit: currency-USD
+  label: EITC phase-out start by number of children
+  reference:
+    - title: 2024 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-23-34.pdf#page=10
+    - title: 2023 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-22-38.pdf#page=10
+    - title: 2022 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-21-45.pdf#page=10
+    - title: 2021 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-20-45.pdf#page=10
+    - title: 2020 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-19-44.pdf#page=10
+    - title: 2019 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-18-57.pdf#page=12
+    - title: 2018 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-17-58.pdf#page=10
+    - title: 2017 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-16-55.pdf#page=11
+    - title: CBO Tax Parameters and Effective Marginal Tax Rates | Feb 2024
+      # 1. Tax Parameters.
+      href: https://www.cbo.gov/system/files/2024-02/53724-2024-02-Tax-Parameters.xlsx
+
+# Described in IRS data release as "Threshold Phaseout Amount".
+brackets:
+  - threshold:
+      values:
+        1995-01-01: 0
+      metadata:
+        unit: child
+    amount:
+      values:
+        2017-01-01: 8_340
+        2018-01-01: 8_510
+        2019-01-01: 8_650
+        2020-01-01: 8_790
+        2021-01-01:
+          value: 11_610
+          metadata:
+            reference:
+              - title: 26 U.S. Code § 32(n)(4)(A)(ii)
+                href: https://www.law.cornell.edu/uscode/text/26/32#n_4_A_ii
+        2022-01-01: 9_160
+        2023-01-01: 9_800
+        2024-01-01: 10_330
+        # CBO forecast.
+        2025-01-01: 10_600
+        2026-01-01: 10_830
+        2027-01-01: 11_050
+        2028-01-01: 11_270
+        2029-01-01: 11_490
+        2030-01-01: 11_710
+        2031-01-01: 11_950
+        2032-01-01: 12_180
+        2033-01-01: 12_430
+        2034-01-01: 12_680
+      metadata:
+        unit: currency-USD
+  - threshold:
+      values:
+        1995-01-01: 1
+      metadata:
+        unit: child
+    amount:
+      values:
+        2017-01-01: 18_340
+        2018-01-01: 18_700
+        2019-01-01: 19_030
+        2020-01-01: 19_330
+        2021-01-01: 19_520
+        2022-01-01: 20_130
+        2023-01-01: 21_560
+        2024-01-01: 22_720
+        # CBO forecast.
+        2025-01-01: 23_300
+        2026-01-01: 23_810
+        2027-01-01: 24_310
+        2028-01-01: 24_780
+        2029-01-01: 25_260
+        2030-01-01: 25_760
+        2031-01-01: 26_270
+        2032-01-01: 26_790
+        2033-01-01: 27_320
+        2034-01-01: 27_870
+      metadata:
+        unit: currency-USD
+  - threshold:
+      values:
+        1995-01-01: 2
+      metadata:
+        unit: child
+    amount:
+      values:
+        2017-01-01: 18_340
+        2018-01-01: 18_700
+        2019-01-01: 19_030
+        2020-01-01: 19_330
+        2021-01-01: 19_520
+        2022-01-01: 20_130
+        2023-01-01: 21_560
+        2024-01-01: 22_720
+        # CBO forecast.
+        2025-01-01: 23_300
+        2026-01-01: 23_810
+        2027-01-01: 24_310
+        2028-01-01: 24_780
+        2029-01-01: 25_260
+        2030-01-01: 25_760
+        2031-01-01: 26_270
+        2032-01-01: 26_790
+        2033-01-01: 27_320
+        2034-01-01: 27_870
+      metadata:
+        unit: currency-USD
+  - threshold:
+      values:
+        1995-01-01: 3
+      metadata:
+        unit: child
+    amount:
+      values:
+        2017-01-01: 18_340
+        2018-01-01: 18_700
+        2019-01-01: 19_030
+        2020-01-01: 19_330
+        2021-01-01: 19_520
+        2022-01-01: 20_130
+        2023-01-01: 21_560
+        2024-01-01: 22_720
+        # CBO forecast.
+        2025-01-01: 23_300
+        2026-01-01: 23_810
+        2027-01-01: 24_310
+        2028-01-01: 24_780
+        2029-01-01: 25_260
+        2030-01-01: 25_760
+        2031-01-01: 26_270
+        2032-01-01: 26_790
+        2033-01-01: 27_320
+        2034-01-01: 27_870
+      metadata:
+        unit: currency-USD

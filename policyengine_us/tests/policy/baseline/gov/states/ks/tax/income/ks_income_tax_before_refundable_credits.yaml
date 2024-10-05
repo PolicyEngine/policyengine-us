@@ -1,0 +1,17 @@
+- name: KS income tax before refundable credits unit test 1
+  period: 2021
+  input:
+    ks_income_tax_before_credits: 900
+    ks_nonrefundable_credits: 850
+    state_code: KS
+  output:
+    ks_income_tax_before_refundable_credits: 900 - 850
+
+- name: KS income tax before refundable credits unit test 2
+  period: 2021
+  input:
+    ks_income_tax_before_credits: 900
+    ks_nonrefundable_credits: 950
+    state_code: KS
+  output:
+    ks_income_tax_before_refundable_credits: 0

@@ -1,0 +1,7 @@
+- name: NE refundable CTC total household income is the same as federal AGI
+  period: 2024
+  input:
+    adjusted_gross_income: 1000
+    state_code: NE
+  output:
+    ne_refundable_ctc_total_household_income: 1000

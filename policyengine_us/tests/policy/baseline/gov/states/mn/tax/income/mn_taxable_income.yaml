@@ -1,0 +1,23 @@
+- name: MN taxable income unit test 1
+  period: 2021
+  input:
+    adjusted_gross_income: 900
+    mn_additions: 100
+    mn_subtractions: 200
+    mn_deductions: 250
+    mn_exemptions: 120
+    state_code: MN
+  output:
+    mn_taxable_income: 900 + 100 - 200 - 250 - 120
+
+- name: MN taxable income unit test 2
+  period: 2021
+  input:
+    adjusted_gross_income: 400
+    mn_additions: 100
+    mn_subtractions: 200
+    mn_deductions: 250
+    mn_exemptions: 120
+    state_code: MN
+  output:
+    mn_taxable_income: 0

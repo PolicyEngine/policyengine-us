@@ -1,0 +1,33 @@
+description: Virginia taxes personal taxable income at these rates.
+metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  label: Virginia income tax rate
+  reference:
+  - title: Code of Virginia § 58.1-320.
+    href: https://law.lis.virginia.gov/vacodefull/title58.1/chapter3/article2/
+  - title: Virginia 2023 Form 760 Resident Individual Income Tax Instructions
+    href: https://www.tax.virginia.gov/sites/default/files/vatax-pdf/2023-760-instructions.pdf#page=41
+  - title: Virginia 2022 Form 760 Resident Individual Income Tax Booklet
+    href: https://www.tax.virginia.gov/sites/default/files/vatax-pdf/2022-760-instructions.pdf#page=41
+  - title: Virginia 2021 Form 760 Resident Individual Income Tax Booklet
+    href: https://www.tax.virginia.gov/sites/default/files/vatax-pdf/2021-760-instructions.pdf#page=41
+
+brackets:
+  - threshold:
+      2021-01-01: 0
+    rate:
+      2021-01-01: 0.02
+  - threshold:
+      2021-01-01: 3_000
+    rate:
+      2021-01-01: 0.03
+  - threshold:
+      2021-01-01: 5_000
+    rate:
+      2021-01-01: 0.05
+  - threshold:
+      2021-01-01: 17_000
+    rate:
+      2021-01-01: 0.0575

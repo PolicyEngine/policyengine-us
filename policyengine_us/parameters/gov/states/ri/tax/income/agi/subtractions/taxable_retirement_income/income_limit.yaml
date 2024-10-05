@@ -1,0 +1,70 @@
+description: Rhode Island subtracts taxable retirement income for filers with federal adjusted gross income below this amount, based on filing status.
+
+metadata:
+  label: Rhode Island taxable retirement income subtraction income limit
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  reference:
+  - title: Rhode Island 2021 RI-1040 Instructions
+    href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2021-12/2021-1040r-instructions.pdf#page=8
+  - title: Rhode Island 2022 RI-1040 Instructions
+    href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-12/2022%20NR%20Instructions_v4_w.pdf#page=11
+  - title: Rhode Island 2023 RI-1040 Instructions
+    href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2023-12/2023%201040R%20Instructions.pdf#page=9
+  # The law points to the secial security modification (c) (8) while the actual amounts differ
+  # in the tax forms
+  - title: R.I. Gen. Laws § 44-30-12 (c), (8), (i)&(ii)
+    href: http://webserver.rilin.state.ri.us/Statutes/title44/44-30/44-30-12.HTM 
+
+JOINT:
+  values:
+    2021-01-01: 109_050
+    2022-01-01: 119_750
+    2023-01-01: 126_250
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
+HEAD_OF_HOUSEHOLD:
+  values:
+    2021-01-01: 87_200
+    2022-01-01: 95_800
+    2023-01-01: 101_000
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
+SURVIVING_SPOUSE:
+  values:
+    2021-01-01: 109_050
+    2022-01-01: 119_750
+    2023-01-01: 126_250
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
+SINGLE:
+  values:
+    2021-01-01: 87_200
+    2022-01-01: 95_800
+    2023-01-01: 101_000
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
+SEPARATE:
+  values:
+    2021-01-01: 87_200
+    2022-01-01: 95_800
+    2023-01-01: 101_025
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50

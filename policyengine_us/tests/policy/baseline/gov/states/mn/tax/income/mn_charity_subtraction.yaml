@@ -1,0 +1,17 @@
+- name: MN charity subtraction unit test 1
+  period: 2021
+  input:
+    charitable_deduction: 900
+    mn_itemizing: true
+    state_code: MN
+  output:
+    mn_charity_subtraction: 0  # because is itemizing MN deductions
+
+- name: MN charity subtraction unit test 2
+  period: 2022
+  input:
+    charitable_deduction: 900
+    mn_itemizing: false
+    state_code: MN
+  output:
+    mn_charity_subtraction: 0.5 * (900 - 500)

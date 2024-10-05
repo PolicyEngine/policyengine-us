@@ -1,0 +1,94 @@
+- name: Tax unit with taxsimid 99830 in g21.its.csv and g21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 66
+        employment_income: 18_010
+        taxable_interest_income: 5_505
+        taxable_private_pension_income: 500
+        social_security_retirement: 4_500
+        rent: 22_000
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person2:
+        age: 66
+        employment_income: 26_010
+        taxable_interest_income: 5_505
+        taxable_private_pension_income: 500
+        social_security_retirement: 4_500
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        premium_tax_credit: 0  # not in TAXSIM35
+        local_income_tax: 0  # not in TAXSIM35
+        state_sales_tax: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 44  # RI
+  output:  # expected results from patched TAXSIM35 2024-01-14 version
+    ri_property_tax_credit_eligible: false
+    ri_income_tax: 1_066.13
+
+- name: Tax unit with taxsimid 99988 in g21.its.csv and g21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 71
+        employment_income: 2_010
+        taxable_interest_income: 11_010
+        taxable_private_pension_income: 6_000
+        social_security_retirement: 9_000
+        rent: 17_000
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+    tax_units:
+      tax_unit:
+        members: [person1]
+        premium_tax_credit: 0  # not in TAXSIM35
+        local_income_tax: 0  # not in TAXSIM35
+        state_sales_tax: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1]
+        state_fips: 44  # RI
+  output:  # expected results from patched TAXSIM35 2024-01-26 version
+    ri_property_tax_credit_eligible: true
+    ri_property_tax_credit: 415
+    ri_income_tax: -415.00
+
+- name: Property tax income test
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      you:
+        long_term_capital_gains: 1_000
+        qualified_dividend_income: 2_000
+    households:
+      household:
+        members: [you]
+        state_code: RI
+  output:
+    capital_gains_excluded_from_taxable_income: 3_000
+    adjusted_gross_income: 3_000
+    ri_property_tax_household_income: 3_000

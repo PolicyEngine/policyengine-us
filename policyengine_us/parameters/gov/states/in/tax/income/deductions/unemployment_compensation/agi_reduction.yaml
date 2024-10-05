@@ -1,0 +1,23 @@
+description: Indiana reduces adjusted gross income by this amount when computing the maximum unemployment compensation deduction.
+metadata:
+  period: year
+  unit: currency-USD
+  label: Indiana AGI reduction for calculation of maximum unemployment compensation deduction
+  breakdown:
+    - filing_status
+  reference:
+    - title: IC 6-3-2-10 Unemployment compensation; deduction (a)(3)
+      href: http://iga.in.gov/legislative/laws/2021/ic/titles/006#6-3-2-10
+    - title: 2023 IT-40 Income Tax Form Instruction Booklet, pg. 19
+      href: https://forms.in.gov/Download.aspx?id=15792
+
+SINGLE:
+  2021-01-01: 12_000
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 12_000
+JOINT:
+  2021-01-01: 18_000
+SURVIVING_SPOUSE:
+  2021-01-01: 12_000
+SEPARATE:
+  2021-01-01: 12_000 # 0 if living together during any part of the year

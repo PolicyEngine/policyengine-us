@@ -1,0 +1,13 @@
+description: Pennsylvania limits TANF benefits to households with resources at or below this amount.
+values:
+  1988-11-01: 1_000
+metadata:
+  unit: currency-USD
+  label: Pennsylvania TANF resource limit
+  reference:
+    - title: Pennsylvania Cash Assistance Handbook | 140.11 Resource Limits
+      href: http://services.dpw.state.pa.us/oimpolicymanuals/cash/index.htm#t=140_Resources%2F140_1_General_Policy.htm&rhsearch=1%2C000&rhsyns=%20
+    - title: Pennsylvania code - 140.11 Resource Limits
+      href: https://www.pacodeandbulletin.gov/Display/pacode?file=/secure/pacode/data/055/chapter177/s177.31.html&d=reduce
+  household: false
+  economy: false

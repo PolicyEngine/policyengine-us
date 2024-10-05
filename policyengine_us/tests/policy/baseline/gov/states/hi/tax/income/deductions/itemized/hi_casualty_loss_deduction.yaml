@@ -1,0 +1,75 @@
+- name: base test
+  period: 2022
+  input:
+    people:
+      person1:
+        casualty_loss: 100
+      person2:
+        casualty_loss: 100
+    tax_units:
+      tax_unit:
+        hi_agi: 1_000
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    hi_casualty_loss_deduction: 100
+
+- name: larger AGI
+  period: 2022
+  input:
+    people:
+      person1:
+        casualty_loss: 100
+      person2:
+        casualty_loss: 100
+    tax_units:
+      tax_unit:
+        hi_agi: 2_000
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    hi_casualty_loss_deduction: 0
+  
+- name: larger loss
+  period: 2022
+  input:
+    people:
+      person1:
+        casualty_loss: 200
+      person2:
+        casualty_loss: 100
+    tax_units:
+      tax_unit:
+        hi_agi: 1_000
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    hi_casualty_loss_deduction: 200
+
+- name: AGI exceed loss
+  period: 2022
+  input:
+    people:
+      person1:
+        casualty_loss: 100
+      person2:
+        casualty_loss: 100
+    tax_units:
+      tax_unit:
+        hi_agi: 3_000
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    hi_casualty_loss_deduction: 0

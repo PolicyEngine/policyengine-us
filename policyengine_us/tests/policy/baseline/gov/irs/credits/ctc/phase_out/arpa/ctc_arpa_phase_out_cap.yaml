@@ -1,0 +1,8 @@
+- name: 5% of difference between ARPA and non-ARPA phase-out thresholds (joint).
+  period: 2021
+  input:
+    ctc_arpa_phase_out_threshold: 150_000
+    ctc_phase_out_threshold: 400_000
+    ctc_arpa_max_addition: 15_000 # e.g. 15 kids * $1,000 extra.
+  output:
+    ctc_arpa_phase_out_cap: 12_500 # 400k - 150k = 250k * 0.05 = 12.5k

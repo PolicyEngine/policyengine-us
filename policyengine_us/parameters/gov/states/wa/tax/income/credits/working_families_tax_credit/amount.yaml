@@ -1,0 +1,43 @@
+description: Washington Working Families Tax Credit maximum amount by number of children.
+metadata:
+  label: Washington Working Families Tax Credit maximum amount by number of children
+  type: single_amount
+  threshold_unit: person
+  amount_unit: currency-USD
+  period: year
+  reference:
+    - title: RCW 82.08.0206 Exemptions—Working families—Eligible low-income persons—Penalties. (3)(a)
+      href: https://app.leg.wa.gov/RCW/default.aspx?cite=82.08.0206
+    - title: Tax year 2023 applications now being accepted for the Working Families Tax Credit
+      href: https://dor.wa.gov/about/news-releases/2024/tax-year-2023-applications-now-being-accepted-working-families-tax-credit
+    # The instruction didn't mention the specific amount.
+    - title: 2023 Working Families Tax Credit Application Instructions 
+      href: https://workingfamiliescredit.wa.gov/sites/default/files/2024-01/WFTC_AppInstr_English_2023.pdf
+    - title: 2023 Working Families Tax Credit Application
+      href: https://workingfamiliescredit.wa.gov/sites/default/files/2024-01/WFTC_app_2023_English.pdf
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: nearest
+      interval: 5
+brackets:
+  - threshold:
+      2022-01-01: 0
+    amount:
+      2022-01-01: 300
+      2023-01-01: 315
+  - threshold:
+      2022-01-01: 1
+    amount:
+      2022-01-01: 600
+      2023-01-01: 625
+  - threshold:
+      2022-01-01: 2
+    amount:
+      2022-01-01: 900
+      2023-01-01: 940
+  - threshold:
+      2022-01-01: 3
+    amount:
+      2022-01-01: 1_200
+      2023-01-01: 1_255

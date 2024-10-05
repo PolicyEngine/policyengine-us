@@ -1,0 +1,20 @@
+description: The Department of Eduction limits the Pell Grant to filers with adjust gross income above this fraction of federal poverty guidelines, based on filing and dependent status.
+
+DEPENDENT_SINGLE:
+  2024-01-01: 3.25
+DEPENDENT_NOT_SINGLE:
+  2024-01-01: 2.75
+INDEPENDENT_SINGLE:
+  2024-01-01: 4
+INDEPENDENT_NOT_SINGLE:
+  2024-01-01: 3.5
+INDEPENDENT_NOT_PARENT:
+  2024-01-01: 2.75
+
+metadata:
+  unit: /1
+  period: year
+  label: Minimum Pell Grant income limits
+  reference:
+    - title: FAFSA® Pell Eligibility and SAI Guide | Step 3
+      href: https://fsapartners.ed.gov/sites/default/files/2024-01/20242025FAFSAPellEligibilityandSAIGuide.pdf#page=30

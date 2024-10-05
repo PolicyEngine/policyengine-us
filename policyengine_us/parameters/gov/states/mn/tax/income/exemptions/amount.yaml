@@ -1,0 +1,26 @@
+description: Minnesota allows this exemption amount per dependent.
+values:
+  2021-01-01: 4_350
+  2022-01-01: 4_450
+  2023-01-01: 4_800
+
+metadata:
+  period: year
+  unit: currency-USD
+  label: Minnesota exemption amount per dependent
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
+  reference:
+  - title: Minnesota Statutes 290.0121 DEPENDENT EXEMPTION. Subd. 1.Exemption amount.
+    href: https://www.revisor.mn.gov/statutes/cite/290.0121#stat.290.0121.1
+  - title: Minnesota Statutes, 290.0121 Subd. 3.Inflation adjustment.
+    href: https://www.revisor.mn.gov/statutes/cite/290.0123#stat.290.0121.3
+  - title: 2021 Minnesota Form M1 instructions, Worksheet for Line 5
+    href: https://www.revenue.state.mn.us/sites/default/files/2023-12/m1_inst_21.pdf#page=13
+  - title: 2022 Minnesota Form M1 instructions, Worksheet for Line 5
+    href: https://www.revenue.state.mn.us/sites/default/files/2024-02/m1-inst-22.pdf#page=13
+  - title: 2023 Minnesota Form M1 instructions, Worksheet for Line 5
+    href: https://www.revenue.state.mn.us/sites/default/files/2024-02/m1-inst-23.pdf#page=14

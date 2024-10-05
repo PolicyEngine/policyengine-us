@@ -1,0 +1,35 @@
+- name: OK income tax before credits unit test 1
+  period: 2021
+  input:
+    filing_status: SINGLE
+    ok_taxable_income: 10_000
+    state_code: OK
+  output:  # from hand calculation to avoid whole-dollar rounding
+    ok_income_tax_before_credits: 311.5
+
+- name: OK income tax before credits unit test 2
+  period: 2021
+  input:
+    filing_status: JOINT
+    ok_taxable_income: 110_000
+    state_code: OK
+  output:  # from filling out 2021 tax computation worksheet
+    ok_income_tax_before_credits: 0.05 * 10_000 + 4_645
+
+- name: OK income tax before credits unit test 3
+  period: 2022
+  input:
+    filing_status: SINGLE
+    ok_taxable_income: 20_000
+    state_code: OK
+  output:  # from hand calculation to avoid whole-dollar rounding
+    ok_income_tax_before_credits: 761.5
+
+- name: OK income tax before credits unit test 4
+  period: 2022
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    ok_taxable_income: 120_000
+    state_code: OK
+  output:  # from filling out 2022 tax computation worksheet
+    ok_income_tax_before_credits: 0.0475 * 20_000 +  4_395

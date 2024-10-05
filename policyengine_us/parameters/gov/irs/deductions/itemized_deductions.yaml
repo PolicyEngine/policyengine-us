@@ -1,0 +1,24 @@
+description: Deductions from taxable income if itemizing (that are not available if not itemizing).
+values:
+  2018-01-01:
+    - charitable_deduction
+    - interest_deduction
+    - salt_deduction
+    - medical_expense_deduction
+    - casualty_loss_deduction
+  2020-01-01:
+    - charitable_deduction  
+    - charitable_deduction_for_non_itemizers
+    - interest_deduction
+    - salt_deduction
+    - medical_expense_deduction
+    - casualty_loss_deduction
+  2022-01-01:
+    - charitable_deduction
+    - interest_deduction
+    - salt_deduction
+    - medical_expense_deduction
+    - casualty_loss_deduction
+metadata:
+  unit: list
+  label: itemized deductions

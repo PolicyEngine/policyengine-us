@@ -1,0 +1,37 @@
+description: Maximum standard deduction for dependents
+values:
+  2018-01-01: 1_050
+  2019-01-01: 1_100
+  2022-01-01: 1_150
+  2023-01-01: 1_250
+  2024-01-01: 1_300
+  # CBO forecast.
+  2025-01-01: 1_350
+  2026-01-01: 1_350
+  2027-01-01: 1_400
+  2028-01-01: 1_400
+  2029-01-01: 1_450
+  2030-01-01: 1_450
+  2031-01-01: 1_500
+  2032-01-01: 1_550
+  2033-01-01: 1_550
+  2034-01-01: 1_600
+metadata:
+  unit: currency-USD
+  reference:
+    - title: 2024 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-23-34.pdf#page=14
+    - title: 2023 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-22-38.pdf#page=13
+    - title: 2022 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-21-45.pdf
+    - title: 2021 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-20-45.pdf
+    - title: 2020 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-19-44.pdf
+    - title: 2019 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-18-57.pdf
+    - title: CBO Tax Parameters and Effective Marginal Tax Rates | Feb 2024
+      # 1. Tax Parameters.
+      href: https://www.cbo.gov/system/files/2024-02/53724-2024-02-Tax-Parameters.xlsx
+  uprating: gov.irs.uprating

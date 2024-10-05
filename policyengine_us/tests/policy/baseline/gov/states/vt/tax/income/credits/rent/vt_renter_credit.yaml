@@ -1,0 +1,91 @@
+- name: test 1, no subsidized
+  period: 2022
+  input:
+    vt_renter_credit_income: 24_500
+    county: ADDISON_COUNTY_VT
+    tax_unit_size: 2
+    rent_is_shared_with_another_tax_unit: false
+    housing_assistance: 0
+    rent: 1_000
+    state_code: VT
+  output:
+    vt_renter_credit: 1_161
+
+- name: test 2, have subsidized
+  period: 2022
+  input:
+    vt_renter_credit_income: 24_500
+    county: ADDISON_COUNTY_VT
+    tax_unit_size: 2
+    rent_is_shared_with_another_tax_unit: false
+    housing_assistance: 50
+    rent: 5_000
+    state_code: VT
+  output:
+    vt_renter_credit: 433
+
+- name: test 3, have subsidized, share rent
+  period: 2022
+  input:
+    vt_renter_credit_income: 24_500
+    county: ADDISON_COUNTY_VT
+    tax_unit_size: 2
+    rent_is_shared_with_another_tax_unit: true
+    housing_assistance: 50
+    rent: 5_000
+    state_code: VT
+  output:
+    vt_renter_credit: 217
+
+- name: test 4, income higher than partial credit limit. 
+  period: 2022
+  input:
+    vt_renter_credit_income: 40_000
+    county: ADDISON_COUNTY_VT
+    tax_unit_size: 2
+    rent_is_shared_with_another_tax_unit: false
+    housing_assistance: 0
+    rent: 0
+    state_code: VT
+  output:
+    vt_renter_credit: 0
+
+- name: test 5, income lower than full credit limit. 
+  period: 2022
+  input:
+    vt_renter_credit_income: 5_000
+    county: ADDISON_COUNTY_VT
+    tax_unit_size: 2
+    rent_is_shared_with_another_tax_unit: false
+    housing_assistance: 0
+    rent: 0
+    state_code: VT
+  output:
+    vt_renter_credit: 1_340
+
+- name: test 6 no subsidized
+  period: 2022
+  input:
+    vt_renter_credit_income: 24_500
+    county: BENNINGTON_COUNTY_VT
+    tax_unit_size: 2
+    rent_is_shared_with_another_tax_unit: false
+    housing_assistance: 0
+    rent: 1_000
+    state_code: VT
+  output:
+    vt_renter_credit: 874
+
+- name: test 7 test for 0 situations in formula 
+  period: 2022
+  input:
+    vt_renter_credit_income: 24_500
+    county: BENNINGTON_COUNTY_VT
+    tax_unit_size: 2
+    rent_is_shared_with_another_tax_unit: false
+    housing_assistance: 0
+    rent: 1_000
+    state_code: VT
+  output:
+    vt_renter_credit: 874
+    

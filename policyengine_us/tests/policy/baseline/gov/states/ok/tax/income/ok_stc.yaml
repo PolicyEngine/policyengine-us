@@ -1,0 +1,36 @@
+- name: OK sales tax credit unit test 1
+  period: 2021
+  input:
+    filing_status: JOINT
+    greater_age_head_spouse: 65
+    tax_unit_dependents: 2
+    tax_unit_size: 4
+    ok_gross_income: 21_000
+    state_code: OK
+  output:
+    ok_stc: 4 * 40
+
+- name: OK sales tax credit unit test 2
+  period: 2021
+  input:
+    filing_status: JOINT
+    greater_age_head_spouse: 60
+    tax_unit_dependents: 2
+    tax_unit_size: 4
+    ok_gross_income: 51_000
+    state_code: OK
+  output:
+    ok_stc: 0
+
+- name: OK sales tax credit unit test 3
+  period: 2021
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    greater_age_head_spouse: 30
+    tax_unit_dependents: 1
+    tax_unit_size: 2
+    ok_gross_income: 18_000
+    ok_tanf: 2_000
+    state_code: OK
+  output:
+    ok_stc: 0

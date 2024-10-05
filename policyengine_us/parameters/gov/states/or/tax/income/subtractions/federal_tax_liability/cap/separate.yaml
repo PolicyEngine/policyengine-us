@@ -1,0 +1,76 @@
+description: Oregon caps its federal tax liability subtraction for married filing separately filers at this amount, depending on federal AGI.
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: currency-USD
+  period: year
+  label: Oregon federal tax liability subtraction cap for married filing separately filers
+  reference:
+    - title: Chapter 316 - Personal Income Tax
+      href: https://www.oregonlegislature.gov/bills_laws/ors/ors316.html #316.800
+    - title: 2021 Oregon Income Tax Form OR-40 Instructions
+      href: https://www.oregon.gov/dor/forms/FormsPubs/form-or-40-inst_101-040-1_2021.pdf#page=13
+    - title: 2022 Oregon Income Tax Form OR-40 Instructions
+      href: https://www.oregon.gov/dor/forms/FormsPubs/form-or-40-inst_101-040-1_2022.pdf#page=14
+    - title: 2023 Oregon Income Tax Form OR-40 Instructions
+      href: https://www.oregon.gov/dor/forms/FormsPubs/form-or-40-inst_101-040-1_2023.pdf#page=14
+brackets:
+  - threshold:
+      2021-01-01: 0
+    amount:
+      2021-01-01: 3_525
+      2022-01-01: 3_625
+      2023-01-01: 3_900
+    metadata:
+      uprating: gov.irs.uprating
+      rounding:
+        type: downwards
+        interval: 25
+  - threshold:
+      2021-01-01: 125_000
+    amount:
+      2021-01-01: 2_825
+      2022-01-01: 2_900
+      2023-01-01: 3_125
+    metadata:
+      uprating: gov.irs.uprating
+      rounding:
+        type: downwards
+        interval: 25
+  - threshold:
+      2021-01-01: 130_000
+    amount:
+      2021-01-01: 2_100
+      2022-01-01: 2_175
+      2023-01-01: 2_350
+    metadata:
+      uprating: gov.irs.uprating
+      rounding:
+        type: downwards
+        interval: 25
+  - threshold:
+      2021-01-01: 135_000
+    amount:
+      2021-01-01: 1_400
+      2022-01-01: 1_450
+      2023-01-01: 1_550
+    metadata:
+      uprating: gov.irs.uprating
+      rounding:
+        type: downwards
+        interval: 25
+  - threshold:
+      2021-01-01: 140_000
+    amount:
+      2021-01-01: 700
+      2022-01-01: 725
+      2023-01-01: 775
+    metadata:
+      uprating: gov.irs.uprating
+      rounding:
+        type: downwards
+        interval: 25
+  - threshold:
+      2021-01-01: 145_000
+    amount:
+      2021-01-01: 0

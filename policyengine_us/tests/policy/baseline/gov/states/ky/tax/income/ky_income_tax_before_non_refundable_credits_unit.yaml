@@ -1,0 +1,39 @@
+- name: 2021, separate
+  period: 2021
+  input:
+    ky_files_separately: true
+    ky_taxable_income_indiv: 100
+    ky_taxable_income_joint: 200
+    state_code: KY
+  output:
+    ky_income_tax_before_non_refundable_credits_unit: 5
+
+- name: 2021, joint
+  period: 2021
+  input:
+    ky_files_separately: false
+    ky_taxable_income_indiv: 100
+    ky_taxable_income_joint: 200
+    state_code: KY
+  output:
+    ky_income_tax_before_non_refundable_credits_unit: 10
+
+- name: 2023, joint
+  period: 2023
+  input:
+    ky_files_separately: false
+    ky_taxable_income_indiv: 100
+    ky_taxable_income_joint: 200
+    state_code: KY
+  output:
+    ky_income_tax_before_non_refundable_credits_unit: 9
+
+- name: 2024, joint
+  period: 2024
+  input:
+    ky_files_separately: false
+    ky_taxable_income_indiv: 100
+    ky_taxable_income_joint: 200
+    state_code: KY
+  output:
+    ky_income_tax_before_non_refundable_credits_unit: 8

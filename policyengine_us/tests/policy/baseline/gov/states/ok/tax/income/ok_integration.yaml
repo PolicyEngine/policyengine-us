@@ -1,0 +1,30 @@
+- name: Tax unit with taxsimid 55 in p21.its.csv and p21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 48
+        employment_income: 12_010
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
+    tax_units:
+      tax_unit:
+        members: [person1]
+        premium_tax_credit: 0  # not in TAXSIM35
+        ok_use_tax: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:  # expected results from patched TAXSIM35 2023-03-26 version
+    eitc: 1_440.80
+    ok_eitc: 72.04
+    ok_income_tax: -39.74

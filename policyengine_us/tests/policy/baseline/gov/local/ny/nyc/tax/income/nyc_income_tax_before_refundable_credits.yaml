@@ -1,0 +1,17 @@
+- name: Credits reduce tax liability but not below zero.
+  period: 2022
+  input:
+    nyc_income_tax_before_credits: 5
+    nyc_non_refundable_credits: 3
+    in_nyc: true
+  output:
+    nyc_income_tax_before_refundable_credits: 2
+
+- name: Credits reduce tax liability to zero
+  period: 2022
+  input:
+    nyc_income_tax_before_credits: 5
+    nyc_non_refundable_credits: 6
+    in_nyc: true
+  output:
+    nyc_income_tax_before_refundable_credits: 0

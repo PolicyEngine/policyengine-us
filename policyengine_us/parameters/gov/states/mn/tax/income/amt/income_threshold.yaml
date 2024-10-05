@@ -1,0 +1,25 @@
+description: Minnesota has an alternative income tax (AMT) levied only on some tax units with AMT taxable income above this threshold.
+metadata:
+  label: Minnesota AMT taxable income threshold
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  reference:
+  - title: 2021 Minnesota Schedule M1MT form, Line 22
+    href: https://www.revenue.state.mn.us/sites/default/files/2023-02/m1mt_21.pdf#page=1
+  - title: 2022 Minnesota Schedule M1MT form, Line 22
+    href: https://www.revenue.state.mn.us/sites/default/files/2023-01/m1mt_22.pdf#page=1
+  - title: 2023 Minnesota Schedule M1MT form, Line 22
+    href: https://www.revenue.state.mn.us/sites/default/files/2023-12/m1mt_23.pdf#page=1
+
+JOINT:
+  2021-01-01: 150_000
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 112_500
+SURVIVING_SPOUSE:
+  2021-01-01: 150_000
+SINGLE:
+  2021-01-01: 112_500
+SEPARATE:
+  2021-01-01: 75_000

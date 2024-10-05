@@ -1,0 +1,52 @@
+description: Progressive rate schedule for a head-of-household filer in Maine. 
+metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  period: year
+  rate_unit: /1
+  label: Maine State income tax rates for head-of-household filers
+  reference:
+    - title: Maine §5111. Imposition and rate of tax 2-F
+      href: https://www.mainelegislature.org/legis/statutes/36/title36sec5111.html
+    - title: §5403. Annual adjustments for inflation 1(A)
+      href: https://legislature.maine.gov/statutes/36/title36sec5403.html
+    - title: Maine 2021 Individual Income Tax Rate Schedules
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/21_1040me_tax_tables.pdf#page=5
+    - title: Maine 2022 Individual Income Tax Form 1040ME
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/22_1040me_dwnld_ff.pdf#page=2
+    - title: Maine 2022 Individual Income Tax Rate Schedules
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/22_1040me_tax_tables.pdf#page=5
+    - title: Maine 2023	Individual Income Tax Rate Schedules
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/23_1040me_tax_tables.pdf#page=5
+
+brackets:
+  - threshold:
+      2017-01-01: 0
+    rate:
+      2017-01-01: 0.058
+  - threshold:
+      values:
+        2017-01-01: 31_550
+        2021-01-01: 33_650
+        2022-01-01: 34_500
+        2023-01-01: 36_750
+      uprating:
+        parameter: gov.irs.uprating
+        rounding:
+          type: downwards
+          interval: 50
+    rate:
+      2017-01-01: 0.0675
+  - threshold:
+      values:
+        2017-01-01: 75_000
+        2021-01-01: 79_750
+        2022-01-01: 81_700
+        2023-01-01: 87_100
+      uprating:
+        parameter: gov.irs.uprating
+        rounding:
+          type: downwards
+          interval: 50
+    rate:
+      2017-01-01: 0.0715

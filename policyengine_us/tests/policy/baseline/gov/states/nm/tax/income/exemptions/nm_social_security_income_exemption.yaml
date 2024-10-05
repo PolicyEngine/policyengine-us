@@ -1,0 +1,39 @@
+- name: No agi
+  period: 2023
+  input:
+    state_code: NM
+    filing_status: SINGLE
+    tax_unit_taxable_social_security: 0
+    adjusted_gross_income: 0
+  output:
+    nm_social_security_income_exemption: 0
+
+- name: AGI above limit - single
+  period: 2023
+  input:
+    state_code: NM
+    filing_status: SINGLE
+    tax_unit_taxable_social_security: 70_000
+    adjusted_gross_income: 100_001
+  output:
+    nm_social_security_income_exemption: 0
+
+- name: AGI below limit - single
+  period: 2023
+  input:
+    state_code: NM
+    filing_status: SINGLE
+    tax_unit_taxable_social_security: 80_000
+    adjusted_gross_income: 100_000
+  output:
+    nm_social_security_income_exemption: 80_000
+
+- name: AGI below limit - joint
+  period: 2023
+  input:
+    state_code: NM
+    filing_status: JOINT
+    tax_unit_taxable_social_security: 149_000
+    adjusted_gross_income: 150_000
+  output:
+    nm_social_security_income_exemption: 149_000

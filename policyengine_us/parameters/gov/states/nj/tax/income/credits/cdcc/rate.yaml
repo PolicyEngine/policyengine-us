@@ -1,0 +1,41 @@
+description: New Jersey matches this share of the federal Child and Dependent Care Credit, depending on taxable income.
+metadata:
+  threshold_unit: currency-USD
+  amount_unit: /1
+  threshold_period: year
+  type: single_amount
+  label: New Jersey CDCC match rate
+  reference: 
+    - title: Child and Dependent Care Credit
+      href: https://www.nj.gov/treasury/taxation/depcarecred.shtml
+    - title: 2022 Instructions for Form NJ-1040 (line 64)
+      href: https://www.state.nj.us/treasury/taxation/pdf/other_forms/tgi-ee/2021/1040i.pdf#page=44
+    - title: 2022 Instructions for Form NJ-1040 (line 64)
+      href: https://www.nj.gov/treasury/taxation/pdf/other_forms/tgi-ee/2022/1040i.pdf#page=44
+    - title: 2023 Instructions for Form NJ-1040 (line 64)
+      href: https://www.state.nj.us/treasury/taxation/pdf/current/1040i.pdf#page=45
+brackets:
+  - threshold:  
+      2021-01-01: -.inf
+    amount:
+      2021-01-01: 0.5
+  - threshold:  
+      2021-01-01: 30_000
+    amount:
+      2021-01-01: 0.4
+  - threshold:
+      2021-01-01: 60_000
+    amount:
+      2021-01-01: 0.3
+  - threshold:
+      2021-01-01: 90_000
+    amount:
+      2021-01-01: 0.2
+  - threshold:
+      2021-01-01: 120_000
+    amount:
+      2021-01-01: 0.1
+  - threshold:
+      2021-01-01: 150_000
+    amount:
+      2021-01-01: 0

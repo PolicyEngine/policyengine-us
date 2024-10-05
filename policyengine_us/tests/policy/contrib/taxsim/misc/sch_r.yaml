@@ -1,0 +1,22 @@
+- name: Tax unit with SchR credit
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: 1
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        age: 67
+        taxable_pension_income: 16000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        premium_tax_credit: 0
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    taxsim_tfica: 0.00
+    income_tax: -1337.50

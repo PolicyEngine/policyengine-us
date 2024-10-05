@@ -1,0 +1,17 @@
+description: Deductions from taxable income if not itemizing.
+values:
+  2018-01-01:
+    - standard_deduction
+    - qualified_business_income_deduction
+    - tuition_and_fees_deduction
+  2020-01-01:
+    - charitable_deduction_for_non_itemizers
+    - standard_deduction
+    - qualified_business_income_deduction
+  2022-01-01:
+    - standard_deduction
+    - qualified_business_income_deduction
+metadata:
+  unit: list
+  period: year
+  label: Taxable income deductions if itemizing

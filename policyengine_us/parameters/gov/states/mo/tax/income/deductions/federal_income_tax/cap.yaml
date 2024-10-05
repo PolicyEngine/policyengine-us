@@ -1,0 +1,22 @@
+description: Missouri allows filers to deduct up to this amount in federal income taxes, after applying the rate.
+SINGLE: 
+  2021-01-01: 10_000
+JOINT:
+  2021-01-01: 10_000
+SEPARATE:
+  2021-01-01: 5_000
+HEAD_OF_HOUSEHOLD: 
+  2021-01-01: 10_000
+SURVIVING_SPOUSE:
+  2021-01-01: 10_000
+metadata:
+  unit: currency-USD
+  period: year
+  label: Missouri federal income tax deduction caps
+  reference:
+    - title: 2021 Missouri Form MO-1040 Individual Income Tax Long Form Instructions
+      href: https://dor.mo.gov/forms/MO-1040%20Instructions_2021.pdf
+    - title: Revisor of Missouri Title X TAXATION AND REVENUE Chapter 143.171
+      href: https://revisor.mo.gov/main/OneSection.aspx?section=143.171&bid=49937&hl=federal+income+tax+deduction%u2044
+  breakdown:
+  - filing_status

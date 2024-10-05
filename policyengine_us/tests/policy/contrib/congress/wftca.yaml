@@ -1,0 +1,17 @@
+- name: WFTCA for a single filer
+  period: 2023
+  input:
+    gov.contrib.congress.wftca.bonus_guaranteed_deduction.amount.SINGLE: 2_000
+  output:
+    bonus_guaranteed_deduction: 2_000
+
+- name: WFTCA for a joint household over the phase-out region
+  period: 2023
+  input:
+    gov.contrib.congress.wftca.bonus_guaranteed_deduction.amount.JOINT: 4_000
+    gov.contrib.congress.wftca.bonus_guaranteed_deduction.phase_out.rate: 0.05
+    gov.contrib.congress.wftca.bonus_guaranteed_deduction.phase_out.threshold.JOINT: 400_000
+    employment_income: 500_000
+    filing_status: JOINT
+  output:
+    bonus_guaranteed_deduction: 0

@@ -1,0 +1,31 @@
+- name: Household with no income is eligible. (0+0<1)
+  period: 2023
+  input:
+    state_code: NY
+    ny_tanf_need_standard: 1
+    ny_tanf_countable_earned_income: 0
+    ny_tanf_countable_gross_unearned_income: 0
+  output:
+    ny_tanf_income_eligible: true
+
+
+- name: Household with income exceeding need standard is ineligible. (1+1>1)
+  period: 2023
+  input:
+    state_code: NY
+    ny_tanf_need_standard: 1
+    ny_tanf_countable_earned_income: 1
+    ny_tanf_countable_gross_unearned_income: 1
+  output:
+    ny_tanf_income_eligible: false
+
+
+- name: Household with income equals need standard is ineligible. (1+0=1)
+  period: 2023
+  input:
+    state_code: NY
+    ny_tanf_need_standard: 1
+    ny_tanf_countable_earned_income: 1
+    ny_tanf_countable_gross_unearned_income: 0
+  output:
+    ny_tanf_income_eligible: false

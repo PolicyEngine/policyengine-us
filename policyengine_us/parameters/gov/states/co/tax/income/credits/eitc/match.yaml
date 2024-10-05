@@ -1,0 +1,29 @@
+description: Colorado matches this fraction of the federal Earned Income Tax Credit.
+values:
+  2021-01-01: 0.1
+  2022-01-01: 0.2
+  2023-01-01: 0.5
+  # HB24-1134 increases the match to 50% in 2024.
+  2024-01-01: 0.5
+  # It also increases the amounts for 2025 and 2026
+  # regardless of state revenue.
+  # It can rise higher depending on state revenue.
+  2025-01-01: 0.35
+  2026-01-01: 0.25
+  2034-01-01: 0.10
+metadata:
+  period: year
+  unit: /1
+  label: Colorado EITC match 
+  reference:
+    - title: C.R.S. 39-22-123.5
+      href: https://advance.lexis.com/documentpage/?pdmfid=1000516&crid=ad7daeaa-b9cd-4f50-9c62-7bddb226d77c&nodeid=ABPAACAACAABAACABH&nodepath=%2FROOT%2FABP%2FABPAAC%2FABPAACAAC%2FABPAACAACAAB%2FABPAACAACAABAAC%2FABPAACAACAABAACABH&level=6&haschildren=&populated=false&title=39-22-123.5.+Earned+income+tax+credit+-+legislative+declaration+-+repeal.&config=014FJAAyNGJkY2Y4Zi1mNjgyLTRkN2YtYmE4OS03NTYzNzYzOTg0OGEKAFBvZENhdGFsb2d592qv2Kywlf8caKqYROP5&pddocfullpath=%2Fshared%2Fdocument%2Fstatutes-legislation%2Furn%3AcontentItem%3A6B7G-SG43-RTYH-3036-00008-00&ecomp=6gf59kk&prid=22d89c10-a7eb-48af-90ff-837a5559904e
+    - title: Individual Estimated Income Tax
+      href: https://tax.colorado.gov/sites/tax/files/documents/DR_0104EP_2023.pdf
+    # Increases not yet reflected in the legal code.
+    - title: HB24-1134
+      href: https://leg.colorado.gov/bills/hb24-1134
+    - title: 2022 Colorado Individual Income Tax Filing Guide, Line 5
+      href: https://tax.colorado.gov/sites/tax/files/documents/DR_0104_Book_2022.pdf#page=16 
+    - title: 2023 Colorado Individual Tax Filing Guide 104 Book, Line 5
+      href: https://tax.colorado.gov/sites/tax/files/documents/Book0104_2023.pdf#page=18

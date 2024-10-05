@@ -1,0 +1,28 @@
+description: Hawaii qualifies filers for itemized deductions with deductions over this amount, based on filing status.
+SINGLE:
+  2018-01-01: 2_200
+JOINT:
+  2018-01-01: 4_400
+SEPARATE:
+  2018-01-01: 2_200
+HEAD_OF_HOUSEHOLD:
+  2018-01-01: 3_212
+SURVIVING_SPOUSE:
+  2018-01-01: 4_400
+metadata:
+  breakdown: filing_status
+  unit: currency-USD
+  label: Hawaii itemized deductions deductions threshold 
+  reference:
+    - title: 2022 Hawaii Resident Income Tax Instructions Itemized Deductions Worksheet
+      href: https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=32
+    - title: 2021 Hawaii Resident Income Tax Instructions Itemized Deductions Worksheet
+      href: https://files.hawaii.gov/tax/forms/2021/n11ins.pdf#page=32
+    - title: 2020 Hawaii Resident Income Tax Instructions Itemized Deductions Worksheet
+      href: https://files.hawaii.gov/tax/forms/2020/n11ins.pdf#page=34
+    - title: 2019 Hawaii Resident Income Tax Instructions Itemized Deductions Worksheet
+      href: https://files.hawaii.gov/tax/forms/2019/n11ins.pdf#page=38
+    - title: 2018 Hawaii Resident Income Tax Instructions Itemized Deductions Worksheet
+      href: https://files.hawaii.gov/tax/forms/2018/n11ins.pdf#page=38
+    - title: Hawaii Income Tax Law, Chapter 235, Section 235-2.4, (a)(2)
+      href: https://files.hawaii.gov/tax/legal/hrs/hrs_235.pdf#page=10

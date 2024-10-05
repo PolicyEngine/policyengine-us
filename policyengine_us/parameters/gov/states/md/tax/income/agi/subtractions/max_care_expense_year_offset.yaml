@@ -1,0 +1,18 @@
+description: Decoupled year offset for maximum CDCC expense cap
+values:
+  2019-01-01: 0   # use current year federal CDCC maximum expense cap
+  2020-01-01: -1  # use 2019 federal CDCC maximum expense cap 
+  2021-01-01: -2  # use 2019 federal CDCC maximum expense cap
+  2022-01-01: 0   # use current year federal CDCC maximum expense cap
+metadata:
+  reference:
+    - title: "Form 502, line 9"
+      href: https://www.marylandtaxes.gov/forms/21_forms/Resident_Booklet.pdf
+    - title: 2023 State & Local Tax Forms & Instructions Maryland
+      href: https://www.marylandtaxes.gov/forms/23_forms/Resident-Booklet.pdf#page=14
+    # The legal code has been ammendet and does not reflect pre-2023 rules
+    - title: Md. Code, Tax-Gen. § 10-207 (r)
+      href: https://casetext.com/statute/code-of-maryland/article-tax-general/title-10-income-tax/subtitle-2-maryland-taxable-income-calculations-for-individual/part-ii-maryland-adjusted-gross-income/section-10-207-applicable-112024-subtractions-from-federal-adjusted-gross-income-in-general
+  unit: int
+  period: year
+  label: Decoupled year offset for maximum CDCC expense cap

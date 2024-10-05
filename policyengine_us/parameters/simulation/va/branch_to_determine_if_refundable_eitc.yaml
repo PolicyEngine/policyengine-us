@@ -1,0 +1,6 @@
+description: PolicyEngine branches to determine whether filers claim the refundable over non-refundable Virginia EITC, as they can choose depending on which minimizes tax liability.
+values:
+  0000-01-01: false
+metadata:
+  unit: bool
+  label: Branch to determine Virginia refundability

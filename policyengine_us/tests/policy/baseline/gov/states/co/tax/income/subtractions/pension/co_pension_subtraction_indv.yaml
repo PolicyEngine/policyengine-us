@@ -1,0 +1,116 @@
+- name: Case 1, age above older threshold, social_security >= $24_000.
+  period: 2022
+  input:
+    age: 65
+    co_social_security_subtraction_indv: 24_000
+    co_pension_subtraction_income: 23_000
+    pension_survivors: 5_000
+    co_pension_subtraction_indv_eligible: true
+  output:
+    co_pension_subtraction_indv: 0
+    # not eligible if social_security >= 24_000
+
+- name: Spouse eligible same as head eligible
+  period: 2022
+  input:
+    age: 65
+    co_social_security_subtraction_indv: 15_000
+    co_pension_subtraction_income: 20_000
+    pension_survivors: 5_000
+    co_pension_subtraction_indv_eligible: true
+  output:
+    co_pension_subtraction_indv: 9_000
+    # min(24_000 - co_social_security, taxable_pension_income) = min(24_000 - 15_000, 20_000)
+
+- name: Case 2, age above older threshold, social_security < $24_000.
+  period: 2022
+  input:
+    age: 65
+    co_social_security_subtraction_indv: 0
+    co_pension_subtraction_income: 25_000
+    pension_survivors: 5_000
+    co_pension_subtraction_indv_eligible: true
+  output:
+    co_pension_subtraction_indv: 24_000
+
+- name: Case 3, age between 55 and 65, social_security < $20_000.
+  period: 2022
+  input:
+    age: 64
+    co_social_security_subtraction_indv: 15_000
+    co_pension_subtraction_income: 20_000
+    pension_survivors: 3_000
+    co_pension_subtraction_indv_eligible: true
+  output:
+    co_pension_subtraction_indv: 5_000
+  # min(20_000 - co_social_security, taxable_pension_income) = min(20_000 - 15_000, 20_000)
+
+- name: Age between 55 and 65, capped at 20_000
+  period: 2022
+  input:
+    age: 64
+    co_social_security_subtraction_indv: 0
+    co_pension_subtraction_income: 21_000
+    pension_survivors: 3_000
+    co_pension_subtraction_indv_eligible: true
+  output:
+    co_pension_subtraction_indv: 20_000
+
+- name: Case 4, age between 55 and 65, social_security >= $20_000.
+  period: 2022
+  input:
+    age: 55
+    co_social_security_subtraction_indv: 21_000
+    co_pension_subtraction_income: 20_000
+    pension_survivors: 3_000
+    co_pension_subtraction_indv_eligible: true
+  output:
+    co_pension_subtraction_indv: 0
+  # not eligible if social_security >= 20_000 when 55 < age <= 65
+
+- name: Case 5, age < 55, social_security >= $20_000. .
+  period: 2022
+  input:
+    age: 54 
+    co_social_security_subtraction_indv: 21_000
+    co_pension_subtraction_income: 20_000
+    pension_survivors: 3_000
+    co_pension_subtraction_indv_eligible: true
+  output:
+    co_pension_subtraction_indv: 0
+    # not eligible if social_security >= 20_000 when age < 55
+
+- name: Case 6, age < 55, social_security < $20_000. 
+  period: 2022
+  input:
+    age: 54  
+    co_social_security_subtraction_indv: 8_000
+    co_pension_subtraction_income: 20_000
+    pension_survivors: 3_000
+    co_pension_subtraction_indv_eligible: true
+  output:
+    co_pension_subtraction_indv: 3_000
+    # min(20_000 - social_security,pension_survivors) = min(20_000 - 8_000 , 3_000) 
+  
+- name: Case 7, age < 55, social_security < $20_000. 
+  period: 2022
+  input:
+    age: 54 
+    co_social_security_subtraction_indv: 8_000
+    co_pension_subtraction_income: 20_000
+    pension_survivors: 13_000
+    co_pension_subtraction_indv_eligible: true
+  output:
+    co_pension_subtraction_indv: 12_000
+    # min(20_000 - social_security,pension_survivors) = min(20_000 - 8_000 , 13_000) 
+  
+- name: Ineligible
+  period: 2022
+  input:
+    age: 54 
+    co_social_security_subtraction_indv: 8_000
+    co_pension_subtraction_income: 20_000
+    pension_survivors: 13_000
+    co_pension_subtraction_indv_eligible: false
+  output:
+    co_pension_subtraction_indv: 0

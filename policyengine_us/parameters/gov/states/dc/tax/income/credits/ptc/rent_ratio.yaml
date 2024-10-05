@@ -1,0 +1,14 @@
+description: DC property tax credit assumes property taxes are this ratio to rent.
+metadata:
+  unit: /1
+  label: DC property tax credit property tax to rent ratio
+  period: year
+  reference:
+    - title: Code of the District of Columbia § 47–1806.06 (a)(1)
+      href: https://code.dccouncil.gov/us/dc/council/code/sections/47-1806.06#(a)(1)
+    - title: 2021 DC Form D-40 Booklet
+      href: https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/52926_D-40_12.21.21_Final_Rev011122.pdf#page=49
+    - title: 2022 DC Form D-40 Booklet
+      href: https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2022_D-40_Booklet_Final_blk_01_23_23_Ordc.pdf#page=47
+values:
+  2021-01-01: 0.2

@@ -1,0 +1,25 @@
+description: Oklahoma provides a special exemption for those with federal AGI below this amount.
+metadata:
+  label: Oklahoma special exemption federal AGI limit
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  reference:
+  - title: 2021 Form 511 instructions
+    href: https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/past-year/2021/511-Pkt-2021.pdf
+  - title: 2022 Form 511 instructions
+    href: https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/current/511-Pkt.pdf
+  - title: 2023 Form 511 instructions
+    href: https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/current/511-Pkt.pdf#page=9
+
+JOINT:
+  2021-01-01: 25_000
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 19_000
+SURVIVING_SPOUSE:
+  2021-01-01: 25_000
+SINGLE:
+  2021-01-01: 15_000
+SEPARATE:
+  2021-01-01: 12_500

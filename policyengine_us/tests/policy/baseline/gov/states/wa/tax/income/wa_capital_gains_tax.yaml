@@ -1,0 +1,21 @@
+- name: Capital gains tax is 7% above a $250,000 deduction and capped charitable deduction above an exemption.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    long_term_capital_gains: 500_000
+    charitable_cash_donations: 500_000
+    state_code: WA
+  output:
+    # Standard deduction: $250k
+    # Charitable deduction: $100k (capped at (donations - $250k, 100k))
+    # $150k total
+    wa_capital_gains_tax: 150_000 * 0.07
+
+- name: 2021 test
+  period: 2021
+  input:
+    long_term_capital_gains: 500_000
+    charitable_cash_donations: 500_000
+    state_code: WA
+  output:
+    wa_capital_gains_tax: 0

@@ -1,0 +1,24 @@
+- name: No assets
+  period: 2021
+  input:
+    state_code: PA
+    pa_tanf_countable_resources: 0
+  output:
+    pa_tanf_resources_eligible: true
+
+- name: Eligible
+  period: 2021
+  input:
+    state_code: PA
+    pa_tanf_countable_resources: 500
+  output:
+    pa_tanf_resources_eligible: true
+
+
+- name: Ineligible
+  period: 2021
+  input:
+    state_code: PA
+    pa_tanf_countable_resources: 1_001
+  output:
+    pa_tanf_resources_eligible: false 

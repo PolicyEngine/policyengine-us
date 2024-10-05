@@ -1,0 +1,34 @@
+description: New York sets this maximum CDCC based on the number of qualifying dependents.
+brackets:
+  - threshold:
+      2019-01-01: 1
+    amount:
+      2019-01-01: 3_000
+  - threshold:
+      2019-01-01: 2
+    amount:
+      2019-01-01: 6_000
+  - threshold:
+      2019-01-01: 3
+    amount:
+      2019-01-01: 7_500
+  - threshold:
+      2019-01-01: 4
+    amount:
+      2019-01-01: 8_500
+  - threshold:
+      2019-01-01: 5
+    amount:
+      2019-01-01: 9_000
+  
+metadata:
+  type: single_amount
+  threshold_unit: dependent
+  amount_unit: currency-USD
+  amount_period: year
+  label: New York CDCC max amount
+  reference:
+    - title: New York Instructions for Form IT-201 Line 64
+      href: https://www.tax.ny.gov/pdf/2023/printable-pdfs/inc/it201i-2023.pdf#page=26
+    - title: Section 606 Credits against tax (c)(1-b)
+      href: https://www.nysenate.gov/legislation/laws/TAX/606

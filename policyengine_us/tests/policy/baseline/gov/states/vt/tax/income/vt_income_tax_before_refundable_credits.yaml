@@ -1,0 +1,18 @@
+- name: Calculation
+  period: 2022
+  input:
+    vt_income_tax_before_non_refundable_credits: 1_000
+    vt_non_refundable_credits: 800
+    state_code: VT
+  output:
+   # 1,000 - 800 = 200
+    vt_income_tax_before_refundable_credits: 200
+
+- name: Capped at 0
+  period: 2022
+  input:
+    vt_income_tax_before_non_refundable_credits: 800
+    vt_non_refundable_credits: 1_000
+    state_code: VT
+  output:
+    vt_income_tax_before_refundable_credits: 0

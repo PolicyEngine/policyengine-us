@@ -1,0 +1,40 @@
+- name: Total SNAP sums normal and emergency allotments.
+  period: 2022
+  input:
+    snap_normal_allotment: 1
+    snap_emergency_allotment: 
+      2022-01: 2
+      2022-02: 0
+      2022-03: 0
+      2022-04: 0
+      2022-05: 0
+      2022-06: 0
+      2022-07: 0
+      2022-08: 0
+      2022-09: 0
+      2022-10: 0
+      2022-11: 0
+      2022-12: 0
+  output:
+    snap: 3
+
+- name: Total SNAP sums normal and emergency allotments in 2024 with DC temporary local benefit.
+  period: 2024
+  input:
+    snap_normal_allotment: 1
+    snap_emergency_allotment: 
+      2024-01: 2
+      2024-02: 0
+      2024-03: 0
+      2024-04: 0
+      2024-05: 0
+      2024-06: 0
+      2024-07: 0
+      2024-08: 0
+      2024-09: 0
+      2024-10: 0
+      2024-11: 0
+      2024-12: 0
+    dc_snap_temporary_local_benefit: 3 
+  output:
+    snap: 6

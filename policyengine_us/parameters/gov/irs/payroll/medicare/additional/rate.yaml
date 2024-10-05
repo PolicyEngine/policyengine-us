@@ -1,0 +1,13 @@
+description: Additional Medicare Tax rate (same for wages and self-employment earnings).
+values:
+  2013-01-01: 0.009
+metadata:
+  unit: /1
+  label: Additional Medicare Tax rate
+  reference:
+    # Employee:
+    - title: 26 U.S. Code § 3101 - Rate of tax
+      href: https://www.law.cornell.edu/uscode/text/26/3101#b_2
+    # Self-employment:
+    - title: 26 U.S. Code § 1401 - Rate of tax
+      href: https://www.law.cornell.edu/uscode/text/26/1401#b_2

@@ -1,0 +1,19 @@
+description: Rhode Island subtracts up to this amount of taxable retirement income from adjusted gross income.
+values:
+  2017-01-01: 15_000
+  2023-01-01: 20_000
+
+metadata:
+  period: year
+  unit: currency-USD
+  label: Rhode Island taxable retirement income subtraction cap
+  reference:
+  # Age and income thresholds are the same as the social security
+  - title: 2021 RI Schedule M - page 1 RI Modifications to Federal AGI line 1u
+    href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-01/2021-ri-schedule-m_w.pdf#page=1
+  - title: 2022 RI Schedule M - page 1 RI Modifications to Federal AGI line 1t
+    href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-12/2022%20RI%20Schedule%20M_w.pdf#page=1
+  - title: Rhode Island 2023 RI-1040 Instructions
+    href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2023-12/2023%201040R%20Instructions.pdf#page=9
+  - title: § 44-30-12.  Rhode Island income of a resident individual. (c), (9)
+    href: http://webserver.rilin.state.ri.us/Statutes/title44/44-30/44-30-12.HTM

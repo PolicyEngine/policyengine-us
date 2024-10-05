@@ -1,0 +1,11 @@
+description: Los Angeles county requires single filers who receive the general relief grant to contribute this amout of the total garnt towards their rent.
+metadata:
+  label: Los Angeles County general relief housing subsidy single rent contribution
+  unit: currency_USD
+  period: month
+  reference:
+    - title: GR Housing Subsidy and Case Management Program
+      href: https://dpss.lacounty.gov/en/cash/gr/housing.html
+values:
+  2021-07-01: 100 # 1_200 yearly
+

@@ -1,0 +1,8 @@
+- name: Oregon taxable income equals income after subtractions minus deductions
+  period: 2021
+  input:
+    state_code: OR
+    or_agi: 1
+    or_deductions: 1
+  output:
+    or_taxable_income: 0

@@ -1,0 +1,21 @@
+description: Massachusetts taxes Part A short-term capital gains at this rate.
+values:
+  2002-01-01: 0.12
+  2023-01-01: 0.085
+metadata:
+  label: Massachusetts short-term capital gains tax rate
+  reference:
+    - title: "Section 4: Rates of tax for residents, non-residents and corporate trusts (a)(1)" # The rate does not yet reflect the 8.5% change as of 2023-12-22
+      href: https://malegislature.gov/Laws/GeneralLaws/PartI/TitleIX/Chapter62/Section4
+    - title: State Individual Income Tax Rates and Brackets (Tax Foundation)
+      href: https://taxfoundation.org/publications/state-individual-income-tax-rates-and-brackets/
+    - title: "Massachusetts Tax Rates"
+      href: https://www.mass.gov/service-details/massachusetts-tax-rates
+    - title: "Schedule B Interest, Dividends and Certain Capital Gains and Losses"
+      href: https://www.mass.gov/doc/2021-schedule-b-interest-dividends-and-certain-capital-gains-and-losses/download
+    - title: Bill H.4104 Section 8
+      href: https://malegislature.gov/Bills/193/H4104/BillHistory
+    - title: Form 1 2023 Massachusetts Resident Income Tax (Line 23a)
+      href: https://www.mass.gov/doc/2023-form-1-instructions/download#page=12
+  unit: /1
+  period: year

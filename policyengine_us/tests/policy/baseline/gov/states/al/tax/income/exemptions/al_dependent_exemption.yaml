@@ -1,0 +1,62 @@
+- name: 2022 Alabama Dependent Exemption applies to AGI ranges between 0 and 50_000
+  period: 2022
+  input:
+    state_code: AL
+    al_agi: 0
+    tax_unit_dependents: 1
+  output:
+    al_dependent_exemption: 1_000
+
+- name: 2022 Alabama Dependent Exemption applies to AGI ranges between 50_000 and 100_000
+  period: 2022
+  input:
+    state_code: AL
+    al_agi: 80_000
+    tax_unit_dependents: 1
+  output:
+    al_dependent_exemption: 500
+
+- name: 2022 Alabama Dependent Exemption applies to AGI range over 100_000
+  period: 2022
+  input:
+    state_code: AL
+    al_agi: 200_000
+    tax_unit_dependents: 1
+  output:
+    al_dependent_exemption: 300
+
+- name: 2021 Alabama Dependent Exemption applies to AGI ranges between 20_000 and 100_000
+  period: 2021
+  input:
+    state_code: AL
+    al_agi: 30_000
+    tax_unit_dependents: 1
+  output:
+    al_dependent_exemption: 500
+
+- name: 2021 Alabama Dependent Exemption applies to AGI ranges between 0 and 20_000
+  period: 2021
+  input:
+    state_code: AL
+    al_agi: 19_999
+    tax_unit_dependents: 1
+  output:
+    al_dependent_exemption: 1_000
+
+- name: 2021 Alabama Dependent Exemption applies to AGI ranges between 0 and 20_000, three dependents
+  period: 2021
+  input:
+    state_code: AL
+    al_agi: 19_999
+    tax_unit_dependents: 3
+  output:
+    al_dependent_exemption: 3_000
+
+- name: 2022 Alabama Dependent Exemption applies to AGI range over 100_000, three dependents
+  period: 2022
+  input:
+    state_code: AL
+    al_agi: 200_000
+    tax_unit_dependents: 3
+  output:
+    al_dependent_exemption: 900

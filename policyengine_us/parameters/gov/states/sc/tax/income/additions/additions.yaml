@@ -1,0 +1,24 @@
+description: South Carolina adds these sources from federal taxable income to determine state taxable income. 
+values:
+  2021-01-01:
+    - sc_state_tax_addback
+    # - Out-of-state losses
+    # - Expenses related to National Guard and Military Reserve Income
+    # - Interest income on obligations of states and political subdivisions other than South Carolina
+    # - Other additions to income
+
+metadata:
+  unit: list
+  period: year
+  label: South Carolina federal taxable income additions  
+  reference:
+    - title: SC 1040 tax form (2021)
+      href: https://dor.sc.gov/forms-site/Forms/SC1040_2021.pdf#page=2
+    - title: SC 1040 tax form instructions (2021)
+      href: https://dor.sc.gov/forms-site/Forms/IITPacket_2021.pdf#page=13
+    - title: SC Legal Code | SECTION 12-6-1110
+      href: https://www.scstatehouse.gov/code/t12c006.php
+    - title: SC 1040 tax form (2022)
+      href: https://dor.sc.gov/forms-site/Forms/SC1040_2022.pdf#page=2
+    - title: SC 1040 tax form instructions (2023)
+      href: https://dor.sc.gov/forms-site/Forms/IITPacket_2023.pdf#page=20

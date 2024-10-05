@@ -1,0 +1,70 @@
+description: Ohio limits its tax rate, depending on modified adjusted gross income for the taxable year for trusts and estates. 
+brackets:
+  - threshold:
+      2021-01-01: 0
+    rate:
+      # The first $25,000 income are not taxed; Ohio has a tax cliff.
+      # This is the rate implied by the starting tax amount $346.16
+      # divided by $25,000.
+      # Separately, we add a variable for being tax exempt, set if income
+      # is below $25,000.
+      2021-01-01: 0.01385
+  - threshold: 
+      values:
+        2021-01-01: 25_000
+        2022-01-01: 26_050
+        2023-01-01: 26_050
+      uprating:
+        parameter: gov.irs.uprating
+        rounding:
+          type: downwards
+          interval: 50
+    rate:
+      2021-01-01: 0.02765
+      2023-01-01: 0.0275
+  - threshold:
+      values:
+        2021-01-01: 44_250
+        2022-01-01: 46_100
+        2023-01-01: 100_000
+      uprating:
+        parameter: gov.irs.uprating
+        rounding:
+          type: downwards
+          interval: 50
+    rate:
+      2021-01-01: 0.03226
+      2023-01-01: 0.03688
+      2024-01-01: 0.035
+  - threshold:
+      values:
+        2021-01-01: 88_450
+        2022-01-01: 92_150
+        2023-01-01: 115_300
+        2024-01-01: .inf
+    rate:
+      2021-01-01: 0.03688
+      2023-01-01: 0.0375
+      2024-01-01: 0.035
+  - threshold: 
+      values:
+        2021-01-01: 110_650
+        2022-01-01: 115_300
+        2023-01-01: .inf
+    rate: 
+      2021-01-01: 0.0399
+      2023-01-01: 0.0375
+metadata:
+  threshold_unit: currency-USD
+  rate_unit: /1
+  type: marginal_rate
+  label: OH AGI Income Tax Rate
+  reference:
+    - title: Section 5747.02 | Tax rates.
+      href: https://codes.ohio.gov/ohio-revised-code/section-5747.02
+    - title: Ohio Income Tax Form 2021 Instructions
+      href: https://tax.ohio.gov/static/forms/ohio_individual/individual/2021/pit-it1040-booklet.pdf#page=31
+    - title: Ohio Income Tax Form 2022 Instructions
+      href: https://dam.assets.ohio.gov/image/upload/tax.ohio.gov/forms/ohio_individual/individual/2022/it1040-sd100-instruction-booklet.pdf#page=31
+    - title: Ohio Income Tax Form 2023 Instructions
+      href: https://dam.assets.ohio.gov/image/upload/tax.ohio.gov/forms/ohio_individual/individual/2023/it1040-sd100-instructionbooklet.pdf#page=46

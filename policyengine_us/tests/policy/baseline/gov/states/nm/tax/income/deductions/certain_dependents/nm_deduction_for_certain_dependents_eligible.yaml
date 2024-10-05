@@ -1,0 +1,27 @@
+- name: No exemptions claimed, not claimed as dependent on another return.
+  period: 2021
+  input:
+    exemptions: 0
+    state_code: NM
+    head_is_dependent_elsewhere: false
+  output:
+    nm_deduction_for_certain_dependents_eligible: true
+
+- name: Ineligible due to federal exemptions.
+  period: 2021
+  input:
+    exemptions: 1
+    state_code: NM
+    head_is_dependent_elsewhere: false
+  output:
+    nm_deduction_for_certain_dependents_eligible: false
+
+
+- name: Ineligible if dependent on another return
+  period: 2021
+  input:
+    exemptions: 0
+    state_code: NM
+    head_is_dependent_elsewhere: true
+  output:
+    nm_deduction_for_certain_dependents_eligible: false

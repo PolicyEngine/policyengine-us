@@ -1,0 +1,27 @@
+- name: Aged and blind.
+  period: 2023
+  input:
+    state_code: DE
+    age: 65
+    is_blind: true
+  output:
+    de_additional_standard_deduction: 5_000
+
+- name: Aged but not blind
+  period: 2023
+  input:
+    state_code: DE
+    age: 65
+    is_blind: false
+  output:
+    de_additional_standard_deduction: 2_500
+
+- name: Neither aged nor blind
+  period: 2023
+  input:
+    state_code: DE
+    age: 63
+    is_blind: false  
+  output:
+    de_additional_standard_deduction: 0
+

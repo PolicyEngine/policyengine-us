@@ -1,0 +1,21 @@
+- name: Eligible filer with 5% of earned income less than income tax after EITC.
+  period: 2020
+  input:
+    is_eligible_md_poverty_line_credit: true
+    md_income_tax_before_credits: 100
+    md_married_or_has_child_non_refundable_eitc: 10
+    tax_unit_earned_income: 100
+    state_code: MD
+  output:
+    md_poverty_line_credit: 5
+
+- name: Eligible filer with 5% of earned income above than income tax after EITC.
+  period: 2020
+  input:
+    is_eligible_md_poverty_line_credit: true
+    md_income_tax_before_credits: 100
+    md_married_or_has_child_non_refundable_eitc: 98
+    tax_unit_earned_income: 100
+    state_code: MD
+  output:
+    md_poverty_line_credit: 2

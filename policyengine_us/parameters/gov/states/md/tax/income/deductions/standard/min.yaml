@@ -1,0 +1,81 @@
+description: Maryland provides a standard deduction of at least this amount.
+metadata:
+  label: Maryland minimum standard deduction
+  period: year
+  unit: currency-USD
+  breakdown:
+    - filing_status
+  reference:
+    - title: Maryland 2023 State & Local Tax Forms & Instructions 
+      href: https://www.marylandtaxes.gov/forms/23_forms/Resident-Booklet.pdf#page=19
+    - title: MD Code, Tax - General, § 10-217 (c)(1)
+      href: https://govt.westlaw.com/mdc/Document/NC8EB19606F6911E8A99BCF2C90B83D38?viewType=FullText&originationContext=documenttoc&transitionType=CategoryPageItem&contextData=(sc.Default)#co_anchor_I552E3B107DF711ECA8F2FF3A9E62BB69
+    - title: MD Code, Tax - General, § 10-217 (d)(1)-(d)(3)
+      href: https://govt.westlaw.com/mdc/Document/NC8EB19606F6911E8A99BCF2C90B83D38?viewType=FullText&originationContext=documenttoc&transitionType=CategoryPageItem&contextData=(sc.Default)#co_anchor_I552E3B107DF711ECA8F2FF3A9E62BB69
+    - title: MD Code, Tax - General, § 10-217 (d)(1)-(d)(3)
+      href: https://govt.westlaw.com/mdc/Document/NC8EB19606F6911E8A99BCF2C90B83D38?viewType=FullText&originationContext=documenttoc&transitionType=CategoryPageItem&contextData=(sc.Default)#co_anchor_I552E3B107DF711ECA8F2FF3A9E62BB69
+    - title: Maryland new tax year update -exemptions and deductions
+      href: https://www.marylandtaxes.gov/new-tax-year-update.php#:~:text=Standard%20Deduction%20%2D%20The%20tax%20year,spouse%2C%20and%20taxpayers%20filing%20jointly.
+    - title: Maryland 2022 State & Local Tax Forms & Instructions 
+      href: https://www.marylandtaxes.gov/forms/22_forms/Resident_Booklet.pdf#page=18
+
+JOINT:
+  values:
+    2018-01-01: 3_000
+    2021-01-01: 3_100
+    2022-01-01: 3_200
+    2023-01-01: 3_450
+  metadata:
+    uprating: 
+      parameter: gov.irs.uprating
+      rounding:
+        type: downwards
+        interval: 50
+HEAD_OF_HOUSEHOLD:
+  values:
+    2018-01-01: 3_000
+    2021-01-01: 3_100
+    2022-01-01: 3_200
+    2023-01-01: 3_450
+  metadata:
+    uprating: 
+      parameter: gov.irs.uprating
+      rounding:
+        type: downwards
+        interval: 50
+SURVIVING_SPOUSE:
+  values:
+    2018-01-01: 3_000
+    2021-01-01: 3_100
+    2022-01-01: 3_200
+    2023-01-01: 3_450
+  metadata:
+    uprating: 
+      parameter: gov.irs.uprating
+      rounding:
+        type: downwards
+        interval: 50
+SINGLE:
+  values:
+    2018-01-01: 1_500
+    2021-01-01: 1_550
+    2022-01-01: 1_600
+    2023-01-01: 1_700
+  metadata:
+    uprating: 
+      parameter: gov.irs.uprating
+      rounding:
+        type: downwards
+        interval: 50
+SEPARATE:
+  values:
+    2018-01-01: 1_500
+    2021-01-01: 1_550
+    2022-01-01: 1_600
+    2023-01-01: 1_700
+  metadata:
+    uprating: 
+      parameter: gov.irs.uprating
+      rounding:
+        type: downwards
+        interval: 50

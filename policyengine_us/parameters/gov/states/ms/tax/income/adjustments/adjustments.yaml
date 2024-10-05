@@ -1,0 +1,20 @@
+description: Mississippi subtracts these adjustments from federal adjusted gross income when computing state adjusted gross income.
+values:
+  2020-01-01:
+    - traditional_ira_contributions # Line 50
+    - ms_self_employment_adjustment # Line 61
+    - ms_national_guard_or_reserve_pay_adjustment # Line 55
+    - alimony_expense # Line 53
+metadata:
+  label: Mississippi adjusted gross income adjustments
+  period: year
+  unit: list
+  reference: 
+    - title: Mississippi Resident Income Tax Instruction
+      href: https://www.dor.ms.gov/sites/default/files/Forms/Individual/80100221.pdf#page=12
+    - title: 2020 Mississippi Code Title 27 - Income Tax and Withholding Article 1
+      href: https://law.justia.com/codes/mississippi/2020/title-27/chapter-7/article-1/section-27-7-18/ # 1 - 7
+    - title: Mississippi Resident Individual Income Tax Return 2022
+      href: https://www.dor.ms.gov/sites/default/files/Forms/Individual/80105228.pdf#page=2  # Line 50 - 64
+    - title: Mississippi Income Tax Instructions 2023
+      href: https://www.dor.ms.gov/sites/default/files/Forms/Individual/80100231.pdf#page=13 # Line 50 - 66

@@ -1,0 +1,25 @@
+description: DC provides a TANF income limit supplement for households with childcare costs of this amount, depending on child age.
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: DC TANF monthly income limit childcare supplement per child
+  type: single_amount
+  threshold_unit: year
+  amount_unit: currency-USD
+  reference:
+    - title: TANF State Plan | Section 4 (4)(a)
+      href: https://dhs.dc.gov/sites/default/files/dc/sites/dhs/service_content/attachments/TANF_Announcement_StatePlan_ForComment_01072020.pdf#page=22
+
+# Use a scale parameter with two brackets: $200 for under 2, $175 for 2 and older.
+brackets:
+  - amount:
+      2020-10-01: 200
+    threshold:
+      2020-10-01: 0 # Age zero until the next bracket threshold.
+  - amount:
+      2020-10-01: 175
+    threshold:
+      2020-10-01: 2
+
+

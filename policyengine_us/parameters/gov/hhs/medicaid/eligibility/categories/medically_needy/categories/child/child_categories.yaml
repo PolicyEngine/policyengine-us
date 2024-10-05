@@ -1,0 +1,13 @@
+description: Medicaid categories grouped as children to decide whether children can qualify for Medicaid under the 'medically needy' pathway.
+metadata:
+  unit: list
+  label: Medicaid medically needy pathway for children
+  reference:
+    - title: "Medicaid Financial Eligibility for Seniors and People with Disabilities: Findings from a 50-State Survey | KFF"
+      href: https://www.kff.org/report-section/medicaid-financial-eligibility-for-seniors-and-people-with-disabilities-findings-from-a-50-state-survey-appendix-tables/
+values:
+  2010-01-01:
+  - is_infant_for_medicaid_nfc
+  - is_young_child_for_medicaid_nfc
+  - is_older_child_for_medicaid_nfc
+  - is_young_adult_for_medicaid_nfc

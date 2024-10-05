@@ -1,0 +1,26 @@
+description: Minnesota has a child/dependent care credit which begins to be phased out when federal AGI exceeds this threshold.
+values:
+  2021-01-01: 53_630
+  2022-01-01: 55_300
+  2023-01-01: 59_210
+
+metadata:
+  period: year
+  unit: currency-USD
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: nearest
+      interval: 10
+  label: Minnesota CDCC phaseout threshold
+  reference:
+  - title: Minnesota Statutes 290.067 DEPENDENT CARE CREDIT. Subd. 1.Amount of credit. (h)
+    href: https://www.revisor.mn.gov/statutes/cite/290.067#stat.290.067.1
+  - title: 2023 Minnesota Statutes Section 270C.22 — Cost Of Living Adjustment Subdivision 1.e
+    href: https://www.revisor.mn.gov/statutes/cite/270c.22#stat.270C.22.1
+  - title: 2021 Schedule M1CD, Child and Dependent Care Credit, Worksheet for Line 8
+    href: https://www.revenue.state.mn.us/sites/default/files/2023-02/m1cd_21.pdf#page=6
+  - title: 2022 Schedule M1CD, Child and Dependent Care Credit, Worksheet for Line 8
+    href: https://www.revenue.state.mn.us/sites/default/files/2023-01/m1cd_22_0.pdf#page=6
+  - title: 2023 Schedule M1CD, Child and Dependent Care Credit, Worksheet for Line 8
+    href: https://www.revenue.state.mn.us/sites/default/files/2023-12/m1cd-23.pdf#page=6

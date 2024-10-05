@@ -1,0 +1,22 @@
+description: Washington capital gains charitable contribution cap.
+metadata:
+  label: Washington capital gains charitable contribution cap
+  unit: currency-USD
+  period: year
+  reference:
+    - title: RCW 82.87.080(2) Charitable donation deduction
+      href: https://app.leg.wa.gov/RCW/default.aspx?cite=82.87.080
+    - title: Capital gains tax | Washington Department of Revenue
+      href: https://dor.wa.gov/taxes-rates/other-taxes/capital-gains-tax
+    - title: 2021 Tax Legislation | Washington Department of Revenue
+      href: https://dor.wa.gov/forms-publications/publications-subject/tax-topics/2021-tax-legislation
+    - title: 2021 Regular Session CAPITAL GAINS TAX - Sec.9.(2)
+      href: https://lawfilesext.leg.wa.gov/biennium/2021-22/Pdf/Bills/Session%20Laws/Senate/5096-S.SL.pdf#page=11
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: nearest
+      interval: 1_000
+values:
+  2022-01-01: 100_000
+  2023-01-01: 105_000

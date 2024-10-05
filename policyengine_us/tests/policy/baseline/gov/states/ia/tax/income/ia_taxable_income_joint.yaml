@@ -1,0 +1,22 @@
+- name: IA taxable income joint unit test 1
+  period: 2021
+  input:
+    ia_net_income: 20_000
+    ia_basic_deduction_indiv: 10_000
+    ia_basic_deduction_joint: 14_000
+    ia_fedtax_deduction: 0
+    ia_qbi_deduction: 0
+    state_code: IA
+  output:
+    ia_taxable_income_joint: 6_000
+
+- name: IA taxable income joint unit test 2
+  period: 2022
+  input:
+    ia_net_income: 12_000
+    ia_basic_deduction_joint: 9_000
+    ia_fedtax_deduction: 0
+    ia_qbi_deduction: 4_000
+    state_code: IA
+  output:
+    ia_taxable_income_joint: 0

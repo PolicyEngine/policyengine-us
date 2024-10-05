@@ -1,0 +1,176 @@
+- name: MN CDCC unit test 1
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 80_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 40
+        employment_income: 5_000
+      person3:
+        age: 10
+      person4:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        tax_unit_childcare_expenses: 9_000
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: MN
+  output:
+    mn_cdcc: 0  # MN CDCC is fully phased out because of high AGI
+
+- name: MN CDCC unit test 2
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 40_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 40
+        employment_income: 10_000
+      person3:
+        age: 10
+      person4:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        tax_unit_childcare_expenses: 9_000
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: MN
+  output:
+    mn_cdcc: 0.2 * 6_000  # no phase out of credit
+
+- name: MN CDCC unit test 3
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 10_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 40
+        employment_income: 10_000
+      person3:
+        age: 10
+      person4:
+        age: 15
+        is_incapable_of_self_care: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        tax_unit_childcare_expenses: 9_000
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: MN
+  output:
+    mn_cdcc: 0.32 * 6_000  # no phase out of credit
+
+- name: MN CDCC unit test 4
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 70_000
+      person2:
+        age: 9
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        tax_unit_childcare_expenses: 9_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MN
+  output:
+    mn_cdcc: 0.20 * 6_000 - 0.05 * (70_000 - 53_630)
+
+- name: Separate filers excluded 
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 70_000
+      person2:
+        age: 9
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        tax_unit_childcare_expenses: 9_000
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MN
+  output:
+    mn_cdcc: 0
+
+- name: Separate filers included 
+  absolute_error_margin: 0.01
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 70_000
+      person2:
+        age: 9
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        tax_unit_childcare_expenses: 9_000
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MN
+  output:
+    mn_cdcc: 660.5

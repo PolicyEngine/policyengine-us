@@ -1,0 +1,71 @@
+- name: Eligible 4-person tax unit gets $100 for AZ increased excise credit
+  period: 2023
+  input:
+    az_increased_excise_tax_credit_eligible: True
+    tax_unit_size: 4
+  output:
+    az_increased_excise_tax_credit: 100 
+
+- name: Eligible 3-person tax unit gets $75 for AZ increased excise credit
+  period: 2023
+  input:
+    az_increased_excise_tax_credit_eligible: True
+    tax_unit_size: 3
+  output:
+    az_increased_excise_tax_credit: 75
+
+- name: Eligible 2-person tax unit gets $50 for AZ increased excise credit
+  period: 2023
+  input:
+    az_increased_excise_tax_credit_eligible: True
+    tax_unit_size: 2
+  output:
+    az_increased_excise_tax_credit: 50  
+
+- name: Eligible 1-person tax unit gets $25 for AZ increased excise credit
+  period: 2023
+  input:
+    az_increased_excise_tax_credit_eligible: True
+    tax_unit_size: 1
+  output:
+    az_increased_excise_tax_credit: 25 
+
+- name: Ineligible 4-person tax unit gets $0 for AZ increased excise credit
+  period: 2023
+  input:
+    az_increased_excise_tax_credit_eligible: False
+    tax_unit_size: 4
+  output:
+    az_increased_excise_tax_credit: 0 
+
+- name: Ineligible 3-person tax unit gets $0 for AZ increased excise credit
+  period: 2023
+  input:
+    az_increased_excise_tax_credit_eligible: False
+    tax_unit_size: 3
+  output:
+    az_increased_excise_tax_credit: 0
+
+- name: Ineligible 2-person tax unit gets $0 for AZ increased excise credit
+  period: 2023
+  input:
+    az_increased_excise_tax_credit_eligible: False
+    tax_unit_size: 2
+  output:
+    az_increased_excise_tax_credit: 0  
+
+- name: Ineligible 1-person tax unit gets $0 for AZ increased excise credit
+  period: 2023
+  input:
+    az_increased_excise_tax_credit_eligible: False
+    tax_unit_size: 1
+  output:
+    az_increased_excise_tax_credit: 0 
+
+- name: Eligible 5-person tax unit gets $100 for AZ increased excise credit
+  period: 2023
+  input:
+    az_increased_excise_tax_credit_eligible: True
+    tax_unit_size: 5
+  output:
+    az_increased_excise_tax_credit: 100 

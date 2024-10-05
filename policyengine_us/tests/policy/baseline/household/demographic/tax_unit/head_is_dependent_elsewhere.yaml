@@ -1,0 +1,15 @@
+- name: Head is a dependent elsewhere.
+  period: 2022
+  input:
+    claimed_as_dependent_on_another_return: true
+    is_tax_unit_head: true
+  output:
+    head_is_dependent_elsewhere: true
+
+- name: Head is not a dependent elsewhere.
+  period: 2022
+  input:
+    claimed_as_dependent_on_another_return: false
+    is_tax_unit_head: true
+  output:
+    head_is_dependent_elsewhere: false

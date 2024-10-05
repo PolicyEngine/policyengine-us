@@ -1,0 +1,15 @@
+description: Washington Working Families Tax Credit minimum amount for those with nonzero benefit.
+metadata:
+  label: Washington Working Families Tax Credit minimum amount
+  unit: currency-USD
+  period: year
+  reference:
+    - title: RCW 82.08.0206 Exemptions—Working families—Eligible low-income persons—Penalties. (3)(c)
+      href: https://app.leg.wa.gov/RCW/default.aspx?cite=82.08.0206
+    # The instruction didn't mention the specific amount.
+    - title: 2023 Working Families Tax Credit Application Instructions 
+      href: https://workingfamiliescredit.wa.gov/sites/default/files/2024-01/WFTC_AppInstr_English_2023.pdf
+    - title: 2023 Working Families Tax Credit Application
+      href: https://workingfamiliescredit.wa.gov/sites/default/files/2024-01/WFTC_app_2023_English.pdf
+values:
+  2022-01-01: 50

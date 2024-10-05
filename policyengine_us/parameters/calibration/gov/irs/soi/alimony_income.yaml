@@ -1,0 +1,11 @@
+description: Total alimony income.
+values:
+  2015-01-01: 10_077_088_000
+  2021-01-01: 8_507_104_000
+metadata:
+  unit: currency-USD
+  label: SOI short-term capital gains
+  uprating: calibration.gov.cbo.income_by_source.adjusted_gross_income
+  reference:
+    - title: IRS SOI Tax Stats - Individual Statistical Tables by Size of Adjusted Gross Income
+      href: https://www.irs.gov/statistics/soi-tax-stats-individual-statistical-tables-by-size-of-adjusted-gross-income

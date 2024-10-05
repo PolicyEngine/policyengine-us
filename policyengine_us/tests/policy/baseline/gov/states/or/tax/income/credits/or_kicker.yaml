@@ -1,0 +1,7 @@
+- name: In 2021, OR returned 17.341 percent of tax as a kicker from prior year (2020)
+  period: 2021
+  input:
+    state_code: OR
+    or_tax_before_credits_in_prior_year: 1
+  output:
+    or_kicker: 0.17341

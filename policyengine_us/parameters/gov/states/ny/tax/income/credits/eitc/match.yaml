@@ -1,0 +1,20 @@
+description: New York matches this fraction of the federal Earned Income Tax Credit.
+values:
+  1994-01-01: 0.075
+  1995-01-01: 0.1
+  1996-01-01: 0.2
+  2000-01-01: 0.225
+  2001-01-01: 0.25
+  2002-01-01: 0.275
+  2003-01-01: 0.3
+metadata:
+  unit: /1
+  period: year
+  label: New York EITC percent
+  reference:
+    - title: Section 606 Credits against tax (d)
+      href: https://www.nysenate.gov/legislation/laws/TAX/606
+    - title: New York Instructions for Form IT-201 Line 65
+      href: https://www.tax.ny.gov/pdf/2023/printable-pdfs/inc/it201i-2023.pdf#page=26
+    - title: New York Form IT-215 Line 11
+      href: https://www.tax.ny.gov/pdf/current_forms/it/it215_fill_in.pdf#page=1

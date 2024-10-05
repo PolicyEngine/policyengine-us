@@ -1,0 +1,22 @@
+description: Oregon provides a minimum standard deduction of this amount for filers who are claimable as a dependent. 
+values:
+  2021-01-01: 1_100
+  2022-01-01: 1_150
+  2023-01-01: 1_250
+metadata:
+  unit: currency-USD
+  period: year
+  label: Oregon minimum deduction if claimable as dependent
+  uprating: gov.irs.uprating
+  rounding:
+        type: downwards
+        interval: 50  
+  reference:
+    - title: 2021 Oregon Income Tax Form OR-40 Instructions
+      href: https://www.oregon.gov/dor/forms/FormsPubs/form-or-40-inst_101-040-1_2021.pdf#page=15  
+    - title: 2021 Publication OR-17, Oregon Individual Income Tax Guide
+      href: https://www.oregon.gov/dor/forms/FormsPubs/publication-or-17_101-431_2021.pdf#page=142
+    - title: 2022 Oregon Income Tax Form OR-40 Instructions
+      href: https://www.oregon.gov/dor/forms/FormsPubs/form-or-40-inst_101-040-1_2022.pdf#page=15
+    - title: 2023 Oregon Income Tax Form OR-40 Instructions
+      href: https://www.oregon.gov/dor/forms/FormsPubs/form-or-40-inst_101-040-1_2023.pdf#page=15

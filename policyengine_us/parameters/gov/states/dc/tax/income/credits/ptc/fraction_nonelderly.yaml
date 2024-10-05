@@ -1,0 +1,42 @@
+description: DC property tax credit offset is this AGI-specific fraction of US AGI for non-elderly.
+metadata:
+  type: single_amount
+  threshold_period: year
+  threshold_unit: currency-USD  # federal AGI
+  amount_unit: list
+  period: year
+  reference:
+    - title: Code of the District of Columbia § 47–1806.06 (a)(2)(D)
+      href: https://code.dccouncil.gov/us/dc/council/code/sections/47-1806.06#(a)(2)(D)
+    - title: 2021 Form D-40 Booklet
+      href: https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/52926_D-40_12.21.21_Final_Rev011122.pdf#page=49
+    - title: 2022 Form D-40 Booklet
+      href: https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2022_D-40_Booklet_Final_blk_01_23_23_Ordc.pdf#page=47
+    - title: 2023 Form D-40 Booklet
+      href: https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2023_D40_Book_Final_012324.pdf#page=47
+brackets:
+  - threshold:
+      2021-01-01: -.inf
+    amount:
+      2021-01-01: 0.03
+  - threshold:
+      2021-01-01: 25_000
+    amount:
+      2021-01-01: 0.04
+  - threshold:
+      2021-01-01: 52_000
+    amount:
+      2021-01-01: 0.05
+  - threshold:
+      values:
+        2021-01-01: 56_200
+        2022-01-01: 57_600
+        2023-01-01: 61_300
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: downwards
+            interval: 100
+    amount:
+      2021-01-01: .inf  # infinite offset implies ineligible for credit

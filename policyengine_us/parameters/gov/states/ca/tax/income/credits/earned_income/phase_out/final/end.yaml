@@ -1,0 +1,17 @@
+description: California limits CalEITC to filers with less than this amount of earnings.
+values:
+  2019-01-01: 30_000
+  2023-01-01: 30_951
+metadata:
+  reference:
+    - title: California Legal code REVENUE AND TAXATION CODE - RTC
+      href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=RTC&sectionNum=17052
+    - title: California Form 3514 instructions (2021)
+      href: https://www.ftb.ca.gov/forms/2021/2021-3514-instructions.html
+    - title: California Form 3514 instructions (2022)
+      href: https://www.ftb.ca.gov/forms/2022/2022-3514-instructions.html
+    - title: California Form 3514 instructions (2023)
+      href: https://www.ftb.ca.gov/forms/2023/2023-3514-instructions.html
+  unit: currency-USD
+  period: year
+  label: CalEITC max earnings

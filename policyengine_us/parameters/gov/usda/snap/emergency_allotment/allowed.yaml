@@ -1,0 +1,19 @@
+description: The federal government allows states to apply for SNAP emergency allotments when this is true.
+
+values:
+  0000-01-01: false
+  2020-03-01:
+    value: true
+    metadata:
+      reference:
+        - title: H.R.6201 - Families First Coronavirus Response Act §2302
+          href: https://www.congress.gov/bill/116th-congress/house-bill/6201/text
+  2023-03-01:
+    value: false
+    metadata:
+      reference:
+        - title: Consolidated Appropriations Act of 2023
+          href: https://www.appropriations.senate.gov/imo/media/doc/JRQ121922.PDF#page=3975
+metadata:
+  unit: bool
+  label: SNAP emergency allotment allowed

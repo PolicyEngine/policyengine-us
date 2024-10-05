@@ -1,0 +1,89 @@
+description: New York sets this maximum real property tax credit for filers without an elderly taxpayer.
+
+brackets:
+  - threshold:
+      2000-01-01: 0
+    amount:
+      2000-01-01: 75
+  - threshold:
+      2000-01-01: 1_000
+    amount:
+      2000-01-01: 73
+  - threshold:
+      2000-01-01: 2_000
+    amount:
+      2000-01-01: 71
+  - threshold:
+      2000-01-01: 3_000
+    amount:
+      2000-01-01: 69
+  - threshold:
+      2000-01-01: 4_000
+    amount:
+      2000-01-01: 67
+  - threshold:
+      2000-01-01: 5_000
+    amount:
+      2000-01-01: 65
+  - threshold:
+      2000-01-01: 6_000
+    amount:
+      2000-01-01: 63
+  - threshold:
+      2000-01-01: 7_000
+    amount:
+      2000-01-01: 61
+  - threshold:
+      2000-01-01: 8_000
+    amount:
+      2000-01-01: 59
+  - threshold:
+      2000-01-01: 9_000
+    amount:
+      2000-01-01: 57
+  - threshold:
+      2000-01-01: 1_0000
+    amount:
+      2000-01-01: 55
+  - threshold:
+      2000-01-01: 11_000
+    amount:
+      2000-01-01: 53
+  - threshold:
+      2000-01-01: 12_000
+    amount:
+      2000-01-01: 51
+  - threshold:
+      2000-01-01: 13_000
+    amount:
+      2000-01-01: 49
+  - threshold:
+      2000-01-01: 14_000
+    amount:
+      2000-01-01: 47
+  - threshold:
+      2000-01-01: 15_000
+    amount:
+      2000-01-01: 45
+  - threshold:
+      2000-01-01: 16_000
+    amount:
+      2000-01-01: 43
+  - threshold:
+      2000-01-01: 17_000
+    amount:
+      2000-01-01: 41
+
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  threshold_period: year
+  amount_unit: currency-USD
+  label: NY real property tax credit non-elderly maximum amount
+  reference:
+    - title: Section 606 Credits against tax (e)
+      href: https://www.nysenate.gov/legislation/laws/TAX/606
+    - title: New York Instructions for Form IT-201 Line 67
+      href: https://www.tax.ny.gov/pdf/2023/printable-pdfs/inc/it201i-2023.pdf#page=26
+    - title: New York Instructions for Form IT-214 Line 32
+      href: https://www.tax.ny.gov/pdf/current_forms/it/it214i.pdf#page=3

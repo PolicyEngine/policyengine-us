@@ -1,0 +1,32 @@
+- name: taxpayer_has_itin unit test 1
+  period: 2021
+  input:
+    has_itin: true
+    is_tax_unit_head: true
+  output:
+    taxpayer_has_itin: true
+
+- name: taxpayer_has_itin unit test 2
+  period: 2022
+  input:
+    has_itin: true
+    is_tax_unit_spouse: true
+  output:
+    taxpayer_has_itin: true
+
+- name: taxpayer_has_itin unit test 3
+  period: 2023
+  input:
+    has_itin: false
+    is_tax_unit_head: true
+  output:
+    taxpayer_has_itin: false
+
+- name: taxpayer_has_itin unit test 4
+  period: 2024
+  input:
+    has_itin: false
+    is_tax_unit_spouse: true
+  output:
+    taxpayer_has_itin: false
+

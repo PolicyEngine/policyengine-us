@@ -1,0 +1,19 @@
+- name: 2022 filer with tier 3 retirement and pension benefits, ss_exempt_retired larger than ss_exempt_not_retired amount
+  period: 2022
+  input:
+    mi_retirement_benefits_deduction_tier_three_eligible: true
+    mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired: 15_000
+    mi_retirement_benefits_deduction_tier_three_ss_exempt_retired: 35_000
+    state_code: MI
+  output: # 35000 > 15000
+    mi_retirement_benefits_deduction_tier_three: 35_000
+
+- name: 2022 filer with tier 3 retirement and pension benefits, ss_exempt_retired smaller than ss_exempt_not_retired amount
+  period: 2022
+  input:
+    mi_retirement_benefits_deduction_tier_three_eligible: true
+    mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired: 30_000
+    mi_retirement_benefits_deduction_tier_three_ss_exempt_retired: 0
+    state_code: MI
+  output: # 30000 > 0
+    mi_retirement_benefits_deduction_tier_three: 30_000

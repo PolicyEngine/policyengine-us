@@ -1,0 +1,7 @@
+- name: KS total eitc unit test
+  period: 2021
+  input:
+    eitc: 1_000
+    state_code: KS
+  output:
+    ks_total_eitc: 0.17 * 1_000

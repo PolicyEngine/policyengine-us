@@ -1,0 +1,189 @@
+- name: Joint filers # ((10_000 - 9_974) * 0.045 + ((9_974 - 3_324) * 0.03) + (3_324 * 0.01)
+  period: 2022
+  input:
+    state_code: ID
+    id_taxable_income: 10_000
+    filing_status: JOINT
+  output:
+    id_income_tax_before_non_refundable_credits: 233.91
+
+- name: Joint filers w/ no income
+  period: 2022
+  input:
+    state_code: ID
+    id_taxable_income: 0
+    filing_status: JOINT
+  output:
+    id_income_tax_before_non_refundable_credits: 0
+
+- name: Single filers # ((3_000 - 1_662) * 0.03 + 1_662 * 0.01)
+  period: 2022
+  input:
+    state_code: ID
+    id_taxable_income: 3_000
+    filing_status: SINGLE
+  output:
+    id_income_tax_before_non_refundable_credits: 56.76
+
+- name: Widow filers # ((10_000 - 9_974) * 0.045  + ((9_974 - 3_324) * 0.03) + (3_324 * 0.01)
+  period: 2022
+  input:
+    state_code: ID
+    id_taxable_income: 10_000
+    filing_status: SURVIVING_SPOUSE
+  output:
+    id_income_tax_before_non_refundable_credits: 233.91
+
+- name: Head_of_Household filers # ((10_000 - 9_974) * 0.045  + ((9_974 - 3_324) * 0.03) + (3_324 * 0.01)
+  period: 2022
+  input:
+    state_code: ID
+    id_taxable_income: 10_000
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    id_income_tax_before_non_refundable_credits: 233.91
+
+
+- name: Separate filers # ((3_000 - 1_662) * 0.03 + 1_662 * 0.01)
+  period: 2022
+  input:
+    state_code: ID
+    id_taxable_income: 3_000
+    filing_status: SEPARATE
+  output:
+    id_income_tax_before_non_refundable_credits: 56.76
+
+- name: Joint filers # (3_176 * 0.01) + ((9_526 - 3_176) * 0.031) + ((12_702 - 9_526) * 0.045) + ((15_878 - 12_702) * 0.055) + ((25_000 - 15_878) * 0.065)
+  period: 2021
+  input:
+    state_code: ID
+    id_taxable_income: 25_000
+    filing_status: JOINT
+  output:
+    id_income_tax_before_non_refundable_credits: 1_139.14
+
+- name: Widow filers # (3_176 * 0.01) + ((9_526 - 3_176) * 0.031) + ((12_702 - 9_526) * 0.045) + ((15_878 - 12_702) * 0.055) + ((16_000 - 15_878) * 0.065)
+  period: 2021
+  input:
+    state_code: ID
+    id_taxable_income: 16_000
+    filing_status: SURVIVING_SPOUSE
+  output:
+    id_income_tax_before_non_refundable_credits: 554.14
+
+- name: Joint filers in 2023 # (10,000 - 8,979) * 0.058 = 290
+  period: 2023
+  input:
+    state_code: ID
+    id_taxable_income: 10_000
+    filing_status: JOINT
+  output:
+    id_income_tax_before_non_refundable_credits: 59.218
+
+- name: Joint filers w/ no income in 2023
+  period: 2023
+  input:
+    state_code: ID
+    id_taxable_income: 0
+    filing_status: JOINT
+  output:
+    id_income_tax_before_non_refundable_credits: 0
+
+- name: Joint filers with high income in 2023 # (100,000 - 8,979) * 0.058
+  period: 2023
+  input:
+    state_code: ID
+    id_taxable_income: 100_000
+    filing_status: JOINT
+  output:
+    id_income_tax_before_non_refundable_credits: 5_279.218
+
+- name: Single filers w/ no income in 2023 
+  period: 2023
+  input:
+    state_code: ID
+    id_taxable_income: 1_000
+    filing_status: SINGLE
+  output:
+    id_income_tax_before_non_refundable_credits: 0
+
+- name: Single filer with high income in 2023 # (100,000 - 4,490) * 0.058
+  period: 2023
+  input:
+    state_code: ID
+    id_taxable_income: 100_000
+    filing_status: SINGLE
+  output:
+    id_income_tax_before_non_refundable_credits: 5_539.58
+
+- name: Widow filers in 2023 # (10,000 - 8,979) * 0.058 
+  period: 2023
+  input:
+    state_code: ID
+    id_taxable_income: 10_000
+    filing_status: SURVIVING_SPOUSE
+  output:
+    id_income_tax_before_non_refundable_credits: 59.218
+
+- name: Widow filers in 2023 w/ no income in 2023  
+  period: 2023
+  input:
+    state_code: ID
+    id_taxable_income: 1_000
+    filing_status: SURVIVING_SPOUSE
+  output:
+    id_income_tax_before_non_refundable_credits: 0
+
+- name: Head_of_Household filers in 2023 # (10,000 - 8,979) * 0.058 
+  period: 2023
+  input:
+    state_code: ID
+    id_taxable_income: 10_000
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    id_income_tax_before_non_refundable_credits: 59.218
+
+- name: Head_of_Household filers in 2023 w/ no income
+  period: 2023
+  input:
+    state_code: ID
+    id_taxable_income: 1_000
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    id_income_tax_before_non_refundable_credits: 0
+
+- name: Head of Household with high income in 2023 # (100,000 - 8,979) * 0.058
+  period: 2023
+  input:
+    state_code: ID
+    id_taxable_income: 100_000
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    id_income_tax_before_non_refundable_credits: 5_279.218
+
+- name: Separate filers in 2023 # (10,000 - 4,490) * 0.058 
+  period: 2023
+  input:
+    state_code: ID
+    id_taxable_income: 10_000
+    filing_status: SEPARATE
+  output:
+    id_income_tax_before_non_refundable_credits: 319.58
+
+- name: Separate filers in 2023 w/ no income
+  period: 2023
+  input:
+    state_code: ID
+    id_taxable_income: 1_000
+    filing_status: SEPARATE
+  output:
+    id_income_tax_before_non_refundable_credits: 0
+
+- name: Separate filer with high income in 2023 # (100,000 - 4,490) * 0.058
+  period: 2023
+  input:
+    state_code: ID
+    id_taxable_income: 100_000
+    filing_status: SEPARATE
+  output:
+    id_income_tax_before_non_refundable_credits: 5_539.58

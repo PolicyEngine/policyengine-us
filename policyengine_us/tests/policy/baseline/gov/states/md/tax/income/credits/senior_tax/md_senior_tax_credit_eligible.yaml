@@ -1,0 +1,35 @@
+- name: Single ineligible by income.
+  period: 2023
+  input:
+    filing_status: SINGLE
+    adjusted_gross_income: 100_000
+    state_code: MD
+  output:
+    md_senior_tax_credit_eligible: false
+
+- name: Head of hosuehold eligible by income.
+  period: 2023
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    adjusted_gross_income: 149_999
+    state_code: MD
+  output:
+    md_senior_tax_credit_eligible: true
+  
+- name: Joint ineligible by income.
+  period: 2023
+  input:
+    filing_status: JOINT
+    adjusted_gross_income: 150_000
+    state_code: MD
+  output:
+    md_senior_tax_credit_eligible: false
+
+- name: Joint ineligible by age.
+  period: 2023
+  input:
+    filing_status: JOINT
+    adjusted_gross_income: 149_999
+    state_code: MD
+  output:
+    md_senior_tax_credit_eligible: true

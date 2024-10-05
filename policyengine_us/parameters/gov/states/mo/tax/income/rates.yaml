@@ -1,0 +1,120 @@
+description: Missouri taxes the individual residents with the following tax rates.
+# threshold value is bottom of the tax bracket; thresholds are <=
+brackets:
+  - threshold:
+      values:
+        2019-01-01: 0
+      metadata:
+        uprating: gov.irs.uprating
+    rate:
+      2019-01-01: 0.015
+      2023-01-01: 0.00
+  - threshold:
+      values:
+        2019-01-01: 1_053
+        2020-01-01: 1_073
+        2021-01-01: 1_088
+        2022-01-01: 1_121
+        2023-01-01: 1_207
+      metadata:
+        uprating: gov.irs.uprating
+    rate:
+      2019-01-01: 0.02
+  - threshold:
+      values:
+        2019-01-01: 2_106
+        2020-01-01: 2_146
+        2021-01-01: 2_176
+        2022-01-01: 2_242
+        2023-01-01: 2_414
+      metadata:
+        uprating: gov.irs.uprating
+    rate:
+      2019-01-01: 0.025
+  - threshold:
+      values:
+        2019-01-01: 3_159
+        2020-01-01: 3_219
+        2021-01-01: 3_264
+        2022-01-01: 3_363
+        2023-01-01: 3_621
+      metadata:
+        uprating: gov.irs.uprating
+    rate:
+      2019-01-01: 0.03
+  - threshold:
+      values:
+        2019-01-01: 4_212
+        2020-01-01: 4_292
+        2021-01-01: 4_352
+        2022-01-01: 4_484
+        2023-01-01: 4_828
+      metadata:
+        uprating: gov.irs.uprating
+    rate:
+      2019-01-01: 0.035
+  - threshold:
+      values:
+        2019-01-01: 5_265
+        2020-01-01: 5_365
+        2021-01-01: 5_440
+        2022-01-01: 5_605
+        2023-01-01: 6_035
+      metadata:
+        uprating: gov.irs.uprating
+    rate:
+      2019-01-01: 0.04
+  - threshold:
+      values:
+        2019-01-01: 6_318
+        2020-01-01: 6_438
+        2021-01-01: 6_528
+        2022-01-01: 6_726
+        2023-01-01: 7_242
+      metadata:
+        uprating: gov.irs.uprating
+    rate:
+      2019-01-01: 0.045
+  - threshold:
+      values:
+        2019-01-01: 7_371
+        2020-01-01: 7_511
+        2021-01-01: 7_616
+        2022-01-01: 7_847
+        2023-01-01: 8_449
+      metadata:
+        uprating: gov.irs.uprating
+    rate:
+      2019-01-01: 0.05
+      2023-01-01: 0.0495    
+  - threshold:
+      values:
+        2019-01-01: 8_424
+        2020-01-01: 8_584
+        2021-01-01: 8_704
+        2022-01-01: 8_968
+        2023-01-01: .inf
+      metadata:
+        uprating: gov.irs.uprating
+    rate:
+      2019-01-01: 0.054
+      2022-01-01: 0.053
+      2023-01-01: 0.0495
+
+metadata:
+  reference:
+    - title: 2019 Missouri Income Tax Chart Form MO-1040 Instructions
+      href: https://dor.mo.gov/forms/MO-1040%20Instructions_2019.pdf#page=22
+    - title: 2020 Missouri Income Tax Chart Form MO-1040 Instructions
+      href: https://dor.mo.gov/forms/MO-1040%20Instructions_2020.pdf#page=22
+    - title: 2021 Missouri Income Tax Chart Form MO-1040 Instructions
+      href: https://dor.mo.gov/forms/MO-1040%20Instructions_2021.pdf#page=26
+    - title: 2022 Missouri Income Tax Chart Form MO-1040 Instructions
+      href: https://dor.mo.gov/forms/MO-1040%20Instructions_2022.pdf#page=26
+    - title: Missouri Legal Code, Chapter 143.011.  Resident individuals — tax rates — rate reductions, when.
+      href: https://revisor.mo.gov/main/OneSection.aspx?section=143.011&bid=51511&hl=
+  label: Missouri resident individual tax rates
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  period: year

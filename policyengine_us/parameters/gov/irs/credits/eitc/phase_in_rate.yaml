@@ -1,0 +1,57 @@
+description: Earned income credit phase-in rate.
+metadata:
+  type: single_amount
+  threshold_unit: child
+  amount_unit: /1
+  label: EITC phase-in rate by number of children
+  reference:
+    - title: 26 U.S. Code § 32 - Earned income
+      href: https://www.law.cornell.edu/uscode/text/26/32#b_1
+brackets:
+  - threshold:
+      values:
+        1995-01-01: 0
+      metadata:
+        unit: child
+    amount:
+      values:
+        1995-01-01: 0.0765
+        2021-01-01: 
+          value: 0.153
+          metadata:
+            reference:
+              - title: 26 U.S. Code § 32(n)(3)
+                href: https://www.law.cornell.edu/uscode/text/26/32#n_3
+        2022-01-01: 0.0765
+      metadata:
+        unit: /1
+  - threshold:
+      values:
+        1995-01-01: 1
+      metadata:
+        unit: child
+    amount:
+      values:
+        1995-01-01: 0.34
+      metadata:
+        unit: /1
+  - threshold:
+      values:
+        1995-01-01: 2
+      metadata:
+        unit: child
+    amount:
+      values:
+        1995-01-01: 0.40
+      metadata:
+        unit: /1
+  - threshold:
+      values:
+        1995-01-01: 3
+      metadata:
+        unit: child
+    amount:
+      values:
+        1995-01-01: 0.45
+      metadata:
+        unit: /1

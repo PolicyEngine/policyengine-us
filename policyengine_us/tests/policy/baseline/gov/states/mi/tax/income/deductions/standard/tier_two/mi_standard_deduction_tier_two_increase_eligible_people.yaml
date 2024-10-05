@@ -1,0 +1,42 @@
+- name: 2022 filer at the tier 2 standard deduction age threshold, not receive retirement benefits from SSA employment exempt and retired before 2013
+  period: 2022
+  input:
+    people:
+      person1:
+        year_of_retirement: 2012
+        retirement_benefits_from_ss_exempt_employment: 0
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    household:
+      members: [person1]
+      state_code: MI
+  output: 
+    mi_standard_deduction_tier_two_increase_eligible_people: 0
+
+- name: 2022 joint filer and their spouse are at the tier 2 standard deduction age threshold, one receive retirement benefits from SSA employment exempt and both retired before 2013, and with one more household member
+  period: 2022
+  input:
+    people:
+      person1:
+        year_of_retirement: 2010
+        retirement_benefits_from_ss_exempt_employment: 2_000
+        is_tax_unit_head_or_spouse: true
+      person2:
+        year_of_retirement: 2018
+        retirement_benefits_from_ss_exempt_employment: 300
+        is_tax_unit_head_or_spouse: true
+      person3:
+        year_of_retirement: 2012
+        retirement_benefits_from_ss_exempt_employment: 300
+        is_tax_unit_head_or_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    household:
+      members: [person1, person2, person3]
+      state_code: MI
+  output: 
+    mi_standard_deduction_tier_two_increase_eligible_people: 1
+    

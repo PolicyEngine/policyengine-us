@@ -1,0 +1,44 @@
+- name: Nine bedroom multi family home
+  period: 2023
+  input:
+    in_la: true
+    is_sro: false
+    bedrooms: 9 
+  output:
+    hud_utility_allowance: 719 * 12
+
+- name: Single room occupancy
+  period: 2023
+  input:
+    in_la: true
+    is_sro: true
+    bedrooms: 3 
+  output:
+    hud_utility_allowance: 179 * 12
+
+- name: Not in LA
+  period: 2023
+  input:
+    in_la: false
+    is_sro: false
+    bedrooms: 9 
+  output:
+    hud_utility_allowance: 0
+
+- name: Four bedroom multi family home
+  period: 2023
+  input:
+    in_la: true
+    is_sro: false
+    bedrooms: 4
+  output:
+    hud_utility_allowance: 452 * 12
+
+- name: Zero bedroom multi family home
+  period: 2023
+  input:
+    in_la: true
+    is_sro: false
+    bedrooms: 0
+  output:
+    hud_utility_allowance: 227 * 12

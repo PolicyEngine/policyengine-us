@@ -1,0 +1,27 @@
+description: California reduces its exemption for each of these increments of income in excess of the threshold.
+SINGLE:
+  1991-01-01: 2_500
+SEPARATE:
+  1991-01-01: 1_250
+SURVIVING_SPOUSE:
+  1991-01-01: 2_500
+JOINT:
+  1991-01-01: 2_500
+HEAD_OF_HOUSEHOLD: 
+  1991-01-01: 2_500
+
+metadata:
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  label: California exemption phase out increment
+  reference:
+  - title: 2021 California Form 540 instructions
+    href: https://www.ftb.ca.gov/forms/2021/2021-540-booklet.html
+  - title: 2022 California Form 540 instructions
+    href: https://www.ftb.ca.gov/forms/2022/2022-540-booklet.html
+  - title: 2023 California Form 540 instructions
+    href: https://www.ftb.ca.gov/forms/2023/2023-540-booklet.html
+  - title: Cal. Rev. & Tax. Code § 17054.1 | (a)
+    href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=17054.1.&nodeTreePath=3.20.2&lawCode=RTC

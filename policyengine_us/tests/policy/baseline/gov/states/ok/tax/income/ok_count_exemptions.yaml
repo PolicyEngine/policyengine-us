@@ -1,0 +1,33 @@
+- name: Non-elderly unmarried with no dependents
+  period: 2021
+  input:
+    filing_status: SINGLE
+    age_head: 40
+    state_code: OK
+  output:
+    ok_count_exemptions: 1
+
+- name: Non-elderly married with two dependents and blind spouse
+  period: 2022
+  input:
+    filing_status: JOINT
+    age_head: 40
+    age_spouse: 40
+    tax_unit_dependents: 2
+    blind_spouse: true
+    state_code: OK
+  output:
+    ok_count_exemptions: 5
+
+- name: Elderly married with two dependents and blind spouse and low AGI
+  period: 2022
+  input:
+    filing_status: JOINT
+    age_head: 65
+    age_spouse: 60
+    tax_unit_dependents: 2
+    blind_spouse: true
+    adjusted_gross_income: 20_000
+    state_code: OK
+  output:
+    ok_count_exemptions: 6

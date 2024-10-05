@@ -1,0 +1,18 @@
+description: Kansas limits its taxable OASDI subtraction to filers with AGI at or below this amount.
+values:
+  2021-01-01: 75_000
+
+metadata:
+  period: year
+  unit: currency-USD
+  label: Kansas federal AGI limit for taxable social security AGI subtraction
+  reference:
+  - title: 2021 Form K-40 instructions
+    href: https://www.ksrevenue.gov/pdf/ip21.pdf
+  - title: 2022 Form K-40 instructions
+    href: https://www.ksrevenue.gov/pdf/ip22.pdf
+  - title: 2023 Form K-40 instructions
+    href: https://www.ksrevenue.gov/pdf/ip23.pdf#page=11
+  - title: Kansas 2022 Statute | Article 32 | §79-32,271(c)(xviii)
+    href: http://www.kslegislature.org/li/b2023_24/statute/079_000_0000_chapter/079_032_0000_article/079_032_0117_section/079_032_0117_k/
+

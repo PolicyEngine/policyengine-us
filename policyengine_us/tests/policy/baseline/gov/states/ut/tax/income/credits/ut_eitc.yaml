@@ -1,0 +1,15 @@
+- name: UT EITC unit test 1
+  period: 2022
+  input:
+    eitc: 1_000
+    state_code: UT
+  output:
+    ut_eitc: 150
+
+- name: No federal EITC
+  period: 2022
+  input:
+    eitc: 0
+    state_code: UT
+  output:
+    ut_eitc: 0

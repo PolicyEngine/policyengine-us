@@ -1,0 +1,23 @@
+- name: Unmarried with no children
+  period: 2021
+  input:
+    filing_status: SINGLE
+    state_code: OK
+  output:
+    ok_standard_deduction: 6_350
+
+- name: Married
+  period: 2022
+  input:
+    filing_status: JOINT
+    state_code: OK
+  output:
+    ok_standard_deduction: 12_700
+
+- name: Unmarrie with children
+  period: 2022
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    state_code: OK
+  output:
+    ok_standard_deduction: 9_350

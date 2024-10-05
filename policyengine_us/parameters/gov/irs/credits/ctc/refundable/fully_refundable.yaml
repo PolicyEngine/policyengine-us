@@ -1,0 +1,11 @@
+description: The IRS makes the Child Tax Credit fully refundable if this is true.
+values:
+  2013-01-01: false
+  2021-01-01: true
+  2022-01-01: false
+metadata:
+  unit: bool
+  label: Fully refundable CTC
+  reference:
+    - title: 26 U.S. Code § 24(i)(1)
+      href: https://www.law.cornell.edu/uscode/text/26/24#i_1

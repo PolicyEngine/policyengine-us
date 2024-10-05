@@ -1,0 +1,58 @@
+- name: Family of 4 in contiguous US
+  period: 2022-01
+  input:
+    spm_unit_size: 4
+    state_group: CONTIGUOUS_US
+  output:
+    snap_standard_deduction: 184
+
+- name: Family of 2 in contiguous US
+  period: 2022-01
+  input:
+    spm_unit_size: 2
+    state_group: CONTIGUOUS_US
+  output:
+    snap_standard_deduction: 177
+
+- name: Family of 9 in contiguous US
+  period: 2022-01
+  input:
+    spm_unit_size: 9
+    state_group: CONTIGUOUS_US
+  output:
+    snap_standard_deduction: 246
+
+- name: One person
+  period: 2022-01
+  input:
+    state_group: CONTIGUOUS_US
+  output:
+    snap_standard_deduction: 177
+
+- name: Individual in Guam
+  period: 2022-01
+  input:
+    state_group: GU
+  output:
+    snap_standard_deduction: 356
+
+- name: Individual in Virgin Islands
+  period: 2022-01
+  input:
+    state_group: VI
+  output:
+    snap_standard_deduction: 156
+
+- name: Individual in Alaska
+  period: 2022-01
+  input:
+    state_group: AK
+  output:
+    snap_standard_deduction: 303
+
+- name: Individual in Hawaii
+  period: 2022-01
+  input:
+    state_group: HI
+  output:
+    snap_standard_deduction: 250

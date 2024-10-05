@@ -1,0 +1,32 @@
+description: Colorado limits the inpatient co-pay under the Child Health Plan Plus to this amount, based on income as a percent of the poverty line.
+
+brackets:
+  - threshold:
+      2023-01-01: 0
+    amount:
+      2023-01-01: 0
+  - threshold:
+      2023-01-01: 1.01
+    amount:
+      2023-01-01: 2
+  - threshold:
+      2023-01-01: 1.57
+    amount:
+      2023-01-01: 20
+  - threshold:
+      2023-01-01: 2.01
+    amount:
+      2023-01-01: 50
+  - threshold:
+      2023-01-01: 2.61
+    amount:
+      2023-01-01: .inf
+
+metadata:
+  type: single_amount
+  rate_unit: currency-USD
+  threshold_unit: /1
+  label: Colorado CHP+ inpatient hospital co-pay
+  reference:
+    - title: Child Health Plan Plus (CHP+) | DEPARTMENT OF HEALTH CARE POLICY AND FINANCING
+      href: https://hcpf.colorado.gov/child-health-plan-plus

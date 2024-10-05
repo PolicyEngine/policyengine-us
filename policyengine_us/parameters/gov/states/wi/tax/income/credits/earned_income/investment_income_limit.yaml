@@ -1,0 +1,17 @@
+description: Wisconsin limits EITC eligibility to this investment income amount.
+metadata:
+  unit: currency-USD
+  period: year
+  label: Wisconsin EITC investment income limit
+  reference:
+    - title: 2021 Wisconsin Form 1 instructions for Line 26
+      href: https://www.revenue.wi.gov/TaxForms2021/2021-Form1-Inst.pdf#page=27
+    - title: 2022 Wisconsin Form 1 instructions for Line 29
+      href: https://www.revenue.wi.gov/TaxForms2022/2022-Form1-Inst.pdf#page=27
+    # In 2023 Wisconsin adopted the federal EITC investment income limit
+    - title: 2023 Form 1 instructions
+      href: https://www.revenue.wi.gov/TaxForms2023/2023-Form1-Inst.pdf#page=27
+
+values:
+  2021-01-01: 3_650
+  2022-01-01: 3_800

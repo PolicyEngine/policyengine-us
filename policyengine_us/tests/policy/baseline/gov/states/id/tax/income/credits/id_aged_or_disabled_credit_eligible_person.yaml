@@ -1,0 +1,226 @@
+- name: Househould with only head and aged spouse
+  period: 2023
+  input:
+    people:
+      person1:
+        is_disabled: false
+        is_tax_unit_head_or_spouse: true
+        share_of_care_and_support_costs_paid_by_tax_filer: 0.6
+        age: 64
+      person2:
+        is_disabled: false
+        is_tax_unit_head_or_spouse: true
+        share_of_care_and_support_costs_paid_by_tax_filer: 0.6
+        age: 65
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:  
+    id_aged_or_disabled_credit_eligible_person: [false, false]
+
+- name: Househould with only disabled head 
+  period: 2023
+  input:
+    people:
+      person1:
+        is_disabled: true
+        is_tax_unit_head_or_spouse: true
+        share_of_care_and_support_costs_paid_by_tax_filer: 0.6
+        age: 65
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:  
+    id_aged_or_disabled_deduction_eligible_person: [true]
+
+
+- name: Househould with only aged spouse 
+  period: 2023
+  input:
+    people:
+      person1:
+        is_disabled: false
+        is_tax_unit_head_or_spouse: true
+        share_of_care_and_support_costs_paid_by_tax_filer: 0.6
+        age: 65
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:  
+    id_aged_or_disabled_deduction_eligible_person: [false]
+
+- name: No eligible person as payment less than one-half of cost
+  period: 2023
+  input:
+    people:
+      person1:
+        is_disabled: false
+        is_tax_unit_head_or_spouse: false
+        age: 65
+        share_of_care_and_support_costs_paid_by_tax_filer: 0
+      person2:
+        is_disabled: false
+        is_tax_unit_head_or_spouse: false
+        age: 65
+        share_of_care_and_support_costs_paid_by_tax_filer: 0.3
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:  
+    id_aged_or_disabled_deduction_eligible_person: [false, false]
+
+- name: Four eligible people - capped at 3
+  period: 2023
+  input:
+    people:
+      person1:
+        is_disabled: true
+        is_tax_unit_head_or_spouse: false
+        share_of_care_and_support_costs_paid_by_tax_filer: 0.6
+        age: 64
+      person2:
+        is_disabled: false
+        is_tax_unit_head_or_spouse: false
+        share_of_care_and_support_costs_paid_by_tax_filer: 0.6
+        age: 65
+      person3:
+        is_disabled: true
+        is_tax_unit_head_or_spouse: false
+        share_of_care_and_support_costs_paid_by_tax_filer: 0.6
+        age: 64
+      person4:
+        is_disabled: false
+        is_tax_unit_head_or_spouse: false
+        share_of_care_and_support_costs_paid_by_tax_filer: 0.6
+        age: 65
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: ID
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+  output:  
+    id_aged_or_disabled_deduction_eligible_person: [true, true, true, true]
+
+- name: One eligible person
+  period: 2023
+  input:
+    people:
+      person1:
+        is_disabled: false
+        is_tax_unit_head_or_spouse: false
+        share_of_care_and_support_costs_paid_by_tax_filer: 0.6
+        age: 64
+      person2:
+        is_disabled: false
+        is_tax_unit_head_or_spouse: false
+        share_of_care_and_support_costs_paid_by_tax_filer: 0.6
+        age: 65
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:  
+    id_aged_or_disabled_deduction_eligible_person: [false, true]
+
+- name: No eligible people as age less than 65
+  period: 2023
+  input:
+    people:
+      person1:
+        is_disabled: false
+        is_tax_unit_head_or_spouse: false
+        share_of_care_and_support_costs_paid_by_tax_filer: 0.6
+        age: 64
+      person2:
+        is_disabled: false
+        is_tax_unit_head_or_spouse: false
+        share_of_care_and_support_costs_paid_by_tax_filer: 0.6
+        age: 64
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:  
+    id_aged_or_disabled_deduction_eligible_person: [false, false]
+
+- name: Head and Spouse are not eligible if aged
+  period: 2023
+  input:
+    people:
+      person1:
+        is_disabled: false
+        is_tax_unit_head_or_spouse: false
+        share_of_care_and_support_costs_paid_by_tax_filer: 0.6
+        age: 65
+      person2:
+        is_disabled: false
+        is_tax_unit_head_or_spouse: true
+        share_of_care_and_support_costs_paid_by_tax_filer: 0.6
+        age: 65
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:  
+    id_aged_or_disabled_deduction_eligible_person: [true, false]
+
+- name: Head and Spouse are not eligible if aged but are eligible if disabled
+  period: 2023
+  input:
+    people:
+      person1:
+        is_disabled: true
+        is_tax_unit_head_or_spouse: false
+        share_of_care_and_support_costs_paid_by_tax_filer: 0.6
+        age: 64
+      person2:
+        is_disabled: false
+        is_tax_unit_head_or_spouse: true
+        share_of_care_and_support_costs_paid_by_tax_filer: 0.6
+        age: 65
+      person3:
+        is_disabled: true
+        is_tax_unit_head_or_spouse: true
+        share_of_care_and_support_costs_paid_by_tax_filer: 0.6
+        age: 64
+      person4:
+        is_disabled: false
+        is_tax_unit_head_or_spouse: false
+        share_of_care_and_support_costs_paid_by_tax_filer: 0.6
+        age: 65
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: ID
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+  output:  
+    id_aged_or_disabled_deduction_eligible_person: [true, false, true, true]

@@ -1,0 +1,61 @@
+- name: "Illinois Use Tax: Single Amount Test #1"
+  period: 2021
+  input:
+    people:
+      person_1:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [person_1]
+        adjusted_gross_income: 43_000
+    households:
+      household:
+        state_code: IL
+  output:
+    il_use_tax: 23
+- name: "Illinois Use Tax: Single Amount Test #2"
+  period: 2021
+  input:
+    people:
+      person_1:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [person_1]
+        adjusted_gross_income: 85_000
+    households:
+      household:
+        state_code: IL
+  output:
+    il_use_tax: 44
+- name: "Illinois Use Tax: Rate Test #1"
+  period: 2021
+  input:
+    people:
+      person_1:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [person_1]
+        adjusted_gross_income: 275_000
+    households:
+      household:
+        state_code: IL
+  output:
+    il_use_tax: 275_000 * 0.0005
+- name: "Illinois Use Tax: Rate Test #2"
+  period: 2021
+  input:
+    people:
+      person_1:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [person_1]
+        adjusted_gross_income: 500_000
+    households:
+      household:
+        state_code: IL
+  output:
+    il_use_tax: 500_000 * 0.0005
+

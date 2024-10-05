@@ -1,0 +1,21 @@
+- name: aca_child_index unit test 1
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 39
+      person3:
+        age: 14
+      person4:
+        age: 13
+      person5:
+        age: 12
+      person6:
+        age: 12
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+  output:
+    aca_child_index: [99, 99, 1, 2, 3, 4]

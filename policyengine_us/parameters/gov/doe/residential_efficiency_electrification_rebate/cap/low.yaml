@@ -1,0 +1,25 @@
+description: The US caps residential efficiency and electrification program rebates at this amount per one-percent reduction of the state's average home energy usage, per year, for retrofits achieving low energy savings, by income AMI ratio.
+# NB: The law specifies this as a dollar amount per 20% reduction in average home energy use in the state.
+# We simplify this by making the value per one-percent reduction.
+brackets:
+  - threshold:
+      0000-01-01: -.inf
+    amount:
+      0000-01-01: 0
+      2023-01-01: 200 # $4,000 in the law / 20% reduction.
+      2031-10-01: 0
+  - threshold:
+      0000-01-01: 0.8
+    amount:
+      0000-01-01: 0
+      2023-01-01: 100 # $2,000 in the law / 20% reduction.
+      2031-10-01: 0
+metadata:
+  threshold_unit: /1
+  amount_unit: currency_USD
+  amount_period: year
+  type: single_amount
+  label: Residential efficiency and electrification rebate cap for small retrofits, per one-percent reduction relative to the average home energy usage in one's state
+  reference:
+    - title: Inflation Reduction Act, part 2, Section 50121 (c)
+      href: https://www.democrats.senate.gov/imo/media/doc/inflation_reduction_act_of_2022.pdf#page=587

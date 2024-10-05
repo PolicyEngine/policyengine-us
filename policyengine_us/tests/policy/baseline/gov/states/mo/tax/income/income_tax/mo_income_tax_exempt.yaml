@@ -1,0 +1,31 @@
+- name: Unit test of minimum taxable income of $111 in 2022.
+  period: 2022
+  input:
+    mo_taxable_income: 111
+    state_code: MO
+  output:
+    mo_income_tax_exempt: true
+
+- name: Unit test of minimum taxable income of $111 in 2022.
+  period: 2022
+  input:
+    mo_taxable_income: 112
+    state_code: MO
+  output:
+    mo_income_tax_exempt: false
+
+- name: Unit test of minimum taxable income of $1,000 in 2023.
+  period: 2023
+  input:
+    mo_taxable_income: 1_000
+    state_code: MO
+  output:
+    mo_income_tax_exempt: true
+
+- name: Unit test of minimum taxable income of $1,000 in 2023.
+  period: 2023
+  input:
+    mo_taxable_income: 1_208
+    state_code: MO
+  output:
+    mo_income_tax_exempt: false

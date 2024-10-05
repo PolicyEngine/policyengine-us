@@ -1,0 +1,15 @@
+description: DC income tax has these non-refundable credits.
+metadata:
+  unit: list
+  period: year
+  label: DC non-refundable credits
+  reference:
+    - title: 2021 Form D-40 Booklet
+      href: https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/52926_D-40_12.21.21_Final_Rev011122.pdf#page=36
+    - title: 2022 Form D-40 Booklet
+      href: https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2022_D-40_Booklet_Final_blk_01_23_23_Ordc.pdf#page=34
+    - title: 2023 Form D-40 Booklet
+      href: https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2023_D40_Book_Final_012324.pdf#page=34
+values:
+  2021-01-01:
+    - dc_cdcc  # DC child/dependent care expense credit

@@ -1,0 +1,17 @@
+description: Program participation that entitles a non-tribal household to the Lifeline program
+values:
+  2016-12-01:
+    - medicaid
+    - snap
+    - ssi
+    # Also not implemented:
+    # - Veterans and Survivors Pension Benefit
+metadata:
+  period: month
+  unit: list
+  label: Lifeline non-tribal qualifying programs
+  reference:
+    - title: 47 CFR § 54.409 - Consumer qualification for Lifeline.
+      href: https://www.law.cornell.edu/cfr/text/47/54.409
+    - title: Lifeline Program for Low-Income Consumers # Specifies 2016-12-01 start date.
+      href: https://www.fcc.gov/general/lifeline-program-low-income-consumers

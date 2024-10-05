@@ -1,0 +1,27 @@
+description: New York marginal percentage of college tuition which is credited.
+brackets:
+  - threshold:
+      2001-01-01: 0
+    rate:
+      2001-01-01: 1
+  - threshold:
+      2001-01-01: 200
+    rate:
+      2001-01-01: 0
+  - threshold:
+      2001-01-01: 5_000
+    rate:
+      2001-01-01: 0.04
+metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  threshold_period: year
+  rate_unit: /1
+  label: New York college tuition credit rate
+  reference:
+    - title: Section 606 Credits against tax (t)(4)
+      href: https://www.nysenate.gov/legislation/laws/TAX/606
+    - title: New York Instructions for Form IT-201 Line 68
+      href: https://www.tax.ny.gov/pdf/2023/printable-pdfs/inc/it201i-2023.pdf#page=26
+    - title: New York Form IT-272 Part 2 & Part 3
+      href: https://www.tax.ny.gov/pdf/current_forms/it/it272_fill_in.pdf#page=2

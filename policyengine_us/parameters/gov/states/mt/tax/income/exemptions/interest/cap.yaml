@@ -1,0 +1,25 @@
+description: Montana caps the interest income exclusion to this amount, based on filing status.
+metadata:
+  label: Montana senior interest income exclusion cap
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  reference: 
+    - title: 2021 Montana Form 2 | line 3 - Partial Interest Exemption for Taxpayers
+      href: https://mtrevenue.gov/wp-content/uploads/mdocs/form%202%202021%20instructions.pdf#page=24
+    - title: 2022 Montana Form 2 | line 3 - Partial Interest Exemption for Taxpayers
+      href: https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2022/12/Form-2-2022-Instructions.pdf#page=25
+    - title: Administrative Rules of Montana | Income Taxes | § 42.14.215 (2) & (3)
+      href: https://rules.mt.gov/gateway/RuleNo.asp?RN=42%2E15%2E215
+
+SINGLE:
+  2021-01-01: 800
+SEPARATE:
+  2021-01-01: 800
+JOINT:
+  2021-01-01: 1_600
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 800
+SURVIVING_SPOUSE:
+  2021-01-01: 800

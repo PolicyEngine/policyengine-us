@@ -1,0 +1,16 @@
+description: Louisiana reduces the exempt adjusted gross income if this is true.
+
+values:
+  2021-01-01: true  
+  2022-01-01: false
+metadata:
+  unit: bool
+  period: year
+  label: Louisiana exempt adjusted gross income reduction in effect
+  reference:
+    - title: 2021 Louisiana Individual Income Tax Return IT-540 Instructions
+      href: https://revenue.louisiana.gov/TaxForms/IT540i(2021)%20Instructions.pdf#page=9
+    - title: 2022 Louisiana Individual Income Tax Return IT-540 Instructions
+      href: https://revenue.louisiana.gov/TaxForms/IT540iWEB(2022)D1.pdf#page=9
+    - title: 2023 Louisiana Individual Income Tax Return IT-540 Instructions
+      href: https://revenue.louisiana.gov/TaxForms/IT540i%20WEB(2023)%20INSTRUCTIONS.pdf#page=10

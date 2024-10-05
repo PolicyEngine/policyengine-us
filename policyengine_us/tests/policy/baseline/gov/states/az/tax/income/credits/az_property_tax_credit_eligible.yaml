@@ -1,0 +1,101 @@
+- name: tax unit head meet the criteria
+  period: 2023
+  input:
+    people:
+      person1: 
+        is_tax_unit_head_or_spouse: true
+        age: 66
+        ssi: 100
+        real_estate_taxes: 0
+        rent: 1_000
+      person2:
+        is_tax_unit_head_or_spouse: true
+        age: 60
+        ssi: 0
+        real_estate_taxes: 0
+        rent: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    az_property_tax_credit_eligible: true
+
+- name: filer at 50 meets criteria
+  period: 2023
+  input:
+    state_code: AZ
+    is_tax_unit_head_or_spouse: true
+    age: 50
+    ssi: 100
+    real_estate_taxes: 100
+    rent: 0
+  output:
+    az_property_tax_credit_eligible: true
+
+- name: filer at 45 does not receive ssi
+  period: 2023
+  input:
+    state_code: AZ
+    is_tax_unit_head_or_spouse: true
+    age: 45
+    ssi: 0
+    real_estate_taxes: 100
+    rent: 0
+  output:
+    az_property_tax_credit_eligible: false
+
+- name: tax filer does not paid property tax and rent
+  period: 2023
+  input:
+    state_code: AZ
+    is_tax_unit_head_or_spouse: true
+    age: 80
+    ssi: 0
+    real_estate_taxes: 0
+    rent: 0
+  output:
+    az_property_tax_credit_eligible: false
+
+- name: filer at 79 meets criteria
+  period: 2023
+  input:
+    state_code: AZ
+    is_tax_unit_head_or_spouse: true
+    age: 79
+    ssi: 0
+    real_estate_taxes: 100
+    rent: 1_500
+  output:
+    az_property_tax_credit_eligible: true
+
+- name: tax unit head does not meet the criteria
+  period: 2023
+  input:
+    people:
+      person1: 
+        is_tax_unit_head_or_spouse: true
+        age: 60
+        ssi: 0
+        real_estate_taxes: 100
+        rent: 1_000
+      person2:
+        is_tax_unit_head_or_spouse: true
+        age: 66
+        ssi: 200
+        real_estate_taxes: 0
+        rent: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    az_property_tax_credit_eligible: true
+
+

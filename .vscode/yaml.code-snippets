@@ -17,8 +17,7 @@
 		"body": [
 			"description: ${1:Description}",
 			"values:",
-			"  2020-01-01:",
-			"    value: ${2:0.00}",
+			"  2020-01-01: ${2:0.00}",
 			"metadata:",
 			"  unit: currency-USD",
 		],
@@ -28,8 +27,7 @@
 		"prefix": "test",
 		"body": [
 			"- name: ${1:Name}",
-			"  period: 2020",
-			"  absolute_error_margin: ${2:0}",
+			"  period: 2022",
 			"  input:",
 			"    ${3:variable values here}",
 			"  output:",

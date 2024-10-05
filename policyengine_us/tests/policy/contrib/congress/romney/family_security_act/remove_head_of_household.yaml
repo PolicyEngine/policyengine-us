@@ -1,0 +1,29 @@
+- name: Remove head of household filing status
+  period: 2023
+  reforms: policyengine_us.reforms.congress.romney.family_security_act.remove_head_of_household.remove_head_of_household
+  input:
+    gov.contrib.congress.romney.family_security_act.remove_head_of_household : true
+    people:
+      head: {}
+      child:
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [head, child]
+  output:
+    filing_status: SINGLE
+
+- name: Remove head of household filing status for widowed filers without children
+  period: 2023
+  reforms: policyengine_us.reforms.congress.romney.family_security_act.remove_head_of_household.remove_head_of_household
+  input:
+    gov.contrib.congress.romney.family_security_act.remove_head_of_household : true
+    people:
+      head: 
+        is_tax_unit_head: true
+        is_widowed: true
+    tax_units:
+      tax_unit:
+        members: [head]
+  output:
+    filing_status: SINGLE

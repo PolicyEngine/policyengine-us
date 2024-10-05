@@ -1,0 +1,39 @@
+- name: Single filer gets $1k exemption.
+  period: 2022
+  input:
+    state_code: NJ
+    filing_status: SINGLE
+  output:
+    nj_regular_exemption: 1_000
+
+- name: Joint filer gets $2k exemption.
+  period: 2022
+  input:
+    state_code: NJ
+    filing_status: JOINT
+  output:
+    nj_regular_exemption: 2_000
+
+- name: Head of household filer gets $1k exemption.
+  period: 2022
+  input:
+    state_code: NJ
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    nj_regular_exemption: 1_000
+
+- name: Widow filer gets $1k exemption.
+  period: 2022
+  input:
+    state_code: NJ
+    filing_status: SURVIVING_SPOUSE
+  output:
+    nj_regular_exemption: 1_000
+
+- name: Separate filer gets $1k exemption.
+  period: 2022
+  input:
+    state_code: NJ
+    filing_status: SEPARATE
+  output:
+    nj_regular_exemption: 1_000

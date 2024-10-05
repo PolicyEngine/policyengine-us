@@ -1,0 +1,14 @@
+description: The IRS caps the tax credit for fuel cell property expenditures at this amount per kilowatt.
+values:
+  2017-01-01: 1_000
+metadata:
+  unit: currency-USD
+  name: residential_clean_energy_credit_fuel_cell_cap_per_kw
+  label: Residential Clean Energy Credit fuel cell cap per kilowatt
+  reference:
+    - title: 26 U.S.C. § 25D(b)(1)
+      href: https://www.law.cornell.edu/uscode/text/26/25D#b_1
+    # The law says $500 per half-kilowatt, but the IRS says $1,000 per kilowatt.
+    # Neither specifies rounding rules.
+    - title: IRS Form 5695 (2021) # Line 10.
+      href: https://www.irs.gov/pub/irs-pdf/f5695.pdf

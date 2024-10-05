@@ -1,0 +1,104 @@
+- name: Separate ineligible
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        social_security_retirement: 10_000
+        id_retirement_benefits_deduction_relevant_income: 45_000
+      person2:
+        is_tax_unit_head_or_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SEPARATE 
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    id_retirement_benefits_deduction: 0
+
+- name: No benefit amount if no eligible income
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: false
+        social_security_retirement: 45_000
+        id_retirement_benefits_deduction_relevant_income: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    id_retirement_benefits_deduction: 0
+
+- name: The deduction is capped at the social security benefits amounts
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        social_security_retirement: 40_140
+        id_retirement_benefits_deduction_relevant_income: 38_700
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    id_retirement_benefits_deduction: 0
+
+- name: Only the social security benefits amount of the head or spouse is considered
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        social_security_retirement: 15_000
+        id_retirement_benefits_deduction_relevant_income: 45_000
+      person2:
+        is_tax_unit_head_or_spouse: true
+        social_security_retirement: 10_000
+      person3:
+        is_tax_unit_head_or_spouse: false
+        social_security_retirement: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        filing_status: JOINT 
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: ID
+  output:
+    id_retirement_benefits_deduction: 35_210
+
+- name: Test for the widow(er) case
+  period: 2022
+  input:
+    people:
+      person1:
+        id_retirement_benefits_deduction_eligible_person: true
+        social_security_retirement: 10_000
+        id_retirement_benefits_deduction_relevant_income: 30_000
+      person2:
+        id_retirement_benefits_deduction_eligible_person: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SURVIVING_SPOUSE 
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    id_retirement_benefits_deduction: 30_000

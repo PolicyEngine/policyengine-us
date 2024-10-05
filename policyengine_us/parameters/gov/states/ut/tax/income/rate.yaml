@@ -1,0 +1,22 @@
+description: Utah taxes personal income at this flat rate. 
+values:
+  2008-01-01: 0.05
+  2018-05-08: 0.0495
+  2022-01-01: 0.0485
+  2023-01-01: 0.0465
+  2024-01-01: 0.0455
+metadata:
+  unit: /1
+  label: Utah income tax rate
+  period: year
+  reference:
+    - title: Utah Code 59-10-104 (2) (b) #2018-01-01
+      href: https://le.utah.gov/xcode/historical.html?date=1/1/2014&oc=/xcode/Title59/Chapter10/C59-10-S104_1800010118000101.html
+    - title : Utah Code 59-10-104 (2) (b) #2018-05-08
+      href: https://le.utah.gov/xcode/historical.html?date=5/8/2018&oc=/xcode/Title59/Chapter10/C59-10-S104_2018050820180508.html
+    - title: Utah Code 59-10-104 (2) (b) #2022-05-04
+      href: https://le.utah.gov/xcode/historical.html?date=8/17/2022&oc=/xcode/Title59/Chapter10/C59-10-S104_2022050420220504.html
+    - title: 2023 Utah Code 59-10-104 (2) (b) # The rate was changed to 0.0465 in May 2023
+      href: https://le.utah.gov/xcode/Title59/Chapter10/59-10-S104.html?v=C59-10-S104_2022050420220504
+    - title: Utah Code 59-10-104 (2) (b) # Current tax code
+      href: https://le.utah.gov/xcode/Title59/Chapter10/59-10-S104.html?v=C59-10-S104_2022050420220504

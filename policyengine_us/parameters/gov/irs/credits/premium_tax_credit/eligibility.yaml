@@ -1,0 +1,20 @@
+description: Eligibility for the Premium Tax Credit as a percentage of the federal poverty line.
+brackets:
+  - threshold:
+      2015-01-01: 0
+    amount:
+      2015-01-01: false
+  - threshold:
+      2015-01-01: 1
+    amount:
+      2015-01-01: true
+  - threshold:
+      2015-01-01: 4
+    amount:
+      2015-01-01: false
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  reference:
+    - title: 26 U.S. Code § 36B - Refundable credit for coverage under a qualified health plan
+      href: https://www.law.cornell.edu/uscode/text/26/36B

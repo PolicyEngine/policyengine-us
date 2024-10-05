@@ -1,0 +1,55 @@
+- name: dc_itemized_deductions unit test 1
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        dc_agi: 100_000
+      person2:
+        is_tax_unit_spouse: true
+        dc_agi: 100_000
+        real_estate_taxes: 9_000
+      person3:
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        casualty_loss_deduction: 1_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DC
+  output:
+    dc_itemized_deductions: 10_000
+
+- name: dc_itemized_deductions unit test 2
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        dc_agi: 100_000
+      person2:
+        is_tax_unit_spouse: true
+        dc_agi: 200_000
+        real_estate_taxes: 12_000
+      person3:
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        casualty_loss_deduction: 1_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DC
+  output:
+    dc_itemized_deductions: 8_000  # = 1_000 + (12_000 - 100_000 * 0.05)

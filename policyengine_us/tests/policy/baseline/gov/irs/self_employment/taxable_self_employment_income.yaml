@@ -1,0 +1,25 @@
+- name: Default is zero.
+  period: 2022
+  output:
+    taxable_self_employment_income: 0
+
+- name: Negatives also produce zero.
+  period: 2022
+  input:
+    self_employment_income: -1
+  output:
+    taxable_self_employment_income: 0
+
+- name: Otherwise, half of self-employment taxes are deducted.
+  period: 2022
+  input:
+    self_employment_income: 100_000
+  output:
+    taxable_self_employment_income: 92_350
+
+- name: Zero if less than $400.
+  period: 2022
+  input:
+    self_employment_income: 399
+  output:
+    taxable_self_employment_income: 0

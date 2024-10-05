@@ -1,0 +1,10 @@
+description: Rate at which maximum MO property tax credit is phased out.
+values:
+  2021-01-01: 0.000625  # = 1 / 16 / 100
+metadata:
+  unit: currency-USD
+  period: year
+  label: Missouri property tax credit phaseout rate
+  reference:
+    - title: MO Rev Stat § 135.030
+      href: https://revisor.mo.gov/main/OneSection.aspx?section=135.030&bid=6439

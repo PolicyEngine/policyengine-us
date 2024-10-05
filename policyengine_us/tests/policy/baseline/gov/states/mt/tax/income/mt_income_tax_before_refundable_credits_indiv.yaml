@@ -1,0 +1,29 @@
+- name: Calculation
+  period: 2021
+  input:
+     mt_non_refundable_credits: 1_000
+     mt_income_tax_before_non_refundable_credits_indiv: 1_400
+     state_code: MT
+     is_tax_unit_head_or_spouse: true
+  output:
+    mt_income_tax_before_refundable_credits_indiv: 400
+
+- name: No income 
+  period: 2021
+  input:
+     mt_non_refundable_credits: 1_000
+     mt_income_tax_before_non_refundable_credits_indiv: 500
+     state_code: MT
+     is_tax_unit_head_or_spouse: true
+  output:
+    mt_income_tax_before_refundable_credits_indiv: 0
+
+- name: Not head or spouse
+  period: 2021
+  input:
+     mt_non_refundable_credits: 1_000
+     mt_income_tax_before_non_refundable_credits_indiv: 2_000
+     state_code: MT
+     is_tax_unit_head_or_spouse: false
+  output:
+    mt_income_tax_before_refundable_credits_indiv: 0

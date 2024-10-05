@@ -1,0 +1,99 @@
+- name: Family of 4, no member(s) with disabilities, income of 24k/year (Standard Test)
+  period: 2022-01
+  absolute_error_margin: 0.01 # Floating point issue.
+  input:
+    people:
+      person_1:
+        age: 30
+        employment_income: 
+          2022: 2_000 * 12
+      person_2:
+        age: 35
+      person_3:
+        age: 17
+      person_4:
+        age: 15
+    spm_units:
+      spm_unit:
+        members: [person_1, person_2, person_3, person_4]
+    households:
+      household:
+        state_code_str: CA
+  output:
+    snap_earned_income_deduction: 2_000 * 0.2 # Flat 20% rate.
+    snap_standard_deduction: 184 #(parameter for family of 4 in contiguous US)
+    snap_excess_shelter_expense_deduction: 0 # No shelter costs reported.
+    snap_max_allotment: 835 # (parameter for family of 4 in contiguous US).
+
+- name: Single person in CA at 200% of FPL meets BBCE gross income test but fails BBCE net income test.
+  period: 2022
+  input:
+    # Use 2021 FPL since 2022 technically takes effect on 2022-01-12.
+    employment_income: 12_880 * 2
+    state_code_str: CA
+  output:
+    snap: 0
+
+- name: Single person in CA at 200% of FPL + $1 is ineligible.
+  period: 2022
+  input:
+    employment_income: 12_880 * 2
+    gi_cash_assistance: 1
+    state_code_str: CA
+  output:
+    snap: 0
+
+# Source: https://www.cbpp.org/research/food-assistance/a-quick-guide-to-snap-eligibility-and-benefits
+# All comment text from here is verbatim from the page.
+# Example: Calculating a Household's Monthly SNAP Benefits
+# Consider a family of three with one full-time, minimum-wage worker,
+# two children, dependent care costs of $78 a month, and shelter costs of $993
+# per month.
+- name: Family of 3, CBPP Example
+  period: 2022-01
+  absolute_error_margin: 5 # They round monthly values.
+  input:
+    # Consider a family of three
+    spm_unit_size: 3
+    # with one full-time, minimum-wage worker [...]
+    # Step 1 - Gross Income:
+    # The federal minimum wage is currently $7.25 per hour.
+    # Full-time work at this level yields monthly earnings of $1,257.
+    snap_earned_income: 1_257
+    # dependent care costs of $78 a month
+    childcare_expenses:
+      2022: 78 * 12
+    # and shelter costs of $993 per month
+    rent: 
+      2022: 993 * 12
+  output:
+    # Step 2 — Net Income for Shelter Deduction:
+    # Subtract the standard deduction for a three-person household ($177)
+    snap_standard_deduction: 177
+    # the earnings deduction (20 percent times $1,257 or $251)
+    snap_earned_income_deduction: 1_257 * 0.2
+    # and the child care deduction ($78)
+    snap_dependent_care_deduction: 78
+    # The result is $751 (Countable Income A).
+    snap_net_income_pre_shelter: 751
+    # Step 3 — Shelter Deduction:
+    # Begin with the shelter costs of $993.
+    # Subtract half of Countable Income A (half of $751 is $376) for a result
+    # of $617.
+    # Because there is a shelter deduction cap of $597, the shelter deduction
+    # for this household is $597. 
+    snap_excess_shelter_expense_deduction: 597
+    # Step 4 — Net Income:
+    # Subtract the shelter deduction ($597) from Countable Income A ($751)
+    # for a result of $154.
+    snap_net_income: 154
+    # Step 5 — Family’s Expected Contribution Toward Food:
+    # 30 percent of the household’s net income ($154) is about $46.
+    snap_expected_contribution: 154 * 0.3
+    # Step 6 — SNAP Benefit:
+    # The maximum benefit in 2022 for a family of three is $658.
+    # The maximum benefit minus the household contribution ($658 minus $46)
+    # equals about $612.
+    snap_max_allotment: 658
+    # The family’s monthly SNAP benefit is $612.
+    snap_normal_allotment: 612

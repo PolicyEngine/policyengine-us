@@ -1,0 +1,59 @@
+- name: Amount only distributed to the head 
+  period: 2021
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        medical_out_of_pocket_expenses: 1_000
+        mt_agi: 400
+      person2:
+        is_tax_unit_head: false
+        medical_out_of_pocket_expenses: 1_000
+        mt_agi: 600
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_medical_expense_deduction_joint: [1_925, 0]
+
+- name: No income
+  period: 2021
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        medical_out_of_pocket_expenses: 1_000
+        mt_agi: 0
+      person2:
+        is_tax_unit_head: false
+        medical_out_of_pocket_expenses: 1_000
+        mt_agi: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_medical_expense_deduction_joint: [2_000, 0]
+
+- name: No expenses
+  period: 2021
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        medical_out_of_pocket_expenses: 0
+        mt_agi: 1_000
+      person2:
+        is_tax_unit_head: false
+        medical_out_of_pocket_expenses: 0
+        mt_agi: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_medical_expense_deduction_joint: [0, 0]

@@ -1,0 +1,8 @@
+- name: Non-refundable CTC is CTC minus refundable CTC.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    ctc: 3
+    refundable_ctc: 1
+  output:
+    non_refundable_ctc: 2

@@ -1,0 +1,35 @@
+description: DC provides up to this amount in TANF, by household size.
+
+metadata:
+  unit: currency-USD
+  period: month
+  breakdown:
+    - range(1, 11)
+  label: DC TANF benefit amount
+  reference:
+    - title: TANF for District Families
+      href: https://dhs.dc.gov/service/tanf-district-families
+    # Adjusted for inflation beginning 2014-10-01.
+    - title: Code of the District of Columbia § 4–205.52(c)
+      href: https://code.dccouncil.gov/us/dc/council/code/sections/4-205.52#(c)
+
+1: 
+  2022-10-01: 437
+2: 
+  2022-10-01: 545 
+3: 
+  2022-10-01: 696 
+4: 
+  2022-10-01: 851
+5: 
+  2022-10-01: 983 
+6: 
+  2022-10-01: 1_155 
+7: 
+  2022-10-01: 1_325 
+8: 
+  2022-10-01: 1_463
+9: 
+  2022-10-01: 1_612
+10: 
+  2022-10-01: 1_750

@@ -1,0 +1,12 @@
+- name: Single person at 160% FPL, MA.
+  relative_error_margin: 0.0002  # two-hundredths of one percent
+  period: 2022
+  input:
+    age: 21
+    state_code: MA
+    zip_code: "01101"
+    medicaid_magi: 1.6 * 13_590
+    second_lowest_silver_plan_cost: 4_133  # per 2022 KFF ACA calculator
+  output:
+    medicaid_income_level: 1.6
+    premium_tax_credit: 4_046  # $4,050 per 2022 KFF ACA calculator

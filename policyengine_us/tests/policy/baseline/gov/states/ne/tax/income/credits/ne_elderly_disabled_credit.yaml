@@ -1,0 +1,17 @@
+- name: NE nonrefundable elderly/disable credit unit test 1
+  period: 2021
+  input:
+    elderly_disabled_credit: 2_000
+    income_tax_before_credits: 1_000
+    state_code: NE
+  output:
+    ne_elderly_disabled_credit: 1_000
+
+- name: NE nonrefundable elderly/disable credit unit test 2
+  period: 2022
+  input:
+    elderly_disabled_credit: 2_000
+    income_tax_before_credits: 3_000
+    state_code: NE
+  output:
+    ne_elderly_disabled_credit: 2_000

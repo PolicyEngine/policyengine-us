@@ -1,0 +1,71 @@
+- name: Filer with AGI below $30,000 gets 50% match level.
+  period: 2022
+  input:
+    state_code: NJ
+    nj_taxable_income: 20_000
+    cdcc: 1_000
+  output:
+    nj_cdcc: 500
+
+- name: Filer with AGI between $30,000 and $60,000 gets 40% match level.
+  period: 2022
+  input:
+    state_code: NJ
+    nj_taxable_income: 40_000
+    cdcc: 1_000
+  output:
+    nj_cdcc: 400
+
+- name: Filer with AGI between $30,000 and $60,000 gets 40% match level.
+  period: 2022
+  input:
+    state_code: NJ
+    nj_taxable_income: 40_000
+    cdcc: 2_000
+  output:
+    nj_cdcc: 800
+
+- name: Filer with AGI between $60,000 and $90,000 gets 30% match level.
+  period: 2022
+  input:
+    state_code: NJ
+    nj_taxable_income: 70_000
+    cdcc: 1_000
+  output:
+    nj_cdcc: 300
+
+- name: Filer with AGI between $60,000 and $90,000 gets 30% match level.
+  period: 2022
+  input:
+    state_code: NJ
+    nj_taxable_income: 80_000
+    cdcc: 1_500
+  output:
+    nj_cdcc: 450
+
+- name: Filer with AGI between $90,000 and $120,000 gets 20% match level.
+  period: 2022
+  input:
+    state_code: NJ
+    nj_taxable_income: 100_000
+    cdcc: 1_000
+  output:
+    nj_cdcc: 200
+
+- name: Filer with AGI between $120,000 and $150,000 gets 10% match level.
+  period: 2022
+  input:
+    state_code: NJ
+    nj_taxable_income: 130_000
+    cdcc: 1_000
+  output:
+    nj_cdcc: 100
+
+- name: Filer with AGI above $150,000 is not eligible.
+  period: 2022
+  input:
+    state_code: NJ
+    nj_taxable_income: 160_000
+    cdcc: 1_000
+  output:
+    nj_cdcc: 0

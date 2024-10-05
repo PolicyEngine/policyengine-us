@@ -1,0 +1,8 @@
+- name: in_refundable_credits unit test 1
+  period: 2022
+  input:
+    state_code: IN
+    in_eitc: 300
+    in_unified_elderly_tax_credit: 200
+  output:
+    in_refundable_credits: 500

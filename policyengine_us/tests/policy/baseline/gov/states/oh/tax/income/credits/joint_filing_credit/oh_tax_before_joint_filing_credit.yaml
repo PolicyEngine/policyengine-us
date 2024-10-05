@@ -1,0 +1,17 @@
+- name: Capped at 0
+  period: 2022
+  input:
+    oh_income_tax_before_non_refundable_credits: 20
+    oh_partial_non_refundable_credits: 30
+    state_code: OH
+  output:
+    oh_tax_before_joint_filing_credit: 0
+
+- name: Reduction
+  period: 2022
+  input:
+    oh_income_tax_before_non_refundable_credits: 100
+    oh_partial_non_refundable_credits: 20
+    state_code: OH
+  output:
+    oh_tax_before_joint_filing_credit: 80

@@ -1,0 +1,43 @@
+- name: Filers who is eligible can get the homestead excess property tax credit of $300.
+  period: 2022
+  input:
+    wv_sctc: 20_000
+    real_estate_taxes: 21_500
+    wv_gross_household_income: 30_000
+    wv_homestead_excess_property_tax_credit_eligible: true
+    # heptc_amount = property_tax - wv_sctc - p.ghi_percentage * wv_ghi = 21500-20000-1200 = 300
+  output:
+    wv_homestead_excess_property_tax_credit: 300
+
+- name: Filers who is ineligible can get the homestead excess property tax credit of 0.
+  period: 2022
+  input:
+    wv_sctc: 20_000
+    real_estate_taxes: 21_500
+    wv_gross_household_income: 30_000
+    wv_homestead_excess_property_tax_credit_eligible: false
+    # heptc_amount = property_tax - wv_sctc - p.ghi_percentage * wv_ghi = 21500-20000-1200 = 300
+  output:
+    wv_homestead_excess_property_tax_credit: 0
+
+- name: Filers who is eligible can get the homestead excess property tax credit of $1200.
+  period: 2022
+  input:
+    wv_sctc: 10_000
+    real_estate_taxes: 20_000
+    wv_gross_household_income: 20_000
+    wv_homestead_excess_property_tax_credit_eligible: true
+    # heptc_amount = property_tax - wv_sctc - p.ghi_percentage * wv_ghi = 20000-10000-800 = 8200
+  output:
+    wv_homestead_excess_property_tax_credit: 1_000
+
+- name: Credit capped at 0
+  period: 2022
+  input:
+    wv_sctc: 10_000
+    real_estate_taxes: 1_000
+    wv_gross_household_income: 20_000
+    wv_homestead_excess_property_tax_credit_eligible: true
+    # heptc_amount = property_tax - wv_sctc - p.ghi_percentage * wv_ghi = 20000-10000-800 = 8200
+  output:
+    wv_homestead_excess_property_tax_credit: 0

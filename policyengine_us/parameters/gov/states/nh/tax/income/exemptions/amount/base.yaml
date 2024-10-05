@@ -1,0 +1,31 @@
+description: New Hampshire provides this base exemption based on filing status.
+metadata:
+  unit: currency-USD
+  period: year
+  breakdown:
+  - filing_status
+  label: New Hampshire base exemption amount
+  reference: 
+    - title: TITLE V - TAXATION - CHAPTER 77 - TAXATION OF INCOMES - Section 77:5
+      href: https://www.gencourt.state.nh.us/rsa/html/V/77/77-5.htm
+    - title: 2023 DP-10 Interest and Dividends Tax Return Instructions
+      href: https://www.revenue.nh.gov/forms/2024/documents/dp-10-instructions-2023.pdf#page=6
+    - title: 2022 DP-10 Interest and Dividends Tax Return Instructions
+      href: https://www.revenue.nh.gov/forms/2023/documents/dp-10-instructions-2022.pdf#page=4
+    - title: 2021 New Hampshire DP-10 Form
+      href: https://www.revenue.nh.gov/forms/2022/documents/dp-10-2021-print.pdf#page=3
+SINGLE: 
+  2021-01-01: 2_400
+  2027-01-01: 0
+JOINT:
+  2021-01-01: 4_800
+  2027-01-01: 0
+SEPARATE:
+  2021-01-01: 2_400
+  2027-01-01: 0
+HEAD_OF_HOUSEHOLD: 
+  2021-01-01: 2_400
+  2027-01-01: 0
+SURVIVING_SPOUSE:
+  2021-01-01: 2_400
+  2027-01-01: 0

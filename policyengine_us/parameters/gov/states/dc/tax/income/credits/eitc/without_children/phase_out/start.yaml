@@ -1,0 +1,20 @@
+description: DC phases out its EITC for filers without qualifying children for income above this threshold.
+metadata:
+  unit: currency-USD
+  label: DC EITC phase-out threshold for filers without qualifying children
+  period: year
+  uprating:
+    parameter: gov.irs.uprating
+  reference:
+    - title: Code of the District of Columbia § 47–1806.04 (f)(1)(C)(ii)
+      href: https://code.dccouncil.gov/us/dc/council/code/sections/47-1806.04#(f)(1)(C)(ii)
+    - title: 2021 DC Form D-40 Booklet, Page 24, Line 5
+      href: https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/52926_D-40_12.21.21_Final_Rev011122.pdf#page=24
+    - title: 2022 DC Form D-40 Booklet, Page 23, Line 5
+      href: https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2022_D-40_Booklet_Final_blk_01_23_23_Ordc.pdf#page=23
+    - title: 2023 DC Form D-40 Booklet, Page 23, Line 5
+      href: https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2023_D40_Book_Final_012324.pdf#page=23
+values:
+  2021-01-01: 19_743
+  2022-01-01: 20_532
+  2023-01-01: 21_888

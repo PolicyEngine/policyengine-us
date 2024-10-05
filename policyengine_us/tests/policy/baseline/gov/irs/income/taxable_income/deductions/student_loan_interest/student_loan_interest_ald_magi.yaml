@@ -1,0 +1,100 @@
+- name: Two people with S corp income and self employment income
+  period: 2021
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        partnership_s_corp_income: 80_000
+        student_loan_interest_ald_eligible: true
+      person2:
+        self_employment_income: 60_000
+        student_loan_interest_ald_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+  output:
+    student_loan_interest_ald_magi: [80_000, 55_761]
+
+- name: Two people with puerto rico income, which is excluded
+  period: 2021
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        irs_employment_income: 80_000
+        is_tax_unit_dependent: false
+        student_loan_interest_ald_eligible: true
+      person2:
+        self_employment_income: 80_000
+        self_employment_tax_ald_person: 1_000
+        is_tax_unit_dependent: false
+        student_loan_interest_ald_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        puerto_rico_income: 1_000
+  output:
+    student_loan_interest_ald_magi: [80_000, 79_000]
+
+- name: Unemployment comp excluded
+  period: 2021
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        miscellaneous_income: 80_000
+        taxable_unemployment_compensation: 10_000
+        student_loan_interest_ald_eligible: true
+      person2:
+        self_employment_income: 80_000
+        student_loan_interest_ald_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SEPARATE
+  output:
+    student_loan_interest_ald_magi: [80_000, 74_348]
+
+- name: One person with no income
+  period: 2021
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        illicit_income: 78_000
+        student_loan_interest_ald_eligible: true
+      person2:
+        is_tax_unit_head_or_spouse: false
+        self_employment_income: 0
+        student_loan_interest_ald_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    student_loan_interest_ald_magi: [78_000, 0]
+
+- name: Basic income is not attributed to the dependents
+  period: 2021
+  absolute_error_margin: 0.1
+  input:
+    gov.contrib.ubi_center.basic_income.taxable: true
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        illicit_income: 78_000
+        student_loan_interest_ald_eligible: true
+      person2:
+        is_tax_unit_dependent: true
+        self_employment_income: 0
+        student_loan_interest_ald_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+        basic_income: 1_000
+  output:
+    student_loan_interest_ald_magi: [79_000, 0]

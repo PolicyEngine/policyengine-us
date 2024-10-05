@@ -1,0 +1,54 @@
+description: All household refundable State income tax credits.
+values:
+  0000-01-01:
+    - al_refundable_credits  # Alabama.
+    - ar_refundable_credits  # Arkansas.
+    - az_refundable_credits  # Arizona.
+    - ca_refundable_credits  # California.
+    - co_refundable_credits  # Colorado
+    - ct_refundable_credits  # Connecticut.
+    - dc_refundable_credits  # District of Columbia.
+    - de_refundable_credits  # Delaware.
+    - ga_refundable_credits  # Georgia.
+    - hi_refundable_credits  # Hawaii.
+    - ia_refundable_credits  # Iowa.
+    - id_refundable_credits  # Idaho.
+    - il_refundable_credits  # Illinois.
+    - in_refundable_credits  # Indiana.
+    - ks_refundable_credits  # Kansas.
+    - ky_refundable_credits  # Kentucky.
+    - la_refundable_credits  # Louisiana.
+    - ma_refundable_credits  # Massachusetts.
+    - me_refundable_credits  # Maine.
+    - md_refundable_credits  # Maryland.
+    - mi_refundable_credits  # Michigan.
+    - mn_refundable_credits  # Minnesota.
+    - mo_refundable_credits  # Missouri.
+    - ms_refundable_credits  # Mississippi.
+    - mt_refundable_credits  # Montana.
+    # Skip NC which has no refundable credits.
+    - nd_refundable_credits  # North Dakota.
+    - ne_refundable_credits  # Nebraska.
+    - nh_refundable_credits  # New Hampshire.
+    - nm_refundable_credits  # New Mexico.
+    - nj_refundable_credits  # New Jersey.
+    - ny_refundable_credits  # New York.
+    - oh_refundable_credits  # Ohio.
+    - ok_refundable_credits  # Oklahoma.
+    - or_refundable_credits  # Oregon.
+    # Skip PA which has no refundable credits.
+    - ri_refundable_credits  # Rhode Island.
+    - sc_refundable_credits  # South Carolina.
+    - wa_refundable_credits  # Washington.
+    - nyc_refundable_credits  # New York City.
+    - ut_refundable_credits  # Utah.
+    - va_refundable_credits  # Virginia.
+    - vt_refundable_credits  # Vermont.
+    - wi_refundable_credits  # Wisconsin.
+    - wv_refundable_credits  # West Virginia.
+    
+
+metadata:
+  unit: list
+  period: year
+  label: Household refundable credits

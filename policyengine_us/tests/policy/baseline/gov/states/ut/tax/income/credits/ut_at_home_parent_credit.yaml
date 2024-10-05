@@ -1,0 +1,101 @@
+- name: 1 eligible parent with 1 child
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_dependent: false
+        ut_at_home_parent_credit_earned_income_eligible_person: true
+      person2:
+        age: 0
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ut_at_home_parent_credit_agi_eligible: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output: # 100 * 1
+    ut_at_home_parent_credit: 100
+
+- name: Earned income eligible but not AGI eligible
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 50
+        is_tax_unit_dependent: false
+        ut_at_home_parent_credit_earned_income_eligible_person: true
+      person2:
+        age: 45
+        is_tax_unit_dependent: false
+      person3:
+        age: 0
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        ut_at_home_parent_credit_agi_eligible: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: UT
+  output:
+    ut_at_home_parent_credit: 0
+
+- name: 2 eligible parents with 1 child
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_dependent: false
+        ut_at_home_parent_credit_earned_income_eligible_person: true
+      person2:
+        age: 0
+        is_tax_unit_dependent: true
+      person3:
+        age: 0
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        ut_at_home_parent_credit_agi_eligible: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: UT
+  output: # 100 * 2
+    ut_at_home_parent_credit: 200
+
+- name: 2 eligible parents with 2 children
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_dependent: false
+        ut_at_home_parent_credit_earned_income_eligible_person: true
+      person2:
+        age: 44
+        is_tax_unit_dependent: false
+        ut_at_home_parent_credit_earned_income_eligible_person: true
+      person3:
+        age: 0
+        is_tax_unit_dependent: true
+      person4:
+        age: 0
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        ut_at_home_parent_credit_agi_eligible: true
+        tax_unit_is_joint: true
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: UT
+  output: # 100 * 2 * 2
+    ut_at_home_parent_credit: 400

@@ -1,0 +1,35 @@
+- name: Unmarried with no children
+  period: 2021
+  input:
+    filing_status: SINGLE
+    aged_blind_count: 0
+    state_code: NE
+  output:
+    ne_standard_deduction: 7_100
+
+- name: Young married couple
+  period: 2022
+  input:
+    filing_status: JOINT
+    aged_blind_count: 0
+    state_code: NE
+  output:
+    ne_standard_deduction: 14_700
+
+- name: Elderly unmarried with children
+  period: 2022
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    aged_blind_count: 1
+    state_code: NE
+  output:
+    ne_standard_deduction: 12_450
+
+- name: Elderly married with children and one blind adult
+  period: 2022
+  input:
+    filing_status: JOINT
+    aged_blind_count: 3
+    state_code: NE
+  output:
+    ne_standard_deduction: 18_900

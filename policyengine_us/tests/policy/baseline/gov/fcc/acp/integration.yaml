@@ -1,0 +1,34 @@
+- name: Previously-enrolled family with a Pell Grant and $100/mo broadband costs gets $50/mo
+  period: 2022
+  input:
+    spm_unit_pell_grant: 100
+    broadband_cost_after_lifeline: 100 * 12
+  output:
+    acp: 30 * 12
+
+- name: Family on tribal land with no eligibility flags gets up to $75
+  period: 2022
+  input:
+    is_on_tribal_land: true
+    broadband_cost_after_lifeline: 70 * 12
+  output:
+    acp: 70 * 12
+
+- name: High-income family gets $0, even if they are eligible for full-price school meals.
+  period: 2022
+  input:
+    people:
+      parent:
+        employment_income: 100_000
+      child:
+        age: 10
+        is_in_k12_school: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        broadband_cost_after_lifeline: 1
+  output:
+    acp: 0

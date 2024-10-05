@@ -1,0 +1,143 @@
+- name: Tax unit with taxsimid 9 in o21.its.csv and o21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 31
+        employment_income: 46_010
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person2:
+        is_tax_unit_spouse: true
+        age: 31
+        employment_income: 142_010
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        premium_tax_credit: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:  # expected results from TAXSIM35 12/08/22 version
+    md_income_tax: 8_612.30
+
+- name: MD integration test checking 2021 AGI subtractions
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 32
+        employment_income: 20_000
+        taxable_interest_income: 12_000
+        taxable_pension_income: 52_000
+        social_security: 15_000
+      person2:
+        age: 11
+      person3:
+        age: 10
+      person4:
+        age: 9
+      person5:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+        tax_unit_childcare_expenses: 10_000
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: MD
+  output:
+    tax_unit_taxable_social_security: 12_750
+    adjusted_gross_income: 72_000 + 12_000 + 12_750  # = 96_750
+    md_socsec_subtraction: 12_750
+    md_two_income_subtraction: 0
+    md_dependent_care_subtraction: 2 * 3_000  # = 6_000
+
+- name: 2021 MD integration test for a single coupon-clipping homeowner
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 40
+        taxable_interest_income: 200_000
+        real_estate_taxes: 12_000
+        interest_expense: 24_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+        premium_tax_credit: 0
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:  # expected results from hand calculations using 2021 MD Form 502
+    # https://www.marylandtaxes.gov/forms/21_forms/502.pdf#page=2
+    # https://www.marylandtaxes.gov/forms/21_forms/Resident_Booklet.pdf#page=18
+    md_agi: 200_000
+    md_deductions: 34_000  # PEUS 0.213.3 code generates 24_000
+    md_taxable_income: 200_000 - 34_000  # code generates 200_000 - 24_000
+
+- name: Tax unit with taxsimid 85510 in p21.its.csv and p21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 53
+        employment_income: 12010
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+        ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
+    tax_units:
+      tax_unit:
+        members: [person1]
+        premium_tax_credit: 0  # not in TAXSIM35
+        local_income_tax: 0  # not in TAXSIM35
+        state_sales_tax: 0  # not in TAXSIM35
+        ca_use_tax: 0  # not in TAXSIM35
+        il_use_tax: 0  # not in TAXSIM35
+        nm_2021_income_rebate: 0  # not in TAXSIM35
+        nm_additional_2021_income_rebate: 0  # not in TAXSIM35
+        nm_supplemental_2021_income_rebate: 0  # not in TAXSIM35
+        ny_supplemental_eitc: 0  # not in TAXSIM35
+        ok_use_tax: 0  # not in TAXSIM35
+        pa_use_tax: 0  # not in TAXSIM35
+        vt_renter_credit: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1]
+        state_fips: 24  # MD
+  output:  # expected results from patched TAXSIM35 2024-03-08 version
+    md_income_tax_before_credits: 280.4
+    md_non_refundable_eitc: 530 # TAXSIM 280.4
+    md_refundable_eitc: 249.6
+    md_income_tax: -249.60

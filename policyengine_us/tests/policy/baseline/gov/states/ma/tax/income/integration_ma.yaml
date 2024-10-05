@@ -1,0 +1,401 @@
+- name: Tax unit with taxsimid 8 from k21.its.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 52
+        employment_income: 74_000
+        short_term_capital_gains: 25_000
+        long_term_capital_gains: 35_000
+        rent: 7_000
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+        ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
+    tax_units:
+      tax_unit:
+        members: [person1]
+        premium_tax_credit: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:  # expected results from TAXSIM35 10/24/22 version
+    ma_income_tax: 7_980.00
+
+- name: Tax unit with taxsimid 995 from m21.its.csv
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 38
+        short_term_capital_gains: 73_000
+        rent: 8_000
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person2:
+        age: 11
+      person3:
+        age: 17
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        premium_tax_credit: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MA
+  output:  # expected results from TAXSIM35 10/24/22 version
+    ma_income_tax: 7_524.00
+
+- name: Simplified tax unit like those in the s21 sample
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 40_000
+        taxable_interest_income: 20_000
+        short_term_capital_gains: 10_000
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+        ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
+    tax_units:
+      tax_unit:
+        members: [person1]
+        premium_tax_credit: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:  # expected results from TAXSIM35 10/24/22 version
+    ma_income_tax: 3_875.00
+
+- name: Tax unit with taxsimid 86195 in t21.its.csv and t21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 27
+        employment_income: 1_000
+        taxable_interest_income: 2_010
+        short_term_capital_gains: 2_010
+        long_term_capital_gains: 10_010
+        social_security: 22_000
+        rent: 17_000
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+        ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
+    tax_units:
+      tax_unit:
+        members: [person1]
+        premium_tax_credit: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:  # expected results from TAXSIM35 12/08/22 version
+    ma_income_tax: 381.00
+
+- name: Tax unit that illustrates problem described in GitHub issue 1354
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 60
+        employment_income: 40_000
+        qualified_dividend_income: 20_000
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+        ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
+    tax_units:
+      tax_unit:
+        members: [person1]
+        premium_tax_credit: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:  # expected results from online TAXSIM35 11/01/22 version
+    ma_income_tax: 2_680.00
+
+- name: Tax unit with taxsimid 2915 in u21.its.csv and u21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 27
+        qualified_dividend_income: 8_010
+        taxable_interest_income: 4_010
+        short_term_capital_gains: 9_010
+        long_term_capital_gains: 8_010
+        social_security: 8_000
+        rent: 8_000
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+        ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
+      person2:
+        age: 11
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+        ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
+      person3:
+        age: 11
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+        ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        tax_unit_childcare_expenses: 10_000
+        premium_tax_credit: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MA
+  output:  # expected results from patched TAXSIM35 2023-01-31 version
+
+    ma_part_b_agi: 4_010  # taxable interest income assumed to be from MA banks
+    ma_part_b_taxable_income_deductions: 3_100  # rent deduction
+    ma_part_b_taxable_income_before_exemption: 910
+    ma_part_b_taxable_income_exemption: 8_800  # = 6_800 + 2 * 1_000
+    ma_part_b_taxable_income: 0
+    ma_part_b_excess_exemption: 7_890  # = 8_800 - 910
+
+    ma_part_a_gross_income: 17_020  # = div + stcg = 8_010 + 9_010
+    ma_part_a_taxable_dividend_income: 120  # = 8_010 - 7_890
+    ma_part_a_taxable_capital_gains_income: 9_010  # excess exemption used up
+
+    ma_part_c_taxable_income: 8_010  # ltcg
+
+    ma_income_tax_before_credits: 0.05 * 120 + 0.12 * 9_010 + 0.05 * 8_010
+                                  # = 1487.70
+    ma_dependent_credit: 360
+    ma_income_tax: 1_487.70 - 360
+
+- name: 2023 Tax unit with taxsimid 2915 in u21.its.csv and u21.ots.csv and rent share amount less than rental deduction cap
+  absolute_error_margin: 0.01
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 27
+        qualified_dividend_income: 8_010
+        taxable_interest_income: 4_010
+        short_term_capital_gains: 9_010
+        long_term_capital_gains: 8_010
+        social_security: 8_000
+        rent: 7_000
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+        ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
+      person2:
+        age: 11
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+        ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
+      person3:
+        age: 11
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+        ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        tax_unit_childcare_expenses: 10_000
+        premium_tax_credit: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MA
+  output:  # expected results from patched TAXSIM35 2023-01-31 version
+
+    ma_part_b_agi: 4_010  # taxable interest income assumed to be from MA banks
+    ma_part_b_taxable_income_deductions: 3_600  # rent deduction
+    ma_part_b_taxable_income_before_exemption: 410 # = 4_010 - 3_600
+    ma_part_b_taxable_income_exemption: 8_800  # = 6_800 + 2 * 1_000
+    ma_part_b_taxable_income: 0
+    ma_part_b_excess_exemption: 8_390  # = 8_800 - 410
+
+    ma_part_a_gross_income: 17_020  # = div + stcg = 8_010 + 9_010
+    ma_part_a_taxable_dividend_income: 0  # = 0 -> 8_010 - 8_390 < 0
+    ma_part_a_taxable_capital_gains_income: 8_630
+
+    ma_part_c_taxable_income: 8_010  # ltcg
+
+    ma_income_tax_before_credits: 0.05 * 0 + 0.085 * 8_630 + 0.05 * 0 + 0.05 * 8_010
+                                  # = 1134.05
+    ma_dependent_credit: 620 # = 310 * 2
+    ma_income_tax: 1134.05 - 620
+
+- name: 2023 Tax unit with taxsimid 2915 in u21.its.csv and u21.ots.csv and rent share amount more than rental deduction cap
+  absolute_error_margin: 0.01
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 27
+        qualified_dividend_income: 8_010
+        taxable_interest_income: 4_010
+        short_term_capital_gains: 9_010
+        long_term_capital_gains: 8_010
+        social_security: 8_000
+        rent: 9_000
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+        ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
+      person2:
+        age: 11
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+        ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
+      person3:
+        age: 11
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+        ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        tax_unit_childcare_expenses: 10_000
+        premium_tax_credit: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MA
+  output:  # expected results from patched TAXSIM35 2023-01-31 version
+
+    ma_part_b_agi: 4_010  # taxable interest income assumed to be from MA banks
+    ma_part_b_taxable_income_deductions: 4_100  # rent deduction
+    ma_part_b_taxable_income_before_exemption: 0
+    ma_part_b_taxable_income_exemption: 8_800  # = 6_800 + 2 * 1_000
+    ma_part_b_taxable_income: 0
+    ma_part_b_excess_exemption: 8_800  # = 8_800 - 0
+
+    ma_part_a_gross_income: 17_020  # = div + stcg = 8_010 + 9_010
+    ma_part_a_taxable_dividend_income: 0  # = 8_010 - 8_010
+    ma_part_a_taxable_capital_gains_income: 8_220
+
+    ma_part_c_taxable_income: 8_010  # ltcg
+
+    ma_income_tax_before_credits: 0.05 * 0 + 0.085 * 8_220 + 0.05 * 0 + 0.05 * 8_010
+                                  # = 1099.20
+    ma_dependent_credit: 620 # = 310 * 2
+    ma_income_tax: 1099.20 - 620
+
+- name: Tax unit with taxsimid 78550 in u21.its.csv and u21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 69
+        qualified_dividend_income: 4_010
+        taxable_interest_income: 3_010
+        short_term_capital_gains: 2_010
+        long_term_capital_gains: 10_010
+        social_security: 18_000
+        rent: 18_000
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+        ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
+      person2:
+        age: 11
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+        ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_childcare_expenses: 3_000
+        premium_tax_credit: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+  output:  # expected results from patched TAXSIM35 2023-01-31 version
+    ma_income_tax_exemption_threshold: 15_400
+    ma_agi: 19_040
+    is_ma_income_tax_exempt: false
+    ma_income_tax_before_credits: 376.50
+    ma_limited_income_tax_credit: 12.50
+    ma_non_refundable_credits: 12.50
+    ma_dependent_credit: 180.00
+    ma_senior_circuit_breaker: 966.00
+    ma_refundable_credits: 180 + 966
+    ma_income_tax: 376.50 - 12.50 - 180 - 966

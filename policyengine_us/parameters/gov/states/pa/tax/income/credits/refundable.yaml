@@ -1,0 +1,14 @@
+description: Pennsylvania provides these refundable credits.
+values:
+  2021-01-01: []
+  2022-01-01:
+    - pa_cdcc
+
+metadata:
+  unit: list
+  period: year
+  label: Pennsylvania refundable credits
+  reference:
+  # CDCC reference
+  - title: PA Department of Revenue - Child and Dependent Care Enhancement Tax Credit
+    href: https://www.revenue.pa.gov/TaxTypes/PIT/Child%20and%20Dependent%20Care%20Enhancement%20Tax%20Credit/Pages/default.aspx

@@ -1,0 +1,59 @@
+- name: Standard Utility Allowance 1
+  period: 2022
+  input:
+    snap_utility_allowance_type: SUA
+    snap_utility_region_str: CA
+    electricity_expense: 20
+    gas_expense: 20
+    phone_expense: 300
+    water_expense: 1
+    trash_expense: 400
+    sewage_expense: 1
+  output:
+    snap_standard_utility_allowance: 5_844 # 487 * 12
+
+- name: Standard Utility Allowance 2
+  period: 2021
+  input:
+    snap_utility_allowance_type: SUA
+    snap_utility_region_str: CA
+    electricity_expense: 20
+    gas_expense: 20
+    phone_expense: 300
+    water_expense: 1
+    trash_expense: 400
+    sewage_expense: 1
+  output:
+    snap_standard_utility_allowance: 1_461 # 487*3 
+
+- name: Standard Utility Allowance 3
+  period: 2020
+  input:
+    snap_utility_allowance_type: SUA
+    snap_utility_region_str: CA
+    electricity_expense: 20
+    gas_expense: 20
+    phone_expense: 300
+    water_expense: 1
+    trash_expense: 400
+    sewage_expense: 1
+  output:
+    snap_standard_utility_allowance: 0
+
+- name: Standard Utility Allowance NC 1 member
+  period: 2024
+  input:
+    snap_utility_allowance_type: SUA
+    snap_utility_region_str: NC
+    spm_unit_size: 1
+  output:
+    snap_standard_utility_allowance: 7_020 # 585 * 12
+
+- name: Standard Utility Allowance NC a lot of members
+  period: 2024
+  input:
+    snap_utility_allowance_type: SUA
+    snap_utility_region_str: NC
+    spm_unit_size: 11
+  output:
+    snap_standard_utility_allowance: 10_068 # 839 * 12

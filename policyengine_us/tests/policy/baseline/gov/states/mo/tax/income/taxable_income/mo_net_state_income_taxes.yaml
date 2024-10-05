@@ -1,0 +1,41 @@
+- name: no income
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    filing_status: SINGLE
+    state_withheld_income_tax: 0
+    state_code: MO
+  output:
+    mo_net_state_income_taxes: 0.0
+
+- name: $23,000 state/local income/sales tax
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    filing_status: SINGLE
+    state_withheld_income_tax: 23_000
+    state_code: MO
+  output:
+    mo_net_state_income_taxes: 10_000
+
+- name: property taxes without SALT cap
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    filing_status: SINGLE
+    real_estate_taxes: 4_000
+    state_withheld_income_tax: 3_000
+    state_code: MO
+  output:
+    mo_net_state_income_taxes: 3_000
+
+- name: property taxes with SALT cap
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    filing_status: JOINT
+    real_estate_taxes: 4_000
+    state_withheld_income_tax:  8_000
+    state_code: MO
+  output:
+    mo_net_state_income_taxes: 6_666.67  # = 10_000 * 2/3

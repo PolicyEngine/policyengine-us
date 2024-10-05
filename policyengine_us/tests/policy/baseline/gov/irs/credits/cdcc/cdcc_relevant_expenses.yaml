@@ -1,0 +1,26 @@
+- name: Limited at the smallest of the limit, expenses, and earned income, test 1
+  period: 2021
+  input:
+    tax_unit_childcare_expenses: 3_000
+    cdcc_limit: 5_000
+    min_head_spouse_earned: 4_000
+  output:
+    cdcc_relevant_expenses: 3_000
+
+- name: Limited at the smallest of the limit, expenses, and earned income, test 2
+  period: 2018
+  input:
+    tax_unit_childcare_expenses: 7_000
+    cdcc_limit: 5_000
+    min_head_spouse_earned: 4_000
+  output:
+    cdcc_relevant_expenses: 4_000
+
+- name: Limited at the smallest of the limit, expenses, and earned income, test 3
+  period: 2018
+  input:
+    tax_unit_childcare_expenses: 7_000
+    cdcc_limit: 5_000
+    min_head_spouse_earned: 8_000
+  output:
+    cdcc_relevant_expenses: 5_000

@@ -1,0 +1,76 @@
+- name: 1 2021 single filer, capped.
+  period: 2021
+  input:
+    state_code: OR
+    filing_status: SINGLE
+    adjusted_gross_income: 80_000
+    income_tax: 10_000
+    eitc: 0
+  output:
+    or_federal_tax_liability_subtraction: 7_050
+
+- name: 2 2021 single filer, not affected by the cap.
+  period: 2021
+  input:
+    state_code: OR
+    filing_status: SINGLE
+    adjusted_gross_income: 80_000
+    income_tax: 6_000
+    eitc: 1_000
+  output:
+    or_federal_tax_liability_subtraction: 7_000
+
+- name: 3 2021 single filer
+  period: 2021
+  input:
+    state_code: OR
+    filing_status: SINGLE
+    adjusted_gross_income: 145_000
+    income_tax: 10_000
+    eitc: 0
+  output:
+    or_federal_tax_liability_subtraction: 0
+
+- name: 4 2021 married filing separately filer
+  period: 2021
+  input:
+    state_code: OR
+    filing_status: SEPARATE
+    adjusted_gross_income: 80_000
+    income_tax: 10_000
+    eitc: 0
+  output:
+    or_federal_tax_liability_subtraction: 3_525
+
+- name: 5 2021 married filing separately filer
+  period: 2021
+  input:
+    state_code: OR
+    filing_status: SEPARATE
+    adjusted_gross_income: 145_000
+    income_tax: 10_000
+    eitc: 0
+  output:
+    or_federal_tax_liability_subtraction: 0
+
+- name: 6 2021 joint filer
+  period: 2021
+  input:
+    state_code: OR
+    filing_status: JOINT
+    adjusted_gross_income: 80_000
+    income_tax: 10_000
+    eitc: 0 
+  output:
+    or_federal_tax_liability_subtraction: 7_050
+
+- name: 7 2021 joint filer
+  period: 2021
+  input:
+    state_code: OR
+    filing_status: JOINT
+    adjusted_gross_income: 290_000
+    income_tax: 10_000
+    eitc: 0
+  output:
+    or_federal_tax_liability_subtraction: 0

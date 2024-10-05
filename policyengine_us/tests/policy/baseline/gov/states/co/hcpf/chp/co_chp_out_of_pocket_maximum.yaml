@@ -1,0 +1,13 @@
+- name: No income
+  period: 2023
+  input:
+    medicaid_magi: 0
+  output:
+    co_chp_out_of_pocket_maximum: 0
+
+- name: Has income
+  period: 2023
+  input:
+    medicaid_magi: 10_000
+  output:
+    co_chp_out_of_pocket_maximum: 500

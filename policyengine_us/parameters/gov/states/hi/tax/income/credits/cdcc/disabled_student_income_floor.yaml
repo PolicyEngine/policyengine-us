@@ -1,0 +1,30 @@
+description: Hawaii limits the employment income floor under the child and dependent care credit benefit for disabled/student filers to this amount. 
+brackets:
+  - threshold:
+      2018-01-01: 0
+    amount:
+      2018-01-01: 2_400 # 200 * 12
+  - threshold:
+      2018-01-01: 2
+    amount:
+      2018-01-01: 4_800 # 400 * 12
+metadata:
+  type: single_amount
+  threshold_unit: child
+  amount_unit: currency-USD
+  label: Hawaii CDCC disabled/student income floor
+  reference:
+    - title: Hawaii Income Tax Law, Chapter 235, Section 235-55.6, (c)(1)
+      href: https://files.hawaii.gov/tax/legal/hrs/hrs_235.pdf#page=41
+    - title: Hawaii SCHEDULE X 2023
+      href: https://files.hawaii.gov/tax/forms/2023/schx_i.pdf#page=2
+    - title: Hawaii SCHEDULE X 2022 
+      href: https://files.hawaii.gov/tax/forms/2022/schx_i.pdf#page=2
+    - title: Hawaii SCHEDULE X 2021 
+      href: https://files.hawaii.gov/tax/forms/2021/schx_i.pdf#page=2
+    - title: Hawaii SCHEDULE X 2020 
+      href: https://files.hawaii.gov/tax/forms/2020/schx_i.pdf#page=2
+    - title: Hawaii SCHEDULE X 2019 
+      href: https://files.hawaii.gov/tax/forms/2019/schx_i.pdf#page=2
+    - title: Hawaii SCHEDULE X 2018 
+      href: https://files.hawaii.gov/tax/forms/2018/schx_i.pdf#page=2

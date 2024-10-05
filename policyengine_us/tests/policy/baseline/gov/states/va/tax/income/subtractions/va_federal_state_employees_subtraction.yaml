@@ -1,0 +1,78 @@
+- name: VA federal state employee subtraction if total income more than $15,000, only person in tax unit
+  period: 2022
+  input:
+    people:
+      person1:
+        irs_employment_income: 16_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+  output:
+    # not qualified if total income more than $15,000
+    va_federal_state_employees_subtraction: 0
+
+- name: VA federal state employee subtraction if total income less than or equal to $15,000, only person in tax unit
+  period: 2022
+  input:
+    people:
+      person1:
+        irs_employment_income: 14_000
+        state_or_federal_salary: 13_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+  output:
+    va_federal_state_employees_subtraction: 13_000
+
+- name: VA federal state employee subtraction if total income less than or equal to $15,000, both head and spouse qualify
+  period: 2022
+  input:
+    people:
+      person1:
+        irs_employment_income: 15_000
+        state_or_federal_salary: 14_000
+      person2:
+        irs_employment_income: 15_000
+        state_or_federal_salary: 15_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # both head and spouse may claim: $14,000 + $15,000
+    va_federal_state_employees_subtraction: 29_000
+
+- name: VA federal state employee subtraction if total income less than or equal to $15,000, all head, spouse and a dependent qualify
+  period: 2022
+  input:
+    people:
+      person1:
+        irs_employment_income: 15_000
+        state_or_federal_salary: 14_000
+      person2:
+        irs_employment_income: 15_000
+        state_or_federal_salary: 13_000
+      person3:
+        irs_employment_income: 15_000
+        state_or_federal_salary: 12_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: VA
+  output:
+    # only head and spouse may claim: $14,000 + $13,000
+    va_federal_state_employees_subtraction: 27_000

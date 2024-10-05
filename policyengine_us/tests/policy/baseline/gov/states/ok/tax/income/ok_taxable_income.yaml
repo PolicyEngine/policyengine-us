@@ -1,0 +1,71 @@
+- name: OK taxable income unit test 1
+  period: 2021
+  input:
+    tax_unit_itemizes: false
+    ok_agi: 90_000
+    ok_standard_deduction: 10_000
+    ok_itemized_deductions: 11_000
+    ok_exemptions: 4_000
+    state_code: OK
+  output:
+    ok_taxable_income: 90_000 - 10_000 - 4_000
+
+- name: OK taxable income unit test 2
+  period: 2021
+  input:
+    tax_unit_itemizes: true
+    ok_agi: 90_000
+    ok_standard_deduction: 12_000
+    ok_itemized_deductions: 11_000
+    ok_exemptions: 4_000
+    state_code: OK
+  output:
+    ok_taxable_income: 90_000 - 11_000 - 4_000
+
+- name: OK taxable income unit test 3
+  period: 2022
+  input:
+    tax_unit_itemizes: false
+    ok_agi: 13_000
+    ok_standard_deduction: 10_000
+    ok_itemized_deductions: 9_000
+    ok_exemptions: 4_000
+    state_code: OK
+  output:
+    ok_taxable_income: 0
+
+- name: Tax unit with taxsimid 93088 in q21.its.csv and q21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 51
+        employment_income: 145_010
+        social_security: 15_000
+        interest_expense: 6_000
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+    tax_units:
+      tax_unit:
+        members: [person1]
+        premium_tax_credit: 0  # not in TAXSIM35
+        local_income_tax: 0  # not in TAXSIM35
+        state_sales_tax: 0  # not in TAXSIM35
+        ok_use_tax: 0  # not in TAXSIM35
+        tax_unit_itemizes: True  # on federal return
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:  # expected results from patched TAXSIM35 2023-08-05 version
+    ok_agi: 145_010  # social security benefits not in OK AGI
+    ok_exemptions: 1_000
+    ok_taxable_income: 145_010 - 1_000 - 6_000  # must use OK itemized deds

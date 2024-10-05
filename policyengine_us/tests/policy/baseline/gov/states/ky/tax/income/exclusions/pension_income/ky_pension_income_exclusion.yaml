@@ -1,0 +1,59 @@
+- name: Not eligible for exemption, exclusion capped at $31,110.
+  period: 2022
+  input:
+    taxable_pension_income: 31_111
+    ky_pension_income_exclusion_exemption_eligible: false
+    ky_service_credits_percentage_pre_1998: 0
+    taxable_ira_distributions: 0
+    taxable_401k_distributions: 0
+    state_code: KY
+  output:
+    ky_pension_income_exclusion: 31_110
+
+- name: Not eligible for exemption, pension and other income capped at $31,110.
+  period: 2022
+  input:
+    taxable_pension_income: 31_111
+    ky_pension_income_exclusion_exemption_eligible: false
+    ky_service_credits_percentage_pre_1998: 0
+    taxable_ira_distributions: 1
+    taxable_401k_distributions: 0
+    state_code: KY
+  output:
+    ky_pension_income_exclusion: 31_110
+
+- name: Retired before 1998 but not eligible for exemption, exclusion capped at $31,110.
+  period: 2022
+  input:
+    taxable_pension_income: 31_111
+    ky_pension_income_exclusion_exemption_eligible: false
+    ky_service_credits_percentage_pre_1998: 1
+    taxable_ira_distributions: 1
+    taxable_401k_distributions: 3
+    state_code: KY
+  output:
+    ky_pension_income_exclusion: 31_110
+
+- name: Retired before 1998 and eligible for exemption, pension income not capped but other income capped.
+  period: 2022
+  input:
+    taxable_pension_income: 31_111
+    ky_pension_income_exclusion_exemption_eligible: true
+    ky_service_credits_percentage_pre_1998: 1
+    taxable_ira_distributions: 31_111
+    taxable_401k_distributions: 3
+    state_code: KY
+  output:
+    ky_pension_income_exclusion: 31_111 + 31_110
+
+- name: Eligible for exemption and 50% of months worked pre-1998.
+  period: 2022
+  input:
+    taxable_pension_income: 70_000
+    ky_pension_income_exclusion_exemption_eligible: true
+    ky_service_credits_percentage_pre_1998: .50 # 35k exempt and 35k capped
+    taxable_ira_distributions: 0
+    taxable_401k_distributions: 0
+    state_code: KY
+  output:
+    ky_pension_income_exclusion: 35_000 + 31_110

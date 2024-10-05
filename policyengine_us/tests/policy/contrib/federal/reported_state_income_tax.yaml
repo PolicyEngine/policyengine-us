@@ -1,0 +1,24 @@
+- name: No reform
+  period: 2022
+  input:
+    simulation.reported_state_income_tax: false
+    employee_payroll_tax: 800
+    co_income_tax_before_refundable_credits: 300
+    ga_refundable_credits: 400
+    income_tax_refundable_credits: 600
+  output:
+    household_tax_before_refundable_credits: 1_100
+    household_refundable_tax_credits: 1_000
+
+- name: Abolish federal income tax reform
+  period: 2022
+  reforms: policyengine_us.reforms.federal.reported_state_income_tax.reported_state_income_tax
+  input:
+    simulation.reported_state_income_tax: true
+    employee_payroll_tax: 800
+    co_income_tax_before_refundable_credits: 300
+    ga_refundable_credits: 400
+    income_tax_refundable_credits: 600
+  output:
+    household_tax_before_refundable_credits: 800
+    household_refundable_tax_credits: 600

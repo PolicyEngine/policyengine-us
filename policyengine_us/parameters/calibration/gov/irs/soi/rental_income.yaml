@@ -1,0 +1,11 @@
+description: Total rental/royalty net income.
+values:
+  2015-01-01: 47_000_000_000
+  2021-01-01: 46_000_000_000
+metadata:
+  unit: currency-USD
+  label: SOI rental income
+  uprating: calibration.gov.cbo.income_by_source.adjusted_gross_income
+  reference:
+    - title: IRS SOI Tax Stats - Individual Statistical Tables by Size of Adjusted Gross Income
+      href: https://www.irs.gov/statistics/soi-tax-stats-individual-statistical-tables-by-size-of-adjusted-gross-income

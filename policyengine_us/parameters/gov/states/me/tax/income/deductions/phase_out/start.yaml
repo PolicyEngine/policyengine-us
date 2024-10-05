@@ -1,0 +1,98 @@
+description: Maine starts phasing out its standard/itemized deduction for filers with Maine AGI above this threshold.
+metadata:
+  unit: currency-USD
+  period: year
+  label: Maine standard/itemized exemption phase-out start
+  reference:
+    - title: Maine §5125. Itemized deductions 6 - Phase-out
+      href: https://www.mainelegislature.org/legis/statutes/36/title36sec5125.html
+    - title: §5403. Annual adjustments for inflation 4
+      href: https://legislature.maine.gov/statutes/36/title36sec5403.html
+    - title: Maine form 1040 Schedule 2 (2023)
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/23_1040me_sched_2_ff_0.pdf#page=1
+    - title: Maine form 1040 Schedule 2 (2022)
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/22_1040me_sched_2_ff.pdf#page=1
+    - title: Instructions for Form 1040ME (2021)
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/21_1040me_book_gen_instr_revMay2022.pdf#page=4
+    - title: Maine form 1040 Schedule 2 (2020)
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/20_1040me_2_dwnldff.pdf#page=1
+    - title: Maine form 1040 Schedule 2 (2019)
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/19_1040me_2_dwnldff.pdf#page=1
+    - title: Maine form 1040 Schedule 2 (2018)
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/18_1040_2_d.pdf#page=1
+    - title: Maine form 1040 Schedule 2 (2017)
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/17_1040me_sch2_d_sept18.pdf#page=1
+    - title: Maine form 1040 Schedule 2 (2016)
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/16_1040%20sched%202_download.pdf#page=1
+  breakdown:
+    - filing_status
+SINGLE:
+  values:
+    2016-01-01: 70_000
+    2018-01-01: 80_000
+    2019-01-01: 81_450
+    2020-01-01: 82_900
+    2021-01-01: 83_850
+    2022-01-01: 85_850
+    2023-01-01: 91_500
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
+SEPARATE:
+  values:
+    2016-01-01: 70_000
+    2018-01-01: 80_000
+    2019-01-01: 81_450
+    2020-01-01: 82_900
+    2021-01-01: 83_850
+    2022-01-01: 85_850
+    2023-01-01: 91_500
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
+HEAD_OF_HOUSEHOLD:
+  values:
+    2016-01-01: 105_000
+    2018-01-01: 120_000
+    2019-01-01: 122_200
+    2020-01-01: 124_350
+    2021-01-01: 125_750
+    2022-01-01: 128_750
+    2023-01-01: 137_300
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
+JOINT:
+  values:
+    2016-01-01: 140_000
+    2018-01-01: 160_000
+    2019-01-01: 162_950
+    2020-01-01: 165_800
+    2021-01-01: 167_700
+    2022-01-01: 171_700
+    2023-01-01: 183_050
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
+SURVIVING_SPOUSE:
+  values:
+    2016-01-01: 140_000
+    2018-01-01: 160_000
+    2019-01-01: 162_950
+    2020-01-01: 165_800
+    2021-01-01: 167_700
+    2022-01-01: 171_700
+    2023-01-01: 183_050
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50

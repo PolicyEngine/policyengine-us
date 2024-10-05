@@ -1,0 +1,23 @@
+- name: GA cdcc unit test 1
+  period: 2021
+  input:
+    cdcc: 1_000
+    state_code: GA
+  output:
+    ga_cdcc: 300 # .30 * 1_000
+
+- name: GA cdcc unit test 2
+  period: 2007
+  input:
+    cdcc: 1_000
+    state_code: GA
+  output:
+    ga_cdcc: 200 # .20 * 1_000
+
+- name: GA cdcc unit test 2
+  period: 2007
+  input:
+    cdcc: 0
+    state_code: GA
+  output:
+    ga_cdcc: 0 # .00 * 1_000

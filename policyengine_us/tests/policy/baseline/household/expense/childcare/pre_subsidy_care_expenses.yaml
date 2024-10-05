@@ -1,0 +1,70 @@
+- name: Default is zero
+  period: 2022
+  output:
+    pre_subsidy_childcare_expenses: 0
+
+- name: Three children with exepenses
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_child: false
+      person2:
+        is_child: false
+      person3:
+        is_child: true
+      person4:
+        is_child: true
+      person5:
+        is_child: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+        spm_unit_pre_subsidy_childcare_expenses: 900
+  output:
+    pre_subsidy_childcare_expenses: [0, 0, 300, 300, 300]
+
+- name: Two children with exepenses
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_child: false
+      person2:
+        is_child: false
+      person3:
+        is_child: true
+      person4:
+        is_child: false
+      person5:
+        is_child: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+        spm_unit_pre_subsidy_childcare_expenses: 900
+  output:
+    pre_subsidy_childcare_expenses: [0, 0, 450, 0, 450]
+
+- name: Two children with no exepenses
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_child: false
+      person2:
+        is_child: false
+      person3:
+        is_child: true
+      person4:
+        is_child: false
+      person5:
+        is_child: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+        spm_unit_pre_subsidy_childcare_expenses: 0
+  output:
+    pre_subsidy_childcare_expenses: [0, 0, 0, 0, 0]

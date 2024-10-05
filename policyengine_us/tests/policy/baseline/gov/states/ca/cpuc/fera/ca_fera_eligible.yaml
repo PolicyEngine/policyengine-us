@@ -1,0 +1,40 @@
+- name: A three-peson household with an income equal to 250% of poverty line, inelligible for CARE, is eligible for FERA.
+  period: 2023
+  input:
+    household_size: 3
+    household_market_income: 2.5
+    ca_care_poverty_line: 1
+    ca_care_eligible: false
+    state_code: CA
+  output:
+    ca_fera_eligible: true
+
+- name: A two-person household with an income equal to 250% of poverty line is not eligible.
+  period: 2023
+  input:
+    household_size: 2
+    household_market_income: 2.5
+    ca_care_poverty_line: 1
+    state_code: CA
+  output:
+    ca_fera_eligible: false
+
+- name: A three-peson household with an income equal to 200% of poverty line is not eligible. # These get CARE instead
+  period: 2023
+  input:
+    household_size: 3
+    household_market_income: 2
+    ca_care_poverty_line: 1
+    state_code: CA
+  output:
+    ca_fera_eligible: false
+
+- name: A three-peson household with an income greater than to 250% of poverty line is not eligible.
+  period: 2023
+  input:
+    household_size: 3
+    household_market_income: 2.51
+    ca_care_poverty_line: 1
+    state_code: CA
+  output:
+    ca_fera_eligible: false

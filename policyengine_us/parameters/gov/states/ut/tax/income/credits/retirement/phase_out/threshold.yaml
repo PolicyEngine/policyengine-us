@@ -1,0 +1,21 @@
+description: Modified AGI threshold after which the Utah retirement credit is phased out.
+SINGLE:
+  2021-01-01: 25_000
+JOINT:
+  2021-01-01: 32_000
+SEPARATE:
+  2021-01-01: 16_000
+SURVIVING_SPOUSE:
+  2021-01-01: 32_000
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 32_000
+metadata:
+  unit: currency-USD
+  period: year
+  reference:
+    - title: Utah Code §59-10-1019 (4)
+      href: https://le.utah.gov/xcode/Title59/Chapter10/59-10-S1019.html
+    - title: 2021 TC-40  Utah Individual Income Tax Form
+      href: https://www.taxformfinder.org/forms/2021/2021-utah-tc-40-full-packet.pdf#page=20
+    - title: 2023 Utah Indivdual Income Tax Form
+      href: https://tax.utah.gov/forms/current/tc-40inst.pdf#page=21    

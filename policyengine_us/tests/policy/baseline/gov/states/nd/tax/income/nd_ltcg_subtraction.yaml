@@ -1,0 +1,33 @@
+- name: Test 1, sum of long-term capital gains and short-term capital gains is larger than long-term capital gains
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        long_term_capital_gains: 2_000
+        short_term_capital_gains: 1_000
+      person2:
+        is_tax_unit_spouse: true
+        long_term_capital_gains: 5_000
+        short_term_capital_gains: 1_000
+    household:
+      state_code: ND
+  output:
+    nd_ltcg_subtraction: 7_000 * 0.40
+
+- name: Test 2, sum of long-term capital gains and short-term capital gains is smaller than long-term capital gains
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        long_term_capital_gains: 2_000
+        short_term_capital_gains: 1_000
+      person2:
+        is_tax_unit_spouse: true
+        long_term_capital_gains: 5_000
+        short_term_capital_gains: -3_000
+    household:
+      state_code: ND
+  output:
+    nd_ltcg_subtraction: (7_000 - 2_000) * 0.40

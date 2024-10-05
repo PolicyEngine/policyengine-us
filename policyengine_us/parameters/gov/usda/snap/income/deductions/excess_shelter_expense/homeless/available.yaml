@@ -1,0 +1,171 @@
+description: Whether homeless households can choose to receive a standard shelter deduction.
+AK:
+  2010-01-01: false
+  2021-10-01: true
+AL:
+  2010-01-01: false
+  2021-10-01: false
+AR:
+  2010-01-01: false
+  2021-10-01: false
+AZ:
+  2010-01-01: false
+  2021-10-01: true
+CA:
+  2010-01-01: false
+  2021-10-01: true
+CO:
+  2010-01-01: false
+  2021-10-01: true
+  2022-11-30:
+    value: true
+    metadata:
+      reference:
+        - title: Code of Colorado Regulations | Rule Manual Volume 4, SNAP | 4.407.3(C) (page 107)
+          href: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=10492&fileName=10%20CCR%202506-1
+CT:
+  2010-01-01: false
+  2021-10-01: false
+DC:
+  2010-01-01: false
+  2021-10-01: true
+DE:
+  2010-01-01: false
+  2021-10-01: true
+FL:
+  2010-01-01: false
+  2021-10-01: true
+GA:
+  2010-01-01: false
+  2021-10-01: false
+GU:
+  2010-01-01: false
+  2021-10-01: true
+HI:
+  2010-01-01: false
+  2021-10-01: true
+IA:
+  2010-01-01: false
+  2021-10-01: false
+ID:
+  2010-01-01: false
+  2021-10-01: true
+IL:
+  2010-01-01: false
+  2021-10-01: false
+IN:
+  2010-01-01: false
+  2021-10-01: false
+KS:
+  2010-01-01: false
+  2021-10-01: false
+KY:
+  2010-01-01: false
+  2021-10-01: true
+LA:
+  2010-01-01: false
+  2021-10-01: false
+MA:
+  2010-01-01: false
+  2021-10-01: true
+MD:
+  2010-01-01: false
+  2021-10-01: true
+ME:
+  2010-01-01: false
+  2021-10-01: true
+MI:
+  2010-01-01: false
+  2021-10-01: false
+MN:
+  2010-01-01: false
+  2021-10-01: false
+MO:
+  2010-01-01: false
+  2021-10-01: false
+MS:
+  2010-01-01: false
+  2021-10-01: false
+MT:
+  2010-01-01: false
+  2021-10-01: false
+NC:
+  2010-01-01: false
+  2021-10-01: false
+ND:
+  2010-01-01: false
+  2021-10-01: false
+NE:
+  2010-01-01: false
+  2021-10-01: true
+NH:
+  2010-01-01: false
+  2021-10-01: true
+NJ:
+  2010-01-01: false
+  2021-10-01: true
+NM:
+  2010-01-01: false
+  2021-10-01: true
+NV:
+  2010-01-01: false
+  2021-10-01: true
+NY:
+  2010-01-01: false
+  2021-10-01: true
+OH:
+  2010-01-01: false
+  2021-10-01: true
+OK:
+  2010-01-01: false
+  2021-10-01: false
+OR:
+  2010-01-01: false
+  2021-10-01: false
+PA:
+  2010-01-01: false
+  2021-10-01: true
+RI:
+  2010-01-01: false
+  2021-10-01: true
+SC:
+  2010-01-01: false
+  2021-10-01: true
+SD:
+  2010-01-01: false
+  2021-10-01: false
+TN:
+  2010-01-01: false
+  2021-10-01: true
+TX:
+  2010-01-01: false
+  2021-10-01: true
+UT:
+  2010-01-01: false
+  2021-10-01: true
+VA:
+  2010-01-01: false
+  2021-10-01: true
+VI:
+  2010-01-01: false
+  2021-10-01: true
+VT:
+  2010-01-01: false
+  2021-10-01: false
+WA:
+  2010-01-01: false
+  2021-10-01: false
+WI:
+  2010-01-01: false
+  2021-10-01: false
+WV:
+  2010-01-01: false
+  2021-10-01: true
+WY:
+  2010-01-01: false
+  2021-10-01: false
+metadata:
+  unit: bool
+  label: SNAP homeless shelter deduction available
+  breakdown:
+  - state_code

@@ -1,0 +1,47 @@
+- name: MD pension AGI subtraction amount unit test 1
+  period: 2021
+  input:
+    is_tax_unit_dependent: true
+    age: 66
+    is_disabled: true
+    taxable_pension_income: 24_000
+    social_security: 0
+    state_code: MD
+  output:
+    md_pension_subtraction_amount: 0  # dependents are ineligible
+
+- name: MD pension AGI subtraction amount unit test 2
+  period: 2021
+  input:
+    is_tax_unit_dependent: false
+    age: 55
+    is_disabled: true
+    taxable_pension_income: 24_000
+    social_security: 0
+    state_code: MD
+  output:
+    md_pension_subtraction_amount: 24_000
+
+- name: MD pension AGI subtraction amount unit test 3
+  period: 2021
+  input:
+    is_tax_unit_dependent: false
+    age: 66
+    is_disabled: false
+    taxable_pension_income: 24_000
+    social_security: 12_300
+    state_code: MD
+  output:
+    md_pension_subtraction_amount: 22_000  # = 34_300 - 12_300
+
+- name: MD pension AGI subtraction amount unit test 4
+  period: 2021
+  input:
+    is_tax_unit_dependent: false
+    age: 66
+    is_disabled: false
+    taxable_pension_income: 24_000
+    social_security: 36_000
+    state_code: MD
+  output:
+    md_pension_subtraction_amount: 0

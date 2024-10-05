@@ -1,0 +1,13 @@
+description: California provides these nonrefundable income tax credits.
+values:
+  2021-01-01:
+    - ca_exemptions
+    - ca_cdcc
+    - ca_renter_credit
+metadata:
+  reference:
+    - title: California Form 540
+      href: "https://www.ftb.ca.gov/forms/Search/Home/Confirmation"
+  unit: currency-USD
+  period: year
+  label: California nonrefundable income tax credits

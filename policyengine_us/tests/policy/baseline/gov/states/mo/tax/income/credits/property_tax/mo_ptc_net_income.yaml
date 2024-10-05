@@ -1,0 +1,21 @@
+- name: Unit test for MO property tax credit net income
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+        mo_ptc_gross_income: 3_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_ptc_net_income: 3_000  # net = gross because income offset is zero

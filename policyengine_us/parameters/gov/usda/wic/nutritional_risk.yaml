@@ -1,0 +1,21 @@
+description: Percentage of otherwise-eligible children in WIC applicant families who are simulated to be found at nutritional risk.
+metadata:
+  unit: /1
+  label: WIC nutritional risk
+  breakdown:
+  - wic_category
+  reference:
+    - title: "Estimating Eligibility and Participation for the WIC Program: Phase I Report"
+      href: https://www.ncbi.nlm.nih.gov/books/NBK223565/pdf/Bookshelf_NBK223565.pdf
+PREGNANT:
+  1980-01-01: 0.913
+POSTPARTUM:
+  1980-01-01: 0.933
+BREASTFEEDING:
+  1980-01-01: 0.889
+INFANT:
+  1980-01-01: 0.95
+CHILD:
+  1980-01-01: 0.752
+NONE:
+  1980-01-01: 0

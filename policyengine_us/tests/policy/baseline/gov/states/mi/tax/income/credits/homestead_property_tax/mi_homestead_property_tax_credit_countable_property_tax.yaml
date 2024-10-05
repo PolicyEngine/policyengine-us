@@ -1,0 +1,33 @@
+- name: no property tax and rent
+  period: 2022
+  input:
+    real_estate_taxes: 0
+    rent: 0
+    state_code: MI
+  output:
+    mi_homestead_property_tax_credit_countable_property_tax: 0
+
+- name: property tax
+  period: 2022
+  input:
+    real_estate_taxes: 1_000
+    state_code: MI
+  output: 
+    mi_homestead_property_tax_credit_countable_property_tax: 1_000
+
+- name: rent
+  period: 2022
+  input:
+    rent: 4_300
+    state_code: MI
+  output: # 4300 * 0.23
+    mi_homestead_property_tax_credit_countable_property_tax: 989
+
+- name: property tax and rent
+  period: 2022
+  input:
+    real_estate_taxes: 800
+    rent: 10_000
+    state_code: MI
+  output: # 10000 * 0.23 + 800
+    mi_homestead_property_tax_credit_countable_property_tax: 3_100

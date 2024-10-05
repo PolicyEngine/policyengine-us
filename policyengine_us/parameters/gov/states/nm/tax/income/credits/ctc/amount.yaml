@@ -1,0 +1,47 @@
+description: New Mexico provides the following child income tax credit amount for filers, based on adjusted gross income.
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: currency-USD
+  label: New Mexico child income tax credit amount
+  reference:
+    - title: New Mexico Statutes, 7-2-18.34. Child income tax credit.
+      href: https://nmonesource.com/nmos/nmsa/en/item/4340/index.do#!fragment/zoupio-_Toc140503818/BQCwhgziBcwMYgK4DsDWszIQewE4BUBTADwBdoAvbRABwEtsBaAfX2zgEYAWABgFYeAZgAcHYQEoANMmylCEAIqJCuAJ7QA5BskRCYXAiUr1WnXoMgAynlIAhdQCUAogBknANQCCAOQDCTyVIwACNoUnZxcSA
+    - title: New Mexico Session Laws, Laws 2023 - First Session, Fifty-Sixth Legislature, Chapter 211 Section 9 Laws 2023
+      href: https://nmonesource.com/nmos/nmsl/en/item/18775/index.do#!fragment/undefined/BQCwhgziBcwMYgK4DsDWsBGB7LqC2YATqgJIAm0cATAIw0QCcAlADTJYAuAphAIqJdCAT2gByUSwhciCfoJHjJ0wggDKWQhwBCIgEoBRADL6AagEEAcgGF9LDmAzQOWOEyZA
+    - title: 2023 New Mexico personal income tax form packet - RC-11 - Table 4. 2023 Child Income Tax Credit Income Table 
+      href: https://klvg4oyd4j.execute-api.us-west-2.amazonaws.com/prod/PublicFiles/34821a9573ca43e7b06dfad20f5183fd/90560f4e-0ef0-4e52-a003-878b84f858bb/PITbook2023.pdf#page=88    
+    - title: 2022 New Mexico personal income tax form packet - absent
+      href: https://klvg4oyd4j.execute-api.us-west-2.amazonaws.com/prod/PublicFiles/34821a9573ca43e7b06dfad20f5183fd/1afc56af-ea90-4d48-82e5-1f9aeb43255a/PITbook2022.pdf
+    - title: 2021 New Mexico personal income tax form packet - absent
+      href: https://klvg4oyd4j.execute-api.us-west-2.amazonaws.com/prod/PublicFiles/34821a9573ca43e7b06dfad20f5183fd/608063af-0c4c-4f28-ba42-cf40e04557ca/PITbook2021.pdf
+brackets:
+  - threshold:
+      # If the AGI is less than 0, the filer may claim the full credit
+      2023-01-01: -.inf
+    amount:
+      2023-01-01: 600
+  - threshold:
+      2023-01-01: 25_001
+    amount:
+      2023-01-01: 400
+  - threshold:
+      2023-01-01: 50_001
+    amount:
+      2023-01-01: 200
+  - threshold:
+      2023-01-01: 75_001
+    amount:
+      2023-01-01: 100
+  - threshold:
+      2023-01-01: 100_001
+    amount:
+      2023-01-01: 75
+  - threshold:
+      2023-01-01: 200_001
+    amount:
+      2023-01-01: 50
+  - threshold:
+      2023-01-01: 350_001
+    amount:
+      2023-01-01: 25

@@ -1,0 +1,31 @@
+description: Virginia subtracts these sources from federal adjusted gross income.
+values:
+  2021-01-01:
+    - us_govt_interest
+    - va_military_basic_pay_subtraction # Special instructions for members of the military
+    - va_disability_income_subtraction # Certification Number 5
+    - railroad_benefits # Certification Number 22
+    - va_national_guard_subtraction # Certification Number 28
+    - unemployment_compensation # Certification Number 37
+    - va_federal_state_employees_subtraction # Certification Number 39
+    - va_military_benefit_subtraction # Certification Number 60
+    - investment_in_529_plan # Certification Number 34
+    - va_age_deduction # Certification Number 4
+    - taxable_social_security # Certification Number 5
+
+
+metadata:
+  unit: list
+  period: year
+  label: Virginia adjusted gross income subtractions
+  reference:
+    - title: 2023 Virginia Schedule ADJ (Form 760-ADJ)
+      href: https://www.tax.virginia.gov/sites/default/files/taxforms/individual-income-tax/2023/schedule-adj-2023.pdf#page=1
+    - title: 2022 Virginia Schedule ADJ (Form 760-ADJ)
+      href: https://www.tax.virginia.gov/sites/default/files/taxforms/individual-income-tax/2022/schedule-adj-2022.pdf#page=1
+    - title: 2021 Virginia Schedule ADJ (Form 760-ADJ) 
+      href: https://www.tax.virginia.gov/sites/default/files/taxforms/individual-income-tax/2021/schedule-adj-2021.pdf#page=1
+    - title: 2022 Form 760 Resident Individual Income Tax Booklet
+      href: https://www.tax.virginia.gov/sites/default/files/vatax-pdf/2022-760-instructions.pdf#page=25
+    - title: Code of Virginia § 58.1-322.02
+      href: https://law.lis.virginia.gov/vacodefull/title58.1/chapter3/article2/

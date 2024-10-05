@@ -1,0 +1,17 @@
+- name: Case 1, income_tax_before_refundable_credits capped at 0.
+  period: 2022
+  input:
+    ut_income_tax_before_non_refundable_credits: 1_000
+    ut_non_refundable_credits: 1_200
+    state_code: UT
+  output:
+    ut_income_tax_before_refundable_credits: 0
+
+- name: Case 2, income_tax_before_refundable_credits higher than non-refundable credits. 
+  period: 2022
+  input:
+    ut_income_tax_before_non_refundable_credits: 1_000
+    ut_non_refundable_credits: 500
+    state_code: UT
+  output:
+    ut_income_tax_before_refundable_credits: 500

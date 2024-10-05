@@ -1,0 +1,95 @@
+- name: 2022 Single household with $1,000 income and no add back or credits
+  period: 2022
+  input:
+    state_code: CT
+    ct_taxable_income: 1_000
+    filing_status: SINGLE
+    ct_income_tax_phase_out_add_back: 0
+    ct_income_tax_recapture: 0
+    ct_personal_credit_rate: 0
+  output:
+    ct_income_tax_after_personal_credits: 30
+
+- name: 2022 Separate household with $20,000 income with some add back, no credits
+  period: 2022
+  input:
+    state_code: CT
+    ct_taxable_income: 20_000
+    filing_status: SEPARATE
+    ct_income_tax_phase_out_add_back: 100
+    ct_income_tax_recapture: 200
+    ct_personal_credit_rate: 0
+  output:
+    ct_income_tax_after_personal_credits: 1_100
+
+- name: 2022 Same as test 2 but credit of 0.2
+  period: 2022
+  input:
+    state_code: CT
+    ct_taxable_income: 20_000
+    filing_status: SEPARATE
+    ct_income_tax_phase_out_add_back: 100
+    ct_income_tax_recapture: 200
+    ct_personal_credit_rate: 0.2
+  output:
+    ct_income_tax_after_personal_credits: 880
+
+- name: 2022 Widow household with credit of 1 - maximum credit
+  period: 2022
+  input:
+    state_code: CT
+    ct_taxable_income: 40_000
+    filing_status: SURVIVING_SPOUSE
+    ct_income_tax_phase_out_add_back: 100
+    ct_income_tax_recapture: 200
+    ct_personal_credit_rate: 1
+  output:
+    ct_income_tax_after_personal_credits: 0
+
+- name: 2024 Single household with $1,000 income and no add back or credits
+  period: 2024
+  input:
+    state_code: CT
+    ct_taxable_income: 1_000
+    filing_status: SINGLE
+    ct_income_tax_phase_out_add_back: 0
+    ct_income_tax_recapture: 0
+    ct_personal_credit_rate: 0
+  output:
+    ct_income_tax_after_personal_credits: 20
+
+- name: 2024 Separate household with $20,000 income with some add back, no credits
+  period: 2024
+  input:
+    state_code: CT
+    ct_taxable_income: 20_000
+    filing_status: SEPARATE
+    ct_income_tax_phase_out_add_back: 100
+    ct_income_tax_recapture: 200
+    ct_personal_credit_rate: 0
+  output:
+    ct_income_tax_after_personal_credits: 950
+
+- name: 2024 Same as test 2 but credit of 0.2
+  period: 2024
+  input:
+    state_code: CT
+    ct_taxable_income: 20_000
+    filing_status: SEPARATE
+    ct_income_tax_phase_out_add_back: 100
+    ct_income_tax_recapture: 200
+    ct_personal_credit_rate: 0.2
+  output:
+    ct_income_tax_after_personal_credits: 760
+
+- name: 2024 Widow household with credit of 1 - maximum credit
+  period: 2024
+  input:
+    state_code: CT
+    ct_taxable_income: 40_000
+    filing_status: WIDOW
+    ct_income_tax_phase_out_add_back: 100
+    ct_income_tax_recapture: 200
+    ct_personal_credit_rate: 1
+  output:
+    ct_income_tax_after_personal_credits: 0

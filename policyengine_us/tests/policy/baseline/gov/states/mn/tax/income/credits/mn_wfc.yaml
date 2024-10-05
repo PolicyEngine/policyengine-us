@@ -1,0 +1,51 @@
+- name: MN WFC unit test 1
+  absolute_error_margin: 0.5
+  period: 2021
+  input:
+    mn_wfc_eligible: true
+    filing_status: JOINT
+    eitc_child_count: 2
+    filer_adjusted_earnings: 20_050
+    adjusted_gross_income: 20_050
+    state_code: MN
+  output:  # expected output from lookup table in Form M1 instructions
+    mn_wfc: 2_206
+
+- name: MN WFC unit test 2
+  absolute_error_margin: 0.5
+  period: 2021
+  input:
+    mn_wfc_eligible: true
+    filing_status: HEAD_OF_HOUSEHOLD
+    eitc_child_count: 1
+    filer_adjusted_earnings: 30_050
+    adjusted_gross_income: 30_050
+    state_code: MN
+  output:  # expected output from lookup table in Form M1 instructions
+    mn_wfc: 747
+
+- name: MN WFC unit test 3
+  absolute_error_margin: 0.5
+  period: 2022
+  input:
+    mn_wfc_eligible: true
+    filing_status: JOINT
+    eitc_child_count: 2
+    filer_adjusted_earnings: 20_050
+    adjusted_gross_income: 20_050
+    state_code: MN
+  output:  # expected output from lookup table in Form M1 instructions
+    mn_wfc: 2_206
+
+- name: MN WFC unit test 4
+  absolute_error_margin: 0.5
+  period: 2022
+  input:
+    mn_wfc_eligible: true
+    filing_status: HEAD_OF_HOUSEHOLD
+    eitc_child_count: 1
+    filer_adjusted_earnings: 30_050
+    adjusted_gross_income: 30_050
+    state_code: MN
+  output:  # expected output from lookup table in Form M1 instructions
+    mn_wfc: 826

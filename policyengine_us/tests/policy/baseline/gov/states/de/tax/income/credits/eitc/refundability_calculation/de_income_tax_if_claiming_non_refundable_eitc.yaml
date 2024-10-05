@@ -1,0 +1,26 @@
+- name: One person with zero earnings pays no tax.
+  period: 2022
+  input:
+    state_code: DE
+  output:
+    de_income_tax_if_claiming_non_refundable_eitc: 0
+  
+- name: One person with zero earnings pays no tax. Giving them some non-refundable EITC doesn't change their tax liability.
+  period: 2022
+  input:
+    state_code: DE
+    de_non_refundable_eitc: 100
+  output:
+    de_income_tax_if_claiming_non_refundable_eitc: 0
+
+- name: One person with zero earnings pays no tax.
+  period: 2022
+  input:
+    state_code: DE
+    de_income_tax_before_non_refundable_credits_joint: 150
+    de_income_tax_before_non_refundable_credits_indv: 150
+    de_personal_credit: 0
+    de_aged_personal_credit: 0
+    de_non_refundable_eitc: 100
+  output:
+    de_income_tax_if_claiming_non_refundable_eitc: 50

@@ -1,0 +1,161 @@
+- name: Separate/head of household/widow filing with non-working head is not eligible.
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        earned_income: 0
+        is_in_k12_school: false
+        is_tax_unit_head_or_spouse: true
+        is_full_time_student: false
+      person2:
+        is_tax_unit_head: false
+        earned_income: 0
+        is_in_k12_school: false
+        is_tax_unit_head_or_spouse: true
+        is_full_time_student: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OR
+  output:
+    or_wfhdc_employment_eligible: false
+
+- name: Separate/head of household/widow filing with working head is eligible.
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        earned_income: 100_000 #>0
+        is_in_k12_school: false
+        is_tax_unit_head_or_spouse: true
+        is_full_time_student: false
+      person2:
+        is_tax_unit_head: false
+        earned_income: 0
+        is_in_k12_school: false
+        is_tax_unit_head_or_spouse: true
+        is_full_time_student: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SURVIVING_SPOUSE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OR
+  output:
+    or_wfhdc_employment_eligible: true
+
+- name: Single filing household with in school head is eligible.
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        earned_income: 0
+        is_in_k12_school: true
+        is_tax_unit_head_or_spouse: true
+        is_full_time_student: false
+      person2:
+        is_tax_unit_head: false
+        earned_income: 0
+        is_in_k12_school: false
+        is_tax_unit_head_or_spouse: true
+        is_full_time_student: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OR
+  output:
+    or_wfhdc_employment_eligible: true
+
+- name: Joint filing household with full time student head is eligible.
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        earned_income: 0
+        is_in_k12_school: true
+        is_tax_unit_head_or_spouse: true
+        is_full_time_student: true
+      person2:
+        is_tax_unit_head: false
+        earned_income: 0
+        is_in_k12_school: false
+        is_tax_unit_head_or_spouse: true
+        is_full_time_student: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OR
+  output:
+    or_wfhdc_employment_eligible: true
+
+- name: Joint filing household with full time student spouse is eligible.
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        earned_income: 0
+        is_in_k12_school: true
+        is_tax_unit_head_or_spouse: true
+        is_full_time_student: false
+      person2:
+        is_tax_unit_head: false
+        earned_income: 0
+        is_in_k12_school: true
+        is_tax_unit_head_or_spouse: true
+        is_full_time_student: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OR
+  output:
+    or_wfhdc_employment_eligible: true
+
+- name: Joint filing household with part time student head is not eligible.
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        earned_income: 0
+        is_in_k12_school: true
+        is_tax_unit_head_or_spouse: true
+        is_full_time_student: false
+      person2:
+        is_tax_unit_head: false
+        earned_income: 0
+        is_in_k12_school: false
+        is_tax_unit_head_or_spouse: true
+        is_full_time_student: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OR
+  output:
+    or_wfhdc_employment_eligible: false

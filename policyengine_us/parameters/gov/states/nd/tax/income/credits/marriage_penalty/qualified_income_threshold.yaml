@@ -1,0 +1,22 @@
+description: North Dakota has a nonrefundable marriage-penalty credit for joint filers with smaller of head and spouse qualified income more than this amount.
+values:
+  2021-01-01: 39_830
+  2022-01-01: 40_979
+  2023-01-01: 43_980
+
+metadata:
+  label: North Dakota marriage-penalty credit qualified income threshold
+  unit: currency-USD
+  uprating: gov.irs.uprating
+  period: year
+  reference:
+  - title: 2021 North Dakota income tax form and instruction booklet, Marriage Penalty Credit Worksheet and line 22
+    href: https://www.tax.nd.gov/sites/www/files/documents/forms/individual/2021-iit/2021-individual-income-tax-booklet.pdf#page=17
+  - title: 2022 North Dakota income tax form and instruction booklet, Marriage Penalty Credit Worksheet and line 22
+    href: https://www.tax.nd.gov/sites/www/files/documents/forms/individual/2022-iit/2022-individual-income-tax-booklet.pdf#page=16
+  - title: 2023 North Dakota income tax form and instruction booklet, Marriage Penalty Credit Worksheet and line 22
+    href: https://www.tax.nd.gov/sites/www/files/documents/forms/individual/2023-iit/2023-individual-income-tax-booklet.pdf#page=17
+  - title: North Dakota legal code section 57-38-01.28 4(a)
+    href: https://casetext.com/statute/north-dakota-century-code/title-57-taxation/chapter-57-38-income-tax/section-57-38-0128-marriage-penalty-credit
+  # Inflation adjustment defined in the IRC legal code
+

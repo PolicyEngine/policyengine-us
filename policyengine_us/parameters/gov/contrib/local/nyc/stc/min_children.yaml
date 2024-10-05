@@ -1,0 +1,11 @@
+description: Limit NYC School Tax Credit eligibility to tax units with at least this many children.
+metadata:
+  unit: single_amount
+  label: NYC School Tax Credit Minimum Number of Children
+  reference:
+    - title: Instructions for Form IT-201 (2023)
+      href: https://www.tax.ny.gov/pdf/2023/printable-pdfs/inc/it201i-2023.pdf#page=27
+    - title: Instructions for Form IT-201 (2022)
+      href: https://www.tax.ny.gov/pdf/2022/printable-pdfs/inc/it201i-2022.pdf#page=25
+values:
+  2022-01-01: 0

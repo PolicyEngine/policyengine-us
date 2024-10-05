@@ -1,0 +1,15 @@
+- name: Four exemptions in 2021
+  period: 2021
+  input:
+    ks_count_exemptions: 4
+    state_code: KS
+  output:
+    ks_exemptions: 2_250 * 4
+
+- name: Two exemptions in 2022
+  period: 2022
+  input:
+    ks_count_exemptions: 2
+    state_code: KS
+  output:
+    ks_exemptions: 2_250 * 2

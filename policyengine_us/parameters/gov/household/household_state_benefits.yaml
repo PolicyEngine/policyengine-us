@@ -1,0 +1,21 @@
+description: The government counts these sources as benefits paid by state agencies.
+values:
+  2023-01-01:
+    - state_supplement
+    # Colorado benefits
+    - co_state_supplement
+    - co_oap
+    - co_child_care_subsidies
+    # California benefits
+    - ca_child_care_subsidies
+    - ca_cvrp
+    - ca_care
+    - ca_fera
+    - ca_la_ez_save
+    # Nebraska benefits
+    - ne_child_care_subsidies
+
+metadata:
+  unit: list
+  period: year
+  label: Household state benefits

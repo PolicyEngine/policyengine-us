@@ -1,0 +1,27 @@
+description: Maximum payment under the Massachusetts Senior Circuit Breaker credit.
+values:
+  2001-01-01: 750
+  # COLA-adjusted, rounded to next lowest multiple of $10.
+  2021-01-01: 1_170
+  2022-01-01: 1_200
+  2023-01-01: 2_590
+metadata:
+  unit: currency-USD
+  period: year
+  label: Massachusetts Senior Circuit Breaker maximum payment
+  reference:
+    # In 2023 the legal code doubled the maximum pre-inflation adjustment credit 
+    # amount from $750 to $1,500
+    # The legal code specifies inflation unadjusted amounts
+    - title: Mass. General Laws c.62 § 6(k)(2)
+      href: https://www.mass.gov/info-details/mass-general-laws-c62-ss-6
+    - title: 2022 Mass. General Laws c.62 § 6(k)(2)
+      href: https://law.justia.com/codes/massachusetts/2022/part-i/title-ix/chapter-62/section-6/
+    - title: Massachusetts Senior Circuit Breaker Tax Credit | Mass.gov
+      href: https://www.mass.gov/info-details/massachusetts-senior-circuit-breaker-tax-credit
+    - title: Form 1 2022 Massachusetts Resident Income Tax (line 44)
+      href: https://www.mass.gov/doc/2022-form-1-instructions/download#page=17
+    - title: Form 1 2023 Massachusetts Resident Income Tax (line 44)
+      href: https://www.mass.gov/doc/2023-form-1-instructions/download#page=17
+    - title: 2023 Schedule CB
+      href: https://www.mass.gov/doc/2023-schedule-cb-circuit-breaker-credit/download

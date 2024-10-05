@@ -1,0 +1,68 @@
+description: Maine starts phasing out its personal exemption for filers with Maine AGI above this threshold.
+metadata:
+  unit: currency-USD
+  period: year
+  label: Maine personal exemption phase-out start
+  reference:
+    - title: 2023 Instructions for Form 1040ME Line 2
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/23_1040me_book_gen_instr.pdf#page=4
+    - title: §5403. Annual adjustments for inflation 8
+      href: https://legislature.maine.gov/statutes/36/title36sec5403.html
+    - title: 2022 Instructions for Form 1040ME Line 18 Exemption
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/22_1040me_book_gen_instruc_revisedFeb23.pdf#page=4
+    - title: 2021 Instructions for Form 1040ME
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/21_1040me_book_gen_instr_revMay2022.pdf#page=4
+    - title: §5126-A. Personal exemptions on or after January 1, 2018 (2)
+      href: https://legislature.maine.gov/statutes/36/title36sec5126-A.html
+  breakdown:
+    - filing_status
+SINGLE:
+  values:
+    2021-01-01: 279_500
+    2022-01-01: 286_200
+    2023-01-01: 305_150
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
+SEPARATE:
+  values:
+    2021-01-01: 167_700
+    2022-01-01: 171_700
+    2023-01-01: 183_050
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
+HEAD_OF_HOUSEHOLD:
+  values:
+    2021-01-01: 307_450
+    2022-01-01: 314_800
+    2023-01-01: 335_650
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
+JOINT:
+  values:
+    2021-01-01: 335_400
+    2022-01-01: 343_400
+    2023-01-01: 366_100
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
+SURVIVING_SPOUSE:
+  values:
+    2021-01-01: 335_400
+    2022-01-01: 343_400
+    2023-01-01: 366_100
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50

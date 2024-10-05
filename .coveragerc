@@ -1,0 +1,6 @@
+[run]
+disable_warnings = couldnt-parse
+
+[report]
+# Include only variables related to taxes and benefits:
+include = */variables/*

@@ -1,0 +1,51 @@
+- name: "Meets all criteria: (AGI + additions) <= FPG, earnings <= FPG, and non-refundable EITC < tax before credits"
+  period: 2021
+  input:
+    adjusted_gross_income: 90
+    md_total_additions: 10
+    tax_unit_fpg: 100
+    tax_unit_earned_income: 100
+    md_married_or_has_child_non_refundable_eitc: 9
+    md_income_tax_before_credits: 10
+    state_code: MD
+  output:
+    is_eligible_md_poverty_line_credit: true
+
+- name: Ineligible because (AGI + additions) > FPG
+  period: 2021
+  input:
+    adjusted_gross_income: 91
+    md_total_additions: 10
+    tax_unit_fpg: 100
+    tax_unit_earned_income: 100
+    md_married_or_has_child_non_refundable_eitc: 9
+    md_income_tax_before_credits: 10
+    state_code: MD
+  output:
+    is_eligible_md_poverty_line_credit: false
+
+
+- name: Ineligible because earnings > FPG
+  period: 2021
+  input:
+    adjusted_gross_income: 90
+    md_total_additions: 10
+    tax_unit_fpg: 100
+    tax_unit_earned_income: 101
+    md_married_or_has_child_non_refundable_eitc: 9
+    md_income_tax_before_credits: 10
+    state_code: MD
+  output:
+    is_eligible_md_poverty_line_credit: false
+
+- name: Ineligible because non-refundable EITC >= tax before credits
+  period: 2021
+  input:
+    adjusted_gross_income: 90
+    md_total_additions: 10
+    tax_unit_fpg: 100
+    tax_unit_earned_income: 100
+    md_married_or_has_child_non_refundable_eitc: 10
+    md_income_tax_before_credits: 10
+  output:
+    is_eligible_md_poverty_line_credit: false

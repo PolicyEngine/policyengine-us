@@ -1,0 +1,44 @@
+- name: Single filer no income
+  period: 2023
+  input:
+    state_code: AZ
+    az_filing_status: SINGLE
+    az_taxable_income: 0
+  output:
+    az_income_tax_before_non_refundable_credits: 0
+    
+- name: Joint calculation 
+  period: 2023
+  input:
+    state_code: AZ
+    az_filing_status: JOINT
+    az_taxable_income: 60_000
+  output:
+    az_income_tax_before_non_refundable_credits: 1_500
+
+- name: Joint calculation 2019
+  period: 2019
+  input:
+    state_code: AZ
+    az_filing_status: JOINT
+    az_taxable_income: 60_000
+  output:
+    az_income_tax_before_non_refundable_credits: 1_606.5
+
+- name: Separate calculation 
+  period: 2022
+  input:
+    state_code: AZ
+    az_filing_status: SEPARATE
+    az_taxable_income: 30_000
+  output:
+    az_income_tax_before_non_refundable_credits: 770.7921
+
+- name: Head of Household calculation 
+  period: 2022
+  input:
+    state_code: AZ
+    az_filing_status: HEAD_OF_HOUSEHOLD
+    az_taxable_income: 70_000
+  output:
+    az_income_tax_before_non_refundable_credits: 1_839.5885

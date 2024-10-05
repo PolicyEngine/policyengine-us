@@ -1,0 +1,21 @@
+description: New York provides the following maximum Working Families Tax Credit amount per child.
+metadata:
+  unit: currency-USD
+  period: year
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
+  label: New York Working Families Tax Credit max amount
+  reference: 
+    - title: New York Senate Bill S277C §3(c-2)(2)(C)
+      href: https://legislation.nysenate.gov/pdf/bills/2023/S277C
+
+values:
+  2024-01-01: 0
+# 2024: 550
+# 2025: 800
+# 2026: 1,000
+# 2027: 1,200
+# 2028: 1,600

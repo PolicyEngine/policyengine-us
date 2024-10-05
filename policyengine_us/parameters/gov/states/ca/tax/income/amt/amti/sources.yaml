@@ -1,0 +1,18 @@
+description: California adds the following items to calculate the total adjustments for the alternative minimum taxable income.
+values:
+   2021-01-01:
+     - medical_expense_deduction # line 2 Medical and dental expenses
+     - real_estate_taxes # line 3 Personal property taxes and real property taxes
+     - mortgage_interest # line 4 Certain interest on a home mortgage
+     - misc_deduction # line 5 Miscellaneous itemized deductions
+
+
+metadata:
+   unit: list  
+   period: year 
+   label: California altenative minimum taxable income adjustments 
+   references: 
+    - title: 2021 Schedule P (540) Alternative Minimum Tax and Credit Limitations - Residents
+      href: https://www.ftb.ca.gov/forms/2021/2021-540-p.pdf#page=1
+    - title: 2022 Schedule P (540) Alternative Minimum Tax and Credit Limitations - Residents
+      href: https://www.ftb.ca.gov/forms/2022/2022-540-p.pdf#page=1

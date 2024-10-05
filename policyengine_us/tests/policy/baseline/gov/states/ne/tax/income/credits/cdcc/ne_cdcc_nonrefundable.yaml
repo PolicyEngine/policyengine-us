@@ -1,0 +1,17 @@
+- name: NE nonrefundable cdcc unit test 1
+  period: 2021
+  input:
+    adjusted_gross_income: 28_000
+    cdcc: 2_000
+    state_code: NE
+  output:
+    ne_cdcc_nonrefundable: 0
+
+- name: NE nonrefundable cdcc unit test 2
+  period: 2022
+  input:
+    adjusted_gross_income: 30_000
+    cdcc: 2_000
+    state_code: NE
+  output:
+    ne_cdcc_nonrefundable: 2_000 * 0.25

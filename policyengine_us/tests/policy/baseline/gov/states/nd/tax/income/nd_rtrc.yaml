@@ -1,0 +1,53 @@
+- name: Test 1, ND resident-tax-relief credit when not filing jointly (capped at 350)
+  period: 2021
+  input:
+    filing_status: SINGLE
+    nd_income_tax_before_credits: 500
+    state_code: ND
+  output:
+    nd_rtrc: 350
+
+- name: Test 2, ND resident-tax-relief credit when not filing jointly
+  period: 2022
+  input:
+    filing_status: SINGLE
+    nd_income_tax_before_credits: 200
+    state_code: ND
+  output:
+    nd_rtrc: 200
+
+- name: Test 3, ND resident-tax-relief credit is provided only in 2021-2022
+  period: 2023
+  input:
+    filing_status: SINGLE
+    nd_income_tax_before_credits: 500
+    state_code: ND
+  output:
+    nd_rtrc: 0
+
+- name: Test 4, ND resident-tax-relief credit when filing jointly (capped at 700)
+  period: 2021
+  input:
+    filing_status: JOINT
+    nd_income_tax_before_credits: 900
+    state_code: ND
+  output:
+    nd_rtrc: 700
+
+- name: Test 5, ND resident-tax-relief credit when filing jointly
+  period: 2022
+  input:
+    filing_status: JOINT
+    nd_income_tax_before_credits: 600
+    state_code: ND
+  output:
+    nd_rtrc: 600
+
+- name: Test 6, ND resident-tax-relief credit is provided only in 2021-2022
+  period: 2023
+  input:
+    filing_status: JOINT
+    nd_income_tax_before_credits: 900
+    state_code: ND
+  output:
+    nd_rtrc: 0

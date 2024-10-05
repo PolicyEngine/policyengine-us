@@ -1,0 +1,47 @@
+- name: No EITC from federal in 2021
+  period: 2021
+  input:
+    eitc: 0
+    state_code: SC
+  output: 
+    sc_eitc: 0
+
+- name: In 2018, with $1,000 EITC
+  period: 2018
+  input:
+    eitc: 1_000
+    state_code: SC
+  output: 
+    sc_eitc: 208.3
+
+- name: In 2019, with $1,000 EITC
+  period: 2019
+  input:
+    eitc: 1_000
+    state_code: SC
+  output: 
+    sc_eitc: 416.7
+
+- name: In 2020, with $1,000 EITC 
+  period: 2020
+  input:
+    eitc: 1_000
+    state_code: SC
+  output: 
+    sc_eitc: 625
+
+- name: In 2021, with $1,000 EITC 
+  period: 2021
+  input:
+    eitc: 1_000
+    state_code: SC
+  output: 
+    sc_eitc: 833.3
+
+- name: In 2022, with $1,000 EITC 
+  period: 2022
+  input:
+    eitc: 1_000
+    state_code: SC
+  output: 
+    sc_eitc: 1041.7

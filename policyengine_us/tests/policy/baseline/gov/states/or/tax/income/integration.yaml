@@ -1,0 +1,80 @@
+- name: Zero employment income.
+  period: 2021
+  input:
+    employment_income: 0
+    state_code: OR
+  output:
+    or_income_tax: 0
+
+- name: Elderly OR couple with modest pension, social security, and bond income
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 67
+        taxable_interest_income: 9000.0
+        taxable_pension_income: 5000.0
+        social_security: 1000.0
+      person2:
+        is_tax_unit_spouse: true
+        age: 67
+        taxable_interest_income: 9000.0
+        taxable_pension_income: 5000.0
+        social_security: 1000.0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        premium_tax_credit: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OR
+  output:
+    or_income_tax_before_credits: 1349.75
+    or_exemption_credit: 426.00
+    or_retirement_credit: 900.00
+    or_income_tax: 23.75  # = 1349.75 - 426.00 - 900.00
+
+- name: Tax unit with taxsimid 99570 in j21.its.csv and j21.ots.csv
+  absolute_error_margin: 0.1
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 71
+        employment_income: 1_010
+        qualified_dividend_income: 8_010
+        taxable_interest_income: 11_010
+        short_term_capital_gains: 2_010
+        long_term_capital_gains: 1_010
+        rental_income: 3_010
+        taxable_private_pension_income: 5000
+        social_security_retirement: 13_000
+        rent: 21_000
+        self_employment_income: 117_010
+        business_is_qualified: true
+        business_is_sstb: false
+        w2_wages_from_qualified_business: 100e6
+      person2:
+        age: 11
+      person3:
+        age: 11
+      person4:
+        age: 16
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        tax_unit_itemizes: False
+        state_income_tax: 10_431.06
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_fips: 41  # OR
+  output:  # expected results from patched TAXSIM35 2024-02-02 version
+    # or_agi: 139_803.51
+    or_standard_deduction: 4_980.00
+    or_itemized_deductions: 0
+    or_taxable_income: 127_773.51
+    or_income_tax: 9_814.18

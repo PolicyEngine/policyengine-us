@@ -1,0 +1,39 @@
+- name: NJ income tax should be zero for a single filer with income below the filing threshold.
+  period: 2022
+  input:
+    state_code: NJ
+    nj_agi: 9_999
+    filing_status: SINGLE
+  output:
+    nj_income_tax: 0
+
+- name: NJ income tax should be zero for a joint couple filing with income below the filing threshold.
+  period: 2022
+  input:
+    state_code: NJ
+    nj_agi: 19_999
+    filing_status: JOINT
+  output:
+    nj_income_tax: 0
+
+- name: NJ income tax below filing threshold but tax is negative because of refundable credits.
+  period: 2022
+  input:
+    state_code: NJ
+    nj_agi: 19_999
+    filing_status: JOINT
+    nj_income_tax_before_refundable_credits: 1_000
+    nj_refundable_credits: 1_001
+  output:
+    nj_income_tax: -1
+
+- name: NJ income tax above filing threshold so tax is calculated amount minus refundable credits.
+  period: 2022
+  input:
+    state_code: NJ
+    nj_agi: 60_000
+    filing_status: JOINT
+    nj_income_tax_before_refundable_credits: 10_000
+    nj_refundable_credits: 50
+  output:
+    nj_income_tax: 9_950

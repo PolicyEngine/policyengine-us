@@ -1,0 +1,22 @@
+description: President Biden proposed taxing as ordinary income the excess of capital income above these thresholds, by filing status.
+metadata:
+  reference:
+    - title: General Explanations of the Administration's Fiscal Year 2025 Revenue Proposals
+      href: https://home.treasury.gov/system/files/131/General-Explanations-FY2025.pdf#page=88
+  label: Threshold above which capital income is taxed as ordinary income  
+  unit: currency-USD
+  period: year
+  uprating: gov.irs.uprating
+
+  breakdown:
+    - filing_status
+JOINT:
+  2024-01-01: 1_000_000 
+SINGLE:
+  2024-01-01: 1_000_000 
+SEPARATE:
+  2024-01-01: 500_000 
+HEAD_OF_HOUSEHOLD:
+  2024-01-01: 1_000_000 
+SURVIVING_SPOUSE:
+  2024-01-01: 1_000_000 

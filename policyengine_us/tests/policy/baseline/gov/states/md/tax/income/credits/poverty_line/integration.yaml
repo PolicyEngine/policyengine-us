@@ -1,0 +1,43 @@
+- name: 2 parents with 20_000 in employment income and 11 children
+  period: 2022
+  input:
+    people:
+      parent:
+        age: 26
+      parent2:
+        age: 26
+      child1:
+        age: 3
+      child2:
+        age: 7
+      child3:
+        age: 4
+      child4:
+        age: 13
+      child5:
+        age: 4
+      child6:
+        age: 4
+      child7:
+        age: 2
+      child8:
+        age: 4
+      child9:
+        age: 14
+      child10:
+        age: 4
+      child11:
+        age: 14
+    tax_units:
+      tax_unit:
+        members: [parent,parent2, child1, child2, child3, child4, child5, child6, child7, child8, child9, child10, child11]
+        md_income_tax_before_credits: 3_000
+        md_married_or_has_child_non_refundable_eitc: 2_000
+        tax_unit_earned_income: 20_000
+        is_eligible_md_poverty_line_credit: true
+    households:
+      household:
+        members: [parent,parent2, child1, child2, child3, child4, child5, child6, child7, child8, child9,child10, child11]
+        state_code: MD
+  output:
+      md_poverty_line_credit: 1_000

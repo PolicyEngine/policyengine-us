@@ -1,0 +1,411 @@
+- name: Single parent of 10 children aged 6 to 17, $200k income during ARP.
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 200_000
+      child1:
+        age: 6
+      child2:
+        age: 6
+      child3:
+        age: 6
+      child4:
+        age: 6
+      child5:
+        age: 6
+      child6:
+        age: 6
+      child7:
+        age: 6
+      child8:
+        age: 6
+      child9:
+        age: 6
+      child10:
+        age: 6
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2, child3, child4, child5, child6, child7, child8, child9, child10]
+        income_tax_before_credits: 37_361 # From taxsim.app
+  output:
+    # SCHEDULE 8812
+    # https://www.irs.gov/pub/irs-prior/f1040s8--2021.pdf
+    # Line 1: Line 11 from Form 1040
+    # This is AGI per https://www.irs.gov/pub/irs-pdf/f1040.pdf
+    adjusted_gross_income: 200_000
+    # Line 2: Puerto Rico income = $0
+    # Line 3: Line 1 plus Line 2 = $200,000
+    # Line 4a: Kids under 18 = 10
+    # Line 4c: 4a - 4b = 10
+    # Line 5 worksheet
+    # https://www.irs.gov/pub/irs-pdf/i1040s8.pdf#page=4
+    # Line 1: Multiply 4b from Schedule 8812 by $3,600 = $0
+    # Line 2: Multiply 4c from Schedule 8812 by $3,000 = $30,000
+    # Line 3: Line 1 plus Line 2 = $30,000
+    # Line 4: Multiply 4a from Schedule 8812 by $2,000 = $20,000
+    ctc_maximum: 20_000
+    # Line 5: Line 3 minus Line 4 = $10,000
+    ctc_arpa_max_addition: 10_000
+    # Line 6: Enter amount from filing status. HOH = $4,375.
+    filing_status: HEAD_OF_HOUSEHOLD
+    ctc_arpa_phase_out_cap: 4_375
+    # Line 7: Enter smaller of lines 5 and 6 = $4,375
+    # Line 8: Enter amount from filing status. HOH = $112,500.
+    # Line 9: Subtract line 8 from AGI, rounding to next multiple of $1,000
+    # $200,000 - $112,500 = $87,500 -> $88,000
+    # Line 10: Multiply line 9 by 5% = $4,400
+    ctc_arpa_uncapped_phase_out: 4_400
+    # Line 11: Enter smaller of lines 7 and 10 = $4,375
+    ctc_arpa_phase_out: 4_375
+    # Line 12: Line 3 minus Line 11 = $30,000 - $4,375 = $25,625
+    ctc_maximum_with_arpa_addition: 25_625
+    # BACK TO SCHEDULE 8812
+    # Line 5: Line 12 from Line 5 worksheet = $25,625
+    # Line 6: Other dependents (we don't model SSNs, so just adult dependents)
+    # Line 7: Multiply line 6 by $500 = $0
+    ctc_adult_individual_maximum: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    # Line 8: Add lines 5 and 7.
+    #         25,625 + 0 = $25,625
+    # Line 9: Enter $400,000 for married jointly, $200,000 for all others.
+    #         200_000
+    # Line 10: Subtract line 9 from line 3.
+    # If zero less, enter 0.
+    # If more than zero and not a multiple of $1,000, enter the next multiple of $1,000.
+    # 200_000 - 200_000 = 0
+    # Line 11: Multiply line 10 by 5%.
+    #          0
+    # Line 12: Subtract line 11 from line 8. If zero or less, enter 0.
+    #          25,625 - 0 = $25,625
+    # Line 13: Lived in the US for more than half the year.
+    #          True - move to Part I-B.
+    # Line 14a: Enter the smaller of line 7 or line 12.
+    #           min(0, 25,625) = 0
+    # Line 14b: Subtract line 14a from line 12.
+    #           25,625 - 0 = 25,625
+    # Line 14c: If line 14a is zero, enter 0. Otherwise, enter the amount from
+    #           the Credit Limit Worksheet A.
+    # CREDIT LIMIT WORKSHEET A: Page 5 of 8812 instructions.
+    # 1: Enter the amount from line 18 of your Form 1040.
+    #    This is tax (https://www.irs.gov/pub/irs-pdf/f1040.pdf#page=2)
+    # 2: Add the following amounts (if applicable) from:
+    #    Schedule 3, line 1 (foreign tax credit per https://www.irs.gov/pub/irs-pdf/f1040s3.pdf)
+    #    Schedule 3, line 2 (CDCTC)
+    #    Schedule 3, line 3 (Education credits)
+    #    Schedule 3, line 4 (Retirement savings contributions credit)
+    #    Schedule 3, line 61 (?)
+    #    Form 5695, line 30 (Nonbusiness energy property credit https://www.irs.gov/pub/irs-pdf/f5695.pdf)
+    #    Form 8910, line 15 (Personal use part of alternative motor vehicle credit https://www.irs.gov/pub/irs-access/f8910_accessible.pdf)
+    #    Form 8936, line 23 (Personal part of plug in vehicle credit https://www.irs.gov/pub/irs-pdf/f8936.pdf)
+    #    Schedule R, line 22 (Credit for elderly or disabled https://www.irs.gov/pub/irs-pdf/f1040sr.pdf)
+    # ... Skip the rest for now.
+    # Not phased out since income is the threshold, so same as ctc_maximum_with_arpa_addition.
+    ctc: 25_625
+
+- name: The adult dependent CTC was not fully refundable in 2021 (only child CTC was).
+  period: 2021
+  input:
+    people:
+      head:
+        age: 40
+      dep:
+        age: 60
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, dep]
+  output:
+    refundable_ctc: 0
+
+- name: TAXSIM erroneously considers the adult dependent CTC to be fully refundable in 2021.
+  reforms: policyengine_us.reforms.taxsim
+  period: 2021
+  input:
+    people:
+      head:
+        age: 40
+      dep:
+        age: 60
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, dep]
+  output:
+    refundable_ctc: 500
+
+- name: Adult dependent CTC is non-refundable in 2022.
+  period: 2022
+  input:
+    people:
+      head:
+        age: 40
+      dep:
+        age: 60
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, dep]
+  output:
+    refundable_ctc: 0
+
+- name: Adult dependent CTC is non-refundable in 2022 with earnings.
+  period: 2022
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 20_000
+      dep:
+        age: 60
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, dep]
+  output:
+    refundable_ctc: 0
+
+- name: Tax unit with taxsimid 483 from f18.its.csv
+  # Married couple with $498k combined income, four children.
+  absolute_error_margin: 0.01
+  period: 2018
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 41
+        employment_income: 292_000
+        unemployment_compensation: 5_000
+        social_security: 19_000
+        taxable_pension_income: 43_000
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person2:
+        is_tax_unit_spouse: true
+        age: 45
+        employment_income: 139_000
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person3:
+        age: 12
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person4:
+        age: 12
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person5:
+        age: 12
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person6:
+        age: 12
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+        snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+        tax_unit_childcare_expenses: 10_000
+        premium_tax_credit: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code: TX  # no state income tax
+  output:  # expected results from patched TAXSIM35 2023-01-13 version
+    tax_unit_taxable_unemployment_compensation: 5_000.00
+    tax_unit_taxable_social_security: 16_150.00
+    adjusted_gross_income: 495_150.00
+    taxable_income: 471_150.00
+    eitc: 0.00
+    non_refundable_ctc: 3_200.00
+    refundable_ctc: 0.00
+    cdcc: 1_200.00  # expected cdcc = 0.20 * 6000
+    income_tax: 111_881.50
+
+- name: Tax unit with taxsimid 4608 from g21.its.csv
+  # Single parent with $203k income and three children.
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 24
+        employment_income: 160_000
+        taxable_interest_income: 10_000
+        non_qualified_dividend_income: 15_000
+        social_security: 18_000
+        interest_expense: 25_000
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person2:
+        age: 16 # age1
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person3:
+        age: 16 # age2
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person4:
+        age: 16 # age3
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        premium_tax_credit: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: TX  # no state income tax
+  output:  # expected results from patched TAXSIM35 2023-01-13 version
+    taxsim_tfica: 11_173.60
+    income_tax: 29_534.40
+
+- name: ODC for 17-year-old in 2024
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 50_000
+      child:
+        age: 17
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+  output:
+    ctc: 500
+    ctc_adult_individual_maximum: [0, 500]  # ODC for 17-year-old
+
+- name: CTC and ODC for multiple children including 17-year-old in 2024
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 100_000
+      child1:
+        age: 10
+        is_tax_unit_dependent: true
+      child2:
+        age: 17
+        is_tax_unit_dependent: true
+      child3:
+        age: 19
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2, child3]
+  output:
+    ctc: 3_000  # 2000 for 10-year-old + 500 for 17-year-old + 500 for 19-year-old
+    ctc_adult_individual_maximum: [0, 0, 500, 500]  # ODC for 17-year-old and 19-year-old
+
+- name: CTC and ODC phase-out with 17-year-old in 2024
+  period: 2024
+  input:
+    people:
+      parent1:
+        age: 40
+        employment_income: 400_000
+      parent2:
+        age: 40
+        employment_income: 0
+      child1:
+        age: 12
+        is_tax_unit_dependent: true
+      child2:
+        age: 17
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child1, child2]
+        filing_status: JOINT
+  output:
+    ctc: 2_500  # 2000 for 12-year-old + 500 for 17-year-old
+    ctc_adult_individual_maximum: [0, 0, 0, 500]  # ODC for 17-year-old
+
+- name: CTC and ODC for children at age transition in 2024
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 70_000
+      child1:
+        age: 16
+        is_tax_unit_dependent: true
+      child2:
+        age: 17
+        is_tax_unit_dependent: true
+      child3:
+        age: 18
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2, child3]
+  output:
+    ctc: 3_000  # 2000 for 16-year-old + 500 for 17-year-old + 500 for 18-year-old
+    ctc_adult_individual_maximum: [0, 0, 500, 500]  # ODC for 17-year-old and 18-year-old
+
+- name: ARPA CTC rules with 17-year-old in 2021
+  period: 2021
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 60_000
+      child1:
+        age: 5
+        is_tax_unit_dependent: true
+      child2:
+        age: 17
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+  output:
+    ctc: 6_600  # 3600 for 5-year-old + 3000 for 17-year-old under ARPA
+    ctc_adult_individual_maximum: [0, 0, 0]  # No ODC under ARPA
+
+- name: ARPA CTC rules with 18-year-old in 2021
+  period: 2021
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 60_000
+      child1:
+        age: 10
+        is_tax_unit_dependent: true
+      child2:
+        age: 18
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+  output:
+    ctc: 3_500  # 3000 for 10-year-old + 500 for 18-year-old (ODC)
+    ctc_adult_individual_maximum: [0, 0, 500]  # ODC for 18-year-old under ARPA

@@ -1,0 +1,77 @@
+- name: If filing single and not blind, exemption is $0.
+  period: 2022
+  input:
+    state_code: MS
+    filing_status: SINGLE
+    blind_head: false
+  output:
+    ms_blind_exemption: 0
+
+- name: If filing single and blind, exemption is $1.5k.
+  period: 2022
+  input:
+    state_code: MS
+    filing_status: SINGLE
+    blind_head: true
+  output:
+    ms_blind_exemption: 1_500
+
+- name: If filing jointly, head is blind but spouse is not blind, exemption is $1.5k.
+  period: 2022
+  input:
+    state_code: MS
+    filing_status: JOINT
+    blind_head: true
+    blind_spouse: false
+  output:
+    ms_blind_exemption: 1_500
+
+- name: If filing jointly, head and spouse are both blind, exemption is $3k.
+  period: 2022
+  input:
+    state_code: MS
+    filing_status: JOINT
+    blind_head: true
+    blind_spouse: true
+  output:
+    ms_blind_exemption: 3_000
+
+- name: If filing jointly, head and spouse are both not blind, exemption is $0k.
+  period: 2022
+  input:
+    state_code: MS
+    filing_status: JOINT
+    blind_head: false
+    blind_spouse: false
+  output:
+    ms_blind_exemption: 0
+
+- name: If filing jointly, head is not blind but spouse is blind, exemption is $1.5k.
+  period: 2022
+  input:
+    state_code: MS
+    filing_status: JOINT
+    blind_head: false
+    blind_spouse: true
+  output:
+    ms_blind_exemption: 1_500
+
+- name: If filing seperately, head and spouse are both blind, exemption is $1.5k.
+  period: 2022
+  input:
+    state_code: MS
+    filing_status: SEPARATE
+    blind_head: true
+    blind_spouse: true
+  output:
+    ms_blind_exemption: 1_500
+
+- name: If filing separately, head and spouse are both not blind, exemption is $0k.
+  period: 2022
+  input:
+    state_code: MS
+    filing_status: SEPARATE
+    blind_head: false
+    blind_spouse: false
+  output:
+    ms_blind_exemption: 0

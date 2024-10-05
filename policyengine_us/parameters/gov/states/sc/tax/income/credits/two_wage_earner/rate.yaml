@@ -1,0 +1,31 @@
+description: South Carolina provides these rates of the filers earned income under the two wage earner credit.
+# threshold value is bottom of the tax bracket; thresholds are <=
+brackets:
+ - threshold:
+     2021-01-01: 0
+   rate:
+     2021-01-01: 0.007
+ - threshold:
+     2021-01-01: 43_333
+     2022-01-01: 46_667
+     2023-01-01: 50_000
+   rate:
+     2021-01-01: 0
+
+metadata:
+  reference:
+    - title: SC 1040 tax form instructions (2021)
+      href: https://dor.sc.gov/forms-site/Forms/IITPacket_2021.pdf#page=23
+    - title: SC 1040 tax form instructions (2022)
+      href: https://dor.sc.gov/forms-site/Forms/IITPacket_2022.pdf#page=23
+    - title: SC 1040 tax form instructions (2023)
+      href: https://dor.sc.gov/forms-site/Forms/IITPacket_2023.pdf#page=32
+    - title: SC Legal Code |  Section 12-6-3330 (B)
+    # Legal code set it to $50,000, then amended it to $30,000 in 2017.
+    # Now adjusted for inflation.
+      href: https://www.scstatehouse.gov/code/t12c006.php
+  label: South Carolina two wage earner credit rate
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  period: year

@@ -1,0 +1,20 @@
+description: Program eligibility or participation that entitles a household to the Emergency Broadband Benefit (EBB) program
+values:
+  2021-05-12:
+    # Sec. 904(a)(6)(A) refers to:
+    # "section 54.409 of title 47, Code of Federal Regulations"
+    # which defines Lifeline eligibility.
+    - is_lifeline_eligible
+    - free_school_meals
+    - reduced_price_school_meals
+    - spm_unit_pell_grant
+    # At least one household member, since 2020-02-29.
+    # This documents also limits this criterion by income:
+    # https://www.fcc.gov/document/fcc-emergency-broadband-benefit-program-fact-sheet
+    - experienced_covid_income_loss
+    # Not modeled: "Meets the eligibility criteria for a participating provider’s existing low-income or COVID-19 program."
+metadata:
+  period: month
+  reference:
+    - name: H.R. 133 - Consolidated Appropriations Act, 2021
+      href: https://www.congress.gov/116/plaws/publ260/PLAW-116publ260.pdf#page=950

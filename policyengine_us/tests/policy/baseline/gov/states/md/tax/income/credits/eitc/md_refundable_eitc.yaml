@@ -1,0 +1,17 @@
+- name: Maryland total refundable eitc for married individual or has qualifying child.
+  period: 2021
+  input:
+    md_married_or_has_child_refundable_eitc: 100
+    md_unmarried_childless_refundable_eitc: 0
+    state_code: MD
+  output:
+    md_refundable_eitc: 100
+
+- name: Maryland total refundable eitc for unmarried childless individual.
+  period: 2021
+  input:
+    md_married_or_has_child_refundable_eitc: 0
+    md_unmarried_childless_refundable_eitc: 300
+    state_code: MD
+  output:
+    md_refundable_eitc: 300

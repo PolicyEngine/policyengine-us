@@ -1,0 +1,8 @@
+- name: Tax after non-refundable credits, except the non-refundable CTC.
+  period: 2020
+  input:
+    income_tax_before_credits: 100
+    elderly_disabled_credit: 20 # Non-refundable.
+    non_refundable_ctc: 10
+  output:
+    ctc_limiting_tax_liability: 80

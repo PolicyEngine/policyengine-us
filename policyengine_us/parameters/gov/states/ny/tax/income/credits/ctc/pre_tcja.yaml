@@ -1,0 +1,13 @@
+description: Whether the NY CTC uses pre-TCJA parameters to calculate the federal CTC.
+values:
+  0000-01-01: false
+  2018-01-01: true
+metadata:
+  unit: bool
+  period: year
+  label: Use pre-TCJA parameters for the federal CTC
+  reference:
+  - title: Section 606 Credits against tax (c-1)
+    href: https://www.nysenate.gov/legislation/laws/TAX/606
+  - title: New York Instructions for Form IT-201 Line 63
+    href: https://www.tax.ny.gov/pdf/2023/printable-pdfs/inc/it201i-2023.pdf#page=25

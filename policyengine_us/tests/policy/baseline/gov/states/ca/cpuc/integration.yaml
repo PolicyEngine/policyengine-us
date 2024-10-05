@@ -1,0 +1,98 @@
+- name: A four person household with an income of $69k is qualified for FERA, but not for CARE.
+  period: 2022
+  input:
+    state_code: CA
+    household_size: 4
+    household_market_income: 69_000
+    pre_subsidy_electricity_expense: 100
+    ca_care_categorically_eligible: false
+  output:
+    ca_care_income_eligible: false
+    ca_care_amount_if_eligible: 32.5
+    ca_care: 0
+    ca_fera_eligible: true
+    ca_fera_amount_if_eligible: 18
+    ca_fera: 18
+
+# Failed integration test above shows that even when a person is not income eligible for CARE, a discount is still being awarded.
+- name: A four person household with an income of $40k is qualified for CARE but not for FERA
+  period: 2022
+  input:
+    state_code: CA
+    household_size: 4
+    household_market_income: 40_000
+    pre_subsidy_electricity_expense: 100
+    ca_care_categorically_eligible: false
+  output:
+    ca_care_income_eligible: true
+    ca_care_amount_if_eligible: 32.5
+    ca_care: 32.5
+    ca_fera_eligible: false
+    ca_fera_amount_if_eligible: 18
+    ca_fera: 0
+
+- name: A three-person household with an income between 200% and 250% of the poverty line is ineligible for CARE and eligible for FERA.
+  period: 2023
+  input:
+  # if the following line is not included, then the test fails. The program is assuming categorical care eligibility.
+    # ca_care_categorically_eligible: false 
+    household_size: 3
+    employment_income: 60_000 # ~240% of poverty line
+    state_code: CA
+  output:
+    ca_care_categorically_eligible: false
+    ca_care_eligible: false
+    ca_fera_eligible: true
+
+- name: A three-person household with an income between 200% and 250% of the poverty line is ineligible for CARE and eligible for FERA.
+  period: 2023
+  input:
+  # if the following line is not included, then the test fails. The program is assuming categorical care eligibility.
+    # ca_care_categorically_eligible: false 
+    people:
+      parent:
+        employment_income: 60_000 # ~240% of poverty line
+      child1:
+        age: 10
+      child2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+        pre_subsidy_electricity_expense: 100
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: CA
+  output:
+    # Eligible due to child Medicaid.
+    ca_care_categorically_eligible: true
+    ca_care_eligible: true
+    ca_fera_eligible: false
+
+- name: A three-person household with an income between 200% and 250% of the poverty line is ineligible for CARE and eligible for FERA.
+  period: 2023
+  input:
+  # if the following line is not included, then the test fails. The program is assuming categorical care eligibility.
+    # ca_care_categorically_eligible: false 
+    people:
+      adult1:
+        age: 30
+        employment_income: 60_000 # ~240% of poverty line
+      adult2:
+        age: 30
+      adult3:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [adult1, adult2, adult3]
+        pre_subsidy_electricity_expense: 100
+    households:
+      household:
+        members: [adult1, adult2, adult3]
+        state_code: CA
+  output:
+    ca_care_categorically_eligible: false
+    ca_care_eligible: false
+    ca_fera_eligible: true
+    ca_fera: 18

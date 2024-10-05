@@ -1,0 +1,13 @@
+- name: Default is single.
+  period: 2022
+  output:
+    head_of_household_eligible: false
+
+- name: If unmarried and has children, then head of household is eligible.
+  period: 2022
+  input:
+    tax_unit_married: false
+    tax_unit_child_dependents: 1
+    surviving_spouse_eligible: false
+  output:
+    head_of_household_eligible: true

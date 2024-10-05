@@ -1,0 +1,35 @@
+- name: NE refundable cdcc unit test 1
+  period: 2021
+  input:
+    adjusted_gross_income: 28_500
+    cdcc: 2_000
+    state_code: NE
+  output:
+    ne_cdcc_refundable: 0.3 * 2_000
+
+- name: NE refundable cdcc unit test 2
+  period: 2022
+  input:
+    adjusted_gross_income: 30_000
+    cdcc: 2_000
+    state_code: NE
+  output:
+    ne_cdcc_refundable: 0
+
+- name: Fraction of the CDCC matched
+  period: 2022
+  input:
+    adjusted_gross_income: 25_000
+    cdcc: 2_000
+    state_code: NE
+  output:
+    ne_cdcc_refundable: 1_400
+
+- name: No reduction
+  period: 2022
+  input:
+    adjusted_gross_income: 21_999
+    cdcc: 2_000
+    state_code: NE
+  output:
+    ne_cdcc_refundable: 2_000

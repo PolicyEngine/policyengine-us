@@ -1,0 +1,79 @@
+description: Iowa levies income taxes at these rates for all filers.
+brackets:
+  - threshold:
+      2021-01-01: 0
+    rate:
+      2021-01-01: 0.0033
+      2023-01-01: 0.044
+      2026-01-01: 0.039
+  - threshold:
+      2021-01-01: 1_676
+      2022-01-01: 1_743
+      2023-01-01: 6_000
+      2026-01-01: .inf
+    rate:
+      2021-01-01: 0.0067
+      2023-01-01: 0.0482
+  - threshold:
+      2021-01-01: 3_352
+      2022-01-01: 3_486
+      2023-01-01: 30_000
+      2025-01-01: .inf
+    rate:
+      2021-01-01: 0.0225
+      2023-01-01: 0.057
+  - threshold:
+      2021-01-01: 6_704
+      2022-01-01: 6_972
+      2023-01-01: 75_000 
+      2024-01-01: .inf
+    rate:
+      2021-01-01: 0.0414
+      2023-01-01: 0.06 
+  - threshold:
+      2021-01-01: 15_084
+      2022-01-01: 15_687
+      2023-01-01: .inf
+    rate:
+      2021-01-01: 0.0563
+  - threshold:
+      2021-01-01: 25_140
+      2022-01-01: 26_145
+      2023-01-01: .inf
+    rate:
+      2021-01-01: 0.0596
+  - threshold:
+      2021-01-01: 33_520
+      2022-01-01: 34_860
+      2023-01-01: .inf
+    rate:
+      2021-01-01: 0.0625
+  - threshold:
+      2021-01-01: 50_280
+      2022-01-01: 52_290
+      2023-01-01: .inf
+    rate:
+      2021-01-01: 0.0744
+  - threshold:
+      2021-01-01: 75_420
+      2022-01-01: 78_435
+      2023-01-01: .inf
+    rate:
+      2021-01-01: 0.0853
+
+metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  threshold_period: year
+  label: Iowa income tax rates and brackets for all filers
+  reference:
+  - title: IDR Announces 2021 Interest Rates, Deductions, Income Tax Brackets
+    href: https://tax.iowa.gov/idr-announces-2021-interest-rates-deductions-income-tax-brackets
+  - title: IDR Announces 2022 Interest Rates, Deductions, Income Tax Brackets
+    href: https://tax.iowa.gov/idr-announces-2022-interest-rates-deductions-income-tax-brackets
+  - title: IDR Announces 2023 Interest Rates, Deductions, Income Tax Brackets
+    href: https://tax.iowa.gov/2023-changes-iowa-individual-income-tax
+  - title: 2023 IA 1041 Instructions
+    href: https://tax.iowa.gov/sites/default/files/2023-11/IA1041Inst%2863002%29.pdf#page=4
+  

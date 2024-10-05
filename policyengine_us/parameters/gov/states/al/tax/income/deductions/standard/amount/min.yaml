@@ -1,0 +1,33 @@
+description: Alabama provides the following standard deduction minimum amount, based on filing status.
+metadata:
+  label: Alabama standard deduction minimum amount
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  reference:
+  - title: The Code of Alabama 1975 Section 40-18-15(b)
+    href: https://law.justia.com/codes/alabama/title-40/chapter-18/article-1/section-40-18-15/
+  - title: The Code of Alabama 1975 Section 40-18-15(b)(3)
+    href: https://alisondb.legislature.state.al.us/alison/CodeOfAlabama/1975/Coatoc.htm
+  - title: 2023 Alabama Department of Revenue -Form 40 Booklet
+    href: https://www.revenue.alabama.gov/ultraviewer/viewer/basic_viewer/index.html?form=2024/01/23f40bk.pdf#page=9
+  - title: 2022 Alabama Department of Revenue -Form 40 Booklet 
+    href: https://www.revenue.alabama.gov/ultraviewer/viewer/basic_viewer/index.html?form=2023/01/22f40bk.pdf#page=9
+  - title: 2021 Alabama Department of Revenue -Form 40 Booklet 
+    href: https://www.revenue.alabama.gov/wp-content/uploads/2022/06/21f40abk.pdf#page=9 
+JOINT:
+  2021-01-01: 4_000
+  2022-01-01: 5_000
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 2_000
+  2022-01-01: 2_500
+SURVIVING_SPOUSE:
+  2021-01-01: 2_000
+  2022-01-01: 2_500
+SINGLE:
+  2021-01-01: 2_000
+  2022-01-01: 2_500
+SEPARATE:
+  2021-01-01: 2_000
+  2022-01-01: 2_500

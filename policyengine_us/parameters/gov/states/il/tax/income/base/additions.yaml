@@ -1,0 +1,14 @@
+description: Illinois Base Income Addition Sources
+values:
+  2021-01-01:
+    - tax_exempt_interest_income
+    - il_schedule_m_additions
+metadata:
+  unit: list
+  period: year
+  label: Illinois Base Income Additions
+  reference:
+    - title: Illinois Income Tax Act, 35 ILCS 5/502 (from Ch. 120, par. 5-502) Sec. 502. Returns and notices.
+      href: https://www.ilga.gov/legislation/ilcs/ilcs5.asp?ActID=577&ChapterID=8
+    - title: Illinois Department of Revenue 2021 Form IL-1040 Instructions
+      href: https://tax.illinois.gov/content/dam/soi/en/web/tax/forms/incometax/documents/currentyear/individual/il-1040-instr.pdf#page7

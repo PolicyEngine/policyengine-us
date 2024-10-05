@@ -1,0 +1,74 @@
+description: Maximum amount of business losses deductible
+metadata:
+  unit: currency-USD
+  period: year
+  label: Business loss limitation
+  reference:
+    - title: 26 U.S. Code § 461 - General rule for taxable year of deduction (l)(3)(A)(ii)(II)
+      href: https://www.law.cornell.edu/uscode/text/26/461#l_3_A_ii_II
+    - title: 2024 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-23-34.pdf#page=20
+    - title: 2023 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-22-38.pdf#page=13
+    - title: 2022 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-21-45.pdf#page=13
+    - title: 2021 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-20-45.pdf#page=13
+    - title: 2020 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-19-44.pdf#page=18
+HEAD_OF_HOUSEHOLD:
+  values:
+    2013-01-01: .inf
+    # IRC defines $250,000.
+    2018-01-01: 250_000
+    2019-01-01: 255_000
+    2020-01-01: 259_000
+    2021-01-01: 262_000
+    2022-01-01: 270_000
+    2023-01-01: 289_000
+    2024-01-01: 305_000
+    2027-01-01: .inf
+JOINT:
+  values:
+    2013-01-01: .inf
+    2018-01-01: 500_000
+    2019-01-01: 510_000
+    2020-01-01: 518_000
+    2021-01-01: 524_000
+    2022-01-01: 540_000
+    2023-01-01: 578_000
+    2024-01-01: 610_000
+    2027-01-01: .inf
+SEPARATE:
+  values:
+    2013-01-01: .inf
+    2018-01-01: 250_000
+    2019-01-01: 255_000
+    2020-01-01: 259_000
+    2021-01-01: 262_000
+    2022-01-01: 270_000
+    2023-01-01: 289_000
+    2024-01-01: 305_000
+    2027-01-01: .inf
+SINGLE:
+  values:
+    2013-01-01: .inf
+    2018-01-01: 250_000
+    2019-01-01: 255_000
+    2020-01-01: 259_000
+    2021-01-01: 262_000
+    2022-01-01: 270_000
+    2023-01-01: 289_000
+    2024-01-01: 305_000
+    2027-01-01: .inf
+SURVIVING_SPOUSE:
+  values:
+    2013-01-01: .inf
+    2018-01-01: 500_000
+    2019-01-01: 510_000
+    2020-01-01: 518_000
+    2021-01-01: 524_000
+    2022-01-01: 540_000
+    2023-01-01: 578_000
+    2024-01-01: 610_000
+    2027-01-01: .inf

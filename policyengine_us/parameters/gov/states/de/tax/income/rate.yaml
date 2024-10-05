@@ -1,0 +1,50 @@
+description: Delaware taxes personal income according to this rate schedule.
+metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  label: Delaware personal income tax rate
+  reference:
+    - title: Government of Delaware - Tax Rate Changes
+      href: https://revenue.delaware.gov/software-developer/tax-rate-changes/
+    - title: The Delaware Code - Title 30, Chapter 11, Subch. 1, § 1102, a, 14
+      href: https://delcode.delaware.gov/title30/c011/sc01/index.html 
+brackets:
+  - threshold:
+      1996-01-01: 0
+    rate:
+      1996-01-01: 0
+  - threshold:
+      1996-01-01: 2_000
+    rate:
+      1996-01-01: 0.031
+      1999-01-01: 0.026
+      2014-01-01: 0.022
+  - threshold:
+      1996-01-01: 5_000
+    rate:
+      1996-01-01: 0.0485
+      2014-01-01: 0.039
+  - threshold:
+      1996-01-01: 10_000
+    rate:
+      1996-01-01: 0.058
+      1999-01-01: 0.043
+      2014-01-01: 0.048
+  - threshold:
+      1996-01-01: 20_000
+    rate:
+      1996-01-01: 0.0615
+      1999-01-01: 0.052
+      2014-01-01: 0.052
+  - threshold:
+      1996-01-01: 25_000
+    rate:
+      1996-01-01: 0.0645
+      2014-01-01: 0.0555
+  - threshold:
+      1996-01-01: 30_000
+      2014-01-01: 60_000
+    rate:
+      1996-01-01: 0.069
+      2014-01-01: 0.066

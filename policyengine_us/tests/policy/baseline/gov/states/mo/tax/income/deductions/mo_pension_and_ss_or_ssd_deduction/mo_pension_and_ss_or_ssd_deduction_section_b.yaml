@@ -1,0 +1,107 @@
+- name: No Values
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    mo_adjusted_gross_income: 0
+    tax_unit_taxable_social_security: 0
+    filing_status: 0
+    taxable_private_pension_income: 0
+    state_code: MO
+  output:
+    mo_pension_and_ss_or_ssd_deduction_section_b: 0.0
+
+- name: AGI below threshold, private pension income, taxable social security income, single
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    mo_adjusted_gross_income: 20_000
+    tax_unit_taxable_social_security: 2_000
+    filing_status: SINGLE
+    taxable_private_pension_income: 5_000
+    state_code: MO
+  output:
+    mo_pension_and_ss_or_ssd_deduction_section_b: 5_000
+
+- name: AGI below threshold, private pension income, no taxable social security income, single
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    mo_adjusted_gross_income: 20_000
+    tax_unit_taxable_social_security: 0
+    filing_status: SINGLE
+    taxable_private_pension_income: 5_000
+    state_code: MO
+  output:
+    mo_pension_and_ss_or_ssd_deduction_section_b: 5_000
+
+- name: AGI below threshold, private pension income, taxable social security income, joint
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    mo_adjusted_gross_income: 30_000
+    tax_unit_taxable_social_security: 5_000
+    filing_status: JOINT
+    taxable_private_pension_income: 10_000
+    state_code: MO
+  output:
+    mo_pension_and_ss_or_ssd_deduction_section_b: 6_000
+
+- name: AGI below threshold, private pension income, no taxable social security income, joint
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    mo_adjusted_gross_income: 30_000
+    tax_unit_taxable_social_security: 0
+    filing_status: JOINT
+    taxable_private_pension_income: 10_000
+    state_code: MO
+  output:
+    mo_pension_and_ss_or_ssd_deduction_section_b: 6_000
+
+- name: AGI above threshold, private pension income, taxable social security income, single
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    mo_adjusted_gross_income: 40_000
+    tax_unit_taxable_social_security: 5_000
+    filing_status: SINGLE
+    taxable_private_pension_income: 10_000
+    state_code: MO
+  output:
+    mo_pension_and_ss_or_ssd_deduction_section_b: 0.0
+
+- name: AGI above threshold, private pension income, no taxable social security income, single
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    mo_adjusted_gross_income: 40_000
+    tax_unit_taxable_social_security: 0
+    filing_status: SINGLE
+    taxable_private_pension_income: 10_000
+    state_code: MO
+  output:
+    mo_pension_and_ss_or_ssd_deduction_section_b: 0.0
+
+- name: AGI above threshold, private pension income, taxable social security income, joint
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    mo_adjusted_gross_income: 40_000
+    tax_unit_taxable_social_security: 5_000
+    filing_status: JOINT
+    taxable_private_pension_income: 10_000
+    state_code: MO
+  output:
+    mo_pension_and_ss_or_ssd_deduction_section_b: 3_000
+
+- name: AGI above threshold, private pension income, no taxable social security income, joint
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    mo_adjusted_gross_income: 40_000
+    tax_unit_taxable_social_security: 0
+    filing_status: JOINT
+    taxable_private_pension_income: 10_000
+    state_code: MO
+  output:
+    mo_pension_and_ss_or_ssd_deduction_section_b: 0

@@ -1,0 +1,79 @@
+description: Maryland provides a standard deduction of up to this amount.
+metadata:
+  label: Maryland maximum standard deduction
+  period: year
+  unit: currency-USD
+  breakdown:
+    - filing_status
+  reference:
+    - title: Maryland 2023 State & Local Tax Forms & Instructions
+      href: https://www.marylandtaxes.gov/forms/23_forms/Resident-Booklet.pdf#page=19
+    - title: "MD Code, Tax - General, § 10-217 (c)(1)"
+      href: https://govt.westlaw.com/mdc/Document/NC8EB19606F6911E8A99BCF2C90B83D38?viewType=FullText&originationContext=documenttoc&transitionType=CategoryPageItem&contextData=(sc.Default)#co_anchor_I552E3B107DF711ECA8F2FF3A9E62BB69
+    - title: "MD Code, Tax - General, § 10-217 (d)(1)-(d)(3)"
+      href: https://govt.westlaw.com/mdc/Document/NC8EB19606F6911E8A99BCF2C90B83D38?viewType=FullText&originationContext=documenttoc&transitionType=CategoryPageItem&contextData=(sc.Default)#co_anchor_I552E3B107DF711ECA8F2FF3A9E62BB69
+    - title: "MD Code, Tax - General, § 10-217 (d)(1)-(d)(3)"
+      href: https://govt.westlaw.com/mdc/Document/NC8EB19606F6911E8A99BCF2C90B83D38?viewType=FullText&originationContext=documenttoc&transitionType=CategoryPageItem&contextData=(sc.Default)#co_anchor_I552E3B107DF711ECA8F2FF3A9E62BB69
+    - title: "Maryland new tax year update -exemptions and deductions"
+      href: https://www.marylandtaxes.gov/new-tax-year-update.php#:~:text=Standard%20Deduction%20%2D%20The%20tax%20year,spouse%2C%20and%20taxpayers%20filing%20jointly.
+
+JOINT:
+  values:
+    2018-01-01: 4_500
+    2021-01-01: 4_700
+    2022-01-01: 4_850
+    2023-01-01: 5_150
+  metadata:
+    uprating: 
+      parameter: gov.irs.uprating
+      rounding:
+        type: downwards
+        interval: 50
+HEAD_OF_HOUSEHOLD:
+  values:
+    2018-01-01: 4_500
+    2021-01-01: 4_700
+    2022-01-01: 4_850
+    2023-01-01: 5_150
+  metadata:
+    uprating: 
+      parameter: gov.irs.uprating
+      rounding:
+        type: downwards
+        interval: 50
+SURVIVING_SPOUSE:
+  values:
+    2018-01-01: 4_500
+    2021-01-01: 4_700
+    2022-01-01: 4_850
+    2023-01-01: 5_150
+  metadata:
+    uprating: 
+      parameter: gov.irs.uprating
+      rounding:
+        type: downwards
+        interval: 50
+SINGLE:
+  values:
+    2018-01-01: 2_250
+    2021-01-01: 2_350
+    2022-01-01: 2_400
+    2023-01-01: 2_550
+  metadata:
+    uprating: 
+      parameter: gov.irs.uprating
+      rounding:
+        type: downwards
+        interval: 50
+SEPARATE:
+  values:
+    2018-01-01: 2_250
+    2021-01-01: 2_350
+    2022-01-01: 2_400
+    2023-01-01: 2_550
+  metadata:
+    uprating: 
+      parameter: gov.irs.uprating
+      rounding:
+        type: downwards
+        interval: 50

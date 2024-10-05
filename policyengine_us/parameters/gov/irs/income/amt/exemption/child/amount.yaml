@@ -1,0 +1,31 @@
+description: Child AMT exemption additional income base
+metadata:
+  unit: currency-USD
+  period: year
+  reference:
+    - title: 2024 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-23-34.pdf#page=11
+    - title: 2023 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-22-38.pdf#page=12
+    - title: 2022 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-21-45.pdf#page=13
+    - title: 2021 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-20-45.pdf#page=12
+    - title: 2020 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-19-45.pdf#page=12
+    - title: 2019 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-18-57.pdf#page=15
+  uprating: gov.irs.uprating
+values:
+  2013-01-01: 7_150
+  2014-01-01: 7_250
+  2015-01-01: 7_400
+  2016-01-01: 7_400
+  2017-01-01: 7_500
+  2018-01-01: 7_600
+  2019-01-01: 7_750
+  2020-01-01: 7_900
+  2021-01-01: 7_950
+  2022-01-01: 8_200
+  2023-01-01: 8_800
+  2024-01-01: 9_250

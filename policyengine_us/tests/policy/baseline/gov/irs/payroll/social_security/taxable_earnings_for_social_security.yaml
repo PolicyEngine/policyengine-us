@@ -1,0 +1,18 @@
+- name: Default is zero.
+  period: 2024
+  output:
+    taxable_earnings_for_social_security: 0
+
+- name: Below limit is the value.
+  period: 2024
+  input:
+    payroll_tax_gross_wages: 100_000
+  output:
+    taxable_earnings_for_social_security: 100_000
+
+- name: Above the cap is the cap.
+  period: 2024
+  input:
+    payroll_tax_gross_wages: 1_000_000
+  output:
+    taxable_earnings_for_social_security: 168_600

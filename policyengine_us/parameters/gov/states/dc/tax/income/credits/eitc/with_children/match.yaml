@@ -1,0 +1,15 @@
+description: DC matches this percentage of the federal earned income tax credit for filers with qualifying children.
+metadata:
+  unit: /1
+  label: DC EITC match for filers with qualifying children
+  period: year
+  reference:
+    - title: Code of the District of Columbia § 47–1806.04 (f)(1)
+      href: https://code.dccouncil.gov/us/dc/council/code/sections/47-1806.04#(f)(1)
+    - title: 2023 DC Form D-40 Booklet, Page 34, Line 27c
+      href: https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2023_D40_Book_Final_012324.pdf#page=34
+values:
+  2015-01-01: 0.4 # (f)(1)(A) and (f)(1)(B)
+  2022-01-01: 0.7 # (f)(1)(B-1)
+  2025-01-01: 0.85 # (f)(1)(B-2)
+  2026-01-01: 1 # (f)(1)(B-3)

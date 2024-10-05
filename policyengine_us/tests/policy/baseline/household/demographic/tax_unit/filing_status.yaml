@@ -1,0 +1,32 @@
+- name: Default is single.
+  period: 2022
+  output:
+    filing_status: SINGLE
+
+- name: Separated file as SEPARATE.
+  period: 2022
+  input:
+    is_separated: true
+  output:
+    filing_status: SEPARATE
+
+- name: Married people file as JOINT.
+  period: 2022
+  input:
+    tax_unit_married: true
+  output:
+    filing_status: JOINT
+
+- name: Surviving spouses file as WIDOW.
+  period: 2022
+  input:
+    surviving_spouse_eligible: true
+  output:
+    filing_status: SURVIVING_SPOUSE
+
+- name: Head of household files as such.
+  period: 2022
+  input:
+    head_of_household_eligible: true
+  output:
+    filing_status: HEAD_OF_HOUSEHOLD

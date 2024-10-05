@@ -1,0 +1,18 @@
+- name: MA, one aged, one blind, full cost household
+  period: 2022
+  absolute_error_margin: 1
+  input:
+    people:
+      person_1:
+        age: 67
+      person_2:
+        is_blind: true
+    marital_units:
+      marital_unit:
+        members: [person_1, person_2]
+    households:
+      household:
+        members: [person_1, person_2]
+        state_code: MA
+  output:
+    maximum_state_supplement: [2_766, 0]

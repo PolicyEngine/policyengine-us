@@ -1,0 +1,17 @@
+- name:  Household with AGI above $52,260 is not eligible.
+  period: 2021
+  input:
+    adjusted_gross_income: 52_261
+    or_agi: 52_259
+    state_code: OR
+  output:
+    or_wfhdc_income_eligible: false
+
+- name: Household with OR income above $52,260 is not eligible.
+  period: 2021
+  input:
+    adjusted_gross_income: 52_259
+    or_agi: 52_261
+    state_code: OR
+  output:
+    or_wfhdc_income_eligible: false

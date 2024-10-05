@@ -1,0 +1,19 @@
+description: Michigan matches this share of the federal Earned Income Tax Credit.
+
+metadata:
+  unit: /1
+  label: Michigan EITC match 
+  reference:
+    - title: INCOME TAX ACT OF 1967 - Section 206.272, (1)
+      href: http://legislature.mi.gov/doc.aspx?mcl-206-272
+    - title: 2022 MICHIGAN Individual Income Tax Return MI-1040 Form, Line 27
+      href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2022/2022-IIT-Forms/MI-1040.pdf#page=2
+    - title: 2023 MICHIGAN Individual Income Tax Return MI-1040 Form, Line 27
+      href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2023/2023-IIT-Forms/MI-1040.pdf#page=2
+values:
+  2008-01-01: 0.1
+  2009-01-01: 0.2
+  2012-01-01: 0.06
+  # Reflected starting with 2023 tax form.
+  # In 2022, Michigan enacted a supplemental 24% match after tax filing season. 
+  2023-01-01: 0.3

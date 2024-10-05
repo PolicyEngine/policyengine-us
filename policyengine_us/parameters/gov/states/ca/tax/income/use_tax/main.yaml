@@ -1,0 +1,90 @@
+description: California levies its use tax as a dollar amount by AGI for income below the top threshold.
+brackets:
+  - threshold:
+      2021-01-01: 0
+    amount:
+      2021-01-01: 0
+      2022-01-01: 0
+  - threshold:
+      2021-01-01: 10_000
+    amount:
+      2021-01-01: 1
+      2022-01-01: 1
+  - threshold:
+      2021-01-01: 20_000
+    amount:
+      2021-01-01: 2
+      2022-01-01: 2
+  - threshold:
+      2021-01-01: 30_000
+    amount:
+      2021-01-01: 3
+      2022-01-01: 3
+  - threshold:
+      2021-01-01: 40_000
+    amount:
+      2021-01-01: 4
+      2022-01-01: 4
+  - threshold:
+      2021-01-01: 50_000
+    amount:
+      2021-01-01: 4
+      2022-01-01: 5
+  - threshold:
+      2021-01-01: 60_000
+    amount:
+      2021-01-01: 5
+      2022-01-01: 6
+  - threshold:
+      2021-01-01: 70_000
+    amount:
+      2021-01-01: 6
+      2022-01-01: 7
+  - threshold:
+      2021-01-01: 80_000
+    amount:
+      2021-01-01: 7
+      2022-01-01: 8
+  - threshold:
+      2021-01-01: 90_000
+    amount:
+      2021-01-01: 8
+      2022-01-01: 9
+  - threshold:
+      2021-01-01: 100_000
+    amount:
+      2021-01-01: 9
+      2022-01-01: 10
+  - threshold:
+      2021-01-01: 125_000
+    amount:
+      2021-01-01: 11
+      2022-01-01: 12
+  - threshold:
+      2021-01-01: 150_000
+    amount:
+      2021-01-01: 13
+      2022-01-01: 15
+  - threshold:
+      2021-01-01: 175_000
+    amount:
+      2021-01-01: 15
+      2022-01-01: 17
+  - threshold:
+      2021-01-01: 200_000
+    amount:
+      2021-01-01: 0
+
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: currency-USD
+  period: year
+  label: CA main use tax 
+  reference:
+    - title: CA personal income tax booklet (2021 instructions for Form 540)
+      href: https://www.ftb.ca.gov/forms/2021/2021-540-booklet.html
+    - title: CA personal income tax booklet (2022 instructions for Form 540)
+      href: https://www.ftb.ca.gov/forms/2022/2022-540-booklet.html
+    - title: CA personal income tax booklet (2023 instructions for Form 540)
+      href: https://www.ftb.ca.gov/forms/2023/2023-540-booklet.html

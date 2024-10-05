@@ -1,0 +1,69 @@
+- name: base test
+  period: 2022
+  input:
+    people:
+      person1:
+        investment_interest_expense: 100
+      person2:
+        investment_interest_expense: 100
+    tax_units:
+      tax_unit:
+        filing_status: JOINT
+        hi_medical_expense_deduction: 300
+        hi_casualty_loss_deduction: 400
+        hi_agi: 200_000
+        members: [person1, person2]
+        hi_total_itemized_deductions: 10_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    hi_reduced_itemized_deductions: 9_004
+
+
+- name: AGI limit not met
+  period: 2022
+  input:
+    people:
+      person1:
+        investment_interest_expense: 100
+      person2:
+        investment_interest_expense: 100
+    tax_units:
+      tax_unit:
+        filing_status: JOINT
+        hi_medical_expense_deduction: 300
+        hi_casualty_loss_deduction: 400
+        hi_agi: 166_779
+        members: [person1, person2]
+        hi_total_itemized_deductions: 10_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    hi_reduced_itemized_deductions: 0
+
+- name: Reduced itemized deductions same as total
+  period: 2022
+  input:
+    people:
+      person1:
+        investment_interest_expense: 100
+      person2:
+        investment_interest_expense: 100
+    tax_units:
+      tax_unit:
+        filing_status: JOINT
+        hi_medical_expense_deduction: 300
+        hi_casualty_loss_deduction: 400
+        hi_agi: 166_880
+        members: [person1, person2]
+        hi_total_itemized_deductions: 900
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    hi_reduced_itemized_deductions: 0

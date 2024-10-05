@@ -1,0 +1,24 @@
+description: New York limits its TANF grant standard to households with up to this income level, by household size.
+
+metadata:
+  unit: currency-USD
+  period: month
+  breakdown:
+    - range(1, 7)
+  label: New York TANF monthly income limit
+  reference:
+    - title: New York State Plan and Executive Certification | Administration of the Block Grant for Temporary Assistance for Needy Families
+      href: https://otda.ny.gov/policy/tanf/TANF-State-Plan-2021-2023.pdf#page=67
+
+1: 
+  2012-10-01: 158
+2: 
+  2012-10-01: 252
+3: 
+  2012-10-01: 336
+4: 
+  2012-10-01: 433
+5: 
+  2012-10-01: 534
+6: 
+  2012-10-01: 617

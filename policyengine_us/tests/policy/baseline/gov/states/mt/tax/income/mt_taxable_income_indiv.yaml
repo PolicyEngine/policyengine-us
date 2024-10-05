@@ -1,0 +1,111 @@
+- name: The dependent exemptions are allocated evently after the income is equalized
+  period: 2021
+  input:
+    people: 
+      person1:
+        is_tax_unit_head: true
+        mt_pre_dependent_exemption_taxable_income_indiv: 10_000
+        mt_dependent_exemptions_person: 3_000
+      person2:
+        is_tax_unit_spouse: true
+        mt_pre_dependent_exemption_taxable_income_indiv: 12_000
+        mt_dependent_exemptions_person: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_taxable_income_indiv: [7_000, 7_000]
+
+- name: Spouse over head AGI
+  period: 2021
+  input:
+    people: 
+      person1:
+        is_tax_unit_head: true
+        mt_pre_dependent_exemption_taxable_income_indiv: 10_000
+        mt_dependent_exemptions_person: 3_000
+      person2:
+        is_tax_unit_spouse: true
+        mt_pre_dependent_exemption_taxable_income_indiv: 50_000
+        mt_dependent_exemptions_person: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_taxable_income_indiv: [10_000, 42_000]
+
+- name: Head over spouse AGI
+  period: 2021
+  input:
+    people: 
+      person1:
+        is_tax_unit_head: true
+        mt_pre_dependent_exemption_taxable_income_indiv: 35_000
+        mt_dependent_exemptions_person: 3_000
+      person2:
+        is_tax_unit_spouse: true
+        mt_pre_dependent_exemption_taxable_income_indiv: 5_000
+        mt_dependent_exemptions_person: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_taxable_income_indiv: [27_000, 5_000]
+
+- name: With equal income, the dependent exemptions are allocated evently
+  period: 2021
+  input:
+    people: 
+      person1:
+        is_tax_unit_head: true
+        mt_pre_dependent_exemption_taxable_income_indiv: 12_000
+        mt_dependent_exemptions_person: 3_000
+      person2:
+        is_tax_unit_spouse: true
+        mt_pre_dependent_exemption_taxable_income_indiv: 12_000
+        mt_dependent_exemptions_person: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_taxable_income_indiv: [8_000, 8_000]
+
+- name: No exemption amount is allocated to the dependents
+  period: 2021
+  input:
+    people: 
+      person1:
+        is_tax_unit_head: true
+        mt_pre_dependent_exemption_taxable_income_indiv: 12_000
+        mt_dependent_exemptions_person: 3_000
+      person2:
+        is_tax_unit_spouse: true
+        mt_pre_dependent_exemption_taxable_income_indiv: 12_000
+        mt_dependent_exemptions_person: 5_000
+      person3:
+        mt_pre_dependent_exemption_taxable_income_indiv: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    mt_taxable_income_indiv: [8_000, 8_000, 0]

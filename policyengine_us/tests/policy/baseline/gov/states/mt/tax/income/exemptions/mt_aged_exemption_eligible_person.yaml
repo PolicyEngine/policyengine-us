@@ -1,0 +1,26 @@
+- name: Eligible person
+  period: 2023
+  input:
+    age: 65
+    is_tax_unit_head_or_spouse: true
+    state_code: MT
+  output: 
+    mt_aged_exemption_eligible_person: true
+
+- name: Age not eligible
+  period: 2023
+  input:
+    age: 64
+    is_tax_unit_head_or_spouse: true
+    state_code: MT
+  output: 
+    mt_aged_exemption_eligible_person: false
+
+- name: Not head or spouse
+  period: 2023
+  input:
+    age: 65
+    is_tax_unit_head_or_spouse: false
+    state_code: MT
+  output: 
+    mt_aged_exemption_eligible_person: false

@@ -1,0 +1,17 @@
+- name: Joint filer with federal AGI above threshold
+  period: 2022
+  input:
+    state_code: RI
+    adjusted_gross_income: 200_100
+    filing_status: JOINT
+  output:
+    ri_child_tax_rebate_eligible: false
+
+- name: Single filer eligible for child tac rebate
+  period: 2022
+  input:
+    state_code: RI
+    adjusted_gross_income: 90_000
+    filing_status: SINGLE
+  output:
+    ri_child_tax_rebate_eligible: true

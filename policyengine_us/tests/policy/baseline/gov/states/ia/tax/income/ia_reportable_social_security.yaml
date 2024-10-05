@@ -1,0 +1,51 @@
+- name: IA reportable social security unit test 1
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+        social_security: 24_000
+        taxable_interest_income: 38_000
+        tax_exempt_interest_income: 2_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 70
+        social_security: 16_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    adjusted_gross_income: 57_600
+    taxable_social_security: [11_760, 7_840]
+    ia_reportable_social_security: 4_000  # one-half of (income - deduction)
+
+- name: IA reportable social security unit test 2
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+        social_security: 2_000
+        taxable_interest_income: 38_000
+        tax_exempt_interest_income: 2_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 70
+        social_security: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    ia_reportable_social_security: 1_500  # one-half of gross social security

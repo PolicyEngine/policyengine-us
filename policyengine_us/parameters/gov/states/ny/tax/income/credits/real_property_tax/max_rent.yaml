@@ -1,0 +1,12 @@
+description: New York disqualifies renters whose annual rent exceeds this value from receiving the real property tax credit.
+values:
+  2019-01-01: 5_400
+metadata:
+  unit: currency-USD
+  period: year
+  label: New York real property tax maximum rent
+  reference:
+    - title: Section 606 Credits against tax (e)
+      href: https://www.nysenate.gov/legislation/laws/TAX/606
+    - title: New York Instructions for Form IT-201 Line 67
+      href: https://www.tax.ny.gov/pdf/2023/printable-pdfs/inc/it201i-2023.pdf#page=26

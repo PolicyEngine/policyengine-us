@@ -1,0 +1,71 @@
+- name: Hourly child care with weekly hours less than 30 is part time service.
+  period: 2023
+  input:
+    ca_calworks_child_care_time_category: HOURLY
+    childcare_hours_per_week: 29
+    state_code: CA
+  output:
+    ca_calworks_child_care_full_time: false
+
+- name: Hourly child care with weekly hours more than 30 is part time service.
+  period: 2023
+  input:
+    ca_calworks_child_care_time_category: HOURLY
+    childcare_hours_per_week: 30
+    state_code: CA
+  output:
+    ca_calworks_child_care_full_time: false
+
+- name: Daily child care with weekly hours less than 30 is full time service.
+  period: 2023
+  input:
+    ca_calworks_child_care_time_category: DAILY
+    childcare_hours_per_week: 29
+    state_code: CA
+  output:
+    ca_calworks_child_care_full_time: true
+
+- name: Daily child care with weekly hours more than 30 is full time service.
+  period: 2023
+  input:
+    ca_calworks_child_care_time_category: DAILY
+    childcare_hours_per_week: 30
+    state_code: CA
+  output:
+    ca_calworks_child_care_full_time: true
+
+- name: Weekly child care with weekly hours less than 30 is part time service.
+  period: 2023
+  input:
+    ca_calworks_child_care_time_category: WEEKLY
+    childcare_hours_per_week: 29
+    state_code: CA
+  output:
+    ca_calworks_child_care_full_time: false
+
+- name: Weekly child care with weekly hours more than 30 is full time service.
+  period: 2023
+  input:
+    ca_calworks_child_care_time_category: WEEKLY
+    childcare_hours_per_week: 30
+    state_code: CA
+  output:
+    ca_calworks_child_care_full_time: true
+
+- name: Monthly child care with weekly hours less than 30 is part time service.
+  period: 2023
+  input:
+    ca_calworks_child_care_time_category: MONTHLY
+    childcare_hours_per_week: 29
+    state_code: CA
+  output:
+    ca_calworks_child_care_full_time: false
+
+- name: Monthly child care with weekly hours more than 30 is full time service.
+  period: 2023
+  input:
+    ca_calworks_child_care_time_category: MONTHLY
+    childcare_hours_per_week: 30
+    state_code: CA
+  output:
+    ca_calworks_child_care_full_time: true

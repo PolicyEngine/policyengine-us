@@ -1,0 +1,69 @@
+- name: Single parent over the AGI limit
+  period: 2021
+  input:
+    cdcc: 100
+    filing_status: SINGLE
+    adjusted_gross_income: 95_901  # $95,900 is the limit.
+    state_code: MD
+  output:
+    md_cdcc: 0
+
+- name: Joint filer over the AGI limit
+  period: 2021
+  input:
+    cdcc: 100
+    filing_status: JOINT
+    adjusted_gross_income: 149_051  # $149,050 is the limit.
+    state_code: MD
+  output:
+    md_cdcc: 0
+  
+- name: Single parent with no income will get 32% of the CDCC
+  period: 2021
+  input:
+    cdcc: 100
+    filing_status: SINGLE
+    adjusted_gross_income: 0
+    state_code: MD
+  output:
+    md_cdcc: 32
+
+- name: Joint filer with no income will get 32% of the CDCC
+  period: 2021
+  input:
+    cdcc: 100
+    filing_status: JOINT
+    adjusted_gross_income: 0
+    state_code: MD
+  output:
+    md_cdcc: 32
+
+- name: Joint filer with $50,000 income will get 32% of the CDCC
+  period: 2021
+  input:
+    cdcc: 100
+    filing_status: JOINT
+    adjusted_gross_income: 50_000
+    state_code: MD
+  output:
+    md_cdcc: 32
+
+- name: Single parent with $80,000 income will get 24% of the CDCC
+  period: 2021
+  input:
+    cdcc: 100
+    filing_status: SINGLE
+    adjusted_gross_income: 80_000
+    state_code: MD
+  output:
+    md_cdcc: 24
+
+- name: Joint filer with $125,000 income will get 24% of the CDCC
+  period: 2021
+  input:
+    cdcc: 100
+    filing_status: JOINT
+    adjusted_gross_income: 125_000
+    state_code: MD
+  output:
+    md_cdcc: 24

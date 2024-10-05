@@ -1,0 +1,75 @@
+- name: Family of 2
+  period: 2022-01
+  input:
+    spm_unit_size: 2
+    state_group: CONTIGUOUS_US
+  output:
+    # Eligible as a family of 2.
+    # $250/mo is the maximum SNAP benefit for 1-person households in the
+    # contiguous US.
+    snap_min_allotment: 250 * 0.08   # Maximum allotments change every October.
+
+- name: Family of 3
+  period: 2022-01
+  input:
+    spm_unit_size: 3
+  output:
+    # Ineligible as a family of 3.
+    snap_min_allotment: 0
+
+- name: NJ provides a different minimum allotment amount
+  period: 2024-01
+  input:
+    spm_unit_size: 2
+    state_code: NJ
+    state_group: CONTIGUOUS_US
+  output:
+    snap_min_allotment: 95
+
+- name: DC provides a different minimum allotment amount
+  period: 2024-01
+  input:
+    spm_unit_size: 2
+    state_code: DC
+    state_group: CONTIGUOUS_US
+  output:
+    snap_min_allotment: 30
+
+- name: In other states, we keep the standard minium allotment amount
+  period: 2022-01
+  input:
+    spm_unit_size: 2
+    state_code: AB
+    state_group: CONTIGUOUS_US
+  output:
+    snap_min_allotment: 250 * 0.08 
+
+- name: Above age threshold in 2017, Maryland provides a different minimum allotment amount 
+  period: 2022-01
+  input:
+    spm_unit_size: 1
+    md_snap_elderly_present: true
+    state_code_str: MD
+    state_group: CONTIGUOUS_US
+  output:
+    snap_min_allotment: 30
+
+- name: Below age threshold in 2022, Maryland follows the federal rules 
+  period: 2022-01
+  input:
+    spm_unit_size: 1
+    md_snap_elderly_present: false
+    state_code_str: MD
+    state_group: CONTIGUOUS_US
+  output:
+    snap_min_allotment: 250 * 0.08 
+  
+- name: Above age threshold in 2023, Maryland provides a different minimum allotment amount.
+  period: 2023-01
+  input:
+    spm_unit_size: 1
+    md_snap_elderly_present: true
+    state_code_str: MD
+    state_group: CONTIGUOUS_US
+  output:
+    snap_min_allotment: 40

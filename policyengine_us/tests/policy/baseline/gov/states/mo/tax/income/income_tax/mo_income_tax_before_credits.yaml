@@ -1,0 +1,90 @@
+- name: no income
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    mo_taxable_income: 0
+    state_code: MO
+  output:
+    mo_income_tax_before_refundable_credits: 0.0
+
+- name: If exempt, no tax.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    mo_income_tax_exempt: true
+    mo_taxable_income: 99
+    state_code: MO
+  output:
+    mo_income_tax_before_credits: 0
+
+- name:  $8,999 MO taxable income
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    mo_taxable_income: 8_999
+    state_code: MO
+  output:
+    mo_income_tax_before_credits: 298.81
+
+- name:  $9,500 MO taxable income
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    mo_taxable_income: 9_500
+    state_code: MO
+  output:
+    mo_income_tax_before_credits: 325.86
+
+- name:  $13,000 MO taxable income
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    mo_taxable_income: 13_000
+    state_code: MO
+  output:
+    mo_income_tax_before_credits: 514.864
+
+- name: no income
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    mo_taxable_income: 0
+    state_code: MO
+  output:
+    mo_income_tax_before_credits: 0.0
+
+- name:  $8,999 MO taxable income
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    mo_taxable_income: 8_999
+    state_code: MO
+  output:
+    mo_income_tax_before_credits: 298.81
+
+- name:  $9,500 MO taxable income
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    mo_taxable_income: 9_500
+    state_code: MO
+  output:
+    mo_income_tax_before_credits: 325.86
+
+- name:  $13,000 MO taxable income in 2023
+  period: 2023
+  absolute_error_margin: 2.00
+  input:
+    mo_taxable_income: 13_000
+    state_code: MO
+  output:
+    mo_income_tax_before_credits: 459.27
+
+- name:  $50,000 MO taxable income in 2023
+  period: 2023
+  absolute_error_margin: 2.00
+  input:
+    mo_taxable_income: 50_000
+    state_code: MO
+  output:
+    mo_income_tax_before_credits: 2_290.77

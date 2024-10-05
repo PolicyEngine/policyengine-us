@@ -1,0 +1,16 @@
+description: Kentucky counts these income sources as other retirement income for Part II of the Schedule P pension income exclusion.
+metadata:
+  unit: list
+  period: year
+  label: Kentucky other retirement income sources
+  reference:
+    - title: Kentucky Revised Statutes 141.019 (1)(g)
+      href: https://law.justia.com/codes/kentucky/2022/chapter-141/section-141-019/ # (1)(g)
+    - title: 2022 Kentucky Pension Income Exclusion (Schedule P)
+      href: https://revenue.ky.gov/Forms/Schedule%20P%202022.pdf#page=1
+    - title: 2023 Kentucky Pension Income Exclusion (Schedule P)
+      href: https://revenue.ky.gov/Forms/Schedule%20P%202023.pdf#page=1
+values:
+  1999-01-01:
+    - taxable_ira_distributions
+    - taxable_401k_distributions

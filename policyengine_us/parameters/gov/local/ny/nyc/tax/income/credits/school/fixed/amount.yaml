@@ -1,0 +1,21 @@
+description: NYC provides a School Tax Credit of this fixed amount based on filing status.
+metadata:
+  unit: currency-USD
+  label: NYC School Tax Credit Fixed Amount
+  reference:
+    - title: Instructions for Form IT-201, 2022
+      href: https://www.tax.ny.gov/pdf/2022/printable-pdfs/inc/it201i-2022.pdf#page=25
+    - title: Instructions for Form IT-201, 2023
+      href: https://www.tax.ny.gov/pdf/2023/printable-pdfs/inc/it201i-2023.pdf#page=27
+  breakdown:
+    - filing_status
+SINGLE:
+  2022-01-01: 63
+SEPARATE:
+  2022-01-01: 63
+HEAD_OF_HOUSEHOLD:
+  2022-01-01: 63
+JOINT:
+  2022-01-01: 125
+SURVIVING_SPOUSE:
+  2022-01-01: 125

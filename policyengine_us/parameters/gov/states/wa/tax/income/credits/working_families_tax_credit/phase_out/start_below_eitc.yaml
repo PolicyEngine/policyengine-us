@@ -1,0 +1,24 @@
+description: Washington Working Families Tax Credit phase-out start, below the EITC's income limit, by number of children.
+metadata:
+  label: Washington Working Families Tax Credit phase-out start
+  type: single_amount
+  threshold_unit: person
+  amount_unit: currency-USD
+  period: year
+  reference:
+    - title: RCW 82.08.0206 Exemptions—Working families—Eligible low-income persons—Penalties. (3)(b)
+      href: https://app.leg.wa.gov/RCW/default.aspx?cite=82.08.0206
+    # The instruction didn't mention the specific amount.
+    - title: 2023 Working Families Tax Credit Application Instructions 
+      href: https://workingfamiliescredit.wa.gov/sites/default/files/2024-01/WFTC_AppInstr_English_2023.pdf
+    - title: 2023 Working Families Tax Credit Application
+      href: https://workingfamiliescredit.wa.gov/sites/default/files/2024-01/WFTC_app_2023_English.pdf
+brackets:
+  - threshold:
+      2022-01-01: 0
+    amount:
+      2022-01-01: 2_500
+  - threshold:
+      2022-01-01: 1
+    amount:
+      2022-01-01: 5_000

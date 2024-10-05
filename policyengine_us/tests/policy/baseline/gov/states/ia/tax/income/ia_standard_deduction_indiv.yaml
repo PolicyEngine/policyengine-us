@@ -1,0 +1,125 @@
+- name: IA standard deduction indiv unit test 1
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+      person2:
+        is_tax_unit_spouse: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    ia_standard_deduction_indiv: [2_130, 2_130]
+
+- name: IA standard deduction indiv unit test 2
+  period: 2021
+  input:
+    people: 
+     person1:
+        is_tax_unit_head: true
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    ia_standard_deduction_indiv: 2_130
+
+- name: IA standard deduction indiv unit test 3
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+      person2:
+        is_tax_unit_spouse: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    ia_standard_deduction_indiv: [2_210, 2_210]
+
+- name: IA standard deduction indiv unit test 4
+  period: 2022
+  input:
+    people: 
+     person1:
+        is_tax_unit_head: true
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    ia_standard_deduction_indiv: 2_210
+
+- name: IA standard deduction indiv unit test 5 (Single 2023)
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    ia_standard_deduction_indiv: 13_850
+
+- name: IA standard deduction indiv unit test 6 (Married Filing Jointly 2023)
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+      person2:
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    ia_standard_deduction_indiv: [13_850, 13_850]
+
+- name: IA standard deduction indiv unit test 7 (Head of Household 2023)
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    ia_standard_deduction_indiv: 20_800
+
+- name: IA standard deduction indiv unit test 8 (Married Filing Separately 2023)
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    ia_standard_deduction_indiv: 13_850

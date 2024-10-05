@@ -1,0 +1,38 @@
+description: Progressive rate schedule for a widow in NYC.
+metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  label: NYC income tax rates for single filers
+  reference:
+    - title: NY Form IT-201 Instructions, page 67
+      href: https://www.tax.ny.gov/pdf/current_forms/it/it201i.pdf#page=67
+    - title: NY Form IT-201 Instructions, 2023
+      href: https://www.tax.ny.gov/pdf/2023/printable-pdfs/inc/it201i-2023.pdf#page=52
+    # Tax forms combine the tax rates provided in 11-1701 with those in 11-1704.1,
+    # a 14% additional tax. We cite the combined rates in the tax forms.
+    - title: The New York City Administrative Code § 11-1701 Imposition of tax.
+      href: https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-13463
+    - title: The New York City Administrative Code § 11-1704.1 Additional tax
+      href: https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-13565
+brackets:
+  - threshold:
+      2017-01-01: 0
+    rate:
+      2017-01-01: 0.03078 # 2.7% * 114% = 3.078%
+      2024-01-01: 0.013452 # 1.18% * 114% = 1.18%
+  - threshold:
+      2017-01-01: 21_600
+    rate:
+      2017-01-01: 0.03762 # 3.3% * 114% = 3.762%
+      2024-01-01: 0.016359 # 1.435% * 114% = 1.6359%
+  - threshold:
+      2017-01-01: 45_000
+    rate:
+      2017-01-01: 0.03819 # 3.35% * 114% = 3.819%
+      2024-01-01: 0.016587 # 1.455% * 114% = 1.6587%
+  - threshold:
+      2017-01-01: 90_000
+    rate:
+      2017-01-01: 0.03876 # 3.4% * 114% = 3.876%
+      2024-01-01: 0.016872 # 1.48% * 114% = 1.6872%

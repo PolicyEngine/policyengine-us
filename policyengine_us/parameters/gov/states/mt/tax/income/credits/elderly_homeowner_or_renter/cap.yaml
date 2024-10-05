@@ -1,0 +1,23 @@
+description: Montana caps the pre-multiplier amount of the elderly homeowner or renter credit to this amount.
+values:
+  2009-01-01: 1_000
+  2022-01-01: 1_150
+metadata:
+  period: year
+  unit: currency-USD
+  # The legal code is ambiguous about whether the cap applies before or after
+  # the multiplier, but the tax form indicates it applies before.
+  label: Montana elderly homeowner or renter credit pre multiplier cap 
+  reference:
+  - title: 2022 Montana Code Annotated, Title 15, Chapter 30, Part 23, 15-30-2340 (6)
+    href: https://law.justia.com/codes/montana/2022/title-15/chapter-30/part-23/section-15-30-2340/
+  - title: 2021 Montana Code Annotated, Title 15, Chapter 30, Part 23, 15-30-2340 (6)
+    href: https://law.justia.com/codes/montana/2021/title-15/chapter-30/part-23/section-15-30-2340/
+  - title: 2020 Montana Code Annotated, Title 15, Chapter 30, Part 23, 15-30-2340 (6)
+    href: https://law.justia.com/codes/montana/2020/title-15/chapter-30/part-23/section-15-30-2340/
+  - title: 2022 Form of Montana Individual Income Tax Return, Line 20
+    href: https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2023/05/Montana-Idividiual-Income-Tax-Return-Form-2-2022v6.2.pdf#page=10
+  - title: 2021 Form of Montana Individual Income Tax Return, Line 20
+    href: https://mtrevenue.gov/wp-content/uploads/mdocs/form%202%202021.pdf#page=10
+  - title: 2023 Form of Montana Individual Income Tax Return, Line 20
+    href: https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2023/12/Form_2_2023.pdf#page=10

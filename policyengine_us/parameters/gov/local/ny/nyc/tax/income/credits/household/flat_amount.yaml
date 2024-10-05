@@ -1,0 +1,24 @@
+description: NYC provides a household credit of this fixed amount to single filers, based on recomputed federal AGI.
+metadata:
+  label: NYC Household Credit Fixed Amount for single filers
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: currency-USD
+  reference:
+    - title: Instructions for Form IT-201, 2022
+      href: https://www.tax.ny.gov/pdf/2022/printable-pdfs/inc/it201i-2022.pdf#page=17
+    - title: Instructions for Form IT-201, 2023
+      href: https://www.tax.ny.gov/pdf/2023/printable-pdfs/inc/it201i-2023.pdf#page=18
+brackets:
+  - threshold:
+      2022-01-01: -1
+    amount:
+      2022-01-01: 15
+  - threshold:
+      2022-01-01: 10_000
+    amount:
+      2022-01-01: 10
+  - threshold:
+      2022-01-01: 12_500
+    amount:
+      2022-01-01: 0

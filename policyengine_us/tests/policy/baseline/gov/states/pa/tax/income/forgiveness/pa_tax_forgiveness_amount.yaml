@@ -1,0 +1,8 @@
+- name: PA forgiveness amount is rate times eligibility income.
+  period: 2021
+  input:
+    state_code: PA
+    pa_income_tax_before_forgiveness: 2
+    pa_tax_forgiveness_rate: 0.5
+  output:
+    pa_tax_forgiveness_amount: 1

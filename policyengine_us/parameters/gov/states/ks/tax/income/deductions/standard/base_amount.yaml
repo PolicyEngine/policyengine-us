@@ -1,0 +1,32 @@
+description: Kansas provides this base standard deduction.
+metadata:
+  label: Kansas base standard deduction
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  reference:
+  - title: 2022 Form K-40 instructions
+    href: https://www.ksrevenue.gov/pdf/ip22.pdf#page=6
+  - title: 2023 Form K-40 instructions
+    href: https://www.ksrevenue.gov/pdf/ip23.pdf#page=6
+  - title: Kansas 2022 Statute Article 32 §79-32,119(c)
+    href: http://www.kslegislature.org/li/b2023_24/statute/079_000_0000_chapter/079_032_0000_article/079_032_0119_section/079_032_0119_k/
+    
+JOINT:
+  2013-01-01: 7_500
+  2021-01-01: 8_000
+HEAD_OF_HOUSEHOLD:
+  2013-01-01: 5_500
+  2021-01-01: 6_000
+SURVIVING_SPOUSE:
+  2013-01-01: 7_500
+  2021-01-01: 8_000
+SINGLE:
+  2013-01-01: 3_000
+  2021-01-01: 3_500
+SEPARATE:
+  # The legal code doesn't specify the value for separate, but
+  # recent tax forms show that it is half the joint value.
+  2013-01-01: 3_750
+  2021-01-01: 4_000

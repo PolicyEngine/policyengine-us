@@ -1,0 +1,54 @@
+- name: Oregen wfhdc eligibility for non-eligible household size
+  period: 2021
+  input:
+    or_wfhdc_household_size_eligible: false
+    or_wfhdc_income_eligible: true
+    or_wfhdc_has_qualified_individual_eligible: true
+    or_wfhdc_employment_eligible: true
+    state_code: OR
+  output:
+    or_wfhdc_eligible: false
+
+- name: Oregen wfhdc eligibility for non-eligible household income
+  period: 2021
+  input:
+    or_wfhdc_household_size_eligible: true
+    or_wfhdc_income_eligible: false
+    or_wfhdc_has_qualified_individual_eligible: true
+    or_wfhdc_employment_eligible: true
+    state_code: OR
+  output:
+    or_wfhdc_eligible: false
+
+- name: Oregen wfhdc eligibility for non-eligible qualified individuals
+  period: 2021
+  input:
+    or_wfhdc_household_size_eligible: true
+    or_wfhdc_income_eligible: true
+    or_wfhdc_has_qualified_individual_eligible: false
+    or_wfhdc_employment_eligible: true
+    state_code: OR
+  output:
+    or_wfhdc_eligible: false
+
+- name: Oregen wfhdc eligibility for non-eligible employment status
+  period: 2021
+  input:
+    or_wfhdc_household_size_eligible: true
+    or_wfhdc_income_eligible: true
+    or_wfhdc_has_qualified_individual_eligible: true
+    or_wfhdc_employment_eligible: false
+    state_code: OR
+  output:
+    or_wfhdc_eligible: false
+
+- name: Oregen wfhdc eligibility
+  period: 2021
+  input:
+    or_wfhdc_household_size_eligible: true
+    or_wfhdc_income_eligible: true
+    or_wfhdc_has_qualified_individual_eligible: true
+    or_wfhdc_employment_eligible: true
+    state_code: OR
+  output:
+    or_wfhdc_eligible: true

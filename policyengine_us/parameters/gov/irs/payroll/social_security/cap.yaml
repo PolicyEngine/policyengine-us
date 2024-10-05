@@ -1,0 +1,35 @@
+description: Individual earnings below this amount are subjected to Social Security (OASDI) payroll tax. This parameter is indexed by the rate of growth in average wages, not by the price inflation rate.
+values:
+  2013-01-01: 113_700
+  2014-01-01: 117_000
+  2015-01-01: 118_500
+  2016-01-01: 118_500
+  2017-01-01: 127_200
+  2018-01-01: 128_400
+  2019-01-01: 132_900
+  2020-01-01: 137_700
+  2021-01-01: 142_800
+  2022-01-01: 147_000
+  2023-01-01: 160_200
+  2024-01-01: 168_600
+  # CBO forecast.
+  2025-01-01: 176_100
+  2026-01-01: 183_300
+  2027-01-01: 189_900
+  2028-01-01: 196_200
+  2029-01-01: 202_800
+  2030-01-01: 210_300
+  2031-01-01: 217_800
+  2032-01-01: 225_600
+  2033-01-01: 233_700
+  2034-01-01: 241_800
+metadata:
+  unit: currency-USD
+  period: year
+  label: Social Security earnings cap
+  reference:
+    - title: Maximum Taxable Earnings Each Year
+      href: https://www.ssa.gov/benefits/retirement/planner/maxtax.html
+    - title: CBO Tax Parameters and Effective Marginal Tax Rates | Feb 2024
+      # 1. Tax Parameters. Row 160.
+      href: https://www.cbo.gov/system/files/2024-02/53724-2024-02-Tax-Parameters.xlsx

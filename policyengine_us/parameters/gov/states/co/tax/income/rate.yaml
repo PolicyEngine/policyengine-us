@@ -1,0 +1,28 @@
+description: Colorado taxes personal income at this flat rate.
+metadata:
+  period: year
+  unit: /1
+  label: Colorado income tax rate
+  # THE FOLLOWING THREE REFERENCES JOINTLY DETERMINE THE TAX RATE ON THE FORM
+  reference:
+    - title: Colorado Legislation, C.R.S. 39-22-104 (1.5), (1.7) (a), (b)
+      href: https://law.justia.com/codes/colorado/2022/title-39/article-22/part-1/section-39-22-104/
+    - title: Colorado Constitution, Article 10, Taxpayer's Bill of Rights (TABOR)
+      href: https://law.justia.com/constitution/colorado/cnart10.html
+    - title: Colorado Proposition 121, passed by the electorate in November 2022
+      href: https://leg.colorado.gov/sites/default/files/initiative%2520referendum_proposition%20121%20final%20lc%20packet.pdf#page=1
+    - title: 2022 Colorado Individual Income Tax Filing Guide
+      href: https://tax.colorado.gov/sites/tax/files/documents/DR_0104_Book_2022.pdf#page=19
+    - title: 2021 Colorado Individual Income Tax Filing Guide
+      href: https://tax.colorado.gov/sites/tax/files/documents/DR0104Book_2021_V3.pdf#page=6
+    - title: 2023 Colorado Individual Tax Filing Guide 104 Book 
+      href: https://tax.colorado.gov/sites/tax/files/documents/Book0104_2023.pdf#page=21
+
+values:
+  1987-01-01: 0.05    # form rate determined by Legislation
+  1999-01-01: 0.0475  # form rate determined by Legislation
+  2000-01-01: 0.0463  # form rate determined by Legislation
+  2019-01-01: 0.045   # form rate determined by Constitution TABOR limit
+  2020-01-01: 0.0455  # form rate determined by Legislation
+  2021-01-01: 0.045   # form rate determined by Constitution TABOR limit
+  2022-01-01: 0.044   # form rate determined by Proposition 121

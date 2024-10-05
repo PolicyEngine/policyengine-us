@@ -1,0 +1,32 @@
+- name: "K12 Credit Test #1: Cap is the smallest amount"
+  period: 2021
+  input:
+    age: 30
+    k12_tuition_and_fees: 10_000
+    il_income_tax_before_nonrefundable_credits: 10_000
+    il_property_tax_credit: 5_000
+    state_code: IL
+  output:
+    il_k12_education_expense_credit: 750
+
+- name: "K12 Credit Test #1: Difference between income tax before nonrefundable credits and prpoerty tax credit is the smallest amount"
+  period: 2021
+  input:
+    age: 30
+    k12_tuition_and_fees: 10_000
+    il_income_tax_before_nonrefundable_credits: 10_000
+    il_property_tax_credit: 9_750
+    state_code: IL
+  output:
+    il_k12_education_expense_credit: 250
+
+- name: "K12 Credit Test #1: Maximum credit is the smallest amount"
+  period: 2021
+  input:
+    age: 30
+    k12_tuition_and_fees: 2_250
+    il_income_tax_before_nonrefundable_credits: 100_000
+    il_property_tax_credit: 2_000
+    state_code: IL
+  output:
+    il_k12_education_expense_credit: 500

@@ -1,0 +1,31 @@
+- name: Two dependents gets $3k exemption.
+  period: 2022
+  input:
+    state_code: NJ
+    tax_unit_dependents: 2
+  output:
+    nj_dependents_exemption: 3_000
+
+- name: One dependent gets $1.5k exemption.
+  period: 2022
+  input:
+    state_code: NJ
+    tax_unit_dependents: 1
+  output:
+    nj_dependents_exemption: 1_500
+
+- name: No dependent gets $0 exemption.
+  period: 2022
+  input:
+    state_code: NJ
+    tax_unit_dependents: 0
+  output:
+    nj_dependents_exemption: 0
+
+- name: If state is New York, NJ exemption is $0.
+  period: 2022
+  input:
+    state_code: NY
+    tax_unit_dependents: 2
+  output:
+    nj_dependents_exemption: 0

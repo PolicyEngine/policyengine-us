@@ -1,0 +1,40 @@
+description: Wisconsin taxes personal income at these rates for separate filers.
+metadata:
+  type: marginal_rate
+  threshold_period: year
+  threshold_unit: currency-USD  # Wisconsin taxable income
+  rate_unit: /1
+  label: Wisconsin separate income tax rate
+  reference:
+    - title: Wisconsin Tax Brackets, Rates, Forms, and Standard Deductions
+      href: https://www.efile.com/wisconsin-tax-brackets-rates-and-forms/
+    - title: State of Wisconsin Department of Revenue
+      href: https://www.revenue.wi.gov/Pages/FAQS/pcs-taxrates.aspx
+      # The tax form only shows the tax brackets, not the exact rates
+    - title: 2023 I-010 Form 1 instructions
+      href: https://www.revenue.wi.gov/TaxForms2023/2023-Form1-Inst.pdf#page=39
+brackets:
+  - threshold:
+      2021-01-01: 0
+    rate:
+      2021-01-01: 0.0354
+      2023-01-01: 0.035
+  - threshold:
+      2021-01-01: 8_080
+      2022-01-01: 8_510
+      2023-01-01: 9_210
+    rate:
+      2021-01-01: 0.0465
+      2023-01-01: 0.044
+  - threshold:
+      2021-01-01: 16_160
+      2022-01-01: 17_010
+      2023-01-01: 18_420
+    rate:
+      2021-01-01: 0.053
+  - threshold:
+      2021-01-01: 177_960
+      2022-01-01: 187_300
+      2023-01-01: 202_780
+    rate:
+      2021-01-01: 0.0765

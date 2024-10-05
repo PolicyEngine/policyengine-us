@@ -1,0 +1,43 @@
+- name: ME AGI subtraction amount unit test 1
+  period: 2022
+  input:
+    tax_unit_taxable_social_security: 1_000
+    us_govt_interest: 1_000
+    state_code: ME
+    me_pension_income_deduction: 3_000
+  output:
+    # tax_unit_taxable_social_security + us_govt_interest + me_pension_income_deduction ($3000) = $5000
+    me_agi_subtractions: 5_000  
+
+- name: ME AGI subtraction amount unit test 2
+  period: 2022
+  input:
+    tax_unit_taxable_social_security: 1_000
+    us_govt_interest: 1_000
+    state_code: ME
+    me_pension_income_deduction: 7_000
+  output:
+    # tax_unit_taxable_social_security + us_govt_interest + me_pension_income_deduction ($7000) = $9000
+    me_agi_subtractions: 9_000   
+
+- name: ME AGI subtraction amount unit test 3
+  period: 2022
+  input:
+    tax_unit_taxable_social_security: 1_000
+    us_govt_interest: 1_000
+    state_code: ME
+    me_pension_income_deduction: 7_000
+  output:
+    # tax_unit_taxable_social_security + us_govt_interest + me_pension_income_deduction ($7000) = $9000
+    me_agi_subtractions: 9_000    
+
+- name: ME AGI subtraction amount unit test 4
+  period: 2022
+  input:
+    tax_unit_taxable_social_security: 1_000
+    us_govt_interest: 1_000
+    state_code: ME
+    me_pension_income_deduction: 2_000
+  output:
+    # tax_unit_taxable_social_security + us_govt_interest + me_pension_income_deduction ($2000) = $4000
+    me_agi_subtractions: 4_000   

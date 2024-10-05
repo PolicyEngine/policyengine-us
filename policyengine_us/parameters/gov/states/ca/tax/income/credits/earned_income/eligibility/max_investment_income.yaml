@@ -1,0 +1,19 @@
+description: California limits the CalEITC to filers with investment income below this threshold.
+values:
+  2021-01-01: 4_053
+  2022-01-01: 4_389
+  2023-01-01: 4_525
+metadata:
+  reference:
+    - title: California Earned Income Tax Credit and Young Child Tax Credit Report Economic and Statistical Research Bureau
+      href: https://www.ftb.ca.gov/about-ftb/data-reports-plans/california-earned-income-tax-credit-report-2019.pdf#page=3
+    - title: California Form 3514 instructions (2021)
+      href: https://www.ftb.ca.gov/forms/2021/2021-3514-instructions.html
+    - title: California Form 3514 instructions (2022)
+      href: https://www.ftb.ca.gov/forms/2022/2022-3514-instructions.html
+    - title: California Form 3514 instructions (2023)
+      href: https://www.ftb.ca.gov/forms/2023/2023-3514-instructions.html
+  unit: currency-USD
+  period: year
+  label: CalEITC investment income limit
+  uprating: gov.states.ca.cpi

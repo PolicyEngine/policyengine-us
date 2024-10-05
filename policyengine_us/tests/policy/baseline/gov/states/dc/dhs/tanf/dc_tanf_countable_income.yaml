@@ -1,0 +1,18 @@
+- name: No earned income or unearned income, $0 total countable income.
+  period: 2023
+  input:
+    state_code: DC
+    dc_tanf_gross_earned_income: 0
+    dc_tanf_countable_gross_unearned_income: 0
+  output:
+    dc_tanf_countable_income: 0
+
+  
+- name: $4,020 earned income or $1,000 unearned income, $0 total countable income.
+  period: 2023
+  input:
+    state_code: DC
+    dc_tanf_gross_earned_income: 4_020
+    dc_tanf_countable_gross_unearned_income: 1_000
+  output:
+    dc_tanf_countable_income: 1_693

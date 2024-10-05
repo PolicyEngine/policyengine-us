@@ -1,0 +1,27 @@
+description: Wisconsin income tax has these nonrefundable credits.
+metadata:
+  unit: list
+  period: year
+  label: Wisconsin nonrefundable credits
+  reference:
+  - title: 2021 Wisconsin Form 1
+    href: https://www.revenue.wi.gov/TaxForms2021/2021-Form1f.pdf#page=2
+  - title: 2021 Wisconsin Form 1 instructions
+    href: https://www.revenue.wi.gov/TaxForms2021/2021-Form1-Inst.pdf#page=16
+  - title: 2022 Wisconsin Form 1
+    href: https://www.revenue.wi.gov/TaxForms2022/2022-Form1f.pdf#page=2
+  - title: 2022 Wisconsin Form 1 instructions
+    href: https://www.revenue.wi.gov/TaxForms2022/2022-Form1-Inst.pdf#page=16
+  - title: 2023 Wisconsin Form 1 instructions
+    href: https://www.revenue.wi.gov/TaxForms2023/2023-Form1-Inst.pdf#page=18
+
+values:
+  2021-01-01:
+    - wi_itemized_deduction_credit
+    - wi_property_tax_credit
+    - wi_married_couple_credit
+  2022-01-01:
+    - wi_itemized_deduction_credit
+    - wi_childcare_expense_credit  # was an income subtraction before 2022
+    - wi_property_tax_credit
+    - wi_married_couple_credit

@@ -1,0 +1,10 @@
+- name: itemized_deductions_less_salt unit test 1
+  period: 2020
+  input:
+    charitable_deduction: 1
+    interest_deduction: 10
+    salt_deduction: 100
+    medical_expense_deduction: 1_000
+    casualty_loss_deduction: 10_000
+  output:
+    itemized_deductions_less_salt: 11_011

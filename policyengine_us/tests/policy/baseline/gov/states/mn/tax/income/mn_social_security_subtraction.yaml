@@ -1,0 +1,49 @@
+- name: MN social security subtraction unit test 1
+  period: 2021
+  input:
+    filing_status: SINGLE
+    social_security: 6_000
+    taxable_social_security: 0
+    state_code: MN
+  output:
+    mn_social_security_subtraction: 0
+
+- name: MN social security subtraction unit test 2
+  period: 2022
+  input:
+    filing_status: SINGLE
+    social_security: 30_000
+    taxable_social_security: 25_500  # = 30_000 * 0.85
+    state_code: MN
+  output:
+    mn_social_security_subtraction: 4_260
+
+- name: Simplified reduction applies but not receives
+  period: 2023
+  input:
+    filing_status: JOINT
+    taxable_social_security: 30_000  
+    state_code: MN
+    adjusted_gross_income: 200_000
+  output:
+    mn_social_security_subtraction: 5_840
+
+- name: Simplified reduction does not apply
+  period: 2022
+  input:
+    filing_status: JOINT
+    taxable_social_security: 30_000  
+    state_code: MN
+    adjusted_gross_income: 200_000
+  output:
+    mn_social_security_subtraction: 5_450
+
+- name: Partially reduced
+  period: 2023
+  input:
+    filing_status: JOINT
+    taxable_social_security: 30_000  
+    state_code: MN
+    adjusted_gross_income: 111_999
+  output:
+    mn_social_security_subtraction: 21_000

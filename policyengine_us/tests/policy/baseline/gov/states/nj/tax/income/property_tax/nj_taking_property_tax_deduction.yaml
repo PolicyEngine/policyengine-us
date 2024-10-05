@@ -1,0 +1,35 @@
+- name: Default should be false if not eligible for property tax deduction.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    nj_property_tax_deduction_eligible: false
+    nj_potential_property_tax_deduction: 15_000
+    nj_taxable_income_before_property_tax_deduction: 100_000
+    filing_status: JOINT
+    state_code: NJ
+  output:
+    nj_taking_property_tax_deduction: false
+
+- name: Single filer with $25k income pays $367.50 before deduction, $317.49 after $2,858 deduction (deduction better than $50 credit).
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    nj_property_tax_deduction_eligible: true
+    nj_potential_property_tax_deduction: 2_858
+    nj_taxable_income_before_property_tax_deduction: 25_000
+    filing_status: SINGLE
+    state_code: NJ
+  output:
+    nj_taking_property_tax_deduction: true
+
+- name: Single filer with $25k income pays $367.50 before deduction, $317.52 after $2,856 deduction ($50 credit better than deduction).
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    nj_property_tax_deduction_eligible: true
+    nj_potential_property_tax_deduction: 2_856
+    nj_taxable_income_before_property_tax_deduction: 25_000
+    filing_status: SINGLE
+    state_code: NJ
+  output:
+    nj_taking_property_tax_deduction: false

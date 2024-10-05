@@ -1,0 +1,49 @@
+- name: Outside Maine, no personal exemption.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: NY
+    filing_status: SINGLE
+  output:
+    me_personal_exemption_deduction: 0
+
+- name: If $0 income, personal exemption is $4,450 in 2022.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: ME
+    me_agi: 0
+    filing_status: SINGLE
+  output:
+    me_personal_exemption_deduction: 4_450
+
+- name: If you have an income below the phaseout start, you get the full personal exemption.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: ME
+    filing_status: SINGLE
+    me_agi: 279_500
+  output:
+    me_personal_exemption_deduction: 4_450
+
+- name: If you have an income between the phaseout start and end, you get a partial credit.
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    state_code: ME
+    filing_status: SINGLE
+    me_agi: 400_000
+  output:
+    # Excess = $120,500 / $125,000 = 0.964
+    me_personal_exemption_deduction: 154.8 # $4,300 - $4,289.8
+
+- name: High income filers get no personal exemption.
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    state_code: ME
+    filing_status: SINGLE
+    me_agi: 404_500 # $279,500 + $125,000 = $404,500
+  output:
+    me_personal_exemption_deduction: 0

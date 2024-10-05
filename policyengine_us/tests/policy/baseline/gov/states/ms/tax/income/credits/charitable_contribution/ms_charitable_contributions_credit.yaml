@@ -1,0 +1,62 @@
+- name: For a single individual making voluntary cash contributions totaling $600.
+  period: 2023
+  input:
+    state_code: MS
+    filing_status: SINGLE
+    ms_charitable_contributions_to_qualifying_foster_care_organizations: 600
+  output:
+    ms_charitable_contributions_credit: 600
+
+- name: For HEAD_OF_HOUSEHOLD making voluntary cash contributions totaling $2000.
+  period: 2023
+  input:
+    state_code: MS
+    filing_status: HEAD_OF_HOUSEHOLD
+    ms_charitable_contributions_to_qualifying_foster_care_organizations: 2_000
+  output:
+    ms_charitable_contributions_credit: 1_500
+
+- name: For married couple filing a joint making voluntary cash contributions totaling $3000.
+  period: 2023
+  input:
+    state_code: MS
+    filing_status: JOINT
+    ms_charitable_contributions_to_qualifying_foster_care_organizations: 3_000
+  output:
+    ms_charitable_contributions_credit: 3_000
+
+- name: For married couple filing a joint making voluntary cash contributions totaling $5000.
+  period: 2023
+  input:
+    state_code: MS
+    filing_status: JOINT
+    ms_charitable_contributions_to_qualifying_foster_care_organizations: 5_000
+  output:
+    ms_charitable_contributions_credit: 3_000
+
+- name: For married couple filing a joint making voluntary cash contributions totaling $800.
+  period: 2021
+  input:
+    state_code: MS
+    filing_status: JOINT
+    ms_charitable_contributions_to_qualifying_foster_care_organizations: 800
+  output:
+    ms_charitable_contributions_credit: 800
+
+- name: For married couple filing a joint making voluntary cash contributions totaling $1500.
+  period: 2021
+  input:
+    state_code: MS
+    filing_status: JOINT
+    ms_charitable_contributions_to_qualifying_foster_care_organizations: 1_500
+  output:
+    ms_charitable_contributions_credit: 1_000
+
+- name: For a single individual making voluntary cash contributions totaling $400.
+  period: 2022
+  input:
+    state_code: MS
+    filing_status: SINGLE
+    ms_charitable_contributions_to_qualifying_foster_care_organizations: 400
+  output:
+    ms_charitable_contributions_credit: 400

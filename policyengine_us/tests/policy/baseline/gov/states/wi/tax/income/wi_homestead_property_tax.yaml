@@ -1,0 +1,9 @@
+- name: wi_homestead_propery_tax unit test 1
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    real_estate_taxes: 200
+    rent: 800
+    state_code: WI
+  output:
+    wi_homestead_property_tax: 360  # = 200 + 800 * 0.20

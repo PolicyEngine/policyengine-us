@@ -1,0 +1,26 @@
+- name: not eligible
+  period: 2023
+  input:
+    ga_military_retirement_exclusion_eligible_person: 0
+    military_retirement_pay: 20_000
+    earned_income: 17_000
+  output:
+    ga_military_retirement_exclusion_person: 0
+
+- name: eligible person - not qualify for the additional military exclusion
+  period: 2023
+  input:
+    ga_military_retirement_exclusion_eligible_person: true
+    military_retirement_pay: 20_000
+    earned_income: 17_000
+  output:
+    ga_military_retirement_exclusion_person: 17_500
+
+- name: eligible person - qualify for the additional military exclusion
+  period: 2023
+  input:
+    ga_military_retirement_exclusion_eligible_person: true
+    military_retirement_pay: 50_000
+    earned_income: 17_900
+  output:
+    ga_military_retirement_exclusion_person: 35_000

@@ -1,0 +1,74 @@
+description: Minnesota limits exemptions when federal adjusted gross income is above this threshold.
+metadata:
+  label: federal adjusted gross income threshold above which Minnesota exemptions are limited
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  reference:
+  - title: Minnesota Statutes 290.0121 DEPENDENT EXEMPTION. Subd. 2.Disallowed exemption amount.
+    href: https://www.revisor.mn.gov/statutes/cite/290.0121#stat.290.0121.2
+  - title: Minnesota Statutes, 290.0121 Subd. 3.Inflation adjustment.
+    href: https://www.revisor.mn.gov/statutes/cite/290.0123#stat.290.0121.3
+  - title: 2021 Minnesota Form M1 instructions, Worksheet for Line 5
+    href: https://www.revenue.state.mn.us/sites/default/files/2023-12/m1_inst_21.pdf#page=13
+  - title: 2022 Minnesota Form M1 instructions, Worksheet for Line 5
+    href: https://www.revenue.state.mn.us/sites/default/files/2024-02/m1-inst-22.pdf#page=13
+  - title: 2023 Minnesota Form M1 instructions, Worksheet for Line 5
+    href: https://www.revenue.state.mn.us/sites/default/files/2024-02/m1-inst-23.pdf#page=14
+
+JOINT:
+  values:
+    2021-01-01: 299_750
+    2022-01-01: 309_050
+    2023-01-01: 330_950
+  metadata:
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: downwards
+        interval: 50
+HEAD_OF_HOUSEHOLD:
+  values:
+    2021-01-01: 249_800
+    2022-01-01: 257_550
+    2023-01-01: 275_800
+  metadata:
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: downwards
+        interval: 50
+SURVIVING_SPOUSE:
+  values:
+    2021-01-01: 299_750
+    2022-01-01: 309_050
+    2023-01-01: 330_950
+  metadata:
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: downwards
+        interval: 50
+SINGLE:
+  values:
+    2021-01-01: 199_850
+    2022-01-01: 206_050
+    2023-01-01: 220_650
+  metadata:
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: downwards
+        interval: 50
+SEPARATE:
+  values:
+    2021-01-01: 149_875
+    2022-01-01: 154_525
+    2023-01-01: 165_475
+  metadata:
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: downwards
+        interval: 50

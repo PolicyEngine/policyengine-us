@@ -1,0 +1,268 @@
+- name: 5 children and each is accounted for
+  period: 2025
+  reforms: policyengine_us.reforms.states.dc.dc_ctc.dc_ctc
+  input:
+    gov.contrib.states.dc.ctc.in_effect: true
+    gov.contrib.states.dc.ctc.child_cap: 999
+    people: 
+      person1:
+        age: 40
+      person2:
+        age: 5
+      person3:
+        age: 5
+      person4:
+        age: 5
+      person5:
+        age: 5
+      person6:
+        age: 6
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+        adjusted_gross_income: 240_000
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code: DC
+  output:
+    dc_ctc: 1_680
+
+
+- name: 5 children with one above the age threshold
+  period: 2025
+  reforms: policyengine_us.reforms.states.dc.dc_ctc.dc_ctc
+  input:
+    gov.contrib.states.dc.ctc.in_effect: true
+    gov.contrib.states.dc.ctc.child_cap: 999
+    people: 
+      person1:
+        age: 40
+      person2:
+        age: 5
+      person3:
+        age: 5
+      person4:
+        age: 5
+      person5:
+        age: 5
+      person6:
+        age: 6
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+        adjusted_gross_income: 240_000
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code: DC
+  output:
+    dc_ctc: 1_680
+
+- name: One child, reform does not change output
+  period: 2025
+  reforms: policyengine_us.reforms.states.dc.dc_ctc.dc_ctc
+  input:
+    gov.contrib.states.dc.ctc.in_effect: true
+    people: 
+      person1:
+        age: 40
+      person2:
+        age: 5    
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        adjusted_gross_income: 100_000
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DC
+  output:
+    dc_ctc: 420
+
+- name: Four children with reduction applied, joint, uncapped children
+  period: 2025
+  reforms: policyengine_us.reforms.states.dc.dc_ctc.dc_ctc
+  input:
+    gov.contrib.states.dc.ctc.in_effect: true
+    gov.contrib.states.dc.ctc.child_cap: 999
+    people: 
+      person1:
+        age: 40
+      person2:
+        age: 5
+      person3:
+        age: 5
+      person4:
+        age: 5
+      person5:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+        adjusted_gross_income: 250_000
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: DC
+  output:
+    dc_ctc: 1_480
+
+- name: Single person with one child, below reduction, cap applies
+  period: 2025
+  reforms: policyengine_us.reforms.states.dc.dc_ctc.dc_ctc
+  input:
+    gov.contrib.states.dc.ctc.in_effect: true
+    people: 
+      person1:
+        age: 40
+      person2:
+        age: 5    
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        adjusted_gross_income: 160_000
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DC
+  output:
+    dc_ctc: 420
+
+- name: Children capped at 3, cap applies
+  period: 2025
+  reforms: policyengine_us.reforms.states.dc.dc_ctc.dc_ctc
+  input:
+    gov.contrib.states.dc.ctc.in_effect: true
+    people: 
+      person1:
+        age: 40
+      person2:
+        age: 5
+      person3:
+        age: 5
+      person4:
+        age: 5
+      person5:
+        age: 5
+      person6:
+        age: 6
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+        adjusted_gross_income: 240_000
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code: DC
+  output:
+    dc_ctc: 1_260
+
+- name: Joint filing, with reduction, cap applies
+  period: 2025
+  reforms: policyengine_us.reforms.states.dc.dc_ctc.dc_ctc
+  input:
+    gov.contrib.states.dc.ctc.in_effect: true
+    people: 
+      person1:
+        age: 40
+      person2:
+        age: 5
+      person3:
+        age: 5
+      person4:
+        age: 5
+      person5:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+        adjusted_gross_income: 255_000
+        filing_status: JOINT
+        dc_eitc: 200
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: DC
+  output:
+    dc_ctc: 960
+    dc_refundable_credits: 1_160
+
+- name: Joint filing, fully reduced, cap applies
+  period: 2025
+  reforms: policyengine_us.reforms.states.dc.dc_ctc.dc_ctc
+  input:
+    gov.contrib.states.dc.ctc.in_effect: true
+    people: 
+      person1:
+        age: 40
+      person2:
+        age: 5    
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        adjusted_gross_income: 261_000
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DC
+  output:
+    dc_ctc: 0
+
+- name: Reform not in effect
+  period: 2025
+  input:
+    gov.contrib.states.dc.ctc.in_effect: false
+    people: 
+      person1:
+        age: 40
+      person2:
+        age: 5
+      person3:
+        age: 5
+      person4:
+        age: 5
+      person5:
+        age: 5
+      person6:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+        adjusted_gross_income: 160_000
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code: DC
+  output:
+    dc_refundable_credits: 0
+
+- name: Integration test with reform in effect
+  period: 2025
+  reforms: policyengine_us.reforms.states.dc.dc_ctc.dc_ctc
+  input:
+    gov.contrib.states.dc.ctc.in_effect: true
+    dc_ctc: 1_000
+    dc_eitc: 2_000
+    dc_income_tax_before_refundable_credits: 5_000
+    state_code: DC
+  output:
+    dc_income_tax: 2_000
+
+- name: Integration test with reform not in effect
+  period: 2025
+  input:
+    gov.contrib.states.dc.ctc.in_effect: false
+    dc_eitc: 2_000
+    dc_income_tax_before_refundable_credits: 5_000
+    state_code: DC
+  output:
+    dc_income_tax: 3_000

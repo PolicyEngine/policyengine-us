@@ -1,0 +1,44 @@
+- name: Two people with rent and housing assistance which is allocated proportionally 
+  period: 2022
+  input:
+    people:
+      p1:
+        pre_subsidy_rent: 100
+      p2:
+        pre_subsidy_rent: 300
+    spm_units:
+      spm_unit:
+        members: [p1, p2]
+        housing_assistance: 100
+  output:
+    rent: [75, 225]
+
+- name: Two people, one with rent and housing assistance which is allocated to person with rent 
+  period: 2022
+  input:
+    people:
+      p1:
+        pre_subsidy_rent: 300
+      p2:
+        pre_subsidy_rent: 0
+    spm_units:
+      spm_unit:
+        members: [p1, p2]
+        housing_assistance: 100
+  output:
+    rent: [200, 0]
+
+- name: Capped at 0
+  period: 2022
+  input:
+    people:
+      p1:
+        pre_subsidy_rent: 300
+      p2:
+        pre_subsidy_rent: 0
+    spm_units:
+      spm_unit:
+        members: [p1, p2]
+        housing_assistance: 400
+  output:
+    rent: [0, 0]

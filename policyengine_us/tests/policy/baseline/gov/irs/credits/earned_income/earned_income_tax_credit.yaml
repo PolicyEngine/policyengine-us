@@ -1,0 +1,121 @@
+- name: Tax unit with taxsimid 770 from f19.its.csv
+  absolute_error_margin: 0.01
+  period: 2019
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 72
+        employment_income: 2_000
+        unemployment_compensation: 4_000
+        social_security: 46_000
+        taxable_pension_income: 9_000
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35        
+      person2:
+        is_tax_unit_spouse: true
+        age: 71
+        employment_income: 10_000
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person3:
+        age: 12
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person4:
+        age: 12
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person5:
+        age: 20
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person6:
+        age: 20
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+        snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+        premium_tax_credit: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code: TX  # no state income tax
+  output:  # expected results from TAXSIM35 05/18/22 version
+    tax_unit_taxable_unemployment_compensation: 4_000.00
+    tax_unit_taxable_social_security: 9_400.00
+    adjusted_gross_income: 34_400.00
+    taxable_income: 7_400.00
+    eitc: 3_810.45
+    refundable_ctc: 1_425.00
+    cdcc: 0.00
+    income_tax: -5_235.45
+
+- name: Married filing jointly Texas couple with one child and modest wages - Integration
+  absolute_error_margin: 0.01
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 50_000
+      person2:
+        age: 30
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX  # no state income tax
+  output:
+    # expected output from IRS publication cited in PEUS EITC parameter files,
+    # which is at this URL:
+    # https://www.irs.gov/pub/irs-drop/rp-22-38.pdf#page=10
+    eitc_maximum: 3_995
+    eitc_phase_out_start: 28_120  
+
+- name: Married filing jointly Texas couple with one child and modest wages - Integration 2018
+  absolute_error_margin: 0.01
+  period: 2018
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 50_000
+      person2:
+        age: 30
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX  # no state income tax
+  output:
+    # expected output from IRS publication cited in PEUS EITC parameter files,
+    # which is at this URL:
+    # https://www.irs.gov/pub/irs-drop/rp-17-58.pdf#page=10
+    eitc_phase_out_start: 24_400 

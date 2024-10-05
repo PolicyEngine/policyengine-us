@@ -1,0 +1,129 @@
+description: Asset limit for TANF non-cash benefit used for SNAP BBCE, by state.
+
+AL:
+  # In Alabama, households with seniors or people with disabilities and gross income under 200 percent of poverty
+  # do not face an asset limit. Those over 200 percent of poverty are not categorically eligible and do face a $3,500 asset
+  # limit.
+  # This is not yet modeled.
+  # Other states with this rule are marked with a *.
+  2020-07-01: .inf
+AK:
+  # Alaska is not in the list, indicating it has not elected to BBCE.
+  # Non-BBCE states are entered as negative infinity asset limit.
+  2020-07-01: -.inf
+AZ:
+  2020-07-01: .inf
+AR:
+  2020-07-01: -.inf # Non-BBCE.
+CA: # *
+  2020-07-01: .inf
+CO: # *
+  2020-07-01: -.inf # Non-BBCE.
+  # May have changed prior to 2022-11-30.
+  2022-11-30:
+    value: .inf
+    metadata:
+      reference:
+        - title: Code of Colorado Regulations | Rule Manual Volume 4, SNAP | 4.206(C)(2)(b) (page 35)
+          href: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=10492&fileName=10%20CCR%202506-1
+CT:
+  2020-07-01: .inf
+DE:
+  2020-07-01: .inf
+DC:
+  2020-07-01: .inf
+FL: # *
+  2020-07-01: .inf
+GA: # *
+  2020-07-01: .inf
+GU:
+  2020-07-01: .inf
+HI:
+  2020-07-01: .inf
+ID:
+  2020-07-01: 5_000
+IL: # *
+  2020-07-01: .inf
+IN:
+  2020-07-01: 5_000
+IA:
+  2020-07-01: .inf
+KS:
+  2020-07-01: -.inf # Non-BBCE.
+KY: # *
+  2020-07-01: .inf
+LA:
+  2020-07-01: .inf
+ME:
+  2020-07-01: .inf
+MD:
+  2020-07-01: .inf
+MA: # *
+  2020-07-01: .inf
+MI:
+  2020-07-01: 15_000
+  2023-07-01: .inf
+MN:
+  2020-07-01: .inf
+MS:
+  2020-07-01: -.inf # Non-BBCE.
+MT:
+  2020-07-01: .inf
+NE:
+  2020-07-01: 25_000 # For liquid assets (not modeled).
+NV:
+  2020-07-01: .inf
+NH:
+  # Only households with at least one dependent child and a specified relative to that child.
+  # (Not currently modeled.)
+  2020-07-01: .inf
+NJ:
+  2020-07-01: .inf
+NM:
+  2020-07-01: .inf
+NY: # *
+  # Only for households with dependent care expenses or earned income (not currently implemented).
+  2020-07-01: .inf
+NC:
+  2020-07-01: .inf
+ND:
+  2020-07-01: .inf
+OH: # *
+  2020-07-01: .inf
+OK:
+  2020-07-01: .inf
+OR:
+  2020-07-01: .inf
+PA: # *
+  2020-07-01: .inf
+RI: # *
+  2020-07-01: .inf
+SC: # *
+  2020-07-01: .inf
+TX:
+  2020-07-01: 5_000 # Excludes 1 vehicle up to $15,000 & includes excess vehicle value (not modeled).
+UT:
+  2020-07-01: -.inf # Non-BBCE.
+VT:
+  2020-07-01: .inf
+VI: # *
+  2020-07-01: .inf
+VA:
+  2020-07-01: .inf
+WA:
+  2020-07-01: .inf
+WV: # *
+  2020-07-01: .inf
+WI:
+  2020-07-01: .inf
+WY:
+  2020-07-01: -.inf # Non-BBCE.
+
+metadata:
+  unit: currency-USD
+  reference:
+    - title: "USDA: Broad-based Categorical Eligibility"
+      href: https://fns-prod.azureedge.net/sites/default/files/resource-files/BBCE%20States%20Chart%20(July%202020).pdf
+      date: 2020-07-01
+  breakdown:
+  - state_code

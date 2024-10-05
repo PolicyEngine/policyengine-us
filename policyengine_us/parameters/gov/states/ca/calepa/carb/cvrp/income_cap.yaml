@@ -1,0 +1,26 @@
+description: Maximum income to be eligible for the California Clean Vehicle Rebate Project.
+SINGLE:
+  2016-11-01: 150_000
+  2022-02-24: 135_000
+HEAD_OF_HOUSEHOLD:
+  2016-11-01: 204_000
+  2022-02-24: 175_000
+JOINT:
+  2016-11-01: 300_000
+  2022-02-24: 200_000
+# Widow and separate are not specified.
+# Assume they are the same as joint and single, respectively.
+SURVIVING_SPOUSE:
+  2016-11-01: 300_000
+  2022-02-24: 200_000
+SEPARATE:
+  2016-11-01: 150_000
+  2022-02-24: 135_000
+
+metadata:
+  unit: currency-USD
+  reference:
+  - title: CVRP Info | Eligibility & Requirements
+    href: https://cleanvehiclerebate.org/en/eligibility-guidelines
+  - title: How often do CVRP program requirements change?
+    href: https://cleanvehiclerebate.org/en/faqs/how-often-do-cvrp-program-requirements-change-0

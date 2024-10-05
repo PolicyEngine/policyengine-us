@@ -1,0 +1,41 @@
+- name: wi_capital_loss unit test 1
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    short_term_capital_gains: -100
+    long_term_capital_gains: -200
+    state_code: WI
+  output:
+    wi_capital_loss: 300
+
+- name: wi_capital_loss unit test 2
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    short_term_capital_gains: 0
+    long_term_capital_gains: -900
+    state_code: WI
+  output:
+    wi_capital_loss: 500
+
+- name: In 2023 separate filers receive a reduced limit
+  absolute_error_margin: 0.01
+  period: 2023
+  input:
+    short_term_capital_gains: 0
+    long_term_capital_gains: -2_000
+    state_code: WI
+    filing_status: SEPARATE
+  output:
+    wi_capital_loss: 1_500
+
+- name: In 2023 the limit incresed
+  absolute_error_margin: 0.01
+  period: 2023
+  input:
+    short_term_capital_gains: 0
+    long_term_capital_gains: -2_000
+    state_code: WI
+    filing_status: JOINT
+  output:
+    wi_capital_loss: 2_000

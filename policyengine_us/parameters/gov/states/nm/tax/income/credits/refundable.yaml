@@ -1,0 +1,30 @@
+description: New Mexico refundable tax credits.
+values:
+  2021-01-01:
+    - nm_cdcc
+    - nm_medical_expense_credit
+    - nm_eitc
+    - nm_low_income_comprehensive_tax_rebate
+    - nm_property_tax_rebate
+    - nm_2021_income_rebate
+    - nm_additional_2021_income_rebate
+    - nm_supplemental_2021_income_rebate
+
+  2022-01-01:
+    - nm_cdcc
+    - nm_medical_expense_credit
+    - nm_eitc
+    - nm_low_income_comprehensive_tax_rebate
+    - nm_property_tax_rebate
+
+  2023-01-01:
+    - nm_cdcc
+    - nm_ctc
+    - nm_medical_expense_credit
+    - nm_eitc
+    - nm_low_income_comprehensive_tax_rebate
+    - nm_property_tax_rebate
+metadata:
+  unit: list
+  period: year
+  label: New Mexico refundable tax credits

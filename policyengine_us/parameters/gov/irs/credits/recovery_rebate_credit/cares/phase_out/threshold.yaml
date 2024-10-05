@@ -1,0 +1,31 @@
+description: Phase-out starting threshold for the CARES Recovery Rebate Credit.
+SINGLE:
+  0000-01-01: 0
+  2020-01-01: 75_000
+  2021-01-01: 0
+JOINT:
+  0000-01-01: 0
+  2020-01-01: 150_000
+  2021-01-01: 0
+HEAD_OF_HOUSEHOLD:
+  0000-01-01: 0
+  2020-01-01: 112_500
+  2021-01-01: 0
+SURVIVING_SPOUSE:
+  0000-01-01: 0
+  2020-01-01: 75_000
+  2021-01-01: 0
+SEPARATE:
+  0000-01-01: 0
+  2020-01-01: 75_000
+  2021-01-01: 0
+metadata:
+  unit: currency-USD
+  period: year
+  breakdown:
+    - filing_status
+  name: rrc_cares_phase_out_threshold
+  label: CARES Recovery Rebate Credit phase-out starting threshold
+  reference:
+    - title: 26 U.S. Code § 6428(c)
+      href: https://www.law.cornell.edu/uscode/text/26/6428#c

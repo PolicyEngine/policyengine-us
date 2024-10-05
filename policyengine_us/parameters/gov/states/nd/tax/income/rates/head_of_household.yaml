@@ -1,0 +1,65 @@
+description: North Dakota taxes income at these rates for head-of-household filing units.
+brackets:
+  - threshold:
+      2021-01-01: 0
+    rate:
+      2021-01-01: 0.011
+      2023-01-01: 0
+  - threshold:
+      values:
+        2021-01-01: 54_300
+        2022-01-01: 55_900
+        2023-01-01: 59_950
+      uprating: 
+        parameter: gov.irs.uprating
+        rounding:
+          type: downwards
+          interval: 50
+    rate:
+      2021-01-01: 0.0204
+      2023-01-01: 0.0195
+  - threshold:
+      values:
+        2021-01-01: 140_200
+        2022-01-01: 144_400
+        2023-01-01: 250_550
+      uprating: 
+        parameter: gov.irs.uprating
+        rounding:
+          type: downwards
+          interval: 50
+    rate:
+      2021-01-01: 0.0227
+      2023-01-01: 0.025
+  - threshold:
+      values:
+        2021-01-01: 226_950
+        2022-01-01: 233_750
+        2023-01-01: .inf
+    rate:
+      2021-01-01: 0.0264
+      2023-01-01: 0.025
+  - threshold:
+      values:
+        2021-01-01: 445_000
+        2022-01-01: 458_350
+        2023-01-01: .inf
+    rate:
+      2021-01-01: 0.029
+      2023-01-01: 0.025
+
+metadata:
+  threshold_unit: currency-USD
+  rate_unit: /1
+  threshold_period: year
+  type: marginal_rate
+  label: North Dakota income tax rates for head-of-household filing units
+  reference:
+  - title: 2021 North Dakota income tax instructions
+    href: https://www.tax.nd.gov/sites/www/files/documents/forms/individual/2021-iit/individual-income-tax-booklet-2021.pdf#page=34
+  - title: 2022 North Dakota income tax instructions
+    href: https://www.tax.nd.gov/sites/www/files/documents/forms/individual/2022-iit/2022-individual-income-tax-booklet.pdf#page=34
+  - title: 2023 North Dakota income tax instructions
+    href: https://www.tax.nd.gov/sites/www/files/documents/forms/individual/2023-iit/2023-individual-income-tax-booklet.pdf#page=30
+  - title: North Dakota legal code 57-38-30.3.(1)(d)
+    href: https://casetext.com/statute/north-dakota-century-code/title-57-taxation/chapter-57-38-income-tax/section-57-38-303-individual-estate-and-trust-income-tax

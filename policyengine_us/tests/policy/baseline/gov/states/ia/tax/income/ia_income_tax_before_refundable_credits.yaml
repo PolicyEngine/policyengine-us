@@ -1,0 +1,43 @@
+- name: IA income tax before refundable credits unit test 1
+  period: 2021
+  input:
+    ia_income_tax_before_credits: 800
+    ia_exemption_credit: 200
+    ia_is_tax_exempt: false
+    ia_reduced_tax: 900
+    state_code: IA
+  output:
+    ia_income_tax_before_refundable_credits: 600
+
+- name: IA income tax before refundable credits unit test 2
+  period: 2022
+  input:
+    ia_income_tax_before_credits: 100
+    ia_exemption_credit: 200
+    ia_is_tax_exempt: false
+    ia_reduced_tax: 300
+    state_code: IA
+  output:
+    ia_income_tax_before_refundable_credits: 0
+
+- name: IA income tax before refundable credits unit test 3
+  period: 2021
+  input:
+    ia_income_tax_before_credits: 110
+    ia_exemption_credit: 80
+    ia_is_tax_exempt: true
+    ia_reduced_tax: 300
+    state_code: IA
+  output:
+    ia_income_tax_before_refundable_credits: 0
+
+- name: IA income tax before refundable credits unit test 4
+  period: 2022
+  input:
+    ia_income_tax_before_credits: 180
+    ia_exemption_credit: 80
+    ia_is_tax_exempt: false
+    ia_reduced_tax: 40
+    state_code: IA
+  output:
+    ia_income_tax_before_refundable_credits: 40

@@ -1,0 +1,32 @@
+description: Vermont qualifies filers for the retirement income exemption from social security with income below this threshold, based on filing status.
+metadata:
+  label: Vermont social security retirement income exemption income threshold
+  period: year
+  unit: currency-USD
+  breakdown:
+    - filing_status
+  reference:
+    - title: Instruction for 2022 SCHEDULE IN-112 - RETIREMENT INCOME EXEMPTION WORKSHEET
+      href: https://tax.vermont.gov/sites/tax/files/documents/IN-112%20Instr-2022.pdf#page=3
+    - title: Instruction for 2021 SCHEDULE IN-112 - SOCIAL SECURITY EXEMPTION WORKSHEET
+      href: https://tax.vermont.gov/sites/tax/files/documents/IN-112%20Instr-2021.pdf#page=2
+    - title: Instruction for 2023 SCHEDULE IN-112 - SOCIAL SECURITY EXEMPTION WORKSHEET
+      href: https://tax.vermont.gov/sites/tax/files/documents/IN-112-Instr-2023.pdf#page=2
+     # Legal code specifies inflation unadjusted thresholds
+    - title: Legal Code Titl. 32 V.S.A. § 5830e(a)(1)(C), (a)(2)(C) 
+      href: https://legislature.vermont.gov/statutes/section/32/151/05830e
+JOINT:
+  2021-01-01: 70_000
+  2022-01-01: 75_000
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 55_000
+  2022-01-01: 60_000
+SURVIVING_SPOUSE:
+  2021-01-01: 55_000
+  2022-01-01: 60_000
+SINGLE:
+  2021-01-01: 55_000
+  2022-01-01: 60_000
+SEPARATE:
+  2021-01-01: 55_000
+  2022-01-01: 60_000

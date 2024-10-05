@@ -1,0 +1,125 @@
+- name: No income
+  period: 2023
+  input:
+    state_code: CO
+    medicaid_income_level: 0
+    ambulance_expense: 100
+    er_visit_expense: 100
+    imaging_expense: 100
+    inpatient_expense: 100
+    lab_expense: 100
+    outpatient_expense: 100
+    physician_services_expense: 100
+    prescription_expense: 100
+    urgent_care_expense: 100
+    is_pregnant: false
+  output:
+    co_chp: 896
+
+- name: 150% fpl
+  period: 2023
+  input:
+    state_code: CO
+    medicaid_income_level: 1.5
+    ambulance_expense: 200
+    er_visit_expense: 200
+    imaging_expense: 200
+    inpatient_expense: 200
+    lab_expense: 200
+    outpatient_expense: 200
+    physician_services_expense: 200
+    prescription_expense: 200
+    urgent_care_expense: 200
+    is_pregnant: false
+  output:
+    co_chp: 1787
+
+- name: 175% fpl
+  period: 2023
+  input:
+    state_code: CO
+    medicaid_income_level: 1.75
+    ambulance_expense: 300
+    er_visit_expense: 300
+    imaging_expense: 300
+    inpatient_expense: 300
+    lab_expense: 300
+    outpatient_expense: 300
+    physician_services_expense: 300
+    prescription_expense: 300
+    urgent_care_expense: 300
+    is_pregnant: false
+  output:
+    co_chp: 2588.5
+
+- name: 250% fpl
+  period: 2023
+  input:
+    state_code: CO
+    medicaid_income_level: 2.50
+    ambulance_expense: 400
+    er_visit_expense: 400
+    imaging_expense: 400
+    inpatient_expense: 400
+    lab_expense: 400
+    outpatient_expense: 400
+    physician_services_expense: 400
+    prescription_expense: 400
+    urgent_care_expense: 400
+    is_pregnant: false
+  output:
+    co_chp: 3395
+
+- name: Too much income
+  period: 2023
+  input:
+    state_code: CO
+    medicaid_income_level: 3
+    ambulance_expense: 500
+    er_visit_expense: 500
+    imaging_expense: 500
+    inpatient_expense: 500
+    lab_expense: 500
+    outpatient_expense: 500
+    physician_services_expense: 500
+    prescription_expense: 500
+    urgent_care_expense: 500
+    is_pregnant: false
+  output:
+    co_chp: 0
+
+- name: No expenses
+  period: 2023
+  input:
+    state_code: CO
+    medicaid_income_level: 0
+    ambulance_expense: 0
+    er_visit_expense: 0
+    imaging_expense: 0
+    inpatient_expense: 0
+    lab_expense: 0
+    outpatient_expense: 0
+    physician_services_expense: 0
+    prescription_expense: 0
+    urgent_care_expense: 0
+    is_pregnant: false
+  output:
+    co_chp: 0
+
+- name: No co-pay if pregnant
+  period: 2023
+  input:
+    state_code: CO
+    medicaid_income_level: 2.5
+    ambulance_expense: 100
+    er_visit_expense: 100
+    imaging_expense: 100
+    inpatient_expense: 100
+    lab_expense: 100
+    outpatient_expense: 100
+    physician_services_expense: 100
+    prescription_expense: 100
+    urgent_care_expense: 100
+    is_pregnant: true
+  output:
+    co_chp: 900

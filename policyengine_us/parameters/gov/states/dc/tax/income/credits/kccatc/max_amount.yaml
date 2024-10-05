@@ -1,0 +1,27 @@
+description: DC keep child care affordable tax credit is limited to this maximum amount per eligible child.
+metadata:
+  unit: currency-USD
+  label: DC KCCATC maximum amount per eligible child
+  period: year
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 5
+  reference:
+    - title: Code of the District of Columbia § 47–1806.15(b)(2)(B)
+      href: https://code.dccouncil.gov/us/dc/council/code/sections/47-1806.15#(b)(2)(B)
+    - title: 2020 DC Schedule ELC
+      href: https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2020_Schedule_ELC.pdf#page=1
+    - title: 2021 DC Form D-40 Booklet, Schedule ELC
+      href: https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/52926_D-40_12.21.21_Final_Rev011122.pdf#page=67
+    - title: 2022 DC Form D-40 Booklet, Schedule ELC
+      href: https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2022_D-40_Booklet_Final_blk_01_23_23_Ordc.pdf#page=59
+    - title: 2023 DC Form D-40 Booklet, Schedule ELC
+      href: https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2023_D40_Book_Final_012324#page=59
+values:
+  2018-01-01: 1_000
+  2020-01-01: 1_010
+  2021-01-01: 1_020
+  2022-01-01: 1_045
+  2023-01-01: 1_115

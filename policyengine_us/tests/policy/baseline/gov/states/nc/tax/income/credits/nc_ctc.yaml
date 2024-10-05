@@ -1,0 +1,71 @@
+- name: No children
+  period: 2015
+  input:
+    filing_status: SINGLE
+    state_code: NC
+    adjusted_gross_income: 15_000
+    ctc_qualifying_children: 0
+  output:  
+    nc_ctc: 0
+
+- name: 1 child - single
+  period: 2015
+  input:
+    filing_status: SINGLE
+    state_code: NC
+    adjusted_gross_income: 15_000
+    ctc_qualifying_children: 1
+  output:  
+    nc_ctc: 125
+
+- name: 1 child
+  period: 2015
+  input:
+    filing_status: JOINT
+    state_code: NC
+    adjusted_gross_income: 50_000
+    ctc_qualifying_children: 1
+  output:  
+    nc_ctc: 100
+
+
+- name: 2 children
+  period: 2015
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    state_code: NC
+    adjusted_gross_income: 30_000
+    ctc_qualifying_children: 2
+  output:  
+    nc_ctc: 250
+
+
+- name: Married with three children
+  period: 2015
+  input:
+    filing_status: JOINT
+    state_code: NC
+    adjusted_gross_income: 45_000
+    ctc_qualifying_children: 3
+  output:  
+    nc_ctc: 300
+
+- name: Married with six children
+  period: 2015
+  input:
+    filing_status: JOINT
+    state_code: NC
+    adjusted_gross_income: 145_000
+    ctc_qualifying_children: 6
+  output:  
+    nc_ctc: 0
+
+- name: Head of Household with two children in 2018
+  period: 2018
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    state_code: NC
+    adjusted_gross_income: 45_000
+    ctc_qualifying_children: 2
+  output:  
+    nc_ctc: 0

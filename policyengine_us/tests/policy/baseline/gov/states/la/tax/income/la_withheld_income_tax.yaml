@@ -1,0 +1,29 @@
+- name: Person with income over the standard deduction amount
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    adjusted_gross_income_person: 15_000
+    filing_status: JOINT
+    state_code: LA
+  output:
+    la_withheld_income_tax: 37.925
+
+- name: Changing the filing status should not change the output 
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    adjusted_gross_income_person: 15_000
+    filing_status: SURVIVING_SPOUSE
+    state_code: LA
+  output:
+    la_withheld_income_tax: 37.925
+
+- name: Capped at 0
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    adjusted_gross_income_person: 12_000
+    filing_status: SURVIVING_SPOUSE
+    state_code: LA
+  output:
+    la_withheld_income_tax: 0

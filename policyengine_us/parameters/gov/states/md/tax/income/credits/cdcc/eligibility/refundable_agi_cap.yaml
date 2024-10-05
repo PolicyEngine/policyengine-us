@@ -1,0 +1,78 @@
+description: Maryland limits its refundable Child and Dependent Care Credit to filers with adjusted gross income below these thresholds.
+JOINT:
+  values:
+    2019-01-01: 75_000
+    2020-01-01: 75_750
+    2021-01-01: 78_150
+    2022-01-01: 83_650
+    2023-01-01: 84_500
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
+SINGLE:
+  values:
+    2019-01-01: 50_000
+    2020-01-01: 50_500
+    2021-01-01: 52_100
+    2022-01-01: 55_750
+    2023-01-01: 56_300
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
+SEPARATE:
+  values:
+    2019-01-01: 50_000
+    2020-01-01: 50_500
+    2021-01-01: 52_100
+    2022-01-01: 55_750
+    2023-01-01: 56_300
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
+HEAD_OF_HOUSEHOLD:
+  values:
+    2019-01-01: 50_000
+    2020-01-01: 50_500
+    2021-01-01: 52_100
+    2022-01-01: 55_750
+    2023-01-01: 56_300
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
+SURVIVING_SPOUSE:
+  values:
+    2019-01-01: 50_000
+    2020-01-01: 50_500
+    2021-01-01: 52_100
+    2022-01-01: 55_750
+    2023-01-01: 56_300
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
+metadata:
+  breakdown:
+    - filing_status
+  reference:
+    - title: Md. Code, Tax-Gen. § 10-716 (e)
+      href: https://casetext.com/statute/code-of-maryland/article-tax-general/title-10-income-tax/subtitle-7-income-tax-credits/section-10-716-for-child-care-or-dependent-care
+    - title: Maryland 2020 State & Local Tax Forms & Instructions
+      href: https://www.marylandtaxes.gov/forms/20_forms/Resident_Booklet.pdf#page=24
+    - title: Maryland 2021 State & Local Tax Forms & Instructions
+      href: https://www.marylandtaxes.gov/forms/21_forms/Resident_Booklet.pdf#page=24
+    - title: 2023 State & Local Tax Forms & Instructions Maryland
+      href: https://www.marylandtaxes.gov/forms/23_forms/Resident-Booklet.pdf#page=25
+    - title: 2022 State & Local Tax Forms & Instructions Maryland
+      href: https://www.marylandtaxes.gov/forms/22_forms/Resident_Booklet.pdf#page=24
+  unit: currency-USD
+  period: year
+  label: Maryland refundable CDCC AGI cap

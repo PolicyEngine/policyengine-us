@@ -1,0 +1,6 @@
+- name: Currently no subsidies included
+  period: 2022
+  input:
+    pre_subsidy_care_expenses: 100
+  output:
+    care_expenses: 100

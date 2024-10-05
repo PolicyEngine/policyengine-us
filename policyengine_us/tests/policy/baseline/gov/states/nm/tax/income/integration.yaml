@@ -1,0 +1,56 @@
+- name: Tax unit with taxsimid 98790 in p21.its.csv and p21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 67
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+        ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
+      person2:
+        age: 11
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+        ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
+      person3:
+        age: 11
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+        ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
+      person4:
+        age: 11
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+        ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        premium_tax_credit: 0  # not in TAXSIM35
+        local_income_tax: 0  # not in TAXSIM35
+        state_sales_tax: 0  # not in TAXSIM35
+        ca_use_tax: 0  # not in TAXSIM35
+        il_use_tax: 0  # not in TAXSIM35
+        nm_2021_income_rebate: 0  # not in TAXSIM35
+        nm_additional_2021_income_rebate: 0  # not in TAXSIM35
+        nm_supplemental_2021_income_rebate: 0  # not in TAXSIM35
+        ny_supplemental_eitc: 0  # not in TAXSIM35
+        ok_use_tax: 0  # not in TAXSIM35
+        pa_use_tax: 0  # not in TAXSIM35
+        vt_renter_credit: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_fips: 35  # NM
+  output:  # expected results from patched TAXSIM35 2024-03-26 version
+    nm_low_income_comprehensive_tax_rebate: 520
+    nm_income_tax: -520.00

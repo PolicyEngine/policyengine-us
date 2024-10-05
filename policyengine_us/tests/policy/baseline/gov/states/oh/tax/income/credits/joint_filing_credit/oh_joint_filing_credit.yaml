@@ -1,0 +1,33 @@
+- name: Eligible for joint filing credit
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    oh_joint_filing_credit_eligible: true
+    oh_modified_agi: 67_000
+    oh_personal_exemptions: 10_000
+    oh_tax_before_joint_filing_credit: 4_000
+  output:
+    oh_joint_filing_credit: 400
+
+- name: Eligible for maximum joint filing credit
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    state_code: OH
+    oh_joint_filing_credit_eligible: true
+    oh_modified_agi: 47_000
+    oh_personal_exemptions: 10_000
+    oh_tax_before_joint_filing_credit: 6_000
+  output:
+    oh_joint_filing_credit: 650
+
+- name: Not eligible for joint filing credit
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    oh_joint_filing_credit_eligible: false
+    oh_modified_agi: 47_000
+    oh_personal_exemptions: 10_000
+    oh_tax_before_joint_filing_credit: 4_000
+  output:
+    oh_joint_filing_credit: 0

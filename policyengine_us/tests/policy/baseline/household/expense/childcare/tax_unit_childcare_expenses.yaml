@@ -1,0 +1,31 @@
+- name: tax_unit_childcare_expenses unit test 1 (default is zero)
+  period: 2022
+  output:
+    tax_unit_childcare_expenses: 0
+
+- name: tax_unit_childcare_expenses unit test 2
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 5
+      person3:
+        age: 30
+      person4:
+        age: 4
+      person5:
+        age: 3
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+      tax_unit2:
+        members: [person3, person4, person5]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+        childcare_expenses: 900
+  output:
+    tax_unit_childcare_expenses: [300, 600]

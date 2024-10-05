@@ -1,0 +1,72 @@
+- name: is disabled, is not a dependent
+  period: 2022
+  input:
+    people:
+      person1:
+        mi_disabled_exemption_eligible_person: true
+    tax_units:
+      tax_unit:
+        mi_personal_exemptions: 5_000
+        members: [person1]
+    household:
+      members: [person1]
+      state_code: MI
+  output: # 5_000 + 2_900
+    mi_exemptions: 7_900
+
+- name: is disabled, is disabled veteran, is not a dependent
+  period: 2022
+  input:
+    people:
+      person1:
+        is_fully_disabled_service_connected_veteran: true
+        mi_disabled_exemption_eligible_person: true
+    tax_units:
+      tax_unit:
+        mi_personal_exemptions: 5_000
+        members: [person1]
+    household:
+      members: [person1]
+      state_code: MI
+  output: # 5_000 + 2_900 + 400
+    mi_exemptions: 8_300
+
+- name: 2 people, 2 disabled, 1 disabled veteran, is not a dependent
+  period: 2022
+  input:
+    people:
+      person1:
+        is_fully_disabled_service_connected_veteran: false
+        mi_disabled_exemption_eligible_person: true
+      person2:
+        is_fully_disabled_service_connected_veteran: true
+        mi_disabled_exemption_eligible_person: true
+    tax_units:
+      tax_unit:
+        mi_personal_exemptions: 10_000
+        members: [person1, person2]
+    household:
+      members: [person1, person2]
+      state_code: MI
+  output: # 10_000 + 2_900 * 2 + 400
+    mi_exemptions: 16_200
+
+- name: 2021 not disabled, is a dependent, single
+  period: 2021
+  input:
+    mi_personal_exemptions: 5_000
+    head_is_dependent_elsewhere: true
+    filing_status: SINGLE
+    state_code: MI
+  output: 
+    mi_exemptions: 1_500
+
+- name: not disabled, is a dependent, married
+  period: 2021
+  input:
+    mi_personal_exemptions: 10_000
+    head_is_dependent_elsewhere: true
+    filing_status: JOINT
+    state_code: MI
+  output: 
+    mi_exemptions: 3_000

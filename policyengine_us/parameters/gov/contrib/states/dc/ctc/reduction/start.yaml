@@ -1,0 +1,22 @@
+description: DC reduces the Child Tax Credit for filer with income above this thresholds, based on filing status.
+
+metadata:
+  period: year
+  unit: currency-USD
+  label: DC Child Tax Credit reduction start
+  breakdown:
+    - filing_status
+  reference:
+    - title: District Child Tax Credit Amendment Act of 2023 “§ 47-1806.17. Child Tax Credit. (a)(2)(A) 
+      href: https://lims.dccouncil.gov/downloads/LIMS/55181/Other/B25-0784-FIS_Fiscal_Year_2025_Budget_Support_Act_of_2024_Second_Reading.pdf#page=98
+
+SINGLE:
+  2025-01-01: 160_000
+HEAD_OF_HOUSEHOLD:
+  2025-01-01: 160_000
+JOINT:
+  2025-01-01: 240_000
+SURVIVING_SPOUSE:
+  2025-01-01: 160_000
+SEPARATE:
+  2025-01-01: 120_000 

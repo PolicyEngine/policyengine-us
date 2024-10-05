@@ -1,0 +1,101 @@
+- name: Zero dollar federal EITC, no Maine EITC
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        age: 10
+      person2:
+        age: 35
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        eitc: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    me_eitc: 0
+
+- name: Outside of Maine, credit should be zero
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        age: 10
+      person2:
+        age: 35
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        eitc: 500
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    me_eitc: 0
+
+- name: Federal EITC of $500 and no qualifying children, Maine EITC should be $250
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        age: 33
+      person2:
+        age: 35
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        eitc: 500
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    me_eitc: 250
+
+- name: Federal EITC of $500 and has a qualifying child, Maine EITC should be $125
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        age: 10
+      person2:
+        age: 35
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        eitc: 500
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    me_eitc: 125
+
+- name: Federal EITC of $500 and two qualifying children, Maine EITC should be $125 (same as one qualifying child)
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        age: 10
+      person2:
+        age: 10
+      person3:
+        age: 35
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        eitc: 500
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: ME
+  output:
+    me_eitc: 125

@@ -1,0 +1,63 @@
+description: Minnesota levies income taxes at these rates for filers who file as head of household.
+brackets:
+  - threshold:
+      2021-01-01: 0
+    rate:
+      2021-01-01: 0.0535
+  - threshold:
+      values:
+        2021-01-01: 33_520
+        2022-01-01: 34_570
+        2023-01-01: 37_010
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 10
+    rate:
+      2021-01-01: 0.068
+  - threshold:
+      values:
+        2021-01-01: 134_700
+        2022-01-01: 138_890
+        2023-01-01: 148_730
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 10
+    rate:
+      2021-01-01: 0.0785
+  - threshold:
+      values:
+        2021-01-01: 220_730
+        2022-01-01: 227_600
+        2023-01-01: 243_720
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 10
+    rate:
+      2021-01-01: 0.0985
+
+metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  threshold_period: year
+  label: Minnesota head of household income tax rates
+  reference:
+  - title: 2023 Minnesota Statutes, 290.06 RATES OF TAX; CREDITS. Subd. 2c.Schedules of rates for individuals, estates, and trusts.
+    href: https://www.revisor.mn.gov/statutes/cite/290.06#stat.290.06.2c
+  - title: 290.06 Subd. 2d.Inflation adjustment of brackets
+    href: https://www.revisor.mn.gov/statutes/cite/290.06#stat.290.06.2d
+  - title: 2021 Minnesota M1 form instructions, Tax Rate Schedules
+    href: https://www.revenue.state.mn.us/sites/default/files/2023-12/m1_inst_21.pdf#page=35
+  - title: 2022 Minnesota M1 form instructions, Tax Rate Schedules
+    href: https://www.revenue.state.mn.us/sites/default/files/2024-02/m1_inst_22.pdf#page=35
+  - title: 2023 Minnesota M1 form instructions, Tax Rate Schedules
+    href: https://www.revenue.state.mn.us/sites/default/files/2024-02/m1-inst-23.pdf#page=32

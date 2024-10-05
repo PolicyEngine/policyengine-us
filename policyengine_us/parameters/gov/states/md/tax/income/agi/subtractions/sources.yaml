@@ -1,0 +1,26 @@
+description: Maryland subtracts the following sources from federal adjusted gross income.
+values:
+  2021-01-01:
+    - md_dependent_care_subtraction
+    - md_pension_subtraction
+    - md_socsec_subtraction
+    - md_two_income_subtraction
+  2022-01-01:
+    - md_dependent_care_subtraction
+    - md_pension_subtraction
+    - md_socsec_subtraction
+    - md_two_income_subtraction
+    - md_hundred_year_subtraction
+
+metadata:
+  reference:
+    - title: 2022 State & Local Tax Forms & Instructions Maryland  
+      href: https://www.marylandtaxes.gov/forms/22_forms/Resident_Booklet.pdf#page=13
+    - title: 2022 Maryland Statutes Tax - General, Title 10, Subtitle 2, Part II - Maryland Adjusted Gross Income
+      href: https://law.justia.com/codes/maryland/2022/tax-general/title-10/subtitle-2/part-ii/
+    # Bill introducing the hundred year subtraction
+    - title: House Bill 186
+      href: https://trackbill.com/bill/maryland-house-bill-186-income-tax-subtraction-modification-for-centenarians/2173534/
+  period: year
+  unit: list
+  label: Maryland adjusted gross income subtractions

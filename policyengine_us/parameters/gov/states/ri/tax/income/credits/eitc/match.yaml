@@ -1,0 +1,20 @@
+description: Rhode Island matches this fraction of the federal earned income tax credit.
+values:
+  # Taxable years before 2015. Start date unknown.
+  2014-01-01: 0.25
+  2015-01-01: 0.1
+  2016-01-01: 0.125
+  2021-01-01: 0.15
+  2024-01-01: 0.16
+metadata:
+  unit: /1
+  label: Rhode Island EITC match
+  reference:
+    - title: R.I. Gen. Laws § 44-30-2.6.(c)(2)(N)
+      href: https://webserver.rilegislature.gov/Statutes/TITLE44/44-30/44-I/44-30-2.6.htm
+    - title: 2022 Form RI-1040 Resident Individual Income Tax Return - page 3
+      href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-12/2022_1040WE_w_0.pdf
+    - title: 2021 Form RI-1040 Resident Individual Income Tax Return
+      href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-01/2021_1040we_w.pdf 
+    - title: Rhode Island Department of Revenue Division of Taxation - page 16
+      href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2023-02/RI-MA%20NATP%20Jan%205%202023-CA.pdf

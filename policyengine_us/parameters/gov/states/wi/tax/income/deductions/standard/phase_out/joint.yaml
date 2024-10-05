@@ -1,0 +1,25 @@
+description: Wisconsin phases out its standard deduction for joint filers according to this schedule.
+metadata:
+  type: marginal_rate
+  threshold_period: year
+  threshold_unit: currency-USD 
+  rate_unit: /1
+  label: Wisconsin standard deduction joint phase out
+  reference:
+    - title: Wisconsin Tax Brackets, Rates, Forms, and Standard Deductions
+      href: https://www.efile.com/wisconsin-tax-brackets-rates-and-forms/
+    # The legal code provides inflaton unadjusted amounts
+    - title: Wisconsin Statutes 71.07 (9)(b)(5)
+      href: https://docs.legis.wisconsin.gov/statutes/statutes/71/i/05/22/dm
+
+brackets:
+  - threshold:
+      2021-01-01: 0
+    rate:
+      2021-01-01: 0
+  - threshold:
+      2021-01-01: 23_300
+      2022-01-01: 24_520
+      2023-01-01: 26_550
+    rate:
+      2021-01-01: 0.19778

@@ -1,0 +1,73 @@
+- name: Medicaid eligibility from pregnancy
+  period: 2022
+  input:
+    is_pregnant_for_medicaid: true
+  output:
+    is_medicaid_eligible: true
+
+- name: Medicaid eligibility from infancy
+  period: 2022
+  input:
+    is_infant_for_medicaid: true
+  output:
+    is_medicaid_eligible: true
+
+- name: Medicaid eligibility from young child
+  period: 2022
+  input:
+    is_young_child_for_medicaid: true
+  output:
+    is_medicaid_eligible: true
+
+- name: Medicaid eligibility from older child
+  period: 2022
+  input:
+    is_older_child_for_medicaid: true
+  output:
+    is_medicaid_eligible: true
+
+- name: Medicaid eligibility from parent
+  period: 2022
+  input:
+    is_parent_for_medicaid: true
+  output:
+    is_medicaid_eligible: true
+
+- name: Medicaid eligibility from adult
+  period: 2022
+  input:
+    is_adult_for_medicaid: true
+  output:
+    is_medicaid_eligible: true
+
+- name: Medicaid eligibility from young adult
+  period: 2022
+  input:
+    is_young_adult_for_medicaid: true
+  output:
+    is_medicaid_eligible: true
+
+- name: Medicaid eligibility from SSI receipt
+  period: 2022
+  input:
+    is_ssi_recipient_for_medicaid: true
+  output:
+    is_medicaid_eligible: true
+
+- name: Eligible undocumented immigrant due to state rules in California
+  period: 2022
+  input:
+    medicaid_category: PARENT
+    immigration_status: UNDOCUMENTED
+    state_code_str: CA
+  output:
+    is_medicaid_eligible: true
+
+- name: Ineligible undocumented immigrant due to state rules in colorado
+  period: 2022
+  input:
+    medicaid_category: PARENT
+    immigration_status: UNDOCUMENTED
+    state_code_str: CO
+  output:
+    is_medicaid_eligible: false

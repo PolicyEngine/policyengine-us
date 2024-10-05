@@ -1,0 +1,32 @@
+description: NYC provides a household credit of this amount per dependent for separate filers.
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: currency-USD
+  label: NYC Household Credit for separate filers.
+  reference:
+    - title: Instructions for Form IT-201, 2022
+      href: https://www.tax.ny.gov/pdf/2022/printable-pdfs/inc/it201i-2022.pdf#page=18
+    - title: Instructions for Form IT-201, 2023
+      href: https://www.tax.ny.gov/pdf/2023/printable-pdfs/inc/it201i-2023.pdf#page=19
+brackets:
+  - threshold:
+      2022-01-01: -1
+    amount:
+      2022-01-01: 15
+  - threshold:
+      2022-01-01: 15_000
+    amount:
+      2022-01-01: 13
+  - threshold:
+      2022-01-01: 17_500
+    amount:
+      2022-01-01: 8
+  - threshold:
+      2022-01-01: 20_000
+    amount:
+      2022-01-01: 5
+  - threshold:
+      2022-01-01: 22_500
+    amount:
+      2022-01-01: 0

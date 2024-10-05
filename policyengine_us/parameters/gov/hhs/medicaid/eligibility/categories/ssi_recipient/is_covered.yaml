@@ -1,0 +1,113 @@
+description: Whether all SSI recipients are covered under Medicaid. States which do not cover SSI recipients are known as 209(b) states - they can apply rules more restrictive than current SSI rules (but no more restrictive than SSI rules in 1972).
+
+metadata:
+  unit: bool
+  label: "Medicaid covers all SSI recipients"
+  breakdown:
+  - state_code
+  reference:
+    - title: 42 U.S. Code § 1396(f)
+      href: https://www.law.cornell.edu/uscode/text/42/1396a#f
+
+AK:
+  2021-01-01: true
+AL:
+  2021-01-01: true
+AR:
+  2021-01-01: true
+AZ:
+  2021-01-01: true
+CA:
+  2021-01-01: true
+CO:
+  2021-01-01: true
+CT:
+  2021-01-01: false
+DC:
+  2021-01-01: true
+DE:
+  2021-01-01: true
+FL:
+  2021-01-01: true
+GA:
+  2021-01-01: true
+HI:
+  2021-01-01: false
+IA:
+  2021-01-01: true
+ID:
+  2021-01-01: true
+IL:
+  2021-01-01: false
+IN:
+  2021-01-01: true
+KS:
+  2021-01-01: true
+KY:
+  2021-01-01: true
+LA:
+  2021-01-01: true
+MA:
+  2021-01-01: true
+MD:
+  2021-01-01: true
+ME:
+  2021-01-01: true
+MI:
+  2021-01-01: true
+MN:
+  2021-01-01: false
+MO:
+  2021-01-01: false
+MS:
+  2021-01-01: true
+MT:
+  2021-01-01: true
+NC:
+  2021-01-01: true
+ND:
+  2021-01-01: false
+NE:
+  2021-01-01: true
+NH:
+  2021-01-01: false
+NJ:
+  2021-01-01: true
+NM:
+  2021-01-01: true
+NV:
+  2021-01-01: true
+NY:
+  2021-01-01: true
+OH:
+  2021-01-01: true
+OK:
+  2021-01-01: false
+OR:
+  2021-01-01: true
+PA:
+  2021-01-01: true
+RI:
+  2021-01-01: true
+SC:
+  2021-01-01: true
+SD:
+  2021-01-01: true
+TN:
+  2021-01-01: true
+TX:
+  2021-01-01: true
+UT:
+  2021-01-01: true
+VA:
+  2021-01-01: false
+VT:
+  2021-01-01: true
+WA:
+  2021-01-01: true
+WI:
+  2021-01-01: true
+WV:
+  2021-01-01: true
+WY:
+  2021-01-01: true

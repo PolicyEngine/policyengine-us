@@ -1,0 +1,27 @@
+description: Minnesota allows a subtraction from federal adjusted gross income to get its taxable income that is available to tax units with elderly or disabled heads or spouses that met certain eligibility conditions with this variable being base offset against US AGI.
+metadata:
+  label: Minnesota base AGI offset in elderly/disabled subtraction calculations
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  reference:
+  - title: Minnesota Statutes 290.0802 Subd. 2.Subtraction. (b)(2)
+    href: https://www.revisor.mn.gov/statutes/cite/290.0802#stat.290.0802.2
+  - title: 2021 Minnesota Schedule M1R form and instructions, Line 10
+    href: https://www.revenue.state.mn.us/sites/default/files/2023-01/m1r_21.pdf#page=2
+  - title: 2022 Minnesota Schedule M1R form and instructions, Line 10
+    href: https://www.revenue.state.mn.us/sites/default/files/2023-01/m1r_22.pdf#page=2
+  - title: 2023 Minnesota Schedule M1R form and instructions, Line 10
+    href: https://www.revenue.state.mn.us/sites/default/files/2023-12/m1r-23.pdf#page=2
+
+JOINT:
+  2021-01-01: 14_500
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 14_500
+SURVIVING_SPOUSE:
+  2021-01-01: 14_500
+SINGLE:
+  2021-01-01: 14_500
+SEPARATE:
+  2021-01-01: 9_000

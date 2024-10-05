@@ -1,0 +1,50 @@
+- name: Tax unit with taxsimid 93531 in f21.its.csv and f21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 69
+        employment_income: 27_010
+        taxable_interest_income: 5_505.0
+        taxable_private_pension_income: 500.0
+        social_security_retirement: 7_000.0
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+        ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
+      person2:
+        age: 69
+        employment_income: 30_010
+        taxable_interest_income: 5_505.0
+        taxable_private_pension_income: 500.0
+        social_security_retirement: 7_000.0
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+        ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        premium_tax_credit: 0  # not in TAXSIM35
+        local_income_tax: 0  # not in TAXSIM35
+        state_sales_tax: 0  # not in TAXSIM35
+        ca_use_tax: 0  # not in TAXSIM35
+        il_use_tax: 0  # not in TAXSIM35
+        nm_2021_income_rebate: 0  # not in TAXSIM35
+        nm_additional_2021_income_rebate: 0  # not in TAXSIM35
+        nm_supplemental_2021_income_rebate: 0  # not in TAXSIM35
+        ny_supplemental_eitc: 0  # not in TAXSIM35
+        ok_use_tax: 0  # not in TAXSIM35
+        pa_use_tax: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 54  # WV
+  output:  # expected results from patched TAXSIM35 2024-02-05 version
+    wv_income_tax: 2_835.45

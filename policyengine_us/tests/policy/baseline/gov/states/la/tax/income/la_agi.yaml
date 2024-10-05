@@ -1,0 +1,17 @@
+- name: Calculation
+  period: 2020
+  input:
+    state_code: LA
+    adjusted_gross_income: 3_000
+    la_agi_exempt_income: 1_000
+  output:
+    la_agi: 2_000 
+
+- name: Capped at 0
+  period: 2020
+  input:
+    state_code: LA
+    adjusted_gross_income: 1_000
+    la_agi_exempt_income: 2_000
+  output:
+    la_agi: 0 

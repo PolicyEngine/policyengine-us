@@ -1,0 +1,29 @@
+- name: Not capped
+  period: 2021
+  input:
+    md_qualifies_for_unmarried_childless_eitc: true
+    md_income_tax_before_credits: 100
+    md_unmarried_childless_non_refundable_eitc: 500
+    state_code: MD
+  output:
+    md_unmarried_childless_refundable_eitc: 400 #500-100
+
+- name: Capped at zero
+  period: 2021
+  input:
+    md_qualifies_for_unmarried_childless_eitc: true
+    md_income_tax_before_credits: 600
+    md_unmarried_childless_non_refundable_eitc: 500
+    state_code: MD
+  output:
+    md_unmarried_childless_refundable_eitc: 0 #max(0, 500-600)
+
+- name: Not eligible for unmarried childless eitc
+  period: 2021
+  input:
+    md_qualifies_for_unmarried_childless_eitc: false
+    md_income_tax_before_credits: 100
+    md_unmarried_childless_non_refundable_eitc: 500
+    state_code: MD
+  output:
+    md_unmarried_childless_refundable_eitc: 0

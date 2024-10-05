@@ -1,0 +1,67 @@
+description: Nebraska taxes head of household filers at these rates.
+brackets:
+  - threshold:
+      2021-01-01: 0
+    rate:
+      2021-01-01: 0.0246
+  - threshold:
+      values:
+        2021-01-01: 6_660
+        2022-01-01: 6_860
+        2023-01-01: 7_390
+      uprating:
+        parameter: gov.irs.uprating
+        rounding:
+          type: nearest
+          interval: 10
+    rate:
+      2021-01-01: 0.0351
+      2026-01-01: 0.0455
+      2027-01-01: 0.0399
+  - threshold:
+      values:
+        2021-01-01: 39_990
+        2022-01-01: 41_190
+        2023-01-01: 44_350
+      uprating:
+        parameter: gov.irs.uprating
+        rounding:
+          type: nearest
+          interval: 10
+    rate:
+      2021-01-01: 0.0501
+  - threshold:
+      values: 
+        2021-01-01: 64_430
+        2022-01-01: 66_360
+        2023-01-01: 71_460
+      uprating:
+        parameter: gov.irs.uprating
+        rounding:
+          type: nearest
+          interval: 10
+    rate:
+      2021-01-01: 0.0684
+      2023-01-01: 0.0664
+      2024-01-01: 0.0584
+      2025-01-01: 0.0520
+      2026-01-01: 0.0455
+      2027-01-01: 0.0399
+        
+metadata:
+  threshold_unit: currency-USD
+  rate_unit: /1
+  threshold_period: year
+  type: marginal_rate
+  label: Nebraska income tax rates for widow filing units
+  reference:
+  - title: Nebraska Tax Rates, Brackets
+    href: https://www.efile.com/nebraska-tax-brackets-rates-and-forms/
+  - title: 2021 NE income tax form and instruction booklet
+    href: https://revenue.nebraska.gov/files/doc/tax-forms/2021/f_1040n_booklet.pdf
+  - title: 2022 NE income tax form and instruction booklet
+    href: https://revenue.nebraska.gov/files/doc/2022_Ne_Individual_Income_Tax_Booklet_8-307-2022_final_5.pdf
+  - title: 2023 NE Individual Income Tax Booklet
+    href: https://revenue.nebraska.gov/sites/revenue.nebraska.gov/files/doc/tax-forms/2023/incometax/f_1040n_booklet_2023_Final.pdf#page=9
+  - title: Nebraska Revised Statute | chapter 77 | §2715.03
+    href: https://www.nebraskalegislature.gov/laws/statutes.php?statute=77-2715.03

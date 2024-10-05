@@ -1,0 +1,11 @@
+- name: Default is not married.
+  period: 2022
+  output:
+    tax_unit_married: false
+
+- name: Married people file as joint.
+  period: 2022
+  input:
+    is_tax_unit_spouse: true
+  output:
+    tax_unit_married: true

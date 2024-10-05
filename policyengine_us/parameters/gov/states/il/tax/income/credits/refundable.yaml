@@ -1,0 +1,15 @@
+description: Illinois provides the following refundable credits.
+values:
+  2021-01-01:
+    - il_pass_through_withholding
+    - il_pass_through_entity_tax_credit
+    - il_eitc
+  2024-01-01:
+    - il_pass_through_withholding
+    - il_pass_through_entity_tax_credit
+    - il_eitc
+    - il_ctc
+metadata:
+  unit: list
+  period: year
+  label: Illinois refundable credits

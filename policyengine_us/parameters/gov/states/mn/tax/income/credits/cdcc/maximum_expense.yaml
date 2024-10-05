@@ -1,0 +1,17 @@
+description: Minnesota has a child/dependent care credit in which this is the maximum care expense allowed per qualified dependent.
+values:
+  2021-01-01: 3_000
+
+metadata:
+  period: year
+  unit: currency-USD
+  label: Minnesota CDCC maximum allowed care expense per qualified dependent
+  reference:
+  # The legal code states that the minimum income will defined by the commissioner of revenue each year
+  # and published in the Minnesota Schedule M1CD.
+  - title: 2021 Schedule M1CD, Child and Dependent Care Credit, Line 1
+    href: https://www.revenue.state.mn.us/sites/default/files/2023-02/m1cd_21.pdf#page=1
+  - title: 2022 Schedule M1CD, Child and Dependent Care Credit, Line 1
+    href: https://www.revenue.state.mn.us/sites/default/files/2023-01/m1cd_22_0.pdf#page=1
+  - title: 2023 Schedule M1CD, Child and Dependent Care Credit, Line 1
+    href: https://www.revenue.state.mn.us/sites/default/files/2023-12/m1cd-23.pdf#page=1

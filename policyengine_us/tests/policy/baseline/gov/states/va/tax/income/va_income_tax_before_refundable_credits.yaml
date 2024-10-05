@@ -1,0 +1,17 @@
+- name: Reduction
+  period: 2022
+  input:
+    va_income_tax_before_non_refundable_credits: 2_000
+    va_non_refundable_credits: 900
+    state_code: VA
+  output:
+    va_income_tax_before_refundable_credits: 1_100
+
+- name: Capped at 0
+  period: 2022
+  input:
+    va_income_tax_before_non_refundable_credits: 200
+    va_non_refundable_credits: 900
+    state_code: VA
+  output:
+    va_income_tax_before_refundable_credits: 0

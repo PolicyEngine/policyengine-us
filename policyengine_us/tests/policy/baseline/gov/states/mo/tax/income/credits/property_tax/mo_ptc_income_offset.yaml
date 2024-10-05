@@ -1,0 +1,76 @@
+- name: Unit test 1 for MO property tax credit income offset (non-joint)
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 30
+      person2:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        tanf: 3_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        rents: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    mo_ptc_income_offset: 0
+
+- name: Unit test 2 for MO property tax credit income offset (joint renter)
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 30
+      person2:
+        is_tax_unit_spouse: true
+        age: 29
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        tanf: 3_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        rents: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    mo_ptc_income_offset: 2_000
+
+- name: Unit test 3 for MO property tax credit income offset (joint owner)
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 30
+      person2:
+        is_tax_unit_spouse: true
+        age: 29
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        tanf: 3_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        rents: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    mo_ptc_income_offset: 4_000

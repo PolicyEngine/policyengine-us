@@ -1,0 +1,22 @@
+description: California provides CARE eligibility to households that are enrolled in these programs.
+values:
+  2022-06-01:
+    - medicaid
+    - wic
+    - snap
+    - ssi
+    # Also these, not in our model:
+    # NSL
+    # Healthy Families A & B
+    # LIHEAP
+    # Bureau of Indian Affairs General Assistance
+metadata:
+  reference:
+    # Legal code establishes categorical eligibility in general, not specific programs.
+    - title: 2021 California Code | Public Utilities Code - PUC | DIVISION 1 - REGULATION OF PUBLIC UTILITIES | PART 1 - PUBLIC UTILITIES ACT | CHAPTER 4 - Regulation of Public Utilities | ARTICLE 2 - Rates | Section 739.1.(f)(1)
+      href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=PUC&sectionNum=739.1
+    # Program defines categorical eligibility programs.
+    - title: CARE/FERA Program
+      href: https://www.cpuc.ca.gov/lowincomerates/
+  unit: list
+  label: CARE non-tribal categorical eligibility programs

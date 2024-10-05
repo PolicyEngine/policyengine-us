@@ -1,0 +1,23 @@
+- name: ARP provided $3,000 to non-young children.
+  period: 2021
+  input:
+    age: 12
+    ctc_qualifying_child: true
+  output:
+    ctc_child_individual_maximum_arpa: 3_000
+
+- name: ARP provided $3,600 to young children.
+  period: 2021
+  input:
+    age: 5
+    ctc_qualifying_child: true
+  output:
+    ctc_child_individual_maximum_arpa: 3_600
+
+- name: Must qualify for CTC.
+  period: 2021
+  input:
+    age: 12
+    ctc_qualifying_child: false
+  output:
+    ctc_child_individual_maximum_arpa: 0

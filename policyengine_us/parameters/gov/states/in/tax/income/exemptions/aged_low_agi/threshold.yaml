@@ -1,0 +1,22 @@
+description: Indiana limits its additional exemption for aged filers with low adjusted gross income to this income, by filing status.
+metadata:
+  period: year
+  unit: currency-USD
+  label: Indiana low AGI aged exemption income limit
+  breakdown:
+    - filing_status
+SINGLE:
+  2021-01-01: 40_000
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 40_000
+JOINT:
+  2021-01-01: 40_000
+SURVIVING_SPOUSE:
+  2021-01-01: 40_000
+SEPARATE:
+  2021-01-01: 20_000
+reference:
+  - title: IC 6-3-1-3.5 "Adjusted gross income" (a)(5)(C)
+    href: http://iga.in.gov/legislative/laws/2021/ic/titles/006#6-3-1-3.5
+  - title: 2023 IT-40 Income Tax Form Instruction Booklet, pg. 25
+    href: https://forms.in.gov/Download.aspx?id=15792

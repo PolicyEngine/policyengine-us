@@ -1,0 +1,23 @@
+- name: $1_000 EITC in 2022 # 6% + 22% rate
+  period: 2022
+  input:
+    state_code: MI
+    eitc: 1_000
+  output:  
+    mi_eitc: 60
+
+- name: $1_000 EITC in 2023
+  period: 2023
+  input:
+    state_code: MI
+    eitc: 1_000
+  output:  
+    mi_eitc: 300
+
+- name: No EITC
+  period: 2023
+  input:
+    state_code: MI
+    eitc: 0
+  output:  
+    mi_eitc: 0

@@ -1,0 +1,70 @@
+description: New York phases out itemized deductions for filers with federal adjusted gross income exceeding this threshold.
+SINGLE:
+  values:
+    2021-01-01: 282_400
+    2022-01-01: 290_850
+    2023-01-01: 313_200
+  uprating: 
+    parameter: gov.irs.uprating
+    rounding:
+      type: nearest
+      interval: 50
+JOINT:
+  values:
+    2021-01-01: 338_850
+    2022-01-01: 349_000
+    2023-01-01: 375_850
+  uprating: 
+    parameter: gov.irs.uprating
+    rounding:
+      type: nearest
+      interval: 50
+SURVIVING_SPOUSE:
+  values:
+    2021-01-01: 338_850
+    2022-01-01: 349_000
+    2023-01-01: 375_850
+  uprating: 
+    parameter: gov.irs.uprating
+    rounding:
+      type: nearest
+      interval: 50
+SEPARATE:
+  values:
+    2021-01-01: 169_400
+    2022-01-01: 174_500
+    2023-01-01: 187_900
+  uprating: 
+    parameter: gov.irs.uprating
+    rounding:
+      type: nearest
+      interval: 50
+HEAD_OF_HOUSEHOLD:
+  values:
+    2021-01-01: 310_600
+    2022-01-01: 319_950
+    2023-01-01: 344_500
+  uprating: 
+    parameter: gov.irs.uprating
+    rounding:
+      type: nearest
+      interval: 50
+metadata:
+  uprating: 
+    parameter: gov.irs.uprating
+    rounding:
+      type: nearest
+      interval: 50
+  unit: currency-USD
+  period: year
+  label: New York itemized deduction AGI phase out threshold
+  reference:
+    # New York continued to increase the federal applicable amount with inflation 
+    - title: 26 U.S. Code § 68 - Overall limitation on itemized deductions (b)(1)
+      href: https://www.law.cornell.edu/uscode/text/26/68#b_1 
+    - title: 2021 NY Form IT-196 Instructions Line 40
+      href: https://www.tax.ny.gov/pdf/2021/inc/it196i_2021.pdf#page=18
+    - title: 2022 NY Form IT-196 Instructions Line 40
+      href: https://www.tax.ny.gov/pdf/2022/inc/it196i_2022.pdf#page=18
+    - title: 2023 NY Form IT-196 Instructions Line 40
+      href: https://www.tax.ny.gov/pdf/2023/printable-pdfs/inc/it196i-2023.pdf#page=25

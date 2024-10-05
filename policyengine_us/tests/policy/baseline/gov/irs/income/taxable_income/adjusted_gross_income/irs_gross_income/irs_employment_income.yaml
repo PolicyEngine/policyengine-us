@@ -1,0 +1,16 @@
+- name: Pre-tax contributions exceed employment income.
+  period: 2024
+  input:
+    employment_income: 100
+    pre_tax_contributions: 200
+  output:
+    irs_employment_income: 0
+
+- name: Pre-tax contributions do not exceed employment income.
+  period: 2024
+  input:
+    employment_income: 100
+    pre_tax_contributions: 30
+  output:
+    irs_employment_income: 70
+

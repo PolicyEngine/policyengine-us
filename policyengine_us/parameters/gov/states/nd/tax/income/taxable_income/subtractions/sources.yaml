@@ -1,0 +1,36 @@
+description: North Dakota subtracts these variables from US taxable income when computing its taxable income.
+values:
+  2021-01-01:
+    - us_govt_interest
+    - nd_ltcg_subtraction  # long-term capital gains
+    - nd_qdiv_subtraction  # qualified dividends
+    - taxable_social_security
+    - military_retirement_pay
+
+  2023-01-01:
+    - us_govt_interest
+    - nd_ltcg_subtraction  # long-term capital gains
+    - nd_qdiv_subtraction  # qualified dividends
+    - taxable_social_security
+    - military_retirement_pay
+    - military_service_income # military pay exculsion
+
+metadata:
+  unit: list  
+  period: year  
+  label: North Dakota subtractions from federal taxable income  
+  reference:
+  - title: 2021 North Dakota income tax form
+    href: https://www.tax.nd.gov/sites/www/files/documents/forms/individual/2021-iit/form-nd-1-2021.pdf#page=1
+  - title: 2021 North Dakota income tax instructions, lines 6, 7, 13, 14, 15
+    href: https://www.tax.nd.gov/sites/www/files/documents/forms/individual/2021-iit/individual-income-tax-booklet-2021.pdf#page=14
+  - title: 2022 North Dakota income tax form
+    href: https://www.tax.nd.gov/sites/www/files/documents/forms/individual/2022-iit/form-nd-1-2022.pdf#page=1
+  - title: 2023 North Dakota income tax form
+    href: https://www.tax.nd.gov/sites/www/files/documents/forms/individual/2023-iit/form-nd-1-2023.pdf#page=1
+  - title: 2022 North Dakota income tax instructions, lines 6, 7, 13, 14, 15
+    href: https://www.tax.nd.gov/sites/www/files/documents/forms/individual/2022-iit/2022-individual-income-tax-booklet.pdf#page=14
+  - title: 2023 North Dakota income tax form and instruction booklet, line 5, 6, 10, 13, 14, 15
+    href: https://www.tax.nd.gov/sites/www/files/documents/forms/individual/2023-iit/2023-individual-income-tax-booklet.pdf#page=15
+  - title: North Dakota Century Code Title 57 - Taxation Chapter 57-38 - Income Tax, 57-38-30.3 (2) 
+    href: https://law.justia.com/codes/north-dakota/2022/title-57/chapter-57-38/

@@ -1,0 +1,232 @@
+- name: SINGLE, dsi=false, under 5_000, 3 exemption, 1 minor child (received more than half), 1 child over 18
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 3
+        is_child: true
+        child_support_received: 400
+        social_security_survivors: 100
+        tanf_person: 401
+      person2:
+        age: 39
+        is_child: false
+      person3:
+        age: 19
+        is_child: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        adjusted_gross_income: 4_000
+        filing_status: SINGLE
+        exemptions_count: 3
+        head_is_dependent_elsewhere: false
+    households:
+      household: 
+        members: [person1, person2, person3]
+        state_code: HI
+  output:
+    hi_food_excise_credit: 330
+
+- name: SINGLE, dsi=false, under 5_000, 3 exemption, 1 minor child (not received more than half), 1 child over 18
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 3
+        is_child: true
+        child_support_received: 1_000
+        social_security_survivors: 100
+        tanf_person: 400
+      person2:
+        age: 39
+        is_child: false
+      person3:
+        age: 19
+        is_child: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        adjusted_gross_income: 4_000
+        filing_status: SINGLE
+        exemptions_count: 3
+        head_is_dependent_elsewhere: false
+    households:
+      household: 
+        members: [person1, person2, person3]
+        state_code: HI
+  output:
+    hi_food_excise_credit: 330
+
+- name: SINGLE, dsi=true, under 5_000, 2 exemption, 1 minor child (received more than half)
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 3
+        is_child: true
+        child_support_received: 400
+        social_security_survivors: 100
+        tanf_person: 401
+      person2:
+        age: 39
+        is_child: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        tanf: 600 
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        adjusted_gross_income: 4_000
+        filing_status: SINGLE
+        exemptions_count: 2
+        head_is_dependent_elsewhere: true
+    households:
+      household: 
+        members: [person1, person2]
+        state_code: HI
+  output:
+    hi_food_excise_credit: 0
+
+- name: SINGLE, dsi=false, over 30_000, 3 exemption, 1 minor child (received more than half), 1 child over 18
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 3
+        is_child: true
+        child_support_received: 400
+        social_security_survivors: 100
+        tanf_person: 401
+      person2:
+        age: 39
+        is_child: false
+      person3:
+        age: 19
+        is_child: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        adjusted_gross_income: 35_000
+        filing_status: SINGLE
+        exemptions_count: 3
+        head_is_dependent_elsewhere: false
+    households:
+      household: 
+        members: [person1, person2, person3]
+        state_code: HI
+  output:
+    hi_food_excise_credit: 110
+
+- name: JOINT, dsi=false, over 30_000 under 40_000, 3 exemption, 1 minor child (received more than half), 1 child over 18
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 3
+        is_child: true
+        child_support_received: 400
+        social_security_survivors: 100
+        tanf_person: 401
+      person2:
+        age: 39
+        is_child: false
+      person3:
+        age: 19
+        is_child: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        adjusted_gross_income: 35_000
+        filing_status: JOINT
+        exemptions_count: 3
+        head_is_dependent_elsewhere: false
+    households:
+      household: 
+        members: [person1, person2, person3]
+        state_code: HI
+  output:
+    hi_food_excise_credit: 200
+
+- name: JOINT, dsi=false, over 50_000, 3 exemption, 1 minor child (received more than half), 1 child over 18
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 3
+        is_child: true
+        child_support_received: 500
+        social_security_survivors: 100
+        tanf_person: 401
+      person2:
+        age: 39
+        is_child: false
+      person3:
+        age: 19
+        is_child: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        adjusted_gross_income: 55_000
+        filing_status: JOINT
+        exemptions_count: 3
+        head_is_dependent_elsewhere: false
+    households:
+      household: 
+        members: [person1, person2, person3]
+        state_code: HI
+  output:
+    hi_food_excise_credit: 110
+
+- name: JOINT, dsi=false, over 5_000 under 10_000, 2 exemption, 1 minor child (received more than half)
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 30
+        is_child: false
+      person2:
+        age: 17
+        is_child: true
+        child_support_received: 500
+        social_security_survivors: 100
+        tanf_person: 401
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        adjusted_gross_income: 6_000
+        filing_status: SINGLE
+        head_is_dependent_elsewhere: false
+    households:
+      household: 
+        members: [person1, person2]
+        state_code: HI
+  output:
+    hi_food_excise_credit: 210
+
+- name: JOINT, dsi=false, over 5_000 under 10_000, 2 exemption, 1 minor child (not received more than half)
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 30
+        is_child: false
+      person2:
+        age: 17
+        is_child: true
+        child_support_received: 1_000
+        social_security_survivors: 100
+        tanf_person: 400
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        adjusted_gross_income: 6_000
+        filing_status: SINGLE
+        head_is_dependent_elsewhere: false
+    households:
+      household: 
+        members: [person1, person2]
+        state_code: HI
+  output:
+    hi_food_excise_credit: 200

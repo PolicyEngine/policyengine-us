@@ -1,0 +1,19 @@
+- name: Alabama medical itemized deductions unit test 1
+  period: 2021
+  input:
+    state_code: AL
+    medical_out_of_pocket_expenses: 2_000
+    al_agi: 80_000
+  output:
+    al_medical_expense_deduction: 0
+#2000-80000*0.04=-1200
+
+- name: Alabama medical itemized deductions unit test 2
+  period: 2021
+  input:
+    state_code: AL
+    medical_out_of_pocket_expenses: 7_000
+    al_agi: 90_000
+  output:
+    al_medical_expense_deduction: 3_400
+#7000-0.04 * 90,000=3400

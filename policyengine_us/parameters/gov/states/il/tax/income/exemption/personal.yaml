@@ -1,0 +1,24 @@
+description: Illinois provides the following personal exemption allowance amount.
+values:
+  2021-01-01: 2_375
+  2022-01-01: 2_425
+  2023-01-01: 2_425 # Redundancy per legal code.  
+  2024-01-01: 2_800 # $2,050 plus COLA since 2011.
+metadata:
+  uprating: 
+    parameter: gov.irs.uprating
+    rounding:
+      type: nearest
+      interval: 25
+  unit: currency-USD
+  period: year
+  label: Illinois personal exemption amount
+  reference:
+    - title: Illinois Income Tax Act, 35 ILCS 5/204 (b)
+      href: https://witnessslips.ilga.gov/legislation/ilcs/ilcs5.asp?ActID=577&ChapterID=8
+    - title: Illinois 2021 Form IL-1040 Instructions
+      href: https://tax.illinois.gov/content/dam/soi/en/web/tax/forms/incometax/documents/2021/individual/il-1040-instr.pdf#page=8
+    - title: Illinois 2022 Form IL-1040 Instructions
+      href: https://tax.illinois.gov/content/dam/soi/en/web/tax/forms/incometax/documents/2022/individual/il-1040-instr.pdf#page=8
+    - title: Illinois 2023 Form IL-1040 Instructions
+      href: https://tax.illinois.gov/content/dam/soi/en/web/tax/forms/incometax/documents/currentyear/individual/il-1040-instr.pdf#page=8

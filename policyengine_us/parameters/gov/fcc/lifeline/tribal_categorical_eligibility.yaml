@@ -1,0 +1,18 @@
+description: Program participation that entitles a tribal household to the Lifeline program
+values:
+  2016-12-01:
+    - head_start
+    - fdpir
+    - tanf
+    # Also not implemented:
+    # - Tribal programs:
+    #   - Bureau of Indian Affairs general assistance
+metadata:
+  period: month
+  unit: list
+  label: Lifeline tribal qualifying programs
+  reference:
+    - title: 47 CFR § 54.409 - Consumer qualification for Lifeline.
+      href: https://www.law.cornell.edu/cfr/text/47/54.409
+    - title: Lifeline Program for Low-Income Consumers # Specifies 2016-12-01 start date.
+      href: https://www.fcc.gov/general/lifeline-program-low-income-consumers

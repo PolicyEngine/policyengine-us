@@ -1,0 +1,40 @@
+start:
+  description: Phase-out start for both the American Opportunity Credit and Lifetime Learning Credit on AGI
+  single:
+    description: Phase-out start for both the American Opportunity Credit and Lifetime Learning Credit on AGI.
+    values:
+      2010-01-01: 80_000
+    metadata:
+      unit: currency-USD
+      period: year
+      label: Education credits phase-out start (single filers)
+  joint:
+    description: Phase-out start for both the American Opportunity Credit and Lifetime Learning Credit on AGI.
+    values:
+      2010-01-01: 160_000
+    metadata:
+      unit: currency-USD
+      period: year
+      label: Education credits phase-out start (joint filers)
+length:
+  description: Length of the phase-out for both the American Opportunity Credit and Lifetime Learning Credit on AGI (when excess income totals this amount, the credit is reduced to zero)
+  single:
+    description: Length of the phase-out for both the American Opportunity Credit and Lifetime Learning Credit on AGI (when excess income totals this amount, the credit is reduced to zero).
+    values:
+      2010-01-01: 10_000
+    metadata:
+      unit: currency-USD
+      period: year
+      label: Education credits phase-out length (single filers)
+  joint:
+    description: Length of the phase-out for both the American Opportunity Credit and Lifetime Learning Credit on AGI (when excess income totals this amount, the credit is reduced to zero).
+    values:
+      2010-01-01: 20_000
+    metadata:
+      unit: currency-USD
+      period: year
+      label: Education credits phase-out length (joint filers)
+metadata:
+  reference:
+    - title: 26 U.S. Code § 25A(d)(1)
+      url: https://www.law.cornell.edu/uscode/text/26/25A#d_1

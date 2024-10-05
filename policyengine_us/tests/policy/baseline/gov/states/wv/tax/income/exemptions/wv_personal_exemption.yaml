@@ -1,0 +1,30 @@
+- name: If not in West Virginia, no exemption.
+  period: 2022
+  input:
+    state_code: VA
+  output:
+    wv_personal_exemption: 0
+
+- name: Zero tax unit counts in the tax unit.
+  period: 2022
+  input:
+    state_code: WV
+    tax_unit_size: 0
+  output:
+    wv_personal_exemption: 500
+
+- name: Three tax unit counts in the tax unit.
+  period: 2022
+  input:
+    state_code: WV
+    tax_unit_size: 3
+  output:
+    wv_personal_exemption: 6_000
+
+- name: Two tax unit counts in the tax unit.
+  period: 2022
+  input:
+    state_code: WV
+    tax_unit_size: 2
+  output:
+    wv_personal_exemption: 4_000

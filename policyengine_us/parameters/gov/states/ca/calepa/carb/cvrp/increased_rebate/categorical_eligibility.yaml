@@ -1,0 +1,18 @@
+description: List of programs that qualify a household for an increased rebate under California's Clean Vehicle Rebate Project.
+values:
+  2016-01-01:
+    - medicaid
+    - ssi
+    # Also:
+    # - tanf # Not yet implemented in California.
+    # Medi-Cal (Income Qualified Medi-Cal Only)
+    # CAPI (Cash Assistance Program for Immigrants)
+    # Section 8 Rental Certificate Program for Very Low and Extremely Low Income classifications (HUD)
+    # EFMP/CC4A (San Joaquin Valley APCD, South Coast AQMD/Clean Cars 4 All)
+    # Clean Vehicle Assistance Program (CVA Program)
+
+metadata:
+  unit: list
+  reference:
+  - title: CVRP Info | Eligibility & Requirements
+    href: https://cleanvehiclerebate.org/en/eligibility-guidelines

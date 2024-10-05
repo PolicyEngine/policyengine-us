@@ -1,0 +1,15 @@
+description: The US caps high-efficiency home program rebates at this amount per year for electric wiring.
+values:
+  0000-01-01: 0
+  # Inflation Reduction Act
+  2023-01-01: 2_500
+  2032-01-01: 0
+metadata:
+  unit: currency-USD
+  period: year
+  label: High efficiency electric home rebate annual cap on electric wiring
+  reference:
+    - title: Inflation Reduction Act, part 2, Section 50121 (c)
+      href: https://www.democrats.senate.gov/imo/media/doc/inflation_reduction_act_of_2022.pdf#page=597
+
+  

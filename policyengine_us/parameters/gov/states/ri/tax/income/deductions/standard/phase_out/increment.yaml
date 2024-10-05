@@ -1,0 +1,25 @@
+description: Rhode Island phases the standard deduction out at this increment.
+values:
+  2021-01-01: 6_000
+  2022-01-01: 6_200
+  2023-01-01: 6_700
+
+metadata:
+  label: Rhode Island standard deduction phase out increment
+  period: year
+  unit: currency-USD
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
+  reference:
+  # Legal code specifies $5,000 starting in 2011.
+  - title: R.I. Gen. Laws § 44-30-2.6 (B), (III)
+    href: http://webserver.rilin.state.ri.us/Statutes/TITLE44/44-30/44-30-2.6.HTM
+  - title: RHODE ISLAND TAX RATE SCHEDULE AND WORKSHEETS 2022
+    href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-12/2022%20Tax%20Rate%20and%20Worksheets.pdf
+  - title: Rhode Island tax rate schedule and worksheets 2021
+    href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2021-11/2021-tax-rate-and-worksheets.pdf
+  # Rhode Island tax form does not specify this rate
+  # According to tax form 2021/2022, this rate can only be found in corresponding tax rate schedule and worksheets

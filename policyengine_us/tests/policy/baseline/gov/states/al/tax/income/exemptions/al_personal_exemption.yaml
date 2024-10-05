@@ -1,0 +1,23 @@
+- name: Single filer gets a $1,500 personal exemption.
+  period: 2022
+  input:
+    filing_status: SINGLE
+    state_code: AL
+  output:
+    al_personal_exemption: 1_500
+
+- name: Joint filer gets a $3,000 personal exemption.
+  period: 2022
+  input:
+    filing_status: JOINT
+    state_code: AL
+  output:
+    al_personal_exemption: 3_000
+
+- name: If not in Alabama, no exemption.
+  period: 2022
+  input:
+    filing_status: JOINT
+    state_code: AK
+  output:
+    al_personal_exemption: 0

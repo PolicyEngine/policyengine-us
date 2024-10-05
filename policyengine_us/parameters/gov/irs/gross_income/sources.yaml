@@ -1,0 +1,32 @@
+description: Income sources counted as gross income for tax purposes.
+values:
+  2010-01-01:
+    - irs_employment_income
+    - self_employment_income
+    - partnership_s_corp_income
+    - farm_income
+    - farm_rent_income
+    - capital_gains
+    - taxable_interest_income
+    - rental_income
+    # Royalties included in rental income
+    - dividend_income
+    - taxable_pension_income 
+    # Pension income includes annuities and endowment contracts
+    - debt_relief
+    # Decedent income
+    # Estate interest income
+    - taxable_unemployment_compensation
+    - taxable_social_security
+    - illicit_income
+    - taxable_retirement_distributions
+    - miscellaneous_income
+    # Listed separately on 1040 line 8g.
+    - ak_permanent_fund_dividend
+metadata:
+  unit: list
+  period: year
+  label: Gross income sources
+  reference:
+    - title: 26 U.S. Code § 61 - Gross income defined
+      href: https://www.law.cornell.edu/uscode/text/26/61

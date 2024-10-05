@@ -1,0 +1,117 @@
+description: The maximum EITC amount.
+
+brackets:
+  - threshold:
+      0000-01-01: 0
+    amount:
+      2017-01-01: 510
+      2018-01-01: 519
+      2019-01-01: 529
+      2020-01-01: 538
+      2021-01-01: 1_502
+      2022-01-01: 560
+      2023-01-01: 600
+      2024-01-01: 632
+      # CBO forecast.
+      2025-01-01: 648
+      2026-01-01: 662
+      2027-01-01: 675
+      2028-01-01: 689
+      2029-01-01: 702
+      2030-01-01: 716
+      2031-01-01: 731
+      2032-01-01: 745
+      2033-01-01: 760
+      2034-01-01: 775
+  - threshold:
+      0000-01-01: 1
+    amount:
+      2017-01-01: 3_400
+      2018-01-01: 3_461
+      2019-01-01: 3_526
+      2020-01-01: 3_584
+      2021-01-01: 3_618
+      2022-01-01: 3_733
+      2023-01-01: 3_995
+      2024-01-01: 4_213
+      # CBO forecast.
+      2025-01-01: 4_318
+      2026-01-01: 4_413
+      2027-01-01: 4_505
+      2028-01-01: 4_593
+      2029-01-01: 4_682
+      2030-01-01: 4_774
+      2031-01-01: 4_869
+      2032-01-01: 4_967
+      2033-01-01: 5_066
+      2034-01-01: 5_168
+  - threshold:
+      0000-01-01: 2
+    amount:
+      2017-01-01: 5_616
+      2018-01-01: 5_716
+      2019-01-01: 5_828
+      2020-01-01: 5_920
+      2021-01-01: 5_980
+      2022-01-01: 6_164
+      2023-01-01: 6_604
+      2024-01-01: 6_960
+      # CBO forecast.
+      2025-01-01: 7_136
+      2026-01-01: 7_292
+      2027-01-01: 7_444
+      2028-01-01: 7_588
+      2029-01-01: 7_736
+      2030-01-01: 7_888
+      2031-01-01: 8_044
+      2032-01-01: 8_204
+      2033-01-01: 8_368
+      2034-01-01: 8_536
+  - threshold:
+      0000-01-01: 3
+    amount:
+      2017-01-01: 6_318
+      2018-01-01: 6_431
+      2019-01-01: 6_557
+      2020-01-01: 6_660
+      2021-01-01: 6_728
+      2022-01-01: 6_935
+      2023-01-01: 7_430
+      2024-01-01: 7_830
+      # CBO forecast.
+      2025-01-01: 8_028
+      2026-01-01: 8_204
+      2027-01-01: 8_374
+      2028-01-01: 8_536
+      2029-01-01: 8_703
+      2030-01-01: 8_874
+      2031-01-01: 9_050
+      2032-01-01: 9_230
+      2033-01-01: 9_414
+      2034-01-01: 9_603
+metadata:
+  type: single_amount
+  threshold_unit: child
+  amount_unit: currency-USD
+  # Skip uprating to avoid uprating the thresholds.
+  label: EITC maximum amount by number of children
+  reference:
+    - title: 2024 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-23-34.pdf#page=10
+    - title: 2023 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-22-38.pdf#page=10
+    - title: 2022 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-21-45.pdf#page=10
+    - title: 2021 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-20-45.pdf#page=10
+    - title: 2020 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-19-44.pdf#page=10
+    - title: 2019 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-18-57.pdf#page=12
+    - title: 2018 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-17-58.pdf#page=10
+    - title: 2017 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-16-55.pdf#page=11
+    - title: CBO Tax Parameters and Effective Marginal Tax Rates | Feb 2024
+      # 1. Tax Parameters.
+      href: https://www.cbo.gov/system/files/2024-02/53724-2024-02-Tax-Parameters.xlsx

@@ -1,0 +1,28 @@
+description: The US covers this percentage of expenditures for its high-efficiency electric home program rebate program, based on a household's ratio of income to area median income
+brackets:
+  # 100% covered up to 80% of AMI.
+  - threshold:
+      0000-01-01: -.inf
+    amount:
+      0000-01-01: 0
+      2023-01-01: 1
+  # 50% covered up to 150% of AMI.
+  - threshold:
+      0000-01-01: 0.8
+    amount:
+      0000-01-01: 0
+      2023-01-01: 0.5
+  # 0% covered for income exceeding 150% of AMI.
+  - threshold:
+      0000-01-01: 1.5
+    amount:
+      0000-01-01: 0
+      2023-01-01: 0
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: /1
+  label: High efficiency electric home rebate percent covered
+  reference:
+    - title: Inflation Reduction Act
+      href: https://www.democrats.senate.gov/imo/media/doc/inflation_reduction_act_of_2022.pdf#page=598

@@ -1,0 +1,26 @@
+- name: No earned income, $0 per year
+  period: 2023
+  input:
+    state_code: CO
+    co_tanf_countable_gross_earned_income: 0
+    is_tanf_enrolled: false
+  output:
+    co_tanf_countable_earned_income_need: 0
+
+- name: Earned income $1,000, $ per year
+  period: 2023
+  input:
+    state_code: CO
+    co_tanf_countable_gross_earned_income: 1_000 * 12
+    is_tanf_enrolled: false
+  output:
+    co_tanf_countable_earned_income_need: 910 * 12 # $90 disregard only.
+
+- name: Earned income $1,000 and TANF enrolled, $ per year
+  period: 2023
+  input:
+    state_code: CO
+    co_tanf_countable_gross_earned_income: 1_000
+    is_tanf_enrolled: true
+  output:
+    co_tanf_countable_earned_income_need: 330 # 67% disregard

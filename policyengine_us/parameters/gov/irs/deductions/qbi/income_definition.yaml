@@ -1,0 +1,10 @@
+description: Income sources that count as qualified business income.
+values:
+  2018-01-01:
+    - self_employment_income
+    - partnership_s_corp_income
+    - farm_income
+    - farm_rent_income
+metadata:
+  unit: list
+  label: Qualified business income sources

@@ -1,0 +1,100 @@
+- name: 2021 single filer who is not blind and not at the age threshold
+  period: 2021
+  input:
+    state_code: OR
+    filing_status: SINGLE
+    age_head: 35
+  output:
+    or_standard_deduction: 2_350
+
+- name: 2021 single filer who is not blind and is at the age threshold
+  period: 2021
+  input:
+    state_code: OR
+    filing_status: SINGLE
+    age_head: 65
+  output:
+    #$2350 base + $1200 aged
+    or_standard_deduction: 3_550
+
+- name: 2021 single filer who is blind and not at the age threshold
+  period: 2021
+  input:
+    state_code: OR
+    filing_status: SINGLE
+    age_head: 35
+    blind_head: true
+  output:
+    # $2350 base + $1200 blind
+    or_standard_deduction: 3_550
+
+- name: 2021 joint filer who is not blind and not at the age threshold, their spouse is also not blind and not at the threshold
+  period: 2021
+  input:
+    state_code: OR
+    filing_status: JOINT
+    age_head: 35
+    age_spouse: 35
+  output: 
+    # $4700 base
+    or_standard_deduction: 4_700
+
+- name: 2021 joint filer who is not blind and is at the age threshold, their spouse is not blind and below age threshold.
+  period: 2021
+  input:
+    state_code: OR
+    filing_status: JOINT
+    age_head: 65
+    age_spouse: 60
+  output:
+    # $4700 base + $1000 1 aged spouse
+    or_standard_deduction: 5_700
+
+- name: 2021 joint filer who is blind and not at the age threshold, their spouse is not blind and not at the threshold
+  period: 2021
+  input:
+    state_code: OR
+    filing_status: JOINT
+    age_head: 35
+    age_spouse: 35
+    blind_head: true
+  output:
+    # $4700 base + $1000 blind head
+    or_standard_deduction: 5_700
+
+- name: 2021 single filer who is not blind, not at the age threshold, can be claimed as a dependent, and has an earned income of $600
+  period: 2021
+  input:
+    state_code: OR
+    filing_status: JOINT
+    age_head: 35
+    head_is_dependent_elsewhere: true
+    tax_unit_earned_income: 600
+  output: 
+    # $1100 base 
+    or_standard_deduction: 1_100
+
+- name: 2021 single filer who is not blind and is not at the age threshold and can be claimed as a dependent, their earned income is $1000
+  period: 2021
+  input:
+    state_code: OR
+    filing_status: SINGLE
+    age_head: 35
+    head_is_dependent_elsewhere: true
+    tax_unit_earned_income: 1_000
+  output:
+    # $1000 income + $350 addition, below the $2,350 normal standard deduction cap.
+    or_standard_deduction: 1_350
+
+- name: 2021 single filer who is blind and not at the age threshold and can be claimed as a dependent, their earned income is $1000
+  period: 2021
+  input:
+    state_code: OR
+    filing_status: SINGLE
+    age: 35
+    head_is_dependent_elsewhere: true
+    tax_unit_earned_income: 1_000
+    blind_head: true
+  output:
+    # $1000 income + $350 addition + $1200 blind
+    or_standard_deduction: 2_550

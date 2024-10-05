@@ -1,0 +1,98 @@
+description: Hawaii taxes separate filers at these rates by taxable income.
+brackets:
+  - threshold:
+      2018-01-01: 0
+    rate:
+      2018-01-01: 0.014
+  - threshold:
+      2018-01-01: 2_400
+      2025-01-01: 9_600
+      2027-01-01: 14_400
+      2029-01-01: 19_200
+    rate:
+      2018-01-01: 0.032
+  - threshold:
+      2018-01-01: 4_800
+      2025-01-01: 14_400
+      2027-01-01: 19_200
+      2029-01-01: 24_000
+    rate:
+      2018-01-01: 0.055
+  - threshold:
+      2018-01-01: 9_600
+      2025-01-01: 19_200
+      2027-01-01: 24_000
+      2029-01-01: 36_000
+    rate:
+      2018-01-01: 0.064
+  - threshold:
+      2018-01-01: 14_400
+      2025-01-01: 24_000
+      2027-01-01: 36_000
+      2029-01-01: 48_000
+    rate:
+      2018-01-01: 0.068
+  - threshold:
+      2018-01-01: 19_200
+      2025-01-01: 36_000
+      2027-01-01: 48_000
+      2029-01-01: 125_000
+    rate:
+      2018-01-01: 0.072
+  - threshold:
+      2018-01-01: 36_000
+      2025-01-01: 48_000
+      2027-01-01: 125_000
+      2029-01-01: 175_000
+    rate:
+      2018-01-01: 0.076
+  - threshold:
+      2018-01-01: 48_000
+      2025-01-01: 125_000
+      2027-01-01: 175_000
+      2029-01-01: 225_000
+    rate:
+      2018-01-01: 0.079
+  - threshold:
+      2018-01-01: 48_000
+      2025-01-01: 175_000
+      2027-01-01: 225_000
+      2029-01-01: 275_000
+    rate:
+      2018-01-01: 0.0825
+  - threshold:
+      2018-01-01: 150_000
+      2025-01-01: 225_000
+      2027-01-01: 275_000
+      2029-01-01: 325_000
+    rate:
+      2018-01-01: 0.09
+  - threshold:
+      2018-01-01: 175_000
+      2025-01-01: 275_000
+      2027-01-01: 325_000
+      2029-01-01: 400_000
+    rate:
+      2018-01-01: 0.1
+  - threshold:
+      2018-01-01: 200_000
+      2025-01-01: 325_000
+      2027-01-01: 400_000
+      2029-01-01: 475_000
+    rate:
+      2018-01-01: 0.11
+
+metadata:
+  threshold_unit: currency_USD
+  rate_unit: /1
+  threshold_period: year
+  type: marginal_rate
+  label: Hawaii separate income tax rate
+  reference:
+    - title: Tax Rate Schedules For Taxable Years Beginning After December 31, 2017
+      href: https://tax.hawaii.gov/forms/d_18table-on/d_18table-on_p13/
+    - title: Tax Bill H.B. 2404 H.D. 1, S.D.1, C.D.1 Section 235-51 (c)
+      href: https://data.capitol.hawaii.gov/sessions/session2024/bills/HB2404_CD1_.HTM
+  # The legal code does not reflect the most recent changes from Bill H.B. 2404 H.D. 1, S.D.1, C.D.1
+    - title: Hawaii Revised Statutes §235-51 (c)
+      href: https://www.capitol.hawaii.gov/hrscurrent/Vol04_Ch0201-0257/HRS0235/HRS_0235-0051.htm

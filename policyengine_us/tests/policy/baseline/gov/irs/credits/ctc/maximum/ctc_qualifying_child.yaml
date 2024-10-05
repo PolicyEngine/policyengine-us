@@ -1,0 +1,37 @@
+- name: Count those with nonzero amounts.
+  period: 2021
+  input:
+    people:
+      adult:
+        age: 30
+        is_tax_unit_dependent: false
+      child:
+        age: 16
+        is_tax_unit_dependent: true
+      child2:
+        age: 17
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [adult, child, child2]
+  output:
+    ctc_qualifying_child: [False, True, True]
+
+- name: One eligible dependent
+  period: 2023
+  input:
+    people:
+      adult:
+        age: 30
+        is_tax_unit_dependent: false
+      child:
+        age: 16
+        is_tax_unit_dependent: true
+      child2:
+        age: 17
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [adult, child, child2]
+  output:
+    ctc_qualifying_child: [False, True, False]

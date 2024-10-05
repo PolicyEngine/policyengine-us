@@ -1,0 +1,11 @@
+description: Wisconsin property tax credit is limited to this maximum.
+metadata:
+  unit: currency-USD
+  period: year
+  label: Wisconsin property tax credit limit
+  reference:
+    - title: Legislative Fiscal Bureau paper on WI income tax 
+      href: https://docs.legis.wisconsin.gov/misc/lfb/informational_papers/january_2023/0002_individual_income_tax_informational_paper_2.pdf#page=19
+    # No tax form citation as the tax instructions only provide a lookup table.
+values:
+  2000-01-01: 300

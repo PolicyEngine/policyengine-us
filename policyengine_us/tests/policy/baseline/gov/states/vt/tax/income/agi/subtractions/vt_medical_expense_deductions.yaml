@@ -1,0 +1,39 @@
+- name: VT medical expense deduction amount unit test 1
+  period: 2022
+  input:
+    state_code: ME # Test state definition
+    medical_expense_deduction: 5_000
+    vt_standard_deduction: 1_000
+    vt_personal_exemptions: 1_000
+  output:
+    vt_medical_expense_deduction: 0  
+
+- name: VT medical expense deduction amount unit test 2
+  period: 2022
+  input:
+    state_code: VT
+    medical_expense_deduction: 5_000
+    vt_standard_deduction: 1_000
+    vt_personal_exemptions: 1_000
+  output:
+    vt_medical_expense_deduction: 3_000  # max(0,5000-2000) = 3000
+
+- name: VT medical expense deduction amount unit test 3
+  period: 2022
+  input:
+    state_code: VT
+    medical_expense_deduction: 1_000
+    vt_standard_deduction: 1_000
+    vt_personal_exemptions: 1_000
+  output:
+    vt_medical_expense_deduction: 0  # max(0,1000-2000) = 0
+
+- name: VT medical expense deduction amount unit test 4
+  period: 2022
+  input:
+    state_code: VT
+    medical_expense_deduction: 2_000
+    vt_standard_deduction: 1_000
+    vt_personal_exemptions: 1_000
+  output:
+    vt_medical_expense_deduction: 0 # max(0,2000-2000) = 0

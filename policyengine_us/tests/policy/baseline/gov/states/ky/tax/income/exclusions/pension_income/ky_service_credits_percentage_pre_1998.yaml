@@ -1,0 +1,17 @@
+- name: No months worked, default is zero.
+  period: 2023
+  input:
+    ky_service_credit_months_pre_1998: 0
+    ky_service_credit_months_post_1997: 0
+    state_code: KY
+  output:
+    ky_service_credits_percentage_pre_1998: 0
+
+- name: Share of months before cutoff.
+  period: 2023
+  input:
+    ky_service_credit_months_pre_1998: 1
+    ky_service_credit_months_post_1997: 1
+    state_code: KY
+  output:
+    ky_service_credits_percentage_pre_1998: 0.5

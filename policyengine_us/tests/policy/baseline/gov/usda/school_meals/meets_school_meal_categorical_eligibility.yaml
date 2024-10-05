@@ -1,0 +1,83 @@
+- name: SPM unit only participates in SNAP.
+  period: 2022
+  input:
+      snap: 1
+      tanf: 0
+      fdpir: 0
+      was_in_foster_care: false
+      is_homeless: false
+      is_runaway_child: false
+      is_migratory_child: false
+      is_head_start_eligible: false
+  output:
+      meets_school_meal_categorical_eligibility: true
+
+- name: SPM unit participates in TANF and FDPIR.
+  period: 2022
+  input:
+      snap: 0
+      tanf: 1
+      fdpir: 1
+      was_in_foster_care: false
+      is_homeless: false
+      is_runaway_child: false
+      is_migratory_child: false
+      is_head_start_eligible: false
+  output:
+      meets_school_meal_categorical_eligibility: true
+
+- name: Is homeless and is migratory child.
+  period: 2022
+  input:
+      snap: 0
+      tanf: 0
+      fdpir: 0
+      was_in_foster_care: false
+      is_homeless: true
+      is_runaway_child: false
+      is_migratory_child: true
+      is_head_start_eligible: false
+  output:
+      meets_school_meal_categorical_eligibility: true
+
+- name: Is runaway child.
+  period: 2022
+  input:
+      snap: 0
+      tanf: 0
+      fdpir: 0
+      was_in_foster_care: false
+      is_homeless: false
+      is_runaway_child: true
+      is_migratory_child: false
+      is_head_start_eligible: false
+  output:
+      meets_school_meal_categorical_eligibility: true
+
+- name: Is Head Start child.
+  period: 2022
+  input:
+      snap: 0
+      tanf: 0
+      fdpir: 0
+      was_in_foster_care: false
+      is_homeless: false
+      is_runaway_child: true
+      is_migratory_child: false
+      is_head_start_eligible: true
+  output:
+      meets_school_meal_categorical_eligibility: true
+
+- name: No participation in any programs.
+  period: 2022
+  input:
+      snap: 0
+      tanf: 0
+      fdpir: 0
+      was_in_foster_care: false
+      is_homeless: false
+      is_runaway_child: false
+      is_migratory_child: false
+      is_head_start_eligible: false
+  output:
+      meets_school_meal_categorical_eligibility: false

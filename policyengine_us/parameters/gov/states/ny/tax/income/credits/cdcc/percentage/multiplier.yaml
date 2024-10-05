@@ -1,0 +1,38 @@
+description: New York CDCC rate is multiplied by this amount, given New York AGI.
+brackets:
+  - threshold:
+      1999-01-01: 0
+    amount:
+      1999-01-01: 1.000
+  - threshold:
+      1999-01-01: 50_000
+    amount:
+      1999-01-01: 1.1682
+  - threshold:
+      1999-01-01: 55_000
+    amount:
+      1999-01-01: 1.2733
+  - threshold:
+      1999-01-01: 60_000
+    amount:
+      1999-01-01: 2.322
+  - threshold:
+      1999-01-01: 65_000
+    amount:
+      1999-01-01: 3.000
+  - threshold:
+      1999-01-01: 150_000
+    amount:
+      1999-01-01: 1.000
+    
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  threshold_period: year
+  amount_unit: /1
+  label: New York CDCC multiplier
+  reference:
+    - title: New York Instructions for Form IT-201 Line 64
+      href: https://www.tax.ny.gov/pdf/2023/printable-pdfs/inc/it201i-2023.pdf#page=26
+    - title: Section 606 Credits against tax (c)(1-a)
+      href: https://www.nysenate.gov/legislation/laws/TAX/606

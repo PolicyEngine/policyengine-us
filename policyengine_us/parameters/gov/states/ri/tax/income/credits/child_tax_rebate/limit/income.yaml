@@ -1,0 +1,24 @@
+description: Rhode Island limits its child tax rebate to filers with federal adjusted gross income of this amount or less.
+metadata:
+  unit: currency-USD
+  period: year
+  label: Rhode Island child tax rebate income limit
+  breakdown:
+  - filing_status
+  reference:
+  # The child tax rebate was introduced in 2022
+  - title: 2022 RI Schedule M - page 1 RI Modifications to Federal AGI line 1v
+    href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-12/2022%20RI%20Schedule%20M_w.pdf#page=1
+  - title: R.I. Gen. Laws § 44-30-103  44-30-103. Child tax rebates. (a). (1) & (2)
+    href: http://webserver.rilin.state.ri.us/Statutes/TITLE44/44-30/44-VI/44-30-103.htm
+
+SINGLE:
+  2022-01-01: 100_000
+JOINT:
+  2022-01-01: 200_000
+SEPARATE:
+  2022-01-01: 100_000
+HEAD_OF_HOUSEHOLD:
+  2022-01-01: 100_000
+SURVIVING_SPOUSE:
+  2022-01-01: 100_000

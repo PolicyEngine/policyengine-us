@@ -1,0 +1,15 @@
+description: Colorado allows for a flat sales tax refund credit if this is true. 
+values:
+  2021-01-01: false
+  2023-01-01: true
+metadata:
+  period: year
+  unit: bool
+  label: Colorado sales tax refund credit flat amount enabled
+  reference:
+    - title: 2023 Colorado Individual Income Tax Filing Guide
+      href: https://leg.colorado.gov/sites/default/files/documents/2023A/bills/fn/2023a_hb1311_00.pdf#page=3
+    - title: 2022 Colorado Individual Income Tax Filing Guide
+      href: https://tax.colorado.gov/sites/tax/files/documents/DR_0104_Book_2022.pdf#page=23
+    - title: Colorado General Assembly HB23-1311 Identical Temporary TABOR Refund
+      href: https://leg.colorado.gov/bills/hb23-1311#:~:text=The%20act%20creates%20a%20new,2022%2D23%20state%20fiscal%20year

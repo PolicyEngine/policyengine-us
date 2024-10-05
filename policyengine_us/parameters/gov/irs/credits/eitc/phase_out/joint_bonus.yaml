@@ -1,0 +1,105 @@
+description: Extra earned income credit phase-out start AGI for married filing jointly.
+metadata:
+  rate_unit: currency-USD
+  propagate_metadata_to_children: true
+  threshold_unit: child
+  type: single_amount
+  reference:
+    # Recorded in IRS data releases as the difference between
+    # Row 3: Threshold Phaseout Amount (Single, Surviving Spouse, or Head of 
+    #        Household), and
+    # Row 5: Threshold Phaseout Amount (Married Filing Jointly)
+    - title: 2024 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-23-34.pdf#page=9
+    - title: IRS data release 2023
+      href: https://www.irs.gov/pub/irs-drop/rp-22-38.pdf#page=10
+    - title: 2022 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-21-45.pdf#page=10
+    - title: 2021 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-20-45.pdf#page=10
+    - title: 2020 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-19-44.pdf#page=10
+    - title: 2019 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-18-57.pdf#page=13
+    - title: EITC Parameters | TPC
+      href: https://www.taxpolicycenter.org/statistics/eitc-parameters
+    - title: CBO Tax Parameters and Effective Marginal Tax Rates | Feb 2024
+      # 1. Tax Parameters.
+      href: https://www.cbo.gov/system/files/2024-02/53724-2024-02-Tax-Parameters.xlsx
+brackets:
+  - amount:
+      values:
+        2002-01-01: 1_000
+        2005-01-01: 2_000
+        2008-01-01: 3_000
+        2009-01-01: 5_000
+        2010-01-01: 5_010
+        2011-01-01: 5_080
+        2012-01-01: 5_210
+        2013-01-01: 5_340
+        2014-01-01: 5_430
+        2015-01-01: 5_520
+        2016-01-01: 5_550
+        2017-01-01: 5_590 # 13_930 - 8_340
+        2018-01-01: 5_690 # 14_200 - 8_510
+        2019-01-01: 5_800 # 14_450 - 8_650
+        2020-01-01: 5_890 # 14_680 - 8_790
+        2021-01-01: 5_940 # 14_820 - 8_880
+        2022-01-01: 6_130 # 15_290 - 9_160
+        2023-01-01: 6_570 # 16_370 - 9_800
+        2024-01-01: 6_920 # 17_250 - 10_330 
+        # CBO forecast.
+        2025-01-01: 7_100
+        2026-01-01: 7_250
+        2027-01-01: 7_400
+        2028-01-01: 7_550
+        2029-01-01: 7_690
+        2030-01-01: 7_840
+        2031-01-01: 8_000
+        2032-01-01: 8_160
+        2033-01-01: 8_330
+        2034-01-01: 8_490
+      metadata:
+        unit: currency-USD
+        period: year
+        label: EITC phase-out start joint filer bonus (no children)
+    threshold:
+      2013-01-01: 0
+  - amount:
+      values:
+        2002-01-01: 1_000
+        2005-01-01: 2_000
+        2008-01-01: 3_000
+        2009-01-01: 5_000
+        2010-01-01: 5_010
+        2011-01-01: 5_080
+        2012-01-01: 5_210
+        2013-01-01: 5_340
+        2014-01-01: 5_430
+        2015-01-01: 5_520
+        2016-01-01: 5_550
+        2017-01-01: 5_590 # 23_930 - 18_340
+        2018-01-01: 5_700 # 24_400 - 18_700
+        2019-01-01: 5_790 # 24_820 - 19_030
+        2020-01-01: 5_890 # 25_220 - 19_330
+        2021-01-01: 5_950 # 25_470 - 19_520
+        2022-01-01: 6_130 # 26_260 - 20_130
+        2023-01-01: 6_560 # 28_120 - 21_560
+        2024-01-01: 6_920 # 29_640 - 22_720
+        # CBO forecast.
+        2025-01-01: 7_100
+        2026-01-01: 7_250
+        2027-01-01: 7_400
+        2028-01-01: 7_550
+        2029-01-01: 7_690
+        2030-01-01: 7_840
+        2031-01-01: 8_000
+        2032-01-01: 8_160
+        2033-01-01: 8_330
+        2034-01-01: 8_490
+      metadata:
+        unit: currency-USD
+        period: year
+        label: EITC phase-out start joint filer bonus (with children)
+    threshold:
+      2013-01-01: 1

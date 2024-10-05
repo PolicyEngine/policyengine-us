@@ -1,0 +1,24 @@
+description: Illinois Use Tax Rate (if greater than $100,000)
+brackets:
+  - amount:
+      2021-01-01: 0
+    threshold:
+      2021-01-01: 0
+  - amount:
+      2021-01-01: 0.0005
+    threshold:
+      2021-01-01: 100_001
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: /1
+  period: year
+  label: Illinois Use Tax Rate
+  reference:
+    # Use tax rate is only specified in tax forms and not in legal code
+    - title: Illinois 2021 Form IL-1040 Instructions
+      href: https://tax.illinois.gov/content/dam/soi/en/web/tax/forms/incometax/documents/2021/individual/il-1040-instr.pdf#page=10
+    - title: Illinois 2022 Form IL-1040 Instructions
+      href: https://tax.illinois.gov/content/dam/soi/en/web/tax/forms/incometax/documents/2022/individual/il-1040-instr.pdf#page=10
+    - title: Illinois 2023 Form IL-1040 Instructions
+      href: https://tax.illinois.gov/content/dam/soi/en/web/tax/forms/incometax/documents/currentyear/individual/il-1040-instr.pdf#page=10

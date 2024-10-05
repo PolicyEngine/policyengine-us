@@ -1,0 +1,21 @@
+- name: Single filing, income excess of $5000
+  period: 2022
+  input:
+    hi_taxable_income: 5_000
+    filing_status: SINGLE
+    state_code: HI
+  output:
+    # First $4800 = $110.4
+    # 5.5% of the next $200 = $11
+    hi_income_tax_before_non_refundable_credits: 121.4
+
+- name: Joint, income excess of $1000 but not excess of $6000
+  period: 2022
+  input:
+    hi_taxable_income: 5_000
+    filing_status: JOINT
+    state_code: HI
+  output:
+    # First $4800 = $67.2
+    # 3.2% of the next $200 = $6.4
+    hi_income_tax_before_non_refundable_credits: 73.6

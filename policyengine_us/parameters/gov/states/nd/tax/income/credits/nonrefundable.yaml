@@ -1,0 +1,19 @@
+description: North Dakota non-refundable credits.
+values:
+  2021-01-01:
+    - nd_mpc  # marriage-penalty credit
+    - nd_rtrc  # resident-tax-relief credit (only for 2021-2022)
+  2023-01-01:
+    - nd_mpc  # marriage-penalty credit
+
+metadata:
+  unit: list
+  period: year
+  label: North Dakota non-refundable credits
+  reference:
+  - title: 2021 North Dakota income tax form and instruction booklet, lines 20 and 22
+    href: https://www.tax.nd.gov/sites/www/files/documents/forms/individual/2021-iit/2021-individual-income-tax-booklet.pdf#page=16
+  - title: 2022 North Dakota income tax form and instruction booklet, lines 20 and 22
+    href: https://www.tax.nd.gov/sites/www/files/documents/forms/individual/2022-iit/2022-individual-income-tax-booklet.pdf#page=16
+  - title: 2023 North Dakota income tax form and instruction booklet, Marriage Penalty Credit Worksheet line 22
+    href: https://www.tax.nd.gov/sites/www/files/documents/forms/individual/2023-iit/2023-individual-income-tax-booklet.pdf#page=16

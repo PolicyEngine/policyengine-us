@@ -1,0 +1,44 @@
+- name: $6k tuition, doesn't itemize.
+  period: 2022
+  input:
+    state_code: NY
+    qualified_tuition_expenses: 6_000
+    ny_itemizes: false
+  output:
+    ny_college_tuition_credit: 200 + 0.04 * 1_000
+
+- name: $6k tuition, itemizes.
+  period: 2022
+  input:
+    state_code: NY
+    qualified_tuition_expenses: 6_000
+    ny_itemizes: true
+  output:
+    ny_college_tuition_credit: 0
+
+- name: $100 tuition, doesn't itemize.
+  period: 2022
+  input:
+    state_code: NY
+    qualified_tuition_expenses: 100
+    ny_itemizes: false
+  output:
+    ny_college_tuition_credit: 100
+
+- name: $4,000 tuition, doesn't itemize.
+  period: 2022
+  input:
+    state_code: NY
+    qualified_tuition_expenses: 4_000
+    ny_itemizes: false
+  output:
+    ny_college_tuition_credit: 200
+
+- name: $6k tuition, doesn't itemize, in 2002 when the applicable percentage was 50%.
+  period: 2002
+  input:
+    state_code: NY
+    qualified_tuition_expenses: 6_000
+    ny_itemizes: false
+  output:
+    ny_college_tuition_credit: 0.5 * (200 + 0.04 * 1_000)

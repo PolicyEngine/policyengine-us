@@ -1,0 +1,33 @@
+description: Montana caps the childcare expenses under the child and dependent care expense deduction to the following amount, based on the number of qualifying children.
+
+metadata:
+  type: single_amount
+  period: year
+  threshold_unit: child
+  unit: currency-USD
+  label: Montana Child and Dependent Care Expense Deduction cap
+  reference:
+  - title: Montana legal code Code § 15-30-2131 1(c)(iv)(B)
+    href: https://casetext.com/statute/montana-code/title-15-taxation/chapter-30-individual-income-tax/part-21-rate-and-general-provisions/section-15-30-2131-effective-until-1012023-deductions-allowed-in-computing-net-income
+  - title: 2021 Montana Child and Dependent Care Expense Deduction
+    href: https://mtrevenue.gov/wp-content/uploads/mdocs/2021%20form%202441-m.pdf#page=1
+  - title: 2022 Montana Child and Dependent Care Expense Deduction
+    href: https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2022/12/2441-M_2022.pdf#page=1
+
+brackets:
+  - threshold:
+      2021-01-01: 0
+    amount:
+      2021-01-01: 0
+  - threshold:
+      2021-01-01: 1
+    amount:
+      2021-01-01: 2_400
+  - threshold:
+      2021-01-01: 2
+    amount:
+      2021-01-01: 3_600
+  - threshold:
+      2021-01-01: 3
+    amount:
+      2021-01-01: 4_800

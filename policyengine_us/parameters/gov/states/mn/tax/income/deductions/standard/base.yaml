@@ -1,0 +1,74 @@
+description: Minnesota provides this base standard deduction amount.
+metadata:
+  label: Minnesota base standard deduction amount
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  reference:
+  - title: Minnesota Statutes 290.0123 STANDARD DEDUCTION. Subdivision 1.Standard deduction amount
+    href: https://www.revisor.mn.gov/statutes/cite/290.0123#stat.290.0123.1
+  - title: Minnesota Statutes, 290.0123 Subd. 6.Inflation adjustment.
+    href: https://www.revisor.mn.gov/statutes/cite/290.0123#stat.290.0123.6
+  - title: 2021 Minnesota M1 form instructions
+    href: https://www.revenue.state.mn.us/sites/default/files/2023-01/m1_inst_21.pdf#page=3
+  - title: 2022 Minnesota M1 form instructions
+    href: https://www.revenue.state.mn.us/sites/default/files/2023-03/m1_inst_22.pdf#page=3
+  - title: 2023 Minnesota M1 form instructions
+    href: https://www.revenue.state.mn.us/sites/default/files/2024-02/m1-inst-23.pdf#page=3
+
+JOINT:
+  values:
+    2021-01-01: 25_050
+    2022-01-01: 25_800
+    2023-01-01: 27_650
+  metadata:
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: downwards
+        interval: 50
+HEAD_OF_HOUSEHOLD:
+  values:
+    2021-01-01: 18_800
+    2022-01-01: 19_400
+    2023-01-01: 20_800
+  metadata:
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: downwards
+        interval: 50
+SURVIVING_SPOUSE:
+  values:
+    2021-01-01: 25_050
+    2022-01-01: 25_800
+    2023-01-01: 27_650
+  metadata:
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: downwards
+        interval: 50
+SINGLE:
+  values:
+    2021-01-01: 12_525
+    2022-01-01: 12_900
+    2023-01-01: 13_825
+  metadata:
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: downwards
+        interval: 50
+SEPARATE:
+  values:
+    2021-01-01: 12_525
+    2022-01-01: 12_900
+    2023-01-01: 13_825
+  metadata:
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: downwards
+        interval: 50

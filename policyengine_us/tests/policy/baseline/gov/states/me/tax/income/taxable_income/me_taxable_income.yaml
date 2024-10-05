@@ -1,0 +1,32 @@
+- name: Maine taxable income is $0 outside of Maine.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: NY
+    me_agi: 50_000
+    me_deductions: 15_000
+    me_exemptions: 5_000
+  output:
+    me_taxable_income: 0
+
+- name: Maine taxable income is Maine AGI minus deductions and exemptions.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: ME
+    me_agi: 50_000
+    me_deductions: 15_000
+    me_exemptions: 5_000
+  output:
+    me_taxable_income: 30_000
+
+- name: Maine taxable income should be capped from below at $0.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: ME
+    me_agi: 50_000
+    me_deductions: 52_000
+    me_exemptions: 5_000
+  output:
+    me_taxable_income: 0

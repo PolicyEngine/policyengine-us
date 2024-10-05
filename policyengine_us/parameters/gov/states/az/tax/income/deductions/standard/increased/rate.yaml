@@ -1,0 +1,19 @@
+description: Arizona increases the standard deduction by this fraction of charitable contributions that would have been allowed if the taxpayer elected to claim itemized deductions.
+metadata:
+  label: Arizona increased standard deduction for charitable contributions rate
+  period: year
+  unit: currency-USD
+  reference:
+  - title: 2022 Arizona Form 140 Resident Personal Income Tax Booklet
+    href: https://azdor.gov/sites/default/files/2023-03/FORMS_INDIVIDUAL_2022_140BOOKLET.pdf#page=24
+  - title: 2021 Arizona Form 140 Resident Personal Income Tax Booklet
+    href: https://azdor.gov/sites/default/files/2023-03/FORMS_INDIVIDUAL_2021_140BOOKLET.pdf#page=43
+  - title: 43-1041. Optional standard deduction Line I
+    href: https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/43/01041.htm
+  - title: 2023 Arizona Form 140 Resident Personal Income Tax Booklet Page 3
+    href: https://azdor.gov/forms/individual/form-140a-arizona-resident-personal-income-tax-booklet
+
+values:
+  2019-01-01: 0.25
+  2022-01-01: 0.27
+  2023-01-01: 0.31

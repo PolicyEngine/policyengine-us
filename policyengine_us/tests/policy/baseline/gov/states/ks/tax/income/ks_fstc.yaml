@@ -1,0 +1,43 @@
+- name: KS food sales tax credit unit test 1
+  period: 2021
+  input:
+    age_head: 56
+    blind_head: false
+    adjusted_gross_income: 30_000
+    ks_count_exemptions: 3
+    state_code: KS
+  output:
+    ks_fstc: 125 * 3
+
+- name: KS food sales tax credit unit test 2
+  period: 2021
+  input:
+    age_head: 54
+    blind_head: true
+    adjusted_gross_income: 30_000
+    ks_count_exemptions: 1
+    state_code: KS
+  output:
+    ks_fstc: 125 * 1
+
+- name: KS food sales tax credit unit test 2
+  period: 2021
+  input:
+    age_head: 54
+    blind_head: false
+    adjusted_gross_income: 30_000
+    ks_count_exemptions: 1
+    state_code: KS
+  output:
+    ks_fstc: 0  # tax unit is ineligible
+
+- name: KS food sales tax credit unit test 4
+  period: 2022
+  input:
+    age_head: 56
+    blind_head: false
+    adjusted_gross_income: 31_000
+    ks_count_exemptions: 3
+    state_code: KS
+  output:
+    ks_fstc: 0  # income ineligible

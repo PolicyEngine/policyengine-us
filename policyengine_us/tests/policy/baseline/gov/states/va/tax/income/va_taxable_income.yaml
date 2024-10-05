@@ -1,0 +1,36 @@
+- name: VA taxable income unit test 1
+  period: 2023
+  input:
+    state_code: VA
+    va_agi: 2_000
+    va_itemized_deductions: 500
+    va_standard_deduction: 700
+    va_total_exemptions: 300
+    tax_unit_itemizes: true
+  output:
+    va_taxable_income: 1_200
+
+- name: Capped at 0 
+  period: 2023
+  input:
+    state_code: VA
+    va_agi: 400
+    va_standard_deduction: 200
+    va_itemized_deductions: 500
+    va_total_exemptions: 300
+    tax_unit_itemizes: false
+  output:
+    va_taxable_income: 0
+
+- name: VA taxable income with cdcc relevant expenses
+  period: 2023
+  input:
+    state_code: VA
+    va_agi: 2_000
+    va_itemized_deductions: 500
+    va_standard_deduction: 700
+    va_total_exemptions: 300
+    tax_unit_itemizes: true
+    va_child_dependent_care_expense_deduction: 2_000
+  output:
+    va_taxable_income: 0

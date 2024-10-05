@@ -1,0 +1,12 @@
+description: California provides an extra monthly income limit for the CalWORKS assistance unit over this size.
+
+metadata:
+  unit: int
+  period: month
+  label: California CalWORKs maximum assistance unit size for MBSAC
+  reference:
+    - title: County of San Diego CalWORKS Program Guide | CalWORKs Payment Standards Chart
+      href: https://hhsaprogramguides.sandiegocounty.gov/CalWORKS/44-300/CalWORKs_Payment_Standards/G_CalWORKs_Payment_Standards.pdf
+
+values:
+  2023-01-01: 10 # Actual: 2023-07-01

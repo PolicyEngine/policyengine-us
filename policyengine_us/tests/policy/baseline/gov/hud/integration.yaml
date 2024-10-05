@@ -1,0 +1,57 @@
+- name: Housing assistance for a one-person household in San Francisco.
+  period: 2022
+  absolute_error_margin: 1
+  input:
+    employment_income: 2_000 * 12
+    hud_gross_rent: 1_000 * 12
+    # 2022 AMI.
+    # https://sfmohcd.org/sites/default/files/Documents/MOH/BMR%20Ownership/2022%20AMI-IncomeLimits.pdf
+    ami: 138_550
+    # 2019 1BR payment standard.
+    # https://sfmohcd.org/sites/default/files/Documents/MOH/Asset%20Management/2019%20AMI_RentLimits-HMFA.pdf
+    pha_payment_standard: 2_748 * 12
+  output:
+    housing_assistance: 400 * 12
+
+- name: Housing assistance for a married household with two children in Los Angeles County.
+  period: 2023
+  absolute_error_margin: 1
+  input:
+    people:
+      parent1:
+        age: 45
+        employment_income: 3_000 * 12
+        pre_subsidy_rent: 1_000 * 12
+      parent2:
+        age: 45
+      dependent1:
+        age: 12
+      dependent2:
+        age: 12
+    households:
+      household:
+        bedrooms: 3
+        is_sro: false
+        members: [parent1, parent2, dependent1, dependent2]
+        in_la: true
+  output:
+    ami: 98_200
+    pha_payment_standard: 41_580 # 3_465 * 12
+    hud_annual_income: 36_000 # 3_000 * 12
+    # Subtract $480 for each dependent per year.
+    hud_adjusted_income: 35_040
+    # 30% of adjusted income, greater than 10% of annual income.
+    # 0.3 * $35,040 = $10,512
+    hud_ttp_adjusted_income_share: 10_512
+    hud_ttp_income_share: 3_600
+    hud_ttp: 10_512
+    # Max subsidy is $41,580 - $10,512 = $31,068
+    hud_max_subsidy: 31_068
+    # Lesser of max subsidy and (rent - TTP)
+    # Rent - TTP = 12_000 - 10_512 = 1,488
+    hud_utility_allowance: 375 * 12
+    hud_gross_rent: 1_375 * 12
+    hud_hap: 5_988
+    # Eligibility
+    hud_income_level: ESPECIALLY_LOW
+    housing_assistance: 5_988

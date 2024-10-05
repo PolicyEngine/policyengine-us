@@ -1,0 +1,43 @@
+- name: WI earned_income_credit unit test 1
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    eitc: 900
+    eitc_relevant_investment_income: 0
+    eitc_child_count: 2
+    state_code: WI
+  output:
+    wi_earned_income_credit: 99
+
+- name: WI earned_income_credit unit test 2
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    eitc: 900
+    eitc_relevant_investment_income: 4_000
+    eitc_child_count: 2
+    state_code: WI
+  output:
+    wi_earned_income_credit: 0
+
+- name: In 2023 the investment income limit is raised to the federal level
+  absolute_error_margin: 0.01
+  period: 2023
+  input:
+    eitc: 900
+    eitc_relevant_investment_income: 7_000
+    eitc_child_count: 2
+    state_code: WI
+  output:
+    wi_earned_income_credit: 99
+
+- name: Before 2023 Wisconsin applied its own investment income limit
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    eitc: 900
+    eitc_relevant_investment_income: 7_000
+    eitc_child_count: 2
+    state_code: WI
+  output:
+    wi_earned_income_credit: 0

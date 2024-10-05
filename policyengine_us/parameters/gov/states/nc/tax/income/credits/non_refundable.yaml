@@ -1,0 +1,17 @@
+description: North Carolina provides these non refundable income tax credits.
+values:
+  2017-01-01:
+    - nc_ctc
+# The ctc has been discontinued in 2018 but due to the absence of other non-refundable credits, we keep it in the list.
+# credits it can not be reflected in this list
+metadata:
+  reference:
+    - title: 2022 Individual Income Tax Credits
+      href: https://www.ncdor.gov/2022-d-400tc-web-fill-version/open
+    - title: 2023 Individual Income Tax Credits
+      href: https://www.ncdor.gov/2023-d-400tc-web-fill-version/open
+    - title: 2017 Individual Income Tax Credits
+      href: https://www.ncdor.gov/documents/files/2017-d-400tc-webfill-0/open
+  unit: currency-USD
+  period: year
+  label: North Carolina non-refundable income tax credits

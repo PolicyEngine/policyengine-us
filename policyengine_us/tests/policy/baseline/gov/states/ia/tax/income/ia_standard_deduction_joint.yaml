@@ -1,0 +1,53 @@
+- name: IA standard deduction joint unit test 1
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    filing_status: JOINT
+    state_code: IA
+  output:
+    ia_standard_deduction_joint: 5_240
+
+- name: IA standard deduction joint unit test 2
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    filing_status: SINGLE
+    state_code: IA
+  output:
+    ia_standard_deduction_joint: 2_130
+
+- name: IA standard deduction joint unit test 3
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    filing_status: JOINT
+    state_code: IA
+  output:
+    ia_standard_deduction_joint: 5_450
+
+- name: IA standard deduction joint unit test 4
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    state_code: IA
+  output:
+    ia_standard_deduction_joint: 5_450
+
+- name: Federal standard deduction applies, hoh
+  absolute_error_margin: 0.01
+  period: 2023
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    state_code: IA
+  output:
+    ia_standard_deduction_joint: 20_800
+
+- name: Federal standard deduction applies, joint
+  absolute_error_margin: 0.01
+  period: 2023
+  input:
+    filing_status: JOINT
+    state_code: IA
+  output:
+    ia_standard_deduction_joint: 27_700

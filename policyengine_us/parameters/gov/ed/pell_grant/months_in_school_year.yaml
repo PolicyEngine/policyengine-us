@@ -1,0 +1,12 @@
+description: The Department of Education defines a full school year as this number of months.
+values:
+  2023-01-01: 9
+metadata:
+  unit: int
+  label: Months in school year
+  reference:
+    - title: THE EFC FORMULA, 2022–2023
+      # "As a reminder, in using the attached schedules for awarding a Federal Pell Grant
+      #  to a student, the full nine-month EFC must always be used regardless of the
+      #  student’s actual period of attendance."
+      href: https://fsapartners.ed.gov/knowledge-center/library/dear-colleague-letters/2023-01-26/2023-2024-federal-pell-grant-payment-and-disbursement-schedules

@@ -1,0 +1,6 @@
+description: Whether the IRS counts basic income in adjusted gross income. If true, this overrides and eliminates all other basic income phase-out parameters.
+values:
+  0000-01-01: false
+metadata:
+  unit: bool
+  label: Basic income taxability

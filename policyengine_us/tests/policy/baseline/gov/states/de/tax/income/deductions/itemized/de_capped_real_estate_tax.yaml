@@ -1,0 +1,18 @@
+- name: Joint filing status
+  period: 2022
+  input:
+    people:
+      person1:
+        real_estate_taxes: 1_000
+      person2:
+        real_estate_taxes: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    de_capped_real_estate_tax: 2_000

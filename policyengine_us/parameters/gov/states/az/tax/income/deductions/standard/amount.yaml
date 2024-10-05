@@ -1,0 +1,32 @@
+description: Arizona provides filers a standard deduction of this amount, depending on their filing status.
+metadata:
+  label: Arizona standard deduction
+  period: year
+  unit: currency-USD
+  breakdown:
+  - az_filing_status
+  reference:
+  - title: 2023 Arizona Form 140A - Arizona Resident Personal Income Tax Booklet Page 12, line 18
+    href: https://azdor.gov/forms/individual/form-140a-arizona-resident-personal-income-tax-booklet
+  - title: 2022 Arizona Form 140 Resident Personal Income Tax Booklet
+    href: https://azdor.gov/forms/individual/form-140-arizona-resident-personal-income-tax-booklet
+  - title: 2021 Arizona Form 140 Resident Personal Income Tax Booklet
+    href: https://azdor.gov/sites/default/files/2023-03/FORMS_INDIVIDUAL_2021_140BOOKLET.pdf#page=43
+
+
+JOINT:
+  2021-01-01: 25_100
+  2022-01-01: 25_900
+  2023-01-01: 27_700
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 18_800
+  2022-01-01: 19_400
+  2023-01-01: 20_800
+SINGLE:
+  2021-01-01: 12_550
+  2022-01-01: 12_950
+  2023-01-01: 13_850
+SEPARATE:
+  2021-01-01: 12_550
+  2022-01-01: 12_950
+  2023-01-01: 13_850

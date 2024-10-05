@@ -1,0 +1,19 @@
+- name: dc_deduction_joint unit test 1
+  period: 2021
+  input:
+    tax_unit_itemizes: false
+    dc_standard_deduction: 20_000
+    dc_itemized_deductions: 30_000
+    state_code: DC
+  output:
+    dc_deduction_joint: 20_000
+
+- name: dc_deduction_joint unit test 2
+  period: 2022
+  input:
+    tax_unit_itemizes: true
+    dc_standard_deduction: 20_000
+    dc_itemized_deductions: 18_000
+    state_code: DC
+  output:
+    dc_deduction_joint: 18_000

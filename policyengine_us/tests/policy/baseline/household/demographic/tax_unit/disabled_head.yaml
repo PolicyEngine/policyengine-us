@@ -1,0 +1,15 @@
+- name: Disabled head
+  period: 2022
+  input:
+    is_tax_unit_head: true
+    is_ssi_disabled: true
+  output:
+    disabled_head: true
+
+- name: Non-disabled
+  period: 2022
+  input:
+    is_tax_unit_head: false
+    is_ssi_disabled: true
+  output:
+    disabled_head: false

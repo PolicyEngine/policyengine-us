@@ -1,0 +1,20 @@
+description: NYC provides a School Tax Credit reduction amount based on filing status.
+metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  label: NYC School Tax Credit Reduction Amount (Separate)
+  reference:
+    - title: Instructions for Form IT-201, 2022
+      href: https://www.tax.ny.gov/pdf/2022/printable-pdfs/inc/it201i-2022.pdf#page=27
+    - title: Instructions for Form IT-201, 2023
+      href: https://www.tax.ny.gov/pdf/2023/printable-pdfs/inc/it201i-2023.pdf#page=29
+brackets:
+  - rate:
+      2022-01-01: 0.00171
+    threshold:
+      2022-01-01: 0
+  - rate:
+      2022-01-01: 0.00228
+    threshold:
+      2022-01-01: 12_000

@@ -1,0 +1,14 @@
+description: Income sources not included in AGI but included in Medicaid/CHIP/ACA-related MAGI.
+values:
+  2010-01-01:
+    - foreign_earned_income_exclusion
+    - tax_exempt_interest_income
+    - tax_exempt_social_security
+metadata:
+  unit: list
+  label: Medicaid/CHIP/ACA-related MAGI additions over AGI
+  reference:
+    - title: 26 U.S. Code § 36B(d)(2) - Refundable credit for coverage under a qualified health plan
+      href: https://www.law.cornell.edu/uscode/text/26/36B#d_2
+    - title: Modified Adjusted Gross Income (MAGI)
+      href: https://www.healthcare.gov/glossary/modified-adjusted-gross-income-magi

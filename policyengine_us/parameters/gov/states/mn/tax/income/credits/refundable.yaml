@@ -1,0 +1,21 @@
+description: Minnesota provides these refundable tax credits.
+values:
+  2021-01-01:
+    - mn_cdcc  # Minnesota child/dependent care credit
+    - mn_wfc  # Minnesota working family credit
+
+  2023-01-01:
+    - mn_cdcc  
+    - mn_child_and_working_families_credits # Minnesota child and working families tax credit
+
+metadata:
+  unit: list
+  period: year
+  label: Minnesota refundable tax credits
+  reference:
+  - title: 2021 Schedule M1REF, Refundable Credits
+    href: https://www.revenue.state.mn.us/sites/default/files/2021-12/m1ref_21_0.pdf
+  - title: 2022 Schedule M1REF, Refundable Credits
+    href: https://www.revenue.state.mn.us/sites/default/files/2022-12/m1ref_22.pdf
+  - title: 2023 Schedule M1REF, Refundable Credits
+    href: https://www.revenue.state.mn.us/sites/default/files/2024-04/m1ref-23.pdf

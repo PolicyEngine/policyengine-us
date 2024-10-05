@@ -1,0 +1,21 @@
+description: Phase-out start for Rep Tlaib's End Child Poverty Act (2022) filer credit
+metadata:
+  reference:
+    - title: End Child Poverty Act
+      href: https://www.congress.gov/bill/118th-congress/house-bill/2540/text?s=1&r=14
+  label: End Child Poverty Act filer credit phase-out start
+  unit: currency-USD
+  period: year
+  uprating: gov.irs.uprating
+  breakdown:
+    - filing_status
+JOINT:
+  2023-01-01: 40_000
+SINGLE:
+  2023-01-01: 20_000
+SEPARATE:
+  2023-01-01: 20_000
+HEAD_OF_HOUSEHOLD:
+  2023-01-01: 20_000
+SURVIVING_SPOUSE:
+  2023-01-01: 20_000

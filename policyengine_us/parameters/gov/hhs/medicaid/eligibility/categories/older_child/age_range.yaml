@@ -1,0 +1,19 @@
+description: Age range defining an older child for Medicaid.
+brackets:
+  - threshold:
+      2015-01-01: 0
+    amount:
+      2015-01-01: false
+  - threshold:
+      2015-01-01: 6
+    amount:
+      2015-01-01: true
+  - threshold:
+      2015-01-01: 19
+    amount:
+      2015-01-01: false
+metadata:
+  type: single_amount
+  rate_unit: bool
+  threshold_unit: year
+  label: "Medicaid older child age range"

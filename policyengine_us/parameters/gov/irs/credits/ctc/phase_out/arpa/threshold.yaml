@@ -1,0 +1,18 @@
+description: Child tax credit phase-out MAGI start for the ARPA CTC expansion
+SINGLE:
+  0000-01-01: 75_000
+JOINT:
+  0000-01-01: 150_000
+SEPARATE:
+  0000-01-01: 75_000
+HEAD_OF_HOUSEHOLD:
+  0000-01-01: 112_500
+SURVIVING_SPOUSE:
+  0000-01-01: 150_000
+metadata:
+  unit: currency-USD
+  period: year
+  label: CTC phase-out threshold (ARPA)
+  reference:
+    - title: U.S.C 26 U.S. Code § 24(i)(4)(B)
+      href: https://www.law.cornell.edu/uscode/text/26/24#i_4_B

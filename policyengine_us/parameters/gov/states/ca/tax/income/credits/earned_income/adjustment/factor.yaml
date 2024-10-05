@@ -1,0 +1,15 @@
+description: California defines the following adjustment factor to the federal EITC in its annual Budget Act.
+values:
+  # "The State Budget has set the adjustment factor at 85 percent for taxable years on and after 2015."
+  2015-01-01: 0.85
+metadata:
+  unit: /1
+  period: year
+  label: CalEITC adjustment factor
+  reference:
+    - title: California legal code 17052(a)(2)(B) # Defines that the annual Budget Act sets the adjustment factor.
+      href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=RTC&sectionNum=17052
+    - title: California Earned Income Tax Credit and Young Child Tax Credit Report | Economic and Statistical Research Bureau
+      href: https://www.ftb.ca.gov/about-ftb/data-reports-plans/California-Earned-Income-Tax-Credit-and-Young-Child-Tax-credit-Report.pdf#page=3
+    - title: 2022 Budget Act, 7730-001-0001 (5) [page 337]
+      href: https://leginfo.legislature.ca.gov/faces/billPdf.xhtml?bill_id=202120220AB178&version=20210AB17895CHP

@@ -1,0 +1,32 @@
+description: Personal and dependent exemption amount
+metadata:
+  unit: currency-USD
+  uprating: gov.irs.uprating
+  period: year
+  reference:
+    - title: 26 U.S. Code § 151 - Allowance of deductions for personal exemptions (d)(1)
+      href: https://www.law.cornell.edu/uscode/text/26/151#d_1
+    # TCJA sets to zero.
+    - title: 26 U.S. Code § 151 - Allowance of deductions for personal exemptions (d)(5)(A)
+      href: https://www.law.cornell.edu/uscode/text/26/151#d_5_A
+    - title: CBO Tax Parameters and Effective Marginal Tax Rates | Feb 2024
+      # 1. Tax Parameters.
+      href: https://www.cbo.gov/system/files/2024-02/53724-2024-02-Tax-Parameters.xlsx
+
+values:
+  2013-01-01: 3_900
+  2014-01-01: 3_950
+  2015-01-01: 4_000
+  2016-01-01: 4_050
+  2017-01-01: 4_050
+  2018-01-01: 0
+  # Values derived from the CBO Projections
+  2026-01-01: 5_300
+  2027-01-01: 5_400
+  2028-01-01: 5_500
+  2029-01-01: 5_600
+  2030-01-01: 5_700
+  2031-01-01: 5_850
+  2032-01-01: 5_950
+  2033-01-01: 6_050
+  2034-01-01: 6_200

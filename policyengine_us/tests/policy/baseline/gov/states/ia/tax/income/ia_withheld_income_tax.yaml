@@ -1,0 +1,39 @@
+- name: Person with income over the standard deduction amount
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    adjusted_gross_income_person: 5_000
+    filing_status: JOINT
+    state_code: IA
+  output:
+    ia_withheld_income_tax: 12.766
+
+- name: Changing the filing status should not change the output 
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    adjusted_gross_income_person: 5_000
+    filing_status: SURVIVING_SPOUSE
+    state_code: IA
+  output:
+    ia_withheld_income_tax: 12.766
+
+- name: Capped at 0
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    adjusted_gross_income_person: 2_000
+    filing_status: SURVIVING_SPOUSE
+    state_code: IA
+  output:
+    ia_withheld_income_tax: 0
+
+- name: Federal deduction from 2023 on
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    adjusted_gross_income_person: 10_000
+    filing_status: JOINT
+    state_code: IA
+  output:
+    ia_withheld_income_tax: 0

@@ -1,0 +1,17 @@
+- name: IA base tax joint unit test 1
+  period: 2021
+  input:
+    ia_regular_tax_joint: 600
+    ia_alternate_tax_joint: 700
+    state_code: IA
+  output:
+    ia_base_tax_joint: 600
+
+- name: IA base tax joint unit test 2
+  period: 2022
+  input:
+    ia_regular_tax_joint: 800
+    ia_alternate_tax_joint: 700
+    state_code: IA
+  output:
+    ia_base_tax_joint: 700

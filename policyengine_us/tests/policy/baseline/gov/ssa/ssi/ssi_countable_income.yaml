@@ -1,0 +1,132 @@
+- name: Earned income only.
+  period: 2022
+  input:
+    ssi_earned_income: 100 * 12
+    is_ssi_aged_blind_disabled: true
+  output:
+    ssi_countable_income: 12 * (100 - 20 - 65) / 2
+
+- name: Unearned income only.
+  period: 2022
+  input:
+    ssi_unearned_income: 100 * 12
+    is_ssi_aged_blind_disabled: true
+  output:
+    ssi_countable_income: 12 * 80
+
+- name: Unearned income and earned income less than the earned exclusion.
+  period: 2022
+  input:
+    ssi_unearned_income: 100 * 12
+    ssi_earned_income: 50 * 12
+    is_ssi_aged_blind_disabled: true
+  output:
+    ssi_countable_income: 12 * 80
+
+- name: Unearned income and earned income more than the earned exclusion.
+  period: 2022
+  input:
+    ssi_unearned_income: 100 * 12
+    ssi_earned_income: 150 * 12
+    is_ssi_aged_blind_disabled: true
+  output:
+    ssi_countable_income: 12 * (80 + (150 - 65) / 2)
+
+- name: Earned income and unearned income less than the general exclusion.
+  period: 2022
+  input:
+    ssi_unearned_income: 10 * 12
+    ssi_earned_income: 150 * 12
+    is_ssi_aged_blind_disabled: true
+  output:
+    # $10 of the general exclusion goes to unearned, the remainder goes to earned.
+    ssi_countable_income: 12 * (150 - 75) / 2
+
+- name: Income is included for couples where the head has the income
+  period: 2023
+  input:
+    people:
+      head:
+        age: 44
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        ssi_earned_income: 20_000
+        is_ssi_aged_blind_disabled: true
+      spouse:
+        age: 44
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        ssi_earned_income: 0
+        is_ssi_aged_blind_disabled: true
+    marital_units: 
+      unit:
+        members: [head, spouse]
+  output:
+    ssi_countable_income: [9_490, 0]
+
+- name: Income is included for couples where the spouse has the income
+  period: 2023
+  input:
+    people:
+      head:
+        age: 44
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        ssi_earned_income: 0
+        is_ssi_aged_blind_disabled: true
+      spouse:
+        age: 44
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        ssi_earned_income: 20_000
+        is_ssi_aged_blind_disabled: true
+    marital_units: 
+      unit:
+        members: [head, spouse]
+  output:
+    ssi_countable_income: [9_490, 0]
+
+- name: Income is not included for couples when the head not eligible
+  period: 2023
+  input:
+    people:
+      head:
+        age: 44
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        ssi_earned_income: 0
+        is_ssi_aged_blind_disabled: false
+      spouse:
+        age: 44
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        ssi_earned_income: 20_000
+        is_ssi_aged_blind_disabled: true
+    marital_units: 
+      unit:
+        members: [head, spouse]
+  output:
+    ssi_countable_income: [0, 9_490]
+
+- name: Income is not included for couples when the spouse not eligible
+  period: 2023
+  input:
+    people:
+      head:
+        age: 44
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        ssi_earned_income: 20_000
+        is_ssi_aged_blind_disabled: true
+      spouse:
+        age: 44
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        ssi_earned_income: 0
+        is_ssi_aged_blind_disabled: false
+    marital_units: 
+      unit:
+        members: [head, spouse]
+  output:
+    ssi_countable_income: [9_490, 0]
+

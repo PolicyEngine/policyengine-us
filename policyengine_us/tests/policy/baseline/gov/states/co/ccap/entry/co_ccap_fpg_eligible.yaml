@@ -1,0 +1,29 @@
+- name: In Adams County, limit is 235% of FPL.
+  period: 2023-01
+  input:
+    state_code_str: CO
+    co_ccap_countable_income: 2.3
+    county_str: ADAMS_COUNTY_CO
+    snap_fpg: 1
+  output:
+    co_ccap_fpg_eligible: true
+
+- name: In Baca County, limit is 200% of FPL.
+  period: 2023-01
+  input:
+    state_code_str: CO
+    co_ccap_countable_income: 2.3
+    county_str: BACA_COUNTY_CO
+    snap_fpg: 1
+  output:
+    co_ccap_fpg_eligible: false
+
+- name: Counties in other states are ineligible.
+  period: 2023-01
+  input:
+    state_code_str: MN
+    co_ccap_countable_income: 0
+    county_str: HENNEPIN_COUNTY_MN
+    snap_fpg: 1
+  output:
+    co_ccap_fpg_eligible: false

@@ -1,0 +1,34 @@
+- name: NJ other retirement income exclusion test 1
+  # Example from the "Only One Spouse Qualifies for Exclusion" section
+  #      of the "Unclaimed Pension Exclusion" section of the New Jersey
+  #      "Retirement Income: Understanding Income Tax" document:
+  # https://www.nj.gov/treasury/taxation/pdf/pubs/tgi-ee/git1&2.pdf#page=24
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 58
+        employment_income: 500
+        taxable_interest_income: 2_000
+        taxable_private_pension_income: 18_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 63
+        employment_income: 1_500
+        taxable_interest_income: 2_000
+        taxable_private_pension_income: 6_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    nj_pension_retirement_exclusion: 6_000
+    nj_other_retirement_income_exclusion: 3_500

@@ -1,0 +1,20 @@
+description: California provides these refundable income tax credits.
+values:
+  2021-01-01:
+    - ca_eitc
+    - ca_yctc
+  2022-01-01:
+    - ca_foster_youth_tax_credit
+    - ca_eitc
+    - ca_yctc
+    - ca_sf_wftc
+metadata:
+  reference:
+    - title: California Form 540
+      href: "https://www.ftb.ca.gov/forms/Search/Home/Confirmation"
+    # San Francisco working families tax credit
+    - title: CHAPTER 12S-SEC. 12S.1. WORKING FAMILIES CREDIT PROGRAM
+      href: https://codelibrary.amlegal.com/codes/san_francisco/latest/sf_admin/0-0-0-8675
+  unit: currency-USD
+  period: year
+  label: California refundable income tax credits

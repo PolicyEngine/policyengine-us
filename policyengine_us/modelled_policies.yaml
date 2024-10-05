@@ -1,0 +1,230 @@
+core:
+  modelled:
+    - Federal income tax
+    - Payroll taxes
+    - Supplemental Security Income
+    - Supplemental Nutrition Assistance Program
+    - Affordable Connectivity Program
+    - Lifeline
+    - Free and reduced price school meals
+    - WIC
+filtered:
+  state_name:
+    AL:
+      modelled:
+      - Alabama state income tax
+      not_modelled:
+      - Alabama TANF
+    AR:
+      modelled:
+      - Arkansas state income tax
+      not_modelled:
+      - Arkansas TANF
+    AZ: 
+      modelled:
+      - Arizona state income tax
+      not_modelled:
+      - Arizona TANF
+    CA:
+      modelled:
+      - California state income tax
+      - California TANF
+      - California's Clean Vehicle Rebate Project
+    CO:
+      modelled:
+      - Colorado state income tax
+      - Colorado Old Age Pension
+      - Colorado State Supplement
+      - Colorado TANF
+    CT:
+      modelled:
+      - Connecticut state income tax
+      not_modelled:
+      - Connecticut TANF
+    DC:
+      modelled:
+      - District of Columbia income tax
+      - District of Columbia TANF
+    DE:
+      modelled:
+      - Delaware state income tax
+      not_modelled:
+      - Delaware TANF
+    GA:
+      modelled:
+      - Georgia state income tax
+      not_modelled:
+      - Georgia TANF
+    HI:
+      modelled:
+      - Hawaii state income tax
+      not_modelled:
+      - Hawaii TANF
+    IA:
+      modelled:
+      - Iowa state income tax
+      not_modelled:
+      - Iowa TANF
+    ID:
+      modelled:
+      - Idaho state income tax
+      not_modelled:
+      - Idaho TANF
+    IL:
+      modelled:
+      - Illinois state income tax
+      - Illinois TANF
+    IN: 
+      modelled:
+      - Indiana state income tax
+      not_modelled:
+      - Indiana TANF
+    KS:
+      modelled:
+      - Kansas state income tax
+      not_modelled:
+      - Kansas TANF
+    KY:
+      modelled:
+      - Kentucky state income tax
+      not_modelled:
+      - Kentucky TANF
+    LA:
+      modelled:
+      - Louisiana state income tax
+      not_modelled:
+      - Louisiana TANF
+    MA:
+      modelled:
+      - Massachusetts state income tax
+      not_modelled:
+      - Massachusetts TANF
+    MD:
+      modelled:
+      - Maryland state income tax
+      not_modelled:
+      - Maryland TANF
+    ME:
+      modelled:
+      - Maine state income tax
+      not_modelled:
+      - Maine TANF
+    MI:
+      modelled:
+      - Michigan state income tax
+      not_modelled:
+      - Michigan TANF
+    MN:
+      modelled:
+      - Minnesota state income tax
+      not_modelled:
+      - Minnesota TANF
+    MO:
+      modelled:
+      - Missouri state income tax
+      not_modelled:
+      - Missouri TANF
+    MS:
+      modelled:
+      - Mississippi state income tax
+      not_modelled:
+      - Mississippi TANF
+    MT:
+      modelled:
+      - Montana state income tax
+      not_modelled:
+      - Montana TANF
+    NC:
+      modelled:
+      - North Carolina state income tax
+      not_modelled:
+      - North Carolina TANF
+    ND:
+      modelled:
+      - North Dakota state income tax
+      not_modelled:
+      - North Dakota TANF
+    NE:
+      modelled:
+      - Nebraska state income tax
+      not_modelled:
+      - Nebraska TANF
+    NH:
+      modelled:
+      - New Hampshire state income tax
+      not_modelled:
+      - New Hampshire TANF
+    NJ:
+      modelled:
+      - New Jersey state income tax
+      not_modelled:
+      - New Jersey TANF
+    NM:
+      modelled:
+      - New Mexico state income tax
+      not_modelled:
+      - New Mexico TANF
+    NY:
+      modelled:
+      - New York state and city income tax
+      - New York TANF
+    OH:
+      modelled:
+      - Ohio state income tax
+      not_modelled:
+      - Ohio TANF
+    OK:
+      modelled:
+      - Oklahoma state income tax
+      not_modelled:
+      - Oklahoma TANF
+    OR:
+      modelled:
+      - Oregon state income tax
+      not_modelled:
+      - Oregon TANF
+    PA:
+      modelled:
+      - Pennsylvania state income tax
+      not_modelled:
+      - Pennsylvania TANF
+    RI:
+      modelled:
+      - Rhode Island state income tax
+      not_modelled:
+      - Rhode Island TANF
+    SC:
+      modelled:
+      - South Carolina state income tax
+      not_modelled:
+      - South Carolina TANF
+    UT:
+      modelled:
+      - Utah state income tax
+      not_modelled:
+      - Utah TANF
+    VA:
+      modelled:
+      - Virginia state income tax
+      not_modelled:
+      - Virginia TANF
+    VT:
+      modelled:
+      - Vermont state income tax
+      not_modelled:
+      - Vermont TANF
+    WA:
+      modelled:
+      - Washington state income tax
+      not_modelled:
+      - Washington TANF
+    WI:
+      modelled:
+      - Wisconsin state income tax
+      not_modelled:
+      - Wisconsin TANF
+    WV:
+      modelled:
+      - West Virginia state income tax
+      not_modelled:
+      - West Virginia TANF

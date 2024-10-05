@@ -1,0 +1,30 @@
+description: Missouri only levies tax on taxable income of at least this amount.
+values:
+  2017-01-01: 100
+  2018-01-01: 102
+  2019-01-01: 104
+  2020-01-01: 106
+  2021-01-01: 108
+  2022-01-01: 111
+  2023-01-01: 1_207
+metadata:
+  reference:
+    - title: Missouri Legal Code | 143.021.  Tax determined by rates in section 143.011 — no tax on taxable income, when.
+      href: https://rezvisor.mo.gov/main/OneSection.aspx?section=143.021
+    - title: 2023 Individual Income Tax Long Form MO-1040 Instructions
+      href: https://dor.mo.gov/forms/MO-1040%20Instructions_2023.pdf#page=26
+    - title: 2022 Individual Income Tax Long Form MO-1040 Instructions
+      href: https://dor.mo.gov/forms/MO-1040%20Instructions_2022.pdf#page=26
+    - title: 2021 Individual Income Tax Long Form MO-1040 Instructions
+      href: https://dor.mo.gov/forms/MO-1040%20Instructions_2021.pdf#page=26
+    - title: 2020 Individual Income Tax Long Form MO-1040 Instructions
+      href: https://dor.mo.gov/forms/MO-1040%20Instructions_2020.pdf#page=22
+    - title: 2019 Individual Income Tax Long Form MO-1040 Instructions
+      href: https://dor.mo.gov/forms/MO-1040%20Instructions_2019.pdf#page=22
+    - title: 2018 Individual Income Tax Long Form MO-1040 Instructions
+      href: https://dor.mo.gov/forms/MO-1040%20Instructions_2018.pdf#page=20
+    - title: 2017 Individual Income Tax Long Form MO-1040 Instructions
+      href: https://dor.mo.gov/forms/MO-1040%20Instructions_2017.pdf#page=20
+  label: Missouri minimum taxable income
+  unit: currency-USD
+  period: year

@@ -1,0 +1,25 @@
+- name: Basic calculation
+  period: 2022
+  input:
+    earned_income: 2_800
+    state_code: SC
+  output:
+    sc_gross_earned_income: 2_800
+
+- name: With subtractions, capped at 0
+  period: 2022
+  input:
+    earned_income: 2_800
+    self_employment_tax_ald_person: 3_000
+    state_code: SC
+  output:
+    sc_gross_earned_income: 0
+
+- name: With subtractions, capped at 0
+  period: 2022
+  input:
+    earned_income: 2_800
+    self_employment_tax_ald_person: 500
+    state_code: SC
+  output:
+    sc_gross_earned_income: 2_300

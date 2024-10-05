@@ -1,0 +1,15 @@
+- name: senior
+  period: 2022
+  input:
+    greater_age_head_spouse: 65
+    state_code: MI
+  output: 
+    mi_is_senior_for_tax: true
+
+- name: not senior
+  period: 2022
+  input:
+    greater_age_head_spouse: 64
+    state_code: MI
+  output: 
+    mi_is_senior_for_tax: false

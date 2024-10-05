@@ -1,0 +1,29 @@
+- name: Deduction capped at $10,000 for joint filers
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    real_estate_taxes: 12_000
+    filing_status: JOINT
+    state_code: MS  
+  output:  
+    ms_real_estate_tax_deduction: 10_000
+
+- name: Deduction capped at $5,000 for separate filers
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    real_estate_taxes: 12_000
+    filing_status: SEPARATE
+    state_code: MS  
+  output:  
+    ms_real_estate_tax_deduction: 5_000
+
+- name: Uncapped calculation
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    real_estate_taxes: 3_000
+    filing_status: SEPARATE
+    state_code: MS  
+  output:  
+    ms_real_estate_tax_deduction: 3_000

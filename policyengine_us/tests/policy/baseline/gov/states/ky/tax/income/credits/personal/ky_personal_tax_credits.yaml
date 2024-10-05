@@ -1,0 +1,42 @@
+- name: separate
+  period: 2022
+  input:
+    people:
+      person1:
+        ky_personal_tax_credits_indiv: 40
+        ky_personal_tax_credits_joint: 40
+      person2:
+        ky_personal_tax_credits_indiv: 100
+        ky_personal_tax_credits_joint: 50
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ky_files_separately: true
+    households:
+      household:
+        members: [person1,person2]
+        state_code: KY
+  output:
+    ky_personal_tax_credits: 140
+
+- name: separate
+  period: 2022
+  input:
+    people:
+      person1:
+        ky_personal_tax_credits_indiv: 40
+        ky_personal_tax_credits_joint: 40
+      person2:
+        ky_personal_tax_credits_indiv: 100
+        ky_personal_tax_credits_joint: 50
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ky_files_separately: false
+    households:
+      household:
+        members: [person1,person2]
+        state_code: KY
+  output:
+    ky_personal_tax_credits: 90
+

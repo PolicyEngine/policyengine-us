@@ -1,0 +1,81 @@
+- name: Test case 1 #Separate filing, agi less than 65000, qualified tuition expenses less than 4000
+  period: 2020
+  input:
+    filing_status: SEPARATE
+    qualified_tuition_expenses: 2_500
+    adjusted_gross_income: 55_000
+    tuition_and_fees_deduction_eligible: false 
+  output:
+    tuition_and_fees_deduction: 0
+   # married filing separate are not qualify 
+
+- name: Test case 2 #Joint filing, agi less than 130000, qualified tuition expenses less than 4000
+  period: 2020
+  input:
+    filing_status: JOINT
+    qualified_tuition_expenses: 2_500
+    adjusted_gross_income: 125_000
+    tuition_and_fees_deduction_eligible: true
+  output:
+    tuition_and_fees_deduction: 2_500
+    # limit = 4_000
+    # tuition_and_fees_deduction = min(2_500, 4_000) = 2_500
+
+- name: Test case 3 #Joint filing, agi less than 130000, qualified tuition expenses more than 4000
+  period: 2020
+  input:
+    filing_status: JOINT
+    qualified_tuition_expenses: 4_500
+    adjusted_gross_income: 125_000
+    tuition_and_fees_deduction_eligible: true 
+  output:
+    tuition_and_fees_deduction: 4_000
+    # limit = 4_000
+    # tuition_and_fees_deduction = min(4_500, 4_000) = 4_000
+
+- name: Test case 4 #Joint filing, agi between 130000 and 160000, qualified tuition expenses less than 2000
+  period: 2020
+  input:
+    filing_status: JOINT
+    qualified_tuition_expenses: 1_500
+    adjusted_gross_income: 155_000
+    tuition_and_fees_deduction_eligible: true 
+  output:
+    tuition_and_fees_deduction: 1_500
+    # limit = 2_000
+    # tuition_and_fees_deduction = min(1_500, 2_000) = 1_500
+
+- name: Test case 5 #Joint filing, agi between 130000 and 160000, qualified tuition expenses more than 2000
+  period: 2020
+  input:
+    filing_status: JOINT
+    qualified_tuition_expenses: 4_500
+    adjusted_gross_income: 155_000
+    tuition_and_fees_deduction_eligible: true 
+  output:
+    tuition_and_fees_deduction: 2_000
+    # limit = 2_000
+    # tuition_and_fees_deduction = min(4_500, 2_000) = 2_000
+
+- name: Test case 6 #JOINT filing, agi greater than 160000
+  period: 2020
+  input:
+    filing_status: JOINT
+    qualified_tuition_expenses: 1_500
+    adjusted_gross_income: 185_000
+    tuition_and_fees_deduction_eligible: true 
+  output:
+    tuition_and_fees_deduction: 0
+    # agi > 160000
+    # tuition_and_fees_deduction = 0
+  
+- name: Test case 7 #Joint filing, agi between 130000 and 160000, but has american opportunity credit
+  period: 2020
+  input:
+    filing_status: JOINT
+    qualified_tuition_expenses: 4_500
+    adjusted_gross_income: 155_000
+    tuition_and_fees_deduction_eligible: false 
+  output:
+    tuition_and_fees_deduction: 0
+     

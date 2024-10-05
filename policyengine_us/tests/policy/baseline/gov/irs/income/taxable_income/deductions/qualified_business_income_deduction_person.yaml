@@ -1,0 +1,47 @@
+- name: The deduction is allocated based on the qbid amount
+  absolute_error_margin: 0
+  period: 2022
+  input:
+    people:
+      person1:
+        qbid_amount: 100
+      person2:
+        qbid_amount: 300
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        qualified_business_income_deduction: 1_000
+  output:
+    qualified_business_income_deduction_person: [250, 750]
+
+- name: The deduction is allocated based on the qbid amount, only to those with positive qbid amounts
+  absolute_error_margin: 0
+  period: 2022
+  input:
+    people:
+      person1:
+        qbid_amount: 100
+      person2:
+        qbid_amount: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        qualified_business_income_deduction: 1_000
+  output:
+    qualified_business_income_deduction_person: [1_000, 0]
+
+- name: The deduction is allocated based on the qbid amount, only if the deduction amount is available
+  absolute_error_margin: 0
+  period: 2022
+  input:
+    people:
+      person1:
+        qbid_amount: 100
+      person2:
+        qbid_amount: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        qualified_business_income_deduction: 0
+  output:
+    qualified_business_income_deduction_person: [0, 0]

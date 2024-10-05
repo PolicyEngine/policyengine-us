@@ -1,0 +1,18 @@
+description: Net Investment Income Tax modified AGI threshold
+HEAD_OF_HOUSEHOLD:
+  values:
+    2013-01-01: 200_000
+JOINT:
+  values:
+    2013-01-01: 250_000
+SEPARATE:
+  values:
+    2013-01-01: 125_000
+SINGLE:
+  values:
+    2013-01-01: 200_000
+SURVIVING_SPOUSE:
+  values:
+    2013-01-01: 250_000
+metadata:
+  unit: currency-USD

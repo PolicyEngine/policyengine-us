@@ -1,0 +1,45 @@
+description: California reduces the exemption amount for filers with income exceeding this threshold.
+SINGLE:
+  1991-01-01: 100_000 # Defined in the legal code. Inflation-indexed from here.
+  2021-01-01: 212_288
+  2022-01-01: 229_908
+  2023-01-01: 237_035
+SEPARATE:
+  1991-01-01: 100_000
+  2021-01-01: 212_288
+  2022-01-01: 229_908
+  2023-01-01: 237_035
+SURVIVING_SPOUSE:
+  1991-01-01: 200_000
+  2021-01-01: 424_581
+  2022-01-01: 459_821
+  2023-01-01: 474_075
+JOINT:
+  1991-01-01: 200_000
+  2021-01-01: 424_581
+  2022-01-01: 459_821
+  2023-01-01: 474_075
+HEAD_OF_HOUSEHOLD: 
+  1991-01-01: 150_000
+  2021-01-01: 318_437
+  2022-01-01: 344_867
+  2023-01-01: 355_558
+
+metadata:
+  period: year
+  unit: currency-USD
+  uprating: gov.states.ca.cpi
+  breakdown:
+  - filing_status
+  label: California exemption phase out start
+  reference:
+  - title: 2021 California Form 540 instructions
+    href: https://www.ftb.ca.gov/forms/2021/2021-540-booklet.html
+  - title: 2022 California Form 540 instructions
+    href: https://www.ftb.ca.gov/forms/2022/2022-540-booklet.html
+  - title: 2023 California Form 540 instructions
+    href: https://www.ftb.ca.gov/forms/2023/2023-540-booklet.html
+  - title: Cal. Rev. & Tax. Code § 17054.1 | (b)
+    href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=17054.1.&nodeTreePath=3.20.2&lawCode=RTC
+    # Index according to federal tax parameter rules until we add California CPI trend.
+    # uprating: gov.irs.uprating

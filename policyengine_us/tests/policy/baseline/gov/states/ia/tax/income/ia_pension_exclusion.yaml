@@ -1,0 +1,119 @@
+- name: IA pension exclusion unit test 1
+  period: 2021
+  input:
+    people:
+      person1:
+        ia_pension_exclusion_eligible: true
+        taxable_pension_income: 1_000
+      person2:
+        ia_pension_exclusion_eligible: false
+        taxable_pension_income: 7_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    ia_pension_exclusion: [1_000, 0]
+
+- name: IA pension exclusion unit test 2
+  period: 2022
+  input:
+    people:
+      person1:
+        ia_pension_exclusion_eligible: true
+        taxable_pension_income: 1_000
+      person2:
+        ia_pension_exclusion_eligible: true
+        taxable_pension_income: 7_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    ia_pension_exclusion: [1_000, 7_000]
+
+- name: IA pension exclusion unit test 3
+  period: 2022
+  input:
+    people:
+      person1:
+        ia_pension_exclusion_eligible: false
+        taxable_pension_income: 1_000
+      person2:
+        ia_pension_exclusion_eligible: true
+        taxable_pension_income: 7_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    ia_pension_exclusion: [0, 7_000]
+
+- name: IA pension exclusion unit test 4
+  period: 2022
+  input:
+    people:
+      person1:
+        ia_pension_exclusion_eligible: false
+        taxable_pension_income: 1_000
+      person2:
+        ia_pension_exclusion_eligible: false
+        taxable_pension_income: 7_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    ia_pension_exclusion: [0, 0]
+
+- name: IA pension exclusion unit test 5, age ineligible
+  period: 2023
+  input:
+    people:
+      person1:
+        ia_pension_exclusion_eligible: false
+        taxable_pension_income: 1_000
+      person2:
+        ia_pension_exclusion_eligible: false
+        taxable_pension_income: 7_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    ia_pension_exclusion: [0, 0]
+
+- name: IA pension exclusion unit test 6, disabled case 
+  period: 2023
+  input:
+    people:
+      person1:
+        ia_pension_exclusion_eligible: true
+        taxable_pension_income: 1_000
+      person2:
+        ia_pension_exclusion_eligible: false
+        taxable_pension_income: 7_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    ia_pension_exclusion: [1_000, 0]
+
+
+- name: IA pension exclusion unit test 7, disabled and aged 
+  period: 2023
+  input:
+    people:
+      person1:
+        ia_pension_exclusion_eligible: true
+        taxable_pension_income: 1_000
+      person2:
+        ia_pension_exclusion_eligible: true
+        taxable_pension_income: 7_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    ia_pension_exclusion: [1_000, 7_000]

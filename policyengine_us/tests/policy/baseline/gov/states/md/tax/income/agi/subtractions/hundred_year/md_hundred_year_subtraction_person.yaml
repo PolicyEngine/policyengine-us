@@ -1,0 +1,15 @@
+- name: Eligible
+  period: 2023
+  input:
+    md_hundred_year_subtraction_eligible: true
+    state_code: MD
+  output:
+    md_hundred_year_subtraction_person: 100_000
+
+- name: Ineligible
+  period: 2023
+  input:
+    md_hundred_year_subtraction_eligible: false
+    state_code: MD
+  output:
+    md_hundred_year_subtraction_person: 0

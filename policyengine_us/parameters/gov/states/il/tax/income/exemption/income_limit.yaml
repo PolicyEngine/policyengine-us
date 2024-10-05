@@ -1,0 +1,24 @@
+description: Maximum AGI to be eligible for Illinois exemptions.
+JOINT:
+  2021-01-01: 500_000
+SINGLE:
+  2021-01-01: 250_000
+SEPARATE:
+  2021-01-01: 250_000
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 250_000
+SURVIVING_SPOUSE:
+  2021-01-01: 250_000
+metadata:
+  unit: currency-USD
+  period: year
+  label: Illinois Exemption Income Limit
+  reference:
+    - title: Illinois Department of Revenue 2023 Form IL-1040 Instructions; Step 4 - Exemptions
+      href: https://tax.illinois.gov/content/dam/soi/en/web/tax/forms/incometax/documents/currentyear/individual/il-1040-instr.pdf#page=8
+    - title: Illinois Department of Revenue 2022 Form IL-1040 Instructions; Step 4 - Exemptions
+      href: https://tax.illinois.gov/content/dam/soi/en/web/tax/forms/incometax/documents/2022/individual/il-1040-instr.pdf#page=8
+    - title: Illinois Department of Revenue 2021 Form IL-1040 Instructions; Step 4 - Exemptions
+      href: https://tax.illinois.gov/content/dam/soi/en/web/tax/forms/incometax/documents/2021/individual/il-1040-instr.pdf#page=8
+    - title: Illinois Income Tax Act, 35 ILCS 5/204 (g)
+      href: https://www.ilga.gov/legislation/ilcs/ilcs5.asp?ActID=577&ChapterID=8

@@ -1,0 +1,21 @@
+description: Minnesota provides a marriage credit for joint filers where this is the maximum credit amount.
+values:
+  2021-01-01: 1_548
+  2022-01-01: 1_596
+  2023-01-01: 1_710
+
+metadata:
+  period: year
+  unit: currency-USD
+  label: Minnesota marriage credit minimum amount
+  uprating:
+    parameter: gov.irs.uprating
+  reference:
+  - title: Minnesota Statutes 290.0675 MARRIAGE PENALTY CREDIT. Subd. 3.Credit amount.
+    href: https://www.revisor.mn.gov/statutes/cite/290.0675#stat.290.0675.3
+  - title: 2021 Minnesota Schedule M1MA, Line 19
+    href: https://www.revenue.state.mn.us/sites/default/files/2023-01/m1ma_21.pdf#page=1
+  - title: 2022 Minnesota Schedule M1MA, Line 19
+    href: https://www.revenue.state.mn.us/sites/default/files/2023-01/m1ma_22.pdf#page=1
+  - title: 2023 Minnesota Schedule M1MA, Line 19
+    href: https://www.revenue.state.mn.us/sites/default/files/2023-12/m1ma-23.pdf#page=1

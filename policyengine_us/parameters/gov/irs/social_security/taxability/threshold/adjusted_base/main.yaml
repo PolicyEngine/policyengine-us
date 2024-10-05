@@ -1,0 +1,19 @@
+description: The IRS taxes Social Security benefits at the additional rate, for filers with modified adjusted gross income between above the additional threshold, by filing status.
+SINGLE:
+  2013-01-01: 34_000
+JOINT:
+  2013-01-01: 44_000
+SEPARATE:
+  2013-01-01: 34_000
+HEAD_OF_HOUSEHOLD:
+  2013-01-01: 34_000
+SURVIVING_SPOUSE:
+  2013-01-01: 34_000
+
+metadata:
+  breakdown: filing_status
+  unit: currency-USD
+  label: Social Security taxability additional threshold
+  reference: 
+    - title: 26 U.S. Code § 86(c)(2) 
+      href: https://www.law.cornell.edu/uscode/text/26/86#c_2

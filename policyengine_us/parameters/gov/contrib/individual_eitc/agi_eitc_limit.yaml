@@ -1,0 +1,10 @@
+description: Tax filers with combined earned income over this cannot claim the EITC. This is only active if the Winship EITC reform is active.
+values:
+  2020-01-01: 0
+metadata:
+  label: EITC AGI limit
+  unit: currency-USD
+  period: year
+  reference:
+    - title: Reforming the EITC to Reduce Single Parenthood and Ease Work-Family Balance
+      href: https://ifstudies.org/blog/reforming-the-eitc-to-reduce-single-parenthood-and-ease-work-family-balance

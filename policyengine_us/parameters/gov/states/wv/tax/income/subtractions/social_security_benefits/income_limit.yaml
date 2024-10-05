@@ -1,0 +1,29 @@
+description: West Virginia limits its social security benefits subtraction to filers with federal adjusted gross income at or below this amount.
+
+metadata:
+  period: year
+  unit: currency-USD
+  label: West Virginia social security benefits subtraction income limit
+  reference:
+  - title: West Virginia Personal Income Tax Forms And Instructions 2020 LINE 33
+    href: https://tax.wv.gov/Documents/TaxForms/2020/it140.booklet.pdf#page=24
+  - title: West Virginia Personal Income Tax Forms And Instructions 2020 LINE 32
+    href: https://tax.wv.gov/Documents/TaxForms/2021/it140.booklet.pdf#page=24
+  - title: West Virginia Personal Income Tax Forms And Instructions 2022 LINE 32
+    href: https://tax.wv.gov/Documents/PIT/2022/PersonalIncomeTaxFormsAndInstructions.2022.pdf#page=25
+  - title: West Virginia Personal Income Tax Forms And Instructions 2023 LINE 32
+    href: https://tax.wv.gov/Documents/PIT/2023/it140.PersonalIncomeTaxFormsAndInstructions.2023.pdf#page=28
+  - title: Code of West Virginia §11-21-12 (c)(8)(D)
+    href: https://code.wvlegislature.gov/11-21-12/
+  breakdown:
+    - filing_status
+JOINT:
+  2020-01-01: 100_000
+SINGLE:
+  2020-01-01: 50_000
+SEPARATE:
+  2020-01-01: 50_000
+HEAD_OF_HOUSEHOLD:
+  2020-01-01: 50_000
+SURVIVING_SPOUSE:
+  2020-01-01: 50_000  

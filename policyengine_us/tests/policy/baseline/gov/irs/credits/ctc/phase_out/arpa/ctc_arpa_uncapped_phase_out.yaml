@@ -1,0 +1,25 @@
+- name: ARPA reduction only applies for 2021.
+  period: 2020
+  input:
+    adjusted_gross_income: 220_000
+  output:
+    ctc_arpa_uncapped_phase_out: 0
+
+- name: Head of household with $220k income and a child under six has a $2,600 CTC reduction under ARPA.
+  period: 2021
+  input:
+    adjusted_gross_income: 220_000
+    ctc_arpa_phase_out_threshold: 112_500 # HOH.
+  output:
+    # 220k - 112.5k = 107.5k
+    # Round up to 108k
+    # Times 5% = 5.4k
+    ctc_arpa_uncapped_phase_out: 5_400
+
+- name: Joint filer with $160k income has a phase-out of $500 due to ARPA. 
+  period: 2021
+  input:
+    adjusted_gross_income: 159_100
+    ctc_arpa_phase_out_threshold: 150_000
+  output:
+    ctc_arpa_uncapped_phase_out: 500 # Rounded up to $10k excess above $150k ARPA threshold * 5%.

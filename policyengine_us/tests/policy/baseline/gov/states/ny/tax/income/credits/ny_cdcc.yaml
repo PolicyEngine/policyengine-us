@@ -1,0 +1,9 @@
+- name: Three dependent children in NY.
+  period: 2022
+  input:
+    count_cdcc_eligible: 3
+    cdcc_relevant_expenses: 10_000
+    state_code: NY
+    employment_income: 10_000
+  output:
+    ny_cdcc: 3_850 # From the tax form IT-216.

@@ -1,0 +1,27 @@
+description: Elements of the Residential Clean Energy Credit.
+values:
+  2017-01-01:
+    - biomass_stove_boiler_expenditures
+    - geothermal_heat_pump_property_expenditures
+    - small_wind_energy_property_expenditures
+    - solar_electric_property_expenditures
+    - solar_water_heating_property_expenditures
+    - fuel_cell_property_expenditures
+  # The Inflation Reduction Act moved biomass fuel credit to the
+  # Energy Efficient Home Improvement Credit effective 2023.
+  2023-01-01:
+    - geothermal_heat_pump_property_expenditures
+    - small_wind_energy_property_expenditures
+    - solar_electric_property_expenditures
+    - solar_water_heating_property_expenditures
+    - fuel_cell_property_expenditures
+    - qualified_battery_storage_technology_expenditures
+metadata:
+  unit: list
+  name: residential_clean_energy_credit_elements
+  label: Expenditure elements of the Residential Clean Energy Credit
+  reference:
+    - title: 26 U.S. Code § 25D - Residential energy efficient property (a)
+      href: https://www.law.cornell.edu/uscode/text/26/25D#a
+    - title: Inflation Reduction Act
+      href: https://www.democrats.senate.gov/imo/media/doc/inflation_reduction_act_of_2022.pdf#page=352

@@ -1,0 +1,11 @@
+description: New York limits its TANF eligibility to households with up to this amount of resources, if they have no elderly members.
+
+metadata:
+  unit: currency-USD
+  label: New York TANF resource limit for households without elderly people
+  reference:
+    - title: New York State Plan and Executive Certification | Administration of the Block Grant for Temporary Assistance for Needy Families
+      href: https://otda.ny.gov/policy/tanf/TANF-State-Plan-2021-2023.pdf#page=7
+
+values:
+  2021-10-01: 2_000

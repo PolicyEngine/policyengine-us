@@ -1,0 +1,13 @@
+description: The IRS enhances its new clean vehicle credit with capacity bonus of this amount per kilowatt-hour in excess of the threshold.
+values:
+  2021-01-01: 417
+  # End with Inflation Reduction Act.
+  # In effect as of 2022-08-16, but backdating so it shows up as current policy
+  # in PolicyEngine.
+  2022-01-01: 0
+metadata:
+  unit: currency-USD
+  label: New clean vehicle credit amount per excess kilowatt-hour
+  reference:
+    - title: 26 U.S. Code § 30D - New qualified plug-in electric drive motor vehicles (b)(3)
+      href: https://www.law.cornell.edu/uscode/text/26/30D#b_3

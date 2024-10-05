@@ -1,0 +1,94 @@
+- name: If filing jointly, head income is  $40,000, spouse income is $16,000, the credit is $112 
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        sc_gross_earned_income: 40_000
+      person2:
+        is_tax_unit_spouse: true
+        sc_gross_earned_income: 16_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    sc_two_wage_earner_credit: 112
+    # less of (head or spouse income)*0.007 
+    # 16_000* 0.007 = $112
+
+- name: If filing jointly, head income is 18_000 and spouse income is 61_500, credit is 126
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        sc_gross_earned_income: 18_000
+      person2:
+        is_tax_unit_spouse: true
+        sc_gross_earned_income: 61_500
+      person3:
+        is_tax_unit_spouse: false
+        is_tax_unit_head: false
+        sc_gross_earned_income: 30_000  
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: SC
+  output:
+    sc_two_wage_earner_credit: 126
+    # less of (head or spouse income)*0.007 
+    # 18_000* 0.007 = $126
+
+- name: If filing separately, credit is 0
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        sc_gross_earned_income: 40_000
+      person2:
+        is_tax_unit_spouse: true
+        sc_gross_earned_income: 16_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    sc_two_wage_earner_credit: 0
+    # only filling joint is eligible
+
+- name: If filing jointly, head income is 18_000, spouse income is 18_000, credit is 126
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        sc_gross_earned_income: 18_000
+      person2:
+        is_tax_unit_spouse: true
+        sc_gross_earned_income: 18_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    sc_two_wage_earner_credit: 126
+    # less of (head or spouse income)*0.007 
+    # 18_000* 0.007 = $126

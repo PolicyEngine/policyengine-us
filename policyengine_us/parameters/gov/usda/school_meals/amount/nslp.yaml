@@ -1,0 +1,68 @@
+description: The USDA's National School Lunch Program reimburses these amounts per meal per child.
+
+# Use the under-60% numbers.
+CONTIGUOUS_US:
+  PAID:
+    2020-07-01: 0.33
+    2021-07-01: 0.35
+    2022-07-01: 0.37
+    2023-07-01: 0.40
+  REDUCED:
+    2020-07-01: 3.11
+    2021-07-01: 3.26
+    2022-07-01: 3.53
+    2023-07-01: 3.85
+  FREE:
+    2020-07-01: 3.51
+    2021-07-01: 3.66
+    2022-07-01: 3.93
+    2023-07-01: 4.25
+AK:
+  PAID:
+    2020-07-01: 0.54
+    2021-07-01: 0.57
+    2022-07-01: 0.61
+    2023-07-01: 0.66
+  REDUCED:
+    2020-07-01: 5.30
+    2021-07-01: 5.54
+    2022-07-01: 5.97
+    2023-07-01: 6.50
+  FREE:
+    2020-07-01: 5.70
+    2021-07-01: 5.94
+    2022-07-01: 6.37
+    2023-07-01: 6.90
+HI:
+  PAID:
+    2020-07-01: 0.39
+    2021-07-01: 0.41
+    2022-07-01: 0.44
+    2023-07-01: 0.53
+  REDUCED:
+    2020-07-01: 3.71
+    2021-07-01: 3.88
+    2022-07-01: 4.20
+    2023-07-01: 5.14
+  FREE:
+    2020-07-01: 4.11
+    2021-07-01: 4.28
+    2022-07-01: 4.60
+    2023-07-01: 5.54
+
+metadata:
+  unit: currency-USD
+  reference:
+    - title: National School Lunch, Special Milk, and School Breakfast Programs, National Average Payments/Maximum Reimbursement Rates - 2020
+      href: https://www.federalregister.gov/documents/2020/07/22/2020-15764/national-school-lunch-special-milk-and-school-breakfast-programs-national-average-paymentsmaximum
+    - title: National School Lunch, Special Milk, and School Breakfast Programs, National Average Payments/Maximum Reimbursement Rates - 2021
+      href: https://www.federalregister.gov/documents/2021/07/16/2021-15107/national-school-lunch-special-milk-and-school-breakfast-programs-national-average-paymentsmaximum
+    - title: National School Lunch, Special Milk, and School Breakfast Programs, National Average Payments/Maximum Reimbursement Rates - 2022
+      href: https://www.federalregister.gov/documents/2022/07/26/2022-15892/national-school-lunch-special-milk-and-school-breakfast-programs-national-average-paymentsmaximum
+  period: day
+  label: National School Lunch Program value
+  breakdown:
+    - state_group
+    - school_meal_tier
+  uprating: gov.bls.cpi.cpi_u
+  propagate_metadata_to_children: true
