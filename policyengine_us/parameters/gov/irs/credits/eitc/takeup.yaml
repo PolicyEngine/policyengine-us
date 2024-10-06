@@ -1,0 +1,22 @@
+description: The share of eligible individuals who claim the EITC.
+brackets:
+  - threshold: 
+      2000-01-01: 0
+    amount:
+      2000-01-01: 0.65
+  - threshold:
+      2000-01-01: 1
+    amount:
+      2000-01-01: 0.86
+  - threshold:
+      2000-01-01: 2
+    amount:
+      2000-01-01: 0.85
+metadata:
+  label: EITC take-up rate by number of children
+  amount_unit: /1
+  type: single_amount
+  threshold_unit: child
+  reference:
+    - title: National Taxpayer Advocate Special Report to Congress 2020 | IRS
+      href: https://www.taxpayeradvocate.irs.gov/wp-content/uploads/2020/08/JRC20_Volume3.pdf#page=62
