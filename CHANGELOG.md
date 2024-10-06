@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.109.0] - 2024-10-06 10:30:21
+
+### Added
+
+- EITC takeup by number of children.
+
 ## [1.108.0] - 2024-10-05 12:11:34
 
 ### Added
@@ -9917,6 +9923,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.109.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.108.0...1.109.0
 [1.108.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.107.0...1.108.0
 [1.107.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.106.0...1.107.0
 [1.106.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.105.2...1.106.0
