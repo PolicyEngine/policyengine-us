@@ -82,7 +82,6 @@ Mac:
   python -m venv venv
 
 ### Creating a pull request
-https://docs.google.com/document/d/1BiajMUJZFzG24Ju5lTybCAW8tp59B3E_DNhS8eJkuR0/edit
 
 https://policyengine.github.io/policyengine-core/intro.html
 
@@ -100,14 +99,6 @@ parameters as yaml files, which specify the values as of certain dates, as well 
 11. Create the variable logic. Variables are features of each person or household, and PolicyEngine defines them as Python files. Create a file in the variables tree corresponding to the program, such as "my_tax_credit.py" and copy an existing .py file as a template. Variables are instances of the Variable class, which defines attributes like the entity and reference, and a formula method defining the logic.
 12. Run make test again. To run a specific yaml test or folder of yaml tests, run policyengine-core test [path] -c policyengine_canada.
 13. Run make format. This will align the code to the black Python formatting standard, and ensure each file ends in an empty new line.
-
-
-
-
-
-
-
-
 
 ### Create new issues
 ![pic1](./page2image24204576.png)
