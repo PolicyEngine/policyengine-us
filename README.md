@@ -14,7 +14,9 @@ To install, run `pip install policyengine-us`.
 - First check the legal code of the program
  - Model based on legal code structure
 - Second check newest tax form for inflation adjusted amount confirmation
-### Contribution on codespaces
+### Setting up your enviorment
+
+#### Contribution on codespaces
 - Steps:
 1. If you haven't already, fork the PolicyEngine/policyengine-us repo to your personal account
    Leave the Copy the master branch only box checked
@@ -43,7 +45,7 @@ To install, run `pip install policyengine-us`.
 6. make format
 7. For the problem of Check version: git pull upstream master
 
-### Contributing on VScode
+#### Contributing on VScode
 1. Install VS Code
 2. Install VS Code extensions (you'll have to sign in to GitHub for each)
    a. GitHub Pull Requests & Issues extension
@@ -81,6 +83,13 @@ Mac:
   pyenv shell 3.10
   python -m venv venv
 
+### Creating a new issue
+![pic1](./page2image24204576.png)
+- Go to the ‘Issues’ tab
+- Click on ‘New Issue’
+- Can assign to specific person/people
+- Remember to add tags for better classification
+
 ### Creating a pull request
 
 https://policyengine.github.io/policyengine-core/intro.html
@@ -100,12 +109,7 @@ parameters as yaml files, which specify the values as of certain dates, as well 
 12. Run make test again. To run a specific yaml test or folder of yaml tests, run policyengine-core test [path] -c policyengine_canada.
 13. Run make format. This will align the code to the black Python formatting standard, and ensure each file ends in an empty new line.
 
-### Create new issues
-![pic1](./page2image24204576.png)
-- Go to the ‘Issues’ tab
-- Click on ‘New Issue’
-- Can assign to specific person/people
-- Remember to add tags for better classification
+
 
 ### Working on issues assigned in VS Code
 
