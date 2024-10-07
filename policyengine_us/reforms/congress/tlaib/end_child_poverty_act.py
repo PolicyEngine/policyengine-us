@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from reforms.utilities import is_reform_active
 
 
 def create_end_child_poverty_act() -> Reform:
@@ -180,8 +181,9 @@ def create_end_child_poverty_act_reform(
         return create_end_child_poverty_act()
 
     p = parameters(period).gov.contrib.congress.tlaib.end_child_poverty_act
+    reform_active = is_reform_active(p, period)
 
-    if p.in_effect:
+    if reform_active:
         return create_end_child_poverty_act()
     else:
         return None

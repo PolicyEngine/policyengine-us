@@ -1,5 +1,5 @@
 from policyengine_us.model_api import *
-
+from reforms.utilities import is_reform_active
 
 def create_reported_state_income_tax() -> Reform:
     class household_tax_before_refundable_credits(Variable):
@@ -61,8 +61,9 @@ def create_reported_state_income_tax_reform(
         return create_reported_state_income_tax()
 
     p = parameters(period).simulation
+    reform_active = is_reform_active(p, period, "reported_state_income_tax")
 
-    if p.reported_state_income_tax:
+    if reform_active:
         return create_reported_state_income_tax()
     else:
         return None

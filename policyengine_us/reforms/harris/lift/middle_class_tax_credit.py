@@ -1,5 +1,5 @@
 from policyengine_us.model_api import *
-
+from reforms.utilities import is_reform_active
 
 def create_middle_class_tax_credit() -> Reform:
     class middle_class_tax_credit(Variable):
@@ -61,8 +61,9 @@ def create_middle_class_tax_credit_reform(
         return create_middle_class_tax_credit()
 
     p = parameters(period).gov.contrib.harris.lift.middle_class_tax_credit
+    reform_active = is_reform_active(p, period)
 
-    if p.in_effect:
+    if reform_active:
         return create_middle_class_tax_credit()
     else:
         return None

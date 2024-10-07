@@ -1,5 +1,5 @@
 from policyengine_us.model_api import *
-from policyengine_core.periods import period as period_
+from reforms.utilities import is_reform_active
 
 
 def create_remove_head_of_household() -> Reform:
@@ -18,14 +18,7 @@ def create_remove_head_of_household_reform(
 
     # Look ahead for the next five years
     p = parameters.gov.contrib.congress.romney.family_security_act
-    reform_active = False
-    current_period = period_(period)
-
-    for i in range(5):
-        if p(current_period).remove_head_of_household:
-            reform_active = True
-            break
-        current_period = current_period.offset(1, "year")
+    reform_active = is_reform_active(p, period, "remove_head_of_household")
 
     if reform_active:
         return create_remove_head_of_household()
