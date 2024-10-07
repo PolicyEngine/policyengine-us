@@ -15,11 +15,7 @@ class in_county_tax(Variable):
         in_in = tax_unit.household("state_code_str", period) == "IN"
         county = tax_unit.household("county_str", period)
         rate = np.zeros_like(county, dtype=float)
-        rates = (
-            parameters(period)
-            .gov.states["in"]
-            .tax.income.taxes.county.county_rates
-        )
+        rates = parameters(period).gov.states["in"].tax.income.county_rates
         if in_in.sum() > 0:
             rate[in_in] = rates[county[in_in]]
         return rate * tax_unit("in_agi", period)
