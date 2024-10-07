@@ -1,12 +1,13 @@
-description: Indiana taxes adjusted gross at these county specific tax rates.
+description: Indiana taxes adjusted gross income at these county specific tax rates.
 metadata:
   period: year
   unit: /1
-  label: IN county tax rates
+  label: Inidiana county tax rates
   reference:
   - title: IC 6-3.6 ARTICLE 3.6. LOCAL INCOME TAXES
     href: http://iga.in.gov/legislative/laws/2021/ic/titles/006#6-3.6
   propagate_metadata_to_children: true
+
 ADAMS_COUNTY_IN:
   2021-01-01: 0.01624
 ALLEN_COUNTY_IN:
