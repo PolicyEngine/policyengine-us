@@ -14,3 +14,19 @@
     state_code: MI
   output:
     mi_income_tax_before_non_refundable_credits: 0
+
+- name: 2023 20k taxable income at a flat 4.05% rate
+  period: 2023
+  input:
+    mi_taxable_income: 20_000
+    state_code: MI
+  output:
+    mi_income_tax_before_non_refundable_credits: 20_000 * 0.0405
+
+- name: 2024 20k taxable income at a flat 4.25% rate
+  period: 2024
+  input:
+    mi_taxable_income: 20_000
+    state_code: MI
+  output:
+    mi_income_tax_before_non_refundable_credits: 20_000 * 0.0425
