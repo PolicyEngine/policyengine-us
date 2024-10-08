@@ -16,12 +16,15 @@ metadata:
     href: https://www.revenue.state.mn.us/sites/default/files/2023-03/m1_inst_22.pdf#page=12
   - title: 2023 Minnesota M1 form instructions
     href: https://www.revenue.state.mn.us/sites/default/files/2024-02/m1-inst-23.pdf#page=13
+  - title: Tax Year 2024 Inflation-Adjusted Amounts In Minnesota Statutes, 290.0123, Subd. 2
+    href: https://www.revenue.state.mn.us/sites/default/files/2023-12/inflation-adjusted-amounts-ty-2024.pdf#page=1
 
 JOINT:
   values:
     2021-01-01: 1_300
     2022-01-01: 1_350
     2023-01-01: 1_450
+    2024-01-01: 1_550
   metadata:
     uprating:
       parameter: gov.irs.uprating
@@ -33,6 +36,7 @@ HEAD_OF_HOUSEHOLD:
     2021-01-01: 1_650
     2022-01-01: 1_700
     2023-01-01: 1_850
+    2024-01-01: 1_950
   metadata:
     uprating:
       parameter: gov.irs.uprating
@@ -44,6 +48,7 @@ SURVIVING_SPOUSE:
     2021-01-01: 1_300
     2022-01-01: 1_350
     2023-01-01: 1_450
+    2024-01-01: 1_550
   metadata:
     uprating:
       parameter: gov.irs.uprating
@@ -55,6 +60,7 @@ SINGLE:
     2021-01-01: 1_650
     2022-01-01: 1_700
     2023-01-01: 1_850
+    2024-01-01: 1_950
   metadata:
     uprating:
       parameter: gov.irs.uprating
@@ -66,6 +72,7 @@ SEPARATE:
     2021-01-01: 1_300
     2022-01-01: 1_350
     2023-01-01: 1_450
+    2024-01-01: 1_950
   metadata:
     uprating:
       parameter: gov.irs.uprating

@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.112.0] - 2024-10-08 14:36:53
+
+### Added
+
+- Minnesota 2024 base and additional standard deduction amount updates.
+
+## [1.111.0] - 2024-10-08 14:25:53
+
+### Added
+
+- Added NC SNAP utility allowances for FY 2025.
+
+### Fixed
+
+- Corrected NC SNAP utility allowance parameters start date.
+
+## [1.110.0] - 2024-10-07 13:04:35
+
 ## [1.109.0] - 2024-10-06 10:30:21
 
 ### Added
@@ -9923,6 +9941,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.112.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.111.0...1.112.0
+[1.111.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.110.0...1.111.0
+[1.110.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.109.0...1.110.0
 [1.109.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.108.0...1.109.0
 [1.108.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.107.0...1.108.0
 [1.107.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.106.0...1.107.0
