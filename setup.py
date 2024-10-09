@@ -34,7 +34,7 @@ setup(
         ),
     ],
     install_requires=[
-        "policyengine-core @ git+https://github.com:anth-volk/policyengine-core.git@fix/varying_your_earnings",
+        "policyengine-core @ git+https://github.com/anth-volk/policyengine-core.git@fix/varying_your_earnings",
         "policyengine-us-data==1.11.0",
         "microdf-python",
         "tqdm",
