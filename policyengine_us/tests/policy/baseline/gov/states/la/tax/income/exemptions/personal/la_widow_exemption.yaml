@@ -5,11 +5,11 @@
       person1:
         age: 64
         is_tax_unit_head: 1
-        is_widowed: True
+        is_surviving_spouse: True
       person2:
         age: 64
         is_tax_unit_spouse: 1
-        is_widowed: False
+        is_surviving_spouse: False
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -27,11 +27,11 @@
       person1:
         age: 64
         is_tax_unit_head: 1
-        is_widowed: False
+        is_surviving_spouse: False
       person2:
         age: 64
         is_tax_unit_spouse: 1
-        is_widowed: False
+        is_surviving_spouse: False
     tax_units:
       tax_unit:
         members: [person1, person2]
