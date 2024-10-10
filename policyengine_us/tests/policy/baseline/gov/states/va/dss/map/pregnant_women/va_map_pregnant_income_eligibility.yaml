@@ -1,0 +1,35 @@
+- name: Household with no income is eligible.
+  period: 2023
+  input:
+    state_code: VA
+    va_map_pregnant_income_limit: 1_000
+    va_map_pregnant_income: 0
+  output:
+    va_map_pregnant_income_eligibility: true
+
+- name: Household income equals limit is eligible.
+  period: 2023
+  input:
+    state_code: VA
+    va_map_pregnant_income_limit: 1_000
+    va_map_pregnant_income: 1_000
+  output:
+    va_map_pregnant_income_eligibility: true
+
+- name: Household income greater than is not eligible.
+  period: 2023
+  input:
+    state_code: VA
+    va_map_pregnant_income_limit: 1_000
+    va_map_pregnant_income: 2_000
+  output:
+    va_map_pregnant_income_eligibility: false
+
+- name: Only apply to VA.
+  period: 2023
+  input:
+    state_code: CA
+    va_map_pregnant_income_limit: 1_000
+    va_map_pregnant_income: 500
+  output:
+    va_map_pregnant_income_eligibility: false

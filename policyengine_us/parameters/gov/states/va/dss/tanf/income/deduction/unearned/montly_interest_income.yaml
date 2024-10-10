@@ -1,0 +1,12 @@
+description: VA excludes this amount of interest income when computing unearned income.
+
+values:
+  2020-07-01: 10
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: VA TANF interest income exclusion
+  reference:
+    - title: VA TANF Guidance Manual - Need and Amount of Assistance 
+      href: https://www.dss.virginia.gov/files/division/bp/tanf/manual/300_11-20.pdf#page=58
