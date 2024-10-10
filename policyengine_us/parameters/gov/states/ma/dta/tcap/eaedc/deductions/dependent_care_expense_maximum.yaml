@@ -1,0 +1,20 @@
+description: Massachusetts provides this deduction amount in dependent care expense for Emergency Aid to the Elderly, Disabled and Children program.
+brackets:
+  - threshold:
+      2022-01-01: 0
+    amount:
+      2022-01-01: 175
+  - threshold:
+      2022-01-01: 2
+    amount:
+      2022-01-01: 200
+  # the legal code said this amount per child 
+metadata:
+  threshold_unit: year 
+  amount_unit: currency-USD
+  type: single_amount
+  threshold_period: year 
+  label: Massachusetts EAEDC dependent care expense deduction amount
+  reference:
+    - title: 106 CMR 704.275 - Dependent Care Deduction
+      href: https://www.law.cornell.edu/regulations/massachusetts/106-CMR-704-275#(A)
