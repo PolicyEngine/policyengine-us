@@ -135,3 +135,31 @@
         members: [head, spouse, child_1, child_2, child_3]
   output:
     co_low_income_cdcc: 500
+
+- name: co_low_income_cdcc after 2026
+  period: 2026
+  absolute_error_margin: 0
+  input:
+    people:
+      head:
+        age: 35
+      spouse:
+        age: 43
+      child_1:
+        age: 12
+      child_2:
+        age: 17  
+      child_3:
+        age: 15
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child_1, child_2, child_3]
+        min_head_spouse_earned: 5_100
+        tax_unit_childcare_expenses: 9_000
+        co_low_income_cdcc_eligible: true  
+    households:
+      household:
+        state_code: CO
+        members: [head, spouse, child_1, child_2, child_3]
+  output:
+    co_low_income_cdcc: 0
