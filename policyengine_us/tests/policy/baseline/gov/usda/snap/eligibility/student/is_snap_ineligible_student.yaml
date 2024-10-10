@@ -1,0 +1,21 @@
+- name: Student who does not meet any exemption criteria
+  period: 2022
+  input:
+    is_full_time_student: true
+    age: 18
+    is_disabled: false
+    weekly_hours_worked: false
+    is_parent: false
+  output:
+    is_snap_ineligible_student: true
+
+- name: Student who is under the age limit
+  period: 2022
+  input:
+    is_full_time_student: true
+    age: 17
+    is_disabled: false
+    weekly_hours_worked: false
+    is_parent: false
+  output:
+    is_snap_ineligible_student: false

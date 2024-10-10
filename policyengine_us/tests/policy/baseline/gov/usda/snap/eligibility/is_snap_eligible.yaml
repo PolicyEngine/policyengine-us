@@ -27,3 +27,75 @@
     meets_snap_categorical_eligibility: false
   output:
     is_snap_eligible: true
+
+- name: One ineligible student present
+  period: 2022
+  input:
+    people:
+      person1:
+        is_snap_ineligible_student: false
+      person2:
+        is_snap_ineligible_student: false
+      person3:
+        is_snap_ineligible_student: true
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3]
+        meets_snap_gross_income_test: true
+        meets_snap_net_income_test: true
+        meets_snap_asset_test: true
+        meets_snap_categorical_eligibility: false
+  output:
+    is_snap_eligible: true
+
+- name: Every person ineligible
+  period: 2022
+  input:
+    people:
+      person1:
+        is_snap_ineligible_student: true
+      person2:
+        is_snap_ineligible_student: true
+      person3:
+        is_snap_ineligible_student: true
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3]
+        meets_snap_gross_income_test: true
+        meets_snap_net_income_test: true
+        meets_snap_asset_test: true
+        meets_snap_categorical_eligibility: false
+  output:
+    is_snap_eligible: false
+
+- name: Single ineligible student
+  period: 2022
+  input:
+    people:
+      person1:
+        is_snap_ineligible_student: true
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        meets_snap_gross_income_test: true
+        meets_snap_net_income_test: true
+        meets_snap_asset_test: true
+        meets_snap_categorical_eligibility: false
+  output:
+    is_snap_eligible: false
+
+- name: Single eligible person
+  period: 2022
+  input:
+    people:
+      person1:
+        is_snap_ineligible_student: false
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        meets_snap_gross_income_test: true
+        meets_snap_net_income_test: true
+        meets_snap_asset_test: true
+        meets_snap_categorical_eligibility: false
+  output:
+    is_snap_eligible: true
