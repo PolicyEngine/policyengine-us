@@ -8367,3 +8367,72 @@
     - Oklahoma military retirement benefit exclusion.
     - Oklahoma AGI subtractions list.
   date: 2024-09-29 23:26:45
+- bump: minor
+  changes:
+    added:
+    - 2023 Medicaid income limit updates.
+  date: 2024-09-30 16:54:45
+- bump: minor
+  changes:
+    added:
+    - North Carolina military retirement deduction.
+  date: 2024-09-30 17:03:10
+- bump: patch
+  changes:
+    changed:
+    - Moved loading of abolitions parameters earlier in initialization process
+  date: 2024-09-30 22:09:41
+- bump: patch
+  changes:
+    added:
+    - Always use the SUA for CO.
+  date: 2024-10-02 17:49:23
+- bump: minor
+  changes:
+    added:
+    - Parameterize the age in is_person_demographic_tanf_eligible.
+  date: 2024-10-04 16:51:40
+- bump: minor
+  changes:
+    added:
+    - Typo in CalWORKs exempt parameter.
+  date: 2024-10-05 07:43:35
+- bump: minor
+  changes:
+    added:
+    - Minnesota 2024 income tax bracekts.
+  date: 2024-10-05 12:11:34
+- bump: minor
+  changes:
+    added:
+    - EITC takeup by number of children.
+  date: 2024-10-06 10:30:21
+- bump: minor
+  changes:
+  - Updated to PolicyEngine US Data v1.9.
+  date: 2024-10-07 13:04:35
+- bump: minor
+  changes:
+    added:
+    - Added NC SNAP utility allowances for FY 2025.
+    fixed:
+    - Corrected NC SNAP utility allowance parameters start date.
+  date: 2024-10-08 14:25:53
+- bump: minor
+  changes:
+    added:
+    - Minnesota 2024 base and additional standard deduction amount updates.
+  date: 2024-10-08 14:36:53
+- bump: minor
+  changes:
+    added:
+    - Minnesota 2024 standard deduction limitations update.
+  date: 2024-10-09 04:16:32
+- bump: minor
+  changes:
+  - Updated to PolicyEngine US Data v1.10.
+  date: 2024-10-09 11:09:17
+- bump: minor
+  changes:
+  - Updated to PolicyEngine US Data v1.11.
+  date: 2024-10-09 15:10:16
