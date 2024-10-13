@@ -1,0 +1,12 @@
+description: Maryland TANF counts these income sources as earned income.
+values:
+  2022-11-01:
+    - employment_income
+    - self_employment_income
+    - armed_services_basic_allowance_for_housing
+metadata:
+  unit: list
+  label: Maryland TANF earned income
+  reference:
+    - title: Family investment administration temporary cash assistance manual - Financial Eligibility
+      href: https://dhs.maryland.gov/documents/Manuals/Temporary-Cash-Assistance-Manual/0900-Financial-Eligibility/0902%20TCA%20Earned%20Income%20rev%2011.22.doc
