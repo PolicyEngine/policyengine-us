@@ -48,6 +48,7 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
     def __init__(self, reform=None):
         super().__init__(entities, reform=reform)
         self.load_parameters(COUNTRY_DIR / "parameters")
+        self.add_abolition_parameters()
         if reform:
             self.apply_reform_set(reform)
         self.parameters = set_irs_uprating_parameter(self.parameters)
@@ -58,7 +59,6 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
         self.parameters = interpolate_parameters(self.parameters)
         self.parameters = uprate_parameters(self.parameters)
         self.parameters = propagate_parameter_metadata(self.parameters)
-        self.add_abolition_parameters()
         add_default_uprating(self)
 
         structural_reform = create_structural_reforms_from_parameters(
