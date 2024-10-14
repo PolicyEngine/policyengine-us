@@ -1,0 +1,61 @@
+- name: AGI over phase_in amount and joint EITC filers
+  period: 2022
+  reforms: policyengine_us.reforms.congress.romney.family_security_act_2024.eitc.family_security_act_2024_eitc.family_security_act_2024_eitc
+  input:
+    gov.contrib.congress.romney.family_security_act_2_0.eitc.apply_eitc_structure: true
+    gov.contrib.congress.romney.family_security_act_2_0.eitc.amount.joint[0].amount: 2_000
+    gov.contrib.congress.romney.family_security_act_2_0.eitc.amount.joint[1].amount: 3_000
+    gov.contrib.congress.romney.family_security_act_2_0.eitc.amount.single[0].amount: 1_000
+    gov.contrib.congress.romney.family_security_act_2_0.eitc.amount.single[1].amount: 2_000
+    adjusted_gross_income: 11_000
+    eitc_child_count: 0
+    filing_status: JOINT
+  output:
+    eitc_maximum: 2_000
+
+- name: AGI over phase_in amount and single EITC filers 
+  period: 2022
+  reforms: policyengine_us.reforms.congress.romney.family_security_act_2024.eitc.family_security_act_2024_eitc.family_security_act_2024_eitc
+  input:
+    gov.contrib.congress.romney.family_security_act_2_0.eitc.apply_eitc_structure: true
+    gov.contrib.congress.romney.family_security_act_2_0.eitc.amount.joint[0].amount: 2_000
+    gov.contrib.congress.romney.family_security_act_2_0.eitc.amount.joint[1].amount: 3_000
+    gov.contrib.congress.romney.family_security_act_2_0.eitc.amount.single[0].amount: 1_000
+    gov.contrib.congress.romney.family_security_act_2_0.eitc.amount.single[1].amount: 2_000
+    adjusted_gross_income: 11_000
+    ctc_maximum_with_arpa_addition: 1_000
+    ctc_phase_out: 100
+    eitc_child_count: 0
+    filing_status: SINGLE
+  output:
+    eitc_maximum: 1_000
+
+- name: AGI below phase_in amount and single EITC filers 
+  period: 2022
+  reforms: policyengine_us.reforms.congress.romney.family_security_act_2024.eitc.family_security_act_2024_eitc.family_security_act_2024_eitc
+  input:
+    gov.contrib.congress.romney.family_security_act_2_0.eitc.apply_eitc_structure: true
+    gov.contrib.congress.romney.family_security_act_2_0.eitc.amount.joint[0].amount: 2_000
+    gov.contrib.congress.romney.family_security_act_2_0.eitc.amount.joint[1].amount: 3_000
+    gov.contrib.congress.romney.family_security_act_2_0.eitc.amount.single[0].amount: 1_000
+    gov.contrib.congress.romney.family_security_act_2_0.eitc.amount.single[1].amount: 2_000
+    adjusted_gross_income: 5_000
+    eitc_child_count: 0
+    filing_status: SEPARATE
+  output:
+    eitc_maximum: 1_000
+
+- name: No AGI
+  period: 2022
+  reforms: policyengine_us.reforms.congress.romney.family_security_act_2024.eitc.family_security_act_2024_eitc.family_security_act_2024_eitc
+  input:
+    gov.contrib.congress.romney.family_security_act_2_0.eitc.apply_eitc_structure: true
+    gov.contrib.congress.romney.family_security_act_2_0.eitc.amount.joint[0].amount: 2_000
+    gov.contrib.congress.romney.family_security_act_2_0.eitc.amount.joint[1].amount: 3_000
+    gov.contrib.congress.romney.family_security_act_2_0.eitc.amount.single[0].amount: 1_000
+    gov.contrib.congress.romney.family_security_act_2_0.eitc.amount.single[1].amount: 2_000
+    adjusted_gross_income: 0
+    eitc_child_count: 0
+    filing_status: SURVIVING_SPOUSE
+  output:
+    eitc_maximum: 1_000

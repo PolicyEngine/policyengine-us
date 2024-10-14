@@ -1,0 +1,13 @@
+- name: Always SUA
+  period: 2024
+  input:
+    state_code: CO
+  output:
+    snap_state_using_standard_utility_allowance: true
+
+- name: Not always SUA
+  period: 2024
+  input:
+    state_code: CA
+  output:
+    snap_state_using_standard_utility_allowance: false
