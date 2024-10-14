@@ -14,6 +14,12 @@ class ks_exemptions(Variable):
     defined_for = StateCode.KS
 
     def formula(tax_unit, period, parameters):
-        exemptions_count = tax_unit("ks_count_exemptions", period)
         p = parameters(period).gov.states.ks.tax.income.exemptions
-        return exemptions_count * p.amount
+        if p.by_filing_status.in_effect:
+            filing_status = tax_unit("filing_status", period)
+            base_amount = p.by_filing_status.amount[filing_status]
+            dependents = tax_unit("tax_unit_dependents", period)
+            dependent_amount = p.by_filing_status.dependent * dependents
+            return base_amount + dependent_amount
+        exemptions_count = tax_unit("ks_count_exemptions", period)
+        return exemptions_count * p.consolidated.amount
