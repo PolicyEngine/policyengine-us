@@ -1,0 +1,35 @@
+- name: Case 1, the filer is a disabled veteran, get exemptions. 
+  period: 2023
+  input:
+    is_permanently_and_totally_disabled: true
+    is_veteran: true
+    state_code: KS
+  output:
+    ks_disabled_veteran_exemptions_eligible_person: true
+
+- name: Case 2, the filer is a veteran, but not disabled, no exemption.  
+  period: 2023
+  input:
+    is_permanently_and_totally_disabled: false
+    is_veteran: true
+    state_code: KS
+  output:
+    ks_disabled_veteran_exemptions_eligible_person: false
+  
+- name: Case 3, the filer is a disabled, but not veteran, no exemption.  
+  period: 2023
+  input:
+    is_permanently_and_totally_disabled: false
+    is_veteran: true
+    state_code: KS
+  output:
+    ks_disabled_veteran_exemptions_eligible_person: false
+
+- name: Case 4, in 2022, the filer is a disabled veteran. 
+  period: 2022
+  input:
+    is_permanently_and_totally_disabled: true
+    is_veteran: true
+    state_code: KS
+  output:
+    ks_disabled_veteran_exemptions_eligible_person: false

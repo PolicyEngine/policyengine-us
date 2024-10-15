@@ -1,0 +1,32 @@
+description: Kansas provides this personal exemption amount, based on filing status, post 2024.
+
+
+JOINT:
+  2021-01-01: 2_250
+  2024-01-01: 18_320
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 2_250
+  2024-01-01: 9_160
+SURVIVING_SPOUSE:
+  2021-01-01: 2_250
+  2024-01-01: 9_160
+SINGLE:
+  2021-01-01: 2_250
+  2024-01-01: 9_160
+SEPARATE:
+  2021-01-01: 2_250
+  2024-01-01: 9_160
+
+
+metadata:
+  period: year
+  unit: currency-USD
+  label: Kansas personal exemption by filing status amount
+  reference:
+    - title: 2023 Form K-40 instructions
+      href: https://www.ksrevenue.gov/pdf/ip23.pdf#page=2
+    # Structure is applied in 2024
+    - title: Kansas Notice 24-08 Changes to individual income tax
+      href: https://www.ksrevenue.gov/taxnotices/notice24-08.pdf#page=2
+    - title: Kan. Stat. § 79-32,121 (a) 
+      href: https://casetext.com/statute/kansas-statutes/chapter-79-taxation/article-32-income-tax/section-79-32121-kansas-exemption-for-an-individual
