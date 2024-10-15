@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.120.0] - 2024-10-15 00:23:23
+
+### Added
+
+- California Income Tax Thresholds 2024.
+
 ## [1.119.0] - 2024-10-14 20:55:12
 
 ### Added
@@ -9975,6 +9981,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.120.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.119.0...1.120.0
 [1.119.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.118.0...1.119.0
 [1.118.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.117.0...1.118.0
 [1.117.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.116.0...1.117.0
