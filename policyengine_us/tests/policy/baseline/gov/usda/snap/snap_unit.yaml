@@ -13,7 +13,7 @@
         members: [person1, person2, person3]
         spm_unit_size: 3
   output:
-    snap_unit: 2
+    snap_unit_size: 2
 
 - name: Everybody eligible
   period: 2022
@@ -30,7 +30,7 @@
         members: [person1, person2, person3]
         spm_unit_size: 3
   output:
-    snap_unit: 3
+    snap_unit_size: 3
 
 - name: No eligible people
   period: 2022
@@ -47,4 +47,4 @@
         members: [person1, person2, person3]
         spm_unit_size: 3
   output:
-    snap_unit: 0
+    snap_unit_size: 0
