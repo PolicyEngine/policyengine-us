@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class snap_unit(Variable):
+class snap_unit_size(Variable):
     value_type = int
     entity = SPMUnit
     label = "SNAP unit"
@@ -12,4 +12,4 @@ class snap_unit(Variable):
         person = spm_unit.members
         ineligible_student = person("is_snap_ineligible_student", period)
         ineligible_students = spm_unit.sum(ineligible_student)
-        return unit_size - ineligible_students
+        return max_(unit_size - ineligible_students, 0)
