@@ -23,7 +23,7 @@ class snap_min_allotment(Variable):
         ]
 
         # Minimum benefits only apply to households up to a certain size.
-        size = spm_unit("spm_unit_size", period)
+        size = spm_unit("snap_unit_size", period)
         eligible = size <= snap.min_allotment.maximum_household_size
         min_allotment = eligible * min_allotment.rate * relevant_max_allotment
 
