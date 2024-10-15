@@ -4,8 +4,7 @@ from policyengine_us.model_api import *
 class ca_ffyp_eligible(Variable):
     value_type = bool
     entity = Person
-    label = "Eligible person for California Former Foster Youth Program"
-    unit = USD
+    label = "Eligible person for the California Former Foster Youth Program"
     definition_period = YEAR
     reference = "https://www.dhcs.ca.gov/services/medi-cal/eligibility/Pages/FFY_Bene.aspx"
     defined_for = StateCode.CA
@@ -14,7 +13,7 @@ class ca_ffyp_eligible(Variable):
         p = parameters(period).gov.states.ca.dhcs.ffyp
         age = person("age", period)
         age_eligible = (
-            p.foster_care_age_minimum < age < p.age_limit
+            p.foster_care_age_minimum < age < p.age_threshold
         )  # Person must be below age limit and previously in foster care for a valid age
         was_in_foster_care = person(
             "was_in_foster_care", period
