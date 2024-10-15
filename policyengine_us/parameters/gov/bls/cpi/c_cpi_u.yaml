@@ -304,7 +304,7 @@ values:
   2031-02-01: 199.7 # 2032 value.
   2032-02-01: 203.7 # 2033 value.
   2033-02-01: 207.8 # 2034 value.
-  2034-02-01: 212.0 # 2035 Value (Indexed Using Values from Previous Year)
+  2034-02-01: 212.0 # 2035 value. (indexed by applying 2034 indexing rate (207.8/203.7) and multiplying it by 207.8)
 metadata:
   unit: currency-USD
   label: Chained CPI-U
