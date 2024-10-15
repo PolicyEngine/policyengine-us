@@ -10,8 +10,10 @@ metadata:
   uprating: gov.usda.snap.uprating
   propagate_metadata_to_children: true
   reference:
-    - name: USDA utility allowances by state spreadsheet. Extracted by build_utility_allowances()
-      href: https://www.fns.usda.gov/sites/default/files/resource-files/snap-sua-table-fy24-032624.xlsx
+  - name: USDA utility allowances by state spreadsheet. Extracted by build_utility_allowances (FY2024)
+    href: https://www.fns.usda.gov/sites/default/files/resource-files/snap-sua-table-fy24-032624.xlsx
+  - name: USDA utility allowances by state spreadsheet. Extracted by build_utility_allowances (FY2025)
+    href: https://www.fns.usda.gov/sites/default/files/resource-files/2024-09-30-SUA-Table-FY25-508-Update.xlsx
 AK:
   2010-01-01: 0
   2021-10-01: 15
