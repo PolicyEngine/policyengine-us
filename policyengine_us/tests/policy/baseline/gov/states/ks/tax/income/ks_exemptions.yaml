@@ -1,0 +1,33 @@
+- name: Four exemptions in 2021
+  period: 2021
+  input:
+    ks_count_exemptions: 4
+    state_code: KS
+  output:
+    ks_exemptions: 2_250 * 4
+
+- name: Two exemptions in 2022
+  period: 2022
+  input:
+    ks_count_exemptions: 2
+    state_code: KS
+  output:
+    ks_exemptions: 2_250 * 2
+
+- name: Post 2024, the exemption amount is dependent on filing sttaus and number of dependents
+  period: 2024
+  input:
+    filing_status: JOINT
+    tax_unit_dependents: 2
+    state_code: KS
+  output:
+    ks_exemptions: 22_960
+
+- name: Post 2024, single no dependents
+  period: 2024
+  input:
+    filing_status: SINGLE
+    tax_unit_dependents: 0
+    state_code: KS
+  output:
+    ks_exemptions: 9_160
