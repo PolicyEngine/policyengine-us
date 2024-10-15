@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.122.0] - 2024-10-15 03:15:23
+
+### Added
+
+- Kansas disabled veteran exemptions.
+
 ## [1.121.0] - 2024-10-15 03:05:54
 
 ### Added
@@ -9987,6 +9993,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.122.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.121.0...1.122.0
 [1.121.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.120.0...1.121.0
 [1.120.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.119.0...1.120.0
 [1.119.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.118.0...1.119.0
