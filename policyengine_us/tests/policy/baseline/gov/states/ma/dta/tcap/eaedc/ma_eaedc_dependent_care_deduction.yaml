@@ -1,0 +1,78 @@
+- name: Case 1, one child age of 5. 
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 35
+        is_tax_unit_dependent: false 
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        care_expenses: 300
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ma_eaedc_dependent_care_deduction_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA  
+  output: 
+    ma_eaedc_dependent_care_deduction: 200
+
+- name: Case 2, one child age of 1.
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 35
+        is_tax_unit_dependent: false 
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        care_expenses: 170
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ma_eaedc_dependent_care_deduction_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA  
+  output: 
+    ma_eaedc_dependent_care_deduction: 170
+
+- name: Case 3, two children age of 1 and 5.
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 35
+        is_tax_unit_dependent: false 
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        care_expenses: 170
+      person3:
+        age: 5
+        is_tax_unit_dependent: true
+        care_expenses: 230
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ma_eaedc_dependent_care_deduction_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MA  
+  output: 
+    ma_eaedc_dependent_care_deduction: 375
