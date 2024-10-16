@@ -1,5 +1,5 @@
 from policyengine_us.model_api import *
-
+from reforms.utilities import is_reform_active
 
 def create_adjust_income_limit_and_min_children_by_filing_status() -> Reform:
     class nyc_school_tax_credit_eligible(Variable):
@@ -55,8 +55,9 @@ def create_adjust_income_limit_by_filing_status_and_eligibility_by_children_refo
         return create_adjust_income_limit_and_min_children_by_filing_status()
 
     p = parameters(period).gov.contrib.local.nyc.stc
+    reform_active = is_reform_active(p, period, "adjust_income_limit_by_filing_status_and_eligibility_by_children")
 
-    if p.adjust_income_limit_by_filing_status_and_eligibility_by_children:
+    if reform_active:
         return create_adjust_income_limit_and_min_children_by_filing_status()
     else:
         return None

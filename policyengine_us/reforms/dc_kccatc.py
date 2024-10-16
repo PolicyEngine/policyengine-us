@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
+from reforms.utilities import is_reform_active
 
-
-def create_dc_kccatc_reform(parameters, period, bypass=False):
+def create_dc_kccatc():
     class dc_kccatc(Variable):
         value_type = float
         entity = TaxUnit
@@ -87,8 +87,18 @@ def create_dc_kccatc_reform(parameters, period, bypass=False):
         def apply(self):
             self.update_variable(dc_kccatc)
 
-    if bypass or parameters(period).gov.contrib.dc_kccatc.active:
-        return reform
+    return reform
+
+
+def create_dc_kccatc_reform(parameters, period, bypass=False):
+    if bypass:
+        return create_dc_kccatc()
+
+    p = parameters(period).gov.contrib.dc_kccatc
+    reform_active = is_reform_active(p, period, "active")
+
+    if reform_active:
+        return create_dc_kccatc()
     else:
         return None
 
