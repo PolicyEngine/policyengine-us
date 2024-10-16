@@ -275,11 +275,11 @@
       person1:
         age: 50
         employment_income: 80_000
-        mortgage_interest:  3_000
+        deductable_mortgage_interest:  3_000
       person2:
         age: 50
         employment_income: 20_000
-        mortgage_interest:  3_000
+        deductable_mortgage_interest:  3_000
     tax_units:
       tax_unit:
         members: [person1, person2]
