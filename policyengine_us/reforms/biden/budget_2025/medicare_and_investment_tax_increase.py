@@ -1,5 +1,5 @@
 from policyengine_us.model_api import *
-
+from policyengine_core.periods import period as period_
 
 def create_medicare_and_investment_tax_increase() -> Reform:
     class additional_medicare_tax(Variable):
@@ -75,8 +75,16 @@ def create_medicare_and_investment_tax_increase_reform(
         return create_medicare_and_investment_tax_increase()
 
     p = parameters(period).gov.contrib.biden.budget_2025
+    current_period = period_(period)
+    reform_active = False
 
-    if (p.medicare.rate > 0) | (p.net_investment_income.rate > 0):
+    for i in range(5):
+        if p(current_period).medicare.rate > 0 or p(current_period).net_investment_income.rate > 0:
+            reform_active = True
+            break
+        current_period = current_period.offset(1, "year")
+
+    if reform_active:
         return create_medicare_and_investment_tax_increase()
     else:
         return None
