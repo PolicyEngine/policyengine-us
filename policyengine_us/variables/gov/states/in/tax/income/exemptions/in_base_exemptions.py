@@ -23,9 +23,9 @@ class in_base_exemptions(Variable):
         dependents = tax_unit(
             "tax_unit_dependents", period
         )  # Total the number of dependents
-        
+
         dependent_exemptions = dependents * p.base.dependent
 
 
-        # total exemptions
+    # total exemptions
         return personal_exemptions + dependent_exemptions
