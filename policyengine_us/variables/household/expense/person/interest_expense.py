@@ -8,4 +8,4 @@ class interest_expense(Variable):
     unit = USD
     definition_period = YEAR
 
-    adds = ["mortgage_interest", "non_mortgage_interest"]
+    adds = ["deductable_mortgage_interest", "non_mortgage_interest"]
