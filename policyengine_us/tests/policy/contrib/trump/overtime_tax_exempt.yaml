@@ -5,9 +5,11 @@
     gov.contrib.trump.overtime_tax_exempt.in_effect: true
     irs_non_overtime_employment_income: 20_000
     irs_overtime_employment_income: 30_000
-    pre_tax_contributions: 0
+    exemptions: 0
+    taxable_income_deductions: 0
   output:
-    income_tax_main_rates: 540
+    irs_employment_income: 50_000
+    taxable_income: 20_000
 
 - name: Reform does not apply
   period: 2024
@@ -15,9 +17,11 @@
     gov.contrib.trump.overtime_tax_exempt.in_effect: false
     irs_non_overtime_employment_income: 20_000
     irs_overtime_employment_income: 30_000
-    pre_tax_contributions: 0
+    exemptions: 0
+    taxable_income_deductions: 0
   output:
-    income_tax_main_rates: 4_016
+    irs_employment_income: 50_000
+    taxable_income: 50_000
 
 - name: No wages
   period: 2024
@@ -28,4 +32,4 @@
     irs_overtime_employment_income: 0
     pre_tax_contributions: 0
   output:
-    income_tax_main_rates: 0
+    taxable_income: 0
