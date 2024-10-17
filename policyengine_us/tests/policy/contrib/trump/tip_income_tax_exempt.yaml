@@ -1,0 +1,22 @@
+- name: Tip income is excluded from taxable income
+  period: 2024
+  reforms: policyengine_us.reforms.trump.tip_income_tax_exempt.tip_income_tax_exempt
+  input:
+    gov.contrib.trump.tip_income_tax_exempt.in_effect: true
+    tip_income: 20_000
+    adjusted_gross_income: 30_000
+    exemptions: 0
+    taxable_income_deductions: 0
+  output:
+    taxable_income: 10_000
+
+- name: Reform not in effect
+  period: 2024
+  input:
+    gov.contrib.trump.tip_income_tax_exempt.in_effect: false
+    tip_income: 20_000
+    adjusted_gross_income: 30_000
+    exemptions: 0
+    taxable_income_deductions: 0
+  output:
+    taxable_income: 50_000
