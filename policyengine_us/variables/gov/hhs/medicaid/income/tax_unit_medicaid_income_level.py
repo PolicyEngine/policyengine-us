@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.hhs.tax_unit_fpg import fpg
 
 
 class tax_unit_medicaid_income_level(Variable):
@@ -15,5 +16,12 @@ class tax_unit_medicaid_income_level(Variable):
 
     def formula(tax_unit, period, parameters):
         income = tax_unit("medicaid_magi", period)
-        fpg = tax_unit("tax_unit_fpg", period)
-        return income / fpg
+
+        members = tax_unit.members
+        pregnant_count = tax_unit.sum(members("is_pregnant", period))
+        tax_unit_size = tax_unit("tax_unit_size", period)
+        state_group = tax_unit.household("state_group_str", period)
+
+        medicaid_fpg = fpg(pregnant_count + tax_unit_size, state_group, period, parameters)
+
+        return income / medicaid_fpg

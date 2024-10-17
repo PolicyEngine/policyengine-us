@@ -1,0 +1,44 @@
+- name: Multiple people with income
+  period: 2024
+  input:
+    people:
+      head:
+        is_pregnant: false
+      spouse:
+        is_pregnant: false
+    tax_units:
+      tax_unit:
+        medicaid_magi: 20_440
+        members: [head, spouse]
+  output:
+    tax_unit_medicaid_income_level: 1
+
+- name: Multiple people with no income
+  period: 2024
+  input:
+    people:
+      head:
+        is_pregnant: false
+      spouse:
+        is_pregnant: false
+    tax_units:
+      tax_unit:
+        medicaid_magi: 0
+        members: [head, spouse]
+  output:
+    tax_unit_medicaid_income_level: 0
+
+- name: Multiple people with income and a pregnant person
+  period: 2024
+  input:
+    people:
+      head:
+        is_pregnant: true
+      spouse:
+        is_pregnant: false
+    tax_units:
+      tax_unit:
+        medicaid_magi: 25_820
+        members: [head, spouse]
+  output:
+    tax_unit_medicaid_income_level: 1
