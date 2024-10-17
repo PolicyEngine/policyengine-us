@@ -1,0 +1,31 @@
+- name: Overtime hours are excldued from payroll gross wages
+  period: 2024
+  reforms: policyengine_us.reforms.trump.overtime_tax_exempt.overtime_tax_exempt
+  input:
+    gov.contrib.trump.overtime_tax_exempt.in_effect: true
+    irs_non_overtime_employment_income: 20_000
+    irs_overtime_employment_income: 30_000
+    pre_tax_contributions: 0
+  output:
+    income_tax_main_rates: 540
+
+- name: Reform does not apply
+  period: 2024
+  input:
+    gov.contrib.trump.overtime_tax_exempt.in_effect: false
+    irs_non_overtime_employment_income: 20_000
+    irs_overtime_employment_income: 30_000
+    pre_tax_contributions: 0
+  output:
+    income_tax_main_rates: 4_016
+
+- name: No wages
+  period: 2024
+  reforms: policyengine_us.reforms.trump.overtime_tax_exempt.overtime_tax_exempt
+  input:
+    gov.contrib.trump.overtime_tax_exempt.in_effect: true
+    irs_non_overtime_employment_income: 0
+    irs_overtime_employment_income: 0
+    pre_tax_contributions: 0
+  output:
+    income_tax_main_rates: 0
