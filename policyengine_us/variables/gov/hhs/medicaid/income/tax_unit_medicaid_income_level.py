@@ -22,6 +22,8 @@ class tax_unit_medicaid_income_level(Variable):
         tax_unit_size = tax_unit("tax_unit_size", period)
         state_group = tax_unit.household("state_group_str", period)
 
-        medicaid_fpg = fpg(pregnant_count + tax_unit_size, state_group, period, parameters)
+        medicaid_fpg = fpg(
+            pregnant_count + tax_unit_size, state_group, period, parameters
+        )
 
         return income / medicaid_fpg
