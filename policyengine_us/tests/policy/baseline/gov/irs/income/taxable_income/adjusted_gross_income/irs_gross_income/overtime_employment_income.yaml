@@ -1,0 +1,18 @@
+- name: No overtime hours
+  period: 2024
+  input:
+    employment_income: 1_000
+    weekly_hours_worked: 40
+    weekly_overtime_hours: 0
+  output:
+    irs_overtime_employment_income: 0
+
+- name: Two overtime hours
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    employment_income: 1_000
+    weekly_hours_worked: 42
+    weekly_overtime_hours: 2
+  output:
+    irs_overtime_employment_income: 47.6

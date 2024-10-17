@@ -1,0 +1,23 @@
+- name: No overtime hours
+  period: 2024
+  input:
+    employment_income: 1_000
+    irs_overtime_employment_income: 0
+  output:
+    irs_non_overtime_employment_income: 1_000
+
+- name: Overtime over employment income
+  period: 2024
+  input:
+    employment_income: 1_000
+    irs_overtime_employment_income: 1_200
+  output:
+    irs_non_overtime_employment_income: 0
+
+- name: Some overtime hours
+  period: 2024
+  input:
+    employment_income: 1_000
+    irs_overtime_employment_income: 200
+  output:
+    irs_non_overtime_employment_income: 800
