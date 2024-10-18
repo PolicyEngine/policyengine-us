@@ -23,15 +23,10 @@ class tax_unit_medicaid_income_level(Variable):
     def formula(tax_unit, period, parameters):
         income = tax_unit("medicaid_magi", period)
 
-        members = tax_unit.members
-        pregnant_count = tax_unit.sum(
-            members("preganant_expected_children", period)
-        )
+        pregnant_count = add(tax_unit, period, ["current_pregnancies"])
         tax_unit_size = tax_unit("tax_unit_size", period)
         state_group = tax_unit.household("state_group_str", period)
 
-        medicaid_fpg = fpg(
-            pregnant_count + tax_unit_size, state_group, period, parameters
-        )
+        medicaid_fpg = fpg(pregnant_count + tax_unit_size, state_group, period, parameters)
 
         return income / medicaid_fpg

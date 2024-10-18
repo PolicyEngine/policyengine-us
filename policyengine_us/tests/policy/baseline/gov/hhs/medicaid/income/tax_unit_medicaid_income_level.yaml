@@ -3,9 +3,9 @@
   input:
     people:
       head:
-        is_pregnant: false
+        current_pregnancies: 0
       spouse:
-        is_pregnant: false
+        current_pregnancies: 0
     tax_units:
       tax_unit:
         medicaid_magi: 20_440
@@ -18,9 +18,9 @@
   input:
     people:
       head:
-        is_pregnant: false
+        current_pregnancies: 0
       spouse:
-        is_pregnant: false
+        current_pregnancies: 0
     tax_units:
       tax_unit:
         medicaid_magi: 0
@@ -33,9 +33,9 @@
   input:
     people:
       head:
-        is_pregnant: true
+        current_pregnancies: 1
       spouse:
-        is_pregnant: false
+        current_pregnancies: 0
     tax_units:
       tax_unit:
         medicaid_magi: 25_820
@@ -48,9 +48,9 @@
   input:
     people:
       head:
-        preganant_expected_children: 2
+        current_pregnancies: 2
       spouse:
-        preganant_expected_children: 0
+        current_pregnancies: 0
     tax_units:
       tax_unit:
         medicaid_magi: 31_200
