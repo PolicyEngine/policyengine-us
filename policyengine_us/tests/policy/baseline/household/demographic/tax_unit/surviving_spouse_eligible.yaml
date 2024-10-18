@@ -3,7 +3,7 @@
   input:
     people:
       head: 
-        is_widowed: true
+        is_surviving_spouse: true
     tax_units:
       tax_unit:
         members: [head]
@@ -16,7 +16,7 @@
     people:
       head: 
         is_tax_unit_head: true
-        is_widowed: true
+        is_surviving_spouse: true
       child: {}
     tax_units:
       tax_unit:
