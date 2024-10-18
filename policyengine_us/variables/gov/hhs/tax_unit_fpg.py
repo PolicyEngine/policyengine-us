@@ -18,4 +18,4 @@ class tax_unit_fpg(Variable):
     def formula(tax_unit, period, parameters):
         n = tax_unit("tax_unit_size", period)
         state_group = tax_unit.household("state_group_str", period)
-        return fpg(n, state_group, parameters, period)
+        return fpg(n, state_group, period, parameters)

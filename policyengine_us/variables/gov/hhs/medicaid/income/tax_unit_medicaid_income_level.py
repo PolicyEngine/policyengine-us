@@ -11,6 +11,12 @@ class tax_unit_medicaid_income_level(Variable):
         "Medicaid/CHIP-related MAGI as fraction of federal poverty line."
         "Documentation: 'Federal poverty level (FPL)' at the following URL:"
         "URL: https://www.healthcare.gov/glossary/federal-poverty-level-fpl/"
+        "**Pregnant Women:**"
+        "  * Pregnant women are counted as 2 individuals when determining"
+        "    household size for Medicaid eligibility."
+        "  * Sources:"
+        "      URL: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=11618&fileName=10%20CCR%25202505-10%208.100"
+        "      URL: https://www.cms.gov/marketplace/technical-assistance-resources/special-populations-pregnant-women.pdf"
     )
     definition_period = YEAR
 
@@ -18,12 +24,11 @@ class tax_unit_medicaid_income_level(Variable):
         income = tax_unit("medicaid_magi", period)
 
         members = tax_unit.members
+        # pregnant people count as 2 people
         pregnant_count = tax_unit.sum(members("is_pregnant", period))
         tax_unit_size = tax_unit("tax_unit_size", period)
         state_group = tax_unit.household("state_group_str", period)
 
-        medicaid_fpg = fpg(
-            pregnant_count + tax_unit_size, state_group, period, parameters
-        )
+        medicaid_fpg = fpg(pregnant_count + tax_unit_size, state_group, period, parameters)
 
         return income / medicaid_fpg
