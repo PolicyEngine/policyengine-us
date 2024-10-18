@@ -42,3 +42,18 @@
         members: [head, spouse]
   output:
     tax_unit_medicaid_income_level: 1
+
+- name: Multiple people with income and a pregnant person expecting twins
+  period: 2024
+  input:
+    people:
+      head:
+        preganant_expected_children: 2
+      spouse:
+        preganant_expected_children: 0
+    tax_units:
+      tax_unit:
+        medicaid_magi: 31_200
+        members: [head, spouse]
+  output:
+    tax_unit_medicaid_income_level: 1
