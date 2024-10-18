@@ -1,0 +1,11 @@
+description: South Carolina limits TANF to filers with gross income below this percentage of the need standard.  # need standard is 50% of fpg.  
+values: 
+  2021-01-01: 1.85
+
+metadata:
+  unit: /1
+  period: year
+  label: South Carolina TANF gross income limit
+  reference:
+    - title: The South Carolina Department of Social Services TANF Policy Manual 
+      href: https://dss.sc.gov/media/3926/tanf_policy_manual_vol-60.pdf#page=131
