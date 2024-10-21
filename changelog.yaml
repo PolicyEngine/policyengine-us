@@ -8518,3 +8518,9 @@
     changed:
     - Updated required version of policyengine-core
   date: 2024-10-21 20:22:41
+- bump: patch
+  changes:
+    fixed:
+    - Changed weekly_hours_worked to weekly_hours_worked_before_lsr in SNAP formula
+      to avoid circular dependency.
+  date: 2024-10-21 20:37:15
