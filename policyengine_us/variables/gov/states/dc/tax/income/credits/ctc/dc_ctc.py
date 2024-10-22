@@ -29,5 +29,5 @@ class dc_ctc(Variable):
             p.child.max_qualifying_children, eligible_children_count
         )
         amount_before_phase_out = p.amount * children_count
-        
+
         return amount_before_phase_out - phase_out
