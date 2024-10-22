@@ -12,8 +12,8 @@ class ca_ffyp_eligible(Variable):
     def formula(person, period, parameters):
         p = parameters(period).gov.states.ca.dhcs.ffyp
         age = person("age", period)
-        age_eligible = (
-            age > p.foster_care_age_minimum and age < p.age_threshold
+        age_eligible = (age > p.foster_care_age_minimum) & (
+            age < p.age_threshold
         )  # Person must be below age limit and previously in foster care for a valid age
         was_in_foster_care = person(
             "was_in_foster_care", period

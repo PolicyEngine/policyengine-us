@@ -72,6 +72,25 @@
   output:
     is_medicaid_eligible: false
 
+- name: Eligible via medicaid eligibility and immigration eligibility
+  period: 2022
+  input:
+    medicaid_category: YOUNG_ADULT
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    ca_ffyp_eligible: false
+  output:
+    is_medicaid_eligible: true
+
+
+- name: Ineligible because not ca ffyp eligible and not both medicaid eligible and immigration eligible
+  period: 2022
+  input:
+    medicaid_category: YOUNG_ADULT
+    immigration_status: UNDOCUMENTED
+    ca_ffyp_eligible: false
+  output:
+    is_medicaid_eligible: true
+
 - name: Eligible via California FFYP program
   period: 2022
   input:
