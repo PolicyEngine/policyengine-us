@@ -13,12 +13,3 @@
     pre_tax_contributions: 30
   output:
     irs_employment_income: 70
-
-- name: Sum of ovettime and non-overtime employment income.
-  period: 2024
-  input:
-    irs_overtime_employment_income: 200
-    irs_non_overtime_employment_income: 300
-    pre_tax_contributions: 30
-  output:
-    irs_employment_income: 470

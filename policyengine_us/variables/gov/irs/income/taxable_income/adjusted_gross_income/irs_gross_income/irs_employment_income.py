@@ -10,13 +10,6 @@ class irs_employment_income(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        employment_income = add(
-            person,
-            period,
-            [
-                "irs_overtime_employment_income",
-                "irs_non_overtime_employment_income",
-            ],
-        )
+        employment_income = person("employment_income", period)
         pre_tax_contributions = person("pre_tax_contributions", period)
         return max_(0, employment_income - pre_tax_contributions)
