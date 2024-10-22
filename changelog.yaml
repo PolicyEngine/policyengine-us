@@ -8503,3 +8503,24 @@
     added:
     - Michigan 2024 income tax rate update.
   date: 2024-10-16 12:20:25
+- bump: minor
+  changes:
+    added:
+    - Biden NIIT label and description change.
+  date: 2024-10-17 19:59:12
+- bump: patch
+  changes:
+    fixed:
+    - Pregnant people counted as 2 for Medicaid FPG percent
+  date: 2024-10-21 19:39:15
+- bump: patch
+  changes:
+    changed:
+    - Updated required version of policyengine-core
+  date: 2024-10-21 20:22:41
+- bump: patch
+  changes:
+    fixed:
+    - Changed weekly_hours_worked to weekly_hours_worked_before_lsr in SNAP formula
+      to avoid circular dependency.
+  date: 2024-10-21 20:37:15

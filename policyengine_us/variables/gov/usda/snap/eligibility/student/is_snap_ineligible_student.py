@@ -17,7 +17,7 @@ class is_snap_ineligible_student(Variable):
         p = parameters(period).gov.usda.snap.student
         age_eligible = p.age_threshold.calc(age)
         disabled = person("is_disabled", period)
-        hours_worked = person("weekly_hours_worked", period)
+        hours_worked = person("weekly_hours_worked_before_lsr", period)
         hours_eligible = hours_worked >= p.working_hours_threshold
         # The parental status applies to children under 6 (under 12
         # if no care available)
