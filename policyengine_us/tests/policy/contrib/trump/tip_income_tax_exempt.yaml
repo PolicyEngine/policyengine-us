@@ -5,8 +5,9 @@
     gov.contrib.trump.tip_income_tax_exempt.in_effect: true
     tip_income: 20_000
     irs_gross_income: 30_000
+    above_the_line_deductions: 0
   output:
-    taxable_income: 10_000
+    adjusted_gross_income: 10_000
 
 - name: Not Exempt from payroll taxes
   period: 2024
@@ -16,11 +17,12 @@
     gov.contrib.trump.tip_income_tax_exempt.payroll_tax_exempt: false
     tip_income: 20_000
     irs_employment_income: 30_000
+    above_the_line_deductions: 0
   output:
-    taxable_income: 10_000
+    adjusted_gross_income: 10_000
     payroll_tax_gross_wages: 30_000
 
-- name: Exempt from payroll taxes
+- name: Exempt from payroll taxes, person level AGI
   period: 2024
   reforms: policyengine_us.reforms.trump.tip_income_tax_exempt.tip_income_tax_exempt
   input:
@@ -28,6 +30,7 @@
     gov.contrib.trump.tip_income_tax_exempt.payroll_tax_exempt: true
     tip_income: 20_000
     irs_employment_income: 30_000
+    above_the_line_deductions: 0
   output:
-    taxable_income: 10_000
+    adjusted_gross_income_person: 10_000
     payroll_tax_gross_wages: 10_000
