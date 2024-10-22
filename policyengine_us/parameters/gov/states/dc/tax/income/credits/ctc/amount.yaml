@@ -1,0 +1,16 @@
+description: DC Child Tax Credit is limited to this amount per eligible child.
+metadata:
+  unit: currency-USD
+  label: DC CTC amount per eligible child
+  period: year
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 5
+  reference:
+    - title: Code of the District of Columbia § 47–1806.17(b)(1)
+      href: https://code.dccouncil.gov/us/dc/council/code/sections/47-1806.17#(b)(1)
+
+values:
+  2025-01-01: 420

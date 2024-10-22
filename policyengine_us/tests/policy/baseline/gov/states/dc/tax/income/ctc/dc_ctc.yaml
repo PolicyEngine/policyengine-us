@@ -1,0 +1,40 @@
+- name: Case 1, no phase_out, single filer with 2 qualifying children.
+  period: 2025
+  input:
+    adjusted_gross_income: 120_000
+    filing_status: SINGLE
+    dc_ctc_eligible_children_count: 2
+    state_code: DC
+  output:
+    dc_ctc: 840
+
+- name: Case 2, no phase_out, jointly filers with 4 qualifying children. 
+  period: 2025
+  input:
+    adjusted_gross_income: 200_000
+    filing_status: JOINT
+    dc_ctc_eligible_children_count: 4
+    state_code: DC
+  output:
+    dc_ctc: 1_260
+
+- name: Case 3, income above income threshold, single filer with 2 qualifying children.
+  period: 2025
+  input:
+    adjusted_gross_income: 162_000
+    filing_status: SINGLE
+    dc_ctc_eligible_children_count: 2
+    state_code: DC
+  output:
+    dc_ctc: 800
+
+- name: Case 4, income above income threshold, jointly filers with 4 qualifying children. 
+  period: 2025
+  input:
+    adjusted_gross_income: 245_000
+    filing_status: JOINT
+    dc_ctc_eligible_children_count: 4
+    state_code: DC
+  output:
+    dc_ctc: 1_160
+    
