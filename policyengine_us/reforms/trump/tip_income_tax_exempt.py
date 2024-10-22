@@ -10,16 +10,38 @@ def create_trump_tip_income_tax_exempt() -> Reform:
         definition_period = YEAR
 
         def formula(tax_unit, period, parameters):
-            agi = tax_unit("adjusted_gross_income", period)
-            overtime_hours = add(tax_unit, period, ["tip_income"])
-            total_agi = max_(0, agi - overtime_hours)
-            exemptions = tax_unit("exemptions", period)
-            deductions = tax_unit("taxable_income_deductions", period)
-            return max_(0, total_agi - exemptions - deductions)
+            income = tax_unit("irs_gross_income", period)
+            tip_income = add(tax_unit, period, ["tip_income"])
+            return max_(0, income - tip_income)
+
+    class payroll_tax_gross_wages(Variable):
+        value_type = float
+        entity = Person
+        label = "Gross wages and salaries for payroll taxes"
+        definition_period = YEAR
+        unit = USD
+
+        def formula(person, period, parameters):
+            income = person("irs_employment_income", period)
+            p = parameters(period).gov.contrib.trump.tip_income_tax_exempt
+            if p.payroll_tax_exempt:
+                tip_income = person("tip_income", period)
+                return max_(income - tip_income, 0)
+            return income
+
+    class tip_income(Variable):
+        value_type = float
+        entity = Person
+        label = "Tip income"
+        unit = USD
+        definition_period = YEAR
+        reference = "https://www.law.cornell.edu/cfr/text/26/31.3402(k)-1"
 
     class reform(Reform):
         def apply(self):
             self.update_variable(taxable_income)
+            self.update_variable(tip_income)
+            self.update_variable(payroll_tax_gross_wages)
 
     return reform
 

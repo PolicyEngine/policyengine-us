@@ -21,8 +21,9 @@ values:
     - illicit_income
     - taxable_retirement_distributions
     - miscellaneous_income
+    # Listed separately on 1040 line 8g.
     - ak_permanent_fund_dividend
-    - tip_income
+
 metadata:
   unit: list
   period: year
