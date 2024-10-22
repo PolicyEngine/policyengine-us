@@ -2,67 +2,26 @@ from policyengine_us.model_api import *
 
 
 def create_trump_tip_income_tax_exempt() -> Reform:
-    class adjusted_gross_income(Variable):
-        value_type = float
-        entity = TaxUnit
-        label = "Adjusted gross income"
-        unit = USD
-        definition_period = YEAR
-        reference = "https://www.law.cornell.edu/uscode/text/26/62"
-
-        def formula(tax_unit, period, parameters):
-            total_gross_income = add(tax_unit, period, ["irs_gross_income"])
-            tip_income = add(tax_unit, period, ["tip_income"])
-            gross_income = max_(0, total_gross_income - tip_income)
-            above_the_line_deductions = tax_unit(
-                "above_the_line_deductions", period
-            )
-            agi = gross_income - above_the_line_deductions
-            if parameters(period).gov.contrib.ubi_center.basic_income.taxable:
-                agi += add(tax_unit, period, ["basic_income"])
-            return agi
-
-    class adjusted_gross_income_person(Variable):
+    class irs_gross_income(Variable):
         value_type = float
         entity = Person
-        label = "Federal adjusted gross income for each person"
+        label = "Gross income"
         unit = USD
+        documentation = (
+            "Gross income, as defined in the Internal Revenue Code."
+        )
         definition_period = YEAR
-        reference = "https://www.law.cornell.edu/uscode/text/26/62"
+        reference = "https://www.law.cornell.edu/uscode/text/26/61"
 
         def formula(person, period, parameters):
-            total_gross_income = person("irs_gross_income", period)
+            sources = parameters(period).gov.irs.gross_income.sources
+            total = 0
+            not_dependent = ~person("is_tax_unit_dependent", period)
+            for source in sources:
+                # Add positive values only - losses are deducted later.
+                total += not_dependent * max_(0, add(person, period, [source]))
             tip_income = person("tip_income", period)
-            gross_income = max_(0, total_gross_income - tip_income)
-            # calculate ald sums by person
-            PERSON_ALDS = [
-                "self_employment_tax_ald",
-                "self_employed_health_insurance_ald",
-                "self_employed_pension_contribution_ald",
-            ]
-            person_ald_vars = [f"{ald}_person" for ald in PERSON_ALDS]
-            ald_sum_person = add(person, period, person_ald_vars)
-            # split other alds evenly between head and spouse
-            all_alds = parameters(period).gov.irs.ald.deductions
-            other_alds = list(set(all_alds) - set(PERSON_ALDS))
-            ald_sum_taxunit = add(person.tax_unit, period, other_alds)
-            is_head = person("is_tax_unit_head", period)
-            is_spouse = person("is_tax_unit_spouse", period)
-            fstatus = person.tax_unit("filing_status", period)
-            frac = where(fstatus == fstatus.possible_values.JOINT, 0.5, 1.0)
-            ald_sum_taxunit_shared = (
-                (is_head | is_spouse) * ald_sum_taxunit * frac
-            )
-            # calculate AGI by person
-            agi = gross_income - ald_sum_person - ald_sum_taxunit_shared
-            if parameters(period).gov.contrib.ubi_center.basic_income.taxable:
-                basic_income = person.tax_unit("basic_income", period)
-                # split basic income evenly between head and spouse
-                basic_income_shared = (
-                    (is_head | is_spouse) * basic_income * frac
-                )
-                agi += basic_income_shared
-            return agi
+            return max_(total - tip_income, 0)
 
     class payroll_tax_gross_wages(Variable):
         value_type = float
@@ -89,10 +48,9 @@ def create_trump_tip_income_tax_exempt() -> Reform:
 
     class reform(Reform):
         def apply(self):
-            self.update_variable(adjusted_gross_income)
+            self.update_variable(irs_gross_income)
             self.update_variable(tip_income)
             self.update_variable(payroll_tax_gross_wages)
-            self.update_variable(adjusted_gross_income_person)
 
     return reform
 
