@@ -5,6 +5,8 @@ metadata:
   rate_unit: /1
   label: Alternative Minimum Tax brackets
   reference:
+    - title: IRS Revenue Procedure 2024-40, 26 CFR 601.602 Tax forms and instructions., SECTION 2. 2025 Adjusted Items, .11 Exemption Amounts for Alternative Minimum Tax
+      href: https://www.irs.gov/pub/irs-drop/rp-24-40.pdf#page=10
     - title: 26 U.S. Code § 55 - Alternative minimum tax imposed (b)(1)(A)
       href: https://www.law.cornell.edu/uscode/text/26/55#b_1_A
     - title: 2024 IRS data release
@@ -40,6 +42,7 @@ brackets:
         2022-01-01: 206_100
         2023-01-01: 220_700
         2024-01-01: 232_600
+        2025-01-01: 239_100
         # CBO forecast.
         2025-01-01: 238_500
         2026-01-01: 243_800

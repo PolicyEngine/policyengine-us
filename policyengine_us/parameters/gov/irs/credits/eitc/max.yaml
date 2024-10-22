@@ -12,8 +12,8 @@ brackets:
       2022-01-01: 560
       2023-01-01: 600
       2024-01-01: 632
+      2025-01-01: 649
       # CBO forecast.
-      2025-01-01: 648
       2026-01-01: 662
       2027-01-01: 675
       2028-01-01: 689
@@ -34,6 +34,7 @@ brackets:
       2022-01-01: 3_733
       2023-01-01: 3_995
       2024-01-01: 4_213
+      2025-01-01: 4_328
       # CBO forecast.
       2025-01-01: 4_318
       2026-01-01: 4_413
@@ -56,8 +57,8 @@ brackets:
       2022-01-01: 6_164
       2023-01-01: 6_604
       2024-01-01: 6_960
+      2025-01-01: 7_152
       # CBO forecast.
-      2025-01-01: 7_136
       2026-01-01: 7_292
       2027-01-01: 7_444
       2028-01-01: 7_588
@@ -78,8 +79,8 @@ brackets:
       2022-01-01: 6_935
       2023-01-01: 7_430
       2024-01-01: 7_830
+      2025-01-01: 8_046
       # CBO forecast.
-      2025-01-01: 8_028
       2026-01-01: 8_204
       2027-01-01: 8_374
       2028-01-01: 8_536
@@ -96,6 +97,8 @@ metadata:
   # Skip uprating to avoid uprating the thresholds.
   label: EITC maximum amount by number of children
   reference:
+    - title: IRS Revenue Procedure 2024-40, 26 CFR 601.602 Tax forms and instructions., SECTION 2. 2025 Adjusted Items, .06 Earned Income Credit
+      href: https://www.irs.gov/pub/irs-drop/rp-24-40.pdf#page=9
     - title: 2024 IRS data release
       href: https://www.irs.gov/pub/irs-drop/rp-23-34.pdf#page=10
     - title: 2023 IRS data release

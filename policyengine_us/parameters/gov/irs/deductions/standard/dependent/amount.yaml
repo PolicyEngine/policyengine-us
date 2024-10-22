@@ -5,8 +5,8 @@ values:
   2022-01-01: 1_150
   2023-01-01: 1_250
   2024-01-01: 1_300
-  # CBO forecast.
   2025-01-01: 1_350
+  # CBO forecast.
   2026-01-01: 1_350
   2027-01-01: 1_400
   2028-01-01: 1_400
@@ -19,6 +19,8 @@ values:
 metadata:
   unit: currency-USD
   reference:
+    - title: IRS Revenue Procedure 2024-40, 26 CFR 601.602 Tax forms and instructions., SECTION 2. 2025 Adjusted Items, .15 Standard Deduction
+      href: https://www.irs.gov/pub/irs-drop/rp-24-40.pdf#page=12
     - title: 2024 IRS data release
       href: https://www.irs.gov/pub/irs-drop/rp-23-34.pdf#page=14
     - title: 2023 IRS data release
