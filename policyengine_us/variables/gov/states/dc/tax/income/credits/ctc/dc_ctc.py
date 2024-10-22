@@ -26,7 +26,7 @@ class dc_ctc(Variable):
             "dc_ctc_eligible_children_count", period
         )
         children_count = min_(
-            p.child.max_qualifying_children, eligible_children_count
+            p.child.child_cap, eligible_children_count
         )
         amount_before_phase_out = p.amount * children_count
 
