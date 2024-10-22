@@ -61,6 +61,17 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
         self.parameters = propagate_parameter_metadata(self.parameters)
         add_default_uprating(self)
 
+        with open("test_file_2.txt", "a") as f:
+            f.write("\nCountryTaxBenefitSystem")
+            f.write("\nroot")
+            f.write(str(dir(self.parameters)))
+            f.write(f"\n{str(self.parameters.trace)}")
+            f.write(f"\n{str(self.parameters.tracer)}")
+            f.write(f"\n{str(self.parameters.metadata)}")
+            f.write(f"\n{str(self.parameters.branch_name)}")
+            f.write(f"\n{self.parameters}")
+
+
         structural_reform = create_structural_reforms_from_parameters(
             self.parameters, year_start
         )
