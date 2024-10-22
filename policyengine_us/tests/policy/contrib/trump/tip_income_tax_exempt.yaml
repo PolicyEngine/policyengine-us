@@ -1,4 +1,4 @@
-- name: Tip income is excluded from taxable income
+- name: Tip income is excluded from gross income
   period: 2024
   reforms: policyengine_us.reforms.trump.tip_income_tax_exempt.tip_income_tax_exempt
   input:
@@ -20,7 +20,7 @@
     irs_gross_income: 10_000
     payroll_tax_gross_wages: 30_000
 
-- name: Exempt from payroll taxes, person level AGI
+- name: Exempt from payroll taxes
   period: 2024
   reforms: policyengine_us.reforms.trump.tip_income_tax_exempt.tip_income_tax_exempt
   input:
