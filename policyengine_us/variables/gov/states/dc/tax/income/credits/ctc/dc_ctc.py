@@ -22,10 +22,8 @@ class dc_ctc(Variable):
         increments = ceil(excess / p.phase_out.increment)
         phase_out = increments * p.phase_out.amount
 
-        eligible_children_count = tax_unit(
-            "dc_ctc_eligible_children_count", period
-        )
-        children_count = min_(p.child.child_cap, eligible_children_count)
-        amount_before_phase_out = p.amount * children_count
+        eligible_children = tax_unit("dc_ctc_eligible_children_count", period)
+        capped_children = min_(p.child.child_cap, eligible_children)
+        base_amount = p.amount * capped_children
 
-        return amount_before_phase_out - phase_out
+        return max_(base_amount - phase_out, 0)
