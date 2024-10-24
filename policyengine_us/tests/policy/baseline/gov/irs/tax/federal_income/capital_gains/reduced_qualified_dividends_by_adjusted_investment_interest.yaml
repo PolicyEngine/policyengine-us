@@ -1,0 +1,23 @@
+- name: qualified_dividend_income larger than investment_income_form_4952
+  period: 2019
+  input:
+    qualified_dividend_income: 2_000
+    investment_income_form_4952: 1_000
+  output:
+    reduced_qualified_dividends_by_adjusted_investment_interest: 1_000
+
+- name: qualified_dividend_income smaller than investment_income_form_4952
+  period: 2019
+  input:
+    qualified_dividend_income: 1_000
+    investment_income_form_4952: 2_000
+  output:
+    reduced_qualified_dividends_by_adjusted_investment_interest: 0
+
+- name: investment_income_form_4952 smaller than 0
+  period: 2019
+  input:
+    qualified_dividend_income: 2_000
+    investment_income_form_4952: -2_000
+  output:
+    reduced_qualified_dividends_by_adjusted_investment_interest: 2_000
