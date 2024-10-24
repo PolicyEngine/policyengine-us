@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.132.0] - 2024-10-24 03:58:00
+
+### Added
+
+- Trump tip income tax exempt.
+
 ## [1.131.0] - 2024-10-23 22:18:23
 
 ### Added
@@ -10065,6 +10071,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.132.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.131.0...1.132.0
 [1.131.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.130.0...1.131.0
 [1.130.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.129.3...1.130.0
 [1.129.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.129.2...1.129.3
