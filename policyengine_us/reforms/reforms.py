@@ -53,9 +53,10 @@ from .treasury.repeal_dependent_exemptions import (
 from .harris.capital_gains import (
     create_harris_capital_gains_reform,
 )
-from .trump.tip_income_tax_exempt import (
-    create_trump_tip_income_tax_exempt_reform,
+from .tax_exempt.tax_exempt_reform import (
+    create_tax_exempt_reform,
 )
+
 
 from policyengine_core.reforms import Reform
 import warnings
@@ -129,9 +130,7 @@ def create_structural_reforms_from_parameters(parameters, period):
     harris_capital_gains = create_harris_capital_gains_reform(
         parameters, period
     )
-    tip_income_tax_exempt = create_trump_tip_income_tax_exempt_reform(
-        parameters, period
-    )
+    tip_income_tax_exempt = create_tax_exempt_reform(parameters, period)
 
     reforms = [
         afa_reform,
