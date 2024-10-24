@@ -53,6 +53,10 @@ from .treasury.repeal_dependent_exemptions import (
 from .harris.capital_gains import (
     create_harris_capital_gains_reform,
 )
+from .tax_exempt.tax_exempt_reform import (
+    create_tax_exempt_reform,
+)
+
 
 from policyengine_core.reforms import Reform
 import warnings
@@ -126,6 +130,7 @@ def create_structural_reforms_from_parameters(parameters, period):
     harris_capital_gains = create_harris_capital_gains_reform(
         parameters, period
     )
+    tip_income_tax_exempt = create_tax_exempt_reform(parameters, period)
 
     reforms = [
         afa_reform,
@@ -153,6 +158,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         family_security_act_2024_eitc,
         repeal_dependent_exemptions,
         harris_capital_gains,
+        tip_income_tax_exempt,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
 
