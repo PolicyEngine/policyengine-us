@@ -3,5 +3,5 @@ from .medicare_and_investment_tax_increase import (
 )
 
 from .capital_gains_tax_increase import (
-    create_capital_gains_tax_increase_reform,
+    create_capital_gains_tax_increase,
 )

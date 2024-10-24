@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.reforms.utils import create_reform_if_active
 
 
 def create_halve_joint_eitc_phase_out_rate() -> Reform:
@@ -25,20 +26,10 @@ def create_halve_joint_eitc_phase_out_rate() -> Reform:
     return reform
 
 
-def create_halve_joint_eitc_phase_out_rate_reform(
-    parameters, period, bypass: bool = False
-):
-    if bypass:
-        return create_halve_joint_eitc_phase_out_rate()
-
-    p = parameters(period).gov.contrib.joint_eitc
-
-    if p.in_effect:
-        return create_halve_joint_eitc_phase_out_rate()
-    else:
-        return None
-
-
-halve_joint_eitc_phase_out_rate = (
-    create_halve_joint_eitc_phase_out_rate_reform(None, None, bypass=True)
+halve_joint_eitc_phase_out_rate = create_reform_if_active(
+    None,
+    None,
+    "gov.contrib.joint_eitc.in_effect",
+    create_halve_joint_eitc_phase_out_rate,
+    bypass=True,
 )

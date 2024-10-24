@@ -1,5 +1,5 @@
 from policyengine_us.model_api import *
-from policyengine_core.periods import period as period_
+from policyengine_us.reforms.utils import create_reform_if_active
 
 
 def create_ctc_expansion() -> Reform:
@@ -104,30 +104,11 @@ def create_ctc_expansion() -> Reform:
     return reform
 
 
-def create_ctc_expansion_reform(parameters, period, bypass: bool = False):
-    if bypass:
-        return create_ctc_expansion()
-
-    # Look ahead for the next five years
-
-    p = parameters.gov.contrib.congress.wyden_smith
-
-    reform_active = False
-    current_period = period_(period)
-
-    for i in range(5):
-        if (
-            p(current_period).actc_lookback
-            or p(current_period).per_child_actc_phase_in
-        ):
-            reform_active = True
-            break
-        current_period = current_period.offset(1, "year")
-
-    if reform_active:
-        return create_ctc_expansion()
-    else:
-        return None
-
-
-ctc_expansion = create_ctc_expansion_reform(None, None, bypass=True)
+# actc_lookback  / per_child_actc_phase_in
+ctc_expansion = create_reform_if_active(
+    None,
+    None,
+    "gov.contrib.congress.wyden_smith",
+    create_ctc_expansion,
+    bypass=True,
+)
