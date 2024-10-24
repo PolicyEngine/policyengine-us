@@ -1,0 +1,35 @@
+- name: Not age eligible 1
+  period: 2024
+  input:
+    state_code: CA
+    age: 18
+    was_in_foster_care: true
+  output:
+    ca_ffyp_eligible: false
+  
+- name: Not age eligible 2
+  period: 2024
+  input:
+    state_code: CA
+    age: 26
+    was_in_foster_care: true
+  output:
+    ca_ffyp_eligible: false
+
+- name: Not in foster care 1
+  period: 2024
+  input:
+    state_code: CA
+    age: 19
+    was_in_foster_care: false
+  output:
+    ca_ffyp_eligible: false
+
+- name: Eligible person
+  period: 2024
+  input:
+    state_code: CA
+    age: 19
+    was_in_foster_care: true
+  output:
+    ca_ffyp_eligible: true
