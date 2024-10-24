@@ -1,0 +1,36 @@
+description: New York State provides the following Clean Heat rebate amount for residential building owners, based on the dac, home and heat pump category. 
+metadata:
+    unit: currency-USD
+    breakdown:
+        - ny_clean_heat_dac_category
+        - ny_clean_heat_home_category
+        - ny_clean_heat_heat_pump_category
+    period: year
+    label: New York State residential ASHP Clean Heat rebate amount
+    reference:
+        - title: New York State Clean Heat Con Edison Heat Pump Program Manual
+          href: https://cleanheat.ny.gov/assets/pdf/CECONY%20Clean%20Heat%20Program%20Manual%206%203%2024.pdf#page=12
+
+
+NDAC:
+    SINGLE:
+        C2A:
+            2024-03-01: 2_500
+        C2E:
+            2024-03-01: 8_000
+    APARTMENT:
+        C2B:
+            2024-03-01: 1_000
+        C2E:
+            2024-03-01: 4_000
+DAC:
+    SINGLE:
+        C2A:
+            2024-03-01: 4_500
+        C2E:
+            2024-03-01: 10_000
+    APARTMENT:
+        C2B:
+            2024-03-01: 2_000
+        C2E:
+            2024-03-01: 5_000
