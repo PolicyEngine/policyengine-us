@@ -24,7 +24,7 @@ class mo_ptc_income_offset(Variable):
             p.income_offset.non_joint,
             where(
                 rents,
-                p.income_offset.joint_renter,
-                p.income_offset.joint_owner,
+                p.income_offset.joint.renter,
+                p.income_offset.joint.owner,
             ),
         )
