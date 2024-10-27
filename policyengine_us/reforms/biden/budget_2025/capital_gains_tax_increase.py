@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_core.periods import period as period_
 
 
 def create_capital_gains_tax_increase() -> Reform:
@@ -145,8 +146,16 @@ def create_capital_gains_tax_increase_reform(
         return create_capital_gains_tax_increase()
 
     p = parameters(period).gov.contrib.biden.budget_2025.capital_gains
+    current_period = period_(period)
+    reform_active = False
 
-    if p.active:
+    for i in range(5):
+        if p(current_period).active:
+            reform_active = True
+            break
+        current_period = current_period.offset(1, "year")
+
+    if reform_active:
         return create_capital_gains_tax_increase()
     else:
         return None

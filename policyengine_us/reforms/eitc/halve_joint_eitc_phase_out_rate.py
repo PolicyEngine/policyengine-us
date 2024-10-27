@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_core.periods import period as period_
 
 
 def create_halve_joint_eitc_phase_out_rate() -> Reform:
@@ -32,8 +33,16 @@ def create_halve_joint_eitc_phase_out_rate_reform(
         return create_halve_joint_eitc_phase_out_rate()
 
     p = parameters(period).gov.contrib.joint_eitc
+    current_period = period_(period)
+    reform_active = False
 
-    if p.in_effect:
+    for i in range(5):
+        if p(current_period).in_effect:
+            reform_active = True
+            break
+        current_period = current_period.offset(1, "year")
+
+    if reform_active:
         return create_halve_joint_eitc_phase_out_rate()
     else:
         return None

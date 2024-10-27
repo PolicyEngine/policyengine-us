@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_core.periods import period as period_
 
 
 def create_or_rebate_state_tax_exempt() -> Reform:
@@ -49,8 +50,16 @@ def create_or_rebate_state_tax_exempt_reform(
         return create_or_rebate_state_tax_exempt()
 
     p = parameters(period).gov.contrib.states["or"].rebate
+    reform_active = False
+    current_period = period_(period)
 
-    if p.state_tax_exempt:
+    for i in range(5):
+        if p(current_period).state_tax_exempt:
+            reform_active = True
+            break
+        current_period = current_period.offset(1, "year")
+
+    if reform_active:
         return create_or_rebate_state_tax_exempt()
     else:
         return None

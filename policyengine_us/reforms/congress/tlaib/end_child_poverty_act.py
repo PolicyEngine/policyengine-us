@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_core.periods import period as period_
 
 
 def create_end_child_poverty_act() -> Reform:
@@ -180,8 +181,16 @@ def create_end_child_poverty_act_reform(
         return create_end_child_poverty_act()
 
     p = parameters(period).gov.contrib.congress.tlaib.end_child_poverty_act
+    current_period = period_(period)
+    reform_active = False
 
-    if p.in_effect:
+    for i in range(5):
+        if p(current_period).in_effect:
+            reform_active = True
+            break
+        current_period = current_period.offset(1, "year")
+
+    if reform_active:
         return create_end_child_poverty_act()
     else:
         return None
