@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.133.0] - 2024-10-27 22:00:19
+
+### Added
+
+- Separate tip income and overtime income from the main tax exempt reforms structure.
+
 ## [1.132.0] - 2024-10-24 03:58:00
 
 ### Added
@@ -10071,6 +10077,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.133.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.132.0...1.133.0
 [1.132.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.131.0...1.132.0
 [1.131.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.130.0...1.131.0
 [1.130.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.129.3...1.130.0
