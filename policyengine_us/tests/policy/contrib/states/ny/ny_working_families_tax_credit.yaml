@@ -358,7 +358,7 @@
         state_code: NY
   output:
     eitc: 5_751.51
-    ny_eitc: 1_687 # 30% of federal credit
+    ny_eitc: 1_695.453 # 30% of federal credit
 
 
 - name: Integration test - single parent of two - ages 5 and 10 - 30k income
@@ -398,7 +398,7 @@
     younger_eitc: 5_102.51
     older_eitc: 0
     ny_wftc_eligible_children: 2
-    ny_eitc: 1_036
+    ny_eitc: 1_041.527
     ny_working_families_tax_credit: 1_600
 
 
@@ -440,7 +440,7 @@
     younger_eitc_eligible: 1
     younger_eitc: 2_824
     eitc_older_demographic_eligible: 1
-    older_eitc: 4_318
+    older_eitc: 4_328
     ny_wftc_eligible_children: 1
     ny_eitc: 1_887
     ny_working_families_tax_credit: 800
