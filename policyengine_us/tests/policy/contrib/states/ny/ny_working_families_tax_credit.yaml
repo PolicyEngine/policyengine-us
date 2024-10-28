@@ -77,7 +77,7 @@
   output:
     # ny_wftc_eligible_children: 0
     # ny_working_families_tax_credit: 0
-    ny_eitc: 950
+    ny_eitc: 954.59906
     ny_ctc: 330
     ny_exemptions: 1_000
 
@@ -115,7 +115,7 @@
   output:
     ny_wftc_eligible_children: 1
     ny_working_families_tax_credit: 550
-    ny_eitc: 625
+    ny_eitc: 629.0825
     ny_ctc: 0
     ny_exemptions: 1_000
 
@@ -357,7 +357,7 @@
         members: [person1, person2, person3]
         state_code: NY
   output:
-    eitc: 5_724
+    eitc: 5_751.51
     ny_eitc: 1_687 # 30% of federal credit
 
 
@@ -395,7 +395,7 @@
         state_code: NY
   output:
     younger_eitc_eligible: 1
-    younger_eitc: 5_076
+    younger_eitc: 5_102.51
     older_eitc: 0
     ny_wftc_eligible_children: 2
     ny_eitc: 1_036
@@ -438,7 +438,7 @@
         state_code: NY
   output:
     younger_eitc_eligible: 1
-    younger_eitc: 2_818
+    younger_eitc: 2_824
     eitc_older_demographic_eligible: 1
     older_eitc: 4_318
     ny_wftc_eligible_children: 1
@@ -470,7 +470,7 @@
         members: [person1, person2, person3]
         state_code: NY
   output:
-    ny_eitc: 2_140
+    ny_eitc: 2_145.6
 
 - name: After 2028, only children under 18 are eligible for the NY WFTC
   period: 2029
