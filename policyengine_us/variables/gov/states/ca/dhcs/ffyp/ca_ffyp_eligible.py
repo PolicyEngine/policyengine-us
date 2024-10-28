@@ -6,7 +6,10 @@ class ca_ffyp_eligible(Variable):
     entity = Person
     label = "Eligible person for the California Former Foster Youth Program"
     definition_period = YEAR
-    reference = "https://www.dhcs.ca.gov/services/medi-cal/eligibility/Pages/FFY_Bene.aspx"
+    reference = (
+        "https://www.dhcs.ca.gov/services/medi-cal/eligibility/Pages/FFY_Bene.aspx",
+        "https://www.dhcs.ca.gov/formsandpubs/forms/Forms/MCED/MC_Forms/MC250A_Eng.pdf",
+    )
     defined_for = StateCode.CA
 
     def formula(person, period, parameters):
