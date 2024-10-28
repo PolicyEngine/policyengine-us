@@ -46,27 +46,10 @@ def create_tax_exempt() -> Reform:
                 exempt_income += person("overtime_income", period)
             return max_(income - exempt_income, 0)
 
-    class tip_income(Variable):
-        value_type = float
-        entity = Person
-        label = "Tip income"
-        unit = USD
-        definition_period = YEAR
-        reference = "https://www.law.cornell.edu/cfr/text/26/31.3402(k)-1"
-
-    class overtime_income(Variable):
-        value_type = float
-        entity = Person
-        label = "Income from overtime hours worked"
-        unit = USD
-        definition_period = YEAR
-
     class reform(Reform):
         def apply(self):
             self.update_variable(irs_gross_income)
-            self.update_variable(tip_income)
             self.update_variable(payroll_tax_gross_wages)
-            self.update_variable(overtime_income)
 
     return reform
 
