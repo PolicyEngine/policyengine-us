@@ -17,7 +17,7 @@
         members: [person1, person2, person3]
         state_code: DC
   output:
-    dc_ctc_eligible_children_count: 1
+    dc_ctc_capped_children: 1
 
 - name: Case 2, 2 dependent children, both age qualify. 
   period: 2025
@@ -39,7 +39,7 @@
         members: [person1, person2, person3]
         state_code: DC
   output:
-    dc_ctc_eligible_children_count: 2
+    dc_ctc_capped_children: 2
 
 - name: Case 3, 2 dependent children, both age unqalify.  
   period: 2025
@@ -61,4 +61,4 @@
         members: [person1, person2, person3]
         state_code: DC
   output:
-    dc_ctc_eligible_children_count: 0
+    dc_ctc_capped_children: 0
