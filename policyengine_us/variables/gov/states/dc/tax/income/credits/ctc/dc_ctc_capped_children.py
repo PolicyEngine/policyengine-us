@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class dc_ctc_capped_children(Variable):
     value_type = int
     entity = TaxUnit
-    label = "DC CTC eligible children capped"
+    label = "Capped number of DC CTC eligible children"
     definition_period = YEAR
     reference = (
         "https://code.dccouncil.gov/us/dc/council/code/sections/47-1806.17"
