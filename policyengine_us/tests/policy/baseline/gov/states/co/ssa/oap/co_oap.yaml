@@ -4,7 +4,7 @@
     co_oap_eligible: true
     ssi_countable_income: 1_000
     ssi: 0
-    ssi_claim_is_joint: false
+    ssi_marital_both_eligible: false
   output:
     co_oap: 10_424
 
@@ -14,7 +14,7 @@
     co_oap_eligible: true
     ssi_countable_income: 0
     ssi: 2_000
-    ssi_claim_is_joint: false
+    ssi_marital_both_eligible: false
   output:
     co_oap: 9_424
 
@@ -24,7 +24,7 @@
     co_oap_eligible: true
     ssi_countable_income: 6_000
     ssi: 6_000
-    ssi_claim_is_joint: false
+    ssi_marital_both_eligible: false
   output:
     co_oap: 0
 
@@ -36,12 +36,12 @@
         co_oap_eligible: true
         ssi_countable_income: 0
         ssi: 12_000
-        ssi_claim_is_joint: true
+        ssi_marital_both_eligible: true
       spouse:
         co_oap_eligible: true
         ssi_countable_income: 0
         ssi: 0
-        ssi_claim_is_joint: true
+        ssi_marital_both_eligible: true
     marital_units:
       marital_unit:
         members: [head, spouse]
