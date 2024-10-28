@@ -6,8 +6,8 @@ SINGLE:
   2022-01-01: 1_750
   2023-01-01: 1_850
   2024-01-01: 1_950
-  # CBO forecast.
   2025-01-01: 2_000
+  # CBO forecast.
   2025-02-01: 2_050
   2025-03-01: 2_100
   2025-04-01: 2_150
@@ -24,8 +24,8 @@ JOINT:
   2022-01-01: 1_400
   2023-01-01: 1_500
   2024-01-01: 1_550
-  # CBO forecast.
   2025-01-01: 1_600
+  # CBO forecast.
   2025-02-01: 1_650
   2025-03-01: 1_650
   2025-04-01: 1_700
@@ -42,8 +42,8 @@ SEPARATE:
   2022-01-01: 1_400
   2023-01-01: 1_500
   2024-01-01: 1_550
-  # CBO forecast.
   2025-01-01: 1_600
+  # CBO forecast.
   2025-02-01: 1_650
   2025-03-01: 1_650
   2025-04-01: 1_700
@@ -60,8 +60,8 @@ HEAD_OF_HOUSEHOLD:
   2022-01-01: 1_750
   2023-01-01: 1_850
   2024-01-01: 1_950
-  # CBO forecast.
   2025-01-01: 2_000
+  # CBO forecast.
   2025-02-01: 2_050
   2025-03-01: 2_100
   2025-04-01: 2_150
@@ -78,8 +78,8 @@ SURVIVING_SPOUSE:
   2022-01-01: 1_400
   2023-01-01: 1_500
   2024-01-01: 1_550
-  # CBO forecast.
   2025-01-01: 1_600
+  # CBO forecast.
   2026-01-01: 1_650
   2027-01-01: 1_650
   2028-01-01: 1_700
@@ -96,6 +96,8 @@ metadata:
   label: Additional standard deduction for the blind and aged
   period: year
   reference:
+    - title: 2025 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-24-40.pdf#page=12  
     - title: 2024 IRS data release
       href: https://www.irs.gov/pub/irs-drop/rp-23-34.pdf#page=14
     - title: 2023 IRS data release
