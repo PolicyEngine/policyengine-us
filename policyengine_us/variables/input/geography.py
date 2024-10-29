@@ -8,6 +8,8 @@ from policyengine_us.parameters.gov.hhs.medicaid.geography import (
     medicaid_rating_areas,
     second_lowest_silver_plan_cost,
 )
+import warnings
+warnings.filterwarnings("ignore")
 
 label = "Geography"
 
