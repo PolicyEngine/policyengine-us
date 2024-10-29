@@ -34,7 +34,12 @@ def create_family_security_act_2024_eitc_reform(
     parameters, period, bypass: bool = False
 ):
     return create_reform_if_active(
-        parameters, period, "gov.contrib.congress.romney.family_security_act_2_0.eitc", "apply_eitc_structure", create_family_security_act_2024_eitc, bypass
+        parameters,
+        period,
+        "gov.contrib.congress.romney.family_security_act_2_0.eitc",
+        "apply_eitc_structure",
+        create_family_security_act_2024_eitc,
+        bypass,
     )
 
 

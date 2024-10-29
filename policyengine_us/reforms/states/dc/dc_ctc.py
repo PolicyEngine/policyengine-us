@@ -1,6 +1,7 @@
 from policyengine_us.model_api import *
 from policyengine_us.reforms.utils import create_reform_if_active
 
+
 def create_dc_ctc() -> Reform:
     class dc_ctc(Variable):
         value_type = float
@@ -57,7 +58,12 @@ def create_dc_ctc() -> Reform:
 
 def create_dc_ctc_reform(parameters, period, bypass: bool = False):
     return create_reform_if_active(
-        parameters, period, "gov.contrib.states.dc.ctc", "in_effect", create_dc_ctc, bypass
+        parameters,
+        period,
+        "gov.contrib.states.dc.ctc",
+        "in_effect",
+        create_dc_ctc,
+        bypass,
     )
 
 

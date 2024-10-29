@@ -1,6 +1,7 @@
 from policyengine_us.model_api import *
 from policyengine_us.reforms.utils import create_reform_if_active
 
+
 def create_capital_gains_tax_increase() -> Reform:
     class capital_gains_tax(Variable):
         value_type = float
@@ -142,7 +143,12 @@ def create_capital_gains_tax_increase_reform(
     parameters, period, bypass: bool = False
 ):
     return create_reform_if_active(
-        parameters, period, "gov.contrib.biden.budget_2025.capital_gains", "active", create_capital_gains_tax_increase, bypass
+        parameters,
+        period,
+        "gov.contrib.biden.budget_2025.capital_gains",
+        "active",
+        create_capital_gains_tax_increase,
+        bypass,
     )
 
 

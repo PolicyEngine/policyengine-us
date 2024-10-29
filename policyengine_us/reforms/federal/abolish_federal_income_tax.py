@@ -1,6 +1,7 @@
 from policyengine_us.model_api import *
 from policyengine_us.reforms.utils import create_reform_if_active
 
+
 def create_abolish_federal_income_tax() -> Reform:
     class household_tax_before_refundable_credits(Variable):
         value_type = float
@@ -51,7 +52,12 @@ def create_abolish_federal_income_tax_reform(
     parameters, period, bypass: bool = False
 ):
     return create_reform_if_active(
-        parameters, period, "gov.contrib.ubi_center.flat_tax", "abolish_federal_income_tax", create_abolish_federal_income_tax, bypass
+        parameters,
+        period,
+        "gov.contrib.ubi_center.flat_tax",
+        "abolish_federal_income_tax",
+        create_abolish_federal_income_tax,
+        bypass,
     )
 
 

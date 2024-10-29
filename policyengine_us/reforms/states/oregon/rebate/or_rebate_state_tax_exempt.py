@@ -47,7 +47,12 @@ def create_or_rebate_state_tax_exempt_reform(
     parameters, period, bypass: bool = False
 ):
     return create_reform_if_active(
-        parameters, period, "gov.contrib.states.or.rebate", "state_tax_exempt", create_or_rebate_state_tax_exempt, bypass
+        parameters,
+        period,
+        "gov.contrib.states.or.rebate",
+        "state_tax_exempt",
+        create_or_rebate_state_tax_exempt,
+        bypass,
     )
 
 

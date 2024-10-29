@@ -1,6 +1,7 @@
 from policyengine_us.model_api import *
 from policyengine_us.reforms.utils import create_reform_if_active
 
+
 def create_end_child_poverty_act() -> Reform:
     class ecpa_adult_dependent_credit(Variable):
         value_type = float
@@ -177,7 +178,12 @@ def create_end_child_poverty_act_reform(
     parameters, period, bypass: bool = False
 ):
     return create_reform_if_active(
-        parameters, period, "gov.contrib.congress.tlaib.end_child_poverty_act", "in_effect", create_end_child_poverty_act, bypass
+        parameters,
+        period,
+        "gov.contrib.congress.tlaib.end_child_poverty_act",
+        "in_effect",
+        create_end_child_poverty_act,
+        bypass,
     )
 
 

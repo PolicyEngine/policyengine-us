@@ -1,6 +1,7 @@
 from policyengine_us.model_api import *
 from policyengine_us.reforms.utils import create_reform_if_active
 
+
 # Repealing Minnesota Bill HF1938 to pre 2023 rules
 def create_mn_walz_hf1938_repeal() -> Reform:
     class mn_refundable_credits(Variable):
@@ -209,7 +210,12 @@ def create_mn_walz_hf1938_repeal_reform(
     parameters, period, bypass: bool = False
 ):
     return create_reform_if_active(
-        parameters, period, "gov.contrib.states.mn.walz.hf1938", "repeal", create_mn_walz_hf1938_repeal, bypass
+        parameters,
+        period,
+        "gov.contrib.states.mn.walz.hf1938",
+        "repeal",
+        create_mn_walz_hf1938_repeal,
+        bypass,
     )
 
 

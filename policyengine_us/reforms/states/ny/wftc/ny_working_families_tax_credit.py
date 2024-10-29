@@ -1,6 +1,7 @@
 from policyengine_us.model_api import *
 from policyengine_us.reforms.utils import create_reform_if_active
 
+
 def create_ny_working_families_tax_credit() -> Reform:
     class ny_working_families_tax_credit(Variable):
         value_type = float
@@ -527,7 +528,12 @@ def create_ny_working_families_tax_credit_reform(
     parameters, period, bypass: bool = False
 ):
     return create_reform_if_active(
-        parameters, period, "gov.contrib.states.ny.wftc", "in_effect", create_ny_working_families_tax_credit, bypass
+        parameters,
+        period,
+        "gov.contrib.states.ny.wftc",
+        "in_effect",
+        create_ny_working_families_tax_credit,
+        bypass,
     )
 
 

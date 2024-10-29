@@ -1,6 +1,7 @@
 from policyengine_us.model_api import *
 from policyengine_us.reforms.utils import create_reform_if_active
 
+
 def create_boost_middle_class_tax_credit() -> Reform:
     class boost_middle_class_tax_credit(Variable):
         value_type = float
@@ -144,7 +145,12 @@ def create_boost_middle_class_tax_credit_reform(
     parameters, period, bypass: bool = False
 ):
     return create_reform_if_active(
-        parameters, period, "gov.contrib.harris.lift.middle_class_tax_credit", "in_effect", create_boost_middle_class_tax_credit, bypass
+        parameters,
+        period,
+        "gov.contrib.harris.lift.middle_class_tax_credit",
+        "in_effect",
+        create_boost_middle_class_tax_credit,
+        bypass,
     )
 
 

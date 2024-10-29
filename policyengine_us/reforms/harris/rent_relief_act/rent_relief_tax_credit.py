@@ -1,6 +1,7 @@
 from policyengine_us.model_api import *
 from policyengine_us.reforms.utils import create_reform_if_active
 
+
 def create_rent_relief_tax_credit() -> Reform:
     class rent_relief_tax_credit(Variable):
         value_type = float
@@ -78,7 +79,12 @@ def create_rent_relief_tax_credit_reform(
     parameters, period, bypass: bool = False
 ):
     return create_reform_if_active(
-        parameters, period, "gov.contrib.harris.rent_relief_act.rent_relief_credit", "in_effect", create_rent_relief_tax_credit, bypass
+        parameters,
+        period,
+        "gov.contrib.harris.rent_relief_act.rent_relief_credit",
+        "in_effect",
+        create_rent_relief_tax_credit,
+        bypass,
     )
 
 

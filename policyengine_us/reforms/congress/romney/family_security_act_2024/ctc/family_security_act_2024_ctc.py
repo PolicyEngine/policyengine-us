@@ -1,6 +1,7 @@
 from policyengine_us.model_api import *
 from policyengine_us.reforms.utils import create_reform_if_active
 
+
 def create_family_security_act_2024_ctc() -> Reform:
     class ctc_phase_in_rate(Variable):
         value_type = float
@@ -142,7 +143,12 @@ def create_family_security_act_2024_ctc_reform(
     parameters, period, bypass: bool = False
 ):
     return create_reform_if_active(
-        parameters, period, "gov.contrib.congress.romney.family_security_act_2_0.ctc", "apply_ctc_structure", create_family_security_act_2024_ctc, bypass
+        parameters,
+        period,
+        "gov.contrib.congress.romney.family_security_act_2_0.ctc",
+        "apply_ctc_structure",
+        create_family_security_act_2024_ctc,
+        bypass,
     )
 
 

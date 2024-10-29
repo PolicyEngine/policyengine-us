@@ -1,6 +1,7 @@
 from policyengine_us.model_api import *
 from policyengine_us.reforms.utils import create_reform_if_active
 
+
 def create_repeal_dependent_exemptions() -> Reform:
     class exemptions_count(Variable):
         value_type = int
@@ -25,7 +26,12 @@ def create_repeal_dependent_exemptions_reform(
     parameters, period, bypass: bool = False
 ):
     return create_reform_if_active(
-        parameters, period, "gov.contrib.treasury", "repeal_dependent_exemptions", create_repeal_dependent_exemptions, bypass
+        parameters,
+        period,
+        "gov.contrib.treasury",
+        "repeal_dependent_exemptions",
+        create_repeal_dependent_exemptions,
+        bypass,
     )
 
 
