@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
-from policyengine_core.periods import period as period_
 
-def create_dc_kccatc():
+
+def create_dc_kccatc_reform(parameters, period, bypass=False):
     class dc_kccatc(Variable):
         value_type = float
         entity = TaxUnit
@@ -87,24 +87,8 @@ def create_dc_kccatc():
         def apply(self):
             self.update_variable(dc_kccatc)
 
-    return reform
-
-
-def create_dc_kccatc_reform(parameters, period, bypass=False):
-    if bypass:
-        return create_dc_kccatc()
-    
-    p = parameters(period).gov.contrib.dc_kccatc
-    current_period = period_(period)
-
-    for i in range(5):
-        if p(current_period).active:
-            reform_active = True
-            break
-        current_period = current_period.offset(1, "year")
-
-    if reform_active:
-        return create_dc_kccatc()
+    if bypass or parameters(period).gov.contrib.dc_kccatc.active:
+        return reform
     else:
         return None
 

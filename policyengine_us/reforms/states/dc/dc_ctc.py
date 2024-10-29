@@ -61,19 +61,14 @@ def create_dc_ctc_reform(parameters, period, bypass: bool = False):
         return create_dc_ctc()
 
     p = parameters.gov.contrib.states.dc.ctc
+
     current_period = period_(period)
-    reform_active = False
 
     for i in range(5):
         if p(current_period).in_effect:
-            reform_active = True
-            break
+            return create_dc_ctc()
         current_period = current_period.offset(1, "year")
-
-    if reform_active:
-        return create_dc_ctc()
-    else:
-        return None
+    return None
 
 
 dc_ctc = create_dc_ctc_reform(None, None, bypass=True)
