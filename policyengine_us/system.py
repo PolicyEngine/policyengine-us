@@ -183,7 +183,6 @@ class Microsimulation(CoreMicrosimulation):
 
         cg_holder = self.get_holder("long_term_capital_gains")
         for known_period in cg_holder.get_known_periods():
-            print(known_period)
             array = cg_holder.get_array(known_period)
             self.set_input(
                 "capital_gains_before_response", known_period, array

@@ -12,7 +12,7 @@ class relative_capital_gains_mtr_change(Variable):
     def formula(person, period, parameters):
         simulation: Simulation = person.simulation
         baseline_branch = simulation.get_branch("baseline").get_branch(
-            "baseline_cgr_measurement"
+            "baseline_cgr_measurement", clone_system=True
         )
         baseline_person = baseline_branch.populations["person"]
         baseline_branch.tax_benefit_system.neutralize_variable(
@@ -30,7 +30,9 @@ class relative_capital_gains_mtr_change(Variable):
             "baseline_cgr_measurement"
         ]
 
-        measurement_branch = simulation.get_branch("cgr_measurement")
+        measurement_branch = simulation.get_branch(
+            "cgr_measurement", clone_system=True
+        )
         measurement_branch.tax_benefit_system.neutralize_variable(
             "capital_gains_behavioral_response"
         )
@@ -93,6 +95,8 @@ class capital_gains_behavioral_response(Variable):
         # Calculate response using log differences
         response_factor = np.exp(elasticity * tax_rate_change) - 1
         response = capital_gains * response_factor
+
+        print(response.sum())
 
         return response
 
