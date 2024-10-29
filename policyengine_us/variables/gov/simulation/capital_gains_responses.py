@@ -72,7 +72,7 @@ class capital_gains_behavioral_response(Variable):
     value_type = float
     entity = Person
     label = "capital gains behavioral response"
-    unit = GBP
+    unit = USD
     definition_period = YEAR
 
     def formula(person, period, parameters):
@@ -106,7 +106,7 @@ class capital_gains_before_response(Variable):
     entity = Person
     definition_period = YEAR
     value_type = float
-    unit = GBP
+    unit = USD
     uprating = "calibration.gov.irs.soi.long_term_capital_gains"
 
 
