@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.136.1] - 2024-10-29 19:55:24
+
+### Changed
+
+- Updated policyengine-us-data to 0.11.1
+- Updated microdf-python to 0.4.3
+
+## [1.136.0] - 2024-10-29 13:25:05
+
+### Added
+
+- Capital gains tax responses.
+
 ## [1.135.0] - 2024-10-28 21:33:47
 
 ### Added
@@ -10089,6 +10102,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.136.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.136.0...1.136.1
+[1.136.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.135.0...1.136.0
 [1.135.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.134.0...1.135.0
 [1.134.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.133.0...1.134.0
 [1.133.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.132.0...1.133.0
