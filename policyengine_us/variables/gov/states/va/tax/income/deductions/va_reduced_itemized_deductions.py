@@ -41,13 +41,18 @@ class va_reduced_itemized_deductions(Variable):
         # remove anything TCJA related, but keep everything else coupled to the IRS
 
         # Shortcut to the full parameter, not parameter at instant, for IRS itemized limitations
-        full_irs_param: Parameter = parameters.gov.irs.deductions.itemized.limitation
+        full_irs_param: Parameter = (
+            parameters.gov.irs.deductions.itemized.limitation
+        )
 
-        va_itemized_deduction_rate = full_irs_param.itemized_deduction_rate.clone()
+        va_itemized_deduction_rate = (
+            full_irs_param.itemized_deduction_rate.clone()
+        )
 
         # Eliminate infinite values created by the TCJA's elimination of this param
         va_itemized_deduction_rate.values_list = [
-            entry for entry in va_itemized_deduction_rate.values_list 
+            entry
+            for entry in va_itemized_deduction_rate.values_list
             if not (entry.value == np.inf or entry.value == -np.inf)
         ]
 
@@ -65,7 +70,8 @@ class va_reduced_itemized_deductions(Variable):
         # and we'll need to eliminate infinite values created by TCJA abolishing param
         va_agi_rate = full_irs_param.agi_rate.clone()
         va_agi_rate.values_list = [
-            entry for entry in va_agi_rate.values_list 
+            entry
+            for entry in va_agi_rate.values_list
             if not (entry.value == np.inf or entry.value == -np.inf)
         ]
 
@@ -90,7 +96,9 @@ class va_reduced_itemized_deductions(Variable):
             "va_capped_state_and_local_sales_or_income_tax", period
         )
 
-        state_and_local_tax_adj = capped_state_and_local_tax * adjustment_fraction
+        state_and_local_tax_adj = (
+            capped_state_and_local_tax * adjustment_fraction
+        )
         # Line 15 - Subtract Line 14 from Line 13
         reduced_state_and_local_tax = max_(
             capped_state_and_local_tax - state_and_local_tax_adj, 0
