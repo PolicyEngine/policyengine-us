@@ -1,5 +1,5 @@
 from policyengine_us.model_api import *
-
+from policyengine_us.reforms.utils import create_reform_if_active
 
 def create_abolish_payroll_tax() -> Reform:
     class household_tax_before_refundable_credits(Variable):
@@ -30,15 +30,9 @@ def create_abolish_payroll_tax() -> Reform:
 def create_abolish_payroll_tax_reform(
     parameters, period, bypass: bool = False
 ):
-    if bypass:
-        return create_abolish_payroll_tax()
-
-    p = parameters(period).gov.contrib.ubi_center.flat_tax
-
-    if p.abolish_payroll_tax:
-        return create_abolish_payroll_tax()
-    else:
-        return None
+    return create_reform_if_active(
+        parameters, period, "gov.contrib.ubi_center.flat_tax", "abolish_payroll_tax", create_abolish_payroll_tax, bypass
+    )
 
 
 abolish_payroll_tax = create_abolish_payroll_tax_reform(
