@@ -19,7 +19,7 @@ class mo_property_tax_credit(Variable):
         # compute maximum (that is, pre-phaseout) credit amount for rent
         rent = add(tax_unit, period, ["rent"])
         ratio = p.property_tax_rent_ratio
-        rent_limit = p.rent_property_tax_limit
+        rent_limit = p.cap
         rent_amount = min_(rent * ratio, rent_limit)
         # compute maximum (that is, pre-phaseout) credit amount for taxes
         ptax = add(tax_unit, period, ["real_estate_taxes"])
