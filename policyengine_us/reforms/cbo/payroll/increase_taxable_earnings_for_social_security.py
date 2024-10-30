@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.reforms.utils import create_reform_threshold_check
+import operator
+import numpy as np
 
 
 def create_increase_taxable_earnings_for_social_security() -> Reform:
@@ -29,15 +32,16 @@ def create_increase_taxable_earnings_for_social_security() -> Reform:
 def create_increase_taxable_earnings_for_social_security_reform(
     parameters, period, bypass: bool = False
 ):
-    if bypass:
-        return create_increase_taxable_earnings_for_social_security()
-
-    p = parameters(period).gov.contrib.cbo.payroll
-
-    if p.secondary_earnings_threshold < np.inf:
-        return create_increase_taxable_earnings_for_social_security()
-    else:
-        return None
+    return create_reform_threshold_check(
+        reform_function=create_increase_taxable_earnings_for_social_security,
+        parameters=parameters,
+        period=period,
+        parameter_path="gov.contrib.cbo.payroll",
+        comparison_parameter_path="secondary_earnings_threshold",
+        comparison_operator=operator.lt,
+        threshold_check=np.inf,
+        bypass=bypass,
+    )
 
 
 increase_taxable_earnings_for_social_security = (
