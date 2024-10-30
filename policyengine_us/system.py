@@ -48,6 +48,7 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
     def __init__(self, reform=None):
         super().__init__(entities, reform=reform)
         self.load_parameters(COUNTRY_DIR / "parameters")
+        self.add_abolition_parameters()
         if reform:
             self.apply_reform_set(reform)
         self.parameters = set_irs_uprating_parameter(self.parameters)
@@ -58,7 +59,6 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
         self.parameters = interpolate_parameters(self.parameters)
         self.parameters = uprate_parameters(self.parameters)
         self.parameters = propagate_parameter_metadata(self.parameters)
-        self.add_abolition_parameters()
         add_default_uprating(self)
 
         structural_reform = create_structural_reforms_from_parameters(
@@ -125,6 +125,16 @@ class Simulation(CoreSimulation):
             )
             weekly_hours.delete_arrays(known_period)
 
+        # Capital gains responses
+
+        cg_holder = self.get_holder("long_term_capital_gains")
+        for known_period in cg_holder.get_known_periods():
+            array = cg_holder.get_array(known_period)
+            self.set_input(
+                "capital_gains_before_response", known_period, array
+            )
+            cg_holder.delete_arrays(known_period)
+
 
 class Microsimulation(CoreMicrosimulation):
     default_tax_benefit_system = CountryTaxBenefitSystem
@@ -169,6 +179,16 @@ class Microsimulation(CoreMicrosimulation):
             )
             weekly_hours.delete_arrays(known_period)
 
+        # Capital gains responses
+
+        cg_holder = self.get_holder("long_term_capital_gains")
+        for known_period in cg_holder.get_known_periods():
+            array = cg_holder.get_array(known_period)
+            self.set_input(
+                "capital_gains_before_response", known_period, array
+            )
+            cg_holder.delete_arrays(known_period)
+
         self.input_variables = [
             variable
             for variable in self.input_variables
@@ -177,11 +197,13 @@ class Microsimulation(CoreMicrosimulation):
                 "employment_income",
                 "self_employment_income",
                 "weekly_hours_worked",
+                "capital_gains",
             ]
         ] + [
             "employment_income_before_lsr",
             "self_employment_income_before_lsr",
             "weekly_hours_worked_before_lsr",
+            "capital_gains_before_response",
         ]
 
 
