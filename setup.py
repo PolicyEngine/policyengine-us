@@ -7,7 +7,7 @@ with open("README.md", "r") as readme_file:
 
 setup(
     name="policyengine-us",
-    version="1.79.3",
+    version="1.136.2",
     author="PolicyEngine",
     author_email="hello@policyengine.org",
     long_description=readme,
@@ -34,14 +34,17 @@ setup(
         ),
     ],
     install_requires=[
-        "policyengine-core>=3.6.5",
-        "policyengine-us-data>=1.1.0",
-        "microdf-python",
+        "policyengine-core>=3.10.0",
+        "policyengine-us-data==1.11.1",
+        "microdf-python>=0.4.3",
         "tqdm",
     ],
     extras_require={
         "dev": [
             "setuptools",
+            "jupyter-book",
+            "furo",
+            "coverage",
         ],
     },
     python_requires=">=3.10,<3.13",

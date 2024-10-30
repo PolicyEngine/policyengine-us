@@ -7,6 +7,7 @@ class il_dependent_exemption(Variable):
     label = "Illinois dependent exemption"
     unit = USD
     definition_period = YEAR
+    defined_for = StateCode.IL
 
     def formula(tax_unit, period, parameters):
         amount = parameters(
