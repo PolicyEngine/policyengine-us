@@ -48,6 +48,7 @@ class cliff_gap(Variable):
             alt_person = alt_sim.person
             netinc_alt = alt_person.household("household_net_income", period)
             increase[mask] += netinc_alt[mask] - netinc_base[mask]
+            del sim.branches[f"mtr_for_adult_{adult_index}"]
         return where(increase < 0, -increase, 0)
 
 
