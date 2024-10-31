@@ -13,7 +13,7 @@ class relative_income_change(Variable):
         simulation = person.simulation
         measurement_branch = simulation.get_branch("lsr_measurement")
         baseline_branch = simulation.get_branch("baseline").get_branch(
-            "baseline_lsr_measurement"
+            "baseline_behavioral_response_measurement"
         )
         measurement_person = measurement_branch.populations["person"]
         baseline_person = baseline_branch.populations["person"]
@@ -49,7 +49,7 @@ class relative_wage_change(Variable):
         simulation = person.simulation
         measurement_branch = simulation.get_branch("lsr_measurement")
         baseline_branch = simulation.get_branch("baseline").get_branch(
-            "baseline_lsr_measurement"
+            "baseline_behavioral_response_measurement"
         )
         measurement_person = measurement_branch.populations["person"]
         baseline_person = baseline_branch.populations["person"]
@@ -67,7 +67,7 @@ class relative_wage_change(Variable):
         return np.clip(relative_change, -wage_change_bound, wage_change_bound)
 
 
-class income_elasticity_lsr(Variable):
+class income_elasticity_behavioral_response(Variable):
     value_type = float
     entity = Person
     label = "income elasticity of labor supply response"
@@ -77,9 +77,11 @@ class income_elasticity_lsr(Variable):
 
     def formula(person, period, parameters):
         lsr = parameters(period).gov.simulation.labor_supply_responses
-        employment_income = person("employment_income_before_lsr", period)
+        employment_income = person(
+            "employment_income_before_behavioral_response", period
+        )
         self_employment_income = person(
-            "self_employment_income_before_lsr", period
+            "self_employment_income_before_behavioral_response", period
         )
         earnings = employment_income + self_employment_income
         income_change = person("relative_income_change", period)
@@ -136,9 +138,9 @@ class substitution_elasticity(Variable):
             1_726e3,
         ]
 
-        earnings = person("employment_income_before_lsr", period) + person(
-            "self_employment_income_before_lsr", period
-        )
+        earnings = person(
+            "employment_income_before_behavioral_response", period
+        ) + person("self_employment_income_before_behavioral_response", period)
         earnings_decile = (
             np.searchsorted(earnings_decile_markers, earnings) + 1
         )
@@ -178,7 +180,7 @@ class substitution_elasticity(Variable):
         return elasticities
 
 
-class substitution_elasticity_lsr(Variable):
+class substitution_elasticity_behavioral_response(Variable):
     value_type = float
     entity = Person
     label = "substitution elasticity of labor supply response"
@@ -188,9 +190,11 @@ class substitution_elasticity_lsr(Variable):
 
     def formula(person, period, parameters):
         lsr = parameters(period).gov.simulation.labor_supply_responses
-        employment_income = person("employment_income_before_lsr", period)
+        employment_income = person(
+            "employment_income_before_behavioral_response", period
+        )
         self_employment_income = person(
-            "self_employment_income_before_lsr", period
+            "self_employment_income_before_behavioral_response", period
         )
         earnings = employment_income + self_employment_income
         wage_change = person("relative_wage_change", period)
@@ -223,7 +227,7 @@ class labor_supply_behavioral_response(Variable):
             "lsr_measurement", clone_system=True
         )  # A branch without LSRs
         baseline_branch = simulation.get_branch("baseline").get_branch(
-            "baseline_lsr_measurement", clone_system=True
+            "baseline_behavioral_response_measurement", clone_system=True
         )  # Already created by default
         baseline_branch.tax_benefit_system.parameters.simulation = (
             measurement_branch.tax_benefit_system.parameters.simulation
@@ -241,22 +245,24 @@ class labor_supply_behavioral_response(Variable):
                 "self_employment_income_behavioral_response"
             )
             branch.set_input(
-                "employment_income_before_lsr",
+                "employment_income_before_behavioral_response",
                 period,
-                person("employment_income_before_lsr", period),
+                person("employment_income_before_behavioral_response", period),
             )
             branch.set_input(
-                "self_employment_income_before_lsr",
+                "self_employment_income_before_behavioral_response",
                 period,
-                person("self_employment_income_before_lsr", period),
+                person(
+                    "self_employment_income_before_behavioral_response", period
+                ),
             )
 
         response = add(
             person,
             period,
             [
-                "income_elasticity_lsr",
-                "substitution_elasticity_lsr",
+                "income_elasticity_behavioral_response",
+                "substitution_elasticity_behavioral_response",
             ],
         )
 
@@ -275,9 +281,11 @@ class employment_income_behavioral_response(Variable):
 
     def formula(person, period, parameters):
         lsr = person("labor_supply_behavioral_response", period)
-        employment_income = person("employment_income_before_lsr", period)
+        employment_income = person(
+            "employment_income_before_behavioral_response", period
+        )
         self_employment_income = person(
-            "self_employment_income_before_lsr", period
+            "self_employment_income_before_behavioral_response", period
         )
         earnings = employment_income + self_employment_income
         emp_share = np.ones_like(earnings)
