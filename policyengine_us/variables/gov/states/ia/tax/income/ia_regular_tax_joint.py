@@ -18,5 +18,16 @@ class ia_regular_tax_joint(Variable):
 
     def formula(person, period, parameters):
         taxable_income = person("ia_taxable_income_joint", period)
-        p = parameters(period).gov.states.ia.tax.income
-        return p.rates.all.calc(max_(0, taxable_income))
+        p = parameters(period).gov.states.ia.tax.income.rates
+        if p.post_2023.tax_structure_applies:
+            filing_status = person.tax_unit(
+                "filing_status",
+                period,
+            )
+            joint = filing_status == filing_status.possible_values.JOINT
+            return where(
+                joint,
+                p.post_2023.joint.calc(taxable_income),
+                p.post_2023.other.calc(taxable_income),
+            )
+        return p.pre_2023.all.calc(taxable_income)

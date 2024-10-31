@@ -19,4 +19,6 @@ class ia_withheld_income_tax(Variable):
         else:
             standard_deduction = p.deductions.standard.amount["SINGLE"]
         reduced_agi = max_(agi - standard_deduction, 0)
-        return p.rates.all.calc(reduced_agi)
+        if p.rates.post_2023.tax_structure_applies:
+            return p.rates.post_2023.other.calc(reduced_agi)
+        return p.rates.pre_2023.all.calc(reduced_agi)
