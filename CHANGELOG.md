@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.137.1] - 2024-10-31 18:57:07
+
+### Fixed
+
+- remove uprating for SNAP variables that don't change
+
 ## [1.137.0] - 2024-10-30 18:47:11
 
 ### Added
@@ -10114,6 +10120,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.137.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.137.0...1.137.1
 [1.137.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.136.2...1.137.0
 [1.136.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.136.1...1.136.2
 [1.136.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.136.0...1.136.1
