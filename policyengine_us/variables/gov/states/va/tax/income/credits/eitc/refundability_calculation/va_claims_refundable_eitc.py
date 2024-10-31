@@ -7,7 +7,7 @@ class va_claims_refundable_eitc(Variable):
     label = "Filer claims refundable Virginia EITC"
     documentation = "Whether the filer claims the refundable over the non-refundable Virginia Earned Income Tax Credit."
     definition_period = YEAR
-    defined_for = StateCode.VA
+    defined_for = "va_eitc_non_default_refundability"
 
     def formula(tax_unit, period, parameters):
         va_income_tax_if_claiming_refundable_eitc = tax_unit(

@@ -4,6 +4,7 @@
     state_code: VA
     va_refundable_eitc: 100
     va_non_refundable_eitc: 90
+    va_eitc_non_default_refundability: true
     va_claims_refundable_eitc: true
   output:
     va_eitc: 100
@@ -14,6 +15,7 @@
     state_code: VA
     va_refundable_eitc: 90
     va_non_refundable_eitc: 100
+    va_eitc_non_default_refundability: true
     va_claims_refundable_eitc: false
   output:
     va_eitc: 100
@@ -25,6 +27,7 @@
     state_code: VA
     va_refundable_eitc: 0
     va_non_refundable_eitc: 90
+    va_eitc_non_default_refundability: true
     va_claims_refundable_eitc: false
   output:
     va_eitc: 90
@@ -35,6 +38,7 @@
     state_code: VA
     va_refundable_eitc: 0
     va_non_refundable_eitc: 100
+    va_eitc_non_default_refundability: true
     va_claims_refundable_eitc: false
   output:
     va_eitc: 100
@@ -55,6 +59,7 @@
         va_refundable_eitc: 0
         va_non_refundable_eitc: 100
         va_claims_refundable_eitc: false
+        va_eitc_non_default_refundability: true
         filing_status: SEPARATE
     households:
       household:
@@ -62,3 +67,14 @@
         state_code: VA
   output:
     va_eitc: 1_000
+
+- name: Claims refundable by default
+  period: 2022
+  input:
+    state_code: VA
+    va_refundable_eitc: 80
+    va_non_refundable_eitc: 90
+    va_claims_refundable_eitc: false
+    va_eitc_non_default_refundability: false
+  output:
+    va_eitc: 80

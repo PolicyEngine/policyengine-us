@@ -4,6 +4,7 @@
     state_code: DE
     de_income_tax_if_claiming_refundable_eitc: 1_000
     de_income_tax_if_claiming_non_refundable_eitc: 500
+    de_eitc_non_default_refundability: true
   output:
     de_claims_refundable_eitc: false
   
@@ -13,5 +14,16 @@
     state_code: DE
     de_income_tax_if_claiming_refundable_eitc: 500
     de_income_tax_if_claiming_non_refundable_eitc: 501
+    de_eitc_non_default_refundability: true
   output:
     de_claims_refundable_eitc: true
+
+- name: Choice is made by default
+  period: 2022
+  input:
+    state_code: DE
+    de_income_tax_if_claiming_refundable_eitc: 500
+    de_income_tax_if_claiming_non_refundable_eitc: 501
+    de_eitc_non_default_refundability: false
+  output:
+    de_claims_refundable_eitc: false

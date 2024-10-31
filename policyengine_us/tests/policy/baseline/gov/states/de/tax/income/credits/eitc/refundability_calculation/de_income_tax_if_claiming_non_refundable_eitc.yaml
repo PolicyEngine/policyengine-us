@@ -2,6 +2,7 @@
   period: 2022
   input:
     state_code: DE
+    de_eitc_non_default_refundability: true
   output:
     de_income_tax_if_claiming_non_refundable_eitc: 0
   
@@ -10,6 +11,7 @@
   input:
     state_code: DE
     de_non_refundable_eitc: 100
+    de_eitc_non_default_refundability: true
   output:
     de_income_tax_if_claiming_non_refundable_eitc: 0
 
@@ -22,5 +24,19 @@
     de_personal_credit: 0
     de_aged_personal_credit: 0
     de_non_refundable_eitc: 100
+    de_eitc_non_default_refundability: true
   output:
     de_income_tax_if_claiming_non_refundable_eitc: 50
+
+- name: Choice is made by default
+  period: 2022
+  input:
+    state_code: DE
+    de_income_tax_before_non_refundable_credits_joint: 150
+    de_income_tax_before_non_refundable_credits_indv: 150
+    de_personal_credit: 0
+    de_aged_personal_credit: 0
+    de_non_refundable_eitc: 100
+    de_eitc_non_default_refundability: false
+  output:
+    de_income_tax_if_claiming_non_refundable_eitc: 0

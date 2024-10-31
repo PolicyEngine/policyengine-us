@@ -8,7 +8,7 @@ class de_claims_refundable_eitc(Variable):
     unit = USD
     documentation = "Whether the filer claims the refundable over the non-refundable Delaware Earned Income Tax Credit."
     definition_period = YEAR
-    defined_for = StateCode.DE
+    defined_for = "de_eitc_non_default_refundability"
 
     def formula(tax_unit, period, parameters):
         de_income_tax_if_claiming_refundable_eitc = tax_unit(

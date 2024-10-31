@@ -14,7 +14,17 @@ class va_eitc(Variable):
     def formula(tax_unit, period, parameters):
         refundable_eitc = tax_unit("va_refundable_eitc", period)
         non_refundable_eitc = tax_unit("va_non_refundable_eitc", period)
-        claims_refundable = tax_unit("va_claims_refundable_eitc", period)
+        claims_refundable_based_on_tax_liability = tax_unit(
+            "va_claims_refundable_eitc", period
+        )
+        claims_refundable_by_default = tax_unit(
+            "va_eitc_non_default_refundability", period
+        )
+        claims_refundable = where(
+            claims_refundable_by_default,
+            claims_refundable_based_on_tax_liability,
+            True,
+        )
         amount = where(claims_refundable, refundable_eitc, non_refundable_eitc)
         filing_status = tax_unit("filing_status", period)
         # In the case of separated individuals, the EITC amount is prorated

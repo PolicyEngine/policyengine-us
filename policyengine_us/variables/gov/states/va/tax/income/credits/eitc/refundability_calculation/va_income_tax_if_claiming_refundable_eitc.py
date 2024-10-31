@@ -7,7 +7,7 @@ class va_income_tax_if_claiming_refundable_eitc(Variable):
     label = "Virginia tax liability if claiming refundable Virginia EITC"
     unit = USD
     definition_period = YEAR
-    defined_for = StateCode.VA
+    defined_for = "va_eitc_non_default_refundability"
 
     def formula(tax_unit, period, parameters):
         simulation = tax_unit.simulation
