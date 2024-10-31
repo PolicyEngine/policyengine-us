@@ -1,5 +1,5 @@
 from policyengine_us.model_api import *
-from .il_personal_exemption_eligibility_status import (
+from policyengine_us.variables.gov.states.il.tax.income.exemptions.il_personal_exemption_eligibility_status import (
     ILPersonalExemptionEligibilityStatus,
 )
 
