@@ -11,7 +11,9 @@ class relative_income_change(Variable):
 
     def formula(person, period, parameters):
         simulation = person.simulation
-        measurement_branch = simulation.get_branch("lsr_measurement", clone_system=True)
+        measurement_branch = simulation.get_branch(
+            "lsr_measurement", clone_system=True
+        )
         baseline_branch = simulation.get_branch("baseline").get_branch(
             "baseline_lsr_measurement", clone_system=True
         )
@@ -19,7 +21,9 @@ class relative_income_change(Variable):
         baseline_net_income = baseline_person.household(
             "household_net_income", period
         )
-        del simulation.branches["baseline"].branches["baseline_lsr_measurement"]
+        del simulation.branches["baseline"].branches[
+            "baseline_lsr_measurement"
+        ]
         measurement_person = measurement_branch.populations["person"]
         net_income = measurement_person.household(
             "household_net_income", period
@@ -54,7 +58,9 @@ class relative_wage_change(Variable):
         )
         baseline_person = baseline_branch.populations["person"]
         baseline_mtr = baseline_person("marginal_tax_rate", period)
-        del simulation.branches["baseline"].branches["baseline_lsr_measurement"]
+        del simulation.branches["baseline"].branches[
+            "baseline_lsr_measurement"
+        ]
         baseline_wage = 1 - baseline_mtr
         measurement_branch = simulation.get_branch("lsr_measurement")
         measurement_person = measurement_branch.populations["person"]
