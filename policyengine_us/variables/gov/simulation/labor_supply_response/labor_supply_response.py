@@ -11,7 +11,9 @@ class relative_income_change(Variable):
 
     def formula(person, period, parameters):
         simulation = person.simulation
-        measurement_branch = simulation.get_branch("lsr_measurement")
+        measurement_branch = simulation.get_branch(
+            "behavioral_response_measurement"
+        )
         baseline_branch = simulation.get_branch("baseline").get_branch(
             "baseline_behavioral_response_measurement"
         )
@@ -47,7 +49,9 @@ class relative_wage_change(Variable):
 
     def formula(person, period, parameters):
         simulation = person.simulation
-        measurement_branch = simulation.get_branch("lsr_measurement")
+        measurement_branch = simulation.get_branch(
+            "behavioral_response_measurement"
+        )
         baseline_branch = simulation.get_branch("baseline").get_branch(
             "baseline_behavioral_response_measurement"
         )
@@ -224,7 +228,7 @@ class labor_supply_behavioral_response(Variable):
             return 0
 
         measurement_branch = simulation.get_branch(
-            "lsr_measurement", clone_system=True
+            "behavioral_response_measurement", clone_system=True
         )  # A branch without LSRs
         baseline_branch = simulation.get_branch("baseline").get_branch(
             "baseline_behavioral_response_measurement", clone_system=True
