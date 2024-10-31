@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from .il_personal_exemption_eligibility_status import (
+    ILPersonalExemptionEligibilityStatus,
+)
 
 
 class il_personal_exemption(Variable):
@@ -14,8 +17,6 @@ class il_personal_exemption(Variable):
             "il_personal_exemption_eligibility_status", period
         )
 
-        eligibility_status = il_is_personal_exemption_eligible.possible_values
-
         personal_exemption_amount = parameters(
             period
         ).gov.states.il.tax.income.exemption.personal
@@ -23,9 +24,9 @@ class il_personal_exemption(Variable):
         return personal_exemption_amount * select(
             [
                 il_is_personal_exemption_eligible
-                == eligibility_status.BOTH_ELIGIBLE,
+                == ILPersonalExemptionEligibilityStatus.BOTH_ELIGIBLE,
                 il_is_personal_exemption_eligible
-                == eligibility_status.PARTIALLY_ELIGIBLE,
+                == ILPersonalExemptionEligibilityStatus.PARTIALLY_ELIGIBLE,
             ],
             [2, 1],
             0,
