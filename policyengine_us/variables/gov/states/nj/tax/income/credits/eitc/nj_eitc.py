@@ -23,7 +23,7 @@ class nj_eitc(Variable):
 
         # Otherwise, return 0.
         # Worksheet reference: https://www.state.nj.us/treasury/taxation/pdf/current/1040i.pdf#page=43
-        federal_eitc_eligible_assuming_income_ok = tax_unit(
+        federal_eitc_eligible_assuming_meets_income_test = tax_unit(
             "eitc_eligible", period
         )
         federal_eitc_meets_income_test = tax_unit(
@@ -31,7 +31,7 @@ class nj_eitc(Variable):
         ) > tax_unit("eitc_reduction", period)
         federal_eitc_takes_up = tax_unit("takes_up_eitc", period)
         federal_eitc_eligible = (
-            federal_eitc_eligible_assuming_income_ok
+            federal_eitc_eligible_assuming_meets_income_test
             & federal_eitc_meets_income_test
             & federal_eitc_takes_up
         )
