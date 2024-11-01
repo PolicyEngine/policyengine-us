@@ -96,8 +96,6 @@ class capital_gains_behavioral_response(Variable):
         response_factor = np.exp(elasticity * tax_rate_change) - 1
         response = capital_gains * response_factor
 
-        print(response.sum())
-
         return response
 
 
