@@ -15,11 +15,11 @@ class relative_income_change(Variable):
         baseline_branch = simulation.get_branch("baseline").get_branch(
             "baseline_lsr_measurement"
         )
-        measurement_person = measurement_branch.populations["person"]
         baseline_person = baseline_branch.populations["person"]
         baseline_net_income = baseline_person.household(
             "household_net_income", period
         )
+        measurement_person = measurement_branch.populations["person"]
         net_income = measurement_person.household(
             "household_net_income", period
         )
@@ -47,14 +47,14 @@ class relative_wage_change(Variable):
 
     def formula(person, period, parameters):
         simulation = person.simulation
-        measurement_branch = simulation.get_branch("lsr_measurement")
         baseline_branch = simulation.get_branch("baseline").get_branch(
             "baseline_lsr_measurement"
         )
-        measurement_person = measurement_branch.populations["person"]
         baseline_person = baseline_branch.populations["person"]
         baseline_mtr = baseline_person("marginal_tax_rate", period)
         baseline_wage = 1 - baseline_mtr
+        measurement_branch = simulation.get_branch("lsr_measurement")
+        measurement_person = measurement_branch.populations["person"]
         mtr = measurement_person("marginal_tax_rate", period)
         wage_rate = 1 - mtr
         # _c suffix for "clipped"
@@ -259,6 +259,11 @@ class labor_supply_behavioral_response(Variable):
                 "substitution_elasticity_lsr",
             ],
         )
+        simulation = person.simulation
+        del simulation.branches["baseline"].branches[
+            "baseline_lsr_measurement"
+        ]
+        del simulation.branches["lsr_measurement"]
 
         simulation.macro_cache_read = False
         simulation.macro_cache_write = False
@@ -296,4 +301,5 @@ class self_employment_income_behavioral_response(Variable):
     def formula(person, period, parameters):
         lsr = person("labor_supply_behavioral_response", period)
         emp_response = person("employment_income_behavioral_response", period)
+
         return lsr - emp_response
