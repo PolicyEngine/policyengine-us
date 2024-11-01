@@ -21,19 +21,11 @@ class ri_refundable_eitc(Variable):
         )
         p = parameters(period).gov.states.ri.tax.income.credits.eitc
         # refundable earned-income credit is the percent of the amount by which the Rhode Island earned-income credit exceeds the Rhode Island income tax.
-        return max(
+        return max_(
             0,
             p.refundable
             * (
-                ri_eitc - min(ri_eitc, ri_income_tax_before_refundable_credits)
+                ri_eitc
+                - min_(ri_eitc, ri_income_tax_before_refundable_credits)
             ),
         )
-
-        #
-        # return max(
-        #     0,
-        #     p.refundable
-        #     * (
-        #         ri_eitc - min(ri_eitc, ri_income_tax_before_refundable_credits)
-        #     ),
-        # ) + min(ri_eitc, ri_income_tax_before_refundable_credits)
