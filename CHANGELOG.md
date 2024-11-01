@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.137.3] - 2024-11-01 16:53:33
+
+### Fixed
+
+- Colorado 2023 sales tax refund.
+
 ## [1.137.2] - 2024-11-01 10:27:40
 
 ### Fixed
@@ -10126,6 +10132,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.137.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.137.2...1.137.3
 [1.137.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.137.1...1.137.2
 [1.137.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.137.0...1.137.1
 [1.137.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.136.2...1.137.0
