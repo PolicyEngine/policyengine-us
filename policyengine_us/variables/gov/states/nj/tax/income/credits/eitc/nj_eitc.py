@@ -35,6 +35,7 @@ class nj_eitc(Variable):
             & federal_eitc_meets_income_test
             & federal_eitc_takes_up
         )
+        print(federal_eitc_meets_income_test)
         federal_eitc = select(
             [
                 federal_eitc_eligible,
