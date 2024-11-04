@@ -8524,3 +8524,69 @@
     - Changed weekly_hours_worked to weekly_hours_worked_before_lsr in SNAP formula
       to avoid circular dependency.
   date: 2024-10-21 20:37:15
+- bump: minor
+  changes:
+    added:
+    - End ACP effective 2024-06-01.
+  date: 2024-10-23 20:51:51
+- bump: minor
+  changes:
+    added:
+    - 2025 income and capital gains thresholds.
+  date: 2024-10-23 22:18:23
+- bump: minor
+  changes:
+    added:
+    - Trump tip income tax exempt.
+  date: 2024-10-24 03:58:00
+- bump: minor
+  changes:
+    added:
+    - Separate tip income and overtime income from the main tax exempt reforms structure.
+  date: 2024-10-27 22:00:19
+- bump: minor
+  changes:
+    added:
+    - DC Child Tax Credit.
+  date: 2024-10-28 20:09:23
+- bump: minor
+  changes:
+    added:
+    - Remaining 2025 IRS tax posted parameter updates.
+  date: 2024-10-28 21:33:47
+- bump: minor
+  changes:
+    added:
+    - Capital gains tax responses.
+  date: 2024-10-29 13:25:05
+- bump: patch
+  changes:
+    changed:
+    - Updated policyengine-us-data to 0.11.1
+    - Updated microdf-python to 0.4.3
+  date: 2024-10-29 19:55:24
+- bump: patch
+  changes:
+    changed:
+    - Altered handling of federal params in VA reduced itemized deductions
+  date: 2024-10-30 02:19:31
+- bump: minor
+  changes:
+    added:
+    - California Medicaid Former Foster Youth Program.
+  date: 2024-10-30 18:47:11
+- bump: patch
+  changes:
+    fixed:
+    - remove uprating for SNAP variables that don't change
+  date: 2024-10-31 18:57:07
+- bump: patch
+  changes:
+    fixed:
+    - Branch improvements.
+  date: 2024-11-01 10:27:40
+- bump: patch
+  changes:
+    fixed:
+    - Colorado 2023 sales tax refund.
+  date: 2024-11-01 16:53:33
