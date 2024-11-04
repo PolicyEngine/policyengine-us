@@ -14,6 +14,12 @@ AZ:
 CA:
   2010-01-01: 0
   2021-10-01: 120
+  2024-10-01:
+    value: 150
+    metadata:
+      reference:
+        - title: California Department of Social Services, Executive Summary, All County Letter No. 24-59, Project Changes
+          href: https://cdss.ca.gov/Portals/9/Additional-Resources/Letters-and-Notices/ACLs/2024/24-59.pdf?ver=2024-08-19-094023-573#page=3
 CO:
   2010-01-01: 0
   2022-10-01:
@@ -202,5 +208,4 @@ metadata:
   period: month
   breakdown:
   - state_code
-  uprating: gov.usda.snap.uprating
   propagate_metadata_to_children: true

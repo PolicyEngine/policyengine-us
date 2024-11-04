@@ -1,0 +1,12 @@
+description: Mississippi limits the child and dependent care credit to filers with income below the following amount.
+values:
+  2023-01-01: 50_000
+metadata:
+  period: year
+  unit: currency-USD
+  label: Mississippi CDCC income limit
+  reference:
+  - title: Mississippi Income Tax Instructions 2023 
+    href: https://www.dor.ms.gov/sites/default/files/Forms/Individual/80100231.pdf#page=20
+  - title: Mississippi House Bill 1671 - Section 27-7-22.39 - Section 5 (2)
+    href: https://legiscan.com/MS/text/HB1671/id/2767768

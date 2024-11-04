@@ -1,0 +1,13 @@
+- name: Individual, is Denver DHS elderly
+  period: 2023
+  input:
+    age: 65
+  output:
+    is_co_denver_dhs_elderly: true
+
+- name: Individual, is not Denver DHS elderly
+  period: 2023
+  input:
+    age: 59
+  output:
+    is_co_denver_dhs_elderly: false

@@ -2,7 +2,6 @@ from policyengine_us.model_api import *
 
 
 def create_end_child_poverty_act() -> Reform:
-
     class ecpa_adult_dependent_credit(Variable):
         value_type = float
         entity = TaxUnit

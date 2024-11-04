@@ -12,7 +12,7 @@ class is_wic_at_nutritional_risk(Variable):
     def formula(person, period, parameters):
         # Assign households WIC nutritional risk status probabilistically in microsimulation.
         # Assume all meet qualification in individual simulation.
-        if hasattr(person.simulation, "dataset"):
+        if person.simulation.dataset is not None:
             wic_reported = person("receives_wic", period)
             meets_income_test = person.spm_unit(
                 "meets_wic_income_test", period

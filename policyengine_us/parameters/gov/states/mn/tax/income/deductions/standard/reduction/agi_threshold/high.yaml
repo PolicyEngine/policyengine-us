@@ -1,0 +1,65 @@
+description: Minnesota reduces the standard deduction by a higher rate for filers with adjusted gross income above this threshold.
+metadata:
+  label: Minnesota standard deduction higher reduction AGI threshold
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  reference:
+  - title: Minnesota Statutes 290.0123 STANDARD DEDUCTION. Subd. 5.Deduction limited. (a)(1)
+    href: https://www.revisor.mn.gov/statutes/cite/290.0123#stat.290.0123.5
+  - title: 2023 Minnesota Schedule M1SA form, Worksheet for Line 26
+    href: https://www.revenue.state.mn.us/sites/default/files/2023-12/m1sa-23.pdf#page=8
+  - title: Tax Year 2024 Inflation-Adjusted Amounts In Minnesota Statutes, 290.0123, Subd. 5
+    href: https://www.revenue.state.mn.us/sites/default/files/2023-12/inflation-adjusted-amounts-ty-2024.pdf#page=2
+
+JOINT:
+  values:
+    2023-01-01: 304_970
+    2024-01-01: 321_350
+  metadata:
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: downwards
+        interval: 50
+HEAD_OF_HOUSEHOLD:
+  values:
+    2023-01-01: 304_970
+    2024-01-01: 321_350
+  metadata:
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: downwards
+        interval: 50
+SURVIVING_SPOUSE:
+  values:
+    2023-01-01: 304_970
+    2024-01-01: 321_350
+  metadata:
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: downwards
+        interval: 50
+SINGLE:
+  values:
+    2023-01-01: 304_970
+    2024-01-01: 321_350
+  metadata:
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: downwards
+        interval: 50
+SEPARATE:
+  values:
+    2023-01-01: 152_485
+    2024-01-01: 160_675
+  metadata:
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: downwards
+        interval: 50

@@ -8,6 +8,7 @@ class il_eitc(Variable):
     unit = USD
     definition_period = YEAR
     reference = "https://www2.illinois.gov/rev/programs/EIC/Pages/default.aspx"
+    defined_for = StateCode.IL
 
     def formula(tax_unit, period, parameters):
         federal_eitc = tax_unit("eitc", period)

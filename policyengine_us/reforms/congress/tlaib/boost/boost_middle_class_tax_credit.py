@@ -55,7 +55,6 @@ def create_boost_middle_class_tax_credit() -> Reform:
         definition_period = YEAR
 
         def formula(household, period, parameters):
-
             BENEFITS = [
                 "social_security",
                 "ssi",

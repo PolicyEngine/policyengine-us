@@ -33,6 +33,7 @@ class employment_income(Variable):
         "employment_income_before_lsr",
         "employment_income_behavioral_response",
     ]
+    uprating = "calibration.gov.irs.soi.employment_income"
 
 
 class self_employment_income(Variable):
@@ -46,6 +47,7 @@ class self_employment_income(Variable):
         "self_employment_income_before_lsr",
         "self_employment_income_behavioral_response",
     ]
+    uprating = "calibration.gov.irs.soi.self_employment_income"
 
 
 class emp_self_emp_ratio(Variable):
@@ -72,3 +74,4 @@ class farm_income(Variable):
     unit = USD
     documentation = "Income from agricultural businesses. Do not include this income in self-employment income."
     definition_period = YEAR
+    uprating = "calibration.gov.irs.soi.farm_income"

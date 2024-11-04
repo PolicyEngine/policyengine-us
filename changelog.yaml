@@ -7909,3 +7909,689 @@
     added:
     - Rent relief tax credit.
   date: 2024-08-12 16:32:53
+- bump: minor
+  changes:
+    added:
+    - Update to codecov/codecov-action@v4, actions/setup-python@v5, and actions/checkout@v4.
+  date: 2024-08-13 03:08:12
+- bump: minor
+  changes:
+    fixed:
+    - Inaccurate docstring in loss.py
+  date: 2024-08-13 14:42:06
+- bump: minor
+  changes:
+    added:
+    - Flat tax on gross income.
+  date: 2024-08-13 16:02:31
+- bump: minor
+  changes:
+    added:
+    - Use un-reduced income for calculating the excess of the rent relief credit.
+  date: 2024-08-16 11:39:35
+- bump: patch
+  changes:
+    fiex:
+    - Typo in New York working families tax credit match.
+  date: 2024-08-16 11:45:37
+- bump: minor
+  changes:
+    added:
+    - Infant calibration.
+  date: 2024-08-16 15:31:16
+- bump: minor
+  changes:
+    added:
+    - Refactor the `household_benefits` and `household_state_benefits` variables to
+      include a list parameter.
+  date: 2024-08-17 13:51:13
+- bump: minor
+  changes:
+    added:
+    - Reform repeal Minnesota Bill HF1938.
+  date: 2024-08-17 15:50:59
+- bump: patch
+  changes:
+    removed:
+    - Age limit for ARPA CTC amount scale parameter (delegating instead to base CTC
+      age limit).
+  date: 2024-08-17 16:48:52
+- bump: patch
+  changes:
+    fixed:
+    - Mixed scalar and vectorized operations in mn_social_security_subtraction.
+  date: 2024-08-17 18:47:58
+- bump: patch
+  changes:
+    fixed:
+    - Limit American Family Act baby bonus reform to CTC-eligible children.
+    - Make AFA baby bonus and head of household repeal work after 2024.
+  date: 2024-08-17 22:15:46
+- bump: patch
+  changes:
+    fixed:
+    - Minnesota Bill HF1938 impact fix.
+  date: 2024-08-18 16:32:45
+- bump: minor
+  changes:
+    added:
+    - Personal Credit reform.
+  date: 2024-08-18 16:54:38
+- bump: minor
+  changes:
+    added:
+    - Add head_start and early_head_start variables to household_benefits parameter.
+  date: 2024-08-19 15:50:20
+- bump: patch
+  changes:
+    fixed:
+    - Bug in Harris Rent Relief Act for low earners.
+  date: 2024-08-19 18:40:57
+- bump: minor
+  changes:
+    added:
+    - 2024 Nebraska tax rules update.
+  date: 2024-08-20 01:56:19
+- bump: patch
+  changes:
+    fixed:
+    - Minnesota standard and itemized deduction reduction structure.
+  date: 2024-08-21 15:12:46
+- bump: minor
+  changes:
+    added:
+    - IRS VITA Program Eligibility.
+  date: 2024-08-22 00:24:36
+- bump: minor
+  changes:
+    added:
+    - Denver property tax relief.
+  date: 2024-08-22 15:03:28
+- bump: minor
+  changes:
+    added:
+    - Separate out SSI eligibility from the general uncapped_ssi file.
+  date: 2024-08-22 23:31:20
+- bump: minor
+  changes:
+    added:
+    - Oregon Rebate state tax exempt reform.
+  date: 2024-08-23 15:56:12
+- bump: patch
+  changes:
+    fixed:
+    - Oregon rebate reform typo.
+  date: 2024-08-25 22:50:32
+- bump: patch
+  changes:
+    fixes:
+    - Utah 2024 Tax Rate and EITC Description Change.
+    - Rhode Island 2023 retirement income subtraction cap increase.
+    - Mississippi 2023 income tax rate.
+    - Remove True print statement in Minnesota CDCC.
+    - Colorado family affordability credit age multiplier label.
+  date: 2024-08-26 14:19:06
+- bump: minor
+  changes:
+    added:
+    - Oregon WFHDC household income variable.
+  date: 2024-08-26 21:37:42
+- bump: minor
+  changes:
+    added:
+    - Mississippi child and dependent care credit.
+  date: 2024-08-26 22:09:35
+- bump: minor
+  changes:
+    added:
+    - CARES act charity deduction provision for non-itemizers.
+  date: 2024-08-29 15:00:53
+- bump: minor
+  changes:
+    added:
+    - New York supplemental tax incremental benefit repeal for 2028
+  date: 2024-08-29 22:06:21
+- bump: patch
+  changes:
+    fixed:
+    - Increase Hawaii Military Reserve or Hawaii National Guard Duty Pay Cap.
+    - Rhode Island 2023 military retirement pay subtraction.
+  date: 2024-08-29 23:49:17
+- bump: minor
+  changes:
+    added:
+    - Repeal dependent exemption reform.
+  date: 2024-08-31 16:36:48
+- bump: minor
+  changes:
+    added:
+    - Family Security Act 2.0 provisions.
+  date: 2024-08-31 18:22:12
+- bump: minor
+  changes:
+    added:
+    - Family Security Act 2.0 CTC amount per child and pregnancy credit structure.
+  date: 2024-09-01 18:17:57
+- bump: minor
+  changes:
+    added:
+    - Infant calibration and uprating.
+  date: 2024-09-02 11:22:31
+- bump: patch
+  changes:
+    fixed:
+    - Five year forward check in the Repeal dependent exemptions reform.
+  date: 2024-09-03 21:50:50
+- bump: minor
+  changes:
+    added:
+    - Change reform parameters to default to 0.
+  date: 2024-09-03 22:29:43
+- bump: minor
+  changes:
+    added:
+    - Apply ALD to alimony expense, not income in the above the line deductions.
+    - Divorce status to cps.py.
+  date: 2024-09-03 22:33:44
+- bump: patch
+  changes:
+    fixed:
+    - Minor bugs and deconstruct MOOP variables in CPS.
+  date: 2024-09-03 23:46:01
+- bump: minor
+  changes:
+    added:
+    - 2024 Medicaid income limit updates for North Carolina.
+  date: 2024-09-04 10:39:53
+- bump: patch
+  changes:
+    changed:
+    - Update policyengine-core to 3.6.5
+  date: 2024-09-05 12:33:59
+- bump: patch
+  changes:
+    fixed:
+    - Minnesota pension income subtraction parameter value.
+  date: 2024-09-05 23:49:18
+- bump: minor
+  changes:
+    added:
+    - Implemented North Carolina TANF need standard and eligibility calculations.
+  date: 2024-09-05 23:56:03
+- bump: minor
+  changes:
+    added:
+    - Arkansas 2024 tax rate.
+  date: 2024-09-06 03:17:09
+- bump: minor
+  changes:
+    fixed:
+    - Refactor the Utah income tax tree.
+    - Remove ut_taxpayer_credit from the non-refundable credits list.
+  date: 2024-09-06 16:56:54
+- bump: patch
+  changes:
+    added:
+    - Commodity Supplemental Food Program
+  date: 2024-09-06 20:25:29
+- bump: minor
+  changes:
+    changed:
+    - Separated data from main repo.
+  date: 2024-09-07 00:01:09
+- bump: patch
+  changes:
+    minor:
+    - Neutralize the New York Working Families Tax credit parameter values.
+  date: 2024-09-09 16:40:19
+- bump: patch
+  changes:
+    fixed:
+    - Fix CSFP income limit
+  date: 2024-09-09 19:58:03
+- bump: patch
+  changes:
+    fixed:
+    - Separate the CTC and EITC under the FSA 2.0.
+  date: 2024-09-09 20:03:22
+- bump: minor
+  changes:
+    added:
+    - Utah additional dependent exemption starting in 2023.
+  date: 2024-09-10 17:15:06
+- bump: minor
+  changes:
+    added:
+    - Update SNAP values for 2025.
+  date: 2024-09-10 22:10:39
+- bump: patch
+  changes:
+    added:
+    - Updated CO TANF grant standard
+  date: 2024-09-12 04:48:22
+- bump: minor
+  changes:
+    added:
+    - Test for additional standard deduction variable.
+  date: 2024-09-12 17:10:41
+- bump: patch
+  changes:
+    added:
+    - Loading of policyengine-us-data from PyPI
+    fixed:
+    - Divided tests within GitHub Actions to avoid resource issues
+  date: 2024-09-14 00:18:02
+- bump: patch
+  changes:
+    fixed:
+    - Add switch to basic income phase-in.
+  date: 2024-09-16 14:57:51
+- bump: patch
+  changes:
+    fixed:
+    - Wisconsin 2nd tax bracket for single and hoh in 2023.
+  date: 2024-09-16 16:11:42
+- bump: minor
+  changes:
+    added:
+    - Apply the federal standard and itemized deductions in Iowa from 2023 on.
+  date: 2024-09-17 03:02:20
+- bump: patch
+  changes:
+    fixed:
+    - Adjust the kiddie tax logic in the AMT calculation.
+  date: 2024-09-17 12:08:35
+- bump: minor
+  changes:
+    changed:
+    - Corrected connection with us-data repository
+    removed:
+    - Deprecated data folder
+  date: 2024-09-18 18:16:20
+- bump: minor
+  changes:
+    added:
+    - Calculation logic for North Carolina SNAP standard and limited utility allowance
+      by household size amount.
+  date: 2024-09-19 01:11:12
+- bump: minor
+  changes:
+    added:
+    - 2025 CalWORKs maximum resource limit update.
+  date: 2024-09-19 02:03:16
+- bump: patch
+  changes:
+    removed:
+    - CI documentation actions, which currently fail.
+  date: 2024-09-19 02:12:02
+- bump: minor
+  changes:
+    added:
+    - 2025 CalWORKs payment standards increase.
+  date: 2024-09-19 02:19:49
+- bump: minor
+  changes:
+    added:
+    - Nebraska child care subsidy.
+  date: 2024-09-19 02:32:58
+- bump: patch
+  changes:
+    changed:
+    - Medicaid national parameters run off a CSV, cutting runtime by ~8%.
+  date: 2024-09-19 15:49:59
+- bump: patch
+  changes:
+    removed:
+    - Unnecessary parameters in VT's parameter tree.
+  date: 2024-09-19 16:01:11
+- bump: patch
+  changes:
+    fixed:
+    - Add defined_for metadata for all state level variables.
+  date: 2024-09-19 17:53:36
+- bump: patch
+  changes:
+    added:
+    - Speedtests to PRs.
+  date: 2024-09-20 15:00:03
+- bump: minor
+  changes:
+    added:
+    - Wisconsin 2024 CDCC match value.
+  date: 2024-09-21 01:08:08
+- bump: minor
+  changes:
+    added:
+    - New Mexico armed forces retirement pay exemption.
+  date: 2024-09-21 01:56:21
+- bump: minor
+  changes:
+    added:
+    - Tenure type.
+    - Uprating for rent and property taxes.
+    - Household reference person flag.
+  date: 2024-09-23 09:43:51
+- bump: minor
+  changes:
+    changed:
+    - PE-US-Data bumped to 1.5.1.
+  date: 2024-09-23 13:43:10
+- bump: minor
+  changes:
+    added:
+    - Remove total_income and net_income.
+  date: 2024-09-23 19:44:39
+- bump: minor
+  changes:
+    added:
+    - Include 17 year olds in the NYWFTC as younger children.
+  date: 2024-09-23 22:24:38
+- bump: minor
+  changes:
+    changed:
+    - Made Maine dependent exemption credit refundable in 2024.
+  date: 2024-09-25 00:47:29
+- bump: patch
+  changes:
+    changed:
+    - US data version to 1.6.0.
+  date: 2024-09-25 11:53:57
+- bump: minor
+  changes:
+    added:
+    - Add post TCJA income tax rates.
+  date: 2024-09-25 17:55:53
+- bump: minor
+  changes:
+    added:
+    - Use adjusted gross income in withheld state income tax.
+    - Separate takes_up_snap_if_eligible variable from snap variable.
+    removed:
+    - Windows test runner.
+  date: 2024-09-27 19:02:03
+- bump: minor
+  changes:
+    added:
+    - 2024 CalFresh (SNAP) standard medical deduction amount increase.
+  date: 2024-09-27 19:10:57
+- bump: minor
+  changes:
+    added:
+    - Alaska Permanent Fund Dividend and One-time Energy Relief Payments.
+  date: 2024-09-27 19:42:19
+- bump: minor
+  changes:
+    added:
+    - New Family Security Act version.
+  date: 2024-09-27 19:50:33
+- bump: minor
+  changes:
+    added:
+    - 2024 Kentucky income tax rate reduction.
+  date: 2024-09-27 20:05:18
+- bump: minor
+  changes:
+    fixed:
+    - Remove lifeline variable from spm_unit_broadband_subsidy.
+    - Modified tests for spm_unit_broadband_subsidy.
+  date: 2024-09-27 20:12:23
+- bump: patch
+  changes:
+    fixed:
+    - Update the Hawaii SNAP net income test application.
+  date: 2024-09-27 20:22:56
+- bump: minor
+  changes:
+    added:
+    - North Carolina rate changes for 2024 on.
+    - 2024 Rhode Island EITC match.
+    fixed:
+    - NYC tax credit parameter formatting.
+  date: 2024-09-28 02:35:09
+- bump: minor
+  changes:
+    added:
+    - Child Tax Credit phase-in variable.
+    fixed:
+    - Child Tax Credit value variable.
+    - Pinned policyengine-core version.
+  date: 2024-09-29 04:49:39
+- bump: minor
+  changes:
+    changed:
+    - PolicyEngine-US-Data bumped to 1.8
+  date: 2024-09-29 22:51:45
+- bump: minor
+  changes:
+    added:
+    - Oklahoma military retirement benefit exclusion.
+    - Oklahoma AGI subtractions list.
+  date: 2024-09-29 23:26:45
+- bump: minor
+  changes:
+    added:
+    - 2023 Medicaid income limit updates.
+  date: 2024-09-30 16:54:45
+- bump: minor
+  changes:
+    added:
+    - North Carolina military retirement deduction.
+  date: 2024-09-30 17:03:10
+- bump: patch
+  changes:
+    changed:
+    - Moved loading of abolitions parameters earlier in initialization process
+  date: 2024-09-30 22:09:41
+- bump: patch
+  changes:
+    added:
+    - Always use the SUA for CO.
+  date: 2024-10-02 17:49:23
+- bump: minor
+  changes:
+    added:
+    - Parameterize the age in is_person_demographic_tanf_eligible.
+  date: 2024-10-04 16:51:40
+- bump: minor
+  changes:
+    added:
+    - Typo in CalWORKs exempt parameter.
+  date: 2024-10-05 07:43:35
+- bump: minor
+  changes:
+    added:
+    - Minnesota 2024 income tax bracekts.
+  date: 2024-10-05 12:11:34
+- bump: minor
+  changes:
+    added:
+    - EITC takeup by number of children.
+  date: 2024-10-06 10:30:21
+- bump: minor
+  changes:
+  - Updated to PolicyEngine US Data v1.9.
+  date: 2024-10-07 13:04:35
+- bump: minor
+  changes:
+    added:
+    - Added NC SNAP utility allowances for FY 2025.
+    fixed:
+    - Corrected NC SNAP utility allowance parameters start date.
+  date: 2024-10-08 14:25:53
+- bump: minor
+  changes:
+    added:
+    - Minnesota 2024 base and additional standard deduction amount updates.
+  date: 2024-10-08 14:36:53
+- bump: minor
+  changes:
+    added:
+    - Minnesota 2024 standard deduction limitations update.
+  date: 2024-10-09 04:16:32
+- bump: minor
+  changes:
+  - Updated to PolicyEngine US Data v1.10.
+  date: 2024-10-09 11:09:17
+- bump: minor
+  changes:
+  - Updated to PolicyEngine US Data v1.11.
+  date: 2024-10-09 15:10:16
+- bump: minor
+  changes:
+    added:
+    - Missouri 2024 income tax rate and brackets.
+  date: 2024-10-14 19:08:02
+- bump: minor
+  changes:
+    added:
+    - Harris capital gains tax reform.
+  date: 2024-10-14 19:22:35
+- bump: minor
+  changes:
+    added:
+    - Kentucky Standard Deduction 2024 & 2025.
+  date: 2024-10-14 20:30:24
+- bump: minor
+  changes:
+    added:
+    - California Standard Deduction, Personal/Dependent Exemption Credits and Renter
+      AGI Cap 2024.
+  date: 2024-10-14 20:55:12
+- bump: minor
+  changes:
+    added:
+    - California Income Tax Thresholds 2024.
+  date: 2024-10-15 00:23:23
+- bump: minor
+  changes:
+    added:
+    - Idaho 2024 income tax rate and brackets.
+  date: 2024-10-15 03:05:54
+- bump: minor
+  changes:
+    added:
+    - Kansas disabled veteran exemptions.
+  date: 2024-10-15 03:15:23
+- bump: minor
+  changes:
+    added:
+    - 2024 tax rate, CDCC match, standard deduction and personal exemption amount
+      in Kansas..
+  date: 2024-10-15 10:18:53
+- bump: minor
+  changes:
+    added:
+    - IN county taxes.
+  date: 2024-10-15 16:26:25
+- bump: minor
+  changes:
+    added:
+    - Exclude students from the SNAP unit with certain exceptions.
+  date: 2024-10-15 16:32:32
+- bump: minor
+  changes:
+    added:
+    - Chained CPI 2035.
+  date: 2024-10-15 18:57:14
+- bump: minor
+  changes:
+    added:
+    - Georgia 2024 dependent exemption amount update.
+  date: 2024-10-15 19:32:53
+- bump: minor
+  changes:
+    added:
+    - Michigan 2024 income tax rate update.
+  date: 2024-10-16 12:20:25
+- bump: minor
+  changes:
+    added:
+    - Biden NIIT label and description change.
+  date: 2024-10-17 19:59:12
+- bump: patch
+  changes:
+    fixed:
+    - Pregnant people counted as 2 for Medicaid FPG percent
+  date: 2024-10-21 19:39:15
+- bump: patch
+  changes:
+    changed:
+    - Updated required version of policyengine-core
+  date: 2024-10-21 20:22:41
+- bump: patch
+  changes:
+    fixed:
+    - Changed weekly_hours_worked to weekly_hours_worked_before_lsr in SNAP formula
+      to avoid circular dependency.
+  date: 2024-10-21 20:37:15
+- bump: minor
+  changes:
+    added:
+    - End ACP effective 2024-06-01.
+  date: 2024-10-23 20:51:51
+- bump: minor
+  changes:
+    added:
+    - 2025 income and capital gains thresholds.
+  date: 2024-10-23 22:18:23
+- bump: minor
+  changes:
+    added:
+    - Trump tip income tax exempt.
+  date: 2024-10-24 03:58:00
+- bump: minor
+  changes:
+    added:
+    - Separate tip income and overtime income from the main tax exempt reforms structure.
+  date: 2024-10-27 22:00:19
+- bump: minor
+  changes:
+    added:
+    - DC Child Tax Credit.
+  date: 2024-10-28 20:09:23
+- bump: minor
+  changes:
+    added:
+    - Remaining 2025 IRS tax posted parameter updates.
+  date: 2024-10-28 21:33:47
+- bump: minor
+  changes:
+    added:
+    - Capital gains tax responses.
+  date: 2024-10-29 13:25:05
+- bump: patch
+  changes:
+    changed:
+    - Updated policyengine-us-data to 0.11.1
+    - Updated microdf-python to 0.4.3
+  date: 2024-10-29 19:55:24
+- bump: patch
+  changes:
+    changed:
+    - Altered handling of federal params in VA reduced itemized deductions
+  date: 2024-10-30 02:19:31
+- bump: minor
+  changes:
+    added:
+    - California Medicaid Former Foster Youth Program.
+  date: 2024-10-30 18:47:11
+- bump: patch
+  changes:
+    fixed:
+    - remove uprating for SNAP variables that don't change
+  date: 2024-10-31 18:57:07
+- bump: patch
+  changes:
+    fixed:
+    - Branch improvements.
+  date: 2024-11-01 10:27:40
+- bump: patch
+  changes:
+    fixed:
+    - Colorado 2023 sales tax refund.
+  date: 2024-11-01 16:53:33
+- bump: patch
+  changes:
+    fixed:
+    - Qualified business defaults to true.
+  date: 2024-11-04 12:17:46

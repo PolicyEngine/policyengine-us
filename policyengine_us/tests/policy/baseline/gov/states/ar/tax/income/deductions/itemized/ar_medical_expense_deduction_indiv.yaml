@@ -3,10 +3,10 @@
   input:
     people:
       person1:
-        medical_expense: 5_000
+        medical_out_of_pocket_expenses: 5_000
         ar_agi_indiv: 120_000
       person2:
-        medical_expense: 18_000
+        medical_out_of_pocket_expenses: 18_000
         ar_agi_indiv: 120_000
     tax_units:
       tax_unit:
@@ -23,10 +23,10 @@
   input:
     people:
       person1:
-        medical_expense: 5_000
+        medical_out_of_pocket_expenses: 5_000
         ar_agi_indiv: 240_000
       person2:
-        medical_expense: 18_000
+        medical_out_of_pocket_expenses: 18_000
         ar_agi_indiv: 0
     tax_units:
       tax_unit:
