@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.138.0] - 2024-11-05 21:37:21
+
+### Added
+
+- SNAP 2024 SUA for Colorado
+
 ## [1.137.4] - 2024-11-04 12:17:46
 
 ### Fixed
@@ -10138,6 +10144,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.138.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.137.4...1.138.0
 [1.137.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.137.3...1.137.4
 [1.137.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.137.2...1.137.3
 [1.137.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.137.1...1.137.2
