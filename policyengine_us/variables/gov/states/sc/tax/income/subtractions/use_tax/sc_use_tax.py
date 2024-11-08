@@ -47,3 +47,5 @@ class sc_use_tax(Variable):
         total_rate = p.main + additional_rate
 
         return out_of_state_purchases * total_rate
+
+

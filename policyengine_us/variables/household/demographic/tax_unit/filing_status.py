@@ -35,3 +35,4 @@ class filing_status(Variable):
             ],
             default=FilingStatus.SINGLE,
         )
+
