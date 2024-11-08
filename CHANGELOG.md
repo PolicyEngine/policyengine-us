@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.139.1] - 2024-11-08 23:52:56
+
+### Added
+
+- Label to Alaska tax param folder
+
 ## [1.139.0] - 2024-11-07 11:43:28
 
 ### Added
@@ -10150,6 +10156,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.139.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.139.0...1.139.1
 [1.139.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.138.0...1.139.0
 [1.138.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.137.4...1.138.0
 [1.137.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.137.3...1.137.4
