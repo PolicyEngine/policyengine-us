@@ -1,6 +1,0 @@
-- bump: patch
-  changes:
-    fixed:
-    - Corrected meets_school_meal_categorical_eligilibity to properly calculate eligibility for vectorized inputs.
-    added:
-    - Test for meets_school_meal_categorical_eligibility with vectorized inputs.
