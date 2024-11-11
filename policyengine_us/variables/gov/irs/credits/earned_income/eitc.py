@@ -17,4 +17,3 @@ class eitc(Variable):
         reduction = tax_unit("eitc_reduction", period)
         limitation = max_(0, maximum - reduction)
         return min_(phased_in, limitation) * takes_up_eitc
- 
