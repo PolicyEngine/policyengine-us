@@ -1,0 +1,35 @@
+- name: Eligible person, 
+  period: 2022
+  input:
+    in_la: True
+    is_in_foster_care: True
+    is_pregnant: True
+  output:
+    ca_la_expectant_parent_payment_eligible: True
+
+- name: Not pregnant
+  period: 2023
+  input:
+    in_la: True
+    is_in_foster_care: True
+    is_pregnant: False
+  output:
+    ca_la_expectant_parent_payment_eligible: False
+
+- name: Not in LA
+  period: 2023
+  input:
+    in_la: False
+    is_in_foster_care: True
+    is_pregnant: True
+  output:
+    ca_la_expectant_parent_payment_eligible: False
+
+- name: Not in foster care
+  period: 2024
+  input:
+    in_la: True
+    is_in_foster_care: False
+    is_pregnant: True
+  output:
+    ca_la_expectant_parent_payment_eligible: False
