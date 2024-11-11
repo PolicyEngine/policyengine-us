@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.140.0] - 2024-11-11 04:40:19
+
+### Fixed
+
+- NJ EITC correctly calculates federal EITC entitlement.
+
 ## [1.139.2] - 2024-11-10 18:07:53
 
 ### Added
@@ -10166,6 +10172,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.140.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.139.2...1.140.0
 [1.139.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.139.1...1.139.2
 [1.139.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.139.0...1.139.1
 [1.139.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.138.0...1.139.0
