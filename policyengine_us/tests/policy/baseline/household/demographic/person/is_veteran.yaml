@@ -1,0 +1,13 @@
+- name: Case 1, veterans_benefits > 0, is a veteran. 
+  period: 2020
+  input: 
+    veterans_benefits: 100
+  output:
+    is_veteran: true
+
+- name: Case 2, veterans_benefits = 0, is not a veteran. 
+  period: 2020
+  input: 
+    veterans_benefits: 0
+  output:
+    is_veteran: false
