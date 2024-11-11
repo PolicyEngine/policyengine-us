@@ -5,7 +5,7 @@ class ca_la_expectant_parent_payment_eligible(Variable):
     value_type = bool
     entity = Person
     definition_period = MONTH
-    label = "Eligible for the Los Angeles County expectant parent paymentt"
+    label = "Eligible for the Los Angeles County expectant parent payment"
     defined_for = "in_la"
 
     def formula(person, period, parameters):

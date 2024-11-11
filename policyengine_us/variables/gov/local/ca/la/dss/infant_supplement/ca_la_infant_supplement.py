@@ -20,8 +20,8 @@ class ca_la_infant_supplement(Variable):
         eligible_infants = add(
             household, period, ["ca_la_infant_supplement_eligible_infant"]
         )
-        eligble_person = person(
+        eligible_person = person(
             "ca_la_infant_supplement_eligible_person", period
         )
-        eligble = household.any(eligble_person)
+        eligble = household.any(eligible_person)
         return base_amount * eligible_infants * eligble
