@@ -1,23 +1,13 @@
-- name: Only 6 months pregnant
-  period: 2022
+- name: Eligible monthly
+  period: 2022-01
   input:
     ca_la_expectant_parent_payment_eligible: True
-    months_pregnant: 6
   output:
-    ca_la_expectant_parent_payment: 0
+    ca_la_expectant_parent_payment: 900
 
-- name: 10 Months pregnant
+- name: Ineligible
   period: 2022
   input:
-    ca_la_expectant_parent_payment_eligible: True
-    months_pregnant: 10
-  output:
-    ca_la_expectant_parent_payment: 2_700
-
-- name: No months pregnant
-  period: 2022
-  input:
-    ca_la_expectant_parent_payment_eligible: True
-    months_pregnant: 0
+    ca_la_expectant_parent_payment_eligible: False
   output:
     ca_la_expectant_parent_payment: 0
