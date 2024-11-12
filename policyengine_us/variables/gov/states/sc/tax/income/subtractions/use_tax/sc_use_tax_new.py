@@ -1,6 +1,6 @@
 from policyengine_us.model_api import *
 
-class sc_use_tax(Variable):
+class sc_use_tax_new(Variable):
     value_type = float
     entity = TaxUnit
     label = "South Carolina Use Tax"
@@ -17,14 +17,16 @@ class sc_use_tax(Variable):
         county = tax_unit.household("county_str", period)
         
         county_group = tax_unit.household("sc_use_tax_county_group", period)
+
+        county_groups = county_group.possible_values
         
         p = parameters(period).gov.states.sc.tax.income.use_tax
 
         additional_rate = select(
             [
-                county_group == ScUseTaxCountyGroup.GROUP1,
-                county_group == ScUseTaxCountyGroup.GROUP2,
-                county_group == ScUseTaxCountyGroup.GROUP3,
+                county_group == county_groups.GROUP1,
+                county_group == county_groups.GROUP2,
+                county_group == county_groups.GROUP3,
             ],
             [
                 p.group_one,  

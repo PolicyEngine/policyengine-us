@@ -1,3 +1,4 @@
+from policyengine_us.model_api import *
 
 class ScUseTaxCountyGroup(Enum):
     GROUP1 = "one"
@@ -32,9 +33,9 @@ class sc_use_tax_county_group(Variable):
         
         return select(
             [
-                county in group1_counties,  
-                county in group2_counties,  
-                county in group3_counties,  
+                np.isin(county, group1_counties),  
+                np.isin(county, group2_counties),  
+                np.isin(county, group3_counties),  
             ],
             [
                 ScUseTaxCountyGroup.GROUP1,  
