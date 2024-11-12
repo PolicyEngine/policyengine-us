@@ -1,0 +1,22 @@
+description: Base amount 
+
+values:
+1:
+  2024-01-01: 808
+2: 
+  2024-01-01: 1_411
+3:
+  2024-01-01: 1_677
+4:
+  2024-01-01: 2_027
+  
+metadata:
+  unit: currency-USD
+  period: year
+  label: 
+  breakdown:
+  - list(range(1,4))
+  reference:
+    - title: National standards -- Food, clothing and other items
+      href: https://www.irs.gov/businesses/small-businesses-self-employed/national-standards-food-clothing-and-other-items
+
