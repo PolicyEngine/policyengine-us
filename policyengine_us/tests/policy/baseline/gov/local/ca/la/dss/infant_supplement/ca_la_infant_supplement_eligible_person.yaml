@@ -3,7 +3,7 @@
   input:
     in_la: true
     is_in_foster_care: true
-    is_mother: true
+    is_pregnant: true
   output:
     ca_la_infant_supplement_eligible_person: true
 
@@ -12,7 +12,7 @@
   input:
     in_la: true
     is_in_foster_care: true
-    is_mother: False
+    is_pregnant: False
   output:
     ca_la_infant_supplement_eligible_person: False
 
@@ -21,7 +21,7 @@
   input:
     in_la: False
     is_in_foster_care: true
-    is_mother: true
+    is_pregnant: true
   output:
     ca_la_infant_supplement_eligible_person: False
 
@@ -30,6 +30,6 @@
   input:
     in_la: true
     is_in_foster_care: False
-    is_mother: true
+    is_pregnant: true
   output:
     ca_la_infant_supplement_eligible_person: False
