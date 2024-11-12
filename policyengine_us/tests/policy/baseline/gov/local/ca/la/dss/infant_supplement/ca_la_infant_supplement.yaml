@@ -1,4 +1,4 @@
-- name: Eligble household with one infant, not in group home
+- name: Eligible household with one infant, not in group home
   period: 2024
   input:
     people:
@@ -14,7 +14,7 @@
   output:
     ca_la_infant_supplement: 10_800
 
-- name: Eligble household with one infant, in group home
+- name: Eligible household with one infant, in group home
   period: 2024
   input:
     people:
@@ -31,7 +31,7 @@
     ca_la_infant_supplement: 16_548
 
 
-- name: Eligble household with no infant, in group home
+- name: Eligible household with no infant, in group home
   period: 2024
   input:
     people:
@@ -47,7 +47,7 @@
   output:
     ca_la_infant_supplement: 0
 
-- name: Ineligble household with no infant, in group home
+- name: Ineligible household with no infant, in group home
   period: 2024
   input:
     people:

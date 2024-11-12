@@ -8,6 +8,4 @@ class ca_la_expectant_parent_payment(Variable):
     label = "Los Angeles County expectant parent payment"
     defined_for = "ca_la_expectant_parent_payment_eligible"
 
-    def formula(person, period, parameters):
-        p = parameters(period).gov.local.ca.la.dss.expectant_parent_payment
-        return p.amount
+    adds = ["gov.local.ca.la.dss.expectant_parent_payment.amount"]
