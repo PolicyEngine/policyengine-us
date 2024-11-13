@@ -9,7 +9,6 @@ class ca_la_infant_supplement_eligible_infant(Variable):
     defined_for = "in_la"
 
     def formula(person, period, parameters):
-        p = parameters(period).gov.local.ca
         age = person("age", period)
         p = parameters(period).gov.states.ca.infant
         return age <= p.age_limit
