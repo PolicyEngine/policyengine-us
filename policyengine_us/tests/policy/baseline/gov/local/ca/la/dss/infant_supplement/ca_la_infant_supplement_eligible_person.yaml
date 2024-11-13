@@ -1,0 +1,35 @@
+- name: Eligible person, 
+  period: 2022
+  input:
+    in_la: true
+    is_in_foster_care: true
+    is_pregnant: true
+  output:
+    ca_la_infant_supplement_eligible_person: true
+
+- name: Not a parent
+  period: 2023
+  input:
+    in_la: true
+    is_in_foster_care: true
+    is_pregnant: False
+  output:
+    ca_la_infant_supplement_eligible_person: False
+
+- name: Not in LA
+  period: 2023
+  input:
+    in_la: False
+    is_in_foster_care: true
+    is_pregnant: true
+  output:
+    ca_la_infant_supplement_eligible_person: False
+
+- name: Not in foster care
+  period: 2024
+  input:
+    in_la: true
+    is_in_foster_care: False
+    is_pregnant: true
+  output:
+    ca_la_infant_supplement_eligible_person: False
