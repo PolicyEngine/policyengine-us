@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.141.0] - 2024-11-13 16:46:23
+
+### Added
+
+- Los Angeles County expectant parent payment.
+- Los Angeles County infant supplement.
+
 ## [1.140.1] - 2024-11-11 04:47:50
 
 ### Fixed
@@ -10178,6 +10185,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.141.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.140.1...1.141.0
 [1.140.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.140.0...1.140.1
 [1.140.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.139.2...1.140.0
 [1.139.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.139.1...1.139.2
