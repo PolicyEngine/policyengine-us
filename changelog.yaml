@@ -8618,3 +8618,29 @@
     - Corrected meets_school_meal_categorical_eligilibity to properly calculate eligibility
       for vectorized inputs.
   date: 2024-11-10 18:07:53
+- bump: minor
+  changes:
+    fixed:
+    - NJ EITC correctly calculates federal EITC entitlement.
+  date: 2024-11-11 04:40:19
+- bump: patch
+  changes:
+    fixed:
+    - Iowa Income Tax Rates 2023-2026.
+  date: 2024-11-11 04:47:50
+- bump: minor
+  changes:
+    added:
+    - Los Angeles County expectant parent payment.
+    - Los Angeles County infant supplement.
+  date: 2024-11-13 16:46:23
+- bump: minor
+  changes:
+    added:
+    - Georgia 2024 income tax rate update.
+  date: 2024-11-14 17:44:55
+- bump: patch
+  changes:
+    fixed:
+    - Mississippi missing 2023 income tax bracket thresholds.
+  date: 2024-11-14 20:12:06

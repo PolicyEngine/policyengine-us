@@ -20,7 +20,7 @@
   output:
     is_wic_eligible: false
 
-- name: Case 3, eligble when either income test or categorical passed 
+- name: Case 3, eligible when either income test or categorical passed 
   period: 2022
   input:
     meets_wic_income_test: true
@@ -29,7 +29,7 @@
   output:
     is_wic_eligible: true
 
-- name: Case 4, eligble when either income test or categorical passed 
+- name: Case 4, eligible when either income test or categorical passed 
   period: 2022
   input:
     meets_wic_income_test: false
