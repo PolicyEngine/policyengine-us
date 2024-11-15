@@ -80,6 +80,31 @@
     ny_ctc: 0
     ny_exemptions: 1_000
 
+- name: Single person, one child, with 20k of employemnt income - no reform
+  period: 2025
+  input:
+    gov.contrib.states.ny.wftc.in_effect: false
+    people: 
+      person1:
+        age: 30
+        is_tax_unit_dependent: false
+        employment_income: 20_000
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    eitc: 4_328
+    ny_eitc: 1_223.4
+    ny_ctc: 330
+    ny_exemptions: 1_000
+
 - name: Single person, one older child, with 20k of employemnt income - reform
   period: 2025
   reforms: policyengine_us.reforms.states.ny.wftc.ny_working_families_tax_credit.ny_working_families_tax_credit
