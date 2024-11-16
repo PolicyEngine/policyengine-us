@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.142.3] - 2024-11-16 20:18:42
+
+### Added
+
+- Add the 2023 Arkansas inflation relief credit amount and avoid attributing the amount twice for joint filers filing separately.
+
 ## [1.142.2] - 2024-11-15 19:21:17
 
 ### Fixed
@@ -10203,6 +10209,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.142.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.142.2...1.142.3
 [1.142.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.142.1...1.142.2
 [1.142.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.142.0...1.142.1
 [1.142.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.141.0...1.142.0
