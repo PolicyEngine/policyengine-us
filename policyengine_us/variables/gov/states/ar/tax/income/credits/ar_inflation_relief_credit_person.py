@@ -30,4 +30,7 @@ class ar_inflation_relief_credit_person(Variable):
         excess = max_(income - reduction_start, 0)
         increments = np.ceil(excess / increment)
         total_reduction_amount = increments * reduction_per_increment
-        return max_(max_amount - total_reduction_amount, 0)
+        # Attribute the maximum amount to each spouse equally when married filing jointly
+        joint = filing_status == filing_status.possible_values.JOINT
+        divisor = where(joint, 2, 1)
+        return max_(max_amount - total_reduction_amount, 0) / divisor
