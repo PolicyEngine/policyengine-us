@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.142.5] - 2024-11-16 20:55:48
+
+### Added
+
+- Populate va_agi_person and add the Virginia spouse tax adjustment to the net income tree.
+
 ## [1.142.4] - 2024-11-16 20:47:40
 
 ### Fixed
@@ -10215,6 +10221,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.142.5]: https://github.com/PolicyEngine/policyengine-us/compare/1.142.4...1.142.5
 [1.142.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.142.3...1.142.4
 [1.142.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.142.2...1.142.3
 [1.142.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.142.1...1.142.2

@@ -8660,3 +8660,9 @@
     fixed:
     - Remove the child tax rebate from the list of 2023 rhode island refundable credits.
   date: 2024-11-16 20:47:40
+- bump: patch
+  changes:
+    added:
+    - Populate va_agi_person and add the Virginia spouse tax adjustment to the net
+      income tree.
+  date: 2024-11-16 20:55:48
