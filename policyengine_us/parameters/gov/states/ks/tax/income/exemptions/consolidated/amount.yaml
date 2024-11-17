@@ -1,0 +1,22 @@
+description: Kansas provides this exemption for each person in a filing unit, pre 2024.
+values:
+  2021-01-01: 2_250
+
+metadata:
+  period: year
+  unit: currency-USD
+  label: Kansas personal exemption consolidated amount
+  reference:
+  
+  - title: 2021 Form K-40 instructions
+    href: https://www.ksrevenue.gov/pdf/ip21.pdf
+  - title: 2022 Form K-40 instructions
+    href: https://www.ksrevenue.gov/pdf/ip22.pdf
+  - title: 2023 Form K-40 instructions
+    href: https://www.ksrevenue.gov/pdf/ip23.pdf#page=2
+  # Structure changed in 2024 - this parameter is discontinued
+  - title: Kansas Notice 24-08 Changes to individual income tax
+    href: https://www.ksrevenue.gov/taxnotices/notice24-08.pdf#page=2
+  # Legal code represents post 2024 structure
+  - title: Kan. Stat. § 79-32,121 (a) 
+    href: https://casetext.com/statute/kansas-statutes/chapter-79-taxation/article-32-income-tax/section-79-32121-kansas-exemption-for-an-individual

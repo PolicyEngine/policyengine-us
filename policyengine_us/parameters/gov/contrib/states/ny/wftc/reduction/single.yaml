@@ -6,24 +6,25 @@ metadata:
   period: year
   label: New York working families tax credit single reduction
   reference:
-  - title: New York Senate Bill S277B (2)(B)
-    href: https://www.nysenate.gov/legislation/bills/2023/S277/amendment/B
+  - title: New York Senate Bill S277C §3(c-2)(2)(B)
+    href: https://legislation.nysenate.gov/pdf/bills/2023/S277C
 
 brackets:
   - threshold:
-      2024-01-01: 0
+      2025-01-01: 0
     rate:
-      2024-01-01: 0
+      2025-01-01: 0
   - threshold:
       values:
-        2024-01-01: 65_000
-        2025-01-01: 55_000
-        2026-01-01: 45_000
-        2027-01-01: 25_000
+        2025-01-01: 75_000
+        2026-01-01: 65_000
+        2027-01-01: 55_000
+        2028-01-01: 45_000
+        2029-01-01: 25_000
       uprating:
         parameter: gov.irs.uprating
         rounding:
           type: downwards
           interval: 50
     rate:
-      2024-01-01: 0.02
+      2025-01-01: 0.02

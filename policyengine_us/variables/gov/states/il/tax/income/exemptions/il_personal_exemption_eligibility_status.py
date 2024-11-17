@@ -16,6 +16,7 @@ class il_personal_exemption_eligibility_status(Variable):
         "Whether The Tax Unit Is Eligible For The Illinois Personal Exemption"
     )
     definition_period = YEAR
+    defined_for = StateCode.IL
 
     def formula(tax_unit, period, parameters):
         personal_eligibility_amount = parameters(

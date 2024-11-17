@@ -61,6 +61,7 @@
     gov.contrib.ubi_center.basic_income.amount.person.by_age[3].amount: 10_000
     gov.contrib.ubi_center.basic_income.amount.person.by_age[0].amount: 5_000
     gov.contrib.ubi_center.basic_income.amount.person.marriage_bonus: 0.2
+    gov.contrib.ubi_center.basic_income.phase_in.in_effect: true
     people:
       adult:
         age: 26
@@ -77,12 +78,35 @@
   output:
     basic_income_before_phase_out: 15_000
 
+- name: Phase-in not in effect
+  period: 2022
+  input:
+    gov.contrib.ubi_center.basic_income.amount.person.by_age[3].amount: 10_000
+    gov.contrib.ubi_center.basic_income.amount.person.by_age[0].amount: 5_000
+    gov.contrib.ubi_center.basic_income.amount.person.marriage_bonus: 0.2
+    people:
+      adult:
+        age: 26
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [adult, child]
+        basic_income_phase_in: 12_000
+    families:
+      family:
+        members: [adult, child]
+        is_married: false
+  output:
+    basic_income_before_phase_out: 15_000
+
 - name: Not fully phased in
   period: 2022
   input:
     gov.contrib.ubi_center.basic_income.amount.person.by_age[3].amount: 10_000
     gov.contrib.ubi_center.basic_income.amount.person.by_age[0].amount: 5_000
     gov.contrib.ubi_center.basic_income.amount.person.marriage_bonus: 0.2
+    gov.contrib.ubi_center.basic_income.phase_in.in_effect: true
     people:
       adult:
         age: 26

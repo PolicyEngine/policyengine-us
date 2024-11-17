@@ -1,0 +1,13 @@
+- name: Eligible monthly
+  period: 2022-01
+  input:
+    ca_la_expectant_parent_payment_eligible: True
+  output:
+    ca_la_expectant_parent_payment: 900
+
+- name: Ineligible
+  period: 2022
+  input:
+    ca_la_expectant_parent_payment_eligible: False
+  output:
+    ca_la_expectant_parent_payment: 0
