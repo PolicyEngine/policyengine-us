@@ -12,7 +12,7 @@
       tax_unit:
         members: [person1]
         filing_status: SINGLE
-        tax_unit_earned_income: 100_000
+        adjusted_gross_income: 100_000
   output:
     salt_deduction: 10_000
 
@@ -30,7 +30,7 @@
       tax_unit:
         members: [person1]
         filing_status: SINGLE
-        tax_unit_earned_income: 120_000
+        adjusted_gross_income: 120_000
   output:
     salt_deduction: 8_000
 
@@ -48,6 +48,6 @@
       tax_unit:
         members: [person1]
         filing_status: SINGLE
-        tax_unit_earned_income: 500_000
+        adjusted_gross_income: 500_000
   output:
     salt_deduction: 0
