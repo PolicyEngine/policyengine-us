@@ -1,0 +1,27 @@
+description: The Chapter 7 bankruptcy means test limits the expense of mortgage or rent by the local standards to this amount, based on household size.
+
+values:
+AL:
+  1:
+    2024-01-01: 677
+  2:
+    2024-01-01: 796
+  3:
+    2024-01-01: 838
+  4:
+    2024-01-01: 935
+  5: 
+    2024-01-01: 950
+
+
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Local standards of mortgage or rent expense 
+  breakdown:
+  - state_code
+  - list(range(1,6))
+  reference:
+    - title: Local standards -- Housing and Utilities and Transportation
+      href: https://www.justice.gov/ust/means-testing/20221101

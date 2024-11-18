@@ -1,4 +1,4 @@
-description: Base amount 
+description: The Chapter 7 bankruptcy means test limits the expense of food, clothing and other items by the national standards to this base amount, based on household size. 
 
 values:
 1:
@@ -13,9 +13,9 @@ values:
 metadata:
   unit: currency-USD
   period: year
-  label: 
+  label: National standards of food, clothing and other items base amount 
   breakdown:
-  - list(range(1,4))
+  - list(range(1,5))
   reference:
     - title: National standards -- Food, clothing and other items
       href: https://www.irs.gov/businesses/small-businesses-self-employed/national-standards-food-clothing-and-other-items

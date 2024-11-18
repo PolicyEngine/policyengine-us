@@ -1,0 +1,27 @@
+description: The Chapter 7 bankruptcy means test limits the expense of insurance and operating by the local standards to this amount, based on household size.
+
+values:
+AL:
+  1:
+    2024-01-01: 594
+  2:
+    2024-01-01: 698
+  3:
+    2024-01-01: 736
+  4:
+    2024-01-01: 820 
+  5: 
+    2024-01-01: 834
+
+
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Local standards of insurance and operating expense
+  breakdown:
+  - state_code
+  - list(range(1,6))
+  reference:
+    - title: Local standards -- Housing and Utilities and Transportation
+      href: https://www.justice.gov/ust/means-testing/20221101
