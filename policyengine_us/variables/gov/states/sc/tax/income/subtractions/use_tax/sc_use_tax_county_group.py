@@ -2,9 +2,9 @@ from policyengine_us.model_api import *
 
 
 class ScUseTaxCountyGroup(Enum):
-    GROUP1 = "one"
-    GROUP2 = "two"
-    GROUP3 = "three"
+    GROUP1 = "Group one"
+    GROUP2 = "Group two"
+    GROUP3 = "Group three"
     GROUP4 = "default"
 
 
