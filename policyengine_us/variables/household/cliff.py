@@ -10,9 +10,15 @@ class cliff_evaluated(Variable):
 
     def formula(person, period, parameters):
         adult_index_values = person("adult_index", period)
-        cliff_adult_count = parameters(period).simulation.cliff_adults
+        mtr_adult_count = parameters(
+            period
+        ).simulation.marginal_tax_rate_adults
         is_adult = person("is_adult", period)
-        return is_adult & (adult_index_values <= cliff_adult_count)
+        with open("test_file.txt", "a") as f:
+            f.write(f"adult_index_values: {str(adult_index_values)}\n")
+            f.write(f"mtr_adult_count: {str(mtr_adult_count)}\n")
+            f.write(f"is_adult: {str(is_adult)}\n")
+        return is_adult & (adult_index_values <= mtr_adult_count)
 
 
 class cliff_gap(Variable):

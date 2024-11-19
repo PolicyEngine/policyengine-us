@@ -1,4 +1,8 @@
 - bump: patch
   changes:
+    changed:
+    - Changed formula for cliff_evaluated to use new marginal tax rate adults parameter.
     removed:
-    - Unused cliff impact parameters
+    - Unused cliff impact parameters.
+    added:
+    - New test to cliff_evaluated to demonstrate differences between adults and children in given household.
