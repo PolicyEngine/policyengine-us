@@ -2,9 +2,8 @@
   period: 2022-01
   input:
     in_la: true
-    is_in_foster_care: true
+    ca_foster_care_minor_dependent: true
     current_pregnancy_month: 6
-    age: 20
   output:
     ca_la_expectant_parent_payment_eligible: true
 
@@ -12,9 +11,8 @@
   period: 2023-01
   input:
     in_la: true
-    is_in_foster_care: true
+    ca_foster_care_minor_dependent: true
     current_pregnancy_month: 5
-    age: 20
   output:
     ca_la_expectant_parent_payment_eligible: false
 
@@ -22,9 +20,8 @@
   period: 2023-01
   input:
     in_la: false
-    is_in_foster_care: true
+    ca_foster_care_minor_dependent: true
     current_pregnancy_month: 7
-    age: 20
   output:
     ca_la_expectant_parent_payment_eligible: false
 
@@ -32,9 +29,8 @@
   period: 2024-01
   input:
     in_la: true
-    is_in_foster_care: false
+    ca_foster_care_minor_dependent: false
     current_pregnancy_month: 8
-    age: 20
   output:
     ca_la_expectant_parent_payment_eligible: false
 
@@ -42,18 +38,7 @@
   period: 2023-01
   input:
     in_la: true
-    is_in_foster_care: true
+    ca_foster_care_minor_dependent: true
     current_pregnancy_month: 10
-    age: 20
-  output:
-    ca_la_expectant_parent_payment_eligible: false
-
-- name: Age ineligible
-  period: 2022-01
-  input:
-    in_la: true
-    is_in_foster_care: true
-    current_pregnancy_month: 6
-    age: 21
   output:
     ca_la_expectant_parent_payment_eligible: false

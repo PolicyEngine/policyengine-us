@@ -9,9 +9,9 @@ class ca_la_infant_supplement_eligible_person(Variable):
     defined_for = "in_la"
 
     def formula(person, period, parameters):
-        foster_care = person("is_in_foster_care", period)
         is_parent = person("is_pregnant", period)
-        age = person("age", period) * 12
-        age_threshold = parameters(period).gov.local.ca.la.dss.age_threshold
-        minor_dependent = age < age_threshold
-        return foster_care & is_parent & minor_dependent
+        # Needed as numeric yearly variables get divided by 12 in monthly formulas.
+        foster_care_minor_dependent = person(
+            "ca_foster_care_minor_dependent", period
+        )
+        return foster_care_minor_dependent & is_parent

@@ -9,15 +9,12 @@ class ca_la_expectant_parent_payment_eligible(Variable):
     defined_for = "in_la"
 
     def formula(person, period, parameters):
-        foster_care = person("is_in_foster_care", period)
         pregnancy_month = person("current_pregnancy_month", period)
         p = parameters(period).gov.local.ca.la.dss.expectant_parent_payment
         eligible_based_on_pregnancy_month = (
             p.pregnancy_month.min <= pregnancy_month <= p.pregnancy_month.max
         )
-        age = person("age", period) * 12
-        age_threshold = parameters(period).gov.local.ca.la.dss.age_threshold
-        minor_dependent = age < age_threshold
-        return (
-            foster_care & eligible_based_on_pregnancy_month & minor_dependent
+        foster_care_minor_dependent = person(
+            "ca_foster_care_minor_dependent", period
         )
+        return foster_care_minor_dependent & eligible_based_on_pregnancy_month
