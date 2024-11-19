@@ -5,7 +5,7 @@ class ScUseTaxCountyGroup(Enum):
     GROUP1 = "Group one"
     GROUP2 = "Group two"
     GROUP3 = "Group three"
-    GROUP4 = "default"
+    GROUP4 = "Group four"
 
 
 class sc_use_tax_county_group(Variable):
