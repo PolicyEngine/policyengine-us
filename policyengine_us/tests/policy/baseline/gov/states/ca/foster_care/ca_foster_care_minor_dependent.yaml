@@ -1,0 +1,26 @@
+- name: Eligible foster child
+  period: 2021
+  input:
+    monthly_age: 20
+    state_code: CA
+    is_in_foster_care: true
+  output:
+    ca_foster_care_minor_dependent: true
+
+- name: Not in foster care
+  period: 2021
+  input:
+    monthly_age: 20
+    state_code: CA
+    is_in_foster_care: false
+  output:
+    ca_foster_care_minor_dependent: false
+
+- name: Age ineligible
+  period: 2021
+  input:
+    monthly_age: 21
+    state_code: CA
+    is_in_foster_care: false
+  output:
+    ca_foster_care_minor_dependent: false
