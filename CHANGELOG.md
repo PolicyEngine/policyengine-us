@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.146.1] - 2024-11-19 16:41:43
+
+### Added
+
+- Monthly age variable.
+
+### Fixed
+
+- Los Angeles Infant Supplement and Expectant Parent Payment age threshold.
+
 ## [1.146.0] - 2024-11-19 13:15:26
 
 ### Changed
@@ -10245,6 +10255,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.146.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.146.0...1.146.1
 [1.146.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.145.0...1.146.0
 [1.145.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.144.0...1.145.0
 [1.144.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.143.0...1.144.0
