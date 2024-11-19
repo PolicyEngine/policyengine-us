@@ -14,7 +14,7 @@ class sc_use_tax_county_group(Variable):
     possible_values = ScUseTaxCountyGroup
     default_value = ScUseTaxCountyGroup.GROUP4
     definition_period = YEAR
-    label = "SC use tax county group"
+    label = "South Carolina use tax county group"
 
     def formula(household, period, parameters):
 
