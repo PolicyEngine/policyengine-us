@@ -53,6 +53,9 @@ from .harris.capital_gains import (
 from .tax_exempt.tax_exempt_reform import (
     create_tax_exempt_reform,
 )
+from .salt_phase_out.salt_phase_out_reform import (
+    create_salt_phase_out_reform,
+)
 
 
 from policyengine_core.reforms import Reform
@@ -126,6 +129,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         parameters, period
     )
     tip_income_tax_exempt = create_tax_exempt_reform(parameters, period)
+    salt_phase_out = create_salt_phase_out_reform(parameters, period)
 
     reforms = [
         afa_reform,
@@ -153,6 +157,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         repeal_dependent_exemptions,
         harris_capital_gains,
         tip_income_tax_exempt,
+        salt_phase_out,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
 

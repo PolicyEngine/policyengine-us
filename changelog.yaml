@@ -8628,3 +8628,56 @@
     fixed:
     - Iowa Income Tax Rates 2023-2026.
   date: 2024-11-11 04:47:50
+- bump: minor
+  changes:
+    added:
+    - Los Angeles County expectant parent payment.
+    - Los Angeles County infant supplement.
+  date: 2024-11-13 16:46:23
+- bump: minor
+  changes:
+    added:
+    - Georgia 2024 income tax rate update.
+  date: 2024-11-14 17:44:55
+- bump: patch
+  changes:
+    fixed:
+    - Mississippi missing 2023 income tax bracket thresholds.
+  date: 2024-11-14 20:12:06
+- bump: patch
+  changes:
+    fixed:
+    - Refactor the New York Working Families Tax Credit.
+  date: 2024-11-15 19:21:17
+- bump: patch
+  changes:
+    added:
+    - Add the 2023 Arkansas inflation relief credit amount and avoid attributing the
+      amount twice for joint filers filing separately.
+  date: 2024-11-16 20:18:42
+- bump: patch
+  changes:
+    fixed:
+    - Remove the child tax rebate from the list of 2023 rhode island refundable credits.
+  date: 2024-11-16 20:47:40
+- bump: patch
+  changes:
+    added:
+    - Populate va_agi_person and add the Virginia spouse tax adjustment to the net
+      income tree.
+  date: 2024-11-16 20:55:48
+- bump: minor
+  changes:
+    added:
+    - Montana 2023 income tax rule updates.
+  date: 2024-11-18 01:37:58
+- bump: minor
+  changes:
+    added:
+    - SALT deduction phase-out reform.
+  date: 2024-11-18 02:11:15
+- bump: minor
+  changes:
+    fixed:
+    - Cliff variables.
+  date: 2024-11-18 13:26:09

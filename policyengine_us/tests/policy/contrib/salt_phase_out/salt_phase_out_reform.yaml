@@ -1,0 +1,53 @@
+- name: Single filer with income below reduction amount
+  period: 2024
+  reforms: policyengine_us.reforms.salt_phase_out.salt_phase_out_reform.salt_phase_out_reform
+  input:
+    gov.contrib.salt_phase_out.in_effect: true
+    gov.contrib.salt_phase_out.rate[1].threshold: 100_000
+    gov.contrib.salt_phase_out.rate[1].rate: 0.1
+    people: 
+      person1:
+        real_estate_taxes: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 100_000
+  output:
+    salt_deduction: 10_000
+
+- name: Single filer with income above reduction amount
+  period: 2024
+  reforms: policyengine_us.reforms.salt_phase_out.salt_phase_out_reform.salt_phase_out_reform
+  input:
+    gov.contrib.salt_phase_out.in_effect: true
+    gov.contrib.salt_phase_out.rate[1].threshold: 100_000
+    gov.contrib.salt_phase_out.rate[1].rate: 0.1
+    people: 
+      person1:
+        real_estate_taxes: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 120_000
+  output:
+    salt_deduction: 8_000
+
+- name: Fully phased out
+  period: 2024
+  reforms: policyengine_us.reforms.salt_phase_out.salt_phase_out_reform.salt_phase_out_reform
+  input:
+    gov.contrib.salt_phase_out.in_effect: true
+    gov.contrib.salt_phase_out.rate[1].threshold: 100_000
+    gov.contrib.salt_phase_out.rate[1].rate: 1
+    people: 
+      person1:
+        real_estate_taxes: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 500_000
+  output:
+    salt_deduction: 0
