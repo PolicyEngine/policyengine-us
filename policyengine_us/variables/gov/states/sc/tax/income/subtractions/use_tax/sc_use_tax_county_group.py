@@ -2,10 +2,10 @@ from policyengine_us.model_api import *
 
 
 class ScUseTaxCountyGroup(Enum):
-    GROUP1 = "one"
-    GROUP2 = "two"
-    GROUP3 = "three"
-    GROUP4 = "default"
+    GROUP1 = "Group one"
+    GROUP2 = "Group two"
+    GROUP3 = "Group three"
+    GROUP4 = "Group four"
 
 
 class sc_use_tax_county_group(Variable):
@@ -14,7 +14,7 @@ class sc_use_tax_county_group(Variable):
     possible_values = ScUseTaxCountyGroup
     default_value = ScUseTaxCountyGroup.GROUP4
     definition_period = YEAR
-    label = "SC use tax county group"
+    label = "South Carolina use tax county group"
 
     def formula(household, period, parameters):
 
