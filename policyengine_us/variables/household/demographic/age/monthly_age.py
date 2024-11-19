@@ -8,5 +8,7 @@ class monthly_age(Variable):
     definition_period = MONTH
 
     def formula(person, period, parameters):
+        # We divide annual variables by 12 when bringing them down to a month.
+        # This reverses that to preserve the true age.
         yearly_age = person("age", period)
         return yearly_age * MONTHS_IN_YEAR
