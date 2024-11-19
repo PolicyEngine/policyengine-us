@@ -20,10 +20,16 @@ def create_salt_phase_out() -> Reform:
             p = parameters(
                 period
             ).gov.irs.deductions.itemized.salt_and_real_estate
-            cap = p.cap[tax_unit("filing_status", period)]
+            filing_status = tax_unit("filing_status", period)
+            cap = p.cap[filing_status]
             p_ref = parameters(period).gov.contrib.salt_phase_out
             income = tax_unit("adjusted_gross_income", period)
-            phase_out = p_ref.rate.calc(income)
+            joint = filing_status == filing_status.possible_values.JOINT
+            phase_out = where(
+                joint,
+                p_ref.rate.joint.calc(income),
+                p_ref.rate.other.calc(income),
+            )
             capped_salt = min_(cap, salt_amount)
             return max_(0, capped_salt - phase_out)
 
