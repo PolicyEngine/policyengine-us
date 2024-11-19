@@ -4,6 +4,7 @@
     in_la: true
     is_in_foster_care: true
     is_pregnant: true
+    age: 20
   output:
     ca_la_infant_supplement_eligible_person: true
 
@@ -12,9 +13,10 @@
   input:
     in_la: true
     is_in_foster_care: true
-    is_pregnant: False
+    is_pregnant: false
+    age: 20
   output:
-    ca_la_infant_supplement_eligible_person: False
+    ca_la_infant_supplement_eligible_person: false
 
 - name: Not in LA
   period: 2023
@@ -22,14 +24,26 @@
     in_la: False
     is_in_foster_care: true
     is_pregnant: true
+    age: 20
   output:
-    ca_la_infant_supplement_eligible_person: False
+    ca_la_infant_supplement_eligible_person: false
 
 - name: Not in foster care
   period: 2024
   input:
     in_la: true
-    is_in_foster_care: False
+    is_in_foster_care: false
     is_pregnant: true
+    age: 20
   output:
-    ca_la_infant_supplement_eligible_person: False
+    ca_la_infant_supplement_eligible_person: false
+
+- name: Age ineligible
+  period: 2024
+  input:
+    in_la: true
+    is_in_foster_care: true
+    is_pregnant: true
+    age: 21
+  output:
+    ca_la_infant_supplement_eligible_person: false

@@ -15,4 +15,9 @@ class ca_la_expectant_parent_payment_eligible(Variable):
         eligible_based_on_pregnancy_month = (
             p.pregnancy_month.min <= pregnancy_month <= p.pregnancy_month.max
         )
-        return foster_care & eligible_based_on_pregnancy_month
+        age = person("age", period) * 12
+        age_threshold = parameters(period).gov.local.ca.la.dss.age_threshold
+        minor_dependent = age < age_threshold
+        return (
+            foster_care & eligible_based_on_pregnancy_month & minor_dependent
+        )
