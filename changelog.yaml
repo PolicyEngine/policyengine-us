@@ -8693,3 +8693,35 @@
     fixed:
     - Los Angeles Infant Supplement and Expectant Parent Payment age threshold.
   date: 2024-11-19 16:41:43
+- bump: patch
+  changes:
+    added:
+    - New test to cliff_evaluated to demonstrate differences between adults and children
+      in given household.
+    changed:
+    - Changed formula for cliff_evaluated to use new marginal tax rate adults parameter.
+    - Updated cliff_gap test to use new marginal tax rate adults parameter.
+    removed:
+    - Unused cliff impact parameters.
+  date: 2024-11-19 21:32:57
+- bump: minor
+  changes:
+    added:
+    - SALT phase-out reform separate rate for joint filers.
+  date: 2024-11-19 23:38:18
+- bump: minor
+  changes:
+    added:
+    - CTC supplement for oldest child reform.
+    - Child index variable.
+  date: 2024-11-21 02:32:20
+- bump: minor
+  changes:
+    added:
+    - Delaware 2022 relief rebate.
+  date: 2024-11-21 03:30:46
+- bump: minor
+  changes:
+    added:
+    - Reform to repeal state dependent exemptions.
+  date: 2024-11-21 03:44:18
