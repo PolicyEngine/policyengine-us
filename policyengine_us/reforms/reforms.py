@@ -56,6 +56,9 @@ from .tax_exempt.tax_exempt_reform import (
 from .salt_phase_out.salt_phase_out_reform import (
     create_salt_phase_out_reform,
 )
+from .ctc import (
+    create_ctc_older_child_supplement_reform,
+)
 
 
 from policyengine_core.reforms import Reform
@@ -130,6 +133,9 @@ def create_structural_reforms_from_parameters(parameters, period):
     )
     tip_income_tax_exempt = create_tax_exempt_reform(parameters, period)
     salt_phase_out = create_salt_phase_out_reform(parameters, period)
+    ctc_older_child_supplement = create_ctc_older_child_supplement_reform(
+        parameters, period
+    )
 
     reforms = [
         afa_reform,
@@ -158,6 +164,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         harris_capital_gains,
         tip_income_tax_exempt,
         salt_phase_out,
+        ctc_older_child_supplement,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
 
