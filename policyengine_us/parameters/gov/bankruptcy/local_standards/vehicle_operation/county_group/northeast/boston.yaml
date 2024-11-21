@@ -1,0 +1,18 @@
+description: The following counties belongs to Boston area by Metropolitan Statistical Area definitions.
+
+metadata:
+  unit: list
+  period: year
+  label: Boston area counties by MSA definitions 
+  reference:
+    - title: Local standards -- Transportation
+      href: https://www.irs.gov/businesses/small-businesses-self-employed/local-standards-transportation
+values:
+  2024-01-01: 
+    - ESSEXE_COUNTY_MA
+    - MIDDLESEX_COUNTY_MA
+    - NORFOLK_COUNTY_MA
+    - PLYMOUTH_COUNTY_MA
+    - SUFFOLK_COUNTY_MA
+    - ROCKINGHAM_COUNTY_NH
+    - STRAFFORD_COUNTY_NH

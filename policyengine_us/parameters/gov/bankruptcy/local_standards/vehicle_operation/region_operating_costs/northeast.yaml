@@ -1,0 +1,34 @@
+description: The Chapter 7 bankruptcy means test limits the expense of operating costs by the local standards to this amount, based on region and the number of owned vehicle.
+
+values:
+NORTHEAST:
+  1:
+    2024-01-01: 285
+  2:
+    2024-01-01: 570
+BOSTON:
+  1: 
+    2024-01-01: 310
+  2:
+    2024-01-01: 620
+NEW_YORK:
+  1:
+    2024-01-01: 377
+  2:
+    2024-01-01: 754
+PHILADELPHIA:
+  1: 
+    2024-01-01: 307
+  2:
+    2024-01-01: 614
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Local standards of operating costs amount
+  breakdown:
+  - northeast_county
+  - list(range(1,3))
+  reference:
+    - title: Local standards -- Transportation
+      href: https://www.irs.gov/businesses/small-businesses-self-employed/local-standards-transportation
