@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.149.0] - 2024-11-21 03:30:46
+
+### Added
+
+- Delaware 2022 relief rebate.
+
 ## [1.148.0] - 2024-11-21 02:32:20
 
 ### Added
@@ -10279,6 +10285,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.149.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.148.0...1.149.0
 [1.148.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.147.0...1.148.0
 [1.147.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.146.2...1.147.0
 [1.146.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.146.1...1.146.2
