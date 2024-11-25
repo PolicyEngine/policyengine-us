@@ -8,6 +8,11 @@ class total_deductions(Variable):
     unit = USD
     definition_period = YEAR
 
-    adds = ["national_standards_deductions","local_standards_deductions",
-            "other_necessary_expenses_deductions","additional_expense_deductions",
-            "debt_payment_deductions","additional_expense_deductions"]
+    adds = [
+        "national_standards_deductions",
+        "local_standards_deductions",
+        "other_necessary_expenses_deductions",
+        "additional_expense_deductions",
+        "debt_payment_deductions",
+        "additional_expense_deductions",
+    ]

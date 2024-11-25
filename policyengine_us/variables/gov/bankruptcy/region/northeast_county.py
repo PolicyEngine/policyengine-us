@@ -12,14 +12,12 @@ class northeast_county(Variable):
     value_type = Enum
     entity = Household
     possible_values = NorthEastCounty
-    default_value = NorthEastCounty.NORTHEAST
+    default_value = NorthEastCounty.NORTHEAST_DEFAULT
     definition_period = YEAR
-    defined_for ="is_northeast_region"
-    label = "South Carolina use tax county group"
-    
+    defined_for = "is_northeast_region"
+    label = "Northeast region state group"
 
     def formula(household, period, parameters):
-
         county = household("county_str", period)
 
         boston_counties = parameters(
