@@ -12,7 +12,7 @@ class additonal_expenses_deductions(Variable):
     def formula(spm_unit, period, parameters):
         health_insurance_expense = add(spm_unit, period,["health_insurance_premiums"])
         health_savings_account_expense = add(spm_unit, period,["health_savings_account_payroll_contributions"])
-        # disability_insurance ??
+        
         care_expense = add(spm_unit, period, ["care_expeses"])
         home_energy_costs = spm_unit.household("current_home_energy_use", period)
         education_expense = add(spm_unit, period, ["k12_tuition_and_fees"]) ## no more than $189.58 

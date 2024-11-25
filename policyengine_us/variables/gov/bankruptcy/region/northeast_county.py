@@ -5,7 +5,7 @@ class NorthEastCounty(Enum):
     BOSTON = "Boston"
     NEW_YORK = "New York"
     PHILADELPHIA = "Philadelphia"
-    NORTHEAST = "Northeast"
+    NORTHEAST_DEFAULT = "Northeast default"
 
 
 class northeast_county(Variable):
@@ -14,6 +14,7 @@ class northeast_county(Variable):
     possible_values = NorthEastCounty
     default_value = NorthEastCounty.NORTHEAST
     definition_period = YEAR
+    defined_for ="is_northeast_region"
     label = "South Carolina use tax county group"
     
 
@@ -44,5 +45,5 @@ class northeast_county(Variable):
                 NorthEastCounty.NEW_YORK,
                 NorthEastCounty.PHILADELPHIA,
             ],
-            default=NorthEastCounty.NORTHEAST,
+            default=NorthEastCounty.NORTHEAST_DEFAULT,
         )

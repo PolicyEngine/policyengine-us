@@ -1,5 +1,4 @@
 description: The Chapter 7 bankruptcy means test limits the expense of insurance and operating by the local standards to this amount, based on household size.
-# The excle sheets have the values for all counties, the follwoing values are the average value based on state level. 
 values:
 AL:
   1:
@@ -141,5 +140,6 @@ metadata:
   - state_code
   - list(range(1,6))
   reference:
+  # We use average state level values while the amount can vary based on county
     - title: Local standards -- Housing and Utilities and Transportation
       href: https://www.justice.gov/ust/means-testing/20221101
