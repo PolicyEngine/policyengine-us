@@ -89,3 +89,25 @@
   output:
     # Output from the LA taxtables
     la_income_tax_before_non_refundable_credits: 148
+
+- name: In 2025, a flat tax rate applies - surviving spouse
+  period: 2025
+  input:
+    la_taxable_income: 120_000
+    state_code: LA
+    filing_status: SURVIVING_SPOUSE
+    la_exemptions: 0
+  output:
+    # Output from the LA taxtables
+    la_income_tax_before_non_refundable_credits: 3_600
+
+- name: In 2025, a flat tax rate applies - joint
+  period: 2025
+  input:
+    la_taxable_income: 120_000
+    state_code: LA
+    filing_status: JOINT
+    la_exemptions: 0
+  output:
+    # Output from the LA taxtables
+    la_income_tax_before_non_refundable_credits: 3_600

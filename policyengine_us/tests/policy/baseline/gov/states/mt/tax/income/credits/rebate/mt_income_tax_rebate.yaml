@@ -1,0 +1,23 @@
+- name: Single filer
+  period: 2023
+  input:
+    filing_status: SINGLE
+    state_code: MT
+  output:
+    mt_income_tax_rebate: 1_250
+
+- name: Joint filers
+  period: 2023
+  input:
+    filing_status: JOINT
+    state_code: MT
+  output:
+    mt_income_tax_rebate: 2_500
+
+- name: Not in Montana
+  period: 2023
+  input:
+    filing_status: JOINT
+    state_code: AR
+  output:
+    mt_income_tax_rebate: 0
