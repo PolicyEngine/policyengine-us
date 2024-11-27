@@ -1,21 +1,3 @@
-- name: Two people, one with income, one with none
-  period: 2024
-  reforms: policyengine_us.reforms.second_earner.second_earner_tax_reform.second_earner_tax_reform
-  input:
-    gov.contrib.second_earner_reform.in_effect: true
-    people: 
-      person1:
-        adjusted_gross_income_person: 20_000
-      person2:
-        adjusted_gross_income_person: 0
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
-        exemptions: 1_000
-        taxable_income_deductions: 500
-  output:
-    taxable_income_person: [19_250, 0]
-
 - name: Two people, both with income in the first bracket
   period: 2023
   reforms: policyengine_us.reforms.second_earner.second_earner_tax_reform.second_earner_tax_reform
@@ -198,5 +180,98 @@
     taxable_income: 62_300
     exemptions: 0
     taxable_income_deductions: 27_700
-    taxable_income_person: [36_150, 26_150, 0]
-    income_tax_main_rates: 6_816
+    taxable_income_deductions_person: [27_700, 13_850, 0]
+    taxable_income_person: [22_300, 26_150, 0]
+    income_tax_main_rates: 5_154
+
+
+- name: Two people both without income
+  period: 2024
+  reforms: policyengine_us.reforms.second_earner.second_earner_tax_reform.second_earner_tax_reform
+  input:
+    gov.contrib.second_earner_reform.in_effect: true
+    people: 
+      person1:
+        age: 40
+      person2:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+  output:
+    basic_standard_deduction_person: [29_200, 14_600]
+
+- name: Taxable income deductions - standard deduction case
+  period: 2024
+  reforms: policyengine_us.reforms.second_earner.second_earner_tax_reform.second_earner_tax_reform
+  input:
+    gov.contrib.second_earner_reform.in_effect: true
+    people: 
+      person1:
+        age: 40
+        earned_income: 50_000
+      person2:
+        age: 40
+        earned_income: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        tax_unit_itemizes: false
+  output:
+    taxable_income_deductions_person: [29_200, 14_600]
+
+- name: Taxable income deductions - itemizing case
+  period: 2024
+  reforms: policyengine_us.reforms.second_earner.second_earner_tax_reform.second_earner_tax_reform
+  input:
+    gov.contrib.second_earner_reform.in_effect: true
+    people: 
+      person1:
+        age: 40
+        earned_income: 50_000
+      person2:
+        age: 40
+        earned_income: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        tax_unit_itemizes: true
+        taxable_income_deductions_if_itemizing: 40_000
+  output:
+    taxable_income_deductions_person: [20_000, 20_000]
+
+- name: Integration test - joint household with one dependent
+  period: 2024
+  reforms: policyengine_us.reforms.second_earner.second_earner_tax_reform.second_earner_tax_reform
+  input:
+    gov.contrib.second_earner_reform.in_effect: true
+    people: 
+      person1:  # Head
+        age: 40
+        employment_income: 50_000
+      person2:  # Spouse
+        age: 40
+        employment_income: 30_000
+      person3:  # Dependent
+        age: 16
+        employment_income: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        filing_status: JOINT
+  output:
+    # Income variables
+    adjusted_gross_income: 80_000
+    adjusted_gross_income_person: [50_000, 30_000, 0]
+    taxable_income: 50_800  # AGI minus standard deduction
+    taxable_income_person: [20_800, 15_400, 0]  # Individual taxable incomes
+    # Deduction variables
+    basic_standard_deduction: 29_200
+    basic_standard_deduction_person: [29_200, 14_600, 0]  # Head gets joint, spouse gets single
+    taxable_income_deductions: 29_200
+    taxable_income_deductions_person: [29_200, 14_600, 0]
+    # Tax variables
+    income_tax_main_rates: 3_696
