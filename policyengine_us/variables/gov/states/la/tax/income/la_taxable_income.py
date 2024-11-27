@@ -10,13 +10,12 @@ class la_taxable_income(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        agi = tax_unit("la_agi", period)
-
         itemizes = tax_unit("tax_unit_itemizes", period)
         # Louisana does not provide a standard deduction
         itemized_deductions = tax_unit("la_itemized_deductions", period)
         claimed_itemized_deductions = itemizes * itemized_deductions
         fed_tax_deduction = tax_unit("la_federal_tax_deduction", period)
+        agi = tax_unit("la_agi", period)
         p = parameters(period).gov.states.la.tax.income.deductions.standard
         if p.applies:
             standard_deduction = tax_unit("la_standard_deductions", period)
