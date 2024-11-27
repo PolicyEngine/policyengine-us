@@ -22,8 +22,6 @@ def create_second_earner_tax() -> Reform:
 #TODO: Attribute dependent income to the head
 
 
-
-
     class income_tax_main_rates(Variable):
         value_type = float
         entity = TaxUnit
@@ -85,6 +83,7 @@ def create_second_earner_tax() -> Reform:
     class reform(Reform):
         def apply(self):
             self.update_variable(taxable_income_person)
+            self.update_variable(income_tax_main_rates)
 
     return reform
 
