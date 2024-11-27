@@ -15,12 +15,7 @@ def create_second_earner_tax() -> Reform:
             deductions = (
                 person.tax_unit("taxable_income_deductions", period) / 2
             )
-            is_tax_unit_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-            return max_(0, agi - exemptions - deductions) * is_tax_unit_head_or_spouse
-
-
-#TODO: Attribute dependent income to the head
-
+            return max_(0, agi - exemptions - deductions)
 
     class income_tax_main_rates(Variable):
         value_type = float
@@ -33,22 +28,46 @@ def create_second_earner_tax() -> Reform:
         def formula(tax_unit, period, parameters):
             person = tax_unit.members
             full_taxable_income = person("taxable_income_person", period)
-            cg_exclusion = tax_unit("capital_gains_excluded_from_taxable_income", period) / 2
+            is_tax_unit_head_or_spouse = person(
+                "is_tax_unit_head_or_spouse", period
+            )
+            cg_exclusion = (
+                tax_unit("capital_gains_excluded_from_taxable_income", period)
+                / 2
+            ) * is_tax_unit_head_or_spouse
             taxinc = max_(0, full_taxable_income - cg_exclusion)
             p = parameters(period).gov.irs.income
             bracket_tops = p.bracket.thresholds
             bracket_rates = p.bracket.rates
             filing_status = tax_unit("filing_status", period)
-            
+
             # Determine primary and secondary earner incomes based on income size
-            is_tax_unit_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+            is_tax_unit_head = person("is_tax_unit_head", period)
+            is_tax_unit_dependent = person("is_tax_unit_dependent", period)
+
+            # Add dependent income to head's income
+            dependent_income = (taxinc * is_tax_unit_dependent).sum()
             earner_taxinc = taxinc * is_tax_unit_head_or_spouse
-            max_income = max_(earner_taxinc)
-            is_primary_earner = (earner_taxinc == max_income) & (earner_taxinc > 0)
-            is_secondary_earner = is_tax_unit_head_or_spouse & ~is_primary_earner
-            
-            taxable_income_primary_earner = where(is_primary_earner, taxinc, 0).sum()
-            taxable_income_secondary_earner = where(is_secondary_earner, taxinc, 0).sum()
+            earner_taxinc = where(
+                is_tax_unit_head,
+                earner_taxinc + dependent_income,
+                earner_taxinc,
+            )
+
+            max_income = tax_unit.max(earner_taxinc)
+            is_primary_earner = (earner_taxinc == max_income) & (
+                earner_taxinc > 0
+            )
+            is_secondary_earner = (
+                is_tax_unit_head_or_spouse & ~is_primary_earner
+            )
+
+            taxable_income_primary_earner = where(
+                is_primary_earner, earner_taxinc, 0
+            ).sum()
+            taxable_income_secondary_earner = where(
+                is_secondary_earner, earner_taxinc, 0
+            ).sum()
 
             # Calculate primary earner tax using actual filing status
             primary_earner_tax = 0
@@ -64,21 +83,18 @@ def create_second_earner_tax() -> Reform:
             # Calculate secondary earner tax using single filing status
             secondary_earner_tax = 0
             bracket_bottom = 0
-            filing_statuses = filing_status.possible_values
-            single_status = filing_statuses.SINGLE
+            single_status = "SINGLE"
             for i in range(1, len(list(bracket_rates.__iter__())) + 1):
                 b = str(i)
                 bracket_top = bracket_tops[b][single_status]
                 secondary_earner_tax += bracket_rates[b] * amount_between(
-                    taxable_income_secondary_earner, bracket_bottom, bracket_top
+                    taxable_income_secondary_earner,
+                    bracket_bottom,
+                    bracket_top,
                 )
                 bracket_bottom = bracket_top
 
             return primary_earner_tax + secondary_earner_tax
-
-
-
-
 
     class reform(Reform):
         def apply(self):

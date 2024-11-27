@@ -15,3 +15,188 @@
         taxable_income_deductions: 500
   output:
     taxable_income_person: [19_250, 0]
+
+- name: Two people, both with income in the first bracket
+  period: 2023
+  reforms: policyengine_us.reforms.second_earner.second_earner_tax_reform.second_earner_tax_reform
+  input:
+    gov.contrib.second_earner_reform.in_effect: true
+    people: 
+      person1:
+        is_tax_unit_head_or_spouse: true
+        taxable_income_person: 20_000
+      person2:
+        is_tax_unit_head_or_spouse: true
+        taxable_income_person: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        capital_gains_excluded_from_taxable_income: 0
+        filing_status: JOINT
+  output:
+    income_tax_main_rates: 2_100
+
+- name: Two people, spouse in second single bracket
+  period: 2023
+  reforms: policyengine_us.reforms.second_earner.second_earner_tax_reform.second_earner_tax_reform
+  input:
+    gov.contrib.second_earner_reform.in_effect: true
+    people: 
+      person1:
+        is_tax_unit_head_or_spouse: true
+        taxable_income_person: 20_000
+      person2:
+        is_tax_unit_head_or_spouse: true
+        taxable_income_person: 15_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        capital_gains_excluded_from_taxable_income: 0
+        filing_status: JOINT
+  output:
+    income_tax_main_rates: 3_580
+
+- name: Two people, spouse in second single bracket - reform not applied
+  period: 2023
+  input:
+    gov.contrib.second_earner_reform.in_effect: false
+    people: 
+      person1:
+        is_tax_unit_head_or_spouse: true
+      person2:
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        capital_gains_excluded_from_taxable_income: 0
+        filing_status: JOINT
+        taxable_income: 45_000
+  output:
+    income_tax_main_rates: 4_960
+
+
+- name: Spouse with higher income becomes primary earner
+  period: 2023
+  reforms: policyengine_us.reforms.second_earner.second_earner_tax_reform.second_earner_tax_reform
+  input:
+    gov.contrib.second_earner_reform.in_effect: true
+    people: 
+      person1:
+        is_tax_unit_head_or_spouse: true
+        taxable_income_person: 20_000
+      person2:
+        is_tax_unit_head_or_spouse: true
+        taxable_income_person: 40_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        capital_gains_excluded_from_taxable_income: 0
+        filing_status: JOINT
+  output:
+    income_tax_main_rates: 6_540
+
+- name: One person with one dependent taxes as head of household
+  period: 2023
+  reforms: policyengine_us.reforms.second_earner.second_earner_tax_reform.second_earner_tax_reform
+  input:
+    gov.contrib.second_earner_reform.in_effect: true
+    people: 
+      person1:
+        taxable_income_person: 40_000
+      person2:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        capital_gains_excluded_from_taxable_income: 0
+  output:
+    income_tax_main_rates: 4_486
+
+- name: One person alone is taxed as single
+  period: 2023
+  reforms: policyengine_us.reforms.second_earner.second_earner_tax_reform.second_earner_tax_reform
+  input:
+    gov.contrib.second_earner_reform.in_effect: true
+    people: 
+      person1:
+        taxable_income_person: 15_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        capital_gains_excluded_from_taxable_income: 0
+  output:
+    income_tax_main_rates: 1_580
+
+- name: Joint couple with one dependent, cg exclusion included
+  period: 2023
+  reforms: policyengine_us.reforms.second_earner.second_earner_tax_reform.second_earner_tax_reform
+  input:
+    gov.contrib.second_earner_reform.in_effect: true
+    people: 
+      person1:
+        age: 40
+        taxable_income_person: 30_000
+      person2:
+        age: 40
+        taxable_income_person: 15_000
+      person3:
+        age: 16
+        taxable_income_person: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        capital_gains_excluded_from_taxable_income: 2_000
+  output:
+    income_tax_main_rates: 4_620
+
+- name: Integration, joint household with one depedent, reform not applied
+  period: 2023
+  input:
+    gov.contrib.second_earner_reform.in_effect: false
+    people: 
+      person1:
+        age: 40
+        employment_income: 50_000
+      person2:
+        age: 40
+        employment_income: 40_000
+      person3:
+        age: 16
+        employment_income: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+  output:
+    adjusted_gross_income: 90_000
+    adjusted_gross_income_person: [50_000, 40_000, 0]
+    exemptions: 0
+    taxable_income_deductions: 27_700
+    taxable_income: 62_300
+    income_tax_main_rates: 7_036
+
+- name: Integration, joint household with one depedent, reform applied
+  period: 2023
+  reforms: policyengine_us.reforms.second_earner.second_earner_tax_reform.second_earner_tax_reform
+  input:
+    gov.contrib.second_earner_reform.in_effect: true
+    people: 
+      person1:
+        age: 40
+        employment_income: 50_000
+      person2:
+        age: 40
+        employment_income: 40_000
+      person3:
+        age: 16
+        employment_income: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+  output:
+    adjusted_gross_income: 90_000
+    adjusted_gross_income_person: [50_000, 40_000, 0]
+    taxable_income: 62_300
+    exemptions: 0
+    taxable_income_deductions: 27_700
+    taxable_income_person: [36_150, 26_150, 0]
+    income_tax_main_rates: 6_816
