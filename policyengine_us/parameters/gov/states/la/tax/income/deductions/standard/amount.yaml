@@ -1,0 +1,40 @@
+description: Louisiana provides the following standard deduction amount, based on filing status.
+metadata:
+  period: year
+  unit: currency-USD
+  label: Louisiana standard deduction amount
+  breakdown:
+    - filing_status
+  reference:
+    - title: Louisiana 2024 Third Extraordinary Session, House Bill 10, §294
+      href: https://legis.la.gov/legis/ViewDocument.aspx?d=1391418
+
+SINGLE:
+  values:
+    2025-01-01: 12_500
+  uprating:
+    parameter: gov.irs.uprating
+
+HEAD_OF_HOUSEHOLD:
+  values:
+    2025-01-01: 25_000
+  uprating:
+    parameter: gov.irs.uprating
+
+JOINT:
+  values:
+    2025-01-01: 25_000
+  uprating:
+    parameter: gov.irs.uprating
+
+SURVIVING_SPOUSE:
+  values:
+    2025-01-01: 25_000
+  uprating:
+    parameter: gov.irs.uprating
+
+SEPARATE:
+  values:
+    2025-01-01: 12_500
+  uprating:
+    parameter: gov.irs.uprating
