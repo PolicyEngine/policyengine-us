@@ -7,7 +7,7 @@ class dc_tanf_grant_standard(Variable):
     label = "DC TANF grant standard"
     unit = USD
     definition_period = YEAR
-    defined_for = "dc_tanf_eligible"
+    defined_for = StateCode.DC
 
     def formula(spm_unit, period, parameters):
         unit_size = spm_unit("spm_unit_size", period)
