@@ -69,6 +69,7 @@
       person2:
         is_tax_unit_head_or_spouse: true
         taxable_income_person: 40_000
+        is_primary_earner: true
     tax_units:
       tax_unit:
         members: [person1, person2]

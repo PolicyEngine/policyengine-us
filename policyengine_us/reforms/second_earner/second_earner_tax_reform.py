@@ -2,6 +2,39 @@ from policyengine_us.model_api import *
 
 
 def create_second_earner_tax() -> Reform:
+    
+    class is_primary_earner(Variable):
+        value_type = bool
+        entity = Person
+        label = "Whether this person is the primary earner in their tax unit"
+        definition_period = YEAR
+
+        def formula(person, period, parameters):
+            earned_income = person("earned_income", period)
+            is_tax_unit_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+            is_tax_unit_head = person("is_tax_unit_head", period)
+            is_tax_unit_dependent = person("is_tax_unit_dependent", period)
+
+            # Add dependent income to head's income
+            dependent_income = (earned_income * is_tax_unit_dependent).sum()
+            earner_income = earned_income * is_tax_unit_head_or_spouse
+            earner_income = where(
+                is_tax_unit_head,
+                earner_income + dependent_income,
+                earner_income,
+            )
+
+            max_income = person.tax_unit.max(earner_income)
+            return (earner_income == max_income) & (
+                (
+                    earner_income
+                    > person.tax_unit.max(
+                        where(~is_tax_unit_head, earner_income, 0)
+                    )
+                )
+                | is_tax_unit_head
+            )
+
     class taxable_income_person(Variable):
         value_type = float
         entity = Person
@@ -40,26 +73,18 @@ def create_second_earner_tax() -> Reform:
             filing_status = tax_unit("filing_status", period)
 
             # Determine primary and secondary earner incomes based on income size
-            is_tax_unit_head = person("is_tax_unit_head", period)
             is_tax_unit_dependent = person("is_tax_unit_dependent", period)
 
             # Add dependent income to head's income
             dependent_income = (taxinc * is_tax_unit_dependent).sum()
             earner_taxinc = taxinc * is_tax_unit_head_or_spouse
-            earner_taxinc = where(
-                is_tax_unit_head,
-                earner_taxinc + dependent_income,
-                earner_taxinc,
-            )
 
-            max_income = tax_unit.max(earner_taxinc)
-            is_primary_earner = earner_taxinc == max_income
-            is_secondary_earner = (
-                is_tax_unit_head_or_spouse & ~is_primary_earner
-            )
+            is_primary_earner = person("is_primary_earner", period)
+            is_secondary_earner = is_tax_unit_head_or_spouse & ~is_primary_earner
+
 
             taxable_income_primary_earner = where(
-                is_primary_earner, earner_taxinc, 0
+                is_primary_earner, earner_taxinc + dependent_income, 0
             ).sum()
             taxable_income_secondary_earner = where(
                 is_secondary_earner, earner_taxinc, 0
@@ -109,37 +134,12 @@ def create_second_earner_tax() -> Reform:
             dependent_elsewhere = person.tax_unit(
                 "head_is_dependent_elsewhere", period
             )
-
             # Determine primary and secondary earners
-            earned_income = person("earned_income", period)
             is_tax_unit_head_or_spouse = person(
                 "is_tax_unit_head_or_spouse", period
             )
-            is_tax_unit_head = person("is_tax_unit_head", period)
-            is_tax_unit_dependent = person("is_tax_unit_dependent", period)
-
-            # Add dependent income to head's income
-            dependent_income = (earned_income * is_tax_unit_dependent).sum()
-            earner_taxinc = earned_income * is_tax_unit_head_or_spouse
-            earner_taxinc = where(
-                is_tax_unit_head,
-                earner_taxinc + dependent_income,
-                earner_taxinc,
-            )
-
-            max_income = person.tax_unit.max(earner_taxinc)
-            is_primary_earner = (earner_taxinc == max_income) & (
-                (
-                    earner_taxinc
-                    > person.tax_unit.max(
-                        where(~is_tax_unit_head, earner_taxinc, 0)
-                    )
-                )
-                | is_tax_unit_head
-            )
-            is_secondary_earner = (
-                is_tax_unit_head_or_spouse & ~is_primary_earner
-            )
+            is_primary_earner = person("is_primary_earner", period)
+            is_secondary_earner = is_tax_unit_head_or_spouse & ~is_primary_earner
 
             # Calculate primary earner deduction using actual filing status
             primary_deduction = std.amount[filing_status]
@@ -221,6 +221,7 @@ def create_second_earner_tax() -> Reform:
             self.update_variable(basic_standard_deduction_person)
             self.update_variable(standard_deduction_person)
             self.update_variable(taxable_income_deductions_person)
+            self.update_variable(is_primary_earner)
 
     return reform
 
@@ -240,3 +241,7 @@ def create_second_earner_tax_reform(parameters, period, bypass: bool = False):
 second_earner_tax_reform = create_second_earner_tax_reform(
     None, None, bypass=True
 )
+
+
+
+#TODO: additional SD and bonus guaranteed deduction logic
