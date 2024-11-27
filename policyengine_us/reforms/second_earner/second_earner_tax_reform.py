@@ -180,6 +180,60 @@ def create_second_earner_tax() -> Reform:
                 ],
             )
 
+    class additional_standard_deduction_person(Variable):
+        value_type = float
+        entity = Person
+        label = "Additional standard deduction for each person"
+        unit = USD
+        definition_period = YEAR
+        reference = "https://www.law.cornell.edu/uscode/text/26/63#f"
+
+        def formula(person, period, parameters):
+            std = parameters(period).gov.irs.deductions.standard
+            filing_status = person.tax_unit("filing_status", period)
+            is_blind = person("is_blind", period).astype(int)
+            age_threshold = parameters(
+                period
+            ).gov.irs.deductions.standard.aged_or_blind.age_threshold
+            is_aged = (person("age", period) >= age_threshold).astype(int)
+            aged_blind = is_blind + is_aged
+            primary_earner = person("is_primary_earner", period)
+            amount = where(
+                primary_earner,
+                std.aged_or_blind.amount[filing_status],
+                std.aged_or_blind.amount["SINGLE"],
+            )
+            return aged_blind * amount
+
+    class bonus_guaranteed_deduction_person(Variable):
+        value_type = float
+        entity = Person
+        label = "Bonus guaranteed deduction"
+        unit = USD
+        definition_period = YEAR
+        reference = "https://waysandmeans.house.gov/malliotakis-steel-lead-legislation-to-provide-tax-relief-to-working-families/"
+
+        def formula(person, period, parameters):
+            filing_status = person.tax_unit("filing_status", period)
+            wftca = parameters(
+                period
+            ).gov.contrib.congress.wftca.bonus_guaranteed_deduction
+            primary_earner = person("is_primary_earner", period)
+            amount = where(
+                primary_earner,
+                wftca.amount[filing_status],
+                wftca.amount["SINGLE"],
+            )
+            agi = person("adjusted_gross_income_person", period)
+            threshold = where(
+                primary_earner,
+                wftca.phase_out.threshold[filing_status],
+                wftca.phase_out.threshold["SINGLE"],
+            )
+            income_in_phase_out_region = max_(agi - threshold, 0)
+            reduction = wftca.phase_out.rate * income_in_phase_out_region
+            return max_(amount - reduction, 0)
+
     class standard_deduction_person(Variable):
         value_type = float
         entity = Person
@@ -190,11 +244,11 @@ def create_second_earner_tax() -> Reform:
 
         def formula(person, period, parameters):
             basic_deduction = person("basic_standard_deduction_person", period)
-            additional_deduction = (
-                person.tax_unit("additional_standard_deduction", period) / 2
+            additional_deduction = person(
+                "additional_standard_deduction_person", period
             )
-            bonus_deduction = (
-                person.tax_unit("bonus_guaranteed_deduction", period) / 2
+            bonus_deduction = person(
+                "bonus_guaranteed_deduction_person", period
             )
             return basic_deduction + additional_deduction + bonus_deduction
 
@@ -724,6 +778,8 @@ def create_second_earner_tax() -> Reform:
             self.update_variable(alternative_minimum_tax)
             self.update_variable(amt_income_person)
             self.update_variable(amt_excluded_deductions_person)
+            self.update_variable(bonus_guaranteed_deduction_person)
+            self.update_variable(additional_standard_deduction_person)
 
     return reform
 
@@ -743,6 +799,3 @@ def create_second_earner_tax_reform(parameters, period, bypass: bool = False):
 second_earner_tax_reform = create_second_earner_tax_reform(
     None, None, bypass=True
 )
-
-
-# TODO: additional SD and bonus guaranteed deduction logic
