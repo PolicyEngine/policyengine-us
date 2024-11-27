@@ -2,7 +2,7 @@ from policyengine_us.model_api import *
 
 
 def create_second_earner_tax() -> Reform:
-    
+
     class is_primary_earner(Variable):
         value_type = bool
         entity = Person
@@ -11,7 +11,9 @@ def create_second_earner_tax() -> Reform:
 
         def formula(person, period, parameters):
             earned_income = person("earned_income", period)
-            is_tax_unit_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+            is_tax_unit_head_or_spouse = person(
+                "is_tax_unit_head_or_spouse", period
+            )
             is_tax_unit_head = person("is_tax_unit_head", period)
             is_tax_unit_dependent = person("is_tax_unit_dependent", period)
 
@@ -80,8 +82,9 @@ def create_second_earner_tax() -> Reform:
             earner_taxinc = taxinc * is_tax_unit_head_or_spouse
 
             is_primary_earner = person("is_primary_earner", period)
-            is_secondary_earner = is_tax_unit_head_or_spouse & ~is_primary_earner
-
+            is_secondary_earner = (
+                is_tax_unit_head_or_spouse & ~is_primary_earner
+            )
 
             taxable_income_primary_earner = where(
                 is_primary_earner, earner_taxinc + dependent_income, 0
@@ -139,7 +142,9 @@ def create_second_earner_tax() -> Reform:
                 "is_tax_unit_head_or_spouse", period
             )
             is_primary_earner = person("is_primary_earner", period)
-            is_secondary_earner = is_tax_unit_head_or_spouse & ~is_primary_earner
+            is_secondary_earner = (
+                is_tax_unit_head_or_spouse & ~is_primary_earner
+            )
 
             # Calculate primary earner deduction using actual filing status
             primary_deduction = std.amount[filing_status]
@@ -214,6 +219,189 @@ def create_second_earner_tax() -> Reform:
                 itemizes, deductions_if_itemizing, standard_deduction + qbid
             )
 
+    class net_capital_gain_person(Variable):
+        value_type = float
+        entity = Person
+        label = "Net capital gain"
+        unit = USD
+        documentation = (
+            "The excess of net long-term capital gain over net short-term capital"
+            'loss, plus qualified dividends (the definition of "net capital gain"'
+            "which applies to 26 U.S.C. § 1(h) from § 1(h)(11))."
+        )
+        definition_period = YEAR
+        reference = dict(
+            title="26 U.S. Code § 1222(11)",
+            href="https://www.law.cornell.edu/uscode/text/26/1222#11",
+        )
+
+        def formula(person, period, parameters):
+            lt_capital_gain = person("long_term_capital_gains", period)
+            st_capital_loss = -person("short_term_capital_gains", period)
+            net_cap_gain = max_(0, lt_capital_gain - st_capital_loss)
+            qual_div_income = person("qualified_dividend_income", period)
+            return net_cap_gain + qual_div_income
+
+    class adjusted_net_capital_gain_person(Variable):
+        value_type = float
+        entity = Person
+        label = "Adjusted net capital gain"
+        unit = USD
+        documentation = "The excess of net long-term capital gain over net short-term capital loss."
+        definition_period = YEAR
+        reference = dict(
+            title="26 U.S. Code § 1(h)(3)",
+            href="https://www.law.cornell.edu/uscode/text/26/1#h_3",
+        )
+        defined_for = "is_tax_unit_head_or_spouse"
+
+        def formula(person, period, parameters):
+            net_capital_gain = person("net_capital_gain_person", period)
+            # The law actually uses the original definition of 'net capital gain' which does not include
+            # qualified dividend income, but separately adds qualified dividends here. The definition of
+            # 'net capital gain' in the variable 'net_capital_gain' actually has some very specific exclusion
+            # criteria for particular types of dividends and companies, so it's not an *exact* fit to the
+            # definition here, but it's a good enough approximation. See 26 U.S. Code § 1(h)(11)(B) for the
+            # definition of 'net capital gain' for the above variable, and 26 U.S. Code § 1(h)(3) for the definition
+            # of adjusted net capital gain (this variable).
+            qualified_dividend_income = person(
+                "qualified_dividend_income", period
+            )
+            unrecaptured_s_1250_gain = (
+                person.tax_unit("unrecaptured_section_1250_gain", period) / 2
+            )
+            cg_28_pct_rate_gain = (
+                person.tax_unit("capital_gains_28_percent_rate_gain", period)
+                / 2
+            )
+            net_gains_less_dividends = max_(
+                0,
+                net_capital_gain - qualified_dividend_income,
+            )
+            reduced_capital_gains = max_(
+                net_gains_less_dividends
+                - (unrecaptured_s_1250_gain + cg_28_pct_rate_gain),
+                0,
+            )
+            return reduced_capital_gains + qualified_dividend_income
+
+    class capital_gains_tax(Variable):
+        value_type = float
+        entity = TaxUnit
+        label = "Maximum income tax after capital gains tax"
+        unit = USD
+        definition_period = YEAR
+
+        def formula(tax_unit, period, parameters):
+            person = tax_unit.members
+            net_cg = person("net_capital_gain_person", period)
+            taxable_income = person("taxable_income_person", period)
+            adjusted_net_cg = min_(
+                person("adjusted_net_capital_gain_person", period),
+                taxable_income,
+            )  # ANCG is referred to in all cases as ANCG or taxable income if less.
+
+            cg = parameters(period).gov.irs.capital_gains
+
+            excluded_cg = tax_unit(
+                "capital_gains_excluded_from_taxable_income", period
+            )
+            non_cg_taxable_income = max_(0, taxable_income - excluded_cg)
+
+            filing_status = tax_unit("filing_status", period)
+            is_tax_unit_head_or_spouse = person(
+                "is_tax_unit_head_or_spouse", period
+            )
+            is_primary_earner = person("is_primary_earner", period)
+            is_secondary_earner = (
+                is_tax_unit_head_or_spouse & ~is_primary_earner
+            )
+            is_tax_unit_dependent = person("is_tax_unit_dependent", period)
+            # Split capital gains between primary and secondary earners
+            primary_cg = where(is_primary_earner, adjusted_net_cg, 0)
+            secondary_cg = where(is_secondary_earner, adjusted_net_cg, 0)
+            dependent_cg = where(
+                is_tax_unit_dependent, adjusted_net_cg, 0
+            ).sum()
+            primary_cg += dependent_cg  # Add dependent gains to primary earner
+
+            # Calculate primary earner capital gains tax (using filing status thresholds)
+            first_threshold_primary = cg.brackets.thresholds["1"][
+                filing_status
+            ]
+            second_threshold_primary = cg.brackets.thresholds["2"][
+                filing_status
+            ]
+
+            # Calculate secondary earner capital gains tax (using single thresholds)
+            first_threshold_secondary = cg.brackets.thresholds["1"]["SINGLE"]
+            second_threshold_secondary = cg.brackets.thresholds["2"]["SINGLE"]
+
+            # Calculate brackets for primary earner
+            primary_cg_in_first = clip(primary_cg, 0, first_threshold_primary)
+            primary_cg_in_second = clip(
+                primary_cg - first_threshold_primary,
+                0,
+                second_threshold_primary - first_threshold_primary,
+            )
+            primary_cg_in_third = max_(
+                0, primary_cg - second_threshold_primary
+            )
+
+            # Calculate brackets for secondary earner
+            secondary_cg_in_first = clip(
+                secondary_cg, 0, first_threshold_secondary
+            )
+            secondary_cg_in_second = clip(
+                secondary_cg - first_threshold_secondary,
+                0,
+                second_threshold_secondary - first_threshold_secondary,
+            )
+            secondary_cg_in_third = max_(
+                0, secondary_cg - second_threshold_secondary
+            )
+
+            # Calculate total capital gains tax
+            main_cg_tax = (
+                (primary_cg_in_first + secondary_cg_in_first)
+                * cg.brackets.rates["1"]
+                + (primary_cg_in_second + secondary_cg_in_second)
+                * cg.brackets.rates["2"]
+                + (primary_cg_in_third + secondary_cg_in_third)
+                * cg.brackets.rates["3"]
+            )
+
+            unrecaptured_s_1250_gain = (
+                tax_unit("unrecaptured_section_1250_gain", period) / 2
+            )
+            qualified_dividends = (
+                add(tax_unit, period, ["qualified_dividend_income"]) / 2
+            )
+            max_taxable_unrecaptured_gain = min_(
+                unrecaptured_s_1250_gain,
+                max_(0, net_cg - qualified_dividends),
+            )
+            unrecaptured_gain_deduction = max_(
+                non_cg_taxable_income + net_cg - taxable_income,
+                0,
+            )
+            taxable_unrecaptured_gain = max_(
+                max_taxable_unrecaptured_gain - unrecaptured_gain_deduction,
+                0,
+            )
+
+            unrecaptured_gain_tax = (
+                cg.unrecaptured_s_1250_rate * taxable_unrecaptured_gain
+            )
+
+            remaining_cg_tax = (
+                tax_unit("capital_gains_28_percent_rate_gain", period)
+                * cg.other_cg_rate
+            ) / 2
+            return tax_unit.sum(
+                main_cg_tax + unrecaptured_gain_tax + remaining_cg_tax
+            )
+
     class reform(Reform):
         def apply(self):
             self.update_variable(taxable_income_person)
@@ -222,6 +410,9 @@ def create_second_earner_tax() -> Reform:
             self.update_variable(standard_deduction_person)
             self.update_variable(taxable_income_deductions_person)
             self.update_variable(is_primary_earner)
+            self.update_variable(capital_gains_tax)
+            self.update_variable(net_capital_gain_person)
+            self.update_variable(adjusted_net_capital_gain_person)
 
     return reform
 
@@ -243,5 +434,4 @@ second_earner_tax_reform = create_second_earner_tax_reform(
 )
 
 
-
-#TODO: additional SD and bonus guaranteed deduction logic
+# TODO: additional SD and bonus guaranteed deduction logic

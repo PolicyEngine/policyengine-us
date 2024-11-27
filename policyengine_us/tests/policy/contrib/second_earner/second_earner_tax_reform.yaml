@@ -276,3 +276,27 @@
     taxable_income_deductions_person: [29_200, 14_600, 0]
     # Tax variables
     income_tax_main_rates: 3_696
+
+- name: Capital gains tax test, two people with CG taxes
+  period: 2024
+  reforms: policyengine_us.reforms.second_earner.second_earner_tax_reform.second_earner_tax_reform
+  input:
+    gov.contrib.second_earner_reform.in_effect: true
+    people: 
+      person1:
+        age: 40
+        adjusted_net_capital_gain_person: 150_000
+        taxable_income_person: 150_000
+        is_tax_unit_head_or_spouse: true
+        qualified_dividend_income: 11_000
+      person2:
+        age: 40
+        is_tax_unit_head_or_spouse: true
+        adjusted_net_capital_gain_person: 100_000
+        taxable_income_person: 100_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+  output:
+    capital_gains_tax: 16_338.75
