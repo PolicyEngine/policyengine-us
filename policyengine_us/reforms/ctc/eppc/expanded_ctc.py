@@ -149,16 +149,15 @@ def create_expanded_ctc() -> Reform:
             # Get tanf grant standards (maximum amounts)
             max_federal_tanf = tax_unit.spm_unit("tanf_max_amount", period)
             max_ny_tanf = tax_unit.spm_unit("ny_tanf_grant_standard", period)
+            tanf_dem_eligible = tax_unit.spm_unit(
+                "is_demographic_tanf_eligible", period
+            )
             max_dc_tanf = tax_unit.spm_unit("dc_tanf_grant_standard", period)
             max_co_tanf = tax_unit.spm_unit("co_tanf_grant_standard", period)
-            return (
-                snap_max_allotment
-                + school_meal_max_value
-                + max_co_tanf
-                + max_dc_tanf
-                + max_federal_tanf
-                + max_ny_tanf
-            )
+            max_tanf = (
+                max_co_tanf + max_dc_tanf + max_federal_tanf + max_ny_tanf
+            ) * tanf_dem_eligible
+            return snap_max_allotment + school_meal_max_value + max_tanf
 
     class reform(Reform):
         def apply(self):
