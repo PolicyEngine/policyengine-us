@@ -300,3 +300,23 @@
         filing_status: JOINT
   output:
     capital_gains_tax: 16_338.75
+
+- name: AMT test
+  period: 2024
+  reforms: policyengine_us.reforms.second_earner.second_earner_tax_reform.second_earner_tax_reform
+  input:
+    gov.contrib.second_earner_reform.in_effect: true
+    people: 
+      person1:
+        age: 40
+        amt_income_person: 150_000
+        is_primary_earner: true
+      person2:
+        age: 40
+        amt_income_person: 100_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+  output:
+    alternative_minimum_tax: 8_060
