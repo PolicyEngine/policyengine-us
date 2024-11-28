@@ -8666,3 +8666,83 @@
     - Populate va_agi_person and add the Virginia spouse tax adjustment to the net
       income tree.
   date: 2024-11-16 20:55:48
+- bump: minor
+  changes:
+    added:
+    - Montana 2023 income tax rule updates.
+  date: 2024-11-18 01:37:58
+- bump: minor
+  changes:
+    added:
+    - SALT deduction phase-out reform.
+  date: 2024-11-18 02:11:15
+- bump: minor
+  changes:
+    fixed:
+    - Cliff variables.
+  date: 2024-11-18 13:26:09
+- bump: minor
+  changes:
+    changed:
+    - US-Data to 1.13.
+  date: 2024-11-19 13:15:26
+- bump: patch
+  changes:
+    added:
+    - Monthly age variable.
+    fixed:
+    - Los Angeles Infant Supplement and Expectant Parent Payment age threshold.
+  date: 2024-11-19 16:41:43
+- bump: patch
+  changes:
+    added:
+    - New test to cliff_evaluated to demonstrate differences between adults and children
+      in given household.
+    changed:
+    - Changed formula for cliff_evaluated to use new marginal tax rate adults parameter.
+    - Updated cliff_gap test to use new marginal tax rate adults parameter.
+    removed:
+    - Unused cliff impact parameters.
+  date: 2024-11-19 21:32:57
+- bump: minor
+  changes:
+    added:
+    - SALT phase-out reform separate rate for joint filers.
+  date: 2024-11-19 23:38:18
+- bump: minor
+  changes:
+    added:
+    - CTC supplement for oldest child reform.
+    - Child index variable.
+  date: 2024-11-21 02:32:20
+- bump: minor
+  changes:
+    added:
+    - Delaware 2022 relief rebate.
+  date: 2024-11-21 03:30:46
+- bump: minor
+  changes:
+    added:
+    - Reform to repeal state dependent exemptions.
+  date: 2024-11-21 03:44:18
+- bump: patch
+  changes:
+    fixed:
+    - Montana 2023 / 2024 EITC match.
+  date: 2024-11-25 12:08:59
+- bump: minor
+  changes:
+    added:
+    - Apply the phase-in to the CTC when computing the New York empire state credit.
+  date: 2024-11-25 21:52:13
+- bump: minor
+  changes:
+    added:
+    - Montana 2023 income tax rebate.
+  date: 2024-11-25 22:04:48
+- bump: minor
+  changes:
+    added:
+    - Louisiana 2025 flat income tax rate.
+    - Louisiana 2025 retirement income exemption increase.
+  date: 2024-11-25 23:01:42
