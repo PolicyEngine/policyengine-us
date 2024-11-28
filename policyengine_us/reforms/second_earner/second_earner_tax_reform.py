@@ -46,7 +46,11 @@ def create_second_earner_tax() -> Reform:
 
         def formula(person, period, parameters):
             agi = person("adjusted_gross_income_person", period)
-            exemptions = person.tax_unit("exemptions", period) / 2
+            exemption_amount = person.tax_unit("exemptions", period)
+            is_joint = person.tax_unit("tax_unit_is_joint", period)
+            exemptions = where(
+                is_joint, exemption_amount / 2, exemption_amount
+            )
             deductions = person("taxable_income_deductions_person", period)
             return max_(0, agi - exemptions - deductions)
 
@@ -261,11 +265,14 @@ def create_second_earner_tax() -> Reform:
 
         def formula(person, period, parameters):
             itemizes = person.tax_unit("tax_unit_itemizes", period)
-            deductions_if_itemizing = (
-                person.tax_unit(
-                    "taxable_income_deductions_if_itemizing", period
-                )
-                / 2
+            is_joint = person.tax_unit("tax_unit_is_joint", period)
+            deductions_if_itemizing_amount = person.tax_unit(
+                "taxable_income_deductions_if_itemizing", period
+            )
+            deductions_if_itemizing = where(
+                is_joint,
+                deductions_if_itemizing_amount / 2,
+                deductions_if_itemizing_amount,
             )
             standard_deduction = person("standard_deduction_person", period)
             qbid = person("qualified_business_income_deduction_person", period)
@@ -321,12 +328,15 @@ def create_second_earner_tax() -> Reform:
             qualified_dividend_income = person(
                 "qualified_dividend_income", period
             )
+            is_joint = person.tax_unit("tax_unit_is_joint", period)
+            divisor = where(is_joint, 2, 1)
             unrecaptured_s_1250_gain = (
-                person.tax_unit("unrecaptured_section_1250_gain", period) / 2
+                person.tax_unit("unrecaptured_section_1250_gain", period)
+                / divisor
             )
             cg_28_pct_rate_gain = (
                 person.tax_unit("capital_gains_28_percent_rate_gain", period)
-                / 2
+                / divisor
             )
             net_gains_less_dividends = max_(
                 0,
@@ -424,12 +434,13 @@ def create_second_earner_tax() -> Reform:
                 + (primary_cg_in_third + secondary_cg_in_third)
                 * cg.brackets.rates["3"]
             )
-
+            is_joint = tax_unit("tax_unit_is_joint", period)
+            divisor = where(is_joint, 2, 1)
             unrecaptured_s_1250_gain = (
-                tax_unit("unrecaptured_section_1250_gain", period) / 2
+                tax_unit("unrecaptured_section_1250_gain", period) / divisor
             )
             qualified_dividends = (
-                add(tax_unit, period, ["qualified_dividend_income"]) / 2
+                add(tax_unit, period, ["qualified_dividend_income"]) / divisor
             )
             max_taxable_unrecaptured_gain = min_(
                 unrecaptured_s_1250_gain,
@@ -451,7 +462,7 @@ def create_second_earner_tax() -> Reform:
             remaining_cg_tax = (
                 tax_unit("capital_gains_28_percent_rate_gain", period)
                 * cg.other_cg_rate
-            ) / 2
+            ) / divisor
             return tax_unit.sum(
                 main_cg_tax + unrecaptured_gain_tax + remaining_cg_tax
             )
@@ -467,7 +478,11 @@ def create_second_earner_tax() -> Reform:
         def formula(person, period, parameters):
             itemizing = person.tax_unit("tax_unit_itemizes", period)
             standard_deduction = person("standard_deduction_person", period)
-            salt_deduction = person.tax_unit("salt_deduction", period) / 2
+            is_joint = person.tax_unit("tax_unit_is_joint", period)
+            divisor = where(is_joint, 2, 1)
+            salt_deduction = (
+                person.tax_unit("salt_deduction", period) / divisor
+            )
             return where(itemizing, salt_deduction, standard_deduction)
 
     class amt_income_person(Variable):
@@ -482,8 +497,10 @@ def create_second_earner_tax() -> Reform:
         def formula(person, period, parameters):
             taxable_income = person("taxable_income_person", period)
             deductions = person("amt_excluded_deductions_person", period)
+            is_joint = person.tax_unit("tax_unit_is_joint", period)
+            divisor = where(is_joint, 2, 1)
             separate_addition = (
-                person.tax_unit("amt_separate_addition", period) / 2
+                person.tax_unit("amt_separate_addition", period) / divisor
             )
             return taxable_income + deductions + separate_addition
 
@@ -742,13 +759,15 @@ def create_second_earner_tax() -> Reform:
             )
 
             # Form 6251, Part II bottom
-            line32 = tax_unit("foreign_tax_credit", period)
+            is_joint = tax_unit("tax_unit_is_joint", period)
+            divisor = where(is_joint, 2, 1)
+            line32 = tax_unit("foreign_tax_credit", period) / divisor
             line33 = line31 - line32
-            regular_tax_before_credits = tax_unit(
-                "regular_tax_before_credits", period
+            regular_tax_before_credits = (
+                tax_unit("regular_tax_before_credits", period) / divisor
             )
-            lump_sum_distributions = tax_unit(
-                "form_4972_lumpsum_distributions", period
+            lump_sum_distributions = (
+                tax_unit("form_4972_lumpsum_distributions", period) / divisor
             )
             capital_gains = tax_unit("capital_gains_tax", period)
             tax_before_credits = regular_tax_before_credits + capital_gains
