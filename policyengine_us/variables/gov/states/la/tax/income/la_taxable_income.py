@@ -18,7 +18,7 @@ class la_taxable_income(Variable):
         total_deductions = claimed_itemized_deductions + fed_tax_deduction
         p = parameters(period).gov.states.la.tax.income.deductions.standard
         if p.applies:
-            standard_deduction = tax_unit("la_standard_deductions", period)
+            standard_deduction = tax_unit("la_standard_deduction", period)
             total_deductions += standard_deduction
 
         return max_(agi - total_deductions, 0)
