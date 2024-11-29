@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class la_standard_deductions(Variable):
+class la_standard_deduction(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Louisiana standard deductions"
+    label = "Louisiana standard deduction"
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.LA
