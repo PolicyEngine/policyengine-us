@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.154.0] - 2024-11-30 18:08:00
+
+### Added
+
+- Louisiana 2025 standard deduction structure.
+
 ## [1.153.0] - 2024-11-25 23:01:42
 
 ### Added
@@ -10316,6 +10322,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.154.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.153.0...1.154.0
 [1.153.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.152.0...1.153.0
 [1.152.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.151.0...1.152.0
 [1.151.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.150.1...1.151.0
