@@ -320,3 +320,52 @@
         filing_status: JOINT
   output:
     alternative_minimum_tax: 8_060
+
+
+- name: Counterfactual integration test - single household with one dependent - reform not applied
+  period: 2024
+  input:
+    gov.contrib.second_earner_reform.in_effect: false
+    people: 
+      person1:
+        age: 40
+        employment_income: 150_000
+      person2:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    # Income variables
+    adjusted_gross_income: 150_000
+    taxable_income: 128_100  
+    # Deduction variables
+    basic_standard_deduction: 21_900
+    taxable_income_deductions: 21_900
+    # Tax variables
+    income_tax_main_rates: 22_093
+
+
+- name: Integration test - single household with one dependent - nothing should change
+  period: 2024
+  reforms: policyengine_us.reforms.second_earner.second_earner_tax_reform.second_earner_tax_reform
+  input:
+    gov.contrib.second_earner_reform.in_effect: true
+    people: 
+      person1:
+        age: 40
+        employment_income: 150_000
+      person2:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    # Income variables
+    adjusted_gross_income: 150_000
+    taxable_income: 128_100  
+    # Deduction variables
+    basic_standard_deduction: 21_900
+    taxable_income_deductions: 21_900
+    # Tax variables
+    income_tax_main_rates: 22_093
