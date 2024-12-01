@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.154.1] - 2024-12-01 16:39:30
+
+### Fixed
+
+- Arkansas 2023 low income tax table parameters.
+
 ## [1.154.0] - 2024-11-30 18:08:00
 
 ### Added
@@ -10322,6 +10328,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.154.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.154.0...1.154.1
 [1.154.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.153.0...1.154.0
 [1.153.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.152.0...1.153.0
 [1.152.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.151.0...1.152.0
