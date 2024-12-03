@@ -6,7 +6,7 @@ class or_liheap_income_threshold(Variable):
         label = "Income threshold for Oregon LIHEAP eligibility"
         unit = USD
         definition_period = YEAR
-        reference = "https://www.oregon.gov/ohcs/energy-weatherization/pages/utility-bill-payment-assistance.aspx"
+        reference = "https://liheapch.acf.hhs.gov/profiles/Oregon.htm"
         
         defined_for = StateCode.OR
         

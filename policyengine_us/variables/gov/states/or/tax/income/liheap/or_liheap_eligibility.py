@@ -5,8 +5,8 @@ class or_liheap_eligibility(Variable):
         entity = TaxUnit
         label = "Oregon LIHEAP eligibility"
         definition_period = YEAR
-        reference = "https://www.oregon.gov/ohcs/energy-weatherization/pages/utility-bill-payment-assistance.aspx"
-        defined_for = StateCode.OR
+        reference = "https://liheapch.acf.hhs.gov/profiles/Oregon.htm"
+        defined_for = StateCode.ORu
 
         def formula(tax_unit, period, parameters):
             income = tax_unit("adjusted_gross_income", period)  
