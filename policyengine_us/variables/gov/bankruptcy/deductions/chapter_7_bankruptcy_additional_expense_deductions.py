@@ -1,13 +1,12 @@
 from policyengine_us.model_api import *
 
 
-class additonal_expenses_deductions(Variable):
+class chapter_7_bankruptcy_additonal_expenses_deductions(Variable):
     value_type = bool
     entity = SPMUnit
     label = "Additional expenses deductions"
     definition_period = MONTH
     reference = "https://www.cacb.uscourts.gov/sites/cacb/files/documents/forms/122A2.pdf#page=6"
-    defined_for = StateCode.CA
 
     def formula(spm_unit, period, parameters):
         health_insurance_expense = add(

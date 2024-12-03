@@ -1,13 +1,12 @@
 from policyengine_us.model_api import *
 
 
-class other_necessary_expenses_deductions(Variable):
+class chapter_7_bankruptcy_other_necessary_expenses_deductions(Variable):
     value_type = bool
     entity = SPMUnit
     label = "Other necessary expenses deduction"
     definition_period = MONTH
     reference = "https://www.cacb.uscourts.gov/sites/cacb/files/documents/forms/122A2.pdf#page=5"
-    defined_for = StateCode.CA
 
     def formula(spm_unit, period, parameters):
         income_tax = add(spm_unit, period, ["income_tax"])

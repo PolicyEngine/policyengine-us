@@ -25,48 +25,20 @@ class west_county(Variable):
     def formula(household, period, parameters):
         county = household("county_str", period)
 
-        anchorage_counties = parameters(
+        p = parameters(
             period
-        ).gov.bankruptcy.local_standards.vehicle_operation.region_group.west.anchorage
-
-        denver_counties = parameters(
-            period
-        ).gov.bankruptcy.local_standards.vehicle_operation.region_group.west.denver
-
-        honolulu_counties = parameters(
-            period
-        ).gov.bankruptcy.local_standards.vehicle_operation.region_group.west.honolulu
-
-        los_angeles_counties = parameters(
-            period
-        ).gov.bankruptcy.local_standards.vehicle_operation.region_group.west.los_angeles
-
-        phoenix_counties = parameters(
-            period
-        ).gov.bankruptcy.local_standards.vehicle_operation.region_group.west.phoenix
-
-        san_diego_counties = parameters(
-            period
-        ).gov.bankruptcy.local_standards.vehicle_operation.region_group.west.san_diego
-
-        san_francisco_counties = parameters(
-            period
-        ).gov.bankruptcy.local_standards.vehicle_operation.region_group.west.san_francisco
-
-        seattle_counties = parameters(
-            period
-        ).gov.bankruptcy.local_standards.vehicle_operation.region_group.west.seattle
+        ).gov.bankruptcy.local_standards.vehicle_operation.region_groupp
 
         return select(
             [
-                np.isin(county, anchorage_counties),
-                np.isin(county, denver_counties),
-                np.isin(county, honolulu_counties),
-                np.isin(county, los_angeles_counties),
-                np.isin(county, phoenix_counties),
-                np.isin(county, san_diego_counties),
-                np.isin(county, san_francisco_counties),
-                np.isin(county, seattle_counties),
+                np.isin(county, p.west.anchorage),
+                np.isin(county, p.west.denver),
+                np.isin(county, p.west.honolulu),
+                np.isin(county, p.west.los_angeles),
+                np.isin(county, p.west.phoenix),
+                np.isin(county, p.west.san_diego),
+                np.isin(county, p.west.san_francisco),
+                np.isin(county, p.west.seattle),
             ],
             [
                 WestCounty.ANCHORAGE,

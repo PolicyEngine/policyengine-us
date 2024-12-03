@@ -24,43 +24,19 @@ class south_county(Variable):
     def formula(household, period, parameters):
         county = household("county_str", period)
 
-        atlanta_counties = parameters(
+        p = parameters(
             period
-        ).gov.bankruptcy.local_standards.vehicle_operation.region_group.south.atlanta
-
-        baltimore_counties = parameters(
-            period
-        ).gov.bankruptcy.local_standards.vehicle_operation.region_group.south.baltimore
-
-        dallas_ft_worth_counties = parameters(
-            period
-        ).gov.bankruptcy.local_standards.vehicle_operation.region_group.south.dallas_ft_worth
-
-        houston_counties = parameters(
-            period
-        ).gov.bankruptcy.local_standards.vehicle_operation.region_group.south.houston
-
-        miami_counties = parameters(
-            period
-        ).gov.bankruptcy.local_standards.vehicle_operation.region_group.south.miami
-
-        tampa_counties = parameters(
-            period
-        ).gov.bankruptcy.local_standards.vehicle_operation.region_group.south.tampa
-
-        washington_dc_counties = parameters(
-            period
-        ).gov.bankruptcy.local_standards.vehicle_operation.region_group.south.washington_dc
+        ).gov.bankruptcy.local_standards.vehicle_operation.region_group
 
         return select(
             [
-                np.isin(county, atlanta_counties),
-                np.isin(county, baltimore_counties),
-                np.isin(county, dallas_ft_worth_counties),
-                np.isin(county, houston_counties),
-                np.isin(county, miami_counties),
-                np.isin(county, tampa_counties),
-                np.isin(county, washington_dc_counties),
+                np.isin(county, p.south.atlanta),
+                np.isin(county, p.northeast.baltimore),
+                np.isin(county, p.northeast.dallas_ft_worth),
+                np.isin(county, p.northeast.houston),
+                np.isin(county, p.northeast.miami),
+                np.isin(county, p.northeast.tampa),
+                np.isin(county, p.northeast.washington_dc),
             ],
             [
                 SouthCounty.ATLANTA,

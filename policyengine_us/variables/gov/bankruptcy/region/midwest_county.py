@@ -22,33 +22,17 @@ class midwest_county(Variable):
     def formula(household, period, parameters):
         county = household("county_str", period)
 
-        chicago_counties = parameters(
+        p = parameters(
             period
-        ).gov.bankruptcy.local_standards.vehicle_operation.region_group.midwest.chicago
-
-        cleveland_counties = parameters(
-            period
-        ).gov.bankruptcy.local_standards.vehicle_operation.region_group.midwest.cleveland
-
-        detroit_counties = parameters(
-            period
-        ).gov.bankruptcy.local_standards.vehicle_operation.region_group.midwest.detroit
-
-        minneapolis_st_paul_counties = parameters(
-            period
-        ).gov.bankruptcy.local_standards.vehicle_operation.region_group.midwest.minneapolis_st_paul
-
-        st_louis_counties = parameters(
-            period
-        ).gov.bankruptcy.local_standards.vehicle_operation.region_group.midwest.st_louis
+        ).gov.bankruptcy.local_standards.vehicle_operation.region_group
 
         return select(
             [
-                np.isin(county, chicago_counties),
-                np.isin(county, cleveland_counties),
-                np.isin(county, detroit_counties),
-                np.isin(county, minneapolis_st_paul_counties),
-                np.isin(county, st_louis_counties),
+                np.isin(county, p.midwest.chicago),
+                np.isin(county, p.midwest.cleveland),
+                np.isin(county, p.midwest.detroit),
+                np.isin(county, p.midwest.minneapolis_st_paul),
+                np.isin(county, p.midwest.st_louis),
             ],
             [
                 MidWestCounty.CHICAGO,

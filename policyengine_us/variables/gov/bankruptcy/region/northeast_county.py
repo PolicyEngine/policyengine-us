@@ -20,23 +20,15 @@ class northeast_county(Variable):
     def formula(household, period, parameters):
         county = household("county_str", period)
 
-        boston_counties = parameters(
+        p = parameters(
             period
-        ).gov.bankruptcy.local_standards.vehicle_operation.region_group.northeast.boston
-
-        new_york_counties = parameters(
-            period
-        ).gov.bankruptcy.local_standards.vehicle_operation.region_group.northeast.new_york
-
-        philadelphia_counties = parameters(
-            period
-        ).gov.bankruptcy.local_standards.vehicle_operation.region_group.northeast.philadelphia
+        ).gov.bankruptcy.local_standards.vehicle_operation.region_group
 
         return select(
             [
-                np.isin(county, boston_counties),
-                np.isin(county, new_york_counties),
-                np.isin(county, philadelphia_counties),
+                np.isin(county, p.northeast.boston),
+                np.isin(county, p.northeast.new_york),
+                np.isin(county, p.northeast.philadelphia),
             ],
             [
                 NorthEastCounty.BOSTON,
