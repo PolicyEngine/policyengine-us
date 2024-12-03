@@ -1,0 +1,16 @@
+- name: Arizona one-time families tax rebate eligible 
+  period: 2023
+  input:
+    az_dependent_tax_credit: 2
+    state_code: AZ
+  output:
+    az_income_tax_rebates_eligibility: true
+
+
+- name: Arizona one-time families tax rebate ineligible (claimed 0 dependent tax credit)
+  period: 2023
+  input:
+    az_dependent_tax_credit: 0
+    state_code: AZ
+  output:
+    az_income_tax_rebates_eligibility: false 

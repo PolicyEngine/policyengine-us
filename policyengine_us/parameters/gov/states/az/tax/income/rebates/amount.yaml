@@ -1,0 +1,26 @@
+description: Arizona provides the following Family Tax Rebate for each eligible child, on their age.   
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Arizona one-time families tax rebate amount
+  type: single_amount
+  threshold_unit: year
+  amount_unit: currency-USD
+  reference:
+  - title: Arizona Families Tax Rebate
+    href: https://211arizona.org/wp-content/uploads/2023/11/Arizona-Families-Tax-Rebate.pdf#page=1
+  - title: Arizona SENATE BILL 1734, Section 3(A)
+    href: https://www.azleg.gov/legtext/56leg/1R/bills/SB1734S.pdf#page=3 
+  - title: ARIZONA STATE SENATE Fifty-Sixth Legislature, First Regular Session, General Welfare Income Tax Rebate, 2
+    href: https://www.azleg.gov/legtext/56leg/1R/summary/S.1734APPROP_ASPASSEDCOW.DOCX.htm
+# Use a scale parameter with two brackets: $250 for under 17, $150 for 17 and older.
+brackets:
+  - threshold:
+      2023-01-01: 0
+    amount:
+      2023-01-01: 250 
+  - threshold:
+      2023-01-01: 17
+    amount:
+      2023-01-01: 100
