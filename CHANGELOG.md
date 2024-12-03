@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.155.0] - 2024-12-03 20:23:24
+
+### Added
+
+- Add the Arizona charitable contributions credit to the net income tree.
+
 ## [1.154.2] - 2024-12-03 20:14:27
 
 ### Changed
@@ -10335,6 +10341,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.155.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.154.2...1.155.0
 [1.154.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.154.1...1.154.2
 [1.154.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.154.0...1.154.1
 [1.154.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.153.0...1.154.0
