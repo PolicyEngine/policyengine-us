@@ -15,5 +15,7 @@ class la_withheld_income_tax(Variable):
         # We apply the base IRS standard deduction amount
         standard_deduction = p_irs.amount["SINGLE"]
         reduced_agi = max_(agi - standard_deduction, 0)
-        p = parameters(period).gov.states.la.tax.income
-        return p.main.single.calc(reduced_agi)
+        p = parameters(period).gov.states.la.tax.income.main
+        if p.flat.applies:
+            return p.flat.rate * reduced_agi
+        return p.by_filing_status.single.calc(reduced_agi)
