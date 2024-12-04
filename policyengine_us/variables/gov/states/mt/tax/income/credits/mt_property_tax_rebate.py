@@ -14,4 +14,5 @@ class mt_property_tax_rebate(Variable):
         p = parameters(period).gov.states.mt.tax.income.credits.rebate.property
         person = tax_unit.members
         mt_property_tax = person("real_estate_taxes", period)
-        return min_(p.amount, mt_property_tax)
+        tax_unit_mt_property_tax = tax_unit.sum(mt_property_tax)
+        return min_(p.amount, tax_unit_mt_property_tax)
