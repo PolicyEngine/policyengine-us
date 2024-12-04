@@ -1,0 +1,45 @@
+description: Iowa levies income taxes at these rates for all joint filers post 2023.
+brackets:
+  - threshold:
+      2023-01-01: 0
+    rate:
+      2023-01-01: 0.044
+      2024-01-01: 0.04
+      2026-01-01: 0.039
+  - threshold:
+      2023-01-01: 12_000
+      2024-01-01: 12_420
+      2026-01-01: .inf
+    rate:
+      2023-01-01: 0.0482
+  - threshold:
+      2023-01-01: 60_000
+      2024-01-01: 62_100
+      2025-01-01: .inf
+    rate:
+      2023-01-01: 0.057
+  - threshold:
+      2023-01-01: 150_000 
+      2024-01-01: .inf
+    rate:
+      2023-01-01: 0.06
+  - threshold:
+      2023-01-01: .inf
+
+
+metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  threshold_period: year
+  label: Iowa joint filers income tax rates and brackets post 2023
+  reference:
+  # the legal code does not represent the newest legislative changes
+  - title: Iowa Senate File 2442
+    href: https://www.legis.iowa.gov/legislation/BillBook?ga=90&ba=SF%202442
+  - title: IDR Announces 2023 Interest Rates, Deductions, Income Tax Brackets
+    href: https://revenue.iowa.gov/taxes/tax-guidance/individual-income-tax/2023-changes-iowa-individual-income-tax
+  - title: 2023 IA 1041 Instructions
+    href: https://tax.iowa.gov/sites/default/files/2023-11/IA1041Inst%2863002%29.pdf#page=4
+  - title: IDR Announces 2024 Interest Rates, Deductions, Income Tax Brackets
+    href: https://revenue.iowa.gov/press-release/2023-10-25/idr-announces-2024-individual-income-tax-brackets-and-interest-rates

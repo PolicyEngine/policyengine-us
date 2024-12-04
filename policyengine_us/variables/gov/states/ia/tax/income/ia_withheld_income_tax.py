@@ -19,4 +19,6 @@ class ia_withheld_income_tax(Variable):
         else:
             standard_deduction = p.deductions.standard.amount["SINGLE"]
         reduced_agi = max_(agi - standard_deduction, 0)
-        return p.rates.all.calc(reduced_agi)
+        if p.rates.by_filing_status.active:
+            return p.rates.by_filing_status.other.calc(reduced_agi)
+        return p.rates.combined.calc(reduced_agi)

@@ -11,6 +11,8 @@ metadata:
       href: https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2022/12/Form-2-2022-Instructions.pdf#page=16
     - title: 2021 Montana income tax form 2 Instructions
       href: https://mtrevenue.gov/wp-content/uploads/mdocs/form%202%202021%20instructions.pdf#page=15
+    - title: 2023 Montana income tax form 2 Instructions
+      href: https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2023/12/Form_2_2023_Instructions.pdf#page=18
 # Before 2024 Montana has a consistent tax rate for each filing status
 # After 2024 the tax rate depends on the filing status
 brackets:
@@ -22,6 +24,7 @@ brackets:
   - threshold:
       2021-01-01: 3_100
       2022-01-01: 3_300
+      2023-01-01: 3_600
       2024-01-01: 20_500
     rate:
       2021-01-01: 0.02
@@ -29,6 +32,7 @@ brackets:
   - threshold:
       2021-01-01: 5_500
       2022-01-01: 5_800
+      2023-01-01: 6_300
       2024-01-01: .inf
     rate:
       2021-01-01: 0.03
@@ -36,6 +40,7 @@ brackets:
   - threshold:
       2021-01-01: 8_400
       2022-01-01: 8_900
+      2023-01-01: 9_700
       2024-01-01: .inf
     rate:
       2021-01-01: 0.04
@@ -43,6 +48,7 @@ brackets:
   - threshold:
       2021-01-01: 11_400
       2022-01-01: 12_000
+      2023-01-01: 13_000
       2024-01-01: .inf
     rate:
       2021-01-01: 0.05
@@ -50,6 +56,7 @@ brackets:
   - threshold:
       2021-01-01: 14_600
       2022-01-01: 15_400
+      2023-01-01: 16_800
       2024-01-01: .inf
     rate:
       2021-01-01: 0.06
@@ -57,6 +64,7 @@ brackets:
   - threshold:
       2021-01-01: 18_800
       2022-01-01: 19_800
+      2023-01-01: 21_600
       2024-01-01: .inf
     rate:
       2021-01-01: 0.069

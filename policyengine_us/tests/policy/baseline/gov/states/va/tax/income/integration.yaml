@@ -136,4 +136,32 @@
   output:  # expected results from patched TAXSIM35 2024-05-07 version
     va_reduced_itemized_deductions: 37_049.81
     va_itemized_deductions: 37_049.81
-    va_income_tax: 18433.05
+    va_income_tax: 18175.545
+
+- name: Joint couple with one child, 81k income each
+  absolute_error_margin: 2
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 38
+        employment_income: 81_000
+      person2:
+        age: 38
+        employment_income: 81_000
+      person3:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        va_rebate: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: VA
+  output:  
+    va_taxable_income: 143_210
+    va_income_tax_before_non_refundable_credits: 7_977
+    va_non_refundable_credits: 0
+    va_spouse_tax_adjustment: 257
+    va_income_tax: 7_718

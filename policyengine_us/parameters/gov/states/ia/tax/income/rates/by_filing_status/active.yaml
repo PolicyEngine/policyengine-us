@@ -1,0 +1,13 @@
+description: Iowa applies a new income tax rate structure if this is true.
+values:
+  2020-01-01: false
+  2023-01-01: true
+metadata:
+  unit: bool
+  period: year
+  label: Iowa post 2023 income tax structure applies
+  reference:
+    - title: Iowa Senate File 2442
+      href: https://www.legis.iowa.gov/legislation/BillBook?ga=90&ba=SF%202442
+    - title: IDR Announces 2023 Interest Rates, Deductions, Income Tax Brackets
+      href: https://revenue.iowa.gov/taxes/tax-guidance/individual-income-tax/2023-changes-iowa-individual-income-tax
