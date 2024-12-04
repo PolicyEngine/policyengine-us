@@ -62,3 +62,60 @@
     refundable_ctc: 1_425.00
     cdcc: 0.00
     income_tax: -5_235.45
+
+- name: Married filing jointly Texas couple with one child and modest wages - Integration
+  absolute_error_margin: 0.01
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 50_000
+      person2:
+        age: 30
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX  # no state income tax
+  output:
+    # expected output from IRS publication cited in PEUS EITC parameter files,
+    # which is at this URL:
+    # https://www.irs.gov/pub/irs-drop/rp-22-38.pdf#page=10
+    eitc_maximum: 3_995
+    eitc_phase_out_start: 28_120  
+
+- name: Married filing jointly Texas couple with one child and modest wages - Integration 2018
+  absolute_error_margin: 0.01
+  period: 2018
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 50_000
+      person2:
+        age: 30
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX  # no state income tax
+  output:
+    # expected output from IRS publication cited in PEUS EITC parameter files,
+    # which is at this URL:
+    # https://www.irs.gov/pub/irs-drop/rp-17-58.pdf#page=10
+    eitc_phase_out_start: 24_400 

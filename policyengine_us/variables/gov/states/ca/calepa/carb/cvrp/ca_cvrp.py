@@ -12,7 +12,6 @@ class ca_cvrp(Variable):
     )
     reference = "https://cleanvehiclerebate.org/en/eligibility-guidelines"
     defined_for = StateCode.CA
-    exhaustive_parameter_dependencies = "gov.states.ca.calepa.carb.cvrp"
 
     def formula(person, period, parameters):
         # Calculate normal rebate.

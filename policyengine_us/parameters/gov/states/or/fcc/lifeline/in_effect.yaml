@@ -1,0 +1,11 @@
+description: Oregon provides a separate maximum Lifeline benefit amount if this is true.
+values:
+  0000-01-01: false
+  2024-01-01: true
+metadata:
+  period: year
+  unit: bool
+  label: Oregon Lifeline maximum benefit in effect
+  reference:
+    - title: Oregon Lifeline Program Online Application Form
+      href: https://apps.puc.state.or.us/rspf/otapapp.asp

@@ -1,4 +1,4 @@
-description: Standard deduction for NY State tax.
+description: New York standard deduction for state tax.
 SINGLE:
   2021-01-01: 8_000
 JOINT:
@@ -14,7 +14,9 @@ metadata:
   period: year
   breakdown:
     - filing_status
-  label: NY standard deduction
+  label: New York standard deduction
   reference:
-    - title: NY Form IT-201 Instructions, page 19
-      href: https://www.tax.ny.gov/pdf/current_forms/it/it201i.pdf#page=19
+    - title: 2021 NY Form IT-201 Instructions Line 34
+      href: https://www.tax.ny.gov/pdf/2021/inc/it201i_2021.pdf#page=19
+    - title: 2023 NY Form IT-201 Instructions Line 34
+      href: https://www.tax.ny.gov/pdf/2023/printable-pdfs/inc/it201i-2023.pdf#page=14

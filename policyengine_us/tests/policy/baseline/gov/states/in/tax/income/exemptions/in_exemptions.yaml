@@ -1,0 +1,11 @@
+- name: Blind and aged couple with qualifying dependent children
+  period: 2021
+  input:
+    state_code: IN
+    in_base_exemptions: 4_000
+    in_additional_exemptions: 3_000
+    in_aged_blind_exemptions: 4_000
+    in_aged_low_agi_exemptions: 1_000
+    in_adoption_exemption: 500
+  output:
+    in_exemptions: 12_500

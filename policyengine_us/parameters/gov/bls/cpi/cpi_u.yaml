@@ -1337,16 +1337,16 @@ values:
   # Since CBO projects the relevant tax parameter,
   # which is the average over the 12mo ending August,
   # we place that in February of each year.
-  2024-02-01: 309.7 # 2025 value.
-  2025-02-01: 317.5 # 2026 value.
-  2026-02-01: 325.1 # 2027 value.
-  2027-02-01: 332.2 # 2028 value.
-  2028-02-01: 339.5 # 2029 value.
-  2029-02-01: 347.0 # 2030 value.
-  2030-02-01: 354.7 # 2031 value.
-  2031-02-01: 362.7 # 2032 value.
-  2032-02-01: 370.8 # 2033 value.
-  2033-02-01: 379.2 # 2034 value.
+  2024-02-01: 311.2 # 2025 value.
+  2025-02-01: 319.3 # 2026 value.
+  2026-02-01: 326.5 # 2027 value.
+  2027-02-01: 333.6 # 2028 value.
+  2028-02-01: 340.6 # 2029 value.
+  2029-02-01: 348.3 # 2030 value.
+  2030-02-01: 356.0 # 2031 value.
+  2031-02-01: 364.0 # 2032 value.
+  2032-02-01: 372.1 # 2033 value.
+  2033-02-01: 380.5 # 2034 value.
 metadata:
   unit: currency-USD
   label: CPI-U
@@ -1354,7 +1354,7 @@ metadata:
   reference:
     - title: BLS Data Viewer | Consumer Price Index for All Urban Consumers (CPI-U)
       href: https://beta.bls.gov/dataViewer/view/timeseries/CUUR0000SA0
-    - title: CBO | Tax Parameters and Effective Marginal Tax Rates | Feb 2024
+    - title: CBO | Tax Parameters and Effective Marginal Tax Rates | June 2024
       # Source: https://www.cbo.gov/data/budget-economic-data#10
-      # Row: 157
-      href: https://www.cbo.gov/system/files/2024-02/53724-2024-02-Tax-Parameters.xlsx
+      # Row: 158
+      href: https://www.cbo.gov/system/files/2024-06/51135-2024-06-Economic-Projections.xlsx

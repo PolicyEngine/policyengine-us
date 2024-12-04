@@ -1,4 +1,4 @@
-description: Real property taxes (or rent equivalent) over this percentage of household gross income are deemed 'excess' for the NY real property tax credit.
+description: New York deems real property taxes (or rent equivalent) over this percentage of household gross income as 'excess' for the real property tax credit.
 
 brackets:
   - threshold:
@@ -33,7 +33,11 @@ metadata:
   threshold_unit: currency-USD
   threshold_period: year
   amount_unit: /1
-  label: NY real property tax credit excess level
+  label: New York real property tax credit excess level
   reference:
     - title: Section 606 Credits against tax (e)
       href: https://www.nysenate.gov/legislation/laws/TAX/606
+    - title: New York Instructions for Form IT-201 Line 67
+      href: https://www.tax.ny.gov/pdf/2023/printable-pdfs/inc/it201i-2023.pdf#page=26
+    - title: New York Instructions for Form IT-214 Line 17
+      href: https://www.tax.ny.gov/pdf/current_forms/it/it214i.pdf#page=2

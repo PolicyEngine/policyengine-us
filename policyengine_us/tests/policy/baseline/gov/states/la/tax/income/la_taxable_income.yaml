@@ -41,3 +41,27 @@
     la_federal_tax_deduction: 400
   output:
     la_taxable_income: 2_600 
+
+- name: Tax unit does not itemize but takes federal tax deduction
+  period: 2020
+  input:
+    state_code: LA
+    la_agi: 3_000
+    tax_unit_itemizes: false
+    la_itemized_deductions: 1_000
+    la_federal_tax_deduction: 400
+    la_standard_deduction: 1_000
+  output:
+    la_taxable_income: 2_600 
+
+- name: In 2025 the standard deduction applies
+  period: 2025
+  input:
+    state_code: LA
+    la_agi: 3_000
+    tax_unit_itemizes: false
+    la_itemized_deductions: 1_000
+    la_federal_tax_deduction: 400
+    la_standard_deduction: 1_000
+  output:
+    la_taxable_income: 1_600 

@@ -6,11 +6,6 @@ metadata:
   unit: currency-USD
   breakdown:
   - filing_status
-  uprating:
-    parameter: gov.irs.uprating
-    rounding:
-      type: downwards
-      interval: 50
   reference:
   - title: Rhode Island 2021 RI-1040 Instructions
     href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2021-12/2021-1040r-instructions.pdf#page=8
@@ -24,22 +19,52 @@ metadata:
     href: http://webserver.rilin.state.ri.us/Statutes/title44/44-30/44-30-12.HTM 
 
 JOINT:
-  2021-01-01: 109_050
-  2022-01-01: 119_750
-  2023-01-01: 126_250
+  values:
+    2021-01-01: 109_050
+    2022-01-01: 119_750
+    2023-01-01: 126_250
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
 HEAD_OF_HOUSEHOLD:
-  2021-01-01: 87_200
-  2022-01-01: 95_800
-  2023-01-01: 101_000
+  values:
+    2021-01-01: 87_200
+    2022-01-01: 95_800
+    2023-01-01: 101_000
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
 SURVIVING_SPOUSE:
-  2021-01-01: 109_050
-  2022-01-01: 119_750
-  2023-01-01: 126_250
+  values:
+    2021-01-01: 109_050
+    2022-01-01: 119_750
+    2023-01-01: 126_250
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
 SINGLE:
-  2021-01-01: 87_200
-  2022-01-01: 95_800
-  2023-01-01: 101_000
+  values:
+    2021-01-01: 87_200
+    2022-01-01: 95_800
+    2023-01-01: 101_000
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
 SEPARATE:
-  2021-01-01: 87_200
-  2022-01-01: 95_800
-  2023-01-01: 101_025
+  values:
+    2021-01-01: 87_200
+    2022-01-01: 95_800
+    2023-01-01: 101_025
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50

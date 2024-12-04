@@ -1,0 +1,59 @@
+- name: Formula A
+  period: 2024
+  input:
+    pell_grant_head_contribution: 200
+    pell_grant_dependent_contribution: 100
+    pell_grant_formula: A
+    pell_grant_eligibility_type: MINIMUM
+  output:
+    pell_grant_sai: 300
+
+- name: Formula A, maximum eligible
+  period: 2024
+  input:
+    pell_grant_head_contribution: 200
+    pell_grant_dependent_contribution: 100
+    pell_grant_formula: A
+    pell_grant_eligibility_type: MAXIMUM
+  output:
+    pell_grant_sai: 0
+
+- name: Formula B
+  period: 2024
+  input:
+    pell_grant_head_contribution: 200
+    pell_grant_dependent_contribution: 0
+    pell_grant_formula: B
+    pell_grant_eligibility_type: MINIMUM
+  output:
+    pell_grant_sai: 200
+
+- name: Formula C
+  period: 2024
+  input:
+    pell_grant_head_contribution: 200
+    pell_grant_dependent_contribution: 100
+    pell_grant_formula: C
+    pell_grant_eligibility_type: MINIMUM
+  output:
+    pell_grant_sai: 200
+
+- name: Minimum student aid index
+  period: 2024
+  input:
+    pell_grant_head_contribution: 200
+    pell_grant_dependent_contribution: -5000
+    pell_grant_formula: A
+    pell_grant_eligibility_type: MAXIMUM
+  output:
+    pell_grant_sai: -1_500
+
+- name: Maximum student aid index
+  period: 2024
+  input:
+    pell_grant_head_contribution: 1_000_000
+    pell_grant_dependent_contribution: 500_000
+    pell_grant_formula: A
+    pell_grant_eligibility_type: MINIMUM
+  output:
+    pell_grant_sai: 999_999

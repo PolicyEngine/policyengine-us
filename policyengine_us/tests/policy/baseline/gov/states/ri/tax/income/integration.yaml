@@ -1,0 +1,21 @@
+- name: Joint filers with 81k of income each and one dependent
+  period: 2023
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 81_000
+      person2: 
+        age: 19
+        employment_income: 81_000
+      person3:
+        age: 8
+    tax_units:
+      tax_units:
+        members: [person1, person2, person3]
+    households:
+      households:
+        state_code: RI
+  output:
+    ri_income_tax: 5_338

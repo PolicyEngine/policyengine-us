@@ -8,7 +8,6 @@ class household_state_income_tax(Variable):
     label = "household State tax"
     unit = USD
     definition_period = YEAR
-    exhaustive_parameter_dependencies = "gov.states"
 
     def formula(tax_unit, period, parameters):
         if parameters(period).simulation.reported_state_income_tax:

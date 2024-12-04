@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class e07600(Variable):
+class prior_year_minimum_tax_credit(Variable):
     value_type = float
     entity = Person
     definition_period = YEAR

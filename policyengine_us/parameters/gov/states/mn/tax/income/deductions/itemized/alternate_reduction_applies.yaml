@@ -1,0 +1,11 @@
+description: Minnesota applies an alternate itemized deduction reduction if this is true.
+values:
+  2021-01-01: false
+  2023-01-01: true
+metadata:
+  unit: bool
+  period: year
+  label: Minnesota itemized deduction alternate reduction applies
+  reference:
+    - title: Minnesota Statutes 290.0122 ITEMIZED DEDUCTIONS. Subd. 2 (a)(1)
+      href: https://www.revisor.mn.gov/statutes/cite/290.0123#stat.290.0123.5

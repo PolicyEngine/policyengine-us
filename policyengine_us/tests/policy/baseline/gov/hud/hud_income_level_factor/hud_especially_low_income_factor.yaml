@@ -1,0 +1,20 @@
+- name: Case 1, household size of 1 with especially low income.
+  period: 2022
+  input:
+    spm_unit_size: 1 
+  output:
+    hud_especially_low_income_factor: 0.35
+  
+- name: Case 2 household size of 4 with especially low income.
+  period: 2022
+  input:
+    spm_unit_size: 4 
+  output:
+    hud_especially_low_income_factor: 0.5
+
+- name: Case 3, household size of 6 with especially low income.
+  period: 2022
+  input:
+    spm_unit_size: 6 
+  output:
+    hud_especially_low_income_factor: 0.58

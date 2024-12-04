@@ -15,7 +15,7 @@ class al_medical_expense_deduction(Variable):
     defined_for = StateCode.AL
 
     def formula(tax_unit, period, parameters):
-        expense = add(tax_unit, period, ["medical_expense"])
+        expense = add(tax_unit, period, ["medical_out_of_pocket_expenses"])
         p = parameters(
             period
         ).gov.states.al.tax.income.deductions.itemized.medical_expense

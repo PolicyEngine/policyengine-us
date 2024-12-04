@@ -6,11 +6,6 @@ metadata:
   unit: currency-USD
   breakdown:
   - filing_status
-  uprating:
-    parameter: gov.irs.uprating
-    rounding:
-      type: downwards
-      interval: 50
   reference:
   # The tax form points to this worksheet: Social Security modification on Schedule M, line 1s.
   - title: Rhode Island 2021 Modification for Taxable social security income worksheet
@@ -24,26 +19,56 @@ metadata:
     href: http://webserver.rilin.state.ri.us/Statutes/title44/44-30/44-30-12.HTM 
 
 JOINT:
-  2016-01-01: 100_000
-  2021-01-01: 111_200
-  2022-01-01: 119_750
-  2023-01-01: 126_250
+  values:
+    2016-01-01: 100_000
+    2021-01-01: 111_200
+    2022-01-01: 119_750
+    2023-01-01: 126_250
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
 HEAD_OF_HOUSEHOLD:
-  2016-01-01: 80_000
-  2021-01-01: 88_950
-  2022-01-01: 95_800
+  values:
+    2016-01-01: 80_000
+    2021-01-01: 88_950
+    2022-01-01: 95_800
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
 SURVIVING_SPOUSE:
-  2016-01-01: 100_000
-  2021-01-01: 111_200
-  2022-01-01: 119_750
-  2023-01-01: 126_250
+  values:
+    2016-01-01: 100_000
+    2021-01-01: 111_200
+    2022-01-01: 119_750
+    2023-01-01: 126_250
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
 SINGLE:
-  2016-01-01: 80_000
-  2021-01-01: 88_950
-  2022-01-01: 95_800
-  2023-01-01: 101_000
+  values:
+    2016-01-01: 80_000
+    2021-01-01: 88_950
+    2022-01-01: 95_800
+    2023-01-01: 101_000
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
 SEPARATE:
-  2016-01-01: 80_000
-  2021-01-01: 88_975
-  2022-01-01: 95_800
-  2023-01-01: 101_025
+  values:
+    2016-01-01: 80_000
+    2021-01-01: 88_975
+    2022-01-01: 95_800
+    2023-01-01: 101_025
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50

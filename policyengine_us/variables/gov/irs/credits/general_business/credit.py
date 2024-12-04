@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class e07400(Variable):
+class general_business_credit(Variable):
     value_type = float
     entity = Person
     definition_period = YEAR

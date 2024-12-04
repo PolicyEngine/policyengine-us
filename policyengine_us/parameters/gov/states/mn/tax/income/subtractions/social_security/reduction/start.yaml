@@ -1,0 +1,59 @@
+description: Minnesota reduces the social security subtraction for filers with adjusted gross income above this amount, based on filing status.
+metadata:
+  label: Minnesota social security subtraction reduction start
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  reference:
+  - title: Minnesota Statutes 290.0132 Subd. 26.Social Security benefits. (c)
+    href: https://www.revisor.mn.gov/statutes/cite/290.0132#stat.290.0132.26
+  - title: 2023 M1M, Income Additions and Subtractions
+    href: https://www.revenue.state.mn.us/sites/default/files/2023-12/m1m-23.pdf#page=4
+
+
+JOINT:
+  values:
+    2023-01-01: 100_000
+  metadata:
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: nearest
+        interval: 10
+HEAD_OF_HOUSEHOLD:
+  values:
+    2023-01-01: 78_000
+  metadata:
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: nearest
+        interval: 10
+SURVIVING_SPOUSE:
+  values:
+    2023-01-01: 100_000
+  metadata:
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: nearest
+        interval: 10
+SINGLE:
+  values:
+    2023-01-01: 78_000
+  metadata:
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: nearest
+        interval: 10
+SEPARATE:
+  values:
+    2023-01-01: 50_000
+  metadata:
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: nearest
+        interval: 10

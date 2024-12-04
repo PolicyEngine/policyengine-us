@@ -1,0 +1,75 @@
+- name: Multiple people with income
+  period: 2024
+  input:
+    people:
+      head:
+        current_pregnancies: 0
+      spouse:
+        current_pregnancies: 0
+    tax_units:
+      tax_unit:
+        medicaid_magi: 20_440
+        tax_unit_size: 2
+        members: [head, spouse]
+    households:
+      household:
+        state_group_str: CONTIGUOUS_US
+  output:
+    tax_unit_medicaid_income_level: 1
+
+- name: Multiple people with no income
+  period: 2024
+  input:
+    people:
+      head:
+        current_pregnancies: 0
+      spouse:
+        current_pregnancies: 0
+    tax_units:
+      tax_unit:
+        medicaid_magi: 0
+        tax_unit_size: 2
+        members: [head, spouse]
+    households:
+      household:
+        state_group_str: CONTIGUOUS_US
+  output:
+    tax_unit_medicaid_income_level: 0
+
+- name: Multiple people with income and a pregnant person
+  period: 2024
+  input:
+    people:
+      head:
+        current_pregnancies: 1
+      spouse:
+        current_pregnancies: 0
+    tax_units:
+      tax_unit:
+        medicaid_magi: 25_820
+        tax_unit_size: 2
+        members: [head, spouse]
+    households:
+      household:
+        state_group_str: CONTIGUOUS_US
+  output:
+    tax_unit_medicaid_income_level: 1
+
+- name: Multiple people with income and a pregnant person expecting twins
+  period: 2024
+  input:
+    people:
+      head:
+        current_pregnancies: 2
+      spouse:
+        current_pregnancies: 0
+    tax_units:
+      tax_unit:
+        medicaid_magi: 31_200
+        tax_unit_size: 2
+        members: [head, spouse]
+    households:
+      household:
+        state_group_str: CONTIGUOUS_US
+  output:
+    tax_unit_medicaid_income_level: 1

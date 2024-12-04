@@ -1,0 +1,58 @@
+- name: Household size 1, State DC
+  period: 2024-01
+  input:
+    spm_unit_size: 1
+    state_code: DC
+    snap_region_str: CONTIGUOUS_US
+  output:
+    # 291 * 0.1 = 29.1
+    dc_snap_temporary_local_benefit: 29.1
+
+- name: Household size 4, State DC
+  period: 2024-01
+  input:
+    spm_unit_size: 4
+    state_code: DC
+    snap_region_str: CONTIGUOUS_US
+  output:
+    # 973 * 0.1 = 97.3
+    dc_snap_temporary_local_benefit: 97.3
+
+- name: Household size 4, State DC, yearly
+  period: 2024
+  input:
+    spm_unit_size: 4
+    state_code: DC
+    snap_region_str: CONTIGUOUS_US
+  output:
+    # 973 * 0.1 = 97.3 * 9 = 875.7
+    dc_snap_temporary_local_benefit: 875.7
+
+- name: Household size 10, State DC, yearly
+  period: 2024
+  input:
+    spm_unit_size: 10
+    state_code: DC
+    snap_region_str: CONTIGUOUS_US
+  output:
+    # (1751 + 219 * 2) * 0.1 * 9 = 1_970.1
+    dc_snap_temporary_local_benefit: 1_970.1
+
+- name: Test using snap_max_allotment
+  period: 2024
+  input:
+    snap_max_allotment: 1_000
+    state_code: DC
+  output:
+    # (1000 * 0.1) / 12 * 9 = 75
+    dc_snap_temporary_local_benefit: 75
+
+- name: Integration test with high employment income, ineligible
+  period: 2024
+  input:
+    snap_max_allotment: 1_000
+    state_code: DC
+    employment_income: 100_000
+  output:
+    is_snap_eligible: false
+    dc_snap_temporary_local_benefit: 0

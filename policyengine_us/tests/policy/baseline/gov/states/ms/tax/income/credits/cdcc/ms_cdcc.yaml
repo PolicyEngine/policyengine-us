@@ -1,0 +1,23 @@
+- name: Eligible household
+  period: 2023
+  input:
+    ms_cdcc_eligible: true
+    cdcc: 1_000
+  output:
+    ms_cdcc: 250
+
+- name: Ineligible household
+  period: 2023
+  input:
+    ms_cdcc_eligible: false
+    cdcc: 1_000
+  output:
+    ms_cdcc: 0
+
+- name: No federal credit
+  period: 2023
+  input:
+    ms_cdcc_eligible: true
+    cdcc: 0
+  output:
+    ms_cdcc: 0

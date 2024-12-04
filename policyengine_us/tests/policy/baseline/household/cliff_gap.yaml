@@ -65,7 +65,7 @@
   absolute_error_margin: 0.01
   period: 2021
   input:
-    simulation.cliff_delta: 1_000
+    simulation.marginal_tax_rate_delta: 1_000
     age: 70
     employment_income: 76_500
     rent: 24_000
@@ -131,7 +131,7 @@
   absolute_error_margin: 0.01
   period: 2021
   input:
-    simulation.cliff_delta: 1_000
+    simulation.marginal_tax_rate_delta: 1_000
     people:
       person1:
         age: 70

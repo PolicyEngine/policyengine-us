@@ -1,4 +1,4 @@
-- name: ND ltcg subtraction unit test 1
+- name: Test 1, sum of long-term capital gains and short-term capital gains is larger than long-term capital gains
   period: 2021
   input:
     people:
@@ -15,7 +15,7 @@
   output:
     nd_ltcg_subtraction: 7_000 * 0.40
 
-- name: ND ltcg subtraction unit test 2
+- name: Test 2, sum of long-term capital gains and short-term capital gains is smaller than long-term capital gains
   period: 2021
   input:
     people:

@@ -1,0 +1,57 @@
+description: The IRS provides this base exclusion amount under the estate tax credit. 
+metadata:
+  unit: currency-USD
+  label: Estate tax credit base exclusion amount  
+  period: year
+  reference:
+    - title: 2025 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-24-40.pdf#page=18
+    - title: 26 U.S. Code § 2010 - Unified credit against estate tax - (c)(3)(A)
+      href: https://www.law.cornell.edu/uscode/text/26/2010
+    - title: What's New - Estate and Gift Tax - Basic Exclusion Amount for Year of Death
+      href: https://www.irs.gov/businesses/small-businesses-self-employed/whats-new-estate-and-gift-tax
+    - title: "26 CFR 601.602: Tax forms and instructions."
+      href: https://www.irs.gov/pub/irs-drop/rp-23-34.pdf#page=18
+    - title: Instructions for Form 706 (Rev. September 2023) (1977-2023)
+      href: https://www.irs.gov/pub/irs-pdf/i706.pdf#page=9
+    - title: Instructions for Form 706 (Rev. September 2022) (1977-2022)
+      href: https://www.irs.gov/pub/irs-prior/i706--2022.pdf#page=9
+    - title: Instructions for Form 706 (Rev. September 2021) (1977-2021)
+      href: https://www.irs.gov/pub/irs-prior/i706--2021.pdf#page=9
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: nearest
+      interval: 10_000
+values:
+  1977-01-01: 30_000 
+  1977-07-01: 120_667 
+  1978-01-01: 134_000 
+  1979-01-01: 147_333 
+  1980-01-01: 161_563 
+  1981-01-01: 175_625 
+  1982-01-01: 225_000 
+  1983-01-01: 275_000 
+  1984-01-01: 325_000 
+  1985-01-01: 400_000 
+  1986-01-01: 500_000 
+  1987-01-01: 600_000 
+  1998-01-01: 625_000 
+  1999-01-01: 650_000 
+  2000-01-01: 675_000  
+  2002-01-01: 1_000_000  
+  2011-01-01: 5_000_000  
+  2012-01-01: 5_120_000  
+  2013-01-01: 5_250_000  
+  2014-01-01: 5_340_000  
+  2015-01-01: 5_430_000  
+  2016-01-01: 5_450_000  
+  2017-01-01: 5_490_000  
+  2018-01-01: 11_180_000  
+  2019-01-01: 11_400_000  
+  2020-01-01: 11_580_000  
+  2021-01-01: 11_700_000  
+  2022-01-01: 12_060_000  
+  2023-01-01: 12_920_000  
+  2024-01-01: 13_610_000
+  2025-01-01: 13_990_000  

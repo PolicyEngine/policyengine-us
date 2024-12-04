@@ -1,0 +1,32 @@
+- name: Household of one person with no income, reduced income is 362 * 12.
+  period: 2024
+  input:
+    state_code: NC
+    nc_tanf_need_standard: 362 * 12
+    nc_tanf_countable_earned_income: 0
+    nc_tanf_countable_gross_unearned_income: 0
+    spm_unit_size: 1
+  output:
+    nc_tanf_reduced_need_standard: 362 * 12
+
+- name: Household with income and less than the allowed difference, reduced income is $0.
+  period: 2024
+  input:
+    state_code: NC
+    nc_tanf_need_standard: 472 * 12
+    nc_tanf_countable_earned_income: 230 * 12 
+    nc_tanf_countable_gross_unearned_income: 200 * 12
+    spm_unit_size: 2
+  output:
+    nc_tanf_reduced_need_standard: (472 - 230 - 200) * 12 
+
+- name: Household with income and greater than the need standard, reduced need standard is $0.
+  period: 2024
+  input:
+    state_code: NC
+    nc_tanf_need_standard: 472 * 12
+    nc_tanf_countable_earned_income: 200 * 12
+    nc_tanf_countable_gross_unearned_income: 280 * 12
+    spm_unit_size: 2
+  output:
+    nc_tanf_reduced_need_standard: 0

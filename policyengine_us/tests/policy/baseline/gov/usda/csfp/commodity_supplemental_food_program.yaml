@@ -1,0 +1,23 @@
+- name: Age ineligible
+  period: 2024
+  input:
+    school_meal_fpg_ratio: 1.3
+    age: 59
+  output:
+    commodity_supplemental_food_program: 0
+
+- name: Income ineligible
+  period: 2024
+  input:
+    school_meal_fpg_ratio: 1.31
+    age: 60
+  output:
+    commodity_supplemental_food_program: 0
+
+- name: Eligible
+  period: 2024
+  input:
+    school_meal_fpg_ratio: 1.30
+    age: 60
+  output:
+    commodity_supplemental_food_program: 330

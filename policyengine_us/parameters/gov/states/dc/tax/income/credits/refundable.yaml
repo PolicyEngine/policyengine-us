@@ -1,6 +1,7 @@
 description: DC income tax has these refundable credits.
 metadata:
-  unit: variable
+  unit: list
+  period: year
   label: DC refundable credits
   reference:
     - title: 2021 Form D-40 Booklet
@@ -14,3 +15,9 @@ values:
     - dc_eitc  # DC earned income tax credit
     - dc_ptc  # DC property tax credit
     - dc_kccatc  # DC keep child care affordable tax credit
+
+  2025-01-01:
+    - dc_eitc  # DC earned income tax credit
+    - dc_ptc  # DC property tax credit
+    - dc_kccatc  # DC keep child care affordable tax credit
+    - dc_ctc # DC child tax credit

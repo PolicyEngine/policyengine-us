@@ -9,4 +9,3 @@ class local_income_tax(Variable):
     unit = USD
 
     adds = ["nyc_income_tax"]
-    exhaustive_parameter_dependencies = "gov.local"

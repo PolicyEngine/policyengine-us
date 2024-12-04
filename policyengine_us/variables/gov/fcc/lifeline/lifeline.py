@@ -18,9 +18,24 @@ class lifeline(Variable):
         is_rural_tribal = and_(
             household, period, ["is_rural", "is_on_tribal_land"]
         )
+        base_amount = amounts.standard
+        # CA and OR provide separate maximum lifeline benefit amount
+        state_code = spm_unit.household("state_code_str", period)
+
+        p_ca = parameters(period).gov.states.ca.fcc.lifeline
+        if p_ca.in_effect:
+            ca_amount = p_ca.max_amount
+            in_ca = state_code == "CA"
+            base_amount = where(in_ca, ca_amount, base_amount)
+
+        p_or = parameters(period).gov.states["or"].fcc.lifeline
+        if p_or.in_effect:
+            or_amount = p_or.max_amount
+            in_or = state_code == "OR"
+            base_amount = where(in_or, or_amount, base_amount)
+
         max_amount = (
-            amounts.standard
-            + is_rural_tribal * amounts.rural_tribal_supplement
+            base_amount + is_rural_tribal * amounts.rural_tribal_supplement
         ) * MONTHS_IN_YEAR
         phone_broadband_cost = add(
             spm_unit, period, ["phone_cost", "broadband_cost"]

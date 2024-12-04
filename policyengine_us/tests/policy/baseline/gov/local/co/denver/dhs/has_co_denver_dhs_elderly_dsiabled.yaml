@@ -1,0 +1,57 @@
+- name: Individual, is Denver DHS elderly but not disabled
+  period: 2023
+  input:
+    is_co_denver_dhs_elderly: true
+    is_disabled: false
+  output:
+    has_co_denver_dhs_elderly_disabled: true
+
+- name: Individual, is Denver DHS disabled but not elderly
+  period: 2023
+  input:
+    is_co_denver_dhs_elderly: false
+    is_disabled: true
+  output:
+    has_co_denver_dhs_elderly_disabled: true
+
+- name: Family with nobody elderly or disabled
+  period: 2023
+  input:
+    people:
+      p1:
+        is_disabled: false
+      p2:
+        is_co_denver_dhs_elderly: false
+    spm_units:
+      spm_unit:
+        members: [p1, p2]
+  output:
+    has_co_denver_dhs_elderly_disabled: false
+
+- name: Family with one person elderly or disabled
+  period: 2023
+  input:
+    people:
+      p1:
+        is_disabled: true
+      p2:
+        is_co_denver_dhs_elderly: false
+    spm_units:
+      spm_unit:
+        members: [p1, p2]
+  output:
+    has_co_denver_dhs_elderly_disabled: true
+
+- name: Family with all elderly or disabled
+  period: 2023
+  input:
+    people:
+      p1:
+        is_disabled: true
+      p2:
+        is_co_denver_dhs_elderly: true
+    spm_units:
+      spm_unit:
+        members: [p1, p2]
+  output:
+    has_co_denver_dhs_elderly_disabled: true
