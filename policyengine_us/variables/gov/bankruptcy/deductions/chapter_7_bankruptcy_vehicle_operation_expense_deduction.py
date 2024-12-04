@@ -13,17 +13,31 @@ class chapter_7_bankruptcy_vehicle_operation_expense_deduction(Variable):
         p = parameters(
             period
         ).gov.bankruptcy.local_standards.vehicle_operation.region_operating_costs
-        
-        household_vehicles_owned = spm_unit.household("household_vehicles_owned", period)
+
+        household_vehicles_owned = spm_unit.household(
+            "household_vehicles_owned", period
+        )
         household_vehicles_owned_cap = min_(household_vehicles_owned, 2)
-        northeast = spm_unit("northeast_county",period)
-        midwest = spm_unit("midwest_county",period)
-        south = spm_unit("south_county",period)
-        west = spm_unit("west_county",period)
-        vehicle_operating_expense_northeast = p.northeast[northeast][household_vehicles_owned_cap]
-        vehicle_operating_expense_midwest = p.midwest[midwest][household_vehicles_owned_cap]
-        vehicle_operating_expense_south = p.south[south][household_vehicles_owned_cap]
-        vehicle_operating_expense_west = p.west[west][household_vehicles_owned_cap]
-        
-        return vehicle_operating_expense_northeast + vehicle_operating_expense_midwest + vehicle_operating_expense_south + vehicle_operating_expense_west
-        
+        northeast = spm_unit("northeast_county", period)
+        midwest = spm_unit("midwest_county", period)
+        south = spm_unit("south_county", period)
+        west = spm_unit("west_county", period)
+        vehicle_operating_expense_northeast = p.northeast[northeast][
+            household_vehicles_owned_cap
+        ]
+        vehicle_operating_expense_midwest = p.midwest[midwest][
+            household_vehicles_owned_cap
+        ]
+        vehicle_operating_expense_south = p.south[south][
+            household_vehicles_owned_cap
+        ]
+        vehicle_operating_expense_west = p.west[west][
+            household_vehicles_owned_cap
+        ]
+
+        return (
+            vehicle_operating_expense_northeast
+            + vehicle_operating_expense_midwest
+            + vehicle_operating_expense_south
+            + vehicle_operating_expense_west
+        )

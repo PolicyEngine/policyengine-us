@@ -7,7 +7,8 @@ class chapter_7_bankruptcy_adjust_monthly_income(Variable):
     label = "Adjust monthly income"
     definition_period = MONTH
     reference = (
-        "https://www.uscourts.gov/sites/default/files/form_b122a-1.pdf#page=1", "https://www.cacb.uscourts.gov/sites/cacb/files/documents/forms/122A2.pdf#page=1",
+        "https://www.uscourts.gov/sites/default/files/form_b122a-1.pdf#page=1",
+        "https://www.cacb.uscourts.gov/sites/cacb/files/documents/forms/122A2.pdf#page=1",
     )
     documentation = "Line 4 in form 122A-2"
 

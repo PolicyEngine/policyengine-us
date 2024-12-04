@@ -18,6 +18,5 @@ class chapter_7_bankruptcy_food_clothing_and_others_deduction(Variable):
         additional_people = size - capped_people
         base = p.main[capped_people]
         additional_amount = p.additional * additional_people
-       
+
         return base + additional_amount
-        
