@@ -173,7 +173,7 @@ class labor_supply_behavioral_response(Variable):
     value_type = float
     entity = Person
     label = "earnings-related labor supply change"
-    unit = "/1"
+    unit = "USD"
     definition_period = YEAR
 
     def formula(person, period, parameters):
@@ -244,7 +244,7 @@ class employment_income_behavioral_response(Variable):
     value_type = float
     entity = Person
     label = "employment income behavioral response"
-    unit = "/1"
+    unit = "USD"
     definition_period = YEAR
 
     def formula(person, period, parameters):
@@ -264,7 +264,7 @@ class self_employment_income_behavioral_response(Variable):
     value_type = float
     entity = Person
     label = "self-employment income behavioral response"
-    unit = "/1"
+    unit = "USD"
     definition_period = YEAR
 
     def formula(person, period, parameters):
