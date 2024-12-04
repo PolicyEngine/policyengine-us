@@ -1,0 +1,24 @@
+- name: Single filer
+  period: 2025
+  input:
+    state_code: LA
+    filing_status: SINGLE
+  output:
+    la_standard_deduction: 12_500
+
+- name: Head of Household filer
+  period: 2025
+  input:
+    state_code: LA
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    la_standard_deduction: 25_000
+
+- name: Head of Household filer - 2026 uprated
+  period: 2026
+  absolute_error_margin: 1
+  input:
+    state_code: LA
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    la_standard_deduction: 25_650

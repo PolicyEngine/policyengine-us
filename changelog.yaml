@@ -8746,3 +8746,24 @@
     - Louisiana 2025 flat income tax rate.
     - Louisiana 2025 retirement income exemption increase.
   date: 2024-11-25 23:01:42
+- bump: minor
+  changes:
+    added:
+    - Louisiana 2025 standard deduction structure.
+  date: 2024-11-30 18:08:00
+- bump: patch
+  changes:
+    fixed:
+    - Arkansas 2023 low income tax table parameters.
+  date: 2024-12-01 16:39:30
+- bump: patch
+  changes:
+    changed:
+    - Upgraded minimum policyengine-core version
+    - Allowed more flexibility in policyengine-us-data version
+  date: 2024-12-03 20:14:27
+- bump: minor
+  changes:
+    added:
+    - Add the Arizona charitable contributions credit to the net income tree.
+  date: 2024-12-03 20:23:24
