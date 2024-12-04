@@ -71,7 +71,7 @@ class income_elasticity_lsr(Variable):
     value_type = float
     entity = Person
     label = "income elasticity of labor supply response"
-    unit = USD
+    unit = "/1"
     definition_period = YEAR
     requires_computation_after = "labor_supply_behavioral_response"
 
@@ -90,23 +90,16 @@ class income_elasticity(Variable):
     value_type = float
     entity = Person
     label = "income elasticity of labor supply"
-    unit = USD
+    unit = "/1"
     definition_period = YEAR
-
-    def formula(person, period, parameters):
-        gov = parameters(period).gov
-        elasticities_p = (
-            gov.simulation.labor_supply_responses.elasticities.income
-        )
-
-        return elasticities_p
+    adds = ["gov.simulation.labor_supply_responses.elasticities.income"]
 
 
 class substitution_elasticity(Variable):
     value_type = float
     entity = Person
     label = "substitution elasticity of labor supply"
-    unit = USD
+    unit = "/1"
     definition_period = YEAR
 
     def formula(person, period, parameters):
@@ -159,7 +152,7 @@ class substitution_elasticity_lsr(Variable):
     value_type = float
     entity = Person
     label = "substitution elasticity of labor supply response"
-    unit = USD
+    unit = "/1"
     definition_period = YEAR
     requires_computation_after = "labor_supply_behavioral_response"
 
@@ -180,7 +173,7 @@ class labor_supply_behavioral_response(Variable):
     value_type = float
     entity = Person
     label = "earnings-related labor supply change"
-    unit = USD
+    unit = "/1"
     definition_period = YEAR
 
     def formula(person, period, parameters):
@@ -251,7 +244,7 @@ class employment_income_behavioral_response(Variable):
     value_type = float
     entity = Person
     label = "employment income behavioral response"
-    unit = USD
+    unit = "/1"
     definition_period = YEAR
 
     def formula(person, period, parameters):
@@ -271,7 +264,7 @@ class self_employment_income_behavioral_response(Variable):
     value_type = float
     entity = Person
     label = "self-employment income behavioral response"
-    unit = USD
+    unit = "/1"
     definition_period = YEAR
 
     def formula(person, period, parameters):
