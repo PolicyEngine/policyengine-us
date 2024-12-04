@@ -8767,3 +8767,9 @@
     added:
     - Add the Arizona charitable contributions credit to the net income tree.
   date: 2024-12-03 20:23:24
+- bump: patch
+  changes:
+    fixed:
+    - Remove the SNAP child support deduction from the net income computation if applied
+      to gross income.
+  date: 2024-12-04 19:11:45
