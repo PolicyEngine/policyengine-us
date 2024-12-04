@@ -371,6 +371,37 @@ def create_repeal_state_dependent_exemptions() -> Reform:
                 exempt_status.base[filing_status] + personal_exemptions_added
             )
 
+    class wi_exemption(Variable):
+        value_type = float
+        entity = TaxUnit
+        label = "Wisconsin exemption"
+        unit = USD
+        definition_period = YEAR
+        reference = (
+            "https://www.revenue.wi.gov/TaxForms2021/2021-Form1f.pdf"
+            "https://www.revenue.wi.gov/TaxForms2021/2021-Form1-Inst.pdf"
+            "https://www.revenue.wi.gov/TaxForms2022/2022-Form1f.pdf"
+            "https://www.revenue.wi.gov/TaxForms2022/2022-Form1-Inst.pdf"
+            "https://docs.legis.wisconsin.gov/misc/lfb/informational_papers/january_2023/0002_individual_income_tax_informational_paper_2.pdf"
+        )
+        defined_for = StateCode.WI
+
+        def formula(tax_unit, period, parameters):
+            # compute base exemption amount
+            p = parameters(period).gov.states.wi.tax.income
+            base_amount = tax_unit("head_spouse_count", period) * p.exemption.base
+            # compute extra exemption amount
+            elderly_head = (
+                tax_unit("age_head", period) >= p.exemption.old_age
+            ).astype(int)
+            elderly_spouse = (
+                tax_unit("age_spouse", period) >= p.exemption.old_age
+            ).astype(int)
+            extra_amount = (elderly_head + elderly_spouse) * p.exemption.extra
+            # return total exemption amount
+            return base_amount + extra_amount
+
+
     class reform(Reform):
         def apply(self):
             self.neutralize_variable("al_dependent_exemption")
@@ -381,6 +412,10 @@ def create_repeal_state_dependent_exemptions() -> Reform:
             self.neutralize_variable("nj_dependents_exemption")
             self.neutralize_variable("ny_exemptions")
             self.neutralize_variable("sc_dependent_exemption")
+            self.neutralize_variable("ut_personal_exemption")
+            self.neutralize_variable("nc_child_deduction")
+            self.neutralize_variable("nm_deduction_for_certain_dependents")
+            self.neutralize_variable("mt_dependent_exemptions_person")
             self.update_variable(hi_regular_exemptions)
             self.update_variable(md_total_personal_exemptions)
             self.update_variable(mi_personal_exemptions)
@@ -397,6 +432,7 @@ def create_repeal_state_dependent_exemptions() -> Reform:
             self.update_variable(ia_exemption_credit)
             self.update_variable(ks_count_exemptions)
             self.update_variable(ma_income_tax_exemption_threshold)
+            self.update_variable(wi_exemption)
 
     return reform
 

@@ -23,3 +23,8 @@ Mississippi: Neutralize dependent exemptions
 New Jersey: Neutralize dependent exemptions
 New York: Neutralize dependent exemptions
 South Carolina: Neutralize dependent exemptions
+Utah: Neutralize the personal exemption amount
+Wisconsin: Change the `tax_unit_size` to `head_spouse_count`
+North Carolina: Neutralize the child deduction
+New Mexico: Neutralize the deduction for certain dependents
+Montana: Neutralize the dependent exemptions person
