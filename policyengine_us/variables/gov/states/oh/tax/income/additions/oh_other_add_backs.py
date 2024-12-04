@@ -6,5 +6,6 @@ class oh_other_add_backs(Variable):
     entity = Person
     label = "Ohio other add backs"
     definition_period = YEAR
+    defined_for = StateCode.OH
     documentation = ""
     reference = ""

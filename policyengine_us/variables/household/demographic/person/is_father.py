@@ -12,5 +12,5 @@ class is_father(Variable):
         # male and has some children in their own household (provided in the
         # CPS).
         female = person("is_female", period)
-        has_children = person("own_children_in_household", period) > 0
+        has_children = person("is_parent", period)
         return ~female & has_children
