@@ -1,0 +1,19 @@
+- name: Tax unit does not itemize
+  period: 2022
+  input:
+    va_standard_deduction: 2_000
+    va_itemized_deductions: 2_200
+    tax_unit_itemizes: false
+    state_code: VA
+  output:
+    va_deductions: 2_000
+
+- name: Tax unit itemizes
+  period: 2022
+  input:
+    va_standard_deduction: 2_000
+    va_itemized_deductions: 2_200
+    tax_unit_itemizes: true
+    state_code: VA
+  output:
+    va_deductions: 2_200

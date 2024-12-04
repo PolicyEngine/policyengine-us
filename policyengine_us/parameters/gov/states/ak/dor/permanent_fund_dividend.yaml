@@ -1,0 +1,16 @@
+description: Alaska provides this Permanent Fund Dividend amount.
+values:
+  2022-01-01: 2_622
+  2023-01-01: 1_312
+  2024-01-01: 1_403.83
+
+metadata:
+  label: Alaska taxable permanent fund dividend
+  period: year
+  unit: currency-USD
+  reference:
+    # 2022 and 2023.
+    - title: Alaska Permanent Fund Dividend Tax Information
+      href: https://pfd.alaska.gov/payments/tax-information
+    - title: Department of Revenue Announces 2024 Permanent Fund Dividend Amount and Energy Relief
+      href: https://dor.alaska.gov/department-of-revenue/news-detail/2024/09/19/department-of-revenue-announces-2024-permanent-fund-dividend-amount-and-energy-relief

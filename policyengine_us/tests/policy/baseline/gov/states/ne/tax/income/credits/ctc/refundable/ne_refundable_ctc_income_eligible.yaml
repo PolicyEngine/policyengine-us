@@ -1,0 +1,26 @@
+- name: NE refundable CTC eligible 1
+  period: 2024
+  input:
+    tax_unit_fpg: 100
+    ne_refundable_ctc_total_household_income: 100
+    state_code: NE
+  output:
+    ne_refundable_ctc_income_eligible: true
+
+- name: NE refundable CTC eligible 2
+  period: 2024
+  input:
+    tax_unit_fpg: 100
+    ne_refundable_ctc_total_household_income: 90
+    state_code: NE
+  output:
+    ne_refundable_ctc_income_eligible: true
+
+- name: NE refundable CTC ineligible
+  period: 2024
+  input:
+    tax_unit_fpg: 100
+    ne_refundable_ctc_total_household_income: 101
+    state_code: NE
+  output:
+    ne_refundable_ctc_income_eligible: false

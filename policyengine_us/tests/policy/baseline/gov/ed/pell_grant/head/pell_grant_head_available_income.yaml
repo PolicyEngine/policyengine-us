@@ -1,0 +1,35 @@
+- name: Income and no allowances
+  period: 2023
+  input:
+    people:
+      head:
+        pell_grant_head_allowances: 0
+        pell_grant_formula: A
+    tax_unit:
+      pell_grant_primary_income: 40_000
+  output:
+    pell_grant_head_available_income: 40_000
+
+- name: Income and some allowances
+  period: 2023
+  input:
+    people:
+      head:
+        pell_grant_head_allowances: 5_000
+        pell_grant_formula: A
+    tax_unit:
+      pell_grant_primary_income: 20_000
+  output:
+    pell_grant_head_available_income: 15_000
+
+- name: Negative head contribution
+  period: 2023
+  input:
+    people:
+      head:
+        pell_grant_head_allowances: 100_000
+        pell_grant_formula: A
+    tax_unit:
+      pell_grant_primary_income: 0
+  output:
+    pell_grant_head_available_income: -100_000

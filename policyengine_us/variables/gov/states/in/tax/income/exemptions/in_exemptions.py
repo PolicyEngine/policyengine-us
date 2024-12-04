@@ -15,4 +15,5 @@ class in_exemptions(Variable):
         "in_additional_exemptions",
         "in_aged_blind_exemptions",
         "in_aged_low_agi_exemptions",
+        "in_adoption_exemption",
     ]

@@ -10,4 +10,10 @@ class ctc_qualifying_child(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/26/24#c"
 
     def formula(person, period, parameters):
-        return person("ctc_child_individual_maximum", period) > 0
+        is_dependent = person("is_tax_unit_dependent", period)
+        age = person("age", period)
+        age_limit = parameters(
+            period
+        ).gov.irs.credits.ctc.amount.base.thresholds[-1]
+        age_eligible = age < age_limit
+        return age_eligible & is_dependent

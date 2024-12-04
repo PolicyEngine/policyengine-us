@@ -1,0 +1,15 @@
+description: Senator Mitt Romney proposed phasing in the Child Tax Credit linearly from zero to this earnings level under the Family Security Act 2.0.
+values:
+  2022-01-01: 0 # 20_000
+metadata:
+  unit: currency-USD
+  period: year
+  label: Family Security Act 2.0 Child Tax Credit phase-in earnings limit
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: nearest
+      interval: 100
+  reference:
+    - title: Family Security Act 2.0
+      href: https://www.romney.senate.gov/wp-content/uploads/2022/06/family-security-act-2.0_one-pager_appendix.pdf

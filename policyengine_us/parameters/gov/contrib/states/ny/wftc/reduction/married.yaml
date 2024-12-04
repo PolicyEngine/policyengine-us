@@ -1,0 +1,28 @@
+description: New York reduces the Working Families Tax Credit for married filers at this rate, based on state adjusted gross income.
+metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  period: year
+  label: New York working families tax credit married reduction
+  reference:
+  - title: New York Senate Bill S277C §3(c-2)(2)(B)
+    href: https://legislation.nysenate.gov/pdf/bills/2023/S277C
+
+brackets:
+  - threshold:
+      2025-01-01: 0
+    rate:
+      2025-01-01: 0
+  - threshold:
+      values:
+        2025-01-01: 110_000
+        2028-01-01: 90_000
+        2029-01-01: 50_000
+      uprating:
+        parameter: gov.irs.uprating
+        rounding:
+          type: downwards
+          interval: 50
+    rate:
+      2025-01-01: 0.02

@@ -23,6 +23,7 @@ CO:
           href: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=10492&fileName=10%20CCR%202506-1
 CT:
   2020-07-01: 1.85
+  2022-10-01: 2
 DE:
   2020-07-01: 2
 DC:
@@ -49,6 +50,7 @@ KY:
   2020-07-01: 2
 LA:
   2020-07-01: 1.3
+  2022-07-01: 2
 ME:
   2020-07-01: 1.85
 MD:
@@ -59,18 +61,21 @@ MI:
   2020-07-01: 2
 MN:
   2020-07-01: 1.65
+  2022-09-01: 2
 MS:
   2020-07-01: -.inf # Non-BBCE.
 MT:
   2020-07-01: 2
 NE:
   2020-07-01: 1.3
+  2021-06-01: 1.65
 NV:
   2020-07-01: 2
 NH:
   # Only households with at least one dependent child and a specified relative to that child.
-  # (Not currently modeled.)
+  # (Not currently modeled.) - criteria removed in 2023
   2020-07-01: 1.85
+  2023-01-01: 2
 NJ:
   2020-07-01: 1.85
 NM:
@@ -89,6 +94,7 @@ OK:
   2020-07-01: 1.3
 OR:
   2020-07-01: 1.85
+  2022-01-01: 2
 PA:
   2020-07-01: 1.6
   # https://www.snapscreener.com/blog/pennsylvania-snap-increase
@@ -106,7 +112,8 @@ VT:
 VI:
   2020-07-01: 1.75
 VA:
-  2020-07-01: 2
+  2020-07-01: 1.3
+  2021-07-01: 2
 WA:
   2020-07-01: 2
 WV:

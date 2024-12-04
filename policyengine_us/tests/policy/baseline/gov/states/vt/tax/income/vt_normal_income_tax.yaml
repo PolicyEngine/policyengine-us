@@ -129,3 +129,13 @@
   output:
     # .0335*35255 + .066*(85150-35255) + .076*(129750-85150) + .0875*(150000-129750) = 9636.5625
     vt_normal_income_tax: 9_636.5625
+
+- name: 14 Joint filer, taxable income is $75.25K in 2023.
+  period: 2023
+  input:
+    vt_taxable_income: 75_250
+    filing_status: JOINT
+    state_code: VT
+  output:
+    # .0335*75000 + .0335*(75250-75000)
+    vt_normal_income_tax: 2_520.875

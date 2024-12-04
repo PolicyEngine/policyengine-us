@@ -16,7 +16,9 @@ class la_school_readiness_credit(Variable):
             period
         ).gov.states.la.tax.income.credits.school_readiness
         # determine school readiness credit amount
-        child_care_credit = tax_unit("la_cdcc", period)
+        child_care_credit = add(
+            tax_unit, period, ["la_refundable_cdcc", "la_non_refundable_cdcc"]
+        )
         eligible_child = person(
             "la_school_readiness_credit_eligible_child", period
         )

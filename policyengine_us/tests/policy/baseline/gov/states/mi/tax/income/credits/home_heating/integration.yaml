@@ -80,9 +80,11 @@
       person1:
         age: 65
         employment_income: 6_000
+        ssi: 0
       person2:
         age: 65
         employment_income: 6_020
+        ssi: 0
       person3:
         age: 10
         employment_income: 0
@@ -109,8 +111,8 @@
     # (1_000 - 12_020 * 0.11) * 0.7 < 0
     mi_alternate_home_heating_credit: 0
     mi_standard_home_heating_credit_eligible: true
-    # 1433 - 24_662 * 0.035
-    mi_standard_home_heating_credit: 569.83
+    # 1433 - 12_020 * 0.035
+    mi_standard_home_heating_credit: 1012.3
     mi_home_heating_credit_eligible_rate: 1
-    # 569.83 * 0.9
-    mi_home_heating_credit: 512.85
+    # 1_012.3 * 0.9
+    mi_home_heating_credit: 911.07

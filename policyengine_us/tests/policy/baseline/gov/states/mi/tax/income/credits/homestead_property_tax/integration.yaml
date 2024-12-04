@@ -299,19 +299,24 @@
         real_estate_taxes: 1_300
         is_disabled: false
         is_tax_unit_head: true
+        ssi: 0
       person2:
         age: 63
         employment_income: 3_000
         real_estate_taxes: 1_500
         is_disabled: true
         is_tax_unit_spouse: true
+        ssi: 0
     household:
       members: [person1, person2]
       state_code: MI
+    martital_units:
+      marital_unit:
+        members: [person1, person2]
   output: # 2_800 - 21142 * 0.032 > 1600
-    mi_household_resources: 21_142
+    mi_household_resources: 8_000
     mi_homestead_property_tax_credit_countable_property_tax: 2_800
-    mi_homestead_property_tax_credit_household_resource_exemption: 2_123.456
+    mi_homestead_property_tax_credit_household_resource_exemption: 2544
     mi_homestead_property_tax_credit_eligible: true
     mi_allowable_homestead_property_tax_credit: 1_600
     mi_homestead_property_tax_credit_pre_alternate_senior_amount: 1_600

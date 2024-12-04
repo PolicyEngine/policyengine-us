@@ -1,15 +1,12 @@
 description: Number of days after giving birth for which the parent is covered as pregnant under Medicaid postpartum coverage (provided they meet the means test).
 metadata:
   unit: day
-  name: medicaid_postpartum_coverage
   label: "Medicaid postpartum coverage"
   breakdown:
   - state_code
   reference:
     - title: 42 U.S. Code § 1396a(e)(5)
       href: https://www.law.cornell.edu/uscode/text/42/1396a#e_5
-    - title: medicaidscreener.com
-      href: https://www.medicaidscreener.com/?p=table
 AK:
   2021-01-01: 60
 AL:

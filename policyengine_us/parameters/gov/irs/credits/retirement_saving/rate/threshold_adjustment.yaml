@@ -1,0 +1,25 @@
+description: IRS multiplies the joint threshold of the saver's credit by this rate, based on filing status.
+metadata:
+  unit: /1
+  period: year
+  label: Retirement Savings Contributions Credit (Saver's Credit) threshold adjustment rate
+  reference: 
+    - title: 26 U.S. Code § 25B(b)(2)
+      href: https://www.law.cornell.edu/uscode/text/26/25B#b
+    - title: IRS | Retirement Savings Contributions Credit (Saver's Credit)
+      href: https://www.irs.gov/retirement-plans/plan-participant-employee/retirement-savings-contributions-savers-credit
+    - title: Form 8880 - 2023 Credit for Qualified Retirement Savings Contributions
+      href: https://www.irs.gov/pub/irs-pdf/f8880.pdf#page=1
+  breakdown:
+    - filing_status
+
+JOINT:
+  2018-01-01: 1
+SINGLE:
+  2018-01-01: 0.5
+SEPARATE:
+  2018-01-01: 0.5
+HEAD_OF_HOUSEHOLD:
+  2018-01-01: 0.75
+SURVIVING_SPOUSE:
+  2018-01-01: 0.5

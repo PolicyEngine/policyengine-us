@@ -1,8 +1,10 @@
-description: Percentage of the federal EITC that is refundable in Utah.
+description: Utah matches this percentage of the federal earned income tax credit.
 values:
   2022-01-01: 0.15
+  2023-01-01: 0.2
 metadata:
   unit: /1
+  period: year
   label: Utah EITC match
   reference:
     - title: Utah legal code| UC §59-10-1044 (2) (a)  #The percentage increased in 2023 to 20%
@@ -11,3 +13,5 @@ metadata:
       href: https://www.taxformfinder.org/forms/2021/2021-utah-tc-40-full-packet.pdf 
     - title: 2022 Utah legal code| 59-10-1044 (2)
       href: https://law.justia.com/codes/utah/2022/title-59/chapter-10/part-10/section-1044/
+    - title: 2023 Utah Indivdual Income Tax Form
+      href: https://tax.utah.gov/forms/current/tc-40inst.pdf#page=23

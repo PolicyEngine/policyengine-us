@@ -1,0 +1,26 @@
+- name: Match of 50%
+  period: 2007
+  input:
+    adjusted_gross_income: 25_000
+    cdcc: 1_000
+    state_code: LA
+  output:
+    la_refundable_cdcc: 500
+
+- name: AGI ineligible
+  period: 2007
+  input:
+    adjusted_gross_income: 25_001
+    cdcc: 1_000
+    state_code: LA
+  output:
+    la_refundable_cdcc: 0
+
+- name: Match of 25% pre 2007
+  period: 2006
+  input:
+    adjusted_gross_income: 24_999
+    cdcc: 1_000
+    state_code: LA
+  output:
+    la_refundable_cdcc: 250

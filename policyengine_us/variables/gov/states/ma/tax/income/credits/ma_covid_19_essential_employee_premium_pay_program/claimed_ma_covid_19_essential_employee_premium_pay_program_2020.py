@@ -11,3 +11,4 @@ class claimed_ma_covid_19_essential_employee_premium_pay_program_2020(
     )
     definition_period = YEAR
     reference = "https://www.mass.gov/info-details/covid-19-essential-employee-premium-pay-program"
+    defined_for = StateCode.MA

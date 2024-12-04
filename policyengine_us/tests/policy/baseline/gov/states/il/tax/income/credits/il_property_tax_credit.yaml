@@ -4,10 +4,10 @@
     people:
       person1:
         age: 30
+        real_estate_taxes: 5_000_000
     tax_units:
       tax_unit:
         members: [person1]
-        property_tax_primary_residence: 5_000_000
         il_income_tax_before_nonrefundable_credits: 10_000
     households:
       household:
@@ -22,10 +22,10 @@
     people:
       person1:
         age: 30
+        real_estate_taxes: 150_000
     tax_units:
       tax_unit:
         members: [person1]
-        property_tax_primary_residence: 150_000
         il_income_tax_before_nonrefundable_credits: 10_000
     households:
       household:

@@ -1,0 +1,15 @@
+- name: Four exemptions in 2021
+  period: 2021
+  input:
+    tax_unit_size: 4
+    state_code: NE
+  output:
+    ne_exemptions: 142 * 4
+
+- name: Two exemptions in 2022
+  period: 2022
+  input:
+    tax_unit_size: 2
+    state_code: NE
+  output:
+    ne_exemptions: 146 * 2

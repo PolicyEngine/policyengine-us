@@ -13,7 +13,6 @@ class nj_eitc(Variable):
     def formula(tax_unit, period, parameters):
         # Get parameter tree for NJ EITC.
         p = parameters(period).gov.states.nj.tax.income.credits.eitc
-
         # Get parameter tree for federal EITC.
         p_fed = parameters(period).gov.irs.credits.eitc
 
@@ -21,11 +20,24 @@ class nj_eitc(Variable):
         # If eligible for federal EITC, return federal EITC * percent_of_federal_eitc.
         # If ineligible for federal EITC only because of age, return (max federal EITC for zero children) * percent_of_federal_eitc.
         #     Note: this implies that they have no children.
+
         # Otherwise, return 0.
         # Worksheet reference: https://www.state.nj.us/treasury/taxation/pdf/current/1040i.pdf#page=43
+        federal_eitc_eligible_assuming_meets_income_test = tax_unit(
+            "eitc_eligible", period
+        )
+        federal_eitc_meets_income_test = tax_unit(
+            "eitc_phased_in", period
+        ) > tax_unit("eitc_reduction", period)
+        federal_eitc_takes_up = tax_unit("takes_up_eitc", period)
+        federal_eitc_eligible = (
+            federal_eitc_eligible_assuming_meets_income_test
+            & federal_eitc_meets_income_test
+            & federal_eitc_takes_up
+        )
         federal_eitc = select(
             [
-                tax_unit("eitc_eligible", period),
+                federal_eitc_eligible,
                 tax_unit("nj_childless_eitc_age_eligible", period),
             ],
             [
@@ -35,4 +47,4 @@ class nj_eitc(Variable):
             default=0,
         )
 
-        return federal_eitc * p.percent_of_federal_eitc
+        return federal_eitc * p.match

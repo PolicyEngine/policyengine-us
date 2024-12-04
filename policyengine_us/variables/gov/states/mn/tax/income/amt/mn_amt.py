@@ -18,8 +18,9 @@ class mn_amt(Variable):
         # calculate gross AMT amount
         filing_status = tax_unit("filing_status", period)
         p = parameters(period).gov.states.mn.tax.income
+        p_gov = parameters(period).gov.irs.income.amt.exemption.phase_out
         excess_taxinc = max_(0, taxinc - p.amt.income_threshold[filing_status])
-        fractional_taxinc = excess_taxinc * p.amt.income_fraction
+        fractional_taxinc = excess_taxinc * p_gov.rate
         fractional_threshold = p.amt.fractional_income_threshold[filing_status]
         taxinc_amount = max_(0, fractional_threshold - fractional_taxinc)
         net_taxinc = max_(0, taxinc - taxinc_amount)

@@ -15,15 +15,18 @@ metadata:
       href: https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2022_AR1000D_CapitalGains.pdf#page=1
     - title: Arkansas 2023 AR1000D 
       href: https://www.taxformfinder.org/forms/2023/2023-arkansas-form-ar1000d.pdf#page=1
-
+# Filing status 2
 JOINT:
-  # $3,000 total if filing jointly
-  2021-01-01: 1_500
+  2021-01-01: 3_000
+# Filing status 3
 HEAD_OF_HOUSEHOLD:
-  2021-01-01: 1_500
+  2021-01-01: 3_000
+# Filing status 6
 SURVIVING_SPOUSE:
-  2021-01-01: 1_500
+  2021-01-01: 3_000
+# Filing status 1
 SINGLE:
-  2021-01-01: 1_500
+  2021-01-01: 3_000
+# Filing status 4
 SEPARATE:
   2021-01-01: 1_500

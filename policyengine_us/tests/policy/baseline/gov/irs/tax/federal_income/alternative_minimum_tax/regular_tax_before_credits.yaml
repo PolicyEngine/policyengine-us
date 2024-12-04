@@ -1,0 +1,9 @@
+- name: Baseline test, single filer with 10k of income
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    taxable_income: 10_000
+    filing_status: SINGLE
+    income_tax_main_rates: 1_000
+  output:
+    regular_tax_before_credits: 1_000

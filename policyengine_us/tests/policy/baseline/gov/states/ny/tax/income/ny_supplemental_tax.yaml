@@ -241,3 +241,63 @@
     ny_main_income_tax: 11_963.755
   output:
     ny_supplemental_tax: 536 #0+536*1
+
+- name: Unit test for 2023 ny_supplemental_tax joint filer
+  absolute_error_margin: 0.1
+  period: 2023
+  input:
+    state_code: NY
+    filing_status: JOINT
+    ny_agi: 120_000
+    ny_taxable_income: 40_000
+    ny_main_income_tax: 1_909.85
+  output:
+    ny_supplemental_tax: 82.251
+
+- name: Unit test for 2023 ny_supplemental_tax head of household filers
+  absolute_error_margin: 0.1
+  period: 2023
+  input:
+    state_code: NY
+    filing_status: HEAD_OF_HOUSEHOLD 
+    ny_agi: 130_000
+    ny_taxable_income: 120_000
+    ny_main_income_tax: 6698.225
+  output:
+    ny_supplemental_tax: 351.789
+
+- name: Unit test for 2023 ny_supplemental_tax separate filers
+  absolute_error_margin: 0.1
+  period: 2023
+  input:
+    state_code: NY
+    filing_status: SEPARATE 
+    ny_agi: 220_000
+    ny_taxable_income: 200_000
+    ny_main_income_tax: 11_963.755
+  output:
+    ny_supplemental_tax: 568
+
+- name: Unit test for year 2028 married filing jointly and qualifying widow(er)
+  absolute_error_margin: 0.1
+  period: 2028
+  input:
+    state_code: NY
+    filing_status: JOINT
+    ny_agi: 110_000 
+    ny_taxable_income: 27_900 
+    ny_main_income_tax: 1_202
+  output:
+    ny_supplemental_tax: 0
+
+- name: Unit test for 2028 separate filers
+  absolute_error_margin: 0.1
+  period: 2028
+  input:
+    state_code: NY
+    filing_status: SEPARATE 
+    ny_agi: 220_000
+    ny_taxable_income: 200_000
+    ny_main_income_tax: 11_963.755
+  output:
+    ny_supplemental_tax: 0

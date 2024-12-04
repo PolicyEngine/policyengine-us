@@ -1,0 +1,26 @@
+description: Montana uses this amount when calculating the taxable social security benefits, based on filing status.
+metadata:
+  period: year
+  unit: currency-USD
+  label: Montana social security benefits amount
+  breakdown:
+    - filing_status
+  reference:
+    - title: 2021 Montana Individual Income Tax Return (Taxable Social Security Benefits Schedule)
+      href: https://mtrevenue.gov/wp-content/uploads/mdocs/form%202%202021.pdf#page=6
+    - title: 2022 Montana Individual Income Tax Return (Taxable Social Security Benefits Schedule)
+      href: https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2023/05/Montana-Idividiual-Income-Tax-Return-Form-2-2022v6.2.pdf#page=6
+    - title: 2023 Montana Individual Income Tax Return (Taxable Social Security Benefits Schedule)
+      href: https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2023/12/Form_2_2023.pdf#page=6
+      # Montana adjusts the federal social security parameters by using the halved joint amount for separate 
+      # filers as opposed to the single amount, which is used in the federal computation. 
+SINGLE:
+  2021-01-01: 25_000
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 25_000
+JOINT:
+  2021-01-01: 32_000
+SEPARATE:
+  2021-01-01: 16_000 
+SURVIVING_SPOUSE:
+  2021-01-01: 25_000

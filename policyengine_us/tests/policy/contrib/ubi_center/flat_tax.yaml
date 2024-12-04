@@ -1,0 +1,9 @@
+- name: 10% flat tax on AGI and 20% flat tax on gross income
+  period: 2023
+  input:
+    gov.contrib.ubi_center.flat_tax.rate.agi: 0.1
+    gov.contrib.ubi_center.flat_tax.rate.gross_income: 0.2
+    positive_agi: 2_000
+    positive_gross_income: 5_000
+  output:
+    flat_tax: 1_200

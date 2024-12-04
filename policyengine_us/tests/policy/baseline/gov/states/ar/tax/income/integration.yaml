@@ -119,7 +119,7 @@
         members: [person1, person2, person3, person4, person5]
         state_fips: 5  # AR
   output:  # expected results from patched TAXSIM35 2024-02-09 version
-    ar_agi: [19_515, 12_515, 0, 0, 0] # 32,030 joint AGI
+    ar_agi_indiv: [19_515, 12_515, 0, 0, 0] # 32,030 joint AGI
     ar_low_income_tax_joint: [933, 0, 0, 0, 0] # 0 joint low income tax
     ar_standard_deduction_joint: [4_400, 0, 0, 0, 0]
     ar_standard_deduction_indiv: [2_200, 2_200, 0, 0, 0]
@@ -133,3 +133,24 @@
     ar_non_refundable_credits: 261
     ar_refundable_credits: 0
     # ar_income_tax: 687.03 expected value from TAXSIM35
+
+- name: Head of household with one dependent, high wages
+  # High error margin because of rounding in the tax tables
+  absolute_error_margin: 5
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 144_000
+      person2:
+        age: 10
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 5  # AR
+  output: 
+    ar_taxable_income_indiv: [141_660, 0]
+    ar_income_tax_before_non_refundable_credits_indiv: [6_502, 0]
+    ar_files_separately: false
+    ar_income_tax: 6_415

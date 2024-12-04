@@ -8,4 +8,10 @@ class housing_cost(Variable):
     unit = USD
     definition_period = YEAR
 
-    adds = ["rent"]
+    adds = [
+        "rent",
+        "real_estate_taxes",
+        "homeowners_association_fees",
+        "mortgage_payments",
+        "homeowners_insurance",
+    ]

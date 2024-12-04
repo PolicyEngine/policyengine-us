@@ -13,9 +13,18 @@
   period: 2021
   input:
     filing_status: HEAD_OF_HOUSEHOLD
-    real_estate_taxes: 50_000
     adjusted_gross_income: 800_000 # > $306,300
-    state_and_local_sales_or_income_tax: 10_000
+    state_and_local_sales_or_income_tax: 60_000
+    state_code: VA
+  output:
+    va_reduced_itemized_deductions: 0
+
+- name: 2027 Virginia limited itemized deduction for a head of household filer
+  period: 2027
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    adjusted_gross_income: 800_000 # > $306,300
+    state_and_local_sales_or_income_tax: 60_000
     state_code: VA
   output:
     va_reduced_itemized_deductions: 0

@@ -1,0 +1,35 @@
+- name: IRS VITA Program Eligible.
+  period: 2023
+  input:
+    irs_gross_income: 60_000
+    is_disabled: true
+    is_english_proficient: false
+  output:
+    vita_eligible: true
+
+- name: IRS VITA Program Eligible - disabled and unproficient English.
+  period: 2023
+  input:
+    irs_gross_income: 90_000
+    is_disabled: true
+    is_english_proficient: false
+  output:
+    vita_eligible: true
+
+- name: IRS VITA Program Eligible - low income.
+  period: 2023
+  input:
+    irs_gross_income: 60_000
+    is_disabled: false
+    is_english_proficient: true
+  output:
+    vita_eligible: true
+
+- name: IRS VITA Program Not Eligible.
+  period: 2023
+  input:
+    irs_gross_income: 90_000
+    is_disabled: false
+    is_english_proficient: true
+  output:
+    vita_eligible: false

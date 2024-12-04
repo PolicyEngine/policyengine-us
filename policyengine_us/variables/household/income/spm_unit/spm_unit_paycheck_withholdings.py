@@ -10,6 +10,6 @@ class spm_unit_paycheck_withholdings(Variable):
 
     adds = [
         "employee_payroll_tax",
-        "state_income_tax_before_refundable_credits",
+        "state_withheld_income_tax",
         "income_tax_before_credits",
     ]

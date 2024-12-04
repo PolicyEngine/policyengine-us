@@ -13,7 +13,7 @@
         la_quality_rating_of_child_care_facility: 5
     tax_units:
       tax_unit:
-        la_cdcc: 50
+        la_refundable_cdcc: 50
         members: [person1, person2, person3]
     households:
       household:
@@ -36,7 +36,7 @@
         la_school_readiness_credit_eligible_child: false
     tax_units:
       tax_unit:
-        la_cdcc: 50
+        la_non_refundable_cdcc: 50
         members: [person1, person2, person3]
     households:
       household: 
@@ -60,7 +60,8 @@
         la_quality_rating_of_child_care_facility: 3
     tax_units:
       tax_unit:
-        la_cdcc: 50
+        la_refundable_cdcc: 20
+        la_non_refundable_cdcc: 30
         members: [person1, person2, person3]
     households:
       household: 
@@ -85,7 +86,7 @@
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
-        la_cdcc: 50
+        la_non_refundable_cdcc: 50
     households:
       household: 
         state_code: LA
@@ -107,7 +108,7 @@
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
-        la_cdcc: 50
+        la_non_refundable_cdcc: 50
     households:
       household: 
         state_code: LA
@@ -129,7 +130,7 @@
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
-        la_cdcc: 50
+        la_non_refundable_cdcc: 50
     households:
       household: 
         state_code: LA

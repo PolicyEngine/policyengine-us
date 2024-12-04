@@ -2,11 +2,17 @@ description: Rhode Island phases the standard deduction out for filers with inco
 values:
   2021-01-01: 210_750
   2022-01-01: 217_050
+  2023-01-01: 233_750
 
 metadata:
   label: Rhode Island standard deduction phase out start 
   period: year
   unit: currency-USD
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
   reference:
   # Legal code specifies $175,000 starting in 2011.
   - title: R.I. Gen. Laws § 44-30-2.6 (c), (3), (B), (III)

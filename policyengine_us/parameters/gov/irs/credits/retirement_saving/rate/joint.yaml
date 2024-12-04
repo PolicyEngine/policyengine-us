@@ -1,0 +1,67 @@
+description: IRS multiplies the qualified contributions by the following rate for joint filers under the Saver's Credit, based on adjusted gross income.
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  ramount_unit: /1
+  period: year
+  label: Saver's Credit joint rate
+  reference: 
+    - title: 26 U.S. Code § 25B(b)(1)
+      href: https://www.law.cornell.edu/uscode/text/26/25B#b
+    - title: IRS | Retirement Savings Contributions Credit (Saver's Credit)
+      href: https://www.irs.gov/retirement-plans/plan-participant-employee/retirement-savings-contributions-savers-credit
+    - title: Form 8880 - 2023 Credit for Qualified Retirement Savings Contributions
+      href: https://www.irs.gov/pub/irs-pdf/f8880.pdf#page=1
+    - title: 2018 Form 8880
+      href: https://www.irs.gov/pub/irs-prior/f8880--2018.pdf#page=1
+
+brackets:
+  - threshold:
+      2018-01-01: 0
+    amount:
+      2018-01-01: 0.5
+  - threshold:
+      values:
+        2018-01-01: 38_000
+        2019-01-01: 38_500
+        2020-01-01: 39_000
+        2021-01-01: 39_500
+        2022-01-01: 41_000
+        2023-01-01: 43_500
+      uprating:
+        parameter: gov.irs.uprating
+        rounding:
+          type: nearest
+          interval: 500
+    amount:
+      2018-01-01: 0.2
+  - threshold:
+      values:
+        2018-01-01: 41_000
+        2019-01-01: 41_500
+        2020-01-01: 42_500
+        2021-01-01: 43_000
+        2022-01-01: 44_000
+        2023-01-01: 47_500
+      uprating:
+        parameter: gov.irs.uprating
+        rounding:
+          type: nearest
+          interval: 500
+    amount:
+      2018-01-01: 0.1
+  - threshold:
+      values:
+        2018-01-01: 63_000
+        2019-01-01: 64_000
+        2020-01-01: 65_000
+        2021-01-01: 66_000
+        2022-01-01: 68_000
+        2023-01-01: 73_000
+      uprating:
+        parameter: gov.irs.uprating
+        rounding:
+          type: nearest
+          interval: 500
+    amount:
+      2018-01-01: 0

@@ -1,0 +1,27 @@
+description: The Administration for Children and Families limits Head Start participants to children within this age range.
+
+brackets:
+  - threshold:
+      2021-09-01: 0
+    amount:
+      2021-09-01: false
+  - threshold:
+      2021-09-01: 3
+    amount:
+      2021-09-01: true
+  - threshold:
+      2021-09-01: 5
+    amount:
+      2021-09-01: false
+
+metadata:
+  type: single_amount
+  rate_unit: bool
+  threshold_unit: year
+  period: year
+  label: Head Start children age range
+  reference:
+    - title: U.S. Department of Health & Human Services Head Start Policy and Regulations, 1302.12 Determining, verifying, and documenting eligibility. (b)
+      href: https://eclkc.ohs.acf.hhs.gov/policy/45-cfr-chap-xiii/1302-12-determining-verifying-documenting-eligibility
+    - title: Federal Reserve Bank of Atlanta, Policy Rules Database (PRD), 2.1.8 Head Start and Early Head Start
+      href: https://www.atlantafed.org/-/media/documents/economic-mobility-and-resilience/advancing-careers-for-low-income-families/policy-rules-database/policy-rules-database-technical-manual.pdf#page=58

@@ -1,0 +1,11 @@
+description: New Jersey provides a separate SNAP minimum allotment amount if this is true.
+values:
+  0000-01-01: false
+  2023-03-01: true
+metadata:
+  period: year
+  unit: bool
+  label: New Jersey SNAP minimum allotment in effect
+  reference:
+      - title: New Jersey Department of Human Services - SNAP 
+        href: https://www.nj.gov/humanservices/njsnap/emergency/covid19/

@@ -22,7 +22,8 @@ class household_state_income_tax(Variable):
                 0,
             )
         else:
-            p = parameters(period)
             return add(
-                tax_unit, period, p.gov.household_state_income_tax
-            ) - add(tax_unit, period, p.gov.state_refundable_credits)
+                tax_unit,
+                period,
+                ["state_income_tax_before_refundable_credits"],
+            ) - add(tax_unit, period, ["state_refundable_credits"])

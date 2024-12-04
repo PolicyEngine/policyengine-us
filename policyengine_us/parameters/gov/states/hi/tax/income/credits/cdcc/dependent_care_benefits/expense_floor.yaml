@@ -4,10 +4,12 @@ brackets:
       2018-01-01: 0
     amount:
       2018-01-01: 2_400
+      2023-01-01: 10_000
   - threshold:
       2018-01-01: 2
     amount:
       2018-01-01: 4_800
+      2023-01-01: 20_000
 metadata:
   type: single_amount
   threshold_unit: child
@@ -15,7 +17,9 @@ metadata:
   label: Hawaii CDCC one child/dependent amount floor
   reference:
     - title: Hawaii Income Tax Law, Chapter 235, Section 235-55.6, (c)(1)
-      href: https://files.hawaii.gov/tax/legal/hrs/hrs_235.pdf#page=41
+      href: https://files.hawaii.gov/tax/legal/hrs/hrs_235.pdf#page=42
+    - title: Hawaii SCHEDULE X 2023
+      href: https://files.hawaii.gov/tax/forms/2023/schx_i.pdf#page=2
     - title: Hawaii SCHEDULE X 2022 
       href: https://files.hawaii.gov/tax/forms/2022/schx_i.pdf#page=2
     - title: Hawaii SCHEDULE X 2021 

@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us_data import ZIP_CODE_DATASET
 
 
 class zip_code(Variable):
@@ -36,6 +37,7 @@ class zip_code(Variable):
                     .sample(
                         count_households_in_state,
                         weights="population",
+                        random_state=192837465,
                         replace=True,
                     )
                     .zip_code

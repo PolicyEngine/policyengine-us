@@ -19,9 +19,18 @@ class ssi_unearned_income_deemed_from_ineligible_parent(Variable):
         ineligible_parent = person("is_ssi_ineligible_parent", period)
         tax_unit = person.tax_unit
 
-        parental_earned_income = eligible_child * tax_unit.sum(
+        prereduction_parental_earned_income = eligible_child * tax_unit.sum(
             person("ssi_earned_income", period) * ineligible_parent
         )
+        blind_disabled_working_student_income = person(
+            "ssi_blind_or_disabled_working_student_exclusion", period
+        )
+        parental_earned_income = max_(
+            prereduction_parental_earned_income
+            - blind_disabled_working_student_income,
+            0,
+        )
+
         parental_unearned_income = eligible_child * tax_unit.sum(
             person("ssi_unearned_income", period) * ineligible_parent
         )

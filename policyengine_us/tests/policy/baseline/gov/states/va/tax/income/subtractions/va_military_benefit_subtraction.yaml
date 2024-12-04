@@ -191,3 +191,22 @@
   output:
     # $9,000+$5,000 since dependents should be excluded
     va_military_benefit_subtraction: 14_000
+
+- name: 2024 VA military benefit of amount less than $10,000, only person in tax unit, not 55 or older
+  period: 2024
+  input:
+    people:
+      person1:
+        military_retirement_pay: 9_000
+        is_tax_unit_head: true
+        age: 45
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+  output:
+    # $0 since the individual has to be 55 or older to be eligible for the subtraction
+    va_military_benefit_subtraction: 9_000

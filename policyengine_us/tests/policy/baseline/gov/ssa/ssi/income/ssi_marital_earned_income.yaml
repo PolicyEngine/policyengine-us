@@ -1,0 +1,64 @@
+- name: Earned income is combined if both eligible
+  period: 2023
+  input:
+    people:
+      head:
+        ssi_marital_both_eligible: true
+        ssi_earned_income: 10
+      spouse:
+        ssi_marital_both_eligible: true
+        ssi_earned_income: 20
+    marital_units: 
+      unit:
+        members: [head, spouse]
+  output:
+    ssi_marital_earned_income: [30, 30]
+
+- name: Earned income is not combined if not both eligible
+  period: 2023
+  input:
+    people:
+      head:
+        ssi_marital_both_eligible: false
+        ssi_earned_income: 10
+      spouse:
+        ssi_marital_both_eligible: false
+        ssi_earned_income: 20
+    marital_units: 
+      unit:
+        members: [head, spouse]
+  output:
+    ssi_marital_earned_income: [10, 20]
+
+- name: Earned income is shared if head has income
+  period: 2023
+  input:
+    people:
+      head:
+        ssi_marital_both_eligible: true
+        ssi_earned_income: 10
+      spouse:
+        ssi_marital_both_eligible: true
+        ssi_earned_income: 0
+    marital_units: 
+      unit:
+        members: [head, spouse]
+  output:
+    ssi_marital_earned_income: [10, 10]
+
+- name: Earned income is shared if spouse has income
+  period: 2023
+  input:
+    people:
+      head:
+        ssi_marital_both_eligible: true
+        ssi_earned_income: 0
+      spouse:
+        ssi_marital_both_eligible: true
+        ssi_earned_income: 10
+    marital_units: 
+      unit:
+        members: [head, spouse]
+  output:
+    ssi_marital_earned_income: [10, 10]
+

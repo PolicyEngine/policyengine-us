@@ -8,8 +8,7 @@ class ssi_claim_is_joint(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        eligible = person("is_ssi_aged_blind_disabled", period)
-        both_eligible = person.marital_unit.sum(eligible) == 2
+        both_eligible = person("ssi_marital_both_eligible", period)
         income_is_deemed = (
             person("ssi_income_deemed_from_ineligible_spouse", period) > 0
         )

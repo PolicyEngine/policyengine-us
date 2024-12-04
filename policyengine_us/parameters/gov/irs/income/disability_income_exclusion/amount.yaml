@@ -1,0 +1,11 @@
+description: IRS reduces the excludable disability income by this amount.
+metadata:
+  unit: currency-USD
+  period: year
+  label: Disability income reduction amount 
+  reference:
+    - title: 26 U.S. Code § 105 (d)(3) (1976)
+      href: https://tile.loc.gov/storage-services/service/ll/uscode/uscode1976-00702/uscode1976-007026001/uscode1976-007026001.pdf#page=118
+    # 26 U.S. Code § 105 (d)(3) was repealed in 1983, but some states continue using it as a standard when computing disability income exclusion 
+values:
+  1976-01-01: 15_000

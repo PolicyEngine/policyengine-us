@@ -1,126 +1,111 @@
-- name: Test case 1, the tax filer chooses itemized deductions and the calculated taxable income is greater than 0.
-  period: 2021
-  input:
-    mt_agi: 6_000
-    mt_standard_deduction_indiv: 2_000
-    mt_itemized_deductions_indiv: 3_000
-    mt_personal_exemptions_indiv: 2_710
-    state_code: MT
-  output: 
-    mt_taxable_income_indiv: 290
-
-- name: Test case 2, the tax filer chooses itemized deductions and the calculated taxable income is less than 0.
-  period: 2021
-  input:
-    mt_agi: 5_000
-    mt_standard_deduction_indiv: 2_000
-    mt_itemized_deductions_indiv: 3_000
-    mt_personal_exemptions_indiv: 2_710
-    state_code: MT
-  output: 
-    mt_taxable_income_indiv: 0
-
-- name: Test case 3, the tax filer chooses standard deductions and the calculated taxable income is less than 0.
-  period: 2021
-  input:
-    mt_agi: 5_000
-    mt_standard_deduction_indiv: 3_000
-    mt_itemized_deductions_indiv: 2_000
-    mt_personal_exemptions_indiv: 2_710
-    state_code: MT
-  output: 
-    mt_taxable_income_indiv: 0
-
-- name: Test case 4, the tax filer chooses standard deductions and the calculated taxable income is greater than 0.
-  period: 2021
-  input:
-    mt_agi: 7_000
-    mt_standard_deduction_indiv: 3_000
-    mt_itemized_deductions_indiv: 2_000
-    mt_personal_exemptions_indiv: 2_710
-    state_code: MT
-  output: 
-    mt_taxable_income_indiv: 1_290
-
-- name: Head and spouse combined AGI below combined deduction and exemption amount
+- name: The dependent exemptions are allocated evently after the income is equalized
   period: 2021
   input:
     people: 
       person1:
         is_tax_unit_head: true
-        mt_agi: 10_000
-        mt_standard_deduction_indiv: 5_000
-        mt_itemized_deductions_indiv: 0
-        mt_personal_exemptions_indiv: 4_000
+        mt_pre_dependent_exemption_taxable_income_indiv: 10_000
+        mt_dependent_exemptions_person: 3_000
       person2:
         is_tax_unit_spouse: true
-        mt_agi: 12_000
-        mt_standard_deduction_indiv: 15_000
-        mt_itemized_deductions_indiv: 0
-        mt_personal_exemptions_indiv: 2_000
+        mt_pre_dependent_exemption_taxable_income_indiv: 12_000
+        mt_dependent_exemptions_person: 5_000
     tax_units:
       tax_unit:
         members: [person1, person2]
-        mt_tax_unit_itemizes: false
     households:
       household:
         members: [person1, person2]
         state_code: MT
   output:
-    mt_taxable_income_indiv: [1_000, 0]
+    mt_taxable_income_indiv: [7_000, 7_000]
 
-- name: First, the gap between spouse and head is closed, after which the amount is allocated equally
+- name: Spouse over head AGI
   period: 2021
   input:
     people: 
       person1:
         is_tax_unit_head: true
-        mt_agi: 10_000
-        mt_standard_deduction_indiv: 1_000
-        mt_itemized_deductions_indiv: 5_000
-        mt_personal_exemptions_indiv: 3_000
+        mt_pre_dependent_exemption_taxable_income_indiv: 10_000
+        mt_dependent_exemptions_person: 3_000
       person2:
         is_tax_unit_spouse: true
-        mt_agi: 12_000
-        mt_standard_deduction_indiv: 2_000
-        mt_itemized_deductions_indiv: 3_000
-        mt_personal_exemptions_indiv: 3_000
+        mt_pre_dependent_exemption_taxable_income_indiv: 50_000
+        mt_dependent_exemptions_person: 5_000
     tax_units:
       tax_unit:
         members: [person1, person2]
-        mt_tax_unit_itemizes: true
     households:
       household:
         members: [person1, person2]
         state_code: MT
   output:
-    mt_taxable_income_indiv: [2_000, 6_000]
+    mt_taxable_income_indiv: [10_000, 42_000]
 
-- name: If the AGI is equal, the amount is allocated equally, excluding the exemptions
+- name: Head over spouse AGI
   period: 2021
   input:
     people: 
       person1:
         is_tax_unit_head: true
-        mt_agi: 20_000
-        mt_standard_deduction_indiv: 1_000
-        mt_itemized_deductions_indiv: 5_000
-        mt_personal_exemptions_indiv: 4_000
+        mt_pre_dependent_exemption_taxable_income_indiv: 35_000
+        mt_dependent_exemptions_person: 3_000
       person2:
         is_tax_unit_spouse: true
-        mt_agi: 20_000
-        mt_standard_deduction_indiv: 2_000
-        mt_itemized_deductions_indiv: 3_000
-        mt_personal_exemptions_indiv: 2_000
+        mt_pre_dependent_exemption_taxable_income_indiv: 5_000
+        mt_dependent_exemptions_person: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_taxable_income_indiv: [27_000, 5_000]
+
+- name: With equal income, the dependent exemptions are allocated evently
+  period: 2021
+  input:
+    people: 
+      person1:
+        is_tax_unit_head: true
+        mt_pre_dependent_exemption_taxable_income_indiv: 12_000
+        mt_dependent_exemptions_person: 3_000
+      person2:
+        is_tax_unit_spouse: true
+        mt_pre_dependent_exemption_taxable_income_indiv: 12_000
+        mt_dependent_exemptions_person: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_taxable_income_indiv: [8_000, 8_000]
+
+- name: No exemption amount is allocated to the dependents
+  period: 2021
+  input:
+    people: 
+      person1:
+        is_tax_unit_head: true
+        mt_pre_dependent_exemption_taxable_income_indiv: 12_000
+        mt_dependent_exemptions_person: 3_000
+      person2:
+        is_tax_unit_spouse: true
+        mt_pre_dependent_exemption_taxable_income_indiv: 12_000
+        mt_dependent_exemptions_person: 5_000
       person3:
-        mt_agi: 0
+        mt_pre_dependent_exemption_taxable_income_indiv: 0
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
-        mt_tax_unit_itemizes: true
     households:
       household:
         members: [person1, person2, person3]
         state_code: MT
   output:
-    mt_taxable_income_indiv: [11_000, 15_000, 0]
+    mt_taxable_income_indiv: [8_000, 8_000, 0]
