@@ -389,7 +389,9 @@ def create_repeal_state_dependent_exemptions() -> Reform:
         def formula(tax_unit, period, parameters):
             # compute base exemption amount
             p = parameters(period).gov.states.wi.tax.income
-            base_amount = tax_unit("head_spouse_count", period) * p.exemption.base
+            base_amount = (
+                tax_unit("head_spouse_count", period) * p.exemption.base
+            )
             # compute extra exemption amount
             elderly_head = (
                 tax_unit("age_head", period) >= p.exemption.old_age
@@ -400,7 +402,6 @@ def create_repeal_state_dependent_exemptions() -> Reform:
             extra_amount = (elderly_head + elderly_spouse) * p.exemption.extra
             # return total exemption amount
             return base_amount + extra_amount
-
 
     class reform(Reform):
         def apply(self):
