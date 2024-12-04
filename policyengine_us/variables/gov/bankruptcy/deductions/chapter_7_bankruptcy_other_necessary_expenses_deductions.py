@@ -10,19 +10,19 @@ class chapter_7_bankruptcy_other_necessary_expenses_deductions(Variable):
 
     def formula(spm_unit, period, parameters):
         income_tax = add(spm_unit, period, ["income_tax"])
-        ## retirement_contribution
+        
         child_support_expense = add(
             spm_unit, period, ["child_support_expense"]
         )
         childcare_expenses = spm_unit("childcare_expenses", period)
-        ## ???
-        line_7 = spm_unit("line_7", period)
+       
+        out_of_pocket_healthcare_allowance = spm_unit("chapter_7_bankruptcy_out_of_pocket_health_care_deductions", period)
         out_of_pocket_healthcare_expense = add(
             spm_unit, period, ["medical_out_of_pocket_expenses"]
         )
-        line_22 = out_of_pocket_healthcare_expense - line_7
-        ##
+        additional_health_care_expenses = max_(out_of_pocket_healthcare_expense - out_of_pocket_healthcare_allowance,0)
+       
         total = (
-            income_tax + child_support_expense + childcare_expenses + line_22
+            income_tax + child_support_expense + childcare_expenses + additional_health_care_expenses
         )
         return total / MONTHS_IN_YEAR

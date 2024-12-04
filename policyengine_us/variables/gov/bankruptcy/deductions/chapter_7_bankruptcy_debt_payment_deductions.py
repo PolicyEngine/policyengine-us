@@ -9,4 +9,8 @@ class chapter_7_bankruptcy_debt_payment_deductions(Variable):
     reference = "https://www.cacb.uscourts.gov/sites/cacb/files/documents/forms/122A2.pdf#page=7"
 
     def formula(spm_unit, period, parameters):
-        # seems to be redudent to the calculation process as we already have local standard deduction in line 9 line 13.
+        housing_expense = add(spm_unit,period,["housing_cost"])
+        vehicle_mortgage_expense = add(spm_unit,period,["vehicle_mortgage_expense"])
+        total = housing_expense + vehicle_mortgage_expense
+        return total/MONTHS_IN_YEAR
+    

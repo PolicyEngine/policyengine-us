@@ -22,7 +22,7 @@ class chapter_7_bankruptcy_additonal_expenses_deductions(Variable):
         )
         education_expense = add(
             spm_unit, period, ["k12_tuition_and_fees"]
-        )  ## no more than $189.58
+        )  ## no more than $189.58 per child
         charitable_contributions = add(
             spm_unit,
             period,

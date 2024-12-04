@@ -1,1 +1,0 @@
-# This folder contains all the new variables created for this program.
