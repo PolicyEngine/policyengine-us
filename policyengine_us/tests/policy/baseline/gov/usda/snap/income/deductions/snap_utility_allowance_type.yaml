@@ -1,0 +1,49 @@
+- name: SUA eligible
+  period: 2024
+  input:
+    count_distinct_utility_expenses: 10
+    snap_utility_region_str: CO
+    snap_state_using_standard_utility_allowance: false
+    has_heating_cooling_expense: true
+  output:
+    snap_utility_allowance_type: SUA
+
+- name: LUA eligible
+  period: 2024
+  input:
+    count_distinct_utility_expenses: 2
+    snap_utility_region_str: CO
+    snap_state_using_standard_utility_allowance: false
+    has_heating_cooling_expense: false
+  output:
+    snap_utility_allowance_type: LUA
+
+- name: IUA eligible
+  period: 2024
+  input:
+    count_distinct_utility_expenses: 1
+    snap_utility_region_str: CO
+    snap_state_using_standard_utility_allowance: false
+    has_heating_cooling_expense: false
+  output:
+    snap_utility_allowance_type: IUA
+
+- name: No utility allowance
+  period: 2024
+  input:
+    count_distinct_utility_expenses: 0
+    snap_utility_region_str: CO
+    snap_state_using_standard_utility_allowance: false
+    has_heating_cooling_expense: false
+  output:
+    snap_utility_allowance_type: NONE
+
+- name: Always SUA eligible
+  period: 2024
+  input:
+    count_distinct_utility_expenses: 0
+    snap_utility_region_str: CO
+    snap_state_using_standard_utility_allowance: true
+    has_heating_cooling_expense: false
+  output:
+    snap_utility_allowance_type: SUA

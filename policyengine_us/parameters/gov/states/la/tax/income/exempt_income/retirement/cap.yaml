@@ -1,4 +1,4 @@
-description: Louisiana caps the retirement income exemption of this amount for filers, based on age.
+description: Louisiana caps the retirement income exemption at this amount for filers, based on age.
 
 brackets:
   - threshold: 
@@ -9,6 +9,7 @@ brackets:
       2001-01-01: 65
     amount:
       2001-01-01: 6_000
+      2025-01-01: 12_000
 
 metadata:
   reference:
@@ -18,6 +19,8 @@ metadata:
       href: https://revenue.louisiana.gov/TaxForms/IT540iWEB(2023)D1.pdf#page=7
     - title: General Information for Filing Your 2022 Louisiana Resident Individual Income Tax Return | Exemption Code 06E
       href: https://revenue.louisiana.gov/TaxForms/IT540iWEB(2022)D1.pdf#page=6
+    - title: Louisiana 2024 Third Extraordinary Session, House Bill 10, §44.1, A
+      href: https://legis.la.gov/legis/ViewDocument.aspx?d=1391418
   threshold_unit: year
   amount_unit: currency-USD  
   type: single_amount
