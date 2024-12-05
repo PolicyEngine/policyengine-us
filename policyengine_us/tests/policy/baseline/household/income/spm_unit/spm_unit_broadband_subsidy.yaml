@@ -15,12 +15,11 @@
   output:
     spm_unit_broadband_subsidy: 5
 
-- name: Baseline subsidy test with relevant inputs
-  period: 2023
+- name: Households with reported broadband subsidies have zero starting in 2025
+  period: 2025
   input:
     gov.simulation.reported_broadband_subsidy: false
     acp: 1
     ebb: 2
   output:
     spm_unit_broadband_subsidy: 3
-
