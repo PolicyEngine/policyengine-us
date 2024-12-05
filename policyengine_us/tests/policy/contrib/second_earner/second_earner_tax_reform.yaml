@@ -119,16 +119,17 @@
       person1:
         age: 40
         taxable_income_person: 30_000
+        capital_gains_excluded_from_taxable_income_person: 1_000
       person2:
         age: 40
         taxable_income_person: 15_000
+        capital_gains_excluded_from_taxable_income_person: 1_000
       person3:
         age: 16
         taxable_income_person: 1_000
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
-        capital_gains_excluded_from_taxable_income: 2_000
   output:
     income_tax_main_rates: 4_620
 
@@ -369,3 +370,24 @@
     taxable_income_deductions: 21_900
     # Tax variables
     income_tax_main_rates: 22_093
+
+- name: Income tax main rates test
+  period: 2024
+  reforms: policyengine_us.reforms.second_earner.second_earner_tax_reform.second_earner_tax_reform
+  input:
+    gov.contrib.second_earner_reform.in_effect: true
+    people: 
+      person1:
+        age: 40
+        taxable_income_person: 50_000
+        capital_gains_excluded_from_taxable_income_person: 10_000
+      person2:
+        age: 30
+        capital_gains_excluded_from_taxable_income_person: 10_000
+        taxable_income_person: 40_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+  output:
+    income_tax_main_rates: 7_704

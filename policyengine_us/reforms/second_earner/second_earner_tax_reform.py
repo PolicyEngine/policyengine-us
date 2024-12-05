@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_core.periods import period as period_
 
 
 def create_second_earner_tax() -> Reform:
@@ -54,6 +55,38 @@ def create_second_earner_tax() -> Reform:
             deductions = person("taxable_income_deductions_person", period)
             return max_(0, agi - exemptions - deductions)
 
+    class capital_gains_excluded_from_taxable_income_person(Variable):
+        value_type = float
+        entity = Person
+        label = "Capital gains excluded from taxable income"
+        unit = USD
+        documentation = "This is subtracted from taxable income before applying the ordinary tax rates. Capital gains tax is calculated separately."
+        definition_period = YEAR
+        reference = dict(
+            title="26 U.S. Code § 1(h)(1)(A)",
+            href="https://www.law.cornell.edu/uscode/text/26/1#h_1_A",
+        )
+
+        def formula(person, period, parameters):
+            net_capital_gain = person("net_capital_gain_person", period)
+            adjusted_net_capital_gain = person(
+                "adjusted_net_capital_gain_person", period
+            )
+            taxable_income = person("taxable_income_person", period)
+            filing_status = person.tax_unit("filing_status", period)
+            cg = parameters(period).gov.irs.capital_gains.brackets
+            income_taxed_below_first_rate = clip(
+                taxable_income, 0, cg.thresholds["1"][filing_status]
+            )
+            reduced_taxable_income = max_(
+                taxable_income - net_capital_gain,
+                min_(
+                    income_taxed_below_first_rate,
+                    taxable_income - adjusted_net_capital_gain,
+                ),
+            )
+            return taxable_income - reduced_taxable_income
+
     class income_tax_main_rates(Variable):
         value_type = float
         entity = TaxUnit
@@ -69,8 +102,9 @@ def create_second_earner_tax() -> Reform:
                 "is_tax_unit_head_or_spouse", period
             )
             cg_exclusion = (
-                tax_unit("capital_gains_excluded_from_taxable_income", period)
-                / 2
+                person(
+                    "capital_gains_excluded_from_taxable_income_person", period
+                )
             ) * is_tax_unit_head_or_spouse
             taxinc = max_(0, full_taxable_income - cg_exclusion)
             p = parameters(period).gov.irs.income
@@ -799,6 +833,9 @@ def create_second_earner_tax() -> Reform:
             self.update_variable(amt_excluded_deductions_person)
             self.update_variable(bonus_guaranteed_deduction_person)
             self.update_variable(additional_standard_deduction_person)
+            self.update_variable(
+                capital_gains_excluded_from_taxable_income_person
+            )
 
     return reform
 
@@ -807,9 +844,17 @@ def create_second_earner_tax_reform(parameters, period, bypass: bool = False):
     if bypass:
         return create_second_earner_tax()
 
-    p = parameters(period).gov.contrib.second_earner_reform
+    p = parameters.gov.contrib.second_earner_reform
+    reform_active = False
+    current_period = period_(period)
 
-    if p.in_effect:
+    for i in range(5):
+        if p(current_period).in_effect:
+            reform_active = True
+            break
+        current_period = current_period.offset(1, "year")
+
+    if reform_active:
         return create_second_earner_tax()
     else:
         return None
