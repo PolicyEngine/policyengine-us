@@ -18,6 +18,7 @@ class wi_additional_exemption(Variable):
 
     def formula(tax_unit, period, parameters):
         # compute extra exemption amount
+        p = parameters(period).gov.states.wi.tax.income
         elderly_head = (
             tax_unit("age_head", period) >= p.exemption.old_age
         ).astype(int)
