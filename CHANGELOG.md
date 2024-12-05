@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.160.0] - 2024-12-05 16:48:14
+
+### Added
+
+- Second earner tax reform.
+
 ## [1.159.0] - 2024-12-05 16:42:58
 
 ### Added
@@ -10371,6 +10377,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.160.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.159.0...1.160.0
 [1.159.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.158.0...1.159.0
 [1.158.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.157.0...1.158.0
 [1.157.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.156.0...1.157.0
