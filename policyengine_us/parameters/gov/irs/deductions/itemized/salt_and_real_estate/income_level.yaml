@@ -1,0 +1,29 @@
+description: States have different sales tax under these income levels
+metadata:
+  unit: Enum
+  period: year
+  label: State Sales Tax Income Level
+  reference:
+    - title: 2023 Optional State Sales Tax Income Level
+      href: https://www.irs.gov/instructions/i1040sca#en_US_2023_publink10005349
+
+income_enum:
+  0-20_000: 1
+  20_001-30_000: 2
+  30_001-40_000: 3
+  40_001-50_000: 4
+  50_001-60_000: 5
+  60_001-70_000: 6
+  70_001-80_000: 7
+  80_001-90_000: 8
+  90_001-100_000: 9
+  100_001-120_000: 10
+  120_001-140_000: 11
+  140_001-160_000: 12
+  160_001-180_000: 13
+  180_001-200_000: 14
+  200_001-225_000: 15
+  225_001-250_000: 16
+  250_001-275_000: 17
+  275_001-300_000: 18
+  300_001+: 19
