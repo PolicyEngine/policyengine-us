@@ -8756,3 +8756,25 @@
     fixed:
     - Arkansas 2023 low income tax table parameters.
   date: 2024-12-01 16:39:30
+- bump: patch
+  changes:
+    changed:
+    - Upgraded minimum policyengine-core version
+    - Allowed more flexibility in policyengine-us-data version
+  date: 2024-12-03 20:14:27
+- bump: minor
+  changes:
+    added:
+    - Add the Arizona charitable contributions credit to the net income tree.
+  date: 2024-12-03 20:23:24
+- bump: patch
+  changes:
+    fixed:
+    - Remove the SNAP child support deduction from the net income computation if applied
+      to gross income.
+  date: 2024-12-04 19:11:45
+- bump: minor
+  changes:
+    added:
+    - Apply the TCJA mortgage value limits under the mortgage interest deduction.
+  date: 2024-12-04 21:38:01
