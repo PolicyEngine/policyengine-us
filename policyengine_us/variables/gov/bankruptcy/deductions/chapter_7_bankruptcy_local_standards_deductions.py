@@ -17,9 +17,9 @@ class chapter_7_bankruptcy_local_standards_deductions(Variable):
             p.housing_and_utilities.insurance_and_operating[state][size]
         )
 
-        mortgage_or_rent_allowance = p.housing_and_utilities.mortgage_or_rent[
-            state
-        ][size]
+        mortgage_or_rent_allowance = ( 
+            p.housing_and_utilities.mortgage_or_rent[state][size]
+        )
         monthly_housing_expense = (
             add(spm_unit, period, ["housing_cost"]) / MONTHS_IN_YEAR
         )
@@ -27,12 +27,10 @@ class chapter_7_bankruptcy_local_standards_deductions(Variable):
             mortgage_or_rent_allowance - monthly_housing_expense, 0
         )
 
-        household_vehicles_owned = spm_unit.household(
-            "household_vehicles_owned", period
-        )
-        household_vehicles_owned_cap = min_(household_vehicles_owned, 2)
+        qualify_vehicles_owned = add(spm_unit,period,["is_vehicle_loaned"])
+        qualify_vehicles_owned_cap = min_(qualify_vehicles_owned, 2)
         ownership_costs_allowance = p.vehicle_operation.ownership_costs[
-            household_vehicles_owned_cap
+            qualify_vehicles_owned_cap
         ]
         vehicle_mortgage_expense = (
             add(spm_unit, period, ["vehicle_mortgage_expense"])

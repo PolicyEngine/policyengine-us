@@ -22,7 +22,12 @@ class chapter_7_bankruptcy_additonal_expenses_deductions(Variable):
         )
         education_expense = add(
             spm_unit, period, ["k12_tuition_and_fees"]
-        )  ## no more than $189.58 per child
+        ) 
+        child_count = add(spm_unit,period,["is_child_dependent"])
+        p = parameters(period).gov.bankruptcy
+        education_expense_allowance = child_count * p.dependent_expense
+        adjust_education_expense = min_(education_expense,education_expense_allowance)
+        
         charitable_contributions = add(
             spm_unit,
             period,
@@ -33,7 +38,7 @@ class chapter_7_bankruptcy_additonal_expenses_deductions(Variable):
             + health_savings_account_expense
             + care_expense
             + home_energy_costs
-            + education_expense
+            + adjust_education_expense
             + charitable_contributions
         )
         return total / MONTHS_IN_YEAR
