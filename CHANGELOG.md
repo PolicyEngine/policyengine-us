@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.158.0] - 2024-12-05 15:58:14
+
+### Added
+
+- Montana property tax rebate.
+
 ## [1.157.0] - 2024-12-05 15:47:47
 
 ### Added
@@ -10359,6 +10365,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.158.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.157.0...1.158.0
 [1.157.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.156.0...1.157.0
 [1.156.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.155.1...1.156.0
 [1.155.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.155.0...1.155.1
