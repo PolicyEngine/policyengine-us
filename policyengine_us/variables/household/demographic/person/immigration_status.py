@@ -4,6 +4,12 @@ from policyengine_us.model_api import *
 class ImmigrationStatus(Enum):
     CITIZEN = "Citizen"
     LEGAL_PERMANENT_RESIDENT = "Legal Permanent Resident"
+    REFUGEE = "Refugee"
+    ASYLEE = "Asylee"
+    DEPORTATION_WITHHELD = "Deportation Withheld"
+    CUBAN_HAITIAN_ENTRANT = "Cuban/Haitian Entrant"
+    CONDITIONAL_ENTRANT = "Conditional Entrant"
+    PAROLED_ONE_YEAR = "Paroled for at Least One Year"
     DACA_TPS = (
         "Deferred Action for Childhood Arrivals or Temporary Protected Status"
     )
@@ -19,6 +25,6 @@ class immigration_status(Variable):
     label = "U.S. immigration status as an enumeration type"
 
     def formula(person, period, parameters):
-        return ImmigrationStatus.encode(
-            person("immigration_status_str", period).decode_to_str()
-        )
+        status_str = person("immigration_status_str", period).decode_to_str()
+        # Use PolicyEngine's Enum encode method
+        return ImmigrationStatus.encode(status_str)
