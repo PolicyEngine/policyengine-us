@@ -2,7 +2,7 @@ from policyengine_us.model_api import *
 
 
 class chapter_7_bankruptcy_debt_payment_deductions(Variable):
-    value_type = bool
+    value_type = float
     entity = SPMUnit
     label = "Debt payment deduction"
     definition_period = MONTH

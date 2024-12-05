@@ -2,7 +2,7 @@ from policyengine_us.model_api import *
 
 
 class chapter_7_bankruptcy_additonal_expenses_deductions(Variable):
-    value_type = bool
+    value_type = float
     entity = SPMUnit
     label = "Additional expenses deductions"
     definition_period = MONTH

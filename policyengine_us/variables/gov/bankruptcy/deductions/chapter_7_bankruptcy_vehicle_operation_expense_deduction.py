@@ -2,7 +2,7 @@ from policyengine_us.model_api import *
 
 
 class chapter_7_bankruptcy_vehicle_operation_expense_deduction(Variable):
-    value_type = bool
+    value_type = float
     entity = SPMUnit
     label = "Vehicle operation expense deduction"
     definition_period = MONTH

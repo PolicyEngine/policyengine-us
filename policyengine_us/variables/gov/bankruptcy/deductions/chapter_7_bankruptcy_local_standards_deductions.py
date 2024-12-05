@@ -2,7 +2,7 @@ from policyengine_us.model_api import *
 
 
 class chapter_7_bankruptcy_local_standards_deductions(Variable):
-    value_type = bool
+    value_type = float
     entity = SPMUnit
     label = "Local standards deduction"
     definition_period = MONTH

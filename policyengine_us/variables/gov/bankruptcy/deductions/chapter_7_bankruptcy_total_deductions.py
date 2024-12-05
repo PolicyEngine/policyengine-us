@@ -5,8 +5,7 @@ class chapter_7_bankruptcy_total_deductions(Variable):
     value_type = float
     entity = SPMUnit
     label = "Total deductions from Income"
-    unit = USD
-    definition_period = YEAR
+    definition_period = MONTH
 
     adds = [
         "chapter_7_bankruptcy_food_clothing_and_others_deduction",

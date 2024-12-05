@@ -2,7 +2,7 @@ from policyengine_us.model_api import *
 
 
 class chapter_7_bankruptcy_food_clothing_and_others_deduction(Variable):
-    value_type = bool
+    value_type = float
     entity = SPMUnit
     label = "National standards of food, clothing and other items deduction"
     definition_period = MONTH
