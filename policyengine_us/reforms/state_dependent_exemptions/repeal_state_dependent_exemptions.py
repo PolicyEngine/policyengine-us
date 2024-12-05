@@ -371,10 +371,11 @@ def create_repeal_state_dependent_exemptions() -> Reform:
                 exempt_status.base[filing_status] + personal_exemptions_added
             )
 
-    class wi_exemption(Variable):
+    # Using head and spouse count instead of exemptions count
+    class wi_base_exemption(Variable):
         value_type = float
         entity = TaxUnit
-        label = "Wisconsin exemption"
+        label = "Wisconsin base exemption"
         unit = USD
         definition_period = YEAR
         reference = (
@@ -389,19 +390,7 @@ def create_repeal_state_dependent_exemptions() -> Reform:
         def formula(tax_unit, period, parameters):
             # compute base exemption amount
             p = parameters(period).gov.states.wi.tax.income
-            base_amount = (
-                tax_unit("head_spouse_count", period) * p.exemption.base
-            )
-            # compute extra exemption amount
-            elderly_head = (
-                tax_unit("age_head", period) >= p.exemption.old_age
-            ).astype(int)
-            elderly_spouse = (
-                tax_unit("age_spouse", period) >= p.exemption.old_age
-            ).astype(int)
-            extra_amount = (elderly_head + elderly_spouse) * p.exemption.extra
-            # return total exemption amount
-            return base_amount + extra_amount
+            return tax_unit("head_spouse_count", period) * p.exemption.base
 
     class reform(Reform):
         def apply(self):
@@ -433,7 +422,7 @@ def create_repeal_state_dependent_exemptions() -> Reform:
             self.update_variable(ia_exemption_credit)
             self.update_variable(ks_count_exemptions)
             self.update_variable(ma_income_tax_exemption_threshold)
-            self.update_variable(wi_exemption)
+            self.update_variable(wi_base_exemption)
 
     return reform
 

@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class wi_exemption(Variable):
+class wi_additional_exemption(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Wisconsin exemption"
+    label = "Wisconsin additional exemption"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -17,9 +17,6 @@ class wi_exemption(Variable):
     defined_for = StateCode.WI
 
     def formula(tax_unit, period, parameters):
-        # compute base exemption amount
-        p = parameters(period).gov.states.wi.tax.income
-        base_amount = tax_unit("exemptions_count", period) * p.exemption.base
         # compute extra exemption amount
         elderly_head = (
             tax_unit("age_head", period) >= p.exemption.old_age
@@ -27,6 +24,4 @@ class wi_exemption(Variable):
         elderly_spouse = (
             tax_unit("age_spouse", period) >= p.exemption.old_age
         ).astype(int)
-        extra_amount = (elderly_head + elderly_spouse) * p.exemption.extra
-        # return total exemption amount
-        return base_amount + extra_amount
+        return (elderly_head + elderly_spouse) * p.exemption.extra
