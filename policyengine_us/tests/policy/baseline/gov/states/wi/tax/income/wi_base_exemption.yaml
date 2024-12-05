@@ -1,0 +1,7 @@
+- name: WI exemption unit test 1
+  period: 2021
+  input:
+    exemptions_count: 5
+    state_code: WI
+  output:
+    wi_base_exemption: 5 * 700
