@@ -9,7 +9,7 @@ class is_west_region(Variable):
     reference = "https://www.irs.gov/businesses/small-businesses-self-employed/local-standards-transportation"
 
     def formula(spm_unit, period, parameters):
-        state_code = spm_unit.household("state_code_str", period)
+        state_code = spm_unit.household("state_code", period)
 
         p = parameters(
             period

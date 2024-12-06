@@ -20,7 +20,8 @@ class is_presumption_of_abuse(Variable):
         monthly_disposable_income_60_months = (
             monthly_disposable_income * MONTHS_IN_YEAR * 5
         )
+        return monthly_disposable_income_60_months > 15150
         # if monthly_disposable_income_60_months < 9075, false,
         # if monthly_disposable_income_60_months > 15150, true
         # if 9075 < monthly_disposable_income_60_months < 15150, go line 41
-        ##
+            ##

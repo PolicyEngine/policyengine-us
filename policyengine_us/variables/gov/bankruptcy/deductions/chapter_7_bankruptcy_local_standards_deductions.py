@@ -48,7 +48,7 @@ class chapter_7_bankruptcy_local_standards_deductions(Variable):
             / MONTHS_IN_YEAR
         )
 
-        have_one_ore_more_vehicles = household_vehicles_owned >= 1
+        have_one_ore_more_vehicles = qualify_vehicles_owned >= 1
         capped_public_transportation_expense = min_(
             public_transportation_expense, public_transportation_allowance
         )
