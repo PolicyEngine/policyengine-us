@@ -1,0 +1,53 @@
+description: The IRS limits the expense of south region operating costs by the local standards to this amount, based on the number of owned vehicle, under the Chapter 7 Bankruptcy means test.
+values:
+South_region:
+  1:
+    2024-01-01: 260
+  2:
+    2024-01-01: 520
+Atlanta:
+  1:
+    2024-01-01: 304
+  2:
+    2024-01-01: 608
+Baltimore:
+  1: 
+    2024-01-01: 272
+  2:
+    2024-01-01: 544
+Dallas_Ft.Worth:
+  1:
+    2024-01-01: 292
+  2:
+    2024-01-01: 584
+Houston:
+  1:
+    2024-01-01: 332
+  2:
+    2024-01-01: 664
+Miami:
+  1: 
+    2024-01-01: 355
+  2:
+    2024-01-01: 710
+Tampa:
+  1:
+    2024-01-01: 305
+  2:
+    2024-01-01: 610
+Washington_DC:
+  1:
+    2024-01-01: 301
+  2:
+    2024-01-01: 602
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Local standards of operating costs amount
+  breakdown:
+  - south_county
+  - list(range(1,3))
+  reference:
+    - title: Local standards -- Transportation
+      href: https://www.irs.gov/businesses/small-businesses-self-employed/local-standards-transportation

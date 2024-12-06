@@ -1,0 +1,44 @@
+description: The IRS limits the expense of midwest region operating costs by the local standards to this amount, based on the number of owned vehicle, under the Chapter 7 Bankruptcy means test.
+
+values:
+Midwest_region:
+  1:
+    2024-01-01: 239
+  2:
+    2024-01-01: 478
+Chicago:
+  1:
+    2024-01-01: 266
+  2:
+    2024-01-01: 532
+Cleveland:
+  1: 
+    2024-01-01: 239
+  2:
+    2024-01-01: 478
+Detroit:
+  1:
+    2024-01-01: 299
+  2:
+    2024-01-01: 598
+Minneapolis_St.Paul:
+  1: 
+    2024-01-01: 243
+  2:
+    2024-01-01: 486
+St.Louis:
+  1:
+    2024-01-01: 220
+  2:
+    2024-01-01: 440
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Local standards of operating costs amount
+  breakdown:
+  - midwest_county
+  - list(range(1,3))
+  reference:
+    - title: Local standards -- Transportation
+      href: https://www.irs.gov/businesses/small-businesses-self-employed/local-standards-transportation
