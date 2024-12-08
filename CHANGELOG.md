@@ -5,6 +5,67 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.160.0] - 2024-12-05 16:48:14
+
+### Added
+
+- Second earner tax reform.
+
+## [1.159.0] - 2024-12-05 16:42:58
+
+### Added
+
+- Add multiple state exemptions to the repeal of state dependent exemptions reform.
+
+## [1.158.0] - 2024-12-05 15:58:14
+
+### Added
+
+- Montana property tax rebate.
+
+## [1.157.0] - 2024-12-05 15:47:47
+
+### Added
+
+- Remove CBO elasticities toggle.
+
+## [1.156.0] - 2024-12-04 21:38:01
+
+### Added
+
+- Apply the TCJA mortgage value limits under the mortgage interest deduction.
+
+## [1.155.1] - 2024-12-04 19:11:45
+
+### Fixed
+
+- Remove the SNAP child support deduction from the net income computation if applied to gross income.
+
+## [1.155.0] - 2024-12-03 20:23:24
+
+### Added
+
+- Add the Arizona charitable contributions credit to the net income tree.
+
+## [1.154.2] - 2024-12-03 20:14:27
+
+### Changed
+
+- Upgraded minimum policyengine-core version
+- Allowed more flexibility in policyengine-us-data version
+
+## [1.154.1] - 2024-12-01 16:39:30
+
+### Fixed
+
+- Arkansas 2023 low income tax table parameters.
+
+## [1.154.0] - 2024-11-30 18:08:00
+
+### Added
+
+- Louisiana 2025 standard deduction structure.
+
 ## [1.153.0] - 2024-11-25 23:01:42
 
 ### Added
@@ -10316,6 +10377,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.160.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.159.0...1.160.0
+[1.159.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.158.0...1.159.0
+[1.158.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.157.0...1.158.0
+[1.157.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.156.0...1.157.0
+[1.156.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.155.1...1.156.0
+[1.155.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.155.0...1.155.1
+[1.155.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.154.2...1.155.0
+[1.154.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.154.1...1.154.2
+[1.154.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.154.0...1.154.1
+[1.154.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.153.0...1.154.0
 [1.153.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.152.0...1.153.0
 [1.152.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.151.0...1.152.0
 [1.151.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.150.1...1.151.0

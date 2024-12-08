@@ -8746,3 +8746,55 @@
     - Louisiana 2025 flat income tax rate.
     - Louisiana 2025 retirement income exemption increase.
   date: 2024-11-25 23:01:42
+- bump: minor
+  changes:
+    added:
+    - Louisiana 2025 standard deduction structure.
+  date: 2024-11-30 18:08:00
+- bump: patch
+  changes:
+    fixed:
+    - Arkansas 2023 low income tax table parameters.
+  date: 2024-12-01 16:39:30
+- bump: patch
+  changes:
+    changed:
+    - Upgraded minimum policyengine-core version
+    - Allowed more flexibility in policyengine-us-data version
+  date: 2024-12-03 20:14:27
+- bump: minor
+  changes:
+    added:
+    - Add the Arizona charitable contributions credit to the net income tree.
+  date: 2024-12-03 20:23:24
+- bump: patch
+  changes:
+    fixed:
+    - Remove the SNAP child support deduction from the net income computation if applied
+      to gross income.
+  date: 2024-12-04 19:11:45
+- bump: minor
+  changes:
+    added:
+    - Apply the TCJA mortgage value limits under the mortgage interest deduction.
+  date: 2024-12-04 21:38:01
+- bump: minor
+  changes:
+    added:
+    - Remove CBO elasticities toggle.
+  date: 2024-12-05 15:47:47
+- bump: minor
+  changes:
+    added:
+    - Montana property tax rebate.
+  date: 2024-12-05 15:58:14
+- bump: minor
+  changes:
+    added:
+    - Add multiple state exemptions to the repeal of state dependent exemptions reform.
+  date: 2024-12-05 16:42:58
+- bump: minor
+  changes:
+    added:
+    - Second earner tax reform.
+  date: 2024-12-05 16:48:14

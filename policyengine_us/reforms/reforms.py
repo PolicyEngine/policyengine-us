@@ -62,8 +62,8 @@ from .state_dependent_exemptions import (
 from .ctc import (
     create_ctc_older_child_supplement_reform,
 )
-from .ctc.eppc import (
-    create_expanded_ctc_reform,
+from .second_earner import (
+    create_second_earner_tax_reform,
 )
 
 
@@ -145,7 +145,9 @@ def create_structural_reforms_from_parameters(parameters, period):
     ctc_older_child_supplement = create_ctc_older_child_supplement_reform(
         parameters, period
     )
-    expanded_ctc = create_expanded_ctc_reform(parameters, period)
+    second_earner_tax_reform = create_second_earner_tax_reform(
+        parameters, period
+    )
 
     reforms = [
         afa_reform,
@@ -176,7 +178,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         salt_phase_out,
         repeal_state_dependent_exemptions,
         ctc_older_child_supplement,
-        expanded_ctc,
+        second_earner_tax_reform,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
 
