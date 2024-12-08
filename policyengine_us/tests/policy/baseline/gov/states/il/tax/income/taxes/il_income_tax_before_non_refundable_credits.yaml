@@ -5,7 +5,7 @@
     il_taxable_income: 1204985
     state_code: IL
   output:
-    il_income_tax_before_nonrefundable_credits: (1204985 * 0.0495) + 12345
+    il_income_tax_before_non_refundable_credits: (1204985 * 0.0495) + 12345
 - name: "Test #2"
   period: 2021
   input:
@@ -13,7 +13,7 @@
     il_taxable_income: 259082
     state_code: IL
   output:
-    il_income_tax_before_nonrefundable_credits: (259082 * 0.0495) + 19034
+    il_income_tax_before_non_refundable_credits: (259082 * 0.0495) + 19034
 - name: "Test #3"
   period: 2021
   input:
@@ -21,4 +21,4 @@
     il_taxable_income: 2843756
     state_code: IL
   output:
-    il_income_tax_before_nonrefundable_credits: (2843756 * 0.0495) + 34598
+    il_income_tax_before_non_refundable_credits: (2843756 * 0.0495) + 34598
