@@ -8,17 +8,16 @@ def create_expanded_ctc() -> Reform:
         label = "CTC phase-in"
         unit = USD
         definition_period = YEAR
-        reference = "https://www.law.cornell.edu/uscode/text/26/24#d"
+        reference = "https://eppc.org/wp-content/uploads/2024/10/Tax-Teams-Comment-on-Working-Families.pdf"
 
         def formula(tax_unit, period, parameters):
-            p = parameters(period).gov.irs.credits.ctc.refundable.phase_in
-            rate = p.rate
             tax = tax_unit("income_tax_pre_ctc", period)
             total_benefits = tax_unit.household("household_benefits", period)
             max_benefit_amount = tax_unit("maximum_benefits", period)
             benefit_reduction = max_benefit_amount - total_benefits
             tax_with_benefit_reduction = tax + benefit_reduction
-            return max_(rate * tax_with_benefit_reduction, 0)
+            p = parameters(period).gov.irs.credits.ctc.refundable.phase_in
+            return max_(p.rate * tax_with_benefit_reduction, 0)
 
     class income_tax_non_refundable_credits_pre_ctc(Variable):
         value_type = float
@@ -146,7 +145,7 @@ def create_expanded_ctc() -> Reform:
                 * children
                 * p_school_meals.school_days
             )
-            # Get tanf grant standards (maximum amounts)
+            # Get TANF grant standards (maximum amounts)
             max_federal_tanf = tax_unit.spm_unit("tanf_max_amount", period)
             max_ny_tanf = tax_unit.spm_unit("ny_tanf_grant_standard", period)
             tanf_dem_eligible = tax_unit.spm_unit(
