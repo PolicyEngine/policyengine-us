@@ -1,5 +1,5 @@
 description: The IRS limits the expense of mortgage or rent by the local standards to this amount, based on household size under the chapter 7 bankruptcy means test.
-values:
+
 AL:
   1:
     2024-01-01: 677
@@ -11,7 +11,7 @@ AL:
     2024-01-01: 935
   5: 
     2024-01-01: 950
-AL:
+AK:
   1:
     2024-01-01: 1_049
   2:
@@ -451,7 +451,7 @@ SC:
     2024-01-01: 1_046
   5: 
     2024-01-01: 1_063
-NJ:
+SD:
   1:
     2024-01-01: 749
   2:
@@ -563,7 +563,7 @@ WY:
     2024-01-01: 1_465
 metadata:
   unit: currency-USD
-  period: year
+  period: month
   label: Local standards of mortgage or rent expense 
   breakdown:
   - state_code

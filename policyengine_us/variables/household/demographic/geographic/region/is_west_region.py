@@ -13,6 +13,6 @@ class is_west_region(Variable):
 
         p = parameters(
             period
-        ).gov.bankruptcy.local_standards.vehicle_operation.state_group
+        ).household.state_group
 
         return np.isin(state_code, p.west)

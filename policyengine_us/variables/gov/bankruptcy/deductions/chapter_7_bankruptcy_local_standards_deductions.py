@@ -28,7 +28,7 @@ class chapter_7_bankruptcy_local_standards_deductions(Variable):
         )
 
         qualify_vehicles_owned = add(spm_unit,period,["is_vehicle_loaned"])
-        qualify_vehicles_owned_cap = min_(qualify_vehicles_owned, 2)
+        qualify_vehicles_owned_cap = min_(qualify_vehicles_owned, p.vehicle_operation.vehicles_owned_cap)
         ownership_costs_allowance = p.vehicle_operation.ownership_costs[
             qualify_vehicles_owned_cap
         ]

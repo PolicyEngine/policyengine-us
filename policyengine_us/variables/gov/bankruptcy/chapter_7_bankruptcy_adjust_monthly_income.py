@@ -12,7 +12,6 @@ class chapter_7_bankruptcy_adjust_monthly_income(Variable):
     )
     documentation = "Line 4 in form 122A-2"
 
-    # Can I create a list parameter which includes all of the following varaibles?
     def formula(spm_unit, period, parameters):
         employment_income = add(spm_unit, period, ["irs_employment_income"])
         alimony_income = add(spm_unit, period, ["alimony_income"])

@@ -1,5 +1,5 @@
 description: The IRS limits the expense of insurance and operating by the local standards to this amount, based on household size under the chapter 7 bankruptcy means test.
-values:
+
 AL:
   1:
     2024-01-01: 594
@@ -11,7 +11,7 @@ AL:
     2024-01-01: 820 
   5: 
     2024-01-01: 834
-AL:
+AK:
   1:
     2024-01-01: 705
   2:
@@ -297,7 +297,7 @@ MT:
     2024-01-01: 760
   5: 
     2024-01-01: 773
- NE:
+NE:
   1:
     2024-01-01: 592
   2:
@@ -563,7 +563,7 @@ WY:
     2024-01-01: 777
 metadata:
   unit: currency-USD
-  period: year
+  period: month
   label: Local standards of insurance and operating expense
   breakdown:
   - state_code

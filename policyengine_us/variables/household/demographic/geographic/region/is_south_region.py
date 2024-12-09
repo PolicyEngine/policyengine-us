@@ -13,6 +13,6 @@ class is_south_region(Variable):
 
         p = parameters(
             period
-        ).gov.bankruptcy.local_standards.vehicle_operation.state_group
+        ).household.state_group
 
         return np.isin(state, p.south)
