@@ -1,0 +1,15 @@
+- name: Property tax less than rebate amount
+  period: 2023
+  input:
+    real_estate_taxes: 600
+    state_code: MT
+  output:
+    mt_property_tax_rebate: 600
+
+- name: Property tax less than rebate amount
+  period: 2023
+  input:
+    real_estate_taxes: 676
+    state_code: MT
+  output:
+    mt_property_tax_rebate: 675
