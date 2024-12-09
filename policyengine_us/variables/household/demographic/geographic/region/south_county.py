@@ -26,7 +26,7 @@ class south_county(Variable):
 
         p = parameters(
             period
-        ).gov.bankruptcy.local_standards.vehicle_operation.region_group
+        ).household.county_group
 
         return select(
             [

@@ -1,20 +1,20 @@
 - name: New Mexico is in west region.
   period: 2024
   input:
-    state_code_str: NM
+    state_code: NM
   output:
     is_west_region: true
 
 - name: California is in west region. 
   period: 2024
   input:
-    state_code_str: CA
+    state_code: CA
   output:
     is_west_region: true
 
 - name: Massachusetts is not in west region.
   period: 2024
   input:
-    state_code_str: MA
+    state_code: MA
   output:
     is_west_region: false

@@ -9,10 +9,10 @@ class is_south_region(Variable):
     reference = "https://www.irs.gov/businesses/small-businesses-self-employed/local-standards-transportation"
 
     def formula(spm_unit, period, parameters):
-        state = spm_unit.household("state_code", period)
+        state_code = spm_unit.household("state_code", period).decode_to_str()
 
         p = parameters(
             period
         ).household.state_group
 
-        return np.isin(state, p.south)
+        return np.isin(state_code, p.south)

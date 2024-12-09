@@ -23,11 +23,11 @@ class west_county(Variable):
     label = "West region state group"
 
     def formula(household, period, parameters):
-        county = household("county_str", period)
+        county = household("county", period).decode_to_str()
 
         p = parameters(
             period
-        ).gov.bankruptcy.local_standards.vehicle_operation.region_groupp
+        ).household.county_group
 
         return select(
             [
