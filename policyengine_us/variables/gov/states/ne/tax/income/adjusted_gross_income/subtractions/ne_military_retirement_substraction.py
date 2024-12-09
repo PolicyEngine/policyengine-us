@@ -13,8 +13,12 @@ class ne_military_retirement_subtraction(Variable):
         p = parameters(
             period
         ).gov.states.ne.tax.income.agi.subtractions.military_retirement
-        military_retirement_benefits = add(
-            tax_unit, period, ["military_retirement_pay"]
+        person = tax_unit.members
+        age = person("age", period)
+        age_eligible = age >= p.age_threshold
+        military_retirement_benefit = person("military_retirement_pay", period)
+        military_retirement_benefits = tax_unit.sum(
+            military_retirement_benefit * age_eligible
         )
         # From 2015 to 2021, the tax filer may elect to exclude 40% of the military retirement benefit income for 7 consecutive years or elect to receive 15% exclusion for all tax years after age 67.
         return military_retirement_benefits * p.fraction
