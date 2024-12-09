@@ -2,9 +2,11 @@ description: Nebraska subtracts these sources from adjusted gross income.
 values:
   2021-01-01:
     - ne_social_security_subtraction
+    - ne_military_retirement_subtraction
   2024-01-01:
     - ne_social_security_subtraction
     - taxable_public_pension_income
+    - ne_military_retirement_subtraction
     
 
 metadata:
