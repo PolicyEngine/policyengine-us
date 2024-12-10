@@ -2,6 +2,8 @@ description: Filers electing to itemize for state tax or other purposes follow t
 metadata:
   unit: currency-USD
   period: year
+  breakdown:
+  - state_code
   label: Optional State Sales Rate
   reference:
     - title: 2023 Optional State Sales Tax
