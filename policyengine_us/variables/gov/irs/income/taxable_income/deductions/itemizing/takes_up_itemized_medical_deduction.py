@@ -10,5 +10,7 @@ class takes_up_itemized_medical_deduction(Variable):
     def formula(tax_unit, period, parameters):
         if not hasattr(tax_unit.simulation, "dataset"):
             return True
-        takeup_rate = parameters(period).gov.irs.deductions.medical.takeup
+        takeup_rate = parameters(
+            period
+        ).gov.irs.deductions.itemized.medical.takeup
         return random(tax_unit) < takeup_rate
