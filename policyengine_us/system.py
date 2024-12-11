@@ -29,13 +29,22 @@ from policyengine_core.parameters.operations.uprate_parameters import (
 from .tools.default_uprating import add_default_uprating
 from policyengine_us_data import DATASETS, CPS_2024
 
+from typing import Annotated
+
+
 COUNTRY_DIR = Path(__file__).parent
 
 CURRENT_YEAR = 2024
-year_start = str(CURRENT_YEAR) + "-01-01"
+DEFAULT_START_DATE = str(CURRENT_YEAR) + "-01-01"
 
 
 class CountryTaxBenefitSystem(TaxBenefitSystem):
+    """
+    The tax-benefit system for the United States.
+    This structure is a modification of the -core
+    package's base TaxBenefitSystem class.
+    """
+
     variables_dir = COUNTRY_DIR / "variables"
     auto_carry_over_input_variables = True
     basic_inputs = [
@@ -45,7 +54,19 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
     ]
     modelled_policies = COUNTRY_DIR / "modelled_policies.yaml"
 
-    def __init__(self, reform=None):
+    def __init__(
+        self,
+        reform: tuple | None = None,
+        start_instant: Annotated[
+            str, "ISO date format YYYY-MM-DD"
+        ] = DEFAULT_START_DATE,
+    ):
+        """
+        Args:
+            reform (tuple | None): A tuple of reforms to apply to the system.
+            If no reform is applied, the system will be initialized with the
+            default tax/benefit parameters.
+        """
         super().__init__(entities, reform=reform)
         self.load_parameters(COUNTRY_DIR / "parameters")
         self.add_abolition_parameters()
@@ -62,7 +83,7 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
         add_default_uprating(self)
 
         structural_reform = create_structural_reforms_from_parameters(
-            self.parameters, year_start
+            self.parameters, start_instant
         )
         if reform is None:
             reform = ()
@@ -85,6 +106,14 @@ system = CountryTaxBenefitSystem()
 
 
 class Simulation(CoreSimulation):
+    """
+    A simulation of the tax-benefit system for the United States,
+    defined against the base simulation class in the -core package.
+
+    This simulation is commonly used for household-level impacts, as it
+    does not include society-wide microdata.
+    """
+
     default_tax_benefit_system = CountryTaxBenefitSystem
     default_tax_benefit_system_instance = system
     default_role = "member"
@@ -93,10 +122,13 @@ class Simulation(CoreSimulation):
     datasets = DATASETS
 
     def __init__(self, *args, **kwargs):
+        start_instant: Annotated[str, "ISO date format YYYY-MM-DD"] = (
+            kwargs.pop("start_instant", DEFAULT_START_DATE)
+        )
         super().__init__(*args, **kwargs)
 
         reform = create_structural_reforms_from_parameters(
-            self.tax_benefit_system.parameters, year_start
+            self.tax_benefit_system.parameters, start_instant
         )
         if reform is not None:
             self.apply_reform(reform)
@@ -137,6 +169,14 @@ class Simulation(CoreSimulation):
 
 
 class Microsimulation(CoreMicrosimulation):
+    """
+    A microsimulation of the tax-benefit system for the United States,
+    defined against the base microsimulation class in the -core package.
+
+    This simulation contains society-wide representative microdata, and is
+    thus suitable for society-level impacts.
+    """
+
     default_tax_benefit_system = CountryTaxBenefitSystem
     default_tax_benefit_system_instance = system
     default_dataset = CPS_2024
@@ -147,10 +187,13 @@ class Microsimulation(CoreMicrosimulation):
     datasets = DATASETS
 
     def __init__(self, *args, **kwargs):
+        start_instant: Annotated[str, "ISO date format YYYY-MM-DD"] = (
+            kwargs.pop("start_instant", DEFAULT_START_DATE)
+        )
         super().__init__(*args, **kwargs)
 
         reform = create_structural_reforms_from_parameters(
-            self.tax_benefit_system.parameters, year_start
+            self.tax_benefit_system.parameters, start_instant
         )
         if reform is not None:
             self.apply_reform(reform)
