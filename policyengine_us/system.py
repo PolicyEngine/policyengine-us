@@ -49,9 +49,11 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
         If no reform is applied, the system will be initialized with the
         default tax/benefit parameters.
 
-        start_instant(str: ISO date format YYYY-MM-DD): The date at which the simulation begins;
-        this is a temporary patch for structural reforms, and must be used when a structural reform param
-        begins on a date other than the first day of the current year.
+        start_instant(str: ISO date format YYYY-MM-DD): Optional; The date 
+        at which the simulation begins; defaults to 2024-01-01; this is a 
+        temporary patch for structural reforms, and must be set to the start
+        date of a structural reform parameter if it begins on a date other 
+        than the first day of the current year.
     """
 
     variables_dir = COUNTRY_DIR / "variables"
@@ -117,9 +119,11 @@ class Simulation(CoreSimulation):
     does not include society-wide microdata.
 
     Args:
-        start_instant(str: ISO date format YYYY-MM-DD): The date at which the simulation begins;
-        this is a temporary patch for structural reforms, and must be used when a structural reform param
-        begins on a date other than the first day of the current year.
+        start_instant(str: ISO date format YYYY-MM-DD): Optional; The date 
+        at which the simulation begins; defaults to 2024-01-01; this is a 
+        temporary patch for structural reforms, and must be set to the start
+        date of a structural reform parameter if it begins on a date other 
+        than the first day of the current year.
     """
 
     default_tax_benefit_system = CountryTaxBenefitSystem
@@ -185,9 +189,11 @@ class Microsimulation(CoreMicrosimulation):
     thus suitable for society-level impacts.
 
     Args:
-        start_instant(str: ISO date format YYYY-MM-DD): The date at which the simulation begins;
-        this is a temporary patch for structural reforms, and must be used when a structural reform param
-        begins on a date other than the first day of the current year.
+        start_instant(str: ISO date format YYYY-MM-DD): Optional; The date 
+        at which the simulation begins; defaults to 2024-01-01; this is a 
+        temporary patch for structural reforms, and must be set to the start
+        date of a structural reform parameter if it begins on a date other 
+        than the first day of the current year.
     """
 
     default_tax_benefit_system = CountryTaxBenefitSystem
