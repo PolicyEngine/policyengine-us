@@ -17,14 +17,12 @@ class midwest_county(Variable):
     default_value = MidWestCounty.MIDWEST_DEFAULT
     definition_period = YEAR
     defined_for = "is_midwest_region"
-    label = "Midwest region state group"
+    label = "Midwest region county group"
 
     def formula(household, period, parameters):
         county = household("county_str", period)
 
-        p = parameters(
-            period
-        ).household.county_group
+        p = parameters(period).household.county_group
 
         return select(
             [

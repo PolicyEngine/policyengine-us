@@ -20,14 +20,14 @@ class chapter_7_bankruptcy_additonal_expenses_deductions(Variable):
         home_energy_costs = spm_unit.household(
             "current_home_energy_use", period
         )
-        education_expense = add(
-            spm_unit, period, ["k12_tuition_and_fees"]
-        ) 
-        child_count = add(spm_unit,period,["is_child_dependent"])
+        education_expense = add(spm_unit, period, ["k12_tuition_and_fees"])
+        child_count = add(spm_unit, period, ["is_child_dependent"])
         p = parameters(period).gov.bankruptcy
         education_expense_allowance = child_count * p.dependent_expense
-        adjust_education_expense = min_(education_expense,education_expense_allowance)
-        
+        adjust_education_expense = min_(
+            education_expense, education_expense_allowance
+        )
+
         charitable_contributions = add(
             spm_unit,
             period,

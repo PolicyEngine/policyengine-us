@@ -19,24 +19,22 @@ class south_county(Variable):
     default_value = SouthCounty.SOUTH_DEFAULT
     definition_period = YEAR
     defined_for = "is_south_region"
-    label = "South region state group"
+    label = "South region county group"
 
     def formula(household, period, parameters):
         county = household("county_str", period)
 
-        p = parameters(
-            period
-        ).household.county_group
+        p = parameters(period).household.county_group
 
         return select(
             [
                 np.isin(county, p.south.atlanta),
-                np.isin(county, p.northeast.baltimore),
-                np.isin(county, p.northeast.dallas_ft_worth),
-                np.isin(county, p.northeast.houston),
-                np.isin(county, p.northeast.miami),
-                np.isin(county, p.northeast.tampa),
-                np.isin(county, p.northeast.washington_dc),
+                np.isin(county, p.south.baltimore),
+                np.isin(county, p.south.dallas_ft_worth),
+                np.isin(county, p.south.houston),
+                np.isin(county, p.south.miami),
+                np.isin(county, p.south.tampa),
+                np.isin(county, p.south.washington_dc),
             ],
             [
                 SouthCounty.ATLANTA,

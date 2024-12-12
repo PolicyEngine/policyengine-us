@@ -15,14 +15,12 @@ class northeast_county(Variable):
     default_value = NorthEastCounty.NORTHEAST_DEFAULT
     definition_period = YEAR
     defined_for = "is_northeast_region"
-    label = "Northeast region state group"
+    label = "Northeast region county group"
 
     def formula(household, period, parameters):
         county = household("county_str", period)
 
-        p = parameters(
-            period
-        ).household.county_group
+        p = parameters(period).household.county_group
 
         return select(
             [

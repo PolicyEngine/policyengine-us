@@ -8,5 +8,5 @@ class has_a_vehicle_loan(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        total_mortage_expenses = person("vehicle_mortgage_expense",period)  
-        return total_mortage_expenses > 0 
+        total_mortage_expenses = person("vehicle_mortgage_expense", period)
+        return total_mortage_expenses > 0

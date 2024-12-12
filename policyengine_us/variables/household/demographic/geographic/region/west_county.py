@@ -20,14 +20,12 @@ class west_county(Variable):
     default_value = WestCounty.WEST_DEFAULT
     definition_period = YEAR
     defined_for = "is_west_region"
-    label = "West region state group"
+    label = "West region county group"
 
     def formula(household, period, parameters):
         county = household("county", period).decode_to_str()
 
-        p = parameters(
-            period
-        ).household.county_group
+        p = parameters(period).household.county_group
 
         return select(
             [

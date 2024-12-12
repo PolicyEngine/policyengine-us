@@ -13,9 +13,10 @@ class chapter_7_bankruptcy_out_of_pocket_health_care_deduction(Variable):
         p = parameters(
             period
         ).gov.bankruptcy.national_standards.out_of_pocket_health_care.amount
-        
-        age = spm_unit.members("age",period)
-        out_of_pocket_health_care_allowance = p.calc(age)  
 
-        return spm_unit.sum(out_of_pocket_health_care_allowance)*MONTHS_IN_YEAR
-    
+        age = spm_unit.members("age", period)
+        out_of_pocket_health_care_allowance = p.calc(age)
+
+        return (
+            spm_unit.sum(out_of_pocket_health_care_allowance) * MONTHS_IN_YEAR
+        )

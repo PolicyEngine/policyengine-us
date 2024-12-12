@@ -10,10 +10,8 @@ class is_presumption_of_abuse(Variable):
     documentation = "Line 39-xx in form 122A-2"
 
     def formula(spm_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.bankruptcy.presumption_abuse
-        
+        p = parameters(period).gov.bankruptcy.presumption_abuse
+
         adjusted_monthly_income = spm_unit(
             "chapter_7_bankruptcy_adjust_monthly_income", period
         )
@@ -24,11 +22,18 @@ class is_presumption_of_abuse(Variable):
         total_disposable_income = (
             monthly_disposable_income * MONTHS_IN_YEAR * 5
         )
-        nonpriority_unsecured_debt = spm_unit("chapter_7_bankruptcy_nonpriority_unsecured_debt",period)
-        adjust_nonpriority_unsecured_debt = nonpriority_unsecured_debt*p.rate
+        nonpriority_unsecured_debt = spm_unit(
+            "chapter_7_bankruptcy_nonpriority_unsecured_debt", period
+        )
+        adjust_nonpriority_unsecured_debt = nonpriority_unsecured_debt * p.rate
         is_income_high = total_disposable_income > p.amount.higher
-        is_income_in_between = p.amount.lower < total_disposable_income < p.amount.higher
-        is_income_exceeding_debt = total_disposable_income >= adjust_nonpriority_unsecured_debt
-        
-        return is_income_high | (is_income_in_between & is_income_exceeding_debt)
-        
+        is_income_in_between = (
+            p.amount.lower < total_disposable_income < p.amount.higher
+        )
+        is_income_exceeding_debt = (
+            total_disposable_income >= adjust_nonpriority_unsecured_debt
+        )
+
+        return is_income_high | (
+            is_income_in_between & is_income_exceeding_debt
+        )

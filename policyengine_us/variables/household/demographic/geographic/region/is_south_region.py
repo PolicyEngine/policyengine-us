@@ -11,8 +11,6 @@ class is_south_region(Variable):
     def formula(spm_unit, period, parameters):
         state_code = spm_unit.household("state_code", period).decode_to_str()
 
-        p = parameters(
-            period
-        ).household.state_group
+        p = parameters(period).household.state_group
 
         return np.isin(state_code, p.south)
