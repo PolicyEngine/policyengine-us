@@ -1,0 +1,26 @@
+- name: oregon liheap eligibility 2021 eligible single household
+  period: 2021
+  input:
+    spm_unit_size: 1
+    state_code_str: OR
+    adjusted_gross_income: 25_000
+  output:
+    or_liheap_eligibility: true
+
+- name: oregon liheap eligibility 2023 ineligible two-person household
+  period: 2023
+  input:
+    spm_unit_size: 2
+    state_code_str: OR
+    adjusted_gross_income: 50_000
+  output:
+    or_liheap_eligibility: false
+
+- name: oregon liheap eligibility 2024 eligible four-person household
+  period: 2024
+  input:
+    spm_unit_size: 4
+    state_code_str: OR
+    adjusted_gross_income: 60_000
+  output:
+    or_liheap_eligibility: true
