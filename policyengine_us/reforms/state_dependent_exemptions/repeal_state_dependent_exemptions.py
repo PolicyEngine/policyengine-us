@@ -406,90 +406,6 @@ def create_repeal_state_dependent_exemptions() -> Reform:
             p = parameters(period).gov.states.de.tax.income.credits
             head_spouse_count = tax_unit("head_spouse_count", period)
             return p.personal_credits.personal * head_spouse_count
-        
-    class ca_exemptions(Variable):
-        value_type = float
-        entity = TaxUnit
-        label = "CA Exemptions"
-        defined_for = StateCode.CA
-        unit = USD
-        definition_period = YEAR
-        reference = "https://www.ftb.ca.gov/forms/2021/2021-540.pdf"
-
-        def formula(tax_unit, period, parameters):
-            p = parameters(period).gov.states.ca.tax.income.exemptions
-            agi = tax_unit("adjusted_gross_income", period)
-            filing_status = tax_unit("filing_status", period)
-
-             # calculating phase out amount per credit
-            over_agi_threshold = max_(0, agi - p.phase_out.start[filing_status])
-            increments = np.ceil(
-                over_agi_threshold / p.phase_out.increment[filing_status]
-            )
-            exemption_reduction = increments * p.phase_out.amount
-
-            # Personal Exemptions
-            personal_exemption_count = p.personal_scale[filing_status]
-            personal_aged_blind_exemption_count = (
-                personal_exemption_count + tax_unit("aged_blind_count", period)
-            )
-            personal_aged_blind_exemption = max_(
-                0,
-                personal_aged_blind_exemption_count
-                * (p.amount - exemption_reduction),
-            )
-
-            # total exemptions
-            return personal_aged_blind_exemption
-
-    class ia_exemption_credit(Variable):
-        value_type = float
-        entity = TaxUnit
-        label = "Iowa exemption credit"
-        unit = USD
-        definition_period = YEAR
-        reference = (
-        "https://tax.iowa.gov/sites/default/files/2021-12/IA6251%2841131%29.pdf"
-        "https://tax.iowa.gov/sites/default/files/2023-01/IA6251%2841131%29.pdf"
-        )
-        defined_for = StateCode.IA
-
-        def formula(tax_unit, period, parameters):
-            # count adult and dependent exemptions
-            adult_count = tax_unit("head_spouse_count", period)
-            filing_status = tax_unit("filing_status", period)
-            hoh_status = filing_status.possible_values.HEAD_OF_HOUSEHOLD
-            hoh_bonus = where(filing_status == hoh_status, 1, 0)
-            # count extra adult exemptions based on being elderly and/or blind
-            p = parameters(period).gov.states.ia.tax.income
-            exemption = p.credits.exemption
-            elder_head = tax_unit("age_head", period) >= exemption.elderly_age
-            elder_spouse = tax_unit("age_spouse", period) >= exemption.elderly_age
-            elder_count = elder_head.astype(int) + elder_spouse.astype(int)
-            blind_head = tax_unit("blind_head", period)
-            blind_spouse = tax_unit("blind_spouse", period)
-            blind_count = blind_head.astype(int) + blind_spouse.astype(int)
-            additional_count = elder_count + blind_count
-            return (
-                (adult_count + hoh_bonus) * exemption.personal
-                + additional_count * exemption.additional
-            )
-
-    class ne_exemptions(Variable):
-        value_type = float
-        entity = TaxUnit
-        label = "Nebraska exemptions amount"
-        unit = USD
-        definition_period = YEAR
-        reference = (
-            "https://revenue.nebraska.gov/files/doc/tax-forms/2021/f_1040n_booklet.pdf"
-            "https://revenue.nebraska.gov/files/doc/2022_Ne_Individual_Income_Tax_Booklet_8-307-2022_final_5.pdf"
-        )
-        defined_for = StateCode.NE
-
-        def formula(tax_unit, period, parameters):
-            p = parameters(period).gov.states.ne.tax.income.exemptions
-            return tax_unit("head_spouse_count", period) * p.amount
 
     class ky_family_size_tax_credit_rate(Variable):
         value_type = float
@@ -517,6 +433,38 @@ def create_repeal_state_dependent_exemptions() -> Reform:
             share = income / poverty_index
             return p.rate.calc(share, right=True)
     
+    class ok_child_care_child_tax_credit(Variable):
+        value_type = float
+        entity = TaxUnit
+        label = "Oklahoma Child Care/Child Tax Credit"
+        unit = USD
+        definition_period = YEAR
+        reference = (
+            "https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/past-year/2021/511-Pkt-2021.pdf"
+            "https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/current/511-Pkt.pdf"
+        )
+        defined_for = StateCode.OK
+
+        def formula(tax_unit, period, parameters):
+            p = parameters(period).gov.states.ok.tax.income.credits
+            # determine AGI eligibility
+            us_agi = tax_unit("adjusted_gross_income", period)
+            agi_eligible = us_agi <= p.child.agi_limit
+            # determine OK cdcc amount
+            us_cdcc = tax_unit("cdcc", period)
+            ok_cdcc = us_cdcc * p.child.cdcc_fraction
+            # determine prorated fraction
+            ok_agi = tax_unit("ok_agi", period)
+            # Compute OK AGI as a share of US AGI.
+            # Use a mask rather than where to avoid a divide-by-zero warning.
+            agi_ratio = np.zeros_like(us_agi)
+            mask = us_agi != 0
+            agi_ratio[mask] = ok_agi[mask] / us_agi[mask]
+            prorate = min_(1, max_(0, agi_ratio))
+            # receive greater of OK cdcc or OK ctc amounts prorated if AGI eligible
+            return agi_eligible * prorate * ok_cdcc
+
+        
     class reform(Reform):
         def apply(self):
             self.neutralize_variable("al_dependent_exemption")
@@ -548,15 +496,13 @@ def create_repeal_state_dependent_exemptions() -> Reform:
             self.update_variable(ca_exemptions)
             self.update_variable(ga_exemptions)
             self.update_variable(in_base_exemptions)
-            self.update_variable(ia_exemption_credit)
             self.update_variable(ks_count_exemptions)
             self.update_variable(ma_income_tax_exemption_threshold)
             self.update_variable(wi_base_exemption)
-            self.update_variable(de_personal_credit)
-            self.update_variable(ca_exemptions)
             self.update_variable(ia_exemption_credit)
-            self.update_variable(ne_exemptions)
+            self.update_variable(de_personal_credit)
             self.update_variable(ky_family_size_tax_credit_rate)
+            self.update_variable(ok_child_care_child_tax_credit)
     return reform
 
 
