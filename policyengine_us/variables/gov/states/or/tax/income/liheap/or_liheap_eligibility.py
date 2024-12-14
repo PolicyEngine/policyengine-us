@@ -9,6 +9,6 @@ class or_liheap_eligibility(Variable):
         defined_for = StateCode.OR
 
         def formula(spm_unit, period, parameters):
-            income = tax_unit.spm_unit("adjusted_gross_income", period)  
+            income = spm_unit.tax_unit("adjusted_gross_income", period)  
             threshold = spm_unit("or_liheap_income_threshold", period)
             return income <= threshold
