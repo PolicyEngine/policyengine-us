@@ -265,7 +265,7 @@
     ny_ctc: 0
     ny_exemptions: 0
 
-- name: 2025 int test - baseline
+- name: 2025 test with two dependents, one older child and one younger - baseline
   period: 2025
   absolute_error_margin: 1
   input:
@@ -293,7 +293,7 @@
     ny_eitc: 1_006.46
 
 
-- name: 2025 int test
+- name: 2025 test with two dependents, one older child and one younger 
   period: 2025
   absolute_error_margin: 1
   reforms: policyengine_us.reforms.states.ny.wftc.ny_working_families_tax_credit.ny_working_families_tax_credit
