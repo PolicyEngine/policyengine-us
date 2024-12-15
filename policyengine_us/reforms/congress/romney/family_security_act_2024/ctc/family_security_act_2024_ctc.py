@@ -1,5 +1,5 @@
 from policyengine_us.model_api import *
-from policyengine_core.periods import period as period_
+from policyengine_us.reforms.utils import create_reform_if_active
 
 
 def create_family_security_act_2024_ctc() -> Reform:
@@ -142,24 +142,14 @@ def create_family_security_act_2024_ctc() -> Reform:
 def create_family_security_act_2024_ctc_reform(
     parameters, period, bypass: bool = False
 ):
-    if bypass:
-        return create_family_security_act_2024_ctc()
-
-    # Look ahead for the next five years
-    p = parameters.gov.contrib.congress.romney.family_security_act_2_0.ctc
-    reform_active = False
-    current_period = period_(period)
-
-    for i in range(5):
-        if p(current_period).apply_ctc_structure:
-            reform_active = True
-            break
-        current_period = current_period.offset(1, "year")
-
-    if reform_active:
-        return create_family_security_act_2024_ctc()
-    else:
-        return None
+    return create_reform_if_active(
+        parameters,
+        period,
+        "gov.contrib.congress.romney.family_security_act_2_0.ctc",
+        "apply_ctc_structure",
+        create_family_security_act_2024_ctc,
+        bypass,
+    )
 
 
 family_security_act_2024_ctc = create_family_security_act_2024_ctc_reform(
