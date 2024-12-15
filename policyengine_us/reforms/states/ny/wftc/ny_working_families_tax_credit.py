@@ -239,18 +239,22 @@ def create_ny_working_families_tax_credit() -> Reform:
             is_dependent = person("is_tax_unit_dependent", period)
             age = person("age", period)
             p_irs = parameters(period).gov.irs.dependent.ineligible_age
-            student = person("is_full_time_student", period)
-            student_age_eligible = age < p_irs.student
             p_ref = parameters(period).gov.contrib.states.ny.wftc
-            older_student_age_eligible = p_ref.child_age_threshold < age
-            age_eligible = student_age_eligible & older_student_age_eligible
-            return is_dependent & student & age_eligible
+            wftc_older_age_eiligble = age > p_ref.child_age_threshold
+            non_student_age_eligible = wftc_older_age_eiligble & (
+                age < p_irs.non_student
+            )
+            student = person("is_full_time_student", period)
+            student_age_eligible = (
+                (age < p_irs.student) & student & wftc_older_age_eiligble
+            )
+            age_eligible = non_student_age_eligible | student_age_eligible
+            return is_dependent & age_eligible
 
     class eitc_older_children_count(Variable):
         value_type = int
         entity = TaxUnit
         label = "EITC-qualifying younger children"
-        unit = USD
         documentation = "Number of children qualifying as children for the EITC, excluding dependents over 18."
         definition_period = YEAR
 
@@ -562,5 +566,3 @@ def create_ny_working_families_tax_credit_reform(
 ny_working_families_tax_credit = create_ny_working_families_tax_credit_reform(
     None, None, bypass=True
 )
-
-
