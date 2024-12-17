@@ -264,3 +264,66 @@
     ny_eitc: 758.8
     ny_ctc: 0
     ny_exemptions: 0
+
+- name: 2025 test with two dependents, one older child and one younger - baseline
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people: 
+      person1:
+        age: 40
+        employment_income: 48_500
+      person2:
+        age: 40
+      person3:
+        age: 18
+      person4: 
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: NY
+  output:
+    eitc: 3_355
+    eitc_child_count: 2
+    eitc_maximum: 7_152
+    ny_eitc: 1_006.46
+
+
+- name: 2025 test with two dependents, one older child and one younger 
+  period: 2025
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ny.wftc.ny_working_families_tax_credit.ny_working_families_tax_credit
+  input:
+    gov.contrib.states.ny.wftc.in_effect: true
+    people: 
+      person1:
+        age: 40
+        employment_income: 48_500
+      person2:
+        age: 40
+      person3:
+        age: 18
+      person4:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: NY
+  output:
+    # ny_eitc: 1_000
+    eitc_older_children_count: 1
+    eitc_younger_children_count: 1
+    is_older_child_dependent: [false, false, true, false]
+    eitc: 3_355
+    eitc_older_maximum: 7_152
+    older_eitc: 3_355
+    younger_eitc: 0
+    ny_eitc: 1_006.46
+    ny_working_families_tax_credit: 550
