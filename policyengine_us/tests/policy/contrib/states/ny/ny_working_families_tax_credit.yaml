@@ -327,3 +327,30 @@
     younger_eitc: 0
     ny_eitc: 1_006.46
     ny_working_families_tax_credit: 550
+
+- name: 2026 test with two dependents, one older child and one younger 
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ny.wftc.ny_working_families_tax_credit.ny_working_families_tax_credit
+  input:
+    gov.contrib.states.ny.wftc.in_effect: true
+    people: 
+      person1:
+        age: 40
+        employment_income: 30_000
+      person2:
+        age: 40
+      person3:
+        age: 19
+        is_full_time_student: true
+      person4:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: NY
+  output:
+    ny_exemptions: 1_000
