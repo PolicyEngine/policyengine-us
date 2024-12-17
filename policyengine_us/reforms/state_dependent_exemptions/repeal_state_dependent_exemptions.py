@@ -1,6 +1,7 @@
 from policyengine_us.model_api import *
 from policyengine_core.periods import period as period_
 
+
 def create_repeal_state_dependent_exemptions() -> Reform:
     class hi_regular_exemptions(Variable):
         value_type = float
