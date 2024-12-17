@@ -133,9 +133,13 @@
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
   output:
     non_refundable_ctc: 2_000
     refundable_ctc: 0
-    ctc_phase_in: 3_686
+    ctc_phase_in: 2_021
     income_tax_pre_ctc: 3_232
     income_tax: 1_232

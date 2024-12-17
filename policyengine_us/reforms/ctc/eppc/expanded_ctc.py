@@ -107,16 +107,14 @@ def create_expanded_ctc() -> Reform:
 
         def formula(tax_unit, period, parameters):
             pre_ctc_tax = tax_unit("income_tax_pre_ctc", period)
-            indiv_tax = tax_unit("income_tax_indiv", period)
+            indiv_tax = tax_unit("income_tax_pre_ctc_indiv", period)
             filing_status = tax_unit("filing_status", period)
             is_joint = filing_status == filing_status.possible_values.JOINT
             non_ref_ctc = tax_unit("non_refundable_ctc", period)
             ref_ctc = tax_unit("refundable_ctc", period)
             regular_tax = max_(pre_ctc_tax - non_ref_ctc, 0) - ref_ctc
-            capped_regular_tax = max_(
-                regular_tax, max_(indiv_tax - non_ref_ctc, 0) - ref_ctc
-            )
-            smaller_tax = min_(indiv_tax, capped_regular_tax)
+            total_indiv_tax = max_(indiv_tax - non_ref_ctc, 0) - ref_ctc
+            smaller_tax = min_(total_indiv_tax, regular_tax)
             return where(is_joint, smaller_tax, regular_tax)
 
     class maximum_benefits(Variable):
@@ -310,7 +308,7 @@ def create_expanded_ctc() -> Reform:
         unit = USD
         documentation = "Capped value of non-refundable tax credits"
         definition_period = YEAR
-        adds = ["income_tax_non_refundable_credits"]
+        adds = ["income_tax_non_refundable_credits_pre_ctc"]
         subtracts = ["income_tax_unavailable_non_refundable_credits"]
 
     class income_tax_unavailable_non_refundable_credits(Variable):
@@ -324,10 +322,10 @@ def create_expanded_ctc() -> Reform:
         def formula(tax_unit, period, parameters):
             return -min_(
                 tax_unit("income_tax_before_credits", period),
-                tax_unit("income_tax_non_refundable_credits", period),
-            ) + tax_unit("income_tax_non_refundable_credits", period)
+                tax_unit("income_tax_non_refundable_credits_pre_ctc", period),
+            ) + tax_unit("income_tax_non_refundable_credits_pre_ctc", period)
 
-    class income_tax_before_refundable_credits(Variable):
+    class income_tax_before_refundable_credits_indiv(Variable):
         value_type = float
         entity = TaxUnit
         definition_period = YEAR
@@ -359,6 +357,30 @@ def create_expanded_ctc() -> Reform:
                 )
                 return added_components - subtracted_components
 
+    class income_tax_pre_ctc_indiv(Variable):
+        value_type = float
+        entity = TaxUnit
+        definition_period = YEAR
+        unit = USD
+        label = "Federal income tax"
+        documentation = "Total federal individual income tax liability."
+
+        def formula(person, period, parameters):
+            if parameters(
+                period
+            ).gov.contrib.ubi_center.flat_tax.abolish_federal_income_tax:
+                return 0
+            else:
+                added_components = add(
+                    person,
+                    period,
+                    ["income_tax_before_refundable_credits_indiv"],
+                )
+                subtracted_components = add(
+                    person, period, ["income_tax_refundable_credits_pre_ctc"]
+                )
+                return added_components - subtracted_components
+
     class reform(Reform):
         def apply(self):
             self.neutralize_variable("eitc")
@@ -372,7 +394,7 @@ def create_expanded_ctc() -> Reform:
             self.update_variable(income_tax_non_refundable_credits_pre_ctc)
             self.update_variable(income_tax_capped_non_refundable_credits)
             self.update_variable(maximum_benefits)
-            self.update_variable(income_tax_before_refundable_credits)
+            self.update_variable(income_tax_before_refundable_credits_indiv)
             self.update_variable(income_tax_before_credits_indiv)
             self.update_variable(
                 income_tax_capped_non_refundable_credits_indiv
@@ -381,6 +403,7 @@ def create_expanded_ctc() -> Reform:
             self.update_variable(taxable_income_indiv)
             self.update_variable(taxable_income_deductions_person)
             self.update_variable(basic_standard_deduction_indiv)
+            self.update_variable(income_tax_pre_ctc_indiv)
 
     return reform
 
