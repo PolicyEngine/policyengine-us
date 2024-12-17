@@ -9,12 +9,12 @@ class weekly_hours_worked(Variable):
     documentation = "Hours worked per week on average."
     definition_period = YEAR
     adds = [
-        "weekly_hours_worked_before_lsr",
+        "weekly_hours_worked_before_behavioral_response",
         "weekly_hours_worked_behavioural_response",
     ]
 
 
-class weekly_hours_worked_before_lsr(Variable):
+class weekly_hours_worked_before_behavioral_response(Variable):
     value_type = float
     entity = Person
     label = "average weekly hours worked (before labor supply responses)"
@@ -30,14 +30,22 @@ class weekly_hours_worked_behavioural_response_income_elasticity(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        original = person("weekly_hours_worked_before_lsr", period)
+        original = person(
+            "weekly_hours_worked_before_behavioral_response", period
+        )
         lsr = person("labor_supply_behavioral_response", period)
         if (lsr != 0).any():
-            income_effect = person("income_elasticity_lsr", period)
+            income_effect = person(
+                "income_elasticity_behavioral_response", period
+            )
         else:
             income_effect = 0
-        original_emp = person("employment_income_before_lsr", period)
-        original_self_emp = person("self_employment_income_before_lsr", period)
+        original_emp = person(
+            "employment_income_before_behavioral_response", period
+        )
+        original_self_emp = person(
+            "self_employment_income_before_behavioral_response", period
+        )
         original_earnings = original_emp + original_self_emp
         lsr_relative_change = np.where(
             original_earnings == 0, 0, income_effect / original_earnings
@@ -55,14 +63,22 @@ class weekly_hours_worked_behavioural_response_substitution_elasticity(
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        original = person("weekly_hours_worked_before_lsr", period)
+        original = person(
+            "weekly_hours_worked_before_behavioral_response", period
+        )
         lsr = person("labor_supply_behavioral_response", period)
         if (lsr != 0).any():
-            substitution_effect = person("substitution_elasticity_lsr", period)
+            substitution_effect = person(
+                "substitution_elasticity_behavioral_response", period
+            )
         else:
             substitution_effect = 0
-        original_emp = person("employment_income_before_lsr", period)
-        original_self_emp = person("self_employment_income_before_lsr", period)
+        original_emp = person(
+            "employment_income_before_behavioral_response", period
+        )
+        original_self_emp = person(
+            "self_employment_income_before_behavioral_response", period
+        )
         original_earnings = original_emp + original_self_emp
         lsr_relative_change = np.where(
             original_earnings == 0, 0, substitution_effect / original_earnings
