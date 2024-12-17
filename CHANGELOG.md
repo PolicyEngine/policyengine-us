@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.161.2] - 2024-12-15 23:08:57
+
+### Fixed
+
+- NYWFTC EITC older children eligibility.
+
+## [1.161.1] - 2024-12-13 23:43:04
+
+### Added
+
+- Capability to select custom start time for simulations; this is a patch for structural reforms that occur at non-default time periods.
+
 ## [1.161.0] - 2024-12-12 05:36:14
 
 ### Added
@@ -10383,6 +10395,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.161.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.161.1...1.161.2
+[1.161.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.161.0...1.161.1
 [1.161.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.160.0...1.161.0
 [1.160.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.159.0...1.160.0
 [1.159.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.158.0...1.159.0
