@@ -12,7 +12,9 @@ def create_expanded_ctc() -> Reform:
 
         def formula(tax_unit, period, parameters):
             tax = tax_unit("income_tax_pre_ctc", period)
-            total_benefits = tax_unit.household("household_benefits", period)
+            total_benefits = add(
+                tax_unit, period, ["snap", "free_school_meals", "tanf"]
+            )
             max_benefit_amount = tax_unit("maximum_benefits", period)
             benefit_reduction = max_benefit_amount - total_benefits
             tax_with_benefit_reduction = tax + benefit_reduction
@@ -112,16 +114,16 @@ def create_expanded_ctc() -> Reform:
             is_joint = filing_status == filing_status.possible_values.JOINT
             non_ref_ctc = tax_unit("non_refundable_ctc", period)
             ref_ctc = tax_unit("refundable_ctc", period)
-            regular_tax = max_(pre_ctc_tax - non_ref_ctc, 0) - ref_ctc
-            total_indiv_tax = max_(indiv_tax - non_ref_ctc, 0) - ref_ctc
-            smaller_tax = min_(total_indiv_tax, regular_tax)
-            return where(is_joint, smaller_tax, regular_tax)
+            base_tax = where(
+                is_joint, min_(pre_ctc_tax, indiv_tax), pre_ctc_tax
+            )
+            return max_(base_tax - non_ref_ctc, 0) - ref_ctc
 
     class maximum_benefits(Variable):
         value_type = float
         entity = TaxUnit
         definition_period = YEAR
-        label = "Maximum benfit amount which the housheold is entitled to"
+        label = "Maximum benefit amount to which the household is entitled"
         unit = USD
         # Currently only includes SNAP, free school meals, and TANF
 

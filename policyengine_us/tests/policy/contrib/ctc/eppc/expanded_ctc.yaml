@@ -4,7 +4,8 @@
   input:
     gov.contrib.ctc.eppc.expanded_ctc.in_effect: true
     income_tax_pre_ctc: 800
-    household_benefits: 700
+    snap: 200
+    tanf: 500
     maximum_benefits: 900
   output:
     ctc_phase_in: 150
