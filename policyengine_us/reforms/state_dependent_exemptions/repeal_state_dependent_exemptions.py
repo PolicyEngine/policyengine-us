@@ -392,7 +392,6 @@ def create_repeal_state_dependent_exemptions() -> Reform:
             p = parameters(period).gov.states.wi.tax.income
             return tax_unit("head_spouse_count", period) * p.exemption.base
 
-
     class de_personal_credit(Variable):
         value_type = float
         entity = TaxUnit
@@ -413,9 +412,7 @@ def create_repeal_state_dependent_exemptions() -> Reform:
         label = "Kentucky family size tax credit rate"
         unit = "/1"
         definition_period = YEAR
-        reference = (
-            "https://apps.legislature.ky.gov/law/statutes/statute.aspx?id=49188"
-        )
+        reference = "https://apps.legislature.ky.gov/law/statutes/statute.aspx?id=49188"
         defined_for = StateCode.KY
 
         def formula(tax_unit, period, parameters):
@@ -432,7 +429,7 @@ def create_repeal_state_dependent_exemptions() -> Reform:
             poverty_index = p1 + padd * (capped_family_size - 1)
             share = income / poverty_index
             return p.rate.calc(share, right=True)
-    
+
     class ok_child_care_child_tax_credit(Variable):
         value_type = float
         entity = TaxUnit
@@ -464,7 +461,6 @@ def create_repeal_state_dependent_exemptions() -> Reform:
             # receive greater of OK cdcc or OK ctc amounts prorated if AGI eligible
             return agi_eligible * prorate * ok_cdcc
 
-        
     class reform(Reform):
         def apply(self):
             self.neutralize_variable("al_dependent_exemption")
@@ -503,6 +499,7 @@ def create_repeal_state_dependent_exemptions() -> Reform:
             self.update_variable(de_personal_credit)
             self.update_variable(ky_family_size_tax_credit_rate)
             self.update_variable(ok_child_care_child_tax_credit)
+
     return reform
 
 
