@@ -143,3 +143,29 @@
     ctc_phase_in: 2_021
     income_tax_pre_ctc: 3_232
     income_tax: 1_232
+
+- name: Joint household with one child, $60k income, one high and one low earner
+  period: 2024
+  absolute_error_margin: 4
+  reforms: policyengine_us.reforms.ctc.eppc.expanded_ctc.expanded_ctc
+  input:
+    gov.contrib.ctc.eppc.expanded_ctc.in_effect: true
+    people:
+      person1:
+        age: 40
+        employment_income: 50_000
+      person2:
+        age: 40
+        employment_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    non_refundable_ctc: 0
+    refundable_ctc: 0
+    income_tax_pre_ctc: 3_232
+    income_tax: 3_232
