@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_core.periods import period as period_
 
 
 def create_second_earner_tax() -> Reform:
@@ -54,6 +55,38 @@ def create_second_earner_tax() -> Reform:
             deductions = person("taxable_income_deductions_person", period)
             return max_(0, agi - exemptions - deductions)
 
+    class capital_gains_excluded_from_taxable_income_person(Variable):
+        value_type = float
+        entity = Person
+        label = "Capital gains excluded from taxable income"
+        unit = USD
+        documentation = "This is subtracted from taxable income before applying the ordinary tax rates. Capital gains tax is calculated separately."
+        definition_period = YEAR
+        reference = dict(
+            title="26 U.S. Code § 1(h)(1)(A)",
+            href="https://www.law.cornell.edu/uscode/text/26/1#h_1_A",
+        )
+
+        def formula(person, period, parameters):
+            net_capital_gain = person("net_capital_gain_person", period)
+            adjusted_net_capital_gain = person(
+                "adjusted_net_capital_gain_person", period
+            )
+            taxable_income = person("taxable_income_person", period)
+            filing_status = person.tax_unit("filing_status", period)
+            cg = parameters(period).gov.irs.capital_gains.brackets
+            income_taxed_below_first_rate = clip(
+                taxable_income, 0, cg.thresholds["1"][filing_status]
+            )
+            reduced_taxable_income = max_(
+                taxable_income - net_capital_gain,
+                min_(
+                    income_taxed_below_first_rate,
+                    taxable_income - adjusted_net_capital_gain,
+                ),
+            )
+            return taxable_income - reduced_taxable_income
+
     class income_tax_main_rates(Variable):
         value_type = float
         entity = TaxUnit
@@ -68,10 +101,9 @@ def create_second_earner_tax() -> Reform:
             is_tax_unit_head_or_spouse = person(
                 "is_tax_unit_head_or_spouse", period
             )
-            cg_exclusion = (
-                tax_unit("capital_gains_excluded_from_taxable_income", period)
-                / 2
-            ) * is_tax_unit_head_or_spouse
+            cg_exclusion = person(
+                "capital_gains_excluded_from_taxable_income_person", period
+            )
             taxinc = max_(0, full_taxable_income - cg_exclusion)
             p = parameters(period).gov.irs.income
             bracket_tops = p.bracket.thresholds
@@ -367,8 +399,8 @@ def create_second_earner_tax() -> Reform:
 
             cg = parameters(period).gov.irs.capital_gains
 
-            excluded_cg = tax_unit(
-                "capital_gains_excluded_from_taxable_income", period
+            excluded_cg = person(
+                "capital_gains_excluded_from_taxable_income_person", period
             )
             non_cg_taxable_income = max_(0, taxable_income - excluded_cg)
 
@@ -425,7 +457,7 @@ def create_second_earner_tax() -> Reform:
                 0, secondary_cg - second_threshold_secondary
             )
 
-            # Calculate total capital gains tax
+            # Calculate total capital gains tax at person level
             main_cg_tax = (
                 (primary_cg_in_first + secondary_cg_in_first)
                 * cg.brackets.rates["1"]
@@ -434,6 +466,10 @@ def create_second_earner_tax() -> Reform:
                 + (primary_cg_in_third + secondary_cg_in_third)
                 * cg.brackets.rates["3"]
             )
+
+            # Aggregate to tax unit level immediately
+            total_main_cg_tax = tax_unit.sum(main_cg_tax)
+
             is_joint = tax_unit("tax_unit_is_joint", period)
             divisor = where(is_joint, 2, 1)
             unrecaptured_s_1250_gain = (
@@ -458,13 +494,26 @@ def create_second_earner_tax() -> Reform:
             unrecaptured_gain_tax = (
                 cg.unrecaptured_s_1250_rate * taxable_unrecaptured_gain
             )
-
+            capital_gains_28_percent_rate_gain = add(
+                person,
+                period,
+                [
+                    "long_term_capital_gains_on_collectibles",
+                    "long_term_capital_gains_on_small_business_stock",
+                ],
+            )
             remaining_cg_tax = (
-                tax_unit("capital_gains_28_percent_rate_gain", period)
-                * cg.other_cg_rate
-            ) / divisor
-            return tax_unit.sum(
-                main_cg_tax + unrecaptured_gain_tax + remaining_cg_tax
+                capital_gains_28_percent_rate_gain * cg.other_cg_rate
+            )
+
+            # Sum the components separately
+            total_unrecaptured_gain_tax = tax_unit.sum(unrecaptured_gain_tax)
+            total_remaining_cg_tax = tax_unit.sum(remaining_cg_tax)
+
+            return (
+                total_main_cg_tax
+                + total_unrecaptured_gain_tax
+                + total_remaining_cg_tax
             )
 
     class amt_excluded_deductions_person(Variable):
@@ -504,284 +553,283 @@ def create_second_earner_tax() -> Reform:
             )
             return taxable_income + deductions + separate_addition
 
-    class alternative_minimum_tax(Variable):
-        value_type = float
-        entity = TaxUnit
-        definition_period = YEAR
-        label = "Alternative Minimum Tax"
-        unit = USD
-        documentation = "Alternative Minimum Tax (AMT) liability"
+    # class alternative_minimum_tax(Variable):
+    #     value_type = float
+    #     entity = TaxUnit
+    #     definition_period = YEAR
+    #     label = "Alternative Minimum Tax"
+    #     unit = USD
+    #     documentation = "Alternative Minimum Tax (AMT) liability"
 
-        def formula(tax_unit, period, parameters):
-            person = tax_unit.members
-            amt_income = person("amt_income_person", period)
-            # Form 6251, Part II top
-            p = parameters(period).gov.irs.income.amt
-            phase_out = p.exemption.phase_out
-            filing_status = tax_unit("filing_status", period)
+    #     def formula(tax_unit, period, parameters):
+    #         person = tax_unit.members
+    #         amt_income = person("amt_income_person", period)
+    #         # Form 6251, Part II top
+    #         p = parameters(period).gov.irs.income.amt
+    #         phase_out = p.exemption.phase_out
+    #         filing_status = tax_unit("filing_status", period)
 
-            # Split calculations for primary and secondary earners
-            is_primary_earner = person("is_primary_earner", period)
-            is_secondary_earner = (
-                person("is_tax_unit_head_or_spouse", period)
-                & ~is_primary_earner
-            )
-            is_tax_unit_dependent = person("is_tax_unit_dependent", period)
+    #         # Split calculations for primary and secondary earners
+    #         is_primary_earner = person("is_primary_earner", period)
+    #         is_secondary_earner = (
+    #             person("is_tax_unit_head_or_spouse", period)
+    #             & ~is_primary_earner
+    #         )
+    #         is_tax_unit_dependent = person("is_tax_unit_dependent", period)
 
-            # Primary earner uses filing status thresholds
-            primary_base_exemption = p.exemption.amount[filing_status]
-            primary_phase_out_start = phase_out.start[filing_status]
+    #         # Primary earner uses filing status thresholds
+    #         primary_base_exemption = p.exemption.amount[filing_status]
+    #         primary_phase_out_start = phase_out.start[filing_status]
 
-            # Secondary earner uses single thresholds
-            secondary_base_exemption = p.exemption.amount["SINGLE"]
-            secondary_phase_out_start = phase_out.start["SINGLE"]
+    #         # Secondary earner uses single thresholds
+    #         secondary_base_exemption = p.exemption.amount["SINGLE"]
+    #         secondary_phase_out_start = phase_out.start["SINGLE"]
 
-            # Calculate income for each earner
-            primary_income = where(is_primary_earner, amt_income, 0)
-            secondary_income = where(is_secondary_earner, amt_income, 0)
-            dependent_income = where(
-                is_tax_unit_dependent, amt_income, 0
-            ).sum()
-            primary_income += (
-                dependent_income  # Add dependent income to primary
-            )
+    #         # Calculate income for each earner
+    #         primary_income = where(is_primary_earner, amt_income, 0)
+    #         secondary_income = where(is_secondary_earner, amt_income, 0)
+    #         dependent_income = where(
+    #             is_tax_unit_dependent, amt_income, 0
+    #         )
+    #         total_dependent_income = tax_unit.sum(dependent_income)
+    #         primary_income += (
+    #             total_dependent_income  # Add dependent income to primary
+    #         )
+    #         # Calculate exemption amounts
+    #         primary_excess = max_(0, primary_income - primary_phase_out_start)
+    #         secondary_excess = max_(
+    #             0, secondary_income - secondary_phase_out_start
+    #         )
 
-            # Calculate exemption amounts
-            primary_excess = max_(0, primary_income - primary_phase_out_start)
-            secondary_excess = max_(
-                0, secondary_income - secondary_phase_out_start
-            )
+    #         primary_exemption = max_(
+    #             0, primary_base_exemption - phase_out.rate * primary_excess
+    #         )
+    #         secondary_exemption = max_(
+    #             0, secondary_base_exemption - phase_out.rate * secondary_excess
+    #         )
 
-            primary_exemption = max_(
-                0, primary_base_exemption - phase_out.rate * primary_excess
-            )
-            secondary_exemption = max_(
-                0, secondary_base_exemption - phase_out.rate * secondary_excess
-            )
+    #         age = tax_unit("age", period)
+    #         is_head = person("is_tax_unit_head", period)
+    #         age_head = where(is_head, age, 0)
+    #         child = parameters(period).gov.irs.dependent.ineligible_age
+    #         young_head = (age_head != 0) & (age_head < child.non_student)
+    #         is_spouse = person("is_tax_unit_spouse", period)
+    #         age_spouse = where(is_spouse, age, 0)
+    #         no_or_young_spouse = (age_spouse != 0) & (age_spouse < child.non_student)
+    #         adj_earnings = person("adjusted_earnings", period)
+    #         child_amount = p.exemption.child.amount
 
-            age_head = tax_unit("age_head", period)
-            child = parameters(period).gov.irs.dependent.ineligible_age
-            young_head = (age_head != 0) & (age_head < child.non_student)
-            no_or_young_spouse = (
-                tax_unit("age_spouse", period) < child.non_student
-            )
-            adj_earnings = person("adjusted_earnings", period)
-            child_amount = p.exemption.child.amount
+    #         kiddie_tax_exemption_cap_applies = young_head & no_or_young_spouse
+    #         exemption_cap = where(
+    #             kiddie_tax_exemption_cap_applies,
+    #             adj_earnings + child_amount,
+    #             np.inf,
+    #         )
+    #         primary_exemption = min_(primary_exemption, exemption_cap)
+    #         secondary_exemption = min_(secondary_exemption, exemption_cap)
 
-            kiddie_tax_exemption_cap_applies = young_head & no_or_young_spouse
-            exemption_cap = where(
-                kiddie_tax_exemption_cap_applies,
-                adj_earnings + child_amount,
-                np.inf,
-            )
-            primary_exemption = min_(primary_exemption, exemption_cap)
-            secondary_exemption = min_(secondary_exemption, exemption_cap)
+    #         # Calculate taxable income
+    #         taxable_income = person("taxable_income_person", period)
+    #         # Do not add back deduction for filers subject to the kiddie tax
+    #         primary_applied_income = where(
+    #             kiddie_tax_exemption_cap_applies,
+    #             where(is_primary_earner, taxable_income, 0),
+    #             primary_income,
+    #         )
+    #         secondary_applied_income = where(
+    #             kiddie_tax_exemption_cap_applies,
+    #             where(is_secondary_earner, taxable_income, 0),
+    #             secondary_income,
+    #         )
+    #         primary_reduced_income = max_(
+    #             0, primary_applied_income - primary_exemption
+    #         )
+    #         secondary_reduced_income = max_(
+    #             0, secondary_applied_income - secondary_exemption
+    #         )
 
-            # Calculate taxable income
-            taxable_income = person("taxable_income_person", period)
-            # Do not add back deduction for filers subject to the kiddie tax
-            primary_applied_income = where(
-                kiddie_tax_exemption_cap_applies,
-                where(is_primary_earner, taxable_income, 0),
-                primary_income,
-            )
-            secondary_applied_income = where(
-                kiddie_tax_exemption_cap_applies,
-                where(is_secondary_earner, taxable_income, 0),
-                secondary_income,
-            )
+    #         # Calculate bracket fractions
+    #         primary_bracket_fraction = where(
+    #             filing_status == filing_status.possible_values.SEPARATE,
+    #             0.5,
+    #             1.0,
+    #         )
+    #         secondary_bracket_fraction = (
+    #             1.0  # Single always uses full brackets
+    #         )
 
-            primary_reduced_income = max_(
-                0, primary_applied_income - primary_exemption
-            )
-            secondary_reduced_income = max_(
-                0, secondary_applied_income - secondary_exemption
-            )
+    #         # Calculate tax thresholds
+    #         primary_tax_threshold = (
+    #             p.brackets.thresholds[-1] * primary_bracket_fraction
+    #         )
+    #         secondary_tax_threshold = (
+    #             p.brackets.thresholds[-1] * secondary_bracket_fraction
+    #         )
 
-            # Calculate bracket fractions
-            primary_bracket_fraction = where(
-                filing_status == filing_status.possible_values.SEPARATE,
-                0.5,
-                1.0,
-            )
-            secondary_bracket_fraction = (
-                1.0  # Single always uses full brackets
-            )
+    #         lower_rate = p.brackets.rates[0]
+    #         higher_rate = p.brackets.rates[1]
 
-            # Calculate tax thresholds
-            primary_tax_threshold = (
-                p.brackets.thresholds[-1] * primary_bracket_fraction
-            )
-            secondary_tax_threshold = (
-                p.brackets.thresholds[-1] * secondary_bracket_fraction
-            )
+    #         # Calculate tax for primary earner
+    #         primary_lower_tax = (
+    #             min_(primary_reduced_income, primary_tax_threshold)
+    #             * lower_rate
+    #         )
+    #         primary_higher_tax = (
+    #             max_(0, primary_reduced_income - primary_tax_threshold)
+    #             * higher_rate
+    #         )
 
-            lower_rate = p.brackets.rates[0]
-            higher_rate = p.brackets.rates[1]
+    #         # Calculate tax for secondary earner
+    #         secondary_lower_tax = (
+    #             min_(secondary_reduced_income, secondary_tax_threshold)
+    #             * lower_rate
+    #         )
+    #         secondary_higher_tax = (
+    #             max_(0, secondary_reduced_income - secondary_tax_threshold)
+    #             * higher_rate
+    #         )
 
-            # Calculate tax for primary earner
-            primary_lower_tax = (
-                min_(primary_reduced_income, primary_tax_threshold)
-                * lower_rate
-            )
-            primary_higher_tax = (
-                max_(0, primary_reduced_income - primary_tax_threshold)
-                * higher_rate
-            )
+    #         # Combine taxes
+    #         reduced_income_tax = tax_unit.sum(
+    #             primary_lower_tax
+    #             + primary_higher_tax
+    #             + secondary_lower_tax
+    #             + secondary_higher_tax
+    #         )
+    #         dwks10, dwks13, dwks14, dwks19, e24515 = [
+    #             add(tax_unit, period, [variable])
+    #             for variable in [
+    #                 "dwks10",
+    #                 "dwks13",
+    #                 "dwks14",
+    #                 "dwks19",
+    #                 "unrecaptured_section_1250_gain",
+    #             ]
+    #         ]
+    #         form_6251_part_iii_required = np.any(
+    #             [
+    #                 variable > 0
+    #                 for variable in [
+    #                     dwks10,
+    #                     dwks13,
+    #                     dwks14,
+    #                     dwks19,
+    #                     e24515,
+    #                 ]
+    #             ]
+    #         )
+    #         reduced_income = tax_unit.sum(primary_reduced_income + secondary_reduced_income)
+    #         # Complete Form 6251, Part III
+    #         line37 = dwks13
+    #         line38 = e24515
+    #         line39 = min_(line37 + line38, dwks10)
+    #         line40 = min_(
+    #             reduced_income, line39
+    #         )
+    #         line41 = max_(
+    #             0, reduced_income - line40
+    #         )
+    #         line42 = p.brackets.calc(line41)
+    #         line44 = dwks14
 
-            # Calculate tax for secondary earner
-            secondary_lower_tax = (
-                min_(secondary_reduced_income, secondary_tax_threshold)
-                * lower_rate
-            )
-            secondary_higher_tax = (
-                max_(0, secondary_reduced_income - secondary_tax_threshold)
-                * higher_rate
-            )
+    #         # Apply different thresholds for primary/secondary for capital gains
+    #         cg = p.capital_gains.brackets
+    #         primary_line45 = max_(
+    #             0, cg.thresholds["1"][filing_status] - line44
+    #         )
+    #         secondary_line45 = max_(0, cg.thresholds["1"]["SINGLE"] - line44)
 
-            # Combine taxes
-            reduced_income_tax = (
-                primary_lower_tax
-                + primary_higher_tax
-                + secondary_lower_tax
-                + secondary_higher_tax
-            )
+    #         line46 = min_(
+    #             reduced_income, line37
+    #         )
+    #         primary_line47 = min_(primary_line45, line46)
+    #         secondary_line47 = min_(secondary_line45, line46)
 
-            dwks10, dwks13, dwks14, dwks19, e24515 = [
-                add(tax_unit, period, [variable])
-                for variable in [
-                    "dwks10",
-                    "dwks13",
-                    "dwks14",
-                    "dwks19",
-                    "unrecaptured_section_1250_gain",
-                ]
-            ]
-            form_6251_part_iii_required = np.any(
-                [
-                    variable > 0
-                    for variable in [
-                        dwks10,
-                        dwks13,
-                        dwks14,
-                        dwks19,
-                        e24515,
-                    ]
-                ]
-            )
+    #         cgtax1 = (
+    #             primary_line47 * cg.rates["1"]
+    #             + secondary_line47 * cg.rates["1"]
+    #         )
 
-            # Complete Form 6251, Part III
-            line37 = dwks13
-            line38 = e24515
-            line39 = min_(line37 + line38, dwks10)
-            line40 = min_(
-                primary_reduced_income + secondary_reduced_income, line39
-            )
-            line41 = max_(
-                0, primary_reduced_income + secondary_reduced_income - line40
-            )
-            line42 = p.brackets.calc(line41)
-            line44 = dwks14
+    #         line48 = line46 - (primary_line47 + secondary_line47)
+    #         line51 = dwks19
 
-            # Apply different thresholds for primary/secondary for capital gains
-            cg = p.capital_gains.brackets
-            primary_line45 = max_(
-                0, cg.thresholds["1"][filing_status] - line44
-            )
-            secondary_line45 = max_(0, cg.thresholds["1"]["SINGLE"] - line44)
+    #         primary_line52 = primary_line45 + line51
+    #         secondary_line52 = secondary_line45 + line51
 
-            line46 = min_(
-                primary_reduced_income + secondary_reduced_income, line37
-            )
-            primary_line47 = min_(primary_line45, line46)
-            secondary_line47 = min_(secondary_line45, line46)
+    #         primary_line53 = max_(
+    #             0, cg.thresholds["2"][filing_status] - primary_line52
+    #         )
+    #         secondary_line53 = max_(
+    #             0, cg.thresholds["2"]["SINGLE"] - secondary_line52
+    #         )
 
-            cgtax1 = (
-                primary_line47 * cg.rates["1"]
-                + secondary_line47 * cg.rates["1"]
-            )
+    #         primary_line54 = min_(line48, primary_line53)
+    #         secondary_line54 = min_(line48, secondary_line53)
 
-            line48 = line46 - (primary_line47 + secondary_line47)
-            line51 = dwks19
+    #         cgtax2 = (
+    #             primary_line54 * cg.rates["2"]
+    #             + secondary_line54 * cg.rates["2"]
+    #         )
 
-            primary_line52 = primary_line45 + line51
-            secondary_line52 = secondary_line45 + line51
+    #         line56 = (
+    #             primary_line47
+    #             + secondary_line47
+    #             + primary_line54
+    #             + secondary_line54
+    #         )
+    #         line57 = where(line41 == line56, 0, line46 - line56)
+    #         linex2 = where(
+    #             line41 == line56,
+    #             0,
+    #             max_(0, primary_line54 + secondary_line54 - line48),
+    #         )
+    #         cgtax3 = line57 * cg.rates["3"]
 
-            primary_line53 = max_(
-                0, cg.thresholds["2"][filing_status] - primary_line52
-            )
-            secondary_line53 = max_(
-                0, cg.thresholds["2"]["SINGLE"] - secondary_line52
-            )
+    #         line61 = where(
+    #             line38 == 0,
+    #             0,
+    #             p.capital_gains.capital_gain_excess_tax_rate
+    #             * max_(
+    #                 0,
+    #                 (
+    #                     reduced_income
+    #                     - line41
+    #                     - line56
+    #                     - line57
+    #                     - linex2
+    #                 ),
+    #             ),
+    #         )
+    #         line62 = line42 + cgtax1 + cgtax2 + cgtax3 + line61
+    #         line64 = min_(reduced_income_tax, line62)
+    #         line31 = where(
+    #             form_6251_part_iii_required, line64, reduced_income_tax
+    #         )
 
-            primary_line54 = min_(line48, primary_line53)
-            secondary_line54 = min_(line48, secondary_line53)
+    #         # Form 6251, Part II bottom
+    #         is_joint = tax_unit("tax_unit_is_joint", period)
+    #         divisor = where(is_joint, 2, 1)
+    #         line32 = tax_unit("foreign_tax_credit", period) / divisor
+    #         line33 = line31 - line32
+    #         regular_tax_before_credits = (
+    #             tax_unit("regular_tax_before_credits", period) / divisor
+    #         )
+    #         lump_sum_distributions = (
+    #             tax_unit("form_4972_lumpsum_distributions", period) / divisor
+    #         )
+    #         capital_gains = tax_unit("capital_gains_tax", period)
+    #         tax_before_credits = regular_tax_before_credits + capital_gains
 
-            cgtax2 = (
-                primary_line54 * cg.rates["2"]
-                + secondary_line54 * cg.rates["2"]
-            )
-
-            line56 = (
-                primary_line47
-                + secondary_line47
-                + primary_line54
-                + secondary_line54
-            )
-            line57 = where(line41 == line56, 0, line46 - line56)
-            linex2 = where(
-                line41 == line56,
-                0,
-                max_(0, primary_line54 + secondary_line54 - line48),
-            )
-            cgtax3 = line57 * cg.rates["3"]
-
-            line61 = where(
-                line38 == 0,
-                0,
-                p.capital_gains.capital_gain_excess_tax_rate
-                * max_(
-                    0,
-                    (
-                        primary_reduced_income
-                        + secondary_reduced_income
-                        - line41
-                        - line56
-                        - line57
-                        - linex2
-                    ),
-                ),
-            )
-            line62 = line42 + cgtax1 + cgtax2 + cgtax3 + line61
-            line64 = min_(reduced_income_tax, line62)
-            line31 = where(
-                form_6251_part_iii_required, line64, reduced_income_tax
-            )
-
-            # Form 6251, Part II bottom
-            is_joint = tax_unit("tax_unit_is_joint", period)
-            divisor = where(is_joint, 2, 1)
-            line32 = tax_unit("foreign_tax_credit", period) / divisor
-            line33 = line31 - line32
-            regular_tax_before_credits = (
-                tax_unit("regular_tax_before_credits", period) / divisor
-            )
-            lump_sum_distributions = (
-                tax_unit("form_4972_lumpsum_distributions", period) / divisor
-            )
-            capital_gains = tax_unit("capital_gains_tax", period)
-            tax_before_credits = regular_tax_before_credits + capital_gains
-
-            return tax_unit.sum(
-                max_(
-                    0,
-                    line33
-                    - max_(
-                        0,
-                        (tax_before_credits - line32 - lump_sum_distributions),
-                    ),
-                )
-            )
+    #         return tax_unit.sum(
+    #             max_(
+    #                 0,
+    #                 line33
+    #                 - max_(
+    #                     0,
+    #                     (tax_before_credits - line32 - lump_sum_distributions),
+    #                 ),
+    #             )
+    #         )
 
     class reform(Reform):
         def apply(self):
@@ -794,11 +842,14 @@ def create_second_earner_tax() -> Reform:
             self.update_variable(capital_gains_tax)
             self.update_variable(net_capital_gain_person)
             self.update_variable(adjusted_net_capital_gain_person)
-            self.update_variable(alternative_minimum_tax)
+            # self.update_variable(alternative_minimum_tax)
             self.update_variable(amt_income_person)
             self.update_variable(amt_excluded_deductions_person)
             self.update_variable(bonus_guaranteed_deduction_person)
             self.update_variable(additional_standard_deduction_person)
+            self.update_variable(
+                capital_gains_excluded_from_taxable_income_person
+            )
 
     return reform
 
@@ -807,9 +858,17 @@ def create_second_earner_tax_reform(parameters, period, bypass: bool = False):
     if bypass:
         return create_second_earner_tax()
 
-    p = parameters(period).gov.contrib.second_earner_reform
+    p = parameters.gov.contrib.second_earner_reform
+    reform_active = False
+    current_period = period_(period)
 
-    if p.in_effect:
+    for i in range(5):
+        if p(current_period).in_effect:
+            reform_active = True
+            break
+        current_period = current_period.offset(1, "year")
+
+    if reform_active:
         return create_second_earner_tax()
     else:
         return None
