@@ -28,3 +28,12 @@ Vermont: Remove the dependents from the personal exemptions
 Virginia: Only apply the personal exemptions to the head and spouse
 West Virginia: Change the `tax_unit_size` to `head_spouse_count`
 Wisconsin: Change the `tax_unit_size` to `head_spouse_count`
+Arizona: Neutralize dependent exemptions
+Arkansas: Neutralize dependent exemptions
+Delaware: Change the `tax_unit_size` to `head_spouse_count`
+Idaho: Neutralize dependent exemptions CTC
+Iowa: Change the `tax_unit_size` to `head_spouse_count`
+Kentucky: Change the `tax_unit_size` in family_size to `head_spouse_count`
+Maine: Neutralize dependent exemptions
+Nebraska: Change the `tax_unit_size` to `head_spouse_count`
+Oklahoma: Remove CTC portion and update return
