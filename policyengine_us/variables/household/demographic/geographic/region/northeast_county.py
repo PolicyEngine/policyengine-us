@@ -6,13 +6,14 @@ class NorthEastCounty(Enum):
     NEW_YORK = "New York"
     PHILADELPHIA = "Philadelphia"
     NORTHEAST_DEFAULT = "Northeast default"
+    NONE = "None"
 
 
 class northeast_county(Variable):
     value_type = Enum
     entity = Household
     possible_values = NorthEastCounty
-    default_value = NorthEastCounty.NORTHEAST_DEFAULT
+    default_value = NorthEastCounty.NONE
     definition_period = YEAR
     defined_for = "is_northeast_region"
     label = "Northeast region county group"
@@ -21,17 +22,25 @@ class northeast_county(Variable):
         county = household("county_str", period)
 
         p = parameters(period).household.county_group
+        boston = np.isin(county, p.northeast.boston)
+        new_york = np.isin(county, p.northeast.new_york)
+        philadelphia = np.isin(county, p.northeast.philadelphia)
+
+        conditions = [
+            boston,
+            new_york,
+            philadelphia,
+            ~(boston | new_york | philadelphia),
+        ]
+        results = [
+            NorthEastCounty.BOSTON,
+            NorthEastCounty.NEW_YORK,
+            NorthEastCounty.PHILADELPHIA,
+            NorthEastCounty.NORTHEAST_DEFAULT,
+        ]
 
         return select(
-            [
-                np.isin(county, p.northeast.boston),
-                np.isin(county, p.northeast.new_york),
-                np.isin(county, p.northeast.philadelphia),
-            ],
-            [
-                NorthEastCounty.BOSTON,
-                NorthEastCounty.NEW_YORK,
-                NorthEastCounty.PHILADELPHIA,
-            ],
-            default=NorthEastCounty.NORTHEAST_DEFAULT,
+            conditions,
+            results,
+            default=NorthEastCounty.NONE,
         )

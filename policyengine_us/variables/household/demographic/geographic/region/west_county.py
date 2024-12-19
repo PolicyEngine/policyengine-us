@@ -11,13 +11,14 @@ class WestCounty(Enum):
     SAN_FRANCISCO = "San Francisco"
     SEATTLE = "Seattle"
     WEST_DEFAULT = "West default"
+    NONE = "None"
 
 
 class west_county(Variable):
     value_type = Enum
     entity = Household
     possible_values = WestCounty
-    default_value = WestCounty.WEST_DEFAULT
+    default_value = WestCounty.NONE
     definition_period = YEAR
     defined_for = "is_west_region"
     label = "West region county group"
@@ -27,26 +28,49 @@ class west_county(Variable):
 
         p = parameters(period).household.county_group
 
+        anchorage = np.isin(county, p.west.anchorage)
+        denver = np.isin(county, p.west.denver)
+        honolulu = np.isin(county, p.west.honolulu)
+        los_angeles = np.isin(county, p.west.los_angeles)
+        phoenix = np.isin(county, p.west.phoenix)
+        san_diego = np.isin(county, p.west.san_diego)
+        san_francisco = np.isin(county, p.west.san_francisco)
+        seattle = np.isin(county, p.west.seattle)
+
+        conditions = [
+            anchorage,
+            denver,
+            honolulu,
+            los_angeles,
+            phoenix,
+            san_diego,
+            san_francisco,
+            seattle,
+            ~(
+                anchorage
+                | denver
+                | honolulu
+                | los_angeles
+                | phoenix
+                | san_diego
+                | san_francisco
+                | seattle
+            ),
+        ]
+        results = [
+            WestCounty.ANCHORAGE,
+            WestCounty.DENVER,
+            WestCounty.HONOLULU,
+            WestCounty.LOS_ANGELES,
+            WestCounty.PHOENIX,
+            WestCounty.SAN_DIEGO,
+            WestCounty.SAN_FRANCISCO,
+            WestCounty.SEATTLE,
+            WestCounty.WEST_DEFAULT,
+        ]
+
         return select(
-            [
-                np.isin(county, p.west.anchorage),
-                np.isin(county, p.west.denver),
-                np.isin(county, p.west.honolulu),
-                np.isin(county, p.west.los_angeles),
-                np.isin(county, p.west.phoenix),
-                np.isin(county, p.west.san_diego),
-                np.isin(county, p.west.san_francisco),
-                np.isin(county, p.west.seattle),
-            ],
-            [
-                WestCounty.ANCHORAGE,
-                WestCounty.DENVER,
-                WestCounty.HONOLULU,
-                WestCounty.LOS_ANGELES,
-                WestCounty.PHOENIX,
-                WestCounty.SAN_DIEGO,
-                WestCounty.SAN_FRANCISCO,
-                WestCounty.SEATTLE,
-            ],
-            default=WestCounty.WEST_DEFAULT,
+            conditions,
+            results,
+            default=WestCounty.NONE,
         )
