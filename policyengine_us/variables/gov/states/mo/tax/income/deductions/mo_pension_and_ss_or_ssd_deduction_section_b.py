@@ -27,11 +27,11 @@ class mo_pension_and_ss_or_ssd_deduction_section_b(Variable):
             (
                 unit_mo_agi
                 - unit_taxable_oasdi
-                - p.mo_private_pension_deduction_allowance[filing_status]
+                - p.pension.private_pension_deduction_allowance[filing_status]
             ),
         )
         ind_pvt_pen_amt = person("taxable_private_pension_income", period)
-        ind_pvt_pen_val = min_(ind_pvt_pen_amt, p.mo_max_private_pension)
+        ind_pvt_pen_val = min_(ind_pvt_pen_amt, p.pension.max_private_pension)
         unit_pvt_pen_val = tax_unit.sum(ind_pvt_pen_val)  # line8
         unit_deduction = max_(0, unit_pvt_pen_val - excess_agi)  # line9
         # Compute the individual's share of the tax unit's taxable private pension income.
