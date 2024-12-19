@@ -1,0 +1,20 @@
+description: South Carolina levies a local use tax of this rate, based on county groups.
+metadata:
+  period: year
+  unit: /1
+  label: South Carolina additional use tax rate
+  reference:
+  - title: South Carolina Sales and Use Tax Manual
+    href: https://dor.sc.gov/forms-site/Forms/IITPacket_2021.pdf#page=24
+
+  breakdown:
+    - sc_use_tax_county_group
+GROUP1:
+  2021-05-01: 0.01
+GROUP2:
+  2021-01-01: 0.02
+GROUP3:
+  2021-05-01: 0.03 
+GROUP4:
+  2021-05-01: 0
+
