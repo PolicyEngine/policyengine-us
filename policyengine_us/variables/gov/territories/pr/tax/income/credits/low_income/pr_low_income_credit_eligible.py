@@ -2,11 +2,11 @@ from policyengine_us.model_api import *
 
 
 class pr_low_income_credit_eligible(Variable):
-    value_type: bool
-    entity: TaxUnit
-    label: "Eligible unit for the Puerto Rico low income credit"
-    definition_period: YEAR
-    reference: "https://casetext.com/statute/laws-of-puerto-rico/title-thirteen-taxation-and-finance/subtitle-17-internal-revenue-code-of-2011/part-ii-income-taxes/chapter-1007-credits-against-tax/subchapter-b-refundable-credits/30212-credit-for-low-income-individuals-older-than-sixty-five-65-years-of-age"
+    value_type = bool
+    entity = TaxUnit
+    label = "Eligible unit for the Puerto Rico low income credit"
+    definition_period = YEAR
+    reference = "https://casetext.com/statute/laws-of-puerto-rico/title-thirteen-taxation-and-finance/subtitle-17-internal-revenue-code-of-2011/part-ii-income-taxes/chapter-1007-credits-against-tax/subchapter-b-refundable-credits/30212-credit-for-low-income-individuals-older-than-sixty-five-65-years-of-age"
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.territories.pr.tax.income.credits.low_income.income_limit
@@ -19,9 +19,9 @@ class pr_low_income_credit_eligible(Variable):
                 eligible_people == 2,
             ],
             [
-                p.one_person_eligible,
-                p.two_people_eligible,
+                p.one_eligible_person,
+                p.two_eligible_people,
             ],
-            default_value = 0
+            default = 0
         )
         return where(eligible_people > 0, income <= income_limit, False)
