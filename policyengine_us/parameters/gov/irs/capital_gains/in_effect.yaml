@@ -1,0 +1,15 @@
+description: Whether the additional lines apply to Schedule D Tax Worksheet.
+values:
+  0000-01-01: false
+  2018-01-01: true
+metadata:
+  unit: bool
+  period: year
+  label: Schedule D Tax Worksheet additional line in effect
+  reference:
+    - title: 2017 Instructions for Schedule D - line 19
+      href: https://www.irs.gov/pub/irs-prior/i1040sd--2017.pdf#page=15
+    - title: 2018 Instructions for Schedule D - line 18b
+      href: https://www.irs.gov/pub/irs-prior/i1040sd--2018.pdf#page=19
+    - title: 2019 Instructions for Schedule D - line 19
+      href: https://www.irs.gov/pub/irs-prior/i1040sd--2019.pdf#page=16
