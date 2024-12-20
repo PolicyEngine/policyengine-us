@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_core.periods import period as period_
 
 
 def create_repeal_state_dependent_exemptions() -> Reform:
@@ -371,6 +372,96 @@ def create_repeal_state_dependent_exemptions() -> Reform:
                 exempt_status.base[filing_status] + personal_exemptions_added
             )
 
+    # Using head and spouse count instead of exemptions count
+    class wi_base_exemption(Variable):
+        value_type = float
+        entity = TaxUnit
+        label = "Wisconsin base exemption"
+        unit = USD
+        definition_period = YEAR
+        reference = (
+            "https://www.revenue.wi.gov/TaxForms2021/2021-Form1f.pdf"
+            "https://www.revenue.wi.gov/TaxForms2021/2021-Form1-Inst.pdf"
+            "https://www.revenue.wi.gov/TaxForms2022/2022-Form1f.pdf"
+            "https://www.revenue.wi.gov/TaxForms2022/2022-Form1-Inst.pdf"
+            "https://docs.legis.wisconsin.gov/misc/lfb/informational_papers/january_2023/0002_individual_income_tax_informational_paper_2.pdf"
+        )
+        defined_for = StateCode.WI
+
+        def formula(tax_unit, period, parameters):
+            # compute base exemption amount
+            p = parameters(period).gov.states.wi.tax.income
+            return tax_unit("head_spouse_count", period) * p.exemption.base
+
+    class de_personal_credit(Variable):
+        value_type = float
+        entity = TaxUnit
+        label = "Delaware personal credit"
+        unit = USD
+        definition_period = YEAR
+        reference = "https://revenuefiles.delaware.gov/2022/PIT-RES_TY22_2022-02_Instructions.pdf"
+        defined_for = StateCode.DE
+
+        def formula(tax_unit, period, parameters):
+            p = parameters(period).gov.states.de.tax.income.credits
+            head_spouse_count = tax_unit("head_spouse_count", period)
+            return p.personal_credits.personal * head_spouse_count
+
+    class ky_family_size_tax_credit_rate(Variable):
+        value_type = float
+        entity = TaxUnit
+        label = "Kentucky family size tax credit rate"
+        unit = "/1"
+        definition_period = YEAR
+        reference = "https://apps.legislature.ky.gov/law/statutes/statute.aspx?id=49188"
+        defined_for = StateCode.KY
+
+        def formula(tax_unit, period, parameters):
+            income = tax_unit("ky_modified_agi", period)
+            fpg = parameters(period).gov.hhs.fpg
+            # This will be CONTIGUOUS_US for Kentucky.
+            state_group = tax_unit.household("state_group", period)
+            p1 = fpg.first_person[state_group]
+            padd = fpg.additional_person[state_group]
+            family_size = tax_unit("head_spouse_count", period)
+            # No more than 4 people are accounted for in the credit
+            p = parameters(period).gov.states.ky.tax.income.credits.family_size
+            capped_family_size = min_(family_size, p.family_size_cap)
+            poverty_index = p1 + padd * (capped_family_size - 1)
+            share = income / poverty_index
+            return p.rate.calc(share, right=True)
+
+    class ok_child_care_child_tax_credit(Variable):
+        value_type = float
+        entity = TaxUnit
+        label = "Oklahoma Child Care/Child Tax Credit"
+        unit = USD
+        definition_period = YEAR
+        reference = (
+            "https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/past-year/2021/511-Pkt-2021.pdf"
+            "https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/current/511-Pkt.pdf"
+        )
+        defined_for = StateCode.OK
+
+        def formula(tax_unit, period, parameters):
+            p = parameters(period).gov.states.ok.tax.income.credits
+            # determine AGI eligibility
+            us_agi = tax_unit("adjusted_gross_income", period)
+            agi_eligible = us_agi <= p.child.agi_limit
+            # determine OK cdcc amount
+            us_cdcc = tax_unit("cdcc", period)
+            ok_cdcc = us_cdcc * p.child.cdcc_fraction
+            # determine prorated fraction
+            ok_agi = tax_unit("ok_agi", period)
+            # Compute OK AGI as a share of US AGI.
+            # Use a mask rather than where to avoid a divide-by-zero warning.
+            agi_ratio = np.zeros_like(us_agi)
+            mask = us_agi != 0
+            agi_ratio[mask] = ok_agi[mask] / us_agi[mask]
+            prorate = min_(1, max_(0, agi_ratio))
+            # receive greater of OK cdcc or OK ctc amounts prorated if AGI eligible
+            return agi_eligible * prorate * ok_cdcc
+
     class reform(Reform):
         def apply(self):
             self.neutralize_variable("al_dependent_exemption")
@@ -381,6 +472,14 @@ def create_repeal_state_dependent_exemptions() -> Reform:
             self.neutralize_variable("nj_dependents_exemption")
             self.neutralize_variable("ny_exemptions")
             self.neutralize_variable("sc_dependent_exemption")
+            self.neutralize_variable("ut_personal_exemption")
+            self.neutralize_variable("nc_child_deduction")
+            self.neutralize_variable("nm_deduction_for_certain_dependents")
+            self.neutralize_variable("mt_dependent_exemptions_person")
+            self.neutralize_variable("az_dependent_tax_credit")
+            self.neutralize_variable("ar_personal_credit_dependent")
+            self.neutralize_variable("id_ctc")
+            self.neutralize_variable("me_dependent_exemption_credit")
             self.update_variable(hi_regular_exemptions)
             self.update_variable(md_total_personal_exemptions)
             self.update_variable(mi_personal_exemptions)
@@ -394,9 +493,13 @@ def create_repeal_state_dependent_exemptions() -> Reform:
             self.update_variable(ca_exemptions)
             self.update_variable(ga_exemptions)
             self.update_variable(in_base_exemptions)
-            self.update_variable(ia_exemption_credit)
             self.update_variable(ks_count_exemptions)
             self.update_variable(ma_income_tax_exemption_threshold)
+            self.update_variable(wi_base_exemption)
+            self.update_variable(ia_exemption_credit)
+            self.update_variable(de_personal_credit)
+            self.update_variable(ky_family_size_tax_credit_rate)
+            self.update_variable(ok_child_care_child_tax_credit)
 
     return reform
 
@@ -407,9 +510,18 @@ def create_repeal_state_dependent_exemptions_reform(
     if bypass:
         return create_repeal_state_dependent_exemptions()
 
-    p = parameters(period).gov.contrib.repeal_state_dependent_exemptions
+    p = parameters.gov.contrib.repeal_state_dependent_exemptions
 
-    if p.in_effect:
+    reform_active = False
+    current_period = period_(period)
+
+    for i in range(5):
+        if p(current_period).in_effect:
+            reform_active = True
+            break
+        current_period = current_period.offset(1, "year")
+
+    if reform_active:
         return create_repeal_state_dependent_exemptions()
     else:
         return None
