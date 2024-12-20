@@ -25,13 +25,13 @@ class chapter_7_bankruptcy_adjust_monthly_income(Variable):
             spm_unit, period, ["farm_rent_income", "rental_income"]
         )
         interest_and_dividends_income = add(
-            spm_unit, period, ["divident_income", "interest_income"]
+            spm_unit, period, ["dividend_income", "interest_income"]
         )
         unemployment_compensation = add(
             spm_unit, period, ["unemployment_compensation"]
         )
         pension_and_retirement_income = add(
-            spm_unit, period, ["pension_income", "retirement_distribution"]
+            spm_unit, period, ["pension_income", "retirement_distributions"]
         )
         total = (
             employment_income
@@ -43,4 +43,4 @@ class chapter_7_bankruptcy_adjust_monthly_income(Variable):
             + unemployment_compensation
             + pension_and_retirement_income
         )
-        return total / MONTHS_IN_YEAR
+        return total

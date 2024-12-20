@@ -20,24 +20,22 @@ class chapter_7_bankruptcy_local_standards_deductions(Variable):
         mortgage_or_rent_allowance = p.housing_and_utilities.mortgage_or_rent[
             state
         ][size]
-        monthly_housing_expense = (
-            add(spm_unit, period, ["housing_cost"]) / MONTHS_IN_YEAR
-        )
+        housing_expense = add(spm_unit, period, ["housing_cost"])
         net_mortgage_or_rent_expense = max_(
-            mortgage_or_rent_allowance - monthly_housing_expense, 0
+            mortgage_or_rent_allowance - housing_expense, 0
         )
 
-        qualify_vehicles_owned = add(spm_unit, period, ["is_vehicle_loaned"])
+        qualify_vehicles_owned = add(spm_unit, period, ["has_a_vehicle_loan"])
         qualify_vehicles_owned_cap = min_(
             qualify_vehicles_owned, p.vehicle_operation.vehicles_owned_cap
         )
         ownership_costs_allowance = p.vehicle_operation.ownership_costs[
             qualify_vehicles_owned_cap
         ]
-        vehicle_mortgage_expense = (
-            add(spm_unit, period, ["vehicle_mortgage_expense"])
-            / MONTHS_IN_YEAR
+        vehicle_mortgage_expense = add(
+            spm_unit, period, ["vehicle_mortgage_expense"]
         )
+
         net_vehicle_ownership_expense = max_(
             ownership_costs_allowance - vehicle_mortgage_expense, 0
         )
@@ -45,9 +43,8 @@ class chapter_7_bankruptcy_local_standards_deductions(Variable):
         public_transportation_allowance = (
             p.vehicle_operation.public_transportation
         )
-        public_transportation_expense = (
-            add(spm_unit, period, ["public_transportation_expense"])
-            / MONTHS_IN_YEAR
+        public_transportation_expense = add(
+            spm_unit, period, ["public_transportation_expense"]
         )
 
         have_one_ore_more_vehicles = qualify_vehicles_owned >= 1

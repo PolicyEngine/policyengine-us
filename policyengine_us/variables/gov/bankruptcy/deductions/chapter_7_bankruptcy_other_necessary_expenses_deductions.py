@@ -17,7 +17,7 @@ class chapter_7_bankruptcy_other_necessary_expenses_deductions(Variable):
         childcare_expenses = spm_unit("childcare_expenses", period)
 
         out_of_pocket_healthcare_allowance = spm_unit(
-            "chapter_7_bankruptcy_out_of_pocket_health_care_deductions", period
+            "chapter_7_bankruptcy_out_of_pocket_health_care_deduction", period
         )
         out_of_pocket_healthcare_expense = add(
             spm_unit, period, ["medical_out_of_pocket_expenses"]
@@ -28,10 +28,9 @@ class chapter_7_bankruptcy_other_necessary_expenses_deductions(Variable):
             0,
         )
 
-        total = (
+        return (
             income_tax
             + child_support_expense
             + childcare_expenses
             + additional_health_care_expenses
         )
-        return total / MONTHS_IN_YEAR

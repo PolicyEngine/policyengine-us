@@ -16,7 +16,7 @@ class chapter_7_bankruptcy_additonal_expenses_deductions(Variable):
             spm_unit, period, ["health_savings_account_payroll_contributions"]
         )
 
-        care_expense = add(spm_unit, period, ["care_expeses"])
+        care_expense = add(spm_unit, period, ["care_expenses"])
         home_energy_costs = spm_unit.household(
             "current_home_energy_use", period
         )
@@ -33,7 +33,7 @@ class chapter_7_bankruptcy_additonal_expenses_deductions(Variable):
             period,
             ["charitable_cash_donations", "charitable_non_cash_donations"],
         )
-        total = (
+        return (
             health_insurance_expense
             + health_savings_account_expense
             + care_expense
@@ -41,4 +41,3 @@ class chapter_7_bankruptcy_additonal_expenses_deductions(Variable):
             + adjust_education_expense
             + charitable_contributions
         )
-        return total / MONTHS_IN_YEAR

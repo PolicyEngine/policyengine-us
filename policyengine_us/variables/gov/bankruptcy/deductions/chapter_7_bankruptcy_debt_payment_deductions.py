@@ -13,5 +13,4 @@ class chapter_7_bankruptcy_debt_payment_deductions(Variable):
         vehicle_mortgage_expense = add(
             spm_unit, period, ["vehicle_mortgage_expense"]
         )
-        total = housing_expense + vehicle_mortgage_expense
-        return total / MONTHS_IN_YEAR
+        return housing_expense + vehicle_mortgage_expense
