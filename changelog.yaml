@@ -8544,3 +8544,288 @@
     added:
     - Separate tip income and overtime income from the main tax exempt reforms structure.
   date: 2024-10-27 22:00:19
+- bump: minor
+  changes:
+    added:
+    - DC Child Tax Credit.
+  date: 2024-10-28 20:09:23
+- bump: minor
+  changes:
+    added:
+    - Remaining 2025 IRS tax posted parameter updates.
+  date: 2024-10-28 21:33:47
+- bump: minor
+  changes:
+    added:
+    - Capital gains tax responses.
+  date: 2024-10-29 13:25:05
+- bump: patch
+  changes:
+    changed:
+    - Updated policyengine-us-data to 0.11.1
+    - Updated microdf-python to 0.4.3
+  date: 2024-10-29 19:55:24
+- bump: patch
+  changes:
+    changed:
+    - Altered handling of federal params in VA reduced itemized deductions
+  date: 2024-10-30 02:19:31
+- bump: minor
+  changes:
+    added:
+    - California Medicaid Former Foster Youth Program.
+  date: 2024-10-30 18:47:11
+- bump: patch
+  changes:
+    fixed:
+    - remove uprating for SNAP variables that don't change
+  date: 2024-10-31 18:57:07
+- bump: patch
+  changes:
+    fixed:
+    - Branch improvements.
+  date: 2024-11-01 10:27:40
+- bump: patch
+  changes:
+    fixed:
+    - Colorado 2023 sales tax refund.
+  date: 2024-11-01 16:53:33
+- bump: patch
+  changes:
+    fixed:
+    - Qualified business defaults to true.
+  date: 2024-11-04 12:17:46
+- bump: minor
+  changes:
+    added:
+    - SNAP 2024 SUA for Colorado
+  date: 2024-11-05 21:37:21
+- bump: minor
+  changes:
+    added:
+    - Update EITC joint bonus for childless filers.
+  date: 2024-11-07 11:43:28
+- bump: patch
+  changes:
+    added:
+    - Label to Alaska tax param folder
+  date: 2024-11-08 23:52:56
+- bump: patch
+  changes:
+    added:
+    - Test for meets_school_meal_categorical_eligibility with vectorized inputs.
+    fixed:
+    - Corrected meets_school_meal_categorical_eligilibity to properly calculate eligibility
+      for vectorized inputs.
+  date: 2024-11-10 18:07:53
+- bump: minor
+  changes:
+    fixed:
+    - NJ EITC correctly calculates federal EITC entitlement.
+  date: 2024-11-11 04:40:19
+- bump: patch
+  changes:
+    fixed:
+    - Iowa Income Tax Rates 2023-2026.
+  date: 2024-11-11 04:47:50
+- bump: minor
+  changes:
+    added:
+    - Los Angeles County expectant parent payment.
+    - Los Angeles County infant supplement.
+  date: 2024-11-13 16:46:23
+- bump: minor
+  changes:
+    added:
+    - Georgia 2024 income tax rate update.
+  date: 2024-11-14 17:44:55
+- bump: patch
+  changes:
+    fixed:
+    - Mississippi missing 2023 income tax bracket thresholds.
+  date: 2024-11-14 20:12:06
+- bump: patch
+  changes:
+    fixed:
+    - Refactor the New York Working Families Tax Credit.
+  date: 2024-11-15 19:21:17
+- bump: patch
+  changes:
+    added:
+    - Add the 2023 Arkansas inflation relief credit amount and avoid attributing the
+      amount twice for joint filers filing separately.
+  date: 2024-11-16 20:18:42
+- bump: patch
+  changes:
+    fixed:
+    - Remove the child tax rebate from the list of 2023 rhode island refundable credits.
+  date: 2024-11-16 20:47:40
+- bump: patch
+  changes:
+    added:
+    - Populate va_agi_person and add the Virginia spouse tax adjustment to the net
+      income tree.
+  date: 2024-11-16 20:55:48
+- bump: minor
+  changes:
+    added:
+    - Montana 2023 income tax rule updates.
+  date: 2024-11-18 01:37:58
+- bump: minor
+  changes:
+    added:
+    - SALT deduction phase-out reform.
+  date: 2024-11-18 02:11:15
+- bump: minor
+  changes:
+    fixed:
+    - Cliff variables.
+  date: 2024-11-18 13:26:09
+- bump: minor
+  changes:
+    changed:
+    - US-Data to 1.13.
+  date: 2024-11-19 13:15:26
+- bump: patch
+  changes:
+    added:
+    - Monthly age variable.
+    fixed:
+    - Los Angeles Infant Supplement and Expectant Parent Payment age threshold.
+  date: 2024-11-19 16:41:43
+- bump: patch
+  changes:
+    added:
+    - New test to cliff_evaluated to demonstrate differences between adults and children
+      in given household.
+    changed:
+    - Changed formula for cliff_evaluated to use new marginal tax rate adults parameter.
+    - Updated cliff_gap test to use new marginal tax rate adults parameter.
+    removed:
+    - Unused cliff impact parameters.
+  date: 2024-11-19 21:32:57
+- bump: minor
+  changes:
+    added:
+    - SALT phase-out reform separate rate for joint filers.
+  date: 2024-11-19 23:38:18
+- bump: minor
+  changes:
+    added:
+    - CTC supplement for oldest child reform.
+    - Child index variable.
+  date: 2024-11-21 02:32:20
+- bump: minor
+  changes:
+    added:
+    - Delaware 2022 relief rebate.
+  date: 2024-11-21 03:30:46
+- bump: minor
+  changes:
+    added:
+    - Reform to repeal state dependent exemptions.
+  date: 2024-11-21 03:44:18
+- bump: patch
+  changes:
+    fixed:
+    - Montana 2023 / 2024 EITC match.
+  date: 2024-11-25 12:08:59
+- bump: minor
+  changes:
+    added:
+    - Apply the phase-in to the CTC when computing the New York empire state credit.
+  date: 2024-11-25 21:52:13
+- bump: minor
+  changes:
+    added:
+    - Montana 2023 income tax rebate.
+  date: 2024-11-25 22:04:48
+- bump: minor
+  changes:
+    added:
+    - Louisiana 2025 flat income tax rate.
+    - Louisiana 2025 retirement income exemption increase.
+  date: 2024-11-25 23:01:42
+- bump: minor
+  changes:
+    added:
+    - Louisiana 2025 standard deduction structure.
+  date: 2024-11-30 18:08:00
+- bump: patch
+  changes:
+    fixed:
+    - Arkansas 2023 low income tax table parameters.
+  date: 2024-12-01 16:39:30
+- bump: patch
+  changes:
+    changed:
+    - Upgraded minimum policyengine-core version
+    - Allowed more flexibility in policyengine-us-data version
+  date: 2024-12-03 20:14:27
+- bump: minor
+  changes:
+    added:
+    - Add the Arizona charitable contributions credit to the net income tree.
+  date: 2024-12-03 20:23:24
+- bump: patch
+  changes:
+    fixed:
+    - Remove the SNAP child support deduction from the net income computation if applied
+      to gross income.
+  date: 2024-12-04 19:11:45
+- bump: minor
+  changes:
+    added:
+    - Apply the TCJA mortgage value limits under the mortgage interest deduction.
+  date: 2024-12-04 21:38:01
+- bump: minor
+  changes:
+    added:
+    - Remove CBO elasticities toggle.
+  date: 2024-12-05 15:47:47
+- bump: minor
+  changes:
+    added:
+    - Montana property tax rebate.
+  date: 2024-12-05 15:58:14
+- bump: minor
+  changes:
+    added:
+    - Add multiple state exemptions to the repeal of state dependent exemptions reform.
+  date: 2024-12-05 16:42:58
+- bump: minor
+  changes:
+    added:
+    - Second earner tax reform.
+  date: 2024-12-05 16:48:14
+- bump: minor
+  changes:
+    added:
+    - Nebraska military retirement benefit exclusion.
+  date: 2024-12-12 05:36:14
+- bump: patch
+  changes:
+    added:
+    - Capability to select custom start time for simulations; this is a patch for
+      structural reforms that occur at non-default time periods.
+  date: 2024-12-13 23:43:04
+- bump: patch
+  changes:
+    fixed:
+    - NYWFTC EITC older children eligibility.
+  date: 2024-12-15 23:08:57
+- bump: patch
+  changes:
+    fixed:
+    - New York Working Families Tax Credit parameter structure.
+    - New York exemptions child definition.
+  date: 2024-12-18 02:17:13
+- bump: minor
+  changes:
+    added:
+    - Add non-refundable credits to state dependent exemption reform.
+  date: 2024-12-18 02:31:13
+- bump: patch
+  changes:
+    added: 2025 SSI, AND-CS, and OAP values
+  date: 2024-12-20 16:50:32

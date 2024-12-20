@@ -64,7 +64,7 @@ def create_ny_working_families_tax_credit() -> Reform:
             is_dependent = person("is_tax_unit_dependent", period)
             age = person("age", period)
             p = parameters(period).gov.contrib.states.ny.wftc
-            age_eligible = age < p.child_age_threshold
+            age_eligible = age <= p.child_age_threshold
             return is_dependent & age_eligible
 
     class eitc_younger_children_count(Variable):
@@ -86,18 +86,12 @@ def create_ny_working_families_tax_credit() -> Reform:
         unit = USD
 
         def formula(tax_unit, period, parameters):
-            younger_child_count = tax_unit(
-                "eitc_younger_children_count", period
-            )
-            older_child_count = tax_unit("eitc_older_children_count", period)
-            child_count = older_child_count + younger_child_count
+            child_count = tax_unit("eitc_younger_children_count", period)
             eitc = parameters(period).gov.irs.credits.eitc
             # We will reduce the maximum credit amount by the amount for self
             # as it is attributed to the younger children EITC
             # We also need to reduce it by the amount attributed to the younger children
-            base_credit = eitc.max.calc(child_count)
-            amount_for_older = eitc.max.calc(older_child_count)
-            return base_credit - amount_for_older
+            return eitc.max.calc(child_count)
 
     class eitc_younger_phase_in_rate(Variable):
         value_type = float
@@ -200,8 +194,15 @@ def create_ny_working_families_tax_credit() -> Reform:
             demographic_eligible = tax_unit(
                 "eitc_younger_demographic_eligible", period
             )
+            no_older_children = (
+                tax_unit("eitc_older_children_count", period) == 0
+            )
             # Define eligibility before considering separate filer limitation.
-            eligible = demographic_eligible & investment_income_eligible
+            eligible = (
+                demographic_eligible
+                & investment_income_eligible
+                & no_older_children
+            )
             # This parameter is true if separate filers are eligible.
             if eitc.eligibility.separate_filer:
                 return eligible
@@ -238,18 +239,22 @@ def create_ny_working_families_tax_credit() -> Reform:
             is_dependent = person("is_tax_unit_dependent", period)
             age = person("age", period)
             p_irs = parameters(period).gov.irs.dependent.ineligible_age
-            student = person("is_full_time_student", period)
-            student_age_eligible = age < p_irs.student
             p_ref = parameters(period).gov.contrib.states.ny.wftc
-            older_student_age_eligible = p_ref.child_age_threshold <= age
-            age_eligible = student_age_eligible & older_student_age_eligible
-            return is_dependent & student & age_eligible
+            wftc_older_age_eiligble = age > p_ref.child_age_threshold
+            non_student_age_eligible = wftc_older_age_eiligble & (
+                age < p_irs.non_student
+            )
+            student = person("is_full_time_student", period)
+            student_age_eligible = (
+                (age < p_irs.student) & student & wftc_older_age_eiligble
+            )
+            age_eligible = non_student_age_eligible | student_age_eligible
+            return is_dependent & age_eligible
 
     class eitc_older_children_count(Variable):
         value_type = int
         entity = TaxUnit
         label = "EITC-qualifying younger children"
-        unit = USD
         documentation = "Number of children qualifying as children for the EITC, excluding dependents over 18."
         definition_period = YEAR
 
@@ -264,7 +269,11 @@ def create_ny_working_families_tax_credit() -> Reform:
         unit = USD
 
         def formula(tax_unit, period, parameters):
-            child_count = tax_unit("eitc_older_children_count", period)
+            older_child_count = tax_unit("eitc_older_children_count", period)
+            younger_child_count = tax_unit(
+                "eitc_younger_children_count", period
+            )
+            child_count = younger_child_count + older_child_count
             eitc = parameters(period).gov.irs.credits.eitc
             # We will reduce the maximum credit amount by the amount for self
             # as it is attributed to the younger children EITC
@@ -280,7 +289,11 @@ def create_ny_working_families_tax_credit() -> Reform:
         definition_period = YEAR
 
         def formula(tax_unit, period, parameters):
-            child_count = tax_unit("eitc_older_children_count", period)
+            older_child_count = tax_unit("eitc_older_children_count", period)
+            younger_child_count = tax_unit(
+                "eitc_younger_children_count", period
+            )
+            child_count = younger_child_count + older_child_count
             eitc = parameters(period).gov.irs.credits.eitc
             return eitc.phase_in_rate.calc(child_count)
 
@@ -308,7 +321,11 @@ def create_ny_working_families_tax_credit() -> Reform:
         definition_period = YEAR
 
         def formula(tax_unit, period, parameters):
-            count_children = tax_unit("eitc_older_children_count", period)
+            older_child_count = tax_unit("eitc_older_children_count", period)
+            younger_child_count = tax_unit(
+                "eitc_younger_children_count", period
+            )
+            count_children = younger_child_count + older_child_count
             eitc = parameters(period).gov.irs.credits.eitc
             is_joint = tax_unit("tax_unit_is_joint", period)
             joint_bonus = eitc.phase_out.joint_bonus.calc(count_children)
@@ -325,8 +342,12 @@ def create_ny_working_families_tax_credit() -> Reform:
 
         def formula(tax_unit, period, parameters):
             eitc = parameters(period).gov.irs.credits.eitc
-            num_children = tax_unit("eitc_older_children_count", period)
-            return eitc.phase_out.rate.calc(num_children)
+            older_child_count = tax_unit("eitc_older_children_count", period)
+            younger_child_count = tax_unit(
+                "eitc_younger_children_count", period
+            )
+            count_children = younger_child_count + older_child_count
+            return eitc.phase_out.rate.calc(count_children)
 
     class eitc_older_reduction(Variable):
         value_type = float
@@ -388,8 +409,13 @@ def create_ny_working_families_tax_credit() -> Reform:
             demographic_eligible = tax_unit(
                 "eitc_older_demographic_eligible", period
             )
+            younger_eitc_eligible = tax_unit("younger_eitc_eligible", period)
             # Define eligibility before considering separate filer limitation.
-            eligible = demographic_eligible & investment_income_eligible
+            eligible = (
+                demographic_eligible
+                & investment_income_eligible
+                & ~younger_eitc_eligible
+            )
             # This parameter is true if separate filers are eligible.
             if eitc.eligibility.separate_filer:
                 return eligible
@@ -452,7 +478,7 @@ def create_ny_working_families_tax_credit() -> Reform:
                 child_dependent = person("is_child_dependent", period)
                 wftc_eligible_child = person("ny_wftc_eligible_child", period)
                 return child_dependent & ~wftc_eligible_child
-            return person("is_tax_unit_dependent", period)
+            return person("is_child_dependent", period)
 
     class ny_exemptions(Variable):
         value_type = float

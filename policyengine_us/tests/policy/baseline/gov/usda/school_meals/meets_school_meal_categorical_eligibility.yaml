@@ -81,3 +81,12 @@
       is_head_start_eligible: false
   output:
       meets_school_meal_categorical_eligibility: false
+
+- name: Vectorized operations
+  period: 2024
+  input:
+      snap: [1, 0, 0, 0, 0, 0, 0, 0]
+      fdpir: [0, 1, 1, 0, 0, 0, 0, 0]
+      is_homeless: [False, False, True, True, False, False, False, False]
+  output:
+      meets_school_meal_categorical_eligibility: [True, True, True, True, False, False, False, False]

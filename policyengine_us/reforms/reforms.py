@@ -20,9 +20,6 @@ from .biden.budget_2025 import (
 from .biden.budget_2025 import create_capital_gains_tax_increase_reform
 from .eitc import create_halve_joint_eitc_phase_out_rate_reform
 from .states.ny.wftc import create_ny_working_families_tax_credit_reform
-from .states.dc.dc_ctc import (
-    create_dc_ctc_reform,
-)
 from .harris.lift.middle_class_tax_credit import (
     create_middle_class_tax_credit_reform,
 )
@@ -55,6 +52,18 @@ from .harris.capital_gains import (
 )
 from .tax_exempt.tax_exempt_reform import (
     create_tax_exempt_reform,
+)
+from .salt_phase_out.salt_phase_out_reform import (
+    create_salt_phase_out_reform,
+)
+from .state_dependent_exemptions import (
+    create_repeal_state_dependent_exemptions_reform,
+)
+from .ctc import (
+    create_ctc_older_child_supplement_reform,
+)
+from .second_earner import (
+    create_second_earner_tax_reform,
 )
 
 
@@ -99,8 +108,6 @@ def create_structural_reforms_from_parameters(parameters, period):
     )
     ny_wftc = create_ny_working_families_tax_credit_reform(parameters, period)
 
-    dc_ctc = create_dc_ctc_reform(parameters, period)
-
     middle_class_tax_credit = create_middle_class_tax_credit_reform(
         parameters, period
     )
@@ -131,6 +138,16 @@ def create_structural_reforms_from_parameters(parameters, period):
         parameters, period
     )
     tip_income_tax_exempt = create_tax_exempt_reform(parameters, period)
+    salt_phase_out = create_salt_phase_out_reform(parameters, period)
+    repeal_state_dependent_exemptions = (
+        create_repeal_state_dependent_exemptions_reform(parameters, period)
+    )
+    ctc_older_child_supplement = create_ctc_older_child_supplement_reform(
+        parameters, period
+    )
+    second_earner_tax_reform = create_second_earner_tax_reform(
+        parameters, period
+    )
 
     reforms = [
         afa_reform,
@@ -147,7 +164,6 @@ def create_structural_reforms_from_parameters(parameters, period):
         capital_gains_tax_increase,
         halve_joint_eitc_phase_out_rate,
         ny_wftc,
-        dc_ctc,
         middle_class_tax_credit,
         rent_relief_tax_credit,
         end_child_poverty_act,
@@ -159,6 +175,10 @@ def create_structural_reforms_from_parameters(parameters, period):
         repeal_dependent_exemptions,
         harris_capital_gains,
         tip_income_tax_exempt,
+        salt_phase_out,
+        repeal_state_dependent_exemptions,
+        ctc_older_child_supplement,
+        second_earner_tax_reform,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
 

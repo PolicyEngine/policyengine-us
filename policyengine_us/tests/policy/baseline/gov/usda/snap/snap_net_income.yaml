@@ -54,3 +54,33 @@
         state_group: CONTIGUOUS_US
   output:
     snap_net_income: 428.5 * 12
+
+- name: SNAP child support deduction integration test
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_1:
+        age: 30
+        child_support_expense: 500
+      person_2:
+        age: 10
+    spm_units:
+      spm_unit:
+        snap_earned_income: 2_000
+        snap_unearned_income: 0
+        members: [person_1, person_2]
+        snap_standard_deduction: 0
+        snap_earned_income_deduction: 0
+        snap_excess_medical_expense_deduction: 0
+        snap_excess_shelter_expense_deduction: 0
+        snap_dependent_care_deduction: 0
+    households:
+      household:
+        state_code: DC
+  output:
+    snap_child_support_gross_income_deduction: 500
+    snap_gross_income: 1_500
+    snap_child_support_deduction: 0
+    snap_deductions: 0
+    snap_net_income: 1_500
