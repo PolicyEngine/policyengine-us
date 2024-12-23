@@ -8803,3 +8803,29 @@
     added:
     - Nebraska military retirement benefit exclusion.
   date: 2024-12-12 05:36:14
+- bump: patch
+  changes:
+    added:
+    - Capability to select custom start time for simulations; this is a patch for
+      structural reforms that occur at non-default time periods.
+  date: 2024-12-13 23:43:04
+- bump: patch
+  changes:
+    fixed:
+    - NYWFTC EITC older children eligibility.
+  date: 2024-12-15 23:08:57
+- bump: patch
+  changes:
+    fixed:
+    - New York Working Families Tax Credit parameter structure.
+    - New York exemptions child definition.
+  date: 2024-12-18 02:17:13
+- bump: minor
+  changes:
+    added:
+    - Add non-refundable credits to state dependent exemption reform.
+  date: 2024-12-18 02:31:13
+- bump: patch
+  changes:
+    added: 2025 SSI, AND-CS, and OAP values
+  date: 2024-12-20 16:50:32
