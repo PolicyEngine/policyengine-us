@@ -6,6 +6,7 @@ class is_ssi_qualified_noncitizen(Variable):
     entity = Person
     label = "Is an SSI qualified noncitizen"
     definition_period = YEAR
+    reference = "https://secure.ssa.gov/poms.nsf/lnx/0500502100"
 
     def formula(person, period, parameters):
         qualifying_quarters_earnings = person(
