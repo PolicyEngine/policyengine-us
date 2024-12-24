@@ -18,5 +18,16 @@ class ia_regular_tax_indiv(Variable):
 
     def formula(person, period, parameters):
         taxable_income = person("ia_taxable_income_indiv", period)
-        p = parameters(period).gov.states.ia.tax.income
-        return p.rates.all.calc(max_(0, taxable_income))
+        p = parameters(period).gov.states.ia.tax.income.rates
+        if p.by_filing_status.active:
+            filing_status = person.tax_unit(
+                "filing_status",
+                period,
+            )
+            joint = filing_status == filing_status.possible_values.JOINT
+            return where(
+                joint,
+                p.by_filing_status.joint.calc(taxable_income),
+                p.by_filing_status.other.calc(taxable_income),
+            )
+        return p.combined.calc(taxable_income)

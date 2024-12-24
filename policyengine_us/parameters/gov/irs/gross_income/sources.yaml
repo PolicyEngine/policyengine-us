@@ -21,8 +21,12 @@ values:
     - illicit_income
     - taxable_retirement_distributions
     - miscellaneous_income
+    # Listed separately on 1040 line 8g.
+    - ak_permanent_fund_dividend
+
 metadata:
-  unit: currency-USD
+  unit: list
+  period: year
   label: Gross income sources
   reference:
     - title: 26 U.S. Code § 61 - Gross income defined
