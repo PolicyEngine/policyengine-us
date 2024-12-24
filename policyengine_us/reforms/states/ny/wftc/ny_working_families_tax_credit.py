@@ -478,7 +478,7 @@ def create_ny_working_families_tax_credit() -> Reform:
                 child_dependent = person("is_child_dependent", period)
                 wftc_eligible_child = person("ny_wftc_eligible_child", period)
                 return child_dependent & ~wftc_eligible_child
-            return person("is_tax_unit_dependent", period)
+            return person("is_child_dependent", period)
 
     class ny_exemptions(Variable):
         value_type = float
