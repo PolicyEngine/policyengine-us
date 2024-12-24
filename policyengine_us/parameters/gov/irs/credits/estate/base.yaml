@@ -55,5 +55,7 @@ values:
   2023-01-01: 12_920_000  
   2024-01-01: 13_610_000
   2025-01-01: 13_990_000
-  # use 2017 value as base and cpi_w (2026Q1 projection) for uprating
-  2026-01-01: 6_790_000 # amount = 5000000 * 321.701 (2026Q1) / 236.854 (2017-01-01)
+  # Based on the legal code, we use 2017 value as the base 
+  # and cpi_w (2026Q1 projection) for uprating
+  # 5,000,000 * 321.701 (2026Q1) / 236.854 (2017-01-01)
+  2026-01-01: 6_790_000 
