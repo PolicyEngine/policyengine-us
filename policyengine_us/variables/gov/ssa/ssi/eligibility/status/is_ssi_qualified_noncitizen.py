@@ -18,19 +18,24 @@ class is_ssi_qualified_noncitizen(Variable):
             immigration_status
             == immigration_status.possible_values.LEGAL_PERMANENT_RESIDENT
         )
-        # Need qualifying quarters if person is a legal permanent resident.
-        has_qualifying_quarters = (
+        # For legal permanent residents, check if they have enough qualifying quarters
+        meets_earnings_requirement = (
             qualifying_quarters_earnings
             >= p.income.sources.qualifying_quarters_threshold
         )
-        earnings_quarters_eligible = where(
+
+        # Non-LPRs automatically meet the earnings requirement
+        # LPRs must meet the earnings threshold
+        earnings_requirement_satisfied = where(
             legal_permanent_resident,
-            has_qualifying_quarters,
+            meets_earnings_requirement,
             True,
         )
+
+        # Convert immigration status to string and check if it's in the list of qualified statuses
         immigration_status_str = immigration_status.decode_to_str()
-        qualifies_based_on_status = np.isin(
+        has_qualifying_status = np.isin(
             immigration_status_str,
             p.eligibility.status.qualified_noncitizen_status,
         )
-        return qualifies_based_on_status & earnings_quarters_eligible
+        return has_qualifying_status & earnings_requirement_satisfied
