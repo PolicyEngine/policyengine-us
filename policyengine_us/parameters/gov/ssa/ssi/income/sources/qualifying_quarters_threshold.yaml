@@ -1,8 +1,10 @@
 description: The number of qualifying quarters of earnings required for SSI eligibility for certain noncitizens.
 values:
-  1996-08-22: 40
+  1975-01-01: 40
 metadata:
-  name: SSI qualifying quarters threshold
+  label: SSI qualifying quarters threshold
+  period: year
+  unit: quarters
   reference:
     - title: SI 00502.135 - Lawfully Admitted for Permanent Residence (LAPR) with 40 Qualifying Quarters of Earnings
       href: https://secure.ssa.gov/poms.nsf/lnx/0500502135
