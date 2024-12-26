@@ -26,11 +26,9 @@ class is_ssi_qualified_noncitizen(Variable):
 
         # Non-LPRs automatically meet the earnings requirement
         # LPRs must meet the earnings threshold
-        earnings_requirement_satisfied = where(
-            legal_permanent_resident,
-            meets_earnings_requirement,
-            True,
-        )
+        earnings_requirement_satisfied = (
+            ~legal_permanent_resident
+        ) | meets_earnings_requirement
 
         # Convert immigration status to string and check if it's in the list of qualified statuses
         immigration_status_str = immigration_status.decode_to_str()
