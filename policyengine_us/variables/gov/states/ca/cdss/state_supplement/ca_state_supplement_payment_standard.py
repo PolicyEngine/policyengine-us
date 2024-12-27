@@ -8,7 +8,7 @@ class ca_state_supplement_payment_standard(Variable):
     unit = USD
     definition_period = MONTH
     defined_for = StateCode.CA
-    reference = "https://www.cdss.ca.gov/Portals/9/CAPI/CAPI_Regulations-Accessible.pdf"
+    reference = "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&sectionNum=12200"
 
     def formula(spm_unit, period, parameters):
         p = parameters(
@@ -32,7 +32,7 @@ class ca_state_supplement_payment_standard(Variable):
         is_disabled = person("is_disabled", period)
         age = person("monthly_age", period)
         is_aged = age >= p.aged_or_disabled.age_threshold
-        aged_or_disabled = is_aged | is_disabled
+        aged_or_disabled = (is_aged | is_disabled) * head_or_spouse
         aged_disabled_count = spm_unit.sum(aged_or_disabled)
         aged_disabled_amount = select(
             [
@@ -49,16 +49,22 @@ class ca_state_supplement_payment_standard(Variable):
         living_arrangements_allow_for_food_preparation = spm_unit.household(
             "living_arrangements_allow_for_food_preparation", period
         )
-        food_allowance_amount_eligible = (
-            ~living_arrangements_allow_for_food_preparation & aged_or_disabled
+        food_allowance_amount = select(
+            [
+                (is_married == 1) & (aged_disabled_count == 2),
+                (is_married == 1) & (aged_disabled_count == 1),
+                (aged_disabled_count == 1),
+            ],
+            [
+                p.allowance.food.married,
+                p.allowance.food.single,
+                p.allowance.food.single,
+            ],
+            default=0,
         )
-        food_allowance_amount_eligible_count = spm_unit.sum(
-            food_allowance_amount_eligible
-        )
-        food_allowance_amount = where(
-            is_married,
-            food_allowance_amount_eligible_count * p.allowance.food.married,
-            food_allowance_amount_eligible_count * p.allowance.food.single,
+        food_allowance_full_amount = (
+            living_arrangements_allow_for_food_preparation
+            * food_allowance_amount
         )
         # Dependent amount
         dependent = person("is_tax_unit_dependent", period)
@@ -88,7 +94,7 @@ class ca_state_supplement_payment_standard(Variable):
         # Total amount
         return (
             max_(blind_amount, aged_disabled_amount)
-            + food_allowance_amount
+            + food_allowance_full_amount
             + dependent_amount
             + medical_care_facility_amount
             + out_of_home_care_facility_amount
