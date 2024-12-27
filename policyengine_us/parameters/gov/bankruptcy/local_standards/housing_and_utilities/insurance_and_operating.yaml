@@ -567,7 +567,7 @@ metadata:
   label: Local standards of insurance and operating expense
   breakdown:
   - state_code
-  - list(range(1,6))
+  - range(1, 6)
   reference:
   # We use average state level values while the amount can vary based on county
     - title: Local standards -- Housing and Utilities and Transportation

@@ -12,7 +12,7 @@ class chapter_7_bankruptcy_local_standards_deductions(Variable):
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.bankruptcy.local_standards
         size = spm_unit("spm_unit_size", period)
-        state = spm_unit.household("state_code_str", period)
+        state = spm_unit.household("state_code", period)
         insurance_and_operating_allowance = (
             p.housing_and_utilities.insurance_and_operating[state][size]
         )
@@ -25,12 +25,13 @@ class chapter_7_bankruptcy_local_standards_deductions(Variable):
             mortgage_or_rent_allowance - housing_expense, 0
         )
 
-        qualify_vehicles_owned = add(spm_unit, period, ["has_a_vehicle_loan"])
-        qualify_vehicles_owned_cap = min_(
+        # qualify_vehicles_owned = add(spm_unit, period, ["has_a_vehicle_loan"])
+        qualify_vehicles_owned = spm_unit("vehicles_loan_count", period)
+        qualify_vehicles_owned_capped = min_(
             qualify_vehicles_owned, p.vehicle_operation.vehicles_owned_cap
         )
         ownership_costs_allowance = p.vehicle_operation.ownership_costs[
-            qualify_vehicles_owned_cap
+            qualify_vehicles_owned_capped
         ]
         vehicle_mortgage_expense = add(
             spm_unit, period, ["vehicle_mortgage_expense"]
