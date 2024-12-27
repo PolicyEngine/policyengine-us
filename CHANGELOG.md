@@ -5,6 +5,79 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.165.0] - 2024-12-26 12:59:32
+
+### Added
+
+- SSI qualified non-citizen eligibility.
+
+## [1.164.0] - 2024-12-24 21:20:18
+
+### Added
+
+- Expanded CTC reform including a reformed phase-in structure.
+
+## [1.163.1] - 2024-12-24 18:42:26
+
+### Fixed
+
+- Illinois income tax before non-refundable credits variable format.
+
+## [1.163.0] - 2024-12-24 15:53:04
+
+### Added
+
+- 2026 Estate Tax Credit Exemption amount.
+
+## [1.162.3] - 2024-12-24 12:46:05
+
+### Fixed
+
+- Indiana National Guard and Reserve Pay Deduction 2023.
+
+## [1.162.2] - 2024-12-23 19:54:14
+
+### Fixed
+
+- Adjust the EPP max pregnancy month value.
+
+## [1.162.1] - 2024-12-20 16:50:32
+
+### Added
+
+- 2
+- 0
+- 2
+- 5
+-  
+- S
+- S
+- I
+- ,
+-  
+- A
+- N
+- D
+- -
+- C
+- S
+- ,
+-  
+- a
+- n
+- d
+-  
+- O
+- A
+- P
+-  
+- v
+- a
+- l
+- u
+- e
+- s
+
 ## [1.162.0] - 2024-12-18 02:31:13
 
 ### Added
@@ -10408,6 +10481,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.165.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.164.0...1.165.0
+[1.164.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.163.1...1.164.0
+[1.163.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.163.0...1.163.1
+[1.163.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.162.3...1.163.0
+[1.162.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.162.2...1.162.3
+[1.162.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.162.1...1.162.2
+[1.162.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.162.0...1.162.1
 [1.162.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.161.3...1.162.0
 [1.161.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.161.2...1.161.3
 [1.161.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.161.1...1.161.2
