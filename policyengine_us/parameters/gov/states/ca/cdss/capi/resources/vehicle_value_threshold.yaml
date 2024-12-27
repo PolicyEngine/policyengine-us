@@ -1,0 +1,10 @@
+description: California counts the value of a car over this threshold as resources for CAPI.
+metadata:
+  unit: currency-USD
+  period: month
+  label: California CAPI resource limit car value threshold
+  reference:
+    - title: California Eligibility and Assistance Standards Chapter 49-040 (.3)(c)(5)
+      href: https://www.cdss.ca.gov/Portals/9/CAPI/CAPI_Regulations-Accessible.pdf#page=38
+values:
+  1991-01-01: 4_500
