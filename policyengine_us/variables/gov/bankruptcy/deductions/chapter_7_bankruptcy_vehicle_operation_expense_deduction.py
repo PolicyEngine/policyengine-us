@@ -14,7 +14,6 @@ class chapter_7_bankruptcy_vehicle_operation_expense_deduction(Variable):
             period
         ).gov.bankruptcy.local_standards.vehicle_operation.region_operating_costs
 
-        # qualify_vehicles_owned = add(spm_unit, period, ["has_a_vehicle_loan"])
         qualify_vehicles_owned = spm_unit("vehicles_loan_count", period)
         qualify_vehicles_owned_capped = min_(qualify_vehicles_owned, 2)
         northeast = spm_unit.household("northeast_county", period)

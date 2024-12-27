@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class chapter_7_bankruptcy_local_standards_deductions(Variable):
     value_type = float
     entity = SPMUnit
-    label = "Local standards deduction"
+    label = "Local standards deductions"
     definition_period = MONTH
     reference = "https://www.cacb.uscourts.gov/sites/cacb/files/documents/forms/122A2.pdf#page=3"
     documentation = "Line 8 to line 15 (expect line 12)in form 122A-2"
@@ -25,7 +25,6 @@ class chapter_7_bankruptcy_local_standards_deductions(Variable):
             mortgage_or_rent_allowance - housing_expense, 0
         )
 
-        # qualify_vehicles_owned = add(spm_unit, period, ["has_a_vehicle_loan"])
         qualify_vehicles_owned = spm_unit("vehicles_loan_count", period)
         qualify_vehicles_owned_capped = min_(
             qualify_vehicles_owned, p.vehicle_operation.vehicles_owned_cap

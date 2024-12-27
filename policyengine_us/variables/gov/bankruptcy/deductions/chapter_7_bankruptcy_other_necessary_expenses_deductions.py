@@ -4,12 +4,12 @@ from policyengine_us.model_api import *
 class chapter_7_bankruptcy_other_necessary_expenses_deductions(Variable):
     value_type = float
     entity = SPMUnit
-    label = "Other necessary expenses deduction"
+    label = "Other necessary expenses deductions"
     definition_period = MONTH
     reference = "https://www.cacb.uscourts.gov/sites/cacb/files/documents/forms/122A2.pdf#page=5"
 
     def formula(spm_unit, period, parameters):
-        income_tax = add(spm_unit, period, ["income_tax"])
+        income_tax = spm_unit("spm_unit_federal_tax", period)
 
         child_support_expense = add(
             spm_unit, period, ["child_support_expense"]
