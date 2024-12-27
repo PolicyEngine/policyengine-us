@@ -20,7 +20,7 @@ class chapter_7_bankruptcy_local_standards_deductions(Variable):
         mortgage_or_rent_allowance = p.housing_and_utilities.mortgage_or_rent[
             state
         ][size]
-        housing_expense = add(spm_unit, period, ["housing_cost"])
+        housing_expense = spm_unit("housing_cost", period)
         net_mortgage_or_rent_expense = max_(
             mortgage_or_rent_allowance - housing_expense, 0
         )
