@@ -34,9 +34,9 @@ class mo_pension_and_ss_or_ssd_deduction_section_a(Variable):
         # Section A, Public Pension Amounts
         # TODO:
         # unclear reference to "See instructions if Line 3 of Section C is more than $0" here: https://dor.mo.gov/forms/MO-A_2021.pdf#page=3
-        public_pension_allowance = p.mo_public_pension_deduction_allowance[
-            filing_status
-        ]
+        public_pension_allowance = (
+            p.pension.public_pension_deduction_allowance[filing_status]
+        )
         agi_over_public_pension__allowance = max_(
             agi_in_excess_of_taxable_social_security
             - public_pension_allowance,
@@ -44,14 +44,14 @@ class mo_pension_and_ss_or_ssd_deduction_section_a(Variable):
         )
         public_pension_amount = person("taxable_public_pension_income", period)
         max_social_security_benefit = (
-            p.mo_max_social_security_benefit
+            p.social_security.max_social_security_benefit
         )  # Seen on Line 7, Section A
         public_pension_value = min_(
             public_pension_amount, max_social_security_benefit
         )
-        ss_or_ssdi_exemption_threshold = p.mo_ss_or_ssdi_exemption_threshold[
-            filing_status
-        ]
+        ss_or_ssdi_exemption_threshold = (
+            p.social_security.ss_or_ssdi_exemption_threshold[filing_status]
+        )
 
         eligible_ss_or_ssd = person(
             "mo_pension_and_ss_or_ssd_deduction_section_c", period
