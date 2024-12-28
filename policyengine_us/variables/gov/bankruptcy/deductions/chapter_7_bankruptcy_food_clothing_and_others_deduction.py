@@ -13,7 +13,8 @@ class chapter_7_bankruptcy_food_clothing_and_others_deduction(Variable):
         p = parameters(
             period
         ).gov.bankruptcy.national_standards.food_clothing_and_others
-        size = spm_unit("spm_unit_size", period)
+        unit = spm_unit("spm_unit_size", period)
+        size = clip(unit, 1, None)
         capped_people = min_(size, 4).astype(int)
         additional_people = size - capped_people
         base = p.main[capped_people]
