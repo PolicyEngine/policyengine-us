@@ -4,7 +4,9 @@ from policyengine_us.model_api import *
 class is_midwestern_region(Variable):
     value_type = bool
     entity = SPMUnit
-    label = "Is in a midwestern region under the Chapter 7 Bankruptcy means test"
+    label = (
+        "Is in a midwestern region under the Chapter 7 Bankruptcy means test"
+    )
     definition_period = YEAR
     reference = "https://www.irs.gov/businesses/small-businesses-self-employed/local-standards-transportation"
 

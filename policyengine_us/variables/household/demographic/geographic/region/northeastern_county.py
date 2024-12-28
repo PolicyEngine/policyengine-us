@@ -18,7 +18,7 @@ class northeastern_county(Variable):
     defined_for = "is_northeastern_region"
     label = "Northeastern region county group"
     reference = "https://www.irs.gov/businesses/small-businesses-self-employed/local-standards-transportation"
-    
+
     def formula(household, period, parameters):
         county = household("county_str", period)
 

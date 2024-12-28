@@ -55,7 +55,7 @@ class chapter_7_bankruptcy_local_standards_deductions(Variable):
         additional_public_transportation_allowance = where(
             have_one_ore_more_vehicles, capped_public_transportation_expense, 0
         )
-    
+
         return (
             insurance_and_operating_allowance
             + net_mortgage_or_rent_expense
