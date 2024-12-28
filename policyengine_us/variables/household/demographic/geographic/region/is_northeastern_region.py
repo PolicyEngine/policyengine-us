@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class is_northeast_region(Variable):
+class is_northeastern_region(Variable):
     value_type = bool
     entity = SPMUnit
-    label = "Is in Northeast region"
+    label = "Is in a norteastern region under the Chapter 7 Bankruptcy means test"
     definition_period = YEAR
     reference = "https://www.irs.gov/businesses/small-businesses-self-employed/local-standards-transportation"
 

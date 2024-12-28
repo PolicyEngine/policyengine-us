@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class MidWestCounty(Enum):
+class MidWesternCounty(Enum):
     CHICAGO = "Chicago"
     CLEVELAND = "Cleveland"
     DETROIT = "Detroit"
@@ -11,14 +11,15 @@ class MidWestCounty(Enum):
     NONE = "None"
 
 
-class midwest_county(Variable):
+class midwestern_county(Variable):
     value_type = Enum
     entity = Household
-    possible_values = MidWestCounty
-    default_value = MidWestCounty.NONE
+    possible_values = MidWesternCounty
+    default_value = MidWesternCounty.NONE
     definition_period = YEAR
-    defined_for = "is_midwest_region"
-    label = "Midwest region county group"
+    defined_for = "is_midwestern_region"
+    label = "Midwestern region county group"
+    reference = "https://www.irs.gov/businesses/small-businesses-self-employed/local-standards-transportation"
 
     def formula(household, period, parameters):
         county = household("county_str", period)
@@ -40,16 +41,16 @@ class midwest_county(Variable):
             ~(chicago | cleveland | detroit | minneapolis_st_paul | st_louis),
         ]
         results = [
-            MidWestCounty.CHICAGO,
-            MidWestCounty.CLEVELAND,
-            MidWestCounty.DETROIT,
-            MidWestCounty.MINNEAPOLIS_ST_PAUL,
-            MidWestCounty.ST_LOUIS,
-            MidWestCounty.MIDWEST_DEFAULT,
+            MidWesternCounty.CHICAGO,
+            MidWesternCounty.CLEVELAND,
+            MidWesternCounty.DETROIT,
+            MidWesternCounty.MINNEAPOLIS_ST_PAUL,
+            MidWesternCounty.ST_LOUIS,
+            MidWesternCounty.MIDWEST_DEFAULT,
         ]
 
         return select(
             conditions,
             results,
-            default=MidWestCounty.NONE,
+            default=MidWesternCounty.NONE,
         )

@@ -4,7 +4,7 @@
     state_code: IL
     county_str: COOK_COUNTY_IL
   output:
-    midwest_county: CHICAGO
+    midwestern_county: CHICAGO
 
 - name: Slope county belongs to default midwest.
   period: 2024
@@ -12,7 +12,7 @@
     state_code: ND
     county_str: SLOPE_COUNTY_ND
   output:
-    midwest_county: MIDWEST_DEFAULT
+    midwestern_county: MIDWEST_DEFAULT
 
 - name:  Not part of any midwest region.
   period: 2024
@@ -20,4 +20,4 @@
     state_code: MA
     county_str: SUFFOLK_COUNTY_MA
   output:
-    midwest_county: NONE
+    midwestern_county: NONE

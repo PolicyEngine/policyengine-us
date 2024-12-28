@@ -1,4 +1,4 @@
-description: The IRS limits the expense of dependent children education to this amount to each child under the chapter 7 bankruptcy means test.
+description: The IRS limits dependent education expenses to this amount for each child under the chapter 7 bankruptcy means test.
 
 values:
   2024-01-01: 189.58
@@ -6,7 +6,7 @@ values:
 metadata:
   unit: currency-USD
   period: month
-  label: Dependent children education expense per child
+  label: Chapter 7 Bankruptcy dependent education expense limit
   reference:
     # The number $189.58 only appears in line 28 of the form. 
     - title: Official Form 122A-2 Chapter 7 Means Test Calculation

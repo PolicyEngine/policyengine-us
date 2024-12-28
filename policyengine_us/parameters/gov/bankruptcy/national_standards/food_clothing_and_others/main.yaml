@@ -1,4 +1,4 @@
-description: The IRS limits the expense of food, clothing and other items by the national standards to this amount, based on household size under the chapter 7 bankruptcy means test.
+description: The IRS limits food, clothing and other items expenses to this amount, based on household size under the chapter 7 bankruptcy means test.
 
 1:
   2024-01-01: 808
@@ -12,7 +12,7 @@ description: The IRS limits the expense of food, clothing and other items by the
 metadata:
   unit: currency-USD
   period: year
-  label: National standards of food, clothing and other items amount 
+  label: Chapter 7 Bankruptcy food, clothing and other items expense limit
   breakdown:
   - list(range(1,5))
   reference:

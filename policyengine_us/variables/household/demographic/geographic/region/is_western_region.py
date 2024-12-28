@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class is_west_region(Variable):
+class is_western_region(Variable):
     value_type = bool
     entity = SPMUnit
-    label = "Is in West region"
+    label = "Is in a western region under the Chapter 7 Bankruptcy means test"
     definition_period = YEAR
     reference = "https://www.irs.gov/businesses/small-businesses-self-employed/local-standards-transportation"
 

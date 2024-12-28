@@ -1,4 +1,5 @@
-description: The IRS limits the expense of insurance and operating by the local standards to this amount, based on household size under the chapter 7 bankruptcy means test.
+description: The IRS limits insurance and operating expenses to this amount, based on household size and state code under the chapter 7 bankruptcy means test.  
+
 
 AL:
   1:
@@ -564,7 +565,7 @@ WY:
 metadata:
   unit: currency-USD
   period: month
-  label: Local standards of insurance and operating expense
+  label: Chapter 7 Bankruptcy insurance and operating expense limit 
   breakdown:
   - state_code
   - range(1, 6)

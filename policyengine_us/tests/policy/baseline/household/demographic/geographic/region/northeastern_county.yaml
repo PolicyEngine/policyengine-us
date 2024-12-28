@@ -4,7 +4,7 @@
     state_code: MA
     county_str: ESSEX_COUNTY_MA
   output:
-    northeast_county: BOSTON
+    northeastern_county: BOSTON
 
 - name: Barnstable county belongs to default northeast.
   period: 2024
@@ -12,7 +12,7 @@
     state_code: MA
     county_str: BARNSTABLE_COUNTY_MA
   output:
-    northeast_county: NORTHEAST_DEFAULT
+    northeastern_county: NORTHEAST_DEFAULT
 
 - name:  Not part of any northeast region.
   period: 2024
@@ -20,4 +20,4 @@
     state_code: IL
     county_str: COOK_COUNTY_IL
   output:
-    northeast_county: NONE
+    northeastern_county: NONE

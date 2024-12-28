@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class NorthEastCounty(Enum):
+class NorthEasternCounty(Enum):
     BOSTON = "Boston"
     NEW_YORK = "New York"
     PHILADELPHIA = "Philadelphia"
@@ -9,15 +9,16 @@ class NorthEastCounty(Enum):
     NONE = "None"
 
 
-class northeast_county(Variable):
+class northeastern_county(Variable):
     value_type = Enum
     entity = Household
-    possible_values = NorthEastCounty
-    default_value = NorthEastCounty.NONE
+    possible_values = NorthEasternCounty
+    default_value = NorthEasternCounty.NONE
     definition_period = YEAR
-    defined_for = "is_northeast_region"
-    label = "Northeast region county group"
-
+    defined_for = "is_northeastern_region"
+    label = "Northeastern region county group"
+    reference = "https://www.irs.gov/businesses/small-businesses-self-employed/local-standards-transportation"
+    
     def formula(household, period, parameters):
         county = household("county_str", period)
 
@@ -33,14 +34,14 @@ class northeast_county(Variable):
             ~(boston | new_york | philadelphia),
         ]
         results = [
-            NorthEastCounty.BOSTON,
-            NorthEastCounty.NEW_YORK,
-            NorthEastCounty.PHILADELPHIA,
-            NorthEastCounty.NORTHEAST_DEFAULT,
+            NorthEasternCounty.BOSTON,
+            NorthEasternCounty.NEW_YORK,
+            NorthEasternCounty.PHILADELPHIA,
+            NorthEasternCounty.NORTHEAST_DEFAULT,
         ]
 
         return select(
             conditions,
             results,
-            default=NorthEastCounty.NONE,
+            default=NorthEasternCounty.NONE,
         )

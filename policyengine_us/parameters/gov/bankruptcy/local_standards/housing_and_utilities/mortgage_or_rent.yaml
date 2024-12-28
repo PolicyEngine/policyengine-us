@@ -1,4 +1,4 @@
-description: The IRS limits the expense of mortgage or rent by the local standards to this amount, based on household size under the chapter 7 bankruptcy means test.
+description: The IRS limits mortgage or rent expenses to this amount, based on household size und state code under the chapter 7 bankruptcy means test.
 
 AL:
   1:
@@ -564,7 +564,7 @@ WY:
 metadata:
   unit: currency-USD
   period: month
-  label: Local standards of mortgage or rent expense 
+  label: Chapter 7 Bankruptcy mortgage or rent expense limit 
   breakdown:
   - state_code
   - range(1, 6)

@@ -11,8 +11,9 @@ class chapter_7_bankruptcy_local_standards_deductions(Variable):
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.bankruptcy.local_standards
-        size = spm_unit("spm_unit_size", period)
+        unit = spm_unit("spm_unit_size", period)
         state = spm_unit.household("state_code", period)
+        size = clip(unit, 1, None)
         insurance_and_operating_allowance = (
             p.housing_and_utilities.insurance_and_operating[state][size]
         )
@@ -54,7 +55,7 @@ class chapter_7_bankruptcy_local_standards_deductions(Variable):
         additional_public_transportation_allowance = where(
             have_one_ore_more_vehicles, capped_public_transportation_expense, 0
         )
-
+    
         return (
             insurance_and_operating_allowance
             + net_mortgage_or_rent_expense

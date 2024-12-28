@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class WestCounty(Enum):
+class WesternCounty(Enum):
     ANCHORAGE = "Anchorage"
     DENVER = "Denver"
     HONOLULU = "Honolulu"
@@ -14,14 +14,15 @@ class WestCounty(Enum):
     NONE = "None"
 
 
-class west_county(Variable):
+class western_county(Variable):
     value_type = Enum
     entity = Household
-    possible_values = WestCounty
-    default_value = WestCounty.NONE
+    possible_values = WesternCounty
+    default_value = WesternCounty.NONE
     definition_period = YEAR
-    defined_for = "is_west_region"
-    label = "West region county group"
+    defined_for = "is_western_region"
+    label = "Western region county group"
+    reference = "https://www.irs.gov/businesses/small-businesses-self-employed/local-standards-transportation"
 
     def formula(household, period, parameters):
         county = household("county", period).decode_to_str()
@@ -58,19 +59,19 @@ class west_county(Variable):
             ),
         ]
         results = [
-            WestCounty.ANCHORAGE,
-            WestCounty.DENVER,
-            WestCounty.HONOLULU,
-            WestCounty.LOS_ANGELES,
-            WestCounty.PHOENIX,
-            WestCounty.SAN_DIEGO,
-            WestCounty.SAN_FRANCISCO,
-            WestCounty.SEATTLE,
-            WestCounty.WEST_DEFAULT,
+            WesternCounty.ANCHORAGE,
+            WesternCounty.DENVER,
+            WesternCounty.HONOLULU,
+            WesternCounty.LOS_ANGELES,
+            WesternCounty.PHOENIX,
+            WesternCounty.SAN_DIEGO,
+            WesternCounty.SAN_FRANCISCO,
+            WesternCounty.SEATTLE,
+            WesternCounty.WEST_DEFAULT,
         ]
 
         return select(
             conditions,
             results,
-            default=WestCounty.NONE,
+            default=WesternCounty.NONE,
         )

@@ -3,18 +3,18 @@
   input:
     state_code: GA
   output:
-    is_south_region: true
+    is_southern_region: true
 
 - name: Florida is in south region. 
   period: 2024
   input:
     state_code: FL
   output:
-    is_south_region: true
+    is_southern_region: true
 
 - name: Massachusetts is not in south region.
   period: 2024
   input:
     state_code: MA
   output:
-    is_south_region: false
+    is_southern_region: false

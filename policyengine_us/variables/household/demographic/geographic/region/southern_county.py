@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class SouthCounty(Enum):
+class SouthernCounty(Enum):
     ATLANTA = "Atlanta"
     BALTIMORE = "Baltimore"
     DALLAS_FT_WORTH = "Dallas-Ft. Worth"
@@ -13,14 +13,15 @@ class SouthCounty(Enum):
     NONE = "None"
 
 
-class south_county(Variable):
+class southern_county(Variable):
     value_type = Enum
     entity = Household
-    possible_values = SouthCounty
-    default_value = SouthCounty.NONE
+    possible_values = SouthernCounty
+    default_value = SouthernCounty.NONE
     definition_period = YEAR
-    defined_for = "is_south_region"
-    label = "South region county group"
+    defined_for = "is_southern_region"
+    label = "Southern region county group"
+    reference = "https://www.irs.gov/businesses/small-businesses-self-employed/local-standards-transportation"
 
     def formula(household, period, parameters):
         county = household("county_str", period)
@@ -54,18 +55,18 @@ class south_county(Variable):
             ),
         ]
         results = [
-            SouthCounty.ATLANTA,
-            SouthCounty.BALTIMORE,
-            SouthCounty.DALLAS_FT_WORTH,
-            SouthCounty.HOUSTON,
-            SouthCounty.MIAMI,
-            SouthCounty.TAMPA,
-            SouthCounty.WASHINGTON_DC,
-            SouthCounty.SOUTH_DEFAULT,
+            SouthernCounty.ATLANTA,
+            SouthernCounty.BALTIMORE,
+            SouthernCounty.DALLAS_FT_WORTH,
+            SouthernCounty.HOUSTON,
+            SouthernCounty.MIAMI,
+            SouthernCounty.TAMPA,
+            SouthernCounty.WASHINGTON_DC,
+            SouthernCounty.SOUTH_DEFAULT,
         ]
 
         return select(
             conditions,
             results,
-            default=SouthCounty.NONE,
+            default=SouthernCounty.NONE,
         )

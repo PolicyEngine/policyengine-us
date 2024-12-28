@@ -4,7 +4,7 @@
     state_code: GA
     county_str: FULTON_COUNTY_GA
   output:
-    south_county: ATLANTA
+    southern_county: ATLANTA
 
 - name: Calhoun county belongs to default south.
   period: 2024
@@ -12,7 +12,7 @@
     state_code: FL
     county_str: CALHOUN_COUNTY_FL
   output:
-    south_county: SOUTH_DEFAULT
+    southern_county: SOUTH_DEFAULT
 
 - name:  Not part of any south region.
   period: 2024
@@ -20,4 +20,4 @@
     state_code: MA
     county_str: SUFFOLK_COUNTY_MA
   output:
-    south_county: NONE
+    southern_county: NONE

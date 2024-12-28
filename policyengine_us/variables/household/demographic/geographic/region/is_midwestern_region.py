@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class is_south_region(Variable):
+class is_midwestern_region(Variable):
     value_type = bool
     entity = SPMUnit
-    label = "Is in South region"
+    label = "Is in a midwestern region under the Chapter 7 Bankruptcy means test"
     definition_period = YEAR
     reference = "https://www.irs.gov/businesses/small-businesses-self-employed/local-standards-transportation"
 
@@ -13,4 +13,4 @@ class is_south_region(Variable):
 
         p = parameters(period).household.state_group
 
-        return np.isin(state_code, p.south)
+        return np.isin(state_code, p.midwest)

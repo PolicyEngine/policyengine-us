@@ -1,4 +1,4 @@
-description: The IRS limits the expense of public transportation by the local standards to this amount under the chapter 7 bankruptcy means test.
+description: The IRS limits public transportation expenses to this amount under the chapter 7 bankruptcy means test.
 
 values:
   2024-01-01: 215
@@ -6,7 +6,7 @@ values:
 metadata:
   unit: currency-USD
   period: month
-  label: Local standards of public transportation amount 
+  label: Chapter 7 Bankruptcy public transportation expense limit
   reference:
     - title: Local standards -- Transportation
       href: https://www.irs.gov/businesses/small-businesses-self-employed/local-standards-transportation

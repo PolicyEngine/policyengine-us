@@ -1,4 +1,4 @@
-description: The IRS limits the expense of west region operating costs by the local standards to this amount, based on the number of owned vehicle, under the Chapter 7 Bankruptcy means test.
+description: The IRS limits the western region operating costs to this amount, based on the number of owned vehicle, under the Chapter 7 Bankruptcy means test.
 
 WEST_DEFAULT:
   1:
@@ -54,9 +54,9 @@ NONE:
 metadata:
   unit: currency-USD
   period: month
-  label: Local standards of operating costs amount
+  label:  Chapter 7 Bankruptcy western region operating costs limit
   breakdown:
-  - west_county
+  - western_county
   - list(range(1,3))
   reference:
     - title: Local standards -- Transportation

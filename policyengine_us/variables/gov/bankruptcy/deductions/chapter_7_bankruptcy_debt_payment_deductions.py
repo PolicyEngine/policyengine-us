@@ -9,7 +9,7 @@ class chapter_7_bankruptcy_debt_payment_deductions(Variable):
     reference = "https://www.cacb.uscourts.gov/sites/cacb/files/documents/forms/122A2.pdf#page=7"
 
     def formula(spm_unit, period, parameters):
-        housing_expense = add(spm_unit, period, ["housing_cost"])
+        housing_expense = spm_unit("housing_cost", period)
         vehicle_mortgage_expense = add(
             spm_unit, period, ["vehicle_mortgage_expense"]
         )
