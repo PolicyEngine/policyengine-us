@@ -1,82 +1,82 @@
 description: Payout from LIHEAP for Region 1 counties in the state of Oregon
 
 2021-01-01:
-  1:
+  1: 
     1:
-      Electricity: 410
+      Electricity: 445
       HeatingOil: 600
       LiquidGas: 600
-      NaturalGas: 435
-      WoodPellets: 465
+      NaturalGas: 475
+      WoodPellets: 505
     2:
-      Electricity: 320
+      Electricity: 350
       HeatingOil: 600
-      LiquidGas: 550
-      NaturalGas: 340
-      WoodPellets: 360
+      LiquidGas: 600
+      NaturalGas: 370
+      WoodPellets: 395
     3:
-      Electricity: 265
-      HeatingOil: 560
-      LiquidGas: 460
-      NaturalGas: 280
+      Electricity: 290
+      HeatingOil: 600
+      LiquidGas: 500
+      NaturalGas: 305
       WoodPellets: 350
     4:
-      Electricity: 200
-      HeatingOil: 405
-      LiquidGas: 330
-      NaturalGas: 200
+      Electricity: 210
+      HeatingOil: 440
+      LiquidGas: 360
+      NaturalGas: 220
       WoodPellets: 350
 
   2:
     1:
-      Electricity: 530
+      Electricity: 575
       HeatingOil: 600
       LiquidGas: 600
-      NaturalGas: 560
+      NaturalGas: 600
       WoodPellets: 600
     2:
-      Electricity: 410
+      Electricity: 450
       HeatingOil: 600
       LiquidGas: 600
-      NaturalGas: 435
-      WoodPellets: 465
+      NaturalGas: 475
+      WoodPellets: 510
     3:
-      Electricity: 345
+      Electricity: 375
       HeatingOil: 600
-      LiquidGas: 590
-      NaturalGas: 365
-      WoodPellets: 390
+      LiquidGas: 600
+      NaturalGas: 395
+      WoodPellets: 425
     4:
-      Electricity: 245
-      HeatingOil: 520
-      LiquidGas: 425
-      NaturalGas: 260
+      Electricity: 270
+      HeatingOil: 570
+      LiquidGas: 465
+      NaturalGas: 285
       WoodPellets: 350
   
   3:
     1:
-      Electricity: 530
+      Electricity: 575
       HeatingOil: 600
       LiquidGas: 600
-      NaturalGas: 560
+      NaturalGas: 600
       WoodPellets: 600
     2:
-      Electricity: 410
+      Electricity: 450
       HeatingOil: 600
       LiquidGas: 600
-      NaturalGas: 435
-      WoodPellets: 465
+      NaturalGas: 475
+      WoodPellets: 510
     3:
-      Electricity: 345
+      Electricity: 375
       HeatingOil: 600
-      LiquidGas: 590
-      NaturalGas: 365
-      WoodPellets: 390
+      LiquidGas: 600
+      NaturalGas: 395
+      WoodPellets: 425
     4:
-      Electricity: 245
-      HeatingOil: 520
-      LiquidGas: 425
-      NaturalGas: 260
+      Electricity: 270
+      HeatingOil: 570
+      LiquidGas: 465
+      NaturalGas: 285
       WoodPellets: 350
       
   4:
@@ -87,23 +87,23 @@ description: Payout from LIHEAP for Region 1 counties in the state of Oregon
       NaturalGas: 600
       WoodPellets: 600
     2:
-      Electricity: 480
+      Electricity: 525
       HeatingOil: 600
       LiquidGas: 600
-      NaturalGas: 510
-      WoodPellets: 545
+      NaturalGas: 555
+      WoodPellets: 590
     3:
-      Electricity: 400
+      Electricity: 435
       HeatingOil: 600
       LiquidGas: 600
-      NaturalGas: 425
-      WoodPellets: 450
+      NaturalGas: 460
+      WoodPellets: 495
     4:
-      Electricity: 285
+      Electricity: 315
       HeatingOil: 600
-      LiquidGas: 495
-      NaturalGas: 305
-      WoodPellets: 350
+      LiquidGas: 540
+      NaturalGas: 330
+      WoodPellets: 355
   
   5:
     1:
@@ -113,23 +113,23 @@ description: Payout from LIHEAP for Region 1 counties in the state of Oregon
       NaturalGas: 600
       WoodPellets: 600
     2:
-      Electricity: 535
+      Electricity: 585
       HeatingOil: 600
       LiquidGas: 600
-      NaturalGas: 565
+      NaturalGas: 600
       WoodPellets: 600
     3:
-      Electricity: 445
+      Electricity: 485
       HeatingOil: 600
       LiquidGas: 600
-      NaturalGas: 470
-      WoodPellets: 506
+      NaturalGas: 515
+      WoodPellets: 550
     4:
-      Electricity: 320
+      Electricity: 350
       HeatingOil: 600
-      LiquidGas: 550
-      NaturalGas: 340
-      WoodPellets: 360
+      LiquidGas: 600
+      NaturalGas: 370
+      WoodPellets: 395
 
   ">=6":
     1:
@@ -145,23 +145,23 @@ description: Payout from LIHEAP for Region 1 counties in the state of Oregon
       NaturalGas: 600
       WoodPellets: 600
     3:
-      Electricity: 500
+      Electricity: 545
       HeatingOil: 600
       LiquidGas: 600
-      NaturalGas: 530
-      WoodPellets: 570
+      NaturalGas: 580
+      WoodPellets: 600
     4:
-      Electricity: 360
+      Electricity: 395
       HeatingOil: 600
       LiquidGas: 600
-      NaturalGas: 380
-      WoodPellets: 410
+      NaturalGas: 415
+      WoodPellets: 445
 
 metadata:
   period: year
   unit: currency-USD
   label: Annual LIHEAP Energy Assistance Payments by Unit Size, Income Range, and Utility Type
-  breakdown:
+  breakdown: 
     - spm_unit_size
     - income_range
     - utility_type
