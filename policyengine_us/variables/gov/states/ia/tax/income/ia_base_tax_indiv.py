@@ -18,4 +18,6 @@ class ia_base_tax_indiv(Variable):
     def formula(person, period, parameters):
         reg_tax = person("ia_regular_tax_indiv", period)
         alt_tax = person("ia_alternate_tax_indiv", period)
-        return min_(reg_tax, alt_tax)
+        alt_tax_eligible = person.tax_unit("ia_alternate_tax_eligible", period)
+        smaller_tax = min_(reg_tax, alt_tax)
+        return where(alt_tax_eligible, smaller_tax, reg_tax)

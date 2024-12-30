@@ -1,11 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class ia_base_tax_joint(Variable):
-    value_type = float
-    entity = Person
-    label = "Iowa base tax when married couples file jointly"
-    unit = USD
+class ia_alternate_tax_eligible(Variable):
+    value_type = bool
+    entity = TaxUnit
+    label = "Iowa alternate tax eligible"
     definition_period = YEAR
     reference = (
         "https://tax.iowa.gov/sites/default/files/2022-01/IA1040%2841-001%29.pdf"
@@ -15,9 +14,7 @@ class ia_base_tax_joint(Variable):
     )
     defined_for = StateCode.IA
 
-    def formula(person, period, parameters):
-        reg_tax = person("ia_regular_tax_joint", period)
-        alt_tax_eligible = person.tax_unit("ia_alternate_tax_eligible", period)
-        alt_tax = person("ia_alternate_tax_joint", period)
-        smaller_tax = min_(reg_tax, alt_tax)
-        return where(alt_tax_eligible, smaller_tax, reg_tax)
+    def formula(tax_unit, period, parameters):
+        filing_status = tax_unit("filing_status", period)
+        is_single = filing_status == filing_status.possible_values.SINGLE
+        return where(is_single, False, True)
