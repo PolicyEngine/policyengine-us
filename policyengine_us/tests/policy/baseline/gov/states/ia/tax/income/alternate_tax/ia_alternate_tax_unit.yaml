@@ -23,7 +23,7 @@
   output:
     ia_alternate_tax_unit: 85.30  # = (33_000 - 32_000) * 0.0853
 
-- name: Still computes alternate tax for tax unit when ineligible
+- name: Still computes alternate tax for tax units when ineligible
   absolute_error_margin: 0.01  
   period: 2022
   input:
