@@ -1,161 +1,164 @@
 description: Payout from LIHEAP for Region 1 counties in the state of Oregon
-
-2021-01-01:
+1:
   1:
-    1:
-      Electricity: 410
-      HeatingOil: 600
-      LiquidGas: 600
-      NaturalGas: 435
-      WoodPellets: 465
-    2:
-      Electricity: 320
-      HeatingOil: 600
-      LiquidGas: 550
-      NaturalGas: 340
-      WoodPellets: 360
-    3:
-      Electricity: 265
-      HeatingOil: 560
-      LiquidGas: 460
-      NaturalGas: 280
-      WoodPellets: 350
-    4:
-      Electricity: 200
-      HeatingOil: 405
-      LiquidGas: 330
-      NaturalGas: 200
-      WoodPellets: 350
-
+    ELECTRICITY: 
+      2021-01-01: 410
+    HEATING_OIL: 
+      2021-01-01: 600
+    LIQUID_GAS: 
+      2021-01-0: 600
+    NATURAL_GAS: 
+      2021-01-01: 435
+    WOOD_PELLETS: 
+      2021-01-01: 465
   2:
-    1:
-      Electricity: 530
-      HeatingOil: 600
-      LiquidGas: 600
-      NaturalGas: 560
-      WoodPellets: 600
-    2:
-      Electricity: 410
-      HeatingOil: 600
-      LiquidGas: 600
-      NaturalGas: 435
-      WoodPellets: 465
-    3:
-      Electricity: 345
-      HeatingOil: 600
-      LiquidGas: 590
-      NaturalGas: 365
-      WoodPellets: 390
-    4:
-      Electricity: 245
-      HeatingOil: 520
-      LiquidGas: 425
-      NaturalGas: 260
-      WoodPellets: 350
-  
+    Electricity: 320
+    HeatingOil: 600
+    LiquidGas: 550
+    NaturalGas: 340
+    WoodPellets: 360
   3:
-    1:
-      Electricity: 530
-      HeatingOil: 600
-      LiquidGas: 600
-      NaturalGas: 560
-      WoodPellets: 600
-    2:
-      Electricity: 410
-      HeatingOil: 600
-      LiquidGas: 600
-      NaturalGas: 435
-      WoodPellets: 465
-    3:
-      Electricity: 345
-      HeatingOil: 600
-      LiquidGas: 590
-      NaturalGas: 365
-      WoodPellets: 390
-    4:
-      Electricity: 245
-      HeatingOil: 520
-      LiquidGas: 425
-      NaturalGas: 260
-      WoodPellets: 350
-      
+    Electricity: 265
+    HeatingOil: 560
+    LiquidGas: 460
+    NaturalGas: 280
+    WoodPellets: 350
   4:
-    1:
-      Electricity: 600
-      HeatingOil: 600
-      LiquidGas: 600
-      NaturalGas: 600
-      WoodPellets: 600
-    2:
-      Electricity: 480
-      HeatingOil: 600
-      LiquidGas: 600
-      NaturalGas: 510
-      WoodPellets: 545
-    3:
-      Electricity: 400
-      HeatingOil: 600
-      LiquidGas: 600
-      NaturalGas: 425
-      WoodPellets: 450
-    4:
-      Electricity: 285
-      HeatingOil: 600
-      LiquidGas: 495
-      NaturalGas: 305
-      WoodPellets: 350
-  
-  5:
-    1:
-      Electricity: 600
-      HeatingOil: 600
-      LiquidGas: 600
-      NaturalGas: 600
-      WoodPellets: 600
-    2:
-      Electricity: 535
-      HeatingOil: 600
-      LiquidGas: 600
-      NaturalGas: 565
-      WoodPellets: 600
-    3:
-      Electricity: 445
-      HeatingOil: 600
-      LiquidGas: 600
-      NaturalGas: 470
-      WoodPellets: 505
-    4:
-      Electricity: 320
-      HeatingOil: 600
-      LiquidGas: 515
-      NaturalGas: 340
-      WoodPellets: 360
+    Electricity: 200
+    HeatingOil: 405
+    LiquidGas: 330
+    NaturalGas: 200
+    WoodPellets: 350
 
-  ">=6":
-    1:
-      Electricity: 600
-      HeatingOil: 600
-      LiquidGas: 600
-      NaturalGas: 600
-      WoodPellets: 600
-    2:
-      Electricity: 600
-      HeatingOil: 600
-      LiquidGas: 600
-      NaturalGas: 600
-      WoodPellets: 600
-    3:
-      Electricity: 500
-      HeatingOil: 600
-      LiquidGas: 600
-      NaturalGas: 530
-      WoodPellets: 570
-    4:
-      Electricity: 360
-      HeatingOil: 600
-      LiquidGas: 600
-      NaturalGas: 380
-      WoodPellets: 410
+2:
+  1:
+    Electricity: 530
+    HeatingOil: 600
+    LiquidGas: 600
+    NaturalGas: 560
+    WoodPellets: 600
+  2:
+    Electricity: 410
+    HeatingOil: 600
+    LiquidGas: 600
+    NaturalGas: 435
+    WoodPellets: 465
+  3:
+    Electricity: 345
+    HeatingOil: 600
+    LiquidGas: 590
+    NaturalGas: 365
+    WoodPellets: 390
+  4:
+    Electricity: 245
+    HeatingOil: 520
+    LiquidGas: 425
+    NaturalGas: 260
+    WoodPellets: 350
+
+3:
+  1:
+    Electricity: 530
+    HeatingOil: 600
+    LiquidGas: 600
+    NaturalGas: 560
+    WoodPellets: 600
+  2:
+    Electricity: 410
+    HeatingOil: 600
+    LiquidGas: 600
+    NaturalGas: 435
+    WoodPellets: 465
+  3:
+    Electricity: 345
+    HeatingOil: 600
+    LiquidGas: 590
+    NaturalGas: 365
+    WoodPellets: 390
+  4:
+    Electricity: 245
+    HeatingOil: 520
+    LiquidGas: 425
+    NaturalGas: 260
+    WoodPellets: 350
+    
+4:
+  1:
+    Electricity: 600
+    HeatingOil: 600
+    LiquidGas: 600
+    NaturalGas: 600
+    WoodPellets: 600
+  2:
+    Electricity: 480
+    HeatingOil: 600
+    LiquidGas: 600
+    NaturalGas: 510
+    WoodPellets: 545
+  3:
+    Electricity: 400
+    HeatingOil: 600
+    LiquidGas: 600
+    NaturalGas: 425
+    WoodPellets: 450
+  4:
+    Electricity: 285
+    HeatingOil: 600
+    LiquidGas: 495
+    NaturalGas: 305
+    WoodPellets: 350
+
+5:
+  1:
+    Electricity: 600
+    HeatingOil: 600
+    LiquidGas: 600
+    NaturalGas: 600
+    WoodPellets: 600
+  2:
+    Electricity: 535
+    HeatingOil: 600
+    LiquidGas: 600
+    NaturalGas: 565
+    WoodPellets: 600
+  3:
+    Electricity: 445
+    HeatingOil: 600
+    LiquidGas: 600
+    NaturalGas: 470
+    WoodPellets: 505
+  4:
+    Electricity: 320
+    HeatingOil: 600
+    LiquidGas: 515
+    NaturalGas: 340
+    WoodPellets: 360
+
+6
+  1:
+    Electricity: 600
+    HeatingOil: 600
+    LiquidGas: 600
+    NaturalGas: 600
+    WoodPellets: 600
+  2:
+    Electricity: 600
+    HeatingOil: 600
+    LiquidGas: 600
+    NaturalGas: 600
+    WoodPellets: 600
+  3:
+    Electricity: 500
+    HeatingOil: 600
+    LiquidGas: 600
+    NaturalGas: 530
+    WoodPellets: 570
+  4:
+    Electricity: 360
+    HeatingOil: 600
+    LiquidGas: 600
+    NaturalGas: 380
+    WoodPellets: 410
 
 2022-01-01:
   1:
@@ -602,7 +605,7 @@ description: Payout from LIHEAP for Region 1 counties in the state of Oregon
       NaturalGas: 425
       WoodPellets: 615
 
-  ">=6":
+  
     1:
       Electricity: 750
       HeatingOil: 750
@@ -633,7 +636,7 @@ metadata:
   unit: currency-USD
   label: Annual LIHEAP Energy Assistance Payments by Unit Size, Income Range, and Utility Type
   breakdown:
-    - spm_unit_size
+    - spm 
     - income_range
     - utility_type
   reference:
