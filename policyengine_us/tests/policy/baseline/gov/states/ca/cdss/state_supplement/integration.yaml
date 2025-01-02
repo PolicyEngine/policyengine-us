@@ -1,23 +1,23 @@
-# - name: Single blind parent with non eligible dependent child
-#   period: 2024
-#   input:
-#     people:
-#       person1:
-#         age: 30
-#         is_tax_unit_head: true
-#         is_blind: true
-#       person2:
-#         age: 4
-#         is_tax_unit_dependent: true
-#     spm_units:
-#       spm_unit:
-#         members: [person1, person2]
-#     households:
-#       household:
-#         members: [person1, person2]
-#         state_code: CA
-#   output:
-#     ca_state_supplement_payment_standard: 8_448
+- name: Single blind parent with non eligible dependent child
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+        is_blind: true
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    ca_state_supplement_payment_standard: 8_448
 
 - name: Married household with one blind and one disabled person, with a disabled dependent child, no food preparation and spouse in out of home care
   period: 2024-01
@@ -44,6 +44,6 @@
       household:
         members: [person1, person2, person3]
         state_code: CA
-        living_arrangements_allow_for_food_preparation: true
+        living_arrangements_allow_for_food_preparation: false
   output:
     ca_state_supplement_payment_standard: 2_639

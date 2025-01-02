@@ -13,10 +13,8 @@ class ca_capi_resources(Variable):
     def formula(spm_unit, period, parameters):
         general_resources = add(spm_unit, period, ["ssi_countable_resources"])
         vehicle_value = spm_unit.household("household_vehicles_value", period)
-        vehicle_value_threshold = parameters(
-            period
-        ).gov.states.ca.cdss.capi.resources.vehicle_value_threshold
+        p = parameters(period).gov.states.ca.cdss.capi.resources
         countable_vehicle_value = max_(
-            vehicle_value - vehicle_value_threshold, 0
+            vehicle_value - p.vehicle_value_threshold, 0
         )
         return general_resources + countable_vehicle_value
