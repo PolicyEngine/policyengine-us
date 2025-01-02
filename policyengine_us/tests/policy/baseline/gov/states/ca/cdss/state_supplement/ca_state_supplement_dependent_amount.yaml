@@ -1,0 +1,47 @@
+- name: One eligible dependent
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 68
+        is_tax_unit_head: true
+        is_blind: true
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        is_blind: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    ca_state_supplement_dependent_amount: 5_988
+
+- name: One eligible dependent, one ineligible
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 68
+        is_tax_unit_head: true
+        is_blind: true
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        is_blind: true
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+        is_blind: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+  output:
+    ca_state_supplement_dependent_amount: 5_988

@@ -1,0 +1,57 @@
+- name: Single eligible person
+  period: 2024
+  input:
+    people:
+      person1:
+        ssi_amount_if_eligible: 1_000
+        ca_capi_eligible_person: true
+        ssi_countable_income: 500
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_capi_eligible: true
+        ca_state_supplement_payment_standard: 2_000
+  output:
+    ca_capi: 2_490
+
+- name: Couple, one person eligible
+  period: 2024
+  input:
+    people:
+      person1:
+        ssi_amount_if_eligible: 1_000
+        ca_capi_eligible_person: true
+        ssi_countable_income: 500
+      person2:
+        ssi_amount_if_eligible: 1_000
+        ca_capi_eligible_person: false
+        ssi_countable_income: 3_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ca_capi_eligible: true
+        spm_unit_is_married: true
+        ca_state_supplement_payment_standard: 4_000
+  output:
+    ca_capi: 5_480
+
+
+- name: Couple, both people eligible
+  period: 2024
+  input:
+    people:
+      person1:
+        ssi_amount_if_eligible: 1_000
+        ca_capi_eligible_person: true
+        ssi_countable_income: 500
+      person2:
+        ssi_amount_if_eligible: 1_000
+        ca_capi_eligible_person: true
+        ssi_countable_income: 4_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ca_capi_eligible: true
+        ca_state_supplement_payment_standard: 4_000
+  output:
+    ca_capi: 1_480

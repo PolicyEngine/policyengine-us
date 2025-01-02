@@ -1,0 +1,88 @@
+- name: Married couple, one person aged
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 68
+        is_tax_unit_head: true
+      person2:
+        age: 40
+        is_tax_unit_spouse: true
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: false
+  output:
+    ca_state_supplement_food_allowance: 816
+
+- name: Married couple, one person aged, not eligible
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 68
+        is_tax_unit_head: true
+      person2:
+        age: 40
+        is_tax_unit_spouse: true
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    ca_state_supplement_food_allowance: 0
+
+- name: Married couple, nobody aged or disabled
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+      person2:
+        age: 40
+        is_tax_unit_spouse: true
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: false
+  output:
+    ca_state_supplement_food_allowance: 0
+
+- name: Married couple, both disabled
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        is_disabled: true
+      person2:
+        age: 40
+        is_tax_unit_spouse: true
+        is_disabled: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: false
+  output:
+    ca_state_supplement_food_allowance: 1_632
