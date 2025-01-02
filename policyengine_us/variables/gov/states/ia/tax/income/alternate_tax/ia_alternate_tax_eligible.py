@@ -17,4 +17,4 @@ class ia_alternate_tax_eligible(Variable):
     def formula(tax_unit, period, parameters):
         filing_status = tax_unit("filing_status", period)
         is_single = filing_status == filing_status.possible_values.SINGLE
-        return where(is_single, False, True)
+        return ~is_single
