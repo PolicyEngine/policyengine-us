@@ -1,0 +1,35 @@
+- name: Test case 1 # Family of 1 in Alabama
+  period: 2023
+  input:
+    state: AL
+    family_size: 1
+    income: 10_000
+  output:
+    state_sales_tax: 365
+
+- name: Test case 2 # Residents of Alaska do not have a state sales tax
+  period: 2023
+  input:
+    state: AK
+    family_size: 4
+    income: 100_000
+  output:
+    state_sales_tax: 0
+
+- name: Test case 3 # Household size over 6
+  period: 2023
+  input:
+    state: AL
+    family_size: 10
+    income: 100_000
+  output:
+    state_sales_tax: 1_309
+
+- name: Test case 4 # Income over max limits 300_000
+  period: 2023
+  input:
+    state: AL
+    family_size: 3
+    income: 500_000
+  output:
+    state_sales_tax: 1_780
