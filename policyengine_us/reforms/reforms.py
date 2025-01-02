@@ -209,23 +209,15 @@
 #     return combined_reform
 # 
 
-from policyengine_us.reforms.test_policy import test_reform
+from policyengine_us.reforms.example_reforms.eitc_reform import eitc_reform
 
 structural_reforms = [
-  test_reform
+  eitc_reform
 ]
 
 def create_structural_reforms_from_parameters(parameters, tax_benefit_system):
     for reform in structural_reforms:
-        # TODO: Parse the start and (where applicable) end dates from trigger param
-
-        TEST_START_DATE = "2026-01-01"
-        TEST_END_DATE = "2035-01-01"
-
-        # If the reform is triggered, activate, else ignore
         reform.activate(
             tax_benefit_system=tax_benefit_system,
-            start_instant=TEST_START_DATE,
-            end_instant=TEST_END_DATE
         )
     
