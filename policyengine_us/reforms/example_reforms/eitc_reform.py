@@ -8,4 +8,4 @@ eitc_reform.update_variable(eitc)
 
 # Also allowable are the below:
 # example_reform.add_variable(eitc) (if it didn't already exist in the tax-benefit system)
-# example_reform.neutralize_variable(eitc)
+# example_reform.neutralize_variable("eitc")
