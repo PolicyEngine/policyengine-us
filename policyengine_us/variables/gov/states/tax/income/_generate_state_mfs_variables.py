@@ -3,9 +3,10 @@ from policyengine_us.model_api import *
 # Create all state variable classes for married-filing-separately states
 for state_code, state_name in [
     ("ar", "Arkansas"),
+    ("dc", "DC"),
     ("de", "Delaware"),
     ("ia", "Iowa"),
-    ("ky", "Kentucky"),  # Keep Kentucky, just skip ky_agi below
+    ("ky", "Kentucky"),
     ("ms", "Mississippi"),
     ("mt", "Montana"),
 ]:
@@ -15,8 +16,14 @@ for state_code, state_name in [
         ("taxable_income", "taxable income"),
         ("agi", "adjusted gross income"),
     ]:
-        # Skip ky_agi, ms_agi, and mt_agi since they already exist
-        if state_code in ["ky", "ms", "mt"] and var_code == "agi":
+        # Skip variables that already exist or aren't needed
+        if (
+            # Skip existing AGI variables
+            (state_code in ["ky", "ms", "mt"] and var_code == "agi")
+            or
+            # Skip all DC variables except taxable income
+            (state_code == "dc" and var_code != "taxable_income")
+        ):
             continue
 
         indiv_var, joint_var = {
@@ -34,6 +41,12 @@ for state_code, state_name in [
                     "ar_taxable_income_joint",
                 ),
                 "agi": ("ar_agi_indiv", "ar_agi_joint"),
+            },
+            "dc": {
+                "taxable_income": (
+                    "dc_taxable_income_indiv",
+                    "dc_taxable_income_joint",
+                ),
             },
             "de": {
                 "standard_deduction": (
@@ -63,10 +76,7 @@ for state_code, state_name in [
                     "ia_taxable_income_indiv",
                     "ia_taxable_income_joint",
                 ),
-                "agi": (
-                    "ia_taxable_income_indiv",
-                    "ia_taxable_income_joint",
-                ),  # Using taxable income for IA
+                "agi": ("ia_taxable_income_indiv", "ia_taxable_income_joint"),
             },
             "ky": {
                 "standard_deduction": (
@@ -81,10 +91,6 @@ for state_code, state_name in [
                     "ky_taxable_income_indiv",
                     "ky_taxable_income_joint",
                 ),
-                "agi": (
-                    "ky_agi_indiv",
-                    "ky_agi_joint",
-                ),  # Won't be used since we skip ky_agi
             },
             "ms": {
                 "standard_deduction": (
@@ -99,10 +105,6 @@ for state_code, state_name in [
                     "ms_taxable_income_indiv",
                     "ms_taxable_income_joint",
                 ),
-                "agi": (
-                    "ms_agi",
-                    "ms_agi",
-                ),  # MS doesn't have separate AGI calcs
             },
             "mt": {
                 "standard_deduction": (
@@ -117,14 +119,9 @@ for state_code, state_name in [
                     "mt_taxable_income_indiv",
                     "mt_taxable_income_joint",
                 ),
-                "agi": (
-                    "mt_agi",
-                    "mt_agi",
-                ),  # MT doesn't have separate AGI calcs
             },
         }[state_code][var_code]
 
-        # Create the class with all attributes
         globals()[f"{state_code}_{var_code}"] = type(
             f"{state_code}_{var_code}",
             (Variable,),
