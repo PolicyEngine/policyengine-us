@@ -14,8 +14,7 @@ class ny_college_tuition_deduction(Variable):
     defined_for = StateCode.NY
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.ny.tax.income
-        return min_(
-            p.deductions.itemized.college_tuition_max,
-            add(tax_unit, period, ["qualified_tuition_expenses"]),
-        )
+        p = parameters(
+            period
+        ).gov.states.ny.tax.income.deductions.itemized.college_tuition
+        return tax_unit("ny_college_tuition_deduction_max", parameters) * p.rate
