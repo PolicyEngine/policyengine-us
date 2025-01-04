@@ -12,5 +12,5 @@ class ny_itemized_deductions_max(Variable):
     adds = [
         "itemized_deductions_less_salt",
         "real_estate_taxes",
-        "ny_itemized_college_tuition_deduction",
+        "ny_college_tuition_deduction",
     ]

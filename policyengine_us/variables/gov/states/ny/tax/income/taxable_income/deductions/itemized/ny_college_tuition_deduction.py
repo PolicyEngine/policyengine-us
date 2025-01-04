@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ny_itemized_college_tuition_deduction(Variable):
+class ny_college_tuition_deduction(Variable):
     value_type = float
     entity = TaxUnit
     label = "New York itemized deduction for college tuition expenses"
