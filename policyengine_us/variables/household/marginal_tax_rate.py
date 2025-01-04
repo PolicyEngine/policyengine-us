@@ -46,6 +46,7 @@ class marginal_tax_rate(Variable):
             netinc_alt = alt_person.household("household_net_income", period)
             increase = netinc_alt - netinc_base
             mtr_values += where(mask, 1 - increase / delta, 0)
+            del sim.branches[f"mtr_for_adult_{adult_index}"]
         return mtr_values
 
 

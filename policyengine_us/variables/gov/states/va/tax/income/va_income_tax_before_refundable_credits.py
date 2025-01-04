@@ -17,6 +17,10 @@ class va_income_tax_before_refundable_credits(Variable):
             "va_income_tax_before_non_refundable_credits", period
         )
         non_refundable_credits = tax_unit("va_non_refundable_credits", period)
+        spouse_tax_adjustment = tax_unit("va_spouse_tax_adjustment", period)
         return max_(
-            tax_before_non_refundable_credits - non_refundable_credits, 0
+            tax_before_non_refundable_credits
+            - non_refundable_credits
+            - spouse_tax_adjustment,
+            0,
         )

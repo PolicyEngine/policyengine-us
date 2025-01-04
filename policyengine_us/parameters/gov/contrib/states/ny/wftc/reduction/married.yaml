@@ -11,19 +11,18 @@ metadata:
 
 brackets:
   - threshold:
-      2024-01-01: 0
+      2025-01-01: 0
     rate:
-      2024-01-01: 0
+      2025-01-01: 0
   - threshold:
       values:
-        2024-01-01: 0
-        # 2025: 110,000
-        # 2028: 90,000
-        # 2029: 50,000
+        2025-01-01: 110_000
+        2028-01-01: 90_000
+        2029-01-01: 50_000
       uprating:
         parameter: gov.irs.uprating
         rounding:
           type: downwards
           interval: 50
     rate:
-      2024-01-01: 0 # 0.02
+      2025-01-01: 0.02
