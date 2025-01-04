@@ -1,108 +1,11 @@
 from policyengine_us.model_api import *
 
-# Define the correct individual/joint variable names for each state and type
-VAR_NAMES = {
-    "ar": {
-        "standard_deduction": (
-            "ar_standard_deduction_indiv",
-            "ar_standard_deduction_joint",
-        ),
-        "itemized_deductions": (
-            "ar_itemized_deductions_indiv",
-            "ar_itemized_deductions_joint",
-        ),
-        "taxable_income": (
-            "ar_taxable_income_indiv",
-            "ar_taxable_income_joint",
-        ),
-        "agi": ("ar_agi_indiv", "ar_agi_joint"),
-    },
-    "de": {
-        "standard_deduction": (
-            "de_standard_deduction_indv",
-            "de_standard_deduction_joint",
-        ),
-        "itemized_deductions": (
-            "de_itemized_deductions_indv",
-            "de_itemized_deductions_joint",
-        ),
-        "taxable_income": (
-            "de_taxable_income_indv",
-            "de_taxable_income_joint",
-        ),
-        "agi": ("de_agi_indiv", "de_agi_joint"),
-    },
-    "ia": {
-        "standard_deduction": (
-            "ia_standard_deduction_indiv",
-            "ia_standard_deduction_joint",
-        ),
-        "itemized_deductions": (
-            "ia_itemized_deductions_indiv",
-            "ia_itemized_deductions_joint",
-        ),
-        "taxable_income": (
-            "ia_taxable_income_indiv",
-            "ia_taxable_income_joint",
-        ),
-        "agi": (
-            "ia_taxable_income_indiv",
-            "ia_taxable_income_joint",
-        ),  # Using taxable income for IA
-    },
-    "ky": {
-        "standard_deduction": (
-            "ky_standard_deduction_indiv",
-            "ky_standard_deduction_joint",
-        ),
-        "itemized_deductions": (
-            "ky_itemized_deductions_indiv",
-            "ky_itemized_deductions_joint",
-        ),
-        "taxable_income": (
-            "ky_taxable_income_indiv",
-            "ky_taxable_income_joint",
-        ),
-        "agi": ("ky_agi_indiv", "ky_agi_joint"),
-    },
-    "ms": {
-        "standard_deduction": (
-            "ms_standard_deduction_indiv",
-            "ms_standard_deduction_joint",
-        ),
-        "itemized_deductions": (
-            "ms_itemized_deductions_indiv",
-            "ms_itemized_deductions_joint",
-        ),
-        "taxable_income": (
-            "ms_taxable_income_indiv",
-            "ms_taxable_income_joint",
-        ),
-        "agi": ("ms_agi", "ms_agi"),  # MS doesn't have separate AGI calcs
-    },
-    "mt": {
-        "standard_deduction": (
-            "mt_standard_deduction_indiv",
-            "mt_standard_deduction_joint",
-        ),
-        "itemized_deductions": (
-            "mt_itemized_deductions_indiv",
-            "mt_itemized_deductions_joint",
-        ),
-        "taxable_income": (
-            "mt_taxable_income_indiv",
-            "mt_taxable_income_joint",
-        ),
-        "agi": ("mt_agi", "mt_agi"),  # MT doesn't have separate AGI calcs
-    },
-}
-
-# Create all state variable classes
+# Create all state variable classes for married-filing-separately states
 for state_code, state_name in [
     ("ar", "Arkansas"),
     ("de", "Delaware"),
     ("ia", "Iowa"),
-    ("ky", "Kentucky"),
+    ("ky", "Kentucky"),  # Keep Kentucky, just skip ky_agi below
     ("ms", "Mississippi"),
     ("mt", "Montana"),
 ]:
@@ -112,7 +15,114 @@ for state_code, state_name in [
         ("taxable_income", "taxable income"),
         ("agi", "adjusted gross income"),
     ]:
-        indiv_var, joint_var = VAR_NAMES[state_code][var_code]
+        # Skip ky_agi, ms_agi, and mt_agi since they already exist
+        if state_code in ["ky", "ms", "mt"] and var_code == "agi":
+            continue
+
+        indiv_var, joint_var = {
+            "ar": {
+                "standard_deduction": (
+                    "ar_standard_deduction_indiv",
+                    "ar_standard_deduction_joint",
+                ),
+                "itemized_deductions": (
+                    "ar_itemized_deductions_indiv",
+                    "ar_itemized_deductions_joint",
+                ),
+                "taxable_income": (
+                    "ar_taxable_income_indiv",
+                    "ar_taxable_income_joint",
+                ),
+                "agi": ("ar_agi_indiv", "ar_agi_joint"),
+            },
+            "de": {
+                "standard_deduction": (
+                    "de_standard_deduction_indv",
+                    "de_standard_deduction_joint",
+                ),
+                "itemized_deductions": (
+                    "de_itemized_deductions_indv",
+                    "de_itemized_deductions_joint",
+                ),
+                "taxable_income": (
+                    "de_taxable_income_indv",
+                    "de_taxable_income_joint",
+                ),
+                "agi": ("de_agi_indiv", "de_agi_joint"),
+            },
+            "ia": {
+                "standard_deduction": (
+                    "ia_standard_deduction_indiv",
+                    "ia_standard_deduction_joint",
+                ),
+                "itemized_deductions": (
+                    "ia_itemized_deductions_indiv",
+                    "ia_itemized_deductions_joint",
+                ),
+                "taxable_income": (
+                    "ia_taxable_income_indiv",
+                    "ia_taxable_income_joint",
+                ),
+                "agi": (
+                    "ia_taxable_income_indiv",
+                    "ia_taxable_income_joint",
+                ),  # Using taxable income for IA
+            },
+            "ky": {
+                "standard_deduction": (
+                    "ky_standard_deduction_indiv",
+                    "ky_standard_deduction_joint",
+                ),
+                "itemized_deductions": (
+                    "ky_itemized_deductions_indiv",
+                    "ky_itemized_deductions_joint",
+                ),
+                "taxable_income": (
+                    "ky_taxable_income_indiv",
+                    "ky_taxable_income_joint",
+                ),
+                "agi": (
+                    "ky_agi_indiv",
+                    "ky_agi_joint",
+                ),  # Won't be used since we skip ky_agi
+            },
+            "ms": {
+                "standard_deduction": (
+                    "ms_standard_deduction_indiv",
+                    "ms_standard_deduction_joint",
+                ),
+                "itemized_deductions": (
+                    "ms_itemized_deductions_indiv",
+                    "ms_itemized_deductions_joint",
+                ),
+                "taxable_income": (
+                    "ms_taxable_income_indiv",
+                    "ms_taxable_income_joint",
+                ),
+                "agi": (
+                    "ms_agi",
+                    "ms_agi",
+                ),  # MS doesn't have separate AGI calcs
+            },
+            "mt": {
+                "standard_deduction": (
+                    "mt_standard_deduction_indiv",
+                    "mt_standard_deduction_joint",
+                ),
+                "itemized_deductions": (
+                    "mt_itemized_deductions_indiv",
+                    "mt_itemized_deductions_joint",
+                ),
+                "taxable_income": (
+                    "mt_taxable_income_indiv",
+                    "mt_taxable_income_joint",
+                ),
+                "agi": (
+                    "mt_agi",
+                    "mt_agi",
+                ),  # MT doesn't have separate AGI calcs
+            },
+        }[state_code][var_code]
 
         # Create the class with all attributes
         globals()[f"{state_code}_{var_code}"] = type(
