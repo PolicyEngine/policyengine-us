@@ -17,4 +17,6 @@ class ny_college_tuition_deduction(Variable):
         p = parameters(
             period
         ).gov.states.ny.tax.income.deductions.itemized.college_tuition
-        return tax_unit("ny_college_tuition_deduction_max", parameters) * p.rate
+        return (
+            tax_unit("ny_college_tuition_deduction_max", parameters) * p.rate
+        )
