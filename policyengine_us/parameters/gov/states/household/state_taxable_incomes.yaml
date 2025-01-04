@@ -1,4 +1,3 @@
-# state_taxable_income.yaml
 description: All state taxable income variables.
 values:
   0000-01-01:
@@ -19,7 +18,7 @@ values:
     - ks_taxable_income  # Kansas
     - ky_taxable_income  # Kentucky
     - la_taxable_income  # Louisiana
-    - ma_taxable_income  # Massachusetts
+    # Massachusetts has multiple taxable income variables.
     - md_taxable_income  # Maryland
     - me_taxable_income  # Maine
     - mi_taxable_income  # Michigan
