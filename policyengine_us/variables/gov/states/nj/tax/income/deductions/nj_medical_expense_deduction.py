@@ -20,8 +20,8 @@ class nj_medical_expense_deduction(Variable):
             tax_unit, period, ["medical_out_of_pocket_expenses"]
         )
         agi = tax_unit("nj_agi", period)
-        agi_excess = p.rate * agi
-        applicable_medical_expenses = max_(0, medical_expenses - agi_excess)
+        floor = p.rate * agi
+        applicable_medical_expenses = max_(0, medical_expenses - floor)
         return (
             self_employed_medical_expense_deduction
             + applicable_medical_expenses
