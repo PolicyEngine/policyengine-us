@@ -1,0 +1,8 @@
+- name: New York provides a 100% deduction for allowable college tuition expenses in 2024.
+  period: 2024
+  absolute_error_margin: 0
+  input:
+    state_code: NY
+    ny_allowable_college_tuition_expenses: 10_000
+  output:
+    ny_college_tuition_deduction: 10_000
