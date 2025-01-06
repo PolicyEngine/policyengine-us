@@ -27,12 +27,14 @@ class chapter_7_bankruptcy_local_standards_deductions(Variable):
         )
 
         qualify_vehicles_owned = spm_unit("vehicles_loan_count", period)
-        qualify_vehicles_owned_capped = min_(
-            qualify_vehicles_owned, p.vehicle_operation.vehicles_owned_cap
+        qualify_vehicles_owned_capped = clip(
+            qualify_vehicles_owned, 1, p.vehicle_operation.vehicles_owned_cap
         )
-        ownership_costs_allowance = p.vehicle_operation.ownership_costs[
-            qualify_vehicles_owned_capped
-        ]
+        ownership_costs_allowance = where(
+            qualify_vehicles_owned > 0,
+            p.vehicle_operation.ownership_costs[qualify_vehicles_owned_capped],
+            0,
+        )
         vehicle_mortgage_expense = add(
             spm_unit, period, ["vehicle_mortgage_expense"]
         )
