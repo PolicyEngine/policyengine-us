@@ -14,9 +14,6 @@ class ca_state_supplement_aged_disabled_amount(Variable):
         p = parameters(
             period
         ).gov.states.ca.cdss.state_supplement.payment_standard.aged_or_disabled.amount
-        # Blind amount
-        is_married = spm_unit("spm_unit_is_married", period)
-
         # Aged or disabled amount
         aged_disabled_count = spm_unit(
             "ca_state_supplement_aged_disabled_count", period
