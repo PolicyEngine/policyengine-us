@@ -7,13 +7,13 @@ class ca_state_supplement_aged_disabled_amount(Variable):
     label = "California SSI state supplement aged disabled amount"
     unit = USD
     definition_period = MONTH
-    defined_for = StateCode.CA
+    defined_for = "ca_state_supplement_aged_disabled_count"
     reference = "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&sectionNum=12200"
 
     def formula(spm_unit, period, parameters):
         p = parameters(
             period
-        ).gov.states.ca.cdss.state_supplement.payment_standard
+        ).gov.states.ca.cdss.state_supplement.payment_standard.aged_or_disabled.amount
         # Blind amount
         is_married = spm_unit("spm_unit_is_married", period)
 
@@ -21,14 +21,4 @@ class ca_state_supplement_aged_disabled_amount(Variable):
         aged_disabled_count = spm_unit(
             "ca_state_supplement_aged_disabled_count", period
         )
-        return select(
-            [
-                (aged_disabled_count >= 2) & (is_married == 1),
-                aged_disabled_count == 1,
-            ],
-            [
-                p.aged_or_disabled.amount.married,
-                p.aged_or_disabled.amount.single,
-            ],
-            default=0,
-        )
+        return where(aged_disabled_count > 1, p.married, p.single)
