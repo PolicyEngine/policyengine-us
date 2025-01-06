@@ -1,0 +1,8 @@
+- name: New York limits allowable college tuition expenses to $10,000 per student. Check one student.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: NY
+    qualified_tuition_expenses: 12_000
+  output:
+    ny_allowable_college_tuition_expenses: 10_000
