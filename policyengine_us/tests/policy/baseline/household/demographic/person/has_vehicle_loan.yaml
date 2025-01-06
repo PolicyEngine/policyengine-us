@@ -3,12 +3,12 @@
   input: 
     vehicle_mortgage_expense: 1_000
   output:
-    has_a_vehicle_loan: true
+    has_vehicle_loan: true
 
 - name: Don't have a vehicle loan.
   period: 2024
   input: 
     vehicle_mortgage_expense: 0
   output:
-    has_a_vehicle_loan: false
+    has_vehicle_loan: false
     

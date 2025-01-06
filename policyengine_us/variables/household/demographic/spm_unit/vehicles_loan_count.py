@@ -7,4 +7,4 @@ class vehicles_loan_count(Variable):
     label = "Number of loaned vehicles in SPM unit"
     definition_period = YEAR
 
-    adds = ["has_a_vehicle_loan"]
+    adds = ["has_vehicle_loan"]
