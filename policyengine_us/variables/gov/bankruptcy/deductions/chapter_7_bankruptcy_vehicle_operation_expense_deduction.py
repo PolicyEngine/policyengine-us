@@ -13,10 +13,12 @@ class chapter_7_bankruptcy_vehicle_operation_expense_deduction(Variable):
         p = parameters(period).gov.bankruptcy.local_standards.vehicle_operation
 
         qualify_vehicles_owned = spm_unit("vehicles_loan_count", period)
-        #qualify_vehicles_owned_capped = min_(
+        # qualify_vehicles_owned_capped = min_(
         #    qualify_vehicles_owned, p.vehicles_owned_cap
-        #)
-        qualify_vehicles_owned_capped = clip(qualify_vehicles_owned, 1, p.vehicles_owned_cap)
+        # )
+        qualify_vehicles_owned_capped = clip(
+            qualify_vehicles_owned, 1, p.vehicles_owned_cap
+        )
         northeast = spm_unit.household("northeastern_county", period)
         midwest = spm_unit.household("midwestern_county", period)
         south = spm_unit.household("southern_county", period)
