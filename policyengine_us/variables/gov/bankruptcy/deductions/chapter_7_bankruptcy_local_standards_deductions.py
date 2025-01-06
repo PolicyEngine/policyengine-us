@@ -13,7 +13,7 @@ class chapter_7_bankruptcy_local_standards_deductions(Variable):
         p = parameters(period).gov.bankruptcy.local_standards
         unit = spm_unit("spm_unit_size", period)
         state = spm_unit.household("state_code", period)
-        size = clip(unit, 1, None)
+        size = clip(unit, 1, 6)
         insurance_and_operating_allowance = (
             p.housing_and_utilities.insurance_and_operating[state][size]
         )
