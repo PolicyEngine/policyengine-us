@@ -1,161 +1,517 @@
 description: Payout from LIHEAP for Region 1 counties in the state of Oregon
 
-2021-01-01:
-  1: 
+1: 
     1:
-      Electricity: 445
-      HeatingOil: 600
-      LiquidGas: 600
-      NaturalGas: 475
-      WoodPellets: 505
+        ELECTRICITY: 
+            2021-01-01: 445
+            2022-01-01: 450
+            2023-01-01: 490
+            2024-01-01: 415
+        HEATING_OIL: 
+            2021-01-01: 600
+            2023-01-01: 750
+        LIQUID_GAS: 
+            2021-01-01: 600
+            2023-01-01: 750
+        NATURAL_GAS: 
+            2021-01-01: 475
+            2022-01-01: 465
+            2023-01-01: 510
+            2024-01-01: 530
+        WOOD_PELLETS: 
+            2021-01-01: 505
+            2022-01-01: 510
+            2023-01-01: 560
+            2024-01-01: 750
     2:
-      Electricity: 350
-      HeatingOil: 600
-      LiquidGas: 600
-      NaturalGas: 370
-      WoodPellets: 395
+        ELECTRICITY: 
+            2021-01-01: 350
+            2023-01-01: 380
+            2024-01-01: 320
+        HEATING_OIL: 
+            2021-01-01: 600
+            2023-01-01: 750
+            2024-01-01: 665
+        LIQUID_GAS: 
+            2021-01-01: 600
+            2022-01-01: 560
+            2023-01-01: 615
+            2024-01-01: 730
+        NATURAL_GAS: 
+            2021-01-01: 370
+            2022-01-01: 365
+            2023-01-01: 400
+            2024-01-01: 410
+        WOOD_PELLETS: 
+            2021-01-01: 395
+            2022-01-01: 400
+            2023-01-01: 435
+            2024-01-01: 600
     3:
-      Electricity: 290
-      HeatingOil: 600
-      LiquidGas: 500
-      NaturalGas: 305
-      WoodPellets: 350
+        ELECTRICITY: 
+            2021-01-01: 290
+            2023-01-01: 320
+            2024-01-01: 265
+        HEATING_OIL: 
+            2021-01-01: 600
+            2023-01-01: 655
+            2024-01-01: 555
+        LIQUID_GAS: 
+            2021-01-01: 500
+            2022-01-01: 465
+            2023-01-01: 510
+            2024-01-01: 610
+        NATURAL_GAS: 
+            2021-01-01: 305
+            2022-01-01: 300
+            2023-01-01: 330
+            2024-01-01: 345
+        WOOD_PELLETS: 
+            2021-01-01: 350
+            2023-01-01: 365
+            2024-01-01: 500
     4:
-      Electricity: 210
-      HeatingOil: 440
-      LiquidGas: 360
-      NaturalGas: 220
-      WoodPellets: 350
+        ELECTRICITY: 
+            2021-01-01: 210
+            2023-01-01: 250
+        HEATING_OIL: 
+            2021-01-01: 440
+            2022-01-01: 430
+            2023-01-01: 470
+            2024-01-01: 400
+        LIQUID_GAS: 
+            2021-01-01: 360
+            2022-01-01: 335
+            2023-01-01: 365
+            2024-01-01: 435
+        NATURAL_GAS: 
+            2021-01-01: 220
+            2022-01-01: 315
+            2023-01-01: 250
+        WOOD_PELLETS: 
+            2021-01-01: 350
+            2024-01-01: 360
 
-  2:
+2:
     1:
-      Electricity: 575
-      HeatingOil: 600
-      LiquidGas: 600
-      NaturalGas: 600
-      WoodPellets: 600
+        ELECTRICITY: 
+            2021-01-01: 575
+            2022-01-01: 580
+            2023-01-01: 635
+            2024-01-01: 650
+        HEATING_OIL: 
+            2021-01-01: 600
+            2023-01-01: 750
+        LIQUID_GAS: 
+            2021-01-01: 600
+            2023-01-01: 750
+        NATURAL_GAS: 
+            2021-01-01: 600
+            2023-01-01: 515
+            2024-01-01: 750
+        WOOD_PELLETS: 
+            2021-01-01: 600
+            2023-01-01: 565
+            2024-01-01: 750
     2:
-      Electricity: 450
-      HeatingOil: 600
-      LiquidGas: 600
-      NaturalGas: 475
-      WoodPellets: 510
+        ELECTRICITY: 
+            2021-01-01: 450
+            2023-01-01: 495
+            2024-01-01: 505
+        HEATING_OIL: 
+            2021-01-01: 600
+            2023-01-01: 750
+        LIQUID_GAS: 
+            2021-01-01: 600
+            2023-01-01: 750
+        NATURAL_GAS: 
+            2021-01-01: 475
+            2022-01-01: 470
+            2023-01-01: 515
+            2024-01-01: 650
+        WOOD_PELLETS: 
+            2021-01-01: 510
+            2022-01-01: 515
+            2023-01-01: 565
+            2024-01-01: 750
     3:
-      Electricity: 375
-      HeatingOil: 600
-      LiquidGas: 600
-      NaturalGas: 395
-      WoodPellets: 425
+        ELECTRICITY: 
+            2021-01-01: 375
+            2023-01-01: 410
+            2024-01-01: 420
+        HEATING_OIL: 
+            2021-01-01: 600
+            2023-01-01: 750
+        LIQUID_GAS: 
+            2021-01-01: 600
+            2023-01-01: 660
+            2024-01-01: 750
+        NATURAL_GAS: 
+            2021-01-01: 395
+            2022-01-01: 390
+            2023-01-01: 430
+            2024-01-01: 540
+        WOOD_PELLETS: 
+            2021-01-01: 425
+            2022-01-01: 430
+            2023-01-01: 470
+            2024-01-01: 750
     4:
-      Electricity: 270
-      HeatingOil: 570
-      LiquidGas: 465
-      NaturalGas: 285
-      WoodPellets: 350
-  
-  3:
-    1:
-      Electricity: 575
-      HeatingOil: 600
-      LiquidGas: 600
-      NaturalGas: 600
-      WoodPellets: 600
-    2:
-      Electricity: 450
-      HeatingOil: 600
-      LiquidGas: 600
-      NaturalGas: 475
-      WoodPellets: 510
-    3:
-      Electricity: 375
-      HeatingOil: 600
-      LiquidGas: 600
-      NaturalGas: 395
-      WoodPellets: 425
-    4:
-      Electricity: 270
-      HeatingOil: 570
-      LiquidGas: 465
-      NaturalGas: 285
-      WoodPellets: 350
-      
-  4:
-    1:
-      Electricity: 600
-      HeatingOil: 600
-      LiquidGas: 600
-      NaturalGas: 600
-      WoodPellets: 600
-    2:
-      Electricity: 525
-      HeatingOil: 600
-      LiquidGas: 600
-      NaturalGas: 555
-      WoodPellets: 590
-    3:
-      Electricity: 435
-      HeatingOil: 600
-      LiquidGas: 600
-      NaturalGas: 460
-      WoodPellets: 495
-    4:
-      Electricity: 315
-      HeatingOil: 600
-      LiquidGas: 540
-      NaturalGas: 330
-      WoodPellets: 355
-  
-  5:
-    1:
-      Electricity: 600
-      HeatingOil: 600
-      LiquidGas: 600
-      NaturalGas: 600
-      WoodPellets: 600
-    2:
-      Electricity: 585
-      HeatingOil: 600
-      LiquidGas: 600
-      NaturalGas: 600
-      WoodPellets: 600
-    3:
-      Electricity: 485
-      HeatingOil: 600
-      LiquidGas: 600
-      NaturalGas: 515
-      WoodPellets: 550
-    4:
-      Electricity: 350
-      HeatingOil: 600
-      LiquidGas: 600
-      NaturalGas: 370
-      WoodPellets: 395
+        ELECTRICITY: 
+            2021-01-01: 270
+            2023-01-01: 295
+            2024-01-01: 300
+        HEATING_OIL: 
+            2021-01-01: 570
+            2022-01-01: 555
+            2023-01-01: 610
+            2024-01-01: 625
+        LIQUID_GAS: 
+            2021-01-01: 465
+            2022-01-01: 430
+            2023-01-01: 475
+            2024-01-01: 685
+        NATURAL_GAS: 
+            2021-01-01: 285
+            2022-01-01: 280
+            2023-01-01: 305
+            2024-01-01: 390
+        WOOD_PELLETS: 
+            2021-01-01: 350
+            2024-01-01: 565
 
-  ">=6":
+3:
     1:
-      Electricity: 600
-      HeatingOil: 600
-      LiquidGas: 600
-      NaturalGas: 600
-      WoodPellets: 600
+        ELECTRICITY: 
+            2021-01-01: 575
+            2022-01-01: 580
+            2023-01-01: 635
+            2024-01-01: 660
+        HEATING_OIL: 
+            2021-01-01: 600
+            2023-01-01: 750
+        LIQUID_GAS: 
+            2021-01-01: 600
+            2023-01-01: 750
+        NATURAL_GAS: 
+            2021-01-01: 600
+            2023-01-01: 660
+            2024-01-01:
+        WOOD_PELLETS: 
+            2021-01-01: 600
+            2023-01-01: 725
+            2024-01-01: 750
     2:
-      Electricity: 600
-      HeatingOil: 600
-      LiquidGas: 600
-      NaturalGas: 600
-      WoodPellets: 600
+        ELECTRICITY: 
+            2021-01-01: 450
+            2023-01-01: 495
+            2024-01-01: 570
+        HEATING_OIL: 
+            2021-01-01: 600
+            2023-01-01: 750
+        LIQUID_GAS: 
+            2021-01-01: 600
+            2023-01-01: 750
+        NATURAL_GAS: 
+            2021-01-01: 475
+            2022-01-01: 470
+            2023-01-01: 515
+            2024-01-01: 660
+        WOOD_PELLETS: 
+            2021-01-01: 510
+            2022-01-01: 515
+            2023-01-01: 565
+            2024-01-01: 750
     3:
-      Electricity: 545
-      HeatingOil: 600
-      LiquidGas: 600
-      NaturalGas: 580
-      WoodPellets: 600
+        ELECTRICITY: 
+            2021-01-01: 375
+            2023-01-01: 410
+            2024-01-01: 430
+            
+        HEATING_OIL: 
+            2021-01-01: 600
+            2023-01-01: 750
+        LIQUID_GAS: 
+            2021-01-01: 600
+            2023-01-01: 660
+            2024-01-01: 750
+        NATURAL_GAS: 
+            2021-01-01: 395
+            2022-01-01: 390
+            2023-01-01: 430
+            2024-01-01: 550
+        WOOD_PELLETS: 
+            2021-01-01: 425
+            2022-01-01: 430
+            2023-01-01: 470
+            2024-01-01: 750
     4:
-      Electricity: 395
-      HeatingOil: 600
-      LiquidGas: 600
-      NaturalGas: 415
-      WoodPellets: 445
+        ELECTRICITY: 
+            2021-01-01: 270
+            2023-01-01: 295
+            2024-01-01: 310
+        HEATING_OIL: 
+            2021-01-01: 570
+            2022-01-01: 555
+            2023-01-01: 610
+            2024-01-01: 640
+        LIQUID_GAS: 
+            2021-01-01: 465
+            2022-01-01: 430
+            2023-01-01: 475
+            2024-01-01: 700
+        NATURAL_GAS: 
+            2021-01-01: 285
+            2022-01-01: 280
+            2023-01-01: 305
+            2024-01-01: 395
+        WOOD_PELLETS: 
+            2021-01-01: 350
+            2024-01-01: 575
+    
+4:
+    1:
+        ELECTRICITY: 
+            2021-01-01: 600
+            2023-01-01: 740
+            2024-01-01: 735
+        HEATING_OIL: 
+            2021-01-01: 600
+            2023-01-01: 750
+        LIQUID_GAS: 
+            2021-01-01: 600
+            2023-01-01: 750
+        NATURAL_GAS: 
+            2021-01-01: 600
+            2023-01-01: 750
+        WOOD_PELLETS: 
+            2021-01-01: 600
+            2023-01-01: 750
+    2:
+        ELECTRICITY: 
+            2021-01-01: 525
+            2023-01-01: 575
+            2024-01-01: 570
+        HEATING_OIL: 
+            2021-01-01: 600
+            2023-01-01: 750
+        LIQUID_GAS: 
+            2021-01-01: 600
+            2023-01-01: 750
+        NATURAL_GAS: 
+            2021-01-01: 555
+            2022-01-01: 545
+            2023-01-01: 600
+            2024-01-01: 735
+        WOOD_PELLETS: 
+            2021-01-01: 590
+            2022-01-01: 600
+            2023-01-01: 655
+            2024-01-01: 750
+    3:
+        ELECTRICITY: 
+            2021-01-01: 435
+            2023-01-01: 480
+            2024-01-01: 475
+        HEATING_OIL: 
+            2021-01-01: 600
+            2023-01-01: 750
+        LIQUID_GAS: 
+            2021-01-01: 600
+            2023-01-01: 750
+        NATURAL_GAS: 
+            2021-01-01: 460
+            2022-01-01: 455
+            2023-01-01: 500
+            2024-01-01: 610
+        WOOD_PELLETS: 
+            2021-01-01: 495
+            2022-01-01: 500
+            2023-01-01: 545
+            2024-01-01: 750
+    4:
+        ELECTRICITY: 
+            2021-01-01: 315
+            2023-01-01: 354
+            2024-01-01: 340
+        HEATING_OIL: 
+            2021-01-01: 600
+            2022-01-01: 710
+        LIQUID_GAS: 
+            2021-01-01: 540
+            2022-01-01: 505
+            2023-01-01: 550
+            2024-01-01: 750
+        NATURAL_GAS: 
+            2021-01-01: 330
+            2022-01-01: 325
+            2023-01-01: 360
+            2024-01-01: 440
+        WOOD_PELLETS: 
+            2021-01-01: 355
+            2022-01-01: 360
+            2023-01-01: 395
+            2024-01-01: 640
+
+5:
+    1:
+        ELECTRICITY: 
+            2021-01-01: 600
+            2023-01-01: 750
+        HEATING_OIL: 
+            2021-01-01: 600
+            2023-01-01: 750
+        LIQUID_GAS: 
+            2021-01-01: 600
+            2023-01-01: 750
+        NATURAL_GAS: 
+            2021-01-01: 600
+            2023-01-01: 750
+        WOOD_PELLETS: 
+            2021-01-01: 600
+            2023-01-01: 750
+    2:
+        ELECTRICITY: 
+            2021-01-01: 585
+            2023-01-01: 640
+            2024-01-01: 600
+        HEATING_OIL: 
+            2021-01-01: 600
+            2023-01-01: 750
+        LIQUID_GAS: 
+            2021-01-01: 600
+            2023-01-01: 750
+        NATURAL_GAS: 
+            2021-01-01: 600
+            2023-01-01: 665
+            2024-01-01: 750
+        WOOD_PELLETS: 
+            2021-01-01: 600
+            2023-01-01: 730
+            2024-01-01: 750
+    3:
+        ELECTRICITY: 
+            2021-01-01: 485
+            2023-01-01: 535
+            2024-01-01: 500
+        HEATING_OIL: 
+            2021-01-01: 600
+            2023-01-01: 750
+        LIQUID_GAS: 
+            2021-01-01: 600
+            2023-01-01: 750
+        NATURAL_GAS: 
+            2021-01-01: 515
+            2022-01-01: 505
+            2023-01-01: 555
+            2024-01-01: 645
+        WOOD_PELLETS: 
+            2021-01-01: 550
+            2022-01-01: 555
+            2023-01-01: 610
+            2024-01-01: 750
+    4:
+        ELECTRICITY: 
+            2021-01-01: 350
+            2023-01-01: 385
+            2024-01-01: 360
+        HEATING_OIL: 
+            2021-01-01: 600
+            2023-01-01: 750
+            2024-01-01: 745
+        LIQUID_GAS: 
+            2021-01-01: 600
+            2022-01-01: 560
+            2023-01-01: 615
+            2024-01-01: 750
+        NATURAL_GAS: 
+            2021-01-01: 370
+            2022-01-01: 365
+            2023-01-01: 400
+            2024-01-01: 460
+        WOOD_PELLETS: 
+            2021-01-01: 395
+            2022-01-01: 400
+            2023-01-01: 440
+            2024-01-01: 675
+
+6:
+    1:
+        ELECTRICITY: 
+            2021-01-01: 600
+            2023-01-01: 750
+        HEATING_OIL: 
+            2021-01-01: 600
+            2023-01-01: 750
+        LIQUID_GAS: 
+            2021-01-01: 600
+            2023-01-01: 750
+        NATURAL_GAS: 
+            2021-01-01: 600
+            2023-01-01: 750
+        WOOD_PELLETS: 
+            2021-01-01: 600
+            2023-01-01: 750
+    2:
+        ELECTRICITY: 
+            2021-01-01: 600
+            2023-01-01: 720
+            2024-01-01: 645
+        HEATING_OIL: 
+            2021-01-01: 600
+            2023-01-01: 750
+        LIQUID_GAS: 
+            2021-01-01: 600
+            2023-01-01: 750
+        NATURAL_GAS: 
+            2021-01-01: 600
+            2023-01-01: 750
+        WOOD_PELLETS: 
+            2021-01-01: 600
+            2023-01-01: 750
+    3:
+        ELECTRICITY: 
+            2021-01-01: 545
+            2022-01-01: 550
+            2023-01-01: 600
+            2024-01-01: 535
+        HEATING_OIL: 
+            2021-01-01: 600
+            2023-01-01: 750
+        LIQUID_GAS: 
+            2021-01-01: 600
+            2023-01-01: 750
+        NATURAL_GAS: 
+            2021-01-01: 580
+            2022-01-01: 570
+            2023-01-01: 625
+            2024-01-01: 690
+        WOOD_PELLETS: 
+            2021-01-01: 600
+            2023-01-01: 685
+            2024-01-01: 750
+    4:
+        ELECTRICITY: 
+            2021-01-01: 395
+            2023-01-01: 430
+            2024-01-01: 385
+        HEATING_OIL: 
+            2021-01-01: 600
+            2023-01-01: 750
+        LIQUID_GAS: 
+            2021-01-01: 600
+            2023-01-01: 690
+            2024-01-01: 750
+        NATURAL_GAS: 
+            2021-01-01: 415
+            2022-01-01: 410
+            2023-01-01: 450
+            2024-01-01: 495
+        WOOD_PELLETS: 
+            2021-01-01: 445
+            2022-01-01: 450
+            2023-01-01: 495
+            2024-01-01: 720
 
 metadata:
   period: year
@@ -168,3 +524,10 @@ metadata:
   reference:
     - title: LIHEAP and OEAP Energy Assistance Intake Operations Manual for Program Year 2021
       href: "https://www.oregon.gov/ohcs/energy-weatherization/Documents/2021-Energy-Assistance-Manual.pdf#Pg=55"
+    - title: LIHEAP and OEAP Energy Assistance Intake Operations Manual for Program Year 2022
+      href: "https://www.oregon.gov/ohcs/energy-weatherization/Documents/2022-Energy-Assistance-Manual.pdf#Pg=56"
+    - title: LIHEAP and OEAP Energy Assistance Intake Operations Manual for Program Year 2023
+      href: "https://www.oregon.gov/ohcs/energy-weatherization/Documents/2023-EA-Manual-Master-09-28-22.pdf#Pg=5.2"
+    - title: LIHEAP and OEAP Energy Assistance Intake Operations Manual for Program Year 2024
+      href: "https://www.oregon.gov/ohcs/energy-weatherization/Documents/Final-PY2024-Manual-Master-09%2021%202023.pdf#Pg= 5.2"
+
