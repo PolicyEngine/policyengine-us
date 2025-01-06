@@ -8,11 +8,11 @@ class ny_college_tuition_credit(Variable):
     unit = USD
     definition_period = YEAR
     reference = "https://www.nysenate.gov/legislation/laws/TAX/606"  # (t)
-    defined_for = StateCode.NY
+    defined_for = "ny_college_tuition_credit_eligible"
 
     def formula(tax_unit, period, parameters):
-        tuition = add(tax_unit, period, ["qualified_tuition_expenses"])
+        tuition = tax_unit("ny_allowable_college_tuition_expenses", period)
         p = parameters(period).gov.states.ny.tax.income.credits.college_tuition
-        amount = p.rate.calc(tuition) * p.applicable_percentage
-        itemizes = tax_unit("ny_itemizes", period)
-        return ~itemizes * amount
+        # Apply a tiered rate structure.
+        amount_pre_percentage = p.rate.calc(tuition)
+        return amount_pre_percentage * p.applicable_percentage

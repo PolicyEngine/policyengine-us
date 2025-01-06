@@ -25,8 +25,4 @@ class ia_alternate_tax_unit(Variable):
         alt_ded = where(is_elder, p.deduction.elderly, p.deduction.nonelderly)
         # ... determine alternate tax amount
         alt_taxinc = max_(0, tax_unit("ia_modified_income", period) - alt_ded)
-        alt_tax = alt_taxinc * p.rate
-        # ... alternate tax is not available to single filing units
-        filing_status = tax_unit("filing_status", period)
-        is_single = filing_status == filing_status.possible_values.SINGLE
-        return where(is_single, np.inf, alt_tax)
+        return alt_taxinc * p.rate
