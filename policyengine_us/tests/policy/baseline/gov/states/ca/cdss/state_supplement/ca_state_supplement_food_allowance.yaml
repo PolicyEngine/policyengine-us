@@ -86,3 +86,13 @@
         living_arrangements_allow_for_food_preparation: false
   output:
     ca_state_supplement_food_allowance: 1_632
+
+- name: Eligible married household with two aged or disabled people
+  period: 2024
+  input:
+    ca_state_supplement_food_allowance_eligible: true
+    spm_unit_is_married: true
+    ca_state_supplement_aged_disabled_count: 2
+    state_code: CA
+  output:
+    ca_state_supplement_food_allowance: 1_632

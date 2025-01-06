@@ -12,12 +12,12 @@ class spm_unit_is_married(Variable):
         # If any tax unit is a married filer, assume the family is.
         person = spm_unit.members
         filing_status = person.tax_unit("filing_status", period)
-        filing_status_type = filing_status.possible_values
+        filing_statuses = filing_status.possible_values
         person_is_married = is_in(
             person.tax_unit("filing_status", period),
             [
-                filing_status_type.JOINT,
-                filing_status_type.SEPARATE,
+                filing_statuses.JOINT,
+                filing_statuses.SEPARATE,
             ],
         )
         return spm_unit.any(person_is_married)

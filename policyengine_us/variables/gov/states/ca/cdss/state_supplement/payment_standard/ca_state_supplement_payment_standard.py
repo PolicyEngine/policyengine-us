@@ -15,5 +15,5 @@ class ca_state_supplement_payment_standard(Variable):
         "ca_state_supplement_food_allowance",
         "ca_state_supplement_medical_care_facility_amount",
         "ca_state_supplement_out_of_home_care_facility_amount",
-        "ca_state_supplement_aged_disabled_amount",
+        "ca_state_supplement_aged_blind_disabled_amount",
     ]

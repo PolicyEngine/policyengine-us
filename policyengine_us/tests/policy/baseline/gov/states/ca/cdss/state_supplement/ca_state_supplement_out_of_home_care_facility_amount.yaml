@@ -3,9 +3,9 @@
   input:
     people:
       person1:
-        ca_in_out_of_home_care_facility: true
+        in_out_of_home_care_facility: true
       person2:
-        ca_in_out_of_home_care_facility: false
+        in_out_of_home_care_facility: false
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -21,9 +21,9 @@
   input:
     people:
       person1:
-        ca_in_out_of_home_care_facility: false
+        in_out_of_home_care_facility: false
       person2:
-        ca_in_out_of_home_care_facility: false
+        in_out_of_home_care_facility: false
     spm_units:
       spm_unit:
         members: [person1, person2]
