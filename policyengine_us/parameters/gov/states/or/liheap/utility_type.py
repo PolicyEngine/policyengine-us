@@ -9,7 +9,7 @@ class UtilityType(Enum):
     WOOD_PELLETS = "Wood Pellets"
 
 
-class utlility_type(Variable):
+class utility_type(Variable):
     value_type = Enum
     entity = spm_unit
     possible_values = UtilityType
