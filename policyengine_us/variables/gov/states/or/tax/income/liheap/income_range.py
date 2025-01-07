@@ -1,13 +1,14 @@
 from policyengine_us.model_api import *
 
 
-class or_liheap_income_threshold(Variable):
+class or_liheap_income_range(Variable):
     value_type = int
     entity = SPMUnit
     label = "Income range for Oregon LIHEAP eligibility"
     unit = USD
     definition_period = YEAR
     reference = "https://www.oregon.gov/ohcs/energy-weatherization/Documents/2021-Energy-Assistance-Manual.pdf#Pg=55"
+
     defined_for = StateCode.OR
 
     def formula(spm_unit, period, parameters):
