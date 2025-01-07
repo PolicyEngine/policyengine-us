@@ -16,3 +16,4 @@ class pr_low_income_credit(Variable):
         eligible_person = person("pr_low_income_credit_eligible_person", period)
         eligible_people = tax_unit.sum(eligible_person)
         return p.amount * eligible_people
+
