@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class or_liheap_income_range(Variable):
+class income_range(Variable):
     value_type = int
     entity = SPMUnit
     label = "Income range for Oregon LIHEAP eligibility"
