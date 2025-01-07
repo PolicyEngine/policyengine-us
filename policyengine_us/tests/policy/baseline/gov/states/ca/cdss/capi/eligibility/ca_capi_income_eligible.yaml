@@ -1,0 +1,21 @@
+- name: Ineligible
+  period: 2024
+  input:
+    ssi_amount_if_eligible: 2_000
+    ca_state_supplement_payment_standard: 1_000
+    ssi_countable_income: 3_001
+    ca_capi_eligible_person: true
+    state_code: CA
+  output:
+    ca_capi_income_eligible: false
+
+- name: Eligible
+  period: 2024
+  input:
+    ssi_amount_if_eligible: 2_000
+    ca_state_supplement_payment_standard: 1_000
+    ssi_countable_income: 2_999
+    ca_capi_eligible_person: true
+    state_code: CA
+  output:
+    ca_capi_income_eligible: true
