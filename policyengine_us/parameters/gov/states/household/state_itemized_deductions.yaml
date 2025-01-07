@@ -1,0 +1,46 @@
+description: All state itemized deduction variables.
+values:
+  0000-01-01:
+    - al_itemized_deductions  # Alabama
+    - ar_itemized_deductions  # Arkansas
+    - az_itemized_deductions  # Arizona
+    - ca_itemized_deductions  # California
+    # Connecticut adopts federal itemized deductions
+    - dc_itemized_deductions  # DC
+    - de_itemized_deductions  # Delaware
+    # Georgia adopts federal itemized deductions
+    - hi_itemized_deductions  # Hawaii
+    - ia_itemized_deductions  # Iowa
+    - id_itemized_deductions  # Idaho
+    # Illinois doesn't have deductions.
+    - ks_itemized_deductions  # Kansas
+    - ky_itemized_deductions  # Kentucky
+    - la_itemized_deductions  # Louisiana
+    # Massachusetts doesn't have deductions in a standard form.
+    - md_itemized_deductions  # Maryland
+    - me_itemized_deductions_pre_phaseout  # Maine phases out deductions after choosing itemization.
+    - mn_itemized_deductions  # Minnesota
+    - mo_itemized_deductions  # Missouri
+    - ms_itemized_deductions  # Mississippi
+    - mt_itemized_deductions  # Montana
+    - nc_itemized_deductions  # North Carolina
+    # North Dakota adopts federal deductions.
+    - ne_itemized_deductions  # Nebraska
+    # New Jersey doesn't have a conventional itemized deduction system.
+    - nm_itemized_deductions  # New Mexico
+    - ny_itemized_deductions  # New York
+    # Ohio doesn't have a conventional itemized deduction system.
+    - ok_itemized_deductions  # Oklahoma
+    - or_itemized_deductions  # Oregon
+    # Rhode Island doesn't have itemized deductions.
+    # South Carolina adjusts federal taxable income rather than having a state itemized deduction system.
+    # Utah adopts federal itemized deductions
+    - va_itemized_deductions  # Virginia
+    # Vermont doesn't have itemized deductions.
+    # Wisconsin doesn't have itemized deductions.
+    # West Virginia doesn't have itemized deductions.
+
+metadata:
+  unit: list
+  period: year
+  label: State Itemized Deduction Variables
