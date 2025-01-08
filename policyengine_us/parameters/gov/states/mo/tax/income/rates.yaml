@@ -93,7 +93,9 @@ brackets:
         uprating: gov.irs.uprating
     rate:
       2019-01-01: 0.05
-      2023-01-01: 0.0495    
+      2023-01-01: 0.0495
+      2024-01-01: 0.048
+      2025-01-01: 0.047
   - threshold:
       values:
         2019-01-01: 8_424
@@ -108,6 +110,7 @@ brackets:
       2022-01-01: 0.053
       2023-01-01: 0.0495
       2024-01-01: 0.048
+      2025-01-01: 0.047
 
 metadata:
   reference:
@@ -123,6 +126,11 @@ metadata:
       href: https://revisor.mo.gov/main/OneSection.aspx?section=143.011&bid=51511&hl=
     - title: 2024 Missouri Withholding Tax Formula
       href: https://dor.mo.gov/forms/Withholding%20Formula_2024.pdf#page=2
+    - title: Missouri Individual Income Tax Changes 2024
+      href: https://dor.mo.gov/taxation/individual/tax-types/income/year-changes/
+    - title: Governor Parson Announces Historic Fifth Income Tax Cut During His Administration
+      href: https://governor.mo.gov/press-releases/archive/governor-parson-announces-historic-fifth-income-tax-cut-during-his
+
   label: Missouri resident individual tax rates
   type: marginal_rate
   threshold_unit: currency-USD
