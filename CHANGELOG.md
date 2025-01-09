@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.170.1] - 2025-01-09 21:40:41
+
+### Added
+
+- Montana top income tax rate 2024.
+
 ## [1.170.0] - 2025-01-09 16:55:35
 
 ### Added
@@ -10532,6 +10538,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.170.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.170.0...1.170.1
 [1.170.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.169.0...1.170.0
 [1.169.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.168.1...1.169.0
 [1.168.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.168.0...1.168.1
