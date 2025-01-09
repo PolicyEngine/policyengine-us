@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.170.0] - 2025-01-09 16:55:35
+
+### Added
+
+- 2024 DC keep child care affordable tax credit max benefit and thresholds.
+- DC EITC match delay to 2029.
+
 ## [1.169.0] - 2025-01-08 23:32:39
 
 ### Added
@@ -10525,6 +10532,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.170.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.169.0...1.170.0
 [1.169.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.168.1...1.169.0
 [1.168.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.168.0...1.168.1
 [1.168.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.167.2...1.168.0
