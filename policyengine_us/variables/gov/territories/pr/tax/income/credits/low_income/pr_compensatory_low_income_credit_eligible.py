@@ -21,12 +21,3 @@ class pr_compensatory_low_income_credit_eligible(Variable):
             "pr_low_income_credit_eligible", period
         )
         return head_or_spouse & pension_lim & low_income_eligible
-
-
-# Workflow:
-# 1. Need to check if the person is a head or spouse
-# 2. Need to check if their pension income is below the parameter
-# Var: "pension_income" for income
-# 3. Check if the TaxUnit is elgible for the low income credit
-# to call a taxunit level variable: person.tax_unit()
-# Return true if all conditions are met
