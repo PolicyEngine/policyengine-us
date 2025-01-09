@@ -1,5 +1,6 @@
 from policyengine_us.model_api import *
 
+
 class pr_compensatory_low_income_credit(Variable):
     value_type = float
     unit = USD

@@ -5,7 +5,7 @@ class pr_refundable_credits(Variable):
     value_type = float
     entity = TaxUnit
     label = "Puerto Rico refundable credits"
-    unit = USD 
+    unit = USD
     definition_period = YEAR
 
     adds = "gov.territories.pr.tax.income.credits.refundable"
