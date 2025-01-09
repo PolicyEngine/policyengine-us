@@ -4,7 +4,6 @@
     is_tax_unit_head_or_spouse: true
     pension_income: 4_800
     pr_low_income_credit_eligible: true
-    state_code: PR
   output:
     pr_compensatory_low_income_credit_eligible: true
 
@@ -14,7 +13,6 @@
     is_tax_unit_head_or_spouse: false
     pension_income: 4_800
     pr_low_income_credit_eligible: true
-    state_code: PR
   output:
     pr_compensatory_low_income_credit_eligible: false
 
@@ -24,7 +22,6 @@
     is_tax_unit_head_or_spouse: true
     pension_income: 4_801
     pr_low_income_credit_eligible: true
-    state_code: PR
   output:
     pr_compensatory_low_income_credit_eligible: false
 
@@ -34,6 +31,5 @@
     is_tax_unit_head_or_spouse: true
     pension_income: 4_800
     pr_low_income_credit_eligible: false
-    state_code: PR
   output:
     pr_compensatory_low_income_credit_eligible: false

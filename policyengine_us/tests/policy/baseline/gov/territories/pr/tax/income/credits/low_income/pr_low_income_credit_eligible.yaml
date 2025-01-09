@@ -11,10 +11,6 @@
       tax_unit:
         members: [person1, person2]
         pr_gross_income: 29_000
-    households:
-      household1:
-        members: [person1, person2]
-        state_code: PR
   output:  
     pr_low_income_credit_eligible: true
 
@@ -31,10 +27,6 @@
       tax_unit:
         members: [person1, person2]
         pr_gross_income: 32_000
-    households:
-      household1:
-        members: [person1, person2]
-        state_code: PR
   output:  
     pr_low_income_credit_eligible: false
 
@@ -51,10 +43,6 @@
       tax_unit:
         members: [person1, person2]
         pr_gross_income: 15_000
-    households:
-      household1:
-        members: [person1, person2]
-        state_code: PR
   output:  
     pr_low_income_credit_eligible: true
 
@@ -71,9 +59,5 @@
       tax_unit:
         members: [person1, person2]
         pr_gross_income: 15_001
-    households:
-      household1:
-        members: [person1, person2]
-        state_code: PR
   output:  
     pr_low_income_credit_eligible: false

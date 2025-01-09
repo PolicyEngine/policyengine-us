@@ -11,10 +11,6 @@
       tax_unit:
         members: [person1, person2]
         pr_low_income_credit_eligible: true
-    households:
-      household:
-        members: [person1, person2]
-        state_code: PR
   output:  
     pr_low_income_credit: 800
 
@@ -34,7 +30,6 @@
     households:
       household1:
         members: [person1, person2]
-        state_code: PR
   output:  
     pr_low_income_credit: 0
 
@@ -54,7 +49,6 @@
     households:
       household1:
         members: [person1, person2]
-        state_code: PR
   output:  
     pr_low_income_credit: 400
 
@@ -76,6 +70,5 @@
     households:
       household1:
         members: [person1, person2]
-        state_code: PR
   output:  
     pr_low_income_credit: 400

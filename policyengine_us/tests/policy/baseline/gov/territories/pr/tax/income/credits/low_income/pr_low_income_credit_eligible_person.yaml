@@ -3,7 +3,6 @@
   input:
     age: 65
     is_tax_unit_head_or_spouse: true
-    state_code: PR
   output:
     pr_low_income_credit_eligible_person: true
 
@@ -12,7 +11,6 @@
   input:
     age: 64
     is_tax_unit_head_or_spouse: true
-    state_code: PR
   output:
     pr_low_income_credit_eligible_person: false
 
@@ -21,6 +19,5 @@
   input:
     age: 65
     is_tax_unit_head_or_spouse: false
-    state_code: PR
   output:
     pr_low_income_credit_eligible_person: false
