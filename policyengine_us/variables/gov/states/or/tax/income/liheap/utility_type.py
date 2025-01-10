@@ -11,8 +11,8 @@ class UtilityType(Enum):
 
 class utility_type(Variable):
     value_type = Enum
-    entity = spm_unit
+    entity = SPMUnit
     possible_values = UtilityType
     default_value = UtilityType.ELECTRICITY
     definition_period = YEAR
-    label = "Utiltiy types for LIHEAP payout"
+    label = "Utility types for LIHEAP payout"
