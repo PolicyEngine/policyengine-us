@@ -29,4 +29,5 @@ class dc_ptc(Variable):
             p_dc.ptc.fraction_nonelderly.calc(us_agi, right=True),
         )
         uncapped_ptc = max_(0, ptax - ptax_offset)
-        return min_(p_dc.ptc.max, uncapped_ptc)
+        takes_up_ptc = tax_unit("dc_takes_up_ptc", period)
+        return min_(p_dc.ptc.max, uncapped_ptc) * takes_up_ptc
