@@ -26,7 +26,5 @@ class or_liheap_income_range(Variable):
                 income <= range3_upper,
             ],
             [1, 2, 3],
-            default=4
+            default=4,
         )
-
-    
