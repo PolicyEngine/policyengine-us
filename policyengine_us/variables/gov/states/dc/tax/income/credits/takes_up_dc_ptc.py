@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class dc_takes_up_ptc(Variable):
+class takes_up_dc_ptc(Variable):
     value_type = bool
     entity = TaxUnit
     label = "Takes up the DC property tax credit"
