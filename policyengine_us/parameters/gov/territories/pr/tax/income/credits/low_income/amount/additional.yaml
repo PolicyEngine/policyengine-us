@@ -1,10 +1,19 @@
-description: Puerto Rico provides the following compensatory tax credit amount for low-income pensioners.
+description: Puerto Rico provides a compensatory tax credit of this amount for low-income pensioners, based on pension income.
 
-values: 
-  2011-01-01: 300
+brackets:
+  - threshold:
+      2021-01-01: 0
+    amount:
+      2021-01-01: 300
+  - threshold:
+      2021-01-01: 4_800
+    amount:
+      2021-01-01: 0
 
 metadata:
-  unit: currency-USD
+  type: single_amount
+  amount_unit: currency-USD
+  threshold_unit: currency-USD
   period: year
   label: Puerto Rico compensatory tax credit for low-income pensioners amount
   reference:
