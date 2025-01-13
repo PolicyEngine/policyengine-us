@@ -1,0 +1,75 @@
+- name: Two aged and disabled people
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 68
+        is_tax_unit_head: true
+        is_disabled: false
+      person2:
+        age: 64
+        is_tax_unit_spouse: true
+        is_disabled: true
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+  output:
+    ca_state_supplement_aged_disabled_count: 2
+
+- name: One aged and disabled person
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 68
+        is_tax_unit_head: true
+        is_disabled: false
+      person2:
+        age: 64
+        is_tax_unit_spouse: false
+        is_disabled: false
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+  output:
+    ca_state_supplement_aged_disabled_count: 1
+
+- name: No aged or disabled head or spouse
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 60
+        is_tax_unit_head: true
+        is_disabled: false
+      person2:
+        age: 64
+        is_tax_unit_spouse: false
+        is_disabled: false
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+        is_disabled: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+  output:
+    ca_state_supplement_aged_disabled_count: 0
