@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class chapter_7_bankruptcy_vehicle_operation_expense_deduction(Variable):
     value_type = float
     entity = SPMUnit
-    label = "Vehicle operation expense deduction"
+    label = "Chapter 7 Bankruptcy vehicle operation expense deduction"
     definition_period = MONTH
     reference = "https://www.cacb.uscourts.gov/sites/cacb/files/documents/forms/122A2.pdf#page=4"
     documentation = "Line 12 in form 122A-2"

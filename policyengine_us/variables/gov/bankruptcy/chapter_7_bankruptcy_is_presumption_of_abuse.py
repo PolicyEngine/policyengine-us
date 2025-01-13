@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class is_presumption_of_abuse(Variable):
+class chapter_7_bankruptcy_is_presumption_of_abuse(Variable):
     value_type = bool
     entity = SPMUnit
-    label = "Is presumption of abuse"
+    label = "Chapter 7 Bankruptcy is presumption of abuse"
     definition_period = YEAR
     reference = "https://www.cacb.uscourts.gov/sites/cacb/files/documents/forms/122A2.pdf#page=8"
     documentation = "Line 39-xx in form 122A-2"
@@ -13,7 +13,7 @@ class is_presumption_of_abuse(Variable):
         p = parameters(period).gov.bankruptcy.presumption_abuse
 
         adjusted_monthly_income = spm_unit(
-            "chapter_7_bankruptcy_adjust_monthly_income", period
+            "chapter_7_bankruptcy_adjusted_monthly_income", period
         )
         total_deductions = spm_unit(
             "chapter_7_bankruptcy_total_deductions", period

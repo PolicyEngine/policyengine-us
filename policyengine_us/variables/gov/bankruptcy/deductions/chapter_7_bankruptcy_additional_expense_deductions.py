@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class chapter_7_bankruptcy_additional_expense_deductions(Variable):
     value_type = float
     entity = SPMUnit
-    label = "Additional expenses deductions"
+    label = "Chapter 7 Bankruptcy additional expense deductions"
     definition_period = MONTH
     reference = "https://www.cacb.uscourts.gov/sites/cacb/files/documents/forms/122A2.pdf#page=6"
 

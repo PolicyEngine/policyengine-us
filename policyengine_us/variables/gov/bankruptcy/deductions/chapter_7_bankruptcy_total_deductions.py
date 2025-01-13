@@ -3,8 +3,9 @@ from policyengine_us.model_api import *
 
 class chapter_7_bankruptcy_total_deductions(Variable):
     value_type = float
+    unit = USD
     entity = SPMUnit
-    label = "Total deductions from Income"
+    label = "Chapter 7 Bankruptcy total deductions from Income"
     definition_period = MONTH
 
     adds = [

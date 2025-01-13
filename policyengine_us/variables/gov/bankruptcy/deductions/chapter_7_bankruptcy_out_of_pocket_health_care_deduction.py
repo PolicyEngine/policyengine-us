@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class chapter_7_bankruptcy_out_of_pocket_health_care_deduction(Variable):
     value_type = float
     entity = SPMUnit
-    label = "National standard of Out-of-pocket health care deduction"
+    label = "Chapter 7 Bankruptcy national standard of Out-of-pocket health care deduction"
     definition_period = YEAR
     reference = "https://www.cacb.uscourts.gov/sites/cacb/files/documents/forms/122A2.pdf#page=2"
     documentation = "Line 7 in form 122A-2"
