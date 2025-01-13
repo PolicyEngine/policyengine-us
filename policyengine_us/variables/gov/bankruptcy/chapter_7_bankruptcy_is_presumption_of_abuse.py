@@ -5,7 +5,7 @@ class chapter_7_bankruptcy_is_presumption_of_abuse(Variable):
     value_type = bool
     entity = SPMUnit
     label = "Chapter 7 Bankruptcy is presumption of abuse"
-    definition_period = YEAR
+    definition_period = MONTH
     reference = "https://www.cacb.uscourts.gov/sites/cacb/files/documents/forms/122A2.pdf#page=8"
     documentation = "Line 39-xx in form 122A-2"
 
