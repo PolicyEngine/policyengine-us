@@ -72,6 +72,7 @@ from .snap import (
     create_abolish_snap_deductions_reform,
     create_abolish_snap_net_income_test_reform,
 )
+from .states.dc.property_tax import create_dc_property_tax_credit_reform
 
 
 from policyengine_core.reforms import Reform
@@ -162,6 +163,9 @@ def create_structural_reforms_from_parameters(parameters, period):
     abolish_snap_net_income_test = create_abolish_snap_net_income_test_reform(
         parameters, period
     )
+    dc_property_tax_credit = create_dc_property_tax_credit_reform(
+        parameters, period
+    )
 
     reforms = [
         afa_reform,
@@ -196,6 +200,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         expanded_ctc,
         abolish_snap_deductions,
         abolish_snap_net_income_test,
+        dc_property_tax_credit,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
 
