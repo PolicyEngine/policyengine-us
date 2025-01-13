@@ -5,6 +5,43 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.172.0] - 2025-01-13 01:59:31
+
+### Added
+
+- DC property tax credit reform.
+
+## [1.171.0] - 2025-01-10 11:34:59
+
+### Added
+
+- DC property tax credit take up.
+
+## [1.170.2] - 2025-01-10 05:35:35
+
+### Fixed
+
+- Only apply the Virginia rebate to the 2023 tax year.
+
+## [1.170.1] - 2025-01-09 21:40:41
+
+### Added
+
+- Montana top income tax rate 2024.
+
+## [1.170.0] - 2025-01-09 16:55:35
+
+### Added
+
+- 2024 DC keep child care affordable tax credit max benefit and thresholds.
+- DC EITC match delay to 2029.
+
+## [1.169.0] - 2025-01-08 23:32:39
+
+### Added
+
+- State-level variables in taxsim.
+
 ## [1.168.1] - 2025-01-06 18:47:40
 
 ### Fixed
@@ -10519,6 +10556,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.172.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.171.0...1.172.0
+[1.171.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.170.2...1.171.0
+[1.170.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.170.1...1.170.2
+[1.170.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.170.0...1.170.1
+[1.170.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.169.0...1.170.0
+[1.169.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.168.1...1.169.0
 [1.168.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.168.0...1.168.1
 [1.168.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.167.2...1.168.0
 [1.167.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.167.1...1.167.2
