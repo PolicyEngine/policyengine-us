@@ -1,10 +1,12 @@
 from policyengine_us.model_api import *
 
+
 class OregonLIHEAPIncomeRange(Enum):
     RANGE_ONE = "Range one"
     RANGE_TWO = "Range two"
     RANGE_THREE = "Range three"
     RANGE_FOUR = "Range four"
+
 
 class or_liheap_income_range(Variable):
     value_type = Enum
@@ -14,14 +16,14 @@ class or_liheap_income_range(Variable):
     label = "Income range for Oregon LIHEAP eligibility"
     definition_period = YEAR
     reference = "https://www.oregon.gov/ohcs/energy-weatherization/Documents/2021-Energy-Assistance-Manual.pdf#page=55"
-    
+
     defined_for = StateCode.OR
 
     def formula(spm_unit, period, parameters):
         income = spm_unit("adjusted_gross_income", period)
         threshold = spm_unit("or_liheap_income_threshold", period)
         p = parameters(period).gov.states["or"].liheap.income_range
-        
+
         range1_upper = threshold * p.range1_upper
         range2_upper = threshold * p.range2_upper
         range3_upper = threshold * p.range3_upper
@@ -31,8 +33,10 @@ class or_liheap_income_range(Variable):
                 income <= range2_upper,
                 income <= range3_upper,
             ],
-            [OregonLIHEAPIncomeRange.RANGE_ONE,
-             OregonLIHEAPIncomeRange.RANGE_TWO,
-             OregonLIHEAPIncomeRange.RANGE_THREE],
+            [
+                OregonLIHEAPIncomeRange.RANGE_ONE,
+                OregonLIHEAPIncomeRange.RANGE_TWO,
+                OregonLIHEAPIncomeRange.RANGE_THREE,
+            ],
             default=OregonLIHEAPIncomeRange.RANGE_FOUR,
         )
