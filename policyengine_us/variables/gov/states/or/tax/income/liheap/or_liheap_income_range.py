@@ -11,7 +11,7 @@ class OregonLIHEAPIncomeRange(Enum):
 class or_liheap_income_range(Variable):
     value_type = Enum
     entity = SPMUnit
-    possible_values = OregonLIHEAPIncomeRange
+    possible_values = OregonLIHEAPIncomeRange  # Use the Enum class directly
     default_value = OregonLIHEAPIncomeRange.RANGE_FOUR
     label = "Income range for Oregon LIHEAP eligibility"
     definition_period = YEAR
@@ -20,18 +20,20 @@ class or_liheap_income_range(Variable):
     defined_for = StateCode.OR
 
     def formula(spm_unit, period, parameters):
-        income = spm_unit("adjusted_gross_income", period)
+        income = add(spm_unit, period, ["adjusted_gross_income"])
         threshold = spm_unit("or_liheap_income_threshold", period)
-        p = parameters(period).gov.states["or"].liheap.income_range
 
-        range1_upper = threshold * p.range1_upper
-        range2_upper = threshold * p.range2_upper
-        range3_upper = threshold * p.range3_upper
+        p = parameters(period).gov.states["or"].liheap
+
+        range1 = threshold * p.range_one
+        range2 = threshold * p.range_two
+        range3 = threshold * p.range_three
+
         return select(
             [
-                income <= range1_upper,
-                income <= range2_upper,
-                income <= range3_upper,
+                income <= range1,
+                income <= range2,
+                income <= range3,
             ],
             [
                 OregonLIHEAPIncomeRange.RANGE_ONE,
