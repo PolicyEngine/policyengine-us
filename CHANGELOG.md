@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.173.0] - 2025-01-13 19:10:03
+
+### Added
+
+- References for New Jersey 2024 state income tax.
+
 ## [1.172.1] - 2025-01-13 17:48:43
 
 ### Fixed
@@ -10562,6 +10568,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.173.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.172.1...1.173.0
 [1.172.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.172.0...1.172.1
 [1.172.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.171.0...1.172.0
 [1.171.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.170.2...1.171.0
