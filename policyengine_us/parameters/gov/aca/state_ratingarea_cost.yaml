@@ -1,8 +1,8 @@
 description: Second Lowest Cost Silver Plan (SLCSP) premiums by rating area, normalized to age 0.
 metadata:
-  type: amount
+
   period: month
-  unit:  USD/month
+  unit: currency-USD
      
 
   breakdown:
@@ -15,7 +15,7 @@ metadata:
   reference:
     - title: CMS Market Rating Reforms State Specific Age Curve Variations
       href: https://www.cms.gov/cciio/programs-and-initiatives/health-insurance-market-reforms/downloads/statespecagecrv053117.pdf
-values:
+
   AK:
     1:
       2025-01-01: 606.00
