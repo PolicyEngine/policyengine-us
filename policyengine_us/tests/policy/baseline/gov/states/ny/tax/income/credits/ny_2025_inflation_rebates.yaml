@@ -1,0 +1,53 @@
+- name: Single person, eligible
+  period: 2025
+  input:
+    state_code: NY
+    ny_agi: 150_000
+    filing_status: SINGLE
+  output:
+    ny_2025_inflation_rebates: 300
+
+- name: Single person, ineligible
+  period: 2025
+  input:
+    state_code: NY
+    ny_agi: 150_001
+    filing_status: SINGLE
+  output:
+    ny_2025_inflation_rebates: 0
+
+- name: Separate person, eligible
+  period: 2025
+  input:
+    state_code: NY
+    ny_agi: 150_000
+    filing_status: SEPARATE
+  output:
+    ny_2025_inflation_rebates: 250
+
+- name: Separate person, ineligible
+  period: 2025
+  input:
+    state_code: NY
+    ny_agi: 150_001
+    filing_status: SEPARATE
+  output:
+    ny_2025_inflation_rebates: 0 
+
+- name: Joint couple, eligible
+  period: 2025
+  input:
+    state_code: NY
+    ny_agi: 300_000
+    filing_status: JOINT
+  output:
+    ny_2025_inflation_rebates: 500
+
+- name: Joint couple, ineligible
+  period: 2025
+  input:
+    state_code: NY
+    ny_agi: 150_001
+    filing_status: JOINT
+  output:
+    ny_2025_inflation_rebates: 0 
