@@ -1,0 +1,27 @@
+description: Puerto Rico has a phase out rate to calculate on any income greater than a certain limit.
+brackets:
+  - threshold: # if below the threshold, no phase out
+      2010-12-31: 0
+    rate:
+      2010-12-31: 0
+  - threshold: # if in the middle bracket, phase out percentage which subtracts from phase in part
+      2010-12-31: 10_000
+    rate:
+      2010-12-31: 0.02
+  - threshold: # no percentage rate for any amount of income above upper limit
+      2010-12-31: 22_500
+      2011-12-31: 25_000
+      2012-12-31: 27_500
+      2013-12-31: 30_000
+      2014-12-31: 32_500
+      2015-12-31: 35_000
+    rate:
+      2010-12-31: 0
+metadata:
+  rate_unit: /1
+  threshold_unit: currency-USD
+  label: Puerto Rico earned income credit phase out rate
+  period: year
+  reference:
+    - title: P.R. Laws tit. 13, § 30211 (1)-(6)
+      href: https://casetext.com/statute/laws-of-puerto-rico/title-thirteen-taxation-and-finance/subtitle-17-internal-revenue-code-of-2011/part-ii-income-taxes/chapter-1007-credits-against-tax/subchapter-b-refundable-credits/30211-earned-income-credit
