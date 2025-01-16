@@ -1,15 +1,17 @@
 from policyengine_us.model_api import *
 
+
 class OregonLIHEAPIncomeRange(Enum):
     RANGE_ONE = "Range one"
     RANGE_TWO = "Range two"
     RANGE_THREE = "Range three"
     RANGE_FOUR = "Range four"
 
+
 class or_liheap_income_range(Variable):
     value_type = Enum
     entity = SPMUnit
-    possible_values = OregonLIHEAPIncomeRange  
+    possible_values = OregonLIHEAPIncomeRange
     default_value = OregonLIHEAPIncomeRange.RANGE_FOUR
     label = "Income range for Oregon LIHEAP eligibility"
     definition_period = YEAR
