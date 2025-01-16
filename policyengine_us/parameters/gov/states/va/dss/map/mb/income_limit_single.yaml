@@ -1,0 +1,31 @@
+description: VA Medicare Beneficiaries have income limit regarding different covered groups as above for a single.
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: VA Medicare Beneficiaries income & resources limit
+  type: single_amount
+  amount_unit: int
+  threshold_unit: currency-USD
+  reference:
+    - title: VA Medical Assistance Programs - Medicare Beneficiaries
+      href: https://www.dss.virginia.gov/files/division/bp/medical_assistance/intro_page/covered_groups/medicare_benificiaries/d032-03-0358-37-eng.pdf.pdf
+
+brackets:
+  - amount:
+      2023-01-01: 0
+    threshold:
+      2023-01-01: 0
+  - amount:
+      2023-01-01: 1
+    threshold:
+      2023-01-01: 1_215
+  - amount:
+      2023-01-01: 2
+    threshold:
+      2023-01-01: 1_458
+  - amount:
+      2023-01-01: 3
+    threshold:
+      2023-01-01: 1_641
+
