@@ -64,7 +64,7 @@ class person_aca_slspc(Variable):
 
     def formula(person, period, parameters):
         # Get state and rating area
-        state = person.tax_unit.household("state_code_str", period)
+        state = person.household("state_code_str", period)
         rating_area = person.tax_unit("aca_rating_area", period)
         
         # Get base cost for rating area
