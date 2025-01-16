@@ -6,6 +6,7 @@ class person_weight(Variable):
     entity = Person
     label = "Person weight"
     definition_period = YEAR
+    uprating = "calibration.gov.census.populations.total"
 
     def formula(person, period, parameters):
         return person.household("household_weight", period)

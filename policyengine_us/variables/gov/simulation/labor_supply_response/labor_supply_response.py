@@ -15,11 +15,11 @@ class relative_income_change(Variable):
         baseline_branch = simulation.get_branch("baseline").get_branch(
             "baseline_lsr_measurement"
         )
-        measurement_person = measurement_branch.populations["person"]
         baseline_person = baseline_branch.populations["person"]
         baseline_net_income = baseline_person.household(
             "household_net_income", period
         )
+        measurement_person = measurement_branch.populations["person"]
         net_income = measurement_person.household(
             "household_net_income", period
         )
@@ -47,14 +47,14 @@ class relative_wage_change(Variable):
 
     def formula(person, period, parameters):
         simulation = person.simulation
-        measurement_branch = simulation.get_branch("lsr_measurement")
         baseline_branch = simulation.get_branch("baseline").get_branch(
             "baseline_lsr_measurement"
         )
-        measurement_person = measurement_branch.populations["person"]
         baseline_person = baseline_branch.populations["person"]
         baseline_mtr = baseline_person("marginal_tax_rate", period)
         baseline_wage = 1 - baseline_mtr
+        measurement_branch = simulation.get_branch("lsr_measurement")
+        measurement_person = measurement_branch.populations["person"]
         mtr = measurement_person("marginal_tax_rate", period)
         wage_rate = 1 - mtr
         # _c suffix for "clipped"
@@ -71,7 +71,7 @@ class income_elasticity_lsr(Variable):
     value_type = float
     entity = Person
     label = "income elasticity of labor supply response"
-    unit = USD
+    unit = "/1"
     definition_period = YEAR
     requires_computation_after = "labor_supply_behavioral_response"
 
@@ -90,32 +90,20 @@ class income_elasticity(Variable):
     value_type = float
     entity = Person
     label = "income elasticity of labor supply"
-    unit = USD
+    unit = "/1"
     definition_period = YEAR
-
-    def formula(person, period, parameters):
-        gov = parameters(period).gov
-        follow_cbo = gov.contrib.cbo.labor_supply.elasticities
-        elasticities_p = (
-            gov.simulation.labor_supply_responses.elasticities.income
-        )
-
-        if follow_cbo:
-            return -0.05
-        else:
-            return elasticities_p
+    adds = ["gov.simulation.labor_supply_responses.elasticities.income"]
 
 
 class substitution_elasticity(Variable):
     value_type = float
     entity = Person
     label = "substitution elasticity of labor supply"
-    unit = USD
+    unit = "/1"
     definition_period = YEAR
 
     def formula(person, period, parameters):
         gov = parameters(period).gov
-        follow_cbo = gov.contrib.cbo.labor_supply.elasticities
         elasticities_p = (
             gov.simulation.labor_supply_responses.elasticities.substitution
         )
@@ -149,31 +137,13 @@ class substitution_elasticity(Variable):
 
         elasticities = np.zeros_like(earnings)
 
-        # Assign non-primary earner elasticities
-        if follow_cbo:
-            elasticities[~is_primary_earner] = 0.27
-            decile_elasticities = [
-                0.31,
-                0.28,
-                0.27,
-                0.27,
-                0.25,
-                0.25,
-                0.22,
-                0.22,
-                0.22,
-                0.22,
-            ]
-            for i in range(10):
-                elasticities[earnings_decile == i + 1] = decile_elasticities[i]
-        else:
-            p = elasticities_p.by_position_and_decile
-            elasticities[~is_primary_earner] = p.secondary
-            decile_elasticities = [
-                p.primary._children[str(i + 1)] for i in range(10)
-            ]
-            for i in range(10):
-                elasticities[earnings_decile == i + 1] = decile_elasticities[i]
+        p = elasticities_p.by_position_and_decile
+        elasticities[~is_primary_earner] = p.secondary
+        decile_elasticities = [
+            p.primary._children[str(i + 1)] for i in range(10)
+        ]
+        for i in range(10):
+            elasticities[earnings_decile == i + 1] = decile_elasticities[i]
 
         return elasticities
 
@@ -182,7 +152,7 @@ class substitution_elasticity_lsr(Variable):
     value_type = float
     entity = Person
     label = "substitution elasticity of labor supply response"
-    unit = USD
+    unit = "/1"
     definition_period = YEAR
     requires_computation_after = "labor_supply_behavioral_response"
 
@@ -215,7 +185,6 @@ class labor_supply_behavioral_response(Variable):
         if (
             lsr.elasticities.income == 0
             and lsr.elasticities.substitution.all == 0
-            and not gov.contrib.cbo.labor_supply.elasticities
         ):
             return 0
 
@@ -259,6 +228,11 @@ class labor_supply_behavioral_response(Variable):
                 "substitution_elasticity_lsr",
             ],
         )
+        simulation = person.simulation
+        del simulation.branches["baseline"].branches[
+            "baseline_lsr_measurement"
+        ]
+        del simulation.branches["lsr_measurement"]
 
         simulation.macro_cache_read = False
         simulation.macro_cache_write = False
@@ -296,4 +270,5 @@ class self_employment_income_behavioral_response(Variable):
     def formula(person, period, parameters):
         lsr = person("labor_supply_behavioral_response", period)
         emp_response = person("employment_income_behavioral_response", period)
+
         return lsr - emp_response

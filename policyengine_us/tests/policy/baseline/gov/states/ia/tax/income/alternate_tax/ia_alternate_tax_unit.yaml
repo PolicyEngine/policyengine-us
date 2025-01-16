@@ -1,0 +1,36 @@
+- name: IA alternate tax for tax unit unit test 1
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    filing_status: JOINT
+    is_tax_unit_head: true
+    age: 64
+    ia_modified_income: 13_400
+    state_code: IA
+  output:
+    # ia_regular_tax: 0
+    ia_alternate_tax_unit: 0  # alternate deduction exceeds modified income
+
+- name: IA alternate tax for tax unit unit test 2
+  absolute_error_margin: 0.01  
+  period: 2022
+  input:
+    filing_status: JOINT
+    is_tax_unit_head: true
+    age: 65
+    ia_modified_income: 33_000
+    state_code: IA
+  output:
+    ia_alternate_tax_unit: 85.30  # = (33_000 - 32_000) * 0.0853
+
+- name: Still computes alternate tax for tax units when ineligible
+  absolute_error_margin: 0.01  
+  period: 2022
+  input:
+    is_tax_unit_head: true
+    age: 65
+    ia_modified_income: 33_000
+    state_code: IA
+    filing_status: SINGLE
+  output:
+    ia_alternate_tax_unit: 85.30  # = (33_000 - 32_000) * 0.0853

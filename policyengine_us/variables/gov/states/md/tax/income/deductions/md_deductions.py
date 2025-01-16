@@ -15,9 +15,7 @@ class md_deductions(Variable):
     defined_for = StateCode.MD
 
     def formula(tax_unit, period, parameters):
-        itm_deds_less_salt = tax_unit("itemized_deductions_less_salt", period)
-        capped_property_taxes = tax_unit("capped_property_taxes", period)
-        md_itmded = itm_deds_less_salt + capped_property_taxes
+        md_itmded = tax_unit("md_itemized_deductions", period)
         md_stdded = tax_unit("md_standard_deduction", period)
         # 2021 and 2022 Form 502 instructions on page 5 include this FAQ:
         # 3. Itemized deductions.

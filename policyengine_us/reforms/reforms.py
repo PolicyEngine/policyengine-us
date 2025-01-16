@@ -20,9 +20,6 @@ from .biden.budget_2025 import (
 from .biden.budget_2025 import create_capital_gains_tax_increase_reform
 from .eitc import create_halve_joint_eitc_phase_out_rate_reform
 from .states.ny.wftc import create_ny_working_families_tax_credit_reform
-from .states.dc.dc_ctc import (
-    create_dc_ctc_reform,
-)
 from .harris.lift.middle_class_tax_credit import (
     create_middle_class_tax_credit_reform,
 )
@@ -41,6 +38,42 @@ from .states.mn.walz import (
 from .states.oregon.rebate import (
     create_or_rebate_state_tax_exempt_reform,
 )
+from .congress.romney.family_security_act_2024.ctc import (
+    create_family_security_act_2024_ctc_reform,
+)
+from .congress.romney.family_security_act_2024.eitc import (
+    create_family_security_act_2024_eitc_reform,
+)
+from .treasury.repeal_dependent_exemptions import (
+    create_repeal_dependent_exemptions_reform,
+)
+from .harris.capital_gains import (
+    create_harris_capital_gains_reform,
+)
+from .tax_exempt.tax_exempt_reform import (
+    create_tax_exempt_reform,
+)
+from .salt_phase_out.salt_phase_out_reform import (
+    create_salt_phase_out_reform,
+)
+from .state_dependent_exemptions import (
+    create_repeal_state_dependent_exemptions_reform,
+)
+from .ctc import (
+    create_ctc_older_child_supplement_reform,
+)
+from .second_earner import (
+    create_second_earner_tax_reform,
+)
+from .ctc.eppc import (
+    create_expanded_ctc_reform,
+)
+from .snap import (
+    create_abolish_snap_deductions_reform,
+    create_abolish_snap_net_income_test_reform,
+)
+from .states.dc.property_tax import create_dc_property_tax_credit_reform
+
 
 from policyengine_core.reforms import Reform
 import warnings
@@ -83,8 +116,6 @@ def create_structural_reforms_from_parameters(parameters, period):
     )
     ny_wftc = create_ny_working_families_tax_credit_reform(parameters, period)
 
-    dc_ctc = create_dc_ctc_reform(parameters, period)
-
     middle_class_tax_credit = create_middle_class_tax_credit_reform(
         parameters, period
     )
@@ -100,6 +131,39 @@ def create_structural_reforms_from_parameters(parameters, period):
     mn_walz_hf1938 = create_mn_walz_hf1938_repeal_reform(parameters, period)
 
     or_rebate_state_tax_exempt = create_or_rebate_state_tax_exempt_reform(
+        parameters, period
+    )
+    family_security_act_2024_ctc = create_family_security_act_2024_ctc_reform(
+        parameters, period
+    )
+    family_security_act_2024_eitc = (
+        create_family_security_act_2024_eitc_reform(parameters, period)
+    )
+    repeal_dependent_exemptions = create_repeal_dependent_exemptions_reform(
+        parameters, period
+    )
+    harris_capital_gains = create_harris_capital_gains_reform(
+        parameters, period
+    )
+    tip_income_tax_exempt = create_tax_exempt_reform(parameters, period)
+    salt_phase_out = create_salt_phase_out_reform(parameters, period)
+    repeal_state_dependent_exemptions = (
+        create_repeal_state_dependent_exemptions_reform(parameters, period)
+    )
+    ctc_older_child_supplement = create_ctc_older_child_supplement_reform(
+        parameters, period
+    )
+    second_earner_tax_reform = create_second_earner_tax_reform(
+        parameters, period
+    )
+    expanded_ctc = create_expanded_ctc_reform(parameters, period)
+    abolish_snap_deductions = create_abolish_snap_deductions_reform(
+        parameters, period
+    )
+    abolish_snap_net_income_test = create_abolish_snap_net_income_test_reform(
+        parameters, period
+    )
+    dc_property_tax_credit = create_dc_property_tax_credit_reform(
         parameters, period
     )
 
@@ -118,13 +182,25 @@ def create_structural_reforms_from_parameters(parameters, period):
         capital_gains_tax_increase,
         halve_joint_eitc_phase_out_rate,
         ny_wftc,
-        dc_ctc,
         middle_class_tax_credit,
         rent_relief_tax_credit,
         end_child_poverty_act,
         boost_middle_class_tax_credit,
         mn_walz_hf1938,
         or_rebate_state_tax_exempt,
+        family_security_act_2024_ctc,
+        family_security_act_2024_eitc,
+        repeal_dependent_exemptions,
+        harris_capital_gains,
+        tip_income_tax_exempt,
+        salt_phase_out,
+        repeal_state_dependent_exemptions,
+        ctc_older_child_supplement,
+        second_earner_tax_reform,
+        expanded_ctc,
+        abolish_snap_deductions,
+        abolish_snap_net_income_test,
+        dc_property_tax_credit,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
 

@@ -1,0 +1,21 @@
+description: Montana provides the following income tax rebate amount, based on filing status.
+metadata:
+  period: year
+  unit: currency-USD
+  label: Montana income tax rebate amount
+  reference:
+    - title: Montana Code Annotated 2023, Title 15, Chapter 30, Part 21, Section 15-30-2191 (b)
+      href: https://archive.legmt.gov/bills/mca/title_0150/chapter_0300/part_0210/section_0910/0150-0300-0210-0910.html
+  breakdown:
+    - filing_status
+
+SINGLE:
+  2023-01-01: 1_250
+HEAD_OF_HOUSEHOLD:
+  2023-01-01: 1_250
+JOINT:
+  2023-01-01: 2_500
+SURVIVING_SPOUSE:
+  2023-01-01: 2_500
+SEPARATE:
+  2023-01-01: 1_250 

@@ -1,0 +1,26 @@
+- name: Living arrangements allow for food preparation
+  period: 2024
+  input:
+    ca_state_supplement_aged_disabled_count: 1
+    living_arrangements_allow_for_food_preparation: true
+    state_code: CA
+  output:
+    ca_state_supplement_food_allowance_eligible: false
+
+- name: Eligible
+  period: 2024
+  input:
+    ca_state_supplement_aged_disabled_count: 1
+    living_arrangements_allow_for_food_preparation: false
+    state_code: CA
+  output:
+    ca_state_supplement_food_allowance_eligible: true
+
+- name: No aged or disabled people
+  period: 2024
+  input:
+    ca_state_supplement_aged_disabled_count: 0
+    living_arrangements_allow_for_food_preparation: false
+    state_code: CA
+  output:
+    ca_state_supplement_food_allowance_eligible: false

@@ -1,0 +1,15 @@
+description: Senator Mitt Romney proposed phasing in the Pregnant Mothers Tax Credit linearly from zero to this earnings level under the Family Security Act 3.0.
+values:
+  2026-01-01: 0 # 10_000
+metadata:
+  unit: currency-USD
+  period: year
+  label: Family Security Act 3.0 Child Tax Credit phase-in earnings limit
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: nearest
+      interval: 100
+  reference:
+    - title: Family Security Act 3.0
+      href: https://www.romney.senate.gov/wp-content/uploads/2024/09/FSA-Scanned-and-Final.pdf#page=16
