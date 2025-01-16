@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.174.1] - 2025-01-16 20:40:42
+
+### Fixed
+
+- Limit CAPI to households with eligible aged or disabled filers.
+
 ## [1.174.0] - 2025-01-15 21:19:28
 
 ### Added
@@ -10574,6 +10580,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.174.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.174.0...1.174.1
 [1.174.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.173.0...1.174.0
 [1.173.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.172.1...1.173.0
 [1.172.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.172.0...1.172.1
