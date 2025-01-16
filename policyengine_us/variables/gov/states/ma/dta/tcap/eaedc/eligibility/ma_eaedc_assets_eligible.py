@@ -4,8 +4,7 @@ from policyengine_us.model_api import *
 class ma_eaedc_assets_eligible(Variable):
     value_type = bool
     entity = SPMUnit
-    label = "Assets eligible for Massachusetts EAEDC "
-    unit = USD
+    label = "Assets eligible for Massachusetts EAEDC"
     definition_period = YEAR
     defined_for = StateCode.MA
     reference = (

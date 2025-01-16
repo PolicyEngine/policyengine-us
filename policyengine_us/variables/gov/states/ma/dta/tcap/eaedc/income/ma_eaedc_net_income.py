@@ -13,7 +13,9 @@ class ma_eaedc_net_income(Variable):
     def formula(spm_unit, period, parameters):
         # net icnome = (earned income - work-related-expense)*($30 and 1/3) - dependent_care_deduction + unearned income
         p = parameters(period).gov.states.ma.dta.tcap.eaedc
-        gross_earned_income = spm_unit("ma_eaedc_total_earned_income", period)
+        gross_earned_income = add(
+            spm_unit, period, ["ma_eaedc_no_disabled_earned_income"]
+        )
         adjusted_earned_income = (
             gross_earned_income - p.deductions.work_related_expense
         )

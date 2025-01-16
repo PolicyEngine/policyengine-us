@@ -11,16 +11,17 @@ class ma_eaedc_dependent_care_deduction(Variable):
     reference = "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-704-275#(B)"
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.states.ma.dta.tcap.eaedc
+        p = parameters(
+            period
+        ).gov.states.ma.dta.tcap.eaedc.deductions.dependent_care
         person = spm_unit.members
         is_dependent = person("is_tax_unit_dependent", period)
         age = person("age", period)
-        meets_age_limit = age < 18
+        meets_age_limit = age < p.age_threshold
         eligible_dependent = is_dependent & meets_age_limit
         # Calculate amount for each dependent
         dependent_care_expense_maximum = (
-            p.deductions.dependent_care_expense_maximum.calc(age)
-            * eligible_dependent
+            p.maximum_expense.calc(age) * eligible_dependent
         )
         # add up the amount for each dependent
         total_capped_amount = spm_unit.sum(dependent_care_expense_maximum)
