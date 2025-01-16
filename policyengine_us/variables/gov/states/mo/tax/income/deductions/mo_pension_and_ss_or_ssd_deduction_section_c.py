@@ -20,7 +20,9 @@ class mo_pension_and_ss_or_ssd_deduction_section_c(Variable):
         unit_mo_agi = tax_unit.sum(ind_mo_agi)
         filing_status = tax_unit("filing_status", period)
         p = parameters(period).gov.states.mo.tax.income.deductions
-        unit_allowance = p.mo_ss_or_ssd_deduction_allowance[filing_status]
+        unit_allowance = p.social_security.ss_or_ssd_deduction_allowance[
+            filing_status
+        ]
         unit_agi_over_allowance = max_(0, unit_mo_agi - unit_allowance)
         ind_taxable_ben = person("taxable_social_security", period)
         unit_taxable_ben = tax_unit.sum(ind_taxable_ben)
