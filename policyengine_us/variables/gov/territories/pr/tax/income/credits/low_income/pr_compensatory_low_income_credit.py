@@ -15,4 +15,4 @@ class pr_compensatory_low_income_credit(Variable):
             period
         ).gov.territories.pr.tax.income.credits.low_income.amount
         pension_income = person("pension_income", period)
-        return p.additional.calc(pension_income)
+        return p.additional.calc(pension_income, right=True)
