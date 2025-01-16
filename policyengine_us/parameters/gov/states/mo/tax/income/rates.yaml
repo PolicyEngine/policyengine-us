@@ -109,7 +109,10 @@ brackets:
       2019-01-01: 0.054
       2022-01-01: 0.053
       2023-01-01: 0.0495 # Set by 143.011.2(1)
-      2024-01-01: 0.048
+      2024-01-01: 0.048 # Reduced by 0.15% per 143.011.3(1)
+      # First 0.1% reduction allowed per 143.011.4(1), confirmed in 2025
+      # withholding formula. Statutes allow further reductions to 0.046 in 2026
+      # and 0.045 in 2027, but we assume revenue conditions not met until confirmed.
       2025-01-01: 0.047
 
 metadata:
