@@ -11,7 +11,7 @@ class ny_2025_inflation_rebates(Variable):
     defined_for = StateCode.NY
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.ny.tax.income.credits[
+        p = parameters(period).gov.contrib.states.ny[
             "2025_inflation_rebates"
         ]
         agi = tax_unit("ny_agi", period)
