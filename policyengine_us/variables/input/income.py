@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 label = "Income"
 
 
-class employment_income_before_lsr(Variable):
+class employment_income_before_behavioral_response(Variable):
     value_type = float
     entity = Person
     label = "employment income before labor supply responses"
@@ -13,7 +13,7 @@ class employment_income_before_lsr(Variable):
     uprating = "calibration.gov.irs.soi.employment_income"
 
 
-class self_employment_income_before_lsr(Variable):
+class self_employment_income_before_behavioral_response(Variable):
     value_type = float
     entity = Person
     label = "self-employment income before labor supply responses"
@@ -30,7 +30,7 @@ class employment_income(Variable):
     unit = USD
     definition_period = YEAR
     adds = [
-        "employment_income_before_lsr",
+        "employment_income_before_behavioral_response",
         "employment_income_behavioral_response",
     ]
     uprating = "calibration.gov.irs.soi.employment_income"
@@ -44,7 +44,7 @@ class self_employment_income(Variable):
     documentation = "Self-employment non-farm income."
     definition_period = YEAR
     adds = [
-        "self_employment_income_before_lsr",
+        "self_employment_income_before_behavioral_response",
         "self_employment_income_behavioral_response",
     ]
     uprating = "calibration.gov.irs.soi.self_employment_income"
