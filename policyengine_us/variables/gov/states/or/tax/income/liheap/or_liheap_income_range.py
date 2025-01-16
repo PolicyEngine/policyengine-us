@@ -20,9 +20,9 @@ class or_liheap_income_range(Variable):
     defined_for = StateCode.OR
 
     def formula(spm_unit, period, parameters):
-        income = spm_unit("adjusted_gross_income", period)
+        income = add(spm_unit, period, ["adjusted_gross_income"])
         threshold = spm_unit("or_liheap_income_threshold", period)
-        p = parameters(period).gov.states["or"].liheap
+        p = parameters(period).gov.states["or"].liheap.income_range
 
         range1 = threshold * p.range_one
         range2 = threshold * p.range_two
