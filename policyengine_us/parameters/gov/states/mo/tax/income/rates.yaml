@@ -112,8 +112,13 @@ brackets:
       2024-01-01: 0.048 # Reduced by 0.15% per 143.011.3(1)
       # First 0.1% reduction allowed per 143.011.4(1), confirmed in 2025
       # withholding formula. Statutes allow further reductions to 0.046 in 2026
-      # and 0.045 in 2027, but we assume revenue conditions not met until confirmed.
+      # and 0.045 in 2027, but we assume revenue conditions are not met until confirmed.
       2025-01-01: 0.047
+      # We model rates through 2025 based on 143.011: initial 4.95% rate in 2023 
+      # (subsection 2(1)), 0.15% reduction to 4.8% in 2024 (subsection 3(1)), and first 
+      # 0.1% reduction to 4.7% in 2025 (subsection 4(1)). We do not model potential 
+      # further 0.1% reductions allowed in subsection 4 until revenue conditions are 
+      # confirmed met.
 
 metadata:
   reference:
