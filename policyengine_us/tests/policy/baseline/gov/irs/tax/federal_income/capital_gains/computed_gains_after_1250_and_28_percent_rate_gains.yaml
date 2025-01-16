@@ -1,0 +1,43 @@
+- name: has_qdiv_or_ltcg, added_1250_and_28_percent_rate_gains < adjusted_capital_gains_reduced_by_investment_income
+  period: 2019
+  input:
+    unrecaptured_section_1250_gain: 1_000
+    capital_gains_28_percent_rate_gain: 1_000
+    adjusted_capital_gains_reduced_by_investment_income: 3_000
+    computed_dividends_gains_whether_has_gains: 2_000
+    has_qdiv_or_ltcg: true
+  output: # (2000 - min(1000 + 1000, 3000)) * 1
+    computed_gains_after_1250_and_28_percent_rate_gains: 0
+
+- name: has_qdiv_or_ltcg, added_1250_and_28_percent_rate_gains < adjusted_capital_gains_reduced_by_investment_income
+  period: 2019
+  input:
+    unrecaptured_section_1250_gain: 1_000
+    capital_gains_28_percent_rate_gain: 1_000
+    adjusted_capital_gains_reduced_by_investment_income: 1_000
+    computed_dividends_gains_whether_has_gains: 2_000
+    has_qdiv_or_ltcg: true
+  output: # (2000 - min(1000 + 1000, 1000)) * 1
+    computed_gains_after_1250_and_28_percent_rate_gains: 1_000
+
+- name: no has_qdiv_or_ltcg
+  period: 2019
+  input:
+    unrecaptured_section_1250_gain: 1_000
+    capital_gains_28_percent_rate_gain: 1_000
+    adjusted_capital_gains_reduced_by_investment_income: 1_000
+    computed_dividends_gains_whether_has_gains: 2_000
+    has_qdiv_or_ltcg: false
+  output: # (2000 - min(1000 + 1000, 1000)) * 0
+    computed_gains_after_1250_and_28_percent_rate_gains: 0
+
+- name: negative result
+  period: 2019
+  input:
+    unrecaptured_section_1250_gain: 2_000
+    capital_gains_28_percent_rate_gain: 1_000
+    adjusted_capital_gains_reduced_by_investment_income: 4_000
+    computed_dividends_gains_whether_has_gains: 2_000
+    has_qdiv_or_ltcg: true
+  output: # (2000 - min(2000 + 1000, 4000)) * 1
+    computed_gains_after_1250_and_28_percent_rate_gains: -1_000
