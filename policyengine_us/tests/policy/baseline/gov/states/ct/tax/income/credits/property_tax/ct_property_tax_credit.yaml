@@ -8,7 +8,7 @@
   output:
     ct_property_tax_credit: 100
 
-- name: SEPARATE household with $75,000  agi and  $250 property tax and eligible for property tax credit
+- name: SEPARATE household with $75,000 AGI and $250 property tax and eligible for property tax credit
   period: 2021
   input:
     ct_property_tax_credit_eligible: true
@@ -19,7 +19,7 @@
     ct_property_tax_credit: 0
 
 
-- name: SEPARATE household with $45,000  agi and  $250 property tax and eligible for property tax credit - 2022
+- name: SEPARATE household with $45,000 AGI and $250 property tax and eligible for property tax credit - 2022
   period: 2022
   input:
     ct_property_tax_credit_eligible: true
@@ -29,7 +29,7 @@
   output:
     ct_property_tax_credit: 175
 
-- name: SEPARATE household with $45,000  agi and  $250 property tax and eligible for property tax credit - 2021
+- name: SEPARATE household with $45,000 AGI and $250 property tax and eligible for property tax credit - 2021
   period: 2021
   input:
     ct_property_tax_credit_eligible: true
@@ -39,7 +39,7 @@
   output:
     ct_property_tax_credit: 140
 
-- name: SEPARATE household with $45,000  agi and  $250 property tax but not eligible for credit
+- name: SEPARATE household with $45,000 AGI and $250 property tax but not eligible for credit
   period: 2021
   input:
     ct_property_tax_credit_eligible: false
@@ -49,7 +49,7 @@
   output:
     ct_property_tax_credit: 0
 
-- name: HEAD OF HOUSEHOLD with $60,000  agi and  $400 property tax and eligible for property tax credit
+- name: HEAD OF HOUSEHOLD with $60,000 AGI and $400 property tax and eligible for property tax credit
   period: 2021
   input:
     ct_property_tax_credit_eligible: true
@@ -59,7 +59,7 @@
   output:
     ct_property_tax_credit: 170
 
-- name: JOINT household with $130,500  agi and  $500 property tax and eligible for property tax credit
+- name: JOINT household with $130,500 AGI and $500 property tax and eligible for property tax credit
   period: 2021
   input:
     ct_property_tax_credit_eligible: true
@@ -69,17 +69,17 @@
   output:
     ct_property_tax_credit: 20
 
-- name: WIDOW with $90,500  agi and  $320 property tax and not eligible for property tax credit
+- name: SURVIVING_SPOUSE with $90,500 AGI and $320 property tax and not eligible for property tax credit
   period: 2021
   input:
     ct_property_tax_credit_eligible: false
     ct_agi: 90_500
-    filing_status: WIDOW
+    filing_status: SURVIVING_SPOUSE
     real_estate_taxes: 320
   output:
     ct_property_tax_credit: 0
 
-- name: JOINT household with $130,500  agi and  $500 property tax and not eligible for property tax credit
+- name: JOINT household with $130,500 AGI and $500 property tax and not eligible for property tax credit
   period: 2021
   input:
     ct_property_tax_credit_eligible: false
@@ -89,7 +89,7 @@
   output:
     ct_property_tax_credit: 0
 
-- name: JOINT household with $80,500  agi and  $290 property tax and eligible for property tax credit
+- name: JOINT household with $80,500 AGI and $290 property tax and eligible for property tax credit
   period: 2021
   input:
     ct_property_tax_credit_eligible: true
