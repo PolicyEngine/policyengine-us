@@ -14,9 +14,7 @@ class pr_low_income_credit(Variable):
         p = parameters(
             period
         ).gov.territories.pr.tax.income.credits.low_income.amount
-        person = tax_unit.members
-        eligible_person = person(
-            "pr_low_income_credit_eligible_person", period
+        eligible_people = tax_unit(
+            "pr_low_income_credit_eligible_people", period
         )
-        eligible_people = tax_unit.sum(eligible_person)
         return p.base * eligible_people
