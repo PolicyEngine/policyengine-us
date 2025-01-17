@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.176.1] - 2025-01-17 14:54:51
+
+### Fixed
+
+- DC property tax credit reform 5 year forward check.
+
 ## [1.176.0] - 2025-01-17 04:08:48
 
 ### Added
@@ -10594,6 +10600,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.176.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.176.0...1.176.1
 [1.176.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.175.0...1.176.0
 [1.175.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.174.1...1.175.0
 [1.174.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.174.0...1.174.1
