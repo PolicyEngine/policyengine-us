@@ -2,7 +2,8 @@ from policyengine_us.model_api import *
 from policyengine_us.parameters.gov.hhs.medicaid.geography import (
     second_lowest_silver_plan_cost,
 )
-from policyengine_us.parameters.gov.aca import (county_ratings.csv
+from policyengine_us.parameters.gov.hhs.medicaid.geography import (
+    aca_rating_areas,
 )
 class slspc_rating_area(Variable):
     value_type = int
@@ -10,12 +11,12 @@ class slspc_rating_area(Variable):
     label = "Second-lowest ACA silver-plan cost rating area"
     definition_period = YEAR
 
-     def formula(household, period, parameters):
+    def formula(household, period, parameters):
         simulation: Simulation = household.simulation
         
         # Check for existing SLSPC first
         if simulation.get_holder("reported_slspc").get_array(period) is not None:
-            return 0
+            return ("reported_slspc")
         
         # Get county data
         county = household("county_str", period)
@@ -28,7 +29,7 @@ class slspc_rating_area(Variable):
         # Single merge with medicaid_rating_areas
         df_matched = pd.merge(
             df,
-            medicaid_rating_areas,
+            aca_rating_areas,
             how="left",
             left_on="location",
             right_on="location",
