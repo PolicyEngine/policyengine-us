@@ -1,6 +1,8 @@
 - name: Single person, eligible
   period: 2025
+  reforms: policyengine_us.reforms.states.ny.inflation_rebates.ny_2025_inflation_rebates.ny_2025_inflation_rebates
   input:
+    gov.contrib.states.ny.inflation_rebates.in_effect: true
     state_code: NY
     ny_agi: 150_000
     filing_status: SINGLE
@@ -9,7 +11,9 @@
 
 - name: Single person, ineligible
   period: 2025
+  reforms: policyengine_us.reforms.states.ny.inflation_rebates.ny_2025_inflation_rebates.ny_2025_inflation_rebates
   input:
+    gov.contrib.states.ny.inflation_rebates.in_effect: true
     state_code: NY
     ny_agi: 150_001
     filing_status: SINGLE
@@ -18,7 +22,9 @@
 
 - name: Separate person, eligible
   period: 2025
+  reforms: policyengine_us.reforms.states.ny.inflation_rebates.ny_2025_inflation_rebates.ny_2025_inflation_rebates
   input:
+    gov.contrib.states.ny.inflation_rebates.in_effect: true
     state_code: NY
     ny_agi: 150_000
     filing_status: SEPARATE
@@ -27,7 +33,9 @@
 
 - name: Separate person, ineligible
   period: 2025
+  reforms: policyengine_us.reforms.states.ny.inflation_rebates.ny_2025_inflation_rebates.ny_2025_inflation_rebates
   input:
+    gov.contrib.states.ny.inflation_rebates.in_effect: true
     state_code: NY
     ny_agi: 150_001
     filing_status: SEPARATE
@@ -36,7 +44,9 @@
 
 - name: Joint couple, eligible
   period: 2025
+  reforms: policyengine_us.reforms.states.ny.inflation_rebates.ny_2025_inflation_rebates.ny_2025_inflation_rebates
   input:
+    gov.contrib.states.ny.inflation_rebates.in_effect: true
     state_code: NY
     ny_agi: 300_000
     filing_status: JOINT
@@ -45,7 +55,9 @@
 
 - name: Joint couple, ineligible
   period: 2025
+  reforms: policyengine_us.reforms.states.ny.inflation_rebates.ny_2025_inflation_rebates.ny_2025_inflation_rebates
   input:
+    gov.contrib.states.ny.inflation_rebates.in_effect: true
     state_code: NY
     ny_agi: 300_001
     filing_status: JOINT
