@@ -16,6 +16,6 @@ class ma_eaedc_standard_assistance(Variable):
         n = spm_unit("spm_unit_size", period)
         living_arrangement = spm_unit("ma_eaedc_living_arrangement", period)
         p = parameters(period).gov.states.ma.dta.tcap.eaedc.standard_assistance
-        p1 = p.base[living_arrangement]
-        pn = p.increment[living_arrangement]
+        p1 = p.base[living_arrangement] * MONTHS_IN_YEAR
+        pn = p.increment[living_arrangement] * MONTHS_IN_YEAR
         return p1 + pn * (n - 1)

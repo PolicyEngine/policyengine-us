@@ -21,7 +21,7 @@ class ma_eaedc_dependent_care_deduction(Variable):
         eligible_dependent = is_dependent & meets_age_limit
         # Calculate amount for each dependent
         dependent_care_expense_maximum = (
-            p.maximum_expense.calc(age) * eligible_dependent
+            p.maximum_expense.calc(age) * MONTHS_IN_YEAR * eligible_dependent
         )
         # add up the amount for each dependent
         total_capped_amount = spm_unit.sum(dependent_care_expense_maximum)

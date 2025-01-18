@@ -2,7 +2,6 @@
   period: 2022
   input:
     ma_eaedc_assets: 1_500
-    household_vehicles_value: 0 
     state_code: MA
   output:
     ma_eaedc_assets_eligible: true
@@ -11,26 +10,8 @@
   period: 2022
   input:
     ma_eaedc_assets: 2_200
-    household_vehicles_value: 1_000
     state_code: MA
   output:
     ma_eaedc_assets_eligible: false 
 
-- name: Case 3,  below assets limit when assets and vehicle value combined.
-  period: 2022
-  input:
-    ma_eaedc_assets: 1_500
-    household_vehicles_value: 1_700
-    state_code: MA
-  output:
-    ma_eaedc_assets_eligible: true
-
-- name: Case 4,  above assets limit when assets and vehicle value combined.
-  period: 2022
-  input:
-    ma_eaedc_assets: 1_500
-    household_vehicles_value: 2_100
-    state_code: MA
-  output:
-    ma_eaedc_assets_eligible: false 
     

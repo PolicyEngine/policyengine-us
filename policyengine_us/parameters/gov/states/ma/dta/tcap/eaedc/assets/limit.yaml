@@ -2,11 +2,10 @@ description: Massachusetts limits the assets to this amount under the Emergency 
 values:
   2022-01-01: 2_000
 
-metadata:
-  threshold_unit: person 
-  amount_unit: currency-USD
+metadata: 
+  unit: currency-USD
+  period: year
   type: single_amount
-  threshold_period: year
   label: Massachusetts EAEDA assets limit
   reference:
     - title: 106 CMR 704.110 - Asset Limitations

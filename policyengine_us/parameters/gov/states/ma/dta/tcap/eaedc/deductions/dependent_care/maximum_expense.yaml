@@ -8,12 +8,12 @@ brackets:
       2022-01-01: 2
     amount:
       2022-01-01: 200
-  # the legal code said this amount per child 
+  # Legal code provides amount per child per month 
 metadata:
+  type: single_amount
   threshold_unit: year 
   amount_unit: currency-USD
-  type: single_amount
-  threshold_period: year 
+  period: month
   label: Massachusetts EAEDC dependent care expense deduction amount
   reference:
     - title: 106 CMR 704.275 - Dependent Care Deduction (A)

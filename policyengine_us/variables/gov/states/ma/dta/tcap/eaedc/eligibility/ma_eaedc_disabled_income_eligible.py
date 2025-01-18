@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ma_eaedc_disabled_income_eligible(Variable):
     value_type = bool
     entity = SPMUnit
-    label = "Disabled person's income eligible for Massachusetts EAEDC"
+    label = "Disabled person's income eligible for the Massachusetts EAEDC"
     definition_period = YEAR
     defined_for = StateCode.MA
     reference = (

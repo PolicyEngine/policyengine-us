@@ -5,7 +5,7 @@
     spm_unit_size: 1 
     state_code: MA
   output:
-    ma_eaedc_standard_assistance: 401
+    ma_eaedc_standard_assistance: 401*12
 
 - name: Case 2, living arrangement B size of 1.
   period: 2022
@@ -14,7 +14,7 @@
     spm_unit_size: 1
     state_code: MA
   output:
-    ma_eaedc_standard_assistance: 121
+    ma_eaedc_standard_assistance: 121*12
 
 - name: Case 3, living arrangement E size of 1.
   period: 2022
@@ -23,7 +23,7 @@
     spm_unit_size: 1 
     state_code: MA
   output:
-    ma_eaedc_standard_assistance: 72.8
+    ma_eaedc_standard_assistance: 72.8*12
 
 - name: Case 4, living arrangement A size of 2.
   period: 2022
@@ -32,7 +32,7 @@
     spm_unit_size: 2 
     state_code: MA
   output:
-    ma_eaedc_standard_assistance: 522
+    ma_eaedc_standard_assistance: 522*12
 
 - name: Case 5, living arrangement B, size of 2.
   period: 2022
@@ -41,7 +41,7 @@
     spm_unit_size: 2 
     state_code: MA
   output:
-    ma_eaedc_standard_assistance: 242
+    ma_eaedc_standard_assistance: 242*12
 
 - name: Case 6, living arrangement H, size of 2.
   period: 2022
@@ -50,7 +50,7 @@
     spm_unit_size: 2 
     state_code: MA
   output:
-    ma_eaedc_standard_assistance: 348.1
+    ma_eaedc_standard_assistance: 348.1*12
 
 - name: Case 7, living arrangement A size of 5.
   period: 2022
@@ -59,5 +59,5 @@
     spm_unit_size: 5 
     state_code: MA
   output:
-    ma_eaedc_standard_assistance: 885
+    ma_eaedc_standard_assistance: 885*12
   

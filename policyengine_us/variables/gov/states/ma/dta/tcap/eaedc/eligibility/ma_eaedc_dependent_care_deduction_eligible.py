@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ma_eaedc_dependent_care_deduction_eligible(Variable):
     value_type = bool
     entity = SPMUnit
-    label = "Eligible for Massachusetts EAEDC dependent care deduction"
+    label = "Eligible for the Massachusetts EAEDC dependent care deduction"
     definition_period = YEAR
     defined_for = StateCode.MA
     reference = "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-704-275#(B)"

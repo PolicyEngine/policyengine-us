@@ -1,6 +1,7 @@
-description: Massachusetts assign these values as the standard_assistance for households size of 1. 
+description: Massachusetts provides the following standard assistance amount, based on living arrangements under the Emergency Aid to the Elderly Disabled and Children program.
 metadata:
-  unit: /1
+  unit: currency-USD  
+  period: month
   label: Massachusetts EAEDC standard_assistance base
   breakdown:
   - ma_eaedc_living_arrangement 

@@ -8,7 +8,7 @@
       person2:
         age: 5
         is_tax_unit_dependent: true
-        care_expenses: 300
+        care_expenses: 3600
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -21,7 +21,7 @@
         members: [person1, person2]
         state_code: MA  
   output: 
-    ma_eaedc_dependent_care_deduction: 200
+    ma_eaedc_dependent_care_deduction: 2400
 
 - name: Case 2, one child age of 1.
   period: 2022
@@ -33,7 +33,7 @@
       person2:
         age: 1
         is_tax_unit_dependent: true
-        care_expenses: 170
+        care_expenses: 170*12
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -46,7 +46,7 @@
         members: [person1, person2]
         state_code: MA  
   output: 
-    ma_eaedc_dependent_care_deduction: 170
+    ma_eaedc_dependent_care_deduction: 170*12
 
 - name: Case 3, two children age of 1 and 5.
   period: 2022
@@ -58,11 +58,11 @@
       person2:
         age: 1
         is_tax_unit_dependent: true
-        care_expenses: 170
+        care_expenses: 2040
       person3:
         age: 5
         is_tax_unit_dependent: true
-        care_expenses: 230
+        care_expenses: 2760
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
@@ -75,4 +75,4 @@
         members: [person1, person2, person3]
         state_code: MA  
   output: 
-    ma_eaedc_dependent_care_deduction: 375
+    ma_eaedc_dependent_care_deduction: 4500
