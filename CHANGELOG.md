@@ -5,6 +5,38 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.176.2] - 2025-01-18 00:44:16
+
+### Fixed
+
+- DC property tax credit phase-out calculation.
+
+## [1.176.1] - 2025-01-17 14:54:51
+
+### Fixed
+
+- DC property tax credit reform 5 year forward check.
+
+## [1.176.0] - 2025-01-17 04:08:48
+
+### Added
+
+- Puerto Rico low income credit.
+- Puerto Rico compensatory low income credit.
+
+## [1.175.0] - 2025-01-16 21:12:09
+
+### Added
+
+- Missouri 2024 and 2025 top income tax rate.
+- Missouri 2024 working family tax credit match.
+
+## [1.174.1] - 2025-01-16 20:40:42
+
+### Fixed
+
+- Limit CAPI to households with eligible aged or disabled filers.
+
 ## [1.174.0] - 2025-01-15 21:19:28
 
 ### Added
@@ -10574,6 +10606,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.176.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.176.1...1.176.2
+[1.176.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.176.0...1.176.1
+[1.176.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.175.0...1.176.0
+[1.175.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.174.1...1.175.0
+[1.174.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.174.0...1.174.1
 [1.174.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.173.0...1.174.0
 [1.173.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.172.1...1.173.0
 [1.172.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.172.0...1.172.1
