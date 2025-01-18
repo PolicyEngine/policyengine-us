@@ -1,0 +1,20 @@
+description: The IRS sets different expense limits on out-of-pocket health care for filers based on this age threshold under the Chapter 7 Bankruptcy means test.
+brackets:
+  - threshold:
+      2024-01-01: 0
+    amount:
+      2024-01-01: 83
+  - threshold:
+      2024-01-01: 65
+    amount:
+      2024-01-01: 158
+metadata:
+  label: Chapter 7 Bankruptcy out of pocket health care allowance 
+  type: single_amount
+  threshold_unit: year
+  amount_unit: currency-USD
+  period: month
+  reference:
+    - title: National standards -- Out-of-pocket health care
+      href: https://www.irs.gov/businesses/small-businesses-self-employed/national-standards-out-of-pocket-health-care
+    
