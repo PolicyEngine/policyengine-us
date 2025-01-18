@@ -13,18 +13,21 @@ def create_dc_property_tax_credit() -> Reform:
             "https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/52926_D-40_12.21.21_Final_Rev011122.pdf#page=49"
             "https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2022_D-40_Booklet_Final_blk_01_23_23_Ordc.pdf#page=47"
         )
-        defined_for = "dc_ptc_eligible"
+        defined_for = StateCode.DC
 
         def formula(tax_unit, period, parameters):
             p = parameters(period).gov.contrib.states.dc.property_tax
             filing_status = tax_unit("filing_status", period)
             amount = p.amount[filing_status]
+            # Income based eligibility criteria does not apply when the credit
+            # is phased out.
+            eligible = tax_unit("dc_ptc_eligible", period)
             if p.phase_out.applies:
                 income_limit = tax_unit("dc_ptc_income_limit", period)
                 income = tax_unit("adjusted_gross_income", period)
                 income_excess = max_(0, income - income_limit)
                 return max_(0, amount - p.phase_out.rate * income_excess)
-            return amount
+            return amount * eligible
 
     class dc_ptc_eligible(Variable):
         value_type = bool
