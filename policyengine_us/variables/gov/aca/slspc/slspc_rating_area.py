@@ -9,7 +9,7 @@ from policyengine_us.parameters.gov.hhs.medicaid.geography import (
 
 class slspc_rating_area(Variable):
     value_type = int
-    entity = Person
+    entity = Household
     label = "Second-lowest ACA silver-plan cost rating area"
     definition_period = YEAR
 
