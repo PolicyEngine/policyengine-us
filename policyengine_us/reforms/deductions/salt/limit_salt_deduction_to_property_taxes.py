@@ -1,11 +1,14 @@
 from policyengine_us.model_api import *
 from policyengine_core.periods import period as period_
+from policyengine_core.periods import instant
 
 
 def create_limit_salt_deduction_to_property_taxes() -> Reform:
     def modify_parameters(parameters):
-        parameters.gov.states.ut.tax.income.rate.update(
-            period="2023", value=new_tax_rate
+        parameters.gov.irs.deductions.itemized.salt_and_real_estate.sources.update(
+            start=instant("2025-01-01"),
+            stop=instant("2036-12-31"),
+            value=["real_estate_taxes"],
         )
         return parameters
 
