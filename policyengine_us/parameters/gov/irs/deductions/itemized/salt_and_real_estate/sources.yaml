@@ -1,0 +1,13 @@
+description: Alabama subtracts the following credits for the federal tax deduction.
+values:
+  2021-01-01:
+    - state_and_local_sales_or_income_tax
+    - real_estate_taxes
+
+metadata:
+  unit: list
+  period: year
+  label: SALT and real estate tax deduction
+  reference:
+    - title: 26 U.S. Code § 164 - Taxes
+      href: https://www.law.cornell.edu/uscode/text/26/164
