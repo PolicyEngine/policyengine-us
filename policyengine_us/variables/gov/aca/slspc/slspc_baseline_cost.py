@@ -1,5 +1,6 @@
 from policyengine_us.model_api import *
 
+
 class slspc_baseline_base_cost(Variable):
     value_type = float
     entity = Person
