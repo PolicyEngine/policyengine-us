@@ -78,7 +78,6 @@ from .states.ny.inflation_rebates import (
     create_ny_2025_inflation_rebates_reform,
 )
 
-
 from .deductions.salt import (
     create_limit_salt_deduction_to_property_taxes_reform,
 )
