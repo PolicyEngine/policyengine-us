@@ -39,7 +39,5 @@ class slspc_rating_area(Variable):
         return df_matched["rating_area"].fillna(1)
     
 
-# Lets not worry about CA for now 
-# Simplify the csv to two columns: location and value 
-# Add formular, similar to "class medicaid_rating_area(Variable)" 
+
 

@@ -7,10 +7,10 @@ class slspc_age_adjusted_cost(Variable):
     unit = USD
     definition_period = MONTH
 
-    def formula(household, period, parameters):
-        state = household("state_code", period).decode_to_str()
-        age = household("age", period)
-        base_cost = household("slspc_baseline_cost_at_age_0", period)
+    def formula(person, period, parameters):
+        state = person.household("state_code_str", period)
+        age = person("monthly_age", period)
+        base_cost = person.household("slspc_baseline_cost_at_age_0", period)
 
         # Get age curve based on state
         special_states = ["district_of_columbia", "alabama", "massachusetts", 

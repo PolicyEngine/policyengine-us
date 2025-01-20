@@ -1,9 +1,10 @@
 from policyengine_us.model_api import *
 
-class slspc_baseline_cost_at_age_0(Variable):
+class slspc_baseline_base_cost(Variable):
     value_type = float
     entity = Household
-    label = "Second-lowest ACA silver-plan cost at age 0"
+    label = "Second-lowest ACA silver-plan base cost"
+    documentation = "Second-lowest ACA silver-plan cost at age 0"
     unit = USD
     definition_period = MONTH
 
