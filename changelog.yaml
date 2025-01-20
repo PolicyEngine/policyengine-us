@@ -8954,3 +8954,23 @@
     - Puerto Rico low income credit.
     - Puerto Rico compensatory low income credit.
   date: 2025-01-17 04:08:48
+- bump: patch
+  changes:
+    fixed:
+    - DC property tax credit reform 5 year forward check.
+  date: 2025-01-17 14:54:51
+- bump: patch
+  changes:
+    fixed:
+    - DC property tax credit phase-out calculation.
+  date: 2025-01-18 00:44:16
+- bump: patch
+  changes:
+    fixed:
+    - Apply the 5 year forward check to the SALT phase out reform.
+  date: 2025-01-20 05:43:12
+- bump: minor
+  changes:
+    added:
+    - Limit the SALT deduction to property taxes reform.
+  date: 2025-01-20 15:53:06

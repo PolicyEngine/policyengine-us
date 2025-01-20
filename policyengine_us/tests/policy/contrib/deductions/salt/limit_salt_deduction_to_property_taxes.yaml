@@ -1,0 +1,41 @@
+- name: Reform active
+  period: 2025
+  reforms: policyengine_us.reforms.deductions.salt.limit_salt_deduction_to_property_taxes.limit_salt_deduction_to_property_taxes
+  input:
+    gov.contrib.deductions.salt.limit_salt_deduction_to_property_taxes: true
+    real_estate_taxes: 5_000
+    state_and_local_sales_or_income_tax: 6_000
+    filing_status: JOINT
+  output:
+    salt_deduction: 5_000
+
+- name: Baseline test
+  period: 2025
+  input:
+    gov.contrib.deductions.salt.limit_salt_deduction_to_property_taxes: false
+    real_estate_taxes: 5_000
+    state_and_local_sales_or_income_tax: 6_000
+    filing_status: JOINT
+  output:
+    salt_deduction: 10_000
+
+- name: 2026 reform test
+  period: 2026
+  reforms: policyengine_us.reforms.deductions.salt.limit_salt_deduction_to_property_taxes.limit_salt_deduction_to_property_taxes
+  input:
+    gov.contrib.deductions.salt.limit_salt_deduction_to_property_taxes: true
+    real_estate_taxes: 5_000
+    state_and_local_sales_or_income_tax: 6_000
+    filing_status: JOINT
+  output:
+    salt_deduction: 5_000
+
+- name: 2026 baseline test
+  period: 2026
+  input:
+    gov.contrib.deductions.salt.limit_salt_deduction_to_property_taxes: false
+    real_estate_taxes: 5_000
+    state_and_local_sales_or_income_tax: 6_000
+    filing_status: JOINT
+  output:
+    salt_deduction: 11_000

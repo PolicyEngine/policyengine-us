@@ -79,6 +79,10 @@ from .states.ny.inflation_rebates import (
 )
 
 
+from .deductions.salt import (
+    create_limit_salt_deduction_to_property_taxes_reform,
+)
+
 from policyengine_core.reforms import Reform
 import warnings
 
@@ -172,6 +176,11 @@ def create_structural_reforms_from_parameters(parameters, period):
     )
     ny_2025_inflation_rebates = create_ny_2025_inflation_rebates_reform(
         parameters, period
+        ) 
+    limit_salt_deduction_to_property_taxes = (
+        create_limit_salt_deduction_to_property_taxes_reform(
+            parameters, period
+        )
     )
 
     reforms = [
@@ -209,6 +218,8 @@ def create_structural_reforms_from_parameters(parameters, period):
         abolish_snap_net_income_test,
         dc_property_tax_credit,
         ny_2025_inflation_rebates,
+        limit_salt_deduction_to_property_taxes,
+
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
 
