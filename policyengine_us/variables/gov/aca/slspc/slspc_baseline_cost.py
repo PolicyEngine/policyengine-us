@@ -2,16 +2,16 @@ from policyengine_us.model_api import *
 
 class slspc_baseline_base_cost(Variable):
     value_type = float
-    entity = Household
+    entity = Person
     label = "Second-lowest ACA silver-plan base cost"
     documentation = "Second-lowest ACA silver-plan cost at age 0"
     unit = USD
     definition_period = MONTH
 
-    def formula(household, period, parameters):
+    def formula(Person, period, parameters):
         # Get state code and rating area
-        state_code = household("state_code", period)
-        rating_area = household("slspc_rating_area", period)
+        state_code = Person("state_code", period)
+        rating_area = Person("slspc_rating_area", period)
 
         # Access the baseline costs from parameters
         baseline_costs = parameters.gov.aca.state_ratingarea_cost

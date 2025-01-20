@@ -1,8 +1,8 @@
 from policyengine_us.model_api import *
 
-class slspc_age_adjusted_cost(Variable):
+class slspc_age_adjusted_cost_person(Variable):
     value_type = float
-    entity = Household
+    entity = Person
     label = "Second-lowest ACA silver-plan cost adjusted for age"
     unit = USD
     definition_period = MONTH

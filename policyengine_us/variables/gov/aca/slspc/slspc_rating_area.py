@@ -7,19 +7,19 @@ from policyengine_us.parameters.gov.hhs.medicaid.geography import (
 )
 class slspc_rating_area(Variable):
     value_type = int
-    entity = Household
+    entity = Person
     label = "Second-lowest ACA silver-plan cost rating area"
     definition_period = YEAR
 
-    def formula(household, period, parameters):
-        simulation: Simulation = household.simulation
+    def formula(Person, period, parameters):
+        simulation: Simulation = Person.simulation
         
         # Check for existing SLSPC first
         if simulation.get_holder("reported_slspc").get_array(period) is not None:
             return ("reported_slspc")
         
         # Get county data
-        county = household("county_str", period)
+        county = Person("county_str", period)
         
         # Create DataFrame with county information
         df = pd.DataFrame({
