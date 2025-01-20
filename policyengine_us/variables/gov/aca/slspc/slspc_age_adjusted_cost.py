@@ -1,3 +1,6 @@
+from policyengine_us.model_api import *
+
+
 class slspc_age_adjusted_cost_person(Variable):
     value_type = float
     entity = Person
