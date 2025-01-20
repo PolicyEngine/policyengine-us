@@ -1,0 +1,184 @@
+- name: No elderly head or spouse present
+  period: 2025
+  reforms: policyengine_us.reforms.states.dc.property_tax.dc_property_tax_reform.dc_property_tax_credit
+  input:
+    gov.contrib.states.dc.property_tax.in_effect: true
+    state_code: DC
+    age_head: 69
+    age_spouse: 69
+  output:
+    dc_ptc_elderly_head_or_spouse_present: false
+
+- name: One elderly head present
+  period: 2025
+  reforms: policyengine_us.reforms.states.dc.property_tax.dc_property_tax_reform.dc_property_tax_credit
+  input:
+    gov.contrib.states.dc.property_tax.in_effect: true
+    state_code: DC
+    age_head: 70
+    age_spouse: 69
+  output:
+    dc_ptc_elderly_head_or_spouse_present: true
+
+- name: One elderly spouse present
+  period: 2025
+  reforms: policyengine_us.reforms.states.dc.property_tax.dc_property_tax_reform.dc_property_tax_credit
+  input:
+    gov.contrib.states.dc.property_tax.in_effect: true
+    state_code: DC
+    age_head: 69
+    age_spouse: 70
+  output:
+    dc_ptc_elderly_head_or_spouse_present: true
+
+- name: Single non elderly filer
+  period: 2025
+  reforms: policyengine_us.reforms.states.dc.property_tax.dc_property_tax_reform.dc_property_tax_credit
+  input:
+    gov.contrib.states.dc.property_tax.in_effect: true
+    state_code: DC
+    dc_ptc_elderly_head_or_spouse_present: false
+    filing_status: SINGLE
+  output:
+    dc_ptc_income_limit: 65_600
+
+- name: Single elderly joint filers
+  period: 2025
+  reforms: policyengine_us.reforms.states.dc.property_tax.dc_property_tax_reform.dc_property_tax_credit
+  input:
+    gov.contrib.states.dc.property_tax.in_effect: true
+    state_code: DC
+    dc_ptc_elderly_head_or_spouse_present: true
+    filing_status: JOINT
+  output:
+    dc_ptc_income_limit: 89_400
+
+- name: Eligible unit
+  period: 2025
+  reforms: policyengine_us.reforms.states.dc.property_tax.dc_property_tax_reform.dc_property_tax_credit
+  input:
+    gov.contrib.states.dc.property_tax.in_effect: true
+    state_code: DC
+    adjusted_gross_income: 89_400
+    dc_ptc_income_limit: 89_400
+  output:
+    dc_ptc_eligible: true
+
+- name: Ineligible unit
+  period: 2025
+  reforms: policyengine_us.reforms.states.dc.property_tax.dc_property_tax_reform.dc_property_tax_credit
+  input:
+    gov.contrib.states.dc.property_tax.in_effect: true
+    state_code: DC
+    adjusted_gross_income: 89_401
+    dc_ptc_income_limit: 89_400
+  output:
+    dc_ptc_eligible: false
+
+- name: Eligible single filer, no phase-out
+  period: 2025
+  reforms: policyengine_us.reforms.states.dc.property_tax.dc_property_tax_reform.dc_property_tax_credit
+  input:
+    gov.contrib.states.dc.property_tax.in_effect: true
+    dc_ptc_eligible: true
+    filing_status: SINGLE
+    dc_ptc_income_limit: 65_600
+    adjusted_gross_income: 70_000
+    state_code: DC
+  output:
+    dc_ptc: 1_400
+
+- name: Income above limit - integration test
+  period: 2025
+  reforms: policyengine_us.reforms.states.dc.property_tax.dc_property_tax_reform.dc_property_tax_credit
+  input:
+    gov.contrib.states.dc.property_tax.in_effect: true
+    state_code: DC
+    age_head: 69
+    age_spouse: 69
+    filing_status: SINGLE
+    adjusted_gross_income: 70_000
+  output:
+    dc_ptc: 0
+
+- name: Income below limit, elderly head present - integration test
+  period: 2025
+  reforms: policyengine_us.reforms.states.dc.property_tax.dc_property_tax_reform.dc_property_tax_credit
+  input:
+    gov.contrib.states.dc.property_tax.in_effect: true
+    state_code: DC
+    age_head: 70
+    age_spouse: 69
+    filing_status: SINGLE
+    adjusted_gross_income: 70_000
+  output:
+    dc_ptc: 1_400
+
+- name: Income above limit, elderly head present - integration test
+  period: 2025
+  reforms: policyengine_us.reforms.states.dc.property_tax.dc_property_tax_reform.dc_property_tax_credit
+  input:
+    gov.contrib.states.dc.property_tax.in_effect: true
+    state_code: DC
+    age_head: 70
+    age_spouse: 69
+    filing_status: SINGLE
+    adjusted_gross_income: 90_000
+  output:
+    dc_ptc: 0
+
+- name: Eligible single filer, partial phase-out
+  period: 2025
+  reforms: policyengine_us.reforms.states.dc.property_tax.dc_property_tax_reform.dc_property_tax_credit
+  input:
+    gov.contrib.states.dc.property_tax.in_effect: true
+    gov.contrib.states.dc.property_tax.phase_out.applies: true
+    dc_ptc_eligible: true
+    filing_status: SINGLE
+    dc_ptc_income_limit: 65_600
+    adjusted_gross_income: 70_000
+    state_code: DC
+  output:
+    dc_ptc: 960
+
+- name: Eligible single filer, full phase-out
+  period: 2025
+  reforms: policyengine_us.reforms.states.dc.property_tax.dc_property_tax_reform.dc_property_tax_credit
+  input:
+    gov.contrib.states.dc.property_tax.in_effect: true
+    gov.contrib.states.dc.property_tax.phase_out.applies: true
+    dc_ptc_eligible: true
+    filing_status: SINGLE
+    dc_ptc_income_limit: 65_600
+    adjusted_gross_income: 80_000
+    state_code: DC
+  output:
+    dc_ptc: 0
+
+- name: Eligible single filer, under phase-out limit
+  period: 2025
+  reforms: policyengine_us.reforms.states.dc.property_tax.dc_property_tax_reform.dc_property_tax_credit
+  input:
+    gov.contrib.states.dc.property_tax.in_effect: true
+    gov.contrib.states.dc.property_tax.phase_out.applies: true
+    dc_ptc_eligible: true
+    filing_status: SINGLE
+    dc_ptc_income_limit: 65_600
+    adjusted_gross_income: 60_000
+    state_code: DC
+  output:
+    dc_ptc: 1_400
+
+- name: Integration test with phase-out limit
+  period: 2025
+  reforms: policyengine_us.reforms.states.dc.property_tax.dc_property_tax_reform.dc_property_tax_credit
+  input:
+    gov.contrib.states.dc.property_tax.in_effect: true
+    gov.contrib.states.dc.property_tax.phase_out.applies: true
+    dc_ptc_eligible: true
+    filing_status: SINGLE
+    employment_income: 68_000
+    state_code: DC
+  output:
+    dc_ptc_income_limit: 65_600
+    dc_ptc: 1_160

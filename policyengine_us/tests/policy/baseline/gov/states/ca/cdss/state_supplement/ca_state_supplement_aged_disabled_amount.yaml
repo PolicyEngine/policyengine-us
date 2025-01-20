@@ -1,0 +1,70 @@
+- name: Single aged parent, blind
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 68
+        is_tax_unit_head: true
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_is_married: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    ca_state_supplement_aged_disabled_amount: 7_560
+
+- name: Married couple, aged and disabled
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 68
+        is_tax_unit_head: true
+      person2:
+        age: 64
+        is_tax_unit_spouse: true
+        is_disabled: true
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+        is_blind: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_is_married: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+  output:
+    ca_state_supplement_aged_disabled_amount: 14_004
+
+- name: Married couple, only one aged and disabled
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 68
+        is_tax_unit_head: true
+      person2:
+        age: 64
+        is_tax_unit_spouse: true
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_is_married: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+  output:
+    ca_state_supplement_aged_disabled_amount: 7_560
