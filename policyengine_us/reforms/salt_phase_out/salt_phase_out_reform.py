@@ -13,14 +13,14 @@ def create_salt_phase_out() -> Reform:
         reference = "https://www.law.cornell.edu/uscode/text/26/164"
 
         def formula(tax_unit, period, parameters):
-            salt_amount = add(
-                tax_unit,
-                period,
-                ["state_and_local_sales_or_income_tax", "real_estate_taxes"],
-            )
             p = parameters(
                 period
             ).gov.irs.deductions.itemized.salt_and_real_estate
+            salt_amount = add(
+                tax_unit,
+                period,
+                p.sources,
+            )
             filing_status = tax_unit("filing_status", period)
             cap = p.cap[filing_status]
             p_ref = parameters(period).gov.contrib.salt_phase_out

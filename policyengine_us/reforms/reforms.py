@@ -75,6 +75,10 @@ from .snap import (
 from .states.dc.property_tax import create_dc_property_tax_credit_reform
 
 
+from .deductions.salt import (
+    create_limit_salt_deduction_to_property_taxes_reform,
+)
+
 from policyengine_core.reforms import Reform
 import warnings
 
@@ -166,6 +170,11 @@ def create_structural_reforms_from_parameters(parameters, period):
     dc_property_tax_credit = create_dc_property_tax_credit_reform(
         parameters, period
     )
+    limit_salt_deduction_to_property_taxes = (
+        create_limit_salt_deduction_to_property_taxes_reform(
+            parameters, period
+        )
+    )
 
     reforms = [
         afa_reform,
@@ -201,6 +210,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         abolish_snap_deductions,
         abolish_snap_net_income_test,
         dc_property_tax_credit,
+        limit_salt_deduction_to_property_taxes,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
 
