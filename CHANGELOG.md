@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.177.0] - 2025-01-20 15:53:06
+
+### Added
+
+- Limit the SALT deduction to property taxes reform.
+
 ## [1.176.3] - 2025-01-20 05:43:12
 
 ### Fixed
@@ -10612,6 +10618,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.177.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.176.3...1.177.0
 [1.176.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.176.2...1.176.3
 [1.176.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.176.1...1.176.2
 [1.176.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.176.0...1.176.1
