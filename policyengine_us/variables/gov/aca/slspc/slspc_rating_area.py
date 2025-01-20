@@ -13,7 +13,7 @@ class slspc_rating_area(Variable):
     label = "Second-lowest ACA silver-plan cost rating area"
     definition_period = YEAR
 
-    def formula(Person, period, parameters):
+    def formula(household, period, parameters):
         simulation: Simulation = Person.simulation
 
         # Check for existing SLSPC first
