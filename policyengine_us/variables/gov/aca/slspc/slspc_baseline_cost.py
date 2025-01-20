@@ -9,7 +9,7 @@ class slspc_baseline_base_cost(Variable):
     unit = USD
     definition_period = MONTH
 
-    def formula(Person, period, parameters):
+    def formula(person, period, parameters):
         # Get state code and rating area
         state_code = Person("state_code", period)
         rating_area = Person("slspc_rating_area", period)
