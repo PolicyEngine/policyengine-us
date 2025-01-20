@@ -176,7 +176,7 @@ def create_structural_reforms_from_parameters(parameters, period):
     )
     ny_2025_inflation_rebates = create_ny_2025_inflation_rebates_reform(
         parameters, period
-        ) 
+    ) 
     limit_salt_deduction_to_property_taxes = (
         create_limit_salt_deduction_to_property_taxes_reform(
             parameters, period
