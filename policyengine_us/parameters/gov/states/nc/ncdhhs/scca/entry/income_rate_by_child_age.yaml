@@ -1,0 +1,20 @@
+description: North Carolina Subsidized Child Care Assistance program's maximum initial income limits differ depending on the age of the child
+metadata:
+  type: single_amount
+  threshold_unit: hours
+  amount_unit: /1
+  label: North Carolina Subsidized Child Care Assistance program income limits by child age
+  reference:
+    - title: Child Care and Development Fund (CCDF) Plan for State/Territory North Carolina FFY 2022 – 24 | Amendment 1
+      href: https://ncchildcare.ncdhhs.gov/Portals/0/documents/pdf/A/ACF-118_CCDF_FFY_2022-2024_For_North_Carolina_Amendment_1.pdf?ver=C9YfIUPAFekeBA3I1mN8aA%3d%3d#page=86
+
+# 0-5: 200% fpl, 6-12: 133% fpl
+brackets:
+  - threshold:
+      2022-10-01: 0
+    amount:
+      2022-10-01: 2
+  - threshold:
+      2022-10-01: 6
+    amount:
+      2022-10-01: 1.33
