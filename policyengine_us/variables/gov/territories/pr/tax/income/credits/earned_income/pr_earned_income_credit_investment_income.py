@@ -1,9 +1,9 @@
 from policyengine_us.model_api import *
 
-class pr_earned_income_credit_eligible(Variable):
-    value_type = bool
+class pr_earned_income_credit_investment_income(Variable):
+    value_type = float
     entity = Person
-    label = "Eligible person for Puerto Rico earned income credit"
+    label = "Puerto Rico earned income credit investment income"
     definition_period = YEAR
     reference = "https://casetext.com/statute/laws-of-puerto-rico/title-thirteen-taxation-and-finance/subtitle-17-internal-revenue-code-of-2011/part-ii-income-taxes/chapter-1007-credits-against-tax/subchapter-b-refundable-credits/30211-earned-income-credit"
 
@@ -11,7 +11,6 @@ class pr_earned_income_credit_eligible(Variable):
         p = parameters(
             period
         ).gov.territories.pr.tax.income.credits.earned_income
-        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        investment_income = person("pr_earned_income_credit_investment_income", period)
-        investment_income_amount_under_limit = investment_income < p.max_investment_income 
-        return head_or_spouse & investment_income_amount_under_limit 
+        # sum up all defined categories for investment income
+        adds = "gov.territories.pr.tax.income.credits.earned_income.ineligible_income_categories"
+        return adds

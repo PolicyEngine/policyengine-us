@@ -1,0 +1,23 @@
+- name: Dependent
+  period: 2024
+  input:
+    is_tax_unit_head_or_spouse: true
+    pr_earned_income_credit_investment_income: 2_000
+  output:
+    pr_earned_income_credit_eligible: false
+
+- name: Investment income over the limit
+  period: 2024
+  input:
+    is_tax_unit_head_or_spouse: false
+    pr_earned_income_credit_investment_income: 2_201
+  output:
+    pr_earned_income_credit_eligible: false
+
+- name: Eligible person
+  period: 2024
+  input:
+    is_tax_unit_head_or_spouse: true
+    pr_earned_income_credit_investment_income: 2_200
+  output:
+    pr_earned_income_credit_eligible: true

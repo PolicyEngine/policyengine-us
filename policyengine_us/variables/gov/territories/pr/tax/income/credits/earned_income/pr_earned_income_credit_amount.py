@@ -1,12 +1,12 @@
 from policyengine_us.model_api import *
 
-class pr_low_income_credit(Variable):
+class pr_earned_income_credit_amount(Variable):
     value_type = float
     entity = Person
-    label = "Puerto Rico earned income credit"
+    label = "Puerto Rico earned income credit amount"
     unit = USD
     definition_period = YEAR
-    reference = ""
+    reference = "https://casetext.com/statute/laws-of-puerto-rico/title-thirteen-taxation-and-finance/subtitle-17-internal-revenue-code-of-2011/part-ii-income-taxes/chapter-1007-credits-against-tax/subchapter-b-refundable-credits/30211-earned-income-credit"
     defined_for = "pr_earned_income_credit_eligible"
 
     def formula(tax_unit, period, parameters):
@@ -14,21 +14,9 @@ class pr_low_income_credit(Variable):
             period
         ).gov.territories.pr.tax.income.credits.earned_income
 
-        # workflow:
-        # Calculate credit amount pre phase out
-        # Income * phase_in_rate capped at max_credit
-        # Calculate the phase_out
-        # p.phase_out_rate.calc(income)
-        # Calculate final value
-        # credit - phase_out
-        earned_gross_income = 10_000 # PLACEHOLDER for earned gross income, person level
+        gross_income = person("pr_gross_income_person", period)
+        # if in the lower bracket: gross_income * rate. if higher, use max credit
+        phase_in = min(gross_income * p.phase_in_rate, p.max_amount)  
+        phase_out = p.phase_out_rate.calc(gross_income)
 
-        # calculate phase in 
-        # what does p.phase_out_amount.threshold return? which threshold? 
-        upper_threshold = p.phase_out_amount.threshold[] 
-        # if gross income > upper threshold, calculate [bottom threshold * phase_in] - [(upper - bottom threshold) * phase_out]
-        # if gross income > lower threshold, calculate [bottom threshold (i.e. 10k) * phase_in] - [(income - bottom threshold) * phase_out]
-        # ELSE, calculate income * phase_in_rate
-
-        
-        return False
+        return phase_in - phase_out
