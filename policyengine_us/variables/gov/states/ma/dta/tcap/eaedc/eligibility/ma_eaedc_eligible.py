@@ -9,7 +9,7 @@ class ma_eaedc_eligible(Variable):
     defined_for = StateCode.MA
 
     def formula(spm_unit, period, parameters):
-        assets_eligible = spm_unit("ma_eaedc_assets_eligible", period)
+        assets_eligible = spm_unit("ma_eaedc_assets_limit_eligible", period)
         financially_eligible = spm_unit(
             "ma_eaedc_financially_eligible", period
         )
