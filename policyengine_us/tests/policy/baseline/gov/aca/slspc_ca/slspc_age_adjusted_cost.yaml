@@ -55,11 +55,10 @@
 
 - name: slspc_age_adjusted_cost_person unit test 6 West Virginia senior
   period: 2023-01
+  absolute_error_margin: 0.1
   input:
     state_code_str: WV
     monthly_age: 62
     slspc_baseline_cost: 561
   output:
-    slspc_age_adjusted_cost_person:
-      value: 2106.89
-      absolute_error_margin: 0.1
+    slspc_age_adjusted_cost_person: 2_106.89
