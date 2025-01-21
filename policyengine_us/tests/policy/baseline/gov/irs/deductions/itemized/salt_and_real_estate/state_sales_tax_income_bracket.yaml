@@ -1,6 +1,13 @@
 - name: Normal income case
   period: 2023
   input:
+    total_income_tax: 10_000
+  output:
+    state_sales_tax_income_bracket: ONE
+
+- name: Normal income case 2
+  period: 2023
+  input:
     total_income_tax: 45_000
   output:
     state_sales_tax_income_bracket: FOUR
