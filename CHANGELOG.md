@@ -5,6 +5,105 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.177.0] - 2025-01-20 15:53:06
+
+### Added
+
+- Limit the SALT deduction to property taxes reform.
+
+## [1.176.3] - 2025-01-20 05:43:12
+
+### Fixed
+
+- Apply the 5 year forward check to the SALT phase out reform.
+
+## [1.176.2] - 2025-01-18 00:44:16
+
+### Fixed
+
+- DC property tax credit phase-out calculation.
+
+## [1.176.1] - 2025-01-17 14:54:51
+
+### Fixed
+
+- DC property tax credit reform 5 year forward check.
+
+## [1.176.0] - 2025-01-17 04:08:48
+
+### Added
+
+- Puerto Rico low income credit.
+- Puerto Rico compensatory low income credit.
+
+## [1.175.0] - 2025-01-16 21:12:09
+
+### Added
+
+- Missouri 2024 and 2025 top income tax rate.
+- Missouri 2024 working family tax credit match.
+
+## [1.174.1] - 2025-01-16 20:40:42
+
+### Fixed
+
+- Limit CAPI to households with eligible aged or disabled filers.
+
+## [1.174.0] - 2025-01-15 21:19:28
+
+### Added
+
+- Colorado income tax rate 2024.
+
+## [1.173.0] - 2025-01-13 19:10:03
+
+### Added
+
+- References for New Jersey 2024 state income tax.
+
+## [1.172.1] - 2025-01-13 17:48:43
+
+### Fixed
+
+- 2024 Connecticut income tax rates for HOH and surviving spouses.
+
+## [1.172.0] - 2025-01-13 01:59:31
+
+### Added
+
+- DC property tax credit reform.
+
+## [1.171.0] - 2025-01-10 11:34:59
+
+### Added
+
+- DC property tax credit take up.
+
+## [1.170.2] - 2025-01-10 05:35:35
+
+### Fixed
+
+- Only apply the Virginia rebate to the 2023 tax year.
+
+## [1.170.1] - 2025-01-09 21:40:41
+
+### Added
+
+- Montana top income tax rate 2024.
+
+## [1.170.0] - 2025-01-09 16:55:35
+
+### Added
+
+- 2024 DC keep child care affordable tax credit max benefit and thresholds.
+- DC EITC match delay to 2029.
+
+## [1.169.0] - 2025-01-08 23:32:39
+
+### Added
+
+- State-level variables in taxsim.
+
 ## [1.168.1] - 2025-01-06 18:47:40
 
 ### Fixed
@@ -10519,6 +10618,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.177.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.176.3...1.177.0
+[1.176.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.176.2...1.176.3
+[1.176.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.176.1...1.176.2
+[1.176.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.176.0...1.176.1
+[1.176.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.175.0...1.176.0
+[1.175.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.174.1...1.175.0
+[1.174.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.174.0...1.174.1
+[1.174.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.173.0...1.174.0
+[1.173.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.172.1...1.173.0
+[1.172.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.172.0...1.172.1
+[1.172.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.171.0...1.172.0
+[1.171.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.170.2...1.171.0
+[1.170.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.170.1...1.170.2
+[1.170.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.170.0...1.170.1
+[1.170.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.169.0...1.170.0
+[1.169.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.168.1...1.169.0
 [1.168.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.168.0...1.168.1
 [1.168.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.167.2...1.168.0
 [1.167.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.167.1...1.167.2

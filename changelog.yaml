@@ -8891,3 +8891,86 @@
     fixed:
     - NYC income tax rates.
   date: 2025-01-06 18:47:40
+- bump: minor
+  changes:
+    added:
+    - State-level variables in taxsim.
+  date: 2025-01-08 23:32:39
+- bump: minor
+  changes:
+    added:
+    - 2024 DC keep child care affordable tax credit max benefit and thresholds.
+    - DC EITC match delay to 2029.
+  date: 2025-01-09 16:55:35
+- bump: patch
+  changes:
+    added:
+    - Montana top income tax rate 2024.
+  date: 2025-01-09 21:40:41
+- bump: patch
+  changes:
+    fixed:
+    - Only apply the Virginia rebate to the 2023 tax year.
+  date: 2025-01-10 05:35:35
+- bump: minor
+  changes:
+    added:
+    - DC property tax credit take up.
+  date: 2025-01-10 11:34:59
+- bump: minor
+  changes:
+    added:
+    - DC property tax credit reform.
+  date: 2025-01-13 01:59:31
+- bump: patch
+  changes:
+    fixed:
+    - 2024 Connecticut income tax rates for HOH and surviving spouses.
+  date: 2025-01-13 17:48:43
+- bump: minor
+  changes:
+    added:
+    - References for New Jersey 2024 state income tax.
+  date: 2025-01-13 19:10:03
+- bump: minor
+  changes:
+    added:
+    - Colorado income tax rate 2024.
+  date: 2025-01-15 21:19:28
+- bump: patch
+  changes:
+    fixed:
+    - Limit CAPI to households with eligible aged or disabled filers.
+  date: 2025-01-16 20:40:42
+- bump: minor
+  changes:
+    added:
+    - Missouri 2024 and 2025 top income tax rate.
+    - Missouri 2024 working family tax credit match.
+  date: 2025-01-16 21:12:09
+- bump: minor
+  changes:
+    added:
+    - Puerto Rico low income credit.
+    - Puerto Rico compensatory low income credit.
+  date: 2025-01-17 04:08:48
+- bump: patch
+  changes:
+    fixed:
+    - DC property tax credit reform 5 year forward check.
+  date: 2025-01-17 14:54:51
+- bump: patch
+  changes:
+    fixed:
+    - DC property tax credit phase-out calculation.
+  date: 2025-01-18 00:44:16
+- bump: patch
+  changes:
+    fixed:
+    - Apply the 5 year forward check to the SALT phase out reform.
+  date: 2025-01-20 05:43:12
+- bump: minor
+  changes:
+    added:
+    - Limit the SALT deduction to property taxes reform.
+  date: 2025-01-20 15:53:06
