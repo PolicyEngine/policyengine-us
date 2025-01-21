@@ -5,6 +5,259 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.179.0] - 2025-01-21 05:05:10
+
+### Added
+
+- 2025 New York Inflation Rebates.
+
+## [1.178.0] - 2025-01-21 04:58:51
+
+### Added
+
+- Maryland standard deduction values 2024.
+
+## [1.177.0] - 2025-01-20 15:53:06
+
+### Added
+
+- Limit the SALT deduction to property taxes reform.
+
+## [1.176.3] - 2025-01-20 05:43:12
+
+### Fixed
+
+- Apply the 5 year forward check to the SALT phase out reform.
+
+## [1.176.2] - 2025-01-18 00:44:16
+
+### Fixed
+
+- DC property tax credit phase-out calculation.
+
+## [1.176.1] - 2025-01-17 14:54:51
+
+### Fixed
+
+- DC property tax credit reform 5 year forward check.
+
+## [1.176.0] - 2025-01-17 04:08:48
+
+### Added
+
+- Puerto Rico low income credit.
+- Puerto Rico compensatory low income credit.
+
+## [1.175.0] - 2025-01-16 21:12:09
+
+### Added
+
+- Missouri 2024 and 2025 top income tax rate.
+- Missouri 2024 working family tax credit match.
+
+## [1.174.1] - 2025-01-16 20:40:42
+
+### Fixed
+
+- Limit CAPI to households with eligible aged or disabled filers.
+
+## [1.174.0] - 2025-01-15 21:19:28
+
+### Added
+
+- Colorado income tax rate 2024.
+
+## [1.173.0] - 2025-01-13 19:10:03
+
+### Added
+
+- References for New Jersey 2024 state income tax.
+
+## [1.172.1] - 2025-01-13 17:48:43
+
+### Fixed
+
+- 2024 Connecticut income tax rates for HOH and surviving spouses.
+
+## [1.172.0] - 2025-01-13 01:59:31
+
+### Added
+
+- DC property tax credit reform.
+
+## [1.171.0] - 2025-01-10 11:34:59
+
+### Added
+
+- DC property tax credit take up.
+
+## [1.170.2] - 2025-01-10 05:35:35
+
+### Fixed
+
+- Only apply the Virginia rebate to the 2023 tax year.
+
+## [1.170.1] - 2025-01-09 21:40:41
+
+### Added
+
+- Montana top income tax rate 2024.
+
+## [1.170.0] - 2025-01-09 16:55:35
+
+### Added
+
+- 2024 DC keep child care affordable tax credit max benefit and thresholds.
+- DC EITC match delay to 2029.
+
+## [1.169.0] - 2025-01-08 23:32:39
+
+### Added
+
+- State-level variables in taxsim.
+
+## [1.168.1] - 2025-01-06 18:47:40
+
+### Fixed
+
+- NYC income tax rates.
+
+## [1.168.0] - 2025-01-06 15:50:44
+
+### Added
+
+- New Jersey medical expense deduction.
+
+## [1.167.2] - 2025-01-06 05:03:19
+
+### Fixed
+
+- Uncap New York real estate tax deduction.
+- Cap New York college tuition expenses credit and deduction per student.
+
+## [1.167.1] - 2025-01-03 16:28:36
+
+### Fixed
+
+- Iowa alternate tax eligibility.
+
+## [1.167.0] - 2024-12-28 02:48:55
+
+### Added
+
+- 2024 DC property tax credit maximum benefit and thresholds
+
+## [1.166.0] - 2024-12-27 21:44:15
+
+### Added
+
+- Abolish SNAP net income test reform.
+- Abolish SNAP deductions reform.
+
+## [1.165.0] - 2024-12-26 12:59:32
+
+### Added
+
+- SSI qualified non-citizen eligibility.
+
+## [1.164.0] - 2024-12-24 21:20:18
+
+### Added
+
+- Expanded CTC reform including a reformed phase-in structure.
+
+## [1.163.1] - 2024-12-24 18:42:26
+
+### Fixed
+
+- Illinois income tax before non-refundable credits variable format.
+
+## [1.163.0] - 2024-12-24 15:53:04
+
+### Added
+
+- 2026 Estate Tax Credit Exemption amount.
+
+## [1.162.3] - 2024-12-24 12:46:05
+
+### Fixed
+
+- Indiana National Guard and Reserve Pay Deduction 2023.
+
+## [1.162.2] - 2024-12-23 19:54:14
+
+### Fixed
+
+- Adjust the EPP max pregnancy month value.
+
+## [1.162.1] - 2024-12-20 16:50:32
+
+### Added
+
+- 2
+- 0
+- 2
+- 5
+-  
+- S
+- S
+- I
+- ,
+-  
+- A
+- N
+- D
+- -
+- C
+- S
+- ,
+-  
+- a
+- n
+- d
+-  
+- O
+- A
+- P
+-  
+- v
+- a
+- l
+- u
+- e
+- s
+
+## [1.162.0] - 2024-12-18 02:31:13
+
+### Added
+
+- Add non-refundable credits to state dependent exemption reform.
+
+## [1.161.3] - 2024-12-18 02:17:13
+
+### Fixed
+
+- New York Working Families Tax Credit parameter structure.
+- New York exemptions child definition.
+
+## [1.161.2] - 2024-12-15 23:08:57
+
+### Fixed
+
+- NYWFTC EITC older children eligibility.
+
+## [1.161.1] - 2024-12-13 23:43:04
+
+### Added
+
+- Capability to select custom start time for simulations; this is a patch for structural reforms that occur at non-default time periods.
+
+## [1.161.0] - 2024-12-12 05:36:14
+
+### Added
+
+- Nebraska military retirement benefit exclusion.
+
 ## [1.160.0] - 2024-12-05 16:48:14
 
 ### Added
@@ -10377,6 +10630,42 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.179.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.178.0...1.179.0
+[1.178.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.177.0...1.178.0
+[1.177.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.176.3...1.177.0
+[1.176.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.176.2...1.176.3
+[1.176.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.176.1...1.176.2
+[1.176.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.176.0...1.176.1
+[1.176.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.175.0...1.176.0
+[1.175.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.174.1...1.175.0
+[1.174.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.174.0...1.174.1
+[1.174.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.173.0...1.174.0
+[1.173.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.172.1...1.173.0
+[1.172.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.172.0...1.172.1
+[1.172.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.171.0...1.172.0
+[1.171.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.170.2...1.171.0
+[1.170.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.170.1...1.170.2
+[1.170.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.170.0...1.170.1
+[1.170.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.169.0...1.170.0
+[1.169.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.168.1...1.169.0
+[1.168.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.168.0...1.168.1
+[1.168.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.167.2...1.168.0
+[1.167.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.167.1...1.167.2
+[1.167.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.167.0...1.167.1
+[1.167.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.166.0...1.167.0
+[1.166.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.165.0...1.166.0
+[1.165.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.164.0...1.165.0
+[1.164.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.163.1...1.164.0
+[1.163.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.163.0...1.163.1
+[1.163.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.162.3...1.163.0
+[1.162.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.162.2...1.162.3
+[1.162.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.162.1...1.162.2
+[1.162.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.162.0...1.162.1
+[1.162.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.161.3...1.162.0
+[1.161.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.161.2...1.161.3
+[1.161.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.161.1...1.161.2
+[1.161.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.161.0...1.161.1
+[1.161.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.160.0...1.161.0
 [1.160.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.159.0...1.160.0
 [1.159.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.158.0...1.159.0
 [1.158.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.157.0...1.158.0

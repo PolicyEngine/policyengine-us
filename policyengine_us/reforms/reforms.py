@@ -65,7 +65,22 @@ from .ctc import (
 from .second_earner import (
     create_second_earner_tax_reform,
 )
+from .ctc.eppc import (
+    create_expanded_ctc_reform,
+)
+from .snap import (
+    create_abolish_snap_deductions_reform,
+    create_abolish_snap_net_income_test_reform,
+)
+from .states.dc.property_tax import create_dc_property_tax_credit_reform
 
+from .states.ny.inflation_rebates import (
+    create_ny_2025_inflation_rebates_reform,
+)
+
+from .deductions.salt import (
+    create_limit_salt_deduction_to_property_taxes_reform,
+)
 
 from policyengine_core.reforms import Reform
 import warnings
@@ -148,6 +163,24 @@ def create_structural_reforms_from_parameters(parameters, period):
     second_earner_tax_reform = create_second_earner_tax_reform(
         parameters, period
     )
+    expanded_ctc = create_expanded_ctc_reform(parameters, period)
+    abolish_snap_deductions = create_abolish_snap_deductions_reform(
+        parameters, period
+    )
+    abolish_snap_net_income_test = create_abolish_snap_net_income_test_reform(
+        parameters, period
+    )
+    dc_property_tax_credit = create_dc_property_tax_credit_reform(
+        parameters, period
+    )
+    ny_2025_inflation_rebates = create_ny_2025_inflation_rebates_reform(
+        parameters, period
+    )
+    limit_salt_deduction_to_property_taxes = (
+        create_limit_salt_deduction_to_property_taxes_reform(
+            parameters, period
+        )
+    )
 
     reforms = [
         afa_reform,
@@ -179,6 +212,12 @@ def create_structural_reforms_from_parameters(parameters, period):
         repeal_state_dependent_exemptions,
         ctc_older_child_supplement,
         second_earner_tax_reform,
+        expanded_ctc,
+        abolish_snap_deductions,
+        abolish_snap_net_income_test,
+        dc_property_tax_credit,
+        ny_2025_inflation_rebates,
+        limit_salt_deduction_to_property_taxes,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
 

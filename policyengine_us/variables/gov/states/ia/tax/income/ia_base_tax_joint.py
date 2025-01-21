@@ -17,5 +17,7 @@ class ia_base_tax_joint(Variable):
 
     def formula(person, period, parameters):
         reg_tax = person("ia_regular_tax_joint", period)
+        alt_tax_eligible = person.tax_unit("ia_alternate_tax_eligible", period)
         alt_tax = person("ia_alternate_tax_joint", period)
-        return min_(reg_tax, alt_tax)
+        smaller_tax = min_(reg_tax, alt_tax)
+        return where(alt_tax_eligible, smaller_tax, reg_tax)
