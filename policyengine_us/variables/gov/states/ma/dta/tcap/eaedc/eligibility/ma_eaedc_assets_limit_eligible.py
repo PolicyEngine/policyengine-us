@@ -15,9 +15,13 @@ class ma_eaedc_assets_limit_eligible(Variable):
         p = parameters(period).gov.states.ma.dta.tcap.eaedc.assets
         countable_assets = spm_unit("ma_eaedc_assets", period)
         living_arrangement = spm_unit("ma_eaedc_living_arrangement", period)
-        
-        living_arrangement_E = living_arrangement == living_arrangement.possible_values.E
+
+        living_arrangement_E = (
+            living_arrangement == living_arrangement.possible_values.E
+        )
         asset_below_limit = countable_assets <= p.limit
         # Only living arrangement E has an asset limit
 
-        return (living_arrangement_E & asset_below_limit) | ~living_arrangement_E 
+        return (
+            living_arrangement_E & asset_below_limit
+        ) | ~living_arrangement_E
