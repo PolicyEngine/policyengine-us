@@ -27,7 +27,7 @@ class state_sales_tax_income_bracket(Variable):
     entity = TaxUnit
     possible_values = StateSalesTaxIncomeBracket
     definition_period = YEAR
-    label = "State Sales Tax"
+    label = "State Sales Tax Income Bracket"
 
     def formula(tax_unit, period, parameters):
         income = tax_unit("total_income_tax", period)

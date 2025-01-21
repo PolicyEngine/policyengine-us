@@ -1,0 +1,20 @@
+- name: Normal income case
+  period: 2023
+  input:
+    total_income_tax: 45_000
+  output:
+    state_sales_tax_income_bracket: FOUR
+
+- name: Edge case 1
+  period: 2023
+  input:
+    total_income_tax: 300_000
+  output:
+    state_sales_tax_income_bracket: NINETEEN
+
+- name: Edge case 2
+  period: 2023
+  input:
+    total_income_tax: 320_000
+  output:
+    state_sales_tax_income_bracket: NINETEEN
