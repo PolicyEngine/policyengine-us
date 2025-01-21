@@ -14,7 +14,7 @@ class slspc_rating_area(Variable):
     definition_period = YEAR
 
     def formula(household, period, parameters):
-        simulation: Simulation = Person.simulation
+        simulation: Simulation = household.simulation
 
         # Check for existing SLSPC first
         if (
@@ -24,7 +24,7 @@ class slspc_rating_area(Variable):
             return "reported_slspc"
 
         # Get county data
-        county = Person("county_str", period)
+        county = household("county_str", period)
 
         # Create DataFrame with county information
         df = pd.DataFrame(
