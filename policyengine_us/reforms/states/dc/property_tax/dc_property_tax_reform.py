@@ -58,9 +58,13 @@ def create_dc_property_tax_credit() -> Reform:
         defined_for = StateCode.DC
 
         def formula(tax_unit, period, parameters):
-            elderly_present = tax_unit("dc_ptc_elderly_head_or_spouse_present", period)
+            elderly_present = tax_unit(
+                "dc_ptc_elderly_head_or_spouse_present", period
+            )
             filing_status = tax_unit("filing_status", period)
-            p = parameters(period).gov.contrib.states.dc.property_tax.income_limit
+            p = parameters(
+                period
+            ).gov.contrib.states.dc.property_tax.income_limit
             return where(
                 elderly_present,
                 p.elderly[filing_status],
@@ -95,7 +99,9 @@ def create_dc_property_tax_credit() -> Reform:
     return reform
 
 
-def create_dc_property_tax_credit_reform(parameters, period, bypass: bool = False):
+def create_dc_property_tax_credit_reform(
+    parameters, period, bypass: bool = False
+):
     if bypass:
         return create_dc_property_tax_credit()
 
@@ -116,4 +122,6 @@ def create_dc_property_tax_credit_reform(parameters, period, bypass: bool = Fals
         return None
 
 
-dc_property_tax_credit = create_dc_property_tax_credit_reform(None, None, bypass=True)
+dc_property_tax_credit = create_dc_property_tax_credit_reform(
+    None, None, bypass=True
+)
