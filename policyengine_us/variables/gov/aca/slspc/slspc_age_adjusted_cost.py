@@ -23,17 +23,6 @@ class slspc_age_adjusted_cost_person(Variable):
             "oregon",
             "utah",
         ]
-        curve_name = (
-            state.lower() if state.lower() in special_states else "default"
-        )
-        age_curve = parameters.gov.aca.age_curves[curve_name]
-
-        # Find applicable bracket
-        brackets = age_curve.brackets
-        applicable_bracket = max(
-            (b for b in brackets if b.threshold <= age),
-            key=lambda b: b.threshold,
-        )
 
         p = parameters(period).gov.aca.age_curved
         applicable_rate = select(
