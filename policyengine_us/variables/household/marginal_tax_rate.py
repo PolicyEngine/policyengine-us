@@ -3,9 +3,7 @@ from policyengine_us.model_api import *
 
 class marginal_tax_rate(Variable):
     label = "marginal tax rate"
-    documentation = (
-        "Fraction of marginal income gains that do not increase household net income."
-    )
+    documentation = "Fraction of marginal income gains that do not increase household net income."
     entity = Person
     definition_period = YEAR
     value_type = float
@@ -25,19 +23,9 @@ class marginal_tax_rate(Variable):
         emp_self_emp_ratio = np.divide(
             employment_income,
             total_earnings,
-            out=np.ones_like(
-                total_earnings, dtype=np.float32
-            ),  # Default value when division isn't possible
-            where=total_earnings > 0,  # Perform division only where total_earnings > 0
+            out=np.ones_like(total_earnings, dtype=np.float32),
+            where=total_earnings > 0,
         )
-
-        # emp_self_emp_ratio = np.ones_like(total_earnings)
-        # mask = total_earnings > 0
-        # emp_self_emp_ratio[mask] = employment_income[mask] / total_earnings[mask]
-
-        # emp_self_emp_ratio = where(
-        #     total_earnings > 0, employment_income / total_earnings, 1
-        # )
 
         for adult_index in range(1, 1 + adult_count):
             alt_sim = sim.get_branch(f"mtr_for_adult_{adult_index}")
@@ -56,7 +44,8 @@ class marginal_tax_rate(Variable):
             alt_sim.set_input(
                 "self_employment_income",
                 period,
-                self_employment_income + mask * delta * (1 - emp_self_emp_ratio),
+                self_employment_income
+                + mask * delta * (1 - emp_self_emp_ratio),
             )
             alt_person = alt_sim.person
             netinc_alt = alt_person.household("household_net_income", period)
