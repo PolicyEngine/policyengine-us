@@ -39,15 +39,21 @@ class weekly_hours_worked_behavioural_response_income_elasticity(Variable):
         original_emp = person("employment_income_before_lsr", period)
         original_self_emp = person("self_employment_income_before_lsr", period)
         original_earnings = original_emp + original_self_emp
-        lsr_relative_change = np.where(
-            original_earnings == 0, 0, income_effect / original_earnings
+
+        lsr_relative_change = np.divide(
+            income_effect,
+            original_earnings,
+            out=np.zeros_like(
+                income_effect, dtype=np.float32
+            ),  # Default to 0 where division isn't valid
+            where=original_earnings
+            != 0,  # Perform division only where original_earnings != 0
         )
+
         return original * lsr_relative_change
 
 
-class weekly_hours_worked_behavioural_response_substitution_elasticity(
-    Variable
-):
+class weekly_hours_worked_behavioural_response_substitution_elasticity(Variable):
     value_type = float
     entity = Person
     label = "behavioural response in weekly hours worked (substitution effect)"
