@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ma_eaedc_no_disabled_earned_income(Variable):
+class ma_eaedc_non_disabled_earned_income(Variable):
     value_type = float
     entity = Person
     label = "Massachusetts EAEDC earned income of a non disabled person"

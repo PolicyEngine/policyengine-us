@@ -1,7 +1,7 @@
 - name: Case 1, $1400 total earned income and $100 dependent care deduction, no unearned income
   period: 2022
   input:
-    ma_eaedc_no_disabled_earned_income: 1_400
+    ma_eaedc_non_disabled_earned_income: 1_400
     ma_eaedc_dependent_care_deduction: 100
     ma_eaedc_unearned_income: 0
     state_code: MA
@@ -15,7 +15,7 @@
 - name: Case 2, $1400 total earned income and $1500 dependent care deduction, no unearned income
   period: 2022
   input:
-    ma_eaedc_no_disabled_earned_income: 1_400
+    ma_eaedc_non_disabled_earned_income: 1_400
     ma_eaedc_dependent_care_deduction: 700
     ma_eaedc_unearned_income: 0
     state_code: MA
@@ -25,7 +25,7 @@
 - name: Case 3, $1400 total earned income and $1500 dependent care deduction, $100 unearned income
   period: 2022
   input:
-    ma_eaedc_no_disabled_earned_income: 1_400
+    ma_eaedc_non_disabled_earned_income: 1_400
     ma_eaedc_dependent_care_deduction: 700
     ma_eaedc_unearned_income: 100
     state_code: MA

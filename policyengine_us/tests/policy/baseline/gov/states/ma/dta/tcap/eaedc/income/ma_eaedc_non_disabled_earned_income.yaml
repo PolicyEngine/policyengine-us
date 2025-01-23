@@ -6,7 +6,7 @@
     is_tax_unit_dependent: false
     state_code: MA
   output:
-    ma_eaedc_no_disabled_earned_income: 0
+    ma_eaedc_non_disabled_earned_income: 0
 
 - name: Case 2, not disabled with earned income $2000.
   period: 2022
@@ -16,7 +16,7 @@
     is_tax_unit_dependent: false
     state_code: MA
   output:
-    ma_eaedc_no_disabled_earned_income: 2_000
+    ma_eaedc_non_disabled_earned_income: 2_000
 
 - name: Case 3, is not disabled but is a dependent.
   period: 2022
@@ -26,4 +26,4 @@
     is_tax_unit_dependent: true
     state_code: MA
   output:
-    ma_eaedc_no_disabled_earned_income: 0
+    ma_eaedc_non_disabled_earned_income: 0
