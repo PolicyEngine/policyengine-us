@@ -49,7 +49,9 @@ class weekly_hours_worked_behavioural_response_income_elasticity(Variable):
         return original * lsr_relative_change
 
 
-class weekly_hours_worked_behavioural_response_substitution_elasticity(Variable):
+class weekly_hours_worked_behavioural_response_substitution_elasticity(
+    Variable
+):
     value_type = float
     entity = Person
     label = "behavioural response in weekly hours worked (substitution effect)"
