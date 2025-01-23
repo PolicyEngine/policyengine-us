@@ -31,7 +31,7 @@ class state_sales_tax_income_bracket(Variable):
 
     def formula(tax_unit, period, parameters):
         print("Formula method called")  # The Formula is not called
-        income = tax_unit("total_income_tax", period)
+        income = tax_unit("federal_state_income_tax", period)
         print(f"Income: {income}")  # No output
 
         return select(
