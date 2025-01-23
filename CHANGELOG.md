@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.180.2] - 2025-01-23 16:58:25
+
+### Fixed
+
+- Invalid value when dividing employment_income by total_earnings in marginal tax rate calculation.
+
 ## [1.180.1] - 2025-01-22 06:23:40
 
 ### Fixed
@@ -10642,6 +10648,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.180.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.180.1...1.180.2
 [1.180.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.180.0...1.180.1
 [1.180.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.179.0...1.180.0
 [1.179.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.178.0...1.179.0
