@@ -35,7 +35,7 @@ class weekly_hours_worked_behavioural_response_income_elasticity(Variable):
         if (lsr != 0).any():
             income_effect = person("income_elasticity_lsr", period)
         else:
-            income_effect = 0
+            income_effect = np.zeros_like(original)
         original_emp = person("employment_income_before_lsr", period)
         original_self_emp = person("self_employment_income_before_lsr", period)
         original_earnings = original_emp + original_self_emp
