@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.180.1] - 2025-01-22 06:23:40
+
+### Fixed
+
+- Limit DC PTC to filers that take it up in the reform.
+
+## [1.180.0] - 2025-01-21 20:24:31
+
+### Added
+
+- 2024 California YCTC and Foster Youth Credit parameters.
+
 ## [1.179.0] - 2025-01-21 05:05:10
 
 ### Added
@@ -10630,6 +10642,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.180.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.180.0...1.180.1
+[1.180.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.179.0...1.180.0
 [1.179.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.178.0...1.179.0
 [1.178.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.177.0...1.178.0
 [1.177.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.176.3...1.177.0
