@@ -12,32 +12,20 @@ class slspc_rating_area(Variable):
     definition_period = YEAR
 
     def formula(household, period, parameters):
-        simulation: Simulation = household.simulation
-
-        # Check for existing SLSPC first
-        if (
-            simulation.get_holder("reported_slspc").get_array(period)
-            is not None
-        ):
-            return "reported_slspc"
-
         # Get county data
         county = household("county_str", period)
 
         # Create DataFrame with county information
-        df = pd.DataFrame(
-            {
-                "location": county,
-            }
-        )
+        df = pd.DataFrame({"county": county})
 
+        print(aca_rating_areas.head(5))
         # Single merge with medicaid_rating_areas
         df_matched = pd.merge(
             df,
             aca_rating_areas,
             how="left",
-            left_on="location",
-            right_on="location",
+            left_on="county",
+            right_on="county",
         )
 
         # Fill any missing values with default rating area 1

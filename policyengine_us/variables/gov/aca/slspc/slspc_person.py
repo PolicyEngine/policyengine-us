@@ -1,31 +1,21 @@
 from policyengine_us.model_api import *
 
 
-class slspc_age_adjusted_cost_person(Variable):
+class slspc_person(Variable):
     value_type = float
     entity = Person
-    label = "Second-lowest ACA silver-plan cost adjusted for age"
+    label = "Second-lowest ACA silver-plan cost"
     unit = USD
     definition_period = MONTH
 
     def formula(person, period, parameters):
-        state = person.household("state_code_str", period)
+        state_code = person.household("state_code_str", period)
         age = person("monthly_age", period)
-        base_cost = person.household("slspc_baseline_cost", period)
+        base_cost = person.household("slspc_age_0", period)
 
-        # Get age curve based on state
-        special_states = [
-            "district_of_columbia",
-            "alabama",
-            "massachusetts",
-            "minnesota",
-            "mississippi",
-            "oregon",
-            "utah",
-        ]
 
-        p = parameters(period).gov.aca.age_curved
-        applicable_rate = select(
+        p = parameters(period).gov.aca.age_curves
+        multiplier = select(
             [
                 state_code == "AL",
                 state_code == "DC",
@@ -33,7 +23,7 @@ class slspc_age_adjusted_cost_person(Variable):
                 state_code == "MN",
                 state_code == "MS",
                 state_code == "OR",
-                state == "UT",
+                state_code == "UT",
             ],
             [
                 p.alabama.calc(age),
@@ -46,4 +36,4 @@ class slspc_age_adjusted_cost_person(Variable):
             ],
             default=p.default.calc(age),
         )
-        return base_cost * applicable_rate
+        return base_cost * multiplier

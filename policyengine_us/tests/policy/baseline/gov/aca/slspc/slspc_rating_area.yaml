@@ -1,11 +1,3 @@
-- name: reported_slspc exists
-  period: 2023
-  input:
-    reported_slspc: 5
-    county_str: SHASTA_COUNTY_CA
-  output:
-    slspc_rating_area: 5
-
 - name: Shasta County CA
   period: 2023
   input:
