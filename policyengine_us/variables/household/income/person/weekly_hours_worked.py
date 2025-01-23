@@ -39,7 +39,6 @@ class weekly_hours_worked_behavioural_response_income_elasticity(Variable):
         original_emp = person("employment_income_before_lsr", period)
         original_self_emp = person("self_employment_income_before_lsr", period)
         original_earnings = original_emp + original_self_emp
-
         lsr_relative_change = np.divide(
             income_effect,
             original_earnings,
