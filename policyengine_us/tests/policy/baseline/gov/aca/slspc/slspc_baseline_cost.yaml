@@ -4,7 +4,7 @@
     state_code: CT
     slspc_rating_area: 2
   output:
-    slspc_baseline_base_cost: 380.00
+    slspc_baseline_base_cost: 380
 
 - name: slspc_baseline_base_cost unit test 2 Hawaii rating area 1
   period: 2025-01
@@ -12,7 +12,7 @@
     state_code: HI
     slspc_rating_area: 1
   output:
-    slspc_baseline_base_cost: 295.00
+    slspc_baseline_base_cost: 295
 
 - name: slspc_baseline_base_cost unit test 3 Kansas rating area 6
   period: 2025-01
@@ -20,7 +20,7 @@
     state_code: KS
     slspc_rating_area: 6
   output:
-    slspc_baseline_base_cost: 384.00
+    slspc_baseline_base_cost: 384
 
 - name: slspc_baseline_base_cost unit test 4 Nebraska rating area 4
   period: 2025-01
@@ -28,7 +28,7 @@
     state_code: NE
     slspc_rating_area: 4
   output:
-    slspc_baseline_base_cost: 422.00
+    slspc_baseline_base_cost: 422
 
 - name: slspc_baseline_base_cost unit test 5 Texas rating area 8
   period: 2025-01
@@ -36,7 +36,7 @@
     state_code: TX
     slspc_rating_area: 8
   output:
-    slspc_baseline_base_cost: 236.00
+    slspc_baseline_base_cost: 236
 
 - name: slspc_baseline_base_cost unit test 6 Texas rating area 9
   period: 2025-01
@@ -44,4 +44,4 @@
     state_code: TX
     slspc_rating_area: 9
   output:
-    slspc_baseline_base_cost: 221.00
+    slspc_baseline_base_cost: 221

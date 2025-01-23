@@ -1,4 +1,4 @@
-- name: slspc_age_adjusted_cost_person unit test 1 Alabama youth
+- name: Alabama youth
   period: 2023-01
   absolute_error_margin: 0.1
   input:
@@ -6,10 +6,9 @@
     monthly_age: 15
     slspc_baseline_cost: 270
   output:
-    slspc_age_adjusted_cost_person:
-      value: 270.00
+    slspc_age_adjusted_cost_person: 270
 
-- name: slspc_age_adjusted_cost_person unit test 2 DC middle age
+- name: DC middle age
   period: 2023-01
   absolute_error_margin: 0.1
   input:
@@ -20,7 +19,7 @@
     slspc_age_adjusted_cost_person:
       value: 1_028.12
       
-- name: slspc_age_adjusted_cost_person unit test 3 Utah young adult
+- name: Utah young adult
   period: 2023-01
   absolute_error_margin: 0.1
   input:
@@ -31,7 +30,7 @@
     slspc_age_adjusted_cost_person:
       value: 637.67
 
-- name: slspc_age_adjusted_cost_person unit test 4 Minnesota middle age
+- name: Minnesota middle age
   period: 2023-01
   absolute_error_margin: 0.1
   input:
@@ -42,7 +41,7 @@
     slspc_age_adjusted_cost_person:
       value: 361.87   
 
-- name: slspc_age_adjusted_cost_person unit test 5 Mississippi adult
+- name: Mississippi adult
   period: 2023-01
   absolute_error_margin: 0.1
   input:
@@ -53,7 +52,7 @@
     slspc_age_adjusted_cost_person:
       value: 452.78
 
-- name: slspc_age_adjusted_cost_person unit test 6 West Virginia senior
+- name: West Virginia senior
   period: 2023-01
   absolute_error_margin: 0.1
   input:

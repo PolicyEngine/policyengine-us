@@ -1,4 +1,4 @@
-- name: slspc_rating_area unit test 1 reported_slspc exists
+- name: reported_slspc exists
   period: 2023
   input:
     reported_slspc: 5
@@ -6,35 +6,35 @@
   output:
     slspc_rating_area: 5
 
-- name: slspc_rating_area unit test 2 Shasta County CA
+- name: Shasta County CA
   period: 2023
   input:
     county_str: SHASTA_COUNTY_CA
   output:
     slspc_rating_area: 1
 
-- name: slspc_rating_area unit test 3 Effingham County IL
+- name: Effingham County IL
   period: 2023
   input:
     county_str: EFFINGHAM_COUNTY_IL
   output:
     slspc_rating_area: 13
 
-- name: slspc_rating_area unit test 4 Graves County KY
+- name: Graves County KY
   period: 2023
   input:
     county_str: GRAVES_COUNTY_KY
   output:
     slspc_rating_area: 1
 
-- name: slspc_rating_area unit test 5 Bay County MI
+- name: Bay County MI
   period: 2023
   input:
     county_str: BAY_COUNTY_MI
   output:
     slspc_rating_area: 8
 
-- name: slspc_rating_area unit test 6 unknown county defaults to 1
+- name: Unknown county defaults to 1
   period: 2023
   input:
     county_str: UNKNOWN_COUNTY_XX

@@ -1,7 +1,5 @@
 from policyengine_us.model_api import *
-from policyengine_us.parameters.gov.hhs.medicaid.geography import (
-    second_lowest_silver_plan_cost,
-)
+
 from policyengine_us.parameters.gov.hhs.medicaid.geography import (
     aca_rating_areas,
 )
