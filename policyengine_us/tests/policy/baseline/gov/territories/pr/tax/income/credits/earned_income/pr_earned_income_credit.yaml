@@ -4,7 +4,7 @@
     pr_gross_income_person: 10_000
     pr_earned_income_credit_eligible: false
   output:
-    pr_earned_income_credit_amount: 0
+    pr_earned_income_credit: 0
 
 - name: Eligible person in the highest bracket, 2024
   period: 2024
@@ -12,7 +12,7 @@
     pr_gross_income_person: 35_000
     pr_earned_income_credit_eligible: true
   output:
-    pr_earned_income_credit_amount: 100
+    pr_earned_income_credit: 100
 
 - name: Eligible person in the middle bracket, 2024
   period: 2024
@@ -20,7 +20,7 @@
     pr_gross_income_person: 34_000
     pr_earned_income_credit_eligible: true
   output:
-    pr_earned_income_credit_amount: 120
+    pr_earned_income_credit: 120
 
 - name: Eligible person with max credit, 2024
   period: 2024
@@ -28,7 +28,7 @@
     pr_gross_income_person: 10_000
     pr_earned_income_credit_eligible: true
   output:
-    pr_earned_income_credit_amount: 600
+    pr_earned_income_credit: 600
 
 - name: Eligible person in the lower bracket, 2024
   period: 2024
@@ -36,7 +36,7 @@
     pr_gross_income_person: 8_000
     pr_earned_income_credit_eligible: true
   output:
-    pr_earned_income_credit_amount: 480
+    pr_earned_income_credit: 480
 
 - name: Eligible person in the lower bracket, 2011
   period: 2011
@@ -44,4 +44,4 @@
     pr_gross_income_person: 8_000
     pr_earned_income_credit_eligible: true
   output:
-    pr_earned_income_credit_amount: 280
+    pr_earned_income_credit: 280
