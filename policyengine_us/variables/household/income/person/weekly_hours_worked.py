@@ -43,11 +43,8 @@ class weekly_hours_worked_behavioural_response_income_elasticity(Variable):
         lsr_relative_change = np.divide(
             income_effect,
             original_earnings,
-            out=np.zeros_like(
-                income_effect, dtype=np.float32
-            ),  # Default to 0 where division isn't valid
-            where=original_earnings
-            != 0,  # Perform division only where original_earnings != 0
+            out=np.zeros_like(income_effect, dtype=np.float32),
+            where=original_earnings != 0,
         )
 
         return original * lsr_relative_change
