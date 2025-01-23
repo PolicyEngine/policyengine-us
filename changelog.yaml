@@ -8994,3 +8994,9 @@
     fixed:
     - Limit DC PTC to filers that take it up in the reform.
   date: 2025-01-22 06:23:40
+- bump: patch
+  changes:
+    fixed:
+    - Invalid value when dividing employment_income by total_earnings in marginal
+      tax rate calculation.
+  date: 2025-01-23 16:58:25
