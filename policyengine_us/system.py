@@ -91,7 +91,7 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
         self.parameters = propagate_parameter_metadata(self.parameters)
         add_default_uprating(self)
 
-        self.add_possible_structural_reforms()
+        self.possible_structural_reforms: list[StructuralReform] = structural_reforms
 
         # structural_reform = create_structural_reforms_from_parameters(
         #     self.parameters, start_instant
@@ -112,13 +112,6 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
             self.apply_reform_set(reform)
 
         self.add_variables(*create_50_state_variables())
-
-    def add_possible_structural_reforms(self):
-
-        self.possible_structural_reforms: list[StructuralReform] = (
-            structural_reforms
-        )
-
 
 system = CountryTaxBenefitSystem()
 
