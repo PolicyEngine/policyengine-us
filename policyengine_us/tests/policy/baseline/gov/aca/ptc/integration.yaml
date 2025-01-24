@@ -29,10 +29,10 @@
     tax_unit_medicaid_income_level: 3.0395136  # greater than 2.66 CA CHIP limit
     is_medicaid_eligible: [false, false, false]
     is_aca_ptc_eligible: [true, true, true]
-    aca_slspc_ca: 12_476  # same as 2022 KFF ACA calculator
+    slspc: 12_476  # same as 2022 KFF ACA calculator
     aca_magi_fraction: 3.18
     aca_ptc_phase_out_rate: 0.0645
-    aca_ptc_ca: 7_961  # $7,947 per 2022 KFF ACA calculator
+    aca_ptc: 7_961  # $7,947 per 2022 KFF ACA calculator
     # annual contribution amount:  0.0645 * 70000 = 4515
     # PEUS: 12476 - 7961 = 4515
     # KFF:  12476 - 7947 = 4529
@@ -71,10 +71,10 @@
     tax_unit_medicaid_income_level: 3.0395136  # greater than 2.66 CA CHIP limit
     is_medicaid_eligible: [false, false, false]
     is_aca_ptc_eligible: [true, true, true]    
-    aca_slspc_ca: 13_160  # same as 2022 KFF ACA calculator
+    slspc: 13_160  # same as 2022 KFF ACA calculator
     aca_magi_fraction: 3.18
     aca_ptc_phase_out_rate: 0.0645
-    aca_ptc_ca: 8_645  # $8,631 per 2022 KFF ACA calculator
+    aca_ptc: 8_645  # $8,631 per 2022 KFF ACA calculator
     # annual contribution amount:  0.0645 * 70000 = 4515
     # PEUS: 13160 - 8645 = 4515
     # KFF:  13160 - 8631 = 4529
@@ -119,7 +119,7 @@
     tax_unit_medicaid_income_level: 2.413516  # less than 2.66 CA CHIP limit
     is_medicaid_eligible: [false, false, true]  # KFF ACA calculator misses this
     is_aca_ptc_eligible: [true, true, false]
-    aca_slspc_ca: 8_569  # $10,977 per 2023 KFF ACA calculator (for three)
+    aca_slspc: 8_569  # $10,977 per 2023 KFF ACA calculator (for three)
     aca_magi_fraction: 2.60
     aca_ptc_phase_out_rate: 0.0440
     aca_ptc_ca: 5_929  # $8,325 per 2023 KFF ACA calculator (for three)
@@ -161,10 +161,10 @@
     tax_unit_medicaid_income_level: 2.413516  # less than 2.66 CA CHIP limit
     is_medicaid_eligible: [false, false, true]  # KFF ACA calculator misses this
     is_aca_ptc_eligible: [true, true, false]
-    aca_slspc_ca: 9_039  # $11,579 per 2023 KFF ACA calculator (for three)
+    slspc: 9_039  # $11,579 per 2023 KFF ACA calculator (for three)
     aca_magi_fraction: 2.60
     aca_ptc_phase_out_rate: 0.0440
-    aca_ptc_ca: 6_399  # $8,927 per 2023 KFF ACA calculator (for three)
+    aca_ptc: 6_399  # $8,927 per 2023 KFF ACA calculator (for three)
     # annual contribution amount:  0.044 * 60000 = 2640
     # PEUS:  9039 - 6399 = 2640
     # KFF:  11579 - 8927 = 2652
