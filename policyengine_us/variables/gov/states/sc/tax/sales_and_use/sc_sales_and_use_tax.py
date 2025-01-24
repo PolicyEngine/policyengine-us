@@ -6,6 +6,7 @@ class sc_sales_and_use_tax(Variable):
     entity = TaxUnit
     label = "South Carolina sales and use tax"
     unit = USD
+    reference = "https://dor.sc.gov/forms-site/Forms/ST3.pdf#page=2"
     definition_period = YEAR
     defined_for = StateCode.SC
 
@@ -13,6 +14,9 @@ class sc_sales_and_use_tax(Variable):
         p = parameters(period).gov.states.sc.tax.sales_and_use
 
         # base amount
+        taxable_sales_and_purchases = tax_unit(
+            "sc_sales_and_purchases_proceeds", period
+        )
 
         # sales and use tax rate with eligible exclusion
         eligible = tax_unit("sc_sales_and_use_exclusion_eligible", period)
@@ -20,3 +24,4 @@ class sc_sales_and_use_tax(Variable):
         rate_applied = p.general - exclusion
 
         # return base amount * rate_applied
+        return taxable_sales_and_purchases * rate_applied
