@@ -1,27 +1,27 @@
-- name: Normal income case
+- name: First income bracket
   period: 2023
   input:
-    federal_state_income_tax: 10_000
+    adjusted_gross_income: 10_000
   output:
-    state_sales_tax_income_bracket: ONE
+    state_sales_tax_income_bracket: 1
 
-- name: Normal income case 2
+- name: Interest in second income bracket
   period: 2023
   input:
-    federal_state_income_tax: 45_000
+    tax_exempt_interest_income: 45_000
   output:
-    state_sales_tax_income_bracket: FOUR
+    state_sales_tax_income_bracket: 4
 
-- name: Edge case 1
+- name: Income in top income bracket
   period: 2023
   input:
-    federal_state_income_tax: 300_000
+    veterans_benefits: 300_000
   output:
-    state_sales_tax_income_bracket: NINETEEN
+    state_sales_tax_income_bracket: 19
 
-- name: Edge case 2
+- name: Workers compensation in top income bracket
   period: 2023
   input:
-    federal_state_income_tax: 320_000
+    workers_compensation: 320_000
   output:
-    state_sales_tax_income_bracket: NINETEEN
+    state_sales_tax_income_bracket: 19
