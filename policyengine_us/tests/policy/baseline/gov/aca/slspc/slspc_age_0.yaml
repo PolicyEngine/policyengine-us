@@ -1,47 +1,47 @@
-- name: slspc_baseline_base_cost unit test 1 Connecticut rating area 2
+- name: slspc_age_0 unit test 1 Connecticut rating area 2
   period: 2025-01
   input:
     state_code: CT
     slspc_rating_area: 2
   output:
-    slspc_baseline_base_cost: 380
+    slspc_age_0: 380
 
-- name: slspc_baseline_base_cost unit test 2 Hawaii rating area 1
+- name: slspc_age_0 unit test 2 Hawaii rating area 1
   period: 2025-01
   input:
     state_code: HI
     slspc_rating_area: 1
   output:
-    slspc_baseline_base_cost: 295
+    slspc_age_0: 295
 
-- name: slspc_baseline_base_cost unit test 3 Kansas rating area 6
+- name: slspc_age_0 unit test 3 Kansas rating area 6
   period: 2025-01
   input:
     state_code: KS
     slspc_rating_area: 6
   output:
-    slspc_baseline_base_cost: 384
+    slspc_age_0: 384
 
-- name: slspc_baseline_base_cost unit test 4 Nebraska rating area 4
+- name: slspc_age_0 unit test 4 Nebraska rating area 4
   period: 2025-01
   input:
     state_code: NE
     slspc_rating_area: 4
   output:
-    slspc_baseline_base_cost: 422
+    slspc_age_0: 422
 
-- name: slspc_baseline_base_cost unit test 5 Texas rating area 8
+- name: slspc_age_0 unit test 5 Texas rating area 8
   period: 2025-01
   input:
     state_code: TX
     slspc_rating_area: 8
   output:
-    slspc_baseline_base_cost: 236
+    slspc_age_0: 236
 
-- name: slspc_baseline_base_cost unit test 6 Texas rating area 9
+- name: slspc_age_0 unit test 6 Texas rating area 9
   period: 2025-01
   input:
     state_code: TX
     slspc_rating_area: 9
   output:
-    slspc_baseline_base_cost: 221
+    slspc_age_0: 221

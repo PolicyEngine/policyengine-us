@@ -18,7 +18,6 @@ class slspc_rating_area(Variable):
         # Create DataFrame with county information
         df = pd.DataFrame({"county": county})
 
-        print(aca_rating_areas.head(5))
         # Single merge with medicaid_rating_areas
         df_matched = pd.merge(
             df,
