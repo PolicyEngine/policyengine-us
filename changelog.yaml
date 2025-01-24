@@ -9000,3 +9000,8 @@
     - Invalid value when dividing employment_income by total_earnings in marginal
       tax rate calculation.
   date: 2025-01-23 16:58:25
+- bump: patch
+  changes:
+    fixed:
+    - Include the New York 2025 Inflation Rebates in the net income tree.
+  date: 2025-01-24 16:08:29

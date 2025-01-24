@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.180.3] - 2025-01-24 16:08:29
+
+### Fixed
+
+- Include the New York 2025 Inflation Rebates in the net income tree.
+
 ## [1.180.2] - 2025-01-23 16:58:25
 
 ### Fixed
@@ -10648,6 +10654,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.180.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.180.2...1.180.3
 [1.180.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.180.1...1.180.2
 [1.180.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.180.0...1.180.1
 [1.180.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.179.0...1.180.0
