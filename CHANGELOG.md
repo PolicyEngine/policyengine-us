@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.181.0] - 2025-01-24 16:56:04
+
+### Added
+
+- Optional State Sales Tax Rates.
+
 ## [1.180.4] - 2025-01-24 16:12:31
 
 ## [1.180.3] - 2025-01-24 16:08:29
@@ -10656,6 +10662,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.181.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.180.4...1.181.0
 [1.180.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.180.3...1.180.4
 [1.180.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.180.2...1.180.3
 [1.180.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.180.1...1.180.2
