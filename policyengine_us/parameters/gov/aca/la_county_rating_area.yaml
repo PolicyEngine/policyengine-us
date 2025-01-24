@@ -1,0 +1,32 @@
+description: Rating areas for Los Angeles County based on 3-digit zip codes
+metadata:
+  period: year
+  label: Los Angeles County ACA rating areas by zip code
+  reference:
+    - title: California Geographic Rating Areas
+      href: https://www.cms.gov/cciio/programs-and-initiatives/health-insurance-market-reforms/ca-gra
+values:
+  2014-01-01:
+    15:  # Rating Area 15
+      - 906
+      - 907
+      - 908
+      - 910
+      - 911
+      - 912
+      - 915
+      - 917
+      - 918
+      - 935
+    16:  # Rating Area 16
+      - 900
+      - 902
+      - 903
+      - 904
+      - 905
+      - 913
+      - 914
+      - 916
+      - 923
+      - 928
+      - 932
