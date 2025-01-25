@@ -1,0 +1,71 @@
+- name: Group 1, 1 person
+  period: 2023
+  input:
+    state_code: PA
+    county: BUCKS_COUNTY_PA
+    spm_unit_size: 1
+  output:
+    pa_tanf_cash_assistance_payout: 2_580
+
+- name: Group 1, 8 people # 8_244 + 996 * 2
+  period: 2023
+  input:
+    state_code: PA
+    county: BUCKS_COUNTY_PA
+    spm_unit_size: 8
+  output:
+    pa_tanf_cash_assistance_payout: 10_236
+    
+- name: Group 2, 1 person
+  period: 2023
+  input:
+    state_code: PA
+    county: ALLEGHENY_COUNTY_PA
+    spm_unit_size: 1
+  output:
+    pa_tanf_cash_assistance_payout: 2_460
+
+- name: Group 2, 8 people # 8_040 + 2 * 996
+  period: 2023
+  input:
+    state_code: PA
+    county: ALLEGHENY_COUNTY_PA
+    spm_unit_size: 8
+  output:
+    pa_tanf_cash_assistance_payout: 10_032
+
+- name: Group 3, 1 person  # 215 * 12 = 2_580
+  period: 2023
+  input:
+    state_code: PA
+    county: BEAVER_COUNTY_PA
+    spm_unit_size: 1
+  output:
+    pa_tanf_cash_assistance_payout: 2_580
+    
+- name: Group 3, 8 people  # (687 + 2 * 83) * 12 = 10_236
+  period: 2023
+  input:
+    state_code: PA
+    county: BEAVER_COUNTY_PA
+    spm_unit_size: 8
+  output:
+    pa_tanf_cash_assistance_payout: 10_236
+
+- name: Group 4, 3 people 
+  period: 2023
+  input:
+    state_code: PA
+    county: CLARION_COUNTY_PA
+    spm_unit_size: 3
+  output:
+    pa_tanf_cash_assistance_payout: 5_052
+  
+- name: Group 4, 7 people # 8_244 + 996 = 9_240
+  period: 2023
+  input:
+    state_code: PA
+    county: CLARION_COUNTY_PA
+    spm_unit_size: 7
+  output:
+    pa_tanf_cash_assistance_payout: 9_240
