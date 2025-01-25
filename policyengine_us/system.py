@@ -150,14 +150,20 @@ class Simulation(CoreSimulation):
         employment_income = self.get_holder("employment_income")
         for known_period in employment_income.get_known_periods():
             array = employment_income.get_array(known_period)
-            self.set_input("employment_income_before_lsr", known_period, array)
+            self.set_input(
+                "employment_income_before_behavioral_response",
+                known_period,
+                array,
+            )
             employment_income.delete_arrays(known_period)
 
         self_employment_income = self.get_holder("self_employment_income")
         for known_period in employment_income.get_known_periods():
             array = self_employment_income.get_array(known_period)
             self.set_input(
-                "self_employment_income_before_lsr", known_period, array
+                "self_employment_income_before_behavioral_response",
+                known_period,
+                array,
             )
             self_employment_income.delete_arrays(known_period)
 
@@ -165,7 +171,9 @@ class Simulation(CoreSimulation):
         for known_period in weekly_hours.get_known_periods():
             array = weekly_hours.get_array(known_period)
             self.set_input(
-                "weekly_hours_worked_before_lsr", known_period, array
+                "weekly_hours_worked_before_behavioral_response",
+                known_period,
+                array,
             )
             weekly_hours.delete_arrays(known_period)
 
@@ -222,14 +230,20 @@ class Microsimulation(CoreMicrosimulation):
         employment_income = self.get_holder("employment_income")
         for known_period in employment_income.get_known_periods():
             array = employment_income.get_array(known_period)
-            self.set_input("employment_income_before_lsr", known_period, array)
+            self.set_input(
+                "employment_income_before_behavioral_response",
+                known_period,
+                array,
+            )
             employment_income.delete_arrays(known_period)
 
         self_employment_income = self.get_holder("self_employment_income")
         for known_period in self_employment_income.get_known_periods():
             array = self_employment_income.get_array(known_period)
             self.set_input(
-                "self_employment_income_before_lsr", known_period, array
+                "self_employment_income_before_behavioral_response",
+                known_period,
+                array,
             )
             self_employment_income.delete_arrays(known_period)
 
@@ -237,7 +251,9 @@ class Microsimulation(CoreMicrosimulation):
         for known_period in weekly_hours.get_known_periods():
             array = weekly_hours.get_array(known_period)
             self.set_input(
-                "weekly_hours_worked_before_lsr", known_period, array
+                "weekly_hours_worked_before_behavioral_response",
+                known_period,
+                array,
             )
             weekly_hours.delete_arrays(known_period)
 
@@ -262,9 +278,9 @@ class Microsimulation(CoreMicrosimulation):
                 "capital_gains",
             ]
         ] + [
-            "employment_income_before_lsr",
-            "self_employment_income_before_lsr",
-            "weekly_hours_worked_before_lsr",
+            "employment_income_before_behavioral_response",
+            "self_employment_income_before_behavioral_response",
+            "weekly_hours_worked_before_behavioral_response",
             "capital_gains_before_response",
         ]
 
