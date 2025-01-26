@@ -1,0 +1,13 @@
+- name: Weekly hours worked with labor supply response
+  period: 2022
+  input:
+    weekly_hours_worked_before_lsr: 40
+    labor_supply_behavioral_response: 1
+    income_elasticity_lsr: 0.1
+    substitution_elasticity_lsr: 0.2
+    employment_income_before_lsr: 100_000
+    self_employment_income_before_lsr: 50_000
+  output:
+    weekly_hours_worked_behavioural_response_income_elasticity: 0.1 * 40 / (100_000 + 50_000) * 40
+    weekly_hours_worked_behavioural_response_substitution_elasticity: 0.2 * 40 / (100_000 + 50_000) * 40
+    weekly_hours_worked_behavioural_response: (0.1 * 40 / (100_000 + 50_000) * 40) + (0.2 * 40 / (100_000 + 50_000) * 40)
