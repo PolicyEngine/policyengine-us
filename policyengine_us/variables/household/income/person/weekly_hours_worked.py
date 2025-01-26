@@ -49,9 +49,7 @@ class weekly_hours_worked_behavioural_response_income_elasticity(Variable):
         return original * lsr_relative_change
 
 
-class weekly_hours_worked_behavioural_response_substitution_elasticity(
-    Variable
-):
+class weekly_hours_worked_behavioural_response_substitution_elasticity(Variable):
     value_type = float
     entity = Person
     label = "behavioural response in weekly hours worked (substitution effect)"
@@ -64,13 +62,19 @@ class weekly_hours_worked_behavioural_response_substitution_elasticity(
         if (lsr != 0).any():
             substitution_effect = person("substitution_elasticity_lsr", period)
         else:
-            substitution_effect = 0
+            substitution_effect = np.zeros_like(original)
         original_emp = person("employment_income_before_lsr", period)
         original_self_emp = person("self_employment_income_before_lsr", period)
         original_earnings = original_emp + original_self_emp
-        lsr_relative_change = np.where(
-            original_earnings == 0, 0, substitution_effect / original_earnings
+
+        lsr_relative_change = np.divide(
+            substitution_effect,
+            original_earnings,
+            # Assign no LSR change to people with no original earnings to avoid dividing by zero.
+            out=np.zeros_like(substitution_effect, dtype=np.float32),
+            where=original_earnings != 0,
         )
+
         return original * lsr_relative_change
 
 
