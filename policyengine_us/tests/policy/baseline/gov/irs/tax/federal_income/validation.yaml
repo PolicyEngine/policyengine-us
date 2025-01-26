@@ -40,6 +40,7 @@
       tax_unit:
         members: [person1, person2, person3, person4]
         premium_tax_credit: 0  # not in TAXSIM35
+        state_sales_tax: 0
     households:
       household:
         members: [person1, person2, person3, person4]
@@ -72,6 +73,7 @@
       tax_unit:
         members: [person1]
         premium_tax_credit: 0  # not in TAXSIM35
+        state_sales_tax: 0
     households:
       household:
         members: [person1]
@@ -126,6 +128,7 @@
       tax_unit:
         members: [person1, person2, person3, person4]
         premium_tax_credit: 0  # not in TAXSIM35
+        state_sales_tax: 0
     households:
       household:
         members: [person1, person2, person3, person4]

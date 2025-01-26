@@ -1,5 +1,6 @@
 from policyengine_us.model_api import *
 from policyengine_core.periods import period as period_
+from policyengine_core.periods import instant
 
 
 def create_ny_2025_inflation_rebates() -> Reform:
@@ -34,9 +35,26 @@ def create_ny_2025_inflation_rebates() -> Reform:
                 ],
             )
 
+    def modify_parameters(parameters):
+        parameters.gov.states.ny.tax.income.credits.refundable.update(
+            start=instant("2025-01-01"),
+            stop=instant("2025-12-31"),
+            value=[
+                "ny_eitc",
+                "ny_supplemental_eitc",
+                "ny_ctc",
+                "ny_cdcc",
+                "ny_real_property_tax_credit",
+                "ny_college_tuition_credit",
+                "ny_2025_inflation_rebates",
+            ],
+        )
+        return parameters
+
     class reform(Reform):
         def apply(self):
             self.update_variable(ny_2025_inflation_rebates)
+            self.modify_parameters(modify_parameters)
 
     return reform
 
