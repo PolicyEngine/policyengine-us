@@ -17,7 +17,7 @@ def create_nyc_school_tax_credit_with_phase_out() -> Reform:
             Calculates the phase-out amount for the NYC School Tax Credit.
 
             Args:
-                AGI: The Adjusted Gross Income of the tax unit.
+                AGI: The State Adjusted Gross Income of the tax unit.
                 Filing status: The filing status of the tax unit.
                 Phase-out rate: The phase-out rate of the credit.
             Returns:
