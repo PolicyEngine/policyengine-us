@@ -40,7 +40,8 @@
       tax_unit:
         members: [person1, person2, person3, person4]
         aca_ptc: 0  # not in TAXSIM35
-        state_sales_tax: 0    households:
+        state_sales_tax: 0    
+    households:
       household:
         members: [person1, person2, person3, person4]
         state_code: TX  # no state income tax
