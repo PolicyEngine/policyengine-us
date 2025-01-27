@@ -7,14 +7,11 @@ class or_liheap_in_region_one(Variable):
     definition_period = YEAR
     defined_for = StateCode.OR
     label = "LIHEAP Region"
-    reference = "https://www.oregon.gov/ohcs/energy-weatherization/Documents/2021-Energy-Assistance-Manual.pdf#page=55" 
+    reference = "https://www.oregon.gov/ohcs/energy-weatherization/Documents/2021-Energy-Assistance-Manual.pdf#page=55"
 
     def formula(spm_unit, period, parameters):
         county = spm_unit.household("county_str", period)
-        region1_counties = parameters(period).gov.states["or"].liheap.region1_counties
-        return where(
-            [county in region1_counties],  
-            True,                 
-            False            
+        region1_counties = (
+            parameters(period).gov.states["or"].liheap.region1_counties
         )
-    
+        return where([county in region1_counties], True, False)
