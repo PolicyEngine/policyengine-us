@@ -1,5 +1,6 @@
 from policyengine_us.model_api import *
 
+
 class slspc(Variable):
     value_type = float
     entity = TaxUnit

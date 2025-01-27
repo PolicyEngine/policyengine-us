@@ -13,7 +13,6 @@ class slspc_person(Variable):
         age = person("monthly_age", period)
         base_cost = person.household("slspc_age_0", period)
 
-
         p = parameters(period).gov.aca.age_curves
         multiplier = select(
             [
