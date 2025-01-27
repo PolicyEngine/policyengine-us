@@ -13,16 +13,6 @@ def create_nyc_school_tax_credit_with_phase_out() -> Reform:
         reference = "https://www.nysenate.gov/legislation/bills/2025/S2238"
 
         def formula(tax_unit, period, parameters):
-            """
-            Calculates the phase-out amount for the NYC School Tax Credit.
-
-            Args:
-                AGI: The State Adjusted Gross Income of the tax unit.
-                Filing status: The filing status of the tax unit.
-                Phase-out rate: The phase-out rate of the credit.
-            Returns:
-                float: The calculated phase-out amount.
-            """
             agi = tax_unit("ny_agi", period)
             filing_status = tax_unit("filing_status", period)
             joint = filing_status == filing_status.possible_values.JOINT
@@ -47,17 +37,6 @@ def create_nyc_school_tax_credit_with_phase_out() -> Reform:
         reference = "https://www.nysenate.gov/legislation/bills/2025/S2238"
 
         def formula(tax_unit, period, parameters):
-            """
-            Calculates the NYC School Tax Credit amount after applying the phase-out.
-
-            Args:
-                Fixed amount: The fixed amount of the credit.
-                Rate reduction amount: The rate reduction amount of the credit.
-                phase_out: The phase-out amount of the credit.
-
-            Returns:
-                float: The calculated credit amount.
-            """
             base_amount = add(
                 tax_unit,
                 period,
