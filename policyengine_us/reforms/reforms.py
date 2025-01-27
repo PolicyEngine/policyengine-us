@@ -82,6 +82,10 @@ from .deductions.salt import (
     create_limit_salt_deduction_to_property_taxes_reform,
 )
 
+from .local.nyc.stc.phase_out import (
+    create_nyc_school_tax_credit_with_phase_out_reform,
+)
+
 from policyengine_core.reforms import Reform
 import warnings
 
@@ -181,6 +185,9 @@ def create_structural_reforms_from_parameters(parameters, period):
             parameters, period
         )
     )
+    nyc_school_tax_credit_with_phase_out = (
+        create_nyc_school_tax_credit_with_phase_out_reform(parameters, period)
+    )
 
     reforms = [
         afa_reform,
@@ -218,6 +225,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         dc_property_tax_credit,
         ny_2025_inflation_rebates,
         limit_salt_deduction_to_property_taxes,
+        nyc_school_tax_credit_with_phase_out,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
 

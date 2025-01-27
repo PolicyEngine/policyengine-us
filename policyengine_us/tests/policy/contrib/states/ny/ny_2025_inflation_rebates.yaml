@@ -63,3 +63,25 @@
     filing_status: JOINT
   output:
     ny_2025_inflation_rebates: 0 
+
+- name: Include credit as a refundable credit
+  period: 2025
+  reforms: policyengine_us.reforms.states.ny.inflation_rebates.ny_2025_inflation_rebates.ny_2025_inflation_rebates
+  input:
+    gov.contrib.states.ny.inflation_rebates.in_effect: true
+    state_code: NY
+    ny_agi: 300_000
+    filing_status: JOINT
+  output:
+    ny_2025_inflation_rebates: 500
+    ny_refundable_credits: 500
+
+- name: Include credit as a refundable credit - baseline test
+  period: 2025
+  input:
+    gov.contrib.states.ny.inflation_rebates.in_effect: false
+    state_code: NY
+    ny_agi: 300_000
+    filing_status: JOINT
+  output:
+    ny_refundable_credits: 0

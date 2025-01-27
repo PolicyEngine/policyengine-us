@@ -1,0 +1,20 @@
+description: New York reduces the NYC school tax credit for joint filers and surviving spouses at this rate, based on state adjusted gross income.
+metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  period: year
+  label: NYC school tax credit joint and surviving spouse reduction rate
+  reference:
+  - title: New York Senate Bill S2238 §1(4-c)(B)
+    href: https://www.nysenate.gov/legislation/bills/2025/S2238
+
+brackets:
+  - threshold:
+      2025-01-01: 0
+    rate:
+      2025-01-01: 0
+  - threshold:
+      2025-01-01: 150_000
+    rate:
+      2025-01-01: 0.05
