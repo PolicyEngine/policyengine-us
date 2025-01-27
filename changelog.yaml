@@ -9020,3 +9020,9 @@
     added:
     - NYC school tax credit phase out reform.
   date: 2025-01-27 12:51:08
+- bump: patch
+  changes:
+    fixed:
+    - Invalid value encountered when dividing income_effect by original_earnings and
+      dividing substitution_effect by original_earnings in weekly hours worked calculation
+  date: 2025-01-27 21:39:20
