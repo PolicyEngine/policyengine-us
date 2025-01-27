@@ -1,41 +1,25 @@
 description: Texas limits its TANF eligibility to households with income below this amount, depending on household size.
 metadata:
-  label: Texas TANF monthly income limit
-  type: single_amount
-  threshold_unit: person
-  amount_unit: currency-USD
+  unit: currency-USD
   period: month
+  breakdown:
+    - range(1, 5)
+  label: Texas TANF monthly maximum allowable income
   reference:
     - title: TANF Cash Help
       href: https://www.hhs.texas.gov/services/financial/cash/tanf-cash-help
-brackets:
-  - threshold:
-      2023-01-01: 1
-      2025-01-01: 1
-    amount:
-      2023-01-01: 2_265
-      2025-01-01: 2_510
-  - threshold:
-      2023-01-01: 2
-      2025-01-01: 2
-    amount:
-      2023-01-01: 3_052
-      2025-01-01: 3_407
-  - threshold:
-      2023-01-01: 3
-      2025-01-01: 3
-    amount:
-      2023-01-01: 3_839
-      2025-01-01: 4_304
-  - threshold:
-      2023-01-01: 4
-      2025-01-01: 4
-    amount:
-      2023-01-01: 4_625
-      2025-01-01: 5_200
-  - threshold:
-      2023-01-01: 5
-      2025-01-01: 5
-    amount:
-      2023-01-01: 5_412
-      2025-01-01: 6_097
+1:
+ 2023-01-01: 2_265
+ 2025-01-01: 2_510
+2:
+ 2023-01-01: 3_052
+ 2025-01-01: 3_407
+3:
+ 2023-01-01: 3_839
+ 2025-01-01: 4_304
+4:
+ 2023-01-01: 4_625
+ 2025-01-01: 5_200
+5:
+ 2023-01-01: 5_412
+ 2025-01-01: 6_097
