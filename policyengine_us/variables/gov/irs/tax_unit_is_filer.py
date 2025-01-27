@@ -28,8 +28,8 @@ class tax_unit_is_filer(Variable):
     (II) total gross income in excess of the standard deduction, or
     (ii) for whom the standard deduction is zero under section 63(c)(6).
     (D) For purposes of this subsection—
-    (i) The terms “standard deduction”, “basic standard deduction” and “additional standard deduction” have the respective meanings given such terms by section 63(c).
-    (ii) The term “exemption amount” has the meaning given such term by section 151(d). In the case of an individual described in section 151(d)(2), the exemption amount shall be zero.
+    (i) The terms "standard deduction", "basic standard deduction" and "additional standard deduction" have the respective meanings given such terms by section 63(c).
+    (ii) The term "exemption amount" has the meaning given such term by section 151(d). In the case of an individual described in section 151(d)(2), the exemption amount shall be zero.
     """
 
     def formula(tax_unit, period, parameters):

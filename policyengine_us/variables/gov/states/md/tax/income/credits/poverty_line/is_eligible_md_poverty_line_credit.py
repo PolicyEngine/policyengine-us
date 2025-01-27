@@ -11,7 +11,7 @@ class is_eligible_md_poverty_line_credit(Variable):
     defined_for = StateCode.MD
 
     def formula(tax_unit, period, parameters):
-        # (3)    “Eligible low income taxpayer” means an individual, or an
+        # (3)    "Eligible low income taxpayer" means an individual, or an
         # individual and the individual’s spouse if they file a joint income
         # tax return:
         # (i)    whose federal adjusted gross income as modified under

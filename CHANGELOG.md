@@ -5,6 +5,118 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.182.0] - 2025-01-27 12:51:08
+
+### Added
+
+- NYC school tax credit phase out reform.
+
+## [1.181.0] - 2025-01-24 16:56:04
+
+### Added
+
+- Optional State Sales Tax Rates.
+
+## [1.180.4] - 2025-01-24 16:12:31
+
+## [1.180.3] - 2025-01-24 16:08:29
+
+### Fixed
+
+- Include the New York 2025 Inflation Rebates in the net income tree.
+
+## [1.180.2] - 2025-01-23 16:58:25
+
+### Fixed
+
+- Invalid value when dividing employment_income by total_earnings in marginal tax rate calculation.
+
+## [1.180.1] - 2025-01-22 06:23:40
+
+### Fixed
+
+- Limit DC PTC to filers that take it up in the reform.
+
+## [1.180.0] - 2025-01-21 20:24:31
+
+### Added
+
+- 2024 California YCTC and Foster Youth Credit parameters.
+
+## [1.179.0] - 2025-01-21 05:05:10
+
+### Added
+
+- 2025 New York Inflation Rebates.
+
+## [1.178.0] - 2025-01-21 04:58:51
+
+### Added
+
+- Maryland standard deduction values 2024.
+
+## [1.177.0] - 2025-01-20 15:53:06
+
+### Added
+
+- Limit the SALT deduction to property taxes reform.
+
+## [1.176.3] - 2025-01-20 05:43:12
+
+### Fixed
+
+- Apply the 5 year forward check to the SALT phase out reform.
+
+## [1.176.2] - 2025-01-18 00:44:16
+
+### Fixed
+
+- DC property tax credit phase-out calculation.
+
+## [1.176.1] - 2025-01-17 14:54:51
+
+### Fixed
+
+- DC property tax credit reform 5 year forward check.
+
+## [1.176.0] - 2025-01-17 04:08:48
+
+### Added
+
+- Puerto Rico low income credit.
+- Puerto Rico compensatory low income credit.
+
+## [1.175.0] - 2025-01-16 21:12:09
+
+### Added
+
+- Missouri 2024 and 2025 top income tax rate.
+- Missouri 2024 working family tax credit match.
+
+## [1.174.1] - 2025-01-16 20:40:42
+
+### Fixed
+
+- Limit CAPI to households with eligible aged or disabled filers.
+
+## [1.174.0] - 2025-01-15 21:19:28
+
+### Added
+
+- Colorado income tax rate 2024.
+
+## [1.173.0] - 2025-01-13 19:10:03
+
+### Added
+
+- References for New Jersey 2024 state income tax.
+
+## [1.172.1] - 2025-01-13 17:48:43
+
+### Fixed
+
+- 2024 Connecticut income tax rates for HOH and surviving spouses.
+
 ## [1.172.0] - 2025-01-13 01:59:31
 
 ### Added
@@ -10556,6 +10668,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.182.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.181.0...1.182.0
+[1.181.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.180.4...1.181.0
+[1.180.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.180.3...1.180.4
+[1.180.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.180.2...1.180.3
+[1.180.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.180.1...1.180.2
+[1.180.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.180.0...1.180.1
+[1.180.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.179.0...1.180.0
+[1.179.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.178.0...1.179.0
+[1.178.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.177.0...1.178.0
+[1.177.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.176.3...1.177.0
+[1.176.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.176.2...1.176.3
+[1.176.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.176.1...1.176.2
+[1.176.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.176.0...1.176.1
+[1.176.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.175.0...1.176.0
+[1.175.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.174.1...1.175.0
+[1.174.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.174.0...1.174.1
+[1.174.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.173.0...1.174.0
+[1.173.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.172.1...1.173.0
+[1.172.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.172.0...1.172.1
 [1.172.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.171.0...1.172.0
 [1.171.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.170.2...1.171.0
 [1.170.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.170.1...1.170.2

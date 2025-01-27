@@ -3,6 +3,7 @@ values:
   2021-01-01: 0
   2022-01-01: 32_490
   2023-01-01: 33_497
+  2024-01-01: 34_602
 
 metadata:
   unit: currency-USD
@@ -13,7 +14,7 @@ metadata:
     # The law specifies $30,000, indexed to inflation from 2022 onward.
     # It does not specify the base year, so we use specific values from
     # the forms.
-    - title: California Revenue and Taxation Code §17052.1(b)(1)
+    - title: California Revenue and Taxation Code §17052.1(b)(1)(B)(ii)
       href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=RTC&sectionNum=17052.1
     - title: Instructions for 2021 CalEITC Form 3514
       href: https://www.ftb.ca.gov/forms/2021/2021-3514-instructions.html
@@ -23,3 +24,5 @@ metadata:
       href: https://www.ftb.ca.gov/forms/2023/2023-3514-instructions.html
     - title: 2023 CalEITC Form 3514
       href: https://www.ftb.ca.gov/forms/2023/2023-3514.pdf#page=3
+    - title: 2024 CalEITC Form 3514
+      href: https://www.ftb.ca.gov/forms/2024/2024-3514.pdf#page=3
