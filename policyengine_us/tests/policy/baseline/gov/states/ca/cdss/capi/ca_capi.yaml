@@ -14,27 +14,6 @@
   output:
     ca_capi: 2_490
 
-- name: Couple, one person eligible
-  period: 2024
-  input:
-    people:
-      person1:
-        ssi_amount_if_eligible: 1_000
-        ca_capi_eligible_person: true
-        ssi_countable_income: 500
-      person2:
-        ssi_amount_if_eligible: 1_000
-        ca_capi_eligible_person: false
-        ssi_countable_income: 3_000
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-        ca_capi_eligible: true
-        spm_unit_is_married: true
-        ca_state_supplement_payment_standard: 4_000
-  output:
-    ca_capi: 5_480
-
 
 - name: Couple, both people eligible
   period: 2024
@@ -55,3 +34,61 @@
         ca_state_supplement_payment_standard: 4_000
   output:
     ca_capi: 1_480
+
+- name: Integration test, ineligible
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 20_000
+      person2:
+        age: 10
+        employment_income: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    ca_capi: 0
+
+- name: Integration test, ssi eligible
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 1_000
+        is_disabled: true
+      person2:
+        age: 10
+        employment_income: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    ssi: [11_316, 0]
+    ca_state_supplement_payment_standard: 9_264
+    ca_capi: 0
+
+- name: Integration test, not a Citizen
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 1_000
+        is_disabled: true
+        immigration_status: UNDOCUMENTED
+      person2:
+        age: 10
+        employment_income: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    ssi: 0
+    ca_state_supplement_payment_standard: 9_264
+    ca_capi: 20_570
