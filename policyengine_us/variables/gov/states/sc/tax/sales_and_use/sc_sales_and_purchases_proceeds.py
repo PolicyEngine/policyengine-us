@@ -7,3 +7,4 @@ class sc_sales_and_purchases_proceeds(Variable):
     label = "South Carolina sales and purchases proceeds"
     unit = USD
     definition_period = YEAR
+    defined_for = StateCode.SC

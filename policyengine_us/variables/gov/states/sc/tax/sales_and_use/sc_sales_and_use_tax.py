@@ -21,7 +21,7 @@ class sc_sales_and_use_tax(Variable):
         # sales and use tax rate with eligible exclusion
         eligible = tax_unit("sc_sales_and_use_exclusion_eligible", period)
         exclusion = p.exclusion.percentage * eligible
-        rate_applied = p.general - exclusion
+        applicable_rate = p.rate - exclusion
 
-        # return base amount * rate_applied
-        return taxable_sales_and_purchases * rate_applied
+        # return base amount * applicable_rate
+        return taxable_sales_and_purchases * applicable_rate
