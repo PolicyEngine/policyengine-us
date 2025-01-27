@@ -15,5 +15,5 @@ class ma_eaedc_disabled_income_eligible(Variable):
         p = parameters(period).gov.states.ma.dta.tcap.eaedc.income
         person = spm_unit.members
         disabled_income = person("ma_eaedc_disabled_earned_income", period)
-
+        # All disabled people should have income less than the limit
         return spm_unit.all(disabled_income < p.disabled_limit)
