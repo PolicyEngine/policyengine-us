@@ -8,7 +8,8 @@ class aca_ptc(Variable):
     unit = USD
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/36B"
-
+    defined_for = "is_aca_ptc_eligible"
+    
     def formula(tax_unit, period, parameters):
         plan_cost = tax_unit("slspc", period)
         income = tax_unit("aca_magi", period)
