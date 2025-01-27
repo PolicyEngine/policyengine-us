@@ -1,8 +1,7 @@
 - name: Oregon LIHEAP region 1 
   period: 2021
   input: 
-    spm_unit_size: 1 
-    county: CURRY_COUNTY_OR
+    county_str: CURRY_COUNTY_OR
     state_code: OR
   output: 
-    region: REGION 1
+    or_liheap_in_region_one: True
