@@ -1,0 +1,19 @@
+description: VA MAP counts these income sources as unearned income.
+values:
+  2023-02-01:
+    - veterans_benefits
+    - rental_income
+    - alimony_income
+    - dividend_income
+    - interest_income
+    - miscellaneous_income
+    - pension_income
+    - unemployment_compensation
+    - gi_cash_assistance
+    - social_security
+    - ssi
+metadata:
+  unit: list
+  reference:
+    - title: VA Medical Assistance Programs
+      href: https://www.dss.virginia.gov/benefit/medical_assistance/index.cgi
