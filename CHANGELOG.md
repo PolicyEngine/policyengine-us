@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.182.2] - 2025-01-28 13:45:56
+
+### Fixed
+
+- California itemized deduction limits 2024.
+- California AMT parameters 2024.
+- California 2024 tax form references.
+
 ## [1.182.1] - 2025-01-27 21:39:20
 
 ### Fixed
@@ -10674,6 +10682,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.182.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.182.1...1.182.2
 [1.182.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.182.0...1.182.1
 [1.182.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.181.0...1.182.0
 [1.181.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.180.4...1.181.0
