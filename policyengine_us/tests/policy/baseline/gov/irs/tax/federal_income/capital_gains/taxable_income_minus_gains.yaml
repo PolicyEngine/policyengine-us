@@ -1,0 +1,26 @@
+- name: has_qdiv_or_ltcg, taxable_income > computed_gains_after_1250_and_28_percent_rate_gains
+  period: 2019
+  input:
+    taxable_income: 3_000
+    computed_gains_after_1250_and_28_percent_rate_gains: 1_000
+    has_qdiv_or_ltcg: true
+  output: # (3000 - 1000) * 1
+    taxable_income_minus_gains: 2_000
+
+- name: has_qdiv_or_ltcg, taxable_income < computed_gains_after_1250_and_28_percent_rate_gains
+  period: 2019
+  input:
+    taxable_income: 3_000
+    computed_gains_after_1250_and_28_percent_rate_gains: 4_000
+    has_qdiv_or_ltcg: true
+  output: # (3000 - 4000) * 1
+    taxable_income_minus_gains: 0
+
+- name: no has_qdiv_or_ltcg
+  period: 2019
+  input:
+    taxable_income: 3_000
+    computed_gains_after_1250_and_28_percent_rate_gains: 1_000
+    has_qdiv_or_ltcg: false
+  output: # (3000 - 1000) * 0
+    taxable_income_minus_gains: 0
