@@ -18,6 +18,10 @@ metadata:
   unit: currency-USD
   label: SSI outlays
   reference:
+    - title: CBO Details About Baseline Projections for Selected Programs | Supplemental Security Income | June 2024
+      # Source: https://www.cbo.gov/data/baseline-projections-selected-programs#21
+      # Row 13 (Estimated Outlays) minus 23 (Demonstration Projects)
+      href: https://www.cbo.gov/system/files/2024-06/51313-2024-06-ssi.xlsx
     - title: CBO Details About Baseline Projections for Selected Programs | Supplemental Security Income | January 2025
       # Source: https://www.cbo.gov/data/baseline-projections-selected-programs#21
       # Row 13 (Estimated Outlays) minus 23 (Demonstration Projects)

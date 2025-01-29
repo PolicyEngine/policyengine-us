@@ -19,8 +19,13 @@ metadata:
   unit: currency-USD
   label: Unemployment compensation outlays
   reference:
+    - title: CBO Details About Baseline Projections for Selected Programs | Unemployment Compensation | June 2024
+      # Source: https://www.cbo.gov/data/baseline-projections-selected-programs#24
+      # Row 15: Estimated Outlays
+      # Note: Includes TAA, a small amount that might be included in microdata.
+      href: https://www.cbo.gov/system/files/2024-06/51316-2024-06-unemployment.xlsx
     - title: CBO Details About Baseline Projections for Selected Programs | Unemployment Compensation | January 2025
       # Source: https://www.cbo.gov/data/baseline-projections-selected-programs#22
-      # Row 15: Estimated Outlays
+      # Row 16: Estimated Outlays
       # Note: Includes TAA, a small amount that might be included in microdata.
       href: https://www.cbo.gov/system/files/2025-01/51316-2025-01-unemployment.xlsx

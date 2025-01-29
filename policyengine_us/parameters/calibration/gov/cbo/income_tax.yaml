@@ -19,6 +19,11 @@ metadata:
   unit: currency-USD
   label: Income tax revenue
   reference:
+    - title: Revenue Projections, by Category | Congressional Budget Office | June 2024
+      # Source: https://www.cbo.gov/data/budget-economic-data
+      # Sheet 3.Individual Income Tax Details
+      # Row 73: Individual income yax receipts ($B, FY)m
+      href: https://www.cbo.gov/system/files/2024-06/51138-2024-06-Revenue.xlsx
     - title: Revenue Projections, by Category | Congressional Budget Office | January 2025
       # Source: https://www.cbo.gov/data/budget-economic-data
       # Sheet 3.Individual Income Tax Details

@@ -72,6 +72,10 @@ metadata:
     unit: currency-USD
     label: Total SNAP outlays
     reference:
+      - title: CBO Baseline Projections - SNAP | June 2024
+        # Source: https://www.cbo.gov/data/baseline-projections-selected-programs
+        # Row 19: Total Benefits > Budget Authority
+        href: https://www.cbo.gov/system/files/2024-06/51312-2024-06-snap.xlsx
       - title: CBO Baseline Projections - SNAP | January 2025
         # Source: https://www.cbo.gov/data/baseline-projections-selected-programs
         # Row 19: Total Benefits > Budget Authority
