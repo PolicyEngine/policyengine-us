@@ -1,0 +1,19 @@
+- name: Single person with $40,000 of employment income
+  absolute_error_margin: 0.01
+  period: 2023
+  input:
+    ia_taxable_income_consolidated: 40_000
+    filing_status: SINGLE
+    state_code: IA
+  output:  # from hand calculation following IA 6251 form
+    ia_regular_tax_consolidated: 1_990.8
+
+- name: Joint person with $40,000 of employment income
+  absolute_error_margin: 0.01
+  period: 2023
+  input:
+    ia_taxable_income_consolidated: 40_000
+    filing_status: JOINT
+    state_code: IA
+  output:  # from hand calculation following IA 6251 form
+    ia_regular_tax_consolidated: 1_877.6
