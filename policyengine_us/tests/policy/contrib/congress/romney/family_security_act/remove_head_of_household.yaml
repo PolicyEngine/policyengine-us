@@ -13,7 +13,7 @@
   output:
     filing_status: SINGLE
 
-- name: Remove head of household filing status for widowed filers without children
+- name: Remove head of household filing status for surviving spouse filers without children
   period: 2023
   reforms: policyengine_us.reforms.congress.romney.family_security_act.remove_head_of_household.remove_head_of_household
   input:
@@ -21,7 +21,7 @@
     people:
       head: 
         is_tax_unit_head: true
-        is_widowed: true
+        is_surviving_spouse: true
     tax_units:
       tax_unit:
         members: [head]

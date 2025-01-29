@@ -69,12 +69,12 @@
   output:
     ct_property_tax_credit: 20
 
-- name: WIDOW with $90,500  agi and  $320 property tax and not eligible for property tax credit
+- name: SURVIVING SPOUSE with $90,500  agi and  $320 property tax and not eligible for property tax credit
   period: 2021
   input:
     ct_property_tax_credit_eligible: false
     ct_agi: 90_500
-    filing_status: WIDOW
+    filing_status: SURVIVING_SPOUSE
     real_estate_taxes: 320
   output:
     ct_property_tax_credit: 0

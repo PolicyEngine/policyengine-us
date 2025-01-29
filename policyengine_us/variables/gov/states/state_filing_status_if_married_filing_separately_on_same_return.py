@@ -5,7 +5,7 @@ class StateFilingStatusIfMarriedFilingSeparatelyOnSameReturn(Enum):
     SINGLE = "Single"
     SEPARATE = "Separate"
     HEAD_OF_HOUSEHOLD = "Head of household"
-    SURVIVING_SPOUSE = "Widow(er)"
+    SURVIVING_SPOUSE = "Surviving spouse"
 
 
 class state_filing_status_if_married_filing_separately_on_same_return(
