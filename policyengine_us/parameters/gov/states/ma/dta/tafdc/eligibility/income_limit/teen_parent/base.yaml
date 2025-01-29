@@ -1,0 +1,45 @@
+description: Massachusetts provides the Transitional Aid to Families with Dependent Children program to families in private housing with gross income below this limit, based on family size.
+
+metadata:
+  type: single_amount
+  period: month
+  threshold_unit: int
+  amount_unit: currency-USD
+  label: Massachusetts TAFDC private household eligibility limit base amount 
+  reference:
+  - title: Massachusetts Transitional Aid to Families with Dependent Children (TAFDC)
+    href: https://www.mass.gov/how-to/transitional-aid-to-families-with-dependent-children-tafdc
+
+brackets:
+  - threshold:
+      2023-01-01: 0
+    amount:
+      2023-01-01: 2_510
+  - threshold:
+      2023-01-01: 2
+    amount:
+      2023-01-01: 3_407
+  - threshold:
+      2023-01-01: 3
+    amount:
+      2023-01-01: 4_303
+  - threshold:
+      2023-01-01: 4
+    amount:
+      2023-01-01: 5_200
+  - threshold:
+      2023-01-01: 5
+    amount:
+      2023-01-01: 6_097
+  - threshold:
+      2023-01-01: 6
+    amount:
+      2023-01-01: 6_993
+  - threshold:
+      2023-01-01: 7
+    amount:
+      2023-01-01: 7_890
+  - threshold:
+      2023-01-01: 8
+    amount:
+      2023-01-01: 8_787
