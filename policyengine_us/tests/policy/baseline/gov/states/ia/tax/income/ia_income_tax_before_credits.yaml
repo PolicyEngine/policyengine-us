@@ -49,3 +49,30 @@
         state_code: IA
   output:
     ia_income_tax_before_credits: 1_500
+
+- name: Post 2023, only the consolidated structure applies
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        ia_base_tax_indiv: 700
+        ia_amt_indiv: 100
+        ia_base_tax_joint: 1_500
+        ia_amt_joint: 50
+      person2:
+        is_tax_unit_spouse: true
+        ia_base_tax_indiv: 600
+        ia_amt_indiv: 100
+        ia_base_tax_joint: 0
+        ia_amt_joint: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ia_income_tax_consolidated: 4_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    ia_income_tax_before_credits: 4_000
