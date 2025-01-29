@@ -1,0 +1,26 @@
+description: Iowa subtracts these sources from taxable income on and after 2023.
+values:
+  2021-01-01:
+    # Line 1B
+    - us_govt_interest
+    # Dividends from federal securitites
+    # Line 5B 
+    - taxable_social_security
+    # Line 6B
+    - military_service_income
+    # Line 7B
+    - ia_pension_exclusion
+    # Railroad unemployment income 
+    # Bonus Depreciation
+    # Iowa Health Insurance Deduction
+    # Iowa capital gains deduction
+
+metadata:
+  unit: list
+  period: year
+  label: Iowa taxable income subtractions
+  reference:
+  - title: 2023 IA1040 Iowa Income Tax Return
+    href: https://revenue.iowa.gov/media/2746/download?inline
+  - title: Iowa income tax law, 422.7 
+    href: https://www.legis.iowa.gov/docs/code/422.7.pdf
