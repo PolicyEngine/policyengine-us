@@ -41,6 +41,7 @@ class second_lowest_silver_plan_cost(Variable):
                 age.astype(int).astype(str),
                 "64+",
             ],
+            default="unknown",
         )
         eligible = person.tax_unit("is_ptc_eligible", period)
         per_person_cost = np.zeros_like(age)
