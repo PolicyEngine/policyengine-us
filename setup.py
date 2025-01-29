@@ -20,6 +20,7 @@ setup(
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
         "Programming Language :: Python :: 3.12",
+        "Programming Language :: Python :: 3.13",
         "Topic :: Scientific/Engineering :: Information Analysis",
     ],
     description="PolicyEngine tax and benefit system for the US",
@@ -48,7 +49,7 @@ setup(
             "coverage",
         ],
     },
-    python_requires=">=3.10,<3.13",
+    python_requires=">=3.10,<=3.13",
     entry_points={
         "console_scripts": [
             "policyengine-us = policyengine_us.tools.cli:main",
