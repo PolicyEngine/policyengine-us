@@ -19,7 +19,8 @@ class ia_pension_exclusion_eligible(Variable):
         # ... determine age eligibility
         age = person("age", period)
         age_eligible = age >= p.minimum_age
+        head_or_spouse_age_eligible = is_head_or_spouse & age_eligible
         # ... determine disability eligiblity
         is_disabled = person("is_permanently_and_totally_disabled", period)
         is_disabled_head_or_spouse = is_head_or_spouse & is_disabled
-        return age_eligible | is_disabled_head_or_spouse
+        return head_or_spouse_age_eligible | is_disabled_head_or_spouse

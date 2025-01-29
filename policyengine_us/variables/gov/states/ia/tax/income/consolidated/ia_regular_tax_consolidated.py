@@ -13,10 +13,7 @@ class ia_regular_tax_consolidated(Variable):
     def formula(tax_unit, period, parameters):
         taxable_income = tax_unit("ia_taxable_income_consolidated", period)
         p = parameters(period).gov.states.ia.tax.income.rates
-        filing_status = tax_unit(
-            "filing_status",
-            period,
-        )
+        filing_status = tax_unit("filing_status", period)
         joint = filing_status == filing_status.possible_values.JOINT
         return where(
             joint,
