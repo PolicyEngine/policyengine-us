@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ga_additional_standard_deduction(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Georgia Additional standard deduction"
+    label = "Georgia additional standard deduction"
     unit = USD
     definition_period = YEAR
     reference = (
