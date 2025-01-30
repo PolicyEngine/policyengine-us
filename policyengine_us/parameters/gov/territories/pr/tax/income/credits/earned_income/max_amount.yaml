@@ -1,14 +1,25 @@
 description: Puerto Rico provides this maximum earned income credit.
-values: 
-  2010-12-31: 350
-  2011-12-31: 400
-  2012-12-31: 450
-  2013-12-31: 500
-  2014-12-31: 550
-  2015-12-31: 600
+brackets:
+  - threshold: 
+      2010-12-31: 0
+    amount:
+      2010-12-31: 1656
+  - threshold: 
+      2010-12-31: 1
+    amount:
+      2010-12-31: 3864
+  - threshold: 
+      2010-12-31: 2
+    amount:
+      2010-12-31: 6072
+  - threshold: 
+      2010-12-31: 3
+    amount:
+      2010-12-31: 7173
 
 metadata:
-  unit: currency-USD
+  threshold_unit: child
+  amount_unit: currency-USD
   label: Puerto Rico earned income credit max amount
   period: year
   reference:
