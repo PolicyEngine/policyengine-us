@@ -9026,3 +9026,25 @@
     - Invalid value encountered when dividing income_effect by original_earnings and
       dividing substitution_effect by original_earnings in weekly hours worked calculation
   date: 2025-01-27 21:39:20
+- bump: patch
+  changes:
+    fixed:
+    - California itemized deduction limits 2024.
+    - California AMT parameters 2024.
+    - California 2024 tax form references.
+  date: 2025-01-28 13:45:56
+- bump: minor
+  changes:
+    added:
+    - New York 2024 tax form references.
+  date: 2025-01-29 01:21:20
+- bump: patch
+  changes:
+    fixed:
+    - Iowa income tax structure on and after 2023.
+  date: 2025-01-29 15:14:24
+- bump: minor
+  changes:
+    added:
+    - New York City 2024 tax form references.
+  date: 2025-01-29 20:49:54

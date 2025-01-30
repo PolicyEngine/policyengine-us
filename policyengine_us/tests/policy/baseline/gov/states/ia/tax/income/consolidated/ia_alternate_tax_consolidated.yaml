@@ -1,0 +1,19 @@
+- name: Elderly present
+  absolute_error_margin: 0.01
+  period: 2023
+  input:
+    ia_modified_income: 100_000
+    greater_age_head_spouse: 65
+    state_code: IA
+  output:  # from hand calculation following IA 6251 form
+    ia_alternate_tax_consolidated: 4_080
+
+- name: Elderly not present
+  absolute_error_margin: 0.01
+  period: 2023
+  input:
+    ia_modified_income: 100_000
+    greater_age_head_spouse: 64
+    state_code: IA
+  output:  # from hand calculation following IA 6251 form
+    ia_alternate_tax_consolidated: 5_190
