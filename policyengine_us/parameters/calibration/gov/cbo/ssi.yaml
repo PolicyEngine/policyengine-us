@@ -3,6 +3,7 @@ values:
   2022-01-01: 61_000_000_000
   2023-01-01: 60_090_000_000
   # Projected.
+  2024-01-01: 57_000_000_000
   2025-01-01: 63_900_000_000
   2026-01-01: 65_500_000_000
   2027-01-01: 67_500_000_000
@@ -19,10 +20,10 @@ metadata:
   label: SSI outlays
   reference:
     - title: CBO Details About Baseline Projections for Selected Programs | Supplemental Security Income | June 2024
-      # Source: https://www.cbo.gov/data/baseline-projections-selected-programs#21
+      # Source: https://www.cbo.gov/data/baseline-projections-selected-programs#20
       # Row 13 (Estimated Outlays) minus 23 (Demonstration Projects)
       href: https://www.cbo.gov/system/files/2024-06/51313-2024-06-ssi.xlsx
     - title: CBO Details About Baseline Projections for Selected Programs | Supplemental Security Income | January 2025
-      # Source: https://www.cbo.gov/data/baseline-projections-selected-programs#21
+      # Source: https://www.cbo.gov/data/baseline-projections-selected-programs#20  
       # Row 13 (Estimated Outlays) minus 23 (Demonstration Projects)
       href: https://www.cbo.gov/system/files/2025-01/51313-2025-01-ssi.xlsx
