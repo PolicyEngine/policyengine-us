@@ -1,5 +1,6 @@
 from policyengine_us.model_api import *
 
+
 class liheap_payout(Variable):
     value_type = float
     entity = SPMUnit
@@ -22,5 +23,5 @@ class liheap_payout(Variable):
         return where(
             is_region1,
             p.payout.region_one[unit_size][income_range][utility_type],
-            p.payout.region_two[unit_size][income_range][utility_type]
+            p.payout.region_two[unit_size][income_range][utility_type],
         )
