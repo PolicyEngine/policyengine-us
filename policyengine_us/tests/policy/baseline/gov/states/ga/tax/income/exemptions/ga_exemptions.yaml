@@ -34,7 +34,7 @@
   output:
     ga_exemptions: 6_700
 
-- name: Widow filer
+- name: Surviving spouse filer
   period: 2021
   input:
     filing_status: SURVIVING_SPOUSE
@@ -52,7 +52,7 @@
   output:
     ga_exemptions: 16_000
 
-- name: 2024 Widow filer
+- name: 2024 Surviving spouse filer
   period: 2024
   input:
     filing_status: SURVIVING_SPOUSE

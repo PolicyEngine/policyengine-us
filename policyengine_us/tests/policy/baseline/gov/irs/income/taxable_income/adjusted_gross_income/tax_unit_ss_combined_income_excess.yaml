@@ -88,7 +88,7 @@
   output:
     tax_unit_ss_combined_income_excess: 100
 
-- name: Widow filing with combined income greater than base amount
+- name: Surviving spouse filing with combined income greater than base amount
   period: 2022
   input:
     tax_unit_combined_income_for_social_security_taxability: 80_000
@@ -97,7 +97,7 @@
   output:
     tax_unit_ss_combined_income_excess: 55_000
 
-- name: Widow filing with combined income less than base amount
+- name: Surviving spouse filing with combined income less than base amount
   period: 2022
   input:
     tax_unit_combined_income_for_social_security_taxability: 15_000

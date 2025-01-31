@@ -1,4 +1,4 @@
-description: Minnesota levies income taxes at these rates for filers who file as widow.
+description: Minnesota levies income taxes at these rates for filers who file as surviving spouse.
 brackets:
   - threshold:
       2021-01-01: 0
@@ -54,7 +54,7 @@ metadata:
   threshold_unit: currency-USD
   rate_unit: /1
   threshold_period: year
-  label: Minnesota widow income tax rates
+  label: Minnesota surviving spouse income tax rates
   reference:
   - title: 2023 Minnesota Statutes, 290.06 RATES OF TAX; CREDITS. Subd. 2c.Schedules of rates for individuals, estates, and trusts.
     href: https://www.revisor.mn.gov/statutes/cite/290.06#stat.290.06.2c

@@ -30,7 +30,7 @@ class hi_taxable_income_for_alternative_tax(Variable):
         reduced_taxable_income = taxable_income - smaller_net_capital_gain
         cap_single = p.rates.single.thresholds[6]
         cap_joint = p.rates.joint.thresholds[6]
-        cap_widow = p.rates.surviving_spouse.thresholds[6]
+        cap_surviving_spouse = p.rates.surviving_spouse.thresholds[6]
         cap_separate = p.rates.separate.thresholds[6]
         cap_hoh = p.rates.head_of_household.thresholds[6]
         statuses = filing_status.possible_values
@@ -45,7 +45,7 @@ class hi_taxable_income_for_alternative_tax(Variable):
             [
                 cap_single,
                 cap_joint,
-                cap_widow,
+                cap_surviving_spouse,
                 cap_separate,
                 cap_hoh,
             ],

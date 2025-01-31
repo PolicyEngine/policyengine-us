@@ -1,9 +1,9 @@
-description: Idaho taxes income of widow filers at this rate.
+description: Idaho taxes income of surviving spouse filers at this rate.
 metadata:
   type: marginal_rate
   threshold_unit: currency-USD
   rate_unit: /1
-  label: Idaho widow filers income tax schedule
+  label: Idaho surviving spouse filers income tax schedule
   reference:
     - title: Idaho State Tax Comission - Individual Income Tax Rate Schedule
       href: https://tax.idaho.gov/taxes/income-tax/individual-income/individual-income-tax-rate-schedule/
@@ -11,7 +11,7 @@ metadata:
       href: https://casetext.com/regulation/idaho-administrative-code/title-idapa-35-tax-commission-state/rule-350101-income-tax-administrative-rules/section-350101075-tax-on-individuals-estates-and-trusts
     - title: IDAHO STATUTES, TITLE 63, CHAPTER 30, SECTION 63-3024 (2)(a)
       href: https://legislature.idaho.gov/statutesrules/idstat/title63/t63ch30/sect63-3024/ 
-    # The Widow filing status is treated as married
+    # The surviving spouse filing status is treated as married
     - title: IDAHO STATUTES, TITLE 63, CHAPTER 30, SECTION 63-3024(2)(b)
       href: https://legislature.idaho.gov/statutesrules/idstat/title63/t63ch30/sect63-3024/#:~:text=(b)%20For%20taxpayers%20filing%20a,five%20thousand%20dollars%20(%245%2C000)
     # Bill to update the structure post 2024
