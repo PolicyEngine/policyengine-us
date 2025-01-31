@@ -2,11 +2,13 @@ description: North Carolina Subsidized Child Care Market Rates for Child Care Ce
 metadata:
   unit: currency-USD
   period: month
+  breakdown:
+    - county_str
+    - scca_age_group
   reference:
     title: Subsidized Child Care Market Rates for Child Care Centers
     href: https://ncchildcare.ncdhhs.gov/Portals/0/documents/pdf/M/Market_Rates_Centers_Eff_10-1.pdf?ver=9w52alSPhmrmo0N9gGVMEw%3d%3d
     href: https://docs.google.com/spreadsheets/d/1y7p8qkiOrMAM42rtSwT_ZXeA5tzew4edNkrTXACxf4M/edit?gid=1339413807#gid=1339413807
-
 Alamance:
   INFANT:
     2023-10-01: 956

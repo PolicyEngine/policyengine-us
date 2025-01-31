@@ -12,7 +12,7 @@ class nc_scca_market_rate(Variable):
     def formula(person, period, parameters):
         p = parameters(period).gov.states.nc.ncdhhs.scca
 
-        # is this the right way to get the county string from a person?
+        # is this the right way to get the county string from a person? check with Pavel
         county = person.household("county_str", period)
 
         # get child's age group

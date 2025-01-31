@@ -1,94 +1,43 @@
-- name: Child under 12 is eligible, return true.
+- name: One child, not disabled, age < 13, eligible.
+  period: 2023
+  input:
+    is_disabled: false
+    is_tax_unit_dependent: true
+    age: 12
+    state_code: NC
+  output:
+    nc_scca_child_eligible: 
+      2023-01: true
+
+- name: One child, not disabled, age >= 13, ineligible.
+  period: 2023
+  input:
+    is_disabled: false
+    is_tax_unit_dependent: true
+    age: 13
+    state_code: NC
+  output:
+    nc_scca_child_eligible: 
+      2023-01: false
+
+- name: One child, disabled, age < 19, eligible.
   period: 2024
   input:
-    people:
-      person1:
-        age: 30
-      child1:
-        age: 12
-    spm_units:
-      spm_unit:
-        members: [person1, child1]
-    households:
-      household:
-        members: [person1, child1]
-        state_code: NC
+    is_disabled: true
+    is_tax_unit_dependent: true
+    age: 18
+    state_code: NC
   output:
-    nc_scca_child_age_eligible: true
+    nc_scca_child_eligible: 
+      2022-12: true
 
-- name: Child above 12 is ineligible, return false.
+- name: One child, disabled, age >= 19, ineligible.
   period: 2024
   input:
-    people:
-      person1:
-        age: 30
-      child1:
-        age: 13
-        is_disabled: false
-    spm_units:
-      spm_unit:
-        members: [person1, child1]
-    households:
-      household:
-        members: [person1, child1]
-        state_code: NC
+    is_disabled: true
+    is_tax_unit_dependent: true
+    age: 19
+    state_code: NC
   output:
-    nc_scca_child_age_eligible: false
-
-- name: Child above 12 and under 17 with disability is eligible, return true
-  period: 2024
-  input:
-    people:
-      person1:
-        age: 40
-      child1:
-        age: 16
-        is_disabled: true
-    spm_units:
-      spm_unit:
-        members: [person1, child1]
-    households:
-      household:
-        members: [person1, child1]
-        state_code: NC
-  output:
-    nc_scca_child_age_eligible: true
-
-- name: Child above 12 and under 17 without disability is ineligible, return false
-  period: 2024
-  input:
-    people:
-      person1:
-        age: 50
-      child1:
-        age: 16
-        is_disabled: false
-    spm_units:
-      spm_unit:
-        members: [person1, child1]
-    households:
-      household:
-        members: [person1, child1]
-        state_code: NC
-  output:
-    nc_scca_child_age_eligible: false
-
-
-- name: Child above 17 with disability is ineligible, return false
-  period: 2024
-  input:
-    people:
-      person1:
-        age: 50
-      child1:
-        age: 17
-        is_disabled: true
-    spm_units:
-      spm_unit:
-        members: [person1, child1]
-    households:
-      household:
-        members: [person1, child1]
-        state_code: NC
-  output:
-    nc_scca_child_age_eligible: false
+    nc_scca_child_eligible: 
+      2022-12: false

@@ -16,4 +16,4 @@ class nc_scca_child_age_eligible(Variable):
         age_limit = where(is_disabled, p.disabled_age_limit, p.age_limit)
         age_eligible = person("age", period.this_year) < age_limit
     
-        return age_eligible
+        return age_eligible & person("is_tax_unit_dependent", period.this_year)
