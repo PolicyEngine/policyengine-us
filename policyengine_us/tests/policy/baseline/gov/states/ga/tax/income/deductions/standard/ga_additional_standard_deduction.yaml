@@ -1,0 +1,21 @@
+- name: 2023 Joint filing - one blind spouse
+  period: 2023
+  input:
+    filing_status: JOINT
+    age_head: 50
+    blind_head: false
+    age_spouse: 30
+    blind_spouse: true
+    state_code: GA
+  output:
+    ga_additional_standard_deduction: 1_300
+
+- name: Head of household  - one blind and aged head
+  period: 2023
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    age_head: 65
+    blind_head: true
+    state_code: GA
+  output:
+    ga_additional_standard_deduction: 2_600
