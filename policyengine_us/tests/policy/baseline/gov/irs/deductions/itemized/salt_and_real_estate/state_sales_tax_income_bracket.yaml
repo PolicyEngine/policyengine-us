@@ -1,0 +1,27 @@
+- name: First income bracket
+  period: 2023
+  input:
+    adjusted_gross_income: 10_000
+  output:
+    state_sales_tax_income_bracket: 1
+
+- name: Interest in second income bracket
+  period: 2023
+  input:
+    tax_exempt_interest_income: 45_000
+  output:
+    state_sales_tax_income_bracket: 4
+
+- name: Income in top income bracket
+  period: 2023
+  input:
+    veterans_benefits: 300_000
+  output:
+    state_sales_tax_income_bracket: 19
+
+- name: Workers compensation in top income bracket
+  period: 2023
+  input:
+    workers_compensation: 320_000
+  output:
+    state_sales_tax_income_bracket: 19

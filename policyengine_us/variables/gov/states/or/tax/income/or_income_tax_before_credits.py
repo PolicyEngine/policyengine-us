@@ -31,6 +31,6 @@ class or_income_tax_before_credits(Variable):
                 rates.joint.calc(income),
                 rates.head_of_household.calc(income),
                 rates.separate.calc(income),
-                rates.widow.calc(income),
+                rates.surviving_spouse.calc(income),
             ],
         )

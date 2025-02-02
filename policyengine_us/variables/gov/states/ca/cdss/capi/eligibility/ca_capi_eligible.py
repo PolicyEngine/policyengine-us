@@ -12,4 +12,7 @@ class ca_capi_eligible(Variable):
     def formula(spm_unit, period, parameters):
         resource_eligible = spm_unit("ca_capi_resource_eligible", period)
         income_eligible = spm_unit("ca_capi_income_eligible", period)
-        return resource_eligible & income_eligible
+        has_eligible_person = (
+            add(spm_unit, period, ["ca_capi_eligible_person"]) > 0
+        )
+        return resource_eligible & income_eligible & has_eligible_person

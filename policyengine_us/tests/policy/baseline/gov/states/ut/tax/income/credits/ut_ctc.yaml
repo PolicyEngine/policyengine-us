@@ -67,7 +67,7 @@
   output: 
     ut_ctc: 0
 
-- name: Widow with 1 child , partially phased out
+- name: Surviving spouse with 1 child , partially phased out
   period: 2024
   input:
     people:
@@ -90,7 +90,7 @@
   output: 
     ut_ctc: 400
 
-- name: Widow with one qualifying child , partially phased out
+- name: Surviving spouse with one qualifying child , partially phased out
   period: 2024
   input:
     people:
@@ -116,7 +116,7 @@
   output: 
     ut_ctc: 400
 
-- name: Widow with two children , partially phased out
+- name: Surviving spouse with two children , partially phased out
   period: 2024
   input:
     people:
@@ -142,7 +142,7 @@
   output: 
     ut_ctc: 1_400
 
-- name: Widow with two children , partially phased out with interest income
+- name: Surviving spouse with two children , partially phased out with interest income
   period: 2024
   input:
     people:

@@ -126,7 +126,7 @@
   output:  # hand calculated to avoid whole-dollar rounding problems
     nd_income_tax_before_credits: 3_966.7
 
-- name: Test 15 (WIDOW), North Dakota income tax before credits for taxable income below or equal 74750
+- name: Test 15 (SURVIVING SPOUSE), North Dakota income tax before credits for taxable income below or equal 74750
   period: 2023
   input:
     filing_status: SURVIVING_SPOUSE
@@ -135,7 +135,7 @@
   output:  # hand calculated to avoid whole-dollar rounding problems
     nd_income_tax_before_credits: 0
 
-- name: Test 16 (WIDOW), North Dakota income tax before credits for taxable income above 74750 and below 275100
+- name: Test 16 (SURVIVING SPOUSE), North Dakota income tax before credits for taxable income above 74750 and below 275100
   period: 2023
   input:
     filing_status: SURVIVING_SPOUSE
@@ -145,7 +145,7 @@
     #(84750-74750)*0.0195 = 195
     nd_income_tax_before_credits: 195
 
-- name: Test 17 (WIDOW), North Dakota income tax before credits for taxable income above 275200
+- name: Test 17 (SURVIVING SPOUSE), North Dakota income tax before credits for taxable income above 275200
   period: 2023
   input:
     filing_status: SURVIVING_SPOUSE
