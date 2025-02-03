@@ -49,7 +49,7 @@ setup(
             "coverage",
         ],
     },
-    python_requires=">=3.10,<=3.13",
+    python_requires=">=3.10,<=3.13.1",
     entry_points={
         "console_scripts": [
             "policyengine-us = policyengine_us.tools.cli:main",
