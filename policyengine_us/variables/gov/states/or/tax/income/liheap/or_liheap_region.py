@@ -6,7 +6,7 @@ class or_liheap_in_region_one(Variable):
     entity = SPMUnit
     definition_period = YEAR
     defined_for = StateCode.OR
-    label = "LIHEAP Region"
+    label = "In Oregon LIHEAP Region One"
     reference = "https://www.oregon.gov/ohcs/energy-weatherization/Documents/2021-Energy-Assistance-Manual.pdf#page=55"
 
     def formula(spm_unit, period, parameters):

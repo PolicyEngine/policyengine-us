@@ -1,8 +1,13 @@
-description: Oregon defines the multiplier for the upper income limit of range three LIHEAP payout.
+description: Oregon multiplies the upper income limit of Range Three by 0.75 under the Low Income Home Energy Assistance Program.
 values:
   2021-01-01: 0.75
 metadata:
   period: year
   unit: /1
-  label: Multiplier for upper income limit of range three. 
+  label: Oregon LIHEAP range three multiplier
+  reference:
+    - title: LIHEAP and OEAP Energy Assistance Intake Operations Manual for Program Year 2021
+      href: "https://www.oregon.gov/ohcs/energy-weatherization/Documents/2021-Energy-Assistance-Manual.pdf#page=55"
+      # multiplier was mathematically derived from the Benefit matrix 
+ 
 
