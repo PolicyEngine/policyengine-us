@@ -24,7 +24,7 @@
         members: [person1, person2, person3]
         state_fips: 6  # CA
         county_fips: 37  # Los Angeles County has two zip3-defined rating areas
-        aca_zip3_ca_county_la: 911  # e.g., Pasadena (91105)
+        three_digit_zip_code: 911  # e.g., Pasadena (91105)
   output:
     tax_unit_medicaid_income_level: 3.0395136  # greater than 2.66 CA CHIP limit
     is_medicaid_eligible: [false, false, false]
@@ -66,7 +66,7 @@
         members: [person1, person2, person3]
         state_fips: 6  # CA
         county_fips: 37  # Los Angeles County has two zip3-defined rating areas
-        aca_zip3_ca_county_la: 904  # e.g., Santa Monica (90405)
+        three_digit_zip_code: 904  # e.g., Santa Monica (90405)
   output:
     tax_unit_medicaid_income_level: 3.0395136  # greater than 2.66 CA CHIP limit
     is_medicaid_eligible: [false, false, false]
@@ -114,7 +114,7 @@
         members: [person1, person2, person3]
         state_fips: 6  # CA
         county_fips: 37  # Los Angeles County has two zip3-defined rating areas
-        aca_zip3_ca_county_la: 908  # e.g., Long Beach (90805)
+        three_digit_zip_code: 908  # e.g., Long Beach (90805)
   output:
     tax_unit_medicaid_income_level: 2.413516  # less than 2.66 CA CHIP limit
     is_medicaid_eligible: [false, false, true]  # KFF ACA calculator misses this
@@ -156,7 +156,7 @@
         members: [person1, person2, person3]
         state_fips: 6  # CA
         county_fips: 37  # Los Angeles County has two zip3-defined rating areas
-        aca_zip3_ca_county_la: 905  # e.g., Torrance (90505)
+        three_digit_zip_code: 905  # e.g., Torrance (90505)
   output:
     tax_unit_medicaid_income_level: 2.413516  # less than 2.66 CA CHIP limit
     is_medicaid_eligible: [false, false, true]  # KFF ACA calculator misses this
