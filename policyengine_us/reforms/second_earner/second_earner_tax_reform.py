@@ -684,8 +684,7 @@ def create_second_earner_tax() -> Reform:
             line44 = dwks14
 
             # Apply different thresholds for primary/secondary for capital gains
-
-            cg = parameters(period).gov.irs.capital_gains.brackets
+            cg = p.capital_gains.brackets
             primary_line45 = max_(
                 0, cg.thresholds["1"][filing_status] - line44
             )
