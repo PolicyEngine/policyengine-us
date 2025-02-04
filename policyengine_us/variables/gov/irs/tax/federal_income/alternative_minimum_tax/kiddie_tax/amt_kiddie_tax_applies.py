@@ -10,7 +10,7 @@ class amt_kiddie_tax_applies(Variable):
 
     def formula(tax_unit, period, parameters):
         age_head = tax_unit("age_head", period)
-        child = parameters(period).gov.irs.dependent.ineligible_age
-        young_head = (age_head != 0) & (age_head < child.non_student)
-        no_or_young_spouse = tax_unit("age_spouse", period) < child.non_student
+        p = parameters(period).gov.irs.dependent.ineligible_age
+        young_head = (age_head != 0) & (age_head < p.non_student)
+        no_or_young_spouse = tax_unit("age_spouse", period) < p.non_student
         return young_head & no_or_young_spouse
