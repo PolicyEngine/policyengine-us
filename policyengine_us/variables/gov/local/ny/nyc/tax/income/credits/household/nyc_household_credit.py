@@ -38,7 +38,7 @@ class nyc_household_credit(Variable):
                 p.separate_per_dependent.calc(federal_agi, right=True)
                 * tax_unit_size,
             ],
-            # Joint, head of household, and widow filers have a different
+            # Joint, head of household, and surviving spouse filers have a different
             # amount per person, varying with AGI.
             default=p.other_per_dependent.calc(federal_agi, right=True)
             * tax_unit_size,

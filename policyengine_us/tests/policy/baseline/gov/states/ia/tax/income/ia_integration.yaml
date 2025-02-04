@@ -342,3 +342,31 @@
         state_code: IA
   output:  # expected ia_income_tax from patched TAXSIM35 2023-06-23 version
     ia_income_tax: 14_590.43
+
+- name: Single person with $40,000 of employment income
+  absolute_error_margin: 1
+  period: 2023
+  input:
+    people:
+      person1:
+        employment_income: 40_000
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:  
+    ia_income_tax: 1_195
+
+- name: Single person with $40,000 of employment income
+  absolute_error_margin: 1
+  period: 2024
+  input:
+    people:
+      person1:
+        taxable_interest_income: 100_000
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:  
+    ia_taxable_income_consolidated: 85_400

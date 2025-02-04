@@ -32,9 +32,9 @@ class ny_supplemental_tax(Variable):
         single = rates.single
         joint = rates.joint
         hoh = rates.head_of_household
-        widow = rates.widow
+        surviving_spouse = rates.surviving_spouse
         separate = rates.separate
-        scales = [single, joint, hoh, widow, separate]
+        scales = [single, joint, hoh, surviving_spouse, separate]
 
         previous_agi_threshold = select(
             in_each_status,
@@ -60,7 +60,7 @@ class ny_supplemental_tax(Variable):
                 single.thresholds[-1],
                 joint.thresholds[-1],
                 hoh.thresholds[-1],
-                widow.thresholds[-1],
+                surviving_spouse.thresholds[-1],
                 separate.thresholds[-1],
             ],
         )
@@ -80,7 +80,7 @@ class ny_supplemental_tax(Variable):
                     p.recapture_base.single.calc(ny_taxable_income),
                     p.recapture_base.joint.calc(ny_taxable_income),
                     p.recapture_base.head_of_household.calc(ny_taxable_income),
-                    p.recapture_base.widow.calc(ny_taxable_income),
+                    p.recapture_base.surviving_spouse.calc(ny_taxable_income),
                     p.recapture_base.separate.calc(ny_taxable_income),
                 ],
             )
@@ -93,7 +93,9 @@ class ny_supplemental_tax(Variable):
                     p.incremental_benefit.head_of_household.calc(
                         ny_taxable_income
                     ),
-                    p.incremental_benefit.widow.calc(ny_taxable_income),
+                    p.incremental_benefit.surviving_spouse.calc(
+                        ny_taxable_income
+                    ),
                     p.incremental_benefit.separate.calc(ny_taxable_income),
                 ],
             )

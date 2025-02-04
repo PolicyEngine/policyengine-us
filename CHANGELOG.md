@@ -5,6 +5,62 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.187.1] - 2025-02-04 16:24:45
+
+### Fixed
+
+- Revert previous commit.
+
+## [1.187.0] - 2025-02-03 22:12:04
+
+### Added
+
+- January 2025 CBO economic and demographic outlooks.
+
+## [1.186.0] - 2025-01-31 15:42:23
+
+### Added
+
+- Change is_widowed to is_surviving_spouse.
+
+## [1.185.0] - 2025-01-31 14:12:32
+
+### Added
+
+- Georgia State Tax Code 2024 Updates.
+
+## [1.184.0] - 2025-01-29 20:49:54
+
+### Added
+
+- New York City 2024 tax form references.
+
+## [1.183.1] - 2025-01-29 15:14:24
+
+### Fixed
+
+- Iowa income tax structure on and after 2023.
+
+## [1.183.0] - 2025-01-29 01:21:20
+
+### Added
+
+- New York 2024 tax form references.
+
+## [1.182.2] - 2025-01-28 13:45:56
+
+### Fixed
+
+- California itemized deduction limits 2024.
+- California AMT parameters 2024.
+- California 2024 tax form references.
+
+## [1.182.1] - 2025-01-27 21:39:20
+
+### Fixed
+
+- Invalid value encountered when dividing income_effect by original_earnings and dividing substitution_effect by original_earnings in weekly hours worked calculation
+
 ## [1.182.0] - 2025-01-27 12:51:08
 
 ### Added
@@ -10668,6 +10724,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.187.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.187.0...1.187.1
+[1.187.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.186.0...1.187.0
+[1.186.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.185.0...1.186.0
+[1.185.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.184.0...1.185.0
+[1.184.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.183.1...1.184.0
+[1.183.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.183.0...1.183.1
+[1.183.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.182.2...1.183.0
+[1.182.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.182.1...1.182.2
+[1.182.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.182.0...1.182.1
 [1.182.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.181.0...1.182.0
 [1.181.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.180.4...1.181.0
 [1.180.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.180.3...1.180.4
