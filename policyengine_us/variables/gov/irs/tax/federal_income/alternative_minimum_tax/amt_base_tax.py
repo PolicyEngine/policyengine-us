@@ -13,17 +13,7 @@ class amt_base_tax(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.irs.income.amt
         filing_status = tax_unit("filing_status", period)
-        # Line 6
         reduced_income = tax_unit("amt_income_less_exemptions", period)
-        # Line 7 consists of 3 parts:
-        # Tax on Foreign income (not modelled)
-        # Tax on capital gains (Part III)
-        # Regular AMT tax
-        # If Form 6251, Part III is required, the regular AMT tax is calculated
-        # by using the smaller of the regular AMT tax calculated on the
-        # reduced income or the regular AMT tax calculated on the applied income
-
-        # Regular AMT tax:
         bracket_fraction = where(
             filing_status == filing_status.possible_values.SEPARATE,
             0.5,
