@@ -12,7 +12,7 @@ class slspc_age_0(Variable):
     def formula(household, period, parameters):
         # Skip if in a microsimulation. [THIS ISN'T WORKING]
         simulation: Simulation = household.simulation
-        if hasattr(simulation, "dataset"):
+        if simulation.is_over_dataset:
             return 0
         # Get state code and rating area
         state_code = household("state_code", period)
