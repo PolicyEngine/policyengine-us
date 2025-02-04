@@ -15,8 +15,11 @@ class pr_earned_income_credit(Variable):
             period
         ).gov.territories.pr.tax.income.credits.earned_income
 
+        # calculate # children
+        num_children = person.tax_unit("pr_earned_income_child_count", period)
+
+        # compute credit amount
         gross_income = person("pr_gross_income_person", period)
-        # if in the lower bracket: gross_income * rate. if higher, use max credit
         phase_in = min_(gross_income * p.phase_in_rate, p.max_amount)
         phase_out = p.phase_out_rate.calc(gross_income)
 

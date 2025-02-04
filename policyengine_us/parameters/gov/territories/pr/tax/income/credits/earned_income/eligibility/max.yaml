@@ -1,9 +1,10 @@
-description: Puerto Rico limits EITC eligibility to filers below or equal to this age.
+description: Puerto Rico limits the Earned Income Tax  Credit to filers of this age or below.  
 values:
   2023-01-01: 65
 metadata:
   unit: year
-  label: EITC maximum age
+  period: year
+  label: Puerto Rico earned income credit maximum age
   reference:
     - title: Schedule CT Individual, Earned Income Credit, 2023
       href: https://hacienda.pr.gov/sites/default/files/schedule_ct_rev._jul_5_23_informative_-_instructions.pdf#page=1

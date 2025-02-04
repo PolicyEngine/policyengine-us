@@ -1,3 +1,7 @@
+# TODO: phase-in folder, 0 child, 1 child, etc. for phase-out-rate
+# phase-out: based on children, based on income
+# non-married vs. married threshold based on number of kids, file for rate
+# pull those values separately in the variables
 description: Puerto Rico phases the earned income credit out at this rate of state gross income.
 brackets:
   # if below the threshold, no phase out
