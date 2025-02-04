@@ -1,27 +1,27 @@
-description: Puerto Rico phases the earned income credit in at this rate of state gross income.
-# determine phase in rate percentage by number of children
+description:
+# determine phase-out rate based on number of children
 brackets:
   - threshold: 
-      2010-12-31: 0
+      2023-01-01: 0
     rate:
-      2010-12-31: 0.15
+      2023-01-01: 0.15
   - threshold: 
-      2010-12-31: 1
+      2023-01-01: 1
     rate:
-      2010-12-31: 0.3398
+      2023-01-01: 0.2692
   - threshold: 
-      2010-12-31: 2
+      2023-01-01: 2
     rate:
-      2010-12-31: 0.4
+      2023-01-01: 0.3438
   - threshold: 
-      2010-12-31: 3
+      2023-01-01: 3
     rate:
-      2010-12-31: 0.4483
+      2023-01-01: 0.3421
 metadata:
   rate_unit: /1
   threshold_unit: child
-  type: marginal_rate
-  label: Puerto Rico earned income credit phase in rate
+  type_marginal: marginal_rate
+  label: Puerto Rico earned income credit phase out rate
   period: year
   reference:
     - title: P.R. Laws tit. 13, § 30211 (1)-(6)

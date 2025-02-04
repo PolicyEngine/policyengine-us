@@ -1,32 +1,25 @@
-# TODO: phase-in folder, 0 child, 1 child, etc. for phase-out-rate
-# phase-out: based on children, based on income
-# non-married vs. married threshold based on number of kids, file for rate
-# pull those values separately in the variables
 description: Puerto Rico phases the earned income credit out at this rate of state gross income.
+# determines the threshold for the phase-in rate to be applied based on # of children
 brackets:
-  # if below the threshold, no phase out
   - threshold: 
-      2010-12-31: 0
+      2023-01-01: 0
     rate:
-      2010-12-31: 0
-  # if in the middle bracket, phase out percentage which subtracts from phase in part
+      2023-01-01: 19_870
   - threshold: 
-      2010-12-31: 10_000
+      2023-01-01: 1
     rate:
-      2010-12-31: 0.02
-  # no percentage rate for any amount of income above upper limit
+      2023-01-01: 24_280
   - threshold: 
-      2010-12-31: 22_500
-      2011-12-31: 25_000
-      2012-12-31: 27_500
-      2013-12-31: 30_000
-      2014-12-31: 32_500
-      2015-12-31: 35_000
+      2023-01-01: 2
     rate:
-      2010-12-31: 0
+      2023-01-01: 27_590
+  - threshold: 
+      2023-01-01: 3
+    rate:
+      2023-01-01: 27_590
 metadata:
-  rate_unit: /1
-  threshold_unit: currency-USD
+  rate_unit: currency-USD
+  threshold_unit: child
   type_marginal: marginal_rate
   label: Puerto Rico earned income credit phase out rate
   period: year
