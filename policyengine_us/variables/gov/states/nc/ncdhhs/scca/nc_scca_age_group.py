@@ -7,7 +7,7 @@ class AgeGroup(Enum):
     THREE_TO_FIVE_YEAR_OLD = "3 - 5 Year olds"
     SCHOOL_AGE = "School age"
 
-class scca_age_group(Variable):
+class nc_scca_age_group(Variable):
     value_type = Enum
     possible_values = AgeGroup
     default_value = AgeGroup.INFANT
@@ -25,7 +25,7 @@ class scca_age_group(Variable):
             [
                 age < 2,
                 age < 3,
-                age >= 3 & age < 6,
+                (age >= 3) & (age < 6),
                 age < 17,
             ],
             [
