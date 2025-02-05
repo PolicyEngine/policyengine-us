@@ -7,14 +7,13 @@ class ma_child_and_family_tax_credit(Variable):
     label = "MA child and family tax credit"
     unit = USD
     definition_period = YEAR
-    reference = (
-        "https://www.mass.gov/info-details/mass-general-laws-c62-ss-6"  # (y)
-    )
+    reference = "https://www.mass.gov/info-details/mass-general-laws-c62-ss-6"  # (y)
     defined_for = StateCode.MA
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.ma.tax.income.credits\
-        .child_and_family_tax_credit
+        p = (
+            parameters(period).gov.states.ma.tax.income.credits.child_and_family_tax_credit
+        )
         person = tax_unit.members
         dependent = person("is_tax_unit_dependent", period)
         age = person("age", period)
