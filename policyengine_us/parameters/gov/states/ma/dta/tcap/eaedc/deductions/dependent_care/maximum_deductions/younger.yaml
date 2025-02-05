@@ -1,17 +1,25 @@
-description: Massachusetts provides this deduction amount of dependent care expenses for Emergency Aid to the Elderly, Disabled and Children program, based on the child age.
+description: Massachusetts provides this dependent care expense deduction amount under the Emergency Aid to the Elderly, Disabled and Children program, based on the child age.
 brackets:
   - threshold:
-      2022-01-01: 0
+      2022-01-01: 1
     amount:
-      2022-01-01: 175
+      2022-01-01: 50
   - threshold:
-      2022-01-01: 2
+      2022-01-01: 10
+    amount:
+      2022-01-01: 100
+  - threshold:
+      2022-01-01: 20
+    amount:
+      2022-01-01: 150
+  - threshold:
+      2022-01-01: 30
     amount:
       2022-01-01: 200
   # Legal code provides amount per child per month 
 metadata:
   type: single_amount
-  threshold_unit: year 
+  threshold_unit: int 
   amount_unit: currency-USD
   period: month
   label: Massachusetts EAEDC dependent care expense deduction amount

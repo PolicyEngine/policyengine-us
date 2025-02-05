@@ -17,13 +17,21 @@ class ma_eaedc_dependent_care_deduction(Variable):
         person = spm_unit.members
         is_dependent = person("is_tax_unit_dependent", period)
         age = person("age", period)
-        meets_age_limit = age < p.age_threshold
+        meets_age_limit = age < p.dependent_age_threshold
         eligible_dependent = is_dependent & meets_age_limit
+        weekly_hours = person("weekly_hours_worked", period)
         # Calculate amount for each dependent
-        dependent_care_expense_maximum = (
-            p.maximum_expense.calc(age) * MONTHS_IN_YEAR * eligible_dependent
+        dependent_care_deduction_maximum_monthly = where(
+            age < p.maximum_deductions.deduction_age_threshold,
+            p.maximum_deductions.younger.calc(weekly_hours),
+            p.maximum_deductions.older.calc(weekly_hours),
+        )
+        dependent_care_deduction_maximum = (
+            dependent_care_deduction_maximum_monthly
+            * MONTHS_IN_YEAR
+            * eligible_dependent
         )
         # add up the amount for each dependent
-        total_capped_amount = spm_unit.sum(dependent_care_expense_maximum)
+        total_capped_amount = spm_unit.sum(dependent_care_deduction_maximum)
         dependent_care_expense = add(spm_unit, period, ["care_expenses"])
         return min_(dependent_care_expense, total_capped_amount)
