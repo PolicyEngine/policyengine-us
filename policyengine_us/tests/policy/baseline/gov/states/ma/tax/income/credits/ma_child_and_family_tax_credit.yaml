@@ -88,7 +88,7 @@
         state_code: MA
         members: [filer, disabled_dependent, elderly_dependent]
   output:
-    ma_dependent_credit: 620
+    ma_child_and_family_tax_credit: 620
 - name: 3 children age 12, dependent credit for 2024
   period: 2024
   absolute_error_margin: 0
