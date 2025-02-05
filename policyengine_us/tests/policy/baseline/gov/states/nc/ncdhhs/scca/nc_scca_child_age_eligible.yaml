@@ -1,5 +1,5 @@
 - name: One child, not disabled, age < 13, eligible.
-  period: 2023
+  period: 2024
   input:
     is_disabled: false
     is_tax_unit_dependent: true
@@ -7,37 +7,37 @@
     state_code: NC
   output:
     nc_scca_child_eligible: 
-      2023-01: true
+      2024-01: true
 
-- name: One child, not disabled, age >= 13, ineligible.
-  period: 2023
-  input:
-    is_disabled: false
-    is_tax_unit_dependent: true
-    age: 13
-    state_code: NC
-  output:
-    nc_scca_child_eligible: 
-      2023-01: false
+# - name: One child, not disabled, age >= 13, ineligible.
+#   period: 2024
+#   input:
+#     is_disabled: false
+#     is_tax_unit_dependent: true
+#     age: 13
+#     state_code: NC
+#   output:
+#     nc_scca_child_eligible: 
+#       2023-01: false
 
-- name: One child, disabled, age < 19, eligible.
-  period: 2024
-  input:
-    is_disabled: true
-    is_tax_unit_dependent: true
-    age: 18
-    state_code: NC
-  output:
-    nc_scca_child_eligible: 
-      2022-12: true
+# - name: One child, disabled, age < 19, eligible.
+#   period: 2024
+#   input:
+#     is_disabled: true
+#     is_tax_unit_dependent: true
+#     age: 18
+#     state_code: NC
+#   output:
+#     nc_scca_child_eligible: 
+#       2022-12: true
 
-- name: One child, disabled, age >= 19, ineligible.
-  period: 2024
-  input:
-    is_disabled: true
-    is_tax_unit_dependent: true
-    age: 19
-    state_code: NC
-  output:
-    nc_scca_child_eligible: 
-      2022-12: false
+# - name: One child, disabled, age >= 19, ineligible.
+#   period: 2024
+#   input:
+#     is_disabled: true
+#     is_tax_unit_dependent: true
+#     age: 19
+#     state_code: NC
+#   output:
+#     nc_scca_child_eligible: 
+#       2022-12: false

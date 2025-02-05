@@ -14,7 +14,7 @@
         members: [person1, child1]
         state_code: NC
   output:
-    nc_scca_child_age_eligible: true
+    nc_scca_child_eligible: true
 
 - name: Child above 12 is ineligible, return false.
   period: 2024
@@ -33,7 +33,7 @@
         members: [person1, child1]
         state_code: NC
   output:
-    nc_scca_child_age_eligible: false
+    nc_scca_child_eligible: false
 
 - name: Child above 12 and under 17 with disability is eligible, return true
   period: 2024
@@ -52,7 +52,7 @@
         members: [person1, child1]
         state_code: NC
   output:
-    nc_scca_child_age_eligible: true
+    nc_scca_child_eligible: true
 
 - name: Child above 12 and under 17 without disability is ineligible, return false
   period: 2024
@@ -71,7 +71,7 @@
         members: [person1, child1]
         state_code: NC
   output:
-    nc_scca_child_age_eligible: false
+    nc_scca_child_eligible: false
 
 
 - name: Child above 17 with disability is ineligible, return false
@@ -91,4 +91,4 @@
         members: [person1, child1]
         state_code: NC
   output:
-    nc_scca_child_age_eligible: false
+    nc_scca_child_eligible: false
