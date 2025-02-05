@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class ma_dependent_credit(Variable):
+class ma_child_and_family_tax_credit(Variable):
     value_type = float
     entity = TaxUnit
-    label = "MA dependent credit"
+    label = "MA child and family tax credit"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -13,7 +13,7 @@ class ma_dependent_credit(Variable):
     defined_for = StateCode.MA
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.ma.tax.income.credits.dependent
+        p = parameters(period).gov.states.ma.tax.income.credits.child_and_family_tax_credit
         person = tax_unit.members
         dependent = person("is_tax_unit_dependent", period)
         age = person("age", period)
