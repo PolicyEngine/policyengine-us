@@ -57,3 +57,13 @@
     slspc_age_0: 561
   output:
     slspc_person: 2_106.89
+
+- name: California teen
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    state_code_str: CA
+    monthly_age: 15
+    slspc_age_0: 244
+  output:
+    slspc_person: 265.69

@@ -45,3 +45,11 @@
     slspc_rating_area: 9
   output:
     slspc_age_0: 286
+
+- name: slspc_age_0 unit test 7 California rating area 15
+  period: 2025-01
+  input:
+    state_code: CA
+    slspc_rating_area: 15
+  output:
+    slspc_age_0: 244

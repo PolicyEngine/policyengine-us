@@ -11,17 +11,17 @@ class slspc_rating_area(Variable):
     definition_period = YEAR
 
     def formula(household, period, parameters):
-        # Get county data
         county = household("county_str", period)
-        is_la = county == "Los Angeles County, CA"
+    # Change the comparison to match the actual format
+        is_la = county == "LOS_ANGELES_COUNTY_CA"
 
         if is_la:
             zip3 = household("three_digit_zip_code", period)
             la_data = parameters.gov.aca.la_county_rating_area[period]
-            # Indent this block to be part of the if statement
             for rating_area, zip_codes in la_data.items():
-                if zip3 in zip_codes:
-                    return rating_area
+                if str(zip3) in zip_codes:  # Convert zip3 to string for comparison
+                    return int(rating_area)  # Convert rating_area to int
+
 
         # Create DataFrame with county information
         df = pd.DataFrame({"county": county})
