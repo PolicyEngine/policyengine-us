@@ -18,7 +18,7 @@ class ny_main_income_tax(Variable):
         single = rates.single
         joint = rates.joint
         hoh = rates.head_of_household
-        widow = rates.widow
+        surviving_spouse = rates.surviving_spouse
         separate = rates.separate
 
         return select(
@@ -33,7 +33,7 @@ class ny_main_income_tax(Variable):
                 single.calc(taxable_income),
                 joint.calc(taxable_income),
                 hoh.calc(taxable_income),
-                widow.calc(taxable_income),
+                surviving_spouse.calc(taxable_income),
                 separate.calc(taxable_income),
             ],
         )

@@ -2,10 +2,6 @@
   period: 2023
   input:
     filing_status: JOINT
-    age_head: 50
-    blind_head: false
-    age_spouse: 30
-    blind_spouse: false
     state_code: GA
   output:
     ga_standard_deduction: 7_100
@@ -14,11 +10,8 @@
   period: 2023
   input:
     filing_status: JOINT
-    age_head: 50
-    blind_head: false
-    age_spouse: 30
-    blind_spouse: true
     state_code: GA
+    ga_additional_standard_deduction: 1_300
   output:
     ga_standard_deduction: 8_400
 
@@ -26,9 +19,8 @@
   period: 2023
   input:
     filing_status: SINGLE
-    age_head: 65
-    blind_head: false
     state_code: GA
+    ga_additional_standard_deduction: 1_300
   output:
     ga_standard_deduction: 6_700
 
@@ -36,42 +28,32 @@
   period: 2023
   input:
     filing_status: HEAD_OF_HOUSEHOLD
-    age_head: 65
-    blind_head: true
+    ga_additional_standard_deduction: 2_600
     state_code: GA
   output:
     ga_standard_deduction: 8_000
 
-- name: Joint filing - aged and blind head + aged and blind spouse
+- name: 2023 Joint filing - aged and blind head + aged and blind spouse
   period: 2023
   input:
     filing_status: JOINT
-    age_head: 66
-    blind_head: true
-    age_spouse: 65
-    blind_spouse: true
     state_code: GA
+    ga_additional_standard_deduction: 5_200
   output:
     ga_standard_deduction: 12_300
 
-- name: Joint filing - aged and blind head + aged and blind spouse
+- name: 2024 Joint filing - aged and blind head + aged and blind spouse
   period: 2024
   input:
     filing_status: JOINT
-    age_head: 66
-    blind_head: true
-    age_spouse: 65
-    blind_spouse: true
     state_code: GA
   output:
-    ga_standard_deduction: 29_200
+    ga_standard_deduction: 24_000
 
-- name: Head of household  - one blind and aged head
+- name: 2024 Head of household  - one blind and aged head
   period: 2024
   input:
     filing_status: HEAD_OF_HOUSEHOLD
-    age_head: 65
-    blind_head: true
     state_code: GA
   output:
-    ga_standard_deduction: 14_600
+    ga_standard_deduction: 12_000

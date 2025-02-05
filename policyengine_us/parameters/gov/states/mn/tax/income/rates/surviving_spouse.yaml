@@ -1,0 +1,70 @@
+description: Minnesota levies income taxes at these rates for filers who file as surviving spouse.
+brackets:
+  - threshold:
+      2021-01-01: 0
+    rate:
+      2021-01-01: 0.0535
+  - threshold:
+      values:
+        2021-01-01: 39_810
+        2022-01-01: 41_050
+        2023-01-01: 43_950
+        2024-01-01: 45_330
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 10
+    rate:
+      2021-01-01: 0.068
+  - threshold:
+      values:
+        2021-01-01: 158_140
+        2022-01-01: 163_060
+        2023-01-01: 174_610
+        2024-01-01: 184_040
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 10
+    rate:
+      2021-01-01: 0.0785
+  - threshold:
+      2021-01-01: 
+      2022-01-01: 
+      values:
+        2021-01-01: 276_200
+        2022-01-01: 284_810
+        2023-01-01: 304_970
+        2024-01-01: 321_450
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 10
+    rate:
+      2021-01-01: 0.0985
+
+metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  threshold_period: year
+  label: Minnesota surviving spouse income tax rates
+  reference:
+  - title: 2023 Minnesota Statutes, 290.06 RATES OF TAX; CREDITS. Subd. 2c.Schedules of rates for individuals, estates, and trusts.
+    href: https://www.revisor.mn.gov/statutes/cite/290.06#stat.290.06.2c
+  - title: 290.06 Subd. 2d.Inflation adjustment of brackets
+    href: https://www.revisor.mn.gov/statutes/cite/290.06#stat.290.06.2d
+  - title: 2021 Minnesota M1 form instructions, Tax Rate Schedules
+    href: https://www.revenue.state.mn.us/sites/default/files/2023-12/m1_inst_21.pdf#page=35
+  - title: 2022 Minnesota M1 form instructions, Tax Rate Schedules
+    href: https://www.revenue.state.mn.us/sites/default/files/2024-02/m1_inst_22.pdf#page=35
+  - title: 2023 Minnesota M1 form instructions, Tax Rate Schedules
+    href: https://www.revenue.state.mn.us/sites/default/files/2024-02/m1-inst-23.pdf#page=32
+  - title: Tax Year 2024 Inflation-Adjusted Amounts In Minnesota Statutes 
+    href: https://www.revenue.state.mn.us/sites/default/files/2023-12/inflation-adjusted-amounts-ty-2024.pdf

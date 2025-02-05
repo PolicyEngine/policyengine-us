@@ -9020,3 +9020,56 @@
     added:
     - NYC school tax credit phase out reform.
   date: 2025-01-27 12:51:08
+- bump: patch
+  changes:
+    fixed:
+    - Invalid value encountered when dividing income_effect by original_earnings and
+      dividing substitution_effect by original_earnings in weekly hours worked calculation
+  date: 2025-01-27 21:39:20
+- bump: patch
+  changes:
+    fixed:
+    - California itemized deduction limits 2024.
+    - California AMT parameters 2024.
+    - California 2024 tax form references.
+  date: 2025-01-28 13:45:56
+- bump: minor
+  changes:
+    added:
+    - New York 2024 tax form references.
+  date: 2025-01-29 01:21:20
+- bump: patch
+  changes:
+    fixed:
+    - Iowa income tax structure on and after 2023.
+  date: 2025-01-29 15:14:24
+- bump: minor
+  changes:
+    added:
+    - New York City 2024 tax form references.
+  date: 2025-01-29 20:49:54
+- bump: minor
+  changes:
+    added:
+    - Georgia State Tax Code 2024 Updates.
+  date: 2025-01-31 14:12:32
+- bump: minor
+  changes:
+    added:
+    - Change is_widowed to is_surviving_spouse.
+  date: 2025-01-31 15:42:23
+- bump: minor
+  changes:
+    added:
+    - January 2025 CBO economic and demographic outlooks.
+  date: 2025-02-03 22:12:04
+- bump: patch
+  changes:
+    fixed:
+    - Revert previous commit.
+  date: 2025-02-04 16:24:45
+- bump: patch
+  changes:
+    fixes:
+    - Georgia personal exemption availability.
+  date: 2025-02-05 00:41:13

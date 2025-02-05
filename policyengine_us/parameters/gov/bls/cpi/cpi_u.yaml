@@ -1333,20 +1333,33 @@ values:
   2023-11-01: 307.051
   2023-12-01: 306.746
   2024-01-01: 308.417
+  2024-02-01: 310.326
+  2024-03-01: 312.332
+  2024-04-01: 313.548
+  2024-05-01: 314.069
+  2024-06-01: 314.175
+  2024-07-01: 314.54
+  2024-08-01: 314.796
+  2024-09-01: 315.301
+  2024-10-01: 315.664
+  2024-11-01: 315.493
+  2024-12-01: 315.605
+
   # CBO projections.
   # Since CBO projects the relevant tax parameter,
   # which is the average over the 12mo ending August,
   # we place that in February of each year.
-  2024-02-01: 311.2 # 2025 value.
-  2025-02-01: 319.3 # 2026 value.
-  2026-02-01: 326.5 # 2027 value.
-  2027-02-01: 333.6 # 2028 value.
-  2028-02-01: 340.6 # 2029 value.
-  2029-02-01: 348.3 # 2030 value.
-  2030-02-01: 356.0 # 2031 value.
-  2031-02-01: 364.0 # 2032 value.
-  2032-02-01: 372.1 # 2033 value.
-  2033-02-01: 380.5 # 2034 value.
+  2025-02-01: 318.2 # 2026 value.
+  2026-02-01: 325.9 # 2027 value.
+  2027-02-01: 333.5 # 2028 value.
+  2028-02-01: 341.1 # 2029 value.
+  2029-02-01: 348.7 # 2030 value.
+  2030-02-01: 356.5 # 2031 value.
+  2031-02-01: 364.5 # 2032 value.
+  2032-02-01: 372.7 # 2033 value.
+  2033-02-01: 381.0 # 2034 value.
+  2034-02-01: 389.6 # 2035 value.
+  2035-02-01: 398.7 # (indexed by applying 2035 indexing rate (389.6/381.0) and multiplying it by 389.6).
 metadata:
   unit: currency-USD
   label: CPI-U
@@ -1358,3 +1371,7 @@ metadata:
       # Source: https://www.cbo.gov/data/budget-economic-data#10
       # Row: 158
       href: https://www.cbo.gov/system/files/2024-06/51135-2024-06-Economic-Projections.xlsx
+    - title: CBO | Tax Parameters and Effective Marginal Tax Rates | January 2025
+      # Source: https://www.cbo.gov/data/budget-economic-data#10
+      # Row: 158
+      href: https://www.cbo.gov/system/files/2025-01/51135-2025-01-Economic-Projections.xlsx

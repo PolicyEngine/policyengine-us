@@ -34,7 +34,7 @@ class la_income_tax_before_non_refundable_credits(Variable):
                 p.by_filing_status.single.calc(income),
                 p.by_filing_status.joint.calc(income),
                 p.by_filing_status.separate.calc(income),
-                p.by_filing_status.widow.calc(income),
+                p.by_filing_status.surviving_spouse.calc(income),
                 p.by_filing_status.head_of_household.calc(income),
             ],
         )

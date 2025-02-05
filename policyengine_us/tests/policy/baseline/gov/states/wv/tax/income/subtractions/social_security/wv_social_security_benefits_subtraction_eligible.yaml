@@ -25,7 +25,7 @@
   output:
     wv_social_security_benefits_subtraction_eligible: false
 
-- name: In 2022, widow(er) filers, agi > 50_000, ineligible.
+- name: In 2022, surviving spouse filers, agi > 50_000, ineligible.
   period: 2022
   input:
     state_code: WV
@@ -70,7 +70,7 @@
   output:
     wv_social_security_benefits_subtraction_eligible: true
 
-- name: In 2022, widow(er) filers, agi <= 50_000, eligible.
+- name: In 2022, surviving spouse filers, agi <= 50_000, eligible.
   period: 2022
   input:
     state_code: WV
