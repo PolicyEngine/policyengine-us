@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.188.0] - 2025-02-06 10:21:40
+
+### Added
+
+- Refactor the Alternative Minimum Tax (AMT) logic.
+
 ## [1.187.3] - 2025-02-05 18:19:06
 
 ### Fixed
@@ -10732,6 +10738,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.188.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.187.3...1.188.0
 [1.187.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.187.2...1.187.3
 [1.187.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.187.1...1.187.2
 [1.187.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.187.0...1.187.1
