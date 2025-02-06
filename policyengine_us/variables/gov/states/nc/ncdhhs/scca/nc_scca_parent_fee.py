@@ -2,7 +2,7 @@ from policyengine_us.model_api import *
 
 
 class nc_scca_parent_fee(Variable):
-    value_type = float
+    value_type = int
     entity = SPMUnit
     label = "North Carolina Subsidized Child Care Assistance Program parent fee"
     unit = USD
@@ -12,17 +12,13 @@ class nc_scca_parent_fee(Variable):
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.nc.ncdhhs.scca
-        parent_fee_rate = p.parent_fee_rate
+        parent_fee_rate = p.parent_fee_rate.value
 
         family_montly_income = spm_unit('nc_scca_countable_income', period)
 
         parent_fee = family_montly_income * parent_fee_rate
 
-        print(f"parent_fee_rate: {parent_fee_rate}")
-        print(f"montly income: {family_montly_income}")
-        print(f"parent_fee: {parent_fee}")
-
         # Round the number and only keep the integer part
-        result = int(np.round(parent_fee))
+        result = int(np.round(parent_fee).item())
         
         return result

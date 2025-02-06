@@ -1,0 +1,31 @@
+- name: With 0 countable income, parent fee is 0.
+  period: 2024
+  input:
+    nc_scca_countable_income: 0
+    state_code: NC
+  output:
+    nc_scca_parent_fee: 0
+
+- name: With 41_496 countable income, parent fee is 346.
+  period: 2024
+  input:
+    nc_scca_countable_income: 41_496
+    state_code: NC
+  output:
+    nc_scca_parent_fee: 346
+
+- name: With 20_440 countable income, parent fee is 170.
+  period: 2024
+  input:
+    nc_scca_countable_income: 20_440
+    state_code: NC
+  output:
+    nc_scca_parent_fee: 170
+
+- name: With 60_000 countable income, parent fee is 500.
+  period: 2024
+  input:
+    nc_scca_countable_income: 60_000
+    state_code: NC
+  output:
+    nc_scca_parent_fee: 500
