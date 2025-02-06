@@ -6,6 +6,6 @@ class pr_earned_income_child_count(Variable):
     entity = TaxUnit
     label = "Puerto Rico EITC-qualifying children"
     definition_period = YEAR
-    reference = 
+    reference = ""
 
     adds = ["is_child_dependent"]

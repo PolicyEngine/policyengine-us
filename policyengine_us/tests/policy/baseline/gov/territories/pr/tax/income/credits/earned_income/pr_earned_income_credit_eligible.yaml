@@ -3,6 +3,38 @@
   input:
     is_tax_unit_head_or_spouse: false
     pr_earned_income_credit_investment_income: 2_000
+    age: 25
+    filing_status: JOINT
+  output:
+    pr_earned_income_credit_eligible: false
+
+- name: Filing separately
+  period: 2024
+  input:
+    is_tax_unit_head_or_spouse: true
+    pr_earned_income_credit_investment_income: 3_000
+    age: 30
+    filing_status: SEPARATE
+  output:
+    pr_earned_income_credit_eligible: false
+
+- name: Under the age limit
+  period: 2024
+  input:
+    is_tax_unit_head_or_spouse: true
+    pr_earned_income_credit_investment_income: 2_000
+    age: 18
+    filing_status: JOINT
+  output:
+    pr_earned_income_credit_eligible: false
+
+- name: Over the age limit
+  period: 2024
+  input:
+    is_tax_unit_head_or_spouse: true
+    pr_earned_income_credit_investment_income: 2_000
+    age: 66
+    filing_status: JOINT
   output:
     pr_earned_income_credit_eligible: false
 
@@ -10,7 +42,9 @@
   period: 2024
   input:
     is_tax_unit_head_or_spouse: true
-    pr_earned_income_credit_investment_income: 2_201
+    pr_earned_income_credit_investment_income: 10_001
+    age: 60
+    filing_status: SINGLE
   output:
     pr_earned_income_credit_eligible: false
 
@@ -18,6 +52,8 @@
   period: 2024
   input:
     is_tax_unit_head_or_spouse: true
-    pr_earned_income_credit_investment_income: 2_200
+    pr_earned_income_credit_investment_income: 10_000
+    age: 65
+    filing_status: SINGLE
   output:
     pr_earned_income_credit_eligible: true

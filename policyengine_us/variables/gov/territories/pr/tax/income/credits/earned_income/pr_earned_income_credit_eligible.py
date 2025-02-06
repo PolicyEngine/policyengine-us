@@ -18,6 +18,14 @@ class pr_earned_income_credit_eligible(Variable):
         )
         investment_income_amount_under_limit = investment_income <= p.investment_income.limit
         age = person("age", period)
-        age_within_range = age >= p.eligibility.min & age <= p.eligibility.max
-        
-        return head_or_spouse & investment_income_amount_under_limit & age_within_range
+        age_within_range = (age >= p.eligibility.min) & (age <= p.eligibility.max)
+        filing_status = person.tax_unit("filing_status", period)
+        not_separate = filing_status != filing_status.possible_values.SEPARATE
+
+        eligible = head_or_spouse & investment_income_amount_under_limit & age_within_range
+        # if separate filers are eligible
+        if p.eligibility.separate_filer:
+            return eligible
+        # else, filing status needs to be not equal to separate
+        else:
+            return eligible & not_separate

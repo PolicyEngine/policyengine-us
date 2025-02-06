@@ -1,14 +1,5 @@
 from policyengine_us.model_api import *
 
-# - computation:
-#     - need: earned income, number of children
-#     - (phase-in-rate.yaml[child] * earned income), max with the max credit[child]
-#     - phase-out = 0
-#     - if single,
-#         - if earned income > single-threshold, phase_out = (earned income - single-threshold) * phase-out-rate[child]
-#     - if married,
-#         - if earned income > married-threshold, phase_out = (earned income - joint-threshold) * phase-out-rate[child]
-#     - phase in - phase out, min 0
 
 class pr_earned_income_credit(Variable):
     value_type = float
