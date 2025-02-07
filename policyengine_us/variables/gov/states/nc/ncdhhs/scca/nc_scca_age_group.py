@@ -11,7 +11,7 @@ class AgeGroup(Enum):
 class nc_scca_age_group(Variable):
     value_type = Enum
     possible_values = AgeGroup
-    default_value = AgeGroup.INFANT
+    default_value = AgeGroup.NOT_QUALIFY
     entity = Person
     label = "NC SCCA age group"
     definition_period = YEAR
@@ -21,6 +21,7 @@ class nc_scca_age_group(Variable):
 
     def formula(person, period, parameters):
         age = person("age", period)
+        disabled = person("is_disabled", period)
 
         return select(
             [
@@ -28,7 +29,7 @@ class nc_scca_age_group(Variable):
                 age < 2,
                 age < 3,
                 (age >= 3) & (age < 6),
-                age < 17,
+                (age < 13) | ((age >= 12) & (age < 18) & disabled), 
             ],
             [   
                 AgeGroup.NOT_QUALIFY,
@@ -37,4 +38,5 @@ class nc_scca_age_group(Variable):
                 AgeGroup.THREE_TO_FIVE_YEAR_OLD,
                 AgeGroup.SCHOOL_AGE,
             ],
+            default=AgeGroup.NOT_QUALIFY, 
         )
