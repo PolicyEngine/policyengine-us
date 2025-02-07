@@ -34,7 +34,7 @@ class md_senior_tax_credit(Variable):
                 p.amount.single,
                 p.amount.joint[eligible_count],
                 p.amount.head_of_household,
-                p.amount.widow,
+                p.amount.surviving_spouse,
                 p.amount.separate,
             ],
         )
