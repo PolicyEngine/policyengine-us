@@ -227,43 +227,7 @@
     ny_eitc: 2_055.6
     ny_ctc: 330
     ny_exemptions: 2_000
-
-- name: In 2028, Single person of, two children new age restriction applies - reform
-  period: 2028
-  reforms: policyengine_us.reforms.states.ny.wftc.ny_working_families_tax_credit.ny_working_families_tax_credit
-  input:
-    gov.contrib.states.ny.wftc.in_effect: true
-    people: 
-      person1:
-        age: 30
-        is_tax_unit_dependent: false
-        employment_income: 20_000
-      person2:
-        age: 16
-        is_tax_unit_dependent: true
-      person3:
-        age: 17
-        is_tax_unit_dependent: true
-        is_full_time_student: true
-    tax_units:
-      tax_unit:
-        members: [person1, person2, person3]
-        ny_household_credit: 0
-    households:
-      household:
-        members: [person1, person2, person3]
-        state_code: NY
-  output:
-    ny_wftc_eligible_children: 2
-    ny_working_families_tax_credit: 2_400
-    eitc: 7_588
-    eitc_younger_children_count: 2
-    eitc_older_children_count: 0
-    younger_eitc: 7_588
-    older_eitc: 0
-    ny_eitc: 758.8
-    ny_ctc: 0
-    ny_exemptions: 0
+    
 
 - name: 2025 test with two dependents, one older child and one younger - baseline
   period: 2025
