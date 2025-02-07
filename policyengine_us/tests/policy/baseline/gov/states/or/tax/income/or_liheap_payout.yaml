@@ -1,15 +1,15 @@
-- name: Oregon LIHEAP payout for electricity for a county in region for the year 2021 for SPM unit size 2
+- name: Oregon LIHEAP payout for electricity for a county in region 2 for the year 2021 for SPM unit size 2
   period: 2021
   input: 
-    county_str: CURRY_COUNTY_OR
+    county_str: CROOK_COUNTY_OR
     state_code: OR
     spm_unit_size: 2
     adjusted_gross_income: 30_000
-    utility_type: ELECTRICITY
+    utility_type: NATURAL_GAS
   output: 
-    liheap_payout: 245
+    liheap_payout: 285
 
-- name: Oregon LIHEAP payout for heating oil for a county in region for the year 2023 for SPM unit size 7
+- name: Oregon LIHEAP payout for heating oil for a county in region 2 for the year 2023 for SPM unit size 7
   period: 2023
   input:
     county_str: BAKER_COUNTY_OR
