@@ -14,5 +14,5 @@ class nc_scca_child_eligible(Variable):
         is_any_child_age_eligible = person(
             "nc_scca_child_age_eligible", period
         )
-
+        print(f"is_any_child_age_eligible {is_any_child_age_eligible}")
         return spm_unit.any(is_any_child_age_eligible)

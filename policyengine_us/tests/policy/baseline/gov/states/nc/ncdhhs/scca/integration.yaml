@@ -1,3 +1,134 @@
+- name: Family of two, no children, no disabilities, monthly income below FPL, saving $0/month.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+      person2:
+        age: 35
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        snap_earned_income: 1700
+        snap_unearned_income: 0
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        county_str: ALAMANCE_COUNTY_NC
+        state_code: NC
+  output:
+    nc_scca_estimated_saving: 0
+
+- name: Family of three (1 child, 17), no disabilities, monthly income below FPL, saving $0/month.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+      person2:
+        age: 35
+        is_disabled: false
+      child1:
+        age: 17
+        is_disabled: false
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        snap_earned_income: 2100
+        snap_unearned_income: 50
+        members: [person1, person2, child1]
+    households:
+      household:
+        members: [person1, person2, child1]
+        county_str: ALAMANCE_COUNTY_NC
+        state_code: NC
+  output:
+    nc_scca_estimated_saving: 0
+
+- name: Family of three (1 child, 17 with disabilities), monthly income below FPL, saving $108/month.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+      person2:
+        age: 35
+        is_disabled: false
+      child1:
+        age: 17
+        is_disabled: true
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        snap_earned_income: 2100
+        snap_unearned_income: 50
+        members: [person1, person2, child1]
+    households:
+      household:
+        members: [person1, person2, child1]
+        county_str: ALAMANCE_COUNTY_NC
+        state_code: NC
+  output:
+    nc_scca_estimated_saving: 108
+
+- name: Family of three (1 child, 17 with disabilities), lives in Chatham County, monthly income below FPL, saving $16/month.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+      person2:
+        age: 35
+        is_disabled: false
+      child1:
+        age: 17
+        is_disabled: true
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        snap_earned_income: 4200
+        snap_unearned_income: 102
+        members: [person1, person2, child1]
+    households:
+      household:
+        members: [person1, person2, child1]
+        county_str: CHATHAM_COUNTY_NC
+        state_code: NC
+  output:
+    nc_scca_estimated_saving: 16
+
+- name: Family of three (1 child, 17 with disabilities), lives in Mitchell County, monthly income below FPL but greater than county market rate, saving $0/month.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+      person2:
+        age: 35
+        is_disabled: false
+      child1:
+        age: 17
+        is_disabled: true
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        snap_earned_income: 4200
+        snap_unearned_income: 102
+        members: [person1, person2, child1]
+    households:
+      household:
+        members: [person1, person2, child1]
+        county_str: MITCHELL_COUNTY_NC
+        state_code: NC
+  output:
+    nc_scca_estimated_saving: 0
+
 - name: Family of four (2 children, ages 0 & 1), no disabilities, monthly income below FPL, saving $1392/month.
   period: 2024-01
   input:
@@ -28,6 +159,37 @@
         state_code: NC
   output:
     nc_scca_estimated_saving: 1392
+
+- name: Family of four (2 children, ages 1 & 2), no disabilities, monthly income below FPL, saving $1378/month.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+      person2:
+        age: 35
+        is_disabled: false
+      child1:
+        age: 1
+        is_disabled: false
+        is_tax_unit_dependent: true
+      child2:
+        age: 2
+        is_disabled: false
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        snap_earned_income: 4200
+        snap_unearned_income: 999
+        members: [person1, person2, child1, child2]
+    households:
+      household:
+        members: [person1, person2, child1, child2]
+        county_str: ALAMANCE_COUNTY_NC
+        state_code: NC
+  output:
+    nc_scca_estimated_saving: 1378
 
 - name: Family of four (2 children, ages 0 & 3), no disabilities, monthly income below FPL, saving $1280/month.
   period: 2024-01
@@ -91,7 +253,7 @@
   output:
     nc_scca_estimated_saving: 1168
 
-- name: Family of four (2 children, ages 3 & 7), no disabilities, monthly income below FPL, saving $0/month.
+- name: Family of four (2 children, ages 3 & 7), no disabilities, monthly income below FPL, saving $647/month.
   period: 2024-01
   input:
     people:
@@ -245,3 +407,228 @@
         state_code: NC
   output:
     nc_scca_estimated_saving: 240
+
+- name: Family of four (2 children, ages 13 & 17), no disabilities, monthly income over FPL, saving $0/month.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+      person2:
+        age: 35
+        is_disabled: false
+      child1:
+        age: 13
+        is_disabled: false
+        is_tax_unit_dependent: true
+      child2:
+        age: 17
+        is_disabled: false
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        snap_earned_income: 4200
+        snap_unearned_income: 1000
+        members: [person1, person2, child1, child2]
+    households:
+      household:
+        members: [person1, person2, child1, child2]
+        county_str: DURHAM_COUNTY_NC
+        state_code: NC
+  output:
+    nc_scca_estimated_saving: 0
+
+- name: Family of four (2 children, ages 13 & 17 with disabilities), monthly income below FPL, saving $34/month.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+      person2:
+        age: 35
+        is_disabled: false
+      child1:
+        age: 13
+        is_disabled: false
+        is_tax_unit_dependent: true
+      child2:
+        age: 17
+        is_disabled: true
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        snap_earned_income: 3400
+        snap_unearned_income: 57
+        members: [person1, person2, child1, child2]
+    households:
+      household:
+        members: [person1, person2, child1, child2]
+        county_str: DURHAM_COUNTY_NC
+        state_code: NC
+  output:
+    nc_scca_estimated_saving: 34
+
+- name: Family of four (2 children, ages 13 & 17 with disabilities), monthly income below FPL but greater than county market rate, saving $0/month.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+      person2:
+        age: 35
+        is_disabled: false
+      child1:
+        age: 13
+        is_disabled: false
+        is_tax_unit_dependent: true
+      child2:
+        age: 17
+        is_disabled: true
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        snap_earned_income: 4200
+        snap_unearned_income: 999
+        members: [person1, person2, child1, child2]
+    households:
+      household:
+        members: [person1, person2, child1, child2]
+        county_str: DURHAM_COUNTY_NC
+        state_code: NC
+  output:
+    nc_scca_estimated_saving: 0
+
+- name: Family of four (2 children, ages 13 & 18 with disabilities), monthly income below FPL, saving $0/month.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+      person2:
+        age: 35
+        is_disabled: false
+      child1:
+        age: 13
+        is_disabled: false
+        is_tax_unit_dependent: true
+      child2:
+        age: 18
+        is_disabled: true
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        snap_earned_income: 3400
+        snap_unearned_income: 57
+        members: [person1, person2, child1, child2]
+    households:
+      household:
+        members: [person1, person2, child1, child2]
+        county_str: DURHAM_COUNTY_NC
+        state_code: NC
+  output:
+    nc_scca_estimated_saving: 0
+
+- name: Family of four (2 children, ages 13 with disabilities & 18), live in Durham County, monthly income below FPL but greater than county market rate, saving $0/month.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+      person2:
+        age: 35
+        is_disabled: false
+      child1:
+        age: 13
+        is_disabled: true
+        is_tax_unit_dependent: true
+      child2:
+        age: 18
+        is_disabled: false
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        snap_earned_income: 4200
+        snap_unearned_income: 999
+        members: [person1, person2, child1, child2]
+    households:
+      household:
+        members: [person1, person2, child1, child2]
+        county_str: DURHAM_COUNTY_NC
+        state_code: NC
+  output:
+    nc_scca_estimated_saving: 0
+
+- name: Family of four (2 children, ages 13 with disabilities & 18), live in Perquimans County, monthly income below FPL, saving $4/month.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+      person2:
+        age: 35
+        is_disabled: false
+      child1:
+        age: 13
+        is_disabled: true
+        is_tax_unit_dependent: true
+      child2:
+        age: 18
+        is_disabled: false
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        snap_earned_income: 2000
+        snap_unearned_income: 0
+        members: [person1, person2, child1, child2]
+    households:
+      household:
+        members: [person1, person2, child1, child2]
+        county_str: PERQUIMANS_COUNTY_NC
+        state_code: NC
+  output:
+    nc_scca_estimated_saving: 4
+
+- name: Family of six (4 children, ages 1, age 2, age 4 and age 6), no disabilities, live in New Hanover County, monthly income below FPL, saving $2884/month.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+      person2:
+        age: 35
+        is_disabled: false
+      child1:
+        age: 1
+        is_disabled: false
+        is_tax_unit_dependent: true
+      child2:
+        age: 2
+        is_disabled: false
+        is_tax_unit_dependent: true
+      child3:
+        age: 4
+        is_disabled: false
+        is_tax_unit_dependent: true
+      child4:
+        age: 6
+        is_disabled: false
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        snap_earned_income: 4200
+        snap_unearned_income: 999
+        members: [person1, person2, child1, child2, child3, child4]
+    households:
+      household:
+        members: [person1, person2, child1, child2, child3, child4]
+        county_str: NEW_HANOVER_COUNTY_NC
+        state_code: NC
+  output:
+    nc_scca_estimated_saving: 2884

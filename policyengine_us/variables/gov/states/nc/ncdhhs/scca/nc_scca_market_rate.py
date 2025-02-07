@@ -16,6 +16,8 @@ class nc_scca_market_rate(Variable):
 
         age_group = person("nc_scca_age_group", period.this_year)
 
+        print(f"~~age_group {age_group}")
+
         rate_table = p.childcare_market_rates
 
         market_rate = rate_table[county][age_group]

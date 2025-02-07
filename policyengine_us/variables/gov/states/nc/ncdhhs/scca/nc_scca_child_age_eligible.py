@@ -9,11 +9,28 @@ class nc_scca_child_age_eligible(Variable):
     definition_period = YEAR
     defined_for = StateCode.NC
 
+    # def formula(person, period, parameters):
+    #     p = parameters(period).gov.states.nc.ncdhhs.scca
+    #     # child < 13 or disabled child <= 17 to be eligible
+    #     is_disabled = person("is_disabled", period.this_year)
+    #     age_limit = where(is_disabled, p.disabled_age_limit, p.age_limit)
+
+    #     print(f"age_limit {age_limit}")
+    #     age_eligible = person("age", period) <= age_limit
+    
+    #     return age_eligible & person("is_tax_unit_dependent", period)
+
     def formula(person, period, parameters):
         p = parameters(period).gov.states.nc.ncdhhs.scca
-        # child < 13 or disabled child < 17 to be eligible
+
         is_disabled = person("is_disabled", period.this_year)
-        age_limit = where(is_disabled, p.disabled_age_limit, p.age_limit)
-        age_eligible = person("age", period) < age_limit
+        age = person("age", period)
+
+        # Apply disabled_age_limit only if child is under 18 and disabled
+        age_limit = where((age <= 17) & is_disabled, p.disabled_age_limit, p.age_limit)
+
+        print(f"age_limit: {age_limit}, age: {age}, is_disabled: {is_disabled}")
+
+        age_eligible = age < age_limit
     
         return age_eligible & person("is_tax_unit_dependent", period)

@@ -27,7 +27,7 @@ class nc_scca_fpl_rate(Variable):
         categorized_age = 6
 
         # Check if any child (6-16) is disabled
-        if any(6 <= age < 17 and is_disabled for age, is_disabled in zip(ages, disabilities)):
+        if any(6 <= age <= 17 and is_disabled for age, is_disabled in zip(ages, disabilities)):
             categorized_age = 5
         elif min_age <= 5:  
             categorized_age = 5

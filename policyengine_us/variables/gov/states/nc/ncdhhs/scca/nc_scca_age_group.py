@@ -25,11 +25,11 @@ class nc_scca_age_group(Variable):
 
         return select(
             [
-                age >= 17,
+                age > 17,
                 age < 2,
                 age < 3,
                 (age >= 3) & (age < 6),
-                (age < 13) | ((age >= 12) & (age < 18) & disabled), 
+                (age < 13) | ((age >= 12) & (age <= 17) & disabled), 
             ],
             [   
                 AgeGroup.NOT_QUALIFY,

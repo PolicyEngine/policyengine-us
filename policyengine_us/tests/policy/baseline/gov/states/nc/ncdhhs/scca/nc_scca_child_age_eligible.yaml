@@ -28,7 +28,7 @@
   output:
     nc_scca_child_age_eligible: true
 
-- name: One child, disabled, age = 17, ineligible.
+- name: One child, disabled, age = 17, eligible.
   period: 2024
   input:
     is_disabled: true
@@ -36,7 +36,7 @@
     age: 17
     state_code: NC
   output:
-    nc_scca_child_age_eligible: false
+    nc_scca_child_age_eligible: true
 
 - name: One child, disabled, age > 17, ineligible.
   period: 2024

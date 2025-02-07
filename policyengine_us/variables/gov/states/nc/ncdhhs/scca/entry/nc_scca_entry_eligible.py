@@ -15,4 +15,5 @@ class nc_scca_entry_eligible(Variable):
             spm_unit("nc_scca_child_eligible", period) > 0
         )
 
+        print(f"has_eligible_children {has_eligible_children}")
         return income_eligible & has_eligible_children
