@@ -16,20 +16,11 @@ class slspc_rating_area(Variable):
 
         if is_la:
             zip3 = household("three_digit_zip_code", period)
-            # Use the same pattern as your working code: pass period first.
-            la_data = parameters(period).gov.aca.la_county_rating_area
-            # Instead of calling .items(), iterate over the keys.
-            for rating_area in la_data:
-                zip_mapping = la_data[rating_area]
-                # Assuming zip_mapping is a dictionary (with zip codes as keys)
-                if str(zip3) in zip_mapping:
-                    return int(rating_area)
-
-        # Fallback: if not LA, merge with aca_rating_areas.
+            p = parameters(period).gov.aca
+            return p.la_county_rating_area[zip3]
+        # If not LA, merge with aca_rating_areas.
         df = pd.DataFrame({"county": county})
-        aca_rating_areas["rating_area"] = aca_rating_areas[
-            "rating_area"
-        ].astype(str)
+        aca_rating_areas["rating_area"] = aca_rating_areas["rating_area"].astype(str)
         df_matched = pd.merge(
             df,
             aca_rating_areas,
