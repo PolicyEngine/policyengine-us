@@ -3,6 +3,7 @@ from policyengine_us.parameters.gov.hhs.medicaid.geography import (
     aca_rating_areas,
 )
 
+
 class slspc_rating_area(Variable):
     value_type = int
     entity = Household
@@ -26,7 +27,9 @@ class slspc_rating_area(Variable):
 
         # Fallback: if not LA, merge with aca_rating_areas.
         df = pd.DataFrame({"county": county})
-        aca_rating_areas["rating_area"] = aca_rating_areas["rating_area"].astype(str)
+        aca_rating_areas["rating_area"] = aca_rating_areas[
+            "rating_area"
+        ].astype(str)
         df_matched = pd.merge(
             df,
             aca_rating_areas,
