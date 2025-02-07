@@ -1,0 +1,30 @@
+- name: Family of 4, with 2 children, 3 and 7 year old with no disabilities, estimated saving is 821 per month
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+      person2:
+        age: 35
+        is_disabled: false
+      child1:
+        age: 3
+        is_disabled: false
+        is_tax_unit_dependent: true
+      child2:
+        age: 7
+        is_disabled: false
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        snap_earned_income: 2000
+        snap_unearned_income: 1000
+        members: [person1, person2, child1, child2]
+    households:
+      household:
+        members: [person1, person2, child1, child2]
+        county_str: ALAMANCE_COUNTY_NC
+        state_code: NC
+  output:
+    nc_scca_estimated_saving: 867

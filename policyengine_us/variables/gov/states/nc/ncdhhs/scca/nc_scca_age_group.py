@@ -2,6 +2,7 @@ from policyengine_us.model_api import *
 
 
 class AgeGroup(Enum):
+    NOT_QUALIFY = "Not qualify"
     INFANT = "Infant"
     TWO_YEAR_OLD = "2 Year olds"
     THREE_TO_FIVE_YEAR_OLD = "3 - 5 Year olds"
@@ -23,12 +24,14 @@ class nc_scca_age_group(Variable):
 
         return select(
             [
+                age >= 17,
                 age < 2,
                 age < 3,
                 (age >= 3) & (age < 6),
                 age < 17,
             ],
-            [
+            [   
+                AgeGroup.NOT_QUALIFY,
                 AgeGroup.INFANT,
                 AgeGroup.TWO_YEAR_OLD,
                 AgeGroup.THREE_TO_FIVE_YEAR_OLD,

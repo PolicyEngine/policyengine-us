@@ -23,6 +23,7 @@ class nc_scca_fpl_rate(Variable):
         # get the youngest child's age
         min_age = min(ages)
 
+        print(f"min_age {min_age}")
         categorized_age = 6
 
         # Check if any child (6-16) is disabled

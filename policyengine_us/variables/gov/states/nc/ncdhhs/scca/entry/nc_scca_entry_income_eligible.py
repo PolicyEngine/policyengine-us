@@ -11,13 +11,18 @@ class nc_scca_entry_income_eligible(Variable):
 
     def formula(spm_unit, period, parameters):        
         family_total_income = spm_unit('nc_scca_countable_income', period)
+        rounded_family_total_income = np.round(family_total_income, 2)
 
         fpg = spm_unit("spm_unit_fpg", period)
 
-        rate = spm_unit("nc_scca_fpl_rate", period)
+        rate = spm_unit("nc_scca_fpl_rate", period.this_year)
 
-        allowed_max_income = fpg * rate
+        allowed_max_income = np.round(fpg * rate, 2)
 
-        income_eligible = family_total_income < allowed_max_income
+        income_eligible = rounded_family_total_income < allowed_max_income
+
+        print(f"rate: {rate}")
+        print(f"allowed_max_income: {allowed_max_income}")
+        print(f"income_eligible: {income_eligible}")
 
         return income_eligible
