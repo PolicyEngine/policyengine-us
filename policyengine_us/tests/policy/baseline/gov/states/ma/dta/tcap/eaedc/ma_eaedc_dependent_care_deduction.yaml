@@ -10,7 +10,7 @@
         age: 5
         is_tax_unit_dependent: true
         care_expenses: 3_600
-        weekly_hours_worked: 40
+        weekly_hours_worked: 0
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -37,7 +37,7 @@
         age: 1
         is_tax_unit_dependent: true
         care_expenses: 2_040
-        weekly_hours_worked: 40
+        weekly_hours_worked: 0
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -64,12 +64,12 @@
         age: 1
         is_tax_unit_dependent: true
         care_expenses: 2_040
-        weekly_hours_worked: 40
+        weekly_hours_worked: 0
       person3:
         age: 5
         is_tax_unit_dependent: true
         care_expenses: 2_760
-        weekly_hours_worked: 40
+        weekly_hours_worked: 0
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
@@ -96,7 +96,7 @@
         age: 2
         is_tax_unit_dependent: true
         care_expenses: 3_600
-        weekly_hours_worked: 25
+        weekly_hours_worked: 0
     spm_units:
       spm_unit:
         members: [person1, person2]

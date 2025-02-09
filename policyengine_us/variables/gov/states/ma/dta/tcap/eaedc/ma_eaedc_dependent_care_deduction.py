@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ma_eaedc_dependent_care_deduction(Variable):
     value_type = float
     entity = SPMUnit
-    label = "Eligible for Massachusetts EAEDC dependent care deduction"
+    label = "Massachusetts EAEDC dependent care deduction"
     unit = USD
     definition_period = YEAR
     defined_for = "ma_eaedc_dependent_care_deduction_eligible"
@@ -19,7 +19,7 @@ class ma_eaedc_dependent_care_deduction(Variable):
         age = person("age", period)
         meets_age_limit = age < p.dependent_age_threshold
         eligible_dependent = is_dependent & meets_age_limit
-        weekly_hours = person("weekly_hours_worked", period)
+        weekly_hours = add(person.spm_unit, period, ["weekly_hours_worked"])
         # Calculate amount for each dependent
         dependent_care_deduction_maximum_monthly = where(
             age < p.maximum_deductions.deduction_age_threshold,
