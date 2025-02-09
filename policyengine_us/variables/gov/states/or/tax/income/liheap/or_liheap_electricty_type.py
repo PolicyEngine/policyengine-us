@@ -1,16 +1,16 @@
 from policyengine_us.model_api import *
 
 
-class ElectricityUsageType(Enum):
+class OregonLIHEAPElectricityType(Enum):
     HEATING = "Heating"
     COOLING = "Cooling"
     BOTH = "Both"
 
-class electricity_usage_type(Variable):
+
+class or_liheap_electricity_type(Variable):
     value_type = Enum
     entity = SPMUnit
-    possible_values = ElectricityUsageType
-    default_value = ElectricityUsageType.BOTH  
+    possible_values = OregonLIHEAPElectricityType
+    default_value = OregonLIHEAPElectricityType.BOTH
     definition_period = YEAR
     label = "Electricity usage type for LIHEAP payout"
-
