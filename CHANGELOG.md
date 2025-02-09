@@ -5,6 +5,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.190.0] - 2025-02-07 21:44:34
+
+### Added
+
+- 2024 North Carolina Income Tax Updates.
+
+## [1.189.0] - 2025-02-06 20:58:56
+
+### Added
+
+- Pennsylvania 2024 income tax updates.
+
+## [1.188.0] - 2025-02-06 10:21:40
+
+### Added
+
+- Refactor the Alternative Minimum Tax (AMT) logic.
+
+## [1.187.3] - 2025-02-05 18:19:06
+
+### Fixed
+
+- Adds 2025 Federal Poverty Guidelines.
+
 ## [1.187.2] - 2025-02-05 00:41:13
 
 ## [1.187.1] - 2025-02-04 16:24:45
@@ -10726,6 +10750,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.190.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.189.0...1.190.0
+[1.189.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.188.0...1.189.0
+[1.188.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.187.3...1.188.0
+[1.187.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.187.2...1.187.3
 [1.187.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.187.1...1.187.2
 [1.187.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.187.0...1.187.1
 [1.187.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.186.0...1.187.0
