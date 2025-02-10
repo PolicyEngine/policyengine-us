@@ -11,5 +11,8 @@ class ma_tafdc_immigation_status_eligible(Variable):
 
     def formula(tax_unit, period, parameters):
         immigration_status = tax_unit.members("immigration_status", period)
-        undocumented = immigration_status == immigration_status.possible_values.UNDOCUMENTED
+        undocumented = (
+            immigration_status
+            == immigration_status.possible_values.UNDOCUMENTED
+        )
         return tax_unit.any(~undocumented)

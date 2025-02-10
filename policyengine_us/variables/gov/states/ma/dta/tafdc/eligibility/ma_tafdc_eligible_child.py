@@ -11,5 +11,7 @@ class ma_tafdc_eligible_child(Variable):
 
     def formula(person, period, parameters):
         age = person("age", period)
-        p = parameters(period).gov.states.ma.dta.tafdc.eligibility.age_threshold
+        p = parameters(
+            period
+        ).gov.states.ma.dta.tafdc.eligibility.age_threshold
         return age < p.child

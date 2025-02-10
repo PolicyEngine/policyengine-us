@@ -12,11 +12,19 @@ class ma_tafdc_dependent_care_deduction(Variable):
 
     def formula(person, period, parameters):
         dependent = person("is_dependent", period)
-        total_weekly_hours = person.tax_unit.sum(person("total_weekly_hours", period))
+        total_weekly_hours = person.tax_unit.sum(
+            person("total_weekly_hours", period)
+        )
         age = person("age", period)
-        p = parameters(period).gov.states.ma.dta.tafdc.gross_income.deductions.dependent_care_expenses
+        p = parameters(
+            period
+        ).gov.states.ma.dta.tafdc.gross_income.deductions.dependent_care_expenses
         young_child = age < p.young_child_age_threshold
-        amount = where(young_child, p.amount.younger.calc(total_weekly_hours), p.amount.older.calc(total_weekly_hours))
+        amount = where(
+            young_child,
+            p.amount.younger.calc(total_weekly_hours),
+            p.amount.older.calc(total_weekly_hours),
+        )
         total_amount = amount * dependent
         care_expenses = person("care_expenses", period)
         return min_(total_amount, care_expenses)
