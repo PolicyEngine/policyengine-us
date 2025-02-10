@@ -87,3 +87,13 @@
     state_code: NC
   output:
     nc_scca_entry_income_eligible: false
+
+- name: Family size of 4, with income equals the 200% fpl, income not eligible.
+  period: 2025
+  input:
+    nc_scca_countable_income: 64_300
+    spm_unit_fpg: 32_150
+    nc_scca_fpl_rate: 2
+    state_code: NC
+  output:
+    nc_scca_entry_income_eligible: false

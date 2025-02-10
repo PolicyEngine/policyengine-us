@@ -19,20 +19,18 @@ class nc_scca_fpl_rate(Variable):
         persons = spm_unit.members
         ages = persons("age", period)
         disabilities = persons("is_disabled", period)
-        
+
+        preschool_age_upper = p.preschool_age_upper
+        disabled_age_limit = p.disabled_age_limit
         # get the youngest child's age
         min_age = min(ages)
-        disabled_age_limit = p.disabled_age_limit
 
         print(f"min_age {min_age}")
 
         # Check if any child (6-17) is disabled
-        has_disabled_child = spm_unit.any((ages >= 6) & (ages < disabled_age_limit) & disabilities)
+        has_disabled_child = spm_unit.any((ages < disabled_age_limit) & disabilities)
 
-        if has_disabled_child | (min_age <= 5):
-            categorized_age = 5
-        else:
-            categorized_age = 6
+        categorized_age = where(has_disabled_child | (min_age < preschool_age_upper), 5, 6)  
 
         rate = p.entry.income_rate_by_child_age.calc(categorized_age)
         return rate

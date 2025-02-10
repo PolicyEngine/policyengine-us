@@ -20,5 +20,5 @@ class nc_scca_parent_fee(Variable):
 
         # Round the number and only keep the integer part
         result = int(np.round(parent_fee).item())
-        
+
         return result

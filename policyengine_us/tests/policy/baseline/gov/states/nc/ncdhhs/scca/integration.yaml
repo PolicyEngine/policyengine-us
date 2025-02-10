@@ -632,3 +632,31 @@
         state_code: NC
   output:
     nc_scca_estimated_saving: 2884
+
+- name: Family of 3 (2 children, ages 3, age 7), no disabilities, live in Cabarrus County, monthly income below FPL, saving $1305/month.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+      child1:
+        age: 3
+        is_disabled: false
+        is_tax_unit_dependent: true
+      child2:
+        age: 7
+        is_disabled: false
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        snap_earned_income: 2000
+        snap_unearned_income: 0
+        members: [person1, child1, child2]
+    households:
+      household:
+        members: [person1, child1, child2]
+        county_str: CABARRUS_COUNTY_NC
+        state_code: NC
+  output:
+    nc_scca_estimated_saving: 1305
