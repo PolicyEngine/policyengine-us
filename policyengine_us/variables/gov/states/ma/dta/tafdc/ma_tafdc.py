@@ -6,7 +6,7 @@ class ma_tafdc(Variable):
     unit = USD
     entity = TaxUnit
     label = "Massachusetts Temporary Assistance for Families with Dependent Children (TAFDC)"
-    definition_period = MONTH
+    definition_period = YEAR
     reference = "https://www.mass.gov/how-to/transitional-aid-to-families-with-dependent-children-tafdc"
     defined_for = "ma_tafdc_eligible"
 

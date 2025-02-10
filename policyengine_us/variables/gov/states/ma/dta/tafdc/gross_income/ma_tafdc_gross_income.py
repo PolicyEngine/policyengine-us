@@ -6,7 +6,7 @@ class ma_tafdc_gross_income(Variable):
     unit = USD
     entity = TaxUnit
     label = "Massachusetts Temporary Assistance for Families with Dependent Children (TAFDC) gross income"
-    definition_period = MONTH
+    definition_period = YEAR
     reference = "https://www.masslegalservices.org/content/73-how-much-income-can-you-have-and-still-qualify-tafdc"
     defined_for = StateCode.MA
 

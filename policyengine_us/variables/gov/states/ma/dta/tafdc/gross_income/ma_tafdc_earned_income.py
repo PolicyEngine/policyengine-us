@@ -6,7 +6,7 @@ class ma_tafdc_earned_income(Variable):
     unit = USD
     entity = TaxUnit
     label = "Massachusetts Temporary Assistance for Families with Dependent Children (TAFDC) earned income"
-    definition_period = MONTH
+    definition_period = YEAR
     reference = (
         "https://www.masslegalservices.org/content/62-what-income-counted"
     )
@@ -15,6 +15,9 @@ class ma_tafdc_earned_income(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.ma.dta.tafdc.gross_income
         total_earned_income = add(tax_unit, period, p.earned)
+        monthly_earned_income = total_earned_income / MONTHS_IN_YEAR
+        # The first 6 months of income are disregarded at a 100% rate
+        
         reduced_income = (
             total_earned_income - p.earned_income_disregard.flat
         ) * p.earned_income_disregard.percentage
