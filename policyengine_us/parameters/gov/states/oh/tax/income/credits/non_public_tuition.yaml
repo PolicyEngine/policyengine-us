@@ -5,7 +5,7 @@ brackets:
       2023-01-01: -.inf
     amount:
       2021-01-01: 500
-      2023-01-01: 1000
+      2023-01-01: 1_000
   - threshold: 
       2021-01-01: 50_000
       2023-01-01: 50_000
@@ -14,7 +14,7 @@ brackets:
       2023-01-01: 1_500
   - threshold:
       2021-01-01: 100_000
-      2023-01-01: inf
+      2023-01-01: .inf
     amount:
       2021-01-01: 0
       2023-01-01: 1_500  # Same as previous bracket since there's no change after $50k
