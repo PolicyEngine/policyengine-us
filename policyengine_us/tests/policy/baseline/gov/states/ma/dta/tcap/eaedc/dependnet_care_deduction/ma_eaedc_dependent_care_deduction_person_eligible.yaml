@@ -1,0 +1,26 @@
+- name: Case 1, eligible person for dependent care deduction.
+  period: 2022
+  input:
+    age: 16
+    is_tax_unit_dependent: true
+    state_code: MA
+  output:
+    ma_eaedc_dependent_care_deduction_person_eligible: true
+
+- name: Case 2, ineligible person for dependent care deduction.
+  period: 2022
+  input:
+    age: 19
+    is_tax_unit_dependent: true
+    state_code: MA
+  output:
+    ma_eaedc_dependent_care_deduction_person_eligible: false
+
+- name: Case 3, ineligible person for dependent care deduction.
+  period: 2022
+  input:
+    age: 16
+    is_tax_unit_dependent: false
+    state_code: MA
+  output:
+    ma_eaedc_dependent_care_deduction_person_eligible: false
