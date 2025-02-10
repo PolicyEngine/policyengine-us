@@ -11,5 +11,5 @@ class ma_tafdc_income_eligible(Variable):
 
     def formula(tax_unit, period, parameters):
         income = tax_unit("ma_tafdc_gross_income", period)
-        payment_standard = tax_unit("ma_tafdc_payment_standard", period)
-        return income < payment_standard
+        income_limit = tax_unit("ma_tafdc_income_limit", period)
+        return income < income_limit
