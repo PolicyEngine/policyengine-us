@@ -1,0 +1,13 @@
+description: Massachusetts counts the following income sources as earned income for the Transitional Aid to Families with Dependent Children program.
+values:
+  2021-01-01:
+    - employment_income
+    - self_employment_income
+
+metadata:
+  unit: list
+  period: year
+  label: Massachusetts TAFDC earned income sources
+  reference:
+    - title: Mass Legal Services, 2024 TAFDC Advocacy Guide, 62. What income is counted?
+      href: https://www.masslegalservices.org/content/62-what-income-counted

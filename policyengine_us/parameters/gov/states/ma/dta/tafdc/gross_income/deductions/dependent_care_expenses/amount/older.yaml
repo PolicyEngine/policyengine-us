@@ -1,0 +1,32 @@
+description: Massachusetts deducts this amount of dependent care expenses from the unearned income for the Transitional Aid to Families with Dependent Children program for parents of older children, based on weekly hours worked.
+
+metadata:
+  type: single_amount
+  period: month
+  threshold_unit: int
+  amount_unit: currency-USD
+  label: Massachusetts TAFDC dependent care deduction older amount
+  reference:
+  - title: Massachusetts Transitional Aid to Families with Dependent Children (TAFDC)
+    href: https://www.mass.gov/how-to/transitional-aid-to-families-with-dependent-children-tafdc
+  - title: Mass Legal Services, 2024 TAFDC Advocacy Guide, 68. How is grandparent income counted towards baby/teen parent income?
+    href: https://www.masslegalservices.org/content/68-how-grandparent-income-counted-towards-baby-teen-parent
+
+
+brackets:
+  - threshold:
+      2023-01-01: 0
+    amount:
+      2023-01-01: 44
+  - threshold:
+      2023-01-01: 11
+    amount:
+      2023-01-01: 88
+  - threshold:
+      2023-01-01: 21
+    amount:
+      2023-01-01: 132
+  - threshold:
+      2023-01-01: 31
+    amount:
+      2023-01-01: 175
