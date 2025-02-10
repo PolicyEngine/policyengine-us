@@ -14,9 +14,7 @@ class ma_tafdc_payment_standard(Variable):
         in_public_housing = tax_unit.household("is_in_public_housing", period)
         p = parameters(period).gov.states.ma.dta.tafdc.eligibility.income_limit
         unit_size = tax_unit("tax_unit_size", period)
-        capped_unit_size = min_(
-            unit_size, p.max_unit_size
-        )
+        capped_unit_size = min_(unit_size, p.max_unit_size)
         additional_people_in_unit = max_(0, unit_size - p.max_unit_size)
         # Calculate the base income limit for non-teen parents
         ps_non_teen_parent = where(

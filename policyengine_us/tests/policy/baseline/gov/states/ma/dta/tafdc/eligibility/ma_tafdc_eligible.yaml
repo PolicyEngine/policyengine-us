@@ -1,0 +1,32 @@
+- name: Eligible child with income and immigration status eligiblity 
+  period: 2023
+  input:
+    ma_tafdc_eligible_child: true
+    state_code: MA
+    ma_tafdc_pregnancy_eligible: false
+    ma_tafdc_income_eligible: true
+    ma_tafdc_immigration_status_eligible: true
+  output:
+    ma_tafdc_eligible: true
+
+- name: No eligible child, but pregnancy eligible with income and immigration status eligiblity 
+  period: 2023
+  input:
+    ma_tafdc_eligible_child: false
+    state_code: MA
+    ma_tafdc_pregnancy_eligible: true
+    ma_tafdc_income_eligible: true
+    ma_tafdc_immigration_status_eligible: true
+  output:
+    ma_tafdc_eligible: true
+
+- name: Not immigration eligible
+  period: 2023
+  input:
+    ma_tafdc_eligible_child: true
+    state_code: MA
+    ma_tafdc_pregnancy_eligible: false
+    ma_tafdc_income_eligible: true
+    ma_tafdc_immigration_status_eligible: false
+  output:
+    ma_tafdc_eligible: false

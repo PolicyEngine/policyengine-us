@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ma_tafdc_immigation_status_eligible(Variable):
+class ma_tafdc_immigration_status_eligible(Variable):
     value_type = bool
     entity = TaxUnit
     label = "Eligible for Massachusetts Temporary Assistance for Families with Dependent Children (TAFDC) due to immigration status"

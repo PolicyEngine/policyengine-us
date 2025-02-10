@@ -11,7 +11,9 @@ class ma_tafdc_income_limit(Variable):
     defined_for = StateCode.MA
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.ma.dta.tafdc.eligibility.income_limit.teen_parent
+        p = parameters(
+            period
+        ).gov.states.ma.dta.tafdc.eligibility.income_limit.teen_parent
         teen_parent_present = tax_unit.any(
             tax_unit.members("ma_tafdc_eligible_teen_parent", period)
         )
@@ -21,4 +23,8 @@ class ma_tafdc_income_limit(Variable):
         fpg = tax_unit("tax_unit_fpg", period)
         teen_parent_income_limit = fpg * p.fpg_limit
         # Select the appropriate income limit based on whether there is a teen parent
-        return where(teen_parent_present, teen_parent_income_limit, base_payment_standard)
+        return where(
+            teen_parent_present,
+            teen_parent_income_limit,
+            base_payment_standard,
+        )
