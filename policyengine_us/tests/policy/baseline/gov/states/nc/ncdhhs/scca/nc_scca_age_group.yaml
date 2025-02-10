@@ -73,13 +73,13 @@
   output:
     nc_scca_age_group: SCHOOL_AGE
 
-- name: Child age, 17.5, with disabilities, NOT_QUALIFY
+- name: Child age, 17.5, with disabilities, SCHOOL_AGE
   period: 2024
   input:
     age: 17.5
     is_disabled: true
   output:
-    nc_scca_age_group:  NOT_QUALIFY
+    nc_scca_age_group:  SCHOOL_AGE
 
 - name: Child age, 18, no disabilities, NOT_QUALIFY
   period: 2024

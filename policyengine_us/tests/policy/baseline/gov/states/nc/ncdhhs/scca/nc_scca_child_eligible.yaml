@@ -74,7 +74,7 @@
     nc_scca_child_eligible: false
 
 
-- name: Child above 17 with disability is ineligible, return false
+- name: Child above 17 but under 18 with disability is eligible, return true
   period: 2024
   input:
     people:
@@ -91,4 +91,4 @@
         members: [person1, child1]
         state_code: NC
   output:
-    nc_scca_child_eligible: false
+    nc_scca_child_eligible: true

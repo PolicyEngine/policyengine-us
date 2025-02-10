@@ -20,16 +20,24 @@ class nc_scca_age_group(Variable):
                 "https://ncchildcare.ncdhhs.gov/Portals/0/documents/pdf/M/Mkt_Rates_Homes_eff_10-1.pdf?ver=baC5Yg7ZMrQ5fck2y9CcvA==")
 
     def formula(person, period, parameters):
+        p = parameters(period).gov.states.nc.ncdhhs.scca
         age = person("age", period)
         disabled = person("is_disabled", period)
 
+        infant_age_limit = p.infant_age_limit # 2
+        toddler_age_limit = p.toddler_age_limit # 3
+        preschool_age_lower = p.preschool_age_lower # 3
+        preschool_age_upper = p.preschool_age_upper # 6 
+        school_age_limit = p.school_age_limit # 13
+        disabled_age_limit = p.disabled_age_limit # 18
+
         return select(
             [
-                age > 17,
-                age < 2,
-                age < 3,
-                (age >= 3) & (age < 6),
-                (age < 13) | ((age >= 12) & (age <= 17) & disabled), 
+                age >= disabled_age_limit,
+                age < infant_age_limit,
+                age < toddler_age_limit,
+                (age >= preschool_age_lower) & (age < preschool_age_upper),
+                (age < school_age_limit) | ((age < disabled_age_limit) & disabled), 
             ],
             [   
                 AgeGroup.NOT_QUALIFY,
