@@ -5,6 +5,108 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.190.0] - 2025-02-07 21:44:34
+
+### Added
+
+- 2024 North Carolina Income Tax Updates.
+
+## [1.189.0] - 2025-02-06 20:58:56
+
+### Added
+
+- Pennsylvania 2024 income tax updates.
+
+## [1.188.0] - 2025-02-06 10:21:40
+
+### Added
+
+- Refactor the Alternative Minimum Tax (AMT) logic.
+
+## [1.187.3] - 2025-02-05 18:19:06
+
+### Fixed
+
+- Adds 2025 Federal Poverty Guidelines.
+
+## [1.187.2] - 2025-02-05 00:41:13
+
+## [1.187.1] - 2025-02-04 16:24:45
+
+### Fixed
+
+- Revert previous commit.
+
+## [1.187.0] - 2025-02-03 22:12:04
+
+### Added
+
+- January 2025 CBO economic and demographic outlooks.
+
+## [1.186.0] - 2025-01-31 15:42:23
+
+### Added
+
+- Change is_widowed to is_surviving_spouse.
+
+## [1.185.0] - 2025-01-31 14:12:32
+
+### Added
+
+- Georgia State Tax Code 2024 Updates.
+
+## [1.184.0] - 2025-01-29 20:49:54
+
+### Added
+
+- New York City 2024 tax form references.
+
+## [1.183.1] - 2025-01-29 15:14:24
+
+### Fixed
+
+- Iowa income tax structure on and after 2023.
+
+## [1.183.0] - 2025-01-29 01:21:20
+
+### Added
+
+- New York 2024 tax form references.
+
+## [1.182.2] - 2025-01-28 13:45:56
+
+### Fixed
+
+- California itemized deduction limits 2024.
+- California AMT parameters 2024.
+- California 2024 tax form references.
+
+## [1.182.1] - 2025-01-27 21:39:20
+
+### Fixed
+
+- Invalid value encountered when dividing income_effect by original_earnings and dividing substitution_effect by original_earnings in weekly hours worked calculation
+
+## [1.182.0] - 2025-01-27 12:51:08
+
+### Added
+
+- NYC school tax credit phase out reform.
+
+## [1.181.0] - 2025-01-24 16:56:04
+
+### Added
+
+- Optional State Sales Tax Rates.
+
+## [1.180.4] - 2025-01-24 16:12:31
+
+## [1.180.3] - 2025-01-24 16:08:29
+
+### Fixed
+
+- Include the New York 2025 Inflation Rebates in the net income tree.
+
 ## [1.180.2] - 2025-01-23 16:58:25
 
 ### Fixed
@@ -10648,6 +10750,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.190.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.189.0...1.190.0
+[1.189.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.188.0...1.189.0
+[1.188.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.187.3...1.188.0
+[1.187.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.187.2...1.187.3
+[1.187.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.187.1...1.187.2
+[1.187.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.187.0...1.187.1
+[1.187.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.186.0...1.187.0
+[1.186.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.185.0...1.186.0
+[1.185.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.184.0...1.185.0
+[1.184.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.183.1...1.184.0
+[1.183.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.183.0...1.183.1
+[1.183.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.182.2...1.183.0
+[1.182.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.182.1...1.182.2
+[1.182.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.182.0...1.182.1
+[1.182.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.181.0...1.182.0
+[1.181.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.180.4...1.181.0
+[1.180.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.180.3...1.180.4
+[1.180.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.180.2...1.180.3
 [1.180.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.180.1...1.180.2
 [1.180.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.180.0...1.180.1
 [1.180.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.179.0...1.180.0

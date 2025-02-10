@@ -19,7 +19,7 @@
   output:
     state_filing_status_if_married_filing_separately_on_same_return: SINGLE
 
-- name: Widow filing status
+- name: Surviving spouse filing status
   period: 2022
   input:
     filing_status: SURVIVING_SPOUSE

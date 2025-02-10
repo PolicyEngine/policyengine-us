@@ -1,0 +1,30 @@
+- name: Kiddie tax does applies to single head
+  period: 2022
+  input:
+    age_head: 18
+  output:
+    amt_kiddie_tax_applies: true
+
+- name: Older spouse
+  period: 2022
+  input:
+    age_head: 18
+    age_spouse: 19
+  output:
+    amt_kiddie_tax_applies: false
+
+- name: Younger spouse
+  period: 2022
+  input:
+    age_head: 18
+    age_spouse: 18
+  output:
+    amt_kiddie_tax_applies: true
+
+- name: Older head
+  period: 2022
+  input:
+    age_head: 19
+    age_spouse: 18
+  output:
+    amt_kiddie_tax_applies: false

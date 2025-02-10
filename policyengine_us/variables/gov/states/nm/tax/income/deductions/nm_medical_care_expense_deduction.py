@@ -44,7 +44,7 @@ class nm_medical_care_expense_deduction(Variable):
                 p.joint.calc(agi, right=True),
                 p.head_of_household.calc(agi, right=True),
                 p.separate.calc(agi, right=True),
-                p.widow.calc(agi, right=True),
+                p.surviving_spouse.calc(agi, right=True),
             ],
         )
         return expenses * rate

@@ -1,0 +1,15 @@
+description: Georgia issues a personal exemption amount if this is true.
+values:
+  2003-01-01: true
+  2024-01-01: false
+metadata:
+  period: year
+  unit: bool
+  label: Georgia personal exemption availability
+  reference:
+  # Line 8 in the 2023 Form 500 Instructions describes the personal exemption availability
+  - title: 2023 Form 500 Instructions
+    href: https://dor.georgia.gov/document/document/2023-it-511-individual-income-tax-booklet/download#page=13
+  # As of 2024, the personal exemption statute only mentions the dependent exemption.
+  - title: Official Code of Georgia Annotated | CH17 Income Taxes | O.C.G.A. § 48-7-26
+    href: https://casetext.com/statute/code-of-georgia/title-48-revenue-and-taxation/chapter-7-income-taxes/article-2-imposition-rate-and-computation-exemptions/section-48-7-26-personal-exemptions
