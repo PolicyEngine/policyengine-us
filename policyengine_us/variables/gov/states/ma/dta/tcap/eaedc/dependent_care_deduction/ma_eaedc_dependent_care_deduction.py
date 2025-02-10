@@ -11,6 +11,8 @@ class ma_eaedc_dependent_care_deduction(Variable):
     reference = "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-704-275#(B)"
 
     def formula(spm_unit, period, parameters):
-        total_amount = add(spm_unit,period,["ma_eaedc_dependent_care_deduction_person"])
+        total_amount = add(
+            spm_unit, period, ["ma_eaedc_dependent_care_deduction_person"]
+        )
         dependent_care_expense = add(spm_unit, period, ["care_expenses"])
         return min_(dependent_care_expense, total_amount)

@@ -15,12 +15,11 @@ class ma_eaedc_dependent_care_deduction_person(Variable):
             period
         ).gov.states.ma.dta.tcap.eaedc.deductions.dependent_care.maximum_deductions
         age = person("age", period)
-        weekly_hours = person.spm_unit("spm_unit_weekly_hours_worked",period)
-        # Calculate amount based on age and hours worked 
+        weekly_hours = person.spm_unit("spm_unit_weekly_hours_worked", period)
+        # Calculate amount based on age and hours worked
         dependent_care_deduction_maximum_monthly = where(
             age < p.deduction_age_threshold,
             p.younger.calc(weekly_hours),
             p.older.calc(weekly_hours),
         )
         return dependent_care_deduction_maximum_monthly * MONTHS_IN_YEAR
-    
