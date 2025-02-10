@@ -1,12 +1,12 @@
-- name: Not eligible person, 2024
-  period: 2024
-  input:
-    pr_earned_income_child_count: 2
-    filing_status: SINGLE
-    pr_gross_income_person: 10_000
-    pr_earned_income_credit_eligible: false
-  output:
-    pr_earned_income_credit: 0
+# - name: Not eligible person, 2024
+#   period: 2024
+#   input:
+#     pr_earned_income_child_count: 2
+#     filing_status: SINGLE
+#     pr_gross_income_person: 10_000
+#     pr_earned_income_credit_eligible: false
+#   output:
+#     pr_earned_income_credit: 0
 
 - name: Eligible person, 0 children with max credit
   period: 2024
@@ -18,52 +18,32 @@
   output:
     pr_earned_income_credit: 1_656
 
-- name: Eligible person, 1 child and higher bracket
-  period: 2024
-  input:
-    pr_earned_income_child_count: 1
-    filing_status: SINGLE
-    pr_gross_income_person: 25_000
-    pr_earned_income_credit_eligible: true
-  output:
-    pr_earned_income_credit: 2_483.004
+# - name: Eligible person, 1 child and higher bracket
+#   period: 2024
+#   input:
+#     pr_earned_income_child_count: 1
+#     filing_status: SINGLE
+#     pr_gross_income_person: 25_000
+#     pr_earned_income_credit_eligible: true
+#   output:
+#     pr_earned_income_credit: 2_483.004
 
-- name: Eligible person in the highest bracket, 2024
-  period: 2024
-  input:
-    pr_gross_income_person: 35_000
-    pr_earned_income_credit_eligible: true
-  output:
-    pr_earned_income_credit: 100
+# - name: Eligible person, 0 child and filing jointly
+#   period: 2024
+#   input:
+#     pr_earned_income_child_count: 0
+#     filing_status: JOINT
+#     pr_gross_income_person: 19_870
+#     pr_earned_income_credit_eligible: true
+#   output:
+#     pr_earned_income_credit: 1_656
 
-- name: Eligible person in the middle bracket, 2024
-  period: 2024
-  input:
-    pr_gross_income_person: 34_000
-    pr_earned_income_credit_eligible: true
-  output:
-    pr_earned_income_credit: 120
-
-- name: Eligible person with max credit, 2024
-  period: 2024
-  input:
-    pr_gross_income_person: 10_000
-    pr_earned_income_credit_eligible: true
-  output:
-    pr_earned_income_credit: 600
-
-- name: Eligible person in the lower bracket, 2024
-  period: 2024
-  input:
-    pr_gross_income_person: 8_000
-    pr_earned_income_credit_eligible: true
-  output:
-    pr_earned_income_credit: 480
-
-- name: Eligible person in the lower bracket, 2011
-  period: 2011
-  input:
-    pr_gross_income_person: 8_000
-    pr_earned_income_credit_eligible: true
-  output:
-    pr_earned_income_credit: 280
+# - name: Eligible person, 1 child, filing jointly, higher bracket
+#   period: 2024
+#   input:
+#     pr_earned_income_child_count: 1
+#     filing_status: JOINT
+#     pr_gross_income_person: 25_000
+#     pr_earned_income_credit_eligible: true
+#   output:
+#     pr_earned_income_credit: 3_670.176

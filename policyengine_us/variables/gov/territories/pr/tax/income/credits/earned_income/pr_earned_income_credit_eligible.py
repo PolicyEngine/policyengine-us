@@ -6,26 +6,37 @@ class pr_earned_income_credit_eligible(Variable):
     entity = Person
     label = "Puerto Rico earned income credit eligibility"
     definition_period = YEAR
-    reference = "https://casetext.com/statute/laws-of-puerto-rico/title-thirteen-taxation-and-finance/subtitle-17-internal-revenue-code-of-2011/part-ii-income-taxes/chapter-1007-credits-against-tax/subchapter-b-refundable-credits/30211-earned-income-credit"
+    reference = "https://hacienda.pr.gov/sites/default/files/schedule_ct_rev._jul_5_23_informative_-_instructions.pdf#page=1"
 
     def formula(person, period, parameters):
         p = parameters(
             period
         ).gov.territories.pr.tax.income.credits.earned_income
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+
         investment_income = person(
             "pr_earned_income_credit_investment_income", period
         )
-        investment_income_amount_under_limit = investment_income <= p.investment_income.limit
+        investment_income_amount_under_limit = (
+            investment_income <= p.investment_income.limit
+        )
+
         age = person("age", period)
-        age_within_range = (age >= p.eligibility.min) & (age <= p.eligibility.max)
+        age_within_range = (age >= p.eligibility.min) & (
+            age <= p.eligibility.max
+        )
+
         filing_status = person.tax_unit("filing_status", period)
         not_separate = filing_status != filing_status.possible_values.SEPARATE
 
-        eligible = head_or_spouse & investment_income_amount_under_limit & age_within_range
+        eligible = (
+            head_or_spouse
+            & investment_income_amount_under_limit
+            & age_within_range
+        )
         # if separate filers are eligible
         if p.eligibility.separate_filer:
             return eligible
-        # else, filing status needs to be not equal to separate
+        # else, filing status can't be filing separate
         else:
             return eligible & not_separate
