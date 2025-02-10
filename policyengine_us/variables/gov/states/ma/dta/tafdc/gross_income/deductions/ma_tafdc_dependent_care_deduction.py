@@ -11,11 +11,11 @@ class ma_tafdc_dependent_care_deduction(Variable):
     defined_for = StateCode.MA
 
     def formula(person, period, parameters):
-        dependent = person("is_dependent", period)
+        dependent = person("is_tax_unit_dependent", period)
         total_weekly_hours = person.tax_unit.sum(
-            person("total_weekly_hours", period)
-        )
-        age = person("age", period)
+            person("weekly_hours_worked", period)
+        ) * MONTHS_IN_YEAR
+        age = person("monthly_age", period)
         p = parameters(
             period
         ).gov.states.ma.dta.tafdc.gross_income.deductions.dependent_care_expenses

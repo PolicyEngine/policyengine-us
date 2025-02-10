@@ -11,6 +11,6 @@ class ma_tafdc_child_support_deduction(Variable):
     defined_for = StateCode.MA
 
     def formula(person, period, parameters):
-        child_support = person("alimony_income", period)
+        child_support = person("alimony_income", period) * MONTHS_IN_YEAR
         p = parameters(period).gov.states.ma.dta.tafdc.gross_income.deductions
         return min_(child_support, p.child_support_payments)
