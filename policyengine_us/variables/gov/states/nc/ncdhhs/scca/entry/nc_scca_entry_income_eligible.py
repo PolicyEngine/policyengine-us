@@ -4,13 +4,13 @@ from policyengine_us.model_api import *
 class nc_scca_entry_income_eligible(Variable):
     value_type = bool
     entity = SPMUnit
-    label = "Income has to be eligible for the entry of North Carolina Subsidized Child Care Assistance program"
-    reference = "https://ncchildcare.ncdhhs.gov/Portals/0/documents/pdf/A/ACF-118_CCDF_FFY_2022-2024_For_North_Carolina_Amendment_1.pdf?ver=C9YfIUPAFekeBA3I1mN8aA%3d%3d#page=83"
+    label = "North Carolina entry income eligibility for Subsidized Child Care Assistance program"
+    reference = "https://policies.ncdhhs.gov/wp-content/uploads/chapter-8-parental-fees-7.pdf#page=8"
     definition_period = MONTH
     defined_for = StateCode.NC
 
-    def formula(spm_unit, period, parameters):        
-        family_total_income = spm_unit('nc_scca_countable_income', period)
+    def formula(spm_unit, period, parameters):
+        family_total_income = spm_unit("nc_scca_countable_income", period)
         rounded_family_total_income = np.round(family_total_income, 2)
 
         fpg = spm_unit("spm_unit_fpg", period)
@@ -20,9 +20,5 @@ class nc_scca_entry_income_eligible(Variable):
         allowed_max_income = np.round(fpg * rate, 2)
 
         income_eligible = rounded_family_total_income < allowed_max_income
-
-        print(f"rate: {rate}")
-        print(f"allowed_max_income: {allowed_max_income}")
-        print(f"income_eligible: {income_eligible}")
 
         return income_eligible

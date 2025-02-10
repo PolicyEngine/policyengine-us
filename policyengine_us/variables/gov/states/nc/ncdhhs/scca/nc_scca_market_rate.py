@@ -4,8 +4,11 @@ from policyengine_us.model_api import *
 class nc_scca_market_rate(Variable):
     value_type = int
     entity = Person
-    label = "Child age eligibility for North Carolina Subsidized Child Care Assistance (SCCA) program"
-    reference = "https://ncchildcare.ncdhhs.gov/Portals/0/documents/pdf/A/ACF-118_CCDF_FFY_2022-2024_For_North_Carolina_Amendment_1.pdf?ver=C9YfIUPAFekeBA3I1mN8aA%3d%3d#page=83"
+    label = "North Carolina Subsidized Child Care Assistance (SCCA) program market rate"
+    reference = (
+        "https://ncchildcare.ncdhhs.gov/Portals/0/documents/pdf/M/Market_Rates_Centers_Eff_10-1.pdf?ver=9w52alSPhmrmo0N9gGVMEw%3d%3d"
+        "https://docs.google.com/spreadsheets/d/1y7p8qkiOrMAM42rtSwT_ZXeA5tzew4edNkrTXACxf4M/edit?gid=1339413807#gid=1339413807"
+    )
     definition_period = MONTH
     defined_for = StateCode.NC
 
@@ -16,12 +19,8 @@ class nc_scca_market_rate(Variable):
 
         age_group = person("nc_scca_age_group", period.this_year)
 
-        print(f"~~age_group {age_group}")
-
         rate_table = p.childcare_market_rates
 
         market_rate = rate_table[county][age_group]
-
-        print(f"market_rate: {market_rate}")
 
         return market_rate

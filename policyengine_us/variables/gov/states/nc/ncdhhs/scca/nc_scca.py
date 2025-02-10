@@ -1,13 +1,13 @@
 from policyengine_us.model_api import *
 
 
-class nc_scca_estimated_saving(Variable):
+class nc_scca(Variable):
     value_type = float
     entity = SPMUnit
     label = "North Carolina Subsidized Child Care Assistance Program"
     unit = USD
     definition_period = MONTH
-    defined_for = 'nc_scca_entry_eligible'
+    defined_for = "nc_scca_entry_eligible"
 
     def formula(spm_unit, period, parameters):
         total_market_rate = add(

@@ -4,17 +4,19 @@ from policyengine_us.model_api import *
 class nc_scca_parent_fee(Variable):
     value_type = int
     entity = SPMUnit
-    label = "North Carolina Subsidized Child Care Assistance Program parent fee"
+    label = (
+        "North Carolina Subsidized Child Care Assistance Program parent fee"
+    )
     unit = USD
     definition_period = MONTH
     defined_for = StateCode.NC
-    reference = "https://docs.google.com/spreadsheets/d/1y7p8qkiOrMAM42rtSwT_ZXeA5tzew4edNkrTXACxf4M/edit?gid=1339413807#gid=1339413807"
+    reference = "https://policies.ncdhhs.gov/wp-content/uploads/chapter-8-parental-fees-7.pdf#page=2"
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.nc.ncdhhs.scca
         parent_fee_rate = p.parent_fee_rate.value
 
-        family_montly_income = spm_unit('nc_scca_countable_income', period)
+        family_montly_income = spm_unit("nc_scca_countable_income", period)
 
         parent_fee = family_montly_income * parent_fee_rate
 

@@ -8,6 +8,7 @@ class AgeGroup(Enum):
     THREE_TO_FIVE_YEAR_OLD = "3 - 5 Year olds"
     SCHOOL_AGE = "School age"
 
+
 class nc_scca_age_group(Variable):
     value_type = Enum
     possible_values = AgeGroup
@@ -15,21 +16,22 @@ class nc_scca_age_group(Variable):
     entity = Person
     label = "NC SCCA age group"
     definition_period = YEAR
-    reference = ("https://docs.google.com/spreadsheets/d/1y7p8qkiOrMAM42rtSwT_ZXeA5tzew4edNkrTXACxf4M/edit?gid=1339413807#gid=1339413807"
-                 "https://ncchildcare.ncdhhs.gov/Portals/0/documents/pdf/M/Market_Rates_Centers_Eff_10-1.pdf?ver=9w52alSPhmrmo0N9gGVMEw%3d%3d"
-                "https://ncchildcare.ncdhhs.gov/Portals/0/documents/pdf/M/Mkt_Rates_Homes_eff_10-1.pdf?ver=baC5Yg7ZMrQ5fck2y9CcvA==")
+    reference = (
+        "https://docs.google.com/spreadsheets/d/1y7p8qkiOrMAM42rtSwT_ZXeA5tzew4edNkrTXACxf4M/edit?gid=1339413807#gid=1339413807"
+        "https://ncchildcare.ncdhhs.gov/Portals/0/documents/pdf/M/Market_Rates_Centers_Eff_10-1.pdf?ver=9w52alSPhmrmo0N9gGVMEw%3d%3d"
+    )
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.nc.ncdhhs.scca
         age = person("age", period)
         disabled = person("is_disabled", period)
 
-        infant_age_limit = p.infant_age_limit # 2
-        toddler_age_limit = p.toddler_age_limit # 3
-        preschool_age_lower = p.preschool_age_lower # 3
-        preschool_age_upper = p.preschool_age_upper # 6 
-        school_age_limit = p.school_age_limit # 13
-        disabled_age_limit = p.disabled_age_limit # 18
+        infant_age_limit = p.infant_age_limit  # 2
+        toddler_age_limit = p.toddler_age_limit  # 3
+        preschool_age_lower = p.preschool_age_lower  # 3
+        preschool_age_upper = p.preschool_age_upper  # 6
+        school_age_limit = p.school_age_limit  # 13
+        disabled_age_limit = p.disabled_age_limit  # 18
 
         return select(
             [
@@ -37,14 +39,15 @@ class nc_scca_age_group(Variable):
                 age < infant_age_limit,
                 age < toddler_age_limit,
                 (age >= preschool_age_lower) & (age < preschool_age_upper),
-                (age < school_age_limit) | ((age < disabled_age_limit) & disabled), 
+                (age < school_age_limit)
+                | ((age < disabled_age_limit) & disabled),
             ],
-            [   
+            [
                 AgeGroup.NOT_QUALIFY,
                 AgeGroup.INFANT,
                 AgeGroup.TWO_YEAR_OLD,
                 AgeGroup.THREE_TO_FIVE_YEAR_OLD,
                 AgeGroup.SCHOOL_AGE,
             ],
-            default=AgeGroup.NOT_QUALIFY, 
+            default=AgeGroup.NOT_QUALIFY,
         )
