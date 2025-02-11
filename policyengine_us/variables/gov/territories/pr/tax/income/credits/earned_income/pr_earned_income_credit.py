@@ -18,16 +18,14 @@ class pr_earned_income_credit(Variable):
         child_count = person.tax_unit("pr_earned_income_child_count", period)
         filing_status = person.tax_unit("filing_status", period)
         gross_income = person("pr_gross_income_person", period)
-        print(p.phase_in_rate.calc(child_count))
+
         # compute credit
         phase_in = min_(
             gross_income * p.phase_in_rate.calc(child_count),
             p.max_amount.calc(child_count),
         )
-        print(p.max_amount.calc(child_count))
         phase_out = 0
 
-        # CHECK ME: what are the possible filing statuses?
         phase_out_rate = p.phase_out.rate.calc(child_count)
         if filing_status == filing_status.possible_values.SINGLE:
             single_threshold = p.phase_out.threshold.single.calc(child_count)

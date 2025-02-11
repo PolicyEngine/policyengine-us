@@ -3,24 +3,24 @@ description: Puerto Rico phases the earned income credit out at this rate of sta
 brackets:
   - threshold: 
       2023-01-01: 0
-    rate:
+    amount:
       2023-01-01: 0.15
   - threshold: 
       2023-01-01: 1
-    rate:
+    amount:
       2023-01-01: 0.2692
   - threshold: 
       2023-01-01: 2
-    rate:
+    amount:
       2023-01-01: 0.3438
   - threshold: 
       2023-01-01: 3
-    rate:
+    amount:
       2023-01-01: 0.3421
 metadata:
-  rate_unit: /1
+  amount_unit: /1
   threshold_unit: child
-  type_marginal: marginal_rate
+  type: single_amount
   label: Puerto Rico earned income credit phase out rate
   period: year
   reference:

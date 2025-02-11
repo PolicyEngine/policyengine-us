@@ -1,26 +1,26 @@
-description: Puerto Rico phases the earned income credit out at this rate of state gross income.
-# determines the threshold for the phase-in rate to be applied based on # of children
+description: Puerto Rico phases the earned income credit out at this amount of state gross income.
+# determines the threshold for the phase-in amount to be applied based on # of children
 brackets:
   - threshold: 
       2023-01-01: 0
-    rate:
+    amount:
       2023-01-01: 17_660
   - threshold: 
       2023-01-01: 1
-    rate:
+    amount:
       2023-01-01: 19_870
   - threshold: 
       2023-01-01: 2
-    rate:
+    amount:
       2023-01-01: 23_180
   - threshold: 
       2023-01-01: 3
-    rate:
+    amount:
       2023-01-01: 23_180
 metadata:
-  rate_unit: currency-USD
+  amount_unit: currency-USD
   threshold_unit: child
-  type_marginal: marginal_rate
+  type: single_amount
   label: Puerto Rico earned income credit phase out threshold
   period: year
   reference:
