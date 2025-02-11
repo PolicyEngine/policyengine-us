@@ -1,4 +1,5 @@
 - bump: patch
   changes:
     fixed:
-    - Use deductible_mortgage_interest in the Hawaii interest deduction.
+    - Create a non_deductible_mortgage_interest variable.
+    - Sum deductible and non-deductibale interest in the mortgage_interest variable.
