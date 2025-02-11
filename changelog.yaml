@@ -9103,3 +9103,9 @@
     added:
     - Apply itemized deduction limitations.
   date: 2025-02-11 16:25:15
+- bump: patch
+  changes:
+    fixed:
+    - Create a non_deductible_mortgage_interest variable.
+    - Sum deductible and non-deductible interest in the mortgage_interest variable.
+  date: 2025-02-11 18:25:27
