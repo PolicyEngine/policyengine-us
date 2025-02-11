@@ -7,6 +7,7 @@ class itemized_taxable_income_deductions_reduction(Variable):
     label = "Itemized taxable income deductions reduction"
     unit = USD
     definition_period = YEAR
+    
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.irs.deductions.itemized.reduction
