@@ -27,13 +27,13 @@
     tax_unit_medicaid_income_level: 2.813507 # greater than 2.62 CA CHIP limit (checked for 2025)
     is_medicaid_eligible: [false, false, false]
     is_aca_ptc_eligible: [true, true, true]
-    slspc: 15_542  #15,522 from 2025 kff calculator, they round more aggressively 
+    slspc: 15_550.90  #15,542 from 2025 kff calculator, they round more aggressively 
     aca_magi_fraction: 2.90
     aca_ptc_phase_out_rate: 0.056
-    aca_ptc: 11_342  #$11,327 from 2025 kff calculator
-    # annual contribution amount:  0.0645 * 70000 = 4515
-    # PEUS: 12476 - 7961 = 4515
-    # KFF:  12476 - 7947 = 4529
+    aca_ptc: 11_350.90  #$11,327 from 2025 kff calculator
+    # annual contribution amount:  0.0645 * 75000 = 4,837.5
+    # PEUS: 15,550.90 - 4,837.5 = 4515
+    # KFF:  15,542 - 7947 = 4529
     #                        14 diff is a bit more than $1/month 
     # FPL = 21960 (for three in 2021), so exact MAGI/FPL = ~318.76%
     # KFF implied applicable figure is 0.0647, which is between
