@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.192.0] - 2025-02-11 16:25:15
+
+### Added
+
+- Apply itemized deduction limitations.
+
 ## [1.191.0] - 2025-02-10 21:41:56
 
 ### Added
@@ -10756,6 +10762,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.192.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.191.0...1.192.0
 [1.191.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.190.0...1.191.0
 [1.190.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.189.0...1.190.0
 [1.189.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.188.0...1.189.0
