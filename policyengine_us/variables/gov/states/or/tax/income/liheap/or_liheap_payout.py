@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class liheap_payout(Variable):
+class or_liheap_payout(Variable):
     value_type = float
     entity = SPMUnit
     definition_period = YEAR
@@ -17,12 +17,17 @@ class liheap_payout(Variable):
 
         p = parameters(period).gov.states["or"].liheap
 
-        electricity_multiplier = where((utility_type == "ELECTRICITY") & (electricity_type == "BOTH"), 2, 1)
+        electricity_multiplier = where(
+            (utility_type == utility_type.possible_values.ELECTRICITY)
+            & (electricity_type == electricity_type.possible_values.BOTH),
+            2,
+            1,
+        )
 
         payout = where(
             is_region1,
             p.payout.region_one[unit_size][income_range][utility_type],
             p.payout.region_two[unit_size][income_range][utility_type],
-        ) 
-      
+        )
+
         return payout * electricity_multiplier
