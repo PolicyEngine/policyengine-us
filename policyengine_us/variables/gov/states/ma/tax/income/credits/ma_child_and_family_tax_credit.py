@@ -13,8 +13,7 @@ class ma_child_and_family_tax_credit(Variable):
     defined_for = StateCode.MA
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.ma.tax.income.credits
-        p = p.child_and_family_tax_credit
+        p = parameters(period).gov.states.ma.tax.income.credits.child_and_family_tax_credit
         person = tax_unit.members
         dependent = person("is_tax_unit_dependent", period)
         age = person("age", period)
