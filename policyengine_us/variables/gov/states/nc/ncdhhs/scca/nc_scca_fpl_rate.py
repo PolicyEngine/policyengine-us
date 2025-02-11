@@ -5,7 +5,7 @@ class nc_scca_fpl_rate(Variable):
     value_type = float
     entity = SPMUnit
     label = "North Carolina Subsidized Child Care Assistance (SCCA) program income limits compared to the FPL"
-    reference = "https://ncchildcare.ncdhhs.gov/Portals/0/documents/pdf/A/ACF-118_CCDF_FFY_2022-2024_For_North_Carolina_Amendment_1.pdf?ver=C9YfIUPAFekeBA3I1mN8aA%3d%3d#page=83"
+    reference = "https://policies.ncdhhs.gov/wp-content/uploads/chapter-8-parental-fees-7.pdf#page=8"
     definition_period = YEAR
     defined_for = StateCode.NC
 
