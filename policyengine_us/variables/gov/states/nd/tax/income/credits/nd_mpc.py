@@ -38,19 +38,20 @@ class nd_mpc(Variable):
         qinc_head = tax_unit.sum(qinc_person * is_head)
         is_spouse = person("is_tax_unit_spouse", period)
         qinc_spouse = tax_unit.sum(qinc_person * is_spouse)
-        min_qinc = min_(qinc_head, qinc_spouse)
-        hi_min_qinc = min_qinc > p.marriage_penalty.qualified_income_threshold
+        less_earning = min_(qinc_head, qinc_spouse)
+        qualified_less_earning = (
+            less_earning > p.marriage_penalty.qualified_income_threshold
+        )
         # calculate uncapped credit amount
         tax = parameters(period).gov.states.nd.tax.income.rates
-        tinc1 = max_(0, min_qinc - p.marriage_penalty.taxable_income_base)
-        taxs1 = tax.single.calc(tinc1)
-        tinc2 = max_(0, taxinc - tinc1)
-        taxs2 = tax.single.calc(tinc2)
-        taxj = tax_unit("nd_income_tax_before_credits", period)
-        mpc_amount = max_(0, taxj - (taxs1 + taxs2))
+        tax_less_earning = tax.single.calc(less_earning)
+        tax_more_earning = tax.single.calc(taxinc - less_earning)
+        tax_joint = tax_unit("nd_income_tax_before_credits", period)
+        mpc_amount = max_(0, tax_joint - (tax_less_earning + tax_more_earning))
+
         # return capped credit amount if eligible and have high min qinc
         return where(
-            eligible & hi_min_qinc,
+            eligible & qualified_less_earning,
             min_(mpc_amount, p.marriage_penalty.maximum),
             0,
         )
