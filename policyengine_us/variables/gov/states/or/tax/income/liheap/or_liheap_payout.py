@@ -17,6 +17,7 @@ class or_liheap_payout(Variable):
 
         p = parameters(period).gov.states["or"].liheap
 
+        # mutliplier not an official policy parameter
         electricity_multiplier = where(
             (utility_type == utility_type.possible_values.ELECTRICITY)
             & (electricity_type == electricity_type.possible_values.BOTH),

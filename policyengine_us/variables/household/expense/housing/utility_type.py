@@ -15,4 +15,4 @@ class utility_type(Variable):
     possible_values = UtilityType
     default_value = UtilityType.ELECTRICITY
     definition_period = YEAR
-    label = "Utility types for LIHEAP payout"
+    label = "Household Utility type"
