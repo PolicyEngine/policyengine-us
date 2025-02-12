@@ -1,19 +1,9 @@
 description: Colorado matches this fraction of the federal Earned Income Tax Credit.
-values:
-  2021-01-01: 0.1
-  2022-01-01: 0.2
-  2023-01-01: 0.5
-  # HB24-1134 increases the match to 50% in 2024.
-  2024-01-01: 0.5
-  # It also increases the amounts for 2025 and 2026
-  # regardless of state revenue.
-  # It can rise higher depending on state revenue.
-  2025-01-01: 0.35
-  2026-01-01: 0.25
-  2034-01-01: 0.10
 metadata:
   period: year
-  unit: /1
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: /1
   label: Colorado EITC match 
   reference:
     - title: C.R.S. 39-22-123.5
@@ -27,3 +17,46 @@ metadata:
       href: https://tax.colorado.gov/sites/tax/files/documents/DR_0104_Book_2022.pdf#page=16 
     - title: 2023 Colorado Individual Tax Filing Guide 104 Book, Line 5
       href: https://tax.colorado.gov/sites/tax/files/documents/Book0104_2023.pdf#page=18
+    - title: Colorado Revised Statutes, 39-22-119. Expenses related to child and dependent care refundable credit against state tax - tax preference performance statement - definition - repeal. (1.7).(a)&(b)
+      href: https://leg.colorado.gov/sites/default/files/2024a_1134_signed.pdf#page=3
+
+brackets:
+  - threshold:
+      2021-01-01: 0
+    amount:
+      2021-01-01: 0.1
+      2022-01-01: 0.2
+      2023-01-01: 0.25
+      2024-01-01: 0.5
+      2025-01-01: 0.35
+      2026-01-01: 0.25
+  - threshold:
+      2021-01-01: .inf
+      2026-01-01: 0.03
+    amount: 
+      2021-01-01: 0                  
+      2026-01-01: 0.05
+  - threshold:
+      2021-01-01: .inf
+      2026-01-01: 0.0318
+    amount:
+      2021-01-01: 0
+      2026-01-01: 0.1
+  - threshold:
+      2021-01-01: .inf
+      2026-01-01: 0.0337
+    amount:
+      2021-01-01: 0
+      2026-01-01: 0.15
+  - threshold:
+      2021-01-01: .inf
+      2026-01-01: 0.0356
+    amount:
+      2021-01-01: 0
+      2026-01-01: 0.2
+  - threshold:
+      2021-01-01: .inf
+      2026-01-01: 0.0375
+    amount:
+      2021-01-01: 0
+      2026-01-01: 0.25
