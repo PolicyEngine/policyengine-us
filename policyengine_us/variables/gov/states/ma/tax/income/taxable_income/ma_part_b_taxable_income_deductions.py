@@ -37,10 +37,11 @@ class ma_part_b_taxable_income_deductions(Variable):
         if tax.exemptions.interest.in_effect:
             bank_interest = add(tax_unit, period, ["taxable_interest_income"])
             bank_interest_deduction = min_(
-                tax.exemptions.interest[filing_status],
+                tax.exemptions.interest.amount[filing_status],
                 bank_interest,
             )
-        bank_interest_deduction = 0
+        else:
+            bank_interest_deduction = 0
         # (B)(a)(9): Rent deduction.
         rent = add(tax_unit, period, ["rent"])
         rent_deduction = tax.deductions.rent.share * rent
