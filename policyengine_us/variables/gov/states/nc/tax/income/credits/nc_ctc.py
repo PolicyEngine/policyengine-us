@@ -28,7 +28,7 @@ class nc_ctc(Variable):
                 p.single.calc(income),
                 p.head_of_household.calc(income),
                 p.joint.calc(income),
-                p.widow.calc(income),
+                p.surviving_spouse.calc(income),
                 p.separate.calc(income),
             ],
         )
