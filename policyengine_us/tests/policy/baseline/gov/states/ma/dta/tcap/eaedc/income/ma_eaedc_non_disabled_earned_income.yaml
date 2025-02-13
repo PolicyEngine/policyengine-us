@@ -3,7 +3,6 @@
   input:
     ma_eaedc_total_earned_income: 2_000
     is_disabled: true
-    is_tax_unit_dependent: false
     state_code: MA
   output:
     ma_eaedc_non_disabled_earned_income: 0
@@ -13,17 +12,6 @@
   input:
     ma_eaedc_total_earned_income: 2_000
     is_disabled: false
-    is_tax_unit_dependent: false
     state_code: MA
   output:
     ma_eaedc_non_disabled_earned_income: 2_000
-
-- name: Case 3, is not disabled but is a dependent.
-  period: 2022
-  input:
-    ma_eaedc_total_earned_income: 2_000
-    is_disabled: false
-    is_tax_unit_dependent: true
-    state_code: MA
-  output:
-    ma_eaedc_non_disabled_earned_income: 0

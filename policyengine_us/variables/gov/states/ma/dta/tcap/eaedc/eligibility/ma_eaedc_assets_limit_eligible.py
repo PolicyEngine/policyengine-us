@@ -13,7 +13,7 @@ class ma_eaedc_assets_limit_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ma.dta.tcap.eaedc.assets
-        countable_assets = spm_unit("ma_eaedc_assets", period)
+        countable_assets = spm_unit("ma_eaedc_countable_assets", period)
         living_arrangement = spm_unit("ma_eaedc_living_arrangement", period)
 
         living_arrangement_E = (

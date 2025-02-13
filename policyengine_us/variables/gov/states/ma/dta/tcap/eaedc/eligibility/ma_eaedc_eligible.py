@@ -10,9 +10,7 @@ class ma_eaedc_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         assets_eligible = spm_unit("ma_eaedc_assets_limit_eligible", period)
-        financially_eligible = spm_unit(
-            "ma_eaedc_financially_eligible", period
-        )
+        income_eligible = spm_unit("ma_eaedc_income_eligible", period)
         age_eligible = spm_unit("ma_eaedc_age_eligible", period)
 
         disabled_income_eligible = spm_unit(
@@ -21,7 +19,7 @@ class ma_eaedc_eligible(Variable):
 
         return (
             assets_eligible
-            & financially_eligible
+            & income_eligible
             & age_eligible
             & disabled_income_eligible
         )

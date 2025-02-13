@@ -5,7 +5,7 @@
     ma_eaedc_net_income: 400
     state_code: MA
   output:
-    ma_eaedc_financially_eligible: true
+    ma_eaedc_income_eligible: true
 
 - name: Case 2, net income above standard assistance,ineligible.
   period: 2022
@@ -14,4 +14,4 @@
     ma_eaedc_net_income: 420
     state_code: MA
   output:
-    ma_eaedc_financially_eligible: false
+    ma_eaedc_income_eligible: false

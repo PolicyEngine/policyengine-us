@@ -1,7 +1,7 @@
 - name: Case 1, passed all eligibility test, eligible. 
   period: 2022
   input:
-    ma_eaedc_financially_eligible: true
+    ma_eaedc_income_eligible: true
     ma_eaedc_assets_limit_eligible: true
     ma_eaedc_age_eligible: true
     ma_eaedc_disabled_income_eligible: true
@@ -12,7 +12,7 @@
 - name: Case 2, failed at one eligibility test, ineligible. 
   period: 2022
   input:
-    ma_eaedc_financially_eligible: true
+    ma_eaedc_income_eligible: true
     ma_eaedc_assets_limit_eligible: true
     ma_eaedc_age_eligible: false
     ma_eaedc_disabled_income_eligible: true

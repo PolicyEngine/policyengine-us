@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class ma_eaedc_financially_eligible(Variable):
+class ma_eaedc_income_eligible(Variable):
     value_type = bool
     entity = SPMUnit
-    label = "Financially eligible for the Massachusetts EAEDC "
+    label = "Eligible for the Massachusetts EAEDC based on income"
     definition_period = YEAR
     defined_for = StateCode.MA
     reference = "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-704-500"  # (B)
