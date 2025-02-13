@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.194.0] - 2025-02-13 01:01:20
+
+### Added
+
+- Colorado 2024 tax form references.
+- 2023 and 2024 Colorado Income Qualified Senior Housing Credit.
+- 2024 Colorado ABLE Account Cap.
+- 2023 and 2024 Colorado CollegeInvest Maximum Amount.
+- 2024 Colorado State Sales Tax Refund.
+
 ## [1.193.0] - 2025-02-13 00:37:01
 
 ### Added
@@ -10777,6 +10787,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.194.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.193.0...1.194.0
 [1.193.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.192.2...1.193.0
 [1.192.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.192.1...1.192.2
 [1.192.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.192.0...1.192.1
