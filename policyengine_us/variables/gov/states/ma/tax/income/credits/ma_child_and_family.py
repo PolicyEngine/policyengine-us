@@ -8,7 +8,7 @@ class ma_child_and_family(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://www.mass.gov/info-details/mass-general-laws-c62-ss-6"  # (y)
+        "https://www.mass.gov/info-details/massachusetts-child-and-family-tax-credit"
     )
     defined_for = StateCode.MA
 

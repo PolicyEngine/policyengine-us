@@ -4,6 +4,11 @@ metadata:
   threshold_unit: currency-USD
   rate_unit: /1
   label: Massachusetts additional income tax
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: nearest
+      interval: 50
   reference:
     - title: Proposal for Constitutional Amendment H.86
       href: https://malegislature.gov/Bills/191/H86
@@ -11,6 +16,8 @@ metadata:
       href: https://www.mass.gov/doc/2023-form-1-instructions/download#page=3
     - title: Form 1 2024 Massachusetts Resident Income Tax - 4% Surtax on Taxable Income Over $1 Million
       href: https://www.mass.gov/doc/2024-form-1-instructions/download#page=3
+    - title: Chapter 62, Section 4 (d)
+      href: https://malegislature.gov/Laws/GeneralLaws/PartI/TitleIX/Chapter62/section4
 brackets:
   - threshold:
       0000-01-01: 0

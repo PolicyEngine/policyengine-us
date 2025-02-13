@@ -10,6 +10,11 @@ metadata:
   unit: currency-USD
   period: year
   label: Massachusetts Senior Circuit Breaker maximum property value
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: nearest
+      interval: 1000
   reference:
     - title: Mass. General Laws c.62 § 6(k)(3)(ii)
       href: https://www.mass.gov/info-details/mass-general-laws-c62-ss-6
