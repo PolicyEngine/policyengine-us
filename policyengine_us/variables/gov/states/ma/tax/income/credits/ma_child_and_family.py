@@ -7,9 +7,7 @@ class ma_child_and_family(Variable):
     label = "Massachusetts child and family tax credit"
     unit = USD
     definition_period = YEAR
-    reference = (
-        "https://www.mass.gov/info-details/massachusetts-child-and-family-tax-credit"
-    )
+    reference = "https://www.mass.gov/info-details/massachusetts-child-and-family-tax-credit"
     defined_for = StateCode.MA
 
     def formula(tax_unit, period, parameters):
