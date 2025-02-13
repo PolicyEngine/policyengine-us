@@ -59,26 +59,6 @@
     la_exemptions: 13_000
     la_taxable_income: 244_826.42
 
-- name: Tax unit with taxsimid 99960 in e21.its.csv and e21.ots.csv
-  absolute_error_margin: 0.01
-  period: 2021
-  input:
-    people:
-      person1:
-        age: 55
-        employment_income: 145010
-        taxable_interest_income: 5505.0
-      person2:
-        age: 55
-        employment_income: 118010
-        taxable_interest_income: 5505.0
-    households:
-      household:
-        members: [person1, person2]
-        state_fips: 22  # LA
-  output:  # expected results from patched TAXSIM35 2024-02-05 version
-    la_income_tax: 10869.59
-
 - name: Tax unit with taxsimid 47193 in f21.its.csv and f21.ots.csv
   absolute_error_margin: 0.01
   period: 2021

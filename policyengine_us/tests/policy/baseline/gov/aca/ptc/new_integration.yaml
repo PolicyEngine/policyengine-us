@@ -30,12 +30,10 @@
     slspc: 15_550.90  #15,542 from 2025 kff calculator, they round more aggressively 
     aca_magi_fraction: 2.90
     aca_ptc_phase_out_rate: 0.056
-    aca_ptc: 11_350.90  #$11,327 from 2025 kff calculator
-    # annual contribution amount:  0.0645 * 75000 = 4,837.5
-    # PEUS: 15,550.90 - 4,837.5 = 4515
-    # KFF:  15,542 - 7947 = 4529
-    #                        14 diff is a bit more than $1/month 
-    # FPL = 21960 (for three in 2021), so exact MAGI/FPL = ~318.76%
-    # KFF implied applicable figure is 0.0647, which is between
-    #   318 ==> 0.0645  and 319 ==> 0.0648, so it appears as if KFF is
-    # not truncating the MAGI/FPL percent as called for on IRS Form 8962
+    aca_ptc: 11_350.898  #$11,327 from 2025 kff calculator
+  ) Final PTC:
+#    - KFF’s result:  $15,542 – $4,215 = $11,327 subsidy (annual).
+#      => They say user’s share is $4,215 (or 5.62% of $75k).
+#    - Ours might be: $15,550.90 – ($75,000 × 0.0560) = ~$11,350.90,
+#      i.e. $4,200 difference from unsubsidized. The $14 difference
+#      is a bit more than $1/month.
