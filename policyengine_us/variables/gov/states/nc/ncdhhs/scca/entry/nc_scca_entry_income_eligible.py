@@ -19,6 +19,4 @@ class nc_scca_entry_income_eligible(Variable):
 
         allowed_max_income = np.round(fpg * rate, 2)
 
-        income_eligible = rounded_family_total_income < allowed_max_income
-
-        return income_eligible
+        return rounded_family_total_income < allowed_max_income

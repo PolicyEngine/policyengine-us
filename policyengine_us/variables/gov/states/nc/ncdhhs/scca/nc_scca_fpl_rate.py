@@ -31,8 +31,9 @@ class nc_scca_fpl_rate(Variable):
         )
 
         categorized_age = where(
-            has_disabled_child | (min_age < preschool_age_upper), 5, 6
+            has_disabled_child | (min_age < preschool_age_upper),
+            p.preschool_age_lower,
+            p.preschool_age_upper,
         )
 
-        rate = p.entry.income_rate_by_child_age.calc(categorized_age)
-        return rate
+        return p.entry.income_rate_by_child_age.calc(categorized_age)

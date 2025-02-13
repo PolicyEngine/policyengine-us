@@ -14,7 +14,7 @@ class nc_scca_age_group(Variable):
     possible_values = AgeGroup
     default_value = AgeGroup.NOT_QUALIFY
     entity = Person
-    label = "NC SCCA age group"
+    label = "North Carolina SCCA age group"
     definition_period = YEAR
     reference = (
         "https://docs.google.com/spreadsheets/d/1y7p8qkiOrMAM42rtSwT_ZXeA5tzew4edNkrTXACxf4M/edit?gid=1339413807#gid=1339413807"
@@ -26,21 +26,14 @@ class nc_scca_age_group(Variable):
         age = person("age", period)
         disabled = person("is_disabled", period)
 
-        infant_age_limit = p.infant_age_limit  # 2
-        toddler_age_limit = p.toddler_age_limit  # 3
-        preschool_age_lower = p.preschool_age_lower  # 3
-        preschool_age_upper = p.preschool_age_upper  # 6
-        school_age_limit = p.school_age_limit  # 13
-        disabled_age_limit = p.disabled_age_limit  # 18
-
         return select(
             [
-                age >= disabled_age_limit,
-                age < infant_age_limit,
-                age < toddler_age_limit,
-                (age >= preschool_age_lower) & (age < preschool_age_upper),
-                (age < school_age_limit)
-                | ((age < disabled_age_limit) & disabled),
+                age >= p.disabled_age_limit,
+                age < p.infant_age_limit,
+                age < p.toddler_age_limit,
+                (age >= p.preschool_age_lower) & (age < p.preschool_age_upper),
+                (age < p.school_age_limit)
+                | ((age < p.disabled_age_limit) & disabled),
             ],
             [
                 AgeGroup.NOT_QUALIFY,

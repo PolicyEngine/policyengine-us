@@ -14,7 +14,7 @@ class nc_scca_child_age_eligible(Variable):
         disabled_age_limit = p.disabled_age_limit
         school_age_limit = p.school_age_limit
 
-        is_disabled = person("is_disabled", period.this_year)
+        is_disabled = person("is_disabled", period)
         age = person("age", period)
 
         # Apply disabled_age_limit only if child is under 18 and disabled

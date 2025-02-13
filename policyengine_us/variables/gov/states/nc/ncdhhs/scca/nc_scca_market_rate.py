@@ -15,12 +15,10 @@ class nc_scca_market_rate(Variable):
     def formula(person, period, parameters):
         p = parameters(period).gov.states.nc.ncdhhs.scca
 
-        county = person.household("county_str", period.this_year)
+        county = person.household("county_str", period)
 
-        age_group = person("nc_scca_age_group", period.this_year)
+        age_group = person("nc_scca_age_group", period)
 
         rate_table = p.childcare_market_rates
 
-        market_rate = rate_table[county][age_group]
-
-        return market_rate
+        return rate_table[county][age_group]
