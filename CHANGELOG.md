@@ -11,6 +11,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - CBO uprating factors for all tax parameters through 2035.
 
+## [1.191.0] - 2025-02-014 18:28:34
+
+### Added
+
+- Updating 2024 Minnesota State Income Taxes.
+
 ## [1.190.0] - 2025-02-07 21:44:34
 
 ### Added
