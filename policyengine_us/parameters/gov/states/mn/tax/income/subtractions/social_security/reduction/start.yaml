@@ -10,11 +10,14 @@ metadata:
     href: https://www.revisor.mn.gov/statutes/cite/290.0132#stat.290.0132.26
   - title: 2023 M1M, Income Additions and Subtractions
     href: https://www.revenue.state.mn.us/sites/default/files/2023-12/m1m-23.pdf#page=4
+  - title: 2024 M1M, Income Additions and Subtractions
+    href: https://www.revenue.state.mn.us/sites/default/files/2024-12/m1m-24.pdf#page=4
 
 
 JOINT:
   values:
     2023-01-01: 100_000
+    2024-01-01: 105_380
   metadata:
     uprating:
       parameter: gov.irs.uprating
@@ -24,6 +27,7 @@ JOINT:
 HEAD_OF_HOUSEHOLD:
   values:
     2023-01-01: 78_000
+    2024-01-01: 82_190
   metadata:
     uprating:
       parameter: gov.irs.uprating
@@ -33,6 +37,7 @@ HEAD_OF_HOUSEHOLD:
 SURVIVING_SPOUSE:
   values:
     2023-01-01: 100_000
+    2024-01-01: 105_380
   metadata:
     uprating:
       parameter: gov.irs.uprating
@@ -42,6 +47,7 @@ SURVIVING_SPOUSE:
 SINGLE:
   values:
     2023-01-01: 78_000
+    2024-01-01: 82_190
   metadata:
     uprating:
       parameter: gov.irs.uprating
@@ -51,6 +57,7 @@ SINGLE:
 SEPARATE:
   values:
     2023-01-01: 50_000
+    2024-01-01: 52_690
   metadata:
     uprating:
       parameter: gov.irs.uprating
