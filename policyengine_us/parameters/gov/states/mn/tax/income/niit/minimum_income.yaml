@@ -1,0 +1,13 @@
+description: Minnesota taxes individuals with a net investment income of at least this minimum amount.
+values:
+  2024-01-01: 1_000_000
+
+metadata:
+  period: year
+  unit: currency-USD
+  label: Minnesota minimum income for net investment income tax, Line 14
+  reference:
+  - title: Minnesota Statutes 290.033
+    href: https://www.revisor.mn.gov/statutes/cite/290.033 
+  - title: Minnesota 2024 Form M1, Individual Income Tax Return
+    href: https://www.revenue.state.mn.us/sites/default/files/2024-12/m1-24.pdf#page=2

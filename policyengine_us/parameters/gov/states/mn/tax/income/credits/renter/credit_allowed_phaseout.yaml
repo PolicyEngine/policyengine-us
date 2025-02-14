@@ -1,0 +1,103 @@
+description: Minnesota individual renters are allowed a credit against the tax due equal to the amount that rent constituting property taxes exceeds the percentage of the household income value of the claimant in the taxable year in which the rent was paid.
+metadata:
+  period: year
+  threshold_unit: currency-USD
+  label: Minnesota Renters Credit brackets
+  reference:
+    - title: Minnesota Statutes 290.0693
+      href: https://www.revisor.mn.gov/statutes/cite/290.0693
+    - title: 2024 Minnesota M1REF Instructions
+      href: https://www.revenue.state.mn.us/sites/default/files/2024-12/m1ref-24_0.pdf
+
+
+values:
+  2024-01-01:
+    brackets:
+      - threshold: 0
+        percent_of_income: 0.01
+        percent_paid_by_claimant: 0.05
+        max_credit: 2_640
+      - threshold: 6_480
+        percent_of_income: 0.01
+        percent_paid_by_claimant: 0.10
+        max_credit: 2_640
+      - threshold: 8_610
+        percent_of_income: 0.011
+        percent_paid_by_claimant: 0.10
+        max_credit: 2_570
+      - threshold: 10_760
+        percent_of_income: 0.012
+        percent_paid_by_claimant: 0.10
+        max_credit: 2_510
+      - threshold: 15_090
+        percent_of_income: 0.013
+        percent_paid_by_claimant: 0.15
+        max_credit: 2_430
+      - threshold: 19_400
+        percent_of_income: 0.014
+        percent_paid_by_claimant: 0.15
+        max_credit: 2_370
+      - threshold: 21_540
+        percent_of_income: 0.014
+        percent_paid_by_claimant: 0.20
+        max_credit: 2_310
+      - threshold: 23_680
+        percent_of_income: 0.015
+        percent_paid_by_claimant: 0.20
+        max_credit: 2_240
+      - threshold: 28_010
+        percent_of_income: 0.016
+        percent_paid_by_claimant: 0.20
+        max_credit: 2_180
+      - threshold: 30_160
+        percent_of_income: 0.017
+        percent_paid_by_claimant: 0.25
+        max_credit: 2_180
+      - threshold: 32_310
+        percent_of_income: 0.018
+        percent_paid_by_claimant: 0.25
+        max_credit: 2_180
+      - threshold: 36_630
+        percent_of_income: 0.019  
+        percent_paid_by_claimant: 0.30 
+        max_credit: 2_180
+      - threshold: 38_770
+        percent_of_income: 0.02    
+        percent_paid_by_claimant: 0.30   
+        max_credit: 2_180
+      - threshold: 45_230
+        percent_of_income: 0.02    
+        percent_paid_by_claimant: 0.35  
+        max_credit: 2_180
+      - threshold: 51_690
+        percent_of_income: 0.02    
+        percent_paid_by_claimant: 0.40   
+        max_credit: 2_180
+      - threshold: 60_320
+        percent_of_income: 0.02
+        percent_paid_by_claimant: 0.45
+        max_credit: 1980
+      - threshold: 62_460
+        percent_of_income: 0.02
+        percent_paid_by_claimant: 0.45
+        max_credit: 1780
+      - threshold: 64_620
+        percent_of_income: 0.02
+        percent_paid_by_claimant: 0.45
+        max_credit: 1510
+      - threshold: 66_790
+        percent_of_income: 0.02
+        percent_paid_by_claimant: 0.50
+        max_credit: 1320
+      - threshold: 68_930
+        percent_of_income: 0.02
+        percent_paid_by_claimant: 0.50
+        max_credit: 1190
+      - threshold: 71_090
+        percent_of_income: 0.02
+        percent_paid_by_claimant: 0.50
+        max_credit: 660
+      - threshold: 73_240
+        percent_of_income: 0.02
+        percent_paid_by_claimant: 0.50
+        max_credit: 260
