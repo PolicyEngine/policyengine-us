@@ -61,7 +61,7 @@ def create_age_curve_yamls():
                 64: 3.000,
             },
         },
-        "alabama": {
+        "AL": {
             "base": 0.635,
             "values": {
                 0: 0.635,
@@ -117,7 +117,7 @@ def create_age_curve_yamls():
                 64: 3.000,
             },
         },
-        "district_of_columbia": {
+        "DC": {
             "base": 0.654,
             "values": {
                 0: 0.654,
@@ -173,7 +173,7 @@ def create_age_curve_yamls():
                 64: 2.181,
             },
         },
-        "massachusetts": {
+        "MA": {
             "base": 0.751,
             "values": {
                 0: 0.751,
@@ -229,7 +229,7 @@ def create_age_curve_yamls():
                 64: 2.365,
             },
         },
-        "minnesota": {
+        "MN": {
             "base": 0.890,
             "values": {
                 0: 0.890,
@@ -285,7 +285,7 @@ def create_age_curve_yamls():
                 64: 3.000,
             },
         },
-        "mississippi": {
+        "MS": {
             "base": 0.635,
             "values": {
                 0: 0.635,
@@ -341,7 +341,7 @@ def create_age_curve_yamls():
                 64: 3.000,
             },
         },
-        "oregon": {
+        "OR": {
             "base": 0.635,
             "values": {
                 0: 0.635,
@@ -397,7 +397,7 @@ def create_age_curve_yamls():
                 64: 3.000,
             },
         },
-        "utah": {
+        "UT": {
             "base": 0.793,
             "values": {
                 0: 0.793,
