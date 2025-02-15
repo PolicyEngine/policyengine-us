@@ -62,9 +62,9 @@ def create_fisc_act() -> Reform:
             # The credit is limited to eligible caregivers
             person = tax_unit.members
             age = person("age", period)
-            age_eligible_caregiver = age >= p.age_threshold.caregiver
+            age_eligible = age >= p.age_threshold.caregiver
             head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-            eligible_caregiver_present = tax_unit.any(age_eligible_caregiver & head_or_spouse)
+            eligible_caregiver_present = tax_unit.any(age_eligible & head_or_spouse)
             return max_(capped_credit - phase_out, 0) * eligible_caregiver_present
     
     def modify_parameters(parameters):
