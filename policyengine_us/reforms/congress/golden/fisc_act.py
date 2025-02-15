@@ -20,7 +20,7 @@ def create_fisc_act() -> Reform:
             p = parameters(
                 period
             ).gov.contrib.congress.golden.fisc_act.family_income_supplement
-            eligible_dependent = (age < p.child_age_threshold) & is_dependent
+            eligible_dependent = (age < p.age_threshold.child) & is_dependent
             current_pregnancy_month = person("current_pregnancy_month", period)
             pregnant_amount = p.amount.pregnant.calc(current_pregnancy_month)
             dependent_amount = p.amount.base.calc(age) * eligible_dependent
@@ -59,8 +59,14 @@ def create_fisc_act() -> Reform:
             phase_out = where(
                 joint, p.phase_out.joint.calc(agi), p.phase_out.other.calc(agi)
             )
-            return max_(capped_credit - phase_out, 0)
-
+            # The credit is limited to eligible caregivers
+            person = tax_unit.members
+            age = person("age", period)
+            age_eligible_caregiver = age >= p.age_threshold.caregiver
+            head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+            eligible_caregiver_present = tax_unit.any(age_eligible_caregiver & head_or_spouse)
+            return max_(capped_credit - phase_out, 0) * eligible_caregiver_present
+    
     def modify_parameters(parameters):
         parameters.gov.irs.credits.refundable.update(
             start=instant("2026-01-01"),
