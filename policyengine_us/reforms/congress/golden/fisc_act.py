@@ -64,9 +64,13 @@ def create_fisc_act() -> Reform:
             age = person("age", period)
             age_eligible = age >= p.age_threshold.caregiver
             head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-            eligible_caregiver_present = tax_unit.any(age_eligible & head_or_spouse)
-            return max_(capped_credit - phase_out, 0) * eligible_caregiver_present
-    
+            eligible_caregiver_present = tax_unit.any(
+                age_eligible & head_or_spouse
+            )
+            return (
+                max_(capped_credit - phase_out, 0) * eligible_caregiver_present
+            )
+
     def modify_parameters(parameters):
         parameters.gov.irs.credits.refundable.update(
             start=instant("2026-01-01"),
