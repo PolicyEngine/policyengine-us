@@ -7,4 +7,3 @@ class current_pregnancy_month(Variable):
     label = "Current pregnancy month"
     definition_period = MONTH
     defined_for = "is_pregnant"
-    # default_value = 9
