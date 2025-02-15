@@ -25,15 +25,17 @@
     gov.contrib.congress.golden.fisc_act.in_effect: true
     people:
       person1:
-        age: 25
+        monthly_age: 25
         is_pregnant: true
+        current_pregnancy_month: 9
       person2:
-        age: 10
+        monthly_age: 10
         is_tax_unit_dependent: true
     tax_units:
       tax_unit:
         members: [person1, person2]
         adjusted_gross_income: 120_000
+        filing_status: HEAD_OF_HOUSEHOLD
   output:
     family_income_supplement_credit: 10_000
     refundable_ctc: 0
@@ -62,6 +64,7 @@
   output:
     family_income_supplement_credit: 4_926.5
 
+
 - name: Married couple, one child, fully phased out
   period: 2026
   absolute_error_margin: 1
@@ -81,5 +84,7 @@
       tax_unit:
         members: [person1, person2, person3]
         adjusted_gross_income: 1_000_000
+        filing_status: JOINT
   output:
+    family_income_supplement_credit_amount: [0, 0, 3_600]
     family_income_supplement_credit: 0

@@ -4,6 +4,33 @@ from policyengine_core.periods import instant
 
 
 def create_fisc_act() -> Reform:
+
+    class family_income_supplement_credit_amount(Variable):
+        value_type = float
+        entity = Person
+        label = "FISC Act family income supplement amount"
+        unit = USD
+        definition_period = MONTH
+        reference = "https://golden.house.gov/sites/evo-subsites/golden.house.gov/files/evo-media-document/GoldenFISC.pdf"
+
+        def formula(person, period, parameters):
+            # Calcualte the base amount
+            is_dependent = person("is_tax_unit_dependent", period)
+            age = person("monthly_age", period)
+            p = parameters(
+                period
+            ).gov.contrib.congress.golden.fisc_act.family_income_supplement
+            eligible_dependent = (age < p.child_age_threshold) & is_dependent
+            current_pregnancy_month = person("current_pregnancy_month", period)
+            pregnant_amount = p.amount.pregnant.calc(current_pregnancy_month)
+            dependent_amount = p.amount.base.calc(age) * eligible_dependent
+            total_base_amount = pregnant_amount + dependent_amount
+
+            # A joint bonus is applied to the base amount
+            filing_status = person.tax_unit("filing_status", period)
+            joint = filing_status == filing_status.possible_values.JOINT
+            return total_base_amount * (1 + joint * p.marriage_bonus_rate)
+
     class family_income_supplement_credit(Variable):
         value_type = float
         entity = TaxUnit
@@ -14,36 +41,20 @@ def create_fisc_act() -> Reform:
 
         def formula(tax_unit, period, parameters):
 
-            # Calcualte the base amount
-            person = tax_unit.members
-            is_pregnant = person("is_pregnant", period)
-            is_dependent = person("is_tax_unit_dependent", period)
-            age = person("age", period)
             p = parameters(
                 period
             ).gov.contrib.congress.golden.fisc_act.family_income_supplement
-            eligible_dependent = (age < p.child_age_threshold) & is_dependent
-            pergnant_amount = p.amount.pregnant * is_pregnant
-            dependent_amount = p.amount.base.calc(age) * eligible_dependent
-            total_base_amount = (
-                tax_unit.sum(pergnant_amount + dependent_amount)
-                * MONTHS_IN_YEAR
-            )
             # A joint bonus is applied to the base amount
             filing_status = tax_unit("filing_status", period)
             joint = filing_status == filing_status.possible_values.JOINT
-            base_with_bonus = where(
-                joint,
-                (total_base_amount * p.marriage_bonus_rate)
-                + total_base_amount,
-                total_base_amount,
+            base_amount = add(
+                tax_unit, period, ["family_income_supplement_credit_amount"]
             )
-
             # The credit is capped at a percentage of the total adjusted gross income
+            # We will use the yearly AGI for the phase-out calculation
             agi = tax_unit("adjusted_gross_income", period)
-            agi_threshold = p.income_threshold * agi
-            capped_credit = min_(base_with_bonus, agi_threshold)
-
+            agi_threshold = p.agi_fraction * agi
+            capped_credit = min_(base_amount, agi_threshold)
             # The credit is further reduced by a phase-out rate
             phase_out = where(
                 joint, p.phase_out.joint.calc(agi), p.phase_out.other.calc(agi)
@@ -66,6 +77,7 @@ def create_fisc_act() -> Reform:
 
     class reform(Reform):
         def apply(self):
+            self.update_variable(family_income_supplement_credit_amount)
             self.update_variable(family_income_supplement_credit)
             self.modify_parameters(modify_parameters)
             self.neutralize_variable("refundable_ctc")
