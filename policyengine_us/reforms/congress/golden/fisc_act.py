@@ -48,7 +48,9 @@ def create_fisc_act() -> Reform:
             filing_status = tax_unit("filing_status", period)
             joint = filing_status == filing_status.possible_values.JOINT
             base_amount = add(
-                tax_unit, period, ["family_income_supplement_credit_base_amount"]
+                tax_unit,
+                period,
+                ["family_income_supplement_credit_base_amount"],
             )
             agi = tax_unit("adjusted_gross_income", period)
             phase_out = where(
