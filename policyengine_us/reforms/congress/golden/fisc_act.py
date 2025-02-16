@@ -5,10 +5,10 @@ from policyengine_core.periods import instant
 
 def create_fisc_act() -> Reform:
 
-    class family_income_supplement_credit_amount(Variable):
+    class family_income_supplement_credit_base_amount(Variable):
         value_type = float
         entity = Person
-        label = "FISC Act family income supplement amount"
+        label = "FISC Act family income supplement base amount with the marriage bonus"
         unit = USD
         definition_period = MONTH
         reference = "https://golden.house.gov/sites/evo-subsites/golden.house.gov/files/evo-media-document/GoldenFISC.pdf"
@@ -48,17 +48,15 @@ def create_fisc_act() -> Reform:
             filing_status = tax_unit("filing_status", period)
             joint = filing_status == filing_status.possible_values.JOINT
             base_amount = add(
-                tax_unit, period, ["family_income_supplement_credit_amount"]
+                tax_unit, period, ["family_income_supplement_credit_base_amount"]
             )
-            # The credit is capped at a percentage of the total adjusted gross income
-            # We will use the yearly AGI for the phase-out calculation
             agi = tax_unit("adjusted_gross_income", period)
-            agi_threshold = p.agi_fraction * agi
-            capped_credit = min_(base_amount, agi_threshold)
-            # The credit is further reduced by a phase-out rate
             phase_out = where(
                 joint, p.phase_out.joint.calc(agi), p.phase_out.other.calc(agi)
             )
+            phased_out_amount = max_(base_amount - phase_out, 0)
+            agi_threshold = p.agi_fraction * agi
+            capped_credit = min_(phased_out_amount, agi_threshold)
             # The credit is limited to eligible caregivers
             person = tax_unit.members
             age = person("age", period)
@@ -67,9 +65,7 @@ def create_fisc_act() -> Reform:
             eligible_caregiver_present = tax_unit.any(
                 age_eligible & head_or_spouse
             )
-            return (
-                max_(capped_credit - phase_out, 0) * eligible_caregiver_present
-            )
+            return capped_credit * eligible_caregiver_present
 
     def modify_parameters(parameters):
         parameters.gov.irs.credits.refundable.update(
@@ -87,7 +83,7 @@ def create_fisc_act() -> Reform:
 
     class reform(Reform):
         def apply(self):
-            self.update_variable(family_income_supplement_credit_amount)
+            self.update_variable(family_income_supplement_credit_base_amount)
             self.update_variable(family_income_supplement_credit)
             self.modify_parameters(modify_parameters)
             self.neutralize_variable("refundable_ctc")

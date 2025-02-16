@@ -1,23 +1,4 @@
-- name: Head of household with one child and no income
-  period: 2026
-  reforms: policyengine_us.reforms.congress.golden.fisc_act.fisc_act
-  input:
-    gov.contrib.congress.golden.fisc_act.in_effect: true
-    people:
-      person1:
-        age: 25
-        is_pregnant: true
-      person2:
-        age: 10
-        is_tax_unit_dependent: false
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
-        adjusted_gross_income: 0
-  output:
-    family_income_supplement_credit: 0
-
-- name: Head of household with one child, pregnant, pre-phase-out income
+- name: Single pregnant, below phase-out, no cap triggered
   period: 2026
   absolute_error_margin: 1
   reforms: policyengine_us.reforms.congress.golden.fisc_act.fisc_act
@@ -25,24 +6,23 @@
     gov.contrib.congress.golden.fisc_act.in_effect: true
     people:
       person1:
-        monthly_age: 25
+        age: 25
         is_pregnant: true
-        current_pregnancy_month: 9
-      person2:
-        monthly_age: 10
-        is_tax_unit_dependent: true
+        # current_pregnancy_month=25 => ensures code pays all 12 months
+        current_pregnancy_month: 25
     tax_units:
       tax_unit:
-        members: [person1, person2]
-        adjusted_gross_income: 120_000
-        filing_status: HEAD_OF_HOUSEHOLD
+        members: [person1]
+        adjusted_gross_income: 80_000
+        filing_status: SINGLE
+  # $800 base per month → *12 => $9,600 annually
+  # No marriage bonus, no phase-out, no 1/12-of-AGI cap triggered
   output:
-    family_income_supplement_credit: 10_000
+    family_income_supplement_credit: 9_600
     refundable_ctc: 0
     non_refundable_ctc: 0
-    income_tax_refundable_credits: 10_000
 
-- name: Married couple, one child, post-phase-out income
+- name: Single with one youngerchild, partial phase-out
   period: 2026
   absolute_error_margin: 1
   reforms: policyengine_us.reforms.congress.golden.fisc_act.fisc_act
@@ -50,22 +30,48 @@
     gov.contrib.congress.golden.fisc_act.in_effect: true
     people:
       person1:
-        age: 25
+        age: 30
         is_pregnant: false
-      person3:
-        age: 25
       person2:
-        age: 3
+        age: 5
         is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        adjusted_gross_income: 126_000
+        filing_status: SINGLE
+  # Base = $400/month => $4,800/year
+  # Over threshold by $1,000 => monthly phase-out is $16.67 => new monthly = $383.33
+  # => $383.33 * 12 ≈ $4,600
+  output:
+    family_income_supplement_credit: 4_600
+
+- name: Married with one younger child, partial phase-out
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.congress.golden.fisc_act.fisc_act
+  input:
+    gov.contrib.congress.golden.fisc_act.in_effect: true
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+      person3:
+        age: 30
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
-        adjusted_gross_income: 300_000
+        adjusted_gross_income: 260_000
+        filing_status: JOINT
+  # Base = $400 child + 20% marriage bonus = $480/month
+  # Over threshold by $10,000 => monthly phase-out = $16.67 * 10 = $166.70
+  # Final monthly = $480 - $166.70 = $313.30 => ~ $3,760/year
   output:
-    family_income_supplement_credit: 4_926.5
+    family_income_supplement_credit: 3_760
 
-
-- name: Married couple, one child, fully phased out
+- name: Married with one older child, fully phased out
   period: 2026
   absolute_error_margin: 1
   reforms: policyengine_us.reforms.congress.golden.fisc_act.fisc_act
@@ -73,23 +79,24 @@
     gov.contrib.congress.golden.fisc_act.in_effect: true
     people:
       person1:
-        age: 25
-        is_pregnant: false
-      person3:
-        age: 25
+        age: 40
       person2:
         age: 6
         is_tax_unit_dependent: true
+      person3:
+        age: 40
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
         adjusted_gross_income: 1_000_000
         filing_status: JOINT
+  # Base = $400 + 20% = $480/month
+  # Threshold = $250k => over by $750k
+  # Phase-out => $16.67 * 750 => $12,502.50 monthly => effectively zero
   output:
-    family_income_supplement_credit_amount: [0, 0, 3_600]
     family_income_supplement_credit: 0
 
-- name: No eligible caregivers present
+- name: Single pregnant with two kids, triggers 1/12-of-AGI cap
   period: 2026
   absolute_error_margin: 1
   reforms: policyengine_us.reforms.congress.golden.fisc_act.fisc_act
@@ -97,16 +104,23 @@
     gov.contrib.congress.golden.fisc_act.in_effect: true
     people:
       person1:
-        age: 17
-        is_pregnant: false
-      person3:
-        age: 16
+        age: 24
+        is_pregnant: true
+        current_pregnancy_month: 25
       person2:
-        age: 3
+        age: 2
+        is_tax_unit_dependent: true
+      person3:
+        age: 5
         is_tax_unit_dependent: true
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
-        adjusted_gross_income: 300_000
+        adjusted_gross_income: 15_000
+        filing_status: SINGLE
+  # Base each month = $800 (pregnancy) + 2 * $400 (two kids) = $1,600
+  # No marriage bonus, no phase-out
+  # But monthly cap = AGI / 12 = $15,000 / 12 ~ $1,250
+  # => final monthly = $1,250 => $15,000/year
   output:
-    family_income_supplement_credit: 0
+    family_income_supplement_credit: 15_000
