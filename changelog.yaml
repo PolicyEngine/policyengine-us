@@ -9109,3 +9109,42 @@
     - Create a non_deductible_mortgage_interest variable.
     - Sum deductible and non-deductible interest in the mortgage_interest variable.
   date: 2025-02-11 18:25:27
+- bump: patch
+  changes:
+    fixes:
+    - Convert the Montana Child Tax Credit to a reform.
+  date: 2025-02-12 20:02:57
+- bump: minor
+  changes:
+    added:
+    - Kansas State Tax Code 2024 Updates.
+  date: 2025-02-13 00:37:01
+- bump: minor
+  changes:
+    added:
+    - Colorado 2024 tax form references.
+    - 2023 and 2024 Colorado Income Qualified Senior Housing Credit.
+    - 2024 Colorado ABLE Account Cap.
+    - 2023 and 2024 Colorado CollegeInvest Maximum Amount.
+    - 2024 Colorado State Sales Tax Refund.
+  date: 2025-02-13 01:01:20
+- bump: minor
+  changes:
+    added:
+    - Rename interest_expense to deductible_interest_expense.
+  date: 2025-02-13 01:08:09
+- bump: patch
+  changes:
+    added:
+    - update the CSFP income limits
+  date: 2025-02-13 21:40:47
+- bump: minor
+  changes:
+    added:
+    - Kentucky income tax rate 2026.
+  date: 2025-02-14 19:34:59
+- bump: patch
+  changes:
+    fixed:
+    - Set the bottom bracket to -.inf under the New York Inflation Rebates reform.
+  date: 2025-02-14 20:39:21
