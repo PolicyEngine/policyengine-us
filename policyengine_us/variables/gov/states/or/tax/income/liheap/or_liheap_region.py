@@ -14,4 +14,5 @@ class or_liheap_in_region_one(Variable):
         region1_counties = (
             parameters(period).gov.states["or"].liheap.region1_counties
         )
-        return where([county in region1_counties], True, False)
+        p = parameters(period).gov.states["or"].liheap
+        return county in p.region1_counties

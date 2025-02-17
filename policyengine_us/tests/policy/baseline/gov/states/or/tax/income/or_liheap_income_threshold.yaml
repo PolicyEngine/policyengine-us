@@ -1,4 +1,4 @@
-- name: oregon smi 2021 single household
+- name: Oregon smi 2021 single household
   period: 2021
   absolute_error_margin: 0.01
   input:
@@ -8,7 +8,7 @@
   output:
     or_liheap_income_threshold: 29_343.6  # 0.6 * $48_906
 
-- name: oregon smi 2023 two-person household
+- name: Oregon smi 2023 two-person household
   period: 2023
   input:
     spm_unit_size: 2  # Two-person household
@@ -17,7 +17,7 @@
   output:
     or_liheap_income_threshold: 43_711.488  # 0.6 * $72_852.48
 
-- name: oregon smi 2024 four-person household
+- name: Oregon smi 2024 four-person household
   period: 2024
   absolute_error_margin: 0.01
   input:
