@@ -36,6 +36,11 @@ metadata:
   breakdown:
     - filing_status
   label: Massachusetts Senior Circuit Breaker maximum income
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: lowest
+      interval: 1000
   reference:
     - title: Mass. General Laws c.62 § 6(k)(3)(i)
       href: https://www.mass.gov/info-details/mass-general-laws-c62-ss-6
