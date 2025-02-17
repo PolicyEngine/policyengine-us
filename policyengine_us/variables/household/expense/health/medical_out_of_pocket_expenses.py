@@ -9,6 +9,9 @@ class medical_out_of_pocket_expenses(Variable):
     definition_period = YEAR
     adds = [
         "health_insurance_premiums",
-        "over_the_counter_health_expenses",
         "other_medical_expenses",
+        # Note: Excludes over_the_counter_health_expenses
+        # as IRS does not include them in the itemized deduction, and
+        # USDA only includes doctor-approved over-the-counter medications
+        # in their medical out-of-pocket expenses definition for SNAP.
     ]
