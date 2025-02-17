@@ -1,11 +1,11 @@
-- name: Newborn aged 0
+- name: Infant aged 0
   period: 2020
   input:
     age: 0
   output:
     is_infant: true
 
-- name: Not newborn
+- name: Not infant
   period: 2020
   input:
     age: 1
