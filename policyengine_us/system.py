@@ -134,9 +134,9 @@ class Simulation(CoreSimulation):
     datasets = DATASETS
 
     def __init__(self, *args, **kwargs):
-        start_instant: Annotated[
-            str, "ISO date format YYYY-MM-DD"
-        ] = kwargs.pop("start_instant", DEFAULT_START_DATE)
+        start_instant: Annotated[str, "ISO date format YYYY-MM-DD"] = (
+            kwargs.pop("start_instant", DEFAULT_START_DATE)
+        )
         super().__init__(*args, **kwargs)
 
         reform = create_structural_reforms_from_parameters(
@@ -206,9 +206,9 @@ class Microsimulation(CoreMicrosimulation):
     datasets = DATASETS
 
     def __init__(self, *args, **kwargs):
-        start_instant: Annotated[
-            str, "ISO date format YYYY-MM-DD"
-        ] = kwargs.pop("start_instant", DEFAULT_START_DATE)
+        start_instant: Annotated[str, "ISO date format YYYY-MM-DD"] = (
+            kwargs.pop("start_instant", DEFAULT_START_DATE)
+        )
         super().__init__(*args, **kwargs)
 
         reform = create_structural_reforms_from_parameters(
