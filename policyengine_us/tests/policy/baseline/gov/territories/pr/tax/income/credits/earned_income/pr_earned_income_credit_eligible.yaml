@@ -28,16 +28,6 @@
   output:
     pr_earned_income_credit_eligible: false
 
-- name: Over the age limit
-  period: 2024
-  input:
-    is_tax_unit_head_or_spouse: true
-    pr_earned_income_credit_investment_income: 2_000
-    age: 66
-    filing_status: JOINT
-  output:
-    pr_earned_income_credit_eligible: false
-
 - name: Investment income over the limit
   period: 2024
   input:

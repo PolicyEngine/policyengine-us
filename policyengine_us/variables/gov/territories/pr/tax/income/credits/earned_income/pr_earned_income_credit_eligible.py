@@ -22,9 +22,7 @@ class pr_earned_income_credit_eligible(Variable):
         )
 
         age = person("age", period)
-        age_within_range = (age >= p.eligibility.min) & (
-            age <= p.eligibility.max
-        )
+        age_within_range = (age >= p.eligibility.min)
 
         filing_status = person.tax_unit("filing_status", period)
         not_separate = filing_status != filing_status.possible_values.SEPARATE
