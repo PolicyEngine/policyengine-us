@@ -1,0 +1,21 @@
+- name: Not required
+  period: 2022
+  input:
+    dwks10: 0
+    dwks13: 0
+    dwks14: 0
+    dwks19: 0
+    unrecaptured_section_1250_gain: 0
+  output:
+    amt_part_iii_required: false
+
+- name: Required
+  period: 2022
+  input:
+    dwks10: 0
+    dwks13: 0
+    dwks14: 1
+    dwks19: 0
+    unrecaptured_section_1250_gain: 0
+  output:
+    amt_part_iii_required: true

@@ -85,3 +85,22 @@
     filing_status: JOINT
   output:
     ny_refundable_credits: 0
+
+- name: Integration test, one person with 0 AGI
+  period: 2025
+  reforms: policyengine_us.reforms.states.ny.inflation_rebates.ny_2025_inflation_rebates.ny_2025_inflation_rebates
+  input:
+    gov.contrib.states.ny.inflation_rebates.in_effect: false
+    people:
+      person1:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [person1]
+        ny_agi: 0
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ny_2025_inflation_rebates: 300
