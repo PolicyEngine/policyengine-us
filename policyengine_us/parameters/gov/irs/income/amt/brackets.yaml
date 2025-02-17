@@ -22,6 +22,9 @@ metadata:
     - title: CBO Tax Parameters and Effective Marginal Tax Rates | Feb 2024
       # 1. Tax Parameters.
       href: https://www.cbo.gov/system/files/2024-02/53724-2024-02-Tax-Parameters.xlsx
+    - title: CBO Tax Parameters and Effective Marginal Tax Rates | Jan 2025
+      # 1. Tax Parameters.
+      href: https://www.cbo.gov/system/files/2025-01/53724-2025-01-Tax-Parameters.xlsx
 
 brackets:
   - threshold:
@@ -44,15 +47,17 @@ brackets:
         2024-01-01: 232_600
         2025-01-01: 239_100
         # CBO forecast.
-        2026-01-01: 243_800
-        2027-01-01: 248_800
-        2028-01-01: 253_700
-        2029-01-01: 258_600
-        2030-01-01: 263_700
-        2031-01-01: 268_900
-        2032-01-01: 274_300
-        2033-01-01: 279_700
-        2034-01-01: 285_300
+        2026-01-01: 244_000
+        2027-01-01: 249_200
+        2028-01-01: 254_200
+        2029-01-01: 259_300
+        2030-01-01: 264_400
+        2031-01-01: 269_600
+        2032-01-01: 274_900
+        2033-01-01: 280_400
+        2034-01-01: 286_000
+        2035-01-01: 291_700
+
       metadata:
         uprating: gov.irs.uprating
     rate:

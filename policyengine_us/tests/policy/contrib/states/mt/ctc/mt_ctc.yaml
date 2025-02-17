@@ -1,0 +1,134 @@
+- name: One child with reduction
+  period: 2023
+  reforms: policyengine_us.reforms.states.mt.ctc.mt_ctc.mt_ctc
+  input:
+    gov.contrib.states.mt.ctc.in_effect: true
+    people:
+      head:
+        age: 40
+      dep1:
+        age: 60
+      dep2:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [head, dep1, dep2]
+        mt_ctc_eligible: true
+        adjusted_gross_income: 55_000
+  output:
+    mt_ctc: 750
+    # 1200 - 5*90 = 750
+
+- name: 2 children under 6 without reduction
+  period: 2023
+  reforms: policyengine_us.reforms.states.mt.ctc.mt_ctc.mt_ctc
+  input:
+    gov.contrib.states.mt.ctc.in_effect: true
+    people:
+      head:
+        age: 34
+      dep1:
+        age: 3
+      dep2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, dep1, dep2]
+        mt_ctc_eligible: true
+        adjusted_gross_income: 49_999
+  output:
+    mt_ctc: 2_400
+    # 1200 * 2
+
+- name: One child over 6 - ineligible
+  period: 2023
+  reforms: policyengine_us.reforms.states.mt.ctc.mt_ctc.mt_ctc
+  input:
+    gov.contrib.states.mt.ctc.in_effect: true
+    people:
+      head:
+        age: 34
+      dep1:
+        age: 3
+      dep2:
+        age: 5
+      dep3:
+        age: 6
+    tax_units:
+      tax_unit:
+        members: [head, dep1, dep2, dep3]
+        mt_ctc_eligible: true
+        adjusted_gross_income: 49_999
+  output:
+    mt_ctc: 2_400
+    # 1200 * 2
+
+- name: Ineligible
+  period: 2023
+  reforms: policyengine_us.reforms.states.mt.ctc.mt_ctc.mt_ctc
+  input:
+    gov.contrib.states.mt.ctc.in_effect: true
+    people:
+      head:
+        age: 34
+      dep1:
+        age: 3
+      dep2:
+        age: 5
+      dep3:
+        age: 6
+    tax_units:
+      tax_unit:
+        members: [head, dep1, dep2, dep3]
+        mt_ctc_eligible: false
+        adjusted_gross_income: 49_999
+  output:
+    mt_ctc: 0
+
+- name: Eligible 
+  period: 2023
+  reforms: policyengine_us.reforms.states.mt.ctc.mt_ctc.mt_ctc
+  input:
+    gov.contrib.states.mt.ctc.in_effect: true
+    tax_unit_earned_income: 66_298
+    adjusted_gross_income: 55_999
+    eitc_relevant_investment_income: 10_299
+    state_code: MT
+  output: 
+    mt_ctc_eligible: true
+
+- name: AGI ineligible 
+  period: 2023
+  reforms: policyengine_us.reforms.states.mt.ctc.mt_ctc.mt_ctc
+  input:
+    gov.contrib.states.mt.ctc.in_effect: true
+    tax_unit_earned_income: 66_300
+    adjusted_gross_income: 56_001
+    eitc_relevant_investment_income: 10_299
+    state_code: MT
+  output: 
+    mt_ctc_eligible: false
+
+- name: Investment income ineligible 
+  period: 2023
+  reforms: policyengine_us.reforms.states.mt.ctc.mt_ctc.mt_ctc
+  input:
+    gov.contrib.states.mt.ctc.in_effect: true
+    tax_unit_earned_income: 66_300
+    adjusted_gross_income: 56_000
+    eitc_relevant_investment_income: 10_300
+    state_code: MT
+  output: 
+    mt_ctc_eligible: false
+
+- name: Earned income ineligible  
+  period: 2023
+  reforms: policyengine_us.reforms.states.mt.ctc.mt_ctc.mt_ctc
+  input:
+    gov.contrib.states.mt.ctc.in_effect: true
+    tax_unit_earned_income: 0
+    adjusted_gross_income: 0
+    eitc_relevant_investment_income: 0
+    state_code: MT
+  output: 
+    mt_ctc_eligible: false

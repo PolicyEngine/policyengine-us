@@ -1,0 +1,30 @@
+description: Louisiana taxes the income of surviving spouse filers at this rate, pre 2025.
+
+brackets:
+  - threshold:
+      2009-01-01: 0
+    rate:
+      2009-01-01: 0.02
+      2022-01-01: 0.0185
+  - threshold:
+      2009-01-01: 25_000
+    rate:
+      2009-01-01: 0.04
+      2022-01-01: 0.035
+  - threshold:
+      2009-01-01: 100_000
+    rate:
+      2009-01-01: 0.06
+      2022-01-01: 0.0425
+
+metadata:
+  reference:
+    - title: LA Legal Code | Section 47:32, part (A)
+      href: https://www.legis.la.gov/legis/Law.aspx?d=101946
+    - title: Individual Income Tax-Determination of Tax
+      href: https://revenue.louisiana.gov/IndividualIncomeTax # tax rates not mentioned in tax forms
+  label: Louisiana income tax rate surviving spouse filers pre 2025
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  period: year

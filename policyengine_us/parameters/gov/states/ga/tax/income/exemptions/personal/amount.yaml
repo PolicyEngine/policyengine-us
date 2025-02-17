@@ -1,0 +1,29 @@
+description: Georgia issues the following exemption amount depending on the filing status.
+metadata:
+  period: year
+  unit: currency-USD
+  label: Georgia personal exemption amount
+  breakdown:
+    - filing_status
+  reference:
+  - title: 2023 Form 500 Instructions
+    href: https://dor.georgia.gov/document/document/2023-it-511-individual-income-tax-booklet/download#page=13
+  - title: 2022 Form 500 Instructions
+    href: https://houpl.org/wp-content/uploads/2023/01/2022-IT-511_Individual_Income_Tax_-Booklet-compressed.pdf#page=12
+  - title: 2021 Form 500 Instructions
+    href: https://houpl.org/wp-content/uploads/2022/01/2021_IT-511_Individual_Income_Tax_Booklet-12.29.21-Web-Version.pdf#page=13
+  # As of 2024, the personal exemption statute only mentions the dependent exemption.
+  - title: Official Code of Georgia Annotated | CH17 Income Taxes | O.C.G.A. § 48-7-26
+    href: https://casetext.com/statute/code-of-georgia/title-48-revenue-and-taxation/chapter-7-income-taxes/article-2-imposition-rate-and-computation-exemptions/section-48-7-26-personal-exemptions
+
+
+JOINT:
+  2020-01-01: 7_400
+HEAD_OF_HOUSEHOLD:
+  2020-01-01: 2_700
+SINGLE:
+  2020-01-01: 2_700
+SEPARATE:
+  2020-01-01: 3_700
+SURVIVING_SPOUSE:
+  2020-01-01: 2_700
