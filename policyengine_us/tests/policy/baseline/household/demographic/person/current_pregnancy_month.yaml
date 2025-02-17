@@ -1,0 +1,60 @@
+- name: First month of pregnancy
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: true
+      person2:
+        age: -0.75
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    current_pregnancy_month: [1, 0]
+
+- name: No pregnant person present
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: false
+      person2:
+        age: -0.2
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    current_pregnancy_month: [0, 0]
+
+- name: Pregnant person in the 7th month
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: true
+      person2:
+        age: -0.25
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    # last trimester should correspond to month 7
+    current_pregnancy_month: [7, 0]
+
+- name: Pregnant person in the 4th month
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: true
+      person2:
+        age: -0.5
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    current_pregnancy_month: [4, 0]

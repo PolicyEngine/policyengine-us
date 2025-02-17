@@ -1,0 +1,13 @@
+- name: Newborn aged 0
+  period: 2020
+  input:
+    age: 0
+  output:
+    is_newborn: true
+
+- name: Not newborn
+  period: 2020
+  input:
+    age: 1
+  output:
+    is_newborn: false
