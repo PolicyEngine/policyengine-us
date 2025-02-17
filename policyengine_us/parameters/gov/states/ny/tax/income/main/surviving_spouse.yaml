@@ -1,0 +1,74 @@
+description: New York taxes the income of surviving spouse filers at this rate.
+metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  period: year
+  label: New York State income tax rates for surviving spouse filers
+  reference:
+    - title: 2021 NY Form IT-201 Instructions
+      href: https://www.tax.ny.gov/pdf/2021/inc/it201i_2021.pdf#page=51
+    - title: 2022 NY Form IT-201 Instructions
+      href: https://www.tax.ny.gov/pdf/2022/printable-pdfs/inc/it201i-2022.pdf#page=43
+    - title: 2023 NY Form IT-201 Instructions
+      href: https://www.tax.ny.gov/pdf/2023/printable-pdfs/inc/it201i-2023.pdf#page=45
+    - title: 2024 NY Form IT-201 Instructions
+      href: https://www.tax.ny.gov/pdf/2024/inc/it201i_2024.pdf#page=33
+    - title: Section 601 Imposition of tax (a)(1)(B), (IV) for 2021, (V) for 2022, and (VI) for 2023
+      href: https://www.nysenate.gov/legislation/laws/TAX/601
+brackets:
+  - threshold:
+      2021-01-01: 0
+    rate:
+      2021-01-01: 0.04
+  - threshold:
+      2021-01-01: 17_150
+    rate:
+      2021-01-01: 0.045   
+  - threshold:
+      2021-01-01: 23_600
+    rate:
+      2021-01-01: 0.0525
+  - threshold:
+      2021-01-01: 27_900
+    rate:
+      2021-01-01: 0.059
+      2022-01-01: 0.0585
+      2023-01-01: 0.055
+  - threshold:
+      2021-01-01: 43_000
+      2022-01-01: 161_550
+    rate:
+      2021-01-01: 0.0597
+      2022-01-01: 0.0625
+      2023-01-01: 0.06
+  - threshold:
+      2021-01-01: 161_550
+      2022-01-01: 323_200
+    rate:
+      2021-01-01: 0.0633
+      2022-01-01: 0.0685
+  - threshold:
+      2021-01-01: 323_200
+      2022-01-01: 2_155_350
+    rate:
+      2021-01-01: 0.0685
+      2022-01-01: 0.0965
+  - threshold:
+      2021-01-01: 2_155_350
+      2022-01-01: 5_000_000
+    rate:
+      2021-01-01: 0.0965
+      2022-01-01: 0.103
+  - threshold:
+      2021-01-01: 5_000_000
+      2022-01-01: 25_000_000
+    rate:
+      2021-01-01: 0.103
+      2022-01-01: 0.109
+  - threshold:
+      2021-01-01: 25_000_000
+      2022-01-01: .inf
+    rate:
+      2021-01-01: 0.109
+

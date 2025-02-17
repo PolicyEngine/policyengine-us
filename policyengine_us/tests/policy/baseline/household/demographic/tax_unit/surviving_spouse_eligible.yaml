@@ -1,22 +1,22 @@
-- name: Widowed head without dependents is not eligible to file as surviving spouse.
+- name: Surviving spouse head without dependents is not eligible to file as surviving spouse.
   period: 2022
   input:
     people:
       head: 
-        is_widowed: true
+        is_surviving_spouse: true
     tax_units:
       tax_unit:
         members: [head]
   output:
     surviving_spouse_eligible: false
 
-- name: Widowed head with one dependent is eligible.
+- name: surviving spouse head with one dependent is eligible.
   period: 2022
   input:
     people:
       head: 
         is_tax_unit_head: true
-        is_widowed: true
+        is_surviving_spouse: true
       child: {}
     tax_units:
       tax_unit:

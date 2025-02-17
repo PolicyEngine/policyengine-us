@@ -9020,3 +9020,131 @@
     added:
     - NYC school tax credit phase out reform.
   date: 2025-01-27 12:51:08
+- bump: patch
+  changes:
+    fixed:
+    - Invalid value encountered when dividing income_effect by original_earnings and
+      dividing substitution_effect by original_earnings in weekly hours worked calculation
+  date: 2025-01-27 21:39:20
+- bump: patch
+  changes:
+    fixed:
+    - California itemized deduction limits 2024.
+    - California AMT parameters 2024.
+    - California 2024 tax form references.
+  date: 2025-01-28 13:45:56
+- bump: minor
+  changes:
+    added:
+    - New York 2024 tax form references.
+  date: 2025-01-29 01:21:20
+- bump: patch
+  changes:
+    fixed:
+    - Iowa income tax structure on and after 2023.
+  date: 2025-01-29 15:14:24
+- bump: minor
+  changes:
+    added:
+    - New York City 2024 tax form references.
+  date: 2025-01-29 20:49:54
+- bump: minor
+  changes:
+    added:
+    - Georgia State Tax Code 2024 Updates.
+  date: 2025-01-31 14:12:32
+- bump: minor
+  changes:
+    added:
+    - Change is_widowed to is_surviving_spouse.
+  date: 2025-01-31 15:42:23
+- bump: minor
+  changes:
+    added:
+    - January 2025 CBO economic and demographic outlooks.
+  date: 2025-02-03 22:12:04
+- bump: patch
+  changes:
+    fixed:
+    - Revert previous commit.
+  date: 2025-02-04 16:24:45
+- bump: patch
+  changes:
+    fixes:
+    - Georgia personal exemption availability.
+  date: 2025-02-05 00:41:13
+- bump: patch
+  changes:
+    fixed:
+    - Adds 2025 Federal Poverty Guidelines.
+  date: 2025-02-05 18:19:06
+- bump: minor
+  changes:
+    added:
+    - Refactor the Alternative Minimum Tax (AMT) logic.
+  date: 2025-02-06 10:21:40
+- bump: minor
+  changes:
+    added:
+    - Pennsylvania 2024 income tax updates.
+  date: 2025-02-06 20:58:56
+- bump: minor
+  changes:
+    added:
+    - 2024 North Carolina Income Tax Updates.
+  date: 2025-02-07 21:44:34
+- bump: minor
+  changes:
+    added:
+    - CBO uprating factors for all tax parameters through 2035.
+  date: 2025-02-10 21:41:56
+- bump: minor
+  changes:
+    added:
+    - Apply itemized deduction limitations.
+  date: 2025-02-11 16:25:15
+- bump: patch
+  changes:
+    fixed:
+    - Create a non_deductible_mortgage_interest variable.
+    - Sum deductible and non-deductible interest in the mortgage_interest variable.
+  date: 2025-02-11 18:25:27
+- bump: patch
+  changes:
+    fixes:
+    - Convert the Montana Child Tax Credit to a reform.
+  date: 2025-02-12 20:02:57
+- bump: minor
+  changes:
+    added:
+    - Kansas State Tax Code 2024 Updates.
+  date: 2025-02-13 00:37:01
+- bump: minor
+  changes:
+    added:
+    - Colorado 2024 tax form references.
+    - 2023 and 2024 Colorado Income Qualified Senior Housing Credit.
+    - 2024 Colorado ABLE Account Cap.
+    - 2023 and 2024 Colorado CollegeInvest Maximum Amount.
+    - 2024 Colorado State Sales Tax Refund.
+  date: 2025-02-13 01:01:20
+- bump: minor
+  changes:
+    added:
+    - Rename interest_expense to deductible_interest_expense.
+  date: 2025-02-13 01:08:09
+- bump: patch
+  changes:
+    added:
+    - update the CSFP income limits
+  date: 2025-02-13 21:40:47
+- bump: minor
+  changes:
+    added:
+    - Kentucky income tax rate 2026.
+  date: 2025-02-14 19:34:59
+- bump: patch
+  changes:
+    fixed:
+    - Set the bottom bracket to -.inf under the New York Inflation Rebates reform.
+  date: 2025-02-14 20:39:21
