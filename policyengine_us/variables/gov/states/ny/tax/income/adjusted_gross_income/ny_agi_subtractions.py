@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ny_agi_subtractions(Variable):
     value_type = float
     entity = TaxUnit
-    label = "NY AGI subtractions"
+    label = "New York AGI subtractions"
     unit = USD
     documentation = "Subtractions from NY AGI over federal AGI."
     definition_period = YEAR

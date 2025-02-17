@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ny_pension_exclusion(Variable):
     value_type = float
     entity = Person
-    label = "NY pension exclusion"
+    label = "New York pension exclusion"
     unit = USD
     documentation = "Exclusion for pension income for eligible individuals."
     definition_period = YEAR
@@ -14,14 +14,10 @@ class ny_pension_exclusion(Variable):
         age = person("age", period)
 
         # Fetching values from separate YAML files
-        min_age = parameters(
+        p = parameters(
             period
-        ).gov.states.ny.tax.income.agi.subtractions.pension_exclusion.min_age
-        cap = parameters(
-            period
-        ).gov.states.ny.tax.income.agi.subtractions.pension_exclusion.cap
+        ).gov.states.ny.tax.income.agi.subtractions.pension_exclusion
 
-        meets_age_test = age >= min_age
-        deductible_pensions = meets_age_test * min_(pension_income, cap)
+        meets_age_test = age >= p.min_age
 
-        return deductible_pensions
+        return meets_age_test * min_(pension_income, p.cap)
