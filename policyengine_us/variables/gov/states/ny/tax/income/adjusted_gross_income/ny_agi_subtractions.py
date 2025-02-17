@@ -20,9 +20,5 @@ class ny_agi_subtractions(Variable):
             period
         ).gov.states.ny.tax.income.agi.subtractions.list
 
-        subtractions = add(tax_unit, period, subtractions_list)
-        pension_exclusion = tax_unit.sum(
-            tax_unit.members("ny_pension_exclusion", period)
-        )
-
-        return subtractions + pension_exclusion
+        # Dynamically sum all subtractions from the list
+        return add(tax_unit, period, subtractions_list)
