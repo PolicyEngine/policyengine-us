@@ -21,15 +21,27 @@ def create_fisc_act() -> Reform:
                 period
             ).gov.contrib.congress.golden.fisc_act.family_income_supplement
             eligible_dependent = (age < p.age_threshold.child) & is_dependent
-            current_pregnancy_month = person("current_pregnancy_month", period)
-            pregnant_amount = p.amount.pregnant.calc(current_pregnancy_month)
-            dependent_amount = p.amount.base.calc(age) * eligible_dependent
-            total_base_amount = pregnant_amount + dependent_amount
+            return p.amount.base.calc(age) * eligible_dependent
 
-            # A joint bonus is applied to the base amount
-            filing_status = person.tax_unit("filing_status", period)
-            joint = filing_status == filing_status.possible_values.JOINT
-            return total_base_amount * (1 + joint * p.marriage_bonus_rate)
+    class family_income_supplement_credit_pregnancy_amount(Variable):
+        value_type = float
+        entity = Person
+        label = "FISC Act family income supplement pregnancy amount"
+        unit = USD
+        definition_period = YEAR
+        reference = "https://golden.house.gov/sites/evo-subsites/golden.house.gov/files/evo-media-document/GoldenFISC.pdf"
+
+        def formula(person, period, parameters):
+            # Calcualte the base amount
+            p = parameters(
+                period
+            ).gov.contrib.congress.golden.fisc_act.family_income_supplement.amount
+            yearly_pregnancy_months = person("yearly_pregnancy_months", period)
+            min_pregnancy_months = p.pregnant.thresholds[1]
+            applicable_pregnancy_months = max_(
+                yearly_pregnancy_months - min_pregnancy_months, 0
+            )
+            return p.pregnant.amounts[1] * applicable_pregnancy_months
 
     class family_income_supplement_credit(Variable):
         value_type = float
@@ -50,13 +62,21 @@ def create_fisc_act() -> Reform:
             base_amount = add(
                 tax_unit,
                 period,
-                ["family_income_supplement_credit_base_amount"],
+                [
+                    "family_income_supplement_credit_base_amount",
+                    "family_income_supplement_credit_pregnancy_amount",
+                ],
+            )
+            base_amount_with_marriage_bonus = base_amount * (
+                1 + joint * p.marriage_bonus_rate
             )
             agi = tax_unit("adjusted_gross_income", period)
             phase_out = where(
                 joint, p.phase_out.joint.calc(agi), p.phase_out.other.calc(agi)
             )
-            phased_out_amount = max_(base_amount - phase_out, 0)
+            phased_out_amount = max_(
+                base_amount_with_marriage_bonus - phase_out, 0
+            )
             agi_threshold = p.agi_fraction * agi
             capped_credit = min_(phased_out_amount, agi_threshold)
             # The credit is limited to eligible caregivers
@@ -87,6 +107,7 @@ def create_fisc_act() -> Reform:
         def apply(self):
             self.update_variable(family_income_supplement_credit_base_amount)
             self.update_variable(family_income_supplement_credit)
+            self.update_variable(family_income_supplement_credit_pregnancy_amount)
             self.modify_parameters(modify_parameters)
             self.neutralize_variable("refundable_ctc")
             self.neutralize_variable("non_refundable_ctc")

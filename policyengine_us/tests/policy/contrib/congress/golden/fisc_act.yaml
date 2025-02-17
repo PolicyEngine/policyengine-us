@@ -9,16 +9,17 @@
         age: 25
         is_pregnant: true
         # current_pregnancy_month=25 => ensures code pays all 12 months
-        current_pregnancy_month: 25
+        yearly_pregnancy_months: 9
     tax_units:
       tax_unit:
         members: [person1]
         adjusted_gross_income: 80_000
         filing_status: SINGLE
-  # $800 base per month → *12 => $9,600 annually
+  # $800 base per month → * 4 months => $3,200 annually (maximum 4 applicable months)
   # No marriage bonus, no phase-out, no 1/12-of-AGI cap triggered
   output:
-    family_income_supplement_credit: 9_600
+    family_income_supplement_credit_pregnancy_amount: 3_200
+    family_income_supplement_credit: 3_200
     refundable_ctc: 0
     non_refundable_ctc: 0
 
@@ -106,21 +107,22 @@
       person1:
         age: 24
         is_pregnant: true
-        current_pregnancy_month: 25
+        yearly_pregnancy_months: 9
       person2:
         age: 2
         is_tax_unit_dependent: true
       person3:
-        age: 5
+        age: 6
         is_tax_unit_dependent: true
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
-        adjusted_gross_income: 15_000
+        adjusted_gross_income: 7_000
         filing_status: SINGLE
-  # Base each month = $800 (pregnancy) + 2 * $400 (two kids) = $1,600
+  # Base = $800 (pregnancy) * 4 + 650 (two kids) * 12 = $11,000
   # No marriage bonus, no phase-out
-  # But monthly cap = AGI / 12 = $15,000 / 12 ~ $1,250
-  # => final monthly = $1,250 => $15,000/year
+  # But yearly cap = $7,000
   output:
-    family_income_supplement_credit: 15_000
+    family_income_supplement_credit_base_amount: [0, 4_800, 3_000]
+    family_income_supplement_credit_pregnancy_amount: [3_200, 0, 0]
+    family_income_supplement_credit: 7_000
