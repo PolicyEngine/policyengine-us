@@ -107,7 +107,9 @@ def create_fisc_act() -> Reform:
         def apply(self):
             self.update_variable(family_income_supplement_credit_base_amount)
             self.update_variable(family_income_supplement_credit)
-            self.update_variable(family_income_supplement_credit_pregnancy_amount)
+            self.update_variable(
+                family_income_supplement_credit_pregnancy_amount
+            )
             self.modify_parameters(modify_parameters)
             self.neutralize_variable("refundable_ctc")
             self.neutralize_variable("non_refundable_ctc")
