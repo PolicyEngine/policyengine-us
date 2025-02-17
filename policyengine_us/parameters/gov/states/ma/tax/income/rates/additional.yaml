@@ -4,11 +4,6 @@ metadata:
   threshold_unit: currency-USD
   rate_unit: /1
   label: Massachusetts additional income tax
-  uprating:
-    parameter: gov.irs.uprating
-    rounding:
-      type: nearest
-      interval: 50
   reference:
     - title: Proposal for Constitutional Amendment H.86
       href: https://malegislature.gov/Bills/191/H86
@@ -26,6 +21,12 @@ brackets:
   - threshold:
       2023-01-01: 1_000_000
       2024-01-01: 1_053_750
+    metadata:
+      uprating:
+        parameter: gov.irs.uprating
+        rounding:
+          type: nearest
+          interval: 50
     rate:
       0000-01-01: 0
       2023-01-01: 0.04
