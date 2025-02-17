@@ -15,24 +15,14 @@ class ny_agi_subtractions(Variable):
     defined_for = StateCode.NY
 
     def formula(tax_unit, period, parameters):
-        taxable_ss = add(tax_unit, period, ["taxable_social_security"])
-        us_govt_interest = tax_unit("us_govt_interest", period)
-        investment_in_529_plan = tax_unit("investment_in_529_plan", period)
-        person = tax_unit.members
-        pension_income = person("pension_income", period)
-        age = person("age", period)
-
-        pension_exclusion = parameters(
+        # Get the list of subtractions from the YAML parameter
+        subtractions_list = parameters(
             period
-        ).gov.states.ny.tax.income.agi.subtractions.pension_exclusion
-        meets_age_test = age >= pension_exclusion.min_age
-        deductible_pensions = meets_age_test * min_(
-            pension_income, pension_exclusion.cap
+        ).gov.states.ny.tax.income.agi.subtractions.list
+
+        subtractions = add(tax_unit, period, subtractions_list)
+        pension_exclusion = tax_unit.sum(
+            tax_unit.members("ny_pension_exclusion", period)
         )
 
-        return (
-            taxable_ss
-            + us_govt_interest
-            + investment_in_529_plan
-            + tax_unit.sum(deductible_pensions)
-        )
+        return subtractions + pension_exclusion
