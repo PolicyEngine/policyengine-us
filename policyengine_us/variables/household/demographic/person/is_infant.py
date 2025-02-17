@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class is_newborn(Variable):
+class is_infant(Variable):
     value_type = bool
     entity = Person
     label = "Is a newborn child"
