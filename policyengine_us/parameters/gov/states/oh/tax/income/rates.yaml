@@ -3,11 +3,11 @@ brackets:
   - threshold:
       2021-01-01: 0
     rate:
-      # The first $26,050 income are not taxed; Ohio has a tax cliff.
-      # This is the rate implied by the starting tax amount $360.69
-      # divided by $26,050.
-      # Separately, we add a variable for being tax exempt, set if income
-      # is below $26,050.
+      # The first bracket has a 0% rate, but when entering the second bracket,
+      # a flat amount is added ($360.69 in 2024) plus the marginal rate on excess income.
+      # This rate represents the implied average rate that would generate that flat amount
+      # at the second bracket's threshold.
+      #this creates a tax cliff
       2021-01-01: 0.01385
   - threshold: 
       values:
@@ -68,3 +68,6 @@ metadata:
       href: https://dam.assets.ohio.gov/image/upload/tax.ohio.gov/forms/ohio_individual/individual/2022/it1040-sd100-instruction-booklet.pdf#page=31
     - title: Ohio Income Tax Form 2023 Instructions
       href: https://dam.assets.ohio.gov/image/upload/tax.ohio.gov/forms/ohio_individual/individual/2023/it1040-sd100-instructionbooklet.pdf#page=46
+    - title: Ohio Income Tax Form 2024 Instructions 
+      href: https://dam.assets.ohio.gov/image/upload/tax.ohio.gov/forms/ohio_individual/individual/2023/it1040-sd100-instructionbooklet.pdf#page=18
+
