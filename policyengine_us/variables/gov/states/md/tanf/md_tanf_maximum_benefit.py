@@ -1,5 +1,7 @@
 from policyengine_us.model_api import *
 
+# reference: https://dhs.maryland.gov/documents/Supplemental%20Nutrition%20Assistance%20Program%20(SNAP)/October-2020-Income-Guidelines-1-1.pdf (2)
+
 
 class md_tanf_maximum_benefit(Variable):
     value_type = float
