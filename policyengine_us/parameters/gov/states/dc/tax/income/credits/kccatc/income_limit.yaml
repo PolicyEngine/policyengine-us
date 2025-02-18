@@ -2,6 +2,11 @@ description: DC limits the keep child care affordable tax credit to those whose 
 metadata:
   unit: year
   label: DC KCCATC DC taxable income limit
+  propagate_metadata_to_children: true
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 100
   breakdown:
     - filing_status
   period: year
@@ -29,12 +34,7 @@ SINGLE:
     2022-01-01: 157_200
     2023-01-01: 167_400
     2024-01-01: 174_300
-  metadata:
-    uprating:
-      parameter: gov.irs.uprating
-      rounding:
-        type: downwards
-        interval: 100
+
 JOINT:
   values:
     2018-01-01: 750_000 # (A)
@@ -44,12 +44,7 @@ JOINT:
     2022-01-01: 157_200
     2023-01-01: 167_400
     2024-01-01: 174_300
-  metadata:
-    uprating:
-      parameter: gov.irs.uprating
-      rounding:
-        type: downwards
-        interval: 100
+
 SEPARATE:
   values:
     2018-01-01: 375_000 # (A)
@@ -59,12 +54,7 @@ SEPARATE:
     2022-01-01: 78_600
     2023-01-01: 83_700
     2024-01-01: 87_100
-  metadata:
-    uprating:
-      parameter: gov.irs.uprating
-      rounding:
-        type: downwards
-        interval: 100
+   
 HEAD_OF_HOUSEHOLD:
   values:
     2018-01-01: 750_000 # (A)
@@ -74,12 +64,7 @@ HEAD_OF_HOUSEHOLD:
     2022-01-01: 157_200
     2023-01-01: 167_400
     2024-01-01: 174_300
-  metadata:
-    uprating:
-      parameter: gov.irs.uprating
-      rounding:
-        type: downwards
-        interval: 100
+
 SURVIVING_SPOUSE:
   values:
     2018-01-01: 750_000 # (A)
@@ -89,9 +74,3 @@ SURVIVING_SPOUSE:
     2022-01-01: 157_200
     2023-01-01: 167_400
     2024-01-01: 174_300
-  metadata:
-    uprating:
-      parameter: gov.irs.uprating
-      rounding:
-        type: downwards
-        interval: 100
