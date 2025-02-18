@@ -9133,3 +9133,25 @@
     added:
     - Rename interest_expense to deductible_interest_expense.
   date: 2025-02-13 01:08:09
+- bump: patch
+  changes:
+    added:
+    - update the CSFP income limits
+  date: 2025-02-13 21:40:47
+- bump: minor
+  changes:
+    added:
+    - Kentucky income tax rate 2026.
+  date: 2025-02-14 19:34:59
+- bump: patch
+  changes:
+    fixed:
+    - Set the bottom bracket to -.inf under the New York Inflation Rebates reform.
+  date: 2025-02-14 20:39:21
+- bump: minor
+  changes:
+    changed:
+    - Uprate medical expense categories by CMS MOOP per capita projections.
+    removed:
+    - Over-the-counter expenses from MOOP definition for IRS and SNAP.
+  date: 2025-02-17 23:53:42
