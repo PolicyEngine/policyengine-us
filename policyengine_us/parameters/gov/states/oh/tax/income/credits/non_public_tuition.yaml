@@ -2,13 +2,11 @@ description: Ohio caps the Nonchartered, Nonpublic, School Tuition Credit at thi
 brackets:
   - threshold:
       2021-01-01: -.inf
-      2023-01-01: -.inf
     amount:
       2021-01-01: 500
       2023-01-01: 1_000
   - threshold: 
       2021-01-01: 50_000
-      2023-01-01: 50_000
     amount:
       2021-01-01: 1_000
       2023-01-01: 1_500
@@ -20,6 +18,7 @@ brackets:
       2023-01-01: 1_500  # Same as previous bracket since there's no change after $50k
 metadata:
   threshold_unit: currency-USD
+  period: year
   amount_unit: currency-USD
   type: single_amount
   label: Ohio Non Public School Credit amount
