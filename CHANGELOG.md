@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.197.0] - 2025-02-17 23:53:42
+
+### Changed
+
+- Uprate medical expense categories by CMS MOOP per capita projections.
+
 ## [1.196.1] - 2025-02-14 20:39:21
 
 ### Fixed
@@ -10811,6 +10817,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.197.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.196.1...1.197.0
 [1.196.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.196.0...1.196.1
 [1.196.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.195.1...1.196.0
 [1.195.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.195.0...1.195.1
