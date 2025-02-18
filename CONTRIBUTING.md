@@ -97,7 +97,7 @@ Usually, you need to work on four specific types of files:
 **You can follow the procedure below to tackle them:**
 
 **1. Create a unit test**
-This will be a file in *policyengine_{country}/tests/[path to program]/variable.yaml*. We apply **test driven development**, where we write tests before writing the logic. This means tests will break and the goal of the Pull Request (**PR**) is to pass the tests. Unit tests specify direct inputs tot he variable for a number of cases, and the expected output.
+This will be a file in *policyengine_{country}/tests/[path to program]/variable.yaml*. We apply **test driven development**, where we write tests before writing the logic. This means tests will break and the goal of the Pull Request (**PR**) is to pass the tests. Unit tests specify direct inputs to the variable for a number of cases, and the expected output.
 
 **2. Commit your changes**
 Use the VS Code source control extension to enter a message, such as *"Create unit test for ['variable']"* and click **Commit**.
