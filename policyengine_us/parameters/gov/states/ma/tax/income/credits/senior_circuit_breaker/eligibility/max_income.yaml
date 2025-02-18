@@ -36,6 +36,7 @@ metadata:
   breakdown:
     - filing_status
   label: Massachusetts Senior Circuit Breaker maximum income
+  propagate_metadata_to_children: true
   uprating:
     parameter: gov.irs.uprating
     rounding:
