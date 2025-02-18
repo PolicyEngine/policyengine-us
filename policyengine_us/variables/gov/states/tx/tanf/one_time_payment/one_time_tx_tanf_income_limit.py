@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class one_time_tx_tanf_income_limit(Variable):
+class tx_one_time_tanf_income_limit(Variable):
     value_type = float
     entity = SPMUnit
     label = "One Time Texas TANF income limit"
