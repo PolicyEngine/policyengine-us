@@ -13,18 +13,7 @@ class ssi_income_deemed_from_ineligible_spouse(Variable):
     reference = "https://www.law.cornell.edu/cfr/text/20/416.1163"
 
     def formula(person, period, parameters):
-        prereduction_personal_earned_income = person(
-            "ssi_earned_income", period
-        )
-        blind_disabled_working_student_income = person(
-            "ssi_blind_or_disabled_working_student_exclusion", period
-        )
-        personal_earned_income = max_(
-            prereduction_personal_earned_income
-            - blind_disabled_working_student_income,
-            0,
-        )
-        personal_unearned_income = person("ssi_unearned_income", period)
+        # Get the ineligible spouse's earned income
         spousal_earned_income = person(
             "ssi_earned_income_deemed_from_ineligible_spouse", period
         )
@@ -32,13 +21,23 @@ class ssi_income_deemed_from_ineligible_spouse(Variable):
             "ssi_unearned_income_deemed_from_ineligible_spouse", period
         )
 
+        # Get the eligible individual's income
+        personal_earned_income = person("ssi_earned_income", period)
+        personal_unearned_income = person("ssi_unearned_income", period)
+
+        # Apply earned income exclusions to combined income
+        combined_earned_income = personal_earned_income + spousal_earned_income
+        combined_unearned_income = personal_unearned_income + spousal_unearned_income
+
+        # Calculate income if combined (after exclusions)
         income_if_combined = _apply_ssi_exclusions(
-            personal_earned_income + spousal_earned_income,
-            personal_unearned_income + spousal_unearned_income,
+            combined_earned_income,
+            combined_unearned_income,
             parameters,
             period,
         )
 
+        # Calculate income if not combined (after exclusions)
         income_if_not_combined = _apply_ssi_exclusions(
             personal_earned_income,
             personal_unearned_income,
@@ -46,13 +45,17 @@ class ssi_income_deemed_from_ineligible_spouse(Variable):
             period,
         )
 
-        spousal_deemed_income = income_if_combined - income_if_not_combined
+        # The deemed income is the difference between combined and individual
+        deemed_income = max_(income_if_combined - income_if_not_combined, 0)
 
-        ssi = parameters(period).gov.ssa.ssi.amount
-        person_rate = (
-            person("is_ssi_ineligible_child", period)
-            * (ssi.couple - ssi.individual)
-            * MONTHS_IN_YEAR
+        # Check if person is an eligible individual with an ineligible spouse
+        is_eligible = person("is_ssi_eligible_individual", period)
+        has_ineligible_spouse = person.marital_unit.any(
+            person("is_ssi_ineligible_spouse", period)
         )
 
-        return spousal_deemed_income * (spousal_deemed_income > person_rate)
+        return where(
+            is_eligible & has_ineligible_spouse,
+            deemed_income,
+            0,
+        )

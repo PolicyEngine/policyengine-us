@@ -10,7 +10,19 @@ class is_ssi_ineligible_spouse(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/42/1382c#b"
 
     def formula(person, period, parameters):
-        spouse = person("is_tax_unit_spouse", period)
+        # Consider both tax unit spouse and tax unit head as potential spouses
+        is_spouse = person("is_tax_unit_spouse", period) | person("is_tax_unit_head", period)
+        
+        # Check if they're in a marital unit
+        in_marital_unit = person.marital_unit.any(person("is_tax_unit_spouse", period) | person("is_tax_unit_head", period))
+        
+        # Check SSI eligibility status
         eligible = person("is_ssi_aged_blind_disabled", period)
         eligible_spouse = person("is_ssi_eligible_spouse", period)
-        return spouse & ~eligible_spouse & ~eligible
+        
+        # A person is an ineligible spouse if they:
+        # 1. Are a spouse (either tax unit spouse or head)
+        # 2. Are in a marital unit
+        # 3. Are not SSI eligible themselves
+        # 4. Are not an SSI eligible spouse
+        return is_spouse & in_marital_unit & ~eligible_spouse & ~eligible
