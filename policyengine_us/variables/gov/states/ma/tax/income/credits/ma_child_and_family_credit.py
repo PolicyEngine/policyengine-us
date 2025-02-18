@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ma_child_and_family(Variable):
+class ma_child_and_family_credit(Variable):
     value_type = float
     entity = TaxUnit
     label = "Massachusetts child and family tax credit"
