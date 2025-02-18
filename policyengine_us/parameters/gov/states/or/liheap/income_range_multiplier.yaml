@@ -1,0 +1,12 @@
+description: Oregon determines the maximum income limit for each range by multiplying the threshold with this percentage under the Low Income Home Energy Assistance Program.
+values:
+  2021-01-01: 0.25
+metadata:
+  period: year
+  unit: /1
+  label: Oregon LIHEAP income range multiplier 
+  reference:
+    - title: LIHEAP and OEAP Energy Assistance Intake Operations Manual for Program Year 2021
+      href: https://www.oregon.gov/ohcs/energy-weatherization/Documents/2021-Energy-Assistance-Manual.pdf#page=55
+      # Multiplier was mathematically derived from the benefit matrix. 
+

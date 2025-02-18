@@ -5,7 +5,7 @@
     state_code: OR
     adjusted_gross_income: 25_000
   output:
-    or_liheap_income_range: RANGE_THREE
+    or_liheap_income_range: 3
 
 - name: Oregon LIHEAP Income Range 4 for a 6-Person Household (2024)
   period: 2024
@@ -14,7 +14,7 @@
     state_code: OR
     adjusted_gross_income: 65_000
   output:
-    or_liheap_income_range: RANGE_FOUR
+    or_liheap_income_range: 4
 
 - name: Oregon LIHEAP Income Range 1 for a 10-Person Household (2023)
   period: 2023
@@ -23,4 +23,4 @@
     state_code: OR
     adjusted_gross_income: 20_000
   output:
-    or_liheap_income_range: RANGE_ONE
+    or_liheap_income_range: 1
