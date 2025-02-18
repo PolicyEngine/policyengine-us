@@ -7,6 +7,15 @@
   output:
     state_sales_tax: 252
 
+- name: Alabama, 1 person, 1st income bracket, 2022
+  period: 2021
+  input:
+    state_code: AL
+    tax_unit_size: 1
+    state_sales_tax_income_bracket: 1
+  output:
+    state_sales_tax: 310
+
 - name: Alabama, 1 person, 1st income bracket, 2023
   period: 2023
   input:
