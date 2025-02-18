@@ -14,11 +14,4 @@ class ny_agi_subtractions(Variable):
     )
     defined_for = StateCode.NY
 
-    def formula(tax_unit, period, parameters):
-        # Get the list of subtractions from the YAML parameter
-        subtractions_list = parameters(
-            period
-        ).gov.states.ny.tax.income.agi.subtractions.list
-
-        # Dynamically sum all subtractions from the list
-        return add(tax_unit, period, subtractions_list)
+    adds = "gov.states.ny.tax.income.agi.subtractions.sources"
