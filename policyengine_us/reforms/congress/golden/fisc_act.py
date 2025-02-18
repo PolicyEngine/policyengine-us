@@ -13,20 +13,14 @@ def create_fisc_act() -> Reform:
         reference = "https://golden.house.gov/sites/evo-subsites/golden.house.gov/files/evo-media-document/GoldenFISC.pdf"
 
         def formula(person, period, parameters):
-            # Calcualte the base amount
+            # Calculate the base amount
             is_dependent = person("is_tax_unit_dependent", period)
             age = person("age", period)
             p = parameters(
                 period
             ).gov.contrib.congress.golden.fisc_act.family_income_supplement
-            base_amount = p.amount.base.calc(age)
-            # If the child is a newborn, we will assume 9 months of pregnancy
-            is_newborn = age < 1
-            monthly_base_amount = base_amount / MONTHS_IN_YEAR
-            newborn_amount = monthly_base_amount * 3
-            eligible_dependent = (age < p.age_threshold.child) & is_dependent
-            dependent_amount = p.amount.base.calc(age) * eligible_dependent
-            return where(is_newborn, newborn_amount, dependent_amount)
+            eligible_dependent = (age < p.child_age_limit) & is_dependent
+            return p.amount.base.calc(age) * eligible_dependent
 
     class family_income_supplement_credit_pregnancy_amount(Variable):
         value_type = float
@@ -37,7 +31,7 @@ def create_fisc_act() -> Reform:
         reference = "https://golden.house.gov/sites/evo-subsites/golden.house.gov/files/evo-media-document/GoldenFISC.pdf"
 
         def formula(person, period, parameters):
-            # Calcualte the base amount
+            # Calculate the pregnancy amount
             p = parameters(
                 period
             ).gov.contrib.congress.golden.fisc_act.family_income_supplement.amount
@@ -47,14 +41,8 @@ def create_fisc_act() -> Reform:
             age = person("age", period)
             newborn_child_present = person.tax_unit.any(age < 1)
             mother = person("is_mother", period)
-            min_pregnancy_months = p.pregnant.thresholds[1]
-            applicable_pregnancy_months = max_(9 - min_pregnancy_months, 0)
             mother_of_newborn_child = newborn_child_present & mother
-            return (
-                p.pregnant.amounts[1]
-                * applicable_pregnancy_months
-                * mother_of_newborn_child
-            )
+            return p.pregnancy * mother_of_newborn_child
 
     class family_income_supplement_credit(Variable):
         value_type = float
@@ -95,7 +83,7 @@ def create_fisc_act() -> Reform:
             # The credit is limited to eligible caregivers
             person = tax_unit.members
             age = person("age", period)
-            age_eligible = age >= p.age_threshold.caregiver
+            age_eligible = age >= p.caregiver_age_threshold
             head_or_spouse = person("is_tax_unit_head_or_spouse", period)
             eligible_caregiver_present = tax_unit.any(
                 age_eligible & head_or_spouse

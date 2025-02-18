@@ -1,20 +1,11 @@
 description: Representative Jared Golden proposed a family income supplement of this amount for pregnant women.
 metadata:
-  type: single_amount
-  threshold_unit: pregnancy-month
-  amount_unit: currency-USD
+  unit: currency-USD
   label: FISC Act family income supplement pregnant amount
-  period: month
+  period: year
   reference:
     - title: Family Income Supplemental Credit Act, Sec. 2, (d)(1)
       href: https://golden.house.gov/sites/evo-subsites/golden.house.gov/files/evo-media-document/GoldenFISC.pdf#page=5
 
-brackets:
-  - threshold:
-      2026-01-01: 0
-    amount:
-      2026-01-01: 0
-  - threshold:
-      2026-01-01: 5
-    amount:
-      2026-01-01: 800
+values:
+  2026-01-01: 3_200 # $800 per month for 4 months
