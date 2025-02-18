@@ -16,18 +16,18 @@ class nc_scca_fpl_rate(Variable):
         p = parameters(period).gov.states.nc.ncdhhs.scca
 
         # Retrieve age and disability status for all members
-        persons = spm_unit.members
-        ages = persons("age", period)
-        disabilities = persons("is_disabled", period)
+        person = spm_unit.members
+        age = person("age", period)
+        disabled = person("is_disabled", period)
 
         preschool_age_upper = p.preschool_age_upper
         disabled_age_limit = p.disabled_age_limit
         # get the youngest child's age
-        min_age = min(ages)
+        min_age = spm_unit.min(age)
 
         # Check if any child (6-17) is disabled
         has_disabled_child = spm_unit.any(
-            (ages < disabled_age_limit) & disabilities
+            (age < disabled_age_limit) & disabled
         )
 
         categorized_age = where(
