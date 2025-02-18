@@ -1,6 +1,13 @@
-description: Minnesota taxes individuals with a net investment income of at least this minimum amount.
-values:
-  2024-01-01: 1_000_000
+description: Minnesota taxes individuals with a net investment income for the given bracket.
+brackets:
+  - threshold:
+      2024-01-01: 0
+    rate:
+      2024-01-01: 0
+  - threshold:
+      2024-01-01: 1_000_000
+    rate:
+      2024-01-01: 0.01
 
 metadata:
   period: year
