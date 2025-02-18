@@ -1,4 +1,4 @@
-- name: Single pregnant, below phase-out, no cap triggered
+- name: Single parent of a newborn child, below phase-out, no cap triggered
   period: 2026
   absolute_error_margin: 1
   reforms: policyengine_us.reforms.congress.golden.fisc_act.fisc_act
@@ -7,19 +7,20 @@
     people:
       person1:
         age: 25
-        is_pregnant: true
-        # current_pregnancy_month=25 => ensures code pays all 12 months
-        yearly_pregnancy_months: 9
+        is_mother: true
+      person2:
+        age: 0
     tax_units:
       tax_unit:
-        members: [person1]
+        members: [person1, person2]
         adjusted_gross_income: 80_000
         filing_status: SINGLE
-  # $800 base per month → * 4 months => $3,200 annually (maximum 4 applicable months)
+  # $800 per month for 4 months + $400 per month for 3 months => $3,200 + $1,200 = $4,400
   # No marriage bonus, no phase-out, no 1/12-of-AGI cap triggered
   output:
-    family_income_supplement_credit_pregnancy_amount: 3_200
-    family_income_supplement_credit: 3_200
+    family_income_supplement_credit_pregnancy_amount: [3_200, 0]
+    family_income_supplement_credit_base_amount: [0, 1_200]
+    family_income_supplement_credit: 4_400
     refundable_ctc: 0
     non_refundable_ctc: 0
 
@@ -106,23 +107,24 @@
     people:
       person1:
         age: 24
-        is_pregnant: true
-        yearly_pregnancy_months: 9
+        is_mother: true
       person2:
-        age: 2
+        age: 1
         is_tax_unit_dependent: true
       person3:
         age: 6
         is_tax_unit_dependent: true
+      person4:
+        age: 0
     tax_units:
       tax_unit:
-        members: [person1, person2, person3]
+        members: [person1, person2, person3, person4]
         adjusted_gross_income: 7_000
         filing_status: SINGLE
   # Base = $800 (pregnancy) * 4 + 650 (two kids) * 12 = $11,000
   # No marriage bonus, no phase-out
   # But yearly cap = $7,000
   output:
-    family_income_supplement_credit_base_amount: [0, 4_800, 3_000]
-    family_income_supplement_credit_pregnancy_amount: [3_200, 0, 0]
+    family_income_supplement_credit_base_amount: [0, 4_800, 3_000, 1_200]
+    family_income_supplement_credit_pregnancy_amount: [3_200, 0, 0, 0]
     family_income_supplement_credit: 7_000
