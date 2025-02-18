@@ -168,7 +168,7 @@ To run a specific yaml test or folder of yaml tests, run `policyengine-core test
 
 **10. Run `make format`**
 
-This will align the code ot the black Python formatting standard, and ensure each file ends in an empty new line.
+This will align the code to the black Python formatting standard, and ensure each file ends in an empty new line.
 
 **Remember to run `git pull upstream master` every time before you *Sync* or *Create a new PR* **
 

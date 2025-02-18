@@ -27,7 +27,9 @@ class ssi_income_deemed_from_ineligible_spouse(Variable):
 
         # Apply earned income exclusions to combined income
         combined_earned_income = personal_earned_income + spousal_earned_income
-        combined_unearned_income = personal_unearned_income + spousal_unearned_income
+        combined_unearned_income = (
+            personal_unearned_income + spousal_unearned_income
+        )
 
         # Calculate income if combined (after exclusions)
         income_if_combined = _apply_ssi_exclusions(
