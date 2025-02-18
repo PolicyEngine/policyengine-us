@@ -3,7 +3,7 @@
   period: 2022
   input:
     is_aca_ptc_eligible: true
-    slspc: 1_200
+    slcsp: 1_200
     aca_magi: 25_000
     aca_ptc_phase_out_rate: 0.04
   output:
@@ -14,7 +14,7 @@
   period: 2022
   input:
     is_aca_ptc_eligible: true
-    slspc: 1_200
+    slcsp: 1_200
     aca_magi: 25_000
     aca_ptc_phase_out_rate: 0.05
   output:
@@ -25,7 +25,7 @@
   period: 2022
   input:
     is_aca_ptc_eligible: false
-    slspc: 1_200
+    slcsp: 1_200
     aca_magi: 25_000
     aca_ptc_phase_out_rate: 0.04
   output:

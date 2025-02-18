@@ -2,7 +2,7 @@ from policyengine_us.model_api import *
 from policyengine_core.simulations import Simulation
 
 
-class slspc_age_0(Variable):
+class slcsp_age_0(Variable):
     value_type = float
     entity = Household
     label = "Second-lowest ACA silver-plan for a person aged 0"
@@ -16,10 +16,10 @@ class slspc_age_0(Variable):
             return 0
         # Get state code and rating area
         state_code = household("state_code", period)
-        rating_area = household("slspc_rating_area", period)
+        rating_area = household("slcsp_rating_area", period)
 
         # Access the baseline costs from parameters
         p = parameters(period).gov.aca
 
         # Return the cost for the specific state and rating area
-        return p.state_ratingarea_cost[state_code][rating_area]
+        return p.state_rating_area_cost[state_code][rating_area]

@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class slspc_person(Variable):
+class slcsp_person(Variable):
     value_type = float
     entity = Person
     label = "Second-lowest ACA silver-plan cost"
@@ -11,7 +11,7 @@ class slspc_person(Variable):
     def formula(person, period, parameters):
         state_code = person.household("state_code_str", period)
         age = person("monthly_age", period)
-        base_cost = person.household("slspc_age_0", period)
+        base_cost = person.household("slcsp_age_0", period)
 
         p = parameters(period).gov.aca.age_curves
         multiplier = select(
@@ -25,13 +25,13 @@ class slspc_person(Variable):
                 state_code == "UT",
             ],
             [
-                p.alabama.calc(age),
-                p.district_of_columbia.calc(age),
-                p.massachusetts.calc(age),
-                p.minnesota.calc(age),
-                p.mississippi.calc(age),
-                p.oregon.calc(age),
-                p.utah.calc(age),
+                p.al.calc(age),
+                p.dc.calc(age),
+                p.ma.calc(age),
+                p.mn.calc(age),
+                p.ms.calc(age),
+                p["or"].calc(age),
+                p.ut.calc(age),
             ],
             default=p.default.calc(age),
         )

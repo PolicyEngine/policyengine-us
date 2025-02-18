@@ -4,9 +4,9 @@
   input:
     state_code_str: AL
     monthly_age: 15
-    slspc_age_0: 270
+    slcsp_age_0: 270
   output:
-    slspc_person: 270
+    slcsp_person: 270
 
 - name: DC middle age
   period: 2023-01
@@ -14,9 +14,9 @@
   input:
     state_code_str: DC
     monthly_age: 55
-    slspc_age_0: 388
+    slcsp_age_0: 388
   output:
-    slspc_person: 1_028.12
+    slcsp_person: 1_028.12
       
 - name: Utah young adult
   period: 2023-01
@@ -24,9 +24,9 @@
   input:
     state_code_str: UT
     monthly_age: 26
-    slspc_age_0: 371
+    slcsp_age_0: 371
   output:
-    slspc_person: 637.67
+    slcsp_person: 637.67
 
 - name: Minnesota middle age
   period: 2023-01
@@ -34,9 +34,9 @@
   input:
     state_code_str: MN
     monthly_age: 40
-    slspc_age_0: 252
+    slcsp_age_0: 252
   output:
-    slspc_person: 361.87   
+    slcsp_person: 361.87   
 
 - name: Mississippi adult
   period: 2023-01
@@ -44,9 +44,9 @@
   input:
     state_code_str: MS
     monthly_age: 33
-    slspc_age_0: 240
+    slcsp_age_0: 240
   output:
-    slspc_person: 452.78
+    slcsp_person: 452.78
 
 - name: West Virginia senior
   period: 2023-01
@@ -54,9 +54,9 @@
   input:
     state_code_str: WV
     monthly_age: 62
-    slspc_age_0: 561
+    slcsp_age_0: 561
   output:
-    slspc_person: 2_106.89
+    slcsp_person: 2_106.89
 
 - name: California teen
   period: 2025-01
@@ -64,6 +64,6 @@
   input:
     state_code_str: CA
     monthly_age: 15
-    slspc_age_0: 244
+    slcsp_age_0: 244
   output:
-    slspc_person: 265.69
+    slcsp_person: 265.69
