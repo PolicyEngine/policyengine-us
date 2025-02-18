@@ -3,6 +3,7 @@ metadata:
   unit: year
   label: DC KCCATC DC taxable income limit
   propagate_metadata_to_children: true
+  uprating:
     parameter: gov.irs.uprating
     rounding:
       type: downwards
