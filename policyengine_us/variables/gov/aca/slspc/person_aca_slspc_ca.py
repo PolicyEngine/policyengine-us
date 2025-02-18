@@ -35,6 +35,6 @@ class person_aca_slspc_ca(Variable):
         idx = where(in_la_county, zip3, cofips)
         gra = aca_gra[in_state * idx].astype(int)
         # specify ACA second-lowest silver-plan cost
-        aca_slspc = ptree.gov.aca.ca_.slspc(period)
+        aca_slspc = ptree.gov.aca.ca_.slcsp(period)
         age = person("aca_slspc_trimmed_age", period)
         return aca_slspc[gra][age]
