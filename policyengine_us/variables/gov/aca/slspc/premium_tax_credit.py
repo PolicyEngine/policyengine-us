@@ -4,8 +4,8 @@ from policyengine_us.model_api import *
 class premium_tax_credit(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Second-lowest ACA silver-plan cost"
+    label = "Affordable Care Act Premium Tax Credit"
     unit = USD
     definition_period = MONTH
 
-    adds = ["slcsp_person"]
+    adds = ["aca_ptc"]
