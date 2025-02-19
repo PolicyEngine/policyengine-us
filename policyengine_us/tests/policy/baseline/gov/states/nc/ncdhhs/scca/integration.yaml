@@ -21,6 +21,29 @@
   output:
     nc_scca: 0
 
+- name: Family of two, no children, no disabilities, monthly income below FPL, saving $0/month.
+  period: 2023-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+      person2:
+        age: 35
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        snap_earned_income: 1700
+        snap_unearned_income: 0
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        county_str: ALAMANCE_COUNTY_NC
+        state_code: NC
+  output:
+    nc_scca: 0
+
 - name: Family of three (1 child, 17), no disabilities, monthly income below FPL, saving $0/month.
   period: 2024-01
   input:
@@ -47,6 +70,33 @@
         state_code: NC
   output:
     nc_scca: 0
+
+- name: Family of three (1 child, 17 with disabilities), monthly income below FPL, saving $108/month.
+  period: 2023-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+      person2:
+        age: 35
+        is_disabled: false
+      child1:
+        age: 17
+        is_disabled: true
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        snap_earned_income: 2100
+        snap_unearned_income: 50
+        members: [person1, person2, child1]
+    households:
+      household:
+        members: [person1, person2, child1]
+        county_str: ALAMANCE_COUNTY_NC
+        state_code: NC
+  output:
+    nc_scca: 108
 
 - name: Family of three (1 child, 17 with disabilities), monthly income below FPL, saving $108/month.
   period: 2024-01

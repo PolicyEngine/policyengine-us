@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class AgeGroup(Enum):
+class NCSCCAAgeGroup(Enum):
     NOT_QUALIFY = "Not qualify"
     INFANT = "Infant"
     TWO_YEAR_OLD = "2 Year olds"
@@ -11,8 +11,8 @@ class AgeGroup(Enum):
 
 class nc_scca_age_group(Variable):
     value_type = Enum
-    possible_values = AgeGroup
-    default_value = AgeGroup.NOT_QUALIFY
+    possible_values = NCSCCAAgeGroup
+    default_value = NCSCCAAgeGroup.NOT_QUALIFY
     entity = Person
     label = "North Carolina SCCA age group"
     definition_period = YEAR
@@ -36,11 +36,11 @@ class nc_scca_age_group(Variable):
                 | ((age < p.disabled_age_limit) & disabled),
             ],
             [
-                AgeGroup.NOT_QUALIFY,
-                AgeGroup.INFANT,
-                AgeGroup.TWO_YEAR_OLD,
-                AgeGroup.THREE_TO_FIVE_YEAR_OLD,
-                AgeGroup.SCHOOL_AGE,
+                NCSCCAAgeGroup.NOT_QUALIFY,
+                NCSCCAAgeGroup.INFANT,
+                NCSCCAAgeGroup.TWO_YEAR_OLD,
+                NCSCCAAgeGroup.THREE_TO_FIVE_YEAR_OLD,
+                NCSCCAAgeGroup.SCHOOL_AGE,
             ],
-            default=AgeGroup.NOT_QUALIFY,
+            default=NCSCCAAgeGroup.NOT_QUALIFY,
         )
