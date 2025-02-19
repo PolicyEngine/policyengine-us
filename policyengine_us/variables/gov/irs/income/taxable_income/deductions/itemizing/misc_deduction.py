@@ -12,7 +12,7 @@ class misc_deduction(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.irs.deductions.itemized.misc
         if p.applies:
-            expenses = add(tax_unit, period, p.sources)
+            expenses = tax_unit("total_misc_deductions", period)
             misc_floor = p.floor * tax_unit("positive_agi", period)
             return max_(0, expenses - misc_floor)
         return 0
