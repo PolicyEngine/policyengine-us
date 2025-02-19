@@ -17,7 +17,10 @@ class pr_earned_income_credit(Variable):
 
         child_count = tax_unit("pr_earned_income_child_count", period)
         filing_status = tax_unit("filing_status", period)
-        gross_income = tax_unit("pr_gross_income", period)
+        gross_income = tax_unit.sum(
+            tax_unit.members("pr_gross_income_person", period)
+            * (tax_unit.members("is_tax_unit_head_or_spouse", period))
+        )
 
         # compute credit
         phase_in = min_(
@@ -27,10 +30,18 @@ class pr_earned_income_credit(Variable):
 
         phase_out_rate = p.phase_out.rate.calc(child_count)
         phase_out_threshold = select(
-            [filing_status == filing_status.possible_values.SINGLE, filing_status == filing_status.possible_values.JOINT],
-            [p.phase_out.threshold.single.calc(child_count), p.phase_out.threshold.joint.calc(child_count)],
+            [
+                filing_status == filing_status.possible_values.SINGLE,
+                filing_status == filing_status.possible_values.JOINT,
+            ],
+            [
+                p.phase_out.threshold.single.calc(child_count),
+                p.phase_out.threshold.joint.calc(child_count),
+            ],
         )
         # could be negative if gross income not over threshold, so make the minimum value 0
-        phase_out = max_(0, (gross_income - phase_out_threshold) * phase_out_rate)
+        phase_out = max_(
+            0, (gross_income - phase_out_threshold) * phase_out_rate
+        )
         # minimum value 0 in case person isn't eligible for any amount of credit
         return max_(0, phase_in - phase_out)

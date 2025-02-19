@@ -3,24 +3,28 @@
   input:
     people:
       person1: 
-        employment_income: 15_000
+        pr_gross_income_person: 15_000
         age: 40
+        is_tax_unit_head_or_spouse: true
       person2:
-        employment_income: 10_000
+        pr_gross_income_person: 10_000
         age: 44
+        is_tax_unit_head_or_spouse: true
       person3:
-        employment_income: 0
+        pr_gross_income_person: 0
         age: 5
       person4:
-        employment_income: 0
-        age: 10
+        pr_gross_income_person: 1_000
+        age: 15
     tax_units:
       tax_unit:
         members: [person1, person2, person3, person4]
+        filing_status: JOINT
     households:
       household:
         members: [person1, person2, person3, person4]
         state_code: PR
   output: 
+    pr_earned_income_credit_eligible_people: 2
     pr_earned_income_credit_eligible: true
     pr_earned_income_credit: 6_072

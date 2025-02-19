@@ -3,38 +3,16 @@ from policyengine_us.model_api import *
 
 class pr_earned_income_credit_eligible(Variable):
     value_type = bool
-    entity = Person
-    label = "Puerto Rico earned income credit eligibility"
+    entity = TaxUnit
+    label = "Puerto Rico earned income credit eligible unit"
     definition_period = YEAR
     reference = "https://hacienda.pr.gov/sites/default/files/schedule_ct_rev._jul_5_23_informative_-_instructions.pdf#page=1"
+    defined_for = "pr_earned_income_credit_eligible_people"
 
-    def formula(person, period, parameters):
-        p = parameters(
-            period
-        ).gov.territories.pr.tax.income.credits.earned_income
-        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-
-        investment_income = person(
-            "pr_earned_income_credit_investment_income", period
+    def formula(tax_unit, period, parameters):
+        # list of eligible people in the tax unit from the adds function
+        num_eligible_people = tax_unit(
+            "pr_earned_income_credit_eligible_people", period
         )
-        investment_income_amount_under_limit = (
-            investment_income <= p.investment_income.limit
-        )
-
-        age = person("age", period)
-        age_within_range = (age >= p.eligibility.min)
-
-        filing_status = person.tax_unit("filing_status", period)
-        not_separate = filing_status != filing_status.possible_values.SEPARATE
-
-        eligible = (
-            head_or_spouse
-            & investment_income_amount_under_limit
-            & age_within_range
-        )
-        # if separate filers are eligible
-        if p.eligibility.separate_filer:
-            return eligible
-        # else, filing status can't be filing separate
-        else:
-            return eligible & not_separate
+        eligible_people_exist = num_eligible_people > 0
+        return eligible_people_exist
