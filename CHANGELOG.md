@@ -7565,7 +7565,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- slscp not included in the CPS microdata, causing a 2x runtime.
+- SLSCP not included in the CPS microdata, causing a 2x runtime.
 
 ## [0.254.0] - 2023-03-24 04:59:06
 
@@ -9889,7 +9889,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Applied new openfisca-tools helper function `index_` to speed up slscp calculations.
+- Applied new openfisca-tools helper function `index_` to speed up SLSCP calculations.
 
 ## [0.70.1] - 2022-06-02 16:51:48
 
