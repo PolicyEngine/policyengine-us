@@ -5,6 +5,79 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.199.0] - 2025-02-19 20:13:32
+
+### Added
+
+- Family Income Supplemental Credit Act reform.
+
+## [1.198.1] - 2025-02-19 20:05:31
+
+### Fixed
+
+- Apply miscellaneous deduction floor.
+- Add miscellaneous deduction to the AMT Income calculation.
+
+## [1.198.0] - 2025-02-18 23:22:33
+
+### Added
+
+- DC 2024 Income Tax Updates.
+
+## [1.197.1] - 2025-02-18 22:33:47
+
+### Added
+
+- Add personal exemptions to the AMT Income calculation.
+
+## [1.197.0] - 2025-02-17 23:53:42
+
+### Changed
+
+- Uprate medical expense categories by CMS MOOP per capita projections.
+
+## [1.196.1] - 2025-02-14 20:39:21
+
+### Fixed
+
+- Set the bottom bracket to -.inf under the New York Inflation Rebates reform.
+
+## [1.196.0] - 2025-02-14 19:34:59
+
+### Added
+
+- Kentucky income tax rate 2026.
+
+## [1.195.1] - 2025-02-13 21:40:47
+
+### Added
+
+- update the CSFP income limits
+
+## [1.195.0] - 2025-02-13 01:08:09
+
+### Added
+
+- Rename interest_expense to deductible_interest_expense.
+
+## [1.194.0] - 2025-02-13 01:01:20
+
+### Added
+
+- Colorado 2024 tax form references.
+- 2023 and 2024 Colorado Income Qualified Senior Housing Credit.
+- 2024 Colorado ABLE Account Cap.
+- 2023 and 2024 Colorado CollegeInvest Maximum Amount.
+- 2024 Colorado State Sales Tax Refund.
+
+## [1.193.0] - 2025-02-13 00:37:01
+
+### Added
+
+- Kansas State Tax Code 2024 Updates.
+
+## [1.192.2] - 2025-02-12 20:02:57
+
 ## [1.192.1] - 2025-02-11 18:25:27
 
 ### Fixed
@@ -10769,6 +10842,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.199.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.198.1...1.199.0
+[1.198.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.198.0...1.198.1
+[1.198.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.197.1...1.198.0
+[1.197.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.197.0...1.197.1
+[1.197.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.196.1...1.197.0
+[1.196.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.196.0...1.196.1
+[1.196.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.195.1...1.196.0
+[1.195.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.195.0...1.195.1
+[1.195.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.194.0...1.195.0
+[1.194.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.193.0...1.194.0
+[1.193.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.192.2...1.193.0
+[1.192.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.192.1...1.192.2
 [1.192.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.192.0...1.192.1
 [1.192.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.191.0...1.192.0
 [1.191.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.190.0...1.191.0

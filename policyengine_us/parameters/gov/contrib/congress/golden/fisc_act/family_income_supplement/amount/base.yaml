@@ -1,0 +1,24 @@
+description: Representative Jared Golden proposed a family income supplement of this amount for each child, based on age.
+metadata:
+  type: single_amount
+  threshold_unit: year
+  amount_unit: currency-USD
+  label: FISC Act family income supplement base amount
+  period: year
+  reference:
+    - title: Family Income Supplemental Credit Act, Sec. 2, (d)(2)
+      href: https://golden.house.gov/sites/evo-subsites/golden.house.gov/files/evo-media-document/GoldenFISC.pdf#page=6
+
+brackets:
+  - threshold:
+      2026-01-01: 0
+    amount:
+      2026-01-01: 8_000 # 800 monthly * 4 months & 400 monthly * 12 months
+  - threshold:
+      2026-01-01: 1
+    amount:
+      2026-01-01: 4_800 # 400 monthly
+  - threshold:
+      2026-01-01: 6
+    amount:
+      2026-01-01: 3_000 # 250 monthly
