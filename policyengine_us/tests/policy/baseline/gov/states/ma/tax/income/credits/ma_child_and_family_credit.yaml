@@ -17,7 +17,7 @@
         state_code: MA
         members: [child_1, child_2, child_3]
   output:
-    ma_child_and_family: 360
+    ma_child_and_family_credit: 360
 
 - name: One elderly, one disabled in 2022
   period: 2022
@@ -42,7 +42,7 @@
         state_code: MA
         members: [filer, disabled_dependent, elderly_dependent]
   output:
-    ma_child_and_family: 360
+    ma_child_and_family_credit: 360
 
 - name: 3 children age 12, dependent credit for 2023
   period: 2023
@@ -63,7 +63,7 @@
         state_code: MA
         members: [child_1, child_2, child_3]
   output:
-    ma_child_and_family: 930
+    ma_child_and_family_credit: 930
 
 - name: One elderly, one disabled in 2023
   period: 2023
@@ -88,7 +88,7 @@
         state_code: MA
         members: [filer, disabled_dependent, elderly_dependent]
   output:
-    ma_child_and_family: 620
+    ma_child_and_family_credit: 620
 - name: 3 children age 12, dependent credit for 2024
   period: 2024
   absolute_error_margin: 0
@@ -108,7 +108,7 @@
         state_code: MA
         members: [child_1, child_2, child_3]
   output:
-    ma_child_and_family: 1_320
+    ma_child_and_family_credit: 1_320
 
 - name: One elderly, one disabled in 2024
   period: 2024
@@ -133,4 +133,4 @@
         state_code: MA
         members: [filer, disabled_dependent, elderly_dependent]
   output:
-    ma_child_and_family: 880
+    ma_child_and_family_credit: 880
