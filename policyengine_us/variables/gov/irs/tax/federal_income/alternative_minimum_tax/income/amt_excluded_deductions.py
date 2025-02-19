@@ -12,12 +12,10 @@ class amt_excluded_deductions(Variable):
     def formula(tax_unit, period, parameters):
         itemizing = tax_unit("tax_unit_itemizes", period)
         standard_deduction = tax_unit("standard_deduction", period)
-        salt_deduction = tax_unit("salt_deduction", period)
-        # After TCJA expiration, miscellaneous deductions are added back to the AMTI
-        if period.start.year >= 2026:
-            misc_deduction = tax_unit("misc_deduction", period)
-            return where(
-                itemizing, salt_deduction + misc_deduction, standard_deduction
-            )
-
-        return where(itemizing, salt_deduction, standard_deduction)
+        p = parameters(period).gov.irs.income.amt
+        itemized_deductions_add_back = add(
+            tax_unit, period, p.itemized_deductions_add_back
+        )
+        return where(
+            itemizing, itemized_deductions_add_back, standard_deduction
+        )
