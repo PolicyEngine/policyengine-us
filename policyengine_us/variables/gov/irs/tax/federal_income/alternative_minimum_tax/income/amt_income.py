@@ -13,4 +13,5 @@ class amt_income(Variable):
         "taxable_income",
         "amt_excluded_deductions",
         "amt_separate_addition",
+        "exemptions",
     ]
