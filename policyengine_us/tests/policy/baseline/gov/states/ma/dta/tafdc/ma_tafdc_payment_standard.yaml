@@ -1,0 +1,71 @@
+- name: Non teen parent, not in public housing, 7 people in tax unit
+  period: 2024-01
+  input:
+    people:
+      person1:
+        ma_tafdc_eligible_teen_parent: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        tax_unit_size: 7
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+        is_in_public_housing: false
+  output:
+    ma_tafdc_payment_standard: 1_356
+
+- name: Non teen parent, not in public housing, 10 people in tax unit
+  period: 2024-01
+  input:
+    people:
+      person1:
+        ma_tafdc_eligible_teen_parent: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        tax_unit_size: 11
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+        is_in_public_housing: false
+  output:
+    ma_tafdc_payment_standard: 1_905
+
+- name: Non teen parent, in public housing, 7 people in tax unit
+  period: 2024-01
+  input:
+    people:
+      person1:
+        ma_tafdc_eligible_teen_parent: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        tax_unit_size: 7
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+        is_in_public_housing: true
+  output:
+    ma_tafdc_payment_standard: 1_316
+
+- name: Teen parent, in public housing, 7 people in tax unit, does not change the payment standard
+  period: 2024-01
+  input:
+    people:
+      person1:
+        ma_tafdc_eligible_teen_parent: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        tax_unit_size: 7
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+        is_in_public_housing: true
+  output:
+    ma_tafdc_payment_standard: 1_316

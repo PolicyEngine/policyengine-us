@@ -1,0 +1,17 @@
+- name: Age ineligible
+  period: 2021
+  input:
+    age: 18
+    is_parent: true
+    state_code: MA
+  output:
+    ma_tafdc_eligible_teen_parent: false
+
+- name: Age eligible
+  period: 2021
+  input:
+    age: 17
+    is_parent: true
+    state_code: MA
+  output:
+    ma_tafdc_eligible_teen_parent: true
