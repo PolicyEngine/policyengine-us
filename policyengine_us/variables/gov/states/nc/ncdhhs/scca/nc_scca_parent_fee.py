@@ -21,4 +21,4 @@ class nc_scca_parent_fee(Variable):
         parent_fee = family_montly_income * parent_fee_rate
 
         # Round the number and only keep the integer part
-        return int(np.round(parent_fee).item())
+        return np.round(parent_fee).astype(int)
