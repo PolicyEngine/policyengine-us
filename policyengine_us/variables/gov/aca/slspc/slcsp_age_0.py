@@ -10,7 +10,6 @@ class slcsp_age_0(Variable):
     definition_period = MONTH
 
     def formula(household, period, parameters):
-        # Skip if in a microsimulation. [THIS ISN'T WORKING]
         simulation: Simulation = household.simulation
         if simulation.is_over_dataset:
             return 0
