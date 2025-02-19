@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.198.1] - 2025-02-19 20:05:31
+
+### Fixed
+
+- Apply miscellaneous deduction floor.
+- Add miscellaneous deduction to the AMT Income calculation.
+
 ## [1.198.0] - 2025-02-18 23:22:33
 
 ### Added
@@ -10829,6 +10836,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.198.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.198.0...1.198.1
 [1.198.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.197.1...1.198.0
 [1.197.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.197.0...1.197.1
 [1.197.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.196.1...1.197.0
