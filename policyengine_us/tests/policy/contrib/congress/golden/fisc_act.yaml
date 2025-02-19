@@ -7,7 +7,6 @@
     people:
       person1:
         age: 25
-        is_mother: true
       person2:
         age: 0
     tax_units:
@@ -18,8 +17,7 @@
   # $800 per month for 4 months + $400 per month for 12 months => $3,200 + $4,800 = $8,000
   # No marriage bonus, no phase-out, no 1/12-of-AGI cap triggered
   output:
-    family_income_supplement_credit_pregnancy_amount: [3_200, 0]
-    family_income_supplement_credit_base_amount: [0, 4_800]
+    family_income_supplement_credit_base_amount: [0, 8_000]
     family_income_supplement_credit: 8_000
     refundable_ctc: 0
     non_refundable_ctc: 0
@@ -33,7 +31,6 @@
     people:
       person1:
         age: 30
-        is_pregnant: false
       person2:
         age: 5
         is_tax_unit_dependent: true
@@ -107,7 +104,6 @@
     people:
       person1:
         age: 24
-        is_mother: true
       person2:
         age: 1
         is_tax_unit_dependent: true
@@ -116,6 +112,7 @@
         is_tax_unit_dependent: true
       person4:
         age: 0
+        is_tax_unit_dependent: true
     tax_units:
       tax_unit:
         members: [person1, person2, person3, person4]
@@ -124,6 +121,34 @@
   # No marriage bonus, no phase-out
   # But yearly cap = $7,000
   output:
-    family_income_supplement_credit_base_amount: [0, 4_800, 3_000, 0]
-    family_income_supplement_credit_pregnancy_amount: [3_200, 0, 0, 0]
+    family_income_supplement_credit_base_amount: [0, 4_800, 3_000, 8_000]
+    family_income_supplement_credit: 7_000
+
+- name: Single pregnant with two kids, triggers 1/12-of-AGI cap
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.congress.golden.fisc_act.fisc_act
+  input:
+    gov.contrib.congress.golden.fisc_act.in_effect: true
+    people:
+      person1:
+        age: 24
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+      person3:
+        age: 6
+        is_tax_unit_dependent: true
+      person4:
+        age: 0
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        adjusted_gross_income: 7_000
+        filing_status: SINGLE
+  # No marriage bonus, no phase-out
+  # But yearly cap = $7,000
+  output:
+    family_income_supplement_credit_base_amount: [0, 4_800, 3_000, 8_000]
     family_income_supplement_credit: 7_000

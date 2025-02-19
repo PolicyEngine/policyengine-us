@@ -22,28 +22,6 @@ def create_fisc_act() -> Reform:
             eligible_dependent = (age < p.child_age_limit) & is_dependent
             return p.amount.base.calc(age) * eligible_dependent
 
-    class family_income_supplement_credit_pregnancy_amount(Variable):
-        value_type = float
-        entity = Person
-        label = "FISC Act family income supplement pregnancy amount"
-        unit = USD
-        definition_period = YEAR
-        reference = "https://golden.house.gov/sites/evo-subsites/golden.house.gov/files/evo-media-document/GoldenFISC.pdf"
-
-        def formula(person, period, parameters):
-            # Calculate the pregnancy amount
-            p = parameters(
-                period
-            ).gov.contrib.congress.golden.fisc_act.family_income_supplement.amount
-            # We will assume that for each housheold with a newborn child (under age 1),
-            # the mother has been pregnant for 9 months out of the year and will receive
-            # the full pregnancy credit amount.
-            age = person("age", period)
-            newborn_child_present = person.tax_unit.any(age < 1)
-            mother = person("is_mother", period)
-            mother_of_newborn_child = newborn_child_present & mother
-            return p.pregnancy * mother_of_newborn_child
-
     class family_income_supplement_credit(Variable):
         value_type = float
         entity = TaxUnit
@@ -65,7 +43,6 @@ def create_fisc_act() -> Reform:
                 period,
                 [
                     "family_income_supplement_credit_base_amount",
-                    "family_income_supplement_credit_pregnancy_amount",
                 ],
             )
             base_amount_with_marriage_bonus = base_amount * (
@@ -108,9 +85,6 @@ def create_fisc_act() -> Reform:
         def apply(self):
             self.update_variable(family_income_supplement_credit_base_amount)
             self.update_variable(family_income_supplement_credit)
-            self.update_variable(
-                family_income_supplement_credit_pregnancy_amount
-            )
             self.modify_parameters(modify_parameters)
             self.neutralize_variable("refundable_ctc")
             self.neutralize_variable("non_refundable_ctc")
