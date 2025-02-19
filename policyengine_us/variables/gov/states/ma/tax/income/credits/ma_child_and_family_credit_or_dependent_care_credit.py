@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ma_dependent_or_dependent_care_credit(Variable):
+class ma_child_and_family_credit_or_dependent_care_credit(Variable):
     value_type = float
     entity = TaxUnit
     label = "MA dependent or dependent care credit"

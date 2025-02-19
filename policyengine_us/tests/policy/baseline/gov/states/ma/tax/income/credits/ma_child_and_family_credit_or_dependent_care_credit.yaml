@@ -5,7 +5,7 @@
     ma_dependent_care_credit: 2
     state_code: MA
   output:
-    ma_dependent_or_dependent_care_credit: 2
+    ma_child_and_family_credit_or_dependent_care_credit: 2
 
 - name: 2023 only dependent credit.
   period: 2023
@@ -14,4 +14,4 @@
     ma_dependent_care_credit: 2
     state_code: MA
   output:
-    ma_dependent_or_dependent_care_credit: 1
+    ma_child_and_family_credit_or_dependent_care_credit: 1
