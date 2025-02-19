@@ -3,7 +3,6 @@
   input:
     unreimbursed_business_employee_expenses: 600
     tax_preparation_fees: 400
-    other_miscellaneous_expenses: 0
     adjusted_gross_income: 2_000
   output: 
     misc_deduction: 960
@@ -11,9 +10,8 @@
 - name: Deduction floor does not apply
   period: 2026
   input:
-    unreimbursed_business_employee_expenses: 0
+    unreimbursed_business_employee_expenses: 1_800
     tax_preparation_fees: 200
-    other_miscellaneous_expenses: 1_800
     adjusted_gross_income: 0
   output: 
     misc_deduction: 2_000
@@ -29,9 +27,8 @@
 - name: Deduction does not apply in 2024
   period: 2024
   input:
-    unreimbursed_business_employee_expenses: 0
+    unreimbursed_business_employee_expenses: 1_800
     tax_preparation_fees: 200
-    other_miscellaneous_expenses: 1_800
     adjusted_gross_income: 0
   output: 
     misc_deduction: 0
