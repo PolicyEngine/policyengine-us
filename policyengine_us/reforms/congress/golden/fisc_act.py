@@ -7,7 +7,7 @@ def create_fisc_act() -> Reform:
     class family_income_supplement_credit_base_amount(Variable):
         value_type = float
         entity = Person
-        label = "FISC Act family income supplement base amount with the marriage bonus"
+        label = "FISC Act family income supplement base amount"
         unit = USD
         definition_period = YEAR
         reference = "https://golden.house.gov/sites/evo-subsites/golden.house.gov/files/evo-media-document/GoldenFISC.pdf"
