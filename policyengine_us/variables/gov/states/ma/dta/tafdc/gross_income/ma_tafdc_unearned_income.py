@@ -15,10 +15,7 @@ class ma_tafdc_unearned_income(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.ma.dta.tafdc.gross_income
         total_unearned_income = add(tax_unit, period, p.unearned)
-        child_support_deduction = (
-            tax_unit.sum(
-                tax_unit.members("ma_tafdc_child_support_deduction", period)
-            )
-            * MONTHS_IN_YEAR
+        child_support_deduction = add(
+            tax_unit, period, ["ma_tafdc_child_support_deduction"]
         )
         return max_(0, total_unearned_income - child_support_deduction)

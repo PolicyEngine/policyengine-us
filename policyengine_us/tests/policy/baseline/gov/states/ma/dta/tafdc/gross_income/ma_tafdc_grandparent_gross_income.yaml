@@ -1,0 +1,18 @@
+- name: 10k in employment income, with a dependent care deduction
+  period: 2023
+  input:
+    people: 
+      person1:
+        is_grandparent_of_filer_or_spouse: true
+      person2: 
+        ma_tafdc_eligible_teen_parent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_fpg: 2_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+  output:
+    ma_tafdc_grandparent_gross_income: 0

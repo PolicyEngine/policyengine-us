@@ -1,5 +1,5 @@
 - name: Some reduction in unearned income
-  period: 2023-01
+  period: 2023
   input:
     ma_tafdc_child_support_deduction: 400
     pension_income: 1_000 
@@ -9,7 +9,7 @@
     ma_tafdc_unearned_income: 3_600
 
 - name: Full reduction
-  period: 2023-01
+  period: 2023
   input:
     ma_tafdc_child_support_deduction: 400
     pension_income: 100

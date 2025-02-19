@@ -7,9 +7,10 @@
     ma_tafdc_child_support_deduction: 0
 
 - name: Some alimony income
-  period: 2023-01
+  period: 2023
   input:
-    alimony_income: 20
+    alimony_income: 
+      2023-01: 20
     state_code: MA
   output:
     ma_tafdc_child_support_deduction: 20
