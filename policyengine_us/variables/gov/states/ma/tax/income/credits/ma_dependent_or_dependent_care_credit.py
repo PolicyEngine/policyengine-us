@@ -17,7 +17,7 @@ class ma_dependent_or_dependent_care_credit(Variable):
         p = parameters(period).gov.states.ma.tax.income.credits.dependent_care
         # MA taxpayers can only take either the dependent credit or the
         # dependent care credit.
-        dependent_credit = tax_unit("ma_child_and_family", period)
+        dependent_credit = tax_unit("ma_child_and_family_credit", period)
         if p.in_effect:
             return max_(
                 dependent_credit,
