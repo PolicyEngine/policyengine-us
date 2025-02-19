@@ -17,7 +17,7 @@ class is_ssi_ineligible_spouse(Variable):
 
         # Check if they're in a marital unit
         in_marital_unit = person.marital_unit.any(
-            person("is_tax_unit_spouse", period)
+            person("is_tax_unit_head_or_spouse", period)
             | person("is_tax_unit_head", period)
         )
 

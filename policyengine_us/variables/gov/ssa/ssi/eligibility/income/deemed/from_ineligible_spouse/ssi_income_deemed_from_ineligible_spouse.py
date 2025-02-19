@@ -56,8 +56,4 @@ class ssi_income_deemed_from_ineligible_spouse(Variable):
             person("is_ssi_ineligible_spouse", period)
         )
 
-        return where(
-            is_eligible & has_ineligible_spouse,
-            deemed_income,
-            0,
-        )
+        return (is_eligible & has_ineligible_spouse) * deemed_income
