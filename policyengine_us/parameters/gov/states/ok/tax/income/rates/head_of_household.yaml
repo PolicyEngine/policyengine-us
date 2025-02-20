@@ -27,10 +27,11 @@ brackets:
       2022-01-01: 0.0375
   - threshold:
       2021-01-01: 12_200
+      2024-01-01: 14_400
     rate:
       2021-01-01: 0.05
       2022-01-01: 0.0475
-        
+
 metadata:
   threshold_unit: currency_USD
   rate_unit: /1
@@ -38,11 +39,15 @@ metadata:
   type: marginal_rate
   label: Oklahoma income tax rates for head-of-household filing units
   reference:
-  - title: Oklahome Tax Rates, Brackets
-    href: https://www.efile.com/oklahoma-tax-brackets-rates-and-forms/
-  - title: 2021 Form 511 instructions
-    href: https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/past-year/2021/511-Pkt-2021.pdf
-  - title: 2022 Form 511 instructions
-    href: https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/current/511-Pkt.pdf
-  - title: 2023 Form 511 instructions
-    href: https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/current/511-Pkt.pdf#page=38
+    - title: Oklahome Tax Rates, Brackets
+      href: https://www.efile.com/oklahoma-tax-brackets-rates-and-forms/
+    - title: Oklahoma Statutes
+      href: https://www.oscn.net/applications/oscn/DeliverDocument.asp?CiteID=92565
+    - title: 2021 Form 511 instructions
+      href: https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/past-year/2021/511-Pkt-2021.pdf
+    - title: 2022 Form 511 instructions
+      href: https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/past-year/2022/511-Pkt-2022.pdf
+    - title: 2023 Form 511 instructions
+      href: https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/past-year/2023/511-Pkt.pdf#page=38
+    - title: 2024 Form 511 instructions
+      href: https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/current/511-Pkt.pdf#page=38
