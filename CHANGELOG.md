@@ -9889,7 +9889,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Applied new openfisca-tools helper function `index_` to speed up SLSCP calculations.
+- Applied new openfisca-tools helper function `index_` to speed up SLSPC calculations.
 
 ## [0.70.1] - 2022-06-02 16:51:48
 
