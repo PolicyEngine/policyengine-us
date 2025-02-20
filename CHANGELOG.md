@@ -7565,7 +7565,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- SLSCP not included in the CPS microdata, causing a 2x runtime.
+- SLSPC not included in the CPS microdata, causing a 2x runtime.
 
 ## [0.254.0] - 2023-03-24 04:59:06
 
