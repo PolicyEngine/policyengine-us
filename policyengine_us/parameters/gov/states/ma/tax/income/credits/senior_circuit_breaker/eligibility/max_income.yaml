@@ -39,7 +39,7 @@ metadata:
   uprating:
     parameter: gov.irs.uprating
     rounding:
-      type: downward
+      type: downwards
       interval: 1_000
   propagate_metadata_to_children: true
   reference:
