@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.200.2] - 2025-02-20 15:09:55
+
+### Fixed
+
+- Correct AMT single exemption amount values.
+
+## [1.200.1] - 2025-02-20 13:23:33
+
+### Fixed
+
+- FISC act in effect parameter type.
+
 ## [1.200.0] - 2025-02-20 03:56:06
 
 ### Added
@@ -10850,6 +10862,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.200.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.200.1...1.200.2
+[1.200.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.200.0...1.200.1
 [1.200.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.199.0...1.200.0
 [1.199.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.198.1...1.199.0
 [1.198.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.198.0...1.198.1
