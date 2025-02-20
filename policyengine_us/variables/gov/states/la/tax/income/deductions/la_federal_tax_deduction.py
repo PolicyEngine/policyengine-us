@@ -21,7 +21,7 @@ class la_federal_tax_deduction(Variable):
         reductions = add(
             tax_unit,
             period,
-            ["form_4972_lumpsum_distributions", "premium_tax_credit"],
+            ["form_4972_lumpsum_distributions", "aca_ptc"],
         )
         amount = max_(0, tax_before_refundable_credits - reductions)
 

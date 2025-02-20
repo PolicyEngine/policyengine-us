@@ -1,0 +1,13 @@
+description: Highest age for which ACA slcsp amount is the same as for newborns.
+metadata:
+  period: year
+  label: ACA last same-slcsp child age
+  reference:
+    - title: KFF Health Insurance Marketplace Calculator
+      href: https://www.kff.org/interactive/subsidy-calculator/
+      # https://www.kff.org/interactive/subsidy-calculator-202?/ for prior years
+      # All states have the same slcsp amount for all children up through
+      # this age, while some states have the same slcsp amount for all children
+      # up through age 20.
+values:
+  2022-01-01: 14  # given 2022 and 2023 slcsp amounts
