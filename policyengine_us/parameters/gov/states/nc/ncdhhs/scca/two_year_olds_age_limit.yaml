@@ -2,8 +2,11 @@ description: North Carolina categorizes children under below age as 2 Year Old g
 metadata:
   reference:
     - title: Subsidized Child Care Market Rates for Child Care Centers - Effective 10-1-2023
+    - title: CHAPTER 09 - CHILD CARE RULES - EFFECTIVE JANUARY 1, 2024
+      href: https://ncchildcare.ncdhhs.gov/Portals/0/documents/pdf/C/Chapter_9_Child_Care_Rules_effective_1-1-2024.pdf?ver=Yh7EA3Q_V_dBhSwZ6rcTVg%3D%3D#page=2
   label: North Carolina Subsidized Child Care Assistance program child age limit for 2 Year Old group 
   unit: year
   period: year
+# No statutory reference defines the 2-year-old age limit, so categorize children over 12 months and under 3 years into the 2-year-old group.
 values:
   2022-10-01: 3

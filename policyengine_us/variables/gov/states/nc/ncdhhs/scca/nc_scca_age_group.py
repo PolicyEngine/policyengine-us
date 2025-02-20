@@ -29,9 +29,10 @@ class nc_scca_age_group(Variable):
         return select(
             [
                 age >= p.disabled_age_limit,
-                age < p.infant_age_limit,
-                age < p.toddler_age_limit,
-                (age >= p.preschool_age_lower) & (age < p.preschool_age_upper),
+                age <= p.infant_age_limit,
+                age < p.two_year_olds_age_limit,
+                (age >= p.three_to_five_year_olds_age_lower)
+                & (age < p.three_to_five_year_olds_age_upper),
                 (age < p.school_age_limit)
                 | ((age < p.disabled_age_limit) & disabled),
             ],

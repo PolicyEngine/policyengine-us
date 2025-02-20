@@ -5,12 +5,12 @@
   output:
     nc_scca_age_group: INFANT
 
-- name: Child age, 1.5, INFANT
+- name: Child age, 1.5, TWO_YEAR_OLD
   period: 2024
   input:
     age: 1.5
   output:
-    nc_scca_age_group: INFANT
+    nc_scca_age_group: TWO_YEAR_OLD
 
 - name: Child age, 2, TWO_YEAR_OLD
   period: 2024
