@@ -15,7 +15,7 @@ class nc_scca_entry_income_eligible(Variable):
 
         fpg = spm_unit("spm_unit_fpg", period)
 
-        rate = spm_unit("nc_scca_fpl_rate", period.this_year)
+        rate = spm_unit("nc_scca_fpg_rate", period.this_year)
 
         allowed_max_income = np.round(fpg * rate, 2)
 

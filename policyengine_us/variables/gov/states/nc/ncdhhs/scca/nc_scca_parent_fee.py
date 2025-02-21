@@ -16,9 +16,9 @@ class nc_scca_parent_fee(Variable):
         p = parameters(period).gov.states.nc.ncdhhs.scca
         parent_fee_rate = p.parent_fee_rate.value
 
-        family_montly_income = spm_unit("nc_scca_countable_income", period)
+        family_monthly_income = spm_unit("nc_scca_countable_income", period)
 
-        parent_fee = family_montly_income * parent_fee_rate
+        parent_fee = family_monthly_income * parent_fee_rate
 
         # Round the number and only keep the integer part
         return np.round(parent_fee).astype(int)

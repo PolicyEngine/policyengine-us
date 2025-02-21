@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class nc_scca_child_eligible(Variable):
+class nc_scca_has_eligible_child(Variable):
     value_type = bool
     entity = SPMUnit
     label = "Any eligible child for North Carolina Subsidized Child Care Assistance program"

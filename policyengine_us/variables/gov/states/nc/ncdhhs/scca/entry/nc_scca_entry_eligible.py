@@ -11,6 +11,6 @@ class nc_scca_entry_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         income_eligible = spm_unit("nc_scca_entry_income_eligible", period)
-        has_eligible_children = spm_unit("nc_scca_child_eligible", period) > 0
+        has_eligible_children = spm_unit("nc_scca_has_eligible_child", period)
 
         return income_eligible & has_eligible_children

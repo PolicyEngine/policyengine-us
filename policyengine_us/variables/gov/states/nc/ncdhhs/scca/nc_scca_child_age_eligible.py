@@ -10,7 +10,7 @@ class nc_scca_child_age_eligible(Variable):
     defined_for = StateCode.NC
 
     def formula(person, period, parameters):
-        p = parameters(period).gov.states.nc.ncdhhs.scca
+        p = parameters(period).gov.states.nc.ncdhhs.scca.age_limit
         disabled_age_limit = p.disabled_age_limit
         school_age_limit = p.school_age_limit
 

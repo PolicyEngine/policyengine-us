@@ -22,7 +22,7 @@ class nc_scca_age_group(Variable):
     )
 
     def formula(person, period, parameters):
-        p = parameters(period).gov.states.nc.ncdhhs.scca
+        p = parameters(period).gov.states.nc.ncdhhs.scca.age_limit
         age = person("age", period)
         disabled = person("is_disabled", period)
 

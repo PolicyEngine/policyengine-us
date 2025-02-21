@@ -2,7 +2,7 @@ description: North Carolina set the following Subsidized Child Care Market Rates
 metadata:
   unit: currency-USD
   period: month
-  label: North Carolina Subsidized Child Care Assistance (SCCA) program market rates brake down by county and child age
+  label: North Carolina SCCA program market rates
   breakdown:
     - county
     - nc_scca_age_group
@@ -11,6 +11,13 @@ metadata:
       href: https://ncchildcare.ncdhhs.gov/Portals/0/documents/pdf/M/Market_Rates_Centers_Eff_10-1.pdf?ver=9w52alSPhmrmo0N9gGVMEw%3d%3d
     - title: Estimated Savings NC Subsidized Child Care Assistance Program
       href: https://docs.google.com/spreadsheets/d/1y7p8qkiOrMAM42rtSwT_ZXeA5tzew4edNkrTXACxf4M/edit?gid=1339413807#gid=1339413807 
+# Quoted and edited from our benefit specialist: Below-market rates are sourced from the Subsidized Child Care Market Rates table (referenced above) 
+# for 4-star Child Care Centers. Only facilities rated 3 stars or higher qualify for the NC SCCA program, 
+# with most subsidized children enrolled in centers rather than home facilities, according to the 
+# NC DHHS Division of Child Development and Early Education Child Care Analysis Summary. 
+# The 4-star center rate was selected as a representative average, as the highest enrollment by star rating varies by county.
+
+# As of February 21, 2025, no updates have been released since October 1, 2023.
 ALAMANCE_COUNTY_NC:
   INFANT:
     2023-10-01: 956

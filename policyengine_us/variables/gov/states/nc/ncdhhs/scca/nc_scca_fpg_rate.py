@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class nc_scca_fpl_rate(Variable):
+class nc_scca_fpg_rate(Variable):
     value_type = float
     entity = SPMUnit
     label = "North Carolina Subsidized Child Care Assistance (SCCA) program income limits compared to the FPL"
@@ -20,20 +20,19 @@ class nc_scca_fpl_rate(Variable):
         age = person("age", period)
         disabled = person("is_disabled", period)
 
-        disabled_age_limit = p.disabled_age_limit
         # get the youngest child's age
         min_age = spm_unit.min(age)
 
         # Check if any child (6-17) is disabled
         has_disabled_child = spm_unit.any(
-            (age < disabled_age_limit) & disabled
+            (age < p.age_limit.disabled_age_limit) & disabled
         )
 
         categorized_age = where(
             has_disabled_child
-            | (min_age < p.three_to_five_year_olds_age_upper),
-            p.three_to_five_year_olds_age_lower,
-            p.three_to_five_year_olds_age_upper,
+            | (min_age < p.age_limit.three_to_five_year_olds_age_upper),
+            p.age_limit.three_to_five_year_olds_age_lower,
+            p.age_limit.three_to_five_year_olds_age_upper,
         )
 
         return p.entry.income_rate_by_child_age.calc(categorized_age)

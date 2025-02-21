@@ -7,4 +7,3 @@ class is_under_court_supervision(Variable):
     label = "Is under court supervision"
     documentation = "Whether this person is under court supervision."
     definition_period = YEAR
-    default_value = False

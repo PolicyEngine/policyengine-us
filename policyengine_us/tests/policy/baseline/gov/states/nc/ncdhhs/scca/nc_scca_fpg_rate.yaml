@@ -16,7 +16,7 @@
         members: [person1, child1]
         state_code: NC
   output:
-    nc_scca_fpl_rate: 2
+    nc_scca_fpg_rate: 2
 
 - name: One child aged 1 with no disabilities; fpl rate is 2.
   period: 2024
@@ -36,7 +36,7 @@
         members: [person1, child1]
         state_code: NC
   output:
-    nc_scca_fpl_rate: 2
+    nc_scca_fpg_rate: 2
 
 - name: One child aged 2 with no disabilities; fpl rate is 2.
   period: 2024
@@ -56,7 +56,7 @@
         members: [person1, child1]
         state_code: NC
   output:
-    nc_scca_fpl_rate: 2
+    nc_scca_fpg_rate: 2
 
 - name: One child aged 3 with no disabilities; fpl rate is 2.
   period: 2024
@@ -76,7 +76,7 @@
         members: [person1, child1]
         state_code: NC
   output:
-    nc_scca_fpl_rate: 2
+    nc_scca_fpg_rate: 2
 
 - name: One child aged 5 with no disabilities; fpl rate is 2.
   period: 2024
@@ -96,7 +96,7 @@
         members: [person1, child1]
         state_code: NC
   output:
-    nc_scca_fpl_rate: 2
+    nc_scca_fpg_rate: 2
 
 - name: One child aged 6 with no disabilities; fpl rate is 1.33.
   period: 2024
@@ -116,7 +116,7 @@
         members: [person1, child1]
         state_code: NC
   output:
-    nc_scca_fpl_rate: 1.33
+    nc_scca_fpg_rate: 1.33
 
 - name: One child aged 6, with a disabled family member; fpl rate is 1.33.
   period: 2024
@@ -136,7 +136,7 @@
         members: [person1, child1]
         state_code: NC
   output:
-    nc_scca_fpl_rate: 1.33
+    nc_scca_fpg_rate: 1.33
 
 - name: One child aged 6 with disabilities; fpl rate is 2.
   period: 2024
@@ -156,7 +156,7 @@
         members: [person1, child1]
         state_code: NC
   output:
-    nc_scca_fpl_rate: 2
+    nc_scca_fpg_rate: 2
 
 - name: One child aged 12 with no disabilities; fpl rate is 1.33.
   period: 2024
@@ -176,7 +176,7 @@
         members: [person1, child1]
         state_code: NC
   output:
-    nc_scca_fpl_rate: 1.33
+    nc_scca_fpg_rate: 1.33
 
 - name: Two children aged 0 and 1; fpl rate is 2.
   period: 2024
@@ -199,7 +199,7 @@
         members: [person1, child1, child2]
         state_code: NC
   output:
-    nc_scca_fpl_rate: 2
+    nc_scca_fpg_rate: 2
 
 - name: Two children aged 2 and 4; fpl rate is 2.
   period: 2024
@@ -222,7 +222,7 @@
         members: [person1, child1, child2]
         state_code: NC
   output:
-    nc_scca_fpl_rate: 2
+    nc_scca_fpg_rate: 2
 
 - name: Two children aged 5 and 7; fpl rate is 2.
   period: 2024
@@ -245,7 +245,7 @@
         members: [person1, child1, child2]
         state_code: NC
   output:
-    nc_scca_fpl_rate: 2
+    nc_scca_fpg_rate: 2
 
 - name: Two children aged 6 and 12; fpl rate is 1.33.
   period: 2024
@@ -268,7 +268,7 @@
         members: [person1, child1, child2]
         state_code: NC
   output:
-    nc_scca_fpl_rate: 1.33
+    nc_scca_fpg_rate: 1.33
 
 - name: Two children aged 10 and 16 with no disabilities; fpl rate is 1.33.
   period: 2024
@@ -291,7 +291,7 @@
         members: [person1, child1, child2]
         state_code: NC
   output:
-    nc_scca_fpl_rate: 1.33
+    nc_scca_fpg_rate: 1.33
 
 - name: Two children aged 10 and 16 with disabilities; fpl rate is 2.
   period: 2024
@@ -314,7 +314,7 @@
         members: [person1, child1, child2]
         state_code: NC
   output:
-    nc_scca_fpl_rate: 2
+    nc_scca_fpg_rate: 2
 
 - name: Three children aged 1, 5 and 10; fpl rate is 2.
   period: 2024
@@ -340,7 +340,7 @@
         members: [person1, child1, child2, child3]
         state_code: NC
   output:
-    nc_scca_fpl_rate: 2
+    nc_scca_fpg_rate: 2
 
 - name: Three children aged 6, 8, and 10; fpl rate is 1.33.
   period: 2024
@@ -366,7 +366,7 @@
         members: [person1, child1, child2, child3]
         state_code: NC
   output:
-    nc_scca_fpl_rate: 1.33
+    nc_scca_fpg_rate: 1.33
 
 - name: Three children aged 6 with disabilities, 8 and 10; fpl rate is 2.
   period: 2024
@@ -392,4 +392,4 @@
         members: [person1, child1, child2, child3]
         state_code: NC
   output:
-    nc_scca_fpl_rate: 2
+    nc_scca_fpg_rate: 2
