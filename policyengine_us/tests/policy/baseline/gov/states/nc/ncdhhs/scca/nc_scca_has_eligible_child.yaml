@@ -1,0 +1,94 @@
+- name: Child under 12 is eligible, return true.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+      child1:
+        age: 12
+    spm_units:
+      spm_unit:
+        members: [person1, child1]
+    households:
+      household:
+        members: [person1, child1]
+        state_code: NC
+  output:
+    nc_scca_has_eligible_child: true
+
+- name: Child above 12 is ineligible, return false.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+      child1:
+        age: 13
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        members: [person1, child1]
+    households:
+      household:
+        members: [person1, child1]
+        state_code: NC
+  output:
+    nc_scca_has_eligible_child: false
+
+- name: Child above 12 and under 17 with disability is eligible, return true
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+      child1:
+        age: 16
+        is_disabled: true
+    spm_units:
+      spm_unit:
+        members: [person1, child1]
+    households:
+      household:
+        members: [person1, child1]
+        state_code: NC
+  output:
+    nc_scca_has_eligible_child: true
+
+- name: Child above 12 and under 17 without disability is ineligible, return false
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 50
+      child1:
+        age: 16
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        members: [person1, child1]
+    households:
+      household:
+        members: [person1, child1]
+        state_code: NC
+  output:
+    nc_scca_has_eligible_child: false
+
+
+- name: Child above 17 but under 18 with disability is eligible, return true
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 50
+      child1:
+        age: 17.5
+        is_disabled: true
+    spm_units:
+      spm_unit:
+        members: [person1, child1]
+    households:
+      household:
+        members: [person1, child1]
+        state_code: NC
+  output:
+    nc_scca_has_eligible_child: true
