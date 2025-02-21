@@ -1,4 +1,4 @@
-description: Minnesota taxes individuals with a net investment income for the given bracket.
+description: Minnesota taxes net investment income at the following rates.
 brackets:
   - threshold:
       2024-01-01: 0
@@ -10,11 +10,13 @@ brackets:
       2024-01-01: 0.01
 
 metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  ammount_unit: /1
   period: year
-  unit: currency-USD
-  label: Minnesota minimum income for net investment income tax, Line 14
+  label: Minnesota net investment income tax rate 
   reference:
-  - title: Minnesota Statutes 290.033
+  - title: Minnesota Statutes 290.033 (b)
     href: https://www.revisor.mn.gov/statutes/cite/290.033 
   - title: Minnesota 2024 Form M1, Individual Income Tax Return
     href: https://www.revenue.state.mn.us/sites/default/files/2024-12/m1-24.pdf#page=2
