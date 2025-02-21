@@ -35,7 +35,7 @@ setup(
         ),
     ],
     install_requires=[
-        "git+https://github.com/noman404/policyengine-core.git@noman404/python3.13",
+        "policyengine-core @git+https://github.com/noman404/policyengine-core.git@noman404/python3.13",
         # Removing the > portion of the below will cause circular dep issues in -us-data
         "policyengine-us-data>=1.13.0",
         "microdf-python>=0.4.3",
