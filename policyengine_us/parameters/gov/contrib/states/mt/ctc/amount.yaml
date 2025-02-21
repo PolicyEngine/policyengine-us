@@ -1,0 +1,21 @@
+description: Montana provides the following base amount per child under the child tax credit, based on age.
+brackets:
+  - threshold:
+      2023-01-01: 0
+    amount:
+      2023-01-01: 1_200
+  - threshold:
+      2023-01-01: 6
+    amount:
+      2023-01-01: 0
+
+metadata:
+  type: single_amount
+  threshold_unit: year
+  amount_unit: currency-USD
+  period: year
+  label: Montana child tax credit base
+  reference:
+    - title: 2023 Montana Legislature, House Bill No. 268, Section 1.(2) & Section 1.(7)-(c)
+      href: https://leg.mt.gov/bills/2023/billhtml/HB0268.htm
+

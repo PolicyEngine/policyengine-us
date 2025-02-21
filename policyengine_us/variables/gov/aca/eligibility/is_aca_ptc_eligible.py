@@ -34,7 +34,7 @@ class is_aca_ptc_eligible(Variable):
         is_income_eligible = p.ptc_income_eligibility.calc(magi_frac)
 
         # determine which people pay an age-based ACA plan premium
-        is_aca_adult = person("age", period) > p.slspc.max_child_age
+        is_aca_adult = person("age", period) > p.slcsp.max_child_age
         child_pays = person("aca_child_index", period) <= p.max_child_count
         pays_aca_premium = is_aca_adult | child_pays
 
