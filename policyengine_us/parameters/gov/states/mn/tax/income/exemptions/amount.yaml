@@ -3,7 +3,7 @@ values:
   2021-01-01: 4_350
   2022-01-01: 4_450
   2023-01-01: 4_800
-  2024-01-01: 5,050
+  2024-01-01: 5_050
 
 metadata:
   period: year
@@ -14,6 +14,7 @@ metadata:
     rounding:
       type: downwards
       interval: 50
+  propagate_metadata_to_children: true
   reference:
   - title: Minnesota Statutes 290.0121 DEPENDENT EXEMPTION. Subd. 1.Exemption amount.
     href: https://www.revisor.mn.gov/statutes/cite/290.0121#stat.290.0121.1

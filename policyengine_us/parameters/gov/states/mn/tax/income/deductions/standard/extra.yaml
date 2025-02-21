@@ -3,6 +3,12 @@ metadata:
   label: Minnesota extra standard deduction amount for each aged/blind head/spouse
   period: year
   unit: currency-USD
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
+  propagate_metadata_to_children: true
   breakdown:
   - filing_status
   reference:
@@ -25,57 +31,27 @@ JOINT:
     2022-01-01: 1_350
     2023-01-01: 1_450
     2024-01-01: 1_550
-  metadata:
-    uprating:
-      parameter: gov.irs.uprating
-      rounding:
-        type: downwards
-        interval: 50
 HEAD_OF_HOUSEHOLD:
   values:
     2021-01-01: 1_650
     2022-01-01: 1_700
     2023-01-01: 1_850
     2024-01-01: 1_950
-  metadata:
-    uprating:
-      parameter: gov.irs.uprating
-      rounding:
-        type: downwards
-        interval: 50
 SURVIVING_SPOUSE:
   values:
     2021-01-01: 1_300
     2022-01-01: 1_350
     2023-01-01: 1_450
     2024-01-01: 1_550
-  metadata:
-    uprating:
-      parameter: gov.irs.uprating
-      rounding:
-        type: downwards
-        interval: 50
 SINGLE:
   values:
     2021-01-01: 1_650
     2022-01-01: 1_700
     2023-01-01: 1_850
     2024-01-01: 1_950
-  metadata:
-    uprating:
-      parameter: gov.irs.uprating
-      rounding:
-        type: downwards
-        interval: 50
 SEPARATE:
   values:
     2021-01-01: 1_300
     2022-01-01: 1_350
     2023-01-01: 1_450
     2024-01-01: 1_950
-  metadata:
-    uprating:
-      parameter: gov.irs.uprating
-      rounding:
-        type: downwards
-        interval: 50

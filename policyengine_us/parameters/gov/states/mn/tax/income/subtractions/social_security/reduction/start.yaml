@@ -3,6 +3,12 @@ metadata:
   label: Minnesota social security subtraction reduction start
   period: year
   unit: currency-USD
+  uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: nearest
+        interval: 10
+  propagate_metadata_to_children: true 
   breakdown:
   - filing_status
   reference:
@@ -18,49 +24,19 @@ JOINT:
   values:
     2023-01-01: 100_000
     2024-01-01: 105_380
-  metadata:
-    uprating:
-      parameter: gov.irs.uprating
-      rounding:
-        type: nearest
-        interval: 10
 HEAD_OF_HOUSEHOLD:
   values:
     2023-01-01: 78_000
     2024-01-01: 82_190
-  metadata:
-    uprating:
-      parameter: gov.irs.uprating
-      rounding:
-        type: nearest
-        interval: 10
 SURVIVING_SPOUSE:
   values:
     2023-01-01: 100_000
     2024-01-01: 105_380
-  metadata:
-    uprating:
-      parameter: gov.irs.uprating
-      rounding:
-        type: nearest
-        interval: 10
 SINGLE:
   values:
     2023-01-01: 78_000
     2024-01-01: 82_190
-  metadata:
-    uprating:
-      parameter: gov.irs.uprating
-      rounding:
-        type: nearest
-        interval: 10
 SEPARATE:
   values:
     2023-01-01: 50_000
     2024-01-01: 52_690
-  metadata:
-    uprating:
-      parameter: gov.irs.uprating
-      rounding:
-        type: nearest
-        interval: 10

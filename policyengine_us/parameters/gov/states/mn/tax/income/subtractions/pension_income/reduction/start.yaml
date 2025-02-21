@@ -3,6 +3,12 @@ metadata:
   label: Minnesota public pension income subtraction agi threshold
   period: year
   unit: currency-USD
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: nearest
+      interval: 10
+  propagate_metadata_to_children: true 
   breakdown:
   - filing_status
   reference:
@@ -15,45 +21,15 @@ metadata:
 JOINT:
   values:
     2023-01-01: 100_000
-  metadata:
-    uprating:
-      parameter: gov.irs.uprating
-      rounding:
-        type: nearest
-        interval: 10
 HEAD_OF_HOUSEHOLD:
   values:
     2023-01-01: 78_000
-  metadata:
-    uprating:
-      parameter: gov.irs.uprating
-      rounding:
-        type: nearest
-        interval: 10
 SURVIVING_SPOUSE:
   values:
     2023-01-01: 100_000
-  metadata:
-    uprating:
-      parameter: gov.irs.uprating
-      rounding:
-        type: nearest
-        interval: 10
 SINGLE:
   values:
     2023-01-01: 78_000
-  metadata:
-    uprating:
-      parameter: gov.irs.uprating
-      rounding:
-        type: nearest
-        interval: 10
 SEPARATE:
   values:
     2023-01-01: 50_000
-  metadata:
-    uprating:
-      parameter: gov.irs.uprating
-      rounding:
-        type: nearest
-        interval: 10
