@@ -11,7 +11,7 @@ def create_tax_employer_payroll() -> Reform:
     # but taxable income is determined at the tax unit level, by summing up all persons' gross income and deducting tax unit's deductions.
     # But since payroll is calculated at the personal level, we want to add each person's employer contribution to each person, thus we add it to gross income.
 
-    # The input is variable because policyengine.core functions(?) will find the variable with the name we specify in this class and feed it into this class
+    # The input is Variable because policyengine.core functions(?) will find the variables we name and feed it into this class
     class irs_gross_income(Variable):
 
         # The following are attributes copied from the .../irs_gross_income.py
@@ -52,6 +52,38 @@ def create_tax_employer_payroll() -> Reform:
                 total += employer_contribution
 
             return total
+    
+    class tax_unit_taxable_social_security(Variable):
+        value_type = float
+        entity = TaxUnit
+        definition_period = YEAR
+        label = "Taxable Social Security benefits"
+        documentation = "Social security (OASDI) benefits included in AGI, including tier 1 railroad retirement benefits."
+        unit = USD
+        reference = "https://www.law.cornell.edu/uscode/text/26/86"
+
+        def formula(tax_unit, period, parameters):
+            return 0
+        
+    class reform(Reform):
+        def apply(self):
+            self.update_variable(irs_gross_income)
+            self.update_variable(tax_unit_taxable_social_security)
+
+    return reform
+
+def create_tax_employer_payroll_reform(parameters, period, bypass: bool = False):
+    if bypass is True:
+        return create_tax_employer_payroll()
+
+    p = parameters(period).gov.contrib.tax_payroll_not_benefits
+
+    if p.in_effect:
+        return create_tax_employer_payroll()
+    else:
+        return None
+    
+tax_employer_payroll_reform = create_tax_employer_payroll_reform(None, None, bypass=True)
 
 
 
