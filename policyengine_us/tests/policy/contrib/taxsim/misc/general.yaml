@@ -50,7 +50,7 @@
       tax_unit:
         members: [person1, person2, person3, person4, person5, person6]
         tax_unit_childcare_expenses: 10_000
-        premium_tax_credit: 0  # not in TAXSIM35
+        aca_ptc: 0  # not in TAXSIM35
     households:
       household:
         members: [person1, person2, person3, person4, person5, person6]
@@ -99,7 +99,7 @@
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
-        premium_tax_credit: 0  # not in TAXSIM35
+        aca_ptc: 0  # not in TAXSIM35
     households:
       household:
         members: [person1, person2, person3]
@@ -144,7 +144,7 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
-        premium_tax_credit: 0  # not in TAXSIM35
+        aca_ptc: 0  # not in TAXSIM35
     households:
       household:
         members: [person1, person2]
@@ -205,7 +205,7 @@
       tax_unit:
         members: [person1, person2, person3, person4, person5]
         tax_unit_childcare_expenses: 8_000
-        premium_tax_credit: 0  # not in TAXSIM35
+        aca_ptc: 0  # not in TAXSIM35
     households:
       household:
         members: [person1, person2, person3, person4, person5]
@@ -267,7 +267,7 @@
       tax_unit:
         members: [person1, person2, person3, person4, person5, person6]
         tax_unit_childcare_expenses: 10_000
-        premium_tax_credit: 0  # not in TAXSIM35
+        aca_ptc: 0  # not in TAXSIM35
     households:
       household:
         members: [person1, person2, person3, person4, person5, person6]

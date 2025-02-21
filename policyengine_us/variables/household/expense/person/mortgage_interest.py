@@ -7,3 +7,5 @@ class mortgage_interest(Variable):
     label = "Mortgage interest"
     unit = USD
     definition_period = YEAR
+
+    adds = ["non_deductible_mortgage_interest", "deductible_mortgage_interest"]

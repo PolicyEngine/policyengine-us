@@ -9,10 +9,10 @@ values:
     - dc_ctc  # District of Columbia Child Tax Credit
     - id_ctc  # Idaho Child Tax Credit
     - il_ctc  # Illinois Child Tax Credit
-    - ma_dependent_credit  # Massachusetts Dependent Credit
+    # Formerly the Massachusetts Dependent Credit, now the Child and Family Tax Credit
+    - ma_child_and_family_credit
     - md_ctc  # Maryland Child Tax Credit
     - mn_child_and_working_families_credits  # Minnesota Child and Working Family Credits
-    - mt_ctc  # Montana Child Tax Credit
     - ne_refundable_ctc  # Nebraska Refundable Child Tax Credit
     - nj_ctc  # New Jersey Child Tax Credit
     - nm_ctc  # New Mexico Child Tax Credit
