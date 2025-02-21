@@ -35,7 +35,7 @@ setup(
         ),
     ],
     install_requires=[
-        "policyengine-core>=3.14.1",
+        "git+https://github.com/noman404/policyengine-core.git@noman404/python3.13",
         # Removing the > portion of the below will cause circular dep issues in -us-data
         "policyengine-us-data>=1.13.0",
         "microdf-python>=0.4.3",
@@ -49,7 +49,7 @@ setup(
             "coverage",
         ],
     },
-    python_requires=">=3.10,<=3.13.1",
+    python_requires=">=3.10,<=3.13",
     entry_points={
         "console_scripts": [
             "policyengine-us = policyengine_us.tools.cli:main",
