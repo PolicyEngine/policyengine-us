@@ -24,3 +24,12 @@
     state_sales_tax_income_bracket: 19
   output:
     state_sales_tax: 1_773
+
+- name: Integration test, 0 income bracket
+  period: 2026
+  input:
+    state_code: DE
+    tax_unit_size: 1
+    state_sales_tax_income_bracket: 0
+  output:
+    state_sales_tax: 0
