@@ -23,7 +23,7 @@
   output:
     ssi_income_deemed_from_ineligible_spouse:
       2025:
-        - 15030  # person1 (actual calculated deemed amount)
+        - 15_030  # person1 (actual calculated deemed amount)
         - 0      # person2
 
 - name: Disabled individual with non-working ineligible spouse (2025)
@@ -68,7 +68,7 @@
         age: 60
         is_disabled: false
         is_tax_unit_head: true
-        ssi_earned_income: 60000
+        ssi_earned_income: 60_000
         ssi_unearned_income: 0
     tax_units:
       tax_unit:
@@ -96,7 +96,7 @@
         age: 60
         is_disabled: false
         is_tax_unit_head: true
-        ssi_earned_income: 24000
+        ssi_earned_income: 24_000
         ssi_unearned_income: 6000
     tax_units:
       tax_unit:
@@ -107,5 +107,5 @@
   output:
     ssi_income_deemed_from_ineligible_spouse:
       2025:
-        - 17370  # person1 (actual calculated deemed amount)
+        - 17_370  # person1 (actual calculated deemed amount)
         - 0      # person2
