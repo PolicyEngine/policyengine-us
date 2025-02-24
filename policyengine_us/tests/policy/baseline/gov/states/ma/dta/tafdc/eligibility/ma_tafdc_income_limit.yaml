@@ -1,0 +1,19 @@
+- name: Not a teen parent
+  period: 2023
+  input:
+    ma_tafdc_eligible_teen_parent: false
+    state_code: MA
+    ma_tafdc_payment_standard: 2_000
+    tax_unit_fpg: 4_000
+  output:
+    ma_tafdc_income_limit: 2_000
+
+- name: Teen parent
+  period: 2023
+  input:
+    ma_tafdc_eligible_teen_parent: true
+    state_code: MA
+    ma_tafdc_payment_standard: 2_000
+    tax_unit_fpg: 4_000
+  output:
+    ma_tafdc_income_limit: 8_000
