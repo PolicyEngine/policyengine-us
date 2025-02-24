@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ma_dependent_or_dependent_care_credit(Variable):
+class ma_child_and_family_credit_or_dependent_care_credit(Variable):
     value_type = float
     entity = TaxUnit
     label = "MA dependent or dependent care credit"
@@ -17,7 +17,7 @@ class ma_dependent_or_dependent_care_credit(Variable):
         p = parameters(period).gov.states.ma.tax.income.credits.dependent_care
         # MA taxpayers can only take either the dependent credit or the
         # dependent care credit.
-        dependent_credit = tax_unit("ma_dependent_credit", period)
+        dependent_credit = tax_unit("ma_child_and_family_credit", period)
         if p.in_effect:
             return max_(
                 dependent_credit,

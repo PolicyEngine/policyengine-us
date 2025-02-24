@@ -9198,3 +9198,13 @@
     added:
     - Nationwide (except NY and VT) ACA for 2025.
   date: 2025-02-20 15:41:40
+- bump: minor
+  changes:
+    added:
+    - 2024 Massachusetts State Income Tax Updates.
+  date: 2025-02-20 19:47:27
+- bump: patch
+  changes:
+    fixed:
+    - Floor the income bracket at 1 in the state_sales_tax variable.
+  date: 2025-02-24 13:59:24

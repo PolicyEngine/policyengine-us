@@ -1,19 +1,19 @@
 from policyengine_us.model_api import *
 
 
-class ma_dependent_credit(Variable):
+class ma_child_and_family_credit(Variable):
     value_type = float
     entity = TaxUnit
-    label = "MA dependent credit"
+    label = "Massachusetts child and family tax credit"
     unit = USD
     definition_period = YEAR
-    reference = (
-        "https://www.mass.gov/info-details/mass-general-laws-c62-ss-6"  # (y)
-    )
+    reference = "https://www.mass.gov/info-details/massachusetts-child-and-family-tax-credit"
     defined_for = StateCode.MA
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.ma.tax.income.credits.dependent
+        p = parameters(
+            period
+        ).gov.states.ma.tax.income.credits.child_and_family
         person = tax_unit.members
         dependent = person("is_tax_unit_dependent", period)
         age = person("age", period)
