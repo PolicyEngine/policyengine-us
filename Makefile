@@ -41,10 +41,9 @@ clear-storage:
 	rm -rf policyengine_us/data/storage/*cache
 compare-speed:
 	pip uninstall policyengine-us -y
-	pip install policyengine-us
+	pip install git+https://github.com/noman404/policyengine-us.git@noman404/python3.13
 	cd policyengine_us/tools && python speedtest.py
-	mv policyengine_us/tools/speedtest.yaml speedtest_old.yaml
+	python -c "import shutil; shutil.copy('policyengine_us/tools/speedtest.yaml', 'speedtest_old.yaml')"
 	pip install -e .
 	cd policyengine_us/tools && python speedtest.py
-	mv policyengine_us/tools/speedtest.yaml speedtest_new.yaml
-	python .github/compare_speed.py
+	python -c "import shutil; shutil.copy('policyengine_us/tools/speedtest.yaml', 'speedtest_new.yaml')" && python .github/compare_speed.py
