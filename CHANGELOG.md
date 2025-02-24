@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.202.2] - 2025-02-24 23:14:08
+
+### Added
+
+- CLAUDE.md with development guidelines and common code patterns
+
+### Fixed
+
+- Delete old ACA SLCSP files
+- Expanded Variables Related to LA county SLCSP
+- Fix array comparison in the LA expectant parent payment eligibility formula
+
 ## [1.202.1] - 2025-02-24 13:59:24
 
 ### Fixed
@@ -10880,6 +10892,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.202.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.202.1...1.202.2
 [1.202.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.202.0...1.202.1
 [1.202.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.201.0...1.202.0
 [1.201.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.200.2...1.201.0
