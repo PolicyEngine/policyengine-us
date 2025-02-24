@@ -1,18 +1,21 @@
 from policyengine_us.model_api import *
 
 def create_tax_employer_payroll() -> Reform:
-    # make a boolean for the reform under parameters/contrib/
-    # redefine rule for social security taxation
+
+    # General workflow for creating reform
+    # 1. Make a boolean for the reform under parameters/contrib/
+    # 2. Create new variables if necessary
+    # 3. Redefine rule for calculating existing variable (in this case social security taxation)
 
     # Create a variable with the same name as the variable we are trying to amend.
-
-    # In this case it's "irs_gross_income", as in "policyengine_us/variables/gov/irs/income/taxable_income/adjusted_gross_income/irs_gross_income/irs_gross_income.py"
+    # In this case it's "irs_gross_income", as in: 
+    # "policyengine_us/variables/gov/irs/income/taxable_income/adjusted_gross_income/irs_gross_income/irs_gross_income.py"
     # We amend irs_gross_income because the employer-side contributions will go into taxable income...
-    # but taxable income is determined at the tax unit level, by summing up all persons' gross income and deducting tax unit's deductions.
-    # But since payroll is calculated at the personal level, we want to add each person's employer contribution to each person, thus we add it to gross income.
-
-    # The input is Variable because policyengine.core functions(?) will find the variables we name and feed it into this class
+    # but taxable income is determined at the tax unit level, by summing up all persons' gross income 
+    # and deducting tax unit's deductions. But since payroll is calculated at the personal level, 
+    # we want to add each person's employer contribution to each person, thus we add it to gross income.
     class irs_gross_income(Variable):
+        # The input is Variable because policyengine.core functions(?) will find the variables we name and feed it into this class
 
         # The following are attributes copied from the .../irs_gross_income.py
         value_type = float
@@ -42,7 +45,8 @@ def create_tax_employer_payroll() -> Reform:
 
             if p.tax_payroll_not_benefits_reform is True:
                 # note that we created two new variables for the purpose of this reform
-                # they respectively measure the amount paid by the employer to a person for (i) social security and (ii) medicare
+                # they respectively measure the amount paid by the employer to a person for:
+                # (i) social security and (ii) medicare.
                 # they are under "variables/gov/irs/tax/payroll/social_security/employer_social_security_tax.py"
                 # and "policyengine_us/variables/gov/irs/tax/payroll/medicare/employer_medicare_tax.py"
                 # We refer to them with the person method(?), which has the following syntax
