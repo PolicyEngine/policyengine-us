@@ -14,5 +14,5 @@ class pr_low_income_credit_eligible_person(Variable):
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         age_eligible = age >= p.age_threshold
         # if you claim earned income credit, aren't eligible for low income credit
-        eitc_not_claimed = person("pr_earned_income_credit", period) <= 0
+        eitc_not_claimed = person.tax_unit("pr_earned_income_credit", period) <= 0
         return head_or_spouse & age_eligible & eitc_not_claimed
