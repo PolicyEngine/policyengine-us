@@ -30,7 +30,15 @@
 - When using `defined_for`, ensure it's tested in microsimulation context
 - Be careful with chained comparisons in formulas - they work with scalars but fail with arrays
 - Prefer explicit vectorized comparison operators joined with `&` and `|`
-- When updating parameter values (e.g., premium data, tax thresholds), verify with external sources
-- SLCSP (ACA premium) data should be verified against healthcare.gov or KFF calculator
-- Age curve multipliers in ACA calculations significantly impact results (e.g., 1.6706 for age 40)
-- Parameter files should include clear metadata about sources and last update dates
+
+## Parameter Validation Best Practices
+- Cross-check parameter values against authoritative external sources (gov websites, calculators)
+- Document the source, publication date, and effective dates in parameter metadata
+- Include both title and href for references to maintain traceability
+- Use multiple sources to validate complex parameters (e.g., tax brackets, benefit amounts)
+- For annually updated values, document the adjustment methodology and inflation indices
+- Test parameter values with real-world examples through YAML tests
+- Be especially careful with multiplicative factors, which can significantly magnify errors
+- Consider interactions between parameters when updating values
+- When updating parameters, verify both individual values and downstream impacts
+- Use descriptive changelog entries that reference authoritative sources for updates
