@@ -30,3 +30,7 @@
 - When using `defined_for`, ensure it's tested in microsimulation context
 - Be careful with chained comparisons in formulas - they work with scalars but fail with arrays
 - Prefer explicit vectorized comparison operators joined with `&` and `|`
+- When updating parameter values (e.g., premium data, tax thresholds), verify with external sources
+- SLCSP (ACA premium) data should be verified against healthcare.gov or KFF calculator
+- Age curve multipliers in ACA calculations significantly impact results (e.g., 1.6706 for age 40)
+- Parameter files should include clear metadata about sources and last update dates
