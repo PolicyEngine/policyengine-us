@@ -42,6 +42,6 @@ class nc_scca_fpg_rate(Variable):
         # Select the appropriate FPG limit based on household composition
         return where(
             has_preschool_or_special_needs,
-            p.entry.fpg_limit_by_school_age.has_preschool_or_special_needs,
-            p.entry.fpg_limit_by_school_age.school_age_only,
+            p.entry.fpg_limit_by_school_age.NON_SCHOOL_AGE,
+            p.entry.fpg_limit_by_school_age.SCHOOL_AGE_ONLY,
         )
