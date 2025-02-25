@@ -2,7 +2,7 @@
   period: 2024
   input:
     county_str: ALAMANCE_COUNTY_NC
-    nc_scca_age_group: INFANT
+    nc_scca_age_group: 1
     state_code: NC
   output:
     nc_scca_market_rate: 956
@@ -11,7 +11,7 @@
   period: 2024
   input:
     county_str: DARE_COUNTY_NC
-    nc_scca_age_group: TWO_YEAR_OLD
+    nc_scca_age_group: 2
     state_code: NC
   output:
     nc_scca_market_rate: 1_062
@@ -20,7 +20,7 @@
   period: 2024
   input:
     county_str: NEW_HANOVER_COUNTY_NC
-    nc_scca_age_group: THREE_TO_FIVE_YEAR_OLD
+    nc_scca_age_group: 3
     state_code: NC
   output:
     nc_scca_market_rate: 934
@@ -29,7 +29,7 @@
   period: 2024
   input:
     county_str: YANCEY_COUNTY_NC
-    nc_scca_age_group: SCHOOL_AGE
+    nc_scca_age_group: 4
     state_code: NC
   output:
     nc_scca_market_rate: 203
@@ -38,7 +38,7 @@
   period: 2024
   input:
     county_str: WILKES_COUNTY_NC
-    nc_scca_age_group: SCHOOL_AGE
+    nc_scca_age_group: 4
     state_code: NC
   output:
     nc_scca_market_rate: 301
@@ -47,7 +47,7 @@
   period: 2024
   input:
     county_str: ALEXANDER_COUNTY_NC
-    nc_scca_age_group: SCHOOL_AGE
+    nc_scca_age_group: 4
     state_code: NC
   output:
     nc_scca_market_rate: 263
