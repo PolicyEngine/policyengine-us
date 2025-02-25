@@ -30,7 +30,7 @@
 - When using `defined_for`, ensure it's tested in microsimulation context
 - Be careful with chained comparisons in formulas - they work with scalars but fail with arrays
 - Prefer explicit vectorized comparison operators joined with `&` and `|`
-- For scale parameters that return integers, use `rate_unit: int` in metadata
+- For scale parameters that return integers, avoid using `rate_unit: int` in metadata (use `/1` instead) due to parameter validation issues
 - Parameter file naming matters: make sure variables reference the exact parameter file name 
 - When refactoring from enum to numeric values, update all downstream dependencies consistently
 - Prefer parameter-driven calculations over hardcoded logic in formulas when possible
