@@ -39,14 +39,11 @@ class nc_scca_fpg_rate(Variable):
             has_eligible_disabled_child | ~all_children_school_age
         )
 
-        # Determine the threshold age for FPG limit calculation
-        # If there's a disabled child or any non-school age child, use age 0 (200% FPL)
-        # Otherwise use age 6 (133% FPL)
-        threshold_age = where(
+        # Select the appropriate FPG limit based on household composition
+        # Children under school age (defined in p.age.school) or with special needs: 200% FPL
+        # Only school-age children without special needs: 133% FPL
+        return where(
             has_preschool_or_special_needs,
-            0,  # Use the 0-5 threshold (200% FPL)
-            6,  # Use the 6+ threshold (133% FPL)
+            p.entry.fpg_limit_by_school_age.preschool_or_special_needs,
+            p.entry.fpg_limit_by_school_age.school_age_only
         )
-        
-        # Use calc method with the bracket parameter structure
-        return p.entry.fpg_limit_by_school_age.calc(threshold_age)

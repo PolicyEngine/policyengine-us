@@ -1,20 +1,18 @@
-description: North Carolina limits the Subsidized Child Care Assistance program initially to filers with income below this percentage of federal poverty guidelines, based on the age of the dependent.
+description: North Carolina limits initial eligibility for the Subsidized Child Care Assistance Program to households with income below this percentage of the federal poverty guidelines.
 metadata:
-  type: single_amount
-  threshold_unit: year
-  amount_unit: /1
-  label: North Carolina Subsidized Child Care Assistance program income limits by child age
+  unit: /1
+  label: NC SCCA FPG limits by household type
+  period: year
   reference:
     - title: Subsidized Child Care Assistance Program Policy Manual
       href: https://policies.ncdhhs.gov/wp-content/uploads/chapter-8-parental-fees-7.pdf#page=9
 
-# 0-5: 200% fpl, 6-12: 133% fpl
-brackets:
-  - threshold:
-      2023-09-29: 0
-    amount:
-      2023-09-29: 2
-  - threshold:
-      2023-09-29: 6
-    amount:
-      2023-09-29: 1.33
+preschool_or_special_needs:
+  description: For households with preschool-age children (under 6) or special needs children
+  values:
+    2023-09-29: 2.0
+
+school_age_only:
+  description: For households with only school-age children without special needs
+  values:
+    2023-09-29: 1.33
