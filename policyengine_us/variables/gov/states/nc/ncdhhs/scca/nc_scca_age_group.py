@@ -15,4 +15,4 @@ class nc_scca_age_group(Variable):
         age = person("age", period)
         p = parameters(period).gov.states.nc.ncdhhs.scca
         
-        return p.age_groups.calc(age)
+        return p.age_group.calc(age)
