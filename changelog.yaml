@@ -9203,3 +9203,17 @@
     added:
     - 2024 Massachusetts State Income Tax Updates.
   date: 2025-02-20 19:47:27
+- bump: patch
+  changes:
+    fixed:
+    - Floor the income bracket at 1 in the state_sales_tax variable.
+  date: 2025-02-24 13:59:24
+- bump: patch
+  changes:
+    added:
+    - CLAUDE.md with development guidelines and common code patterns
+    fixed:
+    - Delete old ACA SLCSP files
+    - Expanded Variables Related to LA county SLCSP
+    - Fix array comparison in the LA expectant parent payment eligibility formula
+  date: 2025-02-24 23:14:08
