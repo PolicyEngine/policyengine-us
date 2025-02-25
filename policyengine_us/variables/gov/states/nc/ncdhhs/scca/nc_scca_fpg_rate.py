@@ -45,5 +45,5 @@ class nc_scca_fpg_rate(Variable):
         return where(
             has_preschool_or_special_needs,
             p.entry.fpg_limit_by_school_age.preschool_or_special_needs,
-            p.entry.fpg_limit_by_school_age.school_age_only
+            p.entry.fpg_limit_by_school_age.school_age_only,
         )
