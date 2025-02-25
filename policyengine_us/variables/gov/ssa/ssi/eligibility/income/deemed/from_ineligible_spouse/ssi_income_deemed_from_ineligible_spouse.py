@@ -41,7 +41,7 @@ class ssi_income_deemed_from_ineligible_spouse(Variable):
         personal_unearned_income = person("ssi_unearned_income", period)
 
         # Combine incomes as specified in §416.1163(d)(2)(i)
-        # "Combining the remainder of your spouse's unearned income with your own unearned income 
+        # "Combining the remainder of your spouse's unearned income with your own unearned income
         # and the remainder of your spouse's earned income with your earned income"
         combined_earned_income = personal_earned_income + spousal_earned_income
         combined_unearned_income = (
@@ -68,7 +68,7 @@ class ssi_income_deemed_from_ineligible_spouse(Variable):
         )
 
         # The deemed income is the difference between combined and individual countable income
-        # This follows §416.1163(d)(2)(iii) which requires subtracting countable income 
+        # This follows §416.1163(d)(2)(iii) which requires subtracting countable income
         # from the FBR to determine the benefit amount
         deemed_income = max_(income_if_combined - income_if_not_combined, 0)
 
