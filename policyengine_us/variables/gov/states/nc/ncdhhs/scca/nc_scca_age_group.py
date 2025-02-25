@@ -13,16 +13,6 @@ class nc_scca_age_group(Variable):
 
     def formula(person, period, parameters):
         age = person("age", period)
-        
-        # Hardcode calculation due to parameter validation issues
-        # Will convert back to parameter-based when issue #5641 is fixed
-        return select(
-            [
-                age < 1,
-                age < 3,
-                age < 6,
-                age >= 6,
-            ],
-            [1, 2, 3, 4],
-            default=0,
-        )
+        p = parameters(period).gov.states.nc.ncdhhs.scca
+
+        return p.age.group.calc(age)
