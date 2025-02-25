@@ -6,9 +6,9 @@ metadata:
     - title: Subsidized Child Care Assistance Program Policy Manual
       href: https://policies.ncdhhs.gov/wp-content/uploads/chapter-8-parental-fees-7.pdf#page=9
 
-# True = household has preschool-age or special needs children (200% FPL)
-# False = household has only school-age children without special needs (133% FPL)
-True:
+# has_preschool_or_special_needs = household has preschool-age or special needs children (200% FPL)
+# school_age_only = household has only school-age children without special needs (133% FPL)
+has_preschool_or_special_needs:
   2023-09-29: 2
-False:
+school_age_only:
   2023-09-29: 1.33
