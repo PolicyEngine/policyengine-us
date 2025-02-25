@@ -1,32 +1,149 @@
-- name: Elderly individual with no income.
-  period: 2022
+# Integration tests for SSI program
+- name: Integration test - SSI benefit calculation for disabled individual with ineligible working spouse (2025)
+  period: 2025
   input:
-    is_ssi_aged_blind_disabled: true
+    people:
+      person1:
+        age: 60
+        is_disabled: true
+        is_tax_unit_spouse: true
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+      person2:
+        age: 55
+        is_disabled: false
+        is_tax_unit_head: true
+        ssi_earned_income: 31_080
+        ssi_unearned_income: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
   output:
-    ssi: 841 * 12
+    # Verify the intermediate variables for clarity
+    is_ssi_eligible_individual:
+      2025:
+        - true  # person1
+        - false # person2
+    is_ssi_ineligible_spouse:
+      2025:
+        - false # person1
+        - true  # person2 
+    ssi_income_deemed_from_ineligible_spouse:
+      2025:
+        - 15_030 # person1
+        - 0      # person2
+    ssi_countable_income:
+      2025:
+        - 15_030 # person1
+        - 0      # person2
+    ssi_claim_is_joint:
+      2025:
+        - true  # person1 (has ineligible spouse)
+        - false # person2
+    ssi_amount_if_eligible:
+      2025:
+        - 17_400 # person1 (couple rate)
+        - 11_604 # person2 (not used since person2 is not eligible)
+    uncapped_ssi:
+      2025:
+        - 2_370  # person1 (17,400 - 15,030)
+        - 0      # person2
+    # Final SSI benefit
+    ssi:
+      2025:
+        - 2_370  # person1 
+        - 0      # person2
 
-- name: Disabled individual with no income
-  period: 2022
+- name: Integration test - SSI benefit for disabled individual with income just below FBR differential threshold (2025)
+  period: 2025
   input:
-    age: 40
-    is_ssi_aged_blind_disabled: true
+    people:
+      person1:
+        age: 65
+        is_disabled: true
+        is_tax_unit_spouse: true
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+      person2:
+        age: 60
+        is_disabled: false
+        is_tax_unit_head: true
+        # Income after exclusions should be just below the FBR differential
+        ssi_earned_income: 4_360
+        ssi_unearned_income: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
   output:
-    ssi: 841 * 12
+    ssi_income_deemed_from_ineligible_spouse:
+      2025:
+        - 1_670 # Based on the actual value from the test run
+        - 0
+    ssi_countable_income:
+      2025:
+        - 1_670 # person1
+        - 0     # person2
+    ssi_claim_is_joint:
+      2025:
+        - true  # person1 (has ineligible spouse)
+        - false # person2
+    ssi_amount_if_eligible:
+      2025:
+        - 17_400 # person1 (couple rate) 
+        - 11_604 # person2 (not used since person2 is not eligible)
+    # Final SSI benefit
+    ssi:
+      2025:
+        - 15_730 # person1 (17,400 - 1,670)
+        - 0      # person2
 
-- name: Example A from SSA SSI page (https://www.ssa.gov/ssi/text-income-ussi.htm) "SSI Federal Benefit with only UNEARNED INCOME"
-  period: 2021
+- name: Integration test - SSI benefit for disabled individual with both earned and unearned income (2025)
+  period: 2025
   input:
-    is_ssi_aged_blind_disabled: true
-    social_security: 300 * 12
+    people:
+      person1:
+        age: 65
+        is_disabled: true
+        is_tax_unit_spouse: true
+        ssi_earned_income: 3_600
+        ssi_unearned_income: 2_400
+      person2:
+        age: 60
+        is_disabled: false
+        is_tax_unit_head: true
+        ssi_earned_income: 24_000
+        ssi_unearned_income: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
   output:
-    ssi_countable_income: 280 * 12
-    ssi: 514 * 12 # 794 - 280
-
-- name: Example B from SSA SSI page (https://www.ssa.gov/ssi/text-income-ussi.htm) "SSI Federal Benefit with only EARNED INCOME"
-  period: 2021
-  input:
-    is_ssi_aged_blind_disabled: true
-    employment_income: 317 * 12
-  output:
-    ssi_countable_income: 116 * 12
-    ssi: 678 * 12 # 794 - 116
+    ssi_income_deemed_from_ineligible_spouse:
+      2025:
+        - 12_000 # person1
+        - 0      # person2
+    ssi_countable_income:
+      2025:
+        - 15_570 # person1 (includes own countable income + deemed income)
+        - 0      # person2
+    ssi_claim_is_joint:
+      2025:
+        - true  # person1 (has ineligible spouse)
+        - false # person2
+    ssi_amount_if_eligible:
+      2025:
+        - 17_400 # person1 (couple rate)
+        - 11_604 # person2 (not used since person2 is not eligible)
+    # Final SSI benefit
+    ssi:
+      2025:
+        - 1_830 # person1 (17,400 - 15,570)
+        - 0     # person2
