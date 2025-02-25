@@ -11,17 +11,15 @@ class nc_scca_child_age_eligible(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.nc.ncdhhs.scca.age.limit
-        disabled_age_limit = p.disabled
-        non_disabled_age_limit = p.non_disabled
 
         is_disabled = person("is_disabled", period)
         age = person("age", period)
 
-        # Apply disabled_age_limit only if child is under 18 and disabled
+        # Apply appropriate age limit based on disability status
         age_limit = where(
-            (age < disabled_age_limit) & is_disabled,
-            disabled_age_limit,
-            non_disabled_age_limit,
+            is_disabled,
+            p.disabled,
+            p.non_disabled,
         )
 
         age_eligible = age < age_limit

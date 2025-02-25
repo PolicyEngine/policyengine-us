@@ -10,9 +10,10 @@ class nc_scca_fpg_rate(Variable):
     defined_for = StateCode.NC
 
     def formula(spm_unit, period, parameters):
-        # entry income eligible depends on the youngest child's age,
-        # 0-5, or with specail needs, 200% fpl
-        # 6-12, 133%
+        # Entry income eligibility depends on the child's age and disability status:
+        # - Children aged 0-5 (preschool): 200% FPL
+        # - Children aged 6-12 (school age): 133% FPL
+        # - Children with special needs (any age): 200% FPL
         p = parameters(period).gov.states.nc.ncdhhs.scca
 
         # Retrieve age and disability status for all members
@@ -20,19 +21,23 @@ class nc_scca_fpg_rate(Variable):
         age = person("age", period)
         disabled = person("is_disabled", period)
 
-        # get the youngest child's age
+        # Get the youngest child's age
         min_age = spm_unit.min(age)
 
-        # Check if any child (6-17) is disabled
+        # Check if any child is disabled
         has_disabled_child = spm_unit.any(
-            (age < p.age_limit.disabled_age_limit) & disabled
+            (age < p.age.limit.disabled) & disabled
         )
 
-        categorized_age = where(
-            has_disabled_child
-            | (min_age < p.age_limit.three_to_five_year_olds_age_upper),
-            p.age_limit.three_to_five_year_olds_age_lower,
-            p.age_limit.three_to_five_year_olds_age_upper,
+        # Determine if the household has a non-school age child (under 6) or special needs child
+        school_age_threshold = p.age.school_age
+        has_preschool_or_special_needs = has_disabled_child | (
+            min_age < school_age_threshold
         )
 
-        return p.entry.income_rate_by_child_age.calc(categorized_age)
+        # Select the appropriate FPG limit based on household composition
+        return where(
+            has_preschool_or_special_needs,
+            p.entry.fpg_limit_by_school_age.non_school_age,
+            p.entry.fpg_limit_by_school_age.school_age,
+        )
