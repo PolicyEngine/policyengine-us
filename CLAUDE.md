@@ -34,6 +34,10 @@
 - Parameter file naming matters: make sure variables reference the exact parameter file name 
 - When refactoring from enum to numeric values, update all downstream dependencies consistently
 - Prefer parameter-driven calculations over hardcoded logic in formulas when possible
+- Use `bool` instead of `int` or `/1` in `rate_unit` for scale parameters when appropriate to avoid validation issues
+- For categorization logic, create separate variables for each test (e.g., `is_school_age`) and use them in downstream variables
+- When dynamically determining numeric groups/categories, calculate values rather than hardcoding them (e.g., `max_value + 1`)
+- Structure parameter files to match program documentation and real-world rules to improve maintainability
 
 ## Parameter Validation Best Practices
 - Cross-check parameter values against authoritative external sources (gov websites, calculators)
