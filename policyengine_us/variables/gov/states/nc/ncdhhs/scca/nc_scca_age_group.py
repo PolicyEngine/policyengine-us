@@ -1,18 +1,8 @@
 from policyengine_us.model_api import *
 
 
-class NCSCCAAgeGroup(Enum):
-    NOT_QUALIFY = "Not qualify"
-    INFANT = "Infant"
-    TWO_YEAR_OLD = "2 Year olds"
-    THREE_TO_FIVE_YEAR_OLD = "3 - 5 Year olds"
-    SCHOOL_AGE = "School age"
-
-
 class nc_scca_age_group(Variable):
-    value_type = Enum
-    possible_values = NCSCCAAgeGroup
-    default_value = NCSCCAAgeGroup.NOT_QUALIFY
+    value_type = int
     entity = Person
     label = "North Carolina SCCA age group"
     definition_period = YEAR
@@ -22,26 +12,7 @@ class nc_scca_age_group(Variable):
     )
 
     def formula(person, period, parameters):
-        p = parameters(period).gov.states.nc.ncdhhs.scca.age_limit
         age = person("age", period)
-        disabled = person("is_disabled", period)
-
-        return select(
-            [
-                age >= p.disabled_age_limit,
-                age <= p.infant_age_limit,
-                age < p.two_year_olds_age_limit,
-                (age >= p.three_to_five_year_olds_age_lower)
-                & (age < p.three_to_five_year_olds_age_upper),
-                (age < p.school_age_limit)
-                | ((age < p.disabled_age_limit) & disabled),
-            ],
-            [
-                NCSCCAAgeGroup.NOT_QUALIFY,
-                NCSCCAAgeGroup.INFANT,
-                NCSCCAAgeGroup.TWO_YEAR_OLD,
-                NCSCCAAgeGroup.THREE_TO_FIVE_YEAR_OLD,
-                NCSCCAAgeGroup.SCHOOL_AGE,
-            ],
-            default=NCSCCAAgeGroup.NOT_QUALIFY,
-        )
+        p = parameters(period).gov.states.nc.ncdhhs.scca
+        
+        return p.age_groups.calc(age)

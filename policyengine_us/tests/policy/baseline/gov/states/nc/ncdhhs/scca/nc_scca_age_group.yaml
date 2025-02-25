@@ -1,90 +1,62 @@
-- name: Child age, 1, INFANT
+- name: Child age, 1, group 1 (infant)
   period: 2023
   input:
     age: 1
   output:
-    nc_scca_age_group: INFANT
+    nc_scca_age_group: 1
 
-- name: Child age, 1.5, TWO_YEAR_OLD
+- name: Child age, 1.5, group 2 (two-year-olds)
   period: 2024
   input:
     age: 1.5
   output:
-    nc_scca_age_group: TWO_YEAR_OLD
+    nc_scca_age_group: 2
 
-- name: Child age, 2, TWO_YEAR_OLD
+- name: Child age, 2, group 2 (two-year-olds)
   period: 2024
   input:
     age: 2
   output:
-    nc_scca_age_group: TWO_YEAR_OLD
+    nc_scca_age_group: 2
 
-- name: Child age, 2.5, TWO_YEAR_OLD
+- name: Child age, 2.5, group 2 (two-year-olds)
   period: 2024
   input:
     age: 2.5
   output:
-    nc_scca_age_group: TWO_YEAR_OLD
+    nc_scca_age_group: 2
 
-- name: Child age, 3, THREE_TO_FIVE_YEAR_OLD
+- name: Child age, 3, group 3 (three-to-five-year-olds)
   period: 2024
   input:
     age: 3
   output:
-    nc_scca_age_group: THREE_TO_FIVE_YEAR_OLD
+    nc_scca_age_group: 3
 
-- name: Child age, 5, THREE_TO_FIVE_YEAR_OLD
+- name: Child age, 5, group 3 (three-to-five-year-olds)
   period: 2024
   input:
     age: 5
-    is_disabled: true
   output:
-    nc_scca_age_group: THREE_TO_FIVE_YEAR_OLD
+    nc_scca_age_group: 3
 
-- name: Child age, 5.5, THREE_TO_FIVE_YEAR_OLD
+- name: Child age, 5.5, group 3 (three-to-five-year-olds)
   period: 2024
   input:
     age: 5.5
-    is_disabled: false
   output:
-    nc_scca_age_group: THREE_TO_FIVE_YEAR_OLD
+    nc_scca_age_group: 3
 
-- name: Child age, 6, SCHOOL_AGE
+- name: Child age, 6, group 4 (school age)
   period: 2024
   input:
     age: 6
-    is_disabled: false
   output:
-    nc_scca_age_group: SCHOOL_AGE
+    nc_scca_age_group: 4
 
-- name: Child age, 12, SCHOOL_AGE
+- name: Child age, 12, group 4 (school age)
   period: 2024
   input:
     age: 12
-    is_disabled: true
   output:
-    nc_scca_age_group: SCHOOL_AGE
-
-- name: Child age, 16.5, with disabilities, SCHOOL_AGE
-  period: 2024
-  input:
-    age: 16.5
-    is_disabled: true
-  output:
-    nc_scca_age_group: SCHOOL_AGE
-
-- name: Child age, 17.5, with disabilities, SCHOOL_AGE
-  period: 2024
-  input:
-    age: 17.5
-    is_disabled: true
-  output:
-    nc_scca_age_group:  SCHOOL_AGE
-
-- name: Child age, 18, no disabilities, NOT_QUALIFY
-  period: 2024
-  input:
-    age: 18
-    is_disabled: false
-  output:
-    nc_scca_age_group: NOT_QUALIFY
+    nc_scca_age_group: 4
