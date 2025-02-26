@@ -1,0 +1,28 @@
+- name: Oregon smi 2021 single household
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    spm_unit_size: 1  # Single-person household
+    state_code: OR  # Oregon state code
+    hhs_smi: 48_906  # State Median Income for a single-person household in Oregon for 2021
+  output:
+    or_liheap_income_threshold: 29_343.6  # 0.6 * $48_906
+
+- name: Oregon smi 2023 two-person household
+  period: 2023
+  input:
+    spm_unit_size: 2  # Two-person household
+    state_code: OR  # Oregon state code
+    hhs_smi: 72_852.48  # State Median Income for Oregon in 2023
+  output:
+    or_liheap_income_threshold: 43_711.488  # 0.6 * $72_852.48
+
+- name: Oregon smi 2024 four-person household
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    spm_unit_size: 4  # Four-person household
+    state_code: OR  # Oregon state code
+    hhs_smi: 117_983  # State Median Income for Oregon in 2024
+  output:
+    or_liheap_income_threshold: 70_789.8  # 0.6 * $117_983

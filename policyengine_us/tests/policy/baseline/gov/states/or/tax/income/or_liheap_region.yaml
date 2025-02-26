@@ -1,0 +1,15 @@
+- name: Oregon LIHEAP region 1 
+  period: 2021
+  input: 
+    county_str: CURRY_COUNTY_OR
+    state_code: OR
+  output: 
+    or_liheap_in_region_one: True
+
+- name: Oregon LIHEAP region 2
+  period: 2022
+  input: 
+    county_str: BAKER_COUNTY_OR
+    state_code: OR
+  output: 
+    or_liheap_in_region_one: False
