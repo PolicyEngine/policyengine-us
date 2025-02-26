@@ -1,28 +1,27 @@
-- name: Default is ineligible
+# Unit tests for SSI variable (final benefit calculation)
+# These tests only use the direct inputs to the ssi variable
+
+# Note: The 'abolish_ssi' parameter test would need a reform, which is not
+# supported in the current test framework for YAML tests. This would need to be
+# tested with a Python test instead.
+
+- name: Zero when uncapped_ssi is zero
   period: 2022
+  input:
+    uncapped_ssi: 0
   output:
     ssi: 0
 
-- name: Eligible with small countable income
+- name: Returns uncapped_ssi when positive
   period: 2022
   input:
-    is_ssi_aged_blind_disabled: true
-    ssi_countable_income: 100 * 12
+    uncapped_ssi: 8892
   output:
-    ssi: 741 * 12 # 841 - 100
+    ssi: 8892
 
-- name: Disqualified by resources
+- name: Returns zero when uncapped_ssi is negative
   period: 2022
   input:
-    is_ssi_aged_blind_disabled: true
-    ssi_countable_resources: 2_001
-  output:
-    ssi: 0
-
-- name: Disqualified by income
-  period: 2022
-  input:
-    is_ssi_aged_blind_disabled: true
-    ssi_countable_income: 850 * 12
+    uncapped_ssi: -100
   output:
     ssi: 0

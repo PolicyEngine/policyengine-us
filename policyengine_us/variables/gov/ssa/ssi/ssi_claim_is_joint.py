@@ -9,7 +9,12 @@ class ssi_claim_is_joint(Variable):
 
     def formula(person, period, parameters):
         both_eligible = person("ssi_marital_both_eligible", period)
-        income_is_deemed = (
-            person("ssi_income_deemed_from_ineligible_spouse", period) > 0
+        is_eligible = person("is_ssi_eligible_individual", period)
+        has_ineligible_spouse = person.marital_unit.any(
+            person("is_ssi_ineligible_spouse", period)
         )
-        return both_eligible | income_is_deemed
+
+        # A claim is joint if either:
+        # 1. Both spouses are eligible, or
+        # 2. One spouse is eligible and the other is ineligible (deeming applies)
+        return both_eligible | (is_eligible & has_ineligible_spouse)
