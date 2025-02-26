@@ -13,9 +13,9 @@ class nc_scca_is_school_age(Variable):
         """
         Determines if a child is considered of school age for SCCA purposes.
         Children are considered school age if they are at or above the school age threshold.
+        Or under 18 with disabilities.
         """
 
-        # they also need to under 13 or under 18 with disabilities
         age = person("age", period)
         p = parameters(period).gov.states.nc.ncdhhs.scca.age
 

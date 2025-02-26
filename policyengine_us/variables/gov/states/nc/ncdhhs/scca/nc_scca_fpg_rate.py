@@ -18,45 +18,25 @@ class nc_scca_fpg_rate(Variable):
 
         # Retrieve age, school age status, and disability status for all members
         person = spm_unit.members
-        is_school_age = person("nc_scca_is_school_age", period)
+        age = person("age", period)
+        min_age = min(age)
 
         disabled = person("is_disabled", period)
-        print(f"disabled: ", disabled)
 
         # Check if any child is disabled and age-eligible for the program
         has_eligible_disabled_child = spm_unit.any(
             person("nc_scca_child_age_eligible", period) & disabled
         )
-        print(f"has_eligible_disabled_child", has_eligible_disabled_child)
-
-        # Check if all children are school age (if there are any children)
-        has_any_children = spm_unit.any(person("is_child", period))
-        all_children_school_age = ~has_any_children | (
-            has_any_children
-            & spm_unit.all(~person("is_child", period) | is_school_age)
-        )
-        print(f"all_children_school_age", all_children_school_age)
 
         # If there are any non-school age children or disabled children,
         # use the higher non-school age FPG limit, otherwise use school age limit
-        has_preschool_or_special_needs = (
-            has_eligible_disabled_child | ~all_children_school_age
-        )
-        print(
-            f"has_preschool_or_special_needs", has_preschool_or_special_needs
+        has_preschool_or_special_needs = has_eligible_disabled_child | (
+            min_age < p.age.school
         )
 
         # Select the appropriate FPG limit based on household composition
         # Children under school age (defined in p.age.school) or with special needs: 200% FPL
         # Only school-age children without special needs: 133% FPL
-        print(
-            f"fpg_rate: ",
-            where(
-                has_preschool_or_special_needs,
-                p.entry.fpg_limit_preschool,
-                p.entry.fpg_limit_school_age,
-            ),
-        )
         return where(
             has_preschool_or_special_needs,
             p.entry.fpg_limit_preschool,
