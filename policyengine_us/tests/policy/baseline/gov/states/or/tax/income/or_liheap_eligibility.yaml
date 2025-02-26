@@ -3,7 +3,7 @@
   input:
     spm_unit_size: 1
     state_code: OR
-    adjusted_gross_income: 25_000
+    irs_gross_income: 25_000
   output:
     or_liheap_eligibility: true
 
@@ -12,7 +12,7 @@
   input:
     spm_unit_size: 2
     state_code: OR
-    adjusted_gross_income: 90_000
+    irs_gross_income: 90_000
   output:
     or_liheap_eligibility: false
 
@@ -21,6 +21,6 @@
   input:
     spm_unit_size: 4
     state_code: OR
-    adjusted_gross_income: 60_000
+    irs_gross_income: 60_000
   output:
     or_liheap_eligibility: true
