@@ -8,4 +8,4 @@ class income_tax_excluding_ptc(Variable):
     unit = USD
     definition_period = YEAR
     adds = ["income_tax"]
-    subtracts = ["premium_tax_credit"]
+    subtracts = ["aca_ptc"]

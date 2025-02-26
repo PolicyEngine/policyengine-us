@@ -22,7 +22,7 @@
     tax_units:
       tax_unit:
         members: [person1]
-        premium_tax_credit: 0  # not in TAXSIM35
+        aca_ptc: 0  # not in TAXSIM35
     households:
       household:
         members: [person1]
@@ -55,7 +55,7 @@
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
-        premium_tax_credit: 0  # not in TAXSIM35
+        aca_ptc: 0  # not in TAXSIM35
     households:
       household:
         members: [person1, person2, person3]
@@ -86,7 +86,7 @@
     tax_units:
       tax_unit:
         members: [person1]
-        premium_tax_credit: 0  # not in TAXSIM35
+        aca_ptc: 0  # not in TAXSIM35
     households:
       household:
         members: [person1]
@@ -120,7 +120,7 @@
     tax_units:
       tax_unit:
         members: [person1]
-        premium_tax_credit: 0  # not in TAXSIM35
+        aca_ptc: 0  # not in TAXSIM35
     households:
       household:
         members: [person1]
@@ -150,7 +150,7 @@
     tax_units:
       tax_unit:
         members: [person1]
-        premium_tax_credit: 0  # not in TAXSIM35
+        aca_ptc: 0  # not in TAXSIM35
     households:
       household:
         members: [person1]
@@ -197,7 +197,7 @@
       tax_unit:
         members: [person1, person2, person3]
         tax_unit_childcare_expenses: 10_000
-        premium_tax_credit: 0  # not in TAXSIM35
+        aca_ptc: 0  # not in TAXSIM35
     households:
       household:
         members: [person1, person2, person3]
@@ -219,7 +219,7 @@
 
     ma_income_tax_before_credits: 0.05 * 120 + 0.12 * 9_010 + 0.05 * 8_010
                                   # = 1487.70
-    ma_dependent_credit: 360
+    ma_child_and_family_credit: 360
     ma_income_tax: 1_487.70 - 360
 
 - name: 2023 Tax unit with taxsimid 2915 in u21.its.csv and u21.ots.csv and rent share amount less than rental deduction cap
@@ -261,7 +261,7 @@
       tax_unit:
         members: [person1, person2, person3]
         tax_unit_childcare_expenses: 10_000
-        premium_tax_credit: 0  # not in TAXSIM35
+        aca_ptc: 0  # not in TAXSIM35
     households:
       household:
         members: [person1, person2, person3]
@@ -283,7 +283,7 @@
 
     ma_income_tax_before_credits: 0.05 * 0 + 0.085 * 8_630 + 0.05 * 0 + 0.05 * 8_010
                                   # = 1134.05
-    ma_dependent_credit: 620 # = 310 * 2
+    ma_child_and_family_credit: 620 # = 310 * 2
     ma_income_tax: 1134.05 - 620
 
 - name: 2023 Tax unit with taxsimid 2915 in u21.its.csv and u21.ots.csv and rent share amount more than rental deduction cap
@@ -325,7 +325,7 @@
       tax_unit:
         members: [person1, person2, person3]
         tax_unit_childcare_expenses: 10_000
-        premium_tax_credit: 0  # not in TAXSIM35
+        aca_ptc: 0  # not in TAXSIM35
     households:
       household:
         members: [person1, person2, person3]
@@ -347,7 +347,7 @@
 
     ma_income_tax_before_credits: 0.05 * 0 + 0.085 * 8_220 + 0.05 * 0 + 0.05 * 8_010
                                   # = 1099.20
-    ma_dependent_credit: 620 # = 310 * 2
+    ma_child_and_family_credit: 620 # = 310 * 2
     ma_income_tax: 1099.20 - 620
 
 - name: Tax unit with taxsimid 78550 in u21.its.csv and u21.ots.csv
@@ -383,7 +383,7 @@
       tax_unit:
         members: [person1, person2]
         tax_unit_childcare_expenses: 3_000
-        premium_tax_credit: 0  # not in TAXSIM35
+        aca_ptc: 0  # not in TAXSIM35
     households:
       household:
         members: [person1, person2]
@@ -395,7 +395,7 @@
     ma_income_tax_before_credits: 376.50
     ma_limited_income_tax_credit: 12.50
     ma_non_refundable_credits: 12.50
-    ma_dependent_credit: 180.00
+    ma_child_and_family_credit: 180.00
     ma_senior_circuit_breaker: 966.00
     ma_refundable_credits: 180 + 966
     ma_income_tax: 376.50 - 12.50 - 180 - 966

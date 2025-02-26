@@ -7,4 +7,4 @@ class health_insurance_premiums_without_medicare_part_b(Variable):
     label = "Health insurance premiums without Medicare Part B premiums"
     unit = USD
     definition_period = YEAR
-    uprating = "gov.bls.cpi.cpi_u"
+    uprating = "calibration.gov.hhs.cms.moop_per_capita"

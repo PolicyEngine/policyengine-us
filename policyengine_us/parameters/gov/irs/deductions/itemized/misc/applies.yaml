@@ -1,0 +1,12 @@
+description: The miscellaneous itemized deduction applies if this is true.
+metadata:
+  unit: bool
+  period: year
+  label: Miscellaneous expense deduction applies
+  reference:
+    - title: 26 U.S. Code § 67 - 2-percent floor on miscellaneous itemized deductions (g)
+      href: https://www.law.cornell.edu/uscode/text/26/67#g
+values:
+  2013-01-01: true
+  2018-01-01: false
+  2026-01-01: true

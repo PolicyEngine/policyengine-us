@@ -1,0 +1,17 @@
+- name: 2022 max of the credits.
+  period: 2022
+  input:
+    ma_child_and_family_credit: 1
+    ma_dependent_care_credit: 2
+    state_code: MA
+  output:
+    ma_child_and_family_credit_or_dependent_care_credit: 2
+
+- name: 2023 only dependent credit.
+  period: 2023
+  input:
+    ma_child_and_family_credit: 1
+    ma_dependent_care_credit: 2
+    state_code: MA
+  output:
+    ma_child_and_family_credit_or_dependent_care_credit: 1
