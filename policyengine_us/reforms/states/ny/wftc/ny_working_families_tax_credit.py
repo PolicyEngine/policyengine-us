@@ -490,7 +490,6 @@ def create_ny_working_families_tax_credit() -> Reform:
         defined_for = StateCode.NY
 
         def formula(tax_unit, period, parameters):
-
             count_dependents = add(
                 tax_unit, period, ["ny_exemptions_dependent"]
             )
