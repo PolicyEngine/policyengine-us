@@ -1,0 +1,68 @@
+- name: Case 1, has disabled in household and income below cap. 
+  period: 2022
+  input:
+    people:
+      person1:
+        ma_eaedc_disabled_earned_income: 1_000
+        is_disabled: true
+      person2:
+        ma_eaedc_disabled_earned_income: 0
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+  output:  
+    ma_eaedc_disabled_income_eligible: true
+
+- name: Case 2, has disabled in household but income above cap. 
+  period: 2022
+  input:
+    people:
+      person1:
+        ma_eaedc_disabled_earned_income: 2_000
+        is_disabled: true
+      person2:
+        ma_eaedc_disabled_earned_income: 0
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+  output:  
+    ma_eaedc_disabled_income_eligible: false
+
+- name: Case 3, don't have disabled in household. 
+  period: 2022
+  input:
+    people:
+      person1:
+        ma_eaedc_disabled_earned_income: 0
+        is_disabled: false
+      person2:
+        ma_eaedc_disabled_earned_income: 0
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+  output:  
+    ma_eaedc_disabled_income_eligible: true

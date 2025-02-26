@@ -1,0 +1,27 @@
+- name: Case 1, one child age of 5.
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 35
+        is_tax_unit_dependent: false 
+        ma_eaedc_dependent_care_deduction_person_eligible: false
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        ma_eaedc_dependent_care_deduction_person_eligible: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ma_eaedc_dependent_care_deduction_eligible: true
+        spm_unit_weekly_hours_worked: 40
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+  output:
+    ma_eaedc_dependent_care_deduction_person: [0,2100]
+    
