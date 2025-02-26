@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class nc_scca_is_school_age(Variable):
+class nc_scca_is_eligible_disabled_age(Variable):
     value_type = bool
     entity = Person
     label = "North Carolina SCCA school age determination"
@@ -17,6 +17,7 @@ class nc_scca_is_school_age(Variable):
         """
 
         age = person("age", period)
+        disabled = person("is_disabled", period)
         p = parameters(period).gov.states.nc.ncdhhs.scca.age
 
-        return (age >= p.school) & (age < p.limit.non_disabled)
+        return (age < p.limit.disabled) & disabled
