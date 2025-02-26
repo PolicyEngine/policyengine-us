@@ -83,12 +83,12 @@
   output:
     ssi_income_deemed_from_ineligible_spouse:
       2025:
-        - 1_670 # Based on the actual value from the test run
+        - 0 # No deeming occurs when under the FBR differential threshold
         - 0
     ssi_countable_income:
       2025:
-        - 1_670 # person1
-        - 0     # person2
+        - 0 # person1 (no deemed income)
+        - 0 # person2
     ssi_claim_is_joint:
       2025:
         - true  # person1 (has ineligible spouse)
@@ -100,7 +100,7 @@
     # Final SSI benefit
     ssi:
       2025:
-        - 15_730 # person1 (17,400 - 1,670)
+        - 17_400 # person1 (full benefit with no deductions)
         - 0      # person2
 
 - name: Integration test - SSI benefit for disabled individual with both earned and unearned income (2025)
@@ -128,7 +128,7 @@
   output:
     ssi_income_deemed_from_ineligible_spouse:
       2025:
-        - 12_000 # person1
+        - 11_730 # person1
         - 0      # person2
     ssi_countable_income:
       2025:
