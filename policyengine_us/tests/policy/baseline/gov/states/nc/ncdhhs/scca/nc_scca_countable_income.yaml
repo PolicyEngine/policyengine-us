@@ -1,0 +1,36 @@
+- name: Default is zero.
+  period: 2024
+  output:
+    nc_scca_countable_income: 0
+
+- name: When snap earned income is 10_000, unearned is 0, countable income is 10_000.
+  period: 2024
+  input:
+    snap_earned_income: 10_000
+    snap_unearned_income: 0
+  output:
+    nc_scca_countable_income: 10_000
+
+- name: When snap earned income is 0, unearned is 10_000, countable income is 10_000.
+  period: 2024
+  input:
+    snap_earned_income: 0
+    snap_unearned_income: 10_000
+  output:
+    nc_scca_countable_income: 10_000
+
+- name: When snap earned income is 10_000, unearned is 10_000, countable income is 20_000.
+  period: 2024
+  input:
+    snap_earned_income: 10_000
+    snap_unearned_income: 10_000
+  output:
+    nc_scca_countable_income: 20_000
+
+- name: When snap earned income is 10_000, unearned is 10_000, countable income is 20_000.
+  period: 2023
+  input:
+    snap_earned_income: 10_000
+    snap_unearned_income: 10_000
+  output:
+    nc_scca_countable_income: 20_000

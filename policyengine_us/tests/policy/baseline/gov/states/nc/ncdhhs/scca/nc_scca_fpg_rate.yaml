@@ -1,0 +1,395 @@
+- name: One child aged 0 with no disabilities; fpg rate is 2.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+      child1:
+        age: 0
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        members: [person1, child1]
+    households:
+      household:
+        members: [person1, child1]
+        state_code: NC
+  output:
+    nc_scca_fpg_rate: 2
+
+- name: One child aged 1 with no disabilities; fpg rate is 2.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+      child1:
+        age: 1
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        members: [person1, child1]
+    households:
+      household:
+        members: [person1, child1]
+        state_code: NC
+  output:
+    nc_scca_fpg_rate: 2
+
+- name: One child aged 2 with no disabilities; fpg rate is 2.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+      child1:
+        age: 2
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        members: [person1, child1]
+    households:
+      household:
+        members: [person1, child1]
+        state_code: NC
+  output:
+    nc_scca_fpg_rate: 2
+
+- name: One child aged 3 with no disabilities; fpg rate is 2.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+      child1:
+        age: 3
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        members: [person1, child1]
+    households:
+      household:
+        members: [person1, child1]
+        state_code: NC
+  output:
+    nc_scca_fpg_rate: 2
+
+- name: One child aged 5 with no disabilities; fpg rate is 2.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+      child1:
+        age: 5
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        members: [person1, child1]
+    households:
+      household:
+        members: [person1, child1]
+        state_code: NC
+  output:
+    nc_scca_fpg_rate: 2
+
+- name: One child aged 6 with no disabilities; fpg rate is 1.33.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+      child1:
+        age: 6
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        members: [person1, child1]
+    households:
+      household:
+        members: [person1, child1]
+        state_code: NC
+  output:
+    nc_scca_fpg_rate: 1.33
+
+- name: One child aged 6, with a disabled family member; fpg rate is 1.33.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: true
+      child1:
+        age: 6
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        members: [person1, child1]
+    households:
+      household:
+        members: [person1, child1]
+        state_code: NC
+  output:
+    nc_scca_fpg_rate: 1.33
+
+- name: One child aged 6 with disabilities; fpg rate is 2.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+      child1:
+        age: 6
+        is_disabled: true
+    spm_units:
+      spm_unit:
+        members: [person1, child1]
+    households:
+      household:
+        members: [person1, child1]
+        state_code: NC
+  output:
+    nc_scca_fpg_rate: 2
+
+- name: One child aged 12 with no disabilities; fpg rate is 1.33.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+      child1:
+        age: 12
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        members: [person1, child1]
+    households:
+      household:
+        members: [person1, child1]
+        state_code: NC
+  output:
+    nc_scca_fpg_rate: 1.33
+
+- name: Two children aged 0 and 1; fpg rate is 2.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+      child1:
+        age: 0
+        is_disabled: false
+      child2:
+        age: 1
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        members: [person1, child1, child2]
+    households:
+      household:
+        members: [person1, child1, child2]
+        state_code: NC
+  output:
+    nc_scca_fpg_rate: 2
+
+- name: Two children aged 2 and 4; fpg rate is 2.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+      child1:
+        age: 2
+        is_disabled: false
+      child2:
+        age: 4
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        members: [person1, child1, child2]
+    households:
+      household:
+        members: [person1, child1, child2]
+        state_code: NC
+  output:
+    nc_scca_fpg_rate: 2
+
+- name: Two children aged 5 and 7; fpg rate is 2.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+      child1:
+        age: 5
+        is_disabled: false
+      child2:
+        age: 7
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        members: [person1, child1, child2]
+    households:
+      household:
+        members: [person1, child1, child2]
+        state_code: NC
+  output:
+    nc_scca_fpg_rate: 2
+
+- name: Two children aged 6 and 12; fpg rate is 1.33.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+      child1:
+        age: 6
+        is_disabled: false
+      child2:
+        age: 12
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        members: [person1, child1, child2]
+    households:
+      household:
+        members: [person1, child1, child2]
+        state_code: NC
+  output:
+    nc_scca_fpg_rate: 1.33
+
+- name: Two children aged 10 and 16 with no disabilities; fpg rate is 1.33.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+      child1:
+        age: 10
+        is_disabled: false
+      child2:
+        age: 16
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        members: [person1, child1, child2]
+    households:
+      household:
+        members: [person1, child1, child2]
+        state_code: NC
+  output:
+    nc_scca_fpg_rate: 1.33
+
+- name: Two children aged 10 and 16 with disabilities; fpg rate is 2.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+      child1:
+        age: 10
+        is_disabled: false
+      child2:
+        age: 16
+        is_disabled: true
+    spm_units:
+      spm_unit:
+        members: [person1, child1, child2]
+    households:
+      household:
+        members: [person1, child1, child2]
+        state_code: NC
+  output:
+    nc_scca_fpg_rate: 2
+
+- name: Three children aged 1, 5 and 10; fpg rate is 2.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+      child1:
+        age: 1
+        is_disabled: false
+      child2:
+        age: 5
+        is_disabled: false
+      child3:
+        age: 10
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        members: [person1, child1, child2, child3]
+    households:
+      household:
+        members: [person1, child1, child2, child3]
+        state_code: NC
+  output:
+    nc_scca_fpg_rate: 2
+
+- name: Three children aged 6, 8, and 10; fpg rate is 1.33.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+      child1:
+        age: 6
+        is_disabled: false
+      child2:
+        age: 8
+        is_disabled: false
+      child3:
+        age: 10
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        members: [person1, child1, child2, child3]
+    households:
+      household:
+        members: [person1, child1, child2, child3]
+        state_code: NC
+  output:
+    nc_scca_fpg_rate: 1.33
+
+- name: Three children aged 6 with disabilities, 8 and 10; fpg rate is 2.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+      child1:
+        age: 6
+        is_disabled: true
+      child2:
+        age: 8
+        is_disabled: false
+      child3:
+        age: 10
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        members: [person1, child1, child2, child3]
+    households:
+      household:
+        members: [person1, child1, child2, child3]
+        state_code: NC
+  output:
+    nc_scca_fpg_rate: 2

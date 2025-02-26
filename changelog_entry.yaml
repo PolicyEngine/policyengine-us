@@ -1,0 +1,7 @@
+- bump: minor
+  changes:
+    added:
+      - Implemented North Carolina Subsidized Child Care Assistance (SCCA) program and entry eligibility calculations.
+    improved:
+      - Enhanced NC SCCA by adding school age detection and refactoring age group determination using parameter-based approach.
+      - Fixed parameter format issues to address validation errors in rate_unit format.
