@@ -6,13 +6,13 @@
   output:
     nc_scca_age_group: 1
 
-- name: Child age, 1, group 2 (toddler)
+- name: Child age, 1, group 1 (infant)
   period: 2024
   input:
     age: 1
     state_code: NC
   output:
-    nc_scca_age_group: 2
+    nc_scca_age_group: 1
 
 - name: Child age, 1.5, group 2 (toddler)
   period: 2024

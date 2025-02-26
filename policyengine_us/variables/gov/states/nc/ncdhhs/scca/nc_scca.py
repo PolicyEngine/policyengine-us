@@ -10,10 +10,14 @@ class nc_scca(Variable):
     defined_for = "nc_scca_entry_eligible"
 
     def formula(spm_unit, period, parameters):
-        total_market_rate = add(
-            spm_unit,
-            period,
-            ["nc_scca_market_rate"],
+        all_eligible_disabled_child = spm_unit.members(
+            "nc_scca_child_age_eligible", period
+        )
+
+        # Collect the market rates only for eligible children
+        total_market_rate = spm_unit.sum(
+            spm_unit.members("nc_scca_market_rate", period)
+            * all_eligible_disabled_child
         )
 
         parent_fee = spm_unit("nc_scca_parent_fee", period)

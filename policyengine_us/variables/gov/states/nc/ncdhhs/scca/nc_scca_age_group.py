@@ -29,4 +29,13 @@ class nc_scca_age_group(Variable):
         school_age_group = 4
 
         # Use standard calculation for non-school age, school_age_group for school age
-        return where(is_school_age, school_age_group, p.age.group.calc(age))
+        return where(
+            is_school_age,
+            school_age_group,
+            where(
+                (age >= p.age.limit.non_disabled)
+                & (age < p.age.limit.disabled),
+                school_age_group,
+                p.age.group.calc(age),
+            ),
+        )
