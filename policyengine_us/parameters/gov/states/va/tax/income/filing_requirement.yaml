@@ -6,9 +6,12 @@ metadata:
   breakdown:
   - filing_status
   reference:
-  # The legal additionally a deduction from AGI which is not specified in the tax form
+  # If your Virginia AGI minus an age deduction (specified in Section 58.1-322.03 Subdivision 5) < amount, you don't have to file.
+  # It seems the tax instructions implicitly defines VAGI in a way that includes the age deduction.
   - title: Code of Virginia § 58.1-321. Exemptions and exclusions. (A)
     href: https://law.lis.virginia.gov/vacodefull/title58.1/chapter3/article2/
+  - title: Virginia 2024 Form 760 Resident Individual Income Tax Instructions
+    href: https://www.tax.virginia.gov/sites/default/files/vatax-pdf/2024-760-instructions.pdf#page=9
   - title: Virginia 2023 Form 760 Resident Individual Income Tax Instructions
     href: https://www.tax.virginia.gov/sites/default/files/vatax-pdf/2023-760-instructions.pdf#page=10
   - title: Virginia 2022 Form 760 Resident Individual Income Tax Booklet

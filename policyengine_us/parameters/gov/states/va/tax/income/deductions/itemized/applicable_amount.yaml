@@ -1,4 +1,4 @@
-description: Virginia limits its itemized deductions to filers with federal adjusted gross income over this amount, based on filing status.
+description: Virginia limits the value of itemized deductions if federal AGI exceeds a given amount. The amount varies by filing status.
 JOINT:
   values:
     2013-01-01: 300_000
@@ -11,6 +11,7 @@ JOINT:
     2021-01-01: 334_150
     2022-01-01: 343_950
     2023-01-01: 368_900
+    2024-01-01: 388_400
   uprating:
     parameter: gov.irs.uprating
     rounding:
@@ -28,6 +29,7 @@ SINGLE:
     2021-01-01: 278_450
     2022-01-01: 286_600
     2023-01-01: 307_400
+    2024-01-01: 323_650
   uprating:
     parameter: gov.irs.uprating
     rounding:
@@ -45,6 +47,7 @@ SEPARATE:
     2021-01-01: 167_075
     2022-01-01: 171_975
     2023-01-01: 184_450
+    2024-01-01: 194_200
   uprating:
     parameter: gov.irs.uprating
     rounding:
@@ -62,6 +65,7 @@ HEAD_OF_HOUSEHOLD:
     2021-01-01: 306_300
     2022-01-01: 315_300
     2023-01-01: 338_150
+    2024-01-01: 356_000
   uprating:
     parameter: gov.irs.uprating
     rounding:
@@ -79,6 +83,7 @@ SURVIVING_SPOUSE:
     2021-01-01: 334_150
     2022-01-01: 343_950
     2023-01-01: 368_900
+    2024-01-01: 388_400
   uprating:
     parameter: gov.irs.uprating
     rounding:
@@ -91,9 +96,11 @@ metadata:
   breakdown:
   - filing_status
   reference:
-    # Virginia continued to increase the federal applicable amount with inflation 
+    # Virginia's limit conforms with the federal limit. The federal limit increases with inflation; thus, so does Virginia's.
     - title: 26 U.S. Code § 68 - Overall limitation on itemized deductions (b)(1)
       href: https://www.law.cornell.edu/uscode/text/26/68#b_1
+    - title: 2024 Virginia Schedule A Itemized Deductions, Line 17
+      href: https://www.tax.virginia.gov/sites/default/files/taxforms/individual-income-tax/2024/schedule-2024.pdf#page=1
     - title: 2023 Virginia Schedule A Itemized Deductions
       href: https://www.tax.virginia.gov/sites/default/files/taxforms/individual-income-tax/2023/schedule-2023.pdf#page=1
     - title: 2022 Virginia Schedule A Itemized Deductions
