@@ -12,11 +12,7 @@ brackets:
   - threshold:
       2022-10-01: 3
     amount:
-      2022-10-01: 3  # 3-5 year olds
-  - threshold:
-      2022-10-01: 6
-    amount:
-      2022-10-01: 4  # School age
+      2022-10-01: 3  # 3-5 year olds; school age filter assigned later
 
 metadata:
   type: single_amount

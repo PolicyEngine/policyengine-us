@@ -18,9 +18,7 @@ class nc_scca_fpg_rate(Variable):
 
         # Retrieve age, school age status, and disability status for all members
         person = spm_unit.members
-        age = person("age", period)
-        min_age = min(age)
-
+        is_school_age = person("nc_scca_is_school_age", period)
         disabled = person("is_disabled", period)
 
         # Check if any child is disabled and age-eligible for the program
@@ -28,10 +26,17 @@ class nc_scca_fpg_rate(Variable):
             person("nc_scca_child_age_eligible", period) & disabled
         )
 
+        # Check if all children are school age (if there are any children)
+        has_any_children = spm_unit.any(person("is_child", period))
+        all_children_school_age = ~has_any_children | (
+            has_any_children
+            & spm_unit.all(~person("is_child", period) | is_school_age)
+        )
+
         # If there are any non-school age children or disabled children,
         # use the higher non-school age FPG limit, otherwise use school age limit
-        has_preschool_or_special_needs = has_eligible_disabled_child | (
-            min_age < p.age.school
+        has_preschool_or_special_needs = (
+            has_eligible_disabled_child | ~all_children_school_age
         )
 
         # Select the appropriate FPG limit based on household composition

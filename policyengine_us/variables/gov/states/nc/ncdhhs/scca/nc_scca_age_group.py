@@ -14,27 +14,23 @@ class nc_scca_age_group(Variable):
     def formula(person, period, parameters):
         """
         Returns the age group for NC SCCA:
-        1 - Infant (0 to <=1)
+        1 - Infant (0 to <1)
         2 - Toddler (1 to <3)
         3 - Preschooler (3 to <6)
-        4 - School age (6+)
-        """
 
-        p = parameters(period).gov.states.nc.ncdhhs.scca
+        The school age group is hardcoded as 4 (one more than the maximum value in the parameter)
+        """
         age = person("age", period)
-        is_disabled_age = person(
-            "nc_scca_is_eligible_disabled_age", period
-        )  # disabled & < 18
+        is_school_age = person("nc_scca_is_school_age", period)
+        p = parameters(period).gov.states.nc.ncdhhs.scca
+
+        # School age group is 4 (one more than the maximum value in the age.group parameter)
+        school_age_group = 4
 
         # Make sure 1 year old child in Group 1
         adjusted_age = where(age == 1, 0.99, age)
 
-        # Assign age groups for children under 13, defaulting to school-age group for older children
-        age_group = where(
-            age < p.age.limit.non_disabled,
-            p.age.group.calc(adjusted_age),
-            p.age.group.calc(6),
+        # Use standard calculation for non-school age, school_age_group for school age
+        return where(
+            is_school_age, school_age_group, p.age.group.calc(adjusted_age)
         )
-
-        # Override for disabled children who are above school age
-        return where(is_disabled_age, p.age.group.calc(6), age_group)
