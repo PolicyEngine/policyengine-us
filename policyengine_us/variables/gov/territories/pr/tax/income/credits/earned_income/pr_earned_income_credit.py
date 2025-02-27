@@ -17,9 +17,10 @@ class pr_earned_income_credit(Variable):
 
         child_count = tax_unit("pr_earned_income_child_count", period)
         filing_status = tax_unit("filing_status", period)
+        person = tax_unit.members
         gross_income = tax_unit.sum(
-            tax_unit.members("pr_gross_income_person", period)
-            * (tax_unit.members("is_tax_unit_head_or_spouse", period))
+            person("pr_gross_income_person", period)
+            * (person("is_tax_unit_head_or_spouse", period))
         )
 
         # compute credit

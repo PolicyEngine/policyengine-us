@@ -2,21 +2,21 @@ description: Puerto Rico phases the earned income credit in at this rate of stat
 # determine phase in rate percentage by number of children
 brackets:
   - threshold:
-      2010-12-31: 0
+      2023-01-01: 0
     amount:
-      2010-12-31: 0.15
+      2023-01-01: 0.15
   - threshold: 
-      2010-12-31: 1
+      2023-01-01: 1
     amount:
-      2010-12-31: 0.3398
+      2023-01-01: 0.3398
   - threshold:
-      2010-12-31: 2
+      2023-01-01: 2
     amount:
-      2010-12-31: 0.4
+      2023-01-01: 0.4
   - threshold:
-      2010-12-31: 3
+      2023-01-01: 3
     amount:
-      2010-12-31: 0.4483
+      2023-01-01: 0.4483
 metadata:
   amount_unit: /1
   threshold_unit: child
@@ -26,3 +26,5 @@ metadata:
   reference:
     - title: Schedule CT Individual, Earned Income Credit, 2023
       href: https://hacienda.pr.gov/sites/default/files/schedule_ct_rev._jul_5_23_informative_-_instructions.pdf#page=2
+    - title: P.R. Laws tit. 13, § 30211 (1) - (6)
+      href: https://casetext.com/statute/laws-of-puerto-rico/title-thirteen-taxation-and-finance/subtitle-17-internal-revenue-code-of-2011/part-ii-income-taxes/chapter-1007-credits-against-tax/subchapter-b-refundable-credits/30211-earned-income-credit

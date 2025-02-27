@@ -11,8 +11,7 @@ class pr_earned_income_credit_eligible(Variable):
 
     def formula(tax_unit, period, parameters):
         # list of eligible people in the tax unit from the adds function
-        num_eligible_people = tax_unit(
-            "pr_earned_income_credit_eligible_people", period
+        num_eligible_people = add(
+            tax_unit, period, ["pr_earned_income_credit_eligible_person"]
         )
-        eligible_people_exist = num_eligible_people > 0
-        return eligible_people_exist
+        return num_eligible_people > 0
