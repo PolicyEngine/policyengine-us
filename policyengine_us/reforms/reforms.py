@@ -92,7 +92,7 @@ from .states.mt.ctc import (
 from .congress.golden import (
     create_fisc_act_reform,
 )
-from .tax_employer_payroll import(
+from .tax_employer_payroll import (
     create_tax_employer_payroll_reform
 )
 
@@ -200,7 +200,8 @@ def create_structural_reforms_from_parameters(parameters, period):
     )
     mt_ctc = create_mt_ctc_reform(parameters, period)
     fisc_act = create_fisc_act_reform(parameters, period)
-    tax_employer_payroll = create_tax_employer_payroll_reform(parameters, period)
+    tax_employer_payroll = create_tax_employer_payroll_reform(
+        parameters, period)
 
     reforms = [
         afa_reform,
