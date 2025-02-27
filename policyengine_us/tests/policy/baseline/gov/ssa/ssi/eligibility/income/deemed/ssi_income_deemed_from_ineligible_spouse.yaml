@@ -21,10 +21,7 @@
       marital_unit:
         members: [person1, person2]
   output:
-    ssi_income_deemed_from_ineligible_spouse:
-      2025:
-        - 15_030  # person1 (actual calculated deemed amount)
-        - 0      # person2
+    ssi_income_deemed_from_ineligible_spouse: [15_030, 0]
 
 - name: Disabled individual with non-working ineligible spouse (2025)
   period: 2025
@@ -49,10 +46,7 @@
       marital_unit:
         members: [person1, person2]
   output:
-    ssi_income_deemed_from_ineligible_spouse:
-      2025:
-        - 0  # person1
-        - 0  # person2
+    ssi_income_deemed_from_ineligible_spouse: [0, 0]
 
 - name: Disabled individual with high-income ineligible spouse (2025)
   period: 2025
@@ -77,10 +71,7 @@
       marital_unit:
         members: [person1, person2]
   output:
-    ssi_income_deemed_from_ineligible_spouse:
-      2025:
-        - 29490  # person1 (actual calculated deemed amount)
-        - 0      # person2
+    ssi_income_deemed_from_ineligible_spouse: [29_490, 0]
 
 - name: Disabled individual with mixed income ineligible spouse (2025)
   period: 2025
@@ -97,7 +88,7 @@
         is_disabled: false
         is_tax_unit_head: true
         ssi_earned_income: 24_000
-        ssi_unearned_income: 6000
+        ssi_unearned_income: 6_000
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -105,10 +96,7 @@
       marital_unit:
         members: [person1, person2]
   output:
-    ssi_income_deemed_from_ineligible_spouse:
-      2025:
-        - 17_370  # person1 (actual calculated deemed amount)
-        - 0      # person2
+    ssi_income_deemed_from_ineligible_spouse: [17_370, 0]
 
 - name: Disabled individual with personal and spouse income (2025)
   period: 2025
@@ -133,10 +121,7 @@
       marital_unit:
         members: [person1, person2]
   output:
-    ssi_income_deemed_from_ineligible_spouse:
-      2025:
-        - 11_730  # person1 (actual calculated deemed amount)
-        - 0      # person2
+    ssi_income_deemed_from_ineligible_spouse: [11_730, 0]
 
 - name: Spouse with income just below the FBR differential threshold (2025)
   period: 2025
@@ -162,7 +147,4 @@
       marital_unit:
         members: [person1, person2]
   output:
-    ssi_income_deemed_from_ineligible_spouse:
-      2025:
-        - 0  # No deeming occurs when under the FBR differential threshold
-        - 0
+    ssi_income_deemed_from_ineligible_spouse: [0, 0]
