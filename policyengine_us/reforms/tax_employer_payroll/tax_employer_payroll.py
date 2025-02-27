@@ -102,7 +102,7 @@ def create_tax_employer_payroll_reform(parameters, period, bypass: bool = False)
         return tax_employer_payroll_reform()
 
     # 2. If boolean in in_effect.yaml is set to true
-    path = parameters(period).gov.contrib.tax_employer_payroll
+    path = parameters.gov.contrib.tax_employer_payroll
     current_period = period_(period)
     reform_active = False
 
