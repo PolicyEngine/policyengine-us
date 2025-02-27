@@ -1,14 +1,14 @@
 from policyengine_us.model_api import *
 from policyengine_core.periods import period as period_
 
-def tax_employer_payroll_reform() -> Reform:
 
+def tax_employer_payroll_reform() -> Reform:
     """
     General workflow for creating reform:
     1. Make a boolean for the reform under parameters/contrib/{reform_name}
     called in_effect.
     2. Create new variables if necessary.
-    3. Redefine rule for calculating existing variable (in this case social 
+    3. Redefine rule for calculating existing variable (in this case social
     security taxation).
     4. Add this reform to reforms/reforms.py.
     """
@@ -30,7 +30,7 @@ def tax_employer_payroll_reform() -> Reform:
     """
 
     class irs_gross_income(Variable):
-        # The input is Variable because policyengine.core functions(?) will 
+        # The input is Variable because policyengine.core functions(?) will
         # find the variables we name and feed it into this class
 
         # The following are attributes copied from the .../irs_gross_income.py
@@ -53,37 +53,36 @@ def tax_employer_payroll_reform() -> Reform:
 
             # Here we add in the employer side contribution
 
-            # Note that each reform correspond to a boolean specified under 
+            # Note that each reform correspond to a boolean specified under
             # "policyengine_us/parameters/gov/contrib/"
-            # I create a directory there of the same name 
+            # I create a directory there of the same name
             # as this file's parent directory ("tax_employer_payroll")
-            # Inside it is a yaml file called in_effect.yaml that is 
+            # Inside it is a yaml file called in_effect.yaml that is
             # a boolean, set to false.
             # (We'll set it to true later)
             p = parameters(period).gov.contrib.tax_employer_payroll
 
-            # note that we created two new variables for the purpose of this 
+            # note that we created two new variables for the purpose of this
             # reform
-            # they respectively measure the amount paid by the employer to a 
+            # they respectively measure the amount paid by the employer to a
             # person for:
             # (i) social security and (ii) medicare.
             # they are under "variables/gov/irs/tax/payroll/social_security
             # /employer_social_security_tax.py"
             # and "policyengine_us/variables/gov/irs/tax/payroll/medicare/
             # employer_medicare_tax.py"
-            # We refer to them with the person method(?), which has the 
+            # We refer to them with the person method(?), which has the
             # following syntax
             employer_contribution = person(
                 "employer_social_security_tax", period
-                ) + person(
-                    "employer_medicare_tax", period)
+            ) + person("employer_medicare_tax", period)
 
             # Update total to include employer_contribution
             total += employer_contribution
 
             return total
-    
-    # the reform class contains a custom method that refers 
+
+    # the reform class contains a custom method that refers
     # to the updated variable
     class reform(Reform):
         # these are all custom methods
@@ -92,16 +91,16 @@ def tax_employer_payroll_reform() -> Reform:
 
     return reform
 
-def create_tax_employer_payroll_reform(
-        parameters, period, bypass: bool = False):   
+
+def create_tax_employer_payroll_reform(parameters, period, bypass: bool = False):
     # Create a create_{reform name} function that initializes the reform object
-    # There are two sufficient conditions for this function to return 
+    # There are two sufficient conditions for this function to return
     # the reform
 
     # 1. If bypass is set to true
     if bypass is True:
         return tax_employer_payroll_reform()
-    
+
     # 2. If boolean in in_effect.yaml is set to true
     path = parameters(period).gov.contrib.tax_employer_payroll
     current_period = period_(period)
@@ -115,7 +114,7 @@ def create_tax_employer_payroll_reform(
             reform_active = True
             break
         current_period = current_period.offset(1, "year")
-    
+
     # if the loop set reform_active to true, return the reform.
     if reform_active:
         return tax_employer_payroll_reform()
@@ -123,8 +122,8 @@ def create_tax_employer_payroll_reform(
         return None
 
 
-
 # Create a reform object to by setting bypass to true,
 # for the purpose of running tests
 tax_employer_payroll_reform = create_tax_employer_payroll_reform(
-    None, None, bypass=True)
+    None, None, bypass=True
+)
