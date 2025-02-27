@@ -92,7 +92,9 @@ def tax_employer_payroll_reform() -> Reform:
     return reform
 
 
-def create_tax_employer_payroll_reform(parameters, period, bypass: bool = False):
+def create_tax_employer_payroll_reform(
+    parameters, period, bypass: bool = False
+):
     # Create a create_{reform name} function that initializes the reform object
     # There are two sufficient conditions for this function to return
     # the reform
