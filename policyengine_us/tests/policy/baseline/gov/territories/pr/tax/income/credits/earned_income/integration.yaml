@@ -25,7 +25,6 @@
         members: [person1, person2, person3, person4]
         state_code: PR
   output: 
-    pr_earned_income_credit_eligible_people: 2
     pr_earned_income_credit_eligible: true
     pr_earned_income_credit: 6_072
 
@@ -58,6 +57,5 @@
         members: [person1, person2, person3, person4, person5]
         state_code: PR
   output: 
-    pr_earned_income_credit_eligible_people: 1
     pr_earned_income_credit_eligible: true
     pr_earned_income_credit: 4_839.878
