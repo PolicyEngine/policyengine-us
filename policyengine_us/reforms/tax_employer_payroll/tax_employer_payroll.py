@@ -13,29 +13,29 @@ def tax_employer_payroll_reform() -> Reform:
     security taxation).
     4. Add this reform to reforms/reforms.py (see previous pull requests for
     syntax).
-    5. Add a unit test under tests/contrib/{reform name} 
+    5. Add a unit test under tests/contrib/{reform name}
     if the reform is not just modifying a parameter
-    5a. Add unit test for new variables under 
+    5a. Add unit test for new variables under
     tests/baseline/{new variable's path}
 
     Specific to this reform:
     We want to modify how an existing variable is calculated.
-    In this case it's "irs_gross_income", as in: 
+    In this case it's "irs_gross_income", as in:
     "policyengine_us/variables/gov/irs/income/taxable_income/
     adjusted_gross_income/irs_gross_income/irs_gross_income.py"
-    We amend irs_gross_income because the employer-side contributions 
+    We amend irs_gross_income because the employer-side contributions
     will go into taxable income...
-    but taxable income is determined at the tax unit level, 
-    by summing up all persons' gross income 
-    and deducting tax unit's deductions. But since payroll is calculated at 
-    the personal level, 
-    we want to add each person's employer contribution to each person, thus 
+    but taxable income is determined at the tax unit level,
+    by summing up all persons' gross income
+    and deducting tax unit's deductions. But since payroll is calculated at
+    the personal level,
+    we want to add each person's employer contribution to each person, thus
     we add it to gross income.
 
     irs_gross_income refers to "parameters/gov/irs/gross_income/sources"
     to determine which sources of income get added into the variable.
     We modify that list by adding the two variables we created for this
-    reform: they are employer's payroll taxes for 
+    reform: they are employer's payroll taxes for
     (i) social security and (ii) medicare.
     The new variabes are under "variables/gov/irs/tax/payroll
     /social_security/employer_social_security_tax.py"
@@ -46,10 +46,8 @@ def tax_employer_payroll_reform() -> Reform:
     def modify_gross_income_sources(parameters):
         # Parameter class has an .update method
         parameters.gov.irs.gross_income.sources.update(
-            start = instant("2010-01-01"),
-            value = [
-                "employer_social_security_tax", "employer_medicare_tax"
-                ]
+            start=instant("2010-01-01"),
+            value=["employer_social_security_tax", "employer_medicare_tax"],
         )
 
     # Create a reform object applies the method
@@ -59,6 +57,7 @@ def tax_employer_payroll_reform() -> Reform:
             self.modify_parameters(modify_gross_income_sources)
 
     return reform
+
 
 def create_tax_employer_payroll_reform(
     parameters, period, bypass: bool = False
