@@ -1,5 +1,6 @@
 from policyengine_us.model_api import *
 from policyengine_core.periods import period as period_
+from policyengine_core.periods import instant
 
 
 def tax_employer_payroll_reform() -> Reform:
@@ -51,23 +52,32 @@ def tax_employer_payroll_reform() -> Reform:
                 # Add positive values only - losses are deducted later.
                 total += not_dependent * max_(0, add(person, period, [source]))
 
-            # Here we add in the employer side contribution
+        # Here we add in the employer side contribution
 
-            # note that we created two new variables for the purpose of this
-            # reform
-            # they respectively measure the amount paid by the employer to a
-            # person for:
-            # (i) social security and (ii) medicare.
-            # they are under "variables/gov/irs/tax/payroll/social_security
-            # /employer_social_security_tax.py"
-            # and "policyengine_us/variables/gov/irs/tax/payroll/medicare/
-            # employer_medicare_tax.py"
-            # We refer to them with the person method(?), which has the
-            # following syntax
+        # note that we created two new variables for the purpose of this
+        # reform
+        # they respectively measure the amount paid by the employer to a
+        # person for:
+        # (i) social security and (ii) medicare.
+        # they are under "variables/gov/irs/tax/payroll/social_security
+        # /employer_social_security_tax.py"
+        # and "policyengine_us/variables/gov/irs/tax/payroll/medicare/
+        # employer_medicare_tax.py"
+
+        # We update the list of sources counted into personal gross income
+        def modify_parameters(parameters):
+            parameters.gov.irs.gross_income.sources.update(
+                start = instant("2010-01-01"),
+                value = [
+                    "employer_social_security tax", "employer_medicare_tax"
+                    ]
+            )
+
+
             employer_contribution = add(
                 person,
                 period,
-                ["employer_social_security tax", "employer_medicare_tax"],
+                ,
             )
 
             # Update total to include employer_contribution
