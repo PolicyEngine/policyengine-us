@@ -53,15 +53,6 @@ def tax_employer_payroll_reform() -> Reform:
 
             # Here we add in the employer side contribution
 
-            # Note that each reform correspond to a boolean specified under
-            # "policyengine_us/parameters/gov/contrib/"
-            # I create a directory there of the same name
-            # as this file's parent directory ("tax_employer_payroll")
-            # Inside it is a yaml file called in_effect.yaml that is
-            # a boolean, set to false.
-            # (We'll set it to true later)
-            p = parameters(period).gov.contrib.tax_employer_payroll
-
             # note that we created two new variables for the purpose of this
             # reform
             # they respectively measure the amount paid by the employer to a
@@ -73,30 +64,17 @@ def tax_employer_payroll_reform() -> Reform:
             # employer_medicare_tax.py"
             # We refer to them with the person method(?), which has the
             # following syntax
-            employer_contribution = person(
-                "employer_social_security_tax", period
-            ) + person("employer_medicare_tax", period)
+            employer_contribution = add(
+                person,
+                period,
+                ["employer_social_security tax", "employer_medicare_tax"],
+            )
 
             # Update total to include employer_contribution
             total += employer_contribution
 
             return total
 
-    # the reform class contains a custom method that refers
-    # to the updated variable
-    class reform(Reform):
-        # these are all custom methods
-        def apply(self):
-            self.update_variable(irs_gross_income)
-
-    return reform
-
-
-def create_tax_employer_payroll_reform(
-    parameters, period, bypass: bool = False
-):
-    # Create a create_{reform name} function that initializes the reform object
-    # There are two sufficient conditions for this function to return
     # the reform
 
     # 1. If bypass is set to true

@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class employer_medicare_tax(Variable):
     value_type = float
     entity = Person
-    label = "employer-side health insurance payroll tax"
+    label = "Employer-side health insurance payroll tax"
     documentation = (
         "Total liability for employer-side health insurance payroll tax."
     )

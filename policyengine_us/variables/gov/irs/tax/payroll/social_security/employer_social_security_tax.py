@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class employer_social_security_tax(Variable):
     value_type = float
     entity = Person
-    label = "employer-side OASDI payroll tax"
+    label = "Employer-side OASDI payroll tax"
     documentation = "Total liability for employer-side OASDI payroll tax."
     definition_period = YEAR
     unit = USD
