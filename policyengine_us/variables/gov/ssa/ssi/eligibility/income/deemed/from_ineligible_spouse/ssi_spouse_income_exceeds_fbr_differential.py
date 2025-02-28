@@ -22,8 +22,10 @@ class ssi_spouse_income_exceeds_fbr_differential(Variable):
     """
 
     def formula(person, period, parameters):
-        # Check if the person has an ineligible spouse
+        # Check if the person is an eligible individual
         is_eligible = person("is_ssi_eligible_individual", period)
+        
+        # Check if the person has an ineligible spouse in their marital unit
         has_ineligible_spouse = person.marital_unit.any(
             person("is_ssi_ineligible_spouse", period)
         )
@@ -41,17 +43,26 @@ class ssi_spouse_income_exceeds_fbr_differential(Variable):
         fbr_differential = p.couple - p.individual
 
         # Apply exclusions to spouse's income to determine if it exceeds the differential
-        spouse_countable_income = (
-            _apply_ssi_exclusions(
-                spousal_earned_income,
-                spousal_unearned_income,
-                parameters,
-                period,
-            )
-            / MONTHS_IN_YEAR
-        )  # Convert to monthly for comparison with FBR
-
+        # Convert annual income to monthly for the exclusions calculation
+        monthly_earned = spousal_earned_income / MONTHS_IN_YEAR
+        monthly_unearned = spousal_unearned_income / MONTHS_IN_YEAR
+        
+        # First apply general income exclusion to unearned income
+        exclusions = parameters(period).gov.ssa.ssi.income.exclusions
+        unearned_exclusion = min_(exclusions.general, monthly_unearned)
+        countable_monthly_unearned = monthly_unearned - unearned_exclusion
+        
+        # Apply remaining general exclusion to earned income
+        remaining_general_exclusion = exclusions.general - unearned_exclusion
+        earned_exclusion = exclusions.earned + remaining_general_exclusion
+        
+        # Apply earned income exclusion and count 50% of the remainder
+        countable_monthly_earned = max_(0, monthly_earned - earned_exclusion) * (1 - exclusions.earned_share)
+        
+        # Total countable monthly income
+        spouse_countable_monthly_income = countable_monthly_unearned + countable_monthly_earned
+        
         # Return True if spouse's income exceeds the differential threshold
-        exceeds_threshold = spouse_countable_income > fbr_differential
+        exceeds_threshold = spouse_countable_monthly_income > fbr_differential
 
         return is_eligible & has_ineligible_spouse & exceeds_threshold
