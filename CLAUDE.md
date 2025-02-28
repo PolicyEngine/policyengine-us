@@ -9,6 +9,9 @@
 - Run specific YAML tests: `policyengine-core test path/to/tests -c policyengine_us [-v]`
 - Run microsimulation test: `pytest policyengine_us/tests/microsimulation/test_microsim.py`
 - Checkout a PR: `gh pr checkout [PR-NUMBER]`
+- View PR list: `gh pr list` 
+- View PR details: `gh pr view [PR-NUMBER]`
+- Contribute to an existing PR after checkout: Use the GitHub extension in VS Code or `gh pr comment [PR-NUMBER] --body "comment text"`
 
 ## Code Style
 - Python >= 3.10, < 3.13
