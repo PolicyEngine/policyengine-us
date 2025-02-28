@@ -3,7 +3,7 @@ from policyengine_core.periods import period as period_
 from policyengine_core.periods import instant
 
 
-def tax_employer_payroll_reform() -> Reform:
+def tax_employer_payroll_tax_reform() -> Reform:
     """
     General workflow for creating reform:
     1. Make a boolean for the reform under parameters/contrib/{reform name}
@@ -45,10 +45,14 @@ def tax_employer_payroll_reform() -> Reform:
 
     def modify_gross_income_sources(parameters):
         # Parameter class has an .update method
-        parameters.gov.irs.gross_income.sources.update(
-            start=instant("2010-01-01"),
-            value=["employer_social_security_tax", "employer_medicare_tax"],
+        period = instant("2010-01-01")
+        p = parameters.gov.irs.gross_income
+        p.sources.update(
+            start=period,
+            value=p.sources(period)
+            + ["employer_social_security_tax", "employer_medicare_tax"],
         )
+        return parameters
 
     # Create a reform object applies the method
     # It inherits the Reform class
@@ -59,7 +63,7 @@ def tax_employer_payroll_reform() -> Reform:
     return reform
 
 
-def create_tax_employer_payroll_reform(
+def create_tax_employer_payroll_tax_reform(
     parameters, period, bypass: bool = False
 ):
     # Create a create_{reform name} function that initializes the reform object
@@ -68,15 +72,15 @@ def create_tax_employer_payroll_reform(
 
     # 1. If bypass is set to true
     if bypass is True:
-        return tax_employer_payroll_reform()
+        return tax_employer_payroll_tax_reform()
 
     # 2. If boolean in in_effect.yaml is set to true
-    path = parameters.gov.contrib.tax_employer_payroll
+    parameter = parameters.gov.contrib.crfb.tax_employer_payroll_tax
     current_period = period_(period)
     reform_active = False
 
     for i in range(5):
-        if path(current_period).in_effect:
+        if parameter(current_period).in_effect:
             # If in any of the next five years, the boolean is true,
             # set the boolean reform_active to true, and stop the check,
             # i.e., assume the reform is active in all subsequent years.
@@ -86,13 +90,13 @@ def create_tax_employer_payroll_reform(
 
     # if the loop set reform_active to true, return the reform.
     if reform_active:
-        return tax_employer_payroll_reform()
+        return tax_employer_payroll_tax_reform()
     else:
         return None
 
 
 # Create a reform object to by setting bypass to true,
 # for the purpose of running tests
-tax_employer_payroll_reform_object = create_tax_employer_payroll_reform(
-    None, None, bypass=True
+tax_employer_payroll_tax_reform_object = (
+    create_tax_employer_payroll_tax_reform(None, None, bypass=True)
 )
