@@ -18,7 +18,8 @@ class la_federal_tax_deduction(Variable):
         tax_before_refundable_credits = tax_unit(
             "income_tax_before_refundable_credits", period
         )
-        # The deduction is also reduced by the ACA PTC repayment amount
+        # The deduction is also reduced by the ACA PTC repayment amount.
+        # We do not model this as it depends on the advance PTC received throughout the year.
         reductions = add(
             tax_unit,
             period,
