@@ -11,12 +11,11 @@ def tax_employer_payroll_reform() -> Reform:
     2. Create new variables if necessary.
     3. Redefine rule for calculating existing variable (in this case social
     security taxation).
-    4. Add this reform to reforms/reforms.py.
-    """
+    4. Add this reform to reforms/reforms.py (see previous pull requests for
+    syntax).
 
-    """
-    Create a variable with the same name as the variable we are trying to 
-    amend.
+    Specific to this reform:
+    We want to modify how an existing variable is calculated.
     In this case it's "irs_gross_income", as in: 
     "policyengine_us/variables/gov/irs/income/taxable_income/
     adjusted_gross_income/irs_gross_income/irs_gross_income.py"
@@ -28,63 +27,40 @@ def tax_employer_payroll_reform() -> Reform:
     the personal level, 
     we want to add each person's employer contribution to each person, thus 
     we add it to gross income.
+
+    irs_gross_income refers to "parameters/gov/irs/gross_income/sources"
+    to determine which sources of income get added into the variable.
+    We modify that list by adding the two variables we created for this
+    reform: they are employer's payroll taxes for 
+    (i) social security and (ii) medicare.
+    The new variabes are under "variables/gov/irs/tax/payroll
+    /social_security/employer_social_security_tax.py"
+    and "policyengine_us/variables/gov/irs/tax/payroll/medicare/
+    employer_medicare_tax.py"
     """
 
-    class irs_gross_income(Variable):
-        # The input is Variable because policyengine.core functions(?) will
-        # find the variables we name and feed it into this class
+    def modify_gross_income_sources(parameters):
+        # Parameter class has an .update method
+        parameters.gov.irs.gross_income.sources.update(
+            start = instant("2010-01-01"),
+            value = [
+                "employer_social_security_tax", "employer_medicare_tax"
+                ]
+        )
 
-        # The following are attributes copied from the .../irs_gross_income.py
-        value_type = float
-        entity = Person
-        label = "Gross income"
-        unit = USD
-        documentation = "Gross income as defined in the Internal Revenue Code."
-        definition_period = YEAR
-        reference = "https://www.law.cornell.edu/uscode/text/26/61"
+    # Create a reform object applies the method
+    # It inherits the Reform class
+    class reform(Reform):
+        def apply(self):
+            self.modify_parameters(modify_gross_income_sources)
 
-        # the formula is also copied from the .../irs_gross_income.py
-        def formula(person, period, parameters):
-            sources = parameters(period).gov.irs.gross_income.sources
-            total = 0
-            not_dependent = ~person("is_tax_unit_dependent", period)
-            for source in sources:
-                # Add positive values only - losses are deducted later.
-                total += not_dependent * max_(0, add(person, period, [source]))
+    return reform
 
-        # Here we add in the employer side contribution
-
-        # note that we created two new variables for the purpose of this
-        # reform
-        # they respectively measure the amount paid by the employer to a
-        # person for:
-        # (i) social security and (ii) medicare.
-        # they are under "variables/gov/irs/tax/payroll/social_security
-        # /employer_social_security_tax.py"
-        # and "policyengine_us/variables/gov/irs/tax/payroll/medicare/
-        # employer_medicare_tax.py"
-
-        # We update the list of sources counted into personal gross income
-        def modify_parameters(parameters):
-            parameters.gov.irs.gross_income.sources.update(
-                start = instant("2010-01-01"),
-                value = [
-                    "employer_social_security tax", "employer_medicare_tax"
-                    ]
-            )
-
-
-            employer_contribution = add(
-                person,
-                period,
-                ,
-            )
-
-            # Update total to include employer_contribution
-            total += employer_contribution
-
-            return total
-
+def create_tax_employer_payroll_reform(
+    parameters, period, bypass: bool = False
+):
+    # Create a create_{reform name} function that initializes the reform object
+    # There are two sufficient conditions for this function to return
     # the reform
 
     # 1. If bypass is set to true
@@ -114,6 +90,6 @@ def tax_employer_payroll_reform() -> Reform:
 
 # Create a reform object to by setting bypass to true,
 # for the purpose of running tests
-tax_employer_payroll_reform = create_tax_employer_payroll_reform(
+tax_employer_payroll_reform_object = create_tax_employer_payroll_reform(
     None, None, bypass=True
 )
