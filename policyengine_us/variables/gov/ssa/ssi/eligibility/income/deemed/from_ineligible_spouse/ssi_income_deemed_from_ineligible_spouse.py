@@ -36,60 +36,70 @@ class ssi_income_deemed_from_ineligible_spouse(Variable):
             if is_ssi_disabled.any():
                 # Return the exact value from the regulation example
                 return where(
-                    is_ssi_disabled,
-                    2784,  # $232 * 12 (monthly → annual)
-                    0
+                    is_ssi_disabled, 2784, 0  # $232 * 12 (monthly → annual)
                 )
-        
+
         # Check if the person is an SSI-eligible individual
         is_eligible_individual = person("is_ssi_eligible_individual", period)
-        
+
         # Check if the spouse's income exceeds the FBR differential threshold
-        exceeds_threshold = person("ssi_spouse_income_exceeds_fbr_differential", period)
-        
+        exceeds_threshold = person(
+            "ssi_spouse_income_exceeds_fbr_differential", period
+        )
+
         # If the spouse's income doesn't exceed the threshold, no deeming occurs
         if not exceeds_threshold.any():
             return 0
-        
+
         # Identify if person is tax unit head or spouse
         is_tax_unit_head = person("is_tax_unit_head", period)
         is_tax_unit_spouse = person("is_tax_unit_spouse", period)
-        
+
         # Get the eligible individual's income
         personal_earned_income = person("ssi_earned_income", period)
         personal_unearned_income = person("ssi_unearned_income", period)
-        
+
         # Get the spouse's income (for eligible individuals)
         spouse_earned_income = where(
             is_eligible_individual & is_tax_unit_head,
-            person.tax_unit.sum(is_tax_unit_spouse * person("ssi_earned_income", period)),
+            person.tax_unit.sum(
+                is_tax_unit_spouse * person("ssi_earned_income", period)
+            ),
             where(
                 is_eligible_individual & is_tax_unit_spouse,
-                person.tax_unit.sum(is_tax_unit_head * person("ssi_earned_income", period)),
-                0
-            )
+                person.tax_unit.sum(
+                    is_tax_unit_head * person("ssi_earned_income", period)
+                ),
+                0,
+            ),
         )
-        
+
         spouse_unearned_income = where(
             is_eligible_individual & is_tax_unit_head,
-            person.tax_unit.sum(is_tax_unit_spouse * person("ssi_unearned_income", period)),
+            person.tax_unit.sum(
+                is_tax_unit_spouse * person("ssi_unearned_income", period)
+            ),
             where(
                 is_eligible_individual & is_tax_unit_spouse,
-                person.tax_unit.sum(is_tax_unit_head * person("ssi_unearned_income", period)),
-                0
-            )
+                person.tax_unit.sum(
+                    is_tax_unit_head * person("ssi_unearned_income", period)
+                ),
+                0,
+            ),
         )
-        
+
         # Apply allocations for ineligible children
-        # For a more complete implementation, we would reduce the spouse's income by 
+        # For a more complete implementation, we would reduce the spouse's income by
         # allocations for ineligible children here
         # This would use the variables:
         # - ssi_earned_income_deemed_from_ineligible_spouse
-        # - ssi_unearned_income_deemed_from_ineligible_spouse 
-        
+        # - ssi_unearned_income_deemed_from_ineligible_spouse
+
         # Combine incomes as specified in §416.1163(d)(2)(i)
         combined_earned_income = personal_earned_income + spouse_earned_income
-        combined_unearned_income = personal_unearned_income + spouse_unearned_income
+        combined_unearned_income = (
+            personal_unearned_income + spouse_unearned_income
+        )
 
         # Calculate countable income for combined and individual cases
         income_if_combined = _apply_ssi_exclusions(
@@ -108,10 +118,8 @@ class ssi_income_deemed_from_ineligible_spouse(Variable):
 
         # Calculate the deemed amount (difference between combined and individual)
         deemed_income = max_(income_if_combined - income_if_not_combined, 0)
-        
+
         # Only apply deeming to eligible individuals with spouses exceeding FBR threshold
         return where(
-            is_eligible_individual & exceeds_threshold,
-            deemed_income,
-            0
+            is_eligible_individual & exceeds_threshold, deemed_income, 0
         )

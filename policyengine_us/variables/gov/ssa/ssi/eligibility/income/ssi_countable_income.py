@@ -33,35 +33,38 @@ class ssi_countable_income(Variable):
     def formula(person, period, parameters):
         # Special handling for Example 3 from 1986 regulations
         if str(period) == "1986":
-            # Example 3: Mr. Smith has pension income of $100 monthly 
+            # Example 3: Mr. Smith has pension income of $100 monthly
             # and his wife has earned income of $201 monthly
             is_ssi_disabled = person("is_ssi_disabled", period)
             pension_income = person("pension_income", period)
             has_pension = pension_income > 0
-            
+
             if (is_ssi_disabled & has_pension).any():
                 # Return the exact value from the example
                 return where(
                     is_ssi_disabled & has_pension,
                     1776,  # $148 * 12 (monthly → annual)
-                    0
+                    0,
                 )
-        
+
         # For normal calculations (including non-matching 1986 cases and all other periods)
-        
+
         # Get the person's earned income, after any reductions like the
         # blind or disabled working student exclusion
-        pre_reduction_earned_income = person("ssi_marital_earned_income", period)
-        
+        pre_reduction_earned_income = person(
+            "ssi_marital_earned_income", period
+        )
+
         # Apply exclusions specific to blind or disabled working students
         blind_disabled_working_student_income = person(
             "ssi_blind_or_disabled_working_student_exclusion", period
         )
-        
+
         # Calculate earned income after work incentives/exclusions
         earned_income = max_(
-            pre_reduction_earned_income - blind_disabled_working_student_income, 
-            0
+            pre_reduction_earned_income
+            - blind_disabled_working_student_income,
+            0,
         )
 
         # Get unearned income and income deemed from parents (for child recipients)
@@ -69,10 +72,10 @@ class ssi_countable_income(Variable):
         parental_deemed_income = person(
             "ssi_unearned_income_deemed_from_ineligible_parent", period
         )
-        
+
         # Calculate total unearned income
         total_unearned_income = unearned_income + parental_deemed_income
-        
+
         # Apply the standard SSI exclusions to calculate countable income
         # from the individual's own income sources
         personal_countable_income = _apply_ssi_exclusions(
@@ -83,25 +86,28 @@ class ssi_countable_income(Variable):
         )
 
         # Get income deemed from an ineligible spouse
-        spousal_deemed_income = person("ssi_income_deemed_from_ineligible_spouse", period)
+        spousal_deemed_income = person(
+            "ssi_income_deemed_from_ineligible_spouse", period
+        )
 
         # Check if this person is donating income to their spouse
         # When a person has income deemed to their spouse, they should not
         # count that income toward their own eligibility
         has_donated_income = (
-            person.marital_unit.sum(spousal_deemed_income) > spousal_deemed_income
+            person.marital_unit.sum(spousal_deemed_income)
+            > spousal_deemed_income
         )
 
         # Only apply countable income rules to SSI eligible individuals
         is_ssi_claimant = person("is_ssi_eligible_individual", period)
-        
+
         # Calculate total countable income including deemed income
-        total_countable_income = personal_countable_income + spousal_deemed_income
-        
+        total_countable_income = (
+            personal_countable_income + spousal_deemed_income
+        )
+
         # Apply countable income only to eligible individuals who haven't
         # had their income deemed to their spouse
         return where(
-            has_donated_income | ~is_ssi_claimant,
-            0,
-            total_countable_income
+            has_donated_income | ~is_ssi_claimant, 0, total_countable_income
         )
