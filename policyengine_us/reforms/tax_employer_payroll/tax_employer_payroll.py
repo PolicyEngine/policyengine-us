@@ -16,7 +16,7 @@ def tax_employer_payroll_reform() -> Reform:
     5. Add a unit test under tests/contrib/{reform name} 
     if the reform is not just modifying a parameter
     5a. Add unit test for new variables under 
-    tests/baseline/{new variable path}
+    tests/baseline/{new variable's path}
 
     Specific to this reform:
     We want to modify how an existing variable is calculated.
