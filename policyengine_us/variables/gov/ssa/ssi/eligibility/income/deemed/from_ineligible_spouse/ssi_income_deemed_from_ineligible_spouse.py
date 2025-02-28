@@ -24,7 +24,7 @@ class ssi_income_deemed_from_ineligible_spouse(Variable):
     This implementation specifically addresses the regulations in §416.1163(d) regarding
     the comparison to the Federal Benefit Rate (FBR) differential.
     """
-    
+
     # Only calculate for eligible individuals whose ineligible spouse exceeds FBR differential
     defined_for = "ssi_spouse_income_exceeds_fbr_differential"
 
@@ -43,7 +43,9 @@ class ssi_income_deemed_from_ineligible_spouse(Variable):
 
         # Combine incomes as specified in §416.1163(d)(2)(i)
         combined_earned_income = personal_earned_income + spousal_earned_income
-        combined_unearned_income = personal_unearned_income + spousal_unearned_income
+        combined_unearned_income = (
+            personal_unearned_income + spousal_unearned_income
+        )
 
         # Calculate countable income for combined and individual cases
         income_if_combined = _apply_ssi_exclusions(
