@@ -1,0 +1,57 @@
+# Tests for the spouse income FBR differential threshold
+- name: Spouse with income exceeding the FBR differential threshold (2025)
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        is_disabled: true
+        is_tax_unit_spouse: true
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+      person2:
+        age: 60
+        is_disabled: false
+        is_tax_unit_head: true
+        ssi_earned_income: 12_000
+        ssi_unearned_income: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+  output:
+    ssi_spouse_income_exceeds_fbr_differential:
+      2025:
+        - true  # person1 (spouse's income exceeds threshold)
+        - false # person2 (not an eligible individual)
+
+- name: Spouse with income just below the FBR differential threshold (2025)
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        is_disabled: true
+        is_tax_unit_spouse: true
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+      person2:
+        age: 60
+        is_disabled: false
+        is_tax_unit_head: true
+        # Income after exclusions should be just below the FBR differential
+        ssi_earned_income: 4_360
+        ssi_unearned_income: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+  output:
+    ssi_spouse_income_exceeds_fbr_differential:
+      2025:
+        - false # person1 (spouse's income below threshold)
+        - false # person2 (not an eligible individual)

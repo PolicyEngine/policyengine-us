@@ -134,9 +134,29 @@
         members: [person1, person2]
   output:
     ssi_income_deemed_from_ineligible_spouse:
-      2025:
-        - 11_730  # Using the value from CI
-        - 0      # person2
+      2025: [12_000, 0]  # [person1, person2]
+      # Calculation steps for person1 deemed amount:
+      # 1. Check if spouse's income exceeds FBR differential:
+      #    - Spouse earned income: $2,000/month
+      #    - Apply exclusions ($20 general + $65 earned): $2,000 - $85 = $1,915
+      #    - Apply 50% disregard: $1,915 * 0.5 = $957.50 countable
+      #    - FBR differential: $1,450 - $967 = $483
+      #    - $957.50 > $483, so deeming applies
+      # 2. Calculate combined countable income:
+      #    - Combined earned: $300 + $2,000 = $2,300/month
+      #    - Combined unearned: $200 + $0 = $200/month
+      #    - Apply $20 general exclusion to unearned: $200 - $20 = $180
+      #    - Apply $65 earned exclusion: $2,300 - $65 = $2,235
+      #    - Apply 50% disregard: $2,235 * 0.5 = $1,117.50
+      #    - Total countable combined: $180 + $1,117.50 = $1,297.50/month
+      #    - Annual: $1,297.50 * 12 = $15,570
+      # 3. Calculate person's countable income:
+      #    - Apply $20 to unearned: $200 - $20 = $180
+      #    - Apply $65 to earned: $300 - $65 = $235
+      #    - Apply 50% disregard: $235 * 0.5 = $117.50
+      #    - Total countable: $180 + $117.50 = $297.50/month
+      #    - Annual: $297.50 * 12 = $3,570
+      # 4. Deemed amount: $15,570 - $3,570 = $12,000
 
 - name: Spouse with income just below the FBR differential threshold (2025)
   period: 2025

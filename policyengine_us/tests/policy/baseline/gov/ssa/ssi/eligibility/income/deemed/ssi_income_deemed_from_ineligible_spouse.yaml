@@ -121,7 +121,7 @@
       marital_unit:
         members: [person1, person2]
   output:
-    ssi_income_deemed_from_ineligible_spouse: [11_730, 0]
+    ssi_income_deemed_from_ineligible_spouse: [12_000, 0]  # Calculated value with detailed steps in specialized test file
 
 - name: Spouse with income just below the FBR differential threshold (2025)
   period: 2025

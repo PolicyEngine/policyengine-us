@@ -1,4 +1,4 @@
 - bump: minor
   changes:
     fixed:
-      - Fixed incorrect SSI spousal deeming calculation (household with an eligible disabled individual and an ineligible working spouse) that was combining incomes and applying exclusions in the wrong order, resulting in an erroneous annual benefit amount. Updated the formula to properly apply exclusions to the ineligible spouse's income first, then compare to the couple-vs-individual FBR difference per SSI regulations §416.1163, fixing the calculation logic to return the correct amount.
+      - Fixed incorrect SSI spousal deeming calculation by adding the FBR differential threshold check required by SSI regulations §416.1163(d)(1). The deeming now only occurs when the ineligible spouse's income exceeds the difference between couple and individual Federal Benefit Rates, implementing the exact regulatory requirement and fixing the test failures for cases with spouse income below the threshold.

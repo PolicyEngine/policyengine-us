@@ -30,6 +30,11 @@
 - When using `defined_for`, ensure it's tested in microsimulation context
 - Be careful with chained comparisons in formulas - they work with scalars but fail with arrays
 - Prefer explicit vectorized comparison operators joined with `&` and `|`
+- Avoid using `if` checks with `.any()` in variable formulas as they can prevent proper vectorization
+- Use `p = parameters(period).gov.<program>` pattern for accessing parameter trees
+- Break complex calculations into separate variables for better modularity and testing
+- In YAML tests, use `[val1, val2]` array syntax instead of hyphenated lists for output values
+- When updating test values, add detailed calculation steps in comments to document the derivation
 
 ## Testing Best Practices
 - **Unit Tests**: 
