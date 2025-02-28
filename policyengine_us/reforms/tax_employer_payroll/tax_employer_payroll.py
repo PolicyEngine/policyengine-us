@@ -6,13 +6,17 @@ from policyengine_core.periods import instant
 def tax_employer_payroll_reform() -> Reform:
     """
     General workflow for creating reform:
-    1. Make a boolean for the reform under parameters/contrib/{reform_name}
+    1. Make a boolean for the reform under parameters/contrib/{reform name}
     called in_effect.
     2. Create new variables if necessary.
     3. Redefine rule for calculating existing variable (in this case social
     security taxation).
     4. Add this reform to reforms/reforms.py (see previous pull requests for
     syntax).
+    5. Add a unit test under tests/contrib/{reform name} 
+    if the reform is not just modifying a parameter
+    5a. Add unit test for new variables under 
+    tests/baseline/{new variable path}
 
     Specific to this reform:
     We want to modify how an existing variable is calculated.
