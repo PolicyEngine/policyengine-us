@@ -11,7 +11,10 @@
 - Checkout a PR: `gh pr checkout [PR-NUMBER]`
 - View PR list: `gh pr list` 
 - View PR details: `gh pr view [PR-NUMBER]`
-- Contribute to an existing PR after checkout: Use the GitHub extension in VS Code or `gh pr comment [PR-NUMBER] --body "comment text"`
+- Contributing to PRs:
+  - After making code changes, run `make format` to ensure code meets style guidelines
+  - Use `git push` to push changes to the PR branch
+  - Alternatively, use VS Code's "Sync Changes" button in the Source Control panel
 
 ## Code Style
 - Python >= 3.10, < 3.13
