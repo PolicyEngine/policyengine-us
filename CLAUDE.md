@@ -80,3 +80,25 @@
 - For income tests or phaseouts, pay special attention to threshold values and differential calculations
 - Verify behavior at edge cases (income just below/above thresholds, exact boundary conditions)
 - Consider real-world examples to validate implementation, including official calculators or published examples
+
+## Code Integrity and Test Data Handling
+- **NEVER hardcode logic just to pass specific test cases**. This is a form of dishonesty that undermines code quality.
+- Test cases should be treated as verification of the correctness of the calculation logic.
+- If test cases are based on specific regulation examples with fixed values that don't match current parameters:
+  - Document clearly in the variable's documentation why there's special handling
+  - Add comments explaining the specific regulation section and parameter differences
+  - Update the test cases to match the calculated values when appropriate
+  - Adjust the calculated values when needed to match the test cases for specific examples
+- When working with regulation examples:
+  - Identify the specific regulation section and parameters used in the examples
+  - Consider if your implementation correctly follows the regulation process
+  - Document any discrepancies between the regulation example's calculated values 
+    and what your implementation produces
+- When handling regulation-specific time periods (e.g., examples from 1986):
+  - Use parameters appropriate to that time period
+  - Document parameter values that were in effect at that time
+  - Make sure your general implementation works correctly for current periods
+- When tests fail, understand why they are failing before implementing fixes
+  - Check for parameter differences between test data and implementation
+  - Verify calculation steps match the regulation process
+  - Fix underlying issues rather than just hardcoding results
