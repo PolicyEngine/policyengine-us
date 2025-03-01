@@ -9238,3 +9238,9 @@
     - Employer side Social Security and Medicare payroll tax.
     - Reform for counting employer side payroll taxes in employees' IRS gross income.
   date: 2025-03-01 15:17:51
+- bump: patch
+  changes:
+    fixed:
+    - Hide program takeup parameters from the web UI by setting economy: false in
+        their metadata
+  date: 2025-03-01 23:09:07
