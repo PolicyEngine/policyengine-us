@@ -92,6 +92,7 @@ from .states.mt.ctc import (
 from .congress.golden import (
     create_fisc_act_reform,
 )
+from .crfb import create_tax_employer_payroll_tax_reform
 
 from policyengine_core.reforms import Reform
 import warnings
@@ -197,6 +198,9 @@ def create_structural_reforms_from_parameters(parameters, period):
     )
     mt_ctc = create_mt_ctc_reform(parameters, period)
     fisc_act = create_fisc_act_reform(parameters, period)
+    tax_employer_payroll_tax = create_tax_employer_payroll_tax_reform(
+        parameters, period
+    )
 
     reforms = [
         afa_reform,
@@ -237,6 +241,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         nyc_school_tax_credit_with_phase_out,
         mt_ctc,
         fisc_act,
+        tax_employer_payroll_tax,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
 
