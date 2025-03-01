@@ -30,6 +30,9 @@
 - When using `defined_for`, ensure it's tested in microsimulation context
 - Be careful with chained comparisons in formulas - they work with scalars but fail with arrays
 - Prefer explicit vectorized comparison operators joined with `&` and `|`
+- Program takeup is assigned during microdata construction, not simulation time
+  - Changes to takeup parameters (SNAP, EITC, etc.) have no effect in the web app
+  - These parameters should include `economy: false` in their metadata
 
 ## Parameter Validation Best Practices
 - Cross-check parameter values against authoritative external sources (gov websites, calculators)
