@@ -7,3 +7,4 @@ class outpatient_expense(Variable):
     label = "Outpatient expenses"
     unit = USD
     definition_period = YEAR
+    uprating = "calibration.gov.hhs.cms.moop_per_capita"

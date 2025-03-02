@@ -8,7 +8,7 @@
         employment_income: 50_000
     tax_units:
       tax_unit:
-        premium_tax_credit: 0
+        aca_ptc: 0
         members: [person1]
     household:
       members: [person1]
@@ -43,7 +43,7 @@
         is_tax_unit_spouse: true
     tax_units:
       tax_unit:
-        premium_tax_credit: 0
+        aca_ptc: 0
         members: [person1, person2]
     household:
       members: [person1, person2]
@@ -79,7 +79,7 @@
         age: 4
     tax_units:
       tax_unit:
-        premium_tax_credit: 0
+        aca_ptc: 0
         members: [person1, person2, person3]
     household:
       members: [person1, person2, person3]
@@ -111,7 +111,7 @@
         age: 4
     tax_units:
       tax_unit:
-        premium_tax_credit: 0
+        aca_ptc: 0
         members: [person1, person2]
     household:
       members: [person1, person2]
@@ -146,7 +146,7 @@
         age: 4   
     tax_units:
       tax_unit:
-        premium_tax_credit: 0
+        aca_ptc: 0
         members: [person1, person2, person3]
     household:
       members: [person1, person2, person3]

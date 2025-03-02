@@ -21,11 +21,11 @@
   output:
     hi_itemized_deductions: 5_000
 
-- name: Separate, have reduced deduction
+- name: Separate, have reduced deductions
   period: 2022
   input:
     state_code: HI
-    filing_status: JOINT
+    filing_status: SEPARATE
     hi_agi: 166_880
     hi_total_itemized_deductions: 5_000
     hi_reduced_itemized_deductions: 4_500

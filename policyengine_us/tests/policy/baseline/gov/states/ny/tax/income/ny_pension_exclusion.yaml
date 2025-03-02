@@ -1,0 +1,159 @@
+- name: NY pension exclusion for eligible individual
+  period: 2022
+  input:
+    people:
+      person1:
+        taxable_pension_income: 25_000
+        age: 65
+    tax_units:
+      tax_unit:
+        members: [person1]        
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ny_pension_exclusion: 20_000  # Capped at 20,000
+
+- name: NY pension exclusion for ineligible individual (under age)
+  period: 2022
+  input:
+    people:
+      person1:
+        taxable_pension_income: 25_000
+        age: 58
+    tax_units:
+      tax_unit:
+        members: [person1]        
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ny_pension_exclusion: 0  # Below 59½, no exclusion applies
+
+- name: NY pension exclusion for eligible individual with lower pension income
+  period: 2022
+  input:
+    people:
+      person1:
+        taxable_pension_income: 15_000
+        age: 65
+    tax_units:
+      tax_unit:
+        members: [person1]        
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ny_pension_exclusion: 15_000  # Pension income is less than the cap
+
+- name: NY pension exclusion for eligible couple (both over age 59½)
+  period: 2022
+  input:
+    people:
+      person1:
+        taxable_pension_income: 15_000
+        age: 65
+      person2:
+        taxable_pension_income: 10_000
+        age: 60
+    tax_units:
+      tax_unit:
+        members: [person1, person2]        
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    ny_pension_exclusion: [15_000, 10_000]  # Individual exclusions
+
+- name: NY pension exclusion for eligible couple with one spouse under age
+  period: 2022
+  input:
+    people:
+      person1:
+        taxable_pension_income: 15_000
+        age: 65
+      person2:
+        taxable_pension_income: 10_000
+        age: 55
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    ny_pension_exclusion: [15_000, 0]  # One eligible, one ineligible
+
+- name: NY pension exclusion for eligible individual with IRA distribution
+  period: 2022
+  input:
+    people:
+      person1:
+        taxable_pension_income: 20_000  # Combined pension and IRA income        
+        age: 65
+    tax_units:
+      tax_unit:
+        members: [person1]        
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ny_pension_exclusion: 20_000  # Combined pension and IRA distribution, capped at 20,000
+
+- name: NY pension exclusion for eligible individual with lump sum IRA distribution
+  period: 2022
+  input:
+    people:
+      person1:
+        taxable_pension_income: 25_000 # Combined pension and IRA income        
+        age: 65
+    tax_units:
+      tax_unit:
+        members: [person1]        
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ny_pension_exclusion: 20_000  # Combined pension and IRA distribution, capped at 20,000
+
+- name: NY pension exclusion for eligible individual with lump sum Keogh distribution
+  period: 2022
+  input:
+    people:
+      person1:
+        taxable_pension_income: 25_000 # Combined pension and Keogh income         
+        age: 65
+    tax_units:
+      tax_unit:
+        members: [person1]        
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ny_pension_exclusion: 20_000  # Combined pension and Keogh distribution, capped at 20,000
+
+- name: NY pension exclusion for eligible individual with lump sum Keogh distribution and 5-year averaging
+  period: 2022
+  input:
+    people:
+      person1:
+        taxable_pension_income: 10_000        
+        age: 65        
+    tax_units:
+      tax_unit:
+        members: [person1]        
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ny_pension_exclusion: 10_000  # Only pension income, as Keogh with 5-year averaging is ineligible
+
