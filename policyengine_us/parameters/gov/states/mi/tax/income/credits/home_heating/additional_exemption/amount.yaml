@@ -7,6 +7,11 @@ values:
 metadata:
   period: year
   unit: currency-USD
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: nearest
+      interval: 1
   label: Michigan home heating additional base amount per additional exemption
   reference:
     - title: Michigan Section 206.527a, Income Tax Act of 1967(Exerpt)Act 281 of 1967, (1)(a)

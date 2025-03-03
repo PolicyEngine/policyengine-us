@@ -12,6 +12,11 @@ values:
 metadata:
   period: year
   unit: currency-USD
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: nearest
+      interval: 50
   label: Michigan exemption base amount
   reference:
   # Legal code specified $3,700.

@@ -2,6 +2,11 @@ description: Michigan phases its homestead property tax credit out for filers wi
 metadata:
   unit: currency-USD
   period: year
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 100
   label: Michigan homestead property tax credit reduction start
   reference:
     - title: 2022 MI-1040 Instructions

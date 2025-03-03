@@ -2,6 +2,11 @@ description: Michigan limits the homestead property tax credit to filers with pr
 metadata:
   unit: currency-USD
   period: year
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 100
   label: Michigan homestead property tax credit property value limit
   reference:
   - title: Michigan Income Tax Act 206.520 - (1)

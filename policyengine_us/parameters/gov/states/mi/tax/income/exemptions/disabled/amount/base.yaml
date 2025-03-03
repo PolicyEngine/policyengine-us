@@ -10,6 +10,11 @@ values:
 metadata:
   period: year
   unit: currency-USD
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 100
   label: Michigan disabled exemption base amount
   reference:
   # Legal code specified $1,800.

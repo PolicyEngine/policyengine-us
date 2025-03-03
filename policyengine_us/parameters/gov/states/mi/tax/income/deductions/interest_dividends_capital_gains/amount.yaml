@@ -3,6 +3,11 @@ metadata:
   label: Michigan interest, dividends, and capital gains deduction amount  
   period: year
   unit: currency-USD
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: nearest
+      interval: 1
   breakdown:
     - filing_status
   reference:

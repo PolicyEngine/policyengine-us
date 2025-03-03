@@ -3,6 +3,11 @@ metadata:
   type: single_amount
   threshold_unit: people
   amount_unit: currency-USD
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: nearest
+      interval: 1
   label: Michigan standard home heating credit base amount
   reference:
     # The legal code provides inflation undajusted amounts

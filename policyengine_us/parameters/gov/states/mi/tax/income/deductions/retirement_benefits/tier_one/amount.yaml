@@ -2,6 +2,11 @@ description: Michigan provides this tier one retirement and pension benefits amo
 metadata:
   label: Michigan tier one retirement and pension benefits amount  
   period: year
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: nearest
+      interval: 1
   unit: currency-USD
   breakdown:
     - filing_status
