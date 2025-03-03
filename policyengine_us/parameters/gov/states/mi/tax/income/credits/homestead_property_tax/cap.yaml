@@ -2,6 +2,11 @@ description: Michigan caps the homestead property tax credit at this amount.
 metadata:
   unit: currency-USD
   period: year
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 100
   label: Michigan homestead property tax credit cap
   reference:
   - title: 2022 MI-1040 Instructions
