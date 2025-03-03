@@ -16,4 +16,4 @@ class nc_scca_is_school_age(Variable):
         """
         age = person("age", period)
         p = parameters(period).gov.states.nc.ncdhhs.scca.age
-        return (age >= p.school) & (age < p.limit.disabled)
+        return age >= p.school

@@ -37,11 +37,3 @@
     state_code: NC
   output:
     nc_scca_is_school_age: true
-
-- name: Child age 18 is not school age
-  period: 2024
-  input:
-    age: 18
-    state_code: NC
-  output:
-    nc_scca_is_school_age: false
