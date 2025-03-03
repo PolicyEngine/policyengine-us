@@ -12,11 +12,6 @@ JOINT:
     2022-01-01: 343_950
     2023-01-01: 368_900
     2024-01-01: 388_400
-  uprating:
-    parameter: gov.irs.uprating
-    rounding:
-      type: downwards
-      interval: 50
 SINGLE:
   values:
     2013-01-01: 250_000
@@ -30,11 +25,6 @@ SINGLE:
     2022-01-01: 286_600
     2023-01-01: 307_400
     2024-01-01: 323_650
-  uprating:
-    parameter: gov.irs.uprating
-    rounding:
-      type: downwards
-      interval: 50
 SEPARATE:
   values:
     2013-01-01: 150_000
@@ -48,11 +38,6 @@ SEPARATE:
     2022-01-01: 171_975
     2023-01-01: 184_450
     2024-01-01: 194_200
-  uprating:
-    parameter: gov.irs.uprating
-    rounding:
-      type: downwards
-      interval: 50
 HEAD_OF_HOUSEHOLD:
   values:
     2013-01-01: 275_000
@@ -66,11 +51,6 @@ HEAD_OF_HOUSEHOLD:
     2022-01-01: 315_300
     2023-01-01: 338_150
     2024-01-01: 356_000
-  uprating:
-    parameter: gov.irs.uprating
-    rounding:
-      type: downwards
-      interval: 50
 SURVIVING_SPOUSE:
   values:
     2013-01-01: 300_000
@@ -84,17 +64,18 @@ SURVIVING_SPOUSE:
     2022-01-01: 343_950
     2023-01-01: 368_900
     2024-01-01: 388_400
-  uprating:
-    parameter: gov.irs.uprating
-    rounding:
-      type: downwards
-      interval: 50
 metadata:
   label: Virginia itemized deduction applicable amount
   period: year
   unit: currency-USD
   breakdown:
   - filing_status
+  propagate_metadata_to_children: true
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
   reference:
     # Virginia's limit conforms with the federal limit. The federal limit increases with inflation; thus, so does Virginia's.
     - title: 26 U.S. Code § 68 - Overall limitation on itemized deductions (b)(1)

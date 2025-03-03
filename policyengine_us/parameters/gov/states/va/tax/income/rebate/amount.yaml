@@ -1,4 +1,4 @@
-description: Virginia does one-time tax rebates.
+description: Virginia provides a one-time individual income tax rebate of this amount in 2023, based on filing status.
 metadata:
   label: Virginia rebate amount
   period: year
@@ -15,12 +15,22 @@ metadata:
     href: https://www.tax.virginia.gov/rebate 
 
 JOINT:
-  2023-01-01: 400
+  values:
+    2023-01-01: 400
+    2024-01-01: 0
 SINGLE:
-  2023-01-01: 200
+  values:
+    2023-01-01: 200
+    2024-01-01: 0
 SEPARATE:
-  2023-01-01: 200
+  values:
+    2023-01-01: 200
+    2024-01-01: 0
 HEAD_OF_HOUSEHOLD:
-  2023-01-01: 200
+  values:
+    2023-01-01: 200
+    2024-01-01: 0
 SURVIVING_SPOUSE:
-  2023-01-01: 200
+  values:
+    2023-01-01: 200
+    2024-01-01: 0
