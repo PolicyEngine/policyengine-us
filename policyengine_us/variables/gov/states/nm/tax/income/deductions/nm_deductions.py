@@ -21,6 +21,7 @@ from policyengine_us.model_api import (
     where,
 )
 
+
 class nm_salt_addback(Variable):
     """
     New Mexico SALT add-back (PIT-1 line 10).
