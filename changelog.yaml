@@ -9244,3 +9244,9 @@
     - Hide program takeup parameters from the web UI by setting economy: false in
         their metadata
   date: 2025-03-01 23:09:07
+- bump: minor
+  changes:
+    added:
+    - Modified reform for counting employer side payroll taxes in employees' IRS gross
+      income so that Social Security and Medicare can be included separately.
+  date: 2025-03-03 23:06:08
