@@ -3,7 +3,7 @@ from policyengine_core.periods import period as period_
 from policyengine_core.periods import instant
 
 
-def tax_employer_payroll_tax_reform() -> Reform:
+def tax_employer_medicare_tax_reform() -> Reform:
     """
     General workflow for creating reform:
     1. Make a boolean for the reform under parameters/contrib/{reform name}
@@ -11,6 +11,7 @@ def tax_employer_payroll_tax_reform() -> Reform:
     2. Create new variables if necessary.
     3. Redefine rule for calculating existing variable (in this case social
     security taxation).
+    3a. Add an init file to initialize the create_{reform name}_reform function.
     4. Add this reform to reforms/reforms.py (see previous pull requests for
     syntax).
     5. Add a unit test under tests/contrib/{reform name}
@@ -49,8 +50,7 @@ def tax_employer_payroll_tax_reform() -> Reform:
         p = parameters.gov.irs.gross_income
         p.sources.update(
             start=period,
-            value=p.sources(period)
-            + ["employer_social_security_tax", "employer_medicare_tax"],
+            value=p.sources(period) + ["employer_medicare_tax"],
         )
         return parameters
 
@@ -63,7 +63,7 @@ def tax_employer_payroll_tax_reform() -> Reform:
     return reform
 
 
-def create_tax_employer_payroll_tax_reform(
+def create_tax_employer_medicare_tax_reform(
     parameters, period, bypass: bool = False
 ):
     # Create a create_{reform name} function that initializes the reform object
@@ -72,10 +72,10 @@ def create_tax_employer_payroll_tax_reform(
 
     # 1. If bypass is set to true
     if bypass is True:
-        return tax_employer_payroll_tax_reform()
+        return tax_employer_medicare_tax_reform()
 
     # 2. If boolean in in_effect.yaml is set to true
-    parameter = parameters.gov.contrib.crfb.tax_employer_payroll_tax
+    parameter = parameters.gov.contrib.crfb.tax_employer_medicare_tax
     current_period = period_(period)
     reform_active = False
 
@@ -90,13 +90,13 @@ def create_tax_employer_payroll_tax_reform(
 
     # if the loop set reform_active to true, return the reform.
     if reform_active:
-        return tax_employer_payroll_tax_reform()
+        return tax_employer_medicare_tax_reform()
     else:
         return None
 
 
 # Create a reform object to by setting bypass to true,
 # for the purpose of running tests
-tax_employer_payroll_tax_reform_object = (
-    create_tax_employer_payroll_tax_reform(None, None, bypass=True)
+tax_employer_medicare_tax_reform_object = (
+    create_tax_employer_medicare_tax_reform(None, None, bypass=True)
 )
