@@ -7,6 +7,7 @@
     - policyengine_us.reforms.crfb.tax_employer_social_security_tax.tax_employer_social_security_tax_reform_object
   input:
     gov.contrib.crfb.tax_employer_medicare_tax.in_effect: true
+    gov.contrib.crfb.tax_employer_social_security_tax.in_effect: true
     people:
       person1:
         age: 24
