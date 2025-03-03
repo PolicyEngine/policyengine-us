@@ -42,7 +42,9 @@ class nm_salt_addback(Variable):
         itemizes = tax_unit("tax_unit_itemizes", period)
 
         # (1) SALT income portion (federal Sch A, line 5a)
-        fed_salt_income = tax_unit("state_and_local_sales_or_income_tax", period)
+        fed_salt_income = tax_unit(
+            "state_and_local_sales_or_income_tax", period
+        )
 
         # (2) total SALT = SALT income + real_estate_taxes (and possibly personal property if separate)
         fed_real_estate = tax_unit("real_estate_taxes", period)
