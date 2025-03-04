@@ -6,10 +6,7 @@ class nc_scca_age_group(Variable):
     entity = Person
     label = "North Carolina SCCA age group"
     definition_period = YEAR
-    reference = (
-        "https://docs.google.com/spreadsheets/d/1y7p8qkiOrMAM42rtSwT_ZXeA5tzew4edNkrTXACxf4M/edit?gid=1339413807#gid=1339413807"
-        "https://ncchildcare.ncdhhs.gov/Portals/0/documents/pdf/M/Market_Rates_Centers_Eff_10-1.pdf?ver=9w52alSPhmrmo0N9gGVMEw%3d%3d"
-    )
+    reference = "https://ncchildcare.ncdhhs.gov/Portals/0/documents/pdf/M/Market_Rates_Centers_Eff_10-1.pdf?ver=9w52alSPhmrmo0N9gGVMEw%3d%3d"
 
     def formula(person, period, parameters):
         """
@@ -25,12 +22,7 @@ class nc_scca_age_group(Variable):
         p = parameters(period).gov.states.nc.ncdhhs.scca
 
         # School age group is 4 (one more than the maximum value in the age.group parameter)
-        school_age_group = 4
+        SCHOOL_AGE_GROUP = 4
 
-        # Make sure 1 year old child in Group 1
-        adjusted_age = where(age == 1, 0.99, age)
-
-        # Use standard calculation for non-school age, school_age_group for school age
-        return where(
-            is_school_age, school_age_group, p.age.group.calc(adjusted_age)
-        )
+        # Use standard calculation for non-school age, SCHOOL_AGE_GROUP for school age
+        return where(is_school_age, SCHOOL_AGE_GROUP, p.age.group.calc(age))

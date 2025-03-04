@@ -1,3 +1,11 @@
+- name: Child age, 0, group 1 (infant)
+  period: 2024
+  input:
+    age: 0
+    state_code: NC
+  output:
+    nc_scca_age_group: 1
+
 - name: Child age, 0.5, group 1 (infant)
   period: 2024
   input:

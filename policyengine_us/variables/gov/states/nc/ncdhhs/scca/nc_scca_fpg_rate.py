@@ -44,6 +44,6 @@ class nc_scca_fpg_rate(Variable):
         # Only school-age children without special needs: 133% FPL
         return where(
             has_preschool_or_special_needs,
-            p.entry.fpg_limit_preschool,
-            p.entry.fpg_limit_school_age,
+            p.entry.fpg_limit.preschool,
+            p.entry.fpg_limit.school_age,
         )
