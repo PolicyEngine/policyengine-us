@@ -129,11 +129,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Set the bottom bracket to -.inf under the New York Inflation Rebates reform.
 
-## [1.196.0] - 2025-02-14 19:34:59
+## [1.197.0] - 2025-02-14 19:34:59
 
 ### Added
 
 - Kentucky income tax rate 2026.
+
+## [1.196.0] - 2025-02-14 19:14:09
+
+### Added
+
+- Minnesota 2024 State Income Tax Update.
 
 ## [1.195.1] - 2025-02-13 21:40:47
 
@@ -10928,24 +10934,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - First prototype version with a standard deduction variable.
 
 
-
-[1.205.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.204.1...1.205.0
-[1.204.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.204.0...1.204.1
-[1.204.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.203.2...1.204.0
-[1.203.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.203.1...1.203.2
-[1.203.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.203.0...1.203.1
-[1.203.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.202.2...1.203.0
-[1.202.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.202.1...1.202.2
-[1.202.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.202.0...1.202.1
-[1.202.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.201.0...1.202.0
-[1.201.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.200.2...1.201.0
-[1.200.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.200.1...1.200.2
-[1.200.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.200.0...1.200.1
-[1.200.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.199.0...1.200.0
-[1.199.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.198.1...1.199.0
-[1.198.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.198.0...1.198.1
-[1.198.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.197.1...1.198.0
-[1.197.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.197.0...1.197.1
 [1.197.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.196.1...1.197.0
 [1.196.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.196.0...1.196.1
 [1.196.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.195.1...1.196.0
