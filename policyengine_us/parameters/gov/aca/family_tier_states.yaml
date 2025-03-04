@@ -1,0 +1,12 @@
+description: States that use family tier rating rather than summing individual age-rated premiums
+metadata:
+  period: year
+  label: Family tier rating states
+  reference:
+    - title: CMS Market Rating Reforms State Specific Age Curve Variations
+      href: https://www.cms.gov/cciio/programs-and-initiatives/health-insurance-market-reforms/state-rating
+states:
+  NY:
+    2018-01-01: true
+  VT:
+    2018-01-01: true

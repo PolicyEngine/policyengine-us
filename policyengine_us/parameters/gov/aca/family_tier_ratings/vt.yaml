@@ -1,0 +1,17 @@
+description: Family tier multipliers for ACA premium pricing in Vermont
+metadata:
+  period: year
+  unit: /1
+  label: ACA premium family tier multipliers - Vermont
+  reference:
+    - title: CMS Market Rating Reforms State Specific Age Curve Variations
+      href: https://www.cms.gov/cciio/programs-and-initiatives/health-insurance-market-reforms/state-rating
+
+one_adult:
+  2018-01-01: 1.00
+two_adults:
+  2018-01-01: 2.00
+one_adult_and_one_or_more_children:
+  2018-01-01: 1.93
+two_adults_and_one_or_more_children:
+  2018-01-01: 2.81

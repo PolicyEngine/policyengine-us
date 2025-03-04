@@ -1,0 +1,163 @@
+- name: NY single adult
+  period: 2023-01
+  input:
+    people:
+      person1:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code_str: NY
+  output:
+    family_tier_category: one_adult
+
+- name: NY two adults
+  period: 2023-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 32
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code_str: NY
+  output:
+    family_tier_category: two_adults
+
+- name: NY three adults still classified as two_adults
+  period: 2023-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 32
+      person3:
+        age: 35
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code_str: NY
+  output:
+    family_tier_category: two_adults
+
+- name: NY single parent with child
+  period: 2023-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code_str: NY
+  output:
+    family_tier_category: one_adult_and_one_or_more_children
+
+- name: NY two parents with child
+  period: 2023-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 32
+      person3:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code_str: NY
+  output:
+    family_tier_category: two_adults_and_one_or_more_children
+
+- name: NY child only
+  period: 2023-01
+  input:
+    people:
+      person1:
+        age: 15
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code_str: NY
+  output:
+    family_tier_category: child_only
+
+- name: VT single adult
+  period: 2023-01
+  input:
+    people:
+      person1:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code_str: VT
+  output:
+    family_tier_category: one_adult
+
+- name: VT two adults with child
+  period: 2023-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 32
+      person3:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code_str: VT
+  output:
+    family_tier_category: two_adults_and_one_or_more_children
+
+- name: Non-family tier state uses individual age rating
+  period: 2023-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 32
+      person3:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code_str: CA
+  output:
+    family_tier_category: individual_age_rated

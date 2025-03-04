@@ -1,0 +1,19 @@
+description: Age curve factors for ACA premium pricing in New York
+metadata:
+  type: single_amount
+  period: year
+  amount_unit: /1
+  threshold_unit: int
+  label: ACA premium age curve factors - New York
+  reference:
+  - title: CMS Market Rating Reforms State Specific Age Curve Variations
+    href: https://www.cms.gov/cciio/programs-and-initiatives/health-insurance-market-reforms/state-rating
+brackets:
+- threshold:
+    2018-01-01: 0
+  amount:
+    2018-01-01: 0.412
+- threshold:
+    2018-01-01: 21
+  amount:
+    2018-01-01: 1.0

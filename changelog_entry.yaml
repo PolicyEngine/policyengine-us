@@ -1,4 +1,21 @@
 - bump: patch
   changes:
     added:
-    - Added age curve factors for Vermont and New York.
+    - Add support for family tier rating in ACA premium calculations for New York and Vermont.
+    
+      In standard states, individual premium rates vary by age, and family premiums are calculated by summing individual premiums.
+      
+      New York and Vermont use a family tier rating system with standardized multipliers:
+      
+      New York tiers:
+      - One Adult = 1.00
+      - Two Adults = 2.00
+      - One Adult and One or More Children = 1.70
+      - Two Adults and One or More Children = 2.85
+      - Child only = 0.412 (no adults)
+      
+      Vermont tiers:  
+      - One Adult = 1.00
+      - Two Adults = 2.00
+      - One Adult and One or More Children = 1.93
+      - Two Adults and One or More Children = 2.81

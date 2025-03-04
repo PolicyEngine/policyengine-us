@@ -21,8 +21,10 @@ class slcsp_person(Variable):
                 state_code == "MA",
                 state_code == "MN",
                 state_code == "MS",
+                state_code == "NY",
                 state_code == "OR",
                 state_code == "UT",
+                state_code == "VT",
             ],
             [
                 p.al.calc(age),
@@ -30,8 +32,10 @@ class slcsp_person(Variable):
                 p.ma.calc(age),
                 p.mn.calc(age),
                 p.ms.calc(age),
+                p.ny.calc(age),
                 p["or"].calc(age),
                 p.ut.calc(age),
+                p.vt.calc(age),
             ],
             default=p.default.calc(age),
         )
