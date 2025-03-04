@@ -9217,3 +9217,36 @@
     - Expanded Variables Related to LA county SLCSP
     - Fix array comparison in the LA expectant parent payment eligibility formula
   date: 2025-02-24 23:14:08
+- bump: minor
+  changes:
+    added:
+    - Ohio state tax code 2025 updates.
+  date: 2025-02-27 08:40:40
+- bump: patch
+  changes:
+    fixed:
+    - Cap the FISC Act AGI floor at 0.
+  date: 2025-02-28 14:09:09
+- bump: patch
+  changes:
+    fixed:
+    - Louisiana federal tax deduction reduction.
+  date: 2025-02-28 14:57:36
+- bump: minor
+  changes:
+    added:
+    - Employer side Social Security and Medicare payroll tax.
+    - Reform for counting employer side payroll taxes in employees' IRS gross income.
+  date: 2025-03-01 15:17:51
+- bump: patch
+  changes:
+    fixed:
+    - Hide program takeup parameters from the web UI by setting economy: false in
+        their metadata
+  date: 2025-03-01 23:09:07
+- bump: minor
+  changes:
+    added:
+    - Modified reform for counting employer side payroll taxes in employees' IRS gross
+      income so that Social Security and Medicare can be included separately.
+  date: 2025-03-03 23:06:08
