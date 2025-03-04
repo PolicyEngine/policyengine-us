@@ -7,10 +7,11 @@ class amt_income(Variable):
     definition_period = YEAR
     label = "AMT taxable income"
     unit = USD
-    reference = "https://www.law.cornell.edu/uscode/text/26/55#b_2"
+    reference = "https://www.law.cornell.edu/uscode/text/26/56"
 
     adds = [
         "taxable_income",
         "amt_excluded_deductions",
         "amt_separate_addition",
+        "exemptions",
     ]

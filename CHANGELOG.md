@@ -5,6 +5,118 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.205.0] - 2025-03-03 23:06:08
+
+### Added
+
+- Modified reform for counting employer side payroll taxes in employees' IRS gross income so that Social Security and Medicare can be included separately.
+
+## [1.204.1] - 2025-03-01 23:09:07
+
+### Fixed
+
+- {'Hide program takeup parameters from the web UI by setting economy': 'false in their metadata'}
+
+## [1.204.0] - 2025-03-01 15:17:51
+
+### Added
+
+- Employer side Social Security and Medicare payroll tax.
+- Reform for counting employer side payroll taxes in employees' IRS gross income.
+
+## [1.203.2] - 2025-02-28 14:57:36
+
+### Fixed
+
+- Louisiana federal tax deduction reduction.
+
+## [1.203.1] - 2025-02-28 14:09:09
+
+### Fixed
+
+- Cap the FISC Act AGI floor at 0.
+
+## [1.203.0] - 2025-02-27 08:40:40
+
+### Added
+
+- Ohio state tax code 2025 updates.
+
+## [1.202.2] - 2025-02-24 23:14:08
+
+### Added
+
+- CLAUDE.md with development guidelines and common code patterns
+
+### Fixed
+
+- Delete old ACA SLCSP files
+- Expanded Variables Related to LA county SLCSP
+- Fix array comparison in the LA expectant parent payment eligibility formula
+
+## [1.202.1] - 2025-02-24 13:59:24
+
+### Fixed
+
+- Floor the income bracket at 1 in the state_sales_tax variable.
+
+## [1.202.0] - 2025-02-20 19:47:27
+
+### Added
+
+- 2024 Massachusetts State Income Tax Updates.
+
+## [1.201.0] - 2025-02-20 15:41:40
+
+### Added
+
+- Nationwide (except NY and VT) ACA for 2025.
+
+## [1.200.2] - 2025-02-20 15:09:55
+
+### Fixed
+
+- Correct AMT single exemption amount values.
+
+## [1.200.1] - 2025-02-20 13:23:33
+
+### Fixed
+
+- FISC act in effect parameter type.
+
+## [1.200.0] - 2025-02-20 03:56:06
+
+### Added
+
+- New York Pension exclusion Variable.
+- New York Subtraction List Parameter.
+- Added test for New York pension exclusion variable.
+
+## [1.199.0] - 2025-02-19 20:13:32
+
+### Added
+
+- Family Income Supplemental Credit Act reform.
+
+## [1.198.1] - 2025-02-19 20:05:31
+
+### Fixed
+
+- Apply miscellaneous deduction floor.
+- Add miscellaneous deduction to the AMT Income calculation.
+
+## [1.198.0] - 2025-02-18 23:22:33
+
+### Added
+
+- DC 2024 Income Tax Updates.
+
+## [1.197.1] - 2025-02-18 22:33:47
+
+### Added
+
+- Add personal exemptions to the AMT Income calculation.
+
 ## [1.197.0] - 2025-02-17 23:53:42
 
 ### Changed

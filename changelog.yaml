@@ -9155,3 +9155,98 @@
     removed:
     - Over-the-counter expenses from MOOP definition for IRS and SNAP.
   date: 2025-02-17 23:53:42
+- bump: patch
+  changes:
+    added:
+    - Add personal exemptions to the AMT Income calculation.
+  date: 2025-02-18 22:33:47
+- bump: minor
+  changes:
+    added:
+    - DC 2024 Income Tax Updates.
+  date: 2025-02-18 23:22:33
+- bump: patch
+  changes:
+    fixed:
+    - Apply miscellaneous deduction floor.
+    - Add miscellaneous deduction to the AMT Income calculation.
+  date: 2025-02-19 20:05:31
+- bump: minor
+  changes:
+    added:
+    - Family Income Supplemental Credit Act reform.
+  date: 2025-02-19 20:13:32
+- bump: minor
+  changes:
+    added:
+    - New York Pension exclusion Variable.
+    - New York Subtraction List Parameter.
+    - Added test for New York pension exclusion variable.
+  date: 2025-02-20 03:56:06
+- bump: patch
+  changes:
+    fixed:
+    - FISC act in effect parameter type.
+  date: 2025-02-20 13:23:33
+- bump: patch
+  changes:
+    fixed:
+    - Correct AMT single exemption amount values.
+  date: 2025-02-20 15:09:55
+- bump: minor
+  changes:
+    added:
+    - Nationwide (except NY and VT) ACA for 2025.
+  date: 2025-02-20 15:41:40
+- bump: minor
+  changes:
+    added:
+    - 2024 Massachusetts State Income Tax Updates.
+  date: 2025-02-20 19:47:27
+- bump: patch
+  changes:
+    fixed:
+    - Floor the income bracket at 1 in the state_sales_tax variable.
+  date: 2025-02-24 13:59:24
+- bump: patch
+  changes:
+    added:
+    - CLAUDE.md with development guidelines and common code patterns
+    fixed:
+    - Delete old ACA SLCSP files
+    - Expanded Variables Related to LA county SLCSP
+    - Fix array comparison in the LA expectant parent payment eligibility formula
+  date: 2025-02-24 23:14:08
+- bump: minor
+  changes:
+    added:
+    - Ohio state tax code 2025 updates.
+  date: 2025-02-27 08:40:40
+- bump: patch
+  changes:
+    fixed:
+    - Cap the FISC Act AGI floor at 0.
+  date: 2025-02-28 14:09:09
+- bump: patch
+  changes:
+    fixed:
+    - Louisiana federal tax deduction reduction.
+  date: 2025-02-28 14:57:36
+- bump: minor
+  changes:
+    added:
+    - Employer side Social Security and Medicare payroll tax.
+    - Reform for counting employer side payroll taxes in employees' IRS gross income.
+  date: 2025-03-01 15:17:51
+- bump: patch
+  changes:
+    fixed:
+    - Hide program takeup parameters from the web UI by setting economy: false in
+        their metadata
+  date: 2025-03-01 23:09:07
+- bump: minor
+  changes:
+    added:
+    - Modified reform for counting employer side payroll taxes in employees' IRS gross
+      income so that Social Security and Medicare can be included separately.
+  date: 2025-03-03 23:06:08
