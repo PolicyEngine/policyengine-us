@@ -26,6 +26,8 @@ brackets:
       2021-01-01: 0.04
       2022-01-01: 0.0375
   - threshold:
+    # 68 O.S. § 2355(C)(1)(a) defines the bracket structure incrementally.  
+    # $1,000 + $1,500 + $1,250 + $1,150 + $2,300 = $7,200  
       2021-01-01: 7_200
     rate:
       2021-01-01: 0.05
@@ -38,8 +40,6 @@ metadata:
   type: marginal_rate
   label: Oklahoma income tax rates for separate filing units
   reference:
-    - title: Oklahome Tax Rates, Brackets
-      href: https://www.efile.com/oklahoma-tax-brackets-rates-and-forms/
     - title: Oklahoma Statutes
       href: https://www.oscn.net/applications/oscn/DeliverDocument.asp?CiteID=92565
     - title: 2021 Form 511 instructions

@@ -27,6 +27,8 @@ brackets:
       2022-01-01: 0.0375
   - threshold:
       2021-01-01: 12_200
+    # 68 O.S. § 2355(C)(2)(a) defines the bracket structure incrementally.  
+    # $2,000 + $3,000 + $2,500 + $2,300 + $4,600 = $14,400  
       2024-01-01: 14_400
     rate:
       2021-01-01: 0.05
@@ -39,8 +41,6 @@ metadata:
   type: marginal_rate
   label: Oklahoma income tax rates for joint filing units
   reference:
-    - title: Oklahome Tax Rates, Brackets
-      href: https://www.efile.com/oklahoma-tax-brackets-rates-and-forms/
     - title: Oklahoma Statutes
       href: https://www.oscn.net/applications/oscn/DeliverDocument.asp?CiteID=92565
     - title: 2021 Form 511 instructions
