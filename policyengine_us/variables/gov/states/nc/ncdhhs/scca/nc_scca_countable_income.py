@@ -9,4 +9,4 @@ class nc_scca_countable_income(Variable):
     definition_period = MONTH
     reference = "https://policies.ncdhhs.gov/wp-content/uploads/FINAL-Chapter-7-Family-definition-and-determining-income-eligibility-08-05-24.pdf#page=11"
     defined_for = StateCode.NC
-    adds = "gov.states.nc.ncdhhs.scca.income.gross_earned"
+    adds = "gov.states.nc.ncdhhs.scca.income.sources"
