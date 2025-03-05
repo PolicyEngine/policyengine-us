@@ -1,0 +1,27 @@
+description: North Carolina assigns children to these age groups for Subsidized Child Care Assistance.
+
+brackets:
+  - threshold:
+      2022-10-01: 0 # Infant
+    amount:
+      2022-10-01: 1  
+  - threshold:
+      2022-10-01: 1.01 # 2-year-olds
+    amount:
+      2022-10-01: 2 
+  - threshold:
+      2022-10-01: 3 # 3-5 year olds; school age filter assigned later
+    amount:
+      2022-10-01: 3
+
+metadata:
+  type: single_amount
+  amount_unit: bool
+  threshold_unit: year
+  period: year
+  label: North Carolina SCCA age groups
+  reference:
+    - title: Subsidized Child Care Market Rates for Child Care Centers - Effective 10-1-2023
+      href: https://ncchildcare.ncdhhs.gov/Portals/0/documents/pdf/M/Market_Rates_Centers_Eff_10-1.pdf?ver=9w52alSPhmrmo0N9gGVMEw%3d%3d
+    - title: CHAPTER 09 - CHILD CARE RULES - EFFECTIVE JANUARY 1, 2024
+      href: https://ncchildcare.ncdhhs.gov/Portals/0/documents/pdf/C/Chapter_9_Child_Care_Rules_effective_1-1-2024.pdf?ver=Yh7EA3Q_V_dBhSwZ6rcTVg%3D%3D#page=2
