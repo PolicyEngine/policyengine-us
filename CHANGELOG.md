@@ -5,6 +5,49 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.206.0] - 2025-03-04 23:26:22
+
+### Added
+
+- Utah state tax code 2024 updates.
+
+## [1.205.0] - 2025-03-03 23:06:08
+
+### Added
+
+- Modified reform for counting employer side payroll taxes in employees' IRS gross income so that Social Security and Medicare can be included separately.
+
+## [1.204.1] - 2025-03-01 23:09:07
+
+### Fixed
+
+- {'Hide program takeup parameters from the web UI by setting economy': 'false in their metadata'}
+
+## [1.204.0] - 2025-03-01 15:17:51
+
+### Added
+
+- Employer side Social Security and Medicare payroll tax.
+- Reform for counting employer side payroll taxes in employees' IRS gross income.
+
+## [1.203.2] - 2025-02-28 14:57:36
+
+### Fixed
+
+- Louisiana federal tax deduction reduction.
+
+## [1.203.1] - 2025-02-28 14:09:09
+
+### Fixed
+
+- Cap the FISC Act AGI floor at 0.
+
+## [1.203.0] - 2025-02-27 08:40:40
+
+### Added
+
+- Ohio state tax code 2025 updates.
+
 ## [1.202.2] - 2025-02-24 23:14:08
 
 ### Added
@@ -10892,6 +10935,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.206.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.205.0...1.206.0
+[1.205.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.204.1...1.205.0
+[1.204.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.204.0...1.204.1
+[1.204.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.203.2...1.204.0
+[1.203.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.203.1...1.203.2
+[1.203.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.203.0...1.203.1
+[1.203.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.202.2...1.203.0
 [1.202.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.202.1...1.202.2
 [1.202.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.202.0...1.202.1
 [1.202.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.201.0...1.202.0

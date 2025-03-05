@@ -38,6 +38,9 @@
 - For categorization logic, create separate variables for each test (e.g., `is_school_age`) and use them in downstream variables
 - When dynamically determining numeric groups/categories, calculate values rather than hardcoding them (e.g., `max_value + 1`)
 - Structure parameter files to match program documentation and real-world rules to improve maintainability
+- Program takeup is assigned during microdata construction, not simulation time
+  - Changes to takeup parameters (SNAP, EITC, etc.) have no effect in the web app
+  - These parameters should include `economy: false` in their metadata
 
 ## Parameter Structure Best Practices
 - Cross-check parameter values against authoritative external sources (gov websites, calculators)
