@@ -5,6 +5,229 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.206.0] - 2025-03-04 23:26:22
+
+### Added
+
+- Utah state tax code 2024 updates.
+
+## [1.205.0] - 2025-03-03 23:06:08
+
+### Added
+
+- Modified reform for counting employer side payroll taxes in employees' IRS gross income so that Social Security and Medicare can be included separately.
+
+## [1.204.1] - 2025-03-01 23:09:07
+
+### Fixed
+
+- {'Hide program takeup parameters from the web UI by setting economy': 'false in their metadata'}
+
+## [1.204.0] - 2025-03-01 15:17:51
+
+### Added
+
+- Employer side Social Security and Medicare payroll tax.
+- Reform for counting employer side payroll taxes in employees' IRS gross income.
+
+## [1.203.2] - 2025-02-28 14:57:36
+
+### Fixed
+
+- Louisiana federal tax deduction reduction.
+
+## [1.203.1] - 2025-02-28 14:09:09
+
+### Fixed
+
+- Cap the FISC Act AGI floor at 0.
+
+## [1.203.0] - 2025-02-27 08:40:40
+
+### Added
+
+- Ohio state tax code 2025 updates.
+
+## [1.202.2] - 2025-02-24 23:14:08
+
+### Added
+
+- CLAUDE.md with development guidelines and common code patterns
+
+### Fixed
+
+- Delete old ACA SLCSP files
+- Expanded Variables Related to LA county SLCSP
+- Fix array comparison in the LA expectant parent payment eligibility formula
+
+## [1.202.1] - 2025-02-24 13:59:24
+
+### Fixed
+
+- Floor the income bracket at 1 in the state_sales_tax variable.
+
+## [1.202.0] - 2025-02-20 19:47:27
+
+### Added
+
+- 2024 Massachusetts State Income Tax Updates.
+
+## [1.201.0] - 2025-02-20 15:41:40
+
+### Added
+
+- Nationwide (except NY and VT) ACA for 2025.
+
+## [1.200.2] - 2025-02-20 15:09:55
+
+### Fixed
+
+- Correct AMT single exemption amount values.
+
+## [1.200.1] - 2025-02-20 13:23:33
+
+### Fixed
+
+- FISC act in effect parameter type.
+
+## [1.200.0] - 2025-02-20 03:56:06
+
+### Added
+
+- New York Pension exclusion Variable.
+- New York Subtraction List Parameter.
+- Added test for New York pension exclusion variable.
+
+## [1.199.0] - 2025-02-19 20:13:32
+
+### Added
+
+- Family Income Supplemental Credit Act reform.
+
+## [1.198.1] - 2025-02-19 20:05:31
+
+### Fixed
+
+- Apply miscellaneous deduction floor.
+- Add miscellaneous deduction to the AMT Income calculation.
+
+## [1.198.0] - 2025-02-18 23:22:33
+
+### Added
+
+- DC 2024 Income Tax Updates.
+
+## [1.197.1] - 2025-02-18 22:33:47
+
+### Added
+
+- Add personal exemptions to the AMT Income calculation.
+
+## [1.197.0] - 2025-02-17 23:53:42
+
+### Changed
+
+- Uprate medical expense categories by CMS MOOP per capita projections.
+
+## [1.196.1] - 2025-02-14 20:39:21
+
+### Fixed
+
+- Set the bottom bracket to -.inf under the New York Inflation Rebates reform.
+
+## [1.196.0] - 2025-02-14 19:34:59
+
+### Added
+
+- Kentucky income tax rate 2026.
+
+## [1.195.1] - 2025-02-13 21:40:47
+
+### Added
+
+- update the CSFP income limits
+
+## [1.195.0] - 2025-02-13 01:08:09
+
+### Added
+
+- Rename interest_expense to deductible_interest_expense.
+
+## [1.194.0] - 2025-02-13 01:01:20
+
+### Added
+
+- Colorado 2024 tax form references.
+- 2023 and 2024 Colorado Income Qualified Senior Housing Credit.
+- 2024 Colorado ABLE Account Cap.
+- 2023 and 2024 Colorado CollegeInvest Maximum Amount.
+- 2024 Colorado State Sales Tax Refund.
+
+## [1.193.0] - 2025-02-13 00:37:01
+
+### Added
+
+- Kansas State Tax Code 2024 Updates.
+
+## [1.192.2] - 2025-02-12 20:02:57
+
+## [1.192.1] - 2025-02-11 18:25:27
+
+### Fixed
+
+- Create a non_deductible_mortgage_interest variable.
+- Sum deductible and non-deductible interest in the mortgage_interest variable.
+
+## [1.192.0] - 2025-02-11 16:25:15
+
+### Added
+
+- Apply itemized deduction limitations.
+
+## [1.191.0] - 2025-02-10 21:41:56
+
+### Added
+
+- CBO uprating factors for all tax parameters through 2035.
+
+## [1.190.0] - 2025-02-07 21:44:34
+
+### Added
+
+- 2024 North Carolina Income Tax Updates.
+
+## [1.189.0] - 2025-02-06 20:58:56
+
+### Added
+
+- Pennsylvania 2024 income tax updates.
+
+## [1.188.0] - 2025-02-06 10:21:40
+
+### Added
+
+- Refactor the Alternative Minimum Tax (AMT) logic.
+
+## [1.187.3] - 2025-02-05 18:19:06
+
+### Fixed
+
+- Adds 2025 Federal Poverty Guidelines.
+
+## [1.187.2] - 2025-02-05 00:41:13
+
+## [1.187.1] - 2025-02-04 16:24:45
+
+### Fixed
+
+- Revert previous commit.
+
+## [1.187.0] - 2025-02-03 22:12:04
+
+### Added
+
+- January 2025 CBO economic and demographic outlooks.
+
 ## [1.186.0] - 2025-01-31 15:42:23
 
 ### Added
@@ -10712,6 +10935,42 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.206.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.205.0...1.206.0
+[1.205.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.204.1...1.205.0
+[1.204.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.204.0...1.204.1
+[1.204.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.203.2...1.204.0
+[1.203.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.203.1...1.203.2
+[1.203.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.203.0...1.203.1
+[1.203.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.202.2...1.203.0
+[1.202.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.202.1...1.202.2
+[1.202.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.202.0...1.202.1
+[1.202.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.201.0...1.202.0
+[1.201.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.200.2...1.201.0
+[1.200.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.200.1...1.200.2
+[1.200.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.200.0...1.200.1
+[1.200.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.199.0...1.200.0
+[1.199.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.198.1...1.199.0
+[1.198.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.198.0...1.198.1
+[1.198.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.197.1...1.198.0
+[1.197.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.197.0...1.197.1
+[1.197.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.196.1...1.197.0
+[1.196.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.196.0...1.196.1
+[1.196.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.195.1...1.196.0
+[1.195.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.195.0...1.195.1
+[1.195.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.194.0...1.195.0
+[1.194.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.193.0...1.194.0
+[1.193.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.192.2...1.193.0
+[1.192.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.192.1...1.192.2
+[1.192.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.192.0...1.192.1
+[1.192.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.191.0...1.192.0
+[1.191.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.190.0...1.191.0
+[1.190.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.189.0...1.190.0
+[1.189.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.188.0...1.189.0
+[1.188.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.187.3...1.188.0
+[1.187.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.187.2...1.187.3
+[1.187.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.187.1...1.187.2
+[1.187.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.187.0...1.187.1
+[1.187.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.186.0...1.187.0
 [1.186.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.185.0...1.186.0
 [1.185.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.184.0...1.185.0
 [1.184.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.183.1...1.184.0
