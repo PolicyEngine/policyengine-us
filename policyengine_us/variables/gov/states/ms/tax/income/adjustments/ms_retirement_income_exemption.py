@@ -15,7 +15,7 @@ class ms_retirement_income_exemption(Variable):
             person,
             period,
             [
-                "social_security_retirement",
+                "taxable_social_security",
                 "taxable_pension_income",
             ],
         )
