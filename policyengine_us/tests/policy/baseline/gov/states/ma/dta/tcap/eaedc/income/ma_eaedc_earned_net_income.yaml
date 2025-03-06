@@ -1,0 +1,31 @@
+- name: Case 1, $1400 total earned income and $100 dependent care deduction
+  period: 2022
+  input:
+    ma_eaedc_total_earned_income: 1_400
+    ma_eaedc_dependent_care_deduction: 100
+    state_code: MA
+  output:
+    ma_eaedc_earned_net_income: 552.4
+    # (1400-200)/12 = 100
+    # (100-30)*0.33*4 = 92.4
+    # (100-30)*8 = 560
+    # 92.4 + 560 = 652.4
+    # 652.4 - 100 = 552.4
+
+- name: Case 2, $1400 total earned income and $700 dependent care deduction
+  period: 2022
+  input:
+    ma_eaedc_total_earned_income: 1_400
+    ma_eaedc_dependent_care_deduction: 700
+    state_code: MA
+  output:
+    ma_eaedc_earned_net_income: 0
+
+- name: Case 3, $0 total earned income and $0 dependent care deduction
+  period: 2022
+  input:
+    ma_eaedc_total_earned_income: 0
+    ma_eaedc_dependent_care_deduction: 0
+    state_code: MA
+  output:
+    ma_eaedc_earned_net_income: 0

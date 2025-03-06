@@ -5,34 +5,34 @@
     ma_eaedc_assets_limit_eligible: true
     ma_eaedc_elderly_age_eligible: true
     ma_eaedc_caretaker_family_eligible: true
-    ma_eaedc_disabled_eligible: true
-    ma_eaedc_disabled_dependent_earned_income: true
+    ma_eaedc_head_is_disabled: true
+    ma_eaedc_disabled_dependent_criteria_met: true
     state_code: MA
   output:
     ma_eaedc_eligible: true
 
-- name: Case 2, has disabled but disabled income is above cap, ineligible. 
+- name: Case 2, has disabled but disabled dependent criteria not met, ineligible. 
   period: 2022
   input:
     ma_eaedc_income_eligible: true
     ma_eaedc_assets_limit_eligible: true
     ma_eaedc_elderly_age_eligible: false
     ma_eaedc_caretaker_family_eligible: false
-    ma_eaedc_disabled_eligible: true
-    ma_eaedc_disabled_dependent_earned_income: false
+    ma_eaedc_head_is_disabled: true
+    ma_eaedc_disabled_dependent_criteria_met: false
     state_code: MA
   output:
     ma_eaedc_eligible: false
 
-- name: Case 3, has elderly and a disabled, but disabled income is above cap, ineligible. 
+- name: Case 3, has elderly and a disabled, but disabled dependent criteria not met, ineligible. 
   period: 2022
   input:
     ma_eaedc_income_eligible: true
     ma_eaedc_assets_limit_eligible: true
     ma_eaedc_elderly_age_eligible: true
     ma_eaedc_caretaker_family_eligible: false
-    ma_eaedc_disabled_eligible: true
-    ma_eaedc_disabled_dependent_income_eligible: false
+    ma_eaedc_head_is_disabled: true
+    ma_eaedc_disabled_dependent_criteria_met: false
     state_code: MA
   output:
     ma_eaedc_eligible: false
@@ -44,8 +44,8 @@
     ma_eaedc_assets_limit_eligible: true
     ma_eaedc_elderly_age_eligible: true
     ma_eaedc_caretaker_family_eligible: false
-    ma_eaedc_disabled_eligible: false
-    ma_eaedc_disabled_dependent_earned_income: true
+    ma_eaedc_head_is_disabled: false
+    ma_eaedc_disabled_dependent_criteria_met: true
     state_code: MA
   output:
     ma_eaedc_eligible: true

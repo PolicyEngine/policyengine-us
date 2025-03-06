@@ -19,7 +19,7 @@
         members: [person1, person2]
         state_code: MA
   output:  
-    ma_eaedc_disabled_dependent_income_eligible: true
+    ma_eaedc_disabled_dependent_income_eligible: [true, true]
 
 - name: Case 2, has disabled in household but income above cap. 
   period: 2022
@@ -42,7 +42,7 @@
         members: [person1, person2]
         state_code: MA
   output:  
-    ma_eaedc_disabled_dependent_income_eligible: false
+    ma_eaedc_disabled_dependent_income_eligible: [false, true]
 
 - name: Case 3, don't have disabled in household. 
   period: 2022
@@ -65,4 +65,4 @@
         members: [person1, person2]
         state_code: MA
   output:  
-    ma_eaedc_disabled_dependent_income_eligible: true
+    ma_eaedc_disabled_dependent_income_eligible: [true, true]

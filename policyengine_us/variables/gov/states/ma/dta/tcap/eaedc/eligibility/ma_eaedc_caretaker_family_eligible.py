@@ -10,6 +10,7 @@ class ma_eaedc_caretaker_family_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         person = spm_unit.members
-        eligible_person = person("ma_eaedc_dependent_care_deduction_person_eligible",period)
+        eligible_person = person(
+            "ma_eaedc_dependent_care_deduction_person_eligible", period
+        )
         return spm_unit.sum(eligible_person) > 0
-    

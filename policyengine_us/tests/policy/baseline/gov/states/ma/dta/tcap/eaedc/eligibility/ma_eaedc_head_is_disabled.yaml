@@ -1,4 +1,4 @@
-- name: Case 1, head of household is disable. 
+- name: Case 1, head of household is disabled. 
   period: 2022
   input:
     people:
@@ -19,9 +19,9 @@
         members: [person1, person2]
         state_code: MA
   output:  
-    ma_eaedc_disabled_eligible: true
+    ma_eaedc_head_is_disabled: true
 
-- name: Case 2, dependent is disable. 
+- name: Case 2, dependent is disabled but head is not. 
   period: 2022
   input:
     people:
@@ -43,7 +43,7 @@
         members: [person1, person2]
         state_code: MA
   output:  
-    ma_eaedc_disabled_eligible: true
+    ma_eaedc_head_is_disabled: false
 
 - name: Case 3, no disabled in household. 
   period: 2022
@@ -67,4 +67,4 @@
         members: [person1, person2]
         state_code: MA
   output:  
-    ma_eaedc_disabled_eligible: false
+    ma_eaedc_head_is_disabled: false

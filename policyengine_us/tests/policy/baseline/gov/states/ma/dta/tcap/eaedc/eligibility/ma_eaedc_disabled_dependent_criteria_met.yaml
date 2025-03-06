@@ -1,0 +1,86 @@
+- name: No disabled dependents
+  period: 2023
+  input:
+    people:
+      person1:
+        is_disabled: false
+        is_tax_unit_dependent: false
+      person2:
+        is_disabled: false
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: MA
+  output:
+    ma_eaedc_disabled_dependent_criteria_met: [true]
+
+- name: Disabled dependent meets income criteria
+  period: 2023
+  input:
+    people:
+      person1:
+        is_disabled: false
+        is_tax_unit_dependent: false
+      person2:
+        is_disabled: true
+        is_tax_unit_dependent: true
+        ma_eaedc_disabled_dependent_income_eligible: true
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: MA
+  output:
+    ma_eaedc_disabled_dependent_criteria_met: [true]
+
+- name: Disabled dependent does not meet income criteria
+  period: 2023
+  input:
+    people:
+      person1:
+        is_disabled: false
+        is_tax_unit_dependent: false
+      person2:
+        is_disabled: true
+        is_tax_unit_dependent: true
+        ma_eaedc_disabled_dependent_income_eligible: false
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: MA
+  output:
+    ma_eaedc_disabled_dependent_criteria_met: [false]
+
+- name: Multiple disabled dependents, one does not meet income criteria
+  period: 2023
+  input:
+    people:
+      person1:
+        is_disabled: false
+        is_tax_unit_dependent: false
+      person2:
+        is_disabled: true
+        is_tax_unit_dependent: true
+        ma_eaedc_disabled_dependent_income_eligible: true
+      person3:
+        is_disabled: true
+        is_tax_unit_dependent: true
+        ma_eaedc_disabled_dependent_income_eligible: false
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3]
+    households:
+      household1:
+        members: [person1, person2, person3]
+        state_code: MA
+  output:
+    ma_eaedc_disabled_dependent_criteria_met: [false]
