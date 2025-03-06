@@ -5,6 +5,36 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.207.2] - 2025-03-06 14:07:16
+
+### Fixed
+
+- Alabama retirement exemption computation.
+
+## [1.207.1] - 2025-03-06 13:36:02
+
+### Fixed
+
+- Remove Colorado SNAP net income test.
+
+## [1.207.0] - 2025-03-05 14:11:36
+
+### Added
+
+- Implemented North Carolina Subsidized Child Care Assistance (SCCA) program and entry eligibility calculations.
+
+## [1.206.0] - 2025-03-04 23:26:22
+
+### Added
+
+- Utah state tax code 2024 updates.
+
+## [1.205.0] - 2025-03-03 23:06:08
+
+### Added
+
+- Modified reform for counting employer side payroll taxes in employees' IRS gross income so that Social Security and Medicare can be included separately.
+
 ## [1.204.1] - 2025-03-01 23:09:07
 
 ### Fixed
@@ -10923,6 +10953,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.207.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.207.1...1.207.2
+[1.207.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.207.0...1.207.1
+[1.207.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.206.0...1.207.0
+[1.206.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.205.0...1.206.0
+[1.205.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.204.1...1.205.0
 [1.204.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.204.0...1.204.1
 [1.204.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.203.2...1.204.0
 [1.203.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.203.1...1.203.2

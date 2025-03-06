@@ -9244,3 +9244,34 @@
     - Hide program takeup parameters from the web UI by setting economy: false in
         their metadata
   date: 2025-03-01 23:09:07
+- bump: minor
+  changes:
+    added:
+    - Modified reform for counting employer side payroll taxes in employees' IRS gross
+      income so that Social Security and Medicare can be included separately.
+  date: 2025-03-03 23:06:08
+- bump: minor
+  changes:
+    added:
+    - Utah state tax code 2024 updates.
+  date: 2025-03-04 23:26:22
+- bump: minor
+  changes:
+    added:
+    - Implemented North Carolina Subsidized Child Care Assistance (SCCA) program and
+      entry eligibility calculations.
+    improved:
+    - Enhanced NC SCCA by adding school age detection and refactoring age group determination
+      using parameter-based approach.
+    - Fixed parameter format issues to address validation errors in rate_unit format.
+  date: 2025-03-05 14:11:36
+- bump: patch
+  changes:
+    fixed:
+    - Remove Colorado SNAP net income test.
+  date: 2025-03-06 13:36:02
+- bump: patch
+  changes:
+    fixed:
+    - Alabama retirement exemption computation.
+  date: 2025-03-06 14:07:16

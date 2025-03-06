@@ -1,0 +1,39 @@
+- name: Child age 5 is not school age
+  period: 2024
+  input:
+    age: 5
+    state_code: NC
+  output:
+    nc_scca_is_school_age: false
+
+- name: Child age 6 is school age
+  period: 2024
+  input:
+    age: 6
+    state_code: NC
+  output:
+    nc_scca_is_school_age: true
+
+- name: Child age 7 is school age
+  period: 2024
+  input:
+    age: 7
+    state_code: NC
+  output:
+    nc_scca_is_school_age: true
+
+- name: Child age 12 is school age
+  period: 2024
+  input:
+    age: 12
+    state_code: NC
+  output:
+    nc_scca_is_school_age: true
+
+- name: Child age 17 is school age
+  period: 2024
+  input:
+    age: 17
+    state_code: NC
+  output:
+    nc_scca_is_school_age: true

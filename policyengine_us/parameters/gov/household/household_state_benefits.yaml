@@ -19,7 +19,27 @@ values:
     - ne_child_care_subsidies
     # Massachuetts benefits
     - ma_eaedc
-
+  2024-01-01:
+    - state_supplement
+    # Colorado benefits
+    - co_state_supplement
+    - co_oap
+    - co_child_care_subsidies
+    # California benefits
+    - ca_child_care_subsidies
+    - ca_cvrp
+    - ca_care
+    - ca_fera
+    - ca_la_ez_save
+    - ca_la_infant_supplement
+    - ca_la_expectant_parent_payment
+    - ca_capi
+    # Nebraska benefits
+    - ne_child_care_subsidies
+    # North Carolina benefits
+    - nc_scca
+    # Massachuetts benefits
+    - ma_eaedc
 metadata:
   unit: list
   period: year
