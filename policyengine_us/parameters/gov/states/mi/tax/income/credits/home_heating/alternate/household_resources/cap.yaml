@@ -5,9 +5,6 @@ metadata:
   amount_unit: currency-USD
   uprating:
     parameter: gov.irs.uprating
-    rounding:
-      type: nearest
-      interval: 1
   label: Michigan alternate home heating credit household resource cap
   reference:
     # Legal Code diverges from the tax form - here we model the tax form structure

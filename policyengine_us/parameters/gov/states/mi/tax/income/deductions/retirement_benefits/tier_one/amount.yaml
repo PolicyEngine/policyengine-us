@@ -4,9 +4,6 @@ metadata:
   period: year
   uprating:
     parameter: gov.irs.uprating
-    rounding:
-      type: nearest
-      interval: 1
   unit: currency-USD
   breakdown:
     - filing_status
