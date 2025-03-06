@@ -1,7 +1,11 @@
 description: Basic income amounts by age.
 brackets:
   - threshold:
-      2010-01-01: 0
+      values:
+        2010-01-01: 0
+      metadata:
+        label: Young child basic income age
+        unit: year
     amount:
       description: Unconditional payment to young children.
       values:
