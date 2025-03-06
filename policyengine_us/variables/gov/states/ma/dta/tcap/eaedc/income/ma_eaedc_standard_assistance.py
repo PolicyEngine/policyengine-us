@@ -8,9 +8,7 @@ class ma_eaedc_standard_assistance(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.MA
-    reference = (
-        "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-704-440"
-    )
+    reference = "https://www.mass.gov/lists/emergency-aid-to-the-elderly-disabled-and-children-eaedc-grant-calculation"
 
     def formula(spm_unit, period, parameters):
         n = spm_unit("spm_unit_size", period)

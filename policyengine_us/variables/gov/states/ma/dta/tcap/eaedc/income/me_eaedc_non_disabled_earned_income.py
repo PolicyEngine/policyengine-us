@@ -12,3 +12,7 @@ class ma_eaedc_non_disabled_earned_income(Variable):
     def formula(person, period, parameters):
         disabled = person("is_disabled", period)
         return ~disabled * person("ma_eaedc_total_earned_income", period)
+        # rename this to ma_eaedc_non_disabled_dependent_earned_income 
+        # def formula(person, period, parameters):
+        #      return add(spm_unit, period, ["ma_eaedc_total_earned_income" - "eaedc_disabled_dependent_earned_income"]
+            

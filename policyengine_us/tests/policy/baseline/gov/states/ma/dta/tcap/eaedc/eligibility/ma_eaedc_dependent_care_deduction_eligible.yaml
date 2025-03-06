@@ -3,6 +3,7 @@
   input:
     ma_eaedc_total_earned_income: 420
     ma_eaedc_standard_assistance: 410
+    ma_eaedc_caretaker_family_eligible: true
     state_code: MA
   output:
     ma_eaedc_dependent_care_deduction_eligible: true
@@ -12,6 +13,17 @@
   input:
     ma_eaedc_total_earned_income: 400
     ma_eaedc_standard_assistance: 410
+    ma_eaedc_caretaker_family_eligible: true
+    state_code: MA
+  output:
+    ma_eaedc_dependent_care_deduction_eligible: false
+
+- name: Case 3, total earned income above standard assistance, but it's not a caretaker family, ineligible.
+  period: 2022
+  input:
+    ma_eaedc_total_earned_income: 420
+    ma_eaedc_standard_assistance: 410
+    ma_eaedc_caretaker_family_eligible: false
     state_code: MA
   output:
     ma_eaedc_dependent_care_deduction_eligible: false

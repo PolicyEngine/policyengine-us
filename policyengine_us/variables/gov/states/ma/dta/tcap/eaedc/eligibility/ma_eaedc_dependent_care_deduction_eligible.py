@@ -6,7 +6,7 @@ class ma_eaedc_dependent_care_deduction_eligible(Variable):
     entity = SPMUnit
     label = "Eligible for the Massachusetts EAEDC dependent care deduction"
     definition_period = YEAR
-    defined_for = StateCode.MA
+    defined_for = "ma_eaedc_caretaker_family_eligible"
     reference = "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-704-275#(B)"
 
     def formula(spm_unit, period, parameters):

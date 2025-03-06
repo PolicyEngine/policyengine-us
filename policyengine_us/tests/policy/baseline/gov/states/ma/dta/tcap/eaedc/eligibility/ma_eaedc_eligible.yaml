@@ -6,7 +6,7 @@
     ma_eaedc_elderly_age_eligible: true
     ma_eaedc_caretaker_family_eligible: true
     ma_eaedc_disabled_eligible: true
-    ma_eaedc_disabled_income_eligible: true
+    ma_eaedc_disabled_dependent_earned_income: true
     state_code: MA
   output:
     ma_eaedc_eligible: true
@@ -19,7 +19,7 @@
     ma_eaedc_elderly_age_eligible: false
     ma_eaedc_caretaker_family_eligible: false
     ma_eaedc_disabled_eligible: true
-    ma_eaedc_disabled_income_eligible: false
+    ma_eaedc_disabled_dependent_earned_income: false
     state_code: MA
   output:
     ma_eaedc_eligible: false
@@ -32,7 +32,7 @@
     ma_eaedc_elderly_age_eligible: true
     ma_eaedc_caretaker_family_eligible: false
     ma_eaedc_disabled_eligible: true
-    ma_eaedc_disabled_income_eligible: false
+    ma_eaedc_disabled_dependent_income_eligible: false
     state_code: MA
   output:
     ma_eaedc_eligible: false
@@ -45,7 +45,7 @@
     ma_eaedc_elderly_age_eligible: true
     ma_eaedc_caretaker_family_eligible: false
     ma_eaedc_disabled_eligible: false
-    ma_eaedc_disabled_income_eligible: true
+    ma_eaedc_disabled_dependent_earned_income: true
     state_code: MA
   output:
     ma_eaedc_eligible: true

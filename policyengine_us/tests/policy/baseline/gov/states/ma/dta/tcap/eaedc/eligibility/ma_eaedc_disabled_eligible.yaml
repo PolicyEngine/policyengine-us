@@ -1,10 +1,11 @@
-- name: Case 1, has disabled in household. 
+- name: Case 1, head of household is disable. 
   period: 2022
   input:
     people:
       person1:
         is_disabled: true
-        is_tax_unit_dependent: true
+        is_tax_unit_dependent: false
+        is_tax_unit_head: true
       person2:
         is_disabled: false
     spm_units:
@@ -20,13 +21,38 @@
   output:  
     ma_eaedc_disabled_eligible: true
 
-- name: Case 2, no disabled in household. 
+- name: Case 2, dependent is disable. 
   period: 2022
   input:
     people:
       person1:
         is_disabled: false
         is_tax_unit_dependent: false
+        is_tax_unit_head: true
+      person2:
+        is_disabled: true
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+  output:  
+    ma_eaedc_disabled_eligible: true
+
+- name: Case 3, no disabled in household. 
+  period: 2022
+  input:
+    people:
+      person1:
+        is_disabled: false
+        is_tax_unit_dependent: false
+        is_tax_unit_head: true
       person2:
         is_disabled: false
         is_tax_unit_dependent: true

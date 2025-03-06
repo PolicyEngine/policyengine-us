@@ -14,21 +14,22 @@ class ma_eaedc_eligible(Variable):
         elderly_age_eligible = spm_unit(
             "ma_eaedc_elderly_age_eligible", period
         )
-        has_disabled_member = spm_unit("ma_eaedc_disabled_eligible", period)
         caretaker_family_eligible = spm_unit(
             "ma_eaedc_caretaker_family_eligible", period
         )
-        disabled_income_eligible = spm_unit(
-            "ma_eaedc_disabled_income_eligible", period
+        head_is_disabled = spm_unit("ma_eaedc_disabled_eligible", period)
+        dependent_is_disabled = spm_unit("ma_eaedc_disabled_dependent_eligible", period)
+        disabled_dependent_income_eligible = spm_unit(
+            "ma_eaedc_disabled_dependent_income_eligible", period
         )
 
         return (
             (
-                elderly_age_eligible
-                | has_disabled_member
+                elderly_age_eligible 
                 | caretaker_family_eligible
+                | head_is_disabled
             )
+            & (~dependent_is_disabled | disabled_dependent_income_eligible)
             & assets_eligible
             & income_eligible
-            & disabled_income_eligible
         )

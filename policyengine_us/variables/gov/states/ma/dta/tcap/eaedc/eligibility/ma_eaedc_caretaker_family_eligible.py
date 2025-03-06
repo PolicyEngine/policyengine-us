@@ -9,11 +9,7 @@ class ma_eaedc_caretaker_family_eligible(Variable):
     reference = "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-703-700"  # (A)
 
     def formula(spm_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.ma.dta.tcap.eaedc.deductions.dependent_care
         person = spm_unit.members
-        is_dependent = person("is_tax_unit_dependent", period)
-        age = person("age", period)
-        meets_age_limit = age < p.dependent_age_threshold
-        return spm_unit.any(is_dependent & meets_age_limit)
+        eligible_person = person("ma_eaedc_dependent_care_deduction_person_eligible",period)
+        return spm_unit.sum(eligible_person) > 0
+    

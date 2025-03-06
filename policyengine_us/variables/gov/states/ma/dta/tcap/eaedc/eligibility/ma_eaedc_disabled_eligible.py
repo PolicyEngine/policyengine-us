@@ -12,5 +12,5 @@ class ma_eaedc_disabled_eligible(Variable):
     def formula(spm_unit, period, parameters):
         person = spm_unit.members
         is_disabled = person("is_disabled", period)
-        is_dependent = person("is_tax_unit_dependent", period)
-        return spm_unit.any(is_disabled & is_dependent)
+        head = person("is_tax_unit_head", period)
+        return spm_unit.any(is_disabled & head)
