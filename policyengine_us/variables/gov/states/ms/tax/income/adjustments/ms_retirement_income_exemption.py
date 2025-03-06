@@ -7,7 +7,10 @@ class ms_retirement_income_exemption(Variable):
     label = "Mississippi retirement income exemption"
     unit = USD
     definition_period = YEAR
-    reference = "https://law.justia.com/codes/mississippi/title-27/chapter-7/article-1/section-27-7-15/"  # (4)(k)
+    reference = [
+        "https://law.justia.com/codes/mississippi/title-27/chapter-7/article-1/section-27-7-15/", # (4)(k)
+        "https://www.dor.ms.gov/sites/default/files/Forms/Individual/80100221.pdf#page=11", # Line 46
+    ]
     defined_for = StateCode.MS
 
     def formula(person, period, parameters):
