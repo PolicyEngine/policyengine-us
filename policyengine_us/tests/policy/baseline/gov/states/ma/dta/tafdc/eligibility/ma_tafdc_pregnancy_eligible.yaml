@@ -1,0 +1,39 @@
+- name: Eligible non teen parent
+  period: 2023
+  input:
+    is_pregnant: true
+    state_code: MA
+    age: 20
+    current_pregnancy_month: 10
+  output:
+    ma_tafdc_pregnancy_eligible: true
+
+- name: Ineligible non teen parent
+  period: 2023
+  input:
+    is_pregnant: true
+    state_code: MA
+    age: 20
+    current_pregnancy_month: 7
+  output:
+    ma_tafdc_pregnancy_eligible: false
+
+- name: Eligble teen parent
+  period: 2023
+  input:
+    is_pregnant: true
+    state_code: MA
+    age: 19
+    current_pregnancy_month: 7
+  output:
+    ma_tafdc_pregnancy_eligible: true
+
+- name: Not pregnant
+  period: 2023
+  input:
+    is_pregnant: false
+    state_code: MA
+    age: 22
+    current_pregnancy_month: 10
+  output:
+    ma_tafdc_pregnancy_eligible: false

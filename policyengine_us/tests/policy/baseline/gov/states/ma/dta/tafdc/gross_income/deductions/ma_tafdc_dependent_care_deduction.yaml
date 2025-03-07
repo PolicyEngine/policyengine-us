@@ -1,0 +1,44 @@
+- name: Older dependent, 10 hours/week
+  period: 2023-01
+  input:
+    is_tax_unit_dependent: true
+    state_code: MA
+    weekly_hours_worked: 10
+    monthly_age: 2
+    care_expenses: 3_000
+  output:
+    ma_tafdc_dependent_care_deduction: 44
+
+- name: Younger dependent, 10 hours/week
+  period: 2023-01
+  input:
+    is_tax_unit_dependent: true
+    state_code: MA
+    weekly_hours_worked: 10
+    monthly_age: 1
+    care_expenses: 3_000
+  output:
+    ma_tafdc_dependent_care_deduction: 50
+
+
+- name: Capped at care expenses
+  period: 2023-01
+  input:
+    is_tax_unit_dependent: true
+    state_code: MA
+    weekly_hours_worked: 10
+    monthly_age: 2
+    care_expenses: 30
+  output:
+    ma_tafdc_dependent_care_deduction: 30
+
+- name: Older dependent, 60 hours/week
+  period: 2023-01
+  input:
+    is_tax_unit_dependent: true
+    state_code: MA
+    weekly_hours_worked: 60
+    monthly_age: 2
+    care_expenses: 3_000
+  output:
+    ma_tafdc_dependent_care_deduction: 175

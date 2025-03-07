@@ -1,0 +1,17 @@
+- name: Not income eligible
+  period: 2023
+  input:
+    ma_tafdc_gross_income: 2_000
+    state_code: MA
+    ma_tafdc_income_limit: 2_000
+  output:
+    ma_tafdc_income_eligible: false
+
+- name: Income eligible
+  period: 2023
+  input:
+    ma_tafdc_gross_income: 1_999
+    state_code: MA
+    ma_tafdc_income_limit: 2_000
+  output:
+    ma_tafdc_income_eligible: true
