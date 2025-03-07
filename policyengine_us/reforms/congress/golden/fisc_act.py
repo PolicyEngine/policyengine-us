@@ -14,13 +14,26 @@ def create_fisc_act() -> Reform:
 
         def formula(person, period, parameters):
             # Calculate the base amount
+
             is_dependent = person("is_tax_unit_dependent", period)
             age = person("age", period)
+            is_pregnant = person("is_pregnant", period)
+            pregnancy_weeks = person("pregnancy_weeks", period)
+
             p = parameters(
                 period
             ).gov.contrib.congress.golden.fisc_act.family_income_supplement
-            eligible_dependent = (age < p.child_age_limit) & is_dependent
-            return p.amount.base.calc(age) * eligible_dependent
+
+            # Child eligibility
+            eligible_child = (age < p.child_age_limit) & is_dependent
+            child_credit = p.amount.base.calc(age) * eligible_child
+
+            # Pregnancy eligibility (credit applies from 20 weeks onward)
+            eligible_pregnancy = is_pregnant & (
+                pregnancy_weeks >= p.pregnancy_weeks_limit
+            )
+            pregnancy_credit = eligible_pregnancy * p.amount.pregnancy
+            return child_credit + pregnancy_credit
 
     class family_income_supplement_credit(Variable):
         value_type = float
@@ -65,6 +78,7 @@ def create_fisc_act() -> Reform:
             eligible_caregiver_present = tax_unit.any(
                 age_eligible & head_or_spouse
             )
+
             return capped_credit * eligible_caregiver_present
 
     def modify_parameters(parameters):
