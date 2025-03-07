@@ -150,6 +150,7 @@
         slcsp_rating_area: 15
         slcsp_age_0: 244
   output:
+    # These all get zeroed out due to defined_for.
     slcsp_family_tier_category: INDIVIDUAL_AGE_RATED
-    slcsp_family_tier_multiplier: 1.0
+    slcsp_family_tier_multiplier: 0
     slcsp: 773.14  # sum of individual premiums

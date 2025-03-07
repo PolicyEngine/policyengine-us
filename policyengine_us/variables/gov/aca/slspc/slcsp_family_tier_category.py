@@ -17,6 +17,7 @@ class slcsp_family_tier_category(Variable):
     default_value = FamilyTierCategory.INDIVIDUAL_AGE_RATED
     definition_period = MONTH
     label = "ACA family tier category for premium calculation"
+    defined_for = "slcsp_family_tier_applies"
 
     def formula(tax_unit, period, parameters):
         """
@@ -41,21 +42,7 @@ class slcsp_family_tier_category(Variable):
         is_adult = member_ages >= 20
         adult_count = tax_unit.sum(is_adult)
         # More efficient than recounting: total - adults = children
-        child_count = tax_unit.count - adult_count
-
-        # Create state masks once
-        ny_mask = state_code == "NY"
-        vt_mask = state_code == "VT"
-
-        # Create a mask for states that use family tiers (NY or VT)
-        family_tier_state = ny_mask | vt_mask
-
-        # Only calculate conditions for relevant states to improve performance
-        if not np.any(family_tier_state):
-            # No NY or VT households, return default value for all
-            return np.full(
-                tax_unit.count, FamilyTierCategory.INDIVIDUAL_AGE_RATED
-            )
+        child_count = tax_unit("tax_unit_size", period) - adult_count
 
         # Common conditions for both states
         one_adult_no_children = (adult_count == 1) & (child_count == 0)
@@ -64,16 +51,16 @@ class slcsp_family_tier_category(Variable):
         two_plus_adults_with_children = (adult_count >= 2) & (child_count > 0)
 
         # NY-specific condition (child-only households)
-        ny_child_only = ny_mask & (adult_count == 0) & (child_count > 0)
+        ny_child_only = (state_code == "NY") & (adult_count == 0) & (child_count > 0)
 
         return select(
             [
                 # Apply conditions only to family tier states
                 ny_child_only,
-                family_tier_state & one_adult_no_children,
-                family_tier_state & two_plus_adults_no_children,
-                family_tier_state & one_adult_with_children,
-                family_tier_state & two_plus_adults_with_children,
+                one_adult_no_children,
+                two_plus_adults_no_children,
+                one_adult_with_children,
+                two_plus_adults_with_children,
             ],
             [
                 FamilyTierCategory.CHILD_ONLY,

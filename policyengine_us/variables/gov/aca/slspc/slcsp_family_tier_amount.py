@@ -7,9 +7,10 @@ class slcsp_family_tier_amount(Variable):
     label = "ACA family tier premium amount"
     unit = USD
     definition_period = MONTH
+    defined_for = "slcsp_family_tier_applies"
 
     def formula(tax_unit, period, parameters):
-        # Get the base premium (cost for a 21-year-old)
+        # Get the base premium
         base_cost = tax_unit.household("slcsp_age_0", period)
 
         # Get the family tier multiplier based on composition

@@ -8,6 +8,7 @@
       tax_unit:
         members: [person1]
         slcsp_family_tier_category: ONE_ADULT
+        slcsp_family_tier_applies: true
     households:
       household:
         members: [person1]
@@ -28,6 +29,7 @@
       tax_unit:
         members: [person1, person2]
         slcsp_family_tier_category: TWO_ADULTS
+        slcsp_family_tier_applies: true
     households:
       household:
         members: [person1, person2]
@@ -48,6 +50,7 @@
       tax_unit:
         members: [person1, person2]
         slcsp_family_tier_category: ONE_ADULT_AND_ONE_OR_MORE_CHILDREN
+        slcsp_family_tier_applies: true
     households:
       household:
         members: [person1, person2]
@@ -70,6 +73,7 @@
       tax_unit:
         members: [person1, person2, person3]
         slcsp_family_tier_category: TWO_ADULTS_AND_ONE_OR_MORE_CHILDREN
+        slcsp_family_tier_applies: true
     households:
       household:
         members: [person1, person2, person3]
@@ -88,6 +92,7 @@
       tax_unit:
         members: [person1]
         slcsp_family_tier_category: CHILD_ONLY
+        slcsp_family_tier_applies: true
     households:
       household:
         members: [person1]
@@ -106,6 +111,7 @@
       tax_unit:
         members: [person1]
         slcsp_family_tier_category: ONE_ADULT
+        slcsp_family_tier_applies: true
     households:
       household:
         members: [person1]
@@ -126,6 +132,7 @@
       tax_unit:
         members: [person1, person2]
         slcsp_family_tier_category: TWO_ADULTS
+        slcsp_family_tier_applies: true
     households:
       household:
         members: [person1, person2]
@@ -146,6 +153,7 @@
       tax_unit:
         members: [person1, person2]
         slcsp_family_tier_category: ONE_ADULT_AND_ONE_OR_MORE_CHILDREN
+        slcsp_family_tier_applies: true
     households:
       household:
         members: [person1, person2]
@@ -168,6 +176,7 @@
       tax_unit:
         members: [person1, person2, person3]
         slcsp_family_tier_category: TWO_ADULTS_AND_ONE_OR_MORE_CHILDREN
+        slcsp_family_tier_applies: true
     households:
       household:
         members: [person1, person2, person3]
@@ -175,4 +184,3 @@
         state_fips: 50
   output:
     slcsp_family_tier_multiplier: 2.81
-
