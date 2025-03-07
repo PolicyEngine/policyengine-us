@@ -14,8 +14,15 @@ class slcsp_person(Variable):
         base_cost = person.household("slcsp_age_0", period)
 
         p = parameters(period).gov.aca.age_curves
+        
+        # Handle VT separately since it uses a simple value, not a bracket structure
+        is_vt = state_code == "VT"
+        vt_value = p.vt
+        
+        # Handle other states with regular bracket structures
         multiplier = select(
             [
+                is_vt,
                 state_code == "AL",
                 state_code == "DC",
                 state_code == "MA",
@@ -24,9 +31,9 @@ class slcsp_person(Variable):
                 state_code == "NY",
                 state_code == "OR",
                 state_code == "UT",
-                state_code == "VT",
             ],
             [
+                vt_value,
                 p.al.calc(age),
                 p.dc.calc(age),
                 p.ma.calc(age),
@@ -35,7 +42,6 @@ class slcsp_person(Variable):
                 p.ny.calc(age),
                 p["or"].calc(age),
                 p.ut.calc(age),
-                p.vt.calc(age),
             ],
             default=p.default.calc(age),
         )

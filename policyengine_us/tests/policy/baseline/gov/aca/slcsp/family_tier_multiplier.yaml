@@ -7,13 +7,13 @@
     tax_units:
       tax_unit:
         members: [person1]
-        family_tier_category: one_adult
+        slcsp_family_tier_category: ONE_ADULT
     households:
       household:
         members: [person1]
         state_code_str: NY
   output:
-    family_tier_multiplier: 1.0
+    slcsp_family_tier_multiplier: 1.0
 
 - name: NY two adults multiplier
   period: 2023-01
@@ -26,13 +26,13 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
-        family_tier_category: two_adults
+        slcsp_family_tier_category: TWO_ADULTS
     households:
       household:
         members: [person1, person2]
         state_code_str: NY
   output:
-    family_tier_multiplier: 2.0
+    slcsp_family_tier_multiplier: 2.0
 
 - name: NY single parent with child multiplier
   period: 2023-01
@@ -45,13 +45,13 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
-        family_tier_category: one_adult_and_one_or_more_children
+        slcsp_family_tier_category: ONE_ADULT_AND_ONE_OR_MORE_CHILDREN
     households:
       household:
         members: [person1, person2]
         state_code_str: NY
   output:
-    family_tier_multiplier: 1.7
+    slcsp_family_tier_multiplier: 1.7
 
 - name: NY family multiplier
   period: 2023-01
@@ -66,13 +66,13 @@
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
-        family_tier_category: two_adults_and_one_or_more_children
+        slcsp_family_tier_category: TWO_ADULTS_AND_ONE_OR_MORE_CHILDREN
     households:
       household:
         members: [person1, person2, person3]
         state_code_str: NY
   output:
-    family_tier_multiplier: 2.85
+    slcsp_family_tier_multiplier: 2.85
 
 - name: NY child only multiplier
   period: 2023-01
@@ -83,13 +83,13 @@
     tax_units:
       tax_unit:
         members: [person1]
-        family_tier_category: child_only
+        slcsp_family_tier_category: CHILD_ONLY
     households:
       household:
         members: [person1]
         state_code_str: NY
   output:
-    family_tier_multiplier: 0.412
+    slcsp_family_tier_multiplier: 0.412
 
 - name: VT single adult multiplier
   period: 2023-01
@@ -100,13 +100,13 @@
     tax_units:
       tax_unit:
         members: [person1]
-        family_tier_category: one_adult
+        slcsp_family_tier_category: ONE_ADULT
     households:
       household:
         members: [person1]
         state_code_str: VT
   output:
-    family_tier_multiplier: 1.0
+    slcsp_family_tier_multiplier: 1.0
 
 - name: VT two adults multiplier
   period: 2023-01
@@ -119,13 +119,13 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
-        family_tier_category: two_adults
+        slcsp_family_tier_category: TWO_ADULTS
     households:
       household:
         members: [person1, person2]
         state_code_str: VT
   output:
-    family_tier_multiplier: 2.0
+    slcsp_family_tier_multiplier: 2.0
 
 - name: VT single parent with child multiplier
   period: 2023-01
@@ -138,13 +138,13 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
-        family_tier_category: one_adult_and_one_or_more_children
+        slcsp_family_tier_category: ONE_ADULT_AND_ONE_OR_MORE_CHILDREN
     households:
       household:
         members: [person1, person2]
         state_code_str: VT
   output:
-    family_tier_multiplier: 1.93
+    slcsp_family_tier_multiplier: 1.93
 
 - name: VT family multiplier
   period: 2023-01
@@ -159,13 +159,13 @@
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
-        family_tier_category: two_adults_and_one_or_more_children
+        slcsp_family_tier_category: TWO_ADULTS_AND_ONE_OR_MORE_CHILDREN
     households:
       household:
         members: [person1, person2, person3]
         state_code_str: VT
   output:
-    family_tier_multiplier: 2.81
+    slcsp_family_tier_multiplier: 2.81
 
 - name: Non-family tier state uses default multiplier
   period: 2023-01
@@ -180,10 +180,10 @@
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
-        family_tier_category: individual_age_rated
+        slcsp_family_tier_category: INDIVIDUAL_AGE_RATED
     households:
       household:
         members: [person1, person2, person3]
         state_code_str: CA
   output:
-    family_tier_multiplier: 1.0
+    slcsp_family_tier_multiplier: 1.0
