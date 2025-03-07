@@ -9255,3 +9255,28 @@
     added:
     - Utah state tax code 2024 updates.
   date: 2025-03-04 23:26:22
+- bump: minor
+  changes:
+    added:
+    - Implemented North Carolina Subsidized Child Care Assistance (SCCA) program and
+      entry eligibility calculations.
+    improved:
+    - Enhanced NC SCCA by adding school age detection and refactoring age group determination
+      using parameter-based approach.
+    - Fixed parameter format issues to address validation errors in rate_unit format.
+  date: 2025-03-05 14:11:36
+- bump: patch
+  changes:
+    fixed:
+    - Remove Colorado SNAP net income test.
+  date: 2025-03-06 13:36:02
+- bump: patch
+  changes:
+    fixed:
+    - Alabama retirement exemption computation.
+  date: 2025-03-06 14:07:16
+- bump: patch
+  changes:
+    changed:
+    - Adjust the Infant age group definition for North Carolina SCCA program.
+  date: 2025-03-07 00:26:43
