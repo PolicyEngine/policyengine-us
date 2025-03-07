@@ -1,0 +1,26 @@
+- name: Oregon LIHEAP Income Range 3 for a 2-Person Household (2021)
+  period: 2021
+  input:
+    spm_unit_size: 2
+    state_code: OR
+    irs_gross_income: 25_000
+  output:
+    or_liheap_income_range: 3
+
+- name: Oregon LIHEAP Income Range 4 for a 6-Person Household (2024)
+  period: 2024
+  input:
+    spm_unit_size: 6
+    state_code: OR
+    irs_gross_income: 65_000
+  output:
+    or_liheap_income_range: 4
+
+- name: Oregon LIHEAP Income Range 1 for a 10-Person Household (2023)
+  period: 2023
+  input:
+    spm_unit_size: 10
+    state_code: OR
+    irs_gross_income: 20_000
+  output:
+    or_liheap_income_range: 1
