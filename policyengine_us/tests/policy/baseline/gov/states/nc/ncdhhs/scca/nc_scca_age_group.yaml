@@ -1,0 +1,87 @@
+- name: Child age, 0, group 1 (infant)
+  period: 2024
+  input:
+    age: 0
+    state_code: NC
+  output:
+    nc_scca_age_group: 1
+
+- name: Child age, 0.5, group 1 (infant)
+  period: 2024
+  input:
+    age: 0.5
+    state_code: NC
+  output:
+    nc_scca_age_group: 1
+
+- name: Child age, 1, group 1 (infant)
+  period: 2024
+  input:
+    age: 1
+    state_code: NC
+  output:
+    nc_scca_age_group: 1
+
+- name: Child age, 1.5, group 1 (infant)
+  period: 2024
+  input:
+    age: 1.5
+    state_code: NC
+  output:
+    nc_scca_age_group: 1
+
+- name: Child age, 2, group 2 (toddler)
+  period: 2024
+  input:
+    age: 2
+    state_code: NC
+  output:
+    nc_scca_age_group: 2
+
+- name: Child age, 2.5, group 2 (toddler)
+  period: 2024
+  input:
+    age: 2.5
+    state_code: NC
+  output:
+    nc_scca_age_group: 2
+
+- name: Child age, 3, group 3 (preschooler)
+  period: 2024
+  input:
+    age: 3
+    state_code: NC
+  output:
+    nc_scca_age_group: 3
+
+- name: Child age, 5, group 3 (preschooler)
+  period: 2024
+  input:
+    age: 5
+    state_code: NC
+  output:
+    nc_scca_age_group: 3
+
+- name: Child age, 5.5, group 3 (preschooler)
+  period: 2024
+  input:
+    age: 5.5
+    state_code: NC
+  output:
+    nc_scca_age_group: 3
+
+- name: Child age, 6, group 4 (school age)
+  period: 2024
+  input:
+    age: 6
+    state_code: NC
+  output:
+    nc_scca_age_group: 4
+
+- name: Child age, 12, group 4 (school age)
+  period: 2024
+  input:
+    age: 12
+    state_code: NC
+  output:
+    nc_scca_age_group: 4

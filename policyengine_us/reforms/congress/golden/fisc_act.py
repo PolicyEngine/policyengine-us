@@ -55,7 +55,7 @@ def create_fisc_act() -> Reform:
             phased_out_amount = max_(
                 base_amount_with_marriage_bonus - phase_out, 0
             )
-            agi_threshold = p.agi_fraction * agi
+            agi_threshold = max_(0, p.agi_fraction * agi)
             capped_credit = min_(phased_out_amount, agi_threshold)
             # The credit is limited to eligible caregivers
             person = tax_unit.members
