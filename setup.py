@@ -7,7 +7,7 @@ with open("README.md", "r") as readme_file:
 
 setup(
     name="policyengine-us",
-    version="1.201.0",
+    version="1.207.4",
     author="PolicyEngine",
     author_email="hello@policyengine.org",
     long_description=readme,
