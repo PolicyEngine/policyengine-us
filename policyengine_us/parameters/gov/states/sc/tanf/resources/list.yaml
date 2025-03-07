@@ -1,0 +1,22 @@
+description: South Carolina accounts for the following resources under the TANF program.
+values:
+  2021-01-01:
+    - spm_unit_cash_assets
+    - retirement_distributions
+    #- Lump sum payments
+    #- Prepaid burial contract
+    #- Refunds of security deposits
+    #- Revocable trust account
+    #- Saving certificate
+    #- Stocks/bonds
+    #- Building(s) not associated with homestead
+    #- Non-hoestead property
+
+metadata:
+  unit: list
+  period: year
+  label: South Carolina TANF household resources
+  reference:
+    - title: The South Carolina Department of Social Services TANF Policy Manual 
+      href: https://dss.sc.gov/media/3926/tanf_policy_manual_vol-60.pdf#page=91
+      
