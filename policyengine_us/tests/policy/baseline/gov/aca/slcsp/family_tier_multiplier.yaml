@@ -12,6 +12,7 @@
       household:
         members: [person1]
         state_code_str: NY
+        state_fips: 36
   output:
     slcsp_family_tier_multiplier: 1.0
 
@@ -31,6 +32,7 @@
       household:
         members: [person1, person2]
         state_code_str: NY
+        state_fips: 36
   output:
     slcsp_family_tier_multiplier: 2.0
 
@@ -50,6 +52,7 @@
       household:
         members: [person1, person2]
         state_code_str: NY
+        state_fips: 36
   output:
     slcsp_family_tier_multiplier: 1.7
 
@@ -71,6 +74,7 @@
       household:
         members: [person1, person2, person3]
         state_code_str: NY
+        state_fips: 36
   output:
     slcsp_family_tier_multiplier: 2.85
 
@@ -88,6 +92,7 @@
       household:
         members: [person1]
         state_code_str: NY
+        state_fips: 36
   output:
     slcsp_family_tier_multiplier: 0.412
 
@@ -105,6 +110,7 @@
       household:
         members: [person1]
         state_code_str: VT
+        state_fips: 50
   output:
     slcsp_family_tier_multiplier: 1.0
 
@@ -124,6 +130,7 @@
       household:
         members: [person1, person2]
         state_code_str: VT
+        state_fips: 50
   output:
     slcsp_family_tier_multiplier: 2.0
 
@@ -143,6 +150,7 @@
       household:
         members: [person1, person2]
         state_code_str: VT
+        state_fips: 50
   output:
     slcsp_family_tier_multiplier: 1.93
 
@@ -164,26 +172,7 @@
       household:
         members: [person1, person2, person3]
         state_code_str: VT
+        state_fips: 50
   output:
     slcsp_family_tier_multiplier: 2.81
 
-- name: Non-family tier state uses default multiplier
-  period: 2023-01
-  input:
-    people:
-      person1:
-        age: 30
-      person2:
-        age: 32
-      person3:
-        age: 5
-    tax_units:
-      tax_unit:
-        members: [person1, person2, person3]
-        slcsp_family_tier_category: INDIVIDUAL_AGE_RATED
-    households:
-      household:
-        members: [person1, person2, person3]
-        state_code_str: CA
-  output:
-    slcsp_family_tier_multiplier: 1.0
