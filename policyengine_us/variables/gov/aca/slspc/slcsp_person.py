@@ -4,9 +4,10 @@ from policyengine_us.model_api import *
 class slcsp_person(Variable):
     value_type = float
     entity = Person
-    label = "Second-lowest ACA silver-plan cost"
+    label = "Second-lowest ACA silver-plan cost, for people in age curve states"
     unit = USD
     definition_period = MONTH
+    defined_for = "slcsp_age_curve_applies"
 
     def formula(person, period, parameters):
         state_code = person.household("state_code_str", period)
@@ -14,6 +15,8 @@ class slcsp_person(Variable):
         base_cost = person.household("slcsp_age_0", period)
 
         p = parameters(period).gov.aca.age_curves
+        
+        # Handle other states with regular bracket structures
         multiplier = select(
             [
                 state_code == "AL",

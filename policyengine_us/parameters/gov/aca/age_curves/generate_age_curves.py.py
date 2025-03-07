@@ -2,6 +2,7 @@ import yaml
 import os
 
 
+# generate age curve yamls for all states except NY and VT
 def create_age_curve_yamls():
     # Define all state data
     state_data = {

@@ -7,5 +7,4 @@ class slcsp(Variable):
     label = "Second-lowest ACA silver-plan cost"
     unit = USD
     definition_period = MONTH
-
-    adds = ["slcsp_person"]
+    adds = ["slcsp_person", "slcsp_family_tier_amount"]
