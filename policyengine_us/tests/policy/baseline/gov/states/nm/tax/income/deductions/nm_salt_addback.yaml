@@ -1,0 +1,80 @@
+# =============================================================================
+# nm_salt_addback.yaml
+#
+# Tests for the new nm_salt_addback variable (replaces nm_itemized_deductions).
+# These closely match the old "nm_itemized_deductions.yaml" inputs,
+# but we now:
+#   - Provide federal_itemized_deduction so line 10 can be computed.
+#   - Expect 'nm_salt_addback' in outputs, not nm_itemized_deductions.
+# =============================================================================
+
+- name: NM SALT addback unit test 1
+  period: 2021
+  absolute_error_margin: 1
+  input:
+    filing_status: SINGLE
+    tax_unit_itemizes: true
+    state_and_local_sales_or_income_tax: 5000
+    real_estate_taxes: 7500
+    standard_deduction: 5000
+    federal_itemized_deduction: 12000  # So difference = 12000 - 5000 = 7000
+    state_code: NM
+  output:
+    nm_salt_addback: 4000
+
+- name: NM SALT addback unit test 2
+  period: 2021
+  absolute_error_margin: 1
+  input:
+    filing_status: SINGLE
+    tax_unit_itemizes: true
+    state_and_local_sales_or_income_tax: 5000
+    real_estate_taxes: 0
+    standard_deduction: 2000
+    federal_itemized_deduction: 5000   # difference = 5000 - 2000 = 3000
+    state_code: NM
+  output:
+    nm_salt_addback: 3000
+
+- name: NM SALT addback unit test 3
+  period: 2021
+  absolute_error_margin: 1
+  input:
+    filing_status: SEPARATE
+    tax_unit_itemizes: true
+    state_and_local_sales_or_income_tax: 7500
+    real_estate_taxes: 0
+    standard_deduction: 2000
+    federal_itemized_deduction: 5000   # difference = 5000 - 2000 = 3000
+    state_code: NM
+  output:
+    nm_salt_addback: 3000
+
+- name: NM SALT addback unit test 4
+  period: 2021
+  absolute_error_margin: 1
+  input:
+    filing_status: SINGLE
+    tax_unit_itemizes: true
+    state_and_local_sales_or_income_tax: 0
+    real_estate_taxes: 0
+    standard_deduction: 2000
+    federal_itemized_deduction: 5000   # difference = 3000
+    state_code: NM
+  output:
+    nm_salt_addback: 0
+
+- name: NM SALT addback unit test 5
+  period: 2021
+  absolute_error_margin: 1
+  input:
+    filing_status: SINGLE
+    tax_unit_itemizes: false
+    state_and_local_sales_or_income_tax: 7500
+    real_estate_taxes: 0
+    standard_deduction: 2000
+    # federal_itemized_deduction can be anything, but won't matter if itemizes=false
+    federal_itemized_deduction: 9999
+    state_code: NM
+  output:
+    nm_salt_addback: 0
