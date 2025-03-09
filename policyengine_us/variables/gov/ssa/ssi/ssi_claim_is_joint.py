@@ -1,4 +1,3 @@
-# File: policyengine_us/variables/gov/ssa/ssi/ssi_claim_is_joint.py
 from policyengine_us.model_api import *
 
 

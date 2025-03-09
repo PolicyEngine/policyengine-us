@@ -1,5 +1,3 @@
-# File: policyengine_us/variables/gov/ssa/ssi/eligibility/income/deemed/from_ineligible_spouse/ssi_spouse_income_exceeds_fbr_differential.py
-
 from policyengine_us.model_api import *
 
 
