@@ -1,4 +1,4 @@
-# File: policyengine_us/variables/gov/ssa/ssi/eligibility/income/deemed/from_ineligible_spouse/ssi_income_deemed_from_ineligible_spouse.py
+# policyengine_us/variables/gov/ssa/ssi/eligibility/income/deemed/from_ineligible_spouse/ssi_income_deemed_from_ineligible_spouse.py
 
 from policyengine_us.model_api import *
 from policyengine_us.variables.gov.ssa.ssi.eligibility.income._apply_ssi_exclusions import (
@@ -10,48 +10,51 @@ class ssi_income_deemed_from_ineligible_spouse(Variable):
     value_type = float
     entity = Person
     label = "SSI income (deemed from ineligible spouse)"
-    unit = USD
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/cfr/text/20/416.1163"
     documentation = """
-    Matches the test expectations for spousal deeming:
-      - If leftover spouse income <= (coupleFBR - indivFBR), no deeming => 0
-      - Else, the entire 'combined countable' income is deemed to the individual
-        (rather than just the difference). This yields 1986 Example 3 -> 1776.
+    Spousal deeming: 
+      1) If leftover spouse income <= (coupleFBR - indivFBR), then 0 is deemed.
+      2) Otherwise, spouse's deemed = (couple combined countable) - (individual alone countable).
+         This yields 816 for 1986 Example 3 and 12000 for the 2025 test.
     """
 
     def formula(person, period, parameters):
-        # Earned/unearned leftover from ineligible spouse AFTER child allocations
+        # 1. Sum leftover spouse earned/unearned (post-child allocations).
         spouse_earned = person(
             "ssi_earned_income_deemed_from_ineligible_spouse", period
         )
         spouse_unearned = person(
             "ssi_unearned_income_deemed_from_ineligible_spouse", period
         )
-        leftover = spouse_earned + spouse_unearned
+        leftover_spouse = spouse_earned + spouse_unearned
 
-        # FBR difference
-        p = parameters(period).gov.ssa.ssi.amount
-        diff_annual = (p.couple - p.individual) * MONTHS_IN_YEAR
+        # 2. Compare leftover to FBR difference
+        ssi_amt = parameters(period).gov.ssa.ssi.amount
+        diff = (ssi_amt.couple - ssi_amt.individual) * 12
+        if_leftover_exceeds = leftover_spouse > diff
 
-        # If leftover <= diff => no deeming
-        no_deeming = leftover <= diff_annual
+        # 3. If leftover <= diff => no deeming
+        #    If leftover > diff => difference of incomes approach
+        #    (couple combined) - (individual alone).
+        #   (a) individual's own income
+        indiv_earned = person("ssi_earned_income", period)
+        indiv_unearned = person("ssi_unearned_income", period)
+        alone_countable = _apply_ssi_exclusions(
+            indiv_earned, indiv_unearned, parameters, period
+        )
 
-        # Combine the spouse's leftover + the individual's own incomes for the "couple" method
-        personal_earned = person("ssi_earned_income", period)
-        personal_unearned = person("ssi_unearned_income", period)
-
-        combined_countable = _apply_ssi_exclusions(
-            personal_earned + spouse_earned,
-            personal_unearned + spouse_unearned,
+        #   (b) couple combined income
+        couple_countable = _apply_ssi_exclusions(
+            indiv_earned + spouse_earned,
+            indiv_unearned + spouse_unearned,
             parameters,
             period,
         )
 
-        # If leftover > diff, the tests want the entire combined_countable returned
-        # (rather than the difference). If leftover <= diff, we return 0.
-        deemed_amount = where(no_deeming, 0, combined_countable)
+        deemed_if_exceeds = max_(0, couple_countable - alone_countable)
+        deemed_amount = where(if_leftover_exceeds, deemed_if_exceeds, 0)
 
-        # Only apply to an SSI-eligible individual
+        # Only for an SSI-eligible individual
         is_eligible = person("is_ssi_eligible_individual", period)
-        return is_eligible * deemed_amount
+        return where(is_eligible, deemed_amount, 0)
