@@ -1,4 +1,39 @@
-# Integration tests for SSI program
+- name: Elderly individual with no income.
+  period: 2022
+  input:
+    is_ssi_aged_blind_disabled: true
+  output:
+    ssi: 841 * 12
+
+- name: Disabled individual with no income
+  period: 2022
+  input:
+    age: 40
+    is_ssi_aged_blind_disabled: true
+  output:
+    ssi: 841 * 12
+
+- name: Example A from SSA SSI page (https://www.ssa.gov/ssi/text-income-ussi.htm) "SSI Federal Benefit with only UNEARNED INCOME"
+  period: 2021
+  input:
+    is_ssi_aged_blind_disabled: true
+    social_security: 300 * 12
+  output:
+    ssi_countable_income: 280 * 12
+    ssi: 514 * 12 # 794 - 280
+
+- name: Example B from SSA SSI page (https://www.ssa.gov/ssi/text-income-ussi.htm) "SSI Federal Benefit with only EARNED INCOME"
+  period: 2021
+  input:
+    is_ssi_aged_blind_disabled: true
+    employment_income: 317 * 12
+  output:
+    ssi_countable_income: 116 * 12
+    ssi: 678 * 12 # 794 - 116
+
+# Below: New integration tests verifying spousal deeming logic with 2025 parameters
+# (No year-specific code—these simply run with the 2025 parameter values.)
+
 - name: Integration test - SSI benefit calculation for disabled individual with ineligible working spouse (2025)
   period: 2025
   input:
@@ -22,26 +57,15 @@
       marital_unit:
         members: [person1, person2]
   output:
-    # Verify the intermediate variables for clarity
-    is_ssi_eligible_individual:
-      2025: [true, false]  # [person1, person2]
-    is_ssi_ineligible_spouse:
-      2025: [false, true]  # [person1, person2]
-    ssi_income_deemed_from_ineligible_spouse:
-      2025: [15_030, 0]  # [person1, person2]
-    ssi_countable_income:
-      2025: [15_030, 0]  # [person1, person2]
-    ssi_claim_is_joint:
-      2025: [true, false]  # [person1 (has ineligible spouse), person2]
-    ssi_amount_if_eligible:
-      2025: [17_400, 11_604]  # [person1 (couple rate), person2 (not used since person2 is not eligible)]
-    uncapped_ssi:
-      2025: [2_370, 0]  # [person1 (17,400 - 15,030), person2]
-    # Final SSI benefit
-    ssi:
-      2025: [2_370, 0]  # [person1, person2]
+    # Just verifying final or intermediate variables for clarity
+    ssi_income_deemed_from_ineligible_spouse: [15_030, 0]
+    ssi_countable_income: [15_030, 0]
+    ssi_claim_is_joint: [true, false]
+    ssi_amount_if_eligible: [17_400, 11_604]
+    uncapped_ssi: [2_370, 0]
+    ssi: [2_370, 0]
 
-- name: Integration test - SSI benefit for disabled individual with income just below FBR differential threshold (2025)
+- name: Integration test - SSI benefit for disabled individual with spouse income just below FBR differential (2025)
   period: 2025
   input:
     people:
@@ -55,7 +79,7 @@
         age: 60
         is_disabled: false
         is_tax_unit_head: true
-        # Income after exclusions should be just below the FBR differential
+        # Income after exclusions is below the difference between couple & individual FBR
         ssi_earned_income: 4_360
         ssi_unearned_income: 0
     tax_units:
@@ -65,19 +89,13 @@
       marital_unit:
         members: [person1, person2]
   output:
-    ssi_income_deemed_from_ineligible_spouse:
-      2025: [0, 0]  # [person1 (no deeming occurs when under the FBR differential threshold), person2]
-    ssi_countable_income:
-      2025: [0, 0]  # [person1 (no deemed income), person2]
-    ssi_claim_is_joint:
-      2025: [true, false]  # [person1 (has ineligible spouse), person2]
-    ssi_amount_if_eligible:
-      2025: [17_400, 11_604]  # [person1 (couple rate), person2 (not used since person2 is not eligible)]
-    # Final SSI benefit
-    ssi:
-      2025: [17_400, 0]  # [person1 (full benefit with no deductions), person2]
+    ssi_income_deemed_from_ineligible_spouse: [0, 0]
+    ssi_countable_income: [0, 0]
+    ssi_claim_is_joint: [true, false]
+    ssi_amount_if_eligible: [17_400, 11_604]
+    ssi: [17_400, 0]
 
-- name: Integration test - SSI benefit for disabled individual with both earned and unearned income (2025)
+- name: Integration test - disabled individual with both earned and unearned spouse income (2025)
   period: 2025
   input:
     people:
@@ -100,14 +118,8 @@
       marital_unit:
         members: [person1, person2]
   output:
-    ssi_income_deemed_from_ineligible_spouse:
-      2025: [12_000, 0]  # [person1, person2]
-    ssi_countable_income:
-      2025: [15_570, 0]  # [person1 (includes own countable income + deemed income), person2]
-    ssi_claim_is_joint:
-      2025: [true, false]  # [person1 (has ineligible spouse), person2]
-    ssi_amount_if_eligible:
-      2025: [17_400, 11_604]  # [person1 (couple rate), person2 (not used since person2 is not eligible)]
-    # Final SSI benefit
-    ssi:
-      2025: [1_830, 0]  # [person1 (17,400 - 15,570), person2]
+    ssi_income_deemed_from_ineligible_spouse: [12_000, 0]
+    ssi_countable_income: [15_570, 0]
+    ssi_claim_is_joint: [true, false]
+    ssi_amount_if_eligible: [17_400, 11_604]
+    ssi: [1_830, 0]

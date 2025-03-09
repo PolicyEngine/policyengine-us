@@ -7,47 +7,40 @@ def _apply_ssi_exclusions(
     parameters: ParameterNode,
     period: Period,
 ) -> ArrayLike:
-    """Applies the SSI exclusions to earned income and unearned income, combining the result.
-
-    Args:
-        earned_income (ArrayLike): Earned income for each person.
-        unearned_income (ArrayLike): Unearned income for each person.
-        parameters (ParameterNode): The root of the parameter tree.
-        period (Period): The period for which to calculate.
-
-    Returns:
-        ArrayLike: SSI countable income.
     """
-    # Convert annual amounts to monthly
-    earned = earned_income / MONTHS_IN_YEAR
-    unearned = unearned_income / MONTHS_IN_YEAR
+    Applies standard SSI income exclusions to convert total earned/unearned income
+    into countable income. This follows 20 CFR §§ 416.1112 and 416.1124:
+      1) Subtract $20 'general' exclusion from unearned (or from earned if unearned < 20).
+      2) Subtract $65 'earned' exclusion from any remaining earned income.
+      3) Exclude 50% of the remainder of earned income.
 
-    # Get the exclusion parameters
-    exclusions = parameters(period).gov.ssa.ssi.income.exclusions
+    All amounts are stored as annual but exclusions are monthly amounts, so we convert
+    from annual -> monthly, apply monthly exclusions, then go back to annual.
+    """
+    # Convert from annual to monthly
+    earned_monthly = earned_income / MONTHS_IN_YEAR
+    unearned_monthly = unearned_income / MONTHS_IN_YEAR
 
-    # For 1986 test cases, use the parameters that were in effect then
-    # The examples in 20 CFR §416.1163(g) use specific parameter values
-    if str(period) == "1986":
-        general_exclusion = 20  # $20 general income exclusion in 1986
-        earned_exclusion = 65  # $65 earned income exclusion in 1986
-        earned_share_exclusion = 0.5  # 50% earned income disregard in 1986
-    else:
-        general_exclusion = exclusions.general
-        earned_exclusion = exclusions.earned
-        earned_share_exclusion = exclusions.earned_share
+    # Pull parameter-based exclusions (they do not vary by year in the param files but
+    # we rely on them for 1986 & beyond, no special "if year" logic needed).
+    excl = parameters(period).gov.ssa.ssi.income.exclusions
+    general_excl = excl.general  # default $20
+    earned_excl = excl.earned  # default $65
+    earned_share = excl.earned_share  # default 0.5
 
-    # Subtract general exclusion from unearned income first.
-    unearned_exclusion = min_(general_exclusion, unearned)
-    countable_unearned = unearned - unearned_exclusion
+    # Step 1: Subtract general exclusion from unearned first
+    applied_general = min_(general_excl, unearned_monthly)
+    countable_unearned = unearned_monthly - applied_general
 
-    # Remaining general exclusion is treated as an earned income exclusion.
-    remaining_general_exclusion = general_exclusion - unearned_exclusion
-    total_earned_exclusion = earned_exclusion + remaining_general_exclusion
+    # The remainder of the general exclusion (if unearned < 20) applies to earned
+    leftover_general = general_excl - applied_general
+    total_earned_excl = earned_excl + leftover_general
 
-    # Subtract the percentage of earned income above the flat exclusion.
-    earned_after_flat_exclusion = max_(earned - total_earned_exclusion, 0)
-    countable_earned_share = 1 - earned_share_exclusion
-    countable_earned = earned_after_flat_exclusion * countable_earned_share
+    # Step 2 & 3: Apply the total earned exclusion, then exclude 50% of the rest
+    earned_after_flat = max_(earned_monthly - total_earned_excl, 0)
+    # The 'earned_share' parameter is the fraction excluded above the flat. Typically 0.5 => 50% excluded.
+    # So the fraction that remains is (1 - earned_share).
+    countable_earned = earned_after_flat * (1.0 - earned_share)
 
-    # Convert back to annual amount
+    # Convert back to annual
     return (countable_unearned + countable_earned) * MONTHS_IN_YEAR
