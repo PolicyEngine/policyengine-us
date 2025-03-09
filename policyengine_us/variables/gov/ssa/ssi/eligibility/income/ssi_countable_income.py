@@ -22,12 +22,15 @@ class ssi_countable_income(Variable):
 
     def formula(person, period, parameters):
         # The individual's earned income, after the blind/disabled student exclusion
-        pre_reduction_earned_income = person("ssi_marital_earned_income", period)
+        pre_reduction_earned_income = person(
+            "ssi_marital_earned_income", period
+        )
         blind_disabled_working_student_income = person(
             "ssi_blind_or_disabled_working_student_exclusion", period
         )
         earned_income = max_(
-            pre_reduction_earned_income - blind_disabled_working_student_income,
+            pre_reduction_earned_income
+            - blind_disabled_working_student_income,
             0,
         )
 
@@ -47,11 +50,15 @@ class ssi_countable_income(Variable):
         )
 
         # Add any spousal deemed income
-        spousal_deemed = person("ssi_income_deemed_from_ineligible_spouse", period)
+        spousal_deemed = person(
+            "ssi_income_deemed_from_ineligible_spouse", period
+        )
 
         # If this person is the spouse whose income is being deemed away, do not double-count it
         # (has_donated_income ensures a spouse who "gave" their income to the other doesn't keep it)
-        has_donated_income = person.marital_unit.sum(spousal_deemed) > spousal_deemed
+        has_donated_income = (
+            person.marital_unit.sum(spousal_deemed) > spousal_deemed
+        )
 
         # Only apply countable income for an SSI-eligible individual
         is_eligible = person("is_ssi_eligible_individual", period)
