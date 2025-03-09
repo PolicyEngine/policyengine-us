@@ -12,21 +12,20 @@ class ssi_spouse_income_exceeds_fbr_differential(Variable):
     documentation = """
     Checks whether the ineligible spouse's leftover income (after child allocations) 
     is above the difference between the couple and individual FBR. If not, no deeming.
-    This is purely to satisfy the test 
-    policyengine_us/tests/policy/baseline/gov/ssa/ssi/eligibility/income/deemed/from_ineligible_spouse/ssi_spouse_income_exceeds_fbr_differential.yaml.
     """
 
     def formula(person, period, parameters):
         # Summation of spouse’s leftover after child allocations
         # We already have these stored in ssi_earned_income_deemed_from_ineligible_spouse
         # and ssi_unearned_income_deemed_from_ineligible_spouse
-        spousal_earned = person(
-            "ssi_earned_income_deemed_from_ineligible_spouse", period
+        leftover = add(
+            person,
+            period,
+            [
+                "ssi_earned_income_deemed_from_ineligible_spouse",
+                "ssi_unearned_income_deemed_from_ineligible_spouse",
+            ],
         )
-        spousal_unearned = person(
-            "ssi_unearned_income_deemed_from_ineligible_spouse", period
-        )
-        leftover = spousal_earned + spousal_unearned
 
         # Compute difference between couple FBR and individual FBR
         p = parameters(period).gov.ssa.ssi.amount
