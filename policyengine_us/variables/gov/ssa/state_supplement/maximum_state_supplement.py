@@ -21,7 +21,9 @@ class maximum_state_supplement(Variable):
 
         # 1. Get state and living arrangement from the person's household.
         state_code = person.household("state_code_str", period)
-        living_arrangement = person.household("state_living_arrangement", period)
+        living_arrangement = person.household(
+            "state_living_arrangement", period
+        )
 
         # 2. Load the state's parameter dictionary. This is structured like:
         # p[state_code][living_arrangement][category][("1" or "2")] = monthly rate
@@ -56,23 +58,23 @@ class maximum_state_supplement(Variable):
         #    We use max_() to pick whichever is relevant if more than one category is true.
 
         monthly_aged_rate = (
-            amounts_for_state_la[np.array([ssi_categories.AGED] * count_persons)][
-                single_or_double_str
-            ]
+            amounts_for_state_la[
+                np.array([ssi_categories.AGED] * count_persons)
+            ][single_or_double_str]
             * is_aged
         )
 
         monthly_blind_rate = (
-            amounts_for_state_la[np.array([ssi_categories.BLIND] * count_persons)][
-                single_or_double_str
-            ]
+            amounts_for_state_la[
+                np.array([ssi_categories.BLIND] * count_persons)
+            ][single_or_double_str]
             * is_blind
         )
 
         monthly_disabled_rate = (
-            amounts_for_state_la[np.array([ssi_categories.DISABLED] * count_persons)][
-                single_or_double_str
-            ]
+            amounts_for_state_la[
+                np.array([ssi_categories.DISABLED] * count_persons)
+            ][single_or_double_str]
             * is_disabled
         )
 
