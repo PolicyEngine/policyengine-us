@@ -30,8 +30,8 @@ class ssi_income_deemed_from_ineligible_spouse(Variable):
         leftover_spouse = spouse_earned + spouse_unearned
 
         # 2. Compare leftover to FBR difference
-        ssi_amt = parameters(period).gov.ssa.ssi.amount
-        diff = (ssi_amt.couple - ssi_amt.individual) * 12
+        p = parameters(period).gov.ssa.ssi.amount
+        diff = (p.couple - p.individual) * MONTHS_IN_YEAR
         if_leftover_exceeds = leftover_spouse > diff
 
         # 3. If leftover <= diff => no deeming
@@ -53,8 +53,8 @@ class ssi_income_deemed_from_ineligible_spouse(Variable):
         )
 
         deemed_if_exceeds = max_(0, couple_countable - alone_countable)
-        deemed_amount = where(if_leftover_exceeds, deemed_if_exceeds, 0)
+        deemed_amount = if_leftover_exceeds * deemed_if_exceeds
 
         # Only for an SSI-eligible individual
         is_eligible = person("is_ssi_eligible_individual", period)
-        return where(is_eligible, deemed_amount, 0)
+        return is_eligible * deemed_amount
