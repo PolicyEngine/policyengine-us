@@ -10,37 +10,91 @@ class maximum_state_supplement(Variable):
     defined_for = "is_ssi_eligible_individual"
 
     def formula_2022(person, period, parameters):
-        marital_unit = person.marital_unit
-        eligible = person("is_ssi_eligible_individual", period)
+        """
+        Returns the maximum annual state supplement for an SSI-eligible individual,
+        before subtracting any leftover income. Depends on:
+          - The person's state of residence
+          - Living arrangement (e.g. FULL_COST, REST_HOME, etc.)
+          - Category (Aged, Blind, or Disabled)
+          - Single vs. Joint claim (couple)
+        """
+
+        # 1. Get state and living arrangement from the person's household.
         state_code = person.household("state_code_str", period)
-        living_arrangement = person.household(
-            "state_living_arrangement", period
-        )
-        ss_amounts = parameters(period).gov.ssa.state_supplement.amount
-        amounts = ss_amounts[state_code][living_arrangement]
+        living_arrangement = person.household("state_living_arrangement", period)
+
+        # 2. Load the state's parameter dictionary. This is structured like:
+        # p[state_code][living_arrangement][category][("1" or "2")] = monthly rate
+        p = parameters(period).gov.ssa.state_supplement.amount
+        # For example: p["MA"]["FULL_COST"]["AGED"]["1"] = 128.82
+
+        # 3. Retrieve the sub-dict for this person's state & living arrangement
+        # e.g. amounts = p["MA"]["FULL_COST"]
+        amounts_for_state_la = p[state_code][living_arrangement]
+
+        # 4. Identify whether the person is aged, blind, or disabled.
+        #    (It's possible to be both aged+blind, so we might pick whichever rate is higher.)
         is_blind = person("is_blind", period)
         is_aged = person("is_ssi_aged", period)
         is_disabled = person("is_ssi_disabled", period)
-        count_persons = len(is_blind)
-        ssi_categories = person("ssi_category", period).possible_values
+
+        # 5. We'll build an array of the single or double (couple) label: e.g. "1" or "2".
+        #    This matches the structure in the parameter file.
         joint_claim = person("ssi_claim_is_joint", period)
-        count_eligible_str = where(joint_claim, 2, 1).astype(str)
-        per_person_amount = (
-            max_(
-                amounts[np.array([ssi_categories.AGED] * count_persons)][
-                    count_eligible_str
-                ]
-                * is_aged,
-                amounts[np.array([ssi_categories.BLIND] * count_persons)][
-                    count_eligible_str
-                ]
-                * is_blind,
-                amounts[np.array([ssi_categories.DISABLED] * count_persons)][
-                    count_eligible_str
-                ]
-                * is_disabled,
-            )
-            * MONTHS_IN_YEAR
+        # Convert True -> "2", False -> "1"
+        single_or_double_str = where(joint_claim, 2, 1).astype(str)
+
+        # 6. For vectorization, we note how many people are in the array dimension.
+        #    We do the same trick for categories. For each person, we might pick
+        #    'AGED', 'BLIND', or 'DISABLED' monthly rate. This code uses np arrays:
+        ssi_categories = person("ssi_category", period).possible_values
+        count_persons = len(is_blind)  # number of entries in the vector
+
+        # 7. Create arrays for each category's monthly rate. For each person, we do:
+        #    amounts_for_state_la["AGED"]["1"], amounts_for_state_la["AGED"]["2"], etc.
+        #    Then multiply by the boolean (is_aged, is_blind, is_disabled).
+        #    We use max_() to pick whichever is relevant if more than one category is true.
+
+        monthly_aged_rate = (
+            amounts_for_state_la[np.array([ssi_categories.AGED] * count_persons)][
+                single_or_double_str
+            ]
+            * is_aged
         )
-        combined_amount = marital_unit.sum(per_person_amount)
-        return eligible * combined_amount * where(joint_claim, 1 / 2, 1)
+
+        monthly_blind_rate = (
+            amounts_for_state_la[np.array([ssi_categories.BLIND] * count_persons)][
+                single_or_double_str
+            ]
+            * is_blind
+        )
+
+        monthly_disabled_rate = (
+            amounts_for_state_la[np.array([ssi_categories.DISABLED] * count_persons)][
+                single_or_double_str
+            ]
+            * is_disabled
+        )
+
+        # 8. We'll pick the maximum, so if someone's "is_aged" is True and "is_blind" is False,
+        #    the first product is nonzero, second is zero, etc.
+        #    If they're both true, we pick whichever is higher.
+        monthly_rate = max_(
+            monthly_aged_rate, monthly_blind_rate, monthly_disabled_rate
+        )
+
+        # 9. Multiply by 12 to get an annual figure. This is the maximum annual supplement
+        #    (still for each person individually).
+        annual_rate = monthly_rate * MONTHS_IN_YEAR
+
+        # 10. Summation across the marital unit. If we have a couple, we might want
+        #     the total combined amount, then split it. Or we might directly keep it as per-person.
+        # Here, they sum for the entire marital unit, then later they do dividing if needed.
+        combined_amount_for_marital_unit = person.marital_unit.sum(annual_rate)
+
+        # 11. Finally, the code divides by 2 if it's a joint claim, presumably so that
+        #     each person sees their half. If it's not joint, it just returns the full amount.
+        # This "per-person" approach might be confusing if the state has a special "couple rate"
+        # that isn't exactly double or half. But that's how the code is set up now.
+        divisor = where(joint_claim, 2, 1)
+        return combined_amount_for_marital_unit / divisor
