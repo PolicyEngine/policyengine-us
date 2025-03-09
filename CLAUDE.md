@@ -41,6 +41,17 @@
 - Break complex calculations into separate variables for better modularity and testing
 - In YAML tests, use `[val1, val2]` array syntax instead of hyphenated lists for output values
 - When updating test values, add detailed calculation steps in comments to document the derivation
+- For scale parameters that return integers, avoid using `rate_unit: int` in metadata (use `/1` instead) due to parameter validation issues
+- Parameter file naming matters: make sure variables reference the exact parameter file name 
+- When refactoring from enum to numeric values, update all downstream dependencies consistently
+- Prefer parameter-driven calculations over hardcoded logic in formulas when possible
+- Use `bool` instead of `int` or `/1` in `rate_unit` for scale parameters when appropriate to avoid validation issues
+- For categorization logic, create separate variables for each test (e.g., `is_school_age`) and use them in downstream variables
+- When dynamically determining numeric groups/categories, calculate values rather than hardcoding them (e.g., `max_value + 1`)
+- Structure parameter files to match program documentation and real-world rules to improve maintainability
+- Program takeup is assigned during microdata construction, not simulation time
+  - Changes to takeup parameters (SNAP, EITC, etc.) have no effect in the web app
+  - These parameters should include `economy: false` in their metadata
 
 ## Testing Best Practices
 - **Unit Tests**: 
@@ -57,7 +68,7 @@
   - Validate intermediate values along with final outputs
   - Include edge cases that test interactions between different parts of the system
 
-## Parameter Validation Best Practices
+## Parameter Structure Best Practices
 - Cross-check parameter values against authoritative external sources (gov websites, calculators)
 - Document the source, publication date, and effective dates in parameter metadata
 - Include both title and href for references to maintain traceability
@@ -102,3 +113,16 @@
   - Check for parameter differences between test data and implementation
   - Verify calculation steps match the regulation process
   - Fix underlying issues rather than just hardcoding results
+
+## Parameter Validation Gotchas
+- When using `breakdown` metadata in parameters, avoid using variable references for integer values. Instead use Python expressions like `range(1, 5)`.
+- The parameter validation system in policyengine-core has issues with certain parameter structures:
+  - Using boolean keys (`True`/`False`) as parameter names can cause validation errors
+  - Using integer output variables in breakdown metadata can cause parameter validation errors
+  - If you encounter `UnboundLocalError: cannot access local variable 'possible_values'`, it's likely due to parameter validation issues
+- To fix parameter validation issues:
+  - Split complex parameters into separate, simpler parameter files
+  - Use string names instead of boolean keys (e.g., `"eligible"` instead of `True`)
+  - Use Python expressions like `range()` instead of variable references for enumerated values
+  - Use breakdown patterns that match existing working examples in the codebase
+  - See [GitHub issue #346](https://github.com/PolicyEngine/policyengine-core/issues/346) for more details
