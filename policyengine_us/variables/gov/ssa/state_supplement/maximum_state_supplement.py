@@ -79,8 +79,8 @@ class maximum_state_supplement(Variable):
         # 8. We'll pick the maximum, so if someone's "is_aged" is True and "is_blind" is False,
         #    the first product is nonzero, second is zero, etc.
         #    If they're both true, we pick whichever is higher.
-        monthly_rate = max_(
-            monthly_aged_rate, monthly_blind_rate, monthly_disabled_rate
+        monthly_rate = np.maximum.reduce(
+            [monthly_aged_rate, monthly_blind_rate, monthly_disabled_rate]
         )
 
         # 9. Multiply by 12 to get an annual figure. This is the maximum annual supplement
