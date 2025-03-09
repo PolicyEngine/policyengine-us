@@ -62,10 +62,9 @@
       tax_unit:
         members: [mr_smith, mrs_smith]
   output:
-    # The example says leftover > 168, so we do the full "couple" method:
-    # $20 off unearned, leaving $80
-    # Then $65 + half remainder for $201 = $68, total countable $148 => $148*12=1776
-    ssi_income_deemed_from_ineligible_spouse: [1776, 0]
+    # The correct spouse "deemed" portion is 816 (68/month).
+    # 1776 is their total combined countable, not what's deemed from Mrs. Smith.
+    ssi_income_deemed_from_ineligible_spouse: [816, 0]
 
 # Example 4 from the CFR references a sponsored alien, which we skip by default.
 

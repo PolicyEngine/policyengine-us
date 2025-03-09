@@ -1,3 +1,4 @@
+# File: policyengine_us/variables/gov/ssa/ssi/ssi_claim_is_joint.py
 from policyengine_us.model_api import *
 
 
@@ -8,6 +9,9 @@ class ssi_claim_is_joint(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        both_eligible = person("ssi_marital_both_eligible", period)
-        deemed_income = person("ssi_income_deemed_from_ineligible_spouse", period) > 0
-        return both_eligible | deemed_income
+        # The simplest way: if you're in a marital_unit with 2 people,
+        # and you are an SSI-eligible individual,
+        # we say it's 'joint' no matter how much is actually deemed.
+        is_eligible = person("is_ssi_eligible_individual", period)
+        num_in_marriage = person.marital_unit.nb_persons()
+        return (num_in_marriage == 2) & is_eligible
