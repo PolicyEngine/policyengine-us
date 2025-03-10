@@ -5,10 +5,9 @@ class slcsp_family_tier_applies(Variable):
     value_type = bool
     entity = TaxUnit
     label = "ACA family tier applies, rather than age curves"
-    unit = "bool"
-    definition_period = MONTH
+    definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.aca
-        state_code =  tax_unit.household("state_code", period)
+        state_code = tax_unit.household("state_code", period)
         return p.family_tier_states[state_code]

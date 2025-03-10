@@ -130,15 +130,15 @@
       person1:
         age: 35
         monthly_age: 35
-        slcsp_person: 297.77  # 244 * 1.222 (age 35 multiplier)
+        slcsp_age_curve_amount_person: 297.77  # 244 * 1.222 (age 35 multiplier)
       person2:
         age: 32
         monthly_age: 32
-        slcsp_person: 288.71  # 244 * 1.183 (age 32 multiplier)
+        slcsp_age_curve_amount_person: 288.71  # 244 * 1.183 (age 32 multiplier)
       person3:
         age: 5
         monthly_age: 5
-        slcsp_person: 186.66  # 244 * 0.765 (age 5 multiplier)
+        slcsp_age_curve_amount_person: 186.66  # 244 * 0.765 (age 5 multiplier)
     tax_units:
       tax_unit:
         members: [person1, person2, person3]

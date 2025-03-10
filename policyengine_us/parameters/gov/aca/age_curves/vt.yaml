@@ -1,13 +1,10 @@
 description: Age curve factors for ACA premium pricing in Vermont. Vermont uses pure community rating with no age-based variation.
 metadata:
-  type: single_amount
+  unit: /1
   period: year
-  amount_unit: /1
-  threshold_unit: int
   label: ACA premium age curve factors - Vermont
   reference:
   - title: CMS Market Rating Reforms State Specific Age Curve Variations
     href: https://www.cms.gov/cciio/programs-and-initiatives/health-insurance-market-reforms/state-rating#age
 values:
  2018-01-01: 1.0
-

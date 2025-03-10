@@ -2,12 +2,12 @@ from policyengine_us.model_api import *
 
 
 class FamilyTierCategory(Enum):
-    INDIVIDUAL_AGE_RATED = "individual_age_rated"
-    ONE_ADULT = "one_adult"
-    TWO_ADULTS = "two_adults"
-    ONE_ADULT_AND_ONE_OR_MORE_CHILDREN = "one_adult_and_one_or_more_children"
-    TWO_ADULTS_AND_ONE_OR_MORE_CHILDREN = "two_adults_and_one_or_more_children"
-    CHILD_ONLY = "child_only"
+    INDIVIDUAL_AGE_RATED = "Individual age rated"
+    ONE_ADULT = "One_adult"
+    TWO_ADULTS = "Two_adults"
+    ONE_ADULT_AND_ONE_OR_MORE_CHILDREN = "One_adult_and_one_or_more_children"
+    TWO_ADULTS_AND_ONE_OR_MORE_CHILDREN = "Two_adults_and_one_or_more_children"
+    CHILD_ONLY = "Child_only"
 
 
 class slcsp_family_tier_category(Variable):
@@ -25,11 +25,11 @@ class slcsp_family_tier_category(Variable):
         that use family tiers instead of individual age rating.
 
         Categories for both NY and VT:
-        - one_adult
-        - two_adults
-        - one_adult_and_one_or_more_children
-        - two_adults_and_one_or_more_children
-        - child_only (only for NY)
+        - One_adult
+        - Two_adults
+        - One_adult_and_one_or_more_children
+        - Two_adults_and_one_or_more_children
+        - Child_only (only for NY)
         """
         # Get inputs
         state_code = tax_unit.household("state_code_str", period)
@@ -45,22 +45,24 @@ class slcsp_family_tier_category(Variable):
         child_count = tax_unit("tax_unit_size", period) - adult_count
 
         # Common conditions for both states
-        one_adult_no_children = (adult_count == 1) & (child_count == 0)
-        two_plus_adults_no_children = (adult_count >= 2) & (child_count == 0)
-        one_adult_with_children = (adult_count == 1) & (child_count > 0)
-        two_plus_adults_with_children = (adult_count >= 2) & (child_count > 0)
+        One_adult_no_children = (adult_count == 1) & (child_count == 0)
+        Two_plus_adults_no_children = (adult_count >= 2) & (child_count == 0)
+        One_adult_with_children = (adult_count == 1) & (child_count > 0)
+        Two_plus_adults_with_children = (adult_count >= 2) & (child_count > 0)
 
         # NY-specific condition (child-only households)
-        ny_child_only = (state_code == "NY") & (adult_count == 0) & (child_count > 0)
+        ny_child_only = (
+            (state_code == "NY") & (adult_count == 0) & (child_count > 0)
+        )
 
         return select(
             [
                 # Apply conditions only to family tier states
                 ny_child_only,
-                one_adult_no_children,
-                two_plus_adults_no_children,
-                one_adult_with_children,
-                two_plus_adults_with_children,
+                One_adult_no_children,
+                Two_plus_adults_no_children,
+                One_adult_with_children,
+                Two_plus_adults_with_children,
             ],
             [
                 FamilyTierCategory.CHILD_ONLY,
