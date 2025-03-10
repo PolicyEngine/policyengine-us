@@ -4,7 +4,7 @@
     county_str: CROOK_COUNTY_OR
     state_code: OR
     spm_unit_size: 2
-    adjusted_gross_income: 30_000
+    irs_gross_income: 30_000
     utility_type: NATURAL_GAS
   output: 
     or_liheap_payout: 285
@@ -15,7 +15,7 @@
     county_str: BAKER_COUNTY_OR
     state_code: OR
     spm_unit_size: 7
-    adjusted_gross_income: 40_000
+    irs_gross_income: 40_000
     utility_type: HEATING_OIL
   output:
     or_liheap_payout: 750
@@ -26,7 +26,7 @@
     county_str: BENTON_COUNTY_OR
     state_code: OR
     spm_unit_size: 3
-    adjusted_gross_income: 35_000
+    irs_gross_income: 35_000
     utility_type: ELECTRICITY
     or_liheap_electricity_type: HEATING
   output:
@@ -38,7 +38,7 @@
     county_str: BENTON_COUNTY_OR
     state_code: OR
     spm_unit_size: 3
-    adjusted_gross_income: 35_000
+    irs_gross_income: 35_000
     utility_type: ELECTRICITY
     or_liheap_electricity_type: COOLING
   output:
@@ -50,7 +50,7 @@
     county_str: BENTON_COUNTY_OR
     state_code: OR
     spm_unit_size: 3
-    adjusted_gross_income: 35_000
+    irs_gross_income: 35_000
     utility_type: ELECTRICITY
     or_liheap_electricity_type: BOTH
   output:

@@ -7,11 +7,14 @@ class or_liheap_income_threshold(Variable):
     label = "Income threshold for Oregon LIHEAP eligibility"
     unit = USD
     definition_period = YEAR
-    reference = "https://liheapch.acf.hhs.gov/profiles/Oregon.htm"
+    reference = (
+        "https://oregon.public.law/rules/oar_813-200-0020"
+        "https://www.oregon.gov/ohcs/energy-weatherization/pages/utility-bill-payment-assistance.aspx"
+    )
 
     defined_for = StateCode.OR
 
     def formula(spm_unit, period, parameters):
         state_median_income = spm_unit("hhs_smi", period)
-        p = parameters(period).gov.states["or"].liheap
-        return state_median_income * p.state_median_income_rate
+        p = parameters(period).gov.hhs.liheap
+        return state_median_income * p.income_rate

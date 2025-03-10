@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class or_liheap_income_range(Variable):
+class or_liheap_benefit_level(Variable):
     value_type = int
     entity = SPMUnit
     label = "Income range for Oregon LIHEAP eligibility"
@@ -15,15 +15,15 @@ class or_liheap_income_range(Variable):
         threshold = spm_unit("or_liheap_income_threshold", period)
         p = parameters(period).gov.states["or"].liheap
 
-        range_one = threshold * p.income_range_multiplier
-        range_two = threshold * p.income_range_multiplier * 2
-        range_three = threshold * p.income_range_multiplier * 3
+        level_one = threshold * p.benefit_level_multiplier
+        level_two = threshold * p.benefit_level_multiplier * 2
+        level_three = threshold * p.benefit_level_multiplier * 3
 
         return select(
             [
-                income <= range_one,
-                income <= range_two,
-                income <= range_three,
+                income <= level_one,
+                income <= level_two,
+                income <= level_three,
             ],
             [
                 1,
