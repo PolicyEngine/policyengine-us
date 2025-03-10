@@ -3,8 +3,6 @@ metadata:
   type: single_amount
   threshold_unit: people
   amount_unit: currency-USD
-  uprating:
-    parameter: gov.irs.uprating
   label: Michigan standard home heating credit base amount
   reference:
     # The legal code provides inflation undajusted amounts
@@ -22,42 +20,66 @@ brackets:
   - threshold:
       2021-01-01: 0
     amount:
-      2021-01-01: 497
-      2022-01-01: 524
-      2023-01-01: 562
-      2024-01-01: 581
+      values:
+        2021-01-01: 497
+        2022-01-01: 524
+        2023-01-01: 562
+        2024-01-01: 581
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
   - threshold:
       2021-01-01: 2
     amount:
-      2021-01-01: 672
-      2022-01-01: 706
-      2023-01-01: 760
-      2024-01-01: 788
+      values:
+        2021-01-01: 672
+        2022-01-01: 706
+        2023-01-01: 760
+        2024-01-01: 788
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
   - threshold:
       2021-01-01: 3
     amount:
-      2021-01-01: 846
-      2022-01-01: 888
-      2023-01-01: 958
-      2024-01-01: 995
+      values:
+        2021-01-01: 846
+        2022-01-01: 888
+        2023-01-01: 958
+        2024-01-01: 995
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
   - threshold:
       2021-01-01: 4 
     amount:
-      2021-01-01: 1_021
-      2022-01-01: 1_069
-      2023-01-01: 1_156
-      2024-01-01: 1_202
+      values:
+        2021-01-01: 1_021
+        2022-01-01: 1_069
+        2023-01-01: 1_156
+        2024-01-01: 1_202
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
   - threshold:
       2021-01-01: 5
     amount:
-      2021-01-01: 1_196
-      2022-01-01: 1_251
-      2023-01-01: 1_354
-      2024-01-01: 1_409
+      values:
+        2021-01-01: 1_196
+        2022-01-01: 1_251
+        2023-01-01: 1_354
+        2024-01-01: 1_409
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
   - threshold:
       2021-01-01: 6
     amount:
-      2021-01-01: 1_371
-      2022-01-01: 1_433
-      2023-01-01: 1_552
-      2024-01-01: 1_616
+      values:
+        2021-01-01: 1_371
+        2022-01-01: 1_433
+        2023-01-01: 1_552
+        2024-01-01: 1_616
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating

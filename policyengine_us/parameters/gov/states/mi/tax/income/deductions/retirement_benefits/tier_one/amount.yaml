@@ -4,6 +4,7 @@ metadata:
   period: year
   uprating:
     parameter: gov.irs.uprating
+  propagate_metadata_to_children: true
   unit: currency-USD
   breakdown:
     - filing_status

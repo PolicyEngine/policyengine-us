@@ -5,6 +5,7 @@ metadata:
   unit: currency-USD
   uprating:
     parameter: gov.irs.uprating
+  propagate_metadata_to_children: true
   breakdown:
     - filing_status
   reference:
