@@ -9265,3 +9265,28 @@
       using parameter-based approach.
     - Fixed parameter format issues to address validation errors in rate_unit format.
   date: 2025-03-05 14:11:36
+- bump: patch
+  changes:
+    fixed:
+    - Remove Colorado SNAP net income test.
+  date: 2025-03-06 13:36:02
+- bump: patch
+  changes:
+    fixed:
+    - Alabama retirement exemption computation.
+  date: 2025-03-06 14:07:16
+- bump: patch
+  changes:
+    changed:
+    - Adjust the Infant age group definition for North Carolina SCCA program.
+  date: 2025-03-07 00:26:43
+- bump: patch
+  changes:
+    added:
+    - Adjust label for young child basic income age parameter.
+  date: 2025-03-07 19:23:38
+- bump: patch
+  changes:
+    fixed:
+    - Typo in the Los Angeles County general relief housing subsidy parameters.
+  date: 2025-03-08 12:59:39
