@@ -10,7 +10,9 @@ class ma_mbta_income_eligible_reduced_fare_eligible(Variable):
     reference = "https://www.mbta.com/fares/reduced/income-eligible"
 
     def formula(person, period, parameters):
-        p = parameters(period).gov.states.ma.dot.mbta.income_eligible_reduced_fares.age_threshold
+        p = parameters(
+            period
+        ).gov.states.ma.dot.mbta.income_eligible_reduced_fares.age_threshold
         age = person("age", period)
         age_eligible = p.calc(age)
-        return age_eligible 
+        return age_eligible
