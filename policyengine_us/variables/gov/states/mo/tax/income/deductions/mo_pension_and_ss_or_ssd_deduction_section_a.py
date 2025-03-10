@@ -29,7 +29,9 @@ class mo_pension_and_ss_or_ssd_deduction_section_a(Variable):
             tax_unit_mo_agi - tax_unit_taxable_social_security_benefits
         )  # Equivalent to Line 3 of section A and B
         filing_status = tax_unit("filing_status", period)
-        p = parameters(period).gov.states.mo.tax.income.deductions.social_security_and_public_pension
+        p = parameters(
+            period
+        ).gov.states.mo.tax.income.deductions.social_security_and_public_pension
 
         # Section A, Public Pension Amounts
         # TODO:
@@ -73,6 +75,4 @@ class mo_pension_and_ss_or_ssd_deduction_section_a(Variable):
                 - agi_over_public_pension__allowance,
                 0,
             )
-        return max_(
-            public_pension_value - eligible_ss_or_ssd, 0
-        )
+        return max_(public_pension_value - eligible_ss_or_ssd, 0)
