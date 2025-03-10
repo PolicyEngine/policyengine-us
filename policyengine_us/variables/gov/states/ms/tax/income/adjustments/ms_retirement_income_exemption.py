@@ -8,9 +8,9 @@ class ms_retirement_income_exemption(Variable):
     unit = USD
     definition_period = YEAR
     reference = [
-        "https://law.justia.com/codes/mississippi/title-27/chapter-7/article-1/section-27-7-15/", # (4)(k)
-        "https://www.dor.ms.gov/sites/default/files/Forms/Individual/80100221.pdf#page=11", # Line 46
-        "https://www.dor.ms.gov/sites/default/files/Forms/Individual/2024/80105248.pdf", 
+        "https://law.justia.com/codes/mississippi/title-27/chapter-7/article-1/section-27-7-15/",  # (4)(k)
+        "https://www.dor.ms.gov/sites/default/files/Forms/Individual/80100221.pdf#page=11",  # Line 46
+        "https://www.dor.ms.gov/sites/default/files/Forms/Individual/2024/80105248.pdf",
     ]
     defined_for = StateCode.MS
 
