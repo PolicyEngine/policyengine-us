@@ -10,6 +10,12 @@ brackets:
         2022-01-01: 34_570
         2023-01-01: 37_010
         2024-01-01: 39_690
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 10
     rate:
       2021-01-01: 0.068
   - threshold:
@@ -18,6 +24,12 @@ brackets:
         2022-01-01: 138_890
         2023-01-01: 148_730
         2024-01-01: 156_760
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 10
     rate:
       2021-01-01: 0.0785
   - threshold:
@@ -26,6 +38,12 @@ brackets:
         2022-01-01: 227_600
         2023-01-01: 243_720
         2024-01-01: 256_880
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 10
     rate:
       2021-01-01: 0.0985
 
@@ -34,12 +52,6 @@ metadata:
   threshold_unit: currency-USD
   rate_unit: /1
   threshold_period: year
-  uprating:
-    parameter: gov.irs.uprating
-    rounding:
-      type: nearest
-      interval: 10
-  propagate_metadata_to_children: true
   label: Minnesota head of household income tax rates
   reference:
   - title: 2023 Minnesota Statutes, 290.06 RATES OF TAX; CREDITS. Subd. 2c.Schedules of rates for individuals, estates, and trusts.

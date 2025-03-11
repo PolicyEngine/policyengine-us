@@ -10,6 +10,12 @@ brackets:
         2022-01-01: 41_050
         2023-01-01: 43_950
         2024-01-01: 45_330
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 10
     rate:
       2021-01-01: 0.068
   - threshold:
@@ -18,16 +24,26 @@ brackets:
         2022-01-01: 163_060
         2023-01-01: 174_610
         2024-01-01: 184_040
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 10
     rate:
       2021-01-01: 0.0785
   - threshold:
-      2021-01-01: 
-      2022-01-01: 
       values:
         2021-01-01: 276_200
         2022-01-01: 284_810
         2023-01-01: 304_970
         2024-01-01: 321_450
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 10
     rate:
       2021-01-01: 0.0985
 
@@ -36,12 +52,6 @@ metadata:
   threshold_unit: currency-USD
   rate_unit: /1
   threshold_period: year
-  uprating:
-    parameter: gov.irs.uprating
-    rounding:
-      type: nearest
-      interval: 10
-  propagate_metadata_to_children: true
   label: Minnesota surviving spouse income tax rates
   reference:
   - title: 2023 Minnesota Statutes, 290.06 RATES OF TAX; CREDITS. Subd. 2c.Schedules of rates for individuals, estates, and trusts.

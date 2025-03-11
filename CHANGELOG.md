@@ -10958,29 +10958,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Prototype with some tax implementations.
 
 ## [0.0.1] - 2021-06-28 00:00:00
-
-### Added
-
-- First prototype version with a standard deduction variable.
-
-
-[1.197.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.196.1...1.197.0
-[1.196.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.196.0...1.196.1
-[1.196.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.195.1...1.196.0
-[1.195.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.195.0...1.195.1
-[1.195.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.194.0...1.195.0
-[1.194.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.193.0...1.194.0
-[1.193.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.192.2...1.193.0
-[1.192.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.192.1...1.192.2
-[1.192.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.192.0...1.192.1
-[1.192.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.191.0...1.192.0
-[1.191.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.190.0...1.191.0
-[1.190.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.189.0...1.190.0
-[1.189.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.188.0...1.189.0
-[1.188.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.187.3...1.188.0
-[1.187.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.187.2...1.187.3
-[1.187.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.187.1...1.187.2
-[1.187.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.187.0...1.187.1
 [1.187.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.186.0...1.187.0
 [1.186.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.185.0...1.186.0
 [1.185.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.184.0...1.185.0
