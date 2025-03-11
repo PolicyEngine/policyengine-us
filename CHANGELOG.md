@@ -5,6 +5,55 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.210.0] - 2025-03-11 21:57:12
+
+### Fixed
+
+- Fixed California Rating Area 16's ACA premium.
+
+## [1.209.2] - 2025-03-11 15:56:15
+
+### Fixed
+
+- Minnesota social security subtraction reduction.
+
+## [1.209.1] - 2025-03-11 12:24:12
+
+### Fixed
+
+- Colorado credit returns NaNs in 2025 and beyond.
+- Added test for NaNs in 2025 and beyond.
+
+## [1.209.0] - 2025-03-10 15:29:09
+
+### Added
+
+- 2025 Idaho income tax cut.
+
+## [1.208.0] - 2025-03-10 12:25:03
+
+### Added
+
+- 2024 Michigan State Income Tax Updates.
+
+## [1.207.5] - 2025-03-08 12:59:39
+
+### Fixed
+
+- Typo in the Los Angeles County general relief housing subsidy parameters.
+
+## [1.207.4] - 2025-03-07 19:23:38
+
+### Added
+
+- Adjust label for young child basic income age parameter.
+
+## [1.207.3] - 2025-03-07 00:26:43
+
+### Changed
+
+- Adjust the Infant age group definition for North Carolina SCCA program.
+
 ## [1.207.2] - 2025-03-06 14:07:16
 
 ### Fixed
@@ -10953,6 +11002,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.210.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.209.2...1.210.0
+[1.209.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.209.1...1.209.2
+[1.209.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.209.0...1.209.1
+[1.209.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.208.0...1.209.0
+[1.208.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.207.5...1.208.0
+[1.207.5]: https://github.com/PolicyEngine/policyengine-us/compare/1.207.4...1.207.5
+[1.207.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.207.3...1.207.4
+[1.207.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.207.2...1.207.3
 [1.207.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.207.1...1.207.2
 [1.207.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.207.0...1.207.1
 [1.207.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.206.0...1.207.0

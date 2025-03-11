@@ -9275,3 +9275,44 @@
     fixed:
     - Alabama retirement exemption computation.
   date: 2025-03-06 14:07:16
+- bump: patch
+  changes:
+    changed:
+    - Adjust the Infant age group definition for North Carolina SCCA program.
+  date: 2025-03-07 00:26:43
+- bump: patch
+  changes:
+    added:
+    - Adjust label for young child basic income age parameter.
+  date: 2025-03-07 19:23:38
+- bump: patch
+  changes:
+    fixed:
+    - Typo in the Los Angeles County general relief housing subsidy parameters.
+  date: 2025-03-08 12:59:39
+- bump: minor
+  changes:
+    added:
+    - 2024 Michigan State Income Tax Updates.
+  date: 2025-03-10 12:25:03
+- bump: minor
+  changes:
+    added:
+    - 2025 Idaho income tax cut.
+  date: 2025-03-10 15:29:09
+- bump: patch
+  changes:
+    fixed:
+    - Colorado credit returns NaNs in 2025 and beyond.
+    - Added test for NaNs in 2025 and beyond.
+  date: 2025-03-11 12:24:12
+- bump: patch
+  changes:
+    fixed:
+    - Minnesota social security subtraction reduction.
+  date: 2025-03-11 15:56:15
+- bump: minor
+  changes:
+    fixed:
+    - Fixed California Rating Area 16's ACA premium.
+  date: 2025-03-11 21:57:12
