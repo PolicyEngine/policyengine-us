@@ -1,7 +1,7 @@
 import pytest
 
 DATASETS = [
-    "hf://policyengine/policyengine-us-data/cps_2024.h5",
+    "hf://policyengine/policyengine-us-data/cps_2023.h5",
     "hf://policyengine/policyengine-us-data/enhanced_cps_2024.h5",
 ]
 
