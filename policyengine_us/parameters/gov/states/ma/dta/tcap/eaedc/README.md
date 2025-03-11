@@ -1,1 +1,1 @@
-# Emergency Aid to Elders, Disabled and Children
+# Emergency Aid to the Elderly, Disabled and Children
