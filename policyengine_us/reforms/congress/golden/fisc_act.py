@@ -18,7 +18,6 @@ def create_fisc_act() -> Reform:
             is_dependent = person("is_tax_unit_dependent", period)
             age = person("age", period)
             weeks_pregnant = person("weeks_pregnant", period)
-
             p = parameters(
                 period
             ).gov.contrib.congress.golden.fisc_act.family_income_supplement
