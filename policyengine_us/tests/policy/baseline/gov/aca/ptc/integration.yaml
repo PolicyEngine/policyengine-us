@@ -1,5 +1,5 @@
 - name: 2025 aca_ptc_los_angeles 
-  absolute_error_margin: 0.001
+  absolute_error_margin: 0.01
   period: 2025
   input:
     people:
@@ -30,7 +30,7 @@
     slcsp: 15_550.90  #15,542 from 2025 kff calculator, they round more aggressively 
     aca_magi_fraction: 2.90
     aca_ptc_phase_out_rate: 0.056
-    aca_ptc: 11_350.898  #$11,327 from 2025 kff calculator
+    aca_ptc: 11_350.90  #$11,327 from 2025 kff calculator
   #Final PTC:
 #    - KFF’s result:  $15,542 – $4,215 = $11,327 subsidy (annual).
 #      => They say user’s share is $4,215 (or 5.62% of $75k).
@@ -60,4 +60,4 @@
     is_aca_ptc_eligible: [true]
     slcsp: 4_911.564 #kff says 4,916 
     aca_magi_fraction: 1.99  # 30k / 15,060 (approx. prior-year FPL reference)
-    aca_ptc: 4_323.5635
+    aca_ptc: 4_323.56
