@@ -2,7 +2,7 @@
 # nm_deductions.yaml
 #
 # Updated to reflect the new unified logic:
-#   - We continue to use "nm_itemized_deductions" variable directly.
+#   - We no longer to use "nm_itemized_deductions" variable directly, instead we use federal_itemized_deduction.
 #   - SALT add-back is 0 in these tests (no SALT taxes), so final results
 #     match old tests.
 # =============================================================================
@@ -11,7 +11,7 @@
   period: 2021
   input:
     tax_unit_itemizes: true
-    nm_itemized_deductions: 1000
+    federal_itemized_deduction: 1000
     standard_deduction: 2500
     nm_medical_care_expense_deduction: 500
     nm_net_capital_gains_deduction: 300
@@ -28,7 +28,7 @@
   period: 2021
   input:
     tax_unit_itemizes: false
-    nm_itemized_deductions: 9999  # won't matter, because itemizes=False
+    federal_itemized_deduction: 9999  # won't matter, because itemizes=False
     standard_deduction: 2500
     nm_medical_care_expense_deduction: 500
     nm_net_capital_gains_deduction: 300
@@ -42,7 +42,7 @@
   period: 2021
   input:
     tax_unit_itemizes: true
-    nm_itemized_deductions: 1000
+    federal_itemized_deduction: 1000
     standard_deduction: 2500
     nm_medical_care_expense_deduction: 0
     nm_net_capital_gains_deduction: 0
@@ -59,7 +59,7 @@
     tax_unit_itemizes: true
     # NM itemized is $12,000, standard is $5,000
     # => difference = $7,000
-    nm_itemized_deductions: 12000
+    federal_itemized_deduction: 12000
     standard_deduction: 5000
 
     # SALT: total 12,500 => but limited by $10k cap => ratio => final SALT addback => $4,000
