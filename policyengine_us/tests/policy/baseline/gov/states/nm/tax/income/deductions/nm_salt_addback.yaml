@@ -4,7 +4,7 @@
 # Tests for the new nm_salt_addback variable (replaces nm_itemized_deductions).
 # These closely match the old "nm_itemized_deductions.yaml" inputs,
 # but we now:
-#   - Provide federal_itemized_deduction so line 10 can be computed.
+#   - Provide nm_itemized_deduction so line 10 can be computed.
 #   - Expect 'nm_salt_addback' in outputs, not nm_itemized_deductions.
 # =============================================================================
 
@@ -17,7 +17,7 @@
     state_and_local_sales_or_income_tax: 5000
     real_estate_taxes: 7500
     standard_deduction: 5000
-    federal_itemized_deduction: 12000  # So difference = 12000 - 5000 = 7000
+    nm_itemized_deduction: 12000  # So difference = 12000 - 5000 = 7000
     state_code: NM
   output:
     nm_salt_addback: 4000
@@ -31,7 +31,7 @@
     state_and_local_sales_or_income_tax: 5000
     real_estate_taxes: 0
     standard_deduction: 2000
-    federal_itemized_deduction: 5000   # difference = 5000 - 2000 = 3000
+    nm_itemized_deduction: 5000   # difference = 5000 - 2000 = 3000
     state_code: NM
   output:
     nm_salt_addback: 3000
@@ -45,7 +45,7 @@
     state_and_local_sales_or_income_tax: 7500
     real_estate_taxes: 0
     standard_deduction: 2000
-    federal_itemized_deduction: 5000   # difference = 5000 - 2000 = 3000
+    nm_itemized_deduction: 5000   # difference = 5000 - 2000 = 3000
     state_code: NM
   output:
     nm_salt_addback: 3000
@@ -59,7 +59,7 @@
     state_and_local_sales_or_income_tax: 0
     real_estate_taxes: 0
     standard_deduction: 2000
-    federal_itemized_deduction: 5000   # difference = 3000
+    nm_itemized_deduction: 5000   # difference = 3000
     state_code: NM
   output:
     nm_salt_addback: 0
@@ -73,8 +73,8 @@
     state_and_local_sales_or_income_tax: 7500
     real_estate_taxes: 0
     standard_deduction: 2000
-    # federal_itemized_deduction can be anything, but won't matter if itemizes=false
-    federal_itemized_deduction: 9999
+    # nm_itemized_deduction can be anything, but won't matter if itemizes=false
+    nm_itemized_deduction: 9999
     state_code: NM
   output:
     nm_salt_addback: 0
