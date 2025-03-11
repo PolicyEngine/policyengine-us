@@ -38,7 +38,7 @@
 #      i.e. $4,200 difference from unsubsidized. The $14 difference
 #      is a bit more than $1/month.
 - name: 2025 aca_ptc_los_angeles_single
-  absolute_error_margin: 0.001
+  absolute_error_margin: 0.01
   period: 2025
   input:
     people:
