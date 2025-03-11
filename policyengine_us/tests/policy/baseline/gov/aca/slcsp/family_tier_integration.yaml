@@ -12,7 +12,7 @@
       household:
         members: [person1]
         state_code_str: NY
-        state_code: 33  # NY state code
+        state_fips: 36  # NY state code
         slcsp_rating_area: 3
         slcsp_age_0: 760
   output:
@@ -40,7 +40,7 @@
       household:
         members: [person1, person2, person3]
         state_code_str: NY
-        state_code: 33  # NY state code
+        state_fips: 36  # NY state code
         slcsp_rating_area: 3
         slcsp_age_0: 760
   output:
@@ -62,7 +62,7 @@
       household:
         members: [person1]
         state_code_str: VT
-        state_code: 47  # VT state code
+        state_fips: 50  # VT state code
         slcsp_rating_area: 1
         slcsp_age_0: 1277
   output:
@@ -90,7 +90,7 @@
       household:
         members: [person1, person2, person3]
         state_code_str: VT
-        state_code: 47  # VT state code
+        state_fips: 50  # VT state code
         slcsp_rating_area: 1
         slcsp_age_0: 1277
   output:
@@ -115,7 +115,7 @@
       household:
         members: [person1, person2]
         state_code_str: NY
-        state_code: 33  # NY state code
+        state_fips: 36  # NY state code
         slcsp_rating_area: 2
         slcsp_age_0: 560
   output:
@@ -146,7 +146,7 @@
       household:
         members: [person1, person2, person3]
         state_code_str: CA
-        state_code: 5  # CA state code
+        state_fips: 6  # CA state code
         slcsp_rating_area: 15
         slcsp_age_0: 244
   output:
