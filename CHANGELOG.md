@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.209.1] - 2025-03-11 12:24:12
+
+### Fixed
+
+- Colorado credit returns NaNs in 2025 and beyond.
+- Added test for NaNs in 2025 and beyond.
+
 ## [1.209.0] - 2025-03-10 15:29:09
 
 ### Added
@@ -10983,6 +10990,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.209.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.209.0...1.209.1
 [1.209.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.208.0...1.209.0
 [1.208.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.207.5...1.208.0
 [1.207.5]: https://github.com/PolicyEngine/policyengine-us/compare/1.207.4...1.207.5
