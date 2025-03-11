@@ -6,12 +6,14 @@ from policyengine_us.model_api import (
     where,
 )
 
+
 class nm_itemized_deductions(Variable):
     """
     Minimal stub so that any test input for 'nm_itemized_deductions'
     doesn't break. When the tax filer itemizes, this returns the test input;
     otherwise, it returns 0.
     """
+
     value_type = float
     entity = TaxUnit
     label = "New Mexico itemized deductions (stub for old tests)"
