@@ -1,0 +1,20 @@
+- name: Gross income over payment standard, clothing allowance is added.
+  period: 2021
+  input:
+    ma_tafdc_payment_standard: 2_100
+    ma_tafdc_clothing_allowance: 400
+    ma_tafdc_eligible: true
+    ma_tafdc_gross_income: 2_200
+  output:
+    # This case will be neglected in integraton tests due to income eligibility.
+    ma_tafdc: 400
+
+- name: Gross income under payment standard
+  period: 2021
+  input:
+    ma_tafdc_payment_standard: 2_100
+    ma_tafdc_clothing_allowance: 400
+    ma_tafdc_eligible: true
+    ma_tafdc_gross_income: 1_000
+  output:
+    ma_tafdc: 1_500
