@@ -1,0 +1,121 @@
+- name: Starting year test for Long Island
+  period: 2010
+  input:
+    ny_sun_region_status: LONG_ISLAND
+    ny_sun_new_pw_system_size: 3
+    ny_sun_current_solar_energy_use: 9_000
+    state_code: NY
+  output:
+    ny_sun_residential_solar_incentive: 1_100
+    
+- name: Starting year test for Upstate
+  period: 2010
+  input:
+    ny_sun_region_status: UPSTATE
+    ny_sun_new_pw_system_size: 3
+    ny_sun_current_solar_energy_use: 9_000
+    state_code: NY
+  output:
+    ny_sun_residential_solar_incentive: 2_200
+    
+- name:  Starting year test for Con Ed
+  period: 2010
+  input:
+    ny_sun_region_status: CON_ED
+    ny_sun_new_pw_system_size: 3
+    ny_sun_current_solar_energy_use: 9_000
+    state_code: NY
+  output:
+    ny_sun_residential_solar_incentive: 2_200
+    
+- name: Regular test for Long Island
+  period: 2020
+  input:
+    ny_sun_region_status: LONG_ISLAND
+    ny_sun_new_pw_system_size: 7 
+    ny_sun_current_solar_energy_use: 6_000
+    state_code: NY
+  output:
+    ny_sun_residential_solar_incentive: 733.330
+   
+    
+- name:  Regular test for Con Ed
+  period: 2020
+  input:
+    ny_sun_region_status: CON_ED
+    ny_sun_new_pw_system_size: 7
+    ny_sun_current_solar_energy_use: 5_100
+    state_code: NY
+  output:
+    ny_sun_residential_solar_incentive: 1_466.670
+    
+- name:  Regular test for Upstate
+  period: 2020
+  input:
+    ny_sun_region_status: UPSTATE
+    ny_sun_new_pw_system_size: 7 
+    ny_sun_current_solar_energy_use: 5_100
+    state_code: NY
+  output:
+    ny_sun_residential_solar_incentive: 1_466.670
+    
+- name: Test for large previous size for Long Island
+  period: 2015
+  input:
+    ny_sun_region_status: LONG_ISLAND
+    ny_sun_new_pw_system_size: 5 
+    ny_sun_current_solar_energy_use: 18_000
+    state_code: NY
+  output:
+    ny_sun_residential_solar_incentive: 2_000
+    
+- name:  Test for large previous size for Upstate
+  period: 2015
+  input:
+    ny_sun_region_status: UPSTATE
+    ny_sun_new_pw_system_size: 5 
+    ny_sun_current_solar_energy_use: 18_000
+    state_code: NY
+  output:
+    ny_sun_residential_solar_incentive: 4_000
+    
+- name:  Test for large previous size for Con Ed
+  period: 2015
+  input:
+    ny_sun_region_status: CON_ED
+    ny_sun_new_pw_system_size: 5 
+    ny_sun_current_solar_energy_use: 18_000
+    state_code: NY
+  output:
+    ny_sun_residential_solar_incentive: 4_000
+    
+- name:  Test near end of period for Long Island
+  period: 2030
+  input:
+    ny_sun_region_status: LONG_ISLAND
+    ny_sun_new_pw_system_size: 7 
+    ny_sun_current_solar_energy_use: 1_100
+    state_code: NY
+  output:
+    ny_sun_residential_solar_incentive: 134.440
+    
+- name:  Test near end of period for Upstate
+  period: 2030
+  input:
+    ny_sun_region_status: UPSTATE
+    ny_sun_new_pw_system_size: 7 
+    ny_sun_current_solar_energy_use: 1_100
+    state_code: NY
+  output:
+    ny_sun_residential_solar_incentive: 268.890
+    
+- name:  Test near end of period for Con Ed
+  period: 2030 
+  input:
+    ny_sun_region_status: CON_ED
+    ny_sun_new_pw_system_size: 7 
+    ny_sun_current_solar_energy_use: 1_100
+    state_code: NY
+  output:
+    ny_sun_residential_solar_incentive: 268.890
+    
