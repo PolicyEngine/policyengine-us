@@ -33,7 +33,7 @@ class slcsp_family_tier_category(Variable):
         """
         # Get inputs
         state_code = tax_unit.household("state_code_str", period)
-        
+
         # Get the maximum child age from parameters
         max_child_age = parameters(period).gov.aca.slcsp.max_child_age
 
