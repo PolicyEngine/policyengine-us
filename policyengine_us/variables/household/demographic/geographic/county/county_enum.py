@@ -2,7 +2,15 @@ from policyengine_us.model_api import *
 
 
 class County(Enum):
+
+    # Based on 2023 file sourced from 
+    # https://www.census.gov/data/tables/time-series/demo/popest/2020s-counties-total.html;
+    # Note that Connecticut shifted to using 9
+    # Councils of Governments (COGs) as a statistical county equivalent
+    # in 2024
+
     UNKNOWN = "Unknown"
+
     ALEUTIANS_EAST_BOROUGH_AK = "Aleutians East Borough, AK"
     ALEUTIANS_WEST_CENSUS_AREA_AK = "Aleutians West Census Area, AK"
     ANCHORAGE_MUNICIPALITY_AK = "Anchorage Municipality, AK"
@@ -24,6 +32,7 @@ class County(Enum):
     NOME_CENSUS_AREA_AK = "Nome Census Area, AK"
     NORTH_SLOPE_BOROUGH_AK = "North Slope Borough, AK"
     NORTHWEST_ARCTIC_BOROUGH_AK = "Northwest Arctic Borough, AK"
+    PETERSBURG_BOUROUGH_AK = "Petersburg Bourough, AK"
     PRINCE_OF_WALES_HYDER_CENSUS_AREA_AK = (
         "Prince of Wales-Hyder Census Area, AK"
     )
@@ -33,6 +42,7 @@ class County(Enum):
     WRANGELL_CITY_AND_BOROUGH_AK = "Wrangell City and Borough, AK"
     YAKUTAT_CITY_AND_BOROUGH_AK = "Yakutat City and Borough, AK"
     YUKON_KOYUKUK_CENSUS_AREA_AK = "Yukon-Koyukuk Census Area, AK"
+
     AUTAUGA_COUNTY_AL = "Autauga County, AL"
     BALDWIN_COUNTY_AL = "Baldwin County, AL"
     BARBOUR_COUNTY_AL = "Barbour County, AL"
@@ -95,12 +105,12 @@ class County(Enum):
     SUMTER_COUNTY_AL = "Sumter County, AL"
     TALLADEGA_COUNTY_AL = "Talladega County, AL"
     TALLAPOOSA_COUNTY_AL = "Tallapoosa County, AL"
-    TROUP_COUNTY_AL = "Troup County, AL"
     TUSCALOOSA_COUNTY_AL = "Tuscaloosa County, AL"
     WALKER_COUNTY_AL = "Walker County, AL"
     WASHINGTON_COUNTY_AL = "Washington County, AL"
     WILCOX_COUNTY_AL = "Wilcox County, AL"
     WINSTON_COUNTY_AL = "Winston County, AL"
+
     ARKANSAS_COUNTY_AR = "Arkansas County, AR"
     ASHLEY_COUNTY_AR = "Ashley County, AR"
     BAXTER_COUNTY_AR = "Baxter County, AR"
@@ -139,7 +149,6 @@ class County(Enum):
     JOHNSON_COUNTY_AR = "Johnson County, AR"
     LAFAYETTE_COUNTY_AR = "Lafayette County, AR"
     LAWRENCE_COUNTY_AR = "Lawrence County, AR"
-    LE_FLORE_COUNTY_AR = "Le Flore County, AR"
     LEE_COUNTY_AR = "Lee County, AR"
     LINCOLN_COUNTY_AR = "Lincoln County, AR"
     LITTLE_RIVER_COUNTY_AR = "Little River County, AR"
@@ -171,13 +180,13 @@ class County(Enum):
     SHARP_COUNTY_AR = "Sharp County, AR"
     ST_FRANCIS_COUNTY_AR = "St. Francis County, AR"
     STONE_COUNTY_AR = "Stone County, AR"
-    TIPTON_COUNTY_AR = "Tipton County, AR"
     UNION_COUNTY_AR = "Union County, AR"
     VAN_BUREN_COUNTY_AR = "Van Buren County, AR"
     WASHINGTON_COUNTY_AR = "Washington County, AR"
     WHITE_COUNTY_AR = "White County, AR"
     WOODRUFF_COUNTY_AR = "Woodruff County, AR"
     YELL_COUNTY_AR = "Yell County, AR"
+
     APACHE_COUNTY_AZ = "Apache County, AZ"
     COCHISE_COUNTY_AZ = "Cochise County, AZ"
     COCONINO_COUNTY_AZ = "Coconino County, AZ"
@@ -186,15 +195,14 @@ class County(Enum):
     GREENLEE_COUNTY_AZ = "Greenlee County, AZ"
     LA_PAZ_COUNTY_AZ = "La Paz County, AZ"
     MARICOPA_COUNTY_AZ = "Maricopa County, AZ"
-    MCKINLEY_COUNTY_AZ = "McKinley County, AZ"
     MOHAVE_COUNTY_AZ = "Mohave County, AZ"
     NAVAJO_COUNTY_AZ = "Navajo County, AZ"
     PIMA_COUNTY_AZ = "Pima County, AZ"
     PINAL_COUNTY_AZ = "Pinal County, AZ"
-    SAN_JUAN_COUNTY_AZ = "San Juan County, AZ"
     SANTA_CRUZ_COUNTY_AZ = "Santa Cruz County, AZ"
     YAVAPAI_COUNTY_AZ = "Yavapai County, AZ"
     YUMA_COUNTY_AZ = "Yuma County, AZ"
+
     ALAMEDA_COUNTY_CA = "Alameda County, CA"
     ALPINE_COUNTY_CA = "Alpine County, CA"
     AMADOR_COUNTY_CA = "Amador County, CA"
@@ -253,6 +261,7 @@ class County(Enum):
     VENTURA_COUNTY_CA = "Ventura County, CA"
     YOLO_COUNTY_CA = "Yolo County, CA"
     YUBA_COUNTY_CA = "Yuba County, CA"
+
     ADAMS_COUNTY_CO = "Adams County, CO"
     ALAMOSA_COUNTY_CO = "Alamosa County, CO"
     ARAPAHOE_COUNTY_CO = "Arapahoe County, CO"
@@ -305,7 +314,6 @@ class County(Enum):
     PITKIN_COUNTY_CO = "Pitkin County, CO"
     PROWERS_COUNTY_CO = "Prowers County, CO"
     PUEBLO_COUNTY_CO = "Pueblo County, CO"
-    RIO_ARRIBA_COUNTY_CO = "Rio Arriba County, CO"
     RIO_BLANCO_COUNTY_CO = "Rio Blanco County, CO"
     RIO_GRANDE_COUNTY_CO = "Rio Grande County, CO"
     ROUTT_COUNTY_CO = "Routt County, CO"
@@ -318,20 +326,23 @@ class County(Enum):
     WASHINGTON_COUNTY_CO = "Washington County, CO"
     WELD_COUNTY_CO = "Weld County, CO"
     YUMA_COUNTY_CO = "Yuma County, CO"
-    FAIRFIELD_COUNTY_CT = "Fairfield County, CT"
-    HARTFORD_COUNTY_CT = "Hartford County, CT"
-    LITCHFIELD_COUNTY_CT = "Litchfield County, CT"
-    MIDDLESEX_COUNTY_CT = "Middlesex County, CT"
-    NEW_HAVEN_COUNTY_CT = "New Haven County, CT"
-    NEW_LONDON_COUNTY_CT = "New London County, CT"
-    SUFFOLK_COUNTY_CT = "Suffolk County, CT"
-    TOLLAND_COUNTY_CT = "Tolland County, CT"
-    WINDHAM_COUNTY_CT = "Windham County, CT"
+
+    CAPITOL_PLANNING_REGION = "Capitol Planning Region, CT"
+    GREATER_BRIDGEPORT_PLANNING_REGION = "Greater Bridgeport Planning Region, CT"
+    LOWER_CONNECTICUT_RIVER_VALLEY_PLANNING_REGION = "Lower Connecticut River Valley Planning Region, CT"
+    NAUGATUCK_VALLEY_PLANNING_REGION = "Naugatuck Valley Planning Region, CT"
+    NORTHEASTERN_CONNECTICUT_PLANNING_REGION = "Northeastern Connecticut Planning Region, CT"
+    NORTHWEST_HILLS_PLANNING_REGION = "Northwest Hills Planning Region, CT"
+    SOUTH_CENTRAL_CONNECTICUT_PLANNING_REGION = "South Central Connecticut Planning Region, CT"
+    SOUTHEASTERN_CONNECTICUT_PLANNING_REGION = "Southeastern Connecticut Planning Region, CT"
+    WESTERN_CONNECTICUT_PLANNING_REGION = "Western Connecticut Planning Region, CT"
+
     DISTRICT_OF_COLUMBIA_DC = "District of Columbia, DC"
-    DORCHESTER_COUNTY_DE = "Dorchester County, DE"
+    
     KENT_COUNTY_DE = "Kent County, DE"
     NEW_CASTLE_COUNTY_DE = "New Castle County, DE"
     SUSSEX_COUNTY_DE = "Sussex County, DE"
+
     ALACHUA_COUNTY_FL = "Alachua County, FL"
     BAKER_COUNTY_FL = "Baker County, FL"
     BAY_COUNTY_FL = "Bay County, FL"
@@ -399,6 +410,7 @@ class County(Enum):
     WAKULLA_COUNTY_FL = "Wakulla County, FL"
     WALTON_COUNTY_FL = "Walton County, FL"
     WASHINGTON_COUNTY_FL = "Washington County, FL"
+
     APPLING_COUNTY_GA = "Appling County, GA"
     ATKINSON_COUNTY_GA = "Atkinson County, GA"
     BACON_COUNTY_GA = "Bacon County, GA"
@@ -407,11 +419,13 @@ class County(Enum):
     BANKS_COUNTY_GA = "Banks County, GA"
     BARROW_COUNTY_GA = "Barrow County, GA"
     BARTOW_COUNTY_GA = "Bartow County, GA"
+    BEN_HILL_COUNTY_GA = "Ben Hill County, GA"
     BERRIEN_COUNTY_GA = "Berrien County, GA"
     BIBB_COUNTY_GA = "Bibb County, GA"
     BLECKLEY_COUNTY_GA = "Bleckley County, GA"
     BRANTLEY_COUNTY_GA = "Brantley County, GA"
     BROOKS_COUNTY_GA = "Brooks County, GA"
+    BRYAN_COUNTY_GA = "Bryan County, GA"
     BULLOCH_COUNTY_GA = "Bulloch County, GA"
     BURKE_COUNTY_GA = "Burke County, GA"
     BUTTS_COUNTY_GA = "Butts County, GA"
@@ -438,6 +452,7 @@ class County(Enum):
     CRAWFORD_COUNTY_GA = "Crawford County, GA"
     CRISP_COUNTY_GA = "Crisp County, GA"
     DADE_COUNTY_GA = "Dade County, GA"
+    DAWSON_COUNTY_GA = "Dawson County, GA"
     DEKALB_COUNTY_GA = "DeKalb County, GA"
     DECATUR_COUNTY_GA = "Decatur County, GA"
     DODGE_COUNTY_GA = "Dodge County, GA"
@@ -478,6 +493,7 @@ class County(Enum):
     JEFF_DAVIS_COUNTY_GA = "Jeff Davis County, GA"
     JEFFERSON_COUNTY_GA = "Jefferson County, GA"
     JENKINS_COUNTY_GA = "Jenkins County, GA"
+    JOHNSON_COUNTY_GA = "Johnson County, GA"
     JONES_COUNTY_GA = "Jones County, GA"
     LAMAR_COUNTY_GA = "Lamar County, GA"
     LANIER_COUNTY_GA = "Lanier County, GA"
@@ -532,6 +548,7 @@ class County(Enum):
     TERRELL_COUNTY_GA = "Terrell County, GA"
     THOMAS_COUNTY_GA = "Thomas County, GA"
     TIFT_COUNTY_GA = "Tift County, GA"
+    TOOMBS_COUNTY_GA = "Toombs County, GA"
     TOWNS_COUNTY_GA = "Towns County, GA"
     TREUTLEN_COUNTY_GA = "Treutlen County, GA"
     TROUP_COUNTY_GA = "Troup County, GA"
@@ -553,11 +570,13 @@ class County(Enum):
     WILKES_COUNTY_GA = "Wilkes County, GA"
     WILKINSON_COUNTY_GA = "Wilkinson County, GA"
     WORTH_COUNTY_GA = "Worth County, GA"
+
     HAWAII_COUNTY_HI = "Hawaii County, HI"
     HONOLULU_COUNTY_HI = "Honolulu County, HI"
     KALAWAO_COUNTY_HI = "Kalawao County, HI"
     KAUAI_COUNTY_HI = "Kauai County, HI"
     MAUI_COUNTY_HI = "Maui County, HI"
+
     ADAIR_COUNTY_IA = "Adair County, IA"
     ADAMS_COUNTY_IA = "Adams County, IA"
     ALLAMAKEE_COUNTY_IA = "Allamakee County, IA"
@@ -2188,7 +2207,7 @@ class County(Enum):
     KINGFISHER_COUNTY_OK = "Kingfisher County, OK"
     KIOWA_COUNTY_OK = "Kiowa County, OK"
     LATIMER_COUNTY_OK = "Latimer County, OK"
-    LE_FLORE_COUNTY_OK = "Le Flore County, OK"
+    LEFLORE_COUNTY_OK = "LeFlore County, OK"
     LINCOLN_COUNTY_OK = "Lincoln County, OK"
     LOGAN_COUNTY_OK = "Logan County, OK"
     LOVE_COUNTY_OK = "Love County, OK"
