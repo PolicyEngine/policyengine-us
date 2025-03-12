@@ -115,7 +115,7 @@ class nm_deductions(Variable):
     value_type = float
     entity = TaxUnit
     label = "New Mexico income deductions"
-    unit = "USD"
+    unit = USD
     definition_period = YEAR
     defined_for = StateCode.NM
 
@@ -128,7 +128,6 @@ class nm_deductions(Variable):
             "nm_medical_care_expense_deduction",
             "nm_deduction_for_certain_dependents",
             "nm_net_capital_gains_deduction",
-            # add others if needed
         ]
         other_nmdeds = add(tax_unit, period, OTHER_DEDUCTIONS)
 

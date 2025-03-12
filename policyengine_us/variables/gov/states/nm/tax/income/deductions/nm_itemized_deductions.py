@@ -1,10 +1,4 @@
-from policyengine_us.model_api import (
-    Variable,
-    TaxUnit,
-    YEAR,
-    StateCode,
-    where,
-)
+from policyengine_us.model_api import *
 
 
 class nm_itemized_deductions(Variable):

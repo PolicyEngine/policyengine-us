@@ -1,25 +1,16 @@
-# =============================================================================
-# nm_deductions.yaml
-#
-# Updated to reflect the new unified logic:
-#   - We no longer to use "nm_itemized_deductions" variable directly, instead we use federal_itemized_deduction.
-#   - SALT add-back is 0 in these tests (no SALT taxes), so final results
-#     match old tests.
-# =============================================================================
-
 - name: New Mexico deductions - itemized
   period: 2021
   input:
     tax_unit_itemizes: true
-    federal_itemized_deduction: 1000
-    standard_deduction: 2500
+    federal_itemized_deduction: 1_000
+    standard_deduction: 2_500
     nm_medical_care_expense_deduction: 500
     nm_net_capital_gains_deduction: 300
-    nm_deduction_for_certain_dependents: 1000
+    nm_deduction_for_certain_dependents: 1_000
     state_code: NM
     # No SALT taxes => nm_salt_addback=0
   output:
-    nm_deductions: 2800
+    nm_deductions: 2_800
     # Explanation: 1000 (fed itemized) - 0 (salt add-back)
     #    + 500 (medical) + 300 (cap gains) + 1000 (dependents)
     #    = 2800
@@ -28,27 +19,27 @@
   period: 2021
   input:
     tax_unit_itemizes: false
-    federal_itemized_deduction: 9999  # won't matter, because itemizes=False
-    standard_deduction: 2500
+    federal_itemized_deduction: 9_999  # won't matter, because itemizes=False
+    standard_deduction: 2_500
     nm_medical_care_expense_deduction: 500
     nm_net_capital_gains_deduction: 300
     state_code: NM
     # No SALT => nm_salt_addback=0
   output:
-    nm_deductions: 3300
+    nm_deductions: 3_300
     # Explanation: 2500 (standard) - 0 + 500 + 300 = 3300
 
 - name: New Mexico deductions - itemized without any additions
   period: 2021
   input:
     tax_unit_itemizes: true
-    federal_itemized_deduction: 1000
-    standard_deduction: 2500
+    federal_itemized_deduction: 1_000
+    standard_deduction: 2_500
     nm_medical_care_expense_deduction: 0
     nm_net_capital_gains_deduction: 0
     state_code: NM
   output:
-    nm_deductions: 1000
+    nm_deductions: 1_000
     # Explanation: 1000 - 0 + 0 = 1000
 
 - name: New Mexico deductions - itemized with SALT addback
@@ -59,19 +50,19 @@
     tax_unit_itemizes: true
     # NM itemized is $12,000, standard is $5,000
     # => difference = $7,000
-    federal_itemized_deduction: 12000
-    standard_deduction: 5000
+    federal_itemized_deduction: 12_000
+    standard_deduction: 5_000
 
     # SALT: total 12,500 => but limited by $10k cap => ratio => final SALT addback => $4,000
-    state_and_local_sales_or_income_tax: 5000
-    real_estate_taxes: 7500
+    state_and_local_sales_or_income_tax: 5_000
+    real_estate_taxes: 7_500
 
     nm_medical_care_expense_deduction: 0
     nm_net_capital_gains_deduction: 0
     nm_deduction_for_certain_dependents: 0
     state_code: NM
   output:
-    nm_deductions: 8000
+    nm_deductions: 8_000
     # Explanation:
     #   nm_federal_deduction_for_nm = 12,000
     #   nm_salt_addback = 4,000
