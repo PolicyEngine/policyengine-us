@@ -33,13 +33,16 @@ class slcsp_family_tier_category(Variable):
         """
         # Get inputs
         state_code = tax_unit.household("state_code_str", period)
+        
+        # Get the maximum child age from parameters
+        max_child_age = parameters(period).gov.aca.slcsp.max_child_age
 
         # For tests, since the age variable is defined yearly but we're running monthly
         # tests, we need to use the direct age values from the input file
         member_ages = tax_unit.members("monthly_age", period)
 
-        # Define adult status (age 20 or above)
-        is_adult = member_ages >= 20
+        # Define adult status using the parameter instead of hardcoded value
+        is_adult = member_ages > max_child_age
         adult_count = tax_unit.sum(is_adult)
         # More efficient than recounting: total - adults = children
         child_count = tax_unit("tax_unit_size", period) - adult_count
@@ -59,10 +62,10 @@ class slcsp_family_tier_category(Variable):
             [
                 # Apply conditions only to family tier states
                 ny_child_only,
-                One_adult_no_children,
-                Two_plus_adults_no_children,
-                One_adult_with_children,
-                Two_plus_adults_with_children,
+                one_adult_no_children,
+                two_plus_adults_no_children,
+                one_adult_with_children,
+                two_plus_adults_with_children,
             ],
             [
                 FamilyTierCategory.CHILD_ONLY,
