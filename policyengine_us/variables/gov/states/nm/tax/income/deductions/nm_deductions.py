@@ -13,7 +13,7 @@ class nm_deductions(Variable):
         itemized_on_federal_return = tax_unit("tax_unit_itemizes", period)
         itm_ded = tax_unit("total_itemized_taxable_income_deductions", period)
         salt_addback = tax_unit("nm_salt_addback", period)
-        total_itemized_deduction_value = max_[itm_ded - salt_addback, 0]
+        total_itemized_deduction_value = max_(itm_ded - salt_addback, 0)
         standard_ded = tax_unit("standard_deduction", period)
         # Tax filer is required to itemize deductions if they itemize on their federal return as per:
         # https://klvg4oyd4j.execute-api.us-west-2.amazonaws.com/prod/PublicFiles/34821a9573ca43e7b06dfad20f5183fd/1afc56af-ea90-4d48-82e5-1f9aeb43255a/PITbook2022.pdf
