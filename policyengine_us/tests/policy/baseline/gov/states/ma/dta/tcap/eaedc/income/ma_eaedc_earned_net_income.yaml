@@ -1,31 +1,26 @@
-- name: Case 1, $1400 total earned income and $100 dependent care deduction
-  period: 2022
+- name: Case 1, earned income after deduction is higher than dependent care deduction.
+  period: 2023
   input:
-    ma_eaedc_total_earned_income: 1_200
+    ma_eaedc_earned_income_after_deduction_person: 200
     ma_eaedc_dependent_care_deduction: 100
     state_code: MA
   output:
-    ma_eaedc_earned_net_income: 547.6
-    # 1200/12 = 100
-    # (100-30)*(1-0.33)*4 = 187.6
-    # (100-30)*8 = 560
-    # 187.6 + 560 = 747.6
-    # 747.6 - 100 = 547.6
+    ma_eaedc_earned_net_income: 100
 
-- name: Case 2, $1400 total earned income and $700 dependent care deduction
-  period: 2022
+- name: Case 2, earned income after deduction is lower than dependent care deduction.
+  period: 2023
   input:
-    ma_eaedc_total_earned_income: 1_400
-    ma_eaedc_dependent_care_deduction: 700
+    ma_eaedc_earned_income_after_deduction_person: 500
+    ma_eaedc_dependent_care_deduction: 600
     state_code: MA
   output:
-    ma_eaedc_earned_net_income: 0
+    ma_eaedc_earned_net_income: 0 
 
-- name: Case 3, $0 total earned income and $0 dependent care deduction
-  period: 2022
+- name: Case 3, both $0.
+  period: 2023
   input:
-    ma_eaedc_total_earned_income: 0
+    ma_eaedc_earned_income_after_deduction_person: 0
     ma_eaedc_dependent_care_deduction: 0
     state_code: MA
   output:
-    ma_eaedc_earned_net_income: 0
+    ma_eaedc_earned_net_income: 0 
