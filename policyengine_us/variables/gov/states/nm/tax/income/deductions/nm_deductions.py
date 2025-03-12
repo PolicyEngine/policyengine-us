@@ -1,25 +1,4 @@
-# =============================================================================
-# nm_deductions.py
-#
-# This replaces the old "nm_deductions" logic.
-#   - Includes SALT add-back (line 10)
-#   - Uses the appropriate federal deduction (line 12)
-#   - Adds other NM-specific deductions
-# =============================================================================
-
-import numpy as np
-
-from policyengine_us.model_api import (
-    Variable,
-    TaxUnit,
-    YEAR,
-    StateCode,
-    add,
-    min_,
-    max_,
-    select,
-    where,
-)
+from policyengine_us.model_api import *
 
 
 class nm_salt_addback(Variable):
@@ -115,7 +94,7 @@ class nm_deductions(Variable):
     value_type = float
     entity = TaxUnit
     label = "New Mexico income deductions"
-    unit = USD
+    unit = "USD"
     definition_period = YEAR
     defined_for = StateCode.NM
 
