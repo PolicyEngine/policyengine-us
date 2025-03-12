@@ -30,7 +30,9 @@ class ma_eaedc_earned_net_income(Variable):
             MONTHS_IN_YEAR - p.deductions.income_disregard.percentage.months, 0
         )
         reduced_remaining_monthly_income = max_(
-            adjusted_monthly_income - p.deductions.income_disregard.percentage.months, 0
+            adjusted_monthly_income
+            - p.deductions.income_disregard.percentage.months,
+            0,
         )
 
         remaining_income = reduced_remaining_monthly_income * remaining_months

@@ -13,4 +13,4 @@ class ma_eaedc_disabled_eligible(Variable):
         person = spm_unit.members
         is_disabled = person("is_disabled", period)
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        return spm_unit.any(is_disabled & head_or_spouse) 
+        return spm_unit.any(is_disabled & head_or_spouse)
