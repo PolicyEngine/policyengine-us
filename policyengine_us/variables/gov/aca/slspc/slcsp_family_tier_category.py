@@ -45,10 +45,10 @@ class slcsp_family_tier_category(Variable):
         child_count = tax_unit("tax_unit_size", period) - adult_count
 
         # Common conditions for both states
-        One_adult_no_children = (adult_count == 1) & (child_count == 0)
-        Two_plus_adults_no_children = (adult_count >= 2) & (child_count == 0)
-        One_adult_with_children = (adult_count == 1) & (child_count > 0)
-        Two_plus_adults_with_children = (adult_count >= 2) & (child_count > 0)
+        one_adult_no_children = (adult_count == 1) & (child_count == 0)
+        two_plus_adults_no_children = (adult_count >= 2) & (child_count == 0)
+        one_adult_with_children = (adult_count == 1) & (child_count > 0)
+        two_plus_adults_with_children = (adult_count >= 2) & (child_count > 0)
 
         # NY-specific condition (child-only households)
         ny_child_only = (
