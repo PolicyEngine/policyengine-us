@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ma_eaedc_total_earned_income(Variable):
     value_type = float
     entity = Person
-    label = "Massachusetts EAEDC earned income"
+    label = "Massachusetts EAEDC total earned income for each person"
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.MA
