@@ -9,4 +9,4 @@ class ma_eaedc_total_earned_income(Variable):
     definition_period = YEAR
     defined_for = StateCode.MA
 
-    adds = "gov.states.ma.dta.tcap.eaedc.income.earned"
+    adds = "gov.states.ma.dta.tcap.eaedc.income.sources.earned"

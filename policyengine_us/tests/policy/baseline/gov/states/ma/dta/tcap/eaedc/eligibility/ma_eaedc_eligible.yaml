@@ -1,51 +1,35 @@
 - name: Case 1, passed all eligibility test, eligible. 
   period: 2022
   input:
-    ma_eaedc_income_eligible: true
-    ma_eaedc_assets_limit_eligible: true
-    ma_eaedc_elderly_age_eligible: true
-    ma_eaedc_caretaker_family_eligible: true
-    ma_eaedc_head_is_disabled: true
-    ma_eaedc_disabled_dependent_criteria_met: true
+    ma_eaedc_financial_eligible: true
+    ma_eaedc_non_financial_eligible: true
     state_code: MA
   output:
     ma_eaedc_eligible: true
 
-- name: Case 2, has disabled but disabled dependent criteria not met, ineligible. 
+- name: Case 2, failed one eligibility test, ineligible. 
   period: 2022
   input:
-    ma_eaedc_income_eligible: true
-    ma_eaedc_assets_limit_eligible: true
-    ma_eaedc_elderly_age_eligible: false
-    ma_eaedc_caretaker_family_eligible: false
-    ma_eaedc_head_is_disabled: true
-    ma_eaedc_disabled_dependent_criteria_met: false
+    ma_eaedc_financial_eligible: true
+    ma_eaedc_non_financial_eligible: false
     state_code: MA
   output:
     ma_eaedc_eligible: false
 
-- name: Case 3, has elderly and a disabled, but disabled dependent criteria not met, ineligible. 
+- name: Case 2, failed one eligibility test, ineligible. 
   period: 2022
   input:
-    ma_eaedc_income_eligible: true
-    ma_eaedc_assets_limit_eligible: true
-    ma_eaedc_elderly_age_eligible: true
-    ma_eaedc_caretaker_family_eligible: false
-    ma_eaedc_head_is_disabled: true
-    ma_eaedc_disabled_dependent_criteria_met: false
+    ma_eaedc_financial_eligible: false
+    ma_eaedc_non_financial_eligible: true
     state_code: MA
   output:
     ma_eaedc_eligible: false
 
-- name: Case 4, has elderly, eligible. 
+- name: Case 3, failed both eligibility test, ineligible. 
   period: 2022
   input:
-    ma_eaedc_income_eligible: true
-    ma_eaedc_assets_limit_eligible: true
-    ma_eaedc_elderly_age_eligible: true
-    ma_eaedc_caretaker_family_eligible: false
-    ma_eaedc_head_is_disabled: false
-    ma_eaedc_disabled_dependent_criteria_met: true
+    ma_eaedc_financial_eligible: false
+    ma_eaedc_non_financial_eligible: false
     state_code: MA
   output:
-    ma_eaedc_eligible: true
+    ma_eaedc_eligible: false

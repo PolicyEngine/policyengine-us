@@ -1,61 +1,62 @@
-- name: Case 1, head of household is disabled. 
+- name: Case 1, has disabled dependent with income below limit, eligible
+  period: 2022
+  input:
+    people:
+      person1:
+        is_disabled: false
+        is_tax_unit_head_or_spouse: true
+      person2:
+        is_disabled: true
+        is_tax_unit_dependent: true
+        ma_eaedc_total_earned_income: 1_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+  output:
+    ma_eaedc_disabled_dependent_present_eligible: true
+
+- name: Case 2, has disabled dependent with income above limit, not eligible
+  period: 2022
+  input:
+    people:
+      person1:
+        is_disabled: false
+        is_tax_unit_head_or_spouse: true
+      person2:
+        is_disabled: true
+        is_tax_unit_dependent: true
+        ma_eaedc_total_earned_income: 1_600
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+  output:
+    ma_eaedc_disabled_dependent_present_eligible: false
+
+- name: Case 3, no disabled dependents, not eligible
   period: 2022
   input:
     people:
       person1:
         is_disabled: true
-        is_tax_unit_dependent: false
-        is_tax_unit_head: true
-      person2:
-        is_disabled: false
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
-    households:
-      household:
-        members: [person1, person2]
-        state_code: MA
-  output:  
-    ma_eaedc_head_is_disabled: true
-
-- name: Case 2, dependent is disabled but head is not. 
-  period: 2022
-  input:
-    people:
-      person1:
-        is_disabled: false
-        is_tax_unit_dependent: false
-        is_tax_unit_head: true
-      person2:
-        is_disabled: true
-        is_tax_unit_dependent: true
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
-    households:
-      household:
-        members: [person1, person2]
-        state_code: MA
-  output:  
-    ma_eaedc_head_is_disabled: false
-
-- name: Case 3, no disabled in household. 
-  period: 2022
-  input:
-    people:
-      person1:
-        is_disabled: false
-        is_tax_unit_dependent: false
-        is_tax_unit_head: true
+        is_tax_unit_head_or_spouse: true
       person2:
         is_disabled: false
         is_tax_unit_dependent: true
+        ma_eaedc_total_earned_income: 1_000
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -66,5 +67,5 @@
       household:
         members: [person1, person2]
         state_code: MA
-  output:  
-    ma_eaedc_head_is_disabled: false
+  output:
+    ma_eaedc_disabled_dependent_present_eligible: false

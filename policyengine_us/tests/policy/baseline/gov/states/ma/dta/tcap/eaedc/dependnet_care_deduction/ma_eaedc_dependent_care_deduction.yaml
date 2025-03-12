@@ -6,13 +6,13 @@
         age: 35
         is_tax_unit_dependent: false 
         weekly_hours_worked: 40
-        ma_eaedc_dependent_care_deduction_person_eligible: false
+        ma_eaedc_dependent_care_deduction_eligible_person: false
       person2:
         age: 5
         is_tax_unit_dependent: true
         care_expenses: 3_600
         weekly_hours_worked: 0
-        ma_eaedc_dependent_care_deduction_person_eligible: true
+        ma_eaedc_dependent_care_deduction_eligible_person: true
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -35,13 +35,13 @@
         age: 35
         is_tax_unit_dependent: false
         weekly_hours_worked: 40 
-        ma_eaedc_dependent_care_deduction_person_eligible: false
+        ma_eaedc_dependent_care_deduction_eligible_person: false
       person2:
         age: 1
         is_tax_unit_dependent: true
         care_expenses: 2_040
         weekly_hours_worked: 0
-        ma_eaedc_dependent_care_deduction_person_eligible: true
+        ma_eaedc_dependent_care_deduction_eligible_person: true
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -64,19 +64,19 @@
         age: 35
         is_tax_unit_dependent: false 
         weekly_hours_worked: 40
-        ma_eaedc_dependent_care_deduction_person_eligible: false
+        ma_eaedc_dependent_care_deduction_eligible_person: false
       person2:
         age: 1
         is_tax_unit_dependent: true
         care_expenses: 2_040
         weekly_hours_worked: 0
-        ma_eaedc_dependent_care_deduction_person_eligible: true
+        ma_eaedc_dependent_care_deduction_eligible_person: true
       person3:
         age: 5
         is_tax_unit_dependent: true
         care_expenses: 2_760
         weekly_hours_worked: 0
-        ma_eaedc_dependent_care_deduction_person_eligible: true
+        ma_eaedc_dependent_care_deduction_eligible_person: true
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
@@ -99,13 +99,13 @@
         age: 35
         is_tax_unit_dependent: false 
         weekly_hours_worked: 25
-        ma_eaedc_dependent_care_deduction_person_eligible: false
+        ma_eaedc_dependent_care_deduction_eligible_person: false
       person2:
         age: 2
         is_tax_unit_dependent: true
         care_expenses: 3_600
         weekly_hours_worked: 0
-        ma_eaedc_dependent_care_deduction_person_eligible: true
+        ma_eaedc_dependent_care_deduction_eligible_person: true
     spm_units:
       spm_unit:
         members: [person1, person2]

@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ma_eaedc_standard_assistance(Variable):
     value_type = float
     entity = SPMUnit
-    label = "Massachusetts EAEDC standard_assistance"
+    label = "Massachusetts EAEDC standard assistance"
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.MA

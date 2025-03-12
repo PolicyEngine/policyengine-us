@@ -1,10 +1,10 @@
-description: Massachusetts provides the following standard assistance amount, based on living arrangements under the Emergency Aid to the Elderly Disabled and Children program.
+description: Massachusetts provides the following Emergency Aid to the Elderly, Disabled and Children program standard assistance base amount, based on the living arrangement.
 metadata:
   unit: currency-USD  
   period: month
-  label: Massachusetts EAEDC standard assistance base
+  label: Massachusetts EAEDC standard assistance base amount
   breakdown:
-  - ma_eaedc_living_arrangement 
+    - ma_eaedc_living_arrangement 
   reference:
     - title: Emergency Aid to the Elderly Disabled and Children (EAEDC) Living Arrangement
       href: https://www.mass.gov/lists/emergency-aid-to-the-elderly-disabled-and-children-eaedc-living-arrangement

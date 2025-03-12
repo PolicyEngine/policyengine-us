@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class ma_eaedc_dependent_care_deduction_person_eligible(Variable):
+class ma_eaedc_dependent_care_deduction_eligible_person(Variable):
     value_type = bool
     entity = Person
-    label = "Massachusetts EAEDC dependent care deduction per person eligible"
+    label = "Eligible person for the Massachusetts EAEDC dependent care deduction"
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-704-275#(B)"
 

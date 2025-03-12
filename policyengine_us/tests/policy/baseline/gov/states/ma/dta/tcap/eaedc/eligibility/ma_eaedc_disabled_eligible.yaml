@@ -1,12 +1,11 @@
-- name: Case 1, has disabled in household and income below cap. 
+- name: Case 1, head or spouse of household is disabled. 
   period: 2022
   input:
     people:
       person1:
-        ma_eaedc_disabled_dependent_earned_income: 1_000
         is_disabled: true
+        is_tax_unit_head_or_spouse: true
       person2:
-        ma_eaedc_disabled_dependent_earned_income: 0
         is_disabled: false
     spm_units:
       spm_unit:
@@ -19,18 +18,18 @@
         members: [person1, person2]
         state_code: MA
   output:  
-    ma_eaedc_disabled_dependent_income_eligible: [true, true]
+    ma_eaedc_disabled_eligible: true
 
-- name: Case 2, has disabled in household but income above cap. 
+- name: Case 2, dependent is disabled but head or spouse is not. 
   period: 2022
   input:
     people:
       person1:
-        ma_eaedc_disabled_dependent_earned_income: 2_000
+        is_disabled: false
+        is_tax_unit_head_or_spouse: true
+      person2:
+        is_tax_unit_dependent: true
         is_disabled: true
-      person2:
-        ma_eaedc_disabled_dependent_earned_income: 0
-        is_disabled: false
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -42,18 +41,18 @@
         members: [person1, person2]
         state_code: MA
   output:  
-    ma_eaedc_disabled_dependent_income_eligible: [false, true]
+    ma_eaedc_disabled_eligible: false
 
-- name: Case 3, don't have disabled in household. 
+- name: Case 3, no disabled in household. 
   period: 2022
   input:
     people:
       person1:
-        ma_eaedc_disabled_dependent_earned_income: 0
         is_disabled: false
+        is_tax_unit_head_or_spouse: true
       person2:
-        ma_eaedc_disabled_dependent_earned_income: 0
         is_disabled: false
+        is_tax_unit_dependent: true
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -65,4 +64,4 @@
         members: [person1, person2]
         state_code: MA
   output:  
-    ma_eaedc_disabled_dependent_income_eligible: [true, true]
+    ma_eaedc_disabled_eligible: false

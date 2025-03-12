@@ -5,11 +5,11 @@
       person1:
         age: 35
         is_tax_unit_dependent: false 
-        ma_eaedc_dependent_care_deduction_person_eligible: false
+        ma_eaedc_dependent_care_deduction_eligible_person: false
       person2:
         age: 5
         is_tax_unit_dependent: true
-        ma_eaedc_dependent_care_deduction_person_eligible: true
+        ma_eaedc_dependent_care_deduction_eligible_person: true
     spm_units:
       spm_unit:
         members: [person1, person2]

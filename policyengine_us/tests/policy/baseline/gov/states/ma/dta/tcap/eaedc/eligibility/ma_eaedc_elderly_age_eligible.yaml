@@ -16,7 +16,7 @@
   output:
     ma_eaedc_elderly_age_eligible: false
 
-- name: Case 2, above age threshold, but ssi eligible, then not eligible.
+- name: Case 3, above age threshold, but ssi eligible, then not eligible.
   period: 2022
   input:
     age: 66

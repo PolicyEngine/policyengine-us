@@ -1,11 +1,11 @@
-description: Massachusetts increases the standard assistance for each additional household member by this amount, based on the living arrangement, under the Emergency Aid to the Elderly Disabled and Children program.  
+description: Massachusetts increases the Emergency Aid to the Elderly, Disabled and Children program standard assistance base amount for each additional household member by this amount, based on the living arrangement.
 
 metadata:
   unit: currency-USD
   period: month
-  label: Massachusetts EAEDC standard assistance increment 
+  label: Massachusetts EAEDC standard assistance additional amount 
   breakdown:
-  - ma_eaedc_living_arrangement 
+    - ma_eaedc_living_arrangement 
   reference:
     - title: Emergency Aid to the Elderly Disabled and Children (EAEDC) Living Arrangement
       href: https://www.mass.gov/lists/emergency-aid-to-the-elderly-disabled-and-children-eaedc-living-arrangement

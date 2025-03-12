@@ -5,7 +5,7 @@
     is_tax_unit_dependent: true
     state_code: MA
   output:
-    ma_eaedc_dependent_care_deduction_person_eligible: true
+    ma_eaedc_dependent_care_deduction_eligible_person: true
 
 - name: Case 2, ineligible person for dependent care deduction.
   period: 2022
@@ -14,7 +14,7 @@
     is_tax_unit_dependent: true
     state_code: MA
   output:
-    ma_eaedc_dependent_care_deduction_person_eligible: false
+    ma_eaedc_dependent_care_deduction_eligible_person: false
 
 - name: Case 3, ineligible person for dependent care deduction.
   period: 2022
@@ -23,4 +23,4 @@
     is_tax_unit_dependent: false
     state_code: MA
   output:
-    ma_eaedc_dependent_care_deduction_person_eligible: false
+    ma_eaedc_dependent_care_deduction_eligible_person: false

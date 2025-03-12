@@ -9,26 +9,6 @@ class ma_eaedc_eligible(Variable):
     defined_for = StateCode.MA
 
     def formula(spm_unit, period, parameters):
-        assets_eligible = spm_unit("ma_eaedc_assets_limit_eligible", period)
-        income_eligible = spm_unit("ma_eaedc_income_eligible", period)
-        elderly_age_eligible = spm_unit(
-            "ma_eaedc_elderly_age_eligible", period
-        )
-        caretaker_family_eligible = spm_unit(
-            "ma_eaedc_caretaker_family_eligible", period
-        )
-        head_is_disabled = spm_unit("ma_eaedc_head_is_disabled", period)
-        disabled_dependent_criteria_met = spm_unit(
-            "ma_eaedc_disabled_dependent_criteria_met", period
-        )
-
-        return (
-            (
-                elderly_age_eligible
-                | caretaker_family_eligible
-                | head_is_disabled
-            )
-            & disabled_dependent_criteria_met
-            & assets_eligible
-            & income_eligible
-        )
+        financial_eligible = spm_unit("ma_eaedc_financial_eligible", period)
+        non_financial_eligible = spm_unit("ma_eaedc_non_financial_eligible", period)
+        return financial_eligible & non_financial_eligible
