@@ -1023,6 +1023,7 @@ class County(Enum):
     WILSON_COUNTY_KS = "Wilson County, KS"
     WOODSON_COUNTY_KS = "Woodson County, KS"
     WYANDOTTE_COUNTY_KS = "Wyandotte County, KS"
+
     ADAIR_COUNTY_KY = "Adair County, KY"
     ALLEN_COUNTY_KY = "Allen County, KY"
     ANDERSON_COUNTY_KY = "Anderson County, KY"
@@ -1047,9 +1048,11 @@ class County(Enum):
     CARTER_COUNTY_KY = "Carter County, KY"
     CASEY_COUNTY_KY = "Casey County, KY"
     CHRISTIAN_COUNTY_KY = "Christian County, KY"
+    CLARK_COUNTY_KY = "Clark County, KY"
     CLAY_COUNTY_KY = "Clay County, KY"
     CLINTON_COUNTY_KY = "Clinton County, KY"
     CRITTENDEN_COUNTY_KY = "Crittenden County, KY"
+    CUMBERLAND_COUNTY_KY = "Cumberland County, KY"
     DAVIESS_COUNTY_KY = "Daviess County, KY"
     EDMONSON_COUNTY_KY = "Edmonson County, KY"
     ELLIOTT_COUNTY_KY = "Elliott County, KY"
@@ -1141,6 +1144,7 @@ class County(Enum):
     WHITLEY_COUNTY_KY = "Whitley County, KY"
     WOLFE_COUNTY_KY = "Wolfe County, KY"
     WOODFORD_COUNTY_KY = "Woodford County, KY"
+
     ACADIA_PARISH_LA = "Acadia Parish, LA"
     ALLEN_PARISH_LA = "Allen Parish, LA"
     ASCENSION_PARISH_LA = "Ascension Parish, LA"
@@ -1168,9 +1172,9 @@ class County(Enum):
     JACKSON_PARISH_LA = "Jackson Parish, LA"
     JEFFERSON_DAVIS_PARISH_LA = "Jefferson Davis Parish, LA"
     JEFFERSON_PARISH_LA = "Jefferson Parish, LA"
-    LASALLE_PARISH_LA = "LaSalle Parish, LA"
     LAFAYETTE_PARISH_LA = "Lafayette Parish, LA"
     LAFOURCHE_PARISH_LA = "Lafourche Parish, LA"
+    LASALLE_PARISH_LA = "LaSalle Parish, LA"
     LINCOLN_PARISH_LA = "Lincoln Parish, LA"
     LIVINGSTON_PARISH_LA = "Livingston Parish, LA"
     MADISON_PARISH_LA = "Madison Parish, LA"
@@ -1205,6 +1209,7 @@ class County(Enum):
     WEST_CARROLL_PARISH_LA = "West Carroll Parish, LA"
     WEST_FELICIANA_PARISH_LA = "West Feliciana Parish, LA"
     WINN_PARISH_LA = "Winn Parish, LA"
+
     BARNSTABLE_COUNTY_MA = "Barnstable County, MA"
     BERKSHIRE_COUNTY_MA = "Berkshire County, MA"
     BRISTOL_COUNTY_MA = "Bristol County, MA"
@@ -1219,6 +1224,7 @@ class County(Enum):
     PLYMOUTH_COUNTY_MA = "Plymouth County, MA"
     SUFFOLK_COUNTY_MA = "Suffolk County, MA"
     WORCESTER_COUNTY_MA = "Worcester County, MA"
+
     ALLEGANY_COUNTY_MD = "Allegany County, MD"
     ANNE_ARUNDEL_COUNTY_MD = "Anne Arundel County, MD"
     BALTIMORE_COUNTY_MD = "Baltimore County, MD"
@@ -1235,7 +1241,6 @@ class County(Enum):
     HOWARD_COUNTY_MD = "Howard County, MD"
     KENT_COUNTY_MD = "Kent County, MD"
     MONTGOMERY_COUNTY_MD = "Montgomery County, MD"
-    NEW_CASTLE_COUNTY_MD = "New Castle County, MD"
     PRINCE_GEORGE_S_COUNTY_MD = "Prince George's County, MD"
     QUEEN_ANNE_S_COUNTY_MD = "Queen Anne's County, MD"
     SOMERSET_COUNTY_MD = "Somerset County, MD"
@@ -1244,6 +1249,7 @@ class County(Enum):
     WASHINGTON_COUNTY_MD = "Washington County, MD"
     WICOMICO_COUNTY_MD = "Wicomico County, MD"
     WORCESTER_COUNTY_MD = "Worcester County, MD"
+
     ANDROSCOGGIN_COUNTY_ME = "Androscoggin County, ME"
     AROOSTOOK_COUNTY_ME = "Aroostook County, ME"
     CUMBERLAND_COUNTY_ME = "Cumberland County, ME"
@@ -1260,6 +1266,7 @@ class County(Enum):
     WALDO_COUNTY_ME = "Waldo County, ME"
     WASHINGTON_COUNTY_ME = "Washington County, ME"
     YORK_COUNTY_ME = "York County, ME"
+
     ALCONA_COUNTY_MI = "Alcona County, MI"
     ALGER_COUNTY_MI = "Alger County, MI"
     ALLEGAN_COUNTY_MI = "Allegan County, MI"
@@ -1343,6 +1350,7 @@ class County(Enum):
     WASHTENAW_COUNTY_MI = "Washtenaw County, MI"
     WAYNE_COUNTY_MI = "Wayne County, MI"
     WEXFORD_COUNTY_MI = "Wexford County, MI"
+
     AITKIN_COUNTY_MN = "Aitkin County, MN"
     ANOKA_COUNTY_MN = "Anoka County, MN"
     BECKER_COUNTY_MN = "Becker County, MN"
