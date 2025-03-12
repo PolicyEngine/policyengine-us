@@ -1,0 +1,14 @@
+description: Massechusettes provides assistance for households with adjusted gross income below this percentage of the state median income through the Low Income Home Energy Assistance Program.
+values:
+  2021-01-01: 0.6
+metadata:
+  period: year
+  unit: /1
+  label: MA LIHEAP state median income threshold 
+  reference:
+    # Legal code points to the program manual
+    - title: "General Laws: Chapter 23B, Section 24B" 
+      href: https://malegislature.gov/Laws/GeneralLaws/PartI/TitleII/Chapter23B/Section24B
+    - title: "Learn About Home Energy Assistance (HEAP) - Mass.gov"
+      href: https://www.mass.gov/info-details/learn-about-home-energy-assistance-heap
+
