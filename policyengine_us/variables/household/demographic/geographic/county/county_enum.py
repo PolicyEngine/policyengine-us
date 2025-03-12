@@ -3,7 +3,7 @@ from policyengine_us.model_api import *
 
 class County(Enum):
 
-    # Based on 2023 file sourced from 
+    # Based on 2023 file sourced from
     # https://www.census.gov/data/tables/time-series/demo/popest/2020s-counties-total.html;
     # Note that Connecticut shifted to using 9
     # Councils of Governments (COGs) as a statistical county equivalent
@@ -328,17 +328,29 @@ class County(Enum):
     YUMA_COUNTY_CO = "Yuma County, CO"
 
     CAPITOL_PLANNING_REGION = "Capitol Planning Region, CT"
-    GREATER_BRIDGEPORT_PLANNING_REGION = "Greater Bridgeport Planning Region, CT"
-    LOWER_CONNECTICUT_RIVER_VALLEY_PLANNING_REGION = "Lower Connecticut River Valley Planning Region, CT"
+    GREATER_BRIDGEPORT_PLANNING_REGION = (
+        "Greater Bridgeport Planning Region, CT"
+    )
+    LOWER_CONNECTICUT_RIVER_VALLEY_PLANNING_REGION = (
+        "Lower Connecticut River Valley Planning Region, CT"
+    )
     NAUGATUCK_VALLEY_PLANNING_REGION = "Naugatuck Valley Planning Region, CT"
-    NORTHEASTERN_CONNECTICUT_PLANNING_REGION = "Northeastern Connecticut Planning Region, CT"
+    NORTHEASTERN_CONNECTICUT_PLANNING_REGION = (
+        "Northeastern Connecticut Planning Region, CT"
+    )
     NORTHWEST_HILLS_PLANNING_REGION = "Northwest Hills Planning Region, CT"
-    SOUTH_CENTRAL_CONNECTICUT_PLANNING_REGION = "South Central Connecticut Planning Region, CT"
-    SOUTHEASTERN_CONNECTICUT_PLANNING_REGION = "Southeastern Connecticut Planning Region, CT"
-    WESTERN_CONNECTICUT_PLANNING_REGION = "Western Connecticut Planning Region, CT"
+    SOUTH_CENTRAL_CONNECTICUT_PLANNING_REGION = (
+        "South Central Connecticut Planning Region, CT"
+    )
+    SOUTHEASTERN_CONNECTICUT_PLANNING_REGION = (
+        "Southeastern Connecticut Planning Region, CT"
+    )
+    WESTERN_CONNECTICUT_PLANNING_REGION = (
+        "Western Connecticut Planning Region, CT"
+    )
 
     DISTRICT_OF_COLUMBIA_DC = "District of Columbia, DC"
-    
+
     KENT_COUNTY_DE = "Kent County, DE"
     NEW_CASTLE_COUNTY_DE = "New Castle County, DE"
     SUSSEX_COUNTY_DE = "Sussex County, DE"
@@ -2364,7 +2376,7 @@ class County(Enum):
     WYOMING_COUNTY_PA = "Wyoming County, PA"
     YORK_COUNTY_PA = "York County, PA"
 
-    # Disabling until Puerto Rico is enabled
+    # Disabling until Puerto Rico is enabled; this list is incomplete
     # ADJUNTAS_MUNICIPIO_PR = "Adjuntas Municipio, PR"
     # AGUADA_MUNICIPIO_PR = "Aguada Municipio, PR"
     # AGUADILLA_MUNICIPIO_PR = "Aguadilla Municipio, PR"
@@ -3081,7 +3093,6 @@ class County(Enum):
 
     ADAMS_COUNTY_WA = "Adams County, WA"
     ASOTIN_COUNTY_WA = "Asotin County, WA"
-    BENEWAH_COUNTY_WA = "Benewah County, WA"
     BENTON_COUNTY_WA = "Benton County, WA"
     CHELAN_COUNTY_WA = "Chelan County, WA"
     CLALLAM_COUNTY_WA = "Clallam County, WA"
@@ -3119,6 +3130,7 @@ class County(Enum):
     WHATCOM_COUNTY_WA = "Whatcom County, WA"
     WHITMAN_COUNTY_WA = "Whitman County, WA"
     YAKIMA_COUNTY_WA = "Yakima County, WA"
+
     ADAMS_COUNTY_WI = "Adams County, WI"
     ASHLAND_COUNTY_WI = "Ashland County, WI"
     BARRON_COUNTY_WI = "Barron County, WI"
@@ -3191,6 +3203,7 @@ class County(Enum):
     WAUSHARA_COUNTY_WI = "Waushara County, WI"
     WINNEBAGO_COUNTY_WI = "Winnebago County, WI"
     WOOD_COUNTY_WI = "Wood County, WI"
+
     BARBOUR_COUNTY_WV = "Barbour County, WV"
     BERKELEY_COUNTY_WV = "Berkeley County, WV"
     BOONE_COUNTY_WV = "Boone County, WV"
@@ -3246,21 +3259,18 @@ class County(Enum):
     WIRT_COUNTY_WV = "Wirt County, WV"
     WOOD_COUNTY_WV = "Wood County, WV"
     WYOMING_COUNTY_WV = "Wyoming County, WV"
+
     ALBANY_COUNTY_WY = "Albany County, WY"
     BIG_HORN_COUNTY_WY = "Big Horn County, WY"
-    BONNEVILLE_COUNTY_WY = "Bonneville County, WY"
     CAMPBELL_COUNTY_WY = "Campbell County, WY"
     CARBON_COUNTY_WY = "Carbon County, WY"
     CONVERSE_COUNTY_WY = "Converse County, WY"
     CROOK_COUNTY_WY = "Crook County, WY"
-    CUSTER_COUNTY_WY = "Custer County, WY"
     FREMONT_COUNTY_WY = "Fremont County, WY"
     GOSHEN_COUNTY_WY = "Goshen County, WY"
     HOT_SPRINGS_COUNTY_WY = "Hot Springs County, WY"
     JOHNSON_COUNTY_WY = "Johnson County, WY"
-    KIMBALL_COUNTY_WY = "Kimball County, WY"
     LARAMIE_COUNTY_WY = "Laramie County, WY"
-    LARIMER_COUNTY_WY = "Larimer County, WY"
     LINCOLN_COUNTY_WY = "Lincoln County, WY"
     NATRONA_COUNTY_WY = "Natrona County, WY"
     NIOBRARA_COUNTY_WY = "Niobrara County, WY"
@@ -3268,7 +3278,6 @@ class County(Enum):
     PLATTE_COUNTY_WY = "Platte County, WY"
     SHERIDAN_COUNTY_WY = "Sheridan County, WY"
     SUBLETTE_COUNTY_WY = "Sublette County, WY"
-    SUMMIT_COUNTY_WY = "Summit County, WY"
     SWEETWATER_COUNTY_WY = "Sweetwater County, WY"
     TETON_COUNTY_WY = "Teton County, WY"
     UINTA_COUNTY_WY = "Uinta County, WY"
