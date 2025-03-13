@@ -70,7 +70,7 @@
       person2:
         age: 5
         is_tax_unit_dependent: true
-        is_tax_unit_head_or_spouse: true
+        is_tafdc_related_to_head_or_spouse: false
         ma_eaedc_earned_income: 0
         care_expenses: 2_400
     spm_units:
@@ -107,6 +107,7 @@
         age: 25
         is_disabled: true
         is_tax_unit_dependent: true
+        is_tafdc_related_to_head_or_spouse: false
         ma_eaedc_earned_income: 18_001
     spm_units:
       spm_unit:

@@ -19,14 +19,16 @@ class ma_eaedc_eligible_disabled_dependent_present(Variable):
         disabled_dependent = is_disabled & is_dependent
         disabled_dependent_present = spm_unit.any(disabled_dependent)
 
-        # If there are disabled dependents, check if they all meet income eligibility
+        # If there are disabled dependents, check if at least one meet income eligibility
         p = parameters(period).gov.states.ma.dta.tcap.eaedc.income
-        disabled_earned_income = (
-            person("ma_eaedc_earned_income", period) * disabled_dependent
+        earned_income = person("ma_eaedc_earned_income", period)
+
+        # A disabled dependent is income eligible if their income is below the limit
+        disabled_dependent_income_eligible = disabled_dependent & (
+            earned_income < p.disabled_limit
         )
-        disabled_dependent_income_eligible = (
-            disabled_earned_income < p.disabled_limit
-        )
-        return spm_unit.any(
-            disabled_dependent_present & disabled_dependent_income_eligible
+
+        # The household is eligible if there's at least one income-eligible disabled dependent
+        return disabled_dependent_present & spm_unit.any(
+            disabled_dependent_income_eligible
         )

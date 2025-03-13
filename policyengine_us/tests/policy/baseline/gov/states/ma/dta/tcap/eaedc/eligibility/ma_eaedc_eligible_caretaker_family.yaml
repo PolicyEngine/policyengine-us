@@ -31,6 +31,7 @@
       person2:
         age: 17
         is_tax_unit_dependent: true
+        is_tafdc_related_to_head_or_spouse: false
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -44,7 +45,7 @@
   output:  
     ma_eaedc_eligible_caretaker_family: true
 
-- name: Case 1, don't have a dependent, ineligible. 
+- name: Case 3, don't have a dependent, ineligible. 
   period: 2022
   input:
     people:

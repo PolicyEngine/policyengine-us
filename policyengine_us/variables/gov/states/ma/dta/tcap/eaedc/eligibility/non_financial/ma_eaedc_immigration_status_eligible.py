@@ -15,5 +15,8 @@ class ma_eaedc_immigration_status_eligible(Variable):
         person = spm_unit.members
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         immigration_status = person("immigration_status", period)
-        is_undocumented = immigration_status == immigration_status.possible_values.UNDOCUMENTED
+        is_undocumented = (
+            immigration_status
+            == immigration_status.possible_values.UNDOCUMENTED
+        )
         return spm_unit.any(head_or_spouse & ~is_undocumented)

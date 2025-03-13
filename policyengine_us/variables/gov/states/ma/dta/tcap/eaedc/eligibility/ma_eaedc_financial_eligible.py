@@ -7,9 +7,7 @@ class ma_eaedc_financial_eligible(Variable):
     label = "Financial eligible for Massachusetts EAEDC"
     definition_period = YEAR
     defined_for = StateCode.MA
-    reference = (
-        "https://www.law.cornell.edu/regulations/massachusetts/department-106-CMR/title-106-CMR-704.000"
-    )
+    reference = "https://www.law.cornell.edu/regulations/massachusetts/department-106-CMR/title-106-CMR-704.000"
 
     def formula(spm_unit, period, parameters):
         assets_eligible = spm_unit("ma_eaedc_assets_limit_eligible", period)

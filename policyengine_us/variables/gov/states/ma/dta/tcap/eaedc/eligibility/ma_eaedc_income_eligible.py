@@ -7,7 +7,9 @@ class ma_eaedc_income_eligible(Variable):
     label = "Eligible for the Massachusetts EAEDC based on income"
     definition_period = YEAR
     defined_for = StateCode.MA
-    reference = "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-704-285" 
+    reference = (
+        "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-704-285"
+    )
 
     def formula(spm_unit, period, parameters):
         standard_assistance = spm_unit("ma_eaedc_standard_assistance", period)

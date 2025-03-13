@@ -1,11 +1,11 @@
-description: Massachusetts limits the Emergency Aid to the Elderly, Disabled and Children program to households with at least one member of this age or older.
+description: Massachusetts limits the Emergency Aid to the Elderly, Disabled and Children program to households with at least one dependent below this age threshold.
 values:
-  2021-01-01: 65
-
+  2021-01-01: 18
+  
 metadata:
   unit: year
   period: year
-  label: Massachusetts EAEDC elderly age threshold
+  label: Massachusetts EAEDC dependent age threshold
   reference:
-    - title: 106 CMR 703.600 - EAEDC Elderly (A)
-      href: https://www.law.cornell.edu/regulations/massachusetts/106-CMR-703-600
+    - title: 106 CMR, § 701.600 - Definition of Terms (J)(2)
+      href: https://www.law.cornell.edu/regulations/massachusetts/106-CMR-701-600
