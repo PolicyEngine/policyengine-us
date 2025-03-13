@@ -1,41 +1,44 @@
-description: Puerto Rico gross income sources.
+description: Puerto Rico accounts for the following gross income sources.
 values:
   2019-02-20:
     # salary/wages
     - irs_employment_income
     - self_employment_income
     - partnership_s_corp_income
-    - farm_income
+
+    - taxable_retirement_distributions # distributions from retirement plans
+    - capital_gains # sale or trade of capital assets
+    - taxable_interest_income # interests
+    - dividend_income # dividends 
+    # distributions from gov plans
+    # distributions from individual retirement, education accounts
+    - taxable_pension_income # annuities, pensions
+    - miscellaneous_income # other income 
+    # profits from pass-through entities
+    # Distributions from deferred compensation plans, partial/lump-sum distributions 
+    # from qualified retirement plans, fixed/variable annuities not subject to preferential rate
+    # income from salaries, wages etc. received by nonresident person
+    - alimony_income # alimony received
+    # distributions due to disaster declared by PR
+    # gain or loss from manufacturing
+    # gain or loss from sale of goods
+    - farm_income # gain or loss from farming
     - farm_rent_income
-    
-    # pensions, annuities, estates
-    - taxable_pension_income # includes annuities & endowments
-    - estate_income
-    # trusts
-    # divorce pensions
-
-    # cancellation of indebtedness
-    - debt_relief
-
-    # distributions from corporations
-
-    # rents, royalties, dividends, or interest
-    - rental_income # includes royalties
-    - dividend_income
-    - taxable_interest_income
+    # gain or loss from services rendered
+    - rental_income # gain or loss from rental business
 
     # profits from any source
-    - capital_gains
     - taxable_unemployment_compensation
     - taxable_social_security
     - illicit_income
-    - taxable_retirement_distributions
-    - miscellaneous_income
-
+    - estate_income
+    - debt_relief
 metadata:
   unit: list
   period: year
-  label: Gross income sources
+  label: Puerto Rico gross income sources
   reference:
     - title: P.R. Laws tit. 13, § 30101 
       href: https://casetext.com/statute/laws-of-puerto-rico/title-thirteen-taxation-and-finance/subtitle-17-internal-revenue-code-of-2011/part-ii-income-taxes/chapter-1005-computation-of-taxable-income/subchapter-a-determination-of-net-income-general-concepts/30101-gross-income
+    - title: P.R. Individual Income Tax Return, Form 482
+      href: https://hacienda.pr.gov/sites/default/files/individuals_2024_rev._jul_12_24_9-30-24_informative.pdf#page=2
