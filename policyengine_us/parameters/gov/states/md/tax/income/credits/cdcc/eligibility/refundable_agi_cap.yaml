@@ -6,6 +6,7 @@ JOINT:
     2021-01-01: 78_150
     2022-01-01: 83_650
     2023-01-01: 84_500
+    2024-01-01: 89_100
   uprating:
     parameter: gov.irs.uprating
     rounding:
@@ -18,6 +19,7 @@ SINGLE:
     2021-01-01: 52_100
     2022-01-01: 55_750
     2023-01-01: 56_300
+    2024-01-01: 59_400
   uprating:
     parameter: gov.irs.uprating
     rounding:
@@ -30,6 +32,7 @@ SEPARATE:
     2021-01-01: 52_100
     2022-01-01: 55_750
     2023-01-01: 56_300
+    2024-01-01: 59_400
   uprating:
     parameter: gov.irs.uprating
     rounding:
@@ -42,6 +45,7 @@ HEAD_OF_HOUSEHOLD:
     2021-01-01: 52_100
     2022-01-01: 55_750
     2023-01-01: 56_300
+    2024-01-01: 59_400
   uprating:
     parameter: gov.irs.uprating
     rounding:
@@ -54,6 +58,7 @@ SURVIVING_SPOUSE:
     2021-01-01: 52_100
     2022-01-01: 55_750
     2023-01-01: 56_300
+    2024-01-01: 59_400
   uprating:
     parameter: gov.irs.uprating
     rounding:
@@ -73,6 +78,8 @@ metadata:
       href: https://www.marylandtaxes.gov/forms/23_forms/Resident-Booklet.pdf#page=25
     - title: 2022 State & Local Tax Forms & Instructions Maryland
       href: https://www.marylandtaxes.gov/forms/22_forms/Resident_Booklet.pdf#page=24
+    - title: 2024 State & Local Tax Forms & Instructions Maryland - Worksheet 21(b)
+      href: https://www.marylandtaxes.gov/forms/24-forms/Resident-Booklet.pdf#page=19
   unit: currency-USD
   period: year
   label: Maryland refundable CDCC AGI cap

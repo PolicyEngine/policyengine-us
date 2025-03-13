@@ -6,6 +6,7 @@ JOINT:
     2021-01-01: 149_050
     2022-01-01: 159_500
     2023-01-01: 161_100
+    2024-01-01: 169_901
   uprating:
     parameter: gov.irs.uprating
     rounding:
@@ -18,6 +19,7 @@ SINGLE:
     2021-01-01: 95_900
     2022-01-01: 102_600
     2023-01-01: 103_650
+    2024-01-01: 109_301
   uprating:
     parameter: gov.irs.uprating
     rounding:
@@ -30,6 +32,7 @@ SEPARATE:
     2021-01-01: 95_900
     2022-01-01: 102_600
     2023-01-01: 103_650
+    2024-01-01: 109_301
   uprating:
     parameter: gov.irs.uprating
     rounding:
@@ -42,6 +45,7 @@ HEAD_OF_HOUSEHOLD:
     2021-01-01: 95_900
     2022-01-01: 102_600
     2023-01-01: 103_650
+    2024-01-01: 109_301
   uprating:
     parameter: gov.irs.uprating
     rounding:
@@ -54,6 +58,7 @@ SURVIVING_SPOUSE:
     2021-01-01: 95_900
     2022-01-01: 102_600
     2023-01-01: 103_650
+    2024-01-01: 109_301
   uprating:
     parameter: gov.irs.uprating
     rounding:
@@ -73,6 +78,8 @@ metadata:
       href: https://marylandtaxes.gov/forms/22_forms/502CR.pdf#page=6
     - title: Maryland 2023 Form 502 CR Instructions
       href: https://marylandtaxes.gov/forms/23_forms/502CR.pdf#page=6
+    - title: Maryland 2024 Form 502 CR Instructions
+      href: https://marylandtaxes.gov/forms/24-forms/502CR.pdf#page=7
   unit: currency-USD
   period: year
   label: Maryland CDCC AGI cap
