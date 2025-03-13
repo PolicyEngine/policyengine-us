@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class nm_salt_add_back(Variable):
     value_type = float
     entity = TaxUnit
-    label = "New Mexico itemized deductions"
+    label = "New Mexico salt addback"
     unit = USD
     definition_period = YEAR
     reference = (
