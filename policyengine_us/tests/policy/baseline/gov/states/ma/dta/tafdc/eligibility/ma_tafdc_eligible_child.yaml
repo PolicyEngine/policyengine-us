@@ -1,0 +1,15 @@
+- name: Eligible child 
+  period: 2023-01
+  input:
+    age: 17
+    state_code: MA
+  output:
+    ma_tafdc_eligible_child: true
+
+- name: Eligible child 
+  period: 2023-01
+  input:
+    age: 18
+    state_code: MA
+  output:
+    ma_tafdc_eligible_child: false
