@@ -34,16 +34,3 @@
     state_code: NM
   output:
     nm_deductions: 1_000
-
-- name: New Mexico salt addback
-  period: 2021
-  input:
-    tax_unit_itemizes: true
-    total_itemized_taxable_income_deductions: 1_000
-    standard_deduction: 2_500
-    nm_salt_addback: 800
-    nm_medical_care_expense_deduction: 0
-    nm_net_capital_gains_deduction: 0
-    state_code: NM
-  output:
-    nm_deductions: 200

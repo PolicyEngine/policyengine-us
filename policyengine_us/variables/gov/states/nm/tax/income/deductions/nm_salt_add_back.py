@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class nm_salt_addback(Variable):
+class nm_salt_add_back(Variable):
     value_type = float
     entity = TaxUnit
     label = "New Mexico itemized deductions"
