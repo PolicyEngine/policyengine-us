@@ -60,7 +60,6 @@ def tax_employer_social_security_tax_reform() -> Reform:
                 total += not_dependent * max_(0, add(person, period, [source]))
             return total + person("employer_social_security_tax", period)
 
-
     # Create a reform object applies the method
     # It inherits the Reform class
     class reform(Reform):

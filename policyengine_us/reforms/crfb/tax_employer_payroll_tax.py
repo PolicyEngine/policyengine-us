@@ -58,9 +58,11 @@ def tax_employer_payroll_tax_reform() -> Reform:
             for source in sources:
                 # Add positive values only - losses are deducted later.
                 total += not_dependent * max_(0, add(person, period, [source]))
-            return total + person("employer_social_security_tax", period) + person(
-                "employer_medicare_tax", period)
-
+            return (
+                total
+                + person("employer_social_security_tax", period)
+                + person("employer_medicare_tax", period)
+            )
 
     # Create a reform object applies the method
     # It inherits the Reform class
