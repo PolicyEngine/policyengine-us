@@ -44,21 +44,28 @@ def tax_employer_social_security_tax_reform() -> Reform:
     employer_medicare_tax.py"
     """
 
-    def modify_gross_income_sources(parameters):
-        # Parameter class has an .update method
-        period = instant("2010-01-01")
-        p = parameters.gov.irs.gross_income
-        p.sources.update(
-            start=period,
-            value=p.sources(period) + ["employer_social_security_tax"],
-        )
-        return parameters
+    class irs_gross_income(Variable):
+        value_type = float
+        entity = Person
+        label = "IRS gross income"
+        definition_period = YEAR
+        unit = USD
+
+        def formula(person, period, parameters):
+            sources = parameters(period).gov.irs.gross_income.sources
+            total = 0
+            not_dependent = ~person("is_tax_unit_dependent", period)
+            for source in sources:
+                # Add positive values only - losses are deducted later.
+                total += not_dependent * max_(0, add(person, period, [source]))
+            return total + person("employer_social_security_tax", period)
+
 
     # Create a reform object applies the method
     # It inherits the Reform class
     class reform(Reform):
         def apply(self):
-            self.modify_parameters(modify_gross_income_sources)
+            self.update_variable(irs_gross_income)
 
     return reform
 
