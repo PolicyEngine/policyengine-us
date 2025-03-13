@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ma_eaedc_disabled_dependent_present_eligible(Variable):
+class ma_eaedc_eligible_disabled_dependent_present(Variable):
     value_type = bool
     entity = SPMUnit
     label = "Meets the disabled dependent criteria for Massachusetts EAEDC"
@@ -16,14 +16,17 @@ class ma_eaedc_disabled_dependent_present_eligible(Variable):
         person = spm_unit.members
         is_disabled = person("is_disabled", period)
         is_dependent = person("is_tax_unit_dependent", period)
-        has_disabled_dependent = spm_unit.any(is_disabled & is_dependent)
+        disabled_dependent = is_disabled & is_dependent
+        disabled_dependent_present = spm_unit.any(disabled_dependent)
 
         # If there are disabled dependents, check if they all meet income eligibility
         p = parameters(period).gov.states.ma.dta.tcap.eaedc.income
-        disabled_income = person(
-            "ma_eaedc_disabled_dependent_earned_income", period
+        disabled_earned_income = (
+            person("ma_eaedc_earned_income", period) * disabled_dependent
         )
-        disabled_dependent_income_eligible = spm_unit.all(
-            disabled_income < p.disabled_limit
+        disabled_dependent_income_eligible = (
+            disabled_earned_income < p.disabled_limit
         )
-        return has_disabled_dependent & disabled_dependent_income_eligible
+        return spm_unit.any(
+            disabled_dependent_present & disabled_dependent_income_eligible
+        )

@@ -19,9 +19,9 @@ class ma_eaedc_assets_limit_eligible(Variable):
         living_arrangement_E = (
             living_arrangement == living_arrangement.possible_values.E
         )
-        asset_below_limit = countable_assets <= p.limit
+        assets_below_limit = countable_assets <= p.limit
         # Only living arrangement E has an asset limit
 
         return (
-            living_arrangement_E & asset_below_limit
+            living_arrangement_E & assets_below_limit
         ) | ~living_arrangement_E

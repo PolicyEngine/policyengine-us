@@ -12,7 +12,7 @@ class ma_eaedc_earned_income_after_deduction_person(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.ma.dta.tcap.eaedc.deductions
-        gross_earned_income = person("ma_eaedc_total_earned_income", period)
+        gross_earned_income = person("ma_eaedc_earned_income", period)
         monthly_income = gross_earned_income / MONTHS_IN_YEAR
         # monthly $200 work related expenses deduction if employed
         is_employed = gross_earned_income > 0

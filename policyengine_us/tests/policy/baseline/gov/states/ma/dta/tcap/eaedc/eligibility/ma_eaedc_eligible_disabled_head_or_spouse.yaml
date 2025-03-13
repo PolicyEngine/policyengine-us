@@ -18,7 +18,7 @@
         members: [person1, person2]
         state_code: MA
   output:  
-    ma_eaedc_disabled_eligible: true
+    ma_eaedc_eligible_disabled_head_or_spouse: true
 
 - name: Case 2, dependent is disabled but head or spouse is not. 
   period: 2022
@@ -41,7 +41,7 @@
         members: [person1, person2]
         state_code: MA
   output:  
-    ma_eaedc_disabled_eligible: false
+    ma_eaedc_eligible_disabled_head_or_spouse: false
 
 - name: Case 3, no disabled in household. 
   period: 2022
@@ -64,4 +64,4 @@
         members: [person1, person2]
         state_code: MA
   output:  
-    ma_eaedc_disabled_eligible: false
+    ma_eaedc_eligible_disabled_head_or_spouse: false

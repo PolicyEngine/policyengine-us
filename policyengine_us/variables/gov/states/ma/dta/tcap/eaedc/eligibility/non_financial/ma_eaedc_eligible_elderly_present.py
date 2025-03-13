@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class ma_eaedc_elderly_age_eligible(Variable):
+class ma_eaedc_eligible_elderly_present(Variable):
     value_type = bool
     entity = SPMUnit
-    label = "Elderly age eligible for the Massachusetts EAEDC"
+    label = "Eligible elderly present for the Massachusetts EAEDC"
     definition_period = YEAR
     defined_for = StateCode.MA
     reference = (

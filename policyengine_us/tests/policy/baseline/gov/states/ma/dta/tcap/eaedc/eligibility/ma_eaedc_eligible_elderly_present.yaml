@@ -5,7 +5,7 @@
     is_ssi_eligible: false
     state_code: MA
   output:
-    ma_eaedc_elderly_age_eligible: true
+    ma_eaedc_eligible_elderly_present: true
 
 - name: Case 2, below age threshold, not eligible.
   period: 2022
@@ -14,7 +14,7 @@
     is_ssi_eligible: false
     state_code: MA
   output:
-    ma_eaedc_elderly_age_eligible: false
+    ma_eaedc_eligible_elderly_present: false
 
 - name: Case 3, above age threshold, but ssi eligible, then not eligible.
   period: 2022
@@ -23,5 +23,4 @@
     is_ssi_eligible: true
     state_code: MA
   output:
-    ma_eaedc_elderly_age_eligible: false
-    
+    ma_eaedc_eligible_elderly_present: false

@@ -19,7 +19,7 @@
         members: [person1, person2]
         state_code: MA
   output:  
-    ma_eaedc_caretaker_family_eligible: false
+    ma_eaedc_eligible_caretaker_family: false
 
 - name: Case 2, has a dependent, age is below threshold. 
   period: 2022
@@ -42,7 +42,7 @@
         members: [person1, person2]
         state_code: MA
   output:  
-    ma_eaedc_caretaker_family_eligible: true
+    ma_eaedc_eligible_caretaker_family: true
 
 - name: Case 1, don't have a dependent, ineligible. 
   period: 2022
@@ -65,4 +65,4 @@
         members: [person1, person2]
         state_code: MA
   output:  
-    ma_eaedc_caretaker_family_eligible: false
+    ma_eaedc_eligible_caretaker_family: false

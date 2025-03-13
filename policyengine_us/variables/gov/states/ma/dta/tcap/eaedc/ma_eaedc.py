@@ -7,9 +7,8 @@ class ma_eaedc(Variable):
     label = "Massachusetts EAEDC"
     unit = USD
     definition_period = YEAR
-    defined_for = StateCode.MA
     defined_for = "ma_eaedc_eligible"
-    reference = "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-704-500#(B)"
+    reference = "https://www.law.cornell.edu/regulations/massachusetts/department-106-CMR/title-106-CMR-701.000"
 
     # Program value can not be less than 0
     # due to the eligibility requirements

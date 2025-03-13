@@ -8,7 +8,7 @@ class ma_eaedc_financial_eligible(Variable):
     definition_period = YEAR
     defined_for = StateCode.MA
     reference = (
-        "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-703-010"
+        "https://www.law.cornell.edu/regulations/massachusetts/department-106-CMR/title-106-CMR-704.000"
     )
 
     def formula(spm_unit, period, parameters):
