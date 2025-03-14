@@ -1,10 +1,9 @@
-description: Utah uses these age curve factors to determine ACA premium pricing, normalized to age 0
-metadata:
+description: Utah multiplies base marketplace plan premiums by these age-specific factors to determine age-specific premiums.
   type: single_amount
   period: year
   amount_unit: /1
   threshold_unit: int
-  label: ACA premium age curve factors - Utah
+  label: ACA premium age curve factors - UT
   reference:
   - title: CMS Market Rating Reforms State Specific Age Curve Variations
     href: https://www.cms.gov/cciio/programs-and-initiatives/health-insurance-market-reforms/downloads/statespecagecrv053117.pdf
