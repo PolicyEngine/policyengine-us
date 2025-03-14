@@ -11,6 +11,11 @@ brackets:
      2022-01-01: 3_200
      2023-01-01: 3_330
      2024-01-01: 3_460
+   metadata:
+      uprating: gov.irs.uprating
+      rounding:
+        type: downwards
+        interval: 10
    rate:
      1994-01-01: 0.03
  - threshold:
@@ -19,6 +24,11 @@ brackets:
      2022-01-01: 16_040
      2023-01-01: 16_680
      2024-01-01: 17_330
+   metadata:
+      uprating: gov.irs.uprating
+      rounding:
+        type: downwards
+        interval: 10
    rate:
      1994-01-01: 0.04
      2022-01-01: 0.065
@@ -69,6 +79,3 @@ metadata:
   threshold_unit: currency-USD
   rate_unit: /1
   period: year
-  uprating:
-    parameter: gov.irs.uprating
-  propagate_metadata_to_children: true
