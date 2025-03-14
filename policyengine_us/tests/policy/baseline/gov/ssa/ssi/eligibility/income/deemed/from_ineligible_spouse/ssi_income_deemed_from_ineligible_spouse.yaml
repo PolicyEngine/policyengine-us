@@ -1,0 +1,220 @@
+# Tests for how much income is deemed from an ineligible spouse to the eligible individual.
+# They rely on applying the spousal deeming steps from 20 CFR 416.1163.
+
+- name: Example 1 from https://www.law.cornell.edu/cfr/text/20/416.1163#g
+  period: 1986
+  absolute_error_margin: 0
+  input:
+    people:
+      mr_todd:
+        age: 70
+        # The example mentions no deeming because leftover is not more than $168
+        # So mr_todd is the aged eligible individual
+      mrs_todd:
+        age: 70
+        ssi_unearned_income: 252 * 12
+      mike:
+        # ineligible child, triggers child allocation
+        age: 10
+    marital_units:
+      marital_unit:
+        members: [mr_todd, mrs_todd]
+  output:
+    ssi_income_deemed_from_ineligible_spouse: [0, 0, 0]
+
+- name: Example 2 from https://www.law.cornell.edu/cfr/text/20/416.1163#g
+  period: 1986
+  absolute_error_margin: 0
+  input:
+    people:
+      mr_jones:
+        is_ssi_disabled: true
+      mrs_jones:
+        ssi_earned_income: 401 * 12
+        ssi_unearned_income: 252 * 12
+      christine:
+        # ineligible child
+        is_child: true
+    marital_units:
+      marital_unit:
+        members: [mr_jones, mrs_jones]
+    tax_units:
+      tax_unit:
+        members: [mr_jones, mrs_jones, christine]
+  output:
+    # The CFR example ends with $232/month in combined countable, i.e. $232 * 12 = 2784
+    ssi_income_deemed_from_ineligible_spouse: [2784, 0, 0]
+
+- name: Example 3 from https://www.law.cornell.edu/cfr/text/20/416.1163#g
+  period: 1986
+  absolute_error_margin: 0
+  input:
+    people:
+      mr_smith:
+        is_ssi_disabled: true
+        pension_income: 100 * 12  # unearned
+      mrs_smith:
+        ssi_earned_income: 201 * 12
+    marital_units:
+      marital_unit:
+        members: [mr_smith, mrs_smith]
+    tax_units:
+      tax_unit:
+        members: [mr_smith, mrs_smith]
+  output:
+    # The correct spouse "deemed" portion is 816 (68/month).
+    # 1776 is their total combined countable, not what's deemed from Mrs. Smith.
+    ssi_income_deemed_from_ineligible_spouse: [816, 0]
+
+# Example 4 from the CFR references a sponsored alien, which we skip by default.
+
+# Additional modern (2025) test scenarios from the PR
+- name: Disabled individual with working ineligible spouse (2025)
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 60
+        is_disabled: true
+        is_tax_unit_spouse: true
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+      person2:
+        age: 55
+        is_disabled: false
+        is_tax_unit_head: true
+        ssi_earned_income: 31_080
+        ssi_unearned_income: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+  output:
+    ssi_income_deemed_from_ineligible_spouse: [15_030, 0]
+
+- name: Disabled individual with non-working ineligible spouse (2025)
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        is_disabled: true
+        is_tax_unit_spouse: true
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+      person2:
+        age: 60
+        is_disabled: false
+        is_tax_unit_head: true
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+  output:
+    ssi_income_deemed_from_ineligible_spouse: [0, 0]
+
+- name: Disabled individual with high-income ineligible spouse (2025)
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        is_disabled: true
+        is_tax_unit_spouse: true
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+      person2:
+        age: 60
+        is_disabled: false
+        is_tax_unit_head: true
+        ssi_earned_income: 60_000
+        ssi_unearned_income: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+  output:
+    ssi_income_deemed_from_ineligible_spouse: [29_490, 0]
+
+- name: Disabled individual with mixed income ineligible spouse (2025)
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        is_disabled: true
+        is_tax_unit_spouse: true
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+      person2:
+        age: 60
+        is_disabled: false
+        is_tax_unit_head: true
+        ssi_earned_income: 24_000
+        ssi_unearned_income: 6_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+  output:
+    ssi_income_deemed_from_ineligible_spouse: [17_370, 0]
+
+- name: Disabled individual with personal and spouse income (2025)
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        is_disabled: true
+        is_tax_unit_spouse: true
+        ssi_earned_income: 3_600
+        ssi_unearned_income: 2_400
+      person2:
+        age: 60
+        is_disabled: false
+        is_tax_unit_head: true
+        ssi_earned_income: 24_000
+        ssi_unearned_income: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+  output:
+    ssi_income_deemed_from_ineligible_spouse: [12_000, 0]
+
+- name: Spouse with income just below the FBR differential threshold (2025)
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        is_disabled: true
+        is_tax_unit_spouse: true
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+      person2:
+        age: 60
+        is_disabled: false
+        is_tax_unit_head: true
+        ssi_earned_income: 4_360
+        ssi_unearned_income: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+  output:
+    ssi_income_deemed_from_ineligible_spouse: [0, 0]

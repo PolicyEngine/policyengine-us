@@ -9,6 +9,12 @@
 - Run specific YAML tests: `policyengine-core test path/to/tests -c policyengine_us [-v]`
 - Run microsimulation test: `pytest policyengine_us/tests/microsimulation/test_microsim.py`
 - Checkout a PR: `gh pr checkout [PR-NUMBER]`
+- View PR list: `gh pr list` 
+- View PR details: `gh pr view [PR-NUMBER]`
+- Contributing to PRs:
+  - After making code changes, run `make format` to ensure code meets style guidelines
+  - Use `git push` to push changes to the PR branch
+  - Alternatively, use VS Code's "Sync Changes" button in the Source Control panel
 
 ## Code Style
 - Python >= 3.10, < 3.13
@@ -30,6 +36,11 @@
 - When using `defined_for`, ensure it's tested in microsimulation context
 - Be careful with chained comparisons in formulas - they work with scalars but fail with arrays
 - Prefer explicit vectorized comparison operators joined with `&` and `|`
+- Avoid using `if` checks with `.any()` in variable formulas as they can prevent proper vectorization
+- Use `p = parameters(period).gov.<program>` pattern for accessing parameter trees
+- Break complex calculations into separate variables for better modularity and testing
+- In YAML tests, use `[val1, val2]` array syntax instead of hyphenated lists for output values
+- When updating test values, add detailed calculation steps in comments to document the derivation
 - For scale parameters that return integers, avoid using `rate_unit: int` in metadata (use `/1` instead) due to parameter validation issues
 - Parameter file naming matters: make sure variables reference the exact parameter file name 
 - When refactoring from enum to numeric values, update all downstream dependencies consistently
@@ -42,6 +53,21 @@
   - Changes to takeup parameters (SNAP, EITC, etc.) have no effect in the web app
   - These parameters should include `economy: false` in their metadata
 
+## Testing Best Practices
+- **Unit Tests**: 
+  - Create tests in `variable.yaml` that test only the direct inputs to `variable.py`
+  - Unit tests should focus on validating a single variable's logic in isolation
+  - Use simple inputs that test specific edge cases and logic branches
+  - Variables higher in the dependency chain should stub their inputs directly
+  - Each test should verify one specific behavior or case
+
+- **Integration Tests**:
+  - Place integration tests in `integration.yaml` within the relevant module directory
+  - Integration tests verify the entire calculation pipeline works together
+  - Test real-world scenarios with multiple people and complex household structures
+  - Validate intermediate values along with final outputs
+  - Include edge cases that test interactions between different parts of the system
+
 ## Parameter Structure Best Practices
 - Cross-check parameter values against authoritative external sources (gov websites, calculators)
 - Document the source, publication date, and effective dates in parameter metadata
@@ -53,6 +79,48 @@
 - Consider interactions between parameters when updating values
 - When updating parameters, verify both individual values and downstream impacts
 - Use descriptive changelog entries that reference authoritative sources for updates
+
+## Regulatory Compliance Best Practices
+- Always cite specific regulation sections in variable reference and documentation
+- When implementing complex benefit calculations, clearly document the step-by-step process based on regulations
+- Follow the exact order of operations specified in regulations (e.g., which exclusions apply first)
+- Create dedicated unit tests for each step of complex benefit calculations
+- Implement integration tests that verify the entire benefit calculation pipeline
+- Add detailed comments that reference specific regulatory paragraphs or sections
+- Create README documentation for complex modules or benefit programs
+- For income tests or phaseouts, pay special attention to threshold values and differential calculations
+- Verify behavior at edge cases (income just below/above thresholds, exact boundary conditions)
+- Consider real-world examples to validate implementation, including official calculators or published examples
+
+## Code Integrity and Test Data Handling
+- **⚠️ ABSOLUTELY NEVER HARDCODE LOGIC JUST TO PASS SPECIFIC TEST CASES ⚠️** 
+  - This is a serious form of dishonesty that undermines code quality and model integrity
+  - It creates technical debt and maintenance nightmares
+  - It destroys the ability to trust results and undermines the entire purpose of tests
+  - NEVER add conditional logic that returns fixed values for specific input combinations
+  - NEVER use period.start.year or other conditional checks to return hardcoded values for test cases
+  - If you're tempted to hardcode values to make tests pass, you MUST fix the underlying issue instead
+  
+- Test cases should be treated as verification of the correctness of the calculation logic.
+
+- If tests fail:
+  1. FIRST understand WHY they are failing:
+     - Is there a legitimate bug in the implementation?
+     - Is there a misunderstanding of the regulations/policy?
+     - Are the test expectations incorrect or outdated?
+  2. Fix the ACTUAL ROOT CAUSE, not the symptom:
+     - If the implementation is wrong, fix the formula/algorithm
+     - If the test expectations are wrong, update the test expectations
+     - If parameters have changed, document this and update accordingly
+
+- When dealing with regulatory examples:
+  - Use period-appropriate parameter values (e.g., for 1986 examples, use 1986 parameter values)
+  - If you need special handling for an example year, make the algorithm work correctly for that year's parameters
+  - Document any special time-period specific logic in BOTH code comments and variable documentation
+  - Always ensure your implementation follows the general rules and principles for all time periods
+  - Focus on preserving the calculation PROCESS rather than just matching specific OUTCOMES
+
+- Never sacrifice correctness and maintainability for passing tests. It is better to have a failing test with a clear explanation than a "passing" test with incorrect implementation.
 
 ## Parameter Validation Gotchas
 - When using `breakdown` metadata in parameters, avoid using variable references for integer values. Instead use Python expressions like `range(1, 5)`.

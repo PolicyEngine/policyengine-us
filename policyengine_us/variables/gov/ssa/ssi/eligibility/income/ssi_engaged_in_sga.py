@@ -11,9 +11,9 @@ class ssi_engaged_in_sga(Variable):
     def formula(person, period, parameters):
         income = person("ssi_earned_income", period)
         monthly_income = income / MONTHS_IN_YEAR
-        sga = parameters(period).gov.ssa.sga.non_blind
+        p = parameters(period).gov.ssa.sga
 
         # SGA does not apply to blind individuals
         is_blind = person("is_blind", period)
 
-        return (monthly_income > sga) & ~is_blind
+        return (monthly_income > p.non_blind) & ~is_blind
