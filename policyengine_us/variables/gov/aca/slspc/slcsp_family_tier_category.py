@@ -18,7 +18,6 @@ class slcsp_family_tier_category(Variable):
     definition_period = MONTH
     label = "ACA family tier category for premium calculation"
     defined_for = "slcsp_family_tier_applies"
-    defined_for = "slcsp_family_tier_applies"
 
     def formula(tax_unit, period, parameters):
         """
