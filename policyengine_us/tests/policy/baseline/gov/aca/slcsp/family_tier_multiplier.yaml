@@ -1,0 +1,186 @@
+- name: NY single adult multiplier
+  period: 2023-01
+  input:
+    people:
+      person1:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [person1]
+        slcsp_family_tier_category: ONE_ADULT
+        slcsp_family_tier_applies: true
+    households:
+      household:
+        members: [person1]
+        state_code_str: NY
+        state_fips: 36
+  output:
+    slcsp_family_tier_multiplier: 1.0
+
+- name: NY two adults multiplier
+  period: 2023-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 32
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        slcsp_family_tier_category: TWO_ADULTS
+        slcsp_family_tier_applies: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code_str: NY
+        state_fips: 36
+  output:
+    slcsp_family_tier_multiplier: 2.0
+
+- name: NY single parent with child multiplier
+  period: 2023-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        slcsp_family_tier_category: ONE_ADULT_AND_ONE_OR_MORE_CHILDREN
+        slcsp_family_tier_applies: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code_str: NY
+        state_fips: 36
+  output:
+    slcsp_family_tier_multiplier: 1.7
+
+- name: NY family multiplier
+  period: 2023-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 32
+      person3:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        slcsp_family_tier_category: TWO_ADULTS_AND_ONE_OR_MORE_CHILDREN
+        slcsp_family_tier_applies: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code_str: NY
+        state_fips: 36
+  output:
+    slcsp_family_tier_multiplier: 2.85
+
+- name: NY child only multiplier
+  period: 2023-01
+  input:
+    people:
+      person1:
+        age: 15
+    tax_units:
+      tax_unit:
+        members: [person1]
+        slcsp_family_tier_category: CHILD_ONLY
+        slcsp_family_tier_applies: true
+    households:
+      household:
+        members: [person1]
+        state_code_str: NY
+        state_fips: 36
+  output:
+    slcsp_family_tier_multiplier: 0.412
+
+- name: VT single adult multiplier
+  period: 2023-01
+  input:
+    people:
+      person1:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [person1]
+        slcsp_family_tier_category: ONE_ADULT
+        slcsp_family_tier_applies: true
+    households:
+      household:
+        members: [person1]
+        state_code_str: VT
+        state_fips: 50
+  output:
+    slcsp_family_tier_multiplier: 1.0
+
+- name: VT two adults multiplier
+  period: 2023-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 32
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        slcsp_family_tier_category: TWO_ADULTS
+        slcsp_family_tier_applies: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code_str: VT
+        state_fips: 50
+  output:
+    slcsp_family_tier_multiplier: 2.0
+
+- name: VT single parent with child multiplier
+  period: 2023-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        slcsp_family_tier_category: ONE_ADULT_AND_ONE_OR_MORE_CHILDREN
+        slcsp_family_tier_applies: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code_str: VT
+        state_fips: 50
+  output:
+    slcsp_family_tier_multiplier: 1.93
+
+- name: VT family multiplier
+  period: 2023-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 32
+      person3:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        slcsp_family_tier_category: TWO_ADULTS_AND_ONE_OR_MORE_CHILDREN
+        slcsp_family_tier_applies: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code_str: VT
+        state_fips: 50
+  output:
+    slcsp_family_tier_multiplier: 2.81
