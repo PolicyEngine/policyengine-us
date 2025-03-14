@@ -66,3 +66,47 @@
   - Use Python expressions like `range()` instead of variable references for enumerated values
   - Use breakdown patterns that match existing working examples in the codebase
   - See [GitHub issue #346](https://github.com/PolicyEngine/policyengine-core/issues/346) for more details
+
+  ## Task Instructions: Updating Oregon State Tax Code Parameters
+
+We have a text file named **`oregon.txt`** containing updated information about Oregon’s state tax parameters. Your job is to:
+
+1. **Identify each parameter** in our Oregon parameter YAML files that corresponds to a parameter listed in **`oregon.txt`**.  
+2. **Compare the 2024 values** to the existing 2023 values in our codebase.
+
+   - If the 2024 value is **different** from the 2023 value, **append** the 2024 value as a **new entry**.  
+     ```yaml
+     2022-01-01: 7_500
+     2023-01-01: 8_100
+     2024-01-01: 8_200  # <--- newly added if 2024 changed
+     ```
+   - If the **2023 value is the same** as the 2024 value, **do not** add a new entry; keep the 2023 date/value pair as the last entry.  
+
+3. **Add the updated reference** for 2024, **whether or not** the value changed. 
+
+   For references, use the following format (with the correct page number from `oregon.txt`):
+   ```yaml
+   - title: 2023 Oregon Income Tax Form OR-40 Instructions
+     href: https://www.oregon.gov/dor/forms/FormsPubs/form-or-40-inst_101-040-1_2023.pdf#page=[PAGE_NUMBER]
+
+  ### Page References
+Page numbers appear in `oregon.txt` as `--- Page X ---`. Make sure you 
+include the exact page where the relevant information is found.
+
+### Change Alerts
+- **Alert** if any parameter values have changed.
+- After updating, **note which parameters received new 2024 values**.
+
+### Additional Notes
+- **Line length**: Keep each line ≤ 79 characters when editing the YAML files.
+- **Vectorization**: Remains relevant if we add or modify formulas downstream.
+
+### Testing
+- After changes, **run `make test`** to ensure no regressions.
+- Consider adding or adjusting **YAML tests** if the new parameters introduce 
+  new conditions or thresholds.
+
+### Changelog
+- Add a note in `changelog_entry.yaml` summarizing the Oregon parameter 
+  updates.
+- Reference the source (`oregon.txt` and the official PDF).
