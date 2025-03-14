@@ -9,7 +9,7 @@
     standard_deduction: 5_000
     state_code: NM
   output:
-    nm_itemized_deductions: 4_000
+    nm_salt_add_back: 4_000
 
 - name: NM itemized deduction unit test 2
   absolute_error_margin: 1
@@ -22,7 +22,7 @@
     standard_deduction: 2_000
     state_code: NM
   output:
-    nm_itemized_deductions: 3_000
+    nm_salt_add_back: 3_000
 
 - name: NM itemized deduction unit test 3
   absolute_error_margin: 1
@@ -35,7 +35,7 @@
     standard_deduction: 2_000
     state_code: NM
   output:
-    nm_itemized_deductions: 3_000
+    nm_salt_add_back: 3_000
 
 - name: NM itemized deduction unit test 4
   absolute_error_margin: 1
@@ -48,7 +48,7 @@
     standard_deduction: 2_000
     state_code: NM
   output:
-    nm_itemized_deductions: 0
+    nm_salt_add_back: 0
 
 - name: NM itemized deduction unit test 5
   absolute_error_margin: 1
@@ -61,4 +61,4 @@
     standard_deduction: 2_000
     state_code: NM
   output:
-    nm_itemized_deductions: 0
+    nm_salt_add_back: 0
