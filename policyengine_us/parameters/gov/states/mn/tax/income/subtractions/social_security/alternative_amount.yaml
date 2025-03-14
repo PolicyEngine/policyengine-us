@@ -3,6 +3,12 @@ metadata:
   label: Minnesota social security subtraction alternative subtraction amount
   period: year
   unit: currency-USD
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: nearest
+      interval: 10
+  propagate_metadata_to_children: true 
   breakdown:
   - filing_status
   reference:
@@ -16,59 +22,32 @@ metadata:
     href: https://www.revenue.state.mn.us/sites/default/files/2024-01/m1m-22.pdf#page=4
   - title: 2023 Minnesota Schedule M1M, Income Additions and Subtractions, Line 12 worksheet
     href: https://www.revenue.state.mn.us/sites/default/files/2024-04/m1m-23_0.pdf#page=4
+  - title: 2024 Minnesota Schedule M1M, Income Additions and Subtractions, Line 12 worksheet
+    href: https://www.revenue.state.mn.us/sites/default/files/2024-12/m1m-24.pdf#page=4
+# No uprating for 2024 (according to M1M) even if the legal code describes uprating.
 
 JOINT:
   values:
     2021-01-01: 5_290
     2022-01-01: 5_450
     2023-01-01: 5_840
-  metadata:
-    uprating:
-      parameter: gov.irs.uprating
-      rounding:
-        type: nearest
-        interval: 10
 HEAD_OF_HOUSEHOLD:
   values:
     2021-01-01: 4_130
     2022-01-01: 4_260
     2023-01-01: 4_560
-  metadata:
-    uprating:
-      parameter: gov.irs.uprating
-      rounding:
-        type: nearest
-        interval: 10
 SURVIVING_SPOUSE:
   values:
     2021-01-01: 5_290
     2022-01-01: 5_450
     2023-01-01: 5_840
-  metadata:
-    uprating:
-      parameter: gov.irs.uprating
-      rounding:
-        type: nearest
-        interval: 10
 SINGLE:
   values:
     2021-01-01: 4_130
     2022-01-01: 4_260
     2023-01-01: 4_560
-  metadata:
-    uprating:
-      parameter: gov.irs.uprating
-      rounding:
-        type: nearest
-        interval: 10
 SEPARATE:
   values:
     2021-01-01: 2_645
     2022-01-01: 2_725
     2023-01-01: 2_920
-  metadata:
-    uprating:
-      parameter: gov.irs.uprating
-      rounding:
-        type: nearest
-        interval: 10

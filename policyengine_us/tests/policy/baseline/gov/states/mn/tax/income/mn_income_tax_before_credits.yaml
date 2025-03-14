@@ -1,0 +1,19 @@
+- name: In 2021, NIIT does not apply
+  period: 2021
+  input:
+    mn_basic_tax: 900
+    mn_amt: 100
+    mn_niit: 1_200
+    state_code: MN
+  output:
+    mn_income_tax_before_credits: 1_000
+
+- name: In 2024, NIIT applies
+  period: 2024
+  input:
+    mn_basic_tax: 900
+    mn_amt: 100
+    mn_niit: 1_200
+    state_code: MN
+  output:
+    mn_income_tax_before_credits: 2_200

@@ -3,6 +3,12 @@ metadata:
   label: Minnesota public pension income subtraction cap
   period: year
   unit: currency-USD
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: nearest
+      interval: 10
+  propagate_metadata_to_children: true 
   breakdown:
   - filing_status
   reference:
@@ -10,49 +16,26 @@ metadata:
     href: https://www.revisor.mn.gov/statutes/cite/290.0132#stat.290.0132.26
   - title: 2023 M1M, Income Additions and Subtractions
     href: https://www.revenue.state.mn.us/sites/default/files/2023-12/m1m-23.pdf#page=7
+  - title: 2024 M1QPEN, Qualified Public Pension Subtraction
+    href: https://www.revenue.state.mn.us/sites/default/files/2024-12/m1qpen-24.pdf#page=1
 
 JOINT:
   values:
     2023-01-01: 25_000
-  metadata:
-    uprating:
-      parameter: gov.irs.uprating
-      rounding:
-        type: nearest
-        interval: 10
+    2024-01-01: 26_340
 HEAD_OF_HOUSEHOLD:
   values:
     2023-01-01: 12_500
-  metadata:
-    uprating:
-      parameter: gov.irs.uprating
-      rounding:
-        type: nearest
-        interval: 10
+    2024-01-01: 13_170
 SURVIVING_SPOUSE:
   values:
     2023-01-01: 25_000
-  metadata:
-    uprating:
-      parameter: gov.irs.uprating
-      rounding:
-        type: nearest
-        interval: 10
+    2024-01-01: 26_340
 SINGLE:
   values:
     2023-01-01: 12_500
-  metadata:
-    uprating:
-      parameter: gov.irs.uprating
-      rounding:
-        type: nearest
-        interval: 10
+    2024-01-01: 13_170
 SEPARATE:
   values:
     2023-01-01: 12_500
-  metadata:
-    uprating:
-      parameter: gov.irs.uprating
-      rounding:
-        type: nearest
-        interval: 10
+    2024-01-01: 13_170
