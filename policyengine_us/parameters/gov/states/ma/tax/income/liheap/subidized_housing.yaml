@@ -1,0 +1,139 @@
+description: Massachusetts determines Low Income Home Energy Assistance Program payouts for subsidized housing tenants based on income, household size, and utility type. 
+
+1:
+  DELIVERABLE FUEL: 
+    2021-01-01: 
+    2022-01-01: 
+    2023-01-01: 
+    2024-01-01: 
+    2025-01-01: 1050
+      
+  UTILITY AND HEAT IN RENT: 
+    2021-01-01: 
+    2022-01-01: 
+    2023-01-01: 
+    2024-01-01: 
+    2025-01-01: 595
+  HEC: 
+    2021-01-01: 
+    2022-01-01: 
+    2023-01-01: 
+    2024-01-01: 
+    2025-01-01: 200
+
+2:
+  DELIVERABLE FUEL: 
+    2021-01-01: 
+    2022-01-01: 
+    2023-01-01: 
+    2024-01-01: 
+    2025-01-01: 924
+      
+  UTILITY AND HEAT IN RENT: 
+    2021-01-01: 
+    2022-01-01: 
+    2023-01-01: 
+    2024-01-01: 
+    2025-01-01: 524
+  HEC: 
+    2021-01-01: 
+    2022-01-01: 
+    2023-01-01: 
+    2024-01-01: 
+    2025-01-01: 180
+
+3:
+  DELIVERABLE FUEL: 
+    2021-01-01: 
+    2022-01-01: 
+    2023-01-01: 
+    2024-01-01: 
+    2025-01-01: 813
+      
+  UTILITY AND HEAT IN RENT: 
+    2021-01-01: 
+    2022-01-01: 
+    2023-01-01: 
+    2024-01-01: 
+    2025-01-01: 461
+  HEC: 
+    2021-01-01: 
+    2022-01-01: 
+    2023-01-01: 
+    2024-01-01: 
+    2025-01-01: 160
+
+4:
+  DELIVERABLE FUEL: 
+    2021-01-01: 
+    2022-01-01: 
+    2023-01-01: 
+    2024-01-01: 
+    2025-01-01: 716
+      
+  UTILITY AND HEAT IN RENT: 
+    2021-01-01: 
+    2022-01-01: 
+    2023-01-01: 
+    2024-01-01: 
+    2025-01-01: 405
+  HEC: 
+    2021-01-01: 
+    2022-01-01: 
+    2023-01-01: 
+    2024-01-01: 
+    2025-01-01: 140
+
+5:
+  DELIVERABLE FUEL: 
+    2021-01-01: 
+    2022-01-01: 
+    2023-01-01: 
+    2024-01-01: 
+    2025-01-01: 716
+      
+  UTILITY AND HEAT IN RENT: 
+    2021-01-01: 
+    2022-01-01: 
+    2023-01-01: 
+    2024-01-01: 
+    2025-01-01: 405
+  HEC: 
+    2021-01-01: 
+    2022-01-01: 
+    2023-01-01: 
+    2024-01-01: 
+    2025-01-01:  140
+
+6:
+  DELIVERABLE FUEL: 
+    2021-01-01: 
+    2022-01-01: 
+    2023-01-01: 
+    2024-01-01: 
+    2025-01-01: 630
+      
+  UTILITY AND HEAT IN RENT: 
+    2021-01-01: 
+    2022-01-01: 
+    2023-01-01: 
+    2024-01-01: 
+    2025-01-01: 357
+  HEC: 
+    2021-01-01: 
+    2022-01-01: 
+    2023-01-01: 
+    2024-01-01: 
+    2025-01-01: 120  
+
+metadata:
+  period: year
+  unit: currency-USD
+  label: Massachusetts LIHEAP region two payout
+  breakdown: 
+    - range(1,6)
+    - utility_type
+
+reference:
+  - title: Fiscal Year 2025 Home Energy Assistance Program (HEAP) Income Eligibility and Benefit Levels
+    href: https://www.mass.gov/doc/fy-2025-heap-income-eligibility-and-benefit-chart-january-2025/download  
