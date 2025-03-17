@@ -1,0 +1,43 @@
+- name: Shasta County CA
+  period: 2023
+  input:
+    county_str: SHASTA_COUNTY_CA
+  output:
+    slcsp_rating_area: 1
+
+- name: Effingham County IL
+  period: 2023
+  input:
+    county_str: EFFINGHAM_COUNTY_IL
+  output:
+    slcsp_rating_area: 13
+
+- name: Graves County KY
+  period: 2023
+  input:
+    county_str: GRAVES_COUNTY_KY
+  output:
+    slcsp_rating_area: 1   
+
+- name: Bay County MI
+  period: 2023
+  input:
+    county_str: BAY_COUNTY_MI
+  output:
+    slcsp_rating_area: 8
+
+- name: Unknown county defaults to 1
+  period: 2023
+  input:
+    county_str: UNKNOWN_COUNTY_XX
+  output:
+    slcsp_rating_area: 1
+
+- name: LA county (Pasadena)
+  period: 2023
+  input:
+    three_digit_zip_code: 911
+    county_str: LOS_ANGELES_COUNTY_CA
+  output:
+    slcsp_rating_area: 15
+  

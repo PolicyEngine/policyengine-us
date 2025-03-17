@@ -7,4 +7,4 @@ class other_medical_expenses(Variable):
     label = "Other medical expenses"
     unit = USD
     definition_period = YEAR
-    uprating = "gov.bls.cpi.cpi_u"
+    uprating = "calibration.gov.hhs.cms.moop_per_capita"

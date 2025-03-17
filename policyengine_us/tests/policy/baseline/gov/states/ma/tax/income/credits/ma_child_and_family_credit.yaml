@@ -1,0 +1,136 @@
+- name: 3 children, maximum dependent credit in 2022
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    people:
+      child_1:
+        age: 7
+      child_2:
+        age: 7
+      child_3:
+        age: 7
+    tax_units:
+      tax_unit:
+        members: [child_1, child_2, child_3]
+    households:
+      household:
+        state_code: MA
+        members: [child_1, child_2, child_3]
+  output:
+    ma_child_and_family_credit: 360
+
+- name: One elderly, one disabled in 2022
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    people:
+      filer:
+        is_tax_unit_dependent: false
+        age: 30
+      disabled_dependent:
+        is_tax_unit_dependent: true
+        is_disabled: true
+        age: 62
+      elderly_dependent:
+        is_tax_unit_dependent: true
+        age: 65
+    tax_units:
+      tax_unit:
+        members: [filer, disabled_dependent, elderly_dependent]
+    households:
+      household:
+        state_code: MA
+        members: [filer, disabled_dependent, elderly_dependent]
+  output:
+    ma_child_and_family_credit: 360
+
+- name: 3 children age 12, dependent credit for 2023
+  period: 2023
+  absolute_error_margin: 0
+  input:
+    people:
+      child_1:
+        age: 12
+      child_2:
+        age: 12
+      child_3:
+        age: 12
+    tax_units:
+      tax_unit:
+        members: [child_1, child_2, child_3]
+    households:
+      household:
+        state_code: MA
+        members: [child_1, child_2, child_3]
+  output:
+    ma_child_and_family_credit: 930
+
+- name: One elderly, one disabled in 2023
+  period: 2023
+  absolute_error_margin: 0
+  input:
+    people:
+      filer:
+        is_tax_unit_dependent: false
+        age: 30
+      disabled_dependent:
+        is_tax_unit_dependent: true
+        is_disabled: true
+        age: 62
+      elderly_dependent:
+        is_tax_unit_dependent: true
+        age: 65
+    tax_units:
+      tax_unit:
+        members: [filer, disabled_dependent, elderly_dependent]
+    households:
+      household:
+        state_code: MA
+        members: [filer, disabled_dependent, elderly_dependent]
+  output:
+    ma_child_and_family_credit: 620
+- name: 3 children age 12, dependent credit for 2024
+  period: 2024
+  absolute_error_margin: 0
+  input:
+    people:
+      child_1:
+        age: 12
+      child_2:
+        age: 12
+      child_3:
+        age: 12
+    tax_units:
+      tax_unit:
+        members: [child_1, child_2, child_3]
+    households:
+      household:
+        state_code: MA
+        members: [child_1, child_2, child_3]
+  output:
+    ma_child_and_family_credit: 1_320
+
+- name: One elderly, one disabled in 2024
+  period: 2024
+  absolute_error_margin: 0
+  input:
+    people:
+      filer:
+        is_tax_unit_dependent: false
+        age: 30
+      disabled_dependent:
+        is_tax_unit_dependent: true
+        is_disabled: true
+        age: 62
+      elderly_dependent:
+        is_tax_unit_dependent: true
+        age: 65
+    tax_units:
+      tax_unit:
+        members: [filer, disabled_dependent, elderly_dependent]
+    households:
+      household:
+        state_code: MA
+        members: [filer, disabled_dependent, elderly_dependent]
+  output:
+    ma_child_and_family_credit: 880
