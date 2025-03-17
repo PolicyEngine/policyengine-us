@@ -1,4 +1,4 @@
-description: Second Lowest Cost Silver Plan (SLCSP) premiums by rating area, normalized to age 0.
+description: Second Lowest Cost Silver Plan (SLCSP) premiums by rating area, normalized to age 0 .
 metadata:
 
   period: month
@@ -6,10 +6,8 @@ metadata:
   breakdown:
      - state_code
      - range(1, 68) #max rating areas +1
-
+  documentation: For NY and VT below is base adult premium
   label: Second Lowest Cost Silver Plan premiums by rating area
-
-  # Excludes New York and Vermont which use different age curves  
   reference:
     - title: CMS Market Rating Reforms State Specific Age Curve Variations
       href: https://www.cms.gov/cciio/programs-and-initiatives/health-insurance-market-reforms/downloads/statespecagecrv053117.pdf
@@ -665,6 +663,23 @@ NM:
     2025-01-01: 337.00
   5:
     2025-01-01: 357.00
+NY:
+  1:
+    2025-01-01: 661.00
+  2:
+    2025-01-01: 560.00
+  3:
+    2025-01-01: 760.00
+  4:
+    2025-01-01: 880.00
+  5:
+    2025-01-01: 690.00
+  6:
+    2025-01-01: 644.00
+  7:
+    2025-01-01: 911.00
+  8:
+    2025-01-01: 778.00
 NV:
   1:
     2025-01-01: 228.00
@@ -963,6 +978,9 @@ VA:
     2025-01-01: 236.00
   12:
     2025-01-01: 236.00
+VT:
+  1:
+    2025-01-01: 1_277.00
 WA:
   1:
     2025-01-01: 257.00

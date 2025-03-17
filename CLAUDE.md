@@ -1,24 +1,43 @@
-# PolicyEngine US Development Guidelines
+# PolicyEngine US - Development Guide
 
-## Commands
-- Build: `make build`
-- Install: `make install` or `pip install -e .[dev]`
-- Format: `make format` (runs black with line length 79)
-- Test: `make test` (all tests)
-- Run single test: `pytest path/to/test_file.py::test_function` 
-- Run specific YAML tests: `policyengine-core test path/to/tests -c policyengine_us [-v]`
-- Run microsimulation test: `pytest policyengine_us/tests/microsimulation/test_microsim.py`
-- Checkout a PR: `gh pr checkout [PR-NUMBER]`
+## Build/Test/Lint Commands
+```bash
+# Install dependencies
+make install
 
-## Code Style
+# Format code
+make format  # Runs black with line length 79 and fixes import ordering
+
+# Run all tests
+make test
+
+# Run specific test file or directory
+pytest policyengine_us/tests/path/to/test_file.py
+
+# Run specific test function
+pytest policyengine_us/tests/path/to/test_file.py::test_function_name
+
+# Run YAML-specific tests
+make test-yaml-structural
+make test-yaml-no-structural
+
+# Generate documentation
+make documentation
+```
+
+## Code Style Guidelines
+- **Imports**: Use absolute imports from policyengine_us.model_api for Variables
+- **Formatting**: Line length 79 characters; use Black for formatting
+- **Types**: Use type hints; import ArrayLike from numpy.typing
+- **Variable Naming**: Use snake_case for variable names and function names
+- **Error Handling**: Use np.divide with out/where parameters to avoid divide-by-zero errors
+- **Documentation**: Add docstrings to classes and functions; include description, parameters, returns
+
+## Additional Guidelines
 - Python >= 3.10, < 3.13
-- Line length: 79 characters
-- Formatting: Black
 - Use `where` not `if` and `max_`/`min_` not `max`/`min` for vectorization
 - For array comparisons use `(x >= min) & (x <= max)` not `min <= x <= max`
-- Naming: snake_case for variables, functions, files; CamelCase for classes
 - Test-driven development: write YAML tests before implementing variables
-- Types: Use type hints (Python typing module)
 - Variables must have descriptive names and follow pattern in existing files
 - Parameters defined in YAML with metadata (units, reference, etc.)
 - Follow GitHub Flow with PRs targeting master branch
