@@ -6,7 +6,7 @@ class ma_tafdc_child_support_deduction(Variable):
     entity = Person
     unit = USD
     label = "Massachusetts Temporary Assistance for Families with Dependent Children (TAFDC) child support deduction"
-    definition_period = MONTH
+    definition_period = YEAR
     reference = "https://www.masslegalservices.org/content/73-how-much-income-can-you-have-and-still-qualify-tafdc"
     defined_for = StateCode.MA
 

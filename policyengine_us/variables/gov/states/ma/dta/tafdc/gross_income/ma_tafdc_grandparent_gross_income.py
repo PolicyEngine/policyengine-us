@@ -13,9 +13,9 @@ class ma_tafdc_grandparent_gross_income(Variable):
     def formula(person, period, parameters):
         p = parameters(period).gov.states.ma.dta.tafdc.gross_income
         is_grandparent = person("is_grandparent_of_filer_or_spouse", period)
-        fpg = person.tax_unit("tax_unit_fpg", period)
+        fpg = person.spm_unit("spm_unit_fpg", period)
         total_income = add(person, period, [p.earned, p.unearned])
-        teen_parent_present = person.tax_unit.any(
+        teen_parent_present = person.spm_unit.any(
             person("ma_tafdc_eligible_teen_parent", period)
         )
         deduction = where(

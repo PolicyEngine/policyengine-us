@@ -6,14 +6,14 @@ class ma_tafdc_dependent_care_deduction(Variable):
     entity = Person
     unit = USD
     label = "Massachusetts Temporary Assistance for Families with Dependent Children (TAFDC) dependent care deduction"
-    definition_period = MONTH
+    definition_period = YEAR
     reference = "https://www.masslegalservices.org/content/73-how-much-income-can-you-have-and-still-qualify-tafdc"
     defined_for = StateCode.MA
 
     def formula(person, period, parameters):
         dependent = person("is_tax_unit_dependent", period)
         total_weekly_hours = (
-            person.tax_unit.sum(person("weekly_hours_worked", period))
+            person.spm_unit.sum(person("weekly_hours_worked", period))
             * MONTHS_IN_YEAR
         )
         age = person("monthly_age", period)

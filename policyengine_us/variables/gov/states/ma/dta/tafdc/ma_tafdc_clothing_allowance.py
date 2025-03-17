@@ -6,7 +6,7 @@ class ma_tafdc_clothing_allowance(Variable):
     unit = USD
     entity = Person
     label = "Massachusetts Temporary Assistance for Families with Dependent Children (TAFDC) clothing allowance"
-    definition_period = MONTH
+    definition_period = YEAR
     reference = "https://www.masslegalservices.org/content/75-how-much-will-you-get-each-month"
     defined_for = StateCode.MA
 
