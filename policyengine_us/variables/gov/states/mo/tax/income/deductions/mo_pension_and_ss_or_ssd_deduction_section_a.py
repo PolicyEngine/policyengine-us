@@ -63,7 +63,7 @@ class mo_pension_and_ss_or_ssd_deduction_section_a(Variable):
         if p.income_threshold_applies:
             adjusted_ss_or_ssdi_value = where(
                 (mo_agi - ss_or_ssdi_exemption_threshold) > 0,
-                eligible_ss_or_ssd,  
+                eligible_ss_or_ssd,
                 # this comes from the result of section c
                 taxable_social_security_benefits,  # this is the unmodified benefits value, from Part 3 - Section C, Line 6
             )
