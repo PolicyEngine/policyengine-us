@@ -1,0 +1,18 @@
+from policyengine_us.model_api import *
+
+
+class ma_tafdc_eligible_infant(Variable):
+    value_type = bool
+    entity = Person
+    label = "Massachusetts Temporary Assistance for Families with Dependent Children (TAFDC) eligible infant"
+    definition_period = YEAR
+    reference = "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-705-600"
+    defined_for = StateCode.MA
+
+    def formula(person, period, parameters):
+        age = person("age", period)
+        p = parameters(
+            period
+        ).gov.states.ma.dta.tafdc.eligibility.age_threshold
+        
+        return age < p.infant 

@@ -14,5 +14,5 @@ class ma_tafdc_eligible_child(Variable):
         p = parameters(
             period
         ).gov.states.ma.dta.tafdc.eligibility.age_threshold
-        
-        return age < p.child # or (is_in_k12_school (full-time) & age < 19)
+        in_school = person("is_in_k12_school", period)
+        return age < p.child | in_school & age < 19   

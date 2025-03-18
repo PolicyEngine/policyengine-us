@@ -15,6 +15,7 @@ class ma_tafdc_earned_income(Variable):
     def formula(person, period, parameters):
         p = parameters(period).gov.states.ma.dta.tafdc.gross_income
         total_earned_income = add(person, period, p.earned)
+        
         flat_disregard = (
             p.deductions.earned_income_disregard.flat * MONTHS_IN_YEAR
         )
@@ -25,6 +26,3 @@ class ma_tafdc_earned_income(Variable):
         # The income of grandparents is computed separately
         is_grandparent = person("is_grandparent_of_filer_or_spouse", period)
         return max_(0, reduced_income - dependent_care_deduction) * ~is_grandparent
-
-
-# TODO: 100% disregard for the first 6 months of income

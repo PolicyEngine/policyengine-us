@@ -15,4 +15,4 @@ class ma_tafdc_eligible_teen_parent(Variable):
             period
         ).gov.states.ma.dta.tafdc.eligibility.age_threshold
         age = person("age", period)
-        return is_parent & (age < p.teen_parent)
+        return is_parent & (age < p.teen_parent_under_18)

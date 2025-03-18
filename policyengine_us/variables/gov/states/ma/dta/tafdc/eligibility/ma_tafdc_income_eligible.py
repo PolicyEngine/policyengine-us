@@ -13,4 +13,4 @@ class ma_tafdc_income_eligible(Variable):
         income = spm_unit("ma_tafdc_gross_income", period)
         income_limit = spm_unit("ma_tafdc_income_limit", period)
         return income < income_limit
-        # we should use income - all kinds of deductions then compare to income limit. 
+ 

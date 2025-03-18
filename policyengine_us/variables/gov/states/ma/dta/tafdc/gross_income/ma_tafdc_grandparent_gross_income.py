@@ -19,6 +19,6 @@ class ma_tafdc_grandparent_gross_income(Variable):
             person("ma_tafdc_eligible_teen_parent", period)
         )
         deduction = where(
-            teen_parent_present, fpg * p.deductions.grandparent_income.percentage, 0
+            teen_parent_present, fpg * p.deductions.grandparent_income, 0
         )
         return is_grandparent * max_(0, total_income - deduction)
