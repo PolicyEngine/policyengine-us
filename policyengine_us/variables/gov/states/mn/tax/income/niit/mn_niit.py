@@ -21,7 +21,8 @@ class mn_niit(Variable):
           - Amounts above $1,000,000 are taxed at 1%
         """
         p = parameters(period).gov.states.mn.tax.income.niit
-        # Minnesota defines its NIIT base following the IRC, except exempting gains  
-        # from some agricultural/rural/forested land. We do not account for this exemption.
+        # Minnesota defines its NIIT base following the IRC, except exempting
+        # gains from some agricultural/rural/forested land. We do not account
+        # for this exemption.
         net_investment_income = tax_unit("net_investment_income", period)
         return p.rate.calc(net_investment_income)
