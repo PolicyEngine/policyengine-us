@@ -2,7 +2,7 @@ from policyengine_us.model_api import *
 from policyengine_us.variables.household.demographic.geographic.county.county_enum import (
     County,
 )
-from policyengine_us_data import ZIP_CODE_DATASET
+from policyengine_us_data import ZIP_CODE_DATASET, COUNTY_FIPS_DATASET
 
 
 class county(Variable):
@@ -14,6 +14,28 @@ class county(Variable):
     definition_period = YEAR
 
     def formula(household, period, parameters):
+        # First look if county FIPS is provided; if so, map to county name
+        county_fips: int | None = household("county_fips", period)
+        if county_fips:
+            # Find county name from dataset
+            county_fips_codes = COUNTY_FIPS_DATASET.set_index("COUNTYFIPS")
+            county_name = county_fips_codes.loc[county_fips, "COUNTYNAME"]
+            state_code = county_fips_codes.loc[county_fips, "STATE"]
+            county_key = county_name.apply(
+                lambda name: name.replace(" ", "_")
+                .replace("-", "_")
+                .replace(".", "")
+                .replace("'", "_")
+                .strip()
+                .upper()
+            )
+            county_state = county_key.str.cat(state_code, sep="_")
+            county_names = pd.Series(
+                np.arange(len(County._member_names_)),
+                index=County._member_names_,
+            )
+            return county_names[county_state]
+
         # Attempt to look up from ZIP code
         zip_code = household("zip_code", period).astype(int)
         zip_codes = ZIP_CODE_DATASET.set_index("zip_code")
