@@ -20,4 +20,4 @@ class nc_scca_child_age_eligible(Variable):
 
         age_eligible = age < age_limit
 
-        return age_eligible & person("is_tax_unit_dependent", period)
+        return age_eligible
