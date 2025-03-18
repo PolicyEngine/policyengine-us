@@ -16,11 +16,11 @@ class county(Variable):
     def formula(household, period, parameters):
         # First look if county FIPS is provided; if so, map to county name
         county_fips: int | None = household("county_fips", period)
-        if county_fips:
+        if county_fips.all():
             # Find county name from dataset
-            county_fips_codes = COUNTY_FIPS_DATASET.set_index("COUNTYFIPS")
-            county_name = county_fips_codes.loc[county_fips, "COUNTYNAME"]
-            state_code = county_fips_codes.loc[county_fips, "STATE"]
+            county_fips_codes = COUNTY_FIPS_DATASET.set_index("county_fips")
+            county_name = county_fips_codes.loc[county_fips, "county_name"]
+            state_code = county_fips_codes.loc[county_fips, "state"]
             county_key = county_name.apply(
                 lambda name: name.replace(" ", "_")
                 .replace("-", "_")
