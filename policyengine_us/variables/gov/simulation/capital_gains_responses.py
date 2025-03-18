@@ -88,7 +88,9 @@ class capital_gains_behavioral_response(Variable):
         ):
             return 0
 
-        capital_gains = person("long_term_capital_gains_before_response", period)
+        capital_gains = person(
+            "long_term_capital_gains_before_response", period
+        )
         tax_rate_change = person("relative_capital_gains_mtr_change", period)
         elasticity = person("capital_gains_elasticity", period)
 
