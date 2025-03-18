@@ -17,11 +17,14 @@ class ma_tafdc_pregnancy_eligible(Variable):
         p = parameters(period).gov.states.ma.dta.tafdc.eligibility
         young_pregnancy = age < p.pregnancy_age
         # Eligible if pregnant and are due in less than 4 months
-        months_eligible = is_pregnant & current_pregnancy_month >= p.pregnancy_month
-        
+        months_eligible = (
+            is_pregnant & current_pregnancy_month >= p.pregnancy_month
+        )
+
         # Eligible if age under 20 and meet teen parent school attendance requirements
         is_in_k12_school = person("is_in_k12_school", period)
-        young_pregnancy_eligible = is_pregnant & young_pregnancy & is_in_k12_school # or k12 graduate(Teen Parent School Attendance)
-        
+        young_pregnancy_eligible = (
+            is_pregnant & young_pregnancy & is_in_k12_school
+        )  # or k12 graduate(Teen Parent School Attendance)
+
         return spm_unit.any(young_pregnancy_eligible | months_eligible)
-    

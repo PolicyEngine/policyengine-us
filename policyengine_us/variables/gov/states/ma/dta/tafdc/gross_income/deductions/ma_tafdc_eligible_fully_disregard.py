@@ -10,7 +10,9 @@ class ma_tafdc_eligible_fully_disregard(Variable):
     defined_for = StateCode.MA
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.states.ma.dta.tafdc.gross_income.deductions.full_disregard
+        p = parameters(
+            period
+        ).gov.states.ma.dta.tafdc.gross_income.deductions.full_disregard
         gross_income = spm_unit("ma_tafdc_gross_income", period)
         fpg = spm_unit("spm_unit_fpg", period)
         return gross_income < fpg * p.income_limit

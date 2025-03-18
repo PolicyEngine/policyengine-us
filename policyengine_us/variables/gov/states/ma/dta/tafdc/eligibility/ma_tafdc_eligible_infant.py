@@ -6,7 +6,9 @@ class ma_tafdc_eligible_infant(Variable):
     entity = Person
     label = "Massachusetts Temporary Assistance for Families with Dependent Children (TAFDC) eligible infant"
     definition_period = YEAR
-    reference = "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-705-600"
+    reference = (
+        "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-705-600"
+    )
     defined_for = StateCode.MA
 
     def formula(person, period, parameters):
@@ -14,5 +16,5 @@ class ma_tafdc_eligible_infant(Variable):
         p = parameters(
             period
         ).gov.states.ma.dta.tafdc.eligibility.age_threshold
-        
-        return age < p.infant 
+
+        return age < p.infant

@@ -19,4 +19,8 @@ class ma_tafdc(Variable):
         infant_benefit = spm_unit.sum(
             spm_unit.members("ma_tafdc_infant_benefit", period)
         )
-        return max_(0, payment_standard - gross_income) + clothing_allowance + infant_benefit
+        return (
+            max_(0, payment_standard - gross_income)
+            + clothing_allowance
+            + infant_benefit
+        )

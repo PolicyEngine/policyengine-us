@@ -28,4 +28,3 @@ class ma_tafdc_income_limit(Variable):
             teen_parent_income_limit,
             base_payment_standard,
         )
-
