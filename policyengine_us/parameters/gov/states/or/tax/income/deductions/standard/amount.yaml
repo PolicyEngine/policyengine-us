@@ -1,8 +1,14 @@
 description: Oregon provides a standard deduction of this amount.
 metadata:
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 5
   label: Oregon standard deduction
   period: year
   unit: currency-USD
+  propagate_metadata_to_children: true 
   breakdown:
     - filing_status
   reference:
@@ -29,11 +35,6 @@ JOINT:
     2022-01-01: 4_840
     2023-01-01: 5_210
     2024-01-01: 5_495
-  metadata:
-    uprating: gov.irs.uprating
-    rounding:
-        type: downwards
-        interval: 5
 HEAD_OF_HOUSEHOLD:
   values:
     2003-01-01: 2_640
@@ -44,11 +45,6 @@ HEAD_OF_HOUSEHOLD:
     2021-01-01: 3_780
     2022-01-01: 3_895
     2024-01-01: 4_420
-  metadata:
-    uprating: gov.irs.uprating
-    rounding:
-        type: downwards
-        interval: 5
 SURVIVING_SPOUSE:
   values:
     2003-01-01: 3_280
@@ -60,11 +56,6 @@ SURVIVING_SPOUSE:
     2022-01-01: 4_840
     2023-01-01: 5_210
     2024-01-01: 5_495
-  metadata:
-    uprating: gov.irs.uprating
-    rounding:
-        type: downwards
-        interval: 5
 SINGLE:
   values:
     2003-01-01: 1_640
@@ -76,11 +67,6 @@ SINGLE:
     2022-01-01: 2_420
     2023-01-01: 2_605
     2024-01-01: 2_745
-  metadata:
-    uprating: gov.irs.uprating
-    rounding:
-        type: downwards
-        interval: 5
 SEPARATE:
   values:
     2003-01-01: 1_640
@@ -92,8 +78,3 @@ SEPARATE:
     2022-01-01: 2_420
     2023-01-01: 2_605
     2024-01-01: 2_745
-  metadata:
-    uprating: gov.irs.uprating
-    rounding:
-        type: downwards
-        interval: 5
