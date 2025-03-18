@@ -1,69 +1,39 @@
 description: Maryland limits its refundable Child and Dependent Care Credit to filers with adjusted gross income below these thresholds.
 JOINT:
-  values:
-    2019-01-01: 75_000
-    2020-01-01: 75_750
-    2021-01-01: 78_150
-    2022-01-01: 83_650
-    2023-01-01: 84_500
-    2024-01-01: 89_100
-  uprating:
-    parameter: gov.irs.uprating
-    rounding:
-      type: downwards
-      interval: 50
+  2019-01-01: 75_000
+  2020-01-01: 75_750
+  2021-01-01: 78_150
+  2022-01-01: 83_650
+  2023-01-01: 84_500
+  2024-01-01: 89_100
 SINGLE:
-  values:
-    2019-01-01: 50_000
-    2020-01-01: 50_500
-    2021-01-01: 52_100
-    2022-01-01: 55_750
-    2023-01-01: 56_300
-    2024-01-01: 59_400
-  uprating:
-    parameter: gov.irs.uprating
-    rounding:
-      type: downwards
-      interval: 50
+  2019-01-01: 50_000
+  2020-01-01: 50_500
+  2021-01-01: 52_100
+  2022-01-01: 55_750
+  2023-01-01: 56_300
+  2024-01-01: 59_400
 SEPARATE:
-  values:
-    2019-01-01: 50_000
-    2020-01-01: 50_500
-    2021-01-01: 52_100
-    2022-01-01: 55_750
-    2023-01-01: 56_300
-    2024-01-01: 59_400
-  uprating:
-    parameter: gov.irs.uprating
-    rounding:
-      type: downwards
-      interval: 50
+  2019-01-01: 50_000
+  2020-01-01: 50_500
+  2021-01-01: 52_100
+  2022-01-01: 55_750
+  2023-01-01: 56_300
+  2024-01-01: 59_400
 HEAD_OF_HOUSEHOLD:
-  values:
-    2019-01-01: 50_000
-    2020-01-01: 50_500
-    2021-01-01: 52_100
-    2022-01-01: 55_750
-    2023-01-01: 56_300
-    2024-01-01: 59_400
-  uprating:
-    parameter: gov.irs.uprating
-    rounding:
-      type: downwards
-      interval: 50
+  2019-01-01: 50_000
+  2020-01-01: 50_500
+  2021-01-01: 52_100
+  2022-01-01: 55_750
+  2023-01-01: 56_300
+  2024-01-01: 59_400
 SURVIVING_SPOUSE:
-  values:
-    2019-01-01: 50_000
-    2020-01-01: 50_500
-    2021-01-01: 52_100
-    2022-01-01: 55_750
-    2023-01-01: 56_300
-    2024-01-01: 59_400
-  uprating:
-    parameter: gov.irs.uprating
-    rounding:
-      type: downwards
-      interval: 50
+  2019-01-01: 50_000
+  2020-01-01: 50_500
+  2021-01-01: 52_100
+  2022-01-01: 55_750
+  2023-01-01: 56_300
+  2024-01-01: 59_400
 metadata:
   breakdown:
     - filing_status
@@ -83,3 +53,9 @@ metadata:
   unit: currency-USD
   period: year
   label: Maryland refundable CDCC AGI cap
+  propagate_metadata_to_children: true
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50

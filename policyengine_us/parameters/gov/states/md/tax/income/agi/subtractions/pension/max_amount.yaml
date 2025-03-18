@@ -15,6 +15,9 @@ metadata:
       href: https://www.marylandtaxes.gov/forms/21_forms/Resident_Booklet.pdf#page=12
     - title: 2024 Maryland Statutes Tax - Title 10 - Income Tax - Section 10-209 - Subtractions From Federal Adjusted Gross Income 
       href: https://law.justia.com/codes/maryland/tax-general/title-10/subtitle-2/part-ii/section-10-209/
+      #the law says the maximum deduction is based on maximum ss benefits from the tax year,
+      # but the tax form listed values are not the same as SSA's max benefits
   unit: currency-USD
   period: year
   label: Maryland max pension AGI subtraction
+  uprating: gov.ssa.uprating
