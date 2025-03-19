@@ -4,17 +4,15 @@
     state_code: LA
     income_tax_before_refundable_credits: 1_200
     form_4972_lumpsum_distributions: 600
-    premium_tax_credit: 500
   output:
-    la_federal_tax_deduction: 100
+    la_federal_tax_deduction: 600
 
 - name: Capped at 0
   period: 2021
   input:
     state_code: LA
     income_tax_before_refundable_credits: 1_000
-    form_4972_lumpsum_distributions: 600
-    premium_tax_credit: 800
+    form_4972_lumpsum_distributions: 1_400
   output:
     la_federal_tax_deduction: 0
 
@@ -24,6 +22,5 @@
     state_code: LA
     income_tax_before_refundable_credits: 1_300
     form_4972_lumpsum_distributions: 600
-    premium_tax_credit: 500
   output:
     la_federal_tax_deduction: 0

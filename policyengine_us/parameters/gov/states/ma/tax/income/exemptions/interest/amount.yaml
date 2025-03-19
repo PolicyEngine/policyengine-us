@@ -1,0 +1,26 @@
+description: Exemption for interest from banks with a location in Massachusetts.
+SINGLE:
+  2002-01-01: 100
+JOINT:
+  2002-01-01: 200
+HEAD_OF_HOUSEHOLD:
+  2002-01-01: 100
+SURVIVING_SPOUSE:
+  2002-01-01: 100
+SEPARATE:
+  2002-01-01: 100
+metadata:
+  unit: currency-USD
+  period: year
+  breakdown:
+  - filing_status
+  label: Massachusetts interest exemption
+  reference:
+    - title: Mass. General Laws c.62 § 3(B)(a)(6)
+      href: https://www.mass.gov/info-details/mass-general-laws-c62-ss-3
+    - title: Form 1-NR Massachusetts Nonresident Income Tax Return (box 5b)
+      href: https://www.mass.gov/doc/2022-form-1-massachusetts-resident-income-tax-return/download
+    - title: Form 1 2024 Massachusetts Resident Income Tax - Repeal of the Deduction of Interest from Massachusetts banks
+      href: https://www.mass.gov/doc/2024-form-1-instructions/download#page=3
+    - title: Repeal Deduction of Interest From Savings in Massachusetts Banks 1
+      href: https://budget.digital.mass.gov/govbudget/fy25/outside-section/section-44-repeal-deduction-of-interest-from-savings-in-massachusetts-banks-1/

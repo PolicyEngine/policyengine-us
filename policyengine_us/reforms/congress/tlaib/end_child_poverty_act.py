@@ -138,7 +138,7 @@ def create_end_child_poverty_act() -> Reform:
                 "ecpa_child_benefit",
             ]
             if parameters(period).gov.contrib.ubi_center.flat_tax.deduct_ptc:
-                BENEFITS.append("premium_tax_credit")
+                BENEFITS.append("aca_ptc")
             if not parameters(period).gov.hud.abolition:
                 BENEFITS.append("spm_unit_capped_housing_subsidy")
             return add(spm_unit, period, BENEFITS)
