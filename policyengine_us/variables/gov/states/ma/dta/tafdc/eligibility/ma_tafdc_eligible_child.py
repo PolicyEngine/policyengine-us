@@ -17,4 +17,3 @@ class ma_tafdc_eligible_child(Variable):
         in_school = person("is_in_k12_school", period)
         age_under_19 = age < p.child_under_19
         return age < p.child | (in_school & age_under_19)
-
