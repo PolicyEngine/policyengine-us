@@ -18,6 +18,4 @@ class nc_scca_child_age_eligible(Variable):
         # Apply appropriate age limit based on disability status
         age_limit = where(is_disabled, p.disabled, p.non_disabled)
 
-        age_eligible = age < age_limit
-
-        return age_eligible
+        return age < age_limit
