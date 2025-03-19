@@ -9374,3 +9374,9 @@
     fixed:
     - Fixed Texas and Maine rating areas and corresponding SLCSP.
   date: 2025-03-19 09:20:57
+- bump: patch
+  changes:
+    fixed:
+    - Rename capital_gains_before_response to long_term_capital_gains_before_response
+      as it is unclear whether it might include/allocate short term.
+  date: 2025-03-19 09:32:35
