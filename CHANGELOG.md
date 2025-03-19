@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.218.0] - 2025-03-19 07:54:52
+
+### Added
+
+- Missouri state tax code 2024 updates.
+
 ## [1.217.1] - 2025-03-18 07:50:27
 
 ### Fixed
@@ -11058,6 +11064,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.218.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.217.1...1.218.0
 [1.217.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.217.0...1.217.1
 [1.217.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.216.0...1.217.0
 [1.216.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.215.0...1.216.0
