@@ -9380,3 +9380,8 @@
     - Rename capital_gains_before_response to long_term_capital_gains_before_response
       as it is unclear whether it might include/allocate short term.
   date: 2025-03-19 09:32:35
+- bump: patch
+  changes:
+    fixed:
+    - Remove SSI from unearned income sources for NC TANF.
+  date: 2025-03-19 20:55:15
