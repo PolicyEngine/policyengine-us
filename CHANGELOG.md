@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.220.0] - 2025-03-19 21:49:56
+
+### Added
+
+- Minnesota 2024 state income tax updates.
+
 ## [1.219.2] - 2025-03-19 20:55:15
 
 ### Fixed
@@ -11082,6 +11088,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.220.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.219.2...1.220.0
 [1.219.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.219.1...1.219.2
 [1.219.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.219.0...1.219.1
 [1.219.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.218.0...1.219.0
