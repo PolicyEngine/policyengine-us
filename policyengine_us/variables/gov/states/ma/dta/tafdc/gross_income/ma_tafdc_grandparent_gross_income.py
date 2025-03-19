@@ -14,7 +14,11 @@ class ma_tafdc_grandparent_gross_income(Variable):
         p = parameters(period).gov.states.ma.dta.tafdc.gross_income
         is_grandparent = person("is_grandparent_of_filer_or_spouse", period)
         fpg = person.spm_unit("spm_unit_fpg", period)
-        total_income = add(person, period, [p.earned, p.unearned])
+        # Calculate total income by summing up earned and unearned income sources
+        earned_income_sources = p.earned
+        unearned_income_sources = p.unearned
+        all_income_sources = earned_income_sources + unearned_income_sources
+        total_income = add(person, period, all_income_sources)
         teen_parent_present = person.spm_unit.any(
             person("ma_tafdc_eligible_teen_parent", period)
         )

@@ -6,7 +6,7 @@ class ma_tafdc_payment_standard(Variable):
     unit = USD
     entity = SPMUnit
     label = "Massachusetts Temporary Assistance for Families with Dependent Children (TAFDC) payment standard"
-    definition_period = YEAR
+    definition_period = MONTH
     reference = "https://www.masslegalservices.org/content/75-how-much-will-you-get-each-month"
     defined_for = StateCode.MA
 

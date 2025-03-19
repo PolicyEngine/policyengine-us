@@ -14,9 +14,8 @@ class ma_tafdc_dependent_care_deduction(Variable):
         dependent = person("is_tax_unit_dependent", period)
         total_weekly_hours = (
             person.spm_unit.sum(person("weekly_hours_worked", period))
-            * MONTHS_IN_YEAR
         )
-        age = person("monthly_age", period)
+        age = person("age", period)
         p = parameters(
             period
         ).gov.states.ma.dta.tafdc.gross_income.deductions.dependent_care_expenses
@@ -26,6 +25,6 @@ class ma_tafdc_dependent_care_deduction(Variable):
             p.amount.younger.calc(total_weekly_hours),
             p.amount.older.calc(total_weekly_hours),
         )
-        total_amount = amount * dependent
+        total_amount = amount * dependent * MONTHS_IN_YEAR
         care_expenses = person("care_expenses", period)
         return min_(total_amount, care_expenses)
