@@ -1,0 +1,35 @@
+- name: SSI claim is joint
+  period: 2023
+  input:
+    people:
+      # Single person in a marital unit
+      person1:
+        is_ssi_eligible_individual: true
+        is_tax_unit_head: true
+      # Two people in a marital unit, both SSI eligible
+      person2:
+        is_ssi_eligible_individual: true
+        is_tax_unit_head: true
+      person3:
+        is_ssi_eligible_individual: true
+        is_tax_unit_spouse: true
+      # Person not eligible for SSI
+      person4:
+        is_ssi_eligible_individual: false
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2, person3]
+      tax_unit3:
+        members: [person4]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2, person3]
+      marital_unit3:
+        members: [person4]
+  output:
+    ssi_claim_is_joint: [false, true, true, false]

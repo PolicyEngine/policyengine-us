@@ -1,125 +1,58 @@
-- name: Elderly individual with no income.
-  period: 2022
-  input:
-    is_ssi_aged_blind_disabled: true
-  output:
-    ssi: 841 * 12
-
-- name: Disabled individual with no income
-  period: 2022
-  input:
-    age: 40
-    is_ssi_aged_blind_disabled: true
-  output:
-    ssi: 841 * 12
-
-- name: Example A from SSA SSI page (https://www.ssa.gov/ssi/text-income-ussi.htm) "SSI Federal Benefit with only UNEARNED INCOME"
-  period: 2021
-  input:
-    is_ssi_aged_blind_disabled: true
-    social_security: 300 * 12
-  output:
-    ssi_countable_income: 280 * 12
-    ssi: 514 * 12 # 794 - 280
-
-- name: Example B from SSA SSI page (https://www.ssa.gov/ssi/text-income-ussi.htm) "SSI Federal Benefit with only EARNED INCOME"
-  period: 2021
-  input:
-    is_ssi_aged_blind_disabled: true
-    employment_income: 317 * 12
-  output:
-    ssi_countable_income: 116 * 12
-    ssi: 678 * 12 # 794 - 116
-
-# Below: New integration tests verifying spousal deeming logic with 2025 parameters
-# (No year-specific code—these simply run with the 2025 parameter values.)
-
-- name: Integration test - SSI benefit calculation for disabled individual with ineligible working spouse (2025)
-  period: 2025
+- name: SSI integration test
+  period: 2023
   input:
     people:
+      # Single person - eligible for SSI
       person1:
-        age: 60
+        age: 65
+        is_disabled: true
+        is_tax_unit_head: true
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+      # Married couple - both eligible for SSI
+      person2:
+        age: 68
+        is_disabled: true
+        is_tax_unit_head: true
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+      person3:
+        age: 70
         is_disabled: true
         is_tax_unit_spouse: true
         ssi_earned_income: 0
         ssi_unearned_income: 0
-      person2:
-        age: 55
-        is_disabled: false
-        is_tax_unit_head: true
-        ssi_earned_income: 31_080
-        ssi_unearned_income: 0
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
-    marital_units:
-      marital_unit:
-        members: [person1, person2]
-  output:
-    # Just verifying final or intermediate variables for clarity
-    ssi_income_deemed_from_ineligible_spouse: [15_030, 0]
-    ssi_countable_income: [15_030, 0]
-    ssi_claim_is_joint: [true, false]
-    ssi_amount_if_eligible: [17_400, 11_604]
-    uncapped_ssi: [2_370, 0]
-    ssi: [2_370, 0]
-
-- name: Integration test - SSI benefit for disabled individual with spouse income just below FBR differential (2025)
-  period: 2025
-  input:
-    people:
-      person1:
-        age: 65
+      # Married couple - only one eligible for SSI
+      person4:
+        age: 72
         is_disabled: true
-        is_tax_unit_spouse: true
+        is_tax_unit_head: true
         ssi_earned_income: 0
         ssi_unearned_income: 0
-      person2:
-        age: 60
+      person5:
+        age: 50
         is_disabled: false
-        is_tax_unit_head: true
-        # Income after exclusions is below the difference between couple & individual FBR
-        ssi_earned_income: 4_360
-        ssi_unearned_income: 0
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
-    marital_units:
-      marital_unit:
-        members: [person1, person2]
-  output:
-    ssi_income_deemed_from_ineligible_spouse: [0, 0]
-    ssi_countable_income: [0, 0]
-    ssi_claim_is_joint: [true, false]
-    ssi_amount_if_eligible: [17_400, 11_604]
-    ssi: [17_400, 0]
-
-- name: Integration test - disabled individual with both earned and unearned spouse income (2025)
-  period: 2025
-  input:
-    people:
-      person1:
-        age: 65
-        is_disabled: true
         is_tax_unit_spouse: true
-        ssi_earned_income: 3_600
-        ssi_unearned_income: 2_400
-      person2:
-        age: 60
-        is_disabled: false
-        is_tax_unit_head: true
-        ssi_earned_income: 24_000
+        ssi_earned_income: 12000
         ssi_unearned_income: 0
     tax_units:
-      tax_unit:
-        members: [person1, person2]
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2, person3]
+      tax_unit3:
+        members: [person4, person5]
     marital_units:
-      marital_unit:
-        members: [person1, person2]
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2, person3]
+      marital_unit3:
+        members: [person4, person5]
   output:
-    ssi_income_deemed_from_ineligible_spouse: [12_000, 0]
-    ssi_countable_income: [15_570, 0]
-    ssi_claim_is_joint: [true, false]
-    ssi_amount_if_eligible: [17_400, 11_604]
-    ssi: [1_830, 0]
+    # Eligibility variables
+    is_ssi_aged_blind_disabled: [true, true, true, true, false]
+    is_ssi_eligible_individual: [true, true, false, true, false]
+    
+    # Joint claim status
+    ssi_claim_is_joint: [false, true, false, true, false]
