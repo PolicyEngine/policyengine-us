@@ -95,6 +95,7 @@ from .congress.golden import (
 from .crfb import (
     create_tax_employer_social_security_tax_reform,
     create_tax_employer_medicare_tax_reform,
+    create_tax_employer_payroll_tax_reform,
 )
 
 from policyengine_core.reforms import Reform
@@ -207,6 +208,9 @@ def create_structural_reforms_from_parameters(parameters, period):
     tax_employer_medicare_tax = create_tax_employer_medicare_tax_reform(
         parameters, period
     )
+    tax_employer_payroll_tax = create_tax_employer_payroll_tax_reform(
+        parameters, period
+    )
 
     reforms = [
         afa_reform,
@@ -249,6 +253,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         fisc_act,
         tax_employer_social_security_tax,
         tax_employer_medicare_tax,
+        tax_employer_payroll_tax,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
 

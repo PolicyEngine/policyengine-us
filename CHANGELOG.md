@@ -5,6 +5,123 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.220.0] - 2025-03-19 21:49:56
+
+### Added
+
+- Minnesota 2024 state income tax updates.
+
+## [1.219.2] - 2025-03-19 20:55:15
+
+### Fixed
+
+- Remove SSI from unearned income sources for NC TANF.
+
+## [1.219.1] - 2025-03-19 09:32:35
+
+### Fixed
+
+- Rename capital_gains_before_response to long_term_capital_gains_before_response as it is unclear whether it might include/allocate short term.
+
+## [1.219.0] - 2025-03-19 09:20:57
+
+### Fixed
+
+- Fixed Texas and Maine rating areas and corresponding SLCSP.
+
+## [1.218.0] - 2025-03-19 07:54:52
+
+### Added
+
+- Missouri state tax code 2024 updates.
+
+## [1.217.1] - 2025-03-18 07:50:27
+
+### Fixed
+
+- Idaho 2024 income tax rate.
+
+## [1.217.0] - 2025-03-17 21:48:20
+
+### Added
+
+- Virginia state tax code 2024 updates.
+- Replace inactive statutory links in the Virginia tax code.
+- Update description of Virginia itemized deduction limits.
+
+## [1.216.0] - 2025-03-17 21:43:27
+
+### Added
+
+- New York and Vermont ACA family tier ratings.
+
+## [1.215.0] - 2025-03-17 21:18:41
+
+### Added
+
+- 2024 Mississippi State Income Tax Updates.
+
+## [1.214.0] - 2025-03-17 09:50:22
+
+### Added
+
+- Move branch_to_determine_itemization to gov/simulation folder.
+
+## [1.213.1] - 2025-03-14 00:28:04
+
+### Fixed
+
+- Changed reform to tax employer payroll taxes from a parametric to a structural reform to avoid double-counting.
+
+## [1.213.0] - 2025-03-13 15:42:03
+
+### Added
+
+- 2024 Alabama State Income Tax Updates.
+
+## [1.212.0] - 2025-03-12 18:28:39
+
+### Added
+
+- 2024 Kentucky State Income Tax Updates.
+
+## [1.211.0] - 2025-03-12 15:09:34
+
+### Added
+
+- 2024 Idaho State Income Tax Updates.
+
+## [1.210.0] - 2025-03-11 21:57:12
+
+### Fixed
+
+- Fixed California Rating Area 16's ACA premium.
+
+## [1.209.2] - 2025-03-11 15:56:15
+
+### Fixed
+
+- Minnesota social security subtraction reduction.
+
+## [1.209.1] - 2025-03-11 12:24:12
+
+### Fixed
+
+- Colorado credit returns NaNs in 2025 and beyond.
+- Added test for NaNs in 2025 and beyond.
+
+## [1.209.0] - 2025-03-10 15:29:09
+
+### Added
+
+- 2025 Idaho income tax cut.
+
+## [1.208.0] - 2025-03-10 12:25:03
+
+### Added
+
+- 2024 Michigan State Income Tax Updates.
+
 ## [1.207.5] - 2025-03-08 12:59:39
 
 ### Fixed
@@ -10971,6 +11088,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.220.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.219.2...1.220.0
+[1.219.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.219.1...1.219.2
+[1.219.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.219.0...1.219.1
+[1.219.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.218.0...1.219.0
+[1.218.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.217.1...1.218.0
+[1.217.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.217.0...1.217.1
+[1.217.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.216.0...1.217.0
+[1.216.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.215.0...1.216.0
+[1.215.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.214.0...1.215.0
+[1.214.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.213.1...1.214.0
+[1.213.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.213.0...1.213.1
+[1.213.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.212.0...1.213.0
+[1.212.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.211.0...1.212.0
+[1.211.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.210.0...1.211.0
+[1.210.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.209.2...1.210.0
+[1.209.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.209.1...1.209.2
+[1.209.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.209.0...1.209.1
+[1.209.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.208.0...1.209.0
+[1.208.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.207.5...1.208.0
 [1.207.5]: https://github.com/PolicyEngine/policyengine-us/compare/1.207.4...1.207.5
 [1.207.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.207.3...1.207.4
 [1.207.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.207.2...1.207.3
