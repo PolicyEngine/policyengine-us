@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.222.0] - 2025-03-20 21:06:04
+
+### Added
+
+- 2023 to 2025 Massachusetts SSI State Supplement Parameters.
+
 ## [1.221.0] - 2025-03-20 15:35:49
 
 ### Added
@@ -11121,6 +11127,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.222.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.221.0...1.222.0
 [1.221.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.220.4...1.221.0
 [1.220.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.220.3...1.220.4
 [1.220.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.220.2...1.220.3
