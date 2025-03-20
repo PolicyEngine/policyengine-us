@@ -12,8 +12,8 @@ class ssi_claim_is_joint(Variable):
         # The simplest way: if you're in a marital_unit with 2 people,
         # and you are an SSI-eligible individual,
         # we say it's 'joint' no matter how much is actually deemed.
-        # 
-        # Note: In the PolicyEngine codebase, marital units by definition only 
+        #
+        # Note: In the PolicyEngine codebase, marital units by definition only
         # include spouses (max of 2 people), not dependents or children.
         # Dependents would be in the same tax_unit or family, but not the same
         # marital_unit. Marital units are defined in entities.py as:
