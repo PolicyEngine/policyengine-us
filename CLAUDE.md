@@ -164,3 +164,26 @@ make documentation
   - Use Python expressions like `range()` instead of variable references for enumerated values
   - Use breakdown patterns that match existing working examples in the codebase
   - See [GitHub issue #346](https://github.com/PolicyEngine/policyengine-core/issues/346) for more details
+
+## Entity Structures and Relationships
+- **Marital Units**: 
+  - Include exactly 1 person (if unmarried) or 2 people (if married)
+  - Do NOT include children or dependents
+  - Defined in entities.py as "An unmarried person, or a married and co-habiting couple"
+  - Used for calculations where spousal relationships matter (like SSI)
+  - `marital_unit.nb_persons()` will return 1 or 2, never more
+
+- **SSI Income Attribution**:
+  - For married couples where both are SSI-eligible:
+    - Combined income is attributed to each spouse via `ssi_marital_earned_income` and `ssi_marital_unearned_income`
+    - These variables use `ssi_marital_both_eligible` to determine if combined income should be used
+    - When both eligible, each spouse receives the combined household income for SSI calculations
+  
+- **SSI Spousal Deeming**:
+  - Only applies when one spouse is eligible and the other is ineligible
+  - If both are eligible, spousal deeming doesn't apply; instead income is combined through marital income variables
+
+- **Debugging Entity Relationships**:
+  - When checking entity totals or sums, be aware of which entity level you're operating at
+  - For variables that need to sum across units, use `entity.sum(variable)`
+  - Use `entity.nb_persons()` to count people in an entity
