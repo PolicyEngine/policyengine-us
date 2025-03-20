@@ -4,7 +4,7 @@
     il_personal_exemption_eligibility_status: BOTH_ELIGIBLE
     state_code: IL
   output:
-    il_personal_exemption: 5_600
+    il_personal_exemption: 5_550
 
 - name: 2024 test, one partner eligible
   period: 2024
@@ -12,7 +12,7 @@
     il_personal_exemption_eligibility_status: PARTIALLY_ELIGIBLE
     state_code: IL
   output:
-    il_personal_exemption: 2_800
+    il_personal_exemption: 2_775
 
 - name: 2022 test, both partners eligible
   period: 2022
