@@ -35,6 +35,10 @@ class ssi_countable_income(Variable):
         )
 
         # The individual's unearned + any unearned deemed from a parent
+        # When both spouses are SSI eligible, ssi_marital_unearned_income and ssi_marital_earned_income
+        # will already have attributed the combined earned/unearned income to each person in the 
+        # marital unit, so we don't need additional head/spouse checks here.
+        # This occurs via the both_eligible check in those variables.
         unearned_income = person("ssi_marital_unearned_income", period)
         parent_deemed = person(
             "ssi_unearned_income_deemed_from_ineligible_parent", period
