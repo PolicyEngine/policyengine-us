@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.220.3] - 2025-03-20 13:20:44
+
+### Fixed
+
+- Fixed SSI spousal deeming logic by adding the FBR differential threshold check required by §416.1163(d)(1). Now the ineligible spouse's income is only deemed if it exceeds the difference between couple and individual FBRs.
+- Corrected a multi-argument `max_()` usage in the State Supplement code to use `np.maximum.reduce(...)`, ensuring that single disabled individuals now receive the correct (non-zero) supplement amount.
+- Updated `ssi_category` so that disabled individuals are categorized properly (no longer `'NONE'`), fixing a scenario where the category check returned zero for disabled recipients.
+- Revised the Massachusetts FULL_COST integration test to align with our current offset logic for large leftover incomes (previously returned an unexpected zero).
+
 ## [1.220.2] - 2025-03-20 12:28:46
 
 ### Added
@@ -11100,6 +11109,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.220.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.220.2...1.220.3
 [1.220.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.220.1...1.220.2
 [1.220.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.220.0...1.220.1
 [1.220.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.219.2...1.220.0
