@@ -1,0 +1,34 @@
+from policyengine_us.model_api import *
+
+
+class ma_tafdc_partially_disregarded_earned_income(Variable):
+    value_type = float
+    unit = USD
+    entity = Person
+    label = "Massachusetts Temporary Assistance for Families with Dependent Children (TAFDC) partially disregarded earned income"
+    definition_period = MONTH
+    reference = (
+        "https://www.masslegalservices.org/content/62-what-income-counted"
+    )
+    defined_for = StateCode.MA
+
+    def formula(person, period, parameters):
+        work_related_deduction = person(
+            "ma_tafdc_work_related_expense_deduction", period
+        )
+        p = parameters(
+            period
+        ).gov.states.ma.dta.tafdc.gross_income.deduction.earned_income_disregard
+
+        gross_earned_income = person("ma_tafdc_gross_earned_income", period)
+        earned_income_after_work_related_deduction = max_(
+            0, gross_earned_income - work_related_deduction
+        )
+        dependent_care_deduction = person(
+            "ma_tafdc_dependent_care_deduction", period
+        )
+        return max_(
+            0,
+            earned_income_after_work_related_deduction * p.percentage
+            - dependent_care_deduction,
+        )
