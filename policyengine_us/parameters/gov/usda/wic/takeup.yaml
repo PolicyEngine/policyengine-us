@@ -7,18 +7,38 @@ metadata:
   economy: false
   household: false
   reference:
-  - title: WIC Eligibility and Coverage Rates - 2018
-    href: https://www.fns.usda.gov/wic/eligibility-and-coverage-rates-2018
+  - title: WIC Eligibility and Coverage Rates - 2016 to 2020
+    href: https://www.fns.usda.gov/research/wic/eligibility-program-reach-estimates-2020
 
 PREGNANT:
-  2018-01-01: 0.533
+  2016-01-01: 0.55
+  2017-01-01: 0.539
+  2018-01-01: 0.523
+  2019-01-01: 0.505
+  2020-01-01: 0.456
 POSTPARTUM:
-  2018-01-01: 0.844
+  2016-01-01: 0.921
+  2017-01-01: 0.882
+  2018-01-01: 0.862
+  2019-01-01: 0.851
+  2020-01-01: 0.819
 BREASTFEEDING:
-  2018-01-01: 0.844
+  2016-01-01: 0.616
+  2017-01-01: 0.595
+  2018-01-01: 0.602
+  2019-01-01: 0.6
+  2020-01-01: 0.604
 INFANT:
-  2018-01-01: 0.978
+  2016-01-01: 0.865
+  2017-01-01: 0.837
+  2018-01-01: 0.843
+  2019-01-01: 0.838
+  2020-01-01: 0.817
 CHILD:
-  2018-01-01: 0.4425 # Mean of ages 1-4
+  2016-01-01: 0.438 # Mean of ages 1-4
+  2017-01-01: 0.422
+  2018-01-01: 0.41
+  2019-01-01: 0.399
+  2020-01-01: 0.406
 NONE:
   2018-01-01: 0
