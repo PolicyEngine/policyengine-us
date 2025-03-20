@@ -17,7 +17,7 @@ class ma_tafdc_countable_income(Variable):
         total_earned_income = add(person, period, p.earned)
         # fully disregard for 6 months
         monthly_income = total_earned_income / MONTHS_IN_YEAR
-        fully_disregard_eligible = spm_unit(
+        fully_disregard_eligible = person.spm_unit(
             "ma_tafdc_eligible_fully_disregard", period
         )
         fully_disregard = (
