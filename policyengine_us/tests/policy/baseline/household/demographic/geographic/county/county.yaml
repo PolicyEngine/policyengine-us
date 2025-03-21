@@ -1,0 +1,41 @@
+- name: County based on county FIPS for Nassau County, New York state
+  period: 2025
+  input:
+    county_fips: "36059"
+  output:
+    county: NASSAU_COUNTY_NY
+
+- name: County derived from county FIPS for Philadelphia, Pennsylvania state
+  period: 2025
+  input:
+    county_fips: "42101"
+  output:
+    county: PHILADELPHIA_COUNTY_PA
+
+- name: County derived from county FIPS for Los Angeles County, California
+  period: 2025
+  input:
+    county_fips: "06037"
+  output:
+    county: LOS_ANGELES_COUNTY_CA
+
+- name: County equivalent for District of Columnbia
+  period: 2025
+  input:
+    county_fips: "11001"
+  output:
+    county: DISTRICT_OF_COLUMBIA_DC
+
+- name: FIPS for Mayagüez, Puerto Rico
+  period: 2025
+  input:
+    county_fips: "72097"
+  output:
+    county: MAYAGÜEZ_MUNICIPIO_PR
+
+- name: County FIPS for vectorized input
+  period: 2025
+  input:
+    county_fips: ["36059", "06037", "26163", "32003"]
+  output:
+    county: [NASSAU_COUNTY_NY, LOS_ANGELES_COUNTY_CA, WAYNE_COUNTY_MI, CLARK_COUNTY_NV]
