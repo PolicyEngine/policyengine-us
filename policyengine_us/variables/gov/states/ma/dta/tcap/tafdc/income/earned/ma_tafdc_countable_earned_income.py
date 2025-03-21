@@ -13,10 +13,14 @@ class ma_tafdc_countable_earned_income(Variable):
     def formula(person, period, parameters):
         # This variable is used for the TAFDC benefit amount calculation
         # The variable is computed yearly to account for the 100% disregard for the first 6 months of the year
-        p = parameters(period).gov.states.ma.dta.tcap.tafdc.earned_income_disregard
+        p = parameters(
+            period
+        ).gov.states.ma.dta.tcap.tafdc.earned_income_disregard
         total_earned_income = person("ma_tcap_gross_earned_income", period)
         # fully disregard for 6 months
-        full_disregard_eligible = person("ma_tafdc_full_earned_income_disregard_eligible", period)
+        full_disregard_eligible = person(
+            "ma_tafdc_full_earned_income_disregard_eligible", period
+        )
         full_disregard = (
             total_earned_income
             - total_earned_income * p.full_disregard.percentage
