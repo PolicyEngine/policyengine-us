@@ -128,7 +128,7 @@ class medicaid_rating_area(Variable):
 
 
 class county_fips(Variable):
-    value_type = int
+    value_type = str
     label = "County FIPS code"
     entity = Household
     definition_period = YEAR

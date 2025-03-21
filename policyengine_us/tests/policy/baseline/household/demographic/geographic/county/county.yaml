@@ -1,8 +1,3 @@
-# Test runner in policyengine-core uses `numexpr.evaluate()` under the hood
-# to convert strings to expressions, where possible. This causes errors for
-# FIPS codes with leading zeros, EVEN WHEN DEFINED AS STRINGS. However, they do
-# work correctly in the code itself, as demonstrated with vectorized input 
-# in last test case.
 - name: County based on county FIPS for Nassau County, New York state
   period: 2025
   input:
@@ -16,6 +11,27 @@
     county_fips: "42101"
   output:
     county: PHILADELPHIA_COUNTY_PA
+
+- name: County derived from county FIPS for Los Angeles County, California
+  period: 2025
+  input:
+    county_fips: "06037"
+  output:
+    county: LOS_ANGELES_COUNTY_CA
+
+- name: County equivalent for District of Columnbia
+  period: 2025
+  input:
+    county_fips: "11001"
+  output:
+    county: DISTRICT_OF_COLUMBIA_DC
+
+- name: FIPS for Mayagüez, Puerto Rico
+  period: 2025
+  input:
+    county_fips: "72097"
+  output:
+    county: MAYAGÜEZ_MUNICIPIO_PR
 
 - name: County FIPS for vectorized input
   period: 2025
