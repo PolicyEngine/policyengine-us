@@ -18,11 +18,15 @@ class ca_state_supplement_blind_amount(Variable):
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         # Blind amount
         blind = person("is_blind", period) * head_or_spouse
-        blind_count = spm_unit.sum(blind)
+        eligible = person("ca_state_supplement_eligible_person", period)
+        blind_count = spm_unit.sum(blind * eligible)
         is_married = spm_unit("spm_unit_is_married", period)
         blind_married_amount = select(
             [blind_count >= 2, blind_count == 1],
             [p.blind.married.two_blind, p.blind.married.one_blind],
             default=0,
         )
-        return where(is_married, blind_married_amount, p.blind.single)
+        total_amount_if_eligible = where(
+            is_married, blind_married_amount, p.blind.single
+        )
+        return where(blind_count == 0, 0, total_amount_if_eligible)
