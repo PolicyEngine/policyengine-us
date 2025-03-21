@@ -1,0 +1,23 @@
+- name: Eligible person
+  period: 2025
+  input:
+    ma_mbta_enrolled_in_applicable_programs: true
+    age: 18
+  output:
+    ma_mbta_income_eligible_reduced_fare_eligible: true
+
+- name: Age ineligible person
+  period: 2025
+  input:
+    ma_mbta_enrolled_in_applicable_programs: true
+    age: 17
+  output:
+    ma_mbta_income_eligible_reduced_fare_eligible: false
+
+- name: Program ineligible person
+  period: 2025
+  input:
+    ma_mbta_enrolled_in_applicable_programs: false
+    age: 64
+  output:
+    ma_mbta_income_eligible_reduced_fare_eligible: false
