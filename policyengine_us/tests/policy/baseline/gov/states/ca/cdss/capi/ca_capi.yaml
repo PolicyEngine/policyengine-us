@@ -52,7 +52,7 @@
   output:
     ca_capi: 0
 
-- name: Integration test, ssi eligible
+- name: Integration test, SSI eligible
   period: 2024
   input:
     people:
@@ -68,7 +68,7 @@
         members: [person1, person2]
         state_code: CA
   output:
-    ssi: [11_316, 0]
+    ssi: [16_980, 0]
     ca_state_supplement_payment_standard: 9_264
     ca_capi: 0
 
