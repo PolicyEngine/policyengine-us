@@ -1,0 +1,63 @@
+- name: Summer EBT eligible via programs
+  period: 2024
+  input:
+    people:
+      person:
+        medicaid: 0
+        is_in_k12_school: True 
+        was_in_foster_care: False
+    spm_unit:
+      snap: 3
+      tanf: 0 
+      fdpir: 0
+      reduced_price_school_meals: 0 
+      free_school_meals: 0
+    household:
+      is_homeless: False  
+  output:
+    is_summer_ebt_eligible: True
+
+- name: Summer EBT eligible via living conditions
+  period: 2024
+  input:
+    snap: 0
+    tanf: 0 
+    fdpir: 0  
+    medicaid: 0  
+    is_in_k12_school: True 
+    is_homeless: True 
+    was_in_foster_care: False
+    reduced_price_school_meals: 0 
+    free_school_meals: 0  
+  output:
+    is_summer_ebt_eligible: True
+
+- name: Summer EBT eligible via meals
+  period: 2024
+  input:
+    snap: 0
+    tanf: 0 
+    fdpir: 0  
+    medicaid: 0  
+    is_in_k12_school: True 
+    is_homeless: False 
+    was_in_foster_care: False
+    reduced_price_school_meals: 5
+    free_school_meals: 5 
+  output:
+    is_summer_ebt_eligible: True
+
+- name: Summer EBT ineligible
+  period: 2024
+  input:
+    snap: 0
+    tanf: 0 
+    fdpir: 0  
+    medicaid: 0  
+    is_in_k12_school: False 
+    is_homeless: False 
+    was_in_foster_care: False
+    reduced_price_school_meals: 0 
+    free_school_meals: 0  
+  output:
+    is_summer_ebt_eligible: False
