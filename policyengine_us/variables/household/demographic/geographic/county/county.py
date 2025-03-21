@@ -18,7 +18,7 @@ class county(Variable):
 
     def formula(household, period, parameters):
         # First look if county FIPS is provided; if so, map to county name
-        county_fips: int | None = household("county_fips", period)
+        county_fips: "pd.Series[str]" | None = household("county_fips", period)
         if county_fips.all():
             # Find county name from dataset
             county_fips_codes = COUNTY_FIPS_DATASET.set_index("county_fips")
