@@ -22,7 +22,7 @@ class ma_tafdc_financial_eligible(Variable):
         #    ],
         # )
 
-        # Align with the application rule, no 50% disregard for earned income
+        # The code below align with the application rule, no 50% disregard for earned income
         gross_earned_income = add(
             spm_unit, period, ["ma_tcap_gross_earned_income"]
         )
@@ -40,7 +40,8 @@ class ma_tafdc_financial_eligible(Variable):
 
         total_monthly_countable_income = max_(
             gross_earned_income - deductions + countable_unearned_income, 0
-        )  # Maybe create a new varaible for this total_countable_income at a spm unit level, can be used in "full_earned_income_disregard_eligible"
+        )  # Maybe create a new variable for this total_countable_income at a spm unit level, can be used in "full_earned_income_disregard_eligible"
+            # Can be used in "ma_tafdc_full_earned_income_disregard_eligible"
         payment_standard = spm_unit("ma_tafdc_payment_standard", period)
 
         return total_monthly_countable_income < payment_standard

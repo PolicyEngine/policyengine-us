@@ -16,7 +16,7 @@ class ma_tafdc_full_earned_income_disregard_eligible(Variable):
         gross_income = person.spm_unit.sum(
             person(
                 "ma_tcap_gross_earned_income", period
-            )  # <-- maybe change this variable
+            )  # <-- maybe change this variable, see comment in "ma_tafdc_financial_eligible"
         )
         fpg = person.spm_unit("spm_unit_fpg", period)
         return gross_income < fpg * p.fpg_limit
