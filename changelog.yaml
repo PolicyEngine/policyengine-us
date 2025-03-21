@@ -9380,3 +9380,61 @@
     - Rename capital_gains_before_response to long_term_capital_gains_before_response
       as it is unclear whether it might include/allocate short term.
   date: 2025-03-19 09:32:35
+- bump: patch
+  changes:
+    fixed:
+    - Remove SSI from unearned income sources for NC TANF.
+  date: 2025-03-19 20:55:15
+- bump: minor
+  changes:
+    added:
+    - Minnesota 2024 state income tax updates.
+  date: 2025-03-19 21:49:56
+- bump: patch
+  changes:
+    fixed:
+    - Remove the mistakenly added tax-dependent limit from the NC SCCA program as
+      it is not required.
+  date: 2025-03-20 12:19:03
+- bump: patch
+  changes:
+    added:
+    - Added Maryland Tax Code Updates for 2024.
+  date: 2025-03-20 12:28:46
+- bump: patch
+  changes:
+    fixed:
+    - "Fixed SSI spousal deeming logic by adding the FBR differential threshold check\
+      \ required by \xA7416.1163(d)(1). Now the ineligible spouse's income is only\
+      \ deemed if it exceeds the difference between couple and individual FBRs."
+    - Corrected a multi-argument `max_()` usage in the State Supplement code to use
+      `np.maximum.reduce(...)`, ensuring that single disabled individuals now receive
+      the correct (non-zero) supplement amount.
+    - Updated `ssi_category` so that disabled individuals are categorized properly
+      (no longer `'NONE'`), fixing a scenario where the category check returned zero
+      for disabled recipients.
+    - Revised the Massachusetts FULL_COST integration test to align with our current
+      offset logic for large leftover incomes (previously returned an unexpected zero).
+  date: 2025-03-20 13:20:44
+- bump: patch
+  changes:
+    fixed:
+    - Refactor New Mexico itemized deductions.
+  date: 2025-03-20 14:53:50
+- bump: minor
+  changes:
+    added:
+    - 2024 North Dakota State Income Tax Updates.
+  date: 2025-03-20 15:35:49
+- bump: minor
+  changes:
+    added:
+    - 2023 to 2025 Massachusetts SSI State Supplement Parameters.
+  date: 2025-03-20 21:06:04
+- bump: minor
+  changes:
+    added:
+    - Illinois 2024 income tax updates.
+    fixed:
+    - Illinois child tax credit logic.
+  date: 2025-03-20 23:52:06

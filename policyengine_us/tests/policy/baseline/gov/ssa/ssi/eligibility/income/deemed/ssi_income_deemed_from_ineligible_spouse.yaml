@@ -1,0 +1,150 @@
+- name: Disabled individual with working ineligible spouse (2025)
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 60
+        is_disabled: true
+        is_tax_unit_spouse: true
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+      person2:
+        age: 55
+        is_disabled: false
+        is_tax_unit_head: true
+        ssi_earned_income: 31_080
+        ssi_unearned_income: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+  output:
+    ssi_income_deemed_from_ineligible_spouse: [15_030, 0]
+
+- name: Disabled individual with non-working ineligible spouse (2025)
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        is_disabled: true
+        is_tax_unit_spouse: true
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+      person2:
+        age: 60
+        is_disabled: false
+        is_tax_unit_head: true
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+  output:
+    ssi_income_deemed_from_ineligible_spouse: [0, 0]
+
+- name: Disabled individual with high-income ineligible spouse (2025)
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        is_disabled: true
+        is_tax_unit_spouse: true
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+      person2:
+        age: 60
+        is_disabled: false
+        is_tax_unit_head: true
+        ssi_earned_income: 60_000
+        ssi_unearned_income: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+  output:
+    ssi_income_deemed_from_ineligible_spouse: [29_490, 0]
+
+- name: Disabled individual with mixed income ineligible spouse (2025)
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        is_disabled: true
+        is_tax_unit_spouse: true
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+      person2:
+        age: 60
+        is_disabled: false
+        is_tax_unit_head: true
+        ssi_earned_income: 24_000
+        ssi_unearned_income: 6_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+  output:
+    ssi_income_deemed_from_ineligible_spouse: [17_370, 0]
+
+- name: Disabled individual with personal and spouse income (2025)
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        is_disabled: true
+        is_tax_unit_spouse: true
+        ssi_earned_income: 3_600
+        ssi_unearned_income: 2_400
+      person2:
+        age: 60
+        is_disabled: false
+        is_tax_unit_head: true
+        ssi_earned_income: 24_000
+        ssi_unearned_income: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+  output:
+    ssi_income_deemed_from_ineligible_spouse: [12_000, 0]  # Calculated value with detailed steps in specialized test file
+
+- name: Spouse with income just below the FBR differential threshold (2025)
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        is_disabled: true
+        is_tax_unit_spouse: true
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+      person2:
+        age: 60
+        is_disabled: false
+        is_tax_unit_head: true
+        # Income after exclusions should be just below the FBR differential
+        ssi_earned_income: 4_360
+        ssi_unearned_income: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+  output:
+    ssi_income_deemed_from_ineligible_spouse: [0, 0]

@@ -5,6 +5,67 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.223.0] - 2025-03-20 23:52:06
+
+### Added
+
+- Illinois 2024 income tax updates.
+
+### Fixed
+
+- Illinois child tax credit logic.
+
+## [1.222.0] - 2025-03-20 21:06:04
+
+### Added
+
+- 2023 to 2025 Massachusetts SSI State Supplement Parameters.
+
+## [1.221.0] - 2025-03-20 15:35:49
+
+### Added
+
+- 2024 North Dakota State Income Tax Updates.
+
+## [1.220.4] - 2025-03-20 14:53:50
+
+### Fixed
+
+- Refactor New Mexico itemized deductions.
+
+## [1.220.3] - 2025-03-20 13:20:44
+
+### Fixed
+
+- Fixed SSI spousal deeming logic by adding the FBR differential threshold check required by §416.1163(d)(1). Now the ineligible spouse's income is only deemed if it exceeds the difference between couple and individual FBRs.
+- Corrected a multi-argument `max_()` usage in the State Supplement code to use `np.maximum.reduce(...)`, ensuring that single disabled individuals now receive the correct (non-zero) supplement amount.
+- Updated `ssi_category` so that disabled individuals are categorized properly (no longer `'NONE'`), fixing a scenario where the category check returned zero for disabled recipients.
+- Revised the Massachusetts FULL_COST integration test to align with our current offset logic for large leftover incomes (previously returned an unexpected zero).
+
+## [1.220.2] - 2025-03-20 12:28:46
+
+### Added
+
+- Added Maryland Tax Code Updates for 2024.
+
+## [1.220.1] - 2025-03-20 12:19:03
+
+### Fixed
+
+- Remove the mistakenly added tax-dependent limit from the NC SCCA program as it is not required.
+
+## [1.220.0] - 2025-03-19 21:49:56
+
+### Added
+
+- Minnesota 2024 state income tax updates.
+
+## [1.219.2] - 2025-03-19 20:55:15
+
+### Fixed
+
+- Remove SSI from unearned income sources for NC TANF.
+
 ## [1.219.1] - 2025-03-19 09:32:35
 
 ### Fixed
@@ -11076,6 +11137,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.223.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.222.0...1.223.0
+[1.222.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.221.0...1.222.0
+[1.221.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.220.4...1.221.0
+[1.220.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.220.3...1.220.4
+[1.220.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.220.2...1.220.3
+[1.220.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.220.1...1.220.2
+[1.220.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.220.0...1.220.1
+[1.220.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.219.2...1.220.0
+[1.219.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.219.1...1.219.2
 [1.219.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.219.0...1.219.1
 [1.219.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.218.0...1.219.0
 [1.218.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.217.1...1.218.0
