@@ -11,6 +11,6 @@ class ma_tafdc_clothing_allowance(Variable):
     defined_for = StateCode.MA
 
     def formula(person, period, parameters):
-        eligible_child = person("ma_tafdc_eligible_child", period)
-        p = parameters(period).gov.states.ma.dta.tafdc
+        eligible_child = person("ma_tafdc_eligible_dependent", period)
+        p = parameters(period).gov.states.ma.dta.tcap.tafdc
         return eligible_child * p.clothing_allowance

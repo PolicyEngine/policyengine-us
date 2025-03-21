@@ -4,7 +4,7 @@
     age: 17
     state_code: MA
   output:
-    ma_tafdc_eligible_child: true
+    ma_tafdc_eligible_dependent: true
 
 - name: Ineligible child 
   period: 2023
@@ -12,7 +12,7 @@
     age: 18
     state_code: MA
   output:
-    ma_tafdc_eligible_child: false
+    ma_tafdc_eligible_dependent: false
 
 - name: Still in high school, eligible 
   period: 2023-01
@@ -21,4 +21,4 @@
     is_in_k12_school: true
     state_code: MA
   output:
-    ma_tafdc_eligible_child: true
+    ma_tafdc_eligible_dependent: true

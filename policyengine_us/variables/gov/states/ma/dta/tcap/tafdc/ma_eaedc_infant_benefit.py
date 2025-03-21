@@ -14,5 +14,5 @@ class ma_tafdc_infant_benefit(Variable):
 
     def formula(person, period, parameters):
         eligible_infant = person("ma_tafdc_eligible_infant", period)
-        p = parameters(period).gov.states.ma.dta.tafdc
+        p = parameters(period).gov.states.ma.dta.tcap.tafdc
         return eligible_infant * p.infant_amount

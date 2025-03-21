@@ -8,7 +8,7 @@ class ma_tafdc_partially_disregarded_earned_income(Variable):
     label = "Massachusetts Temporary Assistance for Families with Dependent Children (TAFDC) partially disregarded earned income"
     definition_period = MONTH
     reference = (
-        "https://www.masslegalservices.org/content/62-what-income-counted"
+        "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-704-281"
     )
     defined_for = StateCode.MA
 
@@ -18,9 +18,9 @@ class ma_tafdc_partially_disregarded_earned_income(Variable):
         )
         p = parameters(
             period
-        ).gov.states.ma.dta.tafdc.gross_income.deduction.earned_income_disregard
+        ).gov.states.ma.dta.tcap.tafdc.earned_income_disregard
 
-        gross_earned_income = person("ma_tafdc_gross_earned_income", period)
+        gross_earned_income = person("ma_tcap_gross_earned_income", period)
         earned_income_after_work_related_deduction = max_(
             0, gross_earned_income - work_related_deduction
         )

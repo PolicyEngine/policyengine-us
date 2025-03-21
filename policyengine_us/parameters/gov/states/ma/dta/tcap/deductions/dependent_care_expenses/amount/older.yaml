@@ -1,11 +1,11 @@
-description: Massachusetts deducts this amount of dependent care expenses from the unearned income for the Transitional Aid to Families with Dependent Children program for parents of older children, based on weekly hours worked.
+description: Massachusetts deducts this amount of dependent care expenses from the unearned income for the Transitional Cash Assistance Program for parents of older children, based on weekly hours worked.
 
 metadata:
   type: single_amount
   period: month
   threshold_unit: int
   amount_unit: currency-USD
-  label: Massachusetts TAFDC dependent care deduction older amount
+  label: Massachusetts TCAP dependent care deduction older amount
   reference:
   - title: Massachusetts Transitional Aid to Families with Dependent Children (TAFDC)
     href: https://www.mass.gov/how-to/transitional-aid-to-families-with-dependent-children-tafdc
@@ -19,14 +19,14 @@ brackets:
     amount:
       2023-01-01: 44
   - threshold:
-      2023-01-01: 11
+      2023-01-01: 10
     amount:
       2023-01-01: 88
   - threshold:
-      2023-01-01: 21
+      2023-01-01: 20
     amount:
       2023-01-01: 132
   - threshold:
-      2023-01-01: 31
+      2023-01-01: 30
     amount:
       2023-01-01: 175

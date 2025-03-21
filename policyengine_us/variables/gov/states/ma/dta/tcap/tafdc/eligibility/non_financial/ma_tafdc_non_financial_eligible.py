@@ -6,7 +6,9 @@ class ma_tafdc_non_financial_eligible(Variable):
     entity = SPMUnit
     label = "Eligible for Massachusetts Temporary Assistance for Families with Dependent Children (TAFDC)"
     definition_period = YEAR
-    reference = "https://www.mass.gov/how-to/transitional-aid-to-families-with-dependent-children-tafdc"
+    reference = (
+        "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-703-010"
+    )
     defined_for = StateCode.MA
 
     def formula(spm_unit, period, parameters):

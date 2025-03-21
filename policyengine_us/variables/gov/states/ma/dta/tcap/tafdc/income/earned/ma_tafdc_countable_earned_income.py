@@ -5,24 +5,18 @@ class ma_tafdc_countable_earned_income(Variable):
     value_type = float
     unit = USD
     entity = Person
-    label = "Massachusetts Temporary Assistance for Families with Dependent Children (TAFDC) countableearned income"
+    label = "Massachusetts Temporary Assistance for Families with Dependent Children (TAFDC) countable earned income"
     definition_period = YEAR
-    reference = (
-        "https://www.masslegalservices.org/content/62-what-income-counted"
-    )
+    reference = "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-704-281"  # (A)&(B)
     defined_for = StateCode.MA
 
     def formula(person, period, parameters):
         # This variable is used for the TAFDC benefit amount calculation
         # The variable is computed yearly to account for the 100% disregard for the first 6 months of the year
-        p = parameters(
-            period
-        ).gov.states.ma.dta.tafdc.gross_income.deductions.earned_income_disregard
-        total_earned_income = person("ma_tafdc_gross_earned_income", period)
+        p = parameters(period).gov.states.ma.dta.tcap.tafdc.earned_income_disregard
+        total_earned_income = person("ma_tcap_gross_earned_income", period)
         # fully disregard for 6 months
-        full_disregard_eligible = person.spm_unit(
-            "ma_tafdc_full_earned_income_disregard_eligible", period
-        )
+        full_disregard_eligible = person("ma_tafdc_full_earned_income_disregard_eligible", period)
         full_disregard = (
             total_earned_income
             - total_earned_income * p.full_disregard.percentage

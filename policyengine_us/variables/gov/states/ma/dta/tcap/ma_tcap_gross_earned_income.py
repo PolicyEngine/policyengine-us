@@ -12,4 +12,4 @@ class ma_tcap_gross_earned_income(Variable):
     )
     defined_for = StateCode.MA
 
-    adds = "gov.states.ma.dta.tafdc.gross_income.earned"
+    adds = "gov.states.ma.dta.tcap.gross_income.earned"

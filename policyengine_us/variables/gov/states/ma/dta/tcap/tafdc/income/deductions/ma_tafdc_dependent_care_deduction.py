@@ -7,18 +7,18 @@ class ma_tafdc_dependent_care_deduction(Variable):
     unit = USD
     label = "Massachusetts Temporary Assistance for Families with Dependent Children (TAFDC) dependent care deduction"
     definition_period = MONTH
-    reference = "https://www.masslegalservices.org/content/73-how-much-income-can-you-have-and-still-qualify-tafdc"
+    reference = "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-704-275"  # (A)
     defined_for = StateCode.MA
 
     def formula(person, period, parameters):
         dependent = person("is_tax_unit_dependent", period)
         total_weekly_hours = person.spm_unit.sum(
             person("weekly_hours_worked", period)
-        )
-        age = person("age", period)
+        )* MONTHS_IN_YEAR
+        age = person("monthly_age", period)
         p = parameters(
             period
-        ).gov.states.ma.dta.tafdc.gross_income.deductions.dependent_care_expenses
+        ).gov.states.ma.dta.tcap.deductions.dependent_care_expenses
         young_child = age < p.young_child_age_threshold
         amount = where(
             young_child,

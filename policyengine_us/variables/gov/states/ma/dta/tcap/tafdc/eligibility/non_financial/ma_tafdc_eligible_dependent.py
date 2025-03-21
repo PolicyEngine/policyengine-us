@@ -15,8 +15,8 @@ class ma_tafdc_eligible_dependent(Variable):
         age = person("age", period)
         p = parameters(
             period
-        ).gov.states.ma.dta.tafdc.eligibility.age_threshold
+        ).gov.states.ma.dta.tcap.tafdc.eligibility.age_threshold
         # College attendees are not eligible dependents
         in_school = person("is_in_k12_school", period)
-        student_age_eligible = age < p.child_under_19
-        return age < p.child | (in_school & student_age_eligible)
+        student_age_eligible = age < p.student_dependent
+        return age < p.dependent | (in_school & student_age_eligible)

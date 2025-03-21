@@ -1,4 +1,4 @@
-description: Massachusetts counts the following income sources as unearned income for the Transitional Aid to Families with Dependent Children program.
+description: Massachusetts counts the following income sources as unearned income for the Transitional Cash Assistance Program.
 values:
   2021-01-01:
     - dividend_income
@@ -7,11 +7,11 @@ values:
     - unemployment_compensation
     - veterans_benefits
     - pension_income
-    # should we use these or the taxable_xxx ones? 
+ 
 metadata:
   unit: list
   period: year
-  label: Massachusetts TAFDC unearned income sources
+  label: Massachusetts TCAP unearned income sources
   reference:
     - title: Mass Legal Services, 2024 TAFDC Advocacy Guide, 62. What income is counted?
       href: https://www.masslegalservices.org/content/62-what-income-counted

@@ -8,4 +8,4 @@ class is_in_public_housing(Variable):
     definition_period = YEAR
 
     def formula(household, period, parameters):
-        return household("housing_assistance", period) > 0
+        return household.sum(household.members.spm_unit('housing_assistance', period)) > 0

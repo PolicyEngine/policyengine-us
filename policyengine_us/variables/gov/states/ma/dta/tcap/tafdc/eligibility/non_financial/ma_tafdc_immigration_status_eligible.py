@@ -6,7 +6,9 @@ class ma_tafdc_immigration_status_eligible(Variable):
     entity = SPMUnit
     label = "Eligible for Massachusetts Temporary Assistance for Families with Dependent Children (TAFDC) due to immigration status"
     definition_period = YEAR
-    reference = "https://www.mass.gov/doc/report-on-transitional-aid-to-families-with-dependent-children-eligible-noncitizen-status-1/download"
+    reference = (
+        "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-703-400"
+    )
     defined_for = StateCode.MA
 
     def formula(spm_unit, period, parameters):

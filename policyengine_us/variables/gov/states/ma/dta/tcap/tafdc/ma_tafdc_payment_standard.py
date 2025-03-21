@@ -7,12 +7,14 @@ class ma_tafdc_payment_standard(Variable):
     entity = SPMUnit
     label = "Massachusetts Temporary Assistance for Families with Dependent Children (TAFDC) payment standard"
     definition_period = MONTH
-    reference = "https://www.masslegalservices.org/content/75-how-much-will-you-get-each-month"
+    reference = (
+        "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-704-420"
+    )
     defined_for = StateCode.MA
 
     def formula(spm_unit, period, parameters):
         in_public_housing = spm_unit.household("is_in_public_housing", period)
-        p = parameters(period).gov.states.ma.dta.tafdc.eligibility.income_limit
+        p = parameters(period).gov.states.ma.dta.tcap.tafdc.eligibility.income_limit
         unit_size = spm_unit("spm_unit_size", period)
         capped_unit_size = min_(unit_size, p.max_unit_size)
         additional_people_in_unit = max_(0, unit_size - p.max_unit_size)

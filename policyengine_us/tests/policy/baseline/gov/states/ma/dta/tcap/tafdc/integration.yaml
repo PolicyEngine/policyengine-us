@@ -1,0 +1,31 @@
+- name: Case 1, applicant is pregnant.
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 20
+        is_pregnant: true
+        current_pregnancy_month: 6
+        ma_tcap_gross_earned_income: 0
+        alimony_income: 0 
+        pension_income: 0 
+        social_security: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ma_tafdc_immigration_status_eligible: true
+        spm_unit_size: 1
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+        is_in_public_housing: false
+  output:
+    ma_tafdc: 506*12
+    ma_tafdc_eligible: true
+    ma_tafdc_payment_standard: 506*12
+    ma_tafdc_dependent_care_deduction: 0
+    ma_tafdc_countable_unearned_income: 0

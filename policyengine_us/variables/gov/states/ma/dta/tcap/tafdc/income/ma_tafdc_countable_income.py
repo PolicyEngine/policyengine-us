@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ma_tafdc_countable_income(Variable):
     value_type = float
     unit = USD
-    entity = Person
+    entity = SPMUnit
     label = "Massachusetts Temporary Assistance for Families with Dependent Children (TAFDC) countable income"
     definition_period = MONTH
     reference = (
@@ -12,4 +12,7 @@ class ma_tafdc_countable_income(Variable):
     )
     defined_for = StateCode.MA
 
-    adds = ["ma_tafdc_gross_earned_income", "ma_tafdc_gross_unearned_income"]
+    adds = [
+        "ma_tafdc_countable_earned_income",
+        "ma_tafdc_countable_unearned_income",
+    ]

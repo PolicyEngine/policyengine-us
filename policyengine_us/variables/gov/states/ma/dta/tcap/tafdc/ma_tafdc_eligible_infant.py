@@ -15,6 +15,6 @@ class ma_tafdc_eligible_infant(Variable):
         age = person("monthly_age", period)
         p = parameters(
             period
-        ).gov.states.ma.dta.tafdc.eligibility.age_threshold
+        ).gov.states.ma.dta.tcap.tafdc.eligibility.age_threshold
 
         return age < p.infant
