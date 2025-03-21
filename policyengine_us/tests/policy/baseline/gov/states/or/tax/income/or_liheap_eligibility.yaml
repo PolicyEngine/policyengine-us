@@ -1,0 +1,54 @@
+- name: Oregon LIHEAP eligibility 2021 eligible single household
+  period: 2021
+  input:
+    spm_unit_size: 1
+    state_code: OR
+    irs_gross_income: 25_000
+    subsidized_housing: false
+    heat_in_rent: false
+  output:
+    or_liheap_eligibility: true
+
+- name: Oregon LIHEAP eligibility 2023 ineligible two-person household (income too high)
+  period: 2023
+  input:
+    spm_unit_size: 2
+    state_code: OR
+    irs_gross_income: 90_000
+    subsidized_housing: false
+    heat_in_rent: false
+  output:
+    or_liheap_eligibility: false
+
+- name: Oregon LIHEAP eligibility 2022 ineligible household in subsidized housing with heat included in rent
+  period: 2022
+  input:
+    spm_unit_size: 3
+    state_code: OR
+    irs_gross_income: 40_000
+    subsidized_housing: true
+    heat_in_rent: true
+  output:
+    or_liheap_eligibility: false
+
+- name: Oregon LIHEAP eligibility 2023 eligible household in subsidized housing paying for own heat
+  period: 2023
+  input:
+    spm_unit_size: 2
+    state_code: OR
+    irs_gross_income: 30_000
+    subsidized_housing: true
+    heat_in_rent: false
+  output:
+    or_liheap_eligibility: true
+
+- name: Oregon LIHEAP eligibility 2024 eligible household in non-subsidized housing with heat included in rent
+  period: 2024
+  input:
+    spm_unit_size: 4
+    state_code: OR
+    irs_gross_income: 50_000
+    subsidized_housing: false
+    heat_in_rent: true
+  output:
+    or_liheap_eligibility: true
