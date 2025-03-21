@@ -11,6 +11,7 @@ metadata:
     # The legal code provides inflaton unadjusted amounts
     - title: Wisconsin Statutes 71.07 (9)(b)(5)
       href: https://docs.legis.wisconsin.gov/statutes/statutes/71/i/05/22/dm
+    # Instructions provide a standard deduction table, but not specific phaseout threshold starts. These are found in the efile. 
 
 brackets:
   - threshold:
@@ -18,8 +19,15 @@ brackets:
     rate:
       2021-01-01: 0
   - threshold:
-      2021-01-01: 16_150
-      2022-01-01: 16_990
-      2023-01-01: 18_400
+      values:
+        2021-01-01: 16_150
+        2022-01-01: 16_990
+        2023-01-01: 18_400
+        2024-01-01: 19_070
+      metadata:
+        uprating: gov.irs.uprating
+        rounding:
+          type: nearest
+          interval: 10
     rate:
       2021-01-01: 0.12
