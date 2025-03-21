@@ -28,9 +28,10 @@ class ma_tafdc_countable_earned_income(Variable):
         remaining_months = MONTHS_IN_YEAR - p.full_disregard.applicable_months
         # The partially disregarded earned income is either applied for 6 months if the unit received
         # the full disregard or for the entire year if the unit did not receive the full disregard.
-        partially_disregarded_income = person(
-            "ma_tafdc_partially_disregarded_earned_income", period
-        ) / MONTHS_IN_YEAR
+        partially_disregarded_income = (
+            person("ma_tafdc_partially_disregarded_earned_income", period)
+            / MONTHS_IN_YEAR
+        )
         last_6_months = partially_disregarded_income * remaining_months
         first_6_months = where(
             full_disregard_eligible,

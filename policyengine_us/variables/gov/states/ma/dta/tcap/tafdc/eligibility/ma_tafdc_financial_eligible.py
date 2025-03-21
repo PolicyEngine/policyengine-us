@@ -12,7 +12,9 @@ class ma_tafdc_financial_eligible(Variable):
     defined_for = StateCode.MA
 
     def formula(spm_unit, period, parameters):
-        total_countable_income = spm_unit("ma_tafdc_earned_income_after_deductions", period)
+        total_countable_income = spm_unit(
+            "ma_tafdc_earned_income_after_deductions", period
+        )
         payment_standard = spm_unit("ma_tafdc_payment_standard", period)
 
         return total_countable_income < payment_standard

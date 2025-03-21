@@ -11,4 +11,3 @@ class ma_tafdc_dependent_care_deduction(Variable):
     defined_for = StateCode.MA
 
     adds = ["ma_tafdc_dependent_care_deduction_person"]
-    

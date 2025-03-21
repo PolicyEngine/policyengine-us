@@ -26,9 +26,13 @@ class ma_tafdc_partially_disregarded_earned_income(Variable):
         )
         filing_status = person.tax_unit("filing_status", period)
         joint = filing_status == filing_status.possible_values.JOINT
-        dependent_care_deduction = person.spm_unit("ma_tafdc_dependent_care_deduction", period)
+        dependent_care_deduction = person.spm_unit(
+            "ma_tafdc_dependent_care_deduction", period
+        )
         # Attributing the dependent care deduction equally to each spouse if filing jointly
-        applicable_dependent_care_deduction = where(joint, dependent_care_deduction / 2, dependent_care_deduction)
+        applicable_dependent_care_deduction = where(
+            joint, dependent_care_deduction / 2, dependent_care_deduction
+        )
         return max_(
             0,
             earned_income_after_work_related_deduction * p.percentage
