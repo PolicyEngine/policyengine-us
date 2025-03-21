@@ -6,7 +6,7 @@ class ma_tafdc_countable_unearned_income(Variable):
     unit = USD
     entity = SPMUnit
     label = "Massachusetts Temporary Assistance for Families with Dependent Children (TAFDC) countable unearned income"
-    definition_period = YEAR
+    definition_period = MONTH
     reference = (
         "https://www.masslegalservices.org/content/62-what-income-counted"
     )

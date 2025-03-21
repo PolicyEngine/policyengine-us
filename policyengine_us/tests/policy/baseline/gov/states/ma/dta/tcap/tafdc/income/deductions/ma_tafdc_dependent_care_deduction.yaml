@@ -1,7 +1,7 @@
 - name: Case 1, older dependent, 10 hours/week.
   period: 2023-01
   input:
-    is_tax_unit_dependent: true
+    ma_tafdc_eligible_dependent: true
     state_code: MA
     weekly_hours_worked: 10
     monthly_age: 2
@@ -12,7 +12,7 @@
 - name: Case 2, younger dependent, 10 hours/week.
   period: 2023-01
   input:
-    is_tax_unit_dependent: true
+    ma_tafdc_eligible_dependent: true
     state_code: MA
     weekly_hours_worked: 10
     monthly_age: 1
@@ -23,7 +23,7 @@
 - name: Case 3, capped at care expenses.
   period: 2023-01
   input:
-    is_tax_unit_dependent: true
+    ma_tafdc_eligible_dependent: true
     state_code: MA
     weekly_hours_worked: 10
     monthly_age: 2
@@ -34,7 +34,7 @@
 - name: Case 4, older dependent, 60 hours/week.
   period: 2023-01
   input:
-    is_tax_unit_dependent: true
+    ma_tafdc_eligible_dependent: true
     state_code: MA
     weekly_hours_worked: 60
     monthly_age: 2
