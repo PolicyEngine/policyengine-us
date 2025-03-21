@@ -22,6 +22,8 @@ metadata:
     # Bill to update the structure post 2024
     - title: HOUSE BILL NO. 521 63-3024 (2)
       href: https://legislature.idaho.gov/wp-content/uploads/sessioninfo/2024/legislation/H0521.pdf#page=2
+    - title: Idaho Individual Income Tax Instructions Packet 2024
+      href: https://tax.idaho.gov/wp-content/uploads/forms/EIN00046/EIN00046_10-23-2024.pdf#page=2
     - title: House Bill 40
       href: https://legislature.idaho.gov/sessioninfo/2025/legislation/H0040/
     # Signed by Governor Little, reduces income tax rate to 5.3%
@@ -36,10 +38,14 @@ brackets:
       2021-01-01: 0.01
       2023-01-01: 0
   - threshold:
-      2021-01-01: 3_176
-      2022-01-01: 3_324
-      2023-01-01: 8_979
-      2024-01-01: 2_500
+      values:
+        2021-01-01: 3_176
+        2022-01-01: 3_324
+        2023-01-01: 8_979
+        2024-01-01: 9_346
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
     rate:
       2021-01-01: 0.031
       2022-01-01: 0.03

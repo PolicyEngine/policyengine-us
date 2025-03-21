@@ -175,7 +175,7 @@ class Simulation(CoreSimulation):
         for known_period in cg_holder.get_known_periods():
             array = cg_holder.get_array(known_period)
             self.set_input(
-                "capital_gains_before_response", known_period, array
+                "long_term_capital_gains_before_response", known_period, array
             )
             cg_holder.delete_arrays(known_period)
 
@@ -247,7 +247,7 @@ class Microsimulation(CoreMicrosimulation):
         for known_period in cg_holder.get_known_periods():
             array = cg_holder.get_array(known_period)
             self.set_input(
-                "capital_gains_before_response", known_period, array
+                "long_term_capital_gains_before_response", known_period, array
             )
             cg_holder.delete_arrays(known_period)
 
@@ -265,7 +265,7 @@ class Microsimulation(CoreMicrosimulation):
             "employment_income_before_lsr",
             "self_employment_income_before_lsr",
             "weekly_hours_worked_before_lsr",
-            "capital_gains_before_response",
+            "long_term_capital_gains_before_response",
         ]
 
 
