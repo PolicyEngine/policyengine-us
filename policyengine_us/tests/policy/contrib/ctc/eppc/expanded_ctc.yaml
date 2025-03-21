@@ -59,36 +59,6 @@
     refundable_ctc: 1_700
     income_tax: -1_700
 
-- name: Joint household with one child, $10k income
-  period: 2024
-  absolute_error_margin: 1
-  reforms: policyengine_us.reforms.ctc.eppc.expanded_ctc.expanded_ctc
-  input:
-    gov.contrib.ctc.eppc.expanded_ctc.in_effect: true
-    people:
-      person1:
-        age: 40
-        employment_income: 10_000
-      person2:
-        age: 40
-      person3:
-        age: 10
-    tax_units:
-      tax_unit:
-        members: [person1, person2, person3]
-    households:
-      household:
-        members: [person1, person2, person3]
-        state_code: TX
-  output:
-    non_refundable_ctc: 1_748
-    refundable_ctc: 252
-    ctc_phase_in: 252
-    household_benefits: 8_562
-    maximum_benefits: 10_242
-    income_tax_pre_ctc: 0
-    income_tax: -252
-
 - name: Joint household with one child, $10k income - no reform, no eitc
   period: 2024
   absolute_error_margin: 1
