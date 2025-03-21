@@ -5,9 +5,9 @@
     state_code: MA
     weekly_hours_worked: 10
     monthly_age: 2
-    care_expenses: 3_000
+    pre_subsidy_childcare_expenses: 3_000
   output:
-    ma_tafdc_dependent_care_deduction: 44
+    ma_tafdc_dependent_care_deduction_person: 44
 
 - name: Case 2, younger dependent, 10 hours/week.
   period: 2023-01
@@ -16,9 +16,9 @@
     state_code: MA
     weekly_hours_worked: 10
     monthly_age: 1
-    care_expenses: 3_000
+    pre_subsidy_childcare_expenses: 3_000
   output:
-    ma_tafdc_dependent_care_deduction: 50
+    ma_tafdc_dependent_care_deduction_person: 50
 
 - name: Case 3, capped at care expenses.
   period: 2023-01
@@ -27,9 +27,9 @@
     state_code: MA
     weekly_hours_worked: 10
     monthly_age: 2
-    care_expenses: 30
+    pre_subsidy_childcare_expenses: 30
   output:
-    ma_tafdc_dependent_care_deduction: 30
+    ma_tafdc_dependent_care_deduction_person: 2.5
 
 - name: Case 4, older dependent, 60 hours/week.
   period: 2023-01
@@ -38,6 +38,6 @@
     state_code: MA
     weekly_hours_worked: 60
     monthly_age: 2
-    care_expenses: 3_000
+    pre_subsidy_childcare_expenses: 3_000
   output:
-    ma_tafdc_dependent_care_deduction: 175
+    ma_tafdc_dependent_care_deduction_person: 175
