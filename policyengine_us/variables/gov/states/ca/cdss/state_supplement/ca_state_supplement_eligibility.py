@@ -10,8 +10,8 @@ class ca_state_supplement_payment_standard(Variable):
     reference = "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&sectionNum=12200"
 
     def formula(spm_unit, period, parameters):
-        meets_resource_test = spm_unit("meets_ssi_resource_test", period)
-        aged_blind_disabled = spm_unit("is_ssi_aged_blind_disabled", period)
+        meets_resource_test = person("meets_ssi_resource_test", period)
+        aged_blind_disabled = person("is_ssi_aged_blind_disabled", period)
         is_qualified_noncitizen = person("is_ssi_qualified_noncitizen", period)
         immigration_status = person("immigration_status", period)
         is_citizen = (
