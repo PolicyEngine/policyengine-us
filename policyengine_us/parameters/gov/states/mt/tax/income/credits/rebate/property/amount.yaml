@@ -1,6 +1,7 @@
 description: Montana provides the following property tax rebate amount.
 values:
   2022-01-01: 675
+  2024-01-01: 0 #was only for 2022 and 2023
 metadata:
   period: year
   unit: currency-USD
@@ -13,3 +14,5 @@ metadata:
     # The Legal code provides a lower rebate amount - applying the tax form instructions value
     - title: 2023 Montana Legislature, House Bill 222
       href: https://archive.legmt.gov/bills/2023/billhtml/HB0222.htm#:~:text=A%20BILL%20FOR%20AN%20ACT,providing%20a%20penalty%20for%20false
+    - title: 2024 Montana Form 2 Instructions
+      href: https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2025/02/Form-2-Instructions-2024-2.pdf#page=3
