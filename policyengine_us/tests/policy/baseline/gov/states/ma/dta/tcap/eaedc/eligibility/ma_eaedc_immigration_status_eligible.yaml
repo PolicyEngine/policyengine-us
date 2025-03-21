@@ -1,0 +1,17 @@
+- name: Undocumented immigrant, not eligible.
+  period: 2022
+  input:
+    is_tax_unit_head_or_spouse: true
+    immigration_status: UNDOCUMENTED
+    state_code: MA
+  output:
+    ma_eaedc_immigration_status_eligible: false
+
+- name: Citizen, eligible.
+  period: 2022
+  input:
+    is_tax_unit_head_or_spouse: true
+    immigration_status: CITIZEN
+    state_code: MA
+  output:
+    ma_eaedc_immigration_status_eligible: true
