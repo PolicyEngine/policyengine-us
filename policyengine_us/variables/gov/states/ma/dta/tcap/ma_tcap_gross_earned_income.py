@@ -5,7 +5,7 @@ class ma_tcap_gross_earned_income(Variable):
     value_type = float
     unit = USD
     entity = Person
-    label = "Massachusetts Temporary Assistance for Families with Dependent Children (TAFDC) gross earned income"
+    label = "Massachusetts Transitional Cash Assistance Program (TCAP) gross earned income"
     definition_period = MONTH
     reference = (
         "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-704-210"

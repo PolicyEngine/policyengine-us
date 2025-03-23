@@ -13,15 +13,15 @@ class ma_tafdc(Variable):
     def formula(spm_unit, period, parameters):
         payment_standard = spm_unit("ma_tafdc_payment_standard", period)
         countable_income = spm_unit("ma_tafdc_countable_income", period)
-        clothing_allowance = spm_unit.sum(
-            spm_unit.members("ma_tafdc_clothing_allowance", period)
-        )
-        infant_benefit = spm_unit.sum(
-            spm_unit.members("ma_tafdc_infant_benefit", period)
+        # The Infant Benefit and Clothing Allowance are mentioned in the TAFDC context
+        # on the Mass.gov website: https://www.mass.gov/how-to/transitional-aid-to-families-with-dependent-children-tafdc
+        clothing_allowance_and_infant_benefit = add(
+            spm_unit,
+            period,
+            ["ma_tafdc_clothing_allowance", "ma_tafdc_infant_benefit"],
         )
 
         return (
             max_(0, payment_standard - countable_income)
-            + clothing_allowance
-            + infant_benefit
+            + clothing_allowance_and_infant_benefit
         )

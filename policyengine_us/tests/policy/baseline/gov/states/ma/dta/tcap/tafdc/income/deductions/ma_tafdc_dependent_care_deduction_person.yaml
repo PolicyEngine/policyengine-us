@@ -41,3 +41,20 @@
     pre_subsidy_childcare_expenses: 3_000
   output:
     ma_tafdc_dependent_care_deduction_person: 175
+
+- name: Integration test, one dependent, 60 hours/week, older dependent.
+  period: 2023
+  input: 
+    people:
+      person1:
+        weekly_hours_worked: 60
+      person2:
+        ma_tafdc_eligible_dependent: true
+        age: 12
+        pre_subsidy_childcare_expenses: 3_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+  output:
+    ma_tafdc_dependent_care_deduction_person: [0, 2_100]

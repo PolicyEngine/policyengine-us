@@ -1,7 +1,7 @@
 - name: Case 1, eligible for full earned income disregard.
   period: 2023
   input:
-    ma_tafdc_earned_income_after_deductions: 0
+    ma_tafdc_income_after_deductions: 0
     spm_unit_fpg: 100
     state_code: MA
   output:
@@ -10,7 +10,7 @@
 - name: Case 2, not eligible for full earned income disregard.
   period: 2023
   input:
-    ma_tafdc_earned_income_after_deductions: 210
+    ma_tafdc_income_after_deductions: 210
     spm_unit_fpg: 100
     state_code: MA
   output:

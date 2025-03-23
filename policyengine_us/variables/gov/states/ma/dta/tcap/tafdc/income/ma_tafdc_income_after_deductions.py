@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ma_tafdc_earned_income_after_deductions(Variable):
+class ma_tafdc_income_after_deductions(Variable):
     value_type = float
     unit = USD
     entity = SPMUnit

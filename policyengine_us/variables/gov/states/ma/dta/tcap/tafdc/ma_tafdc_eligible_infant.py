@@ -12,9 +12,9 @@ class ma_tafdc_eligible_infant(Variable):
     defined_for = StateCode.MA
 
     def formula(person, period, parameters):
+        # Monthly age is used to determine the age of the infant
         age = person("monthly_age", period)
         p = parameters(
             period
         ).gov.states.ma.dta.tcap.tafdc.eligibility.age_threshold
-
         return age < p.infant

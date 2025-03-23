@@ -7,7 +7,7 @@
     ma_tafdc_countable_unearned_income: 0
     state_code: MA
   output:
-    ma_tafdc_earned_income_after_deductions: 130
+    ma_tafdc_income_after_deductions: 130
 
 - name: Gross earned income is lower than deductions.
   period: 2023
@@ -18,4 +18,4 @@
     ma_tafdc_countable_unearned_income: 0
     state_code: MA
   output:
-    ma_tafdc_earned_income_after_deductions: 0
+    ma_tafdc_income_after_deductions: 0
