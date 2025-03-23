@@ -16,15 +16,13 @@ class ma_tafdc_pregnancy_eligible(Variable):
         age = person("age", period)
         current_pregnancy_month = person("current_pregnancy_month", period)
         p = parameters(period).gov.states.ma.dta.tcap.tafdc.eligibility
-        teen_age_eligible = age < p.age_threshold.teen_parent
+        age_limit = person("ma_tafdc_age_limit", period)
+        age_eligible = age < age_limit
         # Eligible if pregnant and are in the 5th month or later (due in 120 days)
         months_eligible = is_pregnant & (
             current_pregnancy_month >= p.pregnancy_month
         )
         # Eligible if age under 20 and meet teen parent school attendance requirements
         is_in_k12_school = person("is_in_k12_school", period)
-        teen_pregnancy_eligible = (
-            is_pregnant & teen_age_eligible & is_in_k12_school
-        )
-
+        teen_pregnancy_eligible = is_pregnant & age_eligible & is_in_k12_school
         return teen_pregnancy_eligible | months_eligible

@@ -12,23 +12,7 @@ class ma_tafdc_income_after_deductions(Variable):
     )
     defined_for = StateCode.MA
 
-    def formula(spm_unit, period, parameters):
-        # The 50% disregard only applies the unit has received TAFDC in the past 4 months and
-        # is re-applying due to temporary ineligibility
-        gross_earned_income = add(
-            spm_unit, period, ["ma_tcap_gross_earned_income"]
-        )
-        deductions = add(
-            spm_unit,
-            period,
-            [
-                "ma_tafdc_work_related_expense_deduction",
-                "ma_tafdc_dependent_care_deduction",
-            ],
-        )
-        countable_unearned_income = spm_unit(
-            "ma_tafdc_countable_unearned_income", period
-        )
-        reduced_earned_income = max_(gross_earned_income - deductions, 0)
-
-        return reduced_earned_income + countable_unearned_income
+    adds = [
+        "ma_tafdc_earned_income_after_deductions",
+        "ma_tafdc_countable_unearned_income",
+    ]

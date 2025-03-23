@@ -13,19 +13,11 @@ class ma_tafdc_eligible_dependent(Variable):
 
     def formula(person, period, parameters):
         age = person("age", period)
-        p = parameters(
-            period
-        ).gov.states.ma.dta.tcap.tafdc.eligibility.age_threshold
         dependent = person("is_tax_unit_dependent", period)
 
         # Basic age eligibility: under standard dependent age threshold
-        standard_age_eligible = age < p.dependent
-
-        # Special case for K-12 students: eligible if in school and under student dependent age
-        # # College attendees are not considered eligible dependents
-        in_school = person("is_in_k12_school", period)
-        student_age_eligible = age < p.student_dependent
-        school_eligible = in_school & student_age_eligible
+        age_limit = person("ma_tafdc_age_limit", period)
+        age_eligible = age < age_limit
 
         # Person must be a dependent and meet either age condition
-        return dependent & (standard_age_eligible | school_eligible)
+        return dependent & age_eligible

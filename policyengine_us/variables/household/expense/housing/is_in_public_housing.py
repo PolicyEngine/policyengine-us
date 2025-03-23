@@ -6,11 +6,3 @@ class is_in_public_housing(Variable):
     entity = Household
     label = "Whether the household is in public housing"
     definition_period = YEAR
-
-    def formula(household, period, parameters):
-        return (
-            household.sum(
-                household.members.spm_unit("housing_assistance", period)
-            )
-            > 0
-        )

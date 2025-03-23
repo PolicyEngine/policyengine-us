@@ -18,4 +18,5 @@ class ma_tafdc_full_earned_income_disregard_eligible(Variable):
         )
 
         fpg = person.spm_unit("spm_unit_fpg", period)
-        return gross_income < fpg * p.fpg_limit
+        income_limit = fpg * p.fpg_limit
+        return gross_income < income_limit
