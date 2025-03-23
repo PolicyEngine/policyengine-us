@@ -13,7 +13,7 @@ class ma_tafdc_financial_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         total_countable_income = spm_unit(
-            "ma_tafdc_income_after_deductions", period
+            "ma_tafdc_applicable_income_for_financial_eligibility", period
         )
         payment_standard = spm_unit("ma_tafdc_payment_standard", period)
 

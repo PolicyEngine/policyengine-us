@@ -14,7 +14,7 @@ class ma_tafdc_full_earned_income_disregard_eligible(Variable):
             period
         ).gov.states.ma.dta.tcap.tafdc.earned_income_disregard.full_disregard
         gross_income = person.spm_unit(
-            "ma_tafdc_income_after_deductions", period
+            "ma_tafdc_applicable_income_for_financial_eligibility", period
         )
 
         fpg = person.spm_unit("spm_unit_fpg", period)

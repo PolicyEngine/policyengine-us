@@ -1,11 +1,11 @@
 from policyengine_us.model_api import *
 
 
-class ma_tafdc_income_after_deductions(Variable):
+class ma_tafdc_applicable_income_for_financial_eligibility(Variable):
     value_type = float
     unit = USD
     entity = SPMUnit
-    label = "Massachusetts Temporary Assistance for Families with Dependent Children (TAFDC) earned income after deductions"
+    label = "Applicable income for the Massachusetts Temporary Assistance for Families with Dependent Children (TAFDC) financial eligibility check"
     definition_period = YEAR
     reference = (
         "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-704-280"
