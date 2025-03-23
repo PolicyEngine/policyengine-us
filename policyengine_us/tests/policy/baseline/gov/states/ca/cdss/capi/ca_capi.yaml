@@ -10,7 +10,7 @@
       spm_unit:
         members: [person1]
         ca_capi_eligible: true
-        ca_state_supplement_payment_standard: 2_000
+        ca_state_supplement: 2_000
   output:
     ca_capi: 2_490
 
@@ -30,7 +30,7 @@
       spm_unit:
         members: [person1, person2]
         ca_capi_eligible: true
-        ca_state_supplement_payment_standard: 4_000
+        ca_state_supplement: 4_000
   output:
     ca_capi: 1_480
 
@@ -69,7 +69,7 @@
   output:
     ssi: [16_980, 0]
     ca_state_supplement_dependent_amount: 0
-    ca_state_supplement_payment_standard: 8_376
+    ca_state_supplement: 8_376
     ca_capi: 0
 
 - name: Integration test, undocumented
@@ -94,5 +94,5 @@
     ca_state_supplement_aged_disabled_count: 0
     ca_state_supplement_blind_amount: 0
     ca_state_supplement_aged_blind_disabled_amount: 0
-    ca_state_supplement_payment_standard: 0
+    ca_state_supplement: 0
     ca_capi: 11_306
