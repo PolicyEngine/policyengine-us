@@ -15,7 +15,6 @@ class ma_eaedc_earned_income_after_deduction_person(Variable):
         gross_earned_income = person("ma_eaedc_earned_income", period)
         monthly_income = gross_earned_income / MONTHS_IN_YEAR
         # monthly $200 work related expenses deduction if employed
-        is_employed = gross_earned_income > 0
         adjusted_monthly_income = max_(
             monthly_income - p.work_related_expenses * is_employed, 0
         )

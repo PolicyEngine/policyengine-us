@@ -23,5 +23,3 @@ class ma_eaedc_living_arrangement(Variable):
     reference = (
         "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-704-435"
     )
-
-    # TODO: Add logic to determine living arrangement. Will result in A being the default value if an EAEDC individual resides.
