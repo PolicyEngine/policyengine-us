@@ -28,7 +28,7 @@
     ma_tafdc_eligible: true
     ma_tafdc_payment_standard: 506 * 12
     ma_tafdc_dependent_care_deduction: 0
-    ma_tafdc_countable_income: 0
+    ma_tafdc_applicable_income_grant_amount: 0
 
 - name: Case 2, applicant has a dependent child that still goes to school.
   period: 2022
@@ -64,7 +64,7 @@
   output:
     ma_tcap_gross_earned_income: [10_000, 0]
     ma_tafdc_countable_earned_income: [1_768, 0]
-    ma_tafdc_countable_income: 1_768
+    ma_tafdc_applicable_income_grant_amount: 1_768
     ma_tafdc_eligible: true
     ma_tafdc_payment_standard: 629*12
     ma_tafdc_eligible_dependent: [False, True]

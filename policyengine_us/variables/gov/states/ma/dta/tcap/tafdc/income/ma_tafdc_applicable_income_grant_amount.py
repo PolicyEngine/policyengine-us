@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ma_tafdc_countable_income(Variable):
+class ma_tafdc_applicable_income_grant_amount(Variable):
     value_type = float
     unit = USD
     entity = SPMUnit

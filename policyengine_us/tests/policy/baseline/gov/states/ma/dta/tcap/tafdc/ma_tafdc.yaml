@@ -4,7 +4,7 @@
     ma_tafdc_payment_standard: 2_100
     ma_tafdc_clothing_allowance: 400
     ma_tafdc_eligible: true
-    ma_tafdc_countable_income: 2_200
+    ma_tafdc_applicable_income_grant_amount: 2_200
   output:
   # This case will be neglected in integration tests due to income eligibility.
     ma_tafdc: 400
@@ -15,7 +15,7 @@
     ma_tafdc_payment_standard: 2_100
     ma_tafdc_clothing_allowance: 400
     ma_tafdc_eligible: true
-    ma_tafdc_countable_income: 1_000
+    ma_tafdc_applicable_income_grant_amount: 1_000
   output:
     ma_tafdc: 1_500
 
@@ -25,6 +25,6 @@
     ma_tafdc_payment_standard: 2_100
     ma_tafdc_clothing_allowance: 400
     ma_tafdc_eligible: false
-    ma_tafdc_countable_income: 2_500
+    ma_tafdc_applicable_income_grant_amount: 2_500
   output:
     ma_tafdc: 0
