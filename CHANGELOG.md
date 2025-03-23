@@ -5,6 +5,123 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.223.0] - 2025-03-20 23:52:06
+
+### Added
+
+- Illinois 2024 income tax updates.
+
+### Fixed
+
+- Illinois child tax credit logic.
+
+## [1.222.0] - 2025-03-20 21:06:04
+
+### Added
+
+- 2023 to 2025 Massachusetts SSI State Supplement Parameters.
+
+## [1.221.0] - 2025-03-20 15:35:49
+
+### Added
+
+- 2024 North Dakota State Income Tax Updates.
+
+## [1.220.4] - 2025-03-20 14:53:50
+
+### Fixed
+
+- Refactor New Mexico itemized deductions.
+
+## [1.220.3] - 2025-03-20 13:20:44
+
+### Fixed
+
+- Fixed SSI spousal deeming logic by adding the FBR differential threshold check required by §416.1163(d)(1). Now the ineligible spouse's income is only deemed if it exceeds the difference between couple and individual FBRs.
+- Corrected a multi-argument `max_()` usage in the State Supplement code to use `np.maximum.reduce(...)`, ensuring that single disabled individuals now receive the correct (non-zero) supplement amount.
+- Updated `ssi_category` so that disabled individuals are categorized properly (no longer `'NONE'`), fixing a scenario where the category check returned zero for disabled recipients.
+- Revised the Massachusetts FULL_COST integration test to align with our current offset logic for large leftover incomes (previously returned an unexpected zero).
+
+## [1.220.2] - 2025-03-20 12:28:46
+
+### Added
+
+- Added Maryland Tax Code Updates for 2024.
+
+## [1.220.1] - 2025-03-20 12:19:03
+
+### Fixed
+
+- Remove the mistakenly added tax-dependent limit from the NC SCCA program as it is not required.
+
+## [1.220.0] - 2025-03-19 21:49:56
+
+### Added
+
+- Minnesota 2024 state income tax updates.
+
+## [1.219.2] - 2025-03-19 20:55:15
+
+### Fixed
+
+- Remove SSI from unearned income sources for NC TANF.
+
+## [1.219.1] - 2025-03-19 09:32:35
+
+### Fixed
+
+- Rename capital_gains_before_response to long_term_capital_gains_before_response as it is unclear whether it might include/allocate short term.
+
+## [1.219.0] - 2025-03-19 09:20:57
+
+### Fixed
+
+- Fixed Texas and Maine rating areas and corresponding SLCSP.
+
+## [1.218.0] - 2025-03-19 07:54:52
+
+### Added
+
+- Missouri state tax code 2024 updates.
+
+## [1.217.1] - 2025-03-18 07:50:27
+
+### Fixed
+
+- Idaho 2024 income tax rate.
+
+## [1.217.0] - 2025-03-17 21:48:20
+
+### Added
+
+- Virginia state tax code 2024 updates.
+- Replace inactive statutory links in the Virginia tax code.
+- Update description of Virginia itemized deduction limits.
+
+## [1.216.0] - 2025-03-17 21:43:27
+
+### Added
+
+- New York and Vermont ACA family tier ratings.
+
+## [1.215.0] - 2025-03-17 21:18:41
+
+### Added
+
+- 2024 Mississippi State Income Tax Updates.
+
+## [1.214.0] - 2025-03-17 09:50:22
+
+### Added
+
+- Move branch_to_determine_itemization to gov/simulation folder.
+
+## [1.213.1] - 2025-03-14 00:28:04
+
+### Fixed
+
+- Changed reform to tax employer payroll taxes from a parametric to a structural reform to avoid double-counting.
+
 ## [1.213.0] - 2025-03-13 15:42:03
 
 ### Added
@@ -11020,6 +11137,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.223.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.222.0...1.223.0
+[1.222.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.221.0...1.222.0
+[1.221.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.220.4...1.221.0
+[1.220.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.220.3...1.220.4
+[1.220.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.220.2...1.220.3
+[1.220.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.220.1...1.220.2
+[1.220.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.220.0...1.220.1
+[1.220.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.219.2...1.220.0
+[1.219.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.219.1...1.219.2
+[1.219.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.219.0...1.219.1
+[1.219.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.218.0...1.219.0
+[1.218.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.217.1...1.218.0
+[1.217.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.217.0...1.217.1
+[1.217.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.216.0...1.217.0
+[1.216.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.215.0...1.216.0
+[1.215.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.214.0...1.215.0
+[1.214.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.213.1...1.214.0
+[1.213.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.213.0...1.213.1
 [1.213.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.212.0...1.213.0
 [1.212.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.211.0...1.212.0
 [1.211.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.210.0...1.211.0
