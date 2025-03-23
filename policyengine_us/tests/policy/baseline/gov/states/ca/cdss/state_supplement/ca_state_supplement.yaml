@@ -1,8 +1,7 @@
 - name: Payment standard fully reduced
   period: 2024
   input:
-    ssi_countable_income: 400
-    ssi: 800
+    ssi: 1_200
     ca_state_supplement_payment_standard: 1_000
     state_code: CA
   output:
@@ -11,8 +10,7 @@
 - name: Payment standard partially reduced
   period: 2024
   input:
-    ssi_countable_income: 400
-    ssi: 800
+    ssi: 1_200
     ca_state_supplement_payment_standard: 2_000
     state_code: CA
   output:
