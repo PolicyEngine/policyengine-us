@@ -20,16 +20,27 @@ class ks_exemptions(Variable):
         veterans_exemption_amount = (
             veteran_exemptions_count * p.disabled_veteran.base
         )
-        
+
         if p.by_filing_status.in_effect:
             filing_status = tax_unit("filing_status", period)
             base_amount = p.by_filing_status.amount[filing_status]
             dependents = tax_unit("tax_unit_dependents", period)
             dependent_amount = p.by_filing_status.dependent * dependents
-            head_of_household = filing_status == filing_status.possible_values.HEAD_OF_HOUSEHOLD
-            head_of_household_additional_amount = head_of_household * p.by_filing_status.hoh_additional_amount
-            return base_amount + dependent_amount + veterans_exemption_amount + head_of_household_additional_amount
+            head_of_household = (
+                filing_status
+                == filing_status.possible_values.HEAD_OF_HOUSEHOLD
+            )
+            head_of_household_additional_amount = (
+                head_of_household * p.by_filing_status.hoh_additional_amount
+            )
+            return (
+                base_amount
+                + dependent_amount
+                + veterans_exemption_amount
+                + head_of_household_additional_amount
+            )
         exemptions_count = tax_unit("ks_count_exemptions", period)
         return (
-            exemptions_count * p.consolidated.amount + veterans_exemption_amount
+            exemptions_count * p.consolidated.amount
+            + veterans_exemption_amount
         )
