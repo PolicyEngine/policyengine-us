@@ -18,5 +18,6 @@ class ma_state_living_arrangement(Variable):
     defined_for = StateCode.MA
     possible_values = MAStateLivingArrangement
     default_value = MAStateLivingArrangement.FULL_COST
-    reference = "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-327-220"
-    
+    reference = (
+        "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-327-220"
+    )
