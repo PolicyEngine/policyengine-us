@@ -14,10 +14,10 @@ class ca_state_supplement_aged_disabled_count(Variable):
             period
         ).gov.states.ca.cdss.state_supplement.payment_standard
         person = spm_unit.members
-        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         # Aged or disabled amount
         is_disabled = person("is_disabled", period)
         age = person("monthly_age", period)
         is_aged = age >= p.aged_or_disabled.age_threshold
-        aged_or_disabled = (is_aged | is_disabled) * head_or_spouse
-        return spm_unit.sum(aged_or_disabled)
+        aged_or_disabled = is_aged | is_disabled
+        eligible = person("ca_state_supplement_eligible_person", period)
+        return spm_unit.sum(aged_or_disabled * eligible)
