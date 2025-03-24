@@ -14,6 +14,6 @@ class long_term_capital_gains(Variable):
     )
     uprating = "calibration.gov.irs.soi.long_term_capital_gains"
     adds = [
-        "capital_gains_before_response",
+        "long_term_capital_gains_before_response",
         "capital_gains_behavioral_response",
     ]
