@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.227.0] - 2025-03-24 21:11:24
+
+### Added
+
+- Massachusetts Transitional Aid to Families with Dependent Children.
+
 ## [1.226.1] - 2025-03-24 20:55:29
 
 ### Fixed
@@ -11161,6 +11167,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.227.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.226.1...1.227.0
 [1.226.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.226.0...1.226.1
 [1.226.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.225.0...1.226.0
 [1.225.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.224.0...1.225.0
