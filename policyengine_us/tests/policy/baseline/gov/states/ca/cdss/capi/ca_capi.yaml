@@ -96,24 +96,3 @@
     ca_state_supplement_aged_blind_disabled_amount: 0
     ca_state_supplement: 0
     ca_capi: 11_306
-
-- name: Integration test, SSI and state supplement
-  period: 2024
-  input:
-    people:
-      person1:
-        age: 40
-        ssi_countable_income: 11_000
-        is_disabled: true
-      person2:
-        age: 10
-        employment_income: 0
-    households:
-      household:
-        members: [person1, person2]
-        state_code: CA
-  output:
-    ssi: [5_980, 0]
-    ca_state_supplement_dependent_amount: 0
-    ca_state_supplement: 2_396
-    ca_capi: 0

@@ -15,4 +15,5 @@ class ca_state_supplement(Variable):
             "ca_state_supplement_payment_standard", period
         )
         ssi = add(spm_unit, period, ["ssi"])
-        return max_(0, payment_standard - ssi)
+        countable_income = add(spm_unit, period, ["ssi_countable_income"])
+        return max_(0, payment_standard - ssi - countable_income)
