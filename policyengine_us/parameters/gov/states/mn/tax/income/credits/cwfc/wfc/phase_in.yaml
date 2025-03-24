@@ -20,6 +20,14 @@ brackets:
     rate:
       2023-01-01: 0.04
   - threshold:
-      2023-01-01: 8_750
+      values:
+        2023-01-01: 8_750
+        2024-01-01: 9_220
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 10
     rate:
       2023-01-01: 0

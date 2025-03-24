@@ -18,4 +18,8 @@ class ca_state_supplement_aged_disabled_amount(Variable):
         aged_disabled_count = spm_unit(
             "ca_state_supplement_aged_disabled_count", period
         )
-        return where(aged_disabled_count > 1, p.married, p.single)
+        return select(
+            [aged_disabled_count > 1, aged_disabled_count == 1],
+            [p.married, p.single],
+            default=0,
+        )

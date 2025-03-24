@@ -1,0 +1,60 @@
+- name: Case 1, older dependent, 10 hours/week.
+  period: 2023-01
+  input:
+    ma_tafdc_eligible_dependent: true
+    state_code: MA
+    weekly_hours_worked: 10
+    monthly_age: 2
+    pre_subsidy_childcare_expenses: 3_000
+  output:
+    ma_tafdc_dependent_care_deduction_person: 44
+
+- name: Case 2, younger dependent, 10 hours/week.
+  period: 2023-01
+  input:
+    ma_tafdc_eligible_dependent: true
+    state_code: MA
+    weekly_hours_worked: 10
+    monthly_age: 1
+    pre_subsidy_childcare_expenses: 3_000
+  output:
+    ma_tafdc_dependent_care_deduction_person: 50
+
+- name: Case 3, capped at care expenses.
+  period: 2023-01
+  input:
+    ma_tafdc_eligible_dependent: true
+    state_code: MA
+    weekly_hours_worked: 10
+    monthly_age: 2
+    pre_subsidy_childcare_expenses: 30
+  output:
+    ma_tafdc_dependent_care_deduction_person: 2.5
+
+- name: Case 4, older dependent, 60 hours/week.
+  period: 2023-01
+  input:
+    ma_tafdc_eligible_dependent: true
+    state_code: MA
+    weekly_hours_worked: 60
+    monthly_age: 2
+    pre_subsidy_childcare_expenses: 3_000
+  output:
+    ma_tafdc_dependent_care_deduction_person: 175
+
+- name: Integration test, one dependent, 60 hours/week, older dependent.
+  period: 2023
+  input: 
+    people:
+      person1:
+        weekly_hours_worked: 60
+      person2:
+        ma_tafdc_eligible_dependent: true
+        age: 12
+        pre_subsidy_childcare_expenses: 3_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+  output:
+    ma_tafdc_dependent_care_deduction_person: [0, 2_100]
