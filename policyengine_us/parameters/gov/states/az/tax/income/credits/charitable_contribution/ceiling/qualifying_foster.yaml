@@ -1,8 +1,13 @@
 description: Arizona caps the credit for contributions to a qualifying foster care charitable organization at this amount.
 metadata:
   label: Arizona credit for contributions to foster organizations cap
-
   unit: currency-USD
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: upwards
+      interval: 1
+  propagate_metadata_to_children: true
   breakdown:
   - filing_status
   reference:
@@ -12,21 +17,29 @@ metadata:
       href: https://azdor.gov/forms/individual/itemized-deduction-adjustments-form
     - title: Credit for Contributions to Qualifying Charitable Foster
       href: https://azdor.gov/forms/tax-credits-forms/credit-contributions-qualifying-foster-care-charitable-organizations
-    - title: 2024 Arizona Form 140 Resident Personal Income Tax Booklet Page 5
-      href: https://azdor.gov/sites/default/files/document/FORMS_INDIVIDUAL_2024_140Booklet.pdf#page=5
 
 JOINT:
   2021-01-01: 1_000
+  2022-01-01: 1_000
+  2023-01-01: 1_051
   2024-01-01: 1_173
 HEAD_OF_HOUSEHOLD:
   2021-01-01: 1_000
-  2024-01-01: 587
+  2022-01-01: 1_000
+  2023-01-01: 1_051
+  2024-01-01: 1_173
 SURVIVING_SPOUSE:
   2021-01-01: 1_000
-  2024-01-01: 587
+  2022-01-01: 1_000
+  2023-01-01: 1_051
+  2024-01-01: 1_173
 SINGLE:
-  2021-01-01: 1_000
+  2021-01-01: 500
+  2022-01-01: 500
+  2023-01-01: 526
   2024-01-01: 587
 SEPARATE:
-  2021-01-01: 500
-  2024-01-01: 587
+  2021-01-01: 1_000
+  2022-01-01: 1_000
+  2023-01-01: 1_051
+  2024-01-01: 1_173
