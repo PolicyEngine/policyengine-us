@@ -3,6 +3,12 @@ metadata:
   label: Arizona charitable contribution credit cap
   period: year
   unit: currency-USD
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: upwards
+      interval: 1
+  propagate_metadata_to_children: true
   breakdown:
   - filing_status
   reference:
@@ -12,21 +18,29 @@ metadata:
       href: https://azdor.gov/forms/individual/itemized-deduction-adjustments-form#page=1
     - title: Credit for Contributions to Qualifying Charitable Organizations
       href: https://azdor.gov/forms/tax-credits-forms/credit-contributions-qualifying-charitable-organizations
-    - title: 2024 Arizona Form 140 Resident Personal Income Tax Booklet Page 5
-      href: https://azdor.gov/sites/default/files/document/FORMS_INDIVIDUAL_2024_140Booklet.pdf#page=5
 
 JOINT:
   2021-01-01: 800
+  2022-01-01: 800
+  2023-01-01: 841
   2024-01-01: 938
 HEAD_OF_HOUSEHOLD:
-  2021-01-01: 800
+  2021-01-01: 400
+  2022-01-01: 400
+  2023-01-01: 421
   2024-01-01: 470
 SURVIVING_SPOUSE:
-  2021-01-01: 800
+  2021-01-01: 400
+  2022-01-01: 400
+  2023-01-01: 421
   2024-01-01: 470
 SINGLE:
-  2021-01-01: 800
+  2021-01-01: 400
+  2022-01-01: 400
+  2023-01-01: 421
   2024-01-01: 470
 SEPARATE:
   2021-01-01: 400
+  2022-01-01: 400
+  2023-01-01: 421
   2024-01-01: 470
