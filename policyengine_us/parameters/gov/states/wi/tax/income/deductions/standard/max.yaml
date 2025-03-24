@@ -4,26 +4,43 @@ metadata:
     - filing_status
   period: year
   unit: currency-USD
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: nearest
+      interval: 10
+  propagate_metadata_to_children: true
   reference:
+    # The legal code includes uprating.
+    - title: Wisconsin Statutes 71.07 (9)(b)(5)
+      href: https://docs.legis.wisconsin.gov/statutes/statutes/71/i/05/22/dt
     - title: Wisconsin Tax Brackets, Rates, Forms, and Standard Deductions
       href: https://www.efile.com/wisconsin-tax-brackets-rates-and-forms/
+    - title: 2024 Form 1 instructions, Standard Deduction Table
+      href: https://www.revenue.wi.gov/TaxForms2024/2024-Form1-inst.pdf#page=35
+    
 SINGLE:
   2021-01-01: 11_200
   2022-01-01: 11_790
   2023-01-01: 12_760
+  2024-01-01: 13_230
 JOINT:
   2021-01-01: 20_730
   2022-01-01: 21_820
   2023-01-01: 23_620
+  2024-01-01: 24_490
 SURVIVING_SPOUSE:
   2021-01-01: 20_730
   2022-01-01: 21_820
   2023-01-01: 23_620
+  2024-01-01: 24_490
 SEPARATE:
   2021-01-01:  9_850
   2022-01-01: 10_370
   2023-01-01: 11_220
+  2024-01-01: 11_630
 HEAD_OF_HOUSEHOLD:
   2021-01-01: 14_470
   2022-01-01: 15_230
   2023-01-01: 16_480
+  2024-01-01: 17_090
