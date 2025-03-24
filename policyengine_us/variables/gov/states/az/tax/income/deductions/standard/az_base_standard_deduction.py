@@ -11,7 +11,6 @@ class az_base_standard_deduction(Variable):
     defined_for = StateCode.AZ
 
     def formula(tax_unit, period, parameters):
-        # Arizona standard deduction follows federal standard deduction
-        p = parameters(period).gov.irs.deductions.standard
+        p = parameters(period).gov.states.az.tax.income.deductions.standard
         filing_status = tax_unit("az_filing_status", period)
         return p.amount[filing_status]
