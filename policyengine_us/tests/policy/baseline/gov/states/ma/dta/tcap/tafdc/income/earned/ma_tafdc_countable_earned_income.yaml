@@ -1,0 +1,19 @@
+- name: Case 1, first 6 month fully disregard.
+  period: 2023
+  input:
+    ma_tcap_gross_earned_income: 10_000
+    ma_tafdc_full_earned_income_disregard_eligible: true
+    ma_tafdc_partially_disregarded_earned_income: 1_200
+    state_code: MA
+  output:
+    ma_tafdc_countable_earned_income: 600
+
+- name: Case 2, does not qualify for full earned income disregard.
+  period: 2023
+  input:
+    ma_tcap_gross_earned_income: 10_000
+    ma_tafdc_full_earned_income_disregard_eligible: false
+    ma_tafdc_partially_disregarded_earned_income: 1_200
+    state_code: MA
+  output:
+    ma_tafdc_countable_earned_income: 1_200

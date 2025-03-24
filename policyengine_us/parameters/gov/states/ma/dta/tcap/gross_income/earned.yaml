@@ -1,0 +1,15 @@
+description: Massachusetts counts the following income sources as earned income under the Transitional Cash Assistance Program.
+values:
+  2021-01-01:
+    - employment_income
+    - self_employment_income
+
+metadata:
+  unit: list
+  period: year
+  label: Massachusetts TCAP earned income sources
+  reference:
+    - title: Mass Legal Services, 2024 TAFDC Advocacy Guide, 62. What income is counted?
+      href: https://www.masslegalservices.org/content/62-what-income-counted
+    - title: 106 CMR, § 704.210 - Types of Countable Income (A)
+      href: https://www.law.cornell.edu/regulations/massachusetts/106-CMR-704-210
