@@ -140,3 +140,14 @@
     state_code: MO
   output:
     mo_pension_and_ss_or_ssd_deduction_section_c: 0.0
+
+- name: 2024 No Income Threshold Applies
+  period: 2024
+  absolute_error_margin: 0
+  input:
+    mo_adjusted_gross_income: 105_000
+    taxable_social_security: 10_000 
+    filing_status: JOINT
+    state_code: MO
+  output:
+    mo_pension_and_ss_or_ssd_deduction_section_c: 10_000

@@ -1,0 +1,17 @@
+- name: MN net investment income tax unit test 1
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    net_investment_income: 100
+    state_code: MN
+  output:
+    mn_niit: 0
+
+- name: MN net investment income tax unit test 2
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    net_investment_income: 1_100_000
+    state_code: MN
+  output:
+    mn_niit: 1_000 # (1_100_000 - 1_000_000) * 0.01
