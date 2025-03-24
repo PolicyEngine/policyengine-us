@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.226.1] - 2025-03-24 20:55:29
+
+### Fixed
+
+- Minnesota working family credit phase-in threshold.
+
 ## [1.226.0] - 2025-03-24 14:07:04
 
 ### Added
@@ -11155,6 +11161,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.226.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.226.0...1.226.1
 [1.226.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.225.0...1.226.0
 [1.225.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.224.0...1.225.0
 [1.224.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.223.0...1.224.0
