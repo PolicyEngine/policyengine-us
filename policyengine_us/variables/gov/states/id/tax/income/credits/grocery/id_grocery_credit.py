@@ -24,10 +24,6 @@ class id_grocery_credit(Variable):
                 ["id_grocery_credit_base", "id_grocery_credit_aged"],
             )
         else:
-            full_amount = (
-                person,
-                period,
-                "id_grocery_credit_base",
-            )
+            full_amount = person("id_grocery_credit_base", period)
         credit_value = full_amount * (qualified_months / MONTHS_IN_YEAR)
         return tax_unit.sum(credit_value)
