@@ -1,8 +1,8 @@
-description: Idaho provides this additional grocery tax credit for aged filers.  
+description: Idaho provides this additional amount to the grocery tax credit for aged filers.  
+values:
+  2021-01-01: 20
 metadata:
-  type: single_amount
-  threshold_unit: year
-  amount_unit: currency-USD
+  unit: currency-USD
   label: Idaho grocery credit aged amount
   reference:
     - title: IDAHO ADMINISTRATIVE CODE || 35.01.01.771 (1) (a)
@@ -23,13 +23,3 @@ metadata:
       href: https://legislature.idaho.gov/wp-content/uploads/sessioninfo/2025/legislation/H0231.pdf
     # Recently passed law not yet added to statute.
 
-brackets:
-  - threshold:
-      2021-01-01: 0
-    amount:
-      2021-01-01: 0
-  - threshold:
-      2021-01-01: 65
-    amount:
-      2021-01-01: 20
-      2025-01-01: 0
