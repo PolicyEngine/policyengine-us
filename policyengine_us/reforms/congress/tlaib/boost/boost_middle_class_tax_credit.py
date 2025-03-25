@@ -94,7 +94,7 @@ def create_boost_middle_class_tax_credit() -> Reform:
             BENEFITS = [
                 "social_security",
                 "ssi",
-                "ma_state_supplement", # Massachusetts benefits
+                "ma_state_supplement",  # Massachusetts benefits
                 # California programs.
                 "ca_cvrp",  # California Clean Vehicle Rebate Project.
                 # Colorado programs.
