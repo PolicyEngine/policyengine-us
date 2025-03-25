@@ -11,13 +11,18 @@ class ma_eaedc_earned_income_after_deduction_person(Variable):
     reference = "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-704-500"  # (B) step 2
 
     def formula(person, period, parameters):
-        p = parameters(period).gov.states.ma.dta.tcap.eaedc.deductions.income_disregard
+        p = parameters(
+            period
+        ).gov.states.ma.dta.tcap.eaedc.deductions.income_disregard
         gross_income = person("ma_tcap_gross_earned_income", period)
         # monthly $200 work related expenses deduction if employed
-        work_related_expenses_deduction = person("ma_tcap_work_related_expense_deduction", period)
-        adjusted_monthly_income = max_(
-            gross_income - work_related_expenses_deduction, 0
-        )/MONTHS_IN_YEAR
+        work_related_expenses_deduction = person(
+            "ma_tcap_work_related_expense_deduction", period
+        )
+        adjusted_monthly_income = (
+            max_(gross_income - work_related_expenses_deduction, 0)
+            / MONTHS_IN_YEAR
+        )
         # Compute earned income after disregard, first 4 months has flat $30 then 1/3 disregard, the rest 8 months has flat $30 deduction.
         first_four_months_income = max_(
             (adjusted_monthly_income - p.flat)
@@ -25,9 +30,7 @@ class ma_eaedc_earned_income_after_deduction_person(Variable):
             * p.percentage.months,
             0,
         )
-        remaining_months = max_(
-            MONTHS_IN_YEAR - p.percentage.months, 0
-        )
+        remaining_months = max_(MONTHS_IN_YEAR - p.percentage.months, 0)
         reduced_remaining_monthly_income = max_(
             adjusted_monthly_income - p.flat,
             0,

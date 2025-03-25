@@ -16,7 +16,7 @@ class ma_eaedc_eligible_caretaker_family(Variable):
         person = spm_unit.members
         eligible_dependent = person("ma_eaedc_eligible_dependent", period)
         eligible_dependent_present = spm_unit.any(eligible_dependent)
-        
+
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         age = person("age", period)
         age_eligible_caretaker = age >= p.caretaker

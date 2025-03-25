@@ -11,7 +11,11 @@ class ma_eaedc_dependent_care_deduction_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         # If earned income lower than standard assistance, then no dependent care expense deduction.
-        gross_earned_income = add(spm_unit, period, ["ma_tcap_gross_earned_income", "ma_tcap_gross_unearned_income"])
+        gross_earned_income = add(
+            spm_unit,
+            period,
+            ["ma_tcap_gross_earned_income", "ma_tcap_gross_unearned_income"],
+        )
         standard_assistance = spm_unit("ma_eaedc_standard_assistance", period)
 
         return gross_earned_income >= standard_assistance
