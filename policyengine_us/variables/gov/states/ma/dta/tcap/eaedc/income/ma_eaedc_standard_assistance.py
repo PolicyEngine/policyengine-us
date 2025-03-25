@@ -6,7 +6,7 @@ class ma_eaedc_standard_assistance(Variable):
     entity = SPMUnit
     label = "Massachusetts EAEDC standard assistance"
     unit = USD
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = StateCode.MA
     reference = "https://www.mass.gov/lists/emergency-aid-to-the-elderly-disabled-and-children-eaedc-grant-calculation"
 
@@ -16,6 +16,6 @@ class ma_eaedc_standard_assistance(Variable):
         p = parameters(
             period
         ).gov.states.ma.dta.tcap.eaedc.standard_assistance.amount
-        p1 = p.base[living_arrangement] * MONTHS_IN_YEAR
-        pn = p.additional[living_arrangement] * MONTHS_IN_YEAR
+        p1 = p.base[living_arrangement] 
+        pn = p.additional[living_arrangement]
         return p1 + pn * (n - 1)

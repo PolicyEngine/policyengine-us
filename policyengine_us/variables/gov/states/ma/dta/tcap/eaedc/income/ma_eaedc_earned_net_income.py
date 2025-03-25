@@ -15,8 +15,8 @@ class ma_eaedc_earned_net_income(Variable):
             spm_unit, period, ["ma_eaedc_earned_income_after_deduction_person"]
         )
         # dependent care deduction
-        dependent_care_deduction = spm_unit(
-            "ma_eaedc_dependent_care_deduction", period
+        dependent_care_deduction = add(
+            spm_unit, period, ["ma_eaedc_dependent_care_deduction_person"]
         )
 
         net_earned_income = max_(

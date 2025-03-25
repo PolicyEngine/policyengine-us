@@ -21,7 +21,7 @@ class ma_eaedc_eligible_disabled_dependent_present(Variable):
 
         # If there are disabled dependents, check if at least one meet income eligibility
         p = parameters(period).gov.states.ma.dta.tcap.eaedc.income
-        earned_income = person("ma_eaedc_earned_income", period)
+        earned_income = person("ma_tcap_gross_earned_income", period)
 
         # A disabled dependent is income eligible if their income is below the limit
         disabled_dependent_income_eligible = disabled_dependent & (

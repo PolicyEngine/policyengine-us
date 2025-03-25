@@ -8,7 +8,7 @@
       person2:
         is_disabled: true
         is_tax_unit_dependent: true
-        ma_eaedc_earned_income: 1_000
+        ma_tcap_gross_earned_income: 1_000
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -32,7 +32,7 @@
       person2:
         is_disabled: true
         is_tax_unit_dependent: true
-        ma_eaedc_earned_income: 1_600
+        ma_tcap_gross_earned_income: 1_600
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -56,7 +56,7 @@
       person2:
         is_disabled: false
         is_tax_unit_dependent: true
-        ma_eaedc_earned_income: 1_000
+        ma_tcap_gross_earned_income: 1_000
     spm_units:
       spm_unit:
         members: [person1, person2]

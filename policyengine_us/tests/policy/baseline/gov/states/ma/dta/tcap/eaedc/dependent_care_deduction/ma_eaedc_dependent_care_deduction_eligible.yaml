@@ -1,7 +1,8 @@
 - name: Case 1, total earned income above standard assistance, eligible.
   period: 2022
   input:
-    ma_eaedc_earned_income: 420
+    ma_tcap_gross_earned_income: 420
+    ma_tcap_gross_unearned_income: 0
     ma_eaedc_standard_assistance: 410
     ma_eaedc_eligible_caretaker_family: true
     state_code: MA
@@ -11,7 +12,8 @@
 - name: Case 2, total earned income below standard assistance, ineligible.
   period: 2022
   input:
-    ma_eaedc_earned_income: 400
+    ma_tcap_gross_earned_income: 400
+    ma_tcap_gross_unearned_income: 0
     ma_eaedc_standard_assistance: 410
     ma_eaedc_eligible_caretaker_family: true
     state_code: MA
@@ -21,7 +23,8 @@
 - name: Case 3, total earned income above standard assistance, but it's not a caretaker family, ineligible.
   period: 2022
   input:
-    ma_eaedc_earned_income: 420
+    ma_tcap_gross_earned_income: 420
+    ma_tcap_gross_unearned_income: 0
     ma_eaedc_standard_assistance: 410
     ma_eaedc_eligible_caretaker_family: false
     state_code: MA
