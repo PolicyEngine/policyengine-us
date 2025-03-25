@@ -73,3 +73,22 @@
         state_code: ID
   output:
     id_grocery_credit: 0
+
+- name: Two people fully eligible
+  period: 2025
+  input:
+    people:
+      person1:
+        id_grocery_credit_qualified_months: 12
+        id_grocery_credit_base: 155
+        id_grocery_credit_aged: 0
+      person2:
+        id_grocery_credit_qualified_months: 12
+        id_grocery_credit_base: 155
+        id_grocery_credit_aged: 0
+    households: 
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    id_grocery_credit: 310
