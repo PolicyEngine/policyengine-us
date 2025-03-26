@@ -7,16 +7,15 @@ class pr_additional_child_tax_credit(Variable):
     label = "Amount for Puerto Rico additional child tax credit"
     definition_period = YEAR
     reference = ""
+    defined_for = "pr_additional_child_tax_credit_eligibility"
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.territories.pr.tax.income.credits
         num_children = tax_unit("pr_child_tax_credit_number_eligible_children", period)
         other_dependents = 2 # TODO - calculate me
-        # eligibility: 1+ children under 17
-        if num_children < 1:
-            return 0
+        
         credit_amt = num_children * p.additional_child_tax_credit.amount
-        modified_agi = 10_000 # TODO - need to calculate
+        modified_agi = tax_unit("pr_modified_agi", period)
         filing_status = tax_unit("filing_status", period)
 
         threshold = select(
@@ -30,29 +29,42 @@ class pr_additional_child_tax_credit(Variable):
             ],
         )
 
+        # earned income method to calculate credit amount
         if modified_agi > threshold:
-            # calculate phase-out
-            mod_income = modified_agi - threshold
-            if mod_income % 1000 != 0:
-                mod_income = ((mod_income // 1000) + 1) * 1000 # turn it into a multiple of 1000
-            mod_income = mod_income * 0.05
-            mod_credit = num_children * 2000 + other_dependents * 500
-            if mod_credit > mod_income:
-                mod_credit = mod_credit - mod_income
-                final_credit = min(credit_amt, mod_credit)
+            # calculate phase-out 
+            # calculate credit based on income earned over the threshold
+            inc_credit = modified_agi - threshold 
+            # turn it into a multiple of 1000 if not already
+            inc_credit = select(
+                [(inc_credit % 1000 == 0), (inc_credit % 1000 != 0)], 
+                [inc_credit, ((inc_credit // 1000) + 1) * 1000],
+            ) * 0.05
+
+            base_credit = num_children * 2000 + other_dependents * 500
+            # credit is limited based on income
+            if base_credit > inc_credit:
+                base_credit = base_credit - inc_credit
+                final_credit = min(credit_amt, base_credit)
             else: 
-                # CAN'T CLAIM CREDIT if mod_income > mod_credit
+                # CAN'T CLAIM CREDIT if inc_credit > base_credit
                 return 0
         else:
+            # otherwise if modified agi under threshold, stick with initial
+            # computation of the credit
             final_credit = credit_amt
         
-        # sum up: self-employment tax + additional medicare tax on self-employment income + 13a-f 
-        # (medicare tax, social security tax etc
-        # sum - additional medicare tax withheld
-        # total tax shouldn't be greater than sum, otherwise can't claim credit
-        # otherwise, sum - total tax
-        # final credit is min of final credit and sum - total tax (line 18)
+        # calculate an alternate way for the credit amount through social security & medicare tax paid
+        # use the smaller method as the final amount for the credit
+        person = tax_unit.members
+        taxes_paid = 0.5 * person("self_employment_tax", period) + 0.5 * tax_unit("additional_medicare_tax", period) + tax_unit("pr_withheld_income", period)
+        # subtract additional medicare tax on medicare wages from Form 8959
 
+        # excess social security tax withheld
+        excess_ss_tax = tax_unit("excess_social_security_withheld", period) # TODO - create a variable for me
+        if excess_ss_tax > taxes_paid:
+            # CAN'T CLAIM THE CREDIT
+            return 0
+        else: 
+            ss_medicare_credit_amt = taxes_paid - excess_ss_tax
 
-        return credit_amt
-
+        return min(final_credit, ss_medicare_credit_amt)
