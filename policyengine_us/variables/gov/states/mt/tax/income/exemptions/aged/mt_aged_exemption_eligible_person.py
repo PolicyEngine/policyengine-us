@@ -11,10 +11,10 @@ class mt_aged_exemption_eligible_person(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.mt.tax.income.exemptions
-        
+
         if p.applies:
             age = person("age", period)
             aged = age >= p.age_threshold
             return aged & person("is_tax_unit_head_or_spouse", period)
-            
+
         return False

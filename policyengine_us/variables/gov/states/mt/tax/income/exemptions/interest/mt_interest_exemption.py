@@ -12,7 +12,7 @@ class mt_interest_exemption(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.mt.tax.income.exemptions
-        
+
         if p.applies:
             interest_p = p.interest
             filing_status = tax_unit("filing_status", period)
@@ -24,5 +24,5 @@ class mt_interest_exemption(Variable):
             )
             total_interest_income = tax_unit.sum(interest_income)
             return min_(cap, total_interest_income)
-            
+
         return 0
