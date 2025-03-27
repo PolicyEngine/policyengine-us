@@ -40,8 +40,8 @@ class ny_itemized_deductions_reduction(Variable):
             * itemized_deduction
             * first_reduction_multiplier
         )
-        second_reduction_condition = (
-            second_reduction_threshold < agi <= high_income_threshold
+        second_reduction_condition = (agi > second_reduction_threshold) & (
+            agi <= high_income_threshold
         )
         second_reduction_excess_amount = max_(
             agi - second_reduction_threshold, 0
@@ -57,8 +57,8 @@ class ny_itemized_deductions_reduction(Variable):
             * itemized_deduction
             * second_reduction_multiplier
         )
-        high_income_condition = (
-            high_income_threshold < agi <= higher_income_threshold
+        high_income_condition = (agi > high_income_threshold) & (
+            agi <= higher_income_threshold
         )
         high_income_reduction = (
             itemized_deduction - p.rate.high_income * charitable_deduction
