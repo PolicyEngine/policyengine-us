@@ -11,8 +11,8 @@ class ma_eaedc_countable_earned_income(Variable):
     reference = "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-704-500"  # (B) step 2
 
     def formula(spm_unit, period, parameters):
-        total_earned_income_after_deduction = add(
-            spm_unit, period, ["ma_eaedc_earned_income_after_deduction_person"]
+        total_earned_income_after_disregard = add(
+            spm_unit, period, ["ma_eaedc_earned_income_after_disregard_person"]
         )
         # dependent care deduction
         dependent_care_deduction = add(
@@ -20,5 +20,5 @@ class ma_eaedc_countable_earned_income(Variable):
         )
 
         return max_(
-            total_earned_income_after_deduction - dependent_care_deduction, 0
+            total_earned_income_after_disregard - dependent_care_deduction, 0
         )
