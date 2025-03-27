@@ -10,7 +10,12 @@ class mt_interest_exemption_eligible_person(Variable):
     defined_for = StateCode.MT
 
     def formula(person, period, parameters):
-        p = parameters(period).gov.states.mt.tax.income.exemptions.interest
-        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        age = person("age", period)
-        return person.tax_unit.any(age >= p.age_threshold) & head_or_spouse
+        p = parameters(period).gov.states.mt.tax.income.exemptions
+        
+        if p.applies:
+            interest_p = p.interest
+            head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+            age = person("age", period)
+            return person.tax_unit.any(age >= interest_p.age_threshold) & head_or_spouse
+            
+        return False

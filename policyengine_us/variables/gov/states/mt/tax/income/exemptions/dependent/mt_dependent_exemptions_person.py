@@ -11,11 +11,15 @@ class mt_dependent_exemptions_person(Variable):
     defined_for = StateCode.MT
 
     def formula(person, period, parameters):
-        # Qualifying child under IRC 152(c), which defines for the EITC
-        qualifying_child = person("is_child_dependent", period)
-        # Disabled dependents get an additional exemption.
-        disabled = person("is_disabled", period)
         p = parameters(period).gov.states.mt.tax.income.exemptions
-
-        eligible_dependent = qualifying_child * (1 + disabled)
-        return eligible_dependent * p.amount
+        
+        if p.applies:
+            # Qualifying child under IRC 152(c), which defines for the EITC
+            qualifying_child = person("is_child_dependent", period)
+            # Disabled dependents get an additional exemption.
+            disabled = person("is_disabled", period)
+            
+            eligible_dependent = qualifying_child * (1 + disabled)
+            return eligible_dependent * p.amount
+            
+        return 0
