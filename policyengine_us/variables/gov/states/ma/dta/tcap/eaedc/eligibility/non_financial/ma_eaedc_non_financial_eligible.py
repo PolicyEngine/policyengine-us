@@ -13,10 +13,10 @@ class ma_eaedc_non_financial_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         elderly_present = spm_unit("ma_eaedc_eligible_elderly_present", period)
-        disabled_eligible = spm_unit(
+        disabled_head_or_spouse_present = spm_unit(
             "ma_eaedc_eligible_disabled_head_or_spouse", period
         )
-        disabled_dependent_present_eligible = spm_unit(
+        disabled_dependent_present = spm_unit(
             "ma_eaedc_eligible_disabled_dependent_present", period
         )
         caretaker_family_eligible = spm_unit(
@@ -28,8 +28,8 @@ class ma_eaedc_non_financial_eligible(Variable):
 
         return (
             elderly_present
-            | disabled_eligible
-            | disabled_dependent_present_eligible
+            | disabled_head_or_spouse_present
+            | disabled_dependent_present
             | caretaker_family_eligible
             | immigration_status_eligible
         )

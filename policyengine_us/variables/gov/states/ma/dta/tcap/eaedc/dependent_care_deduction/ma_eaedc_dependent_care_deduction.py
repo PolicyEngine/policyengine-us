@@ -8,6 +8,6 @@ class ma_eaedc_dependent_care_deduction(Variable):
     label = "Massachusetts EAEDC dependent care deduction"
     definition_period = MONTH
     reference = "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-704-275"  # (A)
-    defined_for = "ma_eaedc_dependent_care_deduction_eligible"
+    defined_for = "ma_eaedc_income_eligible"
 
     adds = ["ma_eaedc_dependent_care_deduction_person"]

@@ -23,19 +23,18 @@ class ma_eaedc_earned_income_after_deduction_person(Variable):
             max_(gross_income - work_related_expenses_deduction, 0)
             / MONTHS_IN_YEAR
         )
-        # Compute earned income after disregard, first 4 months has flat $30 then 1/3 disregard, the rest 8 months has flat $30 deduction.
-        first_four_months_income = max_(
-            (adjusted_monthly_income - p.flat)
-            * (1 - p.percentage.rate)
-            * p.percentage.months,
-            0,
-        )
-        remaining_months = max_(MONTHS_IN_YEAR - p.percentage.months, 0)
-        reduced_remaining_monthly_income = max_(
+        income_after_flat_disregard = max_(
             adjusted_monthly_income - p.flat,
             0,
         )
-
-        remaining_income = reduced_remaining_monthly_income * remaining_months
-
-        return first_four_months_income + remaining_income
+        # A percentage disregard is applied for the first 4 months in addition to the continuous flat disregard.
+        percentage_disregard = max_(
+            income_after_flat_disregard
+            * p.percentage.rate
+            * p.percentage.months,
+            0,
+        )
+        return max_(
+            income_after_flat_disregard - percentage_disregard,
+            0,
+        )

@@ -19,7 +19,6 @@ class ma_eaedc_earned_net_income(Variable):
             spm_unit, period, ["ma_eaedc_dependent_care_deduction_person"]
         )
 
-        net_earned_income = max_(
+        return max_(
             total_earned_income_after_deduction - dependent_care_deduction, 0
         )
-        return net_earned_income
