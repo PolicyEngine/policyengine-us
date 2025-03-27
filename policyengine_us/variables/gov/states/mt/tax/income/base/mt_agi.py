@@ -19,8 +19,8 @@ class mt_agi(Variable):
 
         # Get the current year
         year = period.start.year
-
-        if year <= 2023:
+        p = parameters(period).gov.states.mt.tax.income.deductions.standard
+        if p.applies:
             # 2023 and before: apply lines 21-24 adjustment for social security
             taxable_ss = person("taxable_social_security", period)
             mt_taxable_ss = person("mt_taxable_social_security", period)
