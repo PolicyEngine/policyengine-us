@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ma_eaedc_eligible_disabled_dependent_present(Variable):
     value_type = bool
     entity = SPMUnit
-    label = "Meets the disabled dependent criteria for Massachusetts EAEDC"
+    label = "Disabled dependent present for Massachusetts EAEDC"
     definition_period = YEAR
     defined_for = StateCode.MA
     reference = (

@@ -15,7 +15,6 @@ class ma_eaedc_earned_income_after_deduction_person(Variable):
             period
         ).gov.states.ma.dta.tcap.eaedc.deductions.income_disregard
         gross_income = person("ma_tcap_gross_earned_income", period)
-        # monthly $200 work related expenses deduction if employed
         work_related_expenses_deduction = person(
             "ma_tafdc_work_related_expense_deduction", period
         )

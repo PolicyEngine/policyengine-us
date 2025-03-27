@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ma_eaedc_eligible_disabled_head_or_spouse(Variable):
     value_type = bool
     entity = SPMUnit
-    label = "Disabled eligible for Massachusetts EAEDC"
+    label = "Disabled head or spouse present for Massachusetts EAEDC"
     definition_period = YEAR
     defined_for = StateCode.MA
     reference = "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-703-010"  # (B)
