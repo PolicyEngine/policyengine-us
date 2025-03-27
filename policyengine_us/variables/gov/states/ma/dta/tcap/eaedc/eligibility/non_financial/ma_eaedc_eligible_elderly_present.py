@@ -16,6 +16,7 @@ class ma_eaedc_eligible_elderly_present(Variable):
         person = spm_unit.members
         age = person("age", period)
         is_ssi_eligible = person("is_ssi_eligible", period)
+        is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         elderly = age >= p.elderly
 
-        return spm_unit.any(elderly & ~is_ssi_eligible)
+        return spm_unit.any(elderly & is_head_or_spouse & ~is_ssi_eligible)

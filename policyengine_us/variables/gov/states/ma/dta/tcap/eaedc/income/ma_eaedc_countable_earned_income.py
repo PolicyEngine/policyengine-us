@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class ma_eaedc_earned_net_income(Variable):
+class ma_eaedc_countable_earned_income(Variable):
     value_type = float
     entity = SPMUnit
-    label = "Massachusetts EAEDC net earned income"
+    label = "Massachusetts EAEDC countable earned income"
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.MA

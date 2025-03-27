@@ -13,5 +13,6 @@ class ma_eaedc_income_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         standard_assistance = spm_unit("ma_eaedc_standard_assistance", period)
-        net_income = spm_unit("ma_eaedc_net_income", period)
+        # Income after deductions as applied in the net income test
+        net_income = spm_unit("ma_eaedc_net_income", period) 
         return net_income <= standard_assistance
