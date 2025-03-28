@@ -5,7 +5,8 @@ from policyengine_us.tools.geography.county_helpers import (
 from policyengine_us.variables.household.demographic.geographic.county.county_enum import (
     County,
 )
-from policyengine_us_data import ZIP_CODE_DATASET, COUNTY_FIPS_DATASET
+from policyengine_us_data import ZIP_CODE_DATASET
+from policyengine_core.tools.hugging_face import download_huggingface_dataset
 
 
 class county(Variable):
@@ -17,10 +18,36 @@ class county(Variable):
     definition_period = YEAR
 
     def formula(household, period, parameters):
+
         # First look if county FIPS is provided; if so, map to county name
+        DATA_FOLDER = Path("data")
+        HUGGINGFACE_REPO = "policyengine/policyengine-us-data"
+        COUNTY_FIPS_DATASET_FILENAME = "county_fips_2020.csv.gz"
+
+        try:
+            COUNTY_FIPS_RAW = download_huggingface_dataset(
+                repo=HUGGINGFACE_REPO,
+                repo_filename=COUNTY_FIPS_DATASET_FILENAME,
+                version=None,
+            )
+        except Exception as e:
+            raise Exception(
+                f"Error downloading {COUNTY_FIPS_DATASET_FILENAME} from {HUGGINGFACE_REPO}: {e}"
+            )
+
         county_fips: "pd.Series[str]" | None = household("county_fips", period)
+
         if county_fips.all():
-            # Find county name from dataset
+            # Read raw data into pandas dataframe; county FIPS MUST be defined as string,
+            # else pandas reads as int and drops leading zeros
+            COUNTY_FIPS_DATASET = pd.read_csv(
+                COUNTY_FIPS_RAW,
+                compression="gzip",
+                dtype={"county_fips": str},
+                encoding="utf-8",
+            )
+
+            # Decode FIPS codes
             county_fips_codes = COUNTY_FIPS_DATASET.set_index("county_fips")
             county_name = county_fips_codes.loc[county_fips, "county_name"]
             state_code = county_fips_codes.loc[county_fips, "state"]
