@@ -19,10 +19,8 @@ class ny_itemized_deductions_reduction(Variable):
         itemized_deduction = tax_unit("ny_itemized_deductions_max", period)
         charitable_deduction = tax_unit("charitable_deduction", period)
         # Income thresholds for itemized deductions reduction
-        first_reduction_threshold = p.amount.first_reduction[
-            filing_status
-        ]  
-        second_reduction_threshold = p.amount.second_reduction  
+        first_reduction_threshold = p.amount.first_reduction[filing_status]
+        second_reduction_threshold = p.amount.second_reduction
         # High Income thresholds that only charitable deduction applies
         high_income_threshold = p.high_income_brackets.thresholds[1]
         higher_income_threshold = p.high_income_brackets.thresholds[2]
@@ -85,4 +83,3 @@ class ny_itemized_deductions_reduction(Variable):
             ],
             default=0,
         )
-  
