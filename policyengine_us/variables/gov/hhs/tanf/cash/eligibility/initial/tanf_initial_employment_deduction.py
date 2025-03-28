@@ -19,4 +19,4 @@ class tanf_initial_employment_deduction(Variable):
         per_household = ied.household[state][family_size]
         earners = spm_unit.members("market_income", period) > 0
         earner_count = spm_unit.sum(earners)
-        return (per_household + (per_earner * earner_count))
+        return per_household + (per_earner * earner_count)
