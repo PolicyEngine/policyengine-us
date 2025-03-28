@@ -5,7 +5,7 @@ class ma_eaedc_assets_limit_eligible(Variable):
     value_type = bool
     entity = SPMUnit
     label = "Eligible based on the asset limit for the Massachusetts EAEDC"
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = StateCode.MA
     reference = (
         "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-704-110"

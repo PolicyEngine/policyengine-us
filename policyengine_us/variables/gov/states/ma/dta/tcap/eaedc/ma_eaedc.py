@@ -6,7 +6,7 @@ class ma_eaedc(Variable):
     entity = SPMUnit
     label = "Massachusetts EAEDC"
     unit = USD
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = "ma_eaedc_eligible"
     reference = "https://www.law.cornell.edu/regulations/massachusetts/department-106-CMR/title-106-CMR-701.000"
 

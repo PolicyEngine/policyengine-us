@@ -5,7 +5,7 @@ class ma_eaedc_immigration_status_eligible(Variable):
     value_type = bool
     entity = SPMUnit
     label = "Eligible for the Massachusetts EAEDC based on immigration status"
-    definition_period = YEAR
+    definition_period = MONTH
     reference = (
         "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-703-440"
     )

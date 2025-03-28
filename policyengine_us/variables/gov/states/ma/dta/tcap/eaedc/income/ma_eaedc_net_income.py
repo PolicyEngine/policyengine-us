@@ -6,7 +6,7 @@ class ma_eaedc_net_income(Variable):
     entity = SPMUnit
     label = "Massachusetts EAEDC net income"
     unit = USD
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = StateCode.MA
     reference = "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-704-500"  # (B) step 2
 

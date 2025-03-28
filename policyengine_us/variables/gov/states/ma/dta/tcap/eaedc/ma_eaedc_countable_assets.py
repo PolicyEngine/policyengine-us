@@ -6,7 +6,7 @@ class ma_eaedc_countable_assets(Variable):
     entity = SPMUnit
     label = "Massachusetts EAEDC countable assets"
     unit = USD
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = StateCode.MA
 
     adds = "gov.states.ma.dta.tcap.eaedc.assets.sources"

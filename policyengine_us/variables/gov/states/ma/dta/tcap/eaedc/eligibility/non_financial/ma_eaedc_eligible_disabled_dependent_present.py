@@ -5,7 +5,7 @@ class ma_eaedc_eligible_disabled_dependent_present(Variable):
     value_type = bool
     entity = SPMUnit
     label = "Disabled dependent present for Massachusetts EAEDC"
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = StateCode.MA
     reference = (
         "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-704-340"
@@ -19,7 +19,7 @@ class ma_eaedc_eligible_disabled_dependent_present(Variable):
         disabled_dependent = is_disabled & is_dependent
         disabled_dependent_present = spm_unit.any(disabled_dependent)
 
-        # If there are disabled dependents, check if at least one meet income eligibility
+        # If there are disabled dependents, check if at least one meets income eligibility
         p = parameters(period).gov.states.ma.dta.tcap.eaedc.income
         earned_income = person("ma_tcap_gross_earned_income", period)
 

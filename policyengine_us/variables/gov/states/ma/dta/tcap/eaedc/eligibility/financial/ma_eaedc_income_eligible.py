@@ -5,7 +5,7 @@ class ma_eaedc_income_eligible(Variable):
     value_type = bool
     entity = SPMUnit
     label = "Eligible for the Massachusetts EAEDC based on income"
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = StateCode.MA
     reference = (
         "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-704-285"

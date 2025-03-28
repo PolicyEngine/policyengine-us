@@ -17,7 +17,7 @@ class ma_eaedc_living_arrangement(Variable):
     entity = SPMUnit
     possible_values = MassachusettsEAEDCLivingArrangement
     default_value = MassachusettsEAEDCLivingArrangement.NONE
-    definition_period = YEAR
+    definition_period = MONTH
     label = "Massachusetts EAEDC living arrangement"
     defined_for = StateCode.MA
     reference = (

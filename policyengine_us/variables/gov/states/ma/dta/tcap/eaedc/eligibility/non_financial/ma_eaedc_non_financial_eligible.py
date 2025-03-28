@@ -5,7 +5,7 @@ class ma_eaedc_non_financial_eligible(Variable):
     value_type = bool
     entity = SPMUnit
     label = "Non-financial eligible for Massachusetts EAEDC"
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = StateCode.MA
     reference = (
         "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-703-010"
