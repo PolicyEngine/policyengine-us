@@ -26,9 +26,9 @@
       household:
         members: [person_1, person_2]
         state_code: MA
-        state_living_arrangement: FULL_COST
+        ma_state_living_arrangement: FULL_COST
   output:
     # The code is returning about [1832.6, 1832.6].
     # We'll set them to 1833 each, with an absolute_error_margin of 2
     # so that it passes even if there's a minor rounding difference.
-    state_supplement: [1_833, 1_833]
+    ma_state_supplement: [1_833, 1_833]
