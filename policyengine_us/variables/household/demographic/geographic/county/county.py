@@ -29,6 +29,7 @@ class county(Variable):
                 repo=HUGGINGFACE_REPO,
                 repo_filename=COUNTY_FIPS_DATASET_FILENAME,
                 version=None,
+                local_dir=DATA_FOLDER,
             )
         except Exception as e:
             raise Exception(
