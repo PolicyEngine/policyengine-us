@@ -1,0 +1,28 @@
+description: New York applies a reduction to itemized deductions for high-income taxpayers based on income thresholds. 
+metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  period: year
+  label: New York high-income itemized deduction reduction 
+  reference:
+    - title: SECTION 615 New York itemized deduction of a resident individual (g)
+      href: https://www.nysenate.gov/legislation/laws/TAX/615
+    - title: 2021 NY Form IT-196 Instructions Line 46
+      href: https://www.tax.ny.gov/pdf/2021/inc/it196i_2021.pdf#page=20
+    - title: 2024 NY Form IT-196 Instructions Line 46
+      href: https://www.tax.ny.gov/pdf/2024/inc/it196i_2024.pdf#page=20
+
+brackets:
+  - threshold:
+      2021-01-01: 0 
+    rate:
+      2021-01-01: 0
+  - threshold:
+      2021-01-01: 1_000_000
+    rate:
+      2021-01-01: 0.5
+  - threshold:
+      2021-01-01: 10_000_000
+    rate:
+      2021-01-01: 0.25
