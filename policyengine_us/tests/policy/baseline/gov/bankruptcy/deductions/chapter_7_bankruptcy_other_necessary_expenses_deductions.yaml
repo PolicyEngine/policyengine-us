@@ -1,0 +1,67 @@
+- name: Case 1,  medical expense higher than medical deductions. 
+  period: 2024-01
+  input:
+    spm_unit_federal_tax: 120
+    child_support_expense: 0   
+    childcare_expenses: 0 
+    chapter_7_bankruptcy_out_of_pocket_health_care_deduction: 10
+    medical_out_of_pocket_expenses: 240
+
+  output:
+    chapter_7_bankruptcy_other_necessary_expenses_deductions: 20
+
+- name: Case 2,  medical expense smaller than medical deductions. 
+  period: 2024-01
+  input:
+    spm_unit_federal_tax: 120
+    child_support_expense: 0   
+    childcare_expenses: 0 
+    chapter_7_bankruptcy_out_of_pocket_health_care_deduction: 100
+    medical_out_of_pocket_expenses: 20
+
+  output:
+    chapter_7_bankruptcy_other_necessary_expenses_deductions: 10
+
+- name: Case 3, integration test. 
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 40
+        child_support_expense: 0
+        medical_out_of_pocket_expenses: 20
+      person2:
+        age: 45
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_federal_tax: 120
+        childcare_expenses: 0 
+    households:
+      household:
+        members: [person1, person2]
+
+  output:
+    chapter_7_bankruptcy_other_necessary_expenses_deductions: 10
+
+- name: Case 4, integration test. 
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 40
+        child_support_expense: 0
+        medical_out_of_pocket_expenses: 2_112
+      person2:
+        age: 45
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_federal_tax: 120
+        childcare_expenses: 0 
+    households:
+      household:
+        members: [person1, person2]
+
+  output:
+    chapter_7_bankruptcy_other_necessary_expenses_deductions: 20
