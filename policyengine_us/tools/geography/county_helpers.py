@@ -7,7 +7,7 @@ from pathlib import Path
 from policyengine_core.tools.hugging_face import download_huggingface_dataset
 
 
-def load_county_fips_dataset() -> "pd.Series[str]":
+def load_county_fips_dataset() -> pd.DataFrame:
     """
     Download the county FIPS dataset from Hugging Face and load it into a pandas DataFrame.
     If the dataset already exists in the 'data' folder and is the most recent version, this
