@@ -1,0 +1,25 @@
+description:  NY gives regional incentives for residential solar projects based on solar system size
+
+
+metadata:
+  unit: /1
+  period: year
+  breakdown:
+    - ny_sun_region_status
+  label: New York regional incentive on residential solar projects
+  reference:
+    - title: NY-Sun Residential & Nonresidential Incentive Program #add detail after 
+      href: https://portal.nyserda.ny.gov/servlet/servlet.FileDownload?file=00P8z000001BIuBEAW
+    
+
+LONG_ISLAND:
+  0000-01-01: .inf
+  2010-06-07: 0.4 
+
+CON_ED: 
+  0000-01-01: .inf
+  2010-06-07: 0.8
+
+UPSTATE:
+  0000-01-01: .inf
+  2010-06-07: 0.8
