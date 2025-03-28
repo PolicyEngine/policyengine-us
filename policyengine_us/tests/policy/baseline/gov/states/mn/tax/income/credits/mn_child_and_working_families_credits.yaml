@@ -5,16 +5,18 @@
       person1:
         age: 48 
         is_child_dependent: false
+        ctc_qualifying_child: false
       person2:
         age: 40
         is_child_dependent: false
+        ctc_qualifying_child: false
       person3: 
         age: 5
         is_child_dependent: true
+        ctc_qualifying_child: true
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
-        ctc_qualifying_children: 1
         mn_wfc_eligible: true
         filer_adjusted_earnings: 10_000
         adjusted_gross_income: 10_000
@@ -34,22 +36,25 @@
         age: 48 
         is_child_dependent: false
         is_full_time_student: false
+        ctc_qualifying_child: false
       person2:
         age: 40
         is_child_dependent: false
         is_full_time_student: false
+        ctc_qualifying_child: false
       person3: 
         age: 5
         is_child_dependent: true
         is_full_time_student: false
+        ctc_qualifying_child: true
       person4:
         age: 19
         is_child_dependent: true
         is_full_time_student: true
+        ctc_qualifying_child: false
     tax_units:
       tax_unit:
         members: [person1, person2, person3, person4]
-        ctc_qualifying_children: 1
         mn_wfc_eligible: true
         filer_adjusted_earnings: 6_000
         adjusted_gross_income: 10_000
@@ -69,22 +74,25 @@
         age: 48 
         is_child_dependent: false
         is_full_time_student: false
+        ctc_qualifying_child: false
       person2:
         age: 40
         is_child_dependent: false
         is_full_time_student: false
+        ctc_qualifying_child: false
       person3: 
         age: 5
         is_child_dependent: true
         is_full_time_student: false
+        ctc_qualifying_child: true
       person4:
         age: 19
         is_child_dependent: true
         is_full_time_student: true
+        ctc_qualifying_child: false
     tax_units:
       tax_unit:
         members: [person1, person2, person3, person4]
-        ctc_qualifying_children: 1
         mn_wfc_eligible: true
         filer_adjusted_earnings: 100_000
         adjusted_gross_income: 10_000
@@ -104,22 +112,25 @@
         age: 48 
         is_child_dependent: false
         is_full_time_student: false
+        ctc_qualifying_child: false
       person2:
         age: 40
         is_child_dependent: false
         is_full_time_student: false
+        ctc_qualifying_child: false
       person3: 
         age: 5
         is_child_dependent: true
         is_full_time_student: false
+        ctc_qualifying_child: true
       person4:
         age: 19
         is_child_dependent: true
         is_full_time_student: true
+        ctc_qualifying_child: false
     tax_units:
       tax_unit:
         members: [person1, person2, person3, person4]
-        ctc_qualifying_children: 1
         mn_wfc_eligible: true
         filer_adjusted_earnings: 10_000
         adjusted_gross_income: 45_000
@@ -139,22 +150,25 @@
         age: 48 
         is_child_dependent: false
         is_full_time_student: false
+        ctc_qualifying_child: false
       person2:
         age: 40
         is_child_dependent: false
         is_full_time_student: false
+        ctc_qualifying_child: false
       person3: 
         age: 5
         is_child_dependent: true
         is_full_time_student: false
+        ctc_qualifying_child: true
       person4:
         age: 19
         is_child_dependent: true
         is_full_time_student: true
+        ctc_qualifying_child: false
     tax_units:
       tax_unit:
         members: [person1, person2, person3, person4]
-        ctc_qualifying_children: 1
         mn_wfc_eligible: true
         filer_adjusted_earnings: 10_000
         adjusted_gross_income: 45_000
@@ -181,7 +195,6 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
-        ctc_qualifying_children: 0
         mn_wfc_eligible: true
         filer_adjusted_earnings: 10_000
         adjusted_gross_income: 12_000
@@ -208,7 +221,6 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
-        ctc_qualifying_children: 0
         mn_wfc_eligible: false
         filer_adjusted_earnings: 10_000
         adjusted_gross_income: 12_000
