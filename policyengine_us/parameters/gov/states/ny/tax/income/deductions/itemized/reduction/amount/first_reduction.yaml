@@ -1,4 +1,4 @@
-description: New York phases out itemized deductions reduction for filers with federal adjusted gross income exceeding this threshold.
+description: New York provides a first itemized deductions reduction for filers with adjusted gross income exceeding this threshold, based on filing status. 
 SINGLE:
   values:
     2021-01-01: 100_000
@@ -18,7 +18,7 @@ HEAD_OF_HOUSEHOLD:
 metadata:
   unit: currency-USD
   period: year
-  label: New York itemized deduction reduction AGI phase out threshold
+  label: New York first itemized deduction reduction threshold
   reference:
     - title: SECTION 615 New York itemized deduction of a resident individual (f)(1)
       href: https://www.nysenate.gov/legislation/laws/TAX/615

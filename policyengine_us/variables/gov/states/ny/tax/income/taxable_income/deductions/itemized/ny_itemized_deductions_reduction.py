@@ -18,14 +18,14 @@ class ny_itemized_deductions_reduction(Variable):
         filing_status = tax_unit("filing_status", period)
         itemized_deduction = tax_unit("ny_itemized_deductions_max", period)
         charitable_deduction = tax_unit("charitable_deduction", period)
-        # Income threshold itemized deductions reduction
+        # Income thresholds for itemized deductions reduction
         first_reduction_threshold = p.amount.first_reduction[
             filing_status
-        ]  # 100_000
-        second_reduction_threshold = p.amount.second_reduction  # 475_000
-        # Income threshold where only charitable deduction applies
-        high_income_threshold = p.amount.high_income
-        higher_income_threshold = p.amount.higher_income
+        ]  
+        second_reduction_threshold = p.amount.second_reduction  
+        # High Income thresholds that only charitable deduction applies
+        high_income_threshold = p.high_income_brackets.thresholds[1]
+        higher_income_threshold = p.high_income_brackets.thresholds[2]
 
         first_reduction_condition = agi <= second_reduction_threshold
         first_reduction_excess_amount = agi - first_reduction_threshold
@@ -60,12 +60,14 @@ class ny_itemized_deductions_reduction(Variable):
         high_income_condition = (agi > high_income_threshold) & (
             agi <= higher_income_threshold
         )
+        high_income_rate = p.high_income_brackets.rates[1]
         high_income_reduction = (
-            itemized_deduction - p.rate.high_income * charitable_deduction
+            itemized_deduction - high_income_rate * charitable_deduction
         )
         higher_income_condition = agi > higher_income_threshold
+        higher_income_rate = p.high_income_brackets.rates[2]
         higher_income_reduction = (
-            itemized_deduction - p.rate.higher_income * charitable_deduction
+            itemized_deduction - higher_income_rate * charitable_deduction
         )
 
         return select(
@@ -83,3 +85,4 @@ class ny_itemized_deductions_reduction(Variable):
             ],
             default=0,
         )
+  
