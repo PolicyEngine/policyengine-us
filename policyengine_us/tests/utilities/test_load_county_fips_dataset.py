@@ -40,9 +40,16 @@ def mock_dataset_file(tmp_fips_dir) -> Path:
     return test_file_path
 
 
-def mock_download_huggingface_dataset(filepath):
+def mock_download_huggingface_dataset_success(filepath):
     def _mock(*args, **kwargs):
         return filepath
+
+    return _mock
+
+
+def mock_download_huggingface_dataset_failure(filepath):
+    def _mock(*args, **kwargs):
+        raise Exception("Download failed")
 
     return _mock
 
@@ -112,7 +119,7 @@ class TestLoadCountyFIPSDataset:
         # Apply the mock
         monkeypatch.setattr(
             "policyengine_us.tools.geography.county_helpers.download_huggingface_dataset",
-            mock_download_huggingface_dataset(mock_dataset_file),
+            mock_download_huggingface_dataset_success(mock_dataset_file),
         )
 
         result = load_county_fips_dataset()
@@ -124,5 +131,20 @@ class TestLoadCountyFIPSDataset:
             "01001" in result.values
         )  # Check that FIPS codes are preserved as strings
 
+    def test_when_func_is_run__download_fails__raises_exception(
+        self, mock_dataset_file, monkeypatch
+    ):
+        """
+        Test that the load_county_fips_dataset function raises an exception when download fails.
+        """
 
-# When download error occurs, function should throw error
+        # Apply the mock
+        monkeypatch.setattr(
+            "policyengine_us.tools.geography.county_helpers.download_huggingface_dataset",
+            mock_download_huggingface_dataset_failure(mock_dataset_file),
+        )
+
+        with pytest.raises(Exception) as excinfo:
+            load_county_fips_dataset()
+
+        assert "Error downloading" in str(excinfo.value)
