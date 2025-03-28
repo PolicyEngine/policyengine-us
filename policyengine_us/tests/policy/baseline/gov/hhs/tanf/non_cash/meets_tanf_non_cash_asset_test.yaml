@@ -3,10 +3,18 @@
   output:
     meets_tanf_non_cash_asset_test: true
 
-- name: "Texas asset test is $15,000"
+- name: Texas asset test is $5,000, monthly assets below limit
   period: 2022
   input:
     state_code_str: TX
-    snap_assets: 16_000
+    snap_assets: 16_000 # $1,333.33 monthly
+  output:
+    meets_tanf_non_cash_asset_test: true
+
+- name: Texas asset test is $5,000, monthly assets above limit
+  period: 2025
+  input:
+    state_code_str: TX
+    snap_assets: 61_200 # $5,100 monthly
   output:
     meets_tanf_non_cash_asset_test: false

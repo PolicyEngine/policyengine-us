@@ -6,7 +6,7 @@ class meets_tanf_non_cash_gross_income_test(Variable):
     entity = SPMUnit
     label = "Meets gross income test for TANF non-cash benefit"
     documentation = "Income eligibility (gross income as a percent of the poverty line) for TANF non-cash benefit for SNAP BBCE"
-    definition_period = YEAR
+    definition_period = MONTH
 
     def formula(spm_unit, period, parameters):
         state = spm_unit.household("state_code_str", period)
