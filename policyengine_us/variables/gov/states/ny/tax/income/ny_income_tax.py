@@ -9,4 +9,4 @@ class ny_income_tax(Variable):
     definition_period = YEAR
     defined_for = StateCode.NY
     adds = ["ny_income_tax_before_refundable_credits"]
-    subtracts = ["ny_refundable_credits"]
+    subtracts = ["ny_refundable_credits", "ny_rebates"]
