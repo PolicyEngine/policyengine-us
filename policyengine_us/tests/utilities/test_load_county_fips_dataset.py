@@ -1,7 +1,11 @@
 from policyengine_core.tools.hugging_face import download_huggingface_dataset
+from policyengine_us.tools.geography.county_helpers import (
+    load_county_fips_dataset,
+)
 from pathlib import Path
 import pytest
 import pandas as pd
+import gzip
 
 
 @pytest.fixture
@@ -15,8 +19,38 @@ def tmp_fips_dir(tmp_path) -> Path:
     return TMP_DIR
 
 
-# Ensure dataset exists and is accessible
-class TestCountyFIPSDataset:
+@pytest.fixture
+def mock_dataset_file(tmp_fips_dir) -> Path:
+    """Create a small mock dataset file for testing."""
+
+    # Create a small test CSV with the expected format
+    test_data = pd.DataFrame(
+        {
+            "county_fips": ["01001", "02002", "03003"],
+            "county_name": ["Test County 1", "Test County 2", "Test County 3"],
+            "state": ["AL", "AK", "AZ"],
+        }
+    )
+
+    # Save as gzipped CSV
+    test_file_path = tmp_fips_dir / "county_fips_2020.csv.gz"
+    with gzip.open(test_file_path, "wb") as f:
+        test_data.to_csv(f, index=False, encoding="utf-8")
+
+    return test_file_path
+
+
+def mock_download_huggingface_dataset(filepath):
+    def _mock(*args, **kwargs):
+        return filepath
+
+    return _mock
+
+
+class TestCountyFIPSDatasetFile:
+    """
+    Test that the county FIPS dataset file exists and downloads properly.
+    """
 
     HUGGINGFACE_REPO = "policyengine/policyengine-us-data"
     COUNTY_FIPS_DATASET_FILENAME = "county_fips_2020.csv.gz"
@@ -63,6 +97,32 @@ class TestCountyFIPSDataset:
         assert all(isinstance(fips, str) for fips in df["county_fips"])
 
 
-# When downloading a correctly formatted file, the function should return a pandas DataFrame with the correct columns.
+class TestLoadCountyFIPSDataset:
+    """
+    Test that the load_county_fips_dataset function works correctly.
+    """
+
+    def test_when_func_is_run__correctly__returns_dataframe(
+        self, mock_dataset_file, monkeypatch
+    ):
+        """
+        Test that the load_county_fips_dataset function returns a DataFrame with the correct columns.
+        """
+
+        # Apply the mock
+        monkeypatch.setattr(
+            "policyengine_us.tools.geography.county_helpers.download_huggingface_dataset",
+            mock_download_huggingface_dataset(mock_dataset_file),
+        )
+
+        result = load_county_fips_dataset()
+
+        # Verify the result is a pandas DataFrame with expected structure
+        assert isinstance(result, pd.DataFrame)
+        assert len(result) == 3
+        assert (
+            "01001" in result.values
+        )  # Check that FIPS codes are preserved as strings
+
 
 # When download error occurs, function should throw error

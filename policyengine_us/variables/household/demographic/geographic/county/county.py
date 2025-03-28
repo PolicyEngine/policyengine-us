@@ -25,7 +25,7 @@ class county(Variable):
         county_fips: "pd.Series[str]" | None = household("county_fips", period)
 
         if county_fips.all():
-            COUNTY_FIPS_DATASET: "pd.Series[str]" = load_county_fips_dataset()
+            COUNTY_FIPS_DATASET: "pd.DataFrame" = load_county_fips_dataset()
 
             # Decode FIPS codes
             county_fips_codes = COUNTY_FIPS_DATASET.set_index("county_fips")
