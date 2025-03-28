@@ -1,0 +1,15 @@
+- name: Eligible senior 
+  period: 2025
+  input:
+    age: 65
+    state_code: MA
+  output:
+    ma_mbta_senior_charlie_card_eligible: true
+
+- name: Ineligible senior 
+  period: 2025
+  input:
+    age: 64
+    state_code: MA
+  output:
+    ma_mbta_senior_charlie_card_eligible: false
