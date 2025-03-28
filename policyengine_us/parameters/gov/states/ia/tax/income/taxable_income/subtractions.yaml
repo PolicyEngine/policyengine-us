@@ -3,7 +3,23 @@ values:
   2021-01-01:
     # Line 1B
     - us_govt_interest
-    # Dividends from federal securitites
+    # Dividends from federal securities
+    # Line 5B 
+    - taxable_social_security
+    # Line 6B
+    - military_service_income
+    # Line 7B
+    - ia_pension_exclusion
+    # Railroad unemployment income 
+    # Bonus Depreciation
+    # Iowa Health Insurance Deduction
+    # Iowa capital gains deduction
+  2024-01-01:
+    # Line 1B
+    - us_govt_interest
+    # Dividends from federal securities Why don't we use dividend_income ? 
+    # Line 4B
+    - military_retirement_pay
     # Line 5B 
     - taxable_social_security
     # Line 6B
