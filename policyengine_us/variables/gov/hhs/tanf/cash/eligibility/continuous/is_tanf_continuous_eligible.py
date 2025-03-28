@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class is_tanf_continuous_eligible(Variable):
     value_type = bool
     entity = SPMUnit
-    definition_period = YEAR
+    definition_period = MONTH
     label = "Continued Economic Eligibility for TANF"
     documentation = "Whether the familiy meets the economic requirements for the Temporary Assistance for Needy Families program after being approved."
 

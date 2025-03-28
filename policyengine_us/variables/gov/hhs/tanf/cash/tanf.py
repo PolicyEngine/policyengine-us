@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class tanf(Variable):
     value_type = float
     entity = SPMUnit
-    definition_period = YEAR
+    definition_period = MONTH
     label = "TANF"
     documentation = (
         "Value of Temporary Assistance for Needy Families benefit received."

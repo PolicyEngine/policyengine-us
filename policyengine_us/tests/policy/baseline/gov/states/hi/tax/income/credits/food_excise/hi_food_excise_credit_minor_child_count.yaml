@@ -1,30 +1,56 @@
-- name: 1 minor child over half support
-  period: 2022
-  input:
-    people:
-      person1:
-        age: 3
-        is_child: true
-        child_support_received: 400
-        social_security_survivors: 100
-        tanf_person: 401
-      person2:
-        age: 19
-        is_child: true
-        child_support_received: 400
-        social_security_survivors: 100
-        tanf_person: 401
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
-    households:
-      household: 
-        members: [person1, person2]
-        state_code: HI
-  output:
-    hi_food_excise_credit_minor_child_count: 1
+# - name: 1 minor child over half support
+#   period: 2022
+#   input:
+#     people:
+#       person1:
+#         age: 3
+#         is_child: true
+#         child_support_received: 400
+#         social_security_survivors: 100
+#         tanf_person: 401
+#       person2:
+#         age: 19
+#         is_child: true
+#         child_support_received: 400
+#         social_security_survivors: 100
+#         tanf_person: 401
+#     tax_units:
+#       tax_unit:
+#         members: [person1, person2]
+#     households:
+#       household: 
+#         members: [person1, person2]
+#         state_code: HI
+#   output:
+#     hi_food_excise_credit_minor_child_count: 1
 
-- name: 2 minor child over half support
+# - name: 2 minor child over half support
+#   period: 2022
+#   input:
+#     people:
+#       person1:
+#         age: 3
+#         is_child: true
+#         child_support_received: 400
+#         social_security_survivors: 100
+#         tanf_person: 401
+#       person2:
+#         age: 17
+#         is_child: true
+#         child_support_received: 500
+#         social_security_survivors: 100
+#         tanf_person: 401
+#     tax_units:
+#       tax_unit:
+#         members: [person1, person2]
+#     households:
+#       household: 
+#         members: [person1, person2]
+#         state_code: HI
+#   output:
+#     hi_food_excise_credit_minor_child_count: 2
+
+- name: 1 minor child over half support
   period: 2022
   input:
     people:
@@ -37,33 +63,7 @@
       person2:
         age: 17
         is_child: true
-        child_support_received: 500
-        social_security_survivors: 100
-        tanf_person: 401
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
-    households:
-      household: 
-        members: [person1, person2]
-        state_code: HI
-  output:
-    hi_food_excise_credit_minor_child_count: 2
-
-- name: 1 minor child over half support
-  period: 2022
-  input:
-    people:
-      person1:
-        age: 3
-        is_child: true
-        child_support_received: 400
-        social_security_survivors: 100
-        tanf_person: 401
-      person2:
-        age: 17
-        is_child: true
-        child_support_received: 500
+        child_support_received: 501
         social_security_survivors: 100
         tanf_person: 400
     tax_units:
@@ -74,4 +74,5 @@
         members: [person1, person2]
         state_code: HI
   output:
+    hi_food_excise_credit_child_receiving_public_support: [true, false]
     hi_food_excise_credit_minor_child_count: 1

@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class tanf_person(Variable):
     value_type = float
     entity = Person
-    definition_period = YEAR
+    definition_period = MONTH
     label = "Per-capita TANF"
     documentation = (
         "Per-capita value of Temporary Assistance for Needy Families benefit."
