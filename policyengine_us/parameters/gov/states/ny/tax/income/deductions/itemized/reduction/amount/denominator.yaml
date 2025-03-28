@@ -1,10 +1,10 @@
-description: New York State uses this amount as the denominator to determine the percentage reduction of itemized deductions.
+description: New York sets this value as the denominator in calculating the percentage reduction of itemized deductions for high-income taxpayers.
 values:
   2021-01-01: 50_000
 metadata:
   unit: currency-USD
   period: year
-  label: New York itemized deduction phaseout denominator
+  label: New York itemized deduction reduction calculation denominator
   reference:
     - title: SECTION 615 New York itemized deduction of a resident individual (f)(2)
       href: https://www.nysenate.gov/legislation/laws/TAX/615
