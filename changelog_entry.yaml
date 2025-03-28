@@ -3,6 +3,7 @@
     added:
     - Conversion of county FIPS codes to county enum items
     - Helper function to convert string county names to enum keys
+    - Function to download and parse county FIPS dataset from Hugging Face
     changed:
     - Modified county variable to depend on FIPS input, then on ZIP code
     - Modified county variable to use helper function for conversion from county names to enum keys
