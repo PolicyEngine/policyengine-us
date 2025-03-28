@@ -1,0 +1,26 @@
+- name: Case 1, earned income after deduction is higher than dependent care deduction.
+  period: 2023
+  input:
+    ma_eaedc_earned_income_after_disregard_person: 200
+    ma_eaedc_dependent_care_deduction_person: 100
+    state_code: MA
+  output:
+    ma_eaedc_countable_earned_income: 100
+
+- name: Case 2, earned income after deduction is lower than dependent care deduction.
+  period: 2023
+  input:
+    ma_eaedc_earned_income_after_disregard_person: 500
+    ma_eaedc_dependent_care_deduction_person: 600
+    state_code: MA
+  output:
+    ma_eaedc_countable_earned_income: 0 
+
+- name: Case 3, both $0.
+  period: 2023
+  input:
+    ma_eaedc_earned_income_after_disregard_person: 0
+    ma_eaedc_dependent_care_deduction_person: 0
+    state_code: MA
+  output:
+    ma_eaedc_countable_earned_income: 0 

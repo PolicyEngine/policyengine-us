@@ -1,0 +1,35 @@
+- name: Case 1, passed all eligibility test, eligible. 
+  period: 2022
+  input:
+    ma_eaedc_financial_eligible: true
+    ma_eaedc_non_financial_eligible: true
+    state_code: MA
+  output:
+    ma_eaedc_eligible: true
+
+- name: Case 2, failed one eligibility test, ineligible. 
+  period: 2022
+  input:
+    ma_eaedc_financial_eligible: true
+    ma_eaedc_non_financial_eligible: false
+    state_code: MA
+  output:
+    ma_eaedc_eligible: false
+
+- name: Case 2, failed one eligibility test, ineligible. 
+  period: 2022
+  input:
+    ma_eaedc_financial_eligible: false
+    ma_eaedc_non_financial_eligible: true
+    state_code: MA
+  output:
+    ma_eaedc_eligible: false
+
+- name: Case 3, failed both eligibility test, ineligible. 
+  period: 2022
+  input:
+    ma_eaedc_financial_eligible: false
+    ma_eaedc_non_financial_eligible: false
+    state_code: MA
+  output:
+    ma_eaedc_eligible: false

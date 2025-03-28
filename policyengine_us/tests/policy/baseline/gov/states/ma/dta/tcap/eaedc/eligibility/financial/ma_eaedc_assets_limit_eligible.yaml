@@ -1,0 +1,26 @@
+- name: Case 1, below assets limit, eligible.
+  period: 2022-01
+  input:
+    ma_eaedc_countable_assets: 1_500
+    ma_eaedc_living_arrangement: E
+    state_code: MA
+  output:
+    ma_eaedc_assets_limit_eligible: true
+
+- name: Case 2, above assets limit, ineligible. 
+  period: 2022-01
+  input:
+    ma_eaedc_countable_assets: 2_200
+    ma_eaedc_living_arrangement: E
+    state_code: MA
+  output:
+    ma_eaedc_assets_limit_eligible: false 
+
+- name: Case 3, all other living arrangement has no asset limit.
+  period: 2022-01
+  input:
+    ma_eaedc_countable_assets: 2_500
+    ma_eaedc_living_arrangement: A
+    state_code: MA
+  output:
+    ma_eaedc_assets_limit_eligible: true
