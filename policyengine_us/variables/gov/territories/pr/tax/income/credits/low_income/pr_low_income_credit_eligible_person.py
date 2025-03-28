@@ -13,4 +13,8 @@ class pr_low_income_credit_eligible_person(Variable):
         p = parameters(period).gov.territories.pr.tax.income.credits.low_income
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         age_eligible = age >= p.age_threshold
-        return head_or_spouse & age_eligible
+        # if you claim earned income credit, aren't eligible for low income credit
+        eitc_not_claimed = (
+            person.tax_unit("pr_earned_income_credit", period) <= 0
+        )
+        return head_or_spouse & age_eligible & eitc_not_claimed
