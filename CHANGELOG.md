@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.234.0] - 2025-03-28 18:57:33
+
+### Added
+
+- 2024 Hawaii State Income Tax Updates.
+
 ## [1.233.0] - 2025-03-28 17:49:52
 
 ### Added
@@ -11209,6 +11215,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.234.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.233.0...1.234.0
 [1.233.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.232.0...1.233.0
 [1.232.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.231.0...1.232.0
 [1.231.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.230.0...1.231.0
