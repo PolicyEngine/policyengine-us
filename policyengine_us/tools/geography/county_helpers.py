@@ -35,6 +35,8 @@ def load_county_fips_dataset() -> pd.DataFrame:
             encoding="utf-8",
         )
 
+        return COUNTY_FIPS_DATASET
+
     except Exception as e:
         raise Exception(
             f"Error downloading {COUNTY_FIPS_DATASET_FILENAME} from {HUGGINGFACE_REPO}: {e}"
