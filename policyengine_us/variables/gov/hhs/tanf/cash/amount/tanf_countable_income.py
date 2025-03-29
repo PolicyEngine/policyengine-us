@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class tanf_countable_income(Variable):
     value_type = float
     entity = SPMUnit
-    definition_period = YEAR
+    definition_period = MONTH
     label = "TANF countable income"
     documentation = "Countable income for calculating Temporary Assistance for Needy Families benefit."
     unit = USD
@@ -17,9 +17,8 @@ class tanf_countable_income(Variable):
         deductions = parameters(
             period
         ).gov.hhs.tanf.cash.amount.countable_income.deductions
-        # Annualize the monthly household deduction.
         state = spm_unit.household("state_code_str", period)
-        household_deduction = deductions.household[state] * 12
+        household_deduction = deductions.household[state]
         # First subtract household deduction from unearned income.
         unearned_income = spm_unit("tanf_gross_unearned_income", period)
         countable_unearned_income = max_(
