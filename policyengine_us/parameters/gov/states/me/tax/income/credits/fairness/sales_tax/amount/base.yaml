@@ -3,6 +3,7 @@ SINGLE:
   values:
     2021-01-01: 130
     2023-01-01: 140
+    2024-01-01: 150
   uprating:
     parameter: gov.irs.uprating
     rounding:
@@ -13,6 +14,7 @@ JOINT:
     2021-01-01: 180
     2022-01-01: 185
     2023-01-01: 200
+    2024-01-01: 210
   uprating:
     parameter: gov.irs.uprating
     rounding:
@@ -31,6 +33,7 @@ HEAD_OF_HOUSEHOLD:
     2021-01-01: 180
     2022-01-01: 185
     2023-01-01: 200
+    2024-01-01: 210
   uprating:
     parameter: gov.irs.uprating
     rounding:
@@ -41,6 +44,7 @@ SURVIVING_SPOUSE:
     2021-01-01: 180
     2022-01-01: 185
     2023-01-01: 200
+    2024-01-01: 210
   uprating:
     parameter: gov.irs.uprating
     rounding:
@@ -60,6 +64,8 @@ metadata:
     - title: 2022 Form 1040ME Property Tax Fairness Credit / Sales Tax Fairness Credit 
       href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/22_1040me_sched_pstfc_ff.pdf#page=4
     - title: 2023 Form 1040ME Property Tax Fairness Credit / Sales Tax Fairness Credit
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/23_1040me_sched_pstfc_ff.pdf#page=4
+    - title: 2024 Form 1040ME Property Tax Fairness Credit / Sales Tax Fairness Credit
       href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/23_1040me_sched_pstfc_ff.pdf#page=4
   period: year
   label: Maine sales tax fairness credit base amount
