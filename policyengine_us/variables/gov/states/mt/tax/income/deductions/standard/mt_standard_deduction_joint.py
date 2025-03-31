@@ -18,7 +18,7 @@ class mt_standard_deduction_joint(Variable):
         # Get filing status
         filing_status = person.tax_unit("filing_status", period)
 
-        if year <= 2023:
+        if p.applies:
             # Pre-2024: MT specific standard deduction calculation
             p = parameters(period).gov.states.mt.tax.income.deductions.standard
             agi = add(person.tax_unit, period, ["mt_agi"])
