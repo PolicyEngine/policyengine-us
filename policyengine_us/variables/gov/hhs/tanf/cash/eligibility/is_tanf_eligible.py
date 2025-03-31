@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class is_tanf_eligible(Variable):
     value_type = bool
     entity = SPMUnit
-    definition_period = YEAR
+    definition_period = MONTH
     label = "Eligibility for TANF"
     documentation = "Whether the family is eligible for Temporary Assistance for Needy Families benefit."
 

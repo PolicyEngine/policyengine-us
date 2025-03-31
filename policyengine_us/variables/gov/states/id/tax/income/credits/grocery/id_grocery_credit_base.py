@@ -16,4 +16,4 @@ class id_grocery_credit_base(Variable):
     def formula(person, period, parameters):
         return parameters(
             period
-        ).gov.states.id.tax.income.credits.grocery.amount.base
+        ).gov.states.id.tax.income.credits.grocery.base.amount
