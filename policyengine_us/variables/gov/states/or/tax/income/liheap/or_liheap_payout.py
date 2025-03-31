@@ -5,7 +5,7 @@ class or_liheap_payout(Variable):
     value_type = float
     entity = SPMUnit
     definition_period = YEAR
-    defined_for = StateCode.OR
+    defined_for = "or_liheap_eligibility"
     label = "LIHEAP Payout"
 
     def formula(spm_unit, period, parameters):

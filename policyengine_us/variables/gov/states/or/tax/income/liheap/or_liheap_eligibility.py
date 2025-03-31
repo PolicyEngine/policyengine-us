@@ -17,7 +17,7 @@ class or_liheap_eligibility(Variable):
         income = add(spm_unit, period, ["irs_gross_income"])
         threshold = spm_unit("or_liheap_income_threshold", period)
         is_subsidized = spm_unit("subsidized_housing", period)
-        heat_in_rent = spm_unit("heating_costs_included_in_rent", period)
+        heat_in_rent = spm_unit("or_liheap_heat_in_rent", period)
         pays_own_heat = ~heat_in_rent
 
         return (income <= threshold) & (
