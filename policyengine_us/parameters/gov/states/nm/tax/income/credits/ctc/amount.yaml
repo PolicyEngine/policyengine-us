@@ -25,89 +25,47 @@ brackets:
       2023-01-01: -.inf
     amount:
       metadata:
-        uprating:
-          parameter: gov.bls.cpi.cpi_u
-          base_period: 2022
-          floor: true
-          rounding:
-            type: downwards
-            interval: 1
+        uprating: gov.irs.uprating
       2023-01-01: 600
       2024-01-01: 622
   - threshold:
       2023-01-01: 25_001
     amount:
       metadata:
-        uprating:
-          parameter: gov.bls.cpi.cpi_u
-          base_period: 2022
-          floor: true
-          rounding:
-            type: downwards
-            interval: 1
+        uprating: gov.irs.uprating
       2023-01-01: 400
       2024-01-01: 414
   - threshold:
       2023-01-01: 50_001
     amount:
       metadata:
-        uprating:
-          parameter: gov.bls.cpi.cpi_u
-          base_period: 2022
-          floor: true
-          rounding:
-            type: downwards
-            interval: 1
+        uprating: gov.irs.uprating
       2023-01-01: 200
       2024-01-01: 207
   - threshold:
       2023-01-01: 75_001
     amount:
       metadata:
-        uprating:
-          parameter: gov.bls.cpi.cpi_u
-          base_period: 2022
-          floor: true
-          rounding:
-            type: downwards
-            interval: 1
+        uprating: gov.irs.uprating
       2023-01-01: 100
       2024-01-01: 103
   - threshold:
       2023-01-01: 100_001
     amount:
       metadata:
-        uprating:
-          parameter: gov.bls.cpi.cpi_u
-          base_period: 2022
-          floor: true
-          rounding:
-            type: downwards
-            interval: 1
+        uprating: gov.irs.uprating
       2023-01-01: 75
       2024-01-01: 77
   - threshold:
       2023-01-01: 200_001
     amount:
       metadata:
-        uprating:
-          parameter: gov.bls.cpi.cpi_u
-          base_period: 2022
-          floor: true
-          rounding:
-            type: downwards
-            interval: 1
+        uprating: gov.irs.uprating
       2023-01-01: 50
       2024-01-01: 51
   - threshold:
       2023-01-01: 350_001
     amount:
       metadata:
-        uprating:
-          parameter: gov.bls.cpi.cpi_u
-          base_period: 2022
-          floor: true
-          rounding:
-            type: downwards
-            interval: 1
+        uprating: gov.irs.uprating
       2023-01-01: 25
