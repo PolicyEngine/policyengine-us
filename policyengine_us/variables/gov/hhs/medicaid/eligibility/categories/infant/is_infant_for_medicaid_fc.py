@@ -1,6 +1,5 @@
 from policyengine_us.model_api import *
 
-
 class is_infant_for_medicaid_fc(Variable):
     value_type = bool
     entity = Person
@@ -11,5 +10,7 @@ class is_infant_for_medicaid_fc(Variable):
         ma = parameters(period).gov.hhs.medicaid.eligibility.categories.infant
         income = person("medicaid_income_level", period)
         state = person.household("state_code_str", period)
-        income_limit = ma.income_limit[state]
+        
+        # Perform a vectorized lookup for income limits for each person by iterating over the state codes.
+        income_limit = np.array([ma.income_limit[s] for s in state])
         return income < income_limit
