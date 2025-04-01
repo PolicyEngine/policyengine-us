@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.240.1] - 2025-04-01 18:27:47
+
+### Added
+
+- Conversion of county FIPS codes to county enum items
+- Helper function to convert string county names to enum keys
+- Function to download and parse county FIPS dataset from Hugging Face
+
+### Changed
+
+- Modified county variable to depend on FIPS input, then on ZIP code
+- Modified county variable to use helper function for conversion from county names to enum keys
+
 ## [1.240.0] - 2025-04-01 18:13:56
 
 ### Added
@@ -11253,6 +11266,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.240.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.240.0...1.240.1
 [1.240.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.239.0...1.240.0
 [1.239.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.238.0...1.239.0
 [1.238.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.237.0...1.238.0
