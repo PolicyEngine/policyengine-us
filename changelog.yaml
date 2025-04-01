@@ -9300,3 +9300,227 @@
     added:
     - 2025 Idaho income tax cut.
   date: 2025-03-10 15:29:09
+- bump: patch
+  changes:
+    fixed:
+    - Colorado credit returns NaNs in 2025 and beyond.
+    - Added test for NaNs in 2025 and beyond.
+  date: 2025-03-11 12:24:12
+- bump: patch
+  changes:
+    fixed:
+    - Minnesota social security subtraction reduction.
+  date: 2025-03-11 15:56:15
+- bump: minor
+  changes:
+    fixed:
+    - Fixed California Rating Area 16's ACA premium.
+  date: 2025-03-11 21:57:12
+- bump: minor
+  changes:
+    added:
+    - 2024 Idaho State Income Tax Updates.
+  date: 2025-03-12 15:09:34
+- bump: minor
+  changes:
+    added:
+    - 2024 Kentucky State Income Tax Updates.
+  date: 2025-03-12 18:28:39
+- bump: minor
+  changes:
+    added:
+    - 2024 Alabama State Income Tax Updates.
+  date: 2025-03-13 15:42:03
+- bump: patch
+  changes:
+    fixed:
+    - Changed reform to tax employer payroll taxes from a parametric to a structural
+      reform to avoid double-counting.
+  date: 2025-03-14 00:28:04
+- bump: minor
+  changes:
+    added:
+    - Move branch_to_determine_itemization to gov/simulation folder.
+  date: 2025-03-17 09:50:22
+- bump: minor
+  changes:
+    added:
+    - 2024 Mississippi State Income Tax Updates.
+  date: 2025-03-17 21:18:41
+- bump: minor
+  changes:
+    added:
+    - New York and Vermont ACA family tier ratings.
+  date: 2025-03-17 21:43:27
+- bump: minor
+  changes:
+    added:
+    - Virginia state tax code 2024 updates.
+    - Replace inactive statutory links in the Virginia tax code.
+    - Update description of Virginia itemized deduction limits.
+  date: 2025-03-17 21:48:20
+- bump: patch
+  changes:
+    fixed:
+    - Idaho 2024 income tax rate.
+  date: 2025-03-18 07:50:27
+- bump: minor
+  changes:
+    added:
+    - Missouri state tax code 2024 updates.
+  date: 2025-03-19 07:54:52
+- bump: minor
+  changes:
+    fixed:
+    - Fixed Texas and Maine rating areas and corresponding SLCSP.
+  date: 2025-03-19 09:20:57
+- bump: patch
+  changes:
+    fixed:
+    - Rename capital_gains_before_response to long_term_capital_gains_before_response
+      as it is unclear whether it might include/allocate short term.
+  date: 2025-03-19 09:32:35
+- bump: patch
+  changes:
+    fixed:
+    - Remove SSI from unearned income sources for NC TANF.
+  date: 2025-03-19 20:55:15
+- bump: minor
+  changes:
+    added:
+    - Minnesota 2024 state income tax updates.
+  date: 2025-03-19 21:49:56
+- bump: patch
+  changes:
+    fixed:
+    - Remove the mistakenly added tax-dependent limit from the NC SCCA program as
+      it is not required.
+  date: 2025-03-20 12:19:03
+- bump: patch
+  changes:
+    added:
+    - Added Maryland Tax Code Updates for 2024.
+  date: 2025-03-20 12:28:46
+- bump: patch
+  changes:
+    fixed:
+    - "Fixed SSI spousal deeming logic by adding the FBR differential threshold check\
+      \ required by \xA7416.1163(d)(1). Now the ineligible spouse's income is only\
+      \ deemed if it exceeds the difference between couple and individual FBRs."
+    - Corrected a multi-argument `max_()` usage in the State Supplement code to use
+      `np.maximum.reduce(...)`, ensuring that single disabled individuals now receive
+      the correct (non-zero) supplement amount.
+    - Updated `ssi_category` so that disabled individuals are categorized properly
+      (no longer `'NONE'`), fixing a scenario where the category check returned zero
+      for disabled recipients.
+    - Revised the Massachusetts FULL_COST integration test to align with our current
+      offset logic for large leftover incomes (previously returned an unexpected zero).
+  date: 2025-03-20 13:20:44
+- bump: patch
+  changes:
+    fixed:
+    - Refactor New Mexico itemized deductions.
+  date: 2025-03-20 14:53:50
+- bump: minor
+  changes:
+    added:
+    - 2024 North Dakota State Income Tax Updates.
+  date: 2025-03-20 15:35:49
+- bump: minor
+  changes:
+    added:
+    - 2023 to 2025 Massachusetts SSI State Supplement Parameters.
+  date: 2025-03-20 21:06:04
+- bump: minor
+  changes:
+    added:
+    - Illinois 2024 income tax updates.
+    fixed:
+    - Illinois child tax credit logic.
+  date: 2025-03-20 23:52:06
+- bump: minor
+  changes:
+    added:
+    - 2024 Wisconsin State Income Tax Updates.
+  date: 2025-03-24 11:01:52
+- bump: minor
+  changes:
+    added:
+    - Oklahoma State Tax Code 2024 Updates.
+  date: 2025-03-24 11:38:01
+- bump: minor
+  changes:
+    added:
+    - Include California State Supplement eligibility rules and include in the net
+      income tree .
+  date: 2025-03-24 14:07:04
+- bump: patch
+  changes:
+    fixed:
+    - Minnesota working family credit phase-in threshold.
+  date: 2025-03-24 20:55:29
+- bump: minor
+  changes:
+    added:
+    - Massachusetts Transitional Aid to Families with Dependent Children.
+  date: 2025-03-24 21:11:24
+- bump: patch
+  changes:
+    added:
+    - Updated State Spending on Medicaid.
+  date: 2025-03-25 09:56:10
+- bump: minor
+  changes:
+    added:
+    - Arizona 2024 income tax updates.
+  date: 2025-03-25 16:34:13
+- bump: minor
+  changes:
+    added:
+    - 2025 Idaho Grocery Credit.
+  date: 2025-03-25 20:17:19
+- bump: minor
+  changes:
+    added:
+    - Kansas head of household additional exemption.
+  date: 2025-03-25 20:22:29
+- bump: minor
+  changes:
+    added:
+    - 2024 South Carolina State Income Tax Updates.
+  date: 2025-03-26 17:10:58
+- bump: minor
+  changes:
+    added:
+    - 2024 Indiana Income Tax Updates.
+  date: 2025-03-28 12:23:21
+- bump: minor
+  changes:
+    added:
+    - Convert TANF variables to monthly.
+  date: 2025-03-28 17:49:52
+- bump: minor
+  changes:
+    added:
+    - 2024 Hawaii State Income Tax Updates.
+  date: 2025-03-28 18:57:33
+- bump: minor
+  changes:
+    added:
+    - 2024 Washington State Income Tax Updates.
+  date: 2025-03-31 15:42:14
+- bump: minor
+  changes:
+    added:
+    - 2024 Louisiana State Income Tax Updates.
+  date: 2025-04-01 12:10:52
+- bump: minor
+  changes:
+    added:
+    - 2025 Utah Income Tax Changes.
+  date: 2025-04-01 13:33:21
+- bump: minor
+  changes:
+    added:
+    - Massachusetts Emergency Aid to the Elderly, Disabled and Children (EAEDC).
+  date: 2025-04-01 13:44:29

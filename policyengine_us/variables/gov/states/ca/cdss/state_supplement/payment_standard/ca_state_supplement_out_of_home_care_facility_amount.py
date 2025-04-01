@@ -14,7 +14,12 @@ class ca_state_supplement_out_of_home_care_facility_amount(Variable):
         p = parameters(
             period
         ).gov.states.ca.cdss.state_supplement.payment_standard
-        out_of_home_care_facility_count = add(
-            spm_unit, period, ["in_out_of_home_care_facility"]
+        person = spm_unit.members
+        eligible = person("ca_state_supplement_eligible_person", period)
+        in_out_of_home_care_facility = person(
+            "in_out_of_home_care_facility", period
+        )
+        out_of_home_care_facility_count = spm_unit.sum(
+            in_out_of_home_care_facility * eligible
         )
         return out_of_home_care_facility_count * p.allowance.out_of_home_care
