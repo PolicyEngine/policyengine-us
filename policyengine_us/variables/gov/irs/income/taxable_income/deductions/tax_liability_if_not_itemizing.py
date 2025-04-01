@@ -17,4 +17,6 @@ class tax_liability_if_not_itemizing(Variable):
             period,
             np.zeros((tax_unit.count,), dtype=bool),
         )
-        return non_itemized_branch.calculate("federal_state_income_tax", period)
+        return non_itemized_branch.calculate(
+            "federal_state_income_tax", period
+        )
