@@ -2,7 +2,7 @@ from policyengine_us.model_api import *
 
 
 class is_ssi_eligible(Variable):
-    value_type = float
+    value_type = bool
     entity = Person
     label = "Is SSI eligible person"
     definition_period = YEAR
