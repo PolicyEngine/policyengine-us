@@ -13,9 +13,8 @@ class is_infant_for_medicaid_nfc(Variable):
         state_code = person.household("state_code_str", period)
 
         # Use vectorized selection (similar to the example) to choose which calculation to use
-        result = select(
+        return select(
             [state_code == "CA", state_code == "MN"],
             [ma.age_range.in_ca.calc(age), ma.age_range.in_mn.calc(age)],
             default=ma.age_range.other.calc(age),
         )
-        return result

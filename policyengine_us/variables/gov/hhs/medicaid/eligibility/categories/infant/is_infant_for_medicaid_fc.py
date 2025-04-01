@@ -12,6 +12,4 @@ class is_infant_for_medicaid_fc(Variable):
         income = person("medicaid_income_level", period)
         state = person.household("state_code_str", period)
 
-        # Perform a vectorized lookup for income limits for each person by iterating over the state codes.
-        income_limit = np.array([ma.income_limit[s] for s in state])
         return income < income_limit
