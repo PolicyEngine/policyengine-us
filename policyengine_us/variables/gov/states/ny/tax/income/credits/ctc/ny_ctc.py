@@ -58,7 +58,6 @@ class ny_ctc(Variable):
             qualifies_for_federal_ctc = pre_tcja_ctc.person(
                 "ctc_qualifying_child", period
             )
-            del simulation.branches["pre_tcja_ctc"]
             gov = branch_parameters(period).gov
         # Remaining logic is based on NY parameters.
         qualifies = qualifies_for_federal_ctc & (age >= p.minimum_age)
