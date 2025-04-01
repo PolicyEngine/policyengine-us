@@ -6,7 +6,7 @@ class is_tanf_non_cash_hheod(Variable):
     entity = SPMUnit
     label = "Elderly or disabled for TANF non-cash benefit"
     documentation = "Whether the household is considered elderly or disabled for TANF non-cash benefit for SNAP BBCE"
-    definition_period = YEAR
+    definition_period = MONTH
 
     def formula(spm_unit, period, parameters):
         state = spm_unit.household("state_code_str", period)
