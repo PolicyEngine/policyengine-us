@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.236.0] - 2025-04-01 12:10:52
+
+### Added
+
+- 2024 Louisiana State Income Tax Updates.
+
 ## [1.235.0] - 2025-03-31 15:42:14
 
 ### Added
@@ -11221,6 +11227,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.236.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.235.0...1.236.0
 [1.235.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.234.0...1.235.0
 [1.234.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.233.0...1.234.0
 [1.233.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.232.0...1.233.0
