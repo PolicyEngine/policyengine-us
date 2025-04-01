@@ -17,6 +17,8 @@ class tax_liability_if_not_itemizing(Variable):
             period,
             np.zeros((tax_unit.count,), dtype=bool),
         )
-        return non_itemized_branch.calculate(
+        values = non_itemized_branch.calculate(
             "federal_state_income_tax", period
         )
+        del simulation.branches["not_itemizing"]
+        return values

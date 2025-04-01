@@ -56,6 +56,7 @@ def create_eitc_winship_reform(parameters, period, bypass=False):
                 "adjusted_gross_income", period, filer_earned_head_only
             )
             head_eitc = head_only_branch.calculate("original_eitc", period)
+            del simulation.branches["head_only"]
 
             spouse_only_branch = simulation.get_branch("spouse_only")
             spouse_only_branch.set_input(
@@ -65,6 +66,7 @@ def create_eitc_winship_reform(parameters, period, bypass=False):
                 "adjusted_gross_income", period, filer_earned_spouse_only
             )
             spouse_eitc = spouse_only_branch.calculate("original_eitc", period)
+            del simulation.branches["spouse_only"]
 
             agi_limit = parameters(
                 period

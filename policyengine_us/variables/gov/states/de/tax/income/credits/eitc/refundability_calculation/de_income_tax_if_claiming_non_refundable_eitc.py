@@ -17,4 +17,6 @@ class de_income_tax_if_claiming_non_refundable_eitc(Variable):
             period,
             np.zeros((tax_unit.count,), dtype=bool),
         )
-        return non_refundable_branch.calculate("de_income_tax", period)
+        values = non_refundable_branch.calculate("de_income_tax", period)
+        del simulation.branches["de_non_refundable_eitc"]
+        return values
