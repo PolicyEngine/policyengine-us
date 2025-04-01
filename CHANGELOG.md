@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.239.0] - 2025-04-01 16:24:37
+
+### Added
+
+- 2024 Iowa State Income Tax Updates.
+
 ## [1.238.0] - 2025-04-01 13:44:29
 
 ### Added
@@ -11239,6 +11245,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.239.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.238.0...1.239.0
 [1.238.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.237.0...1.238.0
 [1.237.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.236.0...1.237.0
 [1.236.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.235.0...1.236.0
