@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.240.0] - 2025-04-01 18:13:56
+
+### Added
+
+- Massachusetts Bay Transportation Authority Income-Eligible Reduced Fare Program eligibility.
+- Massachusetts Bay Transportation Authority Senior Charlie Card Program eligibility.
+- Massachusetts Bay Transportation Authority Transportation Access Pass (TAP) Charlie Card Program eligibility.
+
 ## [1.239.0] - 2025-04-01 16:24:37
 
 ### Added
@@ -11245,6 +11253,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.240.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.239.0...1.240.0
 [1.239.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.238.0...1.239.0
 [1.238.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.237.0...1.238.0
 [1.237.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.236.0...1.237.0
