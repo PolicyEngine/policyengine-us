@@ -12,9 +12,9 @@ class ny_itemized_deductions_reduction_applies(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(
             period
-        ).gov.states.ny.tax.income.deductions.itemized.reduction
+        ).gov.states.ny.tax.income.deductions.itemized.reduction.income_threshold
         agi = tax_unit("ny_agi", period)
         filing_status = tax_unit("filing_status", period)
-        first_reduction_threshold = p.income_threshold[filing_status]
+        first_reduction_threshold = p.lower[filing_status]
 
         return agi > first_reduction_threshold
