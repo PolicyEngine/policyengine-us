@@ -6,11 +6,10 @@ class dc_tanf_grant_standard(Variable):
     entity = SPMUnit
     label = "DC TANF grant standard"
     unit = USD
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = StateCode.DC
 
     def formula(spm_unit, period, parameters):
         unit_size = spm_unit("spm_unit_size", period)
         p = parameters(period).gov.states.dc.dhs.tanf.grant_standard
-        monthly = p.main[unit_size]
-        return monthly * MONTHS_IN_YEAR
+        return p.main[unit_size]

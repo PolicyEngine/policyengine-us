@@ -6,7 +6,7 @@ class dc_tanf_resources_eligible(Variable):
     entity = SPMUnit
     label = "DC TANF resources eligible"
     unit = USD
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = StateCode.DC
 
     def formula(spm_unit, period, parameters):
@@ -14,7 +14,7 @@ class dc_tanf_resources_eligible(Variable):
         person = spm_unit.members
         # Check if the household has at least one elderly member.
         has_elderly = spm_unit.any(
-            person("age", period) >= p.elderly_age_threshold
+            person("monthly_age", period) >= p.elderly_age_threshold
         )
         # Check if the household has at least one disabled member.
         has_disabled = spm_unit.any(person("is_disabled", period))

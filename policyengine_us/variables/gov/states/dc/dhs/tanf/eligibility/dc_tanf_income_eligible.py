@@ -5,7 +5,7 @@ class dc_tanf_income_eligible(Variable):
     value_type = bool
     entity = SPMUnit
     label = "DC TANF income eligible"
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = StateCode.DC
 
     def formula(spm_unit, period, parameters):

@@ -6,5 +6,5 @@ class dc_tanf_countable_resources(Variable):
     entity = SPMUnit
     label = "DC TANF countable resources"
     unit = USD
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = StateCode.DC

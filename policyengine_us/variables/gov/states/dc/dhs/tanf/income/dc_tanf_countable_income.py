@@ -6,7 +6,7 @@ class dc_tanf_countable_income(Variable):
     entity = SPMUnit
     label = "DC TANF countable income"
     unit = USD
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = StateCode.DC
 
     def formula(spm_unit, period, parameters):
@@ -15,7 +15,7 @@ class dc_tanf_countable_income(Variable):
             "dc_tanf_countable_gross_unearned_income", period
         )
         p = parameters(period).gov.states.dc.dhs.tanf.income.deductions.earned
-        annual_flat_exclusion = p.flat * MONTHS_IN_YEAR
+        annual_flat_exclusion = p.flat
         earnings_after_deduction = max_(
             gross_earnings - annual_flat_exclusion, 0
         ) * (1 - p.percentage)

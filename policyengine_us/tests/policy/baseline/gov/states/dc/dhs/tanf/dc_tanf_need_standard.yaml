@@ -30,6 +30,7 @@
       parent:
         age: 40
         is_child: false
+        pre_subsidy_childcare_expenses: 100
       child1:
         age: 1
         is_child: true
@@ -42,7 +43,6 @@
     spm_units:
       spm_unit:
         members: [parent, child1, child2, child3]
-        childcare_expenses: 100
         spm_unit_size: 4
     households:
       household:

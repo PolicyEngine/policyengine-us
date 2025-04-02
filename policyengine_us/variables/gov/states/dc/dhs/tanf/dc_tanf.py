@@ -6,7 +6,7 @@ class dc_tanf(Variable):
     entity = SPMUnit
     label = "DC TANF"
     unit = USD
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = "dc_tanf_eligible"
 
     def formula(spm_unit, period, parameters):

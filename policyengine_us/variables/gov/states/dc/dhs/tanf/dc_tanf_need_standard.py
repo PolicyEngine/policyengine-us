@@ -6,7 +6,7 @@ class dc_tanf_need_standard(Variable):
     entity = SPMUnit
     label = "DC TANF need standard"
     unit = USD
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = StateCode.DC
 
     def formula(spm_unit, period, parameters):
@@ -16,13 +16,12 @@ class dc_tanf_need_standard(Variable):
         # Add childcare addition, which depends on the child's age.
         person = spm_unit.members
         child = person("is_child", period)
-        age = person("age", period)
-        has_childcare_expenses = spm_unit("childcare_expenses", period) > 0
+        age = person("monthly_age", period)
+        has_childcare_expenses = add(spm_unit, period, ["pre_subsidy_childcare_expenses"]) > 0
         # Look up supplement by age, and limit to children.
         person_childcare_supplement = p.additional_childcare.calc(age) * child
         # Aggregate person-level childcare supplement to SPM unit.
         spm_unit_childcare_supplement = has_childcare_expenses * spm_unit.sum(
             person_childcare_supplement
         )
-        monthly = base + spm_unit_childcare_supplement
-        return monthly * MONTHS_IN_YEAR
+        return base + spm_unit_childcare_supplement

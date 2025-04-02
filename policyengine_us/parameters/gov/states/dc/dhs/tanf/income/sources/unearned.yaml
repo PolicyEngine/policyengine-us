@@ -1,4 +1,4 @@
-description: DC TANF counts these income sources as unearned income.
+description:  DC counts these income sources as unearned income under the Temporary Assistance for Needy Families program.
 values:
   2020-01-01:
     - veterans_benefits
@@ -14,6 +14,8 @@ values:
     - ssi
 metadata:
   unit: list
+  period: year
+  label: DC TANF unearned income sources
   reference:
     title: Code of the District of Columbia | § 4205.05. Definitions.
     href: https://code.dccouncil.gov/us/dc/council/code/sections/4-205.05
