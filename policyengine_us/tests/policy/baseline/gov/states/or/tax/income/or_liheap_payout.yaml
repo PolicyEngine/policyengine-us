@@ -55,3 +55,15 @@
     or_liheap_electricity_type: BOTH
   output:
     or_liheap_payout: 750
+
+- name: Oregon LIHEAP payout for natural gas for a county in region 2 (2021, SPM unit size 2)
+  period: 2021
+  input:      
+    county_str: CROOK_COUNTY_OR
+    state_code: OR
+    spm_unit_size: 2
+    irs_gross_income: 60_000
+    utility_type: NATURAL_GAS
+    or_liheap_eligibility: false
+  output: 
+    or_liheap_payout: 0
