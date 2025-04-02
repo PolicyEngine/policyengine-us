@@ -5,6 +5,69 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.240.1] - 2025-04-01 18:27:47
+
+### Added
+
+- Conversion of county FIPS codes to county enum items
+- Helper function to convert string county names to enum keys
+- Function to download and parse county FIPS dataset from Hugging Face
+
+### Changed
+
+- Modified county variable to depend on FIPS input, then on ZIP code
+- Modified county variable to use helper function for conversion from county names to enum keys
+
+## [1.240.0] - 2025-04-01 18:13:56
+
+### Added
+
+- Massachusetts Bay Transportation Authority Income-Eligible Reduced Fare Program eligibility.
+- Massachusetts Bay Transportation Authority Senior Charlie Card Program eligibility.
+- Massachusetts Bay Transportation Authority Transportation Access Pass (TAP) Charlie Card Program eligibility.
+
+## [1.239.0] - 2025-04-01 16:24:37
+
+### Added
+
+- 2024 Iowa State Income Tax Updates.
+
+## [1.238.0] - 2025-04-01 13:44:29
+
+### Added
+
+- Massachusetts Emergency Aid to the Elderly, Disabled and Children (EAEDC).
+
+## [1.237.0] - 2025-04-01 13:33:21
+
+### Added
+
+- 2025 Utah Income Tax Changes.
+
+## [1.236.0] - 2025-04-01 12:10:52
+
+### Added
+
+- 2024 Louisiana State Income Tax Updates.
+
+## [1.235.0] - 2025-03-31 15:42:14
+
+### Added
+
+- 2024 Washington State Income Tax Updates.
+
+## [1.234.0] - 2025-03-28 18:57:33
+
+### Added
+
+- 2024 Hawaii State Income Tax Updates.
+
+## [1.233.0] - 2025-03-28 17:49:52
+
+### Added
+
+- Convert TANF variables to monthly.
+
 ## [1.232.0] - 2025-03-28 12:23:21
 
 ### Added
@@ -11203,6 +11266,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.240.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.240.0...1.240.1
+[1.240.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.239.0...1.240.0
+[1.239.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.238.0...1.239.0
+[1.238.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.237.0...1.238.0
+[1.237.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.236.0...1.237.0
+[1.236.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.235.0...1.236.0
+[1.235.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.234.0...1.235.0
+[1.234.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.233.0...1.234.0
+[1.233.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.232.0...1.233.0
 [1.232.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.231.0...1.232.0
 [1.231.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.230.0...1.231.0
 [1.230.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.229.0...1.230.0

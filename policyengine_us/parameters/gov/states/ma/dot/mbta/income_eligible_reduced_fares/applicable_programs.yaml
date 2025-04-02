@@ -1,0 +1,16 @@
+description: Massachusetts Bay Transportation Authority (MBTA) provides the income-eligible reduced fare program to applicants who are enrolled in at least one of the following programs.
+values:
+  2024-01-01:
+    - ma_eaedc
+    - ma_tafdc
+    - snap
+    # Medicaid includes MassHealth CarePlus, MassHealth Family Assistance,
+    # MassHealth Limited, and MassHealth Standard
+    - medicaid
+metadata:
+  unit: list
+  label: Massachusetts Bay Transportation Authority (MBTA) reduced fare program categorical eligibility applicable programs
+  period: year
+  reference:
+    - title: Massachusetts BayTransportation Authority Income-Eligible Reduced Fare Program 
+      href: https://www.mbta.com/fares/reduced/income-eligible
