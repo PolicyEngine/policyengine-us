@@ -17,7 +17,9 @@ class dc_tanf_need_standard(Variable):
         person = spm_unit.members
         child = person("is_child", period)
         age = person("monthly_age", period)
-        has_childcare_expenses = add(spm_unit, period, ["pre_subsidy_childcare_expenses"]) > 0
+        has_childcare_expenses = (
+            add(spm_unit, period, ["pre_subsidy_childcare_expenses"]) > 0
+        )
         # Look up supplement by age, and limit to children.
         person_childcare_supplement = p.additional_childcare.calc(age) * child
         # Aggregate person-level childcare supplement to SPM unit.

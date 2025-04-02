@@ -12,5 +12,12 @@ class dc_tanf_eligible(Variable):
         demographic_eligible = spm_unit("is_demographic_tanf_eligible", period)
         income_eligible = spm_unit("dc_tanf_income_eligible", period)
         resources_eligible = spm_unit("dc_tanf_resources_eligible", period)
-        immigration_status_eligible = spm_unit("dc_tanf_immigration_status_eligible", period)
-        return demographic_eligible & income_eligible & resources_eligible & immigration_status_eligible
+        immigration_status_eligible = spm_unit(
+            "dc_tanf_immigration_status_eligible", period
+        )
+        return (
+            demographic_eligible
+            & income_eligible
+            & resources_eligible
+            & immigration_status_eligible
+        )
