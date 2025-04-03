@@ -11,6 +11,8 @@ class la_general_relief_base_amount(Variable):
     reference = "https://drive.google.com/file/d/1Oc7UuRFxJj-eDwTeox92PtmRVGnG9RjW/view?usp=sharing"
 
     def formula(spm_unit, period, parameters):
+        # Is married is defined for the family, 
+        # the `== 1` is necessary for the np.where statement 
         married = add(spm_unit, period, ["is_married"]) == 1
         people_eligible_based_on_immigration_status = add(
             spm_unit,
