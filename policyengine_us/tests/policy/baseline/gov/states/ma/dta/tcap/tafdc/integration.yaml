@@ -1,4 +1,4 @@
-- name: Case 1, applicant is pregnant.
+- name: Case 1, applicant is pregnant, eaedc ineligible
   period: 2022
   input:
     people:
@@ -15,6 +15,7 @@
         members: [person1]
         ma_tafdc_immigration_status_eligible: true
         spm_unit_size: 1
+        ma_eaedc_eligible: false
     tax_units:
       tax_unit:
         members: [person1]
