@@ -1,12 +1,12 @@
-description: DC excludes this amount of earnings from Temporary Assistance for Needy Families program countable income when determining need for new applicants.
+description: DC excludes this share of earnings from Temporary Assistance for Needy Families program countable income, except for determining need for new applicants.
 
 values:
-  2020-10-01: 160
+  2020-10-01: 0.67
 
 metadata:
-  unit: currency-USD
+  unit: /1
   period: month
-  label: DC TANF flat earnings exclusion
+  label: DC TANF earnings exclusion percent
   reference:
     - title: Code of the District of Columbia § 4-205.11(a)(1)
       href: https://code.dccouncil.gov/us/dc/council/code/sections/4-205.11

@@ -1,8 +1,9 @@
-description:  DC counts these income sources as unearned income under the Temporary Assistance for Needy Families program.
+description: DC counts these income sources as unearned income under the Temporary Assistance for Needy Families program.
 values:
   2020-01-01:
     - veterans_benefits
     - rental_income
+    - child_support_received
     - alimony_income
     - dividend_income
     - interest_income
@@ -10,8 +11,8 @@ values:
     - pension_income
     - unemployment_compensation
     - gi_cash_assistance
-    - social_security
-    - ssi
+
+
 metadata:
   unit: list
   period: year

@@ -1,17 +1,19 @@
-description: DC provides up to this amount in Temporary Assistance for Needy Families program, by household size.
+description: DC provides up to this Temporary Assistance for Needy Families program amount, based on household size.
 
 metadata:
   unit: currency-USD
   period: month
   breakdown:
     - range(1, 11)
-  label: DC TANF benefit amount
+  label: DC TANF standard payment amount
   reference:
     - title: TANF for District Families
       href: https://dhs.dc.gov/service/tanf-district-families
     # Adjusted for inflation beginning 2014-10-01.
     - title: Code of the District of Columbia § 4-205.52(c)
       href: https://code.dccouncil.gov/us/dc/council/code/sections/4-205.52#(c)
+    - title: DC TANF State Plan 2024 | Section 4 (4)(a) 
+      href: https://dhs.dc.gov/sites/default/files/dc/sites/dhs/service_content/attachments/DC%20TANF%20State%20Plan_Oct-2023.pdf#page=41
 
 1: 
   2022-10-01: 437

@@ -1,0 +1,20 @@
+from policyengine_us.model_api import *
+
+
+class dc_tanf_eligible_immigration_status(Variable):
+    value_type = bool
+    entity = Person
+    label = "Eligible immigration status for DC Temporary Assistance for Needy Families (TANF)"
+    definition_period = MONTH
+    reference = (
+        "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-703-400"
+    )
+    defined_for = StateCode.DC
+
+    def formula(person, period, parameters):
+        qualified_noncitizen = person("is_ssi_qualified_noncitizen", period)
+        immigration_status = person("immigration_status", period)
+        is_citizen = (
+            immigration_status == immigration_status.possible_values.CITIZEN
+        )
+        return qualified_noncitizen | is_citizen

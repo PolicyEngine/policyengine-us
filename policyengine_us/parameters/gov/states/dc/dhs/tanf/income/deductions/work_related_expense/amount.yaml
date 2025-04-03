@@ -1,13 +1,12 @@
-description: DC excludes this share of earnings from Temporary Assistance for Needy Families program countable income, except for determining need for new applicants.
+description: DC deducts this amount of work-related expenses from the gross earned income under Temporary Assistance for Needy Families program.
 
 values:
-  # Actually 2/3, but yaml does not accept "2/3".
-  2020-10-01: 0.67
+  2020-10-01: 160
 
 metadata:
-  unit: /1
+  unit: currency-USD
   period: month
-  label: DC TANF earnings exclusion percent
+  label: DC TANF work-related expense deduction amount 
   reference:
     - title: Code of the District of Columbia § 4-205.11(a)(1)
       href: https://code.dccouncil.gov/us/dc/council/code/sections/4-205.11
