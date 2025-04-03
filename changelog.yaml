@@ -9554,3 +9554,19 @@
     fixed:
     - Consolidated the different Medicaid parameters.
   date: 2025-04-02 16:46:53
+- bump: patch
+  changes:
+    fixed:
+    - Convert meets_snap_categorical_eligibility to monthly.
+  date: 2025-04-03 08:25:20
+- bump: patch
+  changes:
+    fixed:
+    - Account for the case where only one person is of the eligible immigration status
+      under the LA GR program.
+  date: 2025-04-03 11:58:58
+- bump: patch
+  changes:
+    added:
+    - Fix 2025 Utah Income Tax Rate.
+  date: 2025-04-03 16:03:51
