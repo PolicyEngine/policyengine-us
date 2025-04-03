@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class dc_tanf_grant_standard(Variable):
+class dc_tanf_standard_payment(Variable):
     value_type = float
     entity = SPMUnit
     label = (

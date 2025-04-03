@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class dc_tanf_earned_income_after_disregard(Variable):
+class dc_tanf_earned_income_after_disregard_person(Variable):
     value_type = float
     entity = Person
-    label = "DC Temporary Assistance for Needy Families (TANF) earned income after disregard"
+    label = "DC Temporary Assistance for Needy Families (TANF) earned income after disregard per person"
     unit = USD
     definition_period = MONTH
     defined_for = StateCode.DC
@@ -19,7 +19,8 @@ class dc_tanf_earned_income_after_disregard(Variable):
         return where(
             enrolled,
             # For enrolled recipients, DC applies a flat and a percentage deduction.
-            earnings_after_flat_exclusion * (1 - p.percentage),
+            earnings_after_flat_exclusion
+            * (1 - p.earned_income_disregard.percentage),
             # For new applicants, DC applies only a flat deduction.
             earnings_after_flat_exclusion,
         )

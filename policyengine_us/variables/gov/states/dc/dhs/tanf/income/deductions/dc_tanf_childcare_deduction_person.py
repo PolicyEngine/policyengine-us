@@ -11,7 +11,9 @@ class dc_tanf_childcare_deduction_person(Variable):
     defined_for = StateCode.DC
 
     def formula(person, period, parameters):
-        p = parameters(period).gov.states.dc.dhs.tanf.deductions.child_care
+        p = parameters(
+            period
+        ).gov.states.dc.dhs.tanf.income.deductions.child_care
         child = person("is_child", period)
         dependent = person("is_tax_unit_dependent", period)
         eligible_child = child & dependent
@@ -19,4 +21,4 @@ class dc_tanf_childcare_deduction_person(Variable):
         childcare_expenses = person("pre_subsidy_childcare_expenses", period)
         childcare_deduction = p.amount.calc(age) * eligible_child
 
-        return max_(childcare_expenses - childcare_deduction, 0)
+        return min_(childcare_expenses, childcare_deduction)
