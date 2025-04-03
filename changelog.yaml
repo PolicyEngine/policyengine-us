@@ -9559,3 +9559,9 @@
     fixed:
     - Convert meets_snap_categorical_eligibility to monthly.
   date: 2025-04-03 08:25:20
+- bump: patch
+  changes:
+    fixed:
+    - Account for the case where only one person is of the eligible immigration status
+      under the LA GR program.
+  date: 2025-04-03 11:58:58
