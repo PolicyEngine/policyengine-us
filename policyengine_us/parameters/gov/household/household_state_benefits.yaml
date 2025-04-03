@@ -20,7 +20,8 @@ values:
     - ne_child_care_subsidies
     # Massachusetts benefits
     #- ma_eaedc
-    - ma_tafdc
+    #- ma_tafdc
+    - dc_tanf
   2024-01-01:
     - state_supplement
     # Colorado benefits
@@ -43,7 +44,8 @@ values:
     - nc_scca
     # Massachusetts benefits
     #- ma_eaedc
-    - ma_tafdc
+    #- ma_tafdc
+    - dc_tanf
 metadata:
   unit: list
   period: year
