@@ -13,7 +13,9 @@ class ma_tafdc_dependent_care_deduction_person(Variable):
     def formula(person, period, parameters):
         dependent = person("ma_tafdc_eligible_dependent", period)
         total_weekly_hours = (
-            person.spm_unit.sum(person("weekly_hours_worked_before_lsr", period))
+            person.spm_unit.sum(
+                person("weekly_hours_worked_before_lsr", period)
+            )
             * MONTHS_IN_YEAR
         )
         age = person("monthly_age", period)
