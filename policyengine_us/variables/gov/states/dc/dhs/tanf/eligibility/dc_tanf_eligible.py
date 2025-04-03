@@ -16,7 +16,12 @@ class dc_tanf_eligible(Variable):
         income_eligible = spm_unit("dc_tanf_income_eligible", period)
         resources_eligible = spm_unit("dc_tanf_resources_eligible", period)
         immigration_status_eligible = (
-            add(spm_unit, period, ["dc_tanf_immigration_status_eligible_person"]) > 0
+            add(
+                spm_unit,
+                period,
+                ["dc_tanf_immigration_status_eligible_person"],
+            )
+            > 0
         )
         return (
             demographic_eligible

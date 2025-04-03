@@ -7,7 +7,7 @@ class dc_tanf_countable_unearned_income(Variable):
     label = "DC Temporary Assistance for Needy Families (TANF) countable unearned income"
     unit = USD
     definition_period = MONTH
-    reference = "https://code.dccouncil.gov/us/dc/council/code/sections/4-205.11" #(a)(8)
+    reference = "https://code.dccouncil.gov/us/dc/council/code/sections/4-205.11"  # (a)(8)
     defined_for = StateCode.DC
 
     def formula(spm_unit, period, parameters):

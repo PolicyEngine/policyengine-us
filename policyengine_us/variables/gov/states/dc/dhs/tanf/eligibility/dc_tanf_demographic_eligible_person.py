@@ -5,9 +5,7 @@ class dc_tanf_demographic_eligible_person(Variable):
     value_type = bool
     entity = Person
     definition_period = MONTH
-    label = (
-        "Eligible person for DC Temporary Assistance for Needy Families (TANF) based on demographics"
-    )
+    label = "Eligible person for DC Temporary Assistance for Needy Families (TANF) based on demographics"
     reference = (
         "https://code.dccouncil.gov/us/dc/council/code/sections/4-205.18",
         "https://code.dccouncil.gov/us/dc/council/code/sections/4-205.63",
