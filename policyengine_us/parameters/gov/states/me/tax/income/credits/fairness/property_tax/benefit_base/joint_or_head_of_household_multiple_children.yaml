@@ -23,4 +23,9 @@ metadata:
     - title: 2024 Form 1040ME Property Tax Fairness Credit / Sales Tax Fairness Credit Line 8
       href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/23_1040me_sched_pstfc_ff.pdf#page=2
   period: year
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
   label: Maine property tax fairness credit benefit base for household with multiple children or joint filers with one child or more
