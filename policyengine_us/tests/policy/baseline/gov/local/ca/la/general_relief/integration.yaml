@@ -1,4 +1,4 @@
-- name: Test for California household with homeless status
+- name: Couple with one ineligible person due to immigration status should still receive GR
   absolute_error_margin: 0.01
   period: 2024
   input:
