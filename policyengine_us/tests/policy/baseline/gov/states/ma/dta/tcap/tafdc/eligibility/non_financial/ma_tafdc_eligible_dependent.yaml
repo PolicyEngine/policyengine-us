@@ -21,7 +21,7 @@
   input:
     age: 18
     is_tax_unit_dependent: true
-    is_in_k12_school: false
+    is_in_secondary_school: false
     state_code: MA
   output:
     ma_tafdc_eligible_dependent: false
@@ -31,7 +31,7 @@
   input:
     age: 18
     is_tax_unit_dependent: true
-    is_in_k12_school: true
+    is_in_secondary_school: true
     state_code: MA
   output:
     ma_tafdc_eligible_dependent: true
@@ -41,7 +41,7 @@
   input:
     age: 19
     is_tax_unit_dependent: true
-    is_in_k12_school: true
+    is_in_secondary_school: true
     state_code: MA
   output:
     ma_tafdc_eligible_dependent: false
