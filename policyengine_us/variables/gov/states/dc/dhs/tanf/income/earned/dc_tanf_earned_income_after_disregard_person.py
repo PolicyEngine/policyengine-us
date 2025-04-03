@@ -19,11 +19,14 @@ class dc_tanf_earned_income_after_disregard_person(Variable):
         earnings_after_flat_exclusion = max_(
             gross_earnings - p.work_related_expense.amount, 0
         )
+        percentage_disregard = (
+            earnings_after_flat_exclusion
+            * p.earned_income_disregard.percentage
+        )
         return where(
             enrolled,
             # For enrolled recipients, DC applies a flat and a percentage deduction.
-            earnings_after_flat_exclusion
-            * (1 - p.earned_income_disregard.percentage),
+            max_(earnings_after_flat_exclusion - percentage_disregard, 0),
             # For new applicants, DC applies only a flat deduction.
             earnings_after_flat_exclusion,
         )
