@@ -2,10 +2,10 @@
   period: 2023-01
   input:
     state_code: DC
-    dc_tanf_eligible_demographic: true
+    dc_tanf_demographic_eligible_person: true
     dc_tanf_income_eligible: true
     dc_tanf_resources_eligible: true
-    dc_tanf_eligible_immigration_status: true
+    dc_tanf_immigration_status_eligible_person: true
   output:
     dc_tanf_eligible: true
 
@@ -13,10 +13,10 @@
   period: 2023-01
   input:
     state_code: DC
-    dc_tanf_eligible_demographic: true
+    dc_tanf_demographic_eligible_person: true
     dc_tanf_income_eligible: true
     dc_tanf_resources_eligible: false
-    dc_tanf_eligible_immigration_status: true
+    dc_tanf_immigration_status_eligible_person: true
   output:
     dc_tanf_eligible: false
 
@@ -24,10 +24,10 @@
   period: 2023-01
   input:
     state_code: DC
-    dc_tanf_eligible_demographic: true
+    dc_tanf_demographic_eligible_person: true
     dc_tanf_income_eligible: false
     dc_tanf_resources_eligible: true
-    dc_tanf_eligible_immigration_status: true
+    dc_tanf_immigration_status_eligible_person: true
   output:
     dc_tanf_eligible: false
 
@@ -35,10 +35,10 @@
   period: 2023-01
   input:
     state_code: DC
-    dc_tanf_eligible_demographic: false
+    dc_tanf_demographic_eligible_person: false
     dc_tanf_income_eligible: true
     dc_tanf_resources_eligible: true
-    dc_tanf_eligible_immigration_status: true
+    dc_tanf_immigration_status_eligible_person: true
   output:
     dc_tanf_eligible: false
 
@@ -46,9 +46,9 @@
   period: 2023-01
   input:
     state_code: DC
-    dc_tanf_eligible_demographic: true
+    dc_tanf_demographic_eligible_person: true
     dc_tanf_income_eligible: true
     dc_tanf_resources_eligible: true
-    dc_tanf_eligible_immigration_status: false
+    dc_tanf_immigration_status_eligible_person: false
   output:
     dc_tanf_eligible: false

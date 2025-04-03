@@ -9,6 +9,7 @@ class dc_tanf_standard_payment(Variable):
     )
     unit = USD
     definition_period = MONTH
+    reference = "https://code.dccouncil.gov/us/dc/council/code/sections/4-205.52"
     defined_for = StateCode.DC
 
     def formula(spm_unit, period, parameters):

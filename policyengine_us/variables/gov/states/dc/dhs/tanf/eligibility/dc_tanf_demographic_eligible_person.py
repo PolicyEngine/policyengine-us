@@ -1,12 +1,12 @@
 from policyengine_us.model_api import *
 
 
-class dc_tanf_eligible_demographic(Variable):
+class dc_tanf_demographic_eligible_person(Variable):
     value_type = bool
     entity = Person
     definition_period = MONTH
     label = (
-        "Eligible person for DC Temporary Assistance for Needy Families (TANF)"
+        "Eligible person for DC Temporary Assistance for Needy Families (TANF) based on demographics"
     )
     reference = (
         "https://code.dccouncil.gov/us/dc/council/code/sections/4-205.18",

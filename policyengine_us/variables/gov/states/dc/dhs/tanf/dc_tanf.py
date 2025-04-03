@@ -7,6 +7,7 @@ class dc_tanf(Variable):
     label = "DC Temporary Assistance for Needy Families (TANF)"
     unit = USD
     definition_period = MONTH
+    reference= "https://code.dccouncil.gov/us/dc/council/code/sections/4-205.52"
     defined_for = "dc_tanf_eligible"
 
     def formula(spm_unit, period, parameters):

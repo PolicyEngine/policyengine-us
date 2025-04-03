@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class dc_tanf_eligible_immigration_status(Variable):
+class dc_tanf_immigration_status_eligible_person(Variable):
     value_type = bool
     entity = Person
-    label = "Eligible immigration status for DC Temporary Assistance for Needy Families (TANF)"
+    label = "Eligible person for DC Temporary Assistance for Needy Families (TANF) based on immigration status"
     definition_period = MONTH
     reference = (
         "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-703-400"

@@ -6,6 +6,7 @@ class dc_tanf_income_eligible(Variable):
     entity = SPMUnit
     label = "Eligible for DC Temporary Assistance for Needy Families (TANF) due to income"
     definition_period = MONTH
+    reference = "https://code.dccouncil.gov/us/dc/council/code/sections/4-205.10"
     defined_for = StateCode.DC
 
     def formula(spm_unit, period, parameters):

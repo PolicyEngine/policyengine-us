@@ -6,16 +6,17 @@ class dc_tanf_eligible(Variable):
     entity = SPMUnit
     label = "Eligible for DC Temporary Assistance for Needy Families (TANF)"
     definition_period = MONTH
+    reference = "https://dhs.dc.gov/service/tanf-district-families"
     defined_for = StateCode.DC
 
     def formula(spm_unit, period, parameters):
         demographic_eligible = (
-            add(spm_unit, period, ["dc_tanf_eligible_demographic"]) > 0
+            add(spm_unit, period, ["dc_tanf_demographic_eligible_person"]) > 0
         )
         income_eligible = spm_unit("dc_tanf_income_eligible", period)
         resources_eligible = spm_unit("dc_tanf_resources_eligible", period)
         immigration_status_eligible = (
-            add(spm_unit, period, ["dc_tanf_eligible_immigration_status"]) > 0
+            add(spm_unit, period, ["dc_tanf_immigration_status_eligible_person"]) > 0
         )
         return (
             demographic_eligible
