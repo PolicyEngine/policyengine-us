@@ -15,10 +15,10 @@ class ma_tafdc_age_limit(Variable):
         p = parameters(
             period
         ).gov.states.ma.dta.tcap.tafdc.eligibility.age_limit
-        in_school = person("is_in_k12_school", period)
+        is_in_secondary_school = person("is_in_secondary_school", period)
         # College attendees are not considered eligible dependents
         dependent_age_limit = where(
-            in_school, p.student_dependent, p.dependent
+            is_in_secondary_school, p.student_dependent, p.dependent
         )
         is_pregnant = person("is_pregnant", period)
         teen_parent_age_limit = p.teen_parent

@@ -18,4 +18,9 @@ class ma_tafdc_non_financial_eligible(Variable):
         dependent_criteria_eligible = spm_unit(
             "ma_tafdc_dependent_criteria_eligible", period
         )
-        return immigration_eligible & dependent_criteria_eligible
+        eaedc_eligible = spm_unit("ma_eaedc_eligible", period)
+        return (
+            immigration_eligible
+            & dependent_criteria_eligible
+            & ~eaedc_eligible
+        )

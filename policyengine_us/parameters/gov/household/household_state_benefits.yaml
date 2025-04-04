@@ -19,8 +19,6 @@ values:
     # Nebraska benefits
     - ne_child_care_subsidies
     # Massachusetts benefits
-    # Not including EAEDC until TAFDC is merged due to mutual dependencies
-    # - ma_eaedc
   2024-01-01:
     - state_supplement
     # Colorado benefits
@@ -42,8 +40,6 @@ values:
     # North Carolina benefits
     - nc_scca
     # Massachusetts benefits
-    # Not including EAEDC until TAFDC is merged due to mutual dependencies
-    # - ma_eaedc
 metadata:
   unit: list
   period: year
