@@ -1,0 +1,157 @@
+- name: Family with employed parent, eligible child, and income below limit is eligible
+  period: 2023
+  input:
+    people:
+      parent:
+        age: 30
+        is_child: false
+        employment_status: 1 # Employed
+        immigration_status: 0 # Citizen
+        earned_income: 20000
+      child:
+        age: 5
+        is_child: true
+        immigration_status: 0 # Citizen
+    spm_units:
+      family:
+        members: [parent, child]
+        spm_unit_income: 20000
+        tax_unit_fpg: 18000 # Approx. 2023 FPL for family of 2
+    households:
+      household:
+        members: [parent, child]
+        state_code: DC
+  output:
+    is_dc_child_care_eligible: true
+
+- name: Family with income above limit but receiving TANF is eligible
+  period: 2023
+  input:
+    people:
+      parent:
+        age: 30
+        is_child: false
+        employment_status: 1 # Employed
+        immigration_status: 0 # Citizen
+        earned_income: 60000
+      child:
+        age: 5
+        is_child: true
+        immigration_status: 0 # Citizen
+    spm_units:
+      family:
+        members: [parent, child]
+        spm_unit_income: 60000
+        tax_unit_fpg: 18000 # Approx. 2023 FPL for family of 2
+        tanf: 100 # Receiving some TANF
+    households:
+      household:
+        members: [parent, child]
+        state_code: DC
+  output:
+    is_dc_child_care_eligible: true
+
+- name: Family with non-citizen child is ineligible
+  period: 2023
+  input:
+    people:
+      parent:
+        age: 30
+        is_child: false
+        employment_status: 1 # Employed
+        immigration_status: 0 # Citizen
+        earned_income: 20000
+      child:
+        age: 5
+        is_child: true
+        immigration_status: 3 # Undocumented immigrant
+    spm_units:
+      family:
+        members: [parent, child]
+        spm_unit_income: 20000
+        tax_unit_fpg: 18000 # Approx. 2023 FPL for family of 2
+    households:
+      household:
+        members: [parent, child]
+        state_code: DC
+  output:
+    is_dc_child_care_eligible: false
+
+- name: Family with unemployed parent (not seeking work) is ineligible
+  period: 2023
+  input:
+    people:
+      parent:
+        age: 30
+        is_child: false
+        employment_status: 2 # Unemployed, not seeking work
+        immigration_status: 0 # Citizen
+        earned_income: 0
+      child:
+        age: 5
+        is_child: true
+        immigration_status: 0 # Citizen
+    spm_units:
+      family:
+        members: [parent, child]
+        spm_unit_income: 10000
+        tax_unit_fpg: 18000 # Approx. 2023 FPL for family of 2
+    households:
+      household:
+        members: [parent, child]
+        state_code: DC
+  output:
+    is_dc_child_care_eligible: false
+
+- name: Family with disabled parent is eligible even if not working
+  period: 2023
+  input:
+    people:
+      parent:
+        age: 30
+        is_child: false
+        employment_status: 2 # Unemployed, not seeking work
+        immigration_status: 0 # Citizen
+        earned_income: 0
+        is_disabled: true
+      child:
+        age: 5
+        is_child: true
+        immigration_status: 0 # Citizen
+    spm_units:
+      family:
+        members: [parent, child]
+        spm_unit_income: 10000
+        tax_unit_fpg: 18000 # Approx. 2023 FPL for family of 2
+    households:
+      household:
+        members: [parent, child]
+        state_code: DC
+  output:
+    is_dc_child_care_eligible: true
+
+- name: Family with income below 150% FPL is eligible
+  period: 2023
+  input:
+    people:
+      parent:
+        age: 30
+        is_child: false
+        employment_status: 1 # Employed
+        immigration_status: 0 # Citizen
+        earned_income: 20000
+      child:
+        age: 5
+        is_child: true
+        immigration_status: 0 # Citizen
+    spm_units:
+      family:
+        members: [parent, child]
+        spm_unit_income: 25000
+        tax_unit_fpg: 18000 # Approx. 2023 FPL for family of 2
+    households:
+      household:
+        members: [parent, child]
+        state_code: DC
+  output:
+    is_dc_child_care_eligible: true

@@ -1,0 +1,16 @@
+description: Countable income sources for DC childcare subsidy eligibility
+metadata:
+  unit: list
+  label: "Countable income sources"
+  reference:
+    - title: "DC Child Care Subsidy Program Manual - Eligibility Requirements"
+      href: "https://osse.dc.gov/sites/default/files/dc/sites/osse/publication/attachments/DC%20Child%20Care%20Subsidy%20Program%20Policy%20Manual.pdf"
+values:
+  2023-01-01:
+    - earned_income
+    - self_employment_income
+    - rental_income
+    - education_grants
+    - pension_income
+    - retirement_distributions
+    - alimony_received
