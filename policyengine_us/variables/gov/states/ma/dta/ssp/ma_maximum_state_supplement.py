@@ -1,15 +1,15 @@
 from policyengine_us.model_api import *
 
 
-class maximum_state_supplement(Variable):
+class ma_maximum_state_supplement(Variable):
     value_type = float
     entity = Person
-    label = "Maximum State Supplement"
+    label = "Massachusetts maximum State Supplement payment amount"
     unit = USD
     definition_period = YEAR
     defined_for = "is_ssi_eligible_individual"
 
-    def formula_2022(person, period, parameters):
+    def formula(person, period, parameters):
         """
         Returns the maximum annual state supplement for an SSI-eligible individual,
         before subtracting any leftover income. Depends on:
@@ -20,19 +20,18 @@ class maximum_state_supplement(Variable):
         """
 
         # 1. Get state and living arrangement from the person's household.
-        state_code = person.household("state_code_str", period)
         living_arrangement = person.household(
-            "state_living_arrangement", period
+            "ma_state_living_arrangement", period
         )
 
         # 2. Load the state's parameter dictionary. This is structured like:
-        # p[state_code][living_arrangement][category][("1" or "2")] = monthly rate
-        p = parameters(period).gov.ssa.state_supplement.amount
-        # For example: p["MA"]["FULL_COST"]["AGED"]["1"] = 128.82
+        # p[living_arrangement][category][("1" or "2")] = monthly rate
+        p = parameters(period).gov.states.ma.dta.ssp.amount
+        # For example: p["FULL_COST"]["AGED"]["1"] = 128.82
 
         # 3. Retrieve the sub-dict for this person's state & living arrangement
-        # e.g. amounts = p["MA"]["FULL_COST"]
-        amounts_for_state_la = p[state_code][living_arrangement]
+        # e.g. amounts = p["FULL_COST"]
+        amounts_for_state_la = p[living_arrangement]
 
         # 4. Identify whether the person is aged, blind, or disabled.
         #    (It's possible to be both aged+blind, so we might pick whichever rate is higher.)
