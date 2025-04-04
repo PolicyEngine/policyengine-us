@@ -1,0 +1,15 @@
+- name: Person age 85 or above eligible for tax exclusion
+  period: 2022
+  input:
+    age: 90
+    state_code: SC
+  output:
+    sc_sales_and_use_exclusion_eligible: true
+
+- name: Person age under 85 not eligible for tax exclusion
+  period: 2022
+  input:
+    age: 70
+    state_code: SC
+  output:
+    sc_sales_and_use_exclusion_eligible: false
