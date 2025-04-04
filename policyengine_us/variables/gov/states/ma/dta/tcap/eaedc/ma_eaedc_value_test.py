@@ -13,4 +13,4 @@ class ma_eaedc_value_test(Variable):
     # Program value can not be less than 0
     # due to the eligibility requirements
     adds = ["ma_eaedc_standard_assistance"]
-    subtracts = ["ma_eaedc_net_income"]
+    subtracts = ["ma_eaedc_test_net_income"]
