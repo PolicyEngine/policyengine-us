@@ -21,3 +21,19 @@
     spm_unit_size: 10
   output:
     dc_tanf_standard_payment: 0
+
+- name: 17 people in 2022, should be capped at 10
+  period: 2022
+  input:
+    state_code: DC
+    spm_unit_size: 17
+  output:
+    dc_tanf_standard_payment: 1_750 * 12
+
+- name: 17 people in january of 2024, should be capped at 19
+  period: 2024-01
+  input:
+    state_code: DC
+    spm_unit_size: 17
+  output:
+    dc_tanf_standard_payment: 2_668

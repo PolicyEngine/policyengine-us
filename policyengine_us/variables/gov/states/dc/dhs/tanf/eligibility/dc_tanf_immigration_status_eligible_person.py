@@ -7,7 +7,7 @@ class dc_tanf_immigration_status_eligible_person(Variable):
     label = "Eligible person for DC Temporary Assistance for Needy Families (TANF) based on immigration status"
     definition_period = MONTH
     reference = (
-        "https://www.law.cornell.edu/regulations/massachusetts/106-CMR-703-400"
+        "https://code.dccouncil.gov/us/dc/council/code/sections/4-205.24#(a)"
     )
     defined_for = StateCode.DC
 

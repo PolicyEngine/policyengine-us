@@ -10,19 +10,19 @@ class dc_tanf_resources_eligible(Variable):
     defined_for = StateCode.DC
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.states.dc.dhs.tanf
+        p = parameters(period).gov.states.dc.dhs.tanf.resource_limit
         person = spm_unit.members
         # Check if the household has at least one elderly member.
         has_elderly = spm_unit.any(
-            person("monthly_age", period) >= p.age_threshold.elderly
+            person("monthly_age", period) >= p.higher.age_threshold
         )
         # Check if the household has at least one disabled member.
         has_disabled = spm_unit.any(person("is_disabled", period))
         # Look up resource limit by the condition.
         resource_limit = where(
             has_elderly | has_disabled,
-            p.resource_limit.higher_limit,
-            p.resource_limit.lower_limit,
+            p.higher.amount,
+            p.lower,
         )
         countable_resources = spm_unit("dc_tanf_countable_resources", period)
         return countable_resources <= resource_limit

@@ -1,8 +1,8 @@
-description: DC limits the Temporary Assistance for Needy Families program to households with up to this resource amount if they do not have elderly or disabled members.
+description: DC limits the Temporary Assistance for Needy Families program to households with up to this resource amount, if they include elderly or disabled members.
 
 metadata:
   unit: currency-USD
-  label: DC TANF resource limit for households without elderly or disabled people
+  label: DC TANF higher resource limit amount
   reference:
     - title: TANF for District Families
       href: https://dhs.dc.gov/service/tanf-district-families
@@ -12,7 +12,6 @@ metadata:
       href: https://code.dccouncil.gov/us/dc/council/code/sections/4-205.37
 
 values:
-  2021-10-01: 2_000
-  2022-10-01: 2_750
-  2024-10-01: 3_000
-  
+  2021-10-01: 3_000
+  2022-10-01: 4_250
+  2024-10-01: 4_500
