@@ -12,5 +12,5 @@ class ma_eaedc_test_net_income(Variable):
 
     adds = [
         "ma_tcap_gross_unearned_income",
-        "ma_eaedc_countable_earned_incomeC",
+        "ma_eaedc_countable_earned_income_testC",
     ]
