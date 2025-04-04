@@ -1,0 +1,15 @@
+description: The IRS follows the Metropolitan Statistical Area to define the default counties in the Tampa area under the Chapter 7 Bankruptcy means test.
+
+metadata:
+  unit: list
+  period: year
+  label: IRS Metropolitan Statistical Area Tampa area counties
+  reference:
+    - title: Internal Revenue Service, Local standards -- Transportation 
+      href: https://www.irs.gov/businesses/small-businesses-self-employed/local-standards-transportation
+values:
+  2024-01-01: 
+    - HERNANDO_COUNTY_FL
+    - HILLSBOROUGH_COUNTY_FL
+    - PASCO_COUNTY_FL
+    - PINELLAS_COUNTY_FL
