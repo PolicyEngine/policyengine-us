@@ -18,8 +18,10 @@ class dc_tanf_childcare_deduction(Variable):
         dependent = person("is_tax_unit_dependent", period)
         age = person("monthly_age", period)
         childcare_expenses = spm_unit("childcare_expenses", period)
-        have_childcare_expenses = childcare_expenses > 0 
-        childcare_deduction_person = p.amount.calc(age) * dependent * have_childcare_expenses
+        have_childcare_expenses = childcare_expenses > 0
+        childcare_deduction_person = (
+            p.amount.calc(age) * dependent * have_childcare_expenses
+        )
         total_childcare_deduction = spm_unit.sum(childcare_deduction_person)
 
         return min_(childcare_expenses, total_childcare_deduction)
