@@ -1,0 +1,20 @@
+- name: Oregon smi 2021 single household
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    spm_unit_size: 1  
+    state_code: OR  
+    hhs_smi: 48_906  
+    irs_gross_income: 25_000
+    subsidized_housing: false
+    or_liheap_heat_in_rent: false
+    county_str: CURRY_COUNTY_OR
+    utility_type: NATURAL_GAS
+
+  output:
+    or_liheap_income_threshold: 29_343.6  
+    or_liheap_eligibility: true
+    or_liheap_benefit_level: 4
+    or_liheap_in_region_one: True
+    or_liheap_payout: 200
+
