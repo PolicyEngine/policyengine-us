@@ -1,0 +1,18 @@
+description: Age range defining an infant for Medicaid in Minnesota.
+brackets:
+  - threshold:
+      2015-01-01: 0
+    amount:
+      2015-01-01: true
+  - threshold:
+      2015-01-01: 2
+    amount:
+      2015-01-01: false
+metadata:
+  type: single_amount
+  rate_unit: bool
+  threshold_unit: year
+  label: "Medicaid infant age range in Minnesota"
+  reference:
+    - title: Medicaid, Children's Health Insurance Program, & Basic Health Program Eligibility Levels | CMS
+      href: https://www.medicaid.gov/medicaid/national-medicaid-chip-program-information/medicaid-childrens-health-insurance-program-basic-health-program-eligibility-levels#footnote10

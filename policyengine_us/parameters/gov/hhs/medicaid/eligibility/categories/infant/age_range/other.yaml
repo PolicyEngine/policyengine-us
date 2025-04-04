@@ -1,4 +1,4 @@
-description: Age range defining an infant for Medicaid.
+description: Age range defining an infant for Medicaid in all states except California and Minnesota.
 brackets:
   - threshold:
       2015-01-01: 0
@@ -12,4 +12,4 @@ metadata:
   type: single_amount
   rate_unit: bool
   threshold_unit: year
-  label: "Medicaid infant age range"
+  label: "Medicaid infant age range in default states"
