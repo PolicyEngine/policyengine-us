@@ -1,0 +1,22 @@
+# situations: 
+# PR Income: 10_000
+# 2 children, 2 dependents
+# $3000
+# filing single
+# credit limit worksheet amount: taxes - credits -> $500 in federal taxes - $0 in credit
+# income under threshold situation
+# expected: $500
+
+# actc:
+# 2 * $1700 -> $3400
+# income < threshold of $200k
+# taxes paid - 
+# expected: 
+
+- name: Income Under Threshold
+  period: 2024
+  input:
+    age: 65
+    is_tax_unit_head_or_spouse: false
+  output:
+    pr_low_income_credit_eligible_person: false

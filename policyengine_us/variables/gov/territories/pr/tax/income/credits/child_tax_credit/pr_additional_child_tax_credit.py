@@ -12,46 +12,25 @@ class pr_additional_child_tax_credit(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.territories.pr.tax.income.credits
         num_children = tax_unit("pr_child_tax_credit_number_eligible_children", period)
-        other_dependents = 2 # TODO - calculate me
+        other_dependents = tax_unit("tax_unit_dependents") - num_children
         
         credit_amt = num_children * p.additional_child_tax_credit.amount
         modified_agi = tax_unit("pr_modified_agi", period)
-        filing_status = tax_unit("filing_status", period)
+        modified_inc = tax_unit("pr_actc_modified_income_calculation", period) # if 0, modified_agi under threshold
+        income_threshold = num_children * 2000 + other_dependents * 500 # threshold
 
-        threshold = select(
+        # earned income method to calculate credit amount
+        earned_inc_credit_amt = select(
             [
-                filing_status == filing_status.possible_values.JOINT,
-                filing_status != filing_status.possible_values.JOINT,
+                modified_inc == 0,
+                modified_inc != 0,
             ],
             [
-                p.child_tax_credit.income_limit_joint,
-                p.child_tax_credit.income_limit_single,
+                credit_amt,
+                min(credit_amt, income_threshold - modified_inc),
             ],
         )
 
-        # earned income method to calculate credit amount
-        if modified_agi > threshold:
-            # calculate phase-out 
-            # calculate credit based on income earned over the threshold
-            inc_credit = modified_agi - threshold 
-            # turn it into a multiple of 1000 if not already
-            inc_credit = select(
-                [(inc_credit % 1000 == 0), (inc_credit % 1000 != 0)], 
-                [inc_credit, ((inc_credit // 1000) + 1) * 1000],
-            ) * 0.05
-
-            base_credit = num_children * 2000 + other_dependents * 500
-            # credit is limited based on income
-            if base_credit > inc_credit:
-                base_credit = base_credit - inc_credit
-                final_credit = min(credit_amt, base_credit)
-            else: 
-                # CAN'T CLAIM CREDIT if inc_credit > base_credit
-                return 0
-        else:
-            # otherwise if modified agi under threshold, stick with initial
-            # computation of the credit
-            final_credit = credit_amt
         
         # calculate an alternate way for the credit amount through social security & medicare tax paid
         # use the smaller method as the final amount for the credit
@@ -67,4 +46,4 @@ class pr_additional_child_tax_credit(Variable):
         else: 
             ss_medicare_credit_amt = taxes_paid - excess_ss_tax
 
-        return min(final_credit, ss_medicare_credit_amt)
+        return min(earned_inc_credit_amt, ss_medicare_credit_amt)
