@@ -15,11 +15,11 @@ class ma_eaedc_earned_income_after_disregard_person(Variable):
             period
         ).gov.states.ma.dta.tcap.eaedc.deductions.income_disregard
         gross_income = person("ma_tcap_gross_earned_income", period)
-        work_related_expenses_deduction = person(
-            "ma_tafdc_work_related_expense_deduction", period
-        )
+        # work_related_expenses_deduction = person(
+        #     "ma_tafdc_work_related_expense_deduction", period
+        # )
         income_after_work_related_expenses_deduction = max_(
-            gross_income - work_related_expenses_deduction, 0
+            gross_income - 0, 0
         )
         income_after_flat_disregard = max_(
             income_after_work_related_expenses_deduction - p.flat,

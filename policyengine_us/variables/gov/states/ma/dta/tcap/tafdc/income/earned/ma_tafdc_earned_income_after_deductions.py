@@ -22,7 +22,7 @@ class ma_tafdc_earned_income_after_deductions(Variable):
             spm_unit,
             period,
             [
-                "ma_tafdc_work_related_expense_deduction",
+                # "ma_tafdc_work_related_expense_deduction",
                 "ma_tafdc_dependent_care_deduction",
             ],
         )
