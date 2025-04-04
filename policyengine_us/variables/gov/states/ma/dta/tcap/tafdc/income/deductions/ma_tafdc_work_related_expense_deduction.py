@@ -12,4 +12,4 @@ class ma_tafdc_work_related_expense_deduction(Variable):
     )
     defined_for = StateCode.MA
 
-    # adds = ["gov.states.ma.dta.tcap.deductions.work_related_expenses.amount"]
+    adds = ["gov.states.ma.dta.tcap.deductions.work_related_expenses.amount"]
