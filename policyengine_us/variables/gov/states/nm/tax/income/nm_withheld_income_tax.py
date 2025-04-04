@@ -16,4 +16,4 @@ class nm_withheld_income_tax(Variable):
         standard_deduction = p_irs.amount["SINGLE"]
         reduced_agi = max_(agi - standard_deduction, 0)
         p = parameters(period).gov.states.nm.tax.income
-        return p.main.single.calc(reduced_agi)
+        return p.main.single.calc(reduced_agi, right=True)

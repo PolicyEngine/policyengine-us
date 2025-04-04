@@ -21,6 +21,6 @@ class nm_net_capital_gains_deduction(Variable):
         separate = filing_status == filing_status.possible_values.SEPARATE
         # Halve the deduction if filing separately.
         denominator = where(separate, 2, 1)
-        capped_element = p.capped_element.calc(net_capital_gains)
+        capped_element = p.capped_element.calc(net_capital_gains, right=True)
         numerator = max_(uncapped_element, capped_element)
         return numerator / denominator

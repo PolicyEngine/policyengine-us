@@ -23,10 +23,10 @@ class nm_income_tax_before_non_refundable_credits(Variable):
                 filing_status == status.HEAD_OF_HOUSEHOLD,
             ],
             [
-                p.single.calc(income),
-                p.joint.calc(income),
-                p.separate.calc(income),
-                p.surviving_spouse.calc(income),
-                p.head_of_household.calc(income),
+                p.single.calc(income, right=True),
+                p.joint.calc(income, right=True),
+                p.separate.calc(income, right=True),
+                p.surviving_spouse.calc(income, right=True),
+                p.head_of_household.calc(income, right=True),
             ],
         )
