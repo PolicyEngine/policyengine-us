@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.242.1] - 2025-04-04 14:06:57
+
+### Added
+
+- Added 2021-2023 Medicaid spending and enrollment data.
+
 ## [1.242.0] - 2025-04-04 11:06:12
 
 ### Added
@@ -11302,6 +11308,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.242.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.242.0...1.242.1
 [1.242.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.241.0...1.242.0
 [1.241.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.240.5...1.241.0
 [1.240.5]: https://github.com/PolicyEngine/policyengine-us/compare/1.240.4...1.240.5
