@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ma_eaedc_countable_earned_income_testB(Variable):
+class ma_eaedc_countable_earned_income_testC(Variable):
     value_type = float
     entity = SPMUnit
     label = "Massachusetts EAEDC countable earned income"
