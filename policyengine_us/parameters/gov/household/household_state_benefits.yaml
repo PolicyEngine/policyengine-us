@@ -21,8 +21,8 @@ values:
     # Massachusetts benefits
     #- ma_eaedc
     #- ma_tafdc
-    - ma_eaedc_standard_assistance
-    - ma_tafdc_payment_standard
+    - ma_eaedc_value_test
+    #- ma_tafdc_non_financial_eligible
   2024-01-01:
     - state_supplement
     # Colorado benefits
@@ -46,8 +46,8 @@ values:
     # Massachusetts benefits
     #- ma_eaedc
     #- ma_tafdc
-    - ma_eaedc_standard_assistance
-    - ma_tafdc_payment_standard
+    - ma_eaedc_value_test
+    #- ma_tafdc_non_financial_eligible
 metadata:
   unit: list
   period: year
