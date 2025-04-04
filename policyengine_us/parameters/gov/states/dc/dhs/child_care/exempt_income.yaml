@@ -1,0 +1,20 @@
+description: Exempt income sources for DC childcare subsidy eligibility
+metadata:
+  unit: list
+  label: "Exempt income sources"
+  reference:
+    - title: "DC Child Care Subsidy Program Manual - Eligibility Requirements"
+      href: "https://osse.dc.gov/sites/default/files/dc/sites/osse/publication/attachments/DC%20Child%20Care%20Subsidy%20Program%20Policy%20Manual.pdf"
+values:
+  2023-01-01:
+    - tanf
+    - snap
+    - wic
+    - social_security
+    - ssi
+    - unemployment_compensation
+    - child_support_received
+    - tax_refunds
+    - eitc
+    - foster_care_payments
+    - non_recurring_income
