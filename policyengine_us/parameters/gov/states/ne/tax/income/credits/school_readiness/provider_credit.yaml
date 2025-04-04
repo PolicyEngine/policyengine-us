@@ -1,0 +1,34 @@
+description: Nebraska School Readiness nonrefundable credit amounts by Step rating.
+brackets:
+  - threshold:
+      2024-01-01: 1
+    amount:
+      2024-01-01: 400
+  - threshold:
+      2024-01-01: 2
+    amount:
+      2024-01-01: 600
+  - threshold:
+      2024-01-01: 3
+    amount:
+      2024-01-01: 800
+  - threshold:
+      2024-01-01: 4
+    amount:
+      2024-01-01: 1000
+  - threshold:
+      2024-01-01: 5
+    amount:
+      2024-01-01: 1200
+
+metadata:
+  type: single_amount
+  threshold_unit: "Nebraska Step rating"
+  amount_unit: USD
+  period: year
+  label: "Nebraska School Readiness nonrefundable credit amounts by Step rating"
+  reference:
+    - title: "LB 754, 2023"
+      href: "https://nebraskalegislature.gov/FloorDocs/108/PDF/Slip/LB754.pdf"
+    - title: 2024 Nebraska Individual Income Tax Booklet
+      href: https://revenue.nebraska.gov/sites/default/files/doc/tax-forms/2024/f_Individual_Income_Tax_Booklet.pdf#page=2
