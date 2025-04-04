@@ -1,8 +1,8 @@
-description: Connecticut increases the higher tax recapture amount in these increments of State adjusted gross income, based on filing status.
+description: Connecticut allows a tax recapture amount, for filers in middle brackets, with income above this threshold, based on filing status.
 metadata:
   period: year
   unit: currency-USD
-  label: Connecticut income tax lower recapture brackets
+  label: Connecticut income tax middle recapture start
   breakdown:
     - filing_status
   reference:
@@ -13,12 +13,12 @@ metadata:
     - title: 2022 Form CT-1040 Connecticut Resident Income Tax Return Instructions
       href: https://portal.ct.gov/-/media/DRS/Forms/2022/Income/2022-CT-1040-Instructions_1222.pdf#page=22
 SINGLE:
-  2015-01-01: 5_000
+  2015-01-01: 200_000
 HEAD_OF_HOUSEHOLD:
-  2015-01-01: 8_000
+  2015-01-01: 320_000
 JOINT:
-  2015-01-01: 10_000
+  2015-01-01: 400_000
 SURVIVING_SPOUSE:
-  2015-01-01: 10_000
+  2015-01-01: 400_000
 SEPARATE:
-  2015-01-01: 5_000 
+  2015-01-01: 200_000 
