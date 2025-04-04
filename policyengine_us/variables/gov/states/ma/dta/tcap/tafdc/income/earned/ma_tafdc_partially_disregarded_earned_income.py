@@ -13,16 +13,16 @@ class ma_tafdc_partially_disregarded_earned_income(Variable):
     defined_for = StateCode.MA
 
     def formula(person, period, parameters):
-        work_related_deduction = person(
-            "ma_tafdc_work_related_expense_deduction", period
-        )
+        # work_related_deduction = person(
+        #     "ma_tafdc_work_related_expense_deduction", period
+        # )
         p = parameters(
             period
         ).gov.states.ma.dta.tcap.tafdc.earned_income_disregard
 
         gross_earned_income = person("ma_tcap_gross_earned_income", period)
         earned_income_after_work_related_deduction = max_(
-            0, gross_earned_income - work_related_deduction
+            0, gross_earned_income - 0
         )
         filing_status = person.tax_unit("filing_status", period)
         joint = filing_status == filing_status.possible_values.JOINT
