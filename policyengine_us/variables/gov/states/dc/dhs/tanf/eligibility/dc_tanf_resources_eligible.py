@@ -22,7 +22,7 @@ class dc_tanf_resources_eligible(Variable):
         resource_limit = where(
             has_elderly | has_disabled,
             p.higher.amount,
-            p.lower,
+            p.lower.amount,
         )
         countable_resources = spm_unit("dc_tanf_countable_resources", period)
         return countable_resources <= resource_limit

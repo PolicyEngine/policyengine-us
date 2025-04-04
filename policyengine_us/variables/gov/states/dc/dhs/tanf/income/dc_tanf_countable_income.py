@@ -11,7 +11,14 @@ class dc_tanf_countable_income(Variable):
     definition_period = MONTH
     defined_for = StateCode.DC
 
-    adds = [
-        "dc_tanf_countable_earned_income",
-        "dc_tanf_countable_unearned_income",
-    ]
+    def formula(spm_unit, period, parameters):
+        income_sources = add(
+            spm_unit,
+            period,
+            [
+                "dc_tanf_countable_earned_income",
+                "dc_tanf_countable_unearned_income",
+            ],
+        )
+        childcare_deduction = spm_unit("dc_tanf_childcare_deduction", period)
+        return max_(income_sources - childcare_deduction, 0)

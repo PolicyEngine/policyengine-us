@@ -1,4 +1,4 @@
-description: DC provides an earned income deduction under the Temporary Assistance for Needy Families program for households with childcare costs of this amount, depending on child age.
+description: The District of Columbia deducts up to this amount of dependent care expenses per child from countable income under the Temporary Assistance for Needy Families program, depending on child age.  
 
 metadata:
   period: month
@@ -7,8 +7,9 @@ metadata:
   threshold_unit: year
   amount_unit: currency-USD
   reference:
-    - title: Code of the District of Columbia § 4-205.11(a)(2)
-      href: https://code.dccouncil.gov/us/dc/council/code/sections/4-205.11
+    # Statute allows an age-based deduction while deferring the amount to mayoral rulemaking.
+    - title: Code of the District of Columbia § 4-205.11 (a)(2)
+      href: https://code.dccouncil.gov/us/dc/council/code/sections/4-205.11#(a)(2)
     - title: DC TANF State Plan 2021 | Section 4 (4)(a) 
       href: https://dhs.dc.gov/sites/default/files/dc/sites/dhs/service_content/attachments/TANF_Announcement_StatePlan_ForComment_01072020.pdf#page=22
     - title: DC TANF State Plan 2024 | Section 4 (4)(a) 
@@ -17,11 +18,11 @@ metadata:
 
 # Use a scale parameter with two brackets:
 brackets:
-  - amount:
-      2020-10-01: 200
-    threshold:
+  - threshold:
       2020-10-01: 0 # Age zero until the next bracket threshold.
-  - amount:
-      2020-10-01: 175
-    threshold:
+    amount:
+      2020-10-01: 200 # Age zero until the next bracket threshold.
+  - threshold:
       2020-10-01: 2
+    amount:
+      2020-10-01: 175

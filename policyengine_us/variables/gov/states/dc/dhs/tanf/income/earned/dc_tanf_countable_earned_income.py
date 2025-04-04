@@ -12,13 +12,4 @@ class dc_tanf_countable_earned_income(Variable):
         "https://code.dccouncil.gov/us/dc/council/code/sections/4-205.11"
     )
 
-    def formula(spm_unit, period, parameters):
-        total_earned_income_after_disregard = add(
-            spm_unit, period, ["dc_tanf_earned_income_after_disregard_person"]
-        )
-
-        child_care_deduction = spm_unit("dc_tanf_childcare_deduction", period)
-
-        return max_(
-            total_earned_income_after_disregard - child_care_deduction, 0
-        )
+    adds = ["dc_tanf_earned_income_after_disregard_person"]

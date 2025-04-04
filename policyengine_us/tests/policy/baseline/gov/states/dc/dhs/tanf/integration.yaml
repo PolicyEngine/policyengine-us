@@ -26,11 +26,11 @@
         age: 1
         is_child: true
         is_tax_unit_dependent: true
-        pre_subsidy_childcare_expenses: 5_000
     spm_units:
       spm_unit:
         members: [person1, person2]
         is_tanf_enrolled: false
+        childcare_expenses: 5_000
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -57,11 +57,11 @@
         age: 1
         is_child: true
         is_tax_unit_dependent: true
-        pre_subsidy_childcare_expenses: 0
     spm_units:
       spm_unit:
         members: [person1, person2]
         is_tanf_enrolled: true
+        childcare_expenses: 0
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -88,11 +88,11 @@
         age: 3
         is_child: true
         is_tax_unit_dependent: true
-        pre_subsidy_childcare_expenses: 1_200
     spm_units:
       spm_unit:
         members: [person1, person2]
         is_tanf_enrolled: false
+        childcare_expenses: 1_200
     tax_units:
       tax_unit:
         members: [person1, person2]
