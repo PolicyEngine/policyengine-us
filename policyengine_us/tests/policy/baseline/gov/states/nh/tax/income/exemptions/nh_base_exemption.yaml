@@ -37,3 +37,11 @@
     filing_status: SURVIVING_SPOUSE
   output:
     nh_base_exemption: 2_400
+
+- name: Single filing in 2025
+  period: 2025
+  input:
+    state_code: NH
+    filing_status: SINGLE
+  output:
+    nh_base_exemption: 0
