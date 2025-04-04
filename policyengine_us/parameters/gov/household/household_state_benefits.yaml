@@ -25,8 +25,8 @@ values:
     #- ma_tafdc_non_financial_eligible
     #- ma_tafdc_eligible
     #- ma_eaedc_countable_earned_income_testA
-    # - ma_eaedc_dependent_care_deduction
-    - ma_eaedc_countable_earned_income_testB
+    - ma_eaedc_dependent_care_deduction
+    #- ma_eaedc_countable_earned_income_testB
   2024-01-01:
     - state_supplement
     # Colorado benefits
@@ -54,8 +54,8 @@ values:
     #- ma_tafdc_non_financial_eligible
     #- ma_tafdc_eligible
     #- ma_eaedc_countable_earned_income_testA
-    #- ma_eaedc_dependent_care_deduction
-    - ma_eaedc_countable_earned_income_testB
+    - ma_eaedc_dependent_care_deduction
+    #- ma_eaedc_countable_earned_income_testB
 metadata:
   unit: list
   period: year
