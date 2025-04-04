@@ -26,5 +26,5 @@ class ma_eaedc_dependent_care_deduction_person(Variable):
             p.amount.older.calc(total_weekly_hours),
         )
         total_amount = amount * dependent
-        care_expenses = person("pre_subsidy_childcare_expenses", period)
+        care_expenses = person("child_care_expenses", period)
         return min_(total_amount, care_expenses)

@@ -11,7 +11,7 @@
         age: 5
         is_tax_unit_dependent: true
         ma_eaedc_eligible_dependent: true
-        pre_subsidy_childcare_expenses: 3_000
+        child_care_expenses: 3_000
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -32,7 +32,7 @@
     state_code: MA
     monthly_hours_worked: 43
     monthly_age: 2
-    pre_subsidy_childcare_expenses: 3_000
+    child_care_expenses: 3_000
   output:
     ma_eaedc_dependent_care_deduction_person: 44
 
@@ -43,7 +43,7 @@
     state_code: MA
     monthly_hours_worked: 43
     monthly_age: 1
-    pre_subsidy_childcare_expenses: 3_000
+    child_care_expenses: 3_000
   output:
     ma_eaedc_dependent_care_deduction_person: 50
 
@@ -54,7 +54,7 @@
     state_code: MA
     monthly_hours_worked: 43
     monthly_age: 2
-    pre_subsidy_childcare_expenses: 30
+    child_care_expenses: 30
   output:
     ma_eaedc_dependent_care_deduction_person: 2.5
 
@@ -65,7 +65,7 @@
     state_code: MA
     monthly_hours_worked: 160
     monthly_age: 2
-    pre_subsidy_childcare_expenses: 3_000
+    child_care_expenses: 3_000
   output:
     ma_eaedc_dependent_care_deduction_person: 175
 
@@ -78,7 +78,7 @@
       person2:
         ma_eaedc_eligible_dependent: true
         age: 12
-        pre_subsidy_childcare_expenses: 3_000
+        child_care_expenses: 3_000
     households:
       household:
         members: [person1, person2]
