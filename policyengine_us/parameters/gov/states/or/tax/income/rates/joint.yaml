@@ -16,6 +16,8 @@ metadata:
       href: https://www.oregon.gov/dor/forms/FormsPubs/form-or-40-inst_101-040-1_2023.pdf#page=24
     - title: 2023 Oregon Income Tax Rates and Brackets
       href: https://www.efile.com/oregon-tax-brackets-rates-and-forms/
+    - title: 2024 Oregon Income Tax Form OR-40 Instructions
+      href: https://www.oregon.gov/dor/forms/FormsPubs/form-or-40-n_or-40-p-inst_101-048-1_2024.pdf#page=21
 brackets:
   - threshold:
       1993-01-01: 0
@@ -34,11 +36,13 @@ brackets:
         2021-01-01: 7_300
         2022-01-01: 7_500
         2023-01-01: 8_100
+        2024-01-01: 8_600
       metadata:
-        uprating: gov.irs.uprating
-        rounding:
-          type: downwards
-          interval: 100
+        uprating: 
+          parameter: gov.irs.uprating
+          rounding:
+            type: downwards
+            interval: 100
     rate:
       2017-01-01: 0.07
       2020-01-01: 0.0675
@@ -52,11 +56,13 @@ brackets:
         2021-01-01: 18_400
         2022-01-01: 18_900
         2023-01-01: 20_400
+        2024-01-01: 21_500
       metadata:
-        uprating: gov.irs.uprating
-        rounding:
-          type: downwards
-          interval: 100
+        uprating:  
+          parameter: gov.irs.uprating
+          rounding:
+            type: downwards
+            interval: 100
     rate:
       2017-01-01: 0.09
       2020-01-01: 0.0875

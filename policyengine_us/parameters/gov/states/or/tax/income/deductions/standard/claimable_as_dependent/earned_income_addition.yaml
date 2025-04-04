@@ -2,7 +2,14 @@ description: Oregon adds this to your earned income for you total standard deduc
 values:
   2021-01-01: 350
   2022-01-01: 400
+  2023-01-01: 400
+  2024-01-01: 450
 metadata:
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
   unit: currency-USD
   period: year
   label: Oregon earned income addition if claimable as dependent
@@ -15,3 +22,7 @@ metadata:
       href: https://www.oregon.gov/dor/forms/FormsPubs/form-or-40-inst_101-040-1_2022.pdf#page=15
     - title: 2023 Oregon Income Tax Form OR-40 Instructions
       href: https://www.oregon.gov/dor/forms/FormsPubs/form-or-40-inst_101-040-1_2023.pdf#page=15
+    - title: 2024 Oregon Income Tax Form OR-40 Instructions
+      href: https://www.oregon.gov/dor/forms/FormsPubs/form-or-40-inst_101-040-1_2024.pdf#page=16
+    - title: 26 USC 63 - Taxable income defined line 7(b)
+      href: https://uscode.house.gov/view.xhtml?req=(title:26%20section:63%20edition:prelim) 
