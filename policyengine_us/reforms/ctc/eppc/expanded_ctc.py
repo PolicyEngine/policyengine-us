@@ -159,7 +159,7 @@ def create_expanded_ctc() -> Reform:
             tanf_dem_eligible = tax_unit.spm_unit(
                 "is_demographic_tanf_eligible", period
             )
-            max_dc_tanf = tax_unit.spm_unit("dc_tanf_grant_standard", period)
+            max_dc_tanf = tax_unit.spm_unit("dc_tanf_standard_payment", period)
             max_co_tanf = tax_unit.spm_unit("co_tanf_grant_standard", period)
             max_tanf = (
                 max_co_tanf + max_dc_tanf + max_federal_tanf + max_ny_tanf

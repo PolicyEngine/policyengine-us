@@ -2,9 +2,8 @@
   period: 2023
   input:
     state_code: DC
-    dc_tanf_need_standard: 1
-    dc_tanf_countable_earned_income: 0
-    dc_tanf_countable_gross_unearned_income: 0
+    dc_tanf_standard_payment: 1
+    dc_tanf_countable_income: 0
   output:
     dc_tanf_income_eligible: true
 
@@ -13,9 +12,8 @@
   period: 2023
   input:
     state_code: DC
-    dc_tanf_need_standard: 1
-    dc_tanf_countable_earned_income: 1
-    dc_tanf_countable_gross_unearned_income: 0
+    dc_tanf_standard_payment: 1
+    dc_tanf_countable_income: 1
   output:
     dc_tanf_income_eligible: true
 
@@ -24,9 +22,7 @@
   period: 2023
   input:
     state_code: DC
-    dc_tanf_need_standard: 1
-    dc_tanf_countable_earned_income: 1
-    dc_tanf_countable_gross_unearned_income: 1
+    dc_tanf_standard_payment: 1
+    dc_tanf_countable_income: 2
   output:
     dc_tanf_income_eligible: false
-

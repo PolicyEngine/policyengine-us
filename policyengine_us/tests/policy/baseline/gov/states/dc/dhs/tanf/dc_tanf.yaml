@@ -2,7 +2,7 @@
   period: 2023
   input:
     dc_tanf_eligible: false
-    dc_tanf_grant_standard: 100
+    dc_tanf_standard_payment: 100
     dc_tanf_countable_income: 0
   output:
     dc_tanf: 0
@@ -11,7 +11,7 @@
   period: 2023
   input:
     dc_tanf_eligible: true
-    dc_tanf_grant_standard: 100
+    dc_tanf_standard_payment: 100
     dc_tanf_countable_income: 0
   output:
     dc_tanf: 100
@@ -20,7 +20,7 @@
   period: 2023
   input:
     dc_tanf_eligible: true
-    dc_tanf_grant_standard: 100
+    dc_tanf_standard_payment: 100
     dc_tanf_countable_income: 110
   output:
     dc_tanf: 0
