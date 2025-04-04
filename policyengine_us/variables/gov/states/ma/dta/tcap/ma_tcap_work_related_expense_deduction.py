@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ma_tafdc_work_related_expense_deduction(Variable):
+class ma_tcap_work_related_expense_deduction(Variable):
     value_type = float
     unit = USD
     entity = Person
@@ -12,4 +12,8 @@ class ma_tafdc_work_related_expense_deduction(Variable):
     )
     defined_for = StateCode.MA
 
-    adds = ["gov.states.ma.dta.tcap.deductions.work_related_expenses.amount"]
+    def formula(person, period, parameters):
+        p = parameters(
+            period
+        ).gov.states.ma.dta.tcap.deductions.work_related_expenses
+        return p.amount

@@ -6,12 +6,12 @@
         age: 35
         is_tax_unit_dependent: false 
         ma_eaedc_eligible_dependent: false
-        weekly_hours_worked: 40
+        monthly_hours_worked: 140*12
       person2:
         age: 5
         is_tax_unit_dependent: true
         ma_eaedc_eligible_dependent: true
-        pre_subsidy_childcare_expenses: 3_000
+        child_care_expenses: 3_000
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -30,9 +30,9 @@
   input:
     ma_eaedc_eligible_dependent: true
     state_code: MA
-    weekly_hours_worked: 10
+    monthly_hours_worked: 43
     monthly_age: 2
-    pre_subsidy_childcare_expenses: 3_000
+    child_care_expenses: 3_000
   output:
     ma_eaedc_dependent_care_deduction_person: 44
 
@@ -41,9 +41,9 @@
   input:
     ma_eaedc_eligible_dependent: true
     state_code: MA
-    weekly_hours_worked: 10
+    monthly_hours_worked: 43
     monthly_age: 1
-    pre_subsidy_childcare_expenses: 3_000
+    child_care_expenses: 3_000
   output:
     ma_eaedc_dependent_care_deduction_person: 50
 
@@ -52,9 +52,9 @@
   input:
     ma_eaedc_eligible_dependent: true
     state_code: MA
-    weekly_hours_worked: 10
+    monthly_hours_worked: 43
     monthly_age: 2
-    pre_subsidy_childcare_expenses: 30
+    child_care_expenses: 30
   output:
     ma_eaedc_dependent_care_deduction_person: 2.5
 
@@ -63,9 +63,9 @@
   input:
     ma_eaedc_eligible_dependent: true
     state_code: MA
-    weekly_hours_worked: 60
+    monthly_hours_worked: 160
     monthly_age: 2
-    pre_subsidy_childcare_expenses: 3_000
+    child_care_expenses: 3_000
   output:
     ma_eaedc_dependent_care_deduction_person: 175
 
@@ -74,11 +74,11 @@
   input: 
     people:
       person1:
-        weekly_hours_worked: 60
+        monthly_hours_worked: 160*12
       person2:
         ma_eaedc_eligible_dependent: true
         age: 12
-        pre_subsidy_childcare_expenses: 3_000
+        child_care_expenses: 3_000
     households:
       household:
         members: [person1, person2]

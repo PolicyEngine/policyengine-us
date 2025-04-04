@@ -14,7 +14,7 @@ class ma_tafdc_partially_disregarded_earned_income(Variable):
 
     def formula(person, period, parameters):
         work_related_deduction = person(
-            "ma_tafdc_work_related_expense_deduction", period
+            "ma_tcap_work_related_expense_deduction", period
         )
         p = parameters(
             period

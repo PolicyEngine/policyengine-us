@@ -12,9 +12,8 @@ class ma_eaedc_dependent_care_deduction_person(Variable):
 
     def formula(person, period, parameters):
         dependent = person("ma_eaedc_eligible_dependent", period)
-        total_weekly_hours = (
-            person.spm_unit.sum(person("weekly_hours_worked", period))
-            * MONTHS_IN_YEAR
+        total_weekly_hours = person.spm_unit(
+            "spm_unit_monthly_hours_worked", period
         )
         age = person("monthly_age", period)
         p = parameters(
@@ -27,5 +26,5 @@ class ma_eaedc_dependent_care_deduction_person(Variable):
             p.amount.older.calc(total_weekly_hours),
         )
         total_amount = amount * dependent
-        care_expenses = person("pre_subsidy_childcare_expenses", period)
+        care_expenses = person("child_care_expenses", period)
         return min_(total_amount, care_expenses)

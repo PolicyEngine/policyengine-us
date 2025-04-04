@@ -23,6 +23,6 @@ class ma_tafdc_pregnancy_eligible(Variable):
             current_pregnancy_month >= p.pregnancy_month
         )
         # Eligible if age under 20 and meet teen parent school attendance requirements
-        is_in_k12_school = person("is_in_k12_school", period)
+        is_in_k12_school = person("is_in_secondary_school", period)
         teen_pregnancy_eligible = is_pregnant & age_eligible & is_in_k12_school
         return teen_pregnancy_eligible | months_eligible
