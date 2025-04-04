@@ -15,12 +15,10 @@ class dc_tanf_childcare_deduction(Variable):
             period
         ).gov.states.dc.dhs.tanf.income.deductions.child_care
         person = spm_unit.members
-        child = person("is_child", period)
         dependent = person("is_tax_unit_dependent", period)
-        eligible_child = child & dependent
         age = person("monthly_age", period)
         childcare_expenses = spm_unit("childcare_expenses", period)
-        childcare_deduction_person = p.amount.calc(age) * eligible_child
+        childcare_deduction_person = p.amount.calc(age) * dependent
         total_childcare_deduction = spm_unit.sum(childcare_deduction_person)
 
         return min_(childcare_expenses, total_childcare_deduction)

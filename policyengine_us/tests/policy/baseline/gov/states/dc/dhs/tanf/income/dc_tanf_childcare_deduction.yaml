@@ -2,7 +2,6 @@
   period: 2023-01
   input:
     state_code: DC
-    is_child: true
     is_tax_unit_dependent: true
     monthly_age: 1 
     childcare_expenses: 0 
@@ -13,7 +12,6 @@
   period: 2023-01
   input:
     state_code: DC
-    is_child: true
     is_tax_unit_dependent: true
     monthly_age: 1 
     childcare_expenses: 250*12
@@ -24,7 +22,6 @@
   period: 2023-01
   input:
     state_code: DC
-    is_child: true
     is_tax_unit_dependent: true
     monthly_age: 15 
     childcare_expenses: 250*12
@@ -35,7 +32,6 @@
   period: 2023-01
   input:
     state_code: DC
-    is_child: true
     is_tax_unit_dependent: false
     monthly_age: 15 
     childcare_expenses: 250*12 
