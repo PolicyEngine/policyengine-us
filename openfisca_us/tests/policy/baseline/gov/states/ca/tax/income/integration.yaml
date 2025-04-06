@@ -1,0 +1,100 @@
+- name: Family of 3, no member(s) with disabilities, income of 50k/year (Standard Test)
+  period: 2022
+  absolute_error_margin: 0.01 # Floating point issue.
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 50_000
+      spouse:
+        age: 35
+      child:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    households:
+      household:
+        state_code_str: CA
+        members: [head, spouse, child]
+  output:
+    filing_status: JOINT 
+    ca_exemptions: 658 
+    ca_agi: 50_000
+    ca_standard_deduction: 9_606
+    ca_taxable_income: 40_394
+    ca_income_tax_before_credits: 622
+    ca_eitc: 0 # I calculated this using the online calculator
+    ca_young_child_tax_credit: 0 # Child is 10, and the age limit is 6.
+    ca_use_tax: 4
+  
+
+- name: Single-Parent household with 2 children, Young Child Tax Credit and CA renter credit and CDCC
+  period: 2022
+  absolute_error_margin: 0.01 # Floating point issue.
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 26_000
+        rent: 10_000
+      child_1:
+        age: 5
+      child_2:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [head, child, child]
+        tax_unit_childcare_expenses: 1_000
+    households:
+      household:
+        state_code_str: CA
+        members: [head, child, child]
+  output:
+    filing_status: HEAD_OF_HOUSEHOLD
+    ca_exemptions: 929
+    ca_agi: 26_000
+    ca_child_and_dependent_care_expenses_credit: 145 # Nonrefundable.
+    ca_renters_credit: 120 # Nonrefundable.
+    ca_standard_deduction: 9_606
+    ca_taxable_income: 16_394
+    ca_income_tax_before_credits: 164
+    ca_young_child_tax_credit: 800 # Refundable.
+    ca_use_tax: 2
+    ca_eitc: 143
+    ca_income_tax_after_non_refundable_credits: 0 
+    ca_income_tax_after_refundable_credits: -800 
+
+- name: Childless couple with lots of money and some itemized deductions. 
+  period: 2022
+  absolute_error_margin: 0.01 # Floating point issue.
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 500_000
+        charitable_cash_donations: 50_000
+      spouse:
+        age: 70
+        employment_income: 600_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        state_code_str: CA
+        members: [head, spouse]
+  output:
+    filing_status: JOINT 
+    ca_exemptions: 387 # but actually 0 later at line 32?
+    ca_agi: 1_100_000
+    ca_mental_health_services_tax: 600
+    ca_itemized_deductions: 40_000
+    ca_use_tax: 88
+    ca_child_and_dependent_care_expenses_credit: 0 
+    ca_standard_deduction: 0 
+    ca_taxable_income: 1_060_000
+    ca_income_tax_before_credits: 122_180 # or 122_180 with mental health services tax
+    ca_young_child_tax_credit: 0 
+    ca_income_tax_after_non_refundable_credits: 122_180
+    ca_income_tax_after_refundable_credits: 122_180
