@@ -1,0 +1,49 @@
+- name: Is demographic, income and resources eligible.
+  period: 2023
+  input:
+    state_code: VA
+    va_map_abd_demographic_eligibility: true
+    va_map_abd_income_eligibility: true
+    va_map_abd_resources_eligibility: true
+  output:
+    va_map_abd_eligibility: true
+
+- name: Is demographic, income eligible but not resources eligible.
+  period: 2023
+  input:
+    state_code: VA
+    va_map_abd_demographic_eligibility: true
+    va_map_abd_income_eligibility: true
+    va_map_abd_resources_eligibility: false
+  output:
+    va_map_abd_eligibility: false
+
+- name: Is demographic, resources eligible but not income eligible.
+  period: 2023
+  input:
+    state_code: VA
+    va_map_abd_demographic_eligibility: true
+    va_map_abd_income_eligibility: false
+    va_map_abd_resources_eligibility: true
+  output:
+    va_map_abd_eligibility: false
+
+- name: Is income, resources eligible but not demographic eligible.
+  period: 2023
+  input:
+    state_code: VA
+    va_map_abd_demographic_eligibility: false
+    va_map_abd_income_eligibility: true
+    va_map_abd_resources_eligibility: true
+  output:
+    va_map_abd_eligibility: false
+
+- name: Only apply to VA.
+  period: 2023
+  input:
+    state_code: CA
+    va_map_abd_demographic_eligibility: true
+    va_map_abd_income_eligibility: true
+    va_map_abd_resources_eligibility: true
+  output:
+    va_map_abd_eligibility: false
