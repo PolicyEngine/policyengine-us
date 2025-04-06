@@ -12,4 +12,6 @@ class nh_income_tax_before_refundable_credits(Variable):
     def formula(tax_unit, period, parameters):
         income = max_(0, tax_unit("nh_taxable_income", period))
         p = parameters(period).gov.states.nh.tax.income
-        return income * p.rate * p.in_effect
+        if p.in_effect:
+            return income * p.rate
+        return 0

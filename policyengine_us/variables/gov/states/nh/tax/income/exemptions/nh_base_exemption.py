@@ -12,4 +12,6 @@ class nh_base_exemption(Variable):
     def formula(tax_unit, period, parameters):
         filing_status = tax_unit("filing_status", period)
         p = parameters(period).gov.states.nh.tax.income.exemptions.amount
-        return p.base[filing_status] * p.in_effect
+        if p.availability:
+            return p.base[filing_status]
+        return 0
