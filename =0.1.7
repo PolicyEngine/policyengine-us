@@ -1,0 +1,23 @@
+Collecting yaml-changelog
+  Using cached yaml_changelog-0.3.0-py3-none-any.whl (16 kB)
+Collecting argparse (from yaml-changelog)
+  Using cached argparse-1.4.0-py2.py3-none-any.whl (23 kB)
+Collecting datetime (from yaml-changelog)
+  Obtaining dependency information for datetime from https://files.pythonhosted.org/packages/95/88/3b9d4042b396221a132180b392ab2a174031a6fb579f7927f3909fc183a7/DateTime-5.2-py3-none-any.whl.metadata
+  Using cached DateTime-5.2-py3-none-any.whl.metadata (33 kB)
+Collecting pathlib (from yaml-changelog)
+  Using cached pathlib-1.0.1-py3-none-any.whl (14 kB)
+Requirement already satisfied: pyyaml in /home/codespace/.local/lib/python3.10/site-packages (from yaml-changelog) (6.0.1)
+Requirement already satisfied: requests in /home/codespace/.local/lib/python3.10/site-packages (from yaml-changelog) (2.31.0)
+Collecting zope.interface (from datetime->yaml-changelog)
+  Downloading zope.interface-6.0-cp310-cp310-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl (246 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 247.0/247.0 kB 9.7 MB/s eta 0:00:00
+Requirement already satisfied: pytz in /home/codespace/.local/lib/python3.10/site-packages (from datetime->yaml-changelog) (2023.3)
+Requirement already satisfied: charset-normalizer<4,>=2 in /home/codespace/.local/lib/python3.10/site-packages (from requests->yaml-changelog) (3.2.0)
+Requirement already satisfied: idna<4,>=2.5 in /home/codespace/.local/lib/python3.10/site-packages (from requests->yaml-changelog) (3.4)
+Requirement already satisfied: urllib3<3,>=1.21.1 in /home/codespace/.local/lib/python3.10/site-packages (from requests->yaml-changelog) (2.0.4)
+Requirement already satisfied: certifi>=2017.4.17 in /home/codespace/.local/lib/python3.10/site-packages (from requests->yaml-changelog) (2023.7.22)
+Requirement already satisfied: setuptools in /home/codespace/.local/lib/python3.10/site-packages (from zope.interface->datetime->yaml-changelog) (68.0.0)
+Using cached DateTime-5.2-py3-none-any.whl (52 kB)
+Installing collected packages: pathlib, argparse, zope.interface, datetime, yaml-changelog
+Successfully installed argparse-1.4.0 datetime-5.2 pathlib-1.0.1 yaml-changelog-0.3.0 zope.interface-6.0
