@@ -1,0 +1,68 @@
+- name: No alimony, child support, or childcare, initial deductions of $40, earned income of $100, $60 per year
+  period: 2023
+  input:
+    people:
+      person1:
+        alimony_income: 0
+        child_support_received: 0
+      person2:
+        alimony_income: 0
+        child_support_received: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        md_tanf_childcare_deduction: 0
+        md_tanf_initial_earnings_deduction: 40
+        md_tanf_countable_gross_earned_income: 100
+        md_tanf_countable_gross_unearned_income: 0
+    households:
+      household:
+        state_code: MD
+  output:
+    md_tanf_net_initial_countable_income: 60
+
+- name: No alimony or childcare, child support of $10, initial deductions of $40, earned income of $100, $50 per year
+  period: 2023
+  input:
+    people:
+      person1:
+        alimony_income: 0
+        child_support_received: 10
+      person2:
+        alimony_income: 0
+        child_support_received: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        md_tanf_childcare_deduction: 0
+        md_tanf_initial_earnings_deduction: 40
+        md_tanf_countable_gross_earned_income: 100
+        md_tanf_countable_gross_unearned_income: 0
+    households:
+      household:
+        state_code: MD
+  output:
+    md_tanf_net_initial_countable_income: 50
+
+- name: No childcare or child support, alimony of $10, initial deductions of $40, earned income of $100, $50 per year
+  period: 2023
+  input:
+    people:
+      person1:
+        alimony_income: 10
+        child_support_received: 0
+      person2:
+        alimony_income: 0
+        child_support_received: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        md_tanf_childcare_deduction: 0
+        md_tanf_initial_earnings_deduction: 40
+        md_tanf_countable_gross_earned_income: 100
+        md_tanf_countable_gross_unearned_income: 0
+    households:
+      household:
+        state_code: MD
+  output:
+    md_tanf_net_initial_countable_income: 50
