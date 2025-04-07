@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ne_rating_of_child_care_worker(Variable):
+class ne_school_readiness_credit_child_care_worker_rating(Variable):
     value_type = int
     entity = Person
     label = "Level of child care worker for the Nebraska school readiness refundable tax credit"
