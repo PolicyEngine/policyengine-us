@@ -1,0 +1,17 @@
+- name: Eligible, level 3
+  period: 2024
+  input:
+    ne_school_readiness_credit_eligible_worker: true
+    ne_rating_of_child_care_worker: 3
+    state_code: NE
+  output:
+    ne_school_readiness_credit: 2_900
+
+- name: Not eligible
+  period: 2024
+  input:
+    ne_school_readiness_credit_eligible_worker: false
+    ne_rating_of_child_care_worker: 0
+    state_code: NE
+  output:
+    ne_school_readiness_credit: 0
