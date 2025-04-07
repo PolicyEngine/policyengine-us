@@ -24,8 +24,4 @@ class nh_old_age_exemption(Variable):
         ).astype(int)
 
         # Calculate total blind exemption.
-        if p.amount.availability:
-            return (
-                head_eligible + spouse_eligible
-            ) * p.amount.old_age_addition
-        return 0
+        return (head_eligible + spouse_eligible) * p.amount.old_age_addition
