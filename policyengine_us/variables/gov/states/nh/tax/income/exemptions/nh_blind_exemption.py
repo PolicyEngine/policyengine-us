@@ -19,6 +19,4 @@ class nh_blind_exemption(Variable):
         blind_spouse = tax_unit("blind_spouse", period).astype(int)
 
         # Calculate total blind exemption.
-        if p.availability:
-            return (blind_head + blind_spouse) * p.blind_addition
-        return 0
+        return (blind_head + blind_spouse) * p.blind_addition

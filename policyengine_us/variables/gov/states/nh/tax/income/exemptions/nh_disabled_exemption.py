@@ -26,8 +26,4 @@ class nh_disabled_exemption(Variable):
         spouse_eligible = (disabled_spouse & age_spouse).astype(int)
 
         # Calculate total blind exemption.
-        if p.amount.availability:
-            return (
-                head_eligible + spouse_eligible
-            ) * p.amount.disabled_addition
-        return 0
+        return (head_eligible + spouse_eligible) * p.amount.disabled_addition
