@@ -1,8 +1,8 @@
-description: Connecticut increases the bracket threshold, among the highest brackets, in these increments of State adjusted gross income, based on filing status.
+description: Connecticut adds this tax recapture amount to filers in the high brackets, for each additional increment of state adjusted gross income, based on filing status.
 metadata:
   period: year
   unit: currency-USD
-  label: Connecticut income tax higher recapture brackets increment
+  label: Connecticut income tax recapture amount for high brackets
   breakdown:
     - filing_status
   reference:
@@ -15,12 +15,12 @@ metadata:
     - title: 2022 Form CT-1040 Connecticut Resident Income Tax Return Instructions
       href: https://portal.ct.gov/-/media/DRS/Forms/2022/Income/2022-CT-1040-Instructions_1222.pdf#page=22
 SINGLE:
-  2015-01-01: 5_000
+  2015-01-01: 50
 HEAD_OF_HOUSEHOLD:
-  2015-01-01: 8_000
+  2015-01-01: 80
 JOINT:
-  2015-01-01: 10_000
+  2015-01-01: 100
 SURVIVING_SPOUSE:
-  2015-01-01: 10_000
+  2015-01-01: 100
 SEPARATE:
-  2015-01-01: 5_000
+  2015-01-01: 50
