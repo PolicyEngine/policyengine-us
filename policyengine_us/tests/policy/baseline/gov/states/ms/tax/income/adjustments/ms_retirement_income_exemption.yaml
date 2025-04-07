@@ -1,0 +1,19 @@
+- name: Head, exemption applies
+  period: 2021
+  input:
+    state_code: MS
+    taxable_social_security: 20_000
+    taxable_private_pension_income: 40_000
+    is_tax_unit_head_or_spouse: true
+  output:
+    ms_retirement_income_exemption: 60_000
+
+- name: Not head or spouse, exemption applies
+  period: 2021
+  input:
+    state_code: MS
+    taxable_social_security: 20_000
+    taxable_private_pension_income: 40_000
+    is_tax_unit_head_or_spouse: false
+  output:
+    ms_retirement_income_exemption: 0
