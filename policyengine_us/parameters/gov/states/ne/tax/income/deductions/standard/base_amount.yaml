@@ -3,6 +3,12 @@ metadata:
   label: Nebraska standard deduction base amount
   period: year
   unit: currency-USD
+  propagate_metadata_to_children: true
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
   breakdown:
   - filing_status
   reference:
@@ -23,11 +29,6 @@ JOINT:
     2022-01-01: 14_700
     2023-01-01: 15_800
     2024-01-01: 16_700
-  uprating:
-    parameter: gov.irs.uprating
-    rounding:
-      type: downwards
-      interval: 50
 
 HEAD_OF_HOUSEHOLD:
   values:
@@ -35,11 +36,6 @@ HEAD_OF_HOUSEHOLD:
     2022-01-01: 10_750
     2023-01-01: 11_600
     2024-01-01: 12_250
-  uprating:
-    parameter: gov.irs.uprating
-    rounding:
-      type: downwards
-      interval: 50
 
 SURVIVING_SPOUSE:
   values:
@@ -47,11 +43,6 @@ SURVIVING_SPOUSE:
     2022-01-01: 14_700
     2023-01-01: 15_800
     2024-01-01: 16_700
-  uprating:
-    parameter: gov.irs.uprating
-    rounding:
-      type: downwards
-      interval: 50
 
 SINGLE:
   values:
@@ -59,11 +50,6 @@ SINGLE:
     2022-01-01: 7_350
     2023-01-01: 7_900
     2024-01-01: 8_350
-  uprating:
-    parameter: gov.irs.uprating
-    rounding:
-      type: downwards
-      interval: 50
 
 SEPARATE:
   values:
@@ -71,8 +57,3 @@ SEPARATE:
     2022-01-01: 7_350
     2023-01-01: 7_900
     2024-01-01: 8_350
-  uprating:
-    parameter: gov.irs.uprating
-    rounding:
-      type: downwards
-      interval: 50

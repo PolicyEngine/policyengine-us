@@ -1,25 +1,29 @@
 description: Nebraska provides the following refundable School Readiness credit amounts, based on the Nebraska Early Childhood Professional (ECP) Record System level.
 brackets:
   - threshold:
+      2024-01-01: 0
+    amount:
+      2024-01-01: 0
+  - threshold:
       2024-01-01: 1
     amount:
-      2024-01-01: 2300
+      2024-01-01: 2_300
   - threshold:
       2024-01-01: 2
     amount:
-      2024-01-01: 2600
+      2024-01-01: 2_600
   - threshold:
       2024-01-01: 3
     amount:
-      2024-01-01: 2900
+      2024-01-01: 2_900
   - threshold:
       2024-01-01: 4
     amount:
-      2024-01-01: 3200
+      2024-01-01: 3_200
   - threshold:
       2024-01-01: 5
     amount:
-      2024-01-01: 3500
+      2024-01-01: 3_500
 
 metadata:
   type: single_amount

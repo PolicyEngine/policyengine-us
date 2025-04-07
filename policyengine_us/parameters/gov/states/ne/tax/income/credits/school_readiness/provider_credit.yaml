@@ -1,6 +1,10 @@
 description: Nebraska School Readiness nonrefundable credit amounts by Step rating.
 brackets:
   - threshold:
+      2024-01-01: 0
+    amount:
+      2024-01-01: 0
+  - threshold:
       2024-01-01: 1
     amount:
       2024-01-01: 400
@@ -15,11 +19,11 @@ brackets:
   - threshold:
       2024-01-01: 4
     amount:
-      2024-01-01: 1000
+      2024-01-01: 1_000
   - threshold:
       2024-01-01: 5
     amount:
-      2024-01-01: 1200
+      2024-01-01: 1_200
 
 metadata:
   type: single_amount
