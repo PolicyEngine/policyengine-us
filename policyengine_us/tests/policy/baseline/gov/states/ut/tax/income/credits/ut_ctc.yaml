@@ -1,0 +1,238 @@
+- name: Head of household with 1 child, below phase out
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 45
+        ctc_qualifying_child: false
+        tax_exempt_interest_income: 0
+      person2:
+        age: 2
+        ctc_qualifying_child: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ut_total_income: 1_000
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output: 
+    ut_ctc: 1_000
+
+- name: Head of household with no qualifying children, below phase out
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 45
+        ctc_qualifying_child: false
+        tax_exempt_interest_income: 0
+      person2:
+        age: 0
+        ctc_qualifying_child: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ut_total_income: 1_000
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output: 
+    ut_ctc: 0
+
+- name: Head of household with 1 child , fully phased out
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 45
+        ctc_qualifying_child: false
+        tax_exempt_interest_income: 0
+      person2:
+        age: 3
+        ctc_qualifying_child: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ut_total_income: 100_000
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output: 
+    ut_ctc: 0
+
+- name: Surviving spouse with 1 child , partially phased out
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 45
+        ctc_qualifying_child: false
+        tax_exempt_interest_income: 0
+      person2:
+        age: 3
+        ctc_qualifying_child: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ut_total_income: 60_000
+        filing_status: SURVIVING_SPOUSE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output: 
+    ut_ctc: 400
+
+- name: Surviving spouse with one qualifying child , partially phased out
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 45
+        ctc_qualifying_child: false
+        tax_exempt_interest_income: 0
+      person2:
+        age: 3
+        ctc_qualifying_child: true
+      person3:
+        age: 2
+        ctc_qualifying_child: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        ut_total_income: 60_000
+        filing_status: SURVIVING_SPOUSE
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: UT
+  output: 
+    ut_ctc: 400
+
+- name: Surviving spouse with two children , partially phased out
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 45
+        ctc_qualifying_child: false
+        tax_exempt_interest_income: 0
+      person2:
+        age: 3
+        ctc_qualifying_child: true
+      person3:
+        age: 2
+        ctc_qualifying_child: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        ut_total_income: 60_000
+        filing_status: SURVIVING_SPOUSE
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: UT
+  output: 
+    ut_ctc: 1_400
+
+- name: Surviving spouse with two children , partially phased out with interest income
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 45
+        ctc_qualifying_child: false
+        tax_exempt_interest_income: 1_000
+      person2:
+        age: 3
+        ctc_qualifying_child: true
+      person3:
+        age: 2
+        ctc_qualifying_child: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        ut_total_income: 60_000
+        filing_status: SURVIVING_SPOUSE
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: UT
+  output: 
+    ut_ctc: 1_300
+
+- name: Head of household with newborn, below phase out
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        ctc_qualifying_child: false
+        tax_exempt_interest_income: 0
+      person2:
+        age: 0
+        ctc_qualifying_child: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ut_total_income: 1_000
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output: 
+    ut_ctc: 1_000
+    
+- name: Head of household with 5 year old, below phase out
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        ctc_qualifying_child: false
+        tax_exempt_interest_income: 0
+      person2:
+        age: 5
+        ctc_qualifying_child: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ut_total_income: 1_000
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output: 
+    ut_ctc: 1_000
+
+- name: Head of household with 6 year old, below phase out
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        ctc_qualifying_child: false
+        tax_exempt_interest_income: 0
+      person2:
+        age: 6
+        ctc_qualifying_child: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ut_total_income: 1_000
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output: 
+    ut_ctc: 0

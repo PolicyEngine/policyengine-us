@@ -217,7 +217,7 @@
   output:
     nj_pension_retirement_exclusion: 75_000
 
-- name: 8 Max amount is restrictive - widow filer.
+- name: 8 Max amount is restrictive - surviving spouse filer.
   absolute_error_margin: 0
   period: 2022
   input:
@@ -235,7 +235,7 @@
       tax_unit:
         members: [person1]
         adjusted_gross_income: 100_000
-        filing_status: WIDOW
+        filing_status: SURVIVING_SPOUSE
     households:
       household:
         members: [person1]

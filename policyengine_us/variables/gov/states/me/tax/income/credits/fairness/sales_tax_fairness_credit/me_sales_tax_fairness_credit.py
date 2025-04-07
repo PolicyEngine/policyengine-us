@@ -22,12 +22,12 @@ class me_sales_tax_fairness_credit(Variable):
             [
                 filing_status == status.JOINT,
                 filing_status == status.HEAD_OF_HOUSEHOLD,
-                filing_status == status.WIDOW,
+                filing_status == status.SURVIVING_SPOUSE,
             ],
             [
                 p.amount.additional.joint.calc(children),
                 p.amount.additional.head_of_household.calc(children),
-                p.amount.additional.widow.calc(children),
+                p.amount.additional.surviving_spouse.calc(children),
             ],
             # No additional amount for single and separate filers.
             default=0,

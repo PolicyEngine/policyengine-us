@@ -1,0 +1,30 @@
+description: New Jersey limits the property tax credit to filers with federal adjusted gross income below this limit, based on filing status.  
+metadata:
+  period: year
+  unit: currency-USD  
+  label: New Jersey property tax credit income limit
+  reference:
+    - title: 2021 NJ-1040 Instructions - Property Tax Credit
+      href: https://www.nj.gov/treasury/taxation/pdf/other_forms/tgi-ee/2021/1040i.pdf#page=49
+    - title: 2022 NJ-1040 Instructions - Property Tax Credit
+      href: https://www.nj.gov/treasury/taxation/pdf/other_forms/tgi-ee/2022/1040i.pdf#page=50
+    - title: 2023 NJ-1040 Instructions - Property Tax Credit
+      href: https://www.state.nj.us/treasury/taxation/pdf/current/1040i.pdf#page=52
+    - title: NJ Income Tax - Property Tax Deduction/Credit Eligibility Requirements
+      href: https://www.nj.gov/treasury/taxation/proptaxdeduc_credit.shtml
+    - title: 2024 NJ-1040 Instructions - Property Tax Credit
+      href: https://www.nj.gov/treasury/taxation/pdf/current/1040i.pdf#page=51
+      
+  breakdown:
+    - filing_status
+
+SINGLE:
+  2021-01-01: 10_000
+HEAD_OF_HOUSEHOLD: 
+  2021-01-01: 20_000
+JOINT:
+  2021-01-01: 20_000
+SURVIVING_SPOUSE:
+  2021-01-01: 20_000
+SEPARATE:
+  2021-01-01: 10_000

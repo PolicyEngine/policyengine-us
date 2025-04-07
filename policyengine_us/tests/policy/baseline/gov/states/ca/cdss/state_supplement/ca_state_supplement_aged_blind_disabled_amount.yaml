@@ -1,0 +1,17 @@
+- name: Aged disabled amount greater than blind amount
+  period: 2024
+  input:
+    ca_state_supplement_blind_amount: 1_000
+    ca_state_supplement_aged_disabled_amount: 2_000
+    state_code: CA
+  output:
+    ca_state_supplement_aged_blind_disabled_amount: 2_000
+
+- name: Aged disabled amount smaller   than blind amount
+  period: 2024
+  input:
+    ca_state_supplement_blind_amount: 1_800
+    ca_state_supplement_aged_disabled_amount: 1_000
+    state_code: CA
+  output:
+    ca_state_supplement_aged_blind_disabled_amount: 1_800

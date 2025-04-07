@@ -17,6 +17,15 @@ def main():
         f"cd policyengine-api && python gcp/bump_country_package.py --country policyengine-us --version {version}"
     )
 
+    # Repeat the above for https://github.com/policyengine/policyengine-household-api
+    os.system(
+        f"git clone https://nikhilwodruff:{pat}@github.com/policyengine/policyengine-household-api"
+    )
+
+    os.system(
+        f"cd policyengine-household-api && python gcp/bump_country_package.py --country policyengine-us --version {version}"
+    )
+
 
 if __name__ == "__main__":
     main()

@@ -7,7 +7,7 @@ class nyc_school_tax_credit_rate_reduction_amount(Variable):
     label = "NYC School Tax Credit Rate Reduction Amount"
     unit = USD
     definition_period = YEAR
-    defined_for = "in_nyc"
+    defined_for = "nyc_school_tax_credit_rate_reduction_amount_eligible"
 
     def formula(tax_unit, period, parameters):
         # First get their NYC taxable income.
@@ -21,27 +21,21 @@ class nyc_school_tax_credit_rate_reduction_amount(Variable):
             period
         ).gov.local.ny.nyc.tax.income.credits.school.rate_reduction
 
-        # Calculate eligibility.
-        eligible = nyc_taxable_income <= p.income_limit
-
         # Calculate amount if eligible, which varies only with filing status.
         filing_statuses = filing_status.possible_values
-        amount_if_eligible = select(
+        return select(
             [
                 filing_status == filing_statuses.SINGLE,
                 filing_status == filing_statuses.JOINT,
                 filing_status == filing_statuses.SEPARATE,
                 filing_status == filing_statuses.HEAD_OF_HOUSEHOLD,
-                filing_status == filing_statuses.WIDOW,
+                filing_status == filing_statuses.SURVIVING_SPOUSE,
             ],
             [
                 p.amount.single.calc(nyc_taxable_income),
                 p.amount.joint.calc(nyc_taxable_income),
                 p.amount.separate.calc(nyc_taxable_income),
                 p.amount.head_of_household.calc(nyc_taxable_income),
-                p.amount.widow.calc(nyc_taxable_income),
+                p.amount.surviving_spouse.calc(nyc_taxable_income),
             ],
         )
-
-        # Return calculated amount.
-        return eligible * amount_if_eligible

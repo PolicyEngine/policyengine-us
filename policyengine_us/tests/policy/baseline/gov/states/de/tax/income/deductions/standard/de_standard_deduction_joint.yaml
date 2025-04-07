@@ -1,0 +1,18 @@
+- name: Deductions are attributed to the head
+  period: 2022
+  input:
+    people:
+      person1:
+        de_base_standard_deduction_joint: 2_000
+        de_additional_standard_deduction: 1_000
+        is_tax_unit_head: true
+      person2:
+        de_base_standard_deduction_joint: 0
+        de_additional_standard_deduction: 3_000
+        is_tax_unit_head: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    de_standard_deduction_joint: [6_000, 0]

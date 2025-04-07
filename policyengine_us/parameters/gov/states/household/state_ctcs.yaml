@@ -1,0 +1,29 @@
+description: All state Child Tax Credits.
+values:
+  0000-01-01:
+    - az_dependent_tax_credit  # Arizona Dependent Tax Credit
+    - ca_yctc  # California Young Child Tax Credit
+    - co_ctc  # Colorado Child Tax Credit
+    - co_family_affordability_credit  # Colorado Family Affordability Credit
+    - ct_child_tax_rebate  # Connecticut Child Tax Rebate
+    - dc_ctc  # District of Columbia Child Tax Credit
+    - id_ctc  # Idaho Child Tax Credit
+    - il_ctc  # Illinois Child Tax Credit
+    # Formerly the Massachusetts Dependent Credit, now the Child and Family Tax Credit
+    - ma_child_and_family_credit
+    - md_ctc  # Maryland Child Tax Credit
+    - mn_child_and_working_families_credits  # Minnesota Child and Working Family Credits
+    - ne_refundable_ctc  # Nebraska Refundable Child Tax Credit
+    - nj_ctc  # New Jersey Child Tax Credit
+    - nm_ctc  # New Mexico Child Tax Credit
+    - ny_ctc  # New York Child Tax Credit (Empire State Child Credit)
+    - ok_child_care_child_tax_credit  # Oklahoma Child Care/Child Tax Credit - also in state_cdccs.
+    - or_ctc  # Oregon Child Tax Credit (Oregon Kids Credit)
+    - ri_child_tax_rebate  # Rhode Island Child Tax Rebate
+    - ut_ctc  # Utah Child Tax Credit
+    - vt_ctc  # Vermont Child Tax Credit
+
+metadata:
+  unit: list
+  period: year
+  label: State CTCs

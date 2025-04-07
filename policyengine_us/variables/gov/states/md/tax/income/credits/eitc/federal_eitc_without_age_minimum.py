@@ -9,6 +9,7 @@ class federal_eitc_without_age_minimum(Variable):
     documentation = "The federal EITC with the minimum age condition ignored."
     definition_period = YEAR
     reference = "https://casetext.com/statute/code-of-maryland/article-tax-general/title-10-income-tax/subtitle-7-income-tax-credits/section-10-704-effective-until-6302023-for-earned-income"
+    defined_for = StateCode.MD
 
     def formula(tax_unit, period, parameters):
         # set up simulation clone

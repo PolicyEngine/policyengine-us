@@ -1,53 +1,48 @@
 description: New Jersey provides this child credit amount for each qualifying dependent, depending on taxable income.
 metadata:
+  period: year
   type: single_amount
   threshold_unit: currency-USD
-  threshold_period: year
   amount_unit: currency-USD
-  label: New Jersey Child Tax Credit
+  label: New Jersey child tax credit amount
   reference:
     - title: New Jersey Statutes Title 54A:4-17.1(1)(a) Child tax credit, income limit.
-      href: https://lis.njleg.state.nj.us/nxt/gateway.dll?f=templates&fn=default.htm&vid=Publish:10.1048/Enu
-    # 2021 form listed to show the absence of the credit.
-    - title: Instructions for 2021 Form NJ-1040
-      href: https://www.state.nj.us/treasury/taxation/pdf/other_forms/tgi-ee/2021/1040i.pdf
-    - title: Instructions for 2022 Form NJ-1040 (line 65)
-      href: https://www.state.nj.us/treasury/taxation/pdf/current/1040i.pdf#page=45
-    # Not yet reflected in the statute, but this law schedules it to double in 2023.
-    - title: P.L. 2023, Chapter 72 (1)(a)
-      href: https://pub.njleg.state.nj.us/Bills/2022/AL23/72_.PDF
+      href: https://law.justia.com/codes/new-jersey/2022/title-54a/section-54a-4-17-1/
+    - title: 2022 Instructions for Form NJ-1040 (line 65)
+      href: https://www.nj.gov/treasury/taxation/pdf/other_forms/tgi-ee/2022/1040i.pdf#page=44
+    - title: 2023 NJ-1040 Instructions (line 65)
+      href: https://www.state.nj.us/treasury/taxation/pdf/current/1040i.pdf#page=46
+    - title: 2024 NJ-1040 Instructions (line 65)
+      href: https://www.nj.gov/treasury/taxation/pdf/current/1040i.pdf#page=46
+      # New Jersey child tax credit was introduced in 2022
+    
 brackets:
   - threshold:
-      2021-01-01: 0
+      2022-01-01: 0
     amount:
-      2021-01-01: 0
       2022-01-01: 500
       2023-01-01: 1_000
   - threshold:
-      2021-01-01: 30_000
+      2022-01-01: 30_000
     amount:
-      2021-01-01: 0
       2022-01-01: 400
       2023-01-01: 800
   - threshold:
-      2021-01-01: 40_000
+      2022-01-01: 40_000
     amount:
-      2021-01-01: 0
       2022-01-01: 300
       2023-01-01: 600
   - threshold:
-      2021-01-01: 50_000
+      2022-01-01: 50_000
     amount:
-      2021-01-01: 0
       2022-01-01: 200
       2023-01-01: 400
   - threshold:
-      2021-01-01: 60_000
+      2022-01-01: 60_000
     amount:
-      2021-01-01: 0
       2022-01-01: 100
       2023-01-01: 200
   - threshold:
-      2021-01-01: 80_000
+      2022-01-01: 80_000
     amount:
-      2021-01-01: 0
+      2022-01-01: 0

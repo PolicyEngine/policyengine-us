@@ -1,6 +1,6 @@
-description: NE standard deduction base amount.
+description: Nebraska provides this standard deduction base amount.
 metadata:
-  label: NE standard deduction base amount
+  label: Nebraska standard deduction base amount
   period: year
   unit: currency-USD
   breakdown:
@@ -12,19 +12,60 @@ metadata:
     href: https://revenue.nebraska.gov/files/doc/2022_Ne_Individual_Income_Tax_Booklet_8-307-2022_final_5.pdf
   - title: Nebraska Revised Statute | chapter 77 | §2716.01
     href: https://nebraskalegislature.gov/laws/statutes.php?statute=77-2716.01
+  - title: 2023 NE Individual Income Tax Booklet
+    href: https://revenue.nebraska.gov/sites/revenue.nebraska.gov/files/doc/tax-forms/2023/incometax/f_1040n_booklet_2023_Final.pdf#page=9  
 
 JOINT:
-  2021-01-01: 14_200
-  2022-01-01: 14_700
+  values:
+    2021-01-01: 14_200
+    2022-01-01: 14_700
+    2023-01-01: 15_800
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
+
 HEAD_OF_HOUSEHOLD:
-  2021-01-01: 10_450
-  2022-01-01: 10_750
-WIDOW:
-  2021-01-01: 14_200
-  2022-01-01: 14_700
+  values:
+    2021-01-01: 10_450
+    2022-01-01: 10_750
+    2023-01-01: 11_600
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
+
+SURVIVING_SPOUSE:
+  values:
+    2021-01-01: 14_200
+    2022-01-01: 14_700
+    2023-01-01: 15_800
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
+
 SINGLE:
-  2021-01-01: 7_100
-  2022-01-01: 7_350
+  values:
+    2021-01-01: 7_100
+    2022-01-01: 7_350
+    2023-01-01: 7_900
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
+
 SEPARATE:
-  2021-01-01: 7_100
-  2022-01-01: 7_350
+  values:
+    2021-01-01: 7_100
+    2022-01-01: 7_350
+    2023-01-01: 7_900
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50

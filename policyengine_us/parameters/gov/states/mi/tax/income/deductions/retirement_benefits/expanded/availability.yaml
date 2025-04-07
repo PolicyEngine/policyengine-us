@@ -1,0 +1,17 @@
+description: Michigan allows for an expanded retirement and pension benefits deduction calculation if this is true.
+values:
+  2017-01-01: false  
+  2023-01-01: true
+metadata:
+  unit: bool
+  period: year
+  label: Michigan expanded retirement and pension benefits deduction availability
+  reference:
+    - title: Michigan Legal Code Section 206.30 - (10)
+      href: http://legislature.mi.gov/doc.aspx?mcl-206-30
+    - title: Michigan Retirement and Pension Benefits
+      href: https://www.michigan.gov/taxes/iit/retirement-and-pension-benefits
+    - title: Michigan 2023 MI-1040 Individual Income Tax FORMS AND INSTRUCTIONS
+      href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2023/2023-IIT-Forms/BOOK_MI-1040.pdf#page=25
+    - title: Michigan 2024 Indiviudal Income Tax Instructions
+      href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2024/MI-1040-Instructions.pdf#page=16

@@ -2,7 +2,7 @@
   period: 2022
   input:
     state_code: DE
-    de_agi: 2_000
+    de_agi_joint: 2_000
     de_deduction_joint: 500
     is_tax_unit_head: true
   output:
@@ -12,7 +12,7 @@
   period: 2022
   input:
     state_code: DE
-    de_agi: 300
+    de_agi_joint: 300
     de_deduction_joint: 500
     is_tax_unit_head: true
   output:
@@ -25,11 +25,11 @@
       person1:
         is_tax_unit_head: true
         de_deduction_joint: 100
-        de_agi: 1_000
+        de_agi_joint: 1_000
       person2:
         is_tax_unit_head: false
         de_deduction_joint: 300
-        de_agi: 200
+        de_agi_joint: 200
     households:
       household:
         members: [person1, person2]

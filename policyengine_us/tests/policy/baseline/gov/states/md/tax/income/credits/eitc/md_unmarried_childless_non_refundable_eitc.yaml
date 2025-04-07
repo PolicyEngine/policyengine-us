@@ -1,0 +1,26 @@
+- name: Not capped
+  period: 2021
+  input:
+    md_qualifies_for_unmarried_childless_eitc: true
+    federal_eitc_without_age_minimum: 500
+    state_code: MD
+  output:
+    md_unmarried_childless_non_refundable_eitc: 500 # 500*100%
+
+- name: Capped with MD EITC max amount
+  period: 2021
+  input:
+    md_qualifies_for_unmarried_childless_eitc: true
+    federal_eitc_without_age_minimum: 600
+    state_code: MD
+  output:
+    md_unmarried_childless_non_refundable_eitc: 530 # min(530, 600*100%)
+
+- name: Not eligible for unmarried childless eitc
+  period: 2021
+  input:
+    md_qualifies_for_unmarried_childless_eitc: false
+    federal_eitc_without_age_minimum: 500
+    state_code: MD
+  output:
+    md_unmarried_childless_non_refundable_eitc: 0

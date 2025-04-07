@@ -12,5 +12,5 @@ class dc_agi(Variable):
         "https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2022_D-40_Booklet_Final_blk_01_23_23_Ordc.pdf#page=34"
     )
     defined_for = StateCode.DC
-    adds = ["adjusted_gross_income_person", "dc_income_additions"]
+    adds = ["adjusted_gross_income_person", "dc_additions"]
     subtracts = ["dc_income_subtractions"]

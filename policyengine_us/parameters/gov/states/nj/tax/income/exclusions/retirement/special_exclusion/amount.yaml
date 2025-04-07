@@ -1,5 +1,6 @@
 description: Filers that will never be eligible for social security or railroad benefits get this exclusion.
 metadata:
+  period: year
   unit: currency-USD
   label: NJ other retirement income special exclusion.
   breakdown:
@@ -9,6 +10,12 @@ metadata:
       href: https://law.justia.com/codes/new-jersey/2022/title-54a/section-54a-6-15/
     - title: Instructions for Form NJ-1040 (line 28b)
       href: https://www.state.nj.us/treasury/taxation/pdf/current/1040i.pdf#page=24
+    - title: 2023 NJ-1040 Instructions (line 28b)
+      href: https://www.state.nj.us/treasury/taxation/pdf/current/1040i.pdf#page=22
+    - title: 2024 NJ-1040 Instructions (line 28b)
+      href: https://www.state.nj.us/treasury/taxation/pdf/current/1040i.pdf#page=22
+
+      
 
 SINGLE:
   2021-01-01: 3_000
@@ -18,5 +25,5 @@ HEAD_OF_HOUSEHOLD:
   2021-01-01: 6_000
 JOINT:
   2021-01-01: 6_000
-WIDOW:
+SURVIVING_SPOUSE:
   2021-01-01: 6_000

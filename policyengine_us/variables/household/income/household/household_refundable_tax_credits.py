@@ -7,5 +7,7 @@ class household_refundable_tax_credits(Variable):
     label = "refundable tax credits"
     definition_period = YEAR
     unit = USD
-
-    adds = "gov.household_refundable_credits"
+    adds = [
+        "income_tax_refundable_credits",
+        "household_refundable_state_tax_credits",
+    ]

@@ -1,0 +1,320 @@
+- name: Single person of 30 with 30k of employemnt income - no reform
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    gov.contrib.states.ny.wftc.in_effect: false
+    people: 
+      person1:
+        age: 30
+        is_tax_unit_dependent: false
+        employment_income: 8_500
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    # ny_wftc_eligible_children: 0
+    # ny_working_families_tax_credit: 0
+    ny_eitc: 150
+    ny_ctc: 0
+    ny_exemptions: 0
+
+- name: Single person should have no change in 2025 with the reform
+  period: 2025
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ny.wftc.ny_working_families_tax_credit.ny_working_families_tax_credit
+  input:
+    gov.contrib.states.ny.wftc.in_effect: true
+    people: 
+      person1:
+        age: 30
+        is_tax_unit_dependent: false
+        employment_income: 8_500
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ny_wftc_eligible_children: 0
+    ny_working_families_tax_credit: 0
+    ny_eitc: 150
+    ny_ctc: 0
+    ny_exemptions: 0
+
+- name: Single person, one child, with 20k of employemnt income - reform
+  period: 2025
+  reforms: policyengine_us.reforms.states.ny.wftc.ny_working_families_tax_credit.ny_working_families_tax_credit
+  input:
+    gov.contrib.states.ny.wftc.in_effect: true
+    people: 
+      person1:
+        age: 30
+        is_tax_unit_dependent: false
+        employment_income: 20_000
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    ny_wftc_eligible_children: 1
+    ny_working_families_tax_credit: 550
+    is_older_child_dependent: [false, false]
+    eitc: 4_328
+    younger_eitc: 4_328
+    younger_eitc_eligible: true
+    older_eitc_eligible: false
+    older_eitc: 0
+    ny_eitc: 1_007
+    ny_ctc: 0
+    ny_exemptions: 1_000
+
+- name: Single person, one child, with 20k of employemnt income - no reform
+  period: 2025
+  input:
+    gov.contrib.states.ny.wftc.in_effect: false
+    people: 
+      person1:
+        age: 30
+        is_tax_unit_dependent: false
+        employment_income: 20_000
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    eitc: 4_328
+    ny_eitc: 1_223.4
+    ny_ctc: 330
+    ny_exemptions: 1_000
+
+- name: Single person, one older child, with 20k of employemnt income - reform
+  period: 2025
+  reforms: policyengine_us.reforms.states.ny.wftc.ny_working_families_tax_credit.ny_working_families_tax_credit
+  input:
+    gov.contrib.states.ny.wftc.in_effect: true
+    people: 
+      person1:
+        age: 30
+        is_tax_unit_dependent: false
+        employment_income: 20_000
+      person2:
+        age: 18
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    ny_wftc_eligible_children: 0
+    ny_working_families_tax_credit: 0
+    is_older_child_dependent: [false, true]
+    eitc: 4_328
+    ny_eitc: 1_223.4
+    ny_ctc: 0
+    ny_exemptions: 1_000
+
+- name: Single person, one older child, with 20k of employemnt income - no reform
+  period: 2025
+  input:
+    gov.contrib.states.ny.wftc.in_effect: false
+    people: 
+      person1:
+        age: 30
+        is_tax_unit_dependent: false
+        employment_income: 20_000
+      person2:
+        age: 18
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    eitc: 4_328
+    eitc_maximum: 4_328
+    ny_eitc: 1_223.4
+    ny_ctc: 0
+    ny_exemptions: 1_000
+
+- name: Single person, two children one older and one younger, with 20k of employemnt income - reform
+  period: 2025
+  reforms: policyengine_us.reforms.states.ny.wftc.ny_working_families_tax_credit.ny_working_families_tax_credit
+  input:
+    gov.contrib.states.ny.wftc.in_effect: true
+    people: 
+      person1:
+        age: 30
+        is_tax_unit_dependent: false
+        employment_income: 20_000
+      person2:
+        age: 16
+        is_tax_unit_dependent: true
+      person3:
+        age: 17
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NY
+  output:
+    ny_wftc_eligible_children: 1
+    ny_working_families_tax_credit: 550
+    eitc: 7_152
+    younger_eitc: 0
+    eitc_younger_children_count: 1
+    eitc_older_children_count: 1
+    eitc_older_maximum: 7_152
+    older_eitc: 7_152
+    ny_eitc: 2_055.6
+    ny_ctc: 0
+    ny_exemptions: 2_000
+
+- name: Single person, two children one older and one younger, with 20k of employemnt income - no reform
+  period: 2025
+  input:
+    gov.contrib.states.ny.wftc.in_effect: false
+    people: 
+      person1:
+        age: 30
+        is_tax_unit_dependent: false
+        employment_income: 20_000
+      person2:
+        age: 16
+        is_tax_unit_dependent: true
+      person3:
+        age: 17
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NY
+  output:
+    eitc: 7_152
+    eitc_maximum: 7_152
+    ny_eitc: 2_055.6
+    ny_ctc: 330
+    ny_exemptions: 2_000
+    
+
+- name: 2025 test with two dependents, one older child and one younger - baseline
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people: 
+      person1:
+        age: 40
+        employment_income: 48_500
+      person2:
+        age: 40
+      person3:
+        age: 18
+      person4: 
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: NY
+  output:
+    eitc: 3_355
+    eitc_child_count: 2
+    eitc_maximum: 7_152
+    ny_eitc: 1_006.46
+
+
+- name: 2025 test with two dependents, one older child and one younger 
+  period: 2025
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ny.wftc.ny_working_families_tax_credit.ny_working_families_tax_credit
+  input:
+    gov.contrib.states.ny.wftc.in_effect: true
+    people: 
+      person1:
+        age: 40
+        employment_income: 48_500
+      person2:
+        age: 40
+      person3:
+        age: 18
+      person4:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: NY
+  output:
+    # ny_eitc: 1_000
+    eitc_older_children_count: 1
+    eitc_younger_children_count: 1
+    is_older_child_dependent: [false, false, true, false]
+    eitc: 3_355
+    eitc_older_maximum: 7_152
+    older_eitc: 3_355
+    younger_eitc: 0
+    ny_eitc: 1_006.46
+    ny_working_families_tax_credit: 550
+
+- name: 2026 test with two dependents, one older child and one younger 
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ny.wftc.ny_working_families_tax_credit.ny_working_families_tax_credit
+  input:
+    gov.contrib.states.ny.wftc.in_effect: true
+    people: 
+      person1:
+        age: 40
+        employment_income: 30_000
+      person2:
+        age: 40
+      person3:
+        age: 19
+        is_full_time_student: true
+      person4:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: NY
+  output:
+    ny_exemptions: 1_000

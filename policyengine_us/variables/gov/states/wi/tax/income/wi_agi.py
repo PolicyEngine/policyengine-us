@@ -14,5 +14,5 @@ class wi_agi(Variable):
         "https://www.revenue.wi.gov/TaxForms2022/2022-Form1-Inst.pdf"
     )
     defined_for = StateCode.WI
-    adds = ["adjusted_gross_income", "wi_income_additions"]
+    adds = ["adjusted_gross_income", "wi_additions"]
     subtracts = ["wi_income_subtractions"]

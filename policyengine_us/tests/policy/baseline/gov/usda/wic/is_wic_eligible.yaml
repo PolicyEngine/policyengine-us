@@ -1,0 +1,39 @@
+# WIC requires each of the following:
+# - Either meeting the income test or categorical eligibility,
+# - Meeting a demographic test (pregnancy, age, parental status), and
+# - Being assessed to be at nutritional risk.
+- name: Case 1, satisfied all conditions hence is eligible
+  period: 2022
+  input:
+    meets_wic_income_test: true
+    meets_wic_categorical_eligibility: true
+    is_wic_at_nutritional_risk: true
+  output:
+    is_wic_eligible: true
+
+- name: Case 2, not nutritional risk hence not eligible
+  period: 2022
+  input:
+    meets_wic_income_test: true
+    meets_wic_categorical_eligibility: true
+    is_wic_at_nutritional_risk: false
+  output:
+    is_wic_eligible: false
+
+- name: Case 3, eligible when either income test or categorical passed 
+  period: 2022
+  input:
+    meets_wic_income_test: true
+    meets_wic_categorical_eligibility: false
+    is_wic_at_nutritional_risk: true
+  output:
+    is_wic_eligible: true
+
+- name: Case 4, eligible when either income test or categorical passed 
+  period: 2022
+  input:
+    meets_wic_income_test: false
+    meets_wic_categorical_eligibility: true
+    is_wic_at_nutritional_risk: true
+  output:
+    is_wic_eligible: true

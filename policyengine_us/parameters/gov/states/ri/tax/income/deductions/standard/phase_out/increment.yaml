@@ -2,12 +2,17 @@ description: Rhode Island phases the standard deduction out at this increment.
 values:
   2021-01-01: 6_000
   2022-01-01: 6_200
-  2024-01-01: 7_050
+  2023-01-01: 6_700
 
 metadata:
   label: Rhode Island standard deduction phase out increment
   period: year
   unit: currency-USD
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
   reference:
   # Legal code specifies $5,000 starting in 2011.
   - title: R.I. Gen. Laws § 44-30-2.6 (B), (III)

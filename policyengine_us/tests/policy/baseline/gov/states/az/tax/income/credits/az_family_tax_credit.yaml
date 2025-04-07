@@ -38,11 +38,11 @@
   output:
     az_family_tax_credit: 240
 
-- name: Family tax credits for widow with 3 dependents ($23000 income)
+- name: Family tax credits for surviving spouse with 3 dependents ($23000 income)
   period: 2023
   input:
     state_code: AZ
-    filing_status: WIDOW
+    filing_status: SURVIVING_SPOUSE
     az_family_tax_credit_eligible: true
     tax_unit_size: 4
   output:

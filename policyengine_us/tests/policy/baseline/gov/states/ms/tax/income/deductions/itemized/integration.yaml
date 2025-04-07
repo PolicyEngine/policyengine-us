@@ -1,0 +1,9 @@
+- name: MS itemized deductions unit test 1
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    real_estate_taxes: 12_000
+    deductible_mortgage_interest: 36_000
+    state_fips: 28  # MS
+  output:  # expected results from filling out 2021 MS form 80-108
+    ms_itemized_deductions_unit: 46_000

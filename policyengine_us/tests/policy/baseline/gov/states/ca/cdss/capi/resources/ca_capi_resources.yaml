@@ -1,0 +1,17 @@
+- name: Vehicle below resource threshold
+  period: 2024
+  input:
+    ssi_countable_resources: 4_000
+    household_vehicles_value: 4_500
+    state_code: CA
+  output:
+    ca_capi_resources: 4_000
+
+- name: Vehicle above resource threshold
+  period: 2024
+  input:
+    ssi_countable_resources: 4_000
+    household_vehicles_value: 6_000
+    state_code: CA
+  output:
+    ca_capi_resources: 5_500

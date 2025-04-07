@@ -1,0 +1,55 @@
+- name: slcsp_age_0 unit test 1 Connecticut rating area 2
+  period: 2025-01
+  input:
+    state_code: CT
+    slcsp_rating_area: 2
+  output:
+    slcsp_age_0: 380
+
+- name: slcsp_age_0 unit test 2 Hawaii rating area 1
+  period: 2025-01
+  input:
+    state_code: HI
+    slcsp_rating_area: 1
+  output:
+    slcsp_age_0: 295
+
+- name: slcsp_age_0 unit test 3 Kansas rating area 6
+  period: 2025-01
+  input:
+    state_code: KS
+    slcsp_rating_area: 6
+  output:
+    slcsp_age_0: 304
+
+- name: slcsp_age_0 unit test 4 Nebraska rating area 4
+  period: 2025-01
+  input:
+    state_code: NE
+    slcsp_rating_area: 4
+  output:
+    slcsp_age_0: 422
+
+- name: slcsp_age_0 unit test 5 Texas rating area 8
+  period: 2025-01
+  input:
+    state_code: TX
+    slcsp_rating_area: 8
+  output:
+    slcsp_age_0: 287
+
+- name: slcsp_age_0 unit test 6 Texas rating area 9
+  period: 2025-01
+  input:
+    state_code: TX
+    slcsp_rating_area: 9
+  output:
+    slcsp_age_0: 328
+
+- name: slcsp_age_0 unit test 7 California rating area 15
+  period: 2025-01
+  input:
+    state_code: CA
+    slcsp_rating_area: 15
+  output:
+    slcsp_age_0: 244

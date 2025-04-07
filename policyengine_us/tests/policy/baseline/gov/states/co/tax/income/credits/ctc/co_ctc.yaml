@@ -130,46 +130,46 @@
   output:
     co_ctc: 0
 
-- name: In 2022,  widow(er) filer, one child age < 6, agi = 25_000, federal ctc = 1_000, the colorado ctc = 600
+- name: In 2022,  surviving spouse filer, one child age < 6, agi = 25_000, federal ctc = 1_000, the colorado ctc = 600
   period: 2022
   input:
     state_code: CO
     adjusted_gross_income: 25_000
     co_federal_ctc: 1_000
-    filing_status: WIDOW
+    filing_status: SURVIVING_SPOUSE
     age: 5
   output:
     co_ctc: 600
 
-- name: In 2022, widow(er) filer, one child age < 6, agi = 50_000, federal ctc = 2_000, the colorado ctc = 600
+- name: In 2022, surviving spouse filer, one child age < 6, agi = 50_000, federal ctc = 2_000, the colorado ctc = 600
   period: 2022
   input:
     state_code: CO
     adjusted_gross_income: 50_000
     co_federal_ctc: 2_000
-    filing_status: WIDOW
+    filing_status: SURVIVING_SPOUSE
     age: 4
   output:
     co_ctc: 600
 
-- name: In 2022, widow(er) filer, one child age < 6, agi = 75_000, federal ctc = 2_000, the colorado ctc = 200
+- name: In 2022, surviving spouse filer, one child age < 6, agi = 75_000, federal ctc = 2_000, the colorado ctc = 200
   period: 2022
   input:
     state_code: CO
     adjusted_gross_income: 75_000
     co_federal_ctc: 2_000
-    filing_status: WIDOW
+    filing_status: SURVIVING_SPOUSE
     age: 4
   output:
     co_ctc: 200
 
-- name: In 2022, widow(er) filer, one child age < 6, agi = 85_000, federal ctc = 2_000, the colorado ctc = 0
+- name: In 2022, surviving spouse filer, one child age < 6, agi = 85_000, federal ctc = 2_000, the colorado ctc = 0
   period: 2022
   input:
     state_code: CO
     adjusted_gross_income: 85_000
     co_federal_ctc: 2_000
-    filing_status: WIDOW
+    filing_status: SURVIVING_SPOUSE
     age: 4
   output:
     co_ctc: 0
@@ -281,7 +281,7 @@
   output: 
     co_ctc: 200
 
-- name: In 2024, widow filer, 2 children - flat amount
+- name: In 2024, surviving spouse filer, 2 children - flat amount
   period: 2024
   input:
     people:

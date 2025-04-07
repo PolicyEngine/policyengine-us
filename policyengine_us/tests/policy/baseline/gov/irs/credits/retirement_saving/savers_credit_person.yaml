@@ -1,0 +1,135 @@
+- name: joint with one eligible person
+  period: 2023
+  input:
+    people:
+      person1:
+        savers_credit_eligible_person: true
+        traditional_ira_contributions: 3_000
+        roth_ira_contributions: 2_000
+        retirement_distributions: 1_000
+      person2:
+        savers_credit_eligible_person: false
+        traditional_ira_contributions: 0
+        roth_ira_contributions: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        adjusted_gross_income: 39_000
+  output:
+    savers_credit_person: [1_000, 0]
+
+- name: joint with AGI over a threshold 
+  period: 2023
+  input:
+    people:
+      person1:
+        savers_credit_eligible_person: true
+        adjusted_gross_income_person: 39_000
+        traditional_ira_contributions: 3_000
+        roth_ira_contributions: 2_000
+      person2:
+        savers_credit_eligible_person: true
+        adjusted_gross_income_person: 50_000
+        traditional_ira_contributions: 3_000
+        roth_ira_contributions: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        adjusted_gross_income: 73_000
+  output:
+    savers_credit_person: [0, 0]
+
+- name: Head of household with AGI over the eligible threshold
+  period: 2023
+  input:
+    people:
+      person1:
+        savers_credit_eligible_person: true
+        traditional_ira_contributions: 3_000
+        roth_ira_contributions: 2_000
+      person2:
+        savers_credit_eligible_person: true
+        traditional_ira_contributions: 3_000
+        roth_ira_contributions: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+        adjusted_gross_income: 54_750
+  output:
+    savers_credit_person: [0, 0]
+
+- name: Head of household with AGI under the eligible threshold, capped contributions 
+  period: 2023
+  input:
+    people:
+      person1:
+        savers_credit_eligible_person: true
+        traditional_ira_contributions: 3_000
+        roth_ira_contributions: 2_000
+        retirement_distributions: 4_000
+      person2:
+        savers_credit_eligible_person: true
+        traditional_ira_contributions: 3_000
+        roth_ira_contributions: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+        adjusted_gross_income: 33_000
+  output:
+    savers_credit_person: [200, 400]
+
+- name: Single uncapped contributions
+  period: 2023
+  input:
+    people:
+      person1:
+        savers_credit_eligible_person: true
+        roth_ira_contributions: 500
+        roth_401k_contributions: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 20_000
+  output:
+    savers_credit_person: [750]
+
+- name: Single uncapped contributions, middle threshold
+  period: 2023
+  input:
+    people:
+      person1:
+        savers_credit_eligible_person: true
+        roth_ira_contributions: 500
+        roth_401k_contributions: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 33_000
+  output:
+    savers_credit_person: [150]
+
+- name: Joint household, no eligible people
+  period: 2023
+  input:
+    people:
+      person1:
+        savers_credit_eligible_person: false
+        traditional_ira_contributions: 3_000
+        roth_ira_contributions: 2_000
+      person2:
+        savers_credit_eligible_person: false
+        traditional_ira_contributions: 0
+        roth_ira_contributions: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        adjusted_gross_income: 39_000
+  output:
+    savers_credit_person: [0, 0]

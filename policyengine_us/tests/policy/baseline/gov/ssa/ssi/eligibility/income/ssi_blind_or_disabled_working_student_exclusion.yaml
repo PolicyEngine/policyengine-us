@@ -1,0 +1,65 @@
+- name: 1974 Monthly exclusion total exceeds yearly cap
+  period: 1974
+  input:
+    is_ssi_blind_or_disabled_working_student_exclusion_eligible: true
+    ssi_earned_income: 400 * 12
+  output:
+    ssi_blind_or_disabled_working_student_exclusion: 1_620
+
+- name: 1974 Monthly exclusion total does not exceed yearly cap
+  period: 1974
+  input:
+    is_ssi_blind_or_disabled_working_student_exclusion_eligible: true
+    ssi_earned_income: 1_600
+  output:
+    ssi_blind_or_disabled_working_student_exclusion: 1_600
+
+- name: 1974 Monthly test 1
+  period: 1974-01
+  input:
+    is_ssi_blind_or_disabled_working_student_exclusion_eligible: true
+    ssi_earned_income: 300
+  output:
+    ssi_blind_or_disabled_working_student_exclusion: 25 # 300/12
+
+- name: 1974 Monthly test 2
+  period: 1974-01
+  absolute_error_margin: 0.01
+  input:
+    is_ssi_blind_or_disabled_working_student_exclusion_eligible: true
+    ssi_earned_income: 20_000
+  output:
+    ssi_blind_or_disabled_working_student_exclusion: 135 # 1,620/12
+
+- name: 2001 Monthly exclusion total exceeds yearly cap
+  period: 2001
+  input:
+    is_ssi_blind_or_disabled_working_student_exclusion_eligible: true
+    ssi_earned_income: 1_290 * 12
+  output:
+    ssi_blind_or_disabled_working_student_exclusion: 5_200
+
+- name: 2001 Monthly exclusion total does not exceed yearly cap
+  period: 2001
+  input:
+    is_ssi_blind_or_disabled_working_student_exclusion_eligible: true
+    ssi_earned_income: 5_000
+  output:
+    ssi_blind_or_disabled_working_student_exclusion: 5_000
+
+- name: 2001 Monthly test 1
+  period: 2001-01
+  input:
+    is_ssi_blind_or_disabled_working_student_exclusion_eligible: true
+    ssi_earned_income: 600
+  output:
+    ssi_blind_or_disabled_working_student_exclusion: 50 # 600/12
+
+- name: 2001 Monthly test 2
+  period: 2001-01
+  absolute_error_margin: 0.01
+  input:
+    is_ssi_blind_or_disabled_working_student_exclusion_eligible: true
+    ssi_earned_income: 20_000
+  output:
+    ssi_blind_or_disabled_working_student_exclusion: 433.33 # 5,200/12

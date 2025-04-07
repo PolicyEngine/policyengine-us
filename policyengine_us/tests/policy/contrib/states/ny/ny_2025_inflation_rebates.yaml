@@ -1,0 +1,106 @@
+- name: Single person, eligible
+  period: 2025
+  reforms: policyengine_us.reforms.states.ny.inflation_rebates.ny_2025_inflation_rebates.ny_2025_inflation_rebates
+  input:
+    gov.contrib.states.ny.inflation_rebates.in_effect: true
+    state_code: NY
+    ny_agi: 150_000
+    filing_status: SINGLE
+  output:
+    ny_2025_inflation_rebates: 300
+
+- name: Single person, ineligible
+  period: 2025
+  reforms: policyengine_us.reforms.states.ny.inflation_rebates.ny_2025_inflation_rebates.ny_2025_inflation_rebates
+  input:
+    gov.contrib.states.ny.inflation_rebates.in_effect: true
+    state_code: NY
+    ny_agi: 150_001
+    filing_status: SINGLE
+  output:
+    ny_2025_inflation_rebates: 0
+
+- name: Separate person, eligible
+  period: 2025
+  reforms: policyengine_us.reforms.states.ny.inflation_rebates.ny_2025_inflation_rebates.ny_2025_inflation_rebates
+  input:
+    gov.contrib.states.ny.inflation_rebates.in_effect: true
+    state_code: NY
+    ny_agi: 150_000
+    filing_status: SEPARATE
+  output:
+    ny_2025_inflation_rebates: 250
+
+- name: Separate person, ineligible
+  period: 2025
+  reforms: policyengine_us.reforms.states.ny.inflation_rebates.ny_2025_inflation_rebates.ny_2025_inflation_rebates
+  input:
+    gov.contrib.states.ny.inflation_rebates.in_effect: true
+    state_code: NY
+    ny_agi: 150_001
+    filing_status: SEPARATE
+  output:
+    ny_2025_inflation_rebates: 0 
+
+- name: Joint couple, eligible
+  period: 2025
+  reforms: policyengine_us.reforms.states.ny.inflation_rebates.ny_2025_inflation_rebates.ny_2025_inflation_rebates
+  input:
+    gov.contrib.states.ny.inflation_rebates.in_effect: true
+    state_code: NY
+    ny_agi: 300_000
+    filing_status: JOINT
+  output:
+    ny_2025_inflation_rebates: 500
+
+- name: Joint couple, ineligible
+  period: 2025
+  reforms: policyengine_us.reforms.states.ny.inflation_rebates.ny_2025_inflation_rebates.ny_2025_inflation_rebates
+  input:
+    gov.contrib.states.ny.inflation_rebates.in_effect: true
+    state_code: NY
+    ny_agi: 300_001
+    filing_status: JOINT
+  output:
+    ny_2025_inflation_rebates: 0 
+
+- name: Include credit as a refundable credit
+  period: 2025
+  reforms: policyengine_us.reforms.states.ny.inflation_rebates.ny_2025_inflation_rebates.ny_2025_inflation_rebates
+  input:
+    gov.contrib.states.ny.inflation_rebates.in_effect: true
+    state_code: NY
+    ny_agi: 300_000
+    filing_status: JOINT
+  output:
+    ny_2025_inflation_rebates: 500
+    ny_refundable_credits: 500
+
+- name: Include credit as a refundable credit - baseline test
+  period: 2025
+  input:
+    gov.contrib.states.ny.inflation_rebates.in_effect: false
+    state_code: NY
+    ny_agi: 300_000
+    filing_status: JOINT
+  output:
+    ny_refundable_credits: 0
+
+- name: Integration test, one person with 0 AGI
+  period: 2025
+  reforms: policyengine_us.reforms.states.ny.inflation_rebates.ny_2025_inflation_rebates.ny_2025_inflation_rebates
+  input:
+    gov.contrib.states.ny.inflation_rebates.in_effect: false
+    people:
+      person1:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [person1]
+        ny_agi: 0
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ny_2025_inflation_rebates: 300

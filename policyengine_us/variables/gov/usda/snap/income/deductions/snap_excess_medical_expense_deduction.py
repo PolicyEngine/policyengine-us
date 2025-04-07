@@ -23,8 +23,7 @@ class snap_excess_medical_expense_deduction(Variable):
         p = parameters(
             period
         ).gov.usda.snap.income.deductions.excess_medical_expense
-        disregard = p.disregard
-        excess = max_(elderly_disabled_moop - disregard, 0)
+        excess = max_(elderly_disabled_moop - p.disregard, 0)
         # Calculate standard medical deduction (SMD).
         state = spm_unit.household("state_code_str", period)
         standard = p.standard[state]

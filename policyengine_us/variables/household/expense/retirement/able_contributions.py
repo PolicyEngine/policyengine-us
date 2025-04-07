@@ -10,3 +10,5 @@ class able_contributions(Variable):
     )
     unit = USD
     definition_period = YEAR
+
+    adds = ["able_contributions_person"]

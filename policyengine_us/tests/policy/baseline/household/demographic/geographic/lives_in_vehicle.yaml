@@ -1,0 +1,31 @@
+- name: Not homeless
+  period: 2023
+  input:
+    is_homeless: false
+    household_vehicles_owned: 1
+  output:
+    lives_in_vehicle: false
+
+- name: Homeless without vehicles
+  period: 2023
+  input:
+    is_homeless: true
+    household_vehicles_owned: 0
+  output:
+    lives_in_vehicle: false
+
+- name: Homeless one vehicle
+  period: 2023
+  input:
+    is_homeless: true
+    household_vehicles_owned: 1
+  output:
+    lives_in_vehicle: true
+
+- name: Homeless multiple vehicles
+  period: 2023
+  input:
+    is_homeless: true
+    household_vehicles_owned: 3
+  output:
+    lives_in_vehicle: true

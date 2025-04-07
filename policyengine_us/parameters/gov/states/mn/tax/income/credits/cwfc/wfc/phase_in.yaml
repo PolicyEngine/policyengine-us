@@ -1,0 +1,33 @@
+description: Minnesota phases the working family credit in at this rate, based on earned income.
+metadata:
+  type: marginal_rate
+  period: year
+  threshold_unit: currency-USD
+  rate_unit: /1
+  label: Minnesota working family credit phase-in rate
+  reference:
+  - title: 290.0671 MINNESOTA WORKING FAMILY CREDIT. Subd. 1 (3) (b)
+    href: https://www.revisor.mn.gov/statutes/cite/290.0671
+  - title: 2023 Schedule M1CWFC, Minnesota Child and Working Family Credits
+    href: https://www.revenue.state.mn.us/sites/default/files/2025-01/m1cwfc-23.pdf#page=1
+  - title: 2024 Schedule M1CWFC, Minnesota Child and Working Family Credits
+    href: https://www.revenue.state.mn.us/sites/default/files/2025-01/m1cwfc-24.pdf#page=1
+  
+
+brackets:
+  - threshold:
+      2023-01-01: 0
+    rate:
+      2023-01-01: 0.04
+  - threshold:
+      values:
+        2023-01-01: 8_750
+        2024-01-01: 9_220
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 10
+    rate:
+      2023-01-01: 0

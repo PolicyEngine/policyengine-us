@@ -1,0 +1,13 @@
+description: North Carolina counts these income sources as earned income for its Temporary Assistance for Needy Families program.
+
+values:
+  2024-01-01:
+    - employment_income
+    - self_employment_income
+metadata:
+  unit: list
+  period: year
+  label: North Carolina TANF earned income sources
+  reference:
+    title: WORK FIRST | Income and Budgeting (Change No. 04-2023, January 1, 2024)
+    href: https://policies.ncdhhs.gov/wp-content/uploads/wf-114_1-2-2024.pdf

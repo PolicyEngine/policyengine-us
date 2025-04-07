@@ -63,10 +63,10 @@
   output:
     md_senior_tax_credit: 1_750
 
-- name: Widow eligible.
+- name: Surviving spouse eligible.
   period: 2023
   input:
-    filing_status: WIDOW
+    filing_status: SURVIVING_SPOUSE
     adjusted_gross_income: 149_999
     state_code: MD
     age_head: 65
@@ -76,7 +76,7 @@
 - name: Head of household no spouse eligible.
   period: 2023
   input:
-    filing_status: WIDOW
+    filing_status: SURVIVING_SPOUSE
     adjusted_gross_income: 149_999
     state_code: MD
     age_head: 65
@@ -86,7 +86,7 @@
 - name: Head of household with spouse both aged eligible.
   period: 2023
   input:
-    filing_status: WIDOW
+    filing_status: SURVIVING_SPOUSE
     adjusted_gross_income: 149_999
     state_code: MD
     age_head: 65
@@ -97,7 +97,7 @@
 - name: Head of household with spouse one aged eligible.
   period: 2023
   input:
-    filing_status: WIDOW
+    filing_status: SURVIVING_SPOUSE
     adjusted_gross_income: 149_999
     state_code: MD
     age_head: 65

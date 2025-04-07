@@ -1,0 +1,19 @@
+description: Maryland matches this percent of the federal Earned Income Tax Credit as a refundable credit for filers who are not single and childless.
+values:
+  2014-01-01: 0.25
+  2015-01-01: 0.255
+  2016-01-01: 0.26
+  2017-01-01: 0.27
+  2018-01-01: 0.28
+  2020-01-01: 0.45
+metadata:
+  unit: /1
+  period: year
+  label: Maryland refundable EITC match
+  reference:
+    - title: Maryland 2024 State & Local Tax Forms & Instructions - Line 22 - Earned Income Credit
+      href: https://www.marylandtaxes.gov/forms/24-forms/Resident-Booklet.pdf#page=14
+    - title: 2023 State & Local Tax Forms & Instructions Maryland 
+      href: https://www.marylandtaxes.gov/forms/23_forms/Resident-Booklet.pdf#page=25 
+    - title: Md. Code, Tax-Gen. § 10-704(c)(2)(ii)
+      href: https://casetext.com/statute/code-of-maryland/article-tax-general/title-10-income-tax/subtitle-7-income-tax-credits/section-10-704-effective-until-6302023-for-earned-income

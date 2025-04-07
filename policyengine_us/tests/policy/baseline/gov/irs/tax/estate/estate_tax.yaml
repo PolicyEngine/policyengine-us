@@ -1,0 +1,15 @@
+- name: Tax over credits
+  period: 2017
+  input:
+    estate_tax_before_credits: 10_000_000
+    estate_tax_credit: 5_000_000
+  output:
+    estate_tax: 5_000_000
+
+- name: Tax not over credits
+  period: 2025
+  input:
+    estate_tax_before_credits: 5_000_000
+    estate_tax_credit: 10_000_000
+  output:
+    estate_tax: 0

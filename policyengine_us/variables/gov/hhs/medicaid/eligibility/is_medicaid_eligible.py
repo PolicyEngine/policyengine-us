@@ -24,4 +24,7 @@ class is_medicaid_eligible(Variable):
         immigration_status_eligible = (
             ~undocumented | undocumented & state_covers_undocumented
         )
-        return categorically_eligible & immigration_status_eligible
+        ca_ffyp_eligible = person("ca_ffyp_eligible", period)
+        return (
+            categorically_eligible & immigration_status_eligible
+        ) | ca_ffyp_eligible

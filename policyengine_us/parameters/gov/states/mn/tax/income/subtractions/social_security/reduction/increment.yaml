@@ -1,0 +1,23 @@
+description: Minnesota reduces the social security subtraction in these increments of adjusted gross income.
+metadata:
+  unit: bool
+  label: Minnesota social security subtraction reduction increment
+  period: year
+  reference:
+  - title: Minnesota Statutes 290.0132 Subd. 26.Social Security benefits. (c)
+    href: https://www.revisor.mn.gov/statutes/cite/290.0132#stat.290.0132.26
+  - title: 2023 Minnesota Schedule M1M, Income Additions and Subtractions, Line 12 worksheet
+    href: https://www.revenue.state.mn.us/sites/default/files/2024-04/m1m-23_0.pdf#page=4
+  - title: 2024 Minnesota Schedule M1M, Income Additions and Subtractions, Line 12 worksheet
+    href: https://www.revenue.state.mn.us/sites/default/files/2024-12/m1m-24.pdf#page=4
+
+SINGLE:
+  2023-01-01: 4_000
+SEPARATE:
+  2023-01-01: 2_000
+HEAD_OF_HOUSEHOLD:
+  2023-01-01: 4_000
+JOINT:
+  2023-01-01: 4_000
+SURVIVING_SPOUSE:
+  2023-01-01: 4_000

@@ -3,7 +3,7 @@ from policyengine_us.model_api import *
 
 class ca_la_ez_save_countable_income(Variable):
     value_type = float
-    entity = SPMUnit
+    entity = Household
     definition_period = YEAR
     label = "Los Angeles County EZ Save program countable income"
     defined_for = "in_la"

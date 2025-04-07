@@ -21,14 +21,14 @@ class nc_ctc(Variable):
                 filing_status == status.SINGLE,
                 filing_status == status.HEAD_OF_HOUSEHOLD,
                 filing_status == status.JOINT,
-                filing_status == status.WIDOW,
+                filing_status == status.SURVIVING_SPOUSE,
                 filing_status == status.SEPARATE,
             ],
             [
                 p.single.calc(income),
                 p.head_of_household.calc(income),
                 p.joint.calc(income),
-                p.widow.calc(income),
+                p.surviving_spouse.calc(income),
                 p.separate.calc(income),
             ],
         )

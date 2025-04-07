@@ -2,6 +2,12 @@ description: DC limits the keep child care affordable tax credit to those whose 
 metadata:
   unit: year
   label: DC KCCATC DC taxable income limit
+  propagate_metadata_to_children: true
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 100
   breakdown:
     - filing_status
   period: year
@@ -14,33 +20,58 @@ metadata:
       href: https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/52926_D-40_12.21.21_Final_Rev011122.pdf#page=68
     - title: 2022 DC Form D-40 Booklet, Schedule ELC
       href: https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2022_D-40_Booklet_Final_blk_01_23_23_Ordc.pdf#page=60
+    - title: 2023 DC Form D-40 Booklet, Schedule ELC
+      href: https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2023_D40_Book_Final_012324.pdf#page=60
+    - title: 2024 DC Form D-40 Booklet, Page 60, Schedule ELC
+      href: https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2024_D40_Booklet_011525.pdf#page=60
+    - title: District of Columbia Tax Changes Take Effect October 1st 2024
+      href: https://otr.cfo.dc.gov/release/district-columbia-tax-changes-take-effect-october1-24
 
 SINGLE:
-  2018-01-01: 750_000 # (A)
-  2019-01-01: 150_000 # (B)
-  2021-01-01: 153_400
-  2022-01-01: 157_200
+  values:
+    2018-01-01: 750_000 # (A)
+    2019-01-01: 150_000 # (B)
+    2021-01-01: 153_400
+    2022-01-01: 157_200
+    2023-01-01: 167_400
+    2024-01-01: 174_300
+
 JOINT:
-  2018-01-01: 750_000 # (A)
-  2019-01-01: 150_000 # (B)
-  2020-01-01: 151_900
-  2021-01-01: 153_400
-  2022-01-01: 157_200
+  values:
+    2018-01-01: 750_000 # (A)
+    2019-01-01: 150_000 # (B)
+    2020-01-01: 151_900
+    2021-01-01: 153_400
+    2022-01-01: 157_200
+    2023-01-01: 167_400
+    2024-01-01: 174_300
+
 SEPARATE:
-  2018-01-01: 375_000 # (A)
-  2019-01-01: 75_000 # (B)
-  2020-01-01: 151_900
-  2021-01-01: 76_700
-  2022-01-01: 78_600
+  values:
+    2018-01-01: 375_000 # (A)
+    2019-01-01: 75_000 # (B)
+    2020-01-01: 151_900
+    2021-01-01: 76_700
+    2022-01-01: 78_600
+    2023-01-01: 83_700
+    2024-01-01: 87_100
+   
 HEAD_OF_HOUSEHOLD:
-  2018-01-01: 750_000 # (A)
-  2019-01-01: 150_000 # (B)
-  2020-01-01: 151_900
-  2021-01-01: 153_400
-  2022-01-01: 157_200
-WIDOW:
-  2018-01-01: 750_000 # (A)
-  2019-01-01: 150_000 # (B)
-  2020-01-01: 151_900
-  2021-01-01: 153_400
-  2022-01-01: 157_200
+  values:
+    2018-01-01: 750_000 # (A)
+    2019-01-01: 150_000 # (B)
+    2020-01-01: 151_900
+    2021-01-01: 153_400
+    2022-01-01: 157_200
+    2023-01-01: 167_400
+    2024-01-01: 174_300
+
+SURVIVING_SPOUSE:
+  values:
+    2018-01-01: 750_000 # (A)
+    2019-01-01: 150_000 # (B)
+    2020-01-01: 151_900
+    2021-01-01: 153_400
+    2022-01-01: 157_200
+    2023-01-01: 167_400
+    2024-01-01: 174_300

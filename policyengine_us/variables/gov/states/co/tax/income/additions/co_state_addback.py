@@ -15,7 +15,7 @@ class co_state_addback(Variable):
 
     def formula(tax_unit, period, parameters):
         federal_itemizer = tax_unit("tax_unit_itemizes", period)
-        state_inctax = max_(0, tax_unit("state_income_tax", period))
+        state_inctax = max_(0, tax_unit("state_withheld_income_tax", period))
         property_taxes = add(tax_unit, period, ["real_estate_taxes"])
         # follow worksheet on page 5 of 2021 Book cited above:
         irs_schA_line_5d = state_inctax + property_taxes

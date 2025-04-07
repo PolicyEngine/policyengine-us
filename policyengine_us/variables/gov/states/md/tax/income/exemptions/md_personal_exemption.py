@@ -23,13 +23,13 @@ class md_personal_exemption(Variable):
                 filing_status == filing_statuses.SEPARATE,
                 filing_status == filing_statuses.JOINT,
                 filing_status == filing_statuses.HEAD_OF_HOUSEHOLD,
-                filing_status == filing_statuses.WIDOW,
+                filing_status == filing_statuses.SURVIVING_SPOUSE,
             ],
             [
                 p.single.calc(agi, right=True),
                 p.separate.calc(agi, right=True),
                 p.joint.calc(agi, right=True),
                 p.head.calc(agi, right=True),
-                p.widow.calc(agi, right=True),
+                p.surviving_spouse.calc(agi, right=True),
             ],
         )

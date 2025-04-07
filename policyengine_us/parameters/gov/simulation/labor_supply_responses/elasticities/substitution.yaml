@@ -1,0 +1,70 @@
+all:
+  description: Percent change (of the change in the effective marginal wage) in labor supply given a 1% change in the effective marginal wage. This parameter overrides all other substitution elasticities if provided.
+  values:
+    2020-01-01: 0
+  metadata:
+    unit: /1
+    label: substitution elasticity of labor supply
+by_position_and_decile:
+  metadata:
+    label: by position and decile
+    unit: /1
+    propagate_metadata_to_children: true
+  primary:
+    metadata:
+      label: primary adult
+    1:
+      metadata:
+        label: primary adult, 1st decile substitution elasticity
+      values:
+        2020-01-01: 0
+    2:
+      metadata:
+        label: primary adult, 2nd decile substitution elasticity
+      values:
+        2020-01-01: 0
+    3:
+      metadata:
+        label: primary adult, 3rd decile substitution elasticity
+      values:
+        2020-01-01: 0
+    4:
+      metadata:
+        label: primary adult, 4th decile substitution elasticity
+      values:
+        2020-01-01: 0
+    5:
+      metadata:
+        label: primary adult, 5th decile substitution elasticity
+      values:
+        2020-01-01: 0
+    6:
+      metadata:
+        label: primary adult, 6th decile substitution elasticity
+      values:
+        2020-01-01: 0
+    7:
+      metadata:
+        label: primary adult, 7th decile substitution elasticity
+      values:
+        2020-01-01: 0
+    8:
+      metadata:
+        label: primary adult, 8th decile substitution elasticity
+      values:
+        2020-01-01: 0
+    9:
+      metadata:
+        label: primary adult, 9th decile substitution elasticity
+      values:
+        2020-01-01: 0
+    10:
+      metadata:
+        label: primary adult, 10th decile substitution elasticity
+      values:
+        2020-01-01: 0
+  secondary:
+    metadata:
+      label: secondary adult, all deciles substitution elasticity
+    values:
+      2020-01-01: 0

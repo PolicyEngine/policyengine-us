@@ -1,0 +1,21 @@
+description: New York provides the following 2025 Inflation Rebate amount for head of household filers, based on state adjusted gross income.
+
+brackets:
+  - threshold:
+      2025-01-01: -.inf
+    amount:
+      2025-01-01: 300
+  - threshold:
+      2025-01-01: 150_000
+    amount:
+      2025-01-01: 0
+
+
+metadata:
+  type: single_amount
+  amount_unit: currency-USD
+  threshold_unit: currency-USD
+  label: New York 2025 Inflaton Rebate head of household amount
+  reference:
+    - title: New York State Governor Hochul Proposes Sending 8.6 Million New Yorkers an Inflation Refund Check as First Proposal of 2025 State of the State
+      href: https://www.governor.ny.gov/news/money-your-pockets-governor-hochul-proposes-sending-86-million-new-yorkers-inflation-refund

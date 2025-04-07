@@ -1,0 +1,15 @@
+description: Massachusetts provides the greater of the Dependent Tax Credit and the Dependent Care Tax Credit if this is true. 
+values:
+  2021-01-01: true  
+  2023-01-01: false
+metadata:
+  unit: bool
+  period: year
+  label: Massachusetts Dependent Care Tax Credit in effect
+  reference:
+    - title: Mass. General Laws c.62 § 6(x)
+      href: https://www.mass.gov/info-details/mass-general-laws-c62-ss-6#(x)-
+    - title: Form 1 2021 Massachusetts Resident Income Tax (line 45)
+      href: https://www.mass.gov/doc/2021-form-1-instructions/download#page=16
+    - title: Form 1 2023 Massachusetts Resident Income Tax (Child and Family Tax Credit)
+      href: https://www.mass.gov/doc/2023-form-1-instructions/download#page=4

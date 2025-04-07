@@ -3,7 +3,8 @@
   input:
     age: 19
     employment_income: 5_000
-    md_qualifies_for_single_childless_eitc: true
+    md_qualifies_for_unmarried_childless_eitc: true
+    state_code: MD
   output:
     eitc: 0
     federal_eitc_without_age_minimum: 382.50

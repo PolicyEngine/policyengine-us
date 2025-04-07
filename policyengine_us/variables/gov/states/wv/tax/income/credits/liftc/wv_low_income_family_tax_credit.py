@@ -29,14 +29,14 @@ class wv_low_income_family_tax_credit(Variable):
                 filing_status == filing_statuses.SEPARATE,
                 filing_status == filing_statuses.JOINT,
                 filing_status == filing_statuses.HEAD_OF_HOUSEHOLD,
-                filing_status == filing_statuses.WIDOW,
+                filing_status == filing_statuses.SURVIVING_SPOUSE,
             ],
             [
                 p.amount.single.calc(reduced_agi),
                 p.amount.separate.calc(reduced_agi),
                 p.amount.joint.calc(reduced_agi),
                 p.amount.head_of_household.calc(reduced_agi),
-                p.amount.widow.calc(reduced_agi),
+                p.amount.surviving_spouse.calc(reduced_agi),
             ],
         )
 

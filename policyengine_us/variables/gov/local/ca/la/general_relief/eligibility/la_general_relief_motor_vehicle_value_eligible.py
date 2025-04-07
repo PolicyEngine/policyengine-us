@@ -12,13 +12,13 @@ class la_general_relief_motor_vehicle_value_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         household = spm_unit.household
-        is_homeless = household("is_homeless", period)
+        lives_in_vehicle = household("lives_in_vehicle", period)
         vehicle_value = household("household_vehicles_value", period)
         p = parameters(
             period
         ).gov.local.ca.la.general_relief.eligibility.limit.motor_vehicle
         vehicle_value_limit = where(
-            is_homeless, p.value.homeless, p.value.resident
+            lives_in_vehicle, p.value.homeless, p.value.resident
         )
         vehicle_value_eligible = vehicle_value <= vehicle_value_limit
         vehicles_owned = household("household_vehicles_owned", period)

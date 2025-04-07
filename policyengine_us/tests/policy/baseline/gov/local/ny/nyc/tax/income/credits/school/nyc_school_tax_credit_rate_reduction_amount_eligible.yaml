@@ -1,0 +1,59 @@
+- name: Single person is eligible with income not over $500,000.
+  period: 2022
+  input:
+    in_nyc: true
+    nyc_taxable_income: 500_000
+    filing_status: SINGLE
+  output:
+    # NYC School Tax Instructions
+    # See Page 25 for fixed amount
+    # https://www.tax.ny.gov/pdf/2022/printable-pdfs/inc/it201i-2022.pdf
+    nyc_school_tax_credit_rate_reduction_amount_eligible: true
+
+- name: Single person is not eligible with income over $500,000.
+  period: 2022
+  input:
+    in_nyc: true
+    nyc_taxable_income: 500_001
+    filing_status: SINGLE
+  output:
+    # NYC School Tax Instructions
+    # See Page 25 for fixed amount
+    # https://www.tax.ny.gov/pdf/2022/printable-pdfs/inc/it201i-2022.pdf
+    nyc_school_tax_credit_rate_reduction_amount_eligible: false
+
+- name: Joint filers are eligible for income not over $500,000.
+  period: 2022
+  input:
+    in_nyc: true
+    nyc_taxable_income: 500_000
+    filing_status: JOINT
+  output:
+    # NYC School Tax Instructions
+    # See Page 25 for fixed amount
+    # https://www.tax.ny.gov/pdf/2022/printable-pdfs/inc/it201i-2022.pdf
+    nyc_school_tax_credit_rate_reduction_amount_eligible: true
+
+- name: Joint filers are not eligible with income over $500,000.
+  period: 2022
+  input:
+    in_nyc: true
+    nyc_taxable_income: 500_001
+    filing_status: JOINT
+  output:
+    # NYC School Tax Instructions
+    # See Page 25 for fixed amount
+    # https://www.tax.ny.gov/pdf/2022/printable-pdfs/inc/it201i-2022.pdf
+    nyc_school_tax_credit_rate_reduction_amount_eligible: false
+
+- name: Filers outside of NYC are not eligible.
+  period: 2022
+  input:
+    in_nyc: false
+    nyc_taxable_income: 0
+    filing_status: JOINT
+  output:
+    # NYC School Tax Instructions
+    # See Page 25 for fixed amount
+    # https://www.tax.ny.gov/pdf/2022/printable-pdfs/inc/it201i-2022.pdf
+    nyc_school_tax_credit_rate_reduction_amount_eligible: false

@@ -1,15 +1,23 @@
 - name: No exemptions
   period: 2022
   input:
-    state_code: VA
-    va_personal_exemption: 0
+    va_low_income_tax_credit_agi_eligible: true
+    tax_unit_size: 0
   output:
     va_low_income_tax_credit: 0
 
-- name: Three exemptions
+- name: Head and spouse with one dependent
   period: 2022
   input:
-    state_code: VA
-    va_personal_exemption: 3
+    va_low_income_tax_credit_agi_eligible: true
+    tax_unit_size: 3
   output:
     va_low_income_tax_credit: 900
+
+- name: Head with four dependent
+  period: 2022
+  input:
+    va_low_income_tax_credit_agi_eligible: true
+    tax_unit_size: 5
+  output:
+    va_low_income_tax_credit: 1_500

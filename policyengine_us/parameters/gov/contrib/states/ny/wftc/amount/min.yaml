@@ -1,0 +1,16 @@
+description: New York provides the following minimum Working Families Tax Credit amount per child.
+metadata:
+  unit: currency-USD
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
+  period: year
+  label: New York Working Families Tax Credit minimum amount
+  reference: 
+    - title: New York Senate Bill S277C §3(c-2)(2)(C)
+      href: https://legislation.nysenate.gov/pdf/bills/2023/S277C
+
+values:
+  2024-01-01: 100

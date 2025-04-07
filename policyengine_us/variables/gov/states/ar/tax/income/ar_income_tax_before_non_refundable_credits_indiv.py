@@ -7,7 +7,10 @@ class ar_income_tax_before_non_refundable_credits_indiv(Variable):
     label = "Arkansas income tax before non refundable credits when married couples are filing separately"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2023_Final_AR1000ES.pdf"
+    reference = (
+        "https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2023_AR1000F_and_AR1000NR_Instructions.pdf"
+        "https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2023_AR1000F_FullYearResidentIndividualIncomeTaxReturn.pdf"
+    )
     defined_for = StateCode.AR
 
     def formula(person, period, parameters):

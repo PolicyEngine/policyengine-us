@@ -4,14 +4,18 @@ metadata:
   amount_unit: /1
   threshold_period: year
   type: single_amount
-  label: New Jersey Child and Dependent Care Credit match rate
+  label: New Jersey CDCC match rate
   reference: 
     - title: Child and Dependent Care Credit
       href: https://www.nj.gov/treasury/taxation/depcarecred.shtml
-    - title: 2021 New Jersey NJ-1040 Resident Return
+    - title: 2022 Instructions for Form NJ-1040 (line 64)
       href: https://www.state.nj.us/treasury/taxation/pdf/other_forms/tgi-ee/2021/1040i.pdf#page=44
-    - title: Instructions for Form NJ-1040 (line 64)
-      href: https://www.state.nj.us/treasury/taxation/pdf/current/1040i.pdf#page=44
+    - title: 2022 Instructions for Form NJ-1040 (line 64)
+      href: https://www.nj.gov/treasury/taxation/pdf/other_forms/tgi-ee/2022/1040i.pdf#page=44
+    - title: 2023 Instructions for Form NJ-1040 (line 64)
+      href: https://www.state.nj.us/treasury/taxation/pdf/current/1040i.pdf#page=45
+    - title: 2024 Instructions for Form NJ-1040 (line 64)
+      href: https://www.nj.gov/treasury/taxation/pdf/current/1040i.pdf#page=46
 brackets:
   - threshold:  
       2021-01-01: -.inf

@@ -5,6 +5,3343 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.245.0] - 2025-04-06 13:44:41
+
+### Changed
+
+- DC Temporary Assistance for Needy Families (TANF) program.
+
+## [1.244.1] - 2025-04-06 13:33:02
+
+### Fixed
+
+- Enable MA EAEDC and TAFDC.
+
+## [1.244.0] - 2025-04-04 19:32:12
+
+### Added
+
+- Revert unwanted changes to MA EAEDC and TAFDC.
+
+## [1.243.0] - 2025-04-04 17:04:17
+
+### Added
+
+- Include Massachusetts EAEDC and TAFDC in the net income tree.
+
+## [1.242.1] - 2025-04-04 14:06:57
+
+### Added
+
+- Added 2021-2023 Medicaid spending and enrollment data.
+
+## [1.242.0] - 2025-04-04 11:06:12
+
+### Added
+
+- 2024 Maine State Income Tax Updates.
+
+## [1.241.0] - 2025-04-04 09:27:04
+
+### Added
+
+- Mississippi Income Tax Cut (2027-2030).
+
+## [1.240.5] - 2025-04-03 16:03:51
+
+### Added
+
+- Fix 2025 Utah Income Tax Rate.
+
+## [1.240.4] - 2025-04-03 11:58:58
+
+### Fixed
+
+- Account for the case where only one person is of the eligible immigration status under the LA GR program.
+
+## [1.240.3] - 2025-04-03 08:25:20
+
+### Fixed
+
+- Convert meets_snap_categorical_eligibility to monthly.
+
+## [1.240.2] - 2025-04-02 16:46:53
+
+### Fixed
+
+- Consolidated the different Medicaid parameters.
+
+## [1.240.1] - 2025-04-01 18:27:47
+
+### Added
+
+- Conversion of county FIPS codes to county enum items
+- Helper function to convert string county names to enum keys
+- Function to download and parse county FIPS dataset from Hugging Face
+
+### Changed
+
+- Modified county variable to depend on FIPS input, then on ZIP code
+- Modified county variable to use helper function for conversion from county names to enum keys
+
+## [1.240.0] - 2025-04-01 18:13:56
+
+### Added
+
+- Massachusetts Bay Transportation Authority Income-Eligible Reduced Fare Program eligibility.
+- Massachusetts Bay Transportation Authority Senior Charlie Card Program eligibility.
+- Massachusetts Bay Transportation Authority Transportation Access Pass (TAP) Charlie Card Program eligibility.
+
+## [1.239.0] - 2025-04-01 16:24:37
+
+### Added
+
+- 2024 Iowa State Income Tax Updates.
+
+## [1.238.0] - 2025-04-01 13:44:29
+
+### Added
+
+- Massachusetts Emergency Aid to the Elderly, Disabled and Children (EAEDC).
+
+## [1.237.0] - 2025-04-01 13:33:21
+
+### Added
+
+- 2025 Utah Income Tax Changes.
+
+## [1.236.0] - 2025-04-01 12:10:52
+
+### Added
+
+- 2024 Louisiana State Income Tax Updates.
+
+## [1.235.0] - 2025-03-31 15:42:14
+
+### Added
+
+- 2024 Washington State Income Tax Updates.
+
+## [1.234.0] - 2025-03-28 18:57:33
+
+### Added
+
+- 2024 Hawaii State Income Tax Updates.
+
+## [1.233.0] - 2025-03-28 17:49:52
+
+### Added
+
+- Convert TANF variables to monthly.
+
+## [1.232.0] - 2025-03-28 12:23:21
+
+### Added
+
+- 2024 Indiana Income Tax Updates.
+
+## [1.231.0] - 2025-03-26 17:10:58
+
+### Added
+
+- 2024 South Carolina State Income Tax Updates.
+
+## [1.230.0] - 2025-03-25 20:22:29
+
+### Added
+
+- Kansas head of household additional exemption.
+
+## [1.229.0] - 2025-03-25 20:17:19
+
+### Added
+
+- 2025 Idaho Grocery Credit.
+
+## [1.228.0] - 2025-03-25 16:34:13
+
+### Added
+
+- Arizona 2024 income tax updates.
+
+## [1.227.1] - 2025-03-25 09:56:10
+
+### Added
+
+- Updated State Spending on Medicaid.
+
+## [1.227.0] - 2025-03-24 21:11:24
+
+### Added
+
+- Massachusetts Transitional Aid to Families with Dependent Children.
+
+## [1.226.1] - 2025-03-24 20:55:29
+
+### Fixed
+
+- Minnesota working family credit phase-in threshold.
+
+## [1.226.0] - 2025-03-24 14:07:04
+
+### Added
+
+- Include California State Supplement eligibility rules and include in the net income tree .
+
+## [1.225.0] - 2025-03-24 11:38:01
+
+### Added
+
+- Oklahoma State Tax Code 2024 Updates.
+
+## [1.224.0] - 2025-03-24 11:01:52
+
+### Added
+
+- 2024 Wisconsin State Income Tax Updates.
+
+## [1.223.0] - 2025-03-20 23:52:06
+
+### Added
+
+- Illinois 2024 income tax updates.
+
+### Fixed
+
+- Illinois child tax credit logic.
+
+## [1.222.0] - 2025-03-20 21:06:04
+
+### Added
+
+- 2023 to 2025 Massachusetts SSI State Supplement Parameters.
+
+## [1.221.0] - 2025-03-20 15:35:49
+
+### Added
+
+- 2024 North Dakota State Income Tax Updates.
+
+## [1.220.4] - 2025-03-20 14:53:50
+
+### Fixed
+
+- Refactor New Mexico itemized deductions.
+
+## [1.220.3] - 2025-03-20 13:20:44
+
+### Fixed
+
+- Fixed SSI spousal deeming logic by adding the FBR differential threshold check required by §416.1163(d)(1). Now the ineligible spouse's income is only deemed if it exceeds the difference between couple and individual FBRs.
+- Corrected a multi-argument `max_()` usage in the State Supplement code to use `np.maximum.reduce(...)`, ensuring that single disabled individuals now receive the correct (non-zero) supplement amount.
+- Updated `ssi_category` so that disabled individuals are categorized properly (no longer `'NONE'`), fixing a scenario where the category check returned zero for disabled recipients.
+- Revised the Massachusetts FULL_COST integration test to align with our current offset logic for large leftover incomes (previously returned an unexpected zero).
+
+## [1.220.2] - 2025-03-20 12:28:46
+
+### Added
+
+- Added Maryland Tax Code Updates for 2024.
+
+## [1.220.1] - 2025-03-20 12:19:03
+
+### Fixed
+
+- Remove the mistakenly added tax-dependent limit from the NC SCCA program as it is not required.
+
+## [1.220.0] - 2025-03-19 21:49:56
+
+### Added
+
+- Minnesota 2024 state income tax updates.
+
+## [1.219.2] - 2025-03-19 20:55:15
+
+### Fixed
+
+- Remove SSI from unearned income sources for NC TANF.
+
+## [1.219.1] - 2025-03-19 09:32:35
+
+### Fixed
+
+- Rename capital_gains_before_response to long_term_capital_gains_before_response as it is unclear whether it might include/allocate short term.
+
+## [1.219.0] - 2025-03-19 09:20:57
+
+### Fixed
+
+- Fixed Texas and Maine rating areas and corresponding SLCSP.
+
+## [1.218.0] - 2025-03-19 07:54:52
+
+### Added
+
+- Missouri state tax code 2024 updates.
+
+## [1.217.1] - 2025-03-18 07:50:27
+
+### Fixed
+
+- Idaho 2024 income tax rate.
+
+## [1.217.0] - 2025-03-17 21:48:20
+
+### Added
+
+- Virginia state tax code 2024 updates.
+- Replace inactive statutory links in the Virginia tax code.
+- Update description of Virginia itemized deduction limits.
+
+## [1.216.0] - 2025-03-17 21:43:27
+
+### Added
+
+- New York and Vermont ACA family tier ratings.
+
+## [1.215.0] - 2025-03-17 21:18:41
+
+### Added
+
+- 2024 Mississippi State Income Tax Updates.
+
+## [1.214.0] - 2025-03-17 09:50:22
+
+### Added
+
+- Move branch_to_determine_itemization to gov/simulation folder.
+
+## [1.213.1] - 2025-03-14 00:28:04
+
+### Fixed
+
+- Changed reform to tax employer payroll taxes from a parametric to a structural reform to avoid double-counting.
+
+## [1.213.0] - 2025-03-13 15:42:03
+
+### Added
+
+- 2024 Alabama State Income Tax Updates.
+
+## [1.212.0] - 2025-03-12 18:28:39
+
+### Added
+
+- 2024 Kentucky State Income Tax Updates.
+
+## [1.211.0] - 2025-03-12 15:09:34
+
+### Added
+
+- 2024 Idaho State Income Tax Updates.
+
+## [1.210.0] - 2025-03-11 21:57:12
+
+### Fixed
+
+- Fixed California Rating Area 16's ACA premium.
+
+## [1.209.2] - 2025-03-11 15:56:15
+
+### Fixed
+
+- Minnesota social security subtraction reduction.
+
+## [1.209.1] - 2025-03-11 12:24:12
+
+### Fixed
+
+- Colorado credit returns NaNs in 2025 and beyond.
+- Added test for NaNs in 2025 and beyond.
+
+## [1.209.0] - 2025-03-10 15:29:09
+
+### Added
+
+- 2025 Idaho income tax cut.
+
+## [1.208.0] - 2025-03-10 12:25:03
+
+### Added
+
+- 2024 Michigan State Income Tax Updates.
+
+## [1.207.5] - 2025-03-08 12:59:39
+
+### Fixed
+
+- Typo in the Los Angeles County general relief housing subsidy parameters.
+
+## [1.207.4] - 2025-03-07 19:23:38
+
+### Added
+
+- Adjust label for young child basic income age parameter.
+
+## [1.207.3] - 2025-03-07 00:26:43
+
+### Changed
+
+- Adjust the Infant age group definition for North Carolina SCCA program.
+
+## [1.207.2] - 2025-03-06 14:07:16
+
+### Fixed
+
+- Alabama retirement exemption computation.
+
+## [1.207.1] - 2025-03-06 13:36:02
+
+### Fixed
+
+- Remove Colorado SNAP net income test.
+
+## [1.207.0] - 2025-03-05 14:11:36
+
+### Added
+
+- Implemented North Carolina Subsidized Child Care Assistance (SCCA) program and entry eligibility calculations.
+
+## [1.206.0] - 2025-03-04 23:26:22
+
+### Added
+
+- Utah state tax code 2024 updates.
+
+## [1.205.0] - 2025-03-03 23:06:08
+
+### Added
+
+- Modified reform for counting employer side payroll taxes in employees' IRS gross income so that Social Security and Medicare can be included separately.
+
+## [1.204.1] - 2025-03-01 23:09:07
+
+### Fixed
+
+- {'Hide program takeup parameters from the web UI by setting economy': 'false in their metadata'}
+
+## [1.204.0] - 2025-03-01 15:17:51
+
+### Added
+
+- Employer side Social Security and Medicare payroll tax.
+- Reform for counting employer side payroll taxes in employees' IRS gross income.
+
+## [1.203.2] - 2025-02-28 14:57:36
+
+### Fixed
+
+- Louisiana federal tax deduction reduction.
+
+## [1.203.1] - 2025-02-28 14:09:09
+
+### Fixed
+
+- Cap the FISC Act AGI floor at 0.
+
+## [1.203.0] - 2025-02-27 08:40:40
+
+### Added
+
+- Ohio state tax code 2025 updates.
+
+## [1.202.2] - 2025-02-24 23:14:08
+
+### Added
+
+- CLAUDE.md with development guidelines and common code patterns
+
+### Fixed
+
+- Delete old ACA SLCSP files
+- Expanded Variables Related to LA county SLCSP
+- Fix array comparison in the LA expectant parent payment eligibility formula
+
+## [1.202.1] - 2025-02-24 13:59:24
+
+### Fixed
+
+- Floor the income bracket at 1 in the state_sales_tax variable.
+
+## [1.202.0] - 2025-02-20 19:47:27
+
+### Added
+
+- 2024 Massachusetts State Income Tax Updates.
+
+## [1.201.0] - 2025-02-20 15:41:40
+
+### Added
+
+- Nationwide (except NY and VT) ACA for 2025.
+
+## [1.200.2] - 2025-02-20 15:09:55
+
+### Fixed
+
+- Correct AMT single exemption amount values.
+
+## [1.200.1] - 2025-02-20 13:23:33
+
+### Fixed
+
+- FISC act in effect parameter type.
+
+## [1.200.0] - 2025-02-20 03:56:06
+
+### Added
+
+- New York Pension exclusion Variable.
+- New York Subtraction List Parameter.
+- Added test for New York pension exclusion variable.
+
+## [1.199.0] - 2025-02-19 20:13:32
+
+### Added
+
+- Family Income Supplemental Credit Act reform.
+
+## [1.198.1] - 2025-02-19 20:05:31
+
+### Fixed
+
+- Apply miscellaneous deduction floor.
+- Add miscellaneous deduction to the AMT Income calculation.
+
+## [1.198.0] - 2025-02-18 23:22:33
+
+### Added
+
+- DC 2024 Income Tax Updates.
+
+## [1.197.1] - 2025-02-18 22:33:47
+
+### Added
+
+- Add personal exemptions to the AMT Income calculation.
+
+## [1.197.0] - 2025-02-17 23:53:42
+
+### Changed
+
+- Uprate medical expense categories by CMS MOOP per capita projections.
+
+## [1.196.1] - 2025-02-14 20:39:21
+
+### Fixed
+
+- Set the bottom bracket to -.inf under the New York Inflation Rebates reform.
+
+## [1.196.0] - 2025-02-14 19:34:59
+
+### Added
+
+- Kentucky income tax rate 2026.
+
+## [1.195.1] - 2025-02-13 21:40:47
+
+### Added
+
+- update the CSFP income limits
+
+## [1.195.0] - 2025-02-13 01:08:09
+
+### Added
+
+- Rename interest_expense to deductible_interest_expense.
+
+## [1.194.0] - 2025-02-13 01:01:20
+
+### Added
+
+- Colorado 2024 tax form references.
+- 2023 and 2024 Colorado Income Qualified Senior Housing Credit.
+- 2024 Colorado ABLE Account Cap.
+- 2023 and 2024 Colorado CollegeInvest Maximum Amount.
+- 2024 Colorado State Sales Tax Refund.
+
+## [1.193.0] - 2025-02-13 00:37:01
+
+### Added
+
+- Kansas State Tax Code 2024 Updates.
+
+## [1.192.2] - 2025-02-12 20:02:57
+
+## [1.192.1] - 2025-02-11 18:25:27
+
+### Fixed
+
+- Create a non_deductible_mortgage_interest variable.
+- Sum deductible and non-deductible interest in the mortgage_interest variable.
+
+## [1.192.0] - 2025-02-11 16:25:15
+
+### Added
+
+- Apply itemized deduction limitations.
+
+## [1.191.0] - 2025-02-10 21:41:56
+
+### Added
+
+- CBO uprating factors for all tax parameters through 2035.
+
+## [1.190.0] - 2025-02-07 21:44:34
+
+### Added
+
+- 2024 North Carolina Income Tax Updates.
+
+## [1.189.0] - 2025-02-06 20:58:56
+
+### Added
+
+- Pennsylvania 2024 income tax updates.
+
+## [1.188.0] - 2025-02-06 10:21:40
+
+### Added
+
+- Refactor the Alternative Minimum Tax (AMT) logic.
+
+## [1.187.3] - 2025-02-05 18:19:06
+
+### Fixed
+
+- Adds 2025 Federal Poverty Guidelines.
+
+## [1.187.2] - 2025-02-05 00:41:13
+
+## [1.187.1] - 2025-02-04 16:24:45
+
+### Fixed
+
+- Revert previous commit.
+
+## [1.187.0] - 2025-02-03 22:12:04
+
+### Added
+
+- January 2025 CBO economic and demographic outlooks.
+
+## [1.186.0] - 2025-01-31 15:42:23
+
+### Added
+
+- Change is_widowed to is_surviving_spouse.
+
+## [1.185.0] - 2025-01-31 14:12:32
+
+### Added
+
+- Georgia State Tax Code 2024 Updates.
+
+## [1.184.0] - 2025-01-29 20:49:54
+
+### Added
+
+- New York City 2024 tax form references.
+
+## [1.183.1] - 2025-01-29 15:14:24
+
+### Fixed
+
+- Iowa income tax structure on and after 2023.
+
+## [1.183.0] - 2025-01-29 01:21:20
+
+### Added
+
+- New York 2024 tax form references.
+
+## [1.182.2] - 2025-01-28 13:45:56
+
+### Fixed
+
+- California itemized deduction limits 2024.
+- California AMT parameters 2024.
+- California 2024 tax form references.
+
+## [1.182.1] - 2025-01-27 21:39:20
+
+### Fixed
+
+- Invalid value encountered when dividing income_effect by original_earnings and dividing substitution_effect by original_earnings in weekly hours worked calculation
+
+## [1.182.0] - 2025-01-27 12:51:08
+
+### Added
+
+- NYC school tax credit phase out reform.
+
+## [1.181.0] - 2025-01-24 16:56:04
+
+### Added
+
+- Optional State Sales Tax Rates.
+
+## [1.180.4] - 2025-01-24 16:12:31
+
+## [1.180.3] - 2025-01-24 16:08:29
+
+### Fixed
+
+- Include the New York 2025 Inflation Rebates in the net income tree.
+
+## [1.180.2] - 2025-01-23 16:58:25
+
+### Fixed
+
+- Invalid value when dividing employment_income by total_earnings in marginal tax rate calculation.
+
+## [1.180.1] - 2025-01-22 06:23:40
+
+### Fixed
+
+- Limit DC PTC to filers that take it up in the reform.
+
+## [1.180.0] - 2025-01-21 20:24:31
+
+### Added
+
+- 2024 California YCTC and Foster Youth Credit parameters.
+
+## [1.179.0] - 2025-01-21 05:05:10
+
+### Added
+
+- 2025 New York Inflation Rebates.
+
+## [1.178.0] - 2025-01-21 04:58:51
+
+### Added
+
+- Maryland standard deduction values 2024.
+
+## [1.177.0] - 2025-01-20 15:53:06
+
+### Added
+
+- Limit the SALT deduction to property taxes reform.
+
+## [1.176.3] - 2025-01-20 05:43:12
+
+### Fixed
+
+- Apply the 5 year forward check to the SALT phase out reform.
+
+## [1.176.2] - 2025-01-18 00:44:16
+
+### Fixed
+
+- DC property tax credit phase-out calculation.
+
+## [1.176.1] - 2025-01-17 14:54:51
+
+### Fixed
+
+- DC property tax credit reform 5 year forward check.
+
+## [1.176.0] - 2025-01-17 04:08:48
+
+### Added
+
+- Puerto Rico low income credit.
+- Puerto Rico compensatory low income credit.
+
+## [1.175.0] - 2025-01-16 21:12:09
+
+### Added
+
+- Missouri 2024 and 2025 top income tax rate.
+- Missouri 2024 working family tax credit match.
+
+## [1.174.1] - 2025-01-16 20:40:42
+
+### Fixed
+
+- Limit CAPI to households with eligible aged or disabled filers.
+
+## [1.174.0] - 2025-01-15 21:19:28
+
+### Added
+
+- Colorado income tax rate 2024.
+
+## [1.173.0] - 2025-01-13 19:10:03
+
+### Added
+
+- References for New Jersey 2024 state income tax.
+
+## [1.172.1] - 2025-01-13 17:48:43
+
+### Fixed
+
+- 2024 Connecticut income tax rates for HOH and surviving spouses.
+
+## [1.172.0] - 2025-01-13 01:59:31
+
+### Added
+
+- DC property tax credit reform.
+
+## [1.171.0] - 2025-01-10 11:34:59
+
+### Added
+
+- DC property tax credit take up.
+
+## [1.170.2] - 2025-01-10 05:35:35
+
+### Fixed
+
+- Only apply the Virginia rebate to the 2023 tax year.
+
+## [1.170.1] - 2025-01-09 21:40:41
+
+### Added
+
+- Montana top income tax rate 2024.
+
+## [1.170.0] - 2025-01-09 16:55:35
+
+### Added
+
+- 2024 DC keep child care affordable tax credit max benefit and thresholds.
+- DC EITC match delay to 2029.
+
+## [1.169.0] - 2025-01-08 23:32:39
+
+### Added
+
+- State-level variables in taxsim.
+
+## [1.168.1] - 2025-01-06 18:47:40
+
+### Fixed
+
+- NYC income tax rates.
+
+## [1.168.0] - 2025-01-06 15:50:44
+
+### Added
+
+- New Jersey medical expense deduction.
+
+## [1.167.2] - 2025-01-06 05:03:19
+
+### Fixed
+
+- Uncap New York real estate tax deduction.
+- Cap New York college tuition expenses credit and deduction per student.
+
+## [1.167.1] - 2025-01-03 16:28:36
+
+### Fixed
+
+- Iowa alternate tax eligibility.
+
+## [1.167.0] - 2024-12-28 02:48:55
+
+### Added
+
+- 2024 DC property tax credit maximum benefit and thresholds
+
+## [1.166.0] - 2024-12-27 21:44:15
+
+### Added
+
+- Abolish SNAP net income test reform.
+- Abolish SNAP deductions reform.
+
+## [1.165.0] - 2024-12-26 12:59:32
+
+### Added
+
+- SSI qualified non-citizen eligibility.
+
+## [1.164.0] - 2024-12-24 21:20:18
+
+### Added
+
+- Expanded CTC reform including a reformed phase-in structure.
+
+## [1.163.1] - 2024-12-24 18:42:26
+
+### Fixed
+
+- Illinois income tax before non-refundable credits variable format.
+
+## [1.163.0] - 2024-12-24 15:53:04
+
+### Added
+
+- 2026 Estate Tax Credit Exemption amount.
+
+## [1.162.3] - 2024-12-24 12:46:05
+
+### Fixed
+
+- Indiana National Guard and Reserve Pay Deduction 2023.
+
+## [1.162.2] - 2024-12-23 19:54:14
+
+### Fixed
+
+- Adjust the EPP max pregnancy month value.
+
+## [1.162.1] - 2024-12-20 16:50:32
+
+### Added
+
+- 2
+- 0
+- 2
+- 5
+-  
+- S
+- S
+- I
+- ,
+-  
+- A
+- N
+- D
+- -
+- C
+- S
+- ,
+-  
+- a
+- n
+- d
+-  
+- O
+- A
+- P
+-  
+- v
+- a
+- l
+- u
+- e
+- s
+
+## [1.162.0] - 2024-12-18 02:31:13
+
+### Added
+
+- Add non-refundable credits to state dependent exemption reform.
+
+## [1.161.3] - 2024-12-18 02:17:13
+
+### Fixed
+
+- New York Working Families Tax Credit parameter structure.
+- New York exemptions child definition.
+
+## [1.161.2] - 2024-12-15 23:08:57
+
+### Fixed
+
+- NYWFTC EITC older children eligibility.
+
+## [1.161.1] - 2024-12-13 23:43:04
+
+### Added
+
+- Capability to select custom start time for simulations; this is a patch for structural reforms that occur at non-default time periods.
+
+## [1.161.0] - 2024-12-12 05:36:14
+
+### Added
+
+- Nebraska military retirement benefit exclusion.
+
+## [1.160.0] - 2024-12-05 16:48:14
+
+### Added
+
+- Second earner tax reform.
+
+## [1.159.0] - 2024-12-05 16:42:58
+
+### Added
+
+- Add multiple state exemptions to the repeal of state dependent exemptions reform.
+
+## [1.158.0] - 2024-12-05 15:58:14
+
+### Added
+
+- Montana property tax rebate.
+
+## [1.157.0] - 2024-12-05 15:47:47
+
+### Added
+
+- Remove CBO elasticities toggle.
+
+## [1.156.0] - 2024-12-04 21:38:01
+
+### Added
+
+- Apply the TCJA mortgage value limits under the mortgage interest deduction.
+
+## [1.155.1] - 2024-12-04 19:11:45
+
+### Fixed
+
+- Remove the SNAP child support deduction from the net income computation if applied to gross income.
+
+## [1.155.0] - 2024-12-03 20:23:24
+
+### Added
+
+- Add the Arizona charitable contributions credit to the net income tree.
+
+## [1.154.2] - 2024-12-03 20:14:27
+
+### Changed
+
+- Upgraded minimum policyengine-core version
+- Allowed more flexibility in policyengine-us-data version
+
+## [1.154.1] - 2024-12-01 16:39:30
+
+### Fixed
+
+- Arkansas 2023 low income tax table parameters.
+
+## [1.154.0] - 2024-11-30 18:08:00
+
+### Added
+
+- Louisiana 2025 standard deduction structure.
+
+## [1.153.0] - 2024-11-25 23:01:42
+
+### Added
+
+- Louisiana 2025 flat income tax rate.
+- Louisiana 2025 retirement income exemption increase.
+
+## [1.152.0] - 2024-11-25 22:04:48
+
+### Added
+
+- Montana 2023 income tax rebate.
+
+## [1.151.0] - 2024-11-25 21:52:13
+
+### Added
+
+- Apply the phase-in to the CTC when computing the New York empire state credit.
+
+## [1.150.1] - 2024-11-25 12:08:59
+
+### Fixed
+
+- Montana 2023 / 2024 EITC match.
+
+## [1.150.0] - 2024-11-21 03:44:18
+
+### Added
+
+- Reform to repeal state dependent exemptions.
+
+## [1.149.0] - 2024-11-21 03:30:46
+
+### Added
+
+- Delaware 2022 relief rebate.
+
+## [1.148.0] - 2024-11-21 02:32:20
+
+### Added
+
+- CTC supplement for oldest child reform.
+- Child index variable.
+
+## [1.147.0] - 2024-11-19 23:38:18
+
+### Added
+
+- SALT phase-out reform separate rate for joint filers.
+
+## [1.146.2] - 2024-11-19 21:32:57
+
+### Added
+
+- New test to cliff_evaluated to demonstrate differences between adults and children in given household.
+
+### Changed
+
+- Changed formula for cliff_evaluated to use new marginal tax rate adults parameter.
+- Updated cliff_gap test to use new marginal tax rate adults parameter.
+
+## [1.146.1] - 2024-11-19 16:41:43
+
+### Added
+
+- Monthly age variable.
+
+### Fixed
+
+- Los Angeles Infant Supplement and Expectant Parent Payment age threshold.
+
+## [1.146.0] - 2024-11-19 13:15:26
+
+### Changed
+
+- US-Data to 1.13.
+
+## [1.145.0] - 2024-11-18 13:26:09
+
+### Fixed
+
+- Cliff variables.
+
+## [1.144.0] - 2024-11-18 02:11:15
+
+### Added
+
+- SALT deduction phase-out reform.
+
+## [1.143.0] - 2024-11-18 01:37:58
+
+### Added
+
+- Montana 2023 income tax rule updates.
+
+## [1.142.5] - 2024-11-16 20:55:48
+
+### Added
+
+- Populate va_agi_person and add the Virginia spouse tax adjustment to the net income tree.
+
+## [1.142.4] - 2024-11-16 20:47:40
+
+### Fixed
+
+- Remove the child tax rebate from the list of 2023 rhode island refundable credits.
+
+## [1.142.3] - 2024-11-16 20:18:42
+
+### Added
+
+- Add the 2023 Arkansas inflation relief credit amount and avoid attributing the amount twice for joint filers filing separately.
+
+## [1.142.2] - 2024-11-15 19:21:17
+
+### Fixed
+
+- Refactor the New York Working Families Tax Credit.
+
+## [1.142.1] - 2024-11-14 20:12:06
+
+### Fixed
+
+- Mississippi missing 2023 income tax bracket thresholds.
+
+## [1.142.0] - 2024-11-14 17:44:55
+
+### Added
+
+- Georgia 2024 income tax rate update.
+
+## [1.141.0] - 2024-11-13 16:46:23
+
+### Added
+
+- Los Angeles County expectant parent payment.
+- Los Angeles County infant supplement.
+
+## [1.140.1] - 2024-11-11 04:47:50
+
+### Fixed
+
+- Iowa Income Tax Rates 2023-2026.
+
+## [1.140.0] - 2024-11-11 04:40:19
+
+### Fixed
+
+- NJ EITC correctly calculates federal EITC entitlement.
+
+## [1.139.2] - 2024-11-10 18:07:53
+
+### Added
+
+- Test for meets_school_meal_categorical_eligibility with vectorized inputs.
+
+### Fixed
+
+- Corrected meets_school_meal_categorical_eligilibity to properly calculate eligibility for vectorized inputs.
+
+## [1.139.1] - 2024-11-08 23:52:56
+
+### Added
+
+- Label to Alaska tax param folder
+
+## [1.139.0] - 2024-11-07 11:43:28
+
+### Added
+
+- Update EITC joint bonus for childless filers.
+
+## [1.138.0] - 2024-11-05 21:37:21
+
+### Added
+
+- SNAP 2024 SUA for Colorado
+
+## [1.137.4] - 2024-11-04 12:17:46
+
+### Fixed
+
+- Qualified business defaults to true.
+
+## [1.137.3] - 2024-11-01 16:53:33
+
+### Fixed
+
+- Colorado 2023 sales tax refund.
+
+## [1.137.2] - 2024-11-01 10:27:40
+
+### Fixed
+
+- Branch improvements.
+
+## [1.137.1] - 2024-10-31 18:57:07
+
+### Fixed
+
+- remove uprating for SNAP variables that don't change
+
+## [1.137.0] - 2024-10-30 18:47:11
+
+### Added
+
+- California Medicaid Former Foster Youth Program.
+
+## [1.136.2] - 2024-10-30 02:19:31
+
+### Changed
+
+- Altered handling of federal params in VA reduced itemized deductions
+
+## [1.136.1] - 2024-10-29 19:55:24
+
+### Changed
+
+- Updated policyengine-us-data to 0.11.1
+- Updated microdf-python to 0.4.3
+
+## [1.136.0] - 2024-10-29 13:25:05
+
+### Added
+
+- Capital gains tax responses.
+
+## [1.135.0] - 2024-10-28 21:33:47
+
+### Added
+
+- Remaining 2025 IRS tax posted parameter updates.
+
+## [1.134.0] - 2024-10-28 20:09:23
+
+### Added
+
+- DC Child Tax Credit.
+
+## [1.133.0] - 2024-10-27 22:00:19
+
+### Added
+
+- Separate tip income and overtime income from the main tax exempt reforms structure.
+
+## [1.132.0] - 2024-10-24 03:58:00
+
+### Added
+
+- Trump tip income tax exempt.
+
+## [1.131.0] - 2024-10-23 22:18:23
+
+### Added
+
+- 2025 income and capital gains thresholds.
+
+## [1.130.0] - 2024-10-23 20:51:51
+
+### Added
+
+- End ACP effective 2024-06-01.
+
+## [1.129.3] - 2024-10-21 20:37:15
+
+### Fixed
+
+- Changed weekly_hours_worked to weekly_hours_worked_before_lsr in SNAP formula to avoid circular dependency.
+
+## [1.129.2] - 2024-10-21 20:22:41
+
+### Changed
+
+- Updated required version of policyengine-core
+
+## [1.129.1] - 2024-10-21 19:39:15
+
+### Fixed
+
+- Pregnant people counted as 2 for Medicaid FPG percent
+
+## [1.129.0] - 2024-10-17 19:59:12
+
+### Added
+
+- Biden NIIT label and description change.
+
+## [1.128.0] - 2024-10-16 12:20:25
+
+### Added
+
+- Michigan 2024 income tax rate update.
+
+## [1.127.0] - 2024-10-15 19:32:53
+
+### Added
+
+- Georgia 2024 dependent exemption amount update.
+
+## [1.126.0] - 2024-10-15 18:57:14
+
+### Added
+
+- Chained CPI 2035.
+
+## [1.125.0] - 2024-10-15 16:32:32
+
+### Added
+
+- Exclude students from the SNAP unit with certain exceptions.
+
+## [1.124.0] - 2024-10-15 16:26:25
+
+### Added
+
+- IN county taxes.
+
+## [1.123.0] - 2024-10-15 10:18:53
+
+### Added
+
+- 2024 tax rate, CDCC match, standard deduction and personal exemption amount in Kansas..
+
+## [1.122.0] - 2024-10-15 03:15:23
+
+### Added
+
+- Kansas disabled veteran exemptions.
+
+## [1.121.0] - 2024-10-15 03:05:54
+
+### Added
+
+- Idaho 2024 income tax rate and brackets.
+
+## [1.120.0] - 2024-10-15 00:23:23
+
+### Added
+
+- California Income Tax Thresholds 2024.
+
+## [1.119.0] - 2024-10-14 20:55:12
+
+### Added
+
+- California Standard Deduction, Personal/Dependent Exemption Credits and Renter AGI Cap 2024.
+
+## [1.118.0] - 2024-10-14 20:30:24
+
+### Added
+
+- Kentucky Standard Deduction 2024 & 2025.
+
+## [1.117.0] - 2024-10-14 19:22:35
+
+### Added
+
+- Harris capital gains tax reform.
+
+## [1.116.0] - 2024-10-14 19:08:02
+
+### Added
+
+- Missouri 2024 income tax rate and brackets.
+
+## [1.115.0] - 2024-10-09 15:10:16
+
+## [1.114.0] - 2024-10-09 11:09:17
+
+## [1.113.0] - 2024-10-09 04:16:32
+
+### Added
+
+- Minnesota 2024 standard deduction limitations update.
+
+## [1.112.0] - 2024-10-08 14:36:53
+
+### Added
+
+- Minnesota 2024 base and additional standard deduction amount updates.
+
+## [1.111.0] - 2024-10-08 14:25:53
+
+### Added
+
+- Added NC SNAP utility allowances for FY 2025.
+
+### Fixed
+
+- Corrected NC SNAP utility allowance parameters start date.
+
+## [1.110.0] - 2024-10-07 13:04:35
+
+## [1.109.0] - 2024-10-06 10:30:21
+
+### Added
+
+- EITC takeup by number of children.
+
+## [1.108.0] - 2024-10-05 12:11:34
+
+### Added
+
+- Minnesota 2024 income tax bracekts.
+
+## [1.107.0] - 2024-10-05 07:43:35
+
+### Added
+
+- Typo in CalWORKs exempt parameter.
+
+## [1.106.0] - 2024-10-04 16:51:40
+
+### Added
+
+- Parameterize the age in is_person_demographic_tanf_eligible.
+
+## [1.105.2] - 2024-10-02 17:49:23
+
+### Added
+
+- Always use the SUA for CO.
+
+## [1.105.1] - 2024-09-30 22:09:41
+
+### Changed
+
+- Moved loading of abolitions parameters earlier in initialization process
+
+## [1.105.0] - 2024-09-30 17:03:10
+
+### Added
+
+- North Carolina military retirement deduction.
+
+## [1.104.0] - 2024-09-30 16:54:45
+
+### Added
+
+- 2023 Medicaid income limit updates.
+
+## [1.103.0] - 2024-09-29 23:26:45
+
+### Added
+
+- Oklahoma military retirement benefit exclusion.
+- Oklahoma AGI subtractions list.
+
+## [1.102.0] - 2024-09-29 22:51:45
+
+### Changed
+
+- PolicyEngine-US-Data bumped to 1.8
+
+## [1.101.0] - 2024-09-29 04:49:39
+
+### Added
+
+- Child Tax Credit phase-in variable.
+
+### Fixed
+
+- Child Tax Credit value variable.
+- Pinned policyengine-core version.
+
+## [1.100.0] - 2024-09-28 02:35:09
+
+### Added
+
+- North Carolina rate changes for 2024 on.
+- 2024 Rhode Island EITC match.
+
+### Fixed
+
+- NYC tax credit parameter formatting.
+
+## [1.99.1] - 2024-09-27 20:22:56
+
+### Fixed
+
+- Update the Hawaii SNAP net income test application.
+
+## [1.99.0] - 2024-09-27 20:12:23
+
+### Fixed
+
+- Remove lifeline variable from spm_unit_broadband_subsidy.
+- Modified tests for spm_unit_broadband_subsidy.
+
+## [1.98.0] - 2024-09-27 20:05:18
+
+### Added
+
+- 2024 Kentucky income tax rate reduction.
+
+## [1.97.0] - 2024-09-27 19:50:33
+
+### Added
+
+- New Family Security Act version.
+
+## [1.96.0] - 2024-09-27 19:42:19
+
+### Added
+
+- Alaska Permanent Fund Dividend and One-time Energy Relief Payments.
+
+## [1.95.0] - 2024-09-27 19:10:57
+
+### Added
+
+- 2024 CalFresh (SNAP) standard medical deduction amount increase.
+
+## [1.94.0] - 2024-09-27 19:02:03
+
+### Added
+
+- Use adjusted gross income in withheld state income tax.
+- Separate takes_up_snap_if_eligible variable from snap variable.
+
+## [1.93.0] - 2024-09-25 17:55:53
+
+### Added
+
+- Add post TCJA income tax rates.
+
+## [1.92.1] - 2024-09-25 11:53:57
+
+### Changed
+
+- US data version to 1.6.0.
+
+## [1.92.0] - 2024-09-25 00:47:29
+
+### Changed
+
+- Made Maine dependent exemption credit refundable in 2024.
+
+## [1.91.0] - 2024-09-23 22:24:38
+
+### Added
+
+- Include 17 year olds in the NYWFTC as younger children.
+
+## [1.90.0] - 2024-09-23 19:44:39
+
+### Added
+
+- Remove total_income and net_income.
+
+## [1.89.0] - 2024-09-23 13:43:10
+
+### Changed
+
+- PE-US-Data bumped to 1.5.1.
+
+## [1.88.0] - 2024-09-23 09:43:51
+
+### Added
+
+- Tenure type.
+- Uprating for rent and property taxes.
+- Household reference person flag.
+
+## [1.87.0] - 2024-09-21 01:56:21
+
+### Added
+
+- New Mexico armed forces retirement pay exemption.
+
+## [1.86.0] - 2024-09-21 01:08:08
+
+### Added
+
+- Wisconsin 2024 CDCC match value.
+
+## [1.85.4] - 2024-09-20 15:00:03
+
+### Added
+
+- Speedtests to PRs.
+
+## [1.85.3] - 2024-09-19 17:53:36
+
+### Fixed
+
+- Add defined_for metadata for all state level variables.
+
+## [1.85.2] - 2024-09-19 16:01:11
+
+## [1.85.1] - 2024-09-19 15:49:59
+
+### Changed
+
+- Medicaid national parameters run off a CSV, cutting runtime by ~8%.
+
+## [1.85.0] - 2024-09-19 02:32:58
+
+### Added
+
+- Nebraska child care subsidy.
+
+## [1.84.0] - 2024-09-19 02:19:49
+
+### Added
+
+- 2025 CalWORKs payment standards increase.
+
+## [1.83.1] - 2024-09-19 02:12:02
+
+## [1.83.0] - 2024-09-19 02:03:16
+
+### Added
+
+- 2025 CalWORKs maximum resource limit update.
+
+## [1.82.0] - 2024-09-19 01:11:12
+
+### Added
+
+- Calculation logic for North Carolina SNAP standard and limited utility allowance by household size amount.
+
+## [1.81.0] - 2024-09-18 18:16:20
+
+### Changed
+
+- Corrected connection with us-data repository
+
+## [1.80.1] - 2024-09-17 12:08:35
+
+### Fixed
+
+- Adjust the kiddie tax logic in the AMT calculation.
+
+## [1.80.0] - 2024-09-17 03:02:20
+
+### Added
+
+- Apply the federal standard and itemized deductions in Iowa from 2023 on.
+
+## [1.79.3] - 2024-09-16 16:11:42
+
+### Fixed
+
+- Wisconsin 2nd tax bracket for single and hoh in 2023.
+
+## [1.79.2] - 2024-09-16 14:57:51
+
+### Fixed
+
+- Add switch to basic income phase-in.
+
+## [1.79.1] - 2024-09-14 00:18:02
+
+### Added
+
+- Loading of policyengine-us-data from PyPI
+
+### Fixed
+
+- Divided tests within GitHub Actions to avoid resource issues
+
+## [1.79.0] - 2024-09-12 17:10:41
+
+### Added
+
+- Test for additional standard deduction variable.
+
+## [1.78.1] - 2024-09-12 04:48:22
+
+### Added
+
+- Updated CO TANF grant standard
+
+## [1.78.0] - 2024-09-10 22:10:39
+
+### Added
+
+- Update SNAP values for 2025.
+
+## [1.77.0] - 2024-09-10 17:15:06
+
+### Added
+
+- Utah additional dependent exemption starting in 2023.
+
+## [1.76.3] - 2024-09-09 20:03:22
+
+### Fixed
+
+- Separate the CTC and EITC under the FSA 2.0.
+
+## [1.76.2] - 2024-09-09 19:58:03
+
+### Fixed
+
+- Fix CSFP income limit
+
+## [1.76.1] - 2024-09-09 16:40:19
+
+## [1.76.0] - 2024-09-07 00:01:09
+
+### Changed
+
+- Separated data from main repo.
+
+## [1.75.1] - 2024-09-06 20:25:29
+
+### Added
+
+- Commodity Supplemental Food Program
+
+## [1.75.0] - 2024-09-06 16:56:54
+
+### Fixed
+
+- Refactor the Utah income tax tree.
+- Remove ut_taxpayer_credit from the non-refundable credits list.
+
+## [1.74.0] - 2024-09-06 03:17:09
+
+### Added
+
+- Arkansas 2024 tax rate.
+
+## [1.73.0] - 2024-09-05 23:56:03
+
+### Added
+
+- Implemented North Carolina TANF need standard and eligibility calculations.
+
+## [1.72.2] - 2024-09-05 23:49:18
+
+### Fixed
+
+- Minnesota pension income subtraction parameter value.
+
+## [1.72.1] - 2024-09-05 12:33:59
+
+### Changed
+
+- Update policyengine-core to 3.6.5
+
+## [1.72.0] - 2024-09-04 10:39:53
+
+### Added
+
+- 2024 Medicaid income limit updates for North Carolina.
+
+## [1.71.1] - 2024-09-03 23:46:01
+
+### Fixed
+
+- Minor bugs and deconstruct MOOP variables in CPS.
+
+## [1.71.0] - 2024-09-03 22:33:44
+
+### Added
+
+- Apply ALD to alimony expense, not income in the above the line deductions.
+- Divorce status to cps.py.
+
+## [1.70.0] - 2024-09-03 22:29:43
+
+### Added
+
+- Change reform parameters to default to 0.
+
+## [1.69.1] - 2024-09-03 21:50:50
+
+### Fixed
+
+- Five year forward check in the Repeal dependent exemptions reform.
+
+## [1.69.0] - 2024-09-02 11:22:31
+
+### Added
+
+- Infant calibration and uprating.
+
+## [1.68.0] - 2024-09-01 18:17:57
+
+### Added
+
+- Family Security Act 2.0 CTC amount per child and pregnancy credit structure.
+
+## [1.67.0] - 2024-08-31 18:22:12
+
+### Added
+
+- Family Security Act 2.0 provisions.
+
+## [1.66.0] - 2024-08-31 16:36:48
+
+### Added
+
+- Repeal dependent exemption reform.
+
+## [1.65.1] - 2024-08-29 23:49:17
+
+### Fixed
+
+- Increase Hawaii Military Reserve or Hawaii National Guard Duty Pay Cap.
+- Rhode Island 2023 military retirement pay subtraction.
+
+## [1.65.0] - 2024-08-29 22:06:21
+
+### Added
+
+- New York supplemental tax incremental benefit repeal for 2028
+
+## [1.64.0] - 2024-08-29 15:00:53
+
+### Added
+
+- CARES act charity deduction provision for non-itemizers.
+
+## [1.63.0] - 2024-08-26 22:09:35
+
+### Added
+
+- Mississippi child and dependent care credit.
+
+## [1.62.0] - 2024-08-26 21:37:42
+
+### Added
+
+- Oregon WFHDC household income variable.
+
+## [1.61.2] - 2024-08-26 14:19:06
+
+## [1.61.1] - 2024-08-25 22:50:32
+
+### Fixed
+
+- Oregon rebate reform typo.
+
+## [1.61.0] - 2024-08-23 15:56:12
+
+### Added
+
+- Oregon Rebate state tax exempt reform.
+
+## [1.60.0] - 2024-08-22 23:31:20
+
+### Added
+
+- Separate out SSI eligibility from the general uncapped_ssi file.
+
+## [1.59.0] - 2024-08-22 15:03:28
+
+### Added
+
+- Denver property tax relief.
+
+## [1.58.0] - 2024-08-22 00:24:36
+
+### Added
+
+- IRS VITA Program Eligibility.
+
+## [1.57.1] - 2024-08-21 15:12:46
+
+### Fixed
+
+- Minnesota standard and itemized deduction reduction structure.
+
+## [1.57.0] - 2024-08-20 01:56:19
+
+### Added
+
+- 2024 Nebraska tax rules update.
+
+## [1.56.1] - 2024-08-19 18:40:57
+
+### Fixed
+
+- Bug in Harris Rent Relief Act for low earners.
+
+## [1.56.0] - 2024-08-19 15:50:20
+
+### Added
+
+- Add head_start and early_head_start variables to household_benefits parameter.
+
+## [1.55.0] - 2024-08-18 16:54:38
+
+### Added
+
+- Personal Credit reform.
+
+## [1.54.4] - 2024-08-18 16:32:45
+
+### Fixed
+
+- Minnesota Bill HF1938 impact fix.
+
+## [1.54.3] - 2024-08-17 22:15:46
+
+### Fixed
+
+- Limit American Family Act baby bonus reform to CTC-eligible children.
+- Make AFA baby bonus and head of household repeal work after 2024.
+
+## [1.54.2] - 2024-08-17 18:47:58
+
+### Fixed
+
+- Mixed scalar and vectorized operations in mn_social_security_subtraction.
+
+## [1.54.1] - 2024-08-17 16:48:52
+
+## [1.54.0] - 2024-08-17 15:50:59
+
+### Added
+
+- Reform repeal Minnesota Bill HF1938.
+
+## [1.53.0] - 2024-08-17 13:51:13
+
+### Added
+
+- Refactor the `household_benefits` and `household_state_benefits` variables to include a list parameter.
+
+## [1.52.0] - 2024-08-16 15:31:16
+
+### Added
+
+- Infant calibration.
+
+## [1.51.1] - 2024-08-16 11:45:37
+
+## [1.51.0] - 2024-08-16 11:39:35
+
+### Added
+
+- Use un-reduced income for calculating the excess of the rent relief credit.
+
+## [1.50.0] - 2024-08-13 16:02:31
+
+### Added
+
+- Flat tax on gross income.
+
+## [1.49.0] - 2024-08-13 14:42:06
+
+### Fixed
+
+- Inaccurate docstring in loss.py
+
+## [1.48.0] - 2024-08-13 03:08:12
+
+### Added
+
+- Update to codecov/codecov-action@v4, actions/setup-python@v5, and actions/checkout@v4.
+
+## [1.47.0] - 2024-08-12 16:32:53
+
+### Added
+
+- Rent relief tax credit.
+
+## [1.46.0] - 2024-08-12 15:37:43
+
+### Added
+
+- New York additional Empire State Tax Credit.
+
+## [1.45.2] - 2024-08-10 19:54:58
+
+### Fixed
+
+- Inclusion of unneeded packages in setup.py install_requires list.
+
+## [1.45.1] - 2024-08-10 11:09:59
+
+### Fixed
+
+- Refactor the alternative minimum tax files.
+- Include capital gains tax in the final alternative minimum tax calculation.
+
+## [1.45.0] - 2024-08-10 03:56:39
+
+### Added
+
+- Support for Python 3.12.
+
+## [1.44.1] - 2024-08-08 18:06:51
+
+### Fixed
+
+- Restriction on out-dated version of policyengine-core.
+
+## [1.44.0] - 2024-08-08 15:22:20
+
+### Added
+
+- Nebraska refundable child tax credit.
+- Remove duplicate childcare expenses variable.
+
+## [1.43.1] - 2024-08-06 21:26:16
+
+### Added
+
+- California TANF resources variable inputs.
+
+## [1.43.0] - 2024-08-06 18:44:12
+
+### Added
+
+- Revised State Median Income (SMI) Ceilings 2024
+
+## [1.42.1] - 2024-08-06 17:30:53
+
+### Fixed
+
+- Adjust the income_tax_before_refundable_credits variable to be neutralized when abolishing federal income tax.
+
+## [1.42.0] - 2024-08-06 16:57:19
+
+### Added
+
+- North Carolina use tax.
+
+## [1.41.0] - 2024-08-05 21:40:16
+
+### Added
+
+- Head Start and Early Head Start programs eligibility.
+
+## [1.40.1] - 2024-08-05 00:52:28
+
+### Added
+
+- Consistent unit usage in list parameters.
+
+## [1.40.0] - 2024-08-02 17:55:58
+
+### Added
+
+- Indiana additional exemption amount for adopted children.
+
+## [1.39.0] - 2024-08-02 03:31:58
+
+### Added
+
+- BOOST act middle class tax credit.
+
+## [1.38.0] - 2024-08-01 15:51:55
+
+### Added
+
+- July 2024 CalWorks vehicle value increase.
+
+## [1.37.0] - 2024-08-01 13:55:37
+
+### Added
+
+- Remove the parameter caching from the state variables.
+
+## [1.36.0] - 2024-08-01 13:25:55
+
+### Added
+
+- California & Oregon higher Lifeline benefit amount.
+
+## [1.35.0] - 2024-07-31 07:15:11
+
+### Added
+
+- Decouple the WFTC child age eligibility from the NY exemptions child age threshold.
+
+## [1.34.7] - 2024-07-30 20:20:10
+
+### Fixed
+
+- Add the Child benefit component to the ECPA reform.
+
+## [1.34.6] - 2024-07-30 20:06:02
+
+### Fixed
+
+- Minor CTC social security parameter formatting.
+
+## [1.34.5] - 2024-07-30 16:30:17
+
+### Fixed
+
+- Structure End Child Poverty Act as a reform.
+
+## [1.34.4] - 2024-07-30 05:34:09
+
+### Fixed
+
+- Add the flat tax variable in the relevant net income tree computations.
+- Index general household and state level parameters.
+
+## [1.34.3] - 2024-07-30 00:23:32
+
+### Fixed
+
+- Exclude childless filers from the NY WFTC EITC reduction.
+
+## [1.34.2] - 2024-07-29 20:47:46
+
+### Fixed
+
+- Optimize for the Hawaii deduction.
+
+## [1.34.1] - 2024-07-26 02:54:51
+
+### Fixed
+
+- Limit the older children under the Working Families Tax Credit above 18 years.
+
+## [1.34.0] - 2024-07-25 22:43:01
+
+### Added
+
+- 2023 Montana Tax Rules.
+
+## [1.33.1] - 2024-07-25 13:01:20
+
+### Fixed
+
+- Remove the adds function from the reported_state_income_tax reform file.
+
+## [1.33.0] - 2024-07-25 12:45:43
+
+### Added
+
+- 2023 Washington Tax Rules.
+
+## [1.32.0] - 2024-07-25 04:22:15
+
+### Added
+
+- 2023 Indiana income tax updates.
+
+## [1.31.4] - 2024-07-25 02:41:53
+
+### Fixed
+
+- Disabeld the exhaustive_parameter_dependencies metadata in household_refundable_state_tax_credits as it was not working with state reforms.
+
+## [1.31.3] - 2024-07-24 20:47:17
+
+### Added
+
+- Restructure Nebraska variables and tests.
+
+## [1.31.2] - 2024-07-24 20:10:44
+
+### Fixed
+
+- Cap the Pell Grant amount at the cost of attendance.
+
+## [1.31.1] - 2024-07-24 20:06:00
+
+### Fixed
+
+- DC CTC parameter period function.
+
+## [1.31.0] - 2024-07-24 01:38:48
+
+### Added
+
+- 2023 Nebraska income tax values.
+
+## [1.30.1] - 2024-07-24 01:33:28
+
+### Fixed
+
+- Adjust the DC CTC formatting.
+
+## [1.30.0] - 2024-07-24 00:03:46
+
+### Added
+
+- Tax Counseling for the Elderly eligibility.
+
+## [1.29.0] - 2024-07-23 21:52:58
+
+### Added
+
+- SSI blind or disabled working student earned income exemption.
+
+## [1.28.0] - 2024-07-23 04:22:45
+
+### Added
+
+- Update 2023 SNAP medical deductions.
+
+## [1.27.0] - 2024-07-23 03:17:03
+
+### Added
+
+- Separate WIC eligibility variable.
+
+## [1.26.2] - 2024-07-22 20:45:34
+
+### Added
+
+- Pell Grant Student Aid Index.
+
+## [1.26.1] - 2024-07-22 18:07:41
+
+### Added
+
+- Refactor social security taxes for refundable CTC calculation.
+
+## [1.26.0] - 2024-07-22 07:26:38
+
+### Fixed
+
+- Formatting adjustments to the Middle Class Tax Credit.
+- Added pell grants to the earned income definitions for the Middle Class Tax Credit.
+
+## [1.25.2] - 2024-07-21 16:10:11
+
+### Added
+
+- Fix 2018 surviving spouse AMT exemption value.
+
+## [1.25.1] - 2024-07-21 16:01:23
+
+### Added
+
+- 2019 Kamala Harris LIFT proposal.
+
+## [1.25.0] - 2024-07-21 02:11:13
+
+### Added
+
+- NYSERDA Drive Clean program.
+
+## [1.24.1] - 2024-07-20 17:07:53
+
+### Fixed
+
+- Change add_variable to update_variable function.
+
+## [1.24.0] - 2024-07-19 20:13:51
+
+### Added
+
+- Maryland state SNAP minimum benefits.
+
+## [1.23.1] - 2024-07-19 00:40:56
+
+### Fixed
+
+- 2020 Single income tax bracket.
+
+## [1.23.0] - 2024-07-18 23:21:40
+
+### Added
+
+- Remove NY Child Tax Credit age minimum for 2023.
+
+## [1.22.1] - 2024-07-18 19:53:37
+
+### Fixed
+
+- Adjust the ctc_qualifying_child to reflect the age requirement.
+
+## [1.22.0] - 2024-07-17 18:24:10
+
+### Added
+
+- UBI marriage bonus structure.
+
+## [1.21.0] - 2024-07-14 16:03:45
+
+### Added
+
+- DC Child Tax Credit.
+- DC Child Tax Credit reform.
+
+## [1.20.0] - 2024-07-12 16:05:37
+
+### Added
+
+- New Jersey SNAP minimum allotment.
+
+## [1.19.0] - 2024-07-12 10:11:42
+
+### Added
+
+- Estate tax.
+
+## [1.18.0] - 2024-07-12 03:51:02
+
+### Added
+
+- Update SNAP income utility expense deduction amounts.
+
+## [1.17.1] - 2024-07-11 16:05:44
+
+### Changed
+
+- Updated version of tables.
+
+## [1.17.0] - 2024-07-10 19:28:55
+
+### Added
+
+- DC disability income exclusion.
+
+## [1.16.3] - 2024-07-10 16:44:14
+
+### Added
+
+- Expand free school categorical eligibility to foster, homeless, migrant, and runaway children.
+
+## [1.16.2] - 2024-07-09 12:45:04
+
+### Fixed
+
+- 2018 federal EITC parameter values.
+
+## [1.16.1] - 2024-07-09 02:52:07
+
+### Fixed
+
+- 2023 EITC joint bonus parameter value.
+
+## [1.16.0] - 2024-07-08 13:14:25
+
+### Added
+
+- New York State Working Families Tax Credit reform.
+
+## [1.15.0] - 2024-07-08 11:55:38
+
+### Added
+
+- 2023 New York tax rules.
+
+## [1.14.0] - 2024-07-07 23:49:09
+
+### Added
+
+- Halve joint EITC phase out rate reform.
+
+## [1.13.0] - 2024-07-03 19:51:24
+
+### Added
+
+- Change MS charitable contributions credit from WIDOW to SURVIVING_SPOUSE.
+
+## [1.12.0] - 2024-07-02 21:36:44
+
+### Added
+
+- New York State Geothermal Energy System Credit.
+
+## [1.11.0] - 2024-07-02 18:45:27
+
+### Added
+
+- Student loan above the line deduction.
+
+## [1.10.0] - 2024-07-02 17:35:57
+
+### Added
+
+- Mississippi 2023, 2024, and 2025 tax rates.
+- Mississippi charitable contributions credit.
+
+## [1.9.0] - 2024-07-02 12:50:48
+
+### Added
+
+- DC Additional SNAP minimum allotment.
+
+## [1.8.0] - 2024-07-02 02:10:58
+
+### Added
+
+- Maryland 2023 income tax updates.
+
+## [1.7.0] - 2024-07-02 00:42:34
+
+### Added
+
+- Maine 2023 tax rules.
+- Maine tax parameters uprating.
+- Refactor Maine property tax fairness credit.
+
+## [1.6.0] - 2024-07-02 00:35:30
+
+### Added
+
+- Moving DC SNAP temporary local benefit code.
+
+## [1.5.2] - 2024-07-02 00:30:47
+
+### Fixed
+
+- Change the parameter input in the CT rebate reduction start from WIDOW to SURVIVING_SPOUSE.
+
+## [1.5.1] - 2024-07-01 20:57:08
+
+### Fixed
+
+- Oklahoma EITC refundability.
+
+## [1.5.0] - 2024-07-01 13:54:35
+
+### Added
+
+- Montgomery County Local EITC.
+
+## [1.4.0] - 2024-06-28 03:25:40
+
+### Added
+
+- 2023 Illinois policy parameter updates.
+
+## [1.3.0] - 2024-06-27 11:42:31
+
+### Added
+
+- Connecticut 2022 temporary child tax rebate.
+
+## [1.2.0] - 2024-06-27 03:27:43
+
+### Added
+
+- Update the SNAP uprating based on the June 2024 CBO forecast.
+
+## [1.1.0] - 2024-06-26 17:53:48
+
+### Added
+
+- Add the New York Residential Solar Tax to the net income tree.
+
+## [1.0.0] - 2024-06-26 17:11:51
+
+### Added
+
+- Support for Python 3.11.
+
+## [0.796.1] - 2024-06-26 00:53:07
+
+### Added
+
+- Move rounding metadata to individual breakdown parameters.
+
+## [0.796.0] - 2024-06-25 02:39:47
+
+### Changed
+
+- Update CPI-U and CPI-W parameters based on the CBO June 2024 Projections.
+
+## [0.795.0] - 2024-06-25 01:14:35
+
+### Added
+
+- Hawaii standard deduction increases.
+- Hawaii tax bracket increases.
+
+## [0.794.2] - 2024-06-21 18:32:22
+
+### Fixed
+
+- Limit DC SNAP minimum allotment to eligible applicants.
+
+## [0.794.1] - 2024-06-21 16:07:00
+
+### Fixed
+
+- Remove unneeded personal_interest_expense variable.
+
+## [0.794.0] - 2024-06-20 15:16:19
+
+### Added
+
+- New York Solar Energy Systems Equipment Credit.
+
+## [0.793.0] - 2024-06-20 14:58:39
+
+### Added
+
+- Add 2023 Minnesota Tax Rules.
+
+## [0.792.0] - 2024-06-20 01:35:16
+
+### Added
+
+- North Dakota 2023 tax rules.
+- North Dakota taxes legal code references.
+- North Dakota tax parameters uprating.
+
+## [0.791.0] - 2024-06-19 16:51:13
+
+### Added
+
+- Projections from June 2024 CBO baseline.
+
+## [0.790.0] - 2024-06-18 12:58:34
+
+### Added
+
+- Variables used by Tax-Calculator but not PolicyEngine in the IRS PUF.
+
+## [0.789.0] - 2024-06-14 09:40:28
+
+### Added
+
+- San Francisco working families tax credit.
+
+## [0.788.0] - 2024-06-12 15:18:35
+
+### Added
+
+- Colorado EITC match increase beginning in 2024, recently legislated.
+
+## [0.787.0] - 2024-06-11 20:39:03
+
+### Fixed
+
+- Fix New Jersey property tax credit income eligibility logic
+
+## [0.786.0] - 2024-06-11 15:00:02
+
+### Added
+
+- Utah child tax credit.
+- 2023 Utah earned income tax credit match increase.
+
+## [0.785.2] - 2024-06-11 12:11:14
+
+### Fixed
+
+- Adjust the Minnesota phase-out rate to reflect the legal code.
+
+## [0.785.1] - 2024-06-10 21:18:51
+
+### Fixed
+
+- Adjust the state income tax to include tax before refundable credits and refundable credits.
+- Create a state withheld income tax variable.
+
+## [0.785.0] - 2024-06-10 16:50:58
+
+### Added
+
+- Adjust the New Mexico refundable credits parameter files.
+
+## [0.784.0] - 2024-06-10 16:45:35
+
+### Added
+
+- Minnesota child and working families tax credits.
+
+### Fixed
+
+- Minnesota working families tax credit parameter structure.
+
+## [0.783.0] - 2024-06-08 01:49:40
+
+### Added
+
+- Colorado family affordability tax credit.
+
+## [0.782.0] - 2024-06-07 20:27:00
+
+### Added
+
+- Rename medicaid_income to medicaid_magi.
+
+## [0.781.0] - 2024-06-07 16:21:49
+
+### Added
+
+- Add Oregon state uprating.
+
+## [0.780.2] - 2024-06-07 13:52:30
+
+### Fixed
+
+- Zero out the taxable social security base income thresholds for separate filers who cohabitated.
+
+## [0.780.1] - 2024-06-07 01:04:14
+
+### Fixed
+
+- Arkansas income tax rates.
+
+## [0.780.0] - 2024-06-05 17:25:11
+
+### Added
+
+- Illinois Child Tax Credit Reform.
+
+## [0.779.2] - 2024-06-04 21:01:00
+
+### Fixed
+
+- Add New Mexico and New Jersey credits to the net income tree.
+
+## [0.779.1] - 2024-06-04 00:24:56
+
+### Fixed
+
+- Round Arkansas deduction allocation fraction to nearest whole percent.
+
+## [0.779.0] - 2024-06-03 17:08:14
+
+### Added
+
+- Remove Social Security from the Montana additions parameter.
+- Pin core to <2.22.
+
+## [0.778.0] - 2024-05-31 11:59:03
+
+### Added
+
+- Add Montana taxable social security benefits.
+- Fix Montana agi formula.
+
+## [0.777.7] - 2024-05-30 13:22:45
+
+### Fixed
+
+- Arkansas tax unit itemizes decision based on the federal itemization.
+- Create a separate Virginia deductions variable.
+
+## [0.777.6] - 2024-05-26 01:22:36
+
+### Fixed
+
+- Add health insurance premiums to SNAP excess medical expense deduction.
+
+## [0.777.5] - 2024-05-24 19:15:18
+
+### Fixed
+
+- Self-employment income not available after initial microdata year.
+
+## [0.777.4] - 2024-05-24 13:34:27
+
+### Fixed
+
+- Randomness in baseline tax results across model runs.
+
+## [0.777.3] - 2024-05-24 12:51:32
+
+### Fixed
+
+- Bug causing State taxes to not have effects in microsimulations.
+
+## [0.777.2] - 2024-05-22 17:28:57
+
+### Fixed
+
+- Adjust the Los Angeles income types to exclude basic income.
+
+## [0.777.1] - 2024-05-21 16:34:59
+
+### Added
+
+- Automatic version updating for household API
+
+## [0.777.0] - 2024-05-18 09:25:41
+
+### Added
+
+- Weekly hours worked.
+
+## [0.776.0] - 2024-05-16 23:47:24
+
+### Added
+
+- Retirement Savings Contributions Credit (Saver’s Credit).
+
+## [0.775.2] - 2024-05-16 22:53:29
+
+### Fixed
+
+- Uncap real estate taxes in the Virginia itemized deduction logic.
+
+## [0.775.1] - 2024-05-15 02:01:54
+
+### Fixed
+
+- Adjust the Alabama legal code references.
+
+## [0.775.0] - 2024-05-14 21:12:56
+
+### Added
+
+- Income disregard for CHP+
+
+## [0.774.0] - 2024-05-14 16:51:18
+
+### Added
+
+- Update core to 2.21.5.
+
+## [0.773.0] - 2024-05-14 14:58:17
+
+### Added
+
+- Backfill empty changelog entries.
+
+## [0.772.0] - 2024-05-14 14:53:14
+
+### Added
+
+- Add venv and .venv to .gitignore.
+
+## [0.771.0] - 2024-05-14 14:16:18
+
+### Added
+
+- 2023 Missouri tax rules.
+
+## [0.770.1] - 2024-05-14 13:17:04
+
+### Fixed
+
+- Increase the Arkansas capital gains loss cap parameter value.
+
+## [0.770.0] - 2024-05-10 15:49:10
+
+### Added
+
+- Hawaii 2023 income tax parameters.
+
+## [0.769.0] - 2024-05-09 13:03:58
+
+### Added
+
+- Create distinct Louisiana CDCC refundable and non-refundable variables.
+
+## [0.768.1] - 2024-05-09 11:37:29
+
+### Added
+
+- Ability for users to provide the PUF data input files.
+
+## [0.768.0] - 2024-05-09 02:48:07
+
+### Added
+
+- 2023 Vermont Tax Rules.
+
+## [0.767.0] - 2024-05-08 15:28:13
+
+### Added
+
+- CBO elasticities for labor supply.
+- Self-employment income responses.
+
+## [0.766.0] - 2024-05-07 18:56:59
+
+### Added
+
+- Make the Louisiana EITC and CDCC refundable.
+
+## [0.765.0] - 2024-05-07 15:23:31
+
+### Added
+
+- Alabama 2023 tax rules.
+
+## [0.764.0] - 2024-05-07 12:04:33
+
+### Added
+
+- 2023 Massachusetts Tax Rules.
+
+## [0.763.0] - 2024-05-07 01:17:04
+
+### Added
+
+- Other housing costs beyond rent for SNAP.
+
+## [0.762.0] - 2024-05-06 23:33:21
+
+### Added
+
+- Bump core to 2.20.0.
+
+## [0.761.0] - 2024-05-06 17:53:18
+
+### Fixed
+
+- Countable income now includes the spouse's income when both the head and spouse are eligible.
+
+## [0.760.0] - 2024-05-06 15:07:09
+
+### Added
+
+- Macro impact caching for key variables.
+
+## [0.759.1] - 2024-05-06 01:19:28
+
+### Fixed
+
+- Allocate the Mississippi itemized deductions optimally between spouses.
+
+## [0.759.0] - 2024-05-06 01:15:16
+
+### Added
+
+- Allocate the Montana dependent exemptions after the application of the deductions and exemptions.
+
+## [0.758.2] - 2024-05-05 21:59:45
+
+### Fixed
+
+- Refactor the Louisianna exempt income variable to use the federal tax deduction.
+
+## [0.758.1] - 2024-05-05 20:28:59
+
+### Fixed
+
+- Performance improvements in labor supply responses.
+
+## [0.758.0] - 2024-05-05 17:39:50
+
+### Added
+
+- Create a lives_in_vehicle variable to determine whether a homeless person is using their vehicle as shelter.
+
+## [0.757.1] - 2024-05-05 12:40:28
+
+### Fixed
+
+- Changed parameters - `unit:years` , `unit:age` to `unit:year`
+
+## [0.757.0] - 2024-05-02 17:30:29
+
+### Added
+
+- New Jersey 2023 income tax updates.
+
+## [0.756.0] - 2024-05-02 09:02:21
+
+### Added
+
+- Include 403b_contributions in pre_tax_contributions.
+
+## [0.755.0] - 2024-04-30 02:07:09
+
+### Added
+
+- 2023 SNAP utility allowances for Colorado
+
+## [0.754.0] - 2024-04-29 16:34:36
+
+### Added
+
+- 2023 Ohio Tax Rules.
+
+## [0.753.0] - 2024-04-29 12:59:19
+
+### Added
+
+- SNAP BBCE Limit Updates.
+
+## [0.752.1] - 2024-04-26 00:39:06
+
+### Fixed
+
+- Reduce the Louisiana exempt income in 2021.
+
+## [0.752.0] - 2024-04-25 19:55:16
+
+### Added
+
+- 2023 Idaho Tax Rules.
+
+## [0.751.0] - 2024-04-25 19:41:13
+
+### Added
+
+- 2023 Utah Tax Rules.
+
+## [0.750.4] - 2024-04-25 18:37:03
+
+### Added
+
+- 2023 Virginia Tax Rules.
+
+## [0.750.3] - 2024-04-24 17:35:42
+
+### Added
+
+- Illinois metadata clean-up.
+- Read me files.
+- Removed per-vehicle payment files.
+
+## [0.750.2] - 2024-04-24 17:29:04
+
+### Fixed
+
+- Prorate the Montana federal income tax deduction based on Montana AGI.
+
+## [0.750.1] - 2024-04-24 04:49:34
+
+### Fixed
+
+- Add Mississippi tax unit itemizes variable.
+
+## [0.750.0] - 2024-04-23 18:20:42
+
+### Added
+
+- Adjust the Missouri deductions metadata.
+
+## [0.749.1] - 2024-04-23 17:20:45
+
+### Fixed
+
+- Reduce the Arkansas taxable long term capital gains by the short term capital losses.
+
+## [0.749.0] - 2024-04-23 16:42:53
+
+### Added
+
+- Change the Colorado family affordability credit file name.
+
+## [0.748.1] - 2024-04-23 06:46:02
+
+### Fixed
+
+- skip_existing in PyPI publish workflow
+
+## [0.748.0] - 2024-04-23 02:11:03
+
+### Added
+
+- 2023 Kentucky tax rules.
+
+## [0.747.0] - 2024-04-23 01:42:03
+
+### Added
+
+- 2023 West Virginia tax rules.
+
+## [0.746.0] - 2024-04-23 01:31:48
+
+### Added
+
+- 2023 Louisiana tax rules.
+
+## [0.745.0] - 2024-04-22 23:34:33
+
+### Added
+
+- 2023 Rhode Island Tax Rules.
+
+## [0.744.1] - 2024-04-22 23:01:24
+
+### Fixed
+
+- Include the Mississippi real estate tax deduction.
+
+## [0.744.0] - 2024-04-22 21:11:00
+
+### Added
+
+- IRS PUF variables under their original names.
+
+## [0.743.1] - 2024-04-19 14:52:52
+
+### Fixed
+
+- Attribute the standard and itemized deductions in Montana to each spouse respectively.
+
+## [0.743.0] - 2024-04-19 05:38:25
+
+### Fixed
+
+- New York household credit calculation.
+
+## [0.742.2] - 2024-04-19 05:22:04
+
+### Fixed
+
+- Remove the Mississippi married filing combined logic.
+
+## [0.742.1] - 2024-04-17 20:43:19
+
+### Fixed
+
+- Consolidated state level additions variables across all state models
+
+## [0.742.0] - 2024-04-17 16:41:57
+
+### Added
+
+- Use CBO projection for personal exemption.
+
+## [0.741.1] - 2024-04-17 16:09:32
+
+### Fixed
+
+- Arkansas capital gains tax calculations.
+
+## [0.741.0] - 2024-04-16 18:05:04
+
+### Added
+
+- 2023 Oklahoma Tax Rules.
+
+## [0.740.0] - 2024-04-16 17:55:38
+
+### Added
+
+- DC "Give SNAP A Raise" program.
+
+## [0.739.0] - 2024-04-16 00:34:07
+
+### Added
+
+- 2023 DC Tax Rules.
+
+## [0.738.0] - 2024-04-16 00:09:30
+
+### Fixed
+
+- Mississippi taxable income.
+
+## [0.737.1] - 2024-04-15 19:08:43
+
+### Added
+
+- Add Old Age Pension grant standard for 2024.
+
+## [0.737.0] - 2024-04-15 14:20:43
+
+### Added
+
+- Enable remaining state income tax models and include in the net income tree.
+
+## [0.736.0] - 2024-04-14 21:21:29
+
+### Added
+
+- 2023 New Hampshire tax rules.
+
+## [0.735.0] - 2024-04-14 20:10:18
+
+### Added
+
+- Colorado HB24-1311 Family Affordability Tax Credit.
+
+## [0.734.1] - 2024-04-14 17:20:33
+
+### Fixed
+
+- Delaware itemized deduction decision logic.
+
+## [0.734.0] - 2024-04-13 17:39:21
+
+### Added
+
+- Adjust the NY Empire State Child Credit to take into account the full ctc amounts.
+
+## [0.733.1] - 2024-04-12 20:36:40
+
+### Fixed
+
+- Delaware _joint AGI and deductions variable attribution.
+
+## [0.733.0] - 2024-04-12 20:25:53
+
+### Added
+
+- Iowa 2023-2026 tax rates.
+- 2023 Iowa pension income exclusion logic.
+- 2023 Iowa alternative minimum tax logic.
+- Disable married filing separately on the same return in Iowa past 2023.
+
+## [0.732.0] - 2024-04-12 20:20:03
+
+### Added
+
+- Include Maine to the list of modelled policies.
+
+## [0.731.0] - 2024-04-12 14:55:04
+
+### Added
+
+- 2023 NYC tax rules.
+
+## [0.730.1] - 2024-04-11 20:46:15
+
+### Fixed
+
+- Tax only half of long-term capital gains in Arkansas.
+
+## [0.730.0] - 2024-04-11 18:12:49
+
+### Added
+
+- Michigan Expanded Deduction for Retirement and Pension Benefits.
+
+## [0.729.1] - 2024-04-11 17:58:58
+
+### Fixed
+
+- Delaware itemized deductions logic.
+
+## [0.729.0] - 2024-04-11 17:53:36
+
+### Added
+
+- Allocate the Delaware itemized deductions based on federal AGI.
+
+## [0.728.0] - 2024-04-11 12:31:09
+
+### Added
+
+- Separate out eligibility variables for NYC STC to allow for more flexible policy modeling.
+
+## [0.727.2] - 2024-04-11 02:29:17
+
+### Fixed
+
+- Floor irs_employment_income at zero.
+
+## [0.727.1] - 2024-04-09 02:59:20
+
+### Fixed
+
+- Adjust the Delaware elderly or disabled exclusion to represent the case where married couples file jointly.
+
+## [0.727.0] - 2024-04-08 03:49:34
+
+### Added
+
+- Fix New Mexico low income comprehensive tax rebate calculations.
+
+## [0.726.0] - 2024-04-08 03:44:57
+
+### Added
+
+- Remove premium_tax_credit from household net income tree.
+
+## [0.725.0] - 2024-04-05 00:05:29
+
+### Added
+
+- Arizona Cash Assistance (TANF) child eligibility.
+
+## [0.724.0] - 2024-04-04 23:53:10
+
+### Added
+
+- Enable the Kentucky income tax model and include in the net income tree.
+
+## [0.723.0] - 2024-04-04 22:18:15
+
+### Added
+
+- Enable the Michigan income tax model and include in the net income tree.
+
+## [0.722.2] - 2024-04-04 16:13:37
+
+### Fixed
+
+- Adjust the widow filing status to surviving spouse in the gov.contrib.biden.budget_2025.capital_gains.income_threshold file.
+
+## [0.722.1] - 2024-04-04 03:29:14
+
+### Fixed
+
+- Kentucky tax unit itemizes deductions logic.
+
+## [0.722.0] - 2024-04-02 21:40:33
+
+### Added
+
+- Rename widow to surviving spouse.
+
+## [0.721.1] - 2024-04-02 15:56:44
+
+### Fixed
+
+- Fix Virginia low-income credit calculation.
+- Fix Virginia itemized deduction calculation.
+
+## [0.721.0] - 2024-04-01 22:07:43
+
+### Added
+
+- 2023 Kansas Tax Rules.
+
+## [0.720.0] - 2024-04-01 00:10:04
+
+### Added
+
+- Delaware 2023 income tax parameters.
+
+## [0.719.1] - 2024-04-01 00:02:30
+
+### Fixed
+
+- Add taxable social security to the list of Delaware exclusions.
+
+## [0.719.0] - 2024-03-31 22:26:12
+
+### Added
+
+- 2023 New Mexico Tax Rules.
+
+## [0.718.0] - 2024-03-29 22:09:50
+
+### Added
+
+- Include the ky_cdcc to the net income tree.
+
+## [0.717.0] - 2024-03-27 17:03:02
+
+### Added
+
+- Oregon 2023 parameter values.
+
+## [0.716.2] - 2024-03-26 21:46:35
+
+### Fixed
+
+- Change LA EZ-SAVE to monthly and lag the poverty line.
+
+## [0.716.1] - 2024-03-26 14:30:48
+
+### Fixed
+
+- Adjust the Michigan household resources to exclude QBI.
+
+## [0.716.0] - 2024-03-25 22:46:18
+
+### Added
+
+- Enable the Connecticut income tax model and include in the net income tree.
+
+## [0.715.0] - 2024-03-25 18:10:17
+
+### Added
+
+- Biden reform to tax LTCG and qualified dividends as ordinary income for high-income filers.
+
+## [0.714.0] - 2024-03-25 15:54:18
+
+### Fixed
+
+- Maryland earned income tax credit.
+
+## [0.713.3] - 2024-03-25 15:14:47
+
+### Fixed
+
+- Bug in filing status logic causing tax unit spouses to appear in separate returns.
+
+## [0.713.2] - 2024-03-24 03:38:17
+
+### Added
+
+- Longer history and source for Social Security benefits target.
+
+## [0.713.1] - 2024-03-22 18:58:11
+
+## [0.713.0] - 2024-03-22 11:49:33
+
+## [0.712.0] - 2024-03-22 01:44:40
+
+### Added
+
+- Enable Ohio income tax model and include in the net income tree.
+
+## [0.711.6] - 2024-03-20 22:53:10
+
+### Fixed
+
+- Add the Connecticut EITC to the list of refundable credits.
+
+## [0.711.5] - 2024-03-20 21:17:09
+
+### Fixed
+
+- Reduce the itemized deductions in Idaho by the SALT amount.
+
+## [0.711.4] - 2024-03-20 19:56:27
+
+### Fixed
+
+- Make Arkansas childcare expense credit non-refundable.
+
+## [0.711.3] - 2024-03-20 19:07:38
+
+### Fixed
+
+- Adjust the Kentucky pension income exclusion to not count pension twice.
+
+## [0.711.2] - 2024-03-20 13:32:09
+
+### Fixed
+
+- Among joint filers, limit the Delaware elderly or disabled exclusion to filers with both head and spouse eligible.
+
+## [0.711.1] - 2024-03-20 04:55:01
+
+### Fixed
+
+- Include the self employment deduction to the list of Michigan additions.
+- Remove the self employment income from the list of household resources.
+- Subtract the above the line deductions from the household resources.
+
+## [0.711.0] - 2024-03-20 00:27:02
+
+### Added
+
+- 2023 North Carolina Tax Rules.
+
 ## [0.710.1] - 2024-03-19 14:53:23
 
 ### Added
@@ -221,6 +3558,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.693.1] - 2024-03-07 19:52:18
 
+### Fixed
+
+- Replace state income tax with estimated withholding for all states in income tax used for SALT deduction.
+
 ## [0.693.0] - 2024-03-07 16:44:16
 
 ### Changed
@@ -277,7 +3618,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.688.3] - 2024-03-05 00:49:48
 
+### Fixed
+
+- Remove not used haircut parameters.
+
 ## [0.688.2] - 2024-03-04 19:38:02
+
+### Fixed
+
+- Remove qualified_business_income_deduction_person from the list of Ohio deductions.
 
 ## [0.688.1] - 2024-03-02 18:37:00
 
@@ -295,7 +3644,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.687.0] - 2024-03-01 17:12:59
 
+### Fixed
+
+- Add 2024 Georgia income tax values.
+
 ## [0.686.2] - 2024-03-01 13:39:44
+
+### Fixed
+
+- Refactor the Utah tax rate yaml file.
 
 ## [0.686.1] - 2024-03-01 01:53:48
 
@@ -387,7 +3744,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.678.2] - 2024-02-22 16:58:33
 
+### Fixed
+
+- Adjust the ct_social_security_benefit_adjustment variable to reflect the worksheet in the tax forms.
+
 ## [0.678.1] - 2024-02-22 15:35:37
+
+### Fixed
+
+- Remove formula from household_tax_before_refundable_credits and household_refundable_tax_credits.
 
 ## [0.678.0] - 2024-02-22 15:29:21
 
@@ -482,6 +3847,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Virginia child and dependent care expenses deduction.
 
 ## [0.668.0] - 2024-02-19 23:30:53
+
+### Fixed
+
+- Update 2024 Maximum Taxable Earnings Each Year.
 
 ## [0.667.2] - 2024-02-19 22:58:16
 
@@ -657,6 +4026,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Michigan homestead property tax credit.
 
 ## [0.651.4] - 2024-02-12 03:02:41
+
+### Fixed
+
+- Adjust the Arkansas files separately formula to rely on ar_income_tax_before_non_refundable_credits comparisons.
 
 ## [0.651.3] - 2024-02-12 02:59:35
 
@@ -1119,6 +4492,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.618.3] - 2024-01-13 22:01:49
 
+### Fixed
+
+- Immigration rules for CalWORKS Child Care program.
+
 ## [0.618.2] - 2024-01-13 21:11:58
 
 ### Fixed
@@ -1193,6 +4570,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.610.1] - 2024-01-10 11:27:40
 
+### Fixed
+
+- California CalWORKS TANF monthly income variables.
+
 ## [0.610.0] - 2024-01-10 01:10:28
 
 ### Added
@@ -1261,6 +4642,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.603.3] - 2024-01-04 01:12:31
 
+### Fixed
+
+- South Carolina taxable income calculation.
+
 ## [0.603.2] - 2024-01-04 01:03:25
 
 ### Fixed
@@ -1281,6 +4666,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Georgia military retirement income exclusion.
 
 ## [0.602.1] - 2024-01-03 17:35:14
+
+### Fixed
+
+- Fix Virginia military benefits subtraction formula.
 
 ## [0.602.0] - 2024-01-03 15:31:42
 
@@ -1498,6 +4887,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.584.2] - 2023-12-18 16:33:00
 
+### Fixed
+
+- Parameterized 25% of the Alternative Minimum Tax calculation.
+
 ## [0.584.1] - 2023-12-18 04:09:27
 
 ### Fixed
@@ -1577,6 +4970,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Alabama income tax variable formula.
 
 ## [0.579.1] - 2023-12-14 19:03:15
+
+### Fixed
+
+- Maine child care credit format.
 
 ## [0.579.0] - 2023-12-14 18:51:52
 
@@ -1961,6 +5358,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - South Carolina additions.
 
 ## [0.537.1] - 2023-11-22 01:31:58
+
+### Fixed
+
+- Ohio senior citizen credit formula.
 
 ## [0.537.0] - 2023-11-22 00:37:55
 
@@ -2425,6 +5826,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.493.1] - 2023-10-05 01:05:40
 
+### Fixed
+
+- Georgia investment in 529 plan deduction variable name adjustment.
+
 ## [0.493.0] - 2023-10-04 21:03:41
 
 ### Added
@@ -2510,6 +5915,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - North Carolina income tree patch.
 
 ## [0.482.1] - 2023-09-28 17:28:07
+
+### Fixed
+
+- Add Louisiana index file.
+- Remove Missouri index file.
 
 ## [0.482.0] - 2023-09-27 21:57:34
 
@@ -2630,6 +6040,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.467.0] - 2023-09-15 04:21:57
 
+### Added
+
+- Pell Grant automatic 0 EFC and marginal tax rate brackets from 2009 to 2023.
+
 ## [0.466.1] - 2023-09-14 19:23:32
 
 ### Fixed
@@ -2740,6 +6154,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Delaware itemized deductions.
 
 ## [0.458.2] - 2023-09-04 20:59:54
+
+### Fixed
+
+- Georgia standard deduction file directory.
 
 ## [0.458.1] - 2023-09-04 20:23:16
 
@@ -7914,6 +11332,547 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.245.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.244.1...1.245.0
+[1.244.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.244.0...1.244.1
+[1.244.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.243.0...1.244.0
+[1.243.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.242.1...1.243.0
+[1.242.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.242.0...1.242.1
+[1.242.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.241.0...1.242.0
+[1.241.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.240.5...1.241.0
+[1.240.5]: https://github.com/PolicyEngine/policyengine-us/compare/1.240.4...1.240.5
+[1.240.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.240.3...1.240.4
+[1.240.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.240.2...1.240.3
+[1.240.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.240.1...1.240.2
+[1.240.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.240.0...1.240.1
+[1.240.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.239.0...1.240.0
+[1.239.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.238.0...1.239.0
+[1.238.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.237.0...1.238.0
+[1.237.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.236.0...1.237.0
+[1.236.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.235.0...1.236.0
+[1.235.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.234.0...1.235.0
+[1.234.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.233.0...1.234.0
+[1.233.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.232.0...1.233.0
+[1.232.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.231.0...1.232.0
+[1.231.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.230.0...1.231.0
+[1.230.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.229.0...1.230.0
+[1.229.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.228.0...1.229.0
+[1.228.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.227.1...1.228.0
+[1.227.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.227.0...1.227.1
+[1.227.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.226.1...1.227.0
+[1.226.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.226.0...1.226.1
+[1.226.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.225.0...1.226.0
+[1.225.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.224.0...1.225.0
+[1.224.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.223.0...1.224.0
+[1.223.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.222.0...1.223.0
+[1.222.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.221.0...1.222.0
+[1.221.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.220.4...1.221.0
+[1.220.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.220.3...1.220.4
+[1.220.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.220.2...1.220.3
+[1.220.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.220.1...1.220.2
+[1.220.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.220.0...1.220.1
+[1.220.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.219.2...1.220.0
+[1.219.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.219.1...1.219.2
+[1.219.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.219.0...1.219.1
+[1.219.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.218.0...1.219.0
+[1.218.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.217.1...1.218.0
+[1.217.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.217.0...1.217.1
+[1.217.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.216.0...1.217.0
+[1.216.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.215.0...1.216.0
+[1.215.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.214.0...1.215.0
+[1.214.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.213.1...1.214.0
+[1.213.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.213.0...1.213.1
+[1.213.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.212.0...1.213.0
+[1.212.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.211.0...1.212.0
+[1.211.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.210.0...1.211.0
+[1.210.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.209.2...1.210.0
+[1.209.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.209.1...1.209.2
+[1.209.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.209.0...1.209.1
+[1.209.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.208.0...1.209.0
+[1.208.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.207.5...1.208.0
+[1.207.5]: https://github.com/PolicyEngine/policyengine-us/compare/1.207.4...1.207.5
+[1.207.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.207.3...1.207.4
+[1.207.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.207.2...1.207.3
+[1.207.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.207.1...1.207.2
+[1.207.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.207.0...1.207.1
+[1.207.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.206.0...1.207.0
+[1.206.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.205.0...1.206.0
+[1.205.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.204.1...1.205.0
+[1.204.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.204.0...1.204.1
+[1.204.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.203.2...1.204.0
+[1.203.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.203.1...1.203.2
+[1.203.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.203.0...1.203.1
+[1.203.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.202.2...1.203.0
+[1.202.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.202.1...1.202.2
+[1.202.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.202.0...1.202.1
+[1.202.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.201.0...1.202.0
+[1.201.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.200.2...1.201.0
+[1.200.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.200.1...1.200.2
+[1.200.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.200.0...1.200.1
+[1.200.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.199.0...1.200.0
+[1.199.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.198.1...1.199.0
+[1.198.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.198.0...1.198.1
+[1.198.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.197.1...1.198.0
+[1.197.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.197.0...1.197.1
+[1.197.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.196.1...1.197.0
+[1.196.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.196.0...1.196.1
+[1.196.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.195.1...1.196.0
+[1.195.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.195.0...1.195.1
+[1.195.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.194.0...1.195.0
+[1.194.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.193.0...1.194.0
+[1.193.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.192.2...1.193.0
+[1.192.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.192.1...1.192.2
+[1.192.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.192.0...1.192.1
+[1.192.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.191.0...1.192.0
+[1.191.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.190.0...1.191.0
+[1.190.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.189.0...1.190.0
+[1.189.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.188.0...1.189.0
+[1.188.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.187.3...1.188.0
+[1.187.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.187.2...1.187.3
+[1.187.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.187.1...1.187.2
+[1.187.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.187.0...1.187.1
+[1.187.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.186.0...1.187.0
+[1.186.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.185.0...1.186.0
+[1.185.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.184.0...1.185.0
+[1.184.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.183.1...1.184.0
+[1.183.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.183.0...1.183.1
+[1.183.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.182.2...1.183.0
+[1.182.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.182.1...1.182.2
+[1.182.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.182.0...1.182.1
+[1.182.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.181.0...1.182.0
+[1.181.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.180.4...1.181.0
+[1.180.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.180.3...1.180.4
+[1.180.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.180.2...1.180.3
+[1.180.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.180.1...1.180.2
+[1.180.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.180.0...1.180.1
+[1.180.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.179.0...1.180.0
+[1.179.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.178.0...1.179.0
+[1.178.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.177.0...1.178.0
+[1.177.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.176.3...1.177.0
+[1.176.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.176.2...1.176.3
+[1.176.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.176.1...1.176.2
+[1.176.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.176.0...1.176.1
+[1.176.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.175.0...1.176.0
+[1.175.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.174.1...1.175.0
+[1.174.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.174.0...1.174.1
+[1.174.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.173.0...1.174.0
+[1.173.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.172.1...1.173.0
+[1.172.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.172.0...1.172.1
+[1.172.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.171.0...1.172.0
+[1.171.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.170.2...1.171.0
+[1.170.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.170.1...1.170.2
+[1.170.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.170.0...1.170.1
+[1.170.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.169.0...1.170.0
+[1.169.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.168.1...1.169.0
+[1.168.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.168.0...1.168.1
+[1.168.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.167.2...1.168.0
+[1.167.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.167.1...1.167.2
+[1.167.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.167.0...1.167.1
+[1.167.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.166.0...1.167.0
+[1.166.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.165.0...1.166.0
+[1.165.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.164.0...1.165.0
+[1.164.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.163.1...1.164.0
+[1.163.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.163.0...1.163.1
+[1.163.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.162.3...1.163.0
+[1.162.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.162.2...1.162.3
+[1.162.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.162.1...1.162.2
+[1.162.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.162.0...1.162.1
+[1.162.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.161.3...1.162.0
+[1.161.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.161.2...1.161.3
+[1.161.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.161.1...1.161.2
+[1.161.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.161.0...1.161.1
+[1.161.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.160.0...1.161.0
+[1.160.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.159.0...1.160.0
+[1.159.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.158.0...1.159.0
+[1.158.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.157.0...1.158.0
+[1.157.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.156.0...1.157.0
+[1.156.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.155.1...1.156.0
+[1.155.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.155.0...1.155.1
+[1.155.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.154.2...1.155.0
+[1.154.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.154.1...1.154.2
+[1.154.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.154.0...1.154.1
+[1.154.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.153.0...1.154.0
+[1.153.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.152.0...1.153.0
+[1.152.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.151.0...1.152.0
+[1.151.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.150.1...1.151.0
+[1.150.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.150.0...1.150.1
+[1.150.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.149.0...1.150.0
+[1.149.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.148.0...1.149.0
+[1.148.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.147.0...1.148.0
+[1.147.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.146.2...1.147.0
+[1.146.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.146.1...1.146.2
+[1.146.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.146.0...1.146.1
+[1.146.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.145.0...1.146.0
+[1.145.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.144.0...1.145.0
+[1.144.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.143.0...1.144.0
+[1.143.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.142.5...1.143.0
+[1.142.5]: https://github.com/PolicyEngine/policyengine-us/compare/1.142.4...1.142.5
+[1.142.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.142.3...1.142.4
+[1.142.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.142.2...1.142.3
+[1.142.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.142.1...1.142.2
+[1.142.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.142.0...1.142.1
+[1.142.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.141.0...1.142.0
+[1.141.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.140.1...1.141.0
+[1.140.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.140.0...1.140.1
+[1.140.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.139.2...1.140.0
+[1.139.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.139.1...1.139.2
+[1.139.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.139.0...1.139.1
+[1.139.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.138.0...1.139.0
+[1.138.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.137.4...1.138.0
+[1.137.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.137.3...1.137.4
+[1.137.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.137.2...1.137.3
+[1.137.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.137.1...1.137.2
+[1.137.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.137.0...1.137.1
+[1.137.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.136.2...1.137.0
+[1.136.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.136.1...1.136.2
+[1.136.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.136.0...1.136.1
+[1.136.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.135.0...1.136.0
+[1.135.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.134.0...1.135.0
+[1.134.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.133.0...1.134.0
+[1.133.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.132.0...1.133.0
+[1.132.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.131.0...1.132.0
+[1.131.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.130.0...1.131.0
+[1.130.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.129.3...1.130.0
+[1.129.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.129.2...1.129.3
+[1.129.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.129.1...1.129.2
+[1.129.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.129.0...1.129.1
+[1.129.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.128.0...1.129.0
+[1.128.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.127.0...1.128.0
+[1.127.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.126.0...1.127.0
+[1.126.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.125.0...1.126.0
+[1.125.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.124.0...1.125.0
+[1.124.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.123.0...1.124.0
+[1.123.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.122.0...1.123.0
+[1.122.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.121.0...1.122.0
+[1.121.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.120.0...1.121.0
+[1.120.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.119.0...1.120.0
+[1.119.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.118.0...1.119.0
+[1.118.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.117.0...1.118.0
+[1.117.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.116.0...1.117.0
+[1.116.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.115.0...1.116.0
+[1.115.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.114.0...1.115.0
+[1.114.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.113.0...1.114.0
+[1.113.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.112.0...1.113.0
+[1.112.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.111.0...1.112.0
+[1.111.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.110.0...1.111.0
+[1.110.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.109.0...1.110.0
+[1.109.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.108.0...1.109.0
+[1.108.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.107.0...1.108.0
+[1.107.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.106.0...1.107.0
+[1.106.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.105.2...1.106.0
+[1.105.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.105.1...1.105.2
+[1.105.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.105.0...1.105.1
+[1.105.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.104.0...1.105.0
+[1.104.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.103.0...1.104.0
+[1.103.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.102.0...1.103.0
+[1.102.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.101.0...1.102.0
+[1.101.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.100.0...1.101.0
+[1.100.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.99.1...1.100.0
+[1.99.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.99.0...1.99.1
+[1.99.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.98.0...1.99.0
+[1.98.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.97.0...1.98.0
+[1.97.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.96.0...1.97.0
+[1.96.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.95.0...1.96.0
+[1.95.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.94.0...1.95.0
+[1.94.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.93.0...1.94.0
+[1.93.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.92.1...1.93.0
+[1.92.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.92.0...1.92.1
+[1.92.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.91.0...1.92.0
+[1.91.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.90.0...1.91.0
+[1.90.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.89.0...1.90.0
+[1.89.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.88.0...1.89.0
+[1.88.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.87.0...1.88.0
+[1.87.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.86.0...1.87.0
+[1.86.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.85.4...1.86.0
+[1.85.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.85.3...1.85.4
+[1.85.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.85.2...1.85.3
+[1.85.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.85.1...1.85.2
+[1.85.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.85.0...1.85.1
+[1.85.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.84.0...1.85.0
+[1.84.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.83.1...1.84.0
+[1.83.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.83.0...1.83.1
+[1.83.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.82.0...1.83.0
+[1.82.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.81.0...1.82.0
+[1.81.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.80.1...1.81.0
+[1.80.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.80.0...1.80.1
+[1.80.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.79.3...1.80.0
+[1.79.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.79.2...1.79.3
+[1.79.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.79.1...1.79.2
+[1.79.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.79.0...1.79.1
+[1.79.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.78.1...1.79.0
+[1.78.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.78.0...1.78.1
+[1.78.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.77.0...1.78.0
+[1.77.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.76.3...1.77.0
+[1.76.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.76.2...1.76.3
+[1.76.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.76.1...1.76.2
+[1.76.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.76.0...1.76.1
+[1.76.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.75.1...1.76.0
+[1.75.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.75.0...1.75.1
+[1.75.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.74.0...1.75.0
+[1.74.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.73.0...1.74.0
+[1.73.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.72.2...1.73.0
+[1.72.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.72.1...1.72.2
+[1.72.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.72.0...1.72.1
+[1.72.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.71.1...1.72.0
+[1.71.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.71.0...1.71.1
+[1.71.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.70.0...1.71.0
+[1.70.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.69.1...1.70.0
+[1.69.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.69.0...1.69.1
+[1.69.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.68.0...1.69.0
+[1.68.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.67.0...1.68.0
+[1.67.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.66.0...1.67.0
+[1.66.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.65.1...1.66.0
+[1.65.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.65.0...1.65.1
+[1.65.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.64.0...1.65.0
+[1.64.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.63.0...1.64.0
+[1.63.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.62.0...1.63.0
+[1.62.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.61.2...1.62.0
+[1.61.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.61.1...1.61.2
+[1.61.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.61.0...1.61.1
+[1.61.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.60.0...1.61.0
+[1.60.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.59.0...1.60.0
+[1.59.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.58.0...1.59.0
+[1.58.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.57.1...1.58.0
+[1.57.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.57.0...1.57.1
+[1.57.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.56.1...1.57.0
+[1.56.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.56.0...1.56.1
+[1.56.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.55.0...1.56.0
+[1.55.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.54.4...1.55.0
+[1.54.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.54.3...1.54.4
+[1.54.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.54.2...1.54.3
+[1.54.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.54.1...1.54.2
+[1.54.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.54.0...1.54.1
+[1.54.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.53.0...1.54.0
+[1.53.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.52.0...1.53.0
+[1.52.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.51.1...1.52.0
+[1.51.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.51.0...1.51.1
+[1.51.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.50.0...1.51.0
+[1.50.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.49.0...1.50.0
+[1.49.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.48.0...1.49.0
+[1.48.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.47.0...1.48.0
+[1.47.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.46.0...1.47.0
+[1.46.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.45.2...1.46.0
+[1.45.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.45.1...1.45.2
+[1.45.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.45.0...1.45.1
+[1.45.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.44.1...1.45.0
+[1.44.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.44.0...1.44.1
+[1.44.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.43.1...1.44.0
+[1.43.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.43.0...1.43.1
+[1.43.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.42.1...1.43.0
+[1.42.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.42.0...1.42.1
+[1.42.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.41.0...1.42.0
+[1.41.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.40.1...1.41.0
+[1.40.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.40.0...1.40.1
+[1.40.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.39.0...1.40.0
+[1.39.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.38.0...1.39.0
+[1.38.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.37.0...1.38.0
+[1.37.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.36.0...1.37.0
+[1.36.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.35.0...1.36.0
+[1.35.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.34.7...1.35.0
+[1.34.7]: https://github.com/PolicyEngine/policyengine-us/compare/1.34.6...1.34.7
+[1.34.6]: https://github.com/PolicyEngine/policyengine-us/compare/1.34.5...1.34.6
+[1.34.5]: https://github.com/PolicyEngine/policyengine-us/compare/1.34.4...1.34.5
+[1.34.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.34.3...1.34.4
+[1.34.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.34.2...1.34.3
+[1.34.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.34.1...1.34.2
+[1.34.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.34.0...1.34.1
+[1.34.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.33.1...1.34.0
+[1.33.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.33.0...1.33.1
+[1.33.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.32.0...1.33.0
+[1.32.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.31.4...1.32.0
+[1.31.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.31.3...1.31.4
+[1.31.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.31.2...1.31.3
+[1.31.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.31.1...1.31.2
+[1.31.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.31.0...1.31.1
+[1.31.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.30.1...1.31.0
+[1.30.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.30.0...1.30.1
+[1.30.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.29.0...1.30.0
+[1.29.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.28.0...1.29.0
+[1.28.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.27.0...1.28.0
+[1.27.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.26.2...1.27.0
+[1.26.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.26.1...1.26.2
+[1.26.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.26.0...1.26.1
+[1.26.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.25.2...1.26.0
+[1.25.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.25.1...1.25.2
+[1.25.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.25.0...1.25.1
+[1.25.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.24.1...1.25.0
+[1.24.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.24.0...1.24.1
+[1.24.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.23.1...1.24.0
+[1.23.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.23.0...1.23.1
+[1.23.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.22.1...1.23.0
+[1.22.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.22.0...1.22.1
+[1.22.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.21.0...1.22.0
+[1.21.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.20.0...1.21.0
+[1.20.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.19.0...1.20.0
+[1.19.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.18.0...1.19.0
+[1.18.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.17.1...1.18.0
+[1.17.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.17.0...1.17.1
+[1.17.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.16.3...1.17.0
+[1.16.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.16.2...1.16.3
+[1.16.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.16.1...1.16.2
+[1.16.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.16.0...1.16.1
+[1.16.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.15.0...1.16.0
+[1.15.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.14.0...1.15.0
+[1.14.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.13.0...1.14.0
+[1.13.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.12.0...1.13.0
+[1.12.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.11.0...1.12.0
+[1.11.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.10.0...1.11.0
+[1.10.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.9.0...1.10.0
+[1.9.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.8.0...1.9.0
+[1.8.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.7.0...1.8.0
+[1.7.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.6.0...1.7.0
+[1.6.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.5.2...1.6.0
+[1.5.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.5.1...1.5.2
+[1.5.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.5.0...1.5.1
+[1.5.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.4.0...1.5.0
+[1.4.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.3.0...1.4.0
+[1.3.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.2.0...1.3.0
+[1.2.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.1.0...1.2.0
+[1.1.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.0.0...1.1.0
+[1.0.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.796.1...1.0.0
+[0.796.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.796.0...0.796.1
+[0.796.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.795.0...0.796.0
+[0.795.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.794.2...0.795.0
+[0.794.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.794.1...0.794.2
+[0.794.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.794.0...0.794.1
+[0.794.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.793.0...0.794.0
+[0.793.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.792.0...0.793.0
+[0.792.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.791.0...0.792.0
+[0.791.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.790.0...0.791.0
+[0.790.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.789.0...0.790.0
+[0.789.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.788.0...0.789.0
+[0.788.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.787.0...0.788.0
+[0.787.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.786.0...0.787.0
+[0.786.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.785.2...0.786.0
+[0.785.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.785.1...0.785.2
+[0.785.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.785.0...0.785.1
+[0.785.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.784.0...0.785.0
+[0.784.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.783.0...0.784.0
+[0.783.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.782.0...0.783.0
+[0.782.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.781.0...0.782.0
+[0.781.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.780.2...0.781.0
+[0.780.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.780.1...0.780.2
+[0.780.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.780.0...0.780.1
+[0.780.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.779.2...0.780.0
+[0.779.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.779.1...0.779.2
+[0.779.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.779.0...0.779.1
+[0.779.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.778.0...0.779.0
+[0.778.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.777.7...0.778.0
+[0.777.7]: https://github.com/PolicyEngine/policyengine-us/compare/0.777.6...0.777.7
+[0.777.6]: https://github.com/PolicyEngine/policyengine-us/compare/0.777.5...0.777.6
+[0.777.5]: https://github.com/PolicyEngine/policyengine-us/compare/0.777.4...0.777.5
+[0.777.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.777.3...0.777.4
+[0.777.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.777.2...0.777.3
+[0.777.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.777.1...0.777.2
+[0.777.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.777.0...0.777.1
+[0.777.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.776.0...0.777.0
+[0.776.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.775.2...0.776.0
+[0.775.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.775.1...0.775.2
+[0.775.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.775.0...0.775.1
+[0.775.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.774.0...0.775.0
+[0.774.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.773.0...0.774.0
+[0.773.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.772.0...0.773.0
+[0.772.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.771.0...0.772.0
+[0.771.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.770.1...0.771.0
+[0.770.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.770.0...0.770.1
+[0.770.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.769.0...0.770.0
+[0.769.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.768.1...0.769.0
+[0.768.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.768.0...0.768.1
+[0.768.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.767.0...0.768.0
+[0.767.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.766.0...0.767.0
+[0.766.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.765.0...0.766.0
+[0.765.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.764.0...0.765.0
+[0.764.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.763.0...0.764.0
+[0.763.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.762.0...0.763.0
+[0.762.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.761.0...0.762.0
+[0.761.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.760.0...0.761.0
+[0.760.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.759.1...0.760.0
+[0.759.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.759.0...0.759.1
+[0.759.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.758.2...0.759.0
+[0.758.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.758.1...0.758.2
+[0.758.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.758.0...0.758.1
+[0.758.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.757.1...0.758.0
+[0.757.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.757.0...0.757.1
+[0.757.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.756.0...0.757.0
+[0.756.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.755.0...0.756.0
+[0.755.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.754.0...0.755.0
+[0.754.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.753.0...0.754.0
+[0.753.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.752.1...0.753.0
+[0.752.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.752.0...0.752.1
+[0.752.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.751.0...0.752.0
+[0.751.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.750.4...0.751.0
+[0.750.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.750.3...0.750.4
+[0.750.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.750.2...0.750.3
+[0.750.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.750.1...0.750.2
+[0.750.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.750.0...0.750.1
+[0.750.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.749.1...0.750.0
+[0.749.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.749.0...0.749.1
+[0.749.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.748.1...0.749.0
+[0.748.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.748.0...0.748.1
+[0.748.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.747.0...0.748.0
+[0.747.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.746.0...0.747.0
+[0.746.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.745.0...0.746.0
+[0.745.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.744.1...0.745.0
+[0.744.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.744.0...0.744.1
+[0.744.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.743.1...0.744.0
+[0.743.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.743.0...0.743.1
+[0.743.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.742.2...0.743.0
+[0.742.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.742.1...0.742.2
+[0.742.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.742.0...0.742.1
+[0.742.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.741.1...0.742.0
+[0.741.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.741.0...0.741.1
+[0.741.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.740.0...0.741.0
+[0.740.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.739.0...0.740.0
+[0.739.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.738.0...0.739.0
+[0.738.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.737.1...0.738.0
+[0.737.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.737.0...0.737.1
+[0.737.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.736.0...0.737.0
+[0.736.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.735.0...0.736.0
+[0.735.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.734.1...0.735.0
+[0.734.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.734.0...0.734.1
+[0.734.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.733.1...0.734.0
+[0.733.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.733.0...0.733.1
+[0.733.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.732.0...0.733.0
+[0.732.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.731.0...0.732.0
+[0.731.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.730.1...0.731.0
+[0.730.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.730.0...0.730.1
+[0.730.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.729.1...0.730.0
+[0.729.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.729.0...0.729.1
+[0.729.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.728.0...0.729.0
+[0.728.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.727.2...0.728.0
+[0.727.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.727.1...0.727.2
+[0.727.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.727.0...0.727.1
+[0.727.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.726.0...0.727.0
+[0.726.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.725.0...0.726.0
+[0.725.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.724.0...0.725.0
+[0.724.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.723.0...0.724.0
+[0.723.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.722.2...0.723.0
+[0.722.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.722.1...0.722.2
+[0.722.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.722.0...0.722.1
+[0.722.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.721.1...0.722.0
+[0.721.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.721.0...0.721.1
+[0.721.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.720.0...0.721.0
+[0.720.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.719.1...0.720.0
+[0.719.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.719.0...0.719.1
+[0.719.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.718.0...0.719.0
+[0.718.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.717.0...0.718.0
+[0.717.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.716.2...0.717.0
+[0.716.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.716.1...0.716.2
+[0.716.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.716.0...0.716.1
+[0.716.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.715.0...0.716.0
+[0.715.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.714.0...0.715.0
+[0.714.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.713.3...0.714.0
+[0.713.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.713.2...0.713.3
+[0.713.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.713.1...0.713.2
+[0.713.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.713.0...0.713.1
+[0.713.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.712.0...0.713.0
+[0.712.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.711.6...0.712.0
+[0.711.6]: https://github.com/PolicyEngine/policyengine-us/compare/0.711.5...0.711.6
+[0.711.5]: https://github.com/PolicyEngine/policyengine-us/compare/0.711.4...0.711.5
+[0.711.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.711.3...0.711.4
+[0.711.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.711.2...0.711.3
+[0.711.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.711.1...0.711.2
+[0.711.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.711.0...0.711.1
+[0.711.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.710.1...0.711.0
 [0.710.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.710.0...0.710.1
 [0.710.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.709.0...0.710.0
 [0.709.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.708.8...0.709.0

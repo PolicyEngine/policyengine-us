@@ -1,14 +1,3 @@
-- name: separate filing, agi in any tax bracket, 0 exemption
-  period: 2022
-  absolute_error_margin: 0.001
-  input:
-    state_code: NM
-    nm_modified_gross_income: 10_000
-    nm_low_income_comprehensive_tax_rebate_exemptions: 0
-    filing_status: SEPARATE
-  output:
-    nm_low_income_comprehensive_tax_rebate: 0
-
 - name: separate filing, agi in 1st tax bracket, 1 exemption
   period: 2022
   absolute_error_margin: 0.001

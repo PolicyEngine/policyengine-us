@@ -23,7 +23,7 @@
   output:
     ny_ctc: 0
 
-- name: Parent of four-year old child with no income gets minimum credit
+- name: Parent of four-year old child with no income gets minimum credit, $100 per child
   period: 2022
   input:
     people:
@@ -42,7 +42,7 @@
   output:
     ny_ctc: 100
 
-- name: Parent of four-year old child with no income gets minimum credit
+- name: Parent of four-year old child with no income gets minimum credit, $100 per child
   period: 2022
   input:
     people:
@@ -71,3 +71,86 @@
     age: 5 # Must be 4+ to be eligible.
   output:
     ny_ctc: 330
+
+- name: 2023 Three-year old child gets minimum credit
+  period: 2023
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc: 100
+
+- name: 2023 Newly born child (zero-year old) gets minimum credit
+  period: 2023
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc: 100
+
+- name: Single parent of one child without income - should receive credit floor
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 0
+      child:
+        age: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    refundable_ctc: 0
+    non_refundable_ctc: 2_000
+    income_tax_before_credits: 0
+    ctc: 2_000 # $1,000 for the calculation as pre-TCJA values apply
+    ctc_value: 0
+    ny_ctc: 100
+
+- name: Single parent of one child with income - should receive percentage credit
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 30_000
+      child:
+        age: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    refundable_ctc: 1_250
+    non_refundable_ctc: 750
+    ctc: 2_000
+    ctc_value: 2_000
+    ny_ctc: 330 # 33% of $1,000 as pre-TCJA CTC values apply 

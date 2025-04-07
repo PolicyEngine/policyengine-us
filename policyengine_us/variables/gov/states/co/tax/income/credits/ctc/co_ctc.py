@@ -31,14 +31,14 @@ class co_ctc(Variable):
                     filing_status == statuses.SINGLE,
                     filing_status == statuses.JOINT,
                     filing_status == statuses.SEPARATE,
-                    filing_status == statuses.WIDOW,
+                    filing_status == statuses.SURVIVING_SPOUSE,
                     filing_status == statuses.HEAD_OF_HOUSEHOLD,
                 ],
                 [
                     p.rate.single.calc(agi, right=True),
                     p.rate.joint.calc(agi, right=True),
                     p.rate.separate.calc(agi, right=True),
-                    p.rate.widow.calc(agi, right=True),
+                    p.rate.surviving_spouse.calc(agi, right=True),
                     p.rate.head_of_household.calc(agi, right=True),
                 ],
             )
@@ -56,14 +56,14 @@ class co_ctc(Variable):
                     filing_status == statuses.SINGLE,
                     filing_status == statuses.JOINT,
                     filing_status == statuses.SEPARATE,
-                    filing_status == statuses.WIDOW,
+                    filing_status == statuses.SURVIVING_SPOUSE,
                     filing_status == statuses.HEAD_OF_HOUSEHOLD,
                 ],
                 [
                     p.amount.single.calc(agi, right=True),
                     p.amount.joint.calc(agi, right=True),
                     p.amount.separate.calc(agi, right=True),
-                    p.amount.widow.calc(agi, right=True),
+                    p.amount.surviving_spouse.calc(agi, right=True),
                     p.amount.head_of_household.calc(agi, right=True),
                 ],
             )

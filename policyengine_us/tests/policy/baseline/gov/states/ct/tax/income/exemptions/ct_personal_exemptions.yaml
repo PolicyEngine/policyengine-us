@@ -16,11 +16,11 @@
   output:
     ct_personal_exemptions: 0
 
-- name: Widow household reduced amount
+- name: Surviving spouse household reduced amount
   period: 2022
   input:
     state_code: CT
     ct_agi: 54_000
-    filing_status: WIDOW
+    filing_status: SURVIVING_SPOUSE
   output:
     ct_personal_exemptions: 18_000

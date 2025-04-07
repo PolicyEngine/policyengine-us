@@ -3,10 +3,13 @@ metadata:
   type: single_amount
   threshold_unit: currency-USD
   amount_unit: currency-USD
-  label: NY household credit base for non-single filers
+  period: year
+  label: New York household credit base for non-single filers
   reference:
-    - title: Instructions for Form IT-203
-      href: https://www.tax.ny.gov/pdf/current_forms/it/it203i.pdf#page=28
+    - title: New York Instructions for Form IT-201 Line 40
+      href: https://www.tax.ny.gov/pdf/2023/printable-pdfs/inc/it201i-2023.pdf#page=15
+    - title: Instructions for Form IT-201
+      href: https://www.tax.ny.gov/pdf/current_forms/it/it201i.pdf#page=12
     - title: Section 606 Credits against tax (b)(2)(B)
       href: https://www.nysenate.gov/legislation/laws/TAX/606
 brackets:
@@ -27,7 +30,7 @@ brackets:
     amount:
       1986-01-01: 60
   - threshold:
-      1986-01-01: 20_000
+      1986-01-01: 22_000
     amount:
       1986-01-01: 50
   - threshold:

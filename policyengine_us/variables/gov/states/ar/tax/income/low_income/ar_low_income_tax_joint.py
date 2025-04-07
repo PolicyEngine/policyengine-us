@@ -13,7 +13,7 @@ class ar_low_income_tax_joint(Variable):
     defined_for = StateCode.AR
 
     def formula(person, period, parameters):
-        agi = add(person.tax_unit, period, ["ar_agi"])
+        agi = add(person.tax_unit, period, ["ar_agi_joint"])
         head = person("is_tax_unit_head", period)
         agi_attributed_to_head = agi * head
         p = parameters(
@@ -30,8 +30,10 @@ class ar_low_income_tax_joint(Variable):
                 (filing_status_separate == status.HEAD_OF_HOUSEHOLD)
                 & (dependents > 1),
                 filing_status_separate == status.SEPARATE,
-                (filing_status_separate == status.WIDOW) & (dependents <= 1),
-                (filing_status_separate == status.WIDOW) & (dependents > 1),
+                (filing_status_separate == status.SURVIVING_SPOUSE)
+                & (dependents <= 1),
+                (filing_status_separate == status.SURVIVING_SPOUSE)
+                & (dependents > 1),
                 (filing_status_separate == status.JOINT) & (dependents <= 1),
                 (filing_status_separate == status.JOINT) & (dependents > 1),
             ],
@@ -45,10 +47,10 @@ class ar_low_income_tax_joint(Variable):
                 ),
                 # Separate filers are ineligible to use the low income tax tables
                 np.inf,
-                p.widow.no_or_one_dependent.calc(
+                p.surviving_spouse.no_or_one_dependent.calc(
                     agi_attributed_to_head, right=True
                 ),
-                p.widow.two_or_more_dependents.calc(
+                p.surviving_spouse.two_or_more_dependents.calc(
                     agi_attributed_to_head, right=True
                 ),
                 p.joint.no_or_one_dependent.calc(

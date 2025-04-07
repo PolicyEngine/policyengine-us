@@ -7,7 +7,10 @@ class ar_files_separately(Variable):
     label = "married couple files separately on the Arkansas tax return"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2023_Final_AR1000ES.pdf"
+    reference = (
+        "https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2023_AR1000F_and_AR1000NR_Instructions.pdf"
+        "https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2023_AR1000F_FullYearResidentIndividualIncomeTaxReturn.pdf"
+    )
     defined_for = StateCode.AR
 
     def formula(tax_unit, period, parameters):

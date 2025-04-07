@@ -2,17 +2,17 @@
   period: 2022
   input:
     in_la: true
-    is_homeless: true
+    lives_in_vehicle: true
     household_vehicles_value: 11_500
     household_vehicles_owned: 1
   output:
     la_general_relief_motor_vehicle_value_eligible: true
 
-- name: Homeless ineligible
+- name: Lives in car but ineligible
   period: 2022
   input:
     in_la: true
-    is_homeless: true
+    lives_in_vehicle: true
     household_vehicles_value: 11_501
     household_vehicles_owned: 1
   output:
@@ -22,7 +22,7 @@
   period: 2022
   input:
     in_la: true
-    is_homeless: false
+    lives_in_vehicle: false
     household_vehicles_value: 4_500
     household_vehicles_owned: 1
   output:
@@ -32,7 +32,7 @@
   period: 2022
   input:
     in_la: true
-    is_homeless: false
+    lives_in_vehicle: false
     household_vehicles_value: 4_501
     household_vehicles_owned: 1
   output:
@@ -42,7 +42,7 @@
   period: 2022
   input:
     in_la: true
-    is_homeless: true
+    lives_in_vehicle: true
     household_vehicles_value: 4_500
     household_vehicles_owned: 2
   output:

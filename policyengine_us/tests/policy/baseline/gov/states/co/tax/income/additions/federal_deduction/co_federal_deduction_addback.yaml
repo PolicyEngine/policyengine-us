@@ -25,7 +25,7 @@
   input:
     state_code: CO
     co_federal_deduction_addback_required: false
-    filing_status: WIDOW
+    filing_status: SURVIVING_SPOUSE
     itemized_taxable_income_deductions: 40_000
     taxable_income_deductions: 0
   output:
@@ -80,7 +80,7 @@
   input:
     state_code: CO
     co_federal_deduction_addback_required: false
-    filing_status: WIDOW
+    filing_status: SURVIVING_SPOUSE
     itemized_taxable_income_deductions: 0
     taxable_income_deductions: 40_000
   output:
@@ -133,7 +133,7 @@
   input:
     state_code: CO
     co_federal_deduction_addback_required: false
-    filing_status: WIDOW
+    filing_status: SURVIVING_SPOUSE
     itemized_taxable_income_deductions: 40_000
   output:
     co_federal_deduction_addback: 0
@@ -188,12 +188,12 @@
   output:
     co_federal_deduction_addback: 10_000
 
-- name: In 2022, widow filers, agi > 400_000, itemized deduction = 40_000, deduction addback = 10_000.
+- name: In 2022, surviving spouse filers, agi > 400_000, itemized deduction = 40_000, deduction addback = 10_000.
   period: 2022
   input:
     state_code: CO
     co_federal_deduction_addback_required: true
-    filing_status: WIDOW
+    filing_status: SURVIVING_SPOUSE
     itemized_taxable_income_deductions: 40_000
   output:
     co_federal_deduction_addback: 10_000
@@ -233,7 +233,7 @@
   input:
     state_code: CO
     co_federal_deduction_addback_required: false
-    filing_status: WIDOW
+    filing_status: SURVIVING_SPOUSE
     taxable_income_deductions: 40_000
   output:
     co_federal_deduction_addback: 0
@@ -289,12 +289,12 @@
   output:
     co_federal_deduction_addback: 10_000
 
-- name: In 2023, widow filers, agi > 300_000, taxable income deductions = 22_000, deduction addback = 10_000.
+- name: In 2023, surviving spouse filers, agi > 300_000, taxable income deductions = 22_000, deduction addback = 10_000.
   period: 2023
   input:
     state_code: CO
     co_federal_deduction_addback_required: true
-    filing_status: WIDOW
+    filing_status: SURVIVING_SPOUSE
     taxable_income_deductions: 22_000
   output:
     co_federal_deduction_addback: 10_000

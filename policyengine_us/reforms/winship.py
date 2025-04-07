@@ -74,7 +74,7 @@ def create_eitc_winship_reform(parameters, period, bypass=False):
 
     class winship_eitc_reform(Reform):
         def apply(self):
-            self.add_variable(original_eitc)
+            self.update_variable(original_eitc)
             self.update_variable(eitc)
 
     return winship_eitc_reform

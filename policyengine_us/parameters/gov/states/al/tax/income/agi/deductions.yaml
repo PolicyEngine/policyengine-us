@@ -5,6 +5,12 @@ values:
     - traditional_ira_contributions # Line 1 
     - alimony_expense # Line 4
     - self_employed_health_insurance_ald # Line 7
+  2023-01-01:
+  # IRA distributions prior to 1982 are not deductible.
+    - traditional_ira_contributions # Line 1 
+    - alimony_expense # Line 4
+    - self_employed_health_insurance_ald # Line 7
+    - al_retirement_exemption #Schedule RS Line 10
 
 metadata:
   unit: list
@@ -15,5 +21,9 @@ metadata:
       href: https://www.revenue.alabama.gov/ultraviewer/viewer/basic_viewer/index.html?form=2023/01/22f40bk.pdf#page=15
     - title: 2021 Alabama Department of Revenue 
       href: https://www.revenue.alabama.gov/wp-content/uploads/2022/06/21f40abk.pdf#page=14
-    - title: The Code of Alabama 1975 Section 40-18-14.2
-      href: https://alisondb.legislature.state.al.us/alison/CodeOfAlabama/1975/Coatoc.htm
+    - title: 2023 Alabama Department of Revenue
+      href: https://www.revenue.alabama.gov/ultraviewer/viewer/basic_viewer/index.html?form=2024/01/23f40bk.pdf#page=8
+    - title: 2024 Alabama Income Tax Instructions
+      href: https://www.revenue.alabama.gov/wp-content/uploads/2025/01/24f40bk.pdf#page=8
+    - title: The Code of Alabama 1975 Section 40-18-14.2 (a)
+      href: https://casetext.com/statute/code-of-alabama/title-40-revenue-and-taxation/chapter-18-income-taxes/article-1-general-provisions/section-40-18-142-adjusted-gross-income

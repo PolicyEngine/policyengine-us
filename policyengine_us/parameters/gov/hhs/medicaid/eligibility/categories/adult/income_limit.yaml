@@ -1,7 +1,6 @@
 description: Maximum family income for adults to qualify for Medicaid.
 metadata:
   unit: /1
-  name: medicaid_adult_income_limit
   label: Medicaid adult income limit
   breakdown:
   - state_code
@@ -10,6 +9,8 @@ metadata:
       href: https://files.kff.org/attachment/REPORT-Medicaid-and-CHIP-Eligibility-and-Enrollment-Policies-as-of-January-2022.pdf#page=33
     - title: medicaidscreener.com
       href: https://www.medicaidscreener.com/?p=table
+    - title: Medicaid, Children's Health Insurance Program, & Basic Health Program Eligibility Levels
+      href: https://www.medicaid.gov/medicaid/national-medicaid-chip-program-information/medicaid-childrens-health-insurance-program-basic-health-program-eligibility-levels/index.html
 AK:
   2021-01-01: 1.38
 AL:
@@ -66,6 +67,7 @@ MT:
   2021-01-01: 1.38
 NC:
   2021-01-01: -.inf
+  2023-12-01: 1.38
 ND:
   2021-01-01: 1.38
 NE:

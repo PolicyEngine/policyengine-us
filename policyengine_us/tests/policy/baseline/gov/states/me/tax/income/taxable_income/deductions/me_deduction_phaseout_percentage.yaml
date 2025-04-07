@@ -48,13 +48,13 @@
   output:
     me_deduction_phaseout_percentage: 0
 
-- name: Phaseout percent is zero for widow filer with income before phaseout start.
+- name: Phaseout percent is zero for surviving spouse filer with income before phaseout start.
   period: 2022
   absolute_error_margin: 0
   input:
     state_code: ME
     me_agi: 171_699
-    filing_status: WIDOW
+    filing_status: SURVIVING_SPOUSE
   output:
     me_deduction_phaseout_percentage: 0
 
@@ -98,13 +98,13 @@
   output:
     me_deduction_phaseout_percentage: 0.16 # (195,700-171,700)/150,000
 
-- name: Phaseout percent is (income - phaseout_start) / phaseout_width for widow filer with income above phaseout start.
+- name: Phaseout percent is (income - phaseout_start) / phaseout_width for SURVIVING_SPOUSE filer with income above phaseout start.
   period: 2022
   absolute_error_margin: 0
   input:
     state_code: ME
     me_agi: 195_700
-    filing_status: WIDOW
+    filing_status: SURVIVING_SPOUSE
   output:
     me_deduction_phaseout_percentage: 0.16 # (195,700-171,700)/150,000
 
@@ -154,6 +154,6 @@
   input:
     state_code: ME
     me_agi: 321_701
-    filing_status: WIDOW
+    filing_status: SURVIVING_SPOUSE
   output:
     me_deduction_phaseout_percentage: 1

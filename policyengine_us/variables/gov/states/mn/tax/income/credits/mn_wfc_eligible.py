@@ -13,13 +13,13 @@ class mn_wfc_eligible(Variable):
     defined_for = StateCode.MN
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.mn.tax.income.credits.wfc
+        p = parameters(period).gov.states.mn.tax.income.credits.cwfc
         person = tax_unit.members
         # determine demographic eligibility using WFC rules
         has_child = tax_unit("tax_unit_children", period) > 0
         age = person("age", period)
-        min_age = p.eligible.childless_adult_age.minimum
-        max_age = p.eligible.childless_adult_age.maximum
+        min_age = p.wfc.eligible.childless_adult_age.minimum
+        max_age = p.wfc.eligible.childless_adult_age.maximum
         in_age_range = (age >= min_age) & (age <= max_age)
         age_eligible = in_age_range & ~person("is_tax_unit_dependent", period)
         demographic_eligible = has_child | tax_unit.any(age_eligible)

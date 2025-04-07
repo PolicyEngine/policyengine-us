@@ -1,0 +1,70 @@
+- name: Case 1, homeowner with income less than ami, eligible, get $1800. 
+  period: 2023
+  input:
+    spm_unit_size: 1 
+    co_denver_property_tax_relief_income: 52_000
+    real_estate_taxes: 1_000
+    rent: 0
+    has_co_denver_dhs_elderly_disabled: true
+    tax_unit_dependents: 0 
+    in_denver: true
+  output:
+    co_denver_property_tax_relief_income: 52_000
+    co_denver_property_tax_relief_homeowner_eligible: true
+    co_denver_property_tax_relief_renter_eligible: false
+    co_denver_homeowner_property_tax_relief: 1_800
+    co_denver_renter_property_tax_relief: 0
+    co_denver_property_tax_relief: 1_800
+
+- name: Case 2, renter with income more than ami, ineligible. 
+  period: 2023
+  input:
+    spm_unit_size: 1 
+    co_denver_property_tax_relief_income: 22_000
+    real_estate_taxes: 0
+    rent: 2_000
+    has_co_denver_dhs_elderly_disabled: true
+    tax_unit_dependents: 0 
+    in_denver: true
+  output:
+    co_denver_property_tax_relief_income: 22_000
+    co_denver_property_tax_relief_homeowner_eligible: false
+    co_denver_property_tax_relief_renter_eligible: false
+    co_denver_homeowner_property_tax_relief: 0
+    co_denver_renter_property_tax_relief: 0
+    co_denver_property_tax_relief: 0
+
+- name: Case 3, homeowner, has elderly, no disabled, no dependent, income less than ami. 
+  period: 2023
+  input:
+    people:
+      person1:
+        employment_income: 30_000
+        age: 66
+        real_estate_taxes: 1_000
+        rent: 0 
+      person2:
+        employment_income: 20_000
+        age: 36
+        real_estate_taxes: 0
+        rent: 0 
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        has_co_denver_dhs_elderly_disabled: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_dependents: 0
+    households:
+      household:
+        members: [person1, person2]
+        in_denver: true
+
+  output:
+    co_denver_property_tax_relief_income: 50_000
+    co_denver_property_tax_relief_homeowner_eligible: true
+    co_denver_property_tax_relief_renter_eligible: false
+    co_denver_homeowner_property_tax_relief: 1_800
+    co_denver_renter_property_tax_relief: 0
+    co_denver_property_tax_relief: 1_800

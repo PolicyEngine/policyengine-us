@@ -1,0 +1,13 @@
+- name: Positive gross income
+  period: 2022
+  input:
+    irs_gross_income: 1_000
+  output:
+    positive_gross_income: 1_000
+
+- name: Negative gross income
+  period: 2022
+  input:
+    irs_gross_income: -1_000
+  output:
+    positive_gross_income: 0

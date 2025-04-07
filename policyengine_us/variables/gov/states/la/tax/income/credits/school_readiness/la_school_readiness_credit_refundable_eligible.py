@@ -10,7 +10,8 @@ class la_school_readiness_credit_refundable_eligible(Variable):
     defined_for = StateCode.LA
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.la.tax.income.credits.cdcc
+        p = parameters(period).gov.states.la.tax.income.credits.cdcc.refundable
         # determine if it is nonrefundable or refundable
         us_agi = tax_unit("adjusted_gross_income", period)
-        return us_agi <= p.refundable_income_limit
+        top_threshold = p.match.thresholds[-1]
+        return us_agi <= top_threshold

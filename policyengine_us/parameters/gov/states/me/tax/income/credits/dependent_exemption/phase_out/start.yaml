@@ -1,0 +1,34 @@
+description: Maine reduces its dependent exemption credit for filers with Maine adjusted gross income above this threshold.
+metadata:
+  unit: currency-USD
+  period: year
+  label: Maine dependents exemption phase-out start
+  reference:
+    - title: Form 1040ME Schedule A (2024) - Worksheet for Dependent Exemption Tax Credit, Line 4
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/24_Form1040me_Sch%20A_ff.pdf#page=2
+    - title: Form 1040ME Schedule A (2023) Line 4
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/23_1040me_sched_a_ff.pdf#page=2  
+    - title: Instructions for Form 1040ME (2022)
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/22_1040me_sched_a_ff.pdf#page=2
+    - title: §5219-SS. Dependent exemption tax credit (4)
+      href: https://www.mainelegislature.org/legis/statutes/36/title36sec5219-SS.html
+    - title: Form 1040ME Schedule A (2021)
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/21_1040me_sched_a_dwnldff.pdf#page=2
+    - title: Form 1040ME Schedule A (2020)
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/20_1040me_sched_a_dwnloadff.pdf#page=2
+    - title: Form 1040ME Schedule A (2019)
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/19_1040me_a_dwnldff.pdf#page=2
+    - title: Form 1040ME Schedule A (2018)
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/18_1040me_a_d.pdf#page=2
+  breakdown:
+    - filing_status
+SINGLE:
+  2018-01-01: 200_000
+SEPARATE:
+  2018-01-01: 200_000
+HEAD_OF_HOUSEHOLD:
+  2018-01-01: 200_000
+JOINT:
+  2018-01-01: 400_000
+SURVIVING_SPOUSE:
+  2018-01-01: 200_000

@@ -1,0 +1,19 @@
+- name: AGI reduced by exemptions and deductions
+  period: 2023
+  input:
+    mt_agi: 6_000
+    mt_personal_exemptions_indiv: 2_000
+    mt_deductions_indiv: 3_000
+    state_code: MT
+  output: 
+    mt_pre_dependent_exemption_taxable_income_indiv: 1_000
+
+- name: AGI reduced by exemptions and deductions, capped at 0
+  period: 2023
+  input:
+    mt_agi: 6_000
+    mt_personal_exemptions_indiv: 5_000
+    mt_deductions_indiv: 3_000
+    state_code: MT
+  output: 
+    mt_pre_dependent_exemption_taxable_income_indiv: 0

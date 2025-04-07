@@ -16,4 +16,5 @@ class ms_deductions_indiv(Variable):
     def formula(person, period, parameters):
         itemized = person("ms_itemized_deductions_indiv", period)
         standard = person("ms_standard_deduction_indiv", period)
-        return max_(itemized, standard)
+        itemizes = person.tax_unit("ms_tax_unit_itemizes", period)
+        return where(itemizes, itemized, standard)

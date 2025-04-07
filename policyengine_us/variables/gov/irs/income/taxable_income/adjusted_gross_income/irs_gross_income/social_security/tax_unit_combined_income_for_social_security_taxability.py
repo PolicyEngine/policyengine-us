@@ -22,5 +22,5 @@ class tax_unit_combined_income_for_social_security_taxability(Variable):
         # parameter as the lower taxability marginal rate (also 50% in the
         # baseline), and that they would be mechanically the same parameter.
 
-        ss_fraction = p.rate.lower * gross_ss
+        ss_fraction = p.rate.base * gross_ss
         return tax_unit("taxable_ss_magi", period) + ss_fraction

@@ -1,0 +1,16 @@
+description: Louisiana provides the following refundable tax credits.
+values:
+  2021-01-01:
+    - la_refundable_cdcc
+    - la_eitc
+metadata:
+  unit: list
+  period: year
+  label: Louisiana refundable tax credits
+  reference:
+    # CDCC reference
+    - title: Louisiana legal code | RS 47:297.4 Reduction to tax due; certain child care expenses (B)(2)
+      href: https://legis.la.gov/Legis/Law.aspx?d=101769
+    # EITC reference
+    - title: Louisiana legal code | RS 47:297.8 Earned income tax credit (B)
+      href: https://www.legis.la.gov/legis/Law.aspx?d=453085

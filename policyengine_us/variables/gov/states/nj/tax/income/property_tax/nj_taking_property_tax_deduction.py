@@ -27,14 +27,14 @@ class nj_taking_property_tax_deduction(Variable):
                 filing_status == status.SINGLE,
                 filing_status == status.JOINT,
                 filing_status == status.HEAD_OF_HOUSEHOLD,
-                filing_status == status.WIDOW,
+                filing_status == status.SURVIVING_SPOUSE,
                 filing_status == status.SEPARATE,
             ],
             [
                 p.single.calc(taxable_income_before_deduction),
                 p.joint.calc(taxable_income_before_deduction),
                 p.head_of_household.calc(taxable_income_before_deduction),
-                p.widow.calc(taxable_income_before_deduction),
+                p.surviving_spouse.calc(taxable_income_before_deduction),
                 p.separate.calc(taxable_income_before_deduction),
             ],
         )
@@ -48,14 +48,14 @@ class nj_taking_property_tax_deduction(Variable):
                 filing_status == status.SINGLE,
                 filing_status == status.JOINT,
                 filing_status == status.HEAD_OF_HOUSEHOLD,
-                filing_status == status.WIDOW,
+                filing_status == status.SURVIVING_SPOUSE,
                 filing_status == status.SEPARATE,
             ],
             [
                 p.single.calc(taxable_income_after_deduction),
                 p.joint.calc(taxable_income_after_deduction),
                 p.head_of_household.calc(taxable_income_after_deduction),
-                p.widow.calc(taxable_income_after_deduction),
+                p.surviving_spouse.calc(taxable_income_after_deduction),
                 p.separate.calc(taxable_income_after_deduction),
             ],
         )

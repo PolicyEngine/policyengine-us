@@ -1,10 +1,14 @@
-description: Each bracket of the NY supplemental tax phases in over this length.
+description: Each bracket of the New York supplemental tax phases in over this length.
 values:
   2021-01-01: 50_000
 metadata:
   unit: currency-USD
   period: year
-  label: NY State supplemental tax phase-in length
+  label: New York State supplemental tax phase-in length
   reference:
-    - title: Section 601 Imposition of tax, (d-2) for 2021 and (d-3) for 2022
+    - title: Section 601 Imposition of tax, (d-2) for 2021, (d-3) for 2022, and (d-4) for 2023
       href: https://www.nysenate.gov/legislation/laws/TAX/601
+    - title: 2023 NY Form IT-201 Instructions
+      href: https://www.tax.ny.gov/pdf/2023/printable-pdfs/inc/it201i-2023.pdf#page=46
+    - title: 2024 NY Form IT-201 Instructions
+      href: https://www.tax.ny.gov/pdf/2024/inc/it201i_2024.pdf#page=34

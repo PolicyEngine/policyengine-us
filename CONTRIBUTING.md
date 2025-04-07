@@ -97,7 +97,7 @@ Usually, you need to work on four specific types of files:
 **You can follow the procedure below to tackle them:**
 
 **1. Create a unit test**
-This will be a file in *policyengine_{country}/tests/[path to program]/variable.yaml*. We apply **test driven development**, where we write tests before writing the logic. This means tests will break and the goal of the Pull Request (**PR**) is to pass the tests. Unit tests specify direct inputs tot he variable for a number of cases, and the expected output.
+This will be a file in *policyengine_{country}/tests/[path to program]/variable.yaml*. We apply **test driven development**, where we write tests before writing the logic. This means tests will break and the goal of the Pull Request (**PR**) is to pass the tests. Unit tests specify direct inputs to the variable for a number of cases, and the expected output.
 
 **2. Commit your changes**
 Use the VS Code source control extension to enter a message, such as *"Create unit test for ['variable']"* and click **Commit**.
@@ -143,11 +143,11 @@ One common breakdown is to break down by **`filing_status`**. If you decided to 
 
 * `SINGLE`
 * `SEPARATE`
-* `WIDOW`
+* `SURVIVING_SPOUSE`
 * `HEAD_OF_HOUSEHOLD`
 * `JOINT`
 
-Sometimes, the document that you refer to (e.g. tax instruction) does not specify all five statuses. In that case, you can let the `WIDOW` cases to be the same as the `JOINT` case.
+Sometimes, the document that you refer to (e.g. tax instruction) does not specify all five statuses. In that case, you can let the `SURVIVING_SPOUSE` cases to be the same as the `JOINT` case.
 
 PolicyEngine defines parameters as yaml files, which specify the values as of certain dates, as well as metadata on the units and reference(s).
 
@@ -168,7 +168,7 @@ To run a specific yaml test or folder of yaml tests, run `policyengine-core test
 
 **10. Run `make format`**
 
-This will align the code ot the black Python formatting standard, and ensure each file ends in an empty new line.
+This will align the code to the black Python formatting standard, and ensure each file ends in an empty new line.
 
 **Remember to run `git pull upstream master` every time before you *Sync* or *Create a new PR* **
 

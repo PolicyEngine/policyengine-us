@@ -5,7 +5,7 @@ class StateFilingStatusIfMarriedFilingSeparatelyOnSameReturn(Enum):
     SINGLE = "Single"
     SEPARATE = "Separate"
     HEAD_OF_HOUSEHOLD = "Head of household"
-    WIDOW = "Widow(er)"
+    SURVIVING_SPOUSE = "Surviving spouse"
 
 
 class state_filing_status_if_married_filing_separately_on_same_return(
@@ -29,7 +29,7 @@ class state_filing_status_if_married_filing_separately_on_same_return(
                 us_filing_status == fsvals.SINGLE,
                 us_filing_status == fsvals.SEPARATE,
                 us_filing_status == fsvals.HEAD_OF_HOUSEHOLD,
-                us_filing_status == fsvals.WIDOW,
+                us_filing_status == fsvals.SURVIVING_SPOUSE,
             ],
             [
                 # Simulate scenario where joint filers file separately on Arkansas return.
@@ -37,6 +37,6 @@ class state_filing_status_if_married_filing_separately_on_same_return(
                 StateFilingStatusIfMarriedFilingSeparatelyOnSameReturn.SINGLE,
                 StateFilingStatusIfMarriedFilingSeparatelyOnSameReturn.SEPARATE,
                 StateFilingStatusIfMarriedFilingSeparatelyOnSameReturn.HEAD_OF_HOUSEHOLD,
-                StateFilingStatusIfMarriedFilingSeparatelyOnSameReturn.WIDOW,
+                StateFilingStatusIfMarriedFilingSeparatelyOnSameReturn.SURVIVING_SPOUSE,
             ],
         )

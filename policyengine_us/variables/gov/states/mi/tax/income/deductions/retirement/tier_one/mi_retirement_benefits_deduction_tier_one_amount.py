@@ -25,44 +25,48 @@ class mi_retirement_benefits_deduction_tier_one_amount(Variable):
         ).gov.states.mi.tax.income.deductions.retirement_benefits.tier_one
         filing_status = tax_unit("filing_status", period)
 
-        private_cap = p.amount[filing_status]  # Line 9
+        # Line 9
+        private_cap = p.amount[filing_status]
         person = tax_unit.members
         # "Recipients born before 1946 may subtract all qualifying retirement and
         # pension benefits received from federal or Michigan public sources"
         # all public benefits can be deducted
+        # Line 10
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         military_retirement_pay = (
             person("military_retirement_pay", period) * is_head_or_spouse
-        )  # Line 10
+        )
 
         total_military_retirement_pay = tax_unit.sum(military_retirement_pay)
         # the cap is reduced by the amount of military retirement pay
+        # Line 11
         reduced_private_cap = max_(
             private_cap - total_military_retirement_pay, 0
-        )  # Line 11
-
+        )
+        # Line 12
         public_benefits = (
             person("taxable_public_pension_income", period) * is_head_or_spouse
         )
-        total_public_benefit = tax_unit.sum(public_benefits)  # Line 12
+        total_public_benefit = tax_unit.sum(public_benefits)
 
         # If your public retirement benefits are greater than the maximum amount,
         # you are not entitled to claim an additional subtraction for private pensions.
+        # Line 13
         reduced_private_cap_reduced_by_public_benefits = max_(
             reduced_private_cap - total_public_benefit, 0
-        )  # Line 13
-
+        )
+        # Line 14
         uncapped_private_benefits = (
             person("taxable_private_pension_income", period)
             * is_head_or_spouse
         )
         total_uncapped_private_benefits = tax_unit.sum(
             uncapped_private_benefits
-        )  # Line 14
-
+        )
+        # Line 15
         capped_private_benefits = min_(
             reduced_private_cap_reduced_by_public_benefits,
             total_uncapped_private_benefits,
-        )  # Line 15
-
-        return capped_private_benefits + total_public_benefit  # Line 16
+        )
+        # Line 16
+        return capped_private_benefits + total_public_benefit

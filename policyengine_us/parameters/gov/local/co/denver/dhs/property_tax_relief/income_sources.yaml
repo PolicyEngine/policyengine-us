@@ -1,0 +1,22 @@
+description: Denver counts these sources as income under the property tax relief program.
+values:
+  2023-01-01:
+    - employment_income
+    - self_employment_income
+    - alimony_income
+    - rental_income
+    - disability_benefits
+    - pension_income
+    - veterans_benefits
+    - interest_income
+    - dividend_income
+    - workers_compensation
+    - unemployment_compensation
+  
+metadata:
+  
+  period: year 
+  label: Denver property tax relief income sources
+  reference:
+    - title: Denver property tax relief program instructions 2023
+      href: https://denvergov.org/files/assets/public/v/2/denver-human-services/documents/property-tax-relief/dptr-instructions-2023.pdf#page=2

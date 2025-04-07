@@ -1,0 +1,136 @@
+- name: IA pension exclusion eligibility unit test 1
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 40
+        is_permanently_and_totally_disabled: true
+      person2:
+        age: 10
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    ia_pension_exclusion_eligible: [true,false]
+
+- name: IA pension exclusion eligibility unit test 2
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 54
+        is_permanently_and_totally_disabled: true
+      person2:
+        is_tax_unit_spouse: true
+        age: 55
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    ia_pension_exclusion_eligible: [true, true]
+
+- name: IA pension exclusion eligibility unit test 3
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 54
+      person2:
+        is_tax_unit_spouse: true
+        age: 55
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    ia_pension_exclusion_eligible: [false, true]
+
+- name: IA pension exclusion eligibility unit test 4
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 54
+      person2:
+        age: 54
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    ia_pension_exclusion_eligible: [false, false]
+
+- name: IA pension exclusion eligibility unit test 5, age ineligible
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 54
+      person2:
+        age: 54
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    ia_pension_exclusion_eligible: [false, false]
+
+- name: IA pension exclusion eligibility unit test 6, disabled case 
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 40
+        is_permanently_and_totally_disabled: true
+      person2:
+        age: 10
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    ia_pension_exclusion_eligible: [true, false]
+
+
+- name: IA pension exclusion eligibility unit test 7, disabled and aged 
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 40
+        is_permanently_and_totally_disabled: true
+      person2:
+        age: 55
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    ia_pension_exclusion_eligible: [true, true]
+
+- name: Only person who meets the age requirement is not a head or spouse
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 54
+      person2:
+        age: 54
+      person3:
+        age: 70
+        is_tax_unit_head_or_spouse: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IA
+  output:
+    ia_pension_exclusion_eligible: [false, false, false]

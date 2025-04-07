@@ -1,0 +1,65 @@
+- name: Single parent with one eligible child
+  period: 2024
+  input:
+    people:
+      head:
+        age: 30
+      dependent:
+        age: 1
+        ctc_qualifying_child: true
+    households:
+      household:
+        members: [head, dependent]
+        state_code: IL
+    tax_units:
+      tax_unit: 
+        members: [head, dependent]
+        il_eitc: 100
+  output:
+    il_ctc: 20
+
+- name: Single parent with no eligible children
+  period: 2024
+  input:
+    people:
+      head:
+        age: 30
+      dependent:
+        age: 12
+        ctc_qualifying_child: true
+    households:
+      household:
+        members: [head, dependent]
+        state_code: IL
+    tax_units:
+      tax_unit: 
+        members: [head, dependent]
+        il_eitc: 100
+  output:
+    il_ctc: 0
+
+- name: Single parent with two eligible children
+  period: 2024
+  input:
+    people:
+      head:
+        age: 30
+      dependent:
+        age: 12
+        ctc_qualifying_child: true
+      dependent2:
+        age: 10
+        ctc_qualifying_child: true
+      dependent3:
+        age: 9
+        ctc_qualifying_child: true
+    households:
+      household:
+        members: [head, dependent, dependent2, dependent3]
+        state_code: IL
+    tax_units:
+      tax_unit: 
+        members: [head, dependent, dependent2, dependent3]
+        il_eitc: 100
+  output:
+    il_ctc: 20

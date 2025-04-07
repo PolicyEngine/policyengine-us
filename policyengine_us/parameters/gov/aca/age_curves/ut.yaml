@@ -1,0 +1,135 @@
+description: Utah multiplies base marketplace plan premiums by these age-specific factors to determine age-specific premiums.
+metadata:
+  type: single_amount
+  period: year
+  amount_unit: /1
+  threshold_unit: int
+  label: ACA premium age curve factors - UT
+  reference:
+  - title: CMS Market Rating Reforms State Specific Age Curve Variations
+    href: https://www.cms.gov/cciio/programs-and-initiatives/health-insurance-market-reforms/downloads/statespecagecrv053117.pdf
+brackets:
+- threshold:
+    2018-01-01: 0
+  amount:
+    2018-01-01: 1.0
+- threshold:
+    2018-01-01: 21
+  amount:
+    2018-01-01: 1.261
+- threshold:
+    2018-01-01: 22
+  amount:
+    2018-01-01: 1.3241
+- threshold:
+    2018-01-01: 23
+  amount:
+    2018-01-01: 1.4035
+- threshold:
+    2018-01-01: 24
+  amount:
+    2018-01-01: 1.5019
+- threshold:
+    2018-01-01: 25
+  amount:
+    2018-01-01: 1.6368
+- threshold:
+    2018-01-01: 26
+  amount:
+    2018-01-01: 1.7188
+- threshold:
+    2018-01-01: 27
+  amount:
+    2018-01-01: 1.7528
+- threshold:
+    2018-01-01: 37
+  amount:
+    2018-01-01: 1.7705
+- threshold:
+    2018-01-01: 38
+  amount:
+    2018-01-01: 1.797
+- threshold:
+    2018-01-01: 39
+  amount:
+    2018-01-01: 1.8285
+- threshold:
+    2018-01-01: 40
+  amount:
+    2018-01-01: 1.8651
+- threshold:
+    2018-01-01: 41
+  amount:
+    2018-01-01: 1.9117
+- threshold:
+    2018-01-01: 42
+  amount:
+    2018-01-01: 1.9697
+- threshold:
+    2018-01-01: 43
+  amount:
+    2018-01-01: 2.0378
+- threshold:
+    2018-01-01: 44
+  amount:
+    2018-01-01: 2.1198
+- threshold:
+    2018-01-01: 45
+  amount:
+    2018-01-01: 2.2043
+- threshold:
+    2018-01-01: 46
+  amount:
+    2018-01-01: 2.2926
+- threshold:
+    2018-01-01: 47
+  amount:
+    2018-01-01: 2.3846
+- threshold:
+    2018-01-01: 48
+  amount:
+    2018-01-01: 2.4792
+- threshold:
+    2018-01-01: 49
+  amount:
+    2018-01-01: 2.5788
+- threshold:
+    2018-01-01: 50
+  amount:
+    2018-01-01: 2.6822
+- threshold:
+    2018-01-01: 51
+  amount:
+    2018-01-01: 2.7894
+- threshold:
+    2018-01-01: 52
+  amount:
+    2018-01-01: 2.9004
+- threshold:
+    2018-01-01: 53
+  amount:
+    2018-01-01: 3.0164
+- threshold:
+    2018-01-01: 54
+  amount:
+    2018-01-01: 3.1375
+- threshold:
+    2018-01-01: 55
+  amount:
+    2018-01-01: 3.2636
+- threshold:
+    2018-01-01: 56
+  amount:
+    2018-01-01: 3.3934
+- threshold:
+    2018-01-01: 57
+  amount:
+    2018-01-01: 3.5296
+- threshold:
+    2018-01-01: 58
+  amount:
+    2018-01-01: 3.6709
+- threshold:
+    2018-01-01: 59
+  amount:
+    2018-01-01: 3.7831

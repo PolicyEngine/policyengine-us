@@ -1,0 +1,181 @@
+- name: 1 Ineligible for property tax deduction and not 65+ or blind/disabled, so ineligible for credit.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    nj_property_tax_deduction_eligible: false
+    real_estate_taxes: 0 
+    rents: true
+    age_head: 64
+    age_spouse: 64
+    blind_head: false
+    blind_spouse: false
+    disabled_head: false
+    disabled_spouse: false
+    filing_status: SINGLE
+    adjusted_gross_income: 5_000
+    state_code: NJ
+  output:
+    nj_property_tax_credit_eligible: false
+
+- name: 2 Eligible for property tax deduction, therefore eligible for credit.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    nj_property_tax_deduction_eligible: true
+    real_estate_taxes: 0 
+    rents: true
+    age_head: 64
+    age_spouse: 64
+    blind_head: false
+    blind_spouse: false
+    disabled_head: false
+    disabled_spouse: false
+    filing_status: SINGLE
+    adjusted_gross_income: 5_000
+    state_code: NJ
+  output:
+    nj_property_tax_credit_eligible: true
+
+- name: 3 Ineligible for property tax deduction but above 65 and paid property taxes, therefore eligible for credit.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    nj_property_tax_deduction_eligible: false
+    real_estate_taxes: 0 
+    rents: true
+    age_head: 66
+    age_spouse: 64
+    blind_head: false
+    blind_spouse: false
+    disabled_head: false
+    disabled_spouse: false
+    filing_status: SINGLE
+    adjusted_gross_income: 5_000
+    state_code: NJ
+  output:
+    nj_property_tax_credit_eligible: true
+
+- name: 4 Ineligible for property tax deduction but spouse is blind and paid property taxes, therefore eligible for credit.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    nj_property_tax_deduction_eligible: false
+    real_estate_taxes: 0 
+    rents: true
+    age_head: 64
+    age_spouse: 64
+    blind_head: false
+    blind_spouse: false
+    disabled_head: false
+    disabled_spouse: true
+    filing_status: JOINT
+    adjusted_gross_income: 10_000
+    state_code: NJ
+  output:
+    nj_property_tax_credit_eligible: true
+
+- name: 5 Ineligible for property tax deduction but above 65 but did not pay property taxes, therefore ineligible for credit.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    nj_property_tax_deduction_eligible: false
+    real_estate_taxes: 0 
+    rents: false
+    age_head: 66
+    age_spouse: 64
+    blind_head: false
+    blind_spouse: false
+    disabled_head: false
+    disabled_spouse: false
+    filing_status: JOINT
+    adjusted_gross_income: 10_000
+    state_code: NJ
+  output:
+    nj_property_tax_credit_eligible: false
+
+- name: 6 Tax unit with taxsimid 99650 in g21.its.csv and g21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 65
+        employment_income: 8_010
+        taxable_interest_income: 11_010
+        taxable_private_pension_income: 1_000
+        social_security: 6_000
+        real_estate_taxes: 0 
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person2:
+        age: 11
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person3:
+        age: 11
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+    tax_units:
+      tax_unit:
+        nj_property_tax_deduction_eligible: true
+        members: [person1, person2, person3] 
+        rents: 8_000
+        tax_unit_childcare_expenses: 4_000
+        aca_ptc: 0  # not in TAXSIM35
+        local_income_tax: 0  # not in TAXSIM35
+        state_sales_tax: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NJ
+  output:  # expected results from patched TAXSIM35 2023-08-16 version
+    nj_agi: 19_020
+    nj_property_tax_credit_eligible: true
+    
+
+- name: 7 Ineligible for property tax deduction, therefore ineligible for credit.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    nj_property_tax_deduction_eligible: false
+    real_estate_taxes: 0 
+    rents: true
+    age_head: 64
+    age_spouse: 64
+    blind_head: false
+    blind_spouse: false
+    disabled_head: false
+    disabled_spouse: false
+    filing_status: SINGLE
+    adjusted_gross_income: 20_000
+    state_code: NJ
+  output:
+    nj_property_tax_credit_eligible: false
+
+- name: 8 Ineligible for property tax deduction but above 65 and did pay property taxes, therefore eligible for credit.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    nj_property_tax_deduction_eligible: false
+    real_estate_taxes: 0 
+    rents: true
+    age_head: 70
+    age_spouse: 64
+    blind_head: false
+    blind_spouse: false
+    disabled_head: false
+    disabled_spouse: false
+    filing_status: SINGLE
+    adjusted_gross_income: 9_000
+    state_code: NJ
+  output:
+    nj_property_tax_credit_eligible: true

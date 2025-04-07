@@ -1,0 +1,39 @@
+- name: SALT and real estate tax under cap, joint
+  period: 2023
+  input:
+    state_and_local_sales_or_income_tax: 8_000
+    real_estate_taxes: 1_600
+    filing_status: JOINT
+    state_code: ID
+  output:
+    id_salt_deduction: 8_000
+
+- name: SALT and real estate tax over cap, joint
+  period: 2023
+  input:
+    state_and_local_sales_or_income_tax: 8_000
+    real_estate_taxes: 2_600
+    filing_status: JOINT
+    state_code: ID
+  output:
+    id_salt_deduction: 7_400
+
+- name: Capped at 0
+  period: 2023
+  input:
+    state_and_local_sales_or_income_tax: 8_000
+    real_estate_taxes: 10_100
+    filing_status: JOINT
+    state_code: ID
+  output:
+    id_salt_deduction: 0
+
+- name: SALT and real estate tax over cap, separate
+  period: 2023
+  input:
+    state_and_local_sales_or_income_tax: 8_000
+    real_estate_taxes: 1_600
+    filing_status: SEPARATE
+    state_code: ID
+  output:
+    id_salt_deduction: 3_400

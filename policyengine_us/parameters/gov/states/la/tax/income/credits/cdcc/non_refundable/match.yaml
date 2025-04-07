@@ -1,0 +1,38 @@
+description: Louisiana matches this percentage of the federal child and dependent care credit, depending on federal adjusted gross income, as the non-refundable state CDCC.
+
+brackets:
+  - threshold:
+      2006-01-01: 0
+    amount:
+      2006-01-01: 0
+  - threshold:
+      2006-01-01: 25_000
+    amount:
+      2006-01-01: 0.3
+  - threshold:
+      2006-01-01: 35_000
+    amount:
+      2006-01-01: 0.1
+  - threshold:
+      2006-01-01: 60_000
+    amount:
+      2006-01-01: 0.1
+
+
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: /1
+  period: year
+  label: Louisiana CDCC non-refundable match
+  reference:
+    - title: §297.4. Reduction to tax due; certain child care expenses, part (A)(1)
+      href: http://legis.la.gov/Legis/Law.aspx?d=101769
+    - title: 2024 Louisiana Resident Income Tax Return, 2024 Louisiana Nonrefundable Child Care Credit Worksheet
+      href: https://dam.ldr.la.gov/taxforms/IT540i%20WEB%20(2024)D18%20INSTRUCTIONS.pdf#page=30
+    - title: 2023 Louisiana Resident Income Tax Return, 2A
+      href: https://revenue.louisiana.gov/TaxForms/IT540WEB(2023)%20F.pdf#page=16
+    - title: 2022 Louisiana Resident Income Tax Return
+      href: https://revenue.louisiana.gov/TaxForms/IT540WEB(2022)%20F%20D2.pdf#page=16
+    - title: 2021 Louisiana Resident Income Tax Return
+      href: https://revenue.louisiana.gov/TaxForms/IT540WEB(2021)%20F.pdf#page=16

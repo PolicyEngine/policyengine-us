@@ -1,12 +1,12 @@
 import pytest
 
 LIMITS = [
-    ("cps_2023", "2023", 3.6),
-    ("cps_2023", "2024", 3.5),
-    ("cps_2023", "2025", 3.4),
-    ("enhanced_cps_2023", "2023", 0.005),
-    ("enhanced_cps_2023", "2024", 0.001),
-    ("enhanced_cps_2023", "2025", 0.001),
+    ("cps_2022", "2023", 3.6),
+    ("cps_2022", "2024", 3.5),
+    ("cps_2022", "2025", 3.4),
+    ("enhanced_cps_2022", "2023", 0.005),
+    ("enhanced_cps_2022", "2024", 0.001),
+    ("enhanced_cps_2022", "2025", 0.001),
 ]
 
 
@@ -17,7 +17,7 @@ LIMITS = [
     [(dataset, year, limit) for dataset, year, limit in LIMITS],
 )
 def test_calibration(dataset, year, limit):
-    from policyengine_us.data.datasets.cps.enhanced_cps.calibrate import (
+    from policyengine_us_data.datasets.cps.enhanced_cps.calibrate import (
         get_snapshot,
     )
 

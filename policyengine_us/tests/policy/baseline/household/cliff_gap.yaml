@@ -41,6 +41,7 @@
     employment_income: 76_500
     rent: 24_000
     state_fips: 11  # DC
+    dc_snap_temporary_local_benefit: 0
   output:
     adjusted_gross_income: 76_500
     dc_ptc: 1_225
@@ -54,6 +55,7 @@
     employment_income: 76_500 + 1_000
     rent: 24_000
     state_fips: 11  # DC
+    dc_snap_temporary_local_benefit: 0
   output:
     adjusted_gross_income: 76_500 + 1_000
     dc_ptc: 0
@@ -63,7 +65,7 @@
   absolute_error_margin: 0.01
   period: 2021
   input:
-    simulation.cliff_delta: 1_000
+    simulation.marginal_tax_rate_delta: 1_000
     age: 70
     employment_income: 76_500
     rent: 24_000
@@ -88,6 +90,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
+        dc_snap_temporary_local_benefit: 0
     households:
       household:
         members: [person1, person2]
@@ -114,6 +117,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
+        dc_snap_temporary_local_benefit: 0
     households:
       household:
         members: [person1, person2]
@@ -127,7 +131,7 @@
   absolute_error_margin: 0.01
   period: 2021
   input:
-    simulation.cliff_delta: 1_000
+    simulation.marginal_tax_rate_delta: 1_000
     people:
       person1:
         age: 70

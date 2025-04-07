@@ -149,14 +149,14 @@
   output:
     nm_aged_blind_exemption: 6_000
 
-- name: 2023 widow(er) filer, blind, age < 65, adjusted gross income = 42_000, the exemption amount is 4_000
+- name: 2023 surviving spouse filer, blind, age < 65, adjusted gross income = 42_000, the exemption amount is 4_000
   period: 2023
   input:
     state_code: NM
     adjusted_gross_income: 42_000
     blind_head: true
     age_head: 60
-    filing_status: WIDOW
+    filing_status: SURVIVING_SPOUSE
   output:
     nm_aged_blind_exemption: 4_000
 

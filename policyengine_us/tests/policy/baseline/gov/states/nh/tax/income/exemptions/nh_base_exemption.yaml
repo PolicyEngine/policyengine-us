@@ -30,10 +30,10 @@
   output:
     nh_base_exemption: 2_400
 
-- name: Widow filing
+- name: Surviving spouse filing
   period: 2022
   input:
     state_code: NH
-    filing_status: WIDOW
+    filing_status: SURVIVING_SPOUSE
   output:
     nh_base_exemption: 2_400

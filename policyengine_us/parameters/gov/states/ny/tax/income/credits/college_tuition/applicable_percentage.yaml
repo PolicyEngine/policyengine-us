@@ -1,4 +1,4 @@
-description: Percentage of tuition expenses which are eligible for New York tuition credit.
+description: New York provides a credit for this fraction of allowable college tuition expenses, after applying the rate structure.
 values:
   2001-01-01: 0.25
   2002-01-01: 0.5
@@ -6,7 +6,12 @@ values:
   2004-01-01: 1
 metadata:
   unit: /1
-  label: NY college tuition credit applicable percentage
+  period: year
+  label: New York college tuition credit applicable percentage
   reference:
     - title: Section 606 Credits against tax (t)(4)
       href: https://www.nysenate.gov/legislation/laws/TAX/606
+    - title: New York Instructions for Form IT-201 Line 68
+      href: https://www.tax.ny.gov/pdf/2023/printable-pdfs/inc/it201i-2023.pdf#page=26
+    - title: NY Form IT-272 Part 1
+      href: https://www.tax.ny.gov/pdf/current_forms/it/it272_fill_in.pdf#page=1

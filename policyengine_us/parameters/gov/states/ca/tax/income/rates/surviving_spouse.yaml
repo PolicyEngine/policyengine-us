@@ -1,0 +1,105 @@
+description: California taxes income at these rates for surviving spouse filers. 
+brackets:
+  - threshold:
+      0000-01-01: 0
+    rate:
+      2021-01-01: 0.01
+  - threshold:
+      values:
+        2021-01-01: 18_650
+        2022-01-01: 20_198
+        2023-01-01: 20_824
+        2024-01-01: 21_512
+      metadata:
+        uprating: gov.states.ca.cpi
+    rate:
+      2021-01-01: 0.02
+  - threshold:
+      values:
+        2021-01-01: 44_214
+        2022-01-01: 47_884
+        2023-01-01: 49_368
+        2024-01-01: 50_998
+      metadata:
+        uprating: gov.states.ca.cpi
+    rate:
+      2021-01-01: 0.04
+  - threshold:
+      values:
+        2021-01-01: 69_784
+        2022-01-01: 75_576
+        2023-01-01: 77_918
+        2024-01-01: 80_490
+      metadata:
+        uprating: gov.states.ca.cpi
+    rate:
+      2021-01-01: 0.06
+  - threshold:
+      values:
+        2021-01-01: 96_870
+        2022-01-01: 104_910
+        2023-01-01: 108_162
+        2024-01-01: 111_732
+      metadata:
+        uprating: gov.states.ca.cpi
+    rate:
+      2021-01-01: 0.08
+  - threshold:
+      values:
+        2021-01-01: 122_428
+        2022-01-01: 132_590
+        2023-01-01: 136_700
+        2024-01-01: 141_212
+      metadata:
+        uprating: gov.states.ca.cpi
+    rate:
+      2021-01-01: 0.093
+  - threshold:
+      values:
+        2021-01-01: 625_372
+        2022-01-01: 677_278
+        2023-01-01: 698_274
+        2024-01-01: 721_318
+      metadata:
+        uprating: gov.states.ca.cpi
+    rate:
+      2021-01-01: 0.103
+  - threshold:
+      values:
+        2021-01-01: 750_442
+        2022-01-01: 812_728
+        2023-01-01: 837_922
+        2024-01-01: 865_574
+      metadata:
+        uprating: gov.states.ca.cpi
+    rate:
+      2021-01-01: 0.113
+  - threshold:
+      values:
+        2021-01-01: 1_250_738
+        2022-01-01: 1_354_550
+        2023-01-01: 1_396_542
+        2024-01-01: 1_442_628
+      metadata:
+        uprating: gov.states.ca.cpi
+    rate:
+      2021-01-01: 0.123
+
+metadata:
+  threshold_unit: currency_USD
+  rate_unit: /1
+  threshold_period: year
+  type: marginal_rate
+  label: California surviving spouse income tax rate
+  reference:
+    - title: California Income Tax Rate Schedules for 2021
+      href: https://www.ftb.ca.gov/forms/2021/2021-540-tax-rate-schedules.pdf
+    - title: California Income Tax Rate Schedules for 2022
+      href: https://www.ftb.ca.gov/forms/2022/2022-540-tax-rate-schedules.pdf
+    - title: California Income Tax Rate Schedules for 2023
+      href: https://www.ftb.ca.gov/forms/2023/2023-540-tax-rate-schedules.pdf
+    - title: California Income Tax Rate Schedules for 2024
+      href: https://www.ftb.ca.gov/forms/2024/2024-540-tax-rate-schedules.pdf
+    - title: Cal. Rev. & Tax. Code § 17041
+      href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=17041.&lawCode=RTC
+      # Index according to federal tax parameter rules until we add California CPI trend.

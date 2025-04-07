@@ -1,0 +1,16 @@
+description: Minnesota reduces the standard deduction by a flat rate for filers with adjusted gross income above this threshold.
+values:
+  2023-01-01: 1_000_000
+  2024-01-01: 1_053_750
+
+metadata:
+  period: year
+  unit: currency-USD
+  label: Minnesota standard deduction alternate reduction income threshold
+  reference:
+  - title: Minnesota Statutes 290.0123 STANDARD DEDUCTION. Subd. 5.Deduction limited. (b)
+    href: https://www.revisor.mn.gov/statutes/cite/290.0123#stat.290.0123.5
+  - title: 2023 Minnesota Schedule M1SA form, Worksheet for Line 26
+    href: https://www.revenue.state.mn.us/sites/default/files/2023-12/m1sa-23.pdf#page=7
+  - title: 2024 Minnesota Schedule M1SA form, Worksheet for Line 26
+    href: https://www.revenue.state.mn.us/sites/default/files/2024-12/m1sa-24.pdf#page=8

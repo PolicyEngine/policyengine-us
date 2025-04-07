@@ -1,0 +1,21 @@
+description: Maryland provides up to this amount for its Earned Income Tax Credit to individuals without a qualifying child. 
+values:
+  2019-01-01: 530
+  2023-01-01: .inf
+metadata:
+  unit: currency-USD
+  period: year
+  label: Maryland childless EITC maximum
+  reference:
+    - title: Maryland 2024 State & Local Tax Forms & Instructions - Line 22 - Earned Income Credit
+      href: https://www.marylandtaxes.gov/forms/24-forms/Resident-Booklet.pdf#page=14
+    - title: Md. Code, Tax-Gen. § 10-704(c)(3)(iii)
+      href: https://casetext.com/statute/code-of-maryland/article-tax-general/title-10-income-tax/subtitle-7-income-tax-credits/section-10-704-effective-until-6302023-for-earned-income
+      # Individuals filing as single, head of household, or qualifying surviving spouse without a qualifying child
+    - title: 2021 Maryland Resident Booklet Individual
+      href: https://www.marylandtaxes.gov/forms/21_forms/Resident_Booklet.pdf#page=19
+    - title: Family Prosperity Act of 2023
+      href: https://mgaleg.maryland.gov/2023RS/fnotes/bil_0007/hb0547.pdf
+    # No limit specified in the 2023 income tax form
+    - title: Maryland 2023 Resident Tax Forms and Instructions
+      href: https://www.marylandtaxes.gov/forms/23_forms/Resident-Booklet.pdf#page=25

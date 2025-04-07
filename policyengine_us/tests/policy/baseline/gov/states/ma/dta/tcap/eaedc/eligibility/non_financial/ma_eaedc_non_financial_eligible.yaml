@@ -1,0 +1,83 @@
+- name: Case 1, eligible due to elderly age
+  period: 2022
+  input:
+    ma_eaedc_eligible_elderly_present: true
+    ma_eaedc_eligible_disabled_head_or_spouse: false
+    ma_eaedc_eligible_disabled_dependent_present: false
+    ma_eaedc_eligible_caretaker_family: false
+    ma_eaedc_immigration_status_eligible: false
+    state_code: MA
+  output:
+    ma_eaedc_non_financial_eligible: true
+
+- name: Case 2, eligible due to disability
+  period: 2022
+  input:
+    ma_eaedc_eligible_elderly_present: false
+    ma_eaedc_eligible_disabled_head_or_spouse: true
+    ma_eaedc_eligible_disabled_dependent_present: false
+    ma_eaedc_eligible_caretaker_family: false
+    ma_eaedc_immigration_status_eligible: false
+    state_code: MA
+  output:
+    ma_eaedc_non_financial_eligible: true
+
+- name: Case 3, eligible due to disabled dependent
+  period: 2022
+  input:
+    ma_eaedc_eligible_elderly_present: false
+    ma_eaedc_eligible_disabled_head_or_spouse: false
+    ma_eaedc_eligible_disabled_dependent_present: true
+    ma_eaedc_eligible_caretaker_family: false
+    ma_eaedc_immigration_status_eligible: false
+    state_code: MA
+  output:
+    ma_eaedc_non_financial_eligible: true
+
+- name: Case 4, eligible due to caretaker family
+  period: 2022
+  input:
+    ma_eaedc_eligible_elderly_present: false
+    ma_eaedc_eligible_disabled_head_or_spouse: false
+    ma_eaedc_eligible_disabled_dependent_present: false
+    ma_eaedc_eligible_caretaker_family: true
+    ma_eaedc_immigration_status_eligible: false
+    state_code: MA
+  output:
+    ma_eaedc_non_financial_eligible: true
+
+- name: Case 5, eligible due to multiple conditions
+  period: 2022
+  input:
+    ma_eaedc_eligible_elderly_present: true
+    ma_eaedc_eligible_disabled_head_or_spouse: true
+    ma_eaedc_eligible_disabled_dependent_present: false
+    ma_eaedc_eligible_caretaker_family: false
+    ma_eaedc_immigration_status_eligible: false
+    state_code: MA
+  output:
+    ma_eaedc_non_financial_eligible: true
+
+- name: Case 6, not eligible because no condition is met
+  period: 2022
+  input:
+    ma_eaedc_eligible_elderly_present: false
+    ma_eaedc_eligible_disabled_head_or_spouse: false
+    ma_eaedc_eligible_disabled_dependent_present: false
+    ma_eaedc_eligible_caretaker_family: false
+    ma_eaedc_immigration_status_eligible: false
+    state_code: MA
+  output:
+    ma_eaedc_non_financial_eligible: false
+
+- name: Case 7, eligible due to immigration status
+  period: 2022
+  input:
+    ma_eaedc_eligible_elderly_present: false
+    ma_eaedc_eligible_disabled_head_or_spouse: false
+    ma_eaedc_eligible_disabled_dependent_present: false
+    ma_eaedc_eligible_caretaker_family: false
+    ma_eaedc_immigration_status_eligible: true
+    state_code: MA
+  output:
+    ma_eaedc_non_financial_eligible: true

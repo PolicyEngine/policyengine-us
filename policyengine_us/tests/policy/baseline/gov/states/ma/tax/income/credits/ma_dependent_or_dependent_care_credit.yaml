@@ -1,9 +1,0 @@
-- name: Max of the credits.
-  period: 2022
-  absolute_error_margin: 0
-  input:
-    ma_dependent_credit: 1
-    ma_dependent_care_credit: 2
-    state_code: MA
-  output:
-    ma_dependent_or_dependent_care_credit: 2

@@ -1,0 +1,51 @@
+- name: Itemized over standard
+  period: 2022
+  input:
+    ky_itemized_deductions_indiv: 1_000
+    ky_standard_deduction_indiv: 900
+    state_code: KY
+  output:
+    ky_tax_unit_itemizes: true
+
+- name: Itemized under standard
+  period: 2022
+  input:
+    ky_itemized_deductions_indiv: 800
+    ky_standard_deduction_indiv: 900
+    state_code: KY
+  output:
+    ky_tax_unit_itemizes: false
+
+- name: Itemized over standard, multiple people
+  period: 2022
+  input:
+    people:
+      person1:
+        ky_itemized_deductions_indiv: 1_000
+        ky_standard_deduction_indiv: 500
+      person2:
+        ky_itemized_deductions_indiv: 200
+        ky_standard_deduction_indiv: 300
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+  output:
+    ky_tax_unit_itemizes: true
+
+- name: Itemized under standard, multiple people
+  period: 2022
+  input:
+    people:
+      person1:
+        ky_itemized_deductions_indiv: 1_000
+        ky_standard_deduction_indiv: 500
+      person2:
+        ky_itemized_deductions_indiv: 200
+        ky_standard_deduction_indiv: 1_300
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+  output:
+    ky_tax_unit_itemizes: false

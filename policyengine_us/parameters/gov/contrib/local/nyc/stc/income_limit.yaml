@@ -1,0 +1,21 @@
+description: Limit NYC School Tax Credit eligibility by filing status to filers with NY AGI not above this amount.
+metadata:
+  unit: currency-USD
+  label: NYC School Tax Credit Income Limit
+  reference:
+    - title: Instructions for Form IT-201 (2023)
+      href: https://www.tax.ny.gov/pdf/2023/printable-pdfs/inc/it201i-2023.pdf#page=27
+    - title: Instructions for Form IT-201 (2022)
+      href: https://www.tax.ny.gov/pdf/2022/printable-pdfs/inc/it201i-2022.pdf#page=25
+  breakdown:
+    - filing_status
+SINGLE:
+  2022-01-01: 250_000
+SEPARATE:
+  2022-01-01: 250_000
+HEAD_OF_HOUSEHOLD:
+  2022-01-01: 250_000
+JOINT:
+  2022-01-01: 250_000
+SURVIVING_SPOUSE:
+  2022-01-01: 250_000

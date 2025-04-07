@@ -5,12 +5,10 @@ values:
     - wic
     - snap
     - ssi
-    - tanf
     # Also these, not in our model:
     # NSL
     # Healthy Families A & B
     # LIHEAP
-    # Head Start Income Eligible
     # Bureau of Indian Affairs General Assistance
 metadata:
   reference:
@@ -20,5 +18,5 @@ metadata:
     # Program defines categorical eligibility programs.
     - title: CARE/FERA Program
       href: https://www.cpuc.ca.gov/lowincomerates/
-  unit: program
-  label: CARE categorical eligibility programs
+  unit: list
+  label: CARE non-tribal categorical eligibility programs

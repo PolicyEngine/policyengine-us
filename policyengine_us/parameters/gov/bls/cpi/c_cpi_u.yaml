@@ -294,16 +294,17 @@ values:
   # Since CBO projects the relevant tax parameter,
   # which is the average over the 12mo ending August,
   # we place that in February of each year.
-  2024-02-01: 172.8 # 2025 value.
-  2025-02-01: 176.6 # 2026 value.
-  2026-02-01: 180.2 # 2027 value.
-  2027-02-01: 183.7 # 2028 value.
-  2028-02-01: 187.3 # 2029 value.
-  2029-02-01: 191.0 # 2030 value.
-  2030-02-01: 194.8 # 2031 value.
-  2031-02-01: 198.6 # 2032 value.
-  2032-02-01: 202.6 # 2033 value.
-  2033-02-01: 206.7 # 2034 value.
+  2025-02-01: 176.7 # 2026 value.
+  2026-02-01: 180.5 # 2027 value.
+  2027-02-01: 184.1 # 2028 value.
+  2028-02-01: 187.8 # 2029 value.
+  2029-02-01: 191.5 # 2030 value.
+  2030-02-01: 195.3 # 2031 value.
+  2031-02-01: 199.1 # 2032 value.
+  2032-02-01: 203.1 # 2033 value.
+  2033-02-01: 207.1 # 2034 value.
+  2034-02-01: 211.2 # 2035 value. 
+  2035-02-01: 215.4 # 2036 value (indexed by applying 2035 indexing rate (211.2/207.1) and multiplying it by 211.2).
 metadata:
   unit: currency-USD
   label: Chained CPI-U
@@ -311,7 +312,11 @@ metadata:
   reference:
     - title: "su.data.0.Current (SUUR0000SA0)"
       href: https://download.bls.gov/pub/time.series/su/su.data.0.Current
-    - title: CBO | Tax Parameters and Effective Marginal Tax Rates | Feb 2024
+    - title: CBO | Tax Parameters and Effective Marginal Tax Rates | June 2024
       # Source: https://www.cbo.gov/data/budget-economic-data#10
-      # Row: 158
-      href: https://www.cbo.gov/system/files/2024-02/53724-2024-02-Tax-Parameters.xlsx
+      # Row: 159
+      href: https://www.cbo.gov/system/files/2024-06/53724-2024-06-Tax-Parameters.xlsx
+    - title: CBO | Tax Parameters and Effective Marginal Tax Rates | January 2025
+      # Source: https://www.cbo.gov/data/budget-economic-data#10
+      # Row: 159
+      href: https://www.cbo.gov/system/files/2025-01/53724-2025-01-Tax-Parameters.xlsx

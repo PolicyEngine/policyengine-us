@@ -4,14 +4,12 @@ from policyengine_us.model_api import *
 class nd_income_tax_before_credits(Variable):
     value_type = float
     entity = TaxUnit
-    label = "ND income tax before credits"
+    label = "North Dakota income tax before credits"
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://www.tax.nd.gov/sites/www/files/documents/forms/form-nd-1-2021.pdf"
-        "https://www.tax.nd.gov/sites/www/files/documents/forms/2021-individual-income-tax-booklet.pdf"
-        "https://www.tax.nd.gov/sites/www/files/documents/forms/form-nd-1-2022.pdf"
-        "https://www.tax.nd.gov/sites/www/files/documents/forms/2022-individual-income-tax-booklet.pdf"
+        "https://casetext.com/statute/north-dakota-century-code/title-57-taxation/chapter-57-38-income-tax/section-57-38-303-individual-estate-and-trust-income-tax"
+        # North Dakota legal code 57-38-30.3.(1)
     )
     defined_for = StateCode.ND
 
@@ -25,14 +23,14 @@ class nd_income_tax_before_credits(Variable):
                 filing_status == statuses.SINGLE,
                 filing_status == statuses.SEPARATE,
                 filing_status == statuses.JOINT,
-                filing_status == statuses.WIDOW,
+                filing_status == statuses.SURVIVING_SPOUSE,
                 filing_status == statuses.HEAD_OF_HOUSEHOLD,
             ],
             [
                 p.single.calc(taxable_income),
                 p.separate.calc(taxable_income),
                 p.joint.calc(taxable_income),
-                p.widow.calc(taxable_income),
+                p.surviving_spouse.calc(taxable_income),
                 p.head_of_household.calc(taxable_income),
             ],
         )

@@ -52,7 +52,9 @@ class ny_ctc(Variable):
                 period,
                 maximum_ctc * meets_ny_minimum_age,
             )
-            federal_ctc = pre_tcja_ctc.tax_unit("ctc_value", period)
+            max_federal_ctc = pre_tcja_ctc.tax_unit("ctc", period)
+            ctc_phase_in = pre_tcja_ctc.tax_unit("ctc_phase_in", period)
+            federal_ctc = min_(max_federal_ctc, ctc_phase_in)
             qualifies_for_federal_ctc = pre_tcja_ctc.person(
                 "ctc_qualifying_child", period
             )

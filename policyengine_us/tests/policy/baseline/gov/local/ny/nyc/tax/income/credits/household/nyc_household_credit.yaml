@@ -138,50 +138,50 @@
   output:
     nyc_household_credit: 0
 
-- name: Widow making $15k gets $30 per dependent (includes self) (size=2).
+- name: Surviving spouse making $15k gets $30 per dependent (includes self) (size=2).
   period: 2022
   absolute_error_margin: 0
   input:
     state_code: NY
     in_nyc: true
     adjusted_gross_income: 15_000
-    filing_status: WIDOW
+    filing_status: SURVIVING_SPOUSE
     tax_unit_size: 2
   output:
     nyc_household_credit: 60
 
-- name: Widow making $15k gets $30 per dependent (includes self) (size=4).
+- name: Surviving spouse making $15k gets $30 per dependent (includes self) (size=4).
   period: 2022
   absolute_error_margin: 0
   input:
     state_code: NY
     in_nyc: true
     adjusted_gross_income: 15_000
-    filing_status: WIDOW
+    filing_status: SURVIVING_SPOUSE
     tax_unit_size: 4
   output:
     nyc_household_credit: 120
 
-- name: Widow making $21k gets $10 per dependent.
+- name: Surviving spouse making $21k gets $10 per dependent.
   period: 2022
   absolute_error_margin: 0
   input:
     state_code: NY
     in_nyc: true
     adjusted_gross_income: 21_000
-    filing_status: WIDOW
+    filing_status: SURVIVING_SPOUSE
     tax_unit_size: 4
   output:
     nyc_household_credit: 40
 
-- name: Widow making over $22.5k gets no credit.
+- name: Surviving spouse making over $22.5k gets no credit.
   period: 2022
   absolute_error_margin: 0
   input:
     state_code: NY
     in_nyc: true
     adjusted_gross_income: 22_501
-    filing_status: WIDOW
+    filing_status: SURVIVING_SPOUSE
     tax_unit_size: 4
   output:
     nyc_household_credit: 0

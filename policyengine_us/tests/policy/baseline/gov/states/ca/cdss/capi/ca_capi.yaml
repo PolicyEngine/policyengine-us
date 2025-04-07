@@ -1,0 +1,98 @@
+- name: Single eligible person
+  period: 2024
+  input:
+    people:
+      person1:
+        ssi_amount_if_eligible: 1_000
+        ca_capi_eligible_person: true
+        ssi_countable_income: 500
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_capi_eligible: true
+        ca_state_supplement: 2_000
+  output:
+    ca_capi: 2_490
+
+- name: Couple, both people eligible
+  period: 2024
+  input:
+    people:
+      person1:
+        ssi_amount_if_eligible: 1_000
+        ca_capi_eligible_person: true
+        ssi_countable_income: 500
+      person2:
+        ssi_amount_if_eligible: 1_000
+        ca_capi_eligible_person: true
+        ssi_countable_income: 4_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ca_capi_eligible: true
+        ca_state_supplement: 4_000
+  output:
+    ca_capi: 1_480
+
+- name: Integration test, ineligible
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 20_000
+      person2:
+        age: 10
+        employment_income: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    ca_capi: 0
+
+- name: Integration test, SSI eligible
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 1_000
+        is_disabled: true
+      person2:
+        age: 10
+        employment_income: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    ssi: [16_980, 0]
+    ca_state_supplement_dependent_amount: 0
+    ca_state_supplement: 0
+    ca_capi: 0
+
+- name: Integration test, undocumented
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 1_000
+        is_disabled: true
+        immigration_status: UNDOCUMENTED
+      person2:
+        age: 10
+        employment_income: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    ssi: 0
+    ca_state_supplement_eligible_person: [false, false]
+    ca_state_supplement_aged_disabled_count: 0
+    ca_state_supplement_blind_amount: 0
+    ca_state_supplement_aged_blind_disabled_amount: 0
+    ca_state_supplement: 0
+    ca_capi: 11_306

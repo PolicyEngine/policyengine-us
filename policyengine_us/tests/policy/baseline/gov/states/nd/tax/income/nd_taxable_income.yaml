@@ -1,4 +1,4 @@
-- name: ND taxable income unit test 1
+- name: Test 1, ND taxable income 
   period: 2021
   input:
     adjusted_gross_income: 20_000
@@ -9,7 +9,7 @@
   output:
     nd_taxable_income: 20_000 - 23_000 + 6_000 - 1_000
 
-- name: ND taxable income unit test 2
+- name: Test 2, ND taxable income cannot be negative
   period: 2021
   input:
     adjusted_gross_income: 20_000

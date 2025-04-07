@@ -35,7 +35,7 @@
   output:
     ca_amt_exemption: 0
 
-- name: Widow with AMTI below reduction amount
+- name: Surviving spouse with AMTI below reduction amount
   period: 2021
   input:
     people:
@@ -43,7 +43,7 @@
     tax_units:
       tax_unit:
         members: [person1]
-        filing_status: WIDOW
+        filing_status: SURVIVING_SPOUSE
         ca_amti: 390_351
         head_earned: 320_000
     households:

@@ -3,8 +3,12 @@ metadata:
   unit: currency-USD
   label: NYC School Tax Credit Fixed Amount
   reference:
-    - title: Instructions for Form IT-201
+    - title: Instructions for Form IT-201, 2022
       href: https://www.tax.ny.gov/pdf/2022/printable-pdfs/inc/it201i-2022.pdf#page=25
+    - title: Instructions for Form IT-201, 2023
+      href: https://www.tax.ny.gov/pdf/2023/printable-pdfs/inc/it201i-2023.pdf#page=27
+    - title: Instructions for Form IT-201, 2024 Line 69
+      href: https://www.tax.ny.gov/pdf/2024/inc/it201i_2024.pdf#page=20
   breakdown:
     - filing_status
 SINGLE:
@@ -15,5 +19,5 @@ HEAD_OF_HOUSEHOLD:
   2022-01-01: 63
 JOINT:
   2022-01-01: 125
-WIDOW:
+SURVIVING_SPOUSE:
   2022-01-01: 125

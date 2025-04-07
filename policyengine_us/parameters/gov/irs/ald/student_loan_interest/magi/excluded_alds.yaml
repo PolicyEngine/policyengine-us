@@ -1,0 +1,14 @@
+description: IRS excludes the following above the line deductions from the modified adjusted gross income under the student loan interest deduction.
+
+metadata:
+  unit: list
+  period: year
+  label: Student loan interest deduction excluded above the line deductions
+  reference:
+    - title: 26 U.S. Code § 221 - Interest on education loans (b)(2)(C)
+      href: https://www.law.cornell.edu/uscode/text/26/221
+
+values:
+  2002-01-01:
+    - student_loan_interest_ald
+    - puerto_rico_income

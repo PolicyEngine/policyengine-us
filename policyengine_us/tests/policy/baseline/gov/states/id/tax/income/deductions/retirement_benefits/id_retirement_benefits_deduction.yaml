@@ -82,7 +82,7 @@
   output:
     id_retirement_benefits_deduction: 35_210
 
-- name: Test for the widow(er) case
+- name: Test for the surviving spouse case
   period: 2022
   input:
     people:
@@ -95,7 +95,7 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
-        filing_status: WIDOW 
+        filing_status: SURVIVING_SPOUSE 
     households:
       household:
         members: [person1, person2]

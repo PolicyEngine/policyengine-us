@@ -1,0 +1,13 @@
+description: Virginia allows for the military benefit subtraction to be claimed regardless of age if this is true.
+values:
+  2022-01-01: true  
+  2024-01-01: false
+metadata:
+  unit: bool
+  period: year
+  label: Virginia military benefit subtraction age threshold availability
+  reference:
+    - title: Code of Virginia § 58.1-322.02. (18.d) # viewed as of 2025-02-14
+      href: https://law.lis.virginia.gov/vacode/title58.1/chapter3/section58.1-322.02/
+    - title: Virginia Department of Taxation 2023 Legislative Summary 
+      href: https://www.tax.virginia.gov/sites/default/files/inline-files/2023-legislative-summary.pdf#page=16

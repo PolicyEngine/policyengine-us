@@ -1,0 +1,64 @@
+- name: Calculation for a joint person
+  period: 2021
+  input:
+  # The taxable income will always default to 0 for the non-head 
+    people: 
+      person1:
+        mt_taxable_income_joint: 1_000
+      person2:
+        mt_taxable_income_joint: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_regular_income_tax_joint: 10
+
+
+- name: Calculation of a head of household
+  period: 2021
+  input:
+  # The taxable income will always default to 0 for the non-head 
+    people: 
+      person1:
+        mt_taxable_income_joint: 10_000
+      person2:
+        mt_taxable_income_joint: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_regular_income_tax_joint: 230
+
+- name: Calculation of a head of household after 2024
+  period: 2024
+  input:
+  # The taxable income will always default to 0 for the non-head 
+    people: 
+      person1:
+        mt_taxable_income_joint: 10_000
+        long_term_capital_gains: 5_000
+        # mt_capital_gains_tax_joint: 210
+      person2:
+        mt_taxable_income_joint: 0
+        long_term_capital_gains: 2_000
+        # mt_capital_gains_tax_joint: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_regular_income_tax_joint: 141

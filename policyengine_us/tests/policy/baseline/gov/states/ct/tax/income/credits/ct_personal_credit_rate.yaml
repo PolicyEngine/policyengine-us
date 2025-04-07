@@ -35,11 +35,11 @@
   output:
     ct_personal_credit_rate: 0.75
 
-- name: Widow household with $31,999 income
+- name: Surviving spouse household with $31,999 income
   period: 2016
   input:
     state_code: CT
     ct_agi: 31_999
-    filing_status: WIDOW
+    filing_status: SURVIVING_SPOUSE
   output:
     ct_personal_credit_rate: 0.55

@@ -38,6 +38,16 @@
   output:
     az_family_tax_credit_eligible: true
 
+- name: Family tax credits for surviving spouse with 3 dependents ($23000 income)
+  period: 2023
+  input:
+    state_code: AZ
+    filing_status: SURVIVING_SPOUSE
+    az_agi: 23_000
+    tax_unit_dependents: 3
+  output:
+    az_family_tax_credit_eligible: true
+
 - name: Family tax credits for head of household with 5 dependents (no income)
   period: 2023
   input:

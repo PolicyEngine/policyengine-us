@@ -1,0 +1,30 @@
+- name: Higher rate applied to all gains
+  period: 2024
+  input:
+    long_term_capital_gains: 1_000
+    mt_capital_gains_tax_applicable_threshold_indiv: 0
+    state_filing_status_if_married_filing_separately_on_same_return: SINGLE
+    state_code: MT
+  output:
+    mt_capital_gains_tax_indiv: 41 
+
+- name: Lower rate applies only
+  period: 2024
+  input:
+    long_term_capital_gains: 1_000
+    mt_capital_gains_tax_applicable_threshold_indiv: 2_000
+    state_filing_status_if_married_filing_separately_on_same_return: SEPARATE
+    state_code: MT
+  output:
+    mt_capital_gains_tax_indiv: 30 
+
+
+- name: Lower and higher rate applies
+  period: 2024
+  input:
+    long_term_capital_gains: 3_000
+    mt_capital_gains_tax_applicable_threshold_indiv: 2_000
+    state_filing_status_if_married_filing_separately_on_same_return: SEPARATE
+    state_code: MT
+  output:
+    mt_capital_gains_tax_indiv: 101 

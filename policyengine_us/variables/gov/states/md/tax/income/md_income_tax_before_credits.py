@@ -21,13 +21,13 @@ class md_income_tax_before_credits(Variable):
                 filing_status == filing_statuses.SEPARATE,
                 filing_status == filing_statuses.JOINT,
                 filing_status == filing_statuses.HEAD_OF_HOUSEHOLD,
-                filing_status == filing_statuses.WIDOW,
+                filing_status == filing_statuses.SURVIVING_SPOUSE,
             ],
             [
                 p.single.calc(taxable_income),
                 p.separate.calc(taxable_income),
                 p.joint.calc(taxable_income),
                 p.head.calc(taxable_income),
-                p.widow.calc(taxable_income),
+                p.surviving_spouse.calc(taxable_income),
             ],
         )

@@ -1,0 +1,42 @@
+description: Minnesota provides the full public pension income subtraction for filers with adjusted gross income below this amount, based on filing status.
+metadata:
+  label: Minnesota public pension income subtraction agi threshold
+  period: year
+  unit: currency-USD
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: nearest
+      interval: 10
+  propagate_metadata_to_children: true 
+  breakdown:
+  - filing_status
+  reference:
+  - title: Minnesota Statutes 290.0132 Subd. 26.Social Security benefits. (f)(g)(h)(j)
+    href: https://www.revisor.mn.gov/statutes/cite/290.0132#stat.290.0132.26
+  - title: 2023 M1M, Income Additions and Subtractions
+    href: https://www.revenue.state.mn.us/sites/default/files/2023-12/m1m-23.pdf#page=7
+  - title: 2024 M1QPEN, Qualified Public Pension Subtraction
+    href: https://www.revenue.state.mn.us/sites/default/files/2024-12/m1qpen-24.pdf#page=1
+
+
+JOINT:
+  values:
+    2023-01-01: 100_000
+    2024-01-01: 105_380
+HEAD_OF_HOUSEHOLD:
+  values:
+    2023-01-01: 78_000
+    2024-01-01: 82_190
+SURVIVING_SPOUSE:
+  values:
+    2023-01-01: 100_000
+    2024-01-01: 105_380
+SINGLE:
+  values:
+    2023-01-01: 78_000
+    2024-01-01: 82_190
+SEPARATE:
+  values:
+    2023-01-01: 50_000
+    2024-01-01: 52_690

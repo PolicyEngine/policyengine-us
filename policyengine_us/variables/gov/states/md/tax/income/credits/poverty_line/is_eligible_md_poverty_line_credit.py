@@ -11,7 +11,7 @@ class is_eligible_md_poverty_line_credit(Variable):
     defined_for = StateCode.MD
 
     def formula(tax_unit, period, parameters):
-        # (3)    “Eligible low income taxpayer” means an individual, or an
+        # (3)    "Eligible low income taxpayer" means an individual, or an
         # individual and the individual’s spouse if they file a joint income
         # tax return:
         # (i)    whose federal adjusted gross income as modified under
@@ -39,7 +39,7 @@ class is_eligible_md_poverty_line_credit(Variable):
         # However, the tax form indicates it's only the non-refundable portion,
         # because it gets pooled with other non-refundable credits.
         md_eitc = tax_unit(
-            "md_non_single_childless_non_refundable_eitc", period
+            "md_married_or_has_child_non_refundable_eitc", period
         )
         md_income_tax_before_credits = tax_unit(
             "md_income_tax_before_credits", period

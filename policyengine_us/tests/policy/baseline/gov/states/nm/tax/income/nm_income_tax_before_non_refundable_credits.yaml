@@ -16,11 +16,11 @@
   output:
     nm_income_tax_before_non_refundable_credits: 200
 
-- name: Widow filer with 10,000 of income 
+- name: Surviving spouse filer with 10,000 of income 
   period: 2023
   input:
     state_code: NM
     nm_taxable_income: 6_000
-    filing_status: WIDOW
+    filing_status: SURVIVING_SPOUSE
   output:
     nm_income_tax_before_non_refundable_credits: 102
