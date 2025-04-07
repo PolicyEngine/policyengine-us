@@ -1,0 +1,60 @@
+description: Special categories for DC childcare subsidy eligibility with waived requirements
+
+full_waiver:
+  description: "Categories with full waiver (activity, income, co-payment)"
+  protective_services:
+    description: "Children under protective services"
+    values:
+      2023-01-01: true
+  adult_disability:
+    description: "Children of adults with disabilities"
+    values:
+      2023-01-01: true
+  homelessness:
+    description: "Children experiencing homelessness"
+    values:
+      2023-01-01: true
+  teen_parents:
+    description: "Children of teen parents"
+    values:
+      2023-01-01: true
+  head_start:
+    description: "Children in Head Start/Early Head Start/QIN"
+    values:
+      2023-01-01: true
+  domestic_violence:
+    description: "Children in families experiencing domestic violence"
+    values:
+      2023-01-01: true
+
+partial_waiver:
+  description: "Categories with partial waiver (activity and co-payment only)"
+  child_disability:
+    description: "Children with disabilities"
+    values:
+      2023-01-01: true
+  elder_caregivers:
+    description: "Children of elder caregivers"
+    values:
+      2023-01-01: true
+  addiction_recovery:
+    description: "Children with parent(s) in addiction recovery"
+    values:
+      2023-01-01: true
+
+automatic_eligibility:
+  description: "Categories with automatic eligibility (waived verification requirements)"
+  tanf:
+    description: "TANF recipients (co-payments waived)"
+    values:
+      2023-01-01: true
+  snap_employment:
+    description: "SNAP E&T participants (co-payments waived)"
+    values:
+      2023-01-01: true
+  
+metadata:
+  label: "Special eligibility categories"
+  reference:
+    - title: "DC Child Care Subsidy Program Manual - Eligibility Requirements"
+      href: "https://osse.dc.gov/sites/default/files/dc/sites/osse/publication/attachments/DC%20Child%20Care%20Subsidy%20Program%20Policy%20Manual.pdf"

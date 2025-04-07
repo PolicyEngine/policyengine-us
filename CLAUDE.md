@@ -187,3 +187,68 @@ make documentation
   - When checking entity totals or sums, be aware of which entity level you're operating at
   - For variables that need to sum across units, use `entity.sum(variable)`
   - Use `entity.nb_persons()` to count people in an entity
+
+  # Task: Implement DC Childcare Subsidy Eligibility Rules
+
+## Context
+
+You need to implement DC's childcare subsidy eligibility rules, similar to California's implementation. Use the California implementation as a reference but note that DC's rules are different.
+
+## Folder Structure to Create
+
+- `policyengine_us/parameters/gov/states/dc/dhs/child_care/`
+- `policyengine_us/variables/gov/states/dc/dhs/child_care/`
+
+## Program Rules - DC Childcare Subsidy
+
+### Basic Eligibility
+- Child must be US citizen or qualified immigrant
+- Parents' immigration status is irrelevant
+- Default requirement: Parents/guardians working, in job training/education, or seeking employment
+- Maximum income: 300% FPL (initial eligibility) or 85% SMI (redetermination)
+- Assets under $1,000,000 (self-declaration acceptable)
+
+### Special Categories with Waived Requirements
+1. **Full waiver** (activity, income, co-payment):
+   - Children under protective services
+   - Children of adults with disabilities
+   - Children experiencing homelessness
+   - Children of teen parents
+   - Children in Head Start/Early Head Start/QIN
+   - Children in families experiencing domestic violence
+
+2. **Partial waiver** (activity and co-payment only):
+   - Children with disabilities
+   - Children of elder caregivers
+   - Children with parent(s) in addiction recovery
+
+3. **Automatic eligibility** (waived verification requirements):
+   - TANF recipients (co-payments waived)
+   - SNAP E&T participants (co-payments waived)
+   - Families below 150% FPL (co-payments waived)
+
+### Income Rules
+- 3-month grace period if income exceeds 85% SMI
+- Countable income includes: wages, self-employment, rental income, certain education grants, pensions, retirement distributions, alimony
+- Exempt income includes: public benefits (TANF, SNAP, WIC, etc.), Social Security/SSI, unemployment, child support, tax refunds, EITC, foster care payments, non-recurring income
+
+## Implementation Plan
+
+1. Study California implementation in:
+   - `policyengine_us/variables/gov/states/ca/cdss/tanf/child_care`
+   - `policyengine_us/tests/policy/baseline/gov/states/ca/cdss/tanf/child_care`
+
+2. Create parameters files:
+   - modeled after CA
+
+3. Create variables files:
+   - modeled after ca
+   - Supporting income files for countable/exempt income calculations
+
+4. Create test files mirroring the structure in CA implementation
+
+5. Follow code style guidelines:
+   - Use absolute imports from policyengine_us.model_api
+   - Add type hints, docstrings, and follow snake_case convention
+   - Use vectorized operations with `where` not `if`
+   - Test-driven development with YAML tests

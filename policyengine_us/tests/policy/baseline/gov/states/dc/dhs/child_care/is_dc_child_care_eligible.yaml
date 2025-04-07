@@ -1,0 +1,71 @@
+- name: A household that meets all requirements is eligible
+  period: 2023
+  input:
+    meets_dc_child_care_citizenship: true
+    meets_dc_child_care_activity: true
+    meets_dc_child_care_income_limit: true
+    dc_child_care_activity_requirement_waived: false
+    dc_child_care_income_requirement_waived: false
+    meets_dc_child_care_special_category: false
+  output:
+    is_dc_child_care_eligible: true
+
+- name: A household that fails citizenship is ineligible
+  period: 2023
+  input:
+    meets_dc_child_care_citizenship: false
+    meets_dc_child_care_activity: true
+    meets_dc_child_care_income_limit: true
+    dc_child_care_activity_requirement_waived: false
+    dc_child_care_income_requirement_waived: false
+    meets_dc_child_care_special_category: false
+  output:
+    is_dc_child_care_eligible: false
+
+- name: A household that fails activity and income is ineligible
+  period: 2023
+  input:
+    meets_dc_child_care_citizenship: true
+    meets_dc_child_care_activity: false
+    meets_dc_child_care_income_limit: false
+    dc_child_care_activity_requirement_waived: false
+    dc_child_care_income_requirement_waived: false
+    meets_dc_child_care_special_category: false
+  output:
+    is_dc_child_care_eligible: false
+
+- name: A household that meets special category is eligible regardless of other factors
+  period: 2023
+  input:
+    meets_dc_child_care_citizenship: false
+    meets_dc_child_care_activity: false
+    meets_dc_child_care_income_limit: false
+    dc_child_care_activity_requirement_waived: false
+    dc_child_care_income_requirement_waived: false
+    meets_dc_child_care_special_category: true
+  output:
+    is_dc_child_care_eligible: true
+
+- name: A household with waived activity requirement doesn't need to meet it
+  period: 2023
+  input:
+    meets_dc_child_care_citizenship: true
+    meets_dc_child_care_activity: false
+    meets_dc_child_care_income_limit: true
+    dc_child_care_activity_requirement_waived: true
+    dc_child_care_income_requirement_waived: false
+    meets_dc_child_care_special_category: false
+  output:
+    is_dc_child_care_eligible: true
+
+- name: A household with waived income requirement doesn't need to meet it
+  period: 2023
+  input:
+    meets_dc_child_care_citizenship: true
+    meets_dc_child_care_activity: true
+    meets_dc_child_care_income_limit: false
+    dc_child_care_activity_requirement_waived: false
+    dc_child_care_income_requirement_waived: true
+    meets_dc_child_care_special_category: false
+  output:
+    is_dc_child_care_eligible: true

@@ -1,0 +1,22 @@
+description: Activity requirements for DC childcare subsidy eligibility
+
+working:
+  description: "Parent/guardian working"
+  values:
+    2023-01-01: true
+  
+job_training:
+  description: "Parent/guardian in job training/education"
+  values:
+    2023-01-01: true
+
+seeking_employment:
+  description: "Parent/guardian seeking employment"
+  values:
+    2023-01-01: true
+
+metadata:
+  label: "Activity requirements"
+  reference:
+    - title: "DC Child Care Subsidy Program Manual - Eligibility Requirements"
+      href: "https://osse.dc.gov/sites/default/files/dc/sites/osse/publication/attachments/DC%20Child%20Care%20Subsidy%20Program%20Policy%20Manual.pdf"
