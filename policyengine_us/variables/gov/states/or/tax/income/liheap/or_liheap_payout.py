@@ -6,7 +6,7 @@ class or_liheap_payout(Variable):
     entity = SPMUnit
     definition_period = YEAR
     defined_for = "or_liheap_eligibility"
-    label = "LIHEAP Payout"
+    label = "Oregon LIHEAP Payout"
 
     def formula(spm_unit, period, parameters):
         utility_type = spm_unit("utility_type", period)

@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class or_liheap_eligibility(Variable):
     value_type = bool
     entity = SPMUnit
-    label = "Oregon LIHEAP eligibility"
+    label = "Eligible for the Oregon LIHEAP"
     definition_period = YEAR
     reference = (
         "https://liheapch.acf.hhs.gov/Directors/Eligibility/OR_Income_def_2013.pdf"

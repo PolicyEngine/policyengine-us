@@ -1,20 +1,27 @@
-- name: Oregon smi 2021 single household
-  period: 2021
-  absolute_error_margin: 0.01
+- name: Single parent with a child
+  period: 2024
+  absolute_error_margin: 0.5
   input:
-    spm_unit_size: 1  
-    state_code: OR  
-    hhs_smi: 48_906  
-    irs_gross_income: 25_000
-    subsidized_housing: false
-    or_liheap_heat_in_rent: false
-    county_str: CURRY_COUNTY_OR
-    utility_type: NATURAL_GAS
-
+    people:
+      person1:
+        irs_gross_income: 25_000
+      person2:
+        irs_gross_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        utility_type: NATURAL_GAS
+        or_liheap_heat_in_rent: false
+        subsidized_housing: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OR
+        county_str: CURRY_COUNTY_OR
   output:
-    or_liheap_income_threshold: 29_343.6  
+    hhs_smi: 72_852 # 107_136*(0.52+0.16)
+    or_liheap_income_threshold: 43_711 # 72_852*0.6
+    or_liheap_in_region_one: true
     or_liheap_eligibility: true
-    or_liheap_benefit_level: 4
-    or_liheap_in_region_one: True
-    or_liheap_payout: 200
-
+    or_liheap_benefit_level: 3
+    or_liheap_payout: 495 

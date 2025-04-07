@@ -175,12 +175,12 @@ description: Oregon provides the following Low Income Home Energy Assistance Pro
       2021-01-01: 365
       2022-01-01: 355
       2023-01-01: 390
-      2024-01-01: 595
+      2024-01-01: 495
       2025-01-01: 510
     WOOD_PELLETS: 
       2021-01-01: 390
       2023-01-01: 430
-      2024-01-01: 750
+      2024-01-01: 720
   4:
     ELECTRICITY: 
       2021-01-01: 245
@@ -582,8 +582,8 @@ metadata:
   unit: currency-USD
   label: Oregon LIHEAP region one payout
   breakdown:
-    - range(1,6)
-    - range(1,4)
+    - range(1,6) # household size  
+    - range(1,4) # benefit level 
     - utility_type
   reference:
     - title: LIHEAP and OEAP Energy Assistance Intake Operations Manual for Program Year 2021

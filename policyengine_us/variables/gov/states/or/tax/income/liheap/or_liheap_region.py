@@ -6,13 +6,12 @@ class or_liheap_in_region_one(Variable):
     entity = SPMUnit
     definition_period = YEAR
     defined_for = StateCode.OR
-    label = "In Oregon LIHEAP Region One"
+    label = (
+        "Whether the househld located in region one under the Oregon LIHEAP"
+    )
     reference = "https://www.oregon.gov/ohcs/energy-weatherization/Documents/2021-Energy-Assistance-Manual.pdf#page=55"
 
     def formula(spm_unit, period, parameters):
         county = spm_unit.household("county_str", period)
-        region1_counties = (
-            parameters(period).gov.states["or"].liheap.region1_counties
-        )
         p = parameters(period).gov.states["or"].liheap
         return county in p.region1_counties
