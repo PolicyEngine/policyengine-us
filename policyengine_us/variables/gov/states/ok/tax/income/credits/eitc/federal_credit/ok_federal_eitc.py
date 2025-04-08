@@ -15,7 +15,7 @@ class ok_federal_eitc(Variable):
     def formula(tax_unit, period, parameters):
         takes_up_eitc = tax_unit("takes_up_eitc", period)
         maximum = tax_unit("ok_federal_eitc_maximum", period)
-        phased_in = tax_unit("eitc_phased_in", period)
-        reduction = tax_unit("eitc_reduction", period)
+        phased_in = tax_unit("ok_federal_eitc_phased_in", period)
+        reduction = tax_unit("ok_federal_eitc_reduction", period)
         limitation = max_(0, maximum - reduction)
         return min_(phased_in, limitation) * takes_up_eitc
