@@ -20,6 +20,6 @@ class ok_eitc(Variable):
         mask = us_agi != 0
         agi_ratio[mask] = ok_agi[mask] / us_agi[mask]
         prorate = min_(1, max_(0, agi_ratio))
-        federal_eitc = tax_unit("eitc", period)
+        federal_eitc = tax_unit("ok_federal_eitc", period)
         p = parameters(period).gov.states.ok.tax.income.credits.earned_income
         return prorate * p.eitc_fraction * federal_eitc
