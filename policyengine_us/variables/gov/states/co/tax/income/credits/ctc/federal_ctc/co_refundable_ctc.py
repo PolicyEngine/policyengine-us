@@ -23,9 +23,9 @@ class co_refundable_ctc(Variable):
     def formula(tax_unit, period, parameters):
         # follow 2022 DR 0104CN form and its instructions (in Book cited above):
         adjusted_fed_ctc = tax_unit("co_non_refundable_ctc", period)  # Line 7
-        max_child_amount = tax_unit("co_federal_ctc_maximum", period)
+        max_child_amount = tax_unit("co_federal_ctc_maximum", period) # Line 3
         credit_excess_over_tax = max_(
-            0, adjusted_fed_ctc - max_child_amount
+            0, max_child_amount - adjusted_fed_ctc
         )  # Line 8
         p = parameters(period).gov.irs.credits.ctc
         statutory_cap = p.refundable.individual_max  # Line 9
