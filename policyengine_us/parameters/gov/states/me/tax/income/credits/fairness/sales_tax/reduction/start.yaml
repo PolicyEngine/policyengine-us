@@ -15,6 +15,8 @@ metadata:
       href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/22_1040me_sched_pstfc_ff.pdf#page=4
     - title: 2023 Form 1040ME Property Tax Fairness Credit / Sales Tax Fairness Credit
       href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/23_1040me_sched_pstfc_ff.pdf#page=4
+    - title: 2024 Form 1040ME Property Tax Fairness Credit / Sales Tax Fairness Credit
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/23_1040me_sched_pstfc_ff.pdf#page=4
   breakdown:
     - filing_status
 SINGLE:
@@ -22,6 +24,7 @@ SINGLE:
     2021-01-01: 21_350
     2022-01-01: 21_850
     2023-01-01: 23_300
+    2024-01-01: 24_750
   uprating:
     parameter: gov.irs.uprating
     rounding:
@@ -40,6 +43,7 @@ HEAD_OF_HOUSEHOLD:
     2021-01-01: 32_000
     2022-01-01: 32_800
     2023-01-01: 34_950
+    2024-01-01: 37_100
   uprating:
     parameter: gov.irs.uprating
     rounding:
@@ -50,6 +54,7 @@ JOINT:
     2021-01-01: 42_700
     2022-01-01: 43_700
     2023-01-01: 46_600
+    2024-01-01: 49_500
   uprating:
     parameter: gov.irs.uprating
     rounding:
@@ -60,6 +65,7 @@ SURVIVING_SPOUSE:
     2021-01-01: 42_700
     2022-01-01: 43_700
     2023-01-01: 46_600
+    2024-01-01: 49_500
   uprating:
     parameter: gov.irs.uprating
     rounding:
