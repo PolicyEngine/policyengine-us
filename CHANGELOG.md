@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.247.1] - 2025-04-08 11:51:57
+
+### Fixed
+
+- Fix the Colorado refundable CTC formula.
+
 ## [1.247.0] - 2025-04-07 20:54:03
 
 ### Added
@@ -11350,6 +11356,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.247.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.247.0...1.247.1
 [1.247.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.246.0...1.247.0
 [1.246.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.245.1...1.246.0
 [1.245.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.245.0...1.245.1
