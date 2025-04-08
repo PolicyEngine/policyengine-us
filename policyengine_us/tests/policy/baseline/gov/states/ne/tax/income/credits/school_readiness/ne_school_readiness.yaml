@@ -15,3 +15,13 @@
     state_code: NE
   output:
     ne_school_readiness_credit: 0
+
+- name: Eligible, bad input
+  period: 2024
+  input:
+    ne_school_readiness_credit_eligible_worker: true
+    ne_school_readiness_credit_child_care_worker_rating: 6
+    state_code: NE
+  output:
+    ne_school_readiness_credit: 3_500
+
