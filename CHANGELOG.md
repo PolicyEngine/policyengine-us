@@ -5,6 +5,96 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.247.1] - 2025-04-08 11:51:57
+
+### Fixed
+
+- Fix the Colorado refundable CTC formula.
+
+## [1.247.0] - 2025-04-07 20:54:03
+
+### Added
+
+- Mississippi retirement income exemption.
+
+## [1.246.0] - 2025-04-07 17:11:50
+
+### Added
+
+- 2024 New Hampshire State Income Tax Updates.
+
+## [1.245.1] - 2025-04-07 17:03:32
+
+### Added
+
+- Fix End Child Poverty Act uprating.
+
+## [1.245.0] - 2025-04-06 13:44:41
+
+### Changed
+
+- DC Temporary Assistance for Needy Families (TANF) program.
+
+## [1.244.1] - 2025-04-06 13:33:02
+
+### Fixed
+
+- Enable MA EAEDC and TAFDC.
+
+## [1.244.0] - 2025-04-04 19:32:12
+
+### Added
+
+- Revert unwanted changes to MA EAEDC and TAFDC.
+
+## [1.243.0] - 2025-04-04 17:04:17
+
+### Added
+
+- Include Massachusetts EAEDC and TAFDC in the net income tree.
+
+## [1.242.1] - 2025-04-04 14:06:57
+
+### Added
+
+- Added 2021-2023 Medicaid spending and enrollment data.
+
+## [1.242.0] - 2025-04-04 11:06:12
+
+### Added
+
+- 2024 Maine State Income Tax Updates.
+
+## [1.241.0] - 2025-04-04 09:27:04
+
+### Added
+
+- Mississippi Income Tax Cut (2027-2030).
+
+## [1.240.5] - 2025-04-03 16:03:51
+
+### Added
+
+- Fix 2025 Utah Income Tax Rate.
+
+## [1.240.4] - 2025-04-03 11:58:58
+
+### Fixed
+
+- Account for the case where only one person is of the eligible immigration status under the LA GR program.
+
+## [1.240.3] - 2025-04-03 08:25:20
+
+### Fixed
+
+- Convert meets_snap_categorical_eligibility to monthly.
+
+## [1.240.2] - 2025-04-02 16:46:53
+
+### Fixed
+
+- Consolidated the different Medicaid parameters.
+
 ## [1.240.1] - 2025-04-01 18:27:47
 
 ### Added
@@ -11266,6 +11356,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.247.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.247.0...1.247.1
+[1.247.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.246.0...1.247.0
+[1.246.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.245.1...1.246.0
+[1.245.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.245.0...1.245.1
+[1.245.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.244.1...1.245.0
+[1.244.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.244.0...1.244.1
+[1.244.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.243.0...1.244.0
+[1.243.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.242.1...1.243.0
+[1.242.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.242.0...1.242.1
+[1.242.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.241.0...1.242.0
+[1.241.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.240.5...1.241.0
+[1.240.5]: https://github.com/PolicyEngine/policyengine-us/compare/1.240.4...1.240.5
+[1.240.4]: https://github.com/PolicyEngine/policyengine-us/compare/1.240.3...1.240.4
+[1.240.3]: https://github.com/PolicyEngine/policyengine-us/compare/1.240.2...1.240.3
+[1.240.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.240.1...1.240.2
 [1.240.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.240.0...1.240.1
 [1.240.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.239.0...1.240.0
 [1.239.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.238.0...1.239.0

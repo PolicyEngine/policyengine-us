@@ -1,0 +1,41 @@
+- name: Default person is 18 and out of school, therefore ineligible for TANF
+  period: 2022
+  output:
+    dc_tanf_demographic_eligible_person: false
+
+- name: Is eligible for TANF due to children under 18
+  period: 2022-01
+  input:
+    age: 17
+    is_tax_unit_dependent: true
+    is_in_secondary_school: false
+    state_code: DC
+  output:
+    dc_tanf_demographic_eligible_person: true
+
+- name: 18-year-old out of school is not eligible for TANF
+  period: 2022-01
+  input:
+    age: 18
+    is_in_secondary_school: false
+    state_code: DC
+  output:
+    dc_tanf_demographic_eligible_person: false
+
+- name: Is eligible for TANF due to pregnancy
+  period: 2022-01
+  input:
+    is_pregnant: true
+    state_code: DC
+  output:
+    dc_tanf_demographic_eligible_person: true
+
+- name: Is eligible for TANF due to being an 18-year-old in school
+  period: 2022-01
+  input:
+    age: 18
+    is_tax_unit_dependent: true
+    is_in_secondary_school: true
+    state_code: DC
+  output:
+    dc_tanf_demographic_eligible_person: true
