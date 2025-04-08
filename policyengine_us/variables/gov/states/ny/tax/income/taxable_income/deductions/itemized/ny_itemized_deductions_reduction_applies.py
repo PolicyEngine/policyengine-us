@@ -16,5 +16,5 @@ class ny_itemized_deductions_reduction_applies(Variable):
         agi = tax_unit("ny_agi", period)
         filing_status = tax_unit("filing_status", period)
         first_reduction_threshold = p.lower[filing_status]
-
+        # No reduction applies if the AGI is less than the first reduction threshold
         return agi > first_reduction_threshold
