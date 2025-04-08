@@ -2,22 +2,23 @@ from policyengine_us.model_api import *
 
 
 class pr_additional_child_tax_credit(Variable):
-    value_type = int
+    value_type = float
     entity = TaxUnit
-    label = "Amount for Puerto Rico additional child tax credit"
+    label = "Puerto Rico additional child tax credit amount"
     definition_period = YEAR
-    reference = ""
+    reference = "https://www.irs.gov/pub/irs-pdf/f1040ss.pdf#page=2"
     defined_for = "pr_additional_child_tax_credit_eligibility"
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.territories.pr.tax.income.credits
-        num_children = tax_unit("pr_child_tax_credit_number_eligible_children", period)
+        num_children = tax_unit("ctc_qualifying_children", period)
         other_dependents = tax_unit("tax_unit_dependents") - num_children
         
         credit_amt = num_children * p.additional_child_tax_credit.amount
         modified_agi = tax_unit("pr_modified_agi", period)
         modified_inc = tax_unit("pr_actc_modified_income_calculation", period) # if 0, modified_agi under threshold
-        income_threshold = num_children * 2000 + other_dependents * 500 # threshold
+        print(modified_inc)
+        ctc_amount = tax_unit("pr_ctc", period) # CTC + ODC amount
 
         # earned income method to calculate credit amount
         earned_inc_credit_amt = select(
@@ -27,7 +28,7 @@ class pr_additional_child_tax_credit(Variable):
             ],
             [
                 credit_amt,
-                min(credit_amt, income_threshold - modified_inc),
+                min(credit_amt, ctc_amount - modified_inc),
             ],
         )
 

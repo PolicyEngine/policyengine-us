@@ -1,0 +1,15 @@
+- name: Income over threshold, joint
+  period: 2024
+  input:
+    pr_modified_agi: 401_000
+    filing_status: JOINT
+  output:
+    agi_greater_than_threshold: true
+
+- name: Income below threshold, single
+  period: 2024
+  input:
+    pr_modified_agi: 200_000
+    filing_status: SINGLE
+  output:
+    agi_greater_than_threshold: false

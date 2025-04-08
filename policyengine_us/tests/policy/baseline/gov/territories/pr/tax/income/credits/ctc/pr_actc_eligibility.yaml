@@ -1,0 +1,8 @@
+- name: Initial test
+  period: 2024
+  input:
+    ctc_qualifying_children: 
+    pr_ctc: 
+    pr_actc_modified_income_calculation: 
+  output:
+    pr_actc_eligibility: false

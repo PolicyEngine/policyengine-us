@@ -1,17 +1,15 @@
 from policyengine_us.model_api import *
-from numpy import ceil
 
 
-class pr_actc_modified_income_calculation(Variable):
-    value_type = float
+class agi_greater_than_threshold(Variable):
+    value_type = bool
     entity = TaxUnit
-    label = "Puerto Rico income modification for additional child tax credit computation"
+    label = "Puerto Rico condition if modified adjusted gross income greater than threshold"
     definition_period = YEAR
     reference = "https://www.irs.gov/pub/irs-pdf/f1040ss.pdf#page=2"
-    defined_for = "agi_greater_than_threshold"
 
-    # only compute if modified_agi > threshold
     def formula(tax_unit, period, parameters):
+        # condition from line 5 
         p = parameters(period).gov.territories.pr.tax.income.credits.child_tax_credit
         modified_agi = tax_unit("pr_modified_agi", period)
         filing_status = tax_unit("filing_status", period)
@@ -27,10 +25,4 @@ class pr_actc_modified_income_calculation(Variable):
             ],
         )
 
-        # calculate credit based on income earned over the threshold, lines 5 & 6
-        modified_inc = modified_agi - threshold 
-        multiple = p.actc_income_multiple
-        # turn it into a multiple of 1000 if not already
-        modified_inc = int(ceil(modified_inc / multiple) * multiple) * p.actc_income_rate
-        
-        return modified_inc
+        return (modified_agi > threshold)

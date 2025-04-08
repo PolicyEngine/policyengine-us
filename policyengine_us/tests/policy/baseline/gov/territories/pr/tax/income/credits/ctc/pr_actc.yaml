@@ -1,0 +1,10 @@
+- name: Initial test
+  period: 2024
+  input:
+    ctc_qualifying_children: 65
+    tax_unit_dependents: true
+    pr_modified_agi: 
+    pr_actc_modified_income_calculation: 
+    pr_ctc: 
+  output:
+    pr_actc: true

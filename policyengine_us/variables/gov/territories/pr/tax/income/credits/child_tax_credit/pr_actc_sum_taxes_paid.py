@@ -2,11 +2,18 @@ from policyengine_us.model_api import *
 
 
 class pr_actc_sum_taxes_paid(Variable):
-    value_type = int
+    value_type = float
     entity = TaxUnit
-    label = ""
+    label = "Puerto Rico additional child tax credit taxes paid"
     definition_period = YEAR
-    reference = ""
+    reference = "https://www.irs.gov/pub/irs-pdf/f1040ss.pdf#page=2"
 
     def formula(tax_unit, period, parameters):
-        total = 0.5 * person("self_employment_tax", period) + 0.5 * tax_unit("additional_medicare_tax", period) + tax_unit("pr_withheld_income", period)
+        p = parameters(period).gov.territories.pr.tax.income.credits.child_tax_credit
+        # check me: self-employment is person level
+        # line 12a-c
+        taxes_to_be_halved = add(tax_unit, period, ["self_employment_tax", "additional_medicare_tax"])  
+        # lines 13a-f
+        withheld_tax = tax_unit("pr_withheld_income", period)  
+        
+        return (taxes_to_be_halved * p.fraction) + withheld_tax  

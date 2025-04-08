@@ -1,0 +1,15 @@
+- name: Income under threshold, joint
+  period: 2024
+  input:
+    pr_modified_agi: 10_000
+    filing_status: JOINT
+  output:
+    pr_actc_modified_income_calculation: 0
+
+- name: Income over threshold, married filing separately
+  period: 2024
+  input:
+    pr_modified_agi: 253_020
+    filing_status: SEPARATE
+  output:
+    pr_actc_modified_income_calculation: 2700
