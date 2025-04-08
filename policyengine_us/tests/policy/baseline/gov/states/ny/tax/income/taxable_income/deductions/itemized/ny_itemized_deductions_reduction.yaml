@@ -44,7 +44,7 @@
     filing_status: SINGLE
     state_code: NY
   output:
-    ny_itemized_deductions_reduction: 200
+    ny_itemized_deductions_reduction: 200 # 300 - 200*0.5 - 200
 
 - name: Case 5, higher income filer. 
   period: 2021
@@ -56,4 +56,4 @@
     filing_status: SINGLE
     state_code: NY
   output:
-    ny_itemized_deductions_reduction: 250
+    ny_itemized_deductions_reduction: 250 # 300 - 200*0.25 = 250 
