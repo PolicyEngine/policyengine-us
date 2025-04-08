@@ -2,7 +2,7 @@
   period: 2024
   input:
     ne_school_readiness_credit_eligible_worker: true
-    ne_rating_of_child_care_worker: 3
+    ne_school_readiness_credit_child_care_worker_rating: 3
     state_code: NE
   output:
     ne_school_readiness_credit: 2_900
@@ -11,7 +11,7 @@
   period: 2024
   input:
     ne_school_readiness_credit_eligible_worker: false
-    ne_rating_of_child_care_worker: 0
+    ne_school_readiness_credit_child_care_worker_rating: 0
     state_code: NE
   output:
     ne_school_readiness_credit: 0

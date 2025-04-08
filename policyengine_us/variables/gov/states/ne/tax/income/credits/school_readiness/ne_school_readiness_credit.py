@@ -12,7 +12,9 @@ class ne_school_readiness_credit(Variable):
     defined_for = "ne_school_readiness_credit_eligible_worker"
 
     def formula(person, period, parameters):
-        level = person("ne_rating_of_child_care_worker", period)
+        level = person(
+            "ne_school_readiness_credit_child_care_worker_rating", period
+        )
         p = parameters(
             period
         ).gov.states.ne.tax.income.credits.school_readiness.amount
