@@ -1,0 +1,39 @@
+- name: Childless EITC maximum.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    employment_income: 10_000
+    state_code: OK
+  output:
+    ok_federal_eitc_maximum: 538
+
+- name: Childless EITC maximum in 2020
+  period: 2020
+  absolute_error_margin: 0
+  input:
+    employment_income: 10_000
+    state_code: OK
+  output:
+    ok_federal_eitc_maximum: 538
+
+- name: EITC maximum with two children
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    people:
+      child_1:
+        age: 7
+      child_2:
+        age: 7
+      parent:
+        employment_income: 20_000
+        age: 25
+    tax_units:
+      tax_unit:
+        members: [child_1, child_2, parent]
+    households:
+      household: 
+        members: [child_1, child_2, parent]
+        state_code: OK
+  output:
+    ok_federal_eitc_maximum: 5_920
