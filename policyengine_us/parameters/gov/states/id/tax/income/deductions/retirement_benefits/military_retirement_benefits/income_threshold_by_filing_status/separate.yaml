@@ -1,0 +1,21 @@
+description: Income threshold for non-disabled veterans under the age of 62 filing a separate return claiming the military pension exemption in 2025 and after.
+values:
+  2024-01-01: 5
+  # This is a tied to the minimum income to be required to file a federal tax return
+metadata:
+  unit: currency-USD
+  period: year
+  label: Separate income threshold for Idaho military pension exemption
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
+  reference:
+    - title: 26 U.S. Code § 6012(a)(1)
+      href: https://www.law.cornell.edu/uscode/text/26/6012
+    - title: Internal Revenue Service - Check if you need to file a tax return
+      href: https://www.irs.gov/individuals/check-if-you-need-to-file-a-tax-return
+    - title: Idaho House Bill 40 (2025)
+      href: https://legislature.idaho.gov/wp-content/uploads/sessioninfo/2025/legislation/H0040.pdf#page=4
+  
