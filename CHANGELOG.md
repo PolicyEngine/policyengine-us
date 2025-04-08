@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.248.1] - 2025-04-08 18:07:28
+
+### Fixed
+
+- Create a separate Hawaii itemized deductions reduction threshold to align with the tax forms.
+
 ## [1.248.0] - 2025-04-08 14:53:45
 
 ### Added
@@ -11362,6 +11368,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.248.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.248.0...1.248.1
 [1.248.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.247.1...1.248.0
 [1.247.1]: https://github.com/PolicyEngine/policyengine-us/compare/1.247.0...1.247.1
 [1.247.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.246.0...1.247.0
