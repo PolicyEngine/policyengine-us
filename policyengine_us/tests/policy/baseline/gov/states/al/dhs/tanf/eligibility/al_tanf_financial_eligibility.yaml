@@ -1,0 +1,93 @@
+- name: One person with $1,000 of employment income
+  period: 2022
+  input:
+    state_code: AL
+    childcare_expenses: 0
+    care_expenses: 0 
+    spm_unit_size: 1
+    employment_income: 3_167
+    unemployment_compensation: 0
+    social_security: 0
+  output:
+    al_tanf_financial_eligibility: false
+
+- name: One person with $1,000 of applicable income
+  period: 2022
+  input:
+    state_code: AL
+    childcare_expenses: 0
+    care_expenses: 0 
+    spm_unit_size: 1
+    al_tanf_applicable_income: 3_167
+  output:
+    al_tanf_financial_eligibility: true
+
+
+- name: One person ineligible
+  period: 2022
+  input:
+    state_code: AL
+    childcare_expenses: 0
+    care_expenses: 0 
+    spm_unit_size: 1
+    employment_income: 3_168
+    unemployment_compensation: 0
+    social_security: 0
+  output:
+    al_tanf_financial_eligibility: false
+
+- name: Five people eligible
+  period: 2022
+  input:
+    state_code: AL
+    childcare_expenses: 500 
+    care_expenses: 300
+    spm_unit_size: 5
+    employment_income: 1_000
+    unemployment_compensation: 0
+    social_security: 0
+  output:
+    # 440*12=5280
+    al_tanf_financial_eligibility: true 
+
+- name: Two people eligible due to care exepenses
+  period: 2022
+  input:
+    state_code: AL
+    childcare_expenses: 88
+    care_expenses: 20
+    spm_unit_size: 2
+    employment_income: 3_680
+    unemployment_compensation: 0
+    social_security: 0
+  output:
+    # Payment standard = 304*12= $3,648
+    al_tanf_financial_eligibility: false
+
+- name: Two people no care expenses
+  period: 2022
+  input:
+    state_code: AL
+    childcare_expenses: 0
+    care_expenses: 0
+    spm_unit_size: 2
+    employment_income: 3_680
+    unemployment_compensation: 0
+    social_security: 0
+  output:
+    # Payment standard = 304*12= $3,648
+    al_tanf_financial_eligibility: false
+
+- name: Number of people over 16 should be capped at 16
+  period: 2022
+  input:
+    state_code: AL
+    childcare_expenses: 0
+    care_expenses: 0
+    spm_unit_size: 20
+    employment_income: 11_615
+    unemployment_compensation: 0
+    social_security: 0
+  output:
+    # Payment standard = 968*12= $11,616
+    al_tanf_financial_eligibility: false
