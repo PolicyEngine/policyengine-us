@@ -1,0 +1,44 @@
+- name: Child eligible for CHIP
+  period: 2023
+  input:
+    is_chip_eligible_child: True
+    is_chip_eligible_pregnant: False
+    immigration_status: CITIZEN
+  output:
+    is_chip_eligible: True
+
+- name: Pregnant woman eligible for CHIP
+  period: 2023
+  input:
+    is_chip_eligible_child: False
+    is_chip_eligible_pregnant: True
+    immigration_status: CITIZEN
+  output:
+    is_chip_eligible: True
+
+- name: Both child and pregnant categories (edge case)
+  period: 2023
+  input:
+    is_chip_eligible_child: True
+    is_chip_eligible_pregnant: True
+    immigration_status: CITIZEN
+  output:
+    is_chip_eligible: True
+
+- name: Not eligible for any CHIP category
+  period: 2023
+  input:
+    is_chip_eligible_child: False
+    is_chip_eligible_pregnant: False
+    immigration_status: CITIZEN
+  output:
+    is_chip_eligible: False
+
+- name: Immigration status makes ineligible
+  period: 2023
+  input:
+    is_chip_eligible_child: True
+    is_chip_eligible_pregnant: False
+    immigration_status: UNDOCUMENTED
+  output:
+    is_chip_eligible: False
