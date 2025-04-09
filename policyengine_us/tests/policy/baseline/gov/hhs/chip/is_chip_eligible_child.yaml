@@ -5,8 +5,7 @@
     age: 10
     immigration_status: CITIZEN
     is_medicaid_eligible: False
-    tax_unit:
-      tax_unit_fpg_ratio: 2.00
+    tax_unit_fpg_ratio: 2.00
   output:
     is_chip_eligible_child: True
 
@@ -17,8 +16,7 @@
     age: 0  # Below min age in Delaware
     immigration_status: CITIZEN
     is_medicaid_eligible: False
-    tax_unit:
-      tax_unit_fpg_ratio: 2.00
+    tax_unit_fpg_ratio: 2.00
   output:
     is_chip_eligible_child: False
 
@@ -29,8 +27,7 @@
     age: 19  # Above max age
     immigration_status: CITIZEN
     is_medicaid_eligible: False
-    tax_unit:
-      tax_unit_fpg_ratio: 2.00
+    tax_unit_fpg_ratio: 2.00
   output:
     is_chip_eligible_child: False
 
@@ -41,8 +38,7 @@
     age: 10
     immigration_status: CITIZEN
     is_medicaid_eligible: False
-    tax_unit:
-      tax_unit_fpg_ratio: 3.00  # Above CO limit of 2.65
+    tax_unit_fpg_ratio: 3.00  # Above CO limit of 2.65
   output:
     is_chip_eligible_child: False
 
@@ -53,8 +49,7 @@
     age: 10
     immigration_status: CITIZEN
     is_medicaid_eligible: True
-    tax_unit:
-      tax_unit_fpg_ratio: 2.00
+    tax_unit_fpg_ratio: 2.00
   output:
     is_chip_eligible_child: False
 
@@ -65,8 +60,7 @@
     age: 10
     immigration_status: CITIZEN
     is_medicaid_eligible: False
-    tax_unit:
-      tax_unit_fpg_ratio: 2.00
+    tax_unit_fpg_ratio: 2.00
   output:
     is_chip_eligible_child: False
 
@@ -77,7 +71,6 @@
     age: 10
     immigration_status: UNDOCUMENTED
     is_medicaid_eligible: False
-    tax_unit:
-      tax_unit_fpg_ratio: 2.00
+    tax_unit_fpg_ratio: 2.00
   output:
     is_chip_eligible_child: False

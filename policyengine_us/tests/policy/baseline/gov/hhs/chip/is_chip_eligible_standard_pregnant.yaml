@@ -5,8 +5,7 @@
     is_pregnant: True
     immigration_status: CITIZEN
     is_medicaid_eligible: False
-    tax_unit:
-      tax_unit_fpg_ratio: 2.00
+    tax_unit_fpg_ratio: 2.00
   output:
     is_chip_eligible_standard_pregnant: True
 
@@ -17,8 +16,7 @@
     is_pregnant: False
     immigration_status: CITIZEN
     is_medicaid_eligible: False
-    tax_unit:
-      tax_unit_fpg_ratio: 2.00
+    tax_unit_fpg_ratio: 2.00
   output:
     is_chip_eligible_standard_pregnant: False
 
@@ -29,8 +27,7 @@
     is_pregnant: True
     immigration_status: CITIZEN
     is_medicaid_eligible: False
-    tax_unit:
-      tax_unit_fpg_ratio: 3.00  # Above CO limit of 2.65
+    tax_unit_fpg_ratio: 3.00  # Above CO limit of 2.65
   output:
     is_chip_eligible_standard_pregnant: False
 
@@ -41,8 +38,7 @@
     is_pregnant: True
     immigration_status: CITIZEN
     is_medicaid_eligible: True
-    tax_unit:
-      tax_unit_fpg_ratio: 2.00
+    tax_unit_fpg_ratio: 2.00
   output:
     is_chip_eligible_standard_pregnant: False
 
@@ -53,8 +49,7 @@
     is_pregnant: True
     immigration_status: CITIZEN
     is_medicaid_eligible: False
-    tax_unit:
-      tax_unit_fpg_ratio: 2.00
+    tax_unit_fpg_ratio: 2.00
   output:
     is_chip_eligible_standard_pregnant: False
 
@@ -65,7 +60,6 @@
     is_pregnant: True
     immigration_status: UNDOCUMENTED
     is_medicaid_eligible: False
-    tax_unit:
-      tax_unit_fpg_ratio: 2.00
+    tax_unit_fpg_ratio: 2.00
   output:
     is_chip_eligible_standard_pregnant: False

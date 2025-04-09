@@ -19,7 +19,7 @@ class is_chip_eligible_fcep(Variable):
         is_pregnant = person("is_pregnant", period)
 
         # Check if state offers FCEP program for pregnant women
-        p = parameters(period).gov.hhs.chip.FCEP
+        p = parameters(period).gov.hhs.chip.fcep
         income_limit = p.income_limit[state]
         state_has_fcep = income_limit > 0
 
