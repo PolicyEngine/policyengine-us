@@ -14,14 +14,16 @@ class is_chip_eligible_pregnant(Variable):
     )
 
     def formula(person, period, parameters):
-        # A person is eligible for CHIP as pregnant if they qualify through either 
+        # A person is eligible for CHIP as pregnant if they qualify through either
         # the standard pregnant pathway or the FCEP pathway
-        
+
         # Check standard pregnant pathway eligibility
-        standard_eligible = person("is_chip_eligible_standard_pregnant", period)
-        
+        standard_eligible = person(
+            "is_chip_eligible_standard_pregnant", period
+        )
+
         # Check FCEP pathway eligibility
         fcep_eligible = person("is_chip_eligible_fcep", period)
-        
+
         # Eligible if either pathway qualifies
         return standard_eligible | fcep_eligible

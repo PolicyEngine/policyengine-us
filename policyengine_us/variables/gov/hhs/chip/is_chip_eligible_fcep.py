@@ -14,30 +14,30 @@ class is_chip_eligible_fcep(Variable):
     def formula(person, period, parameters):
         # Get state code
         state = person.household("state_code_str", period)
-        
+
         # Check pregnancy status
         is_pregnant = person("is_pregnant", period)
-        
+
         # Check if state offers FCEP program for pregnant women
         p = parameters(period).gov.hhs.chip.FCEP
         income_limit = p.income_limit[state]
         state_has_fcep = income_limit > 0
-        
+
         # Check immigration status eligibility
         istatus = person("immigration_status", period)
         undocumented = istatus == istatus.possible_values.UNDOCUMENTED
         immigration_eligible = ~undocumented
-        
+
         # Check income eligibility
         # CHIP is for pregnant women who make too much for Medicaid but below CHIP limits
         # First, check if not eligible for Medicaid
         medicaid_eligible = person("is_medicaid_eligible", period)
-        
+
         # Check if family income is below CHIP threshold
         # Use tax_unit_fpg_ratio as the income measure
         income_ratio = person.tax_unit("tax_unit_fpg_ratio", period)
         income_eligible = income_ratio <= income_limit
-        
+
         return (
             is_pregnant
             & state_has_fcep
