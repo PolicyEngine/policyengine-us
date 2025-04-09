@@ -4,7 +4,7 @@
     pr_modified_agi: 401_000
     filing_status: JOINT
   output:
-    agi_greater_than_threshold: true
+    pr_agi_greater_than_threshold: true
 
 - name: Income below threshold, single
   period: 2024
@@ -12,4 +12,4 @@
     pr_modified_agi: 200_000
     filing_status: SINGLE
   output:
-    agi_greater_than_threshold: false
+    pr_agi_greater_than_threshold: false

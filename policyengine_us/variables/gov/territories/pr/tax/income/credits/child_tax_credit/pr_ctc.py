@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class pr_ctc(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Puerto Rico Child Tax Credit"
+    label = "Puerto Rico child tax credit"
     unit = USD
     definition_period = YEAR
     reference = "https://www.irs.gov/pub/irs-pdf/f1040s8.pdf#page=1"

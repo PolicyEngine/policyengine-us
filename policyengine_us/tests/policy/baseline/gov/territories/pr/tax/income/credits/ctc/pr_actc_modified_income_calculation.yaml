@@ -13,3 +13,11 @@
     filing_status: SEPARATE
   output:
     pr_actc_modified_income_calculation: 2700
+
+- name: Income over threshold, single
+  period: 2024
+  input:
+    pr_modified_agi: 201_000
+    filing_status: SINGLE
+  output:
+    pr_actc_modified_income_calculation: 50

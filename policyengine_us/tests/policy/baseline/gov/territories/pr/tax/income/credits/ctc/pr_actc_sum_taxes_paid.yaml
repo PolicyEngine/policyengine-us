@@ -1,8 +1,8 @@
-- name: Income over threshold, married filing separately
+- name: Basic test
   period: 2024
   input:
-    self_employment_tax: 
-    additional_medicare_tax: 
-    pr_withheld_income: 
+    self_employment_tax: 36
+    additional_medicare_tax: 100
+    pr_withheld_income: 500
   output:
-    pr_actc_sum_taxes_paid: 2700
+    pr_actc_sum_taxes_paid: 568

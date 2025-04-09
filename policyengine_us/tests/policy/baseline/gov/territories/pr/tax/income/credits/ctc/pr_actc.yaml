@@ -3,8 +3,8 @@
   input:
     ctc_qualifying_children: 65
     tax_unit_dependents: true
-    pr_modified_agi: 
-    pr_actc_modified_income_calculation: 
-    pr_ctc: 
+    pr_modified_agi: 1000
+    pr_actc_modified_income_calculation: 240
+    pr_ctc: 400
   output:
-    pr_actc: true
+    pr_actc: 500

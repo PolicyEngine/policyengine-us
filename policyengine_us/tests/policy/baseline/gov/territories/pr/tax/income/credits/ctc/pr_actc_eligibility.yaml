@@ -1,8 +1,41 @@
-- name: Initial test
+- name: No children, not eligible
   period: 2024
   input:
-    ctc_qualifying_children: 
-    pr_ctc: 
-    pr_actc_modified_income_calculation: 
+    ctc_qualifying_children: 0
+    pr_ctc: 1_000
+    pr_actc_modified_income_calculation: 900
+    pr_excess_social_security_withheld: 100
+    pr_actc_sum_taxes_paid: 200
   output:
     pr_actc_eligibility: false
+
+- name: Modified income greater than CTC amount, not eligible
+  period: 2024
+  input:
+    ctc_qualifying_children: 2
+    pr_ctc: 4_500
+    pr_actc_modified_income_calculation: 4_500
+    pr_excess_social_security_withheld: 100
+    pr_actc_sum_taxes_paid: 200
+  output:
+    pr_actc_eligibility: false
+
+- name: Excess social security greater than taxes paid
+  input:
+    ctc_qualifying_children: 2
+    pr_ctc: 4_500
+    pr_actc_modified_income_calculation: 3_000
+    pr_excess_social_security_withheld: 200
+    pr_actc_sum_taxes_paid: 100
+  output:
+    pr_actc_eligibility: false
+  
+- name: Eligible for ACTC
+  input:
+    ctc_qualifying_children: 2
+    pr_ctc: 4_500
+    pr_actc_modified_income_calculation: 3_000
+    pr_excess_social_security_withheld: 100
+    pr_actc_sum_taxes_paid: 200
+  output:
+    pr_actc_eligibility: true
