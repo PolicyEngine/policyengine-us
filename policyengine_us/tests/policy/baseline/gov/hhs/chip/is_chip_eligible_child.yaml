@@ -1,0 +1,83 @@
+- name: Age eligible child in state with CHIP
+  period: 2023
+  input:
+    state_code_str: CO
+    age: 10
+    immigration_status: CITIZEN
+    is_medicaid_eligible: False
+    tax_unit:
+      tax_unit_fpg_ratio: 2.00
+  output:
+    is_chip_eligible_child: True
+
+- name: Child too young for CHIP
+  period: 2023
+  input:
+    state_code_str: DE
+    age: 0  # Below min age in Delaware
+    immigration_status: CITIZEN
+    is_medicaid_eligible: False
+    tax_unit:
+      tax_unit_fpg_ratio: 2.00
+  output:
+    is_chip_eligible_child: False
+
+- name: Child too old for CHIP
+  period: 2023
+  input:
+    state_code_str: CO
+    age: 19  # Above max age
+    immigration_status: CITIZEN
+    is_medicaid_eligible: False
+    tax_unit:
+      tax_unit_fpg_ratio: 2.00
+  output:
+    is_chip_eligible_child: False
+
+- name: Income too high for CHIP
+  period: 2023
+  input:
+    state_code_str: CO
+    age: 10
+    immigration_status: CITIZEN
+    is_medicaid_eligible: False
+    tax_unit:
+      tax_unit_fpg_ratio: 3.00  # Above CO limit of 2.65
+  output:
+    is_chip_eligible_child: False
+
+- name: Already Medicaid eligible
+  period: 2023
+  input:
+    state_code_str: CO
+    age: 10
+    immigration_status: CITIZEN
+    is_medicaid_eligible: True
+    tax_unit:
+      tax_unit_fpg_ratio: 2.00
+  output:
+    is_chip_eligible_child: False
+
+- name: State without CHIP for children
+  period: 2023
+  input:
+    state_code_str: AK  # No CHIP program in this state
+    age: 10
+    immigration_status: CITIZEN
+    is_medicaid_eligible: False
+    tax_unit:
+      tax_unit_fpg_ratio: 2.00
+  output:
+    is_chip_eligible_child: False
+
+- name: Undocumented immigrant not eligible
+  period: 2023
+  input:
+    state_code_str: CO
+    age: 10
+    immigration_status: UNDOCUMENTED
+    is_medicaid_eligible: False
+    tax_unit:
+      tax_unit_fpg_ratio: 2.00
+  output:
+    is_chip_eligible_child: False

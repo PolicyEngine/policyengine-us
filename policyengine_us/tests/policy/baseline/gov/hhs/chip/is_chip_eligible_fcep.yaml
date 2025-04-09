@@ -1,0 +1,71 @@
+- name: Pregnant woman eligible for CHIP through FCEP
+  period: 2023
+  input:
+    state_code_str: CA  # California offers FCEP
+    is_pregnant: True
+    immigration_status: CITIZEN
+    is_medicaid_eligible: False
+    tax_unit:
+      tax_unit_fpg_ratio: 3.00  # Within CA's limit of 3.22
+  output:
+    is_chip_eligible_fcep: True
+
+- name: Not pregnant
+  period: 2023
+  input:
+    state_code_str: CA
+    is_pregnant: False
+    immigration_status: CITIZEN
+    is_medicaid_eligible: False
+    tax_unit:
+      tax_unit_fpg_ratio: 3.00
+  output:
+    is_chip_eligible_fcep: False
+
+- name: Income too high for FCEP
+  period: 2023
+  input:
+    state_code_str: CA
+    is_pregnant: True
+    immigration_status: CITIZEN
+    is_medicaid_eligible: False
+    tax_unit:
+      tax_unit_fpg_ratio: 3.50  # Above CA limit of 3.22
+  output:
+    is_chip_eligible_fcep: False
+
+- name: Already Medicaid eligible
+  period: 2023
+  input:
+    state_code_str: CA
+    is_pregnant: True
+    immigration_status: CITIZEN
+    is_medicaid_eligible: True
+    tax_unit:
+      tax_unit_fpg_ratio: 3.00
+  output:
+    is_chip_eligible_fcep: False
+
+- name: State without FCEP
+  period: 2023
+  input:
+    state_code_str: AK  # No FCEP in this state
+    is_pregnant: True
+    immigration_status: CITIZEN
+    is_medicaid_eligible: False
+    tax_unit:
+      tax_unit_fpg_ratio: 3.00
+  output:
+    is_chip_eligible_fcep: False
+
+- name: Undocumented immigrant not eligible
+  period: 2023
+  input:
+    state_code_str: CA
+    is_pregnant: True
+    immigration_status: UNDOCUMENTED
+    is_medicaid_eligible: False
+    tax_unit:
+      tax_unit_fpg_ratio: 3.00
+  output:
+    is_chip_eligible_fcep: False
