@@ -6,9 +6,7 @@ class il_aabd_immigration_status_eligible_person(Variable):
     entity = Person
     label = "Eligible person for Illinois Aid to the Aged, Blind or Disabled (AABD) based on immigration status"
     definition_period = MONTH
-    reference = (
-        "https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-113.10"
-    )
+    reference = "https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-113.10"
     defined_for = StateCode.IL
 
     def formula(person, period, parameters):

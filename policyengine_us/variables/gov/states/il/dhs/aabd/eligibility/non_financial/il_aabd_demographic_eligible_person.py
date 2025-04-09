@@ -19,7 +19,7 @@ class il_aabd_demographic_eligible_person(Variable):
         elderly = age >= p.elderly_age_threshold
         blind = person("is_blind", period)
         disabled = person("is_ssi_disabled", period)
-        elderly_or_blind_or_disabled = elderly | blind | disabled 
+        elderly_or_blind_or_disabled = elderly | blind | disabled
         ssi_eligible = person("is_ssi_eligible", period)
-        
-        return elderly_or_blind_or_disabled & ssi_eligible 
+
+        return elderly_or_blind_or_disabled & ssi_eligible
