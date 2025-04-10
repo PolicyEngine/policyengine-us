@@ -1,0 +1,28 @@
+- name: No income, no reduction
+  period: 2022
+  absolute_error_margin: 0
+  input: {}
+  output:
+    ok_federal_eitc_reduction: 0
+
+- name: Two children, full reduction
+  period: 2022
+  absolute_error_margin: 1
+  input:
+    people:
+      child_1:
+        age: 5
+      child_2:
+        age: 5
+      parent:
+        age: 25
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [child_1, child_2, parent]
+    households:
+      household: 
+        members: [child_1, child_2, parent]
+        state_code: OK
+  output:
+    ok_federal_eitc_reduction: 6_459
