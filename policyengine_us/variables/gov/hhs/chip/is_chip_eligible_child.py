@@ -14,15 +14,13 @@ class is_chip_eligible_child(Variable):
 
     def formula(person, period, parameters):
         # Get state code
-        state = person.household("state_code_str", period)
+        state = person.household("state_code", period)
 
         # Check age eligibility
         age = person("age", period)
         p = parameters(period).gov.hhs.chip.children
-        min_age = p.min_age[state]
-        max_age = p.max_age
 
-        is_age_eligible = (age >= min_age) & (age <= max_age)
+        is_age_eligible = (age >= p.min_age[state]) & (age <= p.max_age)
 
         # Check if state offers CHIP program for children
         income_limit = p.income_limit[state]
