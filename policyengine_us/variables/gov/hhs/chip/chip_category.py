@@ -35,15 +35,12 @@ class chip_category(Variable):
             [
                 is_child_eligible,
                 ~is_child_eligible & is_standard_pregnant_eligible,
-                ~is_child_eligible
-                & ~is_standard_pregnant_eligible
-                & is_fcep_eligible,
-                True,
+                ~is_child_eligible & ~is_standard_pregnant_eligible & is_fcep_eligible,
             ],
             [
                 CHIPCategory.CHILD,
                 CHIPCategory.PREGNANT_STANDARD,
                 CHIPCategory.PREGNANT_FCEP,
-                CHIPCategory.NONE,
             ],
+            default=CHIPCategory.NONE,
         )

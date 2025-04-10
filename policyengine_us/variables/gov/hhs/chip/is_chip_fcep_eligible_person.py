@@ -21,8 +21,7 @@ class is_chip_fcep_eligible_person(Variable):
         # Check if state offers FCEP program for pregnant women
         p = parameters(period).gov.hhs.chip.fcep
         income_limit = p.income_limit[state]
-        state_has_fcep = income_limit > 0
-
+ 
         # Check immigration status eligibility
         istatus = person("immigration_status", period)
         undocumented = istatus == istatus.possible_values.UNDOCUMENTED
