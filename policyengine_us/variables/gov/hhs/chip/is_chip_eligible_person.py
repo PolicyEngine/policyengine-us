@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class is_chip_eligible(Variable):
+class is_chip_eligible_person(Variable):
     value_type = bool
     entity = Person
     label = "Eligible for CHIP"

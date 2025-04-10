@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class is_chip_eligible_pregnant(Variable):
+class is_chip_eligible_pregnant_person(Variable):
     value_type = bool
     entity = Person
     label = "Pregnant person eligible for CHIP"
