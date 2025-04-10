@@ -14,7 +14,7 @@ class pr_actc_sum_taxes_paid(Variable):
         # line 12a-c
         taxes_to_be_halved = add(tax_unit, period, ["self_employment_tax", "additional_medicare_tax"])  
         # lines 13a-f
-        withheld_tax = tax_unit("pr_withheld_income", period)  
+        fed_tax = tax_unit("pr_federal_taxes", period)  
         
         # line 14
-        return (taxes_to_be_halved * p.fraction) + withheld_tax  
+        return (taxes_to_be_halved * p.fraction) + fed_tax  
