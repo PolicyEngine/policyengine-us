@@ -27,8 +27,12 @@ class or_liheap_payout(Variable):
 
         payout = where(
             is_region1,
-            p.payout.or_liheap_region_one[unit_size][benefit_level][utility_type],
-            p.payout.or_liheap_region_two[unit_size][benefit_level][utility_type],
+            p.payout.or_liheap_region_one[unit_size][benefit_level][
+                utility_type
+            ],
+            p.payout.or_liheap_region_two[unit_size][benefit_level][
+                utility_type
+            ],
         )
 
         return payout * electricity_multiplier
