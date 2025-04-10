@@ -14,9 +14,10 @@ class il_aabd_countable_vehicles_value(Variable):
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.il.dhs.aabd.asset.vehicle_exemption
         vehicle_count = spm_unit.household("household_vehicles_owned", period)
-        total_vehicle_value = spm_unit.household(
-            "household_vehicles_value", period
-        )* MONTHS_IN_YEAR
+        total_vehicle_value = (
+            spm_unit.household("household_vehicles_value", period)
+            * MONTHS_IN_YEAR
+        )
         avg_vehicle_value = np.zeros_like(vehicle_count)
         mask = vehicle_count != 0
         avg_vehicle_value[mask] = (
