@@ -13,4 +13,4 @@ class il_aabd_countable_asset(Variable):
     )
     defined_for = StateCode.IL
 
-    adds = "gov.states.il.dhs.aabd.asset.list"  # Do I need this? Or simply use ssi_countable_resources
+    adds = "gov.states.il.dhs.aabd.asset.list"

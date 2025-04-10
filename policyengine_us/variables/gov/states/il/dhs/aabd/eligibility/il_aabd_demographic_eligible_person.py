@@ -14,12 +14,8 @@ class il_aabd_demographic_eligible_person(Variable):
     defined_for = StateCode.IL
 
     def formula(person, period, parameters):
-        p = parameters(period).gov.states.il.dhs.aabd
-        age = person("monthly_age", period)
-        elderly = age >= p.elderly_age_threshold
-        blind = person("is_blind", period)
-        disabled = person("is_ssi_disabled", period)
-        elderly_or_blind_or_disabled = elderly | blind | disabled
-        ssi_eligible = person("is_ssi_eligible", period)
-
+        elderly_or_blind_or_disabled = person(
+            "is_ssi_aged_blind_disabled", period
+        )
+        ssi_eligible = person("ssi", period) > 0
         return elderly_or_blind_or_disabled & ssi_eligible

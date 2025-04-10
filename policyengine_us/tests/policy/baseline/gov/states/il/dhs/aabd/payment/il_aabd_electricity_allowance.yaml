@@ -1,0 +1,17 @@
+- name: Case 1, size 1, area 1.   
+  period: 2022-01
+  input:
+    spm_unit_size: 1 
+    county_str: COOK_COUNTY_IL
+    state_code: IL
+  output:
+    il_aabd_electricity_allowance: 5.55
+
+- name: Case 1, size 6, area 6.   
+  period: 2022-01
+  input:
+    spm_unit_size: 6 
+    county_str: BOND_COUNTY_IL
+    state_code: IL
+  output:
+    il_aabd_electricity_allowance: 6.7

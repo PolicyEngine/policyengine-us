@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ILAABDAREA(Enum):
+class IllinoisAABDArea(Enum):
     AREA_1 = "Area 1"
     AREA_2 = "Area 2"
     AREA_3 = "Area 3"
@@ -15,8 +15,8 @@ class ILAABDAREA(Enum):
 class il_aabd_area(Variable):
     value_type = Enum
     entity = Household
-    possible_values = ILAABDAREA
-    default_value = ILAABDAREA.AREA_1
+    possible_values = IllinoisAABDArea
+    default_value = IllinoisAABDArea.AREA_1
     definition_period = MONTH
     defined_for = StateCode.IL
     label = "Illinois Aid to the Aged, Blind or Disabled (AABD) area"
@@ -46,18 +46,18 @@ class il_aabd_area(Variable):
             area_8,
         ]
         results = [
-            ILAABDAREA.area_1,
-            ILAABDAREA.area_2,
-            ILAABDAREA.area_3,
-            ILAABDAREA.area_4,
-            ILAABDAREA.area_5,
-            ILAABDAREA.area_6,
-            ILAABDAREA.area_7,
-            ILAABDAREA.area_8,
+            IllinoisAABDArea.AREA_1,
+            IllinoisAABDArea.AREA_2,
+            IllinoisAABDArea.AREA_3,
+            IllinoisAABDArea.AREA_4,
+            IllinoisAABDArea.AREA_5,
+            IllinoisAABDArea.AREA_6,
+            IllinoisAABDArea.AREA_7,
+            IllinoisAABDArea.AREA_8,
         ]
 
         return select(
             conditions,
             results,
-            default=ILAABDAREA.AREA_1,
+            default=IllinoisAABDArea.AREA_1,
         )
