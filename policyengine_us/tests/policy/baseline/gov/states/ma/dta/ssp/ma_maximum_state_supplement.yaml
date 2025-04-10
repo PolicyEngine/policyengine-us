@@ -26,13 +26,13 @@
       household:
         members: [person_disabled]
         state_code: MA
-        state_living_arrangement: FULL_COST
+        ma_state_living_arrangement: FULL_COST
     marital_units:
-      munit:
+      unit:
         members: [person_disabled]
   output:
     # Suppose p["MA"]["FULL_COST"]["DISABLED"]["1"] = 114.39 monthly => ~1373 annual
-    maximum_state_supplement: 1_373
+    ma_maximum_state_supplement: 1_373
 
 - name: Couple both aged, FULL_COST
   period: 2022
@@ -57,14 +57,14 @@
       household:
         members: [spouse1, spouse2]
         state_code: MA
-        state_living_arrangement: FULL_COST
+        ma_state_living_arrangement: FULL_COST
     marital_units:
       unit:
         members: [spouse1, spouse2]
   output:
     # Suppose p["MA"]["FULL_COST"]["AGED"]["2"] => 100.86 monthly each => ~1_210 annual each
     # => final = [1_210, 1_210]
-    maximum_state_supplement: [1_210, 1_210]
+    ma_maximum_state_supplement: [1_210, 1_210]
 
 - name: One aged, one blind, FULL_COST
   period: 2022
@@ -89,7 +89,7 @@
       household:
         members: [person_1, person_2]
         state_code: MA
-        state_living_arrangement: FULL_COST
+        ma_state_living_arrangement: FULL_COST
     marital_units:
       unit:
         members: [person_1, person_2]
@@ -98,4 +98,4 @@
     # p["MA"]["FULL_COST"]["BLIND"]["2"] might be 360.24 monthly => ~4_323 each for the blind spouse
     # The code's logic is 'max_()' for each person, so spouse1 gets 1_210, spouse2 gets 4_323,
     # but the code then sums them up and divides by 2 => ~2_766 each. We'll guess ~[2_766, 2_766].
-    maximum_state_supplement: [2_766, 2_766]
+    ma_maximum_state_supplement: [2_766, 2_766]

@@ -11,7 +11,7 @@
         real_estate_taxes: 22_000
         deductible_interest_expense: 30_000
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
     spm_units:
       spm_unit:
@@ -40,7 +40,7 @@
         employment_income: 14_000
         rent: 6_000
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
     spm_units:
       spm_unit:
@@ -68,7 +68,7 @@
         employment_income: 15_000
         rent: 6_000
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
     spm_units:
       spm_unit:
@@ -96,7 +96,7 @@
         employment_income: 25_000
         rent: 6_000
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
     spm_units:
       spm_unit:
@@ -124,13 +124,13 @@
         employment_income: 16_000
         real_estate_taxes: 12_000
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
       person2:
         is_tax_unit_spouse: true
         age: 65
         ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
+        ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
     spm_units:
       spm_unit:
