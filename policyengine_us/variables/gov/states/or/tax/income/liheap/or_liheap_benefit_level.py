@@ -13,11 +13,11 @@ class or_liheap_benefit_level(Variable):
     def formula(spm_unit, period, parameters):
         income = add(spm_unit, period, ["irs_gross_income"])
         threshold = spm_unit("or_liheap_income_threshold", period)
-        p = parameters(period).gov.states["or"].liheap
+        p = parameters(period).gov.states["or"].mder.liheap
 
-        level_one = threshold * p.benefit_level_multiplier
-        level_two = threshold * p.benefit_level_multiplier * 2
-        level_three = threshold * p.benefit_level_multiplier * 3
+        level_one = threshold * p.or_liheap_benefit_level_multiplier
+        level_two = threshold * p.or_liheap_benefit_level_multiplier * 2
+        level_three = threshold * p.or_liheap_benefit_level_multiplier * 3
 
         return select(
             [

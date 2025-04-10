@@ -15,7 +15,7 @@ class or_liheap_payout(Variable):
         is_region1 = spm_unit("or_liheap_in_region_one", period)
         electricity_type = spm_unit("or_liheap_electricity_type", period)
 
-        p = parameters(period).gov.states["or"].liheap
+        p = parameters(period).gov.states["or"].mder.liheap
 
         # Applies multiplier to the payout when electricity is used for both heating and cooling (not an official policy parameter).
         electricity_multiplier = where(
@@ -27,8 +27,8 @@ class or_liheap_payout(Variable):
 
         payout = where(
             is_region1,
-            p.payout.region_one[unit_size][benefit_level][utility_type],
-            p.payout.region_two[unit_size][benefit_level][utility_type],
+            p.payout.or_liheap_region_one[unit_size][benefit_level][utility_type],
+            p.payout.or_liheap_region_two[unit_size][benefit_level][utility_type],
         )
 
         return payout * electricity_multiplier
