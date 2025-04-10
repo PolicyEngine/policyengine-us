@@ -39,7 +39,7 @@ class is_chip_fcep_eligible_person(Variable):
 
         return (
             is_pregnant
-            & state_has_fcep
+            # & state_has_fcep
             & immigration_eligible
             & ~medicaid_eligible
             & income_eligible
