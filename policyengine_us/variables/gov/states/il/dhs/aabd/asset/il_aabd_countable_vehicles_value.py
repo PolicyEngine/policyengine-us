@@ -27,11 +27,10 @@ class il_aabd_countable_vehicles_value(Variable):
             "il_aabd_has_essential_use_vehicle", period
         )
         # Household can exclude one vehicle completely regardless of value if it has an essential vehicle.
-        full_exemption = where(has_essential_vehicle, avg_vehicle_value, 0)
+        full_exemption = avg_vehicle_value
         # If household does not meet essential vehicle requirements, exempt one vehicle up to $4500 in household
-        capped_vehicle_value = min_(avg_vehicle_value, p.amount)
-        partial_exemption = where(
-            ~has_essential_vehicle, capped_vehicle_value, 0
+        partial_exemption = min_(avg_vehicle_value, p.amount)
+        vehicle_exemption = where(
+            has_essential_vehicle, full_exemption, partial_exemption
         )
-        vehicle_exemption = full_exemption + partial_exemption
         return max_(total_vehicle_value - vehicle_exemption, 0)
