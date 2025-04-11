@@ -8,6 +8,11 @@ values:
 metadata:
   period: year
   unit: currency-USD
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 1
   label: Arkansas post secondary eduction tuition deduction two-year college weighted average tuition
   reference:
     - title: Arkansas Individual Income Tax Return Deduction for Tution Paid to Post-Secondary Educational Institutions AR1075 Rev.2022
