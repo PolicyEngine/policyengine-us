@@ -10,7 +10,7 @@ class il_aabd_countable_income(Variable):
     unit = USD
     definition_period = MONTH
     defined_for = StateCode.IL
-    
+
     adds = [
         "il_aabd_countable_earned_income",
         "il_aabd_countable_unearned_income",

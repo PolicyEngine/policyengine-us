@@ -4,9 +4,7 @@ from policyengine_us.model_api import *
 class il_aabd_expense_exemption_person(Variable):
     value_type = float
     entity = Person
-    label = (
-        "Illinois Aid to the Aged, Blind or Disabled (AABD) expense exemption per person"
-    )
+    label = "Illinois Aid to the Aged, Blind or Disabled (AABD) expense exemption per person"
     unit = USD
     definition_period = MONTH
     defined_for = StateCode.IL
@@ -15,9 +13,9 @@ class il_aabd_expense_exemption_person(Variable):
     )
 
     # def formula(person, period, parameters):
-    #     withholding taxes, 
-    #     social security tax, 
-    #     transportation, 
-    #     child care expense, 
+    #     withholding taxes,
+    #     social security tax,
+    #     transportation,
+    #     child care expense,
     #     rental expense,
-    #   
+    #

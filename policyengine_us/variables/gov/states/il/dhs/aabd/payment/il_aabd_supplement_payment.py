@@ -16,6 +16,6 @@ class il_aabd_supplement_payment(Variable):
 
     adds = [
         "il_aabd_utility_allowance",
-        #"il_aabd_personal_allowance",
+        # "il_aabd_personal_allowance",
         # laundry, telephone, shelter,
     ]
