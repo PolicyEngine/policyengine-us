@@ -18,4 +18,6 @@ class il_aabd_demographic_eligible_person(Variable):
             "is_ssi_aged_blind_disabled", period
         )
         ssi_eligible = person("ssi", period) > 0
+        # Use "is_ssi_eligible_individual"
+        # I can combined this file and immigration eligible variable
         return elderly_or_blind_or_disabled & ssi_eligible
