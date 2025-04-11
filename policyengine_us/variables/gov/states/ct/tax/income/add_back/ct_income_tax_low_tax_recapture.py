@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ct_income_tax_lower_tax_recapture(Variable):
+class ct_income_tax_low_tax_recapture(Variable):
     value_type = float
     entity = TaxUnit
     label = "Connecticut income tax recapture at low brackets"

@@ -16,28 +16,30 @@ class ct_pension_annuity_subtraction(Variable):
         head = person("is_tax_unit_head", period)
         spouse = person("is_tax_unit_spouse", period)
         agi = tax_unit("adjusted_gross_income", period)
-        
-        p = parameters(period).gov.states.ct.tax.income.subtractions.pensions_or_annuity
 
-        # Determine the appropriate rate parameter based on filing status
-        rate_param = select(
-            [
-                filing_status == status.SINGLE or filing_status == status.SEPARATE or filing_status == status.HEAD_OF_HOUSEHOLD,
-                filing_status == status.JOINT or filing_status == status.SURVIVING_SPOUSE,
-            ],
-            [
-                p.non_joint,
-                p.joint,
-            ]
+        p = parameters(
+            period
+        ).gov.states.ct.tax.income.subtractions.pensions_or_annuity
+
+        # Get the rate based on AGI and filing status
+        is_joint = (filing_status == status.JOINT) | (
+            filing_status == status.SURVIVING_SPOUSE
         )
-        
-        # Get the rate based on AGI
-        rate = rate_param.calc(agi)
-        
+        is_non_joint = (
+            (filing_status == status.SINGLE)
+            | (filing_status == status.SEPARATE)
+            | (filing_status == status.HEAD_OF_HOUSEHOLD)
+        )
+
+        joint_rate = p.joint.calc(agi)
+        non_joint_rate = p.non_joint.calc(agi)
+
+        rate = select([is_joint, is_non_joint], [joint_rate, non_joint_rate])
+
         # Apply the rate to eligible pension income
         head_or_spouse = head | spouse
         pension_income = person("taxable_pension_income", period)
         eligible_pension = pension_income * head_or_spouse
         total_pension = tax_unit.sum(eligible_pension)
-        
+
         return total_pension * rate
