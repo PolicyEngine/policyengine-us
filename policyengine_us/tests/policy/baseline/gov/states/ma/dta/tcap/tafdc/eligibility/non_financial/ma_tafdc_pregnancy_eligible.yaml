@@ -25,7 +25,7 @@
     state_code: MA
     age: 19
     current_pregnancy_month: 1
-    is_in_k12_school: true
+    is_in_secondary_school: true
   output:
     ma_tafdc_pregnancy_eligible: true
 
@@ -46,6 +46,17 @@
     state_code: MA
     age: 19
     current_pregnancy_month: 1
-    is_in_k12_school: false
+    is_in_secondary_school: false
   output:
     ma_tafdc_pregnancy_eligible: false
+
+- name: Case 3, eligible teen parent.
+  period: 2023
+  input:
+    is_pregnant: true
+    state_code: MA
+    age: 19
+    current_pregnancy_month: 1
+    is_in_secondary_school: true
+  output:
+    ma_tafdc_pregnancy_eligible: true
