@@ -1,0 +1,13 @@
+- name: Lives in subsidized housing
+  period: 2022
+  input:
+    housing_assistance: 100
+  output:
+    subsidized_housing: true
+
+- name: Does not Live in subsidized housing
+  period: 2024
+  input:
+    housing_assistance: 0
+  output:
+    subsidized_housing: false

@@ -8,7 +8,8 @@ class or_liheap_eligibility(Variable):
     definition_period = YEAR
     reference = (
         "https://liheapch.acf.hhs.gov/Directors/Eligibility/OR_Income_def_2013.pdf"
-        "https://liheapch.acf.hhs.gov/profiles/Oregon.htm"
+        "https://liheapch.acf.hhs.gov/profiles/Oregon.htm" 
+        "https://liheapch.acf.hhs.gov/tables/FY2015/subsidize.htm#OR"
     )
 
     defined_for = StateCode.OR
