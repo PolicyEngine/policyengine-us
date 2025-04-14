@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ma_hecs_eligibility(Variable):
+class ma_liheap_hecs_threshold(Variable):
     value_type = bool
     entity = SPMUnit
     definition_period = YEAR
@@ -12,7 +12,7 @@ class ma_hecs_eligibility(Variable):
         utility_type = spm_unit("utility_type", period)
         last_year_cost = spm_unit("last_year_energy_cost", period)
 
-        p = parameters(period).gov.states.ma.tax.income.liheap
-        threshold = p.hecs_thresholds[utility_type]
+        p = parameters(period).gov.states.ma.mder.liheap
+        threshold = p.ma_liheap_hecs_thresholds[utility_type]
 
         return last_year_cost > threshold

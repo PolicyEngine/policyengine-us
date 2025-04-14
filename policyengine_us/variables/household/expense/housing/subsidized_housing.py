@@ -6,7 +6,7 @@ class subsidized_housing(Variable):
     entity = SPMUnit
     label = "Household lives in subsidized housing"
     definition_period = YEAR
-    reference = "https://www.masslegalservices.org/system/files/blog/FY_2022_LIHEAP_Income_Eligibility_and_Benefit_Chart_APRIL_2022_UTILITY_Increase.pdf"
+    reference = "https://liheapch.acf.hhs.gov/tables/FY2015/subsidize.htm"
 
     def formula(spm_unit, period, parameters):
         housing_assistance = spm_unit("housing_assistance", period)
