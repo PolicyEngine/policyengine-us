@@ -7,7 +7,7 @@ class il_aabd_asset_eligible(Variable):
     definition_period = MONTH
     label = "Eligible for Illinois Aid to the Aged, Blind or Disabled (AABD) due to asset"
     reference = (
-        "https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-113.141",
+        "https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-113.142",
     )
     defined_for = StateCode.IL
 
@@ -21,3 +21,5 @@ class il_aabd_asset_eligible(Variable):
         asset_disregard = p1 + pn * max_(size - 2, 0)
 
         return countable_asset <= asset_disregard
+
+    # TODO: Change this to person level, using count_dependent +1 as size

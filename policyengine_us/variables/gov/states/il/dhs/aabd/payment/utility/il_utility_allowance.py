@@ -9,7 +9,7 @@ class il_aabd_utility_allowance(Variable):
     )
     unit = USD
     definition_period = MONTH
-    defined_for = StateCode.IL
+    defined_for = StateCode.IL  ## defined_for = "il_aabd_eligible_person"
     reference = (
         "https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-113.259",
     )
@@ -26,4 +26,4 @@ class il_aabd_utility_allowance(Variable):
             ]
         )
 
-        return sum_of_allowances
+        return sum_of_allowances  ### change this to person level

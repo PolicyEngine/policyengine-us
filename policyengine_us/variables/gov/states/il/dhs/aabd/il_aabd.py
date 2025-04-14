@@ -16,5 +16,5 @@ class il_aabd(Variable):
         grant_amount = spm_unit("il_aabd_grant_amount", period)
         supplement_payment = spm_unit("il_aabd_supplement_payment", period)
         countable_income = spm_unit("il_aabd_countable_income", period)
-
-        return max_(grant_amount - countable_income, 0) + supplement_payment
+        total_needs = grant_amount + supplement_payment
+        return max_(total_needs - countable_income, 0)  ### person level

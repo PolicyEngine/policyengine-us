@@ -14,4 +14,6 @@ class il_aabd_eligible_(Variable):
         ssi_standard_eligible = add(
             spm_unit, period["is_ssi_eligible_individual"]
         )
-        return asset_eligible & ssi_standard_eligible
+        return (
+            asset_eligible & ssi_standard_eligible
+        )  ### change this to person level
