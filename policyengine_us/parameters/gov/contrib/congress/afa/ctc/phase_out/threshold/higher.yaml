@@ -1,4 +1,4 @@
-description: The AFA phases out the other dependent credit for filers with MAGI above these thresholds.
+description: Senator Michael Bennet proposed an other dependent credit which phases out fully for filers with AGI above these thresholds, based on filing status.
 SINGLE:
   2025-01-01: 300_000
 JOINT:
@@ -12,7 +12,7 @@ SURVIVING_SPOUSE:
 metadata:
   unit: currency-USD
   period: year
-  label: AFA other dependent credit phase-out threshold
+  label: AFA CTC phase-out higher threshold
   breakdown:
     - filing_status
   reference:
