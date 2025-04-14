@@ -4,7 +4,7 @@
     spm_unit_size: 1
     state_code: OR
     irs_gross_income: 25_000
-    subsidized_housing: false
+    housing_assistance: 0
     or_liheap_heat_in_rent: false
   output:
     or_liheap_eligibility: true
@@ -15,7 +15,7 @@
     spm_unit_size: 2
     state_code: OR
     irs_gross_income: 90_000
-    subsidized_housing: false
+    housing_assistance: 0
     or_liheap_heat_in_rent: false
   output:
     or_liheap_eligibility: false
@@ -26,7 +26,7 @@
     spm_unit_size: 3
     state_code: OR
     irs_gross_income: 40_000
-    subsidized_housing: true
+    housing_assistance: 500
     or_liheap_heat_in_rent: true
   output:
     or_liheap_eligibility: false
@@ -37,7 +37,7 @@
     spm_unit_size: 2
     state_code: OR
     irs_gross_income: 30_000
-    subsidized_housing: true
+    housing_assistance: 100
     or_liheap_heat_in_rent: false
   output:
     or_liheap_eligibility: true
@@ -48,7 +48,7 @@
     spm_unit_size: 4
     state_code: OR
     irs_gross_income: 50_000
-    subsidized_housing: false
+    housing_assistance: 0
     or_liheap_heat_in_rent: true
   output:
     or_liheap_eligibility: true

@@ -8,7 +8,7 @@ class or_liheap_eligibility(Variable):
     definition_period = YEAR
     reference = (
         "https://liheapch.acf.hhs.gov/Directors/Eligibility/OR_Income_def_2013.pdf"
-        "https://liheapch.acf.hhs.gov/profiles/Oregon.htm" 
+        "https://liheapch.acf.hhs.gov/profiles/Oregon.htm"
         "https://liheapch.acf.hhs.gov/tables/FY2015/subsidize.htm#OR"
     )
 
@@ -17,10 +17,11 @@ class or_liheap_eligibility(Variable):
     def formula(spm_unit, period, parameters):
         income = add(spm_unit, period, ["irs_gross_income"])
         threshold = spm_unit("or_liheap_income_threshold", period)
-        is_subsidized = spm_unit("subsidized_housing", period)
         heat_in_rent = spm_unit("or_liheap_heat_in_rent", period)
         pays_own_heat = ~heat_in_rent
+        housing_assistance = spm_unit("housing_assistance", period)
+        receives_housing_assistance = housing_assistance > 0
 
         return (income <= threshold) & (
-            (~is_subsidized) | (is_subsidized & pays_own_heat)
+            ~receives_housing_assistance | pays_own_heat
         )

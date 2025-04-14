@@ -12,7 +12,7 @@
         members: [person1, person2]
         utility_type: NATURAL_GAS
         or_liheap_heat_in_rent: false
-        subsidized_housing: false
+        housing_assistance: 0
     households:
       household:
         members: [person1, person2]
@@ -38,7 +38,7 @@
         members: [person1]
         utility_type: ELECTRICITY
         or_liheap_heat_in_rent: false
-        subsidized_housing: false
+        housing_assistance: 0
         or_liheap_electricity_type: BOTH
     households:
       household:
@@ -71,7 +71,7 @@
         members: [person1, person2, person3, person4]
         utility_type: NATURAL_GAS
         or_liheap_heat_in_rent: false
-        subsidized_housing: true
+        housing_assistance: 100
     households:
       household:
         members: [person1, person2, person3, person4]
@@ -99,7 +99,7 @@
         members: [person1, person2]
         utility_type: ELECTRICITY
         or_liheap_heat_in_rent: true
-        subsidized_housing: true
+        housing_assistance: 500
     households:
       household:
         members: [person1, person2]
