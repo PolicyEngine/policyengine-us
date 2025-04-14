@@ -21,5 +21,3 @@ class il_aabd_asset_eligible(Variable):
         asset_disregard = p1 + pn * max_(size - 2, 0)
 
         return countable_asset <= asset_disregard
-
-    # TODO: Change this to person level, using count_dependent +1 as size
