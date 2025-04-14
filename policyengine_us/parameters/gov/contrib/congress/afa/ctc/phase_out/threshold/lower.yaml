@@ -1,0 +1,20 @@
+description: The AFA phases out the other dependent credit for filers with MAGI above these thresholds.
+SINGLE:
+  2025-01-01: 112_500
+JOINT:
+  2025-01-01: 150_000
+SEPARATE:
+  2025-01-01: 112_500
+HEAD_OF_HOUSEHOLD:
+  2025-01-01: 112_500
+SURVIVING_SPOUSE:
+  2025-01-01: 150_000
+metadata:
+  unit: currency-USD
+  period: year
+  label: AFA other dependent credit phase-out threshold
+  breakdown:
+    - filing_status
+  reference:
+    - title: American Family Act of 2025
+      href: https://www.bennet.senate.gov/wp-content/uploads/2025/04/American-Family-Act-2025.pdf#page=28
