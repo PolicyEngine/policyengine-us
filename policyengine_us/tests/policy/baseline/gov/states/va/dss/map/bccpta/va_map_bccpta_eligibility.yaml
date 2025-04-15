@@ -1,0 +1,27 @@
+- name: Only eligible if not eligible for any other program.
+  period: 2023
+  input:
+    state_code: VA
+    va_map_famis_eligibility: false
+    va_map_pregnant_eligibility: false
+    va_map_ssi_eligiblity: false
+    va_map_abd_eligibility: false
+    va_map_mb_qi_eligibility: false
+    va_map_mb_qmb_eligibility: false
+    va_map_mb_slmb_eligibility: false
+  output:
+    va_map_bccpta_eligibility: true
+
+- name: Only eligible if not eligible for any other program.
+  period: 2023
+  input:
+    state_code: VA
+    va_map_famis_eligibility: false
+    va_map_pregnant_eligibility: false
+    va_map_ssi_eligiblity: false
+    va_map_abd_eligibility: true
+    va_map_mb_qi_eligibility: false
+    va_map_mb_qmb_eligibility: false
+    va_map_mb_slmb_eligibility: false
+  output:
+    va_map_bccpta_eligibility: false
