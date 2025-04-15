@@ -3,6 +3,7 @@ values:
   2021-01-01:
     #- pension_income # exempt
     - social_security
+    - ssi
     - disability_benefits
     #- veterans_benefits # exempt
     - workers_compensation
@@ -13,7 +14,7 @@ values:
     #- child_support_received # exempt 
     - dividend_income
     - interest_income
-    #- rental_income # could be considered earned income if the individual is actively engaged in the management of the property
+    #- rental_income # considered earned income if the individual is actively engaged in the management of the property
  
 metadata:
   unit: list

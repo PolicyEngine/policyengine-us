@@ -13,5 +13,5 @@ class il_aabd_total_needs(Variable):
         "il_aabd_grant_amount",
         "il_aabd_utility_allowance",
         "il_aabd_personal_allowance",
-        # laundry, telephone, shelter,
+        "il_aabd_shelter_allowance",
     ]

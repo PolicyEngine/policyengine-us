@@ -12,7 +12,7 @@ class il_aabd_earned_income_after_exemption_person(Variable):
     defined_for = StateCode.IL
 
     def formula(person, period, parameters):
-        p = parameters(period).gov.states.il.dhs.aabd
+        p = parameters(period).gov.states.il.dhs.aabd.income.exemption
         gross_earned_income = person("il_aabd_gross_earned_income", period)
         expense_exemption = person("il_aabd_expense_exemption_person", period)
         adjust_income = max_(gross_earned_income, expense_exemption)
@@ -21,18 +21,20 @@ class il_aabd_earned_income_after_exemption_person(Variable):
         blind = person("is_blind", period)
         disabled = person("is_ssi_disabled", period)
         elderly_or_disabled = elderly | disabled
-        income_after_flat_exemption = max_(
-            adjust_income - p.income.exemption.flat, 0
+        income_after_flat_exemption = max_(adjust_income - p.flat, 0)
+        blind_income_after_exemption = (
+            income_after_flat_exemption
+            - p.blind.calc(income_after_flat_exemption)
+        )
+        elderly_or_disabled_income_after_exemption = (
+            income_after_flat_exemption
+            - p.elderly_or_disabled.calc(income_after_flat_exemption)
         )
         return select(
             [blind, elderly_or_disabled],
             [
-                income_after_flat_exemption
-                - p.income.exemption.blind.calc(income_after_flat_exemption),
-                income_after_flat_exemption
-                - p.income.exemption.elderly_or_disabled.calc(
-                    income_after_flat_exemption
-                ),
+                blind_income_after_exemption,
+                elderly_or_disabled_income_after_exemption,
             ],
             default=0,
         )

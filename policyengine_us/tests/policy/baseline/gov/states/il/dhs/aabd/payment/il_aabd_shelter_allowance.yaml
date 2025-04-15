@@ -1,0 +1,17 @@
+- name: Case 1, pays rent.  
+  period: 2022
+  input: 
+    rent: 1_000
+    housing_cost: 0
+    state_code: IL
+  output:
+    il_aabd_shelter_allowance: 97*12
+
+- name: Case 2, lives in homestead property.  
+  period: 2022-01
+  input: 
+    rent: 0
+    housing_cost: 50
+    state_code: IL
+  output:
+    il_aabd_shelter_allowance: 50

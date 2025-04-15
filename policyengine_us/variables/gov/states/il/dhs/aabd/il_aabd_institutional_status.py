@@ -2,15 +2,15 @@ from policyengine_us.model_api import *
 
 
 class IllinoisAABDInstitutionalStatus(Enum):
-    A = "A"  # Institutional Status A
-    B = "B"  # Institutional Status B
-    C = "C"  # Institutional Status C
-    D = "D"  # Institutional Status D
-    E = "E"  # Institutional Status E
-    F = "F"  # Institutional Status F
-    G = "G"  # Institutional Status G
-    H = "H"  # Institutional Status H
-    I = "I"  # Institutional Status I
+    A = "A"  # Public Institution (Ineligible)
+    B = "B"  # Institution for Mental Diseases (IMD) Ages 22-64 (Ineligible)
+    C = "C"  # Public Educational/Vocational Training Institution (MANG Only)
+    D = "D"  # Correctional/Penal Institution (Ineligible)
+    E = "E"  # Certified Private Psychiatric Hospital (Age 65+)
+    F = "F"  # Accredited Private Psychiatric Hospital (Under Age 21)
+    G = "G"  # Private Institution (Life Care Contract, Ineligible)
+    H = "H"  # Private Institution (Prepaid Care Not Consumed, Ineligible)
+    I = "I"  # Non-Compliant Facility (Ineligible)
     NONE = "None"
 
 

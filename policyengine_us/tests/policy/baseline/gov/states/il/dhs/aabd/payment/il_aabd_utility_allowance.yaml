@@ -7,7 +7,8 @@
   output:
     il_aabd_utility_allowance: 81.6
   # 3.8 + 5.55 + 3 + 23.35 + 16.55 + 11.9 + 17.45
-- name: Case 1, size 6, area 6.   
+
+- name: Case 2, size 6, area 6.   
   period: 2022-01
   input:
     spm_unit_size: 6 
@@ -16,3 +17,13 @@
   output:
     il_aabd_utility_allowance: 86.3
   # 7 + 6.7 + 7.1 + 12.35 + 19.1 + 13.2 + 20.85
+
+- name: Case 3, size 25, area 1.   
+  period: 2022-01
+  input:
+    spm_unit_size: 25 
+    county_str: COOK_COUNTY_IL
+    state_code: IL
+  output:
+    il_aabd_utility_allowance: 111.1
+  # 9.55 + 9.45 + 9.3 + 25.1 + 19.1 + 16.15 + 22.45

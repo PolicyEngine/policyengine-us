@@ -16,8 +16,9 @@ class il_aabd_asset_eligible(Variable):
         size = spm_unit("spm_unit_size", period)
         countable_asset = spm_unit("il_aabd_countable_asset", period)
         capped_size = min_(size, 2)
+        reduced_unit_size = max_(size - 2, 0)
         p1 = p.base[capped_size]
         pn = p.additional
-        asset_disregard = p1 + pn * max_(size - 2, 0)
+        asset_disregard = p1 + pn * reduced_unit_size
 
         return countable_asset <= asset_disregard
