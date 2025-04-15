@@ -13,7 +13,7 @@ class is_chip_eligible_fcep(Variable):
 
     def formula(person, period, parameters):
         # Get state code
-        state = person.household("state_code_str", period)
+        state = person.household("state_code", period)
 
         # Check pregnancy status
         is_pregnant = person("is_pregnant", period)
