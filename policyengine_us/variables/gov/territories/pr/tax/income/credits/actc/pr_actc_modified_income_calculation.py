@@ -28,9 +28,11 @@ class pr_actc_modified_income_calculation(Variable):
         )
 
         # calculate credit based on income earned over the threshold, lines 5 & 6
-        modified_inc = modified_agi - threshold 
+        modified_inc = modified_agi - threshold
         multiple = p.income_multiple
         # turn it into a multiple of 1000 if not already
-        modified_inc = int(ceil(modified_inc / multiple)[0] * multiple) * p.income_rate
-        
+        modified_inc = (
+            int(ceil(modified_inc / multiple)[0] * multiple) * p.income_rate
+        )
+
         return modified_inc

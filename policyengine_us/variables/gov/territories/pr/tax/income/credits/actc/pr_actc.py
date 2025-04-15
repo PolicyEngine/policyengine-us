@@ -12,10 +12,12 @@ class pr_actc(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.territories.pr.tax.income.credits.actc
         num_children = tax_unit("ctc_qualifying_children", period)
-        
-        credit_amt = num_children * p.amount # line 2
-        modified_inc = tax_unit("pr_actc_modified_income_calculation", period) # lines 5-6
-        ctc_amount = tax_unit("pr_ctc", period) # CTC + ODC amount, lines 7-9
+
+        credit_amt = num_children * p.amount  # line 2
+        modified_inc = tax_unit(
+            "pr_actc_modified_income_calculation", period
+        )  # lines 5-6
+        ctc_amount = tax_unit("pr_ctc", period)  # CTC + ODC amount, lines 7-9
 
         # earned income method to calculate credit amount
         # if modified agi > threshold -> minimum of the two amounts, lines 10 and 11
@@ -30,10 +32,12 @@ class pr_actc(Variable):
                 min(credit_amt, ctc_amount - modified_inc),
             ],
         )
-        
+
         # another calculation of the credit through taxes paid
-        taxes_paid = tax_unit("pr_actc_sum_taxes_paid", period) # lines 12a-14
-        taxes_paid = taxes_paid - tax_unit("pr_additional_medicare_tax_withheld", period)  # like a credit
+        taxes_paid = tax_unit("pr_actc_sum_taxes_paid", period)  # lines 12a-14
+        taxes_paid = taxes_paid - tax_unit(
+            "pr_additional_medicare_tax_withheld", period
+        )  # like a credit
 
         # line 15
         excess_ss_tax = tax_unit("pr_excess_social_security_withheld", period)

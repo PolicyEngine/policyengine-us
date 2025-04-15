@@ -11,9 +11,13 @@ class pr_actc_sum_taxes_paid(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.territories.pr.tax.income.credits.actc
         # line 12a-c
-        taxes_to_be_halved = add(tax_unit, period, ["self_employment_tax", "additional_medicare_tax"])  
+        taxes_to_be_halved = add(
+            tax_unit,
+            period,
+            ["self_employment_tax", "additional_medicare_tax"],
+        )
         # lines 13a-f
-        fed_tax = tax_unit("pr_federal_taxes", period)  
-        
+        fed_tax = tax_unit("pr_federal_taxes", period)
+
         # line 14
-        return (taxes_to_be_halved * p.fraction) + fed_tax  
+        return (taxes_to_be_halved * p.fraction) + fed_tax

@@ -9,7 +9,7 @@ class pr_agi_greater_than_threshold(Variable):
     reference = "https://www.irs.gov/pub/irs-pdf/f1040ss.pdf#page=2"
 
     def formula(tax_unit, period, parameters):
-        # line 5 
+        # line 5
         p = parameters(period).gov.territories.pr.tax.income.credits.actc
         modified_agi = tax_unit("pr_modified_agi", period)
         filing_status = tax_unit("filing_status", period)
@@ -25,4 +25,4 @@ class pr_agi_greater_than_threshold(Variable):
             ],
         )
 
-        return (modified_agi > threshold)
+        return modified_agi > threshold

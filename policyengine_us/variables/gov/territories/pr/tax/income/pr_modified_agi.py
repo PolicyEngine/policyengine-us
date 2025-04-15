@@ -9,4 +9,4 @@ class pr_modified_agi(Variable):
     definition_period = YEAR
     reference = ""
 
-    #adds = "gov.states.co.tax.income.credits.sales_tax_refund.magi_sources"
+    # adds = "gov.states.co.tax.income.credits.sales_tax_refund.magi_sources"
