@@ -10,7 +10,7 @@ class pr_agi_greater_than_threshold(Variable):
 
     def formula(tax_unit, period, parameters):
         # line 5 
-        p = parameters(period).gov.territories.pr.tax.income.credits.ctc
+        p = parameters(period).gov.territories.pr.tax.income.credits.actc
         modified_agi = tax_unit("pr_modified_agi", period)
         filing_status = tax_unit("filing_status", period)
 

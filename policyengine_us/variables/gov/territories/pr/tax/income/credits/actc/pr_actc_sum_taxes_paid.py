@@ -10,7 +10,6 @@ class pr_actc_sum_taxes_paid(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.territories.pr.tax.income.credits.actc
-        # check me: self-employment is person level
         # line 12a-c
         taxes_to_be_halved = add(tax_unit, period, ["self_employment_tax", "additional_medicare_tax"])  
         # lines 13a-f

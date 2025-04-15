@@ -33,7 +33,7 @@ class pr_actc(Variable):
         
         # another calculation of the credit through taxes paid
         taxes_paid = tax_unit("pr_actc_sum_taxes_paid", period) # lines 12a-14
-        taxes_paid = taxes_paid - tax_unit("pr_additional_medicare_tax_withheld", period) # TODO - make me
+        taxes_paid = taxes_paid - tax_unit("pr_additional_medicare_tax_withheld", period)  # like a credit
 
         # line 15
         excess_ss_tax = tax_unit("pr_excess_social_security_withheld", period)

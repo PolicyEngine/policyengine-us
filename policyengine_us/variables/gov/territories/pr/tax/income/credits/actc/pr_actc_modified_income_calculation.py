@@ -12,7 +12,7 @@ class pr_actc_modified_income_calculation(Variable):
 
     # only compute if modified_agi > threshold
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.territories.pr.tax.income.credits
+        p = parameters(period).gov.territories.pr.tax.income.credits.actc
         modified_agi = tax_unit("pr_modified_agi", period)
         filing_status = tax_unit("filing_status", period)
 
@@ -22,15 +22,15 @@ class pr_actc_modified_income_calculation(Variable):
                 filing_status != filing_status.possible_values.JOINT,
             ],
             [
-                p.ctc.income_limit_joint,
-                p.ctc.income_limit_all_other,
+                p.income_limit_joint,
+                p.income_limit_all_other,
             ],
         )
 
         # calculate credit based on income earned over the threshold, lines 5 & 6
         modified_inc = modified_agi - threshold 
-        multiple = p.actc.income_multiple
+        multiple = p.income_multiple
         # turn it into a multiple of 1000 if not already
-        modified_inc = int(ceil(modified_inc / multiple)[0] * multiple) * p.actc.income_rate
+        modified_inc = int(ceil(modified_inc / multiple)[0] * multiple) * p.income_rate
         
         return modified_inc
