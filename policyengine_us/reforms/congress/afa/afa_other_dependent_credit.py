@@ -14,6 +14,7 @@ def create_afa_other_dependent_credit() -> Reform:
             "The standalone dependent credit in respect of this person."
         )
         definition_period = YEAR
+        reference = "https://www.bennet.senate.gov/wp-content/uploads/2025/04/American-Family-Act-2025.pdf"
 
         def formula(tax_unit, period, parameters):
             maximum_amount = add(
@@ -45,6 +46,7 @@ def create_afa_other_dependent_credit() -> Reform:
         label = "Other Dependent Credit Phase-Out"
         unit = USD
         definition_period = YEAR
+        reference = "https://www.bennet.senate.gov/wp-content/uploads/2025/04/American-Family-Act-2025.pdf"
 
         def formula(tax_unit, period, parameters):
             # TCJA's phase-out changes are purely parametric so don't require
@@ -69,6 +71,7 @@ def create_afa_other_dependent_credit() -> Reform:
         unit = USD
         documentation = "Reduction of the total CTC due to income."
         definition_period = YEAR
+        reference = "https://www.bennet.senate.gov/wp-content/uploads/2025/04/American-Family-Act-2025.pdf"
 
         def formula(tax_unit, period, parameters):
             # TCJA's phase-out changes are purely parametric so don't require
@@ -93,6 +96,7 @@ def create_afa_other_dependent_credit() -> Reform:
         unit = USD
         documentation = "Reduction of the total CTC due to income."
         definition_period = YEAR
+        reference = "https://www.bennet.senate.gov/wp-content/uploads/2025/04/American-Family-Act-2025.pdf"
 
         def formula(tax_unit, period, parameters):
             # TCJA's phase-out changes are purely parametric so don't require
@@ -119,7 +123,7 @@ def create_afa_other_dependent_credit() -> Reform:
             "The portion of the Child Tax Credit that is refundable."
         )
         definition_period = YEAR
-        reference = "https://www.law.cornell.edu/uscode/text/26/24#d"
+        reference = "https://www.bennet.senate.gov/wp-content/uploads/2025/04/American-Family-Act-2025.pdf"
 
         def formula(tax_unit, period, parameters):
             # This line corresponds to "the credit which would be allowed under this section [the CTC section]"
@@ -166,10 +170,12 @@ def create_afa_other_dependent_credit() -> Reform:
         unit = USD
         documentation = "Total value of the non-refundable and refundable portions of the Child Tax Credit."
         definition_period = YEAR
-        reference = "https://www.law.cornell.edu/uscode/text/26/24#a"
+        reference = "https://www.bennet.senate.gov/wp-content/uploads/2025/04/American-Family-Act-2025.pdf"
 
         def formula(tax_unit, period, parameters):
-            maximum_amount = tax_unit("ctc_maximum_with_arpa_addition", period)
+            maximum_amount = tax_unit(
+                "ctc_child_individual_maximum_arpa", period
+            )
             reduction = tax_unit("ctc_lower_phase_out", period)
             p = parameters(period).gov.contrib.congress.afa.ctc.phase_out
             reduced_max_amount_lower = max_(
@@ -177,6 +183,30 @@ def create_afa_other_dependent_credit() -> Reform:
             )
             higher_reduction = tax_unit("ctc_higher_phase_out", period)
             return max_(0, reduced_max_amount_lower - higher_reduction)
+
+    class ctc_child_individual_maximum_arpa(Variable):
+        value_type = float
+        entity = Person
+        label = "CTC maximum amount (child under ARPA)"
+        unit = USD
+        documentation = "The CTC entitlement in respect of this person as a child, under the American Rescue Plan Act."
+        definition_period = YEAR
+        reference = "https://www.bennet.senate.gov/wp-content/uploads/2025/04/American-Family-Act-2025.pdf"
+
+        def formula(person, period, parameters):
+            p = parameters(period).gov.contrib.congress.afa.ctc.amount
+            base_amount = p.base
+            age = person("age", period)
+            multiplier = p.multiplier.calc(age)
+            pre_baby_bonus_amount = base_amount * multiplier
+            is_baby = age < 1
+            monthly_base_amount = base_amount / MONTHS_IN_YEAR
+            baby_bonus = (
+                monthly_base_amount * p.baby_bonus
+                - monthly_base_amount * multiplier
+            )
+            baby_bonus_amount = baby_bonus * is_baby
+            return pre_baby_bonus_amount + baby_bonus_amount
 
     def modify_parameters(parameters):
         parameters.gov.irs.credits.non_refundable.update(
@@ -195,6 +225,16 @@ def create_afa_other_dependent_credit() -> Reform:
                 "other_dependent_credit",
             ],
         )
+        parameters.gov.irs.credits.ctc.refundable.fully_refundable.update(
+            start=instant("2025-01-01"),
+            stop=instant("2039-12-31"),
+            value=True,
+        )
+        parameters.gov.irs.credits.ctc.amount.adult_dependent.update(
+            start=instant("2025-01-01"),
+            stop=instant("2039-12-31"),
+            value=0,
+        )
         return parameters
 
     class reform(Reform):
@@ -206,6 +246,7 @@ def create_afa_other_dependent_credit() -> Reform:
             self.update_variable(ctc_higher_phase_out)
             self.update_variable(ctc)
             self.update_variable(refundable_ctc)
+            self.update_variable(ctc_child_individual_maximum_arpa)
             self.modify_parameters(modify_parameters)
 
     return reform
