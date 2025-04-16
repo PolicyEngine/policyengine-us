@@ -26,7 +26,7 @@ class is_chip_eligible_child(Variable):
 
         # Check if state offers CHIP program for children
         income_limit = p.income_limit[state_code]
-        state_has_chip = income_limit > 0 
+        state_has_chip = income_limit > 0
 
         # Check immigration status eligibility
         istatus = person("immigration_status", period)

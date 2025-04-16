@@ -27,7 +27,9 @@ class chip_category(Variable):
         is_chip_eligible_standard_pregnant_person = person(
             "is_chip_eligible_standard_pregnant_person", period
         )
-        is_chip_fcep_eligible_person = person("is_chip_fcep_eligible_person", period)
+        is_chip_fcep_eligible_person = person(
+            "is_chip_fcep_eligible_person", period
+        )
 
         # Use select to return the appropriate category
         # If eligible under multiple categories, prioritize child, then standard pregnant, then FCEP
@@ -44,5 +46,5 @@ class chip_category(Variable):
                 CHIPCategory.PREGNANT_STANDARD,
                 CHIPCategory.PREGNANT_FCEP,
             ],
-        default=CHIPCategory.NONE    
+            default=CHIPCategory.NONE,
         )
