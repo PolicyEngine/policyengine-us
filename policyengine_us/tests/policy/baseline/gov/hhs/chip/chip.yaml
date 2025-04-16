@@ -1,0 +1,15 @@
+- name: Eligible with $10,000 value.
+  period: 2022
+  input:
+    is_chip_eligible: true
+    medicaid_benefit_value: 10_000
+  output:
+    chip: 10_000
+
+- name: Ineligible with $10,000 value.
+  period: 2022
+  input:
+    is_chip_eligible: false
+    medicaid_benefit_value: 10_000
+  output:
+    chip: 0
