@@ -5,9 +5,7 @@ class is_chip_eligible_child(Variable):
     value_type = bool
     entity = Person
     label = "Child eligible for CHIP"
-    documentation = (
-        "Determines if a child is eligible for the Children's Health Insurance Program"
-    )
+    documentation = "Determines if a child is eligible for the Children's Health Insurance Program"
     definition_period = YEAR
     reference = (
         "https://www.ssa.gov/OP_Home/ssact/title21/2110.htm",
