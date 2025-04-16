@@ -14,17 +14,19 @@ class is_chip_eligible_child(Variable):
 
     def formula(person, period, parameters):
         # Get state code
-        state = person.household("state_code", period)
+        state_code = person.household("state_code", period)
 
         # Check age eligibility
         age = person("age", period)
         p = parameters(period).gov.hhs.chip.child
+        min_age = p.min_age
+        max_age = p.max_age
 
-        is_age_eligible = (age >= min_age) & (age <= max_age)
+        is_age_eligible = (age >= min_age) & (age < max_age)
 
         # Check if state offers CHIP program for children
-        income_limit = p.income_limit[state]
-        state_has_chip = income_limit > 0
+        income_limit = p.income_limit[state_code]
+        state_has_chip = income_limit > 0 
 
         # Check immigration status eligibility
         istatus = person("immigration_status", period)
@@ -37,8 +39,8 @@ class is_chip_eligible_child(Variable):
         medicaid_eligible = person("is_medicaid_eligible", period)
 
         # Check if family income is below CHIP threshold
-        # Use tax_unit_fpg_ratio as the income measure
-        income_ratio = person.tax_unit("tax_unit_fpg_ratio", period)
+        # Use medicaid_income_level as the income measure
+        income_ratio = person("medicaid_income_level", period)
         income_eligible = income_ratio <= income_limit
 
         return (

@@ -24,26 +24,25 @@ class chip_category(Variable):
 
     def formula(person, period, parameters):
         is_child_eligible = person("is_chip_eligible_child", period)
-        is_standard_pregnant_eligible = person(
-            "is_chip_eligible_standard_pregnant", period
+        is_chip_eligible_standard_pregnant_person = person(
+            "is_chip_eligible_standard_pregnant_person", period
         )
-        is_fcep_eligible = person("is_chip_eligible_fcep", period)
+        is_chip_fcep_eligible_person = person("is_chip_fcep_eligible_person", period)
 
         # Use select to return the appropriate category
         # If eligible under multiple categories, prioritize child, then standard pregnant, then FCEP
         return select(
             [
                 is_child_eligible,
-                ~is_child_eligible & is_standard_pregnant_eligible,
+                ~is_child_eligible & is_chip_eligible_standard_pregnant_person,
                 ~is_child_eligible
-                & ~is_standard_pregnant_eligible
-                & is_fcep_eligible,
-                True,
+                & ~is_chip_eligible_standard_pregnant_person
+                & is_chip_fcep_eligible_person,
             ],
             [
                 CHIPCategory.CHILD,
                 CHIPCategory.PREGNANT_STANDARD,
                 CHIPCategory.PREGNANT_FCEP,
-                CHIPCategory.NONE,
             ],
+        default=CHIPCategory.NONE    
         )
