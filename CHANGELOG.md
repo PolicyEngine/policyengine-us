@@ -5,7 +5,6 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-
 ## [1.251.0] - 2025-04-15 18:10:28
 
 ### Added
@@ -957,12 +956,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - 0
 - 2
 - 5
--  
+-
 - S
 - S
 - I
 - ,
--  
+-
 - A
 - N
 - D
@@ -970,15 +969,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - C
 - S
 - ,
--  
+-
 - a
 - n
 - d
--  
+-
 - O
 - A
 - P
--  
+-
 - v
 - a
 - l
@@ -3147,7 +3146,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- Delaware _joint AGI and deductions variable attribution.
+- Delaware \_joint AGI and deductions variable attribution.
 
 ## [0.733.0] - 2024-04-12 20:25:53
 
@@ -5756,7 +5755,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Seven empty state ??_income_tax.py variables.
+- Seven empty state ??\_income_tax.py variables.
 - All states to the state_income_taxes.py adds list.
 
 ## [0.506.1] - 2023-10-17 22:47:08
@@ -6859,7 +6858,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- Error-prone {short,long}_term_capital_losses variables by removing them.
+- Error-prone {short,long}\_term_capital_losses variables by removing them.
 
 ## [0.390.0] - 2023-07-26 16:33:04
 
@@ -11387,8 +11386,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - First prototype version with a standard deduction variable.
 
-
-
 [1.251.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.250.0...1.251.0
 [1.250.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.249.0...1.250.0
 [1.249.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.248.2...1.249.0
@@ -13213,4 +13210,3 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [0.3.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.2.0...0.3.0
 [0.2.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.1.0...0.2.0
 [0.1.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.0.1...0.1.0
-
