@@ -36,7 +36,8 @@ class chip_category(Variable):
         return select(
             [
                 is_child_eligible,
-                ~is_child_eligible & is_chip_eligible_standard_pregnant_person,
+                is_chip_eligible_standard_pregnant_person,
+                is_chip_fcep_eligible_person,
                 ~is_child_eligible
                 & ~is_chip_eligible_standard_pregnant_person
                 & is_chip_fcep_eligible_person,
