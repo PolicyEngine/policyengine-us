@@ -5,7 +5,9 @@ class is_chip_eligible_child(Variable):
     value_type = bool
     entity = Person
     label = "Child eligible for CHIP"
-    documentation = "Determines if a child is eligible for the Children's Health Insurance Program"
+    documentation = (
+        "Determines if a child is eligible for the Children's Health Insurance Program"
+    )
     definition_period = YEAR
     reference = (
         "https://www.ssa.gov/OP_Home/ssact/title21/2110.htm",
@@ -19,10 +21,8 @@ class is_chip_eligible_child(Variable):
         # Check age eligibility
         age = person("age", period)
         p = parameters(period).gov.hhs.chip.child
-        min_age = p.min_age
-        max_age = p.max_age
 
-        is_age_eligible = (age >= min_age) & (age < max_age)
+        is_age_eligible = age < p.max_age
 
         # Check if state offers CHIP program for children
         income_limit = p.income_limit[state_code]
