@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class or_liheap_heat_in_rent(Variable):
+class heat_in_rent(Variable):
     value_type = bool
     entity = SPMUnit
     label = "Whether household's heating costs are included in the rent amount under the Oregon LIHEAP"

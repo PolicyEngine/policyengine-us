@@ -5,7 +5,7 @@
     state_code: OR
     irs_gross_income: 25_000
     housing_assistance: 0
-    or_liheap_heat_in_rent: false
+    heat_in_rent: false
   output:
     or_liheap_eligibility: true
 
@@ -16,7 +16,7 @@
     state_code: OR
     irs_gross_income: 90_000
     housing_assistance: 0
-    or_liheap_heat_in_rent: false
+    heat_in_rent: false
   output:
     or_liheap_eligibility: false
 
@@ -27,7 +27,7 @@
     state_code: OR
     irs_gross_income: 40_000
     housing_assistance: 500
-    or_liheap_heat_in_rent: true
+    heat_in_rent: true
   output:
     or_liheap_eligibility: false
 
@@ -38,7 +38,7 @@
     state_code: OR
     irs_gross_income: 30_000
     housing_assistance: 100
-    or_liheap_heat_in_rent: false
+    heat_in_rent: false
   output:
     or_liheap_eligibility: true
 
@@ -49,6 +49,6 @@
     state_code: OR
     irs_gross_income: 50_000
     housing_assistance: 0
-    or_liheap_heat_in_rent: true
+    heat_in_rent: true
   output:
     or_liheap_eligibility: true
