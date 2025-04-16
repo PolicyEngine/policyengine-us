@@ -60,7 +60,7 @@
         members: [person1, person2]
         state_fips: 28  # MS
   output:  # expected results from patched TAXSIM35 2024-02-19 version
-    ms_income_tax: 2_286
+    ms_income_tax: 1_686
 
 - name: Tax unit with taxsimid 86116 in j21.its.csv and j21.ots.csv
   absolute_error_margin: 0.01

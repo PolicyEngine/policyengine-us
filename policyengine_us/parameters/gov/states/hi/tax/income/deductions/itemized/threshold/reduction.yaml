@@ -1,0 +1,33 @@
+description: Hawaii reduces the total itemized deductions amount for filers with federal adjusted gross income below this amount, based on filing status.
+
+
+SINGLE:
+  2021-01-01: 166_800
+JOINT:
+  2021-01-01: 166_800
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 166_800
+SEPARATE:
+  2021-01-01: 83_400
+SURVIVING_SPOUSE:
+  2021-01-01: 166_800
+
+metadata:
+  breakdown:
+    - filing_status
+  unit: currency-USD
+  period: year
+  label: Hawaii itemized deductions reduction threshold
+  reference:
+    - title: 2024 Hawaii Resident Income Tax Instructions
+      href: https://files.hawaii.gov/tax/forms/2024/n11ins.pdf#page=32
+    - title: 2023 Hawaii Resident Income Tax Instructions
+      href: https://files.hawaii.gov/tax/forms/2023/n11ins.pdf#page=32
+    - title: 2022 Hawaii Resident Income Tax Instructions
+      href: https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=32
+    - title: 2021 Hawaii Resident Income Tax Instructions
+      href: https://files.hawaii.gov/tax/forms/2021/n11ins.pdf#page=32
+    # The legal code specifies a reduction threshold aligning with the IRS threshold in 2009
+    # However, the tax forms and instructions only reflect the 2009 threshold for single filers 
+    - title: Hawaii Income Tax Law, Chapter 235, Section 235-2.4, (c)(1)
+      href: https://files.hawaii.gov/tax/legal/hrs/hrs_235.pdf#page=11

@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+
+## [1.251.0] - 2025-04-15 18:10:28
+
+### Added
+
+- AFA 2025 reform.
+
 ## [1.250.0] - 2025-04-14 01:13:24
 
 ### Added
@@ -11382,6 +11389,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[1.251.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.250.0...1.251.0
 [1.250.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.249.0...1.250.0
 [1.249.0]: https://github.com/PolicyEngine/policyengine-us/compare/1.248.2...1.249.0
 [1.248.2]: https://github.com/PolicyEngine/policyengine-us/compare/1.248.1...1.248.2
