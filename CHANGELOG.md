@@ -952,38 +952,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- 2
-- 0
-- 2
-- 5
--
-- S
-- S
-- I
-- ,
--
-- A
-- N
-- D
-- -
-- C
-- S
-- ,
--
-- a
-- n
-- d
--
-- O
-- A
-- P
--
-- v
-- a
-- l
-- u
-- e
-- s
+- Added 2025 SSI, AND-CS, and OAP values.
 
 ## [1.162.0] - 2024-12-18 02:31:13
 
