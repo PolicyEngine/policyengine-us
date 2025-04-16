@@ -12,8 +12,6 @@ class mt_standard_deduction_indiv(Variable):
     defined_for = StateCode.MT
 
     def formula(person, period, parameters):
-        # Get the current year
-        year = period.start.year
         p = parameters(period).gov.states.mt.tax.income.deductions.standard
         # Get filing status
         filing_status = person.tax_unit(
@@ -23,14 +21,14 @@ class mt_standard_deduction_indiv(Variable):
 
         if p.applies:
             # Pre-2024: MT specific standard deduction calculation
-            p = parameters(period).gov.states.mt.tax.income.deductions.standard
             agi = person("mt_agi", period)
             # standard deduction is a percentage of AGI that
             # is bounded by a min/max by filing status.
             floor = p.floor[filing_status]
             cap = p.cap[filing_status]
             uncapped_amount = p.rate * agi
-            deduction_amount = max_(min_(uncapped_amount, cap), floor)
+            capped_amount = min_(uncapped_amount, cap
+            deduction_amount = max_(capped_amount, floor)
         else:
             # 2024 and after: Use federal standard deduction
             std = parameters(period).gov.irs.deductions.standard
