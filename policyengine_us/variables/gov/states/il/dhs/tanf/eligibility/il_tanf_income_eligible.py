@@ -6,12 +6,12 @@ class ol_tanf_income_eligible(Variable):
     entity = SPMUnit
     label = "Eligible for Illinois Temporary Assistance for Needy Families (TANF) due to income"
     definition_period = MONTH
-    reference = (
-        "https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-112.155"
-    )
+    reference = "https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-112.155"
     defined_for = StateCode.IL
 
     def formula(spm_unit, period, parameters):
-        countable_income = spm_unit("il_tanf_countable_income_at_application", period)
+        countable_income = spm_unit(
+            "il_tanf_countable_income_at_application", period
+        )
         payment_level = spm_unit("il_tanf_payment_level", period)
         return countable_income <= payment_level

@@ -6,9 +6,7 @@ class il_tanf_immigration_status_eligible(Variable):
     entity = SPMUnit
     label = "Eligible for the Illinois TANF based on immigration status"
     definition_period = MONTH
-    reference = (
-        "https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-112.10"
-    )
+    reference = "https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-112.10"
     defined_for = StateCode.IL
 
     def formula(spm_unit, period, parameters):
