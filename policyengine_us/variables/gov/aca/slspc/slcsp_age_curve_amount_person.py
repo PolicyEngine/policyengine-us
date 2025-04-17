@@ -9,7 +9,7 @@ class slcsp_age_curve_amount_person(Variable):
     )
     unit = USD
     definition_period = MONTH
-    defined_for = "slcsp_age_curve_applies"
+    defined_for = "is_aca_ptc_eligible"
 
     def formula(person, period, parameters):
         state_code = person.household("state_code_str", period)
@@ -40,4 +40,5 @@ class slcsp_age_curve_amount_person(Variable):
             ],
             default=p.default.calc(age),
         )
-        return base_cost * multiplier
+        age_curve_applies = person.household("slcsp_age_curve_applies", period)
+        return base_cost * multiplier * age_curve_applies
