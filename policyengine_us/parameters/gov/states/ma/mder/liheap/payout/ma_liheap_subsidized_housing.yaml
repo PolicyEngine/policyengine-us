@@ -109,7 +109,7 @@ metadata:
   label: Massachusetts LIHEAP subsidized housing payout
   breakdown: 
     - range(1,6) # household size
-    - utility_type
+    - ma_liheap_utility_type
 
   reference:
     - title: Fiscal Year 2022 Home Energy Assistance Program (HEAP) Income Eligibility and Benefit Levels
