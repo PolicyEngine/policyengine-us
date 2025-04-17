@@ -27,7 +27,7 @@ class mt_standard_deduction_indiv(Variable):
             floor = p.floor[filing_status]
             cap = p.cap[filing_status]
             uncapped_amount = p.rate * agi
-            capped_amount = min_(uncapped_amount, cap
+            capped_amount = min_(uncapped_amount, cap)
             deduction_amount = max_(capped_amount, floor)
         else:
             # 2024 and after: Use federal standard deduction
