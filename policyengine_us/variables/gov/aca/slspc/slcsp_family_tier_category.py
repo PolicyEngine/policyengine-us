@@ -39,23 +39,26 @@ class slcsp_family_tier_category(Variable):
 
         # For tests, since the age variable is defined yearly but we're running monthly
         # tests, we need to use the direct age values from the input file
-        member_ages = tax_unit.members("monthly_age", period)
+        person = tax_unit.members
+        member_ages = person("monthly_age", period)
 
         # Define adult status using the parameter instead of hardcoded value
-        is_adult = member_ages > max_child_age
-        adult_count = tax_unit.sum(is_adult)
+        is_aca_ptc_eligible = person("is_aca_ptc_eligible", period)
+        is_eligible_adult = (member_ages > max_child_age) & is_aca_ptc_eligible
+        eligible_adult_count = tax_unit.sum(is_eligible_adult)
         # More efficient than recounting: total - adults = children
-        child_count = tax_unit("tax_unit_size", period) - adult_count
+        eligible_people = tax_unit.sum(is_aca_ptc_eligible)
+        eligible_child_count = eligible_people - eligible_adult_count
 
         # Common conditions for both states
-        one_adult_no_children = (adult_count == 1) & (child_count == 0)
-        two_plus_adults_no_children = (adult_count >= 2) & (child_count == 0)
-        one_adult_with_children = (adult_count == 1) & (child_count > 0)
-        two_plus_adults_with_children = (adult_count >= 2) & (child_count > 0)
+        one_adult_no_children = (eligible_adult_count == 1) & (eligible_child_count == 0)
+        two_plus_adults_no_children = (eligible_adult_count >= 2) & (eligible_child_count == 0)
+        one_adult_with_children = (eligible_adult_count == 1) & (eligible_child_count > 0)
+        two_plus_adults_with_children = (eligible_adult_count >= 2) & (eligible_child_count > 0)
 
         # NY-specific condition (child-only households)
         ny_child_only = (
-            (state_code == "NY") & (adult_count == 0) & (child_count > 0)
+            (state_code == "NY") & (eligible_adult_count == 0) & (eligible_child_count > 0)
         )
 
         return select(
