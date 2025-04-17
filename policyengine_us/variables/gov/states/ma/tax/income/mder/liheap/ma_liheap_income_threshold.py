@@ -7,9 +7,7 @@ class ma_liheap_income_threshold(Variable):
     label = "Income threshold for Massachusetts LIHEAP eligibility"
     unit = USD
     definition_period = YEAR
-    reference = (
-        "https://www.mass.gov/info-details/learn-about-home-energy-assistance-heap"
-    )
+    reference = "https://www.mass.gov/info-details/learn-about-home-energy-assistance-heap"
 
     defined_for = StateCode.MA
 

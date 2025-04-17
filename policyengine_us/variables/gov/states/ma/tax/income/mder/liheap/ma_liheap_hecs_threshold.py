@@ -9,8 +9,8 @@ class ma_liheap_hecs_threshold(Variable):
     label = "Massachusetts HECS Eligibility"
 
     def formula(spm_unit, period, parameters):
-        utility_type = spm_unit("utility_type", period)
-        last_year_cost = spm_unit("last_year_energy_cost", period)
+        utility_type = spm_unit("ma_liheap_utility_type", period)
+        last_year_cost = spm_unit("ma_liheap_last_year_energy_cost", period)
 
         p = parameters(period).gov.states.ma.mder.liheap
         threshold = p.ma_liheap_hecs_thresholds[utility_type]

@@ -1,6 +1,7 @@
 from policyengine_us.model_api import *
 
-class last_year_energy_cost(Variable):
+
+class ma_liheap_last_year_energy_cost(Variable):
     value_type = float
     entity = SPMUnit
     definition_period = YEAR

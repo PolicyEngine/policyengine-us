@@ -9,13 +9,13 @@ class UtilityType(Enum):
     NATURAL_GAS = "Natural Gas"
     OTHER = "Other"
     KEROSENE = "Kerosene"
-    ELECTRICTY = "Electricity"
+    ELECTIRICTIY = "Electricity"
 
 
-class utility_type(Variable):
+class ma_liheap_utility_type(Variable):
     value_type = Enum
     entity = SPMUnit
     possible_values = UtilityType
-    default_value = UtilityType.ELECTRICTY
+    default_value = UtilityType.ELECTIRICTIY
     definition_period = YEAR
     label = "Household Utility type"
