@@ -1,10 +1,10 @@
-description: New York applies a reduction to itemized deductions for high-income taxpayers based on income thresholds. 
+description: New York reduces the itemized deductions by this rate of the federal charitable deduction for filers with adjusted gross income exceeding this threshold.
 metadata:
-  type: marginal_rate
+  type: single_amount
   threshold_unit: currency-USD
-  rate_unit: /1
+  amount_unit: /1
   period: year
-  label: New York high-income itemized deduction reduction 
+  label: New York itemized deduction reduction based on charitable deduction rate
   reference:
     - title: SECTION 615 New York itemized deduction of a resident individual (g)
       href: https://www.nysenate.gov/legislation/laws/TAX/615
@@ -20,13 +20,13 @@ metadata:
 brackets:
   - threshold:
       2021-01-01: 0 
-    rate:
+    amount:
       2021-01-01: 0
   - threshold:
       2021-01-01: 1_000_000
-    rate:
+    amount:
       2021-01-01: 0.5
   - threshold:
       2021-01-01: 10_000_000
-    rate:
+    amount:
       2021-01-01: 0.25

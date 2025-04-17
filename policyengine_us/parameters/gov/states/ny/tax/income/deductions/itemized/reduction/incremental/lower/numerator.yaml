@@ -1,10 +1,10 @@
-description: New York multiplies the itemized deductions by a fraction with the lesser of this value or the excess over state adjusted gross income as the numerator under the itemized deductions adjustment.
+description: New York reduces the itemized deductions by an amount including a fraction with the lesser of adjusted gross income exceeding the lower income threshold or this value as the numerator.
 values:
   2021-01-01: 50_000
 metadata:
   unit: currency-USD
   period: year
-  label: New York itemized deduction reduction numerator  
+  label: New York itemized deduction incremental reduction lower numerator  
   reference:
     - title: SECTION 615 New York itemized deduction of a resident individual (f)(1)
       href: https://www.nysenate.gov/legislation/laws/TAX/615

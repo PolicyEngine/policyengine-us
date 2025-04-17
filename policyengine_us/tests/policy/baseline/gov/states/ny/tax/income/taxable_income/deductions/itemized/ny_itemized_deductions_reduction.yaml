@@ -57,3 +57,27 @@
     state_code: NY
   output:
     ny_itemized_deductions_reduction: 250 # 300 - 200*0.25 = 250 
+
+- name: Case 6 
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    ny_itemized_deductions_reduction_based_on_charitable_deduction: 100
+    ny_itemized_deductions_reduction_based_on_charitable_deduction_applies: true
+    ny_itemized_deductions_incremental_reduction: 50
+    ny_itemized_deductions_reduction_applies: true
+    state_code: NY
+  output:
+    ny_itemized_deductions_reduction: 100
+
+- name: Case 7 
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    ny_itemized_deductions_reduction_based_on_charitable_deduction: 100
+    ny_itemized_deductions_reduction_based_on_charitable_deduction_applies: false
+    ny_itemized_deductions_incremental_reduction: 50
+    ny_itemized_deductions_reduction_applies: true
+    state_code: NY
+  output:
+    ny_itemized_deductions_reduction: 50
