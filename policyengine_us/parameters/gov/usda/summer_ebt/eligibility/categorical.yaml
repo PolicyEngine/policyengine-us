@@ -1,0 +1,19 @@
+description: The United States Department of Agriculture requires participation in one of the following programs to qualify for the Summer EBT program.
+
+values:
+  2024-01-01:
+    - snap # Supplemental Nutrition Assistance Program.
+    - tanf # Temporary Assistance to Needy Families.
+    - fdpir # Food Distribution Program on Indian Reservations.
+    - medicaid
+
+metadata:
+  period: year
+  unit: list
+  label: Summer EBT qualifying programs
+  reference:
+    # The program eligibility is not mentioned in the legal code
+    - title: 42 U.S. Code § 1762(h)(2)
+      href: https://www.law.cornell.edu/uscode/text/42/1762#h_2
+    - title: 2024 USDA SUN Bucks (Summer EBT)
+      href: https://www.fns.usda.gov/summer/sunbucks

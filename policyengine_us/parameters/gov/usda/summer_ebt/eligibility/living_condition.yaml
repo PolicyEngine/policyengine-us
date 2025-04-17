@@ -1,0 +1,17 @@
+description: The United States Department of Agriculture considers the following living conditions as eligibility criteria for the Summer EBT program.
+
+values:
+  2024-01-01:
+    - is_homeless
+    - was_in_foster_care
+
+metadata:
+  period: year
+  unit: list
+  label: Summer EBT qualifying living conditions
+  reference:
+    # The program eligibility is not mentioned in the legal code 
+    - title: 42 U.S. Code § 1762(h)(2)
+      href: https://www.law.cornell.edu/uscode/text/42/1762#h_2
+    - title: 2024 USDA SUN Bucks (Summer EBT)
+      href: https://www.fns.usda.gov/summer/sunbucks
