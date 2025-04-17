@@ -16,7 +16,7 @@
   output:
     ne_school_readiness_credit: 0
 
-- name: Eligible, bad input
+- name: Eligible, unit size capped at 5
   period: 2024
   input:
     ne_school_readiness_credit_eligible_worker: true
@@ -24,4 +24,3 @@
     state_code: NE
   output:
     ne_school_readiness_credit: 3_500
-

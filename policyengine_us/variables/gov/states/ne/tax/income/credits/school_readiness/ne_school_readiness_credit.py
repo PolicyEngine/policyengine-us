@@ -17,7 +17,7 @@ class ne_school_readiness_credit(Variable):
         )
         p = parameters(
             period
-        ).gov.states.ne.tax.income.credits.school_readiness.amount
-        capped_level = min_(level, p.refundable.thresholds[-1])
+        ).gov.states.ne.tax.income.credits.school_readiness
+        capped_level = min_(level, p.max_unit_size)
         # determine school readiness credit amount
-        return p.refundable.calc(capped_level)
+        return p.amount.refundable[capped_level]
