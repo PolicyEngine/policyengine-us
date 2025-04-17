@@ -1,0 +1,13 @@
+description: Puerto Rico limits the earned income credit to filers with investment income below this threshold. 
+values: 
+  2010-12-31: 2_200 
+  2023-01-01: 10_000
+metadata:
+  unit: currency-USD
+  label: Puerto Rico earned income credit investment income limit
+  period: year
+  reference:
+    - title: P.R. Laws tit. 13, § 30211 (e)
+      href: https://casetext.com/statute/laws-of-puerto-rico/title-thirteen-taxation-and-finance/subtitle-17-internal-revenue-code-of-2011/part-ii-income-taxes/chapter-1007-credits-against-tax/subchapter-b-refundable-credits/30211-earned-income-credit
+    - title: Schedule CT Individual, Earned Income Credit, 2023
+      href: https://hacienda.pr.gov/sites/default/files/schedule_ct_rev._jul_5_23_informative_-_instructions.pdf#page=4
