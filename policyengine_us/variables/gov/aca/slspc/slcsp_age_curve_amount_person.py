@@ -40,5 +40,5 @@ class slcsp_age_curve_amount_person(Variable):
             ],
             default=p.default.calc(age),
         )
-        age_curve_applies = person.household("slcsp_age_curve_applies", period)
+        age_curve_applies = person.tax_unit("slcsp_age_curve_applies", period)
         return base_cost * multiplier * age_curve_applies
