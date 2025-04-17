@@ -1,12 +1,12 @@
-description: New York multiplies the itemized deductions by a fraction with this denominator under the itemized deductions adjustment.
+description: New York reduces the itemized deductions by a lower amount of this rate multiplied by the computed fraction.
 values:
-  2021-01-01: 50_000
+  2021-01-01: 0.25
 metadata:
-  unit: currency-USD
+  unit: /1
   period: year
-  label: New York itemized deduction reduction denominator
+  label: New York itemized deduction incremental reduction lower rate
   reference:
-    - title: SECTION 615 New York itemized deduction of a resident individual (f)(2)
+    - title: SECTION 615 New York itemized deduction of a resident individual (f)(1)
       href: https://www.nysenate.gov/legislation/laws/TAX/615
     - title: 2021 NY Form IT-196 Instructions Line 46
       href: https://www.tax.ny.gov/pdf/2021/inc/it196i_2021.pdf#page=20

@@ -1,12 +1,12 @@
-description: New York provides a higher itemized deduction reduction for this fraction of itemized deduction.
+description: New York reduces the itemized deductions by a higher rate with a fraction with this denominator.
 values:
-  2021-01-01: 0.25
+  2021-01-01: 50_000
 metadata:
-  unit: /1
+  unit: currency-USD
   period: year
-  label: New York higher itemized deduction reduction applicable percentage
+  label: New York itemized deduction incremental reduction lower denominator
   reference:
-    - title: SECTION 615 New York itemized deduction of a resident individual (f)(2)
+    - title: SECTION 615 New York itemized deduction of a resident individual (f)(1)
       href: https://www.nysenate.gov/legislation/laws/TAX/615
     - title: 2021 NY Form IT-196 Instructions Line 46
       href: https://www.tax.ny.gov/pdf/2021/inc/it196i_2021.pdf#page=20
