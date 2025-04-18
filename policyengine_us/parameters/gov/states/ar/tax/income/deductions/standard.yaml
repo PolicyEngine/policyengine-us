@@ -4,7 +4,7 @@ metadata:
   period: year
   unit: currency-USD
   uprating:
-    parameter: gov.irs.uprating
+    parameter: gov.bls.cpi.cpi_w
     rounding:
       type: downwards
       interval: 10
