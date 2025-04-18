@@ -3,7 +3,7 @@ values:
   2021-01-01: 6_000
   2022-01-01: 6_200
   2023-01-01: 6_700
-
+  2024-01-01: 7_050
 
 metadata:
   label: Rhode Island exemption phase out increment
@@ -15,6 +15,9 @@ metadata:
       type: downwards
       interval: 50
   reference:
+  # The tax form points to this worksheet: Exemption Worksheet for RI-1040NR, Page 1, line 6)
+  - title: Rhode Island Tax Rate Schedule and Worksheet 2024 (Exemption Worksheet line 6)
+    href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2024-12/2024%20Tax%20Rate%20and%20Worksheets.pdf#page=1
   # The tax form points to this worksheet: Exemption Worksheet for RI-1040NR, Page 1, line 6)
   - title: Rhode Island Tax Rate Schedule and Worksheet 2022 (Exemption Worksheet line 6)
     href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-12/2022%20Tax%20Rate%20and%20Worksheets.pdf#page=1
