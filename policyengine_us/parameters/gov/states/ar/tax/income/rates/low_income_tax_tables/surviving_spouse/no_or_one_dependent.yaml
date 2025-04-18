@@ -3,6 +3,8 @@ metadata:
   type: single_amount
   threshold_unit: currency-USD
   amount_unit: currency-USD
+  uprating: gov.bls.cpi.cpi_u
+  propagate_metadata_to_children: true
   label: Arkansas low income tax table surviving spouse amount no or one dependent
   reference:
     - title: Arkansas Code § 26-51-301, Individuals exempt from taxation or qualifying for the low-income tax credit
